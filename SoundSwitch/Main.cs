@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Win32;
 using SoundSwitch.Models;
+using Settings = SoundSwitch.Properties.Settings;
 
 
 namespace SoundSwitch
@@ -15,15 +16,58 @@ namespace SoundSwitch
         /// <summary>
         /// Instance of the main application class
         /// </summary>
-        public static Main Instance { get; } = new Main();
+        public static Main Instance { get; private set; }
 
-        public AudioDeviceManager AudioDeviceManager { get; private set; } = new AudioDeviceManager("EndPointController.exe");
+        public AudioDeviceManager AudioDeviceManager { get; } = new AudioDeviceManager("EndPointController.exe");
+
+        public delegate void SelectedDeviceChangeHandler(object sender, List<string> newSelectedDevices );
+
+        public event SelectedDeviceChangeHandler OnSelectedDeviceChange;
+
+        public List<string> SelectedDevicesList
+        {
+            get
+            {
+                return
+                    Properties.Settings.Default.SelectedDevices.Split(new[] {SelectedDevicesDelimiter},
+                        StringSplitOptions.RemoveEmptyEntries).ToList();
+            }
+
+            private set
+            {
+                if (value == null)
+                    throw new ArgumentNullException(nameof(value));
+                Properties.Settings.Default.SelectedDevices = string.Join(SelectedDevicesDelimiter, value);
+                Properties.Settings.Default.Save();
+                OnSelectedDeviceChange?.Invoke(this,value);
+            }
+        }
+
+        public List<AudioDevice> AvailableAudioDevices
+        {
+            get
+            {
+                return
+                    AudioDeviceManager.GetDevices()
+                        .Where((device => SelectedDevicesList.Contains(device.FriendlyName)))
+                        .ToList();
+            }
+        }
 
         readonly Util.TrayIcon _trayIcon;
+
+        public static void InitMain()
+        {
+            Instance = new Main();
+        }
 
         public Main()
         {
             _trayIcon = new Util.TrayIcon();
+            OnSelectedDeviceChange += (sender, devices) =>
+            {
+                PopulateTrayIconDeviceMenu();
+            };
             PopulateTrayIconDeviceMenu();
 
             Hook = new KeyboardHook();
@@ -48,7 +92,17 @@ namespace SoundSwitch
             //};
         }
 
+        #region Tray icon 
 
+        /// <summary>
+        /// populates the tray icon with device names that are selected AND found on the system
+        /// </summary>
+        public void PopulateTrayIconDeviceMenu()
+        {
+            _trayIcon.SetDeviceList(AvailableAudioDevices);
+        }
+
+        #endregion
         #region Hot keys
         /// <summary>
         /// Sets the hotkey combination, and <see cref="ReAttachKeyboardHook">re-attaches the keyboard hook</see>.
@@ -150,42 +204,9 @@ namespace SoundSwitch
         }
         #endregion
 
-        #region Tray icon 
-
-        /// <summary>
-        /// populates the tray icon with device names that are selected AND found on the system
-        /// </summary>
-        public void PopulateTrayIconDeviceMenu()
-        {
-            _trayIcon.SetDeviceList(GetAvailableDevices());
-        }
-
-        #endregion
-
         #region Selected devices
 
         private const string SelectedDevicesDelimiter = ";;;"; 
-
-        /// <summary>
-        /// Sets the devices that are enabled
-        /// </summary>
-        /// <param name="deviceNames"></param>
-        public void SetSelectedDevices(string[] deviceNames)
-        {
-            Properties.Settings.Default.SelectedDevices = String.Join(SelectedDevicesDelimiter, deviceNames);
-            Properties.Settings.Default.Save();
-
-            PopulateTrayIconDeviceMenu();
-        }
-
-        /// <summary>
-        /// Gets the names of the devices that are enabled to be used
-        /// </summary>
-        /// <returns></returns>
-        public string[] GetSelectedDevices()
-        {
-            return Properties.Settings.Default.SelectedDevices.Split(new string[] { SelectedDevicesDelimiter }, StringSplitOptions.RemoveEmptyEntries);
-        }
 
         /// <summary>
         /// Sets a particular device to be enabled or not
@@ -194,7 +215,7 @@ namespace SoundSwitch
         /// <param name="selected"></param>
         public void SetDeviceSelection(string deviceName, bool selected)
         {
-            var current = new List<string>(GetSelectedDevices());
+            var current = SelectedDevicesList;
             if (selected && !current.Contains(deviceName))
             {
                 current.Add(deviceName);
@@ -203,23 +224,12 @@ namespace SoundSwitch
             {
                 current.Remove(deviceName);
             }
-            SetSelectedDevices(current.ToArray());
+            SelectedDevicesList = current;
         }
 
         #endregion
 
         #region Active device
-        private string LastKnownActiveDevice
-        {
-            get
-            {
-                return Properties.Settings.Default.ActiveDevice;
-            }
-            set
-            {
-                Properties.Settings.Default.ActiveDevice = value;
-            }
-        }
 
         /// <summary>
         /// Attempts to set active device to the specified name 
@@ -231,8 +241,9 @@ namespace SoundSwitch
             {
                 if (AudioDeviceManager.SetDeviceAsDefault(device))
                 {
-                    LastKnownActiveDevice = device.FriendlyName;
                     _trayIcon.ShowAudioChanged(device.FriendlyName);
+                    Properties.Settings.Default.LastActiveAudioDevice = device.FriendlyName;
+                    Properties.Settings.Default.Save();
                     return true;
                 }
             }
@@ -245,29 +256,30 @@ namespace SoundSwitch
 
         /// <summary>
         /// Cycles the active device to the next device. Returns true if succesfully switched (at least
-        /// as far as we can tell), retursn false if could not successfully switch. Throws NoDevicesException
+        /// as far as we can tell), returns false if could not successfully switch. Throws NoDevicesException
         /// if there are no devices configured.
         /// </summary>
         public bool CycleActiveDevice()
         {
-            var list = GetAvailableDevices();
+            var list = AvailableAudioDevices;
             if (list.Count == 0)
             {
                 throw new NoDevicesException();
             }
-
-            var defaultDev = list.IndexOf(list.First(device => device.IsDefault));
-
-            // loop through effectively one less than list.count, since we only want to try to set every other item except the current
-            for (var i = 1; i < list.Count; i++)
+            AudioDevice defaultDev = null;
+            try
             {
-                defaultDev = (defaultDev >= list.Count - 1) ? 0 : defaultDev + 1;
-                if (SetActiveDevice(list[defaultDev]))
-                {
-                    return true;
-                }
+                defaultDev = list.First(device => device.IsDefault);
             }
-            return false;
+            catch (Exception)
+            {
+                defaultDev =
+                    list.FirstOrDefault(device => device.FriendlyName == Properties.Settings.Default.LastActiveAudioDevice) ??
+                    list[0];
+            }
+
+            var next = list.SkipWhile((device, i) => device != defaultDev).Skip(1).FirstOrDefault() ?? list[0];
+            return SetActiveDevice(next);
         }
 
         class NoDevicesException : InvalidOperationException
@@ -275,16 +287,6 @@ namespace SoundSwitch
             public NoDevicesException() : base("No devices to select") {}
         }
         #endregion
-
-        /// <summary>
-        /// Gets the list of available devices that have been selected. 
-        /// </summary>
-        /// <returns></returns>
-        public List<AudioDevice> GetAvailableDevices()
-        {
-            var selected = new List<string>(GetSelectedDevices());
-            return AudioDeviceManager.GetDevices().Where((device => selected.Contains(device.FriendlyName))).ToList();
-        }
        
     }
 }

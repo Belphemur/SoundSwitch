@@ -19,6 +19,7 @@ namespace SoundSwitch
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.ThreadException += Application_ThreadException;
+                SoundSwitch.Main.InitMain();
                 if (Properties.Settings.Default.FirstRun)
                 {
                     FirstRun();

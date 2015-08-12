@@ -83,7 +83,7 @@ namespace SoundSwitch.Forms
                 // disable click event 
                 lstDevices.ItemCheck -= lstDevices_ItemCheck;
 
-                var selected = Main.Instance.GetSelectedDevices();
+                var selected = Main.Instance.SelectedDevicesList;
                 foreach (var item in Main.Instance.AudioDeviceManager.GetDevices())
                 {
                     var idx = lstDevices.Items.Add(item.FriendlyName);

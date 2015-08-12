@@ -2,14 +2,8 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SoundSwitch.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="ActiveDevice" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="SelectedDevices" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="ShowPopups" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="RunAtStartup" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -25,6 +19,9 @@
     </Setting>
     <Setting Name="SelectedDevicesDelimiter" Type="System.String" Scope="User">
       <Value Profile="(Default)">;;;</Value>
+    </Setting>
+    <Setting Name="LastActiveAudioDevice" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

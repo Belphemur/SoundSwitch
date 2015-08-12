@@ -26,36 +26,12 @@ namespace SoundSwitch.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string ActiveDevice {
-            get {
-                return ((string)(this["ActiveDevice"]));
-            }
-            set {
-                this["ActiveDevice"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string SelectedDevices {
             get {
                 return ((string)(this["SelectedDevices"]));
             }
             set {
                 this["SelectedDevices"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ShowPopups {
-            get {
-                return ((bool)(this["ShowPopups"]));
-            }
-            set {
-                this["ShowPopups"] = value;
             }
         }
         
@@ -116,6 +92,18 @@ namespace SoundSwitch.Properties {
             }
             set {
                 this["SelectedDevicesDelimiter"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastActiveAudioDevice {
+            get {
+                return ((string)(this["LastActiveAudioDevice"]));
+            }
+            set {
+                this["LastActiveAudioDevice"] = value;
             }
         }
     }
