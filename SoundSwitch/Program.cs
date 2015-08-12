@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using SoundSwitch.Forms;
 
 namespace SoundSwitch
 {
@@ -15,15 +16,15 @@ namespace SoundSwitch
             {
                 if (createdNew)
                 {
-                    if (Properties.Settings.Default.FirstRun)
-                    {
-                        FirstRun();
-                    }
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
                     Application.ThreadException += Application_ThreadException;
                     new Main();
                     Application.Run();
+                    if (Properties.Settings.Default.FirstRun)
+                    {
+                        FirstRun();
+                    }
                 }
             }
         }
@@ -49,7 +50,7 @@ namespace SoundSwitch
         {
             try
             {
-                SoundSwitch.Main.Instance.RunAtStartup = true;
+                Settings.Instance.Show();
             }
             catch (Exception)
             {
