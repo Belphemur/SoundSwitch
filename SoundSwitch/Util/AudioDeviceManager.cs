@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
-using AudioDevice_Quickswitcher.utilities;
 using SoundSwitch.Models;
 
 
@@ -11,7 +10,7 @@ namespace SoundSwitch.Util
     /// <summary>
     /// Manages the operating system's audio devices by wrapping Dan Steven's AudioEndPointController (https://github.com/DanStevens/AudioEndPointController).
     /// </summary>
-    internal class AudioDeviceManager
+    public class AudioDeviceManager
     {
         private static readonly string ServiceOutputFormat =
             @"<device>
@@ -54,9 +53,9 @@ namespace SoundSwitch.Util
         /// Sets the specified audio device as the system default.
         /// </summary>
         /// <param name="audioDevice">Device to be set as system default</param>
-        public void SetDeviceAsDefault(AudioDevice audioDevice)
+        public bool SetDeviceAsDefault(AudioDevice audioDevice)
         {
-            _processExecutor.Start(string.Format(" {0}", audioDevice.Index));
+           return _processExecutor.Start(string.Format(" {0}", audioDevice.Index));
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿//Source: https://github.com/danielsunnerberg/AudioDevice-Quickswitcher
+
+using System;
 using System.Diagnostics;
 
 namespace SoundSwitch.Util
@@ -39,10 +41,15 @@ namespace SoundSwitch.Util
         /// Starts the process with the specified arguments.
         /// </summary>
         /// <param name="arguments">Arguments, if any, which the process should be started with.</param>
-        public void Start(string arguments)
+        public bool Start(string arguments)
         {
             _process.StartInfo.Arguments = arguments;
             _process.Start();
+            if (!_process.WaitForExit(5000))
+            {
+                throw new TimeoutException("Timed out while trying to switch audio output.");
+            }
+            return (_process.ExitCode == 0);
         }
 
         /// <summary>

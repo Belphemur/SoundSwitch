@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
 using SoundSwitch.Forms;
+using SoundSwitch.Models;
 
 namespace SoundSwitch.Util
 {
@@ -56,12 +58,12 @@ namespace SoundSwitch.Util
         /// Sets the names of devices that show up in the menu
         /// </summary>
         /// <param name="deviceNames"></param>
-        public void SetDeviceList(string[] deviceNames) 
+        public void SetDeviceList(List<AudioDevice> deviceNames) 
         {
             _selectionMenu.Items.Clear();
             foreach (var item in deviceNames)
             {
-                _selectionMenu.Items.Add(item, null, deviceClicked);
+                _selectionMenu.Items.Add(new ToolStripDeviceItem(deviceClicked, item));
             }
         }
 
@@ -69,8 +71,8 @@ namespace SoundSwitch.Util
         {
             try
             {
-                ToolStripDropDownItem item = (ToolStripDropDownItem)sender;
-                Main.Instance.SetActiveDevice(item.Text);
+                var item = (ToolStripDeviceItem)sender;
+                Main.Instance.SetActiveDevice(item.AudioDevice);
             }
             catch (Exception)
             {

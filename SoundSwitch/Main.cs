@@ -5,6 +5,7 @@ using SoundSwitch.Util;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Win32;
+using SoundSwitch.Models;
 
 
 namespace SoundSwitch
@@ -15,6 +16,8 @@ namespace SoundSwitch
         /// Instance of the main application class
         /// </summary>
         public static Main Instance { get; private set; }
+
+        public AudioDeviceManager AudioDeviceManager { get; private set; } = new AudioDeviceManager("EndPointController.exe");
 
         readonly Util.TrayIcon _trayIcon;
 
@@ -156,7 +159,7 @@ namespace SoundSwitch
         /// </summary>
         public void PopulateTrayIconDeviceMenu()
         {
-            _trayIcon.SetDeviceList(GetAvailableDevices().ToArray());
+            _trayIcon.SetDeviceList(GetAvailableDevices());
         }
 
         #endregion
@@ -223,15 +226,15 @@ namespace SoundSwitch
         /// <summary>
         /// Attempts to set active device to the specified name 
         /// </summary>
-        /// <param name="deviceName"></param>
-        public bool SetActiveDevice(string deviceName)
+        /// <param name="device"></param>
+        public bool SetActiveDevice(AudioDevice device)
         {
             try
             {
-                if (SoundConfig.SetDefaultDevice(deviceName))
+                if (AudioDeviceManager.SetDeviceAsDefault(device))
                 {
-                    LastKnownActiveDevice = deviceName;
-                    _trayIcon.ShowAudioChanged(deviceName);
+                    LastKnownActiveDevice = device.FriendlyName;
+                    _trayIcon.ShowAudioChanged(device.FriendlyName);
                     return true;
                 }
             }
@@ -249,19 +252,19 @@ namespace SoundSwitch
         /// </summary>
         public bool CycleActiveDevice()
         {
-            var list = new List<string>(GetAvailableDevices());
+            var list = GetAvailableDevices();
             if (list.Count == 0)
             {
                 throw new NoDevicesException();
             }
 
-            var activeIdx = list.IndexOf(LastKnownActiveDevice);
+            var defaultDev = list.IndexOf(list.First(device => device.IsDefault));
 
             // loop through effectively one less than list.count, since we only want to try to set every other item except the current
             for (var i = 1; i < list.Count; i++)
             {
-                activeIdx = (activeIdx >= list.Count - 1) ? 0 : activeIdx + 1;
-                if (SetActiveDevice(list[activeIdx]))
+                defaultDev = (defaultDev >= list.Count - 1) ? 0 : defaultDev + 1;
+                if (SetActiveDevice(list[defaultDev]))
                 {
                     return true;
                 }
@@ -279,12 +282,10 @@ namespace SoundSwitch
         /// Gets the list of available devices that have been selected. 
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<string> GetAvailableDevices()
+        public List<AudioDevice> GetAvailableDevices()
         {
             var selected = new List<string>(GetSelectedDevices());
-            var actual = from d in SoundConfig.ListDevices() select d.Name;
-
-            return actual.Intersect(selected);
+            return AudioDeviceManager.GetDevices().Where((device => selected.Contains(device.FriendlyName))).ToList();
         }
        
     }

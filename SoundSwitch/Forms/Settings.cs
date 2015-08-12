@@ -79,10 +79,10 @@ namespace SoundSwitch.Forms
                 lstDevices.ItemCheck -= lstDevices_ItemCheck;
 
                 var selected = Main.Instance.GetSelectedDevices();
-                foreach (var item in SoundConfig.ListDevices())
+                foreach (var item in Main.Instance.AudioDeviceManager.GetDevices())
                 {
-                    var idx = lstDevices.Items.Add(item.Name);
-                    lstDevices.SetItemCheckState(idx, selected.Contains(item.Name) ? CheckState.Checked : CheckState.Unchecked);
+                    var idx = lstDevices.Items.Add(item.FriendlyName);
+                    lstDevices.SetItemCheckState(idx, selected.Contains(item.FriendlyName) ? CheckState.Checked : CheckState.Unchecked);
                 }
             }
             catch (Exception e)
