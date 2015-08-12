@@ -24,6 +24,8 @@ namespace SoundSwitch.Forms
         private Settings()
         {
             InitializeComponent();
+            var toolTip = new ToolTip();
+            toolTip.SetToolTip(closeButton,"Changes are automatically saved");
             
             txtHotkey.KeyDown += TxtHotkey_KeyDown;
             txtHotkey.Text =
@@ -117,5 +119,9 @@ namespace SoundSwitch.Forms
             Main.Instance.PopulateTrayIconDeviceMenu();
         }
 
+        private void closeButton_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }

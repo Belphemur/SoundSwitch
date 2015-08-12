@@ -32,9 +32,9 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lstDevices = new System.Windows.Forms.CheckedListBox();
             this.RunAtStartup = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txtHotkey = new System.Windows.Forms.TextBox();
+            this.closeButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -70,18 +70,6 @@
             this.RunAtStartup.UseVisualStyleBackColor = true;
             this.RunAtStartup.CheckedChanged += new System.EventHandler(this.RunAtStartup_CheckedChanged);
             // 
-            // checkBox2
-            // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Enabled = false;
-            this.checkBox2.Location = new System.Drawing.Point(12, 223);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(197, 17);
-            this.checkBox2.TabIndex = 8;
-            this.checkBox2.Text = "Show popup when changing device";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            this.checkBox2.Visible = false;
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -98,14 +86,26 @@
             this.txtHotkey.Size = new System.Drawing.Size(132, 20);
             this.txtHotkey.TabIndex = 10;
             // 
+            // closeButton
+            // 
+            this.closeButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.closeButton.Location = new System.Drawing.Point(295, 186);
+            this.closeButton.Name = "closeButton";
+            this.closeButton.Size = new System.Drawing.Size(75, 23);
+            this.closeButton.TabIndex = 11;
+            this.closeButton.Text = "Close";
+            this.closeButton.UseVisualStyleBackColor = true;
+            this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
+            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(382, 223);
+            this.CancelButton = this.closeButton;
+            this.ClientSize = new System.Drawing.Size(382, 221);
+            this.Controls.Add(this.closeButton);
             this.Controls.Add(this.txtHotkey);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.RunAtStartup);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -123,9 +123,9 @@
 
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.CheckBox RunAtStartup;
-        private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtHotkey;
         private System.Windows.Forms.CheckedListBox lstDevices;
+        private System.Windows.Forms.Button closeButton;
     }
 }
