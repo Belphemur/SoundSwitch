@@ -28,8 +28,12 @@ namespace SoundSwitch.Forms
             toolTip.SetToolTip(closeButton,"Changes are automatically saved");
             
             txtHotkey.KeyDown += TxtHotkey_KeyDown;
-            txtHotkey.Text =
-                $"{Properties.Settings.Default.HotkeyModifierKeys.Replace(", ", "+")}+{Properties.Settings.Default.HotkeyKey}";
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.HotkeyModifierKeys) &&
+                !string.IsNullOrEmpty(Properties.Settings.Default.HotkeyKey))
+            {
+                txtHotkey.Text =
+                    $"{Properties.Settings.Default.HotkeyModifierKeys.Replace(", ", "+")}+{Properties.Settings.Default.HotkeyKey}";
+            }
 
             RunAtStartup.Checked = Main.Instance.RunAtStartup;
         }
@@ -43,32 +47,31 @@ namespace SoundSwitch.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error changing run at startup setting: " + ex.Message);
+                MessageBox.Show(@"Error changing run at startup setting: " + ex.Message);
                 RunAtStartup.Checked = Main.Instance.RunAtStartup;
             }
         }
 
         private void TxtHotkey_KeyDown(object sender, KeyEventArgs e)
         {
-            if (!new[] { 8, 17, 18, 46 }.Contains(e.KeyValue))
+            if (new[] {8, 17, 18, 46}.Contains(e.KeyValue)) return;
+
+            ModifierKeys modifierKeys = 0;
+            var displayString = "";
+
+            if (e.Control)
             {
-                ModifierKeys modifierKeys = 0;
-                var displayString = "";
-
-                if (e.Control)
-                {
-                    modifierKeys |= Util.ModifierKeys.Control;
-                    displayString += "Ctrl+";
-                }
-                if (e.Alt)
-                {
-                    modifierKeys |= Util.ModifierKeys.Alt;
-                    displayString += "Alt+";
-                }
-
-                txtHotkey.Text = $"{displayString}{e.KeyCode}";
-                Main.Instance.SetHotkeyCombination(e.KeyCode, modifierKeys);
+                modifierKeys |= Util.ModifierKeys.Control;
+                displayString += "Ctrl+";
             }
+            if (e.Alt)
+            {
+                modifierKeys |= Util.ModifierKeys.Alt;
+                displayString += "Alt+";
+            }
+
+            txtHotkey.Text = $"{displayString}{e.KeyCode}";
+            Main.Instance.SetHotkeyCombination(e.KeyCode, modifierKeys);
         }
 
 
@@ -89,7 +92,7 @@ namespace SoundSwitch.Forms
             }
             catch (Exception e)
             {
-                MessageBox.Show("Error: " + e.Message);
+                MessageBox.Show(@"Error: " + e.Message);
             }
             finally
             {

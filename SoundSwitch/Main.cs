@@ -15,7 +15,7 @@ namespace SoundSwitch
         /// <summary>
         /// Instance of the main application class
         /// </summary>
-        public static Main Instance { get; private set; }
+        public static Main Instance { get; } = new Main();
 
         public AudioDeviceManager AudioDeviceManager { get; private set; } = new AudioDeviceManager("EndPointController.exe");
 
@@ -23,8 +23,6 @@ namespace SoundSwitch
 
         public Main()
         {
-            Instance = this;
-
             _trayIcon = new Util.TrayIcon();
             PopulateTrayIconDeviceMenu();
 
