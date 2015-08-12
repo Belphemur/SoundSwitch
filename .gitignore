@@ -34,3 +34,5 @@
 #VS
 bin/
 obj/
+Debug/
+Release/
