@@ -30,3 +30,7 @@
 
 # Debug files
 *.dSYM/
+
+#VS
+bin/
+obj/
