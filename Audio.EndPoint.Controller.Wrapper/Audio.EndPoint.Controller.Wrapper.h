@@ -14,6 +14,6 @@ namespace AudioEndPointControllerWrapper {
 		static List<AudioDeviceWrapper^>^ getAvailableAudioDevices();
 		static List<AudioDeviceWrapper^>^ getAllAudioDevices();
 	private:
-		static List<AudioDeviceWrapper^>^ convertNativeList(std::list<AudioDevice> audioDeviceList);
+		static List<AudioDeviceWrapper^>^ convertNativeList(std::list<AudioDevice*>* audioDeviceList);
 	};
 }
