@@ -4,8 +4,8 @@ using System.Windows.Forms;
 using SoundSwitch.Util;
 using System.Collections.Generic;
 using System.Linq;
+using AudioEndPointControllerWrapper;
 using Microsoft.Win32;
-using SoundSwitch.Models;
 using Settings = SoundSwitch.Properties.Settings;
 
 
@@ -17,8 +17,6 @@ namespace SoundSwitch
         /// Instance of the main application class
         /// </summary>
         public static Main Instance { get; private set; }
-
-        public AudioDeviceManager AudioDeviceManager { get; } = new AudioDeviceManager("EndPointController.exe");
 
         public delegate void SelectedDeviceChangeHandler(object sender, List<string> newSelectedDevices );
 
@@ -43,12 +41,12 @@ namespace SoundSwitch
             }
         }
 
-        public List<AudioDevice> AvailableAudioDevices
+        public List<AudioDeviceWrapper> AvailableAudioDevices
         {
             get
             {
                 return
-                    AudioDeviceManager.GetDevices()
+                    AudioController.getAvailableAudioDevices()
                         .Where((device => SelectedDevicesList.Contains(device.FriendlyName)))
                         .ToList();
             }
@@ -235,17 +233,15 @@ namespace SoundSwitch
         /// Attempts to set active device to the specified name 
         /// </summary>
         /// <param name="device"></param>
-        public bool SetActiveDevice(AudioDevice device)
+        public bool SetActiveDevice(AudioDeviceWrapper device)
         {
             try
             {
-                if (AudioDeviceManager.SetDeviceAsDefault(device))
-                {
-                    _trayIcon.ShowAudioChanged(device.FriendlyName);
-                    Properties.Settings.Default.LastActiveAudioDevice = device.FriendlyName;
-                    Properties.Settings.Default.Save();
-                    return true;
-                }
+                device.SetAsDefault();
+                _trayIcon.ShowAudioChanged(device.FriendlyName);
+                Properties.Settings.Default.LastActiveAudioDevice = device.FriendlyName;
+                Properties.Settings.Default.Save();
+                return true;
             }
             catch (Exception ex)
             {
@@ -266,7 +262,7 @@ namespace SoundSwitch
             {
                 throw new NoDevicesException();
             }
-            AudioDevice defaultDev = null;
+            AudioDeviceWrapper defaultDev = null;
             try
             {
                 defaultDev = list.First(device => device.IsDefault);

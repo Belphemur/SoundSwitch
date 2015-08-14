@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
+using AudioEndPointControllerWrapper;
 using SoundSwitch.Util;
 
 namespace SoundSwitch.Forms
@@ -84,7 +85,7 @@ namespace SoundSwitch.Forms
                 lstDevices.ItemCheck -= lstDevices_ItemCheck;
 
                 var selected = Main.Instance.SelectedDevicesList;
-                foreach (var item in Main.Instance.AudioDeviceManager.GetDevices())
+                foreach (var item in AudioController.getAllAudioDevices().Where(wrapper => !string.IsNullOrEmpty(wrapper.FriendlyName)))
                 {
                     var idx = lstDevices.Items.Add(item.FriendlyName);
                     lstDevices.SetItemCheckState(idx, selected.Contains(item.FriendlyName) ? CheckState.Checked : CheckState.Unchecked);

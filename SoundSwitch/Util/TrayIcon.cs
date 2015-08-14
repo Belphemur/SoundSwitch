@@ -4,8 +4,8 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
+using AudioEndPointControllerWrapper;
 using SoundSwitch.Forms;
-using SoundSwitch.Models;
 
 namespace SoundSwitch.Util
 {
@@ -58,7 +58,7 @@ namespace SoundSwitch.Util
         /// Sets the names of devices that show up in the menu
         /// </summary>
         /// <param name="deviceNames"></param>
-        public void SetDeviceList(List<AudioDevice> deviceNames) 
+        public void SetDeviceList(List<AudioDeviceWrapper> deviceNames) 
         {
             _selectionMenu.Items.Clear();
             foreach (var item in deviceNames)

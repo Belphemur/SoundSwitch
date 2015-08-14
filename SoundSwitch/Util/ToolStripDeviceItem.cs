@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Windows.Forms;
-using SoundSwitch.Models;
+using AudioEndPointControllerWrapper;
 
 namespace SoundSwitch.Util
 {
     internal class ToolStripDeviceItem : ToolStripMenuItem
     {
-        public ToolStripDeviceItem(EventHandler onClick, AudioDevice audioDevice)
+        public ToolStripDeviceItem(EventHandler onClick, AudioDeviceWrapper audioDevice)
             : base(audioDevice.FriendlyName, null, onClick)
         {
             AudioDevice = audioDevice;
         }
 
-        public AudioDevice AudioDevice { get; set; }
+        public AudioDeviceWrapper AudioDevice { get; set; }
     }
 }
