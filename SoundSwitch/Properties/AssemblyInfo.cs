@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("SoundSwitch")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Jeroen Pelgrims")]
+[assembly: AssemblyCompany("SoundSwitch")]
 [assembly: AssemblyProduct("SoundSwitch")]
-[assembly: AssemblyCopyright("Jeroen Pelgrims")]
+[assembly: AssemblyCopyright("Jeroen Pelgrims; Antoine Aflalo")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
