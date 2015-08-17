@@ -20,11 +20,7 @@ namespace SoundSwitch.Forms
 {
     public partial class About : Form
     {
-        private static readonly About instance = new About();
-        public static About Instance
-        {
-            get { return instance; }
-        }
+        public static About Instance { get; } = new About();
 
         static About()
         {
