@@ -10,10 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundSwitch", "SoundSwitch\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Audio.EndPoint.Controller", "AudioEndPointController\Audio.EndPoint.Controller\Audio.EndPoint.Controller.vcxproj", "{A3F1B8E3-39CD-4B6F-9FE2-4AC26A811430}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Audio.EndPoint.Controller.Wrapper", "Audio.EndPoint.Controller.Wrapper\Audio.EndPoint.Controller.Wrapper.vcxproj", "{115BF2B4-B3BE-446D-BA76-348E274258F7}"
-	ProjectSection(ProjectDependencies) = postProject
-		{A3F1B8E3-39CD-4B6F-9FE2-4AC26A811430} = {A3F1B8E3-39CD-4B6F-9FE2-4AC26A811430}
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Audio.EndPoint.Controller.Wrapper", "AudioEndPointController\Audio.EndPoint.Controller.Wrapper\Audio.EndPoint.Controller.Wrapper.vcxproj", "{115BF2B4-B3BE-446D-BA76-348E274258F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

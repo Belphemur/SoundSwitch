@@ -232,7 +232,7 @@
     </PublishFile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Audio.EndPoint.Controller.Wrapper\Audio.EndPoint.Controller.Wrapper.vcxproj">
+    <ProjectReference Include="..\AudioEndPointController\Audio.EndPoint.Controller.Wrapper\Audio.EndPoint.Controller.Wrapper.vcxproj">
       <Project>{115bf2b4-b3be-446d-ba76-348e274258f7}</Project>
       <Name>Audio.EndPoint.Controller.Wrapper</Name>
     </ProjectReference>
