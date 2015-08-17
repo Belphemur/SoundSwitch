@@ -48,10 +48,12 @@ if "%builderror%"=="1" echo error: build failed & goto Quit
 Echo "Copy x64"
 xcopy /y x64\Release\*.dll %x64Release% 1>nul 2>nul
 xcopy /y x64\Release\SoundSwitch.exe %x64Release% 1>nul 2>nul
+xcopy /y x64\Release\SoundSwitch.exe.config %x64Release% 1>nul 2>nul
 
 Echo "Copy x86"
 xcopy /y Release\*.dll %x86Release% 1>nul 2>nul
-xcopy /y Release\SoundSwitch.exe %x86Release% 1>nul 2>nul
+xcopy /y Release\SoundSwitch.* %x86Release% 1>nul 2>nul
+xcopy /y Release\SoundSwitch.exe.config %x64Release% 1>nul 2>nul
 
 if exist Sign.bat (
     echo Signing release...
@@ -61,12 +63,11 @@ if exist Sign.bat (
 )
 
 
-call ./Installer/Make-Installer.bat
-if not "%ERRORLEVEL%"=="0" echo error: make installer failed & goto Quit
+rem call ./Installer/Make-Installer.bat
+rem if not "%ERRORLEVEL%"=="0" echo error: make installer failed & goto Quit
 
 echo.
 Echo All operations completed successfully.
-start Release
 
 :Quit
 Echo.
