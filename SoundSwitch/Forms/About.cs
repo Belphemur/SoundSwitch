@@ -45,11 +45,12 @@ namespace SoundSwitch.Forms
         {
             var version = Application.ProductVersion;
             txtVersion.Text = version;
+            appNameLabel.Text = Application.ProductName;
         }
 
         private void Version_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("http://soundswitch.codeplex.com/releases");
+            Process.Start("https://github.com/Belphemur/SoundSwitch/releases");
         }
 
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -72,9 +73,9 @@ namespace SoundSwitch.Forms
             Process.Start("http://www.daveamenta.com/2011-05/programmatically-or-command-line-change-the-default-sound-playback-device-in-windows-7/");
         }
 
-        private void linkLabel6_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void maintainerLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("http://johnnycoder.com/blog/2009/02/24/clickonce-run-at-startup/");
+            Process.Start("https://www.aaflalo.me");
         }
     }
 }
