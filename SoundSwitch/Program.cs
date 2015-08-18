@@ -44,11 +44,6 @@ namespace SoundSwitch
                     }
                     //Used to check if the Application need to be closed.
                     var closingSignalDetector = new EmptyForm();
-                    closingSignalDetector.FormClosed += (sender, args) =>
-                    {
-                        Application.Exit();
-
-                    };
                     closingSignalDetector.Show();
                     closingSignalDetector.Hide();
 
