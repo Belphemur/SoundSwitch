@@ -63,8 +63,8 @@ if exist Sign.bat (
 )
 
 
-rem call ./Installer/Make-Installer.bat
-rem if not "%ERRORLEVEL%"=="0" echo error: make installer failed & goto Quit
+call ./Installer/Make-Installer.bat
+if not "%ERRORLEVEL%"=="0" echo error: make installer failed & goto Quit
 
 echo.
 Echo All operations completed successfully.

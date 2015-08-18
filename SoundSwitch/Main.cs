@@ -103,6 +103,15 @@ namespace SoundSwitch
             //        MessageBox.Show(ex.Message, "Configuration needed", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             //    }
             //};
+            //Regsiter your application for restart
+            if (RestartManagerWrapper.IsRestartManagerSupported)
+            {
+                string commandLine = null;
+
+                RestartManagerWrapper.RegisterApplicationRestart(commandLine, ApplicationRestartFlags.NONE);
+
+            }//End-if (RestartManagerWrapper.IsRestartManagerSupported)         
+
         }
 
         #region Tray icon 
