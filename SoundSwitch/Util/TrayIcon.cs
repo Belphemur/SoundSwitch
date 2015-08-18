@@ -21,24 +21,29 @@ using System.Reflection;
 using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Forms;
+using SoundSwitch.Properties;
+using Settings = SoundSwitch.Forms.Settings;
 
 namespace SoundSwitch.Util
 {
-    public class TrayIcon
+    public class TrayIcon : IDisposable
     {
-        private readonly NotifyIcon trayIcon = new NotifyIcon
+        private readonly NotifyIcon _trayIcon = new NotifyIcon
         {
-            Icon = Icon.FromHandle(Properties.Resources.SwitchIcon.GetHicon()),
+            Icon = Icon.FromHandle(Resources.SwitchIcon.GetHicon()),
             Visible = true,
             Text = Application.ProductName
         };
         private readonly ContextMenuStrip _settingsMenu = new ContextMenuStrip();
 
         private readonly ContextMenuStrip _selectionMenu = new ContextMenuStrip();
-        
-        public TrayIcon()
+        private readonly Main _main;
+
+
+        public TrayIcon(Main main)
         {
-            trayIcon.ContextMenuStrip = _settingsMenu;
+            _trayIcon.ContextMenuStrip = _settingsMenu;
+            _main = main;
 
             _settingsMenu.Items.Add("Playback Devices", null, (sender, e) =>
             {
@@ -49,24 +54,38 @@ namespace SoundSwitch.Util
             });
             // settingsMenu.Items.Add("Mixer", null, (sender, e) =>  ?? not sure how to display the mixer
             _settingsMenu.Items.Add("-");
-            _settingsMenu.Items.Add("Settings", null, (sender, e) => Settings.Instance.Show());
-            _settingsMenu.Items.Add("About", null, (sender, e) => About.Instance.Show());
+            _settingsMenu.Items.Add("Settings", Resources.Settings, (sender, e) => ShowSettings());
+            _settingsMenu.Items.Add("About", Resources.Help, (sender, e) => new About().Show());
             _settingsMenu.Items.Add("-");
             _settingsMenu.Items.Add("Exit", null, (sender, e) => Application.Exit());
 
-            _selectionMenu.Items.Add("No devices selected", null, (sender, e) => Settings.Instance.Show());
+            _selectionMenu.Items.Add("No devices selected", Resources.Settings, (sender, e) => ShowSettings());
 
-            trayIcon.MouseClick += (sender, e) =>
+            _trayIcon.MouseClick += (sender, e) =>
             {
                 if (e.Button == System.Windows.Forms.MouseButtons.Left)
                 {
-                    trayIcon.ContextMenuStrip = _selectionMenu;
+                    _trayIcon.ContextMenuStrip = _selectionMenu;
                     MethodInfo mi = typeof(NotifyIcon).GetMethod("ShowContextMenu", BindingFlags.Instance | BindingFlags.NonPublic);
-                    mi.Invoke(trayIcon, null);
+                    mi.Invoke(_trayIcon, null);
 
-                    trayIcon.ContextMenuStrip = _settingsMenu;
+                    _trayIcon.ContextMenuStrip = _settingsMenu;
                 }
             };
+            SetDeviceList(_main.AvailableAudioDevices);
+            SetEventHandlers();
+        }
+
+        private void SetEventHandlers()
+        {
+            _main.ErrorTriggered += (sender, exception) => ShowError(exception.Message);
+            _main.AudioDeviceChanged += (sender, audioDeviceWrapper) => ShowAudioChanged(audioDeviceWrapper.FriendlyName);
+            _main.SelectedDeviceChanged += (sender, devices) => SetDeviceList(_main.AvailableAudioDevices);
+        }
+
+        public void ShowSettings()
+        {
+            new Settings(_main).Show();
         }
 
         /// <summary>
@@ -75,7 +94,11 @@ namespace SoundSwitch.Util
         /// <param name="deviceNames"></param>
         public void SetDeviceList(List<AudioDeviceWrapper> deviceNames) 
         {
+            if (deviceNames.Count < 0)
+                return;
+
             _selectionMenu.Items.Clear();
+            
             foreach (var item in deviceNames)
             {
                 _selectionMenu.Items.Add(new ToolStripDeviceItem(deviceClicked, item));
@@ -87,7 +110,7 @@ namespace SoundSwitch.Util
             try
             {
                 var item = (ToolStripDeviceItem)sender;
-                Main.Instance.SetActiveDevice(item.AudioDevice);
+                _main.SetActiveDevice(item.AudioDevice);
             }
             catch (Exception)
             {
@@ -101,7 +124,7 @@ namespace SoundSwitch.Util
         /// <param name="deviceName"></param>
         public void ShowAudioChanged(string deviceName)
         {
-            trayIcon.ShowBalloonTip(500, "SoundSwitch: Audio output changed", deviceName, ToolTipIcon.Info);
+            _trayIcon.ShowBalloonTip(500, "SoundSwitch: Audio output changed", deviceName, ToolTipIcon.Info);
         }
 
         /// <summary>
@@ -109,7 +132,7 @@ namespace SoundSwitch.Util
         /// </summary>
         public void ShowNoDevices()
         {
-            trayIcon.ShowBalloonTip(3000, "SoundSwitch: Configuration needed", "No devices available to switch to. Open configuration by right-clicking on the SoundSwitch icon. ", ToolTipIcon.Warning);
+            _trayIcon.ShowBalloonTip(3000, "SoundSwitch: Configuration needed", "No devices available to switch to. Open configuration by right-clicking on the SoundSwitch icon. ", ToolTipIcon.Warning);
         }
 
         /// <summary>
@@ -118,7 +141,13 @@ namespace SoundSwitch.Util
         /// <param name="errorMessage"></param>
         public void ShowError(string errorMessage, string errorTitle = "Error")
         {
-            trayIcon.ShowBalloonTip(3000, "SoundSwitch: " + errorTitle, errorMessage, ToolTipIcon.Error);
+            _trayIcon.ShowBalloonTip(3000, "SoundSwitch: " + errorTitle, errorMessage, ToolTipIcon.Error);
         }
+
+        public void Dispose()
+        {
+           _trayIcon.Dispose();
+        }
+
     }
 }

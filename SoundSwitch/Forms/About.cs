@@ -20,18 +20,8 @@ namespace SoundSwitch.Forms
 {
     public partial class About : Form
     {
-        public static About Instance { get; } = new About();
 
-        static About()
-        {
-            Instance.Closing += (sender, e) =>
-            {
-                e.Cancel = true;
-                Instance.Hide();
-            };
-        }
-
-        private About()
+        public About()
         {
             InitializeComponent();
         }

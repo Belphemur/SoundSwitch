@@ -21,21 +21,22 @@ using System.Collections.Generic;
 using System.Linq;
 using AudioEndPointControllerWrapper;
 using Microsoft.Win32;
-using Settings = SoundSwitch.Properties.Settings;
 
 
 namespace SoundSwitch
 {
     public class Main
     {
-        /// <summary>
-        /// Instance of the main application class
-        /// </summary>
-        public static Main Instance { get; private set; }
 
         public delegate void SelectedDeviceChangeHandler(object sender, List<string> newSelectedDevices );
 
-        public event SelectedDeviceChangeHandler OnSelectedDeviceChange;
+        public delegate void ErrorHandler(object sender, Exception exception);
+
+        public delegate void AudioChangeHandler(object sender, AudioDeviceWrapper name);
+
+        public event SelectedDeviceChangeHandler SelectedDeviceChanged;
+        public event ErrorHandler ErrorTriggered;
+        public event AudioChangeHandler AudioDeviceChanged;
 
         public List<string> SelectedDevicesList
         {
@@ -52,7 +53,7 @@ namespace SoundSwitch
                     throw new ArgumentNullException(nameof(value));
                 Properties.Settings.Default.SelectedDevices = string.Join(SelectedDevicesDelimiter, value);
                 Properties.Settings.Default.Save();
-                OnSelectedDeviceChange?.Invoke(this,value);
+                SelectedDeviceChanged?.Invoke(this,value);
             }
         }
 
@@ -67,22 +68,8 @@ namespace SoundSwitch
             }
         }
 
-        readonly Util.TrayIcon _trayIcon;
-
-        public static void InitMain()
-        {
-            Instance = new Main();
-        }
-
         public Main()
         {
-            _trayIcon = new Util.TrayIcon();
-            OnSelectedDeviceChange += (sender, devices) =>
-            {
-                PopulateTrayIconDeviceMenu();
-            };
-            PopulateTrayIconDeviceMenu();
-
             Hook = new KeyboardHook();
             if (!string.IsNullOrEmpty(Properties.Settings.Default.HotkeyKey) &&
                 !string.IsNullOrEmpty(Properties.Settings.Default.HotkeyModifierKeys))
@@ -103,28 +90,7 @@ namespace SoundSwitch
             //        MessageBox.Show(ex.Message, "Configuration needed", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             //    }
             //};
-            //Regsiter your application for restart
-            if (RestartManagerWrapper.IsRestartManagerSupported)
-            {
-                string commandLine = null;
-
-                RestartManagerWrapper.RegisterApplicationRestart(commandLine, ApplicationRestartFlags.NONE);
-
-            }//End-if (RestartManagerWrapper.IsRestartManagerSupported)         
-
         }
-
-        #region Tray icon 
-
-        /// <summary>
-        /// populates the tray icon with device names that are selected AND found on the system
-        /// </summary>
-        public void PopulateTrayIconDeviceMenu()
-        {
-            _trayIcon.SetDeviceList(AvailableAudioDevices);
-        }
-
-        #endregion
         #region Hot keys
         /// <summary>
         /// Sets the hotkey combination, and <see cref="ReAttachKeyboardHook">re-attaches the keyboard hook</see>.
@@ -167,7 +133,7 @@ namespace SoundSwitch
             }
             catch (Exception ex)
             {
-                _trayIcon.ShowError(ex.Message);
+                ErrorTriggered?.Invoke(this, ex);
             }
             
         }
@@ -178,13 +144,9 @@ namespace SoundSwitch
             {
                 CycleActiveDevice();
             }
-            catch (InvalidOperationException)
-            {
-                _trayIcon.ShowNoDevices();
-            }
             catch (Exception ex)
             {
-                _trayIcon.ShowError(ex.Message);
+                ErrorTriggered?.Invoke(this, ex);
             }
         }
 
@@ -207,6 +169,9 @@ namespace SoundSwitch
                 Properties.Settings.Default.Save();
             }
         }
+
+        public Settings Settings { get; }
+        public About About { get;}
 
 
         /// <summary>
@@ -262,14 +227,14 @@ namespace SoundSwitch
             try
             {
                 device.SetAsDefault();
-                _trayIcon.ShowAudioChanged(device.FriendlyName);
+                AudioDeviceChanged?.Invoke(this, device);
                 Properties.Settings.Default.LastActiveAudioDevice = device.FriendlyName;
                 Properties.Settings.Default.Save();
                 return true;
             }
             catch (Exception ex)
             {
-                _trayIcon.ShowError("Failed to change device: " + ex.Message);
+                ErrorTriggered?.Invoke(this,ex);
             }
             return false;
         }

@@ -18,6 +18,7 @@ using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using SoundSwitch.Forms;
+using SoundSwitch.Util;
 
 namespace SoundSwitch
 {
@@ -34,12 +35,15 @@ namespace SoundSwitch
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.ThreadException += Application_ThreadException;
-                SoundSwitch.Main.InitMain();
-                if (Properties.Settings.Default.FirstRun)
+                using (var icon = new TrayIcon(new Main()))
                 {
-                    FirstRun();
+                    if (Properties.Settings.Default.FirstRun)
+                    {
+                        icon.ShowSettings();
+                        Properties.Settings.Default.FirstRun = false;
+                    }
+                    Application.Run();
                 }
-                Application.Run();
             }
         }
 
@@ -58,19 +62,6 @@ namespace SoundSwitch
                 {
                     sw.Write(textToWrite);
                 }
-            }
-        }
-
-        private static void FirstRun()
-        {
-            try
-            {
-                Settings.Instance.Show();
-                Properties.Settings.Default.FirstRun = false;
-            }
-            catch (Exception)
-            {
-                //ignore, for debugging, when the application is not installed as a ClickOnce application.
             }
         }
     }

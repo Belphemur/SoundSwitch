@@ -24,21 +24,11 @@ namespace SoundSwitch.Forms
     public partial class Settings : Form
     {
         public const string DevicesDelimiter = ";;;";
+        private readonly Main _main;
 
-
-        public static Settings Instance { get; } = new Settings();
-
-        static Settings()
+        public Settings(Main main)
         {
-            Instance.Closing += (sender, e) =>
-            {
-                e.Cancel = true;
-                Instance.Hide();
-            };
-        }
-
-        private Settings()
-        {
+            _main = main;
             InitializeComponent();
             var toolTip = new ToolTip();
             toolTip.SetToolTip(closeButton,"Changes are automatically saved");
@@ -51,7 +41,9 @@ namespace SoundSwitch.Forms
                     $"{Properties.Settings.Default.HotkeyModifierKeys.Replace(", ", "+")}+{Properties.Settings.Default.HotkeyKey}";
             }
 
-            RunAtStartup.Checked = Main.Instance.RunAtStartup;
+            RunAtStartup.Checked = _main.RunAtStartup;
+            PrepareAudioList();
+            
         }
         
         private void RunAtStartup_CheckedChanged(object sender, EventArgs e)
@@ -59,12 +51,12 @@ namespace SoundSwitch.Forms
             var ras = RunAtStartup.Checked;
             try
             {
-                Main.Instance.RunAtStartup = ras;
+                _main.RunAtStartup = ras;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(@"Error changing run at startup setting: " + ex.Message);
-                RunAtStartup.Checked = Main.Instance.RunAtStartup;
+                RunAtStartup.Checked = _main.RunAtStartup;
             }
         }
 
@@ -87,11 +79,11 @@ namespace SoundSwitch.Forms
             }
 
             txtHotkey.Text = $"{displayString}{e.KeyCode}";
-            Main.Instance.SetHotkeyCombination(e.KeyCode, modifierKeys);
+            _main.SetHotkeyCombination(e.KeyCode, modifierKeys);
         }
 
 
-        public new void Show()
+        public void PrepareAudioList()
         {
             lstDevices.Items.Clear();
             try
@@ -99,7 +91,7 @@ namespace SoundSwitch.Forms
                 // disable click event 
                 lstDevices.ItemCheck -= lstDevices_ItemCheck;
 
-                var selected = Main.Instance.SelectedDevicesList;
+                var selected = _main.SelectedDevicesList;
                 foreach (var item in AudioController.getAllAudioDevices().Where(wrapper => !string.IsNullOrEmpty(wrapper.FriendlyName)))
                 {
                     var idx = lstDevices.Items.Add(item.FriendlyName);
@@ -115,27 +107,18 @@ namespace SoundSwitch.Forms
                 // re-enable click event 
                 lstDevices.ItemCheck += lstDevices_ItemCheck;
             }
-
-            base.Show();
-
         }
 
         private void lstDevices_ItemCheck(object sender, ItemCheckEventArgs e)
         {
             try
             {
-                Main.Instance.SetDeviceSelection(lstDevices.Items[e.Index].ToString(), e.NewValue == CheckState.Checked);
+                _main.SetDeviceSelection(lstDevices.Items[e.Index].ToString(), e.NewValue == CheckState.Checked);
             }
             catch (Exception)
             {
                 e.NewValue = e.CurrentValue;
             }
-        }
-
-        private void Settings_VisibleChanged(object sender, EventArgs e)
-        {
-            // make sure the device list is in sync
-            Main.Instance.PopulateTrayIconDeviceMenu();
         }
 
         private void closeButton_Click(object sender, EventArgs e)
