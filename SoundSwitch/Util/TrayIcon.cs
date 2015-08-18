@@ -74,6 +74,7 @@ namespace SoundSwitch.Util
             };
             SetDeviceList(_main.AvailableAudioDevices);
             SetEventHandlers();
+
         }
 
         private void SetEventHandlers()
