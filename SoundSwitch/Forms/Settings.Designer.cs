@@ -57,7 +57,6 @@
             this.lstDevices.Name = "lstDevices";
             this.lstDevices.Size = new System.Drawing.Size(349, 136);
             this.lstDevices.TabIndex = 12;
-            this.lstDevices.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.lstDevices_ItemCheck);
             // 
             // RunAtStartup
             // 

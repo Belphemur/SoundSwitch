@@ -38,7 +38,7 @@ namespace SoundSwitch.Forms
 
 
             RunAtStartup.Checked = _main.RunAtStartup;
-            PrepareAudioList();
+            PopulateAudioList();
         }
 
         private void RunAtStartup_CheckedChanged(object sender, EventArgs e)
@@ -77,23 +77,26 @@ namespace SoundSwitch.Forms
             _main.SetHotkeyCombination(e.KeyCode, modifierKeys);
         }
 
-        public void PrepareAudioList()
+        private void PopulateAudioList()
         {
             lstDevices.Items.Clear();
             try
             {
-                // disable click event 
-                lstDevices.ItemCheck -= lstDevices_ItemCheck;
-
                 var selected = _main.SelectedDevicesList;
+                var audioDeviceWrappers = AudioController.getAllAudioDevices()
+                    .Where(wrapper => !string.IsNullOrEmpty(wrapper.FriendlyName)).Select(wrapper => wrapper.FriendlyName).OrderBy(s => s);
                 foreach (
                     var item in
-                        AudioController.getAllAudioDevices()
-                            .Where(wrapper => !string.IsNullOrEmpty(wrapper.FriendlyName)))
+                        audioDeviceWrappers.Where(name => selected.Contains(name)))
                 {
-                    var idx = lstDevices.Items.Add(item.FriendlyName);
-                    lstDevices.SetItemCheckState(idx,
-                        selected.Contains(item.FriendlyName) ? CheckState.Checked : CheckState.Unchecked);
+                    lstDevices.Items.Add(item, true);
+                }
+
+                foreach (
+                    var item in
+                        audioDeviceWrappers.Where(name => !selected.Contains(name)))
+                {
+                    lstDevices.Items.Add(item, false);
                 }
             }
             catch (Exception e)
@@ -102,12 +105,11 @@ namespace SoundSwitch.Forms
             }
             finally
             {
-                // re-enable click event 
-                lstDevices.ItemCheck += lstDevices_ItemCheck;
+                lstDevices.ItemCheck += LstDevicesItemChecked;
             }
         }
 
-        private void lstDevices_ItemCheck(object sender, ItemCheckEventArgs e)
+        private void LstDevicesItemChecked(object sender, ItemCheckEventArgs e)
         {
             try
             {
