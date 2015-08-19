@@ -35,6 +35,20 @@ namespace SoundSwitch
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.ThreadException += Application_ThreadException;
+                CloseNotifier.Start();
+                CloseNotifier.ApplicationClosing += (sender, @event) =>
+                {
+                    if (@event.Type == CloseNotifier.ClosingEventType.Query)
+                    {
+                        @event.Result = new IntPtr(1);
+                    }
+                    else
+                    {
+                        Application.Exit();
+                    }
+                    
+                };
+
                 using (var icon = new TrayIcon(new Main()))
                 {
                     if (Properties.Settings.Default.FirstRun)
@@ -42,12 +56,9 @@ namespace SoundSwitch
                         icon.ShowSettings();
                         Properties.Settings.Default.FirstRun = false;
                     }
-                    //Used to check if the Application need to be closed.
-                    var closingSignalDetector = new EmptyForm();
-                    closingSignalDetector.Show();
-                    closingSignalDetector.Hide();
 
                     Application.Run();
+                    CloseNotifier.Stop();
                 }
 
             }

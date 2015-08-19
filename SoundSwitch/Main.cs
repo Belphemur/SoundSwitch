@@ -18,9 +18,11 @@ using SoundSwitch.Forms;
 using System.Windows.Forms;
 using SoundSwitch.Util;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using AudioEndPointControllerWrapper;
 using Microsoft.Win32;
+using Microsoft.WindowsAPICodePack.ApplicationServices;
 
 
 namespace SoundSwitch
@@ -90,7 +92,44 @@ namespace SoundSwitch
             //        MessageBox.Show(ex.Message, "Configuration needed", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             //    }
             //};
+
+            RegisterForRestart();
+            RegisterRecovery();
         }
+
+
+        private void RegisterRecovery()
+        {
+           var settings = new RecoverySettings(new RecoveryData(SaveState, Properties.Settings.Default), 0);
+            ApplicationRestartRecoveryManager.RegisterForApplicationRecovery(settings);
+            Trace.WriteLine("Recovery Registered");
+        }
+
+        private void RegisterForRestart()
+        {
+           var settings = new RestartSettings("/restart", RestartRestrictions.None);
+            ApplicationRestartRecoveryManager.RegisterForApplicationRestart(settings);
+            Trace.WriteLine("Restart Registered");
+        }
+
+        private int SaveState(object state)
+        {
+            Trace.WriteLine("Saving State");
+            var settings = (Properties.Settings) state;
+            var cancelled = ApplicationRestartRecoveryManager.ApplicationRecoveryInProgress();
+            if (cancelled)
+            {
+                Trace.Write("Recovery Cancelled");
+                ApplicationRestartRecoveryManager.ApplicationRecoveryFinished(false);
+                return 0;
+            }
+            settings.Save();
+            ApplicationRestartRecoveryManager.ApplicationRecoveryFinished(true);
+            Trace.WriteLine("Recovery Success");
+            return 0;
+
+        }
+
         #region Hot keys
         /// <summary>
         /// Sets the hotkey combination, and <see cref="ReAttachKeyboardHook">re-attaches the keyboard hook</see>.
@@ -169,9 +208,6 @@ namespace SoundSwitch
                 Properties.Settings.Default.Save();
             }
         }
-
-        public Settings Settings { get; }
-        public About About { get;}
 
 
         /// <summary>
