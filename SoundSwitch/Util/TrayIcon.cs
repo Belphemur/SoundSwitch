@@ -27,17 +27,16 @@ namespace SoundSwitch.Util
 {
     public sealed class TrayIcon : IDisposable
     {
+        private readonly Main _main;
+        private readonly ContextMenuStrip _selectionMenu = new ContextMenuStrip();
+        private readonly ContextMenuStrip _settingsMenu = new ContextMenuStrip();
+
         private readonly NotifyIcon _trayIcon = new NotifyIcon
         {
             Icon = Icon.FromHandle(Resources.SwitchIcon.GetHicon()),
             Visible = true,
             Text = Application.ProductName
         };
-        private readonly ContextMenuStrip _settingsMenu = new ContextMenuStrip();
-
-        private readonly ContextMenuStrip _selectionMenu = new ContextMenuStrip();
-        private readonly Main _main;
-
 
         public TrayIcon(Main main)
         {
@@ -62,10 +61,11 @@ namespace SoundSwitch.Util
 
             _trayIcon.MouseClick += (sender, e) =>
             {
-                if (e.Button == System.Windows.Forms.MouseButtons.Left)
+                if (e.Button == MouseButtons.Left)
                 {
                     _trayIcon.ContextMenuStrip = _selectionMenu;
-                    MethodInfo mi = typeof(NotifyIcon).GetMethod("ShowContextMenu", BindingFlags.Instance | BindingFlags.NonPublic);
+                    var mi = typeof (NotifyIcon).GetMethod("ShowContextMenu",
+                        BindingFlags.Instance | BindingFlags.NonPublic);
                     mi.Invoke(_trayIcon, null);
 
                     _trayIcon.ContextMenuStrip = _settingsMenu;
@@ -73,84 +73,6 @@ namespace SoundSwitch.Util
             };
             SetDeviceList(_main.AvailableAudioDevices);
             SetEventHandlers();
-
-        }
-
-        private void SetEventHandlers()
-        {
-            _main.ErrorTriggered += (sender, exception) => ShowError(exception.Exception.Message);
-            _main.AudioDeviceChanged += (sender, audioDeviceWrapper) => ShowAudioChanged(audioDeviceWrapper.AudioDevice.FriendlyName);
-            _main.SelectedDeviceChanged += (sender, changed) => SetDeviceList(_main.AvailableAudioDevices);
-            WindowsEventNotifier.EventTriggered += (sender, @event) =>
-            {
-                if (@event.Type != WindowsEventNotifier.EventType.DeviceChange)
-                    return;
-                _selectionMenu.Invoke(new Action(() =>
-                {
-                    SetDeviceList(_main.AvailableAudioDevices);
-                }));
-            };
-        }
-
-        public void ShowSettings()
-        {
-            new Settings(_main).Show();
-        }
-
-        /// <summary>
-        /// Sets the names of devices that show up in the menu
-        /// </summary>
-        /// <param name="deviceNames"></param>
-        public void SetDeviceList(List<AudioDeviceWrapper> deviceNames) 
-        {
-            if (deviceNames.Count < 0)
-                return;
-
-            _selectionMenu.Items.Clear();
-            
-            foreach (var item in deviceNames)
-            {
-                _selectionMenu.Items.Add(new ToolStripDeviceItem(DeviceClicked, item));
-            }
-        }
-
-        void DeviceClicked(object sender, EventArgs e)
-        {
-            try
-            {
-                var item = (ToolStripDeviceItem)sender;
-                _main.SetActiveDevice(item.AudioDevice);
-            }
-            catch (Exception)
-            {
-
-            }
-        }
-
-        /// <summary>
-        /// Notification that audio has changed
-        /// </summary>
-        /// <param name="deviceName"></param>
-        public void ShowAudioChanged(string deviceName)
-        {
-            _trayIcon.ShowBalloonTip(500, "SoundSwitch: Audio output changed", deviceName, ToolTipIcon.Info);
-        }
-
-        /// <summary>
-        /// Notification for when there are no devices configured
-        /// </summary>
-        public void ShowNoDevices()
-        {
-            _trayIcon.ShowBalloonTip(3000, "SoundSwitch: Configuration needed", "No devices available to switch to. Open configuration by right-clicking on the SoundSwitch icon. ", ToolTipIcon.Warning);
-        }
-
-        /// <summary>
-        /// shows an error messasge
-        /// </summary>
-        /// <param name="errorMessage"></param>
-        public void ShowError(string errorMessage, string errorTitle = "Error")
-        {
-            _trayIcon.ShowBalloonTip(3000, "SoundSwitch: " + errorTitle, errorMessage, ToolTipIcon.Error);
         }
 
         public void Dispose()
@@ -161,5 +83,80 @@ namespace SoundSwitch.Util
             GC.SuppressFinalize(this);
         }
 
+        private void SetEventHandlers()
+        {
+            _main.ErrorTriggered += (sender, exception) => ShowError(exception.Exception.Message);
+            _main.AudioDeviceChanged +=
+                (sender, audioDeviceWrapper) => ShowAudioChanged(audioDeviceWrapper.AudioDevice.FriendlyName);
+            _main.SelectedDeviceChanged += (sender, changed) => SetDeviceList(_main.AvailableAudioDevices);
+            WindowsEventNotifier.EventTriggered += (sender, @event) =>
+            {
+                if (@event.Type != WindowsEventNotifier.EventType.DeviceChange)
+                    return;
+                _selectionMenu.Invoke(new Action(() => { SetDeviceList(_main.AvailableAudioDevices); }));
+            };
+        }
+
+        public void ShowSettings()
+        {
+            new Settings(_main).Show();
+        }
+
+        /// <summary>
+        ///     Sets the names of devices that show up in the menu
+        /// </summary>
+        /// <param name="deviceNames"></param>
+        public void SetDeviceList(List<AudioDeviceWrapper> deviceNames)
+        {
+            if (deviceNames.Count < 0)
+                return;
+
+            _selectionMenu.Items.Clear();
+
+            foreach (var item in deviceNames)
+            {
+                _selectionMenu.Items.Add(new ToolStripDeviceItem(DeviceClicked, item));
+            }
+        }
+
+        private void DeviceClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                var item = (ToolStripDeviceItem) sender;
+                _main.SetActiveDevice(item.AudioDevice);
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        /// <summary>
+        ///     Notification that audio has changed
+        /// </summary>
+        /// <param name="deviceName"></param>
+        public void ShowAudioChanged(string deviceName)
+        {
+            _trayIcon.ShowBalloonTip(500, "SoundSwitch: Audio output changed", deviceName, ToolTipIcon.Info);
+        }
+
+        /// <summary>
+        ///     Notification for when there are no devices configured
+        /// </summary>
+        public void ShowNoDevices()
+        {
+            _trayIcon.ShowBalloonTip(3000, "SoundSwitch: Configuration needed",
+                "No devices available to switch to. Open configuration by right-clicking on the SoundSwitch icon. ",
+                ToolTipIcon.Warning);
+        }
+
+        /// <summary>
+        ///     shows an error messasge
+        /// </summary>
+        /// <param name="errorMessage"></param>
+        public void ShowError(string errorMessage, string errorTitle = "Error")
+        {
+            _trayIcon.ShowBalloonTip(3000, "SoundSwitch: " + errorTitle, errorMessage, ToolTipIcon.Error);
+        }
     }
 }

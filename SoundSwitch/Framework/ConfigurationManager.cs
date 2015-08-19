@@ -23,8 +23,8 @@ namespace SoundSwitch.Framework
     public interface IConfiguration
     {
         /// <summary>
-        /// Where is the configuration saved
-        /// Any change to this will be discarded at the next loading of the configuration
+        ///     Where is the configuration saved
+        ///     Any change to this will be discarded at the next loading of the configuration
         /// </summary>
         string FileLocation { get; set; }
 
@@ -33,7 +33,6 @@ namespace SoundSwitch.Framework
 
     public static class ConfigurationManager
     {
- 
         private static readonly string SRoot = Path.Combine(Environment.GetFolderPath(
             Environment.SpecialFolder.ApplicationData), Application.ProductName);
 
@@ -46,7 +45,7 @@ namespace SoundSwitch.Framework
         }
 
         /// <summary>
-        /// Load a ConfigurationManager from its file
+        ///     Load a ConfigurationManager from its file
         /// </summary>
         /// <returns>The loaded configuration if the file exists, else a new instance of the configuration</returns>
         public static T LoadConfiguration<T>() where T : IConfiguration, new()
@@ -64,7 +63,7 @@ namespace SoundSwitch.Framework
                 if (obj == null)
                 {
                     Trace.WriteLine("Problem with Deserializer");
-                    Trace.WriteLine("Contents: "+contents);
+                    Trace.WriteLine("Contents: " + contents);
                     obj = new T();
                 }
             }
@@ -79,7 +78,7 @@ namespace SoundSwitch.Framework
         }
 
         /// <summary>
-        /// Save the configuration in a json file.
+        ///     Save the configuration in a json file.
         /// </summary>
         /// <param name="configuration">configuration object to save</param>
         public static void SaveConfiguration<T>(T configuration) where T : IConfiguration, new()

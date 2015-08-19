@@ -28,37 +28,6 @@ namespace SoundSwitch
 {
     public class Main
     {
-        #region Events
-        public class AudioChangeEvent : EventArgs
-        {
-            public AudioDeviceWrapper AudioDevice  { get; }
-
-            public AudioChangeEvent(AudioDeviceWrapper audioDevice)
-            {
-                AudioDevice = audioDevice;
-            }
-        }
-
-        public class ExceptionEvent : EventArgs
-        {
-            public Exception Exception { get; private set; }
-
-            public ExceptionEvent(Exception exception)
-            {
-                Exception = exception;
-            }
-        }
-
-        public class DeviceListChanged : EventArgs
-        {
-            public List<string> SeletedDevicesList { get; private set; }
-
-            public DeviceListChanged(List<string> seletedDevicesList)
-            {
-                SeletedDevicesList = seletedDevicesList;
-            }
-        }
-        #endregion
         public delegate void AudioChangeHandler(object sender, AudioChangeEvent e);
 
         public delegate void ErrorHandler(object sender, ExceptionEvent e);
@@ -152,6 +121,40 @@ namespace SoundSwitch
             return 0;
         }
 
+        #region Events
+
+        public class AudioChangeEvent : EventArgs
+        {
+            public AudioChangeEvent(AudioDeviceWrapper audioDevice)
+            {
+                AudioDevice = audioDevice;
+            }
+
+            public AudioDeviceWrapper AudioDevice { get; }
+        }
+
+        public class ExceptionEvent : EventArgs
+        {
+            public ExceptionEvent(Exception exception)
+            {
+                Exception = exception;
+            }
+
+            public Exception Exception { get; private set; }
+        }
+
+        public class DeviceListChanged : EventArgs
+        {
+            public DeviceListChanged(List<string> seletedDevicesList)
+            {
+                SeletedDevicesList = seletedDevicesList;
+            }
+
+            public List<string> SeletedDevicesList { get; private set; }
+        }
+
+        #endregion
+
         #region Hot keys
 
         /// <summary>
@@ -194,7 +197,7 @@ namespace SoundSwitch
             }
             catch (Exception ex)
             {
-                ErrorTriggered?.Invoke(this,  new ExceptionEvent(ex));
+                ErrorTriggered?.Invoke(this, new ExceptionEvent(ex));
             }
         }
 
@@ -312,6 +315,7 @@ namespace SoundSwitch
             var next = list.SkipWhile((device, i) => device != defaultDev).Skip(1).FirstOrDefault() ?? list[0];
             return SetActiveDevice(next);
         }
+
         [Serializable]
         private class NoDevicesException : InvalidOperationException
         {

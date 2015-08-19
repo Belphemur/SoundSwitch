@@ -22,10 +22,10 @@ using SoundSwitch.Util;
 
 namespace SoundSwitch
 {
-    static class Program
+    internal static class Program
     {
         [STAThread]
-        static void Main()
+        private static void Main()
         {
             bool createdNew;
             using (new Mutex(true, Application.ProductName, out createdNew))
@@ -36,6 +36,9 @@ namespace SoundSwitch
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.ThreadException += Application_ThreadException;
                 WindowsEventNotifier.Start();
+                //Manage the Closing events send by Windows
+                //Since this app don't use a Form as "main window" the app doesn't close 
+                //when it should without this.
                 WindowsEventNotifier.EventTriggered += (sender, @event) =>
                 {
                     switch (@event.Type)
@@ -48,7 +51,6 @@ namespace SoundSwitch
                             Application.Exit();
                             break;
                     }
-                    
                 };
                 var config = ConfigurationManager.LoadConfiguration<SoundSwitchConfiguration>();
                 using (var icon = new TrayIcon(new Main(config)))
@@ -56,20 +58,23 @@ namespace SoundSwitch
                     if (config.FirstRun)
                     {
                         icon.ShowSettings();
-                       config.FirstRun = false;
+                        config.FirstRun = false;
                     }
 
                     Application.Run();
                     WindowsEventNotifier.Stop();
                 }
-
             }
         }
 
-        static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
+        private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
-            var message = string.Format("It seems {1} has crashed.{0}Do you want to save a log of the error that ocurred?{0}This could be useful to fix bugs. Please post this file in the issues section.", Environment.NewLine, Application.ProductName);
-            var result = MessageBox.Show(message, $"{Application.ProductName} crashed...", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+            var message =
+                string.Format(
+                    "It seems {1} has crashed.{0}Do you want to save a log of the error that ocurred?{0}This could be useful to fix bugs. Please post this file in the issues section.",
+                    Environment.NewLine, Application.ProductName);
+            var result = MessageBox.Show(message, $"{Application.ProductName} crashed...", MessageBoxButtons.YesNo,
+                MessageBoxIcon.Error);
 
             if (result == DialogResult.Yes)
             {

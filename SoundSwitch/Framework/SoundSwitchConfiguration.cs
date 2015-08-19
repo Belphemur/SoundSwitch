@@ -20,16 +20,6 @@ namespace SoundSwitch.Framework
 {
     public class SoundSwitchConfiguration : IConfiguration
     {
-        public List<string> SelectedDeviceList { get; set; }
-        public string LastActiveDevice { get; set; }
-        public bool FirstRun { get; set; }
-        public bool RunOnStartup { get; set; }
-        public Keys HotKeys { get; set; }
-        public ModifierKeys HotModifierKeys { get; set; }
-
-        public string FileLocation { get; set; }
-
-
         public SoundSwitchConfiguration()
         {
             FirstRun = true;
@@ -38,6 +28,14 @@ namespace SoundSwitch.Framework
             HotKeys = Keys.F11;
             HotModifierKeys = ModifierKeys.Alt | ModifierKeys.Control;
         }
+
+        public List<string> SelectedDeviceList { get; set; }
+        public string LastActiveDevice { get; set; }
+        public bool FirstRun { get; set; }
+        public bool RunOnStartup { get; set; }
+        public Keys HotKeys { get; set; }
+        public ModifierKeys HotModifierKeys { get; set; }
+        public string FileLocation { get; set; }
 
         public void Save()
         {
