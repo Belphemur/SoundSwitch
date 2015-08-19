@@ -22,7 +22,6 @@ using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Forms;
 using SoundSwitch.Properties;
-using Settings = SoundSwitch.Forms.Settings;
 
 namespace SoundSwitch.Util
 {
@@ -81,7 +80,16 @@ namespace SoundSwitch.Util
         {
             _main.ErrorTriggered += (sender, exception) => ShowError(exception.Exception.Message);
             _main.AudioDeviceChanged += (sender, audioDeviceWrapper) => ShowAudioChanged(audioDeviceWrapper.AudioDevice.FriendlyName);
-            _main.SelectedDeviceChanged += (sender, devices) => SetDeviceList(_main.AvailableAudioDevices);
+            _main.SelectedDeviceChanged += (sender, changed) => SetDeviceList(_main.AvailableAudioDevices);
+            WindowsEventNotifier.EventTriggered += (sender, @event) =>
+            {
+                if (@event.Type != WindowsEventNotifier.EventType.DeviceChange)
+                    return;
+                _selectionMenu.Invoke(new Action(() =>
+                {
+                    SetDeviceList(_main.AvailableAudioDevices);
+                }));
+            };
         }
 
         public void ShowSettings()

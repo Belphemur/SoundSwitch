@@ -17,7 +17,6 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
-using SoundSwitch.Forms;
 using SoundSwitch.Framework;
 using SoundSwitch.Util;
 
@@ -36,16 +35,18 @@ namespace SoundSwitch
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.ThreadException += Application_ThreadException;
-                CloseNotifier.Start();
-                CloseNotifier.ApplicationClosing += (sender, @event) =>
+                WindowsEventNotifier.Start();
+                WindowsEventNotifier.EventTriggered += (sender, @event) =>
                 {
-                    if (@event.Type == CloseNotifier.ClosingEventType.Query)
+                    switch (@event.Type)
                     {
-                        @event.Result = new IntPtr(1);
-                    }
-                    else
-                    {
-                        Application.Exit();
+                        case WindowsEventNotifier.EventType.Query:
+                            @event.Result = new IntPtr(1);
+                            break;
+                        case WindowsEventNotifier.EventType.EndSession:
+                        case WindowsEventNotifier.EventType.ForceClose:
+                            Application.Exit();
+                            break;
                     }
                     
                 };
@@ -59,7 +60,7 @@ namespace SoundSwitch
                     }
 
                     Application.Run();
-                    CloseNotifier.Stop();
+                    WindowsEventNotifier.Stop();
                 }
 
             }

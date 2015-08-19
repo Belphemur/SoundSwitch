@@ -19,45 +19,37 @@ using System.Windows.Forms;
 
 namespace SoundSwitch.Util
 {
-    public class CloseNotifier : Form
+    public class WindowsEventNotifier : Form
     {
-        private static CloseNotifier _instance;
+        public delegate void WindowsEventHandler(object sender, WindowsEvent e);
 
-        public enum ClosingEventType
+        public enum EventType
         {
             Query,
-            EndSession
+            EndSession,
+            ForceClose,
+            DeviceChange
         }
 
-        public class ClosingEvent : EventArgs
-        {
-            public IntPtr Result { get; set; }
-            public ClosingEventType Type { get; }
-
-            public ClosingEvent(ClosingEventType type)
-            {
-                Result = new IntPtr(0);
-                Type = type;
-            }
-        }
         /**
             #define WM_QUERYENDSESSION              0x0011
             #define WM_ENDSESSION                   0x0016
             #define ENDSESSION_CLOSEAPP         0x00000001
             #define WM_CLOSE                        0x0010
+            #define WM_DEVICECHANGE                 0x0219
         */
         private const int WM_QUERYENDSESSION = 0x0011;
         private const int WM_ENDSESSION = 0x0016;
         private const int ENDSESSION_CLOSEAPP = 0x00000001;
         private const int WM_CLOSE = 0x0010;
+        private const int WM_DEVICECHANGE = 0x0219;
+        private static WindowsEventNotifier _instance;
 
-        public delegate void ClosingHandler(object sender, ClosingEvent e);
-
-        public static event ClosingHandler ApplicationClosing;
-
-        private CloseNotifier()
+        private WindowsEventNotifier()
         {
         }
+
+        public static event WindowsEventHandler EventTriggered;
 
         public static void Start()
         {
@@ -66,21 +58,24 @@ namespace SoundSwitch.Util
             t.IsBackground = true;
             t.Start();
         }
+
         public static void Stop()
         {
             if (_instance == null) throw new InvalidOperationException("Notifier not started");
-            ApplicationClosing = null;
+            EventTriggered = null;
             _instance.EndForm();
         }
+
         private static void RunForm()
         {
-            Application.Run(new CloseNotifier());
+            Application.Run(new WindowsEventNotifier());
         }
 
         private void EndForm()
         {
-            this.Close();
+            Close();
         }
+
         protected override void SetVisibleCore(bool value)
         {
             // Prevent window getting visible
@@ -92,21 +87,41 @@ namespace SoundSwitch.Util
 
         protected override void WndProc(ref Message m)
         {
-           //Check for shutdown message from windows
+            //Check for shutdown message from windows
             if (m.Msg == WM_QUERYENDSESSION && m.LParam.ToInt32() == ENDSESSION_CLOSEAPP)
             {
-                var closingEvent = new ClosingEvent(ClosingEventType.Query);
-                ApplicationClosing?.Invoke(this,closingEvent);
+                var closingEvent = new WindowsEvent(EventType.Query);
+                EventTriggered?.Invoke(this, closingEvent);
                 m.Result = closingEvent.Result;
-                return;
             }
-
-            if (m.Msg == WM_CLOSE || (m.Msg == WM_ENDSESSION && m.LParam.ToInt32() == ENDSESSION_CLOSEAPP))
+            else if (m.Msg == WM_ENDSESSION && m.LParam.ToInt32() == ENDSESSION_CLOSEAPP)
             {
-                ApplicationClosing?.Invoke(this, new ClosingEvent(ClosingEventType.EndSession));
+                EventTriggered?.Invoke(this, new WindowsEvent(EventType.EndSession));
             }
+            else
+                switch (m.Msg)
+                {
+                    case WM_CLOSE:
+                        EventTriggered?.Invoke(this, new WindowsEvent(EventType.ForceClose));
+                        break;
+                    case WM_DEVICECHANGE:
+                        EventTriggered?.Invoke(this, new WindowsEvent(EventType.DeviceChange));
+                        break;
+                }
 
             base.WndProc(ref m);
+        }
+
+        public class WindowsEvent : EventArgs
+        {
+            public WindowsEvent(EventType type)
+            {
+                Result = new IntPtr(0);
+                Type = type;
+            }
+
+            public IntPtr Result { get; set; }
+            public EventType Type { get; }
         }
     }
 }
