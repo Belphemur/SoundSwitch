@@ -18,6 +18,7 @@ using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using SoundSwitch.Forms;
+using SoundSwitch.Framework;
 using SoundSwitch.Util;
 
 namespace SoundSwitch
@@ -48,13 +49,13 @@ namespace SoundSwitch
                     }
                     
                 };
-
-                using (var icon = new TrayIcon(new Main()))
+                var config = ConfigurationManager.LoadConfiguration<SoundSwitchConfiguration>();
+                using (var icon = new TrayIcon(new Main(config)))
                 {
-                    if (Properties.Settings.Default.FirstRun)
+                    if (config.FirstRun)
                     {
                         icon.ShowSettings();
-                        Properties.Settings.Default.FirstRun = false;
+                       config.FirstRun = false;
                     }
 
                     Application.Run();

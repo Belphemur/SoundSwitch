@@ -31,21 +31,16 @@ namespace SoundSwitch.Forms
             _main = main;
             InitializeComponent();
             var toolTip = new ToolTip();
-            toolTip.SetToolTip(closeButton,"Changes are automatically saved");
-            
+            toolTip.SetToolTip(closeButton, "Changes are automatically saved");
+
             txtHotkey.KeyDown += TxtHotkey_KeyDown;
-            if (!string.IsNullOrEmpty(Properties.Settings.Default.HotkeyModifierKeys) &&
-                !string.IsNullOrEmpty(Properties.Settings.Default.HotkeyKey))
-            {
-                txtHotkey.Text =
-                    $"{Properties.Settings.Default.HotkeyModifierKeys.Replace(", ", "+")}+{Properties.Settings.Default.HotkeyKey}";
-            }
+            txtHotkey.Text = _main.HotKeysString;
+
 
             RunAtStartup.Checked = _main.RunAtStartup;
             PrepareAudioList();
-            
         }
-        
+
         private void RunAtStartup_CheckedChanged(object sender, EventArgs e)
         {
             var ras = RunAtStartup.Checked;
@@ -82,7 +77,6 @@ namespace SoundSwitch.Forms
             _main.SetHotkeyCombination(e.KeyCode, modifierKeys);
         }
 
-
         public void PrepareAudioList()
         {
             lstDevices.Items.Clear();
@@ -92,10 +86,14 @@ namespace SoundSwitch.Forms
                 lstDevices.ItemCheck -= lstDevices_ItemCheck;
 
                 var selected = _main.SelectedDevicesList;
-                foreach (var item in AudioController.getAllAudioDevices().Where(wrapper => !string.IsNullOrEmpty(wrapper.FriendlyName)))
+                foreach (
+                    var item in
+                        AudioController.getAllAudioDevices()
+                            .Where(wrapper => !string.IsNullOrEmpty(wrapper.FriendlyName)))
                 {
                     var idx = lstDevices.Items.Add(item.FriendlyName);
-                    lstDevices.SetItemCheckState(idx, selected.Contains(item.FriendlyName) ? CheckState.Checked : CheckState.Unchecked);
+                    lstDevices.SetItemCheckState(idx,
+                        selected.Contains(item.FriendlyName) ? CheckState.Checked : CheckState.Unchecked);
                 }
             }
             catch (Exception e)

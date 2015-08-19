@@ -14,48 +14,54 @@
 ********************************************************************/
 
 using System;
-using SoundSwitch.Forms;
-using System.Windows.Forms;
-using SoundSwitch.Util;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
 using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.ApplicationServices;
-
+using SoundSwitch.Framework;
+using SoundSwitch.Util;
 
 namespace SoundSwitch
 {
     public class Main
     {
-
-        public delegate void SelectedDeviceChangeHandler(object sender, List<string> newSelectedDevices );
+        public delegate void AudioChangeHandler(object sender, AudioDeviceWrapper name);
 
         public delegate void ErrorHandler(object sender, Exception exception);
 
-        public delegate void AudioChangeHandler(object sender, AudioDeviceWrapper name);
+        public delegate void SelectedDeviceChangeHandler(object sender, List<string> newSelectedDevices);
 
-        public event SelectedDeviceChangeHandler SelectedDeviceChanged;
-        public event ErrorHandler ErrorTriggered;
-        public event AudioChangeHandler AudioDeviceChanged;
+        private readonly SoundSwitchConfiguration _configuration;
+
+        public Main(SoundSwitchConfiguration configuration)
+        {
+            _configuration = configuration;
+            Hook = new KeyboardHook();
+
+            ReAttachKeyboardHook();
+
+            RegisterForRestart();
+            RegisterRecovery();
+        }
 
         public List<string> SelectedDevicesList
         {
             get
             {
                 return
-                    Properties.Settings.Default.SelectedDevices.Split(new[] {SelectedDevicesDelimiter},
-                        StringSplitOptions.RemoveEmptyEntries).ToList();
+                    _configuration.SelectedDeviceList;
             }
 
             private set
             {
                 if (value == null)
                     throw new ArgumentNullException(nameof(value));
-                Properties.Settings.Default.SelectedDevices = string.Join(SelectedDevicesDelimiter, value);
-                Properties.Settings.Default.Save();
-                SelectedDeviceChanged?.Invoke(this,value);
+                _configuration.SelectedDeviceList = value;
+                _configuration.Save();
+                SelectedDeviceChanged?.Invoke(this, value);
             }
         }
 
@@ -70,44 +76,30 @@ namespace SoundSwitch
             }
         }
 
-        public Main()
+        public string HotKeysString
         {
-            Hook = new KeyboardHook();
-            if (!string.IsNullOrEmpty(Properties.Settings.Default.HotkeyKey) &&
-                !string.IsNullOrEmpty(Properties.Settings.Default.HotkeyModifierKeys))
+            get
             {
-                ReAttachKeyboardHook();
+                var key = Enum.Format(typeof (Keys), _configuration.HotKeys, "g");
+                var modKeys = Enum.Format(typeof (ModifierKeys), _configuration.HotModifierKeys, "g");
+                return $"{modKeys.Replace(", ", "+")}+{key}";
             }
-
-            //Hook.RegisterHotKey(ModifierKeys.Control | ModifierKeys.Alt, Keys.F11);
-            //Hook.KeyPressed += (sender, e) =>
-            //{
-            //    try
-            //    {
-            //        SoundConfig.ToggleDefaultDevice();
-            //    }
-            //    catch (ConfigurationException ex)
-            //    {
-            //        Settings.Instance.Show();
-            //        MessageBox.Show(ex.Message, "Configuration needed", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            //    }
-            //};
-
-            RegisterForRestart();
-            RegisterRecovery();
         }
 
+        public event SelectedDeviceChangeHandler SelectedDeviceChanged;
+        public event ErrorHandler ErrorTriggered;
+        public event AudioChangeHandler AudioDeviceChanged;
 
         private void RegisterRecovery()
         {
-           var settings = new RecoverySettings(new RecoveryData(SaveState, Properties.Settings.Default), 0);
+            var settings = new RecoverySettings(new RecoveryData(SaveState, _configuration), 0);
             ApplicationRestartRecoveryManager.RegisterForApplicationRecovery(settings);
             Trace.WriteLine("Recovery Registered");
         }
 
         private void RegisterForRestart()
         {
-           var settings = new RestartSettings("/restart", RestartRestrictions.None);
+            var settings = new RestartSettings("/restart", RestartRestrictions.None);
             ApplicationRestartRecoveryManager.RegisterForApplicationRestart(settings);
             Trace.WriteLine("Restart Registered");
         }
@@ -115,7 +107,7 @@ namespace SoundSwitch
         private int SaveState(object state)
         {
             Trace.WriteLine("Saving State");
-            var settings = (Properties.Settings) state;
+            var settings = (SoundSwitchConfiguration) state;
             var cancelled = ApplicationRestartRecoveryManager.ApplicationRecoveryInProgress();
             if (cancelled)
             {
@@ -127,20 +119,20 @@ namespace SoundSwitch
             ApplicationRestartRecoveryManager.ApplicationRecoveryFinished(true);
             Trace.WriteLine("Recovery Success");
             return 0;
-
         }
 
         #region Hot keys
+
         /// <summary>
-        /// Sets the hotkey combination, and <see cref="ReAttachKeyboardHook">re-attaches the keyboard hook</see>.
+        ///     Sets the hotkey combination, and <see cref="ReAttachKeyboardHook">re-attaches the keyboard hook</see>.
         /// </summary>
         /// <param name="key"></param>
         /// <param name="modifierKeys"></param>
         public void SetHotkeyCombination(Keys key, ModifierKeys modifierKeys)
         {
-            Properties.Settings.Default.HotkeyKey = Enum.Format(typeof(Keys), key, "g");
-            Properties.Settings.Default.HotkeyModifierKeys = Enum.Format(typeof(ModifierKeys), modifierKeys, "g");
-            Properties.Settings.Default.Save();
+            _configuration.HotKeys = key;
+            _configuration.HotModifierKeys = modifierKeys;
+            _configuration.Save();
 
             ReAttachKeyboardHook();
         }
@@ -154,27 +146,13 @@ namespace SoundSwitch
                 Hook.Dispose();
                 Hook = new KeyboardHook();
 
-                Keys hotkeyKey;
-                ModifierKeys hotkeyModifierKeys;
-                if (!String.IsNullOrEmpty(Properties.Settings.Default.HotkeyKey))
-                {
-                    hotkeyKey = (Keys)Enum.Parse(typeof(Keys), Properties.Settings.Default.HotkeyKey);
-                    hotkeyModifierKeys = (ModifierKeys)Enum.Parse(typeof(ModifierKeys), Properties.Settings.Default.HotkeyModifierKeys);
-                }
-                else
-                {
-                    hotkeyKey = Keys.F11;
-                    hotkeyModifierKeys = Util.ModifierKeys.Alt | Util.ModifierKeys.Control;
-                }
-
-                Hook.RegisterHotKey(hotkeyModifierKeys, hotkeyKey);
+                Hook.RegisterHotKey(_configuration.HotModifierKeys, _configuration.HotKeys);
                 Hook.KeyPressed += HandleHotkeyPress;
             }
             catch (Exception ex)
             {
                 ErrorTriggered?.Invoke(this, ex);
             }
-            
         }
 
         private void HandleHotkeyPress(object sender, KeyPressedEventArgs e)
@@ -192,26 +170,24 @@ namespace SoundSwitch
         #endregion
 
         #region Misc settings
+
         /// <summary>
-        /// If the application runs at windows startup
+        ///     If the application runs at windows startup
         /// </summary>
         public bool RunAtStartup
         {
-            get
-            {
-                return Properties.Settings.Default.RunAtStartup;
-            }
+            get { return _configuration.RunOnStartup; }
             set
             {
                 SetAutoStart(value);
-                Properties.Settings.Default.RunAtStartup = value;
-                Properties.Settings.Default.Save();
+                _configuration.RunOnStartup = value;
+                _configuration.Save();
             }
         }
 
 
         /// <summary>
-        /// Set the Application as autoStarting using registry
+        ///     Set the Application as autoStarting using registry
         /// </summary>
         /// <param name="start"></param>
         private static void SetAutoStart(bool start)
@@ -223,16 +199,16 @@ namespace SoundSwitch
                 rk?.SetValue(Application.ProductName, Application.ExecutablePath);
             else
                 rk?.DeleteValue(Application.ProductName, false);
-
         }
+
         #endregion
 
         #region Selected devices
 
-        private const string SelectedDevicesDelimiter = ";;;"; 
+        private const string SelectedDevicesDelimiter = ";;;";
 
         /// <summary>
-        /// Sets a particular device to be enabled or not
+        ///     Sets a particular device to be enabled or not
         /// </summary>
         /// <param name="deviceName"></param>
         /// <param name="selected"></param>
@@ -255,7 +231,7 @@ namespace SoundSwitch
         #region Active device
 
         /// <summary>
-        /// Attempts to set active device to the specified name 
+        ///     Attempts to set active device to the specified name
         /// </summary>
         /// <param name="device"></param>
         public bool SetActiveDevice(AudioDeviceWrapper device)
@@ -264,21 +240,21 @@ namespace SoundSwitch
             {
                 device.SetAsDefault();
                 AudioDeviceChanged?.Invoke(this, device);
-                Properties.Settings.Default.LastActiveAudioDevice = device.FriendlyName;
-                Properties.Settings.Default.Save();
+                _configuration.LastActiveDevice = device.FriendlyName;
+                _configuration.Save();
                 return true;
             }
             catch (Exception ex)
             {
-                ErrorTriggered?.Invoke(this,ex);
+                ErrorTriggered?.Invoke(this, ex);
             }
             return false;
         }
 
         /// <summary>
-        /// Cycles the active device to the next device. Returns true if succesfully switched (at least
-        /// as far as we can tell), returns false if could not successfully switch. Throws NoDevicesException
-        /// if there are no devices configured.
+        ///     Cycles the active device to the next device. Returns true if succesfully switched (at least
+        ///     as far as we can tell), returns false if could not successfully switch. Throws NoDevicesException
+        ///     if there are no devices configured.
         /// </summary>
         public bool CycleActiveDevice()
         {
@@ -295,7 +271,7 @@ namespace SoundSwitch
             catch (Exception)
             {
                 defaultDev =
-                    list.FirstOrDefault(device => device.FriendlyName == Properties.Settings.Default.LastActiveAudioDevice) ??
+                    list.FirstOrDefault(device => device.FriendlyName == _configuration.LastActiveDevice) ??
                     list[0];
             }
 
@@ -303,11 +279,13 @@ namespace SoundSwitch
             return SetActiveDevice(next);
         }
 
-        class NoDevicesException : InvalidOperationException
+        private class NoDevicesException : InvalidOperationException
         {
-            public NoDevicesException() : base("No devices to select") {}
+            public NoDevicesException() : base("No devices to select")
+            {
+            }
         }
+
         #endregion
-       
     }
 }
