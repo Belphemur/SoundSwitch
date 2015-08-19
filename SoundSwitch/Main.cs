@@ -28,11 +28,42 @@ namespace SoundSwitch
 {
     public class Main
     {
-        public delegate void AudioChangeHandler(object sender, AudioDeviceWrapper name);
+        #region Events
+        public class AudioChangeEvent : EventArgs
+        {
+            public AudioDeviceWrapper AudioDevice  { get; }
 
-        public delegate void ErrorHandler(object sender, Exception exception);
+            public AudioChangeEvent(AudioDeviceWrapper audioDevice)
+            {
+                AudioDevice = audioDevice;
+            }
+        }
 
-        public delegate void SelectedDeviceChangeHandler(object sender, List<string> newSelectedDevices);
+        public class ExceptionEvent : EventArgs
+        {
+            public Exception Exception { get; private set; }
+
+            public ExceptionEvent(Exception exception)
+            {
+                Exception = exception;
+            }
+        }
+
+        public class DeviceListChanged : EventArgs
+        {
+            public List<string> SeletedDevicesList { get; private set; }
+
+            public DeviceListChanged(List<string> seletedDevicesList)
+            {
+                SeletedDevicesList = seletedDevicesList;
+            }
+        }
+        #endregion
+        public delegate void AudioChangeHandler(object sender, AudioChangeEvent e);
+
+        public delegate void ErrorHandler(object sender, ExceptionEvent e);
+
+        public delegate void SelectedDeviceChangeHandler(object sender, DeviceListChanged e);
 
         private readonly SoundSwitchConfiguration _configuration;
 
@@ -61,7 +92,7 @@ namespace SoundSwitch
                     throw new ArgumentNullException(nameof(value));
                 _configuration.SelectedDeviceList = value;
                 _configuration.Save();
-                SelectedDeviceChanged?.Invoke(this, value);
+                SelectedDeviceChanged?.Invoke(this, new DeviceListChanged(value));
             }
         }
 
@@ -151,7 +182,7 @@ namespace SoundSwitch
             }
             catch (Exception ex)
             {
-                ErrorTriggered?.Invoke(this, ex);
+                ErrorTriggered?.Invoke(this, new ExceptionEvent(ex));
             }
         }
 
@@ -163,7 +194,7 @@ namespace SoundSwitch
             }
             catch (Exception ex)
             {
-                ErrorTriggered?.Invoke(this, ex);
+                ErrorTriggered?.Invoke(this,  new ExceptionEvent(ex));
             }
         }
 
@@ -239,14 +270,14 @@ namespace SoundSwitch
             try
             {
                 device.SetAsDefault();
-                AudioDeviceChanged?.Invoke(this, device);
+                AudioDeviceChanged?.Invoke(this, new AudioChangeEvent(device));
                 _configuration.LastActiveDevice = device.FriendlyName;
                 _configuration.Save();
                 return true;
             }
             catch (Exception ex)
             {
-                ErrorTriggered?.Invoke(this, ex);
+                ErrorTriggered?.Invoke(this, new ExceptionEvent(ex));
             }
             return false;
         }
@@ -259,9 +290,12 @@ namespace SoundSwitch
         public bool CycleActiveDevice()
         {
             var list = AvailableAudioDevices;
-            if (list.Count == 0)
+            switch (list.Count)
             {
-                throw new NoDevicesException();
+                case 0:
+                    throw new NoDevicesException();
+                case 1:
+                    return false;
             }
             AudioDeviceWrapper defaultDev = null;
             try
@@ -278,7 +312,7 @@ namespace SoundSwitch
             var next = list.SkipWhile((device, i) => device != defaultDev).Skip(1).FirstOrDefault() ?? list[0];
             return SetActiveDevice(next);
         }
-
+        [Serializable]
         private class NoDevicesException : InvalidOperationException
         {
             public NoDevicesException() : base("No devices to select")

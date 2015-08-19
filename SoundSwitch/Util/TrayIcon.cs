@@ -26,7 +26,7 @@ using Settings = SoundSwitch.Forms.Settings;
 
 namespace SoundSwitch.Util
 {
-    public class TrayIcon : IDisposable
+    public sealed class TrayIcon : IDisposable
     {
         private readonly NotifyIcon _trayIcon = new NotifyIcon
         {
@@ -79,8 +79,8 @@ namespace SoundSwitch.Util
 
         private void SetEventHandlers()
         {
-            _main.ErrorTriggered += (sender, exception) => ShowError(exception.Message);
-            _main.AudioDeviceChanged += (sender, audioDeviceWrapper) => ShowAudioChanged(audioDeviceWrapper.FriendlyName);
+            _main.ErrorTriggered += (sender, exception) => ShowError(exception.Exception.Message);
+            _main.AudioDeviceChanged += (sender, audioDeviceWrapper) => ShowAudioChanged(audioDeviceWrapper.AudioDevice.FriendlyName);
             _main.SelectedDeviceChanged += (sender, devices) => SetDeviceList(_main.AvailableAudioDevices);
         }
 
@@ -102,11 +102,11 @@ namespace SoundSwitch.Util
             
             foreach (var item in deviceNames)
             {
-                _selectionMenu.Items.Add(new ToolStripDeviceItem(deviceClicked, item));
+                _selectionMenu.Items.Add(new ToolStripDeviceItem(DeviceClicked, item));
             }
         }
 
-        void deviceClicked(object sender, EventArgs e)
+        void DeviceClicked(object sender, EventArgs e)
         {
             try
             {
@@ -147,7 +147,10 @@ namespace SoundSwitch.Util
 
         public void Dispose()
         {
-           _trayIcon.Dispose();
+            _selectionMenu.Dispose();
+            _settingsMenu.Dispose();
+            _trayIcon.Dispose();
+            GC.SuppressFinalize(this);
         }
 
     }

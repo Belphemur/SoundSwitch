@@ -29,7 +29,7 @@ namespace SoundSwitch.Util
             EndSession
         }
 
-        public class ClosingEvent
+        public class ClosingEvent : EventArgs
         {
             public IntPtr Result { get; set; }
             public ClosingEventType Type { get; }
@@ -51,7 +51,7 @@ namespace SoundSwitch.Util
         private const int ENDSESSION_CLOSEAPP = 0x00000001;
         private const int WM_CLOSE = 0x0010;
 
-        public delegate void ClosingHandler(object sender, ClosingEvent closingEvent);
+        public delegate void ClosingHandler(object sender, ClosingEvent e);
 
         public static event ClosingHandler ApplicationClosing;
 

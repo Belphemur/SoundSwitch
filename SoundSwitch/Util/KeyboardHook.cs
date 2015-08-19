@@ -22,12 +22,16 @@ namespace SoundSwitch.Util
 {
     public sealed class KeyboardHook : IDisposable
     {
-        // Registers a hot key with Windows.
-        [DllImport("user32.dll")]
-        private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
-        // Unregisters the hot key with Windows.
-        [DllImport("user32.dll")]
-        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+        public sealed class NativeMethods
+        {
+            // Registers a hot key with Windows.
+            [DllImport("user32.dll")]
+            internal static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
+
+            // Unregisters the hot key with Windows.
+            [DllImport("user32.dll")]
+            internal static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+        }
 
         /// <summary>
         /// Represents the window that is used internally to get the messages.
@@ -99,7 +103,7 @@ namespace SoundSwitch.Util
             _currentId = _currentId + 1;
 
             // register the hot key.
-            if (!RegisterHotKey(_window.Handle, _currentId, (uint)modifier, (uint)key))
+            if (!NativeMethods.RegisterHotKey(_window.Handle, _currentId, (uint)modifier, (uint)key))
                 throw new InvalidOperationException("Couldn’t register the hot key.");
         }
 
@@ -115,7 +119,7 @@ namespace SoundSwitch.Util
             // unregister all the registered hot keys.
             for (int i = _currentId; i > 0; i--)
             {
-                UnregisterHotKey(_window.Handle, i);
+                NativeMethods.UnregisterHotKey(_window.Handle, i);
             }
 
             // dispose the inner native window.
