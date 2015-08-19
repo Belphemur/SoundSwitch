@@ -93,7 +93,15 @@ namespace SoundSwitch.Util
             {
                 if (@event.Type != WindowsEventNotifier.EventType.DeviceChange)
                     return;
-                _selectionMenu.Invoke(new Action(() => { SetDeviceList(_main.AvailableAudioDevices); }));
+                try
+                {
+                    _selectionMenu.Invoke(new Action(() => { SetDeviceList(_main.AvailableAudioDevices); }));
+                }
+                catch (Exception ex)
+                {
+                   Trace.WriteLine(ex);
+                }
+              
             };
         }
 
