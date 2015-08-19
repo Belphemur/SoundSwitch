@@ -79,7 +79,6 @@ namespace SoundSwitch.Forms
 
         private void PopulateAudioList()
         {
-            lstDevices.Items.Clear();
             try
             {
                 var selected = _main.SelectedDevicesList;
