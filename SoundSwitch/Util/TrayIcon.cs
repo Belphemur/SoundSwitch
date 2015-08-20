@@ -98,7 +98,7 @@ namespace SoundSwitch.Util
             {
                 UpdateAvailableDeviceList();
             };
-            WindowsEventNotifier.DeviceChanged += (sender, @event) =>
+            WindowsAPIAdapter.DeviceChanged += (sender, @event) =>
             {
                 UpdateAvailableDeviceList();
             };

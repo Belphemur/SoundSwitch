@@ -39,9 +39,8 @@ namespace SoundSwitch
         public Main(SoundSwitchConfiguration configuration)
         {
             _configuration = configuration;
-            Hook = new KeyboardHook();
-
-            ReAttachKeyboardHook();
+            SetHotkeyCombination(_configuration.HotKeysCombinaison);
+            WindowsAPIAdapter.HotKeyPressed += HandleHotkeyPress;
 
             RegisterForRestart();
             RegisterRecovery();
@@ -60,15 +59,7 @@ namespace SoundSwitch
             }
         }
 
-        public string HotKeysString
-        {
-            get
-            {
-                var key = Enum.Format(typeof (Keys), _configuration.HotKeys, "g");
-                var modKeys = Enum.Format(typeof (ModifierKeys), _configuration.HotModifierKeys, "g");
-                return $"{modKeys.Replace(", ", "+")}+{key}";
-            }
-        }
+        public string HotKeysString => _configuration.HotKeysCombinaison.ToString();
 
         public event SelectedDeviceChangeHandler SelectedDeviceChanged;
         public event ErrorHandler ErrorTriggered;
@@ -144,36 +135,26 @@ namespace SoundSwitch
         /// <summary>
         ///     Sets the hotkey combination, and <see cref="ReAttachKeyboardHook">re-attaches the keyboard hook</see>.
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="modifierKeys"></param>
-        public void SetHotkeyCombination(Keys key, ModifierKeys modifierKeys)
+        /// <param name="hotkeys"></param>
+        public void SetHotkeyCombination(HotKeys hotkeys)
         {
-            _configuration.HotKeys = key;
-            _configuration.HotModifierKeys = modifierKeys;
+            WindowsAPIAdapter.UnRegisterHotKey(_configuration.HotKeysCombinaison);
+            _configuration.HotKeysCombinaison = hotkeys;
             _configuration.Save();
-
-            ReAttachKeyboardHook();
-        }
-
-        private KeyboardHook Hook { get; set; }
-
-        public void ReAttachKeyboardHook()
-        {
             try
             {
-                Hook.Dispose();
-                Hook = new KeyboardHook();
-
-                Hook.RegisterHotKey(_configuration.HotModifierKeys, _configuration.HotKeys);
-                Hook.KeyPressed += HandleHotkeyPress;
+                WindowsAPIAdapter.RegisterHotKey(_configuration.HotKeysCombinaison);
             }
             catch (Exception ex)
             {
-                ErrorTriggered?.Invoke(this, new ExceptionEvent(ex));
+                ErrorTriggered?.Invoke(this,new ExceptionEvent(ex));
             }
+           
         }
 
-        private void HandleHotkeyPress(object sender, KeyPressedEventArgs e)
+
+
+        private void HandleHotkeyPress(object sender, WindowsAPIAdapter.KeyPressedEventArgs e)
         {
             try
             {

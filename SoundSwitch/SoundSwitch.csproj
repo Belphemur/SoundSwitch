@@ -154,13 +154,13 @@
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
     <Compile Include="Framework\SoundSwitchConfiguration.cs" />
-    <Compile Include="Util\WindowsEventNotifier.cs">
+    <Compile Include="Util\HotKeys.cs" />
+    <Compile Include="Util\WindowsAPIAdapter.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Util\ToolStripDeviceItem.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Util\KeyboardHook.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

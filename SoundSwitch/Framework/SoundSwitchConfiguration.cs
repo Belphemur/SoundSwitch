@@ -25,16 +25,14 @@ namespace SoundSwitch.Framework
             FirstRun = true;
             RunOnStartup = false;
             SelectedDeviceList = new HashSet<string>();
-            HotKeys = Keys.F11;
-            HotModifierKeys = ModifierKeys.Alt | ModifierKeys.Control;
+            HotKeysCombinaison = new HotKeys(Keys.F11, HotKeys.ModifierKeys.Alt | HotKeys.ModifierKeys.Control);
         }
 
         public HashSet<string> SelectedDeviceList { get; set; }
         public string LastActiveDevice { get; set; }
         public bool FirstRun { get; set; }
         public bool RunOnStartup { get; set; }
-        public Keys HotKeys { get; set; }
-        public ModifierKeys HotModifierKeys { get; set; }
+        public HotKeys HotKeysCombinaison { get; set; }
         public string FileLocation { get; set; }
 
         public void Save()

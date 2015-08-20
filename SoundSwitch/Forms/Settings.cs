@@ -59,22 +59,22 @@ namespace SoundSwitch.Forms
         {
             if (new[] {8, 17, 18, 46}.Contains(e.KeyValue)) return;
 
-            ModifierKeys modifierKeys = 0;
+            HotKeys.ModifierKeys modifierKeys = 0;
             var displayString = "";
 
             if (e.Control)
             {
-                modifierKeys |= Util.ModifierKeys.Control;
+                modifierKeys |= HotKeys.ModifierKeys.Control;
                 displayString += "Ctrl+";
             }
             if (e.Alt)
             {
-                modifierKeys |= Util.ModifierKeys.Alt;
+                modifierKeys |= HotKeys.ModifierKeys.Alt;
                 displayString += "Alt+";
             }
 
             txtHotkey.Text = $"{displayString}{e.KeyCode}";
-            _main.SetHotkeyCombination(e.KeyCode, modifierKeys);
+            _main.SetHotkeyCombination(new HotKeys(e.KeyCode, modifierKeys));
         }
 
         private void PopulateAudioList()

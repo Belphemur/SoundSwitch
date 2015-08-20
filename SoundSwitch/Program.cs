@@ -35,19 +35,19 @@ namespace SoundSwitch
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.ThreadException += Application_ThreadException;
-                WindowsEventNotifier.Start();
+                WindowsAPIAdapter.Start();
                 //Manage the Closing events send by Windows
                 //Since this app don't use a Form as "main window" the app doesn't close 
                 //when it should without this.
-                WindowsEventNotifier.RestartManagerTriggered += (sender, @event) =>
+                WindowsAPIAdapter.RestartManagerTriggered += (sender, @event) =>
                 {
                     switch (@event.Type)
                     {
-                        case WindowsEventNotifier.RestartManagerEventType.Query:
+                        case WindowsAPIAdapter.RestartManagerEventType.Query:
                             @event.Result = new IntPtr(1);
                             break;
-                        case WindowsEventNotifier.RestartManagerEventType.EndSession:
-                        case WindowsEventNotifier.RestartManagerEventType.ForceClose:
+                        case WindowsAPIAdapter.RestartManagerEventType.EndSession:
+                        case WindowsAPIAdapter.RestartManagerEventType.ForceClose:
                             Application.Exit();
                             break;
                     }
@@ -62,7 +62,7 @@ namespace SoundSwitch
                     }
 
                     Application.Run();
-                    WindowsEventNotifier.Stop();
+                    WindowsAPIAdapter.Stop();
                 }
             }
         }
