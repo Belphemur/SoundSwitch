@@ -85,6 +85,7 @@ namespace SoundSwitch.Util
             _selectionMenu.Dispose();
             _settingsMenu.Dispose();
             _trayIcon.Dispose();
+            GC.SuppressFinalize(_availableAudioDeviceWrappers);
             GC.SuppressFinalize(this);
         }
 
