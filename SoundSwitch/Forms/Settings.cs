@@ -14,6 +14,7 @@
 ********************************************************************/
 
 using System;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
@@ -57,8 +58,6 @@ namespace SoundSwitch.Forms
 
         private void TxtHotkey_KeyDown(object sender, KeyEventArgs e)
         {
-            if (new[] {8, 17, 18, 46}.Contains(e.KeyValue)) return;
-
             HotKeys.ModifierKeys modifierKeys = 0;
             var displayString = "";
 
@@ -77,9 +76,19 @@ namespace SoundSwitch.Forms
                 modifierKeys |= HotKeys.ModifierKeys.Shift;
                 displayString += "Shift+";
             }
+            var keyCode = e.KeyCode.ToString();
+            if (new[] {8, 16, 17, 18, 46}.Contains(e.KeyValue))
+            {
+                keyCode = "";
+                txtHotkey.ForeColor = Color.Crimson;
+            }
 
-            txtHotkey.Text = $"{displayString}{e.KeyCode}";
-            _main.SetHotkeyCombination(new HotKeys(e.KeyCode, modifierKeys));
+            txtHotkey.Text = $"{displayString}{keyCode}";
+            if (!string.IsNullOrEmpty(keyCode))
+            {
+                txtHotkey.ForeColor = Color.Green;
+                _main.SetHotkeyCombination(new HotKeys(e.KeyCode, modifierKeys));
+            }
         }
 
         private void PopulateAudioList()
@@ -88,7 +97,9 @@ namespace SoundSwitch.Forms
             {
                 var selected = _main.SelectedDevicesList;
                 var audioDeviceWrappers = AudioController.getAllAudioDevices()
-                    .Where(wrapper => !string.IsNullOrEmpty(wrapper.FriendlyName)).Select(wrapper => wrapper.FriendlyName).OrderBy(s => s);
+                    .Where(wrapper => !string.IsNullOrEmpty(wrapper.FriendlyName))
+                    .Select(wrapper => wrapper.FriendlyName)
+                    .OrderBy(s => s);
                 foreach (
                     var item in
                         audioDeviceWrappers.Where(name => selected.Contains(name)))
