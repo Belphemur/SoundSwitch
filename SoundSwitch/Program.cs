@@ -39,15 +39,15 @@ namespace SoundSwitch
                 //Manage the Closing events send by Windows
                 //Since this app don't use a Form as "main window" the app doesn't close 
                 //when it should without this.
-                WindowsEventNotifier.EventTriggered += (sender, @event) =>
+                WindowsEventNotifier.RestartManagerTriggered += (sender, @event) =>
                 {
                     switch (@event.Type)
                     {
-                        case WindowsEventNotifier.EventType.Query:
+                        case WindowsEventNotifier.RestartManagerEventType.Query:
                             @event.Result = new IntPtr(1);
                             break;
-                        case WindowsEventNotifier.EventType.EndSession:
-                        case WindowsEventNotifier.EventType.ForceClose:
+                        case WindowsEventNotifier.RestartManagerEventType.EndSession:
+                        case WindowsEventNotifier.RestartManagerEventType.ForceClose:
                             Application.Exit();
                             break;
                     }

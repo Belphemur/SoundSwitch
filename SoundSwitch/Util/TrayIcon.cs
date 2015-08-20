@@ -98,10 +98,8 @@ namespace SoundSwitch.Util
             {
                 UpdateAvailableDeviceList();
             };
-            WindowsEventNotifier.EventTriggered += (sender, @event) =>
+            WindowsEventNotifier.DeviceChanged += (sender, @event) =>
             {
-                if (@event.Type != WindowsEventNotifier.EventType.DeviceChange)
-                    return;
                 UpdateAvailableDeviceList();
             };
         }

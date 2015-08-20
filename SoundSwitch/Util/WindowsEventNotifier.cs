@@ -21,14 +21,11 @@ namespace SoundSwitch.Util
 {
     public class WindowsEventNotifier : Form
     {
-        public delegate void WindowsEventHandler(object sender, WindowsEvent e);
-
-        public enum EventType
+       public enum RestartManagerEventType
         {
             Query,
             EndSession,
-            ForceClose,
-            DeviceChange
+            ForceClose
         }
 
         /**
@@ -49,7 +46,8 @@ namespace SoundSwitch.Util
         {
         }
 
-        public static event WindowsEventHandler EventTriggered;
+        public static event EventHandler<RestartManagerEvent> RestartManagerTriggered;
+        public static event EventHandler<DeviceChangeEvent> DeviceChanged;
 
         public static void Start()
         {
@@ -62,7 +60,8 @@ namespace SoundSwitch.Util
         public static void Stop()
         {
             if (_instance == null) throw new InvalidOperationException("Notifier not started");
-            EventTriggered = null;
+            RestartManagerTriggered = null;
+            DeviceChanged = null;
             _instance.EndForm();
         }
 
@@ -90,38 +89,44 @@ namespace SoundSwitch.Util
             //Check for shutdown message from windows
             if (m.Msg == WM_QUERYENDSESSION && m.LParam.ToInt32() == ENDSESSION_CLOSEAPP)
             {
-                var closingEvent = new WindowsEvent(EventType.Query);
-                EventTriggered?.Invoke(this, closingEvent);
+                var closingEvent = new RestartManagerEvent(RestartManagerEventType.Query);
+                RestartManagerTriggered?.Invoke(this, closingEvent);
                 m.Result = closingEvent.Result;
             }
             else if (m.Msg == WM_ENDSESSION && m.LParam.ToInt32() == ENDSESSION_CLOSEAPP)
             {
-                EventTriggered?.Invoke(this, new WindowsEvent(EventType.EndSession));
+                RestartManagerTriggered?.Invoke(this, new RestartManagerEvent(RestartManagerEventType.EndSession));
             }
             else
                 switch (m.Msg)
                 {
                     case WM_CLOSE:
-                        EventTriggered?.Invoke(this, new WindowsEvent(EventType.ForceClose));
+                        RestartManagerTriggered?.Invoke(this, new RestartManagerEvent(RestartManagerEventType.ForceClose));
                         break;
                     case WM_DEVICECHANGE:
-                        EventTriggered?.Invoke(this, new WindowsEvent(EventType.DeviceChange));
+                        DeviceChanged?.Invoke(this, new DeviceChangeEvent());
                         break;
                 }
 
             base.WndProc(ref m);
         }
-
-        public class WindowsEvent : EventArgs
+        #region Events
+        public class RestartManagerEvent : EventArgs
         {
-            public WindowsEvent(EventType type)
+            public RestartManagerEvent(RestartManagerEventType type)
             {
                 Result = new IntPtr(0);
                 Type = type;
             }
 
             public IntPtr Result { get; set; }
-            public EventType Type { get; }
+            public RestartManagerEventType Type { get; }
         }
+
+        public class DeviceChangeEvent : EventArgs
+        {
+            
+        }
+        #endregion
     }
 }
