@@ -69,14 +69,9 @@ namespace SoundSwitch.Util
             RestartManagerTriggered = null;
             DeviceChanged = null;
             HotKeyPressed = null;
-            _instance.Invoke(new Action(() =>
-            {
-                foreach (var hotKeyId in _instance._registeredHotkeys.Values)
-                {
-                    NativeMethods.UnregisterHotKey(_instance.Handle, hotKeyId);
-                }
-            }));
-            _instance.EndForm();
+
+            if (!_instance.IsDisposed)
+                _instance.Invoke(new MethodInvoker(_instance.EndForm));
         }
 
         private static void RunForm()
@@ -87,6 +82,15 @@ namespace SoundSwitch.Util
         private void EndForm()
         {
             Close();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            foreach (var hotKeyId in _instance._registeredHotkeys.Values)
+            {
+                NativeMethods.UnregisterHotKey(_instance.Handle, hotKeyId);
+            }
+            base.Dispose(disposing);
         }
 
         /// <summary>
