@@ -122,6 +122,7 @@ namespace SoundSwitch.Util
                 {
                     return;
                 }
+                _instance._registeredHotkeys.Remove(hotKeys);
                 NativeMethods.UnregisterHotKey(_instance.Handle, id);
             }));
         }
