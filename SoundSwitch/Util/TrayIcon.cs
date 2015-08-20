@@ -38,10 +38,14 @@ namespace SoundSwitch.Util
             Text = Application.ProductName
         };
 
+        private List<AudioDeviceWrapper> _availableAudioDeviceWrappers;
+        private bool _deviceListChanged = true;
+
         public TrayIcon(Main main)
         {
             _trayIcon.ContextMenuStrip = _settingsMenu;
             _main = main;
+            _availableAudioDeviceWrappers = _main.AvailableAudioDevices;
 
             _settingsMenu.Items.Add("Playback Devices", null, (sender, e) =>
             {
@@ -63,6 +67,7 @@ namespace SoundSwitch.Util
             {
                 if (e.Button == MouseButtons.Left)
                 {
+                    UpdateDeviceSelectionList();
                     _trayIcon.ContextMenuStrip = _selectionMenu;
                     var mi = typeof (NotifyIcon).GetMethod("ShowContextMenu",
                         BindingFlags.Instance | BindingFlags.NonPublic);
@@ -71,7 +76,7 @@ namespace SoundSwitch.Util
                     _trayIcon.ContextMenuStrip = _settingsMenu;
                 }
             };
-            SetDeviceList(_main.AvailableAudioDevices);
+            UpdateDeviceSelectionList();
             SetEventHandlers();
         }
 
@@ -88,23 +93,26 @@ namespace SoundSwitch.Util
             _main.ErrorTriggered += (sender, exception) => ShowError(exception.Exception.Message);
             _main.AudioDeviceChanged +=
                 (sender, audioDeviceWrapper) => ShowAudioChanged(audioDeviceWrapper.AudioDevice.FriendlyName);
-            _main.SelectedDeviceChanged += (sender, changed) => SetDeviceList(_main.AvailableAudioDevices);
+            _main.SelectedDeviceChanged += (sender, changed) =>
+            {
+                UpdateAvailableDeviceList();
+            };
             WindowsEventNotifier.EventTriggered += (sender, @event) =>
             {
                 if (@event.Type != WindowsEventNotifier.EventType.DeviceChange)
                     return;
-                if (!_selectionMenu.IsHandleCreated)
-                    return;
-                try
-                {
-                    _selectionMenu.Invoke(new Action(() => { SetDeviceList(_main.AvailableAudioDevices); }));
-                }
-                catch (Exception ex)
-                {
-                   Trace.WriteLine(ex);
-                }
-              
+                UpdateAvailableDeviceList();
             };
+        }
+
+        private void UpdateAvailableDeviceList()
+        {
+            var audioDevices = _main.AvailableAudioDevices;
+            _deviceListChanged = !_availableAudioDeviceWrappers.Equals(audioDevices);
+            if (_deviceListChanged)
+            {
+                _availableAudioDeviceWrappers = audioDevices;
+            }
         }
 
         public void ShowSettings()
@@ -115,18 +123,25 @@ namespace SoundSwitch.Util
         /// <summary>
         ///     Sets the names of devices that show up in the menu
         /// </summary>
-        /// <param name="deviceNames"></param>
-        public void SetDeviceList(List<AudioDeviceWrapper> deviceNames)
+        public void UpdateDeviceSelectionList()
         {
-            if (deviceNames.Count < 0)
+            if (!_deviceListChanged)
+            {
                 return;
+            }
+
+            if (_availableAudioDeviceWrappers.Count < 0)
+            {
+                return;
+            }
 
             _selectionMenu.Items.Clear();
 
-            foreach (var item in deviceNames)
+            foreach (var item in _availableAudioDeviceWrappers)
             {
                 _selectionMenu.Items.Add(new ToolStripDeviceItem(DeviceClicked, item));
             }
+            _deviceListChanged = false;
         }
 
         private void DeviceClicked(object sender, EventArgs e)

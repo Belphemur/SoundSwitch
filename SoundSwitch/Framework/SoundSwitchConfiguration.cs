@@ -24,12 +24,12 @@ namespace SoundSwitch.Framework
         {
             FirstRun = true;
             RunOnStartup = false;
-            SelectedDeviceList = new List<string>();
+            SelectedDeviceList = new HashSet<string>();
             HotKeys = Keys.F11;
             HotModifierKeys = ModifierKeys.Alt | ModifierKeys.Control;
         }
 
-        public List<string> SelectedDeviceList { get; set; }
+        public HashSet<string> SelectedDeviceList { get; set; }
         public string LastActiveDevice { get; set; }
         public bool FirstRun { get; set; }
         public bool RunOnStartup { get; set; }

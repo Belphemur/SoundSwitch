@@ -47,23 +47,7 @@ namespace SoundSwitch
             RegisterRecovery();
         }
 
-        public List<string> SelectedDevicesList
-        {
-            get
-            {
-                return
-                    _configuration.SelectedDeviceList;
-            }
-
-            private set
-            {
-                if (value == null)
-                    throw new ArgumentNullException(nameof(value));
-                _configuration.SelectedDeviceList = value;
-                _configuration.Save();
-                SelectedDeviceChanged?.Invoke(this, new DeviceListChanged(value));
-            }
-        }
+        public HashSet<string> SelectedDevicesList => _configuration.SelectedDeviceList;
 
         public List<AudioDeviceWrapper> AvailableAudioDevices
         {
@@ -145,12 +129,12 @@ namespace SoundSwitch
 
         public class DeviceListChanged : EventArgs
         {
-            public DeviceListChanged(List<string> seletedDevicesList)
+            public DeviceListChanged(IEnumerable<string> seletedDevicesList)
             {
                 SeletedDevicesList = seletedDevicesList;
             }
 
-            public List<string> SeletedDevicesList { get; private set; }
+            public IEnumerable<string> SeletedDevicesList { get; private set; }
         }
 
         #endregion
@@ -239,25 +223,23 @@ namespace SoundSwitch
 
         #region Selected devices
 
-        private const string SelectedDevicesDelimiter = ";;;";
-
         /// <summary>
         ///     Sets a particular device to be enabled or not
         /// </summary>
         /// <param name="deviceName"></param>
-        /// <param name="selected"></param>
-        public void SetDeviceSelection(string deviceName, bool selected)
+        public void AddRemoveDevice(string deviceName)
         {
-            var current = SelectedDevicesList;
-            if (selected && !current.Contains(deviceName))
+
+            if (SelectedDevicesList.Contains(deviceName))
             {
-                current.Add(deviceName);
+                SelectedDevicesList.Remove(deviceName);
             }
-            else if (current.Contains(deviceName))
+            else
             {
-                current.Remove(deviceName);
+                SelectedDevicesList.Add(deviceName);
             }
-            SelectedDevicesList = current;
+            SelectedDeviceChanged?.Invoke(this, new DeviceListChanged(SelectedDevicesList));
+            _configuration.Save();
         }
 
         #endregion

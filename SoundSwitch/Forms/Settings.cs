@@ -112,7 +112,7 @@ namespace SoundSwitch.Forms
         {
             try
             {
-                _main.SetDeviceSelection(lstDevices.Items[e.Index].ToString(), e.NewValue == CheckState.Checked);
+                _main.AddRemoveDevice(lstDevices.Items[e.Index].ToString());
             }
             catch (Exception)
             {
