@@ -223,6 +223,7 @@
     <Content Include="Resources\arrow_switch.ico" />
     <Content Include="Resources\arrow_switch.png" />
     <Content Include="Resources\explanation.png" />
+    <None Include="Resources\GreenCheck.png" />
     <Content Include="Resources\help.png" />
     <Content Include="Resources\setting_tools.png" />
   </ItemGroup>

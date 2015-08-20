@@ -16,13 +16,14 @@
 using System;
 using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
+using SoundSwitch.Properties;
 
 namespace SoundSwitch.Util
 {
     internal class ToolStripDeviceItem : ToolStripMenuItem
     {
         public ToolStripDeviceItem(EventHandler onClick, AudioDeviceWrapper audioDevice)
-            : base(audioDevice.FriendlyName, null, onClick)
+            : base(audioDevice.FriendlyName, audioDevice.IsDefault ? Resources.GreenCheck : null, onClick)
         {
             AudioDevice = audioDevice;
         }

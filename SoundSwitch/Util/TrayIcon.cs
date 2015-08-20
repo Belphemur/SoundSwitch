@@ -93,7 +93,14 @@ namespace SoundSwitch.Util
         {
             _main.ErrorTriggered += (sender, exception) => ShowError(exception.Exception.Message);
             _main.AudioDeviceChanged +=
-                (sender, audioDeviceWrapper) => ShowAudioChanged(audioDeviceWrapper.AudioDevice.FriendlyName);
+                (sender, audioDeviceWrapper) =>
+                {
+                    ShowAudioChanged(audioDeviceWrapper.AudioDevice.FriendlyName);
+                    foreach (ToolStripDeviceItem item in _selectionMenu.Items)
+                    {
+                        item.Image = item.AudioDevice.FriendlyName == audioDeviceWrapper.AudioDevice.FriendlyName ? Resources.GreenCheck : null;
+                    }
+                };
             _main.SelectedDeviceChanged += (sender, changed) =>
             {
                 UpdateAvailableDeviceList();
