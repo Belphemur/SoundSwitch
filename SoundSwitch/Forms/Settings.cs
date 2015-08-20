@@ -72,6 +72,11 @@ namespace SoundSwitch.Forms
                 modifierKeys |= HotKeys.ModifierKeys.Alt;
                 displayString += "Alt+";
             }
+            if (e.Shift)
+            {
+                modifierKeys |= HotKeys.ModifierKeys.Shift;
+                displayString += "Shift+";
+            }
 
             txtHotkey.Text = $"{displayString}{e.KeyCode}";
             _main.SetHotkeyCombination(new HotKeys(e.KeyCode, modifierKeys));
