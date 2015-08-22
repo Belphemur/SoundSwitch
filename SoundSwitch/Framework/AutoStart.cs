@@ -41,7 +41,7 @@ namespace SoundSwitch.Framework
         /// <returns></returns>
         public static bool IsAutoStarted()
         {
-            return SstartupKey.GetValue(Application.ProductName).ToString() == Application.ExecutablePath;
+            return SstartupKey.GetValue(Application.ProductName).ToString() == Application.ExecutablePath; 
         }
 
     }
