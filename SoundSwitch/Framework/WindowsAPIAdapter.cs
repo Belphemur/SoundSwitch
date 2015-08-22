@@ -28,7 +28,7 @@ namespace SoundSwitch.Framework
         {
             Query,
             EndSession,
-            ForceClose
+            ForceClose 
         }
 
         /**
