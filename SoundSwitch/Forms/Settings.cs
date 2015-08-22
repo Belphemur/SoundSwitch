@@ -18,6 +18,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
+using SoundSwitch.Framework;
 using SoundSwitch.Util;
 
 namespace SoundSwitch.Forms

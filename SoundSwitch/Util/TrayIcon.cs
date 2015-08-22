@@ -21,6 +21,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Forms;
+using SoundSwitch.Framework;
 using SoundSwitch.Properties;
 
 namespace SoundSwitch.Util

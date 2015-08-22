@@ -175,29 +175,18 @@ namespace SoundSwitch
         /// </summary>
         public bool RunAtStartup
         {
-            get { return _configuration.RunOnStartup; }
+            get { return AutoStart.IsAutoStarted(); }
             set
             {
-                SetAutoStart(value);
-                _configuration.RunOnStartup = value;
-                _configuration.Save();
+                if (value)
+                {
+                    AutoStart.EnableAutoStart();
+                }
+                else
+                {
+                    AutoStart.DisableAutoStart();
+                }
             }
-        }
-
-
-        /// <summary>
-        ///     Set the Application as autoStarting using registry
-        /// </summary>
-        /// <param name="start"></param>
-        private static void SetAutoStart(bool start)
-        {
-            var rk = Registry.CurrentUser.OpenSubKey
-                ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-
-            if (start)
-                rk?.SetValue(Application.ProductName, Application.ExecutablePath);
-            else
-                rk?.DeleteValue(Application.ProductName, false);
         }
 
         #endregion

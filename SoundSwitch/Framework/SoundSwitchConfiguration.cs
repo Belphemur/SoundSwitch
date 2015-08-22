@@ -23,7 +23,6 @@ namespace SoundSwitch.Framework
         public SoundSwitchConfiguration()
         {
             FirstRun = true;
-            RunOnStartup = false;
             SelectedDeviceList = new HashSet<string>();
             HotKeysCombinaison = new HotKeys(Keys.F11, HotKeys.ModifierKeys.Alt | HotKeys.ModifierKeys.Control);
         }
@@ -31,7 +30,6 @@ namespace SoundSwitch.Framework
         public HashSet<string> SelectedDeviceList { get; set; }
         public string LastActiveDevice { get; set; }
         public bool FirstRun { get; set; }
-        public bool RunOnStartup { get; set; }
         public HotKeys HotKeysCombinaison { get; set; }
         public string FileLocation { get; set; }
 
