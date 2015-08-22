@@ -15,6 +15,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -49,11 +50,13 @@ namespace SoundSwitch.Util
 
         private WindowsAPIAdapter()
         {
+            CreateHandle();
         }
 
         public static event EventHandler<RestartManagerEvent> RestartManagerTriggered;
         public static event EventHandler<DeviceChangeEvent> DeviceChanged;
         public static event EventHandler<KeyPressedEventArgs> HotKeyPressed;
+
 
         public static void Start()
         {
@@ -71,12 +74,24 @@ namespace SoundSwitch.Util
             HotKeyPressed = null;
 
             if (!_instance.IsDisposed)
-                _instance.Invoke(new MethodInvoker(_instance.EndForm));
+            {
+                try
+                {
+                    _instance.Invoke(new MethodInvoker(_instance.EndForm));
+                }
+                catch (Exception ex)
+                {
+                    //Can happen when the instance got dispose in its own thread
+                    //when in the same time the Application thread call the Stop() method.
+                    Trace.WriteLine("Thread Race Condition: " + ex);
+                }
+            }
         }
 
         private static void RunForm()
         {
-            Application.Run(new WindowsAPIAdapter());
+            _instance = new WindowsAPIAdapter();
+            Application.Run(_instance);
         }
 
         private void EndForm()
@@ -86,9 +101,12 @@ namespace SoundSwitch.Util
 
         protected override void Dispose(bool disposing)
         {
-            foreach (var hotKeyId in _instance._registeredHotkeys.Values)
+            if (disposing)
             {
-                NativeMethods.UnregisterHotKey(_instance.Handle, hotKeyId);
+                foreach (var hotKeyId in _instance._registeredHotkeys.Values)
+                {
+                    NativeMethods.UnregisterHotKey(_instance.Handle, hotKeyId);
+                }
             }
             base.Dispose(disposing);
         }
@@ -133,46 +151,64 @@ namespace SoundSwitch.Util
 
         protected override void SetVisibleCore(bool value)
         {
-            // Prevent window getting visible
-            if (_instance == null) CreateHandle();
-            _instance = this;
-            value = false;
-            base.SetVisibleCore(value);
+            base.SetVisibleCore(false);
         }
 
         protected override void WndProc(ref Message m)
         {
             //Check for shutdown message from windows
-            if (m.Msg == WM_QUERYENDSESSION && m.LParam.ToInt32() == ENDSESSION_CLOSEAPP)
+            switch (m.Msg)
             {
-                var closingEvent = new RestartManagerEvent(RestartManagerEventType.Query);
-                RestartManagerTriggered?.Invoke(this, closingEvent);
-                m.Result = closingEvent.Result;
-            }
-            else if (m.Msg == WM_ENDSESSION && m.LParam.ToInt32() == ENDSESSION_CLOSEAPP)
-            {
-                RestartManagerTriggered?.Invoke(this, new RestartManagerEvent(RestartManagerEventType.EndSession));
-            }
-            else
-                switch (m.Msg)
-                {
-                    case WM_CLOSE:
-                        RestartManagerTriggered?.Invoke(this,
-                            new RestartManagerEvent(RestartManagerEventType.ForceClose));
+                case WM_QUERYENDSESSION:
+                    if (ConvertLParam(m.LParam) != ENDSESSION_CLOSEAPP)
                         break;
-                    case WM_DEVICECHANGE:
-                        DeviceChanged?.Invoke(this, new DeviceChangeEvent());
+                    var closingEvent = new RestartManagerEvent(RestartManagerEventType.Query);
+                    RestartManagerTriggered?.Invoke(this, closingEvent);
+                    m.Result = closingEvent.Result;
+                    break;
+                case WM_ENDSESSION:
+                    if (ConvertLParam(m.LParam) != ENDSESSION_CLOSEAPP)
                         break;
-                    case WM_HOTKEY:
-                        // get the keys.
-                        var key = (Keys) (((int) m.LParam >> 16) & 0xFFFF);
-                        var modifier = (HotKeys.ModifierKeys) ((int) m.LParam & 0xFFFF);
+                    RestartManagerTriggered?.Invoke(this, new RestartManagerEvent(RestartManagerEventType.EndSession));
+                    break;
 
-                        HotKeyPressed?.Invoke(this, new KeyPressedEventArgs(new HotKeys(key, modifier)));
-                        break;
-                }
+                case WM_CLOSE:
+                    RestartManagerTriggered?.Invoke(this,
+                        new RestartManagerEvent(RestartManagerEventType.ForceClose));
+                    break;
+                case WM_DEVICECHANGE:
+                    DeviceChanged?.Invoke(this, new DeviceChangeEvent());
+                    break;
+                case WM_HOTKEY:
+                    ProcessHotKeyEvent(m);
+                    break;
+            }
 
             base.WndProc(ref m);
+        }
+        /// <summary>
+        /// To avoid overflow on 64 bit platform use this method
+        /// </summary>
+        /// <param name="lParam"></param>
+        /// <returns></returns>
+        private long ConvertLParam(IntPtr lParam)
+        {
+            try
+            {
+                return lParam.ToInt32();
+            }
+            catch (OverflowException)
+            {
+                return lParam.ToInt64();
+            }
+        }
+
+        private void ProcessHotKeyEvent(Message m)
+        {
+            var key = (Keys) ((ConvertLParam(m.LParam) >> 16) & 0xFFFF);
+            var modifier = (HotKeys.ModifierKeys) (ConvertLParam(m.LParam) & 0xFFFF);
+
+            HotKeyPressed?.Invoke(this, new KeyPressedEventArgs(new HotKeys(key, modifier)));
         }
 
         #region WindowsNativeMethods
