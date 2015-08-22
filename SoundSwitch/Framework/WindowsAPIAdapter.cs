@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace SoundSwitch.Util
+namespace SoundSwitch.Framework
 {
     public class WindowsAPIAdapter : Form
     {
