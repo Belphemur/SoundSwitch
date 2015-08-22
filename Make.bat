@@ -2,8 +2,9 @@
 setlocal
 cd /d "%~dp0"
 
-set x86Release="Final\x86"
-set x64Release="Final\x64"
+set finalDir="Final"
+set x86Release="%finalDir%\x86"
+set x64Release="%finalDir%\x64"
 
 net session 1>nul 2>nul
 if not "%ERRORLEVEL%"=="0" (
@@ -44,6 +45,9 @@ if not "%ERRORLEVEL%"=="0" (set builderror=1)
 Echo.
 
 if "%builderror%"=="1" echo error: build failed & goto Quit
+
+echo "Copy Changelog"
+xcopy /y CHANGELOG.md %finalDir% 1>nul 2>nul
 
 Echo "Copy x64"
 xcopy /y x64\Release\*.dll %x64Release% 1>nul 2>nul

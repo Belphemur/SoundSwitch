@@ -61,6 +61,8 @@ Source: "{#ExeDir}x64\*.dll"; DestDir: "{app}"; Check: IsX64
 Source: "{#ExeDir}x86\SoundSwitch.exe"; DestDir: "{app}"; Check: not Is64BitInstallMode
 Source: "{#ExeDir}x86\*.dll"; DestDir: "{app}"; Check: not Is64BitInstallMode
 
+Source: "{#ExeDir}CHANGELOG.md"; DestDir: "{app}"
+
 
 [Icons]
 Name: "{group}\{#MyAppSetupName}"; Filename: "{app}\SoundSwitch.exe"
