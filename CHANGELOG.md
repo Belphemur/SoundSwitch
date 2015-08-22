@@ -5,6 +5,8 @@
 
 **Implemented enhancements:**
 
+- Make the uinstaller remove the startup registry key [\#4](https://github.com/Belphemur/SoundSwitch/issues/4)
+- Add Changelog in installer [\#3](https://github.com/Belphemur/SoundSwitch/issues/3)
 - Implement a better AutoStart feature [\#2](https://github.com/Belphemur/SoundSwitch/issues/2)
 
 **Fixed bugs:**
