@@ -63,6 +63,8 @@ Source: "{#ExeDir}x86\*.dll"; DestDir: "{app}"; Check: not Is64BitInstallMode
 
 Source: "{#ExeDir}CHANGELOG.md"; DestDir: "{app}"
 
+[Registry]
+Root: HKCU; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Run\{#MyAppSetupName}"; Flags: uninsdeletekey
 
 [Icons]
 Name: "{group}\{#MyAppSetupName}"; Filename: "{app}\SoundSwitch.exe"
