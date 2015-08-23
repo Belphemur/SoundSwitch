@@ -56,18 +56,27 @@ namespace SoundSwitch.Framework
         public static event EventHandler<DeviceChangeEvent> DeviceChanged;
         public static event EventHandler<KeyPressedEventArgs> HotKeyPressed;
         public static AutoResetEvent Instancied { get; } = new AutoResetEvent(false);
-
+        /// <summary>
+        /// Star the Adapter thread
+        /// </summary>
         public static void Start()
         {
+            if (_instance != null)
+                throw new InvalidOperationException("Adapter already started");
+
             var t = new Thread(RunForm);
             t.SetApartmentState(ApartmentState.STA);
             t.IsBackground = true;
             t.Start();
         }
-
+        /// <summary>
+        /// Stop the adapter thread
+        /// </summary>
         public static void Stop()
         {
-            if (_instance == null) throw new InvalidOperationException("Notifier not started");
+            if (_instance == null)
+                throw new InvalidOperationException("Adapter not started");
+
             RestartManagerTriggered = null;
             DeviceChanged = null;
             HotKeyPressed = null;
