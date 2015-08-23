@@ -2,9 +2,11 @@
 setlocal
 cd /d "%~dp0"
 
-set finalDir="Final"
-set x86Release="%finalDir%\x86"
-set x64Release="%finalDir%\x64"
+SET "FILE_DIR=%~dp0"
+
+set finalDir=%FILE_DIR%Final
+set x86Release=%finalDir%\x86
+set x64Release=%finalDir%\x64
 
 net session 1>nul 2>nul
 if not "%ERRORLEVEL%"=="0" (
@@ -29,12 +31,6 @@ mkdir %x64Release% 1>nul 2>nul
 
 set buildPlatform=Release
 
-set zipper="%ProgramFiles%\7-zip\7z.exe"
-if not exist %zipper% (
-  echo Error: 7-zip (native version^) is not installed
-  goto Quit
-)
-
 set msbuildexe="%programfiles(x86)%\MSBuild\14.0\Bin\MSBuild.exe"
 
 Echo Making SoundSwitch...
@@ -57,9 +53,9 @@ xcopy /y x64\Release\SoundSwitch.exe.config %x64Release% 1>nul 2>nul
 Echo "Copy x86"
 xcopy /y Release\*.dll %x86Release% 1>nul 2>nul
 xcopy /y Release\SoundSwitch.* %x86Release% 1>nul 2>nul
-xcopy /y Release\SoundSwitch.exe.config %x64Release% 1>nul 2>nul
+xcopy /y Release\SoundSwitch.exe.config %x86Release% 1>nul 2>nul
 
-if exist Sign.bat (
+IF EXIST "%FILE_DIR%..\signinfo.txt" (
     echo Signing release...
     Echo.
     call Sign.bat %x86Release%\SoundSwitch.exe
