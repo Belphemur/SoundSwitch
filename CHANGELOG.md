@@ -1,5 +1,16 @@
 # Change Log
 
+## [v3.2.1](https://github.com/Belphemur/SoundSwitch/tree/v3.2.1) (2015-08-23)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.2.0...v3.2.1)
+
+**Implemented enhancements:**
+
+- Sign the application and installer [\#7](https://github.com/Belphemur/SoundSwitch/issues/7)
+
+**Fixed bugs:**
+
+- SoundSwitch appears to crash immediately after launch [\#5](https://github.com/Belphemur/SoundSwitch/issues/5)
+
 ## [v3.2.0](https://github.com/Belphemur/SoundSwitch/tree/v3.2.0) (2015-08-22)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.1.2...v3.2.0)
 
