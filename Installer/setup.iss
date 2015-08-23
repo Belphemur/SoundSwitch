@@ -56,9 +56,11 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "{#ExeDir}x64\SoundSwitch.exe"; DestDir: "{app}"; Check: IsX64
+Source: "{#ExeDir}x64\SoundSwitch.exe.config"; DestDir: "{app}"; Check: not IsX64
 Source: "{#ExeDir}x64\*.dll"; DestDir: "{app}"; Check: IsX64
 
 Source: "{#ExeDir}x86\SoundSwitch.exe"; DestDir: "{app}"; Check: not Is64BitInstallMode
+Source: "{#ExeDir}x86\SoundSwitch.exe.config"; DestDir: "{app}"; Check: not Is64BitInstallMode
 Source: "{#ExeDir}x86\*.dll"; DestDir: "{app}"; Check: not Is64BitInstallMode
 
 Source: "{#ExeDir}CHANGELOG.md"; DestDir: "{app}"
