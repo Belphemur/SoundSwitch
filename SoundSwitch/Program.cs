@@ -53,6 +53,7 @@ namespace SoundSwitch
                     }
                 };
                 var config = ConfigurationManager.LoadConfiguration<SoundSwitchConfiguration>();
+                WindowsAPIAdapter.Instancied.WaitOne();
                 using (var icon = new TrayIcon(new Main(config)))
                 {
                     if (config.FirstRun)

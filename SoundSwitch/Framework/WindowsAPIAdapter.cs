@@ -28,7 +28,7 @@ namespace SoundSwitch.Framework
         {
             Query,
             EndSession,
-            ForceClose 
+            ForceClose
         }
 
         /**
@@ -50,13 +50,12 @@ namespace SoundSwitch.Framework
 
         private WindowsAPIAdapter()
         {
-            CreateHandle();
         }
 
         public static event EventHandler<RestartManagerEvent> RestartManagerTriggered;
         public static event EventHandler<DeviceChangeEvent> DeviceChanged;
         public static event EventHandler<KeyPressedEventArgs> HotKeyPressed;
-
+        public static AutoResetEvent Instancied { get; } = new AutoResetEvent(false);
 
         public static void Start()
         {
@@ -91,6 +90,8 @@ namespace SoundSwitch.Framework
         private static void RunForm()
         {
             _instance = new WindowsAPIAdapter();
+            _instance.CreateHandle();
+            Instancied.Set();
             Application.Run(_instance);
         }
 
@@ -115,18 +116,17 @@ namespace SoundSwitch.Framework
         ///     Registers a HotKey in the system.
         /// </summary>
         /// <param name="hotKeys">Represent the hotkey to register</param>
-        public static void RegisterHotKey(HotKeys hotKeys)
+        public static bool RegisterHotKey(HotKeys hotKeys)
         {
-            _instance.Invoke(new Action(() =>
+            return (bool) _instance.Invoke(new Func<bool>(() =>
             {
                 if (_instance._registeredHotkeys.ContainsKey(hotKeys))
-                    return;
+                    return false;
 
                 var id = _instance._hotKeyId++;
                 _instance._registeredHotkeys.Add(hotKeys, id);
                 // register the hot key.
-                if (!NativeMethods.RegisterHotKey(_instance.Handle, id, (uint) hotKeys.Modifier, (uint) hotKeys.Keys))
-                    throw new InvalidOperationException("Couldn’t register the hot key.");
+                return NativeMethods.RegisterHotKey(_instance.Handle, id, (uint) hotKeys.Modifier, (uint) hotKeys.Keys);
             }));
         }
 
@@ -135,17 +135,17 @@ namespace SoundSwitch.Framework
         /// </summary>
         /// <param name="hotKeys"></param>
         /// <returns></returns>
-        public static void UnRegisterHotKey(HotKeys hotKeys)
+        public static bool UnRegisterHotKey(HotKeys hotKeys)
         {
-            _instance.Invoke(new Action(() =>
+           return (bool) _instance.Invoke(new Func<bool>(() =>
             {
                 int id;
                 if (!_instance._registeredHotkeys.TryGetValue(hotKeys, out id))
                 {
-                    return;
+                    return false;
                 }
                 _instance._registeredHotkeys.Remove(hotKeys);
-                NativeMethods.UnregisterHotKey(_instance.Handle, id);
+                return NativeMethods.UnregisterHotKey(_instance.Handle, id);
             }));
         }
 
@@ -186,8 +186,9 @@ namespace SoundSwitch.Framework
 
             base.WndProc(ref m);
         }
+
         /// <summary>
-        /// To avoid overflow on 64 bit platform use this method
+        ///     To avoid overflow on 64 bit platform use this method
         /// </summary>
         /// <param name="lParam"></param>
         /// <returns></returns>

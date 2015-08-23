@@ -39,11 +39,18 @@ namespace SoundSwitch
         public Main(SoundSwitchConfiguration configuration)
         {
             _configuration = configuration;
-            SetHotkeyCombination(_configuration.HotKeysCombinaison);
-            WindowsAPIAdapter.HotKeyPressed += HandleHotkeyPress;
+            
 
             RegisterForRestart();
             RegisterRecovery();
+        }
+        /// <summary>
+        /// Register the configured hotkeys
+        /// </summary>
+        public void InitializeHotkeys()
+        {
+            SetHotkeyCombination(_configuration.HotKeysCombinaison);
+            WindowsAPIAdapter.HotKeyPressed += HandleHotkeyPress;
         }
 
         public HashSet<string> SelectedDevicesList => _configuration.SelectedDeviceList;
@@ -139,15 +146,16 @@ namespace SoundSwitch
         public void SetHotkeyCombination(HotKeys hotkeys)
         {
             WindowsAPIAdapter.UnRegisterHotKey(_configuration.HotKeysCombinaison);
-            _configuration.HotKeysCombinaison = hotkeys;
-            _configuration.Save();
-            try
+
+            if (!WindowsAPIAdapter.RegisterHotKey(hotkeys))
             {
-                WindowsAPIAdapter.RegisterHotKey(_configuration.HotKeysCombinaison);
+                ErrorTriggered?.Invoke(this,
+                    new ExceptionEvent(new Exception("Impossible to register HotKey: " + HotKeysString)));
             }
-            catch (Exception ex)
+            else
             {
-                ErrorTriggered?.Invoke(this,new ExceptionEvent(ex));
+                _configuration.HotKeysCombinaison = hotkeys;
+                _configuration.Save();
             }
            
         }
@@ -156,6 +164,9 @@ namespace SoundSwitch
 
         private void HandleHotkeyPress(object sender, WindowsAPIAdapter.KeyPressedEventArgs e)
         {
+            if (e.HotKeys != _configuration.HotKeysCombinaison)
+                return;
+
             try
             {
                 CycleActiveDevice();

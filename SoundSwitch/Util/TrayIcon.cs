@@ -110,6 +110,7 @@ namespace SoundSwitch.Util
             {
                 UpdateAvailableDeviceList();
             };
+            _main.InitializeHotkeys();
         }
 
         private void UpdateAvailableDeviceList()
