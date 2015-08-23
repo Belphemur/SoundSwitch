@@ -54,6 +54,7 @@ namespace SoundSwitch
                 };
                 var config = ConfigurationManager.LoadConfiguration<SoundSwitchConfiguration>();
                 WindowsAPIAdapter.Instancied.WaitOne();
+                WindowsAPIAdapter.AddThreadExceptionHandler(Application_ThreadException);
                 using (var icon = new TrayIcon(new Main(config)))
                 {
                     if (config.FirstRun)
@@ -61,7 +62,6 @@ namespace SoundSwitch
                         icon.ShowSettings();
                         config.FirstRun = false;
                     }
-
                     Application.Run();
                     WindowsAPIAdapter.Stop();
                 }
@@ -80,8 +80,13 @@ namespace SoundSwitch
             if (result == DialogResult.Yes)
             {
                 var textToWrite =
-                    $"{DateTime.Now}\nException:\n{e.Exception.Message}\n\nInner Exception:\n{e.Exception.InnerException}\n\n\n\n";
-                var dialog = new SaveFileDialog();
+                    $"{DateTime.Now}\nException:\n{e.Exception}\n\nInner Exception:\n{e.Exception.InnerException}\n\n\n\n";
+                var dialog = new SaveFileDialog
+                {
+                    Title = @"Crash Log",
+                    AddExtension = true,
+                    Filter = @"*.log"
+                };
                 dialog.ShowDialog();
                 using (var sw = new StreamWriter(dialog.OpenFile()))
                 {

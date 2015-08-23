@@ -64,7 +64,7 @@ namespace SoundSwitch.Framework
             if (_instance != null)
                 throw new InvalidOperationException("Adapter already started");
 
-            var t = new Thread(RunForm);
+            var t = new Thread(RunForm) {Name = typeof (WindowsAPIAdapter).Name};
             t.SetApartmentState(ApartmentState.STA);
             t.IsBackground = true;
             t.Start();
@@ -94,6 +94,20 @@ namespace SoundSwitch.Framework
                     Trace.WriteLine("Thread Race Condition: " + ex);
                 }
             }
+        }
+        /// <summary>
+        /// Add an Exception handler for the Adapter thread
+        /// </summary>
+        /// <param name="handler"></param>
+        public static void AddThreadExceptionHandler(ThreadExceptionEventHandler handler)
+        {
+            if (_instance == null)
+                throw new InvalidOperationException("Adapter not started");
+
+            _instance.Invoke(new Action(() =>
+            {
+                Application.ThreadException += handler;
+            }));
         }
 
         private static void RunForm()
