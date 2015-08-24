@@ -222,13 +222,17 @@ namespace SoundSwitch
             get { return AutoStart.IsAutoStarted(); }
             set
             {
-                if (value)
+                using (AppLogger.Log.InfoCall())
                 {
-                    AutoStart.EnableAutoStart();
-                }
-                else
-                {
-                    AutoStart.DisableAutoStart();
+                    AppLogger.Log.Info("Set AutoStart: ", value);
+                    if (value)
+                    {
+                        AutoStart.EnableAutoStart();
+                    }
+                    else
+                    {
+                        AutoStart.DisableAutoStart();
+                    }
                 }
             }
         }
