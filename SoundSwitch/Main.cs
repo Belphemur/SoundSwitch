@@ -164,7 +164,7 @@ namespace SoundSwitch
                 }
                 else
                 {
-                    AppLogger.Log.Info("New Hotkeys registered");
+                    AppLogger.Log.Info("New Hotkeys registered", hotkeys);
                     _configuration.HotKeysCombinaison = hotkeys;
                     _configuration.Save();
                 }
@@ -251,19 +251,23 @@ namespace SoundSwitch
         /// <param name="device"></param>
         public bool SetActiveDevice(AudioDeviceWrapper device)
         {
-            try
+            using (AppLogger.Log.InfoCall())
             {
-                device.SetAsDefault();
-                AudioDeviceChanged?.Invoke(this, new AudioChangeEvent(device));
-                _configuration.LastActiveDevice = device.FriendlyName;
-                _configuration.Save();
-                return true;
+                try
+                {
+                    AppLogger.Log.Info("Set Default device", device);
+                    device.SetAsDefault();
+                    AudioDeviceChanged?.Invoke(this, new AudioChangeEvent(device));
+                    _configuration.LastActiveDevice = device.FriendlyName;
+                    _configuration.Save();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    ErrorTriggered?.Invoke(this, new ExceptionEvent(ex));
+                }
+                return false;
             }
-            catch (Exception ex)
-            {
-                ErrorTriggered?.Invoke(this, new ExceptionEvent(ex));
-            }
-            return false;
         }
 
         /// <summary>
@@ -273,29 +277,35 @@ namespace SoundSwitch
         /// </summary>
         public bool CycleActiveDevice()
         {
-            var list = AvailableAudioDevices;
-            switch (list.Count)
+            using (AppLogger.Log.InfoCall())
             {
-                case 0:
-                    ErrorTriggered?.Invoke(this, new ExceptionEvent(new NoDevicesException()));
-                    return false;
-                case 1:
-                    return false;
-            }
-            AudioDeviceWrapper defaultDev = null;
-            try
-            {
-                defaultDev = list.First(device => device.IsDefault);
-            }
-            catch (Exception)
-            {
-                defaultDev =
-                    list.FirstOrDefault(device => device.FriendlyName == _configuration.LastActiveDevice) ??
-                    list[0];
-            }
+               
+                var list = AvailableAudioDevices;
+                switch (list.Count)
+                {
+                    case 0:
+                        ErrorTriggered?.Invoke(this, new ExceptionEvent(new NoDevicesException()));
+                        return false;
+                    case 1:
+                        return false;
+                }
+                AppLogger.Log.Info("Cycle Audio Devices", list);
+                AudioDeviceWrapper defaultDev = null;
+                try
+                {
+                    defaultDev = list.First(device => device.IsDefault);
+                }
+                catch (Exception)
+                {
+                    defaultDev =
+                        list.FirstOrDefault(device => device.FriendlyName == _configuration.LastActiveDevice) ??
+                        list[0];
+                }
 
-            var next = list.SkipWhile((device, i) => device != defaultDev).Skip(1).FirstOrDefault() ?? list[0];
-            return SetActiveDevice(next);
+                var next = list.SkipWhile((device, i) => device != defaultDev).Skip(1).FirstOrDefault() ?? list[0];
+                AppLogger.Log.Info("Select AudioDevice", next);
+                return SetActiveDevice(next);
+            }
         }
 
         [Serializable]
