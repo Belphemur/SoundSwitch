@@ -18,7 +18,7 @@ const
 
 procedure dotnetfx45(MinVersion: integer);
 begin
-	if (not netfxinstalled(NetFx452, '') or (netfxspversion(NetFx45, '') < MinVersion)) then
+	if (not netfxinstalled(NetFx45, '') or (netfxspversion(NetFx45, '') < MinVersion)) then
 		AddProduct('dotnetfx45.exe',
 			CustomMessage('dotnetfx45_lcid') + ' /q /norestart',
 			CustomMessage('dotnetfx45_title'),
