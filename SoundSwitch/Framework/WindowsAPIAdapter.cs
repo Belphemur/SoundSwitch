@@ -52,12 +52,13 @@ namespace SoundSwitch.Framework
         {
         }
 
+        private static readonly AutoResetEvent Instancied  = new AutoResetEvent(false);
         public static event EventHandler<RestartManagerEvent> RestartManagerTriggered;
         public static event EventHandler<DeviceChangeEvent> DeviceChanged;
         public static event EventHandler<KeyPressedEventArgs> HotKeyPressed;
-        public static AutoResetEvent Instancied { get; } = new AutoResetEvent(false);
+
         /// <summary>
-        /// Star the Adapter thread
+        ///     Star the Adapter thread
         /// </summary>
         public static void Start()
         {
@@ -69,8 +70,9 @@ namespace SoundSwitch.Framework
             t.IsBackground = true;
             t.Start();
         }
+
         /// <summary>
-        /// Stop the adapter thread
+        ///     Stop the adapter thread
         /// </summary>
         public static void Stop()
         {
@@ -95,19 +97,22 @@ namespace SoundSwitch.Framework
                 }
             }
         }
+
         /// <summary>
-        /// Add an Exception handler for the Adapter thread
+        ///     Add an Exception handler for the Adapter thread
         /// </summary>
         /// <param name="handler"></param>
         public static void AddThreadExceptionHandler(ThreadExceptionEventHandler handler)
         {
-            if (_instance == null)
-                throw new InvalidOperationException("Adapter not started");
-
-            _instance.Invoke(new Action(() =>
+            Instancied.WaitOne();
+            try
             {
-                Application.ThreadException += handler;
-            }));
+                _instance.Invoke(new Action(() => { Application.ThreadException += handler; }));
+            }
+            finally
+            {
+                Instancied.Set();
+            }
         }
 
         private static void RunForm()
@@ -141,16 +146,25 @@ namespace SoundSwitch.Framework
         /// <param name="hotKeys">Represent the hotkey to register</param>
         public static bool RegisterHotKey(HotKeys hotKeys)
         {
-            return (bool) _instance.Invoke(new Func<bool>(() =>
+            Instancied.WaitOne();
+            try
             {
-                if (_instance._registeredHotkeys.ContainsKey(hotKeys))
-                    return false;
+                return (bool) _instance.Invoke(new Func<bool>(() =>
+                {
+                    if (_instance._registeredHotkeys.ContainsKey(hotKeys))
+                        return false;
 
-                var id = _instance._hotKeyId++;
-                _instance._registeredHotkeys.Add(hotKeys, id);
-                // register the hot key.
-                return NativeMethods.RegisterHotKey(_instance.Handle, id, (uint) hotKeys.Modifier, (uint) hotKeys.Keys);
-            }));
+                    var id = _instance._hotKeyId++;
+                    _instance._registeredHotkeys.Add(hotKeys, id);
+                    // register the hot key.
+                    return NativeMethods.RegisterHotKey(_instance.Handle, id, (uint) hotKeys.Modifier,
+                        (uint) hotKeys.Keys);
+                }));
+            }
+            finally
+            {
+                Instancied.Set();
+            }
         }
 
         /// <summary>
@@ -160,16 +174,24 @@ namespace SoundSwitch.Framework
         /// <returns></returns>
         public static bool UnRegisterHotKey(HotKeys hotKeys)
         {
-           return (bool) _instance.Invoke(new Func<bool>(() =>
+            Instancied.WaitOne();
+            try
             {
-                int id;
-                if (!_instance._registeredHotkeys.TryGetValue(hotKeys, out id))
+                return (bool) _instance.Invoke(new Func<bool>(() =>
                 {
-                    return false;
-                }
-                _instance._registeredHotkeys.Remove(hotKeys);
-                return NativeMethods.UnregisterHotKey(_instance.Handle, id);
-            }));
+                    int id;
+                    if (!_instance._registeredHotkeys.TryGetValue(hotKeys, out id))
+                    {
+                        return false;
+                    }
+                    _instance._registeredHotkeys.Remove(hotKeys);
+                    return NativeMethods.UnregisterHotKey(_instance.Handle, id);
+                }));
+            }
+            finally
+            {
+                Instancied.Set();
+            }
         }
 
         protected override void SetVisibleCore(bool value)

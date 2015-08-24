@@ -53,7 +53,6 @@ namespace SoundSwitch
                     }
                 };
                 var config = ConfigurationManager.LoadConfiguration<SoundSwitchConfiguration>();
-                WindowsAPIAdapter.Instancied.WaitOne();
                 WindowsAPIAdapter.AddThreadExceptionHandler(Application_ThreadException);
                 using (var icon = new TrayIcon(new Main(config)))
                 {
@@ -71,9 +70,7 @@ namespace SoundSwitch
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
             var message =
-                string.Format(
-                    "It seems {1} has crashed.{0}Do you want to save a log of the error that ocurred?{0}This could be useful to fix bugs. Please post this file in the issues section.",
-                    Environment.NewLine, Application.ProductName);
+                $"It seems {Application.ProductName} has crashed.\nDo you want to save a log of the error that ocurred?\nThis could be useful to fix bugs. Please post this file in the issues section.";
             var result = MessageBox.Show(message, $"{Application.ProductName} crashed...", MessageBoxButtons.YesNo,
                 MessageBoxIcon.Error);
 
