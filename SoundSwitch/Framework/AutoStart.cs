@@ -27,10 +27,7 @@ namespace SoundSwitch.Framework
         /// </summary>
         public static void EnableAutoStart()
         {
-            using (AppLogger.Log.DebugCall())
-            {
-                SstartupKey?.SetValue(Application.ProductName, Application.ExecutablePath);
-            }
+            SstartupKey?.SetValue(Application.ProductName, Application.ExecutablePath);
         }
 
         /// <summary>
@@ -38,10 +35,7 @@ namespace SoundSwitch.Framework
         /// </summary>
         public static void DisableAutoStart()
         {
-            using (AppLogger.Log.DebugCall())
-            {
-                SstartupKey?.DeleteValue(Application.ProductName, false);
-            }
+            SstartupKey?.DeleteValue(Application.ProductName, false);
         }
 
         /// <summary>
@@ -50,10 +44,7 @@ namespace SoundSwitch.Framework
         /// <returns></returns>
         public static bool IsAutoStarted()
         {
-            using (AppLogger.Log.DebugCall())
-            {
-                return SstartupKey?.GetValue(Application.ProductName)?.ToString() == Application.ExecutablePath;
-            }
+            return SstartupKey?.GetValue(Application.ProductName)?.ToString() == Application.ExecutablePath;
         }
     }
 }
