@@ -14,7 +14,7 @@
 ********************************************************************/
 
 using System;
-using System.IO;
+using System.Diagnostics;
 using System.Threading;
 using System.Windows.Forms;
 using SoundSwitch.Framework;
@@ -28,9 +28,14 @@ namespace SoundSwitch
         private static void Main()
         {
             bool createdNew;
+            AppLogger.Log.Info("Application Starts");
             using (new Mutex(true, Application.ProductName, out createdNew))
             {
-                if (!createdNew) return;
+                if (!createdNew)
+                {
+                    AppLogger.Log.Warn("Application already started");
+                    return;
+                }
 
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
@@ -41,15 +46,21 @@ namespace SoundSwitch
                 //when it should without this.
                 WindowsAPIAdapter.RestartManagerTriggered += (sender, @event) =>
                 {
-                    switch (@event.Type)
+                    using (AppLogger.Log.DebugCall())
                     {
-                        case WindowsAPIAdapter.RestartManagerEventType.Query:
-                            @event.Result = new IntPtr(1);
-                            break;
-                        case WindowsAPIAdapter.RestartManagerEventType.EndSession:
-                        case WindowsAPIAdapter.RestartManagerEventType.ForceClose:
-                            Application.Exit();
-                            break;
+                        AppLogger.Log.Debug("Restart Event received", @event);
+                        switch (@event.Type)
+                        {
+                            case WindowsAPIAdapter.RestartManagerEventType.Query:
+                                @event.Result = new IntPtr(1);
+
+                                break;
+                            case WindowsAPIAdapter.RestartManagerEventType.EndSession:
+                            case WindowsAPIAdapter.RestartManagerEventType.ForceClose:
+                                AppLogger.Log.Debug("Close Application");
+                                Application.Exit();
+                                break;
+                        }
                     }
                 };
                 var config = ConfigurationManager.LoadConfiguration<SoundSwitchConfiguration>();
@@ -60,6 +71,7 @@ namespace SoundSwitch
                     {
                         icon.ShowSettings();
                         config.FirstRun = false;
+                        AppLogger.Log.Info("First run");
                     }
                     Application.Run();
                     WindowsAPIAdapter.Stop();
@@ -69,6 +81,7 @@ namespace SoundSwitch
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
+            AppLogger.Log.Fatal("Exception Occured", e);
             var message =
                 $"It seems {Application.ProductName} has crashed.\nDo you want to save a log of the error that ocurred?\nThis could be useful to fix bugs. Please post this file in the issues section.";
             var result = MessageBox.Show(message, $"{Application.ProductName} crashed...", MessageBoxButtons.YesNo,
@@ -76,19 +89,7 @@ namespace SoundSwitch
 
             if (result == DialogResult.Yes)
             {
-                var textToWrite =
-                    $"{DateTime.Now}\nException:\n{e.Exception}\n\nInner Exception:\n{e.Exception.InnerException}\n\n\n\n";
-                var dialog = new SaveFileDialog
-                {
-                    Title = @"Crash Log",
-                    AddExtension = true,
-                    Filter = @"*.log"
-                };
-                dialog.ShowDialog();
-                using (var sw = new StreamWriter(dialog.OpenFile()))
-                {
-                    sw.Write(textToWrite);
-                }
+                Process.Start(AppLogger.LogsLocation);
             }
         }
     }

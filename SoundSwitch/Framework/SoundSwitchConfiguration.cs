@@ -35,7 +35,11 @@ namespace SoundSwitch.Framework
 
         public void Save()
         {
-            ConfigurationManager.SaveConfiguration(this);
+            using (AppLogger.Log.DebugCall())
+            {
+                AppLogger.Log.Debug("Saving configuration", this);
+                ConfigurationManager.SaveConfiguration(this);
+            }
         }
     }
 }

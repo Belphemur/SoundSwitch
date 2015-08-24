@@ -59,10 +59,13 @@ namespace SoundSwitch
         {
             get
             {
-                return
-                    AudioController.getAvailableAudioDevices()
-                        .Where((device => SelectedDevicesList.Contains(device.FriendlyName)))
-                        .ToList();
+                using (AppLogger.Log.DebugCall())
+                {
+                    return
+                        AudioController.getAvailableAudioDevices()
+                            .Where((device => SelectedDevicesList.Contains(device.FriendlyName)))
+                            .ToList();
+                }
             }
         }
 
@@ -76,31 +79,34 @@ namespace SoundSwitch
         {
             var settings = new RecoverySettings(new RecoveryData(SaveState, _configuration), 0);
             ApplicationRestartRecoveryManager.RegisterForApplicationRecovery(settings);
-            Trace.WriteLine("Recovery Registered");
+            AppLogger.Log.Info("Recovery Registered");
         }
 
         private void RegisterForRestart()
         {
             var settings = new RestartSettings("/restart", RestartRestrictions.None);
             ApplicationRestartRecoveryManager.RegisterForApplicationRestart(settings);
-            Trace.WriteLine("Restart Registered");
+            AppLogger.Log.Info("Restart Registered");
         }
 
         private int SaveState(object state)
         {
-            Trace.WriteLine("Saving State");
-            var settings = (SoundSwitchConfiguration) state;
-            var cancelled = ApplicationRestartRecoveryManager.ApplicationRecoveryInProgress();
-            if (cancelled)
+            using (AppLogger.Log.ErrorCall())
             {
-                Trace.Write("Recovery Cancelled");
-                ApplicationRestartRecoveryManager.ApplicationRecoveryFinished(false);
+                AppLogger.Log.Error("Saving application state");
+                var settings = (SoundSwitchConfiguration) state;
+                var cancelled = ApplicationRestartRecoveryManager.ApplicationRecoveryInProgress();
+                if (cancelled)
+                {
+                    AppLogger.Log.Error("Recovery Cancelled");
+                    ApplicationRestartRecoveryManager.ApplicationRecoveryFinished(false);
+                    return 0;
+                }
+                settings.Save();
+                ApplicationRestartRecoveryManager.ApplicationRecoveryFinished(true);
+                AppLogger.Log.Error("Recovery Success");
                 return 0;
             }
-            settings.Save();
-            ApplicationRestartRecoveryManager.ApplicationRecoveryFinished(true);
-            Trace.WriteLine("Recovery Success");
-            return 0;
         }
 
         #region Events
@@ -145,35 +151,47 @@ namespace SoundSwitch
         /// <param name="hotkeys"></param>
         public void SetHotkeyCombination(HotKeys hotkeys)
         {
-            WindowsAPIAdapter.UnRegisterHotKey(_configuration.HotKeysCombinaison);
+            using (AppLogger.Log.InfoCall())
+            {
+                AppLogger.Log.Info("Unregister previous hotkeys",_configuration.HotKeysCombinaison);
+                WindowsAPIAdapter.UnRegisterHotKey(_configuration.HotKeysCombinaison);
 
-            if (!WindowsAPIAdapter.RegisterHotKey(hotkeys))
-            {
-                ErrorTriggered?.Invoke(this,
-                    new ExceptionEvent(new Exception("Impossible to register HotKey: " + HotKeysString)));
+                if (!WindowsAPIAdapter.RegisterHotKey(hotkeys))
+                {
+                    AppLogger.Log.Warn("Can't register new hotkeys", hotkeys);
+                    ErrorTriggered?.Invoke(this,
+                        new ExceptionEvent(new Exception("Impossible to register HotKey: " + HotKeysString)));
+                }
+                else
+                {
+                    AppLogger.Log.Info("New Hotkeys registered");
+                    _configuration.HotKeysCombinaison = hotkeys;
+                    _configuration.Save();
+                }
             }
-            else
-            {
-                _configuration.HotKeysCombinaison = hotkeys;
-                _configuration.Save();
-            }
-           
+
         }
 
 
 
         private void HandleHotkeyPress(object sender, WindowsAPIAdapter.KeyPressedEventArgs e)
         {
-            if (e.HotKeys != _configuration.HotKeysCombinaison)
-                return;
+            using (AppLogger.Log.DebugCall())
+            {
+                if (e.HotKeys != _configuration.HotKeysCombinaison)
+                {
+                    AppLogger.Log.Debug("Not the registered Hotkeys", e.HotKeys);
+                    return;
+                }
 
-            try
-            {
-                CycleActiveDevice();
-            }
-            catch (Exception ex)
-            {
-                ErrorTriggered?.Invoke(this, new ExceptionEvent(ex));
+                try
+                {
+                    CycleActiveDevice();
+                }
+                catch (Exception ex)
+                {
+                    ErrorTriggered?.Invoke(this, new ExceptionEvent(ex));
+                }
             }
         }
 
