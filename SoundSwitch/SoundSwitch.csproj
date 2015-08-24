@@ -156,6 +156,7 @@
     <Compile Include="Forms\Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Framework\AppLogger.cs" />
     <Compile Include="Framework\SoundSwitchConfiguration.cs" />
     <Compile Include="Framework\HotKeys.cs" />
     <Compile Include="Framework\WindowsAPIAdapter.cs">
