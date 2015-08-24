@@ -22,9 +22,6 @@ namespace SoundSwitch.Framework
 {
     internal static class AppLogger
     {
-        public static string LogsLocation { get; } = Path.Combine(Environment.GetFolderPath(
-                Environment.SpecialFolder.ApplicationData), Application.ProductName, "Logs");
-
         static AppLogger()
         {
             SetLoggerOptions(Log.TextFile);
@@ -33,7 +30,13 @@ namespace SoundSwitch.Framework
             Log.TextFile.Open();
             Log.TextFileTraceLevel = TraceLevel.Warn;
             Log.EventLogTraceLevel = TraceLevel.Error;
+#if DEBUG
+            Log.BinaryFileTraceLevel = TraceLevel.Verbose;
+#endif
         }
+
+        public static string LogsLocation { get; } = Path.Combine(Environment.GetFolderPath(
+            Environment.SpecialFolder.ApplicationData), Application.ProductName, "Logs");
 
         public static Logger Log { get; } = Logger.GetLogger(Application.ProductName);
 
