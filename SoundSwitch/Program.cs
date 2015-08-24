@@ -48,7 +48,7 @@ namespace SoundSwitch
                 {
                     using (AppLogger.Log.DebugCall())
                     {
-                        AppLogger.Log.Debug("Restart Event received", @event);
+                        AppLogger.Log.Debug("Restart Event recieved", @event);
                         switch (@event.Type)
                         {
                             case WindowsAPIAdapter.RestartManagerEventType.Query:
@@ -84,7 +84,7 @@ namespace SoundSwitch
                 }
                 catch (Exception ex)
                 {
-                   Application_ThreadException(null, new ThreadExceptionEventArgs(ex));
+                    HandleException(ex);
                 }
                
             }
@@ -92,15 +92,23 @@ namespace SoundSwitch
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
-            AppLogger.Log.Fatal("Exception Occured", e.Exception);
-            var message =
-                $"It seems {Application.ProductName} has crashed.\nDo you want to save a log of the error that ocurred?\nThis could be useful to fix bugs. Please post this file in the issues section.";
-            var result = MessageBox.Show(message, $"{Application.ProductName} crashed...", MessageBoxButtons.YesNo,
-                MessageBoxIcon.Error);
+            HandleException(e.Exception);
+        }
 
-            if (result == DialogResult.Yes)
+        private static void HandleException(Exception exception)
+        {
+            using (AppLogger.Log.FatalCall())
             {
-                Process.Start(AppLogger.LogsLocation);
+                AppLogger.Log.Fatal("Exception Occured", exception);
+                var message =
+                    $"It seems {Application.ProductName} has crashed.\nDo you want to save a log of the error that ocurred?\nThis could be useful to fix bugs. Please post this file in the issues section.";
+                var result = MessageBox.Show(message, $"{Application.ProductName} crashed...", MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Error);
+
+                if (result == DialogResult.Yes)
+                {
+                    Process.Start(AppLogger.LogsLocation);
+                }
             }
         }
     }
