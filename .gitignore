@@ -40,3 +40,4 @@ ipch/
 *.opensdf
 *.sdf
 Final
+GenerateChangelog.bat
