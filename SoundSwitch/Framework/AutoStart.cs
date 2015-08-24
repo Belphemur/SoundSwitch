@@ -52,7 +52,7 @@ namespace SoundSwitch.Framework
         {
             using (AppLogger.Log.DebugCall())
             {
-                return SstartupKey.GetValue(Application.ProductName).ToString() == Application.ExecutablePath;
+                return SstartupKey?.GetValue(Application.ProductName)?.ToString() == Application.ExecutablePath;
             }
         }
     }
