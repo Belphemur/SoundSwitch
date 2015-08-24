@@ -26,13 +26,13 @@ namespace SoundSwitch.Framework
         {
             SetLoggerOptions(Log.TextFile);
             SetLoggerOptions(Log.BinaryFile);
-            Log.BinaryFile.Open();
-            Log.TextFile.Open();
             Log.TextFileTraceLevel = TraceLevel.Warn;
             Log.EventLogTraceLevel = TraceLevel.Error;
 #if DEBUG
             Log.BinaryFileTraceLevel = TraceLevel.Verbose;
 #endif
+            Log.BinaryFile.Open();
+            Log.TextFile.Open();
         }
 
         public static string LogsLocation { get; } = Path.Combine(Environment.GetFolderPath(
