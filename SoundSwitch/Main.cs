@@ -38,11 +38,15 @@ namespace SoundSwitch
 
         public Main(SoundSwitchConfiguration configuration)
         {
-            _configuration = configuration;
-            
+            using (AppLogger.Log.DebugCall())
+            {
+                AppLogger.Log.Debug("Setting configuration",configuration);
+                _configuration = configuration;
 
-            RegisterForRestart();
-            RegisterRecovery();
+
+                RegisterForRestart();
+                RegisterRecovery();
+            }
         }
         /// <summary>
         /// Register the configured hotkeys
@@ -53,7 +57,18 @@ namespace SoundSwitch
             WindowsAPIAdapter.HotKeyPressed += HandleHotkeyPress;
         }
 
-        public HashSet<string> SelectedDevicesList => _configuration.SelectedDeviceList;
+        public HashSet<string> SelectedDevicesList
+        {
+            get
+            {
+                using (AppLogger.Log.DebugCall())
+                {
+                    return _configuration.SelectedDeviceList;
+                }
+            }
+        }
+
+       
 
         public List<AudioDeviceWrapper> AvailableAudioDevices
         {

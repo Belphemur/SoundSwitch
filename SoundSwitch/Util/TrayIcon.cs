@@ -46,8 +46,10 @@ namespace SoundSwitch.Util
         {
             using (AppLogger.Log.DebugCall())
             {
+                AppLogger.Log.Debug("Star TrayIcon ctor");
                 _trayIcon.ContextMenuStrip = _settingsMenu;
                 _main = main;
+                AppLogger.Log.Debug("Set Main ", _main);
                 _availableAudioDeviceWrappers = _main.AvailableAudioDevices;
 
                 _settingsMenu.Items.Add("Playback Devices", null, (sender, e) =>

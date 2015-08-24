@@ -41,5 +41,10 @@ namespace SoundSwitch.Framework
                 ConfigurationManager.SaveConfiguration(this);
             }
         }
+
+        public override string ToString()
+        {
+            return $"{GetType().Name}({FileLocation})";
+        }
     }
 }

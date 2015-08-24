@@ -63,25 +63,36 @@ namespace SoundSwitch
                         }
                     }
                 };
+                AppLogger.Log.Info("Load Configuration");
                 var config = ConfigurationManager.LoadConfiguration<SoundSwitchConfiguration>();
+                AppLogger.Log.Info("Set Exception Handler");
                 WindowsAPIAdapter.AddThreadExceptionHandler(Application_ThreadException);
-                using (var icon = new TrayIcon(new Main(config)))
+                AppLogger.Log.Info("Set Tray Icon with Main");
+                try
                 {
-                    if (config.FirstRun)
+                    using (var icon = new TrayIcon(new Main(config)))
                     {
-                        icon.ShowSettings();
-                        config.FirstRun = false;
-                        AppLogger.Log.Info("First run");
+                        if (config.FirstRun)
+                        {
+                            icon.ShowSettings();
+                            config.FirstRun = false;
+                            AppLogger.Log.Info("First run");
+                        }
+                        Application.Run();
+                        WindowsAPIAdapter.Stop();
                     }
-                    Application.Run();
-                    WindowsAPIAdapter.Stop();
                 }
+                catch (Exception ex)
+                {
+                   Application_ThreadException(null, new ThreadExceptionEventArgs(ex));
+                }
+               
             }
         }
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
-            AppLogger.Log.Fatal("Exception Occured", e);
+            AppLogger.Log.Fatal("Exception Occured", e.Exception);
             var message =
                 $"It seems {Application.ProductName} has crashed.\nDo you want to save a log of the error that ocurred?\nThis could be useful to fix bugs. Please post this file in the issues section.";
             var result = MessageBox.Show(message, $"{Application.ProductName} crashed...", MessageBoxButtons.YesNo,
