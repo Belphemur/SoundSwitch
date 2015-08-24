@@ -277,7 +277,8 @@ namespace SoundSwitch
             switch (list.Count)
             {
                 case 0:
-                    throw new NoDevicesException();
+                    ErrorTriggered?.Invoke(this, new ExceptionEvent(new NoDevicesException()));
+                    return false;
                 case 1:
                     return false;
             }
@@ -298,7 +299,7 @@ namespace SoundSwitch
         }
 
         [Serializable]
-        private class NoDevicesException : InvalidOperationException
+        public class NoDevicesException : InvalidOperationException
         {
             public NoDevicesException() : base("No devices to select")
             {

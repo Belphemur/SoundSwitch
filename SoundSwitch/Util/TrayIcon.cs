@@ -92,7 +92,17 @@ namespace SoundSwitch.Util
 
         private void SetEventHandlers()
         {
-            _main.ErrorTriggered += (sender, exception) => ShowError(exception.Exception.Message);
+            _main.ErrorTriggered += (sender, exception) =>
+            {
+                if (exception.Exception is Main.NoDevicesException)
+                {
+                    ShowNoDevices();
+                }
+                else
+                {
+                    ShowError(exception.Exception.Message);
+                }
+            };
             _main.AudioDeviceChanged +=
                 (sender, audioDeviceWrapper) =>
                 {
