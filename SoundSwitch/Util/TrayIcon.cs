@@ -92,31 +92,35 @@ namespace SoundSwitch.Util
 
         private void SetEventHandlers()
         {
-            _main.ErrorTriggered += (sender, exception) =>
+            _main.ErrorTriggered += (sender, @event) =>
             {
-                if (exception.Exception is Main.NoDevicesException)
+                using (AppLogger.Log.ErrorCall())
                 {
-                    ShowNoDevices();
-                }
-                else
-                {
-                    ShowError(exception.Exception.Message);
+                    if (@event.Exception is Main.NoDevicesException)
+                    {
+                        ShowNoDevices();
+                    }
+                    else
+                    {
+                        AppLogger.Log.Error("Exception managed", @event.Exception);
+                        ShowError(@event.Exception.Message, @event.Exception.GetType().Name);
+                    }
                 }
             };
             _main.AudioDeviceChanged +=
-                (sender, audioDeviceWrapper) =>
+                (sender, audioChangeEvent) =>
                 {
-                    ShowAudioChanged(audioDeviceWrapper.AudioDevice.FriendlyName);
+                    ShowAudioChanged(audioChangeEvent.AudioDevice.FriendlyName);
                     foreach (ToolStripDeviceItem item in _selectionMenu.Items)
                     {
-                        item.Image = item.AudioDevice.FriendlyName == audioDeviceWrapper.AudioDevice.FriendlyName ? Resources.GreenCheck : null;
+                        item.Image = item.AudioDevice.FriendlyName == audioChangeEvent.AudioDevice.FriendlyName ? Resources.GreenCheck : null;
                     }
                 };
-            _main.SelectedDeviceChanged += (sender, changed) =>
+            _main.SelectedDeviceChanged += (sender, deviceListChanged) =>
             {
                 UpdateAvailableDeviceList();
             };
-            WindowsAPIAdapter.DeviceChanged += (sender, @event) =>
+            WindowsAPIAdapter.DeviceChanged += (sender, deviceChangeEvent) =>
             {
                 UpdateAvailableDeviceList();
             };
@@ -188,6 +192,7 @@ namespace SoundSwitch.Util
         /// </summary>
         public void ShowNoDevices()
         {
+            AppLogger.Log.Error("No devices available");
             _trayIcon.ShowBalloonTip(3000, "SoundSwitch: Configuration needed",
                 "No devices available to switch to. Open configuration by right-clicking on the SoundSwitch icon. ",
                 ToolTipIcon.Warning);
