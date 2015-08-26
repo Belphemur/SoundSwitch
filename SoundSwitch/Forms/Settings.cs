@@ -19,6 +19,7 @@ using System.Linq;
 using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework;
+using SoundSwitch.Properties;
 using SoundSwitch.Util;
 
 namespace SoundSwitch.Forms
@@ -40,6 +41,7 @@ namespace SoundSwitch.Forms
 
 
             RunAtStartup.Checked = _main.RunAtStartup;
+           //TODO: test.SmallImageList.Images.Add("test", Resources.GreenCheck);
             PopulateAudioList();
         }
 
@@ -99,21 +101,35 @@ namespace SoundSwitch.Forms
                 var selected = _main.SelectedDevicesList;
                 var audioDeviceWrappers = AudioController.getAllAudioDevices()
                     .Where(wrapper => !string.IsNullOrEmpty(wrapper.FriendlyName))
-                    .Select(wrapper => wrapper.FriendlyName)
-                    .OrderBy(s => s);
-                foreach (
-                    var item in
-                        audioDeviceWrappers.Where(name => selected.Contains(name)))
+                    .OrderBy(s => s.FriendlyName);
+                deviceListView.SmallImageList = new ImageList();
+             
+                deviceListView.Columns.Add("Device", -3, HorizontalAlignment.Center);
+                foreach (var device in audioDeviceWrappers)
                 {
-                    lstDevices.Items.Add(item, true);
+                    deviceListView.SmallImageList.Images.Add(device.FriendlyName, IconExtractor.ExtractIconFromAudioDevice(device, false));
+                    if (selected.Contains(device.FriendlyName))
+                    {
+                        deviceListView.Items.Add(new ListViewItem
+                        {
+                            Text = device.FriendlyName,
+                            Checked = true,
+                            Group = deviceListView.Groups["selectedGroup"],
+                            ImageKey = device.FriendlyName
+                        });
+                    }
+                    else
+                    {
+                        deviceListView.Items.Add(new ListViewItem
+                        {
+                            Text = device.FriendlyName,
+                            Checked = false,
+                            Group = deviceListView.Groups["unSelectedGroup"],
+                            ImageKey = device.FriendlyName
+                        });
+                    }
                 }
-
-                foreach (
-                    var item in
-                        audioDeviceWrappers.Where(name => !selected.Contains(name)))
-                {
-                    lstDevices.Items.Add(item, false);
-                }
+           
             }
             catch (Exception e)
             {
@@ -121,7 +137,7 @@ namespace SoundSwitch.Forms
             }
             finally
             {
-                lstDevices.ItemCheck += LstDevicesItemChecked;
+                deviceListView.ItemCheck += LstDevicesItemChecked;
             }
         }
 
@@ -129,7 +145,7 @@ namespace SoundSwitch.Forms
         {
             try
             {
-                _main.AddRemoveDevice(lstDevices.Items[e.Index].ToString());
+                _main.AddRemoveDevice(deviceListView.Items[e.Index].ToString());
             }
             catch (Exception)
             {
