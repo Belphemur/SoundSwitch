@@ -228,6 +228,8 @@
     <Content Include="Resources\arrow_switch.ico" />
     <Content Include="Resources\arrow_switch.png" />
     <None Include="Resources\cog.png" />
+    <None Include="Resources\computer.png" />
+    <None Include="Resources\exit.png" />
     <Content Include="Resources\explanation.png" />
     <None Include="Resources\GreenCheck.png" />
     <Content Include="Resources\help.png" />

@@ -52,7 +52,7 @@ namespace SoundSwitch.Util
                 AppLogger.Log.Debug("Set Main ", _main);
                 _availableAudioDeviceWrappers = _main.AvailableAudioDevices;
 
-                _settingsMenu.Items.Add("Playback Devices", null, (sender, e) =>
+                _settingsMenu.Items.Add("Playback Devices", Resources.computer, (sender, e) =>
                 {
                     Process.Start(new ProcessStartInfo("cmd", "/c " + "control mmsys.cpl sounds")
                     {
@@ -64,7 +64,7 @@ namespace SoundSwitch.Util
                 _settingsMenu.Items.Add("Settings", Resources.Settings, (sender, e) => ShowSettings());
                 _settingsMenu.Items.Add("About", Resources.Help, (sender, e) => new About().Show());
                 _settingsMenu.Items.Add("-");
-                _settingsMenu.Items.Add("Exit", null, (sender, e) => Application.Exit());
+                _settingsMenu.Items.Add("Exit", Resources.exit, (sender, e) => Application.Exit());
 
                 _selectionMenu.Items.Add("No devices selected", Resources.Settings, (sender, e) => ShowSettings());
 
