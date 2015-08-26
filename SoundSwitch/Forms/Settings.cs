@@ -33,6 +33,7 @@ namespace SoundSwitch.Forms
         {
             _main = main;
             InitializeComponent();
+            Icon = System.Drawing.Icon.FromHandle(Resources.Settings.GetHicon());
             var toolTip = new ToolTip();
             toolTip.SetToolTip(closeButton, "Changes are automatically saved");
 

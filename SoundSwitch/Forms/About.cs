@@ -15,6 +15,7 @@
 
 using System.Diagnostics;
 using System.Windows.Forms;
+using SoundSwitch.Properties;
 
 namespace SoundSwitch.Forms
 {
@@ -24,6 +25,7 @@ namespace SoundSwitch.Forms
         public About()
         {
             InitializeComponent();
+            Icon = System.Drawing.Icon.FromHandle(Resources.Help.GetHicon());
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -45,7 +47,7 @@ namespace SoundSwitch.Forms
 
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("http://www.fatcow.com/free-icons/");
+            Process.Start("https://codefisher.org/pastel-svg/");
         }
 
         private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

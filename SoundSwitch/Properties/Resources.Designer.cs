@@ -63,9 +63,29 @@ namespace SoundSwitch.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap GreenCheck {
+        internal static System.Drawing.Bitmap arrow_switch_16 {
             get {
-                object obj = ResourceManager.GetObject("GreenCheck", resourceCulture);
+                object obj = ResourceManager.GetObject("arrow_switch_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap arrow_switch_48 {
+            get {
+                object obj = ResourceManager.GetObject("arrow_switch_48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Check {
+            get {
+                object obj = ResourceManager.GetObject("Check", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -86,16 +106,6 @@ namespace SoundSwitch.Properties {
         internal static System.Drawing.Bitmap Settings {
             get {
                 object obj = ResourceManager.GetObject("Settings", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap SwitchIcon {
-            get {
-                object obj = ResourceManager.GetObject("SwitchIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

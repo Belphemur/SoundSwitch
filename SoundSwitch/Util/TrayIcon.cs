@@ -34,7 +34,7 @@ namespace SoundSwitch.Util
 
         private readonly NotifyIcon _trayIcon = new NotifyIcon
         {
-            Icon = Icon.FromHandle(Resources.SwitchIcon.GetHicon()),
+            Icon = Icon.FromHandle(Resources.arrow_switch_16.GetHicon()),
             Visible = true,
             Text = Application.ProductName
         };
@@ -119,7 +119,7 @@ namespace SoundSwitch.Util
                     foreach (ToolStripDeviceItem item in _selectionMenu.Items)
                     {
                         item.Image = item.AudioDevice.FriendlyName == audioChangeEvent.AudioDevice.FriendlyName
-                            ? Resources.GreenCheck
+                            ? Resources.Check
                             : null;
                     }
                 };

@@ -173,12 +173,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\TrayIcon.cs" />
-    <EmbeddedResource Include="Forms\About.resx">
-      <DependentUpon>About.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Settings.resx">
-      <DependentUpon>Settings.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -228,8 +222,12 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\tick.png" />
+    <None Include="Resources\arrow-switch-16.png" />
+    <None Include="Resources\arrow-switch-48.png" />
     <Content Include="Resources\arrow_switch.ico" />
     <Content Include="Resources\arrow_switch.png" />
+    <None Include="Resources\cog.png" />
     <Content Include="Resources\explanation.png" />
     <None Include="Resources\GreenCheck.png" />
     <Content Include="Resources\help.png" />

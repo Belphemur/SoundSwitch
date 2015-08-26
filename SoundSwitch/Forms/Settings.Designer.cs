@@ -139,7 +139,6 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.RunAtStartup);
             this.Controls.Add(this.groupBox1);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(400, 200);
             this.Name = "Settings";
             this.Text = "Settings";

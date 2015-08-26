@@ -44,7 +44,12 @@ GNU General Public License for more details.
 [Jeroen Pelgrims](http://jeroenpelgrims.be)
 
 ### Icons
-[FatCow](http://www.fatcow.com/free-icons/)
+The [Pastel SVG icon set](https://codefisher.org/pastel-svg/) Created by Michael Buckley
+
+#### License
+Creative Commons Attribution NonCommercial Share Alike 4.0
+http://creativecommons.org/licenses/by-nc-sa/4.0/ 
+
 
 ### Keyboard hook
 [Christian Liensberger](http://www.liensberger.it/web/blog/?p=207)
