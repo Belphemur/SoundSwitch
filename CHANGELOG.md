@@ -1,5 +1,15 @@
 # Change Log
 
+## [Unreleased](https://github.com/Belphemur/SoundSwitch/tree/HEAD)
+
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.2.2...HEAD)
+
+**Implemented enhancements:**
+
+- Add devices icons in the Settings Form [\#16](https://github.com/Belphemur/SoundSwitch/issues/16)
+- Use AudioEndPointLibrary to manage audio devices [\#15](https://github.com/Belphemur/SoundSwitch/issues/15)
+- Idea: Add function to switch "Default communication device" [\#14](https://github.com/Belphemur/SoundSwitch/issues/14)
+
 ## [v3.2.2](https://github.com/Belphemur/SoundSwitch/tree/v3.2.2) (2015-08-24)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.2.1...v3.2.2)
 
