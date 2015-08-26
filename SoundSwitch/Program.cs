@@ -63,19 +63,17 @@ namespace SoundSwitch
                         }
                     }
                 };
-                AppLogger.Log.Info("Load Configuration");
-                var config = ConfigurationManager.LoadConfiguration<SoundSwitchConfiguration>();
                 AppLogger.Log.Info("Set Exception Handler");
                 WindowsAPIAdapter.AddThreadExceptionHandler(Application_ThreadException);
                 AppLogger.Log.Info("Set Tray Icon with Main");
                 try
                 {
-                    using (var icon = new TrayIcon(new Main(config)))
+                    using (var icon = new TrayIcon())
                     {
-                        if (config.FirstRun)
+                        if (AppConfigs.Configuration.FirstRun)
                         {
                             icon.ShowSettings();
-                            config.FirstRun = false;
+                            AppConfigs.Configuration.FirstRun = false;
                             AppLogger.Log.Info("First run");
                         }
                         Application.Run();

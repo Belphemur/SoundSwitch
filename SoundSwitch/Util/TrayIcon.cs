@@ -42,13 +42,13 @@ namespace SoundSwitch.Util
         private List<AudioDeviceWrapper> _availableAudioDeviceWrappers;
         private bool _deviceListChanged = true;
 
-        public TrayIcon(Main main)
+        public TrayIcon()
         {
             using (AppLogger.Log.DebugCall())
             {
                 AppLogger.Log.Debug("Star TrayIcon ctor");
                 _trayIcon.ContextMenuStrip = _settingsMenu;
-                _main = main;
+                _main = new Main();
                 AppLogger.Log.Debug("Set Main ", _main);
                 _availableAudioDeviceWrappers = _main.AvailableAudioDevices;
 

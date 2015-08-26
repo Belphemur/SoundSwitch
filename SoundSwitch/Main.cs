@@ -30,16 +30,11 @@ namespace SoundSwitch
 
         public delegate void SelectedDeviceChangeHandler(object sender, DeviceListChanged e);
 
-        private readonly SoundSwitchConfiguration _configuration;
 
-        public Main(SoundSwitchConfiguration configuration)
+        public Main()
         {
             using (AppLogger.Log.DebugCall())
             {
-                AppLogger.Log.Debug("Setting configuration", configuration);
-                _configuration = configuration;
-
-
                 RegisterForRestart();
                 RegisterRecovery();
             }
@@ -50,7 +45,7 @@ namespace SoundSwitch
         /// </summary>
         public void InitializeHotkeys()
         {
-            SetHotkeyCombination(_configuration.HotKeysCombinaison);
+            SetHotkeyCombination(AppConfigs.Configuration.HotKeysCombinaison);
             WindowsAPIAdapter.HotKeyPressed += HandleHotkeyPress;
         }
 
@@ -60,7 +55,7 @@ namespace SoundSwitch
             {
                 using (AppLogger.Log.DebugCall())
                 {
-                    return _configuration.SelectedDeviceList;
+                    return AppConfigs.Configuration.SelectedDeviceList;
                 }
             }
         }
@@ -80,7 +75,7 @@ namespace SoundSwitch
             }
         }
 
-        public string HotKeysString => _configuration.HotKeysCombinaison.ToString();
+        public string HotKeysString => AppConfigs.Configuration.HotKeysCombinaison.ToString();
 
         public event SelectedDeviceChangeHandler SelectedDeviceChanged;
         public event ErrorHandler ErrorTriggered;
@@ -88,7 +83,7 @@ namespace SoundSwitch
 
         private void RegisterRecovery()
         {
-            var settings = new RecoverySettings(new RecoveryData(SaveState, _configuration), 0);
+            var settings = new RecoverySettings(new RecoveryData(SaveState, AppConfigs.Configuration), 0);
             ApplicationRestartRecoveryManager.RegisterForApplicationRecovery(settings);
             AppLogger.Log.Info("Recovery Registered");
         }
@@ -164,8 +159,8 @@ namespace SoundSwitch
         {
             using (AppLogger.Log.InfoCall())
             {
-                AppLogger.Log.Info("Unregister previous hotkeys", _configuration.HotKeysCombinaison);
-                WindowsAPIAdapter.UnRegisterHotKey(_configuration.HotKeysCombinaison);
+                AppLogger.Log.Info("Unregister previous hotkeys", AppConfigs.Configuration.HotKeysCombinaison);
+                WindowsAPIAdapter.UnRegisterHotKey(AppConfigs.Configuration.HotKeysCombinaison);
 
                 if (!WindowsAPIAdapter.RegisterHotKey(hotkeys))
                 {
@@ -176,8 +171,8 @@ namespace SoundSwitch
                 else
                 {
                     AppLogger.Log.Info("New Hotkeys registered", hotkeys);
-                    _configuration.HotKeysCombinaison = hotkeys;
-                    _configuration.Save();
+                    AppConfigs.Configuration.HotKeysCombinaison = hotkeys;
+                    AppConfigs.Configuration.Save();
                 }
             }
         }
@@ -187,7 +182,7 @@ namespace SoundSwitch
         {
             using (AppLogger.Log.DebugCall())
             {
-                if (e.HotKeys != _configuration.HotKeysCombinaison)
+                if (e.HotKeys != AppConfigs.Configuration.HotKeysCombinaison)
                 {
                     AppLogger.Log.Debug("Not the registered Hotkeys", e.HotKeys);
                     return;
@@ -250,7 +245,7 @@ namespace SoundSwitch
                 SelectedDevicesList.Add(deviceName);
             }
             SelectedDeviceChanged?.Invoke(this, new DeviceListChanged(SelectedDevicesList));
-            _configuration.Save();
+            AppConfigs.Configuration.Save();
         }
 
         #endregion
@@ -270,8 +265,8 @@ namespace SoundSwitch
                     AppLogger.Log.Info("Set Default device", device);
                     device.SetAsDefault(Role.Console);
                     AudioDeviceChanged?.Invoke(this, new AudioChangeEvent(device));
-                    _configuration.LastActiveDevice = device.FriendlyName;
-                    _configuration.Save();
+                    AppConfigs.Configuration.LastActiveDevice = device.FriendlyName;
+                    AppConfigs.Configuration.Save();
                     return true;
                 }
                 catch (Exception ex)
@@ -302,7 +297,7 @@ namespace SoundSwitch
                 }
                 AppLogger.Log.Info("Cycle Audio Devices", list);
                 var defaultDev =
-                        list.FirstOrDefault(device => device.FriendlyName == _configuration.LastActiveDevice) ?? 
+                        list.FirstOrDefault(device => device.FriendlyName == AppConfigs.Configuration.LastActiveDevice) ?? 
                         list.FirstOrDefault(device => device.IsDefault(Role.Console)) ??
                         list[0];
 

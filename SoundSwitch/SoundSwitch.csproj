@@ -142,6 +142,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Framework\AppConfigs.cs" />
     <Compile Include="Framework\AutoStart.cs" />
     <Compile Include="Framework\ConfigurationManager.cs" />
     <Compile Include="Forms\About.cs">
