@@ -32,11 +32,11 @@
             System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Available", System.Windows.Forms.HorizontalAlignment.Left);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Settings));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.deviceListView = new System.Windows.Forms.ListView();
             this.RunAtStartup = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txtHotkey = new System.Windows.Forms.TextBox();
             this.closeButton = new System.Windows.Forms.Button();
-            this.deviceListView = new System.Windows.Forms.ListView();
             this.communicationCheckbox = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -53,6 +53,25 @@
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Devices selection";
+            // 
+            // deviceListView
+            // 
+            this.deviceListView.CheckBoxes = true;
+            this.deviceListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            listViewGroup1.Header = "Active";
+            listViewGroup1.Name = "selectedGroup";
+            listViewGroup2.Header = "Available";
+            listViewGroup2.Name = "unSelectedGroup";
+            this.deviceListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
+            listViewGroup1,
+            listViewGroup2});
+            this.deviceListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.deviceListView.Location = new System.Drawing.Point(3, 16);
+            this.deviceListView.Name = "deviceListView";
+            this.deviceListView.Size = new System.Drawing.Size(463, 176);
+            this.deviceListView.TabIndex = 0;
+            this.deviceListView.UseCompatibleStateImageBehavior = false;
+            this.deviceListView.View = System.Windows.Forms.View.Details;
             // 
             // RunAtStartup
             // 
@@ -96,25 +115,6 @@
             this.closeButton.UseVisualStyleBackColor = true;
             this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
             // 
-            // deviceListView
-            // 
-            this.deviceListView.CheckBoxes = true;
-            this.deviceListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            listViewGroup1.Header = "Active";
-            listViewGroup1.Name = "selectedGroup";
-            listViewGroup2.Header = "Available";
-            listViewGroup2.Name = "unSelectedGroup";
-            this.deviceListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup1,
-            listViewGroup2});
-            this.deviceListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.deviceListView.Location = new System.Drawing.Point(3, 16);
-            this.deviceListView.Name = "deviceListView";
-            this.deviceListView.Size = new System.Drawing.Size(463, 176);
-            this.deviceListView.TabIndex = 0;
-            this.deviceListView.UseCompatibleStateImageBehavior = false;
-            this.deviceListView.View = System.Windows.Forms.View.Details;
-            // 
             // communicationCheckbox
             // 
             this.communicationCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -140,6 +140,7 @@
             this.Controls.Add(this.RunAtStartup);
             this.Controls.Add(this.groupBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(400, 200);
             this.Name = "Settings";
             this.Text = "Settings";
             this.groupBox1.ResumeLayout(false);

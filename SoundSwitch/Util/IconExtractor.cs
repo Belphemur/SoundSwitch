@@ -16,7 +16,6 @@
 using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using AudioEndPointControllerWrapper;
 
 namespace SoundSwitch.Util
 {
@@ -42,20 +41,6 @@ namespace SoundSwitch.Util
             {
                 return null;
             }
-        }
-
-        /// <summary>
-        ///     Extract the Icon out of an AudioDevice
-        /// </summary>
-        /// <param name="audioDevice"></param>
-        /// <param name="largeIcon"></param>
-        /// <returns></returns>
-        public static Icon ExtractIconFromAudioDevice(AudioDeviceWrapper audioDevice, bool largeIcon)
-        {
-            var iconInfo = audioDevice.DeviceClassIconPath.Split(',');
-            var dllPath = iconInfo[0];
-            var iconIndex = int.Parse(iconInfo[1]);
-            return Extract(dllPath, iconIndex, largeIcon);
         }
 
         private static class NativeMethods

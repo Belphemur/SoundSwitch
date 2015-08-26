@@ -110,7 +110,7 @@ namespace SoundSwitch.Forms
                 deviceListView.Columns.Add("Device", -3, HorizontalAlignment.Center);
                 foreach (var device in audioDeviceWrappers)
                 {
-                    deviceListView.SmallImageList.Images.Add(device.FriendlyName, IconExtractor.ExtractIconFromAudioDevice(device, false));
+                    deviceListView.SmallImageList.Images.Add(device.FriendlyName, AudioDeviceIconExtractor.ExtractIconFromAudioDevice(device, false));
                     if (selected.Contains(device.FriendlyName))
                     {
                         deviceListView.Items.Add(new ListViewItem

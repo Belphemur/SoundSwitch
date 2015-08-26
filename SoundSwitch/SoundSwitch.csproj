@@ -134,6 +134,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="TracerX-Logger, Version=6.1.1304.13122, Culture=neutral, processorArchitecture=MSIL">
@@ -143,6 +144,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Framework\AppConfigs.cs" />
+    <Compile Include="Framework\AudioDeviceIconExtractor.cs" />
     <Compile Include="Framework\AutoStart.cs" />
     <Compile Include="Framework\ConfigurationManager.cs" />
     <Compile Include="Forms\About.cs">
