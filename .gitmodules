@@ -1,0 +1,3 @@
+[submodule "AudioEndPointLibrary"]
+	path = AudioEndPointLibrary
+	url = git@github.com:Belphemur/AudioEndPointLibrary.git
