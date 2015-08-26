@@ -15,14 +15,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
-using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.ApplicationServices;
 using SoundSwitch.Framework;
-using SoundSwitch.Util;
 
 namespace SoundSwitch
 {
@@ -40,7 +36,7 @@ namespace SoundSwitch
         {
             using (AppLogger.Log.DebugCall())
             {
-                AppLogger.Log.Debug("Setting configuration",configuration);
+                AppLogger.Log.Debug("Setting configuration", configuration);
                 _configuration = configuration;
 
 
@@ -48,6 +44,7 @@ namespace SoundSwitch
                 RegisterRecovery();
             }
         }
+
         /// <summary>
         /// Register the configured hotkeys
         /// </summary>
@@ -68,7 +65,6 @@ namespace SoundSwitch
             }
         }
 
-       
 
         public List<AudioDeviceWrapper> AvailableAudioDevices
         {
@@ -168,7 +164,7 @@ namespace SoundSwitch
         {
             using (AppLogger.Log.InfoCall())
             {
-                AppLogger.Log.Info("Unregister previous hotkeys",_configuration.HotKeysCombinaison);
+                AppLogger.Log.Info("Unregister previous hotkeys", _configuration.HotKeysCombinaison);
                 WindowsAPIAdapter.UnRegisterHotKey(_configuration.HotKeysCombinaison);
 
                 if (!WindowsAPIAdapter.RegisterHotKey(hotkeys))
@@ -184,9 +180,7 @@ namespace SoundSwitch
                     _configuration.Save();
                 }
             }
-
         }
-
 
 
         private void HandleHotkeyPress(object sender, WindowsAPIAdapter.KeyPressedEventArgs e)
@@ -247,7 +241,6 @@ namespace SoundSwitch
         /// <param name="deviceName"></param>
         public void AddRemoveDevice(string deviceName)
         {
-
             if (SelectedDevicesList.Contains(deviceName))
             {
                 SelectedDevicesList.Remove(deviceName);
@@ -275,7 +268,7 @@ namespace SoundSwitch
                 try
                 {
                     AppLogger.Log.Info("Set Default device", device);
-                    device.SetAsDefault();
+                    device.SetAsDefault(Role.Console);
                     AudioDeviceChanged?.Invoke(this, new AudioChangeEvent(device));
                     _configuration.LastActiveDevice = device.FriendlyName;
                     _configuration.Save();
@@ -298,7 +291,6 @@ namespace SoundSwitch
         {
             using (AppLogger.Log.InfoCall())
             {
-               
                 var list = AvailableAudioDevices;
                 switch (list.Count)
                 {
@@ -309,17 +301,11 @@ namespace SoundSwitch
                         return false;
                 }
                 AppLogger.Log.Info("Cycle Audio Devices", list);
-                AudioDeviceWrapper defaultDev = null;
-                try
-                {
-                    defaultDev = list.First(device => device.IsDefault);
-                }
-                catch (Exception)
-                {
-                    defaultDev =
-                        list.FirstOrDefault(device => device.FriendlyName == _configuration.LastActiveDevice) ??
+                var defaultDev =
+                        list.FirstOrDefault(device => device.FriendlyName == _configuration.LastActiveDevice) ?? 
+                        list.FirstOrDefault(device => device.IsDefault(Role.Console)) ??
                         list[0];
-                }
+
 
                 var next = list.SkipWhile((device, i) => device != defaultDev).Skip(1).FirstOrDefault() ?? list[0];
                 AppLogger.Log.Info("Select AudioDevice", next);
