@@ -37,6 +37,7 @@
             this.txtHotkey = new System.Windows.Forms.TextBox();
             this.closeButton = new System.Windows.Forms.Button();
             this.deviceListView = new System.Windows.Forms.ListView();
+            this.communicationCheckbox = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -114,12 +115,25 @@
             this.deviceListView.UseCompatibleStateImageBehavior = false;
             this.deviceListView.View = System.Windows.Forms.View.Details;
             // 
+            // communicationCheckbox
+            // 
+            this.communicationCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.communicationCheckbox.AutoSize = true;
+            this.communicationCheckbox.Location = new System.Drawing.Point(111, 240);
+            this.communicationCheckbox.Name = "communicationCheckbox";
+            this.communicationCheckbox.Size = new System.Drawing.Size(158, 17);
+            this.communicationCheckbox.TabIndex = 12;
+            this.communicationCheckbox.Text = "Set also as Communications";
+            this.communicationCheckbox.UseVisualStyleBackColor = true;
+            this.communicationCheckbox.CheckedChanged += new System.EventHandler(this.communicationCheckbox_CheckedChanged);
+            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.closeButton;
             this.ClientSize = new System.Drawing.Size(496, 261);
+            this.Controls.Add(this.communicationCheckbox);
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.txtHotkey);
             this.Controls.Add(this.label2);
@@ -142,5 +156,6 @@
         private System.Windows.Forms.TextBox txtHotkey;
         private System.Windows.Forms.Button closeButton;
         private System.Windows.Forms.ListView deviceListView;
+        private System.Windows.Forms.CheckBox communicationCheckbox;
     }
 }

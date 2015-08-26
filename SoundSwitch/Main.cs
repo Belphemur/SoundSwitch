@@ -75,6 +75,19 @@ namespace SoundSwitch
             }
         }
 
+        public bool ChangeCommunications
+        {
+            get
+            {
+                return AppConfigs.Configuration.ChangeCommunications;
+            }
+            set
+            {
+                AppConfigs.Configuration.ChangeCommunications = value;
+                AppConfigs.Configuration.Save();
+            }
+        }
+
         public string HotKeysString => AppConfigs.Configuration.HotKeysCombinaison.ToString();
 
         public event SelectedDeviceChangeHandler SelectedDeviceChanged;
@@ -264,6 +277,11 @@ namespace SoundSwitch
                 {
                     AppLogger.Log.Info("Set Default device", device);
                     device.SetAsDefault(Role.Console);
+                    if (ChangeCommunications)
+                    {
+                        AppLogger.Log.Info("Set Default Communication device", device);
+                        device.SetAsDefault(Role.Communications);
+                    }
                     AudioDeviceChanged?.Invoke(this, new AudioChangeEvent(device));
                     AppConfigs.Configuration.LastActiveDevice = device.FriendlyName;
                     AppConfigs.Configuration.Save();

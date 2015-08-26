@@ -23,6 +23,7 @@ namespace SoundSwitch.Framework
         public SoundSwitchConfiguration()
         {
             FirstRun = true;
+            ChangeCommunications = false;
             SelectedDeviceList = new HashSet<string>();
             HotKeysCombinaison = new HotKeys(Keys.F11, HotKeys.ModifierKeys.Alt | HotKeys.ModifierKeys.Control);
         }
@@ -31,13 +32,15 @@ namespace SoundSwitch.Framework
         public string LastActiveDevice { get; set; }
         public bool FirstRun { get; set; }
         public HotKeys HotKeysCombinaison { get; set; }
+        public bool ChangeCommunications { get; set; }
+        //Needed by Interface
         public string FileLocation { get; set; }
 
         public void Save()
         {
             using (AppLogger.Log.DebugCall())
             {
-                AppLogger.Log.Debug("Saving configuration", this);
+                AppLogger.Log.Debug("Saving configuration ", this);
                 ConfigurationManager.SaveConfiguration(this);
             }
         }

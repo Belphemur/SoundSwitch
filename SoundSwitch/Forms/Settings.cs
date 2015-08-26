@@ -36,12 +36,15 @@ namespace SoundSwitch.Forms
             var toolTip = new ToolTip();
             toolTip.SetToolTip(closeButton, "Changes are automatically saved");
 
+            var toolTipComm = new ToolTip();
+            toolTipComm.SetToolTip(communicationCheckbox, "When checked, switch also the default Communications device");
+
             txtHotkey.KeyDown += TxtHotkey_KeyDown;
             txtHotkey.Text = _main.HotKeysString;
 
 
             RunAtStartup.Checked = _main.RunAtStartup;
-           //TODO: test.SmallImageList.Images.Add("test", Resources.GreenCheck);
+            communicationCheckbox.Checked = _main.ChangeCommunications;
             PopulateAudioList();
         }
 
@@ -156,6 +159,20 @@ namespace SoundSwitch.Forms
         private void closeButton_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void communicationCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            var comm = communicationCheckbox.Checked;
+            try
+            {
+                _main.ChangeCommunications = comm;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(@"Error changing run at startup setting: " + ex.Message);
+                communicationCheckbox.Checked = _main.ChangeCommunications;
+            }
         }
     }
 }
