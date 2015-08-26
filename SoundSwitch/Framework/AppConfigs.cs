@@ -1,5 +1,4 @@
 ﻿/********************************************************************
-* Copyright (C) 2015 Jeroen Pelgrims
 * Copyright (C) 2015 Antoine Aflalo
 * 
 * This program is free software; you can redistribute it and/or

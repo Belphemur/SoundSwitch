@@ -163,6 +163,7 @@
     <Compile Include="Framework\WindowsAPIAdapter.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Util\IconExtractor.cs" />
     <Compile Include="Util\ToolStripDeviceItem.cs">
       <SubType>Component</SubType>
     </Compile>
