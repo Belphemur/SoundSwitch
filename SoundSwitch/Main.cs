@@ -25,12 +25,6 @@ namespace SoundSwitch
 {
     public class Main
     {
-        public delegate void AudioChangeHandler(object sender, AudioChangeEvent e);
-
-        public delegate void ErrorHandler(object sender, ExceptionEvent e);
-
-        public delegate void SelectedDeviceChangeHandler(object sender, DeviceListChanged e);
-
         public static Main Instance { get; } = new Main();
 
 
@@ -93,9 +87,9 @@ namespace SoundSwitch
 
         public string HotKeysString => AppConfigs.Configuration.HotKeysCombinaison.ToString();
 
-        public event SelectedDeviceChangeHandler SelectedDeviceChanged;
-        public event ErrorHandler ErrorTriggered;
-        public event AudioChangeHandler AudioDeviceChanged;
+        public event EventHandler<DeviceListChanged> SelectedDeviceChanged;
+        public event EventHandler<ExceptionEvent> ErrorTriggered;
+        public event EventHandler<AudioChangeEvent> AudioDeviceChanged;
 
         private void RegisterRecovery()
         {
