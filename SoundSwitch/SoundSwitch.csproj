@@ -121,6 +121,10 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommonMark, Version=0.1.0.0, Culture=neutral, PublicKeyToken=001ef8810438905d, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonMark.NET.0.9.1\lib\net45\CommonMark.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.WindowsAPICodePack-Core.1.1.0.2\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
       <Private>True</Private>
@@ -147,6 +151,9 @@
     <Compile Include="Framework\AudioDeviceIconExtractor.cs" />
     <Compile Include="Framework\AutoStart.cs" />
     <Compile Include="Framework\Configuration\ConfigurationManager.cs" />
+    <Compile Include="UI\Controls\ChangelogViewer.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="UI\Controls\TextProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
