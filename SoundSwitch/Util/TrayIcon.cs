@@ -20,10 +20,10 @@ using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
-using SoundSwitch.Forms;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Properties;
+using SoundSwitch.UI.Forms;
 
 namespace SoundSwitch.Util
 {

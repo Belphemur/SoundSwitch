@@ -1,4 +1,4 @@
-﻿namespace SoundSwitch.Forms
+﻿namespace SoundSwitch.UI.Forms
 {
     partial class Settings
     {

@@ -147,16 +147,19 @@
     <Compile Include="Framework\AudioDeviceIconExtractor.cs" />
     <Compile Include="Framework\AutoStart.cs" />
     <Compile Include="Framework\Configuration\ConfigurationManager.cs" />
-    <Compile Include="Forms\About.cs">
+    <Compile Include="UI\Controls\TextProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\About.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\About.Designer.cs">
+    <Compile Include="UI\Forms\About.Designer.cs">
       <DependentUpon>About.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Settings.cs">
+    <Compile Include="UI\Forms\Settings.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Settings.Designer.cs">
+    <Compile Include="UI\Forms\Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
     <Compile Include="Framework\AppLogger.cs" />
@@ -166,6 +169,7 @@
     <Compile Include="Framework\Updater\IntervalUpdateChecker.cs" />
     <Compile Include="Framework\Updater\UpdateChecker.cs" />
     <Compile Include="Framework\Updater\Release.cs" />
+    <Compile Include="Framework\Updater\WebFile.cs" />
     <Compile Include="Framework\WindowsAPIAdapter.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -223,6 +227,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\page-bottom.png" />
     <None Include="Resources\tick.png" />
     <None Include="Resources\arrow-switch-16.png" />
     <None Include="Resources\arrow-switch-48.png" />

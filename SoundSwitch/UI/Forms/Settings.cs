@@ -21,7 +21,7 @@ using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework;
 using SoundSwitch.Properties;
 
-namespace SoundSwitch.Forms
+namespace SoundSwitch.UI.Forms
 {
     public partial class Settings : Form
     {

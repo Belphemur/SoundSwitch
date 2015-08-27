@@ -17,7 +17,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using SoundSwitch.Properties;
 
-namespace SoundSwitch.Forms
+namespace SoundSwitch.UI.Forms
 {
     public partial class About : Form
     {
