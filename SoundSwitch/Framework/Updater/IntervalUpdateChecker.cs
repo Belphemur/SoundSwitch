@@ -28,6 +28,7 @@ namespace SoundSwitch.Framework.Updater
         {
             var timer = new Timer(interval * 1000);
             timer.Elapsed += TimerElapsed;
+            timer.Start();
         }
 
         private void TimerElapsed(object sender, ElapsedEventArgs e)

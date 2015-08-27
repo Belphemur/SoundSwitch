@@ -19,6 +19,7 @@ using System.Threading;
 using System.Windows.Forms;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
+using SoundSwitch.Framework.Updater;
 using SoundSwitch.Util;
 
 namespace SoundSwitch

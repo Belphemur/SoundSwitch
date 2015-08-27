@@ -25,7 +25,8 @@ namespace SoundSwitch.Framework.Updater
     public class UpdateChecker
     {
         private static readonly string UserAgent =
-            $"Mozilla/5.0 (compatible; Windows NT {Environment.OSVersion.Version}; SoundSwitch/{Application.ProductVersion}; +https://github.com/Belphemur/SoundSwitch)";
+            $"Mozilla/5.0 (compatible; {Environment.OSVersion.Platform} {Environment.OSVersion.VersionString}; {Application.ProductName}/{Application.ProductVersion};)";
+        private static readonly Version AppVersion = new Version(Application.ProductVersion);
 
         private readonly Uri _releaseUrl;
         private readonly WebClient _webClient = new WebClient();
@@ -53,7 +54,10 @@ namespace SoundSwitch.Framework.Updater
                 var installer = serverRelease.assets.First(asset => asset.name.EndsWith(".exe"));
                 var release = new Release(version,installer, serverRelease.name);
                 release.Changelog.AddRange(changelog);
-                UpdateAvailable?.Invoke(this, new NewReleaseEvent(release));
+                if (version > AppVersion)
+                {
+                    UpdateAvailable?.Invoke(this, new NewReleaseEvent(release));
+                }
             }
             catch (Exception ex)
             {
