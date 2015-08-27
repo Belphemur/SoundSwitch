@@ -45,6 +45,7 @@ GNU General Public License for more details.
 
 ### Icons
 The [Pastel SVG icon set](https://codefisher.org/pastel-svg/) Created by Michael Buckley is licensed under the:
+
 Creative Commons Attribution NonCommercial Share Alike 4.0
 http://creativecommons.org/licenses/by-nc-sa/4.0/ 
 
