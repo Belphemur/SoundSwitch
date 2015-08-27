@@ -22,7 +22,7 @@ using Newtonsoft.Json;
 
 namespace SoundSwitch.Framework.Updater
 {
-    internal class UpdateChecker
+    public class UpdateChecker
     {
         private static readonly string UserAgent =
             $"Mozilla/5.0 (compatible; Windows NT {Environment.OSVersion.Version}; SoundSwitch/{Application.ProductVersion}; +https://github.com/Belphemur/SoundSwitch)";
@@ -31,7 +31,7 @@ namespace SoundSwitch.Framework.Updater
         private readonly WebClient _webClient = new WebClient();
         public EventHandler<NewReleaseEvent> UpdateAvailable;
 
-        private UpdateChecker(Uri releaseUrl)
+        public UpdateChecker(Uri releaseUrl)
         {
             _releaseUrl = releaseUrl;
             _webClient.DownloadStringCompleted += DownloadStringCompleted;

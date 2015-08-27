@@ -12,21 +12,27 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System.Collections.Generic;
+using System;
+using System.Timers;
 
 namespace SoundSwitch.Framework.Updater
 {
-    public class GitHubRelease
+    public class IntervalUpdateChecker : UpdateChecker
     {
-        public string tag_name { get; set; }
-        public string body { get; set; }
-        public string name { get; set; }
-        public List<Asset> assets { get; set; }
-
-        public class Asset
+        /// <summary>
+        /// Check for update at the wanted interval in seconds
+        /// </summary>
+        /// <param name="releaseUrl">Url of the GitHub release</param>
+        /// <param name="interval">Seconds</param>
+        public IntervalUpdateChecker(Uri releaseUrl, int interval) : base(releaseUrl)
         {
-            public string name { get; set; }
-            public string browser_download_url { get; set; }
+            var timer = new Timer(interval * 1000);
+            timer.Elapsed += TimerElapsed;
+        }
+
+        private void TimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            CheckForUpdate();
         }
     }
 }

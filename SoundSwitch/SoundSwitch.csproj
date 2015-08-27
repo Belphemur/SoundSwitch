@@ -163,6 +163,7 @@
     <Compile Include="Framework\Configuration\SoundSwitchConfiguration.cs" />
     <Compile Include="Framework\HotKeys.cs" />
     <Compile Include="Framework\Updater\GitHubRelease.cs" />
+    <Compile Include="Framework\Updater\IntervalUpdateChecker.cs" />
     <Compile Include="Framework\Updater\UpdateChecker.cs" />
     <Compile Include="Framework\Updater\Release.cs" />
     <Compile Include="Framework\WindowsAPIAdapter.cs">

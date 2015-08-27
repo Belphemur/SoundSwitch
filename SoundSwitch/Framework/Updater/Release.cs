@@ -17,7 +17,7 @@ using System.Collections.Generic;
 
 namespace SoundSwitch.Framework.Updater
 {
-    internal class Release
+    public class Release
     {
         public Release(Version releaseVersion, GitHubRelease.Asset asset, string name)
         {
