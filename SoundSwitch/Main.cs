@@ -25,9 +25,6 @@ namespace SoundSwitch
 {
     public class Main
     {
-        public static Main Instance { get; } = new Main();
-
-
         private Main()
         {
             using (AppLogger.Log.DebugCall())
@@ -37,47 +34,23 @@ namespace SoundSwitch
             }
         }
 
-        /// <summary>
-        /// Register the configured hotkeys
-        /// </summary>
-        public void InitializeHotkeys()
-        {
-            SetHotkeyCombination(AppConfigs.Configuration.HotKeysCombinaison);
-            WindowsAPIAdapter.HotKeyPressed += HandleHotkeyPress;
-        }
-
-        public HashSet<string> SelectedDevicesList
-        {
-            get
-            {
-                using (AppLogger.Log.DebugCall())
-                {
-                    return AppConfigs.Configuration.SelectedDeviceList;
-                }
-            }
-        }
-
+        public static Main Instance { get; } = new Main();
+        public HashSet<string> SelectedDevicesList => AppConfigs.Configuration.SelectedDeviceList;
 
         public List<AudioDeviceWrapper> AvailableAudioDevices
         {
             get
             {
-                using (AppLogger.Log.DebugCall())
-                {
-                    return
-                        AudioController.getAvailableAudioDevices()
-                            .Where((device => SelectedDevicesList.Contains(device.FriendlyName)))
-                            .ToList();
-                }
+                return
+                    AudioController.getAvailableAudioDevices()
+                        .Where((device => SelectedDevicesList.Contains(device.FriendlyName)))
+                        .ToList();
             }
         }
 
         public bool ChangeCommunications
         {
-            get
-            {
-                return AppConfigs.Configuration.ChangeCommunications;
-            }
+            get { return AppConfigs.Configuration.ChangeCommunications; }
             set
             {
                 AppConfigs.Configuration.ChangeCommunications = value;
@@ -86,6 +59,42 @@ namespace SoundSwitch
         }
 
         public string HotKeysString => AppConfigs.Configuration.HotKeysCombinaison.ToString();
+
+        #region Misc settings
+
+        /// <summary>
+        ///     If the application runs at windows startup
+        /// </summary>
+        public bool RunAtStartup
+        {
+            get { return AutoStart.IsAutoStarted(); }
+            set
+            {
+                using (AppLogger.Log.InfoCall())
+                {
+                    AppLogger.Log.Info("Set AutoStart: ", value);
+                    if (value)
+                    {
+                        AutoStart.EnableAutoStart();
+                    }
+                    else
+                    {
+                        AutoStart.DisableAutoStart();
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        ///     Register the configured hotkeys
+        /// </summary>
+        public void InitializeHotkeys()
+        {
+            SetHotkeyCombination(AppConfigs.Configuration.HotKeysCombinaison);
+            WindowsAPIAdapter.HotKeyPressed += HandleHotkeyPress;
+        }
 
         public event EventHandler<DeviceListChanged> SelectedDeviceChanged;
         public event EventHandler<ExceptionEvent> ErrorTriggered;
@@ -124,6 +133,28 @@ namespace SoundSwitch
                 return 0;
             }
         }
+
+        #region Selected devices
+
+        /// <summary>
+        ///     Sets a particular device to be enabled or not
+        /// </summary>
+        /// <param name="deviceName"></param>
+        public void AddRemoveDevice(string deviceName)
+        {
+            if (SelectedDevicesList.Contains(deviceName))
+            {
+                SelectedDevicesList.Remove(deviceName);
+            }
+            else
+            {
+                SelectedDevicesList.Add(deviceName);
+            }
+            SelectedDeviceChanged?.Invoke(this, new DeviceListChanged(SelectedDevicesList));
+            AppConfigs.Configuration.Save();
+        }
+
+        #endregion
 
         #region Events
 
@@ -211,55 +242,6 @@ namespace SoundSwitch
 
         #endregion
 
-        #region Misc settings
-
-        /// <summary>
-        ///     If the application runs at windows startup
-        /// </summary>
-        public bool RunAtStartup
-        {
-            get { return AutoStart.IsAutoStarted(); }
-            set
-            {
-                using (AppLogger.Log.InfoCall())
-                {
-                    AppLogger.Log.Info("Set AutoStart: ", value);
-                    if (value)
-                    {
-                        AutoStart.EnableAutoStart();
-                    }
-                    else
-                    {
-                        AutoStart.DisableAutoStart();
-                    }
-                }
-            }
-        }
-
-        #endregion
-
-        #region Selected devices
-
-        /// <summary>
-        ///     Sets a particular device to be enabled or not
-        /// </summary>
-        /// <param name="deviceName"></param>
-        public void AddRemoveDevice(string deviceName)
-        {
-            if (SelectedDevicesList.Contains(deviceName))
-            {
-                SelectedDevicesList.Remove(deviceName);
-            }
-            else
-            {
-                SelectedDevicesList.Add(deviceName);
-            }
-            SelectedDeviceChanged?.Invoke(this, new DeviceListChanged(SelectedDevicesList));
-            AppConfigs.Configuration.Save();
-        }
-
-        #endregion
-
         #region Active device
 
         /// <summary>
@@ -312,9 +294,9 @@ namespace SoundSwitch
                 }
                 AppLogger.Log.Info("Cycle Audio Devices", list);
                 var defaultDev =
-                        list.FirstOrDefault(device => device.FriendlyName == AppConfigs.Configuration.LastActiveDevice) ?? 
-                        list.FirstOrDefault(device => device.IsDefault(Role.Console)) ??
-                        list[0];
+                    list.FirstOrDefault(device => device.FriendlyName == AppConfigs.Configuration.LastActiveDevice) ??
+                    list.FirstOrDefault(device => device.IsDefault(Role.Console)) ??
+                    list[0];
 
 
                 var next = list.SkipWhile((device, i) => device != defaultDev).Skip(1).FirstOrDefault() ?? list[0];
