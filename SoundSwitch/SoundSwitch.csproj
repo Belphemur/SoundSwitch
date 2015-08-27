@@ -143,10 +143,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Framework\AppConfigs.cs" />
+    <Compile Include="Framework\Configuration\AppConfigs.cs" />
     <Compile Include="Framework\AudioDeviceIconExtractor.cs" />
     <Compile Include="Framework\AutoStart.cs" />
-    <Compile Include="Framework\ConfigurationManager.cs" />
+    <Compile Include="Framework\Configuration\ConfigurationManager.cs" />
     <Compile Include="Forms\About.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -160,7 +160,7 @@
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
     <Compile Include="Framework\AppLogger.cs" />
-    <Compile Include="Framework\SoundSwitchConfiguration.cs" />
+    <Compile Include="Framework\Configuration\SoundSwitchConfiguration.cs" />
     <Compile Include="Framework\HotKeys.cs" />
     <Compile Include="Framework\WindowsAPIAdapter.cs">
       <SubType>Form</SubType>
@@ -246,6 +246,9 @@
       <Project>{115bf2b4-b3be-446d-ba76-348e274258f7}</Project>
       <Name>Audio.EndPoint.Controller.Wrapper</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Framework\Updater\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

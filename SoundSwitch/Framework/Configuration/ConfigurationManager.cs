@@ -18,7 +18,7 @@ using System.IO;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 
-namespace SoundSwitch.Framework
+namespace SoundSwitch.Framework.Configuration
 {
     public interface IConfiguration
     {

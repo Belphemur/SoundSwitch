@@ -14,9 +14,8 @@
 
 using System.Collections.Generic;
 using System.Windows.Forms;
-using SoundSwitch.Util;
 
-namespace SoundSwitch.Framework
+namespace SoundSwitch.Framework.Configuration
 {
     public class SoundSwitchConfiguration : IConfiguration
     {

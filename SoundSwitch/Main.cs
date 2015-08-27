@@ -19,6 +19,7 @@ using System.Linq;
 using AudioEndPointControllerWrapper;
 using Microsoft.WindowsAPICodePack.ApplicationServices;
 using SoundSwitch.Framework;
+using SoundSwitch.Framework.Configuration;
 
 namespace SoundSwitch
 {

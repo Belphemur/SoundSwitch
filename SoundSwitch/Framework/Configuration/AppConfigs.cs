@@ -12,7 +12,7 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-namespace SoundSwitch.Framework
+namespace SoundSwitch.Framework.Configuration
 {
     internal static class AppConfigs
     {
