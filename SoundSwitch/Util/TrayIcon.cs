@@ -50,16 +50,7 @@ namespace SoundSwitch.Util
 
             _availableAudioDeviceWrappers = Main.Instance.AvailableAudioDevices;
 
-            _settingsMenu.Items.Add("Playback Devices", Resources.control_volume_blue,
-                (sender, e) => { Process.Start(new ProcessStartInfo("control", "mmsys.cpl sounds")); });
-            _settingsMenu.Items.Add("Mixer", Resources.control_equalizer_blue,
-                (sender, e) => { Process.Start(new ProcessStartInfo("sndvol.exe")); });
-            _settingsMenu.Items.Add("-");
-            _settingsMenu.Items.Add("Settings", Resources.Settings, (sender, e) => ShowSettings());
-            _settingsMenu.Items.Add("About", Resources.Help, (sender, e) => new About().Show());
-            _settingsMenu.Items.Add(_updateMenuItem);
-            _settingsMenu.Items.Add("-");
-            _settingsMenu.Items.Add("Exit", Resources.exit, (sender, e) => Application.Exit());
+            PopulateSettingsMenu();
 
             _selectionMenu.Items.Add("No devices selected", Resources.Settings, (sender, e) => ShowSettings());
 
@@ -78,6 +69,20 @@ namespace SoundSwitch.Util
             };
             UpdateDeviceSelectionList();
             SetEventHandlers();
+        }
+
+        private void PopulateSettingsMenu()
+        {
+            _settingsMenu.Items.Add("Playback Devices", Resources.control_volume_blue,
+                (sender, e) => { Process.Start(new ProcessStartInfo("control", "mmsys.cpl sounds")); });
+            _settingsMenu.Items.Add("Mixer", Resources.control_equalizer_blue,
+                (sender, e) => { Process.Start(new ProcessStartInfo("sndvol.exe")); });
+            _settingsMenu.Items.Add("-");
+            _settingsMenu.Items.Add("Settings", Resources.Settings, (sender, e) => ShowSettings());
+            _settingsMenu.Items.Add("About", Resources.Help, (sender, e) => new About().Show());
+            _settingsMenu.Items.Add(_updateMenuItem);
+            _settingsMenu.Items.Add("-");
+            _settingsMenu.Items.Add("Exit", Resources.exit, (sender, e) => Application.Exit());
         }
 
         public void Dispose()
