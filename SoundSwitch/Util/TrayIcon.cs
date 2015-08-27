@@ -28,7 +28,6 @@ namespace SoundSwitch.Util
 {
     public sealed class TrayIcon : IDisposable
     {
-        private readonly Main _main;
         private readonly ContextMenuStrip _selectionMenu = new ContextMenuStrip();
         private readonly ContextMenuStrip _settingsMenu = new ContextMenuStrip();
 
@@ -39,51 +38,45 @@ namespace SoundSwitch.Util
             Text = Application.ProductName
         };
 
+        private readonly ToolStripMenuItem _updateMenuItem;
         private List<AudioDeviceWrapper> _availableAudioDeviceWrappers;
         private bool _deviceListChanged = true;
 
         public TrayIcon()
         {
-            using (AppLogger.Log.DebugCall())
+            _updateMenuItem = new ToolStripMenuItem("No Update", Resources.page_bottom, OnUpdateClick) {Enabled = false};
+            _trayIcon.ContextMenuStrip = _settingsMenu;
+
+            _availableAudioDeviceWrappers = Main.Instance.AvailableAudioDevices;
+
+            _settingsMenu.Items.Add("Playback Devices", Resources.control_volume_blue,
+                (sender, e) => { Process.Start(new ProcessStartInfo("control", "mmsys.cpl sounds")); });
+            _settingsMenu.Items.Add("Mixer", Resources.control_equalizer_blue,
+                (sender, e) => { Process.Start(new ProcessStartInfo("sndvol.exe")); });
+            _settingsMenu.Items.Add("-");
+            _settingsMenu.Items.Add("Settings", Resources.Settings, (sender, e) => ShowSettings());
+            _settingsMenu.Items.Add("About", Resources.Help, (sender, e) => new About().Show());
+            _settingsMenu.Items.Add(_updateMenuItem);
+            _settingsMenu.Items.Add("-");
+            _settingsMenu.Items.Add("Exit", Resources.exit, (sender, e) => Application.Exit());
+
+            _selectionMenu.Items.Add("No devices selected", Resources.Settings, (sender, e) => ShowSettings());
+
+            _trayIcon.MouseClick += (sender, e) =>
             {
-                AppLogger.Log.Debug("Star TrayIcon ctor");
-                _trayIcon.ContextMenuStrip = _settingsMenu;
-                _main = new Main();
-                AppLogger.Log.Debug("Set Main ", _main);
-                _availableAudioDeviceWrappers = _main.AvailableAudioDevices;
-
-                _settingsMenu.Items.Add("Playback Devices", Resources.control_volume_blue, (sender, e) =>
+                if (e.Button == MouseButtons.Left)
                 {
-                    Process.Start(new ProcessStartInfo("control","mmsys.cpl sounds"));
-                });
-                _settingsMenu.Items.Add("Mixer", Resources.control_equalizer_blue, (sender, e) =>
-                {
-                    Process.Start(new ProcessStartInfo("sndvol.exe"));
-                });
-                _settingsMenu.Items.Add("-");
-                _settingsMenu.Items.Add("Settings", Resources.Settings, (sender, e) => ShowSettings());
-                _settingsMenu.Items.Add("About", Resources.Help, (sender, e) => new About().Show());
-                _settingsMenu.Items.Add("-");
-                _settingsMenu.Items.Add("Exit", Resources.exit, (sender, e) => Application.Exit());
+                    UpdateDeviceSelectionList();
+                    _trayIcon.ContextMenuStrip = _selectionMenu;
+                    var mi = typeof (NotifyIcon).GetMethod("ShowContextMenu",
+                        BindingFlags.Instance | BindingFlags.NonPublic);
+                    mi.Invoke(_trayIcon, null);
 
-                _selectionMenu.Items.Add("No devices selected", Resources.Settings, (sender, e) => ShowSettings());
-
-                _trayIcon.MouseClick += (sender, e) =>
-                {
-                    if (e.Button == MouseButtons.Left)
-                    {
-                        UpdateDeviceSelectionList();
-                        _trayIcon.ContextMenuStrip = _selectionMenu;
-                        var mi = typeof (NotifyIcon).GetMethod("ShowContextMenu",
-                            BindingFlags.Instance | BindingFlags.NonPublic);
-                        mi.Invoke(_trayIcon, null);
-
-                        _trayIcon.ContextMenuStrip = _settingsMenu;
-                    }
-                };
-                UpdateDeviceSelectionList();
-                SetEventHandlers();
-            }
+                    _trayIcon.ContextMenuStrip = _settingsMenu;
+                }
+            };
+            UpdateDeviceSelectionList();
+            SetEventHandlers();
         }
 
         public void Dispose()
@@ -95,9 +88,14 @@ namespace SoundSwitch.Util
             GC.SuppressFinalize(this);
         }
 
+        private void OnUpdateClick(object sender, EventArgs eventArgs)
+        {
+            throw new NotImplementedException();
+        }
+
         private void SetEventHandlers()
         {
-            _main.ErrorTriggered += (sender, @event) =>
+            Main.Instance.ErrorTriggered += (sender, @event) =>
             {
                 using (AppLogger.Log.ErrorCall())
                 {
@@ -112,7 +110,7 @@ namespace SoundSwitch.Util
                     }
                 }
             };
-            _main.AudioDeviceChanged +=
+            Main.Instance.AudioDeviceChanged +=
                 (sender, audioChangeEvent) =>
                 {
                     ShowAudioChanged(audioChangeEvent.AudioDevice.FriendlyName);
@@ -123,14 +121,14 @@ namespace SoundSwitch.Util
                             : null;
                     }
                 };
-            _main.SelectedDeviceChanged += (sender, deviceListChanged) => { UpdateAvailableDeviceList(); };
+            Main.Instance.SelectedDeviceChanged += (sender, deviceListChanged) => { UpdateAvailableDeviceList(); };
             WindowsAPIAdapter.DeviceChanged += (sender, deviceChangeEvent) => { UpdateAvailableDeviceList(); };
-            _main.InitializeHotkeys();
+            Main.Instance.InitializeHotkeys();
         }
 
         private void UpdateAvailableDeviceList()
         {
-            var audioDevices = _main.AvailableAudioDevices;
+            var audioDevices = Main.Instance.AvailableAudioDevices;
             _deviceListChanged = !_availableAudioDeviceWrappers.Equals(audioDevices);
             if (_deviceListChanged)
             {
@@ -140,7 +138,7 @@ namespace SoundSwitch.Util
 
         public void ShowSettings()
         {
-            new Settings(_main).Show();
+            new Settings().Show();
         }
 
         /// <summary>
@@ -177,7 +175,7 @@ namespace SoundSwitch.Util
             try
             {
                 var item = (ToolStripDeviceItem) sender;
-                _main.SetActiveDevice(item.AudioDevice);
+                Main.Instance.SetActiveDevice(item.AudioDevice);
             }
             catch (Exception)
             {

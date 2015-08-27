@@ -20,18 +20,15 @@ using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework;
 using SoundSwitch.Properties;
-using SoundSwitch.Util;
 
 namespace SoundSwitch.Forms
 {
     public partial class Settings : Form
     {
         public const string DevicesDelimiter = ";;;";
-        private readonly Main _main;
 
-        public Settings(Main main)
+        public Settings()
         {
-            _main = main;
             InitializeComponent();
             Icon = System.Drawing.Icon.FromHandle(Resources.Settings.GetHicon());
             var toolTip = new ToolTip();
@@ -41,11 +38,11 @@ namespace SoundSwitch.Forms
             toolTipComm.SetToolTip(communicationCheckbox, "When checked, switch also the default Communications device");
 
             txtHotkey.KeyDown += TxtHotkey_KeyDown;
-            txtHotkey.Text = _main.HotKeysString;
+            txtHotkey.Text = Main.Instance.HotKeysString;
 
 
-            RunAtStartup.Checked = _main.RunAtStartup;
-            communicationCheckbox.Checked = _main.ChangeCommunications;
+            RunAtStartup.Checked = Main.Instance.RunAtStartup;
+            communicationCheckbox.Checked = Main.Instance.ChangeCommunications;
             PopulateAudioList();
         }
 
@@ -54,12 +51,12 @@ namespace SoundSwitch.Forms
             var ras = RunAtStartup.Checked;
             try
             {
-                _main.RunAtStartup = ras;
+                Main.Instance.RunAtStartup = ras;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(@"Error changing run at startup setting: " + ex.Message);
-                RunAtStartup.Checked = _main.RunAtStartup;
+                RunAtStartup.Checked = Main.Instance.RunAtStartup;
             }
         }
 
@@ -94,7 +91,7 @@ namespace SoundSwitch.Forms
             if (!string.IsNullOrEmpty(keyCode))
             {
                 txtHotkey.ForeColor = Color.Green;
-                _main.SetHotkeyCombination(new HotKeys(e.KeyCode, modifierKeys));
+                Main.Instance.SetHotkeyCombination(new HotKeys(e.KeyCode, modifierKeys));
             }
         }
 
@@ -102,7 +99,7 @@ namespace SoundSwitch.Forms
         {
             try
             {
-                var selected = _main.SelectedDevicesList;
+                var selected = Main.Instance.SelectedDevicesList;
                 var audioDeviceWrappers = AudioController.getAllAudioDevices()
                     .Where(wrapper => !string.IsNullOrEmpty(wrapper.FriendlyName))
                     .OrderBy(s => s.FriendlyName);
@@ -149,7 +146,7 @@ namespace SoundSwitch.Forms
         {
             try
             {
-                _main.AddRemoveDevice(deviceListView.Items[e.Index].ToString());
+                Main.Instance.AddRemoveDevice(deviceListView.Items[e.Index].ToString());
             }
             catch (Exception)
             {
@@ -167,12 +164,12 @@ namespace SoundSwitch.Forms
             var comm = communicationCheckbox.Checked;
             try
             {
-                _main.ChangeCommunications = comm;
+                Main.Instance.ChangeCommunications = comm;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(@"Error changing run at startup setting: " + ex.Message);
-                communicationCheckbox.Checked = _main.ChangeCommunications;
+                communicationCheckbox.Checked = Main.Instance.ChangeCommunications;
             }
         }
     }

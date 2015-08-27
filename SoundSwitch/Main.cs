@@ -31,8 +31,10 @@ namespace SoundSwitch
 
         public delegate void SelectedDeviceChangeHandler(object sender, DeviceListChanged e);
 
+        public static Main Instance { get; } = new Main();
 
-        public Main()
+
+        private Main()
         {
             using (AppLogger.Log.DebugCall())
             {
