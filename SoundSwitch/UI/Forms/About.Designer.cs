@@ -224,7 +224,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::SoundSwitch.Properties.Resources.arrow_switch_48;
+            this.pictureBox1.Image = global::SoundSwitch.Properties.Resources.SoundSwitch48;
             this.pictureBox1.Location = new System.Drawing.Point(21, 2);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(45, 50);

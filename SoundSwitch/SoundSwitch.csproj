@@ -180,6 +180,12 @@
     <Compile Include="Framework\WindowsAPIAdapter.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UI\Forms\UpdateDownloadForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\UpdateDownloadForm.Designer.cs">
+      <DependentUpon>UpdateDownloadForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Util\IconExtractor.cs" />
     <Compile Include="Util\ToolStripDeviceItem.cs">
       <SubType>Component</SubType>
@@ -198,6 +204,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UI\Forms\UpdateDownloadForm.resx">
+      <DependentUpon>UpdateDownloadForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>

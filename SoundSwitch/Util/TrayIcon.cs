@@ -34,7 +34,7 @@ namespace SoundSwitch.Util
 
         private readonly NotifyIcon _trayIcon = new NotifyIcon
         {
-            Icon = Icon.FromHandle(Resources.arrow_switch_16.GetHicon()),
+            Icon = Icon.FromHandle(Resources.SoundSwitch16.GetHicon()),
             Visible = true,
             Text = Application.ProductName
         };
@@ -45,7 +45,7 @@ namespace SoundSwitch.Util
 
         public TrayIcon()
         {
-            _updateMenuItem = new ToolStripMenuItem("No Update", Resources.page_bottom, OnUpdateClick) {Enabled = false};
+            _updateMenuItem = new ToolStripMenuItem("No Update", Resources.Update, OnUpdateClick) {Enabled = false};
             _trayIcon.ContextMenuStrip = _settingsMenu;
 
             _availableAudioDeviceWrappers = Main.Instance.AvailableAudioDevices;
@@ -73,9 +73,9 @@ namespace SoundSwitch.Util
 
         private void PopulateSettingsMenu()
         {
-            _settingsMenu.Items.Add("Playback Devices", Resources.control_volume_blue,
+            _settingsMenu.Items.Add("Playback Devices", Resources.PlaybackDevices,
                 (sender, e) => { Process.Start(new ProcessStartInfo("control", "mmsys.cpl sounds")); });
-            _settingsMenu.Items.Add("Mixer", Resources.control_equalizer_blue,
+            _settingsMenu.Items.Add("Mixer", Resources.Mixer,
                 (sender, e) => { Process.Start(new ProcessStartInfo("sndvol.exe")); });
             _settingsMenu.Items.Add("-");
             _settingsMenu.Items.Add("Settings", Resources.Settings, (sender, e) => ShowSettings());
