@@ -71,6 +71,16 @@ namespace SoundSwitch.Util
             SetEventHandlers();
         }
 
+        public void Dispose()
+        {
+            _selectionMenu.Dispose();
+            _settingsMenu.Dispose();
+            _trayIcon.Dispose();
+            _updateMenuItem.Dispose();
+            GC.SuppressFinalize(_availableAudioDeviceWrappers);
+            GC.SuppressFinalize(this);
+        }
+
         private void PopulateSettingsMenu()
         {
             _settingsMenu.Items.Add("Playback Devices", Resources.PlaybackDevices,
@@ -85,20 +95,9 @@ namespace SoundSwitch.Util
             _settingsMenu.Items.Add("Exit", Resources.exit, (sender, e) => Application.Exit());
         }
 
-        public void Dispose()
-        {
-            _selectionMenu.Dispose();
-            _settingsMenu.Dispose();
-            _trayIcon.Dispose();
-            _updateMenuItem.Dispose();
-            GC.SuppressFinalize(_availableAudioDeviceWrappers);
-            GC.SuppressFinalize(this);
-        }
-
         private void OnUpdateClick(object sender, EventArgs eventArgs)
         {
-            //TODO: Use a form with a progress bar
-            throw new NotImplementedException();
+            new UpdateDownloadForm((Release) _updateMenuItem.Tag).ShowDialog();
         }
 
         private void SetEventHandlers()
@@ -130,7 +129,17 @@ namespace SoundSwitch.Util
                     }
                 };
             Main.Instance.SelectedDeviceChanged += (sender, deviceListChanged) => { UpdateAvailableDeviceList(); };
-            Main.Instance.NewVersionReleased += NewReleaseAvailable;
+            Main.Instance.NewVersionReleased += (sender, @event) =>
+            {
+                if (_settingsMenu.IsHandleCreated)
+                {
+                    _settingsMenu.Invoke(new Action(() => { NewReleaseAvailable(sender, @event); }));
+                }
+                else
+                {
+                    NewReleaseAvailable(sender, @event);
+                }
+            };
 
 
             WindowsAPIAdapter.DeviceChanged += (sender, deviceChangeEvent) => { UpdateAvailableDeviceList(); };

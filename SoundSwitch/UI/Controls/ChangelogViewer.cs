@@ -12,9 +12,7 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using CommonMark;
 
@@ -22,6 +20,12 @@ namespace SoundSwitch.UI.Controls
 {
     public class ChangelogWebViewer : WebBrowser
     {
+        public ChangelogWebViewer()
+        {
+            IsWebBrowserContextMenuEnabled = false;
+            WebBrowserShortcutsEnabled = false;
+        }
+
         protected static List<string> HtmlHeaders => new List<string>
         {
             "<!doctype html>",
@@ -37,17 +41,10 @@ namespace SoundSwitch.UI.Controls
             "<body>"
         };
 
-        public ChangelogWebViewer()
-        {
-            ObjectForScripting = this;
-            IsWebBrowserContextMenuEnabled = false;
-            WebBrowserShortcutsEnabled = false;
-        }
         /// <summary>
-        /// Set the changelog in the WebBrowser
+        ///     Set the changelog in the WebBrowser
         /// </summary>
         /// <param name="changelogLines"></param>
-
         public void SetChangelog(IEnumerable<string> changelogLines)
         {
             var lines = HtmlHeaders;
@@ -56,6 +53,5 @@ namespace SoundSwitch.UI.Controls
             lines.Add("</html>");
             DocumentText = string.Join("\n", lines);
         }
-
     }
 }
