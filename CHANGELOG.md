@@ -1,14 +1,16 @@
 # Change Log
 
-## [Unreleased](https://github.com/Belphemur/SoundSwitch/tree/HEAD)
-
-[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.2.2...HEAD)
+## [v3.3.0](https://github.com/Belphemur/SoundSwitch/tree/v3.3.0) (2015-08-27)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.2.2...v3.3.0)
 
 **Implemented enhancements:**
 
+- Access the Windows Sound Mixer [\#18](https://github.com/Belphemur/SoundSwitch/issues/18)
+- Update Icons to higher quality [\#17](https://github.com/Belphemur/SoundSwitch/issues/17)
 - Add devices icons in the Settings Form [\#16](https://github.com/Belphemur/SoundSwitch/issues/16)
 - Use AudioEndPointLibrary to manage audio devices [\#15](https://github.com/Belphemur/SoundSwitch/issues/15)
 - Idea: Add function to switch "Default communication device" [\#14](https://github.com/Belphemur/SoundSwitch/issues/14)
+- Auto-Updater [\#12](https://github.com/Belphemur/SoundSwitch/issues/12)
 
 ## [v3.2.2](https://github.com/Belphemur/SoundSwitch/tree/v3.2.2) (2015-08-24)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.2.1...v3.2.2)
