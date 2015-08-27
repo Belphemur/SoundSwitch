@@ -24,9 +24,9 @@ namespace SoundSwitch.Framework.Updater
         /// </summary>
         /// <param name="releaseUrl">Url of the GitHub release</param>
         /// <param name="interval">Seconds</param>
-        public IntervalUpdateChecker(Uri releaseUrl, int interval) : base(releaseUrl)
+        public IntervalUpdateChecker(Uri releaseUrl, uint interval) : base(releaseUrl)
         {
-            var timer = new Timer(interval * 1000);
+            var timer = new Timer(interval * 1000U);
             timer.Elapsed += TimerElapsed;
             timer.Start();
         }

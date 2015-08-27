@@ -20,11 +20,14 @@ using AudioEndPointControllerWrapper;
 using Microsoft.WindowsAPICodePack.ApplicationServices;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
+using SoundSwitch.Framework.Updater;
 
 namespace SoundSwitch
 {
     public class Main
     {
+        private bool _initialized;
+
         private Main()
         {
             using (AppLogger.Log.DebugCall())
@@ -88,17 +91,29 @@ namespace SoundSwitch
         #endregion
 
         /// <summary>
-        ///     Register the configured hotkeys
+        ///     Initialize the Main class with Updater and Hotkeys
         /// </summary>
-        public void InitializeHotkeys()
+        public void InitializeMain()
         {
+            if (_initialized)
+            {
+                throw new InvalidOperationException("Already initialized");
+            }
             SetHotkeyCombination(AppConfigs.Configuration.HotKeysCombinaison);
             WindowsAPIAdapter.HotKeyPressed += HandleHotkeyPress;
+            var updateChecker =
+                new IntervalUpdateChecker(
+                    new Uri("https://api.github.com/repos/Belphemur/SoundSwitch/releases/latest"),
+                    AppConfigs.Configuration.UpdateCheckInterval);
+            updateChecker.UpdateAvailable += (sender, @event) => NewVersionReleased?.Invoke(this, @event);
+            updateChecker.CheckForUpdate();
+            _initialized = true;
         }
 
         public event EventHandler<DeviceListChanged> SelectedDeviceChanged;
         public event EventHandler<ExceptionEvent> ErrorTriggered;
         public event EventHandler<AudioChangeEvent> AudioDeviceChanged;
+        public event EventHandler<UpdateChecker.NewReleaseEvent> NewVersionReleased;
 
         private void RegisterRecovery()
         {

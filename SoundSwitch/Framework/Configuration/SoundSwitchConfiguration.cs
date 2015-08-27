@@ -25,6 +25,8 @@ namespace SoundSwitch.Framework.Configuration
             ChangeCommunications = false;
             SelectedDeviceList = new HashSet<string>();
             HotKeysCombinaison = new HotKeys(Keys.F11, HotKeys.ModifierKeys.Alt | HotKeys.ModifierKeys.Control);
+            //12 hours
+            UpdateCheckInterval = 3600 * 12;
         }
 
         public HashSet<string> SelectedDeviceList { get; set; }
@@ -32,6 +34,7 @@ namespace SoundSwitch.Framework.Configuration
         public bool FirstRun { get; set; }
         public HotKeys HotKeysCombinaison { get; set; }
         public bool ChangeCommunications { get; set; }
+        public uint UpdateCheckInterval { get; set; }
         //Needed by Interface
         public string FileLocation { get; set; }
 

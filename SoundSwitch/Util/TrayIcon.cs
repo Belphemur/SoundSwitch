@@ -22,6 +22,7 @@ using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Forms;
 using SoundSwitch.Framework;
+using SoundSwitch.Framework.Updater;
 using SoundSwitch.Properties;
 
 namespace SoundSwitch.Util
@@ -84,12 +85,14 @@ namespace SoundSwitch.Util
             _selectionMenu.Dispose();
             _settingsMenu.Dispose();
             _trayIcon.Dispose();
+            _updateMenuItem.Dispose();
             GC.SuppressFinalize(_availableAudioDeviceWrappers);
             GC.SuppressFinalize(this);
         }
 
         private void OnUpdateClick(object sender, EventArgs eventArgs)
         {
+            //TODO: Use a form with a progress bar
             throw new NotImplementedException();
         }
 
@@ -122,8 +125,20 @@ namespace SoundSwitch.Util
                     }
                 };
             Main.Instance.SelectedDeviceChanged += (sender, deviceListChanged) => { UpdateAvailableDeviceList(); };
+            Main.Instance.NewVersionReleased += NewReleaseAvailable;
+
+
             WindowsAPIAdapter.DeviceChanged += (sender, deviceChangeEvent) => { UpdateAvailableDeviceList(); };
-            Main.Instance.InitializeHotkeys();
+            Main.Instance.InitializeMain();
+        }
+
+        private void NewReleaseAvailable(object sender, UpdateChecker.NewReleaseEvent newReleaseEvent)
+        {
+            _updateMenuItem.Tag = newReleaseEvent.Release;
+            _updateMenuItem.Text = $"Update Available ({newReleaseEvent.Release.ReleaseVersion})";
+            _updateMenuItem.Enabled = true;
+            _trayIcon.ShowBalloonTip(3000, $"Version {newReleaseEvent.Release.ReleaseVersion} is available",
+                "Right click on the tray icon to download.", ToolTipIcon.Info);
         }
 
         private void UpdateAvailableDeviceList()
