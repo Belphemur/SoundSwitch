@@ -187,9 +187,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\switchicon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
@@ -226,14 +223,11 @@
     <None Include="Resources\arrow-switch-16.png" />
     <None Include="Resources\arrow-switch-48.png" />
     <Content Include="Resources\arrow_switch.ico" />
-    <Content Include="Resources\arrow_switch.png" />
     <None Include="Resources\cog.png" />
-    <None Include="Resources\computer.png" />
     <None Include="Resources\exit.png" />
-    <Content Include="Resources\explanation.png" />
-    <None Include="Resources\GreenCheck.png" />
+    <Content Include="Resources\control-equalizer-blue.png" />
+    <Content Include="Resources\control-volume-blue.png" />
     <Content Include="Resources\help.png" />
-    <Content Include="Resources\setting_tools.png" />
   </ItemGroup>
   <ItemGroup>
     <PublishFile Include="SMDiagnostics">

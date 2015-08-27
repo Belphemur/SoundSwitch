@@ -52,14 +52,14 @@ namespace SoundSwitch.Util
                 AppLogger.Log.Debug("Set Main ", _main);
                 _availableAudioDeviceWrappers = _main.AvailableAudioDevices;
 
-                _settingsMenu.Items.Add("Playback Devices", Resources.computer, (sender, e) =>
+                _settingsMenu.Items.Add("Playback Devices", Resources.control_volume_blue, (sender, e) =>
                 {
-                    Process.Start(new ProcessStartInfo("cmd", "/c " + "control mmsys.cpl sounds")
-                    {
-                        WindowStyle = ProcessWindowStyle.Hidden
-                    });
+                    Process.Start(new ProcessStartInfo("control","mmsys.cpl sounds"));
                 });
-                // settingsMenu.Items.Add("Mixer", null, (sender, e) =>  ?? not sure how to display the mixer
+                _settingsMenu.Items.Add("Mixer", Resources.control_equalizer_blue, (sender, e) =>
+                {
+                    Process.Start(new ProcessStartInfo("sndvol.exe"));
+                });
                 _settingsMenu.Items.Add("-");
                 _settingsMenu.Items.Add("Settings", Resources.Settings, (sender, e) => ShowSettings());
                 _settingsMenu.Items.Add("About", Resources.Help, (sender, e) => new About().Show());
