@@ -40,12 +40,12 @@ namespace SoundSwitch
         public static Main Instance { get; } = new Main();
         public HashSet<string> SelectedDevicesList => AppConfigs.Configuration.SelectedDeviceList;
 
-        public List<AudioDeviceWrapper> AvailableAudioDevices
+        public List<AudioDeviceWrapper> AvailablePlaybackDevices
         {
             get
             {
                 return
-                    AudioController.getAvailableAudioDevices()
+                    AudioController.GetActivePlaybackDevices()
                         .Where((device => SelectedDevicesList.Contains(device.FriendlyName)))
                         .ToList();
             }
@@ -298,7 +298,7 @@ namespace SoundSwitch
         {
             using (AppLogger.Log.InfoCall())
             {
-                var list = AvailableAudioDevices;
+                var list = AvailablePlaybackDevices;
                 switch (list.Count)
                 {
                     case 0:

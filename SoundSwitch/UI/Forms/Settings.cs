@@ -100,7 +100,7 @@ namespace SoundSwitch.UI.Forms
             try
             {
                 var selected = Main.Instance.SelectedDevicesList;
-                var audioDeviceWrappers = AudioController.getAllAudioDevices()
+                var audioDeviceWrappers = AudioController.GetAllPlaybackDevices()
                     .Where(wrapper => !string.IsNullOrEmpty(wrapper.FriendlyName))
                     .OrderBy(s => s.FriendlyName);
                 deviceListView.SmallImageList = new ImageList();

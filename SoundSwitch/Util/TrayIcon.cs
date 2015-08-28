@@ -48,7 +48,7 @@ namespace SoundSwitch.Util
             _updateMenuItem = new ToolStripMenuItem("No Update", Resources.Update, OnUpdateClick) {Enabled = false};
             _trayIcon.ContextMenuStrip = _settingsMenu;
 
-            _availableAudioDeviceWrappers = Main.Instance.AvailableAudioDevices;
+            _availableAudioDeviceWrappers = Main.Instance.AvailablePlaybackDevices;
 
             PopulateSettingsMenu();
 
@@ -157,7 +157,7 @@ namespace SoundSwitch.Util
 
         private void UpdateAvailableDeviceList()
         {
-            var audioDevices = Main.Instance.AvailableAudioDevices;
+            var audioDevices = Main.Instance.AvailablePlaybackDevices;
             _deviceListChanged = !_availableAudioDeviceWrappers.Equals(audioDevices);
             if (_deviceListChanged)
             {
