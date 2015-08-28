@@ -53,6 +53,4 @@ http://creativecommons.org/licenses/by-nc-sa/4.0/
 [Christian Liensberger](http://www.liensberger.it/web/blog/?p=207)
 
 ### Changing default sound device
-[Dave Amenta](http://www.daveamenta.com/2011-05/programmatically-or-command-line-change-the-default-sound-playback-device-in-windows-7/)
-
-[Dan Stevens](https://github.com/DanStevens)
+[EreTIk](http://eretik.omegahg.com/)
