@@ -100,6 +100,12 @@ namespace SoundSwitch
                 throw new InvalidOperationException("Already initialized");
             }
             SetHotkeyCombination(AppConfigs.Configuration.HotKeysCombinaison);
+            InitUpdateChecker();
+            _initialized = true;
+        }
+
+        private void InitUpdateChecker()
+        {
             WindowsAPIAdapter.HotKeyPressed += HandleHotkeyPress;
             var updateChecker =
                 new IntervalUpdateChecker(
@@ -107,7 +113,6 @@ namespace SoundSwitch
                     AppConfigs.Configuration.UpdateCheckInterval);
             updateChecker.UpdateAvailable += (sender, @event) => NewVersionReleased?.Invoke(this, @event);
             updateChecker.CheckForUpdate();
-            _initialized = true;
         }
 
         public event EventHandler<DeviceListChanged> SelectedDeviceChanged;
