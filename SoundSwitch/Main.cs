@@ -38,7 +38,7 @@ namespace SoundSwitch
         }
 
         public static Main Instance { get; } = new Main();
-        public HashSet<string> SelectedDevicesList => AppConfigs.Configuration.SelectedDeviceList;
+        public HashSet<string> SelectedDevicesList => AppConfigs.Configuration.SelectedPlaybackDeviceList;
 
         public List<AudioDeviceWrapper> AvailablePlaybackDevices
         {
@@ -152,21 +152,41 @@ namespace SoundSwitch
         #region Selected devices
 
         /// <summary>
-        ///     Sets a particular device to be enabled or not
+        ///     Add a playback device into the Set.
         /// </summary>
         /// <param name="deviceName"></param>
-        public void AddRemoveDevice(string deviceName)
+        /// <returns>
+        ///     true if the element is added to the <see cref="T:System.Collections.Generic.HashSet`1" /> object; false if
+        ///     the element is already present.
+        /// </returns>
+        public bool AddPlaybackDevice(string deviceName)
         {
-            if (SelectedDevicesList.Contains(deviceName))
+            var result = SelectedDevicesList.Add(deviceName);
+            if (result)
             {
-                SelectedDevicesList.Remove(deviceName);
+                SelectedDeviceChanged?.Invoke(this, new DeviceListChanged(SelectedDevicesList));
+                AppConfigs.Configuration.Save();
             }
-            else
+            return result;
+        }
+
+        /// <summary>
+        ///     Remove a device from the Set.
+        /// </summary>
+        /// <param name="deviceName"></param>
+        /// <returns>
+        ///     true if the element is successfully found and removed; otherwise, false.  This method returns false if
+        ///     <paramref name="item" /> is not found in the <see cref="T:System.Collections.Generic.HashSet`1" /> object.
+        /// </returns>
+        public bool RemovePlaybackDevice(string deviceName)
+        {
+            var result = SelectedDevicesList.Remove(deviceName);
+            if (result)
             {
-                SelectedDevicesList.Add(deviceName);
+                SelectedDeviceChanged?.Invoke(this, new DeviceListChanged(SelectedDevicesList));
+                AppConfigs.Configuration.Save();
             }
-            SelectedDeviceChanged?.Invoke(this, new DeviceListChanged(SelectedDevicesList));
-            AppConfigs.Configuration.Save();
+            return result;
         }
 
         #endregion

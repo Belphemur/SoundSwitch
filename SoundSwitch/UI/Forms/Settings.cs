@@ -132,10 +132,6 @@ namespace SoundSwitch.UI.Forms
                 }
            
             }
-            catch (Exception e)
-            {
-                MessageBox.Show(@"Error: " + e.Message);
-            }
             finally
             {
                 deviceListView.ItemCheck += LstDevicesItemChecked;
@@ -146,7 +142,15 @@ namespace SoundSwitch.UI.Forms
         {
             try
             {
-                Main.Instance.AddRemoveDevice(deviceListView.Items[e.Index].ToString());
+                switch (e.NewValue)
+                {
+                    case CheckState.Checked:
+                        Main.Instance.AddPlaybackDevice(deviceListView.Items[e.Index].Text);
+                        break;
+                    case CheckState.Unchecked:
+                        Main.Instance.RemovePlaybackDevice(deviceListView.Items[e.Index].Text);
+                        break;
+                }
             }
             catch (Exception)
             {
