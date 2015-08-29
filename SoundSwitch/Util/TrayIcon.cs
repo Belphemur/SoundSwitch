@@ -22,6 +22,7 @@ using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Updater;
+using SoundSwitch.Model;
 using SoundSwitch.Properties;
 using SoundSwitch.UI.Forms;
 
@@ -48,7 +49,7 @@ namespace SoundSwitch.Util
             _updateMenuItem = new ToolStripMenuItem("No Update", Resources.Update, OnUpdateClick) {Enabled = false};
             _trayIcon.ContextMenuStrip = _settingsMenu;
 
-            _availableAudioDeviceWrappers = Main.Instance.AvailablePlaybackDevices;
+            _availableAudioDeviceWrappers = AppModel.Instance.AvailablePlaybackDevices;
 
             PopulateSettingsMenu();
 
@@ -102,11 +103,11 @@ namespace SoundSwitch.Util
 
         private void SetEventHandlers()
         {
-            Main.Instance.ErrorTriggered += (sender, @event) =>
+            AppModel.Instance.ErrorTriggered += (sender, @event) =>
             {
                 using (AppLogger.Log.ErrorCall())
                 {
-                    if (@event.Exception is Main.NoDevicesException)
+                    if (@event.Exception is AppModel.NoDevicesException)
                     {
                         ShowNoDevices();
                     }
@@ -117,7 +118,7 @@ namespace SoundSwitch.Util
                     }
                 }
             };
-            Main.Instance.AudioDeviceChanged +=
+            AppModel.Instance.DefaultPlaybackDeviceChanged +=
                 (sender, audioChangeEvent) =>
                 {
                     ShowAudioChanged(audioChangeEvent.AudioDevice.FriendlyName);
@@ -128,8 +129,8 @@ namespace SoundSwitch.Util
                             : null;
                     }
                 };
-            Main.Instance.SelectedDeviceChanged += (sender, deviceListChanged) => { UpdateAvailableDeviceList(); };
-            Main.Instance.NewVersionReleased += (sender, @event) =>
+            AppModel.Instance.SelectedPlaybackDeviceChanged += (sender, deviceListChanged) => { UpdateAvailableDeviceList(); };
+            AppModel.Instance.NewVersionReleased += (sender, @event) =>
             {
                 if (_settingsMenu.IsHandleCreated)
                 {
@@ -143,7 +144,7 @@ namespace SoundSwitch.Util
 
 
             WindowsAPIAdapter.DeviceChanged += (sender, deviceChangeEvent) => { UpdateAvailableDeviceList(); };
-            Main.Instance.InitializeMain();
+            AppModel.Instance.InitializeMain();
         }
 
         private void NewReleaseAvailable(object sender, UpdateChecker.NewReleaseEvent newReleaseEvent)
@@ -157,7 +158,7 @@ namespace SoundSwitch.Util
 
         private void UpdateAvailableDeviceList()
         {
-            var audioDevices = Main.Instance.AvailablePlaybackDevices;
+            var audioDevices = AppModel.Instance.AvailablePlaybackDevices;
             _deviceListChanged = !_availableAudioDeviceWrappers.Equals(audioDevices);
             if (_deviceListChanged)
             {
@@ -204,7 +205,7 @@ namespace SoundSwitch.Util
             try
             {
                 var item = (ToolStripDeviceItem) sender;
-                Main.Instance.SetActiveDevice(item.AudioDevice);
+                AppModel.Instance.SetActiveDevice(item.AudioDevice);
             }
             catch (Exception)
             {

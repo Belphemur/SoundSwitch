@@ -22,13 +22,13 @@ using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Updater;
 
-namespace SoundSwitch
+namespace SoundSwitch.Model
 {
-    public class Main
+    public class AppModel : IAppModel
     {
         private bool _initialized;
 
-        private Main()
+        private AppModel()
         {
             using (AppLogger.Log.DebugCall())
             {
@@ -37,8 +37,8 @@ namespace SoundSwitch
             }
         }
 
-        public static Main Instance { get; } = new Main();
-        public HashSet<string> SelectedDevicesList => AppConfigs.Configuration.SelectedPlaybackDeviceList;
+        public static IAppModel Instance { get; } = new AppModel();
+        public HashSet<string> SelectedPlaybackDevicesList => AppConfigs.Configuration.SelectedPlaybackDeviceList;
 
         public List<AudioDeviceWrapper> AvailablePlaybackDevices
         {
@@ -46,12 +46,12 @@ namespace SoundSwitch
             {
                 return
                     AudioController.GetActivePlaybackDevices()
-                        .Where((device => SelectedDevicesList.Contains(device.FriendlyName)))
+                        .Where((device => SelectedPlaybackDevicesList.Contains(device.FriendlyName)))
                         .ToList();
             }
         }
 
-        public bool ChangeCommunications
+        public bool SetCommunications
         {
             get { return AppConfigs.Configuration.ChangeCommunications; }
             set
@@ -115,9 +115,9 @@ namespace SoundSwitch
             updateChecker.CheckForUpdate();
         }
 
-        public event EventHandler<DeviceListChanged> SelectedDeviceChanged;
+        public event EventHandler<DeviceListChanged> SelectedPlaybackDeviceChanged;
         public event EventHandler<ExceptionEvent> ErrorTriggered;
-        public event EventHandler<AudioChangeEvent> AudioDeviceChanged;
+        public event EventHandler<AudioChangeEvent> DefaultPlaybackDeviceChanged;
         public event EventHandler<UpdateChecker.NewReleaseEvent> NewVersionReleased;
 
         private void RegisterRecovery()
@@ -166,10 +166,10 @@ namespace SoundSwitch
         /// </returns>
         public bool AddPlaybackDevice(string deviceName)
         {
-            var result = SelectedDevicesList.Add(deviceName);
+            var result = SelectedPlaybackDevicesList.Add(deviceName);
             if (result)
             {
-                SelectedDeviceChanged?.Invoke(this, new DeviceListChanged(SelectedDevicesList));
+                SelectedPlaybackDeviceChanged?.Invoke(this, new DeviceListChanged(SelectedPlaybackDevicesList));
                 AppConfigs.Configuration.Save();
             }
             return result;
@@ -185,10 +185,10 @@ namespace SoundSwitch
         /// </returns>
         public bool RemovePlaybackDevice(string deviceName)
         {
-            var result = SelectedDevicesList.Remove(deviceName);
+            var result = SelectedPlaybackDevicesList.Remove(deviceName);
             if (result)
             {
-                SelectedDeviceChanged?.Invoke(this, new DeviceListChanged(SelectedDevicesList));
+                SelectedPlaybackDeviceChanged?.Invoke(this, new DeviceListChanged(SelectedPlaybackDevicesList));
                 AppConfigs.Configuration.Save();
             }
             return result;
@@ -296,12 +296,12 @@ namespace SoundSwitch
                 {
                     AppLogger.Log.Info("Set Default device", device);
                     device.SetAsDefault(Role.Console);
-                    if (ChangeCommunications)
+                    if (SetCommunications)
                     {
                         AppLogger.Log.Info("Set Default Communication device", device);
                         device.SetAsDefault(Role.Communications);
                     }
-                    AudioDeviceChanged?.Invoke(this, new AudioChangeEvent(device));
+                    DefaultPlaybackDeviceChanged?.Invoke(this, new AudioChangeEvent(device));
                     AppConfigs.Configuration.LastActiveDevice = device.FriendlyName;
                     AppConfigs.Configuration.Save();
                     return true;

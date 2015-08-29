@@ -171,6 +171,7 @@
     <Compile Include="Framework\AudioDeviceIconExtractor.cs" />
     <Compile Include="Framework\AutoStart.cs" />
     <Compile Include="Framework\Configuration\ConfigurationManager.cs" />
+    <Compile Include="Model\IAppModel.cs" />
     <Compile Include="UI\Controls\ChangelogViewer.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -210,7 +211,7 @@
     <Compile Include="Util\ToolStripDeviceItem.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Main.cs" />
+    <Compile Include="Model\AppModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\TrayIcon.cs" />

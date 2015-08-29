@@ -21,6 +21,7 @@ using System.Windows.Forms;
 using AudioEndPoint;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework;
+using SoundSwitch.Model;
 using SoundSwitch.Properties;
 
 namespace SoundSwitch.UI.Forms
@@ -40,11 +41,11 @@ namespace SoundSwitch.UI.Forms
             toolTipComm.SetToolTip(communicationCheckbox, "When checked, switch also the default Communications device");
 
             txtHotkey.KeyDown += TxtHotkey_KeyDown;
-            txtHotkey.Text = Main.Instance.HotKeysString;
+            txtHotkey.Text = AppModel.Instance.HotKeysString;
 
 
-            RunAtStartup.Checked = Main.Instance.RunAtStartup;
-            communicationCheckbox.Checked = Main.Instance.ChangeCommunications;
+            RunAtStartup.Checked = AppModel.Instance.RunAtStartup;
+            communicationCheckbox.Checked = AppModel.Instance.SetCommunications;
             PopulateAudioList();
         }
 
@@ -79,7 +80,7 @@ namespace SoundSwitch.UI.Forms
             if (!string.IsNullOrEmpty(keyCode))
             {
                 txtHotkey.ForeColor = Color.Green;
-                Main.Instance.SetHotkeyCombination(new HotKeys(e.KeyCode, modifierKeys));
+                AppModel.Instance.SetHotkeyCombination(new HotKeys(e.KeyCode, modifierKeys));
             }
         }
 
@@ -95,12 +96,12 @@ namespace SoundSwitch.UI.Forms
             var ras = RunAtStartup.Checked;
             try
             {
-                Main.Instance.RunAtStartup = ras;
+                AppModel.Instance.RunAtStartup = ras;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(@"Error changing run at startup setting: " + ex.Message);
-                RunAtStartup.Checked = Main.Instance.RunAtStartup;
+                RunAtStartup.Checked = AppModel.Instance.RunAtStartup;
             }
         }
 
@@ -109,12 +110,12 @@ namespace SoundSwitch.UI.Forms
             var comm = communicationCheckbox.Checked;
             try
             {
-                Main.Instance.ChangeCommunications = comm;
+                AppModel.Instance.SetCommunications = comm;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(@"Error changing run at startup setting: " + ex.Message);
-                communicationCheckbox.Checked = Main.Instance.ChangeCommunications;
+                communicationCheckbox.Checked = AppModel.Instance.SetCommunications;
             }
         }
 
@@ -128,7 +129,7 @@ namespace SoundSwitch.UI.Forms
             {
                 PopulateDeviceTypeGroups();
 
-                var selected = Main.Instance.SelectedDevicesList;
+                var selected = AppModel.Instance.SelectedPlaybackDevicesList;
                 var audioDeviceWrappers = AudioController.GetAllPlaybackDevices()
                     .Where(wrapper => !string.IsNullOrEmpty(wrapper.FriendlyName))
                     .OrderBy(s => s.FriendlyName);
@@ -197,10 +198,10 @@ namespace SoundSwitch.UI.Forms
                 switch (e.NewValue)
                 {
                     case CheckState.Checked:
-                        Main.Instance.AddPlaybackDevice(deviceListView.Items[e.Index].Text);
+                        AppModel.Instance.AddPlaybackDevice(deviceListView.Items[e.Index].Text);
                         break;
                     case CheckState.Unchecked:
-                        Main.Instance.RemovePlaybackDevice(deviceListView.Items[e.Index].Text);
+                        AppModel.Instance.RemovePlaybackDevice(deviceListView.Items[e.Index].Text);
                         break;
                 }
             }
