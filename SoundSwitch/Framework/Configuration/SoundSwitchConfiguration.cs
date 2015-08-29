@@ -12,14 +12,12 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace SoundSwitch.Framework.Configuration
 {
-    public class SoundSwitchConfiguration : IConfiguration
+    public class SoundSwitchConfiguration : ISoundSwitchConfiguration
     {
         public SoundSwitchConfiguration()
         {
@@ -28,25 +26,10 @@ namespace SoundSwitch.Framework.Configuration
             SelectedPlaybackDeviceList = new HashSet<string>();
             HotKeysCombinaison = new HotKeys(Keys.F11, HotKeys.ModifierKeys.Alt | HotKeys.ModifierKeys.Control);
             //12 hours
-            UpdateCheckInterval = 3600 * 12;
+            UpdateCheckInterval = 3600*12;
         }
 
         public HashSet<string> SelectedPlaybackDeviceList { get; set; }
-
-        //TODO: Remove in 3.4
-        [Obsolete("Used as compatibility layer for SelectedPlaybackDeviceList. To be remove in 3.4")]
-        public HashSet<string> SelectedDeviceList
-        {
-            get { return null; }
-            set
-            {
-                foreach (var device in value.Where(device => !device.StartsWith("ListView")))
-                {
-                    SelectedPlaybackDeviceList.Add(device);
-                }
-            }
-        }
-
         public string LastActiveDevice { get; set; }
         public bool FirstRun { get; set; }
         public HotKeys HotKeysCombinaison { get; set; }
