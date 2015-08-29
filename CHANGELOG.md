@@ -1,5 +1,12 @@
 # Change Log
 
+## [v3.3.1](https://github.com/Belphemur/SoundSwitch/tree/v3.3.1) (2015-08-29)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.3.0...v3.3.1)
+
+**Fixed bugs:**
+
+- Settings not saving [\#21](https://github.com/Belphemur/SoundSwitch/issues/21)
+
 ## [v3.3.0](https://github.com/Belphemur/SoundSwitch/tree/v3.3.0) (2015-08-27)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.2.2...v3.3.0)
 
