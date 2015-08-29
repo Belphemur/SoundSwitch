@@ -176,7 +176,7 @@ namespace SoundSwitch
         /// <param name="deviceName"></param>
         /// <returns>
         ///     true if the element is successfully found and removed; otherwise, false.  This method returns false if
-        ///     <paramref name="item" /> is not found in the <see cref="T:System.Collections.Generic.HashSet`1" /> object.
+        ///     <paramref name="deviceName" /> is not found in the <see cref="T:System.Collections.Generic.HashSet`1" /> object.
         /// </returns>
         public bool RemovePlaybackDevice(string deviceName)
         {
@@ -228,7 +228,7 @@ namespace SoundSwitch
         #region Hot keys
 
         /// <summary>
-        ///     Sets the hotkey combination, and <see cref="ReAttachKeyboardHook">re-attaches the keyboard hook</see>.
+        ///     Sets the hotkey combination
         /// </summary>
         /// <param name="hotkeys"></param>
         public void SetHotkeyCombination(HotKeys hotkeys)
