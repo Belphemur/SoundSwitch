@@ -14,9 +14,11 @@
 ********************************************************************/
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using AudioEndPoint;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework;
 using SoundSwitch.Properties;
@@ -30,7 +32,7 @@ namespace SoundSwitch.UI.Forms
         public Settings()
         {
             InitializeComponent();
-            Icon = System.Drawing.Icon.FromHandle(Resources.Settings.GetHicon());
+            Icon = Icon.FromHandle(Resources.Settings.GetHicon());
             var toolTip = new ToolTip();
             toolTip.SetToolTip(closeButton, "Changes are automatically saved");
 
@@ -44,20 +46,6 @@ namespace SoundSwitch.UI.Forms
             RunAtStartup.Checked = Main.Instance.RunAtStartup;
             communicationCheckbox.Checked = Main.Instance.ChangeCommunications;
             PopulateAudioList();
-        }
-
-        private void RunAtStartup_CheckedChanged(object sender, EventArgs e)
-        {
-            var ras = RunAtStartup.Checked;
-            try
-            {
-                Main.Instance.RunAtStartup = ras;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(@"Error changing run at startup setting: " + ex.Message);
-                RunAtStartup.Checked = Main.Instance.RunAtStartup;
-            }
         }
 
         private void TxtHotkey_KeyDown(object sender, KeyEventArgs e)
@@ -95,46 +83,110 @@ namespace SoundSwitch.UI.Forms
             }
         }
 
+        private void closeButton_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        #region Basic Settings (CheckBoxes)
+
+        private void RunAtStartup_CheckedChanged(object sender, EventArgs e)
+        {
+            var ras = RunAtStartup.Checked;
+            try
+            {
+                Main.Instance.RunAtStartup = ras;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(@"Error changing run at startup setting: " + ex.Message);
+                RunAtStartup.Checked = Main.Instance.RunAtStartup;
+            }
+        }
+
+        private void communicationCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            var comm = communicationCheckbox.Checked;
+            try
+            {
+                Main.Instance.ChangeCommunications = comm;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(@"Error changing run at startup setting: " + ex.Message);
+                communicationCheckbox.Checked = Main.Instance.ChangeCommunications;
+            }
+        }
+
+        #endregion
+
+        #region Device List Playback
+
         private void PopulateAudioList()
         {
             try
             {
+                PopulateDeviceTypeGroups();
+
                 var selected = Main.Instance.SelectedDevicesList;
                 var audioDeviceWrappers = AudioController.GetAllPlaybackDevices()
                     .Where(wrapper => !string.IsNullOrEmpty(wrapper.FriendlyName))
                     .OrderBy(s => s.FriendlyName);
                 deviceListView.SmallImageList = new ImageList();
-             
+
                 deviceListView.Columns.Add("Device", -3, HorizontalAlignment.Center);
                 foreach (var device in audioDeviceWrappers)
                 {
-                    deviceListView.SmallImageList.Images.Add(device.FriendlyName, AudioDeviceIconExtractor.ExtractIconFromAudioDevice(device, false));
-                    if (selected.Contains(device.FriendlyName))
-                    {
-                        deviceListView.Items.Add(new ListViewItem
-                        {
-                            Text = device.FriendlyName,
-                            Checked = true,
-                            Group = deviceListView.Groups["selectedGroup"],
-                            ImageKey = device.FriendlyName
-                        });
-                    }
-                    else
-                    {
-                        deviceListView.Items.Add(new ListViewItem
-                        {
-                            Text = device.FriendlyName,
-                            Checked = false,
-                            Group = deviceListView.Groups["unSelectedGroup"],
-                            ImageKey = device.FriendlyName
-                        });
-                    }
+                    AddDeviceIconSmallImage(device);
+
+                    var listViewItem = GenerateListViewItem(device, selected);
+
+                    deviceListView.Items.Add(listViewItem);
                 }
-           
             }
             finally
             {
                 deviceListView.ItemCheck += LstDevicesItemChecked;
+            }
+        }
+
+        /// <summary>
+        ///     Using the information of the AudioDeviceWrapper, generate a ListViewItem
+        /// </summary>
+        /// <param name="device"></param>
+        /// <param name="selected"></param>
+        /// <returns></returns>
+        private ListViewItem GenerateListViewItem(AudioDeviceWrapper device, HashSet<string> selected)
+        {
+            var listViewItem = new ListViewItem
+            {
+                Text = device.FriendlyName,
+                ImageKey = device.DeviceClassIconPath
+            };
+
+            if (selected.Contains(device.FriendlyName))
+            {
+                listViewItem.Checked = true;
+                listViewItem.Group = deviceListView.Groups["selectedGroup"];
+            }
+            else
+            {
+                listViewItem.Checked = false;
+                listViewItem.Group = GetGroup(device.DeviceState);
+            }
+            return listViewItem;
+        }
+
+        /// <summary>
+        ///     Using the DeviceClassIconPath, get the Icon
+        /// </summary>
+        /// <param name="device"></param>
+        private void AddDeviceIconSmallImage(AudioDeviceWrapper device)
+        {
+            if (!deviceListView.SmallImageList.Images.ContainsKey(device.DeviceClassIconPath))
+            {
+                deviceListView.SmallImageList.Images.Add(device.DeviceClassIconPath,
+                    AudioDeviceIconExtractor.ExtractIconFromAudioDevice(device, false));
             }
         }
 
@@ -158,23 +210,32 @@ namespace SoundSwitch.UI.Forms
             }
         }
 
-        private void closeButton_Click(object sender, EventArgs e)
+        #region Groups
+
+        /// <summary>
+        ///     Get the ListViewItem group in which the device belongs.
+        /// </summary>
+        /// <param name="deviceState"></param>
+        /// <returns></returns>
+        private ListViewGroup GetGroup(DeviceState deviceState)
         {
-            Close();
+            switch (deviceState)
+            {
+                case DeviceState.Active:
+                    return deviceListView.Groups[DeviceState.Active.ToString()];
+                default:
+                    return deviceListView.Groups[DeviceState.NotPresent.ToString()];
+            }
         }
 
-        private void communicationCheckbox_CheckedChanged(object sender, EventArgs e)
+        private void PopulateDeviceTypeGroups()
         {
-            var comm = communicationCheckbox.Checked;
-            try
-            {
-                Main.Instance.ChangeCommunications = comm;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(@"Error changing run at startup setting: " + ex.Message);
-                communicationCheckbox.Checked = Main.Instance.ChangeCommunications;
-            }
+            deviceListView.Groups.Add(new ListViewGroup(DeviceState.Active.ToString(), "Connected"));
+            deviceListView.Groups.Add(new ListViewGroup(DeviceState.NotPresent.ToString(), "Disconnected"));
         }
+
+        #endregion
+
+        #endregion
     }
 }

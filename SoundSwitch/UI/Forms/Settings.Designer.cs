@@ -28,9 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Active", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Available", System.Windows.Forms.HorizontalAlignment.Left);
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Settings));
+            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.deviceListView = new System.Windows.Forms.ListView();
             this.RunAtStartup = new System.Windows.Forms.CheckBox();
@@ -58,13 +56,11 @@
             // 
             this.deviceListView.CheckBoxes = true;
             this.deviceListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            listViewGroup1.Header = "Active";
+            listViewGroup1.Header = "Selected";
+            listViewGroup1.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
             listViewGroup1.Name = "selectedGroup";
-            listViewGroup2.Header = "Available";
-            listViewGroup2.Name = "unSelectedGroup";
             this.deviceListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup1,
-            listViewGroup2});
+            listViewGroup1});
             this.deviceListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.deviceListView.Location = new System.Drawing.Point(3, 16);
             this.deviceListView.Name = "deviceListView";
