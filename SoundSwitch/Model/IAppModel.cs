@@ -57,17 +57,17 @@ namespace SoundSwitch.Model
         /// <summary>
         ///     When the selected list of device to switch from is changed (new device added or removed).
         /// </summary>
-        event EventHandler<SoundSwitch.Model.AppModel.DeviceListChanged> SelectedPlaybackDeviceChanged;
+        event EventHandler<DeviceListChanged> SelectedPlaybackDeviceChanged;
 
         /// <summary>
         ///     If an exception happened in the <see cref="IAppModel" />
         /// </summary>
-        event EventHandler<SoundSwitch.Model.AppModel.ExceptionEvent> ErrorTriggered;
+        event EventHandler<ExceptionEvent> ErrorTriggered;
 
         /// <summary>
         ///     The Default Playback device has been changed.
         /// </summary>
-        event EventHandler<SoundSwitch.Model.AppModel.AudioChangeEvent> DefaultPlaybackDeviceChanged;
+        event EventHandler<AudioChangeEvent> DefaultPlaybackDeviceChanged;
 
         /// <summary>
         ///     The update checker found a newer release than the installed version.

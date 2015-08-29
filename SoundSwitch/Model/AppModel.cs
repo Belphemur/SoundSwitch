@@ -196,39 +196,6 @@ namespace SoundSwitch.Model
 
         #endregion
 
-        #region Events
-
-        public class AudioChangeEvent : EventArgs
-        {
-            public AudioChangeEvent(AudioDeviceWrapper audioDevice)
-            {
-                AudioDevice = audioDevice;
-            }
-
-            public AudioDeviceWrapper AudioDevice { get; }
-        }
-
-        public class ExceptionEvent : EventArgs
-        {
-            public ExceptionEvent(Exception exception)
-            {
-                Exception = exception;
-            }
-
-            public Exception Exception { get; private set; }
-        }
-
-        public class DeviceListChanged : EventArgs
-        {
-            public DeviceListChanged(IEnumerable<string> seletedDevicesList)
-            {
-                SeletedDevicesList = seletedDevicesList;
-            }
-
-            public IEnumerable<string> SeletedDevicesList { get; private set; }
-        }
-
-        #endregion
 
         #region Hot keys
 
