@@ -14,9 +14,9 @@
 
 namespace SoundSwitch.Framework.Configuration
 {
-    internal static class AppConfigs
+    public static class AppConfigs
     {
-        public static SoundSwitchConfiguration Configuration { get; } =
+        public static ISoundSwitchConfiguration Configuration { get; private set; } =
             ConfigurationManager.LoadConfiguration<SoundSwitchConfiguration>();
     }
 }
