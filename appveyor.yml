@@ -1,0 +1,13 @@
+version: 3.3.x.{build}
+configuration: AppVeyor
+platform:
+- x64
+- x86
+before_build:
+- cmd: nuget restore
+build:
+  project: SoundSwitch.sln
+  parallel: true
+  verbosity: minimal
+install:
+  git submodule update --init --recursive
