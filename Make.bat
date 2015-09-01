@@ -2,7 +2,8 @@
 setlocal
 cd /d "%~dp0"
 
-SET "FILE_DIR=%~dp0"
+SET FILE_DIR="%~dp0"
+SET BIN_DIR=%FILE_DIR%bin
 
 set finalDir=%FILE_DIR%Final
 set x86Release=%finalDir%\x86
@@ -46,14 +47,14 @@ echo "Copy Changelog"
 xcopy /y CHANGELOG.md %finalDir% 1>nul 2>nul
 
 Echo "Copy x64"
-xcopy /y x64\Release\*.dll %x64Release% 1>nul 2>nul
-xcopy /y x64\Release\SoundSwitch.exe %x64Release% 1>nul 2>nul
-xcopy /y x64\Release\SoundSwitch.exe.config %x64Release% 1>nul 2>nul
+xcopy /y %BIN_DIR%\x64\Release\*.dll %x64Release% 1>nul 2>nul
+xcopy /y %BIN_DIR%\x64\Release\SoundSwitch.exe %x64Release% 1>nul 2>nul
+xcopy /y %BIN_DIR%\x64\Release\SoundSwitch.exe.config %x64Release% 1>nul 2>nul
 
 Echo "Copy x86"
-xcopy /y Release\*.dll %x86Release% 1>nul 2>nul
-xcopy /y Release\SoundSwitch.* %x86Release% 1>nul 2>nul
-xcopy /y Release\SoundSwitch.exe.config %x86Release% 1>nul 2>nul
+xcopy /y %BIN_DIR%\x86\Release\*.dll %x86Release% 1>nul 2>nul
+xcopy /y %BIN_DIR%\x86\Release\SoundSwitch.* %x86Release% 1>nul 2>nul
+xcopy /y %BIN_DIR%\x86\Release\SoundSwitch.exe.config %x86Release% 1>nul 2>nul
 
 IF EXIST "%FILE_DIR%..\signinfo.txt" (
     echo Signing release...

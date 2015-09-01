@@ -13,4 +13,5 @@ install:
   git submodule update --init --recursive
 test:
   assemblies: 
-   - '**\$(configuration)\*.tests.dll'
+   - '**\x64\$(configuration)\*.tests.dll'
+   - '**\x86\$(configuration)\*.tests.dll'
