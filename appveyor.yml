@@ -12,6 +12,9 @@ build:
 install:
   git submodule update --init --recursive
 test:
+  categories:
+    except:
+    - AudioDevice
   assemblies: 
    - '**\x64\$(configuration)\*.tests.dll'
    - '**\x86\$(configuration)\*.tests.dll'

@@ -6,9 +6,9 @@ using NUnit.Framework;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Model;
 
-namespace SoundSwitchUnitTest
+namespace SoundSwitch.Tests
 {
-    [TestFixture, Category("AppModel")]
+    [TestFixture]
     public class ModelUnitTest
     {
         private static void SetConfigurationMoq(IMock<ISoundSwitchConfiguration> configurationMoq)
@@ -100,7 +100,7 @@ namespace SoundSwitchUnitTest
             Assert.That(!eventCalled, "SelectedPlaybackDeviceChanged called");
         }
 
-        [Test]
+        [Test, Category("AudioDevice")]
         public void TestActiveAudioDeviceWithSelectedList()
         {
             var configurationMoq = new Mock<ISoundSwitchConfiguration> { Name = "Configuration mock" };
@@ -123,7 +123,7 @@ namespace SoundSwitchUnitTest
             configurationMoq.VerifyGet(c => c.SelectedPlaybackDeviceList);
         }
 
-        [Test]
+        [Test, Category("AudioDevice")]
         public void TestActiveAudioDeviceWithSelectedListWithUnexistingOne()
         {
             var configurationMoq = new Mock<ISoundSwitchConfiguration> { Name = "Configuration mock" };
