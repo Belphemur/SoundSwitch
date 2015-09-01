@@ -18,11 +18,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using AudioEndPoint;
-using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
+using AudioEndPointControllerWrapper;
 
 namespace SoundSwitch.UI.Forms
 {
@@ -130,7 +129,7 @@ namespace SoundSwitch.UI.Forms
                 PopulateDeviceTypeGroups();
 
                 var selected = AppModel.Instance.SelectedPlaybackDevicesList;
-                var audioDeviceWrappers = AudioController.GetAllPlaybackDevices()
+                var audioDeviceWrappers = new AudioDeviceLister(DeviceState.All).GetPlaybackDevices()
                     .Where(wrapper => !string.IsNullOrEmpty(wrapper.FriendlyName))
                     .OrderBy(s => s.FriendlyName);
                 deviceListView.SmallImageList = new ImageList();
