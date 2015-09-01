@@ -2,7 +2,7 @@
 setlocal
 cd /d "%~dp0"
 
-SET FILE_DIR="%~dp0"
+SET FILE_DIR=%~dp0
 SET BIN_DIR=%FILE_DIR%bin
 
 set finalDir=%FILE_DIR%Final
@@ -36,7 +36,9 @@ set msbuildexe="%programfiles(x86)%\MSBuild\14.0\Bin\MSBuild.exe"
 
 Echo Making SoundSwitch...
 Echo.
+Echo "Build x86"
 %msbuildexe% SoundSwitch.sln /m /p:Configuration=%buildPlatform% /p:Platform="x86" /v:q /t:rebuild
+Echo "Build x64"
 %msbuildexe% SoundSwitch.sln /m /p:Configuration=%buildPlatform% /p:Platform="x64" /v:q /t:rebuild
 if not "%ERRORLEVEL%"=="0" (set builderror=1)
 Echo.
