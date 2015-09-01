@@ -1,4 +1,4 @@
-# SoundSwitch
+# SoundSwitch [![Build status](https://ci.appveyor.com/api/projects/status/bt0yr309rq74tbvc?svg=true)](https://ci.appveyor.com/project/Belphemur/soundswitch)
 SoundSwitch makes it easier to switch playback devices (sound cards).
 
 Normally, to switch a Playback device you need to right click the sound icon in the bottom right corner of your screen (system tray),
