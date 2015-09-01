@@ -11,3 +11,6 @@ build:
   verbosity: minimal
 install:
   git submodule update --init --recursive
+test:
+  assemblies: 
+   - '**\$(configuration)\*.tests.dll'
