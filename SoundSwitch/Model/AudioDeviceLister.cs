@@ -12,39 +12,37 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System;
 using System.Collections.Generic;
+using AudioEndPoint;
 using AudioEndPointControllerWrapper;
 
 namespace SoundSwitch.Model
 {
-    public class AudioChangeEvent : EventArgs
+    public class AudioDeviceLister : IAudioDeviceLister
     {
-        public AudioChangeEvent(IAudioDevice audioDevice)
+        private readonly DeviceState _state;
+
+        public AudioDeviceLister(DeviceState state)
         {
-            AudioDevice = audioDevice;
+            _state = state;
         }
 
-        public IAudioDevice AudioDevice { get; }
-    }
-
-    public class ExceptionEvent : EventArgs
-    {
-        public ExceptionEvent(Exception exception)
+        /// <summary>
+        ///     Get the playback device in the set state
+        /// </summary>
+        /// <returns></returns>
+        public ICollection<IAudioDevice> GetPlaybackDevices()
         {
-            Exception = exception;
+            return AudioController.GetPlaybackDevices(_state);
         }
 
-        public Exception Exception { get; private set; }
-    }
-
-    public class DeviceListChanged : EventArgs
-    {
-        public DeviceListChanged(IEnumerable<string> seletedDevicesList)
+        /// <summary>
+        ///     Get the recording device in the set state
+        /// </summary>
+        /// <returns></returns>
+        public ICollection<IAudioDevice> GetRecordingDevices()
         {
-            SeletedDevicesList = seletedDevicesList;
+            return AudioController.GetRecordingDevices(_state);
         }
-
-        public IEnumerable<string> SeletedDevicesList { get; private set; }
     }
 }

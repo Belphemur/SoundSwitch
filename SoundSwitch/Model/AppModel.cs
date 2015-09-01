@@ -40,12 +40,12 @@ namespace SoundSwitch.Model
         public static IAppModel Instance { get; } = new AppModel();
         public HashSet<string> SelectedPlaybackDevicesList => AppConfigs.Configuration.SelectedPlaybackDeviceList;
 
-        public List<AudioDeviceWrapper> AvailablePlaybackDevices
+        public ICollection<IAudioDevice> AvailablePlaybackDevices
         {
             get
             {
                 return
-                    AudioController.GetActivePlaybackDevices()
+                   ActiveAudioDeviceLister.GetPlaybackDevices()
                     .Join(SelectedPlaybackDevicesList, 
                     a => a.FriendlyName, 
                     selected => selected, 
@@ -91,6 +91,8 @@ namespace SoundSwitch.Model
             }
         }
 
+        public IAudioDeviceLister ActiveAudioDeviceLister { get; set; }
+
         #endregion
 
         /// <summary>
@@ -98,6 +100,10 @@ namespace SoundSwitch.Model
         /// </summary>
         public void InitializeMain()
         {
+            if (ActiveAudioDeviceLister == null)
+            {
+                throw new InvalidOperationException("The devices lister are not configured");
+            }
             if (_initialized)
             {
                 throw new InvalidOperationException("Already initialized");
@@ -258,7 +264,7 @@ namespace SoundSwitch.Model
         ///     Attempts to set active device to the specified name
         /// </summary>
         /// <param name="device"></param>
-        public bool SetActiveDevice(AudioDeviceWrapper device)
+        public bool SetActiveDevice(IAudioDevice device)
         {
             using (AppLogger.Log.InfoCall())
             {
@@ -306,10 +312,10 @@ namespace SoundSwitch.Model
                 var defaultDev =
                     list.FirstOrDefault(device => device.FriendlyName == AppConfigs.Configuration.LastActiveDevice) ??
                     list.FirstOrDefault(device => device.IsDefault(Role.Console)) ??
-                    list[0];
+                    list.ElementAt(0);
 
 
-                var next = list.SkipWhile((device, i) => device != defaultDev).Skip(1).FirstOrDefault() ?? list[0];
+                var next = list.SkipWhile((device, i) => device != defaultDev).Skip(1).FirstOrDefault() ?? list.ElementAt(0);
                 AppLogger.Log.Info("Select AudioDevice", next);
                 return SetActiveDevice(next);
             }

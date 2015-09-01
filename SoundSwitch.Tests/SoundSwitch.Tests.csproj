@@ -128,6 +128,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AudioEndPointLibrary\Audio.EndPoint.Controller.Wrapper\Audio.EndPoint.Controller.Wrapper.vcxproj">
+      <Project>{115bf2b4-b3be-446d-ba76-348e274258f7}</Project>
+      <Name>Audio.EndPoint.Controller.Wrapper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SoundSwitch\SoundSwitch.csproj">
       <Project>{a17ecfe0-c4e2-4410-839a-14df8c11428d}</Project>
       <Name>SoundSwitch</Name>

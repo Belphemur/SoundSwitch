@@ -31,9 +31,9 @@ namespace SoundSwitch.Model
         HashSet<string> SelectedPlaybackDevicesList { get; }
 
         /// <summary>
-        ///     An union between the Active <see cref="AudioDeviceWrapper" /> of Windows and <see cref="SelectedPlaybackDevicesList" />
+        ///     An union between the Active <see cref="IAudioDevice" /> of Windows and <see cref="SelectedPlaybackDevicesList" />
         /// </summary>
-        List<AudioDeviceWrapper> AvailablePlaybackDevices { get; }
+        ICollection<IAudioDevice> AvailablePlaybackDevices { get; }
 
         /// <summary>
         ///     If the Playback device need also to be set for Communications.
@@ -49,6 +49,10 @@ namespace SoundSwitch.Model
         ///     If the application runs at windows startup
         /// </summary>
         bool RunAtStartup { get; set; }
+        /// <summary>
+        /// List the active audio devices
+        /// </summary>
+        IAudioDeviceLister ActiveAudioDeviceLister { get; set; }
 
         #endregion
 
@@ -114,7 +118,7 @@ namespace SoundSwitch.Model
         ///     Attempts to set active device to the specified name
         /// </summary>
         /// <param name="device"></param>
-        bool SetActiveDevice(AudioDeviceWrapper device);
+        bool SetActiveDevice(IAudioDevice device);
 
         /// <summary>
         ///     Cycles the active device to the next device. Returns true if succesfully switched (at least

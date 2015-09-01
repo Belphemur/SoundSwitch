@@ -29,7 +29,7 @@ namespace SoundSwitch.Framework
         /// <param name="audioDevice"></param>
         /// <param name="largeIcon"></param>
         /// <returns></returns>
-        public static Icon ExtractIconFromAudioDevice(AudioDeviceWrapper audioDevice, bool largeIcon)
+        public static Icon ExtractIconFromAudioDevice(IAudioDevice audioDevice, bool largeIcon)
         {
             Icon ico;
             if (IconCache.TryGetValue(audioDevice.DeviceClassIconPath, out ico))

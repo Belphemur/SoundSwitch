@@ -22,12 +22,12 @@ namespace SoundSwitch.Util
 {
     internal class ToolStripDeviceItem : ToolStripMenuItem
     {
-        public ToolStripDeviceItem(EventHandler onClick, AudioDeviceWrapper audioDevice)
+        public ToolStripDeviceItem(EventHandler onClick, IAudioDevice audioDevice)
             : base(audioDevice.FriendlyName, audioDevice.IsDefault(Role.Console) ? Resources.Check : null, onClick)
         {
             AudioDevice = audioDevice;
         }
 
-        public AudioDeviceWrapper AudioDevice { get; set; }
+        public IAudioDevice AudioDevice { get; set; }
     }
 }

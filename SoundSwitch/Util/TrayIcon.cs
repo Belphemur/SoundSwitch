@@ -41,7 +41,7 @@ namespace SoundSwitch.Util
         };
 
         private readonly ToolStripMenuItem _updateMenuItem;
-        private List<AudioDeviceWrapper> _availableAudioDeviceWrappers;
+        private ICollection<IAudioDevice> _availableAudioDeviceWrappers;
         private bool _deviceListChanged = true;
 
         public TrayIcon()

@@ -157,7 +157,7 @@ namespace SoundSwitch.UI.Forms
         /// <param name="device"></param>
         /// <param name="selected"></param>
         /// <returns></returns>
-        private ListViewItem GenerateListViewItem(AudioDeviceWrapper device, ICollection<string> selected)
+        private ListViewItem GenerateListViewItem(IAudioDevice device, ICollection<string> selected)
         {
             var listViewItem = new ListViewItem
             {
@@ -182,7 +182,7 @@ namespace SoundSwitch.UI.Forms
         ///     Using the DeviceClassIconPath, get the Icon
         /// </summary>
         /// <param name="device"></param>
-        private void AddDeviceIconSmallImage(AudioDeviceWrapper device)
+        private void AddDeviceIconSmallImage(IAudioDevice device)
         {
             if (!deviceListView.SmallImageList.Images.ContainsKey(device.DeviceClassIconPath))
             {

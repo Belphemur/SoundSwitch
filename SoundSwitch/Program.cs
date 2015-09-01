@@ -17,9 +17,10 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Windows.Forms;
+using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
-using SoundSwitch.Framework.Updater;
+using SoundSwitch.Model;
 using SoundSwitch.Util;
 
 namespace SoundSwitch
@@ -38,7 +39,7 @@ namespace SoundSwitch
                     AppLogger.Log.Warn("Application already started");
                     return;
                 }
-
+                AppModel.Instance.ActiveAudioDeviceLister = new AudioDeviceLister(DeviceState.Active);
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.ThreadException += Application_ThreadException;

@@ -198,10 +198,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Framework\Configuration\AppConfigs.cs" />
-    <Compile Include="Framework\AudioDeviceIconExtractor.cs" />
+    <Compile Include="Model\IAudioDeviceLister.cs" />
+    <Compile Include="Util\AudioDeviceIconExtractor.cs" />
     <Compile Include="Framework\AutoStart.cs" />
     <Compile Include="Framework\Configuration\ConfigurationManager.cs" />
     <Compile Include="Framework\Configuration\ISoundSwitchConfiguration.cs" />
+    <Compile Include="Model\AudioDeviceLister.cs" />
     <Compile Include="Model\Events.cs" />
     <Compile Include="Model\IAppModel.cs" />
     <Compile Include="UI\Controls\ChangelogViewer.cs">
