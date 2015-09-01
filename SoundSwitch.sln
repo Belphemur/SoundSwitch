@@ -12,7 +12,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AudioEndPointLibrary", "Aud
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Audio.EndPoint.Controller.Wrapper", "AudioEndPointLibrary\Audio.EndPoint.Controller.Wrapper\Audio.EndPoint.Controller.Wrapper.vcxproj", "{115BF2B4-B3BE-446D-BA76-348E274258F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundSwitchUnitTest", "SoundSwitchUnitTest\SoundSwitchUnitTest.csproj", "{8275B4A6-2DDD-46BF-BFF8-CC1EF445EA0F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundSwitch.Tests", "SoundSwitchUnitTest\SoundSwitch.Tests.csproj", "{8275B4A6-2DDD-46BF-BFF8-CC1EF445EA0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -7,7 +7,7 @@ using SoundSwitch.Model;
 
 namespace SoundSwitchUnitTest
 {
-    [TestFixture]
+    [TestFixture, Category("AppModel")]
     public class ModelUnitTest
     {
         private static void SetConfigurationMoq(IMock<ISoundSwitchConfiguration> configurationMoq)
