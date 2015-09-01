@@ -46,8 +46,11 @@ namespace SoundSwitch.Model
             {
                 return
                     AudioController.GetActivePlaybackDevices()
-                        .Where((device => SelectedPlaybackDevicesList.Contains(device.FriendlyName)))
-                        .ToList();
+                    .Join(SelectedPlaybackDevicesList, 
+                    a => a.FriendlyName, 
+                    selected => selected, 
+                    (a,selected) => a)
+                    .ToList();
             }
         }
 

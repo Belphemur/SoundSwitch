@@ -99,54 +99,5 @@ namespace SoundSwitch.Tests
             configurationMoq.VerifyGet(c => c.SelectedPlaybackDeviceList);
             Assert.That(!eventCalled, "SelectedPlaybackDeviceChanged called");
         }
-
-        [Test, Category("AudioDevice")]
-        public void TestActiveAudioDeviceWithSelectedList()
-        {
-            var configurationMoq = new Mock<ISoundSwitchConfiguration> { Name = "Configuration mock" };
-
-            //Setup
-            var allActiveDevice =
-                AudioEndPointControllerWrapper.AudioController.GetActivePlaybackDevices()
-                    .Select(a => a.FriendlyName)
-                    .ToList();
-            configurationMoq.Setup(c => c.SelectedPlaybackDeviceList).Returns(new HashSet<string>(allActiveDevice));
-            SetConfigurationMoq(configurationMoq);
-
-            //Action
-            Assert.That(
-                AppModel.Instance.AvailablePlaybackDevices.Select(a => a.FriendlyName)
-                    .Intersect(allActiveDevice)
-                    .Count() == allActiveDevice.Count);
-
-            //Asserts
-            configurationMoq.VerifyGet(c => c.SelectedPlaybackDeviceList);
-        }
-
-        [Test, Category("AudioDevice")]
-        public void TestActiveAudioDeviceWithSelectedListWithUnexistingOne()
-        {
-            var configurationMoq = new Mock<ISoundSwitchConfiguration> { Name = "Configuration mock" };
-
-            //Setup
-            var allActiveDevice =
-                AudioEndPointControllerWrapper.AudioController.GetActivePlaybackDevices()
-                    .Select(a => a.FriendlyName)
-                    .ToList();
-            allActiveDevice.Add("ThisCan'tBePresent");
-            configurationMoq.Setup(c => c.SelectedPlaybackDeviceList).Returns(new HashSet<string>(allActiveDevice));
-            SetConfigurationMoq(configurationMoq);
-
-            //Action
-            Assert.That(
-                AppModel.Instance.AvailablePlaybackDevices.Select(a => a.FriendlyName)
-                    .Intersect(allActiveDevice)
-                    .Count() == allActiveDevice.Count - 1);
-
-            //Asserts
-            configurationMoq.VerifyGet(c => c.SelectedPlaybackDeviceList);
-        }
-
-
-    }
+   }
 }

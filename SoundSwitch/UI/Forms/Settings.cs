@@ -157,7 +157,7 @@ namespace SoundSwitch.UI.Forms
         /// <param name="device"></param>
         /// <param name="selected"></param>
         /// <returns></returns>
-        private ListViewItem GenerateListViewItem(AudioDeviceWrapper device, HashSet<string> selected)
+        private ListViewItem GenerateListViewItem(AudioDeviceWrapper device, ICollection<string> selected)
         {
             var listViewItem = new ListViewItem
             {
