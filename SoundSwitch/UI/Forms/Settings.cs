@@ -18,10 +18,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework;
+using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
-using AudioEndPointControllerWrapper;
 
 namespace SoundSwitch.UI.Forms
 {
@@ -37,16 +38,20 @@ namespace SoundSwitch.UI.Forms
             var toolTipComm = new ToolTip();
             toolTipComm.SetToolTip(communicationCheckbox, "When checked, switch also the default Communications device");
 
-            txtHotkey.KeyDown += TxtHotkey_KeyDown;
-            txtHotkey.Text = AppModel.Instance.PlaybackHotKeysString;
-
+            hotkeyTextBox.KeyDown += (sender, args) => SetHotkey(args);
+            hotkeyTextBox.Text = AppConfigs.Configuration.PlaybackHotKeys.ToString();
+            hotkeyTextBox.Tag = AudioDeviceType.Playback;
 
             RunAtStartup.Checked = AppModel.Instance.RunAtStartup;
             communicationCheckbox.Checked = AppModel.Instance.SetCommunications;
-            PopulateAudioList();
+            var audioDeviceLister = new AudioDeviceLister(DeviceState.All);
+            PopulateAudioList(playbackListView, AppModel.Instance.SelectedPlaybackDevicesList,
+                audioDeviceLister.GetPlaybackDevices());
+            PopulateAudioList(recordingListView, AppModel.Instance.SelectedRecordingDevicesList,
+                audioDeviceLister.GetRecordingDevices());
         }
 
-        private void TxtHotkey_KeyDown(object sender, KeyEventArgs e)
+        private void SetHotkey(KeyEventArgs e)
         {
             HotKeys.ModifierKeys modifierKeys = 0;
             var displayString = "";
@@ -70,16 +75,18 @@ namespace SoundSwitch.UI.Forms
             if (new[] {8, 16, 17, 18, 46}.Contains(e.KeyValue))
             {
                 keyCode = "";
-                txtHotkey.ForeColor = Color.Crimson;
+                hotkeyTextBox.ForeColor = Color.Crimson;
             }
 
-            txtHotkey.Text = $"{displayString}{keyCode}";
+            hotkeyTextBox.Text = $"{displayString}{keyCode}";
             if (!string.IsNullOrEmpty(keyCode))
             {
-
-                txtHotkey.ForeColor = AppModel.Instance.SetHotkeyCombination(new HotKeys(e.KeyCode, modifierKeys),
-                    AudioDeviceType.Playback) ? Color.Green : Color.Red;
+                hotkeyTextBox.ForeColor = AppModel.Instance.SetHotkeyCombination(new HotKeys(e.KeyCode, modifierKeys),
+                    (AudioDeviceType) hotkeyTextBox.Tag)
+                    ? Color.Green
+                    : Color.Red;
             }
+            e.Handled = true;
         }
 
         private void closeButton_Click(object sender, EventArgs e)
@@ -121,31 +128,31 @@ namespace SoundSwitch.UI.Forms
 
         #region Device List Playback
 
-        private void PopulateAudioList()
+        private void PopulateAudioList(ListView listView, ICollection<string> selectedDevices,
+            ICollection<IAudioDevice> audioDevices)
         {
             try
             {
-                PopulateDeviceTypeGroups();
+                PopulateDeviceTypeGroups(listView);
 
-                var selected = AppModel.Instance.SelectedPlaybackDevicesList;
-                var audioDeviceWrappers = new AudioDeviceLister(DeviceState.All).GetPlaybackDevices()
+                var audioDeviceWrappers = audioDevices
                     .Where(wrapper => !string.IsNullOrEmpty(wrapper.FriendlyName))
                     .OrderBy(s => s.FriendlyName);
-                deviceListView.SmallImageList = new ImageList();
+                listView.SmallImageList = new ImageList();
 
-                deviceListView.Columns.Add("Device", -3, HorizontalAlignment.Center);
+                listView.Columns.Add("Device", -3, HorizontalAlignment.Center);
                 foreach (var device in audioDeviceWrappers)
                 {
-                    AddDeviceIconSmallImage(device, deviceListView);
+                    AddDeviceIconSmallImage(device, listView);
 
-                    var listViewItem = GenerateListViewItem(device, selected);
+                    var listViewItem = GenerateListViewItem(device, selectedDevices, listView);
 
-                    deviceListView.Items.Add(listViewItem);
+                    listView.Items.Add(listViewItem);
                 }
             }
             finally
             {
-                deviceListView.ItemCheck += LstDevicesItemChecked;
+                listView.ItemCheck += ListViewItemChecked;
             }
         }
 
@@ -154,8 +161,9 @@ namespace SoundSwitch.UI.Forms
         /// </summary>
         /// <param name="device"></param>
         /// <param name="selected"></param>
+        /// <param name="listView"></param>
         /// <returns></returns>
-        private ListViewItem GenerateListViewItem(IAudioDevice device, ICollection<string> selected)
+        private ListViewItem GenerateListViewItem(IAudioDevice device, ICollection<string> selected, ListView listView)
         {
             var listViewItem = new ListViewItem
             {
@@ -167,12 +175,12 @@ namespace SoundSwitch.UI.Forms
             if (selected.Contains(device.FriendlyName))
             {
                 listViewItem.Checked = true;
-                listViewItem.Group = deviceListView.Groups["selectedGroup"];
+                listViewItem.Group = listView.Groups["selectedGroup"];
             }
             else
             {
                 listViewItem.Checked = false;
-                listViewItem.Group = GetGroup(device.DeviceState);
+                listViewItem.Group = GetGroup(device.DeviceState, listView);
             }
             return listViewItem;
         }
@@ -190,18 +198,20 @@ namespace SoundSwitch.UI.Forms
             }
         }
 
-        private void LstDevicesItemChecked(object sender, ItemCheckEventArgs e)
+        private void ListViewItemChecked(object sender, ItemCheckEventArgs e)
         {
             try
             {
                 switch (e.NewValue)
                 {
                     case CheckState.Checked:
-                        AppModel.Instance.SelectDevice((IAudioDevice)deviceListView.Items[e.Index].Tag);
+                        AppModel.Instance.SelectDevice((IAudioDevice) ((ListView)sender).Items[e.Index].Tag);
                         break;
                     case CheckState.Unchecked:
-                        AppModel.Instance.UnselectDevice((IAudioDevice)deviceListView.Items[e.Index].Tag);
+                        AppModel.Instance.UnselectDevice((IAudioDevice)((ListView)sender).Items[e.Index].Tag);
                         break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
             }
             catch (Exception)
@@ -216,26 +226,41 @@ namespace SoundSwitch.UI.Forms
         ///     Get the ListViewItem group in which the device belongs.
         /// </summary>
         /// <param name="deviceState"></param>
+        /// <param name="listView"></param>
         /// <returns></returns>
-        private ListViewGroup GetGroup(DeviceState deviceState)
+        private ListViewGroup GetGroup(DeviceState deviceState, ListView listView)
         {
             switch (deviceState)
             {
                 case DeviceState.Active:
-                    return deviceListView.Groups[DeviceState.Active.ToString()];
+                    return listView.Groups[DeviceState.Active.ToString()];
                 default:
-                    return deviceListView.Groups[DeviceState.NotPresent.ToString()];
+                    return listView.Groups[DeviceState.NotPresent.ToString()];
             }
         }
 
-        private void PopulateDeviceTypeGroups()
+        private void PopulateDeviceTypeGroups(ListView listView)
         {
-            deviceListView.Groups.Add(new ListViewGroup(DeviceState.Active.ToString(), "Connected"));
-            deviceListView.Groups.Add(new ListViewGroup(DeviceState.NotPresent.ToString(), "Disconnected"));
+            listView.Groups.Add(new ListViewGroup(DeviceState.Active.ToString(), "Connected"));
+            listView.Groups.Add(new ListViewGroup(DeviceState.NotPresent.ToString(), "Disconnected"));
         }
 
         #endregion
 
         #endregion
+
+        private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var tabControlSender = (TabControl) sender;
+            if (tabControlSender.SelectedTab == playbackPage)
+            {
+                hotkeyTextBox.Text = AppConfigs.Configuration.PlaybackHotKeys.ToString();
+                hotkeyTextBox.Tag = AudioDeviceType.Playback;
+            } else if (tabControlSender.SelectedTab == recordingPage)
+            {
+                hotkeyTextBox.Text = AppConfigs.Configuration.RecordingHotKeys.ToString();
+                hotkeyTextBox.Tag = AudioDeviceType.Recording;
+            }
+        }
     }
 }

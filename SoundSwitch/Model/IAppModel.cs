@@ -51,17 +51,6 @@ namespace SoundSwitch.Model
         bool SetCommunications { get; set; }
 
         /// <summary>
-        ///     A string repsenting the set Keyboard shortcut for Switch default Playback devices.
-        /// </summary>
-        string PlaybackHotKeysString { get; }
-
-
-        /// <summary>
-        ///     A string repsenting the set Keyboard shortcut for Switch default Playback devices.
-        /// </summary>
-        string RecordingHotKeysString { get; }
-
-        /// <summary>
         ///     If the application runs at windows startup
         /// </summary>
         bool RunAtStartup { get; set; }

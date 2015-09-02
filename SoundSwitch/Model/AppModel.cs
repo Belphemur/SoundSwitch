@@ -79,9 +79,6 @@ namespace SoundSwitch.Model
             }
         }
 
-        public string PlaybackHotKeysString => AppConfigs.Configuration.PlaybackHotKeys.ToString();
-        public string RecordingHotKeysString { get; }
-
         #region Misc settings
 
         /// <summary>
@@ -276,7 +273,7 @@ namespace SoundSwitch.Model
                 if (!WindowsAPIAdapter.RegisterHotKey(hotkeys))
                 {
                     AppLogger.Log.Warn("Can't register new hotkeys", hotkeys);
-                    ErrorTriggered?.Invoke(this, new ExceptionEvent(new Exception("Impossible to register HotKey: " + PlaybackHotKeysString)));
+                    ErrorTriggered?.Invoke(this, new ExceptionEvent(new Exception("Impossible to register HotKey: " + hotkeys)));
                     return false;
                 }
 
