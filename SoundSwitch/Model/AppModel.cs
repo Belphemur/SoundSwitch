@@ -54,6 +54,21 @@ namespace SoundSwitch.Model
             }
         }
 
+        public HashSet<string> SelectedRecordingDevicesList { get; }
+
+        public ICollection<IAudioDevice> AvailableRecordingDevices
+        {
+            get
+            {
+                return ActiveAudioDeviceLister.GetRecordingDevices()
+                  .Join(SelectedRecordingDevicesList,
+                  a => a.FriendlyName,
+                  selected => selected,
+                  (a, selected) => a)
+                  .ToList();
+            }
+        }
+
         public bool SetCommunications
         {
             get { return AppConfigs.Configuration.ChangeCommunications; }
@@ -64,7 +79,8 @@ namespace SoundSwitch.Model
             }
         }
 
-        public string HotKeysString => AppConfigs.Configuration.HotKeysCombinaison.ToString();
+        public string PlaybackHotKeysString => AppConfigs.Configuration.HotKeysCombinaison.ToString();
+        public string RecordingHotKeysString { get; }
 
         #region Misc settings
 
@@ -108,7 +124,7 @@ namespace SoundSwitch.Model
             {
                 throw new InvalidOperationException("Already initialized");
             }
-            SetHotkeyCombination(AppConfigs.Configuration.HotKeysCombinaison);
+            SetPlaybackHotkeyCombination(AppConfigs.Configuration.HotKeysCombinaison);
             InitUpdateChecker();
             _initialized = true;
         }
@@ -125,8 +141,10 @@ namespace SoundSwitch.Model
         }
 
         public event EventHandler<DeviceListChanged> SelectedPlaybackDeviceChanged;
+        public event EventHandler<AudioChangeEvent> DefaultRecordingDeviceChanged;
         public event EventHandler<ExceptionEvent> ErrorTriggered;
         public event EventHandler<AudioChangeEvent> DefaultPlaybackDeviceChanged;
+        public event EventHandler<DeviceListChanged> SelectedRecordingDeviceChanged;
         public event EventHandler<UpdateChecker.NewReleaseEvent> NewVersionReleased;
 
         private void RegisterRecovery()
@@ -168,14 +186,14 @@ namespace SoundSwitch.Model
         /// <summary>
         ///     Add a playback device into the Set.
         /// </summary>
-        /// <param name="deviceName"></param>
+        /// <param name="device"></param>
         /// <returns>
         ///     true if the element is added to the <see cref="T:System.Collections.Generic.HashSet`1" /> object; false if
         ///     the element is already present.
         /// </returns>
-        public bool AddPlaybackDevice(string deviceName)
+        public bool SelectDevice(IAudioDevice device)
         {
-            var result = SelectedPlaybackDevicesList.Add(deviceName);
+            var result = SelectedPlaybackDevicesList.Add(device.FriendlyName);
             if (result)
             {
                 SelectedPlaybackDeviceChanged?.Invoke(this, new DeviceListChanged(SelectedPlaybackDevicesList));
@@ -187,14 +205,14 @@ namespace SoundSwitch.Model
         /// <summary>
         ///     Remove a device from the Set.
         /// </summary>
-        /// <param name="deviceName"></param>
+        /// <param name="device"></param>
         /// <returns>
         ///     true if the element is successfully found and removed; otherwise, false.  This method returns false if
         ///     <paramref name="deviceName" /> is not found in the <see cref="T:System.Collections.Generic.HashSet`1" /> object.
         /// </returns>
-        public bool RemovePlaybackDevice(string deviceName)
+        public bool UnselectDevice(IAudioDevice device)
         {
-            var result = SelectedPlaybackDevicesList.Remove(deviceName);
+            var result = SelectedPlaybackDevicesList.Remove(device.FriendlyName);
             if (result)
             {
                 SelectedPlaybackDeviceChanged?.Invoke(this, new DeviceListChanged(SelectedPlaybackDevicesList));
@@ -212,7 +230,7 @@ namespace SoundSwitch.Model
         ///     Sets the hotkey combination
         /// </summary>
         /// <param name="hotkeys"></param>
-        public void SetHotkeyCombination(HotKeys hotkeys)
+        public void SetPlaybackHotkeyCombination(HotKeys hotkeys)
         {
             using (AppLogger.Log.InfoCall())
             {
@@ -223,7 +241,7 @@ namespace SoundSwitch.Model
                 {
                     AppLogger.Log.Warn("Can't register new hotkeys", hotkeys);
                     ErrorTriggered?.Invoke(this,
-                        new ExceptionEvent(new Exception("Impossible to register HotKey: " + HotKeysString)));
+                        new ExceptionEvent(new Exception("Impossible to register HotKey: " + PlaybackHotKeysString)));
                 }
                 else
                 {
@@ -232,6 +250,11 @@ namespace SoundSwitch.Model
                     AppConfigs.Configuration.Save();
                 }
             }
+        }
+
+        public void SetRecordingHotkeyCombination(HotKeys hotkeys)
+        {
+            throw new NotImplementedException();
         }
 
 

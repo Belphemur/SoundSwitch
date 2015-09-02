@@ -27,8 +27,6 @@ namespace SoundSwitch.UI.Forms
 {
     public partial class Settings : Form
     {
-        public const string DevicesDelimiter = ";;;";
-
         public Settings()
         {
             InitializeComponent();
@@ -40,7 +38,7 @@ namespace SoundSwitch.UI.Forms
             toolTipComm.SetToolTip(communicationCheckbox, "When checked, switch also the default Communications device");
 
             txtHotkey.KeyDown += TxtHotkey_KeyDown;
-            txtHotkey.Text = AppModel.Instance.HotKeysString;
+            txtHotkey.Text = AppModel.Instance.PlaybackHotKeysString;
 
 
             RunAtStartup.Checked = AppModel.Instance.RunAtStartup;
@@ -79,7 +77,7 @@ namespace SoundSwitch.UI.Forms
             if (!string.IsNullOrEmpty(keyCode))
             {
                 txtHotkey.ForeColor = Color.Green;
-                AppModel.Instance.SetHotkeyCombination(new HotKeys(e.KeyCode, modifierKeys));
+                AppModel.Instance.SetPlaybackHotkeyCombination(new HotKeys(e.KeyCode, modifierKeys));
             }
         }
 
@@ -137,7 +135,7 @@ namespace SoundSwitch.UI.Forms
                 deviceListView.Columns.Add("Device", -3, HorizontalAlignment.Center);
                 foreach (var device in audioDeviceWrappers)
                 {
-                    AddDeviceIconSmallImage(device);
+                    AddDeviceIconSmallImage(device, deviceListView);
 
                     var listViewItem = GenerateListViewItem(device, selected);
 
@@ -161,7 +159,8 @@ namespace SoundSwitch.UI.Forms
             var listViewItem = new ListViewItem
             {
                 Text = device.FriendlyName,
-                ImageKey = device.DeviceClassIconPath
+                ImageKey = device.DeviceClassIconPath,
+                Tag = device
             };
 
             if (selected.Contains(device.FriendlyName))
@@ -181,11 +180,11 @@ namespace SoundSwitch.UI.Forms
         ///     Using the DeviceClassIconPath, get the Icon
         /// </summary>
         /// <param name="device"></param>
-        private void AddDeviceIconSmallImage(IAudioDevice device)
+        private void AddDeviceIconSmallImage(IAudioDevice device, ListView listView)
         {
-            if (!deviceListView.SmallImageList.Images.ContainsKey(device.DeviceClassIconPath))
+            if (!listView.SmallImageList.Images.ContainsKey(device.DeviceClassIconPath))
             {
-                deviceListView.SmallImageList.Images.Add(device.DeviceClassIconPath,
+                listView.SmallImageList.Images.Add(device.DeviceClassIconPath,
                     AudioDeviceIconExtractor.ExtractIconFromAudioDevice(device, false));
             }
         }
@@ -197,10 +196,10 @@ namespace SoundSwitch.UI.Forms
                 switch (e.NewValue)
                 {
                     case CheckState.Checked:
-                        AppModel.Instance.AddPlaybackDevice(deviceListView.Items[e.Index].Text);
+                        AppModel.Instance.SelectDevice((IAudioDevice)deviceListView.Items[e.Index].Tag);
                         break;
                     case CheckState.Unchecked:
-                        AppModel.Instance.RemovePlaybackDevice(deviceListView.Items[e.Index].Text);
+                        AppModel.Instance.UnselectDevice((IAudioDevice)deviceListView.Items[e.Index].Tag);
                         break;
                 }
             }
