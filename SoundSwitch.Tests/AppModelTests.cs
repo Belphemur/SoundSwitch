@@ -1,5 +1,19 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿/********************************************************************
+* Copyright (C) 2015 Antoine Aflalo
+* 
+* This program is free software; you can redistribute it and/or
+* modify it under the terms of the GNU General Public License
+* as published by the Free Software Foundation; either version 2
+* of the License, or (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+********************************************************************/
+
+using System;
+using System.Collections.Generic;
 using System.Reflection;
 using AudioEndPointControllerWrapper;
 using Moq;
@@ -240,6 +254,52 @@ namespace SoundSwitch.Tests
             audioMoqII.VerifyGet(a => a.FriendlyName);
             listerMoq.Verify(l => l.GetPlaybackDevices());
             configurationMoq.VerifyGet(config => config.LastActiveDevice);
+            configurationMoq.VerifySet(config => config.LastActiveDevice = "Speakers (Test device)");
+            audioMoqI.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Console)));
+            Assert.That(audioMoqI.Object.Equals(audioDevice));
+        }
+
+        [Test]
+        public void TestSetActiveDeviceNull()
+        {
+            var configurationMoq = new Mock<ISoundSwitchConfiguration> {Name = "Configuration mock"};
+            configurationMoq.SetupGet(conf => conf.LastActiveDevice).Returns("");
+
+
+            //Setup
+            SetConfigurationMoq(configurationMoq);
+            bool deviceChangeEventCalled = false;
+            bool errorTriggeredEventCalled = false;
+            AppModel.Instance.DefaultPlaybackDeviceChanged += (sender, @event) => deviceChangeEventCalled = true;
+            AppModel.Instance.ErrorTriggered +=
+                (sender, @event) => errorTriggeredEventCalled = @event.Exception is NullReferenceException;
+
+            //Action
+            AppModel.Instance.SetActiveDevice(null);
+
+            //Asserts
+            Assert.That(!deviceChangeEventCalled);
+            Assert.That(errorTriggeredEventCalled);
+        }
+
+        [Test]
+        public void TestSetAudioDeviceSetAudioDeviceAsDefault()
+        {
+            var configurationMoq = new Mock<ISoundSwitchConfiguration> { Name = "Configuration mock" };
+            configurationMoq.SetupGet(conf => conf.LastActiveDevice).Returns("");
+
+            var audioMoqI = new Mock<IAudioDevice> { Name = "first audio dev" };
+            audioMoqI.SetupGet(a => a.FriendlyName).Returns("Speakers (Test device)");
+
+            //Setup
+            SetConfigurationMoq(configurationMoq);
+            IAudioDevice audioDevice = null;
+            AppModel.Instance.DefaultPlaybackDeviceChanged += (sender, @event) => audioDevice = @event.AudioDevice;
+
+            //Action
+            AppModel.Instance.SetActiveDevice(audioMoqI.Object);
+
+            //Asserts
             configurationMoq.VerifySet(config => config.LastActiveDevice = "Speakers (Test device)");
             audioMoqI.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Console)));
             Assert.That(audioMoqI.Object.Equals(audioDevice));
