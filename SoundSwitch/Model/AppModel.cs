@@ -54,7 +54,7 @@ namespace SoundSwitch.Model
             }
         }
 
-        public HashSet<string> SelectedRecordingDevicesList { get; }
+        public HashSet<string> SelectedRecordingDevicesList => AppConfigs.Configuration.SelectedRecordingDeviceList;
 
         public ICollection<IAudioDevice> AvailableRecordingDevices
         {
@@ -301,7 +301,7 @@ namespace SoundSwitch.Model
                         device.SetAsDefault(Role.Communications);
                     }
                     DefaultPlaybackDeviceChanged?.Invoke(this, new AudioChangeEvent(device));
-                    AppConfigs.Configuration.LastActiveDevice = device.FriendlyName;
+                    AppConfigs.Configuration.LastPlaybackActive = device.FriendlyName;
                     AppConfigs.Configuration.Save();
                     return true;
                 }
@@ -333,7 +333,7 @@ namespace SoundSwitch.Model
                 }
                 AppLogger.Log.Info("Cycle Audio Devices", list);
                 var defaultDev =
-                    list.FirstOrDefault(device => device.FriendlyName == AppConfigs.Configuration.LastActiveDevice) ??
+                    list.FirstOrDefault(device => device.FriendlyName == AppConfigs.Configuration.LastPlaybackActive) ??
                     list.FirstOrDefault(device => device.IsDefault(Role.Console)) ??
                     list.ElementAt(0);
 

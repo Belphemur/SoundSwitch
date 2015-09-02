@@ -19,7 +19,9 @@ namespace SoundSwitch.Framework.Configuration
     public interface ISoundSwitchConfiguration : IConfiguration
     {
         HashSet<string> SelectedPlaybackDeviceList { get; set; }
-        string LastActiveDevice { get; set; }
+        HashSet<string> SelectedRecordingDeviceList { get; set; }
+        string LastPlaybackActive { get; set; }
+        string LastRecordingActive { get; set; }
         bool FirstRun { get; set; }
         HotKeys HotKeysCombinaison { get; set; }
         bool ChangeCommunications { get; set; }

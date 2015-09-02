@@ -158,7 +158,7 @@ namespace SoundSwitch.Tests
         public void TestCycleConsoleAudioDevice()
         {
             var configurationMoq = new Mock<ISoundSwitchConfiguration> { Name = "Configuration mock" };
-            configurationMoq.SetupGet(conf => conf.LastActiveDevice).Returns("");
+            configurationMoq.SetupGet(conf => conf.LastPlaybackActive).Returns("");
 
             var audioMoqI = new Mock<IAudioDevice> { Name = "first audio dev" };
             audioMoqI.SetupGet(a => a.FriendlyName).Returns("Speakers (Test device)");
@@ -185,8 +185,8 @@ namespace SoundSwitch.Tests
             audioMoqI.VerifyGet(a => a.FriendlyName);
             audioMoqII.VerifyGet(a => a.FriendlyName);
             listerMoq.Verify(l => l.GetPlaybackDevices());
-            configurationMoq.VerifyGet(config => config.LastActiveDevice);
-            configurationMoq.VerifySet(config => config.LastActiveDevice = "Headphones (Test device)");
+            configurationMoq.VerifyGet(config => config.LastPlaybackActive);
+            configurationMoq.VerifySet(config => config.LastPlaybackActive = "Headphones (Test device)");
             audioMoqII.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Console)));
             Assert.That(audioMoqII.Object.Equals(audioDevice));
         }
@@ -195,7 +195,7 @@ namespace SoundSwitch.Tests
         public void TestCycleCommunicationsAudioDevice()
         {
             var configurationMoq = new Mock<ISoundSwitchConfiguration> { Name = "Configuration mock" };
-            configurationMoq.SetupGet(conf => conf.LastActiveDevice).Returns("");
+            configurationMoq.SetupGet(conf => conf.LastPlaybackActive).Returns("");
             configurationMoq.SetupGet(conf => conf.ChangeCommunications).Returns(true);
 
             var audioMoqI = new Mock<IAudioDevice> { Name = "first audio dev" };
@@ -224,8 +224,8 @@ namespace SoundSwitch.Tests
             audioMoqI.VerifyGet(a => a.FriendlyName);
             audioMoqII.VerifyGet(a => a.FriendlyName);
             listerMoq.Verify(l => l.GetPlaybackDevices());
-            configurationMoq.VerifyGet(config => config.LastActiveDevice);
-            configurationMoq.VerifySet(config => config.LastActiveDevice = "Headphones (Test device)");
+            configurationMoq.VerifyGet(config => config.LastPlaybackActive);
+            configurationMoq.VerifySet(config => config.LastPlaybackActive = "Headphones (Test device)");
             audioMoqII.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Console)));
             audioMoqII.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Communications)));
             Assert.That(audioMoqII.Object.Equals(audioDevice));
@@ -235,7 +235,7 @@ namespace SoundSwitch.Tests
         public void TestCycleAudioDeviceIsACycleThatReturnToFirstWhenReachEnd()
         {
             var configurationMoq = new Mock<ISoundSwitchConfiguration> { Name = "Configuration mock" };
-            configurationMoq.SetupGet(conf => conf.LastActiveDevice).Returns("");
+            configurationMoq.SetupGet(conf => conf.LastPlaybackActive).Returns("");
 
             var audioMoqI = new Mock<IAudioDevice> { Name = "first audio dev" };
             audioMoqI.SetupGet(a => a.FriendlyName).Returns("Speakers (Test device)");
@@ -262,8 +262,8 @@ namespace SoundSwitch.Tests
             audioMoqI.VerifyGet(a => a.FriendlyName);
             audioMoqII.VerifyGet(a => a.FriendlyName);
             listerMoq.Verify(l => l.GetPlaybackDevices());
-            configurationMoq.VerifyGet(config => config.LastActiveDevice);
-            configurationMoq.VerifySet(config => config.LastActiveDevice = "Speakers (Test device)");
+            configurationMoq.VerifyGet(config => config.LastPlaybackActive);
+            configurationMoq.VerifySet(config => config.LastPlaybackActive = "Speakers (Test device)");
             audioMoqI.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Console)));
             Assert.That(audioMoqI.Object.Equals(audioDevice));
         }
@@ -272,7 +272,7 @@ namespace SoundSwitch.Tests
         public void TestSetActiveDeviceNull()
         {
             var configurationMoq = new Mock<ISoundSwitchConfiguration> {Name = "Configuration mock"};
-            configurationMoq.SetupGet(conf => conf.LastActiveDevice).Returns("");
+            configurationMoq.SetupGet(conf => conf.LastPlaybackActive).Returns("");
 
 
             //Setup
@@ -295,7 +295,7 @@ namespace SoundSwitch.Tests
         public void TestSetAudioDeviceSetAudioDeviceAsDefault()
         {
             var configurationMoq = new Mock<ISoundSwitchConfiguration> { Name = "Configuration mock" };
-            configurationMoq.SetupGet(conf => conf.LastActiveDevice).Returns("");
+            configurationMoq.SetupGet(conf => conf.LastPlaybackActive).Returns("");
 
             var audioMoqI = new Mock<IAudioDevice> { Name = "first audio dev" };
             audioMoqI.SetupGet(a => a.FriendlyName).Returns("Speakers (Test device)");
@@ -309,7 +309,7 @@ namespace SoundSwitch.Tests
             AppModel.Instance.SetActiveDevice(audioMoqI.Object);
 
             //Asserts
-            configurationMoq.VerifySet(config => config.LastActiveDevice = "Speakers (Test device)");
+            configurationMoq.VerifySet(config => config.LastPlaybackActive = "Speakers (Test device)");
             audioMoqI.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Console)));
             Assert.That(audioMoqI.Object.Equals(audioDevice));
         }

@@ -24,13 +24,16 @@ namespace SoundSwitch.Framework.Configuration
             FirstRun = true;
             ChangeCommunications = false;
             SelectedPlaybackDeviceList = new HashSet<string>();
+            SelectedRecordingDeviceList = new HashSet<string>();
             HotKeysCombinaison = new HotKeys(Keys.F11, HotKeys.ModifierKeys.Alt | HotKeys.ModifierKeys.Control);
             //12 hours
             UpdateCheckInterval = 3600*12;
         }
 
         public HashSet<string> SelectedPlaybackDeviceList { get; set; }
-        public string LastActiveDevice { get; set; }
+        public HashSet<string> SelectedRecordingDeviceList { get; set; }
+        public string LastPlaybackActive { get; set; }
+        public string LastRecordingActive { get; set; }
         public bool FirstRun { get; set; }
         public HotKeys HotKeysCombinaison { get; set; }
         public bool ChangeCommunications { get; set; }
