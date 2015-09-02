@@ -143,7 +143,7 @@ namespace SoundSwitch.Model
         ///     as far as we can tell), returns false if could not successfully switch. Throws NoDevicesException
         ///     if there are no devices configured.
         /// </summary>
-        bool CycleActiveDevice(AudioDeviceType type = AudioDeviceType.Playback);
+        bool CycleActiveDevice(AudioDeviceType type);
 
         #endregion
     }

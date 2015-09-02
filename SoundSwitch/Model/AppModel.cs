@@ -347,7 +347,6 @@ namespace SoundSwitch.Model
                         AppLogger.Log.Info("Set Default Communication device", device);
                         device.SetAsDefault(Role.Communications);
                     }
-                    DefaultDeviceChanged?.Invoke(this, new AudioChangeEvent(device));
                     switch (device.Type)
                     {
                         case AudioDeviceType.Playback:
@@ -359,7 +358,7 @@ namespace SoundSwitch.Model
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
-
+                    DefaultDeviceChanged?.Invoke(this, new AudioChangeEvent(device));
                     AppConfigs.Configuration.Save();
                     return true;
                 }
@@ -376,7 +375,7 @@ namespace SoundSwitch.Model
         ///     as far as we can tell), returns false if could not successfully switch. Throws NoDevicesException
         ///     if there are no devices configured.
         /// </summary>
-        public bool CycleActiveDevice(AudioDeviceType type = AudioDeviceType.Playback)
+        public bool CycleActiveDevice(AudioDeviceType type)
         {
             using (AppLogger.Log.InfoCall())
             {

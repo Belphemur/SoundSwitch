@@ -125,8 +125,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="AppModelTests.cs" />
+    <Compile Include="RecordingDevices.cs" />
+    <Compile Include="PlaybackDevices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
