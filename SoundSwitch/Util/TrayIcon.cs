@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
@@ -41,7 +42,8 @@ namespace SoundSwitch.Util
         };
 
         private readonly ToolStripMenuItem _updateMenuItem;
-        private ICollection<IAudioDevice> _availableAudioDeviceWrappers;
+        private ICollection<IAudioDevice> _availablePlaybackDevices;
+        private ICollection<IAudioDevice> _availableRecordingDevices;
         private bool _deviceListChanged = true;
 
         public TrayIcon()
@@ -49,7 +51,8 @@ namespace SoundSwitch.Util
             _updateMenuItem = new ToolStripMenuItem("No Update", Resources.Update, OnUpdateClick) {Enabled = false};
             _trayIcon.ContextMenuStrip = _settingsMenu;
 
-            _availableAudioDeviceWrappers = AppModel.Instance.AvailablePlaybackDevices;
+            _availablePlaybackDevices = AppModel.Instance.AvailablePlaybackDevices;
+            _availableRecordingDevices = AppModel.Instance.AvailableRecordingDevices;
 
             PopulateSettingsMenu();
 
@@ -78,7 +81,7 @@ namespace SoundSwitch.Util
             _settingsMenu.Dispose();
             _trayIcon.Dispose();
             _updateMenuItem.Dispose();
-            GC.SuppressFinalize(_availableAudioDeviceWrappers);
+            GC.SuppressFinalize(_availablePlaybackDevices);
             GC.SuppressFinalize(this);
         }
 
@@ -121,13 +124,20 @@ namespace SoundSwitch.Util
             AppModel.Instance.DefaultDeviceChanged +=
                 (sender, audioChangeEvent) =>
                 {
-                    ShowAudioChanged(audioChangeEvent.AudioDevice.FriendlyName);
-                    foreach (ToolStripDeviceItem item in _selectionMenu.Items)
+                    var audioDeviceType = audioChangeEvent.AudioDevice.Type;
+                    switch (audioDeviceType)
                     {
-                        item.Image = item.AudioDevice.FriendlyName == audioChangeEvent.AudioDevice.FriendlyName
-                            ? Resources.Check
-                            : null;
+                        case AudioDeviceType.Playback:
+                            ShowPlaybackChanged(audioChangeEvent.AudioDevice.FriendlyName);
+                            break;
+                        case AudioDeviceType.Recording:
+                            ShowRecordingChanged(audioChangeEvent.AudioDevice.FriendlyName);
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
                     }
+
+                    UpdateImageContextMenu(audioDeviceType, audioChangeEvent);
                 };
             AppModel.Instance.SelectedDeviceChanged += (sender, deviceListChanged) => { UpdateAvailableDeviceList(); };
             AppModel.Instance.NewVersionReleased += (sender, @event) =>
@@ -147,22 +157,39 @@ namespace SoundSwitch.Util
             AppModel.Instance.InitializeMain();
         }
 
+        private void UpdateImageContextMenu(AudioDeviceType audioDeviceType, AudioChangeEvent audioChangeEvent)
+        {
+            foreach (
+                var toolStripDevItem in
+                    _selectionMenu.Items.OfType<ToolStripDeviceItem>().Where(item => item.AudioDevice.Type == audioDeviceType))
+            {
+                toolStripDevItem.Image = toolStripDevItem.AudioDevice.FriendlyName == audioChangeEvent.AudioDevice.FriendlyName
+                    ? Resources.Check
+                    : null;
+            }
+        }
+
         private void NewReleaseAvailable(object sender, UpdateChecker.NewReleaseEvent newReleaseEvent)
         {
             _updateMenuItem.Tag = newReleaseEvent.Release;
             _updateMenuItem.Text = $"Update Available ({newReleaseEvent.Release.ReleaseVersion})";
             _updateMenuItem.Enabled = true;
-            _trayIcon.ShowBalloonTip(3000, $"Version {newReleaseEvent.Release.ReleaseVersion} is available",
-                "Right click on the tray icon to download.", ToolTipIcon.Info);
+            _trayIcon.ShowBalloonTip(3000, $"Version {newReleaseEvent.Release.ReleaseVersion} is available", "Right click on the tray icon to download.", ToolTipIcon.Info);
         }
 
         private void UpdateAvailableDeviceList()
         {
             var audioDevices = AppModel.Instance.AvailablePlaybackDevices;
-            _deviceListChanged = !_availableAudioDeviceWrappers.Equals(audioDevices);
+            _deviceListChanged = !_availablePlaybackDevices.Equals(audioDevices);
             if (_deviceListChanged)
             {
-                _availableAudioDeviceWrappers = audioDevices;
+                _availablePlaybackDevices = audioDevices;
+            }
+            audioDevices = AppModel.Instance.AvailableRecordingDevices;
+            _deviceListChanged = !_availableRecordingDevices.Equals(audioDevices);
+            if (_deviceListChanged)
+            {
+                _availableRecordingDevices = audioDevices;
             }
         }
 
@@ -184,7 +211,7 @@ namespace SoundSwitch.Util
                     return;
                 }
 
-                if (_availableAudioDeviceWrappers.Count < 0)
+                if (_availablePlaybackDevices.Count < 0 && _availableRecordingDevices.Count < 0)
                 {
                     AppLogger.Log.Info("Device list empty");
                     return;
@@ -192,9 +219,17 @@ namespace SoundSwitch.Util
 
                 _selectionMenu.Items.Clear();
                 AppLogger.Log.Info("Set tray icon menu devices");
-                foreach (var item in _availableAudioDeviceWrappers)
+                foreach (var item in _availablePlaybackDevices)
                 {
                     _selectionMenu.Items.Add(new ToolStripDeviceItem(DeviceClicked, item));
+                }
+                if (_availableRecordingDevices.Count > 0)
+                {
+                    _selectionMenu.Items.Add("-");
+                    foreach (var item in _availableRecordingDevices)
+                    {
+                         _selectionMenu.Items.Add(new ToolStripDeviceItem(DeviceClicked, item));
+                    }
                 }
                 _deviceListChanged = false;
             }
@@ -212,13 +247,14 @@ namespace SoundSwitch.Util
             }
         }
 
-        /// <summary>
-        ///     Notification that audio has changed
-        /// </summary>
-        /// <param name="deviceName"></param>
-        public void ShowAudioChanged(string deviceName)
+        private void ShowPlaybackChanged(string deviceName)
         {
-            _trayIcon.ShowBalloonTip(500, "SoundSwitch: Audio output changed", deviceName, ToolTipIcon.Info);
+            _trayIcon.ShowBalloonTip(500, "SoundSwitch: Playback device changed", deviceName, ToolTipIcon.Info);
+        }
+
+        private void ShowRecordingChanged(string deviceName)
+        {
+            _trayIcon.ShowBalloonTip(500, "SoundSwitch: Recording device changed", deviceName, ToolTipIcon.Info);
         }
 
         /// <summary>
@@ -227,9 +263,7 @@ namespace SoundSwitch.Util
         public void ShowNoDevices()
         {
             AppLogger.Log.Error("No devices available");
-            _trayIcon.ShowBalloonTip(3000, "SoundSwitch: Configuration needed",
-                "No devices available to switch to. Open configuration by right-clicking on the SoundSwitch icon. ",
-                ToolTipIcon.Warning);
+            _trayIcon.ShowBalloonTip(3000, "SoundSwitch: Configuration needed", "No devices available to switch to. Open configuration by right-clicking on the SoundSwitch icon. ", ToolTipIcon.Warning);
         }
 
         /// <summary>

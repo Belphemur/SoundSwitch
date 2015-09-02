@@ -42,7 +42,9 @@ namespace SoundSwitch
                 AppModel.Instance.ActiveAudioDeviceLister = new AudioDeviceLister(DeviceState.Active);
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
+#if !DEBUG
                 Application.ThreadException += Application_ThreadException;
+#endif
                 WindowsAPIAdapter.Start();
                 //Manage the Closing events send by Windows
                 //Since this app don't use a Form as "main window" the app doesn't close 
@@ -67,10 +69,14 @@ namespace SoundSwitch
                     }
                 };
                 AppLogger.Log.Info("Set Exception Handler");
+#if !DEBUG
                 WindowsAPIAdapter.AddThreadExceptionHandler(Application_ThreadException);
+#endif
                 AppLogger.Log.Info("Set Tray Icon with Main");
+#if !DEBUG
                 try
                 {
+#endif
                     using (var icon = new TrayIcon())
                     {
                         if (AppConfigs.Configuration.FirstRun)
@@ -82,13 +88,16 @@ namespace SoundSwitch
                         Application.Run();
                         WindowsAPIAdapter.Stop();
                     }
+#if !DEBUG
                 }
+               
                 catch (Exception ex)
                 {
                     HandleException(ex);
+
                 }
-               
-            }
+#endif
+                }
         }
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
