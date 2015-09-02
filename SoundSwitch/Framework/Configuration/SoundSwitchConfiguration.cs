@@ -12,6 +12,7 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
@@ -25,7 +26,8 @@ namespace SoundSwitch.Framework.Configuration
             ChangeCommunications = false;
             SelectedPlaybackDeviceList = new HashSet<string>();
             SelectedRecordingDeviceList = new HashSet<string>();
-            HotKeysCombinaison = new HotKeys(Keys.F11, HotKeys.ModifierKeys.Alt | HotKeys.ModifierKeys.Control);
+            PlaybackHotKeys = new HotKeys(Keys.F11, HotKeys.ModifierKeys.Alt | HotKeys.ModifierKeys.Control);
+            RecordingHotKeys = new HotKeys(Keys.F7,HotKeys.ModifierKeys.Alt | HotKeys.ModifierKeys.Control);
             //12 hours
             UpdateCheckInterval = 3600*12;
         }
@@ -35,7 +37,17 @@ namespace SoundSwitch.Framework.Configuration
         public string LastPlaybackActive { get; set; }
         public string LastRecordingActive { get; set; }
         public bool FirstRun { get; set; }
-        public HotKeys HotKeysCombinaison { get; set; }
+        public HotKeys PlaybackHotKeys { get; set; }
+        
+        //TODO: Remove in a couple of version (introduced in 3.4)
+        [Obsolete("Replaced by PlaybackHotKeys")]
+        public HotKeys HotKeysCombinaison
+        {
+            get { return null; }
+            set { PlaybackHotKeys = value; }
+        }
+
+        public HotKeys RecordingHotKeys { get; set; }
         public bool ChangeCommunications { get; set; }
         public uint UpdateCheckInterval { get; set; }
         //Needed by Interface

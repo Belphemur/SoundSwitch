@@ -79,7 +79,7 @@ namespace SoundSwitch.Model
             }
         }
 
-        public string PlaybackHotKeysString => AppConfigs.Configuration.HotKeysCombinaison.ToString();
+        public string PlaybackHotKeysString => AppConfigs.Configuration.PlaybackHotKeys.ToString();
         public string RecordingHotKeysString { get; }
 
         #region Misc settings
@@ -124,7 +124,8 @@ namespace SoundSwitch.Model
             {
                 throw new InvalidOperationException("Already initialized");
             }
-            SetPlaybackHotkeyCombination(AppConfigs.Configuration.HotKeysCombinaison);
+            SetHotkeyCombination(AppConfigs.Configuration.PlaybackHotKeys, AudioDeviceType.Playback);
+            SetHotkeyCombination(AppConfigs.Configuration.RecordingHotKeys, AudioDeviceType.Recording);
             InitUpdateChecker();
             _initialized = true;
         }
@@ -253,34 +254,47 @@ namespace SoundSwitch.Model
 
         #region Hot keys
 
-        /// <summary>
-        ///     Sets the hotkey combination
-        /// </summary>
-        /// <param name="hotkeys"></param>
-        public void SetPlaybackHotkeyCombination(HotKeys hotkeys)
+        public bool SetHotkeyCombination(HotKeys hotkeys, AudioDeviceType deviceType)
         {
             using (AppLogger.Log.InfoCall())
             {
-                AppLogger.Log.Info("Unregister previous hotkeys", AppConfigs.Configuration.HotKeysCombinaison);
-                WindowsAPIAdapter.UnRegisterHotKey(AppConfigs.Configuration.HotKeysCombinaison);
+                HotKeys confHotKeys = null;
+                switch (deviceType)
+                {
+                    case AudioDeviceType.Playback:
+                        confHotKeys = AppConfigs.Configuration.PlaybackHotKeys;
+                        break;
+                    case AudioDeviceType.Recording:
+                        confHotKeys = AppConfigs.Configuration.RecordingHotKeys;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(deviceType), deviceType, null);
+                }
+                AppLogger.Log.Info("Unregister previous hotkeys", confHotKeys);
+                WindowsAPIAdapter.UnRegisterHotKey(confHotKeys);
 
                 if (!WindowsAPIAdapter.RegisterHotKey(hotkeys))
                 {
                     AppLogger.Log.Warn("Can't register new hotkeys", hotkeys);
                     ErrorTriggered?.Invoke(this, new ExceptionEvent(new Exception("Impossible to register HotKey: " + PlaybackHotKeysString)));
+                    return false;
                 }
-                else
-                {
-                    AppLogger.Log.Info("New Hotkeys registered", hotkeys);
-                    AppConfigs.Configuration.HotKeysCombinaison = hotkeys;
-                    AppConfigs.Configuration.Save();
-                }
-            }
-        }
 
-        public void SetRecordingHotkeyCombination(HotKeys hotkeys)
-        {
-            throw new NotImplementedException();
+                AppLogger.Log.Info("New Hotkeys registered", hotkeys);
+                switch (deviceType)
+                {
+                    case AudioDeviceType.Playback:
+                        AppConfigs.Configuration.PlaybackHotKeys = hotkeys;
+                        break;
+                    case AudioDeviceType.Recording:
+                        AppConfigs.Configuration.RecordingHotKeys = hotkeys;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(deviceType), deviceType, null);
+                }
+                AppConfigs.Configuration.Save();
+                return true;
+            }
         }
 
 
@@ -288,7 +302,7 @@ namespace SoundSwitch.Model
         {
             using (AppLogger.Log.DebugCall())
             {
-                if (e.HotKeys != AppConfigs.Configuration.HotKeysCombinaison)
+                if (e.HotKeys != AppConfigs.Configuration.PlaybackHotKeys)
                 {
                     AppLogger.Log.Debug("Not the registered Hotkeys", e.HotKeys);
                     return;
@@ -338,7 +352,7 @@ namespace SoundSwitch.Model
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
-                    
+
                     AppConfigs.Configuration.Save();
                     return true;
                 }

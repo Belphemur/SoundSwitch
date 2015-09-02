@@ -76,8 +76,9 @@ namespace SoundSwitch.UI.Forms
             txtHotkey.Text = $"{displayString}{keyCode}";
             if (!string.IsNullOrEmpty(keyCode))
             {
-                txtHotkey.ForeColor = Color.Green;
-                AppModel.Instance.SetPlaybackHotkeyCombination(new HotKeys(e.KeyCode, modifierKeys));
+
+                txtHotkey.ForeColor = AppModel.Instance.SetHotkeyCombination(new HotKeys(e.KeyCode, modifierKeys),
+                    AudioDeviceType.Playback) ? Color.Green : Color.Red;
             }
         }
 

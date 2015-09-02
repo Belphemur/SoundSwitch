@@ -23,7 +23,8 @@ namespace SoundSwitch.Framework.Configuration
         string LastPlaybackActive { get; set; }
         string LastRecordingActive { get; set; }
         bool FirstRun { get; set; }
-        HotKeys HotKeysCombinaison { get; set; }
+        HotKeys PlaybackHotKeys { get; set; }
+        HotKeys RecordingHotKeys { get; set; }
         bool ChangeCommunications { get; set; }
         uint UpdateCheckInterval { get; set; }
     }

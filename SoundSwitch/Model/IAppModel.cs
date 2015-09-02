@@ -128,13 +128,9 @@ namespace SoundSwitch.Model
         ///     Sets the hotkey combination
         /// </summary>
         /// <param name="hotkeys"></param>
-        void SetPlaybackHotkeyCombination(HotKeys hotkeys);
-
-        /// <summary>
-        ///     Sets the hotkey combination
-        /// </summary>
-        /// <param name="hotkeys"></param>
-        void SetRecordingHotkeyCombination(HotKeys hotkeys);
+        /// <param name="deviceType"></param>
+        /// <returns>if it's successfull</returns>
+        bool SetHotkeyCombination(HotKeys hotkeys, AudioDeviceType deviceType);
 
         /// <summary>
         ///     Attempts to set active device to the specified name
