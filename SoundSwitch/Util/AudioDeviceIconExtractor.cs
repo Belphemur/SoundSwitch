@@ -12,12 +12,14 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using AudioEndPointControllerWrapper;
-using SoundSwitch.Util;
+using SoundSwitch.Framework;
+using SoundSwitch.Properties;
 
-namespace SoundSwitch.Framework
+namespace SoundSwitch.Util
 {
     internal class AudioDeviceIconExtractor
     {
@@ -36,10 +38,29 @@ namespace SoundSwitch.Framework
             {
                 return ico;
             }
-            var iconInfo = audioDevice.DeviceClassIconPath.Split(',');
-            var dllPath = iconInfo[0];
-            var iconIndex = int.Parse(iconInfo[1]);
-            ico = IconExtractor.Extract(dllPath, iconIndex, largeIcon);
+            try
+            {
+                var iconInfo = audioDevice.DeviceClassIconPath.Split(',');
+                var dllPath = iconInfo[0];
+                var iconIndex = int.Parse(iconInfo[1]);
+                ico = IconExtractor.Extract(dllPath, iconIndex, largeIcon);
+            }
+            catch (Exception e)
+            {
+                AppLogger.Log.Error($"Can't extract icon from {audioDevice.DeviceClassIconPath}\n Ex: ", e);
+                switch (audioDevice.Type)
+                {
+                    case AudioDeviceType.Playback:
+                        ico = Icon.FromHandle(Resources.SpeakerDefaultIcon.GetHicon());
+                        break;
+                    case AudioDeviceType.Recording:
+                        ico = Icon.FromHandle(Resources.MicDefaultIcon.GetHicon());
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+
             IconCache.Add(audioDevice.DeviceClassIconPath, ico);
             return ico;
         }

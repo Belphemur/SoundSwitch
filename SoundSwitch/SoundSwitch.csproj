@@ -298,6 +298,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\MicDefaultIcon.png" />
+    <None Include="Resources\SpeakerDefaultIcon.png" />
     <None Include="Resources\page-bottom.png" />
     <None Include="Resources\tick.png" />
     <None Include="Resources\arrow-switch-16.png" />

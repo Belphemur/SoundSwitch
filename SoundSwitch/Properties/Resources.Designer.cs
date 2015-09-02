@@ -93,6 +93,16 @@ namespace SoundSwitch.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap MicDefaultIcon {
+            get {
+                object obj = ResourceManager.GetObject("MicDefaultIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Mixer {
             get {
                 object obj = ResourceManager.GetObject("Mixer", resourceCulture);
@@ -136,6 +146,16 @@ namespace SoundSwitch.Properties {
         internal static System.Drawing.Bitmap SoundSwitch48 {
             get {
                 object obj = ResourceManager.GetObject("SoundSwitch48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SpeakerDefaultIcon {
+            get {
+                object obj = ResourceManager.GetObject("SpeakerDefaultIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
