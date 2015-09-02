@@ -1,5 +1,12 @@
 # Change Log
 
+## [v3.4.1](https://github.com/Belphemur/SoundSwitch/tree/v3.4.1) (2015-09-02)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.4.0...v3.4.1)
+
+**Fixed bugs:**
+
+- crashes on start: IndexOutOfRangeException [\#23](https://github.com/Belphemur/SoundSwitch/issues/23)
+
 ## [v3.4.0](https://github.com/Belphemur/SoundSwitch/tree/v3.4.0) (2015-09-02)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.3.1...v3.4.0)
 
