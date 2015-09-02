@@ -118,7 +118,7 @@ namespace SoundSwitch.Util
                     }
                 }
             };
-            AppModel.Instance.DefaultPlaybackDeviceChanged +=
+            AppModel.Instance.DefaultDeviceChanged +=
                 (sender, audioChangeEvent) =>
                 {
                     ShowAudioChanged(audioChangeEvent.AudioDevice.FriendlyName);
@@ -129,7 +129,7 @@ namespace SoundSwitch.Util
                             : null;
                     }
                 };
-            AppModel.Instance.SelectedPlaybackDeviceChanged += (sender, deviceListChanged) => { UpdateAvailableDeviceList(); };
+            AppModel.Instance.SelectedDeviceChanged += (sender, deviceListChanged) => { UpdateAvailableDeviceList(); };
             AppModel.Instance.NewVersionReleased += (sender, @event) =>
             {
                 if (_settingsMenu.IsHandleCreated)

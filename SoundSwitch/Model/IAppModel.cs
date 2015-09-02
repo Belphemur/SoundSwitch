@@ -77,22 +77,12 @@ namespace SoundSwitch.Model
         /// <summary>
         ///     When the selected list of device to switch from is changed (new device added or removed).
         /// </summary>
-        event EventHandler<DeviceListChanged> SelectedPlaybackDeviceChanged;
+        event EventHandler<DeviceListChanged> SelectedDeviceChanged;
 
         /// <summary>
         ///     The Default Playback device has been changed.
         /// </summary>
-        event EventHandler<AudioChangeEvent> DefaultPlaybackDeviceChanged;
-
-        /// <summary>
-        ///     When the selected list of device to switch from is changed (new device added or removed).
-        /// </summary>
-        event EventHandler<DeviceListChanged> SelectedRecordingDeviceChanged;
-
-        /// <summary>
-        ///     The Default Recording device has been changed.
-        /// </summary>
-        event EventHandler<AudioChangeEvent> DefaultRecordingDeviceChanged;
+        event EventHandler<AudioChangeEvent> DefaultDeviceChanged;
 
         /// <summary>
         ///     If an exception happened in the <see cref="IAppModel" />
@@ -157,7 +147,7 @@ namespace SoundSwitch.Model
         ///     as far as we can tell), returns false if could not successfully switch. Throws NoDevicesException
         ///     if there are no devices configured.
         /// </summary>
-        bool CycleActiveDevice();
+        bool CycleActiveDevice(AudioDeviceType type = AudioDeviceType.Playback);
 
         #endregion
     }

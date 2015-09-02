@@ -40,11 +40,13 @@ namespace SoundSwitch.Model
 
     public class DeviceListChanged : EventArgs
     {
-        public DeviceListChanged(IEnumerable<string> seletedDevicesList)
+        public DeviceListChanged(IEnumerable<string> seletedDevicesList, AudioDeviceType type)
         {
             SeletedDevicesList = seletedDevicesList;
+            Type = type;
         }
 
         public IEnumerable<string> SeletedDevicesList { get; private set; }
+        public AudioDeviceType Type { get; private set; }
     }
 }

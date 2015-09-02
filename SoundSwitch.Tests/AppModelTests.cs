@@ -38,6 +38,7 @@ namespace SoundSwitch.Tests
             var configurationMoq = new Mock<ISoundSwitchConfiguration> {Name = "Configuration mock"};
             var audioMoqI = new Mock<IAudioDevice> { Name = "first audio dev" };
             audioMoqI.SetupGet(a => a.FriendlyName).Returns("Speakers (Test device)");
+            audioMoqI.SetupGet(a => a.Type).Returns(AudioDeviceType.Playback);
 
             //Setup
             configurationMoq.Setup(c => c.SelectedPlaybackDeviceList).Returns(new HashSet<string>());
@@ -45,16 +46,17 @@ namespace SoundSwitch.Tests
 
             //Action
             var eventCalled = false;
-            AppModel.Instance.SelectedPlaybackDeviceChanged += (sender, changed) => eventCalled = true;
+            AppModel.Instance.SelectedDeviceChanged += (sender, changed) => eventCalled = true;
             Assert.True(AppModel.Instance.SelectDevice(audioMoqI.Object));
 
             //Asserts
             configurationMoq.VerifyGet(c => c.SelectedPlaybackDeviceList);
             configurationMoq.Verify(c => c.Save());
             audioMoqI.VerifyGet(a => a.FriendlyName);
+            audioMoqI.VerifyGet(a => a.Type);
             Assert.That(configurationMoq.Object.SelectedPlaybackDeviceList.Count == 1);
             Assert.That(configurationMoq.Object.SelectedPlaybackDeviceList.Contains("Speakers (Test device)"));
-            Assert.That(eventCalled, "SelectedPlaybackDeviceChanged not called");
+            Assert.That(eventCalled, "SelectedDeviceChanged not called");
         }
 
         [Test]
@@ -63,6 +65,7 @@ namespace SoundSwitch.Tests
             var configurationMoq = new Mock<ISoundSwitchConfiguration> {Name = "Configuration mock"};
             var audioMoqI = new Mock<IAudioDevice> { Name = "first audio dev" };
             audioMoqI.SetupGet(a => a.FriendlyName).Returns("Speakers (Test device)");
+            audioMoqI.SetupGet(a => a.Type).Returns(AudioDeviceType.Playback);
 
             //Setup
             configurationMoq.Setup(c => c.SelectedPlaybackDeviceList).Returns(new HashSet<string> { "Speakers (Test device)" });
@@ -70,14 +73,15 @@ namespace SoundSwitch.Tests
 
             //Action
             var eventCalled = false;
-            AppModel.Instance.SelectedPlaybackDeviceChanged += (sender, changed) => eventCalled = true;
+            AppModel.Instance.SelectedDeviceChanged += (sender, changed) => eventCalled = true;
             Assert.False(AppModel.Instance.SelectDevice(audioMoqI.Object));
 
             //Asserts
             configurationMoq.VerifyGet(c => c.SelectedPlaybackDeviceList);
             audioMoqI.VerifyGet(a => a.FriendlyName);
+            audioMoqI.VerifyGet(a => a.Type);
             Assert.That(configurationMoq.Object.SelectedPlaybackDeviceList.Count == 1);
-            Assert.That(!eventCalled, "SelectedPlaybackDeviceChanged called");
+            Assert.That(!eventCalled, "SelectedDeviceChanged called");
         }
 
         [Test]
@@ -86,21 +90,24 @@ namespace SoundSwitch.Tests
             var configurationMoq = new Mock<ISoundSwitchConfiguration> {Name = "Configuration mock"};
             var audioMoqI = new Mock<IAudioDevice> { Name = "first audio dev" };
             audioMoqI.SetupGet(a => a.FriendlyName).Returns("Speakers (Test device)");
+            audioMoqI.SetupGet(a => a.Type).Returns(AudioDeviceType.Playback);
+
             //Setup
             configurationMoq.Setup(c => c.SelectedPlaybackDeviceList).Returns(new HashSet<string> { "Speakers (Test device)" });
             SetConfigurationMoq(configurationMoq);
 
             //Action
             var eventCalled = false;
-            AppModel.Instance.SelectedPlaybackDeviceChanged += (sender, changed) => eventCalled = true;
+            AppModel.Instance.SelectedDeviceChanged += (sender, changed) => eventCalled = true;
             Assert.True(AppModel.Instance.UnselectDevice(audioMoqI.Object));
 
             //Asserts
             configurationMoq.VerifyGet(c => c.SelectedPlaybackDeviceList);
             configurationMoq.Verify(c => c.Save());
             audioMoqI.VerifyGet(a => a.FriendlyName);
+            audioMoqI.VerifyGet(a => a.Type);
             Assert.That(configurationMoq.Object.SelectedPlaybackDeviceList.Count == 0);
-            Assert.That(eventCalled, "SelectedPlaybackDeviceChanged not called");
+            Assert.That(eventCalled, "SelectedDeviceChanged not called");
         }
 
         [Test]
@@ -109,19 +116,22 @@ namespace SoundSwitch.Tests
             var configurationMoq = new Mock<ISoundSwitchConfiguration> {Name = "Configuration mock"};
             var audioMoqI = new Mock<IAudioDevice> { Name = "first audio dev" };
             audioMoqI.SetupGet(a => a.FriendlyName).Returns("Speakers (Test device)");
+            audioMoqI.SetupGet(a => a.Type).Returns(AudioDeviceType.Playback);
+
             //Setup
             configurationMoq.Setup(c => c.SelectedPlaybackDeviceList).Returns(new HashSet<string>());
             SetConfigurationMoq(configurationMoq);
 
             //Action
             var eventCalled = false;
-            AppModel.Instance.SelectedPlaybackDeviceChanged += (sender, changed) => eventCalled = true;
+            AppModel.Instance.SelectedDeviceChanged += (sender, changed) => eventCalled = true;
             Assert.False(AppModel.Instance.UnselectDevice(audioMoqI.Object));
 
             //Asserts
             configurationMoq.VerifyGet(c => c.SelectedPlaybackDeviceList);
             audioMoqI.VerifyGet(a => a.FriendlyName);
-            Assert.That(!eventCalled, "SelectedPlaybackDeviceChanged called");
+            audioMoqI.VerifyGet(a => a.Type);
+            Assert.That(!eventCalled, "SelectedDeviceChanged called");
         }
 
         [Test]
@@ -175,7 +185,7 @@ namespace SoundSwitch.Tests
             SetConfigurationMoq(configurationMoq);
             AppModel.Instance.ActiveAudioDeviceLister = listerMoq.Object;
             IAudioDevice audioDevice = null;
-            AppModel.Instance.DefaultPlaybackDeviceChanged += (sender, @event) => audioDevice = @event.AudioDevice;
+            AppModel.Instance.DefaultDeviceChanged += (sender, @event) => audioDevice = @event.AudioDevice;
 
             //Action
             Assert.That(AppModel.Instance.CycleActiveDevice());
@@ -214,7 +224,7 @@ namespace SoundSwitch.Tests
             SetConfigurationMoq(configurationMoq);
             AppModel.Instance.ActiveAudioDeviceLister = listerMoq.Object;
             IAudioDevice audioDevice = null;
-            AppModel.Instance.DefaultPlaybackDeviceChanged += (sender, @event) => audioDevice = @event.AudioDevice;
+            AppModel.Instance.DefaultDeviceChanged += (sender, @event) => audioDevice = @event.AudioDevice;
 
             //Action
             Assert.That(AppModel.Instance.CycleActiveDevice());
@@ -252,7 +262,7 @@ namespace SoundSwitch.Tests
             SetConfigurationMoq(configurationMoq);
             AppModel.Instance.ActiveAudioDeviceLister = listerMoq.Object;
             IAudioDevice audioDevice = null;
-            AppModel.Instance.DefaultPlaybackDeviceChanged += (sender, @event) => audioDevice = @event.AudioDevice;
+            AppModel.Instance.DefaultDeviceChanged += (sender, @event) => audioDevice = @event.AudioDevice;
 
             //Action
             Assert.That(AppModel.Instance.CycleActiveDevice());
@@ -279,7 +289,7 @@ namespace SoundSwitch.Tests
             SetConfigurationMoq(configurationMoq);
             bool deviceChangeEventCalled = false;
             bool errorTriggeredEventCalled = false;
-            AppModel.Instance.DefaultPlaybackDeviceChanged += (sender, @event) => deviceChangeEventCalled = true;
+            AppModel.Instance.DefaultDeviceChanged += (sender, @event) => deviceChangeEventCalled = true;
             AppModel.Instance.ErrorTriggered +=
                 (sender, @event) => errorTriggeredEventCalled = @event.Exception is NullReferenceException;
 
@@ -303,13 +313,14 @@ namespace SoundSwitch.Tests
             //Setup
             SetConfigurationMoq(configurationMoq);
             IAudioDevice audioDevice = null;
-            AppModel.Instance.DefaultPlaybackDeviceChanged += (sender, @event) => audioDevice = @event.AudioDevice;
+            AppModel.Instance.DefaultDeviceChanged += (sender, @event) => audioDevice = @event.AudioDevice;
 
             //Action
             AppModel.Instance.SetActiveDevice(audioMoqI.Object);
 
             //Asserts
             configurationMoq.VerifySet(config => config.LastPlaybackActive = "Speakers (Test device)");
+            audioMoqI.VerifyGet(a => a.Type);
             audioMoqI.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Console)));
             Assert.That(audioMoqI.Object.Equals(audioDevice));
         }

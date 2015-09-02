@@ -140,11 +140,9 @@ namespace SoundSwitch.Model
             updateChecker.CheckForUpdate();
         }
 
-        public event EventHandler<DeviceListChanged> SelectedPlaybackDeviceChanged;
-        public event EventHandler<AudioChangeEvent> DefaultRecordingDeviceChanged;
+        public event EventHandler<DeviceListChanged> SelectedDeviceChanged;
         public event EventHandler<ExceptionEvent> ErrorTriggered;
-        public event EventHandler<AudioChangeEvent> DefaultPlaybackDeviceChanged;
-        public event EventHandler<DeviceListChanged> SelectedRecordingDeviceChanged;
+        public event EventHandler<AudioChangeEvent> DefaultDeviceChanged;
         public event EventHandler<UpdateChecker.NewReleaseEvent> NewVersionReleased;
 
         private void RegisterRecovery()
@@ -193,10 +191,25 @@ namespace SoundSwitch.Model
         /// </returns>
         public bool SelectDevice(IAudioDevice device)
         {
-            var result = SelectedPlaybackDevicesList.Add(device.FriendlyName);
+            var result = false;
+            DeviceListChanged eventChanged = null;
+            switch (device.Type)
+            {
+                case AudioDeviceType.Playback:
+                    result = SelectedPlaybackDevicesList.Add(device.FriendlyName);
+                    eventChanged = new DeviceListChanged(SelectedPlaybackDevicesList, device.Type);
+                    break;
+                case AudioDeviceType.Recording:
+                    result = SelectedRecordingDevicesList.Add(device.FriendlyName);
+                    eventChanged = new DeviceListChanged(SelectedRecordingDevicesList, device.Type);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
             if (result)
             {
-                SelectedPlaybackDeviceChanged?.Invoke(this, new DeviceListChanged(SelectedPlaybackDevicesList));
+                SelectedDeviceChanged?.Invoke(this, eventChanged);
                 AppConfigs.Configuration.Save();
             }
             return result;
@@ -212,17 +225,31 @@ namespace SoundSwitch.Model
         /// </returns>
         public bool UnselectDevice(IAudioDevice device)
         {
-            var result = SelectedPlaybackDevicesList.Remove(device.FriendlyName);
+            var result = false;
+            DeviceListChanged eventChanged = null;
+            switch (device.Type)
+            {
+                case AudioDeviceType.Playback:
+                    result = SelectedPlaybackDevicesList.Remove(device.FriendlyName);
+                    eventChanged = new DeviceListChanged(SelectedPlaybackDevicesList, device.Type);
+                    break;
+                case AudioDeviceType.Recording:
+                    result = SelectedRecordingDevicesList.Remove(device.FriendlyName);
+                    eventChanged = new DeviceListChanged(SelectedRecordingDevicesList, device.Type);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
             if (result)
             {
-                SelectedPlaybackDeviceChanged?.Invoke(this, new DeviceListChanged(SelectedPlaybackDevicesList));
+                SelectedDeviceChanged?.Invoke(this, eventChanged);
                 AppConfigs.Configuration.Save();
             }
             return result;
         }
 
         #endregion
-
 
         #region Hot keys
 
@@ -240,8 +267,7 @@ namespace SoundSwitch.Model
                 if (!WindowsAPIAdapter.RegisterHotKey(hotkeys))
                 {
                     AppLogger.Log.Warn("Can't register new hotkeys", hotkeys);
-                    ErrorTriggered?.Invoke(this,
-                        new ExceptionEvent(new Exception("Impossible to register HotKey: " + PlaybackHotKeysString)));
+                    ErrorTriggered?.Invoke(this, new ExceptionEvent(new Exception("Impossible to register HotKey: " + PlaybackHotKeysString)));
                 }
                 else
                 {
@@ -300,8 +326,19 @@ namespace SoundSwitch.Model
                         AppLogger.Log.Info("Set Default Communication device", device);
                         device.SetAsDefault(Role.Communications);
                     }
-                    DefaultPlaybackDeviceChanged?.Invoke(this, new AudioChangeEvent(device));
-                    AppConfigs.Configuration.LastPlaybackActive = device.FriendlyName;
+                    DefaultDeviceChanged?.Invoke(this, new AudioChangeEvent(device));
+                    switch (device.Type)
+                    {
+                        case AudioDeviceType.Playback:
+                            AppConfigs.Configuration.LastPlaybackActive = device.FriendlyName;
+                            break;
+                        case AudioDeviceType.Recording:
+                            AppConfigs.Configuration.LastRecordingActive = device.FriendlyName;
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                    
                     AppConfigs.Configuration.Save();
                     return true;
                 }
@@ -318,11 +355,26 @@ namespace SoundSwitch.Model
         ///     as far as we can tell), returns false if could not successfully switch. Throws NoDevicesException
         ///     if there are no devices configured.
         /// </summary>
-        public bool CycleActiveDevice()
+        public bool CycleActiveDevice(AudioDeviceType type = AudioDeviceType.Playback)
         {
             using (AppLogger.Log.InfoCall())
             {
-                var list = AvailablePlaybackDevices;
+                ICollection<IAudioDevice> list = null;
+                string lastActive = null;
+                switch (type)
+                {
+                    case AudioDeviceType.Playback:
+                        list = AvailablePlaybackDevices;
+                        lastActive = AppConfigs.Configuration.LastPlaybackActive;
+                        break;
+                    case AudioDeviceType.Recording:
+                        list = AvailableRecordingDevices;
+                        lastActive = AppConfigs.Configuration.LastRecordingActive;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(type), type, null);
+                }
+
                 switch (list.Count)
                 {
                     case 0:
@@ -332,12 +384,7 @@ namespace SoundSwitch.Model
                         return false;
                 }
                 AppLogger.Log.Info("Cycle Audio Devices", list);
-                var defaultDev =
-                    list.FirstOrDefault(device => device.FriendlyName == AppConfigs.Configuration.LastPlaybackActive) ??
-                    list.FirstOrDefault(device => device.IsDefault(Role.Console)) ??
-                    list.ElementAt(0);
-
-
+                var defaultDev = list.FirstOrDefault(device => device.FriendlyName == lastActive) ?? list.FirstOrDefault(device => device.IsDefault(Role.Console)) ?? list.ElementAt(0);
                 var next = list.SkipWhile((device, i) => device != defaultDev).Skip(1).FirstOrDefault() ?? list.ElementAt(0);
                 AppLogger.Log.Info("Select AudioDevice", next);
                 return SetActiveDevice(next);
