@@ -302,7 +302,7 @@ namespace SoundSwitch.Model
         {
             using (AppLogger.Log.DebugCall())
             {
-                if (e.HotKeys != AppConfigs.Configuration.PlaybackHotKeys)
+                if (e.HotKeys != AppConfigs.Configuration.PlaybackHotKeys && e.HotKeys != AppConfigs.Configuration.RecordingHotKeys)
                 {
                     AppLogger.Log.Debug("Not the registered Hotkeys", e.HotKeys);
                     return;
@@ -310,7 +310,14 @@ namespace SoundSwitch.Model
 
                 try
                 {
-                    CycleActiveDevice();
+                    if (e.HotKeys == AppConfigs.Configuration.PlaybackHotKeys)
+                    {
+                        CycleActiveDevice(AudioDeviceType.Playback);
+                    }
+                    else if (e.HotKeys == AppConfigs.Configuration.RecordingHotKeys)
+                    {
+                        CycleActiveDevice(AudioDeviceType.Recording);
+                    }
                 }
                 catch (Exception ex)
                 {
