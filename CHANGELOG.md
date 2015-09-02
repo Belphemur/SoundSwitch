@@ -1,5 +1,17 @@
 # Change Log
 
+## [v3.4.0](https://github.com/Belphemur/SoundSwitch/tree/v3.4.0) (2015-09-02)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.3.1...v3.4.0)
+
+**Implemented enhancements:**
+
+- Group devices by state in Settings [\#22](https://github.com/Belphemur/SoundSwitch/issues/22)
+- Switch Recording devices [\#19](https://github.com/Belphemur/SoundSwitch/issues/19)
+
+**Closed issues:**
+
+- Error: Index was outside the bounds of the array [\#20](https://github.com/Belphemur/SoundSwitch/issues/20)
+
 ## [v3.3.1](https://github.com/Belphemur/SoundSwitch/tree/v3.3.1) (2015-08-29)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.3.0...v3.3.1)
 

@@ -22,7 +22,12 @@ If you want the application to start automatically when your pc boots up, check 
 Press Ctrl + Alt + F11 to cycle through the playback devices.
 (Or a different key combination if you changed it)
 
+For Recording devices the default is : Ctrl + Alt + F7
+
 ## Features
+
+### Recording Devices
+SoundSwitch can also switch your recording devices. You can set HotKeys as for the Playback devices.
 
 ### Auto-Updater
 This is one of the interesting feature added in Isabelline Gold, the auto-updater. Every 12h SoundSwitch will check the github repository (thanks to the GitHub API) for a new release, if a new one is available, the user will get a notification and the  “No Update” in the context menu will change to “Update Available (X.X.X)” where X.X.X represent the new version number. When the user click on it, a new Window opens with a progress bar (see screenshots). The new version get automatically downloaded in the temp folder of the user. When the download is finished the user can install the Update by just clicking the install button. A changelog is also provided by getting the information set in the release on GitHub.
