@@ -12,7 +12,6 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System;
 using System.Collections.Generic;
 using AudioEndPoint;
 using AudioEndPointControllerWrapper;

@@ -196,7 +196,7 @@ namespace SoundSwitch.UI.Forms
             if (!listView.SmallImageList.Images.ContainsKey(device.DeviceClassIconPath))
             {
                 listView.SmallImageList.Images.Add(device.DeviceClassIconPath,
-                    AudioDeviceIconExtractor.ExtractIconFromAudioDevice(device, true));
+                    AudioDeviceIconExtractor.ExtractIconFromAudioDevice(device, true)); 
             }
         }
 

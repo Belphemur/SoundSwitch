@@ -42,7 +42,7 @@ namespace SoundSwitch.Util
             {
                 if (audioDevice.DeviceClassIconPath.EndsWith(".ico"))
                 {
-                    ico = Icon.ExtractAssociatedIcon(audioDevice.DeviceClassIconPath);
+                    ico = Icon.ExtractAssociatedIcon(audioDevice.DeviceClassIconPath); 
                 }
                 else
                 {
