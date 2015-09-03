@@ -139,7 +139,7 @@ namespace SoundSwitch.UI.Forms
                 var audioDeviceWrappers = audioDevices
                     .Where(wrapper => !string.IsNullOrEmpty(wrapper.FriendlyName))
                     .OrderBy(s => s.FriendlyName);
-                listView.SmallImageList = new ImageList();
+                listView.SmallImageList = new ImageList {ImageSize = new Size(32,32), ColorDepth = ColorDepth.Depth32Bit};
 
                 listView.Columns.Add("Device", -3, HorizontalAlignment.Center);
                 foreach (var device in audioDeviceWrappers)
@@ -190,12 +190,13 @@ namespace SoundSwitch.UI.Forms
         ///     Using the DeviceClassIconPath, get the Icon
         /// </summary>
         /// <param name="device"></param>
+        /// <param name="listView"></param>
         private void AddDeviceIconSmallImage(IAudioDevice device, ListView listView)
         {
             if (!listView.SmallImageList.Images.ContainsKey(device.DeviceClassIconPath))
             {
                 listView.SmallImageList.Images.Add(device.DeviceClassIconPath,
-                    AudioDeviceIconExtractor.ExtractIconFromAudioDevice(device, false));
+                    AudioDeviceIconExtractor.ExtractIconFromAudioDevice(device, true));
             }
         }
 
