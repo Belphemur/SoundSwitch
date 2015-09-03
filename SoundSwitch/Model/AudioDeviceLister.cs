@@ -12,9 +12,11 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
+using System;
 using System.Collections.Generic;
 using AudioEndPoint;
 using AudioEndPointControllerWrapper;
+using SoundSwitch.Framework;
 
 namespace SoundSwitch.Model
 {
@@ -33,7 +35,16 @@ namespace SoundSwitch.Model
         /// <returns></returns>
         public ICollection<IAudioDevice> GetPlaybackDevices()
         {
-            return AudioController.GetPlaybackDevices(_state);
+            try
+            {
+                return AudioController.GetPlaybackDevices(_state);
+            }
+            catch (DefSoundException e)
+            {
+                AppLogger.Log.Error("Problem getting Playback Devices ", e);
+                return new List<IAudioDevice>();
+            }
+            
         }
 
         /// <summary>
@@ -42,7 +53,16 @@ namespace SoundSwitch.Model
         /// <returns></returns>
         public ICollection<IAudioDevice> GetRecordingDevices()
         {
-            return AudioController.GetRecordingDevices(_state);
+            try
+            {
+                return AudioController.GetRecordingDevices(_state);
+            }
+            catch (DefSoundException e)
+            {
+                AppLogger.Log.Error("Problem getting Recording Devices ", e);
+                return new List<IAudioDevice>();
+            }
+
         }
     }
 }
