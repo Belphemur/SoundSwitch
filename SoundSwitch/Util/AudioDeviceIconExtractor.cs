@@ -40,10 +40,17 @@ namespace SoundSwitch.Util
             }
             try
             {
-                var iconInfo = audioDevice.DeviceClassIconPath.Split(',');
-                var dllPath = iconInfo[0];
-                var iconIndex = int.Parse(iconInfo[1]);
-                ico = IconExtractor.Extract(dllPath, iconIndex, largeIcon);
+                if (audioDevice.DeviceClassIconPath.EndsWith(".ico"))
+                {
+                    ico = Icon.ExtractAssociatedIcon(audioDevice.DeviceClassIconPath);
+                }
+                else
+                {
+                    var iconInfo = audioDevice.DeviceClassIconPath.Split(',');
+                    var dllPath = iconInfo[0];
+                    var iconIndex = int.Parse(iconInfo[1]);
+                    ico = IconExtractor.Extract(dllPath, iconIndex, largeIcon);
+                }
             }
             catch (Exception e)
             {
@@ -51,10 +58,10 @@ namespace SoundSwitch.Util
                 switch (audioDevice.Type)
                 {
                     case AudioDeviceType.Playback:
-                        ico = Icon.FromHandle(Resources.SpeakerDefaultIcon.GetHicon());
+                        ico = Resources.defaultSpeakers;
                         break;
                     case AudioDeviceType.Recording:
-                        ico = Icon.FromHandle(Resources.MicDefaultIcon.GetHicon());
+                        ico = Resources.defaultMicrophone;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();

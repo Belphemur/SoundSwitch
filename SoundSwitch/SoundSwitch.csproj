@@ -298,8 +298,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\MicDefaultIcon.png" />
-    <None Include="Resources\SpeakerDefaultIcon.png" />
     <None Include="Resources\page-bottom.png" />
     <None Include="Resources\tick.png" />
     <None Include="Resources\arrow-switch-16.png" />
@@ -309,6 +307,8 @@
     <None Include="Resources\exit.png" />
     <Content Include="Resources\control-equalizer-blue.png" />
     <Content Include="Resources\control-volume-blue.png" />
+    <None Include="Resources\defaultMicrophone.ico" />
+    <None Include="Resources\defaultSpeakers.ico" />
     <Content Include="Resources\help.png" />
   </ItemGroup>
   <ItemGroup>

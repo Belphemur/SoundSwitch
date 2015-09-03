@@ -71,6 +71,26 @@ namespace SoundSwitch.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon defaultMicrophone {
+            get {
+                object obj = ResourceManager.GetObject("defaultMicrophone", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon defaultSpeakers {
+            get {
+                object obj = ResourceManager.GetObject("defaultSpeakers", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap exit {
@@ -86,16 +106,6 @@ namespace SoundSwitch.Properties {
         internal static System.Drawing.Bitmap Help {
             get {
                 object obj = ResourceManager.GetObject("Help", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap MicDefaultIcon {
-            get {
-                object obj = ResourceManager.GetObject("MicDefaultIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -146,16 +156,6 @@ namespace SoundSwitch.Properties {
         internal static System.Drawing.Bitmap SoundSwitch48 {
             get {
                 object obj = ResourceManager.GetObject("SoundSwitch48", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap SpeakerDefaultIcon {
-            get {
-                object obj = ResourceManager.GetObject("SpeakerDefaultIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
