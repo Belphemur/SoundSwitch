@@ -1,4 +1,6 @@
-﻿namespace SoundSwitch.UI.Forms
+﻿using SoundSwitch.Properties;
+
+namespace SoundSwitch.UI.Forms
 {
     partial class About
     {
@@ -66,7 +68,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(58, 13);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Created by";
+            this.label2.Text = AboutStrings.created;
             // 
             // linkLabel1
             // 
@@ -86,7 +88,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(42, 13);
             this.label3.TabIndex = 3;
-            this.label3.Text = "Version";
+            this.label3.Text = AboutStrings.version;
             // 
             // txtVersion
             // 
@@ -112,7 +114,7 @@
             this.groupBox1.Size = new System.Drawing.Size(259, 94);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Author and Program info";
+            this.groupBox1.Text = AboutStrings.author;
             // 
             // maintainerLinkLabel
             // 
@@ -132,7 +134,7 @@
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(73, 13);
             this.label7.TabIndex = 5;
-            this.label7.Text = "Maintained by";
+            this.label7.Text = AboutStrings.maintained;
             // 
             // groupBox2
             // 
@@ -147,7 +149,7 @@
             this.groupBox2.Size = new System.Drawing.Size(259, 99);
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Credit and attribution";
+            this.groupBox2.Text = AboutStrings.credits;
             // 
             // label6
             // 
@@ -155,7 +157,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(90, 27);
             this.label6.TabIndex = 4;
-            this.label6.Text = "Default Playback device change";
+            this.label6.Text = AboutStrings.defPlaybacChg;
             // 
             // linkLabel3
             // 
@@ -175,7 +177,7 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(79, 13);
             this.label5.TabIndex = 2;
-            this.label5.Text = "Keyboard hook";
+            this.label5.Text = AboutStrings.keyboardHotkeys;
             // 
             // linkLabel2
             // 
@@ -195,7 +197,7 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(33, 13);
             this.label4.TabIndex = 0;
-            this.label4.Text = "Icons";
+            this.label4.Text = AboutStrings.icons;
             // 
             // pictureBox1
             // 
@@ -228,7 +230,7 @@
             this.Controls.Add(this.appNameLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "About";
-            this.Text = "About";
+            this.Text = TrayIconStrings.about;
             this.Load += new System.EventHandler(this.About_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
