@@ -81,8 +81,6 @@ namespace SoundSwitch.Util
             _settingsMenu.Dispose();
             _trayIcon.Dispose();
             _updateMenuItem.Dispose();
-            GC.SuppressFinalize(_availablePlaybackDevices);
-            GC.SuppressFinalize(this);
         }
 
         private void PopulateSettingsMenu()
