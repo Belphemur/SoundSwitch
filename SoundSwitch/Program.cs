@@ -15,7 +15,6 @@
 
 using System;
 using System.Diagnostics;
-using System.Globalization;
 using System.Threading;
 using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
@@ -31,7 +30,6 @@ namespace SoundSwitch
         [STAThread]
         private static void Main()
         {
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("fr-FR");
             bool createdNew;
             AppLogger.Log.Info("Application Starts");
             using (new Mutex(true, Application.ProductName, out createdNew))
@@ -79,17 +77,17 @@ namespace SoundSwitch
                 try
                 {
 #endif
-                    using (var icon = new TrayIcon())
+                using (var icon = new TrayIcon())
+                {
+                    if (AppConfigs.Configuration.FirstRun)
                     {
-                        if (AppConfigs.Configuration.FirstRun)
-                        {
-                            icon.ShowSettings();
-                            AppConfigs.Configuration.FirstRun = false;
-                            AppLogger.Log.Info("First run");
-                        }
-                        Application.Run();
-                        WindowsAPIAdapter.Stop();
+                        icon.ShowSettings();
+                        AppConfigs.Configuration.FirstRun = false;
+                        AppLogger.Log.Info("First run");
                     }
+                    Application.Run();
+                    WindowsAPIAdapter.Stop();
+                }
 #if !DEBUG
                 }
                
@@ -99,7 +97,7 @@ namespace SoundSwitch
 
                 }
 #endif
-                }
+            }
         }
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
