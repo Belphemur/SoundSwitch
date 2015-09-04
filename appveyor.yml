@@ -1,4 +1,4 @@
-version: 3.3.x.{build}
+version: 3.4.2.{build}
 configuration: AppVeyor
 platform:
 - x64

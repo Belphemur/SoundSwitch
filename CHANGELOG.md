@@ -1,5 +1,17 @@
 # Change Log
 
+## [v3.4.2](https://github.com/Belphemur/SoundSwitch/tree/v3.4.2) (2015-09-04)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.4.1...v3.4.2)
+
+**Implemented enhancements:**
+
+- Add localization [\#27](https://github.com/Belphemur/SoundSwitch/issues/27)
+- Bigger Icons in Settings. Support non standard icons. [\#26](https://github.com/Belphemur/SoundSwitch/issues/26)
+
+**Fixed bugs:**
+
+- crash on Start: Recording Devices: Call IMMDeviceEnumerator::GetDefaultAudioEndpoint\(...\)  [\#25](https://github.com/Belphemur/SoundSwitch/issues/25)
+
 ## [v3.4.1](https://github.com/Belphemur/SoundSwitch/tree/v3.4.1) (2015-09-02)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.4.0...v3.4.1)
 
