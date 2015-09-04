@@ -48,7 +48,7 @@ namespace SoundSwitch.Util
 
         public TrayIcon()
         {
-            _updateMenuItem = new ToolStripMenuItem("No Update", Resources.Update, OnUpdateClick) {Enabled = false};
+            _updateMenuItem = new ToolStripMenuItem(TrayIconStrings.NoUpdate, Resources.Update, OnUpdateClick) {Enabled = false};
             _trayIcon.ContextMenuStrip = _settingsMenu;
 
             _availablePlaybackDevices = AppModel.Instance.AvailablePlaybackDevices;
@@ -56,7 +56,7 @@ namespace SoundSwitch.Util
 
             PopulateSettingsMenu();
 
-            _selectionMenu.Items.Add("No devices selected", Resources.Settings, (sender, e) => ShowSettings());
+            _selectionMenu.Items.Add(TrayIconStrings.NoDevSel, Resources.Settings, (sender, e) => ShowSettings());
 
             _trayIcon.MouseClick += (sender, e) =>
             {
@@ -87,16 +87,16 @@ namespace SoundSwitch.Util
 
         private void PopulateSettingsMenu()
         {
-            _settingsMenu.Items.Add("Playback Devices", Resources.PlaybackDevices,
+            _settingsMenu.Items.Add(TrayIconStrings.playbackDev, Resources.PlaybackDevices,
                 (sender, e) => { Process.Start(new ProcessStartInfo("control", "mmsys.cpl sounds")); });
-            _settingsMenu.Items.Add("Mixer", Resources.Mixer,
+            _settingsMenu.Items.Add(TrayIconStrings.mixer, Resources.Mixer,
                 (sender, e) => { Process.Start(new ProcessStartInfo("sndvol.exe")); });
             _settingsMenu.Items.Add("-");
-            _settingsMenu.Items.Add("Settings", Resources.Settings, (sender, e) => ShowSettings());
-            _settingsMenu.Items.Add("About", Resources.Help, (sender, e) => new About().Show());
+            _settingsMenu.Items.Add(TrayIconStrings.settings, Resources.Settings, (sender, e) => ShowSettings());
+            _settingsMenu.Items.Add(TrayIconStrings.about, Resources.Help, (sender, e) => new About().Show());
             _settingsMenu.Items.Add(_updateMenuItem);
             _settingsMenu.Items.Add("-");
-            _settingsMenu.Items.Add("Exit", Resources.exit, (sender, e) => Application.Exit());
+            _settingsMenu.Items.Add(TrayIconStrings.exit, Resources.exit, (sender, e) => Application.Exit());
         }
 
         private void OnUpdateClick(object sender, EventArgs eventArgs)
@@ -172,9 +172,9 @@ namespace SoundSwitch.Util
         private void NewReleaseAvailable(object sender, UpdateChecker.NewReleaseEvent newReleaseEvent)
         {
             _updateMenuItem.Tag = newReleaseEvent.Release;
-            _updateMenuItem.Text = $"Update Available ({newReleaseEvent.Release.ReleaseVersion})";
+            _updateMenuItem.Text = string.Format(TrayIconStrings.updateAvailable, newReleaseEvent.Release.ReleaseVersion);
             _updateMenuItem.Enabled = true;
-            _trayIcon.ShowBalloonTip(3000, $"Version {newReleaseEvent.Release.ReleaseVersion} is available", "Right click on the tray icon to download.", ToolTipIcon.Info);
+            _trayIcon.ShowBalloonTip(3000, string.Format(TrayIconStrings.versionAvailable, newReleaseEvent.Release.ReleaseVersion), TrayIconStrings.howDownloadUpdate, ToolTipIcon.Info);
         }
 
         private void UpdateAvailableDeviceList()
@@ -249,12 +249,12 @@ namespace SoundSwitch.Util
 
         private void ShowPlaybackChanged(string deviceName)
         {
-            _trayIcon.ShowBalloonTip(500, "SoundSwitch: Playback device changed", deviceName, ToolTipIcon.Info);
+            _trayIcon.ShowBalloonTip(500, string.Format(TrayIconStrings.playbackChanged, Application.ProductName), deviceName, ToolTipIcon.Info);
         }
 
         private void ShowRecordingChanged(string deviceName)
         {
-            _trayIcon.ShowBalloonTip(500, "SoundSwitch: Recording device changed", deviceName, ToolTipIcon.Info);
+            _trayIcon.ShowBalloonTip(500, string.Format(TrayIconStrings.recordingChanged, Application.ProductName), deviceName, ToolTipIcon.Info);
         }
 
         /// <summary>
@@ -262,17 +262,18 @@ namespace SoundSwitch.Util
         /// </summary>
         public void ShowNoDevices()
         {
-            AppLogger.Log.Error("No devices available");
-            _trayIcon.ShowBalloonTip(3000, "SoundSwitch: Configuration needed", "No devices available to switch to. Open configuration by right-clicking on the SoundSwitch icon. ", ToolTipIcon.Warning);
+            AppLogger.Log.Info("No devices available");
+            _trayIcon.ShowBalloonTip(3000, string.Format(TrayIconStrings.confNeeded, Application.ProductName), TrayIconStrings.confNeededExp, ToolTipIcon.Warning);
         }
 
         /// <summary>
         ///     shows an error messasge
         /// </summary>
         /// <param name="errorMessage"></param>
-        public void ShowError(string errorMessage, string errorTitle = "Error")
+        /// <param name="errorTitle"></param>
+        public void ShowError(string errorMessage, string errorTitle)
         {
-            _trayIcon.ShowBalloonTip(3000, "SoundSwitch: " + errorTitle, errorMessage, ToolTipIcon.Error);
+            _trayIcon.ShowBalloonTip(3000, $"{Application.ProductName}: {errorTitle}", errorMessage, ToolTipIcon.Error);
         }
     }
 }
