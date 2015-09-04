@@ -24,7 +24,7 @@ namespace SoundSwitch.UI.Forms
 {
     public partial class UpdateDownloadForm : Form
     {
-        private readonly WebFile releaseFile;
+        private readonly WebFile _releaseFile;
 
         public UpdateDownloadForm(Release release)
         {
@@ -34,18 +34,18 @@ namespace SoundSwitch.UI.Forms
             changeLog.SetChangelog(release.Changelog);
             downloadProgress.DisplayStyle = TextProgressBar.ProgressBarDisplayText.Both;
             downloadProgress.CustomText = release.Asset.name;
-            releaseFile = new WebFile(new Uri(release.Asset.browser_download_url));
-            releaseFile.DownloadProgressChanged +=
+            _releaseFile = new WebFile(new Uri(release.Asset.browser_download_url));
+            _releaseFile.DownloadProgressChanged +=
                 (sender, args) =>
                 {
                     downloadProgress.Invoke(new Action(() => { downloadProgress.Value = args.ProgressPercentage; }));
                 };
-            releaseFile.DownloadFailed += (sender, @event) =>
+            _releaseFile.DownloadFailed += (sender, @event) =>
             {
                 AppLogger.Log.Error("Couldn't download the Release ", @event.Exception);
-                MessageBox.Show(@event.Exception.Message, @"Download failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(@event.Exception.Message, UpdateFormStrings.downloadFailed, MessageBoxButtons.OK, MessageBoxIcon.Error);
             };
-            releaseFile.Downloaded += (sender, args) =>
+            _releaseFile.Downloaded += (sender, args) =>
             {
                 installButton.Invoke(new Action(() =>
                 {
@@ -53,7 +53,7 @@ namespace SoundSwitch.UI.Forms
                     downloadProgress.Enabled = false;
                 }));
             };
-            releaseFile.DownloadFile();
+            _releaseFile.DownloadFile();
         }
 
         private void cancelButton_Click(object sender, EventArgs e)
@@ -63,13 +63,13 @@ namespace SoundSwitch.UI.Forms
 
         private void installButton_Click(object sender, EventArgs e)
         {
-            releaseFile.Start();
+            _releaseFile.Start();
             Close();
         }
 
         private void UpdateDownloadForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            releaseFile.CancelDownload();
+            _releaseFile.CancelDownload();
         }
     }
 }

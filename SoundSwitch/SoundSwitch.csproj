@@ -204,20 +204,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SettingsString.resx</DependentUpon>
     </Compile>
-    <Compile Include="Properties\SettingsString.fr.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SettingsString.fr.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\TrayIconStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TrayIconStrings.resx</DependentUpon>
     </Compile>
-    <Compile Include="Properties\TrayIconStrings.fr.Designer.cs">
+    <Compile Include="Properties\UpdateFormStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>TrayIconStrings.fr.resx</DependentUpon>
+      <DependentUpon>UpdateFormStrings.resx</DependentUpon>
     </Compile>
     <Compile Include="Util\AudioDeviceIconExtractor.cs" />
     <Compile Include="Framework\AutoStart.cs" />
@@ -279,26 +274,22 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Properties\SettingsString.fr.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>SettingsString.fr.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\SettingsString.fr.resx" />
     <EmbeddedResource Include="Properties\SettingsString.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>SettingsString.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\TrayIconStrings.fr.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>TrayIconStrings.fr.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\TrayIconStrings.fr.resx" />
     <EmbeddedResource Include="Properties\TrayIconStrings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>TrayIconStrings.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Forms\UpdateDownloadForm.resx">
-      <DependentUpon>UpdateDownloadForm.cs</DependentUpon>
+    <EmbeddedResource Include="Properties\UpdateFormStrings.fr.resx" />
+    <EmbeddedResource Include="Properties\UpdateFormStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>UpdateFormStrings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="App.config" />
     <None Include="packages.config" />

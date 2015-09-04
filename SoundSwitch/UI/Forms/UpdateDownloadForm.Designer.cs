@@ -1,4 +1,5 @@
-﻿using SoundSwitch.UI.Controls;
+﻿using SoundSwitch.Properties;
+using SoundSwitch.UI.Controls;
 
 namespace SoundSwitch.UI.Forms
 {
@@ -49,7 +50,7 @@ namespace SoundSwitch.UI.Forms
             this.changeLogGroup.Size = new System.Drawing.Size(540, 229);
             this.changeLogGroup.TabIndex = 0;
             this.changeLogGroup.TabStop = false;
-            this.changeLogGroup.Text = "Changelog";
+            this.changeLogGroup.Text = UpdateFormStrings.changelog;
             // 
             // cancelButton
             // 
@@ -58,7 +59,7 @@ namespace SoundSwitch.UI.Forms
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 2;
-            this.cancelButton.Text = "Cancel";
+            this.cancelButton.Text = UpdateFormStrings.cancel;
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
             // 
@@ -70,7 +71,7 @@ namespace SoundSwitch.UI.Forms
             this.installButton.Name = "installButton";
             this.installButton.Size = new System.Drawing.Size(75, 23);
             this.installButton.TabIndex = 3;
-            this.installButton.Text = "Install";
+            this.installButton.Text = UpdateFormStrings.install;
             this.installButton.UseVisualStyleBackColor = true;
             this.installButton.Click += new System.EventHandler(this.installButton_Click);
             // 
