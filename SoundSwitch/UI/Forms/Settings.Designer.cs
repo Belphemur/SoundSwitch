@@ -1,4 +1,6 @@
-﻿namespace SoundSwitch.UI.Forms
+﻿using SoundSwitch.Properties;
+
+namespace SoundSwitch.UI.Forms
 {
     partial class Settings
     {
@@ -28,8 +30,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
-            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
+            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup(global::SoundSwitch.Properties.SettingsString.selected, System.Windows.Forms.HorizontalAlignment.Center);
+            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup(global::SoundSwitch.Properties.SettingsString.selected, System.Windows.Forms.HorizontalAlignment.Center);
             this.RunAtStartup = new System.Windows.Forms.CheckBox();
             this.closeButton = new System.Windows.Forms.Button();
             this.communicationCheckbox = new System.Windows.Forms.CheckBox();
@@ -51,9 +53,9 @@
             this.RunAtStartup.AutoSize = true;
             this.RunAtStartup.Location = new System.Drawing.Point(12, 265);
             this.RunAtStartup.Name = "RunAtStartup";
-            this.RunAtStartup.Size = new System.Drawing.Size(93, 17);
+            this.RunAtStartup.Size = new System.Drawing.Size(95, 17);
             this.RunAtStartup.TabIndex = 7;
-            this.RunAtStartup.Text = "Run at startup";
+            this.RunAtStartup.Text = global::SoundSwitch.Properties.SettingsString.runStartup;
             this.RunAtStartup.UseVisualStyleBackColor = true;
             this.RunAtStartup.CheckedChanged += new System.EventHandler(this.RunAtStartup_CheckedChanged);
             // 
@@ -65,7 +67,7 @@
             this.closeButton.Name = "closeButton";
             this.closeButton.Size = new System.Drawing.Size(75, 23);
             this.closeButton.TabIndex = 11;
-            this.closeButton.Text = "Close";
+            this.closeButton.Text = global::SoundSwitch.Properties.SettingsString.close;
             this.closeButton.UseVisualStyleBackColor = true;
             this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
             // 
@@ -73,11 +75,11 @@
             // 
             this.communicationCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.communicationCheckbox.AutoSize = true;
-            this.communicationCheckbox.Location = new System.Drawing.Point(111, 265);
+            this.communicationCheckbox.Location = new System.Drawing.Point(165, 265);
             this.communicationCheckbox.Name = "communicationCheckbox";
-            this.communicationCheckbox.Size = new System.Drawing.Size(158, 17);
+            this.communicationCheckbox.Size = new System.Drawing.Size(140, 17);
             this.communicationCheckbox.TabIndex = 12;
-            this.communicationCheckbox.Text = "Set also as Communications";
+            this.communicationCheckbox.Text = global::SoundSwitch.Properties.SettingsString.setComm;
             this.communicationCheckbox.UseVisualStyleBackColor = true;
             this.communicationCheckbox.CheckedChanged += new System.EventHandler(this.communicationCheckbox_CheckedChanged);
             // 
@@ -103,7 +105,7 @@
             this.playbackPage.Padding = new System.Windows.Forms.Padding(3);
             this.playbackPage.Size = new System.Drawing.Size(473, 192);
             this.playbackPage.TabIndex = 0;
-            this.playbackPage.Text = "Playback";
+            this.playbackPage.Text = global::SoundSwitch.Properties.SettingsString.playback;
             this.playbackPage.UseVisualStyleBackColor = true;
             // 
             // playbackListView
@@ -112,7 +114,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.playbackListView.CheckBoxes = true;
-            listViewGroup1.Header = "Selected";
+            listViewGroup1.Header = global::SoundSwitch.Properties.SettingsString.selected;
             listViewGroup1.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
             listViewGroup1.Name = "selectedGroup";
             this.playbackListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
@@ -133,7 +135,7 @@
             this.recordingPage.Padding = new System.Windows.Forms.Padding(3);
             this.recordingPage.Size = new System.Drawing.Size(473, 192);
             this.recordingPage.TabIndex = 1;
-            this.recordingPage.Text = "Recording";
+            this.recordingPage.Text = global::SoundSwitch.Properties.SettingsString.recording;
             this.recordingPage.UseVisualStyleBackColor = true;
             // 
             // recordingListView
@@ -143,7 +145,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.recordingListView.CheckBoxes = true;
-            listViewGroup2.Header = "Selected";
+            listViewGroup2.Header = global::SoundSwitch.Properties.SettingsString.selected;
             listViewGroup2.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
             listViewGroup2.Name = "selectedGroup";
             this.recordingListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {

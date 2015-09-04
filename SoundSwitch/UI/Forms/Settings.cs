@@ -34,10 +34,10 @@ namespace SoundSwitch.UI.Forms
             InitializeComponent();
             Icon = Icon.FromHandle(Resources.Settings.GetHicon());
             var toolTip = new ToolTip();
-            toolTip.SetToolTip(closeButton, "Changes are automatically saved");
+            toolTip.SetToolTip(closeButton, SettingsString.closeTooltip);
 
             var toolTipComm = new ToolTip();
-            toolTipComm.SetToolTip(communicationCheckbox, "When checked, switch also the default Communications device");
+            toolTipComm.SetToolTip(communicationCheckbox, SettingsString.commTooltip);
 
             hotkeyTextBox.KeyDown += (sender, args) => SetHotkey(args);
             hotkeyTextBox.Text = AppConfigs.Configuration.PlaybackHotKeys.ToString();
@@ -243,8 +243,8 @@ namespace SoundSwitch.UI.Forms
 
         private void PopulateDeviceTypeGroups(ListView listView)
         {
-            listView.Groups.Add(new ListViewGroup(DeviceState.Active.ToString(), "Connected"));
-            listView.Groups.Add(new ListViewGroup(DeviceState.NotPresent.ToString(), "Disconnected"));
+            listView.Groups.Add(new ListViewGroup(DeviceState.Active.ToString(), SettingsString.connected));
+            listView.Groups.Add(new ListViewGroup(DeviceState.NotPresent.ToString(), SettingsString.disconnected));
         }
 
         #endregion

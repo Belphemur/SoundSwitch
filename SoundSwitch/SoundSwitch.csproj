@@ -199,6 +199,16 @@
   <ItemGroup>
     <Compile Include="Framework\Configuration\AppConfigs.cs" />
     <Compile Include="Model\IAudioDeviceLister.cs" />
+    <Compile Include="Properties\SettingsString.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SettingsString.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\SettingsString.fr.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SettingsString.fr.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\TrayIconStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -269,6 +279,15 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Properties\SettingsString.fr.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SettingsString.fr.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\SettingsString.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SettingsString.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\TrayIconStrings.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>TrayIconStrings.fr.Designer.cs</LastGenOutput>

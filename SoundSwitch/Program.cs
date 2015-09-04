@@ -15,6 +15,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Threading;
 using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
@@ -30,6 +31,7 @@ namespace SoundSwitch
         [STAThread]
         private static void Main()
         {
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("fr-FR");
             bool createdNew;
             AppLogger.Log.Info("Application Starts");
             using (new Mutex(true, Application.ProductName, out createdNew))
