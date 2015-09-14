@@ -151,8 +151,75 @@ namespace SoundSwitch.Util
             };
 
 
-            WindowsAPIAdapter.DeviceChanged += (sender, deviceChangeEvent) => { UpdateAvailableDeviceList(); };
+            AppModel.Instance.DeviceRemoved += (sender, @event) =>
+            {
+                RemoveDeviceFromContextMenu(@event);
+            };
+
+            AppModel.Instance.DeviceAdded += (sender, @event) =>
+            {
+                AddDeviceToContextMenu(@event);
+            };
+
+            AppModel.Instance.DeviceStateChanged += (sender, @event) =>
+            {
+                if (@event.newState == DeviceState.Active)
+                {
+                    AddDeviceToContextMenu(@event);
+                }
+                else
+                {
+                    RemoveDeviceFromContextMenu(@event);
+                }
+            };
+
             AppModel.Instance.InitializeMain();
+        }
+
+        private void AddDeviceToContextMenu(DeviceEvent @event)
+        {
+            var result = false;
+            switch (@event.device.Type)
+            {
+                case AudioDeviceType.Playback:
+                    if (AppModel.Instance.SelectedPlaybackDevicesList.Contains(@event.device.FriendlyName))
+                    {
+                        _availablePlaybackDevices.Add(@event.device);
+                        result = true;
+                    }
+                    break;
+                case AudioDeviceType.Recording:
+                    if (AppModel.Instance.SelectedRecordingDevicesList.Contains(@event.device.FriendlyName))
+                    {
+                        _availableRecordingDevices.Add(@event.device);
+                        result = true;
+                    }
+                    break;
+            }
+            if (result)
+            {
+                _deviceListChanged = true;
+                AppLogger.Log.Info("Added device in list: ", @event.device);
+            }
+        }
+
+        private void RemoveDeviceFromContextMenu(DeviceEvent @event)
+        {
+            var result = false;
+            switch (@event.device.Type)
+            {
+                case AudioDeviceType.Playback:
+                    result = _availablePlaybackDevices.Remove(@event.device);
+                    break;
+                case AudioDeviceType.Recording:
+                    result = _availableRecordingDevices.Remove(@event.device);
+                    break;
+            }
+            if (result)
+            {
+                _deviceListChanged = true;
+                AppLogger.Log.Info("Removed device from list: ", @event.device);
+            }
         }
 
         private void UpdateImageContextMenu(AudioDeviceType audioDeviceType, DeviceDefaultChangedEvent audioChangeEvent)

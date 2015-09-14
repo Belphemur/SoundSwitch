@@ -182,8 +182,6 @@ namespace SoundSwitch.Tests
                 .Returns(new HashSet<string> {"Speakers (Test device)", "Headphones (Test device)"});
             TestHelpers.SetConfigurationMoq(configurationMoq);
             AppModel.Instance.ActiveAudioDeviceLister = listerMoq.Object;
-            IAudioDevice audioDevice = null;
-            AppModel.Instance.DefaultDeviceChanged += (sender, @event) => audioDevice = @event.AudioDevice;
 
             //Action
             Assert.That(AppModel.Instance.CycleActiveDevice(AudioDeviceType.Recording));
@@ -196,7 +194,6 @@ namespace SoundSwitch.Tests
             configurationMoq.VerifyGet(config => config.LastRecordingActive);
             configurationMoq.VerifySet(config => config.LastRecordingActive = "Headphones (Test device)");
             audioMoqII.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Console)));
-            Assert.That(audioMoqII.Object.Equals(audioDevice));
         }
 
         [Test]
@@ -227,8 +224,6 @@ namespace SoundSwitch.Tests
                 .Returns(new HashSet<string> {"Speakers (Test device)", "Headphones (Test device)"});
             TestHelpers.SetConfigurationMoq(configurationMoq);
             AppModel.Instance.ActiveAudioDeviceLister = listerMoq.Object;
-            IAudioDevice audioDevice = null;
-            AppModel.Instance.DefaultDeviceChanged += (sender, @event) => audioDevice = @event.AudioDevice;
 
             //Action
             Assert.That(AppModel.Instance.CycleActiveDevice(AudioDeviceType.Recording));
@@ -242,7 +237,6 @@ namespace SoundSwitch.Tests
             configurationMoq.VerifySet(config => config.LastRecordingActive = "Headphones (Test device)");
             audioMoqII.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Console)));
             audioMoqII.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Communications)));
-            Assert.That(audioMoqII.Object.Equals(audioDevice));
         }
 
         [Test]
@@ -268,8 +262,6 @@ namespace SoundSwitch.Tests
                 .Returns(new HashSet<string> {"Speakers (Test device)", "Headphones (Test device)"});
             TestHelpers.SetConfigurationMoq(configurationMoq);
             AppModel.Instance.ActiveAudioDeviceLister = listerMoq.Object;
-            IAudioDevice audioDevice = null;
-            AppModel.Instance.DefaultDeviceChanged += (sender, @event) => audioDevice = @event.AudioDevice;
 
             //Action
             Assert.That(AppModel.Instance.CycleActiveDevice(AudioDeviceType.Recording));
@@ -282,7 +274,6 @@ namespace SoundSwitch.Tests
             configurationMoq.VerifyGet(config => config.LastRecordingActive);
             configurationMoq.VerifySet(config => config.LastRecordingActive = "Speakers (Test device)");
             audioMoqI.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Console)));
-            Assert.That(audioMoqI.Object.Equals(audioDevice));
         }
 
         [Test]
@@ -320,8 +311,7 @@ namespace SoundSwitch.Tests
 
             //Setup
             TestHelpers.SetConfigurationMoq(configurationMoq);
-            IAudioDevice audioDevice = null;
-            AppModel.Instance.DefaultDeviceChanged += (sender, @event) => audioDevice = @event.AudioDevice;
+
 
             //Action
             AppModel.Instance.SetActiveDevice(audioMoqI.Object);
@@ -330,7 +320,6 @@ namespace SoundSwitch.Tests
             configurationMoq.VerifySet(config => config.LastRecordingActive = "Speakers (Test device)");
             audioMoqI.VerifyGet(a => a.Type);
             audioMoqI.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Console)));
-            Assert.That(audioMoqI.Object.Equals(audioDevice));
         }
     }
 }
