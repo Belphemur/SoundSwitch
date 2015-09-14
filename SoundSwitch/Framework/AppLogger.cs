@@ -20,8 +20,21 @@ using TracerX;
 
 namespace SoundSwitch.Framework
 {
-    internal static class AppLogger
+    public static class AppLogger
     {
+        public class LogRestartor : IDisposable
+        {
+            public LogRestartor()
+            {
+                Log.BinaryFile.Close();
+                Log.TextFile.Close();
+            }
+            public void Dispose()
+            {
+                Log.BinaryFile.CloseAndReopen();
+                Log.TextFile.CloseAndReopen();
+            }
+        }
         static AppLogger()
         {
             SetLoggerOptions(Log.TextFile);
@@ -35,14 +48,11 @@ namespace SoundSwitch.Framework
             Log.TextFile.Open();
         }
 
-        public static string LogsLocation { get; } = Path.Combine(Environment.GetFolderPath(
-            Environment.SpecialFolder.ApplicationData), Application.ProductName, "Logs");
-
         public static Logger Log { get; } = Logger.GetLogger(Application.ProductName);
 
         private static void SetLoggerOptions(FileBase file)
         {
-            file.Directory = LogsLocation;
+            file.Directory = ApplicationPath.Logs;
             file.MaxSizeMb = 1;
             file.FullFilePolicy = FullFilePolicy.Wrap;
             file.CircularStartSizeKb = 5;

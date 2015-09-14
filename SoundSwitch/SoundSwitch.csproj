@@ -184,6 +184,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Management" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -197,7 +198,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Framework\ApplicationPath.cs" />
     <Compile Include="Framework\Configuration\AppConfigs.cs" />
+    <Compile Include="Framework\HourGlass.cs" />
     <Compile Include="Model\IAudioDeviceLister.cs" />
     <Compile Include="Properties\AboutStrings.Designer.cs">
       <AutoGen>True</AutoGen>

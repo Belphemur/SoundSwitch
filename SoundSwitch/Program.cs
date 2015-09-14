@@ -15,6 +15,8 @@
 
 using System;
 using System.Diagnostics;
+using System.IO;
+using System.IO.Compression;
 using System.Threading;
 using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
@@ -107,18 +109,29 @@ namespace SoundSwitch
 
         private static void HandleException(Exception exception)
         {
-            using (AppLogger.Log.FatalCall())
-            {
-                AppLogger.Log.Fatal("Exception Occured", exception);
-                var message =
-                    $"It seems {Application.ProductName} has crashed.\nDo you want to save a log of the error that ocurred?\nThis could be useful to fix bugs. Please post this file in the issues section.";
-                var result = MessageBox.Show(message, $"{Application.ProductName} crashed...", MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Error);
+            AppLogger.Log.Fatal("Exception Occured ", exception);
+            var zipFile = Path.Combine(ApplicationPath.AppData,
+                $"{Application.ProductName}-crashlog-{DateTime.UtcNow.Date.Day}_{DateTime.UtcNow.Date.Month}_{DateTime.UtcNow.Date.Year}.zip");
+            var message =
+                $"It seems {Application.ProductName} has crashed.\n" +
+                $"Do you want to save a log of the error that ocurred?\n" +
+                $"This could be useful to fix bugs. Please post this file in the issues section.\n" +
+                $"File Location: " + zipFile;
+            var result = MessageBox.Show(message, $"{Application.ProductName} crashed...", MessageBoxButtons.YesNo,
+                MessageBoxIcon.Error);
 
-                if (result == DialogResult.Yes)
+            if (result == DialogResult.Yes)
+            {
+                using (new HourGlass())
+                using (new AppLogger.LogRestartor())
                 {
-                    Process.Start(AppLogger.LogsLocation);
+                    if (File.Exists(zipFile))
+                    {
+                        File.Delete(zipFile);
+                    }
+                    ZipFile.CreateFromDirectory(ApplicationPath.Default, zipFile);
                 }
+                Process.Start("explorer.exe", "/select," + @zipFile);
             }
         }
     }

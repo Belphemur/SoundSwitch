@@ -33,8 +33,7 @@ namespace SoundSwitch.Framework.Configuration
 
     public static class ConfigurationManager
     {
-        private static readonly string SRoot = Path.Combine(Environment.GetFolderPath(
-            Environment.SpecialFolder.ApplicationData), Application.ProductName);
+        private static readonly string SRoot = ApplicationPath.Default;
 
         static ConfigurationManager()
         {
