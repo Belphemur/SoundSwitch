@@ -125,11 +125,6 @@ namespace SoundSwitch.Model
             SetHotkeyCombination(AppConfigs.Configuration.RecordingHotKeys, AudioDeviceType.Recording);
             InitUpdateChecker();
             _initialized = true;
-
-            AudioController.DeviceDefaultChanged += (sender, @event) =>
-            {
-                DefaultDeviceChanged?.Invoke(this, @event);
-            };
         }
 
         private void InitUpdateChecker()
@@ -145,8 +140,31 @@ namespace SoundSwitch.Model
 
         public event EventHandler<DeviceListChanged> SelectedDeviceChanged;
         public event EventHandler<ExceptionEvent> ErrorTriggered;
-        public event EventHandler<DeviceDefaultChangedEvent> DefaultDeviceChanged;
         public event EventHandler<UpdateChecker.NewReleaseEvent> NewVersionReleased;
+
+        public event EventHandler<DeviceDefaultChangedEvent> DefaultDeviceChanged
+        {
+            add { AudioController.DeviceDefaultChanged += value; }
+            remove { AudioController.DeviceDefaultChanged -= value; }
+        }
+
+        public event EventHandler<DeviceStateChangedEvent> DeviceStateChanged
+        {
+            add { AudioController.DeviceStateChanged += value; }
+            remove { AudioController.DeviceStateChanged -= value; }
+        }
+
+        public event EventHandler<DeviceRemovedEvent> DeviceRemoved
+        {
+            add { AudioController.DeviceRemoved += value; }
+            remove { AudioController.DeviceRemoved -= value; }
+        }
+
+        public event EventHandler<DeviceAddedEvent> DeviceAdded
+        {
+            add { AudioController.DeviceAdded += value; }
+            remove { AudioController.DeviceAdded -= value; }
+        }
 
         private void RegisterRecovery()
         {

@@ -82,7 +82,20 @@ namespace SoundSwitch.Model
         ///     The update checker found a newer release than the installed version.
         /// </summary>
         event EventHandler<UpdateChecker.NewReleaseEvent> NewVersionReleased;
+        /// <summary>
+        /// When a device change state like from NotPresent to Active
+        /// </summary>
+        event EventHandler<DeviceStateChangedEvent> DeviceStateChanged;
 
+        /// <summary>
+        /// If a device is removed from the system
+        /// </summary>
+        event EventHandler<DeviceRemovedEvent> DeviceRemoved;
+
+        /// <summary>
+        /// If a device is added in the system
+        /// </summary>
+        event EventHandler<DeviceAddedEvent> DeviceAdded;
         #endregion
 
         #region Methods
