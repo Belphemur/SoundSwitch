@@ -1,4 +1,4 @@
-version: 3.4.2.{build}
+version: 3.5.0.{build}
 configuration: AppVeyor
 os: Visual Studio 2015
 platform:

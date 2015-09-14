@@ -1,5 +1,13 @@
 # Change Log
 
+## [v3.5.0](https://github.com/Belphemur/SoundSwitch/tree/v3.5.0) (2015-09-14)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.4.2...v3.5.0)
+
+**Implemented enhancements:**
+
+- Implements improvement given by underlying library [\#29](https://github.com/Belphemur/SoundSwitch/issues/29)
+- In case of crash. Zip the Log folder for easy reporting [\#24](https://github.com/Belphemur/SoundSwitch/issues/24)
+
 ## [v3.4.2](https://github.com/Belphemur/SoundSwitch/tree/v3.4.2) (2015-09-04)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.4.1...v3.4.2)
 
