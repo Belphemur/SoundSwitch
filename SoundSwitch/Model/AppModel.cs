@@ -125,6 +125,11 @@ namespace SoundSwitch.Model
             SetHotkeyCombination(AppConfigs.Configuration.RecordingHotKeys, AudioDeviceType.Recording);
             InitUpdateChecker();
             _initialized = true;
+
+            AudioController.DeviceDefaultChanged += (sender, @event) =>
+            {
+                DefaultDeviceChanged?.Invoke(this, @event);
+            };
         }
 
         private void InitUpdateChecker()
@@ -140,7 +145,7 @@ namespace SoundSwitch.Model
 
         public event EventHandler<DeviceListChanged> SelectedDeviceChanged;
         public event EventHandler<ExceptionEvent> ErrorTriggered;
-        public event EventHandler<AudioChangeEvent> DefaultDeviceChanged;
+        public event EventHandler<DeviceDefaultChangedEvent> DefaultDeviceChanged;
         public event EventHandler<UpdateChecker.NewReleaseEvent> NewVersionReleased;
 
         private void RegisterRecovery()
@@ -355,7 +360,6 @@ namespace SoundSwitch.Model
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
-                    DefaultDeviceChanged?.Invoke(this, new AudioChangeEvent(device));
                     AppConfigs.Configuration.Save();
                     return true;
                 }

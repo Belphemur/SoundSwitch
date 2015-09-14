@@ -122,14 +122,14 @@ namespace SoundSwitch.Util
             AppModel.Instance.DefaultDeviceChanged +=
                 (sender, audioChangeEvent) =>
                 {
-                    var audioDeviceType = audioChangeEvent.AudioDevice.Type;
+                    var audioDeviceType = audioChangeEvent.device.Type;
                     switch (audioDeviceType)
                     {
                         case AudioDeviceType.Playback:
-                            ShowPlaybackChanged(audioChangeEvent.AudioDevice.FriendlyName);
+                            ShowPlaybackChanged(audioChangeEvent.device.FriendlyName);
                             break;
                         case AudioDeviceType.Recording:
-                            ShowRecordingChanged(audioChangeEvent.AudioDevice.FriendlyName);
+                            ShowRecordingChanged(audioChangeEvent.device.FriendlyName);
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();
@@ -155,13 +155,16 @@ namespace SoundSwitch.Util
             AppModel.Instance.InitializeMain();
         }
 
-        private void UpdateImageContextMenu(AudioDeviceType audioDeviceType, AudioChangeEvent audioChangeEvent)
+        private void UpdateImageContextMenu(AudioDeviceType audioDeviceType, DeviceDefaultChangedEvent audioChangeEvent)
         {
+            if (audioChangeEvent.role != Role.Console)
+                return;
+
             foreach (
                 var toolStripDevItem in
                     _selectionMenu.Items.OfType<ToolStripDeviceItem>().Where(item => item.AudioDevice.Type == audioDeviceType))
             {
-                toolStripDevItem.Image = toolStripDevItem.AudioDevice.FriendlyName == audioChangeEvent.AudioDevice.FriendlyName
+                toolStripDevItem.Image = toolStripDevItem.AudioDevice.FriendlyName == audioChangeEvent.device.FriendlyName
                     ? Resources.Check
                     : null;
             }

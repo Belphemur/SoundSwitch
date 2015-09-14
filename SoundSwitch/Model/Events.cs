@@ -18,15 +18,6 @@ using AudioEndPointControllerWrapper;
 
 namespace SoundSwitch.Model
 {
-    public class AudioChangeEvent : EventArgs
-    {
-        public AudioChangeEvent(IAudioDevice audioDevice)
-        {
-            AudioDevice = audioDevice;
-        }
-
-        public IAudioDevice AudioDevice { get; }
-    }
 
     public class ExceptionEvent : EventArgs
     {

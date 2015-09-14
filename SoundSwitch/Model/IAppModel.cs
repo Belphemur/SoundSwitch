@@ -71,7 +71,7 @@ namespace SoundSwitch.Model
         /// <summary>
         ///     The Default Playback device has been changed.
         /// </summary>
-        event EventHandler<AudioChangeEvent> DefaultDeviceChanged;
+        event EventHandler<DeviceDefaultChangedEvent> DefaultDeviceChanged;
 
         /// <summary>
         ///     If an exception happened in the <see cref="IAppModel" />
