@@ -1,5 +1,12 @@
 # Change Log
 
+## [v3.5.1](https://github.com/Belphemur/SoundSwitch/tree/v3.5.1) (2015-09-18)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.5.0...v3.5.1)
+
+**Implemented enhancements:**
+
+- Update AudioEndPointLibrary [\#30](https://github.com/Belphemur/SoundSwitch/issues/30)
+
 ## [v3.5.0](https://github.com/Belphemur/SoundSwitch/tree/v3.5.0) (2015-09-14)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.4.2...v3.5.0)
 
