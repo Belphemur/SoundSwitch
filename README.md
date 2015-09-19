@@ -35,7 +35,7 @@ This is one of the interesting feature added in Isabelline Gold, the auto-update
 ### Communications
 SoundSwitch can also change the communications devices when asked in the Settings. Windows make a differentiation between Multimedia and Communication, it means if an application ask to have access to Communications Audio Device (like Skype), it will receive the default Communications device. By default SoundSwitch only change the Multimedia device, and not the communications. Now if the checkbox is checked in the settings, it will also change the Communications device.
 
-## License
+## License: GPLv2
 
 Copyright (C) 2015 Jeroen Pelgrims
 
