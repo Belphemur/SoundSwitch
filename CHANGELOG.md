@@ -1,11 +1,14 @@
 # Change Log
 
-## [v3.5.2](https://github.com/Belphemur/SoundSwitch/tree/v3.5.2) (2015-11-11)
-[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.5.1...v3.5.2)
+## [v3.5.3](https://github.com/Belphemur/SoundSwitch/tree/v3.5.3) (2015-11-12)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.5.2...v3.5.3)
 
 **Fixed bugs:**
 
 - Soundswitch won't start. No crash report. [\#31](https://github.com/Belphemur/SoundSwitch/issues/31)
+
+## [v3.5.2](https://github.com/Belphemur/SoundSwitch/tree/v3.5.2) (2015-11-11)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.5.1...v3.5.2)
 
 ## [v3.5.1](https://github.com/Belphemur/SoundSwitch/tree/v3.5.1) (2015-09-18)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.5.0...v3.5.1)
