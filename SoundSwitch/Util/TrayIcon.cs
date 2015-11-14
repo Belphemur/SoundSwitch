@@ -122,6 +122,11 @@ namespace SoundSwitch.Util
             AppModel.Instance.DefaultDeviceChanged +=
                 (sender, audioChangeEvent) =>
                 {
+                    if (audioChangeEvent.role != Role.Console)
+                    {
+                        return;
+                    }
+
                     var audioDeviceType = audioChangeEvent.device.Type;
                     switch (audioDeviceType)
                     {
