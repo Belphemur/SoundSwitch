@@ -45,6 +45,8 @@ namespace SoundSwitch.UI.Forms
 
             RunAtStartup.Checked = AppModel.Instance.RunAtStartup;
             communicationCheckbox.Checked = AppModel.Instance.SetCommunications;
+            notificationsCheckbox.Checked = AppModel.Instance.DisplayNotifications;
+
             var audioDeviceLister = new AudioDeviceLister(DeviceState.All);
             PopulateAudioList(playbackListView, AppModel.Instance.SelectedPlaybackDevicesList,
                 audioDeviceLister.GetPlaybackDevices());
@@ -263,6 +265,12 @@ namespace SoundSwitch.UI.Forms
                 hotkeyTextBox.Text = AppConfigs.Configuration.RecordingHotKeys.ToString();
                 hotkeyTextBox.Tag = AudioDeviceType.Recording;
             }
+        }
+
+        private void notificationsCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            var checkboxSender = (CheckBox) sender;
+            AppModel.Instance.DisplayNotifications = checkboxSender.Checked;
         }
     }
 }

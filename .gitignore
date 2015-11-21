@@ -41,3 +41,6 @@ ipch/
 *.sdf
 Final
 GenerateChangelog.bat
+
+# nuget
+packages/

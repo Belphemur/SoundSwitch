@@ -27,5 +27,6 @@ namespace SoundSwitch.Framework.Configuration
         HotKeys RecordingHotKeys { get; set; }
         bool ChangeCommunications { get; set; }
         uint UpdateCheckInterval { get; set; }
+        bool DisplayNotifications { get; set; }
     }
 }

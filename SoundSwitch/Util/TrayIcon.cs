@@ -322,12 +322,20 @@ namespace SoundSwitch.Util
 
         private void ShowPlaybackChanged(string deviceName)
         {
-            _trayIcon.ShowBalloonTip(500, string.Format(TrayIconStrings.playbackChanged, Application.ProductName), deviceName, ToolTipIcon.Info);
+            if (AppModel.Instance.DisplayNotifications)
+            {
+                _trayIcon.ShowBalloonTip(500, string.Format(TrayIconStrings.playbackChanged, Application.ProductName),
+                    deviceName, ToolTipIcon.Info);
+            }
         }
 
         private void ShowRecordingChanged(string deviceName)
         {
-            _trayIcon.ShowBalloonTip(500, string.Format(TrayIconStrings.recordingChanged, Application.ProductName), deviceName, ToolTipIcon.Info);
+            if (AppModel.Instance.DisplayNotifications)
+            {
+                _trayIcon.ShowBalloonTip(500, string.Format(TrayIconStrings.recordingChanged, Application.ProductName),
+                    deviceName, ToolTipIcon.Info);
+            }
         }
 
         /// <summary>

@@ -305,6 +305,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>UpdateFormStrings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\Settings.resx">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
