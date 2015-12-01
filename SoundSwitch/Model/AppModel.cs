@@ -104,6 +104,16 @@ namespace SoundSwitch.Model
             }
         }
 
+        public bool DisplayNotifications
+        {
+            get { return AppConfigs.Configuration.DisplayNotifications; }
+            set
+            {
+                AppConfigs.Configuration.DisplayNotifications = value;
+                AppConfigs.Configuration.Save();
+            }
+        }
+
         public IAudioDeviceLister ActiveAudioDeviceLister { get; set; }
 
         #endregion

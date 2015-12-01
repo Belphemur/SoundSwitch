@@ -24,6 +24,7 @@ namespace SoundSwitch.Framework.Configuration
         {
             FirstRun = true;
             ChangeCommunications = false;
+            DisplayNotifications = true;
             SelectedPlaybackDeviceList = new HashSet<string>();
             SelectedRecordingDeviceList = new HashSet<string>();
             PlaybackHotKeys = new HotKeys(Keys.F11, HotKeys.ModifierKeys.Alt | HotKeys.ModifierKeys.Control);
@@ -50,6 +51,8 @@ namespace SoundSwitch.Framework.Configuration
         public HotKeys RecordingHotKeys { get; set; }
         public bool ChangeCommunications { get; set; }
         public uint UpdateCheckInterval { get; set; }
+        public bool DisplayNotifications { get; set; }
+
         //Needed by Interface
         public string FileLocation { get; set; }
 

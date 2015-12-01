@@ -54,6 +54,12 @@ namespace SoundSwitch.Model
         ///     If the application runs at windows startup
         /// </summary>
         bool RunAtStartup { get; set; }
+
+        /// <summary>
+        ///     If notifications are displayed when the devices are changed
+        /// </summary>
+        bool DisplayNotifications { get; set; }
+
         /// <summary>
         /// List the active audio devices
         /// </summary>
