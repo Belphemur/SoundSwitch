@@ -48,6 +48,9 @@ if "%builderror%"=="1" echo error: build failed & goto Quit
 echo "Copy Changelog"
 xcopy /y CHANGELOG.md %finalDir% 1>nul 2>nul
 
+echo "Copy README"
+xcopy /y README.md %finalDir% 1>nul 2>nul
+
 Echo "Copy x64"
 xcopy /y %BIN_DIR%\x64\Release\*.dll %x64Release% 1>nul 2>nul
 xcopy /y %BIN_DIR%\x64\Release\SoundSwitch.exe %x64Release% 1>nul 2>nul
