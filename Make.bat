@@ -51,6 +51,9 @@ xcopy /y CHANGELOG.md %finalDir% 1>nul 2>nul
 echo "Copy README"
 xcopy /y README.md %finalDir% 1>nul 2>nul
 
+echo "Copy LICENSE"
+xcopy /y LICENSE.txt %finalDir% 1>nul 2>nul
+
 Echo "Copy x64"
 xcopy /y %BIN_DIR%\x64\Release\*.dll %x64Release% 1>nul 2>nul
 xcopy /y %BIN_DIR%\x64\Release\SoundSwitch.exe %x64Release% 1>nul 2>nul
