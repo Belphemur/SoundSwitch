@@ -3,6 +3,10 @@
 ## [v3.6.1](https://github.com/Belphemur/SoundSwitch/tree/v3.6.1) (2015-12-04)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.6.0...v3.6.1)
 
+**Fixed bugs:**
+
+- Installer doesn't detect DotNet 4.6.1 [\#35](https://github.com/Belphemur/SoundSwitch/issues/35)
+
 **Merged pull requests:**
 
 - Allow enable/disable display of notifications [\#33](https://github.com/Belphemur/SoundSwitch/pull/33) ([adamblackburn](https://github.com/adamblackburn))
