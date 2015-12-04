@@ -67,3 +67,6 @@ http://creativecommons.org/licenses/by-nc-sa/4.0/
 
 ### Changing default sound device
 [EreTIk](http://eretik.omegahg.com/)
+
+### Disabling notification
+[@adamblackburn](https://github.com/adamblackburn) with merge request [#33](https://github.com/Belphemur/SoundSwitch/pull/33)
