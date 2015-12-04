@@ -1,5 +1,12 @@
 # Change Log
 
+## [v3.6.1](https://github.com/Belphemur/SoundSwitch/tree/v3.6.1) (2015-12-04)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.6.0...v3.6.1)
+
+**Merged pull requests:**
+
+- Allow enable/disable display of notifications [\#33](https://github.com/Belphemur/SoundSwitch/pull/33) ([adamblackburn](https://github.com/adamblackburn))
+
 ## [v3.6.0](https://github.com/Belphemur/SoundSwitch/tree/v3.6.0) (2015-11-14)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.5.3...v3.6.0)
 
