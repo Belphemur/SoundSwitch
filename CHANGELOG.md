@@ -1,5 +1,13 @@
 # Change Log
 
+## [Unreleased](https://github.com/Belphemur/SoundSwitch/tree/HEAD)
+
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.6.1...HEAD)
+
+**Fixed bugs:**
+
+- Installer not detecting correctly VS 2015 Redist [\#39](https://github.com/Belphemur/SoundSwitch/issues/39)
+
 ## [v3.6.1](https://github.com/Belphemur/SoundSwitch/tree/v3.6.1) (2015-12-04)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.6.0...v3.6.1)
 
