@@ -1,12 +1,22 @@
 # Change Log
 
-## [Unreleased](https://github.com/Belphemur/SoundSwitch/tree/HEAD)
+## [v3.6.2](https://github.com/Belphemur/SoundSwitch/tree/v3.6.2) (2015-12-12)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.6.1...v3.6.2)
 
-[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.6.1...HEAD)
+**Implemented enhancements:**
+
+- Add/Correct possibility to add only one key as hotkeys [\#37](https://github.com/Belphemur/SoundSwitch/issues/37)
+- Toggle Option in the trayicon's menu [\#36](https://github.com/Belphemur/SoundSwitch/issues/36)
 
 **Fixed bugs:**
 
+- SoundSwitch Crashing when connecting a device [\#40](https://github.com/Belphemur/SoundSwitch/issues/40)
 - Installer not detecting correctly VS 2015 Redist [\#39](https://github.com/Belphemur/SoundSwitch/issues/39)
+- Add/Correct possibility to add only one key as hotkeys [\#37](https://github.com/Belphemur/SoundSwitch/issues/37)
+
+**Closed issues:**
+
+- Switching output bug in Chrome [\#38](https://github.com/Belphemur/SoundSwitch/issues/38)
 
 ## [v3.6.1](https://github.com/Belphemur/SoundSwitch/tree/v3.6.1) (2015-12-04)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.6.0...v3.6.1)
