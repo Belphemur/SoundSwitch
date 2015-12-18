@@ -35,6 +35,7 @@ namespace SoundSwitch.Util
         private readonly ContextMenuStrip _selectionMenu = new ContextMenuStrip();
         private readonly ContextMenuStrip _settingsMenu = new ContextMenuStrip();
         private readonly SynchronizationContext _context = SynchronizationContext.Current ?? new SynchronizationContext();
+        private bool _needToUpdateList = true;
         private readonly NotifyIcon _trayIcon = new NotifyIcon
         {
             Icon = Icon.FromHandle(Resources.SoundSwitch16.GetHicon()),
@@ -60,6 +61,7 @@ namespace SoundSwitch.Util
             {
                 if (e.Button == MouseButtons.Left)
                 {
+                    UpdateDeviceSelectionList();
                     _trayIcon.ContextMenuStrip = _selectionMenu;
                     var mi = typeof (NotifyIcon).GetMethod("ShowContextMenu",
                         BindingFlags.Instance | BindingFlags.NonPublic);
@@ -136,24 +138,24 @@ namespace SoundSwitch.Util
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
-
-                    UpdateImageContextMenu(audioDeviceType, audioChangeEvent);
+                    _context.Send(s => { UpdateImageContextMenu(audioDeviceType, audioChangeEvent); }, null);
+                    
                 };
             AppModel.Instance.SelectedDeviceChanged +=
-                (sender, deviceListChanged) => { _context.Send(s => { UpdateDeviceSelectionList(); }, null); };
+                 (sender, @event) => { _needToUpdateList = true; };
             AppModel.Instance.NewVersionReleased += (sender, @event) =>
             {
                 _context.Send(s => { NewReleaseAvailable(sender, @event); }, null);
             };
 
             AppModel.Instance.DeviceRemoved +=
-                (sender, @event) => { _context.Send(s => { UpdateDeviceSelectionList(); }, null); };
+                (sender, @event) => { _needToUpdateList = true; };
 
             AppModel.Instance.DeviceAdded +=
-                (sender, @event) => { _context.Send(s => { UpdateDeviceSelectionList(); }, null); };
+                 (sender, @event) => { _needToUpdateList = true; };
 
             AppModel.Instance.DeviceStateChanged +=
-                (sender, @event) => { _context.Send(s => { UpdateDeviceSelectionList(); }, null); };
+                 (sender, @event) => { _needToUpdateList = true; };
 
             AppModel.Instance.InitializeMain();
         }
@@ -198,6 +200,11 @@ namespace SoundSwitch.Util
         {
             using (AppLogger.Log.InfoCall())
             {
+                if (!_needToUpdateList)
+                {
+                    AppLogger.Log.Info("Device list doesn't need update");
+                    return;
+                }
                 if (AppModel.Instance.AvailablePlaybackDevices.Count < 0 &&
                     AppModel.Instance.AvailableRecordingDevices.Count < 0)
                 {
@@ -220,6 +227,7 @@ namespace SoundSwitch.Util
                         _selectionMenu.Items.Add(new ToolStripDeviceItem(DeviceClicked, item));
                     }
                 }
+                _needToUpdateList = false;
             }
         }
 
