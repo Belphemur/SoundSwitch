@@ -34,8 +34,7 @@ namespace SoundSwitch.Util
     {
         private readonly ContextMenuStrip _selectionMenu = new ContextMenuStrip();
         private readonly ContextMenuStrip _settingsMenu = new ContextMenuStrip();
-        private SynchronizationContext _context = SynchronizationContext.Current ?? new SynchronizationContext();
-
+        private readonly SynchronizationContext _context = SynchronizationContext.Current ?? new SynchronizationContext();
         private readonly NotifyIcon _trayIcon = new NotifyIcon
         {
             Icon = Icon.FromHandle(Resources.SoundSwitch16.GetHicon()),
@@ -129,10 +128,10 @@ namespace SoundSwitch.Util
                     switch (audioDeviceType)
                     {
                         case AudioDeviceType.Playback:
-                            ShowPlaybackChanged(audioChangeEvent.device.FriendlyName);
+                            _context.Send(s => { ShowPlaybackChanged(audioChangeEvent.device.FriendlyName); }, null);
                             break;
                         case AudioDeviceType.Recording:
-                            ShowRecordingChanged(audioChangeEvent.device.FriendlyName);
+                            _context.Send(s => { ShowRecordingChanged(audioChangeEvent.device.FriendlyName); }, null);
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();
@@ -144,14 +143,7 @@ namespace SoundSwitch.Util
                 (sender, deviceListChanged) => { _context.Send(s => { UpdateDeviceSelectionList(); }, null); };
             AppModel.Instance.NewVersionReleased += (sender, @event) =>
             {
-                if (_selectionMenu.IsHandleCreated)
-                {
-                    _selectionMenu.Invoke(new Action(() => { NewReleaseAvailable(sender, @event); }));
-                }
-                else
-                {
-                    NewReleaseAvailable(sender, @event);
-                }
+                _context.Send(s => { NewReleaseAvailable(sender, @event); }, null);
             };
 
             AppModel.Instance.DeviceRemoved +=
