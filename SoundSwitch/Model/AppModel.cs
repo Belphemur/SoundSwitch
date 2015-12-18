@@ -380,10 +380,10 @@ namespace SoundSwitch.Model
                     switch (device.Type)
                     {
                         case AudioDeviceType.Playback:
-                            AppConfigs.Configuration.LastPlaybackActive = device.FriendlyName;
+                            AppConfigs.Configuration.LastPlaybackActiveId = device.Id;
                             break;
                         case AudioDeviceType.Recording:
-                            AppConfigs.Configuration.LastRecordingActive = device.FriendlyName;
+                            AppConfigs.Configuration.LastRecordingActiveId = device.Id;
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();
@@ -414,11 +414,11 @@ namespace SoundSwitch.Model
                 {
                     case AudioDeviceType.Playback:
                         list = AvailablePlaybackDevices;
-                        lastActive = AppConfigs.Configuration.LastPlaybackActive;
+                        lastActive = AppConfigs.Configuration.LastPlaybackActiveId;
                         break;
                     case AudioDeviceType.Recording:
                         list = AvailableRecordingDevices;
-                        lastActive = AppConfigs.Configuration.LastRecordingActive;
+                        lastActive = AppConfigs.Configuration.LastRecordingActiveId;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(type), type, null);
@@ -433,8 +433,8 @@ namespace SoundSwitch.Model
                         return false;
                 }
                 AppLogger.Log.Info("Cycle Audio Devices", list);
-                var defaultDev = list.FirstOrDefault(device => device.FriendlyName == lastActive) ?? list.FirstOrDefault(device => device.IsDefault(Role.Console)) ?? list.ElementAt(0);
-                var next = list.SkipWhile((device, i) => device != defaultDev).Skip(1).FirstOrDefault() ?? list.ElementAt(0);
+                var defaultDev = list.FirstOrDefault(device => device.Id == lastActive) ?? list.FirstOrDefault(device => device.IsDefault(Role.Console)) ?? list.ElementAt(0);
+                var next = list.SkipWhile((device, i) => !Equals(device, defaultDev)).Skip(1).FirstOrDefault() ?? list.ElementAt(0);
                 AppLogger.Log.Info("Select AudioDevice", next);
                 return SetActiveDevice(next);
             }

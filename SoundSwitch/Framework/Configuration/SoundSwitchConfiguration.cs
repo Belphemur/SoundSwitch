@@ -35,19 +35,10 @@ namespace SoundSwitch.Framework.Configuration
 
         public HashSet<string> SelectedPlaybackDeviceList { get; set; }
         public HashSet<string> SelectedRecordingDeviceList { get; set; }
-        public string LastPlaybackActive { get; set; }
-        public string LastRecordingActive { get; set; }
+        public string LastPlaybackActiveId { get; set; }
+        public string LastRecordingActiveId { get; set; }
         public bool FirstRun { get; set; }
         public HotKeys PlaybackHotKeys { get; set; }
-        
-        //TODO: Remove in a couple of version (introduced in 3.4)
-        [Obsolete("Replaced by PlaybackHotKeys")]
-        public HotKeys HotKeysCombinaison
-        {
-            get { return null; }
-            set { PlaybackHotKeys = value; }
-        }
-
         public HotKeys RecordingHotKeys { get; set; }
         public bool ChangeCommunications { get; set; }
         public uint UpdateCheckInterval { get; set; }

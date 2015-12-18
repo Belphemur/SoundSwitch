@@ -20,8 +20,8 @@ namespace SoundSwitch.Framework.Configuration
     {
         HashSet<string> SelectedPlaybackDeviceList { get; set; }
         HashSet<string> SelectedRecordingDeviceList { get; set; }
-        string LastPlaybackActive { get; set; }
-        string LastRecordingActive { get; set; }
+        string LastPlaybackActiveId { get; set; }
+        string LastRecordingActiveId { get; set; }
         bool FirstRun { get; set; }
         HotKeys PlaybackHotKeys { get; set; }
         HotKeys RecordingHotKeys { get; set; }
