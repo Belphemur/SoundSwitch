@@ -1,5 +1,13 @@
 # Change Log
 
+## [Unreleased](https://github.com/Belphemur/SoundSwitch/tree/HEAD)
+
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.6.2...HEAD)
+
+**Closed issues:**
+
+- Default Audio device switching - programs are not [\#42](https://github.com/Belphemur/SoundSwitch/issues/42)
+
 ## [v3.6.2](https://github.com/Belphemur/SoundSwitch/tree/v3.6.2) (2015-12-12)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.6.1...v3.6.2)
 
