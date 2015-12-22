@@ -38,6 +38,13 @@ namespace SoundSwitch.Model
             AudioController.DeviceStateChanged += AudioControllerOnDeviceStateChanged;
         }
 
+        ~AudioDeviceLister()
+        {
+            AudioController.DeviceAdded -= AudioControllerOnDeviceAdded;
+            AudioController.DeviceRemoved -= AudioControllerOnDeviceRemoved;
+            AudioController.DeviceStateChanged -= AudioControllerOnDeviceStateChanged;
+        }
+
         private void AudioControllerOnDeviceStateChanged(object sender, DeviceStateChangedEvent deviceStateChangedEvent)
         {
             _cacheLock.EnterWriteLock();
@@ -45,7 +52,7 @@ namespace SoundSwitch.Model
             {
                 using (AppLogger.Log.InfoCall())
                 {
-                    if (deviceStateChangedEvent.newState == _state)
+                    if ((deviceStateChangedEvent.newState | _state) == _state)
                     {
                         if (deviceStateChangedEvent.device.Type == AudioDeviceType.Playback)
                         {
@@ -58,7 +65,7 @@ namespace SoundSwitch.Model
                             AppLogger.Log.Info("Add new recording: ", deviceStateChangedEvent.device);
                         }
                     }
-                    else if (deviceStateChangedEvent.previousState == _state)
+                    else if ((deviceStateChangedEvent.previousState | _state) == _state)
                     {
                         if (deviceStateChangedEvent.device.Type == AudioDeviceType.Playback)
                         {
