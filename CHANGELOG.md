@@ -1,8 +1,11 @@
 # Change Log
 
-## [Unreleased](https://github.com/Belphemur/SoundSwitch/tree/HEAD)
+## [v3.6.5](https://github.com/Belphemur/SoundSwitch/tree/v3.6.5) (2015-12-22)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.6.2...v3.6.5)
 
-[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.6.2...HEAD)
+**Fixed bugs:**
+
+- Crash and Restart when using Windows Remote Desktop. Problem when new device is connected. [\#41](https://github.com/Belphemur/SoundSwitch/issues/41)
 
 **Closed issues:**
 
