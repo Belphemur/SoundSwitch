@@ -15,10 +15,12 @@
 using System;
 using System.Collections.Generic;
 using AudioEndPointControllerWrapper;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NUnit.Framework;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Model;
+using Assert = NUnit.Framework.Assert;
 
 namespace SoundSwitch.Tests
 {
@@ -320,6 +322,13 @@ namespace SoundSwitch.Tests
             audioMoqI.VerifyGet(a => a.Type);
             audioMoqI.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Console)));
             audioMoqI.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Multimedia)));
+        }
+
+        [Test]
+        [Category("AudioDevice")]
+        public void TestUnderlyingLibraryPlaybackDevices()
+        {
+            AudioController.GetAllPlaybackDevices();
         }
     }
 }
