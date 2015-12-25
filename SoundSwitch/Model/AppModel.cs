@@ -32,7 +32,7 @@ namespace SoundSwitch.Model
         {
             using (AppLogger.Log.DebugCall())
             {
-                RegisterForRestart();
+                //RegisterForRestart();
                 RegisterRecovery();
             }
         }
@@ -371,11 +371,15 @@ namespace SoundSwitch.Model
                 try
                 {
                     AppLogger.Log.Info("Set Default device", device);
-                    device.SetAsDefault(Role.Console);
-                    if (SetCommunications)
+                    if (!SetCommunications)
+                    {
+                        device.SetAsDefault(Role.Console);
+                        device.SetAsDefault(Role.Multimedia);
+                    }
+                    else
                     {
                         AppLogger.Log.Info("Set Default Communication device", device);
-                        device.SetAsDefault(Role.Communications);
+                        device.SetAsDefault(Role.All);
                     }
                     switch (device.Type)
                     {
