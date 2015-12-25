@@ -237,8 +237,7 @@ namespace SoundSwitch.Tests
             listerMoq.Verify(l => l.GetRecordingDevices());
             configurationMoq.VerifyGet(config => config.LastRecordingActiveId);
             configurationMoq.VerifySet(config => config.LastRecordingActiveId = "Headphones (Test device)");
-            audioMoqII.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Console)));
-            audioMoqII.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Communications)));
+            audioMoqII.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.All)));
         }
 
         [Test]

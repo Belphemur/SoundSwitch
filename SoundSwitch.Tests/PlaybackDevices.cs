@@ -194,6 +194,7 @@ namespace SoundSwitch.Tests
             configurationMoq.VerifyGet(config => config.LastPlaybackActiveId);
             configurationMoq.VerifySet(config => config.LastPlaybackActiveId = "Headphones (Test device)");
             audioMoqII.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Console)));
+            audioMoqII.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Multimedia)));
         }
 
         [Test]
@@ -233,8 +234,7 @@ namespace SoundSwitch.Tests
             listerMoq.Verify(l => l.GetPlaybackDevices());
             configurationMoq.VerifyGet(config => config.LastPlaybackActiveId);
             configurationMoq.VerifySet(config => config.LastPlaybackActiveId = "Headphones (Test device)");
-            audioMoqII.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Console)));
-            audioMoqII.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Communications)));
+            audioMoqII.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.All)));
         }
 
         [Test]
@@ -271,6 +271,7 @@ namespace SoundSwitch.Tests
             configurationMoq.VerifyGet(config => config.LastPlaybackActiveId);
             configurationMoq.VerifySet(config => config.LastPlaybackActiveId = "Speakers (Test device)");
             audioMoqI.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Console)));
+            audioMoqI.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Multimedia)));
         }
 
         [Test]
@@ -318,6 +319,7 @@ namespace SoundSwitch.Tests
             configurationMoq.VerifySet(config => config.LastPlaybackActiveId = "Speakers (Test device)");
             audioMoqI.VerifyGet(a => a.Type);
             audioMoqI.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Console)));
+            audioMoqI.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Multimedia)));
         }
     }
 }
