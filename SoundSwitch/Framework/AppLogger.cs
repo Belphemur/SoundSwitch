@@ -41,9 +41,7 @@ namespace SoundSwitch.Framework
             SetLoggerOptions(Log.BinaryFile);
             Log.TextFileTraceLevel = TraceLevel.Warn;
             Log.EventLogTraceLevel = TraceLevel.Error;
-#if DEBUG
             Log.BinaryFileTraceLevel = TraceLevel.Verbose;
-#endif
             Log.BinaryFile.Open();
             Log.TextFile.Open();
         }

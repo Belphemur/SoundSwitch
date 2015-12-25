@@ -32,7 +32,7 @@ namespace SoundSwitch.Model
         {
             using (AppLogger.Log.DebugCall())
             {
-                //RegisterForRestart();
+                RegisterForRestart();
                 RegisterRecovery();
             }
         }
@@ -185,7 +185,7 @@ namespace SoundSwitch.Model
 
         private void RegisterForRestart()
         {
-            var settings = new RestartSettings("/restart", RestartRestrictions.None);
+            var settings = new RestartSettings("/restart", RestartRestrictions.NotOnReboot);
             ApplicationRestartRecoveryManager.RegisterForApplicationRestart(settings);
             AppLogger.Log.Info("Restart Registered");
         }

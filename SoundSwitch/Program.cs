@@ -17,6 +17,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
@@ -29,7 +30,8 @@ namespace SoundSwitch
 {
     internal static class Program
     {
-        [STAThread]
+        [HandleProcessCorruptedStateExceptions]
+        [MTAThread]
         private static void Main()
         {
             bool createdNew;
@@ -45,7 +47,11 @@ namespace SoundSwitch
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
 #if !DEBUG
-                Application.ThreadException += Application_ThreadException;
+                AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+                {
+                    HandleException((Exception)args.ExceptionObject);
+                };
+                Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
 #endif
                 WindowsAPIAdapter.Start();
                 //Manage the Closing events send by Windows

@@ -27,7 +27,7 @@ namespace SoundSwitch.Model
         private readonly DeviceState _state;
         private readonly HashSet<IAudioDevice> _recording = new HashSet<IAudioDevice>();
         private readonly HashSet<IAudioDevice> _playback = new HashSet<IAudioDevice>();
-        private bool _needUpdate = true;
+        private volatile bool _needUpdate = true;
         private readonly ReaderWriterLockSlim _cacheLock = new ReaderWriterLockSlim();
 
         public AudioDeviceLister(DeviceState state)
@@ -88,26 +88,14 @@ namespace SoundSwitch.Model
 
         private void AudioControllerOnDeviceRemoved(object sender, DeviceRemovedEvent deviceRemovedEvent)
         {
-            SetNeedUpdate();
+            _needUpdate = true;
         }
 
         private void AudioControllerOnDeviceAdded(object sender, DeviceAddedEvent deviceAddedEvent)
         {
-            SetNeedUpdate();
+            _needUpdate = true;
         }
 
-        private void SetNeedUpdate()
-        {
-            _cacheLock.EnterWriteLock();
-            try
-            {
-                _needUpdate = true;
-            }
-            finally
-            {
-                _cacheLock.ExitWriteLock();
-            }
-        }
 
         /// <summary>
         ///     Get the playback device in the set state

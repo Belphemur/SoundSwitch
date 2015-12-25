@@ -35,7 +35,7 @@ namespace SoundSwitch.Util
         private readonly ContextMenuStrip _selectionMenu = new ContextMenuStrip();
         private readonly ContextMenuStrip _settingsMenu = new ContextMenuStrip();
         private readonly SynchronizationContext _context = SynchronizationContext.Current ?? new SynchronizationContext();
-        private bool _needToUpdateList = true;
+        private volatile bool _needToUpdateList = true;
         private readonly NotifyIcon _trayIcon = new NotifyIcon
         {
             Icon = Icon.FromHandle(Resources.SoundSwitch16.GetHicon()),
