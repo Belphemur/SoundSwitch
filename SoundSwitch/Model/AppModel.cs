@@ -151,27 +151,29 @@ namespace SoundSwitch.Model
                 var audioDeviceLister = new AudioDeviceLister(DeviceState.All);
                 using (AppLogger.Log.InfoCall())
                 {
-                    foreach (var audioDevice in audioDeviceLister.GetRecordingDevices()
-                        .Join(AppConfigs.Configuration.SelectedRecordingDeviceList,
-                            a => a.FriendlyName,
-                            selected => selected,
-                            (a, selected) => a))
-                    {
-                        SelectedRecordingDevicesList.Add(audioDevice.Id);
-                        AppLogger.Log.Info("Migrating Device: ", audioDevice);
-                    }
+                    if (AppConfigs.Configuration.SelectedRecordingDeviceList != null)
+                        foreach (var audioDevice in audioDeviceLister.GetRecordingDevices()
+                            .Join(AppConfigs.Configuration.SelectedRecordingDeviceList,
+                                a => a.FriendlyName,
+                                selected => selected,
+                                (a, selected) => a))
+                        {
+                            SelectedRecordingDevicesList.Add(audioDevice.Id);
+                            AppLogger.Log.Info("Migrating Device: ", audioDevice);
+                        }
                 }
                 using (AppLogger.Log.InfoCall())
                 {
-                    foreach (var audioDevice in audioDeviceLister.GetPlaybackDevices()
-                        .Join(AppConfigs.Configuration.SelectedPlaybackDeviceList,
-                            a => a.FriendlyName,
-                            selected => selected,
-                            (a, selected) => a))
-                    {
-                        SelectedPlaybackDevicesList.Add(audioDevice.Id);
-                        AppLogger.Log.Info("Migrating Device: ", audioDevice);
-                    }
+                    if (AppConfigs.Configuration.SelectedPlaybackDeviceList != null)
+                        foreach (var audioDevice in audioDeviceLister.GetPlaybackDevices()
+                            .Join(AppConfigs.Configuration.SelectedPlaybackDeviceList,
+                                a => a.FriendlyName,
+                                selected => selected,
+                                (a, selected) => a))
+                        {
+                            SelectedPlaybackDevicesList.Add(audioDevice.Id);
+                            AppLogger.Log.Info("Migrating Device: ", audioDevice);
+                        }
                 }
                 AppConfigs.Configuration.MigratedSelectedDeviceLists = true;
                 AppConfigs.Configuration.SelectedPlaybackDeviceList = null;
