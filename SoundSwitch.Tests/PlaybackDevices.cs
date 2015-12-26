@@ -325,7 +325,6 @@ namespace SoundSwitch.Tests
         }
 
         [Test]
-        [Category("AudioDevice")]
         public void TestUnderlyingLibraryPlaybackDevices()
         {
             AudioController.GetAllPlaybackDevices();

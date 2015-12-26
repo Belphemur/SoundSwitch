@@ -327,7 +327,6 @@ namespace SoundSwitch.Tests
             audioMoqI.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Console)));
         }
         [Test]
-        [Category("AudioDevice")]
         public void TestUnderlyingLibraryRecordingDevices()
         {
             AudioController.GetAllRecordingDevices();
