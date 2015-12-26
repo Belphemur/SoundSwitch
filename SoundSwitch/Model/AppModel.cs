@@ -174,6 +174,8 @@ namespace SoundSwitch.Model
                     }
                 }
                 AppConfigs.Configuration.MigratedSelectedDeviceLists = true;
+                AppConfigs.Configuration.SelectedPlaybackDeviceList = null;
+                AppConfigs.Configuration.SelectedRecordingDeviceList = null;
                 AppConfigs.Configuration.Save();
             }
         }

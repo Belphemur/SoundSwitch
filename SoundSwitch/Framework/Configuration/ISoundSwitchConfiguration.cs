@@ -18,8 +18,8 @@ namespace SoundSwitch.Framework.Configuration
 {
     public interface ISoundSwitchConfiguration : IConfiguration
     {
-        HashSet<string> SelectedPlaybackDeviceList { get; }
-        HashSet<string> SelectedRecordingDeviceList { get; }
+        HashSet<string> SelectedPlaybackDeviceList { get; set; }
+        HashSet<string> SelectedRecordingDeviceList { get; set; }
 
         HashSet<string> SelectedPlaybackDeviceListId { get; }
         HashSet<string> SelectedRecordingDeviceListId { get; }

@@ -25,8 +25,8 @@ namespace SoundSwitch.Framework.Configuration
             FirstRun = true;
             ChangeCommunications = false;
             DisplayNotifications = true;
-            SelectedPlaybackDeviceList = new HashSet<string>();
-            SelectedRecordingDeviceList = new HashSet<string>();
+            SelectedPlaybackDeviceList = null;
+            SelectedRecordingDeviceList = null;
             SelectedPlaybackDeviceListId = new HashSet<string>();
             SelectedRecordingDeviceListId = new HashSet<string>();
             PlaybackHotKeys = new HotKeys(Keys.F11, HotKeys.ModifierKeys.Alt | HotKeys.ModifierKeys.Control);
@@ -36,8 +36,8 @@ namespace SoundSwitch.Framework.Configuration
         }
 
         /*TODO: Remove in next VERSION (3.6.6)*/
-        public HashSet<string> SelectedPlaybackDeviceList { get; }
-        public HashSet<string> SelectedRecordingDeviceList { get; }
+        public HashSet<string> SelectedPlaybackDeviceList { get; set; }
+        public HashSet<string> SelectedRecordingDeviceList { get; set; }
         public bool MigratedSelectedDeviceLists { get; set; }
 
         public HashSet<string> SelectedPlaybackDeviceListId { get; }
