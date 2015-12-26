@@ -1,11 +1,20 @@
 # Change Log
 
-## [v3.6.5](https://github.com/Belphemur/SoundSwitch/tree/v3.6.5) (2015-12-22)
-[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.6.2...v3.6.5)
+## [v3.7.0](https://github.com/Belphemur/SoundSwitch/tree/v3.7.0) (2015-12-26)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.6.5...v3.7.0)
+
+**Implemented enhancements:**
+
+- Remove the use of Device Name in configuration for device ID [\#46](https://github.com/Belphemur/SoundSwitch/issues/46)
 
 **Fixed bugs:**
 
+- Version 3.6.5.13463 does not recognize playback devices, version 3.6.2.37344 does. [\#45](https://github.com/Belphemur/SoundSwitch/issues/45)
+- By default SoundSwitch doesn't switch the Multimedia Device [\#44](https://github.com/Belphemur/SoundSwitch/issues/44)
 - Crash and Restart when using Windows Remote Desktop. Problem when new device is connected. [\#41](https://github.com/Belphemur/SoundSwitch/issues/41)
+
+## [v3.6.5](https://github.com/Belphemur/SoundSwitch/tree/v3.6.5) (2015-12-22)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.6.2...v3.6.5)
 
 **Closed issues:**
 
