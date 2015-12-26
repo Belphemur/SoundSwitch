@@ -27,14 +27,21 @@ namespace SoundSwitch.Framework.Configuration
             DisplayNotifications = true;
             SelectedPlaybackDeviceList = new HashSet<string>();
             SelectedRecordingDeviceList = new HashSet<string>();
+            SelectedPlaybackDeviceListId = new HashSet<string>();
+            SelectedRecordingDeviceListId = new HashSet<string>();
             PlaybackHotKeys = new HotKeys(Keys.F11, HotKeys.ModifierKeys.Alt | HotKeys.ModifierKeys.Control);
-            RecordingHotKeys = new HotKeys(Keys.F7,HotKeys.ModifierKeys.Alt | HotKeys.ModifierKeys.Control);
+            RecordingHotKeys = new HotKeys(Keys.F7, HotKeys.ModifierKeys.Alt | HotKeys.ModifierKeys.Control);
             //12 hours
-            UpdateCheckInterval = 3600*12;
+            UpdateCheckInterval = 3600 * 12;
         }
 
-        public HashSet<string> SelectedPlaybackDeviceList { get; set; }
-        public HashSet<string> SelectedRecordingDeviceList { get; set; }
+        /*TODO: Remove in next VERSION (3.6.6)*/
+        public HashSet<string> SelectedPlaybackDeviceList { get; }
+        public HashSet<string> SelectedRecordingDeviceList { get; }
+        public bool MigratedSelectedDeviceLists { get; set; }
+
+        public HashSet<string> SelectedPlaybackDeviceListId { get; }
+        public HashSet<string> SelectedRecordingDeviceListId { get; }
         public string LastPlaybackActiveId { get; set; }
         public string LastRecordingActiveId { get; set; }
         public bool FirstRun { get; set; }

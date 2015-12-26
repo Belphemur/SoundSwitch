@@ -175,7 +175,7 @@ namespace SoundSwitch.UI.Forms
                 Tag = device
             };
 
-            if (selected.Contains(device.FriendlyName))
+            if (selected.Contains(device.Id))
             {
                 listViewItem.Checked = true;
                 listViewItem.Group = listView.Groups["selectedGroup"];

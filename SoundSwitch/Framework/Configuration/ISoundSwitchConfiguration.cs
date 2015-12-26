@@ -18,8 +18,11 @@ namespace SoundSwitch.Framework.Configuration
 {
     public interface ISoundSwitchConfiguration : IConfiguration
     {
-        HashSet<string> SelectedPlaybackDeviceList { get; set; }
-        HashSet<string> SelectedRecordingDeviceList { get; set; }
+        HashSet<string> SelectedPlaybackDeviceList { get; }
+        HashSet<string> SelectedRecordingDeviceList { get; }
+
+        HashSet<string> SelectedPlaybackDeviceListId { get; }
+        HashSet<string> SelectedRecordingDeviceListId { get; }
         string LastPlaybackActiveId { get; set; }
         string LastRecordingActiveId { get; set; }
         bool FirstRun { get; set; }
@@ -28,5 +31,6 @@ namespace SoundSwitch.Framework.Configuration
         bool ChangeCommunications { get; set; }
         uint UpdateCheckInterval { get; set; }
         bool DisplayNotifications { get; set; }
+        bool MigratedSelectedDeviceLists { get; set; }
     }
 }

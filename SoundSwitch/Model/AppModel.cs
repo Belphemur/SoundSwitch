@@ -38,7 +38,7 @@ namespace SoundSwitch.Model
         }
 
         public static IAppModel Instance { get; } = new AppModel();
-        public HashSet<string> SelectedPlaybackDevicesList => AppConfigs.Configuration.SelectedPlaybackDeviceList;
+        public HashSet<string> SelectedPlaybackDevicesList => AppConfigs.Configuration.SelectedPlaybackDeviceListId;
 
         public ICollection<IAudioDevice> AvailablePlaybackDevices
         {
@@ -46,15 +46,15 @@ namespace SoundSwitch.Model
             {
                 return
                    ActiveAudioDeviceLister.GetPlaybackDevices()
-                    .Join(SelectedPlaybackDevicesList, 
-                    a => a.FriendlyName, 
-                    selected => selected, 
-                    (a,selected) => a)
+                    .Join(SelectedPlaybackDevicesList,
+                    a => a.Id,
+                    selected => selected,
+                    (a, selected) => a)
                     .ToList();
             }
         }
 
-        public HashSet<string> SelectedRecordingDevicesList => AppConfigs.Configuration.SelectedRecordingDeviceList;
+        public HashSet<string> SelectedRecordingDevicesList => AppConfigs.Configuration.SelectedRecordingDeviceListId;
 
         public ICollection<IAudioDevice> AvailableRecordingDevices
         {
@@ -62,7 +62,7 @@ namespace SoundSwitch.Model
             {
                 return ActiveAudioDeviceLister.GetRecordingDevices()
                   .Join(SelectedRecordingDevicesList,
-                  a => a.FriendlyName,
+                  a => a.Id,
                   selected => selected,
                   (a, selected) => a)
                   .ToList();
@@ -133,8 +133,49 @@ namespace SoundSwitch.Model
             }
             SetHotkeyCombination(AppConfigs.Configuration.PlaybackHotKeys, AudioDeviceType.Playback);
             SetHotkeyCombination(AppConfigs.Configuration.RecordingHotKeys, AudioDeviceType.Recording);
+            /*TODO: Remove in next VERSION (3.6.6)*/
+            MigrateSelectedDeviceLists();
             InitUpdateChecker();
             _initialized = true;
+        }
+
+        private void MigrateSelectedDeviceLists()
+        {
+            using (AppLogger.Log.InfoCall())
+            {
+                if (AppConfigs.Configuration.MigratedSelectedDeviceLists)
+                {
+                    AppLogger.Log.Info("Already migrated the device lists");
+                    return;
+                }
+                var audioDeviceLister = new AudioDeviceLister(DeviceState.All);
+                using (AppLogger.Log.InfoCall())
+                {
+                    foreach (var audioDevice in audioDeviceLister.GetRecordingDevices()
+                        .Join(AppConfigs.Configuration.SelectedRecordingDeviceList,
+                            a => a.FriendlyName,
+                            selected => selected,
+                            (a, selected) => a))
+                    {
+                        SelectedRecordingDevicesList.Add(audioDevice.Id);
+                        AppLogger.Log.Info("Migrating Device: ", audioDevice);
+                    }
+                }
+                using (AppLogger.Log.InfoCall())
+                {
+                    foreach (var audioDevice in audioDeviceLister.GetPlaybackDevices()
+                        .Join(AppConfigs.Configuration.SelectedPlaybackDeviceList,
+                            a => a.FriendlyName,
+                            selected => selected,
+                            (a, selected) => a))
+                    {
+                        SelectedPlaybackDevicesList.Add(audioDevice.Id);
+                        AppLogger.Log.Info("Migrating Device: ", audioDevice);
+                    }
+                }
+                AppConfigs.Configuration.MigratedSelectedDeviceLists = true;
+                AppConfigs.Configuration.Save();
+            }
         }
 
         private void InitUpdateChecker()
@@ -195,7 +236,7 @@ namespace SoundSwitch.Model
             using (AppLogger.Log.ErrorCall())
             {
                 AppLogger.Log.Error("Saving application state");
-                var settings = (SoundSwitchConfiguration) state;
+                var settings = (SoundSwitchConfiguration)state;
                 var cancelled = ApplicationRestartRecoveryManager.ApplicationRecoveryInProgress();
                 if (cancelled)
                 {
@@ -213,13 +254,10 @@ namespace SoundSwitch.Model
         #region Selected devices
 
         /// <summary>
-        ///     Add a playback device into the Set.
+        /// Add the device to the Selected device list
         /// </summary>
         /// <param name="device"></param>
-        /// <returns>
-        ///     true if the element is added to the <see cref="T:System.Collections.Generic.HashSet`1" /> object; false if
-        ///     the element is already present.
-        /// </returns>
+        /// <returns></returns>
         public bool SelectDevice(IAudioDevice device)
         {
             var result = false;
@@ -227,11 +265,11 @@ namespace SoundSwitch.Model
             switch (device.Type)
             {
                 case AudioDeviceType.Playback:
-                    result = SelectedPlaybackDevicesList.Add(device.FriendlyName);
+                    result = SelectedPlaybackDevicesList.Add(device.Id);
                     eventChanged = new DeviceListChanged(SelectedPlaybackDevicesList, device.Type);
                     break;
                 case AudioDeviceType.Recording:
-                    result = SelectedRecordingDevicesList.Add(device.FriendlyName);
+                    result = SelectedRecordingDevicesList.Add(device.Id);
                     eventChanged = new DeviceListChanged(SelectedRecordingDevicesList, device.Type);
                     break;
                 default:
@@ -247,13 +285,10 @@ namespace SoundSwitch.Model
         }
 
         /// <summary>
-        ///     Remove a device from the Set.
+        /// Add the device to the Selected device list
         /// </summary>
         /// <param name="device"></param>
-        /// <returns>
-        ///     true if the element is successfully found and removed; otherwise, false.  This method returns false if
-        ///     <paramref name="deviceName" /> is not found in the <see cref="T:System.Collections.Generic.HashSet`1" /> object.
-        /// </returns>
+        /// <returns></returns>
         public bool UnselectDevice(IAudioDevice device)
         {
             var result = false;
@@ -261,11 +296,11 @@ namespace SoundSwitch.Model
             switch (device.Type)
             {
                 case AudioDeviceType.Playback:
-                    result = SelectedPlaybackDevicesList.Remove(device.FriendlyName);
+                    result = SelectedPlaybackDevicesList.Remove(device.Id);
                     eventChanged = new DeviceListChanged(SelectedPlaybackDevicesList, device.Type);
                     break;
                 case AudioDeviceType.Recording:
-                    result = SelectedRecordingDevicesList.Remove(device.FriendlyName);
+                    result = SelectedRecordingDevicesList.Remove(device.Id);
                     eventChanged = new DeviceListChanged(SelectedRecordingDevicesList, device.Type);
                     break;
                 default:
