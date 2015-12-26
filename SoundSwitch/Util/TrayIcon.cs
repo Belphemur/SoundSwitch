@@ -70,7 +70,6 @@ namespace SoundSwitch.Util
                     _trayIcon.ContextMenuStrip = _settingsMenu;
                 }
             };
-            UpdateDeviceSelectionList();
             SetEventHandlers();
         }
 
@@ -138,8 +137,8 @@ namespace SoundSwitch.Util
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
-                    _context.Send(s => { UpdateImageContextMenu(audioDeviceType, audioChangeEvent); }, null);
-                    
+                    _needToUpdateList = true;
+
                 };
             AppModel.Instance.SelectedDeviceChanged +=
                  (sender, @event) => { _needToUpdateList = true; };
@@ -158,23 +157,6 @@ namespace SoundSwitch.Util
                  (sender, @event) => { _needToUpdateList = true; };
 
             AppModel.Instance.InitializeMain();
-        }
-
-
-        private void UpdateImageContextMenu(AudioDeviceType audioDeviceType, DeviceDefaultChangedEvent audioChangeEvent)
-        {
-            if (audioChangeEvent.role != Role.Console)
-                return;
-
-            foreach (
-                var toolStripDevItem in
-                    _selectionMenu.Items.OfType<ToolStripDeviceItem>()
-                        .Where(item => item.AudioDevice.Type == audioDeviceType))
-            {
-                toolStripDevItem.Image = toolStripDevItem.AudioDevice.Id == audioChangeEvent.device.Id
-                    ? Resources.Check
-                    : null;
-            }
         }
 
         private void NewReleaseAvailable(object sender, UpdateChecker.NewReleaseEvent newReleaseEvent)
