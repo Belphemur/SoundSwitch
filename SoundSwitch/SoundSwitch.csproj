@@ -202,6 +202,7 @@
     <Compile Include="Framework\ApplicationPath.cs" />
     <Compile Include="Framework\Configuration\AppConfigs.cs" />
     <Compile Include="Framework\HourGlass.cs" />
+    <Compile Include="Framework\Minidump\MemoryDumper.cs" />
     <Compile Include="Model\IAudioDeviceLister.cs" />
     <Compile Include="Properties\AboutStrings.Designer.cs">
       <AutoGen>True</AutoGen>

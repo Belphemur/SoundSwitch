@@ -23,6 +23,7 @@ using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
+using SoundSwitch.Framework.Minidump;
 using SoundSwitch.Model;
 using SoundSwitch.Util;
 
@@ -115,7 +116,8 @@ namespace SoundSwitch
 
         private static void HandleException(Exception exception)
         {
-            AppLogger.Log.Fatal("Exception Occured ", exception);
+            if (exception == null)
+                return;
             var zipFile = Path.Combine(ApplicationPath.AppData,
                 $"{Application.ProductName}-crashlog-{DateTime.UtcNow.Date.Day}_{DateTime.UtcNow.Date.Month}_{DateTime.UtcNow.Date.Year}.zip");
             var message =
@@ -129,15 +131,28 @@ namespace SoundSwitch
             if (result == DialogResult.Yes)
             {
                 using (new HourGlass())
-                using (new AppLogger.LogRestartor())
                 {
-                    if (File.Exists(zipFile))
+                    var fileName = Path.Combine(ApplicationPath.Default, Environment.MachineName + ".dmp");
+                    using (
+                        var fs = new FileStream(fileName, FileMode.Create, FileAccess.ReadWrite,
+                            FileShare.Write))
                     {
-                        File.Delete(zipFile);
+                        MiniDump.Write(fs.SafeFileHandle,
+                            MiniDump.Option.Normal | MiniDump.Option.WithThreadInfo | MiniDump.Option.WithHandleData |
+                            MiniDump.Option.WithDataSegs, MiniDump.ExceptionInfo.Present);
                     }
-                    ZipFile.CreateFromDirectory(ApplicationPath.Default, zipFile);
+                    AppLogger.Log.Fatal("Exception Occured ", exception);
+                    using (new AppLogger.LogRestartor())
+                    {
+                        if (File.Exists(zipFile))
+                        {
+                            File.Delete(zipFile);
+                        }
+                        
+                        ZipFile.CreateFromDirectory(ApplicationPath.Default, zipFile);
+                    }
+                    Process.Start("explorer.exe", "/select," + @zipFile);
                 }
-                Process.Start("explorer.exe", "/select," + @zipFile);
             }
         }
     }
