@@ -1,5 +1,18 @@
 # Change Log
 
+## [Unreleased](https://github.com/Belphemur/SoundSwitch/tree/HEAD)
+
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.7.0...HEAD)
+
+**Implemented enhancements:**
+
+- Create minidump in case of crash [\#48](https://github.com/Belphemur/SoundSwitch/issues/48)
+- When an update is available, clicking on the notification launch the download [\#47](https://github.com/Belphemur/SoundSwitch/issues/47)
+
+**Fixed bugs:**
+
+- French language not loaded by SoundSwitch [\#50](https://github.com/Belphemur/SoundSwitch/issues/50)
+
 ## [v3.7.0](https://github.com/Belphemur/SoundSwitch/tree/v3.7.0) (2015-12-26)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.6.5...v3.7.0)
 
