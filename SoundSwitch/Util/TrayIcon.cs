@@ -97,7 +97,11 @@ namespace SoundSwitch.Util
 
         private void OnUpdateClick(object sender, EventArgs eventArgs)
         {
+            if (_updateMenuItem.Tag == null)
+                return;
+
             new UpdateDownloadForm((Release) _updateMenuItem.Tag).ShowDialog();
+            _trayIcon.BalloonTipClicked -= OnUpdateClick;
         }
 
         private void SetEventHandlers()
@@ -164,6 +168,7 @@ namespace SoundSwitch.Util
             _updateMenuItem.Tag = newReleaseEvent.Release;
             _updateMenuItem.Text = string.Format(TrayIconStrings.updateAvailable, newReleaseEvent.Release.ReleaseVersion);
             _updateMenuItem.Enabled = true;
+            _trayIcon.BalloonTipClicked += OnUpdateClick;
             _trayIcon.ShowBalloonTip(3000,
                 string.Format(TrayIconStrings.versionAvailable, newReleaseEvent.Release.ReleaseVersion),
                 TrayIconStrings.howDownloadUpdate, ToolTipIcon.Info);
