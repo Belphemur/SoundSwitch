@@ -125,7 +125,7 @@
 		<value>Version {0} est disponible</value>
 	</data>
 	<data name="howDownloadUpdate" xml:space="preserve">
-		<value>Click droit sur l'icone pour télécharger.</value>
+		<value>Cliquer ici pour mettre à jour.</value>
 	</data>
 	<data name="playbackChanged" xml:space="preserve">
 		<value>{0}: Périphérique de lecture</value>

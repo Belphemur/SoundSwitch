@@ -125,7 +125,7 @@
 		<value>Version {0} is available</value>
 	</data>
 	<data name="howDownloadUpdate" xml:space="preserve">
-		<value>Right click on the tray icon to download.</value>
+		<value>Click here to update.</value>
 	</data>
 	<data name="playbackChanged" xml:space="preserve">
 		<value>{0}: Playback device switched to</value>
