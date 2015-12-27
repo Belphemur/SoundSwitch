@@ -4,6 +4,7 @@ cd /d "%~dp0"
 
 SET FILE_DIR=%~dp0
 SET BIN_DIR=%FILE_DIR%bin
+SET LANGS=(fr)
 
 set finalDir=%FILE_DIR%Final
 set x86Release=%finalDir%\x86
@@ -55,14 +56,24 @@ echo "Copy LICENSE"
 xcopy /y LICENSE.txt %finalDir% 1>nul 2>nul
 
 Echo "Copy x64"
+xcopy /y %BIN_DIR%\x64\Release\*.pdb %x64Release% 1>nul 2>nul
 xcopy /y %BIN_DIR%\x64\Release\*.dll %x64Release% 1>nul 2>nul
 xcopy /y %BIN_DIR%\x64\Release\SoundSwitch.exe %x64Release% 1>nul 2>nul
 xcopy /y %BIN_DIR%\x64\Release\SoundSwitch.exe.config %x64Release% 1>nul 2>nul
+for %%l in %LANGS% DO (
+    mkdir %x64Release%\%%l\ 
+    xcopy /y %BIN_DIR%\x64\Release\%%l\SoundSwitch.resources.dll %x64Release%\%%l\ 1>nul 2>nul
+)
 
 Echo "Copy x86"
+xcopy /y %BIN_DIR%\x86\Release\*.pdb %x86Release% 1>nul 2>nul
 xcopy /y %BIN_DIR%\x86\Release\*.dll %x86Release% 1>nul 2>nul
 xcopy /y %BIN_DIR%\x86\Release\SoundSwitch.* %x86Release% 1>nul 2>nul
 xcopy /y %BIN_DIR%\x86\Release\SoundSwitch.exe.config %x86Release% 1>nul 2>nul
+for %%l in %LANGS% DO (
+    mkdir %x86Release%\%%l\
+    xcopy /y %BIN_DIR%\x86\Release\%%l\SoundSwitch.resources.dll %x86Release%\%%l\ 1>nul 2>nul
+)
 
 IF EXIST "%FILE_DIR%..\signinfo.txt" (
     echo Signing release...
@@ -73,6 +84,10 @@ IF EXIST "%FILE_DIR%..\signinfo.txt" (
     call Sign.bat %x64Release%\AudioEndPointLibrary.dll
     call Sign.bat %x86Release%\Audio.EndPoint.Controller.Wrapper.dll
     call Sign.bat %x64Release%\Audio.EndPoint.Controller.Wrapper.dll
+    for %%l in %LANGS% DO (
+        call Sign.bat %x86Release%\%%l\SoundSwitch.resources.dll
+        call Sign.bat %x64Release%\%%l\SoundSwitch.resources.dll
+    )
 )
 
 
