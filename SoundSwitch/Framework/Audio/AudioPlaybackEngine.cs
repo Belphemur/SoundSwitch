@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 

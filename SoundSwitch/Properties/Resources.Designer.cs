@@ -91,15 +91,6 @@ namespace SoundSwitch.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream dingdong {
-            get {
-                return ResourceManager.GetStream("dingdong", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap exit {
@@ -126,6 +117,15 @@ namespace SoundSwitch.Properties {
             get {
                 object obj = ResourceManager.GetObject("Mixer", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream NotificationSound {
+            get {
+                return ResourceManager.GetStream("NotificationSound", resourceCulture);
             }
         }
         

@@ -21,7 +21,6 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         {
             if (audioDevice.Type != AudioDeviceType.Playback)
                 return;
-
             new AudioPlaybackEngine().PlaySoundWav(_sound);
         }
     }

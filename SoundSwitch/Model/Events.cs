@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using AudioEndPointControllerWrapper;
+using SoundSwitch.Framework.NotificationManager;
 
 namespace SoundSwitch.Model
 {
@@ -39,5 +40,17 @@ namespace SoundSwitch.Model
 
         public IEnumerable<string> SeletedDevicesList { get; private set; }
         public AudioDeviceType Type { get; private set; }
+    }
+
+    public class NotificationSettingsUpdatedEvent : EventArgs
+    {
+        public NotificationTypeEnum PrevSettings { get;}
+        public NotificationTypeEnum NewSettings { get; }
+
+        public NotificationSettingsUpdatedEvent(NotificationTypeEnum prevSettings, NotificationTypeEnum newSettings)
+        {
+            PrevSettings = prevSettings;
+            NewSettings = newSettings;
+        }
     }
 }

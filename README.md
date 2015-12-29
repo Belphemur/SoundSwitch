@@ -70,3 +70,6 @@ http://creativecommons.org/licenses/by-nc-sa/4.0/
 
 ### Disabling notification
 [@adamblackburn](https://github.com/adamblackburn) with merge request [#33](https://github.com/Belphemur/SoundSwitch/pull/33)
+
+### Notification Sound
+[Music box notification sound by Robinhood76](https://www.freesound.org/people/Robinhood76/sounds/216676/)

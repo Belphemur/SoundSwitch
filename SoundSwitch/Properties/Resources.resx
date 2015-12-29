@@ -151,7 +151,7 @@
   <data name="defaultSpeakers" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\defaultSpeakers.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="dingdong" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\33244__ljudman__dingding.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="NotificationSound" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\216676__robinhood76__04864-notification-music-box.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

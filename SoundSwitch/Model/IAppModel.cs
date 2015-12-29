@@ -112,6 +112,11 @@ namespace SoundSwitch.Model
         /// If a device is added in the system
         /// </summary>
         event EventHandler<DeviceAddedEvent> DeviceAdded;
+
+        /// <summary>
+        /// If the NotificationSettings has been modified
+        /// </summary>
+        event EventHandler<NotificationSettingsUpdatedEvent> NotificationSettingsChanged;
         #endregion
 
         #region Methods
