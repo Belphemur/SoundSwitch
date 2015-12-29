@@ -55,6 +55,8 @@ namespace SoundSwitch.UI.Forms
                 audioDeviceLister.GetRecordingDevices());
             notifLabel.Text = Properties.SettingsString.notification;
 
+            var toolTipNotification = new ToolTip();
+            toolTipNotification.SetToolTip(notificationComboBox, Notifications.explanation);
             notificationComboBox.DisplayMember = "Label";
             notificationComboBox.ValueMember = "Type";
             notificationComboBox.DataSource = NotificationFactory.GetNotificationDisplayers();

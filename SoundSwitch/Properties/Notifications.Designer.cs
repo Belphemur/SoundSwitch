@@ -61,6 +61,17 @@ namespace SoundSwitch.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Window&apos;s Notification: Use the usual OS notification system
+        ///Sound Notification: Play a sound on the switched audio device
+        ///No Notification: ... No Notification at all..
+        /// </summary>
+        internal static string explanation {
+            get {
+                return ResourceManager.GetString("explanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No Notification.
         /// </summary>
         internal static string NotifNone {

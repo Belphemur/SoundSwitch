@@ -106,4 +106,9 @@
 	<data name="NotifSound" xml:space="preserve">
 		<value>Sound Notification</value>
 	</data>
+	<data name="explanation" xml:space="preserve">
+		<value>Window's Notification: Use the usual OS notification system
+Sound Notification: Play a sound on the switched audio device
+No Notification: ... No Notification at all.</value>
+	</data>
 </root>
