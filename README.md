@@ -35,6 +35,18 @@ This is one of the interesting feature added in Isabelline Gold, the auto-update
 ### Communications
 SoundSwitch can also change the communications devices when asked in the Settings. Windows make a differentiation between Multimedia and Communication, it means if an application ask to have access to Communications Audio Device (like Skype), it will receive the default Communications device. By default SoundSwitch only change the Multimedia device, and not the communications. Now if the checkbox is checked in the settings, it will also change the Communications device.
 
+### Notifications
+SoundSwitch provides 3 types of notification.
+
+#### Windows Notification
+This is the default notification, it use the ballontip of Windows. In the case of Windows 7, it's the little ballon that open next to the systray icon. For Windows 10, it's the notification system that slide from the right corner of the screen.
+
+#### Sound Notification
+This notification is a sound played on the switched device. This way when you are switching device, the new device will "chime" to tell you it's selected.
+
+#### No Notification
+In case you're not interested of getting any sort of notification.
+
 ## License: GPLv2
 
 Copyright (C) 2015 Jeroen Pelgrims
