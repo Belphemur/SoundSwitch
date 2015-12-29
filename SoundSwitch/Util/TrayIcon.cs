@@ -23,6 +23,7 @@ using System.Threading;
 using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework;
+using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
@@ -36,7 +37,7 @@ namespace SoundSwitch.Util
         private readonly ContextMenuStrip _settingsMenu = new ContextMenuStrip();
         private readonly SynchronizationContext _context = SynchronizationContext.Current ?? new SynchronizationContext();
         private volatile bool _needToUpdateList = true;
-        private readonly NotifyIcon _trayIcon = new NotifyIcon
+        public NotifyIcon NotifyIcon { get; }    = new NotifyIcon
         {
             Icon = Icon.FromHandle(Resources.SoundSwitch16.GetHicon()),
             Visible = true,
@@ -51,23 +52,23 @@ namespace SoundSwitch.Util
             {
                 Enabled = false
             };
-            _trayIcon.ContextMenuStrip = _settingsMenu;
+            NotifyIcon.ContextMenuStrip = _settingsMenu;
 
             PopulateSettingsMenu();
 
             _selectionMenu.Items.Add(TrayIconStrings.NoDevSel, Resources.Settings, (sender, e) => ShowSettings());
 
-            _trayIcon.MouseClick += (sender, e) =>
+            NotifyIcon.MouseClick += (sender, e) =>
             {
                 if (e.Button == MouseButtons.Left)
                 {
                     UpdateDeviceSelectionList();
-                    _trayIcon.ContextMenuStrip = _selectionMenu;
+                    NotifyIcon.ContextMenuStrip = _selectionMenu;
                     var mi = typeof (NotifyIcon).GetMethod("ShowContextMenu",
                         BindingFlags.Instance | BindingFlags.NonPublic);
-                    mi.Invoke(_trayIcon, null);
+                    mi.Invoke(NotifyIcon, null);
 
-                    _trayIcon.ContextMenuStrip = _settingsMenu;
+                    NotifyIcon.ContextMenuStrip = _settingsMenu;
                 }
             };
             SetEventHandlers();
@@ -77,7 +78,7 @@ namespace SoundSwitch.Util
         {
             _selectionMenu.Dispose();
             _settingsMenu.Dispose();
-            _trayIcon.Dispose();
+            NotifyIcon.Dispose();
             _updateMenuItem.Dispose();
         }
 
@@ -101,7 +102,7 @@ namespace SoundSwitch.Util
                 return;
 
             new UpdateDownloadForm((Release) _updateMenuItem.Tag).ShowDialog();
-            _trayIcon.BalloonTipClicked -= OnUpdateClick;
+            NotifyIcon.BalloonTipClicked -= OnUpdateClick;
         }
 
         private void SetEventHandlers()
@@ -128,21 +129,7 @@ namespace SoundSwitch.Util
                     {
                         return;
                     }
-
-                    var audioDeviceType = audioChangeEvent.device.Type;
-                    switch (audioDeviceType)
-                    {
-                        case AudioDeviceType.Playback:
-                            _context.Send(s => { ShowPlaybackChanged(audioChangeEvent.device.FriendlyName); }, null);
-                            break;
-                        case AudioDeviceType.Recording:
-                            _context.Send(s => { ShowRecordingChanged(audioChangeEvent.device.FriendlyName); }, null);
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
                     _needToUpdateList = true;
-
                 };
             AppModel.Instance.SelectedDeviceChanged +=
                  (sender, @event) => { _needToUpdateList = true; };
@@ -168,8 +155,8 @@ namespace SoundSwitch.Util
             _updateMenuItem.Tag = newReleaseEvent.Release;
             _updateMenuItem.Text = string.Format(TrayIconStrings.updateAvailable, newReleaseEvent.Release.ReleaseVersion);
             _updateMenuItem.Enabled = true;
-            _trayIcon.BalloonTipClicked += OnUpdateClick;
-            _trayIcon.ShowBalloonTip(3000,
+            NotifyIcon.BalloonTipClicked += OnUpdateClick;
+            NotifyIcon.ShowBalloonTip(3000,
                 string.Format(TrayIconStrings.versionAvailable, newReleaseEvent.Release.ReleaseVersion),
                 TrayIconStrings.howDownloadUpdate, ToolTipIcon.Info);
         }
@@ -230,31 +217,13 @@ namespace SoundSwitch.Util
             }
         }
 
-        private void ShowPlaybackChanged(string deviceName)
-        {
-            if (AppModel.Instance.DisplayNotifications)
-            {
-                _trayIcon.ShowBalloonTip(500, string.Format(TrayIconStrings.playbackChanged, Application.ProductName),
-                    deviceName, ToolTipIcon.Info);
-            }
-        }
-
-        private void ShowRecordingChanged(string deviceName)
-        {
-            if (AppModel.Instance.DisplayNotifications)
-            {
-                _trayIcon.ShowBalloonTip(500, string.Format(TrayIconStrings.recordingChanged, Application.ProductName),
-                    deviceName, ToolTipIcon.Info);
-            }
-        }
-
         /// <summary>
         ///     Notification for when there are no devices configured
         /// </summary>
         public void ShowNoDevices()
         {
             AppLogger.Log.Info("No devices available");
-            _trayIcon.ShowBalloonTip(3000, string.Format(TrayIconStrings.confNeeded, Application.ProductName),
+            NotifyIcon.ShowBalloonTip(3000, string.Format(TrayIconStrings.confNeeded, Application.ProductName),
                 TrayIconStrings.confNeededExp, ToolTipIcon.Warning);
         }
 
@@ -265,7 +234,7 @@ namespace SoundSwitch.Util
         /// <param name="errorTitle"></param>
         public void ShowError(string errorMessage, string errorTitle)
         {
-            _trayIcon.ShowBalloonTip(3000, $"{Application.ProductName}: {errorTitle}", errorMessage, ToolTipIcon.Error);
+            NotifyIcon.ShowBalloonTip(3000, $"{Application.ProductName}: {errorTitle}", errorMessage, ToolTipIcon.Error);
         }
     }
 }

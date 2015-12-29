@@ -133,4 +133,7 @@
 	<data name="commTooltip" xml:space="preserve">
 		<value>Switch aussi le périphérique de communication. (Par exemple pour Skype, TeamSpeak, etc ...)</value>
 	</data>
+	<data name="notification" xml:space="preserve">
+		<value>Notification</value>
+	</data>
 </root>

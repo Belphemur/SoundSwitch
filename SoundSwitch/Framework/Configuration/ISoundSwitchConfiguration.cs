@@ -12,12 +12,15 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
+using System;
 using System.Collections.Generic;
+using SoundSwitch.Framework.NotificationManager;
 
 namespace SoundSwitch.Framework.Configuration
 {
     public interface ISoundSwitchConfiguration : IConfiguration
     {
+        /*TODO: Remove in next VERSION (3.6.6)*/
         HashSet<string> SelectedPlaybackDeviceList { get; set; }
         HashSet<string> SelectedRecordingDeviceList { get; set; }
 
@@ -30,7 +33,12 @@ namespace SoundSwitch.Framework.Configuration
         HotKeys RecordingHotKeys { get; set; }
         bool ChangeCommunications { get; set; }
         uint UpdateCheckInterval { get; set; }
+
+        /*TODO: Remove in next VERSION (3.7.0)*/
+        [Obsolete("Use the NotificationSettings instead.")]
         bool DisplayNotifications { get; set; }
+
         bool MigratedSelectedDeviceLists { get; set; }
+        NotificationTypeEnum NotificationSettings { get; set; }
     }
 }

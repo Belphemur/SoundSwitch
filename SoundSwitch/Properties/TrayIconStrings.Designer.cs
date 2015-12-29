@@ -106,7 +106,7 @@ namespace SoundSwitch.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Right click on the tray icon to download..
+        ///   Looks up a localized string similar to Click here to update..
         /// </summary>
         internal static string howDownloadUpdate {
             get {

@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using SoundSwitch.Framework.NotificationManager;
 
 namespace SoundSwitch.Framework.Configuration
 {
@@ -24,15 +25,17 @@ namespace SoundSwitch.Framework.Configuration
         {
             FirstRun = true;
             ChangeCommunications = false;
-            DisplayNotifications = true;
             SelectedPlaybackDeviceList = null;
             SelectedRecordingDeviceList = null;
+            NotificationSettings = NotificationTypeEnum.DefaultWindowsNotification;
             SelectedPlaybackDeviceListId = new HashSet<string>();
             SelectedRecordingDeviceListId = new HashSet<string>();
             PlaybackHotKeys = new HotKeys(Keys.F11, HotKeys.ModifierKeys.Alt | HotKeys.ModifierKeys.Control);
             RecordingHotKeys = new HotKeys(Keys.F7, HotKeys.ModifierKeys.Alt | HotKeys.ModifierKeys.Control);
             //12 hours
             UpdateCheckInterval = 3600 * 12;
+            /*TODO: Remove in next VERSION (3.7.0)*/
+
         }
 
         /*TODO: Remove in next VERSION (3.6.6)*/
@@ -49,7 +52,19 @@ namespace SoundSwitch.Framework.Configuration
         public HotKeys RecordingHotKeys { get; set; }
         public bool ChangeCommunications { get; set; }
         public uint UpdateCheckInterval { get; set; }
-        public bool DisplayNotifications { get; set; }
+        public NotificationTypeEnum NotificationSettings { get; set; }
+
+        /*TODO: Remove in next VERSION (3.7.0)*/
+        [Obsolete("Use the NotificationSettings instead.")]
+        public bool DisplayNotifications
+        {
+            get { return NotificationSettings == NotificationTypeEnum.DefaultWindowsNotification; }
+            set {
+                NotificationSettings = value ? NotificationTypeEnum.DefaultWindowsNotification : NotificationTypeEnum.SoundNotification;
+            }
+        }
+
+
 
         //Needed by Interface
         public string FileLocation { get; set; }

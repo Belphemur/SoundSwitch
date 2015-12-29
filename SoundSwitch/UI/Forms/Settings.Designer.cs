@@ -30,8 +30,8 @@ namespace SoundSwitch.UI.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup(global::SoundSwitch.Properties.SettingsString.selected, System.Windows.Forms.HorizontalAlignment.Center);
-            System.Windows.Forms.ListViewGroup listViewGroup4 = new System.Windows.Forms.ListViewGroup(global::SoundSwitch.Properties.SettingsString.selected, System.Windows.Forms.HorizontalAlignment.Center);
+            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup(global::SoundSwitch.Properties.SettingsString.selected, System.Windows.Forms.HorizontalAlignment.Center);
+            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup(global::SoundSwitch.Properties.SettingsString.selected, System.Windows.Forms.HorizontalAlignment.Center);
             this.RunAtStartup = new System.Windows.Forms.CheckBox();
             this.closeButton = new System.Windows.Forms.Button();
             this.communicationCheckbox = new System.Windows.Forms.CheckBox();
@@ -42,7 +42,8 @@ namespace SoundSwitch.UI.Forms
             this.recordingListView = new System.Windows.Forms.ListView();
             this.hotkeyTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.notificationsCheckbox = new System.Windows.Forms.CheckBox();
+            this.notificationComboBox = new System.Windows.Forms.ComboBox();
+            this.notifLabel = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.playbackPage.SuspendLayout();
             this.recordingPage.SuspendLayout();
@@ -64,7 +65,7 @@ namespace SoundSwitch.UI.Forms
             // 
             this.closeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.closeButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.closeButton.Location = new System.Drawing.Point(418, 251);
+            this.closeButton.Location = new System.Drawing.Point(428, 251);
             this.closeButton.Name = "closeButton";
             this.closeButton.Size = new System.Drawing.Size(75, 23);
             this.closeButton.TabIndex = 11;
@@ -94,7 +95,7 @@ namespace SoundSwitch.UI.Forms
             this.tabControl.Location = new System.Drawing.Point(12, 6);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(481, 218);
+            this.tabControl.Size = new System.Drawing.Size(491, 218);
             this.tabControl.TabIndex = 13;
             this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
             // 
@@ -104,7 +105,7 @@ namespace SoundSwitch.UI.Forms
             this.playbackPage.Location = new System.Drawing.Point(4, 22);
             this.playbackPage.Name = "playbackPage";
             this.playbackPage.Padding = new System.Windows.Forms.Padding(3);
-            this.playbackPage.Size = new System.Drawing.Size(473, 192);
+            this.playbackPage.Size = new System.Drawing.Size(483, 192);
             this.playbackPage.TabIndex = 0;
             this.playbackPage.Text = global::SoundSwitch.Properties.SettingsString.playback;
             this.playbackPage.UseVisualStyleBackColor = true;
@@ -115,15 +116,15 @@ namespace SoundSwitch.UI.Forms
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.playbackListView.CheckBoxes = true;
-            listViewGroup3.Header = global::SoundSwitch.Properties.SettingsString.selected;
-            listViewGroup3.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
-            listViewGroup3.Name = "selectedGroup";
+            listViewGroup1.Header = global::SoundSwitch.Properties.SettingsString.selected;
+            listViewGroup1.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
+            listViewGroup1.Name = "selectedGroup";
             this.playbackListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup3});
+            listViewGroup1});
             this.playbackListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.playbackListView.Location = new System.Drawing.Point(-4, 0);
             this.playbackListView.Name = "playbackListView";
-            this.playbackListView.Size = new System.Drawing.Size(477, 192);
+            this.playbackListView.Size = new System.Drawing.Size(493, 194);
             this.playbackListView.TabIndex = 14;
             this.playbackListView.UseCompatibleStateImageBehavior = false;
             this.playbackListView.View = System.Windows.Forms.View.Details;
@@ -134,7 +135,7 @@ namespace SoundSwitch.UI.Forms
             this.recordingPage.Location = new System.Drawing.Point(4, 22);
             this.recordingPage.Name = "recordingPage";
             this.recordingPage.Padding = new System.Windows.Forms.Padding(3);
-            this.recordingPage.Size = new System.Drawing.Size(473, 192);
+            this.recordingPage.Size = new System.Drawing.Size(483, 192);
             this.recordingPage.TabIndex = 1;
             this.recordingPage.Text = global::SoundSwitch.Properties.SettingsString.recording;
             this.recordingPage.UseVisualStyleBackColor = true;
@@ -146,11 +147,11 @@ namespace SoundSwitch.UI.Forms
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.recordingListView.CheckBoxes = true;
-            listViewGroup4.Header = global::SoundSwitch.Properties.SettingsString.selected;
-            listViewGroup4.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
-            listViewGroup4.Name = "selectedGroup";
+            listViewGroup2.Header = global::SoundSwitch.Properties.SettingsString.selected;
+            listViewGroup2.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
+            listViewGroup2.Name = "selectedGroup";
             this.recordingListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup4});
+            listViewGroup2});
             this.recordingListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.recordingListView.Location = new System.Drawing.Point(-2, 0);
             this.recordingListView.Name = "recordingListView";
@@ -177,32 +178,41 @@ namespace SoundSwitch.UI.Forms
             this.label2.TabIndex = 14;
             this.label2.Text = "Hotkeys";
             // 
-            // notificationsCheckbox
+            // notificationComboBox
             // 
-            this.notificationsCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.notificationsCheckbox.AutoSize = true;
-            this.notificationsCheckbox.Location = new System.Drawing.Point(259, 265);
-            this.notificationsCheckbox.Name = "notificationsCheckbox";
-            this.notificationsCheckbox.Size = new System.Drawing.Size(121, 17);
-            this.notificationsCheckbox.TabIndex = 16;
-            this.notificationsCheckbox.Text = "Display Notifications";
-            this.notificationsCheckbox.UseVisualStyleBackColor = true;
-            this.notificationsCheckbox.CheckedChanged += new System.EventHandler(this.notificationsCheckbox_CheckedChanged);
+            this.notificationComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.notificationComboBox.FormattingEnabled = true;
+            this.notificationComboBox.Location = new System.Drawing.Point(301, 230);
+            this.notificationComboBox.Name = "notificationComboBox";
+            this.notificationComboBox.Size = new System.Drawing.Size(121, 21);
+            this.notificationComboBox.TabIndex = 16;
+            this.notificationComboBox.SelectedValueChanged += new System.EventHandler(this.notificationComboBox_SelectedValueChanged);
+            // 
+            // notifLabel
+            // 
+            this.notifLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.notifLabel.AutoSize = true;
+            this.notifLabel.Location = new System.Drawing.Point(235, 233);
+            this.notifLabel.Name = "notifLabel";
+            this.notifLabel.Size = new System.Drawing.Size(60, 13);
+            this.notifLabel.TabIndex = 17;
+            this.notifLabel.Text = "Notification";
             // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.closeButton;
-            this.ClientSize = new System.Drawing.Size(505, 286);
-            this.Controls.Add(this.notificationsCheckbox);
+            this.ClientSize = new System.Drawing.Size(515, 286);
+            this.Controls.Add(this.notifLabel);
+            this.Controls.Add(this.notificationComboBox);
             this.Controls.Add(this.hotkeyTextBox);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.communicationCheckbox);
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.RunAtStartup);
-            this.MinimumSize = new System.Drawing.Size(400, 200);
+            this.MinimumSize = new System.Drawing.Size(500, 325);
             this.Name = "Settings";
             this.Text = "Settings";
             this.tabControl.ResumeLayout(false);
@@ -224,6 +234,7 @@ namespace SoundSwitch.UI.Forms
         private System.Windows.Forms.ListView recordingListView;
         private System.Windows.Forms.TextBox hotkeyTextBox;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.CheckBox notificationsCheckbox;
+        private System.Windows.Forms.ComboBox notificationComboBox;
+        private System.Windows.Forms.Label notifLabel;
     }
 }

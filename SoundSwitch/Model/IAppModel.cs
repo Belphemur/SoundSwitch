@@ -15,8 +15,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework;
+using SoundSwitch.Framework.Audio;
+using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Updater;
 
 namespace SoundSwitch.Model
@@ -24,6 +27,8 @@ namespace SoundSwitch.Model
     public interface IAppModel
     {
         #region Properties
+
+        CachedWavSound NotificationSound { get; set; }
 
         /// <summary>
         ///     The list of Playback device selected to be used for Switching default devices.
@@ -56,9 +61,14 @@ namespace SoundSwitch.Model
         bool RunAtStartup { get; set; }
 
         /// <summary>
-        ///     If notifications are displayed when the devices are changed
+        /// What did the user want as Notification of device changed
         /// </summary>
-        bool DisplayNotifications { get; set; }
+        NotificationTypeEnum NotificationSettings { get; set; }
+
+        /// <summary>
+        /// The tray icon of the application
+        /// </summary>
+        NotifyIcon NotifyIcon { get; set; }
 
         /// <summary>
         /// List the active audio devices

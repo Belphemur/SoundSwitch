@@ -15,7 +15,6 @@
 using System;
 using System.Collections.Generic;
 using AudioEndPointControllerWrapper;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NUnit.Framework;
 using SoundSwitch.Framework.Configuration;

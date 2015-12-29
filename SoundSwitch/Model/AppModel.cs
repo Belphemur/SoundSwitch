@@ -16,17 +16,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
 using Microsoft.WindowsAPICodePack.ApplicationServices;
 using SoundSwitch.Framework;
+using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Updater;
+using SoundSwitch.Framework.NotificationManager;
 
 namespace SoundSwitch.Model
 {
     public class AppModel : IAppModel
     {
         private bool _initialized;
+        private readonly NotificationManager _notificationManager;
 
         private AppModel()
         {
@@ -34,11 +38,24 @@ namespace SoundSwitch.Model
             {
                 RegisterForRestart();
                 RegisterRecovery();
+                _notificationManager = new NotificationManager(this);
             }
         }
 
         public static IAppModel Instance { get; } = new AppModel();
+        public NotifyIcon NotifyIcon { get; set; }
+        public CachedWavSound NotificationSound { get; set; }
+        public NotificationTypeEnum NotificationSettings
+        {
+            get { return AppConfigs.Configuration.NotificationSettings; }
+            set
+            {
+                AppConfigs.Configuration.NotificationSettings = value;
+                AppConfigs.Configuration.Save();
+            }
+        }
         public HashSet<string> SelectedPlaybackDevicesList => AppConfigs.Configuration.SelectedPlaybackDeviceListId;
+
 
         public ICollection<IAudioDevice> AvailablePlaybackDevices
         {
@@ -104,16 +121,6 @@ namespace SoundSwitch.Model
             }
         }
 
-        public bool DisplayNotifications
-        {
-            get { return AppConfigs.Configuration.DisplayNotifications; }
-            set
-            {
-                AppConfigs.Configuration.DisplayNotifications = value;
-                AppConfigs.Configuration.Save();
-            }
-        }
-
         public IAudioDeviceLister ActiveAudioDeviceLister { get; set; }
 
         #endregion
@@ -133,11 +140,13 @@ namespace SoundSwitch.Model
             }
             SetHotkeyCombination(AppConfigs.Configuration.PlaybackHotKeys, AudioDeviceType.Playback);
             SetHotkeyCombination(AppConfigs.Configuration.RecordingHotKeys, AudioDeviceType.Recording);
+            NotificationSound = new CachedWavSound(Properties.Resources.dingdong);
             /*TODO: Remove in next VERSION (3.6.6)*/
             MigrateSelectedDeviceLists();
             InitUpdateChecker();
             _initialized = true;
         }
+       
 
         private void MigrateSelectedDeviceLists()
         {

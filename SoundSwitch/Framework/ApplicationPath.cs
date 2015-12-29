@@ -17,7 +17,7 @@ using System.Windows.Forms;
 
 namespace SoundSwitch.Framework
 {
-    internal static class ApplicationPath
+    public static class ApplicationPath
     {
         /// <summary>
         /// Application data directory

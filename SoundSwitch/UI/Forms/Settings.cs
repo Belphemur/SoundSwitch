@@ -21,6 +21,7 @@ using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
+using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
 using SoundSwitch.Util;
@@ -29,6 +30,7 @@ namespace SoundSwitch.UI.Forms
 {
     public partial class Settings : Form
     {
+        private bool _loaded = false;
         public Settings()
         {
             InitializeComponent();
@@ -45,13 +47,19 @@ namespace SoundSwitch.UI.Forms
 
             RunAtStartup.Checked = AppModel.Instance.RunAtStartup;
             communicationCheckbox.Checked = AppModel.Instance.SetCommunications;
-            notificationsCheckbox.Checked = AppModel.Instance.DisplayNotifications;
 
             var audioDeviceLister = new AudioDeviceLister(DeviceState.All);
             PopulateAudioList(playbackListView, AppModel.Instance.SelectedPlaybackDevicesList,
                 audioDeviceLister.GetPlaybackDevices());
             PopulateAudioList(recordingListView, AppModel.Instance.SelectedRecordingDevicesList,
                 audioDeviceLister.GetRecordingDevices());
+            notifLabel.Text = Properties.SettingsString.notification;
+
+            notificationComboBox.DisplayMember = "Label";
+            notificationComboBox.ValueMember = "Type";
+            notificationComboBox.DataSource = NotificationFactory.GetNotificationDisplayers();
+            notificationComboBox.SelectedValue = AppModel.Instance.NotificationSettings;
+            _loaded = true;
         }
 
         private void SetHotkey(KeyEventArgs e)
@@ -267,10 +275,14 @@ namespace SoundSwitch.UI.Forms
             }
         }
 
-        private void notificationsCheckbox_CheckedChanged(object sender, EventArgs e)
+        private void notificationComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
-            var checkboxSender = (CheckBox) sender;
-            AppModel.Instance.DisplayNotifications = checkboxSender.Checked;
+            if (!_loaded)
+                return;
+            var value = ((ComboBox) sender).SelectedValue;
+            if (value == null || (NotificationTypeEnum)value == AppModel.Instance.NotificationSettings)
+                return;
+            AppModel.Instance.NotificationSettings = (NotificationTypeEnum)value;
         }
     }
 }
