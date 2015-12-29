@@ -353,6 +353,7 @@
     <None Include="Resources\tick.png" />
     <None Include="Resources\arrow-switch-16.png" />
     <None Include="Resources\arrow-switch-48.png" />
+    <None Include="Resources\33244__ljudman__dingding.wav" />
     <Content Include="Resources\arrow_switch.ico" />
     <None Include="Resources\cog.png" />
     <None Include="Resources\exit.png" />
