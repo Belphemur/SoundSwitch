@@ -375,7 +375,6 @@
     <None Include="Resources\tick.png" />
     <None Include="Resources\arrow-switch-16.png" />
     <None Include="Resources\arrow-switch-48.png" />
-    <None Include="Resources\33244__ljudman__dingding.wav" />
     <None Include="Resources\216676__robinhood76__04864-notification-music-box.wav" />
     <Content Include="Resources\arrow_switch.ico" />
     <None Include="Resources\cog.png" />
