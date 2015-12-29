@@ -6,6 +6,7 @@
 
 **Implemented enhancements:**
 
+- Personalize the Sound when switching device and play it on the new device. [\#49](https://github.com/Belphemur/SoundSwitch/issues/49)
 - Create minidump in case of crash [\#48](https://github.com/Belphemur/SoundSwitch/issues/48)
 - When an update is available, clicking on the notification launch the download [\#47](https://github.com/Belphemur/SoundSwitch/issues/47)
 
