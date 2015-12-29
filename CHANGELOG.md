@@ -1,8 +1,7 @@
 # Change Log
 
-## [Unreleased](https://github.com/Belphemur/SoundSwitch/tree/HEAD)
-
-[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.7.0...HEAD)
+## [v3.8.0](https://github.com/Belphemur/SoundSwitch/tree/v3.8.0) (2015-12-29)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.7.0...v3.8.0)
 
 **Implemented enhancements:**
 
