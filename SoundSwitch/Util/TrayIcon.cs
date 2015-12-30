@@ -146,8 +146,6 @@ namespace SoundSwitch.Util
 
             AppModel.Instance.DeviceStateChanged +=
                  (sender, @event) => { _needToUpdateList = true; };
-
-            AppModel.Instance.InitializeMain();
         }
 
         private void NewReleaseAvailable(object sender, UpdateChecker.NewReleaseEvent newReleaseEvent)

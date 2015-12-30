@@ -89,6 +89,7 @@ namespace SoundSwitch
                 using (var icon = new TrayIcon())
                 {
                     AppModel.Instance.NotifyIcon = icon.NotifyIcon;
+                    AppModel.Instance.InitializeMain();
                     if (AppConfigs.Configuration.FirstRun)
                     {
                         icon.ShowSettings();
