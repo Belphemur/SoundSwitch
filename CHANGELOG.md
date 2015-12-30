@@ -1,5 +1,12 @@
 # Change Log
 
+## [v3.8.2](https://github.com/Belphemur/SoundSwitch/tree/v3.8.2) (2015-12-30)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.8.1...v3.8.2)
+
+**Fixed bugs:**
+
+- Crash when using Windows Notification after SoundSwitch restart and switch device [\#55](https://github.com/Belphemur/SoundSwitch/issues/55)
+
 ## [v3.8.1](https://github.com/Belphemur/SoundSwitch/tree/v3.8.1) (2015-12-30)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.8.0...v3.8.1)
 
