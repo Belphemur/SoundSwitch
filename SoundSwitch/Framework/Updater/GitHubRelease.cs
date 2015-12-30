@@ -21,12 +21,18 @@ namespace SoundSwitch.Framework.Updater
         public string tag_name { get; set; }
         public string body { get; set; }
         public string name { get; set; }
+        public bool prerelease { get; set; }
         public List<Asset> assets { get; set; }
 
         public class Asset
         {
             public string name { get; set; }
             public string browser_download_url { get; set; }
+        }
+
+        public override string ToString()
+        {
+            return $"tag_name: {tag_name}, name: {name}, prerelease: {prerelease}";
         }
     }
 }

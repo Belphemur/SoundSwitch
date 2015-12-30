@@ -47,6 +47,11 @@ namespace SoundSwitch.Framework.Updater
             }
 
             var serverRelease = JsonConvert.DeserializeObject<GitHubRelease>(e.Result);
+            if (serverRelease.prerelease)
+            {
+                AppLogger.Log.Warn("The version found is a pre release: ", serverRelease);
+                return;
+            }
             var version = new Version(serverRelease.tag_name.Substring(1));
             var changelog = Regex.Split(serverRelease.body, "\r\n|\r|\n");
             try
