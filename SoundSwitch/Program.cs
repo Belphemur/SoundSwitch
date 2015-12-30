@@ -32,7 +32,7 @@ namespace SoundSwitch
     internal static class Program
     {
         [HandleProcessCorruptedStateExceptions]
-        [MTAThread]
+        [STAThread]
         private static void Main()
         {
             bool createdNew;
