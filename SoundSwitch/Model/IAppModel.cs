@@ -28,7 +28,7 @@ namespace SoundSwitch.Model
     {
         #region Properties
 
-        CachedWavSound NotificationSound { get; set; }
+        CachedSound NotificationSound { get; set; }
 
         /// <summary>
         ///     The list of Playback device selected to be used for Switching default devices.

@@ -15,14 +15,14 @@ namespace SoundSwitch.Framework.NotificationManager
         /// <param name="icon"></param>
         /// <param name="sound"></param>
         /// <returns></returns>
-        public static INotification CreateNotification(NotificationTypeEnum eEnum, NotifyIcon icon, CachedWavSound sound)
+        public static INotification CreateNotification(NotificationTypeEnum eEnum, NotifyIcon icon, CachedSound sound)
         {
             switch (eEnum)
             {
                 case NotificationTypeEnum.DefaultWindowsNotification:
                     return new NotificationWindows(icon);
                 case NotificationTypeEnum.SoundNotification:
-                    return new NotificationSound(sound);
+                    return new NotificationSound();
                 case NotificationTypeEnum.NoNotification:
                     return new NotificationNone();
                 default:

@@ -207,8 +207,8 @@
     <Compile Include="Framework\AppLogger.cs" />
     <Compile Include="Framework\Audio\AudioPlaybackEngine.cs" />
     <Compile Include="Framework\Audio\AutoDisposeFileReader.cs" />
-    <Compile Include="Framework\Audio\CachedWavSound.cs" />
-    <Compile Include="Framework\Audio\CachedWavSoundSampleProvider.cs" />
+    <Compile Include="Framework\Audio\CachedSound.cs" />
+    <Compile Include="Framework\Audio\CachedSoundSampleProvider.cs" />
     <Compile Include="Framework\AutoStart.cs" />
     <Compile Include="Framework\Configuration\AppConfigs.cs" />
     <Compile Include="Framework\Configuration\ConfigurationManager.cs" />

@@ -9,6 +9,7 @@ namespace SoundSwitch.Framework.Audio
     {
         private readonly IWavePlayer _outputDevice;
         private readonly MixingSampleProvider _mixer;
+        public PlaybackState PlaybackState => _outputDevice.PlaybackState;
 
         public AudioPlaybackEngine(int sampleRate = 44100, int channelCount = 2)
         {
@@ -40,9 +41,9 @@ namespace SoundSwitch.Framework.Audio
             throw new NotImplementedException("Not yet implemented this channel count conversion");
         }
 
-        public void PlaySoundWav(CachedWavSound wavSound)
+        public void PlaySoundWav(CachedSound wavSound)
         {
-            AddMixerInput(new CachedWavSoundSampleProvider(wavSound));
+            AddMixerInput(new CachedSoundSampleProvider(wavSound));
         }
 
         private void AddMixerInput(ISampleProvider input)
@@ -52,9 +53,8 @@ namespace SoundSwitch.Framework.Audio
 
         public void Dispose()
         {
+            _mixer.RemoveAllMixerInputs();
             _outputDevice.Dispose();
         }
-
-        public static readonly AudioPlaybackEngine Instance = new AudioPlaybackEngine(44100, 2);
     }
 }

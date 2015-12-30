@@ -44,7 +44,7 @@ namespace SoundSwitch.Model
 
         public static IAppModel Instance { get; } = new AppModel();
         public NotifyIcon NotifyIcon { get; set; }
-        public CachedWavSound NotificationSound { get; set; }
+        public CachedSound NotificationSound { get; set; }
         public NotificationTypeEnum NotificationSettings
         {
             get { return AppConfigs.Configuration.NotificationSettings; }
@@ -145,7 +145,6 @@ namespace SoundSwitch.Model
             }
             SetHotkeyCombination(AppConfigs.Configuration.PlaybackHotKeys, AudioDeviceType.Playback);
             SetHotkeyCombination(AppConfigs.Configuration.RecordingHotKeys, AudioDeviceType.Recording);
-            NotificationSound = new CachedWavSound(Properties.Resources.NotificationSound);
             /*TODO: Remove in next VERSION (3.6.6)*/
             MigrateSelectedDeviceLists();
             InitUpdateChecker();
