@@ -58,11 +58,15 @@ Name: "de"; MessagesFile: "compiler:Languages\German.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
 
 [Files]
-Source: "{#ExeDir}x64\*"; DestDir: "{app}"; Check: IsX64
-Source: "{#ExeDir}x64\fr\*"; DestDir: "{app}\fr"; Check: IsX64
+Source: "{#ExeDir}x64\SoundSwitch.exe.config"; DestDir: "{app}"; Check: IsX64
+Source: "{#ExeDir}x64\SoundSwitch.exe"; DestDir: "{app}"; Check: IsX64
+Source: "{#ExeDir}x64\*.dll"; DestDir: "{app}"; Check: IsX64
+Source: "{#ExeDir}x64\fr\*.dll"; DestDir: "{app}\fr"; Check: IsX64
 
-Source: "{#ExeDir}x86\*"; DestDir: "{app}"; Check: not Is64BitInstallMode
-Source: "{#ExeDir}x86\fr\*"; DestDir: "{app}\fr"; Check: not Is64BitInstallMode
+Source: "{#ExeDir}x86\SoundSwitch.exe.config"; DestDir: "{app}"; Check: not Is64BitInstallMode
+Source: "{#ExeDir}x86\SoundSwitch.exe"; DestDir: "{app}"; Check:  not Is64BitInstallMode
+Source: "{#ExeDir}x86\*.dll"; DestDir: "{app}"; Check: not Is64BitInstallMode
+Source: "{#ExeDir}x86\fr\*.dll"; DestDir: "{app}\fr"; Check: not Is64BitInstallMode
 
 Source: "{#ExeDir}CHANGELOG.md"; DestDir: "{app}"
 Source: "{#ExeDir}README.md"; DestDir: "{app}"
