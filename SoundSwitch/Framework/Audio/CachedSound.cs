@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using NAudio.Wave;
 
@@ -8,8 +10,17 @@ namespace SoundSwitch.Framework.Audio
     {
         public byte[] AudioData { get; private set; }
         public WaveFormat WaveFormat { get; private set; }
+        /// <summary>
+        /// Load the AudioFile into the memory using the right reader.
+        /// </summary>
+        /// <param name="audioFileName"></param>
+        /// <exception cref="ArgumentException">Audio file doesn't exists</exception>
         public CachedSound(string audioFileName)
         {
+            if (!File.Exists(audioFileName))
+            {
+                throw new ArgumentException("The audio file doesn't exists");
+            }
             using (var audioFileReader = new AudioFileReader(audioFileName))
             {
                 // TODO: could add resampling in here if required
