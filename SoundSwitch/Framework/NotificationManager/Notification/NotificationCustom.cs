@@ -15,7 +15,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
 
         public NotificationCustom(CachedSound sound)
         {
-            _sound = new CachedSound(@"D:\Downloads\Other\202029__hykenfreak__notification-chime.wav");
+            _sound = sound;
         }
 
         public void NotifyDefaultChanged(IAudioDevice audioDevice)
