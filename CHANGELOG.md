@@ -1,5 +1,13 @@
 # Change Log
 
+## [v3.8.3](https://github.com/Belphemur/SoundSwitch/tree/v3.8.3) (2015-12-31)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.8.2...v3.8.3)
+
+**Fixed bugs:**
+
+- SoundSwitch crash when disabling all Playback devices in the Control Panel [\#57](https://github.com/Belphemur/SoundSwitch/issues/57)
+- Notification settings reset when Soundswitch closes when choosing "No Notification" \(3.8.2.25464\) [\#56](https://github.com/Belphemur/SoundSwitch/issues/56)
+
 ## [v3.8.2](https://github.com/Belphemur/SoundSwitch/tree/v3.8.2) (2015-12-30)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.8.1...v3.8.2)
 
