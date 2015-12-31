@@ -52,7 +52,6 @@ namespace SoundSwitch.Framework.Configuration
         public HotKeys RecordingHotKeys { get; set; }
         public bool ChangeCommunications { get; set; }
         public uint UpdateCheckInterval { get; set; }
-        public NotificationTypeEnum NotificationSettings { get; set; }
 
         /*TODO: Remove in next VERSION (3.7.0)*/
         [Obsolete("Use the NotificationSettings instead.")]
@@ -60,9 +59,10 @@ namespace SoundSwitch.Framework.Configuration
         {
             get { return NotificationSettings == NotificationTypeEnum.DefaultWindowsNotification; }
             set {
-                NotificationSettings = value ? NotificationTypeEnum.DefaultWindowsNotification : NotificationTypeEnum.SoundNotification;
+                NotificationSettings = value ? NotificationTypeEnum.DefaultWindowsNotification : NotificationTypeEnum.NoNotification;
             }
         }
+        public NotificationTypeEnum NotificationSettings { get; set; }
 
 
 
