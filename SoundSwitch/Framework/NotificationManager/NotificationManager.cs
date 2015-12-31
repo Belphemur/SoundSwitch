@@ -21,13 +21,13 @@ namespace SoundSwitch.Framework.NotificationManager
             _model.DefaultDeviceChanged += ModelOnDefaultDeviceChanged;
             _model.NotificationSettingsChanged += ModelOnNotificationSettingsChanged;
             _notification = NotificationFactory.CreateNotification(_model.NotificationSettings, _model.NotifyIcon,
-                _model.NotificationSound);
+                _model.CustomNotificationSound);
         }
 
         private void ModelOnNotificationSettingsChanged(object sender, NotificationSettingsUpdatedEvent notificationSettingsUpdatedEvent)
         {
             _notification = NotificationFactory.CreateNotification(notificationSettingsUpdatedEvent.NewSettings, _model.NotifyIcon,
-               _model.NotificationSound);
+               _model.CustomNotificationSound);
         }
 
         private void ModelOnDefaultDeviceChanged(object sender, DeviceDefaultChangedEvent deviceDefaultChangedEvent)

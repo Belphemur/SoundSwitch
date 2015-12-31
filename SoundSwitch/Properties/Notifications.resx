@@ -111,4 +111,7 @@
 Sound Notification: Play a sound on the switched audio device
 No Notification: ... No Notification at all.</value>
 	</data>
+	<data name="NotifCustom" xml:space="preserve">
+		<value>Customized Sound Notification</value>
+	</data>
 </root>

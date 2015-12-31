@@ -25,10 +25,13 @@ namespace SoundSwitch.Framework.NotificationManager
                     return new NotificationSound();
                 case NotificationTypeEnum.NoNotification:
                     return new NotificationNone();
+                case NotificationTypeEnum.CustomNotification:
+                    return new NotificationCustom(sound);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(eEnum), eEnum, null);
             }
         }
+
         /// <summary>
         /// Return a diplyable list of Notification
         /// </summary>
@@ -40,6 +43,7 @@ namespace SoundSwitch.Framework.NotificationManager
                 new NotificationDisplayer(NotificationTypeEnum.DefaultWindowsNotification,
                     Properties.Notifications.NotifWindows),
                 new NotificationDisplayer(NotificationTypeEnum.SoundNotification, Properties.Notifications.NotifSound),
+                new NotificationDisplayer(NotificationTypeEnum.CustomNotification, Properties.Notifications.NotifCustom),
                 new NotificationDisplayer(NotificationTypeEnum.NoNotification, Properties.Notifications.NotifNone)
             };
             return displayers;

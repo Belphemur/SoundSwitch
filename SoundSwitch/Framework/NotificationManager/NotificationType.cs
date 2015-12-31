@@ -10,6 +10,7 @@ namespace SoundSwitch.Framework.NotificationManager
     {
         DefaultWindowsNotification,
         SoundNotification,
-        NoNotification       
+        NoNotification,
+        CustomNotification
     }
 }

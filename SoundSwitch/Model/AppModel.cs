@@ -45,7 +45,7 @@ namespace SoundSwitch.Model
 
         public static IAppModel Instance { get; } = new AppModel();
         public NotifyIcon NotifyIcon { get; set; }
-        public CachedSound NotificationSound { get; set; }
+        public CachedSound CustomNotificationSound { get; set; }
         public NotificationTypeEnum NotificationSettings
         {
             get { return AppConfigs.Configuration.NotificationSettings; }

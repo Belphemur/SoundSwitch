@@ -72,6 +72,15 @@ namespace SoundSwitch.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Customized Sound Notification.
+        /// </summary>
+        internal static string NotifCustom {
+            get {
+                return ResourceManager.GetString("NotifCustom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No Notification.
         /// </summary>
         internal static string NotifNone {

@@ -6,7 +6,7 @@ namespace SoundSwitch.Framework.Audio
 {
     public class CachedSound
     {
-        public float[] AudioData { get; private set; }
+        public byte[] AudioData { get; private set; }
         public WaveFormat WaveFormat { get; private set; }
         public CachedSound(string audioFileName)
         {
@@ -14,8 +14,8 @@ namespace SoundSwitch.Framework.Audio
             {
                 // TODO: could add resampling in here if required
                 WaveFormat = audioFileReader.WaveFormat;
-                var wholeFile = new List<float>((int)(audioFileReader.Length / 4));
-                var readBuffer= new float[audioFileReader.WaveFormat.SampleRate * audioFileReader.WaveFormat.Channels];
+                var wholeFile = new List<byte>((int)(audioFileReader.Length));
+                var readBuffer= new byte[audioFileReader.WaveFormat.SampleRate * audioFileReader.WaveFormat.Channels];
                 int samplesRead;
                 while((samplesRead = audioFileReader.Read(readBuffer,0,readBuffer.Length)) > 0)
                 {

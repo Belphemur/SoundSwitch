@@ -28,7 +28,7 @@ namespace SoundSwitch.Model
     {
         #region Properties
 
-        CachedSound NotificationSound { get; set; }
+        CachedSound CustomNotificationSound { get; set; }
 
         /// <summary>
         ///     The list of Playback device selected to be used for Switching default devices.

@@ -111,4 +111,7 @@
 Notification Sonore: Joue un signal sonore sur le périfique audio lors du "switch".
 Aucune Notification: ... Aucune Notification.</value>
 	</data>
+	<data name="NotifCustom" xml:space="preserve">
+		<value>Notification Sonore Personalisée</value>
+	</data>
 </root>
