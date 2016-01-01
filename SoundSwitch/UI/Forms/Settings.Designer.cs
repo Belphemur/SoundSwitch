@@ -44,6 +44,7 @@ namespace SoundSwitch.UI.Forms
             this.label2 = new System.Windows.Forms.Label();
             this.notificationComboBox = new System.Windows.Forms.ComboBox();
             this.notifLabel = new System.Windows.Forms.Label();
+            this.betaVersionCheckbox = new System.Windows.Forms.CheckBox();
             this.tabControl.SuspendLayout();
             this.playbackPage.SuspendLayout();
             this.recordingPage.SuspendLayout();
@@ -199,12 +200,25 @@ namespace SoundSwitch.UI.Forms
             this.notifLabel.TabIndex = 17;
             this.notifLabel.Text = "Notification";
             // 
+            // betaVersionCheckbox
+            // 
+            this.betaVersionCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.betaVersionCheckbox.AutoSize = true;
+            this.betaVersionCheckbox.Location = new System.Drawing.Point(260, 265);
+            this.betaVersionCheckbox.Name = "betaVersionCheckbox";
+            this.betaVersionCheckbox.Size = new System.Drawing.Size(91, 17);
+            this.betaVersionCheckbox.TabIndex = 18;
+            this.betaVersionCheckbox.Text = global::SoundSwitch.Properties.SettingsString.beta;
+            this.betaVersionCheckbox.UseVisualStyleBackColor = true;
+            this.betaVersionCheckbox.CheckedChanged += new System.EventHandler(this.betaVersionCheckbox_CheckedChanged);
+            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.closeButton;
             this.ClientSize = new System.Drawing.Size(515, 286);
+            this.Controls.Add(this.betaVersionCheckbox);
             this.Controls.Add(this.notifLabel);
             this.Controls.Add(this.notificationComboBox);
             this.Controls.Add(this.hotkeyTextBox);
@@ -237,5 +251,6 @@ namespace SoundSwitch.UI.Forms
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox notificationComboBox;
         private System.Windows.Forms.Label notifLabel;
+        private System.Windows.Forms.CheckBox betaVersionCheckbox;
     }
 }

@@ -61,6 +61,24 @@ namespace SoundSwitch.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Beta Versions.
+        /// </summary>
+        internal static string beta {
+            get {
+                return ResourceManager.GetString("beta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When checked, SoundSwitch will also check for pre-release version on GitHub.
+        /// </summary>
+        internal static string betaExplanation {
+            get {
+                return ResourceManager.GetString("betaExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close.
         /// </summary>
         internal static string close {

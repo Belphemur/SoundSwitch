@@ -19,21 +19,40 @@ namespace SoundSwitch.Framework.Updater
 {
     public class IntervalUpdateChecker : UpdateChecker
     {
+        private readonly Timer _timer;
+
         /// <summary>
         /// Check for update at the wanted interval in seconds
         /// </summary>
         /// <param name="releaseUrl">Url of the GitHub release</param>
         /// <param name="interval">Seconds</param>
-        public IntervalUpdateChecker(Uri releaseUrl, uint interval) : base(releaseUrl)
+        public IntervalUpdateChecker(Uri releaseUrl, uint interval) : this(releaseUrl, interval, false)
         {
-            var timer = new Timer(interval * 1000U);
-            timer.Elapsed += TimerElapsed;
-            timer.Start();
+        }
+
+        /// <summary>
+        /// Check for update at the wanted interval in seconds
+        /// </summary>
+        /// <param name="releaseUrl">Url of the GitHub release</param>
+        /// <param name="interval">Seconds</param>
+        /// <param name="checkBeta"></param>
+        public IntervalUpdateChecker(Uri releaseUrl, uint interval, bool checkBeta) : base(releaseUrl, checkBeta)
+        {
+            _timer = new Timer(interval * 1000U);
+            _timer.Elapsed += TimerElapsed;
+            _timer.Start();
         }
 
         private void TimerElapsed(object sender, ElapsedEventArgs e)
         {
             CheckForUpdate();
+        }
+        /// <summary>
+        /// Stop the UpdateChecker
+        /// </summary>
+        public void StopCheckingUpdate()
+        {
+            _timer.Stop();
         }
     }
 }

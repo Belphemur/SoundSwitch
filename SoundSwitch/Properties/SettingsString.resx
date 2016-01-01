@@ -136,4 +136,10 @@
 	<data name="notification" xml:space="preserve">
 		<value>Notification</value>
 	</data>
+	<data name="beta" xml:space="preserve">
+		<value>Beta Versions</value>
+	</data>
+	<data name="betaExplanation" xml:space="preserve">
+		<value>When checked, SoundSwitch will also check for pre-release version on GitHub</value>
+	</data>
 </root>

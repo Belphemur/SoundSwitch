@@ -40,5 +40,6 @@ namespace SoundSwitch.Framework.Configuration
 
         bool MigratedSelectedDeviceLists { get; set; }
         NotificationTypeEnum NotificationSettings { get; set; }
+        bool SubscribedBetaVersion { get; set; }
     }
 }

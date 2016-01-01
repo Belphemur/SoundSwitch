@@ -34,7 +34,7 @@ namespace SoundSwitch.Framework.Configuration
             RecordingHotKeys = new HotKeys(Keys.F7, HotKeys.ModifierKeys.Alt | HotKeys.ModifierKeys.Control);
             //12 hours
             UpdateCheckInterval = 3600 * 12;
-            /*TODO: Remove in next VERSION (3.7.0)*/
+            SubscribedBetaVersion = false;
 
         }
 
@@ -63,7 +63,7 @@ namespace SoundSwitch.Framework.Configuration
             }
         }
         public NotificationTypeEnum NotificationSettings { get; set; }
-
+        public bool SubscribedBetaVersion { get; set; }
 
 
         //Needed by Interface
