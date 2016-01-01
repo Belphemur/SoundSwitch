@@ -218,7 +218,7 @@ namespace SoundSwitch.Model
         {
             WindowsAPIAdapter.HotKeyPressed += HandleHotkeyPress;
             _updateChecker = new IntervalUpdateChecker(
-                new Uri("https://api.github.com/repos/Belphemur/SoundSwitch/releases/latest"),
+                new Uri("https://api.github.com/repos/Belphemur/SoundSwitch/releases"),
                 AppConfigs.Configuration.UpdateCheckInterval, AppConfigs.Configuration.SubscribedBetaVersion);
             _updateChecker.UpdateAvailable += (sender, @event) => NewVersionReleased?.Invoke(this, @event);
             _updateChecker.CheckForUpdate();

@@ -32,7 +32,7 @@ namespace SoundSwitch.Framework.Updater
 
         public override string ToString()
         {
-            return $"tag_name: {tag_name}, name: {name}, prerelease: {prerelease}";
+            return $"(tag_name: {tag_name}, name: {name}, prerelease: {prerelease})";
         }
     }
 }

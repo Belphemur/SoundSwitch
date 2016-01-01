@@ -13,8 +13,10 @@
 ********************************************************************/
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -53,28 +55,48 @@ namespace SoundSwitch.Framework.Updater
                 return;
             }
 
-            var serverRelease = JsonConvert.DeserializeObject<GitHubRelease>(e.Result);
-            if (serverRelease.prerelease)
+            var serverRelease = JsonConvert.DeserializeObject<List<GitHubRelease>>(e.Result);
+            if (!serverRelease.Any(ProcessRelease))
             {
-                AppLogger.Log.Warn("The version found is a pre release: ", serverRelease);
-                if (!Beta)
-                    return;
+                AppLogger.Log.Info("No new Version found ", string.Join("\n", serverRelease));
             }
-            var version = new Version(serverRelease.tag_name.Substring(1));
-            var changelog = Regex.Split(serverRelease.body, "\r\n|\r|\n");
-            try
+        }
+
+        private bool ProcessRelease(GitHubRelease serverRelease)
+        {
+            using (AppLogger.Log.InfoCall())
             {
-                var installer = serverRelease.assets.First(asset => asset.name.EndsWith(".exe"));
-                var release = new Release(version, installer, serverRelease.name);
-                release.Changelog.AddRange(changelog);
-                if (version > AppVersion)
+                AppLogger.Log.Info("Checking version: ", serverRelease);
+                if (serverRelease.prerelease && !Beta)
                 {
-                    UpdateAvailable?.Invoke(this, new NewReleaseEvent(release));
+                    AppLogger.Log.Info("Pre-release and not in Beta Mode.");
+                    return false;
                 }
-            }
-            catch (Exception ex)
-            {
-                AppLogger.Log.Error("Exception while getting release ", ex);
+
+                if (!serverRelease.prerelease && Beta)
+                {
+                    AppLogger.Log.Info("Release and in Beta Mode.");
+                    return false;
+                }
+
+                var version = new Version(serverRelease.tag_name.Substring(1));
+                var changelog = Regex.Split(serverRelease.body, "\r\n|\r|\n");
+                try
+                {
+                    if (version > AppVersion)
+                    {
+                        var installer = serverRelease.assets.First(asset => asset.name.EndsWith(".exe"));
+                        var release = new Release(version, installer, serverRelease.name);
+                        release.Changelog.AddRange(changelog);
+                        UpdateAvailable?.Invoke(this, new NewReleaseEvent(release));
+                        return true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    AppLogger.Log.Error("Exception while getting release ", ex);
+                }
+                return false;
             }
         }
 
