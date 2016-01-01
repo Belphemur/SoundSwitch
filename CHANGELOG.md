@@ -1,5 +1,12 @@
 # Change Log
 
+## [v3.8.4](https://github.com/Belphemur/SoundSwitch/tree/v3.8.4) (2016-01-01)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.8.3...v3.8.4)
+
+**Implemented enhancements:**
+
+- Beta Channel [\#58](https://github.com/Belphemur/SoundSwitch/issues/58)
+
 ## [v3.8.3](https://github.com/Belphemur/SoundSwitch/tree/v3.8.3) (2015-12-31)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.8.2...v3.8.3)
 
