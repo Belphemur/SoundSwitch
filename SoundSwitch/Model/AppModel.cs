@@ -31,6 +31,7 @@ namespace SoundSwitch.Model
     {
         private bool _initialized;
         private readonly NotificationManager _notificationManager;
+        private IntervalUpdateChecker _updateChecker;
 
         private AppModel()
         {
@@ -56,6 +57,23 @@ namespace SoundSwitch.Model
                     new NotificationSettingsUpdatedEvent(NotificationSettings, value));
             }
         }
+        /// <summary>
+        /// Beta or Stable channel.
+        /// </summary>
+        public bool SubscribedBetaVersions
+        {
+            get { return AppConfigs.Configuration.SubscribedBetaVersion; }
+            set
+            {
+                if (value != SubscribedBetaVersions && _updateChecker != null)
+                {
+                    _updateChecker.Beta = value;
+                }
+                AppConfigs.Configuration.SubscribedBetaVersion = value;
+                AppConfigs.Configuration.Save();
+            }
+        }
+
         public HashSet<string> SelectedPlaybackDevicesList => AppConfigs.Configuration.SelectedPlaybackDeviceListId;
 
 
@@ -199,12 +217,11 @@ namespace SoundSwitch.Model
         private void InitUpdateChecker()
         {
             WindowsAPIAdapter.HotKeyPressed += HandleHotkeyPress;
-            var updateChecker =
-                new IntervalUpdateChecker(
-                    new Uri("https://api.github.com/repos/Belphemur/SoundSwitch/releases/latest"),
-                    AppConfigs.Configuration.UpdateCheckInterval);
-            updateChecker.UpdateAvailable += (sender, @event) => NewVersionReleased?.Invoke(this, @event);
-            updateChecker.CheckForUpdate();
+            _updateChecker = new IntervalUpdateChecker(
+                new Uri("https://api.github.com/repos/Belphemur/SoundSwitch/releases/latest"),
+                AppConfigs.Configuration.UpdateCheckInterval, AppConfigs.Configuration.SubscribedBetaVersion);
+            _updateChecker.UpdateAvailable += (sender, @event) => NewVersionReleased?.Invoke(this, @event);
+            _updateChecker.CheckForUpdate();
         }
 
         public event EventHandler<DeviceListChanged> SelectedDeviceChanged;

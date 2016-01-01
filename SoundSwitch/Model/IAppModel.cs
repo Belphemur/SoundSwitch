@@ -75,6 +75,11 @@ namespace SoundSwitch.Model
         /// </summary>
         IAudioDeviceLister ActiveAudioDeviceLister { get; set; }
 
+        /// <summary>
+        /// Beta or Stable channel.
+        /// </summary>
+        bool SubscribedBetaVersions { get; set; }
+
         #endregion
 
         #region Events

@@ -61,6 +61,10 @@ namespace SoundSwitch.UI.Forms
             notificationComboBox.ValueMember = "Type";
             notificationComboBox.DataSource = NotificationFactory.GetNotificationDisplayers();
             notificationComboBox.SelectedValue = AppModel.Instance.NotificationSettings;
+
+            betaVersionCheckbox.Checked = AppModel.Instance.SubscribedBetaVersions;
+            var toolTipBeta = new ToolTip();
+            toolTipBeta.SetToolTip(betaVersionCheckbox,SettingsString.betaExplanation);
             _loaded = true;
         }
 
@@ -135,6 +139,11 @@ namespace SoundSwitch.UI.Forms
                 MessageBox.Show(@"Error changing run at startup setting: " + ex.Message);
                 communicationCheckbox.Checked = AppModel.Instance.SetCommunications;
             }
+        }
+
+        private void betaVersionCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            AppModel.Instance.SubscribedBetaVersions = betaVersionCheckbox.Checked;
         }
 
         #endregion

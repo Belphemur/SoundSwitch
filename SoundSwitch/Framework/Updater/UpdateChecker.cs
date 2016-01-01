@@ -32,7 +32,7 @@ namespace SoundSwitch.Framework.Updater
         private readonly Uri _releaseUrl;
         private readonly WebClient _webClient = new WebClient();
         public EventHandler<NewReleaseEvent> UpdateAvailable;
-        private readonly bool _beta;
+        public bool Beta { get; set; }
 
         public UpdateChecker(Uri releaseUrl) : this(releaseUrl, false)
         {
@@ -42,7 +42,7 @@ namespace SoundSwitch.Framework.Updater
         {
             _releaseUrl = releaseUrl;
             _webClient.DownloadStringCompleted += DownloadStringCompleted;
-            _beta = checkBeta;
+            Beta = checkBeta;
         }
 
         private void DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
@@ -57,7 +57,7 @@ namespace SoundSwitch.Framework.Updater
             if (serverRelease.prerelease)
             {
                 AppLogger.Log.Warn("The version found is a pre release: ", serverRelease);
-                if (!_beta)
+                if (!Beta)
                     return;
             }
             var version = new Version(serverRelease.tag_name.Substring(1));
