@@ -26,16 +26,23 @@ namespace SoundSwitch.Framework.Updater
     {
         private static readonly string UserAgent =
             $"Mozilla/5.0 (compatible; {Environment.OSVersion.Platform} {Environment.OSVersion.VersionString}; {Application.ProductName}/{Application.ProductVersion};)";
+
         private static readonly Version AppVersion = new Version(Application.ProductVersion);
 
         private readonly Uri _releaseUrl;
         private readonly WebClient _webClient = new WebClient();
         public EventHandler<NewReleaseEvent> UpdateAvailable;
+        private readonly bool _beta;
 
-        public UpdateChecker(Uri releaseUrl)
+        public UpdateChecker(Uri releaseUrl) : this(releaseUrl, false)
+        {
+        }
+
+        public UpdateChecker(Uri releaseUrl, bool checkBeta)
         {
             _releaseUrl = releaseUrl;
             _webClient.DownloadStringCompleted += DownloadStringCompleted;
+            _beta = checkBeta;
         }
 
         private void DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
@@ -50,14 +57,15 @@ namespace SoundSwitch.Framework.Updater
             if (serverRelease.prerelease)
             {
                 AppLogger.Log.Warn("The version found is a pre release: ", serverRelease);
-                return;
+                if (!_beta)
+                    return;
             }
             var version = new Version(serverRelease.tag_name.Substring(1));
             var changelog = Regex.Split(serverRelease.body, "\r\n|\r|\n");
             try
             {
                 var installer = serverRelease.assets.First(asset => asset.name.EndsWith(".exe"));
-                var release = new Release(version,installer, serverRelease.name);
+                var release = new Release(version, installer, serverRelease.name);
                 release.Changelog.AddRange(changelog);
                 if (version > AppVersion)
                 {
@@ -69,6 +77,7 @@ namespace SoundSwitch.Framework.Updater
                 AppLogger.Log.Error("Exception while getting release ", ex);
             }
         }
+
         /// <summary>
         /// Check for update 
         /// </summary>

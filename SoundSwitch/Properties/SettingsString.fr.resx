@@ -136,4 +136,10 @@
 	<data name="notification" xml:space="preserve">
 		<value>Notification</value>
 	</data>
+	<data name="beta" xml:space="preserve">
+		<value>Versions Beta</value>
+	</data>
+	<data name="betaExplanation" xml:space="preserve">
+		<value>Si la case est cochée, SoundSwitch téléchargera les versions beta du program.</value>
+	</data>
 </root>

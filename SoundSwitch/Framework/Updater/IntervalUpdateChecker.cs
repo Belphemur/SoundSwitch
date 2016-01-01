@@ -24,7 +24,17 @@ namespace SoundSwitch.Framework.Updater
         /// </summary>
         /// <param name="releaseUrl">Url of the GitHub release</param>
         /// <param name="interval">Seconds</param>
-        public IntervalUpdateChecker(Uri releaseUrl, uint interval) : base(releaseUrl)
+        public IntervalUpdateChecker(Uri releaseUrl, uint interval) : this(releaseUrl, interval, false)
+        {
+        }
+
+        /// <summary>
+        /// Check for update at the wanted interval in seconds
+        /// </summary>
+        /// <param name="releaseUrl">Url of the GitHub release</param>
+        /// <param name="interval">Seconds</param>
+        /// <param name="checkBeta"></param>
+        public IntervalUpdateChecker(Uri releaseUrl, uint interval, bool checkBeta) : base(releaseUrl, checkBeta)
         {
             var timer = new Timer(interval * 1000U);
             timer.Elapsed += TimerElapsed;

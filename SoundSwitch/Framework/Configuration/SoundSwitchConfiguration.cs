@@ -63,7 +63,7 @@ namespace SoundSwitch.Framework.Configuration
             }
         }
         public NotificationTypeEnum NotificationSettings { get; set; }
-
+        public bool SubscribedBetaVersion { get; set; }
 
 
         //Needed by Interface
