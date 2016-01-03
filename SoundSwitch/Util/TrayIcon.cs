@@ -155,8 +155,9 @@ namespace SoundSwitch.Util
             _updateMenuItem.Enabled = true;
             NotifyIcon.BalloonTipClicked += OnUpdateClick;
             NotifyIcon.ShowBalloonTip(3000,
-                string.Format(TrayIconStrings.versionAvailable, newReleaseEvent.Release.ReleaseVersion),
-                TrayIconStrings.howDownloadUpdate, ToolTipIcon.Info);
+                string.Format(TrayIconStrings.versionAvailable, Application.ProductName,
+                    newReleaseEvent.Release.ReleaseVersion),
+                newReleaseEvent.Release.Name + '\n' + TrayIconStrings.howDownloadUpdate, ToolTipIcon.Info);
         }
 
 
