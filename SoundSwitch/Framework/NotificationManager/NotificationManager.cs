@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
+using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification;
 using SoundSwitch.Model;
 
@@ -20,14 +22,28 @@ namespace SoundSwitch.Framework.NotificationManager
         {
             _model.DefaultDeviceChanged += ModelOnDefaultDeviceChanged;
             _model.NotificationSettingsChanged += ModelOnNotificationSettingsChanged;
-            _notification = NotificationFactory.CreateNotification(_model.NotificationSettings, _model.NotifyIcon,
-                _model.CustomNotificationSound);
+            SetNotification(_model.NotificationSettings);
         }
 
         private void ModelOnNotificationSettingsChanged(object sender, NotificationSettingsUpdatedEvent notificationSettingsUpdatedEvent)
         {
-            _notification = NotificationFactory.CreateNotification(notificationSettingsUpdatedEvent.NewSettings, _model.NotifyIcon,
-               _model.CustomNotificationSound);
+            var notificationTypeEnum = notificationSettingsUpdatedEvent.NewSettings;
+            SetNotification(notificationTypeEnum);
+        }
+
+        private void SetNotification(NotificationTypeEnum notificationTypeEnum)
+        {
+            try
+            {
+                _notification = NotificationFactory.CreateNotification(notificationTypeEnum);
+            }
+            catch (CachedSoundFileNotExistsException)
+            {
+                MessageBox.Show(string.Format(Properties.Notifications.AudioFileNotFound, Application.ProductName,
+                        Properties.Notifications.NotifSound),Properties.Notifications.AudioFileNotFoundTitle,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                _model.NotificationSettings = NotificationTypeEnum.SoundNotification;
+            }
         }
 
         private void ModelOnDefaultDeviceChanged(object sender, DeviceDefaultChangedEvent deviceDefaultChangedEvent)

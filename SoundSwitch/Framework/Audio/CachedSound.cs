@@ -10,6 +10,8 @@ namespace SoundSwitch.Framework.Audio
     {
         public byte[] AudioData { get; private set; }
         public WaveFormat WaveFormat { get; private set; }
+        public string FilePath { get; }
+
         /// <summary>
         /// Load the AudioFile into the memory using the right reader.
         /// </summary>
@@ -19,16 +21,17 @@ namespace SoundSwitch.Framework.Audio
         {
             if (!File.Exists(audioFileName))
             {
-                throw new ArgumentException("The audio file doesn't exists");
+                throw new CachedSoundFileNotExistsException("The audio file doesn't exists");
             }
+            FilePath = audioFileName;
             using (var audioFileReader = new AudioFileReader(audioFileName))
             {
                 // TODO: could add resampling in here if required
                 WaveFormat = audioFileReader.WaveFormat;
-                var wholeFile = new List<byte>((int)(audioFileReader.Length));
-                var readBuffer= new byte[audioFileReader.WaveFormat.SampleRate * audioFileReader.WaveFormat.Channels];
+                var wholeFile = new List<byte>((int) (audioFileReader.Length));
+                var readBuffer = new byte[audioFileReader.WaveFormat.SampleRate*audioFileReader.WaveFormat.Channels];
                 int samplesRead;
-                while((samplesRead = audioFileReader.Read(readBuffer,0,readBuffer.Length)) > 0)
+                while ((samplesRead = audioFileReader.Read(readBuffer, 0, readBuffer.Length)) > 0)
                 {
                     wholeFile.AddRange(readBuffer.Take(samplesRead));
                 }

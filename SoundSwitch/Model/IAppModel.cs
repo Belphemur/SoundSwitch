@@ -28,8 +28,6 @@ namespace SoundSwitch.Model
     {
         #region Properties
 
-        CachedSound CustomNotificationSound { get; set; }
-
         /// <summary>
         ///     The list of Playback device selected to be used for Switching default devices.
         /// </summary>
@@ -79,6 +77,12 @@ namespace SoundSwitch.Model
         /// Beta or Stable channel.
         /// </summary>
         bool SubscribedBetaVersions { get; set; }
+
+        /// <summary>
+        /// The sound to be played for a Custom notification
+        /// <exception cref="CachedSoundFileNotExistsException">Sound file doens't exists or not set</exception>
+        /// </summary>
+        CachedSound CustomNotificationSound { get; set; }
 
         #endregion
 

@@ -114,4 +114,10 @@ No Notification: ... No Notification at all.</value>
 	<data name="NotifCustom" xml:space="preserve">
 		<value>Customized Sound Notification</value>
 	</data>
+	<data name="AudioFileNotFound" xml:space="preserve">
+		<value>The audio file you selected to be use as notification can't be found. {0} switched the notification setting back to {1}.</value>
+	</data>
+	<data name="AudioFileNotFoundTitle" xml:space="preserve">
+		<value>Audio file not found</value>
+	</data>
 </root>

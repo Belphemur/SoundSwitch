@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -15,9 +16,11 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
     public class NotificationSound : INotification
     {
         private readonly MMDeviceEnumerator _deviceEnumerator;
+        private readonly Stream _memoryStreamSound;
 
-        public NotificationSound()
+        public NotificationSound(Stream memoryStreamSound)
         {
+            _memoryStreamSound = memoryStreamSound;
             _deviceEnumerator = new MMDeviceEnumerator();
         }
 
@@ -30,7 +33,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
                 var device = _deviceEnumerator.GetDevice(audioDevice.Id);
                 using (var output = new WasapiOut(device, AudioClientShareMode.Shared, true, 10))
                 {
-                    output.Init(new WaveFileReader(Resources.NotificationSound));
+                    output.Init(new WaveFileReader(_memoryStreamSound));
                     output.Play();
                     while (output.PlaybackState == PlaybackState.Playing)
                     {

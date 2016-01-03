@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
 using SoundSwitch.Framework.NotificationManager;
 
@@ -64,6 +65,7 @@ namespace SoundSwitch.Framework.Configuration
         }
         public NotificationTypeEnum NotificationSettings { get; set; }
         public bool SubscribedBetaVersion { get; set; }
+        public string CustomNotificationFilePath { get; set; }
 
 
         //Needed by Interface
