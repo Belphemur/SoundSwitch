@@ -122,7 +122,7 @@
 		<value>MàJ Disponible ({0})</value>
 	</data>
 	<data name="versionAvailable" xml:space="preserve">
-		<value>MàJ pour{0} ({1}) est disponible.</value>
+		<value>MàJ pour{0}({1}) est disponible.</value>
 	</data>
 	<data name="howDownloadUpdate" xml:space="preserve">
 		<value>Cliquer ici pour mettre à jour.</value>
