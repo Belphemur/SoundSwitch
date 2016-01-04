@@ -32,10 +32,14 @@ mkdir %x86Release% 1>nul 2>nul
 mkdir %x64Release% 1>nul 2>nul
 
 set buildPlatform=Release
+IF "%~1" neq "" (
+    set buildPlatform=%~1
+)
+
 
 set msbuildexe="%programfiles(x86)%\MSBuild\14.0\Bin\MSBuild.exe"
 
-Echo Making SoundSwitch...
+Echo Making SoundSwitch %buildPlatform%
 Echo.
 Echo "Build x86"
 %msbuildexe% SoundSwitch.sln /m /p:Configuration=%buildPlatform% /p:Platform="x86" /v:q /t:rebuild
