@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using AudioEndPointControllerWrapper;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using SoundSwitch.Framework.Audio;
-using SoundSwitch.Properties;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification
 {
@@ -42,6 +37,10 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
                 }
             });
             task.Start();
+        }
+
+        public void OnSoundChanged(CachedSound newSound)
+        {
         }
     }
 }

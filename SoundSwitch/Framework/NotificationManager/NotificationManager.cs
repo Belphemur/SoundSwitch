@@ -23,6 +23,12 @@ namespace SoundSwitch.Framework.NotificationManager
             _model.DefaultDeviceChanged += ModelOnDefaultDeviceChanged;
             _model.NotificationSettingsChanged += ModelOnNotificationSettingsChanged;
             SetNotification(_model.NotificationSettings);
+            _model.CustomSoundChanged += ModelOnCustomSoundChanged;
+        }
+
+        private void ModelOnCustomSoundChanged(object sender, CustomSoundChangedEvent customSoundChangedEvent)
+        {
+            _notification.OnSoundChanged(customSoundChangedEvent.NewSound);
         }
 
         private void ModelOnNotificationSettingsChanged(object sender, NotificationSettingsUpdatedEvent notificationSettingsUpdatedEvent)
@@ -60,6 +66,7 @@ namespace SoundSwitch.Framework.NotificationManager
         {
             _model.DefaultDeviceChanged -= ModelOnDefaultDeviceChanged;
             _model.NotificationSettingsChanged -= ModelOnNotificationSettingsChanged;
+            _model.CustomSoundChanged -= ModelOnCustomSoundChanged;
         }
     }
 }

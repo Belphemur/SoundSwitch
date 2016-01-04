@@ -55,9 +55,11 @@ namespace SoundSwitch.Model
             }
             set
             {
+                var oldSound = _customNotificationCachedSound;
                 _customNotificationCachedSound = value;
                 AppConfigs.Configuration.CustomNotificationFilePath = _customNotificationCachedSound.FilePath;
                 AppConfigs.Configuration.Save();
+                CustomSoundChanged?.Invoke(this, new CustomSoundChangedEvent(oldSound, value));
             }
         }
 
@@ -160,6 +162,7 @@ namespace SoundSwitch.Model
 
         public IAudioDeviceLister ActiveAudioDeviceLister { get; set; }
         public event EventHandler<NotificationSettingsUpdatedEvent> NotificationSettingsChanged;
+        public event EventHandler<CustomSoundChangedEvent> CustomSoundChanged;
 
         #endregion
 

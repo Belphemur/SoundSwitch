@@ -4,14 +4,13 @@ using AudioEndPointControllerWrapper;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using SoundSwitch.Framework.Audio;
-using SoundSwitch.Properties;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification
 {
     public class NotificationCustom : INotification
     {
-        private readonly CachedSound _sound;
         private readonly MMDeviceEnumerator _deviceEnumerator = new MMDeviceEnumerator();
+        private CachedSound _sound;
 
         public NotificationCustom(CachedSound sound)
         {
@@ -26,7 +25,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             {
                 var device = _deviceEnumerator.GetDevice(audioDevice.Id);
                 using (var output = new WasapiOut(device, AudioClientShareMode.Shared, true, 10))
-                using(var waveStream  = new CachedSoundWaveStream(_sound))
+                using (var waveStream = new CachedSoundWaveStream(_sound))
                 {
                     output.Init(waveStream);
                     output.Play();
@@ -37,6 +36,11 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
                 }
             });
             task.Start();
+        }
+
+        public void OnSoundChanged(CachedSound newSound)
+        {
+            _sound = newSound;
         }
     }
 }

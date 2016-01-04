@@ -126,6 +126,11 @@ namespace SoundSwitch.Model
         /// If the NotificationSettings has been modified
         /// </summary>
         event EventHandler<NotificationSettingsUpdatedEvent> NotificationSettingsChanged;
+
+        /// <summary>
+        /// When the custom sound is changed
+        /// </summary>
+        event EventHandler<CustomSoundChangedEvent> CustomSoundChanged;
         #endregion
 
         #region Methods
@@ -178,5 +183,7 @@ namespace SoundSwitch.Model
         bool CycleActiveDevice(AudioDeviceType type);
 
         #endregion
+
+
     }
 }
