@@ -6,7 +6,6 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("SoundSwitch")]
 [assembly: AssemblyDescription("Manage the default audio device.")]
-[assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("SoundSwitch")]
 [assembly: AssemblyProduct("SoundSwitch")]
 [assembly: AssemblyCopyright("Jeroen Pelgrims; Antoine Aflalo")]
@@ -20,6 +19,12 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("84f4ff94-6c07-4a07-8772-b333693762c2")]
+
+#if BETA
+[assembly: AssemblyConfiguration("Beta")]
+#else
+[assembly: AssemblyConfiguration("Release")]
+#endif
 
 // Version information for an assembly consists of the following four values:
 //
