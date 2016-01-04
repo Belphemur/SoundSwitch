@@ -142,4 +142,10 @@
 	<data name="betaExplanation" xml:space="preserve">
 		<value>When checked, SoundSwitch will also check for pre-release version on GitHub</value>
 	</data>
+	<data name="supportedAudio" xml:space="preserve">
+		<value>Audio File</value>
+	</data>
+	<data name="selectSoundButtonTooltip" xml:space="preserve">
+		<value>Select the sound file for the notification.</value>
+	</data>
 </root>

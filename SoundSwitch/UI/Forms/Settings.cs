@@ -15,11 +15,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework;
+using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Model;
@@ -30,7 +32,8 @@ namespace SoundSwitch.UI.Forms
 {
     public partial class Settings : Form
     {
-        private bool _loaded = false;
+        private readonly bool _loaded = false;
+
         public Settings()
         {
             InitializeComponent();
@@ -64,8 +67,22 @@ namespace SoundSwitch.UI.Forms
 
             betaVersionCheckbox.Checked = AppModel.Instance.SubscribedBetaVersions;
             var toolTipBeta = new ToolTip();
-            toolTipBeta.SetToolTip(betaVersionCheckbox,SettingsString.betaExplanation);
+            toolTipBeta.SetToolTip(betaVersionCheckbox, SettingsString.betaExplanation);
+
+            selectSoundFileDialog.Filter = SettingsString.supportedAudio + @" (*.wav;*.mp3)|*.wav;*.mp3;*.aiff";
+            selectSoundFileDialog.FileOk += SelectSoundFileDialogOnFileOk;
+            selectSoundFileDialog.CheckFileExists = true;
+
+            var toolTipSoundButton = new ToolTip();
+            toolTipSoundButton.SetToolTip(selectSoundButton, SettingsString.selectSoundButtonTooltip);
+            selectSoundButton.Visible = AppModel.Instance.NotificationSettings ==
+                                        NotificationTypeEnum.CustomNotification;
             _loaded = true;
+        }
+
+        private void SelectSoundFileDialogOnFileOk(object sender, CancelEventArgs cancelEventArgs)
+        {
+            AppModel.Instance.CustomNotificationSound = new CachedSound(selectSoundFileDialog.FileName);
         }
 
         private void SetHotkey(KeyEventArgs e)
@@ -160,7 +177,11 @@ namespace SoundSwitch.UI.Forms
                 var audioDeviceWrappers = audioDevices
                     .Where(wrapper => !string.IsNullOrEmpty(wrapper.FriendlyName))
                     .OrderBy(s => s.FriendlyName);
-                listView.SmallImageList = new ImageList {ImageSize = new Size(32,32), ColorDepth = ColorDepth.Depth32Bit};
+                listView.SmallImageList = new ImageList
+                {
+                    ImageSize = new Size(32, 32),
+                    ColorDepth = ColorDepth.Depth32Bit
+                };
 
                 listView.Columns.Add("Device", -3, HorizontalAlignment.Center);
                 foreach (var device in audioDeviceWrappers)
@@ -217,7 +238,7 @@ namespace SoundSwitch.UI.Forms
             if (!listView.SmallImageList.Images.ContainsKey(device.DeviceClassIconPath))
             {
                 listView.SmallImageList.Images.Add(device.DeviceClassIconPath,
-                    AudioDeviceIconExtractor.ExtractIconFromAudioDevice(device, true)); 
+                    AudioDeviceIconExtractor.ExtractIconFromAudioDevice(device, true));
             }
         }
 
@@ -228,10 +249,10 @@ namespace SoundSwitch.UI.Forms
                 switch (e.NewValue)
                 {
                     case CheckState.Checked:
-                        AppModel.Instance.SelectDevice((IAudioDevice) ((ListView)sender).Items[e.Index].Tag);
+                        AppModel.Instance.SelectDevice((IAudioDevice) ((ListView) sender).Items[e.Index].Tag);
                         break;
                     case CheckState.Unchecked:
-                        AppModel.Instance.UnselectDevice((IAudioDevice)((ListView)sender).Items[e.Index].Tag);
+                        AppModel.Instance.UnselectDevice((IAudioDevice) ((ListView) sender).Items[e.Index].Tag);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -279,7 +300,8 @@ namespace SoundSwitch.UI.Forms
             {
                 hotkeyTextBox.Text = AppConfigs.Configuration.PlaybackHotKeys.ToString();
                 hotkeyTextBox.Tag = AudioDeviceType.Playback;
-            } else if (tabControlSender.SelectedTab == recordingPage)
+            }
+            else if (tabControlSender.SelectedTab == recordingPage)
             {
                 hotkeyTextBox.Text = AppConfigs.Configuration.RecordingHotKeys.ToString();
                 hotkeyTextBox.Tag = AudioDeviceType.Recording;
@@ -291,9 +313,34 @@ namespace SoundSwitch.UI.Forms
             if (!_loaded)
                 return;
             var value = ((ComboBox) sender).SelectedValue;
-            if (value == null || (NotificationTypeEnum)value == AppModel.Instance.NotificationSettings)
+
+            if (value == null)
                 return;
-            AppModel.Instance.NotificationSettings = (NotificationTypeEnum)value;
+
+            if ((NotificationTypeEnum) value == AppModel.Instance.NotificationSettings)
+                return;
+
+            var isCustomNotification = (NotificationTypeEnum) value == NotificationTypeEnum.CustomNotification;
+            selectSoundButton.Visible = isCustomNotification;
+
+            if (isCustomNotification)
+            {
+                try
+                {
+                    var sound = AppModel.Instance.CustomNotificationSound;
+                }
+                catch (CachedSoundFileNotExistsException)
+                {
+                    selectSoundFileDialog.ShowDialog(this);
+                }
+            }
+
+            AppModel.Instance.NotificationSettings = (NotificationTypeEnum) value;
+        }
+
+        private void selectSoundButton_Click(object sender, EventArgs e)
+        {
+            selectSoundFileDialog.ShowDialog(this);
         }
     }
 }

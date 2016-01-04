@@ -178,6 +178,15 @@ namespace SoundSwitch.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select the sound file for the notification..
+        /// </summary>
+        internal static string selectSoundButtonTooltip {
+            get {
+                return ResourceManager.GetString("selectSoundButtonTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Communications Device.
         /// </summary>
         internal static string setComm {
@@ -192,6 +201,15 @@ namespace SoundSwitch.Properties {
         internal static string settings {
             get {
                 return ResourceManager.GetString("settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Supported Audio File.
+        /// </summary>
+        internal static string supportedAudio {
+            get {
+                return ResourceManager.GetString("supportedAudio", resourceCulture);
             }
         }
     }
