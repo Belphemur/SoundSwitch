@@ -31,6 +31,7 @@ namespace SoundSwitch.UI.Forms
             InitializeComponent();
             Icon = Icon.FromHandle(Resources.Update.GetHicon());
             Text = release.Name;
+            Focus();
             changeLog.SetChangelog(release.Changelog);
             downloadProgress.DisplayStyle = TextProgressBar.ProgressBarDisplayText.Both;
             downloadProgress.CustomText = release.Asset.name;
