@@ -1,5 +1,13 @@
 # Change Log
 
+## [v3.9.0-beta](https://github.com/Belphemur/SoundSwitch/tree/v3.9.0-beta) (2016-01-05)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.8.4...v3.9.0-beta)
+
+**Implemented enhancements:**
+
+- Make update notification clearer for Windows 10 [\#59](https://github.com/Belphemur/SoundSwitch/issues/59)
+- Personalized Notification Sound [\#52](https://github.com/Belphemur/SoundSwitch/issues/52)
+
 ## [v3.8.4](https://github.com/Belphemur/SoundSwitch/tree/v3.8.4) (2016-01-01)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.8.3...v3.8.4)
 
