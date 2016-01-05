@@ -61,6 +61,24 @@ namespace SoundSwitch.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The audio file you selected to be use as notification can&apos;t be found. {0} switched the notification setting back to {1}..
+        /// </summary>
+        internal static string AudioFileNotFound {
+            get {
+                return ResourceManager.GetString("AudioFileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Audio file not found.
+        /// </summary>
+        internal static string AudioFileNotFoundTitle {
+            get {
+                return ResourceManager.GetString("AudioFileNotFoundTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Window&apos;s Notification: Use the usual OS notification system
         ///Sound Notification: Play a sound on the switched audio device
         ///No Notification: ... No Notification at all..
@@ -68,6 +86,15 @@ namespace SoundSwitch.Properties {
         internal static string explanation {
             get {
                 return ResourceManager.GetString("explanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Customized Sound Notification.
+        /// </summary>
+        internal static string NotifCustom {
+            get {
+                return ResourceManager.GetString("NotifCustom", resourceCulture);
             }
         }
         

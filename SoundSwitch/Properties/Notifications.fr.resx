@@ -111,4 +111,13 @@
 Notification Sonore: Joue un signal sonore sur le périfique audio lors du "switch".
 Aucune Notification: ... Aucune Notification.</value>
 	</data>
+	<data name="NotifCustom" xml:space="preserve">
+		<value>Notification Sonore Personalisée</value>
+	</data>
+	<data name="AudioFileNotFound" xml:space="preserve">
+		<value>Le fichier audio que vous avez sélectionné pour être joué comme notification est introuvable. {0} a changé ses paramétre de notification pour {1}.</value>
+	</data>
+	<data name="AudioFileNotFoundTitle" xml:space="preserve">
+		<value>Fichier audio introuvable</value>
+	</data>
 </root>

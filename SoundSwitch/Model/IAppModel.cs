@@ -28,8 +28,6 @@ namespace SoundSwitch.Model
     {
         #region Properties
 
-        CachedSound NotificationSound { get; set; }
-
         /// <summary>
         ///     The list of Playback device selected to be used for Switching default devices.
         /// </summary>
@@ -80,6 +78,12 @@ namespace SoundSwitch.Model
         /// </summary>
         bool SubscribedBetaVersions { get; set; }
 
+        /// <summary>
+        /// The sound to be played for a Custom notification
+        /// <exception cref="CachedSoundFileNotExistsException">Sound file doens't exists or not set</exception>
+        /// </summary>
+        CachedSound CustomNotificationSound { get; set; }
+
         #endregion
 
         #region Events
@@ -122,6 +126,11 @@ namespace SoundSwitch.Model
         /// If the NotificationSettings has been modified
         /// </summary>
         event EventHandler<NotificationSettingsUpdatedEvent> NotificationSettingsChanged;
+
+        /// <summary>
+        /// When the custom sound is changed
+        /// </summary>
+        event EventHandler<CustomSoundChangedEvent> CustomSoundChanged;
         #endregion
 
         #region Methods
@@ -174,5 +183,7 @@ namespace SoundSwitch.Model
         bool CycleActiveDevice(AudioDeviceType type);
 
         #endregion
+
+
     }
 }

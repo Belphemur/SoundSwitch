@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using AudioEndPointControllerWrapper;
+using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager;
 
 namespace SoundSwitch.Model
@@ -51,6 +52,18 @@ namespace SoundSwitch.Model
         {
             PrevSettings = prevSettings;
             NewSettings = newSettings;
+        }
+    }
+
+    public class CustomSoundChangedEvent : EventArgs
+    {
+        public CachedSound PrevSound { get; }
+        public CachedSound NewSound { get; }
+
+        public CustomSoundChangedEvent(CachedSound prevSound, CachedSound newSound)
+        {
+            PrevSound = prevSound;
+            NewSound = newSound;
         }
     }
 }

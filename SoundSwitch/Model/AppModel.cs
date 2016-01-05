@@ -45,7 +45,24 @@ namespace SoundSwitch.Model
 
         public static IAppModel Instance { get; } = new AppModel();
         public NotifyIcon NotifyIcon { get; set; }
-        public CachedSound NotificationSound { get; set; }
+        private CachedSound _customNotificationCachedSound;
+        public CachedSound CustomNotificationSound
+        {
+            get {
+                return _customNotificationCachedSound ??
+                       (_customNotificationCachedSound =
+                           new CachedSound(AppConfigs.Configuration.CustomNotificationFilePath));
+            }
+            set
+            {
+                var oldSound = _customNotificationCachedSound;
+                _customNotificationCachedSound = value;
+                AppConfigs.Configuration.CustomNotificationFilePath = _customNotificationCachedSound.FilePath;
+                AppConfigs.Configuration.Save();
+                CustomSoundChanged?.Invoke(this, new CustomSoundChangedEvent(oldSound, value));
+            }
+        }
+
         public NotificationTypeEnum NotificationSettings
         {
             get { return AppConfigs.Configuration.NotificationSettings; }
@@ -57,6 +74,8 @@ namespace SoundSwitch.Model
                     new NotificationSettingsUpdatedEvent(NotificationSettings, value));
             }
         }
+
+
         /// <summary>
         /// Beta or Stable channel.
         /// </summary>
@@ -143,6 +162,7 @@ namespace SoundSwitch.Model
 
         public IAudioDeviceLister ActiveAudioDeviceLister { get; set; }
         public event EventHandler<NotificationSettingsUpdatedEvent> NotificationSettingsChanged;
+        public event EventHandler<CustomSoundChangedEvent> CustomSoundChanged;
 
         #endregion
 

@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AudioEndPointControllerWrapper;
 using NAudio.CoreAudioApi;
@@ -8,15 +7,14 @@ using SoundSwitch.Framework.Audio;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification
 {
-    public class NotificationSound : INotification
+    public class NotificationCustom : INotification
     {
-        private readonly MMDeviceEnumerator _deviceEnumerator;
-        private readonly Stream _memoryStreamSound;
+        private readonly MMDeviceEnumerator _deviceEnumerator = new MMDeviceEnumerator();
+        private CachedSound _sound;
 
-        public NotificationSound(Stream memoryStreamSound)
+        public NotificationCustom(CachedSound sound)
         {
-            _memoryStreamSound = memoryStreamSound;
-            _deviceEnumerator = new MMDeviceEnumerator();
+            _sound = sound;
         }
 
         public void NotifyDefaultChanged(IAudioDevice audioDevice)
@@ -27,8 +25,9 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             {
                 var device = _deviceEnumerator.GetDevice(audioDevice.Id);
                 using (var output = new WasapiOut(device, AudioClientShareMode.Shared, true, 10))
+                using (var waveStream = new CachedSoundWaveStream(_sound))
                 {
-                    output.Init(new WaveFileReader(_memoryStreamSound));
+                    output.Init(waveStream);
                     output.Play();
                     while (output.PlaybackState == PlaybackState.Playing)
                     {
@@ -41,6 +40,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
 
         public void OnSoundChanged(CachedSound newSound)
         {
+            _sound = newSound;
         }
     }
 }

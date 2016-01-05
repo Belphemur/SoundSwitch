@@ -234,10 +234,9 @@
   <ItemGroup>
     <Compile Include="Framework\ApplicationPath.cs" />
     <Compile Include="Framework\AppLogger.cs" />
-    <Compile Include="Framework\Audio\AudioPlaybackEngine.cs" />
-    <Compile Include="Framework\Audio\AutoDisposeFileReader.cs" />
     <Compile Include="Framework\Audio\CachedSound.cs" />
-    <Compile Include="Framework\Audio\CachedSoundSampleProvider.cs" />
+    <Compile Include="Framework\Audio\CachedSoundFileNotExistsException.cs" />
+    <Compile Include="Framework\Audio\CachedSoundWaveStream.cs" />
     <Compile Include="Framework\AutoStart.cs" />
     <Compile Include="Framework\Configuration\AppConfigs.cs" />
     <Compile Include="Framework\Configuration\ConfigurationManager.cs" />
@@ -249,6 +248,7 @@
     <Compile Include="Framework\NotificationManager\NotificationFactory.cs" />
     <Compile Include="Framework\NotificationManager\NotificationManager.cs" />
     <Compile Include="Framework\NotificationManager\Notification\INotification.cs" />
+    <Compile Include="Framework\NotificationManager\Notification\NotificationCustom.cs" />
     <Compile Include="Framework\NotificationManager\Notification\NotificationDisplayer.cs" />
     <Compile Include="Framework\NotificationManager\Notification\NotificationSound.cs" />
     <Compile Include="Framework\NotificationManager\Notification\NotificationWindows.cs" />
