@@ -19,20 +19,36 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             _deviceEnumerator = new MMDeviceEnumerator();
         }
 
+        private Stream GetStreamCopy()
+        {
+            lock (this)
+            {
+                _memoryStreamSound.Position = 0;
+                var memoryStreamedSound = new MemoryStream();
+                _memoryStreamSound.CopyTo(memoryStreamedSound);
+                memoryStreamedSound.Position = 0;
+                return memoryStreamedSound;
+            }
+        }
+
         public void NotifyDefaultChanged(IAudioDevice audioDevice)
         {
             if (audioDevice.Type != AudioDeviceType.Playback)
                 return;
+
             var task = new Task(() =>
             {
-                var device = _deviceEnumerator.GetDevice(audioDevice.Id);
-                using (var output = new WasapiOut(device, AudioClientShareMode.Shared, true, 10))
+                using (var memoryStreamedSound = GetStreamCopy())
                 {
-                    output.Init(new WaveFileReader(_memoryStreamSound));
-                    output.Play();
-                    while (output.PlaybackState == PlaybackState.Playing)
+                    var device = _deviceEnumerator.GetDevice(audioDevice.Id);
+                    using (var output = new WasapiOut(device, AudioClientShareMode.Shared, true, 10))
                     {
-                        Thread.Sleep(500);
+                        output.Init(new WaveFileReader(memoryStreamedSound));
+                        output.Play();
+                        while (output.PlaybackState == PlaybackState.Playing)
+                        {
+                            Thread.Sleep(500);
+                        }
                     }
                 }
             });
