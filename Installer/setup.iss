@@ -18,14 +18,14 @@
 AppName={#MyAppSetupName}
 AppVersion={#MyAppVersion}
 AppVerName={#MyAppSetupName} {#MyAppVersion}
-AppCopyright=Copyright © 2010-2015 {#MyAppSetupName}
+AppCopyright=Copyright © 2010-2016 {#MyAppSetupName}
 VersionInfoVersion={#MyAppVersion}
 VersionInfoCompany=SoundSwitch
 AppPublisher=Antoine Aflalo
 AppPublisherURL=https://www.aaflalo.me
 AppSupportURL=https://github.com/Belphemur/SoundSwitch
 AppUpdatesURL=https://github.com/Belphemur/SoundSwitch/releases
-OutputBaseFilename={#MyAppSetupName}_v{#MyAppVersion}_Installer
+OutputBaseFilename={#MyAppSetupName}_v{#MyAppVersion}_{#ReleaseState}_Installer
 DefaultGroupName={#MyAppSetupName}
 DefaultDirName={pf}\{#MyAppSetupName}
 UninstallDisplayIcon={app}\SoundSwitch.exe

@@ -13,7 +13,7 @@ del ..\Final\*Installer.exe
 echo Making installer...
 
 REM The Installer
-%innosetup% setup.iss
+%innosetup% setup.iss /DReleaseState=%1
 if not "%ERRORLEVEL%"=="0" echo error: innosetup failed & goto Quit
 
 goto Done

@@ -95,7 +95,7 @@ IF EXIST "%FILE_DIR%..\signinfo.txt" (
 )
 
 
-call ./Installer/Make-Installer.bat
+call ./Installer/Make-Installer.bat %buildPlatform%
 if not "%ERRORLEVEL%"=="0" echo error: make installer failed & goto Quit
 
 echo.
