@@ -259,6 +259,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>UpdateFormStrings.resx</DependentUpon>
     </Compile>
+    <Compile Include="Util\AssemblyUtils.cs" />
     <Compile Include="Util\AudioDeviceIconExtractor.cs" />
     <Compile Include="Model\AudioDeviceLister.cs" />
     <Compile Include="Model\Events.cs" />
