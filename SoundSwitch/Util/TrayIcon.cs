@@ -84,6 +84,10 @@ namespace SoundSwitch.Util
 
         private void PopulateSettingsMenu()
         {
+            _settingsMenu.Items.Add(
+                Application.ProductName + ' ' + AssemblyUtils.GetReleaseState() + " (" + Application.ProductVersion +
+                ")", Resources.SoundSwitch16);
+            _settingsMenu.Items.Add("-");
             _settingsMenu.Items.Add(TrayIconStrings.playbackDev, Resources.PlaybackDevices,
                 (sender, e) => { Process.Start(new ProcessStartInfo("control", "mmsys.cpl sounds")); });
             _settingsMenu.Items.Add(TrayIconStrings.mixer, Resources.Mixer,
