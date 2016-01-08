@@ -1,5 +1,16 @@
 # Change Log
 
+## [v3.9.1](https://github.com/Belphemur/SoundSwitch/tree/v3.9.1) (2016-01-08)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.9.0...v3.9.1)
+
+**Implemented enhancements:**
+
+- Disabling completely the hotkeys [\#62](https://github.com/Belphemur/SoundSwitch/issues/62)
+
+**Fixed bugs:**
+
+- Sporadically hangs [\#43](https://github.com/Belphemur/SoundSwitch/issues/43)
+
 ## [v3.9.0](https://github.com/Belphemur/SoundSwitch/tree/v3.9.0) (2016-01-05)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.8.4...v3.9.0)
 
