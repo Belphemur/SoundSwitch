@@ -52,10 +52,10 @@ namespace SoundSwitch.UI.Forms
             toolTipComm.SetToolTip(communicationCheckbox, SettingsString.commTooltip);
 
             hotkeyTextBox.KeyDown += (sender, args) => SetHotkey(args);
-            hotkeyTextBox.Text = AppConfigs.Configuration.PlaybackHotKeys.ToString();
+            hotkeyTextBox.Text = AppConfigs.Configuration.PlaybackHotKeys.Display();
             hotkeyTextBox.Tag = new Tuple<AudioDeviceType, HotKeys>(AudioDeviceType.Playback,
                 AppConfigs.Configuration.PlaybackHotKeys);
-            hotkeysCheckbox.Checked = AppConfigs.Configuration.PlaybackHotKeys.Enabled;
+            hotkeyTextBox.Enabled = hotkeysCheckbox.Checked = AppConfigs.Configuration.PlaybackHotKeys.Enabled;
             var toolTipHotkeys = new ToolTip();
             toolTipHotkeys.SetToolTip(hotkeysCheckbox, SettingsString.hotkeyUncheckExplanation);
 
@@ -147,14 +147,14 @@ namespace SoundSwitch.UI.Forms
             var tabControlSender = (TabControl) sender;
             if (tabControlSender.SelectedTab == playbackPage)
             {
-                hotkeyTextBox.Text = AppConfigs.Configuration.PlaybackHotKeys.ToString();
+                hotkeyTextBox.Text = AppConfigs.Configuration.PlaybackHotKeys.Display();
                 hotkeyTextBox.Tag = new Tuple<AudioDeviceType, HotKeys>(AudioDeviceType.Playback,
                     AppConfigs.Configuration.PlaybackHotKeys);
                 hotkeysCheckbox.Checked = AppConfigs.Configuration.PlaybackHotKeys.Enabled;
             }
             else if (tabControlSender.SelectedTab == recordingPage)
             {
-                hotkeyTextBox.Text = AppConfigs.Configuration.RecordingHotKeys.ToString();
+                hotkeyTextBox.Text = AppConfigs.Configuration.RecordingHotKeys.Display();
                 hotkeyTextBox.Tag = new Tuple<AudioDeviceType, HotKeys>(AudioDeviceType.Recording,
                     AppConfigs.Configuration.RecordingHotKeys);
                 hotkeysCheckbox.Checked = AppConfigs.Configuration.RecordingHotKeys.Enabled;
@@ -199,8 +199,10 @@ namespace SoundSwitch.UI.Forms
         private void hotkeysCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             var tuple = (Tuple<AudioDeviceType, HotKeys>) hotkeyTextBox.Tag;
+            var currentState = tuple.Item2.Enabled;
             hotkeyTextBox.Enabled = tuple.Item2.Enabled = hotkeysCheckbox.Checked;
-            AppModel.Instance.SetHotkeyCombination(tuple.Item2, tuple.Item1);
+            if (currentState != tuple.Item2.Enabled)
+                AppModel.Instance.SetHotkeyCombination(tuple.Item2, tuple.Item1);
         }
 
         #region Basic Settings (CheckBoxes)

@@ -84,6 +84,13 @@ namespace SoundSwitch.Framework
         {
             var key = Enum.Format(typeof(Keys), Keys, "g");
             var modKeys = Enum.Format(typeof(ModifierKeys), Modifier, "g");
+            return $"{modKeys.Replace(", ", "+")}+{key}: {Enabled}";
+        }
+
+        public string Display()
+        {
+            var key = Enum.Format(typeof(Keys), Keys, "g");
+            var modKeys = Enum.Format(typeof(ModifierKeys), Modifier, "g");
             return $"{modKeys.Replace(", ", "+")}+{key}";
         }
     }
