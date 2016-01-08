@@ -45,6 +45,7 @@ namespace SoundSwitch.Framework
         private const int WM_DEVICECHANGE = 0x0219;
         private const int WM_HOTKEY = 0x0312;
         private static WindowsAPIAdapter _instance;
+        private static ThreadExceptionEventHandler _exceptionEventHandler;
         private readonly Dictionary<HotKeys, int> _registeredHotkeys = new Dictionary<HotKeys, int>();
         private int _hotKeyId;
 
@@ -59,10 +60,12 @@ namespace SoundSwitch.Framework
         /// <summary>
         ///     Star the Adapter thread
         /// </summary>
-        public static void Start()
+        public static void Start(ThreadExceptionEventHandler exceptionEventHandler = null)
         {
             if (_instance != null)
                 throw new InvalidOperationException("Adapter already started");
+
+            _exceptionEventHandler = exceptionEventHandler;
 
             var t = new Thread(RunForm) {Name = typeof (WindowsAPIAdapter).Name};
             t.SetApartmentState(ApartmentState.STA);
@@ -86,10 +89,7 @@ namespace SoundSwitch.Framework
             {
                 try
                 {
-                    lock (_instance)
-                    {
                         _instance.Invoke(new MethodInvoker(_instance.EndForm));
-                    }
                 }
                 catch (Exception ex)
                 {
@@ -100,22 +100,12 @@ namespace SoundSwitch.Framework
             }
         }
 
-        /// <summary>
-        ///     Add an Exception handler for the Adapter thread
-        /// </summary>
-        /// <param name="handler"></param>
-        public static void AddThreadExceptionHandler(ThreadExceptionEventHandler handler)
-        {
-            lock (_instance)
-            {
-                _instance.Invoke(new Action(() => { Application.ThreadException += handler; }));
-            }
-        }
-
         private static void RunForm()
         {
             _instance = new WindowsAPIAdapter();
             _instance.CreateHandle();
+            if (_exceptionEventHandler != null)
+                Application.ThreadException += _exceptionEventHandler;
             Application.Run(_instance);
         }
 
@@ -128,12 +118,11 @@ namespace SoundSwitch.Framework
         {
             if (disposing)
             {
-                lock (_instance)
+                if (_exceptionEventHandler != null)
+                    Application.ThreadException -= _exceptionEventHandler;
+                foreach (var hotKeyId in _registeredHotkeys.Values)
                 {
-                    foreach (var hotKeyId in _instance._registeredHotkeys.Values)
-                    {
-                        NativeMethods.UnregisterHotKey(_instance.Handle, hotKeyId);
-                    }
+                    NativeMethods.UnregisterHotKey(_instance.Handle, hotKeyId);
                 }
             }
             base.Dispose(disposing);

@@ -52,9 +52,15 @@ namespace SoundSwitch
                 {
                     HandleException((Exception)args.ExceptionObject);
                 };
+
+                AppLogger.Log.Info("Set Exception Handler");
                 Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
-#endif
+                WindowsAPIAdapter.Start(Application_ThreadException);
+
+#else
                 WindowsAPIAdapter.Start();
+#endif
+
                 //Manage the Closing events send by Windows
                 //Since this app don't use a Form as "main window" the app doesn't close 
                 //when it should without this.
@@ -77,10 +83,7 @@ namespace SoundSwitch
                         }
                     }
                 };
-                AppLogger.Log.Info("Set Exception Handler");
-#if !DEBUG
-                WindowsAPIAdapter.AddThreadExceptionHandler(Application_ThreadException);
-#endif
+
                 AppLogger.Log.Info("Set Tray Icon with Main");
 #if !DEBUG
                 try
