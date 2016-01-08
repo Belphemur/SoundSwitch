@@ -148,4 +148,7 @@
 	<data name="selectSoundButtonTooltip" xml:space="preserve">
 		<value>Select the sound file for the notification.</value>
 	</data>
+	<data name="hotkeyUncheckExplanation" xml:space="preserve">
+		<value>Uncheck the checkbox to disable the Hotkeys.</value>
+	</data>
 </root>

@@ -396,7 +396,7 @@ namespace SoundSwitch.Model
                     WindowsAPIAdapter.UnRegisterHotKey(confHotKeys);
                     AppLogger.Log.Info("Unregistered previous hotkeys", confHotKeys);
 
-                    if (!WindowsAPIAdapter.RegisterHotKey(hotkeys))
+                    if (hotkeys.Enabled && !WindowsAPIAdapter.RegisterHotKey(hotkeys))
                     {
                         AppLogger.Log.Warn("Can't register new hotkeys", hotkeys);
                         ErrorTriggered?.Invoke(this,

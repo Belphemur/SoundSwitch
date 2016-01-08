@@ -133,6 +133,15 @@ namespace SoundSwitch.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Uncheck the checkbox to disable the Hotkeys..
+        /// </summary>
+        internal static string hotkeyUncheckExplanation {
+            get {
+                return ResourceManager.GetString("hotkeyUncheckExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notification.
         /// </summary>
         internal static string notification {
@@ -205,7 +214,7 @@ namespace SoundSwitch.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Supported Audio File.
+        ///   Looks up a localized string similar to Audio Files.
         /// </summary>
         internal static string supportedAudio {
             get {

@@ -42,5 +42,6 @@ namespace SoundSwitch.Framework.Configuration
         NotificationTypeEnum NotificationSettings { get; set; }
         bool SubscribedBetaVersion { get; set; }
         string CustomNotificationFilePath { get; set; }
+
     }
 }

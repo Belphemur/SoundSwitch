@@ -35,14 +35,17 @@ namespace SoundSwitch.Framework
         {
             Keys = keys;
             Modifier = modifier;
+            Enabled = true;
         }
 
         public HotKeys()
         {
+            Enabled = true;
         }
 
         public Keys Keys { get; set; }
         public ModifierKeys Modifier { get; set; }
+        public bool Enabled { get; set; }
 
         public bool Equals(HotKeys other)
         {

@@ -32,7 +32,7 @@ namespace SoundSwitch.UI.Forms
 {
     public partial class Settings : Form
     {
-        private readonly bool _loaded = false;
+        private readonly bool _loaded;
 
         public Settings()
         {
@@ -53,7 +53,11 @@ namespace SoundSwitch.UI.Forms
 
             hotkeyTextBox.KeyDown += (sender, args) => SetHotkey(args);
             hotkeyTextBox.Text = AppConfigs.Configuration.PlaybackHotKeys.ToString();
-            hotkeyTextBox.Tag = AudioDeviceType.Playback;
+            hotkeyTextBox.Tag = new Tuple<AudioDeviceType, HotKeys>(AudioDeviceType.Playback,
+                AppConfigs.Configuration.PlaybackHotKeys);
+            hotkeysCheckbox.Checked = AppConfigs.Configuration.PlaybackHotKeys.Enabled;
+            var toolTipHotkeys = new ToolTip();
+            toolTipHotkeys.SetToolTip(hotkeysCheckbox, SettingsString.hotkeyUncheckExplanation);
 
             RunAtStartup.Checked = AppModel.Instance.RunAtStartup;
             communicationCheckbox.Checked = AppModel.Instance.SetCommunications;
@@ -63,7 +67,7 @@ namespace SoundSwitch.UI.Forms
                 audioDeviceLister.GetPlaybackDevices());
             PopulateAudioList(recordingListView, AppModel.Instance.SelectedRecordingDevicesList,
                 audioDeviceLister.GetRecordingDevices());
-            notifLabel.Text = Properties.SettingsString.notification;
+            notifLabel.Text = SettingsString.notification;
 
             var toolTipNotification = new ToolTip();
             toolTipNotification.SetToolTip(notificationComboBox, Notifications.explanation);
@@ -122,8 +126,11 @@ namespace SoundSwitch.UI.Forms
             hotkeyTextBox.Text = $"{displayString}{keyCode}";
             if (!string.IsNullOrEmpty(keyCode))
             {
-                hotkeyTextBox.ForeColor = AppModel.Instance.SetHotkeyCombination(new HotKeys(e.KeyCode, modifierKeys),
-                    (AudioDeviceType) hotkeyTextBox.Tag)
+                var tuple = (Tuple<AudioDeviceType, HotKeys>) hotkeyTextBox.Tag;
+                var newTuple = new Tuple<AudioDeviceType, HotKeys>(tuple.Item1, new HotKeys(e.KeyCode, modifierKeys));
+                hotkeyTextBox.Tag = newTuple;
+                hotkeyTextBox.ForeColor = AppModel.Instance.SetHotkeyCombination(newTuple.Item2,
+                    newTuple.Item1)
                     ? Color.Green
                     : Color.Red;
             }
@@ -133,6 +140,67 @@ namespace SoundSwitch.UI.Forms
         private void closeButton_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var tabControlSender = (TabControl) sender;
+            if (tabControlSender.SelectedTab == playbackPage)
+            {
+                hotkeyTextBox.Text = AppConfigs.Configuration.PlaybackHotKeys.ToString();
+                hotkeyTextBox.Tag = new Tuple<AudioDeviceType, HotKeys>(AudioDeviceType.Playback,
+                    AppConfigs.Configuration.PlaybackHotKeys);
+                hotkeysCheckbox.Checked = AppConfigs.Configuration.PlaybackHotKeys.Enabled;
+            }
+            else if (tabControlSender.SelectedTab == recordingPage)
+            {
+                hotkeyTextBox.Text = AppConfigs.Configuration.RecordingHotKeys.ToString();
+                hotkeyTextBox.Tag = new Tuple<AudioDeviceType, HotKeys>(AudioDeviceType.Recording,
+                    AppConfigs.Configuration.RecordingHotKeys);
+                hotkeysCheckbox.Checked = AppConfigs.Configuration.RecordingHotKeys.Enabled;
+            }
+        }
+
+        private void notificationComboBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (!_loaded)
+                return;
+            var value = ((ComboBox) sender).SelectedValue;
+
+            if (value == null)
+                return;
+
+            if ((NotificationTypeEnum) value == AppModel.Instance.NotificationSettings)
+                return;
+
+            var isCustomNotification = (NotificationTypeEnum) value == NotificationTypeEnum.CustomNotification;
+            selectSoundButton.Visible = isCustomNotification;
+
+            if (isCustomNotification)
+            {
+                try
+                {
+                    var sound = AppModel.Instance.CustomNotificationSound;
+                }
+                catch (CachedSoundFileNotExistsException)
+                {
+                    selectSoundFileDialog.ShowDialog(this);
+                }
+            }
+
+            AppModel.Instance.NotificationSettings = (NotificationTypeEnum) value;
+        }
+
+        private void selectSoundButton_Click(object sender, EventArgs e)
+        {
+            selectSoundFileDialog.ShowDialog(this);
+        }
+
+        private void hotkeysCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            var tuple = (Tuple<AudioDeviceType, HotKeys>) hotkeyTextBox.Tag;
+            hotkeyTextBox.Enabled = tuple.Item2.Enabled = hotkeysCheckbox.Checked;
+            AppModel.Instance.SetHotkeyCombination(tuple.Item2, tuple.Item1);
         }
 
         #region Basic Settings (CheckBoxes)
@@ -299,55 +367,5 @@ namespace SoundSwitch.UI.Forms
         #endregion
 
         #endregion
-
-        private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            var tabControlSender = (TabControl) sender;
-            if (tabControlSender.SelectedTab == playbackPage)
-            {
-                hotkeyTextBox.Text = AppConfigs.Configuration.PlaybackHotKeys.ToString();
-                hotkeyTextBox.Tag = AudioDeviceType.Playback;
-            }
-            else if (tabControlSender.SelectedTab == recordingPage)
-            {
-                hotkeyTextBox.Text = AppConfigs.Configuration.RecordingHotKeys.ToString();
-                hotkeyTextBox.Tag = AudioDeviceType.Recording;
-            }
-        }
-
-        private void notificationComboBox_SelectedValueChanged(object sender, EventArgs e)
-        {
-            if (!_loaded)
-                return;
-            var value = ((ComboBox) sender).SelectedValue;
-
-            if (value == null)
-                return;
-
-            if ((NotificationTypeEnum) value == AppModel.Instance.NotificationSettings)
-                return;
-
-            var isCustomNotification = (NotificationTypeEnum) value == NotificationTypeEnum.CustomNotification;
-            selectSoundButton.Visible = isCustomNotification;
-
-            if (isCustomNotification)
-            {
-                try
-                {
-                    var sound = AppModel.Instance.CustomNotificationSound;
-                }
-                catch (CachedSoundFileNotExistsException)
-                {
-                    selectSoundFileDialog.ShowDialog(this);
-                }
-            }
-
-            AppModel.Instance.NotificationSettings = (NotificationTypeEnum) value;
-        }
-
-        private void selectSoundButton_Click(object sender, EventArgs e)
-        {
-            selectSoundFileDialog.ShowDialog(this);
-        }
     }
 }

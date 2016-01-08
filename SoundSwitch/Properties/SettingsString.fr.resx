@@ -148,4 +148,7 @@
 	<data name="selectSoundButtonTooltip" xml:space="preserve">
 		<value>Choissez le fichier audio pour la notification sonore.</value>
 	</data>
+	<data name="hotkeyUncheckExplanation" xml:space="preserve">
+		<value>Décocher la case pour désactiver le raccourcis clavier.</value>
+	</data>
 </root>
