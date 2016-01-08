@@ -143,7 +143,7 @@
 		<value>When checked, SoundSwitch will also check for pre-release version on GitHub</value>
 	</data>
 	<data name="supportedAudio" xml:space="preserve">
-		<value>Audio File</value>
+		<value>Audio Files</value>
 	</data>
 	<data name="selectSoundButtonTooltip" xml:space="preserve">
 		<value>Select the sound file for the notification.</value>

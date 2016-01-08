@@ -52,7 +52,6 @@ namespace SoundSwitch.Framework
         {
         }
 
-        private static readonly AutoResetEvent Instancied  = new AutoResetEvent(false);
         public static event EventHandler<RestartManagerEvent> RestartManagerTriggered;
         public static event EventHandler<DeviceChangeEvent> DeviceChanged;
         public static event EventHandler<KeyPressedEventArgs> HotKeyPressed;
@@ -87,7 +86,10 @@ namespace SoundSwitch.Framework
             {
                 try
                 {
-                    _instance.Invoke(new MethodInvoker(_instance.EndForm));
+                    lock (_instance)
+                    {
+                        _instance.Invoke(new MethodInvoker(_instance.EndForm));
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -104,14 +106,9 @@ namespace SoundSwitch.Framework
         /// <param name="handler"></param>
         public static void AddThreadExceptionHandler(ThreadExceptionEventHandler handler)
         {
-            Instancied.WaitOne();
-            try
+            lock (_instance)
             {
                 _instance.Invoke(new Action(() => { Application.ThreadException += handler; }));
-            }
-            finally
-            {
-                Instancied.Set();
             }
         }
 
@@ -119,7 +116,6 @@ namespace SoundSwitch.Framework
         {
             _instance = new WindowsAPIAdapter();
             _instance.CreateHandle();
-            Instancied.Set();
             Application.Run(_instance);
         }
 
@@ -132,9 +128,12 @@ namespace SoundSwitch.Framework
         {
             if (disposing)
             {
-                foreach (var hotKeyId in _instance._registeredHotkeys.Values)
+                lock (_instance)
                 {
-                    NativeMethods.UnregisterHotKey(_instance.Handle, hotKeyId);
+                    foreach (var hotKeyId in _instance._registeredHotkeys.Values)
+                    {
+                        NativeMethods.UnregisterHotKey(_instance.Handle, hotKeyId);
+                    }
                 }
             }
             base.Dispose(disposing);
@@ -146,8 +145,7 @@ namespace SoundSwitch.Framework
         /// <param name="hotKeys">Represent the hotkey to register</param>
         public static bool RegisterHotKey(HotKeys hotKeys)
         {
-            Instancied.WaitOne();
-            try
+            lock (_instance)
             {
                 return (bool) _instance.Invoke(new Func<bool>(() =>
                 {
@@ -161,10 +159,7 @@ namespace SoundSwitch.Framework
                         (uint) hotKeys.Keys);
                 }));
             }
-            finally
-            {
-                Instancied.Set();
-            }
+
         }
 
         /// <summary>
@@ -174,8 +169,7 @@ namespace SoundSwitch.Framework
         /// <returns></returns>
         public static bool UnRegisterHotKey(HotKeys hotKeys)
         {
-            Instancied.WaitOne();
-            try
+            lock (_instance)
             {
                 return (bool) _instance.Invoke(new Func<bool>(() =>
                 {
@@ -187,10 +181,6 @@ namespace SoundSwitch.Framework
                     _instance._registeredHotkeys.Remove(hotKeys);
                     return NativeMethods.UnregisterHotKey(_instance.Handle, id);
                 }));
-            }
-            finally
-            {
-                Instancied.Set();
             }
         }
 

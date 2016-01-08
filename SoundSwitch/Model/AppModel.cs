@@ -390,17 +390,22 @@ namespace SoundSwitch.Model
                     default:
                         throw new ArgumentOutOfRangeException(nameof(deviceType), deviceType, null);
                 }
-                AppLogger.Log.Info("Unregister previous hotkeys", confHotKeys);
-                WindowsAPIAdapter.UnRegisterHotKey(confHotKeys);
-
-                if (!WindowsAPIAdapter.RegisterHotKey(hotkeys))
+                using (AppLogger.Log.InfoCall())
                 {
-                    AppLogger.Log.Warn("Can't register new hotkeys", hotkeys);
-                    ErrorTriggered?.Invoke(this, new ExceptionEvent(new Exception("Impossible to register HotKey: " + hotkeys)));
-                    return false;
-                }
+                    AppLogger.Log.Info("Unregister previous hotkeys", confHotKeys);
+                    WindowsAPIAdapter.UnRegisterHotKey(confHotKeys);
+                    AppLogger.Log.Info("Unregistered previous hotkeys", confHotKeys);
 
-                AppLogger.Log.Info("New Hotkeys registered", hotkeys);
+                    if (!WindowsAPIAdapter.RegisterHotKey(hotkeys))
+                    {
+                        AppLogger.Log.Warn("Can't register new hotkeys", hotkeys);
+                        ErrorTriggered?.Invoke(this,
+                            new ExceptionEvent(new Exception("Impossible to register HotKey: " + hotkeys)));
+                        return false;
+                    }
+
+                    AppLogger.Log.Info("New Hotkeys registered", hotkeys);
+                }
                 switch (deviceType)
                 {
                     case AudioDeviceType.Playback:
