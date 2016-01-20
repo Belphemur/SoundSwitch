@@ -24,6 +24,7 @@ using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Minidump;
+using SoundSwitch.Framework.Pipe;
 using SoundSwitch.Model;
 using SoundSwitch.Util;
 
@@ -31,6 +32,7 @@ namespace SoundSwitch
 {
     internal static class Program
     {
+        private static PipeServer _pipeServer;
         [HandleProcessCorruptedStateExceptions]
         [STAThread]
         private static void Main()
@@ -42,7 +44,11 @@ namespace SoundSwitch
                 if (!createdNew)
                 {
                     AppLogger.Log.Warn("Application already started");
-                    return;
+                    using (var pipe = new PipeClient())
+                    {
+                        pipe.SendCommand(PipeCommand.StopApplication);
+                        Thread.Sleep(500);
+                    }
                 }
                 AppModel.Instance.ActiveAudioDeviceLister = new AudioDeviceLister(DeviceState.Active);
                 Application.EnableVisualStyles();
@@ -89,6 +95,7 @@ namespace SoundSwitch
                 try
                 {
 #endif
+                _pipeServer = new PipeServer();
                 using (var icon = new TrayIcon())
                 {
                     AppModel.Instance.NotifyIcon = icon.NotifyIcon;

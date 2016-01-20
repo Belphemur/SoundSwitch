@@ -18,5 +18,7 @@ namespace SoundSwitch.Framework.Configuration
     {
         public static ISoundSwitchConfiguration Configuration { get; private set; } =
             ConfigurationManager.LoadConfiguration<SoundSwitchConfiguration>();
+        public static IPipeConfiguration PipeConfiguration { get; private set; } =
+    ConfigurationManager.LoadConfiguration<PipeConfiguration>();
     }
 }

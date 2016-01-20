@@ -238,8 +238,10 @@
     <Compile Include="Framework\Audio\CachedSoundFileNotExistsException.cs" />
     <Compile Include="Framework\Audio\CachedSoundWaveStream.cs" />
     <Compile Include="Framework\AutoStart.cs" />
+    <Compile Include="Framework\Configuration\PipeConfiguration.cs" />
     <Compile Include="Framework\Configuration\AppConfigs.cs" />
     <Compile Include="Framework\Configuration\ConfigurationManager.cs" />
+    <Compile Include="Framework\Configuration\IPipeConfiguration.cs" />
     <Compile Include="Framework\Configuration\ISoundSwitchConfiguration.cs" />
     <Compile Include="Framework\Configuration\SoundSwitchConfiguration.cs" />
     <Compile Include="Framework\HotKeys.cs" />
@@ -254,6 +256,10 @@
     <Compile Include="Framework\NotificationManager\Notification\NotificationWindows.cs" />
     <Compile Include="Framework\NotificationManager\Notification\NotificationNone.cs" />
     <Compile Include="Framework\NotificationManager\NotificationType.cs" />
+    <Compile Include="Framework\Pipe\PipeClient.cs" />
+    <Compile Include="Framework\Pipe\PipeCommand.cs" />
+    <Compile Include="Framework\Pipe\PipeServer.cs" />
+    <Compile Include="Framework\Pipe\StreamString.cs" />
     <Compile Include="Framework\Updater\GitHubRelease.cs" />
     <Compile Include="Framework\Updater\IntervalUpdateChecker.cs" />
     <Compile Include="Framework\Updater\Release.cs" />
