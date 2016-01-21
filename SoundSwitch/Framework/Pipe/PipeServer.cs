@@ -12,7 +12,6 @@ namespace SoundSwitch.Framework.Pipe
             new NamedPipeServerStream(AppConfigs.PipeConfiguration.PipeName, PipeDirection.InOut, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous);
 
         private bool _applicationRunning = true;
-        private readonly StreamString _streamString;
         private IAsyncResult _arConnectionRequest;
 
         public PipeServer()
@@ -20,49 +19,62 @@ namespace SoundSwitch.Framework.Pipe
             Application.ApplicationExit += (sender, args) => _applicationRunning = false;
             var thread = new Thread(GetMessages) {Name = "PipeServer"};
             thread.Start();
-            _streamString = new StreamString(_namedPipe);
             AppConfigs.PipeConfiguration.Save();
         }
 
 
         private void GetMessages()
         {
-            _namedPipe.BeginWaitForConnection(SendAuth, null );
+            _namedPipe.BeginWaitForConnection(ProcessPipeCommands, null );
         }
 
-        private void SendAuth(IAsyncResult arResult)
+        private void ProcessPipeCommands(IAsyncResult arResult)
         {
             _arConnectionRequest = arResult;
             if (!arResult.IsCompleted) return;
             _namedPipe.WaitForConnection();
-            _streamString.WriteString(PipeCommand.InitiateService.ToString());
-            _streamString.WriteString(AppConfigs.PipeConfiguration.AuthentificationString);
-            _namedPipe.WaitForPipeDrain();
             while (_applicationRunning)
             {
-                var command = _streamString.ReadString();
-                if(command == null)
+                var pipeCmd = PipeCommand.GetPipeCommand(_namedPipe);
+                if(pipeCmd == null)
                     continue;
-
-                PipeCommand cmdEnum;
-                Enum.TryParse(command, false, out cmdEnum);
-                ExecuteCommand(cmdEnum);
+                ExecuteCommand(pipeCmd);
             }
             _namedPipe.EndWaitForConnection(_arConnectionRequest);
             _namedPipe.Close();
         }
-
-        private void ExecuteCommand(PipeCommand cmdEnum)
+        /// <summary>
+        /// Send command to the pipe client
+        /// </summary>
+        /// <param name="cmd"></param>
+        public void SendCommand(PipeCommand cmd)
         {
-            switch (cmdEnum)
+            cmd.Write(_namedPipe);
+            _namedPipe.WaitForPipeDrain();
+        }
+
+        private void ExecuteCommand(PipeCommand cmd)
+        {
+            switch (cmd.Type)
             {
-                case PipeCommand.InitiateService:
+                case PipeCommandType.InitiateService:
+                    if (cmd.Data != AppConfigs.PipeConfiguration.AesKeyBytes.ToString())
+                    {
+                        SendCommand(new PipeCommand(PipeCommandType.WrongAuth, cmd.Data));
+                    }
+                    else
+                    {
+                        SendCommand(new PipeCommand(PipeCommandType.InitiateService, AppConfigs.PipeConfiguration.AuthentificationString));
+                    }
                     break;
-                case PipeCommand.StopApplication:
+                case PipeCommandType.StopApplication:
+                    AppLogger.Log.Warn("Received stopping app from ", cmd.Data);
                     Application.Exit();
                     break;
+                case PipeCommandType.WrongAuth:
+                    break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(cmdEnum), cmdEnum, null);
+                    throw new ArgumentOutOfRangeException(nameof(cmd), cmd, null);
             }
         }
     }

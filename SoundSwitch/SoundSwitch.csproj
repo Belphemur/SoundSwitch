@@ -258,6 +258,7 @@
     <Compile Include="Framework\NotificationManager\NotificationType.cs" />
     <Compile Include="Framework\Pipe\PipeClient.cs" />
     <Compile Include="Framework\Pipe\PipeCommand.cs" />
+    <Compile Include="Framework\Pipe\PipeCommandType.cs" />
     <Compile Include="Framework\Pipe\PipeServer.cs" />
     <Compile Include="Framework\Pipe\StreamString.cs" />
     <Compile Include="Framework\Updater\GitHubRelease.cs" />

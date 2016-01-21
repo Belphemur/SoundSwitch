@@ -19,6 +19,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Runtime.ExceptionServices;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework;
@@ -39,20 +40,6 @@ namespace SoundSwitch
         {
             bool createdNew;
             AppLogger.Log.Info("Application Starts");
-            using (new Mutex(true, Application.ProductName, out createdNew))
-            {
-                if (!createdNew)
-                {
-                    AppLogger.Log.Warn("Application already started");
-                    using (var pipe = new PipeClient())
-                    {
-                        pipe.SendCommand(PipeCommand.StopApplication);
-                        Thread.Sleep(500);
-                    }
-                }
-                AppModel.Instance.ActiveAudioDeviceLister = new AudioDeviceLister(DeviceState.Active);
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
 #if !DEBUG
                 AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
                 {
@@ -64,8 +51,24 @@ namespace SoundSwitch
                 WindowsAPIAdapter.Start(Application_ThreadException);
 
 #else
-                WindowsAPIAdapter.Start();
+            WindowsAPIAdapter.Start();
 #endif
+
+            using (new Mutex(true, Application.ProductName, out createdNew))
+            {
+                if (!createdNew)
+                {
+                    AppLogger.Log.Warn("Application already started");
+                    using (var pipe = new PipeClient(true))
+                    using (new AppLogger.LogRestartor())
+                    {
+                        pipe.SendCommand(new PipeCommand(PipeCommandType.StopApplication, Application.ProductVersion));
+                        Thread.Sleep(500);
+                    }
+                }
+                AppModel.Instance.ActiveAudioDeviceLister = new AudioDeviceLister(DeviceState.Active);
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
 
                 //Manage the Closing events send by Windows
                 //Since this app don't use a Form as "main window" the app doesn't close 
@@ -107,7 +110,6 @@ namespace SoundSwitch
                         AppLogger.Log.Info("First run");
                     }
                     Application.Run();
-                    WindowsAPIAdapter.Stop();
                 }
 #if !DEBUG
                 }
@@ -119,6 +121,7 @@ namespace SoundSwitch
                 }
 #endif
             }
+            WindowsAPIAdapter.Stop();
         }
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
