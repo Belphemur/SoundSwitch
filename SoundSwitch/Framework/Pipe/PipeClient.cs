@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO.Pipes;
 using System.Security.Principal;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using SoundSwitch.Framework.Configuration;
 
 namespace SoundSwitch.Framework.Pipe
@@ -12,24 +9,50 @@ namespace SoundSwitch.Framework.Pipe
     public class PipeClient : IDisposable
     {
         private readonly NamedPipeClientStream _namedPipe =
-    new NamedPipeClientStream(".", AppConfigs.PipeConfiguration.PipeName, PipeDirection.InOut, PipeOptions.None, TokenImpersonationLevel.Impersonation);
+            new NamedPipeClientStream(".", AppConfigs.PipeConfiguration.PipeName, PipeDirection.InOut, PipeOptions.None,
+                TokenImpersonationLevel.Impersonation);
 
-        public bool IsConnected { get; private set; }
+        private string _serverAuth;
 
-        private readonly StreamString _streamString;
 
         public PipeClient(bool exitIfNoConnection = false)
         {
-            _streamString = new StreamString(_namedPipe);
-            if (exitIfNoConnection)
-                CheckForConnectionTask();
+            ExitIfNoConnection = exitIfNoConnection;
             InitPipeClient();
         }
 
+        public bool IsConnected { get; private set; }
+        public bool ExitIfNoConnection { get; }
+
+        public void Dispose()
+        {
+            IsConnected = false;
+            _namedPipe.Close();
+        }
+
+        public event EventHandler<PipeCommandReceivedEvent> PipeCommandReceived;
+
         private void InitPipeClient()
         {
-            _namedPipe.Connect();
-            SendCommand(new PipeCommand(PipeCommandType.InitiateService, AppConfigs.PipeConfiguration.AesKeyBytes.ToString()));
+            try
+            {
+                _namedPipe.Connect(2000);
+            }
+            catch (TimeoutException)
+            {
+                if (ExitIfNoConnection)
+                {
+                    AppLogger.Log.Warn("No Pipe available. Closing the application.");
+                    Environment.FailFast("No pipe available");
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            SendCommand(new PipeCommand(PipeCommandType.InitiateService,
+                BitConverter.ToString(AppConfigs.PipeConfiguration.AesKeyBytes)));
             var cmd = PipeCommand.GetPipeCommand(_namedPipe);
             if (cmd == null)
             {
@@ -43,36 +66,48 @@ namespace SoundSwitch.Framework.Pipe
             {
                 throw new Exception("Wrong Auth: " + cmd.Data);
             }
+            _serverAuth = cmd.Auth;
             IsConnected = true;
-        }
-        /// <summary>
-        /// Send a command to the Pipe Server
-        /// </summary>
-        /// <param name="cmd"></param>
-        public void SendCommand(PipeCommand cmd)
-        {
-            cmd.Write(_namedPipe);
-            _namedPipe.WaitForPipeDrain();
-        }
-        /// <summary>
-        /// If the Pipe client doens't connect after 2000 ms, stop the application
-        /// </summary>
-        private void CheckForConnectionTask()
-        {
             var task = new Task(() =>
             {
-                Thread.Sleep(2000);
-                if (IsConnected) return;
-                AppLogger.Log.Error("The launched version of " + Application.ProductName + " doesn't support pipes.");
-                Environment.FailFast("Old Version of SoundSwitch still launched");
+                while (_namedPipe.IsConnected)
+                {
+                    var pipeCmd = PipeCommand.GetPipeCommand(_namedPipe);
+                    if (pipeCmd != null)
+                    {
+                        PipeCommandReceived?.Invoke(this, new PipeCommandReceivedEvent(pipeCmd));
+                    }
+                }
             });
             task.Start();
         }
 
-
-        public void Dispose()
+        /// <summary>
+        ///     Send a command to the Pipe Server
+        /// </summary>
+        /// <param name="cmd"></param>
+        public void SendCommand(PipeCommand cmd)
         {
-           _namedPipe.Close();
+            if (_serverAuth != null)
+            {
+                cmd.Auth = _serverAuth;
+            }
+            cmd.Write(_namedPipe);
+            _namedPipe.WaitForPipeDrain();
         }
+
+        #region Events
+
+        public class PipeCommandReceivedEvent : EventArgs
+        {
+            public PipeCommandReceivedEvent(PipeCommand command)
+            {
+                Command = command;
+            }
+
+            public PipeCommand Command { get; set; }
+        }
+
+        #endregion
     }
 }
