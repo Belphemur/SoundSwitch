@@ -1,5 +1,20 @@
 # Change Log
 
+## [v3.9.2](https://github.com/Belphemur/SoundSwitch/tree/v3.9.2) (2016-01-22)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.9.1...v3.9.2)
+
+**Implemented enhancements:**
+
+- Make new instance of SoundSwitch close the previous one [\#66](https://github.com/Belphemur/SoundSwitch/issues/66)
+
+**Fixed bugs:**
+
+- Make new instance of SoundSwitch close the previous one [\#66](https://github.com/Belphemur/SoundSwitch/issues/66)
+
+**Closed issues:**
+
+- Command line [\#61](https://github.com/Belphemur/SoundSwitch/issues/61)
+
 ## [v3.9.1](https://github.com/Belphemur/SoundSwitch/tree/v3.9.1) (2016-01-08)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.9.0...v3.9.1)
 
