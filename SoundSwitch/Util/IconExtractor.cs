@@ -16,9 +16,28 @@
 using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 
 namespace SoundSwitch.Util
 {
+    public class IconExtractionException : Exception
+    {
+        public IconExtractionException()
+        {
+        }
+
+        public IconExtractionException(string message) : base(message)
+        {
+        }
+
+        public IconExtractionException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected IconExtractionException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
+    }
     public static class IconExtractor
     {
         /// <summary>
@@ -27,6 +46,7 @@ namespace SoundSwitch.Util
         /// <param name="file"></param>
         /// <param name="iconIndex"></param>
         /// <param name="largeIcon"></param>
+        /// <exception cref="IconExtractionException">Problem while extracting the icon</exception>
         /// <returns></returns>
         public static Icon Extract(string file, int iconIndex, bool largeIcon)
         {
@@ -37,9 +57,9 @@ namespace SoundSwitch.Util
             {
                 return Icon.FromHandle(largeIcon ? large : small);
             }
-            catch
+            catch(Exception e)
             {
-                return null;
+                throw new IconExtractionException($"Can't etract icon from file: {file} / index:{iconIndex}", e);
             }
         }
 
