@@ -59,7 +59,7 @@ namespace SoundSwitch.Util
             }
             catch(Exception e)
             {
-                throw new IconExtractionException($"Can't etract icon from file: {file} / index:{iconIndex}", e);
+                throw new IconExtractionException($"Can't extract icon from file: {file} / index:{iconIndex}", e);
             }
         }
 
