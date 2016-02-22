@@ -1,15 +1,11 @@
 # Change Log
 
-## [Unreleased](https://github.com/Belphemur/SoundSwitch/tree/HEAD)
-
-[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.9.3...HEAD)
+## [v3.9.4](https://github.com/Belphemur/SoundSwitch/tree/v3.9.4) (2016-02-22)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.9.2...v3.9.4)
 
 **Fixed bugs:**
 
 - Empty Icon defined for an AudioDevice [\#71](https://github.com/Belphemur/SoundSwitch/issues/71)
-
-## [v3.9.3](https://github.com/Belphemur/SoundSwitch/tree/v3.9.3) (2016-02-22)
-[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.9.2...v3.9.3)
 
 **Closed issues:**
 
