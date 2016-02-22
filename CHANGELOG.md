@@ -1,5 +1,16 @@
 # Change Log
 
+## [Unreleased](https://github.com/Belphemur/SoundSwitch/tree/HEAD)
+
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.9.5...HEAD)
+
+**Implemented enhancements:**
+
+- Add a "stealth" component to the Auto-Update [\#64](https://github.com/Belphemur/SoundSwitch/issues/64)
+
+## [v3.9.5](https://github.com/Belphemur/SoundSwitch/tree/v3.9.5) (2016-02-28)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.9.4...v3.9.5)
+
 ## [v3.9.4](https://github.com/Belphemur/SoundSwitch/tree/v3.9.4) (2016-02-22)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.9.2...v3.9.4)
 
