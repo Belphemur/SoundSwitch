@@ -84,6 +84,11 @@ namespace SoundSwitch.Model
         /// </summary>
         CachedSound CustomNotificationSound { get; set; }
 
+        /// <summary>
+        /// Application update itselve in the background without asking the user
+        /// </summary>
+        bool StealthUpdate { get; set; }
+
         #endregion
 
         #region Events

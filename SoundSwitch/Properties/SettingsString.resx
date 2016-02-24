@@ -160,4 +160,10 @@
 	<data name="updateSettings" xml:space="preserve">
 		<value>Update Settings</value>
 	</data>
+	<data name="stealthUpdate" xml:space="preserve">
+		<value>Automatic Update</value>
+	</data>
+	<data name="stealthUpdateExplanation" xml:space="preserve">
+		<value>The application will update itself automatically when a new version is out.</value>
+	</data>
 </root>

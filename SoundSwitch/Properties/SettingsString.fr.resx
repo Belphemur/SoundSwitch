@@ -160,4 +160,10 @@
 	<data name="updateSettings" xml:space="preserve">
 		<value>Configuration des MàJ</value>
 	</data>
+	<data name="stealthUpdate" xml:space="preserve">
+		<value>MàJ automatique</value>
+	</data>
+	<data name="stealthUpdateExplanation" xml:space="preserve">
+		<value>L'application se mettra à jour automatiquement quand une nouvelle version est disponible.</value>
+	</data>
 </root>

@@ -232,6 +232,24 @@ namespace SoundSwitch.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Automatic Update.
+        /// </summary>
+        internal static string stealthUpdate {
+            get {
+                return ResourceManager.GetString("stealthUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The application will update itself automatically when a new version is out..
+        /// </summary>
+        internal static string stealthUpdateExplanation {
+            get {
+                return ResourceManager.GetString("stealthUpdateExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Audio Files.
         /// </summary>
         internal static string supportedAudio {

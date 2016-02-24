@@ -88,6 +88,11 @@ namespace SoundSwitch.UI.Forms
             toolTipSoundButton.SetToolTip(selectSoundButton, SettingsString.selectSoundButtonTooltip);
             selectSoundButton.Visible = AppModel.Instance.NotificationSettings ==
                                         NotificationTypeEnum.CustomNotification;
+
+            stealthUpdateCheckbox.Checked = AppModel.Instance.StealthUpdate;
+            var toolTipStealthUpdate = new ToolTip();
+            toolTipStealthUpdate.SetToolTip(stealthUpdateCheckbox, SettingsString.stealthUpdateExplanation);
+
             _loaded = true;
         }
 
@@ -381,5 +386,10 @@ namespace SoundSwitch.UI.Forms
         #endregion
 
         #endregion
+
+        private void stealthUpdateCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            AppModel.Instance.StealthUpdate = stealthUpdateCheckbox.Checked;
+        }
     }
 }

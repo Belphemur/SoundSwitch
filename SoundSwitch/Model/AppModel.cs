@@ -135,6 +135,16 @@ namespace SoundSwitch.Model
             }
         }
 
+        public bool StealthUpdate
+        {
+            get { return AppConfigs.Configuration.UpdateState == UpdateState.Steath; }
+            set
+            {
+                AppConfigs.Configuration.UpdateState = value ? UpdateState.Steath : UpdateState.Normal;
+                AppConfigs.Configuration.Save();
+            }
+        }
+
         #region Misc settings
 
         /// <summary>
