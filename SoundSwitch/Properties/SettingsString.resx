@@ -151,4 +151,13 @@
 	<data name="hotkeyUncheckExplanation" xml:space="preserve">
 		<value>Uncheck the checkbox to disable the Hotkeys.</value>
 	</data>
+	<data name="basicSettings" xml:space="preserve">
+		<value>Basic Settings</value>
+	</data>
+	<data name="audioSettings" xml:space="preserve">
+		<value>Audio Settings</value>
+	</data>
+	<data name="updateSettings" xml:space="preserve">
+		<value>Update Settings</value>
+	</data>
 </root>

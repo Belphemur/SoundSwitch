@@ -61,6 +61,24 @@ namespace SoundSwitch.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Audio Settings.
+        /// </summary>
+        internal static string audioSettings {
+            get {
+                return ResourceManager.GetString("audioSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Basic Settings.
+        /// </summary>
+        internal static string basicSettings {
+            get {
+                return ResourceManager.GetString("basicSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Beta Versions.
         /// </summary>
         internal static string beta {
@@ -219,6 +237,15 @@ namespace SoundSwitch.Properties {
         internal static string supportedAudio {
             get {
                 return ResourceManager.GetString("supportedAudio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Settings.
+        /// </summary>
+        internal static string updateSettings {
+            get {
+                return ResourceManager.GetString("updateSettings", resourceCulture);
             }
         }
     }

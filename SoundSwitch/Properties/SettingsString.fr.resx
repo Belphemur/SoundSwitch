@@ -151,4 +151,13 @@
 	<data name="hotkeyUncheckExplanation" xml:space="preserve">
 		<value>Décocher la case pour désactiver le raccourcis clavier.</value>
 	</data>
+	<data name="basicSettings" xml:space="preserve">
+		<value>Configuration de base</value>
+	</data>
+	<data name="audioSettings" xml:space="preserve">
+		<value>Configuration Audio</value>
+	</data>
+	<data name="updateSettings" xml:space="preserve">
+		<value>Configuration des MàJ</value>
+	</data>
 </root>

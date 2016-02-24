@@ -147,6 +147,7 @@ namespace SoundSwitch.UI.Forms
             var tabControlSender = (TabControl) sender;
             if (tabControlSender.SelectedTab == playbackPage)
             {
+                SetHotkeysFieldsVisibility(true);
                 hotkeyTextBox.Text = AppConfigs.Configuration.PlaybackHotKeys.Display();
                 hotkeyTextBox.Tag = new Tuple<AudioDeviceType, HotKeys>(AudioDeviceType.Playback,
                     AppConfigs.Configuration.PlaybackHotKeys);
@@ -154,11 +155,22 @@ namespace SoundSwitch.UI.Forms
             }
             else if (tabControlSender.SelectedTab == recordingPage)
             {
+                SetHotkeysFieldsVisibility(true);
                 hotkeyTextBox.Text = AppConfigs.Configuration.RecordingHotKeys.Display();
                 hotkeyTextBox.Tag = new Tuple<AudioDeviceType, HotKeys>(AudioDeviceType.Recording,
                     AppConfigs.Configuration.RecordingHotKeys);
                 hotkeysCheckbox.Checked = AppConfigs.Configuration.RecordingHotKeys.Enabled;
+            } else if (tabControlSender.SelectedTab == appSettingTabPage)
+            {
+                SetHotkeysFieldsVisibility(false);
             }
+        }
+
+        private void SetHotkeysFieldsVisibility(bool visibility)
+        {
+            hotkeysCheckbox.Visible = visibility;
+            hotkeyTextBox.Visible = visibility;
+            hotkeysLabel.Visible = visibility;
         }
 
         private void notificationComboBox_SelectedValueChanged(object sender, EventArgs e)
