@@ -26,6 +26,7 @@ using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Minidump;
 using SoundSwitch.Framework.Pipe;
+using SoundSwitch.Framework.Updater;
 using SoundSwitch.Model;
 using SoundSwitch.Util;
 
@@ -103,6 +104,14 @@ namespace SoundSwitch
                 {
                     AppModel.Instance.NotifyIcon = icon.NotifyIcon;
                     AppModel.Instance.InitializeMain();
+                    AppModel.Instance.NewVersionReleased += (sender, @event) =>
+                    {
+                        if (@event.UpdateState != UpdateState.Steath)
+                        {
+                            return;
+                        }
+                        new AutoUpdater("/VERYSILENT /RESTARTAPPLICATIONS /NOCANCEL", ApplicationPath.Default).Update(@event.Release, false);
+                    };
                     if (AppConfigs.Configuration.FirstRun)
                     {
                         icon.ShowSettings();

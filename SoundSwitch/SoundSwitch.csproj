@@ -261,6 +261,7 @@
     <Compile Include="Framework\Pipe\PipeCommandType.cs" />
     <Compile Include="Framework\Pipe\PipeServer.cs" />
     <Compile Include="Framework\Pipe\StreamString.cs" />
+    <Compile Include="Framework\Updater\AutoUpdater.cs" />
     <Compile Include="Framework\Updater\GitHubRelease.cs" />
     <Compile Include="Framework\Updater\IntervalUpdateChecker.cs" />
     <Compile Include="Framework\Updater\Release.cs" />

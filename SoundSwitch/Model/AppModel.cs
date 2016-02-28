@@ -247,9 +247,14 @@ namespace SoundSwitch.Model
         private void InitUpdateChecker()
         {
             WindowsAPIAdapter.HotKeyPressed += HandleHotkeyPress;
+#if DEBUG
+            const string url = "https://www.aaflalo.me/api.json";
+#else
+            const string url = "https://api.github.com/repos/Belphemur/SoundSwitch/releases";
+#endif
             _updateChecker = new IntervalUpdateChecker(
-                new Uri("https://api.github.com/repos/Belphemur/SoundSwitch/releases"),
-                AppConfigs.Configuration.UpdateCheckInterval, AppConfigs.Configuration.SubscribedBetaVersion);
+               new Uri(url),
+           AppConfigs.Configuration.UpdateCheckInterval, AppConfigs.Configuration.SubscribedBetaVersion);
             _updateChecker.UpdateAvailable += (sender, @event) => NewVersionReleased?.Invoke(this, 
                 new NewReleaseAvailableEvent(@event.Release, AppConfigs.Configuration.UpdateState));
             _updateChecker.CheckForUpdate();
@@ -317,7 +322,7 @@ namespace SoundSwitch.Model
             }
         }
 
-        #region Selected devices
+#region Selected devices
 
         /// <summary>
         /// Add the device to the Selected device list
@@ -381,9 +386,9 @@ namespace SoundSwitch.Model
             return result;
         }
 
-        #endregion
+#endregion
 
-        #region Hot keys
+#region Hot keys
 
         public bool SetHotkeyCombination(HotKeys hotkeys, AudioDeviceType deviceType)
         {
@@ -462,9 +467,9 @@ namespace SoundSwitch.Model
             }
         }
 
-        #endregion
+#endregion
 
-        #region Active device
+#region Active device
 
         /// <summary>
         ///     Attempts to set active device to the specified name
@@ -558,6 +563,6 @@ namespace SoundSwitch.Model
             }
         }
 
-        #endregion
+#endregion
     }
 }

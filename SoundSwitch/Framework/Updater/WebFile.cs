@@ -121,7 +121,13 @@ namespace SoundSwitch.Framework.Updater
         {
             _webClient.CancelAsync();
         }
+
+        public override string ToString()
+        {
+            return $"FileUri: {FileUri}, FilePath: {FilePath}";
+        }
     }
+
 
     public class DownloadFailEvent : EventArgs
     {
