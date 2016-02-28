@@ -139,7 +139,8 @@ namespace SoundSwitch.Util
                  (sender, @event) => { _needToUpdateList = true; };
             AppModel.Instance.NewVersionReleased += (sender, @event) =>
             {
-                _context.Send(s => { NewReleaseAvailable(sender, @event); }, null);
+                if (@event.UpdateState == UpdateState.Normal)
+                    _context.Send(s => { NewReleaseAvailable(sender, @event); }, null);
             };
 
             AppModel.Instance.DeviceRemoved +=

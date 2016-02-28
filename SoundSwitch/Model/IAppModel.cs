@@ -111,7 +111,7 @@ namespace SoundSwitch.Model
         /// <summary>
         ///     The update checker found a newer release than the installed version.
         /// </summary>
-        event EventHandler<UpdateChecker.NewReleaseEvent> NewVersionReleased;
+        event EventHandler<NewReleaseAvailableEvent> NewVersionReleased;
         /// <summary>
         /// When a device change state like from NotPresent to Active
         /// </summary>

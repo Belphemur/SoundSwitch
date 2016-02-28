@@ -250,13 +250,14 @@ namespace SoundSwitch.Model
             _updateChecker = new IntervalUpdateChecker(
                 new Uri("https://api.github.com/repos/Belphemur/SoundSwitch/releases"),
                 AppConfigs.Configuration.UpdateCheckInterval, AppConfigs.Configuration.SubscribedBetaVersion);
-            _updateChecker.UpdateAvailable += (sender, @event) => NewVersionReleased?.Invoke(this, @event);
+            _updateChecker.UpdateAvailable += (sender, @event) => NewVersionReleased?.Invoke(this, 
+                new NewReleaseAvailableEvent(@event.Release, AppConfigs.Configuration.UpdateState));
             _updateChecker.CheckForUpdate();
         }
 
         public event EventHandler<DeviceListChanged> SelectedDeviceChanged;
         public event EventHandler<ExceptionEvent> ErrorTriggered;
-        public event EventHandler<UpdateChecker.NewReleaseEvent> NewVersionReleased;
+        public event EventHandler<NewReleaseAvailableEvent> NewVersionReleased;
 
         public event EventHandler<DeviceDefaultChangedEvent> DefaultDeviceChanged
         {

@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager;
+using SoundSwitch.Framework.Updater;
 
 namespace SoundSwitch.Model
 {
@@ -64,6 +65,16 @@ namespace SoundSwitch.Model
         {
             PrevSound = prevSound;
             NewSound = newSound;
+        }
+    }
+
+    public class NewReleaseAvailableEvent : UpdateChecker.NewReleaseEvent
+    {
+        public UpdateState UpdateState { get; }
+
+        public NewReleaseAvailableEvent(Release release, UpdateState updateState) : base(release)
+        {
+            UpdateState = updateState;
         }
     }
 }
