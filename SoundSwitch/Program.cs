@@ -110,7 +110,7 @@ namespace SoundSwitch
                         {
                             return;
                         }
-                        new AutoUpdater("/VERYSILENT /RESTARTAPPLICATIONS /NOCANCEL", ApplicationPath.Default).Update(@event.Release, false);
+                        new AutoUpdater("/VERYSILENT /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS /NOCANCEL", ApplicationPath.Default).Update(@event.Release, false);
                     };
                     if (AppConfigs.Configuration.FirstRun)
                     {

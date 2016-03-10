@@ -14,6 +14,7 @@
 
 using System;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace SoundSwitch.Framework.Updater
@@ -23,6 +24,7 @@ namespace SoundSwitch.Framework.Updater
     /// </summary>
     public class AutoUpdater
     {
+        private readonly SynchronizationContext _context = SynchronizationContext.Current ?? new SynchronizationContext();
         public string InstallerParameters { get; }
         public string InstallerFilePath { get; }
 
@@ -48,7 +50,7 @@ namespace SoundSwitch.Framework.Updater
                     file.Start(InstallerParameters);
                     if (closeApp)
                     {
-                        Application.Exit();
+                        _context.Send(s => { Application.Exit(); }, null);
                     }
                 };
                 file.DownloadFile();

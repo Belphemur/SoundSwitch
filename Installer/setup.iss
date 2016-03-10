@@ -80,7 +80,7 @@ Name: "{group}\{cm:UninstallProgram,{#MyAppSetupName}}"; Filename: "{uninstallex
 Name: "{commondesktop}\{#MyAppSetupName}"; Filename: "{app}\SoundSwitch.exe"; Tasks: desktopicon; AppUserModelID: aaflalo.{#MyAppSetupName}.Application
 
 [Run]
-Filename: "{app}\SoundSwitch.exe"; Description: "{cm:LaunchProgram,{#MyAppSetupName}}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\SoundSwitch.exe"; Description: "{cm:LaunchProgram,{#MyAppSetupName}}"; Flags: nowait postinstall
 
 [CustomMessages]
 win_sp_title=Windows %1 Service Pack %2
