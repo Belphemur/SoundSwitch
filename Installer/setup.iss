@@ -41,7 +41,7 @@ LicenseFile={#ExeDir}\LICENSE.txt
 ;AppMutex={#MyAppSetupName}
 
 ;MinVersion default value: "0,5.0 (Windows 2000+) if Unicode Inno Setup, else 4.0,4.0 (Windows 95+)"
-MinVersion=0,6.1
+MinVersion=6.1.7601
 PrivilegesRequired=admin
 ArchitecturesAllowed=x86 x64
 ArchitecturesInstallIn64BitMode=x64
