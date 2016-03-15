@@ -44,8 +44,8 @@ Echo.
 
 if "%builderror%"=="1" echo error: build failed & goto Quit
 
-echo "Copy Changelog"
-xcopy /y CHANGELOG.md %finalDir% 1>nul 2>nul
+echo "Generate Changelog"
+cmd.exe /c markdown-html CHANGELOG.md -o %finalDir%\Changelog.html > NUL
 
 echo "Generate README"
 cmd.exe /c markdown-html README.md -o %finalDir%\Readme.html > NUL

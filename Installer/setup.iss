@@ -68,7 +68,7 @@ Source: "{#ExeDir}x86\SoundSwitch.exe"; DestDir: "{app}"; Check:  not Is64BitIns
 Source: "{#ExeDir}x86\*.dll"; DestDir: "{app}"; Check: not Is64BitInstallMode
 Source: "{#ExeDir}x86\fr\*.dll"; DestDir: "{app}\fr"; Check: not Is64BitInstallMode
 
-Source: "{#ExeDir}CHANGELOG.md"; DestDir: "{app}"
+Source: "{#ExeDir}Changelog.html"; DestDir: "{app}"
 Source: "{#ExeDir}Readme.html"; DestDir: "{app}"
 
 [Registry]
@@ -82,6 +82,7 @@ Name: "{commondesktop}\{#MyAppSetupName}"; Filename: "{app}\SoundSwitch.exe"; Ta
 [Run]
 Filename: "{app}\SoundSwitch.exe"; Description: "{cm:LaunchProgram,{#MyAppSetupName}}"; Flags: nowait postinstall
 Filename: "{app}\Readme.html"; Description: "View the README file"; Flags: postinstall shellexec skipifsilent
+Filename: "{app}\Changelog.html"; Description: "View the CHANGELOG file"; Flags: postinstall shellexec skipifsilent unchecked
 
 [CustomMessages]
 win_sp_title=Windows %1 Service Pack %2
