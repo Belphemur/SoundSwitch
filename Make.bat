@@ -53,8 +53,8 @@ if "%builderror%"=="1" echo error: build failed & goto Quit
 echo "Copy Changelog"
 xcopy /y CHANGELOG.md %finalDir% 1>nul 2>nul
 
-echo "Copy README"
-xcopy /y README.md %finalDir% 1>nul 2>nul
+echo "Generate README"
+cmd.exe /c markdown-html README.md -o %finalDir%\Readme.html > NUL
 
 echo "Copy LICENSE"
 xcopy /y LICENSE.txt %finalDir% 1>nul 2>nul

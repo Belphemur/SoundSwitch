@@ -69,7 +69,7 @@ Source: "{#ExeDir}x86\*.dll"; DestDir: "{app}"; Check: not Is64BitInstallMode
 Source: "{#ExeDir}x86\fr\*.dll"; DestDir: "{app}\fr"; Check: not Is64BitInstallMode
 
 Source: "{#ExeDir}CHANGELOG.md"; DestDir: "{app}"
-Source: "{#ExeDir}README.md"; DestDir: "{app}"
+Source: "{#ExeDir}Readme.html"; DestDir: "{app}"
 
 [Registry]
 Root: HKCU; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Run\{#MyAppSetupName}"; Flags: uninsdeletekey
@@ -81,6 +81,7 @@ Name: "{commondesktop}\{#MyAppSetupName}"; Filename: "{app}\SoundSwitch.exe"; Ta
 
 [Run]
 Filename: "{app}\SoundSwitch.exe"; Description: "{cm:LaunchProgram,{#MyAppSetupName}}"; Flags: nowait postinstall
+Filename: "{app}\Readme.html"; Description: "View the README file"; Flags: postinstall shellexec skipifsilent
 
 [CustomMessages]
 win_sp_title=Windows %1 Service Pack %2
