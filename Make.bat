@@ -10,12 +10,6 @@ set finalDir=%FILE_DIR%Final
 set x86Release=%finalDir%\x86
 set x64Release=%finalDir%\x64
 
-net session 1>nul 2>nul
-if not "%ERRORLEVEL%"=="0" (
-    echo Error: Restricted access. Please run Make.bat as administrator.
-    goto Quit
-)
-
 git describe --abbrev=0 --tags > latestTag.txt
 for /f "delims=" %%i in ('git rev-list HEAD --count') do set commitCount=%%i
 set /p latestTag=<latestTag.txt
