@@ -24,6 +24,9 @@ Press Ctrl + Alt + F11 to cycle through the playback devices.
 
 For Recording devices the default is : Ctrl + Alt + F7
 
+### Double clicks
+You can also double click on the systray icon to switch audio devices.
+
 ## Features
 
 ### Recording Devices
