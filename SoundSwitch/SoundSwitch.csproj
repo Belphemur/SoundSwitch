@@ -224,6 +224,7 @@
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="TracerX-Logger, Version=6.1.1304.13122, Culture=neutral, processorArchitecture=MSIL">
@@ -246,6 +247,9 @@
     <Compile Include="Framework\Configuration\SoundSwitchConfiguration.cs" />
     <Compile Include="Framework\HotKeys.cs" />
     <Compile Include="Framework\HourGlass.cs" />
+    <Compile Include="Framework\IPC\IPCClient.cs" />
+    <Compile Include="Framework\IPC\IPCServer.cs" />
+    <Compile Include="Framework\IPC\RemoteObjects\RemoteObject.cs" />
     <Compile Include="Framework\Minidump\MemoryDumper.cs" />
     <Compile Include="Framework\NotificationManager\NotificationFactory.cs" />
     <Compile Include="Framework\NotificationManager\NotificationManager.cs" />
