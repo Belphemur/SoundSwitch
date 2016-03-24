@@ -10,12 +10,6 @@ set finalDir=%FILE_DIR%Final
 set x86Release=%finalDir%\x86
 set x64Release=%finalDir%\x64
 
-net session 1>nul 2>nul
-if not "%ERRORLEVEL%"=="0" (
-    echo Error: Restricted access. Please run Make.bat as administrator.
-    goto Quit
-)
-
 git describe --abbrev=0 --tags > latestTag.txt
 for /f "delims=" %%i in ('git rev-list HEAD --count') do set commitCount=%%i
 set /p latestTag=<latestTag.txt
@@ -50,11 +44,11 @@ Echo.
 
 if "%builderror%"=="1" echo error: build failed & goto Quit
 
-echo "Copy Changelog"
-xcopy /y CHANGELOG.md %finalDir% 1>nul 2>nul
+echo "Generate Changelog"
+cmd.exe /c markdown-html CHANGELOG.md -o %finalDir%\Changelog.html > NUL
 
-echo "Copy README"
-xcopy /y README.md %finalDir% 1>nul 2>nul
+echo "Generate README"
+cmd.exe /c markdown-html README.md -o %finalDir%\Readme.html > NUL
 
 echo "Copy LICENSE"
 xcopy /y LICENSE.txt %finalDir% 1>nul 2>nul

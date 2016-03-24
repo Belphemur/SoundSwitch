@@ -41,7 +41,7 @@ LicenseFile={#ExeDir}\LICENSE.txt
 ;AppMutex={#MyAppSetupName}
 
 ;MinVersion default value: "0,5.0 (Windows 2000+) if Unicode Inno Setup, else 4.0,4.0 (Windows 95+)"
-MinVersion=0,6.1
+MinVersion=6.1.7601
 PrivilegesRequired=admin
 ArchitecturesAllowed=x86 x64
 ArchitecturesInstallIn64BitMode=x64
@@ -68,8 +68,8 @@ Source: "{#ExeDir}x86\SoundSwitch.exe"; DestDir: "{app}"; Check:  not Is64BitIns
 Source: "{#ExeDir}x86\*.dll"; DestDir: "{app}"; Check: not Is64BitInstallMode
 Source: "{#ExeDir}x86\fr\*.dll"; DestDir: "{app}\fr"; Check: not Is64BitInstallMode
 
-Source: "{#ExeDir}CHANGELOG.md"; DestDir: "{app}"
-Source: "{#ExeDir}README.md"; DestDir: "{app}"
+Source: "{#ExeDir}Changelog.html"; DestDir: "{app}"
+Source: "{#ExeDir}Readme.html"; DestDir: "{app}"
 
 [Registry]
 Root: HKCU; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Run\{#MyAppSetupName}"; Flags: uninsdeletekey
@@ -81,6 +81,8 @@ Name: "{commondesktop}\{#MyAppSetupName}"; Filename: "{app}\SoundSwitch.exe"; Ta
 
 [Run]
 Filename: "{app}\SoundSwitch.exe"; Description: "{cm:LaunchProgram,{#MyAppSetupName}}"; Flags: nowait postinstall
+Filename: "{app}\Readme.html"; Description: "View the README file"; Flags: postinstall shellexec skipifsilent
+Filename: "{app}\Changelog.html"; Description: "View the CHANGELOG file"; Flags: postinstall shellexec skipifsilent unchecked
 
 [CustomMessages]
 win_sp_title=Windows %1 Service Pack %2

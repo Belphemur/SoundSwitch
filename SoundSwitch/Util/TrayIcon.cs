@@ -58,18 +58,22 @@ namespace SoundSwitch.Util
 
             _selectionMenu.Items.Add(TrayIconStrings.NoDevSel, Resources.Settings, (sender, e) => ShowSettings());
 
+            NotifyIcon.MouseDoubleClick += (sender, args) =>
+            {
+                AppModel.Instance.CycleActiveDevice(AudioDeviceType.Playback);
+            };
+
             NotifyIcon.MouseClick += (sender, e) =>
             {
-                if (e.Button == MouseButtons.Left)
-                {
-                    UpdateDeviceSelectionList();
-                    NotifyIcon.ContextMenuStrip = _selectionMenu;
-                    var mi = typeof (NotifyIcon).GetMethod("ShowContextMenu",
-                        BindingFlags.Instance | BindingFlags.NonPublic);
-                    mi.Invoke(NotifyIcon, null);
+                if (e.Button != MouseButtons.Left) return;
 
-                    NotifyIcon.ContextMenuStrip = _settingsMenu;
-                }
+                UpdateDeviceSelectionList();
+                NotifyIcon.ContextMenuStrip = _selectionMenu;
+                var mi = typeof (NotifyIcon).GetMethod("ShowContextMenu",
+                    BindingFlags.Instance | BindingFlags.NonPublic);
+                mi.Invoke(NotifyIcon, null);
+
+                NotifyIcon.ContextMenuStrip = _settingsMenu;
             };
             SetEventHandlers();
         }

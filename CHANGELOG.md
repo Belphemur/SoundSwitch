@@ -1,12 +1,17 @@
 # Change Log
 
-## [Unreleased](https://github.com/Belphemur/SoundSwitch/tree/HEAD)
-
-[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.9.5...HEAD)
+## [v3.9.6](https://github.com/Belphemur/SoundSwitch/tree/v3.9.6) (2016-03-10)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.9.5...v3.9.6)
 
 **Implemented enhancements:**
 
 - Add a "stealth" component to the Auto-Update [\#64](https://github.com/Belphemur/SoundSwitch/issues/64)
+
+**Fixed bugs:**
+
+- AutoUpdate doesn't restart correctly SoundSwitch [\#76](https://github.com/Belphemur/SoundSwitch/issues/76)
+- Installer: Don't install if not Windows 7 SP1 or newer [\#75](https://github.com/Belphemur/SoundSwitch/issues/75)
+- At windows startup, hotkeys don't work [\#72](https://github.com/Belphemur/SoundSwitch/issues/72)
 
 ## [v3.9.5](https://github.com/Belphemur/SoundSwitch/tree/v3.9.5) (2016-02-28)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.9.4...v3.9.5)
