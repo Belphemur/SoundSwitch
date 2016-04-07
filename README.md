@@ -1,4 +1,4 @@
-# SoundSwitch [![Build status](https://ci.appveyor.com/api/projects/status/bt0yr309rq74tbvc?svg=true)](https://ci.appveyor.com/project/Belphemur/soundswitch)![Github Releases (by Asset)](https://img.shields.io/github/downloads/Belphemur/SoundSwitch/latest/total.svg)](https://www.aaflalo.me/downloads/)
+# SoundSwitch [![Build status](https://ci.appveyor.com/api/projects/status/bt0yr309rq74tbvc?svg=true)](https://ci.appveyor.com/project/Belphemur/soundswitch) [![Donwload](https://img.shields.io/github/downloads/Belphemur/SoundSwitch/latest/total.svg)](https://www.aaflalo.me/downloads/)
 SoundSwitch makes it easier to switch playback devices (sound cards).
 
 Normally, to switch a Playback device you need to right click the sound icon in the bottom right corner of your screen (system tray),
