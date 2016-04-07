@@ -1,4 +1,4 @@
-# SoundSwitch [![Build status](https://ci.appveyor.com/api/projects/status/bt0yr309rq74tbvc?svg=true)](https://ci.appveyor.com/project/Belphemur/soundswitch)
+# SoundSwitch [![Build status](https://ci.appveyor.com/api/projects/status/bt0yr309rq74tbvc?svg=true)](https://ci.appveyor.com/project/Belphemur/soundswitch)![Github Releases (by Asset)](https://img.shields.io/github/downloads/Belphemur/SoundSwitch/latest/total.svg)](https://www.aaflalo.me/downloads/)
 SoundSwitch makes it easier to switch playback devices (sound cards).
 
 Normally, to switch a Playback device you need to right click the sound icon in the bottom right corner of your screen (system tray),
@@ -33,7 +33,7 @@ You can also double click on the systray icon to switch audio devices.
 SoundSwitch can also switch your recording devices. You can set HotKeys as for the Playback devices.
 
 ### Auto-Updater
-This is one of the interesting feature added in Isabelline Gold, the auto-updater. Every 12h SoundSwitch will check the github repository (thanks to the GitHub API) for a new release, if a new one is available, the user will get a notification and the  ìNo Updateî in the context menu will change to ìUpdate Available (X.X.X)î where X.X.X represent the new version number. When the user click on it, a new Window opens with a progress bar (see screenshots). The new version get automatically downloaded in the temp folder of the user. When the download is finished the user can install the Update by just clicking the install button. A changelog is also provided by getting the information set in the release on GitHub.
+This is one of the interesting feature added in Isabelline Gold, the auto-updater. Every 12h SoundSwitch will check the github repository (thanks to the GitHub API) for a new release, if a new one is available, the user will get a notification and the  ‚ÄúNo Update‚Äù in the context menu will change to ‚ÄúUpdate Available (X.X.X)‚Äù where X.X.X represent the new version number. When the user click on it, a new Window opens with a progress bar (see screenshots). The new version get automatically downloaded in the temp folder of the user. When the download is finished the user can install the Update by just clicking the install button. A changelog is also provided by getting the information set in the release on GitHub.
 
 ### Communications
 SoundSwitch can also change the communications devices when asked in the Settings. Windows make a differentiation between Multimedia and Communication, it means if an application ask to have access to Communications Audio Device (like Skype), it will receive the default Communications device. By default SoundSwitch only change the Multimedia device, and not the communications. Now if the checkbox is checked in the settings, it will also change the Communications device.
