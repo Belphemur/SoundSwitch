@@ -18,14 +18,15 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Runtime.ExceptionServices;
+using System.Runtime.Remoting;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
+using SoundSwitch.Framework.IPC;
 using SoundSwitch.Framework.Minidump;
-using SoundSwitch.Framework.Pipe;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Model;
 using SoundSwitch.Util;
@@ -34,7 +35,6 @@ namespace SoundSwitch
 {
     internal static class Program
     {
-        private static PipeServer _pipeServer;
         [HandleProcessCorruptedStateExceptions]
         [STAThread]
         private static void Main()
@@ -60,11 +60,23 @@ namespace SoundSwitch
                 if (!createdNew)
                 {
                     AppLogger.Log.Warn("Application already started");
-                    using (var pipe = new PipeClient(true))
                     using (new AppLogger.LogRestartor())
                     {
-                        pipe.SendCommand(new PipeCommand(PipeCommandType.StopApplication, Application.ProductVersion));
-                        Thread.Sleep(500);
+                        using (var client = new IPCClient(AppConfigs.IPCConfiguration.ClientUrl()))
+                        {
+                            try
+                            {
+                                var service = client.GetService();
+                                service.StopApplication();
+                                RestartApp();
+                            }
+                            catch (RemotingException e)
+                            {
+                                AppLogger.Log.Error("Can't stop the other app ", e);
+                                Application.Exit();
+                                return;
+                            }
+                        }
                     }
                 }
                 AppModel.Instance.ActiveAudioDeviceLister = new AudioDeviceLister(DeviceState.Active);
@@ -99,9 +111,23 @@ namespace SoundSwitch
                 try
                 {
 #endif
-                _pipeServer = new PipeServer();
+                using(var ipcServer = new IPCServer(AppConfigs.IPCConfiguration.ServerUrl()))
                 using (var icon = new TrayIcon())
                 {
+                    var available = false;
+                    while (!available)
+                    {
+                        try
+                        {
+                            ipcServer.InitServer();
+                            available = true;
+                        }
+                        catch (RemotingException e)
+                        {
+                            Thread.Sleep(250);
+                        }
+                        
+                    }
                     AppModel.Instance.NotifyIcon = icon.NotifyIcon;
                     AppModel.Instance.InitializeMain();
                     AppModel.Instance.NewVersionReleased += (sender, @event) =>
@@ -131,6 +157,19 @@ namespace SoundSwitch
 #endif
             }
             WindowsAPIAdapter.Stop();
+        }
+
+        private static void RestartApp()
+        {
+            var info = new ProcessStartInfo
+            {
+                Arguments = "/C ping 127.0.0.1 -n 2 && \"" + Application.ExecutablePath + "\"",
+                WindowStyle = ProcessWindowStyle.Hidden,
+                CreateNoWindow = true,
+                FileName = "cmd.exe"
+            };
+            Process.Start(info);
+            Environment.FailFast("Restarting");
         }
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)

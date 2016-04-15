@@ -1,11 +1,12 @@
-﻿using System.Runtime.Remoting;
+﻿using System;
+using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
 using SoundSwitch.Framework.IPC.RemoteObjects;
 
 namespace SoundSwitch.Framework.IPC
 {
-    public class IPCClient
+    public class IPCClient : IDisposable
     {
         private readonly string _serverUrl;
         private readonly IpcChannel _ipcClient;
@@ -22,13 +23,13 @@ namespace SoundSwitch.Framework.IPC
             var remoteType =
             new WellKnownClientTypeEntry(
                 typeof(RemoteObject),
-                _serverUrl+ RemoteObject.ObjURL);
+                _serverUrl + RemoteObject.ObjURL);
             RemotingConfiguration.RegisterWellKnownClientType(remoteType);
-            string objectUri;
-            var messageSink =
-                _ipcClient.CreateMessageSink(_serverUrl + RemoteObject.ObjURL, null, out objectUri);
+            return new RemoteObject();
+        }
 
-            return messageSink == null ? null : new RemoteObject();
+        public void Dispose()
+        {
         }
     }
 }
