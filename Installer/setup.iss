@@ -108,6 +108,7 @@ end;
 #include "scripts\products\winversion.iss"
 #include "scripts\products\fileversion.iss"
 #include "scripts\products\dotnetfxversion.iss"
+#include "scripts\products\vcredistversion.iss"
 
 // actual products
 #ifdef use_iis
