@@ -69,6 +69,7 @@ namespace SoundSwitch
                                 var service = client.GetService();
                                 service.StopApplication();
                                 RestartApp();
+                                return;
                             }
                             catch (RemotingException e)
                             {
@@ -169,7 +170,7 @@ namespace SoundSwitch
                 FileName = "cmd.exe"
             };
             Process.Start(info);
-            Environment.FailFast("Restarting");
+            Application.Exit();
         }
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
