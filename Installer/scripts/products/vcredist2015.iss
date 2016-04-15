@@ -16,18 +16,13 @@ de.vcredist2015_size_x64=13,9 MB
 const
 	vcredist2015_url = 'http://download.microsoft.com/download/C/E/5/CE514EAE-78A8-4381-86E8-29108D78DBD4/VC_redist.x86.exe';
 	vcredist2015_url_x64 = 'http://download.microsoft.com/download/C/E/5/CE514EAE-78A8-4381-86E8-29108D78DBD4/VC_redist.x64.exe';
-
-	vcredist2015_productcode = '{74D0E5DB-B326-4DAE-A6B2-445B9DE1836E}';
-	vcredist2015_productcode_x64 = '{0D3E9E15-DE7A-300B-96F1-B4AF12B96488}';
-
-  vcredist2015_productcode2 = '{65AD78AD-D23D-3A1E-9305-3AE65CD522C2}';
-	vcredist2015_productcode2_x64 = '{A1C31BA5-5438-3A07-9EEE-A5FB2D0FDE36}';
+  vc_redist_version = '14.0';
+  vc_redist_build = 23506;
 
 procedure vcredist2015();
 begin
 	if (not IsIA64()) then begin
-		if (not msiproduct(GetString(vcredist2015_productcode, vcredist2015_productcode_x64, '')) and 
-        not msiproduct(GetString(vcredist2015_productcode2, vcredist2015_productcode2_x64, ''))) then
+		if (not IsVcRedistInstalled(vc_redist_version, vc_redist_build)) then
 			AddProduct('vcredist2015' + GetArchitectureString() + '.exe',
 				'/passive /norestart',
 				CustomMessage('vcredist2015_title' + GetArchitectureString()),
