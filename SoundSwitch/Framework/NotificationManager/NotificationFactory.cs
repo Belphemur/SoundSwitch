@@ -10,44 +10,35 @@ namespace SoundSwitch.Framework.NotificationManager
 {
     public class NotificationFactory
     {
+        public static readonly List<INotification> AllNotifications = new List<INotification>()
+        {
+            new NotificationWindows(),
+            new NotificationSound(),
+            new NotificationCustom(),
+            new NotificationNone()
+        };
+
         /// <summary>
         ///     Create a notification object linked to the enum value
         /// </summary>
         /// <param name="eEnum"></param>
-        /// <exception cref="CachedSoundFileNotExistsException">For a CustomNotification if the Sound file is not present.</exception>
+        /// <exception cref="CachedSoundFileNotExistsException">For a CustomNotification if the CustomSound file is not present.</exception>
         /// <returns></returns>
         public static INotification CreateNotification(NotificationTypeEnum eEnum)
         {
             switch (eEnum)
             {
                 case NotificationTypeEnum.DefaultWindowsNotification:
-                    return new NotificationWindows(AppModel.Instance.NotifyIcon);
+                    return new NotificationWindows();
                 case NotificationTypeEnum.SoundNotification:
-                    return new NotificationSound(Resources.NotificationSound);
+                    return new NotificationSound();
                 case NotificationTypeEnum.NoNotification:
                     return new NotificationNone();
                 case NotificationTypeEnum.CustomNotification:
-                    return new NotificationCustom(AppModel.Instance.CustomNotificationSound);
+                    return new NotificationCustom();
                 default:
                     throw new ArgumentOutOfRangeException(nameof(eEnum), eEnum, null);
             }
-        }
-
-        /// <summary>
-        /// Return a diplyable list of Notification
-        /// </summary>
-        /// <returns></returns>
-        public static IEnumerable<NotificationDisplayer> GetNotificationDisplayers()
-        {
-            var displayers = new List<NotificationDisplayer>
-            {
-                new NotificationDisplayer(NotificationTypeEnum.DefaultWindowsNotification,
-                    Properties.Notifications.NotifWindows),
-                new NotificationDisplayer(NotificationTypeEnum.SoundNotification, Properties.Notifications.NotifSound),
-                new NotificationDisplayer(NotificationTypeEnum.CustomNotification, Properties.Notifications.NotifCustom),
-                new NotificationDisplayer(NotificationTypeEnum.NoNotification, Properties.Notifications.NotifNone)
-            };
-            return displayers;
         }
     }
 }

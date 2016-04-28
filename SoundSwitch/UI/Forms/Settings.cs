@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework;
@@ -73,7 +74,7 @@ namespace SoundSwitch.UI.Forms
             toolTipNotification.SetToolTip(notificationComboBox, Notifications.explanation);
             notificationComboBox.DisplayMember = "Label";
             notificationComboBox.ValueMember = "Type";
-            notificationComboBox.DataSource = NotificationFactory.GetNotificationDisplayers();
+            notificationComboBox.DataSource = NotificationFactory.AllNotifications.Select(notification => notification.Displayer()).ToArray();
             notificationComboBox.SelectedValue = AppModel.Instance.NotificationSettings;
 
             betaVersionCheckbox.Checked = AppModel.Instance.SubscribedBetaVersions;

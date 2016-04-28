@@ -5,17 +5,16 @@ using AudioEndPointControllerWrapper;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using SoundSwitch.Framework.Audio;
+using SoundSwitch.Framework.NotificationManager.Notification.configuration;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification
 {
     public class NotificationSound : INotification
     {
         private readonly MMDeviceEnumerator _deviceEnumerator;
-        private readonly Stream _memoryStreamSound;
 
-        public NotificationSound(Stream memoryStreamSound)
+        public NotificationSound()
         {
-            _memoryStreamSound = memoryStreamSound;
             _deviceEnumerator = new MMDeviceEnumerator();
         }
 
@@ -23,13 +22,15 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         {
             lock (this)
             {
-                _memoryStreamSound.Position = 0;
+                Configuration.DefaultSound.Position = 0;
                 var memoryStreamedSound = new MemoryStream();
-                _memoryStreamSound.CopyTo(memoryStreamedSound);
+                Configuration.DefaultSound.CopyTo(memoryStreamedSound);
                 memoryStreamedSound.Position = 0;
                 return memoryStreamedSound;
             }
         }
+
+        public INotificationConfiguration Configuration { get; set; }
 
         public void NotifyDefaultChanged(IAudioDevice audioDevice)
         {
@@ -57,6 +58,21 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
 
         public void OnSoundChanged(CachedSound newSound)
         {
+        }
+
+        public NotificationDisplayer Displayer()
+        {
+            return new NotificationDisplayer(Type(), Properties.Notifications.NotifSound);
+        }
+
+        public NotificationTypeEnum Type()
+        {
+            return NotificationTypeEnum.SoundNotification;
+        }
+
+        public bool NeedCustomSound()
+        {
+            return false;
         }
     }
 }

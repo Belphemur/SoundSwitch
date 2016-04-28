@@ -253,6 +253,8 @@
     <Compile Include="Framework\Minidump\MemoryDumper.cs" />
     <Compile Include="Framework\NotificationManager\NotificationFactory.cs" />
     <Compile Include="Framework\NotificationManager\NotificationManager.cs" />
+    <Compile Include="Framework\NotificationManager\Notification\configuration\INotificationConfiguration.cs" />
+    <Compile Include="Framework\NotificationManager\Notification\configuration\NotificationConfiguration.cs" />
     <Compile Include="Framework\NotificationManager\Notification\INotification.cs" />
     <Compile Include="Framework\NotificationManager\Notification\NotificationCustom.cs" />
     <Compile Include="Framework\NotificationManager\Notification\NotificationDisplayer.cs" />

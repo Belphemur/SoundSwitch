@@ -2,30 +2,26 @@
 using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework.Audio;
+using SoundSwitch.Framework.NotificationManager.Notification.configuration;
 using SoundSwitch.Properties;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification
 {
     public class NotificationWindows : INotification
     {
-        private readonly NotifyIcon _notifyIcon;
-
-        public NotificationWindows(NotifyIcon notifyIcon)
-        {
-            _notifyIcon = notifyIcon;
-        }
+        public INotificationConfiguration Configuration { get; set; }
 
         public void NotifyDefaultChanged(IAudioDevice audioDevice)
         {
             switch (audioDevice.Type)
             {
                 case AudioDeviceType.Playback:
-                    _notifyIcon.ShowBalloonTip(500,
+                    Configuration.Icon.ShowBalloonTip(500,
                         string.Format(TrayIconStrings.playbackChanged, Application.ProductName),
                         audioDevice.FriendlyName, ToolTipIcon.Info);
                     break;
                 case AudioDeviceType.Recording:
-                    _notifyIcon.ShowBalloonTip(500,
+                    Configuration.Icon.ShowBalloonTip(500,
                         string.Format(TrayIconStrings.recordingChanged, Application.ProductName),
                         audioDevice.FriendlyName, ToolTipIcon.Info);
                     break;
@@ -36,6 +32,21 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
 
         public void OnSoundChanged(CachedSound newSound)
         {
+        }
+
+        public NotificationDisplayer Displayer()
+        {
+            return new NotificationDisplayer(Type(), Properties.Notifications.NotifWindows);
+        }
+
+        public NotificationTypeEnum Type()
+        {
+            return NotificationTypeEnum.DefaultWindowsNotification;
+        }
+
+        public bool NeedCustomSound()
+        {
+            return false;
         }
     }
 }
