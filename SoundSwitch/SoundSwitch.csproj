@@ -245,6 +245,7 @@
     <Compile Include="Framework\Configuration\IIPCConfiguration.cs" />
     <Compile Include="Framework\Configuration\ISoundSwitchConfiguration.cs" />
     <Compile Include="Framework\Configuration\SoundSwitchConfiguration.cs" />
+    <Compile Include="Framework\Factory\AbstractFactory.cs" />
     <Compile Include="Framework\HotKeys.cs" />
     <Compile Include="Framework\HourGlass.cs" />
     <Compile Include="Framework\IPC\IPCClient.cs" />

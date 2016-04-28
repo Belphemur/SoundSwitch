@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
+using System.Collections.ObjectModel;
+using SoundSwitch.Framework.Factory;
 using SoundSwitch.Framework.NotificationManager.Notification;
 
 namespace SoundSwitch.Framework.NotificationManager
 {
-    public class NotificationFactory
+    public class NotificationFactory : AbstractFactory<NotificationTypeEnum, INotification>
     {
-        public static readonly Dictionary<NotificationTypeEnum, INotification> AllNotifications = new Dictionary
+        private static readonly IDictionary<NotificationTypeEnum, INotification> Notifications = new Dictionary
             <NotificationTypeEnum, INotification>
         {
             {NotificationTypeEnum.DefaultWindowsNotification, new NotificationWindows()},
@@ -15,19 +16,8 @@ namespace SoundSwitch.Framework.NotificationManager
             {NotificationTypeEnum.CustomNotification, new NotificationCustom()}
         };
 
-        /// <summary>
-        ///     Create a notification object linked to the enum value
-        /// </summary>
-        /// <param name="eEnum"></param>
-        /// <returns></returns>
-        public static INotification CreateNotification(NotificationTypeEnum eEnum)
+        public NotificationFactory() : base(new ReadOnlyDictionary<NotificationTypeEnum, INotification>(Notifications))
         {
-            INotification notif;
-            if (!AllNotifications.TryGetValue(eEnum, out notif))
-            {
-                throw new InvalidEnumArgumentException();
-            }
-            return notif;
         }
     }
 }

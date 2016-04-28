@@ -14,10 +14,12 @@ namespace SoundSwitch.Framework.NotificationManager
         private readonly IAppModel _model;
         private string _lastDeviceId;
         private INotification _notification;
+        private readonly NotificationFactory _notificationFactory;
 
         public NotificationManager(IAppModel model)
         {
             _model = model;
+            _notificationFactory = new NotificationFactory();
         }
 
         public void Init()
@@ -43,7 +45,7 @@ namespace SoundSwitch.Framework.NotificationManager
         {
             try
             {
-                _notification = NotificationFactory.CreateNotification(notificationTypeEnum);
+                _notification = _notificationFactory.Get(notificationTypeEnum);
                 _notification.Configuration = new NotificationConfiguration()
                 {
                     Icon = AppModel.Instance.NotifyIcon,
