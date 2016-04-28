@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using SoundSwitch.Framework.NotificationManager.Notification;
 
 namespace SoundSwitch.Framework.NotificationManager
 {
     public class NotificationFactory
     {
-        public static readonly List<INotification> AllNotifications = new List<INotification>
+        public static readonly Dictionary<NotificationTypeEnum, INotification> AllNotifications = new Dictionary
+            <NotificationTypeEnum, INotification>
         {
-            new NotificationWindows(),
-            new NotificationSound(),
-            new NotificationCustom(),
-            new NotificationNone()
+            {NotificationTypeEnum.DefaultWindowsNotification, new NotificationWindows()},
+            {NotificationTypeEnum.SoundNotification, new NotificationSound()},
+            {NotificationTypeEnum.NoNotification, new NotificationNone()},
+            {NotificationTypeEnum.CustomNotification, new NotificationCustom()}
         };
 
         /// <summary>
@@ -22,19 +22,12 @@ namespace SoundSwitch.Framework.NotificationManager
         /// <returns></returns>
         public static INotification CreateNotification(NotificationTypeEnum eEnum)
         {
-            switch (eEnum)
+            INotification notif;
+            if (!AllNotifications.TryGetValue(eEnum, out notif))
             {
-                case NotificationTypeEnum.DefaultWindowsNotification:
-                    return new NotificationWindows();
-                case NotificationTypeEnum.SoundNotification:
-                    return new NotificationSound();
-                case NotificationTypeEnum.NoNotification:
-                    return new NotificationNone();
-                case NotificationTypeEnum.CustomNotification:
-                    return new NotificationCustom();
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(eEnum), eEnum, null);
+                throw new InvalidEnumArgumentException();
             }
+            return notif;
         }
     }
 }

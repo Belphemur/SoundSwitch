@@ -74,7 +74,7 @@ namespace SoundSwitch.UI.Forms
             toolTipNotification.SetToolTip(notificationComboBox, Notifications.explanation);
             notificationComboBox.DisplayMember = "Label";
             notificationComboBox.ValueMember = "Type";
-            notificationComboBox.DataSource = NotificationFactory.AllNotifications.Select(notification => notification.Displayer()).ToArray();
+            notificationComboBox.DataSource = NotificationFactory.AllNotifications.Values.Select(notification => notification.Displayer()).ToArray();
             notificationComboBox.SelectedValue = AppModel.Instance.NotificationSettings;
 
             betaVersionCheckbox.Checked = AppModel.Instance.SubscribedBetaVersions;
