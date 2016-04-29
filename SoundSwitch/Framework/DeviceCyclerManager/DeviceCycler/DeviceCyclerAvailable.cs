@@ -8,14 +8,14 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
 {
     public class DeviceCyclerAvailable : ADeviceCycler
     {
-        public override DeviceCyclerEnumType TypeEnum { get; } = DeviceCyclerEnumType.All;
+        public override DeviceCyclerTypeEnum TypeEnum { get; } = DeviceCyclerTypeEnum.All;
         public override string Label { get; } = AudioCycler.all;
 
         /// <summary>
         ///     Cycle the audio device for the given type
         /// </summary>
         /// <param name="type"></param>
-        public override void CycleAudioDevice(AudioDeviceType type)
+        public override bool CycleAudioDevice(AudioDeviceType type)
         {
             ICollection<IAudioDevice> audioDevices;
             switch (type)
@@ -29,7 +29,16 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
-            SetActiveDevice(GetNextDevice(audioDevices, type));
+
+            switch (audioDevices.Count)
+            {
+                case 0:
+                    throw new AppModel.NoDevicesException();
+                case 1:
+                    return false;
+            }
+
+            return SetActiveDevice(GetNextDevice(audioDevices, type));
         }
     }
 }

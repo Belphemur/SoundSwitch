@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.TooltipInfoManager.TootipInfo;
 using SoundSwitch.Framework.Updater;
@@ -40,6 +41,7 @@ namespace SoundSwitch.Framework.Configuration
             UpdateState = UpdateState.Steath;
             SubscribedBetaVersion = false;
             TooltipInfo = TooltipInfoTypeEnum.Playback;
+            CyclerType = DeviceCyclerTypeEnum.Available;
 
         }
 
@@ -50,8 +52,6 @@ namespace SoundSwitch.Framework.Configuration
 
         public HashSet<string> SelectedPlaybackDeviceListId { get; }
         public HashSet<string> SelectedRecordingDeviceListId { get; }
-        public string LastPlaybackActiveId { get; set; }
-        public string LastRecordingActiveId { get; set; }
         public bool FirstRun { get; set; }
         public HotKeys PlaybackHotKeys { get; set; }
         public HotKeys RecordingHotKeys { get; set; }
@@ -59,6 +59,7 @@ namespace SoundSwitch.Framework.Configuration
         public uint UpdateCheckInterval { get; set; }
         public UpdateState UpdateState { get; set; }
         public TooltipInfoTypeEnum TooltipInfo { get; set; }
+        public DeviceCyclerTypeEnum CyclerType { get; set; }
 
         /*TODO: Remove in next VERSION (3.7.0)*/
         [Obsolete("Use the NotificationSettings instead.")]

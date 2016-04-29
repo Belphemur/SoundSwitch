@@ -123,7 +123,7 @@ namespace SoundSwitch
                             ipcServer.InitServer();
                             available = true;
                         }
-                        catch (RemotingException e)
+                        catch (RemotingException)
                         {
                             Thread.Sleep(250);
                         }

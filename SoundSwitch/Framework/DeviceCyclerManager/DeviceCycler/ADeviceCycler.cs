@@ -10,14 +10,14 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         private readonly IDictionary<AudioDeviceType, IAudioDevice> _lastDevices =
             new Dictionary<AudioDeviceType, IAudioDevice>();
 
-        public abstract DeviceCyclerEnumType TypeEnum { get; }
+        public abstract DeviceCyclerTypeEnum TypeEnum { get; }
         public abstract string Label { get; }
 
         /// <summary>
         ///     Cycle the audio device for the given type
         /// </summary>
         /// <param name="type"></param>
-        public abstract void CycleAudioDevice(AudioDeviceType type);
+        public abstract bool CycleAudioDevice(AudioDeviceType type);
 
         /// <summary>
         ///     Get the next device that need to be set as Default
@@ -46,7 +46,7 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         ///     Attempts to set active device to the specified name
         /// </summary>
         /// <param name="device"></param>
-        protected bool SetActiveDevice(IAudioDevice device)
+        public bool SetActiveDevice(IAudioDevice device)
         {
             using (AppLogger.Log.InfoCall())
             {
