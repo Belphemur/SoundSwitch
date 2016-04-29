@@ -74,9 +74,7 @@ namespace SoundSwitch.UI.Forms
 
             var toolTipNotification = new ToolTip();
             toolTipNotification.SetToolTip(notificationComboBox, Notifications.explanation);
-            notificationComboBox.DisplayMember = "Label";
-            notificationComboBox.ValueMember = "Type";
-            notificationComboBox.DataSource = new NotificationFactory().AllImplementations.Values.Select(notification => notification.Displayer()).ToArray();
+            new NotificationFactory().ConfigureListControl(notificationComboBox);
             notificationComboBox.SelectedValue = AppModel.Instance.NotificationSettings;
 
             betaVersionCheckbox.Checked = AppModel.Instance.SubscribedBetaVersions;
@@ -96,10 +94,7 @@ namespace SoundSwitch.UI.Forms
             var toolTipStealthUpdate = new ToolTip();
             toolTipStealthUpdate.SetToolTip(stealthUpdateCheckbox, SettingsString.stealthUpdateExplanation);
 
-            var tooltipInfoFactory = new TooltipInfoFactory();
-            tooltipInfoComboBox.ValueMember = "TypeEnum";
-            tooltipInfoComboBox.DisplayMember = "Label";
-            tooltipInfoComboBox.DataSource = tooltipInfoFactory.AllImplementations.Values.ToArray();
+            new TooltipInfoFactory().ConfigureListControl(tooltipInfoComboBox);
             tooltipInfoComboBox.SelectedValue = TooltipInfoManager.CurrentTooltipInfo;
 
             _loaded = true;

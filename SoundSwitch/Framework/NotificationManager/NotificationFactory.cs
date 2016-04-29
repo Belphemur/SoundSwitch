@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using SoundSwitch.Framework.Factory;
 using SoundSwitch.Framework.NotificationManager.Notification;
 

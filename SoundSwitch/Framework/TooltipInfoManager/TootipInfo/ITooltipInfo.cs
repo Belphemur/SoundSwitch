@@ -1,16 +1,9 @@
+using SoundSwitch.Framework.Factory;
+
 namespace SoundSwitch.Framework.TooltipInfoManager.TootipInfo
 {
-    public interface ITooltipInfo
+    public interface ITooltipInfo : IEnumImpl<TooltipInfoTypeEnum>
     {
-        /// <summary>
-        ///     Type of the Tooltip Info
-        /// </summary>
-        TooltipInfoTypeEnum TypeEnum { get; }
-
-        /// <summary>
-        ///     Displaying label
-        /// </summary>
-        string Label { get; }
 
         /// <summary>
         ///     The text to display for this tooltip

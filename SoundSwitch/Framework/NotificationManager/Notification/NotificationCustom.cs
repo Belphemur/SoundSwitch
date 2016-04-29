@@ -1,17 +1,20 @@
-﻿using System.Runtime.InteropServices;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AudioEndPointControllerWrapper;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification.configuration;
+using SoundSwitch.Properties;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification
 {
     public class NotificationCustom : INotification
     {
         private readonly MMDeviceEnumerator _deviceEnumerator = new MMDeviceEnumerator();
+        public NotificationTypeEnum TypeEnum { get; } = NotificationTypeEnum.CustomNotification;
+        public string Label { get; } = Notifications.NotifCustom;
+
 
         public INotificationConfiguration Configuration { get; set; }
 
@@ -39,16 +42,6 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         public void OnSoundChanged(CachedSound newSound)
         {
             Configuration.CustomSound = newSound;
-        }
-
-        public NotificationDisplayer Displayer()
-        {
-            return new NotificationDisplayer(Type(), Properties.Notifications.NotifCustom);
-        }
-
-        public NotificationTypeEnum Type()
-        {
-            return NotificationTypeEnum.CustomNotification;
         }
 
         public bool NeedCustomSound()

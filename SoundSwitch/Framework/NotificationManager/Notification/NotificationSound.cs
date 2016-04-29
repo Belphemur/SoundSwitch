@@ -6,6 +6,7 @@ using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification.configuration;
+using SoundSwitch.Properties;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification
 {
@@ -18,17 +19,8 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             _deviceEnumerator = new MMDeviceEnumerator();
         }
 
-        private Stream GetStreamCopy()
-        {
-            lock (this)
-            {
-                Configuration.DefaultSound.Position = 0;
-                var memoryStreamedSound = new MemoryStream();
-                Configuration.DefaultSound.CopyTo(memoryStreamedSound);
-                memoryStreamedSound.Position = 0;
-                return memoryStreamedSound;
-            }
-        }
+        public NotificationTypeEnum TypeEnum { get; } = NotificationTypeEnum.SoundNotification;
+        public string Label { get; } = Notifications.NotifSound;
 
         public INotificationConfiguration Configuration { get; set; }
 
@@ -60,19 +52,21 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         {
         }
 
-        public NotificationDisplayer Displayer()
-        {
-            return new NotificationDisplayer(Type(), Properties.Notifications.NotifSound);
-        }
-
-        public NotificationTypeEnum Type()
-        {
-            return NotificationTypeEnum.SoundNotification;
-        }
-
         public bool NeedCustomSound()
         {
             return false;
+        }
+
+        private Stream GetStreamCopy()
+        {
+            lock (this)
+            {
+                Configuration.DefaultSound.Position = 0;
+                var memoryStreamedSound = new MemoryStream();
+                Configuration.DefaultSound.CopyTo(memoryStreamedSound);
+                memoryStreamedSound.Position = 0;
+                return memoryStreamedSound;
+            }
         }
     }
 }

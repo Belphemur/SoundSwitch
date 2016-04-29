@@ -1,11 +1,15 @@
 ﻿using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification.configuration;
+using SoundSwitch.Properties;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification
 {
     public class NotificationNone : INotification
     {
+        public NotificationTypeEnum TypeEnum { get; } = NotificationTypeEnum.NoNotification;
+        public string Label { get; } = Notifications.NotifNone;
+
         public INotificationConfiguration Configuration { get; set; }
 
         public void NotifyDefaultChanged(IAudioDevice audioDevice)
@@ -14,16 +18,6 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
 
         public void OnSoundChanged(CachedSound newSound)
         {
-        }
-
-        public NotificationDisplayer Displayer()
-        {
-            return new NotificationDisplayer(Type(), Properties.Notifications.NotifNone);
-        }
-
-        public NotificationTypeEnum Type()
-        {
-            return NotificationTypeEnum.NoNotification;
         }
 
         public bool NeedCustomSound()

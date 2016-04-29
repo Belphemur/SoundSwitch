@@ -9,6 +9,9 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
 {
     public class NotificationWindows : INotification
     {
+        public NotificationTypeEnum TypeEnum { get; } = NotificationTypeEnum.DefaultWindowsNotification;
+        public string Label { get; } = Notifications.NotifWindows;
+
         public INotificationConfiguration Configuration { get; set; }
 
         public void NotifyDefaultChanged(IAudioDevice audioDevice)
@@ -32,16 +35,6 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
 
         public void OnSoundChanged(CachedSound newSound)
         {
-        }
-
-        public NotificationDisplayer Displayer()
-        {
-            return new NotificationDisplayer(Type(), Properties.Notifications.NotifWindows);
-        }
-
-        public NotificationTypeEnum Type()
-        {
-            return NotificationTypeEnum.DefaultWindowsNotification;
         }
 
         public bool NeedCustomSound()

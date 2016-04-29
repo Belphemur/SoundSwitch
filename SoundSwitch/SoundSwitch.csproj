@@ -246,6 +246,7 @@
     <Compile Include="Framework\Configuration\ISoundSwitchConfiguration.cs" />
     <Compile Include="Framework\Configuration\SoundSwitchConfiguration.cs" />
     <Compile Include="Framework\Factory\AbstractFactory.cs" />
+    <Compile Include="Framework\Factory\IEnumImpl.cs" />
     <Compile Include="Framework\HotKeys.cs" />
     <Compile Include="Framework\HourGlass.cs" />
     <Compile Include="Framework\IPC\IPCClient.cs" />
@@ -258,7 +259,6 @@
     <Compile Include="Framework\NotificationManager\Notification\configuration\NotificationConfiguration.cs" />
     <Compile Include="Framework\NotificationManager\Notification\INotification.cs" />
     <Compile Include="Framework\NotificationManager\Notification\NotificationCustom.cs" />
-    <Compile Include="Framework\NotificationManager\Notification\NotificationDisplayer.cs" />
     <Compile Include="Framework\NotificationManager\Notification\NotificationSound.cs" />
     <Compile Include="Framework\NotificationManager\Notification\NotificationWindows.cs" />
     <Compile Include="Framework\NotificationManager\Notification\NotificationNone.cs" />
