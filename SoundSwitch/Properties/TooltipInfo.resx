@@ -112,4 +112,7 @@
 	<data name="titleTooltip" xml:space="preserve">
 		<value>Active Device</value>
 	</data>
+	<data name="none" xml:space="preserve">
+		<value>No tooltip</value>
+	</data>
 </root>

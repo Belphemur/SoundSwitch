@@ -11,7 +11,8 @@ namespace SoundSwitch.Framework.TooltipInfoManager
         {
             {TooltipInfoTypeEnum.Playback, new TooltipInfoPlayback()},
             {TooltipInfoTypeEnum.Recording, new TooltipInfoRecording()},
-            {TooltipInfoTypeEnum.Both, new TooltipInfoBoth()}
+            {TooltipInfoTypeEnum.Both, new TooltipInfoBoth()},
+            {TooltipInfoTypeEnum.None, new TooltipInfoNone()}
         };
 
         public TooltipInfoFactory() : base(TooltipInfos)

@@ -112,4 +112,7 @@
 	<data name="titleTooltip" xml:space="preserve">
 		<value>Périphérique Actif</value>
 	</data>
+	<data name="none" xml:space="preserve">
+		<value>Pas de notification</value>
+	</data>
 </root>

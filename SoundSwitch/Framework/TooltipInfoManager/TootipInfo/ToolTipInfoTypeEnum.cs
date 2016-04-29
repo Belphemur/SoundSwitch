@@ -4,6 +4,7 @@
     {
         Recording,
         Playback,
-        Both
+        Both,
+        None
     }
 }

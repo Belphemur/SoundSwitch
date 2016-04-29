@@ -79,6 +79,15 @@ namespace SoundSwitch.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No tooltip.
+        /// </summary>
+        internal static string none {
+            get {
+                return ResourceManager.GetString("none", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Playback Device.
         /// </summary>
         internal static string playback {
