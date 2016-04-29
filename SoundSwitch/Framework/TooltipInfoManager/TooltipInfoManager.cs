@@ -10,7 +10,7 @@ namespace SoundSwitch.Framework.TooltipInfoManager
     {
         private readonly NotifyIcon _icon;
         private readonly TooltipInfoFactory _tooltipInfoFactory;
-        private bool _isBallontipVisible;
+        public bool IsBallontipVisible { get; set; }
 
         public TooltipInfoManager(NotifyIcon icon)
         {
@@ -32,12 +32,12 @@ namespace SoundSwitch.Framework.TooltipInfoManager
 
         private void IconOnBalloonTipClosed(object sender, EventArgs eventArgs)
         {
-            _isBallontipVisible = false;
+            IsBallontipVisible = false;
         }
 
         private void IconOnBalloonTipShown(object sender, EventArgs eventArgs)
         {
-            _isBallontipVisible = true;
+            IsBallontipVisible = true;
         }
 
 
@@ -46,7 +46,7 @@ namespace SoundSwitch.Framework.TooltipInfoManager
         /// </summary>
         public void ShowTooltipInfo()
         {
-            if (_isBallontipVisible)
+            if (IsBallontipVisible)
                 return;
 
             var tooltipInfo = _tooltipInfoFactory.Get(CurrentTooltipInfo);

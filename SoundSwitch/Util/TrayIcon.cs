@@ -86,6 +86,8 @@ namespace SoundSwitch.Util
                     return;
                 _tooltipInfoManager.ShowTooltipInfo();
             };
+            _selectionMenu.Closed += (sender, args) => _tooltipInfoManager.IsBallontipVisible = false;
+            _settingsMenu.Closed += (sender, args) => _tooltipInfoManager.IsBallontipVisible = false;
             SetEventHandlers();
         }
 
