@@ -1,5 +1,17 @@
 # Change Log
 
+## [v3.9.8](https://github.com/Belphemur/SoundSwitch/tree/v3.9.8) (2016-04-29)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.9.7...v3.9.8)
+
+**Implemented enhancements:**
+
+- Show active device on hover Systray Icon [\#88](https://github.com/Belphemur/SoundSwitch/issues/88)
+- Playback devices constantly go in the Disconnected section [\#87](https://github.com/Belphemur/SoundSwitch/issues/87)
+
+**Fixed bugs:**
+
+- Playback devices constantly go in the Disconnected section [\#87](https://github.com/Belphemur/SoundSwitch/issues/87)
+
 ## [v3.9.7](https://github.com/Belphemur/SoundSwitch/tree/v3.9.7) (2016-04-15)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.9.6...v3.9.7)
 
