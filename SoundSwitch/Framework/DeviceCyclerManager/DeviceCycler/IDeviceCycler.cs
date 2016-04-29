@@ -3,7 +3,7 @@ using SoundSwitch.Framework.Factory;
 
 namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
 {
-    public interface IDeviceCycler : IEnumImpl<DeviceCyclerEnumType>
+    public interface IDeviceCycler : IEnumImpl<DeviceCyclerTypeEnum>
     {
         /// <summary>
         /// Cycle the audio device for the given type

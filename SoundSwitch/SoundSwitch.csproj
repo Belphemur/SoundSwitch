@@ -248,8 +248,8 @@
     <Compile Include="Framework\DeviceCyclerManager\DeviceCycler\ADeviceCycler.cs" />
     <Compile Include="Framework\DeviceCyclerManager\DeviceCycler\DeviceCyclerAvailable.cs" />
     <Compile Include="Framework\DeviceCyclerManager\DeviceCycler\DeviceCyclerAll.cs" />
-    <Compile Include="Framework\DeviceCyclerManager\DeviceCycler\DeviceCyclerEnumType.cs" />
-    <Compile Include="Framework\DeviceCyclerManager\DeviceCycler\DeviceCyclerFactory.cs" />
+    <Compile Include="Framework\DeviceCyclerManager\DeviceCyclerTypeEnum.cs" />
+    <Compile Include="Framework\DeviceCyclerManager\DeviceCyclerFactory.cs" />
     <Compile Include="Framework\DeviceCyclerManager\DeviceCycler\IDeviceCycler.cs" />
     <Compile Include="Framework\Factory\AbstractFactory.cs" />
     <Compile Include="Framework\Factory\IEnumImpl.cs" />
