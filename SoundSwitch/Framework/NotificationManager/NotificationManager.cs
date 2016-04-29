@@ -43,15 +43,15 @@ namespace SoundSwitch.Framework.NotificationManager
 
         private void SetNotification(NotificationTypeEnum notificationTypeEnum)
         {
+            _notification = _notificationFactory.Get(notificationTypeEnum);
+            _notification.Configuration = new NotificationConfiguration()
+            {
+                Icon = AppModel.Instance.NotifyIcon,
+                DefaultSound = Resources.NotificationSound
+            };
             try
             {
-                _notification = _notificationFactory.Get(notificationTypeEnum);
-                _notification.Configuration = new NotificationConfiguration()
-                {
-                    Icon = AppModel.Instance.NotifyIcon,
-                    CustomSound = AppModel.Instance.CustomNotificationSound,
-                    DefaultSound = Resources.NotificationSound
-                };
+                _notification.Configuration.CustomSound = AppModel.Instance.CustomNotificationSound;
             }
             catch (CachedSoundFileNotExistsException)
             {
