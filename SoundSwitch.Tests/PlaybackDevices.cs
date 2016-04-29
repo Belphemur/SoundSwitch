@@ -18,6 +18,7 @@ using AudioEndPointControllerWrapper;
 using Moq;
 using NUnit.Framework;
 using SoundSwitch.Framework.Configuration;
+using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Model;
 using Assert = NUnit.Framework.Assert;
 
@@ -180,6 +181,8 @@ namespace SoundSwitch.Tests
             //Setup
             configurationMoq.Setup(c => c.SelectedPlaybackDeviceListId)
                 .Returns(new HashSet<string> {"Speakers (Test device)", "Headphones (Test device)"});
+            configurationMoq.Setup(configuration => configuration.CyclerType).Returns(DeviceCyclerTypeEnum.Available);
+            configurationMoq.Setup(configuration => configuration.ChangeCommunications).Returns(false);
             TestHelpers.SetConfigurationMoq(configurationMoq);
             AppModel.Instance.ActiveAudioDeviceLister = listerMoq.Object;
 
@@ -191,8 +194,8 @@ namespace SoundSwitch.Tests
             audioMoqI.VerifyGet(a => a.Id);
             audioMoqII.VerifyGet(a => a.Id);
             listerMoq.Verify(l => l.GetPlaybackDevices());
-            audioMoqII.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Console)));
-            audioMoqII.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Multimedia)));
+            audioMoqI.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Console)));
+            audioMoqI.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Multimedia)));
         }
 
         [Test]
@@ -218,6 +221,7 @@ namespace SoundSwitch.Tests
             //Setup
             configurationMoq.Setup(c => c.SelectedPlaybackDeviceListId)
                 .Returns(new HashSet<string> {"Speakers (Test device)", "Headphones (Test device)"});
+            configurationMoq.Setup(configuration => configuration.CyclerType).Returns(DeviceCyclerTypeEnum.Available);
             TestHelpers.SetConfigurationMoq(configurationMoq);
             AppModel.Instance.ActiveAudioDeviceLister = listerMoq.Object;
 
@@ -225,11 +229,12 @@ namespace SoundSwitch.Tests
             Assert.That(AppModel.Instance.CycleActiveDevice(AudioDeviceType.Playback));
 
             //Asserts
-            configurationMoq.VerifyGet(c => c.SelectedPlaybackDeviceListId);
+            configurationMoq.VerifyGet(configuration => configuration.SelectedPlaybackDeviceListId);
+            configurationMoq.VerifyGet(configuration => configuration.CyclerType);
             audioMoqI.VerifyGet(a => a.Id);
             audioMoqII.VerifyGet(a => a.Id);
             listerMoq.Verify(l => l.GetPlaybackDevices());
-            audioMoqII.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.All)));
+            audioMoqI.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.All)));
         }
 
         [Test]
@@ -258,9 +263,6 @@ namespace SoundSwitch.Tests
             Assert.That(AppModel.Instance.CycleActiveDevice(AudioDeviceType.Playback));
 
             //Asserts
-            configurationMoq.VerifyGet(c => c.SelectedPlaybackDeviceListId);
-            audioMoqI.VerifyGet(a => a.Id);
-            audioMoqII.VerifyGet(a => a.Id);
             listerMoq.Verify(l => l.GetPlaybackDevices());
             audioMoqI.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Console)));
             audioMoqI.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Multimedia)));

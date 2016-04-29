@@ -15,10 +15,10 @@
 using System;
 using System.Collections.Generic;
 using AudioEndPointControllerWrapper;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NUnit.Framework;
 using SoundSwitch.Framework.Configuration;
+using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Model;
 using Assert = NUnit.Framework.Assert;
 
@@ -182,6 +182,7 @@ namespace SoundSwitch.Tests
             //Setup
             configurationMoq.Setup(c => c.SelectedRecordingDeviceListId)
                 .Returns(new HashSet<string> {"Speakers (Test device)", "Headphones (Test device)"});
+            configurationMoq.Setup(configuration => configuration.CyclerType).Returns(DeviceCyclerTypeEnum.Available);
             TestHelpers.SetConfigurationMoq(configurationMoq);
             AppModel.Instance.ActiveAudioDeviceLister = listerMoq.Object;
 
@@ -193,7 +194,7 @@ namespace SoundSwitch.Tests
             audioMoqI.VerifyGet(a => a.Id);
             audioMoqII.VerifyGet(a => a.Id);
             listerMoq.Verify(l => l.GetRecordingDevices());
-            audioMoqII.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Console)));
+            audioMoqI.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Console)));
         }
 
         [Test]
@@ -211,7 +212,6 @@ namespace SoundSwitch.Tests
             audioMoqI.SetupGet(a => a.Type).Returns(AudioDeviceType.Recording);
             var audioMoqII = new Mock<IAudioDevice> {Name = "secound audio dev"};
             audioMoqII.SetupGet(a => a.Id).Returns("Headphones (Test device)");
-            audioMoqII.SetupGet(a => a.Id).Returns("Headphones (Test device)");
             audioMoqII.SetupGet(a => a.Type).Returns(AudioDeviceType.Recording);
           
 
@@ -222,6 +222,8 @@ namespace SoundSwitch.Tests
             //Setup
             configurationMoq.Setup(c => c.SelectedRecordingDeviceListId)
                 .Returns(new HashSet<string> {"Speakers (Test device)", "Headphones (Test device)"});
+            configurationMoq.Setup(configuration => configuration.CyclerType).Returns(DeviceCyclerTypeEnum.Available);
+            configurationMoq.Setup(configuration => configuration.ChangeCommunications).Returns(true);
             TestHelpers.SetConfigurationMoq(configurationMoq);
             AppModel.Instance.ActiveAudioDeviceLister = listerMoq.Object;
 
@@ -233,7 +235,7 @@ namespace SoundSwitch.Tests
             audioMoqI.VerifyGet(a => a.Id);
             audioMoqII.VerifyGet(a => a.Id);
             listerMoq.Verify(l => l.GetRecordingDevices());
-            audioMoqII.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.All)));
+            audioMoqI.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.All)));
         }
 
         [Test]
@@ -242,7 +244,6 @@ namespace SoundSwitch.Tests
             var configurationMoq = new Mock<ISoundSwitchConfiguration> {Name = "Configuration mock"};
 
             var audioMoqI = new Mock<IAudioDevice> {Name = "first audio dev"};
-            audioMoqI.SetupGet(a => a.Id).Returns("Speakers (Test device)");
             audioMoqI.SetupGet(a => a.Id).Returns("Speakers (Test device)");
             var audioMoqII = new Mock<IAudioDevice> {Name = "secound audio dev"};
             audioMoqII.SetupGet(a => a.Id).Returns("Headphones (Test device)");
@@ -257,6 +258,7 @@ namespace SoundSwitch.Tests
             //Setup
             configurationMoq.Setup(c => c.SelectedRecordingDeviceListId)
                 .Returns(new HashSet<string> {"Speakers (Test device)", "Headphones (Test device)"});
+            configurationMoq.Setup(configuration => configuration.CyclerType).Returns(DeviceCyclerTypeEnum.Available);
             TestHelpers.SetConfigurationMoq(configurationMoq);
             AppModel.Instance.ActiveAudioDeviceLister = listerMoq.Object;
 
@@ -264,6 +266,7 @@ namespace SoundSwitch.Tests
             Assert.That(AppModel.Instance.CycleActiveDevice(AudioDeviceType.Recording));
 
             //Asserts
+            configurationMoq.VerifyGet(configuration => configuration.CyclerType);
             configurationMoq.VerifyGet(c => c.SelectedRecordingDeviceListId);
             audioMoqI.VerifyGet(a => a.Id);
             audioMoqII.VerifyGet(a => a.Id);
