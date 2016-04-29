@@ -7,7 +7,8 @@ namespace SoundSwitch.Framework.TooltipInfoManager.TootipInfo
 {
     public class TooltipInfoRecording : ITooltipInfo
     {
-        public TooltipInfoTypeEnum TypeEnum { get; } =TooltipInfoTypeEnum.Recording;
+        public TooltipInfoTypeEnum TypeEnum { get; } = TooltipInfoTypeEnum.Recording;
+        public string Label { get; } = TooltipInfo.recording;
 
         /// <summary>
         ///     The text to display for this tooltip
@@ -23,7 +24,7 @@ namespace SoundSwitch.Framework.TooltipInfoManager.TootipInfo
 
         public override string ToString()
         {
-            return TooltipInfo.recording;
+            return Label;
         }
     }
 }

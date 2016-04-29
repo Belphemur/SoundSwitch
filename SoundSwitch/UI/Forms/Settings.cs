@@ -96,7 +96,11 @@ namespace SoundSwitch.UI.Forms
             var toolTipStealthUpdate = new ToolTip();
             toolTipStealthUpdate.SetToolTip(stealthUpdateCheckbox, SettingsString.stealthUpdateExplanation);
 
-            tooltipInfoComboBox.DataSource = new TooltipInfoFactory().AllImplementations.Values.ToArray();
+            var tooltipInfoFactory = new TooltipInfoFactory();
+            tooltipInfoComboBox.ValueMember = "TypeEnum";
+            tooltipInfoComboBox.DisplayMember = "Label";
+            tooltipInfoComboBox.DataSource = tooltipInfoFactory.AllImplementations.Values.ToArray();
+            tooltipInfoComboBox.SelectedValue = TooltipInfoManager.CurrentTooltipInfo;
 
             _loaded = true;
         }
@@ -223,8 +227,8 @@ namespace SoundSwitch.UI.Forms
             if (value == null)
                 return;
 
-            var tooltip = (ITooltipInfo) value;
-            TooltipInfoManager.CurrentTooltipInfo = tooltip.TypeEnum;
+            var tooltip = (TooltipInfoTypeEnum) value;
+            TooltipInfoManager.CurrentTooltipInfo = tooltip;
         }
 
         private void selectSoundButton_Click(object sender, EventArgs e)

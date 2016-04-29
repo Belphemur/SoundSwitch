@@ -5,6 +5,7 @@ namespace SoundSwitch.Framework.TooltipInfoManager.TootipInfo
     public class TooltipInfoNone : ITooltipInfo
     {
         public TooltipInfoTypeEnum TypeEnum { get; } = TooltipInfoTypeEnum.None;
+        public string Label { get; } = TooltipInfo.none;
 
         public string TextToDisplay()
         {
@@ -14,7 +15,7 @@ namespace SoundSwitch.Framework.TooltipInfoManager.TootipInfo
 
         public override string ToString()
         {
-            return TooltipInfo.none;
+            return Label;
         }
     }
 }
