@@ -7,6 +7,8 @@ namespace SoundSwitch.Framework.TooltipInfoManager.TootipInfo
 {
     public class TooltipInfoRecording : ITooltipInfo
     {
+        public TooltipInfoTypeEnum TypeEnum { get; } =TooltipInfoTypeEnum.Recording;
+
         /// <summary>
         ///     The text to display for this tooltip
         /// </summary>
@@ -17,15 +19,6 @@ namespace SoundSwitch.Framework.TooltipInfoManager.TootipInfo
                 AppModel.Instance.ActiveAudioDeviceLister.GetRecordingDevices()
                     .FirstOrDefault(device => device.IsDefault(Role.Console));
             return recordingDevice == null ? null : string.Format(TooltipInfo.currentlyActive, recordingDevice);
-        }
-
-        /// <summary>
-        ///     Type of the Tooltip info
-        /// </summary>
-        /// <returns></returns>
-        public TooltipInfoTypeEnum Type()
-        {
-            return TooltipInfoTypeEnum.Recording;
         }
 
         public override string ToString()

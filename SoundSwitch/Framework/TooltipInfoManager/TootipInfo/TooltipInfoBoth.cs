@@ -4,6 +4,8 @@ namespace SoundSwitch.Framework.TooltipInfoManager.TootipInfo
 {
     public class TooltipInfoBoth : ITooltipInfo
     {
+        public TooltipInfoTypeEnum TypeEnum { get; } = TooltipInfoTypeEnum.Both;
+
         /// <summary>
         ///     The text to display for this tooltip
         /// </summary>
@@ -18,15 +20,6 @@ namespace SoundSwitch.Framework.TooltipInfoManager.TootipInfo
 
             return string.Concat(playbackToDisplay, "\n",
                 recordingToDisplay);
-        }
-
-        /// <summary>
-        ///     Type of the Tooltip info
-        /// </summary>
-        /// <returns></returns>
-        public TooltipInfoTypeEnum Type()
-        {
-            return TooltipInfoTypeEnum.Both;
         }
 
         public override string ToString()

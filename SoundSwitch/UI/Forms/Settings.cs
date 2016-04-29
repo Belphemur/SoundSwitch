@@ -224,7 +224,7 @@ namespace SoundSwitch.UI.Forms
                 return;
 
             var tooltip = (ITooltipInfo) value;
-            TooltipInfoManager.CurrentTooltipInfo = tooltip.Type();
+            TooltipInfoManager.CurrentTooltipInfo = tooltip.TypeEnum;
         }
 
         private void selectSoundButton_Click(object sender, EventArgs e)
