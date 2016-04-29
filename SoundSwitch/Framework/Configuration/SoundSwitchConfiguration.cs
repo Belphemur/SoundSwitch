@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using SoundSwitch.Framework.NotificationManager;
+using SoundSwitch.Framework.TooltipInfoManager.TootipInfo;
 using SoundSwitch.Framework.Updater;
 
 namespace SoundSwitch.Framework.Configuration
@@ -38,6 +39,7 @@ namespace SoundSwitch.Framework.Configuration
             UpdateCheckInterval = 3600 * 12;
             UpdateState = UpdateState.Steath;
             SubscribedBetaVersion = false;
+            TooltipInfo = ToolTipInfoTypeEnum.Playback;
 
         }
 
@@ -56,6 +58,7 @@ namespace SoundSwitch.Framework.Configuration
         public bool ChangeCommunications { get; set; }
         public uint UpdateCheckInterval { get; set; }
         public UpdateState UpdateState { get; set; }
+        public ToolTipInfoTypeEnum TooltipInfo { get; set; }
 
         /*TODO: Remove in next VERSION (3.7.0)*/
         [Obsolete("Use the NotificationSettings instead.")]

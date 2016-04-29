@@ -109,4 +109,7 @@
 	<data name="currentlyActive" xml:space="preserve">
 		<value>{0} est actif</value>
 	</data>
+	<data name="titleTooltip" xml:space="preserve">
+		<value>Périphérique Actif</value>
+	</data>
 </root>

@@ -95,5 +95,14 @@ namespace SoundSwitch.Properties {
                 return ResourceManager.GetString("recording", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Active Device.
+        /// </summary>
+        internal static string titleTooltip {
+            get {
+                return ResourceManager.GetString("titleTooltip", resourceCulture);
+            }
+        }
     }
 }
