@@ -8,8 +8,8 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
 {
     public class DeviceCyclerAvailable : ADeviceCycler
     {
-        public override DeviceCyclerTypeEnum TypeEnum { get; } = DeviceCyclerTypeEnum.All;
-        public override string Label { get; } = AudioCycler.all;
+        public override DeviceCyclerTypeEnum TypeEnum { get; } = DeviceCyclerTypeEnum.Available;
+        public override string Label { get; } = AudioCycler.actives;
 
         /// <summary>
         ///     Cycle the audio device for the given type

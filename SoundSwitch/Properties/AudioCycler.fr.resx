@@ -160,4 +160,11 @@
 	<data name="actives" xml:space="preserve">
 		<value>Seulement les périphériques présents</value>
 	</data>
+	<data name="optionLabel" xml:space="preserve">
+		<value>Switcher avec</value>
+	</data>
+	<data name="tooltipExplanation" xml:space="preserve">
+		<value>Choissiez entre switcher le son sur les cartes son que vous avez sélectionner (défault)
+Ou sur toutes les cartes son connectées</value>
+	</data>
 </root>

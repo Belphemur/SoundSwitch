@@ -148,6 +148,15 @@ namespace SoundSwitch.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cycle through.
+        /// </summary>
+        internal static string optionLabel {
+            get {
+                return ResourceManager.GetString("optionLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap PlaybackDevices {
@@ -184,6 +193,16 @@ namespace SoundSwitch.Properties {
             get {
                 object obj = ResourceManager.GetObject("SoundSwitch48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose between cycling through your selected device that are connected (Default)
+        ///Or through all the devices connected..
+        /// </summary>
+        internal static string tooltipExplanation {
+            get {
+                return ResourceManager.GetString("tooltipExplanation", resourceCulture);
             }
         }
         

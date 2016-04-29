@@ -24,6 +24,7 @@ using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Configuration;
+using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.TooltipInfoManager;
 using SoundSwitch.Framework.TooltipInfoManager.TootipInfo;
@@ -96,6 +97,11 @@ namespace SoundSwitch.UI.Forms
 
             new TooltipInfoFactory().ConfigureListControl(tooltipInfoComboBox);
             tooltipInfoComboBox.SelectedValue = TooltipInfoManager.CurrentTooltipInfo;
+
+            var toolTipCycler = new ToolTip();
+            toolTipCycler.SetToolTip(cyclerComboBox, AudioCycler.tooltipExplanation);
+            new DeviceCyclerFactory().ConfigureListControl(cyclerComboBox);
+            cyclerComboBox.SelectedValue = DeviceCyclerManager.CurrentCycler;
 
             _loaded = true;
         }
@@ -224,6 +230,19 @@ namespace SoundSwitch.UI.Forms
 
             var tooltip = (TooltipInfoTypeEnum) value;
             TooltipInfoManager.CurrentTooltipInfo = tooltip;
+        }
+
+        private void cyclerComboBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (!_loaded)
+                return;
+            var value = ((ComboBox)sender).SelectedValue;
+
+            if (value == null)
+                return;
+
+            var cycler = (DeviceCyclerTypeEnum)value;
+            DeviceCyclerManager.CurrentCycler = cycler;
         }
 
         private void selectSoundButton_Click(object sender, EventArgs e)
@@ -409,6 +428,5 @@ namespace SoundSwitch.UI.Forms
         {
             AppModel.Instance.StealthUpdate = stealthUpdateCheckbox.Checked;
         }
-
     }
 }
