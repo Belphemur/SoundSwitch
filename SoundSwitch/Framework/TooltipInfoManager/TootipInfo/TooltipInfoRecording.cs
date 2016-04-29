@@ -15,8 +15,8 @@ namespace SoundSwitch.Framework.TooltipInfoManager.TootipInfo
         {
             var recordingDevice =
                 AppModel.Instance.ActiveAudioDeviceLister.GetRecordingDevices()
-                    .First(device => device.IsDefault(Role.Console));
-            return string.Format(TooltipInfo.currentlyActive, recordingDevice);
+                    .FirstOrDefault(device => device.IsDefault(Role.Console));
+            return recordingDevice == null ? null : string.Format(TooltipInfo.currentlyActive, recordingDevice);
         }
 
         /// <summary>

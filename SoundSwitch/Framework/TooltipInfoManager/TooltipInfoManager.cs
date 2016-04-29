@@ -25,13 +25,18 @@ namespace SoundSwitch.Framework.TooltipInfoManager
                 AppConfigs.Configuration.Save();
             }
         }
+
         /// <summary>
-        /// Show the tooltip with the NotifyIcon
+        ///     Show the tooltip with the NotifyIcon
         /// </summary>
         public void ShowTooltipInfo()
         {
             var tooltipInfo = _tooltipInfoFactory.Get(CurrentTooltipInfo);
             var text = tooltipInfo.TextToDisplay();
+
+            if (text == null)
+                return;
+
             _icon.ShowBalloonTip(1000, TooltipInfo.titleTooltip, text, ToolTipIcon.Info);
         }
     }

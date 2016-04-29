@@ -24,6 +24,7 @@ using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
+using SoundSwitch.Framework.TooltipInfoManager;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
@@ -44,10 +45,13 @@ namespace SoundSwitch.Util
             Text = Application.ProductName
         };
 
+        private readonly TooltipInfoManager _tooltipInfoManager;
+
         private readonly ToolStripMenuItem _updateMenuItem;
 
         public TrayIcon()
         {
+            _tooltipInfoManager = new TooltipInfoManager(NotifyIcon);
             _updateMenuItem = new ToolStripMenuItem(TrayIconStrings.NoUpdate, Resources.Update, OnUpdateClick)
             {
                 Enabled = false
@@ -74,6 +78,13 @@ namespace SoundSwitch.Util
                 mi.Invoke(NotifyIcon, null);
 
                 NotifyIcon.ContextMenuStrip = _settingsMenu;
+            };
+
+            NotifyIcon.MouseMove += (sender, args) =>
+            {
+                if (!NotifyIcon.Visible)
+                    return;
+                _tooltipInfoManager.ShowTooltipInfo();
             };
             SetEventHandlers();
         }

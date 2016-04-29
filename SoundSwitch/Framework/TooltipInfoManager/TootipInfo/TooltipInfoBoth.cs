@@ -10,8 +10,14 @@ namespace SoundSwitch.Framework.TooltipInfoManager.TootipInfo
         /// <returns></returns>
         public string TextToDisplay()
         {
-            return string.Concat(new TooltipInfoPlayback().TextToDisplay(), "\n",
-                new TooltipInfoRecording().TextToDisplay());
+            var playbackToDisplay = new TooltipInfoPlayback().TextToDisplay();
+            var recordingToDisplay = new TooltipInfoRecording().TextToDisplay();
+
+            if(playbackToDisplay == null || recordingToDisplay == null)
+                return null;
+
+            return string.Concat(playbackToDisplay, "\n",
+                recordingToDisplay);
         }
 
         /// <summary>
