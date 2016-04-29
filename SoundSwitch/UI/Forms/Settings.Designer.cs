@@ -196,7 +196,7 @@ namespace SoundSwitch.UI.Forms
             this.updateSettingsGroup.Controls.Add(this.betaVersionCheckbox);
             this.updateSettingsGroup.Location = new System.Drawing.Point(321, 3);
             this.updateSettingsGroup.Name = "updateSettingsGroup";
-            this.updateSettingsGroup.Size = new System.Drawing.Size(209, 152);
+            this.updateSettingsGroup.Size = new System.Drawing.Size(209, 95);
             this.updateSettingsGroup.TabIndex = 14;
             this.updateSettingsGroup.TabStop = false;
             this.updateSettingsGroup.Text = "Update Settings";
@@ -216,7 +216,7 @@ namespace SoundSwitch.UI.Forms
             // 
             this.betaVersionCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.betaVersionCheckbox.AutoSize = true;
-            this.betaVersionCheckbox.Location = new System.Drawing.Point(6, 23);
+            this.betaVersionCheckbox.Location = new System.Drawing.Point(6, -34);
             this.betaVersionCheckbox.Name = "betaVersionCheckbox";
             this.betaVersionCheckbox.Size = new System.Drawing.Size(91, 17);
             this.betaVersionCheckbox.TabIndex = 18;
@@ -255,7 +255,7 @@ namespace SoundSwitch.UI.Forms
             this.tooltipInfoComboBox.FormattingEnabled = true;
             this.tooltipInfoComboBox.Location = new System.Drawing.Point(98, 98);
             this.tooltipInfoComboBox.Name = "tooltipInfoComboBox";
-            this.tooltipInfoComboBox.Size = new System.Drawing.Size(121, 21);
+            this.tooltipInfoComboBox.Size = new System.Drawing.Size(177, 21);
             this.tooltipInfoComboBox.TabIndex = 20;
             this.tooltipInfoComboBox.SelectedValueChanged += new System.EventHandler(this.tooltipInfoComboBox_SelectedValueChanged);
             // 
