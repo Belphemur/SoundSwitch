@@ -25,6 +25,8 @@ using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.NotificationManager;
+using SoundSwitch.Framework.TooltipInfoManager;
+using SoundSwitch.Framework.TooltipInfoManager.TootipInfo;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
 using SoundSwitch.Util;
@@ -93,6 +95,8 @@ namespace SoundSwitch.UI.Forms
             stealthUpdateCheckbox.Checked = AppModel.Instance.StealthUpdate;
             var toolTipStealthUpdate = new ToolTip();
             toolTipStealthUpdate.SetToolTip(stealthUpdateCheckbox, SettingsString.stealthUpdateExplanation);
+
+            tooltipInfoComboBox.DataSource = new TooltipInfoFactory().AllImplementations.Values.ToArray();
 
             _loaded = true;
         }
@@ -207,6 +211,20 @@ namespace SoundSwitch.UI.Forms
             }
 
             AppModel.Instance.NotificationSettings = (NotificationTypeEnum) value;
+        }
+
+
+        private void tooltipInfoComboBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (!_loaded)
+                return;
+            var value = ((ComboBox)sender).SelectedValue;
+
+            if (value == null)
+                return;
+
+            var tooltip = (ITooltipInfo) value;
+            new TooltipInfoManager(AppModel.Instance.NotifyIcon).CurrentTooltipInfo = tooltip.Type();
         }
 
         private void selectSoundButton_Click(object sender, EventArgs e)
@@ -392,5 +410,6 @@ namespace SoundSwitch.UI.Forms
         {
             AppModel.Instance.StealthUpdate = stealthUpdateCheckbox.Checked;
         }
+
     }
 }

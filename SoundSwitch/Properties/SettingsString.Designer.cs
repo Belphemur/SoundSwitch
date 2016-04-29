@@ -259,6 +259,15 @@ namespace SoundSwitch.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tooltip on Hover.
+        /// </summary>
+        internal static string tooltip {
+            get {
+                return ResourceManager.GetString("tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Update Settings.
         /// </summary>
         internal static string updateSettings {

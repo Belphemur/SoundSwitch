@@ -25,6 +25,9 @@ namespace SoundSwitch.Framework.TooltipInfoManager
             get { return AppConfigs.Configuration.TooltipInfo; }
             set
             {
+                if (value == AppConfigs.Configuration.TooltipInfo)
+                    return;
+
                 AppConfigs.Configuration.TooltipInfo = value;
                 AppConfigs.Configuration.Save();
             }

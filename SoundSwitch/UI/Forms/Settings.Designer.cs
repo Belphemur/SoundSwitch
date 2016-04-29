@@ -45,6 +45,8 @@ namespace SoundSwitch.UI.Forms
             this.stealthUpdateCheckbox = new System.Windows.Forms.CheckBox();
             this.betaVersionCheckbox = new System.Windows.Forms.CheckBox();
             this.audioSettingsGroup = new System.Windows.Forms.GroupBox();
+            this.tooltipLabel = new System.Windows.Forms.Label();
+            this.tooltipInfoComboBox = new System.Windows.Forms.ComboBox();
             this.selectSoundButton = new System.Windows.Forms.Button();
             this.notifLabel = new System.Windows.Forms.Label();
             this.notificationComboBox = new System.Windows.Forms.ComboBox();
@@ -90,7 +92,7 @@ namespace SoundSwitch.UI.Forms
             // 
             this.communicationCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.communicationCheckbox.AutoSize = true;
-            this.communicationCheckbox.Location = new System.Drawing.Point(6, 19);
+            this.communicationCheckbox.Location = new System.Drawing.Point(6, 26);
             this.communicationCheckbox.Name = "communicationCheckbox";
             this.communicationCheckbox.Size = new System.Drawing.Size(140, 17);
             this.communicationCheckbox.TabIndex = 12;
@@ -224,21 +226,43 @@ namespace SoundSwitch.UI.Forms
             // 
             // audioSettingsGroup
             // 
+            this.audioSettingsGroup.Controls.Add(this.tooltipLabel);
+            this.audioSettingsGroup.Controls.Add(this.tooltipInfoComboBox);
             this.audioSettingsGroup.Controls.Add(this.communicationCheckbox);
             this.audioSettingsGroup.Controls.Add(this.selectSoundButton);
             this.audioSettingsGroup.Controls.Add(this.notifLabel);
             this.audioSettingsGroup.Controls.Add(this.notificationComboBox);
             this.audioSettingsGroup.Location = new System.Drawing.Point(3, 55);
             this.audioSettingsGroup.Name = "audioSettingsGroup";
-            this.audioSettingsGroup.Size = new System.Drawing.Size(312, 100);
+            this.audioSettingsGroup.Size = new System.Drawing.Size(312, 131);
             this.audioSettingsGroup.TabIndex = 13;
             this.audioSettingsGroup.TabStop = false;
             this.audioSettingsGroup.Text = "Audio Settings";
             // 
+            // tooltipLabel
+            // 
+            this.tooltipLabel.AutoSize = true;
+            this.tooltipLabel.Location = new System.Drawing.Point(6, 102);
+            this.tooltipLabel.Name = "tooltipLabel";
+            this.tooltipLabel.Size = new System.Drawing.Size(86, 13);
+            this.tooltipLabel.TabIndex = 21;
+            this.tooltipLabel.Text = "Tooltip on Hover";
+            // 
+            // tooltipInfoComboBox
+            // 
+            this.tooltipInfoComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.tooltipInfoComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.tooltipInfoComboBox.FormattingEnabled = true;
+            this.tooltipInfoComboBox.Location = new System.Drawing.Point(98, 98);
+            this.tooltipInfoComboBox.Name = "tooltipInfoComboBox";
+            this.tooltipInfoComboBox.Size = new System.Drawing.Size(121, 21);
+            this.tooltipInfoComboBox.TabIndex = 20;
+            this.tooltipInfoComboBox.SelectedValueChanged += new System.EventHandler(this.tooltipInfoComboBox_SelectedValueChanged);
+            // 
             // selectSoundButton
             // 
             this.selectSoundButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.selectSoundButton.Location = new System.Drawing.Point(255, 52);
+            this.selectSoundButton.Location = new System.Drawing.Point(281, 58);
             this.selectSoundButton.Name = "selectSoundButton";
             this.selectSoundButton.Size = new System.Drawing.Size(24, 23);
             this.selectSoundButton.TabIndex = 19;
@@ -251,7 +275,7 @@ namespace SoundSwitch.UI.Forms
             // 
             this.notifLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.notifLabel.AutoSize = true;
-            this.notifLabel.Location = new System.Drawing.Point(6, 57);
+            this.notifLabel.Location = new System.Drawing.Point(6, 64);
             this.notifLabel.Name = "notifLabel";
             this.notifLabel.Size = new System.Drawing.Size(60, 13);
             this.notifLabel.TabIndex = 17;
@@ -262,7 +286,7 @@ namespace SoundSwitch.UI.Forms
             this.notificationComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.notificationComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.notificationComboBox.FormattingEnabled = true;
-            this.notificationComboBox.Location = new System.Drawing.Point(72, 52);
+            this.notificationComboBox.Location = new System.Drawing.Point(98, 59);
             this.notificationComboBox.Name = "notificationComboBox";
             this.notificationComboBox.Size = new System.Drawing.Size(177, 21);
             this.notificationComboBox.TabIndex = 16;
@@ -362,5 +386,7 @@ namespace SoundSwitch.UI.Forms
         private System.Windows.Forms.GroupBox audioSettingsGroup;
         private System.Windows.Forms.GroupBox updateSettingsGroup;
         private System.Windows.Forms.CheckBox stealthUpdateCheckbox;
+        private System.Windows.Forms.ComboBox tooltipInfoComboBox;
+        private System.Windows.Forms.Label tooltipLabel;
     }
 }
