@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using SoundSwitch.Framework.Audio;
 
-namespace SoundSwitch.Framework.NotificationManager.Notification.configuration
+namespace SoundSwitch.Framework.NotificationManager.Notification.Configuration
 {
     public interface INotificationConfiguration
     {

@@ -1,6 +1,6 @@
 ﻿using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework.Audio;
-using SoundSwitch.Framework.NotificationManager.Notification.configuration;
+using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
 using SoundSwitch.Properties;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification

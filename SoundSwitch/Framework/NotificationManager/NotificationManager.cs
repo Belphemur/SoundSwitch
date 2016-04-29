@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification;
-using SoundSwitch.Framework.NotificationManager.Notification.configuration;
+using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
 
