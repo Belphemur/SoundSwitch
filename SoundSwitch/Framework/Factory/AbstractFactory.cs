@@ -10,8 +10,8 @@ namespace SoundSwitch.Framework.Factory
     /// <summary>
     ///     Used to build factory based on Enums
     /// </summary>
-    /// <typeparam name="TEnum"></typeparam>
-    /// <typeparam name="TImplementation"></typeparam>
+    /// <typeparam name="TEnum">The Enum defining the type</typeparam>
+    /// <typeparam name="TImplementation">The implementation of the enum</typeparam>
     public abstract class AbstractFactory<TEnum, TImplementation> where TImplementation : IEnumImpl<TEnum>
         where TEnum : struct, IConvertible
     {
