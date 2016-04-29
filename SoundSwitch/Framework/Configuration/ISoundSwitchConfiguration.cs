@@ -45,6 +45,6 @@ namespace SoundSwitch.Framework.Configuration
         bool SubscribedBetaVersion { get; set; }
         string CustomNotificationFilePath { get; set; }
         UpdateState UpdateState { get; set; }
-        ToolTipInfoTypeEnum TooltipInfo { get; set; }
+        TooltipInfoTypeEnum TooltipInfo { get; set; }
     }
 }

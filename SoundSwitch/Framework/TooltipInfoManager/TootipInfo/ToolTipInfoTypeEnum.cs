@@ -1,6 +1,6 @@
 ﻿namespace SoundSwitch.Framework.TooltipInfoManager.TootipInfo
 {
-    public enum ToolTipInfoTypeEnum
+    public enum TooltipInfoTypeEnum
     {
         Recording,
         Playback,

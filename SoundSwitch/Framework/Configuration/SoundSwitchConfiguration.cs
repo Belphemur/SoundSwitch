@@ -39,7 +39,7 @@ namespace SoundSwitch.Framework.Configuration
             UpdateCheckInterval = 3600 * 12;
             UpdateState = UpdateState.Steath;
             SubscribedBetaVersion = false;
-            TooltipInfo = ToolTipInfoTypeEnum.Playback;
+            TooltipInfo = TooltipInfoTypeEnum.Playback;
 
         }
 
@@ -58,7 +58,7 @@ namespace SoundSwitch.Framework.Configuration
         public bool ChangeCommunications { get; set; }
         public uint UpdateCheckInterval { get; set; }
         public UpdateState UpdateState { get; set; }
-        public ToolTipInfoTypeEnum TooltipInfo { get; set; }
+        public TooltipInfoTypeEnum TooltipInfo { get; set; }
 
         /*TODO: Remove in next VERSION (3.7.0)*/
         [Obsolete("Use the NotificationSettings instead.")]

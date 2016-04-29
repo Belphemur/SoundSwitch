@@ -4,14 +4,14 @@ using SoundSwitch.Framework.TooltipInfoManager.TootipInfo;
 
 namespace SoundSwitch.Framework.TooltipInfoManager
 {
-    public class TooltipInfoFactory : AbstractFactory<ToolTipInfoTypeEnum, ITooltipInfo>
+    public class TooltipInfoFactory : AbstractFactory<TooltipInfoTypeEnum, ITooltipInfo>
     {
-        private static readonly IDictionary<ToolTipInfoTypeEnum, ITooltipInfo> TooltipInfos = new Dictionary
-            <ToolTipInfoTypeEnum, ITooltipInfo>
+        private static readonly IDictionary<TooltipInfoTypeEnum, ITooltipInfo> TooltipInfos = new Dictionary
+            <TooltipInfoTypeEnum, ITooltipInfo>
         {
-            {ToolTipInfoTypeEnum.Playback, new TooltipInfoPlayback()},
-            {ToolTipInfoTypeEnum.Recording, new TooltipInfoRecording()},
-            {ToolTipInfoTypeEnum.Both, new TooltipInfoBoth()}
+            {TooltipInfoTypeEnum.Playback, new TooltipInfoPlayback()},
+            {TooltipInfoTypeEnum.Recording, new TooltipInfoRecording()},
+            {TooltipInfoTypeEnum.Both, new TooltipInfoBoth()}
         };
 
         public TooltipInfoFactory() : base(TooltipInfos)

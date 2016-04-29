@@ -24,9 +24,9 @@ namespace SoundSwitch.Framework.TooltipInfoManager.TootipInfo
         ///     Type of the Tooltip info
         /// </summary>
         /// <returns></returns>
-        public ToolTipInfoTypeEnum Type()
+        public TooltipInfoTypeEnum Type()
         {
-            return ToolTipInfoTypeEnum.Both;
+            return TooltipInfoTypeEnum.Both;
         }
 
         public override string ToString()

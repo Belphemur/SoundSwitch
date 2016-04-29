@@ -20,7 +20,7 @@ namespace SoundSwitch.Framework.TooltipInfoManager
             _icon.BalloonTipClosed += IconOnBalloonTipClosed;
         }
 
-        public ToolTipInfoTypeEnum CurrentTooltipInfo
+        public TooltipInfoTypeEnum CurrentTooltipInfo
         {
             get { return AppConfigs.Configuration.TooltipInfo; }
             set

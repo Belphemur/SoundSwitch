@@ -269,7 +269,7 @@
     <Compile Include="Framework\TooltipInfoManager\TootipInfo\TooltipInfoBoth.cs" />
     <Compile Include="Framework\TooltipInfoManager\TootipInfo\TooltipInfoPlayback.cs" />
     <Compile Include="Framework\TooltipInfoManager\TootipInfo\TooltipInfoRecording.cs" />
-    <Compile Include="Framework\TooltipInfoManager\TootipInfo\ToolTipInfoTypeEnum.cs" />
+    <Compile Include="Framework\TooltipInfoManager\TootipInfo\TooltipInfoTypeEnum.cs" />
     <Compile Include="Framework\Updater\AutoUpdater.cs" />
     <Compile Include="Framework\Updater\GitHubRelease.cs" />
     <Compile Include="Framework\Updater\IntervalUpdateChecker.cs" />
