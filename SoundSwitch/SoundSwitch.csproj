@@ -263,6 +263,13 @@
     <Compile Include="Framework\NotificationManager\Notification\NotificationWindows.cs" />
     <Compile Include="Framework\NotificationManager\Notification\NotificationNone.cs" />
     <Compile Include="Framework\NotificationManager\NotificationType.cs" />
+    <Compile Include="Framework\TooltipInfoManager\TooltipInfoFactory.cs" />
+    <Compile Include="Framework\TooltipInfoManager\TooltipInfoManager.cs" />
+    <Compile Include="Framework\TooltipInfoManager\TootipInfo\ITooltipInfo.cs" />
+    <Compile Include="Framework\TooltipInfoManager\TootipInfo\TooltipInfoBoth.cs" />
+    <Compile Include="Framework\TooltipInfoManager\TootipInfo\TooltipInfoPlayback.cs" />
+    <Compile Include="Framework\TooltipInfoManager\TootipInfo\TooltipInfoRecording.cs" />
+    <Compile Include="Framework\TooltipInfoManager\TootipInfo\ToolTipInfoTypeEnum.cs" />
     <Compile Include="Framework\Updater\AutoUpdater.cs" />
     <Compile Include="Framework\Updater\GitHubRelease.cs" />
     <Compile Include="Framework\Updater\IntervalUpdateChecker.cs" />
@@ -288,6 +295,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SettingsString.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\TooltipInfo.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TooltipInfo.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\TrayIconStrings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -361,6 +373,11 @@
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>SettingsString.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\TooltipInfo.fr.resx" />
+    <EmbeddedResource Include="Properties\TooltipInfo.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TooltipInfo.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\TrayIconStrings.fr.resx" />
     <EmbeddedResource Include="Properties\TrayIconStrings.resx">

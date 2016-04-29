@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 namespace SoundSwitch.Framework.Factory
@@ -12,9 +13,9 @@ namespace SoundSwitch.Framework.Factory
     {
         public IReadOnlyDictionary<TEnum, TImplementation> AllImplementations { get; }
 
-        protected AbstractFactory(IReadOnlyDictionary<TEnum, TImplementation> allImplementations)
+        protected AbstractFactory(IDictionary<TEnum, TImplementation> allImplementations)
         {
-            AllImplementations = allImplementations;
+            AllImplementations = new ReadOnlyDictionary<TEnum, TImplementation>(allImplementations);
         }
 
         /// <summary>

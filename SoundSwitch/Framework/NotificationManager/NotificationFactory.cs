@@ -16,7 +16,7 @@ namespace SoundSwitch.Framework.NotificationManager
             {NotificationTypeEnum.CustomNotification, new NotificationCustom()}
         };
 
-        public NotificationFactory() : base(new ReadOnlyDictionary<NotificationTypeEnum, INotification>(Notifications))
+        public NotificationFactory() : base(Notifications)
         {
         }
     }
