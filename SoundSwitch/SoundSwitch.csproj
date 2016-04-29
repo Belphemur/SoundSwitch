@@ -262,7 +262,7 @@
     <Compile Include="Framework\NotificationManager\Notification\NotificationSound.cs" />
     <Compile Include="Framework\NotificationManager\Notification\NotificationWindows.cs" />
     <Compile Include="Framework\NotificationManager\Notification\NotificationNone.cs" />
-    <Compile Include="Framework\NotificationManager\NotificationType.cs" />
+    <Compile Include="Framework\NotificationManager\NotificationTypeEnum.cs" />
     <Compile Include="Framework\TooltipInfoManager\TooltipInfoFactory.cs" />
     <Compile Include="Framework\TooltipInfoManager\TooltipInfoManager.cs" />
     <Compile Include="Framework\TooltipInfoManager\TootipInfo\ITooltipInfo.cs" />
