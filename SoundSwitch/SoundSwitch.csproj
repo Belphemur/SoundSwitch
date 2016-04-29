@@ -245,6 +245,12 @@
     <Compile Include="Framework\Configuration\IIPCConfiguration.cs" />
     <Compile Include="Framework\Configuration\ISoundSwitchConfiguration.cs" />
     <Compile Include="Framework\Configuration\SoundSwitchConfiguration.cs" />
+    <Compile Include="Framework\DeviceCyclerManager\DeviceCycler\ADeviceCycler.cs" />
+    <Compile Include="Framework\DeviceCyclerManager\DeviceCycler\DeviceCyclerAvailable.cs" />
+    <Compile Include="Framework\DeviceCyclerManager\DeviceCycler\DeviceCyclerAll.cs" />
+    <Compile Include="Framework\DeviceCyclerManager\DeviceCycler\DeviceCyclerEnumType.cs" />
+    <Compile Include="Framework\DeviceCyclerManager\DeviceCycler\DeviceCyclerFactory.cs" />
+    <Compile Include="Framework\DeviceCyclerManager\DeviceCycler\IDeviceCycler.cs" />
     <Compile Include="Framework\Factory\AbstractFactory.cs" />
     <Compile Include="Framework\Factory\IEnumImpl.cs" />
     <Compile Include="Framework\HotKeys.cs" />
@@ -286,6 +292,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AboutStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AudioCycler.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AudioCycler.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\Notifications.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -353,6 +364,11 @@
     <EmbeddedResource Include="Properties\AboutStrings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>AboutStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\AudioCycler.fr.resx" />
+    <EmbeddedResource Include="Properties\AudioCycler.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AudioCycler.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Notifications.fr.resx" />
     <EmbeddedResource Include="Properties\Notifications.resx">
