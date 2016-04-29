@@ -158,13 +158,13 @@
 		<value>All audio devices</value>
 	</data>
 	<data name="actives" xml:space="preserve">
-		<value>Only available audio devices</value>
+		<value>Only selected audio devices</value>
 	</data>
 	<data name="optionLabel" xml:space="preserve">
 		<value>Cycle through</value>
 	</data>
 	<data name="tooltipExplanation" xml:space="preserve">
 		<value>Choose between cycling through your selected device that are connected (Default)
-Or through all the connected devices.</value>
+Or through all the connected devices regardless of your settings.</value>
 	</data>
 </root>
