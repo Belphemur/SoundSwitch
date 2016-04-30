@@ -19,7 +19,7 @@ namespace SoundSwitch.Framework.TooltipInfoManager.TootipInfo
             var playbackDefaultDevice =
                 AppModel.Instance.ActiveAudioDeviceLister.GetPlaybackDevices()
                     .FirstOrDefault(device => device.IsDefault(Role.Console));
-            return playbackDefaultDevice == null ? null : string.Format(TooltipInfo.currentlyActive, playbackDefaultDevice);
+            return playbackDefaultDevice == null ? null : string.Format(TooltipInfo.playbackActive, playbackDefaultDevice);
         }
 
         public override string ToString()

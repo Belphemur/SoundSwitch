@@ -106,13 +106,16 @@
 	<data name="both" xml:space="preserve">
 		<value>Tout les périphériques</value>
 	</data>
-	<data name="currentlyActive" xml:space="preserve">
-		<value>{0} est actif</value>
-	</data>
 	<data name="titleTooltip" xml:space="preserve">
 		<value>Périphérique Actif</value>
 	</data>
 	<data name="none" xml:space="preserve">
 		<value>Pas de notification</value>
+	</data>
+	<data name="recordingActive" xml:space="preserve">
+		<value>Enr: {0}</value>
+	</data>
+	<data name="playbackActive" xml:space="preserve">
+		<value>Lec: {0}</value>
 	</data>
 </root>

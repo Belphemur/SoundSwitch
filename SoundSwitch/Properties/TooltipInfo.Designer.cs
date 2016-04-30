@@ -70,15 +70,6 @@ namespace SoundSwitch.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} is currently active.
-        /// </summary>
-        internal static string currentlyActive {
-            get {
-                return ResourceManager.GetString("currentlyActive", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to No tooltip.
         /// </summary>
         internal static string none {
@@ -97,11 +88,29 @@ namespace SoundSwitch.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Play: {0}.
+        /// </summary>
+        internal static string playbackActive {
+            get {
+                return ResourceManager.GetString("playbackActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recording Device.
         /// </summary>
         internal static string recording {
             get {
                 return ResourceManager.GetString("recording", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rec: {0}.
+        /// </summary>
+        internal static string recordingActive {
+            get {
+                return ResourceManager.GetString("recordingActive", resourceCulture);
             }
         }
         

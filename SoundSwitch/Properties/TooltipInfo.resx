@@ -97,9 +97,6 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-	<data name="currentlyActive" xml:space="preserve">
-		<value>{0} is currently active</value>
-	</data>
 	<data name="recording" xml:space="preserve">
 		<value>Recording Device</value>
 	</data>
@@ -114,5 +111,11 @@
 	</data>
 	<data name="none" xml:space="preserve">
 		<value>No tooltip</value>
+	</data>
+	<data name="recordingActive" xml:space="preserve">
+		<value>Rec: {0}</value>
+	</data>
+	<data name="playbackActive" xml:space="preserve">
+		<value>Play: {0}</value>
 	</data>
 </root>
