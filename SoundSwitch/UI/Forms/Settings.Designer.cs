@@ -30,8 +30,8 @@ namespace SoundSwitch.UI.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewGroup listViewGroup5 = new System.Windows.Forms.ListViewGroup(global::SoundSwitch.Properties.SettingsString.selected, System.Windows.Forms.HorizontalAlignment.Center);
-            System.Windows.Forms.ListViewGroup listViewGroup6 = new System.Windows.Forms.ListViewGroup(global::SoundSwitch.Properties.SettingsString.selected, System.Windows.Forms.HorizontalAlignment.Center);
+            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup(global::SoundSwitch.Properties.SettingsString.selected, System.Windows.Forms.HorizontalAlignment.Center);
+            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup(global::SoundSwitch.Properties.SettingsString.selected, System.Windows.Forms.HorizontalAlignment.Center);
             this.RunAtStartup = new System.Windows.Forms.CheckBox();
             this.closeButton = new System.Windows.Forms.Button();
             this.communicationCheckbox = new System.Windows.Forms.CheckBox();
@@ -45,6 +45,8 @@ namespace SoundSwitch.UI.Forms
             this.stealthUpdateCheckbox = new System.Windows.Forms.CheckBox();
             this.betaVersionCheckbox = new System.Windows.Forms.CheckBox();
             this.audioSettingsGroup = new System.Windows.Forms.GroupBox();
+            this.cyclerLabel = new System.Windows.Forms.Label();
+            this.cyclerComboBox = new System.Windows.Forms.ComboBox();
             this.tooltipLabel = new System.Windows.Forms.Label();
             this.tooltipInfoComboBox = new System.Windows.Forms.ComboBox();
             this.selectSoundButton = new System.Windows.Forms.Button();
@@ -55,8 +57,6 @@ namespace SoundSwitch.UI.Forms
             this.hotkeysLabel = new System.Windows.Forms.Label();
             this.selectSoundFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.hotkeysCheckbox = new System.Windows.Forms.CheckBox();
-            this.cyclerLabel = new System.Windows.Forms.Label();
-            this.cyclerComboBox = new System.Windows.Forms.ComboBox();
             this.tabControl.SuspendLayout();
             this.playbackPage.SuspendLayout();
             this.recordingPage.SuspendLayout();
@@ -123,7 +123,7 @@ namespace SoundSwitch.UI.Forms
             this.playbackPage.Location = new System.Drawing.Point(4, 22);
             this.playbackPage.Name = "playbackPage";
             this.playbackPage.Padding = new System.Windows.Forms.Padding(3);
-            this.playbackPage.Size = new System.Drawing.Size(533, 230);
+            this.playbackPage.Size = new System.Drawing.Size(533, 253);
             this.playbackPage.TabIndex = 0;
             this.playbackPage.Text = global::SoundSwitch.Properties.SettingsString.playback;
             this.playbackPage.UseVisualStyleBackColor = true;
@@ -134,11 +134,11 @@ namespace SoundSwitch.UI.Forms
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.playbackListView.CheckBoxes = true;
-            listViewGroup5.Header = global::SoundSwitch.Properties.SettingsString.selected;
-            listViewGroup5.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
-            listViewGroup5.Name = "selectedGroup";
+            listViewGroup1.Header = global::SoundSwitch.Properties.SettingsString.selected;
+            listViewGroup1.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
+            listViewGroup1.Name = "selectedGroup";
             this.playbackListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup5});
+            listViewGroup1});
             this.playbackListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.playbackListView.Location = new System.Drawing.Point(-4, 0);
             this.playbackListView.Name = "playbackListView";
@@ -153,7 +153,7 @@ namespace SoundSwitch.UI.Forms
             this.recordingPage.Location = new System.Drawing.Point(4, 22);
             this.recordingPage.Name = "recordingPage";
             this.recordingPage.Padding = new System.Windows.Forms.Padding(3);
-            this.recordingPage.Size = new System.Drawing.Size(533, 230);
+            this.recordingPage.Size = new System.Drawing.Size(533, 253);
             this.recordingPage.TabIndex = 1;
             this.recordingPage.Text = global::SoundSwitch.Properties.SettingsString.recording;
             this.recordingPage.UseVisualStyleBackColor = true;
@@ -165,11 +165,11 @@ namespace SoundSwitch.UI.Forms
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.recordingListView.CheckBoxes = true;
-            listViewGroup6.Header = global::SoundSwitch.Properties.SettingsString.selected;
-            listViewGroup6.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
-            listViewGroup6.Name = "selectedGroup";
+            listViewGroup2.Header = global::SoundSwitch.Properties.SettingsString.selected;
+            listViewGroup2.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
+            listViewGroup2.Name = "selectedGroup";
             this.recordingListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup6});
+            listViewGroup2});
             this.recordingListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.recordingListView.Location = new System.Drawing.Point(-2, 0);
             this.recordingListView.Name = "recordingListView";
@@ -206,7 +206,7 @@ namespace SoundSwitch.UI.Forms
             // stealthUpdateCheckbox
             // 
             this.stealthUpdateCheckbox.AutoSize = true;
-            this.stealthUpdateCheckbox.Location = new System.Drawing.Point(7, 47);
+            this.stealthUpdateCheckbox.Location = new System.Drawing.Point(6, 23);
             this.stealthUpdateCheckbox.Name = "stealthUpdateCheckbox";
             this.stealthUpdateCheckbox.Size = new System.Drawing.Size(111, 17);
             this.stealthUpdateCheckbox.TabIndex = 19;
@@ -218,7 +218,7 @@ namespace SoundSwitch.UI.Forms
             // 
             this.betaVersionCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.betaVersionCheckbox.AutoSize = true;
-            this.betaVersionCheckbox.Location = new System.Drawing.Point(6, -34);
+            this.betaVersionCheckbox.Location = new System.Drawing.Point(6, 52);
             this.betaVersionCheckbox.Name = "betaVersionCheckbox";
             this.betaVersionCheckbox.Size = new System.Drawing.Size(91, 17);
             this.betaVersionCheckbox.TabIndex = 18;
@@ -242,6 +242,27 @@ namespace SoundSwitch.UI.Forms
             this.audioSettingsGroup.TabIndex = 13;
             this.audioSettingsGroup.TabStop = false;
             this.audioSettingsGroup.Text = "Audio Settings";
+            // 
+            // cyclerLabel
+            // 
+            this.cyclerLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cyclerLabel.AutoSize = true;
+            this.cyclerLabel.Location = new System.Drawing.Point(6, 150);
+            this.cyclerLabel.Name = "cyclerLabel";
+            this.cyclerLabel.Size = new System.Drawing.Size(72, 13);
+            this.cyclerLabel.TabIndex = 23;
+            this.cyclerLabel.Text = "Cycle through";
+            // 
+            // cyclerComboBox
+            // 
+            this.cyclerComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cyclerComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cyclerComboBox.FormattingEnabled = true;
+            this.cyclerComboBox.Location = new System.Drawing.Point(98, 146);
+            this.cyclerComboBox.Name = "cyclerComboBox";
+            this.cyclerComboBox.Size = new System.Drawing.Size(177, 21);
+            this.cyclerComboBox.TabIndex = 22;
+            this.cyclerComboBox.SelectedValueChanged += new System.EventHandler(this.cyclerComboBox_SelectedValueChanged);
             // 
             // tooltipLabel
             // 
@@ -339,27 +360,6 @@ namespace SoundSwitch.UI.Forms
             this.hotkeysCheckbox.TabIndex = 20;
             this.hotkeysCheckbox.UseVisualStyleBackColor = true;
             this.hotkeysCheckbox.CheckedChanged += new System.EventHandler(this.hotkeysCheckbox_CheckedChanged);
-            // 
-            // cyclerLabel
-            // 
-            this.cyclerLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cyclerLabel.AutoSize = true;
-            this.cyclerLabel.Location = new System.Drawing.Point(6, 150);
-            this.cyclerLabel.Name = "cyclerLabel";
-            this.cyclerLabel.Size = new System.Drawing.Size(86, 13);
-            this.cyclerLabel.TabIndex = 23;
-            this.cyclerLabel.Text = Properties.AudioCycler.optionLabel;
-            // 
-            // cyclerComboBox
-            // 
-            this.cyclerComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cyclerComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cyclerComboBox.FormattingEnabled = true;
-            this.cyclerComboBox.Location = new System.Drawing.Point(98, 146);
-            this.cyclerComboBox.Name = "cyclerComboBox";
-            this.cyclerComboBox.Size = new System.Drawing.Size(177, 21);
-            this.cyclerComboBox.TabIndex = 22;
-            this.cyclerComboBox.SelectedValueChanged += new System.EventHandler(this.cyclerComboBox_SelectedValueChanged);
             // 
             // Settings
             // 
