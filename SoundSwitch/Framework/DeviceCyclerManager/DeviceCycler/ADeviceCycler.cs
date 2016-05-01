@@ -24,17 +24,13 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         /// </summary>
         /// <param name="audioDevices"></param>
         /// <param name="type"></param>
-        /// <param name="lastDevice"></param>
         /// <returns></returns>
         protected IAudioDevice GetNextDevice(ICollection<IAudioDevice> audioDevices, AudioDeviceType type)
         {
             IAudioDevice lastDevice;
-            if (!_lastDevices.TryGetValue(type, out lastDevice))
-            {
-                return audioDevices.First();
-            }
+            _lastDevices.TryGetValue(type, out lastDevice);
 
-            var defaultDev = audioDevices.FirstOrDefault(device => device.Id == lastDevice.Id) ??
+            var defaultDev = lastDevice ??
                              audioDevices.FirstOrDefault(device => device.IsDefault(Role.Console)) ??
                              audioDevices.Last();
             var next = audioDevices.SkipWhile((device, i) => !Equals(device, defaultDev)).Skip(1).FirstOrDefault() ??
