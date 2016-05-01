@@ -1,5 +1,18 @@
 # Change Log
 
+## [v3.9.9](https://github.com/Belphemur/SoundSwitch/tree/v3.9.9) (2016-05-01)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.9.8...v3.9.9)
+
+**Implemented enhancements:**
+
+- Use the Tooltip of the Systray instead of a Baloontip to display active device [\#90](https://github.com/Belphemur/SoundSwitch/issues/90)
+
+**Fixed bugs:**
+
+- When launching SoundSwitch, it always set as default the already default device [\#93](https://github.com/Belphemur/SoundSwitch/issues/93)
+- Missing Beta mode in Settings [\#92](https://github.com/Belphemur/SoundSwitch/issues/92)
+- Infinite notification popup [\#91](https://github.com/Belphemur/SoundSwitch/issues/91)
+
 ## [v3.9.8](https://github.com/Belphemur/SoundSwitch/tree/v3.9.8) (2016-04-29)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.9.7...v3.9.8)
 
