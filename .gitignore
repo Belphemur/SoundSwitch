@@ -44,3 +44,13 @@ GenerateChangelog.bat
 
 # nuget
 packages/
+/SoundSwitch/Properties/UpdateFormStrings.fi.resx
+/SoundSwitch/Properties/TrayIconStrings.fi.resx
+/SoundSwitch/Properties/SettingsString.fi.resx
+/SoundSwitch/Properties/Resources.fi.resx
+/SoundSwitch/Properties/Notifications.fi.resx
+/SoundSwitch/Properties/AboutStrings.fi.resx
+/SoundSwitch160228.vspx
+/SoundSwitch.VC.VC.opendb
+/SoundSwitch.VC.db
+/SoundSwitch.psess

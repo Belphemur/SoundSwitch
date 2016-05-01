@@ -1,5 +1,32 @@
 # Change Log
 
+## [v3.9.8](https://github.com/Belphemur/SoundSwitch/tree/v3.9.8) (2016-04-29)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.9.7...v3.9.8)
+
+**Implemented enhancements:**
+
+- Show active device on hover Systray Icon [\#88](https://github.com/Belphemur/SoundSwitch/issues/88)
+- Playback devices constantly go in the Disconnected section [\#87](https://github.com/Belphemur/SoundSwitch/issues/87)
+
+**Fixed bugs:**
+
+- Playback devices constantly go in the Disconnected section [\#87](https://github.com/Belphemur/SoundSwitch/issues/87)
+
+## [v3.9.7](https://github.com/Belphemur/SoundSwitch/tree/v3.9.7) (2016-04-15)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.9.6...v3.9.7)
+
+**Implemented enhancements:**
+
+- Request: Cycle through connected devices by double clicking on the system tray icon [\#80](https://github.com/Belphemur/SoundSwitch/issues/80)
+- Generate HTML for Changelog file and add it to the installer [\#79](https://github.com/Belphemur/SoundSwitch/issues/79)
+- Providing 'help' for first time users at the time of installation [\#78](https://github.com/Belphemur/SoundSwitch/issues/78)
+
+**Fixed bugs:**
+
+- SoundSwitch 3.9.6 Cannot install visual c++ redist [\#84](https://github.com/Belphemur/SoundSwitch/issues/84)
+- Pipe system broken: New instance of SoundSwitch doesn't close the previous one [\#81](https://github.com/Belphemur/SoundSwitch/issues/81)
+- Switching already running applications [\#70](https://github.com/Belphemur/SoundSwitch/issues/70)
+
 ## [v3.9.6](https://github.com/Belphemur/SoundSwitch/tree/v3.9.6) (2016-03-10)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.9.5...v3.9.6)
 

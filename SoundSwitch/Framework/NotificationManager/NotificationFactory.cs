@@ -1,53 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using SoundSwitch.Framework.Audio;
+﻿using System.Collections.Generic;
+using SoundSwitch.Framework.Factory;
 using SoundSwitch.Framework.NotificationManager.Notification;
-using SoundSwitch.Model;
-using SoundSwitch.Properties;
 
 namespace SoundSwitch.Framework.NotificationManager
 {
-    public class NotificationFactory
+    public class NotificationFactory : AbstractFactory<NotificationTypeEnum, INotification>
     {
-        /// <summary>
-        ///     Create a notification object linked to the enum value
-        /// </summary>
-        /// <param name="eEnum"></param>
-        /// <exception cref="CachedSoundFileNotExistsException">For a CustomNotification if the Sound file is not present.</exception>
-        /// <returns></returns>
-        public static INotification CreateNotification(NotificationTypeEnum eEnum)
+        private static readonly IDictionary<NotificationTypeEnum, INotification> Notifications = new Dictionary
+            <NotificationTypeEnum, INotification>
         {
-            switch (eEnum)
-            {
-                case NotificationTypeEnum.DefaultWindowsNotification:
-                    return new NotificationWindows(AppModel.Instance.NotifyIcon);
-                case NotificationTypeEnum.SoundNotification:
-                    return new NotificationSound(Resources.NotificationSound);
-                case NotificationTypeEnum.NoNotification:
-                    return new NotificationNone();
-                case NotificationTypeEnum.CustomNotification:
-                    return new NotificationCustom(AppModel.Instance.CustomNotificationSound);
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(eEnum), eEnum, null);
-            }
-        }
+            {NotificationTypeEnum.DefaultWindowsNotification, new NotificationWindows()},
+            {NotificationTypeEnum.SoundNotification, new NotificationSound()},
+            {NotificationTypeEnum.NoNotification, new NotificationNone()},
+            {NotificationTypeEnum.CustomNotification, new NotificationCustom()}
+        };
 
-        /// <summary>
-        /// Return a diplyable list of Notification
-        /// </summary>
-        /// <returns></returns>
-        public static IEnumerable<NotificationDisplayer> GetNotificationDisplayers()
+        public NotificationFactory() : base(Notifications)
         {
-            var displayers = new List<NotificationDisplayer>
-            {
-                new NotificationDisplayer(NotificationTypeEnum.DefaultWindowsNotification,
-                    Properties.Notifications.NotifWindows),
-                new NotificationDisplayer(NotificationTypeEnum.SoundNotification, Properties.Notifications.NotifSound),
-                new NotificationDisplayer(NotificationTypeEnum.CustomNotification, Properties.Notifications.NotifCustom),
-                new NotificationDisplayer(NotificationTypeEnum.NoNotification, Properties.Notifications.NotifNone)
-            };
-            return displayers;
         }
     }
 }

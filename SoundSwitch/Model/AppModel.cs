@@ -22,6 +22,7 @@ using Microsoft.WindowsAPICodePack.ApplicationServices;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Configuration;
+using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.NotificationManager;
 
@@ -41,11 +42,14 @@ namespace SoundSwitch.Model
                 RegisterRecovery();
                 _notificationManager = new NotificationManager(this);
             }
+            _deviceCyclerManager = new DeviceCyclerManager();
         }
 
         public static IAppModel Instance { get; } = new AppModel();
         public NotifyIcon NotifyIcon { get; set; }
         private CachedSound _customNotificationCachedSound;
+        private readonly DeviceCyclerManager _deviceCyclerManager;
+
         public CachedSound CustomNotificationSound
         {
             get {
@@ -481,30 +485,7 @@ namespace SoundSwitch.Model
             {
                 try
                 {
-                    AppLogger.Log.Info("Set Default device", device);
-                    if (!SetCommunications)
-                    {
-                        device.SetAsDefault(Role.Console);
-                        device.SetAsDefault(Role.Multimedia);
-                    }
-                    else
-                    {
-                        AppLogger.Log.Info("Set Default Communication device", device);
-                        device.SetAsDefault(Role.All);
-                    }
-                    switch (device.Type)
-                    {
-                        case AudioDeviceType.Playback:
-                            AppConfigs.Configuration.LastPlaybackActiveId = device.Id;
-                            break;
-                        case AudioDeviceType.Recording:
-                            AppConfigs.Configuration.LastRecordingActiveId = device.Id;
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                    AppConfigs.Configuration.Save();
-                    return true;
+                    return _deviceCyclerManager.SetAsDefault(device);
                 }
                 catch (Exception ex)
                 {
@@ -523,35 +504,15 @@ namespace SoundSwitch.Model
         {
             using (AppLogger.Log.InfoCall())
             {
-                ICollection<IAudioDevice> list = null;
-                string lastActive = null;
-                switch (type)
+                try
                 {
-                    case AudioDeviceType.Playback:
-                        list = AvailablePlaybackDevices;
-                        lastActive = AppConfigs.Configuration.LastPlaybackActiveId;
-                        break;
-                    case AudioDeviceType.Recording:
-                        list = AvailableRecordingDevices;
-                        lastActive = AppConfigs.Configuration.LastRecordingActiveId;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(type), type, null);
+                    return _deviceCyclerManager.CycleDevice(type);
                 }
-
-                switch (list.Count)
+                catch (Exception exception)
                 {
-                    case 0:
-                        ErrorTriggered?.Invoke(this, new ExceptionEvent(new NoDevicesException()));
-                        return false;
-                    case 1:
-                        return false;
+                    ErrorTriggered?.Invoke(this, new ExceptionEvent(exception));
                 }
-                AppLogger.Log.Info("Cycle Audio Devices", list);
-                var defaultDev = list.FirstOrDefault(device => device.Id == lastActive) ?? list.FirstOrDefault(device => device.IsDefault(Role.Console)) ?? list.ElementAt(0);
-                var next = list.SkipWhile((device, i) => !Equals(device, defaultDev)).Skip(1).FirstOrDefault() ?? list.ElementAt(0);
-                AppLogger.Log.Info("Select AudioDevice", next);
-                return SetActiveDevice(next);
+                return false;
             }
         }
 

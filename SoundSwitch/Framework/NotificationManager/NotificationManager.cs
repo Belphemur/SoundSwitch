@@ -3,7 +3,9 @@ using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification;
+using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
 using SoundSwitch.Model;
+using SoundSwitch.Properties;
 
 namespace SoundSwitch.Framework.NotificationManager
 {
@@ -12,10 +14,12 @@ namespace SoundSwitch.Framework.NotificationManager
         private readonly IAppModel _model;
         private string _lastDeviceId;
         private INotification _notification;
+        private readonly NotificationFactory _notificationFactory;
 
         public NotificationManager(IAppModel model)
         {
             _model = model;
+            _notificationFactory = new NotificationFactory();
         }
 
         public void Init()
@@ -39,12 +43,23 @@ namespace SoundSwitch.Framework.NotificationManager
 
         private void SetNotification(NotificationTypeEnum notificationTypeEnum)
         {
+            _notification = _notificationFactory.Get(notificationTypeEnum);
+            _notification.Configuration = new NotificationConfiguration()
+            {
+                Icon = AppModel.Instance.NotifyIcon,
+                DefaultSound = Resources.NotificationSound
+            };
             try
             {
-                _notification = NotificationFactory.CreateNotification(notificationTypeEnum);
+                _notification.Configuration.CustomSound = AppModel.Instance.CustomNotificationSound;
             }
             catch (CachedSoundFileNotExistsException)
             {
+                if (!_notification.NeedCustomSound())
+                {
+                    return;
+                }
+
                 MessageBox.Show(string.Format(Properties.Notifications.AudioFileNotFound, Application.ProductName,
                         Properties.Notifications.NotifSound),Properties.Notifications.AudioFileNotFoundTitle,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
