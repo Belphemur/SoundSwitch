@@ -1,18 +1,17 @@
-﻿using System.Collections.Generic;
-using SoundSwitch.Framework.Factory;
+﻿using SoundSwitch.Framework.Factory;
 using SoundSwitch.Framework.TooltipInfoManager.TootipInfo;
 
 namespace SoundSwitch.Framework.TooltipInfoManager
 {
     public class TooltipInfoFactory : AbstractFactory<TooltipInfoTypeEnum, ITooltipInfo>
     {
-        private static readonly IDictionary<TooltipInfoTypeEnum, ITooltipInfo> TooltipInfos = new Dictionary
+        private static readonly IEnumImplList<TooltipInfoTypeEnum, ITooltipInfo> TooltipInfos = new EnumImplList
             <TooltipInfoTypeEnum, ITooltipInfo>
         {
-            {TooltipInfoTypeEnum.Playback, new TooltipInfoPlayback()},
-            {TooltipInfoTypeEnum.Recording, new TooltipInfoRecording()},
-            {TooltipInfoTypeEnum.Both, new TooltipInfoBoth()},
-            {TooltipInfoTypeEnum.None, new TooltipInfoNone()}
+            new TooltipInfoPlayback(),
+            new TooltipInfoRecording(),
+            new TooltipInfoBoth(),
+            new TooltipInfoNone()
         };
 
         public TooltipInfoFactory() : base(TooltipInfos)

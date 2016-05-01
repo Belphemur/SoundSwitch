@@ -254,6 +254,8 @@
     <Compile Include="Framework\DeviceCyclerManager\DeviceCycler\IDeviceCycler.cs" />
     <Compile Include="Framework\Factory\AbstractFactory.cs" />
     <Compile Include="Framework\Factory\IEnumImpl.cs" />
+    <Compile Include="Framework\Factory\EnumImplList.cs" />
+    <Compile Include="Framework\Factory\IEnumImplList.cs" />
     <Compile Include="Framework\HotKeys.cs" />
     <Compile Include="Framework\HourGlass.cs" />
     <Compile Include="Framework\IPC\IPCClient.cs" />

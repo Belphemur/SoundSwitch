@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
@@ -15,9 +14,9 @@ namespace SoundSwitch.Framework.Factory
     public abstract class AbstractFactory<TEnum, TImplementation> where TImplementation : IEnumImpl<TEnum>
         where TEnum : struct, IConvertible
     {
-        protected AbstractFactory(IDictionary<TEnum, TImplementation> allImplementations)
+        protected AbstractFactory(IEnumImplList<TEnum, TImplementation> enumImplList)
         {
-            AllImplementations = new ReadOnlyDictionary<TEnum, TImplementation>(allImplementations);
+            AllImplementations = enumImplList.ToReadOnlyDictionary();
         }
 
         public IReadOnlyDictionary<TEnum, TImplementation> AllImplementations { get; }
