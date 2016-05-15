@@ -25,7 +25,7 @@ namespace SoundSwitch.UI.Forms
         public About()
         {
             InitializeComponent();
-            Icon = System.Drawing.Icon.FromHandle(Resources.Help.GetHicon());
+            Icon = Resources.HelpIcon;
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

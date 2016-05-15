@@ -368,9 +368,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>AboutStrings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\AudioCycler.fr.resx" />
+    <EmbeddedResource Include="Properties\AudioCycler.fr.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\AudioCycler.resx">
       <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
       <LastGenOutput>AudioCycler.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Notifications.fr.resx" />
@@ -449,19 +452,22 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\page-bottom.ico" />
     <None Include="Resources\page-bottom.png" />
     <None Include="Resources\tick.png" />
     <None Include="Resources\arrow-switch-16.png" />
     <None Include="Resources\arrow-switch-48.png" />
     <None Include="Resources\216676__robinhood76__04864-notification-music-box.wav" />
     <Content Include="Resources\arrow_switch.ico" />
-    <None Include="Resources\cog.png" />
     <None Include="Resources\exit.png" />
+    <None Include="Resources\cog-16.png" />
+    <None Include="Resources\cog.ico" />
     <Content Include="Resources\control-equalizer-blue.png" />
     <Content Include="Resources\control-volume-blue.png" />
     <None Include="Resources\defaultMicrophone.ico" />
     <None Include="Resources\defaultSpeakers.ico" />
-    <Content Include="Resources\help.png" />
+    <None Include="Resources\help-16.png" />
+    <None Include="Resources\help.ico" />
   </ItemGroup>
   <ItemGroup>
     <PublishFile Include="SMDiagnostics">

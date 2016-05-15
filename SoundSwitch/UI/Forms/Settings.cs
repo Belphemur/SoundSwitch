@@ -48,7 +48,7 @@ namespace SoundSwitch.UI.Forms
                 Name = SettingsString.settings + ' ' + AssemblyUtils.GetReleaseState();
                 Text = SettingsString.settings + ' ' + AssemblyUtils.GetReleaseState();
             }
-            Icon = Icon.FromHandle(Resources.Settings.GetHicon());
+            Icon = Resources.SettingsIcon;
             var toolTip = new ToolTip();
             toolTip.SetToolTip(closeButton, SettingsString.closeTooltip);
 
