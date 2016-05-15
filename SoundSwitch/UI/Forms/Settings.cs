@@ -18,12 +18,16 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Configuration;
+using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
+using SoundSwitch.Framework.TooltipInfoManager;
+using SoundSwitch.Framework.TooltipInfoManager.TootipInfo;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
 using SoundSwitch.Util;
@@ -44,7 +48,7 @@ namespace SoundSwitch.UI.Forms
                 Name = SettingsString.settings + ' ' + AssemblyUtils.GetReleaseState();
                 Text = SettingsString.settings + ' ' + AssemblyUtils.GetReleaseState();
             }
-            Icon = Icon.FromHandle(Resources.Settings.GetHicon());
+            Icon = Resources.SettingsIcon;
             var toolTip = new ToolTip();
             toolTip.SetToolTip(closeButton, SettingsString.closeTooltip);
 
@@ -71,9 +75,7 @@ namespace SoundSwitch.UI.Forms
 
             var toolTipNotification = new ToolTip();
             toolTipNotification.SetToolTip(notificationComboBox, Notifications.explanation);
-            notificationComboBox.DisplayMember = "Label";
-            notificationComboBox.ValueMember = "Type";
-            notificationComboBox.DataSource = NotificationFactory.GetNotificationDisplayers();
+            new NotificationFactory().ConfigureListControl(notificationComboBox);
             notificationComboBox.SelectedValue = AppModel.Instance.NotificationSettings;
 
             betaVersionCheckbox.Checked = AppModel.Instance.SubscribedBetaVersions;
@@ -92,6 +94,14 @@ namespace SoundSwitch.UI.Forms
             stealthUpdateCheckbox.Checked = AppModel.Instance.StealthUpdate;
             var toolTipStealthUpdate = new ToolTip();
             toolTipStealthUpdate.SetToolTip(stealthUpdateCheckbox, SettingsString.stealthUpdateExplanation);
+
+            new TooltipInfoFactory().ConfigureListControl(tooltipInfoComboBox);
+            tooltipInfoComboBox.SelectedValue = TooltipInfoManager.CurrentTooltipInfo;
+
+            var toolTipCycler = new ToolTip();
+            toolTipCycler.SetToolTip(cyclerComboBox, AudioCycler.tooltipExplanation);
+            new DeviceCyclerFactory().ConfigureListControl(cyclerComboBox);
+            cyclerComboBox.SelectedValue = DeviceCyclerManager.CurrentCycler;
 
             _loaded = true;
         }
@@ -206,6 +216,33 @@ namespace SoundSwitch.UI.Forms
             }
 
             AppModel.Instance.NotificationSettings = (NotificationTypeEnum) value;
+        }
+
+
+        private void tooltipInfoComboBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (!_loaded)
+                return;
+            var value = ((ComboBox)sender).SelectedValue;
+
+            if (value == null)
+                return;
+
+            var tooltip = (TooltipInfoTypeEnum) value;
+            TooltipInfoManager.CurrentTooltipInfo = tooltip;
+        }
+
+        private void cyclerComboBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (!_loaded)
+                return;
+            var value = ((ComboBox)sender).SelectedValue;
+
+            if (value == null)
+                return;
+
+            var cycler = (DeviceCyclerTypeEnum)value;
+            DeviceCyclerManager.CurrentCycler = cycler;
         }
 
         private void selectSoundButton_Click(object sender, EventArgs e)

@@ -14,7 +14,9 @@
 
 using System;
 using System.Collections.Generic;
+using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
+using SoundSwitch.Framework.TooltipInfoManager.TootipInfo;
 using SoundSwitch.Framework.Updater;
 
 namespace SoundSwitch.Framework.Configuration
@@ -27,8 +29,6 @@ namespace SoundSwitch.Framework.Configuration
 
         HashSet<string> SelectedPlaybackDeviceListId { get; }
         HashSet<string> SelectedRecordingDeviceListId { get; }
-        string LastPlaybackActiveId { get; set; }
-        string LastRecordingActiveId { get; set; }
         bool FirstRun { get; set; }
         HotKeys PlaybackHotKeys { get; set; }
         HotKeys RecordingHotKeys { get; set; }
@@ -44,5 +44,7 @@ namespace SoundSwitch.Framework.Configuration
         bool SubscribedBetaVersion { get; set; }
         string CustomNotificationFilePath { get; set; }
         UpdateState UpdateState { get; set; }
+        TooltipInfoTypeEnum TooltipInfo { get; set; }
+        DeviceCyclerTypeEnum CyclerType { get; set; }
     }
 }

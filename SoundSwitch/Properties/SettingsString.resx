@@ -166,4 +166,7 @@
 	<data name="stealthUpdateExplanation" xml:space="preserve">
 		<value>The application will update itself automatically when a new version is out.</value>
 	</data>
+	<data name="tooltip" xml:space="preserve">
+		<value>Tooltip on hover</value>
+	</data>
 </root>

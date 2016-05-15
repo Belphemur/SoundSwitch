@@ -24,6 +24,7 @@ using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
+using SoundSwitch.Framework.TooltipInfoManager;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
@@ -44,10 +45,13 @@ namespace SoundSwitch.Util
             Text = Application.ProductName
         };
 
+        private readonly TooltipInfoManager _tooltipInfoManager;
+
         private readonly ToolStripMenuItem _updateMenuItem;
 
         public TrayIcon()
         {
+            _tooltipInfoManager = new TooltipInfoManager(NotifyIcon);
             _updateMenuItem = new ToolStripMenuItem(TrayIconStrings.NoUpdate, Resources.Update, OnUpdateClick)
             {
                 Enabled = false
@@ -56,21 +60,34 @@ namespace SoundSwitch.Util
 
             PopulateSettingsMenu();
 
-            _selectionMenu.Items.Add(TrayIconStrings.NoDevSel, Resources.Settings, (sender, e) => ShowSettings());
+            _selectionMenu.Items.Add(TrayIconStrings.NoDevSel, Resources.SettingsSmall, (sender, e) => ShowSettings());
+
+            NotifyIcon.MouseDoubleClick += (sender, args) =>
+            {
+                AppModel.Instance.CycleActiveDevice(AudioDeviceType.Playback);
+            };
 
             NotifyIcon.MouseClick += (sender, e) =>
             {
-                if (e.Button == MouseButtons.Left)
-                {
-                    UpdateDeviceSelectionList();
-                    NotifyIcon.ContextMenuStrip = _selectionMenu;
-                    var mi = typeof (NotifyIcon).GetMethod("ShowContextMenu",
-                        BindingFlags.Instance | BindingFlags.NonPublic);
-                    mi.Invoke(NotifyIcon, null);
+                if (e.Button != MouseButtons.Left) return;
 
-                    NotifyIcon.ContextMenuStrip = _settingsMenu;
-                }
+                UpdateDeviceSelectionList();
+                NotifyIcon.ContextMenuStrip = _selectionMenu;
+                var mi = typeof (NotifyIcon).GetMethod("ShowContextMenu",
+                    BindingFlags.Instance | BindingFlags.NonPublic);
+                mi.Invoke(NotifyIcon, null);
+
+                NotifyIcon.ContextMenuStrip = _settingsMenu;
             };
+
+            NotifyIcon.MouseMove += (sender, args) =>
+            {
+                if (!NotifyIcon.Visible)
+                    return;
+                _tooltipInfoManager.ShowTooltipInfo();
+            };
+            _selectionMenu.Closed += (sender, args) => _tooltipInfoManager.IsBallontipVisible = false;
+            _settingsMenu.Closed += (sender, args) => _tooltipInfoManager.IsBallontipVisible = false;
             SetEventHandlers();
         }
 
@@ -93,8 +110,8 @@ namespace SoundSwitch.Util
             _settingsMenu.Items.Add(TrayIconStrings.mixer, Resources.Mixer,
                 (sender, e) => { Process.Start(new ProcessStartInfo("sndvol.exe")); });
             _settingsMenu.Items.Add("-");
-            _settingsMenu.Items.Add(TrayIconStrings.settings, Resources.Settings, (sender, e) => ShowSettings());
-            _settingsMenu.Items.Add(TrayIconStrings.about, Resources.Help, (sender, e) => new About().Show());
+            _settingsMenu.Items.Add(TrayIconStrings.settings, Resources.SettingsSmall, (sender, e) => ShowSettings());
+            _settingsMenu.Items.Add(TrayIconStrings.about, Resources.HelpSmall, (sender, e) => new About().Show());
             _settingsMenu.Items.Add(_updateMenuItem);
             _settingsMenu.Items.Add("-");
             _settingsMenu.Items.Add(TrayIconStrings.exit, Resources.exit, (sender, e) => Application.Exit());

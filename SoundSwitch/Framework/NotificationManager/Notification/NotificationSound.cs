@@ -5,31 +5,24 @@ using AudioEndPointControllerWrapper;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using SoundSwitch.Framework.Audio;
+using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
+using SoundSwitch.Properties;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification
 {
     public class NotificationSound : INotification
     {
         private readonly MMDeviceEnumerator _deviceEnumerator;
-        private readonly Stream _memoryStreamSound;
 
-        public NotificationSound(Stream memoryStreamSound)
+        public NotificationSound()
         {
-            _memoryStreamSound = memoryStreamSound;
             _deviceEnumerator = new MMDeviceEnumerator();
         }
 
-        private Stream GetStreamCopy()
-        {
-            lock (this)
-            {
-                _memoryStreamSound.Position = 0;
-                var memoryStreamedSound = new MemoryStream();
-                _memoryStreamSound.CopyTo(memoryStreamedSound);
-                memoryStreamedSound.Position = 0;
-                return memoryStreamedSound;
-            }
-        }
+        public NotificationTypeEnum TypeEnum { get; } = NotificationTypeEnum.SoundNotification;
+        public string Label { get; } = Notifications.NotifSound;
+
+        public INotificationConfiguration Configuration { get; set; }
 
         public void NotifyDefaultChanged(IAudioDevice audioDevice)
         {
@@ -57,6 +50,23 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
 
         public void OnSoundChanged(CachedSound newSound)
         {
+        }
+
+        public bool NeedCustomSound()
+        {
+            return false;
+        }
+
+        private Stream GetStreamCopy()
+        {
+            lock (this)
+            {
+                Configuration.DefaultSound.Position = 0;
+                var memoryStreamedSound = new MemoryStream();
+                Configuration.DefaultSound.CopyTo(memoryStreamedSound);
+                memoryStreamedSound.Position = 0;
+                return memoryStreamedSound;
+            }
         }
     }
 }

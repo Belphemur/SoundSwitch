@@ -202,7 +202,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommonMark, Version=0.1.0.0, Culture=neutral, PublicKeyToken=001ef8810438905d, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommonMark.NET.0.10.0\lib\net45\CommonMark.dll</HintPath>
+      <HintPath>..\packages\CommonMark.NET.0.12.0\lib\net45\CommonMark.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -214,7 +214,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -224,6 +224,7 @@
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="TracerX-Logger, Version=6.1.1304.13122, Culture=neutral, processorArchitecture=MSIL">
@@ -238,29 +239,47 @@
     <Compile Include="Framework\Audio\CachedSoundFileNotExistsException.cs" />
     <Compile Include="Framework\Audio\CachedSoundWaveStream.cs" />
     <Compile Include="Framework\AutoStart.cs" />
-    <Compile Include="Framework\Configuration\PipeConfiguration.cs" />
+    <Compile Include="Framework\Configuration\IPCConfiguration.cs" />
     <Compile Include="Framework\Configuration\AppConfigs.cs" />
     <Compile Include="Framework\Configuration\ConfigurationManager.cs" />
-    <Compile Include="Framework\Configuration\IPipeConfiguration.cs" />
+    <Compile Include="Framework\Configuration\IIPCConfiguration.cs" />
     <Compile Include="Framework\Configuration\ISoundSwitchConfiguration.cs" />
     <Compile Include="Framework\Configuration\SoundSwitchConfiguration.cs" />
+    <Compile Include="Framework\DeviceCyclerManager\DeviceCycler\ADeviceCycler.cs" />
+    <Compile Include="Framework\DeviceCyclerManager\DeviceCycler\DeviceCyclerAvailable.cs" />
+    <Compile Include="Framework\DeviceCyclerManager\DeviceCycler\DeviceCyclerAll.cs" />
+    <Compile Include="Framework\DeviceCyclerManager\DeviceCyclerTypeEnum.cs" />
+    <Compile Include="Framework\DeviceCyclerManager\DeviceCyclerFactory.cs" />
+    <Compile Include="Framework\DeviceCyclerManager\DeviceCyclerManager.cs" />
+    <Compile Include="Framework\DeviceCyclerManager\DeviceCycler\IDeviceCycler.cs" />
+    <Compile Include="Framework\Factory\AbstractFactory.cs" />
+    <Compile Include="Framework\Factory\IEnumImpl.cs" />
+    <Compile Include="Framework\Factory\EnumImplList.cs" />
+    <Compile Include="Framework\Factory\IEnumImplList.cs" />
     <Compile Include="Framework\HotKeys.cs" />
     <Compile Include="Framework\HourGlass.cs" />
+    <Compile Include="Framework\IPC\IPCClient.cs" />
+    <Compile Include="Framework\IPC\IPCServer.cs" />
+    <Compile Include="Framework\IPC\RemoteObjects\RemoteObject.cs" />
     <Compile Include="Framework\Minidump\MemoryDumper.cs" />
     <Compile Include="Framework\NotificationManager\NotificationFactory.cs" />
     <Compile Include="Framework\NotificationManager\NotificationManager.cs" />
+    <Compile Include="Framework\NotificationManager\Notification\Configuration\INotificationConfiguration.cs" />
+    <Compile Include="Framework\NotificationManager\Notification\Configuration\NotificationConfiguration.cs" />
     <Compile Include="Framework\NotificationManager\Notification\INotification.cs" />
     <Compile Include="Framework\NotificationManager\Notification\NotificationCustom.cs" />
-    <Compile Include="Framework\NotificationManager\Notification\NotificationDisplayer.cs" />
     <Compile Include="Framework\NotificationManager\Notification\NotificationSound.cs" />
     <Compile Include="Framework\NotificationManager\Notification\NotificationWindows.cs" />
     <Compile Include="Framework\NotificationManager\Notification\NotificationNone.cs" />
-    <Compile Include="Framework\NotificationManager\NotificationType.cs" />
-    <Compile Include="Framework\Pipe\PipeClient.cs" />
-    <Compile Include="Framework\Pipe\PipeCommand.cs" />
-    <Compile Include="Framework\Pipe\PipeCommandType.cs" />
-    <Compile Include="Framework\Pipe\PipeServer.cs" />
-    <Compile Include="Framework\Pipe\StreamString.cs" />
+    <Compile Include="Framework\NotificationManager\NotificationTypeEnum.cs" />
+    <Compile Include="Framework\TooltipInfoManager\TooltipInfoFactory.cs" />
+    <Compile Include="Framework\TooltipInfoManager\TooltipInfoManager.cs" />
+    <Compile Include="Framework\TooltipInfoManager\TootipInfo\ITooltipInfo.cs" />
+    <Compile Include="Framework\TooltipInfoManager\TootipInfo\TooltipInfoBoth.cs" />
+    <Compile Include="Framework\TooltipInfoManager\TootipInfo\TooltipInfoNone.cs" />
+    <Compile Include="Framework\TooltipInfoManager\TootipInfo\TooltipInfoPlayback.cs" />
+    <Compile Include="Framework\TooltipInfoManager\TootipInfo\TooltipInfoRecording.cs" />
+    <Compile Include="Framework\TooltipInfoManager\TootipInfo\TooltipInfoTypeEnum.cs" />
     <Compile Include="Framework\Updater\AutoUpdater.cs" />
     <Compile Include="Framework\Updater\GitHubRelease.cs" />
     <Compile Include="Framework\Updater\IntervalUpdateChecker.cs" />
@@ -277,6 +296,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AboutStrings.resx</DependentUpon>
     </Compile>
+    <Compile Include="Properties\AudioCycler.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AudioCycler.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Notifications.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -286,6 +310,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SettingsString.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\TooltipInfo.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TooltipInfo.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\TrayIconStrings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -339,6 +368,14 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>AboutStrings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\AudioCycler.fr.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\AudioCycler.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>AudioCycler.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Notifications.fr.resx" />
     <EmbeddedResource Include="Properties\Notifications.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -359,6 +396,11 @@
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>SettingsString.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\TooltipInfo.fr.resx" />
+    <EmbeddedResource Include="Properties\TooltipInfo.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TooltipInfo.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\TrayIconStrings.fr.resx" />
     <EmbeddedResource Include="Properties\TrayIconStrings.resx">
@@ -410,19 +452,22 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\page-bottom.ico" />
     <None Include="Resources\page-bottom.png" />
     <None Include="Resources\tick.png" />
     <None Include="Resources\arrow-switch-16.png" />
     <None Include="Resources\arrow-switch-48.png" />
     <None Include="Resources\216676__robinhood76__04864-notification-music-box.wav" />
     <Content Include="Resources\arrow_switch.ico" />
-    <None Include="Resources\cog.png" />
     <None Include="Resources\exit.png" />
+    <None Include="Resources\cog-16.png" />
+    <None Include="Resources\cog.ico" />
     <Content Include="Resources\control-equalizer-blue.png" />
     <Content Include="Resources\control-volume-blue.png" />
     <None Include="Resources\defaultMicrophone.ico" />
     <None Include="Resources\defaultSpeakers.ico" />
-    <Content Include="Resources\help.png" />
+    <None Include="Resources\help-16.png" />
+    <None Include="Resources\help.ico" />
   </ItemGroup>
   <ItemGroup>
     <PublishFile Include="SMDiagnostics">

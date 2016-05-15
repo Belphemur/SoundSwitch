@@ -166,4 +166,7 @@
 	<data name="stealthUpdateExplanation" xml:space="preserve">
 		<value>L'application se mettra à jour automatiquement quand une nouvelle version est disponible.</value>
 	</data>
+	<data name="tooltip" xml:space="preserve">
+		<value>Information lors du survol</value>
+	</data>
 </root>
