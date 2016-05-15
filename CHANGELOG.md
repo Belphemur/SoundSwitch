@@ -1,5 +1,12 @@
 # Change Log
 
+## [v3.10.0](https://github.com/Belphemur/SoundSwitch/tree/v3.10.0) (2016-05-15)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.9.9...v3.10.0)
+
+**Implemented enhancements:**
+
+- High Resolution Icons [\#94](https://github.com/Belphemur/SoundSwitch/issues/94)
+
 ## [v3.9.9](https://github.com/Belphemur/SoundSwitch/tree/v3.9.9) (2016-05-01)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.9.8...v3.9.9)
 
