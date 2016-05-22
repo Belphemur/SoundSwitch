@@ -1,5 +1,16 @@
 # Change Log
 
+## [v3.10.1](https://github.com/Belphemur/SoundSwitch/tree/v3.10.1) (2016-05-22)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.10.0...v3.10.1)
+
+**Implemented enhancements:**
+
+- Support HTTPS download in the installer [\#99](https://github.com/Belphemur/SoundSwitch/issues/99)
+
+**Fixed bugs:**
+
+- SoundSwitch install not working, VCRedist detect and download problem v3.10 Stable [\#98](https://github.com/Belphemur/SoundSwitch/issues/98)
+
 ## [v3.10.0](https://github.com/Belphemur/SoundSwitch/tree/v3.10.0) (2016-05-15)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.9.9...v3.10.0)
 
