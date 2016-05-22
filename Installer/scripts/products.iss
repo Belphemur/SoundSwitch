@@ -1,38 +1,43 @@
-#include "isxdl\isxdl.iss"
+#include "idp\idp.iss"
+#include "idp\idplang\German.iss"
+#include "idp\idplang\French.iss"
 
 [CustomMessages]
 DependenciesDir=MyProgramDependencies
 
 en.depdownload_msg=The following applications are required before setup can continue:%n%n%1%nDownload and install now?
 de.depdownload_msg=Die folgenden Programme werden benötigt bevor das Setup fortfahren kann:%n%n%1%nJetzt downloaden und installieren?
+fr.depdownload_msg=Pour fonctionner cette application a besoin de :%n%n%1%nTélécharger et installer maintenant?
 
 en.depdownload_memo_title=Download dependencies
 de.depdownload_memo_title=Abhängigkeiten downloaden
+fr.depdownload_memo_title=Télécharger les dépendences
 
 en.depinstall_memo_title=Install dependencies
 de.depinstall_memo_title=Abhängigkeiten installieren
+fr.depinstall_memo_title=Installer les dépendences
 
 en.depinstall_title=Installing dependencies
 de.depinstall_title=Installiere Abhängigkeiten
+fr.depinstall_title=Installation des dépendences
 
 en.depinstall_description=Please wait while Setup installs dependencies on your computer.
 de.depinstall_description=Warten Sie bitte während Abhängigkeiten auf Ihrem Computer installiert wird.
+fr.depinstall_description=Veuillez patientez le temps que nous installons les dépendences.
 
 en.depinstall_status=Installing %1...
 de.depinstall_status=Installiere %1...
+fr.depinstall_status=Installe %1...
 
 en.depinstall_missing=%1 must be installed before setup can continue. Please install %1 and run Setup again.
 de.depinstall_missing=%1 muss installiert werden bevor das Setup fortfahren kann. Bitte installieren Sie %1 und starten Sie das Setup erneut.
+fr.depinstall_missing=%1 doit être installé pour que l'installation continue. Installez %1 et relancer l'installateur.
 
 en.depinstall_error=An error occured while installing the dependencies. Please restart the computer and run the setup again or install the following dependencies manually:%n
 de.depinstall_error=Ein Fehler ist während der Installation der Abghängigkeiten aufgetreten. Bitte starten Sie den Computer neu und führen Sie das Setup erneut aus oder installieren Sie die folgenden Abhängigkeiten per Hand:%n
-
-en.isxdl_langfile=
-de.isxdl_langfile=german2.ini
+fr.depinstall_error=Nous n'avons pu installer les dépendences. Veuillez redémarrer votre ordinateur et relancer l'installation ou installer ces dépendences manuellement: %n
 
 
-[Files]
-Source: "scripts\isxdl\german2.ini"; Flags: dontcopy
 
 [Code]
 type
@@ -64,7 +69,7 @@ begin
 	if not FileExists(path) then begin
 		path := ExpandConstant('{tmp}{\}') + FileName;
 
-		isxdl_AddFile(URL, path);
+		idpAddFile(URL, path);
 
 		downloadMemo := downloadMemo + '%1' + Title + #13;
 		downloadMessage := downloadMessage + '	' + Title + ' (' + Size + ')' + #13;
@@ -215,18 +220,20 @@ begin
 	if CurPageID = wpReady then begin
 		if downloadMemo <> '' then begin
 			//change isxdl language only if it is not english because isxdl default language is already english
-			if (ActiveLanguage() <> 'en') then begin
-				ExtractTemporaryFile(CustomMessage('isxdl_langfile'));
-				isxdl_SetOption('language', ExpandConstant('{tmp}{\}') + CustomMessage('isxdl_langfile'));
-			end;
+			//if (ActiveLanguage() <> 'en') then begin
+			//	ExtractTemporaryFile(CustomMessage('isxdl_langfile'));
+			//	isxdl_SetOption('language', ExpandConstant('{tmp}{\}') + CustomMessage('isxdl_langfile'));
+			//end;
 			//isxdl_SetOption('title', FmtMessage(SetupMessage(msgSetupWindowTitle), [CustomMessage('appname')]));
+      idpSetOption('detailedmode', 'true');
 
 			if SuppressibleMsgBox(FmtMessage(CustomMessage('depdownload_msg'), [downloadMessage]), mbConfirmation, MB_YESNO, IDYES) = IDNO then
 				Result := false
-			else if isxdl_DownloadFiles(StrToInt(ExpandConstant('{wizardhwnd}'))) = 0 then
-				Result := false;
-		end;
-	end;
+			else begin
+        Result := true;
+      end;
+     end;
+  end;
 end;
 
 function IsX86: boolean;
