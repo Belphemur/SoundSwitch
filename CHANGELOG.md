@@ -1,5 +1,12 @@
 # Change Log
 
+## [v3.10.2](https://github.com/Belphemur/SoundSwitch/tree/v3.10.2) (2016-06-05)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.10.1...v3.10.2)
+
+**Fixed bugs:**
+
+- C++ 2015 x64 redist installed but installer tries and fails to download and install it again [\#101](https://github.com/Belphemur/SoundSwitch/issues/101)
+
 ## [v3.10.1](https://github.com/Belphemur/SoundSwitch/tree/v3.10.1) (2016-05-22)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.10.0...v3.10.1)
 
