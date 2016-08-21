@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading;
 using AudioEndPoint;
 using AudioEndPointControllerWrapper;
@@ -36,6 +37,7 @@ namespace SoundSwitch.Model
             AudioController.DeviceAdded += AudioControllerOnDeviceAdded;
             AudioController.DeviceRemoved += AudioControllerOnDeviceRemoved;
             AudioController.DeviceStateChanged += AudioControllerOnDeviceStateChanged;
+            AudioController.DeviceDefaultChanged += AudioControllerOnDeviceDefaultChanged;
         }
 
         ~AudioDeviceLister()
@@ -43,47 +45,17 @@ namespace SoundSwitch.Model
             AudioController.DeviceAdded -= AudioControllerOnDeviceAdded;
             AudioController.DeviceRemoved -= AudioControllerOnDeviceRemoved;
             AudioController.DeviceStateChanged -= AudioControllerOnDeviceStateChanged;
+            AudioController.DeviceDefaultChanged -= AudioControllerOnDeviceDefaultChanged;
+        }
+
+        private void AudioControllerOnDeviceDefaultChanged(object sender, DeviceDefaultChangedEvent deviceDefaultChangedEvent)
+        {
+            _needUpdate = true;
         }
 
         private void AudioControllerOnDeviceStateChanged(object sender, DeviceStateChangedEvent deviceStateChangedEvent)
         {
-            _cacheLock.EnterWriteLock();
-            try
-            {
-                using (AppLogger.Log.InfoCall())
-                {
-                    if ((deviceStateChangedEvent.newState | _state) == _state)
-                    {
-                        if (deviceStateChangedEvent.device.Type == AudioDeviceType.Playback)
-                        {
-                            _playback.Add(deviceStateChangedEvent.device);
-                            AppLogger.Log.Info("Add new playback: ",deviceStateChangedEvent.device);
-                        }
-                        else
-                        {
-                            _recording.Add(deviceStateChangedEvent.device);
-                            AppLogger.Log.Info("Add new recording: ", deviceStateChangedEvent.device);
-                        }
-                    }
-                    else if ((deviceStateChangedEvent.previousState | _state) == _state)
-                    {
-                        if (deviceStateChangedEvent.device.Type == AudioDeviceType.Playback)
-                        {
-                            _playback.Remove(deviceStateChangedEvent.device);
-                            AppLogger.Log.Info("Remove playback: ", deviceStateChangedEvent.device);
-                        }
-                        else
-                        {
-                            _recording.Remove(deviceStateChangedEvent.device);
-                            AppLogger.Log.Info("Remove Recording: ", deviceStateChangedEvent.device);
-                        }
-                    }
-                }
-            }
-            finally
-            {
-                _cacheLock.ExitWriteLock();
-            }
+            _needUpdate = true;
         }
 
         private void AudioControllerOnDeviceRemoved(object sender, DeviceRemovedEvent deviceRemovedEvent)
