@@ -261,6 +261,7 @@
     <Compile Include="Framework\IPC\IPCClient.cs" />
     <Compile Include="Framework\IPC\IPCServer.cs" />
     <Compile Include="Framework\IPC\RemoteObjects\RemoteObject.cs" />
+    <Compile Include="Framework\KeyboardWindowsAPI.cs" />
     <Compile Include="Framework\Minidump\MemoryDumper.cs" />
     <Compile Include="Framework\NotificationManager\NotificationFactory.cs" />
     <Compile Include="Framework\NotificationManager\NotificationManager.cs" />
