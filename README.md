@@ -50,6 +50,11 @@ This notification is a sound played on the switched device. This way when you ar
 #### No Notification
 In case you're not interested of getting any sort of notification.
 
+## Awards
+
+### Giga 5 Stars
+[![Giga 5 stars](http://i.imgur.com/19GaPLQ.png)](http://www.giga.de/downloads/soundswitch/)
+
 ## License: GPLv2
 
 Copyright (C) 2015 Jeroen Pelgrims
