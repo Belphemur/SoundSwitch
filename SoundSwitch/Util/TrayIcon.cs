@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -101,6 +102,9 @@ namespace SoundSwitch.Util
 
         private void PopulateSettingsMenu()
         {
+            var applicationDirectory = Path.GetDirectoryName(Application.ExecutablePath);
+            Debug.Assert(applicationDirectory != null, "applicationDirectory != null");
+            var readmeHtml = Path.Combine(applicationDirectory, "Readme.html");
             _settingsMenu.Items.Add(
                 Application.ProductName + ' ' + AssemblyUtils.GetReleaseState() + " (" + Application.ProductVersion +
                 ")", Resources.SoundSwitch16);
@@ -112,6 +116,15 @@ namespace SoundSwitch.Util
             _settingsMenu.Items.Add("-");
             _settingsMenu.Items.Add(TrayIconStrings.settings, Resources.SettingsSmall, (sender, e) => ShowSettings());
             _settingsMenu.Items.Add(TrayIconStrings.about, Resources.HelpSmall, (sender, e) => new About().Show());
+            _settingsMenu.Items.Add(TrayIconStrings.help, Resources.InfoHelp, (sender, e) =>
+            {
+                if (!File.Exists(readmeHtml))
+                {
+                    AppLogger.Log.Error($"File {readmeHtml} doesn\'t exists");
+                    return;
+                }
+                Process.Start(readmeHtml);
+            });
             _settingsMenu.Items.Add(_updateMenuItem);
             _settingsMenu.Items.Add("-");
             _settingsMenu.Items.Add(TrayIconStrings.exit, Resources.exit, (sender, e) => Application.Exit());

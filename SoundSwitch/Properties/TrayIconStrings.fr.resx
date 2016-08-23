@@ -142,4 +142,7 @@
 	<data name="error" xml:space="preserve">
 		<value>Erreur</value>
 	</data>
+	<data name="help" xml:space="preserve">
+		<value>Aide</value>
+	</data>
 </root>

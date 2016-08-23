@@ -453,6 +453,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\InfoHelp.png" />
     <None Include="Resources\page-bottom.ico" />
     <None Include="Resources\page-bottom.png" />
     <None Include="Resources\tick.png" />
