@@ -29,5 +29,11 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         /// </summary>
         /// <returns></returns>
         bool NeedCustomSound();
+
+        /// <summary>
+        ///    Is this notification available
+        /// </summary>
+        /// <returns></returns>
+        bool IsAvailable();
     }
 }

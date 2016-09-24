@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
@@ -18,18 +17,22 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
 
         public void NotifyDefaultChanged(IAudioDevice audioDevice)
         {
-            var toastData = new ToastData() { ImagePath = ApplicationPath.DefaultImagePath, Title = audioDevice.FriendlyName };
-            if (Configuration.CustomSound != null && File.Exists(Configuration.CustomSound.FilePath))
+            var toastData = new ToastData
+            {
+                ImagePath = ApplicationPath.DefaultImagePath,
+                Title = audioDevice.FriendlyName
+            };
+            if ((Configuration.CustomSound != null) && File.Exists(Configuration.CustomSound.FilePath))
             {
                 toastData.Silent = false;
                 toastData.SoundFilePath = Configuration.CustomSound.FilePath;
             }
-            
+
             switch (audioDevice.Type)
             {
                 case AudioDeviceType.Playback:
                     toastData.Line0 = Notifications.PlaybackChanged;
-                  
+
                     break;
                 case AudioDeviceType.Recording:
                     toastData.Line0 = Notifications.RecordingChanged;
@@ -37,7 +40,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
                 default:
                     throw new ArgumentOutOfRangeException(nameof(audioDevice.Type), audioDevice.Type, null);
             }
-            (new ToastManager()).ShowNotification(toastData);
+            new ToastManager().ShowNotification(toastData);
         }
 
         public void OnSoundChanged(CachedSound newSound)
@@ -48,6 +51,12 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         public bool NeedCustomSound()
         {
             return false;
+        }
+
+        public bool IsAvailable()
+        {
+            //Not available before windows 8
+            return Environment.OSVersion.Version > new Version(6, 1);
         }
     }
 }

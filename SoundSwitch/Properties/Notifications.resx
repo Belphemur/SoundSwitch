@@ -121,7 +121,7 @@ No Notification: ... No Notification at all.</value>
 		<value>Audio file not found</value>
 	</data>
 	<data name="NotifToast" xml:space="preserve">
-		<value>Toast Notification (&gt;= Win 8)</value>
+		<value>Toast Notification</value>
 	</data>
 	<data name="PlaybackChanged" xml:space="preserve">
 		<value>Playback Device</value>

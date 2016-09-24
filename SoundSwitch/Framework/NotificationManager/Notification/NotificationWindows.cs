@@ -41,5 +41,10 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         {
             return false;
         }
+
+        public bool IsAvailable()
+        {
+            return true;
+        }
     }
 }
