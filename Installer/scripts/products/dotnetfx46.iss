@@ -14,12 +14,12 @@ de.dotnetfx46_lcid=/lcid 1031
 
 [Code]
 const
-	dotnetfx462_url = 'https://download.microsoft.com/download/F/9/4/F942F07D-F26F-4F30-B4E3-EBD54FABA377/NDP462-KB3151800-x86-x64-AllOS-ENU.exe';
+	dotnetfx462_url = 'https://download.microsoft.com/download/D/5/C/D5C98AB0-35CC-45D9-9BA5-B18256BA2AE6/NDP462-KB3151802-Web.exe';
 
 procedure dotnetfx46(minVersion: integer);
 begin
 	if (not netfxinstalled(NetFx46, '') or (netfxspversion(NetFx46, '') < minVersion)) then
-		AddProduct('dotnetfx46.exe',
+		AddProduct('dotnetfx462_web.exe',
 			CustomMessage('dotnetfx46_lcid') + ' /passive /norestart',
 			CustomMessage('dotnetfx46_title'),
 			CustomMessage('dotnetfx46_size'),
