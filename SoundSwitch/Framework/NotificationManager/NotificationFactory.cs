@@ -1,18 +1,17 @@
-﻿using System.Collections.Generic;
-using SoundSwitch.Framework.Factory;
+﻿using SoundSwitch.Framework.Factory;
 using SoundSwitch.Framework.NotificationManager.Notification;
 
 namespace SoundSwitch.Framework.NotificationManager
 {
     public class NotificationFactory : AbstractFactory<NotificationTypeEnum, INotification>
     {
-        private static readonly IDictionary<NotificationTypeEnum, INotification> Notifications = new Dictionary
+        private static readonly IEnumImplList<NotificationTypeEnum, INotification> Notifications = new EnumImplList
             <NotificationTypeEnum, INotification>
         {
-            {NotificationTypeEnum.DefaultWindowsNotification, new NotificationWindows()},
-            {NotificationTypeEnum.SoundNotification, new NotificationSound()},
-            {NotificationTypeEnum.NoNotification, new NotificationNone()},
-            {NotificationTypeEnum.CustomNotification, new NotificationCustom()}
+            new NotificationWindows(),
+            new NotificationSound(),
+            new NotificationNone(),
+            new NotificationCustom()
         };
 
         public NotificationFactory() : base(Notifications)

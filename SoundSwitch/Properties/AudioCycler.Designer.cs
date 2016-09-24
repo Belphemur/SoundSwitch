@@ -61,7 +61,7 @@ namespace SoundSwitch.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only available audio devices.
+        ///   Looks up a localized string similar to Only selected audio devices.
         /// </summary>
         internal static string actives {
             get {
@@ -121,16 +121,6 @@ namespace SoundSwitch.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Help {
-            get {
-                object obj = ResourceManager.GetObject("Help", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap Mixer {
             get {
                 object obj = ResourceManager.GetObject("Mixer", resourceCulture);
@@ -169,16 +159,6 @@ namespace SoundSwitch.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Settings {
-            get {
-                object obj = ResourceManager.GetObject("Settings", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap SoundSwitch16 {
             get {
                 object obj = ResourceManager.GetObject("SoundSwitch16", resourceCulture);
@@ -198,7 +178,7 @@ namespace SoundSwitch.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to Choose between cycling through your selected device that are connected (Default)
-        ///Or through all the devices connected..
+        ///Or through all the connected devices regardless of your settings..
         /// </summary>
         internal static string tooltipExplanation {
             get {

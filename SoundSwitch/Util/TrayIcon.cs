@@ -60,7 +60,7 @@ namespace SoundSwitch.Util
 
             PopulateSettingsMenu();
 
-            _selectionMenu.Items.Add(TrayIconStrings.NoDevSel, Resources.Settings, (sender, e) => ShowSettings());
+            _selectionMenu.Items.Add(TrayIconStrings.NoDevSel, Resources.SettingsSmall, (sender, e) => ShowSettings());
 
             NotifyIcon.MouseDoubleClick += (sender, args) =>
             {
@@ -110,8 +110,8 @@ namespace SoundSwitch.Util
             _settingsMenu.Items.Add(TrayIconStrings.mixer, Resources.Mixer,
                 (sender, e) => { Process.Start(new ProcessStartInfo("sndvol.exe")); });
             _settingsMenu.Items.Add("-");
-            _settingsMenu.Items.Add(TrayIconStrings.settings, Resources.Settings, (sender, e) => ShowSettings());
-            _settingsMenu.Items.Add(TrayIconStrings.about, Resources.Help, (sender, e) => new About().Show());
+            _settingsMenu.Items.Add(TrayIconStrings.settings, Resources.SettingsSmall, (sender, e) => ShowSettings());
+            _settingsMenu.Items.Add(TrayIconStrings.about, Resources.HelpSmall, (sender, e) => new About().Show());
             _settingsMenu.Items.Add(_updateMenuItem);
             _settingsMenu.Items.Add("-");
             _settingsMenu.Items.Add(TrayIconStrings.exit, Resources.exit, (sender, e) => Application.Exit());

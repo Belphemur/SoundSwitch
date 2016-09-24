@@ -1,5 +1,43 @@
 # Change Log
 
+## [v3.10.2](https://github.com/Belphemur/SoundSwitch/tree/v3.10.2) (2016-06-05)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.10.1...v3.10.2)
+
+**Fixed bugs:**
+
+- C++ 2015 x64 redist installed but installer tries and fails to download and install it again [\#101](https://github.com/Belphemur/SoundSwitch/issues/101)
+
+## [v3.10.1](https://github.com/Belphemur/SoundSwitch/tree/v3.10.1) (2016-05-22)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.10.0...v3.10.1)
+
+**Implemented enhancements:**
+
+- Support HTTPS download in the installer [\#99](https://github.com/Belphemur/SoundSwitch/issues/99)
+
+**Fixed bugs:**
+
+- SoundSwitch install not working, VCRedist detect and download problem v3.10 Stable [\#98](https://github.com/Belphemur/SoundSwitch/issues/98)
+
+## [v3.10.0](https://github.com/Belphemur/SoundSwitch/tree/v3.10.0) (2016-05-15)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.9.9...v3.10.0)
+
+**Implemented enhancements:**
+
+- High Resolution Icons [\#94](https://github.com/Belphemur/SoundSwitch/issues/94)
+
+## [v3.9.9](https://github.com/Belphemur/SoundSwitch/tree/v3.9.9) (2016-05-01)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.9.8...v3.9.9)
+
+**Implemented enhancements:**
+
+- Use the Tooltip of the Systray instead of a Baloontip to display active device [\#90](https://github.com/Belphemur/SoundSwitch/issues/90)
+
+**Fixed bugs:**
+
+- When launching SoundSwitch, it always set as default the already default device [\#93](https://github.com/Belphemur/SoundSwitch/issues/93)
+- Missing Beta mode in Settings [\#92](https://github.com/Belphemur/SoundSwitch/issues/92)
+- Infinite notification popup [\#91](https://github.com/Belphemur/SoundSwitch/issues/91)
+
 ## [v3.9.8](https://github.com/Belphemur/SoundSwitch/tree/v3.9.8) (2016-04-29)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.9.7...v3.9.8)
 

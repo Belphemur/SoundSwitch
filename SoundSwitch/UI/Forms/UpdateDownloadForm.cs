@@ -29,7 +29,7 @@ namespace SoundSwitch.UI.Forms
         public UpdateDownloadForm(Release release)
         {
             InitializeComponent();
-            Icon = Icon.FromHandle(Resources.Update.GetHicon());
+            Icon = Resources.UpdateIcon;
             Text = release.Name;
             Focus();
             changeLog.SetChangelog(release.Changelog);

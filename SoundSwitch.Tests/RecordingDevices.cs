@@ -235,7 +235,7 @@ namespace SoundSwitch.Tests
             audioMoqI.VerifyGet(a => a.Id);
             audioMoqII.VerifyGet(a => a.Id);
             listerMoq.Verify(l => l.GetRecordingDevices());
-            audioMoqII.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.All)));
+            audioMoqI.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.All)));
         }
 
         [Test]

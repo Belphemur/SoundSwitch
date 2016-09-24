@@ -53,6 +53,7 @@ DisableReadyMemo=no
 [Languages]
 Name: "en"; MessagesFile: "compiler:Default.isl"
 Name: "de"; MessagesFile: "compiler:Languages\German.isl"
+Name: "fr";    MessagesFile: "compiler:Languages\French.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
@@ -340,6 +341,10 @@ begin
 #ifdef use_sql2008express
 	sql2008express();
 #endif
-
 	Result := true;
+end;
+
+procedure InitializeWizard();
+begin
+  idpDownloadAfter(wpReady); 
 end;

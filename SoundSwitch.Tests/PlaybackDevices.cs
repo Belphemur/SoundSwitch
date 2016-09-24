@@ -194,8 +194,8 @@ namespace SoundSwitch.Tests
             audioMoqI.VerifyGet(a => a.Id);
             audioMoqII.VerifyGet(a => a.Id);
             listerMoq.Verify(l => l.GetPlaybackDevices());
-            audioMoqII.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Console)));
-            audioMoqII.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Multimedia)));
+            audioMoqI.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Console)));
+            audioMoqI.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.Multimedia)));
         }
 
         [Test]
@@ -234,7 +234,7 @@ namespace SoundSwitch.Tests
             audioMoqI.VerifyGet(a => a.Id);
             audioMoqII.VerifyGet(a => a.Id);
             listerMoq.Verify(l => l.GetPlaybackDevices());
-            audioMoqI.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.All)));
+            audioMoqII.Verify(a => a.SetAsDefault(It.Is<Role>(role => role == Role.All)));
         }
 
         [Test]

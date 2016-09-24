@@ -48,7 +48,7 @@ namespace SoundSwitch.UI.Forms
                 Name = SettingsString.settings + ' ' + AssemblyUtils.GetReleaseState();
                 Text = SettingsString.settings + ' ' + AssemblyUtils.GetReleaseState();
             }
-            Icon = Icon.FromHandle(Resources.Settings.GetHicon());
+            Icon = Resources.SettingsIcon;
             var toolTip = new ToolTip();
             toolTip.SetToolTip(closeButton, SettingsString.closeTooltip);
 
@@ -115,32 +115,40 @@ namespace SoundSwitch.UI.Forms
         {
             HotKeys.ModifierKeys modifierKeys = 0;
             var displayString = "";
+            foreach (var pressedModifier in KeyboardWindowsAPI.GetPressedModifiers())
+            {
+                if ((pressedModifier & Keys.Modifiers) == Keys.Control)
+                {
+                    modifierKeys |= HotKeys.ModifierKeys.Control;
+                    displayString += "Ctrl+";
+                }
+                if ((pressedModifier & Keys.Modifiers) == Keys.Alt)
+                {
+                    modifierKeys |= HotKeys.ModifierKeys.Alt;
+                    displayString += "Alt+";
+                }
+                if ((pressedModifier & Keys.Modifiers) == Keys.Shift)
+                {
+                    modifierKeys |= HotKeys.ModifierKeys.Shift;
+                    displayString += "Shift+";
+                }
+                if (pressedModifier == Keys.LWin || pressedModifier == Keys.RWin)
+                {
+                    modifierKeys |= HotKeys.ModifierKeys.Win;
+                    displayString += "Win+";
+                }
+            }
 
-            if (e.Control)
+            var normalPressedKeys = KeyboardWindowsAPI.GetNormalPressedKeys();
+            var key = normalPressedKeys.FirstOrDefault();
+
+
+            if (key == Keys.None)
             {
-                modifierKeys |= HotKeys.ModifierKeys.Control;
-                displayString += "Ctrl+";
-            }
-            if (e.Alt)
-            {
-                modifierKeys |= HotKeys.ModifierKeys.Alt;
-                displayString += "Alt+";
-            }
-            if (e.Shift)
-            {
-                modifierKeys |= HotKeys.ModifierKeys.Shift;
-                displayString += "Shift+";
-            }
-            var keyCode = e.KeyCode.ToString();
-            if (new[] {8, 16, 17, 18, 46}.Contains(e.KeyValue))
-            {
-                keyCode = "";
+                hotkeyTextBox.Text = $"{displayString}";
                 hotkeyTextBox.ForeColor = Color.Crimson;
-            }
-
-            hotkeyTextBox.Text = $"{displayString}{keyCode}";
-            if (!string.IsNullOrEmpty(keyCode))
-            {
+            } else {
+                hotkeyTextBox.Text = $"{displayString}{key}";
                 var tuple = (Tuple<AudioDeviceType, HotKeys>) hotkeyTextBox.Tag;
                 var newTuple = new Tuple<AudioDeviceType, HotKeys>(tuple.Item1, new HotKeys(e.KeyCode, modifierKeys));
                 hotkeyTextBox.Tag = newTuple;
