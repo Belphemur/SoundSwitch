@@ -259,7 +259,7 @@ namespace SoundSwitch.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tooltip on Hover.
+        ///   Looks up a localized string similar to Tooltip on hover.
         /// </summary>
         internal static string tooltip {
             get {

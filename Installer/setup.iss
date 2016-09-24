@@ -6,7 +6,7 @@
 #define use_msi45
 #define use_msiproduct
 
-#define use_dotnetfx45
+#define use_dotnetfx46
 
 #define use_vc2015
 
@@ -304,6 +304,11 @@ begin
     //dotnetfx45(2); // min allowed version is 4.5.2
     dotnetfx45(0); // min allowed version is 4.5.0
 #endif
+
+#ifdef use_dotnetfx46
+    dotnetfx46(2); // min allowed version is 4.6.2
+#endif
+
 
 #ifdef use_vc2005
 	vcredist2005();
