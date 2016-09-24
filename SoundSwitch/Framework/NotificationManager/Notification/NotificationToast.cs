@@ -56,7 +56,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         public bool IsAvailable()
         {
             //Not available before windows 8
-            return Environment.OSVersion.Version > new Version(6, 1);
+            return Environment.OSVersion.Version >= new Version(6, 2);
         }
     }
 }
