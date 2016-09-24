@@ -1,5 +1,21 @@
 # Change Log
 
+## [v3.11.0](https://github.com/Belphemur/SoundSwitch/tree/v3.11.0) (2016-08-21)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.10.2...v3.11.0)
+
+**Implemented enhancements:**
+
+- Request: WinKey as modifier [\#109](https://github.com/Belphemur/SoundSwitch/issues/109)
+
+**Fixed bugs:**
+
+- Unresponsive after RDC [\#112](https://github.com/Belphemur/SoundSwitch/issues/112)
+- Not switching "default communications device" [\#106](https://github.com/Belphemur/SoundSwitch/issues/106)
+
+**Closed issues:**
+
+- Nevermind [\#104](https://github.com/Belphemur/SoundSwitch/issues/104)
+
 ## [v3.10.2](https://github.com/Belphemur/SoundSwitch/tree/v3.10.2) (2016-06-05)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.10.1...v3.10.2)
 

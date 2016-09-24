@@ -106,6 +106,15 @@ namespace SoundSwitch.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Help.
+        /// </summary>
+        internal static string help {
+            get {
+                return ResourceManager.GetString("help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Click here to update..
         /// </summary>
         internal static string howDownloadUpdate {
@@ -187,7 +196,7 @@ namespace SoundSwitch.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Version {0} is available.
+        ///   Looks up a localized string similar to Update for {0}({1}) is available..
         /// </summary>
         internal static string versionAvailable {
             get {
