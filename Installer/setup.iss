@@ -171,6 +171,10 @@ end;
 #include "scripts\products\dotnetfx45.iss"
 #endif
 
+#ifdef use_dotnetfx46
+#include "scripts\products\dotnetfx46.iss"
+#endif
+
 #ifdef use_wic
 #include "scripts\products\wic.iss"
 #endif
