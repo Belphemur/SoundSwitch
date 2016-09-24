@@ -1,5 +1,18 @@
 # Change Log
 
+## [v3.12.0](https://github.com/Belphemur/SoundSwitch/tree/v3.12.0) (2016-09-24)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.11.0...v3.12.0)
+
+**Implemented enhancements:**
+
+- Update to .NET 4.6.2 [\#118](https://github.com/Belphemur/SoundSwitch/issues/118)
+- Accessing 'help' at any time [\#105](https://github.com/Belphemur/SoundSwitch/issues/105)
+- Request: Notification pop up with custom sound? [\#73](https://github.com/Belphemur/SoundSwitch/issues/73)
+
+**Fixed bugs:**
+
+- Don't switch to already default device [\#117](https://github.com/Belphemur/SoundSwitch/issues/117)
+
 ## [v3.11.0](https://github.com/Belphemur/SoundSwitch/tree/v3.11.0) (2016-08-21)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.10.2...v3.11.0)
 
@@ -9,7 +22,6 @@
 
 **Fixed bugs:**
 
-- Unresponsive after RDC [\#112](https://github.com/Belphemur/SoundSwitch/issues/112)
 - Not switching "default communications device" [\#106](https://github.com/Belphemur/SoundSwitch/issues/106)
 
 **Closed issues:**
