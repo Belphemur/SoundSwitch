@@ -50,6 +50,9 @@ cmd.exe /c markdown-html CHANGELOG.md -o %finalDir%\Changelog.html > NUL
 echo "Generate README"
 cmd.exe /c markdown-html README.md -o %finalDir%\Readme.html > NUL
 
+echo "Copy img"
+xcopy /y img\soundSwitched.png %finalDir% 1>nul 2>nul
+
 echo "Copy LICENSE"
 xcopy /y LICENSE.txt %finalDir% 1>nul 2>nul
 

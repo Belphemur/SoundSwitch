@@ -22,7 +22,7 @@ namespace SoundSwitch.Framework
         /// <summary>
         /// Application data directory
         /// </summary>
-        static public string AppData { get; } = Environment.GetFolderPath(
+        public static string AppData { get; } = Environment.GetFolderPath(
             Environment.SpecialFolder.ApplicationData);
         /// <summary>
         /// Path where the application store it's file like the configuration.
@@ -32,5 +32,13 @@ namespace SoundSwitch.Framework
         /// Path wher ethe application store the logs
         /// </summary>
         public static string Logs { get; } = Path.Combine(Default, "Logs");
+        /// <summary>
+        /// Where the application is installed
+        /// </summary>
+        public static string InstallDirectory { get; } = Path.GetDirectoryName(Application.ExecutablePath);
+        /// <summary>
+        /// Where is the image to be used for toast
+        /// </summary>
+        public static string DefaultImagePath { get; } = Path.Combine(InstallDirectory, "img", "soundSwitched.png");
     }
 }

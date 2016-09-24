@@ -70,7 +70,8 @@ Source: "{#ExeDir}x86\*.dll"; DestDir: "{app}"; Check: not Is64BitInstallMode
 Source: "{#ExeDir}x86\fr\*.dll"; DestDir: "{app}\fr"; Check: not Is64BitInstallMode
 
 Source: "{#ExeDir}Changelog.html"; DestDir: "{app}"
-Source: "{#ExeDir}Readme.html"; DestDir: "{app}"
+Source: "{#ExeDir}Readme.html"; DestDir: "{app}"   
+Source: "{#ExeDir}soundSwitched.png"; DestDir: "{app}\img"
 
 [Registry]
 Root: HKCU; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Run\{#MyAppSetupName}"; Flags: uninsdeletekey

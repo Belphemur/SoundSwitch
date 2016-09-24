@@ -117,11 +117,38 @@ namespace SoundSwitch.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Toast Notification (&gt;= Win 8).
+        /// </summary>
+        internal static string NotifToast {
+            get {
+                return ResourceManager.GetString("NotifToast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Windows&apos;s Notification.
         /// </summary>
         internal static string NotifWindows {
             get {
                 return ResourceManager.GetString("NotifWindows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Playback Device.
+        /// </summary>
+        internal static string PlaybackChanged {
+            get {
+                return ResourceManager.GetString("PlaybackChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recording Device.
+        /// </summary>
+        internal static string RecordingChanged {
+            get {
+                return ResourceManager.GetString("RecordingChanged", resourceCulture);
             }
         }
     }

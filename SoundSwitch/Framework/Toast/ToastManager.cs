@@ -12,7 +12,8 @@ namespace SoundSwitch.Framework.Toast
         /// <param name="data"></param>
         public void ShowNotification(ToastData data)
         {
-            ToastNotificationManager.CreateToastNotifier(APP_ID).Show(data.BuildNotification());
+            var notification = data.BuildNotification();
+            ToastNotificationManager.CreateToastNotifier(APP_ID).Show(notification);
         }
     }
 }

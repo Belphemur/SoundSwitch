@@ -5,6 +5,7 @@
         DefaultWindowsNotification,
         SoundNotification,
         NoNotification,
-        CustomNotification
+        CustomNotification,
+        ToastNotification
     }
 }

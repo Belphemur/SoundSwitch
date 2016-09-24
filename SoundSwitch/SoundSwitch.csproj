@@ -207,6 +207,10 @@
       <HintPath>..\packages\CommonMark.NET.0.14.0\lib\net45\CommonMark.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Toolkit.Uwp.Notifications, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Toolkit.Uwp.Notifications.1.0.0\lib\dotnet\Microsoft.Toolkit.Uwp.Notifications.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.WindowsAPICodePack-Core.1.1.0.2\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
       <Private>True</Private>
@@ -221,17 +225,12 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.IO.Compression.FileSystem" />
-    <Reference Include="System.Management" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime">
       <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\Facades\System.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
     <Reference Include="TracerX-Logger, Version=6.1.1304.13122, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\TracerX-Logger.6.1\lib\TracerX-Logger.dll</HintPath>
       <Private>True</Private>
@@ -277,6 +276,7 @@
     <Compile Include="Framework\NotificationManager\Notification\INotification.cs" />
     <Compile Include="Framework\NotificationManager\Notification\NotificationCustom.cs" />
     <Compile Include="Framework\NotificationManager\Notification\NotificationSound.cs" />
+    <Compile Include="Framework\NotificationManager\Notification\NotificationToast.cs" />
     <Compile Include="Framework\NotificationManager\Notification\NotificationWindows.cs" />
     <Compile Include="Framework\NotificationManager\Notification\NotificationNone.cs" />
     <Compile Include="Framework\NotificationManager\NotificationTypeEnum.cs" />

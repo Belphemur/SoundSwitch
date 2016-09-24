@@ -120,4 +120,13 @@ Aucune Notification: ... Aucune Notification.</value>
 	<data name="AudioFileNotFoundTitle" xml:space="preserve">
 		<value>Fichier audio introuvable</value>
 	</data>
+	<data name="PlaybackChanged" xml:space="preserve">
+		<value>Périphérique de lecture</value>
+	</data>
+	<data name="RecordingChanged" xml:space="preserve">
+		<value>Périphérique d'enregistrement</value>
+	</data>
+	<data name="NotifToast" xml:space="preserve">
+		<value>Notification Popup (&gt;= Win 8)</value>
+	</data>
 </root>
