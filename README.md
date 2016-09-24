@@ -47,6 +47,11 @@ This is the default notification, it use the ballontip of Windows. In the case o
 #### Sound Notification
 This notification is a sound played on the switched device. This way when you are switching device, the new device will "chime" to tell you it's selected.
 
+#### Toast Notification (>=Win 8)
+If you are on Windows 8 or more you can use this type of Toast notification. More personalization are possible, by default the notification is silent but you can set a custom sound for it (mp3 or wav for now).
+
+If you want to return to a silent Toast notification, open the file selector, and just do Cancel. Doing that will deconfigure the sound.
+
 #### No Notification
 In case you're not interested of getting any sort of notification.
 
