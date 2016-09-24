@@ -61,7 +61,7 @@ namespace SoundSwitch.Model
             {
                 var oldSound = _customNotificationCachedSound;
                 _customNotificationCachedSound = value;
-                AppConfigs.Configuration.CustomNotificationFilePath = _customNotificationCachedSound.FilePath;
+                AppConfigs.Configuration.CustomNotificationFilePath = _customNotificationCachedSound?.FilePath;
                 AppConfigs.Configuration.Save();
                 CustomSoundChanged?.Invoke(this, new CustomSoundChangedEvent(oldSound, value));
             }

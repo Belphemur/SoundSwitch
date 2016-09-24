@@ -89,7 +89,8 @@ namespace SoundSwitch.UI.Forms
             var toolTipSoundButton = new ToolTip();
             toolTipSoundButton.SetToolTip(selectSoundButton, SettingsString.selectSoundButtonTooltip);
             selectSoundButton.Visible = AppModel.Instance.NotificationSettings ==
-                                        NotificationTypeEnum.CustomNotification;
+                                        NotificationTypeEnum.CustomNotification ||
+                                        AppModel.Instance.NotificationSettings == NotificationTypeEnum.ToastNotification;
 
             stealthUpdateCheckbox.Checked = AppModel.Instance.StealthUpdate;
             var toolTipStealthUpdate = new ToolTip();
@@ -147,7 +148,9 @@ namespace SoundSwitch.UI.Forms
             {
                 hotkeyTextBox.Text = $"{displayString}";
                 hotkeyTextBox.ForeColor = Color.Crimson;
-            } else {
+            }
+            else
+            {
                 hotkeyTextBox.Text = $"{displayString}{key}";
                 var tuple = (Tuple<AudioDeviceType, HotKeys>) hotkeyTextBox.Tag;
                 var newTuple = new Tuple<AudioDeviceType, HotKeys>(tuple.Item1, new HotKeys(e.KeyCode, modifierKeys));
@@ -183,7 +186,8 @@ namespace SoundSwitch.UI.Forms
                 hotkeyTextBox.Tag = new Tuple<AudioDeviceType, HotKeys>(AudioDeviceType.Recording,
                     AppConfigs.Configuration.RecordingHotKeys);
                 hotkeysCheckbox.Checked = AppConfigs.Configuration.RecordingHotKeys.Enabled;
-            } else if (tabControlSender.SelectedTab == appSettingTabPage)
+            }
+            else if (tabControlSender.SelectedTab == appSettingTabPage)
             {
                 SetHotkeysFieldsVisibility(false);
             }
@@ -209,7 +213,8 @@ namespace SoundSwitch.UI.Forms
                 return;
 
             var isCustomNotification = (NotificationTypeEnum) value == NotificationTypeEnum.CustomNotification;
-            selectSoundButton.Visible = isCustomNotification;
+            selectSoundButton.Visible = isCustomNotification ||
+                                        (NotificationTypeEnum) value == NotificationTypeEnum.ToastNotification;
 
             if (isCustomNotification)
             {
@@ -231,7 +236,7 @@ namespace SoundSwitch.UI.Forms
         {
             if (!_loaded)
                 return;
-            var value = ((ComboBox)sender).SelectedValue;
+            var value = ((ComboBox) sender).SelectedValue;
 
             if (value == null)
                 return;
@@ -244,18 +249,22 @@ namespace SoundSwitch.UI.Forms
         {
             if (!_loaded)
                 return;
-            var value = ((ComboBox)sender).SelectedValue;
+            var value = ((ComboBox) sender).SelectedValue;
 
             if (value == null)
                 return;
 
-            var cycler = (DeviceCyclerTypeEnum)value;
+            var cycler = (DeviceCyclerTypeEnum) value;
             DeviceCyclerManager.CurrentCycler = cycler;
         }
 
         private void selectSoundButton_Click(object sender, EventArgs e)
         {
-            selectSoundFileDialog.ShowDialog(this);
+            var result = selectSoundFileDialog.ShowDialog(this);
+            if (result == DialogResult.Cancel)
+            {
+                AppModel.Instance.CustomNotificationSound = null;
+            }
         }
 
         private void hotkeysCheckbox_CheckedChanged(object sender, EventArgs e)
