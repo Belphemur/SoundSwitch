@@ -1,4 +1,4 @@
-# SoundSwitch [![Build status](https://ci.appveyor.com/api/projects/status/bt0yr309rq74tbvc?svg=true)](https://ci.appveyor.com/project/Belphemur/soundswitch) [![Last Release](https://img.shields.io/github/release/Belphemur/SoundSwitch.svg)](https://github.com/Belphemur/SoundSwitch/releases) [![Downloads for last Release](https://img.shields.io/github/downloads/Belphemur/SoundSwitch/total.svg)](https://www.aaflalo.me/downloads/)
+# SoundSwitch [![Build status](https://ci.appveyor.com/api/projects/status/bt0yr309rq74tbvc?svg=true)](https://ci.appveyor.com/project/Belphemur/soundswitch) [![Last Release](https://img.shields.io/github/release/Belphemur/SoundSwitch.svg)](https://github.com/Belphemur/SoundSwitch/releases) [![Downloads for last Release](https://img.shields.io/github/downloads/Belphemur/SoundSwitch/total.svg)](https://www.aaflalo.me/downloads/) [![AppVeyor branch](https://img.shields.io/badge/Donate-paypal%2Fcc-blue.svg)](https://www.aaflalo.me/donate/)
 SoundSwitch makes it easier to switch playback devices (sound cards).
 
 Normally, to switch a Playback device you need to right click the sound icon in the bottom right corner of your screen (system tray),
@@ -11,6 +11,9 @@ With SoundSwitch you just configure once between which Playback devices you want
 You need .NET 4.6.2 installed to work: [Microsoft .NET Framework 4.5.2 (Web Installer)](https://www.microsoft.com/en-us/download/details.aspx?id=53345) 
 
 You also need [Visual C++ Redistributable for Visual Studio 2015](https://www.microsoft.com/en-us/download/details.aspx?id=48145)
+
+## Donations
+If you want to donate for the development don't hesite to do it here: https://www.aaflalo.me/donate/
 
 ## Configuration
 Right click the SoundSwitch icon in your system tray and choose Settings.
