@@ -8,7 +8,7 @@ Every time you want to switch.
 With SoundSwitch you just configure once between which Playback devices you want to toggle and then you can press Ctrl+Alt+F11 to toggle automatically!
 
 ## Dependencies
-You need .NET 4.6.2 installed to work: [Microsoft .NET Framework 4.5.2 (Web Installer)](https://www.microsoft.com/en-us/download/details.aspx?id=53345) 
+You need .NET 4.6.2 installed to work: [Microsoft .NET Framework 4.6.2 (Web Installer)](https://www.microsoft.com/en-us/download/details.aspx?id=53345) 
 
 You also need [Visual C++ Redistributable for Visual Studio 2015](https://www.microsoft.com/en-us/download/details.aspx?id=48145)
 
