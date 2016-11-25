@@ -1,5 +1,16 @@
 # Change Log
 
+## [v3.12.1](https://github.com/Belphemur/SoundSwitch/tree/v3.12.1) (2016-11-25)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.12.0...v3.12.1)
+
+**Implemented enhancements:**
+
+- Device-dependent system tray icon [\#122](https://github.com/Belphemur/SoundSwitch/issues/122)
+
+**Fixed bugs:**
+
+- SoundSwitch crash when stopping [\#123](https://github.com/Belphemur/SoundSwitch/issues/123)
+
 ## [v3.12.0](https://github.com/Belphemur/SoundSwitch/tree/v3.12.0) (2016-09-24)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.11.0...v3.12.0)
 
