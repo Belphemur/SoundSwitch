@@ -1,4 +1,4 @@
-# SoundSwitch [![Build status](https://ci.appveyor.com/api/projects/status/bt0yr309rq74tbvc?svg=true)](https://ci.appveyor.com/project/Belphemur/soundswitch) [![Last Release](https://img.shields.io/github/release/Belphemur/SoundSwitch.svg)](https://github.com/Belphemur/SoundSwitch/releases) [![Downloads for last Release](https://img.shields.io/github/downloads/Belphemur/SoundSwitch/total.svg)](https://www.aaflalo.me/downloads/)
+# SoundSwitch [![Build status](https://ci.appveyor.com/api/projects/status/bt0yr309rq74tbvc?svg=true)](https://ci.appveyor.com/project/Belphemur/soundswitch) [![Last Release](https://img.shields.io/github/release/Belphemur/SoundSwitch.svg)](https://github.com/Belphemur/SoundSwitch/releases) [![Downloads for last Release](https://img.shields.io/github/downloads/Belphemur/SoundSwitch/total.svg)](https://www.aaflalo.me/downloads/) [![AppVeyor branch](https://img.shields.io/badge/Donate-paypal%2Fcc-blue.svg)](https://www.aaflalo.me/donate/)
 SoundSwitch makes it easier to switch playback devices (sound cards).
 
 Normally, to switch a Playback device you need to right click the sound icon in the bottom right corner of your screen (system tray),
@@ -8,9 +8,12 @@ Every time you want to switch.
 With SoundSwitch you just configure once between which Playback devices you want to toggle and then you can press Ctrl+Alt+F11 to toggle automatically!
 
 ## Dependencies
-You need .NET 4.6.2 installed to work: [Microsoft .NET Framework 4.5.2 (Web Installer)](https://www.microsoft.com/en-us/download/details.aspx?id=53345) 
+You need .NET 4.6.2 installed to work: [Microsoft .NET Framework 4.6.2 (Web Installer)](https://www.microsoft.com/en-us/download/details.aspx?id=53345) 
 
 You also need [Visual C++ Redistributable for Visual Studio 2015](https://www.microsoft.com/en-us/download/details.aspx?id=48145)
+
+## Donations
+If you want to donate for the development don't hesite to do it here: https://www.aaflalo.me/donate/
 
 ## Configuration
 Right click the SoundSwitch icon in your system tray and choose Settings.
@@ -36,7 +39,7 @@ SoundSwitch can also switch your recording devices. You can set HotKeys as for t
 This is one of the interesting feature added in Isabelline Gold, the auto-updater. Every 12h SoundSwitch will check the github repository (thanks to the GitHub API) for a new release, if a new one is available, the user will get a notification and the  “No Update” in the context menu will change to “Update Available (X.X.X)” where X.X.X represent the new version number. When the user click on it, a new Window opens with a progress bar (see screenshots). The new version get automatically downloaded in the temp folder of the user. When the download is finished the user can install the Update by just clicking the install button. A changelog is also provided by getting the information set in the release on GitHub.
 
 ### Communications
-SoundSwitch can also change the communications devices when asked in the Settings. Windows make a differentiation between Multimedia and Communication, it means if an application ask to have access to Communications Audio Device (like Skype), it will receive the default Communications device. By default SoundSwitch only change the Multimedia device, and not the communications. Now if the checkbox is checked in the settings, it will also change the Communications device.
+SoundSwitch can also change the communications devices when asked in the Settings. Windows make a differentiation between Multimedia and Communication, it means if an application ask to have access to Communications Audio Device, it will receive the default Communications device. By default SoundSwitch only change the Multimedia device, and not the communications. Now if the checkbox is checked in the settings, it will also change the Communications device.
 
 ### Notifications
 SoundSwitch provides 3 types of notification.
