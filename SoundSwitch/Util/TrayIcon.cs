@@ -164,6 +164,7 @@ namespace SoundSwitch.Util
                         return;
                     }
                     _needToUpdateList = true;
+                    NotifyIcon.Icon = AudioDeviceIconExtractor.ExtractIconFromAudioDevice(audioChangeEvent.device, false);
                 };
             AppModel.Instance.SelectedDeviceChanged +=
                  (sender, @event) => { _needToUpdateList = true; };
