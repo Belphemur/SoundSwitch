@@ -19,7 +19,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         {
             var toastData = new ToastData
             {
-                ImagePath = ApplicationPath.DefaultImagePath,
+                ImagePath = "file:///"+ApplicationPath.DefaultImagePath,
                 Title = audioDevice.FriendlyName
             };
             if ((Configuration.CustomSound != null) && File.Exists(Configuration.CustomSound.FilePath))

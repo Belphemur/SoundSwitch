@@ -66,7 +66,7 @@ namespace SoundSwitch.Framework.Toast
                     },
                     AppLogoOverride = new ToastGenericAppLogo()
                     {
-                        Source = "file:///" + ImagePath,
+                        Source = ImagePath,
                         HintCrop = ToastGenericAppLogoCrop.Default
                     }
                 }

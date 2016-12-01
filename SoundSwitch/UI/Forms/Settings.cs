@@ -85,6 +85,7 @@ namespace SoundSwitch.UI.Forms
             selectSoundFileDialog.Filter = SettingsString.supportedAudio + @" (*.wav;*.mp3)|*.wav;*.mp3;*.aiff";
             selectSoundFileDialog.FileOk += SelectSoundFileDialogOnFileOk;
             selectSoundFileDialog.CheckFileExists = true;
+            selectSoundFileDialog.CheckPathExists = true;
 
             var toolTipSoundButton = new ToolTip();
             toolTipSoundButton.SetToolTip(selectSoundButton, SettingsString.selectSoundButtonTooltip);
