@@ -165,4 +165,7 @@
 	<data name="help" xml:space="preserve">
 		<value>Help</value>
 	</data>
+	<data name="donate" xml:space="preserve">
+		<value>Donate</value>
+	</data>
 </root>

@@ -88,6 +88,15 @@ namespace SoundSwitch.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Donate.
+        /// </summary>
+        internal static string donate {
+            get {
+                return ResourceManager.GetString("donate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         internal static string error {
