@@ -23,7 +23,30 @@ namespace SoundSwitch.Util
 {
     internal class AudioDeviceIconExtractor
     {
-        private static readonly Dictionary<string, Icon> IconCache = new Dictionary<string, Icon>();
+        private class IconKey : IEquatable<IconKey>
+        {
+            private string FilePath { get; }
+            private bool Large { get; }
+
+            public IconKey(string filePath, bool large)
+            {
+                FilePath = filePath;
+                Large = large;
+            }
+
+            public bool Equals(IconKey other)
+            {
+                if (other == null)
+                    return false;
+                if (!FilePath.Equals(other.FilePath))
+                    return false;
+                if (!Large.Equals(other.Large))
+                    return false;
+
+                return true;
+            }
+        }
+        private static readonly Dictionary<IconKey, Icon> IconCache = new Dictionary<IconKey, Icon>();
 
         /// <summary>
         ///     Extract the Icon out of an AudioDevice
@@ -34,7 +57,8 @@ namespace SoundSwitch.Util
         public static Icon ExtractIconFromAudioDevice(IAudioDevice audioDevice, bool largeIcon)
         {
             Icon ico;
-            if (IconCache.TryGetValue(audioDevice.DeviceClassIconPath, out ico))
+            var iconKey = new IconKey(audioDevice.DeviceClassIconPath, largeIcon);
+            if (IconCache.TryGetValue(iconKey, out ico))
             {
                 return ico;
             }
@@ -42,7 +66,7 @@ namespace SoundSwitch.Util
             {
                 if (audioDevice.DeviceClassIconPath.EndsWith(".ico"))
                 {
-                    ico = Icon.ExtractAssociatedIcon(audioDevice.DeviceClassIconPath); 
+                    ico = Icon.ExtractAssociatedIcon(audioDevice.DeviceClassIconPath);
                 }
                 else
                 {
@@ -68,7 +92,7 @@ namespace SoundSwitch.Util
                 }
             }
 
-            IconCache.Add(audioDevice.DeviceClassIconPath, ico);
+            IconCache.Add(iconKey, ico);
             return ico;
         }
     }
