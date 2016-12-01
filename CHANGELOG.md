@@ -1,5 +1,18 @@
 # Change Log
 
+## [v3.12.2](https://github.com/Belphemur/SoundSwitch/tree/v3.12.2) (2016-12-01)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.12.1...v3.12.2)
+
+**Implemented enhancements:**
+
+- Add a donate button [\#127](https://github.com/Belphemur/SoundSwitch/issues/127)
+
+**Fixed bugs:**
+
+- Installer doesn't check for the right version of VC Redist 2015 [\#126](https://github.com/Belphemur/SoundSwitch/issues/126)
+- Device Icon used in Settings is the small one [\#125](https://github.com/Belphemur/SoundSwitch/issues/125)
+- App crashes on launch [\#124](https://github.com/Belphemur/SoundSwitch/issues/124)
+
 ## [v3.12.1](https://github.com/Belphemur/SoundSwitch/tree/v3.12.1) (2016-11-25)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.12.0...v3.12.1)
 
