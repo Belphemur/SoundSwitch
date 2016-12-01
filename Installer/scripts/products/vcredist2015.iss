@@ -17,7 +17,7 @@ const
 	vcredist2015_url = 'https://www.aaflalo.me/VCRedist2015/vc_redist.x86.exe';
 	vcredist2015_url_x64 = 'https://www.aaflalo.me/VCRedist2015/vc_redist.x64.exe';
   vc_redist_version = '14.0';
-  vc_redist_build = 23026;
+  vc_redist_build = 24212;
 
 procedure vcredist2015();
 begin
