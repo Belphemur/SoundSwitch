@@ -116,6 +116,7 @@ namespace SoundSwitch.Util
             _settingsMenu.Items.Add("-");
             _settingsMenu.Items.Add(TrayIconStrings.settings, Resources.SettingsSmall, (sender, e) => ShowSettings());
             _settingsMenu.Items.Add(TrayIconStrings.about, Resources.HelpSmall, (sender, e) => new About().Show());
+            _settingsMenu.Items.Add(TrayIconStrings.donate, Resources.donate, (sender, e) => Process.Start("https://www.aaflalo.me/donate"));
             _settingsMenu.Items.Add(TrayIconStrings.help, Resources.InfoHelp, (sender, e) =>
             {
                 if (!File.Exists(readmeHtml))
