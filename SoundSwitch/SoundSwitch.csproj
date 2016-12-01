@@ -462,6 +462,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\donate-16.png" />
     <None Include="Resources\donate.ico" />
     <None Include="Resources\InfoHelp.png" />
     <None Include="Resources\page-bottom.ico" />
