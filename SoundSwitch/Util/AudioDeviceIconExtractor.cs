@@ -34,16 +34,37 @@ namespace SoundSwitch.Util
                 Large = large;
             }
 
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    return (FilePath.GetHashCode()*397) ^ Large.GetHashCode();
+                }
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (ReferenceEquals(null, obj)) return false;
+                if (ReferenceEquals(this, obj)) return true;
+                if (obj.GetType() != this.GetType()) return false;
+                return Equals((IconKey) obj);
+            }
+
+            public static bool operator ==(IconKey left, IconKey right)
+            {
+                return Equals(left, right);
+            }
+
+            public static bool operator !=(IconKey left, IconKey right)
+            {
+                return !Equals(left, right);
+            }
+
             public bool Equals(IconKey other)
             {
-                if (other == null)
-                    return false;
-                if (!FilePath.Equals(other.FilePath))
-                    return false;
-                if (!Large.Equals(other.Large))
-                    return false;
-
-                return true;
+                if (ReferenceEquals(null, other)) return false;
+                if (ReferenceEquals(this, other)) return true;
+                return string.Equals(FilePath, other.FilePath) && Large == other.Large;
             }
         }
         private static readonly Dictionary<IconKey, Icon> IconCache = new Dictionary<IconKey, Icon>();
