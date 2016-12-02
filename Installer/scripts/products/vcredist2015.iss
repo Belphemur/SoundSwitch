@@ -24,7 +24,7 @@ begin
 	if (not IsIA64()) then begin
 		if (not IsVcRedistInstalled(vc_redist_version, vc_redist_build)) then
 			AddProduct('vcredist2015' + GetArchitectureString() + '.exe',
-				'/passive /norestart',
+				'/passive /norestart /showrmui',
 				CustomMessage('vcredist2015_title' + GetArchitectureString()),
 				CustomMessage('vcredist2015_size' + GetArchitectureString()),
 				GetString(vcredist2015_url, vcredist2015_url_x64, ''),
