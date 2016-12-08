@@ -137,7 +137,7 @@ namespace SoundSwitch
                         {
                             return;
                         }
-                        new AutoUpdater("/VERYSILENT /NOCANCEL", ApplicationPath.Default).Update(@event.Release, true);
+                        new AutoUpdater("/VERYSILENT /NOCANCEL /NORESTART", ApplicationPath.Default).Update(@event.Release, true);
                     };
                     if (AppConfigs.Configuration.FirstRun)
                     {
