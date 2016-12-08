@@ -169,4 +169,10 @@
 	<data name="tooltip" xml:space="preserve">
 		<value>Tooltip on hover</value>
 	</data>
+	<data name="cycleDevice" xml:space="preserve">
+		<value>Cycle through</value>
+	</data>
+	<data name="keepSystrayIcon" xml:space="preserve">
+		<value>Keep systray icon</value>
+	</data>
 </root>

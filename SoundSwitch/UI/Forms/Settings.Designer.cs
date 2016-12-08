@@ -57,6 +57,7 @@ namespace SoundSwitch.UI.Forms
             this.hotkeysLabel = new System.Windows.Forms.Label();
             this.selectSoundFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.hotkeysCheckbox = new System.Windows.Forms.CheckBox();
+            this.checkboxSystrayIcon = new System.Windows.Forms.CheckBox();
             this.tabControl.SuspendLayout();
             this.playbackPage.SuspendLayout();
             this.recordingPage.SuspendLayout();
@@ -70,7 +71,7 @@ namespace SoundSwitch.UI.Forms
             // 
             this.RunAtStartup.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.RunAtStartup.AutoSize = true;
-            this.RunAtStartup.Location = new System.Drawing.Point(6, 23);
+            this.RunAtStartup.Location = new System.Drawing.Point(6, 19);
             this.RunAtStartup.Name = "RunAtStartup";
             this.RunAtStartup.Size = new System.Drawing.Size(95, 17);
             this.RunAtStartup.TabIndex = 7;
@@ -94,7 +95,7 @@ namespace SoundSwitch.UI.Forms
             // 
             this.communicationCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.communicationCheckbox.AutoSize = true;
-            this.communicationCheckbox.Location = new System.Drawing.Point(6, 34);
+            this.communicationCheckbox.Location = new System.Drawing.Point(6, 38);
             this.communicationCheckbox.Name = "communicationCheckbox";
             this.communicationCheckbox.Size = new System.Drawing.Size(140, 17);
             this.communicationCheckbox.TabIndex = 12;
@@ -236,18 +237,18 @@ namespace SoundSwitch.UI.Forms
             this.audioSettingsGroup.Controls.Add(this.selectSoundButton);
             this.audioSettingsGroup.Controls.Add(this.notifLabel);
             this.audioSettingsGroup.Controls.Add(this.notificationComboBox);
-            this.audioSettingsGroup.Location = new System.Drawing.Point(3, 55);
+            this.audioSettingsGroup.Location = new System.Drawing.Point(3, 71);
             this.audioSettingsGroup.Name = "audioSettingsGroup";
-            this.audioSettingsGroup.Size = new System.Drawing.Size(312, 175);
+            this.audioSettingsGroup.Size = new System.Drawing.Size(312, 179);
             this.audioSettingsGroup.TabIndex = 13;
             this.audioSettingsGroup.TabStop = false;
-            this.audioSettingsGroup.Text = "Audio Settings";
+            this.audioSettingsGroup.Text = global::SoundSwitch.Properties.SettingsString.audioSettings;
             // 
             // cyclerLabel
             // 
             this.cyclerLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cyclerLabel.AutoSize = true;
-            this.cyclerLabel.Location = new System.Drawing.Point(6, 150);
+            this.cyclerLabel.Location = new System.Drawing.Point(6, 154);
             this.cyclerLabel.Name = "cyclerLabel";
             this.cyclerLabel.Size = new System.Drawing.Size(72, 13);
             this.cyclerLabel.TabIndex = 23;
@@ -258,7 +259,7 @@ namespace SoundSwitch.UI.Forms
             this.cyclerComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cyclerComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cyclerComboBox.FormattingEnabled = true;
-            this.cyclerComboBox.Location = new System.Drawing.Point(98, 146);
+            this.cyclerComboBox.Location = new System.Drawing.Point(98, 150);
             this.cyclerComboBox.Name = "cyclerComboBox";
             this.cyclerComboBox.Size = new System.Drawing.Size(177, 21);
             this.cyclerComboBox.TabIndex = 22;
@@ -268,7 +269,7 @@ namespace SoundSwitch.UI.Forms
             // 
             this.tooltipLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.tooltipLabel.AutoSize = true;
-            this.tooltipLabel.Location = new System.Drawing.Point(6, 110);
+            this.tooltipLabel.Location = new System.Drawing.Point(6, 114);
             this.tooltipLabel.Name = "tooltipLabel";
             this.tooltipLabel.Size = new System.Drawing.Size(86, 13);
             this.tooltipLabel.TabIndex = 21;
@@ -279,7 +280,7 @@ namespace SoundSwitch.UI.Forms
             this.tooltipInfoComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.tooltipInfoComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.tooltipInfoComboBox.FormattingEnabled = true;
-            this.tooltipInfoComboBox.Location = new System.Drawing.Point(98, 106);
+            this.tooltipInfoComboBox.Location = new System.Drawing.Point(98, 110);
             this.tooltipInfoComboBox.Name = "tooltipInfoComboBox";
             this.tooltipInfoComboBox.Size = new System.Drawing.Size(177, 21);
             this.tooltipInfoComboBox.TabIndex = 20;
@@ -288,7 +289,7 @@ namespace SoundSwitch.UI.Forms
             // selectSoundButton
             // 
             this.selectSoundButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.selectSoundButton.Location = new System.Drawing.Point(281, 66);
+            this.selectSoundButton.Location = new System.Drawing.Point(281, 70);
             this.selectSoundButton.Name = "selectSoundButton";
             this.selectSoundButton.Size = new System.Drawing.Size(24, 23);
             this.selectSoundButton.TabIndex = 19;
@@ -301,7 +302,7 @@ namespace SoundSwitch.UI.Forms
             // 
             this.notifLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.notifLabel.AutoSize = true;
-            this.notifLabel.Location = new System.Drawing.Point(6, 72);
+            this.notifLabel.Location = new System.Drawing.Point(6, 76);
             this.notifLabel.Name = "notifLabel";
             this.notifLabel.Size = new System.Drawing.Size(60, 13);
             this.notifLabel.TabIndex = 17;
@@ -312,7 +313,7 @@ namespace SoundSwitch.UI.Forms
             this.notificationComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.notificationComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.notificationComboBox.FormattingEnabled = true;
-            this.notificationComboBox.Location = new System.Drawing.Point(98, 67);
+            this.notificationComboBox.Location = new System.Drawing.Point(98, 71);
             this.notificationComboBox.Name = "notificationComboBox";
             this.notificationComboBox.Size = new System.Drawing.Size(177, 21);
             this.notificationComboBox.TabIndex = 16;
@@ -320,13 +321,14 @@ namespace SoundSwitch.UI.Forms
             // 
             // basicSettingsGroup
             // 
+            this.basicSettingsGroup.Controls.Add(this.checkboxSystrayIcon);
             this.basicSettingsGroup.Controls.Add(this.RunAtStartup);
             this.basicSettingsGroup.Location = new System.Drawing.Point(3, 3);
             this.basicSettingsGroup.Name = "basicSettingsGroup";
-            this.basicSettingsGroup.Size = new System.Drawing.Size(312, 46);
+            this.basicSettingsGroup.Size = new System.Drawing.Size(312, 62);
             this.basicSettingsGroup.TabIndex = 0;
             this.basicSettingsGroup.TabStop = false;
-            this.basicSettingsGroup.Text = "Basic Settings";
+            this.basicSettingsGroup.Text = global::SoundSwitch.Properties.SettingsString.basicSettings;
             // 
             // hotkeyTextBox
             // 
@@ -360,6 +362,17 @@ namespace SoundSwitch.UI.Forms
             this.hotkeysCheckbox.TabIndex = 20;
             this.hotkeysCheckbox.UseVisualStyleBackColor = true;
             this.hotkeysCheckbox.CheckedChanged += new System.EventHandler(this.hotkeysCheckbox_CheckedChanged);
+            // 
+            // checkboxSystrayIcon
+            // 
+            this.checkboxSystrayIcon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkboxSystrayIcon.AutoSize = true;
+            this.checkboxSystrayIcon.Location = new System.Drawing.Point(6, 39);
+            this.checkboxSystrayIcon.Name = "checkboxSystrayIcon";
+            this.checkboxSystrayIcon.Size = new System.Drawing.Size(109, 17);
+            this.checkboxSystrayIcon.TabIndex = 8;
+            this.checkboxSystrayIcon.Text = global::SoundSwitch.Properties.SettingsString.keepSystrayIcon;
+            this.checkboxSystrayIcon.UseVisualStyleBackColor = true;
             // 
             // Settings
             // 
@@ -416,5 +429,6 @@ namespace SoundSwitch.UI.Forms
         private System.Windows.Forms.Label tooltipLabel;
         private System.Windows.Forms.Label cyclerLabel;
         private System.Windows.Forms.ComboBox cyclerComboBox;
+        private System.Windows.Forms.CheckBox checkboxSystrayIcon;
     }
 }

@@ -169,4 +169,7 @@
 	<data name="tooltip" xml:space="preserve">
 		<value>Information lors du survol</value>
 	</data>
+	<data name="cycleDevice" xml:space="preserve">
+		<value>Switcher entre</value>
+	</data>
 </root>

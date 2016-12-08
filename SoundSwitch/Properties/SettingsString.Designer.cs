@@ -133,6 +133,15 @@ namespace SoundSwitch.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cycle through.
+        /// </summary>
+        internal static string cycleDevice {
+            get {
+                return ResourceManager.GetString("cycleDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Disconnected.
         /// </summary>
         internal static string disconnected {
@@ -156,6 +165,15 @@ namespace SoundSwitch.Properties {
         internal static string hotkeyUncheckExplanation {
             get {
                 return ResourceManager.GetString("hotkeyUncheckExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keep systray icon.
+        /// </summary>
+        internal static string keepSystrayIcon {
+            get {
+                return ResourceManager.GetString("keepSystrayIcon", resourceCulture);
             }
         }
         
