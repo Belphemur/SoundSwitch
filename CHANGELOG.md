@@ -1,5 +1,16 @@
 # Change Log
 
+## [v3.12.3](https://github.com/Belphemur/SoundSwitch/tree/v3.12.3) (2016-12-08)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.12.2...v3.12.3)
+
+**Implemented enhancements:**
+
+- Setting to keep the normal SoundSwitch TrayIcon [\#128](https://github.com/Belphemur/SoundSwitch/issues/128)
+
+**Closed issues:**
+
+- Hotkey to switch playback no longer works [\#130](https://github.com/Belphemur/SoundSwitch/issues/130)
+
 ## [v3.12.2](https://github.com/Belphemur/SoundSwitch/tree/v3.12.2) (2016-12-01)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.12.1...v3.12.2)
 
