@@ -178,6 +178,15 @@ namespace SoundSwitch.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to If selected, the Systray Icon won&apos;t change when the default device change..
+        /// </summary>
+        internal static string keepSystrayIconHelp {
+            get {
+                return ResourceManager.GetString("keepSystrayIconHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notification.
         /// </summary>
         internal static string notification {

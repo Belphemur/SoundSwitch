@@ -175,4 +175,7 @@
 	<data name="keepSystrayIcon" xml:space="preserve">
 		<value>Keep systray icon</value>
 	</data>
+	<data name="keepSystrayIconHelp" xml:space="preserve">
+		<value>If selected, the Systray Icon won't change when the default device changes.</value>
+	</data>
 </root>

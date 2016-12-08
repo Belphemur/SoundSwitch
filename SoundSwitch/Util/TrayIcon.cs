@@ -25,6 +25,7 @@ using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
+using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.TooltipInfoManager;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Model;
@@ -39,6 +40,7 @@ namespace SoundSwitch.Util
         private readonly ContextMenuStrip _settingsMenu = new ContextMenuStrip();
         private readonly SynchronizationContext _context = SynchronizationContext.Current ?? new SynchronizationContext();
         private volatile bool _needToUpdateList = true;
+        private bool _iconChanged = false;
         public NotifyIcon NotifyIcon { get; }    = new NotifyIcon
         {
             Icon = Icon.FromHandle(Resources.SoundSwitch16.GetHicon()),
@@ -164,8 +166,16 @@ namespace SoundSwitch.Util
                     {
                         return;
                     }
-                    _needToUpdateList = true;
-                    NotifyIcon.Icon = AudioDeviceIconExtractor.ExtractIconFromAudioDevice(audioChangeEvent.device, false);
+                    if (!AppConfigs.Configuration.KeepSystrayIcon)
+                    {
+                        NotifyIcon.Icon = AudioDeviceIconExtractor.ExtractIconFromAudioDevice(audioChangeEvent.device, false);
+                        _iconChanged = true;
+                    }
+                    else if (_iconChanged)
+                    {
+                        NotifyIcon.Icon = Icon.FromHandle(Resources.SoundSwitch16.GetHicon());
+                        _iconChanged = false;
+                    }
                 };
             AppModel.Instance.SelectedDeviceChanged +=
                  (sender, @event) => { _needToUpdateList = true; };

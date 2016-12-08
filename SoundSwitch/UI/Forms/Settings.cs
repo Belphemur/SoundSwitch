@@ -105,6 +105,10 @@ namespace SoundSwitch.UI.Forms
             new DeviceCyclerFactory().ConfigureListControl(cyclerComboBox);
             cyclerComboBox.SelectedValue = DeviceCyclerManager.CurrentCycler;
 
+            var toolTipSystray = new ToolTip();
+            toolTipSystray.SetToolTip(checkboxSystrayIcon, SettingsString.keepSystrayIconHelp);
+            checkboxSystrayIcon.Checked = AppConfigs.Configuration.KeepSystrayIcon;
+
             _loaded = true;
         }
 
@@ -445,6 +449,12 @@ namespace SoundSwitch.UI.Forms
         private void stealthUpdateCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             AppModel.Instance.StealthUpdate = stealthUpdateCheckbox.Checked;
+        }
+
+        private void checkboxSystrayIcon_CheckedChanged(object sender, EventArgs e)
+        {
+            AppConfigs.Configuration.KeepSystrayIcon = checkboxSystrayIcon.Checked;
+            AppConfigs.Configuration.Save();
         }
     }
 }

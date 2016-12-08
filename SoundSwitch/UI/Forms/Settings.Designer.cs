@@ -53,11 +53,11 @@ namespace SoundSwitch.UI.Forms
             this.notifLabel = new System.Windows.Forms.Label();
             this.notificationComboBox = new System.Windows.Forms.ComboBox();
             this.basicSettingsGroup = new System.Windows.Forms.GroupBox();
+            this.checkboxSystrayIcon = new System.Windows.Forms.CheckBox();
             this.hotkeyTextBox = new System.Windows.Forms.TextBox();
             this.hotkeysLabel = new System.Windows.Forms.Label();
             this.selectSoundFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.hotkeysCheckbox = new System.Windows.Forms.CheckBox();
-            this.checkboxSystrayIcon = new System.Windows.Forms.CheckBox();
             this.tabControl.SuspendLayout();
             this.playbackPage.SuspendLayout();
             this.recordingPage.SuspendLayout();
@@ -252,7 +252,7 @@ namespace SoundSwitch.UI.Forms
             this.cyclerLabel.Name = "cyclerLabel";
             this.cyclerLabel.Size = new System.Drawing.Size(72, 13);
             this.cyclerLabel.TabIndex = 23;
-            this.cyclerLabel.Text = "Cycle through";
+            this.cyclerLabel.Text = global::SoundSwitch.Properties.SettingsString.cycleDevice;
             // 
             // cyclerComboBox
             // 
@@ -306,7 +306,7 @@ namespace SoundSwitch.UI.Forms
             this.notifLabel.Name = "notifLabel";
             this.notifLabel.Size = new System.Drawing.Size(60, 13);
             this.notifLabel.TabIndex = 17;
-            this.notifLabel.Text = "Notification";
+            this.notifLabel.Text = global::SoundSwitch.Properties.SettingsString.notification;
             // 
             // notificationComboBox
             // 
@@ -329,6 +329,18 @@ namespace SoundSwitch.UI.Forms
             this.basicSettingsGroup.TabIndex = 0;
             this.basicSettingsGroup.TabStop = false;
             this.basicSettingsGroup.Text = global::SoundSwitch.Properties.SettingsString.basicSettings;
+            // 
+            // checkboxSystrayIcon
+            // 
+            this.checkboxSystrayIcon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkboxSystrayIcon.AutoSize = true;
+            this.checkboxSystrayIcon.Location = new System.Drawing.Point(6, 39);
+            this.checkboxSystrayIcon.Name = "checkboxSystrayIcon";
+            this.checkboxSystrayIcon.Size = new System.Drawing.Size(109, 17);
+            this.checkboxSystrayIcon.TabIndex = 8;
+            this.checkboxSystrayIcon.Text = global::SoundSwitch.Properties.SettingsString.keepSystrayIcon;
+            this.checkboxSystrayIcon.UseVisualStyleBackColor = true;
+            this.checkboxSystrayIcon.CheckedChanged += new System.EventHandler(this.checkboxSystrayIcon_CheckedChanged);
             // 
             // hotkeyTextBox
             // 
@@ -362,17 +374,6 @@ namespace SoundSwitch.UI.Forms
             this.hotkeysCheckbox.TabIndex = 20;
             this.hotkeysCheckbox.UseVisualStyleBackColor = true;
             this.hotkeysCheckbox.CheckedChanged += new System.EventHandler(this.hotkeysCheckbox_CheckedChanged);
-            // 
-            // checkboxSystrayIcon
-            // 
-            this.checkboxSystrayIcon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.checkboxSystrayIcon.AutoSize = true;
-            this.checkboxSystrayIcon.Location = new System.Drawing.Point(6, 39);
-            this.checkboxSystrayIcon.Name = "checkboxSystrayIcon";
-            this.checkboxSystrayIcon.Size = new System.Drawing.Size(109, 17);
-            this.checkboxSystrayIcon.TabIndex = 8;
-            this.checkboxSystrayIcon.Text = global::SoundSwitch.Properties.SettingsString.keepSystrayIcon;
-            this.checkboxSystrayIcon.UseVisualStyleBackColor = true;
             // 
             // Settings
             // 

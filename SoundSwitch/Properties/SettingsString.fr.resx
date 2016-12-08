@@ -172,4 +172,10 @@
 	<data name="cycleDevice" xml:space="preserve">
 		<value>Switcher entre</value>
 	</data>
+	<data name="keepSystrayIconHelp" xml:space="preserve">
+		<value>Si coché, l'icone dans la barre de tache restera celle de l'application quand le périférique par défault est changé.</value>
+	</data>
+	<data name="keepSystrayIcon" xml:space="preserve">
+		<value>Garder l'icone intacte</value>
+	</data>
 </root>
