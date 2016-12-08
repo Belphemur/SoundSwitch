@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Manage the default audio device.")]
 [assembly: AssemblyCompany("SoundSwitch")]
 [assembly: AssemblyProduct("SoundSwitch")]
-[assembly: AssemblyCopyright("Jeroen Pelgrims; Antoine Aflalo")]
+[assembly: AssemblyCopyright("Antoine Aflalo")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -35,4 +35,4 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("3.12.2.*")]
+[assembly: AssemblyVersion("3.12.3.*")]
