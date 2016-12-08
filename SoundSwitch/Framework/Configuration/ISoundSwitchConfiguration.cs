@@ -35,10 +35,6 @@ namespace SoundSwitch.Framework.Configuration
         bool ChangeCommunications { get; set; }
         uint UpdateCheckInterval { get; set; }
 
-        /*TODO: Remove in next VERSION (3.7.0)*/
-        [Obsolete("Use the NotificationSettings instead.")]
-        bool DisplayNotifications { get; set; }
-
         bool MigratedSelectedDeviceLists { get; set; }
         NotificationTypeEnum NotificationSettings { get; set; }
         bool SubscribedBetaVersion { get; set; }
@@ -46,5 +42,6 @@ namespace SoundSwitch.Framework.Configuration
         UpdateState UpdateState { get; set; }
         TooltipInfoTypeEnum TooltipInfo { get; set; }
         DeviceCyclerTypeEnum CyclerType { get; set; }
+        bool KeepSystrayIcon { get; set; }
     }
 }

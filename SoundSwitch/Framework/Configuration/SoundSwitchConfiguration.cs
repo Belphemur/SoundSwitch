@@ -42,6 +42,7 @@ namespace SoundSwitch.Framework.Configuration
             SubscribedBetaVersion = false;
             TooltipInfo = TooltipInfoTypeEnum.Playback;
             CyclerType = DeviceCyclerTypeEnum.Available;
+            KeepSystrayIcon = false;
 
         }
 
@@ -60,19 +61,10 @@ namespace SoundSwitch.Framework.Configuration
         public UpdateState UpdateState { get; set; }
         public TooltipInfoTypeEnum TooltipInfo { get; set; }
         public DeviceCyclerTypeEnum CyclerType { get; set; }
-
-        /*TODO: Remove in next VERSION (3.7.0)*/
-        [Obsolete("Use the NotificationSettings instead.")]
-        public bool DisplayNotifications
-        {
-            get { return NotificationSettings == NotificationTypeEnum.DefaultWindowsNotification; }
-            set {
-                NotificationSettings = value ? NotificationTypeEnum.DefaultWindowsNotification : NotificationTypeEnum.NoNotification;
-            }
-        }
         public NotificationTypeEnum NotificationSettings { get; set; }
         public bool SubscribedBetaVersion { get; set; }
         public string CustomNotificationFilePath { get; set; }
+        public bool KeepSystrayIcon { get; set; }
 
 
         //Needed by Interface
