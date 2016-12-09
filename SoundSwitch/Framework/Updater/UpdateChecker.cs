@@ -73,12 +73,6 @@ namespace SoundSwitch.Framework.Updater
                     return false;
                 }
 
-                if (!serverRelease.prerelease && Beta)
-                {
-                    AppLogger.Log.Info("Release and in Beta Mode.");
-                    return false;
-                }
-
                 var version = new Version(serverRelease.tag_name.Substring(1));
                 var changelog = Regex.Split(serverRelease.body, "\r\n|\r|\n");
                 try
