@@ -17,9 +17,6 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DefSound", "AudioEndPointLibrary\DefSound\DefSound.vcxproj", "{0EF580FE-B39D-4423-A59C-5B98AB6F39E7}"
 EndProject
 Global
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		AppVeyor|x64 = AppVeyor|x64
 		AppVeyor|x86 = AppVeyor|x86
