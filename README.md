@@ -24,6 +24,9 @@ For Recording devices the default is: Ctrl + Alt + F7
 ### Double clicks
 You can also double click on the systray icon to switch audio devices.
 
+### Left Click
+If you use the left click on the systray icon, you'll see a menu appear where you can select the wanted device.
+
 ## Features
 
 ### Recording Devices
