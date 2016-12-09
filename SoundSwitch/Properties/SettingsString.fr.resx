@@ -173,7 +173,7 @@
 		<value>Switcher entre</value>
 	</data>
 	<data name="keepSystrayIconHelp" xml:space="preserve">
-		<value>Si coché, l'icone dans la barre de tache restera celle de l'application quand le périférique par défault est changé.</value>
+		<value>Si coché, l'icone dans la barre de tache restera celle de l'application quand le périférique par défaut change.</value>
 	</data>
 	<data name="keepSystrayIcon" xml:space="preserve">
 		<value>Garder l'icone intacte</value>
