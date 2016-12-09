@@ -162,10 +162,7 @@ namespace SoundSwitch.Util
             AppModel.Instance.DefaultDeviceChanged +=
                 (sender, audioChangeEvent) =>
                 {
-                    if (audioChangeEvent.role != Role.Console)
-                    {
-                        return;
-                    }
+
                     if (!AppConfigs.Configuration.KeepSystrayIcon)
                     {
                         NotifyIcon.Icon = AudioDeviceIconExtractor.ExtractIconFromAudioDevice(audioChangeEvent.device, false);
@@ -177,6 +174,14 @@ namespace SoundSwitch.Util
                         _iconChanged = false;
                     }
                 };
+            AppModel.Instance.DefaultDeviceChanged += (sender, @event) =>
+            {
+                if (@event.role != Role.Console)
+                {
+                    return;
+                }
+                _needToUpdateList = true;
+            };
             AppModel.Instance.SelectedDeviceChanged +=
                  (sender, @event) => { _needToUpdateList = true; };
             AppModel.Instance.NewVersionReleased += (sender, @event) =>
