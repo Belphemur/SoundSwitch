@@ -3,6 +3,10 @@
 ## [v3.12.4](https://github.com/Belphemur/SoundSwitch/tree/v3.12.4) (2016-12-09)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.12.3...v3.12.4)
 
+**Implemented enhancements:**
+
+- When on Beta channel, also install releases [\#132](https://github.com/Belphemur/SoundSwitch/issues/132)
+
 **Fixed bugs:**
 
 - Audio device's selection menu on the systray stopped updating/working [\#131](https://github.com/Belphemur/SoundSwitch/issues/131)
