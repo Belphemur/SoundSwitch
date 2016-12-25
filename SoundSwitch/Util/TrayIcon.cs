@@ -54,6 +54,7 @@ namespace SoundSwitch.Util
 
         public TrayIcon()
         {
+            InitIcon();
             _tooltipInfoManager = new TooltipInfoManager(NotifyIcon);
             _updateMenuItem = new ToolStripMenuItem(TrayIconStrings.NoUpdate, Resources.Update, OnUpdateClick)
             {
@@ -100,6 +101,19 @@ namespace SoundSwitch.Util
             _settingsMenu.Dispose();
             NotifyIcon.Dispose();
             _updateMenuItem.Dispose();
+        }
+
+        private void InitIcon()
+        {
+            try
+            {
+                IAudioDevice defaultDevice = AppModel.Instance.ActiveAudioDeviceLister.GetPlaybackDevices()
+                    .First(device => device.IsDefault(Role.Console));
+                NotifyIcon.Icon = AudioDeviceIconExtractor.ExtractIconFromAudioDevice(defaultDevice, false);
+            }
+            catch (InvalidOperationException)
+            {
+            }
         }
 
         private void PopulateSettingsMenu()
