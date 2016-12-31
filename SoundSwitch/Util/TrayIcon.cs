@@ -105,6 +105,8 @@ namespace SoundSwitch.Util
 
         private void InitIcon()
         {
+            if (AppConfigs.Configuration.KeepSystrayIcon)
+                return;
             try
             {
                 IAudioDevice defaultDevice = AppModel.Instance.ActiveAudioDeviceLister.GetPlaybackDevices()
