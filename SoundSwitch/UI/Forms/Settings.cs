@@ -455,6 +455,7 @@ namespace SoundSwitch.UI.Forms
         {
             AppConfigs.Configuration.KeepSystrayIcon = checkboxSystrayIcon.Checked;
             AppConfigs.Configuration.Save();
+            AppModel.Instance.TrayIcon.UpdateIcon();
         }
     }
 }

@@ -40,10 +40,8 @@ namespace SoundSwitch.Util
         private readonly ContextMenuStrip _settingsMenu = new ContextMenuStrip();
         private readonly SynchronizationContext _context = SynchronizationContext.Current ?? new SynchronizationContext();
         private volatile bool _needToUpdateList = true;
-        private bool _iconChanged = false;
         public NotifyIcon NotifyIcon { get; }    = new NotifyIcon
         {
-            Icon = Icon.FromHandle(Resources.SoundSwitch16.GetHicon()),
             Visible = true,
             Text = Application.ProductName
         };
@@ -54,7 +52,7 @@ namespace SoundSwitch.Util
 
         public TrayIcon()
         {
-            InitIcon();
+            UpdateIcon();
             _tooltipInfoManager = new TooltipInfoManager(NotifyIcon);
             _updateMenuItem = new ToolStripMenuItem(TrayIconStrings.NoUpdate, Resources.Update, OnUpdateClick)
             {
@@ -103,13 +101,17 @@ namespace SoundSwitch.Util
             _updateMenuItem.Dispose();
         }
 
-        private void InitIcon()
+        public void UpdateIcon()
         {
             if (AppConfigs.Configuration.KeepSystrayIcon)
+            {
+                NotifyIcon.Icon = Icon.FromHandle(Resources.SoundSwitch16.GetHicon());
                 return;
+            }
+                
             try
             {
-                IAudioDevice defaultDevice = AppModel.Instance.ActiveAudioDeviceLister.GetPlaybackDevices()
+                var defaultDevice = AppModel.Instance.ActiveAudioDeviceLister.GetPlaybackDevices()
                     .First(device => device.IsDefault(Role.Console));
                 NotifyIcon.Icon = AudioDeviceIconExtractor.ExtractIconFromAudioDevice(defaultDevice, false);
             }
@@ -178,17 +180,11 @@ namespace SoundSwitch.Util
             AppModel.Instance.DefaultDeviceChanged +=
                 (sender, audioChangeEvent) =>
                 {
-
-                    if (!AppConfigs.Configuration.KeepSystrayIcon)
+                    if (AppConfigs.Configuration.KeepSystrayIcon)
                     {
-                        NotifyIcon.Icon = AudioDeviceIconExtractor.ExtractIconFromAudioDevice(audioChangeEvent.device, false);
-                        _iconChanged = true;
+                        return;
                     }
-                    else if (_iconChanged)
-                    {
-                        NotifyIcon.Icon = Icon.FromHandle(Resources.SoundSwitch16.GetHicon());
-                        _iconChanged = false;
-                    }
+                    NotifyIcon.Icon = AudioDeviceIconExtractor.ExtractIconFromAudioDevice(audioChangeEvent.device, false);
                 };
             AppModel.Instance.DefaultDeviceChanged += (sender, @event) =>
             {

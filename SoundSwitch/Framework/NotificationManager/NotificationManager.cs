@@ -46,7 +46,7 @@ namespace SoundSwitch.Framework.NotificationManager
             _notification = _notificationFactory.Get(notificationTypeEnum);
             _notification.Configuration = new NotificationConfiguration()
             {
-                Icon = AppModel.Instance.NotifyIcon,
+                Icon = AppModel.Instance.TrayIcon.NotifyIcon,
                 DefaultSound = Resources.NotificationSound
             };
             try

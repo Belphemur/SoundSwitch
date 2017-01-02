@@ -129,7 +129,7 @@ namespace SoundSwitch
                         }
                         
                     }
-                    AppModel.Instance.NotifyIcon = icon.NotifyIcon;
+                    AppModel.Instance.TrayIcon = icon;
                     AppModel.Instance.InitializeMain();
                     AppModel.Instance.NewVersionReleased += (sender, @event) =>
                     {

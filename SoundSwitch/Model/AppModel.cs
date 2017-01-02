@@ -25,6 +25,7 @@ using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.NotificationManager;
+using SoundSwitch.Util;
 
 namespace SoundSwitch.Model
 {
@@ -46,7 +47,7 @@ namespace SoundSwitch.Model
         }
 
         public static IAppModel Instance { get; } = new AppModel();
-        public NotifyIcon NotifyIcon { get; set; }
+        public TrayIcon TrayIcon { get; set; }
         private CachedSound _customNotificationCachedSound;
         private readonly DeviceCyclerManager _deviceCyclerManager;
 

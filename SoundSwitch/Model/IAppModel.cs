@@ -21,6 +21,7 @@ using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Updater;
+using SoundSwitch.Util;
 
 namespace SoundSwitch.Model
 {
@@ -66,7 +67,7 @@ namespace SoundSwitch.Model
         /// <summary>
         /// The tray icon of the application
         /// </summary>
-        NotifyIcon NotifyIcon { get; set; }
+        TrayIcon TrayIcon { get; set; }
 
         /// <summary>
         /// List the active audio devices

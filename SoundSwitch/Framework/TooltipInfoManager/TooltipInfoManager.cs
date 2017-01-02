@@ -61,7 +61,7 @@ namespace SoundSwitch.Framework.TooltipInfoManager
 
 
         /// <summary>
-        ///     Show the tooltip with the NotifyIcon
+        ///     Show the tooltip with the TrayIcon
         /// </summary>
         public void ShowTooltipInfo()
         {
