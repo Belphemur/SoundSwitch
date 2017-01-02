@@ -1,5 +1,16 @@
 # Change Log
 
+## [v3.12.5](https://github.com/Belphemur/SoundSwitch/tree/v3.12.5) (2017-01-02)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.12.4...v3.12.5)
+
+**Fixed bugs:**
+
+- Reinit the systray icon on Keep Systray setting change [\#135](https://github.com/Belphemur/SoundSwitch/issues/135)
+
+**Merged pull requests:**
+
+- TrayIcon is correctly selected after startup [\#134](https://github.com/Belphemur/SoundSwitch/pull/134) ([patgrosse](https://github.com/patgrosse))
+
 ## [v3.12.4](https://github.com/Belphemur/SoundSwitch/tree/v3.12.4) (2016-12-09)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.12.3...v3.12.4)
 
