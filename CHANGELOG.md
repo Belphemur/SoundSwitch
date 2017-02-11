@@ -1,5 +1,12 @@
 # Change Log
 
+## [v3.12.6](https://github.com/Belphemur/SoundSwitch/tree/v3.12.6) (2017-02-11)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.12.5...v3.12.6)
+
+**Fixed bugs:**
+
+- Crashed when Bluetooth headphones conneted [\#140](https://github.com/Belphemur/SoundSwitch/issues/140)
+
 ## [v3.12.5](https://github.com/Belphemur/SoundSwitch/tree/v3.12.5) (2017-01-02)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.12.4...v3.12.5)
 
