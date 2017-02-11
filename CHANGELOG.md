@@ -7,6 +7,10 @@
 
 - Crashed when Bluetooth headphones conneted [\#140](https://github.com/Belphemur/SoundSwitch/issues/140)
 
+**Closed issues:**
+
+- Add donation url in the installer [\#142](https://github.com/Belphemur/SoundSwitch/issues/142)
+
 ## [v3.12.5](https://github.com/Belphemur/SoundSwitch/tree/v3.12.5) (2017-01-02)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.12.4...v3.12.5)
 
