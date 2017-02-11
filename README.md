@@ -8,7 +8,7 @@ With SoundSwitch you just configure once between which Playback devices you want
 ## Dependencies
 You need .NET 4.6.2 installed to work: [Microsoft .NET Framework 4.6.2 (Web Installer)](https://www.microsoft.com/en-us/download/details.aspx?id=53345) 
 
-You also need [Visual C++ Redistributable for Visual Studio 2015](https://www.microsoft.com/en-us/download/details.aspx?id=52685)
+You also need [Visual C++ Redistributable for Visual Studio 2015](https://www.microsoft.com/en-us/download/details.aspx?id=53587)
 
 ## Donations
 If you want to donate for the development don't hesite to do it here: https://www.aaflalo.me/donate/
