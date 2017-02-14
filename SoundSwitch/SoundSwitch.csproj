@@ -204,19 +204,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommonMark, Version=0.1.0.0, Culture=neutral, PublicKeyToken=001ef8810438905d, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommonMark.NET.0.14.0\lib\net45\CommonMark.dll</HintPath>
+      <HintPath>..\packages\CommonMark.NET.0.15.0\lib\net45\CommonMark.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Toolkit.Uwp.Notifications, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Toolkit.Uwp.Notifications.1.0.0\lib\dotnet\Microsoft.Toolkit.Uwp.Notifications.dll</HintPath>
+    <Reference Include="Microsoft.Toolkit.Uwp.Notifications, Version=1.3.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Toolkit.Uwp.Notifications.1.3.1\lib\dotnet\Microsoft.Toolkit.Uwp.Notifications.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.WindowsAPICodePack-Core.1.1.0.2\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NAudio, Version=1.7.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NAudio.1.7.3\lib\net35\NAudio.dll</HintPath>
+    <Reference Include="NAudio, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.1.8.0\lib\net35\NAudio.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
