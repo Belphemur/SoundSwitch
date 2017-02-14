@@ -1,5 +1,18 @@
 # Change Log
 
+## [v3.12.7](https://github.com/Belphemur/SoundSwitch/tree/v3.12.7) (2017-02-14)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.12.6...v3.12.7)
+
+**Implemented enhancements:**
+
+- Check the update is signed with a trusted key [\#147](https://github.com/Belphemur/SoundSwitch/issues/147)
+- Make the installer install the certificate used by SoundSwitch [\#145](https://github.com/Belphemur/SoundSwitch/issues/145)
+- When stealth update is activated, don't auto-update if there is an app in fullscreen [\#144](https://github.com/Belphemur/SoundSwitch/issues/144)
+
+**Fixed bugs:**
+
+- Updater crash with Full updater and progress bar [\#83](https://github.com/Belphemur/SoundSwitch/issues/83)
+
 ## [v3.12.6](https://github.com/Belphemur/SoundSwitch/tree/v3.12.6) (2017-02-11)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.12.5...v3.12.6)
 
