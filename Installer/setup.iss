@@ -75,6 +75,8 @@ Source: "{#ExeDir}Changelog.html"; DestDir: "{app}"
 Source: "{#ExeDir}Readme.html"; DestDir: "{app}"   
 Source: "{#ExeDir}soundSwitched.png"; DestDir: "{app}\img"
 
+Source: "{#ExeDir}../../Certs/SoundSwitch.cer"; DestDir: "{app}\certs";
+
 [Registry]
 Root: HKCU; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Run\{#MyAppSetupName}"; Flags: uninsdeletekey
 
@@ -88,10 +90,15 @@ Filename: "{app}\SoundSwitch.exe"; Description: "{cm:LaunchProgram,{#MyAppSetupN
 Filename: "{app}\Readme.html"; Description: "View the README file"; Flags: postinstall shellexec skipifsilent
 Filename: "https://www.aaflalo.me/donate/"; Description: "Support the project"; Flags: postinstall shellexec skipifsilent runasoriginaluser
 Filename: "{app}\Changelog.html"; Description: "View the CHANGELOG file"; Flags: postinstall shellexec skipifsilent unchecked
+Filename: "certutil.exe"; Parameters: "-addstore TrustedPublisher {app}\certs\SoundSwitch.cer"; \
+    StatusMsg: "Adding trusted publisher..."; Description: "{cm:AddCertDescription}"; Flags: postinstall shellexec runhidden
 
 [CustomMessages]
 win_sp_title=Windows %1 Service Pack %2
+AddCertDescription=Trust SoundSwitch Certficate%nThis way you won't have warnings when SoundSwitch is updating.
 
+[UninstallRun]
+Filename: "certutil.exe"; Parameters: "-delstore TrustedPublisher 942A37BCA9A9889442F6710533CB5548" ; Flags: shellexec runhidden
 
 [Code]
 #include "scripts\checkMutex.iss"
