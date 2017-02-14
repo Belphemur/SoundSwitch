@@ -48,6 +48,13 @@ namespace SoundSwitch.UI.Forms
             };
             _releaseFile.Downloaded += (sender, args) =>
             {
+                if (!SignatureChecker.IsValid(_releaseFile.FilePath))
+                {
+                    AppLogger.Log.Error("Wrong signature for the release");
+                    MessageBox.Show(UpdateFormStrings.notSigned, UpdateFormStrings.notSignedTitle, MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    return;
+                }
                 installButton.Invoke(new Action(() =>
                 {
                     installButton.Enabled = true;

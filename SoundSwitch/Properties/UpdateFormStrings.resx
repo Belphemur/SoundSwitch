@@ -109,4 +109,10 @@
 	<data name="changelog" xml:space="preserve">
 		<value>Changelog</value>
 	</data>
+	<data name="notSigned" xml:space="preserve">
+		<value>The downloaded update doesn't have the right signature. We advise you to delete the file and contact the developer.</value>
+	</data>
+	<data name="notSignedTitle" xml:space="preserve">
+		<value>Wrong Digital Signature</value>
+	</data>
 </root>

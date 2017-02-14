@@ -109,4 +109,10 @@
 	<data name="changelog" xml:space="preserve">
 		<value>Changements</value>
 	</data>
+	<data name="notSigned" xml:space="preserve">
+		<value>La mise à jour téléchargée n'est pas signée par SoundSwitch. Nous vous conseillons de supprimer le fichier et de contacter le dévelopeur.</value>
+	</data>
+	<data name="notSignedTitle" xml:space="preserve">
+		<value>Signature Digitale Invalide</value>
+	</data>
 </root>

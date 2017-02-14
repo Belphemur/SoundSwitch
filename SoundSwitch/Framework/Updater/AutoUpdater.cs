@@ -47,6 +47,11 @@ namespace SoundSwitch.Framework.Updater
                 file.Downloaded += (sender, args) =>
                 {
                     AppLogger.Log.Info("Update downloaded: " + file);
+                    if (!SignatureChecker.IsValid(file.FilePath))
+                    {
+                        AppLogger.Log.Error("The file has the wrong signature. Update cancelled.");
+                        return;
+                    }
                     file.Start(InstallerParameters);
                     if (closeApp)
                     {

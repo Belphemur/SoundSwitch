@@ -294,6 +294,7 @@
     <Compile Include="Framework\Updater\GitHubRelease.cs" />
     <Compile Include="Framework\Updater\IntervalUpdateChecker.cs" />
     <Compile Include="Framework\Updater\Release.cs" />
+    <Compile Include="Framework\Updater\SignatureChecker.cs" />
     <Compile Include="Framework\Updater\UpdateChecker.cs" />
     <Compile Include="Framework\Updater\UpdateState.cs" />
     <Compile Include="Framework\Updater\WebFile.cs" />
@@ -422,6 +423,7 @@
     <EmbeddedResource Include="Properties\UpdateFormStrings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>UpdateFormStrings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>

@@ -95,5 +95,23 @@ namespace SoundSwitch.Properties {
                 return ResourceManager.GetString("install", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The downloaded update doesn&apos;t have the right signature. We advise you to delete the file and contact the developer..
+        /// </summary>
+        internal static string notSigned {
+            get {
+                return ResourceManager.GetString("notSigned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wrong Digital Signature.
+        /// </summary>
+        internal static string notSignedTitle {
+            get {
+                return ResourceManager.GetString("notSignedTitle", resourceCulture);
+            }
+        }
     }
 }
