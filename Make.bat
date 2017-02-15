@@ -81,14 +81,14 @@ IF EXIST "%FILE_DIR%..\signinfo.txt" (
     Echo.
     call Sign.bat %x86Release%\SoundSwitch.exe
     call Sign.bat %x64Release%\SoundSwitch.exe
-    REM call Sign.bat %x86Release%\AudioEndPointLibrary.dll
-    REM call Sign.bat %x64Release%\AudioEndPointLibrary.dll
-    REM call Sign.bat %x86Release%\Audio.EndPoint.Controller.Wrapper.dll
-    REM call Sign.bat %x64Release%\Audio.EndPoint.Controller.Wrapper.dll
-    REM for %%l in %LANGS% DO (
-        REM call Sign.bat %x86Release%\%%l\SoundSwitch.resources.dll
-        REM call Sign.bat %x64Release%\%%l\SoundSwitch.resources.dll
-    REM )
+     call Sign.bat %x86Release%\AudioEndPointLibrary.dll
+     call Sign.bat %x64Release%\AudioEndPointLibrary.dll
+     call Sign.bat %x86Release%\Audio.EndPoint.Controller.Wrapper.dll
+     call Sign.bat %x64Release%\Audio.EndPoint.Controller.Wrapper.dll
+     for %%l in %LANGS% DO (
+         call Sign.bat %x86Release%\%%l\SoundSwitch.resources.dll
+         call Sign.bat %x64Release%\%%l\SoundSwitch.resources.dll
+     )
 )
 
 

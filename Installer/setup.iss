@@ -1,4 +1,4 @@
-;contribute on github.com/stfx/innodependencyinstaller or codeproject.com/Articles/20868/NET-Framework-1-1-2-0-3-5-Installer-for-InnoSetup
+﻿;contribute on github.com/stfx/innodependencyinstaller or codeproject.com/Articles/20868/NET-Framework-1-1-2-0-3-5-Installer-for-InnoSetup
 
 ;comment out product defines to disable installing them
 ;#define use_iis
@@ -18,7 +18,7 @@
 AppName={#MyAppSetupName}
 AppVersion={#MyAppVersion}
 AppVerName={#MyAppSetupName} {#MyAppVersion}
-AppCopyright=Copyright � 2010-2016 {#MyAppSetupName}
+AppCopyright=Copyright © 2010-2017 {#MyAppSetupName}
 VersionInfoVersion={#MyAppVersion}
 VersionInfoCompany=SoundSwitch
 AppPublisher=Antoine Aflalo
@@ -57,24 +57,26 @@ Name: "fr";    MessagesFile: "compiler:Languages\French.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
+Name: "certs"; Description: "{cm:AddCertDescription}"; GroupDescription: "Certificates:" ;
 
 [Files]
 Source: "{#ExeDir}x64\SoundSwitch.exe.config"; DestDir: "{app}"; Check: IsX64
 Source: "{#ExeDir}x64\SoundSwitch.exe"; DestDir: "{app}"; Check: IsX64
 Source: "{#ExeDir}x64\*.dll"; DestDir: "{app}"; Check: IsX64
-;Source: "{#ExeDir}x64\*.pdb"; DestDir: "{app}"; Check: IsX64
+Source: "{#ExeDir}x64\*.pdb"; DestDir: "{app}"; Check: IsX64
 Source: "{#ExeDir}x64\fr\*.dll"; DestDir: "{app}\fr"; Check: IsX64
 
 Source: "{#ExeDir}x86\SoundSwitch.exe.config"; DestDir: "{app}"; Check: not Is64BitInstallMode
 Source: "{#ExeDir}x86\SoundSwitch.exe"; DestDir: "{app}"; Check:  not Is64BitInstallMode
 Source: "{#ExeDir}x86\*.dll"; DestDir: "{app}"; Check: not Is64BitInstallMode
-;Source: "{#ExeDir}x86\*.pdb"; DestDir: "{app}"; Check: not Is64BitInstallMode
+Source: "{#ExeDir}x86\*.pdb"; DestDir: "{app}"; Check: not Is64BitInstallMode
 Source: "{#ExeDir}x86\fr\*.dll"; DestDir: "{app}\fr"; Check: not Is64BitInstallMode
 
 Source: "{#ExeDir}Changelog.html"; DestDir: "{app}"
 Source: "{#ExeDir}Readme.html"; DestDir: "{app}"   
 Source: "{#ExeDir}soundSwitched.png"; DestDir: "{app}\img"
 
+Source: "{#ExeDir}../../Certs/aaflalo.cer"; DestDir: "{app}\certs";
 Source: "{#ExeDir}../../Certs/SoundSwitch.cer"; DestDir: "{app}\certs";
 
 [Registry]
@@ -90,14 +92,16 @@ Filename: "{app}\SoundSwitch.exe"; Description: "{cm:LaunchProgram,{#MyAppSetupN
 Filename: "{app}\Readme.html"; Description: "View the README file"; Flags: postinstall shellexec skipifsilent
 Filename: "https://www.aaflalo.me/donate/"; Description: "Support the project"; Flags: postinstall shellexec skipifsilent runasoriginaluser
 Filename: "{app}\Changelog.html"; Description: "View the CHANGELOG file"; Flags: postinstall shellexec skipifsilent unchecked
-Filename: "certutil.exe"; Parameters: "-addstore TrustedPublisher {app}\certs\SoundSwitch.cer"; \
-    StatusMsg: "Adding trusted publisher..."; Description: "{cm:AddCertDescription}"; Flags: postinstall shellexec runhidden
+Filename: "certutil.exe"; Parameters: "-addstore Root {app}\certs\aaflalo.cer"; Flags: shellexec runhidden;  Tasks: "certs"
+Filename: "certutil.exe"; Parameters: "-addstore TrustedPublisher {app}\certs\SoundSwitch.cer"; Flags: shellexec runhidden;  Tasks: "certs"
 
 [CustomMessages]
 win_sp_title=Windows %1 Service Pack %2
-AddCertDescription=Trust SoundSwitch Certficate%nThis way you won't have warnings when SoundSwitch is updating.
+en.AddCertDescription=Trust SoundSwitch Certficates%nThis way you won't have warnings when SoundSwitch is updating.
+fr.AddCertDescription=Installer les certificats de SoundSwitch%nSi sélectionné, Windows reconnaîtra SoundSwitch comme étant un distributeur valide.
 
 [UninstallRun]
+Filename: "certutil.exe"; Parameters: "-delstore TrustedPublisher ‎ebdb8a0a72a6029140749ea2af63d2fc" ; Flags: shellexec runhidden
 Filename: "certutil.exe"; Parameters: "-delstore TrustedPublisher 942A37BCA9A9889442F6710533CB5548" ; Flags: shellexec runhidden
 
 [Code]
