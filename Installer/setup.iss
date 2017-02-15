@@ -92,8 +92,8 @@ Filename: "{app}\SoundSwitch.exe"; Description: "{cm:LaunchProgram,{#MyAppSetupN
 Filename: "{app}\Readme.html"; Description: "View the README file"; Flags: postinstall shellexec skipifsilent
 Filename: "https://www.aaflalo.me/donate/"; Description: "Support the project"; Flags: postinstall shellexec skipifsilent runasoriginaluser
 Filename: "{app}\Changelog.html"; Description: "View the CHANGELOG file"; Flags: postinstall shellexec skipifsilent unchecked
-Filename: "certutil.exe"; Parameters: "-addstore Root {app}\certs\aaflalo.cer"; Flags: shellexec runhidden;  Tasks: "certs"
-Filename: "certutil.exe"; Parameters: "-addstore TrustedPublisher {app}\certs\SoundSwitch.cer"; Flags: shellexec runhidden;  Tasks: "certs"
+Filename: "certutil.exe"; Parameters: "-addstore Root {app}\certs\aaflalo.cer"; Flags: shellexec runhidden skipifsilent;  Tasks: "certs"
+Filename: "certutil.exe"; Parameters: "-addstore TrustedPublisher {app}\certs\SoundSwitch.cer"; Flags: shellexec runhidden skipifsilent;  Tasks: "certs"
 
 [CustomMessages]
 win_sp_title=Windows %1 Service Pack %2
