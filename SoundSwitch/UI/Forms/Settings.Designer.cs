@@ -257,7 +257,7 @@ namespace SoundSwitch.UI.Forms
             this.audioSettingsGroup.Size = new System.Drawing.Size(312, 179);
             this.audioSettingsGroup.TabIndex = 13;
             this.audioSettingsGroup.TabStop = false;
-            this.audioSettingsGroup.Text = "Audio Settings";
+            this.audioSettingsGroup.Text = SettingsString.audioSettings;
             // 
             // cyclerLabel
             // 
@@ -267,7 +267,7 @@ namespace SoundSwitch.UI.Forms
             this.cyclerLabel.Name = "cyclerLabel";
             this.cyclerLabel.Size = new System.Drawing.Size(72, 13);
             this.cyclerLabel.TabIndex = 23;
-            this.cyclerLabel.Text = "Cycle through";
+            this.cyclerLabel.Text = global::SoundSwitch.Properties.SettingsString.cycleDevice;
             // 
             // cyclerComboBox
             // 
@@ -321,7 +321,7 @@ namespace SoundSwitch.UI.Forms
             this.notifLabel.Name = "notifLabel";
             this.notifLabel.Size = new System.Drawing.Size(60, 13);
             this.notifLabel.TabIndex = 17;
-            this.notifLabel.Text = "Notification";
+            this.notifLabel.Text = global::SoundSwitch.Properties.SettingsString.notification;
             // 
             // notificationComboBox
             // 
@@ -343,7 +343,7 @@ namespace SoundSwitch.UI.Forms
             this.basicSettingsGroup.Size = new System.Drawing.Size(312, 62);
             this.basicSettingsGroup.TabIndex = 0;
             this.basicSettingsGroup.TabStop = false;
-            this.basicSettingsGroup.Text = "Basic Settings";
+            this.basicSettingsGroup.Text = global::SoundSwitch.Properties.SettingsString.basicSettings;
             // 
             // checkboxSystrayIcon
             // 
