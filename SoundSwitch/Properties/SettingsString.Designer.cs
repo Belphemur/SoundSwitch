@@ -70,6 +70,24 @@ namespace SoundSwitch.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Auto-Install.
+        /// </summary>
+        internal static string autoInstall {
+            get {
+                return ResourceManager.GetString("autoInstall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download and update the application in the background without needing any user interaction..
+        /// </summary>
+        internal static string autoInstallHelp {
+            get {
+                return ResourceManager.GetString("autoInstallHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Basic Settings.
         /// </summary>
         internal static string basicSettings {
@@ -93,6 +111,24 @@ namespace SoundSwitch.Properties {
         internal static string betaExplanation {
             get {
                 return ResourceManager.GetString("betaExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check for Update.
+        /// </summary>
+        internal static string checkUpdate {
+            get {
+                return ResourceManager.GetString("checkUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check periodically if there is an update. When found, notify the user of the update..
+        /// </summary>
+        internal static string checkUpdateHelp {
+            get {
+                return ResourceManager.GetString("checkUpdateHelp", resourceCulture);
             }
         }
         
@@ -178,7 +214,7 @@ namespace SoundSwitch.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If selected, the Systray Icon won&apos;t change when the default device change..
+        ///   Looks up a localized string similar to If selected, the Systray Icon won&apos;t change when the default device changes..
         /// </summary>
         internal static string keepSystrayIconHelp {
             get {

@@ -93,9 +93,20 @@ namespace SoundSwitch.UI.Forms
                                         NotificationTypeEnum.CustomNotification ||
                                         AppModel.Instance.NotificationSettings == NotificationTypeEnum.ToastNotification;
 
-            stealthUpdateCheckbox.Checked = AppModel.Instance.StealthUpdate;
-            var toolTipStealthUpdate = new ToolTip();
-            toolTipStealthUpdate.SetToolTip(stealthUpdateCheckbox, SettingsString.stealthUpdateExplanation);
+            if (AppModel.Instance.StealthUpdate)
+            {
+                autoInstallRadio.Checked = true;
+            }
+            else
+            {
+                checkForUpdateRadio.Checked = true;
+            }
+
+            var toolTipAutoInstall = new ToolTip();
+            toolTipAutoInstall.SetToolTip(autoInstallRadio, SettingsString.autoInstallHelp);
+
+            var toolTipCheckUpdate = new ToolTip();
+            toolTipCheckUpdate.SetToolTip(checkForUpdateRadio, SettingsString.checkUpdateHelp);
 
             new TooltipInfoFactory().ConfigureListControl(tooltipInfoComboBox);
             tooltipInfoComboBox.SelectedValue = TooltipInfoManager.CurrentTooltipInfo;
@@ -157,7 +168,7 @@ namespace SoundSwitch.UI.Forms
             else
             {
                 hotkeyTextBox.Text = $"{displayString}{key}";
-                var tuple = (Tuple<AudioDeviceType, HotKeys>) hotkeyTextBox.Tag;
+                var tuple = (Tuple<AudioDeviceType, HotKeys>)hotkeyTextBox.Tag;
                 var newTuple = new Tuple<AudioDeviceType, HotKeys>(tuple.Item1, new HotKeys(e.KeyCode, modifierKeys));
                 hotkeyTextBox.Tag = newTuple;
                 hotkeyTextBox.ForeColor = AppModel.Instance.SetHotkeyCombination(newTuple.Item2,
@@ -175,7 +186,7 @@ namespace SoundSwitch.UI.Forms
 
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var tabControlSender = (TabControl) sender;
+            var tabControlSender = (TabControl)sender;
             if (tabControlSender.SelectedTab == playbackPage)
             {
                 SetHotkeysFieldsVisibility(true);
@@ -209,17 +220,17 @@ namespace SoundSwitch.UI.Forms
         {
             if (!_loaded)
                 return;
-            var value = ((ComboBox) sender).SelectedValue;
+            var value = ((ComboBox)sender).SelectedValue;
 
             if (value == null)
                 return;
 
-            if ((NotificationTypeEnum) value == AppModel.Instance.NotificationSettings)
+            if ((NotificationTypeEnum)value == AppModel.Instance.NotificationSettings)
                 return;
 
-            var isCustomNotification = (NotificationTypeEnum) value == NotificationTypeEnum.CustomNotification;
+            var isCustomNotification = (NotificationTypeEnum)value == NotificationTypeEnum.CustomNotification;
             selectSoundButton.Visible = isCustomNotification ||
-                                        (NotificationTypeEnum) value == NotificationTypeEnum.ToastNotification;
+                                        (NotificationTypeEnum)value == NotificationTypeEnum.ToastNotification;
 
             if (isCustomNotification)
             {
@@ -233,7 +244,7 @@ namespace SoundSwitch.UI.Forms
                 }
             }
 
-            AppModel.Instance.NotificationSettings = (NotificationTypeEnum) value;
+            AppModel.Instance.NotificationSettings = (NotificationTypeEnum)value;
         }
 
 
@@ -241,12 +252,12 @@ namespace SoundSwitch.UI.Forms
         {
             if (!_loaded)
                 return;
-            var value = ((ComboBox) sender).SelectedValue;
+            var value = ((ComboBox)sender).SelectedValue;
 
             if (value == null)
                 return;
 
-            var tooltip = (TooltipInfoTypeEnum) value;
+            var tooltip = (TooltipInfoTypeEnum)value;
             TooltipInfoManager.CurrentTooltipInfo = tooltip;
         }
 
@@ -254,12 +265,12 @@ namespace SoundSwitch.UI.Forms
         {
             if (!_loaded)
                 return;
-            var value = ((ComboBox) sender).SelectedValue;
+            var value = ((ComboBox)sender).SelectedValue;
 
             if (value == null)
                 return;
 
-            var cycler = (DeviceCyclerTypeEnum) value;
+            var cycler = (DeviceCyclerTypeEnum)value;
             DeviceCyclerManager.CurrentCycler = cycler;
         }
 
@@ -274,7 +285,7 @@ namespace SoundSwitch.UI.Forms
 
         private void hotkeysCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            var tuple = (Tuple<AudioDeviceType, HotKeys>) hotkeyTextBox.Tag;
+            var tuple = (Tuple<AudioDeviceType, HotKeys>)hotkeyTextBox.Tag;
             var currentState = tuple.Item2.Enabled;
             hotkeyTextBox.Enabled = tuple.Item2.Enabled = hotkeysCheckbox.Checked;
             if (currentState != tuple.Item2.Enabled)
@@ -402,10 +413,10 @@ namespace SoundSwitch.UI.Forms
                 switch (e.NewValue)
                 {
                     case CheckState.Checked:
-                        AppModel.Instance.SelectDevice((IAudioDevice) ((ListView) sender).Items[e.Index].Tag);
+                        AppModel.Instance.SelectDevice((IAudioDevice)((ListView)sender).Items[e.Index].Tag);
                         break;
                     case CheckState.Unchecked:
-                        AppModel.Instance.UnselectDevice((IAudioDevice) ((ListView) sender).Items[e.Index].Tag);
+                        AppModel.Instance.UnselectDevice((IAudioDevice)((ListView)sender).Items[e.Index].Tag);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -446,16 +457,27 @@ namespace SoundSwitch.UI.Forms
 
         #endregion
 
-        private void stealthUpdateCheckbox_CheckedChanged(object sender, EventArgs e)
-        {
-            AppModel.Instance.StealthUpdate = stealthUpdateCheckbox.Checked;
-        }
-
         private void checkboxSystrayIcon_CheckedChanged(object sender, EventArgs e)
         {
             AppConfigs.Configuration.KeepSystrayIcon = checkboxSystrayIcon.Checked;
             AppConfigs.Configuration.Save();
             AppModel.Instance.TrayIcon.UpdateIcon();
+        }
+
+        private void autoInstallRadio_CheckedChanged(object sender, EventArgs e)
+        {
+            if (autoInstallRadio.Checked)
+            {
+                AppModel.Instance.StealthUpdate = true;
+            }
+        }
+
+        private void checkForUpdateRadio_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkForUpdateRadio.Checked)
+            {
+                AppModel.Instance.StealthUpdate = false;
+            }
         }
     }
 }

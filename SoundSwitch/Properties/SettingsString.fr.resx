@@ -178,4 +178,16 @@
 	<data name="keepSystrayIcon" xml:space="preserve">
 		<value>Garder l'icone intacte</value>
 	</data>
+	<data name="autoInstall" xml:space="preserve">
+		<value>Auto-Install</value>
+	</data>
+	<data name="autoInstallHelp" xml:space="preserve">
+		<value>Télécharge et installe les mis à jours sans que vous deviez intéragir avec l'application.</value>
+	</data>
+	<data name="checkUpdate" xml:space="preserve">
+		<value>Vérifie les MàJ</value>
+	</data>
+	<data name="checkUpdateHelp" xml:space="preserve">
+		<value>Vérifie la présence d'une nouvelle version. Si c'est le cas, prévient l'utilisateur.</value>
+	</data>
 </root>

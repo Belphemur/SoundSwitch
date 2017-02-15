@@ -178,4 +178,16 @@
 	<data name="keepSystrayIconHelp" xml:space="preserve">
 		<value>If selected, the Systray Icon won't change when the default device changes.</value>
 	</data>
+	<data name="autoInstall" xml:space="preserve">
+		<value>Auto-Install</value>
+	</data>
+	<data name="autoInstallHelp" xml:space="preserve">
+		<value>Download and update the application in the background without needing any user interaction.</value>
+	</data>
+	<data name="checkUpdate" xml:space="preserve">
+		<value>Check for Update</value>
+	</data>
+	<data name="checkUpdateHelp" xml:space="preserve">
+		<value>Check periodically if there is an update. When found, notify the user of the update.</value>
+	</data>
 </root>
