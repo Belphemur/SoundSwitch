@@ -1,4 +1,4 @@
-﻿;contribute on github.com/stfx/innodependencyinstaller or codeproject.com/Articles/20868/NET-Framework-1-1-2-0-3-5-Installer-for-InnoSetup
+;contribute on github.com/stfx/innodependencyinstaller or codeproject.com/Articles/20868/NET-Framework-1-1-2-0-3-5-Installer-for-InnoSetup
 
 ;comment out product defines to disable installing them
 ;#define use_iis
@@ -92,8 +92,8 @@ Filename: "{app}\SoundSwitch.exe"; Description: "{cm:LaunchProgram,{#MyAppSetupN
 Filename: "{app}\Readme.html"; Description: "View the README file"; Flags: postinstall shellexec skipifsilent
 Filename: "https://www.aaflalo.me/donate/"; Description: "Support the project"; Flags: postinstall shellexec skipifsilent runasoriginaluser
 Filename: "{app}\Changelog.html"; Description: "View the CHANGELOG file"; Flags: postinstall shellexec skipifsilent unchecked
-Filename: "certutil.exe"; Parameters: "-addstore Root {app}\certs\aaflalo.cer"; Flags: shellexec runhidden skipifsilent;  Tasks: "certs"
-Filename: "certutil.exe"; Parameters: "-addstore TrustedPublisher {app}\certs\SoundSwitch.cer"; Flags: shellexec runhidden skipifsilent;  Tasks: "certs"
+Filename: "certutil.exe"; Parameters: "-addstore ""Root"" ""{app}\certs\aaflalo.cer"""; Flags: runhidden runascurrentuser skipifsilent;  Tasks: "certs"
+Filename: "certutil.exe"; Parameters: "-addstore ""TrustedPublisher"" ""{app}\certs\SoundSwitch.cer"""; Flags: runhidden runascurrentuser skipifsilent;  Tasks: "certs"
 
 [CustomMessages]
 win_sp_title=Windows %1 Service Pack %2
@@ -101,8 +101,8 @@ en.AddCertDescription=Trust SoundSwitch Certficates%nThis way you won't have war
 fr.AddCertDescription=Installer les certificats de SoundSwitch%nSi sélectionné, Windows reconnaîtra SoundSwitch comme étant un distributeur valide.
 
 [UninstallRun]
-Filename: "certutil.exe"; Parameters: "-delstore TrustedPublisher ‎ebdb8a0a72a6029140749ea2af63d2fc" ; Flags: shellexec runhidden
-Filename: "certutil.exe"; Parameters: "-delstore TrustedPublisher 942A37BCA9A9889442F6710533CB5548" ; Flags: shellexec runhidden
+Filename: "certutil.exe"; Parameters: "-delstore ""Root"" ""eb db 8a 0a 72 a6 02 91 40 74 9e a2 af 63 d2 fc""" ; Flags: runhidden runascurrentuser
+Filename: "certutil.exe"; Parameters: "-delstore ""TrustedPublisher"" ""942A37BCA9A9889442F6710533CB5548""" ; Flags: runhidden runascurrentuser
 
 [Code]
 #include "scripts\checkMutex.iss"
