@@ -1,5 +1,12 @@
 # Change Log
 
+## [v3.12.8](https://github.com/Belphemur/SoundSwitch/tree/v3.12.8) (2017-02-15)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.12.7...v3.12.8)
+
+**Implemented enhancements:**
+
+- Use radio button for the Auto-Update [\#150](https://github.com/Belphemur/SoundSwitch/issues/150)
+
 ## [v3.12.7](https://github.com/Belphemur/SoundSwitch/tree/v3.12.7) (2017-02-14)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.12.6...v3.12.7)
 
