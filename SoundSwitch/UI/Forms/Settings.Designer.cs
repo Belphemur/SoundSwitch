@@ -42,9 +42,10 @@ namespace SoundSwitch.UI.Forms
             this.recordingListView = new System.Windows.Forms.ListView();
             this.appSettingTabPage = new System.Windows.Forms.TabPage();
             this.updateSettingsGroup = new System.Windows.Forms.GroupBox();
-            this.checkForUpdateRadio = new System.Windows.Forms.RadioButton();
-            this.autoInstallRadio = new System.Windows.Forms.RadioButton();
-            this.betaVersionCheckbox = new System.Windows.Forms.CheckBox();
+            this.updateNeverRadioButton = new System.Windows.Forms.RadioButton();
+            this.updateNotifyRadioButton = new System.Windows.Forms.RadioButton();
+            this.updateSilentRadioButton = new System.Windows.Forms.RadioButton();
+            this.includeBetaVersionsCheckbox = new System.Windows.Forms.CheckBox();
             this.audioSettingsGroup = new System.Windows.Forms.GroupBox();
             this.cyclerLabel = new System.Windows.Forms.Label();
             this.cyclerComboBox = new System.Windows.Forms.ComboBox();
@@ -196,9 +197,10 @@ namespace SoundSwitch.UI.Forms
             // 
             this.updateSettingsGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.updateSettingsGroup.Controls.Add(this.checkForUpdateRadio);
-            this.updateSettingsGroup.Controls.Add(this.autoInstallRadio);
-            this.updateSettingsGroup.Controls.Add(this.betaVersionCheckbox);
+            this.updateSettingsGroup.Controls.Add(this.updateNeverRadioButton);
+            this.updateSettingsGroup.Controls.Add(this.updateNotifyRadioButton);
+            this.updateSettingsGroup.Controls.Add(this.updateSilentRadioButton);
+            this.updateSettingsGroup.Controls.Add(this.includeBetaVersionsCheckbox);
             this.updateSettingsGroup.Location = new System.Drawing.Point(321, 3);
             this.updateSettingsGroup.Name = "updateSettingsGroup";
             this.updateSettingsGroup.Size = new System.Drawing.Size(209, 123);
@@ -206,41 +208,53 @@ namespace SoundSwitch.UI.Forms
             this.updateSettingsGroup.TabStop = false;
             this.updateSettingsGroup.Text = "Update Settings";
             // 
-            // checkForUpdateRadio
+            // updateNeverRadioButton
             // 
-            this.checkForUpdateRadio.AutoSize = true;
-            this.checkForUpdateRadio.Location = new System.Drawing.Point(7, 43);
-            this.checkForUpdateRadio.Name = "checkForUpdateRadio";
-            this.checkForUpdateRadio.Size = new System.Drawing.Size(109, 17);
-            this.checkForUpdateRadio.TabIndex = 20;
-            this.checkForUpdateRadio.TabStop = true;
-            this.checkForUpdateRadio.Text = global::SoundSwitch.Properties.SettingsString.checkUpdate;
-            this.checkForUpdateRadio.UseVisualStyleBackColor = true;
-            this.checkForUpdateRadio.CheckedChanged += new System.EventHandler(this.checkForUpdateRadio_CheckedChanged);
+            this.updateNeverRadioButton.AutoSize = true;
+            this.updateNeverRadioButton.Location = new System.Drawing.Point(7, 66);
+            this.updateNeverRadioButton.Name = "updateNeverRadioButton";
+            this.updateNeverRadioButton.Size = new System.Drawing.Size(143, 17);
+            this.updateNeverRadioButton.TabIndex = 21;
+            this.updateNeverRadioButton.TabStop = true;
+            this.updateNeverRadioButton.Text = "Never check for updates";
+            this.updateNeverRadioButton.UseVisualStyleBackColor = true;
+            this.updateNeverRadioButton.CheckedChanged += new System.EventHandler(this.updateNeverRadioButton_CheckedChanged);
             // 
-            // autoInstallRadio
+            // updateNotifyRadioButton
             // 
-            this.autoInstallRadio.AutoSize = true;
-            this.autoInstallRadio.Location = new System.Drawing.Point(7, 20);
-            this.autoInstallRadio.Name = "autoInstallRadio";
-            this.autoInstallRadio.Size = new System.Drawing.Size(77, 17);
-            this.autoInstallRadio.TabIndex = 19;
-            this.autoInstallRadio.TabStop = true;
-            this.autoInstallRadio.Text = global::SoundSwitch.Properties.SettingsString.autoInstall;
-            this.autoInstallRadio.UseVisualStyleBackColor = true;
-            this.autoInstallRadio.CheckedChanged += new System.EventHandler(this.autoInstallRadio_CheckedChanged);
+            this.updateNotifyRadioButton.AutoSize = true;
+            this.updateNotifyRadioButton.Location = new System.Drawing.Point(7, 43);
+            this.updateNotifyRadioButton.Name = "updateNotifyRadioButton";
+            this.updateNotifyRadioButton.Size = new System.Drawing.Size(202, 17);
+            this.updateNotifyRadioButton.TabIndex = 20;
+            this.updateNotifyRadioButton.TabStop = true;
+            this.updateNotifyRadioButton.Text = "Notify me when updates are available";
+            this.updateNotifyRadioButton.UseVisualStyleBackColor = true;
+            this.updateNotifyRadioButton.CheckedChanged += new System.EventHandler(this.updateNotifyRadioButton_CheckedChanged);
             // 
-            // betaVersionCheckbox
+            // updateSilentRadioButton
             // 
-            this.betaVersionCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.betaVersionCheckbox.AutoSize = true;
-            this.betaVersionCheckbox.Location = new System.Drawing.Point(6, 80);
-            this.betaVersionCheckbox.Name = "betaVersionCheckbox";
-            this.betaVersionCheckbox.Size = new System.Drawing.Size(91, 17);
-            this.betaVersionCheckbox.TabIndex = 18;
-            this.betaVersionCheckbox.Text = global::SoundSwitch.Properties.SettingsString.beta;
-            this.betaVersionCheckbox.UseVisualStyleBackColor = true;
-            this.betaVersionCheckbox.CheckedChanged += new System.EventHandler(this.betaVersionCheckbox_CheckedChanged);
+            this.updateSilentRadioButton.AutoSize = true;
+            this.updateSilentRadioButton.Location = new System.Drawing.Point(7, 20);
+            this.updateSilentRadioButton.Name = "updateSilentRadioButton";
+            this.updateSilentRadioButton.Size = new System.Drawing.Size(157, 17);
+            this.updateSilentRadioButton.TabIndex = 19;
+            this.updateSilentRadioButton.TabStop = true;
+            this.updateSilentRadioButton.Text = "Install updates automatically";
+            this.updateSilentRadioButton.UseVisualStyleBackColor = true;
+            this.updateSilentRadioButton.CheckedChanged += new System.EventHandler(this.updateSilentRadioButton_CheckedChanged);
+            // 
+            // includeBetaVersionsCheckbox
+            // 
+            this.includeBetaVersionsCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.includeBetaVersionsCheckbox.AutoSize = true;
+            this.includeBetaVersionsCheckbox.Location = new System.Drawing.Point(7, 100);
+            this.includeBetaVersionsCheckbox.Name = "includeBetaVersionsCheckbox";
+            this.includeBetaVersionsCheckbox.Size = new System.Drawing.Size(127, 17);
+            this.includeBetaVersionsCheckbox.TabIndex = 18;
+            this.includeBetaVersionsCheckbox.Text = "Include beta versions";
+            this.includeBetaVersionsCheckbox.UseVisualStyleBackColor = true;
+            this.includeBetaVersionsCheckbox.CheckedChanged += new System.EventHandler(this.betaVersionCheckbox_CheckedChanged);
             // 
             // audioSettingsGroup
             // 
@@ -257,7 +271,7 @@ namespace SoundSwitch.UI.Forms
             this.audioSettingsGroup.Size = new System.Drawing.Size(312, 179);
             this.audioSettingsGroup.TabIndex = 13;
             this.audioSettingsGroup.TabStop = false;
-            this.audioSettingsGroup.Text = SettingsString.audioSettings;
+            this.audioSettingsGroup.Text = "Audio Settings";
             // 
             // cyclerLabel
             // 
@@ -267,7 +281,7 @@ namespace SoundSwitch.UI.Forms
             this.cyclerLabel.Name = "cyclerLabel";
             this.cyclerLabel.Size = new System.Drawing.Size(72, 13);
             this.cyclerLabel.TabIndex = 23;
-            this.cyclerLabel.Text = global::SoundSwitch.Properties.SettingsString.cycleDevice;
+            this.cyclerLabel.Text = "Cycle through";
             // 
             // cyclerComboBox
             // 
@@ -321,7 +335,7 @@ namespace SoundSwitch.UI.Forms
             this.notifLabel.Name = "notifLabel";
             this.notifLabel.Size = new System.Drawing.Size(60, 13);
             this.notifLabel.TabIndex = 17;
-            this.notifLabel.Text = global::SoundSwitch.Properties.SettingsString.notification;
+            this.notifLabel.Text = "Notification";
             // 
             // notificationComboBox
             // 
@@ -343,7 +357,7 @@ namespace SoundSwitch.UI.Forms
             this.basicSettingsGroup.Size = new System.Drawing.Size(312, 62);
             this.basicSettingsGroup.TabIndex = 0;
             this.basicSettingsGroup.TabStop = false;
-            this.basicSettingsGroup.Text = global::SoundSwitch.Properties.SettingsString.basicSettings;
+            this.basicSettingsGroup.Text = "Basic Settings";
             // 
             // checkboxSystrayIcon
             // 
@@ -432,7 +446,7 @@ namespace SoundSwitch.UI.Forms
         private System.Windows.Forms.Label hotkeysLabel;
         private System.Windows.Forms.ComboBox notificationComboBox;
         private System.Windows.Forms.Label notifLabel;
-        private System.Windows.Forms.CheckBox betaVersionCheckbox;
+        private System.Windows.Forms.CheckBox includeBetaVersionsCheckbox;
         private System.Windows.Forms.OpenFileDialog selectSoundFileDialog;
         private System.Windows.Forms.Button selectSoundButton;
         private System.Windows.Forms.CheckBox hotkeysCheckbox;
@@ -445,7 +459,8 @@ namespace SoundSwitch.UI.Forms
         private System.Windows.Forms.Label cyclerLabel;
         private System.Windows.Forms.ComboBox cyclerComboBox;
         private System.Windows.Forms.CheckBox checkboxSystrayIcon;
-        private System.Windows.Forms.RadioButton checkForUpdateRadio;
-        private System.Windows.Forms.RadioButton autoInstallRadio;
+        private System.Windows.Forms.RadioButton updateNotifyRadioButton;
+        private System.Windows.Forms.RadioButton updateSilentRadioButton;
+        private System.Windows.Forms.RadioButton updateNeverRadioButton;
     }
 }

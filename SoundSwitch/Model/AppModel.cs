@@ -1,12 +1,12 @@
 ﻿/********************************************************************
 * Copyright (C) 2015 Jeroen Pelgrims
 * Copyright (C) 2015 Antoine Aflalo
-* 
+*
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public License
 * as published by the Free Software Foundation; either version 2
 * of the License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -84,16 +84,16 @@ namespace SoundSwitch.Model
         /// <summary>
         /// Beta or Stable channel.
         /// </summary>
-        public bool SubscribedBetaVersions
+        public bool IncludeBetaVersions
         {
-            get { return AppConfigs.Configuration.SubscribedBetaVersion; }
+            get { return AppConfigs.Configuration.IncludeBetaVersions; }
             set
             {
-                if (value != SubscribedBetaVersions && _updateChecker != null)
+                if (value != IncludeBetaVersions && _updateChecker != null)
                 {
                     _updateChecker.Beta = value;
                 }
-                AppConfigs.Configuration.SubscribedBetaVersion = value;
+                AppConfigs.Configuration.IncludeBetaVersions = value;
                 AppConfigs.Configuration.Save();
             }
         }
@@ -140,12 +140,12 @@ namespace SoundSwitch.Model
             }
         }
 
-        public bool StealthUpdate
+        public UpdateMode UpdateMode
         {
-            get { return AppConfigs.Configuration.UpdateState == UpdateState.Steath; }
+            get { return AppConfigs.Configuration.UpdateMode; }
             set
             {
-                AppConfigs.Configuration.UpdateState = value ? UpdateState.Steath : UpdateState.Normal;
+                AppConfigs.Configuration.UpdateMode = value;
                 AppConfigs.Configuration.Save();
             }
         }
@@ -204,7 +204,7 @@ namespace SoundSwitch.Model
             _notificationManager.Init();
             _initialized = true;
         }
-       
+
 
         private void MigrateSelectedDeviceLists()
         {
@@ -251,17 +251,23 @@ namespace SoundSwitch.Model
 
         private void InitUpdateChecker()
         {
+            if (AppConfigs.Configuration.UpdateMode == UpdateMode.Never)
+            {
+                return;
+            }
+
             WindowsAPIAdapter.HotKeyPressed += HandleHotkeyPress;
 #if DEBUG
             const string url = "https://www.aaflalo.me/api.json";
 #else
             const string url = "https://api.github.com/repos/Belphemur/SoundSwitch/releases";
 #endif
-            _updateChecker = new IntervalUpdateChecker(
-               new Uri(url),
-           AppConfigs.Configuration.UpdateCheckInterval, AppConfigs.Configuration.SubscribedBetaVersion);
-            _updateChecker.UpdateAvailable += (sender, @event) => NewVersionReleased?.Invoke(this, 
-                new NewReleaseAvailableEvent(@event.Release, AppConfigs.Configuration.UpdateState));
+            _updateChecker = new IntervalUpdateChecker(new Uri(url),
+                                                       AppConfigs.Configuration.UpdateCheckInterval,
+                                                       AppConfigs.Configuration.IncludeBetaVersions);
+
+            _updateChecker.UpdateAvailable += (sender, @event) => NewVersionReleased?.Invoke(this,
+                                              new NewReleaseAvailableEvent(@event.Release, AppConfigs.Configuration.UpdateMode));
             _updateChecker.CheckForUpdate();
         }
 
