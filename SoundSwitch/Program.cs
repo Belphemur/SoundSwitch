@@ -1,12 +1,12 @@
 ﻿/********************************************************************
 * Copyright (C) 2015 Jeroen Pelgrims
 * Copyright (C) 2015 Antoine Aflalo
-* 
+*
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public License
 * as published by the Free Software Foundation; either version 2
 * of the License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -85,7 +85,7 @@ namespace SoundSwitch
                 Application.SetCompatibleTextRenderingDefault(false);
 
                 //Manage the Closing events send by Windows
-                //Since this app don't use a Form as "main window" the app doesn't close 
+                //Since this app don't use a Form as "main window" the app doesn't close
                 //when it should without this.
                 WindowsAPIAdapter.RestartManagerTriggered += (sender, @event) =>
                 {
@@ -127,17 +127,16 @@ namespace SoundSwitch
                         {
                             Thread.Sleep(250);
                         }
-                        
+
                     }
                     AppModel.Instance.TrayIcon = icon;
                     AppModel.Instance.InitializeMain();
                     AppModel.Instance.NewVersionReleased += (sender, @event) =>
                     {
-                        if (@event.UpdateState != UpdateState.Steath)
+                        if (@event.UpdateMode == UpdateMode.Silent)
                         {
-                            return;
+                            new AutoUpdater("/VERYSILENT /NOCANCEL /NORESTART", ApplicationPath.Default).Update(@event.Release, true);
                         }
-                        new AutoUpdater("/VERYSILENT /NOCANCEL /NORESTART", ApplicationPath.Default).Update(@event.Release, true);
                     };
                     if (AppConfigs.Configuration.FirstRun)
                     {
@@ -149,7 +148,7 @@ namespace SoundSwitch
                 }
 #if !DEBUG
                 }
-               
+
                 catch (Exception ex)
                 {
                     HandleException(ex);
@@ -212,7 +211,7 @@ namespace SoundSwitch
                         {
                             File.Delete(zipFile);
                         }
-                        
+
                         ZipFile.CreateFromDirectory(ApplicationPath.Default, zipFile);
                     }
                     Process.Start("explorer.exe", "/select," + @zipFile);

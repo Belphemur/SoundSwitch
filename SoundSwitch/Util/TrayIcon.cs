@@ -198,7 +198,7 @@ namespace SoundSwitch.Util
                  (sender, @event) => { _needToUpdateList = true; };
             AppModel.Instance.NewVersionReleased += (sender, @event) =>
             {
-                if (@event.UpdateState == UpdateState.Normal)
+                if (@event.UpdateMode == UpdateMode.Notify)
                     _context.Send(s => { NewReleaseAvailable(sender, @event); }, null);
             };
 
