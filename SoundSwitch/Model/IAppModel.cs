@@ -1,12 +1,12 @@
 /********************************************************************
 * Copyright (C) 2015 Jeroen Pelgrims
 * Copyright (C) 2015 Antoine Aflalo
-* 
+*
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public License
 * as published by the Free Software Foundation; either version 2
 * of the License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -77,18 +77,18 @@ namespace SoundSwitch.Model
         /// <summary>
         /// Beta or Stable channel.
         /// </summary>
-        bool SubscribedBetaVersions { get; set; }
+        bool IncludeBetaVersions { get; set; }
 
         /// <summary>
         /// The sound to be played for a Custom notification
-        /// <exception cref="CachedSoundFileNotExistsException">Sound file doens't exists or not set</exception>
+        /// <exception cref="CachedSoundFileNotExistsException">Sound file doesn't exists or not set</exception>
         /// </summary>
         CachedSound CustomNotificationSound { get; set; }
 
         /// <summary>
-        /// Application update itselve in the background without asking the user
+        /// Specifies how the application searches for updates and installs them
         /// </summary>
-        bool StealthUpdate { get; set; }
+        UpdateMode UpdateMode { get; set; }
 
         #endregion
 

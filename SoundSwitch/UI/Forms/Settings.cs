@@ -1,12 +1,12 @@
 ﻿/********************************************************************
 * Copyright (C) 2015 Jeroen Pelgrims
 * Copyright (C) 2015 Antoine Aflalo
-* 
+*
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public License
 * as published by the Free Software Foundation; either version 2
 * of the License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -28,6 +28,7 @@ using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.TooltipInfoManager;
 using SoundSwitch.Framework.TooltipInfoManager.TootipInfo;
+using SoundSwitch.Framework.Updater;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
 using SoundSwitch.Util;
@@ -78,9 +79,9 @@ namespace SoundSwitch.UI.Forms
             new NotificationFactory().ConfigureListControl(notificationComboBox);
             notificationComboBox.SelectedValue = AppModel.Instance.NotificationSettings;
 
-            betaVersionCheckbox.Checked = AppModel.Instance.SubscribedBetaVersions;
+            includeBetaVersionsCheckbox.Checked = AppModel.Instance.IncludeBetaVersions;
             var toolTipBeta = new ToolTip();
-            toolTipBeta.SetToolTip(betaVersionCheckbox, SettingsString.betaExplanation);
+            toolTipBeta.SetToolTip(includeBetaVersionsCheckbox, SettingsString.betaExplanation);
 
             selectSoundFileDialog.Filter = SettingsString.supportedAudio + @" (*.wav;*.mp3)|*.wav;*.mp3;*.aiff";
             selectSoundFileDialog.FileOk += SelectSoundFileDialogOnFileOk;
@@ -93,20 +94,26 @@ namespace SoundSwitch.UI.Forms
                                         NotificationTypeEnum.CustomNotification ||
                                         AppModel.Instance.NotificationSettings == NotificationTypeEnum.ToastNotification;
 
-            if (AppModel.Instance.StealthUpdate)
+            switch (AppModel.Instance.UpdateMode)
             {
-                autoInstallRadio.Checked = true;
-            }
-            else
-            {
-                checkForUpdateRadio.Checked = true;
+                case UpdateMode.Silent:
+                    updateSilentRadioButton.Checked = true;
+                    break;
+                case UpdateMode.Notify:
+                    updateNotifyRadioButton.Checked = true;
+                    break;
+                case UpdateMode.Never:
+                    updateNeverRadioButton.Checked = true;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
 
             var toolTipAutoInstall = new ToolTip();
-            toolTipAutoInstall.SetToolTip(autoInstallRadio, SettingsString.autoInstallHelp);
+            toolTipAutoInstall.SetToolTip(updateSilentRadioButton, SettingsString.autoInstallHelp);
 
             var toolTipCheckUpdate = new ToolTip();
-            toolTipCheckUpdate.SetToolTip(checkForUpdateRadio, SettingsString.checkUpdateHelp);
+            toolTipCheckUpdate.SetToolTip(updateNotifyRadioButton, SettingsString.checkUpdateHelp);
 
             new TooltipInfoFactory().ConfigureListControl(tooltipInfoComboBox);
             tooltipInfoComboBox.SelectedValue = TooltipInfoManager.CurrentTooltipInfo;
@@ -324,7 +331,7 @@ namespace SoundSwitch.UI.Forms
 
         private void betaVersionCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            AppModel.Instance.SubscribedBetaVersions = betaVersionCheckbox.Checked;
+            AppModel.Instance.IncludeBetaVersions = includeBetaVersionsCheckbox.Checked;
         }
 
         #endregion
@@ -464,19 +471,27 @@ namespace SoundSwitch.UI.Forms
             AppModel.Instance.TrayIcon.UpdateIcon();
         }
 
-        private void autoInstallRadio_CheckedChanged(object sender, EventArgs e)
+        private void updateSilentRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            if (autoInstallRadio.Checked)
+            if (updateSilentRadioButton.Checked)
             {
-                AppModel.Instance.StealthUpdate = true;
+                AppModel.Instance.UpdateMode = UpdateMode.Silent;
             }
         }
 
-        private void checkForUpdateRadio_CheckedChanged(object sender, EventArgs e)
+        private void updateNotifyRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkForUpdateRadio.Checked)
+            if (updateNotifyRadioButton.Checked)
             {
-                AppModel.Instance.StealthUpdate = false;
+                AppModel.Instance.UpdateMode = UpdateMode.Notify;
+            }
+        }
+
+        private void updateNeverRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (updateNeverRadioButton.Checked)
+            {
+                AppModel.Instance.UpdateMode = UpdateMode.Never;
             }
         }
     }
