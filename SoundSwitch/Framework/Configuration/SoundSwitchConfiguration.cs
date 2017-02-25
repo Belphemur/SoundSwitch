@@ -51,6 +51,15 @@ namespace SoundSwitch.Framework.Configuration
         public HashSet<string> SelectedRecordingDeviceList { get; set; }
         public bool MigratedSelectedDeviceLists { get; set; }
 
+        /*TODO: Remove in next VERSION (3.12.8)*/
+        public UpdateState UpdateState
+        {
+            set {
+                UpdateMode = (value == UpdateState.Steath ? UpdateMode.Silent : UpdateMode.Notify);
+            } 
+        }
+
+
         public HashSet<string> SelectedPlaybackDeviceListId { get; }
         public HashSet<string> SelectedRecordingDeviceListId { get; }
         public bool FirstRun { get; set; }

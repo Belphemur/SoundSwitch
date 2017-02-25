@@ -297,6 +297,7 @@
     <Compile Include="Framework\Updater\SignatureChecker.cs" />
     <Compile Include="Framework\Updater\UpdateChecker.cs" />
     <Compile Include="Framework\Updater\UpdateMode.cs" />
+    <Compile Include="Framework\Updater\UpdateState.cs" />
     <Compile Include="Framework\Updater\WebFile.cs" />
     <Compile Include="Framework\WindowsAPIAdapter.cs">
       <SubType>Form</SubType>
