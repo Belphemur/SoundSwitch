@@ -14,8 +14,8 @@ de.vcredist2015_size_x64=13,9 MB
 
 [Code]
 const
-	vcredist2015_url = 'https://www.aaflalo.me/VCRedist2015/vc_redist.x86.exe';
-	vcredist2015_url_x64 = 'https://www.aaflalo.me/VCRedist2015/vc_redist.x64.exe';
+	vcredist2015_url = 'https://download.microsoft.com/download/6/D/F/6DF3FF94-F7F9-4F0B-838C-A328D1A7D0EE/vc_redist.x86.exe';
+	vcredist2015_url_x64 = 'https://download.microsoft.com/download/6/D/F/6DF3FF94-F7F9-4F0B-838C-A328D1A7D0EE/vc_redist.x64.exe';
   vc_redist_version = '14.0';
   vc_redist_build = 24212;
 
