@@ -75,19 +75,22 @@ namespace SoundSwitch.Model
         /// <returns></returns>
         public ICollection<IAudioDevice> GetPlaybackDevices()
         {
-            _cacheLock.EnterUpgradeableReadLock();
-            try
+            using (AppLogger.Log.DebugCall())
             {
-                if (_needUpdate)
+                _cacheLock.EnterUpgradeableReadLock();
+                try
                 {
+                    if (!_needUpdate) return _playback;
+
+                    AppLogger.Log.Debug("Needs update");
                     Refresh();
+                    return _playback;
                 }
-                return _playback;
-            }
-            finally
-            {
-                AppLogger.Log.Debug("Get Playback Devices");
-                _cacheLock.ExitUpgradeableReadLock();
+                finally
+                {
+                    AppLogger.Log.Debug("Get Playback Devices");
+                    _cacheLock.ExitUpgradeableReadLock();
+                }
             }
 
 
@@ -102,6 +105,7 @@ namespace SoundSwitch.Model
 
                 try
                 {
+                    AppLogger.Log.Debug("Refreshing playback devices");
                     _playback.UnionWith(AudioController.GetPlaybackDevices(_state));
                 }
                 catch (DefSoundException e)
@@ -113,6 +117,7 @@ namespace SoundSwitch.Model
                 _recording.Clear();
                 try
                 {
+                    AppLogger.Log.Debug("Refreshing recording devices");
                     _recording.UnionWith(AudioController.GetRecordingDevices(_state));
                 }
                 catch (DefSoundException e)
@@ -133,19 +138,22 @@ namespace SoundSwitch.Model
         /// <returns></returns>
         public ICollection<IAudioDevice> GetRecordingDevices()
         {
-            _cacheLock.EnterUpgradeableReadLock();
-            try
+            using (AppLogger.Log.DebugCall())
             {
-                if (_needUpdate)
+                _cacheLock.EnterUpgradeableReadLock();
+                try
                 {
+                    if (!_needUpdate) return _recording;
+
+                    AppLogger.Log.Debug("Needs update");
                     Refresh();
+                    return _recording;
                 }
-                return _recording;
-            }
-            finally
-            {
-                AppLogger.Log.Debug("Get Recording Devices");
-                _cacheLock.ExitUpgradeableReadLock();
+                finally
+                {
+                    AppLogger.Log.Debug("Get Recording Devices");
+                    _cacheLock.ExitUpgradeableReadLock();
+                }
             }
         }
     }
