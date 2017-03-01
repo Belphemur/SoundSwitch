@@ -1,11 +1,11 @@
 ﻿/********************************************************************
-* Copyright (C) 2015 Antoine Aflalo
-* 
+* Copyright (C) 2015-2017 Antoine Aflalo
+*
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public License
 * as published by the Free Software Foundation; either version 2
 * of the License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -13,16 +13,16 @@
 ********************************************************************/
 
 using System;
-using System.Drawing;
 using System.Windows.Forms;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Updater;
+using SoundSwitch.Localization;
 using SoundSwitch.Properties;
 using SoundSwitch.UI.Controls;
 
 namespace SoundSwitch.UI.Forms
 {
-    public partial class UpdateDownloadForm : Form
+    public sealed partial class UpdateDownloadForm : Form
     {
         private readonly WebFile _releaseFile;
 
@@ -31,28 +31,33 @@ namespace SoundSwitch.UI.Forms
             InitializeComponent();
             Icon = Resources.UpdateIcon;
             Text = release.Name;
+            LocalizeForm();
             Focus();
+
             changeLog.SetChangelog(release.Changelog);
             downloadProgress.DisplayStyle = TextProgressBar.ProgressBarDisplayText.Both;
             downloadProgress.CustomText = release.Asset.name;
+
             _releaseFile = new WebFile(new Uri(release.Asset.browser_download_url));
-            _releaseFile.DownloadProgressChanged +=
-                (sender, args) =>
-                {
-                    downloadProgress.Invoke(new Action(() => { downloadProgress.Value = args.ProgressPercentage; }));
-                };
+            _releaseFile.DownloadProgressChanged += (sender, args) =>
+            {
+                downloadProgress.Invoke(new Action(() => { downloadProgress.Value = args.ProgressPercentage; }));
+            };
             _releaseFile.DownloadFailed += (sender, @event) =>
             {
                 AppLogger.Log.Error("Couldn't download the Release ", @event.Exception);
-                MessageBox.Show(@event.Exception.Message, UpdateFormStrings.downloadFailed, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(@event.Exception.Message,
+                                UpdateDownloadStrings.downloadFailed,
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
             };
             _releaseFile.Downloaded += (sender, args) =>
             {
                 if (!SignatureChecker.IsValid(_releaseFile.FilePath))
                 {
                     AppLogger.Log.Error("Wrong signature for the release");
-                    MessageBox.Show(UpdateFormStrings.notSigned, UpdateFormStrings.notSignedTitle, MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
+                    MessageBox.Show(UpdateDownloadStrings.notSigned,
+                                    UpdateDownloadStrings.notSignedTitle,
+                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 installButton.Invoke(new Action(() =>
@@ -62,6 +67,14 @@ namespace SoundSwitch.UI.Forms
                 }));
             };
             _releaseFile.DownloadFile();
+        }
+
+        private void LocalizeForm()
+        {
+            // Misc
+            changeLogGroup.Text = UpdateDownloadStrings.changelog;
+            cancelButton.Text = UpdateDownloadStrings.cancel;
+            installButton.Text = UpdateDownloadStrings.install;
         }
 
         private void cancelButton_Click(object sender, EventArgs e)

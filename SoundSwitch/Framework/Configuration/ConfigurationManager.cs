@@ -1,21 +1,19 @@
 ﻿/********************************************************************
-* Copyright (C) 2015 Antoine Aflalo
-* 
+* Copyright (C) 2015-2017 Antoine Aflalo
+*
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public License
 * as published by the Free Software Foundation; either version 2
 * of the License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System;
 using System.Diagnostics;
 using System.IO;
-using System.Windows.Forms;
 using Newtonsoft.Json;
 
 namespace SoundSwitch.Framework.Configuration
@@ -23,8 +21,8 @@ namespace SoundSwitch.Framework.Configuration
     public interface IConfiguration
     {
         /// <summary>
-        ///     Where is the configuration saved
-        ///     Any change to this will be discarded at the next loading of the configuration
+        /// Where is the configuration saved
+        /// Any change to this will be discarded at the next loading of the configuration
         /// </summary>
         string FileLocation { get; set; }
 
@@ -44,7 +42,7 @@ namespace SoundSwitch.Framework.Configuration
         }
 
         /// <summary>
-        ///     Load a ConfigurationManager from its file
+        /// Load a ConfigurationManager from its file
         /// </summary>
         /// <returns>The loaded configuration if the file exists, else a new instance of the configuration</returns>
         public static T LoadConfiguration<T>() where T : IConfiguration, new()
@@ -61,7 +59,7 @@ namespace SoundSwitch.Framework.Configuration
                 obj = JsonConvert.DeserializeObject<T>(contents);
                 if (obj == null)
                 {
-                    Trace.WriteLine("Problem with Deserializer");
+                    Trace.WriteLine("Problem with deserialization");
                     Trace.WriteLine("Contents: " + contents);
                     obj = new T();
                 }
@@ -77,7 +75,7 @@ namespace SoundSwitch.Framework.Configuration
         }
 
         /// <summary>
-        ///     Save the configuration in a json file.
+        /// Save the configuration in a json file.
         /// </summary>
         /// <param name="configuration">configuration object to save</param>
         public static void SaveConfiguration<T>(T configuration) where T : IConfiguration, new()

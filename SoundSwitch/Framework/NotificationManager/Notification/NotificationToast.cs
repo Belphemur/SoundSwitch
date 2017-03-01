@@ -1,17 +1,31 @@
-﻿using System;
+﻿/********************************************************************
+* Copyright (C) 2015-2017 Antoine Aflalo
+*
+* This program is free software; you can redistribute it and/or
+* modify it under the terms of the GNU General Public License
+* as published by the Free Software Foundation; either version 2
+* of the License, or (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+********************************************************************/
+
+using System;
 using System.IO;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
 using SoundSwitch.Framework.Toast;
-using SoundSwitch.Properties;
+using SoundSwitch.Localization;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification
 {
     public class NotificationToast : INotification
     {
-        public NotificationTypeEnum TypeEnum { get; } = NotificationTypeEnum.ToastNotification;
-        public string Label { get; } = Notifications.NotifToast;
+        public NotificationTypeEnum TypeEnum => NotificationTypeEnum.ToastNotification;
+        public string Label => SettingsStrings.notificationOptionToast;
 
         public INotificationConfiguration Configuration { get; set; }
 
@@ -22,7 +36,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
                 ImagePath = "file:///"+ApplicationPath.DefaultImagePath,
                 Title = audioDevice.FriendlyName
             };
-            if ((Configuration.CustomSound != null) && File.Exists(Configuration.CustomSound.FilePath))
+            if (Configuration.CustomSound != null && File.Exists(Configuration.CustomSound.FilePath))
             {
                 toastData.Silent = false;
                 toastData.SoundFilePath = Configuration.CustomSound.FilePath;
@@ -31,11 +45,10 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             switch (audioDevice.Type)
             {
                 case AudioDeviceType.Playback:
-                    toastData.Line0 = Notifications.PlaybackChanged;
-
+                    toastData.Line0 = SettingsStrings.tooltipOnHoverOptionPlaybackDevice;
                     break;
                 case AudioDeviceType.Recording:
-                    toastData.Line0 = Notifications.RecordingChanged;
+                    toastData.Line0 = SettingsStrings.tooltipOnHoverOptionRecordingDevice;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(audioDevice.Type), audioDevice.Type, null);
@@ -55,7 +68,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
 
         public bool IsAvailable()
         {
-            //Not available before windows 8
+            // Not available before Windows 8
             return Environment.OSVersion.Version >= new Version(6, 2);
         }
     }

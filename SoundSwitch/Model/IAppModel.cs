@@ -1,6 +1,6 @@
 /********************************************************************
 * Copyright (C) 2015 Jeroen Pelgrims
-* Copyright (C) 2015 Antoine Aflalo
+* Copyright (C) 2015-2017 Antoine Aflalo
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public License
@@ -15,12 +15,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Updater;
+using SoundSwitch.Localization;
 using SoundSwitch.Util;
 
 namespace SoundSwitch.Model
@@ -30,32 +30,32 @@ namespace SoundSwitch.Model
         #region Properties
 
         /// <summary>
-        ///     The list of Playback device selected to be used for Switching default devices.
+        /// The list of Playback device selected to be used for Switching default devices.
         /// </summary>
         HashSet<string> SelectedPlaybackDevicesList { get; }
 
         /// <summary>
-        ///     An union between the Active <see cref="IAudioDevice" /> of Windows and <see cref="SelectedPlaybackDevicesList" />
+        /// An union between the Active <see cref="IAudioDevice" /> of Windows and <see cref="SelectedPlaybackDevicesList" />
         /// </summary>
         ICollection<IAudioDevice> AvailablePlaybackDevices { get; }
 
         /// <summary>
-        ///     The list of Recording device selected to be used for Switching default devices.
+        /// The list of Recording device selected to be used for Switching default devices.
         /// </summary>
         HashSet<string> SelectedRecordingDevicesList { get; }
 
         /// <summary>
-        ///     An union between the Active <see cref="IAudioDevice" /> of Windows and <see cref="SelectedRecordingDevicesList" />
+        /// An union between the Active <see cref="IAudioDevice" /> of Windows and <see cref="SelectedRecordingDevicesList" />
         /// </summary>
         ICollection<IAudioDevice> AvailableRecordingDevices { get; }
 
         /// <summary>
-        ///     If the Playback device need also to be set for Communications.
+        /// If the Playback device need also to be set for Communications.
         /// </summary>
         bool SetCommunications { get; set; }
 
         /// <summary>
-        ///     If the application runs at windows startup
+        /// If the application runs at windows startup.
         /// </summary>
         bool RunAtStartup { get; set; }
 
@@ -80,15 +80,20 @@ namespace SoundSwitch.Model
         bool IncludeBetaVersions { get; set; }
 
         /// <summary>
-        /// The sound to be played for a Custom notification
-        /// <exception cref="CachedSoundFileNotExistsException">Sound file doesn't exists or not set</exception>
+        /// The sound to be played for a Custom notification.
+        /// <exception cref="CachedSoundFileNotExistsException">Sound file doesn't exists or not set.</exception>
         /// </summary>
         CachedSound CustomNotificationSound { get; set; }
 
         /// <summary>
-        /// Specifies how the application searches for updates and installs them
+        /// Specifies how the application searches for updates and installs them.
         /// </summary>
         UpdateMode UpdateMode { get; set; }
+
+        /// <summary>
+        /// The language of the application.
+        /// </summary>
+        Language Language { get; set; }
 
         #endregion
 

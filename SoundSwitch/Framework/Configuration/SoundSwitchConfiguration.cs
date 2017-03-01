@@ -1,5 +1,5 @@
 ﻿/********************************************************************
-* Copyright (C) 2015 Antoine Aflalo
+* Copyright (C) 2015-2017 Antoine Aflalo
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public License
@@ -12,14 +12,14 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Globalization;
 using System.Windows.Forms;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.TooltipInfoManager.TootipInfo;
 using SoundSwitch.Framework.Updater;
+using SoundSwitch.Localization;
 
 namespace SoundSwitch.Framework.Configuration
 {
@@ -27,23 +27,31 @@ namespace SoundSwitch.Framework.Configuration
     {
         public SoundSwitchConfiguration()
         {
+            // Basic Settings
             FirstRun = true;
+            KeepSystrayIcon = false;
+
+            // Audio Settings
             ChangeCommunications = false;
+            NotificationSettings = NotificationTypeEnum.DefaultWindowsNotification;
+            TooltipInfo = TooltipInfoTypeEnum.Playback;
+            CyclerType = DeviceCyclerTypeEnum.Available;
+
+            // Update Settings
+            UpdateCheckInterval = 3600 * 24; // 24 hours
+            UpdateMode = UpdateMode.Notify;
+            IncludeBetaVersions = false;
+
+            // Language Settings
+            Language = LanguageParser.ParseLanguage(CultureInfo.InstalledUICulture);
+
+            // Misc
             SelectedPlaybackDeviceList = null;
             SelectedRecordingDeviceList = null;
-            NotificationSettings = NotificationTypeEnum.DefaultWindowsNotification;
             SelectedPlaybackDeviceListId = new HashSet<string>();
             SelectedRecordingDeviceListId = new HashSet<string>();
             PlaybackHotKeys = new HotKeys(Keys.F11, HotKeys.ModifierKeys.Alt | HotKeys.ModifierKeys.Control);
             RecordingHotKeys = new HotKeys(Keys.F7, HotKeys.ModifierKeys.Alt | HotKeys.ModifierKeys.Control);
-            // 24 hours
-            UpdateCheckInterval = 3600 * 24;
-            UpdateMode = UpdateMode.Notify;
-            IncludeBetaVersions = false;
-            TooltipInfo = TooltipInfoTypeEnum.Playback;
-            CyclerType = DeviceCyclerTypeEnum.Available;
-            KeepSystrayIcon = false;
-
         }
 
         /*TODO: Remove in next VERSION (3.6.6)*/
@@ -55,10 +63,9 @@ namespace SoundSwitch.Framework.Configuration
         public UpdateState UpdateState
         {
             set {
-                UpdateMode = (value == UpdateState.Steath ? UpdateMode.Silent : UpdateMode.Notify);
-            } 
+                UpdateMode = value == UpdateState.Steath ? UpdateMode.Silent : UpdateMode.Notify;
+            }
         }
-
 
         public HashSet<string> SelectedPlaybackDeviceListId { get; }
         public HashSet<string> SelectedRecordingDeviceListId { get; }
@@ -71,12 +78,13 @@ namespace SoundSwitch.Framework.Configuration
         public TooltipInfoTypeEnum TooltipInfo { get; set; }
         public DeviceCyclerTypeEnum CyclerType { get; set; }
         public NotificationTypeEnum NotificationSettings { get; set; }
+        public Language Language { get; set; }
         public bool IncludeBetaVersions { get; set; }
         public string CustomNotificationFilePath { get; set; }
         public bool KeepSystrayIcon { get; set; }
 
 
-        //Needed by Interface
+        // Needed by Interface
         public string FileLocation { get; set; }
 
         public void Save()

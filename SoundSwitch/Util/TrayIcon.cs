@@ -1,12 +1,12 @@
 ﻿/********************************************************************
 * Copyright (C) 2015 Jeroen Pelgrims
-* Copyright (C) 2015 Antoine Aflalo
-* 
+* Copyright (C) 2015-2017 Antoine Aflalo
+*
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public License
 * as published by the Free Software Foundation; either version 2
 * of the License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -14,7 +14,6 @@
 ********************************************************************/
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -24,10 +23,10 @@ using System.Threading;
 using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework;
-using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.TooltipInfoManager;
 using SoundSwitch.Framework.Updater;
+using SoundSwitch.Localization;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
 using SoundSwitch.UI.Forms;
@@ -40,7 +39,7 @@ namespace SoundSwitch.Util
         private readonly ContextMenuStrip _settingsMenu = new ContextMenuStrip();
         private readonly SynchronizationContext _context = SynchronizationContext.Current ?? new SynchronizationContext();
         private volatile bool _needToUpdateList = true;
-        public NotifyIcon NotifyIcon { get; }    = new NotifyIcon
+        public NotifyIcon NotifyIcon { get; } = new NotifyIcon
         {
             Visible = true,
             Text = Application.ProductName
@@ -54,7 +53,7 @@ namespace SoundSwitch.Util
         {
             UpdateIcon();
             _tooltipInfoManager = new TooltipInfoManager(NotifyIcon);
-            _updateMenuItem = new ToolStripMenuItem(TrayIconStrings.NoUpdate, Resources.Update, OnUpdateClick)
+            _updateMenuItem = new ToolStripMenuItem(TrayIconStrings.noUpdate, Resources.Update, OnUpdateClick)
             {
                 Enabled = false
             };
@@ -62,7 +61,7 @@ namespace SoundSwitch.Util
 
             PopulateSettingsMenu();
 
-            _selectionMenu.Items.Add(TrayIconStrings.NoDevSel, Resources.SettingsSmall, (sender, e) => ShowSettings());
+            _selectionMenu.Items.Add(TrayIconStrings.noDevicesSelected, Resources.SettingsSmall, (sender, e) => ShowSettings());
 
             NotifyIcon.MouseDoubleClick += (sender, args) =>
             {
@@ -108,7 +107,7 @@ namespace SoundSwitch.Util
                 NotifyIcon.Icon = Icon.FromHandle(Resources.SoundSwitch16.GetHicon());
                 return;
             }
-                
+
             try
             {
                 var defaultDevice = AppModel.Instance.ActiveAudioDeviceLister.GetPlaybackDevices()
@@ -129,7 +128,7 @@ namespace SoundSwitch.Util
                 Application.ProductName + ' ' + AssemblyUtils.GetReleaseState() + " (" + Application.ProductVersion +
                 ")", Resources.SoundSwitch16);
             _settingsMenu.Items.Add("-");
-            _settingsMenu.Items.Add(TrayIconStrings.playbackDev, Resources.PlaybackDevices,
+            _settingsMenu.Items.Add(TrayIconStrings.playbackDevices, Resources.PlaybackDevices,
                 (sender, e) => { Process.Start(new ProcessStartInfo("control", "mmsys.cpl sounds")); });
             _settingsMenu.Items.Add(TrayIconStrings.mixer, Resources.Mixer,
                 (sender, e) => { Process.Start(new ProcessStartInfo("sndvol.exe")); });
@@ -177,15 +176,14 @@ namespace SoundSwitch.Util
                     }
                 }
             };
-            AppModel.Instance.DefaultDeviceChanged +=
-                (sender, audioChangeEvent) =>
+            AppModel.Instance.DefaultDeviceChanged += (sender, audioChangeEvent) =>
+            {
+                if (AppConfigs.Configuration.KeepSystrayIcon)
                 {
-                    if (AppConfigs.Configuration.KeepSystrayIcon)
-                    {
-                        return;
-                    }
-                    NotifyIcon.Icon = AudioDeviceIconExtractor.ExtractIconFromAudioDevice(audioChangeEvent.device, false);
-                };
+                    return;
+                }
+                NotifyIcon.Icon = AudioDeviceIconExtractor.ExtractIconFromAudioDevice(audioChangeEvent.device, false);
+            };
             AppModel.Instance.DefaultDeviceChanged += (sender, @event) =>
             {
                 if (@event.role != Role.Console)
@@ -194,22 +192,16 @@ namespace SoundSwitch.Util
                 }
                 _needToUpdateList = true;
             };
-            AppModel.Instance.SelectedDeviceChanged +=
-                 (sender, @event) => { _needToUpdateList = true; };
+            AppModel.Instance.SelectedDeviceChanged += (sender, @event) => { _needToUpdateList = true; };
             AppModel.Instance.NewVersionReleased += (sender, @event) =>
             {
                 if (@event.UpdateMode == UpdateMode.Notify)
                     _context.Send(s => { NewReleaseAvailable(sender, @event); }, null);
             };
 
-            AppModel.Instance.DeviceRemoved +=
-                (sender, @event) => { _needToUpdateList = true; };
-
-            AppModel.Instance.DeviceAdded +=
-                 (sender, @event) => { _needToUpdateList = true; };
-
-            AppModel.Instance.DeviceStateChanged +=
-                 (sender, @event) => { _needToUpdateList = true; };
+            AppModel.Instance.DeviceRemoved += (sender, @event) => { _needToUpdateList = true; };
+            AppModel.Instance.DeviceAdded += (sender, @event) => { _needToUpdateList = true; };
+            AppModel.Instance.DeviceStateChanged += (sender, @event) => { _needToUpdateList = true; };
         }
 
         private void NewReleaseAvailable(object sender, UpdateChecker.NewReleaseEvent newReleaseEvent)
@@ -219,15 +211,14 @@ namespace SoundSwitch.Util
             _updateMenuItem.Enabled = true;
             NotifyIcon.BalloonTipClicked += OnUpdateClick;
             NotifyIcon.ShowBalloonTip(3000,
-                string.Format(TrayIconStrings.versionAvailable, Application.ProductName,
-                    newReleaseEvent.Release.ReleaseVersion),
-                newReleaseEvent.Release.Name + '\n' + TrayIconStrings.howDownloadUpdate, ToolTipIcon.Info);
+                                      string.Format(TrayIconStrings.versionAvailable, Application.ProductName, newReleaseEvent.Release.ReleaseVersion),
+                                      newReleaseEvent.Release.Name + '\n' + TrayIconStrings.clickToUpdate, ToolTipIcon.Info);
         }
 
 
         public void ShowSettings()
         {
-            new Settings().Show();
+            new SettingsForm().Show();
         }
 
         /// <summary>
@@ -277,27 +268,31 @@ namespace SoundSwitch.Util
             }
             catch (Exception)
             {
+                // ignore
             }
         }
 
         /// <summary>
-        ///     Notification for when there are no devices configured
+        /// Notification for when there are no devices configured
         /// </summary>
         public void ShowNoDevices()
         {
             AppLogger.Log.Info("No devices available");
-            NotifyIcon.ShowBalloonTip(3000, string.Format(TrayIconStrings.confNeeded, Application.ProductName),
-                TrayIconStrings.confNeededExp, ToolTipIcon.Warning);
+            NotifyIcon.ShowBalloonTip(3000,
+                                      string.Format(TrayIconStrings.configurationNeeded, Application.ProductName),
+                                      TrayIconStrings.configurationNeededExplanation, ToolTipIcon.Warning);
         }
 
         /// <summary>
-        ///     shows an error messasge
+        /// Shows an error message
         /// </summary>
         /// <param name="errorMessage"></param>
         /// <param name="errorTitle"></param>
         public void ShowError(string errorMessage, string errorTitle)
         {
-            NotifyIcon.ShowBalloonTip(3000, $"{Application.ProductName}: {errorTitle}", errorMessage, ToolTipIcon.Error);
+            NotifyIcon.ShowBalloonTip(3000,
+                                      $"{Application.ProductName}: {errorTitle}",
+                                      errorMessage, ToolTipIcon.Error);
         }
     }
 }

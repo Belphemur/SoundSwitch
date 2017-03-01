@@ -1,6 +1,6 @@
 ﻿/********************************************************************
 * Copyright (C) 2015 Jeroen Pelgrims
-* Copyright (C) 2015 Antoine Aflalo
+* Copyright (C) 2015-2017 Antoine Aflalo
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public License
@@ -18,7 +18,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework;
@@ -29,70 +28,77 @@ using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.TooltipInfoManager;
 using SoundSwitch.Framework.TooltipInfoManager.TootipInfo;
 using SoundSwitch.Framework.Updater;
+using SoundSwitch.Localization;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
 using SoundSwitch.Util;
 
 namespace SoundSwitch.UI.Forms
 {
-    public partial class Settings : Form
+    public sealed partial class SettingsForm : Form
     {
         private readonly bool _loaded;
 
-        public Settings()
+        public SettingsForm()
         {
+            // Form itself
             InitializeComponent();
-            Name = SettingsString.settings;
-            Text = SettingsString.settings;
-            if (AssemblyUtils.GetReleaseState() == AssemblyUtils.ReleaseState.Beta)
-            {
-                Name = SettingsString.settings + ' ' + AssemblyUtils.GetReleaseState();
-                Text = SettingsString.settings + ' ' + AssemblyUtils.GetReleaseState();
-            }
             Icon = Resources.SettingsIcon;
-            var toolTip = new ToolTip();
-            toolTip.SetToolTip(closeButton, SettingsString.closeTooltip);
+            Text = AssemblyUtils.GetReleaseState() == AssemblyUtils.ReleaseState.Beta ?
+                   $"{SettingsStrings.settings} {AssemblyUtils.GetReleaseState()}" :
+                   SettingsStrings.settings;
+            LocalizeForm();
 
-            var toolTipComm = new ToolTip();
-            toolTipComm.SetToolTip(communicationCheckbox, SettingsString.commTooltip);
+            var closeToolTip = new ToolTip();
+            closeToolTip.SetToolTip(closeButton, SettingsStrings.closeTooltip);
 
-            hotkeyTextBox.KeyDown += (sender, args) => SetHotkey(args);
-            hotkeyTextBox.Text = AppConfigs.Configuration.PlaybackHotKeys.Display();
-            hotkeyTextBox.Tag = new Tuple<AudioDeviceType, HotKeys>(AudioDeviceType.Playback,
-                AppConfigs.Configuration.PlaybackHotKeys);
-            hotkeyTextBox.Enabled = hotkeysCheckbox.Checked = AppConfigs.Configuration.PlaybackHotKeys.Enabled;
-            var toolTipHotkeys = new ToolTip();
-            toolTipHotkeys.SetToolTip(hotkeysCheckbox, SettingsString.hotkeyUncheckExplanation);
+            hotkeysTextBox.Text = AppConfigs.Configuration.PlaybackHotKeys.Display();
+            hotkeysTextBox.Tag = new Tuple<AudioDeviceType, HotKeys>(AudioDeviceType.Playback, AppConfigs.Configuration.PlaybackHotKeys);
+            hotkeysTextBox.Enabled = hotkeysCheckBox.Checked = AppConfigs.Configuration.PlaybackHotKeys.Enabled;
+            hotkeysTextBox.KeyDown += (sender, args) => SetHotkey(args);
+            var hotkeysToolTip = new ToolTip();
+            hotkeysToolTip.SetToolTip(hotkeysCheckBox, SettingsStrings.hotkeysTooltip);
 
-            RunAtStartup.Checked = AppModel.Instance.RunAtStartup;
-            communicationCheckbox.Checked = AppModel.Instance.SetCommunications;
+            // Settings - Basic
+            startWithWindowsCheckBox.Checked = AppModel.Instance.RunAtStartup;
+            keepSystemTrayIconCheckBox.Checked = AppConfigs.Configuration.KeepSystrayIcon;
 
-            var audioDeviceLister = new AudioDeviceLister(DeviceState.All);
-            PopulateAudioList(playbackListView, AppModel.Instance.SelectedPlaybackDevicesList,
-                audioDeviceLister.GetPlaybackDevices());
-            PopulateAudioList(recordingListView, AppModel.Instance.SelectedRecordingDevicesList,
-                audioDeviceLister.GetRecordingDevices());
-            notifLabel.Text = SettingsString.notification;
+            var keepSystemTrayIconToolTip = new ToolTip();
+            keepSystemTrayIconToolTip.SetToolTip(keepSystemTrayIconCheckBox, SettingsStrings.keepSystemTrayIconTooltip);
 
-            var toolTipNotification = new ToolTip();
-            toolTipNotification.SetToolTip(notificationComboBox, Notifications.explanation);
+            // Settings - Audio
+            switchCommunicationDeviceCheckBox.Checked = AppModel.Instance.SetCommunications;
+
+            var switchCommunicationsDeviceToolTip = new ToolTip();
+            switchCommunicationsDeviceToolTip.SetToolTip(switchCommunicationDeviceCheckBox, SettingsStrings.communicationsDevice);
+
+            var notificationToolTip = new ToolTip();
+            notificationToolTip.SetToolTip(notificationComboBox, SettingsStrings.notificationTooltip);
+
             new NotificationFactory().ConfigureListControl(notificationComboBox);
             notificationComboBox.SelectedValue = AppModel.Instance.NotificationSettings;
 
-            includeBetaVersionsCheckbox.Checked = AppModel.Instance.IncludeBetaVersions;
-            var toolTipBeta = new ToolTip();
-            toolTipBeta.SetToolTip(includeBetaVersionsCheckbox, SettingsString.betaExplanation);
-
-            selectSoundFileDialog.Filter = SettingsString.supportedAudio + @" (*.wav;*.mp3)|*.wav;*.mp3;*.aiff";
+            selectSoundFileDialog.Filter = SettingsStrings.audioFiles + @" (*.wav;*.mp3)|*.wav;*.mp3;*.aiff";
             selectSoundFileDialog.FileOk += SelectSoundFileDialogOnFileOk;
             selectSoundFileDialog.CheckFileExists = true;
             selectSoundFileDialog.CheckPathExists = true;
 
-            var toolTipSoundButton = new ToolTip();
-            toolTipSoundButton.SetToolTip(selectSoundButton, SettingsString.selectSoundButtonTooltip);
-            selectSoundButton.Visible = AppModel.Instance.NotificationSettings ==
-                                        NotificationTypeEnum.CustomNotification ||
+            selectSoundButton.Visible = AppModel.Instance.NotificationSettings == NotificationTypeEnum.CustomNotification ||
                                         AppModel.Instance.NotificationSettings == NotificationTypeEnum.ToastNotification;
+            var selectSoundButtonToolTip = new ToolTip();
+            selectSoundButtonToolTip.SetToolTip(selectSoundButton, SettingsStrings.selectSoundButtonTooltip);
+
+            new TooltipInfoFactory().ConfigureListControl(tooltipInfoComboBox);
+            tooltipInfoComboBox.SelectedValue = TooltipInfoManager.CurrentTooltipInfo;
+
+            new DeviceCyclerFactory().ConfigureListControl(cycleThroughComboBox);
+            cycleThroughComboBox.SelectedValue = DeviceCyclerManager.CurrentCycler;
+
+            var cycleThroughToolTip = new ToolTip();
+            cycleThroughToolTip.SetToolTip(cycleThroughComboBox, SettingsStrings.cycleThroughTooltip);
+
+            // Settings - Update
+            includeBetaVersionsCheckBox.Checked = AppModel.Instance.IncludeBetaVersions;
 
             switch (AppModel.Instance.UpdateMode)
             {
@@ -109,25 +115,56 @@ namespace SoundSwitch.UI.Forms
                     throw new ArgumentOutOfRangeException();
             }
 
-            var toolTipAutoInstall = new ToolTip();
-            toolTipAutoInstall.SetToolTip(updateSilentRadioButton, SettingsString.autoInstallHelp);
+            var includeBetaVersionsToolTip = new ToolTip();
+            includeBetaVersionsToolTip.SetToolTip(includeBetaVersionsCheckBox, SettingsStrings.updateIncludeBetaVersionsTooltip);
 
-            var toolTipCheckUpdate = new ToolTip();
-            toolTipCheckUpdate.SetToolTip(updateNotifyRadioButton, SettingsString.checkUpdateHelp);
+            // Settings - Language
+            languageComboBox.SelectedIndex = (int)AppConfigs.Configuration.Language;
 
-            new TooltipInfoFactory().ConfigureListControl(tooltipInfoComboBox);
-            tooltipInfoComboBox.SelectedValue = TooltipInfoManager.CurrentTooltipInfo;
-
-            var toolTipCycler = new ToolTip();
-            toolTipCycler.SetToolTip(cyclerComboBox, AudioCycler.tooltipExplanation);
-            new DeviceCyclerFactory().ConfigureListControl(cyclerComboBox);
-            cyclerComboBox.SelectedValue = DeviceCyclerManager.CurrentCycler;
-
-            var toolTipSystray = new ToolTip();
-            toolTipSystray.SetToolTip(checkboxSystrayIcon, SettingsString.keepSystrayIconHelp);
-            checkboxSystrayIcon.Checked = AppConfigs.Configuration.KeepSystrayIcon;
+            // Playback and Recording
+            var audioDeviceLister = new AudioDeviceLister(DeviceState.All);
+            PopulateAudioList(playbackListView, AppModel.Instance.SelectedPlaybackDevicesList, audioDeviceLister.GetPlaybackDevices());
+            PopulateAudioList(recordingListView, AppModel.Instance.SelectedRecordingDevicesList, audioDeviceLister.GetRecordingDevices());
 
             _loaded = true;
+        }
+
+        private void LocalizeForm()
+        {
+            // TabPages
+            playbackTabPage.Text = SettingsStrings.playback;
+            playbackListView.Groups[0].Header = SettingsStrings.selected;
+
+            recordingTabPage.Text = SettingsStrings.recording;
+            recordingListView.Groups[0].Header = SettingsStrings.selected;
+
+            appSettingTabPage.Text = SettingsStrings.settings;
+
+            // Settings - Basic
+            basicSettingsGroupBox.Text = SettingsStrings.basicSettings;
+            startWithWindowsCheckBox.Text = SettingsStrings.startWithWindows;
+            keepSystemTrayIconCheckBox.Text = SettingsStrings.keepSystemTrayIcon;
+
+            // Settings - Audio
+            audioSettingsGroupBox.Text = SettingsStrings.audioSettings;
+            switchCommunicationDeviceCheckBox.Text = SettingsStrings.communicationsDevice;
+            notificationLabel.Text = SettingsStrings.notification;
+            tooltipOnHoverLabel.Text = SettingsStrings.tooltipOnHover;
+            cycleThroughLabel.Text = SettingsStrings.cycleThrough;
+
+            // Settings - Update
+            updateSettingsGroupBox.Text = SettingsStrings.updateSettings;
+            updateSilentRadioButton.Text = SettingsStrings.updateInstallAutomatically;
+            updateNotifyRadioButton.Text = SettingsStrings.updateNotify;
+            updateNeverRadioButton.Text = SettingsStrings.updateNever;
+            includeBetaVersionsCheckBox.Text = SettingsStrings.updateIncludeBetaVersions;
+
+            // Settings - Language
+            languageGroupBox.Text = SettingsStrings.language;
+
+            // Misc
+            hotkeysLabel.Text = SettingsStrings.hotkeys;
+            closeButton.Text = SettingsStrings.close;
         }
 
         private void SelectSoundFileDialogOnFileOk(object sender, CancelEventArgs cancelEventArgs)
@@ -169,16 +206,16 @@ namespace SoundSwitch.UI.Forms
 
             if (key == Keys.None)
             {
-                hotkeyTextBox.Text = $"{displayString}";
-                hotkeyTextBox.ForeColor = Color.Crimson;
+                hotkeysTextBox.Text = $"{displayString}";
+                hotkeysTextBox.ForeColor = Color.Crimson;
             }
             else
             {
-                hotkeyTextBox.Text = $"{displayString}{key}";
-                var tuple = (Tuple<AudioDeviceType, HotKeys>)hotkeyTextBox.Tag;
+                hotkeysTextBox.Text = $"{displayString}{key}";
+                var tuple = (Tuple<AudioDeviceType, HotKeys>)hotkeysTextBox.Tag;
                 var newTuple = new Tuple<AudioDeviceType, HotKeys>(tuple.Item1, new HotKeys(e.KeyCode, modifierKeys));
-                hotkeyTextBox.Tag = newTuple;
-                hotkeyTextBox.ForeColor = AppModel.Instance.SetHotkeyCombination(newTuple.Item2,
+                hotkeysTextBox.Tag = newTuple;
+                hotkeysTextBox.ForeColor = AppModel.Instance.SetHotkeyCombination(newTuple.Item2,
                     newTuple.Item1)
                     ? Color.Green
                     : Color.Red;
@@ -194,21 +231,19 @@ namespace SoundSwitch.UI.Forms
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
             var tabControlSender = (TabControl)sender;
-            if (tabControlSender.SelectedTab == playbackPage)
+            if (tabControlSender.SelectedTab == playbackTabPage)
             {
                 SetHotkeysFieldsVisibility(true);
-                hotkeyTextBox.Text = AppConfigs.Configuration.PlaybackHotKeys.Display();
-                hotkeyTextBox.Tag = new Tuple<AudioDeviceType, HotKeys>(AudioDeviceType.Playback,
-                    AppConfigs.Configuration.PlaybackHotKeys);
-                hotkeysCheckbox.Checked = AppConfigs.Configuration.PlaybackHotKeys.Enabled;
+                hotkeysTextBox.Text = AppConfigs.Configuration.PlaybackHotKeys.Display();
+                hotkeysTextBox.Tag = new Tuple<AudioDeviceType, HotKeys>(AudioDeviceType.Playback, AppConfigs.Configuration.PlaybackHotKeys);
+                hotkeysCheckBox.Checked = AppConfigs.Configuration.PlaybackHotKeys.Enabled;
             }
-            else if (tabControlSender.SelectedTab == recordingPage)
+            else if (tabControlSender.SelectedTab == recordingTabPage)
             {
                 SetHotkeysFieldsVisibility(true);
-                hotkeyTextBox.Text = AppConfigs.Configuration.RecordingHotKeys.Display();
-                hotkeyTextBox.Tag = new Tuple<AudioDeviceType, HotKeys>(AudioDeviceType.Recording,
-                    AppConfigs.Configuration.RecordingHotKeys);
-                hotkeysCheckbox.Checked = AppConfigs.Configuration.RecordingHotKeys.Enabled;
+                hotkeysTextBox.Text = AppConfigs.Configuration.RecordingHotKeys.Display();
+                hotkeysTextBox.Tag = new Tuple<AudioDeviceType, HotKeys>(AudioDeviceType.Recording, AppConfigs.Configuration.RecordingHotKeys);
+                hotkeysCheckBox.Checked = AppConfigs.Configuration.RecordingHotKeys.Enabled;
             }
             else if (tabControlSender.SelectedTab == appSettingTabPage)
             {
@@ -218,8 +253,8 @@ namespace SoundSwitch.UI.Forms
 
         private void SetHotkeysFieldsVisibility(bool visibility)
         {
-            hotkeysCheckbox.Visible = visibility;
-            hotkeyTextBox.Visible = visibility;
+            hotkeysCheckBox.Visible = visibility;
+            hotkeysTextBox.Visible = visibility;
             hotkeysLabel.Visible = visibility;
         }
 
@@ -281,6 +316,18 @@ namespace SoundSwitch.UI.Forms
             DeviceCyclerManager.CurrentCycler = cycler;
         }
 
+        private void languageComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!_loaded)
+                return;
+            var comboBox = (ComboBox)sender;
+
+            if (comboBox == null)
+                return;
+
+            AppModel.Instance.Language = (Language)languageComboBox.SelectedIndex;
+        }
+
         private void selectSoundButton_Click(object sender, EventArgs e)
         {
             var result = selectSoundFileDialog.ShowDialog(this);
@@ -292,9 +339,9 @@ namespace SoundSwitch.UI.Forms
 
         private void hotkeysCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            var tuple = (Tuple<AudioDeviceType, HotKeys>)hotkeyTextBox.Tag;
+            var tuple = (Tuple<AudioDeviceType, HotKeys>)hotkeysTextBox.Tag;
             var currentState = tuple.Item2.Enabled;
-            hotkeyTextBox.Enabled = tuple.Item2.Enabled = hotkeysCheckbox.Checked;
+            hotkeysTextBox.Enabled = tuple.Item2.Enabled = hotkeysCheckBox.Checked;
             if (currentState != tuple.Item2.Enabled)
                 AppModel.Instance.SetHotkeyCombination(tuple.Item2, tuple.Item1);
         }
@@ -303,7 +350,7 @@ namespace SoundSwitch.UI.Forms
 
         private void RunAtStartup_CheckedChanged(object sender, EventArgs e)
         {
-            var ras = RunAtStartup.Checked;
+            var ras = startWithWindowsCheckBox.Checked;
             try
             {
                 AppModel.Instance.RunAtStartup = ras;
@@ -311,13 +358,13 @@ namespace SoundSwitch.UI.Forms
             catch (Exception ex)
             {
                 MessageBox.Show(@"Error changing run at startup setting: " + ex.Message);
-                RunAtStartup.Checked = AppModel.Instance.RunAtStartup;
+                startWithWindowsCheckBox.Checked = AppModel.Instance.RunAtStartup;
             }
         }
 
         private void communicationCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            var comm = communicationCheckbox.Checked;
+            var comm = switchCommunicationDeviceCheckBox.Checked;
             try
             {
                 AppModel.Instance.SetCommunications = comm;
@@ -325,13 +372,13 @@ namespace SoundSwitch.UI.Forms
             catch (Exception ex)
             {
                 MessageBox.Show(@"Error changing run at startup setting: " + ex.Message);
-                communicationCheckbox.Checked = AppModel.Instance.SetCommunications;
+                switchCommunicationDeviceCheckBox.Checked = AppModel.Instance.SetCommunications;
             }
         }
 
         private void betaVersionCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            AppModel.Instance.IncludeBetaVersions = includeBetaVersionsCheckbox.Checked;
+            AppModel.Instance.IncludeBetaVersions = includeBetaVersionsCheckBox.Checked;
         }
 
         #endregion
@@ -371,7 +418,7 @@ namespace SoundSwitch.UI.Forms
         }
 
         /// <summary>
-        ///     Using the information of the AudioDeviceWrapper, generate a ListViewItem
+        /// Using the information of the AudioDeviceWrapper, generate a ListViewItem
         /// </summary>
         /// <param name="device"></param>
         /// <param name="selected"></param>
@@ -400,7 +447,7 @@ namespace SoundSwitch.UI.Forms
         }
 
         /// <summary>
-        ///     Using the DeviceClassIconPath, get the Icon
+        /// Using the DeviceClassIconPath, get the Icon
         /// </summary>
         /// <param name="device"></param>
         /// <param name="listView"></param>
@@ -438,7 +485,7 @@ namespace SoundSwitch.UI.Forms
         #region Groups
 
         /// <summary>
-        ///     Get the ListViewItem group in which the device belongs.
+        /// Get the ListViewItem group in which the device belongs.
         /// </summary>
         /// <param name="deviceState"></param>
         /// <param name="listView"></param>
@@ -456,8 +503,8 @@ namespace SoundSwitch.UI.Forms
 
         private void PopulateDeviceTypeGroups(ListView listView)
         {
-            listView.Groups.Add(new ListViewGroup(DeviceState.Active.ToString(), SettingsString.connected));
-            listView.Groups.Add(new ListViewGroup(DeviceState.NotPresent.ToString(), SettingsString.disconnected));
+            listView.Groups.Add(new ListViewGroup(DeviceState.Active.ToString(), SettingsStrings.connected));
+            listView.Groups.Add(new ListViewGroup(DeviceState.NotPresent.ToString(), SettingsStrings.disconnected));
         }
 
         #endregion
@@ -466,7 +513,7 @@ namespace SoundSwitch.UI.Forms
 
         private void checkboxSystrayIcon_CheckedChanged(object sender, EventArgs e)
         {
-            AppConfigs.Configuration.KeepSystrayIcon = checkboxSystrayIcon.Checked;
+            AppConfigs.Configuration.KeepSystrayIcon = keepSystemTrayIconCheckBox.Checked;
             AppConfigs.Configuration.Save();
             AppModel.Instance.TrayIcon.UpdateIcon();
         }
