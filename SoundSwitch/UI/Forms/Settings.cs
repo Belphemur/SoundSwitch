@@ -116,7 +116,7 @@ namespace SoundSwitch.UI.Forms
             }
 
             var includeBetaVersionsToolTip = new ToolTip();
-            includeBetaVersionsToolTip.SetToolTip(includeBetaVersionsCheckBox, SettingsStrings.updateIncludeBetaVersionsTooltip);
+            includeBetaVersionsToolTip.SetToolTip(includeBetaVersionsCheckBox, string.Format(SettingsStrings.updateIncludeBetaVersionsTooltip, Application.ProductName));
 
             // Settings - Language
             languageComboBox.SelectedIndex = (int)AppConfigs.Configuration.Language;
@@ -206,19 +206,16 @@ namespace SoundSwitch.UI.Forms
 
             if (key == Keys.None)
             {
-                hotkeysTextBox.Text = $"{displayString}";
+                hotkeysTextBox.Text = displayString;
                 hotkeysTextBox.ForeColor = Color.Crimson;
             }
             else
             {
-                hotkeysTextBox.Text = $"{displayString}{key}";
+                hotkeysTextBox.Text = displayString + key;
                 var tuple = (Tuple<AudioDeviceType, HotKeys>)hotkeysTextBox.Tag;
                 var newTuple = new Tuple<AudioDeviceType, HotKeys>(tuple.Item1, new HotKeys(e.KeyCode, modifierKeys));
                 hotkeysTextBox.Tag = newTuple;
-                hotkeysTextBox.ForeColor = AppModel.Instance.SetHotkeyCombination(newTuple.Item2,
-                    newTuple.Item1)
-                    ? Color.Green
-                    : Color.Red;
+                hotkeysTextBox.ForeColor = AppModel.Instance.SetHotkeyCombination(newTuple.Item2, newTuple.Item1) ? Color.Green : Color.Red;
             }
             e.Handled = true;
         }
@@ -289,7 +286,6 @@ namespace SoundSwitch.UI.Forms
             AppModel.Instance.NotificationSettings = (NotificationTypeEnum)value;
         }
 
-
         private void tooltipInfoComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
             if (!_loaded)
@@ -326,6 +322,13 @@ namespace SoundSwitch.UI.Forms
                 return;
 
             AppModel.Instance.Language = (Language)languageComboBox.SelectedIndex;
+
+            if (MessageBox.Show(string.Format(SettingsStrings.languageRestartRequired, Application.ProductName),
+                                SettingsStrings.languageRestartRequiredCaption,
+                                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                Program.RestartApp();
+            }
         }
 
         private void selectSoundButton_Click(object sender, EventArgs e)

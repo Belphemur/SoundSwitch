@@ -73,7 +73,7 @@ namespace SoundSwitch
                             }
                             catch (RemotingException e)
                             {
-                                AppLogger.Log.Error("Can't stop the other app ", e);
+                                AppLogger.Log.Error("Unable to stop another running application ", e);
                                 Application.Exit();
                                 return;
                             }
@@ -148,18 +148,19 @@ namespace SoundSwitch
                 }
 #if !DEBUG
                 }
-
                 catch (Exception ex)
                 {
                     HandleException(ex);
-
                 }
 #endif
             }
             WindowsAPIAdapter.Stop();
         }
 
-        private static void RestartApp()
+        /// <summary>
+        /// Restarts the application itself.
+        /// </summary>
+        public static void RestartApp()
         {
             var info = new ProcessStartInfo
             {

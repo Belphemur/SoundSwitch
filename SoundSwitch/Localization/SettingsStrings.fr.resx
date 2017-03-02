@@ -128,7 +128,7 @@
 		<value>Notification</value>
 	</data>
 	<data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
-		<value>Si la case est cochée, SoundSwitch téléchargera les versions beta du program.</value>
+		<value>Si la case est cochée, {0} téléchargera les versions beta du program.</value>
 	</data>
 	<data name="audioFiles" xml:space="preserve">
 		<value>Fichiers Audio</value>
@@ -178,7 +178,7 @@
 	<data name="audioFileNotFound" xml:space="preserve">
 		<value>Le fichier audio que vous avez sélectionné pour être joué comme notification est introuvable. {0} a changé ses paramétre de notification pour {1}.</value>
 	</data>
-	<data name="audioFileNotFoundTitle" xml:space="preserve">
+	<data name="audioFileNotFoundCaption" xml:space="preserve">
 		<value>Fichier audio introuvable</value>
 	</data>
 	<data name="activeRecording" xml:space="preserve">

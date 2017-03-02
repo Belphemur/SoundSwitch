@@ -90,9 +90,9 @@ namespace SoundSwitch.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Audio file not found.
         /// </summary>
-        internal static string audioFileNotFoundTitle {
+        internal static string audioFileNotFoundCaption {
             get {
-                return ResourceManager.GetString("audioFileNotFoundTitle", resourceCulture);
+                return ResourceManager.GetString("audioFileNotFoundCaption", resourceCulture);
             }
         }
         
@@ -259,6 +259,25 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The language will change after restarting {0}.
+        ///Do you want to restart now?.
+        /// </summary>
+        internal static string languageRestartRequired {
+            get {
+                return ResourceManager.GetString("languageRestartRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Need a restart.
+        /// </summary>
+        internal static string languageRestartRequiredCaption {
+            get {
+                return ResourceManager.GetString("languageRestartRequiredCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notification.
         /// </summary>
         internal static string notification {
@@ -304,7 +323,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Windows Default Notification.
+        ///   Looks up a localized string similar to Windows Notification.
         /// </summary>
         internal static string notificationOptionWindowsDefault {
             get {
@@ -313,7 +332,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Windows Default Notification: The default windows tray pop-up.
+        ///   Looks up a localized string similar to Windows Notification: The default windows tray pop-up.
         ///Sound Notification: Plays a sound on the switched Playback Device.
         ///Customized Sound Notification: Plays the specified sound on the switched Playback Device.
         ///Toast Notification: Uses a special form of the windows tray pop-up version..
@@ -433,7 +452,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to When checked, SoundSwitch will also check for pre-release version on GitHub..
+        ///   Looks up a localized string similar to When checked, {0} will also check for pre-release versions on GitHub..
         /// </summary>
         internal static string updateIncludeBetaVersionsTooltip {
             get {

@@ -160,7 +160,7 @@
     <value>Include Beta versions</value>
   </data>
 	<data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
-    <value>When checked, SoundSwitch will also check for pre-release version on GitHub.</value>
+    <value>When checked, {0} will also check for pre-release versions on GitHub.</value>
   </data>
 	<data name="audioFiles" xml:space="preserve">
     <value>Audio Files</value>
@@ -249,7 +249,7 @@ Toast Notification: Uses a special form of the windows tray pop-up version.</val
 	<data name="audioFileNotFound" xml:space="preserve">
     <value>The audio file you selected to be used as notification can't be found. {0} switched the notification setting back to {1}.</value>
   </data>
-	<data name="audioFileNotFoundTitle" xml:space="preserve">
+	<data name="audioFileNotFoundCaption" xml:space="preserve">
     <value>Audio file not found</value>
   </data>
 	<data name="activeRecording" xml:space="preserve">
@@ -260,5 +260,12 @@ Toast Notification: Uses a special form of the windows tray pop-up version.</val
   </data>
 	<data name="language" xml:space="preserve">
 		<value>Language</value>
+	</data>
+	<data name="languageRestartRequired" xml:space="preserve">
+		<value>The language will change after restarting {0}.
+Do you want to restart now?</value>
+	</data>
+	<data name="languageRestartRequiredCaption" xml:space="preserve">
+		<value>Need a restart</value>
 	</data>
 </root>

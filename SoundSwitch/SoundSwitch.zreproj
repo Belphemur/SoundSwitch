@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <project>
   <configuration createBackupFiles="False" hideEmptyRows="False" hideTranslatedRows="False" useSpellChecker="True" resXIndentChar="	" neutralLanguageCode="en-us" languagesToDisplay="">
-    <globalSetting name="projectMruItems">&lt;?xml version='1.0' encoding='utf-8'?&gt;&lt;items&gt;&lt;item type="2" checksum="3593582194" /&gt;&lt;item type="2" checksum="2984873266" /&gt;&lt;item type="2" checksum="1403806966" /&gt;&lt;item type="2" checksum="3191052202" /&gt;&lt;/items&gt;</globalSetting>
+    <globalSetting name="projectMruItems">&lt;?xml version='1.0' encoding='utf-8'?&gt;&lt;items&gt;&lt;item type="2" checksum="2984873266" /&gt;&lt;/items&gt;</globalSetting>
     <globalSetting name="Filter-ResourceEditorGrid">&lt;XtraSerializer version="1.0" application="View"&gt;
   &lt;property name="#LayoutVersion" /&gt;
   &lt;property name="ActiveFilterString" /&gt;
@@ -35,30 +35,30 @@
   </configuration>
   <fileGroups>
     <fileGroup name="" projectFolderUniqueID="00000000-0000-0000-0000-000000000000" orderPosition="13" ignoreDuringExportAndImport="False" uniqueID="d90a8180-b0b6-4fe9-bf77-b90cfe012700">
-      <file filePath="Localization\AboutStrings.resx" uniqueID="9fb031d9-9f45-478a-b459-2a01a96d7c8b" />
-      <file filePath="Localization\AboutStrings.de.resx" uniqueID="27d2cb2b-963e-41ed-b74f-36433f4aae4c" />
-      <file filePath="Localization\AboutStrings.fr.resx" uniqueID="52d892bd-7769-4091-a6a8-ed3c64452775" />
+      <file filePath="Localization\AboutStrings.resx" />
+      <file filePath="Localization\AboutStrings.de.resx" />
+      <file filePath="Localization\AboutStrings.fr.resx" />
       <remarks>
       </remarks>
     </fileGroup>
     <fileGroup name="" projectFolderUniqueID="00000000-0000-0000-0000-000000000000" orderPosition="15" ignoreDuringExportAndImport="False" uniqueID="55ead1d4-e9b8-4459-b234-b86cc5854a58">
-      <file filePath="Localization\SettingsStrings.resx" uniqueID="ecc421b6-8f82-496e-9849-50e1279b5909" />
-      <file filePath="Localization\SettingsStrings.de.resx" uniqueID="6385f489-aa52-410c-afc7-8d4daf10bff8" />
-      <file filePath="Localization\SettingsStrings.fr.resx" uniqueID="b32a288d-dcd7-404c-b396-a666397c55af" />
+      <file filePath="Localization\SettingsStrings.resx" />
+      <file filePath="Localization\SettingsStrings.de.resx" />
+      <file filePath="Localization\SettingsStrings.fr.resx" />
       <remarks>
       </remarks>
     </fileGroup>
     <fileGroup name="" projectFolderUniqueID="00000000-0000-0000-0000-000000000000" orderPosition="16" ignoreDuringExportAndImport="False" uniqueID="3ced32d7-4350-4580-ade4-974d79a11c34">
-      <file filePath="Localization\TrayIconStrings.resx" uniqueID="b2765ac2-717d-4186-a1a4-5d21c0e69b8f" />
-      <file filePath="Localization\TrayIconStrings.de.resx" uniqueID="c63a57fd-0ab1-496c-8de8-48139ed13d1f" />
-      <file filePath="Localization\TrayIconStrings.fr.resx" uniqueID="c4a85cc5-8022-4294-a8ed-300db0560bdb" />
+      <file filePath="Localization\TrayIconStrings.resx" />
+      <file filePath="Localization\TrayIconStrings.de.resx" />
+      <file filePath="Localization\TrayIconStrings.fr.resx" />
       <remarks>
       </remarks>
     </fileGroup>
     <fileGroup name="" projectFolderUniqueID="00000000-0000-0000-0000-000000000000" orderPosition="17" ignoreDuringExportAndImport="False" uniqueID="2e3b36f8-c04b-4774-9e23-e0dd3cc91381">
-      <file filePath="Localization\UpdateDownloadStrings.resx" uniqueID="fee35bcf-b8df-4750-a30a-87d736741f67" />
-      <file filePath="Localization\UpdateDownloadStrings.de.resx" uniqueID="2fe4063f-f833-4cc9-90b0-55601d63257c" />
-      <file filePath="Localization\UpdateDownloadStrings.fr.resx" uniqueID="3eb30a89-eac4-44f9-80b9-abb52139baad" />
+      <file filePath="Localization\UpdateDownloadStrings.resx" />
+      <file filePath="Localization\UpdateDownloadStrings.de.resx" />
+      <file filePath="Localization\UpdateDownloadStrings.fr.resx" />
       <remarks>
       </remarks>
     </fileGroup>

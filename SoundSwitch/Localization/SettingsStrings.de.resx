@@ -157,7 +157,7 @@
 		<value>Inklusive Beta Versionen</value>
 	</data>
 	<data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
-		<value>Falls aktiv, wird SoundSwitch auch nach Pre-Release Versionen auf GitHub suchen.</value>
+		<value>Falls aktiv, wird {0} auch nach Pre-Release Versionen auf GitHub suchen.</value>
 	</data>
 	<data name="audioFiles" xml:space="preserve">
 		<value>Audiodateien</value>
@@ -213,7 +213,7 @@
 	<data name="tooltipOnHoverOptionNone" xml:space="preserve">
 		<value>Kein Tooltip</value>
 	</data>
-	<data name="audioFileNotFoundTitle" xml:space="preserve">
+	<data name="audioFileNotFoundCaption" xml:space="preserve">
 		<value>Audiodatei nicht gefunden</value>
 	</data>
 	<data name="language" xml:space="preserve">
@@ -260,5 +260,12 @@
 Akustische Benachrichtigung: Spielt einen Sound auf dem Wiedergabegerät ab.
 Angepasste akustische Benachrichtigung: Spielt einen selbst definierten Sound ab.
 Popup Benachrichtigung: Spezielle Form eines Windows Pop-ups.</value>
+	</data>
+	<data name="languageRestartRequired" xml:space="preserve">
+		<value>Die Sprache wird beim Neustart von {0} übernommen.
+Möchten Sie jetzt neustarten?</value>
+	</data>
+	<data name="languageRestartRequiredCaption" xml:space="preserve">
+		<value>Neustart notwendig</value>
 	</data>
 </root>

@@ -369,7 +369,9 @@
       <LastGenOutput>AboutStrings.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Localization\SettingsStrings.de.resx" />
+    <EmbeddedResource Include="Localization\SettingsStrings.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Localization\TrayIconStrings.de.resx" />
     <EmbeddedResource Include="Localization\UpdateDownloadStrings.de.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
