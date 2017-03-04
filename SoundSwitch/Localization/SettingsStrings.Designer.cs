@@ -488,11 +488,29 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Don&apos;t update the program unless you do it manually..
+        /// </summary>
+        internal static string updateNeverTooltip {
+            get {
+                return ResourceManager.GetString("updateNeverTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notify me when updates are available.
         /// </summary>
         internal static string updateNotify {
             get {
                 return ResourceManager.GetString("updateNotify", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SoundSwitch will notify you when there is a new update available. When clicking on the notification, you&apos;ll get a popup downloading the update for you and asking if you want to install it..
+        /// </summary>
+        internal static string updateNotifyTooltip {
+            get {
+                return ResourceManager.GetString("updateNotifyTooltip", resourceCulture);
             }
         }
         

@@ -159,6 +159,13 @@ namespace SoundSwitch.UI.Forms
             updateNeverRadioButton.Text = SettingsStrings.updateNever;
             includeBetaVersionsCheckBox.Text = SettingsStrings.updateIncludeBetaVersions;
 
+            var updateSilentToolTip = new ToolTip();
+            updateSilentToolTip.SetToolTip(updateSilentRadioButton, SettingsStrings.updateInstallAutomaticallyTooltip);
+            var updateNotifyToolTip = new ToolTip();
+            updateNotifyToolTip.SetToolTip(updateNotifyRadioButton, SettingsStrings.updateNotifyTooltip);
+            var updateNeverToolTip = new ToolTip();
+            updateNeverToolTip.SetToolTip(updateNeverRadioButton, SettingsStrings.updateNeverTooltip);
+
             // Settings - Language
             languageGroupBox.Text = SettingsStrings.language;
 

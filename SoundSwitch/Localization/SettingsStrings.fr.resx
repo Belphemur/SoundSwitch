@@ -247,4 +247,10 @@ Notif. Toast: Popup sur le coté de l'écran dans Windows 10.</value>
 	<data name="updateNotify" xml:space="preserve">
 		<value>Notification de MàJ</value>
 	</data>
+	<data name="updateNeverTooltip" xml:space="preserve">
+		<value>Ne pas mettre à jour le programme. Vous devez télécharger manuelleme les nouvelles versions.</value>
+	</data>
+	<data name="updateNotifyTooltip" xml:space="preserve">
+		<value>SoundSwitch vous préviendra quand une MàJ est disponible. Il téléchargera pour vous la MàJ et vous demandera si vous voulez l'installer.</value>
+	</data>
 </root>

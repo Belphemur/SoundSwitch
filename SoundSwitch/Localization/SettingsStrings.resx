@@ -268,4 +268,10 @@ Do you want to restart now?</value>
 	<data name="languageRestartRequiredCaption" xml:space="preserve">
 		<value>Need a restart</value>
 	</data>
+	<data name="updateNeverTooltip" xml:space="preserve">
+		<value>Don't update the program unless you do it manually.</value>
+	</data>
+	<data name="updateNotifyTooltip" xml:space="preserve">
+		<value>SoundSwitch will notify you when there is a new update available. When clicking on the notification, you'll get a popup downloading the update for you and asking if you want to install it.</value>
+	</data>
 </root>
