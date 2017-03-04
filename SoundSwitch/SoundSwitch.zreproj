@@ -35,30 +35,30 @@
   </configuration>
   <fileGroups>
     <fileGroup name="" projectFolderUniqueID="00000000-0000-0000-0000-000000000000" orderPosition="13" ignoreDuringExportAndImport="False" uniqueID="d90a8180-b0b6-4fe9-bf77-b90cfe012700">
-      <file filePath="Localization\AboutStrings.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.resx" uniqueID="feec5d9e-f7a5-4c16-9d09-1079a1148f3d" />
-      <file filePath="Localization\AboutStrings.de.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.de.resx" uniqueID="86dc3cde-d26e-407c-823f-edc8930c3531" />
-      <file filePath="Localization\AboutStrings.fr.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.fr.resx" uniqueID="cc5c9fb6-d521-4482-bf87-8ed8529fd658" />
+      <file filePath="Localization\AboutStrings.resx" />
+      <file filePath="Localization\AboutStrings.de.resx" />
+      <file filePath="Localization\AboutStrings.fr.resx" />
       <remarks>
       </remarks>
     </fileGroup>
     <fileGroup name="" projectFolderUniqueID="00000000-0000-0000-0000-000000000000" orderPosition="15" ignoreDuringExportAndImport="False" uniqueID="55ead1d4-e9b8-4459-b234-b86cc5854a58">
-      <file filePath="Localization\SettingsStrings.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.resx" uniqueID="a3d5d941-3bc5-4382-b3a1-a86f0a0e3d27" />
-      <file filePath="Localization\SettingsStrings.de.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.de.resx" uniqueID="08f115bd-06c3-429d-a689-04dccd1f24fb" />
-      <file filePath="Localization\SettingsStrings.fr.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.fr.resx" uniqueID="e9169bfa-54f5-4573-b482-ad4fd335c464" />
+      <file filePath="Localization\SettingsStrings.resx" />
+      <file filePath="Localization\SettingsStrings.de.resx" />
+      <file filePath="Localization\SettingsStrings.fr.resx" />
       <remarks>
       </remarks>
     </fileGroup>
     <fileGroup name="" projectFolderUniqueID="00000000-0000-0000-0000-000000000000" orderPosition="16" ignoreDuringExportAndImport="False" uniqueID="3ced32d7-4350-4580-ade4-974d79a11c34">
-      <file filePath="Localization\TrayIconStrings.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.resx" uniqueID="690f41eb-2cc9-4cff-ad37-d9d4d54ccf05" />
-      <file filePath="Localization\TrayIconStrings.de.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.de.resx" uniqueID="5547884f-5228-4fd0-86c8-97dbfb794101" />
-      <file filePath="Localization\TrayIconStrings.fr.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.fr.resx" uniqueID="03d1ce3f-f97d-4fd3-acda-1a81b0bf38e4" />
+      <file filePath="Localization\TrayIconStrings.resx" />
+      <file filePath="Localization\TrayIconStrings.de.resx" />
+      <file filePath="Localization\TrayIconStrings.fr.resx" />
       <remarks>
       </remarks>
     </fileGroup>
     <fileGroup name="" projectFolderUniqueID="00000000-0000-0000-0000-000000000000" orderPosition="17" ignoreDuringExportAndImport="False" uniqueID="2e3b36f8-c04b-4774-9e23-e0dd3cc91381">
-      <file filePath="Localization\UpdateDownloadStrings.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.resx" uniqueID="9d472da1-7e4f-48bc-b091-b46471a81cf3" />
-      <file filePath="Localization\UpdateDownloadStrings.de.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.de.resx" uniqueID="2ad93fa2-2d77-4c04-92d0-9ae32885d4b7" />
-      <file filePath="Localization\UpdateDownloadStrings.fr.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.fr.resx" uniqueID="41c7e51b-bccd-445b-af08-e702ad1e8792" />
+      <file filePath="Localization\UpdateDownloadStrings.resx" />
+      <file filePath="Localization\UpdateDownloadStrings.de.resx" />
+      <file filePath="Localization\UpdateDownloadStrings.fr.resx" />
       <remarks>
       </remarks>
     </fileGroup>
