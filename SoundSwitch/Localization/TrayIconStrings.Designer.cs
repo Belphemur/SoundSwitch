@@ -79,7 +79,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}: Configuration needed.
+        ///   Looks up a localized string similar to SoundSwitch: Configuration needed.
         /// </summary>
         internal static string configurationNeeded {
             get {
@@ -160,7 +160,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}: Playback device switched to.
+        ///   Looks up a localized string similar to SoundSwitch: Playback device switched to.
         /// </summary>
         internal static string playbackChanged {
             get {
@@ -178,7 +178,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}: Recording device switched to.
+        ///   Looks up a localized string similar to SoundSwitch: Recording device switched to.
         /// </summary>
         internal static string recordingChanged {
             get {
@@ -205,7 +205,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Update for {0} ({1}) is available..
+        ///   Looks up a localized string similar to Update for SoundSwitch ({1}) is available..
         /// </summary>
         internal static string versionAvailable {
             get {

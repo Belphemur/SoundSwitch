@@ -79,7 +79,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The audio file you selected to be used as notification can&apos;t be found. {0} switched the notification setting back to {1}..
+        ///   Looks up a localized string similar to The audio file you selected to be used as notification can&apos;t be found. SoundSwitch switched the notification setting back to {1}..
         /// </summary>
         internal static string audioFileNotFound {
             get {
@@ -259,7 +259,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The language will change after restarting {0}.
+        ///   Looks up a localized string similar to The language will change after restarting SoundSwitch.
         ///Do you want to restart now?.
         /// </summary>
         internal static string languageRestartRequired {
@@ -452,7 +452,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to When checked, {0} will also check for pre-release versions on GitHub..
+        ///   Looks up a localized string similar to When checked, SoundSwitch will also check for pre-release versions on GitHub..
         /// </summary>
         internal static string updateIncludeBetaVersionsTooltip {
             get {

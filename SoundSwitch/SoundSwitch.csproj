@@ -372,7 +372,9 @@
     <EmbeddedResource Include="Localization\SettingsStrings.de.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Localization\TrayIconStrings.de.resx" />
+    <EmbeddedResource Include="Localization\TrayIconStrings.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Localization\UpdateDownloadStrings.de.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -384,13 +386,17 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Localization\SettingsStrings.fr.resx" />
+    <EmbeddedResource Include="Localization\SettingsStrings.fr.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Localization\SettingsStrings.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>SettingsStrings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Localization\TrayIconStrings.fr.resx" />
+    <EmbeddedResource Include="Localization\TrayIconStrings.fr.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Localization\TrayIconStrings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>TrayIconStrings.Designer.cs</LastGenOutput>

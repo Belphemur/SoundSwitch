@@ -142,19 +142,19 @@
     <value>Update Available ({0})</value>
   </data>
 	<data name="versionAvailable" xml:space="preserve">
-    <value>Update for {0} ({1}) is available.</value>
+    <value>Update for SoundSwitch ({1}) is available.</value>
   </data>
 	<data name="clickToUpdate" xml:space="preserve">
     <value>Click here to update.</value>
   </data>
 	<data name="playbackChanged" xml:space="preserve">
-    <value>{0}: Playback device switched to</value>
+    <value>SoundSwitch: Playback device switched to</value>
   </data>
 	<data name="recordingChanged" xml:space="preserve">
-    <value>{0}: Recording device switched to</value>
+    <value>SoundSwitch: Recording device switched to</value>
   </data>
 	<data name="configurationNeeded" xml:space="preserve">
-    <value>{0}: Configuration needed</value>
+    <value>SoundSwitch: Configuration needed</value>
   </data>
 	<data name="configurationNeededExplanation" xml:space="preserve">
     <value>No devices available to switch to. Open configuration by right-clicking on the icon.</value>

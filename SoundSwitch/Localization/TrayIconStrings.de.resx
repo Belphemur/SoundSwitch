@@ -142,19 +142,19 @@
 		<value>Update verfügbar ({0})</value>
 	</data>
 	<data name="versionAvailable" xml:space="preserve">
-		<value>Update auf {0} ({1}) ist verfügbar.</value>
+		<value>Update auf SoundSwitch ({1}) ist verfügbar.</value>
 	</data>
 	<data name="clickToUpdate" xml:space="preserve">
 		<value>Hier klicken um zu updaten.</value>
 	</data>
 	<data name="playbackChanged" xml:space="preserve">
-		<value>{0}: Wiedergabegerät gewechselt zu</value>
+		<value>SoundSwitch: Wiedergabegerät gewechselt zu</value>
 	</data>
 	<data name="recordingChanged" xml:space="preserve">
-		<value>{0}: Aufnahmegerät gewechselt zu</value>
+		<value>SoundSwitch: Aufnahmegerät gewechselt zu</value>
 	</data>
 	<data name="configurationNeeded" xml:space="preserve">
-		<value>{0}: Konfiguration benötigt</value>
+		<value>SoundSwitch: Konfiguration benötigt</value>
 	</data>
 	<data name="configurationNeededExplanation" xml:space="preserve">
 		<value>Keine Geräte vorhanden um zu wechseln. Öffne die Einstellungen mit einem rechts-klick auf das Icon in der Statusleiste.</value>

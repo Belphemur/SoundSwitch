@@ -74,7 +74,7 @@ namespace SoundSwitch.Framework.NotificationManager
                     return;
                 }
 
-                MessageBox.Show(string.Format(SettingsStrings.audioFileNotFound, Application.ProductName, SettingsStrings.notificationOptionSound),
+                MessageBox.Show(string.Format(SettingsStrings.audioFileNotFound, SettingsStrings.notificationOptionSound),
                                 SettingsStrings.audioFileNotFoundCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 _model.NotificationSettings = NotificationTypeEnum.SoundNotification;
             }
