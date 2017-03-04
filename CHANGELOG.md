@@ -1,5 +1,28 @@
 # Change Log
 
+## [v3.13.0](https://github.com/Belphemur/SoundSwitch/tree/v3.13.0) (2017-03-04)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.12.8...v3.13.0)
+
+**Implemented enhancements:**
+
+- Improve french translation [\#158](https://github.com/Belphemur/SoundSwitch/issues/158)
+- Localization improvements [\#156](https://github.com/Belphemur/SoundSwitch/issues/156)
+- Ability to disable auto update checker [\#102](https://github.com/Belphemur/SoundSwitch/issues/102)
+
+**Fixed bugs:**
+
+- Unable to launch on Windows 7 32bit: Universal C Runtime missing [\#155](https://github.com/Belphemur/SoundSwitch/issues/155)
+- Tray icon doesn't update until switched  [\#154](https://github.com/Belphemur/SoundSwitch/issues/154)
+
+**Closed issues:**
+
+- Resolve AppVeyor problems [\#153](https://github.com/Belphemur/SoundSwitch/issues/153)
+
+**Merged pull requests:**
+
+- Improved the multi-language support, this includes: [\#157](https://github.com/Belphemur/SoundSwitch/pull/157) ([FireEmerald](https://github.com/FireEmerald))
+- Improved the update system to support three different modes [\#152](https://github.com/Belphemur/SoundSwitch/pull/152) ([FireEmerald](https://github.com/FireEmerald))
+
 ## [v3.12.8](https://github.com/Belphemur/SoundSwitch/tree/v3.12.8) (2017-02-15)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.12.7...v3.12.8)
 
