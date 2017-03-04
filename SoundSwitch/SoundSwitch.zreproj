@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='utf-8'?>
+<project>
+  <configuration createBackupFiles="False" hideEmptyRows="False" hideTranslatedRows="False" useSpellChecker="True" resXIndentChar="	" neutralLanguageCode="en-us" languagesToDisplay="">
+    <globalSetting name="projectMruItems">&lt;?xml version='1.0' encoding='utf-8'?&gt;&lt;items&gt;&lt;item type="2" checksum="2984873266" /&gt;&lt;/items&gt;</globalSetting>
+    <globalSetting name="Filter-ResourceEditorGrid">&lt;XtraSerializer version="1.0" application="View"&gt;
+  &lt;property name="#LayoutVersion" /&gt;
+  &lt;property name="ActiveFilterString" /&gt;
+&lt;/XtraSerializer&gt;</globalSetting>
+    <globalSetting name="Sort-ResourceEditorGrid">&lt;XtraSerializer version="1.0" application="View"&gt;
+  &lt;property name="#LayoutVersion" /&gt;
+  &lt;property name="SortInfo"&gt;~Xtra#Base64AAEAAAD/////AQAAAAAAAAAMAgAAAF1EZXZFeHByZXNzLlh0cmFHcmlkLnYxNi4yLCBWZXJzaW9uPTE2LjIuNC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI4OGQxNzU0ZDcwMGU0OWEFAQAAADhEZXZFeHByZXNzLlh0cmFHcmlkLkNvbHVtbnMuR3JpZENvbHVtblNvcnRJbmZvQ29sbGVjdGlvbgQAAAAKZ3JvdXBDb3VudAVjbG9uZQ9jbG9uZUdyb3VwQ291bnQTQ29sbGVjdGlvbkJhc2UrbGlzdAADAAMIsgFTeXN0ZW0uQ29sbGVjdGlvbnMuR2VuZXJpYy5MaXN0YDFbW0RldkV4cHJlc3MuWHRyYUdyaWQuQ29sdW1ucy5HcmlkQ29sdW1uU29ydEluZm8sIERldkV4cHJlc3MuWHRyYUdyaWQudjE2LjIsIFZlcnNpb249MTYuMi40LjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjg4ZDE3NTRkNzAwZTQ5YV1dCBxTeXN0ZW0uQ29sbGVjdGlvbnMuQXJyYXlMaXN0AgAAAAAAAAAJAwAAAAAAAAAJBAAAAAQDAAAAsgFTeXN0ZW0uQ29sbGVjdGlvbnMuR2VuZXJpYy5MaXN0YDFbW0RldkV4cHJlc3MuWHRyYUdyaWQuQ29sdW1ucy5HcmlkQ29sdW1uU29ydEluZm8sIERldkV4cHJlc3MuWHRyYUdyaWQudjE2LjIsIFZlcnNpb249MTYuMi40LjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjg4ZDE3NTRkNzAwZTQ5YV1dAwAAAAZfaXRlbXMFX3NpemUIX3ZlcnNpb24EAAAwRGV2RXhwcmVzcy5YdHJhR3JpZC5Db2x1bW5zLkdyaWRDb2x1bW5Tb3J0SW5mb1tdAgAAAAgICQUAAAAAAAAAAAAAAAQEAAAAHFN5c3RlbS5Db2xsZWN0aW9ucy5BcnJheUxpc3QDAAAABl9pdGVtcwVfc2l6ZQhfdmVyc2lvbgUAAAgICQYAAAABAAAABAAAAAcFAAAAAAEAAAAAAAAABC5EZXZFeHByZXNzLlh0cmFHcmlkLkNvbHVtbnMuR3JpZENvbHVtblNvcnRJbmZvAgAAABAGAAAABAAAAAkHAAAADQMMCAAAABlEZXZFeHByZXNzLlh0cmFHcmlkLnYxNi4yBQcAAAAuRGV2RXhwcmVzcy5YdHJhR3JpZC5Db2x1bW5zLkdyaWRDb2x1bW5Tb3J0SW5mbwIAAAAJU29ydE9yZGVyCkNvbHVtbk5hbWUAAQgIAAAAAQAAAAYJAAAAB2NvbE5hbWUL&lt;/property&gt;
+&lt;/XtraSerializer&gt;</globalSetting>
+    <globalSetting name="ReadOnlyFileOverwriteBehaviour">0</globalSetting>
+    <globalSetting name="OmitEmptyItems">True</globalSetting>
+    <globalSetting name="ShowCommentsColumnInGrid">False</globalSetting>
+    <globalSetting name="IgnoreWindowsFormsResourcesWithDesignerFiles">True</globalSetting>
+    <globalSetting name="HideInternalDesignerRows">True</globalSetting>
+    <globalSetting name="UseShallowGridDataCumulation">True</globalSetting>
+    <globalSetting name="HideFileGroupFilesInTree">True</globalSetting>
+    <globalSetting name="NeutralLanguageFileNamePattern">[basename][optionaldefaulttypes].[extension]</globalSetting>
+    <globalSetting name="NonNeutralLanguageFileNamePattern">[basename][optionaldefaulttypes].[languagecode].[extension]</globalSetting>
+    <globalSetting name="BaseNameDotCount">0</globalSetting>
+    <globalSetting name="DefaultFileTypesToIgnore">.aspx;.ascx;.asmx;.master;.sitemap</globalSetting>
+    <globalSetting name="Project-PersistGridSettings">True</globalSetting>
+    <globalSetting name="ColorifyNullCells">True</globalSetting>
+    <globalSetting name="EnableExcelExportSnapshots">True</globalSetting>
+    <globalSetting name="CreateNewFileForm.prefixTextBox.Text">####</globalSetting>
+    <globalSetting name="CreateNewFileForm.prefixCheckBox.Checked">False</globalSetting>
+    <globalSetting name="CreateNewFileForm.referenceLanguageComboBox.SelectedIndex">0</globalSetting>
+    <globalSetting name="CreateNewFileForm.newLanguageComboBox.SelectedIndex">112</globalSetting>
+    <globalSetting name="CreateNewFileForm.copyTextsCheckBox.Checked">False</globalSetting>
+    <globalSetting name="CreateNewFileForm.automaticallyTranslateCheckBox.Checked">False</globalSetting>
+    <description>
+    </description>
+  </configuration>
+  <fileGroups>
+    <fileGroup name="" projectFolderUniqueID="00000000-0000-0000-0000-000000000000" orderPosition="13" ignoreDuringExportAndImport="False" uniqueID="d90a8180-b0b6-4fe9-bf77-b90cfe012700">
+      <file filePath="Localization\AboutStrings.resx" />
+      <file filePath="Localization\AboutStrings.de.resx" />
+      <file filePath="Localization\AboutStrings.fr.resx" />
+      <remarks>
+      </remarks>
+    </fileGroup>
+    <fileGroup name="" projectFolderUniqueID="00000000-0000-0000-0000-000000000000" orderPosition="15" ignoreDuringExportAndImport="False" uniqueID="55ead1d4-e9b8-4459-b234-b86cc5854a58">
+      <file filePath="Localization\SettingsStrings.resx" />
+      <file filePath="Localization\SettingsStrings.de.resx" />
+      <file filePath="Localization\SettingsStrings.fr.resx" />
+      <remarks>
+      </remarks>
+    </fileGroup>
+    <fileGroup name="" projectFolderUniqueID="00000000-0000-0000-0000-000000000000" orderPosition="16" ignoreDuringExportAndImport="False" uniqueID="3ced32d7-4350-4580-ade4-974d79a11c34">
+      <file filePath="Localization\TrayIconStrings.resx" />
+      <file filePath="Localization\TrayIconStrings.de.resx" />
+      <file filePath="Localization\TrayIconStrings.fr.resx" />
+      <remarks>
+      </remarks>
+    </fileGroup>
+    <fileGroup name="" projectFolderUniqueID="00000000-0000-0000-0000-000000000000" orderPosition="17" ignoreDuringExportAndImport="False" uniqueID="2e3b36f8-c04b-4774-9e23-e0dd3cc91381">
+      <file filePath="Localization\UpdateDownloadStrings.resx" />
+      <file filePath="Localization\UpdateDownloadStrings.de.resx" />
+      <file filePath="Localization\UpdateDownloadStrings.fr.resx" />
+      <remarks>
+      </remarks>
+    </fileGroup>
+  </fileGroups>
+  <projectFolders />
+</project>

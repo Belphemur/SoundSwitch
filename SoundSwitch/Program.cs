@@ -1,6 +1,6 @@
 ﻿/********************************************************************
 * Copyright (C) 2015 Jeroen Pelgrims
-* Copyright (C) 2015 Antoine Aflalo
+* Copyright (C) 2015-2017 Antoine Aflalo
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@ using System.IO.Compression;
 using System.Runtime.ExceptionServices;
 using System.Runtime.Remoting;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework;
@@ -28,6 +27,7 @@ using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.IPC;
 using SoundSwitch.Framework.Minidump;
 using SoundSwitch.Framework.Updater;
+using SoundSwitch.Localization;
 using SoundSwitch.Model;
 using SoundSwitch.Util;
 
@@ -50,10 +50,10 @@ namespace SoundSwitch
                 AppLogger.Log.Info("Set Exception Handler");
                 Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
                 WindowsAPIAdapter.Start(Application_ThreadException);
-
 #else
             WindowsAPIAdapter.Start();
 #endif
+            Thread.CurrentThread.CurrentUICulture = LanguageParser.ParseLanguage(AppModel.Instance.Language);
 
             using (new Mutex(true, Application.ProductName, out createdNew))
             {
@@ -73,7 +73,7 @@ namespace SoundSwitch
                             }
                             catch (RemotingException e)
                             {
-                                AppLogger.Log.Error("Can't stop the other app ", e);
+                                AppLogger.Log.Error("Unable to stop another running application ", e);
                                 Application.Exit();
                                 return;
                             }
@@ -84,14 +84,14 @@ namespace SoundSwitch
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
 
-                //Manage the Closing events send by Windows
-                //Since this app don't use a Form as "main window" the app doesn't close
-                //when it should without this.
+                // Manage the Closing events send by Windows
+                // Since this app don't use a Form as "main window" the app doesn't close
+                // when it should without this.
                 WindowsAPIAdapter.RestartManagerTriggered += (sender, @event) =>
                 {
                     using (AppLogger.Log.DebugCall())
                     {
-                        AppLogger.Log.Debug("Restart Event recieved", @event);
+                        AppLogger.Log.Debug("Restart Event received", @event);
                         switch (@event.Type)
                         {
                             case WindowsAPIAdapter.RestartManagerEventType.Query:
@@ -148,18 +148,19 @@ namespace SoundSwitch
                 }
 #if !DEBUG
                 }
-
                 catch (Exception ex)
                 {
                     HandleException(ex);
-
                 }
 #endif
             }
             WindowsAPIAdapter.Stop();
         }
 
-        private static void RestartApp()
+        /// <summary>
+        /// Restarts the application itself.
+        /// </summary>
+        public static void RestartApp()
         {
             var info = new ProcessStartInfo
             {
@@ -185,7 +186,7 @@ namespace SoundSwitch
                 $"{Application.ProductName}-crashlog-{DateTime.UtcNow.Date.Day}_{DateTime.UtcNow.Date.Month}_{DateTime.UtcNow.Date.Year}.zip");
             var message =
                 $"It seems {Application.ProductName} has crashed.\n" +
-                $"Do you want to save a log of the error that ocurred?\n" +
+                $"Do you want to save a log of the error that occurred?\n" +
                 $"This could be useful to fix bugs. Please post this file in the issues section.\n" +
                 $"File Location: " + zipFile;
             var result = MessageBox.Show(message, $"{Application.ProductName} crashed...", MessageBoxButtons.YesNo,
@@ -204,7 +205,7 @@ namespace SoundSwitch
                             MiniDump.Option.Normal | MiniDump.Option.WithThreadInfo | MiniDump.Option.WithHandleData |
                             MiniDump.Option.WithDataSegs, MiniDump.ExceptionInfo.Present);
                     }
-                    AppLogger.Log.Fatal("Exception Occured ", exception);
+                    AppLogger.Log.Fatal("Exception Occurred ", exception);
                     using (new AppLogger.LogRestartor())
                     {
                         if (File.Exists(zipFile))

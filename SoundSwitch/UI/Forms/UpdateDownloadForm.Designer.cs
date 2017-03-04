@@ -1,9 +1,6 @@
-﻿using SoundSwitch.Properties;
-using SoundSwitch.UI.Controls;
-
-namespace SoundSwitch.UI.Forms
+﻿namespace SoundSwitch.UI.Forms
 {
-    partial class UpdateDownloadForm
+    sealed partial class UpdateDownloadForm
     {
         /// <summary>
         /// Required designer variable.
@@ -38,11 +35,11 @@ namespace SoundSwitch.UI.Forms
             this.changeLog = new SoundSwitch.UI.Controls.ChangelogWebViewer();
             this.changeLogGroup.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // changeLogGroup
-            // 
-            this.changeLogGroup.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.changeLogGroup.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.changeLogGroup.Controls.Add(this.changeLog);
             this.changeLogGroup.Location = new System.Drawing.Point(12, 46);
@@ -50,34 +47,34 @@ namespace SoundSwitch.UI.Forms
             this.changeLogGroup.Size = new System.Drawing.Size(540, 229);
             this.changeLogGroup.TabIndex = 0;
             this.changeLogGroup.TabStop = false;
-            this.changeLogGroup.Text = UpdateFormStrings.changelog;
-            // 
+            this.changeLogGroup.Text = "Changelog";
+            //
             // cancelButton
-            // 
+            //
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cancelButton.Location = new System.Drawing.Point(473, 304);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 2;
-            this.cancelButton.Text = UpdateFormStrings.cancel;
+            this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
-            // 
+            //
             // installButton
-            // 
+            //
             this.installButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.installButton.Enabled = false;
             this.installButton.Location = new System.Drawing.Point(12, 304);
             this.installButton.Name = "installButton";
             this.installButton.Size = new System.Drawing.Size(75, 23);
             this.installButton.TabIndex = 3;
-            this.installButton.Text = UpdateFormStrings.install;
+            this.installButton.Text = "Install";
             this.installButton.UseVisualStyleBackColor = true;
             this.installButton.Click += new System.EventHandler(this.installButton_Click);
-            // 
+            //
             // downloadProgress
-            // 
-            this.downloadProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.downloadProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.downloadProgress.CustomText = null;
             this.downloadProgress.DisplayStyle = SoundSwitch.UI.Controls.TextProgressBar.ProgressBarDisplayText.Percentage;
@@ -85,9 +82,9 @@ namespace SoundSwitch.UI.Forms
             this.downloadProgress.Name = "downloadProgress";
             this.downloadProgress.Size = new System.Drawing.Size(540, 23);
             this.downloadProgress.TabIndex = 1;
-            // 
+            //
             // changeLog
-            // 
+            //
             this.changeLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.changeLog.IsWebBrowserContextMenuEnabled = false;
             this.changeLog.Location = new System.Drawing.Point(3, 16);
@@ -96,9 +93,9 @@ namespace SoundSwitch.UI.Forms
             this.changeLog.Size = new System.Drawing.Size(534, 210);
             this.changeLog.TabIndex = 0;
             this.changeLog.WebBrowserShortcutsEnabled = false;
-            // 
+            //
             // UpdateDownloadForm
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;

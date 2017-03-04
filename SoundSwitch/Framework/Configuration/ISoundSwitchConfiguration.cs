@@ -1,5 +1,5 @@
 ﻿/********************************************************************
-* Copyright (C) 2015 Antoine Aflalo
+* Copyright (C) 2015-2017 Antoine Aflalo
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public License
@@ -12,12 +12,12 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System;
 using System.Collections.Generic;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.TooltipInfoManager.TootipInfo;
 using SoundSwitch.Framework.Updater;
+using SoundSwitch.Localization;
 
 namespace SoundSwitch.Framework.Configuration
 {
@@ -40,6 +40,7 @@ namespace SoundSwitch.Framework.Configuration
         bool IncludeBetaVersions { get; set; }
         string CustomNotificationFilePath { get; set; }
         UpdateMode UpdateMode { get; set; }
+        Language Language { get; set; }
         TooltipInfoTypeEnum TooltipInfo { get; set; }
         DeviceCyclerTypeEnum CyclerType { get; set; }
         bool KeepSystrayIcon { get; set; }

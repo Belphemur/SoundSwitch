@@ -1,6 +1,6 @@
 ﻿/********************************************************************
 * Copyright (C) 2015 Jeroen Pelgrims
-* Copyright (C) 2015 Antoine Aflalo
+* Copyright (C) 2015-2017 Antoine Aflalo
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public License
@@ -16,7 +16,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
 using AudioEndPointControllerWrapper;
 using Microsoft.WindowsAPICodePack.ApplicationServices;
 using SoundSwitch.Framework;
@@ -25,6 +24,7 @@ using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.NotificationManager;
+using SoundSwitch.Localization;
 using SoundSwitch.Util;
 
 namespace SoundSwitch.Model
@@ -146,6 +146,16 @@ namespace SoundSwitch.Model
             set
             {
                 AppConfigs.Configuration.UpdateMode = value;
+                AppConfigs.Configuration.Save();
+            }
+        }
+
+        public Language Language
+        {
+            get { return AppConfigs.Configuration.Language; }
+            set
+            {
+                AppConfigs.Configuration.Language = value;
                 AppConfigs.Configuration.Save();
             }
         }

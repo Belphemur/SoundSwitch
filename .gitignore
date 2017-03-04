@@ -37,6 +37,7 @@ obj/
 Debug/
 Release/
 ipch/
+*.suo
 *.opensdf
 *.sdf
 Final
