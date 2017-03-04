@@ -145,4 +145,7 @@
 	<data name="donate" xml:space="preserve">
 		<value>Donation</value>
 	</data>
+	<data name="noUpdate" xml:space="preserve">
+		<value>Aucune MàJ présente</value>
+	</data>
 </root>

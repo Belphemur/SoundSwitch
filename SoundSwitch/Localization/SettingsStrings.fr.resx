@@ -149,10 +149,10 @@
 		<value>Switcher entre</value>
 	</data>
 	<data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
-		<value>Tous les périphériques audio</value>
+		<value>Tous les cartes audio</value>
 	</data>
 	<data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
-		<value>Seulement les périphériques sélectionnés</value>
+		<value>Seulement les cartes sélectionnées</value>
 	</data>
 	<data name="notificationOptionSound" xml:space="preserve">
 		<value>Notification Sonore</value>
@@ -186,5 +186,65 @@
 	</data>
 	<data name="activePlayback" xml:space="preserve">
 		<value>Lec: {0}</value>
+	</data>
+	<data name="communicationsDevice" xml:space="preserve">
+		<value>Changer la carte de communication</value>
+	</data>
+	<data name="communicationsDeviceTooltip" xml:space="preserve">
+		<value>Quand cette option est sélectionnée, l'application changera aussi la carte audio utilisée pour la communication.</value>
+	</data>
+	<data name="hotkeysTooltip" xml:space="preserve">
+		<value>Pour activer le raccourcis clavier.</value>
+	</data>
+	<data name="keepSystemTrayIcon" xml:space="preserve">
+		<value>Garder l'icone de SoundSwitch</value>
+	</data>
+	<data name="keepSystemTrayIconTooltip" xml:space="preserve">
+		<value>Pour que l'icone de SoundSwitch ne change pas quand la carte par défault change.</value>
+	</data>
+	<data name="cycleThroughTooltip" xml:space="preserve">
+		<value>Choisir quel group de carte audio changer. Soit toute, soit celle que vous avez sélectionné.</value>
+	</data>
+	<data name="notificationOptionWindowsDefault" xml:space="preserve">
+		<value>Notification Windows</value>
+	</data>
+	<data name="notificationTooltip" xml:space="preserve">
+		<value>Notif. Windows: Popup sur l'icone de système
+Notifi. Sonore: Joue un son
+Notif. Sonore Perso: Joue le son choisi
+Notif. Toast: Popup sur le coté de l'écran dans Windows 10.</value>
+	</data>
+	<data name="language" xml:space="preserve">
+		<value>Langue</value>
+	</data>
+	<data name="languageRestartRequired" xml:space="preserve">
+		<value>Voulez-vous redémarrer {0} pour changer la langue ?</value>
+	</data>
+	<data name="languageRestartRequiredCaption" xml:space="preserve">
+		<value>Besoin de rédémarrer.</value>
+	</data>
+	<data name="startWithWindows" xml:space="preserve">
+		<value>Démarrer avec Windows</value>
+	</data>
+	<data name="updateIncludeBetaVersions" xml:space="preserve">
+		<value>Version Beta</value>
+	</data>
+	<data name="updateInstallAutomatically" xml:space="preserve">
+		<value>Auto-Installation</value>
+	</data>
+	<data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
+		<value>Les mise à jour sont téléchargées et installées automatiquement.</value>
+	</data>
+	<data name="updateNever" xml:space="preserve">
+		<value>Pas de MàJ</value>
+	</data>
+	<data name="tooltipOnHover" xml:space="preserve">
+		<value>Information</value>
+	</data>
+	<data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
+		<value>Toutes les cartes</value>
+	</data>
+	<data name="updateNotify" xml:space="preserve">
+		<value>Notification de MàJ</value>
 	</data>
 </root>
