@@ -157,7 +157,7 @@
 		<value>Inklusive Beta Versionen</value>
 	</data>
 	<data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
-		<value>Falls aktiv, wird {0} auch nach Pre-Release Versionen auf GitHub suchen.</value>
+		<value>Falls aktiv, wird SoundSwitch auch nach Pre-Release Versionen auf GitHub suchen.</value>
 	</data>
 	<data name="audioFiles" xml:space="preserve">
 		<value>Audiodateien</value>
@@ -253,7 +253,7 @@
 		<value>Wähle zwischen welchen Geräten gewechselt werden soll. Entweder nur zwischen den ausgewählten oder zwischen allen.</value>
 	</data>
 	<data name="audioFileNotFound" xml:space="preserve">
-		<value>Die Audiodatei für die Benachrichtigungen konnte nicht gefunden werden. {0} wechselte die Benachrichtigungseinstellungen zu {1}.</value>
+		<value>Die Audiodatei für die Benachrichtigungen konnte nicht gefunden werden. SoundSwitch wechselte die Benachrichtigungseinstellungen zu {1}.</value>
 	</data>
 	<data name="notificationTooltip" xml:space="preserve">
 		<value>Windows Benachrichtigung: Das Standard Windows Pop-Up.
@@ -262,16 +262,16 @@ Angepasste akustische Benachrichtigung: Spielt einen selbst definierten Sound ab
 Popup Benachrichtigung: Spezielle Form eines Windows Pop-ups.</value>
 	</data>
 	<data name="languageRestartRequired" xml:space="preserve">
-		<value>Die Sprache wird beim Neustart von {0} übernommen.
+		<value>Die Sprache wird beim Neustart von SoundSwitch übernommen.
 Möchten Sie jetzt neustarten?</value>
 	</data>
 	<data name="languageRestartRequiredCaption" xml:space="preserve">
 		<value>Neustart notwendig</value>
 	</data>
 	<data name="updateNeverTooltip" xml:space="preserve">
-		<value>Don't update the program unless you do it manually.</value>
+		<value>Updates müssen manuell installiert werden.</value>
 	</data>
 	<data name="updateNotifyTooltip" xml:space="preserve">
-		<value>SoundSwitch will notify you when there is a new update available. When clicking on the notification, you'll get a popup downloading the update for you and asking if you want to install it.</value>
+		<value>SoundSwitch zeigt eine Benachrichtigung, falls ein Update verfügbar ist. Mit einem Klick auf die Benachrichtigung lässt sich das Update dann installieren.</value>
 	</data>
 </root>

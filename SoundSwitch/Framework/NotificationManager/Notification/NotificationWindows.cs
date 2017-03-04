@@ -34,12 +34,12 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             {
                 case AudioDeviceType.Playback:
                     Configuration.Icon.ShowBalloonTip(500,
-                                                      string.Format(TrayIconStrings.playbackChanged, Application.ProductName),
+                                                      TrayIconStrings.playbackChanged,
                                                       audioDevice.FriendlyName, ToolTipIcon.Info);
                     break;
                 case AudioDeviceType.Recording:
                     Configuration.Icon.ShowBalloonTip(500,
-                                                      string.Format(TrayIconStrings.recordingChanged, Application.ProductName),
+                                                      TrayIconStrings.recordingChanged,
                                                       audioDevice.FriendlyName, ToolTipIcon.Info);
                     break;
                 default:

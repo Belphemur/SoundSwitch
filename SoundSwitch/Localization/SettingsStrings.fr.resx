@@ -128,7 +128,7 @@
 		<value>Notification</value>
 	</data>
 	<data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
-		<value>Si la case est cochée, {0} téléchargera les versions beta du program.</value>
+		<value>Si la case est cochée, SoundSwitch téléchargera les versions beta du program.</value>
 	</data>
 	<data name="audioFiles" xml:space="preserve">
 		<value>Fichiers Audio</value>
@@ -176,7 +176,7 @@
 		<value>Pas de notification</value>
 	</data>
 	<data name="audioFileNotFound" xml:space="preserve">
-		<value>Le fichier audio que vous avez sélectionné pour être joué comme notification est introuvable. {0} a changé ses paramétre de notification pour {1}.</value>
+		<value>Le fichier audio que vous avez sélectionné pour être joué comme notification est introuvable. SoundSwitch a changé ses paramétre de notification pour {1}.</value>
 	</data>
 	<data name="audioFileNotFoundCaption" xml:space="preserve">
 		<value>Fichier audio introuvable</value>
@@ -218,7 +218,7 @@ Notif. Toast: Popup sur le coté de l'écran dans Windows 10.</value>
 		<value>Langue</value>
 	</data>
 	<data name="languageRestartRequired" xml:space="preserve">
-		<value>Voulez-vous redémarrer {0} pour changer la langue ?</value>
+		<value>Voulez-vous redémarrer SoundSwitch pour changer la langue ?</value>
 	</data>
 	<data name="languageRestartRequiredCaption" xml:space="preserve">
 		<value>Besoin de rédémarrer.</value>

@@ -115,8 +115,15 @@ namespace SoundSwitch.UI.Forms
                     throw new ArgumentOutOfRangeException();
             }
 
+            var updateSilentToolTip = new ToolTip();
+            updateSilentToolTip.SetToolTip(updateSilentRadioButton, SettingsStrings.updateInstallAutomaticallyTooltip);
+            var updateNotifyToolTip = new ToolTip();
+            updateNotifyToolTip.SetToolTip(updateNotifyRadioButton, SettingsStrings.updateNotifyTooltip);
+            var updateNeverToolTip = new ToolTip();
+            updateNeverToolTip.SetToolTip(updateNeverRadioButton, SettingsStrings.updateNeverTooltip);
+
             var includeBetaVersionsToolTip = new ToolTip();
-            includeBetaVersionsToolTip.SetToolTip(includeBetaVersionsCheckBox, string.Format(SettingsStrings.updateIncludeBetaVersionsTooltip, Application.ProductName));
+            includeBetaVersionsToolTip.SetToolTip(includeBetaVersionsCheckBox, SettingsStrings.updateIncludeBetaVersionsTooltip);
 
             // Settings - Language
             languageComboBox.SelectedIndex = (int)AppConfigs.Configuration.Language;
@@ -158,13 +165,6 @@ namespace SoundSwitch.UI.Forms
             updateNotifyRadioButton.Text = SettingsStrings.updateNotify;
             updateNeverRadioButton.Text = SettingsStrings.updateNever;
             includeBetaVersionsCheckBox.Text = SettingsStrings.updateIncludeBetaVersions;
-
-            var updateSilentToolTip = new ToolTip();
-            updateSilentToolTip.SetToolTip(updateSilentRadioButton, SettingsStrings.updateInstallAutomaticallyTooltip);
-            var updateNotifyToolTip = new ToolTip();
-            updateNotifyToolTip.SetToolTip(updateNotifyRadioButton, SettingsStrings.updateNotifyTooltip);
-            var updateNeverToolTip = new ToolTip();
-            updateNeverToolTip.SetToolTip(updateNeverRadioButton, SettingsStrings.updateNeverTooltip);
 
             // Settings - Language
             languageGroupBox.Text = SettingsStrings.language;
@@ -330,7 +330,7 @@ namespace SoundSwitch.UI.Forms
 
             AppModel.Instance.Language = (Language)languageComboBox.SelectedIndex;
 
-            if (MessageBox.Show(string.Format(SettingsStrings.languageRestartRequired, Application.ProductName),
+            if (MessageBox.Show(SettingsStrings.languageRestartRequired,
                                 SettingsStrings.languageRestartRequiredCaption,
                                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {

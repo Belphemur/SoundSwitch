@@ -211,7 +211,7 @@ namespace SoundSwitch.Util
             _updateMenuItem.Enabled = true;
             NotifyIcon.BalloonTipClicked += OnUpdateClick;
             NotifyIcon.ShowBalloonTip(3000,
-                                      string.Format(TrayIconStrings.versionAvailable, Application.ProductName, newReleaseEvent.Release.ReleaseVersion),
+                                      string.Format(TrayIconStrings.versionAvailable, newReleaseEvent.Release.ReleaseVersion),
                                       newReleaseEvent.Release.Name + '\n' + TrayIconStrings.clickToUpdate, ToolTipIcon.Info);
         }
 
@@ -279,7 +279,7 @@ namespace SoundSwitch.Util
         {
             AppLogger.Log.Info("No devices available");
             NotifyIcon.ShowBalloonTip(3000,
-                                      string.Format(TrayIconStrings.configurationNeeded, Application.ProductName),
+                                      TrayIconStrings.configurationNeeded,
                                       TrayIconStrings.configurationNeededExplanation, ToolTipIcon.Warning);
         }
 
