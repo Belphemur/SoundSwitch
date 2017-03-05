@@ -16,10 +16,10 @@ namespace SoundSwitch.Framework.NotificationManager
 {
     public enum NotificationTypeEnum
     {
-        DefaultWindowsNotification,
-        SoundNotification,
-        CustomNotification,
-        ToastNotification,
-        NoNotification
+        DefaultWindowsNotification = 0,
+        SoundNotification = 1,
+        NoNotification = 2,
+        CustomNotification = 3,
+        ToastNotification = 4
     }
 }

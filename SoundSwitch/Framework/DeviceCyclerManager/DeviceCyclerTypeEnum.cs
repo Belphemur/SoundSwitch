@@ -16,7 +16,7 @@ namespace SoundSwitch.Framework.DeviceCyclerManager
 {
     public enum DeviceCyclerTypeEnum
     {
-        All,
-        Available
+        All = 0,
+        Available = 1
     }
 }
