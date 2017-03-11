@@ -1,5 +1,21 @@
 # Change Log
 
+## [v3.13.1](https://github.com/Belphemur/SoundSwitch/tree/v3.13.1) (2017-03-11)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.13.0...v3.13.1)
+
+**Implemented enhancements:**
+
+- Translate missing strings in German [\#159](https://github.com/Belphemur/SoundSwitch/issues/159)
+
+**Fixed bugs:**
+
+- Crash on Launch, Win7 x64 [\#161](https://github.com/Belphemur/SoundSwitch/issues/161)
+
+**Merged pull requests:**
+
+- Assigned values to DeviceCyclerTypeEnum and NotificationTypeEnum entries. [\#162](https://github.com/Belphemur/SoundSwitch/pull/162) ([FireEmerald](https://github.com/FireEmerald))
+- Translated some strings into German introduced in 4dedc42. [\#160](https://github.com/Belphemur/SoundSwitch/pull/160) ([FireEmerald](https://github.com/FireEmerald))
+
 ## [v3.13.0](https://github.com/Belphemur/SoundSwitch/tree/v3.13.0) (2017-03-04)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.12.8...v3.13.0)
 
