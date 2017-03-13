@@ -36,7 +36,7 @@ namespace SoundSwitch.Framework.Updater
         public AutoUpdater(string installerParameters, string filePath)
         {
             InstallerParameters = installerParameters;
-            InstallerFilePath = Path.Combine(filePath, "Installer.exe");
+            InstallerFilePath = Path.Combine(filePath, "SoundSwitch_Update.exe");
         }
 
         public void Update(Release release, bool closeApp)
