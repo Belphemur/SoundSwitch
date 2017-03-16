@@ -110,7 +110,7 @@
 		<value>Configuration</value>
 	</data>
 	<data name="about" xml:space="preserve">
-		<value>A propos</value>
+		<value>A propos SoundSwitch</value>
 	</data>
 	<data name="exit" xml:space="preserve">
 		<value>Fermer</value>

@@ -53,7 +53,7 @@
             // 
             this.appNameLabel.AutoSize = true;
             this.appNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.appNameLabel.Location = new System.Drawing.Point(108, 14);
+            this.appNameLabel.Location = new System.Drawing.Point(108, 19);
             this.appNameLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.appNameLabel.Name = "appNameLabel";
             this.appNameLabel.Size = new System.Drawing.Size(210, 47);
@@ -232,6 +232,7 @@
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(68, 77);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox1.TabIndex = 7;
             this.pictureBox1.TabStop = false;
             // 
@@ -249,7 +250,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "About";
-            this.Text = "About";
+            this.Text = "About SoundSwitch";
             this.Load += new System.EventHandler(this.About_Load);
             this.authorAndProgramInfoGroupBox.ResumeLayout(false);
             this.authorAndProgramInfoGroupBox.PerformLayout();
