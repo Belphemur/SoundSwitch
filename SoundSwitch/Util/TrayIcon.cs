@@ -133,9 +133,9 @@ namespace SoundSwitch.Util
             _settingsMenu.Items.Add(TrayIconStrings.mixer, Resources.Mixer,
                 (sender, e) => { Process.Start(new ProcessStartInfo("sndvol.exe")); });
             _settingsMenu.Items.Add("-");
+            _settingsMenu.Items.Add(_updateMenuItem);
             _settingsMenu.Items.Add(TrayIconStrings.settings, Resources.SettingsSmall, (sender, e) => ShowSettings());
-            _settingsMenu.Items.Add(TrayIconStrings.about, Resources.HelpSmall, (sender, e) => new About().Show());
-            _settingsMenu.Items.Add(TrayIconStrings.donate, Resources.donate, (sender, e) => Process.Start("https://www.aaflalo.me/donate"));
+            _settingsMenu.Items.Add("-");
             _settingsMenu.Items.Add(TrayIconStrings.help, Resources.InfoHelp, (sender, e) =>
             {
                 if (!File.Exists(readmeHtml))
@@ -145,7 +145,8 @@ namespace SoundSwitch.Util
                 }
                 Process.Start(readmeHtml);
             });
-            _settingsMenu.Items.Add(_updateMenuItem);
+            _settingsMenu.Items.Add(TrayIconStrings.donate, Resources.donate, (sender, e) => Process.Start("https://www.aaflalo.me/donate"));
+            _settingsMenu.Items.Add(TrayIconStrings.about, Resources.HelpSmall, (sender, e) => new About().Show());
             _settingsMenu.Items.Add("-");
             _settingsMenu.Items.Add(TrayIconStrings.exit, Resources.exit, (sender, e) => Application.Exit());
         }
