@@ -16,7 +16,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using CommonMark;
 
-namespace SoundSwitch.UI.Controls
+namespace SoundSwitch.UI.UserControls
 {
     public class ChangelogWebViewer : WebBrowser
     {

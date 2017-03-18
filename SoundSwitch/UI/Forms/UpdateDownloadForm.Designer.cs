@@ -1,4 +1,6 @@
-﻿namespace SoundSwitch.UI.Forms
+﻿using SoundSwitch.UI.UserControls;
+
+namespace SoundSwitch.UI.Forms
 {
     sealed partial class UpdateDownloadForm
     {
@@ -31,8 +33,8 @@
             this.changeLogGroup = new System.Windows.Forms.GroupBox();
             this.cancelButton = new System.Windows.Forms.Button();
             this.installButton = new System.Windows.Forms.Button();
-            this.downloadProgress = new SoundSwitch.UI.Controls.TextProgressBar();
-            this.changeLog = new SoundSwitch.UI.Controls.ChangelogWebViewer();
+            this.downloadProgress = new TextProgressBar();
+            this.changeLog = new ChangelogWebViewer();
             this.changeLogGroup.SuspendLayout();
             this.SuspendLayout();
             //
@@ -77,7 +79,7 @@
             this.downloadProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.downloadProgress.CustomText = null;
-            this.downloadProgress.DisplayStyle = SoundSwitch.UI.Controls.TextProgressBar.ProgressBarDisplayText.Percentage;
+            this.downloadProgress.DisplayStyle = TextProgressBar.ProgressBarDisplayText.Percentage;
             this.downloadProgress.Location = new System.Drawing.Point(12, 17);
             this.downloadProgress.Name = "downloadProgress";
             this.downloadProgress.Size = new System.Drawing.Size(540, 23);
@@ -116,8 +118,8 @@
         #endregion
 
         private System.Windows.Forms.GroupBox changeLogGroup;
-        private SoundSwitch.UI.Controls.ChangelogWebViewer changeLog;
-        private SoundSwitch.UI.Controls.TextProgressBar downloadProgress;
+        private ChangelogWebViewer changeLog;
+        private TextProgressBar downloadProgress;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Button installButton;
     }
