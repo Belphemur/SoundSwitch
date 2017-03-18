@@ -13,6 +13,7 @@
 ********************************************************************/
 
 using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Updater;
@@ -24,6 +25,7 @@ namespace SoundSwitch.UI.Forms
 {
     public sealed partial class UpdateDownloadForm : Form
     {
+        private readonly bool _redirectLinks = false;
         private readonly WebFile _releaseFile;
 
         public UpdateDownloadForm(Release release)
@@ -35,6 +37,7 @@ namespace SoundSwitch.UI.Forms
             Focus();
 
             changeLog.SetChangelog(release.Changelog);
+            _redirectLinks = true;
             downloadProgress.DisplayStyle = TextProgressBar.ProgressBarDisplayText.Both;
             downloadProgress.CustomText = release.Asset.name;
 
@@ -91,6 +94,16 @@ namespace SoundSwitch.UI.Forms
         private void UpdateDownloadForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             _releaseFile.CancelDownload();
+        }
+
+        private void changeLog_Navigating(object sender, WebBrowserNavigatingEventArgs e)
+        {
+            if (_redirectLinks)
+            {
+                // Redirect links to the users default web browser.
+                e.Cancel = true;
+                Process.Start(e.Url.ToString());
+            }
         }
     }
 }

@@ -404,6 +404,9 @@
     <EmbeddedResource Include="UI\Forms\Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\UpdateDownloadForm.resx">
+      <DependentUpon>UpdateDownloadForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>

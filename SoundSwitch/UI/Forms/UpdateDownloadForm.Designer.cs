@@ -33,79 +33,87 @@ namespace SoundSwitch.UI.Forms
             this.changeLogGroup = new System.Windows.Forms.GroupBox();
             this.cancelButton = new System.Windows.Forms.Button();
             this.installButton = new System.Windows.Forms.Button();
-            this.downloadProgress = new TextProgressBar();
-            this.changeLog = new ChangelogWebViewer();
+            this.downloadProgress = new SoundSwitch.UI.UserControls.TextProgressBar();
+            this.changeLog = new SoundSwitch.UI.UserControls.ChangelogWebViewer();
             this.changeLogGroup.SuspendLayout();
             this.SuspendLayout();
-            //
+            // 
             // changeLogGroup
-            //
-            this.changeLogGroup.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            // 
+            this.changeLogGroup.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.changeLogGroup.Controls.Add(this.changeLog);
-            this.changeLogGroup.Location = new System.Drawing.Point(12, 46);
+            this.changeLogGroup.Location = new System.Drawing.Point(8, 35);
+            this.changeLogGroup.Margin = new System.Windows.Forms.Padding(2);
             this.changeLogGroup.Name = "changeLogGroup";
-            this.changeLogGroup.Size = new System.Drawing.Size(540, 229);
+            this.changeLogGroup.Padding = new System.Windows.Forms.Padding(2);
+            this.changeLogGroup.Size = new System.Drawing.Size(698, 349);
             this.changeLogGroup.TabIndex = 0;
             this.changeLogGroup.TabStop = false;
             this.changeLogGroup.Text = "Changelog";
-            //
+            // 
             // cancelButton
-            //
+            // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cancelButton.Location = new System.Drawing.Point(473, 304);
+            this.cancelButton.Location = new System.Drawing.Point(628, 392);
+            this.cancelButton.Margin = new System.Windows.Forms.Padding(2);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 2;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
-            //
+            // 
             // installButton
-            //
+            // 
             this.installButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.installButton.Enabled = false;
-            this.installButton.Location = new System.Drawing.Point(12, 304);
+            this.installButton.Location = new System.Drawing.Point(11, 392);
+            this.installButton.Margin = new System.Windows.Forms.Padding(2);
             this.installButton.Name = "installButton";
             this.installButton.Size = new System.Drawing.Size(75, 23);
             this.installButton.TabIndex = 3;
             this.installButton.Text = "Install";
             this.installButton.UseVisualStyleBackColor = true;
             this.installButton.Click += new System.EventHandler(this.installButton_Click);
-            //
+            // 
             // downloadProgress
-            //
-            this.downloadProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            // 
+            this.downloadProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.downloadProgress.CustomText = null;
-            this.downloadProgress.DisplayStyle = TextProgressBar.ProgressBarDisplayText.Percentage;
-            this.downloadProgress.Location = new System.Drawing.Point(12, 17);
+            this.downloadProgress.DisplayStyle = SoundSwitch.UI.UserControls.TextProgressBar.ProgressBarDisplayText.Percentage;
+            this.downloadProgress.Location = new System.Drawing.Point(8, 11);
+            this.downloadProgress.Margin = new System.Windows.Forms.Padding(2);
             this.downloadProgress.Name = "downloadProgress";
-            this.downloadProgress.Size = new System.Drawing.Size(540, 23);
+            this.downloadProgress.Size = new System.Drawing.Size(698, 20);
             this.downloadProgress.TabIndex = 1;
-            //
+            // 
             // changeLog
-            //
+            // 
             this.changeLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.changeLog.IsWebBrowserContextMenuEnabled = false;
-            this.changeLog.Location = new System.Drawing.Point(3, 16);
-            this.changeLog.MinimumSize = new System.Drawing.Size(20, 20);
+            this.changeLog.Location = new System.Drawing.Point(2, 15);
+            this.changeLog.Margin = new System.Windows.Forms.Padding(2);
+            this.changeLog.MinimumSize = new System.Drawing.Size(13, 13);
             this.changeLog.Name = "changeLog";
-            this.changeLog.Size = new System.Drawing.Size(534, 210);
+            this.changeLog.Size = new System.Drawing.Size(694, 332);
             this.changeLog.TabIndex = 0;
             this.changeLog.WebBrowserShortcutsEnabled = false;
-            //
+            this.changeLog.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.changeLog_Navigating);
+            // 
             // UpdateDownloadForm
-            //
-            this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(564, 339);
+            this.ClientSize = new System.Drawing.Size(714, 426);
             this.Controls.Add(this.installButton);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.downloadProgress);
             this.Controls.Add(this.changeLogGroup);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "UpdateDownloadForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "UpdateDownloadForm";

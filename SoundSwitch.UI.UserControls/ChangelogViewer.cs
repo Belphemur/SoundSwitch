@@ -28,26 +28,39 @@ namespace SoundSwitch.UI.UserControls
 
         protected static List<string> HtmlHeaders => new List<string>
         {
-            "<!doctype html>",
-            "<html>",
-            "<head>",
-            "<style>" +
-            "body { background: #fff; margin: 0 auto; } " +
-            "h1 { font-size: 15px; color: #1562b6; padding-top: 5px; border: 0px !important; border-bottom: 2px solid #1562b6 !important; }" +
-            "h2 { font-size: 13px; color: #1562b6; padding-top: 5px; border: 0px !important; border-bottom: 1px solid #1562b6 !important; }" +
-            ".center {text-align: center}" +
-            "</style>",
-            "</head>",
-            "<body>"
+            @"<!doctype html>
+            <html>
+            <head>
+                <style>
+                    body {
+                        background: #fff; margin: 0 auto;
+                        font-family: ""Segoe UI"", Helvetica, Arial, sans-serif;
+                    }
+                    h1 {
+                        padding: 0.3em 0em 0.3em;
+                        font-size: 1.2em;
+                        border-bottom: 1px solid #eaecef;
+                    }
+                    h2 {
+                        padding: 0.3em 0em 0.3em;
+                        font-size: 1em;
+                        border-bottom: 1px solid #eaecef;
+                    }
+                    .center {
+                        text-align: center
+                    }
+                </style>
+            </head>"
         };
 
         /// <summary>
-        ///     Set the changelog in the WebBrowser
+        /// Set the changelog in the WebBrowser
         /// </summary>
         /// <param name="changelogLines"></param>
         public void SetChangelog(IEnumerable<string> changelogLines)
         {
             var lines = HtmlHeaders;
+            lines.Add("<body>");
             lines.Add(CommonMarkConverter.Convert(string.Join("\n", changelogLines)));
             lines.Add("</body>");
             lines.Add("</html>");
