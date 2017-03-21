@@ -44,20 +44,11 @@ namespace SoundSwitch.Framework.Configuration
 
             // Language Settings
             Language = LanguageParser.ParseLanguage(CultureInfo.InstalledUICulture);
-
-            // Misc
-            SelectedPlaybackDeviceList = null;
-            SelectedRecordingDeviceList = null;
             SelectedPlaybackDeviceListId = new HashSet<string>();
             SelectedRecordingDeviceListId = new HashSet<string>();
             PlaybackHotKeys = new HotKeys(Keys.F11, HotKeys.ModifierKeys.Alt | HotKeys.ModifierKeys.Control);
             RecordingHotKeys = new HotKeys(Keys.F7, HotKeys.ModifierKeys.Alt | HotKeys.ModifierKeys.Control);
         }
-
-        /*TODO: Remove in next VERSION (3.6.6)*/
-        public HashSet<string> SelectedPlaybackDeviceList { get; set; }
-        public HashSet<string> SelectedRecordingDeviceList { get; set; }
-        public bool MigratedSelectedDeviceLists { get; set; }
 
         /*TODO: Remove in next VERSION (3.12.8)*/
         public UpdateState UpdateState

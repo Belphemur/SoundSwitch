@@ -23,10 +23,6 @@ namespace SoundSwitch.Framework.Configuration
 {
     public interface ISoundSwitchConfiguration : IConfiguration
     {
-        /*TODO: Remove in next VERSION (3.6.6)*/
-        HashSet<string> SelectedPlaybackDeviceList { get; set; }
-        HashSet<string> SelectedRecordingDeviceList { get; set; }
-
         HashSet<string> SelectedPlaybackDeviceListId { get; }
         HashSet<string> SelectedRecordingDeviceListId { get; }
         bool FirstRun { get; set; }
@@ -35,7 +31,6 @@ namespace SoundSwitch.Framework.Configuration
         bool ChangeCommunications { get; set; }
         uint UpdateCheckInterval { get; set; }
 
-        bool MigratedSelectedDeviceLists { get; set; }
         NotificationTypeEnum NotificationSettings { get; set; }
         bool IncludeBetaVersions { get; set; }
         string CustomNotificationFilePath { get; set; }
