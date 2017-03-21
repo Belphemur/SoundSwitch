@@ -116,7 +116,7 @@
 		<value>Fermer</value>
 	</data>
 	<data name="updateAvailable" xml:space="preserve">
-		<value>MàJ Disponible ({0})</value>
+		<value>MàJ disponible ({0})</value>
 	</data>
 	<data name="versionAvailable" xml:space="preserve">
 		<value>MàJ pour SoundSwitch ({1}) est disponible.</value>
@@ -146,6 +146,6 @@
 		<value>Donation</value>
 	</data>
 	<data name="noUpdate" xml:space="preserve">
-		<value>Aucune MàJ présente</value>
+		<value>Aucune MàJ disponible</value>
 	</data>
 </root>
