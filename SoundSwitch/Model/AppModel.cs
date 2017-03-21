@@ -209,55 +209,13 @@ namespace SoundSwitch.Model
             SetHotkeyCombination(AppConfigs.Configuration.PlaybackHotKeys, AudioDeviceType.Playback);
             SetHotkeyCombination(AppConfigs.Configuration.RecordingHotKeys, AudioDeviceType.Recording);
             /*TODO: Remove in next VERSION (3.6.6)*/
-            MigrateSelectedDeviceLists();
             InitUpdateChecker();
             _notificationManager.Init();
             _initialized = true;
         }
 
 
-        private void MigrateSelectedDeviceLists()
-        {
-            using (AppLogger.Log.InfoCall())
-            {
-                if (AppConfigs.Configuration.MigratedSelectedDeviceLists)
-                {
-                    AppLogger.Log.Info("Already migrated the device lists");
-                    return;
-                }
-                var audioDeviceLister = new AudioDeviceLister(DeviceState.All);
-                using (AppLogger.Log.InfoCall())
-                {
-                    if (AppConfigs.Configuration.SelectedRecordingDeviceList != null)
-                        foreach (var audioDevice in audioDeviceLister.GetRecordingDevices()
-                            .Join(AppConfigs.Configuration.SelectedRecordingDeviceList,
-                                a => a.FriendlyName,
-                                selected => selected,
-                                (a, selected) => a))
-                        {
-                            SelectedRecordingDevicesList.Add(audioDevice.Id);
-                            AppLogger.Log.Info("Migrating Device: ", audioDevice);
-                        }
-                }
-                using (AppLogger.Log.InfoCall())
-                {
-                    if (AppConfigs.Configuration.SelectedPlaybackDeviceList != null)
-                        foreach (var audioDevice in audioDeviceLister.GetPlaybackDevices()
-                            .Join(AppConfigs.Configuration.SelectedPlaybackDeviceList,
-                                a => a.FriendlyName,
-                                selected => selected,
-                                (a, selected) => a))
-                        {
-                            SelectedPlaybackDevicesList.Add(audioDevice.Id);
-                            AppLogger.Log.Info("Migrating Device: ", audioDevice);
-                        }
-                }
-                AppConfigs.Configuration.MigratedSelectedDeviceLists = true;
-                AppConfigs.Configuration.SelectedPlaybackDeviceList = null;
-                AppConfigs.Configuration.SelectedRecordingDeviceList = null;
-                AppConfigs.Configuration.Save();
-            }
-        }
+      
 
         private void InitUpdateChecker()
         {
