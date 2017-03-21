@@ -61,7 +61,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to About.
+        ///   Looks up a localized string similar to About SoundSwitch.
         /// </summary>
         internal static string about {
             get {
