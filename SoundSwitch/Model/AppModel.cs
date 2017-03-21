@@ -208,7 +208,9 @@ namespace SoundSwitch.Model
             }
             SetHotkeyCombination(AppConfigs.Configuration.PlaybackHotKeys, AudioDeviceType.Playback);
             SetHotkeyCombination(AppConfigs.Configuration.RecordingHotKeys, AudioDeviceType.Recording);
-            /*TODO: Remove in next VERSION (3.6.6)*/
+
+            WindowsAPIAdapter.HotKeyPressed += HandleHotkeyPress;
+
             InitUpdateChecker();
             _notificationManager.Init();
             _initialized = true;
@@ -223,8 +225,6 @@ namespace SoundSwitch.Model
             {
                 return;
             }
-
-            WindowsAPIAdapter.HotKeyPressed += HandleHotkeyPress;
 #if DEBUG
             const string url = "https://www.aaflalo.me/api.json";
 #else
