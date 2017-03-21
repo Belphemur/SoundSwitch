@@ -119,7 +119,7 @@
 		<value>MàJ Disponible ({0})</value>
 	</data>
 	<data name="versionAvailable" xml:space="preserve">
-		<value>MàJ pour SoundSwitch ({1}) est disponible.</value>
+		<value>MàJ pour SoundSwitch ({0}) est disponible.</value>
 	</data>
 	<data name="clickToUpdate" xml:space="preserve">
 		<value>Cliquer ici pour mettre à jour.</value>
