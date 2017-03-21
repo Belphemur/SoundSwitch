@@ -1,5 +1,16 @@
 # Change Log
 
+## [v3.13.2](https://github.com/Belphemur/SoundSwitch/tree/v3.13.2) (2017-03-21)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.13.1...v3.13.2)
+
+**Implemented enhancements:**
+
+- Rename the Installer EXE when autoupdate to something more meaningful [\#167](https://github.com/Belphemur/SoundSwitch/issues/167)
+
+**Fixed bugs:**
+
+- Problem with hotkey since new version [\#171](https://github.com/Belphemur/SoundSwitch/issues/171)
+
 ## [v3.13.1](https://github.com/Belphemur/SoundSwitch/tree/v3.13.1) (2017-03-11)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.13.0...v3.13.1)
 
