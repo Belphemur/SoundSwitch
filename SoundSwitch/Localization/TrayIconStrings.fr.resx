@@ -110,13 +110,13 @@
 		<value>Configuration</value>
 	</data>
 	<data name="about" xml:space="preserve">
-		<value>A propos</value>
+		<value>A propos SoundSwitch</value>
 	</data>
 	<data name="exit" xml:space="preserve">
 		<value>Fermer</value>
 	</data>
 	<data name="updateAvailable" xml:space="preserve">
-		<value>MàJ disponible ({0})</value>
+		<value>MàJ Disponible ({0})</value>
 	</data>
 	<data name="versionAvailable" xml:space="preserve">
 		<value>MàJ pour SoundSwitch ({1}) est disponible.</value>
@@ -146,6 +146,6 @@
 		<value>Donation</value>
 	</data>
 	<data name="noUpdate" xml:space="preserve">
-		<value>Aucune MàJ disponible</value>
+		<value>Aucune MàJ présente</value>
 	</data>
 </root>
