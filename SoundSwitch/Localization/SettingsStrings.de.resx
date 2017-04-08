@@ -253,7 +253,7 @@
 		<value>Wähle zwischen welchen Geräten gewechselt werden soll. Entweder nur zwischen den ausgewählten oder zwischen allen.</value>
 	</data>
 	<data name="audioFileNotFound" xml:space="preserve">
-		<value>Die Audiodatei für die Benachrichtigungen konnte nicht gefunden werden. SoundSwitch wechselte die Benachrichtigungseinstellungen zu {1}.</value>
+		<value>Die Audiodatei für die Benachrichtigungen konnte nicht gefunden werden. SoundSwitch wechselte die Benachrichtigungseinstellungen zu {0}.</value>
 	</data>
 	<data name="notificationTooltip" xml:space="preserve">
 		<value>Windows Benachrichtigung: Das Standard Windows Pop-Up.

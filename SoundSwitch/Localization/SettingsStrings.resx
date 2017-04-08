@@ -247,7 +247,7 @@ Toast Notification: Uses a special form of the windows tray pop-up version.</val
     <value>No Tooltip</value>
   </data>
 	<data name="audioFileNotFound" xml:space="preserve">
-    <value>The audio file you selected to be used as notification can't be found. SoundSwitch switched the notification setting back to {1}.</value>
+    <value>The audio file you selected to be used as notification can't be found. SoundSwitch switched the notification setting back to {0}.</value>
   </data>
 	<data name="audioFileNotFoundCaption" xml:space="preserve">
     <value>Audio file not found</value>

@@ -176,7 +176,7 @@
 		<value>Pas de notification</value>
 	</data>
 	<data name="audioFileNotFound" xml:space="preserve">
-		<value>Le fichier audio que vous avez sélectionné pour être joué comme notification est introuvable. SoundSwitch a changé ses paramétre de notification pour {1}.</value>
+		<value>Le fichier audio que vous avez sélectionné pour être joué comme notification est introuvable. SoundSwitch a changé ses paramétre de notification pour {0}.</value>
 	</data>
 	<data name="audioFileNotFoundCaption" xml:space="preserve">
 		<value>Fichier audio introuvable</value>
