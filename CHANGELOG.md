@@ -1,5 +1,33 @@
 # Change Log
 
+## [v3.14.1](https://github.com/Belphemur/SoundSwitch/tree/v3.14.1) (2017-04-08)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.14.0...v3.14.1)
+
+**Implemented enhancements:**
+
+- Update AudioEndPointLibrary [\#178](https://github.com/Belphemur/SoundSwitch/issues/178)
+
+**Fixed bugs:**
+
+- SoundSwitch Crash when Custom Notification is set and no Sound is chosen: System.FormatException Fatal Error [\#175](https://github.com/Belphemur/SoundSwitch/issues/175)
+
+**Closed issues:**
+
+- SoundSwitch doesn't start - Windows 8.1 [\#176](https://github.com/Belphemur/SoundSwitch/issues/176)
+
+## [v3.14.0](https://github.com/Belphemur/SoundSwitch/tree/v3.14.0) (2017-03-21)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.13.2...v3.14.0)
+
+**Implemented enhancements:**
+
+- Improve the notifcation of new update [\#168](https://github.com/Belphemur/SoundSwitch/issues/168)
+- Corrected anchors, added high-dpi support. [\#169](https://github.com/Belphemur/SoundSwitch/pull/169) ([FireEmerald](https://github.com/FireEmerald))
+
+**Fixed bugs:**
+
+- Notification BallonTip not showing [\#173](https://github.com/Belphemur/SoundSwitch/issues/173)
+- Settings dialog resize issues [\#164](https://github.com/Belphemur/SoundSwitch/issues/164)
+
 ## [v3.13.2](https://github.com/Belphemur/SoundSwitch/tree/v3.13.2) (2017-03-21)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.13.1...v3.13.2)
 
