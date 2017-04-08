@@ -16,6 +16,7 @@
 using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -30,6 +31,7 @@ using SoundSwitch.Localization;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
 using SoundSwitch.UI.Forms;
+using Timer = System.Windows.Forms.Timer;
 
 namespace SoundSwitch.Util
 {
@@ -48,6 +50,7 @@ namespace SoundSwitch.Util
         private readonly TooltipInfoManager _tooltipInfoManager;
 
         private readonly ToolStripMenuItem _updateMenuItem;
+        private Timer _animationTimer;
 
         public TrayIcon()
         {
@@ -71,6 +74,12 @@ namespace SoundSwitch.Util
             NotifyIcon.MouseClick += (sender, e) =>
             {
                 if (e.Button != MouseButtons.Left) return;
+
+                if (_updateMenuItem.Tag != null)
+                {
+                    OnUpdateClick(sender, e);
+                    return;
+                }
 
                 UpdateDeviceSelectionList();
                 NotifyIcon.ContextMenuStrip = _selectionMenu;
@@ -133,9 +142,9 @@ namespace SoundSwitch.Util
             _settingsMenu.Items.Add(TrayIconStrings.mixer, Resources.Mixer,
                 (sender, e) => { Process.Start(new ProcessStartInfo("sndvol.exe")); });
             _settingsMenu.Items.Add("-");
+            _settingsMenu.Items.Add(_updateMenuItem);
             _settingsMenu.Items.Add(TrayIconStrings.settings, Resources.SettingsSmall, (sender, e) => ShowSettings());
-            _settingsMenu.Items.Add(TrayIconStrings.about, Resources.HelpSmall, (sender, e) => new About().Show());
-            _settingsMenu.Items.Add(TrayIconStrings.donate, Resources.donate, (sender, e) => Process.Start("https://www.aaflalo.me/donate"));
+            _settingsMenu.Items.Add("-");
             _settingsMenu.Items.Add(TrayIconStrings.help, Resources.InfoHelp, (sender, e) =>
             {
                 if (!File.Exists(readmeHtml))
@@ -145,7 +154,8 @@ namespace SoundSwitch.Util
                 }
                 Process.Start(readmeHtml);
             });
-            _settingsMenu.Items.Add(_updateMenuItem);
+            _settingsMenu.Items.Add(TrayIconStrings.donate, Resources.donate, (sender, e) => Process.Start("https://www.aaflalo.me/donate"));
+            _settingsMenu.Items.Add(TrayIconStrings.about, Resources.HelpSmall, (sender, e) => new About().Show());
             _settingsMenu.Items.Add("-");
             _settingsMenu.Items.Add(TrayIconStrings.exit, Resources.exit, (sender, e) => Application.Exit());
         }
@@ -155,6 +165,7 @@ namespace SoundSwitch.Util
             if (_updateMenuItem.Tag == null)
                 return;
 
+            StopAnimationIconUpdate();
             new UpdateDownloadForm((Release) _updateMenuItem.Tag).ShowDialog();
             NotifyIcon.BalloonTipClicked -= OnUpdateClick;
         }
@@ -206,6 +217,7 @@ namespace SoundSwitch.Util
 
         private void NewReleaseAvailable(object sender, UpdateChecker.NewReleaseEvent newReleaseEvent)
         {
+            StartAnimationIconUpdate();
             _updateMenuItem.Tag = newReleaseEvent.Release;
             _updateMenuItem.Text = string.Format(TrayIconStrings.updateAvailable, newReleaseEvent.Release.ReleaseVersion);
             _updateMenuItem.Enabled = true;
@@ -213,6 +225,40 @@ namespace SoundSwitch.Util
             NotifyIcon.ShowBalloonTip(3000,
                                       string.Format(TrayIconStrings.versionAvailable, newReleaseEvent.Release.ReleaseVersion),
                                       newReleaseEvent.Release.Name + '\n' + TrayIconStrings.clickToUpdate, ToolTipIcon.Info);
+
+           
+        }
+        /// <summary>
+        /// Make the icon flicker between default Icon and Update icon
+        /// Used to notify the user of an update
+        /// </summary>
+        private void StartAnimationIconUpdate()
+        {
+            if (_animationTimer == null)
+            {
+                _animationTimer = new Timer() {Interval = 1000};
+                var tick = 0;
+                _animationTimer.Tick += (sender, args) =>
+                {
+                    NotifyIcon.Icon = tick == 0
+                        ? Icon.FromHandle(Resources.SoundSwitch16.GetHicon())
+                        : Resources.UpdateIcon;
+                    tick = ++tick%2;
+                };
+            }
+            _animationTimer.Start();
+        }
+
+        /// <summary>
+        /// Stop the animation of the Icon and reset the icon
+        /// </summary>
+        private void StopAnimationIconUpdate()
+        {
+            if (_animationTimer == null)
+                return;
+
+            _animationTimer.Stop();
+            UpdateIcon();
         }
 
 

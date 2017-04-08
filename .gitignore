@@ -31,12 +31,13 @@
 # Debug files
 *.dSYM/
 
-#VS
+# Visual Studio
 bin/
 obj/
 Debug/
 Release/
 ipch/
+*.user
 *.suo
 *.opensdf
 *.sdf

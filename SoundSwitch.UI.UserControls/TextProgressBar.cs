@@ -16,7 +16,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace SoundSwitch.UI.Controls
+namespace SoundSwitch.UI.UserControls
 {
     public class TextProgressBar : ProgressBar
     {

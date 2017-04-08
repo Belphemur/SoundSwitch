@@ -18,6 +18,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Runtime.ExceptionServices;
+using System.Runtime.InteropServices;
 using System.Runtime.Remoting;
 using System.Threading;
 using System.Windows.Forms;
@@ -35,6 +36,9 @@ namespace SoundSwitch
 {
     internal static class Program
     {
+        [DllImport("user32.dll")]
+        private static extern bool SetProcessDPIAware();
+
         [HandleProcessCorruptedStateExceptions]
         [STAThread]
         private static void Main()
@@ -81,6 +85,11 @@ namespace SoundSwitch
                     }
                 }
                 AppModel.Instance.ActiveAudioDeviceLister = new AudioDeviceLister(DeviceState.Active);
+
+                // Windows Vista or newer.
+                if (Environment.OSVersion.Version.Major >= 6)
+                    SetProcessDPIAware();
+
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
 

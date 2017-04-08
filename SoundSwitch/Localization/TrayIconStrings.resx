@@ -133,7 +133,7 @@
     <value>Settings</value>
   </data>
 	<data name="about" xml:space="preserve">
-    <value>About</value>
+    <value>About SoundSwitch</value>
   </data>
 	<data name="exit" xml:space="preserve">
     <value>Exit</value>
@@ -142,7 +142,7 @@
     <value>Update Available ({0})</value>
   </data>
 	<data name="versionAvailable" xml:space="preserve">
-    <value>Update for SoundSwitch ({1}) is available.</value>
+    <value>Update for SoundSwitch ({0}) is available.</value>
   </data>
 	<data name="clickToUpdate" xml:space="preserve">
     <value>Click here to update.</value>

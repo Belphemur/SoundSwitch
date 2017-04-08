@@ -70,7 +70,7 @@ namespace SoundSwitch.UI.Forms
             switchCommunicationDeviceCheckBox.Checked = AppModel.Instance.SetCommunications;
 
             var switchCommunicationsDeviceToolTip = new ToolTip();
-            switchCommunicationsDeviceToolTip.SetToolTip(switchCommunicationDeviceCheckBox, SettingsStrings.communicationsDevice);
+            switchCommunicationsDeviceToolTip.SetToolTip(switchCommunicationDeviceCheckBox, SettingsStrings.communicationsDeviceTooltip);
 
             var notificationToolTip = new ToolTip();
             notificationToolTip.SetToolTip(notificationComboBox, SettingsStrings.notificationTooltip);

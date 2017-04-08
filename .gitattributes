@@ -1,0 +1,14 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Explicitly declare text files you want to always be normalized and converted
+# to native line endings on checkout.
+*.bat     text eol=lf
+
+# Declare files that will always have CRLF line endings on checkout.
+*.cs      text eol=crlf
+*.resx    text eol=crlf
+
+*.sln     text eol=crlf
+*.csproj  text eol=crlf
+*.zreproj text eol=crlf
