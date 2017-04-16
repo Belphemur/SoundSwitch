@@ -1,3 +1,5 @@
+REM Use the following tool: https://github.com/skywinder/github-changelog-generator
+
 SETLOCAL
 SET "FILE_DIR=%~dp0"
 
