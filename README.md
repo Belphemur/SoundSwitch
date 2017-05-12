@@ -72,14 +72,16 @@ Would you like to help us with the localization? Great! See [Add or modify anoth
 ## Awards
 
 ### Giga 5 Stars
-[![Giga 5 stars](http://i.imgur.com/19GaPLQ.png)](http://www.giga.de/downloads/soundswitch/)
+[![Giga 5 stars](https://i.imgur.com/19GaPLQ.png)](http://www.giga.de/downloads/soundswitch/)
 
 ### Softpedia
 [![Softpedia](http://s1.softpedia-static.com/_img/sp100free.png)](http://www.softpedia.com/get/Multimedia/Audio/Other-AUDIO-Tools/SoundSwitch.shtml#status)
 
 ### Chip Online
-[![Chip Online de](http://i.imgur.com/Nedw1su.png)](http://www.chip.de/downloads/SoundSwitch_94258571.html)
+[![Chip Online de](https://i.imgur.com/Nedw1su.png)](http://www.chip.de/downloads/SoundSwitch_94258571.html)
 
+### netzwelt
+[![netzwelt GmbH](https://i.imgur.com/VaMTnxV.png)](https://www.netzwelt.de/download/24278-soundswitch.html)
 
 ## License: GPLv2
 
