@@ -241,6 +241,8 @@
     <Compile Include="Framework\Audio\CachedSoundFileNotExistsException.cs" />
     <Compile Include="Framework\Audio\CachedSoundWaveStream.cs" />
     <Compile Include="Framework\AutoStart.cs" />
+    <Compile Include="Framework\Banner\BannerData.cs" />
+    <Compile Include="Framework\Banner\BannerManager.cs" />
     <Compile Include="Framework\Configuration\IPCConfiguration.cs" />
     <Compile Include="Framework\Configuration\AppConfigs.cs" />
     <Compile Include="Framework\Configuration\ConfigurationManager.cs" />
@@ -267,16 +269,24 @@
     <Compile Include="Framework\Minidump\MemoryDumper.cs" />
     <Compile Include="Framework\NotificationManager\NotificationFactory.cs" />
     <Compile Include="Framework\NotificationManager\NotificationManager.cs" />
+    <Compile Include="Framework\NotificationManager\NotificationCustomSoundEnum.cs" />
     <Compile Include="Framework\NotificationManager\Notification\Configuration\INotificationConfiguration.cs" />
     <Compile Include="Framework\NotificationManager\Notification\Configuration\NotificationConfiguration.cs" />
     <Compile Include="Framework\NotificationManager\Notification\INotification.cs" />
     <Compile Include="Framework\NotificationManager\Notification\NotificationCustom.cs" />
     <Compile Include="Framework\NotificationManager\Notification\NotificationSound.cs" />
+    <Compile Include="Framework\NotificationManager\Notification\NotificationBanner.cs" />
     <Compile Include="Framework\NotificationManager\Notification\NotificationToast.cs" />
     <Compile Include="Framework\NotificationManager\Notification\NotificationWindows.cs" />
     <Compile Include="Framework\NotificationManager\Notification\NotificationNone.cs" />
     <Compile Include="Framework\NotificationManager\NotificationTypeEnum.cs" />
     <Compile Include="Framework\Toast\ToastData.cs" />
+    <Compile Include="Framework\Banner\BannerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Framework\Banner\BannerForm.Designer.cs">
+      <DependentUpon>BannerForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Framework\Toast\ToastManager.cs" />
     <Compile Include="Framework\TooltipInfoManager\TooltipInfoFactory.cs" />
     <Compile Include="Framework\TooltipInfoManager\TooltipInfoManager.cs" />
@@ -352,6 +362,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\TrayIcon.cs" />
+    <EmbeddedResource Include="Framework\Banner\BannerForm.resx">
+      <DependentUpon>BannerForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Localization\AboutStrings.de.resx" />
     <EmbeddedResource Include="Localization\AboutStrings.fr.resx" />
     <EmbeddedResource Include="Localization\AboutStrings.resx">

@@ -79,7 +79,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The audio file you selected to be used as notification can&apos;t be found. SoundSwitch switched the notification setting back to {1}..
+        ///   Looks up a localized string similar to The audio file you selected to be used as notification can&apos;t be found. SoundSwitch switched the notification setting back to {0}..
         /// </summary>
         internal static string audioFileNotFound {
             get {
@@ -287,6 +287,15 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Banner.
+        /// </summary>
+        internal static string notificationOptionBanner {
+            get {
+                return ResourceManager.GetString("notificationOptionBanner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Customized Sound Notification.
         /// </summary>
         internal static string notificationOptionCustomized {
@@ -335,7 +344,8 @@ namespace SoundSwitch.Localization {
         ///   Looks up a localized string similar to Windows Notification: The default windows tray pop-up.
         ///Sound Notification: Plays a sound on the switched Playback Device.
         ///Customized Sound Notification: Plays the specified sound on the switched Playback Device.
-        ///Toast Notification: Uses a special form of the windows tray pop-up version..
+        ///Toast Notification: Uses a special form of the windows tray pop-up version.
+        ///Banner: Uses a custom form always on top, may useful in certain for in-game usage because it stands above directdraw/opengl..
         /// </summary>
         internal static string notificationTooltip {
             get {
