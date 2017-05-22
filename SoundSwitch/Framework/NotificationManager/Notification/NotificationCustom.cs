@@ -58,6 +58,8 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             Configuration.CustomSound = newSound;
         }
 
+        public NotificationCustomSoundEnum SupportCustomSound() => NotificationCustomSoundEnum.Required;
+
         public bool NeedCustomSound()
         {
             return true;

@@ -75,7 +75,8 @@ namespace SoundSwitch.UI.Forms
             var notificationToolTip = new ToolTip();
             notificationToolTip.SetToolTip(notificationComboBox, SettingsStrings.notificationTooltip);
 
-            new NotificationFactory().ConfigureListControl(notificationComboBox);
+            var notificationFactory = new NotificationFactory();
+            notificationFactory.ConfigureListControl(notificationComboBox);
             notificationComboBox.SelectedValue = AppModel.Instance.NotificationSettings;
 
             selectSoundFileDialog.Filter = SettingsStrings.audioFiles + @" (*.wav;*.mp3)|*.wav;*.mp3;*.aiff";
@@ -83,8 +84,7 @@ namespace SoundSwitch.UI.Forms
             selectSoundFileDialog.CheckFileExists = true;
             selectSoundFileDialog.CheckPathExists = true;
 
-            selectSoundButton.Visible = AppModel.Instance.NotificationSettings == NotificationTypeEnum.CustomNotification ||
-                                        AppModel.Instance.NotificationSettings == NotificationTypeEnum.ToastNotification;
+            selectSoundButton.Visible = notificationFactory.Get(AppModel.Instance.NotificationSettings).SupportCustomSound() != NotificationCustomSoundEnum.NotSupported;
             var selectSoundButtonToolTip = new ToolTip();
             selectSoundButtonToolTip.SetToolTip(selectSoundButton, SettingsStrings.selectSoundButtonTooltip);
 
@@ -271,14 +271,14 @@ namespace SoundSwitch.UI.Forms
             if (value == null)
                 return;
 
-            if ((NotificationTypeEnum)value == AppModel.Instance.NotificationSettings)
+            NotificationTypeEnum notificationType = (NotificationTypeEnum)value;
+            if (notificationType == AppModel.Instance.NotificationSettings)
                 return;
 
-            var isCustomNotification = (NotificationTypeEnum)value == NotificationTypeEnum.CustomNotification;
-            selectSoundButton.Visible = isCustomNotification ||
-                                        (NotificationTypeEnum)value == NotificationTypeEnum.ToastNotification;
+            NotificationCustomSoundEnum supportCustomSound = new NotificationFactory().Get(notificationType).SupportCustomSound();
+            selectSoundButton.Visible = supportCustomSound != NotificationCustomSoundEnum.NotSupported;
 
-            if (isCustomNotification)
+            if (supportCustomSound == NotificationCustomSoundEnum.Required)
             {
                 try
                 {
@@ -290,7 +290,7 @@ namespace SoundSwitch.UI.Forms
                 }
             }
 
-            AppModel.Instance.NotificationSettings = (NotificationTypeEnum)value;
+            AppModel.Instance.NotificationSettings = notificationType;
         }
 
         private void tooltipInfoComboBox_SelectedValueChanged(object sender, EventArgs e)
