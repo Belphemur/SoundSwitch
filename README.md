@@ -85,7 +85,7 @@ Would you like to help us with the localization? Great! See [Add or modify anoth
 
 ## Thanks
 
-### JetBrain
+### JetBrains
 
 Thanks for their Open-Source licence to their amazing IDEs and addons like ReSharper for Visual Studio.
 
