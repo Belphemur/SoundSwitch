@@ -87,6 +87,8 @@ Would you like to help us with the localization? Great! See [Add or modify anoth
 
 ### JetBrain
 
+Thanks for their Open-Source licence to their amazing IDEs and addons like ReSharper for Visual Studio.
+
 [![JetBrain Tooling](https://i.imgur.com/opT9XBj.png)](https://www.jetbrains.com)
 
 ## License: GPLv2
