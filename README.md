@@ -83,6 +83,12 @@ Would you like to help us with the localization? Great! See [Add or modify anoth
 ### netzwelt
 [![netzwelt GmbH](https://i.imgur.com/VaMTnxV.png)](https://www.netzwelt.de/download/24278-soundswitch.html)
 
+## Thanks
+
+### JetBrain
+
+[![JetBrain Tooling](https://i.imgur.com/opT9XBj.png)](https://www.jetbrains.com)
+
 ## License: GPLv2
 
 Copyright (C) 2015 Jeroen Pelgrims
