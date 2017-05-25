@@ -31,8 +31,28 @@ IF "%~1" neq "" (
 )
 
 
-REM set msbuildexe="%programfiles(x86)%\MSBuild\14.0\Bin\MSBuild.exe"
-set msbuildexe="%programfiles(x86)%\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\msbuild.exe"
+set VS2017Ent=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin\msbuild.exe
+set VS2017Pro=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Professional\MSBuild\15.0\Bin\msbuild.exe
+set VS2017Community=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\msbuild.exe
+set VS2015=%ProgramFiles(x86)%\MSBuild\14.0\bin\msbuild.exe
+
+if exist "%VS2017Ent%" (
+  echo Using VS2017Ent
+  set msbuildexe="%VS2017Ent%"
+) else (
+    if exist "%VS2017Community%" (
+      echo Using VS2017Community
+      set msbuildexe="%VS2017Community%"
+    ) else (
+        if exist "%VS2017Pro%" (
+          echo Using VS2017Pro
+          set msbuildexe="%VS2017Pro%"
+        ) else (
+            echo Fallback to VS2015
+            set msbuildexe="%VS2015%"
+        )
+    )
+)
 
 Echo Making SoundSwitch %buildPlatform%
 Echo.

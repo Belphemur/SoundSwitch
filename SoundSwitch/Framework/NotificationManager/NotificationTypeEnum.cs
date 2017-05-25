@@ -20,6 +20,7 @@ namespace SoundSwitch.Framework.NotificationManager
         SoundNotification = 1,
         NoNotification = 2,
         CustomNotification = 3,
-        ToastNotification = 4
+        ToastNotification = 4,
+        BannerNotification = 5
     }
 }

@@ -32,6 +32,7 @@
 *.dSYM/
 
 # Visual Studio
+.vs/
 bin/
 obj/
 Debug/
@@ -55,3 +56,4 @@ packages/
 /SoundSwitch.VC.VC.opendb
 /SoundSwitch.VC.db
 /SoundSwitch.psess
+

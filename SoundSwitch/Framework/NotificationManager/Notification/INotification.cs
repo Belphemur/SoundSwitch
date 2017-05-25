@@ -39,6 +39,12 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         void OnSoundChanged(CachedSound newSound);
 
         /// <summary>
+        /// Does the notification support a Custom Sound
+        /// </summary>
+        /// <returns></returns>
+        NotificationCustomSoundEnum SupportCustomSound();
+
+        /// <summary>
         /// Does the notification need a Custom Sound set to work
         /// </summary>
         /// <returns></returns>

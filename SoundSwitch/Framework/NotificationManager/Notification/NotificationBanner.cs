@@ -13,45 +13,54 @@
 ********************************************************************/
 
 using System;
-using System.Windows.Forms;
+using System.IO;
 using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
+using SoundSwitch.Framework.Banner;
 using SoundSwitch.Localization;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification
 {
-    public class NotificationWindows : INotification
+    public class NotificationBanner : INotification
     {
-        public NotificationTypeEnum TypeEnum => NotificationTypeEnum.DefaultWindowsNotification;
-        public string Label => SettingsStrings.notificationOptionWindowsDefault;
+        public NotificationTypeEnum TypeEnum => NotificationTypeEnum.BannerNotification;
+        public string Label => SettingsStrings.notificationOptionBanner;
 
         public INotificationConfiguration Configuration { get; set; }
 
         public void NotifyDefaultChanged(IAudioDevice audioDevice)
         {
+            var toastData = new BannerData
+            {
+                ImagePath = new System.Uri(Path.GetFullPath(ApplicationPath.DefaultImagePath)).AbsoluteUri,
+                Text = audioDevice.FriendlyName
+            };
+            if (Configuration.CustomSound != null && File.Exists(Configuration.CustomSound.FilePath))
+            {
+                toastData.SoundFilePath = Configuration.CustomSound.FilePath;
+            }
+
             switch (audioDevice.Type)
             {
                 case AudioDeviceType.Playback:
-                    Configuration.Icon.ShowBalloonTip(500,
-                                                      TrayIconStrings.playbackChanged,
-                                                      audioDevice.FriendlyName, ToolTipIcon.Info);
+                    toastData.Title = SettingsStrings.tooltipOnHoverOptionPlaybackDevice;
                     break;
                 case AudioDeviceType.Recording:
-                    Configuration.Icon.ShowBalloonTip(500,
-                                                      TrayIconStrings.recordingChanged,
-                                                      audioDevice.FriendlyName, ToolTipIcon.Info);
+                    toastData.Title = SettingsStrings.tooltipOnHoverOptionRecordingDevice;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(audioDevice.Type), audioDevice.Type, null);
             }
+            new BannerManager().ShowNotification(toastData);
         }
 
         public void OnSoundChanged(CachedSound newSound)
         {
+            Configuration.CustomSound = newSound;
         }
 
-        public NotificationCustomSoundEnum SupportCustomSound() => NotificationCustomSoundEnum.NotSupported;
+        public NotificationCustomSoundEnum SupportCustomSound() => NotificationCustomSoundEnum.Optional;
 
         public bool NeedCustomSound()
         {
@@ -60,6 +69,9 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
 
         public bool IsAvailable()
         {
+            BannerManager.Setup();
+
+            // Available in all Windows versions
             return true;
         }
     }
