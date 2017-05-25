@@ -107,10 +107,21 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
-## Credits
+## Contributors
 
-### Original Developer
-[Jeroen Pelgrims](http://jeroenpelgrims.be)
+### [Jeroen Pelgrims](http://jeroenpelgrims.be)
+Original Developer
+
+### [@adamblackburn](https://github.com/adamblackburn)
+Disabling Notification with merge request [#33](https://github.com/Belphemur/SoundSwitch/pull/33)
+
+### [@FireEmerald](https://github.com/FireEmerald) 
+Localization and German language with merge request [#157](https://github.com/Belphemur/SoundSwitch/pull/157)
+
+### [@ramon18](https://github.com/ramon18)
+Banner Notification with merge request [#186](https://github.com/Belphemur/SoundSwitch/pull/186)
+
+## Credits
 
 ### Icons
 The [Pastel SVG icon set](https://codefisher.org/pastel-svg/) Created by Michael Buckley is licensed under the:
@@ -123,12 +134,6 @@ http://creativecommons.org/licenses/by-nc-sa/4.0/
 
 ### Changing default sound device
 [EreTIk](http://eretik.omegahg.com/)
-
-### Disabling notification
-[@adamblackburn](https://github.com/adamblackburn) with merge request [#33](https://github.com/Belphemur/SoundSwitch/pull/33)
-
-### Localization and German language
-[@FireEmerald](https://github.com/FireEmerald) with merge request [#157](https://github.com/Belphemur/SoundSwitch/pull/157)
-
+ 
 ### Notification Sound
 [Music box notification sound by Robinhood76](https://www.freesound.org/people/Robinhood76/sounds/216676/)
