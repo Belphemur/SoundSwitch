@@ -210,10 +210,10 @@
 	</data>
 	<data name="notificationTooltip" xml:space="preserve">
 		<value>Notif. Windows: Popup sur l'icone de système.
-Notifi. Sonore: Joue un son.
+Notif. Sonore: Joue un son.
 Notif. Sonore Perso: Joue le son choisi.
 Notif. Toast: Popup sur le coté de l'écran dans Windows 10.
-Banner: Uses a custom always-on-top frame, useful for in-game usage.</value>
+Ban. : Bannière discrète sur fond noir transparent sur le coté gauche de l'écran.</value>
 	</data>
 	<data name="language" xml:space="preserve">
 		<value>Langue</value>
