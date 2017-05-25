@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
 	<!-- 
     Microsoft ResX Schema 
@@ -233,7 +233,7 @@
 Sound Notification: Plays a sound on the switched Playback Device.
 Customized Sound Notification: Plays the specified sound on the switched Playback Device.
 Toast Notification: Uses a special form of the windows tray pop-up version.
-Uses a custom always-on-top frame, useful for in-game usage.</value>
+Banner: Uses a custom always-on-top frame, useful for in-game usage.</value>
   </data>
 	<data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
     <value>Playback Device</value>
@@ -275,7 +275,7 @@ Do you want to restart now?</value>
 	<data name="updateNotifyTooltip" xml:space="preserve">
 		<value>SoundSwitch will notify you when there is a new update available. When clicking on the notification, you'll get a popup downloading the update for you and asking if you want to install it.</value>
 	</data>
-    <data name="notificationOptionBanner" xml:space="preserve">
+	<data name="notificationOptionBanner" xml:space="preserve">
         <value>Banner</value>
-    </data>        
+    </data>
 </root>
