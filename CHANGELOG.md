@@ -1,5 +1,22 @@
 # Change Log
 
+## [v3.14.2](https://github.com/Belphemur/SoundSwitch/tree/v3.14.2) (2017-05-25)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.14.1...v3.14.2)
+
+**Fixed bugs:**
+
+- Unresponsive after RDC [\#112](https://github.com/Belphemur/SoundSwitch/issues/112)
+
+**Closed issues:**
+
+- Error after Creator's Update [\#185](https://github.com/Belphemur/SoundSwitch/issues/185)
+- Kaspersky Internet Security detects Virus and crashes SoundSwitch while updating \(false-positive\) [\#180](https://github.com/Belphemur/SoundSwitch/issues/180)
+
+**Merged pull requests:**
+
+- Add thanks category [\#188](https://github.com/Belphemur/SoundSwitch/pull/188) ([Belphemur](https://github.com/Belphemur))
+- Some improvements and a feature [\#186](https://github.com/Belphemur/SoundSwitch/pull/186) ([ramon18](https://github.com/ramon18))
+
 ## [v3.14.1](https://github.com/Belphemur/SoundSwitch/tree/v3.14.1) (2017-04-08)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.14.0...v3.14.1)
 
