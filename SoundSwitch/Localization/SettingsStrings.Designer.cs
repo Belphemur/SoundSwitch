@@ -345,7 +345,7 @@ namespace SoundSwitch.Localization {
         ///Sound Notification: Plays a sound on the switched Playback Device.
         ///Customized Sound Notification: Plays the specified sound on the switched Playback Device.
         ///Toast Notification: Uses a special form of the windows tray pop-up version.
-        ///Banner: Uses a custom form always on top, may useful in certain for in-game usage because it stands above directdraw/opengl..
+        ///Banner: Uses a custom always-on-top frame, useful for in-game usage..
         /// </summary>
         internal static string notificationTooltip {
             get {

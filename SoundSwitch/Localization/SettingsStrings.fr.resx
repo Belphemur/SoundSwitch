@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
 	<!-- 
 		Microsoft ResX Schema
@@ -209,11 +209,11 @@
 		<value>Notification Windows</value>
 	</data>
 	<data name="notificationTooltip" xml:space="preserve">
-		<value>Notif. Windows: Popup sur l'icone de système
-Notifi. Sonore: Joue un son
-Notif. Sonore Perso: Joue le son choisi
+		<value>Notif. Windows: Popup sur l'icone de système.
+Notifi. Sonore: Joue un son.
+Notif. Sonore Perso: Joue le son choisi.
 Notif. Toast: Popup sur le coté de l'écran dans Windows 10.
-Uses a custom always-on-top frame, useful for in-game usage.</value>
+Banner: Uses a custom always-on-top frame, useful for in-game usage.</value>
 	</data>
 	<data name="language" xml:space="preserve">
 		<value>Langue</value>
@@ -254,7 +254,7 @@ Uses a custom always-on-top frame, useful for in-game usage.</value>
 	<data name="updateNotifyTooltip" xml:space="preserve">
 		<value>SoundSwitch vous préviendra quand une MàJ est disponible. Il téléchargera pour vous la MàJ et vous demandera si vous voulez l'installer.</value>
 	</data>
-    <data name="notificationOptionBanner" xml:space="preserve">
+	<data name="notificationOptionBanner" xml:space="preserve">
         <value>Bannière</value>
-    </data>        
+    </data>
 </root>
