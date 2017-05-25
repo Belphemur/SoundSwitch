@@ -33,7 +33,7 @@ namespace SoundSwitch.Framework.Configuration
 
             // Audio Settings
             ChangeCommunications = false;
-            NotificationSettings = NotificationTypeEnum.DefaultWindowsNotification;
+            NotificationSettings = NotificationTypeEnum.BannerNotification;
             TooltipInfo = TooltipInfoTypeEnum.Playback;
             CyclerType = DeviceCyclerTypeEnum.Available;
 
