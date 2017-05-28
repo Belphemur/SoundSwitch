@@ -76,8 +76,8 @@ namespace SoundSwitch.Framework.Banner
                 this.timerHide.Enabled = false;
             }
 
-            if (!string.IsNullOrEmpty(data.ImagePath) && System.IO.File.Exists(data.ImagePath))
-                this.pbxLogo.ImageLocation = data.ImagePath;
+            if (data.Image != null)
+                this.pbxLogo.Image = data.Image;
 
             DestroySound();
 

@@ -19,6 +19,7 @@ using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
 using SoundSwitch.Framework.Banner;
 using SoundSwitch.Localization;
+using SoundSwitch.Util;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification
 {
@@ -33,7 +34,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         {
             var toastData = new BannerData
             {
-                ImagePath = new System.Uri(Path.GetFullPath(ApplicationPath.DefaultImagePath)).AbsoluteUri,
+                Image = AudioDeviceIconExtractor.ExtractIconFromAudioDevice(audioDevice, true).ToBitmap(),
                 Text = audioDevice.FriendlyName
             };
             if (Configuration.CustomSound != null && File.Exists(Configuration.CustomSound.FilePath))

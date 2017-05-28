@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,7 +39,7 @@ namespace SoundSwitch.Framework.Banner
         /// <summary>
         /// Gets/sets the path for an image, this is optional.
         /// </summary>
-        public string ImagePath { get; internal set; }
+        public Image Image { get; internal set; }
 
         /// <summary>
         /// Gets/sets the path for a wav sound to be playedc during the notification, this is optional.
