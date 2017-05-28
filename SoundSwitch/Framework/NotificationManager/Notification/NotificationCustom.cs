@@ -25,12 +25,20 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
 {
     public class NotificationCustom : INotification
     {
-        private readonly MMDeviceEnumerator _deviceEnumerator = new MMDeviceEnumerator();
+        private MMDeviceEnumerator _deviceEnumerator;
 
         public NotificationTypeEnum TypeEnum => NotificationTypeEnum.CustomNotification;
         public string Label => SettingsStrings.notificationOptionCustomized;
 
         public INotificationConfiguration Configuration { get; set; }
+
+        private MMDeviceEnumerator GetEnumerator()
+        {
+            if (_deviceEnumerator != null)
+                return _deviceEnumerator;
+
+            return _deviceEnumerator = new MMDeviceEnumerator();
+        }
 
         public void NotifyDefaultChanged(IAudioDevice audioDevice)
         {
@@ -38,7 +46,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
                 return;
             var task = new Task(() =>
             {
-                var device = _deviceEnumerator.GetDevice(audioDevice.Id);
+                var device = GetEnumerator().GetDevice(audioDevice.Id);
                 using (var output = new WasapiOut(device, AudioClientShareMode.Shared, true, 10))
                 using (var waveStream = new CachedSoundWaveStream(Configuration.CustomSound))
                 {

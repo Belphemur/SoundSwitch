@@ -26,17 +26,20 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
 {
     public class NotificationSound : INotification
     {
-        private readonly MMDeviceEnumerator _deviceEnumerator;
-
-        public NotificationSound()
-        {
-            _deviceEnumerator = new MMDeviceEnumerator();
-        }
+        private MMDeviceEnumerator _deviceEnumerator;
 
         public NotificationTypeEnum TypeEnum => NotificationTypeEnum.SoundNotification;
         public string Label => SettingsStrings.notificationOptionSound;
 
         public INotificationConfiguration Configuration { get; set; }
+
+        private MMDeviceEnumerator GetEnumerator()
+        {
+            if (_deviceEnumerator != null)
+                return _deviceEnumerator;
+
+            return _deviceEnumerator = new MMDeviceEnumerator();
+        }
 
         public void NotifyDefaultChanged(IAudioDevice audioDevice)
         {
@@ -47,7 +50,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             {
                 using (var memoryStreamedSound = GetStreamCopy())
                 {
-                    var device = _deviceEnumerator.GetDevice(audioDevice.Id);
+                    var device = GetEnumerator().GetDevice(audioDevice.Id);
                     using (var output = new WasapiOut(device, AudioClientShareMode.Shared, true, 10))
                     {
                         output.Init(new WaveFileReader(memoryStreamedSound));
