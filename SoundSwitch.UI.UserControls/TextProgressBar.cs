@@ -44,14 +44,18 @@ namespace SoundSwitch.UI.UserControls
             var rect = ClientRectangle;
             var g = e.Graphics;
 
-            ProgressBarRenderer.DrawHorizontalBar(g, rect);
-            rect.Inflate(-3, -3);
-            if (Value > 0)
+            // Validate that the user has enabled visual styles in the operating system
+            if (ProgressBarRenderer.IsSupported)
             {
-                // As we doing this ourselves we need to draw the chunks on the progress bar
-                var clip = new Rectangle(rect.X, rect.Y, (int)Math.Round(((float)Value / Maximum) * rect.Width),
-                    rect.Height);
-                ProgressBarRenderer.DrawHorizontalChunks(g, clip);
+                ProgressBarRenderer.DrawHorizontalBar(g, rect);
+                rect.Inflate(-3, -3);
+                if (Value > 0)
+                {
+                    // As we doing this ourselves we need to draw the chunks on the progress bar
+                    var clip = new Rectangle(rect.X, rect.Y, (int) Math.Round(((float) Value / Maximum) * rect.Width),
+                        rect.Height);
+                    ProgressBarRenderer.DrawHorizontalChunks(g, clip);
+                }
             }
 
             // Set the Display text (Either a % amount or our custom text
@@ -68,7 +72,6 @@ namespace SoundSwitch.UI.UserControls
                     text = String.Format("{0}%", Value);
                     break;
             }
-
 
             using (var f = new Font(FontFamily.GenericSansSerif, 8.25F))
             {
