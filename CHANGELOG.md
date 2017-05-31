@@ -1,5 +1,26 @@
 # Change Log
 
+## [v3.15.0](https://github.com/Belphemur/SoundSwitch/tree/v3.15.0) (2017-05-31)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.14.2...v3.15.0)
+
+**Implemented enhancements:**
+
+- Make the banner notification use the image of the Device [\#192](https://github.com/Belphemur/SoundSwitch/issues/192)
+- Update German [\#189](https://github.com/Belphemur/SoundSwitch/issues/189)
+- Unable to bind ScrollLock as a hotkey [\#151](https://github.com/Belphemur/SoundSwitch/issues/151)
+
+**Fixed bugs:**
+
+- Installer don't detect .net 4.7 [\#193](https://github.com/Belphemur/SoundSwitch/issues/193)
+
+**Closed issues:**
+
+- Recording device hotkey doesn't cycle [\#191](https://github.com/Belphemur/SoundSwitch/issues/191)
+
+**Merged pull requests:**
+
+- Translations [\#190](https://github.com/Belphemur/SoundSwitch/pull/190) ([Belphemur](https://github.com/Belphemur))
+
 ## [v3.14.2](https://github.com/Belphemur/SoundSwitch/tree/v3.14.2) (2017-05-25)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.14.1...v3.14.2)
 
