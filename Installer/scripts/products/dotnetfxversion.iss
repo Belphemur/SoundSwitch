@@ -104,7 +104,7 @@ begin
 					regVersion := 0 // 4.6.0
 				else if (regVersion = 394254) or (regVersion = 394271) then
 					regVersion := 1 // 4.6.1
-				else if (regVersion >= 394802) and (regVersion <= 394806) then
+				else if (regVersion >= 394802) then
 					regVersion := 2 //4.6.2
 				else
 					regVersion := -1;
