@@ -9,7 +9,7 @@
 ## Dependencies
 The following components are required to run SoundSwitch on your Windows device:
 - [Microsoft .NET Framework 4.6.2 (Web Installer)](https://www.microsoft.com/en-us/download/details.aspx?id=53345) 
-- [Visual C++ Redistributable for Visual Studio 2015](https://www.microsoft.com/en-us/download/details.aspx?id=53587)
+- [Visual C++ Redistributable for Visual Studio 2017](https://go.microsoft.com/fwlink/?LinkId=746572)
 
 ## Donations
 If you want to donate for the development don't hesite [to do it here](https://www.aaflalo.me/donate/).
