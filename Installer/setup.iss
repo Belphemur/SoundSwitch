@@ -8,7 +8,7 @@
 
 #define use_dotnetfx46
 
-#define use_vc2015
+#define use_vc2017
 
 #define MyAppSetupName 'SoundSwitch'
 #define ExeDir  '..\Final\'
@@ -38,6 +38,7 @@ CloseApplications=yes
 SignTool=SoundSwitch
 SignedUninstaller=yes
 LicenseFile={#ExeDir}\LICENSE.txt
+SetupLogging=yes
 ;AppMutex={#MyAppSetupName}
 
 ;MinVersion default value: "0,5.0 (Windows 2000+) if Unicode Inno Setup, else 4.0,4.0 (Windows 95+)"
@@ -217,6 +218,9 @@ end;
 #ifdef use_vc2015
 #include "scripts\products\vcredist2015.iss"
 #endif
+#ifdef use_vc2017
+#include "scripts\products\vcredist2017.iss"
+#endif
 
 #ifdef use_mdac28
 #include "scripts\products\mdac28.iss"
@@ -349,6 +353,9 @@ begin
 #ifdef use_vc2015
 	vcredist2015();
 #endif
+#ifdef use_vc2017
+	vcredist2017();
+#endif
 
 #ifdef use_mdac28
 	mdac28('2.7'); // min allowed version is 2.7
@@ -374,3 +381,16 @@ procedure InitializeWizard();
 begin
   idpDownloadAfter(wpReady); 
 end;
+
+// Called just before Setup terminates. Note that this function is called even if the user exits Setup before anything is installed.
+procedure DeinitializeSetup();
+var
+  logfilepathname, logfilename, newfilepathname: string;
+begin
+  logfilepathname := ExpandConstant('{log}');
+  logfilename := ExtractFileName(logfilepathname);
+  // Set the new target path as the directory where the installer is being run from
+  newfilepathname := ExpandConstant('{src}\') + logfilename;
+
+  FileCopy(logfilepathname, newfilepathname, false);
+end; 
