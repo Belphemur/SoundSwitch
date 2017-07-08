@@ -1,5 +1,26 @@
 # Change Log
 
+## [v3.15.1](https://github.com/Belphemur/SoundSwitch/tree/v3.15.1) (2017-07-08)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.15.0...v3.15.1)
+
+**Fixed bugs:**
+
+- Can't install vcredist with the built in installer provided by soundswitch [\#203](https://github.com/Belphemur/SoundSwitch/issues/203)
+- Hotkeys Alt+Ctrl+F11 bug. [\#200](https://github.com/Belphemur/SoundSwitch/issues/200)
+- SoundSwitch in Homeoffice/Office [\#199](https://github.com/Belphemur/SoundSwitch/issues/199)
+- Updater Progress bar crash with Classic Visual Theme [\#194](https://github.com/Belphemur/SoundSwitch/issues/194)
+
+**Closed issues:**
+
+- High CPU usage because of "Windows Audio Device Graph Isolation" process [\#198](https://github.com/Belphemur/SoundSwitch/issues/198)
+- Error popup when trying to install latest update [\#196](https://github.com/Belphemur/SoundSwitch/issues/196)
+- Branding version for GTribe [\#148](https://github.com/Belphemur/SoundSwitch/issues/148)
+
+**Merged pull requests:**
+
+- Add VC Redist 2017 as dependency [\#204](https://github.com/Belphemur/SoundSwitch/pull/204) ([Belphemur](https://github.com/Belphemur))
+- Fixed a crash which happened if the user disabled visual styles e.g. with the 'Windows Classic' theme of Windows 7. [\#195](https://github.com/Belphemur/SoundSwitch/pull/195) ([FireEmerald](https://github.com/FireEmerald))
+
 ## [v3.15.0](https://github.com/Belphemur/SoundSwitch/tree/v3.15.0) (2017-05-31)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.14.2...v3.15.0)
 
