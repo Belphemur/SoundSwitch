@@ -50,6 +50,8 @@ ArchitecturesInstallIn64BitMode=x64
 ;Downloading and installing dependencies will only work if the memo/ready page is enabled (default behaviour)
 DisableReadyPage=no
 DisableReadyMemo=no
+Uninstallable=not IsTaskSelected('portablemode')
+CreateUninstallRegKey=not IsTaskSelected('portablemode')
 
 [Languages]
 Name: "en"; MessagesFile: "compiler:Default.isl"
@@ -58,7 +60,8 @@ Name: "fr";    MessagesFile: "compiler:Languages\French.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
-Name: "certs"; Description: "{cm:AddCertDescription}"; GroupDescription: "Certificates:" ;
+Name: "certs"; Description: "{cm:AddCertDescription}"; GroupDescription: "Certificates:"
+Name: "portablemode"; Description: "{cm:PortableMode}";  GroupDescription: "{cm:GroupPortableMode}"; Flags: unchecked
 
 [Files]
 Source: "{#ExeDir}x64\SoundSwitch.exe.config"; DestDir: "{app}"; Check: Is64BitInstallMode  ; Flags: 64bit
@@ -102,6 +105,10 @@ Filename: "certutil.exe"; Parameters: "-addstore ""TrustedPublisher"" ""{app}\ce
 win_sp_title=Windows %1 Service Pack %2
 en.AddCertDescription=Trust SoundSwitch Certficates%nThis way you won't have warnings when SoundSwitch is updating.
 fr.AddCertDescription=Installer les certificats de SoundSwitch%nSi sélectionné, Windows reconnaîtra SoundSwitch comme étant un distributeur valide.
+en.GroupPortableMode=Portable Mode
+fr.GroupPortableMode=Mode portable
+en.PortableMode=If selected, doesn't install for all the user.
+fr.PortableMode=Si sélectionné, SoundSwitch ne sera pas install� pour tous les utilisateurs.
 
 [UninstallRun]
 Filename: "certutil.exe"; Parameters: "-delstore ""Root"" ""eb db 8a 0a 72 a6 02 91 40 74 9e a2 af 63 d2 fc""" ; Flags: runhidden runascurrentuser
