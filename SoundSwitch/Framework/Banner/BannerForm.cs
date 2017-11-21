@@ -91,22 +91,7 @@ namespace SoundSwitch.Framework.Banner
 
             if (data.SoundFile != null)
             {
-                player = new WasapiOut();
-                var task = new Task(() =>
-                {
-                    using (var waveStream = new CachedSoundWaveStream(data.SoundFile))
-                    {
-                        player.Init(waveStream);
-                        player.Play();
-                        while (player.PlaybackState == PlaybackState.Playing)
-                        {
-                            Thread.Sleep(500);
-                        }
-
-                    }
-                });
-                task.Start();
-
+                PrepareSound(data);
             }
 
             this.hiding = false;
@@ -116,6 +101,28 @@ namespace SoundSwitch.Framework.Banner
             this.timerHide.Enabled = true;
 
             this.Show();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        private void PrepareSound(BannerData data)
+        {
+            player = new WasapiOut();
+            var task = new Task(() =>
+            {
+                using (var waveStream = new CachedSoundWaveStream(data.SoundFile))
+                {
+                    player.Init(waveStream);
+                    player.Play();
+                    while (player.PlaybackState == PlaybackState.Playing)
+                    {
+                        Thread.Sleep(500);
+                    }
+                }
+            });
+            task.Start();
         }
 
         /// <summary>
