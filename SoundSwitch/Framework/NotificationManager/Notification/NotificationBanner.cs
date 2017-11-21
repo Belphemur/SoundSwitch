@@ -39,7 +39,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             };
             if (Configuration.CustomSound != null && File.Exists(Configuration.CustomSound.FilePath))
             {
-                toastData.SoundFilePath = Configuration.CustomSound.FilePath;
+                toastData.SoundFile = Configuration.CustomSound;
             }
 
             switch (audioDevice.Type)

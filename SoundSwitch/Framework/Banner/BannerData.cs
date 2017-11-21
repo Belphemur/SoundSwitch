@@ -15,9 +15,11 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SoundSwitch.Framework.Audio;
 
 namespace SoundSwitch.Framework.Banner
 {
@@ -44,6 +46,6 @@ namespace SoundSwitch.Framework.Banner
         /// <summary>
         /// Gets/sets the path for a wav sound to be playedc during the notification, this is optional.
         /// </summary>
-        public string SoundFilePath { get; internal set; }
+        public CachedSound SoundFile { get; internal set; }
     }
 }

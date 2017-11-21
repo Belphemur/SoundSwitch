@@ -18,8 +18,14 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using NAudio.CoreAudioApi;
+using NAudio.Wave;
+using SoundSwitch.Framework.Audio;
+using Timer = System.Windows.Forms.Timer;
 
 namespace SoundSwitch.Framework.Banner
 {
@@ -30,7 +36,9 @@ namespace SoundSwitch.Framework.Banner
     {
         private Timer timerHide;
         private bool hiding;
-        private System.Media.SoundPlayer player;
+
+
+        private WasapiOut player;
 
         /// <summary>
         /// Constructor for the <see cref="BannerForm"/> class
@@ -81,11 +89,24 @@ namespace SoundSwitch.Framework.Banner
 
             DestroySound();
 
-            if (!string.IsNullOrEmpty(data.SoundFilePath))
+            if (data.SoundFile != null)
             {
-                this.player = new System.Media.SoundPlayer();
-                player.SoundLocation = data.SoundFilePath;
-                player.Play();
+                player = new WasapiOut();
+                var task = new Task(() =>
+                {
+                    using (var waveStream = new CachedSoundWaveStream(data.SoundFile))
+                    {
+                        player.Init(waveStream);
+                        player.Play();
+                        while (player.PlaybackState == PlaybackState.Playing)
+                        {
+                            Thread.Sleep(500);
+                        }
+
+                    }
+                });
+                task.Start();
+
             }
 
             this.hiding = false;
@@ -104,10 +125,12 @@ namespace SoundSwitch.Framework.Banner
         {
             if (this.player != null)
             {
+                this.player.Stop();
                 this.player.Dispose();
                 this.player = null;
             }
         }
+      
 
         /// <summary>
         /// Event handler for the "hiding" timer.
