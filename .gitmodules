@@ -1,6 +1,3 @@
-[submodule "AudioEndPointLibrary"]
-	path = AudioEndPointLibrary
-	url = https://github.com/Belphemur/AudioEndPointLibrary.git	
 [submodule "AudioDefaultSwitcher"]
 	path = AudioDefaultSwitcher
 	url = https://github.com/Belphemur/AudioDefaultSwitcher.git
