@@ -15,7 +15,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using AudioEndPointControllerWrapper;
+using NAudio.CoreAudioApi;
 using SoundSwitch.Framework;
 using SoundSwitch.Properties;
 
@@ -75,23 +75,23 @@ namespace SoundSwitch.Util
         /// <param name="audioDevice"></param>
         /// <param name="largeIcon"></param>
         /// <returns></returns>
-        public static Icon ExtractIconFromAudioDevice(IAudioDevice audioDevice, bool largeIcon)
+        public static Icon ExtractIconFromAudioDevice(MMDevice audioDevice, bool largeIcon)
         {
             Icon ico;
-            var iconKey = new IconKey(audioDevice.DeviceClassIconPath, largeIcon);
+            var iconKey = new IconKey(audioDevice.IconPath, largeIcon);
             if (IconCache.TryGetValue(iconKey, out ico))
             {
                 return ico;
             }
             try
             {
-                if (audioDevice.DeviceClassIconPath.EndsWith(".ico"))
+                if (audioDevice.IconPath.EndsWith(".ico"))
                 {
-                    ico = Icon.ExtractAssociatedIcon(audioDevice.DeviceClassIconPath);
+                    ico = Icon.ExtractAssociatedIcon(audioDevice.IconPath);
                 }
                 else
                 {
-                    var iconInfo = audioDevice.DeviceClassIconPath.Split(',');
+                    var iconInfo = audioDevice.IconPath.Split(',');
                     var dllPath = iconInfo[0];
                     var iconIndex = int.Parse(iconInfo[1]);
                     ico = IconExtractor.Extract(dllPath, iconIndex, largeIcon);
@@ -99,13 +99,13 @@ namespace SoundSwitch.Util
             }
             catch (Exception e)
             {
-                AppLogger.Log.Error($"Can't extract icon from {audioDevice.DeviceClassIconPath}\n Ex: ", e);
-                switch (audioDevice.Type)
+                AppLogger.Log.Error($"Can't extract icon from {audioDevice.IconPath}\n Ex: ", e);
+                switch (audioDevice.DataFlow)
                 {
-                    case AudioDeviceType.Playback:
+                    case DataFlow.Capture:
                         ico = Resources.defaultSpeakers;
                         break;
-                    case AudioDeviceType.Recording:
+                    case DataFlow.Render:
                         ico = Resources.defaultMicrophone;
                         break;
                     default:

@@ -22,7 +22,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Remoting;
 using System.Threading;
 using System.Windows.Forms;
-using AudioEndPointControllerWrapper;
+using NAudio.CoreAudioApi;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.IPC;

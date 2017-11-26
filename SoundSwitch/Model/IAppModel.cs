@@ -15,6 +15,7 @@
 
 using System;
 using System.Collections.Generic;
+using AudioDefaultSwitcherWrapper;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
@@ -118,20 +119,6 @@ namespace SoundSwitch.Model
         ///     The update checker found a newer release than the installed version.
         /// </summary>
         event EventHandler<NewReleaseAvailableEvent> NewVersionReleased;
-        /// <summary>
-        /// When a device change state like from NotPresent to Active
-        /// </summary>
-        event EventHandler<DeviceStateChangedEvent> DeviceStateChanged;
-
-        /// <summary>
-        /// If a device is removed from the system
-        /// </summary>
-        event EventHandler<DeviceRemovedEvent> DeviceRemoved;
-
-        /// <summary>
-        /// If a device is added in the system
-        /// </summary>
-        event EventHandler<DeviceAddedEvent> DeviceAdded;
 
         /// <summary>
         /// If the NotificationSettings has been modified
@@ -178,7 +165,7 @@ namespace SoundSwitch.Model
         /// <param name="hotkeys"></param>
         /// <param name="deviceType"></param>
         /// <returns>if it's successfull</returns>
-        bool SetHotkeyCombination(HotKeys hotkeys, DataFlow deviceType);
+        bool SetHotkeyCombination(HotKeys hotkeys, DeviceType deviceType);
 
         /// <summary>
         ///     Attempts to set active device to the specified name
@@ -191,7 +178,7 @@ namespace SoundSwitch.Model
         ///     as far as we can tell), returns false if could not successfully switch. Throws NoDevicesException
         ///     if there are no devices configured.
         /// </summary>
-        bool CycleActiveDevice(DataFlow type);
+        bool CycleActiveDevice(DeviceType type);
 
         #endregion
 

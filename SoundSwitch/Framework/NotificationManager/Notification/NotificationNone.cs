@@ -12,7 +12,6 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using AudioEndPointControllerWrapper;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;

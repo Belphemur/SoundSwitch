@@ -81,13 +81,15 @@ namespace SoundSwitch.Model
 
     public class DeviceDefaultChangedEvent : EventArgs
     {
-        public DeviceDefaultChangedEvent(string deviceId, MMDevice device)
+        public DeviceDefaultChangedEvent(MMDevice device, DeviceRole role)
         {
-            DeviceId = deviceId;
+            DeviceId = device.ID;
             Device = device;
+            Role = role;
         }
 
         public string DeviceId { get; }
         public MMDevice Device { get; }
+        public DeviceRole Role { get; }
     }
 }

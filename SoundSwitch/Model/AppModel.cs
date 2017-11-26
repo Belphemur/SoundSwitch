@@ -291,15 +291,15 @@ namespace SoundSwitch.Model
         {
             var result = false;
             DeviceListChanged eventChanged = null;
-            switch (device.Type)
+            switch ((DeviceType)device.DataFlow)
             {
                 case DeviceType.Playback:
-                    result = SelectedPlaybackDevicesList.Add(device.Id);
-                    eventChanged = new DeviceListChanged(SelectedPlaybackDevicesList, device.Type);
+                    result = SelectedPlaybackDevicesList.Add(device.ID);
+                    eventChanged = new DeviceListChanged(SelectedPlaybackDevicesList, (DeviceType)device.DataFlow);
                     break;
                 case DeviceType.Recording:
-                    result = SelectedRecordingDevicesList.Add(device.Id);
-                    eventChanged = new DeviceListChanged(SelectedRecordingDevicesList, device.Type);
+                    result = SelectedRecordingDevicesList.Add(device.ID);
+                    eventChanged = new DeviceListChanged(SelectedRecordingDevicesList, (DeviceType)device.DataFlow);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -322,15 +322,15 @@ namespace SoundSwitch.Model
         {
             var result = false;
             DeviceListChanged eventChanged = null;
-            switch (device.Type)
+            switch ((DeviceType)device.DataFlow)
             {
                 case DeviceType.Playback:
-                    result = SelectedPlaybackDevicesList.Remove(device.Id);
-                    eventChanged = new DeviceListChanged(SelectedPlaybackDevicesList, device.Type);
+                    result = SelectedPlaybackDevicesList.Remove(device.ID);
+                    eventChanged = new DeviceListChanged(SelectedPlaybackDevicesList, (DeviceType)device.DataFlow);
                     break;
                 case DeviceType.Recording:
-                    result = SelectedRecordingDevicesList.Remove(device.Id);
-                    eventChanged = new DeviceListChanged(SelectedRecordingDevicesList, device.Type);
+                    result = SelectedRecordingDevicesList.Remove(device.ID);
+                    eventChanged = new DeviceListChanged(SelectedRecordingDevicesList, (DeviceType)device.DataFlow);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -454,7 +454,7 @@ namespace SoundSwitch.Model
         ///     as far as we can tell), returns false if could not successfully switch. Throws NoDevicesException
         ///     if there are no devices configured.
         /// </summary>
-        public bool CycleActiveDevice(DataFlow type)
+        public bool CycleActiveDevice(DeviceType type)
         {
             using (AppLogger.Log.InfoCall())
             {

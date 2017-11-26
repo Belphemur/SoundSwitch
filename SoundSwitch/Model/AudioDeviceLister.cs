@@ -23,6 +23,11 @@ namespace SoundSwitch.Model
     {
         private readonly DeviceState _state;
 
+        public AudioDeviceLister(DeviceState state)
+        {
+            _state = state;
+        }
+
         /// <summary>
         /// Get the playback device in the set state
         /// </summary>

@@ -13,6 +13,7 @@
 ********************************************************************/
 
 using AudioDefaultSwitcherWrapper;
+using NAudio.CoreAudioApi;
 using SoundSwitch.Framework.Configuration;
 
 namespace SoundSwitch.Framework.DeviceCyclerManager
@@ -50,7 +51,7 @@ namespace SoundSwitch.Framework.DeviceCyclerManager
         /// </summary>
         /// <param name="device"></param>
         /// <returns></returns>
-        public bool SetAsDefault(DeviceType device)
+        public bool SetAsDefault(MMDevice device)
         {
             return _deviceCyclerFactory.Get(CurrentCycler).SetActiveDevice(device);
         }
