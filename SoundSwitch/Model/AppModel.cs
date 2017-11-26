@@ -382,10 +382,10 @@ namespace SoundSwitch.Model
                 }
                 switch (deviceType)
                 {
-                    case DeviceType.Recording:
+                    case DeviceType.Playback:
                         AppConfigs.Configuration.PlaybackHotKeys = hotkeys;
                         break;
-                    case DeviceType.Playback:
+                    case DeviceType.Recording:
                         AppConfigs.Configuration.RecordingHotKeys = hotkeys;
                         break;
                     default:
