@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using AudioDefaultSwitcherWrapper;
+using NAudio.CoreAudioApi;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Updater;
@@ -80,11 +81,13 @@ namespace SoundSwitch.Model
 
     public class DeviceDefaultChangedEvent : EventArgs
     {
-        public DeviceDefaultChangedEvent(string deviceId)
+        public DeviceDefaultChangedEvent(string deviceId, MMDevice device)
         {
             DeviceId = deviceId;
+            Device = device;
         }
 
         public string DeviceId { get; }
+        public MMDevice Device { get; }
     }
 }
