@@ -50,8 +50,8 @@ ArchitecturesInstallIn64BitMode=x64
 ;Downloading and installing dependencies will only work if the memo/ready page is enabled (default behaviour)
 DisableReadyPage=no
 DisableReadyMemo=no
-Uninstallable=not IsTaskSelected('portablemode')
-CreateUninstallRegKey=not IsTaskSelected('portablemode')
+Uninstallable=yes
+CreateUninstallRegKey=yes
 
 [Languages]
 Name: "en"; MessagesFile: "compiler:Default.isl"
@@ -61,7 +61,7 @@ Name: "fr";    MessagesFile: "compiler:Languages\French.isl"
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
 Name: "certs"; Description: "{cm:AddCertDescription}"; GroupDescription: "Certificates:"
-Name: "portablemode"; Description: "{cm:PortableMode}";  GroupDescription: "{cm:GroupPortableMode}"; Flags: unchecked
+Name: deletefiles; Description: "{cm:ExistingSettings}"; Flags: unchecked
 
 [Files]
 Source: "{#ExeDir}x64\SoundSwitch.exe.config"; DestDir: "{app}"; Check: Is64BitInstallMode  ; Flags: 64bit
@@ -104,15 +104,21 @@ Filename: "certutil.exe"; Parameters: "-addstore ""TrustedPublisher"" ""{app}\ce
 [CustomMessages]
 win_sp_title=Windows %1 Service Pack %2
 en.AddCertDescription=Trust SoundSwitch Certficates%nThis way you won't have warnings when SoundSwitch is updating.
-fr.AddCertDescription=Installer les certificats de SoundSwitch%nSi sÃ©lectionnÃ©, Windows reconnaÃ®tra SoundSwitch comme Ã©tant un distributeur valide.
-en.GroupPortableMode=Portable Mode
-fr.GroupPortableMode=Mode portable
-en.PortableMode=If selected, doesn't install for all the user.
-fr.PortableMode=Si sÃ©lectionnÃ©, SoundSwitch ne sera pas installé pour tous les utilisateurs.
+fr.AddCertDescription=Installer les certificats de SoundSwitch%nSi sélectionné, Windows reconnaîtra SoundSwitch comme étant un distributeur valide.
+fr.ExistingSettings=Supprimer les paramètres existants
+en.ExistingSettings=Remove any existing settings
+fr.UninstallQuestion=Voulez-vous aussi supprimer les paramètres de {#MyAppSetupName} ?
+en.UninstallQuestion=Do you want to remove {#MyAppSetupName}'s settings?
 
 [UninstallRun]
 Filename: "certutil.exe"; Parameters: "-delstore ""Root"" ""eb db 8a 0a 72 a6 02 91 40 74 9e a2 af 63 d2 fc""" ; Flags: runhidden runascurrentuser
 Filename: "certutil.exe"; Parameters: "-delstore ""TrustedPublisher"" ""942A37BCA9A9889442F6710533CB5548""" ; Flags: runhidden runascurrentuser
+
+
+[InstallDelete]
+Type: filesandordirs; Name: {userappdata}\SoundSwitch; Tasks: deletefiles
+Type: files; Name: {app}\Audio.EndPoint.Controller.Wrapper.*
+Type: files; Name: {app}\AudioEndPointLibrary.*
 
 [Code]
 #include "scripts\checkMutex.iss"
@@ -127,6 +133,20 @@ begin
   end;  
 end;
 
+
+procedure CurUninstallStepChanged (CurUninstallStep: TUninstallStep);
+var
+  mres : integer;
+begin
+  case CurUninstallStep of
+    usPostUninstall:
+      begin
+        mres := MsgBox(ExpandConstant('{cm:UninstallQuestion}'), mbConfirmation, MB_YESNO or MB_DEFBUTTON2)
+        if mres = IDYES then
+          DelTree(ExpandConstant('{userappdata}\SoundSwitch'), True, True, True);
+      end;  
+  end;
+end;
 // shared code for installing the products
 #include "scripts\products.iss"
 // helper functions
