@@ -12,7 +12,7 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using AudioEndPointControllerWrapper;
+using AudioDefaultSwitcherWrapper;
 using SoundSwitch.Framework.Configuration;
 
 namespace SoundSwitch.Framework.DeviceCyclerManager
@@ -41,7 +41,7 @@ namespace SoundSwitch.Framework.DeviceCyclerManager
         /// Cycle the audio device
         /// </summary>
         /// <param name="type"></param>
-        public bool CycleDevice(AudioDeviceType type)
+        public bool CycleDevice(DeviceType type)
         {
             return _deviceCyclerFactory.Get(CurrentCycler).CycleAudioDevice(type);
         }
@@ -50,7 +50,7 @@ namespace SoundSwitch.Framework.DeviceCyclerManager
         /// </summary>
         /// <param name="device"></param>
         /// <returns></returns>
-        public bool SetAsDefault(IAudioDevice device)
+        public bool SetAsDefault(DeviceType device)
         {
             return _deviceCyclerFactory.Get(CurrentCycler).SetActiveDevice(device);
         }
