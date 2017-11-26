@@ -27,6 +27,7 @@ using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.IPC;
 using SoundSwitch.Framework.Minidump;
+using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
@@ -121,6 +122,7 @@ namespace SoundSwitch
                 try
                 {
 #endif
+                MMNotificationClient.Instance.Register();
                 using(var ipcServer = new IPCServer(AppConfigs.IPCConfiguration.ServerUrl()))
                 using (var icon = new TrayIcon())
                 {
@@ -163,6 +165,7 @@ namespace SoundSwitch
                 }
 #endif
             }
+            MMNotificationClient.Instance.UnRegister();
             WindowsAPIAdapter.Stop();
         }
 

@@ -265,6 +265,7 @@
     <Compile Include="Framework\IPC\RemoteObjects\RemoteObject.cs" />
     <Compile Include="Framework\KeyboardWindowsAPI.cs" />
     <Compile Include="Framework\Minidump\MemoryDumper.cs" />
+    <Compile Include="Framework\NotificationManager\MMNotificationClient.cs" />
     <Compile Include="Framework\NotificationManager\NotificationFactory.cs" />
     <Compile Include="Framework\NotificationManager\NotificationManager.cs" />
     <Compile Include="Framework\NotificationManager\NotificationCustomSoundEnum.cs" />

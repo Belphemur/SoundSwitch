@@ -244,7 +244,11 @@ namespace SoundSwitch.Model
         public event EventHandler<ExceptionEvent> ErrorTriggered;
         public event EventHandler<NewReleaseAvailableEvent> NewVersionReleased;
 
-        public event EventHandler<DeviceDefaultChangedEvent> DefaultDeviceChanged;
+        public event EventHandler<DeviceDefaultChangedEvent> DefaultDeviceChanged
+        {
+            add => MMNotificationClient.Instance.DefaultDeviceChanged += value;
+            remove => MMNotificationClient.Instance.DefaultDeviceChanged -= value;
+        }
 
         private void RegisterRecovery()
         {
