@@ -16,8 +16,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AudioEndPointControllerWrapper;
+using AudioDefaultSwitcherWrapper;
 using Microsoft.WindowsAPICodePack.ApplicationServices;
+using NAudio.CoreAudioApi;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Configuration;
@@ -101,14 +102,14 @@ namespace SoundSwitch.Model
         public HashSet<string> SelectedPlaybackDevicesList => AppConfigs.Configuration.SelectedPlaybackDeviceListId;
 
 
-        public ICollection<IAudioDevice> AvailablePlaybackDevices
+        public ICollection<MMDevice> AvailablePlaybackDevices
         {
             get
             {
                 return
                    ActiveAudioDeviceLister.GetPlaybackDevices()
                     .Join(SelectedPlaybackDevicesList,
-                    a => a.Id,
+                    a => a.ID,
                     selected => selected,
                     (a, selected) => a)
                     .ToList();
@@ -117,13 +118,13 @@ namespace SoundSwitch.Model
 
         public HashSet<string> SelectedRecordingDevicesList => AppConfigs.Configuration.SelectedRecordingDeviceListId;
 
-        public ICollection<IAudioDevice> AvailableRecordingDevices
+        public ICollection<MMDevice> AvailableRecordingDevices
         {
             get
             {
                 return ActiveAudioDeviceLister.GetRecordingDevices()
                   .Join(SelectedRecordingDevicesList,
-                  a => a.Id,
+                  a => a.ID,
                   selected => selected,
                   (a, selected) => a)
                   .ToList();
@@ -206,8 +207,8 @@ namespace SoundSwitch.Model
             {
                 throw new InvalidOperationException("Already initialized");
             }
-            SetHotkeyCombination(AppConfigs.Configuration.PlaybackHotKeys, AudioDeviceType.Playback);
-            SetHotkeyCombination(AppConfigs.Configuration.RecordingHotKeys, AudioDeviceType.Recording);
+            SetHotkeyCombination(AppConfigs.Configuration.PlaybackHotKeys, DeviceType.Playback);
+            SetHotkeyCombination(AppConfigs.Configuration.RecordingHotKeys, DeviceType.Recording);
 
             WindowsAPIAdapter.HotKeyPressed += HandleHotkeyPress;
 
@@ -243,29 +244,7 @@ namespace SoundSwitch.Model
         public event EventHandler<ExceptionEvent> ErrorTriggered;
         public event EventHandler<NewReleaseAvailableEvent> NewVersionReleased;
 
-        public event EventHandler<DeviceDefaultChangedEvent> DefaultDeviceChanged
-        {
-            add { AudioController.DeviceDefaultChanged += value; }
-            remove { AudioController.DeviceDefaultChanged -= value; }
-        }
-
-        public event EventHandler<DeviceStateChangedEvent> DeviceStateChanged
-        {
-            add { AudioController.DeviceStateChanged += value; }
-            remove { AudioController.DeviceStateChanged -= value; }
-        }
-
-        public event EventHandler<DeviceRemovedEvent> DeviceRemoved
-        {
-            add { AudioController.DeviceRemoved += value; }
-            remove { AudioController.DeviceRemoved -= value; }
-        }
-
-        public event EventHandler<DeviceAddedEvent> DeviceAdded
-        {
-            add { AudioController.DeviceAdded += value; }
-            remove { AudioController.DeviceAdded -= value; }
-        }
+        public event EventHandler<DeviceDefaultChangedEvent> DefaultDeviceChanged;
 
         private void RegisterRecovery()
         {
@@ -308,17 +287,17 @@ namespace SoundSwitch.Model
         /// </summary>
         /// <param name="device"></param>
         /// <returns></returns>
-        public bool SelectDevice(IAudioDevice device)
+        public bool SelectDevice(MMDevice device)
         {
             var result = false;
             DeviceListChanged eventChanged = null;
             switch (device.Type)
             {
-                case AudioDeviceType.Playback:
+                case DeviceType.Playback:
                     result = SelectedPlaybackDevicesList.Add(device.Id);
                     eventChanged = new DeviceListChanged(SelectedPlaybackDevicesList, device.Type);
                     break;
-                case AudioDeviceType.Recording:
+                case DeviceType.Recording:
                     result = SelectedRecordingDevicesList.Add(device.Id);
                     eventChanged = new DeviceListChanged(SelectedRecordingDevicesList, device.Type);
                     break;
@@ -339,17 +318,17 @@ namespace SoundSwitch.Model
         /// </summary>
         /// <param name="device"></param>
         /// <returns></returns>
-        public bool UnselectDevice(IAudioDevice device)
+        public bool UnselectDevice(MMDevice device)
         {
             var result = false;
             DeviceListChanged eventChanged = null;
             switch (device.Type)
             {
-                case AudioDeviceType.Playback:
+                case DeviceType.Playback:
                     result = SelectedPlaybackDevicesList.Remove(device.Id);
                     eventChanged = new DeviceListChanged(SelectedPlaybackDevicesList, device.Type);
                     break;
-                case AudioDeviceType.Recording:
+                case DeviceType.Recording:
                     result = SelectedRecordingDevicesList.Remove(device.Id);
                     eventChanged = new DeviceListChanged(SelectedRecordingDevicesList, device.Type);
                     break;
@@ -369,17 +348,17 @@ namespace SoundSwitch.Model
 
 #region Hot keys
 
-        public bool SetHotkeyCombination(HotKeys hotkeys, AudioDeviceType deviceType)
+        public bool SetHotkeyCombination(HotKeys hotkeys, DeviceType deviceType)
         {
             using (AppLogger.Log.InfoCall())
             {
                 HotKeys confHotKeys = null;
                 switch (deviceType)
                 {
-                    case AudioDeviceType.Playback:
+                    case DeviceType.Playback:
                         confHotKeys = AppConfigs.Configuration.PlaybackHotKeys;
                         break;
-                    case AudioDeviceType.Recording:
+                    case DeviceType.Recording:
                         confHotKeys = AppConfigs.Configuration.RecordingHotKeys;
                         break;
                     default:
@@ -403,10 +382,10 @@ namespace SoundSwitch.Model
                 }
                 switch (deviceType)
                 {
-                    case AudioDeviceType.Playback:
+                    case DeviceType.Recording:
                         AppConfigs.Configuration.PlaybackHotKeys = hotkeys;
                         break;
-                    case AudioDeviceType.Recording:
+                    case DeviceType.Playback:
                         AppConfigs.Configuration.RecordingHotKeys = hotkeys;
                         break;
                     default:
@@ -432,11 +411,11 @@ namespace SoundSwitch.Model
                 {
                     if (e.HotKeys == AppConfigs.Configuration.PlaybackHotKeys)
                     {
-                        CycleActiveDevice(AudioDeviceType.Playback);
+                        CycleActiveDevice(DeviceType.Playback);
                     }
                     else if (e.HotKeys == AppConfigs.Configuration.RecordingHotKeys)
                     {
-                        CycleActiveDevice(AudioDeviceType.Recording);
+                        CycleActiveDevice(DeviceType.Recording);
                     }
                 }
                 catch (Exception ex)
@@ -454,7 +433,7 @@ namespace SoundSwitch.Model
         ///     Attempts to set active device to the specified name
         /// </summary>
         /// <param name="device"></param>
-        public bool SetActiveDevice(IAudioDevice device)
+        public bool SetActiveDevice(MMDevice device)
         {
             using (AppLogger.Log.InfoCall())
             {
@@ -475,7 +454,7 @@ namespace SoundSwitch.Model
         ///     as far as we can tell), returns false if could not successfully switch. Throws NoDevicesException
         ///     if there are no devices configured.
         /// </summary>
-        public bool CycleActiveDevice(AudioDeviceType type)
+        public bool CycleActiveDevice(DataFlow type)
         {
             using (AppLogger.Log.InfoCall())
             {
