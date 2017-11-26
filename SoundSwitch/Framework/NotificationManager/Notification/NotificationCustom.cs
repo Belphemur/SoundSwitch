@@ -14,7 +14,6 @@
 
 using System.Threading;
 using System.Threading.Tasks;
-using AudioEndPointControllerWrapper;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using SoundSwitch.Framework.Audio;
@@ -25,29 +24,19 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
 {
     public class NotificationCustom : INotification
     {
-        private MMDeviceEnumerator _deviceEnumerator;
-
         public NotificationTypeEnum TypeEnum => NotificationTypeEnum.CustomNotification;
         public string Label => SettingsStrings.notificationOptionCustomized;
 
         public INotificationConfiguration Configuration { get; set; }
 
-        private MMDeviceEnumerator GetEnumerator()
-        {
-            if (_deviceEnumerator != null)
-                return _deviceEnumerator;
 
-            return _deviceEnumerator = new MMDeviceEnumerator();
-        }
-
-        public void NotifyDefaultChanged(IAudioDevice audioDevice)
+        public void NotifyDefaultChanged(MMDevice audioDevice)
         {
-            if (audioDevice.Type != AudioDeviceType.Playback)
+            if (audioDevice.DataFlow != DataFlow.Render)
                 return;
             var task = new Task(() =>
             {
-                var device = GetEnumerator().GetDevice(audioDevice.Id);
-                using (var output = new WasapiOut(device, AudioClientShareMode.Shared, true, 10))
+                using (var output = new WasapiOut(audioDevice, AudioClientShareMode.Shared, true, 10))
                 using (var waveStream = new CachedSoundWaveStream(Configuration.CustomSound))
                 {
                     output.Init(waveStream);
