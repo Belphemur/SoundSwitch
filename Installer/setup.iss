@@ -18,7 +18,7 @@
 AppName={#MyAppSetupName}
 AppVersion={#MyAppVersion}
 AppVerName={#MyAppSetupName} {#MyAppVersion}
-AppCopyright=Copyright Â© 2010-2017 {#MyAppSetupName}
+AppCopyright=Copyright Ã‚Â© 2010-2017 {#MyAppSetupName}
 VersionInfoVersion={#MyAppVersion}
 VersionInfoCompany=SoundSwitch
 AppPublisher=Antoine Aflalo
@@ -60,7 +60,7 @@ Name: "fr";    MessagesFile: "compiler:Languages\French.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
-Name: "certs"; Description: "{cm:AddCertDescription}"; GroupDescription: "Certificates:"
+Name: "certs"; Description: "{cm:AddCertDescription}"; GroupDescription: "{cm:CertificatesGroup}"
 Name: deletefiles; Description: "{cm:ExistingSettings}"; Flags: unchecked
 
 [Files]
@@ -104,11 +104,13 @@ Filename: "certutil.exe"; Parameters: "-addstore ""TrustedPublisher"" ""{app}\ce
 [CustomMessages]
 win_sp_title=Windows %1 Service Pack %2
 en.AddCertDescription=Trust SoundSwitch Certficates%nThis way you won't have warnings when SoundSwitch is updating.
-fr.AddCertDescription=Installer les certificats de SoundSwitch%nSi sélectionné, Windows reconnaîtra SoundSwitch comme étant un distributeur valide.
-fr.ExistingSettings=Supprimer les paramètres existants
+fr.AddCertDescription=Installer les certificats de SoundSwitch%nSi sÃ©lectionnÃ©, Windows reconnaÃ®tra SoundSwitch comme Ã©tant un distributeur valide.
 en.ExistingSettings=Remove any existing settings
-fr.UninstallQuestion=Voulez-vous aussi supprimer les paramètres de {#MyAppSetupName} ?
+fr.ExistingSettings=Supprimer les paramÃ¨tres existants
 en.UninstallQuestion=Do you want to remove {#MyAppSetupName}'s settings?
+fr.UninstallQuestion=Voulez-vous aussi supprimer les paramÃ¨tres de {#MyAppSetupName} ?
+en.CertificatesGroup=Certificates:
+fr.CertificatesGroup=Certificats:
 
 [UninstallRun]
 Filename: "certutil.exe"; Parameters: "-delstore ""Root"" ""eb db 8a 0a 72 a6 02 91 40 74 9e a2 af 63 d2 fc""" ; Flags: runhidden runascurrentuser
