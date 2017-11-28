@@ -404,7 +404,14 @@ namespace SoundSwitch.UI.Forms
                 PopulateDeviceTypeGroups(listView);
 
                 var audioDeviceWrappers = audioDevices
-                    .Where(wrapper => !string.IsNullOrEmpty(wrapper.FriendlyName))
+                    .Where(device => 
+                    {
+                        try {                            
+                            return !string.IsNullOrEmpty(device.FriendlyName);
+                        } catch(Exception e) {
+                            return false;
+                        }
+                    })
                     .OrderBy(s => s.FriendlyName);
                 listView.SmallImageList = new ImageList
                 {
