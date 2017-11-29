@@ -103,14 +103,18 @@ Filename: "certutil.exe"; Parameters: "-addstore ""TrustedPublisher"" ""{app}\ce
 
 [CustomMessages]
 win_sp_title=Windows %1 Service Pack %2
-en.AddCertDescription=Trust SoundSwitch Certficates%nThis way you won't have warnings when SoundSwitch is updating.
-fr.AddCertDescription=Installer les certificats de SoundSwitch%nSi sélectionné, Windows reconnaîtra SoundSwitch comme étant un distributeur valide.
+en.AddCertDescription=Trust {#MyAppSetupName} Certficates%nThis way you won't have warnings when {#MyAppSetupName} is updating.
+fr.AddCertDescription=Installer les certificats de {#MyAppSetupName}%nSi sélectionné, Windows reconnaîtra {#MyAppSetupName} comme étant un distributeur valide.
+de.AddCertDescription={#MyAppSetupName} Zertifikaten vertrauen%nAuf diese Weise erhalten Sie keine Warnungen, wenn {#MyAppSetupName} aktualisiert wird.
 en.ExistingSettings=Remove any existing settings
 fr.ExistingSettings=Supprimer les paramètres existants
+de.ExistingSettings=Alle Einstellungen löschen
 en.UninstallQuestion=Do you want to remove {#MyAppSetupName}'s settings?
 fr.UninstallQuestion=Voulez-vous aussi supprimer les paramètres de {#MyAppSetupName} ?
+de.UninstallQuestion=Sollen deine {#MyAppSetupName} Einstellungen gelöscht werden?
 en.CertificatesGroup=Certificates:
 fr.CertificatesGroup=Certificats:
+de.CertificatesGroup=Zertifikate:
 
 [UninstallRun]
 Filename: "certutil.exe"; Parameters: "-delstore ""Root"" ""eb db 8a 0a 72 a6 02 91 40 74 9e a2 af 63 d2 fc""" ; Flags: runhidden runascurrentuser
