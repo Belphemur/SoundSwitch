@@ -1,4 +1,4 @@
-# SoundSwitch [![Last Release](https://img.shields.io/github/release/Belphemur/SoundSwitch.svg)](https://github.com/Belphemur/SoundSwitch/releases) [![Downloads for last Release](https://img.shields.io/github/downloads/Belphemur/SoundSwitch/total.svg)](https://www.aaflalo.me/downloads/) [![AppVeyor branch](https://img.shields.io/badge/Donate-paypal%2Fcc-blue.svg)](https://www.aaflalo.me/donate/)
+# SoundSwitch [![Last Release](https://img.shields.io/github/release/Belphemur/SoundSwitch.svg)](https://github.com/Belphemur/SoundSwitch/releases) [![Downloads for last Release](https://img.shields.io/github/downloads/Belphemur/SoundSwitch/total.svg)](https://soundswitch.aaflalo.me/) [![AppVeyor branch](https://img.shields.io/badge/Donate-paypal%2Fcc-blue.svg)](https://www.aaflalo.me/donate/)
 **SoundSwitch** offers you the opportunity to switch your playback devices and/or recording devices using simple hotkeys.
 
 **No more** navigating througth several menus and screens. Just configure SoundSwitch **once** - and you are able to switch between your devices as fast as never before!
