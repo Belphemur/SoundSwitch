@@ -1,5 +1,28 @@
 # Change Log
 
+## [v4.1](https://github.com/Belphemur/SoundSwitch/tree/v4.1) (2017-11-30)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.0...v4.1)
+
+**Implemented enhancements:**
+
+- Add choice in uninstaller to remove application configuration [\#216](https://github.com/Belphemur/SoundSwitch/issues/216)
+
+**Fixed bugs:**
+
+- Settings crash when device don't have a friendly name [\#225](https://github.com/Belphemur/SoundSwitch/issues/225)
+- Locking up on switch since Fall Creator's Update [\#219](https://github.com/Belphemur/SoundSwitch/issues/219)
+- Application crashes when activating a bluetooth device - Win7 [\#217](https://github.com/Belphemur/SoundSwitch/issues/217)
+- Soundswitch crash on startup [\#214](https://github.com/Belphemur/SoundSwitch/issues/214)
+- SoundSwitch Freezing randomly. [\#200](https://github.com/Belphemur/SoundSwitch/issues/200)
+- New-Old Issue - Switching to Bluetooth Audio [\#166](https://github.com/Belphemur/SoundSwitch/issues/166)
+
+**Merged pull requests:**
+
+- Rewrite [\#226](https://github.com/Belphemur/SoundSwitch/pull/226) ([Belphemur](https://github.com/Belphemur))
+
+## [v4.0](https://github.com/Belphemur/SoundSwitch/tree/v4.0) (2017-11-26)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.15.2...v4.0)
+
 ## [v3.15.2](https://github.com/Belphemur/SoundSwitch/tree/v3.15.2) (2017-11-21)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.15.1...v3.15.2)
 
