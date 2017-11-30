@@ -46,7 +46,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>$(SolutionDir)\bin\x86\Debug\</OutputPath>
+    <OutputPath>$(SolutionDir)\bin\Win32\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -57,7 +57,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>$(SolutionDir)\bin\x86\Release\</OutputPath>
+    <OutputPath>$(SolutionDir)\bin\Win32\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -144,7 +144,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AppVeyor|x86'">
-    <OutputPath>$(SolutionDir)\bin\x86\AppVeyor\</OutputPath>
+    <OutputPath>$(SolutionDir)\bin\Win32\AppVeyor\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -174,7 +174,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Beta|x86'">
-    <OutputPath>$(SolutionDir)\bin\x86\Release\</OutputPath>
+    <OutputPath>$(SolutionDir)\bin\Win32\Release\</OutputPath>
     <DefineConstants>TRACE;BETA</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -210,12 +210,12 @@
       <HintPath>..\packages\Microsoft.WindowsAPICodePack-Core.1.1.0.2\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NAudio, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NAudio.1.8.0\lib\net35\NAudio.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="NAudio, Version=1.8.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.1.8.3\lib\net35\NAudio.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.IO.Compression.FileSystem" />
@@ -265,6 +265,7 @@
     <Compile Include="Framework\IPC\RemoteObjects\RemoteObject.cs" />
     <Compile Include="Framework\KeyboardWindowsAPI.cs" />
     <Compile Include="Framework\Minidump\MemoryDumper.cs" />
+    <Compile Include="Framework\NotificationManager\MMNotificationClient.cs" />
     <Compile Include="Framework\NotificationManager\NotificationFactory.cs" />
     <Compile Include="Framework\NotificationManager\NotificationManager.cs" />
     <Compile Include="Framework\NotificationManager\NotificationCustomSoundEnum.cs" />
@@ -487,9 +488,9 @@
     </PublishFile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AudioEndPointLibrary\Audio.EndPoint.Controller.Wrapper\Audio.EndPoint.Controller.Wrapper.vcxproj">
+    <ProjectReference Include="..\AudioDefaultSwitcher\Audio.EndPoint.Controller.Wrapper\Audio.EndPoint.Controller.Wrapper.vcxproj">
       <Project>{115bf2b4-b3be-446d-ba76-348e274258f7}</Project>
-      <Name>Audio.EndPoint.Controller.Wrapper</Name>
+      <Name>Audio.Default.Switcher.Wrapper</Name>
     </ProjectReference>
     <ProjectReference Include="..\SoundSwitch.UI.UserControls\SoundSwitch.UI.UserControls.csproj">
       <Project>{082ab6e3-eb26-4791-8025-5ba9682460ea}</Project>

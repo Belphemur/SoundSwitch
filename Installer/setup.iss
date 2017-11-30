@@ -18,7 +18,7 @@
 AppName={#MyAppSetupName}
 AppVersion={#MyAppVersion}
 AppVerName={#MyAppSetupName} {#MyAppVersion}
-AppCopyright=Copyright © 2010-2017 {#MyAppSetupName}
+AppCopyright=Copyright Â© 2010-2017 {#MyAppSetupName}
 VersionInfoVersion={#MyAppVersion}
 VersionInfoCompany=SoundSwitch
 AppPublisher=Antoine Aflalo
@@ -50,8 +50,8 @@ ArchitecturesInstallIn64BitMode=x64
 ;Downloading and installing dependencies will only work if the memo/ready page is enabled (default behaviour)
 DisableReadyPage=no
 DisableReadyMemo=no
-Uninstallable=not IsTaskSelected('portablemode')
-CreateUninstallRegKey=not IsTaskSelected('portablemode')
+Uninstallable=yes
+CreateUninstallRegKey=yes
 
 [Languages]
 Name: "en"; MessagesFile: "compiler:Default.isl"
@@ -60,8 +60,8 @@ Name: "fr";    MessagesFile: "compiler:Languages\French.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
-Name: "certs"; Description: "{cm:AddCertDescription}"; GroupDescription: "Certificates:"
-Name: "portablemode"; Description: "{cm:PortableMode}";  GroupDescription: "{cm:GroupPortableMode}"; Flags: unchecked
+Name: "certs"; Description: "{cm:AddCertDescription}"; GroupDescription: "{cm:CertificatesGroup}"
+Name: deletefiles; Description: "{cm:ExistingSettings}"; Flags: unchecked
 
 [Files]
 Source: "{#ExeDir}x64\SoundSwitch.exe.config"; DestDir: "{app}"; Check: Is64BitInstallMode  ; Flags: 64bit
@@ -103,16 +103,28 @@ Filename: "certutil.exe"; Parameters: "-addstore ""TrustedPublisher"" ""{app}\ce
 
 [CustomMessages]
 win_sp_title=Windows %1 Service Pack %2
-en.AddCertDescription=Trust SoundSwitch Certficates%nThis way you won't have warnings when SoundSwitch is updating.
-fr.AddCertDescription=Installer les certificats de SoundSwitch%nSi sélectionné, Windows reconnaîtra SoundSwitch comme étant un distributeur valide.
-en.GroupPortableMode=Portable Mode
-fr.GroupPortableMode=Mode portable
-en.PortableMode=If selected, doesn't install for all the user.
-fr.PortableMode=Si sélectionné, SoundSwitch ne sera pas install� pour tous les utilisateurs.
+en.AddCertDescription=Trust {#MyAppSetupName} Certficates%nThis way you won't have warnings when {#MyAppSetupName} is updating.
+fr.AddCertDescription=Installer les certificats de {#MyAppSetupName}%nSi sélectionné, Windows reconnaîtra {#MyAppSetupName} comme étant un distributeur valide.
+de.AddCertDescription={#MyAppSetupName} Zertifikaten vertrauen%nAuf diese Weise erhalten Sie keine Warnungen, wenn {#MyAppSetupName} aktualisiert wird.
+en.ExistingSettings=Remove any existing settings
+fr.ExistingSettings=Supprimer les paramètres existants
+de.ExistingSettings=Alle Einstellungen löschen
+en.UninstallQuestion=Do you want to remove {#MyAppSetupName}'s settings?
+fr.UninstallQuestion=Voulez-vous aussi supprimer les paramètres de {#MyAppSetupName} ?
+de.UninstallQuestion=Sollen deine {#MyAppSetupName} Einstellungen gelöscht werden?
+en.CertificatesGroup=Certificates:
+fr.CertificatesGroup=Certificats:
+de.CertificatesGroup=Zertifikate:
 
 [UninstallRun]
 Filename: "certutil.exe"; Parameters: "-delstore ""Root"" ""eb db 8a 0a 72 a6 02 91 40 74 9e a2 af 63 d2 fc""" ; Flags: runhidden runascurrentuser
 Filename: "certutil.exe"; Parameters: "-delstore ""TrustedPublisher"" ""942A37BCA9A9889442F6710533CB5548""" ; Flags: runhidden runascurrentuser
+
+
+[InstallDelete]
+Type: filesandordirs; Name: {userappdata}\SoundSwitch; Tasks: deletefiles
+Type: files; Name: {app}\Audio.EndPoint.Controller.Wrapper.*
+Type: files; Name: {app}\AudioEndPointLibrary.*
 
 [Code]
 #include "scripts\checkMutex.iss"
@@ -127,6 +139,20 @@ begin
   end;  
 end;
 
+
+procedure CurUninstallStepChanged (CurUninstallStep: TUninstallStep);
+var
+  mres : integer;
+begin
+  case CurUninstallStep of
+    usPostUninstall:
+      begin
+        mres := MsgBox(ExpandConstant('{cm:UninstallQuestion}'), mbConfirmation, MB_YESNO or MB_DEFBUTTON2)
+        if mres = IDYES then
+          DelTree(ExpandConstant('{userappdata}\SoundSwitch'), True, True, True);
+      end;  
+  end;
+end;
 // shared code for installing the products
 #include "scripts\products.iss"
 // helper functions

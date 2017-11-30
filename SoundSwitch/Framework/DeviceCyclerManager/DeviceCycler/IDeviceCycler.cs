@@ -12,7 +12,8 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using AudioEndPointControllerWrapper;
+using AudioDefaultSwitcherWrapper;
+using NAudio.CoreAudioApi;
 using SoundSwitch.Framework.Factory;
 
 namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
@@ -23,12 +24,12 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         /// Cycle the audio device for the given type
         /// </summary>
         /// <param name="type"></param>
-        bool CycleAudioDevice(AudioDeviceType type);
+        bool CycleAudioDevice(DeviceType type);
 
         /// <summary>
         ///     Attempts to set active device to the specified name
         /// </summary>
         /// <param name="device"></param>
-        bool SetActiveDevice(IAudioDevice device);
+        bool SetActiveDevice(MMDevice device);
     }
 }

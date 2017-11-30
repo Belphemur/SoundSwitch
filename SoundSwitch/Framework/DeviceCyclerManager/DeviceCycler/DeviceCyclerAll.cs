@@ -14,7 +14,9 @@
 
 using System;
 using System.Collections.Generic;
-using AudioEndPointControllerWrapper;
+using System.Linq;
+using AudioDefaultSwitcherWrapper;
+using NAudio.CoreAudioApi;
 using SoundSwitch.Model;
 using SoundSwitch.Localization;
 
@@ -29,15 +31,15 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         /// Cycle the audio device for the given type
         /// </summary>
         /// <param name="type"></param>
-        public override bool CycleAudioDevice(AudioDeviceType type)
+        public override bool CycleAudioDevice(DeviceType type)
         {
-            ICollection<IAudioDevice> audioDevices;
+            MMDeviceCollection audioDevices;
             switch (type)
             {
-                case AudioDeviceType.Playback:
+                case DeviceType.Playback:
                     audioDevices = AppModel.Instance.ActiveAudioDeviceLister.GetPlaybackDevices();
                     break;
-                case AudioDeviceType.Recording:
+                case DeviceType.Recording:
                     audioDevices = AppModel.Instance.ActiveAudioDeviceLister.GetRecordingDevices();
                     break;
                 default:
@@ -52,7 +54,7 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
                     return false;
             }
 
-            return SetActiveDevice(GetNextDevice(audioDevices, type));
+            return SetActiveDevice(GetNextDevice(audioDevices.ToList(), type));
         }
     }
 }

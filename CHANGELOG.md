@@ -1,12 +1,24 @@
 # Change Log
 
+## [v3.15.2](https://github.com/Belphemur/SoundSwitch/tree/v3.15.2) (2017-11-21)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.15.1...v3.15.2)
+
+**Fixed bugs:**
+
+- App Crash with MP3 file used for Banner Notification \(works fine in Custom Sound Notification\) [\#218](https://github.com/Belphemur/SoundSwitch/issues/218)
+- Invalid sound file make SoundSwitch crash [\#210](https://github.com/Belphemur/SoundSwitch/issues/210)
+
+**Closed issues:**
+
+- SoundSwitch won't launch [\#205](https://github.com/Belphemur/SoundSwitch/issues/205)
+- Crashes when remote connecting to machine using RDP [\#197](https://github.com/Belphemur/SoundSwitch/issues/197)
+
 ## [v3.15.1](https://github.com/Belphemur/SoundSwitch/tree/v3.15.1) (2017-07-08)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.15.0...v3.15.1)
 
 **Fixed bugs:**
 
 - Can't install vcredist with the built in installer provided by soundswitch [\#203](https://github.com/Belphemur/SoundSwitch/issues/203)
-- Hotkeys Alt+Ctrl+F11 bug. [\#200](https://github.com/Belphemur/SoundSwitch/issues/200)
 - SoundSwitch in Homeoffice/Office [\#199](https://github.com/Belphemur/SoundSwitch/issues/199)
 - Updater Progress bar crash with Classic Visual Theme [\#194](https://github.com/Belphemur/SoundSwitch/issues/194)
 

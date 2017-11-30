@@ -15,7 +15,8 @@
 
 using System;
 using System.Collections.Generic;
-using AudioEndPointControllerWrapper;
+using AudioDefaultSwitcherWrapper;
+using NAudio.CoreAudioApi;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager;
@@ -37,7 +38,7 @@ namespace SoundSwitch.Model
         /// <summary>
         /// An union between the Active <see cref="IAudioDevice" /> of Windows and <see cref="SelectedPlaybackDevicesList" />
         /// </summary>
-        ICollection<IAudioDevice> AvailablePlaybackDevices { get; }
+        ICollection<MMDevice> AvailablePlaybackDevices { get; }
 
         /// <summary>
         /// The list of Recording device selected to be used for Switching default devices.
@@ -47,7 +48,7 @@ namespace SoundSwitch.Model
         /// <summary>
         /// An union between the Active <see cref="IAudioDevice" /> of Windows and <see cref="SelectedRecordingDevicesList" />
         /// </summary>
-        ICollection<IAudioDevice> AvailableRecordingDevices { get; }
+        ICollection<MMDevice> AvailableRecordingDevices { get; }
 
         /// <summary>
         /// If the Playback device need also to be set for Communications.
@@ -118,20 +119,6 @@ namespace SoundSwitch.Model
         ///     The update checker found a newer release than the installed version.
         /// </summary>
         event EventHandler<NewReleaseAvailableEvent> NewVersionReleased;
-        /// <summary>
-        /// When a device change state like from NotPresent to Active
-        /// </summary>
-        event EventHandler<DeviceStateChangedEvent> DeviceStateChanged;
-
-        /// <summary>
-        /// If a device is removed from the system
-        /// </summary>
-        event EventHandler<DeviceRemovedEvent> DeviceRemoved;
-
-        /// <summary>
-        /// If a device is added in the system
-        /// </summary>
-        event EventHandler<DeviceAddedEvent> DeviceAdded;
 
         /// <summary>
         /// If the NotificationSettings has been modified
@@ -160,7 +147,7 @@ namespace SoundSwitch.Model
         ///     true if the element is added to the <see cref="T:System.Collections.Generic.HashSet`1" /> object; false if
         ///     the element is already present.
         /// </returns>
-        bool SelectDevice(IAudioDevice device);
+        bool SelectDevice(MMDevice device);
 
         /// <summary>
         ///     Remove a device from the Set.
@@ -170,7 +157,7 @@ namespace SoundSwitch.Model
         ///     true if the element is successfully found and removed; otherwise, false.  This method returns false if
         ///     <paramref name="device" /> is not found in the <see cref="T:System.Collections.Generic.HashSet`1" /> object.
         /// </returns>
-        bool UnselectDevice(IAudioDevice device);
+        bool UnselectDevice(MMDevice device);
 
         /// <summary>
         ///     Sets the hotkey combination
@@ -178,20 +165,20 @@ namespace SoundSwitch.Model
         /// <param name="hotkeys"></param>
         /// <param name="deviceType"></param>
         /// <returns>if it's successfull</returns>
-        bool SetHotkeyCombination(HotKeys hotkeys, AudioDeviceType deviceType);
+        bool SetHotkeyCombination(HotKeys hotkeys, DeviceType deviceType);
 
         /// <summary>
         ///     Attempts to set active device to the specified name
         /// </summary>
         /// <param name="device"></param>
-        bool SetActiveDevice(IAudioDevice device);
+        bool SetActiveDevice(MMDevice device);
 
         /// <summary>
         ///     Cycles the active device to the next device. Returns true if succesfully switched (at least
         ///     as far as we can tell), returns false if could not successfully switch. Throws NoDevicesException
         ///     if there are no devices configured.
         /// </summary>
-        bool CycleActiveDevice(AudioDeviceType type);
+        bool CycleActiveDevice(DeviceType type);
 
         #endregion
 

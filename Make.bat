@@ -88,13 +88,13 @@ for %%l in %LANGS% DO (
 )
 
 Echo "Copy x86"
-xcopy /y %BIN_DIR%\x86\Release\*.pdb %x86Release% 1>nul 2>nul
-xcopy /y %BIN_DIR%\x86\Release\*.dll %x86Release% 1>nul 2>nul
-xcopy /y %BIN_DIR%\x86\Release\SoundSwitch.* %x86Release% 1>nul 2>nul
-xcopy /y %BIN_DIR%\x86\Release\SoundSwitch.exe.config %x86Release% 1>nul 2>nul
+xcopy /y %BIN_DIR%\Win32\Release\*.pdb %x86Release% 1>nul 2>nul
+xcopy /y %BIN_DIR%\Win32\Release\*.dll %x86Release% 1>nul 2>nul
+xcopy /y %BIN_DIR%\Win32\Release\SoundSwitch.* %x86Release% 1>nul 2>nul
+xcopy /y %BIN_DIR%\Win32\Release\SoundSwitch.exe.config %x86Release% 1>nul 2>nul
 for %%l in %LANGS% DO (
     mkdir %x86Release%\%%l\
-    xcopy /y %BIN_DIR%\x86\Release\%%l\SoundSwitch.resources.dll %x86Release%\%%l\ 1>nul 2>nul
+    xcopy /y %BIN_DIR%\Win32\Release\%%l\SoundSwitch.resources.dll %x86Release%\%%l\ 1>nul 2>nul
 )
 
 rem IF EXIST "%FILE_DIR%..\signinfo.txt" (

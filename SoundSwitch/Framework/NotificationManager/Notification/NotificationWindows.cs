@@ -14,7 +14,7 @@
 
 using System;
 using System.Windows.Forms;
-using AudioEndPointControllerWrapper;
+using NAudio.CoreAudioApi;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
 using SoundSwitch.Localization;
@@ -28,22 +28,22 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
 
         public INotificationConfiguration Configuration { get; set; }
 
-        public void NotifyDefaultChanged(IAudioDevice audioDevice)
+        public void NotifyDefaultChanged(MMDevice audioDevice)
         {
-            switch (audioDevice.Type)
+            switch (audioDevice.DataFlow)
             {
-                case AudioDeviceType.Playback:
+                case DataFlow.Render:
                     Configuration.Icon.ShowBalloonTip(500,
                                                       TrayIconStrings.playbackChanged,
                                                       audioDevice.FriendlyName, ToolTipIcon.Info);
                     break;
-                case AudioDeviceType.Recording:
+                case DataFlow.Capture:
                     Configuration.Icon.ShowBalloonTip(500,
                                                       TrayIconStrings.recordingChanged,
                                                       audioDevice.FriendlyName, ToolTipIcon.Info);
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(audioDevice.Type), audioDevice.Type, null);
+                    throw new ArgumentOutOfRangeException(nameof(audioDevice.DataFlow), audioDevice.DataFlow, null);
             }
         }
 

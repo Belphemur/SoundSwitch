@@ -13,7 +13,7 @@
 ********************************************************************/
 
 using System.Collections.Generic;
-using AudioEndPointControllerWrapper;
+using NAudio.CoreAudioApi;
 
 namespace SoundSwitch.Model
 {
@@ -23,12 +23,12 @@ namespace SoundSwitch.Model
         ///     Get the playback device in the set state
         /// </summary>
         /// <returns></returns>
-        ICollection<IAudioDevice> GetPlaybackDevices();
+        MMDeviceCollection GetPlaybackDevices();
 
         /// <summary>
         ///     Get the recording device in the set state
         /// </summary>
         /// <returns></returns>
-        ICollection<IAudioDevice> GetRecordingDevices();
+        MMDeviceCollection GetRecordingDevices();
     }
 }

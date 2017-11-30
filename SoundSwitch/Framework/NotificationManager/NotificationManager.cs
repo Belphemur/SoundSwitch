@@ -13,7 +13,6 @@
 ********************************************************************/
 
 using System.Windows.Forms;
-using AudioEndPointControllerWrapper;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
@@ -82,11 +81,11 @@ namespace SoundSwitch.Framework.NotificationManager
 
         private void ModelOnDefaultDeviceChanged(object sender, DeviceDefaultChangedEvent deviceDefaultChangedEvent)
         {
-            if (_lastDeviceId == deviceDefaultChangedEvent.device.Id)
+            if (_lastDeviceId == deviceDefaultChangedEvent.DeviceId)
                 return;
 
-            _notification.NotifyDefaultChanged(deviceDefaultChangedEvent.device);
-            _lastDeviceId = deviceDefaultChangedEvent.device.Id;
+            _notification.NotifyDefaultChanged(deviceDefaultChangedEvent.Device);
+            _lastDeviceId = deviceDefaultChangedEvent.DeviceId;
         }
 
         ~NotificationManager()

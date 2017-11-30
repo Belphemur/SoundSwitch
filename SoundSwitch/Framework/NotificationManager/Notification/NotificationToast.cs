@@ -14,7 +14,7 @@
 
 using System;
 using System.IO;
-using AudioEndPointControllerWrapper;
+using NAudio.CoreAudioApi;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
 using SoundSwitch.Framework.Toast;
@@ -29,7 +29,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
 
         public INotificationConfiguration Configuration { get; set; }
 
-        public void NotifyDefaultChanged(IAudioDevice audioDevice)
+        public void NotifyDefaultChanged(MMDevice audioDevice)
         {
             var toastData = new ToastData
             {
@@ -42,16 +42,16 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
                 toastData.SoundFilePath = Configuration.CustomSound.FilePath;
             }
 
-            switch (audioDevice.Type)
+            switch (audioDevice.DataFlow)
             {
-                case AudioDeviceType.Playback:
+                case DataFlow.Render:
                     toastData.Line0 = SettingsStrings.tooltipOnHoverOptionPlaybackDevice;
                     break;
-                case AudioDeviceType.Recording:
+                case DataFlow.Capture:
                     toastData.Line0 = SettingsStrings.tooltipOnHoverOptionRecordingDevice;
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(audioDevice.Type), audioDevice.Type, null);
+                    throw new ArgumentOutOfRangeException(nameof(audioDevice.DataFlow), audioDevice.DataFlow, null);
             }
             new ToastManager().ShowNotification(toastData);
         }

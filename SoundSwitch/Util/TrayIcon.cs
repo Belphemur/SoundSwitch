@@ -16,13 +16,12 @@
 using System;
 using System.Diagnostics;
 using System.Drawing;
-using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
-using AudioEndPointControllerWrapper;
+using AudioDefaultSwitcherWrapper;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.TooltipInfoManager;
@@ -40,7 +39,6 @@ namespace SoundSwitch.Util
         private readonly ContextMenuStrip _selectionMenu = new ContextMenuStrip();
         private readonly ContextMenuStrip _settingsMenu = new ContextMenuStrip();
         private readonly SynchronizationContext _context = SynchronizationContext.Current ?? new SynchronizationContext();
-        private volatile bool _needToUpdateList = true;
         public NotifyIcon NotifyIcon { get; } = new NotifyIcon
         {
             Visible = true,
@@ -68,7 +66,7 @@ namespace SoundSwitch.Util
 
             NotifyIcon.MouseDoubleClick += (sender, args) =>
             {
-                AppModel.Instance.CycleActiveDevice(AudioDeviceType.Playback);
+                AppModel.Instance.CycleActiveDevice(DeviceType.Playback);
             };
 
             NotifyIcon.MouseClick += (sender, e) =>
@@ -120,7 +118,7 @@ namespace SoundSwitch.Util
             try
             {
                 var defaultDevice = AppModel.Instance.ActiveAudioDeviceLister.GetPlaybackDevices()
-                    .First(device => device.IsDefault(Role.Console));
+                    .First(device => AudioController.IsDefault(device.ID, (DeviceType)device.DataFlow, DeviceRole.Console));
                 NotifyIcon.Icon = AudioDeviceIconExtractor.ExtractIconFromAudioDevice(defaultDevice, false);
             }
             catch (InvalidOperationException)
@@ -193,26 +191,13 @@ namespace SoundSwitch.Util
                 {
                     return;
                 }
-                NotifyIcon.Icon = AudioDeviceIconExtractor.ExtractIconFromAudioDevice(audioChangeEvent.device, false);
+                NotifyIcon.Icon = AudioDeviceIconExtractor.ExtractIconFromAudioDevice(audioChangeEvent.Device, false);
             };
-            AppModel.Instance.DefaultDeviceChanged += (sender, @event) =>
-            {
-                if (@event.role != Role.Console)
-                {
-                    return;
-                }
-                _needToUpdateList = true;
-            };
-            AppModel.Instance.SelectedDeviceChanged += (sender, @event) => { _needToUpdateList = true; };
             AppModel.Instance.NewVersionReleased += (sender, @event) =>
             {
                 if (@event.UpdateMode == UpdateMode.Notify)
                     _context.Send(s => { NewReleaseAvailable(sender, @event); }, null);
             };
-
-            AppModel.Instance.DeviceRemoved += (sender, @event) => { _needToUpdateList = true; };
-            AppModel.Instance.DeviceAdded += (sender, @event) => { _needToUpdateList = true; };
-            AppModel.Instance.DeviceStateChanged += (sender, @event) => { _needToUpdateList = true; };
         }
 
         private void NewReleaseAvailable(object sender, UpdateChecker.NewReleaseEvent newReleaseEvent)
@@ -274,11 +259,7 @@ namespace SoundSwitch.Util
         {
             using (AppLogger.Log.InfoCall())
             {
-                if (!_needToUpdateList)
-                {
-                    AppLogger.Log.Info("Device list doesn't need update");
-                    return;
-                }
+              
                 if (AppModel.Instance.AvailablePlaybackDevices.Count < 0 &&
                     AppModel.Instance.AvailableRecordingDevices.Count < 0)
                 {
@@ -301,7 +282,6 @@ namespace SoundSwitch.Util
                         _selectionMenu.Items.Add(new ToolStripDeviceItem(DeviceClicked, item));
                     }
                 }
-                _needToUpdateList = false;
             }
         }
 

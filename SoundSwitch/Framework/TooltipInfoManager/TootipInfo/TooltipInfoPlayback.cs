@@ -13,7 +13,7 @@
 ********************************************************************/
 
 using System.Linq;
-using AudioEndPointControllerWrapper;
+using AudioDefaultSwitcherWrapper;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
 
@@ -31,7 +31,7 @@ namespace SoundSwitch.Framework.TooltipInfoManager.TootipInfo
         public string TextToDisplay()
         {
             var playbackDefaultDevice = AppModel.Instance.ActiveAudioDeviceLister.GetPlaybackDevices()
-                                        .FirstOrDefault(device => device.IsDefault(Role.Console));
+                                        .FirstOrDefault(device => AudioController.IsDefault(device.ID, (DeviceType)device.DataFlow, DeviceRole.Console));
             return playbackDefaultDevice == null ? null : string.Format(SettingsStrings.activePlayback, playbackDefaultDevice);
         }
 

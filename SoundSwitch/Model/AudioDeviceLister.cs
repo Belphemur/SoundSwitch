@@ -14,8 +14,7 @@
 
 using System.Collections.Generic;
 using System.Threading;
-using AudioEndPoint;
-using AudioEndPointControllerWrapper;
+using NAudio.CoreAudioApi;
 using SoundSwitch.Framework;
 
 namespace SoundSwitch.Model
@@ -23,134 +22,40 @@ namespace SoundSwitch.Model
     public class AudioDeviceLister : IAudioDeviceLister
     {
         private readonly DeviceState _state;
-        private readonly HashSet<IAudioDevice> _recording = new HashSet<IAudioDevice>();
-        private readonly HashSet<IAudioDevice> _playback = new HashSet<IAudioDevice>();
-        private volatile bool _needUpdate = true;
-        private readonly ReaderWriterLockSlim _cacheLock = new ReaderWriterLockSlim();
 
         public AudioDeviceLister(DeviceState state)
         {
             _state = state;
-            AudioController.DeviceAdded += AudioControllerOnDeviceAdded;
-            AudioController.DeviceRemoved += AudioControllerOnDeviceRemoved;
-            AudioController.DeviceStateChanged += AudioControllerOnDeviceStateChanged;
-            AudioController.DeviceDefaultChanged += AudioControllerOnDeviceDefaultChanged;
         }
-
-        ~AudioDeviceLister()
-        {
-            AudioController.DeviceAdded -= AudioControllerOnDeviceAdded;
-            AudioController.DeviceRemoved -= AudioControllerOnDeviceRemoved;
-            AudioController.DeviceStateChanged -= AudioControllerOnDeviceStateChanged;
-            AudioController.DeviceDefaultChanged -= AudioControllerOnDeviceDefaultChanged;
-        }
-
-        private void AudioControllerOnDeviceDefaultChanged(object sender, DeviceDefaultChangedEvent deviceDefaultChangedEvent)
-        {
-            _needUpdate = true;
-        }
-
-        private void AudioControllerOnDeviceStateChanged(object sender, DeviceStateChangedEvent deviceStateChangedEvent)
-        {
-            _needUpdate = true;
-        }
-
-        private void AudioControllerOnDeviceRemoved(object sender, DeviceRemovedEvent deviceRemovedEvent)
-        {
-            _needUpdate = true;
-        }
-
-        private void AudioControllerOnDeviceAdded(object sender, DeviceAddedEvent deviceAddedEvent)
-        {
-            _needUpdate = true;
-        }
-
 
         /// <summary>
         /// Get the playback device in the set state
         /// </summary>
         /// <returns></returns>
-        public ICollection<IAudioDevice> GetPlaybackDevices()
+        public MMDeviceCollection GetPlaybackDevices()
         {
-            using (AppLogger.Log.DebugCall())
-            {
-                _cacheLock.EnterUpgradeableReadLock();
-                try
-                {
-                    if (!_needUpdate) return _playback;
 
-                    AppLogger.Log.Debug("Needs update");
-                    Refresh();
-                    return _playback;
-                }
-                finally
-                {
-                    AppLogger.Log.Debug("Get Playback Devices");
-                    _cacheLock.ExitUpgradeableReadLock();
-                }
+            AppLogger.Log.Debug("Get Playback Devices");
+            using (var enumerator = new MMDeviceEnumerator())
+            {
+                return enumerator.EnumerateAudioEndPoints(DataFlow.Render, _state);
             }
+
 
 
         }
 
-        private void Refresh()
-        {
-            _cacheLock.EnterWriteLock();
-            try
-            {
-                _playback.Clear();
-
-                try
-                {
-                    AppLogger.Log.Debug("Refreshing playback devices");
-                    _playback.UnionWith(AudioController.GetPlaybackDevices(_state));
-                }
-                catch (DefSoundException e)
-                {
-                    AppLogger.Log.Error("Problem getting Playback Devices ", e);
-                }
-
-
-                _recording.Clear();
-                try
-                {
-                    AppLogger.Log.Debug("Refreshing recording devices");
-                    _recording.UnionWith(AudioController.GetRecordingDevices(_state));
-                }
-                catch (DefSoundException e)
-                {
-                    AppLogger.Log.Error("Problem getting Recording Devices ", e);
-                }
-                _needUpdate = false;
-            }
-            finally
-            {
-                _cacheLock.ExitWriteLock();
-            }
-        }
-
+       
         /// <summary>
         /// Get the recording device in the set state
         /// </summary>
         /// <returns></returns>
-        public ICollection<IAudioDevice> GetRecordingDevices()
+        public MMDeviceCollection GetRecordingDevices()
         {
-            using (AppLogger.Log.DebugCall())
+            AppLogger.Log.Debug("Get Recording Devices");
+            using (var enumerator = new MMDeviceEnumerator())
             {
-                _cacheLock.EnterUpgradeableReadLock();
-                try
-                {
-                    if (!_needUpdate) return _recording;
-
-                    AppLogger.Log.Debug("Needs update");
-                    Refresh();
-                    return _recording;
-                }
-                finally
-                {
-                    AppLogger.Log.Debug("Get Recording Devices");
-                    _cacheLock.ExitUpgradeableReadLock();
-                }
+                return enumerator.EnumerateAudioEndPoints(DataFlow.Capture, _state);
             }
         }
     }

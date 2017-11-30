@@ -12,7 +12,7 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using AudioEndPointControllerWrapper;
+using NAudio.CoreAudioApi;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
 using SoundSwitch.Localization;
@@ -27,7 +27,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
 
         public INotificationConfiguration Configuration { get; set; }
 
-        public void NotifyDefaultChanged(IAudioDevice audioDevice)
+        public void NotifyDefaultChanged(MMDevice audioDevice)
         {
         }
 

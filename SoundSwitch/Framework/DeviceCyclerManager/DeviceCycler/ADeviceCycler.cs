@@ -12,16 +12,18 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using AudioEndPointControllerWrapper;
+using AudioDefaultSwitcherWrapper;
+using NAudio.CoreAudioApi;
 using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
 {
     public abstract class ADeviceCycler : IDeviceCycler
     {
-        private readonly IDictionary<AudioDeviceType, IAudioDevice> _lastDevices = new Dictionary<AudioDeviceType, IAudioDevice>();
+        private readonly IDictionary<DeviceType, String> _lastDevices = new Dictionary<DeviceType, String>();
 
         public abstract DeviceCyclerTypeEnum TypeEnum { get; }
         public abstract string Label { get; }
@@ -30,7 +32,7 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         /// Cycle the audio device for the given type
         /// </summary>
         /// <param name="type"></param>
-        public abstract bool CycleAudioDevice(AudioDeviceType type);
+        public abstract bool CycleAudioDevice(DeviceType type);
 
         /// <summary>
         /// Get the next device that need to be set as Default
@@ -38,15 +40,29 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         /// <param name="audioDevices"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        protected IAudioDevice GetNextDevice(ICollection<IAudioDevice> audioDevices, AudioDeviceType type)
+        protected MMDevice GetNextDevice(ICollection<MMDevice> audioDevices, DeviceType type)
         {
-            IAudioDevice lastDevice;
-            _lastDevices.TryGetValue(type, out lastDevice);
+            _lastDevices.TryGetValue(type, out var lastDeviceId);
+            MMDevice lastDevice = null;
+            if (lastDeviceId != null)
+            {
+                using (var enumerator = new MMDeviceEnumerator())
+                {
+                    try
+                    {
+                        lastDevice = enumerator.GetDevice(lastDeviceId);
+                    }
+                    catch (Exception)
+                    {
+                        // ignored
+                    }
+                }
+            }
 
             var defaultDev = lastDevice ??
-                             audioDevices.FirstOrDefault(device => device.IsDefault(Role.Console)) ??
+                             audioDevices.FirstOrDefault(device => AudioController.IsDefault(device.ID, type, DeviceRole.Console)) ??
                              audioDevices.Last();
-            var next = audioDevices.SkipWhile((device, i) => !Equals(device, defaultDev)).Skip(1).FirstOrDefault() ??
+            var next = audioDevices.SkipWhile((device, i) => device.ID != defaultDev.ID).Skip(1).FirstOrDefault() ??
                        audioDevices.ElementAt(0);
             return next;
         }
@@ -55,22 +71,22 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         /// Attempts to set active device to the specified name
         /// </summary>
         /// <param name="device"></param>
-        public bool SetActiveDevice(IAudioDevice device)
+        public bool SetActiveDevice(MMDevice device)
         {
             using (AppLogger.Log.InfoCall())
             {
                 AppLogger.Log.Info("Set Default device", device);
                 if (!AppModel.Instance.SetCommunications)
                 {
-                    device.SetAsDefault(Role.Console);
-                    device.SetAsDefault(Role.Multimedia);
+                    AudioController.SwitchTo(device.ID, DeviceRole.Console);
+                    AudioController.SwitchTo(device.ID, DeviceRole.Multimedia);
                 }
                 else
                 {
                     AppLogger.Log.Info("Set Default Communication device", device);
-                    device.SetAsDefault(Role.All);
+                    AudioController.SwitchTo(device.ID, DeviceRole.All);
                 }
-                _lastDevices[device.Type] = device;
+                _lastDevices[(DeviceType)device.DataFlow] = device.ID;
                 return true;
             }
         }

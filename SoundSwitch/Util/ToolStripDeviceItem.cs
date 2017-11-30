@@ -14,20 +14,33 @@
 ********************************************************************/
 
 using System;
+using System.Drawing;
 using System.Windows.Forms;
-using AudioEndPointControllerWrapper;
+using AudioDefaultSwitcherWrapper;
+using NAudio.CoreAudioApi;
 using SoundSwitch.Properties;
 
 namespace SoundSwitch.Util
 {
     internal class ToolStripDeviceItem : ToolStripMenuItem
     {
-        public ToolStripDeviceItem(EventHandler onClick, IAudioDevice audioDevice)
-            : base(audioDevice.FriendlyName, audioDevice.IsDefault(Role.Console) ? Resources.Check : null, onClick)
+        public ToolStripDeviceItem(EventHandler onClick, MMDevice audioDevice)
+            : base(audioDevice.FriendlyName, null, onClick)
         {
             AudioDevice = audioDevice;
         }
 
-        public IAudioDevice AudioDevice { get; set; }
+        public override Image Image
+        {
+            get
+            {
+                if (AudioDevice !=null && AudioController.IsDefault(AudioDevice.ID, (DeviceType) AudioDevice.DataFlow, DeviceRole.Console))
+                    return Resources.Check;
+
+                return null;
+            }
+        }
+
+        public MMDevice AudioDevice { get; }
     }
 }
