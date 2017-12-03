@@ -1,5 +1,16 @@
 # Change Log
 
+## [v4.2](https://github.com/Belphemur/SoundSwitch/tree/v4.2) (2017-12-03)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.1...v4.2)
+
+**Implemented enhancements:**
+
+- Rewrite of the core of SoundSwitch [\#224](https://github.com/Belphemur/SoundSwitch/issues/224)
+
+**Fixed bugs:**
+
+- Race condition of the WindowsAPIThread leading to crash on start. [\#229](https://github.com/Belphemur/SoundSwitch/issues/229)
+
 ## [v4.1](https://github.com/Belphemur/SoundSwitch/tree/v4.1) (2017-11-30)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.0...v4.1)
 
