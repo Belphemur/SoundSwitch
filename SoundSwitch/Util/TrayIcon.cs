@@ -152,7 +152,7 @@ namespace SoundSwitch.Util
                 }
                 Process.Start(readmeHtml);
             });
-            _settingsMenu.Items.Add(TrayIconStrings.donate, Resources.donate, (sender, e) => Process.Start("https://www.aaflalo.me/donate"));
+            _settingsMenu.Items.Add(TrayIconStrings.donate, Resources.donate, (sender, e) => Process.Start("https://soundswitch.aaflalo.me/?utm_source=application"));
             _settingsMenu.Items.Add(TrayIconStrings.about, Resources.HelpSmall, (sender, e) => new About().Show());
             _settingsMenu.Items.Add("-");
             _settingsMenu.Items.Add(TrayIconStrings.exit, Resources.exit, (sender, e) => Application.Exit());
