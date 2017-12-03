@@ -1,4 +1,4 @@
-;contribute on github.com/stfx/innodependencyinstaller or codeproject.com/Articles/20868/NET-Framework-1-1-2-0-3-5-Installer-for-InnoSetup
+﻿;contribute on github.com/stfx/innodependencyinstaller or codeproject.com/Articles/20868/NET-Framework-1-1-2-0-3-5-Installer-for-InnoSetup
 
 ;comment out product defines to disable installing them
 ;#define use_iis
@@ -18,7 +18,7 @@
 AppName={#MyAppSetupName}
 AppVersion={#MyAppVersion}
 AppVerName={#MyAppSetupName} {#MyAppVersion}
-AppCopyright=Copyright Â© 2010-2017 {#MyAppSetupName}
+AppCopyright=Copyright © 2010-2017 {#MyAppSetupName}
 VersionInfoVersion={#MyAppVersion}
 VersionInfoCompany=SoundSwitch
 AppPublisher=Antoine Aflalo
@@ -105,10 +105,10 @@ Filename: "certutil.exe"; Parameters: "-addstore ""TrustedPublisher"" ""{app}\ce
 win_sp_title=Windows %1 Service Pack %2
 en.AddCertDescription=Trust {#MyAppSetupName} Certficates%nThis way you won't have warnings when {#MyAppSetupName} is updating.
 fr.AddCertDescription=Installer les certificats de {#MyAppSetupName}%nSi sélectionné, Windows reconnaîtra {#MyAppSetupName} comme étant un distributeur valide.
-de.AddCertDescription={#MyAppSetupName} Zertifikaten vertrauen%nAuf diese Weise erhalten Sie keine Warnungen, wenn {#MyAppSetupName} aktualisiert wird.
+de.AddCertDescription={#MyAppSetupName} Zertifikaten vertrauen%nDadurch erhalten Sie keine Warnungen mehr, wenn sich {#MyAppSetupName} aktualisiert.
 en.ExistingSettings=Remove any existing settings
 fr.ExistingSettings=Supprimer les paramètres existants
-de.ExistingSettings=Alle Einstellungen löschen
+de.ExistingSettings=Alle vorhandenen Einstellungen löschen
 en.UninstallQuestion=Do you want to remove {#MyAppSetupName}'s settings?
 fr.UninstallQuestion=Voulez-vous aussi supprimer les paramètres de {#MyAppSetupName} ?
 de.UninstallQuestion=Sollen deine {#MyAppSetupName} Einstellungen gelöscht werden?
