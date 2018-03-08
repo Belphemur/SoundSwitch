@@ -34,6 +34,8 @@ namespace SoundSwitch.Localization
                     return CultureInfo.GetCultureInfo("fr");
                 case Language.German:
                     return CultureInfo.GetCultureInfo("de");
+                case Language.Spanish:
+                    return CultureInfo.GetCultureInfo("es");
                 default:
                     return CultureInfo.GetCultureInfo("en");
 
@@ -53,6 +55,8 @@ namespace SoundSwitch.Localization
                     return Language.French;
                 case "de":
                     return Language.German;
+                case "es":
+                    return Language.Spanish;
                 default:
                     return Language.English;
             }
