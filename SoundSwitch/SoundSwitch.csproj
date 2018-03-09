@@ -365,6 +365,7 @@
       <DependentUpon>BannerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Localization\AboutStrings.de.resx" />
+    <EmbeddedResource Include="Localization\AboutStrings.es.resx" />
     <EmbeddedResource Include="Localization\AboutStrings.fr.resx" />
     <EmbeddedResource Include="Localization\AboutStrings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -374,10 +375,13 @@
     <EmbeddedResource Include="Localization\SettingsStrings.de.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Localization\SettingsStrings.es.resx" />
     <EmbeddedResource Include="Localization\TrayIconStrings.de.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Localization\TrayIconStrings.es.resx" />
     <EmbeddedResource Include="Localization\UpdateDownloadStrings.de.resx" />
+    <EmbeddedResource Include="Localization\UpdateDownloadStrings.es.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -439,12 +443,12 @@
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Visual.C++.14.0.x64">
       <Visible>False</Visible>
-      <ProductName>Visual C++ "14" Runtime Libraries %28x64%29</ProductName>
+      <ProductName>Bibliotecas en tiempo de ejecución de Visual C++ "14" %28x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Visual.C++.14.0.x86">
       <Visible>False</Visible>
-      <ProductName>Visual C++ "14" Runtime Libraries %28x86%29</ProductName>
+      <ProductName>Bibliotecas en tiempo de ejecución de Visual C++ "14" %28x86%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
@@ -478,12 +482,12 @@
   <ItemGroup>
     <PublishFile Include="SMDiagnostics">
       <Visible>False</Visible>
+      <PublishState>Exclude</PublishState>
+      <IncludeHash>True</IncludeHash>
       <Group>
       </Group>
       <TargetPath>
       </TargetPath>
-      <PublishState>Exclude</PublishState>
-      <IncludeHash>True</IncludeHash>
       <FileType>Assembly</FileType>
     </PublishFile>
   </ItemGroup>
