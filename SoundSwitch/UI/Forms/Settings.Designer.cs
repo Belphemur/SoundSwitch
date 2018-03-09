@@ -73,10 +73,9 @@
             // startWithWindowsCheckBox
             // 
             this.startWithWindowsCheckBox.AutoSize = true;
-            this.startWithWindowsCheckBox.Location = new System.Drawing.Point(9, 35);
-            this.startWithWindowsCheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.startWithWindowsCheckBox.Location = new System.Drawing.Point(6, 23);
             this.startWithWindowsCheckBox.Name = "startWithWindowsCheckBox";
-            this.startWithWindowsCheckBox.Size = new System.Drawing.Size(266, 24);
+            this.startWithWindowsCheckBox.Size = new System.Drawing.Size(181, 17);
             this.startWithWindowsCheckBox.TabIndex = 7;
             this.startWithWindowsCheckBox.Text = "Start automatically with Windows";
             this.startWithWindowsCheckBox.UseVisualStyleBackColor = true;
@@ -86,10 +85,9 @@
             // 
             this.closeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.closeButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.closeButton.Location = new System.Drawing.Point(732, 452);
-            this.closeButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.closeButton.Location = new System.Drawing.Point(488, 301);
             this.closeButton.Name = "closeButton";
-            this.closeButton.Size = new System.Drawing.Size(112, 35);
+            this.closeButton.Size = new System.Drawing.Size(75, 23);
             this.closeButton.TabIndex = 11;
             this.closeButton.Text = "Close";
             this.closeButton.UseVisualStyleBackColor = true;
@@ -98,10 +96,9 @@
             // switchCommunicationDeviceCheckBox
             // 
             this.switchCommunicationDeviceCheckBox.AutoSize = true;
-            this.switchCommunicationDeviceCheckBox.Location = new System.Drawing.Point(9, 35);
-            this.switchCommunicationDeviceCheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.switchCommunicationDeviceCheckBox.Location = new System.Drawing.Point(6, 23);
             this.switchCommunicationDeviceCheckBox.Name = "switchCommunicationDeviceCheckBox";
-            this.switchCommunicationDeviceCheckBox.Size = new System.Drawing.Size(304, 24);
+            this.switchCommunicationDeviceCheckBox.Size = new System.Drawing.Size(207, 17);
             this.switchCommunicationDeviceCheckBox.TabIndex = 12;
             this.switchCommunicationDeviceCheckBox.Text = "Switch Default Communication Device";
             this.switchCommunicationDeviceCheckBox.UseVisualStyleBackColor = true;
@@ -115,22 +112,20 @@
             this.tabControl.Controls.Add(this.playbackTabPage);
             this.tabControl.Controls.Add(this.recordingTabPage);
             this.tabControl.Controls.Add(this.appSettingTabPage);
-            this.tabControl.Location = new System.Drawing.Point(18, 9);
-            this.tabControl.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabControl.Location = new System.Drawing.Point(12, 6);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(826, 429);
+            this.tabControl.Size = new System.Drawing.Size(551, 286);
             this.tabControl.TabIndex = 13;
             this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
             // 
             // playbackTabPage
             // 
             this.playbackTabPage.Controls.Add(this.playbackListView);
-            this.playbackTabPage.Location = new System.Drawing.Point(4, 29);
-            this.playbackTabPage.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.playbackTabPage.Location = new System.Drawing.Point(4, 22);
             this.playbackTabPage.Name = "playbackTabPage";
-            this.playbackTabPage.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.playbackTabPage.Size = new System.Drawing.Size(818, 396);
+            this.playbackTabPage.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.playbackTabPage.Size = new System.Drawing.Size(543, 260);
             this.playbackTabPage.TabIndex = 0;
             this.playbackTabPage.Text = "Playback";
             this.playbackTabPage.UseVisualStyleBackColor = true;
@@ -146,10 +141,9 @@
             this.playbackListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
             listViewGroup1});
             this.playbackListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.playbackListView.Location = new System.Drawing.Point(4, 5);
-            this.playbackListView.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.playbackListView.Location = new System.Drawing.Point(3, 3);
             this.playbackListView.Name = "playbackListView";
-            this.playbackListView.Size = new System.Drawing.Size(810, 386);
+            this.playbackListView.Size = new System.Drawing.Size(537, 254);
             this.playbackListView.TabIndex = 14;
             this.playbackListView.UseCompatibleStateImageBehavior = false;
             this.playbackListView.View = System.Windows.Forms.View.Details;
@@ -157,11 +151,10 @@
             // recordingTabPage
             // 
             this.recordingTabPage.Controls.Add(this.recordingListView);
-            this.recordingTabPage.Location = new System.Drawing.Point(4, 29);
-            this.recordingTabPage.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.recordingTabPage.Location = new System.Drawing.Point(4, 22);
             this.recordingTabPage.Name = "recordingTabPage";
-            this.recordingTabPage.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.recordingTabPage.Size = new System.Drawing.Size(818, 396);
+            this.recordingTabPage.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.recordingTabPage.Size = new System.Drawing.Size(543, 260);
             this.recordingTabPage.TabIndex = 1;
             this.recordingTabPage.Text = "Recording";
             this.recordingTabPage.UseVisualStyleBackColor = true;
@@ -178,10 +171,9 @@
             this.recordingListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
             listViewGroup2});
             this.recordingListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.recordingListView.Location = new System.Drawing.Point(4, 5);
-            this.recordingListView.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.recordingListView.Location = new System.Drawing.Point(3, 3);
             this.recordingListView.Name = "recordingListView";
-            this.recordingListView.Size = new System.Drawing.Size(810, 386);
+            this.recordingListView.Size = new System.Drawing.Size(537, 254);
             this.recordingListView.TabIndex = 17;
             this.recordingListView.UseCompatibleStateImageBehavior = false;
             this.recordingListView.View = System.Windows.Forms.View.Details;
@@ -192,22 +184,21 @@
             this.appSettingTabPage.Controls.Add(this.updateSettingsGroupBox);
             this.appSettingTabPage.Controls.Add(this.audioSettingsGroupBox);
             this.appSettingTabPage.Controls.Add(this.basicSettingsGroupBox);
-            this.appSettingTabPage.Location = new System.Drawing.Point(4, 29);
-            this.appSettingTabPage.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.appSettingTabPage.Location = new System.Drawing.Point(4, 22);
             this.appSettingTabPage.Name = "appSettingTabPage";
-            this.appSettingTabPage.Size = new System.Drawing.Size(818, 396);
+            this.appSettingTabPage.Size = new System.Drawing.Size(543, 260);
             this.appSettingTabPage.TabIndex = 2;
             this.appSettingTabPage.Text = "Settings";
             this.appSettingTabPage.UseVisualStyleBackColor = true;
             // 
             // languageGroupBox
             // 
+            this.languageGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.languageGroupBox.Controls.Add(this.languageComboBox);
-            this.languageGroupBox.Location = new System.Drawing.Point(482, 212);
-            this.languageGroupBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.languageGroupBox.Location = new System.Drawing.Point(321, 141);
             this.languageGroupBox.Name = "languageGroupBox";
-            this.languageGroupBox.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.languageGroupBox.Size = new System.Drawing.Size(328, 92);
+            this.languageGroupBox.Size = new System.Drawing.Size(219, 61);
             this.languageGroupBox.TabIndex = 15;
             this.languageGroupBox.TabStop = false;
             this.languageGroupBox.Text = "Language";
@@ -219,25 +210,25 @@
             this.languageComboBox.Items.AddRange(new object[] {
             "English (en)",
             "French (fr)",
-            "German (de)"});
-            this.languageComboBox.Location = new System.Drawing.Point(12, 35);
-            this.languageComboBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            "German (de)",
+            "Spanish (es)"});
+            this.languageComboBox.Location = new System.Drawing.Point(8, 23);
             this.languageComboBox.Name = "languageComboBox";
-            this.languageComboBox.Size = new System.Drawing.Size(302, 28);
+            this.languageComboBox.Size = new System.Drawing.Size(203, 21);
             this.languageComboBox.TabIndex = 17;
             this.languageComboBox.SelectedIndexChanged += new System.EventHandler(this.languageComboBox_SelectedIndexChanged);
             // 
             // updateSettingsGroupBox
             // 
+            this.updateSettingsGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.updateSettingsGroupBox.Controls.Add(this.updateNeverRadioButton);
             this.updateSettingsGroupBox.Controls.Add(this.updateNotifyRadioButton);
             this.updateSettingsGroupBox.Controls.Add(this.updateSilentRadioButton);
             this.updateSettingsGroupBox.Controls.Add(this.includeBetaVersionsCheckBox);
-            this.updateSettingsGroupBox.Location = new System.Drawing.Point(482, 5);
-            this.updateSettingsGroupBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.updateSettingsGroupBox.Location = new System.Drawing.Point(321, 3);
             this.updateSettingsGroupBox.Name = "updateSettingsGroupBox";
-            this.updateSettingsGroupBox.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.updateSettingsGroupBox.Size = new System.Drawing.Size(328, 198);
+            this.updateSettingsGroupBox.Size = new System.Drawing.Size(219, 132);
             this.updateSettingsGroupBox.TabIndex = 14;
             this.updateSettingsGroupBox.TabStop = false;
             this.updateSettingsGroupBox.Text = "Update Settings";
@@ -245,10 +236,9 @@
             // updateNeverRadioButton
             // 
             this.updateNeverRadioButton.AutoSize = true;
-            this.updateNeverRadioButton.Location = new System.Drawing.Point(10, 106);
-            this.updateNeverRadioButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.updateNeverRadioButton.Location = new System.Drawing.Point(7, 71);
             this.updateNeverRadioButton.Name = "updateNeverRadioButton";
-            this.updateNeverRadioButton.Size = new System.Drawing.Size(206, 24);
+            this.updateNeverRadioButton.Size = new System.Drawing.Size(143, 17);
             this.updateNeverRadioButton.TabIndex = 21;
             this.updateNeverRadioButton.TabStop = true;
             this.updateNeverRadioButton.Text = "Never check for updates";
@@ -258,10 +248,9 @@
             // updateNotifyRadioButton
             // 
             this.updateNotifyRadioButton.AutoSize = true;
-            this.updateNotifyRadioButton.Location = new System.Drawing.Point(10, 69);
-            this.updateNotifyRadioButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.updateNotifyRadioButton.Location = new System.Drawing.Point(7, 46);
             this.updateNotifyRadioButton.Name = "updateNotifyRadioButton";
-            this.updateNotifyRadioButton.Size = new System.Drawing.Size(296, 24);
+            this.updateNotifyRadioButton.Size = new System.Drawing.Size(202, 17);
             this.updateNotifyRadioButton.TabIndex = 20;
             this.updateNotifyRadioButton.TabStop = true;
             this.updateNotifyRadioButton.Text = "Notify me when updates are available";
@@ -271,10 +260,9 @@
             // updateSilentRadioButton
             // 
             this.updateSilentRadioButton.AutoSize = true;
-            this.updateSilentRadioButton.Location = new System.Drawing.Point(10, 32);
-            this.updateSilentRadioButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.updateSilentRadioButton.Location = new System.Drawing.Point(7, 21);
             this.updateSilentRadioButton.Name = "updateSilentRadioButton";
-            this.updateSilentRadioButton.Size = new System.Drawing.Size(234, 24);
+            this.updateSilentRadioButton.Size = new System.Drawing.Size(157, 17);
             this.updateSilentRadioButton.TabIndex = 19;
             this.updateSilentRadioButton.TabStop = true;
             this.updateSilentRadioButton.Text = "Install updates automatically";
@@ -284,10 +272,9 @@
             // includeBetaVersionsCheckBox
             // 
             this.includeBetaVersionsCheckBox.AutoSize = true;
-            this.includeBetaVersionsCheckBox.Location = new System.Drawing.Point(10, 155);
-            this.includeBetaVersionsCheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.includeBetaVersionsCheckBox.Location = new System.Drawing.Point(7, 103);
             this.includeBetaVersionsCheckBox.Name = "includeBetaVersionsCheckBox";
-            this.includeBetaVersionsCheckBox.Size = new System.Drawing.Size(187, 24);
+            this.includeBetaVersionsCheckBox.Size = new System.Drawing.Size(128, 17);
             this.includeBetaVersionsCheckBox.TabIndex = 18;
             this.includeBetaVersionsCheckBox.Text = "Include Beta versions";
             this.includeBetaVersionsCheckBox.UseVisualStyleBackColor = true;
@@ -303,21 +290,18 @@
             this.audioSettingsGroupBox.Controls.Add(this.selectSoundButton);
             this.audioSettingsGroupBox.Controls.Add(this.notificationLabel);
             this.audioSettingsGroupBox.Controls.Add(this.notificationComboBox);
-            this.audioSettingsGroupBox.Location = new System.Drawing.Point(4, 135);
-            this.audioSettingsGroupBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.audioSettingsGroupBox.Location = new System.Drawing.Point(3, 90);
             this.audioSettingsGroupBox.Name = "audioSettingsGroupBox";
-            this.audioSettingsGroupBox.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.audioSettingsGroupBox.Size = new System.Drawing.Size(468, 249);
+            this.audioSettingsGroupBox.Size = new System.Drawing.Size(312, 166);
             this.audioSettingsGroupBox.TabIndex = 13;
             this.audioSettingsGroupBox.TabStop = false;
             this.audioSettingsGroupBox.Text = "Audio Settings";
             // 
             // cycleThroughLabel
             // 
-            this.cycleThroughLabel.Location = new System.Drawing.Point(-12, 199);
-            this.cycleThroughLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.cycleThroughLabel.Location = new System.Drawing.Point(-8, 133);
             this.cycleThroughLabel.Name = "cycleThroughLabel";
-            this.cycleThroughLabel.Size = new System.Drawing.Size(150, 20);
+            this.cycleThroughLabel.Size = new System.Drawing.Size(100, 13);
             this.cycleThroughLabel.TabIndex = 23;
             this.cycleThroughLabel.Text = "Cycle through";
             this.cycleThroughLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -326,19 +310,17 @@
             // 
             this.cycleThroughComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cycleThroughComboBox.FormattingEnabled = true;
-            this.cycleThroughComboBox.Location = new System.Drawing.Point(147, 196);
-            this.cycleThroughComboBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cycleThroughComboBox.Location = new System.Drawing.Point(98, 131);
             this.cycleThroughComboBox.Name = "cycleThroughComboBox";
-            this.cycleThroughComboBox.Size = new System.Drawing.Size(264, 28);
+            this.cycleThroughComboBox.Size = new System.Drawing.Size(177, 21);
             this.cycleThroughComboBox.TabIndex = 22;
             this.cycleThroughComboBox.SelectedValueChanged += new System.EventHandler(this.cyclerComboBox_SelectedValueChanged);
             // 
             // tooltipOnHoverLabel
             // 
-            this.tooltipOnHoverLabel.Location = new System.Drawing.Point(-12, 146);
-            this.tooltipOnHoverLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.tooltipOnHoverLabel.Location = new System.Drawing.Point(-8, 97);
             this.tooltipOnHoverLabel.Name = "tooltipOnHoverLabel";
-            this.tooltipOnHoverLabel.Size = new System.Drawing.Size(150, 20);
+            this.tooltipOnHoverLabel.Size = new System.Drawing.Size(100, 13);
             this.tooltipOnHoverLabel.TabIndex = 21;
             this.tooltipOnHoverLabel.Text = "Tooltip on Hover";
             this.tooltipOnHoverLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -347,19 +329,17 @@
             // 
             this.tooltipInfoComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.tooltipInfoComboBox.FormattingEnabled = true;
-            this.tooltipInfoComboBox.Location = new System.Drawing.Point(147, 142);
-            this.tooltipInfoComboBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tooltipInfoComboBox.Location = new System.Drawing.Point(98, 95);
             this.tooltipInfoComboBox.Name = "tooltipInfoComboBox";
-            this.tooltipInfoComboBox.Size = new System.Drawing.Size(264, 28);
+            this.tooltipInfoComboBox.Size = new System.Drawing.Size(177, 21);
             this.tooltipInfoComboBox.TabIndex = 20;
             this.tooltipInfoComboBox.SelectedValueChanged += new System.EventHandler(this.tooltipInfoComboBox_SelectedValueChanged);
             // 
             // selectSoundButton
             // 
-            this.selectSoundButton.Location = new System.Drawing.Point(422, 86);
-            this.selectSoundButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.selectSoundButton.Location = new System.Drawing.Point(281, 57);
             this.selectSoundButton.Name = "selectSoundButton";
-            this.selectSoundButton.Size = new System.Drawing.Size(36, 35);
+            this.selectSoundButton.Size = new System.Drawing.Size(24, 23);
             this.selectSoundButton.TabIndex = 19;
             this.selectSoundButton.Text = "...";
             this.selectSoundButton.UseVisualStyleBackColor = true;
@@ -368,10 +348,9 @@
             // 
             // notificationLabel
             // 
-            this.notificationLabel.Location = new System.Drawing.Point(-12, 92);
-            this.notificationLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.notificationLabel.Location = new System.Drawing.Point(-8, 61);
             this.notificationLabel.Name = "notificationLabel";
-            this.notificationLabel.Size = new System.Drawing.Size(150, 20);
+            this.notificationLabel.Size = new System.Drawing.Size(100, 13);
             this.notificationLabel.TabIndex = 17;
             this.notificationLabel.Text = "Notification";
             this.notificationLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -380,10 +359,9 @@
             // 
             this.notificationComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.notificationComboBox.FormattingEnabled = true;
-            this.notificationComboBox.Location = new System.Drawing.Point(147, 88);
-            this.notificationComboBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.notificationComboBox.Location = new System.Drawing.Point(98, 59);
             this.notificationComboBox.Name = "notificationComboBox";
-            this.notificationComboBox.Size = new System.Drawing.Size(264, 28);
+            this.notificationComboBox.Size = new System.Drawing.Size(177, 21);
             this.notificationComboBox.TabIndex = 16;
             this.notificationComboBox.SelectedValueChanged += new System.EventHandler(this.notificationComboBox_SelectedValueChanged);
             // 
@@ -391,11 +369,9 @@
             // 
             this.basicSettingsGroupBox.Controls.Add(this.keepSystemTrayIconCheckBox);
             this.basicSettingsGroupBox.Controls.Add(this.startWithWindowsCheckBox);
-            this.basicSettingsGroupBox.Location = new System.Drawing.Point(4, 5);
-            this.basicSettingsGroupBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.basicSettingsGroupBox.Location = new System.Drawing.Point(3, 3);
             this.basicSettingsGroupBox.Name = "basicSettingsGroupBox";
-            this.basicSettingsGroupBox.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.basicSettingsGroupBox.Size = new System.Drawing.Size(468, 122);
+            this.basicSettingsGroupBox.Size = new System.Drawing.Size(312, 81);
             this.basicSettingsGroupBox.TabIndex = 0;
             this.basicSettingsGroupBox.TabStop = false;
             this.basicSettingsGroupBox.Text = "Basic Settings";
@@ -403,10 +379,9 @@
             // keepSystemTrayIconCheckBox
             // 
             this.keepSystemTrayIconCheckBox.AutoSize = true;
-            this.keepSystemTrayIconCheckBox.Location = new System.Drawing.Point(9, 71);
-            this.keepSystemTrayIconCheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.keepSystemTrayIconCheckBox.Location = new System.Drawing.Point(6, 47);
             this.keepSystemTrayIconCheckBox.Name = "keepSystemTrayIconCheckBox";
-            this.keepSystemTrayIconCheckBox.Size = new System.Drawing.Size(307, 24);
+            this.keepSystemTrayIconCheckBox.Size = new System.Drawing.Size(209, 17);
             this.keepSystemTrayIconCheckBox.TabIndex = 8;
             this.keepSystemTrayIconCheckBox.Text = "Keep SoundSwitch\'s System Tray Icon";
             this.keepSystemTrayIconCheckBox.UseVisualStyleBackColor = true;
@@ -415,19 +390,17 @@
             // hotkeysTextBox
             // 
             this.hotkeysTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.hotkeysTextBox.Location = new System.Drawing.Point(135, 451);
-            this.hotkeysTextBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.hotkeysTextBox.Location = new System.Drawing.Point(90, 301);
             this.hotkeysTextBox.Name = "hotkeysTextBox";
-            this.hotkeysTextBox.Size = new System.Drawing.Size(196, 26);
+            this.hotkeysTextBox.Size = new System.Drawing.Size(132, 20);
             this.hotkeysTextBox.TabIndex = 15;
             // 
             // hotkeysLabel
             // 
             this.hotkeysLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.hotkeysLabel.Location = new System.Drawing.Point(-24, 455);
-            this.hotkeysLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.hotkeysLabel.Location = new System.Drawing.Point(-16, 303);
             this.hotkeysLabel.Name = "hotkeysLabel";
-            this.hotkeysLabel.Size = new System.Drawing.Size(150, 20);
+            this.hotkeysLabel.Size = new System.Drawing.Size(100, 13);
             this.hotkeysLabel.TabIndex = 14;
             this.hotkeysLabel.Text = "Hotkeys";
             this.hotkeysLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -440,27 +413,25 @@
             // 
             this.hotkeysCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.hotkeysCheckBox.AutoSize = true;
-            this.hotkeysCheckBox.Location = new System.Drawing.Point(345, 454);
-            this.hotkeysCheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.hotkeysCheckBox.Location = new System.Drawing.Point(230, 303);
             this.hotkeysCheckBox.Name = "hotkeysCheckBox";
-            this.hotkeysCheckBox.Size = new System.Drawing.Size(22, 21);
+            this.hotkeysCheckBox.Size = new System.Drawing.Size(15, 14);
             this.hotkeysCheckBox.TabIndex = 20;
             this.hotkeysCheckBox.UseVisualStyleBackColor = true;
             this.hotkeysCheckBox.CheckedChanged += new System.EventHandler(this.hotkeysCheckbox_CheckedChanged);
             // 
             // SettingsForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.CancelButton = this.closeButton;
-            this.ClientSize = new System.Drawing.Size(862, 497);
+            this.ClientSize = new System.Drawing.Size(579, 343);
             this.Controls.Add(this.hotkeysCheckBox);
             this.Controls.Add(this.hotkeysTextBox);
             this.Controls.Add(this.hotkeysLabel);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.closeButton);
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.MinimumSize = new System.Drawing.Size(884, 553);
+            this.MinimumSize = new System.Drawing.Size(595, 382);
             this.Name = "SettingsForm";
             this.Text = "Settings";
             this.tabControl.ResumeLayout(false);
