@@ -4,7 +4,7 @@ cd /d "%~dp0"
 
 SET FILE_DIR=%~dp0
 SET BIN_DIR=%FILE_DIR%bin
-SET LANGS=(fr de)
+SET LANGS=(fr de es)
 
 set finalDir=%FILE_DIR%Final
 set x86Release=%finalDir%\x86
