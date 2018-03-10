@@ -1,5 +1,17 @@
 # Change Log
 
+## [v4.3](https://github.com/Belphemur/SoundSwitch/tree/v4.3) (2018-03-10)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.2...v4.3)
+
+**Closed issues:**
+
+- Unable to set shortcut [\#241](https://github.com/Belphemur/SoundSwitch/issues/241)
+- Switch Device by system time [\#235](https://github.com/Belphemur/SoundSwitch/issues/235)
+
+**Merged pull requests:**
+
+- Spanish language added [\#244](https://github.com/Belphemur/SoundSwitch/pull/244) ([plextoriano](https://github.com/plextoriano))
+
 ## [v4.2](https://github.com/Belphemur/SoundSwitch/tree/v4.2) (2017-12-03)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.1...v4.2)
 
