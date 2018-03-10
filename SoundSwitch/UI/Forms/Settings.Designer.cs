@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
-            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
+            System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
+            System.Windows.Forms.ListViewGroup listViewGroup4 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
             this.startWithWindowsCheckBox = new System.Windows.Forms.CheckBox();
             this.closeButton = new System.Windows.Forms.Button();
             this.switchCommunicationDeviceCheckBox = new System.Windows.Forms.CheckBox();
@@ -85,7 +85,7 @@
             // 
             this.closeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.closeButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.closeButton.Location = new System.Drawing.Point(488, 301);
+            this.closeButton.Location = new System.Drawing.Point(654, 395);
             this.closeButton.Name = "closeButton";
             this.closeButton.Size = new System.Drawing.Size(75, 23);
             this.closeButton.TabIndex = 11;
@@ -115,7 +115,7 @@
             this.tabControl.Location = new System.Drawing.Point(12, 6);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(551, 286);
+            this.tabControl.Size = new System.Drawing.Size(717, 380);
             this.tabControl.TabIndex = 13;
             this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
             // 
@@ -124,8 +124,8 @@
             this.playbackTabPage.Controls.Add(this.playbackListView);
             this.playbackTabPage.Location = new System.Drawing.Point(4, 22);
             this.playbackTabPage.Name = "playbackTabPage";
-            this.playbackTabPage.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.playbackTabPage.Size = new System.Drawing.Size(543, 260);
+            this.playbackTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.playbackTabPage.Size = new System.Drawing.Size(709, 354);
             this.playbackTabPage.TabIndex = 0;
             this.playbackTabPage.Text = "Playback";
             this.playbackTabPage.UseVisualStyleBackColor = true;
@@ -135,15 +135,15 @@
             this.playbackListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.playbackListView.CheckBoxes = true;
             this.playbackListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            listViewGroup1.Header = "Selected";
-            listViewGroup1.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
-            listViewGroup1.Name = "selectedGroup";
+            listViewGroup3.Header = "Selected";
+            listViewGroup3.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
+            listViewGroup3.Name = "selectedGroup";
             this.playbackListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup1});
+            listViewGroup3});
             this.playbackListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.playbackListView.Location = new System.Drawing.Point(3, 3);
             this.playbackListView.Name = "playbackListView";
-            this.playbackListView.Size = new System.Drawing.Size(537, 254);
+            this.playbackListView.Size = new System.Drawing.Size(703, 348);
             this.playbackListView.TabIndex = 14;
             this.playbackListView.UseCompatibleStateImageBehavior = false;
             this.playbackListView.View = System.Windows.Forms.View.Details;
@@ -153,8 +153,8 @@
             this.recordingTabPage.Controls.Add(this.recordingListView);
             this.recordingTabPage.Location = new System.Drawing.Point(4, 22);
             this.recordingTabPage.Name = "recordingTabPage";
-            this.recordingTabPage.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.recordingTabPage.Size = new System.Drawing.Size(543, 260);
+            this.recordingTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.recordingTabPage.Size = new System.Drawing.Size(709, 354);
             this.recordingTabPage.TabIndex = 1;
             this.recordingTabPage.Text = "Recording";
             this.recordingTabPage.UseVisualStyleBackColor = true;
@@ -165,15 +165,15 @@
             this.recordingListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.recordingListView.CheckBoxes = true;
             this.recordingListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            listViewGroup2.Header = "Selected";
-            listViewGroup2.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
-            listViewGroup2.Name = "selectedGroup";
+            listViewGroup4.Header = "Selected";
+            listViewGroup4.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
+            listViewGroup4.Name = "selectedGroup";
             this.recordingListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup2});
+            listViewGroup4});
             this.recordingListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.recordingListView.Location = new System.Drawing.Point(3, 3);
             this.recordingListView.Name = "recordingListView";
-            this.recordingListView.Size = new System.Drawing.Size(537, 254);
+            this.recordingListView.Size = new System.Drawing.Size(703, 348);
             this.recordingListView.TabIndex = 17;
             this.recordingListView.UseCompatibleStateImageBehavior = false;
             this.recordingListView.View = System.Windows.Forms.View.Details;
@@ -186,7 +186,7 @@
             this.appSettingTabPage.Controls.Add(this.basicSettingsGroupBox);
             this.appSettingTabPage.Location = new System.Drawing.Point(4, 22);
             this.appSettingTabPage.Name = "appSettingTabPage";
-            this.appSettingTabPage.Size = new System.Drawing.Size(543, 260);
+            this.appSettingTabPage.Size = new System.Drawing.Size(709, 354);
             this.appSettingTabPage.TabIndex = 2;
             this.appSettingTabPage.Text = "Settings";
             this.appSettingTabPage.UseVisualStyleBackColor = true;
@@ -196,9 +196,9 @@
             this.languageGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.languageGroupBox.Controls.Add(this.languageComboBox);
-            this.languageGroupBox.Location = new System.Drawing.Point(321, 141);
+            this.languageGroupBox.Location = new System.Drawing.Point(395, 141);
             this.languageGroupBox.Name = "languageGroupBox";
-            this.languageGroupBox.Size = new System.Drawing.Size(219, 61);
+            this.languageGroupBox.Size = new System.Drawing.Size(311, 61);
             this.languageGroupBox.TabIndex = 15;
             this.languageGroupBox.TabStop = false;
             this.languageGroupBox.Text = "Language";
@@ -226,9 +226,9 @@
             this.updateSettingsGroupBox.Controls.Add(this.updateNotifyRadioButton);
             this.updateSettingsGroupBox.Controls.Add(this.updateSilentRadioButton);
             this.updateSettingsGroupBox.Controls.Add(this.includeBetaVersionsCheckBox);
-            this.updateSettingsGroupBox.Location = new System.Drawing.Point(321, 3);
+            this.updateSettingsGroupBox.Location = new System.Drawing.Point(395, 3);
             this.updateSettingsGroupBox.Name = "updateSettingsGroupBox";
-            this.updateSettingsGroupBox.Size = new System.Drawing.Size(219, 132);
+            this.updateSettingsGroupBox.Size = new System.Drawing.Size(311, 132);
             this.updateSettingsGroupBox.TabIndex = 14;
             this.updateSettingsGroupBox.TabStop = false;
             this.updateSettingsGroupBox.Text = "Update Settings";
@@ -292,7 +292,7 @@
             this.audioSettingsGroupBox.Controls.Add(this.notificationComboBox);
             this.audioSettingsGroupBox.Location = new System.Drawing.Point(3, 90);
             this.audioSettingsGroupBox.Name = "audioSettingsGroupBox";
-            this.audioSettingsGroupBox.Size = new System.Drawing.Size(312, 166);
+            this.audioSettingsGroupBox.Size = new System.Drawing.Size(386, 166);
             this.audioSettingsGroupBox.TabIndex = 13;
             this.audioSettingsGroupBox.TabStop = false;
             this.audioSettingsGroupBox.Text = "Audio Settings";
@@ -312,7 +312,7 @@
             this.cycleThroughComboBox.FormattingEnabled = true;
             this.cycleThroughComboBox.Location = new System.Drawing.Point(98, 131);
             this.cycleThroughComboBox.Name = "cycleThroughComboBox";
-            this.cycleThroughComboBox.Size = new System.Drawing.Size(177, 21);
+            this.cycleThroughComboBox.Size = new System.Drawing.Size(247, 21);
             this.cycleThroughComboBox.TabIndex = 22;
             this.cycleThroughComboBox.SelectedValueChanged += new System.EventHandler(this.cyclerComboBox_SelectedValueChanged);
             // 
@@ -331,13 +331,13 @@
             this.tooltipInfoComboBox.FormattingEnabled = true;
             this.tooltipInfoComboBox.Location = new System.Drawing.Point(98, 95);
             this.tooltipInfoComboBox.Name = "tooltipInfoComboBox";
-            this.tooltipInfoComboBox.Size = new System.Drawing.Size(177, 21);
+            this.tooltipInfoComboBox.Size = new System.Drawing.Size(247, 21);
             this.tooltipInfoComboBox.TabIndex = 20;
             this.tooltipInfoComboBox.SelectedValueChanged += new System.EventHandler(this.tooltipInfoComboBox_SelectedValueChanged);
             // 
             // selectSoundButton
             // 
-            this.selectSoundButton.Location = new System.Drawing.Point(281, 57);
+            this.selectSoundButton.Location = new System.Drawing.Point(351, 57);
             this.selectSoundButton.Name = "selectSoundButton";
             this.selectSoundButton.Size = new System.Drawing.Size(24, 23);
             this.selectSoundButton.TabIndex = 19;
@@ -361,7 +361,7 @@
             this.notificationComboBox.FormattingEnabled = true;
             this.notificationComboBox.Location = new System.Drawing.Point(98, 59);
             this.notificationComboBox.Name = "notificationComboBox";
-            this.notificationComboBox.Size = new System.Drawing.Size(177, 21);
+            this.notificationComboBox.Size = new System.Drawing.Size(247, 21);
             this.notificationComboBox.TabIndex = 16;
             this.notificationComboBox.SelectedValueChanged += new System.EventHandler(this.notificationComboBox_SelectedValueChanged);
             // 
@@ -371,7 +371,7 @@
             this.basicSettingsGroupBox.Controls.Add(this.startWithWindowsCheckBox);
             this.basicSettingsGroupBox.Location = new System.Drawing.Point(3, 3);
             this.basicSettingsGroupBox.Name = "basicSettingsGroupBox";
-            this.basicSettingsGroupBox.Size = new System.Drawing.Size(312, 81);
+            this.basicSettingsGroupBox.Size = new System.Drawing.Size(386, 81);
             this.basicSettingsGroupBox.TabIndex = 0;
             this.basicSettingsGroupBox.TabStop = false;
             this.basicSettingsGroupBox.Text = "Basic Settings";
@@ -390,7 +390,7 @@
             // hotkeysTextBox
             // 
             this.hotkeysTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.hotkeysTextBox.Location = new System.Drawing.Point(90, 301);
+            this.hotkeysTextBox.Location = new System.Drawing.Point(90, 395);
             this.hotkeysTextBox.Name = "hotkeysTextBox";
             this.hotkeysTextBox.Size = new System.Drawing.Size(132, 20);
             this.hotkeysTextBox.TabIndex = 15;
@@ -398,7 +398,7 @@
             // hotkeysLabel
             // 
             this.hotkeysLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.hotkeysLabel.Location = new System.Drawing.Point(-16, 303);
+            this.hotkeysLabel.Location = new System.Drawing.Point(-16, 397);
             this.hotkeysLabel.Name = "hotkeysLabel";
             this.hotkeysLabel.Size = new System.Drawing.Size(100, 13);
             this.hotkeysLabel.TabIndex = 14;
@@ -413,7 +413,7 @@
             // 
             this.hotkeysCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.hotkeysCheckBox.AutoSize = true;
-            this.hotkeysCheckBox.Location = new System.Drawing.Point(230, 303);
+            this.hotkeysCheckBox.Location = new System.Drawing.Point(230, 397);
             this.hotkeysCheckBox.Name = "hotkeysCheckBox";
             this.hotkeysCheckBox.Size = new System.Drawing.Size(15, 14);
             this.hotkeysCheckBox.TabIndex = 20;
@@ -425,7 +425,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.CancelButton = this.closeButton;
-            this.ClientSize = new System.Drawing.Size(579, 343);
+            this.ClientSize = new System.Drawing.Size(745, 437);
             this.Controls.Add(this.hotkeysCheckBox);
             this.Controls.Add(this.hotkeysTextBox);
             this.Controls.Add(this.hotkeysLabel);
