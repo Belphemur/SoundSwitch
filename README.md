@@ -71,7 +71,7 @@ This is one of the interesting feature, the auto-updater. Every 24h SoundSwitch 
 There are three different options available: **Silent**, means the program updates itself in the background without any prompts. **Notify**, you will be notified when there's an update available. **Never**, well this is self-explained.
 
 ### Multi-Language Support
-There are three languages available: **English**, **French** and **German**.
+There are three languages available: **English**, **French**, **German** and **Spanish**.
 
 Would you like to help us with the localization? Great! See [Add or modify another language](../../wiki/Add-or-modify-another-language) for further informations.
 
@@ -88,6 +88,7 @@ Would you like to help us with the localization? Great! See [Add or modify anoth
 - Keyboard hook, [Christian Liensberger](http://www.liensberger.it/web/blog/?p=207).
 - Changing default sound device, [EreTIk](http://eretik.omegahg.com/).
 - Notification Sound, [Music box notification sound by Robinhood76](https://www.freesound.org/people/Robinhood76/sounds/216676/).
+- Spanish Language [#244](https://github.com/Belphemur/SoundSwitch/pull/244) [@plextoriano](https://github.com/plextoriano)
 
 ## Thanks
 
@@ -105,7 +106,7 @@ Thanks for their Open-Source licence to their amazing IDEs and addons like ReSha
 
 Copyright (C) 2015 Jeroen Pelgrims
 
-Copyright (C) 2015-2017 Antoine Aflalo
+Copyright (C) 2015-2018 Antoine Aflalo
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
