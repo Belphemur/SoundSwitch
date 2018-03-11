@@ -56,7 +56,8 @@ CreateUninstallRegKey=yes
 [Languages]
 Name: "en"; MessagesFile: "compiler:Default.isl"
 Name: "de"; MessagesFile: "compiler:Languages\German.isl"
-Name: "fr";    MessagesFile: "compiler:Languages\French.isl"
+Name: "fr"; MessagesFile: "compiler:Languages\French.isl"
+Name: "es"; MessagesFile: "compiler:Languages\Spanish.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
@@ -108,15 +109,19 @@ win_sp_title=Windows %1 Service Pack %2
 en.AddCertDescription=Trust {#MyAppSetupName} Certficates%nThis way you won't have warnings when {#MyAppSetupName} is updating.
 fr.AddCertDescription=Installer les certificats de {#MyAppSetupName}%nSi sélectionné, Windows reconnaîtra {#MyAppSetupName} comme étant un distributeur valide.
 de.AddCertDescription={#MyAppSetupName} Zertifikaten vertrauen%nDadurch erhalten Sie keine Warnungen mehr, wenn sich {#MyAppSetupName} aktualisiert.
+es.AddCertDescription=Confiar en los certificados de {#MyAppSetupName}%nDe esta forma no tendrá advertencias cada vez que {#MyAppSetupName} se actualice.
 en.ExistingSettings=Remove any existing settings
 fr.ExistingSettings=Supprimer les paramètres existants
 de.ExistingSettings=Alle vorhandenen Einstellungen löschen
+es.ExistingSettings=Elimiar cualquier configuración existente
 en.UninstallQuestion=Do you want to remove {#MyAppSetupName}'s settings?
 fr.UninstallQuestion=Voulez-vous aussi supprimer les paramètres de {#MyAppSetupName} ?
 de.UninstallQuestion=Sollen deine {#MyAppSetupName} Einstellungen gelöscht werden?
+es.UninstallQuestion=¿Quieres eliminar la configuración de {#MyAppSetupName}?
 en.CertificatesGroup=Certificates:
 fr.CertificatesGroup=Certificats:
 de.CertificatesGroup=Zertifikate:
+es.CertificatesGroup=Certificados:
 
 [UninstallRun]
 Filename: "certutil.exe"; Parameters: "-delstore ""Root"" ""eb db 8a 0a 72 a6 02 91 40 74 9e a2 af 63 d2 fc""" ; Flags: runhidden runascurrentuser
