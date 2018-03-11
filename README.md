@@ -73,7 +73,7 @@ There are three different options available: **Silent**, means the program updat
 ### Multi-Language Support
 There are three languages available: **English**, **French**, **German** and **Spanish**.
 
-Would you like to help us with the localization? Great! See [Add or modify another language](../../wiki/Add-or-modify-another-language) for further informations.
+Would you like to help us with the localization? Great! See [Add or modify another language](https://github.com/Belphemur/SoundSwitch/wiki/Add-or-modify-another-language) for further informations.
 
 ## Awards
 
