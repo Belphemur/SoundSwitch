@@ -1,4 +1,3 @@
-[Code]
 procedure Explode(var Dest: TArrayOfString; Text: String; Separator: String);
 var
   i, p: Integer;
@@ -30,7 +29,7 @@ begin
   if(IsX64()) then begin
     regKey := 'SOFTWARE\WOW6432Node\Microsoft\VisualStudio\'+ version +'\VC\Runtimes\x64';
   end else begin
-    regKey := 'SOFTWARE\Microsoft\VisualStudio\'+ version +'\VC\VCRedist\x86';
+    regKey := 'SOFTWARE\Microsoft\VisualStudio\'+ version +'\VC\Runtimes\x86';
   end;
   RegQueryDWordValue(HKLM, regKey, 'Installed', regInstalled);
    //Normal version installed, compare buildNumber
@@ -47,7 +46,7 @@ begin
   if(IsX64()) then begin
     regKey := 'SOFTWARE\Wow6432Node\Microsoft\DevDiv\vc\Servicing\'+ version +'\RuntimeAdditional';
   end else begin
-    regKey := 'SOFTWARE\Microsoft\DevDiv\vc\Servicing\'+ version +'\VC\VCRedist\x86';
+    regKey := 'SOFTWARE\Microsoft\DevDiv\vc\Servicing\'+ version +'\VC\RuntimeAdditional\x86';
   end;
   RegQueryDWordValue(HKLM, regKey, 'Install', regInstalled);
   if(regInstalled <> 1) then begin
