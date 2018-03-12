@@ -1,3 +1,4 @@
+[Code]
 procedure Explode(var Dest: TArrayOfString; Text: String; Separator: String);
 var
   i, p: Integer;
