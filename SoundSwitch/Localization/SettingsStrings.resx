@@ -232,7 +232,7 @@
     <value>Windows Notification: The default windows tray pop-up.
 Sound Notification: Plays a sound on the switched Playback Device.
 Customized Sound Notification: Plays the specified sound on the switched Playback Device.
-Toast Notification: Uses a special form of the windows tray pop-up version.
+Toast Notification: Uses a special form of the Windows tray pop-up version.
 Banner: Uses a custom always-on-top frame, useful for in-game usage.</value>
   </data>
 	<data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
