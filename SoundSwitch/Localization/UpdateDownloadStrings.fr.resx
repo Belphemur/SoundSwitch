@@ -113,6 +113,6 @@
 		<value>Signature Digitale Invalide</value>
 	</data>
 <data name="notSigned" xml:space="preserve">
-		<value>La màj qui a été téléchargée n'est pas signée par l'équipe de SoundSwitch. Contactez les dévelopeur et n'exécuter pas le fichier.</value>
+		<value>La màj qui a été téléchargée n'est pas signée par l'équipe de SoundSwitch. Contactez les dévelopeur et n'exécuter pas le fichier !</value>
   </data>
 	</root>
