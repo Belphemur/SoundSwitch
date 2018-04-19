@@ -24,6 +24,6 @@ namespace SoundSwitch.Localization
         French = 1,
         German = 2,
         Spanish = 3,
-        Nowegian = 4
+        Norwegian = 4
     }
 }
