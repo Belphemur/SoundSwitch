@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <project>
   <configuration createBackupFiles="False" hideEmptyRows="False" hideTranslatedRows="False" useSpellChecker="True" resXIndentChar="	" neutralLanguageCode="en-us" languagesToDisplay="">
-    <globalSetting name="projectMruItems">&lt;?xml version='1.0' encoding='utf-8'?&gt;&lt;items&gt;&lt;item type="2" checksum="4337951924" /&gt;&lt;item type="2" checksum="2702639950" /&gt;&lt;item type="2" checksum="4220368428" /&gt;&lt;item type="2" checksum="4307636005" /&gt;&lt;/items&gt;</globalSetting>
+    <globalSetting name="projectMruItems">&lt;?xml version='1.0' encoding='utf-8'?&gt;&lt;items&gt;&lt;item type="2" checksum="5965703517" /&gt;&lt;item type="2" checksum="3780276222" /&gt;&lt;item type="2" checksum="5343180671" /&gt;&lt;item type="2" checksum="4620909454" /&gt;&lt;item type="0" checksum="1495344443" /&gt;&lt;/items&gt;</globalSetting>
     <globalSetting name="Filter-ResourceEditorGrid">&lt;XtraSerializer version="1.0" application="View"&gt;
   &lt;property name="#LayoutVersion" /&gt;
   &lt;property name="ActiveFilterString" /&gt;
@@ -27,42 +27,49 @@
     <globalSetting name="CreateNewFileForm.prefixTextBox.Text">####</globalSetting>
     <globalSetting name="CreateNewFileForm.prefixCheckBox.Checked">False</globalSetting>
     <globalSetting name="CreateNewFileForm.referenceLanguageComboBox.SelectedIndex">0</globalSetting>
-    <globalSetting name="CreateNewFileForm.newLanguageComboBox.SelectedIndex">112</globalSetting>
+    <globalSetting name="CreateNewFileForm.newLanguageComboBox.SelectedIndex">589</globalSetting>
     <globalSetting name="CreateNewFileForm.copyTextsCheckBox.Checked">False</globalSetting>
     <globalSetting name="CreateNewFileForm.automaticallyTranslateCheckBox.Checked">False</globalSetting>
+    <userSetting name="alecs@ALECZKDESKTOP.FindText">
+    </userSetting>
+    <userSetting name="alecs@ALECZKDESKTOP.RecentFiles">E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\UpdateDownloadStrings.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\UpdateDownloadStrings.de.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\UpdateDownloadStrings.es.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\UpdateDownloadStrings.fr.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\UpdateDownloadStrings.pt-BR.resx###***###E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\TrayIconStrings.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\TrayIconStrings.de.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\TrayIconStrings.es.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\TrayIconStrings.fr.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\TrayIconStrings.pt-BR.resx###***###E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\SettingsStrings.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\SettingsStrings.de.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\SettingsStrings.es.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\SettingsStrings.fr.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\SettingsStrings.pt-BR.resx###***###E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\AboutStrings.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\AboutStrings.de.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\AboutStrings.es.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\AboutStrings.fr.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\AboutStrings.pt-BR.resx###***###E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\AboutStrings.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\AboutStrings.de.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\AboutStrings.es.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\AboutStrings.fr.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\AboutStrings.pt-BR.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\SettingsStrings.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\SettingsStrings.de.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\SettingsStrings.es.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\SettingsStrings.fr.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\SettingsStrings.pt-BR.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\TrayIconStrings.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\TrayIconStrings.de.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\TrayIconStrings.es.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\TrayIconStrings.fr.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\TrayIconStrings.pt-BR.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\UpdateDownloadStrings.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\UpdateDownloadStrings.de.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\UpdateDownloadStrings.es.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\UpdateDownloadStrings.fr.resx;E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\UpdateDownloadStrings.pt-BR.resx</userSetting>
     <description>
     </description>
   </configuration>
   <fileGroups>
     <fileGroup name="" projectFolderUniqueID="00000000-0000-0000-0000-000000000000" orderPosition="13" ignoreDuringExportAndImport="False" uniqueID="d90a8180-b0b6-4fe9-bf77-b90cfe012700">
-      <file filePath="Localization\AboutStrings.resx" />
-      <file filePath="Localization\AboutStrings.de.resx" />
-      <file filePath="Localization\AboutStrings.es.resx" />
-      <file filePath="Localization\AboutStrings.fr.resx" />
+      <file filePath="Localization\AboutStrings.resx" absoluteFilePath="E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\AboutStrings.resx" uniqueID="80c843d2-291d-4850-b6fd-156e29c26ea7" />
+      <file filePath="Localization\AboutStrings.de.resx" absoluteFilePath="E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\AboutStrings.de.resx" uniqueID="fc97377a-9a5b-4ea5-896c-11e376fe79aa" />
+      <file filePath="Localization\AboutStrings.es.resx" absoluteFilePath="E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\AboutStrings.es.resx" uniqueID="18bb4f06-74e5-419c-8eeb-944b6bcffcb1" />
+      <file filePath="Localization\AboutStrings.fr.resx" absoluteFilePath="E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\AboutStrings.fr.resx" uniqueID="053937cd-232e-45d7-8f3a-2aa385fb6251" />
+      <file filePath="Localization\AboutStrings.pt-BR.resx" absoluteFilePath="E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\AboutStrings.pt-BR.resx" uniqueID="60d597e3-8637-474b-95d9-6633eade703a" />
       <remarks>
       </remarks>
     </fileGroup>
     <fileGroup name="" projectFolderUniqueID="00000000-0000-0000-0000-000000000000" orderPosition="15" ignoreDuringExportAndImport="False" uniqueID="55ead1d4-e9b8-4459-b234-b86cc5854a58">
-      <file filePath="Localization\SettingsStrings.resx" />
-      <file filePath="Localization\SettingsStrings.de.resx" />
-      <file filePath="Localization\SettingsStrings.es.resx" />
-      <file filePath="Localization\SettingsStrings.fr.resx" />
+      <file filePath="Localization\SettingsStrings.resx" absoluteFilePath="E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\SettingsStrings.resx" uniqueID="78a75aa9-2090-4d32-a60e-14bc41e2acbb" />
+      <file filePath="Localization\SettingsStrings.de.resx" absoluteFilePath="E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\SettingsStrings.de.resx" uniqueID="aa0102b5-29ae-4ec2-9525-43eb74292f6f" />
+      <file filePath="Localization\SettingsStrings.es.resx" absoluteFilePath="E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\SettingsStrings.es.resx" uniqueID="80a808e7-25f4-480f-9181-3b3fac7ff3f5" />
+      <file filePath="Localization\SettingsStrings.fr.resx" absoluteFilePath="E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\SettingsStrings.fr.resx" uniqueID="1f7cf33e-1504-4ab2-ae70-6e2af00ca9aa" />
+      <file filePath="Localization\SettingsStrings.pt-BR.resx" absoluteFilePath="E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\SettingsStrings.pt-BR.resx" uniqueID="30251510-8dd8-4191-a36d-e9e6e995e826" />
       <remarks>
       </remarks>
     </fileGroup>
     <fileGroup name="" projectFolderUniqueID="00000000-0000-0000-0000-000000000000" orderPosition="16" ignoreDuringExportAndImport="False" uniqueID="3ced32d7-4350-4580-ade4-974d79a11c34">
-      <file filePath="Localization\TrayIconStrings.resx" />
-      <file filePath="Localization\TrayIconStrings.de.resx" />
-      <file filePath="Localization\TrayIconStrings.es.resx" />
-      <file filePath="Localization\TrayIconStrings.fr.resx" />
+      <file filePath="Localization\TrayIconStrings.resx" absoluteFilePath="E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\TrayIconStrings.resx" uniqueID="ee2690e9-27ce-4b6b-8e55-70f78966f523" />
+      <file filePath="Localization\TrayIconStrings.de.resx" absoluteFilePath="E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\TrayIconStrings.de.resx" uniqueID="cb211dfd-94fe-45a0-8531-501ccc0eb24b" />
+      <file filePath="Localization\TrayIconStrings.es.resx" absoluteFilePath="E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\TrayIconStrings.es.resx" uniqueID="fcf84f58-8d1e-4d5f-a8ff-572f6a5cf6c3" />
+      <file filePath="Localization\TrayIconStrings.fr.resx" absoluteFilePath="E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\TrayIconStrings.fr.resx" uniqueID="a2828712-aaf4-41f6-a85c-57deafd2b614" />
+      <file filePath="Localization\TrayIconStrings.pt-BR.resx" absoluteFilePath="E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\TrayIconStrings.pt-BR.resx" uniqueID="a4f9d1bc-b8ed-4f45-8e71-84f58dc05102" />
       <remarks>
       </remarks>
     </fileGroup>
     <fileGroup name="" projectFolderUniqueID="00000000-0000-0000-0000-000000000000" orderPosition="17" ignoreDuringExportAndImport="False" uniqueID="2e3b36f8-c04b-4774-9e23-e0dd3cc91381">
-      <file filePath="Localization\UpdateDownloadStrings.resx" />
-      <file filePath="Localization\UpdateDownloadStrings.de.resx" />
-      <file filePath="Localization\UpdateDownloadStrings.es.resx" />
-      <file filePath="Localization\UpdateDownloadStrings.fr.resx" />
+      <file filePath="Localization\UpdateDownloadStrings.resx" absoluteFilePath="E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\UpdateDownloadStrings.resx" uniqueID="f3ba9f60-b17e-455b-9d6a-0791563e2a16" />
+      <file filePath="Localization\UpdateDownloadStrings.de.resx" absoluteFilePath="E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\UpdateDownloadStrings.de.resx" uniqueID="3b92eaf9-3a7e-4356-8496-de8b37c16c8e" />
+      <file filePath="Localization\UpdateDownloadStrings.es.resx" absoluteFilePath="E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\UpdateDownloadStrings.es.resx" uniqueID="c8cf0aab-1aa0-4dbf-a065-f758ee1bf7b4" />
+      <file filePath="Localization\UpdateDownloadStrings.fr.resx" absoluteFilePath="E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\UpdateDownloadStrings.fr.resx" uniqueID="32522acc-49e3-433e-a2ce-c44897ffd940" />
+      <file filePath="Localization\UpdateDownloadStrings.pt-BR.resx" absoluteFilePath="E:\Downloads\SoundSwitch-dev\SoundSwitch\Localization\UpdateDownloadStrings.pt-BR.resx" uniqueID="9fe89488-5c0b-4120-9353-dd1ef04c36cd" />
       <remarks>
       </remarks>
     </fileGroup>
