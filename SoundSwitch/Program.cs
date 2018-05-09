@@ -48,13 +48,7 @@ namespace SoundSwitch
         private static void Main()
         {
             bool createdNew;
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .Enrich.WithThreadId()
-                .Enrich.WithEnvironmentUserName()
-                .Enrich.WithExceptionDetails()
-                .WriteTo.File(new CompactJsonFormatter(), Path.Combine(ApplicationPath.Logs, "soundswitch.log"), rollingInterval: RollingInterval.Day, retainedFileCountLimit: 3, flushToDiskInterval: TimeSpan.FromMinutes(10))
-                .CreateLogger();
+            InitializeLogger();
             Log.Information("Application Starts");
             var audioDeviceLister = new AudioDeviceLister(DeviceState.Active);
             Log.Information("Devices Recording {device}", audioDeviceLister.GetRecordingDevices());
@@ -178,6 +172,21 @@ namespace SoundSwitch
             MMNotificationClient.Instance.UnRegister();
             WindowsAPIAdapter.Stop();
             Log.CloseAndFlush();
+        }
+        /// <summary>
+        /// Initialize the logger
+        /// </summary>
+        private static void InitializeLogger()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .Enrich.WithThreadId()
+                .Enrich.WithEnvironmentUserName()
+                .Enrich.WithExceptionDetails()
+                .WriteTo.File(new CompactJsonFormatter(), Path.Combine(ApplicationPath.Logs, "soundswitch.log"),
+                    rollingInterval: RollingInterval.Day, retainedFileCountLimit: 3,
+                    flushToDiskInterval: TimeSpan.FromMinutes(10))
+                .CreateLogger();
         }
 
         /// <summary>
