@@ -1,4 +1,4 @@
-version: 4.3.{build}
+version: 4.4.{build}
 configuration: AppVeyor
 os: Visual Studio 2015
 branches:

@@ -1,5 +1,29 @@
 # Change Log
 
+## [v4.4](https://github.com/Belphemur/SoundSwitch/tree/v4.4) (2018-05-09)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.3...v4.4)
+
+**Implemented enhancements:**
+
+- New Language: Portuguese \(Brazilian\) - Pull Request [\#258](https://github.com/Belphemur/SoundSwitch/issues/258)
+- Improve logging [\#254](https://github.com/Belphemur/SoundSwitch/issues/254)
+
+**Fixed bugs:**
+
+- Crash observed after restart driven by Windows Update [\#248](https://github.com/Belphemur/SoundSwitch/issues/248)
+- In x86, the installer always force to install VC++ Redist [\#245](https://github.com/Belphemur/SoundSwitch/issues/245)
+
+**Closed issues:**
+
+- Identify Re-Connected Displays /w Audio [\#250](https://github.com/Belphemur/SoundSwitch/issues/250)
+
+**Merged pull requests:**
+
+- Improve logging [\#259](https://github.com/Belphemur/SoundSwitch/pull/259) ([Belphemur](https://github.com/Belphemur))
+- Norwegian language [\#255](https://github.com/Belphemur/SoundSwitch/pull/255) ([Belphemur](https://github.com/Belphemur))
+- Spelling: windows → Windows [\#253](https://github.com/Belphemur/SoundSwitch/pull/253) ([comradekingu](https://github.com/comradekingu))
+- Added Spanish language in installer [\#246](https://github.com/Belphemur/SoundSwitch/pull/246) ([plextoriano](https://github.com/plextoriano))
+
 ## [v4.3](https://github.com/Belphemur/SoundSwitch/tree/v4.3) (2018-03-10)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.2...v4.3)
 
