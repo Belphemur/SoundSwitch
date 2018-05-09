@@ -207,11 +207,6 @@
             // 
             this.languageComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.languageComboBox.FormattingEnabled = true;
-            this.languageComboBox.Items.AddRange(new object[] {
-            "English (en)",
-            "French (fr)",
-            "German (de)",
-            "Spanish (es)"});
             this.languageComboBox.Location = new System.Drawing.Point(8, 23);
             this.languageComboBox.Name = "languageComboBox";
             this.languageComboBox.Size = new System.Drawing.Size(203, 21);

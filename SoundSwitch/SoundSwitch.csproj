@@ -367,6 +367,8 @@
     <EmbeddedResource Include="Localization\AboutStrings.de.resx" />
     <EmbeddedResource Include="Localization\AboutStrings.es.resx" />
     <EmbeddedResource Include="Localization\AboutStrings.fr.resx" />
+    <EmbeddedResource Include="Localization\AboutStrings.nb.resx" />
+    <EmbeddedResource Include="Localization\AboutStrings.pt-BR.resx" />
     <EmbeddedResource Include="Localization\AboutStrings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>AboutStrings.Designer.cs</LastGenOutput>
@@ -376,12 +378,18 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Localization\SettingsStrings.es.resx" />
+    <EmbeddedResource Include="Localization\SettingsStrings.nb.resx" />
+    <EmbeddedResource Include="Localization\SettingsStrings.pt-BR.resx" />
     <EmbeddedResource Include="Localization\TrayIconStrings.de.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Localization\TrayIconStrings.es.resx" />
+    <EmbeddedResource Include="Localization\TrayIconStrings.nb.resx" />
+    <EmbeddedResource Include="Localization\TrayIconStrings.pt-BR.resx" />
     <EmbeddedResource Include="Localization\UpdateDownloadStrings.de.resx" />
     <EmbeddedResource Include="Localization\UpdateDownloadStrings.es.resx" />
+    <EmbeddedResource Include="Localization\UpdateDownloadStrings.nb.resx" />
+    <EmbeddedResource Include="Localization\UpdateDownloadStrings.pt-BR.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

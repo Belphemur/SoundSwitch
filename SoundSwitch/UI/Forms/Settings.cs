@@ -127,6 +127,7 @@ namespace SoundSwitch.UI.Forms
             includeBetaVersionsToolTip.SetToolTip(includeBetaVersionsCheckBox, SettingsStrings.updateIncludeBetaVersionsTooltip);
 
             // Settings - Language
+            languageComboBox.Items.AddRange(Enum.GetNames(typeof(Language)));
             languageComboBox.SelectedIndex = (int)AppConfigs.Configuration.Language;
 
             // Playback and Recording
