@@ -136,6 +136,7 @@ Filename: "certutil.exe"; Parameters: "-delstore ""TrustedPublisher"" ""942A37BC
 Type: filesandordirs; Name: {userappdata}\SoundSwitch; Tasks: deletefiles
 Type: files; Name: {app}\Audio.EndPoint.Controller.Wrapper.*
 Type: files; Name: {app}\AudioEndPointLibrary.*
+Type: files; Name: {app}\TracerX-Logger.*
 
 [Code]
 #include "scripts\checkMutex.iss"
