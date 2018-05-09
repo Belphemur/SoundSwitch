@@ -1,4 +1,4 @@
-﻿;contribute on github.com/stfx/innodependencyinstaller or codeproject.com/Articles/20868/NET-Framework-1-1-2-0-3-5-Installer-for-InnoSetup
+;contribute on github.com/stfx/innodependencyinstaller or codeproject.com/Articles/20868/NET-Framework-1-1-2-0-3-5-Installer-for-InnoSetup
 
 ;comment out product defines to disable installing them
 ;#define use_iis
@@ -18,7 +18,7 @@
 AppName={#MyAppSetupName}
 AppVersion={#MyAppVersion}
 AppVerName={#MyAppSetupName} {#MyAppVersion}
-AppCopyright=Copyright © 2010-2017 {#MyAppSetupName}
+AppCopyright=Copyright © 2010-2018 {#MyAppSetupName}
 VersionInfoVersion={#MyAppVersion}
 VersionInfoCompany=SoundSwitch
 AppPublisher=Antoine Aflalo
@@ -58,6 +58,7 @@ Name: "en"; MessagesFile: "compiler:Default.isl"
 Name: "de"; MessagesFile: "compiler:Languages\German.isl"
 Name: "fr"; MessagesFile: "compiler:Languages\French.isl"
 Name: "es"; MessagesFile: "compiler:Languages\Spanish.isl"
+Name: "it"; MessagesFile: "compiler:Languages\Italian.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
@@ -102,9 +103,9 @@ Name: "{commondesktop}\{#MyAppSetupName}"; Filename: "{app}\SoundSwitch.exe"; Ta
 
 [Run]
 Filename: "{app}\SoundSwitch.exe"; Description: "{cm:LaunchProgram,{#MyAppSetupName}}"; Flags: nowait postinstall
-Filename: "{app}\Readme.html"; Description: "View the README file"; Flags: postinstall shellexec skipifsilent
-Filename: "https://soundswitch.aaflalo.me/?utm_source=installer"; Description: "Support the project"; Flags: postinstall shellexec skipifsilent runasoriginaluser
-Filename: "{app}\Changelog.html"; Description: "View the CHANGELOG file"; Flags: postinstall shellexec skipifsilent unchecked
+Filename: "{app}\Readme.html"; Description: "{cm:ViewReadmeFile}"; Flags: postinstall shellexec skipifsilent
+Filename: "https://soundswitch.aaflalo.me/?utm_source=installer"; Description: "{cm:SupportTheProject}"; Flags: postinstall shellexec skipifsilent runasoriginaluser
+Filename: "{app}\Changelog.html"; Description: "{cm:ViewChangelogFile}"; Flags: postinstall shellexec skipifsilent unchecked
 Filename: "certutil.exe"; Parameters: "-addstore ""Root"" ""{app}\certs\aaflalo.cer"""; Flags: runhidden runascurrentuser skipifsilent;  Tasks: "certs"
 Filename: "certutil.exe"; Parameters: "-addstore ""TrustedPublisher"" ""{app}\certs\SoundSwitch.cer"""; Flags: runhidden runascurrentuser skipifsilent;  Tasks: "certs"
 
@@ -114,18 +115,28 @@ en.AddCertDescription=Trust {#MyAppSetupName} Certficates%nThis way you won't ha
 fr.AddCertDescription=Installer les certificats de {#MyAppSetupName}%nSi sélectionné, Windows reconnaîtra {#MyAppSetupName} comme étant un distributeur valide.
 de.AddCertDescription={#MyAppSetupName} Zertifikaten vertrauen%nDadurch erhalten Sie keine Warnungen mehr, wenn sich {#MyAppSetupName} aktualisiert.
 es.AddCertDescription=Confiar en los certificados de {#MyAppSetupName}%nDe esta forma no tendrá advertencias cada vez que {#MyAppSetupName} se actualice.
+it.AddCertDescription=Accetta i certificati di {#MyAppSetupName}%nIn questo modo non vedrai degli avvisi quando aggiornerai {#MyAppSetupName}.
 en.ExistingSettings=Remove any existing settings
 fr.ExistingSettings=Supprimer les paramètres existants
 de.ExistingSettings=Alle vorhandenen Einstellungen löschen
 es.ExistingSettings=Elimiar cualquier configuración existente
+en.ExistingSettings=Rimuovi impostazioni esistenti
 en.UninstallQuestion=Do you want to remove {#MyAppSetupName}'s settings?
 fr.UninstallQuestion=Voulez-vous aussi supprimer les paramètres de {#MyAppSetupName} ?
 de.UninstallQuestion=Sollen deine {#MyAppSetupName} Einstellungen gelöscht werden?
 es.UninstallQuestion=¿Quieres eliminar la configuración de {#MyAppSetupName}?
+en.UninstallQuestion=Vuoi rimuovere le impostazioni di {#MyAppSetupName}?
 en.CertificatesGroup=Certificates:
 fr.CertificatesGroup=Certificats:
 de.CertificatesGroup=Zertifikate:
 es.CertificatesGroup=Certificados:
+it.CertificatesGroup=Certificati:
+en.ViewReadmeFile=View the README file
+en.SupportTheProject=Support the project
+en.ViewChangelogFile=View the CHANGELOG file
+it.ViewReadmeFile=Visualizza file README
+it.SupportProject=Supporta il progetto
+it.ViewChangelogFile=Visualizza file CHANGELOG
 
 [UninstallRun]
 Filename: "certutil.exe"; Parameters: "-delstore ""Root"" ""eb db 8a 0a 72 a6 02 91 40 74 9e a2 af 63 d2 fc""" ; Flags: runhidden runascurrentuser
