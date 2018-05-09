@@ -97,28 +97,4 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-	<data name="created" xml:space="preserve">
-		<value>Criado por</value>
-	</data>
-	<data name="maintained" xml:space="preserve">
-		<value>Mantido por</value>
-	</data>
-	<data name="version" xml:space="preserve">
-		<value>Versão</value>
-	</data>
-	<data name="author" xml:space="preserve">
-		<value>Autor e informações do programa</value>
-	</data>
-	<data name="credits" xml:space="preserve">
-		<value>Contribuidores</value>
-	</data>
-	<data name="defaultPlaybackDeviceChange" xml:space="preserve">
-		<value>Troca de dispositivo de reprodução</value>
-	</data>
-	<data name="keyboardHotkeys" xml:space="preserve">
-		<value>Sistema de atalhos do teclado</value>
-	</data>
-	<data name="icons" xml:space="preserve">
-		<value>Ícones</value>
-	</data>
 </root>
