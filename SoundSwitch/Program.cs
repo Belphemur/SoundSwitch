@@ -50,6 +50,7 @@ namespace SoundSwitch
             bool createdNew;
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
+                .Enrich.WithThreadId()
                 .Enrich.WithEnvironmentUserName()
                 .Enrich.WithExceptionDetails()
                 .WriteTo.File(new CompactJsonFormatter(), Path.Combine(ApplicationPath.Logs, "soundswitch.log"), rollingInterval: RollingInterval.Day, retainedFileCountLimit: 3, flushToDiskInterval: TimeSpan.FromMinutes(10))
