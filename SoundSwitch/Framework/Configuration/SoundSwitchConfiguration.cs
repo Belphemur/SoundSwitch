@@ -15,6 +15,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Forms;
+using Serilog;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.TooltipInfoManager.TootipInfo;
@@ -80,11 +81,10 @@ namespace SoundSwitch.Framework.Configuration
 
         public void Save()
         {
-            using (AppLogger.Log.DebugCall())
-            {
-                AppLogger.Log.Debug("Saving configuration ", this);
-                ConfigurationManager.SaveConfiguration(this);
-            }
+
+            Log.Debug("Saving configuration ", this);
+            ConfigurationManager.SaveConfiguration(this);
+
         }
 
         public override string ToString()

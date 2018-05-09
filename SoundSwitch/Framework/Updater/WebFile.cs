@@ -19,6 +19,7 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Serilog;
 
 namespace SoundSwitch.Framework.Updater
 {
@@ -76,7 +77,7 @@ namespace SoundSwitch.Framework.Updater
             {
                 DownloadFailed?.Invoke(this, new DownloadFailEvent(asyncCompletedEventArgs.Error));
 
-                AppLogger.Log.Error("Problem downloading file ", asyncCompletedEventArgs.Error);
+                Log.Error(asyncCompletedEventArgs.Error, "Problem downloading file ");
                 return;
             }
 

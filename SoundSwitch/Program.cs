@@ -23,6 +23,9 @@ using System.Runtime.Remoting;
 using System.Threading;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
+using Serilog;
+using Serilog.Exceptions;
+using Serilog.Formatting.Compact;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.IPC;
@@ -45,7 +48,16 @@ namespace SoundSwitch
         private static void Main()
         {
             bool createdNew;
-            AppLogger.Log.Info("Application Starts");
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .Enrich.WithEnvironmentUserName()
+                .Enrich.WithExceptionDetails()
+                .WriteTo.File(new CompactJsonFormatter(), Path.Combine(ApplicationPath.Logs, "soundswitch.log"), rollingInterval: RollingInterval.Day, retainedFileCountLimit: 3, flushToDiskInterval: TimeSpan.FromMinutes(10))
+                .CreateLogger();
+            Log.Information("Application Starts");
+            var audioDeviceLister = new AudioDeviceLister(DeviceState.Active);
+            Log.Information("Devices Recording {device}", audioDeviceLister.GetRecordingDevices());
+            Log.Information("Devices Playback {device}", audioDeviceLister.GetPlaybackDevices());
 #if !DEBUG
                 AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
                 {
@@ -64,27 +76,25 @@ namespace SoundSwitch
             {
                 if (!createdNew)
                 {
-                    AppLogger.Log.Warn("Application already started");
-                    using (new AppLogger.LogRestartor())
+                    Log.Warning("Application already started");
+                    using (var client = new IPCClient(AppConfigs.IPCConfiguration.ClientUrl()))
                     {
-                        using (var client = new IPCClient(AppConfigs.IPCConfiguration.ClientUrl()))
+                        try
                         {
-                            try
-                            {
-                                var service = client.GetService();
-                                service.StopApplication();
-                                RestartApp();
-                                return;
-                            }
-                            catch (RemotingException e)
-                            {
-                                AppLogger.Log.Error("Unable to stop another running application ", e);
-                                Application.Exit();
-                                return;
-                            }
+                            var service = client.GetService();
+                            service.StopApplication();
+                            RestartApp();
+                            return;
+                        }
+                        catch (RemotingException e)
+                        {
+                            Log.Error(e, "Unable to stop another running application");
+                            Application.Exit();
+                            return;
                         }
                     }
                 }
+
                 AppModel.Instance.ActiveAudioDeviceLister = new AudioDeviceLister(DeviceState.Active);
 
                 // Windows Vista or newer.
@@ -99,9 +109,8 @@ namespace SoundSwitch
                 // when it should without this.
                 WindowsAPIAdapter.RestartManagerTriggered += (sender, @event) =>
                 {
-                    using (AppLogger.Log.DebugCall())
-                    {
-                        AppLogger.Log.Debug("Restart Event received", @event);
+                    
+                        Log.Debug("Restart Event received: {@Event}", @event);
                         switch (@event.Type)
                         {
                             case WindowsAPIAdapter.RestartManagerEventType.Query:
@@ -110,20 +119,20 @@ namespace SoundSwitch
                                 break;
                             case WindowsAPIAdapter.RestartManagerEventType.EndSession:
                             case WindowsAPIAdapter.RestartManagerEventType.ForceClose:
-                                AppLogger.Log.Debug("Close Application");
+                                Log.Debug("Close Application");
                                 Application.Exit();
                                 break;
                         }
-                    }
+                  
                 };
 
-                AppLogger.Log.Info("Set Tray Icon with Main");
+                Log.Information("Set Tray Icon with Main");
 #if !DEBUG
                 try
                 {
 #endif
                 MMNotificationClient.Instance.Register();
-                using(var ipcServer = new IPCServer(AppConfigs.IPCConfiguration.ServerUrl()))
+                using (var ipcServer = new IPCServer(AppConfigs.IPCConfiguration.ServerUrl()))
                 using (var icon = new TrayIcon())
                 {
                     var available = false;
@@ -153,7 +162,7 @@ namespace SoundSwitch
                     {
                         icon.ShowSettings();
                         AppConfigs.Configuration.FirstRun = false;
-                        AppLogger.Log.Info("First run");
+                        Log.Information("First run");
                     }
                     Application.Run();
                 }
@@ -167,6 +176,7 @@ namespace SoundSwitch
             }
             MMNotificationClient.Instance.UnRegister();
             WindowsAPIAdapter.Stop();
+            Log.CloseAndFlush();
         }
 
         /// <summary>
@@ -217,18 +227,17 @@ namespace SoundSwitch
                             MiniDump.Option.Normal | MiniDump.Option.WithThreadInfo | MiniDump.Option.WithHandleData |
                             MiniDump.Option.WithDataSegs, MiniDump.ExceptionInfo.Present);
                     }
-                    AppLogger.Log.Fatal("Exception Occurred ", exception);
-                    using (new AppLogger.LogRestartor())
-                    {
-                        if (File.Exists(zipFile))
-                        {
-                            File.Delete(zipFile);
-                        }
+                    Log.Fatal(exception, "Exception Occurred ");
 
-                        ZipFile.CreateFromDirectory(ApplicationPath.Default, zipFile);
+                    if (File.Exists(zipFile))
+                    {
+                        File.Delete(zipFile);
                     }
-                    Process.Start("explorer.exe", "/select," + @zipFile);
+
+                    ZipFile.CreateFromDirectory(ApplicationPath.Default, zipFile);
                 }
+                Process.Start("explorer.exe", "/select," + @zipFile);
+
             }
         }
     }

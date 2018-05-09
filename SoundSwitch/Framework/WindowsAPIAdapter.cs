@@ -19,6 +19,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
+using Serilog;
 
 namespace SoundSwitch.Framework
 {
@@ -67,7 +68,7 @@ namespace SoundSwitch.Framework
 
             _exceptionEventHandler = exceptionEventHandler;
 
-            var t = new Thread(RunForm) {Name = typeof(WindowsAPIAdapter).Name};
+            var t = new Thread(RunForm) { Name = typeof(WindowsAPIAdapter).Name };
             t.SetApartmentState(ApartmentState.STA);
             t.IsBackground = true;
             t.Start();
@@ -89,7 +90,7 @@ namespace SoundSwitch.Framework
             {
                 try
                 {
-                        _instance.Invoke(new MethodInvoker(_instance.EndForm));
+                    _instance.Invoke(new MethodInvoker(_instance.EndForm));
                 }
                 catch (Exception ex)
                 {
@@ -102,18 +103,17 @@ namespace SoundSwitch.Framework
 
         private static void RunForm()
         {
-            using (AppLogger.Log.InfoCall())
-            {
-                AppLogger.Log.Info("Starting WindowsAPIAdapter thread");
-                if (_exceptionEventHandler != null)
-                    Application.ThreadException += _exceptionEventHandler;
 
-                _instance = new WindowsAPIAdapter();
-                _instance.CreateHandle();
-                AppLogger.Log.Info("Handle created. Running the application.");
-                Application.Run(_instance);
-                AppLogger.Log.Info("End of the WindowsAPIAdapter thread");
-            }
+            Log.Information("Starting WindowsAPIAdapter thread");
+            if (_exceptionEventHandler != null)
+                Application.ThreadException += _exceptionEventHandler;
+
+            _instance = new WindowsAPIAdapter();
+            _instance.CreateHandle();
+            Log.Information("Handle created. Running the application.");
+            Application.Run(_instance);
+            Log.Information("End of the WindowsAPIAdapter thread");
+
         }
 
         private void EndForm()
@@ -149,28 +149,27 @@ namespace SoundSwitch.Framework
                 {
                     throw new ThreadStateException("Instance isn't set even after waiting 750 ms");
                 }
-            } 
+            }
 
             lock (_instance)
             {
-                return (bool) _instance.Invoke(new Func<bool>(() =>
-                {
-                    using (AppLogger.Log.InfoCall())
-                    {
-                        AppLogger.Log.Info("Registering Hotkeys: " + hotKeys);
-                        if (_instance._registeredHotkeys.ContainsKey(hotKeys))
-                        {
-                            AppLogger.Log.Info("Already registered");
-                            return false;
-                        }
+                return (bool)_instance.Invoke(new Func<bool>(() =>
+               {
 
-                        var id = _instance._hotKeyId++;
-                        _instance._registeredHotkeys.Add(hotKeys, id);
-                        // register the hot key.
-                        return NativeMethods.RegisterHotKey(_instance.Handle, id, (uint) hotKeys.Modifier,
-                            (uint) hotKeys.Keys);
-                    }
-                }));
+                   Log.Information("Registering Hotkeys: {hotkeys}", hotKeys);
+                   if (_instance._registeredHotkeys.ContainsKey(hotKeys))
+                   {
+                       Log.Information("Already registered {hotkeys}", hotKeys);
+                       return false;
+                   }
+
+                   var id = _instance._hotKeyId++;
+                   _instance._registeredHotkeys.Add(hotKeys, id);
+                   // register the hot key.
+                   return NativeMethods.RegisterHotKey(_instance.Handle, id, (uint)hotKeys.Modifier,
+                      (uint)hotKeys.Keys);
+
+               }));
             }
 
         }
@@ -194,17 +193,17 @@ namespace SoundSwitch.Framework
 
             lock (_instance)
             {
-                return (bool) _instance.Invoke(new Func<bool>(() =>
-                {
-                    AppLogger.Log.Info("Unregistering Hotkeys: " + hotKeys);
-                    if (!_instance._registeredHotkeys.TryGetValue(hotKeys, out var id))
-                    {
-                        AppLogger.Log.Info("Not registered");
-                        return false;
-                    }
-                    _instance._registeredHotkeys.Remove(hotKeys);
-                    return NativeMethods.UnregisterHotKey(_instance.Handle, id);
-                }));
+                return (bool)_instance.Invoke(new Func<bool>(() =>
+               {
+                   Log.Information("Unregistering Hotkeys: {hotkeys}", hotKeys);
+                   if (!_instance._registeredHotkeys.TryGetValue(hotKeys, out var id))
+                   {
+                       Log.Information("Not registered {hotkeys}", hotKeys);
+                       return false;
+                   }
+                   _instance._registeredHotkeys.Remove(hotKeys);
+                   return NativeMethods.UnregisterHotKey(_instance.Handle, id);
+               }));
             }
         }
 
@@ -265,8 +264,8 @@ namespace SoundSwitch.Framework
 
         private void ProcessHotKeyEvent(Message m)
         {
-            var key = (Keys) ((ConvertLParam(m.LParam) >> 16) & 0xFFFF);
-            var modifier = (HotKeys.ModifierKeys) (ConvertLParam(m.LParam) & 0xFFFF);
+            var key = (Keys)((ConvertLParam(m.LParam) >> 16) & 0xFFFF);
+            var modifier = (HotKeys.ModifierKeys)(ConvertLParam(m.LParam) & 0xFFFF);
 
             HotKeyPressed?.Invoke(this, new KeyPressedEventArgs(new HotKeys(key, modifier)));
         }

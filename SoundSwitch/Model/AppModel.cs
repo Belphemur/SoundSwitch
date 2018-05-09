@@ -19,6 +19,7 @@ using System.Linq;
 using AudioDefaultSwitcherWrapper;
 using Microsoft.WindowsAPICodePack.ApplicationServices;
 using NAudio.CoreAudioApi;
+using Serilog;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Configuration;
@@ -38,12 +39,11 @@ namespace SoundSwitch.Model
 
         private AppModel()
         {
-            using (AppLogger.Log.DebugCall())
-            {
-                RegisterForRestart();
-                RegisterRecovery();
-                _notificationManager = new NotificationManager(this);
-            }
+
+            RegisterForRestart();
+            RegisterRecovery();
+            _notificationManager = new NotificationManager(this);
+
             _deviceCyclerManager = new DeviceCyclerManager();
         }
 
@@ -54,7 +54,8 @@ namespace SoundSwitch.Model
 
         public CachedSound CustomNotificationSound
         {
-            get {
+            get
+            {
                 return _customNotificationCachedSound ??
                        (_customNotificationCachedSound =
                            new CachedSound(AppConfigs.Configuration.CustomNotificationFilePath));
@@ -171,18 +172,17 @@ namespace SoundSwitch.Model
             get { return AutoStart.IsAutoStarted(); }
             set
             {
-                using (AppLogger.Log.InfoCall())
+
+                Log.Information("Set AutoStart: {autostart}", value);
+                if (value)
                 {
-                    AppLogger.Log.Info("Set AutoStart: ", value);
-                    if (value)
-                    {
-                        AutoStart.EnableAutoStart();
-                    }
-                    else
-                    {
-                        AutoStart.DisableAutoStart();
-                    }
+                    AutoStart.EnableAutoStart();
                 }
+                else
+                {
+                    AutoStart.DisableAutoStart();
+                }
+
             }
         }
 
@@ -218,7 +218,7 @@ namespace SoundSwitch.Model
         }
 
 
-      
+
 
         private void InitUpdateChecker()
         {
@@ -254,37 +254,36 @@ namespace SoundSwitch.Model
         {
             var settings = new RecoverySettings(new RecoveryData(SaveState, AppConfigs.Configuration), 0);
             ApplicationRestartRecoveryManager.RegisterForApplicationRecovery(settings);
-            AppLogger.Log.Info("Recovery Registered");
+            Log.Information("Recovery Registered");
         }
 
         private void RegisterForRestart()
         {
             var settings = new RestartSettings("/restart", RestartRestrictions.NotOnReboot);
             ApplicationRestartRecoveryManager.RegisterForApplicationRestart(settings);
-            AppLogger.Log.Info("Restart Registered");
+            Log.Information("Restart Registered");
         }
 
         private int SaveState(object state)
         {
-            using (AppLogger.Log.ErrorCall())
+
+            Log.Error("Saving application state");
+            var settings = (SoundSwitchConfiguration)state;
+            var cancelled = ApplicationRestartRecoveryManager.ApplicationRecoveryInProgress();
+            if (cancelled)
             {
-                AppLogger.Log.Error("Saving application state");
-                var settings = (SoundSwitchConfiguration)state;
-                var cancelled = ApplicationRestartRecoveryManager.ApplicationRecoveryInProgress();
-                if (cancelled)
-                {
-                    AppLogger.Log.Error("Recovery Cancelled");
-                    ApplicationRestartRecoveryManager.ApplicationRecoveryFinished(false);
-                    return 0;
-                }
-                settings.Save();
-                ApplicationRestartRecoveryManager.ApplicationRecoveryFinished(true);
-                AppLogger.Log.Error("Recovery Success");
+                Log.Error("Recovery Cancelled");
+                ApplicationRestartRecoveryManager.ApplicationRecoveryFinished(false);
                 return 0;
             }
+            settings.Save();
+            ApplicationRestartRecoveryManager.ApplicationRecoveryFinished(true);
+            Log.Error("Recovery Success");
+            return 0;
+
         }
 
-#region Selected devices
+        #region Selected devices
 
         /// <summary>
         /// Add the device to the Selected device list
@@ -348,90 +347,87 @@ namespace SoundSwitch.Model
             return result;
         }
 
-#endregion
+        #endregion
 
-#region Hot keys
+        #region Hot keys
 
         public bool SetHotkeyCombination(HotKeys hotkeys, DeviceType deviceType)
         {
-            using (AppLogger.Log.InfoCall())
+
+            HotKeys confHotKeys = null;
+            switch (deviceType)
             {
-                HotKeys confHotKeys = null;
-                switch (deviceType)
-                {
-                    case DeviceType.Playback:
-                        confHotKeys = AppConfigs.Configuration.PlaybackHotKeys;
-                        break;
-                    case DeviceType.Recording:
-                        confHotKeys = AppConfigs.Configuration.RecordingHotKeys;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(deviceType), deviceType, null);
-                }
-                using (AppLogger.Log.InfoCall())
-                {
-                    AppLogger.Log.Info("Unregister previous hotkeys", confHotKeys);
-                    WindowsAPIAdapter.UnRegisterHotKey(confHotKeys);
-                    AppLogger.Log.Info("Unregistered previous hotkeys", confHotKeys);
-
-                    if (hotkeys.Enabled && !WindowsAPIAdapter.RegisterHotKey(hotkeys))
-                    {
-                        AppLogger.Log.Warn("Can't register new hotkeys", hotkeys);
-                        ErrorTriggered?.Invoke(this,
-                            new ExceptionEvent(new Exception("Impossible to register HotKey: " + hotkeys)));
-                        return false;
-                    }
-
-                    AppLogger.Log.Info("New Hotkeys registered", hotkeys);
-                }
-                switch (deviceType)
-                {
-                    case DeviceType.Playback:
-                        AppConfigs.Configuration.PlaybackHotKeys = hotkeys;
-                        break;
-                    case DeviceType.Recording:
-                        AppConfigs.Configuration.RecordingHotKeys = hotkeys;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(deviceType), deviceType, null);
-                }
-                AppConfigs.Configuration.Save();
-                return true;
+                case DeviceType.Playback:
+                    confHotKeys = AppConfigs.Configuration.PlaybackHotKeys;
+                    break;
+                case DeviceType.Recording:
+                    confHotKeys = AppConfigs.Configuration.RecordingHotKeys;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(deviceType), deviceType, null);
             }
+
+            Log.Information("Unregister previous hotkeys {hotkeys}", confHotKeys);
+            WindowsAPIAdapter.UnRegisterHotKey(confHotKeys);
+            Log.Information("Unregistered previous hotkeys {hotkeys}", confHotKeys);
+
+            if (hotkeys.Enabled && !WindowsAPIAdapter.RegisterHotKey(hotkeys))
+            {
+                Log.Warning("Can't register new hotkeys {hotkeys}", hotkeys);
+                ErrorTriggered?.Invoke(this,
+                    new ExceptionEvent(new Exception("Impossible to register HotKey: " + hotkeys)));
+                return false;
+            }
+
+            Log.Information("New Hotkeys registered {hotkeys}", hotkeys);
+
+            switch (deviceType)
+            {
+                case DeviceType.Playback:
+                    AppConfigs.Configuration.PlaybackHotKeys = hotkeys;
+                    break;
+                case DeviceType.Recording:
+                    AppConfigs.Configuration.RecordingHotKeys = hotkeys;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(deviceType), deviceType, null);
+            }
+            AppConfigs.Configuration.Save();
+            return true;
+
         }
 
 
         private void HandleHotkeyPress(object sender, WindowsAPIAdapter.KeyPressedEventArgs e)
         {
-            using (AppLogger.Log.DebugCall())
-            {
-                if (e.HotKeys != AppConfigs.Configuration.PlaybackHotKeys && e.HotKeys != AppConfigs.Configuration.RecordingHotKeys)
-                {
-                    AppLogger.Log.Debug("Not the registered Hotkeys", e.HotKeys);
-                    return;
-                }
 
-                try
+            if (e.HotKeys != AppConfigs.Configuration.PlaybackHotKeys && e.HotKeys != AppConfigs.Configuration.RecordingHotKeys)
+            {
+                Log.Debug("Not the registered Hotkeys {hotkeys}", e.HotKeys);
+                return;
+            }
+
+            try
+            {
+                if (e.HotKeys == AppConfigs.Configuration.PlaybackHotKeys)
                 {
-                    if (e.HotKeys == AppConfigs.Configuration.PlaybackHotKeys)
-                    {
-                        CycleActiveDevice(DeviceType.Playback);
-                    }
-                    else if (e.HotKeys == AppConfigs.Configuration.RecordingHotKeys)
-                    {
-                        CycleActiveDevice(DeviceType.Recording);
-                    }
+                    CycleActiveDevice(DeviceType.Playback);
                 }
-                catch (Exception ex)
+                else if (e.HotKeys == AppConfigs.Configuration.RecordingHotKeys)
                 {
-                    ErrorTriggered?.Invoke(this, new ExceptionEvent(ex));
+                    CycleActiveDevice(DeviceType.Recording);
                 }
             }
+            catch (Exception ex)
+            {
+                ErrorTriggered?.Invoke(this, new ExceptionEvent(ex));
+            }
+
         }
 
-#endregion
+        #endregion
 
-#region Active device
+        #region Active device
 
         /// <summary>
         ///     Attempts to set active device to the specified name
@@ -439,18 +435,17 @@ namespace SoundSwitch.Model
         /// <param name="device"></param>
         public bool SetActiveDevice(MMDevice device)
         {
-            using (AppLogger.Log.InfoCall())
+
+            try
             {
-                try
-                {
-                    return _deviceCyclerManager.SetAsDefault(device);
-                }
-                catch (Exception ex)
-                {
-                    ErrorTriggered?.Invoke(this, new ExceptionEvent(ex));
-                }
-                return false;
+                return _deviceCyclerManager.SetAsDefault(device);
             }
+            catch (Exception ex)
+            {
+                ErrorTriggered?.Invoke(this, new ExceptionEvent(ex));
+            }
+            return false;
+
         }
 
         /// <summary>
@@ -460,18 +455,17 @@ namespace SoundSwitch.Model
         /// </summary>
         public bool CycleActiveDevice(DeviceType type)
         {
-            using (AppLogger.Log.InfoCall())
+
+            try
             {
-                try
-                {
-                    return _deviceCyclerManager.CycleDevice(type);
-                }
-                catch (Exception exception)
-                {
-                    ErrorTriggered?.Invoke(this, new ExceptionEvent(exception));
-                }
-                return false;
+                return _deviceCyclerManager.CycleDevice(type);
             }
+            catch (Exception exception)
+            {
+                ErrorTriggered?.Invoke(this, new ExceptionEvent(exception));
+            }
+            return false;
+
         }
 
         [Serializable]
@@ -482,6 +476,6 @@ namespace SoundSwitch.Model
             }
         }
 
-#endregion
+        #endregion
     }
 }

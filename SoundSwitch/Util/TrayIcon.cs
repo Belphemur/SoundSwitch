@@ -22,6 +22,7 @@ using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using AudioDefaultSwitcherWrapper;
+using Serilog;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.TooltipInfoManager;
@@ -81,7 +82,7 @@ namespace SoundSwitch.Util
 
                 UpdateDeviceSelectionList();
                 NotifyIcon.ContextMenuStrip = _selectionMenu;
-                var mi = typeof (NotifyIcon).GetMethod("ShowContextMenu",
+                var mi = typeof(NotifyIcon).GetMethod("ShowContextMenu",
                     BindingFlags.Instance | BindingFlags.NonPublic);
                 mi.Invoke(NotifyIcon, null);
 
@@ -147,7 +148,7 @@ namespace SoundSwitch.Util
             {
                 if (!File.Exists(readmeHtml))
                 {
-                    AppLogger.Log.Error($"File {readmeHtml} doesn\'t exists");
+                    Log.Error("File {readme} doesn\'t exists", readmeHtml);
                     return;
                 }
                 Process.Start(readmeHtml);
@@ -164,7 +165,7 @@ namespace SoundSwitch.Util
                 return;
 
             StopAnimationIconUpdate();
-            new UpdateDownloadForm((Release) _updateMenuItem.Tag).ShowDialog();
+            new UpdateDownloadForm((Release)_updateMenuItem.Tag).ShowDialog();
             NotifyIcon.BalloonTipClicked -= OnUpdateClick;
         }
 
@@ -172,18 +173,16 @@ namespace SoundSwitch.Util
         {
             AppModel.Instance.ErrorTriggered += (sender, @event) =>
             {
-                using (AppLogger.Log.ErrorCall())
+                if (@event.Exception is AppModel.NoDevicesException)
                 {
-                    if (@event.Exception is AppModel.NoDevicesException)
-                    {
-                        ShowNoDevices();
-                    }
-                    else
-                    {
-                        AppLogger.Log.Error("Exception managed", @event.Exception);
-                        ShowError(@event.Exception.Message, @event.Exception.GetType().Name);
-                    }
+                    ShowNoDevices();
                 }
+                else
+                {
+                    Log.Error(@event.Exception, "Exception managed");
+                    ShowError(@event.Exception.Message, @event.Exception.GetType().Name);
+                }
+
             };
             AppModel.Instance.DefaultDeviceChanged += (sender, audioChangeEvent) =>
             {
@@ -211,7 +210,7 @@ namespace SoundSwitch.Util
                                       string.Format(TrayIconStrings.versionAvailable, newReleaseEvent.Release.ReleaseVersion),
                                       newReleaseEvent.Release.Name + '\n' + TrayIconStrings.clickToUpdate, ToolTipIcon.Info);
 
-           
+
         }
         /// <summary>
         /// Make the icon flicker between default Icon and Update icon
@@ -221,14 +220,14 @@ namespace SoundSwitch.Util
         {
             if (_animationTimer == null)
             {
-                _animationTimer = new Timer() {Interval = 1000};
+                _animationTimer = new Timer() { Interval = 1000 };
                 var tick = 0;
                 _animationTimer.Tick += (sender, args) =>
                 {
                     NotifyIcon.Icon = tick == 0
                         ? Icon.FromHandle(Resources.SoundSwitch16.GetHicon())
                         : Resources.UpdateIcon;
-                    tick = ++tick%2;
+                    tick = ++tick % 2;
                 };
             }
             _animationTimer.Start();
@@ -257,39 +256,37 @@ namespace SoundSwitch.Util
         /// </summary>
         public void UpdateDeviceSelectionList()
         {
-            using (AppLogger.Log.InfoCall())
-            {
-              
-                if (AppModel.Instance.AvailablePlaybackDevices.Count < 0 &&
-                    AppModel.Instance.AvailableRecordingDevices.Count < 0)
-                {
-                    AppLogger.Log.Info("Device list empty");
-                    return;
-                }
 
-                _selectionMenu.Items.Clear();
-                AppLogger.Log.Info("Set tray icon menu devices");
-                foreach (var item in AppModel.Instance.AvailablePlaybackDevices)
+            if (AppModel.Instance.AvailablePlaybackDevices.Count < 0 &&
+                AppModel.Instance.AvailableRecordingDevices.Count < 0)
+            {
+                Log.Information("Device list empty");
+                return;
+            }
+
+            _selectionMenu.Items.Clear();
+            Log.Information("Set tray icon menu devices");
+            foreach (var item in AppModel.Instance.AvailablePlaybackDevices)
+            {
+                _selectionMenu.Items.Add(new ToolStripDeviceItem(DeviceClicked, item));
+            }
+
+            if (AppModel.Instance.AvailableRecordingDevices.Count > 0)
+            {
+                _selectionMenu.Items.Add("-");
+                foreach (var item in AppModel.Instance.AvailableRecordingDevices)
                 {
                     _selectionMenu.Items.Add(new ToolStripDeviceItem(DeviceClicked, item));
                 }
-
-                if (AppModel.Instance.AvailableRecordingDevices.Count > 0)
-                {
-                    _selectionMenu.Items.Add("-");
-                    foreach (var item in AppModel.Instance.AvailableRecordingDevices)
-                    {
-                        _selectionMenu.Items.Add(new ToolStripDeviceItem(DeviceClicked, item));
-                    }
-                }
             }
+
         }
 
         private void DeviceClicked(object sender, EventArgs e)
         {
             try
             {
-                var item = (ToolStripDeviceItem) sender;
+                var item = (ToolStripDeviceItem)sender;
                 AppModel.Instance.SetActiveDevice(item.AudioDevice);
             }
             catch (Exception)
@@ -303,7 +300,7 @@ namespace SoundSwitch.Util
         /// </summary>
         public void ShowNoDevices()
         {
-            AppLogger.Log.Info("No devices available");
+            Log.Error("No devices available");
             NotifyIcon.ShowBalloonTip(3000,
                                       TrayIconStrings.configurationNeeded,
                                       TrayIconStrings.configurationNeededExplanation, ToolTipIcon.Warning);
