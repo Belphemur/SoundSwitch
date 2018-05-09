@@ -59,7 +59,7 @@ namespace SoundSwitch
                     HandleException((Exception)args.ExceptionObject);
                 };
 
-                AppLogger.Log.Info("Set Exception Handler");
+                Log.Information("Set Exception Handler");
                 Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
                 WindowsAPIAdapter.Start(Application_ThreadException);
 #else
