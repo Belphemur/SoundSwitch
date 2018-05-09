@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using NAudio.CoreAudioApi;
+using Serilog;
 using SoundSwitch.Framework;
 using SoundSwitch.Properties;
 
@@ -99,7 +100,7 @@ namespace SoundSwitch.Util
             }
             catch (Exception e)
             {
-                AppLogger.Log.Error($"Can't extract icon from {audioDevice.IconPath}\n Ex: ", e);
+                Log.Error(e, "Can't extract icon from {path}", audioDevice.IconPath);
                 switch (audioDevice.DataFlow)
                 {
                     case DataFlow.Capture:

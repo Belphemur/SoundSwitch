@@ -409,7 +409,7 @@ namespace SoundSwitch.UI.Forms
                     {
                         try {                            
                             return !string.IsNullOrEmpty(device.FriendlyName);
-                        } catch(Exception e) {
+                        } catch(Exception) {
                             return false;
                         }
                     })

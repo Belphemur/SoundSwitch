@@ -15,6 +15,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using NAudio.CoreAudioApi;
+using Serilog;
 using SoundSwitch.Framework;
 
 namespace SoundSwitch.Model
@@ -34,25 +35,19 @@ namespace SoundSwitch.Model
         /// <returns></returns>
         public MMDeviceCollection GetPlaybackDevices()
         {
-
-            AppLogger.Log.Debug("Get Playback Devices");
             using (var enumerator = new MMDeviceEnumerator())
             {
                 return enumerator.EnumerateAudioEndPoints(DataFlow.Render, _state);
             }
-
-
-
         }
 
-       
+
         /// <summary>
         /// Get the recording device in the set state
         /// </summary>
         /// <returns></returns>
         public MMDeviceCollection GetRecordingDevices()
         {
-            AppLogger.Log.Debug("Get Recording Devices");
             using (var enumerator = new MMDeviceEnumerator())
             {
                 return enumerator.EnumerateAudioEndPoints(DataFlow.Capture, _state);

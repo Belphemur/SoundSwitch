@@ -16,6 +16,7 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using Serilog;
 
 namespace SoundSwitch.Framework.Updater
 {
@@ -41,15 +42,14 @@ namespace SoundSwitch.Framework.Updater
 
         public void Update(Release release, bool closeApp)
         {
-            using (AppLogger.Log.InfoCall())
-            {
+          
                 var file = new WebFile(new Uri(release.Asset.browser_download_url), InstallerFilePath);
                 file.Downloaded += (sender, args) =>
                 {
-                    AppLogger.Log.Info("Update downloaded: " + file);
+                    Log.Information("Update downloaded: {@File}", file);
                     if (!SignatureChecker.IsValid(file.FilePath))
                     {
-                        AppLogger.Log.Error("The file has the wrong signature. Update cancelled.");
+                        Log.Error("The file has the wrong signature. Update cancelled.");
                         return;
                     }
                     file.Start(InstallerParameters);
@@ -59,7 +59,7 @@ namespace SoundSwitch.Framework.Updater
                     }
                 };
                 file.DownloadFile();
-            }
+            
         }
     }
 }

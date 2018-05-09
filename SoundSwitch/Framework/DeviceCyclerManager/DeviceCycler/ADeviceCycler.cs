@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AudioDefaultSwitcherWrapper;
 using NAudio.CoreAudioApi;
+using Serilog;
 using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
@@ -73,22 +74,21 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         /// <param name="device"></param>
         public bool SetActiveDevice(MMDevice device)
         {
-            using (AppLogger.Log.InfoCall())
+
+            Log.Information("Set Default device: {@Device}", device);
+            if (!AppModel.Instance.SetCommunications)
             {
-                AppLogger.Log.Info("Set Default device", device);
-                if (!AppModel.Instance.SetCommunications)
-                {
-                    AudioController.SwitchTo(device.ID, DeviceRole.Console);
-                    AudioController.SwitchTo(device.ID, DeviceRole.Multimedia);
-                }
-                else
-                {
-                    AppLogger.Log.Info("Set Default Communication device", device);
-                    AudioController.SwitchTo(device.ID, DeviceRole.All);
-                }
-                _lastDevices[(DeviceType)device.DataFlow] = device.ID;
-                return true;
+                AudioController.SwitchTo(device.ID, DeviceRole.Console);
+                AudioController.SwitchTo(device.ID, DeviceRole.Multimedia);
             }
+            else
+            {
+                Log.Information("Set Default Communication device: {@Device}", device);
+                AudioController.SwitchTo(device.ID, DeviceRole.All);
+            }
+            _lastDevices[(DeviceType)device.DataFlow] = device.ID;
+            return true;
+
         }
     }
 }

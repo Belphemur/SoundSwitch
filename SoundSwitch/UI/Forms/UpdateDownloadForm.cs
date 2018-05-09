@@ -15,6 +15,7 @@
 using System;
 using System.Diagnostics;
 using System.Windows.Forms;
+using Serilog;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Localization;
@@ -48,7 +49,7 @@ namespace SoundSwitch.UI.Forms
             };
             _releaseFile.DownloadFailed += (sender, @event) =>
             {
-                AppLogger.Log.Error("Couldn't download the Release ", @event.Exception);
+                Log.Error(@event.Exception, "Couldn't download the Release ");
                 MessageBox.Show(@event.Exception.Message,
                                 UpdateDownloadStrings.downloadFailed,
                                 MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -57,7 +58,7 @@ namespace SoundSwitch.UI.Forms
             {
                 if (!SignatureChecker.IsValid(_releaseFile.FilePath))
                 {
-                    AppLogger.Log.Error("Wrong signature for the release");
+                    Log.Error("Wrong signature for the release");
                     MessageBox.Show(UpdateDownloadStrings.notSigned,
                                     UpdateDownloadStrings.notSignedTitle,
                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
