@@ -21,10 +21,10 @@ namespace SoundSwitch.Localization
     public enum Language
     {
         English = 0,
-        French = 1,
-        German = 2,
-        Spanish = 3,
-        Norwegian = 4,
-        Portugese = 5
+        Français = 1,
+        Deutsche = 2,
+        Español = 3,
+        Norsk = 4,
+        Português = 5
     }
 }

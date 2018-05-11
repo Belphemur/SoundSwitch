@@ -30,15 +30,15 @@ namespace SoundSwitch.Localization
         {
             switch (language)
             {
-                case Language.French:
+                case Language.Français:
                     return CultureInfo.GetCultureInfo("fr");
-                case Language.German:
+                case Language.Deutsche:
                     return CultureInfo.GetCultureInfo("de");
-                case Language.Spanish:
+                case Language.Español:
                     return CultureInfo.GetCultureInfo("es");
-                case Language.Norwegian:
+                case Language.Norsk:
                     return CultureInfo.GetCultureInfo("nb");
-                case Language.Portugese:
+                case Language.Português:
                     return CultureInfo.GetCultureInfo("pt-BR");
                 default:
                     return CultureInfo.GetCultureInfo("en");
@@ -56,15 +56,15 @@ namespace SoundSwitch.Localization
             switch (cultureInfo.TwoLetterISOLanguageName)
             {
                 case "fr":
-                    return Language.French;
+                    return Language.Français;
                 case "de":
-                    return Language.German;
+                    return Language.Deutsche;
                 case "es":
-                    return Language.Spanish;
+                    return Language.Español;
                 case "nb":
-                    return Language.Norwegian;
+                    return Language.Norsk;
                 case "pt":
-                    return Language.Portugese;
+                    return Language.Português;
                 default:
                     return Language.English;
             }
