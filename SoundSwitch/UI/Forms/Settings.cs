@@ -236,24 +236,6 @@ namespace SoundSwitch.UI.Forms
             Close();
         }
 
-        protected override void OnClosed(EventArgs e)
-        {
-            base.OnClosed(e);
-            foreach (var i in playbackListView.SmallImageList.Images)
-            {
-                if (i is IDisposable)
-                {
-                    ((IDisposable)i).Dispose();
-                }
-            }
-            foreach (var i in recordingListView.SmallImageList.Images)
-            {
-                if (i is IDisposable)
-                {
-                    ((IDisposable)i).Dispose();
-                }
-            }
-        }
 
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
