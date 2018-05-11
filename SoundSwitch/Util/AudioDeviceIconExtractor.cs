@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime.Caching;
 using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Framework;
@@ -43,6 +44,11 @@ namespace SoundSwitch.Util
                 }
             }
 
+            public override string ToString()
+            {
+                return $"{nameof(FilePath)}: {FilePath}, {nameof(Large)}: {Large}";
+            }
+
             public override bool Equals(object obj)
             {
                 if (ReferenceEquals(null, obj)) return false;
@@ -68,7 +74,20 @@ namespace SoundSwitch.Util
                 return string.Equals(FilePath, other.FilePath) && Large == other.Large;
             }
         }
-        private static readonly Dictionary<IconKey, Icon> IconCache = new Dictionary<IconKey, Icon>();
+
+        private static readonly MemoryCache IconCache = new MemoryCache("_iconCache");
+        private static readonly CacheItemPolicy CacheItemPolicy = new CacheItemPolicy
+        {
+            RemovedCallback = CleanupIcon,
+            SlidingExpiration = TimeSpan.FromMinutes(5)
+        };
+
+        private static void CleanupIcon(CacheEntryRemovedArguments arg)
+        {
+            if (!(arg.CacheItem.Value is IDisposable item)) return;
+
+            item.Dispose();
+        }
 
         /// <summary>
         ///     Extract the Icon out of an AudioDevice
@@ -80,9 +99,10 @@ namespace SoundSwitch.Util
         {
             Icon ico;
             var iconKey = new IconKey(audioDevice.IconPath, largeIcon);
-            if (IconCache.TryGetValue(iconKey, out ico))
+            var key = iconKey.ToString();
+            if (IconCache.Contains(key))
             {
-                return ico;
+                return (Icon)IconCache.Get(key);
             }
             try
             {
@@ -114,7 +134,7 @@ namespace SoundSwitch.Util
                 }
             }
 
-            IconCache.Add(iconKey, ico);
+            IconCache.Add(key, ico, CacheItemPolicy);
             return ico;
         }
     }
