@@ -25,55 +25,6 @@ namespace SoundSwitch.Util
 {
     internal class AudioDeviceIconExtractor
     {
-        private class IconKey : IEquatable<IconKey>
-        {
-            private string FilePath { get; }
-            private bool Large { get; }
-
-            public IconKey(string filePath, bool large)
-            {
-                FilePath = filePath;
-                Large = large;
-            }
-
-            public override int GetHashCode()
-            {
-                unchecked
-                {
-                    return (FilePath.GetHashCode() * 397) ^ Large.GetHashCode();
-                }
-            }
-
-            public override string ToString()
-            {
-                return $"{nameof(FilePath)}: {FilePath}, {nameof(Large)}: {Large}";
-            }
-
-            public override bool Equals(object obj)
-            {
-                if (ReferenceEquals(null, obj)) return false;
-                if (ReferenceEquals(this, obj)) return true;
-                if (obj.GetType() != this.GetType()) return false;
-                return Equals((IconKey)obj);
-            }
-
-            public static bool operator ==(IconKey left, IconKey right)
-            {
-                return Equals(left, right);
-            }
-
-            public static bool operator !=(IconKey left, IconKey right)
-            {
-                return !Equals(left, right);
-            }
-
-            public bool Equals(IconKey other)
-            {
-                if (ReferenceEquals(null, other)) return false;
-                if (ReferenceEquals(this, other)) return true;
-                return string.Equals(FilePath, other.FilePath) && Large == other.Large;
-            }
-        }
 
         private static readonly Icon DefaultSpeakers = Resources.defaultSpeakers;
         private static readonly Icon DefaultMicrophone = Resources.defaultMicrophone;
@@ -92,6 +43,11 @@ namespace SoundSwitch.Util
             item.Dispose();
         }
 
+        private static string GetKey(MMDevice audioDevice, bool largeIcon)
+        {
+            return $"{audioDevice.IconPath}-${largeIcon}";
+        }
+
         /// <summary>
         ///     Extract the Icon out of an AudioDevice
         /// </summary>
@@ -101,8 +57,7 @@ namespace SoundSwitch.Util
         public static Icon ExtractIconFromAudioDevice(MMDevice audioDevice, bool largeIcon)
         {
             Icon ico;
-            var iconKey = new IconKey(audioDevice.IconPath, largeIcon);
-            var key = iconKey.ToString();
+            var key = GetKey(audioDevice, largeIcon);
             if (IconCache.Contains(key))
             {
                 return (Icon)IconCache.Get(key);
