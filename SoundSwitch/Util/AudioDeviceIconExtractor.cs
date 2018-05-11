@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime.Caching;
 using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Framework;
@@ -24,8 +25,72 @@ namespace SoundSwitch.Util
 {
     internal class AudioDeviceIconExtractor
     {
-        private static readonly Icon defaultSpeakers = Resources.defaultSpeakers;
-        private static readonly Icon defaultMicrophone = Resources.defaultMicrophone;
+        private class IconKey : IEquatable<IconKey>
+        {
+            private string FilePath { get; }
+            private bool Large { get; }
+
+            public IconKey(string filePath, bool large)
+            {
+                FilePath = filePath;
+                Large = large;
+            }
+
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    return (FilePath.GetHashCode() * 397) ^ Large.GetHashCode();
+                }
+            }
+
+            public override string ToString()
+            {
+                return $"{nameof(FilePath)}: {FilePath}, {nameof(Large)}: {Large}";
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (ReferenceEquals(null, obj)) return false;
+                if (ReferenceEquals(this, obj)) return true;
+                if (obj.GetType() != this.GetType()) return false;
+                return Equals((IconKey)obj);
+            }
+
+            public static bool operator ==(IconKey left, IconKey right)
+            {
+                return Equals(left, right);
+            }
+
+            public static bool operator !=(IconKey left, IconKey right)
+            {
+                return !Equals(left, right);
+            }
+
+            public bool Equals(IconKey other)
+            {
+                if (ReferenceEquals(null, other)) return false;
+                if (ReferenceEquals(this, other)) return true;
+                return string.Equals(FilePath, other.FilePath) && Large == other.Large;
+            }
+        }
+
+        private static readonly Icon DefaultSpeakers = Resources.defaultSpeakers;
+        private static readonly Icon DefaultMicrophone = Resources.defaultMicrophone;
+
+        private static readonly MemoryCache IconCache = new MemoryCache("_iconCache");
+        private static readonly CacheItemPolicy CacheItemPolicy = new CacheItemPolicy
+        {
+            RemovedCallback = CleanupIcon,
+            SlidingExpiration = TimeSpan.FromMinutes(5)
+        };
+
+        private static void CleanupIcon(CacheEntryRemovedArguments arg)
+        {
+            if (!(arg.CacheItem.Value is IDisposable item)) return;
+
+            item.Dispose();
+        }
 
         /// <summary>
         ///     Extract the Icon out of an AudioDevice
@@ -35,18 +100,25 @@ namespace SoundSwitch.Util
         /// <returns></returns>
         public static Icon ExtractIconFromAudioDevice(MMDevice audioDevice, bool largeIcon)
         {
+            Icon ico;
+            var iconKey = new IconKey(audioDevice.IconPath, largeIcon);
+            var key = iconKey.ToString();
+            if (IconCache.Contains(key))
+            {
+                return (Icon)IconCache.Get(key);
+            }
             try
             {
                 if (audioDevice.IconPath.EndsWith(".ico"))
                 {
-                    return Icon.ExtractAssociatedIcon(audioDevice.IconPath);
+                    ico = Icon.ExtractAssociatedIcon(audioDevice.IconPath);
                 }
                 else
                 {
                     var iconInfo = audioDevice.IconPath.Split(',');
                     var dllPath = iconInfo[0];
                     var iconIndex = int.Parse(iconInfo[1]);
-                    return IconExtractor.Extract(dllPath, iconIndex, largeIcon);
+                    ico = IconExtractor.Extract(dllPath, iconIndex, largeIcon);
                 }
             }
             catch (Exception e)
@@ -55,13 +127,16 @@ namespace SoundSwitch.Util
                 switch (audioDevice.DataFlow)
                 {
                     case DataFlow.Capture:
-                        return defaultSpeakers;
+                        return DefaultMicrophone;
                     case DataFlow.Render:
-                        return defaultMicrophone;
+                        return DefaultSpeakers;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
             }
+
+            IconCache.Add(key, ico, CacheItemPolicy);
+            return ico;
         }
     }
 }
