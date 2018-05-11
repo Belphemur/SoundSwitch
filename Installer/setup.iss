@@ -75,6 +75,7 @@ Source: "{#ExeDir}x64\de\*.dll"; DestDir: "{app}\de"; Check: Is64BitInstallMode 
 Source: "{#ExeDir}x64\es\*.dll"; DestDir: "{app}\es"; Check: Is64BitInstallMode   ; Flags: 64bit
 Source: "{#ExeDir}x64\nb\*.dll"; DestDir: "{app}\nb"; Check: Is64BitInstallMode   ; Flags: 64bit
 Source: "{#ExeDir}x64\pt-BR\*.dll"; DestDir: "{app}\pt-BR"; Check: Is64BitInstallMode   ; Flags: 64bit
+Source: "{#ExeDir}x64\it-IT\*.dll"; DestDir: "{app}\it-IT"; Check: Is64BitInstallMode   ; Flags: 64bit
 
 Source: "{#ExeDir}x86\SoundSwitch.exe.config"; DestDir: "{app}"; Check: not Is64BitInstallMode  ; Flags: 32bit
 Source: "{#ExeDir}x86\SoundSwitch.exe"; DestDir: "{app}"; Check:  not Is64BitInstallMode   ; Flags: 32bit signonce
@@ -83,8 +84,9 @@ Source: "{#ExeDir}x86\*.pdb"; DestDir: "{app}"; Check: not Is64BitInstallMode   
 Source: "{#ExeDir}x86\fr\*.dll"; DestDir: "{app}\fr"; Check: not Is64BitInstallMode  ; Flags: 32bit 
 Source: "{#ExeDir}x86\de\*.dll"; DestDir: "{app}\de"; Check: not Is64BitInstallMode  ; Flags: 32bit 
 Source: "{#ExeDir}x86\es\*.dll"; DestDir: "{app}\es"; Check: not Is64BitInstallMode  ; Flags: 32bit 
-Source: "{#ExeDir}x86\nb\*.dll"; DestDir: "{app}\nb"; Check: Is64BitInstallMode   ; Flags: 32bit
-Source: "{#ExeDir}x86\pt-BR\*.dll"; DestDir: "{app}\pt-BR"; Check: Is64BitInstallMode   ; Flags: 32bit
+Source: "{#ExeDir}x86\nb\*.dll"; DestDir: "{app}\nb"; Check: not Is64BitInstallMode   ; Flags: 32bit
+Source: "{#ExeDir}x86\pt-BR\*.dll"; DestDir: "{app}\pt-BR"; Check: not Is64BitInstallMode   ; Flags: 32bit
+Source: "{#ExeDir}x86\it-IT\*.dll"; DestDir: "{app}\it-IT"; Check: not Is64BitInstallMode   ; Flags: 32bit
 
 Source: "{#ExeDir}Changelog.html"; DestDir: "{app}"
 Source: "{#ExeDir}Readme.html"; DestDir: "{app}"   
