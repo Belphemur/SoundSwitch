@@ -22,11 +22,12 @@ namespace SoundSwitch.UI.Forms
 {
     public partial class About : Form
     {
+        private static readonly System.Drawing.Icon helpIcon = Resources.HelpIcon;
 
         public About()
         {
             InitializeComponent();
-            Icon = Resources.HelpIcon;
+            Icon = helpIcon;
         }
 
         private void About_Load(object sender, System.EventArgs e)

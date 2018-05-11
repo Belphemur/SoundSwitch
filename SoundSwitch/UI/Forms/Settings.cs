@@ -38,13 +38,15 @@ namespace SoundSwitch.UI.Forms
 {
     public sealed partial class SettingsForm : Form
     {
+        private static readonly Icon settingsIcon = Resources.SettingsIcon;
+
         private readonly bool _loaded;
 
         public SettingsForm()
         {
             // Form itself
             InitializeComponent();
-            Icon = Resources.SettingsIcon;
+            Icon = settingsIcon;
             Text = AssemblyUtils.GetReleaseState() == AssemblyUtils.ReleaseState.Beta ?
                    $"{SettingsStrings.settings} {AssemblyUtils.GetReleaseState()}" :
                    SettingsStrings.settings;
@@ -232,6 +234,25 @@ namespace SoundSwitch.UI.Forms
         private void closeButton_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            foreach (var i in playbackListView.SmallImageList.Images)
+            {
+                if (i is IDisposable)
+                {
+                    ((IDisposable)i).Dispose();
+                }
+            }
+            foreach (var i in recordingListView.SmallImageList.Images)
+            {
+                if (i is IDisposable)
+                {
+                    ((IDisposable)i).Dispose();
+                }
+            }
         }
 
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)

@@ -24,51 +24,8 @@ namespace SoundSwitch.Util
 {
     internal class AudioDeviceIconExtractor
     {
-        private class IconKey : IEquatable<IconKey>
-        {
-            private string FilePath { get; }
-            private bool Large { get; }
-
-            public IconKey(string filePath, bool large)
-            {
-                FilePath = filePath;
-                Large = large;
-            }
-
-            public override int GetHashCode()
-            {
-                unchecked
-                {
-                    return (FilePath.GetHashCode()*397) ^ Large.GetHashCode();
-                }
-            }
-
-            public override bool Equals(object obj)
-            {
-                if (ReferenceEquals(null, obj)) return false;
-                if (ReferenceEquals(this, obj)) return true;
-                if (obj.GetType() != this.GetType()) return false;
-                return Equals((IconKey) obj);
-            }
-
-            public static bool operator ==(IconKey left, IconKey right)
-            {
-                return Equals(left, right);
-            }
-
-            public static bool operator !=(IconKey left, IconKey right)
-            {
-                return !Equals(left, right);
-            }
-
-            public bool Equals(IconKey other)
-            {
-                if (ReferenceEquals(null, other)) return false;
-                if (ReferenceEquals(this, other)) return true;
-                return string.Equals(FilePath, other.FilePath) && Large == other.Large;
-            }
-        }
-        private static readonly Dictionary<IconKey, Icon> IconCache = new Dictionary<IconKey, Icon>();
+        private static readonly Icon defaultSpeakers = Resources.defaultSpeakers;
+        private static readonly Icon defaultMicrophone = Resources.defaultMicrophone;
 
         /// <summary>
         ///     Extract the Icon out of an AudioDevice
@@ -78,24 +35,18 @@ namespace SoundSwitch.Util
         /// <returns></returns>
         public static Icon ExtractIconFromAudioDevice(MMDevice audioDevice, bool largeIcon)
         {
-            Icon ico;
-            var iconKey = new IconKey(audioDevice.IconPath, largeIcon);
-            if (IconCache.TryGetValue(iconKey, out ico))
-            {
-                return ico;
-            }
             try
             {
                 if (audioDevice.IconPath.EndsWith(".ico"))
                 {
-                    ico = Icon.ExtractAssociatedIcon(audioDevice.IconPath);
+                    return Icon.ExtractAssociatedIcon(audioDevice.IconPath);
                 }
                 else
                 {
                     var iconInfo = audioDevice.IconPath.Split(',');
                     var dllPath = iconInfo[0];
                     var iconIndex = int.Parse(iconInfo[1]);
-                    ico = IconExtractor.Extract(dllPath, iconIndex, largeIcon);
+                    return IconExtractor.Extract(dllPath, iconIndex, largeIcon);
                 }
             }
             catch (Exception e)
@@ -104,18 +55,13 @@ namespace SoundSwitch.Util
                 switch (audioDevice.DataFlow)
                 {
                     case DataFlow.Capture:
-                        ico = Resources.defaultSpeakers;
-                        break;
+                        return defaultSpeakers;
                     case DataFlow.Render:
-                        ico = Resources.defaultMicrophone;
-                        break;
+                        return defaultMicrophone;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
             }
-
-            IconCache.Add(iconKey, ico);
-            return ico;
         }
     }
 }
