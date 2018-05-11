@@ -37,6 +37,17 @@ namespace SoundSwitch.Util
 {
     public sealed class TrayIcon : IDisposable
     {
+        private static readonly Bitmap updateBitmap = Resources.Update;
+        private static readonly Bitmap settingsSmall = Resources.SettingsSmall;
+        private static readonly Bitmap soundSwitch16 = Resources.SoundSwitch16;
+        private static readonly Bitmap playbackDevices = Resources.PlaybackDevices;
+        private static readonly Bitmap mixer = Resources.Mixer;
+        private static readonly Bitmap infoHelp = Resources.InfoHelp;
+        private static readonly Bitmap donate = Resources.donate;
+        private static readonly Bitmap helpSmall = Resources.HelpSmall;
+        private static readonly Bitmap exit = Resources.exit;
+        private static readonly Icon updateIcon = Resources.UpdateIcon;
+
         private readonly ContextMenuStrip _selectionMenu = new ContextMenuStrip();
         private readonly ContextMenuStrip _settingsMenu = new ContextMenuStrip();
         private readonly SynchronizationContext _context = SynchronizationContext.Current ?? new SynchronizationContext();
@@ -55,7 +66,7 @@ namespace SoundSwitch.Util
         {
             UpdateIcon();
             _tooltipInfoManager = new TooltipInfoManager(NotifyIcon);
-            _updateMenuItem = new ToolStripMenuItem(TrayIconStrings.noUpdate, Resources.Update, OnUpdateClick)
+            _updateMenuItem = new ToolStripMenuItem(TrayIconStrings.noUpdate, updateBitmap, OnUpdateClick)
             {
                 Enabled = false
             };
@@ -63,7 +74,7 @@ namespace SoundSwitch.Util
 
             PopulateSettingsMenu();
 
-            _selectionMenu.Items.Add(TrayIconStrings.noDevicesSelected, Resources.SettingsSmall, (sender, e) => ShowSettings());
+            _selectionMenu.Items.Add(TrayIconStrings.noDevicesSelected, settingsSmall, (sender, e) => ShowSettings());
 
             NotifyIcon.MouseDoubleClick += (sender, args) =>
             {
@@ -104,15 +115,29 @@ namespace SoundSwitch.Util
         {
             _selectionMenu.Dispose();
             _settingsMenu.Dispose();
+            if (NotifyIcon.Icon != null)
+            {
+                NotifyIcon.Icon.Dispose();
+            }
             NotifyIcon.Dispose();
             _updateMenuItem.Dispose();
+        }
+
+        private void ReplaceIcon(Icon newIcon)
+        {
+            var oldIcon = NotifyIcon.Icon;
+            NotifyIcon.Icon = newIcon;
+            if (oldIcon != null)
+            {
+                oldIcon.Dispose();
+            }
         }
 
         public void UpdateIcon()
         {
             if (AppConfigs.Configuration.KeepSystrayIcon)
             {
-                NotifyIcon.Icon = Icon.FromHandle(Resources.SoundSwitch16.GetHicon());
+                ReplaceIcon(Icon.FromHandle(soundSwitch16.GetHicon()));
                 return;
             }
 
@@ -120,7 +145,7 @@ namespace SoundSwitch.Util
             {
                 var defaultDevice = AppModel.Instance.ActiveAudioDeviceLister.GetPlaybackDevices()
                     .First(device => AudioController.IsDefault(device.ID, (DeviceType)device.DataFlow, DeviceRole.Console));
-                NotifyIcon.Icon = AudioDeviceIconExtractor.ExtractIconFromAudioDevice(defaultDevice, false);
+                ReplaceIcon(AudioDeviceIconExtractor.ExtractIconFromAudioDevice(defaultDevice, false));
             }
             catch (InvalidOperationException)
             {
@@ -134,17 +159,17 @@ namespace SoundSwitch.Util
             var readmeHtml = Path.Combine(applicationDirectory, "Readme.html");
             _settingsMenu.Items.Add(
                 Application.ProductName + ' ' + AssemblyUtils.GetReleaseState() + " (" + Application.ProductVersion +
-                ")", Resources.SoundSwitch16);
+                ")", soundSwitch16);
             _settingsMenu.Items.Add("-");
-            _settingsMenu.Items.Add(TrayIconStrings.playbackDevices, Resources.PlaybackDevices,
+            _settingsMenu.Items.Add(TrayIconStrings.playbackDevices, playbackDevices,
                 (sender, e) => { Process.Start(new ProcessStartInfo("control", "mmsys.cpl sounds")); });
-            _settingsMenu.Items.Add(TrayIconStrings.mixer, Resources.Mixer,
+            _settingsMenu.Items.Add(TrayIconStrings.mixer, mixer,
                 (sender, e) => { Process.Start(new ProcessStartInfo("sndvol.exe")); });
             _settingsMenu.Items.Add("-");
             _settingsMenu.Items.Add(_updateMenuItem);
-            _settingsMenu.Items.Add(TrayIconStrings.settings, Resources.SettingsSmall, (sender, e) => ShowSettings());
+            _settingsMenu.Items.Add(TrayIconStrings.settings, settingsSmall, (sender, e) => ShowSettings());
             _settingsMenu.Items.Add("-");
-            _settingsMenu.Items.Add(TrayIconStrings.help, Resources.InfoHelp, (sender, e) =>
+            _settingsMenu.Items.Add(TrayIconStrings.help, infoHelp, (sender, e) =>
             {
                 if (!File.Exists(readmeHtml))
                 {
@@ -153,10 +178,10 @@ namespace SoundSwitch.Util
                 }
                 Process.Start(readmeHtml);
             });
-            _settingsMenu.Items.Add(TrayIconStrings.donate, Resources.donate, (sender, e) => Process.Start("https://soundswitch.aaflalo.me/?utm_source=application"));
-            _settingsMenu.Items.Add(TrayIconStrings.about, Resources.HelpSmall, (sender, e) => new About().Show());
+            _settingsMenu.Items.Add(TrayIconStrings.donate, donate, (sender, e) => Process.Start("https://soundswitch.aaflalo.me/?utm_source=application"));
+            _settingsMenu.Items.Add(TrayIconStrings.about, helpSmall, (sender, e) => new About().Show());
             _settingsMenu.Items.Add("-");
-            _settingsMenu.Items.Add(TrayIconStrings.exit, Resources.exit, (sender, e) => Application.Exit());
+            _settingsMenu.Items.Add(TrayIconStrings.exit, exit, (sender, e) => Application.Exit());
         }
 
         private void OnUpdateClick(object sender, EventArgs eventArgs)
@@ -190,7 +215,7 @@ namespace SoundSwitch.Util
                 {
                     return;
                 }
-                NotifyIcon.Icon = AudioDeviceIconExtractor.ExtractIconFromAudioDevice(audioChangeEvent.Device, false);
+                ReplaceIcon(AudioDeviceIconExtractor.ExtractIconFromAudioDevice(audioChangeEvent.Device, false));
             };
             AppModel.Instance.NewVersionReleased += (sender, @event) =>
             {
@@ -224,9 +249,9 @@ namespace SoundSwitch.Util
                 var tick = 0;
                 _animationTimer.Tick += (sender, args) =>
                 {
-                    NotifyIcon.Icon = tick == 0
-                        ? Icon.FromHandle(Resources.SoundSwitch16.GetHicon())
-                        : Resources.UpdateIcon;
+                    ReplaceIcon(tick == 0
+                        ? Icon.FromHandle(soundSwitch16.GetHicon())
+                        : (Icon)updateIcon.Clone());
                     tick = ++tick % 2;
                 };
             }

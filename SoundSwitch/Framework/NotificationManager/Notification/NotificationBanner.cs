@@ -32,11 +32,13 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
 
         public void NotifyDefaultChanged(MMDevice audioDevice)
         {
+            var Icon = AudioDeviceIconExtractor.ExtractIconFromAudioDevice(audioDevice, true);
             var toastData = new BannerData
             {
-                Image = AudioDeviceIconExtractor.ExtractIconFromAudioDevice(audioDevice, true).ToBitmap(),
+                Image = Icon.ToBitmap(),
                 Text = audioDevice.FriendlyName
             };
+            Icon.Dispose();
             if (Configuration.CustomSound != null && File.Exists(Configuration.CustomSound.FilePath))
             {
                 toastData.SoundFile = Configuration.CustomSound;
