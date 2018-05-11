@@ -26,13 +26,15 @@ namespace SoundSwitch.UI.Forms
 {
     public sealed partial class UpdateDownloadForm : Form
     {
+        private static readonly System.Drawing.Icon updateIcon = Resources.UpdateIcon;
+
         private readonly bool _redirectLinks = false;
         private readonly WebFile _releaseFile;
 
         public UpdateDownloadForm(Release release)
         {
             InitializeComponent();
-            Icon = Resources.UpdateIcon;
+            Icon = updateIcon;
             Text = release.Name;
             LocalizeForm();
             Focus();

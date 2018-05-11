@@ -40,7 +40,7 @@ namespace SoundSwitch.Util
             {
                 unchecked
                 {
-                    return (FilePath.GetHashCode()*397) ^ Large.GetHashCode();
+                    return (FilePath.GetHashCode() * 397) ^ Large.GetHashCode();
                 }
             }
 
@@ -54,7 +54,7 @@ namespace SoundSwitch.Util
                 if (ReferenceEquals(null, obj)) return false;
                 if (ReferenceEquals(this, obj)) return true;
                 if (obj.GetType() != this.GetType()) return false;
-                return Equals((IconKey) obj);
+                return Equals((IconKey)obj);
             }
 
             public static bool operator ==(IconKey left, IconKey right)
@@ -74,6 +74,9 @@ namespace SoundSwitch.Util
                 return string.Equals(FilePath, other.FilePath) && Large == other.Large;
             }
         }
+
+        private static readonly Icon DefaultSpeakers = Resources.defaultSpeakers;
+        private static readonly Icon DefaultMicrophone = Resources.defaultMicrophone;
 
         private static readonly MemoryCache IconCache = new MemoryCache("_iconCache");
         private static readonly CacheItemPolicy CacheItemPolicy = new CacheItemPolicy
@@ -124,11 +127,9 @@ namespace SoundSwitch.Util
                 switch (audioDevice.DataFlow)
                 {
                     case DataFlow.Capture:
-                        ico = Resources.defaultSpeakers;
-                        break;
+                        return DefaultMicrophone;
                     case DataFlow.Render:
-                        ico = Resources.defaultMicrophone;
-                        break;
+                        return DefaultSpeakers;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }

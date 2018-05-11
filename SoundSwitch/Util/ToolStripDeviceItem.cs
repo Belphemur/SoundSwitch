@@ -24,6 +24,8 @@ namespace SoundSwitch.Util
 {
     internal class ToolStripDeviceItem : ToolStripMenuItem
     {
+        private static readonly Bitmap check = Resources.Check;
+
         public ToolStripDeviceItem(EventHandler onClick, MMDevice audioDevice)
             : base(audioDevice.FriendlyName, null, onClick)
         {
@@ -35,7 +37,7 @@ namespace SoundSwitch.Util
             get
             {
                 if (AudioDevice !=null && AudioController.IsDefault(AudioDevice.ID, (DeviceType) AudioDevice.DataFlow, DeviceRole.Console))
-                    return Resources.Check;
+                    return check;
 
                 return null;
             }
