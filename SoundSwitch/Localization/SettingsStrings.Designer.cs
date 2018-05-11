@@ -205,6 +205,15 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Disable the set Custom Sound..
+        /// </summary>
+        internal static string disableCustomSoundTooltip {
+            get {
+                return ResourceManager.GetString("disableCustomSoundTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Disconnected.
         /// </summary>
         internal static string disconnected {

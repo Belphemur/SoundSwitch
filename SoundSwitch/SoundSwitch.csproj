@@ -513,6 +513,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\delete.png" />
     <None Include="packages.config" />
     <None Include="Resources\donate-16.png" />
     <None Include="Resources\donate.ico" />

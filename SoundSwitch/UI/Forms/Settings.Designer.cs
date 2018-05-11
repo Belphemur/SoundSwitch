@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
-            System.Windows.Forms.ListViewGroup listViewGroup4 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
+            System.Windows.Forms.ListViewGroup listViewGroup9 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
+            System.Windows.Forms.ListViewGroup listViewGroup10 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
             this.startWithWindowsCheckBox = new System.Windows.Forms.CheckBox();
             this.closeButton = new System.Windows.Forms.Button();
             this.switchCommunicationDeviceCheckBox = new System.Windows.Forms.CheckBox();
@@ -47,6 +47,7 @@
             this.updateSilentRadioButton = new System.Windows.Forms.RadioButton();
             this.includeBetaVersionsCheckBox = new System.Windows.Forms.CheckBox();
             this.audioSettingsGroupBox = new System.Windows.Forms.GroupBox();
+            this.deleteSoundButton = new System.Windows.Forms.Button();
             this.cycleThroughLabel = new System.Windows.Forms.Label();
             this.cycleThroughComboBox = new System.Windows.Forms.ComboBox();
             this.tooltipOnHoverLabel = new System.Windows.Forms.Label();
@@ -135,11 +136,11 @@
             this.playbackListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.playbackListView.CheckBoxes = true;
             this.playbackListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            listViewGroup3.Header = "Selected";
-            listViewGroup3.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
-            listViewGroup3.Name = "selectedGroup";
+            listViewGroup9.Header = "Selected";
+            listViewGroup9.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
+            listViewGroup9.Name = "selectedGroup";
             this.playbackListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup3});
+            listViewGroup9});
             this.playbackListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.playbackListView.Location = new System.Drawing.Point(3, 3);
             this.playbackListView.Name = "playbackListView";
@@ -165,11 +166,11 @@
             this.recordingListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.recordingListView.CheckBoxes = true;
             this.recordingListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            listViewGroup4.Header = "Selected";
-            listViewGroup4.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
-            listViewGroup4.Name = "selectedGroup";
+            listViewGroup10.Header = "Selected";
+            listViewGroup10.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
+            listViewGroup10.Name = "selectedGroup";
             this.recordingListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup4});
+            listViewGroup10});
             this.recordingListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.recordingListView.Location = new System.Drawing.Point(3, 3);
             this.recordingListView.Name = "recordingListView";
@@ -196,9 +197,9 @@
             this.languageGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.languageGroupBox.Controls.Add(this.languageComboBox);
-            this.languageGroupBox.Location = new System.Drawing.Point(395, 141);
+            this.languageGroupBox.Location = new System.Drawing.Point(419, 141);
             this.languageGroupBox.Name = "languageGroupBox";
-            this.languageGroupBox.Size = new System.Drawing.Size(311, 61);
+            this.languageGroupBox.Size = new System.Drawing.Size(287, 61);
             this.languageGroupBox.TabIndex = 15;
             this.languageGroupBox.TabStop = false;
             this.languageGroupBox.Text = "Language";
@@ -221,9 +222,9 @@
             this.updateSettingsGroupBox.Controls.Add(this.updateNotifyRadioButton);
             this.updateSettingsGroupBox.Controls.Add(this.updateSilentRadioButton);
             this.updateSettingsGroupBox.Controls.Add(this.includeBetaVersionsCheckBox);
-            this.updateSettingsGroupBox.Location = new System.Drawing.Point(395, 3);
+            this.updateSettingsGroupBox.Location = new System.Drawing.Point(419, 3);
             this.updateSettingsGroupBox.Name = "updateSettingsGroupBox";
-            this.updateSettingsGroupBox.Size = new System.Drawing.Size(311, 132);
+            this.updateSettingsGroupBox.Size = new System.Drawing.Size(287, 132);
             this.updateSettingsGroupBox.TabIndex = 14;
             this.updateSettingsGroupBox.TabStop = false;
             this.updateSettingsGroupBox.Text = "Update Settings";
@@ -277,6 +278,7 @@
             // 
             // audioSettingsGroupBox
             // 
+            this.audioSettingsGroupBox.Controls.Add(this.deleteSoundButton);
             this.audioSettingsGroupBox.Controls.Add(this.cycleThroughLabel);
             this.audioSettingsGroupBox.Controls.Add(this.cycleThroughComboBox);
             this.audioSettingsGroupBox.Controls.Add(this.tooltipOnHoverLabel);
@@ -287,10 +289,21 @@
             this.audioSettingsGroupBox.Controls.Add(this.notificationComboBox);
             this.audioSettingsGroupBox.Location = new System.Drawing.Point(3, 90);
             this.audioSettingsGroupBox.Name = "audioSettingsGroupBox";
-            this.audioSettingsGroupBox.Size = new System.Drawing.Size(386, 166);
+            this.audioSettingsGroupBox.Size = new System.Drawing.Size(410, 166);
             this.audioSettingsGroupBox.TabIndex = 13;
             this.audioSettingsGroupBox.TabStop = false;
             this.audioSettingsGroupBox.Text = "Audio Settings";
+            // 
+            // deleteSoundButton
+            // 
+            this.deleteSoundButton.Image = global::SoundSwitch.Properties.Resources.delete;
+            this.deleteSoundButton.Location = new System.Drawing.Point(381, 57);
+            this.deleteSoundButton.Name = "deleteSoundButton";
+            this.deleteSoundButton.Size = new System.Drawing.Size(23, 23);
+            this.deleteSoundButton.TabIndex = 24;
+            this.deleteSoundButton.UseVisualStyleBackColor = true;
+            this.deleteSoundButton.Visible = false;
+            this.deleteSoundButton.Click += new System.EventHandler(this.deleteSoundButton_Click);
             // 
             // cycleThroughLabel
             // 
@@ -366,7 +379,7 @@
             this.basicSettingsGroupBox.Controls.Add(this.startWithWindowsCheckBox);
             this.basicSettingsGroupBox.Location = new System.Drawing.Point(3, 3);
             this.basicSettingsGroupBox.Name = "basicSettingsGroupBox";
-            this.basicSettingsGroupBox.Size = new System.Drawing.Size(386, 81);
+            this.basicSettingsGroupBox.Size = new System.Drawing.Size(410, 81);
             this.basicSettingsGroupBox.TabIndex = 0;
             this.basicSettingsGroupBox.TabStop = false;
             this.basicSettingsGroupBox.Text = "Basic Settings";
@@ -476,5 +489,6 @@
         private System.Windows.Forms.RadioButton updateNeverRadioButton;
         private System.Windows.Forms.GroupBox languageGroupBox;
         private System.Windows.Forms.ComboBox languageComboBox;
+        private System.Windows.Forms.Button deleteSoundButton;
     }
 }

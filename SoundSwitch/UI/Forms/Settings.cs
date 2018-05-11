@@ -87,7 +87,20 @@ namespace SoundSwitch.UI.Forms
             selectSoundFileDialog.CheckFileExists = true;
             selectSoundFileDialog.CheckPathExists = true;
 
-            selectSoundButton.Visible = notificationFactory.Get(AppModel.Instance.NotificationSettings).SupportCustomSound() != NotificationCustomSoundEnum.NotSupported;
+            var soundSupported = notificationFactory.Get(AppModel.Instance.NotificationSettings).SupportCustomSound() != NotificationCustomSoundEnum.NotSupported;
+            selectSoundButton.Visible = soundSupported;
+
+            var removeCustomSoundToolTip = new ToolTip();
+            removeCustomSoundToolTip.SetToolTip(deleteSoundButton, SettingsStrings.disableCustomSoundTooltip);
+            try
+            {
+                deleteSoundButton.Visible = soundSupported && AppModel.Instance.CustomNotificationSound != null;
+            }
+            catch (CachedSoundFileNotExistsException)
+            {
+                
+            }
+
             var selectSoundButtonToolTip = new ToolTip();
             selectSoundButtonToolTip.SetToolTip(selectSoundButton, SettingsStrings.selectSoundButtonTooltip);
 
@@ -181,6 +194,7 @@ namespace SoundSwitch.UI.Forms
         private void SelectSoundFileDialogOnFileOk(object sender, CancelEventArgs cancelEventArgs)
         {
             AppModel.Instance.CustomNotificationSound = new CachedSound(selectSoundFileDialog.FileName);
+            deleteSoundButton.Visible = true;
         }
 
         private void SetHotkey(KeyEventArgs e)
@@ -288,6 +302,7 @@ namespace SoundSwitch.UI.Forms
                 try
                 {
                     var sound = AppModel.Instance.CustomNotificationSound;
+                    deleteSoundButton.Visible = true;
                 }
                 catch (CachedSoundFileNotExistsException)
                 {
@@ -562,6 +577,12 @@ namespace SoundSwitch.UI.Forms
             {
                 AppModel.Instance.UpdateMode = UpdateMode.Never;
             }
+        }
+
+        private void deleteSoundButton_Click(object sender, EventArgs e)
+        {
+            AppModel.Instance.CustomNotificationSound = null;
+            deleteSoundButton.Visible = false;
         }
     }
 }

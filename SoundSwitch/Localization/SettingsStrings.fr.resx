@@ -257,4 +257,7 @@ Ban. : Bannière discrète sur fond noir transparent sur le coté gauche de l'é
 	<data name="notificationOptionBanner" xml:space="preserve">
         <value>Bannière</value>
     </data>
+	<data name="disableCustomSoundTooltip" xml:space="preserve">
+		<value>Désactiver le son personnalisé.</value>
+	</data>
 </root>

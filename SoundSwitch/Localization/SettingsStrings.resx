@@ -278,4 +278,7 @@ Do you want to restart now?</value>
 	<data name="notificationOptionBanner" xml:space="preserve">
         <value>Banner</value>
     </data>
+	<data name="disableCustomSoundTooltip" xml:space="preserve">
+		<value>Disable the set Custom Sound.</value>
+	</data>
 </root>
