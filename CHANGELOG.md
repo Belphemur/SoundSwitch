@@ -1,5 +1,17 @@
 # Change Log
 
+## [v4.5](https://github.com/Belphemur/SoundSwitch/tree/v4.5) (2018-05-12)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.4...v4.5)
+
+**Implemented enhancements:**
+
+- Add option to disable selected sound on device switch [\#261](https://github.com/Belphemur/SoundSwitch/issues/261)
+
+**Merged pull requests:**
+
+- Maybe fix memory leak caused by not disposing Icons and Bitmaps. [\#262](https://github.com/Belphemur/SoundSwitch/pull/262) ([Niko-O](https://github.com/Niko-O))
+- Update ISS file \(add Italian language\) [\#260](https://github.com/Belphemur/SoundSwitch/pull/260) ([bovirus](https://github.com/bovirus))
+
 ## [v4.4](https://github.com/Belphemur/SoundSwitch/tree/v4.4) (2018-05-09)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.3...v4.4)
 
