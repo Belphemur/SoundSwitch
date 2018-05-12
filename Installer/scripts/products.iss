@@ -1,50 +1,68 @@
 #include "idp\idp.iss"
-#include "idp\idplang\German.iss"
-#include "idp\idplang\French.iss"
-#include "idp\idplang\Spanish.iss"
+#include "idp\idplang\belarusian.iss"
+#include "idp\idplang\brazilianPortuguese.iss"
+#include "idp\idplang\ChineseSimplified.iss"
+#include "idp\idplang\czech.iss"
+#include "idp\idplang\finnish.iss"
+#include "idp\idplang\german.iss"
+#include "idp\idplang\french.iss"
+#include "idp\idplang\hungarian.iss"
+#include "idp\idplangitalian.iss"
+#include "idp\idplang\polish.iss"
+#include "idp\idplang\russian.iss"
+#include "idp\idplang\slovak.iss"
+#include "idp\idplang\spanish.iss"
 
 [CustomMessages]
 DependenciesDir=MyProgramDependencies
 
 en.depdownload_msg=The following applications are required before setup can continue:%n%n%1%nDownload and install now?
-de.depdownload_msg=Die folgenden Programme werden benˆtigt bevor das Setup fortfahren kann:%n%n%1%nJetzt downloaden und installieren?
-fr.depdownload_msg=Pour fonctionner cette application a besoin de :%n%n%1%nTÈlÈcharger et installer maintenant?
-es.depdownload_msg=Las siguientes aplicaciones son requeridas para que el instalador pueda continurar:%n%n%1%nøDescargar e instalarlo ahora?
+de.depdownload_msg=Die folgenden Programme werden ben√∂tigt bevor das Setup fortfahren kann:%n%n%1%nJetzt downloaden und installieren?
+fr.depdownload_msg=Pour fonctionner cette application a besoin de :%n%n%1%nT√©l√©charger et installer maintenant?
+es.depdownload_msg=Las siguientes aplicaciones son requeridas para que el instalador pueda continurar:%n%n%1%n¬øDescargar e instalarlo ahora?
+it.depdownload_msg=Prima che l'installazione possa proseguire sono richieste le seguente applicazioni :%n%n%1%nVuoi scaricarle e installarle?
 
 en.depdownload_memo_title=Download dependencies
-de.depdownload_memo_title=Abh‰ngigkeiten downloaden
-fr.depdownload_memo_title=TÈlÈcharger les dÈpendences
+de.depdownload_memo_title=Abh√§ngigkeiten downloaden
+fr.depdownload_memo_title=T√©l√©charger les d√©pendences
 es.depdownload_memo_title=Desargar dependencias
+it.depdownload_memo_title=Download dipendenze
 
 en.depinstall_memo_title=Install dependencies
-de.depinstall_memo_title=Abh‰ngigkeiten installieren
-fr.depinstall_memo_title=Installer les dÈpendences
+de.depinstall_memo_title=Abh√§ngigkeiten installieren
+fr.depinstall_memo_title=Installer les d√©pendences
 es.depinstall_memo_title=Instalar dependencias
+it.depinstall_memo_title=Installa dipendenze
 
 en.depinstall_title=Installing dependencies
-de.depinstall_title=Installiere Abh‰ngigkeiten
-fr.depinstall_title=Installation des dÈpendences
-en.depinstall_title=Instalando dependenncias
+de.depinstall_title=Installiere Abh√§ngigkeiten
+fr.depinstall_title=Installation des d√©pendences
+es.depinstall_title=Instalando dependenncias
+it.depinstall_title=Installazione dipendenze
 
 en.depinstall_description=Please wait while Setup installs dependencies on your computer.
-de.depinstall_description=Warten Sie bitte w‰hrend Abh‰ngigkeiten auf Ihrem Computer installiert wird.
-fr.depinstall_description=Veuillez patientez le temps que nous installons les dÈpendences.
+de.depinstall_description=Warten Sie bitte w√§hrend Abh√§ngigkeiten auf Ihrem Computer installiert wird.
+fr.depinstall_description=Veuillez patientez le temps que nous installons les d√©pendences.
 es.depinstall_description=Por favor espera mientras el instalador configura dependencias en tu computador.
+it.depinstall_description=Attendi il completamento dell'installazione delle dipendenze.
 
 en.depinstall_status=Installing %1...
 de.depinstall_status=Installiere %1...
 fr.depinstall_status=Installe %1...
 es.depinstall_status=Instalando %1...
+it.depinstall_status=Installazione di %1...
 
 en.depinstall_missing=%1 must be installed before setup can continue. Please install %1 and run Setup again.
 de.depinstall_missing=%1 muss installiert werden bevor das Setup fortfahren kann. Bitte installieren Sie %1 und starten Sie das Setup erneut.
-fr.depinstall_missing=%1 doit Ítre installÈ pour que l'installation continue. Installez %1 et relancer l'installateur.
+fr.depinstall_missing=%1 doit √™tre install√© pour que l'installation continue. Installez %1 et relancer l'installateur.
 es.depinstall_missing=%1 debe ser instalado antes para poder continuar. Por favor, instala %1 y ejecuta Instalador otra vez.
+it.depinstall_missing=Prima che l'installazione possa continuare deve essere installato %1.%nInstalla %1 e quindi riesegui l'installazione.
 
 en.depinstall_error=An error occured while installing the dependencies. Please restart the computer and run the setup again or install the following dependencies manually:%n
-de.depinstall_error=Ein Fehler ist w‰hrend der Installation der Abgh‰ngigkeiten aufgetreten. Bitte starten Sie den Computer neu und f¸hren Sie das Setup erneut aus oder installieren Sie die folgenden Abh‰ngigkeiten per Hand:%n
-fr.depinstall_error=Nous n'avons pu installer les dÈpendences. Veuillez redÈmarrer votre ordinateur et relancer l'installation ou installer ces dÈpendences manuellement: %n
-es.depinstall_error=Un error ocurriÛ instalando las dependencias. Por favor, reinicia el computador y ejecuta el instaldor otra vez, o instala la siguientes dependencias manualmente:%n
+de.depinstall_error=Ein Fehler ist w√§hrend der Installation der Abgh√§ngigkeiten aufgetreten. Bitte starten Sie den Computer neu und f√ºhren Sie das Setup erneut aus oder installieren Sie die folgenden Abh√§ngigkeiten per Hand:%n
+fr.depinstall_error=Nous n'avons pu installer les d√©pendences. Veuillez red√©marrer votre ordinateur et relancer l'installation ou installer ces d√©pendences manuellement: %n
+es.depinstall_error=Un error ocurri√≥ instalando las dependencias. Por favor, reinicia el computador y ejecuta el instaldor otra vez, o instala la siguientes dependencias manualmente:%n
+it.depinstall_error=Si √® verificato un errore durante l'installazione delle dipendenze.%nRiavvia il computer e esegui nuovamente l'installazione o installa manualmente le seguenti dipendenze:%n
 
 
 [Code]
