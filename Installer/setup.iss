@@ -137,7 +137,7 @@ en.ViewReadmeFile=View the README file
 en.SupportTheProject=Support the project
 en.ViewChangelogFile=View the CHANGELOG file
 it.ViewReadmeFile=Visualizza file README
-it.SupportProject=Supporta il progetto
+it.SupportTheProject=Supporta il progetto
 it.ViewChangelogFile=Visualizza file CHANGELOG
 
 [UninstallRun]
