@@ -205,7 +205,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Update for SoundSwitch ({1}) is available..
+        ///   Looks up a localized string similar to Update for SoundSwitch ({0}) is available..
         /// </summary>
         internal static string versionAvailable {
             get {
