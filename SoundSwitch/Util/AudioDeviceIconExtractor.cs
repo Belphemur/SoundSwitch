@@ -39,8 +39,14 @@ namespace SoundSwitch.Util
         private static void CleanupIcon(CacheEntryRemovedArguments arg)
         {
             if (!(arg.CacheItem.Value is IDisposable item)) return;
+            try
+            {
+                item.Dispose();
+            }
+            catch (ObjectDisposedException)
+            {
 
-            item.Dispose();
+            }
         }
 
         private static string GetKey(MMDevice audioDevice, bool largeIcon)

@@ -380,63 +380,31 @@
       <DependentUpon>BannerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Localization\AboutStrings.de.resx" />
-    <EmbeddedResource Include="Localization\AboutStrings.el-GR.resx" />
     <EmbeddedResource Include="Localization\AboutStrings.es.resx" />
-    <EmbeddedResource Include="Localization\AboutStrings.fi-FI.resx" />
     <EmbeddedResource Include="Localization\AboutStrings.fr.resx" />
-    <EmbeddedResource Include="Localization\AboutStrings.it-IT.resx" />
-    <EmbeddedResource Include="Localization\AboutStrings.ja-JP.resx" />
     <EmbeddedResource Include="Localization\AboutStrings.nb.resx" />
-    <EmbeddedResource Include="Localization\AboutStrings.pl-PL.resx" />
     <EmbeddedResource Include="Localization\AboutStrings.pt-BR.resx" />
     <EmbeddedResource Include="Localization\AboutStrings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>AboutStrings.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Localization\AboutStrings.ru-RU.resx" />
-    <EmbeddedResource Include="Localization\AboutStrings.sv-SE.resx" />
-    <EmbeddedResource Include="Localization\AboutStrings.zh-CHS.resx" />
     <EmbeddedResource Include="Localization\SettingsStrings.de.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Localization\SettingsStrings.el-GR.resx" />
     <EmbeddedResource Include="Localization\SettingsStrings.es.resx" />
-    <EmbeddedResource Include="Localization\SettingsStrings.fi-FI.resx" />
-    <EmbeddedResource Include="Localization\SettingsStrings.it-IT.resx" />
-    <EmbeddedResource Include="Localization\SettingsStrings.ja-JP.resx" />
     <EmbeddedResource Include="Localization\SettingsStrings.nb.resx" />
-    <EmbeddedResource Include="Localization\SettingsStrings.pl-PL.resx" />
     <EmbeddedResource Include="Localization\SettingsStrings.pt-BR.resx" />
-    <EmbeddedResource Include="Localization\SettingsStrings.ru-RU.resx" />
-    <EmbeddedResource Include="Localization\SettingsStrings.sv-SE.resx" />
-    <EmbeddedResource Include="Localization\SettingsStrings.zh-CHS.resx" />
     <EmbeddedResource Include="Localization\TrayIconStrings.de.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Localization\TrayIconStrings.el-GR.resx" />
     <EmbeddedResource Include="Localization\TrayIconStrings.es.resx" />
-    <EmbeddedResource Include="Localization\TrayIconStrings.fi-FI.resx" />
-    <EmbeddedResource Include="Localization\TrayIconStrings.it-IT.resx" />
-    <EmbeddedResource Include="Localization\TrayIconStrings.ja-JP.resx" />
     <EmbeddedResource Include="Localization\TrayIconStrings.nb.resx" />
-    <EmbeddedResource Include="Localization\TrayIconStrings.pl-PL.resx" />
     <EmbeddedResource Include="Localization\TrayIconStrings.pt-BR.resx" />
-    <EmbeddedResource Include="Localization\TrayIconStrings.ru-RU.resx" />
-    <EmbeddedResource Include="Localization\TrayIconStrings.sv-SE.resx" />
-    <EmbeddedResource Include="Localization\TrayIconStrings.zh-CHS.resx" />
     <EmbeddedResource Include="Localization\UpdateDownloadStrings.de.resx" />
-    <EmbeddedResource Include="Localization\UpdateDownloadStrings.el-GR.resx" />
     <EmbeddedResource Include="Localization\UpdateDownloadStrings.es.resx" />
-    <EmbeddedResource Include="Localization\UpdateDownloadStrings.fi-FI.resx" />
-    <EmbeddedResource Include="Localization\UpdateDownloadStrings.it-IT.resx" />
-    <EmbeddedResource Include="Localization\UpdateDownloadStrings.ja-JP.resx" />
     <EmbeddedResource Include="Localization\UpdateDownloadStrings.nb.resx" />
-    <EmbeddedResource Include="Localization\UpdateDownloadStrings.pl-PL.resx" />
     <EmbeddedResource Include="Localization\UpdateDownloadStrings.pt-BR.resx" />
-    <EmbeddedResource Include="Localization\UpdateDownloadStrings.ru-RU.resx" />
-    <EmbeddedResource Include="Localization\UpdateDownloadStrings.sv-SE.resx" />
-    <EmbeddedResource Include="Localization\UpdateDownloadStrings.zh-CHS.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -513,7 +481,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\delete.png" />
     <None Include="packages.config" />
     <None Include="Resources\donate-16.png" />
     <None Include="Resources\donate.ico" />
