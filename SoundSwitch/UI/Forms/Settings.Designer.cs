@@ -1,4 +1,6 @@
-﻿namespace SoundSwitch.UI.Forms
+﻿using System;
+
+namespace SoundSwitch.UI.Forms
 {
     sealed partial class SettingsForm
     {

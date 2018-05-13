@@ -14,6 +14,7 @@
 
 using System.Collections.Generic;
 using NAudio.CoreAudioApi;
+using SoundSwitch.Framework.Audio.Device;
 
 namespace SoundSwitch.Model
 {
@@ -23,12 +24,12 @@ namespace SoundSwitch.Model
         ///     Get the playback device in the set state
         /// </summary>
         /// <returns></returns>
-        MMDeviceCollection GetPlaybackDevices();
+        DisposableMMDeviceCollection GetPlaybackDevices();
 
         /// <summary>
         ///     Get the recording device in the set state
         /// </summary>
         /// <returns></returns>
-        MMDeviceCollection GetRecordingDevices();
+        DisposableMMDeviceCollection GetRecordingDevices();
     }
 }

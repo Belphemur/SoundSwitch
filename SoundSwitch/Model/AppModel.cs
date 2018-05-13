@@ -107,13 +107,16 @@ namespace SoundSwitch.Model
         {
             get
             {
-                return
-                   ActiveAudioDeviceLister.GetPlaybackDevices()
-                    .Join(SelectedPlaybackDevicesList,
-                    a => a.ID,
-                    selected => selected,
-                    (a, selected) => a)
-                    .ToList();
+                using (var devices = ActiveAudioDeviceLister.GetPlaybackDevices())
+                {
+                    return
+                        devices
+                        .Join(SelectedPlaybackDevicesList,
+                            a => a.ID,
+                            selected => selected,
+                            (a, selected) => a)
+                        .ToList();
+                }
             }
         }
 
@@ -123,12 +126,15 @@ namespace SoundSwitch.Model
         {
             get
             {
-                return ActiveAudioDeviceLister.GetRecordingDevices()
-                  .Join(SelectedRecordingDevicesList,
-                  a => a.ID,
-                  selected => selected,
-                  (a, selected) => a)
-                  .ToList();
+                using (var devices = ActiveAudioDeviceLister.GetRecordingDevices())
+                {
+                    return devices
+                        .Join(SelectedRecordingDevicesList,
+                            a => a.ID,
+                            selected => selected,
+                            (a, selected) => a)
+                        .ToList();
+                }
             }
         }
 

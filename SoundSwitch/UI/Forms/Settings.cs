@@ -23,6 +23,7 @@ using AudioDefaultSwitcherWrapper;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
+using SoundSwitch.Framework.Audio.Device;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
@@ -38,7 +39,7 @@ namespace SoundSwitch.UI.Forms
 {
     public sealed partial class SettingsForm : Form
     {
-        private static readonly Icon settingsIcon = Resources.SettingsIcon;
+        private static readonly Icon RessourceSettingsIcon = Resources.SettingsIcon;
 
         private readonly bool _loaded;
 
@@ -46,7 +47,7 @@ namespace SoundSwitch.UI.Forms
         {
             // Form itself
             InitializeComponent();
-            Icon = settingsIcon;
+            Icon = RessourceSettingsIcon;
             Text = AssemblyUtils.GetReleaseState() == AssemblyUtils.ReleaseState.Beta ?
                    $"{SettingsStrings.settings} {AssemblyUtils.GetReleaseState()}" :
                    SettingsStrings.settings;
@@ -190,6 +191,7 @@ namespace SoundSwitch.UI.Forms
             hotkeysLabel.Text = SettingsStrings.hotkeys;
             closeButton.Text = SettingsStrings.close;
         }
+
 
         private void SelectSoundFileDialogOnFileOk(object sender, CancelEventArgs cancelEventArgs)
         {
@@ -416,41 +418,47 @@ namespace SoundSwitch.UI.Forms
         #region Device List Playback
 
         private void PopulateAudioList(ListView listView, ICollection<string> selectedDevices,
-            IEnumerable<MMDevice> audioDevices)
+            DisposableMMDeviceCollection audioDevices)
         {
-            try
+            using (audioDevices)
             {
-                PopulateDeviceTypeGroups(listView);
+                try
+                {
+                    PopulateDeviceTypeGroups(listView);
 
-                var audioDeviceWrappers = audioDevices
-                    .Where(device => 
+                    var audioDeviceWrappers = audioDevices
+                        .Where(device =>
+                        {
+                            try
+                            {
+                                return !string.IsNullOrEmpty(device.FriendlyName);
+                            }
+                            catch (Exception)
+                            {
+                                return false;
+                            }
+                        })
+                        .OrderBy(s => s.FriendlyName);
+                    listView.SmallImageList = new ImageList
                     {
-                        try {                            
-                            return !string.IsNullOrEmpty(device.FriendlyName);
-                        } catch(Exception) {
-                            return false;
-                        }
-                    })
-                    .OrderBy(s => s.FriendlyName);
-                listView.SmallImageList = new ImageList
-                {
-                    ImageSize = new Size(32, 32),
-                    ColorDepth = ColorDepth.Depth32Bit
-                };
+                        ImageSize = new Size(32, 32),
+                        ColorDepth = ColorDepth.Depth32Bit
+                    };
 
-                listView.Columns.Add("Device", -3, HorizontalAlignment.Center);
-                foreach (var device in audioDeviceWrappers)
-                {
-                    AddDeviceIconSmallImage(device, listView);
+                    listView.Columns.Add("Device", -3, HorizontalAlignment.Center);
+                    foreach (var device in audioDeviceWrappers)
+                    {
+                        AddDeviceIconSmallImage(device, listView);
 
-                    var listViewItem = GenerateListViewItem(device, selectedDevices, listView);
+                        var listViewItem = GenerateListViewItem(device, selectedDevices, listView);
 
-                    listView.Items.Add(listViewItem);
+                        listView.Items.Add(listViewItem);
+                    }
                 }
-            }
-            finally
-            {
-                listView.ItemCheck += ListViewItemChecked;
+                finally
+                {
+                    listView.ItemCheck += ListViewItemChecked;
+                }
             }
         }
 

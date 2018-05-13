@@ -268,6 +268,7 @@ namespace SoundSwitch.Framework
             var modifier = (HotKeys.ModifierKeys)(ConvertLParam(m.LParam) & 0xFFFF);
 
             HotKeyPressed?.Invoke(this, new KeyPressedEventArgs(new HotKeys(key, modifier)));
+            GC.Collect();
         }
 
         #region WindowsNativeMethods

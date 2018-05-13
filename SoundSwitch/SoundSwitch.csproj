@@ -253,6 +253,7 @@
     <Compile Include="Framework\Audio\CachedSound.cs" />
     <Compile Include="Framework\Audio\CachedSoundFileNotExistsException.cs" />
     <Compile Include="Framework\Audio\CachedSoundWaveStream.cs" />
+    <Compile Include="Framework\Audio\Device\DisposableMMDeviceCollection.cs" />
     <Compile Include="Framework\AutoStart.cs" />
     <Compile Include="Framework\Banner\BannerData.cs" />
     <Compile Include="Framework\Banner\BannerManager.cs" />

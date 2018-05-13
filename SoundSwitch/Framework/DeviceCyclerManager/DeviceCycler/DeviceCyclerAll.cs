@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AudioDefaultSwitcherWrapper;
 using NAudio.CoreAudioApi;
+using SoundSwitch.Framework.Audio.Device;
 using SoundSwitch.Model;
 using SoundSwitch.Localization;
 
@@ -33,7 +34,7 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         /// <param name="type"></param>
         public override bool CycleAudioDevice(DeviceType type)
         {
-            MMDeviceCollection audioDevices;
+            DisposableMMDeviceCollection audioDevices;
             switch (type)
             {
                 case DeviceType.Playback:
@@ -53,8 +54,10 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
                 case 1:
                     return false;
             }
-
-            return SetActiveDevice(GetNextDevice(audioDevices.ToList(), type));
+            using (audioDevices)
+            {
+                return SetActiveDevice(GetNextDevice(audioDevices.ToList(), type));
+            }
         }
     }
 }

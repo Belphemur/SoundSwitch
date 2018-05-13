@@ -123,7 +123,7 @@ namespace SoundSwitch.Util
             _updateMenuItem.Dispose();
         }
 
-        private void ReplaceIcon(Icon newIcon, bool dispose = true)
+        private void ReplaceIcon(Icon newIcon, bool dispose = false)
         {
             var oldIcon = NotifyIcon.Icon;
             NotifyIcon.Icon = newIcon;
@@ -144,7 +144,7 @@ namespace SoundSwitch.Util
         {
             if (AppConfigs.Configuration.KeepSystrayIcon)
             {
-                ReplaceIcon(Icon.FromHandle(RessourceSoundSwitch16Bitmap.GetHicon()), false);
+                ReplaceIcon(Icon.FromHandle(RessourceSoundSwitch16Bitmap.GetHicon()));
                 return;
             }
 
@@ -152,7 +152,7 @@ namespace SoundSwitch.Util
             {
                 var defaultDevice = AppModel.Instance.ActiveAudioDeviceLister.GetPlaybackDevices()
                     .First(device => AudioController.IsDefault(device.ID, (DeviceType)device.DataFlow, DeviceRole.Console));
-                ReplaceIcon(AudioDeviceIconExtractor.ExtractIconFromAudioDevice(defaultDevice, false), false);
+                ReplaceIcon(AudioDeviceIconExtractor.ExtractIconFromAudioDevice(defaultDevice, false));
             }
             catch (InvalidOperationException)
             {
@@ -258,7 +258,7 @@ namespace SoundSwitch.Util
                 {
                     ReplaceIcon(tick == 0
                         ? Icon.FromHandle(RessourceSoundSwitch16Bitmap.GetHicon())
-                        : (Icon)RessourceUpdateIconBitmap.Clone());
+                        : (Icon)RessourceUpdateIconBitmap.Clone(), true);
                     tick = ++tick % 2;
                 };
             }

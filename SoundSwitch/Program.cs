@@ -51,8 +51,16 @@ namespace SoundSwitch
             InitializeLogger();
             Log.Information("Application Starts");
             var audioDeviceLister = new AudioDeviceLister(DeviceState.Active);
-            Log.Information("Devices Recording {device}", audioDeviceLister.GetRecordingDevices());
-            Log.Information("Devices Playback {device}", audioDeviceLister.GetPlaybackDevices());
+
+            using (var recordingDevices = audioDeviceLister.GetRecordingDevices())
+            {
+                Log.Information("Devices Recording {device}", recordingDevices);
+            }
+           
+            using (var playbackDevices = audioDeviceLister.GetPlaybackDevices())
+            {
+                Log.Information("Devices Playback {device}", playbackDevices);
+            }
 #if !DEBUG
                 AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
                 {
