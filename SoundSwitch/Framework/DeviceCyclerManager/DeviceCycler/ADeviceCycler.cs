@@ -75,7 +75,7 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         public bool SetActiveDevice(MMDevice device)
         {
 
-            Log.Information("Set Default device: {@Device}", device);
+            Log.Information("Set Default device: {Device}", device);
             if (!AppModel.Instance.SetCommunications)
             {
                 AudioController.SwitchTo(device.ID, DeviceRole.Console);
@@ -83,7 +83,7 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
             }
             else
             {
-                Log.Information("Set Default Communication device: {@Device}", device);
+                Log.Information("Set Default Communication device: {Device}", device);
                 AudioController.SwitchTo(device.ID, DeviceRole.All);
             }
             _lastDevices[(DeviceType)device.DataFlow] = device.ID;

@@ -46,7 +46,7 @@ namespace SoundSwitch.Framework.Updater
                 var file = new WebFile(new Uri(release.Asset.browser_download_url), InstallerFilePath);
                 file.Downloaded += (sender, args) =>
                 {
-                    Log.Information("Update downloaded: {@File}", file);
+                    Log.Information("Update downloaded: {File}", file);
                     if (!SignatureChecker.IsValid(file.FilePath))
                     {
                         Log.Error("The file has the wrong signature. Update cancelled.");

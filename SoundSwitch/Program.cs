@@ -105,7 +105,7 @@ namespace SoundSwitch
                 WindowsAPIAdapter.RestartManagerTriggered += (sender, @event) =>
                 {
                     
-                        Log.Debug("Restart Event received: {@Event}", @event);
+                        Log.Debug("Restart Event received: {Event}", @event);
                         switch (@event.Type)
                         {
                             case WindowsAPIAdapter.RestartManagerEventType.Query:
