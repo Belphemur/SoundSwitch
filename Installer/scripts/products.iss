@@ -7,7 +7,7 @@
 #include "idp\idplang\german.iss"
 #include "idp\idplang\french.iss"
 #include "idp\idplang\hungarian.iss"
-#include "idp\idplangitalian.iss"
+#include "idp\idplang\italian.iss"
 #include "idp\idplang\polish.iss"
 #include "idp\idplang\russian.iss"
 #include "idp\idplang\slovak.iss"
