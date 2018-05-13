@@ -163,7 +163,7 @@
 		<value>Quando marcado, SoundSwitch irá buscar por versões preliminares no GitHub.</value>
 	</data>
 	<data name="audioFiles" xml:space="preserve">
-		<value>Arquivos de Aúdio</value>
+		<value>Arquivos de Áudio</value>
 	</data>
 	<data name="selectSoundButtonTooltip" xml:space="preserve">
 		<value>Seleciona um arquivo de som para a notificação.</value>
@@ -175,7 +175,7 @@
 		<value>Configurações Básicas</value>
 	</data>
 	<data name="audioSettings" xml:space="preserve">
-		<value>Configurações de Aúdio</value>
+		<value>Configurações de Áudio</value>
 	</data>
 	<data name="updateSettings" xml:space="preserve">
 		<value>Configurações de Atualização</value>
@@ -184,7 +184,7 @@
 		<value>Trocar entre</value>
 	</data>
 	<data name="keepSystemTrayIcon" xml:space="preserve">
-		<value>Manter o ícone do SoundSwitch na barra do sistema.</value>
+		<value>Manter o ícone do SoundSwitch na barra do sistema</value>
 	</data>
 	<data name="keepSystemTrayIconTooltip" xml:space="preserve">
 		<value>Quando marcado, o Ícone do Systema não irá ser trocado quando o 'Dispositivo de Reprodução Padrão' for trocado.</value>
@@ -205,10 +205,10 @@
 		<value>Barra flutuante</value>
 	</data>
 	<data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
-		<value>Todos os dispositivos de aúdio</value>
+		<value>Todos os dispositivos de áudio</value>
 	</data>
 	<data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
-		<value>Apenas os dispositivos de aúdio selecionados</value>
+		<value>Apenas os dispositivos de áudio selecionados</value>
 	</data>
 	<data name="cycleThroughTooltip" xml:space="preserve">
 		<value>Selecione quais dispositivos trocar. Apenas entre o selecionado ou entre todos.</value>
@@ -248,10 +248,10 @@ Banner: Usa uma moldura 'sempre no topo'; útil para uso em jogos.</value>
 		<value>Sem dicas contextuais</value>
 	</data>
 	<data name="audioFileNotFound" xml:space="preserve">
-		<value>O arquivo de aúdio escolhido para ser usado como notificação não pôde ser encontrado. SoundSwitch revertirá a configuração de notificação para {0}.</value>
+		<value>O arquivo de áudio escolhido para ser usado como notificação não pôde ser encontrado. SoundSwitch revertirá a configuração de notificação para {0}.</value>
 	</data>
 	<data name="audioFileNotFoundCaption" xml:space="preserve">
-		<value>Arquivo de aúdio não encontrado</value>
+		<value>Arquivo de áudio não encontrado</value>
 	</data>
 	<data name="activeRecording" xml:space="preserve">
 		<value>Gravar: {0}</value>
