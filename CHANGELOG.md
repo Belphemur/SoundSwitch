@@ -1,5 +1,24 @@
 # Change Log
 
+## [v4.6](https://github.com/Belphemur/SoundSwitch/tree/v4.6) (2018-05-13)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.5...v4.6)
+
+**Fixed bugs:**
+
+- App randomly crashes, every 2 hours or so, with latest 4.5 update.  [\#268](https://github.com/Belphemur/SoundSwitch/issues/268)
+- Double Click to switch output device crashes app [\#267](https://github.com/Belphemur/SoundSwitch/issues/267)
+
+**Closed issues:**
+
+- With default communications checked, it would not switch properly [\#256](https://github.com/Belphemur/SoundSwitch/issues/256)
+
+**Merged pull requests:**
+
+- Update SettingsStrings.pt-BR.resx [\#266](https://github.com/Belphemur/SoundSwitch/pull/266) ([opus-2](https://github.com/opus-2))
+- Update italian.iss [\#265](https://github.com/Belphemur/SoundSwitch/pull/265) ([bovirus](https://github.com/bovirus))
+- Several updates [\#264](https://github.com/Belphemur/SoundSwitch/pull/264) ([bovirus](https://github.com/bovirus))
+- Update Italian strings [\#263](https://github.com/Belphemur/SoundSwitch/pull/263) ([bovirus](https://github.com/bovirus))
+
 ## [v4.5](https://github.com/Belphemur/SoundSwitch/tree/v4.5) (2018-05-12)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.4...v4.5)
 

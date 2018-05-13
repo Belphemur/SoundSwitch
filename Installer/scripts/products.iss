@@ -1,16 +1,7 @@
 #include "idp\idp.iss"
-#include "idp\idplang\belarusian.iss"
-#include "idp\idplang\brazilianPortuguese.iss"
-#include "idp\idplang\ChineseSimplified.iss"
-#include "idp\idplang\czech.iss"
-#include "idp\idplang\finnish.iss"
 #include "idp\idplang\german.iss"
 #include "idp\idplang\french.iss"
-#include "idp\idplang\hungarian.iss"
 #include "idp\idplang\italian.iss"
-#include "idp\idplang\polish.iss"
-#include "idp\idplang\russian.iss"
-#include "idp\idplang\slovak.iss"
 #include "idp\idplang\spanish.iss"
 
 [CustomMessages]
