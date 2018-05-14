@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <root>
 	<!-- 
     Microsoft ResX Schema 
@@ -60,45 +60,45 @@
             : and then encoded with base64 encoding.
     -->
 	<xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+		<xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
 		<xsd:element name="root" msdata:IsDataSet="true">
 			<xsd:complexType>
 				<xsd:choice maxOccurs="unbounded">
 					<xsd:element name="metadata">
 						<xsd:complexType>
 							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" />
+								<xsd:element name="value" type="xsd:string" minOccurs="0"/>
 							</xsd:sequence>
-							<xsd:attribute name="name" use="required" type="xsd:string" />
-							<xsd:attribute name="type" type="xsd:string" />
-							<xsd:attribute name="mimetype" type="xsd:string" />
-							<xsd:attribute ref="xml:space" />
+							<xsd:attribute name="name" use="required" type="xsd:string"/>
+							<xsd:attribute name="type" type="xsd:string"/>
+							<xsd:attribute name="mimetype" type="xsd:string"/>
+							<xsd:attribute ref="xml:space"/>
 						</xsd:complexType>
 					</xsd:element>
 					<xsd:element name="assembly">
 						<xsd:complexType>
-							<xsd:attribute name="alias" type="xsd:string" />
-							<xsd:attribute name="name" type="xsd:string" />
+							<xsd:attribute name="alias" type="xsd:string"/>
+							<xsd:attribute name="name" type="xsd:string"/>
 						</xsd:complexType>
 					</xsd:element>
 					<xsd:element name="data">
 						<xsd:complexType>
 							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
 							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-							<xsd:attribute ref="xml:space" />
+							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+							<xsd:attribute ref="xml:space"/>
 						</xsd:complexType>
 					</xsd:element>
 					<xsd:element name="resheader">
 						<xsd:complexType>
 							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
 							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
+							<xsd:attribute name="name" type="xsd:string" use="required"/>
 						</xsd:complexType>
 					</xsd:element>
 				</xsd:choice>
@@ -121,10 +121,10 @@
     <value>Selezionato</value>
   </data>
 	<data name="connected" xml:space="preserve">
-    <value>Connesso</value>
+    <value>Connessi</value>
   </data>
 	<data name="disconnected" xml:space="preserve">
-    <value>Disconnesso</value>
+    <value>Disconnessi</value>
   </data>
 	<data name="recording" xml:space="preserve">
     <value>Registrazione</value>
@@ -157,7 +157,7 @@
     <value>Notifiche</value>
   </data>
 	<data name="updateIncludeBetaVersions" xml:space="preserve">
-    <value>Includi versioni beta</value>
+    <value>Includi controllo versioni beta</value>
   </data>
 	<data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
     <value>Quando selezionato, SoundSwitch controllerà anche la presenza di versioni beta su Github.</value>
@@ -181,13 +181,13 @@
     <value>Impostazioni aggiornamento</value>
   </data>
 	<data name="cycleThrough" xml:space="preserve">
-    <value>Cambia tra i dispositivi</value>
+    <value>Cambia tra i</value>
   </data>
 	<data name="keepSystemTrayIcon" xml:space="preserve">
     <value>Mantieni icona di sistema SoundSwitch</value>
   </data>
 	<data name="keepSystemTrayIconTooltip" xml:space="preserve">
-    <value>Quando spuntato, l'icona di sistema non si modificherà quando viene cambiato il 'Dispositivo di riproduzione predefinito'.</value>
+    <value>Se selezionato, quando viene cambiato il 'Dispositivo di riproduzione predefinito' l'icona di sistema non verrà modificata.</value>
   </data>
 	<data name="updateInstallAutomatically" xml:space="preserve">
     <value>Installa automaticamente aggiornamenti</value>
@@ -257,7 +257,7 @@ Banner: usa uno speciale riquadro sempre in primo piano, utile per l'uso durante
     <value>Reg: {0}</value>
   </data>
 	<data name="activePlayback" xml:space="preserve">
-    <value>Ripr.: {0}</value>
+    <value>Riproduttore: {0}</value>
   </data>
 	<data name="language" xml:space="preserve">
     <value>Lingua</value>
@@ -273,7 +273,8 @@ Vuoi riavviare SoundSwitch ora?</value>
     <value>Non verrà aggiornato il programma a meno di farlo manualmente.</value>
   </data>
 	<data name="updateNotifyTooltip" xml:space="preserve">
-    <value>SoundSwitch notificherà quando è disponibile un aggiornamento. Facendo clic sulla notifica, apparirà una finestra che scaricherà l'aggiornamento e chiederà se si vuole installarlo.</value>
+    <value>SoundSwitch notificherà quando è disponibile un aggiornamento. 
+Facendo clic sulla notifica, apparirà una finestra che scaricherà l'aggiornamento e chiederà se si vuole installarlo.</value>
   </data>
 	<data name="notificationOptionBanner" xml:space="preserve">
     <value>Banner</value>
