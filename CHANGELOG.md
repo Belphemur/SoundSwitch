@@ -6,9 +6,11 @@
 **Fixed bugs:**
 
 - Crashing when mouse over tray icon [\#272](https://github.com/Belphemur/SoundSwitch/issues/272)
+- Readme missing screenshot [\#271](https://github.com/Belphemur/SoundSwitch/issues/271)
 
 **Closed issues:**
 
+- Sound Switch keeps closing [\#270](https://github.com/Belphemur/SoundSwitch/issues/270)
 - SoundSwitch isn't working with chrome sometimes [\#269](https://github.com/Belphemur/SoundSwitch/issues/269)
 
 ## [v4.6](https://github.com/Belphemur/SoundSwitch/tree/v4.6) (2018-05-13)
