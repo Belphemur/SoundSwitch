@@ -59,6 +59,7 @@ Name: "de"; MessagesFile: "compiler:Languages\German.isl"
 Name: "fr"; MessagesFile: "compiler:Languages\French.isl"
 Name: "es"; MessagesFile: "compiler:Languages\Spanish.isl"
 Name: "it"; MessagesFile: "compiler:Languages\Italian.isl"
+Name: "pt_br"; MessagesFile: "compiler:Languages\brazilianPortuguese.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
@@ -118,27 +119,34 @@ fr.AddCertDescription=Installer les certificats de {#MyAppSetupName}%nSi sélect
 de.AddCertDescription={#MyAppSetupName} Zertifikaten vertrauen%nDadurch erhalten Sie keine Warnungen mehr, wenn sich {#MyAppSetupName} aktualisiert.
 es.AddCertDescription=Confiar en los certificados de {#MyAppSetupName}%nDe esta forma no tendrá advertencias cada vez que {#MyAppSetupName} se actualice.
 it.AddCertDescription=Accetta i certificati di {#MyAppSetupName}%nIn questo modo non vedrai degli avvisi quando aggiornerai {#MyAppSetupName}.
+pt_br.AddCertDescription=Instalar certificados do {#MyAppSetupName}%nDeste modo, você não receberá avisos quando {#MyAppSetupName} for atualizado.
 en.ExistingSettings=Remove any existing settings
 fr.ExistingSettings=Supprimer les paramètres existants
 de.ExistingSettings=Alle vorhandenen Einstellungen löschen
 es.ExistingSettings=Elimiar cualquier configuración existente
 it.ExistingSettings=Rimuovi impostazioni esistenti
+pt_br.ExistingSettings=Eliminar qualquer configuração existente
 en.UninstallQuestion=Do you want to remove {#MyAppSetupName}'s settings?
 fr.UninstallQuestion=Voulez-vous aussi supprimer les paramètres de {#MyAppSetupName} ?
 de.UninstallQuestion=Sollen deine {#MyAppSetupName} Einstellungen gelöscht werden?
 es.UninstallQuestion=¿Quieres eliminar la configuración de {#MyAppSetupName}?
 it.UninstallQuestion=Vuoi rimuovere le impostazioni di {#MyAppSetupName}?
+pt_br.UninstallQuestion=Remover configurações do {#MyAppSetupName}?
 en.CertificatesGroup=Certificates:
 fr.CertificatesGroup=Certificats:
 de.CertificatesGroup=Zertifikate:
 es.CertificatesGroup=Certificados:
 it.CertificatesGroup=Certificati:
+pt_br.CertificatesGroup=Certificados:
 en.ViewReadmeFile=View the README file
 en.SupportTheProject=Support the project
 en.ViewChangelogFile=View the CHANGELOG file
 it.ViewReadmeFile=Visualizza file README
 it.SupportTheProject=Supporta il progetto
 it.ViewChangelogFile=Visualizza file CHANGELOG
+pt_br.ViewReadmeFile=Visualizar arquivo README
+pt_br.SupportTheProject=Apoiar o projeto
+pt_br.ViewChangelogFile=Visualizar o CHANGELOG
 
 [UninstallRun]
 Filename: "certutil.exe"; Parameters: "-delstore ""Root"" ""eb db 8a 0a 72 a6 02 91 40 74 9e a2 af 63 d2 fc""" ; Flags: runhidden runascurrentuser
