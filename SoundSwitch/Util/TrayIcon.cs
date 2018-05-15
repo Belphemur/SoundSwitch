@@ -123,21 +123,19 @@ namespace SoundSwitch.Util
             _updateMenuItem.Dispose();
         }
 
-        private void ReplaceIcon(Icon newIcon, bool dispose = false)
+        private void ReplaceIcon(Icon newIcon)
         {
             var oldIcon = NotifyIcon.Icon;
-            NotifyIcon.Icon = newIcon;
-            if (dispose)
+            NotifyIcon.Icon = (Icon)newIcon.Clone();
+            try
             {
-                try
-                {
-                    oldIcon?.Dispose();
-                }
-                catch (ObjectDisposedException)
-                {
-
-                }
+                oldIcon?.Dispose();
             }
+            catch (ObjectDisposedException)
+            {
+
+            }
+
         }
 
         public void UpdateIcon()
@@ -150,9 +148,13 @@ namespace SoundSwitch.Util
 
             try
             {
-                var defaultDevice = AppModel.Instance.ActiveAudioDeviceLister.GetPlaybackDevices()
-                    .First(device => AudioController.IsDefault(device.ID, (DeviceType)device.DataFlow, DeviceRole.Console));
-                ReplaceIcon(AudioDeviceIconExtractor.ExtractIconFromAudioDevice(defaultDevice, false));
+                using (var devices = AppModel.Instance.ActiveAudioDeviceLister.GetPlaybackDevices())
+                {
+                    var defaultDevice = devices
+                        .First(device =>
+                        AudioController.IsDefault(device.ID, (DeviceType) device.DataFlow, DeviceRole.Console));
+                    ReplaceIcon(AudioDeviceIconExtractor.ExtractIconFromAudioDevice(defaultDevice, false));
+                }
             }
             catch (InvalidOperationException)
             {
@@ -258,7 +260,7 @@ namespace SoundSwitch.Util
                 {
                     ReplaceIcon(tick == 0
                         ? Icon.FromHandle(RessourceSoundSwitch16Bitmap.GetHicon())
-                        : (Icon)RessourceUpdateIconBitmap.Clone(), true);
+                        : RessourceUpdateIconBitmap);
                     tick = ++tick % 2;
                 };
             }

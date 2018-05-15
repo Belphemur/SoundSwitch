@@ -31,7 +31,7 @@ namespace SoundSwitch.Framework.TooltipInfoManager
                 BindingFlags hidden = BindingFlags.NonPublic | BindingFlags.Instance;
                 t.GetField("text", hidden).SetValue(ni, text);
                 if ((bool)t.GetField("added", hidden).GetValue(ni))
-                    t.GetMethod("UpdateIcon", hidden).Invoke(ni, new object[] { true });
+                  t.GetMethod("UpdateIcon", hidden).Invoke(ni, new object[] { true });
             }
         }
 

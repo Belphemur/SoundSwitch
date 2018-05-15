@@ -33,7 +33,7 @@ namespace SoundSwitch.Util
         private static readonly CacheItemPolicy CacheItemPolicy = new CacheItemPolicy
         {
             RemovedCallback = CleanupIcon,
-            SlidingExpiration = TimeSpan.FromMinutes(5)
+            SlidingExpiration = TimeSpan.FromMinutes(30)
         };
 
         private static void CleanupIcon(CacheEntryRemovedArguments arg)
