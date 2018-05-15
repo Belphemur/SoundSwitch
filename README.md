@@ -4,7 +4,7 @@
 **No more** navigating througth several menus and screens. Just configure SoundSwitch **once** - and you are able to switch between your devices as fast as never before!
 
 ## Preview image
-![preview](img/preview.gif)
+![preview](https://soundswitch.aaflalo.me/img/preview.gif)
 
 ## Dependencies
 The following components are required to run SoundSwitch on your Windows device:
