@@ -1,5 +1,16 @@
 # Change Log
 
+## [v4.7](https://github.com/Belphemur/SoundSwitch/tree/v4.7) (2018-05-15)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.6...v4.7)
+
+**Fixed bugs:**
+
+- Crashing when mouse over tray icon [\#272](https://github.com/Belphemur/SoundSwitch/issues/272)
+
+**Closed issues:**
+
+- SoundSwitch isn't working with chrome sometimes [\#269](https://github.com/Belphemur/SoundSwitch/issues/269)
+
 ## [v4.6](https://github.com/Belphemur/SoundSwitch/tree/v4.6) (2018-05-13)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.5...v4.6)
 
