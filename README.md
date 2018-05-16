@@ -1,3 +1,5 @@
+![SoundSwitch](https://i.imgur.com/52Osx3r.png)
+
 # SoundSwitch [![Last Release](https://img.shields.io/github/release/Belphemur/SoundSwitch.svg)](https://soundswitch.aaflalo.me) [![Downloads for last Release](https://img.shields.io/github/downloads/Belphemur/SoundSwitch/total.svg)](https://soundswitch.aaflalo.me/) [![Donate](https://img.shields.io/badge/Donate-paypal%2Fcc-blue.svg)](https://soundswitch.aaflalo.me) [![Translate](https://hosted.weblate.org/widgets/soundswitch/-/svg-badge.svg)](https://hosted.weblate.org/projects/soundswitch/)
 **SoundSwitch** offers you the opportunity to switch your playback devices and/or recording devices using simple hotkeys.
 
