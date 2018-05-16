@@ -93,6 +93,7 @@ Would you like to help us with the localization? Great! See [Add or modify anoth
 - Notification Sound, [Music box notification sound by Robinhood76](https://www.freesound.org/people/Robinhood76/sounds/216676/).
 - Spanish Language [#244](https://github.com/Belphemur/SoundSwitch/pull/244) [@plextoriano](https://github.com/plextoriano)
 - Portuguese (Brazilian) [#258](https://github.com/Belphemur/SoundSwitch/pull/258) [@aleczk](https://github.com/aleczk)
+- Awesome Logo  [#278](https://github.com/Belphemur/SoundSwitch/pull/278) [@linadesteem](https://github.com/linadesteem)
 
 ## Thanks
 
