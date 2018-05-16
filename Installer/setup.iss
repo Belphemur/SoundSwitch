@@ -59,6 +59,7 @@ Name: "de"; MessagesFile: "compiler:Languages\German.isl"
 Name: "fr"; MessagesFile: "compiler:Languages\French.isl"
 Name: "es"; MessagesFile: "compiler:Languages\Spanish.isl"
 Name: "it"; MessagesFile: "compiler:Languages\Italian.isl"
+Name: "pt_br"; MessagesFile: "compiler:Languages\brazilianPortuguese.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
@@ -113,32 +114,46 @@ Filename: "certutil.exe"; Parameters: "-addstore ""TrustedPublisher"" ""{app}\ce
 
 [CustomMessages]
 win_sp_title=Windows %1 Service Pack %2
+
 en.AddCertDescription=Trust {#MyAppSetupName} Certficates%nThis way you won't have warnings when {#MyAppSetupName} is updating.
 fr.AddCertDescription=Installer les certificats de {#MyAppSetupName}%nSi sélectionné, Windows reconnaîtra {#MyAppSetupName} comme étant un distributeur valide.
 de.AddCertDescription={#MyAppSetupName} Zertifikaten vertrauen%nDadurch erhalten Sie keine Warnungen mehr, wenn sich {#MyAppSetupName} aktualisiert.
 es.AddCertDescription=Confiar en los certificados de {#MyAppSetupName}%nDe esta forma no tendrá advertencias cada vez que {#MyAppSetupName} se actualice.
 it.AddCertDescription=Accetta i certificati di {#MyAppSetupName}%nIn questo modo non vedrai degli avvisi quando aggiornerai {#MyAppSetupName}.
+pt_br.AddCertDescription=Confiar nos certificados do {#MyAppSetupName}%nDeste modo não receberá alerta quando o {#MyAppSetupName} atualizar.
+
 en.ExistingSettings=Remove any existing settings
 fr.ExistingSettings=Supprimer les paramètres existants
 de.ExistingSettings=Alle vorhandenen Einstellungen löschen
 es.ExistingSettings=Elimiar cualquier configuración existente
 it.ExistingSettings=Rimuovi impostazioni esistenti
+pt_br.ExistingSettings=Remover configurações já existentes
+
 en.UninstallQuestion=Do you want to remove {#MyAppSetupName}'s settings?
 fr.UninstallQuestion=Voulez-vous aussi supprimer les paramètres de {#MyAppSetupName} ?
 de.UninstallQuestion=Sollen deine {#MyAppSetupName} Einstellungen gelöscht werden?
 es.UninstallQuestion=¿Quieres eliminar la configuración de {#MyAppSetupName}?
 it.UninstallQuestion=Vuoi rimuovere le impostazioni di {#MyAppSetupName}?
+pt_br.UninstallQuestion=Deseja remover as configurações do {#MyAppSetupName}?
+
 en.CertificatesGroup=Certificates:
 fr.CertificatesGroup=Certificats:
 de.CertificatesGroup=Zertifikate:
 es.CertificatesGroup=Certificados:
 it.CertificatesGroup=Certificati:
+pt_br.CertificatesGroup=Certificados:
+
 en.ViewReadmeFile=View the README file
-en.SupportTheProject=Support the project
-en.ViewChangelogFile=View the CHANGELOG file
 it.ViewReadmeFile=Visualizza file README
+pt_br.ViewReadmeFile=Visualizar o arquivo README
+
+en.SupportTheProject=Support the project
 it.SupportTheProject=Supporta il progetto
+pt_br.SupportTheProject=Apoiar o projeto
+
+en.ViewChangelogFile=View the CHANGELOG file
 it.ViewChangelogFile=Visualizza file CHANGELOG
+pt_br.ViewChangelogFile=Visualizar o CHANGELOG
 
 [UninstallRun]
 Filename: "certutil.exe"; Parameters: "-delstore ""Root"" ""eb db 8a 0a 72 a6 02 91 40 74 9e a2 af 63 d2 fc""" ; Flags: runhidden runascurrentuser
