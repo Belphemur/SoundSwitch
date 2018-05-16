@@ -10,9 +10,9 @@ DependenciesDir=MyProgramDependencies
 
 en.depdownload_msg=The following applications are required before setup can continue:%n%n%1%nDownload and install now?
 de.depdownload_msg=Die folgenden Programme werden benötigt bevor das Setup fortfahren kann:%n%n%1%nJetzt downloaden und installieren?
-fr.depdownload_msg=Pour fonctionner cette application a besoin de :%n%n%1%nTélécharger et installer maintenant?
+fr.depdownload_msg=Pour fonctionner cette application a besoin de:%n%n%1%nTélécharger et installer maintenant?
 es.depdownload_msg=Las siguientes aplicaciones son requeridas para que el instalador pueda continurar:%n%n%1%n¿Descargar e instalarlo ahora?
-it.depdownload_msg=Prima che l'installazione possa proseguire sono richieste le seguente applicazioni :%n%n%1%nVuoi scaricarle e installarle?
+it.depdownload_msg=Prima che l'installazione possa proseguire sono richieste le seguente applicazioni:%n%n%1%nVuoi scaricarle e installarle?
 pt_br.depdownload_msg=As seguintes aplicações são necessárias antes que a instalação possa continuar:%n%n%1%nBaixar e instalar agora?
 
 en.depdownload_memo_title=Download dependencies
