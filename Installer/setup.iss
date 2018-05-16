@@ -144,13 +144,15 @@ it.CertificatesGroup=Certificati:
 pt_br.CertificatesGroup=Certificados:
 
 en.ViewReadmeFile=View the README file
-en.SupportTheProject=Support the project
-en.ViewChangelogFile=View the CHANGELOG file
 it.ViewReadmeFile=Visualizza file README
-it.SupportTheProject=Supporta il progetto
-it.ViewChangelogFile=Visualizza file CHANGELOG
 pt_br.ViewReadmeFile=Visualizar o arquivo README
-pt_br.SupportTheProject=Ajudar o projeto
+
+en.SupportTheProject=Support the project
+it.SupportTheProject=Supporta il progetto
+pt_br.SupportTheProject=Apoiar o projeto
+
+en.ViewChangelogFile=View the CHANGELOG file
+it.ViewChangelogFile=Visualizza file CHANGELOG
 pt_br.ViewChangelogFile=Visualizar o CHANGELOG
 
 [UninstallRun]
