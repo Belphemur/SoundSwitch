@@ -59,7 +59,7 @@ pt_br.depinstall_missing=%1 deve ser instalado para que o setup possa continuar.
 
 en.depinstall_error=An error occured while installing the dependencies. Please restart the computer and run the setup again or install the following dependencies manually:%n
 de.depinstall_error=Ein Fehler ist während der Installation der Abghängigkeiten aufgetreten. Bitte starten Sie den Computer neu und führen Sie das Setup erneut aus oder installieren Sie die folgenden Abhängigkeiten per Hand:%n
-fr.depinstall_error=Nous n'avons pu installer les dépendences. Veuillez redémarrer votre ordinateur et relancer l'installation ou installer ces dépendences manuellement: %n
+fr.depinstall_error=Nous n'avons pu installer les dépendences. Veuillez redémarrer votre ordinateur et relancer l'installation ou installer ces dépendences manuellement:%n
 es.depinstall_error=Un error ocurrió instalando las dependencias. Por favor, reinicia el computador y ejecuta el instaldor otra vez, o instala la siguientes dependencias manualmente:%n
 it.depinstall_error=Si è verificato un errore durante l'installazione delle dipendenze.%nRiavvia il computer e esegui nuovamente l'installazione o installa manualmente le seguenti dipendenze:%n
 pt_br.depinstall_error=Um erro ocorreu durante a instalação das dependências. Por favor reinicie o computador e execute o instalador novamente ou instale as seguintes dependências manualmente:%n
