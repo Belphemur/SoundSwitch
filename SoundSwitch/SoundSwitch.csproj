@@ -83,7 +83,7 @@
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\arrow_switch.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Blue Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
@@ -525,6 +525,7 @@
     <None Include="Resources\arrow-switch-16.png" />
     <None Include="Resources\arrow-switch-48.png" />
     <None Include="Resources\216676__robinhood76__04864-notification-music-box.wav" />
+    <Content Include="Blue Icon.ico" />
     <Content Include="Resources\arrow_switch.ico" />
     <None Include="Resources\exit.png" />
     <None Include="Resources\cog-16.png" />
