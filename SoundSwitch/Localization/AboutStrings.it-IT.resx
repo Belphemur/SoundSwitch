@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
 	<!-- 
 		Microsoft ResX Schema
@@ -65,20 +65,20 @@
 					<xsd:element name="data">
 						<xsd:complexType>
 							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
 							</xsd:sequence>
-							<xsd:attribute name="Label" type="xsd:string" msdata:Ordinal="1"/>
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+							<xsd:attribute name="Label" type="xsd:string" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
 						</xsd:complexType>
 					</xsd:element>
 					<xsd:element name="resheader">
 						<xsd:complexType>
 							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
 							</xsd:sequence>
-							<xsd:attribute name="Label" type="xsd:string" use="required"/>
+							<xsd:attribute name="Label" type="xsd:string" use="required" />
 						</xsd:complexType>
 					</xsd:element>
 				</xsd:choice>
@@ -97,28 +97,28 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-  <data name="created" xml:space="preserve">
+	<data name="created" xml:space="preserve">
     <value>Creato da</value>
   </data>
-  <data name="maintained" xml:space="preserve">
+	<data name="maintained" xml:space="preserve">
     <value>Mantenuto da</value>
   </data>
-  <data name="version" xml:space="preserve">
+	<data name="version" xml:space="preserve">
     <value>Versione</value>
   </data>
-  <data name="author" xml:space="preserve">
+	<data name="author" xml:space="preserve">
     <value>Info autore e programma</value>
   </data>
-  <data name="credits" xml:space="preserve">
+	<data name="credits" xml:space="preserve">
     <value>Ringraziamenti ed attribuzioni</value>
   </data>
-  <data name="defaultPlaybackDeviceChange" xml:space="preserve">
+	<data name="defaultPlaybackDeviceChange" xml:space="preserve">
     <value>Modifica dispositivo riproduzione predefinito</value>
   </data>
-  <data name="keyboardHotkeys" xml:space="preserve">
+	<data name="keyboardHotkeys" xml:space="preserve">
     <value>Sistema tasti rapidi tastiera</value>
   </data>
-  <data name="icons" xml:space="preserve">
+	<data name="icons" xml:space="preserve">
     <value>Icone</value>
   </data>
 </root>

@@ -47,6 +47,7 @@ namespace SoundSwitch.UI.Forms
             maintainedByLabel.Text = AboutStrings.maintained;
             createdByLabel.Text = AboutStrings.created;
             versionLabel.Text = AboutStrings.version;
+            logoMadeLabel.Text = AboutStrings.logo;
 
             // Credits and Attribution
             creditsAndAttributionGroupBox.Text = AboutStrings.credits;
@@ -83,6 +84,11 @@ namespace SoundSwitch.UI.Forms
         private void eretikLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("http://eretik.omegahg.com");
+        }
+
+        private void logoCreatorLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://github.com/linadesteem");
         }
     }
 }

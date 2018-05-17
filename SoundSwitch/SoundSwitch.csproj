@@ -514,6 +514,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\White Icon.ico" />
     <None Include="packages.config" />
     <None Include="Resources\donate-16.png" />
     <None Include="Resources\donate.ico" />
@@ -528,6 +529,7 @@
     <None Include="Resources\exit.png" />
     <None Include="Resources\cog-16.png" />
     <None Include="Resources\cog.ico" />
+    <None Include="Resources\Blue Icon.ico" />
     <Content Include="Resources\control-equalizer-blue.png" />
     <Content Include="Resources\control-volume-blue.png" />
     <None Include="Resources\defaultMicrophone.ico" />

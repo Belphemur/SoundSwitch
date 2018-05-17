@@ -121,4 +121,7 @@
 	<data name="icons" xml:space="preserve">
 		<value>Icones</value>
 	</data>
+	<data name="logo" xml:space="preserve">
+		<value>Logo créé par</value>
+	</data>
 </root>

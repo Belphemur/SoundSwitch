@@ -115,6 +115,15 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Logo made by.
+        /// </summary>
+        internal static string logo {
+            get {
+                return ResourceManager.GetString("logo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mantained by.
         /// </summary>
         internal static string maintained {

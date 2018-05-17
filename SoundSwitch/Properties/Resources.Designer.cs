@@ -220,6 +220,26 @@ namespace SoundSwitch.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon SoundSwitchLogoBlue {
+            get {
+                object obj = ResourceManager.GetObject("SoundSwitchLogoBlue", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon SoundSwitchLogoWhite {
+            get {
+                object obj = ResourceManager.GetObject("SoundSwitchLogoWhite", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Update {

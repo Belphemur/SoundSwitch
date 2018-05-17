@@ -39,7 +39,6 @@ namespace SoundSwitch.Util
     {
         private static readonly Bitmap RessourceUpdateBitmap = Resources.Update;
         private static readonly Bitmap RessourceSettingsSmallBitmap = Resources.SettingsSmall;
-        private static readonly Bitmap RessourceSoundSwitch16Bitmap = Resources.SoundSwitch16;
         private static readonly Bitmap RessourcePlaybackDevicesBitmap = Resources.PlaybackDevices;
         private static readonly Bitmap RessourceMixerBitmap = Resources.Mixer;
         private static readonly Bitmap RessourceInfoHelpBitmap = Resources.InfoHelp;
@@ -47,6 +46,8 @@ namespace SoundSwitch.Util
         private static readonly Bitmap RessourceHelpSmallBitmap = Resources.HelpSmall;
         private static readonly Bitmap RessourceExitBitmap = Resources.exit;
         private static readonly Icon RessourceUpdateIconBitmap = Resources.UpdateIcon;
+        private static readonly Icon RessourceSoundSwitchIconWhite = Resources.SoundSwitchLogoWhite;
+        private static readonly Icon RessourceSoundSwitchIconBlue = Resources.SoundSwitchLogoBlue;
 
         private readonly ContextMenuStrip _selectionMenu = new ContextMenuStrip();
         private readonly ContextMenuStrip _settingsMenu = new ContextMenuStrip();
@@ -142,7 +143,7 @@ namespace SoundSwitch.Util
         {
             if (AppConfigs.Configuration.KeepSystrayIcon)
             {
-                ReplaceIcon(Icon.FromHandle(RessourceSoundSwitch16Bitmap.GetHicon()));
+                ReplaceIcon(RessourceSoundSwitchIconWhite);
                 return;
             }
 
@@ -168,7 +169,7 @@ namespace SoundSwitch.Util
             var readmeHtml = Path.Combine(applicationDirectory, "Readme.html");
             _settingsMenu.Items.Add(
                 Application.ProductName + ' ' + AssemblyUtils.GetReleaseState() + " (" + Application.ProductVersion +
-                ")", RessourceSoundSwitch16Bitmap);
+                ")", RessourceSoundSwitchIconBlue.ToBitmap());
             _settingsMenu.Items.Add("-");
             _settingsMenu.Items.Add(TrayIconStrings.playbackDevices, RessourcePlaybackDevicesBitmap,
                 (sender, e) => { Process.Start(new ProcessStartInfo("control", "mmsys.cpl sounds")); });
@@ -259,7 +260,7 @@ namespace SoundSwitch.Util
                 _animationTimer.Tick += (sender, args) =>
                 {
                     ReplaceIcon(tick == 0
-                        ? Icon.FromHandle(RessourceSoundSwitch16Bitmap.GetHicon())
+                        ? RessourceSoundSwitchIconWhite
                         : RessourceUpdateIconBitmap);
                     tick = ++tick % 2;
                 };
