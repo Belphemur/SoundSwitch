@@ -14,8 +14,11 @@
 
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Forms;
+using NAudio.CoreAudioApi;
 using Serilog;
+using SoundSwitch.Framework.Configuration.Device;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.TooltipInfoManager.TootipInfo;
@@ -49,18 +52,14 @@ namespace SoundSwitch.Framework.Configuration
             SelectedRecordingDeviceListId = new HashSet<string>();
             PlaybackHotKeys = new HotKeys(Keys.F11, HotKeys.ModifierKeys.Alt | HotKeys.ModifierKeys.Control);
             RecordingHotKeys = new HotKeys(Keys.F7, HotKeys.ModifierKeys.Alt | HotKeys.ModifierKeys.Control);
+
+            SelectedDevices = new HashSet<DeviceInfo>();
         }
 
-        /*TODO: Remove in next VERSION (3.12.8)*/
-        public UpdateState UpdateState
-        {
-            set {
-                UpdateMode = value == UpdateState.Steath ? UpdateMode.Silent : UpdateMode.Notify;
-            }
-        }
 
         public HashSet<string> SelectedPlaybackDeviceListId { get; }
         public HashSet<string> SelectedRecordingDeviceListId { get; }
+        public HashSet<DeviceInfo> SelectedDevices { get; }
         public bool FirstRun { get; set; }
         public HotKeys PlaybackHotKeys { get; set; }
         public HotKeys RecordingHotKeys { get; set; }
@@ -78,6 +77,25 @@ namespace SoundSwitch.Framework.Configuration
 
         // Needed by Interface
         public string FileLocation { get; set; }
+        /// <summary>
+        /// Migrate configuration to a new schema
+        /// </summary>
+        public void Migrate()
+        {
+            if (SelectedPlaybackDeviceListId.Count > 0)
+            {
+                SelectedDevices.UnionWith(
+                    SelectedPlaybackDeviceListId.Select((s => new DeviceInfo("", s, DataFlow.Render))));
+                SelectedPlaybackDeviceListId.Clear();
+            }
+
+            if (SelectedRecordingDeviceListId.Count > 0)
+            {
+                SelectedDevices.UnionWith(
+                    SelectedRecordingDeviceListId.Select((s => new DeviceInfo("", s, DataFlow.Capture))));
+                SelectedRecordingDeviceListId.Clear();
+            }
+        }
 
         public void Save()
         {
