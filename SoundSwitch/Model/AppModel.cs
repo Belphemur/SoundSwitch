@@ -23,6 +23,7 @@ using Serilog;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Configuration;
+using SoundSwitch.Framework.Configuration.Device;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.NotificationManager;
@@ -100,8 +101,8 @@ namespace SoundSwitch.Model
             }
         }
 
-        public HashSet<string> SelectedPlaybackDevicesList => AppConfigs.Configuration.SelectedPlaybackDeviceListId;
 
+        public HashSet<DeviceInfo> SelectedDevices { get; } = AppConfigs.Configuration.SelectedDevices;
 
         public ICollection<MMDevice> AvailablePlaybackDevices
         {
@@ -109,18 +110,20 @@ namespace SoundSwitch.Model
             {
                 using (var devices = ActiveAudioDeviceLister.GetPlaybackDevices())
                 {
-                    return
-                        devices
-                        .Join(SelectedPlaybackDevicesList,
-                            a => a.ID,
-                            selected => selected,
-                            (a, selected) => a)
-                        .ToList();
+                    return (
+                        from selected in SelectedDevices.Where((info => info.Type == DataFlow.Render))
+                        from device in devices
+                            .Where((audio => audio.ID == selected.Id || audio.FriendlyName == selected.Name))
+                            .DefaultIfEmpty()
+                        select device
+                        ).ToList();
+
+
                 }
             }
         }
 
-        public HashSet<string> SelectedRecordingDevicesList => AppConfigs.Configuration.SelectedRecordingDeviceListId;
+       
 
         public ICollection<MMDevice> AvailableRecordingDevices
         {
@@ -128,12 +131,13 @@ namespace SoundSwitch.Model
             {
                 using (var devices = ActiveAudioDeviceLister.GetRecordingDevices())
                 {
-                    return devices
-                        .Join(SelectedRecordingDevicesList,
-                            a => a.ID,
-                            selected => selected,
-                            (a, selected) => a)
-                        .ToList();
+                    return (
+                        from selected in SelectedDevices.Where((info => info.Type == DataFlow.Capture))
+                        from device in devices
+                            .Where((audio => audio.ID == selected.Id || audio.FriendlyName == selected.Name))
+                            .DefaultIfEmpty()
+                        select device
+                    ).ToList();
                 }
             }
         }
@@ -300,19 +304,8 @@ namespace SoundSwitch.Model
         {
             var result = false;
             DeviceListChanged eventChanged = null;
-            switch ((DeviceType)device.DataFlow)
-            {
-                case DeviceType.Playback:
-                    result = SelectedPlaybackDevicesList.Add(device.ID);
-                    eventChanged = new DeviceListChanged(SelectedPlaybackDevicesList, (DeviceType)device.DataFlow);
-                    break;
-                case DeviceType.Recording:
-                    result = SelectedRecordingDevicesList.Add(device.ID);
-                    eventChanged = new DeviceListChanged(SelectedRecordingDevicesList, (DeviceType)device.DataFlow);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            result = SelectedDevices.Add(new DeviceInfo(device));
+            eventChanged = new DeviceListChanged(SelectedDevices, (DeviceType)device.DataFlow);
 
             if (result)
             {
@@ -330,20 +323,10 @@ namespace SoundSwitch.Model
         public bool UnselectDevice(MMDevice device)
         {
             var result = false;
+            var deviceToRemove = new DeviceInfo(device);
             DeviceListChanged eventChanged = null;
-            switch ((DeviceType)device.DataFlow)
-            {
-                case DeviceType.Playback:
-                    result = SelectedPlaybackDevicesList.Remove(device.ID);
-                    eventChanged = new DeviceListChanged(SelectedPlaybackDevicesList, (DeviceType)device.DataFlow);
-                    break;
-                case DeviceType.Recording:
-                    result = SelectedRecordingDevicesList.Remove(device.ID);
-                    eventChanged = new DeviceListChanged(SelectedRecordingDevicesList, (DeviceType)device.DataFlow);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            result = SelectedDevices.RemoveWhere((info => info.Equals(deviceToRemove))) > 0;
+            eventChanged = new DeviceListChanged(SelectedDevices, (DeviceType)device.DataFlow);
 
             if (result)
             {

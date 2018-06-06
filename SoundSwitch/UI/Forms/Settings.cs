@@ -25,6 +25,7 @@ using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Audio.Device;
 using SoundSwitch.Framework.Configuration;
+using SoundSwitch.Framework.Configuration.Device;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.TooltipInfoManager;
@@ -148,8 +149,8 @@ namespace SoundSwitch.UI.Forms
 
             // Playback and Recording
             var audioDeviceLister = new AudioDeviceLister(DeviceState.All);
-            PopulateAudioList(playbackListView, AppModel.Instance.SelectedPlaybackDevicesList, audioDeviceLister.GetPlaybackDevices());
-            PopulateAudioList(recordingListView, AppModel.Instance.SelectedRecordingDevicesList, audioDeviceLister.GetRecordingDevices());
+            PopulateAudioList(playbackListView, AppModel.Instance.SelectedDevices.Where((device) => device.Type == DataFlow.Render), audioDeviceLister.GetPlaybackDevices());
+            PopulateAudioList(recordingListView, AppModel.Instance.SelectedDevices.Where((device) => device.Type == DataFlow.Capture), audioDeviceLister.GetRecordingDevices());
 
             _loaded = true;
         }
@@ -417,7 +418,7 @@ namespace SoundSwitch.UI.Forms
 
         #region Device List Playback
 
-        private void PopulateAudioList(ListView listView, ICollection<string> selectedDevices,
+        private void PopulateAudioList(ListView listView, IEnumerable<DeviceInfo> selectedDevices,
             DisposableMMDeviceCollection audioDevices)
         {
             using (audioDevices)
@@ -469,7 +470,7 @@ namespace SoundSwitch.UI.Forms
         /// <param name="selected"></param>
         /// <param name="listView"></param>
         /// <returns></returns>
-        private ListViewItem GenerateListViewItem(MMDevice device, ICollection<string> selected, ListView listView)
+        private ListViewItem GenerateListViewItem(MMDevice device, IEnumerable<DeviceInfo> selected, ListView listView)
         {
             var listViewItem = new ListViewItem
             {
@@ -478,7 +479,7 @@ namespace SoundSwitch.UI.Forms
                 Tag = device
             };
 
-            if (selected.Contains(device.ID))
+            if (selected.Contains(new DeviceInfo(device)))
             {
                 listViewItem.Checked = true;
                 listViewItem.Group = listView.Groups["selectedGroup"];

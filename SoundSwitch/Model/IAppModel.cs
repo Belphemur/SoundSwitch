@@ -19,6 +19,7 @@ using AudioDefaultSwitcherWrapper;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
+using SoundSwitch.Framework.Configuration.Device;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Localization;
@@ -30,20 +31,15 @@ namespace SoundSwitch.Model
     {
         #region Properties
 
-        /// <summary>
-        /// The list of Playback device selected to be used for Switching default devices.
-        /// </summary>
-        HashSet<string> SelectedPlaybackDevicesList { get; }
 
+        /// <summary>
+        /// Devices selected for Switching
+        /// </summary>
+        HashSet<DeviceInfo> SelectedDevices { get; }
         /// <summary>
         /// An union between the Active <see cref="IAudioDevice" /> of Windows and <see cref="SelectedPlaybackDevicesList" />
         /// </summary>
         ICollection<MMDevice> AvailablePlaybackDevices { get; }
-
-        /// <summary>
-        /// The list of Recording device selected to be used for Switching default devices.
-        /// </summary>
-        HashSet<string> SelectedRecordingDevicesList { get; }
 
         /// <summary>
         /// An union between the Active <see cref="IAudioDevice" /> of Windows and <see cref="SelectedRecordingDevicesList" />

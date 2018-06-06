@@ -1,32 +1,39 @@
 ﻿using System;
+using NAudio.CoreAudioApi;
+using Newtonsoft.Json;
 
 namespace SoundSwitch.Framework.Configuration.Device
 {
-    public class DeviceInfo : IComparable<DeviceInfo>, IEquatable<DeviceInfo>
+    public class DeviceInfo : IEquatable<DeviceInfo>, IComparable<DeviceInfo>
     {
-        public string Name { get; }
+        public string Name { get;  }
         public string Id { get; }
+        public DataFlow Type { get; }
 
-        public DeviceInfo(string name, string id)
+        [JsonConstructor]
+        public DeviceInfo(string name, string id, DataFlow type)
         {
             Name = name;
             Id = id;
+            Type = type;
         }
 
-        public int CompareTo(DeviceInfo other)
+        public DeviceInfo(MMDevice device)
         {
-            if (ReferenceEquals(this, other)) return 0;
-            if (ReferenceEquals(null, other)) return 1;
-            var nameComparison = string.Compare(Name, other.Name, StringComparison.Ordinal);
-            if (nameComparison != 0) return nameComparison;
-            return string.Compare(Id, other.Id, StringComparison.Ordinal);
+            Name = device.FriendlyName;
+            Id = device.ID;
+            Type = device.DataFlow;
+        }
+
+        public DeviceInfo()
+        {
         }
 
         public bool Equals(DeviceInfo other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return string.Equals(Name, other.Name) || string.Equals(Id, other.Id);
+            return Type == other.Type && (string.Equals(Id, other.Id) || string.Equals(Name, other.Name));
         }
 
         public override bool Equals(object obj)
@@ -41,7 +48,10 @@ namespace SoundSwitch.Framework.Configuration.Device
         {
             unchecked
             {
-                return ((Name != null ? Name.GetHashCode() : 0) * 397) ^ (Id != null ? Id.GetHashCode() : 0);
+                var hashCode = (int) Type + 1;
+                hashCode = (hashCode * 397) ^ (Id != null ? Id.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Name != null ? Name.GetHashCode() : 0);
+                return hashCode;
             }
         }
 
@@ -54,5 +64,18 @@ namespace SoundSwitch.Framework.Configuration.Device
         {
             return !Equals(left, right);
         }
+
+
+        public int CompareTo(DeviceInfo other)
+        {
+            if (ReferenceEquals(this, other)) return 0;
+            if (ReferenceEquals(null, other)) return 1;
+            var typeComparison = Type.CompareTo(other.Type);
+            if (typeComparison != 0) return typeComparison;
+            var idComparison = string.Compare(Id, other.Id, StringComparison.Ordinal);
+            if (idComparison != 0) return idComparison;
+            return string.Compare(Name, other.Name, StringComparison.Ordinal);
+        }
+     
     }
 }
