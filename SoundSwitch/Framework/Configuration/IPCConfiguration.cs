@@ -52,5 +52,9 @@ namespace SoundSwitch.Framework.Configuration
             ConfigurationManager.SaveConfiguration(this);
         }
 
+        public void Migrate()
+        {
+            
+        }
     }
 }

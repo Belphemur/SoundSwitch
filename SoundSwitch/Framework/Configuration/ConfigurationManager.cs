@@ -27,6 +27,11 @@ namespace SoundSwitch.Framework.Configuration
         string FileLocation { get; set; }
 
         void Save();
+
+        /// <summary>
+        /// Migrate configuration to a new schema
+        /// </summary>
+        void Migrate();
     }
 
     public static class ConfigurationManager
@@ -65,6 +70,7 @@ namespace SoundSwitch.Framework.Configuration
                 }
             }
             obj.FileLocation = filePath;
+            obj.Migrate();
             return obj;
         }
 

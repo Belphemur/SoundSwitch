@@ -12,7 +12,9 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
+using System;
 using System.Collections.Generic;
+using SoundSwitch.Framework.Configuration.Device;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.TooltipInfoManager.TootipInfo;
@@ -23,8 +25,15 @@ namespace SoundSwitch.Framework.Configuration
 {
     public interface ISoundSwitchConfiguration : IConfiguration
     {
+    
+        [Obsolete]
         HashSet<string> SelectedPlaybackDeviceListId { get; }
+        [Obsolete]
         HashSet<string> SelectedRecordingDeviceListId { get; }
+
+        HashSet<DeviceInfo> SelectedPlayback { get; }
+        HashSet<DeviceInfo> SelectedRecording { get; }
+
         bool FirstRun { get; set; }
         HotKeys PlaybackHotKeys { get; set; }
         HotKeys RecordingHotKeys { get; set; }

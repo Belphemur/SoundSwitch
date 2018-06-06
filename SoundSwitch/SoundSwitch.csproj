@@ -257,6 +257,7 @@
     <Compile Include="Framework\AutoStart.cs" />
     <Compile Include="Framework\Banner\BannerData.cs" />
     <Compile Include="Framework\Banner\BannerManager.cs" />
+    <Compile Include="Framework\Configuration\Device\DeviceInfo.cs" />
     <Compile Include="Framework\Configuration\IPCConfiguration.cs" />
     <Compile Include="Framework\Configuration\AppConfigs.cs" />
     <Compile Include="Framework\Configuration\ConfigurationManager.cs" />
