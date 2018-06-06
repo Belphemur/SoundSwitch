@@ -478,8 +478,8 @@ namespace SoundSwitch.UI.Forms
                 ImageKey = device.IconPath,
                 Tag = device
             };
-
-            if (selected.Contains(new DeviceInfo(device)))
+            var selectedDevice = new DeviceInfo(device);
+            if (selected.Any((info => selectedDevice.Equals(info))))
             {
                 listViewItem.Checked = true;
                 listViewItem.Group = listView.Groups["selectedGroup"];

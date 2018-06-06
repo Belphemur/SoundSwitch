@@ -110,15 +110,7 @@ namespace SoundSwitch.Model
             {
                 using (var devices = ActiveAudioDeviceLister.GetPlaybackDevices())
                 {
-                    return (
-                        from selected in SelectedDevices.Where((info => info.Type == DataFlow.Render))
-                        from device in devices
-                            .Where((audio => audio.ID == selected.Id || audio.FriendlyName == selected.Name))
-                            .DefaultIfEmpty()
-                        select device
-                        ).ToList();
-
-
+                    return devices.Where((device) => SelectedDevices.Any((info => new DeviceInfo(device).Equals(info)))).ToList();
                 }
             }
         }
@@ -131,13 +123,7 @@ namespace SoundSwitch.Model
             {
                 using (var devices = ActiveAudioDeviceLister.GetRecordingDevices())
                 {
-                    return (
-                        from selected in SelectedDevices.Where((info => info.Type == DataFlow.Capture))
-                        from device in devices
-                            .Where((audio => audio.ID == selected.Id || audio.FriendlyName == selected.Name))
-                            .DefaultIfEmpty()
-                        select device
-                    ).ToList();
+                    return devices.Where((device) => SelectedDevices.Any((info => new DeviceInfo(device).Equals(info)))).ToList();
                 }
             }
         }
