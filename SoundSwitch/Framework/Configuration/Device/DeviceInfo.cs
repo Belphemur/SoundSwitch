@@ -25,10 +25,6 @@ namespace SoundSwitch.Framework.Configuration.Device
             Type = device.DataFlow;
         }
 
-        public DeviceInfo()
-        {
-        }
-
         public bool Equals(DeviceInfo other)
         {
             if (ReferenceEquals(null, other)) return false;
