@@ -149,8 +149,8 @@ namespace SoundSwitch.UI.Forms
 
             // Playback and Recording
             var audioDeviceLister = new AudioDeviceLister(DeviceState.All);
-            PopulateAudioList(playbackListView, AppModel.Instance.SelectedDevices.Where((device) => device.Type == DataFlow.Render), audioDeviceLister.GetPlaybackDevices());
-            PopulateAudioList(recordingListView, AppModel.Instance.SelectedDevices.Where((device) => device.Type == DataFlow.Capture), audioDeviceLister.GetRecordingDevices());
+            PopulateAudioList(playbackListView, AppModel.Instance.SelectedDevices, audioDeviceLister.GetPlaybackDevices());
+            PopulateAudioList(recordingListView, AppModel.Instance.SelectedDevices, audioDeviceLister.GetRecordingDevices());
 
             _loaded = true;
         }
@@ -479,7 +479,7 @@ namespace SoundSwitch.UI.Forms
                 Tag = device
             };
             var selectedDevice = new DeviceInfo(device);
-            if (selected.Any((info => selectedDevice.Equals(info))))
+            if (selected.Contains(selectedDevice))
             {
                 listViewItem.Checked = true;
                 listViewItem.Group = listView.Groups["selectedGroup"];
@@ -522,7 +522,7 @@ namespace SoundSwitch.UI.Forms
                         throw new ArgumentOutOfRangeException();
                 }
             }
-            catch (Exception)
+            catch (Exception exception)
             {
                 e.NewValue = e.CurrentValue;
             }
