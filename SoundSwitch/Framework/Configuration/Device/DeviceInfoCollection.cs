@@ -30,13 +30,21 @@ namespace SoundSwitch.Framework.Configuration.Device
         /// <returns></returns>
         public IEnumerable<MMDevice> IntersectWith(IEnumerable<MMDevice> devices)
         {
-            var result = devices.Join(_deviceById, device => device.ID, pair => pair.Key, (device, pair) => device);
-            if (result.GetEnumerator().Current != null)
+            var devicesResult = new Dictionary<string, MMDevice>();
+            foreach (var mmDevice in devices)
             {
-                return result;
+                if (devicesResult.ContainsKey(mmDevice.ID))
+                    continue;
+
+                if (!_deviceById.ContainsKey(mmDevice.ID) && !_deviceByName.ContainsKey(mmDevice.FriendlyName))
+                    continue;
+
+                devicesResult.Add(mmDevice.ID, mmDevice);
+
             }
 
-            return devices.Join(_deviceByName, device => device.FriendlyName, pair => pair.Key, (device, pair) => device);
+            return devicesResult.Values;
+
         }
 
         public IEnumerator<DeviceInfo> GetEnumerator()
