@@ -52,6 +52,9 @@ namespace SoundSwitch.Model
         public TrayIcon TrayIcon { get; set; }
         private CachedSound _customNotificationCachedSound;
         private readonly DeviceCyclerManager _deviceCyclerManager;
+        private DeviceInfoCollection _deviceSelectedList;
+
+
 
         public CachedSound CustomNotificationSound
         {
@@ -102,7 +105,15 @@ namespace SoundSwitch.Model
         }
 
 
-        public HashSet<DeviceInfo> SelectedDevices { get; } = AppConfigs.Configuration.SelectedDevices;
+        public DeviceInfoCollection SelectedDevices
+        {
+            get
+            {
+                if (_deviceSelectedList != null)
+                    return _deviceSelectedList;
+                return _deviceSelectedList = new DeviceInfoCollection(AppConfigs.Configuration.SelectedDevices);
+            }
+        }
 
         public ICollection<MMDevice> AvailablePlaybackDevices
         {
@@ -110,7 +121,7 @@ namespace SoundSwitch.Model
             {
                 using (var devices = ActiveAudioDeviceLister.GetPlaybackDevices())
                 {
-                    return devices.Where((device) => SelectedDevices.Any((info => new DeviceInfo(device).Equals(info)))).ToList();
+                    return SelectedDevices.IntersectWith(devices).ToList();
                 }
             }
         }
@@ -123,7 +134,7 @@ namespace SoundSwitch.Model
             {
                 using (var devices = ActiveAudioDeviceLister.GetRecordingDevices())
                 {
-                    return devices.Where((device) => SelectedDevices.Any((info => new DeviceInfo(device).Equals(info)))).ToList();
+                    return SelectedDevices.IntersectWith(devices).ToList();
                 }
             }
         }
@@ -288,17 +299,19 @@ namespace SoundSwitch.Model
         /// <returns></returns>
         public bool SelectDevice(MMDevice device)
         {
-            var result = false;
-            DeviceListChanged eventChanged = null;
-            result = SelectedDevices.Add(new DeviceInfo(device));
-            eventChanged = new DeviceListChanged(SelectedDevices, (DeviceType)device.DataFlow);
-
-            if (result)
+            try
             {
-                SelectedDeviceChanged?.Invoke(this, eventChanged);
-                AppConfigs.Configuration.Save();
+                SelectedDevices.Add(new DeviceInfo(device));
             }
-            return result;
+            catch (ArgumentException)
+            {
+                return false;
+            }
+
+            SelectedDeviceChanged?.Invoke(this, new DeviceListChanged(SelectedDevices, (DeviceType)device.DataFlow));
+            AppConfigs.Configuration.Save();
+
+            return true;
         }
 
         /// <summary>
@@ -309,17 +322,23 @@ namespace SoundSwitch.Model
         public bool UnselectDevice(MMDevice device)
         {
             var result = false;
-            var deviceToRemove = new DeviceInfo(device);
-            DeviceListChanged eventChanged = null;
-            result = SelectedDevices.RemoveWhere((info => info.Equals(deviceToRemove))) > 0;
-            eventChanged = new DeviceListChanged(SelectedDevices, (DeviceType)device.DataFlow);
+            try
+            {
+                result = SelectedDevices.Remove(new DeviceInfo(device));
+            }
+            catch (ArgumentException)
+            {
+                return false;
+            }
 
             if (result)
             {
-                SelectedDeviceChanged?.Invoke(this, eventChanged);
+                SelectedDeviceChanged?.Invoke(this,
+                    new DeviceListChanged(SelectedDevices, (DeviceType) device.DataFlow));
                 AppConfigs.Configuration.Save();
             }
-            return result;
+
+            return true;
         }
 
         #endregion
