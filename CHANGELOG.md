@@ -1,5 +1,25 @@
 # Change Log
 
+## [v4.9](https://github.com/Belphemur/SoundSwitch/tree/v4.9) (2018-06-09)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.8...v4.9)
+
+**Fixed bugs:**
+
+- New logo mostly invisible on white background [\#287](https://github.com/Belphemur/SoundSwitch/issues/287)
+- Switching between Audio sources delayed - v4.8 [\#286](https://github.com/Belphemur/SoundSwitch/issues/286)
+- SoundSwitch not starting after installation finished [\#276](https://github.com/Belphemur/SoundSwitch/issues/276)
+
+**Closed issues:**
+
+- Much slower switching ever since 4.8 [\#291](https://github.com/Belphemur/SoundSwitch/issues/291)
+- Interface slow to respond to click to open [\#288](https://github.com/Belphemur/SoundSwitch/issues/288)
+
+**Merged pull requests:**
+
+- Fix performance [\#290](https://github.com/Belphemur/SoundSwitch/pull/290) ([Belphemur](https://github.com/Belphemur))
+- Fix Icon [\#289](https://github.com/Belphemur/SoundSwitch/pull/289) ([Belphemur](https://github.com/Belphemur))
+- Bump version [\#285](https://github.com/Belphemur/SoundSwitch/pull/285) ([Belphemur](https://github.com/Belphemur))
+
 ## [v4.8](https://github.com/Belphemur/SoundSwitch/tree/v4.8) (2018-06-06)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.7...v4.8)
 
