@@ -232,9 +232,9 @@ namespace SoundSwitch.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon SoundSwitchLogoWhite {
+        internal static System.Drawing.Icon Switch_Logo {
             get {
-                object obj = ResourceManager.GetObject("SoundSwitchLogoWhite", resourceCulture);
+                object obj = ResourceManager.GetObject("Switch_Logo", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }

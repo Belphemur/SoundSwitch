@@ -46,8 +46,7 @@ namespace SoundSwitch.Util
         private static readonly Bitmap RessourceHelpSmallBitmap = Resources.HelpSmall;
         private static readonly Bitmap RessourceExitBitmap = Resources.exit;
         private static readonly Icon RessourceUpdateIconBitmap = Resources.UpdateIcon;
-        private static readonly Icon RessourceSoundSwitchIconWhite = Resources.SoundSwitchLogoWhite;
-        private static readonly Icon RessourceSoundSwitchIconBlue = Resources.SoundSwitchLogoBlue;
+        private static readonly Icon SoundSwitchLogoIcon = Resources.Switch_Logo;
 
         private readonly ContextMenuStrip _selectionMenu = new ContextMenuStrip();
         private readonly ContextMenuStrip _settingsMenu = new ContextMenuStrip();
@@ -143,7 +142,7 @@ namespace SoundSwitch.Util
         {
             if (AppConfigs.Configuration.KeepSystrayIcon)
             {
-                ReplaceIcon(RessourceSoundSwitchIconWhite);
+                ReplaceIcon(SoundSwitchLogoIcon);
                 return;
             }
 
@@ -169,7 +168,7 @@ namespace SoundSwitch.Util
             var readmeHtml = Path.Combine(applicationDirectory, "Readme.html");
             _settingsMenu.Items.Add(
                 Application.ProductName + ' ' + AssemblyUtils.GetReleaseState() + " (" + Application.ProductVersion +
-                ")", RessourceSoundSwitchIconBlue.ToBitmap());
+                ")", SoundSwitchLogoIcon.ToBitmap());
             _settingsMenu.Items.Add("-");
             _settingsMenu.Items.Add(TrayIconStrings.playbackDevices, RessourcePlaybackDevicesBitmap,
                 (sender, e) => { Process.Start(new ProcessStartInfo("control", "mmsys.cpl sounds")); });
@@ -260,7 +259,7 @@ namespace SoundSwitch.Util
                 _animationTimer.Tick += (sender, args) =>
                 {
                     ReplaceIcon(tick == 0
-                        ? RessourceSoundSwitchIconWhite
+                        ? SoundSwitchLogoIcon
                         : RessourceUpdateIconBitmap);
                     tick = ++tick % 2;
                 };

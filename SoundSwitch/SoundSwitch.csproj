@@ -83,7 +83,7 @@
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\Blue Icon.ico</ApplicationIcon>
+    <ApplicationIcon>Switch-Logo.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
@@ -516,6 +516,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Switch-Logo.ico" />
+    <Content Include="Switch-Logo.ico" />
     <None Include="Resources\White Icon.ico" />
     <None Include="packages.config" />
     <None Include="Resources\donate-16.png" />
