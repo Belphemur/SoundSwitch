@@ -83,7 +83,7 @@
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Switch-Logo.ico</ApplicationIcon>
+    <ApplicationIcon>.\Resources\Switch-Logo.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
