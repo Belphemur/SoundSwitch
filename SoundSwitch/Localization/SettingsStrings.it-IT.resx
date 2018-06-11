@@ -279,4 +279,7 @@ Facendo clic sulla notifica, apparirà una finestra che scaricherà l'aggiorname
 	<data name="notificationOptionBanner" xml:space="preserve">
     <value>Banner</value>
     </data>
+  <data name="disableCustomSoundTooltip" xml:space="preserve">
+    <value>Disabilita il set Suoni personalizzati</value>
+  </data>
 </root>
