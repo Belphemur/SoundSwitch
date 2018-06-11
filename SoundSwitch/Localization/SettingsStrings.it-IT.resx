@@ -280,6 +280,6 @@ Facendo clic sulla notifica, apparirà una finestra che scaricherà l'aggiorname
     <value>Banner</value>
     </data>
   <data name="disableCustomSoundTooltip" xml:space="preserve">
-    <value>Disabilita il set Suoni personalizzati</value>
+    <value>Disabilita il set Suoni personalizzati.</value>
   </data>
 </root>
