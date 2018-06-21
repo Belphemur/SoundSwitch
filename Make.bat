@@ -3,14 +3,14 @@ rem SoundSwitch Make file
 rem 
 rem Compiles SoundSwitch binaries and installer.
 rem 
-rem Requires Visual Studio >=2017 or add
+rem Requires Visual Studio >=2017 or add switch
 rem -legacy to force use of MSBuild tools from VS2015.
 rem
 rem Requires the npm package markdown-html:
 rem https://github.com/Belphemur/markdown-html
 rem
 rem You may run this script without markdown-html,
-rem then none Changelog and README are created.
+rem but a dummy Changelog and README is created then.
 
 setlocal
 cd /d "%~dp0"
@@ -50,7 +50,6 @@ if "%~1" neq "" (
 echo.
 echo Determine MSBuild.exe...
 if defined USE_LEGACY_VS2015 (
-echo START
     for /f "usebackq tokens=*" %%i in (`tools\vswhere -legacy -version [14.0^,15.0] -property installationPath`) do (
         set msBuildExe=%%i
     )
