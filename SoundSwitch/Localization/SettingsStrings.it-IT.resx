@@ -277,8 +277,8 @@ Vuoi riavviare SoundSwitch ora?</value>
 Facendo clic sulla notifica, apparirà una finestra che scaricherà l'aggiornamento e chiederà se si vuole installarlo.</value>
   </data>
 	<data name="notificationOptionBanner" xml:space="preserve">
-    <value>Banner</value>
-    </data>
+    <value>Pubblicità</value>
+  </data>
   <data name="disableCustomSoundTooltip" xml:space="preserve">
     <value>Disabilita il set Suoni personalizzati.</value>
   </data>
