@@ -6,7 +6,7 @@
 #define use_msi45
 #define use_msiproduct
 
-#define use_dotnetfx46
+#define use_dotnetfx47
 
 #define use_vc2017
 
@@ -264,6 +264,10 @@ end;
 
 #ifdef use_dotnetfx46
 #include "scripts\products\dotnetfx46.iss"
+#endif
+
+#ifdef use_dotnetfx47
+#include "scripts\products\dotnetfx47.iss"
 #endif
 
 #ifdef use_wic
