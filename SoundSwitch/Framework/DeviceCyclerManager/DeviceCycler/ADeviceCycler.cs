@@ -18,13 +18,14 @@ using System.Linq;
 using AudioDefaultSwitcherWrapper;
 using NAudio.CoreAudioApi;
 using Serilog;
+using SoundSwitch.Framework.Configuration.Device;
 using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
 {
     public abstract class ADeviceCycler : IDeviceCycler
     {
-        private readonly IDictionary<DeviceType, String> _lastDevices = new Dictionary<DeviceType, String>();
+        private readonly IDictionary<DeviceType, DeviceFullInfo> _lastDevices = new Dictionary<DeviceType, DeviceFullInfo>();
 
         public abstract DeviceCyclerTypeEnum TypeEnum { get; }
         public abstract string Label { get; }
@@ -41,29 +42,14 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         /// <param name="audioDevices"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        protected MMDevice GetNextDevice(ICollection<MMDevice> audioDevices, DeviceType type)
+        protected DeviceFullInfo GetNextDevice(ICollection<DeviceFullInfo> audioDevices, DeviceType type)
         {
-            _lastDevices.TryGetValue(type, out var lastDeviceId);
-            MMDevice lastDevice = null;
-            if (lastDeviceId != null)
-            {
-                using (var enumerator = new MMDeviceEnumerator())
-                {
-                    try
-                    {
-                        lastDevice = enumerator.GetDevice(lastDeviceId);
-                    }
-                    catch (Exception)
-                    {
-                        // ignored
-                    }
-                }
-            }
+            _lastDevices.TryGetValue(type, out var lastDevice);
 
             var defaultDev = lastDevice ??
-                             audioDevices.FirstOrDefault(device => AudioController.IsDefault(device.ID, type, DeviceRole.Console)) ??
+                             audioDevices.FirstOrDefault(device => AudioController.IsDefault(device.Id, type, DeviceRole.Console)) ??
                              audioDevices.Last();
-            var next = audioDevices.SkipWhile((device, i) => device.ID != defaultDev.ID).Skip(1).FirstOrDefault() ??
+            var next = audioDevices.SkipWhile((device, i) => device.Id != defaultDev.Id).Skip(1).FirstOrDefault() ??
                        audioDevices.ElementAt(0);
             return next;
         }
@@ -72,21 +58,21 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         /// Attempts to set active device to the specified name
         /// </summary>
         /// <param name="device"></param>
-        public bool SetActiveDevice(MMDevice device)
+        public bool SetActiveDevice(DeviceFullInfo device)
         {
 
             Log.Information("Set Default device: {Device}", device);
             if (!AppModel.Instance.SetCommunications)
             {
-                AudioController.SwitchTo(device.ID, DeviceRole.Console);
-                AudioController.SwitchTo(device.ID, DeviceRole.Multimedia);
+                AudioController.SwitchTo(device.Id, DeviceRole.Console);
+                AudioController.SwitchTo(device.Id, DeviceRole.Multimedia);
             }
             else
             {
                 Log.Information("Set Default Communication device: {Device}", device);
-                AudioController.SwitchTo(device.ID, DeviceRole.All);
+                AudioController.SwitchTo(device.Id, DeviceRole.All);
             }
-            _lastDevices[(DeviceType)device.DataFlow] = device.ID;
+            _lastDevices[(DeviceType)device.Type] = device;
             return true;
 
         }

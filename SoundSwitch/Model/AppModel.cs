@@ -13,9 +13,6 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using AudioDefaultSwitcherWrapper;
 using Microsoft.WindowsAPICodePack.ApplicationServices;
 using NAudio.CoreAudioApi;
@@ -25,10 +22,13 @@ using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Configuration.Device;
 using SoundSwitch.Framework.DeviceCyclerManager;
-using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.NotificationManager;
+using SoundSwitch.Framework.Updater;
 using SoundSwitch.Localization;
 using SoundSwitch.Util;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SoundSwitch.Model
 {
@@ -115,29 +115,10 @@ namespace SoundSwitch.Model
             }
         }
 
-        public ICollection<MMDevice> AvailablePlaybackDevices
-        {
-            get
-            {
-                using (var devices = ActiveAudioDeviceLister.GetPlaybackDevices())
-                {
-                    return SelectedDevices.IntersectWith(devices).ToList();
-                }
-            }
-        }
+        public ICollection<DeviceFullInfo> AvailablePlaybackDevices => SelectedDevices.IntersectWith(ActiveAudioDeviceLister.GetPlaybackDevices());
 
-       
 
-        public ICollection<MMDevice> AvailableRecordingDevices
-        {
-            get
-            {
-                using (var devices = ActiveAudioDeviceLister.GetRecordingDevices())
-                {
-                    return SelectedDevices.IntersectWith(devices).ToList();
-                }
-            }
-        }
+        public ICollection<DeviceFullInfo> AvailableRecordingDevices => SelectedDevices.IntersectWith(ActiveAudioDeviceLister.GetRecordingDevices());
 
         public bool SetCommunications
         {
@@ -297,18 +278,18 @@ namespace SoundSwitch.Model
         /// </summary>
         /// <param name="device"></param>
         /// <returns></returns>
-        public bool SelectDevice(MMDevice device)
+        public bool SelectDevice(DeviceFullInfo device)
         {
             try
             {
-                SelectedDevices.Add(new DeviceInfo(device));
+                SelectedDevices.Add(device);
             }
             catch (ArgumentException)
             {
                 return false;
             }
 
-            SelectedDeviceChanged?.Invoke(this, new DeviceListChanged(SelectedDevices, (DeviceType)device.DataFlow));
+            SelectedDeviceChanged?.Invoke(this, new DeviceListChanged(SelectedDevices, (DeviceType)device.Type));
             AppConfigs.Configuration.Save();
 
             return true;
@@ -319,12 +300,12 @@ namespace SoundSwitch.Model
         /// </summary>
         /// <param name="device"></param>
         /// <returns></returns>
-        public bool UnselectDevice(MMDevice device)
+        public bool UnselectDevice(DeviceFullInfo device)
         {
             var result = false;
             try
             {
-                result = SelectedDevices.Remove(new DeviceInfo(device));
+                result = SelectedDevices.Remove(device);
             }
             catch (ArgumentException)
             {
@@ -334,7 +315,7 @@ namespace SoundSwitch.Model
             if (result)
             {
                 SelectedDeviceChanged?.Invoke(this,
-                    new DeviceListChanged(SelectedDevices, (DeviceType) device.DataFlow));
+                    new DeviceListChanged(SelectedDevices, (DeviceType) device.Type));
                 AppConfigs.Configuration.Save();
             }
 
@@ -427,7 +408,7 @@ namespace SoundSwitch.Model
         ///     Attempts to set active device to the specified name
         /// </summary>
         /// <param name="device"></param>
-        public bool SetActiveDevice(MMDevice device)
+        public bool SetActiveDevice(DeviceFullInfo device)
         {
 
             try

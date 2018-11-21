@@ -55,28 +55,30 @@ namespace SoundSwitch.Util
         }
 
         /// <summary>
-        ///     Extract the Icon out of an AudioDevice
+        /// Extract an Icon form a given path
         /// </summary>
-        /// <param name="audioDevice"></param>
+        /// <param name="path"></param>
+        /// <param name="dataFlow"></param>
         /// <param name="largeIcon"></param>
         /// <returns></returns>
-        public static Icon ExtractIconFromAudioDevice(MMDevice audioDevice, bool largeIcon)
+        public static Icon ExtractIconFromPath(string path, DataFlow dataFlow, bool largeIcon)
         {
             Icon ico;
-            var key = GetKey(audioDevice, largeIcon);
+            var key = $"{path}-${largeIcon}";
+
             if (IconCache.Contains(key))
             {
                 return (Icon)IconCache.Get(key);
             }
             try
             {
-                if (audioDevice.IconPath.EndsWith(".ico"))
+                if (path.EndsWith(".ico"))
                 {
-                    ico = Icon.ExtractAssociatedIcon(audioDevice.IconPath);
+                    ico = Icon.ExtractAssociatedIcon(path);
                 }
                 else
                 {
-                    var iconInfo = audioDevice.IconPath.Split(',');
+                    var iconInfo = path.Split(',');
                     var dllPath = iconInfo[0];
                     var iconIndex = int.Parse(iconInfo[1]);
                     ico = IconExtractor.Extract(dllPath, iconIndex, largeIcon);
@@ -84,8 +86,8 @@ namespace SoundSwitch.Util
             }
             catch (Exception e)
             {
-                Log.Error(e, "Can't extract icon from {path}", audioDevice.IconPath);
-                switch (audioDevice.DataFlow)
+                Log.Error(e, "Can't extract icon from {path}", path);
+                switch (dataFlow)
                 {
                     case DataFlow.Capture:
                         return DefaultMicrophone;
@@ -98,6 +100,17 @@ namespace SoundSwitch.Util
 
             IconCache.Add(key, ico, CacheItemPolicy);
             return ico;
+        }
+
+        /// <summary>
+        ///     Extract the Icon out of an AudioDevice
+        /// </summary>
+        /// <param name="audioDevice"></param>
+        /// <param name="largeIcon"></param>
+        /// <returns></returns>
+        public static Icon ExtractIconFromAudioDevice(MMDevice audioDevice, bool largeIcon)
+        {
+            return ExtractIconFromPath(audioDevice.IconPath, audioDevice.DataFlow, largeIcon);
         }
     }
 }

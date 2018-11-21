@@ -31,7 +31,7 @@ namespace SoundSwitch.Framework.TooltipInfoManager.TootipInfo
         public string TextToDisplay()
         {
             var recordingDevice = AppModel.Instance.ActiveAudioDeviceLister.GetRecordingDevices()
-                                  .FirstOrDefault(device => AudioController.IsDefault(device.ID, (DeviceType)device.DataFlow, DeviceRole.Console));
+                                  .FirstOrDefault(device => AudioController.IsDefault(device.Id, (DeviceType)device.Type, DeviceRole.Console));
             return recordingDevice == null ? null : string.Format(SettingsStrings.activeRecording, recordingDevice);
         }
 

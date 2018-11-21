@@ -28,18 +28,18 @@ namespace SoundSwitch.Framework.Configuration.Device
         /// </summary>
         /// <param name="devices"></param>
         /// <returns></returns>
-        public IEnumerable<MMDevice> IntersectWith(IEnumerable<MMDevice> devices)
+        public ICollection<DeviceFullInfo> IntersectWith(IEnumerable<DeviceFullInfo> devices)
         {
-            var devicesResult = new Dictionary<string, MMDevice>();
+            var devicesResult = new Dictionary<string, DeviceFullInfo>();
             foreach (var mmDevice in devices)
             {
-                if (devicesResult.ContainsKey(mmDevice.ID))
+                if (devicesResult.ContainsKey(mmDevice.Id))
                     continue;
 
-                if (!_deviceById.ContainsKey(mmDevice.ID) && !_deviceByName.ContainsKey(mmDevice.FriendlyName))
+                if (!_deviceById.ContainsKey(mmDevice.Id) && !_deviceByName.ContainsKey(mmDevice.Name))
                     continue;
 
-                devicesResult.Add(mmDevice.ID, mmDevice);
+                devicesResult.Add(mmDevice.Id, mmDevice);
 
             }
 
@@ -60,6 +60,11 @@ namespace SoundSwitch.Framework.Configuration.Device
         public void Add(DeviceInfo item)
         {
             AddItem(item, true);
+        }
+
+        public void Add(MMDevice item)
+        {
+            AddItem(new DeviceInfo(item), true);
         }
 
         /// <summary>

@@ -12,24 +12,25 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
+using System;
 using System.Collections.Generic;
 using NAudio.CoreAudioApi;
-using SoundSwitch.Framework.Audio.Device;
+using SoundSwitch.Framework.Configuration.Device;
 
 namespace SoundSwitch.Model
 {
-    public interface IAudioDeviceLister
+    public interface IAudioDeviceLister : IDisposable
     {
         /// <summary>
         ///     Get the playback device in the set state
         /// </summary>
         /// <returns></returns>
-        DisposableMMDeviceCollection GetPlaybackDevices();
+        ICollection<DeviceFullInfo> GetPlaybackDevices();
 
         /// <summary>
         ///     Get the recording device in the set state
         /// </summary>
         /// <returns></returns>
-        DisposableMMDeviceCollection GetRecordingDevices();
+        ICollection<DeviceFullInfo> GetRecordingDevices();
     }
 }

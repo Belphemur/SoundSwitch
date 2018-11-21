@@ -50,15 +50,12 @@ namespace SoundSwitch
             bool createdNew;
             InitializeLogger();
             Log.Information("Application Starts");
-            var audioDeviceLister = new AudioDeviceLister(DeviceState.Active);
-
-            using (var recordingDevices = audioDeviceLister.GetRecordingDevices())
+            using (var audioDeviceLister = new CachedAudioDeviceLister(DeviceState.Active))
             {
+                var recordingDevices = audioDeviceLister.GetRecordingDevices();
                 Log.Information("Devices Recording {device}", recordingDevices);
-            }
-           
-            using (var playbackDevices = audioDeviceLister.GetPlaybackDevices())
-            {
+                var playbackDevices = audioDeviceLister.GetPlaybackDevices();
+
                 Log.Information("Devices Playback {device}", playbackDevices);
             }
 #if !DEBUG
@@ -98,7 +95,7 @@ namespace SoundSwitch
                     }
                 }
 
-                AppModel.Instance.ActiveAudioDeviceLister = new AudioDeviceLister(DeviceState.Active);
+                AppModel.Instance.ActiveAudioDeviceLister = new CachedAudioDeviceLister(DeviceState.Active);
 
                 // Windows Vista or newer.
                 if (Environment.OSVersion.Version.Major >= 6)
@@ -112,21 +109,19 @@ namespace SoundSwitch
                 // when it should without this.
                 WindowsAPIAdapter.RestartManagerTriggered += (sender, @event) =>
                 {
-                    
-                        Log.Debug("Restart Event received: {Event}", @event);
-                        switch (@event.Type)
-                        {
-                            case WindowsAPIAdapter.RestartManagerEventType.Query:
-                                @event.Result = new IntPtr(1);
+                    Log.Debug("Restart Event received: {Event}", @event);
+                    switch (@event.Type)
+                    {
+                        case WindowsAPIAdapter.RestartManagerEventType.Query:
+                            @event.Result = new IntPtr(1);
 
-                                break;
-                            case WindowsAPIAdapter.RestartManagerEventType.EndSession:
-                            case WindowsAPIAdapter.RestartManagerEventType.ForceClose:
-                                Log.Debug("Close Application");
-                                Application.Exit();
-                                break;
-                        }
-                  
+                            break;
+                        case WindowsAPIAdapter.RestartManagerEventType.EndSession:
+                        case WindowsAPIAdapter.RestartManagerEventType.ForceClose:
+                            Log.Debug("Close Application");
+                            Application.Exit();
+                            break;
+                    }
                 };
 
                 Log.Information("Set Tray Icon with Main");
@@ -150,15 +145,16 @@ namespace SoundSwitch
                         {
                             Thread.Sleep(250);
                         }
-
                     }
+
                     AppModel.Instance.TrayIcon = icon;
                     AppModel.Instance.InitializeMain();
                     AppModel.Instance.NewVersionReleased += (sender, @event) =>
                     {
                         if (@event.UpdateMode == UpdateMode.Silent)
                         {
-                            new AutoUpdater("/VERYSILENT /NOCANCEL /NORESTART", ApplicationPath.Default).Update(@event.Release, true);
+                            new AutoUpdater("/VERYSILENT /NOCANCEL /NORESTART", ApplicationPath.Default).Update(
+                                @event.Release, true);
                         }
                     };
                     if (AppConfigs.Configuration.FirstRun)
@@ -167,6 +163,7 @@ namespace SoundSwitch
                         AppConfigs.Configuration.FirstRun = false;
                         Log.Information("First run");
                     }
+
                     Application.Run();
                 }
 #if !DEBUG
@@ -177,10 +174,13 @@ namespace SoundSwitch
                 }
 #endif
             }
+
+            AppModel.Instance.ActiveAudioDeviceLister.Dispose();
             MMNotificationClient.Instance.UnRegister();
             WindowsAPIAdapter.Stop();
             Log.CloseAndFlush();
         }
+
         /// <summary>
         /// Initialize the logger
         /// </summary>
@@ -245,6 +245,7 @@ namespace SoundSwitch
                             MiniDump.Option.Normal | MiniDump.Option.WithThreadInfo | MiniDump.Option.WithHandleData |
                             MiniDump.Option.WithDataSegs, MiniDump.ExceptionInfo.Present);
                     }
+
                     Log.Fatal(exception, "Exception Occurred ");
 
                     if (File.Exists(zipFile))
@@ -254,8 +255,8 @@ namespace SoundSwitch
 
                     ZipFile.CreateFromDirectory(ApplicationPath.Default, zipFile);
                 }
-                Process.Start("explorer.exe", "/select," + @zipFile);
 
+                Process.Start("explorer.exe", "/select," + @zipFile);
             }
         }
     }

@@ -30,12 +30,14 @@ namespace SoundSwitch.Framework.TooltipInfoManager.TootipInfo
         /// <returns></returns>
         public string TextToDisplay()
         {
-            using (var audioDevices = AppModel.Instance.ActiveAudioDeviceLister.GetPlaybackDevices())
-            {
-                var playbackDefaultDevice = audioDevices
-                                            .FirstOrDefault(device => AudioController.IsDefault(device.ID, (DeviceType)device.DataFlow, DeviceRole.Console));
-                return playbackDefaultDevice == null ? null : string.Format(SettingsStrings.activePlayback, playbackDefaultDevice);
-            }
+            var audioDevices = AppModel.Instance.ActiveAudioDeviceLister.GetPlaybackDevices();
+
+            var playbackDefaultDevice = audioDevices
+                .FirstOrDefault(device =>
+                    AudioController.IsDefault(device.Id, (DeviceType) device.Type, DeviceRole.Console));
+            return playbackDefaultDevice == null
+                ? null
+                : string.Format(SettingsStrings.activePlayback, playbackDefaultDevice);
         }
 
         public override string ToString()

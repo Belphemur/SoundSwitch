@@ -18,6 +18,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using AudioDefaultSwitcherWrapper;
 using NAudio.CoreAudioApi;
+using SoundSwitch.Framework.Configuration.Device;
 using SoundSwitch.Properties;
 
 namespace SoundSwitch.Util
@@ -26,8 +27,8 @@ namespace SoundSwitch.Util
     {
         private static readonly Bitmap check = Resources.Check;
 
-        public ToolStripDeviceItem(EventHandler onClick, MMDevice audioDevice)
-            : base(audioDevice.FriendlyName, null, onClick)
+        public ToolStripDeviceItem(EventHandler onClick, DeviceFullInfo audioDevice)
+            : base(audioDevice.Name, null, onClick)
         {
             AudioDevice = audioDevice;
         }
@@ -36,13 +37,14 @@ namespace SoundSwitch.Util
         {
             get
             {
-                if (AudioDevice !=null && AudioController.IsDefault(AudioDevice.ID, (DeviceType) AudioDevice.DataFlow, DeviceRole.Console))
+                if (AudioDevice != null &&
+                    AudioController.IsDefault(AudioDevice.Id, (DeviceType) AudioDevice.Type, DeviceRole.Console))
                     return check;
 
                 return null;
             }
         }
 
-        public MMDevice AudioDevice { get; }
+        public DeviceFullInfo AudioDevice { get; }
     }
 }

@@ -80,17 +80,28 @@ namespace SoundSwitch.Model
         }
     }
 
-    public class DeviceDefaultChangedEvent : EventArgs
+    public class DeviceChangedEventBase : EventArgs
     {
-        public DeviceDefaultChangedEvent(MMDevice device, DeviceRole role)
+        public string DeviceId { get; }
+
+
+        public DeviceChangedEventBase(string deviceId)
         {
-            DeviceId = device.ID;
+            DeviceId = deviceId;
+   
+        }
+    }
+
+    public class DeviceDefaultChangedEvent : DeviceChangedEventBase
+    {
+        public DeviceRole Role { get; }
+        public MMDevice Device { get; }
+        public DeviceDefaultChangedEvent(MMDevice device, DeviceRole role) : base(device.ID)
+        {
             Device = device;
             Role = role;
         }
 
-        public string DeviceId { get; }
-        public MMDevice Device { get; }
-        public DeviceRole Role { get; }
+      
     }
 }
