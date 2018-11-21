@@ -1,5 +1,33 @@
 # Change Log
 
+## [v4.10](https://github.com/Belphemur/SoundSwitch/tree/v4.10) (2018-11-21)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.9...v4.10)
+
+**Fixed bugs:**
+
+- Lag opening system tray context menu [\#298](https://github.com/Belphemur/SoundSwitch/issues/298)
+- 4.9 Update will not finish [\#294](https://github.com/Belphemur/SoundSwitch/issues/294)
+- Crashing, unstableness and messed up dialogues. [\#293](https://github.com/Belphemur/SoundSwitch/issues/293)
+- SoundSwitch crashing ... again [\#292](https://github.com/Belphemur/SoundSwitch/issues/292)
+
+**Closed issues:**
+
+- Default Communications Device [\#308](https://github.com/Belphemur/SoundSwitch/issues/308)
+- I can not install or update SoundSwitch. [\#307](https://github.com/Belphemur/SoundSwitch/issues/307)
+- No icon-switching on latest build? [\#306](https://github.com/Belphemur/SoundSwitch/issues/306)
+- no way to set a shotcut [\#305](https://github.com/Belphemur/SoundSwitch/issues/305)
+- Crashing at launch [\#303](https://github.com/Belphemur/SoundSwitch/issues/303)
+- Odd issue with soundswitch [\#302](https://github.com/Belphemur/SoundSwitch/issues/302)
+- Enhancement - Leftclick to switch devices [\#301](https://github.com/Belphemur/SoundSwitch/issues/301)
+- Soundswitch App Wont Open  [\#296](https://github.com/Belphemur/SoundSwitch/issues/296)
+- Feat.Req.: create and switch-to "profiles" \(e.g. Docked-Softphone, Docked-VideoConf\) [\#295](https://github.com/Belphemur/SoundSwitch/issues/295)
+- Soundswitch won't appear on the screen even thought it is running in the task manager [\#243](https://github.com/Belphemur/SoundSwitch/issues/243)
+- SoundSwitch is crashing frequently [\#232](https://github.com/Belphemur/SoundSwitch/issues/232)
+
+**Merged pull requests:**
+
+- Add license scan report and status [\#300](https://github.com/Belphemur/SoundSwitch/pull/300) ([fossabot](https://github.com/fossabot))
+
 ## [v4.9](https://github.com/Belphemur/SoundSwitch/tree/v4.9) (2018-06-09)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.8...v4.9)
 
