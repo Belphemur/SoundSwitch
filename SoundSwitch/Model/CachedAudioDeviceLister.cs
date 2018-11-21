@@ -58,16 +58,18 @@ namespace SoundSwitch.Model
             {
                 try
                 {
-                    if (string.IsNullOrEmpty(device.FriendlyName))
+                    var deviceInfo = new DeviceFullInfo(device);
+                    if (string.IsNullOrEmpty(deviceInfo.Name))
                     {
                         continue;
                     }
+                    sortedDevices.Add(device.FriendlyName, deviceInfo);
                 }
                 catch (Exception)
                 {
-                    continue;
+                    Log.Warning("Can't get name of device {device}", device.ID);
                 }
-                sortedDevices.Add(device.FriendlyName, new DeviceFullInfo(device));
+                
             }
 
             return sortedDevices.Values;
