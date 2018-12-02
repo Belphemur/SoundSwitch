@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
 	<!-- 
 		Microsoft ResX Schema
@@ -97,4 +97,31 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+	<data name="created" xml:space="preserve">
+		<value>制作</value>
+	</data>
+	<data name="maintained" xml:space="preserve">
+		<value>维护</value>
+	</data>
+	<data name="version" xml:space="preserve">
+		<value>版本</value>
+	</data>
+	<data name="author" xml:space="preserve">
+		<value>作者和项目目信息</value>
+	</data>
+	<data name="credits" xml:space="preserve">
+		<value>项目归属</value>
+	</data>
+	<data name="defaultPlaybackDeviceChange" xml:space="preserve">
+		<value>默认播放设备更改</value>
+	</data>
+	<data name="keyboardHotkeys" xml:space="preserve">
+		<value>键盘快捷键系统</value>
+	</data>
+	<data name="icons" xml:space="preserve">
+		<value>图标</value>
+	</data>
+	<data name="logo" xml:space="preserve">
+		<value>标志</value>
+	</data>
 </root>

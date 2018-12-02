@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
 	<!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,55 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+	<data name="noUpdate" xml:space="preserve">
+		<value>没有可用的更新</value>
+	</data>
+	<data name="noDevicesSelected" xml:space="preserve">
+		<value>未选择任何设备</value>
+	</data>
+	<data name="playbackDevices" xml:space="preserve">
+		<value>播放设备</value>
+	</data>
+	<data name="mixer" xml:space="preserve">
+		<value>声音混合器</value>
+	</data>
+	<data name="settings" xml:space="preserve">
+		<value>设置</value>
+	</data>
+	<data name="about" xml:space="preserve">
+		<value>关于SoundSwitch</value>
+	</data>
+	<data name="exit" xml:space="preserve">
+		<value>退出</value>
+	</data>
+	<data name="updateAvailable" xml:space="preserve">
+		<value>可用更新（{0}）</value>
+	</data>
+	<data name="versionAvailable" xml:space="preserve">
+		<value>可以使用SoundSwitch（{0}）的更新。</value>
+	</data>
+	<data name="clickToUpdate" xml:space="preserve">
+		<value>点击这里更新。</value>
+	</data>
+	<data name="playbackChanged" xml:space="preserve">
+		<value>SoundSwitch：切换到播放设备</value>
+	</data>
+	<data name="recordingChanged" xml:space="preserve">
+		<value>SoundSwitch：切换到录音设备</value>
+	</data>
+	<data name="configurationNeeded" xml:space="preserve">
+		<value>SoundSwitch：需要配置</value>
+	</data>
+	<data name="configurationNeededExplanation" xml:space="preserve">
+		<value>没有设备可以切换到, 右键单击图标打开配置。</value>
+	</data>
+	<data name="error" xml:space="preserve">
+		<value>错误</value>
+	</data>
+	<data name="help" xml:space="preserve">
+		<value>帮助</value>
+	</data>
+	<data name="donate" xml:space="preserve">
+		<value>捐助</value>
+	</data>
 </root>
