@@ -1,5 +1,16 @@
 # Change Log
 
+## [v4.11](https://github.com/Belphemur/SoundSwitch/tree/v4.11) (2018-12-05)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.10...v4.11)
+
+**Implemented enhancements:**
+
+- Add Chinese language [\#311](https://github.com/Belphemur/SoundSwitch/issues/311)
+
+**Fixed bugs:**
+
+- High CPU usage with 4.10.6899.14921 when coming back from hibernation/sleep [\#309](https://github.com/Belphemur/SoundSwitch/issues/309)
+
 ## [v4.10](https://github.com/Belphemur/SoundSwitch/tree/v4.10) (2018-11-21)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.9...v4.10)
 
