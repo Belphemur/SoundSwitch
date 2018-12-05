@@ -25,6 +25,12 @@ namespace SoundSwitch.Model
 {
     public class CachedAudioDeviceLister : IAudioDeviceLister
     {
+
+        /// <inheritdoc />
+        public ICollection<DeviceFullInfo> PlaybackDevices { get; private set; }
+        /// <inheritdoc />
+        public ICollection<DeviceFullInfo> RecordingDevices { get; private set; }
+
         private readonly DeviceState _state;
 
         public CachedAudioDeviceLister(DeviceState state)
@@ -95,13 +101,6 @@ namespace SoundSwitch.Model
 
             return sortedDevices.Values;
         }
-
-        /// <inheritdoc />
-        public ICollection<DeviceFullInfo> PlaybackDevices { get; private set; }
-
-
-        /// <inheritdoc />
-        public ICollection<DeviceFullInfo> RecordingDevices { get; private set; }
 
         public void Dispose()
         {
