@@ -26,6 +26,7 @@ namespace SoundSwitch.Localization
         Español = 3,
         Norsk = 4,
         Português = 5,
-        Italiano = 6
+        Italiano = 6,
+        Chinese = 7
     }
 }

@@ -42,6 +42,8 @@ namespace SoundSwitch.Localization
                     return CultureInfo.GetCultureInfo("pt-BR");
                 case Language.Italiano:
                     return CultureInfo.GetCultureInfo("it-IT");
+                case Language.Chinese:
+                    return CultureInfo.GetCultureInfo("zh-CHS");
                 default:
                     return CultureInfo.GetCultureInfo("en");
 
@@ -69,6 +71,8 @@ namespace SoundSwitch.Localization
                     return Language.Português;
                 case "it":
                     return Language.Italiano;
+                case "zh":
+                    return Language.Chinese;
                 default:
                     return Language.English;
             }
