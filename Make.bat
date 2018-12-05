@@ -17,7 +17,7 @@ cd /d "%~dp0"
 
 set FILE_DIR=%~dp0
 set BIN_DIR=%FILE_DIR%bin
-set LANGS=(fr de es nb pt-BR it-IT)
+set LANGS=(fr de es nb pt-BR it-IT zh-CHS)
 
 if ["%~1"]==["-legacy"] set USE_LEGACY_VS2015=1
 
