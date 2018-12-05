@@ -56,3 +56,7 @@ packages/
 /SoundSwitch.VC.db
 /SoundSwitch.psess
 
+/NDependOut
+/NDependOut
+/SoundSwitch.ndproj
+*.ndproj

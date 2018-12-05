@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Threading;
+using System.Threading.Tasks;
 using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Framework;
@@ -24,7 +25,7 @@ using SoundSwitch.Framework.NotificationManager;
 
 namespace SoundSwitch.Model
 {
-    public class CachedAudioDeviceLister : IAudioDeviceLister, IDisposable
+    public class CachedAudioDeviceLister : IAudioDeviceLister
     {
         private readonly DeviceState _state;
         private ICollection<DeviceFullInfo> _playbackCollection;
@@ -44,11 +45,35 @@ namespace SoundSwitch.Model
 
         private void Refresh()
         {
-            using (var enumerator = new MMDeviceEnumerator())
+            if (!Monitor.TryEnter(this, 500))
             {
-                _playbackCollection = CreateDeviceList(enumerator.EnumerateAudioEndPoints(DataFlow.Render, _state));
-                _recordingCollection = CreateDeviceList(enumerator.EnumerateAudioEndPoints(DataFlow.Capture, _state));
+                return;
             }
+            try
+            {
+
+                var playbackTask = Task<ICollection<DeviceFullInfo>>.Factory.StartNew((() =>
+                {
+                    using (var enumerator = new MMDeviceEnumerator())
+                    {
+                        return CreateDeviceList(enumerator.EnumerateAudioEndPoints(DataFlow.Render, _state));
+                    }
+                }));
+                var recordingTask = Task<ICollection<DeviceFullInfo>>.Factory.StartNew((() =>
+                {
+                    using (var enumerator = new MMDeviceEnumerator())
+                    {
+                        return CreateDeviceList(enumerator.EnumerateAudioEndPoints(DataFlow.Capture, _state));
+                    }
+                }));
+                _playbackCollection = playbackTask.Result;
+                _recordingCollection = recordingTask.Result;
+            }
+            finally
+            {
+                Monitor.Exit(this);
+            }
+
         }
 
         private ICollection<DeviceFullInfo> CreateDeviceList(MMDeviceCollection collection)
@@ -69,7 +94,7 @@ namespace SoundSwitch.Model
                 {
                     Log.Warning("Can't get name of device {device}", device.ID);
                 }
-                
+
             }
 
             return sortedDevices.Values;

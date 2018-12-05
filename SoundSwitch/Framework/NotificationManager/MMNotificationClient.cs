@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using AudioDefaultSwitcherWrapper;
 using NAudio.CoreAudioApi;
 using NAudio.CoreAudioApi.Interfaces;
@@ -36,28 +37,43 @@ namespace SoundSwitch.Framework.NotificationManager
 
         public void OnDeviceStateChanged(string deviceId, DeviceState newState)
         {
-            DevicesChanged?.Invoke(this, new DeviceChangedEventBase(deviceId));
+            Task.Factory.StartNew(() => { DevicesChanged?.Invoke(this, new DeviceChangedEventBase(deviceId)); });
         }
 
         public void OnDeviceAdded(string pwstrDeviceId)
         {
-            DevicesChanged?.Invoke(this, new DeviceChangedEventBase(pwstrDeviceId));
+            Task.Factory.StartNew(() => { DevicesChanged?.Invoke(this, new DeviceChangedEventBase(pwstrDeviceId)); });
         }
 
         public void OnDeviceRemoved(string deviceId)
         {
-            DevicesChanged?.Invoke(this, new DeviceChangedEventBase(deviceId));
+            Task.Factory.StartNew(() => { DevicesChanged?.Invoke(this, new DeviceChangedEventBase(deviceId)); });
         }
 
         public void OnDefaultDeviceChanged(DataFlow flow, Role role, string defaultDeviceId)
         {
-            var device = _enumerator.GetDevice(defaultDeviceId);
-            DefaultDeviceChanged?.Invoke(this, new DeviceDefaultChangedEvent(device, (DeviceRole) role));
+            Task.Factory.StartNew(() =>
+            {
+                var device = _enumerator.GetDevice(defaultDeviceId);
+                DefaultDeviceChanged?.Invoke(this, new DeviceDefaultChangedEvent(device, (DeviceRole) role));
+            });
         }
 
         public void OnPropertyValueChanged(string pwstrDeviceId, PropertyKey key)
         {
-            DevicesChanged?.Invoke(this, new DeviceChangedEventBase(pwstrDeviceId));
+            Task.Factory.StartNew(() =>
+            {
+                if (PropertyKeys.PKEY_DeviceInterface_FriendlyName.formatId != key.formatId
+                    && PropertyKeys.PKEY_AudioEndpoint_GUID.formatId != key.formatId
+                    && PropertyKeys.PKEY_Device_IconPath.formatId != key.formatId
+                    && PropertyKeys.PKEY_Device_FriendlyName.formatId != key.formatId
+                )
+                {
+                    return;
+                }
+
+                DevicesChanged?.Invoke(this, new DeviceChangedEventBase(pwstrDeviceId));
+            });
         }
     }
 }
