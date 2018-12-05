@@ -115,10 +115,10 @@ namespace SoundSwitch.Model
             }
         }
 
-        public ICollection<DeviceFullInfo> AvailablePlaybackDevices => SelectedDevices.IntersectWith(ActiveAudioDeviceLister.GetPlaybackDevices());
+        public ICollection<DeviceFullInfo> AvailablePlaybackDevices => SelectedDevices.IntersectWith(ActiveAudioDeviceLister.PlaybackDevices);
 
 
-        public ICollection<DeviceFullInfo> AvailableRecordingDevices => SelectedDevices.IntersectWith(ActiveAudioDeviceLister.GetRecordingDevices());
+        public ICollection<DeviceFullInfo> AvailableRecordingDevices => SelectedDevices.IntersectWith(ActiveAudioDeviceLister.RecordingDevices);
 
         public bool SetCommunications
         {

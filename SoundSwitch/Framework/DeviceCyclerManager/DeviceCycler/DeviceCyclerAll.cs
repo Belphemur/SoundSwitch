@@ -38,10 +38,10 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
             switch (type)
             {
                 case DeviceType.Playback:
-                    audioDevices = AppModel.Instance.ActiveAudioDeviceLister.GetPlaybackDevices();
+                    audioDevices = AppModel.Instance.ActiveAudioDeviceLister.PlaybackDevices;
                     break;
                 case DeviceType.Recording:
-                    audioDevices = AppModel.Instance.ActiveAudioDeviceLister.GetRecordingDevices();
+                    audioDevices = AppModel.Instance.ActiveAudioDeviceLister.RecordingDevices;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);

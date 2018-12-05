@@ -52,9 +52,9 @@ namespace SoundSwitch
             Log.Information("Application Starts");
             using (var audioDeviceLister = new CachedAudioDeviceLister(DeviceState.Active))
             {
-                var recordingDevices = audioDeviceLister.GetRecordingDevices();
+                var recordingDevices = audioDeviceLister.RecordingDevices;
                 Log.Information("Devices Recording {device}", recordingDevices);
-                var playbackDevices = audioDeviceLister.GetPlaybackDevices();
+                var playbackDevices = audioDeviceLister.PlaybackDevices;
 
                 Log.Information("Devices Playback {device}", playbackDevices);
             }

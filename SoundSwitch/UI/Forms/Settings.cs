@@ -153,9 +153,9 @@ namespace SoundSwitch.UI.Forms
             using (var audioDeviceLister = new CachedAudioDeviceLister(DeviceState.All))
             {
                 PopulateAudioList(playbackListView, AppModel.Instance.SelectedDevices,
-                    audioDeviceLister.GetPlaybackDevices());
+                    audioDeviceLister.PlaybackDevices);
                 PopulateAudioList(recordingListView, AppModel.Instance.SelectedDevices,
-                    audioDeviceLister.GetRecordingDevices());
+                    audioDeviceLister.RecordingDevices);
             }
 
             _loaded = true;

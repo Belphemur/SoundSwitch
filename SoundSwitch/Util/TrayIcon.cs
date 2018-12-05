@@ -151,7 +151,7 @@ namespace SoundSwitch.Util
 
             try
             {
-                var devices = AppModel.Instance.ActiveAudioDeviceLister.GetPlaybackDevices();
+                var devices = AppModel.Instance.ActiveAudioDeviceLister.PlaybackDevices;
 
                 var defaultDevice = devices
                     .First(device =>

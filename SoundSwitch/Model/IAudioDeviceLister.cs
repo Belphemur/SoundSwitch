@@ -25,12 +25,12 @@ namespace SoundSwitch.Model
         ///     Get the playback device in the set state
         /// </summary>
         /// <returns></returns>
-        ICollection<DeviceFullInfo> GetPlaybackDevices();
+        ICollection<DeviceFullInfo> PlaybackDevices { get; }
 
         /// <summary>
         ///     Get the recording device in the set state
         /// </summary>
         /// <returns></returns>
-        ICollection<DeviceFullInfo> GetRecordingDevices();
+        ICollection<DeviceFullInfo> RecordingDevices { get; }
     }
 }

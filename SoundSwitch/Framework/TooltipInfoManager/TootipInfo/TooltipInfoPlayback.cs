@@ -30,7 +30,7 @@ namespace SoundSwitch.Framework.TooltipInfoManager.TootipInfo
         /// <returns></returns>
         public string TextToDisplay()
         {
-            var audioDevices = AppModel.Instance.ActiveAudioDeviceLister.GetPlaybackDevices();
+            var audioDevices = AppModel.Instance.ActiveAudioDeviceLister.PlaybackDevices;
 
             var playbackDefaultDevice = audioDevices
                 .FirstOrDefault(device =>

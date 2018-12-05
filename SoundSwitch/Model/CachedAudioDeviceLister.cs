@@ -26,8 +26,6 @@ namespace SoundSwitch.Model
     public class CachedAudioDeviceLister : IAudioDeviceLister
     {
         private readonly DeviceState _state;
-        private ICollection<DeviceFullInfo> _playbackCollection;
-        private ICollection<DeviceFullInfo> _recordingCollection;
 
         public CachedAudioDeviceLister(DeviceState state)
         {
@@ -64,8 +62,8 @@ namespace SoundSwitch.Model
                         return CreateDeviceList(enumerator.EnumerateAudioEndPoints(DataFlow.Capture, _state));
                     }
                 }));
-                _playbackCollection = playbackTask.Result;
-                _recordingCollection = recordingTask.Result;
+                PlaybackDevices = playbackTask.Result;
+                RecordingDevices = recordingTask.Result;
             }
             finally
             {
@@ -98,24 +96,12 @@ namespace SoundSwitch.Model
             return sortedDevices.Values;
         }
 
-        /// <summary>
-        /// Get the playback device in the set state
-        /// </summary>
-        /// <returns></returns>
-        public ICollection<DeviceFullInfo> GetPlaybackDevices()
-        {
-            return _playbackCollection;
-        }
+        /// <inheritdoc />
+        public ICollection<DeviceFullInfo> PlaybackDevices { get; private set; }
 
 
-        /// <summary>
-        /// Get the recording device in the set state
-        /// </summary>
-        /// <returns></returns>
-        public ICollection<DeviceFullInfo> GetRecordingDevices()
-        {
-            return _recordingCollection;
-        }
+        /// <inheritdoc />
+        public ICollection<DeviceFullInfo> RecordingDevices { get; private set; }
 
         public void Dispose()
         {
