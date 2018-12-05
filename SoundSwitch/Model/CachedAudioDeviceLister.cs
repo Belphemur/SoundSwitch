@@ -14,12 +14,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Threading;
 using System.Threading.Tasks;
 using NAudio.CoreAudioApi;
 using Serilog;
-using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration.Device;
 using SoundSwitch.Framework.NotificationManager;
 
@@ -76,7 +74,7 @@ namespace SoundSwitch.Model
 
         }
 
-        private ICollection<DeviceFullInfo> CreateDeviceList(MMDeviceCollection collection)
+        private static ICollection<DeviceFullInfo> CreateDeviceList(MMDeviceCollection collection)
         {
             var sortedDevices = new SortedList<string, DeviceFullInfo>();
             foreach (var device in collection)
