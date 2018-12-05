@@ -51,12 +51,11 @@ packages/
 /SoundSwitch/Properties/Resources.fi.resx
 /SoundSwitch/Properties/Notifications.fi.resx
 /SoundSwitch/Properties/AboutStrings.fi.resx
-/SoundSwitch160228.vspx
-/SoundSwitch.VC.VC.opendb
-/SoundSwitch.VC.db
-/SoundSwitch.psess
+*.vspx
+*.opendb
+*.VC.db
+*.psess
 
 /NDependOut
-/NDependOut
-/SoundSwitch.ndproj
 *.ndproj
+*.vsp
