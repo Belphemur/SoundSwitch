@@ -1,4 +1,0 @@
-[submodule "AudioDefaultSwitcher"]
-	path = AudioDefaultSwitcher
-	url = https://github.com/Belphemur/AudioDefaultSwitcher.git
-	branch = master
