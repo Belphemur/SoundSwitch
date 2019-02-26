@@ -56,9 +56,6 @@ This notification is a sound played on the switched device. This way when you ar
 - #### Customized Sound Notification
 The same as a Sound Notification but you can specify the sound which is played.
 
-- #### Toast Notification (≥Win 8)
-If you are on Windows 8 or later, you can use this type of Toast Notification. More personalization is possible, by default the notification is silent, but you can set a custom sound for it (mp3 or wav for now).
-
 If you want to return to a silent Toast Notification, open the file selector, and just do Cancel. Doing that will remove the set sound.
 
 ---
