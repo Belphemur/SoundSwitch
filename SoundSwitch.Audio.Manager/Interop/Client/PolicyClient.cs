@@ -1,11 +1,11 @@
-﻿using System;
-using System.ComponentModel;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Audio.Manager.Interop.Interface;
+using SoundSwitch.Audio.Manager.Interop.Interface.Policy;
 
-namespace SoundSwitch.Audio.Manager.Interop
+namespace SoundSwitch.Audio.Manager.Interop.Client
 {
-    public class PolicyClient
+    internal class PolicyClient
     {
         private readonly IPolicyConfig _configVII;
         private readonly IPolicyConfigVista _configVista;
@@ -25,8 +25,6 @@ namespace SoundSwitch.Audio.Manager.Interop
         {
             if (_policyConfig != null && Marshal.IsComObject(_policyConfig))
                 Marshal.FinalReleaseComObject(_policyConfig);
-
-            GC.Collect();
         }
 
         public void SetDefaultEndpoint(string devId, ERole eRole)
@@ -45,7 +43,7 @@ namespace SoundSwitch.Audio.Manager.Interop
             }
         }
 
-        [ComImport, Guid("870AF99C-171D-4F9E-AF0D-E63DF40C2BC9")]
+        [ComImport, Guid(ComGuid.POLICY_CONFIG_CLIENT_IID)]
         private class _PolicyConfigClient
         {
         }

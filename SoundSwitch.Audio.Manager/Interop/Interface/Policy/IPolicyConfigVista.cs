@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 
 namespace SoundSwitch.Audio.Manager.Interop.Interface.Policy
 {
-    [Guid(ComGuid.POLICY_CONFIG_X_IID)]
+    [Guid(ComGuid.POLICY_CONFIG_VISTA_IID)]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    internal interface IPolicyConfigX
+    internal interface IPolicyConfigVista
     {
         [PreserveSig]
         int GetMixFormat(
@@ -17,9 +18,6 @@ namespace SoundSwitch.Audio.Manager.Interop.Interface.Policy
             [In] [MarshalAs(UnmanagedType.LPWStr)] string pszDeviceName,
             [In] [MarshalAs(UnmanagedType.Bool)] bool bDefault,
             [In] IntPtr ppFormat);
-
-        [PreserveSig]
-        int ResetDeviceFormat([In] [MarshalAs(UnmanagedType.LPWStr)] string pszDeviceName);
 
         [PreserveSig]
         int SetDeviceFormat(

@@ -23,6 +23,8 @@ using System.Threading;
 using System.Windows.Forms;
 using AudioDefaultSwitcherWrapper;
 using Serilog;
+using SoundSwitch.Audio.Manager;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.TooltipInfoManager;
@@ -155,7 +157,7 @@ namespace SoundSwitch.Util
 
                 var defaultDevice = devices
                     .First(device =>
-                        AudioController.IsDefault(device.Id, (DeviceType) device.Type, DeviceRole.Console));
+                        AudioSwitcher.Instance.IsDefault(device.Id, (EDataFlow) device.Type, ERole.eConsole));
                 ReplaceIcon(defaultDevice.SmallIcon);
             }
             catch (InvalidOperationException)

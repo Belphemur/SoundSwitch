@@ -14,6 +14,8 @@
 
 using System.Linq;
 using AudioDefaultSwitcherWrapper;
+using SoundSwitch.Audio.Manager;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
 
@@ -30,7 +32,8 @@ namespace SoundSwitch.Framework.TooltipInfoManager.TootipInfo
         /// <returns></returns>
         public string TextToDisplay()
         {
-            var recordingDevice = AppModel.Instance.ActiveAudioDeviceLister.RecordingDevices                                  .FirstOrDefault(device => AudioController.IsDefault(device.Id, (DeviceType)device.Type, DeviceRole.Console));
+            var recordingDevice = AppModel.Instance.ActiveAudioDeviceLister.RecordingDevices.FirstOrDefault(device =>
+                AudioSwitcher.Instance.IsDefault(device.Id, (EDataFlow)device.Type, ERole.eConsole));
             return recordingDevice == null ? null : string.Format(SettingsStrings.activeRecording, recordingDevice);
         }
 

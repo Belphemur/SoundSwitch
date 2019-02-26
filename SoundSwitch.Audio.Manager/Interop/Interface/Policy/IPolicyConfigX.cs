@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 
-namespace SoundSwitch.Audio.Manager.Interop.Interface
+namespace SoundSwitch.Audio.Manager.Interop.Interface.Policy
 {
-    [Guid(ComGuid.POLICY_CONFIG_IID)]
+    [Guid(ComGuid.POLICY_CONFIG_X_IID)]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    internal interface IPolicyConfig
+    internal interface IPolicyConfigX
     {
         [PreserveSig]
         int GetMixFormat(

@@ -20,6 +20,7 @@ using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Framework.Configuration.Device;
 using SoundSwitch.Model;
 
@@ -49,7 +50,7 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
             _lastDevices.TryGetValue(type, out var lastDevice);
 
             var defaultDev = lastDevice ??
-                             audioDevices.FirstOrDefault(device => AudioController.IsDefault(device.Id, type, DeviceRole.Console)) ??
+                             audioDevices.FirstOrDefault(device => AudioSwitcher.Instance.IsDefault(device.Id, (EDataFlow)type, ERole.eConsole)) ??
                              audioDevices.Last();
             var next = audioDevices.SkipWhile((device, i) => device.Id != defaultDev.Id).Skip(1).FirstOrDefault() ??
                        audioDevices.ElementAt(0);

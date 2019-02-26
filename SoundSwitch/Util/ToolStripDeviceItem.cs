@@ -18,6 +18,8 @@ using System.Drawing;
 using System.Windows.Forms;
 using AudioDefaultSwitcherWrapper;
 using NAudio.CoreAudioApi;
+using SoundSwitch.Audio.Manager;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Framework.Configuration.Device;
 using SoundSwitch.Properties;
 
@@ -38,7 +40,7 @@ namespace SoundSwitch.Util
             get
             {
                 if (AudioDevice != null &&
-                    AudioController.IsDefault(AudioDevice.Id, (DeviceType) AudioDevice.Type, DeviceRole.Console))
+                    AudioSwitcher.Instance.IsDefault(AudioDevice.Id, (EDataFlow)AudioDevice.Type, ERole.eConsole))
                     return check;
 
                 return null;

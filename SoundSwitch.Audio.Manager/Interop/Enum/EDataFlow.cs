@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SoundSwitch.Audio.Manager.Interop
+namespace SoundSwitch.Audio.Manager.Interop.Enum
 {
     [Flags]
     public enum EDataFlow : uint

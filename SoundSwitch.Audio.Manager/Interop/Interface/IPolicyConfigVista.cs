@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace SoundSwitch.Audio.Manager.Interop.Interface
+namespace SoundSwitch.Audio.Manager.Interop.Interface.Policy
 {
     [Guid(ComGuid.POLICY_CONFIG_VISTA_IID)]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
