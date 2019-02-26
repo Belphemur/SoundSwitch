@@ -16,14 +16,12 @@ setlocal
 cd /d "%~dp0"
 
 set FILE_DIR=%~dp0
-set BIN_DIR=%FILE_DIR%bin
+set BIN_DIR=%FILE_DIR%SoundSwitch\bin
 set LANGS=(fr de es nb pt-BR it-IT zh-CHS)
 
 if ["%~1"]==["-legacy"] set USE_LEGACY_VS2015=1
 
 set finalDir=%FILE_DIR%Final
-set x86Release=%finalDir%\x86
-set x64Release=%finalDir%\x64
 
 rem Check if required commands exist
 where markdown-html >nul 2>nul
@@ -37,10 +35,8 @@ rmdir /q /s bin >nul 2>nul
 rmdir /q /s obj >nul 2>nul
 rmdir /q /s Release >nul 2>nul
 
-rmdir /q /s %x86Release% >nul 2>nul
-rmdir /q /s %x64Release% >nul 2>nul
-mkdir %x86Release% >nul 2>nul
-mkdir %x64Release% >nul 2>nul
+rmdir /q /s %finalDir% >nul 2>nul
+mkdir %finalDir% >nul 2>nul
 
 set buildPlatform=Release
 if "%~1" neq "" (
@@ -68,10 +64,8 @@ echo %msBuildExe%
 echo.
 echo Building SoundSwitch %buildPlatform%
 echo.
-echo Build x86
-%msBuildExe% SoundSwitch.sln /m /p:Configuration=%buildPlatform% /p:Platform="x86" /v:q /t:rebuild || (set errorMessage=Build x86 failed & goto ERROR_QUIT)
-echo Build x64
-%msBuildExe% SoundSwitch.sln /m /p:Configuration=%buildPlatform% /p:Platform="x64" /v:q /t:rebuild || (set errorMessage=Build x64 failed & goto ERROR_QUIT)
+echo Build AnyCPU
+%msBuildExe% SoundSwitch.sln /m /p:Configuration=%buildPlatform% /p:Platform="Any CPU" /v:q /t:rebuild || (set errorMessage=Build AnyCPU failed & goto ERROR_QUIT)
 echo.
 
 if %buildChangelogAndReadme%==1 (
@@ -94,24 +88,14 @@ xcopy /y img\soundSwitched.png %finalDir% >nul 2>nul
 echo Copy LICENSE
 xcopy /y LICENSE.txt %finalDir% >nul 2>nul
 
-echo Copy x64
-xcopy /y %BIN_DIR%\x64\Release\*.pdb %x64Release% >nul 2>nul
-xcopy /y %BIN_DIR%\x64\Release\*.dll %x64Release% >nul 2>nul
-xcopy /y %BIN_DIR%\x64\Release\SoundSwitch.exe %x64Release% >nul 2>nul
-xcopy /y %BIN_DIR%\x64\Release\SoundSwitch.exe.config %x64Release% >nul 2>nul
+echo Copy Binaries
+xcopy /y %BIN_DIR%\Release\*.pdb %finalDir% >nul 2>nul
+xcopy /y %BIN_DIR%\Release\*.dll %finalDir% >nul 2>nul
+xcopy /y %BIN_DIR%\Release\SoundSwitch.exe %finalDir% >nul 2>nul
+xcopy /y %BIN_DIR%\Release\SoundSwitch.exe.config %finalDir% >nul 2>nul
 for %%l in %LANGS% DO (
-    mkdir %x64Release%\%%l\ 
-    xcopy /y %BIN_DIR%\x64\Release\%%l\SoundSwitch.resources.dll %x64Release%\%%l\ >nul 2>nul
-)
-
-echo Copy x86
-xcopy /y %BIN_DIR%\Win32\Release\*.pdb %x86Release% >nul 2>nul
-xcopy /y %BIN_DIR%\Win32\Release\*.dll %x86Release% >nul 2>nul
-xcopy /y %BIN_DIR%\Win32\Release\SoundSwitch.* %x86Release% >nul 2>nul
-xcopy /y %BIN_DIR%\Win32\Release\SoundSwitch.exe.config %x86Release% >nul 2>nul
-for %%l in %LANGS% DO (
-    mkdir %x86Release%\%%l\
-    xcopy /y %BIN_DIR%\Win32\Release\%%l\SoundSwitch.resources.dll %x86Release%\%%l\ >nul 2>nul
+    mkdir %finalDir%\%%l\ 
+    xcopy /y %BIN_DIR%\Release\%%l\SoundSwitch.resources.dll %finalDir%\%%l\ >nul 2>nul
 )
 
 echo START

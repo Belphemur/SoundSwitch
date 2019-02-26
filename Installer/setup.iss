@@ -8,11 +8,11 @@
 
 #define use_dotnetfx47
 
-#define use_vc2017
+;#define use_vc2017
 
 #define MyAppSetupName 'SoundSwitch'
 #define ExeDir  '..\Final\'
-#define MyAppVersion GetFileVersion('..\Final\x64\SoundSwitch.exe')
+#define MyAppVersion GetFileVersion('..\Final\SoundSwitch.exe')
 
 [Setup]
 AppName={#MyAppSetupName}
@@ -67,29 +67,17 @@ Name: "certs"; Description: "{cm:AddCertDescription}"; GroupDescription: "{cm:Ce
 Name: deletefiles; Description: "{cm:ExistingSettings}"; Flags: unchecked
 
 [Files]
-Source: "{#ExeDir}x64\SoundSwitch.exe.config"; DestDir: "{app}"; Check: Is64BitInstallMode  ; Flags: 64bit
-Source: "{#ExeDir}x64\SoundSwitch.exe"; DestDir: "{app}"; Check: Is64BitInstallMode   ; Flags: 64bit signonce
-Source: "{#ExeDir}x64\*.dll"; DestDir: "{app}"; Check: Is64BitInstallMode   ; Flags: 64bit
-Source: "{#ExeDir}x64\*.pdb"; DestDir: "{app}"; Check: Is64BitInstallMode   ; Flags: 64bit
-Source: "{#ExeDir}x64\fr\*.dll"; DestDir: "{app}\fr"; Check: Is64BitInstallMode   ; Flags: 64bit   
-Source: "{#ExeDir}x64\de\*.dll"; DestDir: "{app}\de"; Check: Is64BitInstallMode   ; Flags: 64bit
-Source: "{#ExeDir}x64\es\*.dll"; DestDir: "{app}\es"; Check: Is64BitInstallMode   ; Flags: 64bit
-Source: "{#ExeDir}x64\nb\*.dll"; DestDir: "{app}\nb"; Check: Is64BitInstallMode   ; Flags: 64bit
-Source: "{#ExeDir}x64\pt-BR\*.dll"; DestDir: "{app}\pt-BR"; Check: Is64BitInstallMode   ; Flags: 64bit
-Source: "{#ExeDir}x64\it-IT\*.dll"; DestDir: "{app}\it-IT"; Check: Is64BitInstallMode   ; Flags: 64bit
-Source: "{#ExeDir}x64\zh-CHS\*.dll"; DestDir: "{app}\zh-CHS"; Check: Is64BitInstallMode   ; Flags: 64bit
-
-Source: "{#ExeDir}x86\SoundSwitch.exe.config"; DestDir: "{app}"; Check: not Is64BitInstallMode  ; Flags: 32bit
-Source: "{#ExeDir}x86\SoundSwitch.exe"; DestDir: "{app}"; Check:  not Is64BitInstallMode   ; Flags: 32bit signonce
-Source: "{#ExeDir}x86\*.dll"; DestDir: "{app}"; Check: not Is64BitInstallMode    ; Flags: 32bit 
-Source: "{#ExeDir}x86\*.pdb"; DestDir: "{app}"; Check: not Is64BitInstallMode    ; Flags: 32bit 
-Source: "{#ExeDir}x86\fr\*.dll"; DestDir: "{app}\fr"; Check: not Is64BitInstallMode  ; Flags: 32bit 
-Source: "{#ExeDir}x86\de\*.dll"; DestDir: "{app}\de"; Check: not Is64BitInstallMode  ; Flags: 32bit 
-Source: "{#ExeDir}x86\es\*.dll"; DestDir: "{app}\es"; Check: not Is64BitInstallMode  ; Flags: 32bit 
-Source: "{#ExeDir}x86\nb\*.dll"; DestDir: "{app}\nb"; Check: not Is64BitInstallMode   ; Flags: 32bit
-Source: "{#ExeDir}x86\pt-BR\*.dll"; DestDir: "{app}\pt-BR"; Check: not Is64BitInstallMode   ; Flags: 32bit
-Source: "{#ExeDir}x86\it-IT\*.dll"; DestDir: "{app}\it-IT"; Check: not Is64BitInstallMode   ; Flags: 32bit
-Source: "{#ExeDir}x86\zh-CHS\*.dll"; DestDir: "{app}\zh-CHS"; Check: not Is64BitInstallMode   ; Flags: 32bit
+Source: "{#ExeDir}SoundSwitch.exe.config"; DestDir: "{app}"; 
+Source: "{#ExeDir}SoundSwitch.exe"; DestDir: "{app}";  Flags: signonce
+Source: "{#ExeDir}*.dll"; DestDir: "{app}";
+Source: "{#ExeDir}*.pdb"; DestDir: "{app}"; 
+Source: "{#ExeDir}fr\*.dll"; DestDir: "{app}\fr";
+Source: "{#ExeDir}de\*.dll"; DestDir: "{app}\de";
+Source: "{#ExeDir}es\*.dll"; DestDir: "{app}\es";
+Source: "{#ExeDir}nb\*.dll"; DestDir: "{app}\nb";
+Source: "{#ExeDir}pt-BR\*.dll"; DestDir: "{app}\pt-BR";
+Source: "{#ExeDir}it-IT\*.dll"; DestDir: "{app}\it-IT";
+Source: "{#ExeDir}zh-CHS\*.dll"; DestDir: "{app}\zh-CHS";
 
 Source: "{#ExeDir}Changelog.html"; DestDir: "{app}"
 Source: "{#ExeDir}Readme.html"; DestDir: "{app}"   
@@ -168,6 +156,10 @@ Type: files; Name: {app}\Audio.EndPoint.Controller.Wrapper.*
 Type: files; Name: {app}\AudioEndPointLibrary.*
 Type: files; Name: {app}\TracerX-Logger.*
 Type: files; Name: {app}\System.*.dll
+Type: files; Name: {app}\Audio.Default.Switcher.Wrapper.*
+Type: files; Name: {app}\AudioDefaultSwitcher.*
+Type: files; Name: {app}\Microsoft.*.dll
+Type: files; Name: {app}\Microsoft.*.pdb
 
 [Code]
 #include "scripts\checkMutex.iss"
