@@ -16,7 +16,6 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using AudioDefaultSwitcherWrapper;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;

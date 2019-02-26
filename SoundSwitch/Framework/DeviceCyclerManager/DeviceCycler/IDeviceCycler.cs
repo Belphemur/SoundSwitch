@@ -12,7 +12,6 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using AudioDefaultSwitcherWrapper;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Framework.Configuration.Device;
 using SoundSwitch.Framework.Factory;
@@ -25,7 +24,7 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         /// Cycle the audio device for the given type
         /// </summary>
         /// <param name="type"></param>
-        bool CycleAudioDevice(DeviceType type);
+        bool CycleAudioDevice(DataFlow type);
 
         /// <summary>
         ///     Attempts to set active device to the specified name

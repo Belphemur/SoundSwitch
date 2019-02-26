@@ -14,7 +14,6 @@
 
 using System;
 using System.Collections.Generic;
-using AudioDefaultSwitcherWrapper;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Configuration.Device;
@@ -36,14 +35,14 @@ namespace SoundSwitch.Model
 
     public class DeviceListChanged : EventArgs
     {
-        public DeviceListChanged(IEnumerable<DeviceInfo> seletedDevicesList, DeviceType type)
+        public DeviceListChanged(IEnumerable<DeviceInfo> seletedDevicesList, DataFlow type)
         {
             SeletedDevicesList = seletedDevicesList;
             Type = type;
         }
 
         public IEnumerable<DeviceInfo> SeletedDevicesList { get; private set; }
-        public DeviceType Type { get; private set; }
+        public DataFlow Type { get; private set; }
     }
 
     public class NotificationSettingsUpdatedEvent : EventArgs
@@ -94,9 +93,9 @@ namespace SoundSwitch.Model
 
     public class DeviceDefaultChangedEvent : DeviceChangedEventBase
     {
-        public DeviceRole Role { get; }
+        public Role Role { get; }
         public MMDevice Device { get; }
-        public DeviceDefaultChangedEvent(MMDevice device, DeviceRole role) : base(device.ID)
+        public DeviceDefaultChangedEvent(MMDevice device, Role role) : base(device.ID)
         {
             Device = device;
             Role = role;

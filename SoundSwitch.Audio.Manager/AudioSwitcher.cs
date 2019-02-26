@@ -2,6 +2,7 @@
 using SoundSwitch.Audio.Manager.Interop;
 using SoundSwitch.Audio.Manager.Interop.Client;
 using SoundSwitch.Audio.Manager.Interop.Enum;
+using SoundSwitch.Audio.Manager.Interop.Threading;
 
 namespace SoundSwitch.Audio.Manager
 {
@@ -24,33 +25,27 @@ namespace SoundSwitch.Audio.Manager
                     return _instance;
                 }
 
-                return _instance = new AudioSwitcher();
+                return _instance = ComThread.Invoke(() => new AudioSwitcher());
             }
         }
 
-        public bool SwitchTo(string deviceId, ERole role)
+        public void SwitchTo(string deviceId, ERole role)
         {
             if (role != ERole.ERole_enum_count)
             {
-                return InternalSwitchTo(deviceId, role);
+                ComThread.Invoke((() => _policyClient.SetDefaultEndpoint(deviceId, role)));
+
+                return;
             }
 
-            var result = true;
-            result &= InternalSwitchTo(deviceId, ERole.eConsole);
-            result &= InternalSwitchTo(deviceId, ERole.eMultimedia);
-            result &= InternalSwitchTo(deviceId, ERole.eCommunications);
-            return result;
+            SwitchTo(deviceId, ERole.eConsole);
+            SwitchTo(deviceId, ERole.eMultimedia);
+            SwitchTo(deviceId, ERole.eCommunications);
         }
 
         public bool IsDefault(string deviceId, EDataFlow flow, ERole role)
         {
-            return _enumerator.IsDefault(deviceId, flow, role);
-        }
-
-        private bool InternalSwitchTo(string deviceId, ERole role)
-        {
-            _policyClient.SetDefaultEndpoint(deviceId, role);
-            return true;
+            return ComThread.Invoke(() => _enumerator.IsDefault(deviceId, flow, role));
         }
     }
 }

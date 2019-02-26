@@ -576,10 +576,6 @@
     </PublishFile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AudioDefaultSwitcher\Audio.EndPoint.Controller.Wrapper\Audio.EndPoint.Controller.Wrapper.vcxproj">
-      <Project>{115bf2b4-b3be-446d-ba76-348e274258f7}</Project>
-      <Name>Audio.Default.Switcher.Wrapper</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SoundSwitch.Audio.Manager\SoundSwitch.Audio.Manager.csproj">
       <Project>{b4f7987e-a5fa-45b1-9ae4-5e40144ffc54}</Project>
       <Name>SoundSwitch.Audio.Manager</Name>

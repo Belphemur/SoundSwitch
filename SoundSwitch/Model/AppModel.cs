@@ -13,7 +13,6 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using AudioDefaultSwitcherWrapper;
 using Microsoft.WindowsAPICodePack.ApplicationServices;
 using NAudio.CoreAudioApi;
 using Serilog;
@@ -195,8 +194,8 @@ namespace SoundSwitch.Model
             {
                 throw new InvalidOperationException("Already initialized");
             }
-            SetHotkeyCombination(AppConfigs.Configuration.PlaybackHotKeys, DeviceType.Playback);
-            SetHotkeyCombination(AppConfigs.Configuration.RecordingHotKeys, DeviceType.Recording);
+            SetHotkeyCombination(AppConfigs.Configuration.PlaybackHotKeys, DataFlow.Render);
+            SetHotkeyCombination(AppConfigs.Configuration.RecordingHotKeys, DataFlow.Capture);
 
             WindowsAPIAdapter.HotKeyPressed += HandleHotkeyPress;
 
@@ -289,7 +288,7 @@ namespace SoundSwitch.Model
                 return false;
             }
 
-            SelectedDeviceChanged?.Invoke(this, new DeviceListChanged(SelectedDevices, (DeviceType)device.Type));
+            SelectedDeviceChanged?.Invoke(this, new DeviceListChanged(SelectedDevices, device.Type));
             AppConfigs.Configuration.Save();
 
             return true;
@@ -315,7 +314,7 @@ namespace SoundSwitch.Model
             if (result)
             {
                 SelectedDeviceChanged?.Invoke(this,
-                    new DeviceListChanged(SelectedDevices, (DeviceType) device.Type));
+                    new DeviceListChanged(SelectedDevices, device.Type));
                 AppConfigs.Configuration.Save();
             }
 
@@ -326,16 +325,16 @@ namespace SoundSwitch.Model
 
         #region Hot keys
 
-        public bool SetHotkeyCombination(HotKeys hotkeys, DeviceType deviceType)
+        public bool SetHotkeyCombination(HotKeys hotkeys, DataFlow deviceType)
         {
 
             HotKeys confHotKeys = null;
             switch (deviceType)
             {
-                case DeviceType.Playback:
+                 case DataFlow.Render:
                     confHotKeys = AppConfigs.Configuration.PlaybackHotKeys;
                     break;
-                case DeviceType.Recording:
+                case DataFlow.Capture:
                     confHotKeys = AppConfigs.Configuration.RecordingHotKeys;
                     break;
                 default:
@@ -358,10 +357,10 @@ namespace SoundSwitch.Model
 
             switch (deviceType)
             {
-                case DeviceType.Playback:
+                case DataFlow.Render:
                     AppConfigs.Configuration.PlaybackHotKeys = hotkeys;
                     break;
-                case DeviceType.Recording:
+                case DataFlow.Capture:
                     AppConfigs.Configuration.RecordingHotKeys = hotkeys;
                     break;
                 default:
@@ -386,11 +385,11 @@ namespace SoundSwitch.Model
             {
                 if (e.HotKeys == AppConfigs.Configuration.PlaybackHotKeys)
                 {
-                    CycleActiveDevice(DeviceType.Playback);
+                    CycleActiveDevice(DataFlow.Render);
                 }
                 else if (e.HotKeys == AppConfigs.Configuration.RecordingHotKeys)
                 {
-                    CycleActiveDevice(DeviceType.Recording);
+                    CycleActiveDevice(DataFlow.Capture);
                 }
             }
             catch (Exception ex)
@@ -428,7 +427,7 @@ namespace SoundSwitch.Model
         ///     as far as we can tell), returns false if could not successfully switch. Throws NoDevicesException
         ///     if there are no devices configured.
         /// </summary>
-        public bool CycleActiveDevice(DeviceType type)
+        public bool CycleActiveDevice(DataFlow type)
         {
 
             try

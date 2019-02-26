@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Audio.Manager.Interop.Interface;
 using SoundSwitch.Audio.Manager.Interop.Interface.Policy;

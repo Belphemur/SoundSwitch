@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using AudioDefaultSwitcherWrapper;
 using NAudio.CoreAudioApi;
 using NAudio.CoreAudioApi.Interfaces;
 using SoundSwitch.Model;
@@ -55,7 +54,7 @@ namespace SoundSwitch.Framework.NotificationManager
             Task.Factory.StartNew(() =>
             {
                 var device = _enumerator.GetDevice(defaultDeviceId);
-                DefaultDeviceChanged?.Invoke(this, new DeviceDefaultChangedEvent(device, (DeviceRole) role));
+                DefaultDeviceChanged?.Invoke(this, new DeviceDefaultChangedEvent(device, role));
             });
         }
 

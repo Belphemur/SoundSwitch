@@ -15,7 +15,6 @@
 
 using System;
 using System.Collections.Generic;
-using AudioDefaultSwitcherWrapper;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
@@ -161,7 +160,7 @@ namespace SoundSwitch.Model
         /// <param name="hotkeys"></param>
         /// <param name="deviceType"></param>
         /// <returns>if it's successfull</returns>
-        bool SetHotkeyCombination(HotKeys hotkeys, DeviceType deviceType);
+        bool SetHotkeyCombination(HotKeys hotkeys, DataFlow deviceType);
 
         /// <summary>
         ///     Attempts to set active device to the specified name
@@ -174,7 +173,7 @@ namespace SoundSwitch.Model
         ///     as far as we can tell), returns false if could not successfully switch. Throws NoDevicesException
         ///     if there are no devices configured.
         /// </summary>
-        bool CycleActiveDevice(DeviceType type);
+        bool CycleActiveDevice(DataFlow type);
 
         #endregion
 

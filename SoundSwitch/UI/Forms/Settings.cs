@@ -19,7 +19,6 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using AudioDefaultSwitcherWrapper;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
@@ -58,7 +57,7 @@ namespace SoundSwitch.UI.Forms
 
             hotkeysTextBox.Text = AppConfigs.Configuration.PlaybackHotKeys.Display();
             hotkeysTextBox.Tag =
-                new Tuple<DeviceType, HotKeys>(DeviceType.Playback, AppConfigs.Configuration.PlaybackHotKeys);
+                new Tuple<DataFlow, HotKeys>(DataFlow.Render, AppConfigs.Configuration.PlaybackHotKeys);
             hotkeysTextBox.Enabled = hotkeysCheckBox.Checked = AppConfigs.Configuration.PlaybackHotKeys.Enabled;
             hotkeysTextBox.KeyDown += (sender, args) => SetHotkey(args);
             var hotkeysToolTip = new ToolTip();
@@ -249,8 +248,8 @@ namespace SoundSwitch.UI.Forms
             else
             {
                 hotkeysTextBox.Text = displayString + key;
-                var tuple = (Tuple<DeviceType, HotKeys>) hotkeysTextBox.Tag;
-                var newTuple = new Tuple<DeviceType, HotKeys>(tuple.Item1, new HotKeys(e.KeyCode, modifierKeys));
+                var tuple = (Tuple<DataFlow, HotKeys>) hotkeysTextBox.Tag;
+                var newTuple = new Tuple<DataFlow, HotKeys>(tuple.Item1, new HotKeys(e.KeyCode, modifierKeys));
                 hotkeysTextBox.Tag = newTuple;
                 hotkeysTextBox.ForeColor = AppModel.Instance.SetHotkeyCombination(newTuple.Item2, newTuple.Item1)
                     ? Color.Green
@@ -274,7 +273,7 @@ namespace SoundSwitch.UI.Forms
                 SetHotkeysFieldsVisibility(true);
                 hotkeysTextBox.Text = AppConfigs.Configuration.PlaybackHotKeys.Display();
                 hotkeysTextBox.Tag =
-                    new Tuple<DeviceType, HotKeys>(DeviceType.Playback, AppConfigs.Configuration.PlaybackHotKeys);
+                    new Tuple<DataFlow, HotKeys>(DataFlow.Render, AppConfigs.Configuration.PlaybackHotKeys);
                 hotkeysCheckBox.Checked = AppConfigs.Configuration.PlaybackHotKeys.Enabled;
             }
             else if (tabControlSender.SelectedTab == recordingTabPage)
@@ -282,7 +281,7 @@ namespace SoundSwitch.UI.Forms
                 SetHotkeysFieldsVisibility(true);
                 hotkeysTextBox.Text = AppConfigs.Configuration.RecordingHotKeys.Display();
                 hotkeysTextBox.Tag =
-                    new Tuple<DeviceType, HotKeys>(DeviceType.Recording, AppConfigs.Configuration.RecordingHotKeys);
+                    new Tuple<DataFlow, HotKeys>(DataFlow.Capture, AppConfigs.Configuration.RecordingHotKeys);
                 hotkeysCheckBox.Checked = AppConfigs.Configuration.RecordingHotKeys.Enabled;
             }
             else if (tabControlSender.SelectedTab == appSettingTabPage)
@@ -387,7 +386,7 @@ namespace SoundSwitch.UI.Forms
 
         private void hotkeysCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            var tuple = (Tuple<DeviceType, HotKeys>) hotkeysTextBox.Tag;
+            var tuple = (Tuple<DataFlow, HotKeys>) hotkeysTextBox.Tag;
             var currentState = tuple.Item2.Enabled;
             hotkeysTextBox.Enabled = tuple.Item2.Enabled = hotkeysCheckBox.Checked;
             if (currentState != tuple.Item2.Enabled)

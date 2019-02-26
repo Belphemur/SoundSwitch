@@ -15,7 +15,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AudioDefaultSwitcherWrapper;
 using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Audio.Manager;
@@ -28,7 +27,7 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
 {
     public abstract class ADeviceCycler : IDeviceCycler
     {
-        private readonly IDictionary<DeviceType, DeviceFullInfo> _lastDevices = new Dictionary<DeviceType, DeviceFullInfo>();
+        private readonly IDictionary<DataFlow, DeviceFullInfo> _lastDevices = new Dictionary<DataFlow, DeviceFullInfo>();
 
         public abstract DeviceCyclerTypeEnum TypeEnum { get; }
         public abstract string Label { get; }
@@ -37,7 +36,7 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         /// Cycle the audio device for the given type
         /// </summary>
         /// <param name="type"></param>
-        public abstract bool CycleAudioDevice(DeviceType type);
+        public abstract bool CycleAudioDevice(DataFlow type);
 
         /// <summary>
         /// Get the next device that need to be set as Default
@@ -45,7 +44,7 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         /// <param name="audioDevices"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        protected DeviceFullInfo GetNextDevice(ICollection<DeviceFullInfo> audioDevices, DeviceType type)
+        protected DeviceFullInfo GetNextDevice(ICollection<DeviceFullInfo> audioDevices, DataFlow type)
         {
             _lastDevices.TryGetValue(type, out var lastDevice);
 
@@ -75,7 +74,7 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
                 Log.Information("Set Default Communication device: {Device}", device);
                 AudioSwitcher.Instance.SwitchTo(device.Id, ERole.ERole_enum_count);
             }
-            _lastDevices[(DeviceType)device.Type] = device;
+            _lastDevices[device.Type] = device;
             return true;
 
         }

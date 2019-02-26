@@ -13,7 +13,6 @@
 ********************************************************************/
 
 using System.Linq;
-using AudioDefaultSwitcherWrapper;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Localization;

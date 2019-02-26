@@ -15,7 +15,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AudioDefaultSwitcherWrapper;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Framework.Configuration.Device;
 using SoundSwitch.Model;
@@ -32,15 +31,15 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         /// Cycle the audio device for the given type
         /// </summary>
         /// <param name="type"></param>
-        public override bool CycleAudioDevice(DeviceType type)
+        public override bool CycleAudioDevice(DataFlow type)
         {
             ICollection<DeviceFullInfo> audioDevices;
             switch (type)
             {
-                case DeviceType.Playback:
+                case DataFlow.Render:
                     audioDevices = AppModel.Instance.ActiveAudioDeviceLister.PlaybackDevices;
                     break;
-                case DeviceType.Recording:
+                case DataFlow.Capture:
                     audioDevices = AppModel.Instance.ActiveAudioDeviceLister.RecordingDevices;
                     break;
                 default:
