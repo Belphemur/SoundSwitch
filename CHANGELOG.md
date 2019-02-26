@@ -1,5 +1,23 @@
 # Change Log
 
+## [v4.12](https://github.com/Belphemur/SoundSwitch/tree/v4.12) (2019-02-26)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.11...v4.12)
+
+**Fixed bugs:**
+
+- SoundSwitch does not refresh itself when connecting new device to computer [\#323](https://github.com/Belphemur/SoundSwitch/issues/323)
+- Toast Notification not working [\#321](https://github.com/Belphemur/SoundSwitch/issues/321)
+
+**Closed issues:**
+
+- Not switching to HDMI Audio Device [\#322](https://github.com/Belphemur/SoundSwitch/issues/322)
+- Failure to install Visual C++ Redistributable during first installation. [\#320](https://github.com/Belphemur/SoundSwitch/issues/320)
+- Not toggling when browser is up [\#319](https://github.com/Belphemur/SoundSwitch/issues/319)
+- Breaks Spotify [\#318](https://github.com/Belphemur/SoundSwitch/issues/318)
+- Soundswitch does not open itself at boot. [\#317](https://github.com/Belphemur/SoundSwitch/issues/317)
+- Visual C++ Redistributable for Visual Studio 2017 issues with  other program [\#315](https://github.com/Belphemur/SoundSwitch/issues/315)
+- 4.11.69 Bug with hotkeys [\#314](https://github.com/Belphemur/SoundSwitch/issues/314)
+
 ## [v4.11](https://github.com/Belphemur/SoundSwitch/tree/v4.11) (2018-12-05)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.10...v4.11)
 
