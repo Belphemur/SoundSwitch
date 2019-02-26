@@ -92,7 +92,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>$(SolutionDir)\bin\x64\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -110,7 +110,7 @@
     <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>$(SolutionDir)\bin\x64\Release\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -318,14 +318,12 @@
     <Compile Include="Framework\NotificationManager\Notification\NotificationWindows.cs" />
     <Compile Include="Framework\NotificationManager\Notification\NotificationNone.cs" />
     <Compile Include="Framework\NotificationManager\NotificationTypeEnum.cs" />
-    <Compile Include="Framework\Toast\ToastData.cs" />
     <Compile Include="Framework\Banner\BannerForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Framework\Banner\BannerForm.Designer.cs">
       <DependentUpon>BannerForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Framework\Toast\ToastManager.cs" />
     <Compile Include="Framework\TooltipInfoManager\TooltipInfoFactory.cs" />
     <Compile Include="Framework\TooltipInfoManager\TooltipInfoManager.cs" />
     <Compile Include="Framework\TooltipInfoManager\TootipInfo\ITooltipInfo.cs" />
