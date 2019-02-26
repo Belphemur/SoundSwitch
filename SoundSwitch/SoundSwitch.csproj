@@ -223,7 +223,7 @@
       <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
-      <HintPath>..\packages\Serilog.2.7.1\lib\net46\Serilog.dll</HintPath>
+      <HintPath>..\packages\Serilog.2.8.0\lib\net46\Serilog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Serilog.Enrichers.Environment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
@@ -234,9 +234,8 @@
       <HintPath>..\packages\Serilog.Enrichers.Thread.3.0.0\lib\net45\Serilog.Enrichers.Thread.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Serilog.Exceptions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=fc5550082a9c642c, processorArchitecture=MSIL">
-      <HintPath>..\packages\Serilog.Exceptions.4.1.0\lib\net45\Serilog.Exceptions.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Serilog.Exceptions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=fc5550082a9c642c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Exceptions.5.0.0\lib\net46\Serilog.Exceptions.dll</HintPath>
     </Reference>
     <Reference Include="Serilog.Formatting.Compact, Version=1.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
       <HintPath>..\packages\Serilog.Formatting.Compact.1.0.0\lib\net45\Serilog.Formatting.Compact.dll</HintPath>
@@ -304,7 +303,6 @@
     <Compile Include="Framework\NotificationManager\Notification\NotificationCustom.cs" />
     <Compile Include="Framework\NotificationManager\Notification\NotificationSound.cs" />
     <Compile Include="Framework\NotificationManager\Notification\NotificationBanner.cs" />
-    <Compile Include="Framework\NotificationManager\Notification\NotificationToast.cs" />
     <Compile Include="Framework\NotificationManager\Notification\NotificationWindows.cs" />
     <Compile Include="Framework\NotificationManager\Notification\NotificationNone.cs" />
     <Compile Include="Framework\NotificationManager\NotificationTypeEnum.cs" />

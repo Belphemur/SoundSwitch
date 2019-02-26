@@ -95,6 +95,11 @@ namespace SoundSwitch.Framework.Configuration
                     SelectedRecordingDeviceListId.Select((s => new DeviceInfo("", s, DataFlow.Capture))));
                 SelectedRecordingDeviceListId.Clear();
             }
+
+            if (NotificationSettings == NotificationTypeEnum.ToastNotification)
+            {
+                NotificationSettings = NotificationTypeEnum.BannerNotification;
+            }
         }
 
         public void Save()

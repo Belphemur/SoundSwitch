@@ -28,7 +28,6 @@ namespace SoundSwitch.Framework.NotificationManager
                 new NotificationWindows(),
                 new NotificationSound(),
                 new NotificationCustom(),
-                new NotificationToast(),
                 new NotificationBanner(),
                 new NotificationNone()
             };
