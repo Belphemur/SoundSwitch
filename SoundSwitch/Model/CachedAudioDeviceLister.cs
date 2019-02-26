@@ -25,9 +25,9 @@ namespace SoundSwitch.Model
 {
     public class CachedAudioDeviceLister : IAudioDeviceLister
     {
-
         /// <inheritdoc />
         public ICollection<DeviceFullInfo> PlaybackDevices { get; private set; }
+
         /// <inheritdoc />
         public ICollection<DeviceFullInfo> RecordingDevices { get; private set; }
 
@@ -47,35 +47,22 @@ namespace SoundSwitch.Model
 
         private void Refresh()
         {
-            if (!Monitor.TryEnter(this, 500))
+            var playbackTask = Task<ICollection<DeviceFullInfo>>.Factory.StartNew((() =>
             {
-                return;
-            }
-            try
-            {
-
-                var playbackTask = Task<ICollection<DeviceFullInfo>>.Factory.StartNew((() =>
+                using (var enumerator = new MMDeviceEnumerator())
                 {
-                    using (var enumerator = new MMDeviceEnumerator())
-                    {
-                        return CreateDeviceList(enumerator.EnumerateAudioEndPoints(DataFlow.Render, _state));
-                    }
-                }));
-                var recordingTask = Task<ICollection<DeviceFullInfo>>.Factory.StartNew((() =>
-                {
-                    using (var enumerator = new MMDeviceEnumerator())
-                    {
-                        return CreateDeviceList(enumerator.EnumerateAudioEndPoints(DataFlow.Capture, _state));
-                    }
-                }));
-                PlaybackDevices = playbackTask.Result;
-                RecordingDevices = recordingTask.Result;
-            }
-            finally
+                    return CreateDeviceList(enumerator.EnumerateAudioEndPoints(DataFlow.Render, _state));
+                }
+            }));
+            var recordingTask = Task<ICollection<DeviceFullInfo>>.Factory.StartNew((() =>
             {
-                Monitor.Exit(this);
-            }
-
+                using (var enumerator = new MMDeviceEnumerator())
+                {
+                    return CreateDeviceList(enumerator.EnumerateAudioEndPoints(DataFlow.Capture, _state));
+                }
+            }));
+            PlaybackDevices = playbackTask.Result;
+            RecordingDevices = recordingTask.Result;
         }
 
         private static ICollection<DeviceFullInfo> CreateDeviceList(MMDeviceCollection collection)
@@ -90,13 +77,13 @@ namespace SoundSwitch.Model
                     {
                         continue;
                     }
+
                     sortedDevices.Add(device.FriendlyName, deviceInfo);
                 }
                 catch (Exception)
                 {
                     Log.Warning("Can't get name of device {device}", device.ID);
                 }
-
             }
 
             return sortedDevices.Values;
