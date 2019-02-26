@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SoundSwitch.Audio.Policies")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("SoundSwitch.Audio.Manager")]
+[assembly: AssemblyDescription("Lib used the manage the default audio device")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SoundSwitch.Audio.Policies")]
+[assembly: AssemblyCompany("SoundSwitch")]
+[assembly: AssemblyProduct("SoundSwitch.Audio.Manager")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
