@@ -1,6 +1,7 @@
 <a href="https://soundswitch.aaflalo.me" title="SoundSwitch website"><img src="https://soundswitch.aaflalo.me/img/Main-Logo-Blue.svg" alt="logo SoundSwitch" height="180px" style="margin-left:auto;margin-right:auto;display:block;"></a>
 
 [![Last Release](https://img.shields.io/github/release/Belphemur/SoundSwitch.svg)](https://soundswitch.aaflalo.me) [![Downloads for last Release](https://img.shields.io/github/downloads/Belphemur/SoundSwitch/total.svg)](https://soundswitch.aaflalo.me/) [![Donate](https://img.shields.io/badge/Donate-paypal%2Fcc-blue.svg)](https://soundswitch.aaflalo.me) [![Translate](https://hosted.weblate.org/widgets/soundswitch/-/svg-badge.svg)](https://hosted.weblate.org/projects/soundswitch/)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FBelphemur%2FSoundSwitch.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FBelphemur%2FSoundSwitch?ref=badge_shield)
 
 **SoundSwitch** offers you the opportunity to switch your playback devices and/or recording devices using simple hotkeys.
 
@@ -8,7 +9,6 @@
 
 ## Preview image
 ![preview](https://soundswitch.aaflalo.me/img/preview.gif)
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FBelphemur%2FSoundSwitch.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FBelphemur%2FSoundSwitch?ref=badge_shield)
 
 ## Dependencies
 The following components are required to run SoundSwitch on your Windows device:
