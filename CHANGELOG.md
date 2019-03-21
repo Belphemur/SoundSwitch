@@ -1,5 +1,23 @@
 # Change Log
 
+## [v4.13.0](https://github.com/Belphemur/SoundSwitch/tree/v4.13.0) (2019-03-21)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.12...v4.13.0)
+
+**Fixed bugs:**
+
+- High CPU came back [\#330](https://github.com/Belphemur/SoundSwitch/issues/330)
+- Soundswitch crash at start when no internet [\#326](https://github.com/Belphemur/SoundSwitch/issues/326)
+- Hotkeys do not work even after 4.12 [\#324](https://github.com/Belphemur/SoundSwitch/issues/324)
+
+**Closed issues:**
+
+- Link Playback and Recording devices together [\#328](https://github.com/Belphemur/SoundSwitch/issues/328)
+- Installer crashing [\#327](https://github.com/Belphemur/SoundSwitch/issues/327)
+- \[Feature\] Switch device on single click on tray icon [\#325](https://github.com/Belphemur/SoundSwitch/issues/325)
+- Characters in french are not displayed correctly in the installer [\#313](https://github.com/Belphemur/SoundSwitch/issues/313)
+- SoundSwitch not launching on Windows 8.1 [\#136](https://github.com/Belphemur/SoundSwitch/issues/136)
+- Problem with VC Redist and Win 10 anniversary update [\#114](https://github.com/Belphemur/SoundSwitch/issues/114)
+
 ## [v4.12](https://github.com/Belphemur/SoundSwitch/tree/v4.12) (2019-02-26)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.11...v4.12)
 
