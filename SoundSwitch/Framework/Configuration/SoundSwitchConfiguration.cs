@@ -18,7 +18,7 @@ using System.Linq;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
 using Serilog;
-using SoundSwitch.Framework.Configuration.Device;
+using SoundSwitch.Framework.Audio.Device;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.TooltipInfoManager.TootipInfo;

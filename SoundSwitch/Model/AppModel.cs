@@ -19,7 +19,6 @@ using Serilog;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Configuration;
-using SoundSwitch.Framework.Configuration.Device;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Updater;
@@ -28,6 +27,7 @@ using SoundSwitch.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SoundSwitch.Framework.Audio.Device;
 
 namespace SoundSwitch.Model
 {

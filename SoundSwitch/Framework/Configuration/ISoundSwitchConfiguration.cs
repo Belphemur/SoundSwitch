@@ -14,7 +14,7 @@
 
 using System;
 using System.Collections.Generic;
-using SoundSwitch.Framework.Configuration.Device;
+using SoundSwitch.Framework.Audio.Device;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.TooltipInfoManager.TootipInfo;

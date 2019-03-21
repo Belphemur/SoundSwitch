@@ -2,7 +2,7 @@
 using NAudio.CoreAudioApi;
 using SoundSwitch.Util;
 
-namespace SoundSwitch.Framework.Configuration.Device
+namespace SoundSwitch.Framework.Audio.Device
 {
     public class DeviceFullInfo : DeviceInfo
     {

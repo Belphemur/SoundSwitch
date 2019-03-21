@@ -19,7 +19,7 @@ using System.Windows.Forms;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
-using SoundSwitch.Framework.Configuration.Device;
+using SoundSwitch.Framework.Audio.Device;
 using SoundSwitch.Properties;
 
 namespace SoundSwitch.Util

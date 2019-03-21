@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using NAudio.CoreAudioApi;
 
-namespace SoundSwitch.Framework.Configuration.Device
+namespace SoundSwitch.Framework.Audio.Device
 {
     public class DeviceInfoCollection : ICollection<DeviceInfo>
     {

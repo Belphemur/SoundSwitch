@@ -20,7 +20,7 @@ using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop;
 using SoundSwitch.Audio.Manager.Interop.Enum;
-using SoundSwitch.Framework.Configuration.Device;
+using SoundSwitch.Framework.Audio.Device;
 using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler

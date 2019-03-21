@@ -276,9 +276,9 @@
     <Compile Include="Framework\AutoStart.cs" />
     <Compile Include="Framework\Banner\BannerData.cs" />
     <Compile Include="Framework\Banner\BannerManager.cs" />
-    <Compile Include="Framework\Configuration\Device\DeviceFullInfo.cs" />
-    <Compile Include="Framework\Configuration\Device\DeviceInfo.cs" />
-    <Compile Include="Framework\Configuration\Device\DeviceInfoCollection.cs" />
+    <Compile Include="Framework\Audio\Device\DeviceFullInfo.cs" />
+    <Compile Include="Framework\Audio\Device\DeviceInfo.cs" />
+    <Compile Include="Framework\Audio\Device\DeviceInfoCollection.cs" />
     <Compile Include="Framework\Configuration\IPCConfiguration.cs" />
     <Compile Include="Framework\Configuration\AppConfigs.cs" />
     <Compile Include="Framework\Configuration\ConfigurationManager.cs" />

@@ -15,7 +15,7 @@
 using System;
 using System.Collections.Generic;
 using NAudio.CoreAudioApi;
-using SoundSwitch.Framework.Configuration.Device;
+using SoundSwitch.Framework.Audio.Device;
 
 namespace SoundSwitch.Model
 {
