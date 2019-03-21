@@ -33,7 +33,7 @@ using SoundSwitch.Localization;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
 using SoundSwitch.UI.Forms;
-using Timer = System.Windows.Forms.Timer;
+using TimerForm = System.Windows.Forms.Timer;
 
 namespace SoundSwitch.Util
 {
@@ -65,7 +65,7 @@ namespace SoundSwitch.Util
         private readonly TooltipInfoManager _tooltipInfoManager;
 
         private readonly ToolStripMenuItem _updateMenuItem;
-        private Timer _animationTimer;
+        private TimerForm _animationTimer;
 
         public TrayIcon()
         {
@@ -261,7 +261,7 @@ namespace SoundSwitch.Util
         {
             if (_animationTimer == null)
             {
-                _animationTimer = new Timer() {Interval = 1000};
+                _animationTimer = new TimerForm() {Interval = 1000};
                 var tick = 0;
                 _animationTimer.Tick += (sender, args) =>
                 {

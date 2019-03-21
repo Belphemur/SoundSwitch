@@ -20,6 +20,7 @@ using Serilog;
 using SoundSwitch.Framework.Audio.Device;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Model;
+using SoundSwitch.Util.Timer;
 
 namespace SoundSwitch.Framework.Audio.Lister
 {
@@ -32,6 +33,7 @@ namespace SoundSwitch.Framework.Audio.Lister
         public ICollection<DeviceFullInfo> RecordingDevices { get; private set; }
 
         private readonly DeviceState _state;
+        private readonly DebounceDispatcher _dispatcher = new DebounceDispatcher();
 
         public CachedAudioDeviceLister(DeviceState state)
         {
@@ -42,11 +44,12 @@ namespace SoundSwitch.Framework.Audio.Lister
 
         private void DeviceChanged(object sender, DeviceChangedEventBase e)
         {
-            Refresh();
+            _dispatcher.Debounce(150, (o) => Refresh());
         }
 
         private void Refresh()
         {
+            Log.Information("Refreshing device of state {@State}", _state);
             var playbackTask = Task<ICollection<DeviceFullInfo>>.Factory.StartNew((() =>
             {
                 using (var enumerator = new MMDeviceEnumerator())
@@ -63,6 +66,7 @@ namespace SoundSwitch.Framework.Audio.Lister
             }));
             PlaybackDevices = playbackTask.Result;
             RecordingDevices = recordingTask.Result;
+            Log.Information("Refreshed device of state {@State}", _state);
         }
 
         private static ICollection<DeviceFullInfo> CreateDeviceList(MMDeviceCollection collection)
