@@ -23,6 +23,7 @@ using NAudio.CoreAudioApi;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Audio.Device;
+using SoundSwitch.Framework.Audio.Lister;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;

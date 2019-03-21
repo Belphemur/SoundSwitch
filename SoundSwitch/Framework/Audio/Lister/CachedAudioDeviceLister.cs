@@ -14,14 +14,14 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Framework.Audio.Device;
 using SoundSwitch.Framework.NotificationManager;
+using SoundSwitch.Model;
 
-namespace SoundSwitch.Model
+namespace SoundSwitch.Framework.Audio.Lister
 {
     public class CachedAudioDeviceLister : IAudioDeviceLister
     {

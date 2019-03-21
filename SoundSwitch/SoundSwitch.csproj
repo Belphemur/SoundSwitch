@@ -367,7 +367,7 @@
     <Compile Include="Model\IAudioDeviceLister.cs" />
     <Compile Include="Util\AssemblyUtils.cs" />
     <Compile Include="Util\AudioDeviceIconExtractor.cs" />
-    <Compile Include="Model\CachedAudioDeviceLister.cs" />
+    <Compile Include="Framework\Audio\Lister\CachedAudioDeviceLister.cs" />
     <Compile Include="Model\Events.cs" />
     <Compile Include="Model\IAppModel.cs" />
     <Compile Include="UI\Forms\About.cs">
