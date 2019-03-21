@@ -30,6 +30,7 @@ using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio.Lister;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.IPC;
+using SoundSwitch.Framework.Logger.Configuration;
 using SoundSwitch.Framework.Minidump;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Updater;
@@ -187,15 +188,7 @@ namespace SoundSwitch
         /// </summary>
         private static void InitializeLogger()
         {
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .Enrich.WithThreadId()
-                .Enrich.WithEnvironmentUserName()
-                .Enrich.WithExceptionDetails()
-                .WriteTo.File(new CompactJsonFormatter(), Path.Combine(ApplicationPath.Logs, "soundswitch.log"),
-                    rollingInterval: RollingInterval.Day, retainedFileCountLimit: 3,
-                    flushToDiskInterval: TimeSpan.FromMinutes(10))
-                .CreateLogger();
+            LoggerConfigurator.ConfigureLogger();
         }
 
         /// <summary>

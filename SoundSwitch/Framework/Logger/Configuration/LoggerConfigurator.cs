@@ -1,0 +1,27 @@
+﻿using System;
+using System.IO;
+using Serilog;
+using Serilog.Exceptions;
+using Serilog.Formatting.Compact;
+using SoundSwitch.Framework.Logger.Enricher;
+
+namespace SoundSwitch.Framework.Logger.Configuration
+{
+    public static class LoggerConfigurator
+    {
+        public static void ConfigureLogger()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .Enrich.WithThreadId()
+                .Enrich.WithEnvironmentUserName()
+                .Enrich.WithExceptionDetails()
+                .Enrich.WithCaller()
+                .WriteTo.File(Path.Combine(ApplicationPath.Logs, "soundswitch.log"),
+                    rollingInterval: RollingInterval.Day, retainedFileCountLimit: 3,
+                    flushToDiskInterval: TimeSpan.FromMinutes(10),
+                    outputTemplate: "[{Timestamp:HH:mm:ss.fff} {Level:u3}] {Message} (at {Caller}){NewLine}{Exception}")
+                .CreateLogger();
+        }
+    }
+}
