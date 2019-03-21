@@ -48,11 +48,8 @@
     <Compile Include="Interop\Client\PolicyClient.cs" />
     <Compile Include="Interop\Threading\ComTaskScheduler.cs" />
     <Compile Include="Interop\Threading\ComThread.cs" />
-    <Compile Include="Interop\Enum\DeviceState.cs" />
     <Compile Include="Interop\Enum\EDataFlow.cs" />
     <Compile Include="Interop\Enum\ERole.cs" />
-    <Compile Include="Interop\Interface\Audio\IMMDevice.cs" />
-    <Compile Include="Interop\Interface\Audio\IMMDeviceEnumerator.cs" />
     <Compile Include="Interop\Interface\ComGuid.cs" />
     <Compile Include="Interop\Interface\Policy\IPolicyConfig.cs" />
     <Compile Include="Interop\Interface\Policy\IPolicyConfigVista.cs" />
