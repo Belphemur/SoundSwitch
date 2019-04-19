@@ -1,8 +1,8 @@
 ﻿using System.Runtime.InteropServices;
 using SoundSwitch.Audio.Manager.Interop;
 using SoundSwitch.Audio.Manager.Interop.Client;
+using SoundSwitch.Audio.Manager.Interop.Com.Threading;
 using SoundSwitch.Audio.Manager.Interop.Enum;
-using SoundSwitch.Audio.Manager.Interop.Threading;
 
 namespace SoundSwitch.Audio.Manager
 {

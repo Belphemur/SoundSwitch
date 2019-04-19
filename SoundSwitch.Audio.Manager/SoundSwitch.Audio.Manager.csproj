@@ -46,15 +46,19 @@
     <Compile Include="AudioSwitcher.cs" />
     <Compile Include="Interop\Client\EnumeratorClient.cs" />
     <Compile Include="Interop\Client\PolicyClient.cs" />
-    <Compile Include="Interop\Threading\ComTaskScheduler.cs" />
-    <Compile Include="Interop\Threading\ComThread.cs" />
+    <Compile Include="Interop\Com\Base\ComBase.cs" />
+    <Compile Include="Interop\Enum\HRESULT.cs" />
+    <Compile Include="Interop\Factory\AudioPolicyConfigFactory.cs" />
+    <Compile Include="Interop\Interface\Policy\Extended\IAudioPolicyConfigFactory.cs" />
+    <Compile Include="Interop\Com\Threading\ComTaskScheduler.cs" />
+    <Compile Include="Interop\Com\Threading\ComThread.cs" />
     <Compile Include="Interop\Enum\EDataFlow.cs" />
     <Compile Include="Interop\Enum\ERole.cs" />
     <Compile Include="Interop\Interface\ComGuid.cs" />
     <Compile Include="Interop\Interface\Policy\IPolicyConfig.cs" />
     <Compile Include="Interop\Interface\Policy\IPolicyConfigVista.cs" />
     <Compile Include="Interop\Interface\Policy\IPolicyConfigX.cs" />
-    <Compile Include="Interop\Threading\InvalidThreadException.cs" />
+    <Compile Include="Interop\Com\Threading\InvalidThreadException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SoundSwitch.Audio.Manager.Interop.Threading
+namespace SoundSwitch.Audio.Manager.Interop.Com.Threading
 {
     internal static class ComThread
     {

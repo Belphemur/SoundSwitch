@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SoundSwitch.Audio.Manager.Interop.Threading
+namespace SoundSwitch.Audio.Manager.Interop.Com.Threading
 {
     public sealed class InvalidThreadException : Exception
     {
