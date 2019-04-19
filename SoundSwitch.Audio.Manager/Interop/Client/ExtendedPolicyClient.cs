@@ -42,7 +42,7 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
             return deviceId;
         }
 
-        public void SetDefaultEndPoint(string deviceId, EDataFlow flow, IEnumerable<ERole> roles, int processId)
+        public void SetDefaultEndPoint(string deviceId, EDataFlow flow, IEnumerable<ERole> roles, uint processId)
         {
             Trace.WriteLine($"ExtendedPolicyClient SetDefaultEndPoint {deviceId} [{flow}] {processId}");
             try
@@ -57,7 +57,7 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
 
                 foreach (var eRole in roles)
                 {
-                    PolicyConfig.SetPersistedDefaultAudioEndpoint((uint)processId, flow, eRole, stringPtrDeviceId);
+                    PolicyConfig.SetPersistedDefaultAudioEndpoint(processId, flow, eRole, stringPtrDeviceId);
                 }
 
             }
@@ -67,11 +67,11 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
             }
         }
 
-        public string GetDefaultEndPoint(EDataFlow flow, ERole role, int processId)
+        public string GetDefaultEndPoint(EDataFlow flow, ERole role, uint processId)
         {
             try
             {
-                PolicyConfig.GetPersistedDefaultAudioEndpoint((uint)processId, flow, role, out string deviceId);
+                PolicyConfig.GetPersistedDefaultAudioEndpoint(processId, flow, role, out string deviceId);
                 return UnpackDeviceId(deviceId);
             }
             catch (Exception ex)

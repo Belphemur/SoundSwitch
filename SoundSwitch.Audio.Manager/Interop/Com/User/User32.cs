@@ -4,7 +4,7 @@ using SoundSwitch.Audio.Manager.Interop.Com.Threading;
 
 namespace SoundSwitch.Audio.Manager.Interop.Com.User
 {
-    internal static class User32
+    public static class User32
     {
         private static class NativeMethods
         {
@@ -15,13 +15,13 @@ namespace SoundSwitch.Audio.Manager.Interop.Com.User
             public static extern IntPtr GetForegroundWindow();
         }
 
-        public static int ForegroundProcessId
+        public static uint ForegroundProcessId
         {
             get
             {
                 var activeWindowHandle = NativeMethods.GetForegroundWindow();
                 NativeMethods.GetWindowThreadProcessId(activeWindowHandle, out var processId);
-                return (int)processId;
+                return processId;
             }
         }
     }

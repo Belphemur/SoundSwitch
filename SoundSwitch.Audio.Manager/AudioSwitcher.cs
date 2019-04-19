@@ -70,7 +70,7 @@ namespace SoundSwitch.Audio.Manager
         /// <param name="role">Which role to switch</param>
         /// <param name="flow">Which flow to switch</param>
         /// <param name="processId">ProcessID of the process</param>
-        public void SwitchTo(string deviceId, ERole role, EDataFlow flow, int processId)
+        public void SwitchTo(string deviceId, ERole role, EDataFlow flow, uint processId)
         {
 
             var roles = new ERole[]
@@ -122,7 +122,7 @@ namespace SoundSwitch.Audio.Manager
         /// <param name="role"></param>
         /// <param name="processId"></param>
         /// <returns></returns>
-        public string GetUsedDevice(EDataFlow flow, ERole role, int processId)
+        public string GetUsedDevice(EDataFlow flow, ERole role, uint processId)
         {
             return ComThread.Invoke(() => ExtendPolicyClient.GetDefaultEndPoint(flow, role, processId));
         }
