@@ -46,17 +46,17 @@ if "%~1" neq "" (
 echo.
 echo Determine MSBuild.exe...
 if defined USE_LEGACY_VS2015 (
-    for /f "usebackq tokens=*" %%i in (`tools\vswhere -legacy -version [14.0^,15.0] -property installationPath`) do (
+    for /f "usebackq tokens=*" %%i in (`tools\vswhere -legacy -version [14.0^,15.0,16.0] -property installationPath`) do (
         set msBuildExe=%%i
     )
     set msBuildVersion=14.0
+    set msBuildExe="%msBuildExe%\MSBuild\%msBuildVersion%\Bin\MSBuild.exe"
 ) else (
-    for /f "usebackq tokens=*" %%i in (`tools\vswhere -latest -products * -requires Microsoft.Component.MSBuild -property installationPath`) do (
-        set msBuildExe=%%i
-    )
-    set msBuildVersion=15.0
+    for /f "delims=" %%i in ('%FILE_DIR%tools\vswhere -latest -products * -requires Microsoft.Component.MSBuild -property installationPath') do (
+        set msBuildExe="%%i\MSBuild\Current\Bin\MSBuild.exe"
+    )    
 )
-set msBuildExe="%msBuildExe%\MSBuild\%msBuildVersion%\Bin\MSBuild.exe"
+
 
 if not exist %msBuildExe% (set errorMessage=MSBuild.exe not found in %msBuildExe% & goto ERROR_QUIT)
 
