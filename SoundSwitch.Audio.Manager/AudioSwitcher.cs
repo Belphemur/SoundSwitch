@@ -2,6 +2,7 @@
 using SoundSwitch.Audio.Manager.Interop;
 using SoundSwitch.Audio.Manager.Interop.Client;
 using SoundSwitch.Audio.Manager.Interop.Com.Threading;
+using SoundSwitch.Audio.Manager.Interop.Com.User;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 
 namespace SoundSwitch.Audio.Manager
@@ -62,7 +63,13 @@ namespace SoundSwitch.Audio.Manager
             SwitchTo(deviceId, ERole.eMultimedia);
             SwitchTo(deviceId, ERole.eCommunications);
         }
-
+        /// <summary>
+        /// Switch the audio endpoint of the given process
+        /// </summary>
+        /// <param name="deviceId">Id of the device</param>
+        /// <param name="role">Which role to switch</param>
+        /// <param name="flow">Which flow to switch</param>
+        /// <param name="processId">ProcessID of the process</param>
         public void SwitchTo(string deviceId, ERole role, EDataFlow flow, int processId)
         {
 
@@ -84,10 +91,40 @@ namespace SoundSwitch.Audio.Manager
 
             ComThread.Invoke((() => ExtendPolicyClient.SetDefaultEndPoint(deviceId, flow, roles, processId)));
         }
+        /// <summary>
+        /// Switch the audio device of the Foreground Process
+        /// </summary>
+        /// <param name="deviceId">Id of the device</param>
+        /// <param name="role">Which role to switch</param>
+        /// <param name="flow">Which flow to switch</param>
+        public void SwitchTo(string deviceId, ERole role, EDataFlow flow)
+        {
+            var processId = ComThread.Invoke(() => User32.ForegroundProcessId);
+            SwitchTo(deviceId, role, flow, processId);
+        }
 
+        /// <summary>
+        /// Is the given deviceId the default audio device in the system
+        /// </summary>
+        /// <param name="deviceId"></param>
+        /// <param name="flow"></param>
+        /// <param name="role"></param>
+        /// <returns></returns>
         public bool IsDefault(string deviceId, EDataFlow flow, ERole role)
         {
             return ComThread.Invoke(() => _enumerator.IsDefault(deviceId, flow, role));
+        }
+
+        /// <summary>
+        /// Get the device used by the given process
+        /// </summary>
+        /// <param name="flow"></param>
+        /// <param name="role"></param>
+        /// <param name="processId"></param>
+        /// <returns></returns>
+        public string GetUsedDevice(EDataFlow flow, ERole role, int processId)
+        {
+            return ComThread.Invoke(() => ExtendPolicyClient.GetDefaultEndPoint(flow, role, processId));
         }
     }
 }
