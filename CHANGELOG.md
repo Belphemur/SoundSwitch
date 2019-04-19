@@ -1,5 +1,16 @@
 # Change Log
 
+## [v4.14.0](https://github.com/Belphemur/SoundSwitch/tree/v4.14.0) (2019-04-19)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.13.0...v4.14.0)
+
+**Implemented enhancements:**
+
+- Switch the foreground app also \[WIN10\] [\#334](https://github.com/Belphemur/SoundSwitch/issues/334)
+
+**Closed issues:**
+
+- \[Bug\] No Logitech G533 after updating soundswitch to 4.13 [\#331](https://github.com/Belphemur/SoundSwitch/issues/331)
+
 ## [v4.13.0](https://github.com/Belphemur/SoundSwitch/tree/v4.13.0) (2019-03-21)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.12...v4.13.0)
 
