@@ -12,6 +12,21 @@ namespace SoundSwitch.Audio.Manager
         private readonly PolicyClient _policyClient = new PolicyClient();
         private readonly EnumeratorClient _enumerator = new EnumeratorClient();
 
+        private ExtendedPolicyClient _extendedPolicyClient;
+
+        private ExtendedPolicyClient ExtendPolicyClient
+        {
+            get
+            {
+                if (_extendedPolicyClient != null)
+                {
+                    return _extendedPolicyClient;
+                }
+
+                return _extendedPolicyClient = ComThread.Invoke(() => new ExtendedPolicyClient());
+            }
+        }
+
         private AudioSwitcher()
         {
         }
@@ -29,6 +44,11 @@ namespace SoundSwitch.Audio.Manager
             }
         }
 
+        /// <summary>
+        /// Switch the default audio device to the one given
+        /// </summary>
+        /// <param name="deviceId"></param>
+        /// <param name="role"></param>
         public void SwitchTo(string deviceId, ERole role)
         {
             if (role != ERole.ERole_enum_count)
@@ -41,6 +61,28 @@ namespace SoundSwitch.Audio.Manager
             SwitchTo(deviceId, ERole.eConsole);
             SwitchTo(deviceId, ERole.eMultimedia);
             SwitchTo(deviceId, ERole.eCommunications);
+        }
+
+        public void SwitchTo(string deviceId, ERole role, EDataFlow flow, int processId)
+        {
+
+            var roles = new ERole[]
+            {
+                ERole.eConsole,
+                ERole.eCommunications,
+                ERole.eMultimedia
+            };
+
+            if (role != ERole.ERole_enum_count)
+            {
+                roles = new ERole[]
+                {
+                    role
+                };
+            }
+
+
+            ComThread.Invoke((() => ExtendPolicyClient.SetDefaultEndPoint(deviceId, flow, roles, processId)));
         }
 
         public bool IsDefault(string deviceId, EDataFlow flow, ERole role)
