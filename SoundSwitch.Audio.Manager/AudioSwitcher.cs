@@ -70,7 +70,7 @@ namespace SoundSwitch.Audio.Manager
         /// <param name="role">Which role to switch</param>
         /// <param name="flow">Which flow to switch</param>
         /// <param name="processId">ProcessID of the process</param>
-        public void SwitchTo(string deviceId, ERole role, EDataFlow flow, uint processId)
+        public void SwitchProcessTo(string deviceId, ERole role, EDataFlow flow, uint processId)
         {
 
             var roles = new ERole[]
@@ -97,10 +97,10 @@ namespace SoundSwitch.Audio.Manager
         /// <param name="deviceId">Id of the device</param>
         /// <param name="role">Which role to switch</param>
         /// <param name="flow">Which flow to switch</param>
-        public void SwitchTo(string deviceId, ERole role, EDataFlow flow)
+        public void SwitchProcessTo(string deviceId, ERole role, EDataFlow flow)
         {
             var processId = ComThread.Invoke(() => User32.ForegroundProcessId);
-            SwitchTo(deviceId, role, flow, processId);
+            SwitchProcessTo(deviceId, role, flow, processId);
         }
 
         /// <summary>
@@ -125,6 +125,14 @@ namespace SoundSwitch.Audio.Manager
         public string GetUsedDevice(EDataFlow flow, ERole role, uint processId)
         {
             return ComThread.Invoke(() => ExtendPolicyClient.GetDefaultEndPoint(flow, role, processId));
+        }
+
+        /// <summary>
+        /// Reset Windows configuration for the process that had their audio device changed
+        /// </summary>
+        public void ResetProcessDeviceConfiguration()
+        {
+            ComThread.Invoke(() =>  ExtendPolicyClient.ResetAllSetEndpoint());
         }
     }
 }

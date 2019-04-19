@@ -81,5 +81,17 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
 
             return null;
         }
+
+        public void ResetAllSetEndpoint()
+        {
+            try
+            {
+                PolicyConfig.ClearAllPersistedApplicationDefaultEndpoints();
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine($"{ex}");
+            }
+        }
     }
 }
