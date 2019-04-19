@@ -8,10 +8,10 @@ namespace SoundSwitch.Audio.Manager.Interop.Com.User
     {
         private static class NativeMethods
         {
-            [DllImport("user32.dll", PreserveSig = false)]
+            [DllImport("user32.dll")]
             public static extern IntPtr GetWindowThreadProcessId(IntPtr hWnd, out uint ProcessId);
 
-            [DllImport("user32.dll", PreserveSig = false)]
+            [DllImport("user32.dll")]
             public static extern IntPtr GetForegroundWindow();
         }
 
