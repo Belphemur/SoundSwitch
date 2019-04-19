@@ -73,6 +73,7 @@ namespace SoundSwitch.UI.Forms
 
             // Settings - Audio
             switchCommunicationDeviceCheckBox.Checked = AppModel.Instance.SetCommunications;
+           
 
             var switchCommunicationsDeviceToolTip = new ToolTip();
             switchCommunicationsDeviceToolTip.SetToolTip(switchCommunicationDeviceCheckBox,
@@ -115,6 +116,11 @@ namespace SoundSwitch.UI.Forms
 
             var cycleThroughToolTip = new ToolTip();
             cycleThroughToolTip.SetToolTip(cycleThroughComboBox, SettingsStrings.cycleThroughTooltip);
+
+            foregroundAppCheckbox.Checked = AppModel.Instance.SwitchForegroundProgram;
+     
+            var foregroundAppToolTip = new ToolTip();
+            foregroundAppToolTip.SetToolTip(foregroundAppCheckbox, SettingsStrings.foregroundAppTooltip);
 
             // Settings - Update
             includeBetaVersionsCheckBox.Checked = AppModel.Instance.IncludeBetaVersions;
@@ -183,6 +189,7 @@ namespace SoundSwitch.UI.Forms
             notificationLabel.Text = SettingsStrings.notification;
             tooltipOnHoverLabel.Text = SettingsStrings.tooltipOnHover;
             cycleThroughLabel.Text = SettingsStrings.cycleThrough;
+            foregroundAppCheckbox.Text = SettingsStrings.foregroundApp;
 
             // Settings - Update
             updateSettingsGroupBox.Text = SettingsStrings.updateSettings;
@@ -592,6 +599,11 @@ namespace SoundSwitch.UI.Forms
         {
             AppModel.Instance.CustomNotificationSound = null;
             deleteSoundButton.Visible = false;
+        }
+
+        private void ForegroundAppCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            AppModel.Instance.SwitchForegroundProgram = foregroundAppCheckbox.Checked;
         }
     }
 }

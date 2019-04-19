@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
 	<!-- 
     Microsoft ResX Schema 
@@ -60,45 +60,45 @@
             : and then encoded with base64 encoding.
     -->
 	<xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-		<xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
 		<xsd:element name="root" msdata:IsDataSet="true">
 			<xsd:complexType>
 				<xsd:choice maxOccurs="unbounded">
 					<xsd:element name="metadata">
 						<xsd:complexType>
 							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0"/>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" />
 							</xsd:sequence>
-							<xsd:attribute name="name" use="required" type="xsd:string"/>
-							<xsd:attribute name="type" type="xsd:string"/>
-							<xsd:attribute name="mimetype" type="xsd:string"/>
-							<xsd:attribute ref="xml:space"/>
+							<xsd:attribute name="name" use="required" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+							<xsd:attribute ref="xml:space" />
 						</xsd:complexType>
 					</xsd:element>
 					<xsd:element name="assembly">
 						<xsd:complexType>
-							<xsd:attribute name="alias" type="xsd:string"/>
-							<xsd:attribute name="name" type="xsd:string"/>
+							<xsd:attribute name="alias" type="xsd:string" />
+							<xsd:attribute name="name" type="xsd:string" />
 						</xsd:complexType>
 					</xsd:element>
 					<xsd:element name="data">
 						<xsd:complexType>
 							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
 							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
-							<xsd:attribute ref="xml:space"/>
+							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+							<xsd:attribute ref="xml:space" />
 						</xsd:complexType>
 					</xsd:element>
 					<xsd:element name="resheader">
 						<xsd:complexType>
 							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
 							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required"/>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
 						</xsd:complexType>
 					</xsd:element>
 				</xsd:choice>
@@ -117,168 +117,168 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-  <data name="selected" xml:space="preserve">
+	<data name="selected" xml:space="preserve">
     <value>已选择</value>
   </data>
-  <data name="connected" xml:space="preserve">
+	<data name="connected" xml:space="preserve">
     <value>已连接</value>
   </data>
-  <data name="disconnected" xml:space="preserve">
+	<data name="disconnected" xml:space="preserve">
     <value>未连接</value>
   </data>
-  <data name="recording" xml:space="preserve">
+	<data name="recording" xml:space="preserve">
     <value>录音</value>
   </data>
-  <data name="playback" xml:space="preserve">
+	<data name="playback" xml:space="preserve">
     <value>回放</value>
   </data>
-  <data name="settings" xml:space="preserve">
+	<data name="settings" xml:space="preserve">
     <value>设置</value>
   </data>
-  <data name="hotkeys" xml:space="preserve">
+	<data name="hotkeys" xml:space="preserve">
     <value>快捷键</value>
   </data>
-  <data name="communicationsDevice" xml:space="preserve">
+	<data name="communicationsDevice" xml:space="preserve">
     <value>切换默认通信设备</value>
   </data>
-  <data name="startWithWindows" xml:space="preserve">
+	<data name="startWithWindows" xml:space="preserve">
     <value>使用Windows自动启动</value>
   </data>
-  <data name="close" xml:space="preserve">
+	<data name="close" xml:space="preserve">
     <value>关闭</value>
   </data>
-  <data name="closeTooltip" xml:space="preserve">
+	<data name="closeTooltip" xml:space="preserve">
     <value>自动保存更改</value>
   </data>
-  <data name="communicationsDeviceTooltip" xml:space="preserve">
+	<data name="communicationsDeviceTooltip" xml:space="preserve">
     <value>当检查时，“默认通信设备”和“默认回放设备”被切换到一起（对的Skype，TeamSpeak非常有用）。</value>
   </data>
-  <data name="notification" xml:space="preserve">
+	<data name="notification" xml:space="preserve">
     <value>通知</value>
   </data>
-  <data name="updateIncludeBetaVersions" xml:space="preserve">
+	<data name="updateIncludeBetaVersions" xml:space="preserve">
     <value>包括测试版本</value>
   </data>
-  <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
+	<data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
     <value>选中后，SoundSwitch还将检查GitHub上的预发行版本。</value>
   </data>
-  <data name="audioFiles" xml:space="preserve">
+	<data name="audioFiles" xml:space="preserve">
     <value>音频文件</value>
   </data>
-  <data name="selectSoundButtonTooltip" xml:space="preserve">
+	<data name="selectSoundButtonTooltip" xml:space="preserve">
     <value>选择通知的声音文件。</value>
   </data>
-  <data name="hotkeysTooltip" xml:space="preserve">
+	<data name="hotkeysTooltip" xml:space="preserve">
     <value>检查是否启用快捷键。</value>
   </data>
-  <data name="basicSettings" xml:space="preserve">
+	<data name="basicSettings" xml:space="preserve">
     <value>基本设置</value>
   </data>
-  <data name="audioSettings" xml:space="preserve">
+	<data name="audioSettings" xml:space="preserve">
     <value>音频设置</value>
   </data>
-  <data name="updateSettings" xml:space="preserve">
+	<data name="updateSettings" xml:space="preserve">
     <value>更新设置</value>
   </data>
-  <data name="cycleThrough" xml:space="preserve">
+	<data name="cycleThrough" xml:space="preserve">
     <value>循环</value>
   </data>
-  <data name="keepSystemTrayIcon" xml:space="preserve">
+	<data name="keepSystemTrayIcon" xml:space="preserve">
     <value>保留SoundSwitch的系统托盘图标</value>
   </data>
-  <data name="keepSystemTrayIconTooltip" xml:space="preserve">
+	<data name="keepSystemTrayIconTooltip" xml:space="preserve">
     <value>选中时，“默认播放设备”更改时系统托盘图标不会更改。</value>
   </data>
-  <data name="updateInstallAutomatically" xml:space="preserve">
+	<data name="updateInstallAutomatically" xml:space="preserve">
     <value>自动安装更新</value>
   </data>
-  <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
+	<data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
     <value>更新会自动安装，不会有任何提示。</value>
   </data>
-  <data name="updateNotify" xml:space="preserve">
+	<data name="updateNotify" xml:space="preserve">
     <value>有更新时通知我</value>
   </data>
-  <data name="updateNever" xml:space="preserve">
+	<data name="updateNever" xml:space="preserve">
     <value>永远不要检查更新</value>
   </data>
-  <data name="tooltipOnHover" xml:space="preserve">
+	<data name="tooltipOnHover" xml:space="preserve">
     <value>悬停上方工具提示</value>
   </data>
-  <data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
+	<data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
     <value>所有音频设备</value>
   </data>
-  <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
+	<data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
     <value>仅选择音频设备</value>
   </data>
-  <data name="cycleThroughTooltip" xml:space="preserve">
+	<data name="cycleThroughTooltip" xml:space="preserve">
     <value>在哪个设备之间切换。要么只在选择之间，要么在所有之间。</value>
   </data>
-  <data name="notificationOptionWindowsDefault" xml:space="preserve">
+	<data name="notificationOptionWindowsDefault" xml:space="preserve">
     <value>Windows通知</value>
   </data>
-  <data name="notificationOptionSound" xml:space="preserve">
+	<data name="notificationOptionSound" xml:space="preserve">
     <value>声音通知</value>
   </data>
-  <data name="notificationOptionNone" xml:space="preserve">
+	<data name="notificationOptionNone" xml:space="preserve">
     <value>没有通知</value>
   </data>
-  <data name="notificationOptionToast" xml:space="preserve">
+	<data name="notificationOptionToast" xml:space="preserve">
     <value>弹出通知</value>
   </data>
-  <data name="notificationOptionCustomized" xml:space="preserve">
+	<data name="notificationOptionCustomized" xml:space="preserve">
     <value>定制的声音通知</value>
   </data>
-  <data name="notificationTooltip" xml:space="preserve">
+	<data name="notificationTooltip" xml:space="preserve">
     <value>Windows通知：默认的Windows托盘弹出窗口。
 声音通知：在切换的播放设备上播放声音。
 自定义声音通知：在切换的播放设备上播放指定的声音。
 弹出通知：使用特殊形式的Windows托盘弹出版本。
 视窗：使用自定义的永远在线视窗，对游戏内使用非常有用。</value>
   </data>
-  <data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
+	<data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
     <value>播放设备</value>
   </data>
-  <data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
+	<data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
     <value>录音设备</value>
   </data>
-  <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
+	<data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
     <value>对于两种设备</value>
   </data>
-  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
+	<data name="tooltipOnHoverOptionNone" xml:space="preserve">
     <value>没有工具提示</value>
   </data>
-  <data name="audioFileNotFound" xml:space="preserve">
+	<data name="audioFileNotFound" xml:space="preserve">
     <value>找不到您选择用作通知的音频文件。SoundSwitch将通知设置切换回默认 {0}.</value>
   </data>
-  <data name="audioFileNotFoundCaption" xml:space="preserve">
+	<data name="audioFileNotFoundCaption" xml:space="preserve">
     <value>找不到音频文件</value>
   </data>
-  <data name="activeRecording" xml:space="preserve">
+	<data name="activeRecording" xml:space="preserve">
     <value>录音：{0}</value>
   </data>
-  <data name="activePlayback" xml:space="preserve">
+	<data name="activePlayback" xml:space="preserve">
     <value>播放：{0}</value>
   </data>
-  <data name="language" xml:space="preserve">
+	<data name="language" xml:space="preserve">
     <value>语言</value>
   </data>
-  <data name="languageRestartRequired" xml:space="preserve">
+	<data name="languageRestartRequired" xml:space="preserve">
     <value>重新启动SoundSwitch后，语言会发生变化。
 现在要重新启动吗？</value>
   </data>
-  <data name="languageRestartRequiredCaption" xml:space="preserve">
+	<data name="languageRestartRequiredCaption" xml:space="preserve">
     <value>需要重启</value>
   </data>
-  <data name="updateNeverTooltip" xml:space="preserve">
+	<data name="updateNeverTooltip" xml:space="preserve">
     <value>除非您手动执行此操作，否则不会更新程序。</value>
   </data>
-  <data name="updateNotifyTooltip" xml:space="preserve">
+	<data name="updateNotifyTooltip" xml:space="preserve">
     <value>SoundSwitch会在有新的更新时通知您。单击通知时，您将获得一个弹出窗口，为您下载更新并询问您是否要安装它。</value>
   </data>
-  <data name="notificationOptionBanner" xml:space="preserve">
+	<data name="notificationOptionBanner" xml:space="preserve">
     <value>框架</value>
   </data>
-  <data name="disableCustomSoundTooltip" xml:space="preserve">
+	<data name="disableCustomSoundTooltip" xml:space="preserve">
     <value>禁用设置自定义声音。</value>
   </data>
 </root>

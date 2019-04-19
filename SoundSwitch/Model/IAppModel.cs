@@ -90,6 +90,10 @@ namespace SoundSwitch.Model
         /// The language of the application.
         /// </summary>
         Language Language { get; set; }
+        /// <summary>
+        /// Switch also the foreground program
+        /// </summary>
+        bool SwitchForegroundProgram { get; set; }
 
         #endregion
 

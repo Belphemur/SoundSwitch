@@ -57,12 +57,10 @@ namespace SoundSwitch.Model
 
         public CachedSound CustomNotificationSound
         {
-            get
-            {
-                return _customNotificationCachedSound ??
-                       (_customNotificationCachedSound =
-                           new CachedSound(AppConfigs.Configuration.CustomNotificationFilePath));
-            }
+            get =>
+                _customNotificationCachedSound ??
+                (_customNotificationCachedSound =
+                    new CachedSound(AppConfigs.Configuration.CustomNotificationFilePath));
             set
             {
                 var oldSound = _customNotificationCachedSound;
@@ -75,7 +73,7 @@ namespace SoundSwitch.Model
 
         public NotificationTypeEnum NotificationSettings
         {
-            get { return AppConfigs.Configuration.NotificationSettings; }
+            get => AppConfigs.Configuration.NotificationSettings;
             set
             {
                 AppConfigs.Configuration.NotificationSettings = value;
@@ -91,7 +89,7 @@ namespace SoundSwitch.Model
         /// </summary>
         public bool IncludeBetaVersions
         {
-            get { return AppConfigs.Configuration.IncludeBetaVersions; }
+            get => AppConfigs.Configuration.IncludeBetaVersions;
             set
             {
                 if (value != IncludeBetaVersions && _updateChecker != null)
@@ -121,7 +119,7 @@ namespace SoundSwitch.Model
 
         public bool SetCommunications
         {
-            get { return AppConfigs.Configuration.ChangeCommunications; }
+            get => AppConfigs.Configuration.ChangeCommunications;
             set
             {
                 AppConfigs.Configuration.ChangeCommunications = value;
@@ -131,7 +129,7 @@ namespace SoundSwitch.Model
 
         public UpdateMode UpdateMode
         {
-            get { return AppConfigs.Configuration.UpdateMode; }
+            get => AppConfigs.Configuration.UpdateMode;
             set
             {
                 AppConfigs.Configuration.UpdateMode = value;
@@ -141,10 +139,20 @@ namespace SoundSwitch.Model
 
         public Language Language
         {
-            get { return AppConfigs.Configuration.Language; }
+            get => AppConfigs.Configuration.Language;
             set
             {
                 AppConfigs.Configuration.Language = value;
+                AppConfigs.Configuration.Save();
+            }
+        }
+
+        public bool SwitchForegroundProgram
+        {
+            get => AppConfigs.Configuration.SwitchForegroundProgram;
+            set
+            {
+                AppConfigs.Configuration.SwitchForegroundProgram = value;
                 AppConfigs.Configuration.Save();
             }
         }

@@ -34,6 +34,7 @@ namespace SoundSwitch.Framework.Configuration
             // Basic Settings
             FirstRun = true;
             KeepSystrayIcon = false;
+            SwitchForegroundProgram = false;
 
             // Audio Settings
             ChangeCommunications = false;
@@ -73,6 +74,7 @@ namespace SoundSwitch.Framework.Configuration
         public bool IncludeBetaVersions { get; set; }
         public string CustomNotificationFilePath { get; set; }
         public bool KeepSystrayIcon { get; set; }
+        public bool SwitchForegroundProgram { get; set; }
 
 
         // Needed by Interface

@@ -68,11 +68,21 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
             {
                 AudioSwitcher.Instance.SwitchTo(device.Id, ERole.eConsole);
                 AudioSwitcher.Instance.SwitchTo(device.Id, ERole.eMultimedia);
+                if (AppModel.Instance.SwitchForegroundProgram)
+                {
+                    AudioSwitcher.Instance.SwitchTo(device.Id, ERole.eConsole, (EDataFlow)device.Type);
+                    AudioSwitcher.Instance.SwitchTo(device.Id, ERole.eMultimedia, (EDataFlow)device.Type);
+                }
+               
             }
             else
             {
                 Log.Information("Set Default Communication device: {Device}", device);
                 AudioSwitcher.Instance.SwitchTo(device.Id, ERole.ERole_enum_count);
+                if (AppModel.Instance.SwitchForegroundProgram)
+                {
+                    AudioSwitcher.Instance.SwitchTo(device.Id, ERole.ERole_enum_count, (EDataFlow)device.Type);
+                }
             }
             _lastDevices[device.Type] = device;
             return true;

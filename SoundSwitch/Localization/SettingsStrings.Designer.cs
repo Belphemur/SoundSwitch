@@ -19,7 +19,7 @@ namespace SoundSwitch.Localization {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class SettingsStrings {
@@ -219,6 +219,24 @@ namespace SoundSwitch.Localization {
         internal static string disconnected {
             get {
                 return ResourceManager.GetString("disconnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Also switch the foreground program.
+        /// </summary>
+        internal static string foregroundApp {
+            get {
+                return ResourceManager.GetString("foregroundApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Switch also the sound of the currently in use application. Useful with video games..
+        /// </summary>
+        internal static string foregroundAppTooltip {
+            get {
+                return ResourceManager.GetString("foregroundAppTooltip", resourceCulture);
             }
         }
         

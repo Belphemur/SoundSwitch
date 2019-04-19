@@ -47,5 +47,7 @@ namespace SoundSwitch.Framework.Configuration
         TooltipInfoTypeEnum TooltipInfo { get; set; }
         DeviceCyclerTypeEnum CyclerType { get; set; }
         bool KeepSystrayIcon { get; set; }
+
+        bool SwitchForegroundProgram { get; set; }
     }
 }

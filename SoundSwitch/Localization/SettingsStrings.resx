@@ -281,4 +281,10 @@ Do you want to restart now?</value>
 	<data name="disableCustomSoundTooltip" xml:space="preserve">
 		<value>Disable the set Custom Sound.</value>
 	</data>
+	<data name="foregroundApp" xml:space="preserve">
+		<value>Also switch the foreground program</value>
+	</data>
+	<data name="foregroundAppTooltip" xml:space="preserve">
+		<value>Switch also the sound of the currently in use application. Useful with video games.</value>
+	</data>
 </root>

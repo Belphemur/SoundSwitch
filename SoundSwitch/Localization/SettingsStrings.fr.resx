@@ -260,4 +260,10 @@ Ban. : Bannière discrète sur fond noir transparent sur le coté gauche de l'é
 	<data name="disableCustomSoundTooltip" xml:space="preserve">
 		<value>Désactiver le son personnalisé.</value>
 	</data>
+	<data name="foregroundApp" xml:space="preserve">
+		<value>Switcher aussi l'application visible</value>
+	</data>
+	<data name="foregroundAppTooltip" xml:space="preserve">
+		<value>Change aussi l'audio de l'application en avant. Utile pour les jeux vidéo.</value>
+	</data>
 </root>
