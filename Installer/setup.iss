@@ -44,6 +44,7 @@ SetupLogging=yes
 ;MinVersion default value: "0,5.0 (Windows 2000+) if Unicode Inno Setup, else 4.0,4.0 (Windows 95+)"
 MinVersion=6.1.7601
 PrivilegesRequired=admin
+PrivilegesRequiredOverridesAllowed=commandline dialog
 ArchitecturesAllowed=x86 x64
 ArchitecturesInstallIn64BitMode=x64
 
@@ -188,6 +189,18 @@ begin
       end;  
   end;
 end;
+
+procedure DeinitializeSetup();
+var
+  logfilepathname, logfilename, newfilepathname: string;
+begin
+  logfilepathname := ExpandConstant('{log}');
+  logfilename := ExtractFileName(logfilepathname);
+  // Set the new target path as the directory where the installer is being run from
+  newfilepathname := ExpandConstant('{tmp}\..') + logfilename;
+
+  FileCopy(logfilepathname, newfilepathname, false);
+end; 
 // shared code for installing the products
 #include "scripts\products.iss"
 // helper functions
@@ -453,16 +466,3 @@ procedure InitializeWizard();
 begin
   idpDownloadAfter(wpReady); 
 end;
-
-// Called just before Setup terminates. Note that this function is called even if the user exits Setup before anything is installed.
-procedure DeinitializeSetup();
-var
-  logfilepathname, logfilename, newfilepathname: string;
-begin
-  logfilepathname := ExpandConstant('{log}');
-  logfilename := ExtractFileName(logfilepathname);
-  // Set the new target path as the directory where the installer is being run from
-  newfilepathname := ExpandConstant('{src}\') + logfilename;
-
-  FileCopy(logfilepathname, newfilepathname, false);
-end; 

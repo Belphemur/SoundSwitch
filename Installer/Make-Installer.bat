@@ -10,9 +10,9 @@ setlocal
 cd /d "%~dp0"
 
 if "%PROCESSOR_ARCHITECTURE%"=="x86" (
-    set innoSetupRegistryNode=HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Inno Setup 5_is1
+    set innoSetupRegistryNode=HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Inno Setup 6_is1
 ) else (
-    set innoSetupRegistryNode=HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Inno Setup 5_is1
+    set innoSetupRegistryNode=HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Inno Setup 6_is1
 )
 
 rem Retrieve registry key of Inno Setup installation
