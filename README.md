@@ -15,7 +15,7 @@ The following components are required to run SoundSwitch on your Windows device:
 - [Microsoft .NET Framework 4.7 (Web Installer)](https://www.microsoft.com/en-us/download/details.aspx?id=55170)
 
 ## Donations
-If you want to donate for the development don't hesite [to do it here](https://www.aaflalo.me/donate/).
+If you want to donate for the development don't hesite [to do it here](https://soundswitch.aaflalo.me/#donate).
 
 ## Configuration
 ``Right click`` the SoundSwitch icon in your system tray and choose `Settings`. Now select the devices between which you want to toggle. Optionally you can also change the keyboard combination. If you want the application to start automatically when your PC boots up, check the box `Start automatically with Windows`.
