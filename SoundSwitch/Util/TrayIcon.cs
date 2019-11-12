@@ -48,7 +48,7 @@ namespace SoundSwitch.Util
         private static readonly Bitmap RessourceHelpSmallBitmap = Resources.HelpSmall;
         private static readonly Bitmap RessourceExitBitmap = Resources.exit;
         private static readonly Icon RessourceUpdateIconBitmap = Resources.UpdateIcon;
-        private static readonly Icon SoundSwitchLogoIcon = Resources.Switch_Logo;
+        private static readonly Icon SoundSwitchLogoIcon = Resources.Switch_SoundWave;
 
         private readonly ContextMenuStrip _selectionMenu = new ContextMenuStrip();
         private readonly ContextMenuStrip _settingsMenu = new ContextMenuStrip();

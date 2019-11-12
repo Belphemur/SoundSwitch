@@ -175,7 +175,7 @@
   <data name="SoundSwitchLogoBlue" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Blue Icon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Switch_Logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Switch-Logo.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Switch_SoundWave" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Switch-SoundWave.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
