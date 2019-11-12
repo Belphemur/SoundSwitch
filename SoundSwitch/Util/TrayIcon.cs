@@ -231,6 +231,12 @@ namespace SoundSwitch.Util
                     return;
                 }
 
+                //Only update icon when it's a Render device
+                if (audioChangeEvent.Device.DataFlow != DataFlow.Render)
+                {
+                    return;
+                } 
+
                 ReplaceIcon(AudioDeviceIconExtractor.ExtractIconFromAudioDevice(audioChangeEvent.Device, false));
             };
             AppModel.Instance.NewVersionReleased += (sender, @event) =>
