@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SoundSwitch</RootNamespace>
     <AssemblyName>SoundSwitch</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <PlatformTarget>x86</PlatformTarget>
     <TargetFrameworkProfile>
@@ -41,6 +41,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -107,7 +108,7 @@
     <Prefer32Bit>false</Prefer32Bit>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <RunCodeAnalysis>false</RunCodeAnalysis>
-    <LangVersion>7</LangVersion>
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>bin\Release\</OutputPath>
@@ -277,7 +278,6 @@
     <Compile Include="Framework\Banner\BannerManager.cs" />
     <Compile Include="Framework\Audio\Device\DeviceFullInfo.cs" />
     <Compile Include="Framework\Audio\Device\DeviceInfo.cs" />
-    <Compile Include="Framework\Audio\Device\DeviceInfoCollection.cs" />
     <Compile Include="Framework\Configuration\IPCConfiguration.cs" />
     <Compile Include="Framework\Configuration\AppConfigs.cs" />
     <Compile Include="Framework\Configuration\ConfigurationManager.cs" />

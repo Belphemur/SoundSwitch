@@ -44,7 +44,7 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         /// <param name="audioDevices"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        protected DeviceFullInfo GetNextDevice(ICollection<DeviceFullInfo> audioDevices, DataFlow type)
+        protected DeviceFullInfo GetNextDevice(IReadOnlyCollection<DeviceFullInfo> audioDevices, DataFlow type)
         {
             _lastDevices.TryGetValue(type, out var lastDevice);
 

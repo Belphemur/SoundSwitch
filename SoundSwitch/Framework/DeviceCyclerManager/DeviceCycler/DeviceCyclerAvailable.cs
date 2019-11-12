@@ -32,7 +32,7 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         /// <param name="type"></param>
         public override bool CycleAudioDevice(DataFlow type)
         {
-            ICollection<DeviceFullInfo> audioDevices;
+            IReadOnlyCollection<DeviceFullInfo> audioDevices;
             switch (type)
             {
                 case DataFlow.Render:

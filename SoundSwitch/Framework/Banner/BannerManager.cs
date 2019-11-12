@@ -13,7 +13,6 @@
 ********************************************************************/
 
 using System;
-using Windows.UI.Notifications;
 
 namespace SoundSwitch.Framework.Banner
 {

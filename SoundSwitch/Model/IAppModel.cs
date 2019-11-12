@@ -34,16 +34,16 @@ namespace SoundSwitch.Model
         /// <summary>
         /// Devices selected for Switching
         /// </summary>
-        DeviceInfoCollection SelectedDevices { get; }
+        ISet<DeviceInfo> SelectedDevices { get; }
         /// <summary>
         /// An union between the Active <see cref="IAudioDevice" /> of Windows and <see cref="SelectedPlaybackDevicesList" />
         /// </summary>
-        ICollection<DeviceFullInfo> AvailablePlaybackDevices { get; }
+        IReadOnlyCollection<DeviceFullInfo> AvailablePlaybackDevices { get; }
 
         /// <summary>
         /// An union between the Active <see cref="IAudioDevice" /> of Windows and <see cref="SelectedRecordingDevicesList" />
         /// </summary>
-        ICollection<DeviceFullInfo> AvailableRecordingDevices { get; }
+        IReadOnlyCollection<DeviceFullInfo> AvailableRecordingDevices { get; }
 
         /// <summary>
         /// If the Playback device need also to be set for Communications.

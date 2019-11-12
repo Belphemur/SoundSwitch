@@ -29,7 +29,7 @@ namespace SoundSwitch.Framework.Audio.Device
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return Type == other.Type && (string.Equals(Id, other.Id) || string.Equals(Name, other.Name));
+            return Id == other.Id && Type == other.Type;
         }
 
         public override bool Equals(object obj)
@@ -44,10 +44,7 @@ namespace SoundSwitch.Framework.Audio.Device
         {
             unchecked
             {
-                var hashCode = (int) Type + 1;
-                hashCode = (hashCode * 397) ^ (Id != null ? Id.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Name != null ? Name.GetHashCode() : 0);
-                return hashCode;
+                return ((Id != null ? Id.GetHashCode() : 0) * 397) ^ (int) Type;
             }
         }
 
@@ -66,12 +63,9 @@ namespace SoundSwitch.Framework.Audio.Device
         {
             if (ReferenceEquals(this, other)) return 0;
             if (ReferenceEquals(null, other)) return 1;
-            var typeComparison = Type.CompareTo(other.Type);
-            if (typeComparison != 0) return typeComparison;
             var idComparison = string.Compare(Id, other.Id, StringComparison.Ordinal);
             if (idComparison != 0) return idComparison;
-            return string.Compare(Name, other.Name, StringComparison.Ordinal);
+            return Type.CompareTo(other.Type);
         }
-     
     }
 }

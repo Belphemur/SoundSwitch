@@ -51,7 +51,6 @@ namespace SoundSwitch.Model
         public TrayIcon TrayIcon { get; set; }
         private CachedSound _customNotificationCachedSound;
         private readonly DeviceCyclerManager _deviceCyclerManager;
-        private DeviceInfoCollection _deviceSelectedList;
 
 
 
@@ -102,20 +101,14 @@ namespace SoundSwitch.Model
         }
 
 
-        public DeviceInfoCollection SelectedDevices
-        {
-            get
-            {
-                if (_deviceSelectedList != null)
-                    return _deviceSelectedList;
-                return _deviceSelectedList = new DeviceInfoCollection(AppConfigs.Configuration.SelectedDevices);
-            }
-        }
+        public ISet<DeviceInfo> SelectedDevices => AppConfigs.Configuration.SelectedDevices;
 
-        public ICollection<DeviceFullInfo> AvailablePlaybackDevices => SelectedDevices.IntersectWith(ActiveAudioDeviceLister.PlaybackDevices);
+        public IReadOnlyCollection<DeviceFullInfo> AvailablePlaybackDevices =>
+            ActiveAudioDeviceLister.PlaybackDevices.Intersect(SelectedDevices.Where(info => info.Type == DataFlow.Render)).Cast<DeviceFullInfo>().ToArray();
 
 
-        public ICollection<DeviceFullInfo> AvailableRecordingDevices => SelectedDevices.IntersectWith(ActiveAudioDeviceLister.RecordingDevices);
+        public IReadOnlyCollection<DeviceFullInfo> AvailableRecordingDevices =>
+            ActiveAudioDeviceLister.RecordingDevices.Intersect(SelectedDevices.Where(info => info.Type == DataFlow.Capture)).Cast<DeviceFullInfo>().ToArray();
 
         public bool SetCommunications
         {
