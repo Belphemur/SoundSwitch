@@ -1,5 +1,35 @@
 # Change Log
 
+## [v4.15.0](https://github.com/Belphemur/SoundSwitch/tree/v4.15.0) (2019-11-12)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.14.0...v4.15.0)
+
+**Implemented enhancements:**
+
+- The installer dumps a setup log file next to itself after normal installation [\#337](https://github.com/Belphemur/SoundSwitch/issues/337)
+- Don't launch the application after a silent install [\#336](https://github.com/Belphemur/SoundSwitch/issues/336)
+
+**Fixed bugs:**
+
+- Incorrect tray icon displayed [\#340](https://github.com/Belphemur/SoundSwitch/issues/340)
+
+**Closed issues:**
+
+- Sound Switch is not opening after the newest windows update \(1903\) [\#355](https://github.com/Belphemur/SoundSwitch/issues/355)
+- Soundswitch shortcut doesn't work anymore [\#354](https://github.com/Belphemur/SoundSwitch/issues/354)
+- Switch audio outputs when SoundSwitch is run while already running. [\#353](https://github.com/Belphemur/SoundSwitch/issues/353)
+- \[Feature request\] option to hide tray icon [\#352](https://github.com/Belphemur/SoundSwitch/issues/352)
+- \[Enhacement\] Cycle through selected devices with one left click of the tray icon [\#351](https://github.com/Belphemur/SoundSwitch/issues/351)
+- This program messed up my sound settings after uninstalling [\#350](https://github.com/Belphemur/SoundSwitch/issues/350)
+- Unable to download installer - SSL Issues [\#349](https://github.com/Belphemur/SoundSwitch/issues/349)
+- Hotkey not working [\#347](https://github.com/Belphemur/SoundSwitch/issues/347)
+- \[Feature Request\] Switch output by a shortcut without SoundSwitch running in tray [\#346](https://github.com/Belphemur/SoundSwitch/issues/346)
+- Icon in start menu is small when medium icon size is selected [\#345](https://github.com/Belphemur/SoundSwitch/issues/345)
+- Not working in Chrome [\#344](https://github.com/Belphemur/SoundSwitch/issues/344)
+- Default audio is switching but my opened programs do not. [\#343](https://github.com/Belphemur/SoundSwitch/issues/343)
+- Audio out of only one source [\#342](https://github.com/Belphemur/SoundSwitch/issues/342)
+- Microphone level is reset to 0 after switching [\#339](https://github.com/Belphemur/SoundSwitch/issues/339)
+- Not switching audio devices without restarting program with bootup on start enabled [\#335](https://github.com/Belphemur/SoundSwitch/issues/335)
+
 ## [v4.14.0](https://github.com/Belphemur/SoundSwitch/tree/v4.14.0) (2019-04-19)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.13.0...v4.14.0)
 
