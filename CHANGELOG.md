@@ -1,5 +1,16 @@
 # Change Log
 
+## [Unreleased](https://github.com/Belphemur/SoundSwitch/tree/HEAD)
+
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.15.1...HEAD)
+
+**Fixed bugs:**
+
+- Speakers registering as disconnected in SoundSwitch since update 4.15.0.40592 [\#361](https://github.com/Belphemur/SoundSwitch/issues/361)
+- Working device showing as "Disconnected" after latest update [\#360](https://github.com/Belphemur/SoundSwitch/issues/360)
+- Shortcut Not Working [\#359](https://github.com/Belphemur/SoundSwitch/issues/359)
+- Missing Audio Device [\#358](https://github.com/Belphemur/SoundSwitch/issues/358)
+
 ## [v4.15.1](https://github.com/Belphemur/SoundSwitch/tree/v4.15.1) (2019-11-13)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.15.0...v4.15.1)
 
