@@ -16,7 +16,7 @@ namespace SoundSwitch.Util.Timer
     /// </summary>
     public class DebounceDispatcher
     {
-        private System.Timers.Timer _timer;
+        private System.Timers.Timer? _timer;
         private DateTime TimerStarted { get; set; } = DateTime.UtcNow.AddYears(-1);
 
         /// <summary>
