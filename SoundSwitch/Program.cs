@@ -21,6 +21,7 @@ using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Remoting;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
 using Serilog;
@@ -47,19 +48,18 @@ namespace SoundSwitch
 
         [HandleProcessCorruptedStateExceptions]
         [STAThread]
-        private static void Main()
+        private static async Task Main()
         {
             bool createdNew;
             InitializeLogger();
             Log.Information("Application Starts");
-            using (var audioDeviceLister = new CachedAudioDeviceLister(DeviceState.Active))
-            {
-                var recordingDevices = audioDeviceLister.RecordingDevices;
-                Log.Information("Devices Recording {device}", recordingDevices);
-                var playbackDevices = audioDeviceLister.PlaybackDevices;
+            using var audioDeviceLister = new CachedAudioDeviceLister(DeviceState.Active);
+            await audioDeviceLister.Refresh();
+            var recordingDevices = audioDeviceLister.RecordingDevices;
+            Log.Information("Devices Recording {device}", recordingDevices);
+            var playbackDevices = audioDeviceLister.PlaybackDevices;
 
-                Log.Information("Devices Playback {device}", playbackDevices);
-            }
+            Log.Information("Devices Playback {device}", playbackDevices);
 #if !DEBUG
                 AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
                 {
@@ -97,7 +97,9 @@ namespace SoundSwitch
                     }
                 }
 
-                AppModel.Instance.ActiveAudioDeviceLister = new CachedAudioDeviceLister(DeviceState.Active);
+                var deviceActiveLister = new CachedAudioDeviceLister(DeviceState.Active);
+                await deviceActiveLister.Refresh();
+                AppModel.Instance.ActiveAudioDeviceLister = deviceActiveLister;
 
                 // Windows Vista or newer.
                 if (Environment.OSVersion.Version.Major >= 6)
@@ -161,7 +163,7 @@ namespace SoundSwitch
                     };
                     if (AppConfigs.Configuration.FirstRun)
                     {
-                        icon.ShowSettings();
+                        await icon.ShowSettings();
                         AppConfigs.Configuration.FirstRun = false;
                         Log.Information("First run");
                     }

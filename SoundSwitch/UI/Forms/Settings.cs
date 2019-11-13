@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Framework;
@@ -41,7 +42,7 @@ namespace SoundSwitch.UI.Forms
     {
         private static readonly Icon RessourceSettingsIcon = Resources.SettingsIcon;
 
-        private readonly bool _loaded;
+        private bool _loaded;
 
         public SettingsForm()
         {
@@ -154,15 +155,18 @@ namespace SoundSwitch.UI.Forms
             // Settings - Language
             languageComboBox.Items.AddRange(Enum.GetNames(typeof(Language)));
             languageComboBox.SelectedIndex = (int) AppConfigs.Configuration.Language;
+        }
 
+        public  async Task PopulateAudioDevices()
+        {
+            
             // Playback and Recording
-            using (var audioDeviceLister = new CachedAudioDeviceLister(DeviceState.All))
-            {
-                PopulateAudioList(playbackListView, AppModel.Instance.SelectedDevices,
-                    audioDeviceLister.PlaybackDevices);
-                PopulateAudioList(recordingListView, AppModel.Instance.SelectedDevices,
-                    audioDeviceLister.RecordingDevices);
-            }
+            using var audioDeviceLister = new CachedAudioDeviceLister(DeviceState.All);
+            await audioDeviceLister.Refresh();
+            PopulateAudioList(playbackListView, AppModel.Instance.SelectedDevices,
+                audioDeviceLister.PlaybackDevices);
+            PopulateAudioList(recordingListView, AppModel.Instance.SelectedDevices,
+                audioDeviceLister.RecordingDevices);
 
             _loaded = true;
         }

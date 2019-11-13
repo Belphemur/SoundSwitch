@@ -20,6 +20,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
 using Serilog;
@@ -181,7 +182,7 @@ namespace SoundSwitch.Util
             _settingsMenu.Items.Add("-");
             _settingsMenu.Items.Add(_updateMenuItem);
             _settingsMenu.Items.Add(TrayIconStrings.settings, RessourceSettingsSmallBitmap,
-                (sender, e) => ShowSettings());
+                async (sender, e) => await ShowSettings());
             _settingsMenu.Items.Add("-");
             _settingsMenu.Items.Add(TrayIconStrings.help, RessourceInfoHelpBitmap, (sender, e) =>
             {
@@ -294,9 +295,11 @@ namespace SoundSwitch.Util
         }
 
 
-        public void ShowSettings()
+        public async Task ShowSettings()
         {
-            new SettingsForm().Show();
+            var settingsForm = new SettingsForm();
+            await settingsForm.PopulateAudioDevices();
+            settingsForm.Show();
         }
 
         /// <summary>

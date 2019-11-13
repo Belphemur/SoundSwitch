@@ -38,34 +38,31 @@ namespace SoundSwitch.Framework.Audio.Lister
         public CachedAudioDeviceLister(DeviceState state)
         {
             _state = state;
-            Refresh();
             MMNotificationClient.Instance.DevicesChanged += DeviceChanged;
         }
 
         private void DeviceChanged(object sender, DeviceChangedEventBase e)
         {
-            _dispatcher.Debounce(150, (o) => Refresh());
+            _dispatcher.Debounce(150, async (o) => await Refresh());
         }
 
-        private void Refresh()
+        public async Task Refresh()
         {
             Log.Information("Refreshing device of state {@State}", _state);
             var playbackTask = Task<ICollection<DeviceFullInfo>>.Factory.StartNew((() =>
             {
-                using (var enumerator = new MMDeviceEnumerator())
-                {
-                    return CreateDeviceList(enumerator.EnumerateAudioEndPoints(DataFlow.Render, _state));
-                }
+                using var enumerator = new MMDeviceEnumerator();
+                return CreateDeviceList(enumerator.EnumerateAudioEndPoints(DataFlow.Render, _state));
             }));
             var recordingTask = Task<ICollection<DeviceFullInfo>>.Factory.StartNew((() =>
             {
-                using (var enumerator = new MMDeviceEnumerator())
-                {
-                    return CreateDeviceList(enumerator.EnumerateAudioEndPoints(DataFlow.Capture, _state));
-                }
+                using var enumerator = new MMDeviceEnumerator();
+                return CreateDeviceList(enumerator.EnumerateAudioEndPoints(DataFlow.Capture, _state));
             }));
-            PlaybackDevices = playbackTask.Result;
-            RecordingDevices = recordingTask.Result;
+            var results = await Task.WhenAll(playbackTask, recordingTask);
+            PlaybackDevices = results[0];
+            RecordingDevices = results[1];
+
             Log.Information("Refreshed device of state {@State}", _state);
         }
 
@@ -82,7 +79,7 @@ namespace SoundSwitch.Framework.Audio.Lister
                         continue;
                     }
 
-                    sortedDevices.Add(device.FriendlyName, deviceInfo);
+                    sortedDevices.Add(device.ID, deviceInfo);
                 }
                 catch (Exception)
                 {

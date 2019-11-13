@@ -8,7 +8,6 @@
       <e p="SoundSwitch" t="IncludeRecursive">
         <e p="App.config" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
-        <e p="Blue Icon.ico" t="Include" />
         <e p="Framework" t="Include">
           <e p="ApplicationPath.cs" t="Include" />
           <e p="Audio" t="Include">
@@ -220,6 +219,7 @@
           <e p="page-bottom.ico" t="Include" />
           <e p="page-bottom.png" t="Include" />
           <e p="Switch-Logo.ico" t="Include" />
+          <e p="Switch-SoundWave.ico" t="Include" />
           <e p="tick.png" t="Include" />
           <e p="White Icon.ico" t="Include" />
         </e>
