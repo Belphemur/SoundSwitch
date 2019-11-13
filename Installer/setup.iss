@@ -98,7 +98,7 @@ Name: "{commondesktop}\{#MyAppSetupName}"; Filename: "{app}\SoundSwitch.exe"; Ta
 [Run]
 Filename: "{app}\SoundSwitch.exe"; Description: "{cm:LaunchProgram,{#MyAppSetupName}}"; Flags: nowait postinstall
 Filename: "{app}\Readme.html"; Description: "{cm:ViewReadmeFile}"; Flags: postinstall shellexec skipifsilent
-Filename: "https://soundswitch.aaflalo.me/#donate?utm_source=installer"; Description: "{cm:SupportTheProject}"; Flags: postinstall shellexec skipifsilent runasoriginaluser
+Filename: "https://soundswitch.aaflalo.me/?utm_source=installer#donate"; Description: "{cm:SupportTheProject}"; Flags: postinstall shellexec skipifsilent runasoriginaluser
 Filename: "{app}\Changelog.html"; Description: "{cm:ViewChangelogFile}"; Flags: postinstall shellexec skipifsilent unchecked
 Filename: "certutil.exe"; Parameters: "-addstore ""Root"" ""{app}\certs\aaflalo.cer"""; Flags: runhidden runascurrentuser skipifsilent;  Tasks: "certs"
 Filename: "certutil.exe"; Parameters: "-addstore ""TrustedPublisher"" ""{app}\certs\SoundSwitch.cer"""; Flags: runhidden runascurrentuser skipifsilent;  Tasks: "certs"
