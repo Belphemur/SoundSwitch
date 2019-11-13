@@ -1,5 +1,12 @@
 # Change Log
 
+## [v4.15.1](https://github.com/Belphemur/SoundSwitch/tree/v4.15.1) (2019-11-13)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.15.0...v4.15.1)
+
+**Fixed bugs:**
+
+- Cycle throu selected  not working [\#357](https://github.com/Belphemur/SoundSwitch/issues/357)
+
 ## [v4.15.0](https://github.com/Belphemur/SoundSwitch/tree/v4.15.0) (2019-11-12)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.14.0...v4.15.0)
 
