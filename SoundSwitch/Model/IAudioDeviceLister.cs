@@ -26,13 +26,13 @@ namespace SoundSwitch.Model
         ///     Get the playback device in the set state
         /// </summary>
         /// <returns></returns>
-        ICollection<DeviceFullInfo> PlaybackDevices { get; }
+        IReadOnlyCollection<DeviceFullInfo> PlaybackDevices { get; }
 
         /// <summary>
         ///     Get the recording device in the set state
         /// </summary>
         /// <returns></returns>
-        ICollection<DeviceFullInfo> RecordingDevices { get; }
+        IReadOnlyCollection<DeviceFullInfo> RecordingDevices { get; }
 
         Task Refresh();
     }

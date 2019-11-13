@@ -29,10 +29,10 @@ namespace SoundSwitch.Framework.Audio.Lister
     public class CachedAudioDeviceLister : IAudioDeviceLister
     {
         /// <inheritdoc />
-        public ICollection<DeviceFullInfo> PlaybackDevices { get; private set; }
+        public IReadOnlyCollection<DeviceFullInfo> PlaybackDevices { get; private set; } = new List<DeviceFullInfo>();
 
         /// <inheritdoc />
-        public ICollection<DeviceFullInfo> RecordingDevices { get; private set; }
+        public IReadOnlyCollection<DeviceFullInfo> RecordingDevices { get; private set; } = new List<DeviceFullInfo>();
 
         private readonly DeviceState _state;
         private readonly DebounceDispatcher _dispatcher = new DebounceDispatcher();
@@ -51,7 +51,7 @@ namespace SoundSwitch.Framework.Audio.Lister
         public async Task Refresh()
         {
             Log.Information("Refreshing device of state {@State}", _state);
-            var playbackTask = Task<ICollection<DeviceFullInfo>>.Factory.StartNew((() =>
+            var playbackTask = Task<IReadOnlyCollection<DeviceFullInfo>>.Factory.StartNew((() =>
             {
                 Log.Information("Refreshing playback device of state {@State}", _state);
                 using var enumerator = new MMDeviceEnumerator();
@@ -59,7 +59,7 @@ namespace SoundSwitch.Framework.Audio.Lister
                 Log.Information("Refreshed playbacks: {@Playbacks}", playback.Select(info => new {Name = info.Name, Id = info.Id}));
                 return playback;
             }));
-            var recordingTask = Task<ICollection<DeviceFullInfo>>.Factory.StartNew((() =>
+            var recordingTask = Task<IReadOnlyCollection<DeviceFullInfo>>.Factory.StartNew((() =>
             {
                 Log.Information("Refreshing recording device of state {@State}", _state);
                 using var enumerator = new MMDeviceEnumerator();
@@ -73,7 +73,7 @@ namespace SoundSwitch.Framework.Audio.Lister
             Log.Information("Refreshed device of state {@State}", _state);
         }
 
-        private static ICollection<DeviceFullInfo> CreateDeviceList(MMDeviceCollection collection)
+        private static IReadOnlyCollection<DeviceFullInfo> CreateDeviceList(MMDeviceCollection collection)
         {
             var sortedDevices = new SortedList<string, DeviceFullInfo>();
             foreach (var device in collection)
@@ -94,7 +94,7 @@ namespace SoundSwitch.Framework.Audio.Lister
                 }
             }
 
-            return sortedDevices.Values;
+            return sortedDevices.Values.ToArray();
         }
 
         public void Dispose()
