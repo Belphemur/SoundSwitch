@@ -287,4 +287,14 @@ Do you want to restart now?</value>
 	<data name="foregroundAppTooltip" xml:space="preserve">
 		<value>Switch also the sound of the currently in use application. Useful with video games.</value>
 	</data>
+	<data name="iconChange" xml:space="preserve">
+		<value>Change Icon</value>
+	</data>
+	<data name="iconChange.tooltip" xml:space="preserve">
+		<value>Choose when to change the Systray Icon of SoundSwitch.
+
+Never: Don't change it.
+Playback: When a playback device is switched.
+Recording: When a recording device is switched.</value>
+	</data>
 </root>

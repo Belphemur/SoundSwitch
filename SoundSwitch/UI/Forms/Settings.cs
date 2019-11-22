@@ -28,6 +28,7 @@ using SoundSwitch.Framework.Audio.Lister;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
+using SoundSwitch.Framework.TrayIcon.Icon;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 using SoundSwitch.Framework.Updater;
@@ -67,11 +68,13 @@ namespace SoundSwitch.UI.Forms
 
             // Settings - Basic
             startWithWindowsCheckBox.Checked = AppModel.Instance.RunAtStartup;
-            keepSystemTrayIconCheckBox.Checked = AppConfigs.Configuration.KeepSystrayIcon;
-
-            var keepSystemTrayIconToolTip = new ToolTip();
-            keepSystemTrayIconToolTip.SetToolTip(keepSystemTrayIconCheckBox, SettingsStrings.keepSystemTrayIconTooltip);
-
+            
+            new IconChangerFactory().ConfigureListControl(iconChangeChoicesComboBox);
+            iconChangeChoicesComboBox.SelectedValue = AppConfigs.Configuration.SwitchIcon;
+            
+            var iconChangeToolTip = new ToolTip();
+            iconChangeToolTip.SetToolTip(iconChangeLabel, SettingsStrings.iconChange_tooltip);
+            
             // Settings - Audio
             switchCommunicationDeviceCheckBox.Checked = AppModel.Instance.SetCommunications;
            
@@ -114,6 +117,8 @@ namespace SoundSwitch.UI.Forms
 
             new DeviceCyclerFactory().ConfigureListControl(cycleThroughComboBox);
             cycleThroughComboBox.SelectedValue = DeviceCyclerManager.CurrentCycler;
+            
+            
 
             var cycleThroughToolTip = new ToolTip();
             cycleThroughToolTip.SetToolTip(cycleThroughComboBox, SettingsStrings.cycleThroughTooltip);
@@ -185,7 +190,7 @@ namespace SoundSwitch.UI.Forms
             // Settings - Basic
             basicSettingsGroupBox.Text = SettingsStrings.basicSettings;
             startWithWindowsCheckBox.Text = SettingsStrings.startWithWindows;
-            keepSystemTrayIconCheckBox.Text = SettingsStrings.keepSystemTrayIcon;
+            iconChangeLabel.Text = SettingsStrings.iconChange;
 
             // Settings - Audio
             audioSettingsGroupBox.Text = SettingsStrings.audioSettings;
@@ -568,12 +573,6 @@ namespace SoundSwitch.UI.Forms
 
         #endregion
 
-        private void checkboxSystrayIcon_CheckedChanged(object sender, EventArgs e)
-        {
-            AppConfigs.Configuration.KeepSystrayIcon = keepSystemTrayIconCheckBox.Checked;
-            AppConfigs.Configuration.Save();
-        }
-
         private void updateSilentRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             if (updateSilentRadioButton.Checked)
@@ -607,6 +606,21 @@ namespace SoundSwitch.UI.Forms
         private void ForegroundAppCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             AppModel.Instance.SwitchForegroundProgram = foregroundAppCheckbox.Checked;
+        }
+
+        private void iconChangeChoicesComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!_loaded)
+                return;
+            var comboBox = (ComboBox)sender;
+
+            if (comboBox == null)
+                return;
+
+            AppConfigs.Configuration.SwitchIcon = (IconChangerFactory.ActionEnum)iconChangeChoicesComboBox.SelectedIndex;
+            AppConfigs.Configuration.Save();
+            
+            new IconChangerFactory().Get(AppConfigs.Configuration.SwitchIcon).ChangeIcon(AppModel.Instance.TrayIcon);
         }
     }
 }

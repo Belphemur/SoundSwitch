@@ -154,4 +154,7 @@
 	<data name="iconChanger.recording" xml:space="preserve">
 		<value>Enregistrement</value>
 	</data>
+	<data name="iconChanger.none" xml:space="preserve">
+		<value>Jamais</value>
+	</data>
 </root>

@@ -19,7 +19,7 @@ namespace SoundSwitch.Localization {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class SettingsStrings {
@@ -255,6 +255,28 @@ namespace SoundSwitch.Localization {
         internal static string hotkeysTooltip {
             get {
                 return ResourceManager.GetString("hotkeysTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change Icon.
+        /// </summary>
+        internal static string iconChange {
+            get {
+                return ResourceManager.GetString("iconChange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose when to change the Systray Icon of SoundSwitch.
+        ///
+        ///Never: Don&apos;t change it.
+        ///Playback: When a playback device is switched.
+        ///Recording: When a recording device is switched..
+        /// </summary>
+        internal static string iconChange_tooltip {
+            get {
+                return ResourceManager.GetString("iconChange.tooltip", resourceCulture);
             }
         }
         

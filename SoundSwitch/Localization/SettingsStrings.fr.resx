@@ -266,4 +266,7 @@ Ban. : Bannière discrète sur fond noir transparent sur le coté gauche de l'é
   <data name="foregroundAppTooltip" xml:space="preserve">
 		<value>Change aussi l'audio de l'application en avant. Utile pour les jeux vidéo.</value>
   </data>
+	<data name="iconChange" xml:space="preserve">
+		<value>Change l'icone</value>
+	</data>
 </root>
