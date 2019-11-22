@@ -135,7 +135,7 @@ namespace SoundSwitch.Util
 
         public void ReplaceIcon(Icon newIcon)
         {
-            if (NotifyIcon.Icon.Equals(newIcon))
+            if (newIcon.Equals(NotifyIcon.Icon))
                 return;
             
             var oldIcon = NotifyIcon.Icon;
