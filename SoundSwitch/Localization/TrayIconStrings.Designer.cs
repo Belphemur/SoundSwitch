@@ -19,7 +19,7 @@ namespace SoundSwitch.Localization {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class TrayIconStrings {
@@ -129,6 +129,33 @@ namespace SoundSwitch.Localization {
         internal static string help {
             get {
                 return ResourceManager.GetString("help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Never.
+        /// </summary>
+        internal static string iconChanger_none {
+            get {
+                return ResourceManager.GetString("iconChanger.none", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Playback.
+        /// </summary>
+        internal static string iconChanger_playback {
+            get {
+                return ResourceManager.GetString("iconChanger.playback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recording.
+        /// </summary>
+        internal static string iconChanger_recording {
+            get {
+                return ResourceManager.GetString("iconChanger.recording", resourceCulture);
             }
         }
         

@@ -148,4 +148,10 @@
 	<data name="noUpdate" xml:space="preserve">
 		<value>Aucune MàJ présente</value>
 	</data>
+	<data name="iconChanger.playback" xml:space="preserve">
+		<value>Lecture</value>
+	</data>
+	<data name="iconChanger.recording" xml:space="preserve">
+		<value>Enregistrement</value>
+	</data>
 </root>

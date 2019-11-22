@@ -109,4 +109,7 @@
 	<data name="donate" xml:space="preserve">
 		<value>Doner</value>
   </data>
+	<data name="iconChanger.playback" xml:space="preserve">
+		<value>Avspillingsenheter</value>
+	</data>
 </root>

@@ -168,4 +168,10 @@
 	<data name="donate" xml:space="preserve">
 		<value>Spenden</value>
 	</data>
+	<data name="iconChanger.playback" xml:space="preserve">
+		<value>Wiedergabegeräte</value>
+	</data>
+	<data name="iconChanger.recording" xml:space="preserve">
+		<value>Aufnahmegerät</value>
+	</data>
 </root>

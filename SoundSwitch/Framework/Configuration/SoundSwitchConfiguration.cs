@@ -21,6 +21,7 @@ using Serilog;
 using SoundSwitch.Framework.Audio.Device;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
+using SoundSwitch.Framework.TrayIcon.Icon;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Localization;
@@ -75,6 +76,8 @@ namespace SoundSwitch.Framework.Configuration
         public string CustomNotificationFilePath { get; set; }
         public bool KeepSystrayIcon { get; set; }
         public bool SwitchForegroundProgram { get; set; }
+        
+        public IconChangerFactory.Enum SwitchIcon { get; set; }
 
 
         // Needed by Interface
