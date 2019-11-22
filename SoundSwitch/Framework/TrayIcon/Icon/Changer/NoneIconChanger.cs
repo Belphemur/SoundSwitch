@@ -1,5 +1,6 @@
 ﻿using SoundSwitch.Framework.Audio.Device;
 using SoundSwitch.Localization;
+using SoundSwitch.Properties;
 
 namespace SoundSwitch.Framework.TrayIcon.Icon.Changer
 {
@@ -11,6 +12,11 @@ namespace SoundSwitch.Framework.TrayIcon.Icon.Changer
         public bool ChangeIcon(DeviceInfo deviceInfo)
         {
             return false;
+        }
+
+        public void OnSelection(Util.TrayIcon trayIcon)
+        {
+            trayIcon.ReplaceIcon(Resources.Switch_SoundWave);
         }
     }
 }

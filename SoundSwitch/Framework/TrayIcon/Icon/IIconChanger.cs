@@ -11,5 +11,11 @@ namespace SoundSwitch.Framework.TrayIcon.Icon
         /// <param name="deviceInfo"></param>
         /// <returns></returns>
         bool ChangeIcon(DeviceInfo deviceInfo);
+
+        /// <summary>
+        /// What to do when the option is selected
+        /// </summary>
+        /// <param name="trayIcon"></param>
+        void OnSelection(Util.TrayIcon trayIcon);
     }
 }

@@ -131,7 +131,7 @@ namespace SoundSwitch.Util
             _updateMenuItem.Dispose();
         }
 
-        private void ReplaceIcon(Icon newIcon)
+        public void ReplaceIcon(Icon newIcon)
         {
             var oldIcon = NotifyIcon.Icon;
             NotifyIcon.Icon = (Icon) newIcon.Clone();
