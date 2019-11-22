@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using SoundSwitch.Framework.Audio.Device;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
+using SoundSwitch.Framework.TrayIcon.Icon;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Localization;
@@ -49,5 +50,10 @@ namespace SoundSwitch.Framework.Configuration
         bool KeepSystrayIcon { get; set; }
 
         bool SwitchForegroundProgram { get; set; }
+
+        /// <summary>
+        /// What to do with the TrayIcon when changing default device
+        /// </summary>
+        IconChangerFactory.ActionEnum SwitchIcon { get; set; }
     }
 }

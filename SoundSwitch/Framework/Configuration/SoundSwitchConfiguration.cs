@@ -12,6 +12,7 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -34,7 +35,6 @@ namespace SoundSwitch.Framework.Configuration
         {
             // Basic Settings
             FirstRun = true;
-            KeepSystrayIcon = false;
             SwitchForegroundProgram = true;
 
             // Audio Settings
@@ -56,6 +56,7 @@ namespace SoundSwitch.Framework.Configuration
             RecordingHotKeys = new HotKeys(Keys.F7, HotKeys.ModifierKeys.Alt | HotKeys.ModifierKeys.Control);
 
             SelectedDevices = new HashSet<DeviceInfo>();
+            SwitchIcon = IconChangerFactory.ActionEnum.Nothing;
         }
 
 
@@ -74,12 +75,15 @@ namespace SoundSwitch.Framework.Configuration
         public Language Language { get; set; }
         public bool IncludeBetaVersions { get; set; }
         public string CustomNotificationFilePath { get; set; }
+        [Obsolete]
         public bool KeepSystrayIcon { get; set; }
         public bool SwitchForegroundProgram { get; set; }
+        public IconChangerFactory.ActionEnum SwitchIcon { get; set; }
         
-        public IconChangerFactory.Enum SwitchIcon { get; set; }
-
-
+        /// <summary>
+        /// Fields of the config that got migrated
+        /// </summary>
+        public HashSet<string> MigratedFields { get; set; }
         // Needed by Interface
         public string FileLocation { get; set; }
         /// <summary>
@@ -105,6 +109,13 @@ namespace SoundSwitch.Framework.Configuration
             {
                 NotificationSettings = NotificationTypeEnum.BannerNotification;
             }
+
+            if (!MigratedFields.Contains("KeepSystrayIcon"))
+            {
+                SwitchIcon = KeepSystrayIcon ? IconChangerFactory.ActionEnum.Nothing : IconChangerFactory.ActionEnum.Playback;
+                MigratedFields.Add("KeepSystrayIcon");
+            }
+            
         }
 
         public void Save()

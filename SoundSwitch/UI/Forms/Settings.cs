@@ -572,7 +572,6 @@ namespace SoundSwitch.UI.Forms
         {
             AppConfigs.Configuration.KeepSystrayIcon = keepSystemTrayIconCheckBox.Checked;
             AppConfigs.Configuration.Save();
-            AppModel.Instance.TrayIcon.UpdateIcon();
         }
 
         private void updateSilentRadioButton_CheckedChanged(object sender, EventArgs e)

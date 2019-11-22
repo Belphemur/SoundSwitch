@@ -27,7 +27,9 @@ using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Framework;
+using SoundSwitch.Framework.Audio.Device;
 using SoundSwitch.Framework.Configuration;
+using SoundSwitch.Framework.TrayIcon.Icon;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Localization;
@@ -133,6 +135,9 @@ namespace SoundSwitch.Util
 
         public void ReplaceIcon(Icon newIcon)
         {
+            if (NotifyIcon.Icon.Equals(newIcon))
+                return;
+            
             var oldIcon = NotifyIcon.Icon;
             NotifyIcon.Icon = (Icon) newIcon.Clone();
             try
@@ -144,26 +149,9 @@ namespace SoundSwitch.Util
             }
         }
 
-        public void UpdateIcon()
+        private void UpdateIcon()
         {
-            if (AppConfigs.Configuration.KeepSystrayIcon)
-            {
-                ReplaceIcon(SoundSwitchLogoIcon);
-                return;
-            }
-
-            try
-            {
-                var devices = AppModel.Instance.ActiveAudioDeviceLister.PlaybackDevices;
-
-                var defaultDevice = devices
-                    .First(device =>
-                        AudioSwitcher.Instance.IsDefault(device.Id, (EDataFlow) device.Type, ERole.eConsole));
-                ReplaceIcon(defaultDevice.SmallIcon);
-            }
-            catch (InvalidOperationException)
-            {
-            }
+            new IconChangerFactory().Get(AppConfigs.Configuration.SwitchIcon).ChangeIcon(this);
         }
 
         private void PopulateSettingsMenu()
@@ -227,18 +215,13 @@ namespace SoundSwitch.Util
             };
             AppModel.Instance.DefaultDeviceChanged += (sender, audioChangeEvent) =>
             {
-                if (AppConfigs.Configuration.KeepSystrayIcon)
+                var iconChanger = new IconChangerFactory().Get(AppConfigs.Configuration.SwitchIcon);
+                if (!iconChanger.NeedsToChangeIcon(new DeviceInfo(audioChangeEvent.Device)))
                 {
                     return;
                 }
-
-                //Only update icon when it's a Render device
-                if (audioChangeEvent.Device.DataFlow != DataFlow.Render)
-                {
-                    return;
-                } 
-
-                ReplaceIcon(AudioDeviceIconExtractor.ExtractIconFromAudioDevice(audioChangeEvent.Device, false));
+                
+                iconChanger.ChangeIcon(this);
             };
             AppModel.Instance.NewVersionReleased += (sender, @event) =>
             {

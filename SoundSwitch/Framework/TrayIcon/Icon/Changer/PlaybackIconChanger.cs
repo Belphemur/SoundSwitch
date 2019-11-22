@@ -7,15 +7,15 @@ namespace SoundSwitch.Framework.TrayIcon.Icon.Changer
 {
     public class PlaybackIconChanger : IIconChanger
     {
-        public IconChangerFactory.Enum TypeEnum => IconChangerFactory.Enum.Playback;
+        public IconChangerFactory.ActionEnum TypeEnum => IconChangerFactory.ActionEnum.Playback;
         public string Label => TrayIconStrings.iconChanger_playback;
 
-        public bool ChangeIcon(DeviceInfo deviceInfo)
+        public bool NeedsToChangeIcon(DeviceInfo deviceInfo)
         {
             return deviceInfo.Type == DataFlow.Render;
         }
 
-        public void OnSelection(Util.TrayIcon trayIcon)
+        public void ChangeIcon(Util.TrayIcon trayIcon)
         {
             using var enumerator = new MMDeviceEnumerator();
             using var defaultAudio = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console);

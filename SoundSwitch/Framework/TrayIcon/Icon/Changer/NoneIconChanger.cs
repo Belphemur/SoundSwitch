@@ -6,15 +6,15 @@ namespace SoundSwitch.Framework.TrayIcon.Icon.Changer
 {
     public class NoneIconChanger : IIconChanger
     {
-        public IconChangerFactory.Enum TypeEnum => IconChangerFactory.Enum.None;
+        public IconChangerFactory.ActionEnum TypeEnum => IconChangerFactory.ActionEnum.Nothing;
         public string Label => TrayIconStrings.iconChanger_none;
 
-        public bool ChangeIcon(DeviceInfo deviceInfo)
+        public bool NeedsToChangeIcon(DeviceInfo deviceInfo)
         {
             return false;
         }
 
-        public void OnSelection(Util.TrayIcon trayIcon)
+        public void ChangeIcon(Util.TrayIcon trayIcon)
         {
             trayIcon.ReplaceIcon(Resources.Switch_SoundWave);
         }
