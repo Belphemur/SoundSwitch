@@ -95,16 +95,26 @@
             <e p="NotificationManager.cs" t="Include" />
             <e p="NotificationTypeEnum.cs" t="Include" />
           </e>
-          <e p="TooltipInfoManager" t="Include">
-            <e p="TooltipInfoFactory.cs" t="Include" />
-            <e p="TooltipInfoManager.cs" t="Include" />
-            <e p="TootipInfo" t="Include">
-              <e p="ITooltipInfo.cs" t="Include" />
-              <e p="TooltipInfoBoth.cs" t="Include" />
-              <e p="TooltipInfoNone.cs" t="Include" />
-              <e p="TooltipInfoPlayback.cs" t="Include" />
-              <e p="TooltipInfoRecording.cs" t="Include" />
-              <e p="TooltipInfoTypeEnum.cs" t="Include" />
+          <e p="TrayIcon" t="Include">
+            <e p="Icon" t="Include">
+              <e p="Changer" t="Include">
+                <e p="PlaybackIconChanger.cs" t="Include" />
+                <e p="RecordingIconChanger.cs" t="Include" />
+              </e>
+              <e p="IconChangerFactory.cs" t="Include" />
+              <e p="IIconChanger.cs" t="Include" />
+            </e>
+            <e p="TooltipInfoManager" t="Include">
+              <e p="TooltipInfoFactory.cs" t="Include" />
+              <e p="TooltipInfoManager.cs" t="Include" />
+              <e p="TootipInfo" t="Include">
+                <e p="ITooltipInfo.cs" t="Include" />
+                <e p="TooltipInfoBoth.cs" t="Include" />
+                <e p="TooltipInfoNone.cs" t="Include" />
+                <e p="TooltipInfoPlayback.cs" t="Include" />
+                <e p="TooltipInfoRecording.cs" t="Include" />
+                <e p="TooltipInfoTypeEnum.cs" t="Include" />
+              </e>
             </e>
           </e>
           <e p="Updater" t="Include">

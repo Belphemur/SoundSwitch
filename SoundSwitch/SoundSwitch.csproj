@@ -327,6 +327,10 @@
     <Compile Include="Framework\Banner\BannerForm.Designer.cs">
       <DependentUpon>BannerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Framework\TrayIcon\Icon\Changer\PlaybackIconChanger.cs" />
+    <Compile Include="Framework\TrayIcon\Icon\Changer\RecordingIconChanger.cs" />
+    <Compile Include="Framework\TrayIcon\Icon\IIconChanger.cs" />
+    <Compile Include="Framework\TrayIcon\Icon\IconChangerFactory.cs" />
     <Compile Include="Framework\TrayIcon\TooltipInfoManager\TooltipInfoFactory.cs" />
     <Compile Include="Framework\TrayIcon\TooltipInfoManager\TooltipInfoManager.cs" />
     <Compile Include="Framework\TrayIcon\TooltipInfoManager\TootipInfo\ITooltipInfo.cs" />
