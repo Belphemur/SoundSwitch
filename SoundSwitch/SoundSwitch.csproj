@@ -296,6 +296,7 @@
     <Compile Include="Framework\DeviceCyclerManager\DeviceCyclerManager.cs" />
     <Compile Include="Framework\DeviceCyclerManager\DeviceCycler\IDeviceCycler.cs" />
     <Compile Include="Framework\Factory\AbstractFactory.cs" />
+    <Compile Include="Framework\Factory\DisplayEnumObject.cs" />
     <Compile Include="Framework\Factory\IEnumImpl.cs" />
     <Compile Include="Framework\Factory\EnumImplList.cs" />
     <Compile Include="Framework\Factory\IEnumImplList.cs" />
@@ -398,6 +399,7 @@
     <Compile Include="UI\Forms\UpdateDownloadForm.Designer.cs">
       <DependentUpon>UpdateDownloadForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Util\CasterExtensions.cs" />
     <Compile Include="Util\IconExtractor.cs" />
     <Compile Include="Util\Timer\DebounceDispatcher.cs" />
     <Compile Include="Util\ToolStripDeviceItem.cs">

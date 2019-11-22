@@ -51,6 +51,7 @@
           </e>
           <e p="Factory" t="Include">
             <e p="AbstractFactory.cs" t="Include" />
+            <e p="DisplayEnumObject.cs" t="Include" />
             <e p="EnumImplList.cs" t="Include" />
             <e p="IEnumImpl.cs" t="Include" />
             <e p="IEnumImplList.cs" t="Include" />
@@ -253,6 +254,7 @@
         <e p="Util" t="Include">
           <e p="AssemblyUtils.cs" t="Include" />
           <e p="AudioDeviceIconExtractor.cs" t="Include" />
+          <e p="CasterExtensions.cs" t="Include" />
           <e p="IconExtractor.cs" t="Include" />
           <e p="Timer" t="Include">
             <e p="DebounceDispatcher.cs" t="Include" />

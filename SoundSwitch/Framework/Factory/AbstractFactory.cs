@@ -58,10 +58,10 @@ namespace SoundSwitch.Framework.Factory
         {
             list.DataSource =
                 AllImplementations.Values.Select(
-                    implementation => new {Type = implementation.TypeEnum, Display = implementation.Label})
+                    implementation => new DisplayEnumObject<TEnum>(implementation))
                     .ToArray();
-            list.ValueMember = "Type";
-            list.DisplayMember = "Display";
+            list.ValueMember = nameof(DisplayEnumObject<TEnum>.Enum);
+            list.DisplayMember = nameof(DisplayEnumObject<TEnum>.Display);
         }
     }
 }

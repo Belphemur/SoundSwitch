@@ -27,6 +27,7 @@ using SoundSwitch.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio.Lister;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.DeviceCyclerManager;
+using SoundSwitch.Framework.Factory;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.TrayIcon.Icon;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
@@ -617,10 +618,11 @@ namespace SoundSwitch.UI.Forms
             if (comboBox == null)
                 return;
 
-            AppConfigs.Configuration.SwitchIcon = (IconChangerFactory.ActionEnum)iconChangeChoicesComboBox.SelectedIndex;
+            var item = (DisplayEnumObject<IconChangerFactory.ActionEnum>)iconChangeChoicesComboBox.SelectedItem;
+            AppConfigs.Configuration.SwitchIcon = item.Enum;
             AppConfigs.Configuration.Save();
             
-            new IconChangerFactory().Get(AppConfigs.Configuration.SwitchIcon).ChangeIcon(AppModel.Instance.TrayIcon);
+            new IconChangerFactory().Get(item.Enum).ChangeIcon(AppModel.Instance.TrayIcon);
         }
     }
 }
