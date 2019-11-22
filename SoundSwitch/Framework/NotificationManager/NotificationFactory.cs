@@ -12,6 +12,7 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
@@ -36,34 +37,9 @@ namespace SoundSwitch.Framework.NotificationManager
         {
         }
 
-
-        /// <summary>
-        ///     Get the implementation for the given Enum
-        /// </summary>
-        /// <param name="eEnum"></param>
-        /// <returns></returns>
-        public new INotification Get(NotificationTypeEnum eEnum)
+        protected override IReadOnlyDictionary<NotificationTypeEnum, INotification> DataSource()
         {
-            INotification value;
-            if (!AllImplementations.TryGetValue(eEnum, out value))
-                throw new InvalidEnumArgumentException();
-            if (!value.IsAvailable())
-                throw new InvalidEnumArgumentException(@"Can't be selected");
-            return value;
-        }
-
-        /// <summary>
-        ///     Configure the list control DataSource, ValueMember and DisplayMember
-        /// </summary>
-        /// <param name="list"></param>
-        public new void ConfigureListControl(ListControl list)
-        {
-            list.DataSource =
-                AllImplementations.Values.Where(notif => notif.IsAvailable()).Select(
-                        implementation => new {Type = implementation.TypeEnum, Display = implementation.Label})
-                    .ToArray();
-            list.ValueMember = "Type";
-            list.DisplayMember = "Display";
+            return AllImplementations.Where(pair => pair.Value.IsAvailable()).ToDictionary(pair => pair.Key, pair => pair.Value);
         }
     }
 }

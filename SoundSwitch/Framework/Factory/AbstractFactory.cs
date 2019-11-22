@@ -43,11 +43,16 @@ namespace SoundSwitch.Framework.Factory
         public TImplementation Get(TEnum eEnum)
         {
             TImplementation value;
-            if (!AllImplementations.TryGetValue(eEnum, out value))
+            if (!DataSource().TryGetValue(eEnum, out value))
             {
                 throw new InvalidEnumArgumentException();
             }
             return value;
+        }
+
+        protected virtual IReadOnlyDictionary<TEnum, TImplementation> DataSource()
+        {
+            return AllImplementations;
         }
 
         /// <summary>
@@ -57,7 +62,7 @@ namespace SoundSwitch.Framework.Factory
         public void ConfigureListControl(ListControl list)
         {
             list.DataSource =
-                AllImplementations.Values.Select(
+                DataSource().Values.Select(
                     implementation => new DisplayEnumObject<TEnum>(implementation))
                     .ToArray();
             list.ValueMember = nameof(DisplayEnumObject<TEnum>.Enum);

@@ -319,16 +319,16 @@ namespace SoundSwitch.UI.Forms
         {
             if (!_loaded)
                 return;
-            var value = ((ComboBox) sender).SelectedValue;
+            var value = (DisplayEnumObject<NotificationTypeEnum>)((ComboBox) sender).SelectedItem;
 
             if (value == null)
                 return;
-
-            NotificationTypeEnum notificationType = (NotificationTypeEnum) value;
+            
+            var notificationType = value.Enum;
             if (notificationType == AppModel.Instance.NotificationSettings)
                 return;
 
-            NotificationCustomSoundEnum supportCustomSound =
+            var supportCustomSound =
                 new NotificationFactory().Get(notificationType).SupportCustomSound();
             selectSoundButton.Visible = supportCustomSound != NotificationCustomSoundEnum.NotSupported;
 
@@ -352,26 +352,25 @@ namespace SoundSwitch.UI.Forms
         {
             if (!_loaded)
                 return;
-            var value = ((ComboBox) sender).SelectedValue;
+            var value = (DisplayEnumObject<TooltipInfoTypeEnum>)((ComboBox) sender).SelectedItem;
 
             if (value == null)
                 return;
 
-            var tooltip = (TooltipInfoTypeEnum) value;
-            TooltipInfoManager.CurrentTooltipInfo = tooltip;
+            
+            TooltipInfoManager.CurrentTooltipInfo = value.Enum;
         }
 
         private void cyclerComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
             if (!_loaded)
                 return;
-            var value = ((ComboBox) sender).SelectedValue;
+            var value = (DisplayEnumObject<DeviceCyclerTypeEnum>)((ComboBox) sender).SelectedItem;
 
             if (value == null)
                 return;
-
-            var cycler = (DeviceCyclerTypeEnum) value;
-            DeviceCyclerManager.CurrentCycler = cycler;
+            
+            DeviceCyclerManager.CurrentCycler = value.Enum;
         }
 
         private void languageComboBox_SelectedIndexChanged(object sender, EventArgs e)
