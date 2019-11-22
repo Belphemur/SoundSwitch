@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using SoundSwitch.Framework.Audio.Device;
+using SoundSwitch.Util.Timer;
 
 namespace SoundSwitch.Model
 {
@@ -36,6 +37,7 @@ namespace SoundSwitch.Model
         private bool _initialized;
         private readonly NotificationManager _notificationManager;
         private IntervalUpdateChecker _updateChecker;
+        private readonly DebounceDispatcher _dispatcher = new DebounceDispatcher();
 
         private AppModel()
         {
@@ -45,6 +47,7 @@ namespace SoundSwitch.Model
             _notificationManager = new NotificationManager(this);
 
             _deviceCyclerManager = new DeviceCyclerManager();
+            MMNotificationClient.Instance.DefaultDeviceChanged += (sender, @event) => { _dispatcher.Debounce(50, o => { DefaultDeviceChanged?.Invoke(sender, @event); }); };
         }
 
         public static IAppModel Instance { get; } = new AppModel();
@@ -232,11 +235,8 @@ namespace SoundSwitch.Model
         public event EventHandler<ExceptionEvent> ErrorTriggered;
         public event EventHandler<NewReleaseAvailableEvent> NewVersionReleased;
 
-        public event EventHandler<DeviceDefaultChangedEvent> DefaultDeviceChanged
-        {
-            add => MMNotificationClient.Instance.DefaultDeviceChanged += value;
-            remove => MMNotificationClient.Instance.DefaultDeviceChanged -= value;
-        }
+        public event EventHandler<DeviceDefaultChangedEvent> DefaultDeviceChanged;
+        
 
         private void RegisterRecovery()
         {
