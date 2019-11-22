@@ -57,6 +57,7 @@ namespace SoundSwitch.Framework.Configuration
 
             SelectedDevices = new HashSet<DeviceInfo>();
             SwitchIcon = IconChangerFactory.ActionEnum.Nothing;
+            MigratedFields = new HashSet<string>();
         }
 
 
