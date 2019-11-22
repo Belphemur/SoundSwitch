@@ -21,7 +21,7 @@ using Serilog;
 using SoundSwitch.Framework.Audio.Device;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
-using SoundSwitch.Framework.TooltipInfoManager.TootipInfo;
+using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Localization;
 

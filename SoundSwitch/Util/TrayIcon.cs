@@ -28,7 +28,7 @@ using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
-using SoundSwitch.Framework.TooltipInfoManager;
+using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;

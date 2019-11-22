@@ -14,7 +14,7 @@
 
 using SoundSwitch.Framework.Factory;
 
-namespace SoundSwitch.Framework.TooltipInfoManager.TootipInfo
+namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo
 {
     public interface ITooltipInfo : IEnumImpl<TooltipInfoTypeEnum>
     {

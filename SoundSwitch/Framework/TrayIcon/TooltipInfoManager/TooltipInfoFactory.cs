@@ -12,27 +12,24 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using SoundSwitch.Localization;
+using SoundSwitch.Framework.Factory;
+using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 
-namespace SoundSwitch.Framework.TooltipInfoManager.TootipInfo
+namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager
 {
-    public class TooltipInfoNone : ITooltipInfo
+    public class TooltipInfoFactory : AbstractFactory<TooltipInfoTypeEnum, ITooltipInfo>
     {
-        public TooltipInfoTypeEnum TypeEnum => TooltipInfoTypeEnum.None;
-        public string Label => SettingsStrings.tooltipOnHoverOptionNone;
-
-        /// <summary>
-        /// The text to display for this ToolTip
-        /// </summary>
-        /// <returns></returns>
-        public string TextToDisplay()
+        private static readonly IEnumImplList<TooltipInfoTypeEnum, ITooltipInfo> TooltipInfos = new EnumImplList
+            <TooltipInfoTypeEnum, ITooltipInfo>
         {
-            return null;
-        }
+            new TooltipInfoPlayback(),
+            new TooltipInfoRecording(),
+            new TooltipInfoBoth(),
+            new TooltipInfoNone()
+        };
 
-        public override string ToString()
+        public TooltipInfoFactory() : base(TooltipInfos)
         {
-            return Label;
         }
     }
 }

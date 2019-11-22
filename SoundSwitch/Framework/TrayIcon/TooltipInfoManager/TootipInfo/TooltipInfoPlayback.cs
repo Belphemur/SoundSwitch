@@ -18,7 +18,7 @@ using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
 
-namespace SoundSwitch.Framework.TooltipInfoManager.TootipInfo
+namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo
 {
     public class TooltipInfoPlayback : ITooltipInfo
     {

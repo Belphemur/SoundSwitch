@@ -327,14 +327,14 @@
     <Compile Include="Framework\Banner\BannerForm.Designer.cs">
       <DependentUpon>BannerForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Framework\TooltipInfoManager\TooltipInfoFactory.cs" />
-    <Compile Include="Framework\TooltipInfoManager\TooltipInfoManager.cs" />
-    <Compile Include="Framework\TooltipInfoManager\TootipInfo\ITooltipInfo.cs" />
-    <Compile Include="Framework\TooltipInfoManager\TootipInfo\TooltipInfoBoth.cs" />
-    <Compile Include="Framework\TooltipInfoManager\TootipInfo\TooltipInfoNone.cs" />
-    <Compile Include="Framework\TooltipInfoManager\TootipInfo\TooltipInfoPlayback.cs" />
-    <Compile Include="Framework\TooltipInfoManager\TootipInfo\TooltipInfoRecording.cs" />
-    <Compile Include="Framework\TooltipInfoManager\TootipInfo\TooltipInfoTypeEnum.cs" />
+    <Compile Include="Framework\TrayIcon\TooltipInfoManager\TooltipInfoFactory.cs" />
+    <Compile Include="Framework\TrayIcon\TooltipInfoManager\TooltipInfoManager.cs" />
+    <Compile Include="Framework\TrayIcon\TooltipInfoManager\TootipInfo\ITooltipInfo.cs" />
+    <Compile Include="Framework\TrayIcon\TooltipInfoManager\TootipInfo\TooltipInfoBoth.cs" />
+    <Compile Include="Framework\TrayIcon\TooltipInfoManager\TootipInfo\TooltipInfoNone.cs" />
+    <Compile Include="Framework\TrayIcon\TooltipInfoManager\TootipInfo\TooltipInfoPlayback.cs" />
+    <Compile Include="Framework\TrayIcon\TooltipInfoManager\TootipInfo\TooltipInfoRecording.cs" />
+    <Compile Include="Framework\TrayIcon\TooltipInfoManager\TootipInfo\TooltipInfoTypeEnum.cs" />
     <Compile Include="Framework\Updater\AutoUpdater.cs" />
     <Compile Include="Framework\Updater\GitHubRelease.cs" />
     <Compile Include="Framework\Updater\IntervalUpdateChecker.cs" />
@@ -587,7 +587,6 @@
       <Name>SoundSwitch.UI.UserControls</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

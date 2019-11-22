@@ -16,9 +16,9 @@ using System;
 using System.Reflection;
 using System.Windows.Forms;
 using SoundSwitch.Framework.Configuration;
-using SoundSwitch.Framework.TooltipInfoManager.TootipInfo;
+using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 
-namespace SoundSwitch.Framework.TooltipInfoManager
+namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager
 {
     public class TooltipInfoManager
     {

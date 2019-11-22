@@ -12,7 +12,7 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-namespace SoundSwitch.Framework.TooltipInfoManager.TootipInfo
+namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo
 {
     public enum TooltipInfoTypeEnum
     {

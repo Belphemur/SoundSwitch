@@ -14,7 +14,7 @@
 
 using SoundSwitch.Localization;
 
-namespace SoundSwitch.Framework.TooltipInfoManager.TootipInfo
+namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo
 {
     public class TooltipInfoBoth : ITooltipInfo
     {
