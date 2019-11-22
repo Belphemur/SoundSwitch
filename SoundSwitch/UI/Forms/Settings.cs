@@ -45,7 +45,6 @@ namespace SoundSwitch.UI.Forms
         private static readonly Icon RessourceSettingsIcon = Resources.SettingsIcon;
 
         private bool _loaded;
-
         public SettingsForm()
         {
             // Form itself

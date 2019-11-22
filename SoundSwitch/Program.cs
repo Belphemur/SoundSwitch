@@ -48,7 +48,7 @@ namespace SoundSwitch
 
         [HandleProcessCorruptedStateExceptions]
         [STAThread]
-        private static async Task Main()
+        private static void Main()
         {
             bool createdNew;
             InitializeLogger();
@@ -91,7 +91,7 @@ namespace SoundSwitch
                 }
 
                 var deviceActiveLister = new CachedAudioDeviceLister(DeviceState.Active);
-                await deviceActiveLister.Refresh();
+                deviceActiveLister.Refresh().ConfigureAwait(false);
                 AppModel.Instance.ActiveAudioDeviceLister = deviceActiveLister;
 
                 // Windows Vista or newer.
@@ -156,7 +156,7 @@ namespace SoundSwitch
                     };
                     if (AppConfigs.Configuration.FirstRun)
                     {
-                        icon.ShowSettings();
+                        icon.ShowSettings().ConfigureAwait(false);
                         AppConfigs.Configuration.FirstRun = false;
                         Log.Information("First run");
                     }
