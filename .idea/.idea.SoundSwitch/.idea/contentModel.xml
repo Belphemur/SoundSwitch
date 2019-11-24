@@ -223,7 +223,6 @@
           <e p="defaultMicrophone.ico" t="Include" />
           <e p="defaultSpeakers.ico" t="Include" />
           <e p="donate-16.png" t="Include" />
-          <e p="donate.ico" t="Include" />
           <e p="exit.png" t="Include" />
           <e p="help-16.png" t="Include" />
           <e p="help.ico" t="Include" />
@@ -233,11 +232,9 @@
           <e p="Switch-Logo.ico" t="Include" />
           <e p="Switch-SoundWave.ico" t="Include" />
           <e p="tick.png" t="Include" />
-          <e p="White Icon.ico" t="Include" />
         </e>
         <e p="SMDiagnostics" t="Include" />
         <e p="SoundSwitch.csproj" t="IncludeRecursive" />
-        <e p="Switch-Logo.ico" t="Include" />
         <e p="UI" t="Include">
           <e p="Forms" t="Include">
             <e p="About.cs" t="Include" />

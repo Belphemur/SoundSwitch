@@ -549,10 +549,7 @@
     <None Include="Resources\Switch-SoundWave.ico" />
     <None Include="packages.config" />
     <None Include="Resources\Switch-Logo.ico" />
-    <Content Include="Switch-Logo.ico" />
-    <None Include="Resources\White Icon.ico" />
     <None Include="Resources\donate-16.png" />
-    <None Include="Resources\donate.ico" />
     <None Include="Resources\InfoHelp.png" />
     <None Include="Resources\page-bottom.ico" />
     <None Include="Resources\page-bottom.png" />
