@@ -7,7 +7,7 @@
 **Nie wieder** durch mehrere Bildschirme und Menüs navigieren. SoundSwitch **einmalig** einstellen - und schon können Sie zwischen Geräten schneller wechseln, als jemals zuvor!
 
 ## ✨ Vorschau
-![Vorschau](img/preview.gif)
+![Vorschau](https://soundswitch.aaflalo.me/img/preview.gif)
 
 ## Anforderungen
 - ⚠ Betriebssystem: Windows 7 oder neuer
