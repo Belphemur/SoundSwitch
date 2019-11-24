@@ -99,7 +99,9 @@
           <e p="TrayIcon" t="Include">
             <e p="Icon" t="Include">
               <e p="Changer" t="Include">
-                <e p="NoneIconChanger.cs" t="Include" />
+                <e p="AbstractIconChanger.cs" t="Include" />
+                <e p="AlwaysIconChanger.cs" t="Include" />
+                <e p="NeverIconIconChanger.cs" t="Include" />
                 <e p="PlaybackIconChanger.cs" t="Include" />
                 <e p="RecordingIconChanger.cs" t="Include" />
               </e>

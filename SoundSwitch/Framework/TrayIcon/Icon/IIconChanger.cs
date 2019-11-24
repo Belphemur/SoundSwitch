@@ -13,9 +13,14 @@ namespace SoundSwitch.Framework.TrayIcon.Icon
         bool NeedsToChangeIcon(DeviceInfo deviceInfo);
 
         /// <summary>
-        /// What to do when the option is selected
+        /// Change the icon to the current default device
         /// </summary>
         /// <param name="trayIcon"></param>
         void ChangeIcon(Util.TrayIcon trayIcon);
+        
+        /// <summary>
+        ///  Change icon to selected device if match the condition
+        /// </summary>
+        void ChangeIcon(Util.TrayIcon trayIcon, DeviceFullInfo deviceInfo);
     }
 }

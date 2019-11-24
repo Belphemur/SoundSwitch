@@ -215,12 +215,7 @@ namespace SoundSwitch.Util
             AppModel.Instance.DefaultDeviceChanged += (sender, audioChangeEvent) =>
             {
                 var iconChanger = new IconChangerFactory().Get(AppConfigs.Configuration.SwitchIcon);
-                if (!iconChanger.NeedsToChangeIcon(new DeviceInfo(audioChangeEvent.Device)))
-                {
-                    return;
-                }
-                
-                iconChanger.ChangeIcon(this);
+                iconChanger.ChangeIcon(this, new DeviceFullInfo(audioChangeEvent.Device));
             };
             AppModel.Instance.NewVersionReleased += (sender, @event) =>
             {

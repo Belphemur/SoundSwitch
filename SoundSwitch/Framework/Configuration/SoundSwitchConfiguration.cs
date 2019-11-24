@@ -56,7 +56,7 @@ namespace SoundSwitch.Framework.Configuration
             RecordingHotKeys = new HotKeys(Keys.F7, HotKeys.ModifierKeys.Alt | HotKeys.ModifierKeys.Control);
 
             SelectedDevices = new HashSet<DeviceInfo>();
-            SwitchIcon = IconChangerFactory.ActionEnum.Nothing;
+            SwitchIcon = IconChangerFactory.ActionEnum.Never;
             MigratedFields = new HashSet<string>();
         }
 
@@ -113,7 +113,7 @@ namespace SoundSwitch.Framework.Configuration
 
             if (!MigratedFields.Contains("KeepSystrayIcon"))
             {
-                SwitchIcon = KeepSystrayIcon ? IconChangerFactory.ActionEnum.Nothing : IconChangerFactory.ActionEnum.Playback;
+                SwitchIcon = KeepSystrayIcon ? IconChangerFactory.ActionEnum.Never : IconChangerFactory.ActionEnum.Playback;
                 MigratedFields.Add("KeepSystrayIcon");
             }
             

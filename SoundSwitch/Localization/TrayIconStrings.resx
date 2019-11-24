@@ -177,4 +177,7 @@
 	<data name="iconChanger.none" xml:space="preserve">
 		<value>Never</value>
 	</data>
+	<data name="iconChanger.both" xml:space="preserve">
+		<value>Always</value>
+	</data>
 </root>

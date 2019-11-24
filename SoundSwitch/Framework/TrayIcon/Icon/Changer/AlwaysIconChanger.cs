@@ -1,18 +1,16 @@
 ﻿using NAudio.CoreAudioApi;
 using SoundSwitch.Framework.Audio.Device;
 using SoundSwitch.Localization;
-using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.TrayIcon.Icon.Changer
 {
-    public class PlaybackIconChanger : AbstractIconChanger
+    public class AlwaysIconChanger : AbstractIconChanger
     {
-        public override IconChangerFactory.ActionEnum TypeEnum => IconChangerFactory.ActionEnum.Playback;
-        public override string Label => TrayIconStrings.iconChanger_playback;
-
+        public override IconChangerFactory.ActionEnum TypeEnum => IconChangerFactory.ActionEnum.Always;
+        public override string Label => TrayIconStrings.iconChanger_both;
         public override bool NeedsToChangeIcon(DeviceInfo deviceInfo)
         {
-            return deviceInfo.Type == DataFlow.Render;
+            return true;
         }
 
         public override void ChangeIcon(Util.TrayIcon trayIcon)

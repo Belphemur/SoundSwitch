@@ -7,16 +7,18 @@ namespace SoundSwitch.Framework.TrayIcon.Icon
     {
         public enum ActionEnum
         {
-            Nothing,
+            Never,
             Recording,
-            Playback
+            Playback,
+            Always
         }
 
         private static readonly IEnumImplList<IconChangerFactory.ActionEnum, IIconChanger> Impl = new EnumImplList<ActionEnum, IIconChanger>()
         {
             new PlaybackIconChanger(),
             new RecordingIconChanger(),
-            new NoneIconChanger()
+            new NeverIconIconChanger(),
+            new AlwaysIconChanger()
         };
 
         public IconChangerFactory() : base(Impl)
