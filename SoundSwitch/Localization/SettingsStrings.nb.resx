@@ -229,7 +229,7 @@ Banner: Bruker en ramme som alltid er i forgrunnen, nyttig inne i spill.</value>
     <value>Veksle også lyden for brukt program. Nyttig i videospill.</value>
   </data>
 	<data name="iconChange" xml:space="preserve">
-    <value>Endre ikon</value>
+    <value>Systemkurvsikonet</value>
   </data>
 	<data name="iconChange.tooltip" xml:space="preserve">
     <value>Velg når systemkurvsikonet for SonudSwitch skal endres.

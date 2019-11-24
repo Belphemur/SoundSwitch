@@ -267,7 +267,7 @@ Ban. : Bannière discrète sur fond noir transparent sur le coté gauche de l'é
 		<value>Change aussi l'audio de l'application en avant. Utile pour les jeux vidéo.</value>
   </data>
 	<data name="iconChange" xml:space="preserve">
-		<value>Changer l'icone</value>
+		<value>Icône système</value>
 	</data>
 	<data name="iconChange.tooltip" xml:space="preserve">
 		<value>Changer l'icone système de SoundSwitch.
