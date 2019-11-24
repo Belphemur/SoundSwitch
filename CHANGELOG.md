@@ -1,15 +1,37 @@
 # Change Log
 
-## [Unreleased](https://github.com/Belphemur/SoundSwitch/tree/HEAD)
+## [v4.16.0](https://github.com/Belphemur/SoundSwitch/tree/v4.16.0) (2019-11-24)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.15.1...v4.16.0)
 
-[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.15.1...HEAD)
+**Implemented enhancements:**
+
+- User can choose how the SoundSwitch Icon changes [\#368](https://github.com/Belphemur/SoundSwitch/issues/368)
+- Would you like a translated readme in German? [\#366](https://github.com/Belphemur/SoundSwitch/issues/366)
 
 **Fixed bugs:**
 
+- SoundSwitch crashes when switching to "Customized Sound Notification" [\#365](https://github.com/Belphemur/SoundSwitch/issues/365)
+- Possible Windows/Nvidia update causing persistent 4.10 and 4.15 issues. [\#363](https://github.com/Belphemur/SoundSwitch/issues/363)
 - Speakers registering as disconnected in SoundSwitch since update 4.15.0.40592 [\#361](https://github.com/Belphemur/SoundSwitch/issues/361)
 - Working device showing as "Disconnected" after latest update [\#360](https://github.com/Belphemur/SoundSwitch/issues/360)
 - Shortcut Not Working [\#359](https://github.com/Belphemur/SoundSwitch/issues/359)
 - Missing Audio Device [\#358](https://github.com/Belphemur/SoundSwitch/issues/358)
+- Missing second playback device with same name [\#338](https://github.com/Belphemur/SoundSwitch/issues/338)
+
+**Closed issues:**
+
+- checking "Run as Admin" in kompatability mode under Win10 stops autostart on bootup [\#370](https://github.com/Belphemur/SoundSwitch/issues/370)
+- Certificates are missing in the repository [\#367](https://github.com/Belphemur/SoundSwitch/issues/367)
+- Cannot Switch after the latest update [\#364](https://github.com/Belphemur/SoundSwitch/issues/364)
+- Bluetooth Speakers Not Shown [\#362](https://github.com/Belphemur/SoundSwitch/issues/362)
+- Switching Audio Devices Frequently Leads To Audio Output From Multiple Audio Devices [\#356](https://github.com/Belphemur/SoundSwitch/issues/356)
+- Request: custom volume per device [\#333](https://github.com/Belphemur/SoundSwitch/issues/333)
+- Feature Request: Delay Launch for SoundSwitch [\#332](https://github.com/Belphemur/SoundSwitch/issues/332)
+
+**Merged pull requests:**
+
+- Fresh new look for README [\#371](https://github.com/Belphemur/SoundSwitch/pull/371) ([FireEmerald](https://github.com/FireEmerald))
+- Added german README, based on translations from Overload86 [\#369](https://github.com/Belphemur/SoundSwitch/pull/369) ([FireEmerald](https://github.com/FireEmerald))
 
 ## [v4.15.1](https://github.com/Belphemur/SoundSwitch/tree/v4.15.1) (2019-11-13)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.15.0...v4.15.1)
