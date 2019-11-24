@@ -1,5 +1,13 @@
 # Change Log
 
+## [v4.16.1](https://github.com/Belphemur/SoundSwitch/tree/v4.16.1) (2019-11-24)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.16.0...v4.16.1)
+
+**Implemented enhancements:**
+
+- Icon can change when any device is switched [\#373](https://github.com/Belphemur/SoundSwitch/issues/373)
+- Possibility to link application to Audio Device [\#13](https://github.com/Belphemur/SoundSwitch/issues/13)
+
 ## [v4.16.0](https://github.com/Belphemur/SoundSwitch/tree/v4.16.0) (2019-11-24)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.15.1...v4.16.0)
 
