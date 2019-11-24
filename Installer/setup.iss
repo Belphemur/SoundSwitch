@@ -81,8 +81,8 @@ Source: "{#ExeDir}it-IT\*.dll"; DestDir: "{app}\it-IT";
 Source: "{#ExeDir}zh-CHS\*.dll"; DestDir: "{app}\zh-CHS";
 
 Source: "{#ExeDir}Changelog.html"; DestDir: "{app}"
-Source: "{#ExeDir}Readme.html"; DestDir: "{app}"   
-Source: "{#ExeDir}soundSwitched.png"; DestDir: "{app}\img"
+Source: "{#ExeDir}Readme.html"; DestDir: "{app}"; DestName: "Readme.html"; Languages: en fr es it pt_br   
+Source: "{#ExeDir}Readme.de.html"; DestDir: "{app}"; DestName: "Readme.html"; Languages: de  
 
 Source: "{#ExeDir}../tools/Certs/aaflalo.cer"; DestDir: "{app}\certs";
 Source: "{#ExeDir}../tools/Certs/SoundSwitch.cer"; DestDir: "{app}\certs";

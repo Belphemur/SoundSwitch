@@ -74,6 +74,7 @@ if %buildChangelogAndReadme%==1 (
 
     echo Generate README
     cmd.exe /c markdown-html README.md -o %finalDir%\Readme.html > NUL
+    cmd.exe /c markdown-html README.de.md -o %finalDir%\Readme.de.html > NUL
 ) else (
     echo Generate dummy Changelog
     echo ^<html^>^<body^>^<h1^>Dummy Changelog, markdown-html is required^</h1^>^</body^>^</html^> > %finalDir%\Changelog.html
