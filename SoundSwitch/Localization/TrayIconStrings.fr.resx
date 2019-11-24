@@ -155,9 +155,9 @@
 		<value>Enregistrement</value>
 	</data>
 	<data name="iconChanger.none" xml:space="preserve">
-		<value>Jamais</value>
+		<value>Défaut</value>
 	</data>
 	<data name="iconChanger.both" xml:space="preserve">
-		<value>Toujours</value>
+		<value>Les deux</value>
 	</data>
 </root>

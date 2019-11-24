@@ -175,9 +175,9 @@
 		<value>Recording</value>
 	</data>
 	<data name="iconChanger.none" xml:space="preserve">
-		<value>Never</value>
+		<value>Default</value>
 	</data>
 	<data name="iconChanger.both" xml:space="preserve">
-		<value>Always</value>
+		<value>Both</value>
 	</data>
 </root>

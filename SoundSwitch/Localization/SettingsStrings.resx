@@ -293,9 +293,9 @@ Do you want to restart now?</value>
 	<data name="iconChange.tooltip" xml:space="preserve">
 		<value>Choose when to change the systray Icon of SoundSwitch.
 
-Never: Don't change it.
+Default: Don't change it. Keep SoundSwitch Icon.
 Playback: When a playback device is switched.
 Recording: When a recording device is switched.
-Always: Change when any type of device is switched.</value>
+Both: Change when any type of device is switched.</value>
   </data>
 </root>

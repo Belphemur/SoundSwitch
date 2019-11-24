@@ -115,7 +115,4 @@
 	<data name="iconChanger.recording" xml:space="preserve">
     <value>Opptak</value>
   </data>
-	<data name="iconChanger.none" xml:space="preserve">
-    <value>Aldri</value>
-  </data>
 </root>
