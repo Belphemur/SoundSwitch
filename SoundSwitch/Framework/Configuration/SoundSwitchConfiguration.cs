@@ -113,7 +113,7 @@ namespace SoundSwitch.Framework.Configuration
 
             if (!MigratedFields.Contains("KeepSystrayIcon"))
             {
-                SwitchIcon = KeepSystrayIcon ? IconChangerFactory.ActionEnum.Never : IconChangerFactory.ActionEnum.Playback;
+                SwitchIcon = KeepSystrayIcon ? IconChangerFactory.ActionEnum.Never : IconChangerFactory.ActionEnum.Always;
                 MigratedFields.Add("KeepSystrayIcon");
             }
             
