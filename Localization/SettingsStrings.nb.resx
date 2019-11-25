@@ -1,0 +1,241 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="metadata">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" />
+							</xsd:sequence>
+							<xsd:attribute name="name" use="required" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="assembly">
+						<xsd:complexType>
+							<xsd:attribute name="alias" type="xsd:string" />
+							<xsd:attribute name="name" type="xsd:string" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="selected" xml:space="preserve">
+    <value>Valgt</value>
+  </data>
+	<data name="connected" xml:space="preserve">
+    <value>Tilkoblet</value>
+  </data>
+	<data name="disconnected" xml:space="preserve">
+    <value>Frakoblet</value>
+  </data>
+	<data name="recording" xml:space="preserve">
+    <value>Opptak</value>
+  </data>
+	<data name="playback" xml:space="preserve">
+    <value>Avspilling</value>
+  </data>
+	<data name="settings" xml:space="preserve">
+    <value>Innstillinger</value>
+  </data>
+	<data name="hotkeys" xml:space="preserve">
+    <value>Snarveier</value>
+  </data>
+	<data name="communicationsDevice" xml:space="preserve">
+    <value>Veksle forvalgt kommunikasjonsenhet</value>
+  </data>
+	<data name="startWithWindows" xml:space="preserve">
+    <value>Start automatisk med Windows</value>
+  </data>
+	<data name="close" xml:space="preserve">
+    <value>Lukk</value>
+  </data>
+	<data name="closeTooltip" xml:space="preserve">
+    <value>Endringer blir lagret automatisk</value>
+  </data>
+	<data name="communicationsDeviceTooltip" xml:space="preserve">
+    <value>Når valgt, vil "Forvalgt kommunikasjonsenhet" og "Forvalgt avspillingsenhet" byttes sammen (nyttig for Mumble, Jitsi osv.).</value>
+  </data>
+	<data name="notification" xml:space="preserve">
+    <value>Merknad</value>
+  </data>
+	<data name="updateIncludeBetaVersions" xml:space="preserve">
+    <value>Inkluder Beta-versjoner</value>
+  </data>
+	<data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
+    <value>Når valgt, vil SoundSwitch også se etter forhåndsversjoner på GitHub.</value>
+  </data>
+	<data name="audioFiles" xml:space="preserve">
+    <value>Lydfiler</value>
+  </data>
+	<data name="selectSoundButtonTooltip" xml:space="preserve">
+    <value>Velg lydfil for merknaden.</value>
+  </data>
+	<data name="hotkeysTooltip" xml:space="preserve">
+    <value>Velg for å skru på snarveier.</value>
+  </data>
+	<data name="basicSettings" xml:space="preserve">
+    <value>Grunnleggende innstillinger</value>
+  </data>
+	<data name="audioSettings" xml:space="preserve">
+    <value>Lydinnstillinger</value>
+  </data>
+	<data name="updateSettings" xml:space="preserve">
+    <value>Oppdater innstillinger</value>
+  </data>
+	<data name="cycleThrough" xml:space="preserve">
+    <value>Veksle gjennom</value>
+  </data>
+	<data name="keepSystemTrayIcon" xml:space="preserve">
+    <value>Behold Soundswitch sitt systemkurvsikon</value>
+  </data>
+	<data name="keepSystemTrayIconTooltip" xml:space="preserve">
+    <value>Når valgt, vil ikke systemkurvsikonet endre seg når "Forvalg avspillingsenhet" endres.</value>
+  </data>
+	<data name="updateInstallAutomatically" xml:space="preserve">
+    <value>Installer oppgraderinger automatisk</value>
+  </data>
+	<data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
+    <value>Oppgraderinger installeres automatisk uten forvarsel.</value>
+  </data>
+	<data name="updateNotify" xml:space="preserve">
+    <value>Varsle meg om nye oppgraderinger</value>
+  </data>
+	<data name="updateNever" xml:space="preserve">
+    <value>Aldri se etter oppgraderinger</value>
+  </data>
+	<data name="tooltipOnHover" xml:space="preserve">
+    <value>Verktøystips ved musesveving</value>
+  </data>
+	<data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
+    <value>Alle lydenheter</value>
+  </data>
+	<data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
+    <value>Kun valgte lydenheter</value>
+  </data>
+	<data name="cycleThroughTooltip" xml:space="preserve">
+    <value>Velg mellom enhetene det skal byttes mellom. Enten mellom valgte eller mellom alle.</value>
+  </data>
+	<data name="notificationOptionWindowsDefault" xml:space="preserve">
+    <value>Windows-merknad</value>
+  </data>
+	<data name="notificationOptionSound" xml:space="preserve">
+    <value>Lydmerknad</value>
+  </data>
+	<data name="notificationOptionNone" xml:space="preserve">
+    <value>Uten merknad</value>
+  </data>
+	<data name="notificationOptionToast" xml:space="preserve">
+    <value>Hjørnemerknad</value>
+  </data>
+	<data name="notificationOptionCustomized" xml:space="preserve">
+    <value>Egendefinert lydmerknad</value>
+  </data>
+	<data name="notificationTooltip" xml:space="preserve">
+    <value>Windows-merknad: Forvalgt oppsprett for Windows.
+Lydmerknad: Spiller en lyd på byttet avspillingsenhet.
+Egendefinert lydmerknad: Spiller en angitt lyd på byttet avspillingsenhet.
+Hjørnemerknad: Bruker en spesiell type av systemkurvsoppsprettet for windows.
+Banner: Bruker en ramme som alltid er i forgrunnen, nyttig inne i spill.</value>
+  </data>
+	<data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
+    <value>Avspillingsenhet</value>
+  </data>
+	<data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
+    <value>Opptaksenhet</value>
+  </data>
+	<data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
+    <value>For begge enheter</value>
+  </data>
+	<data name="tooltipOnHoverOptionNone" xml:space="preserve">
+    <value>Uten verktøystips</value>
+  </data>
+	<data name="audioFileNotFound" xml:space="preserve">
+    <value>Lydfilen du valgte til bruk for merknadsvarsling ble ikke funnet. SoundSwitch byttet merknadsinnstillingen tilbake til {0}.</value>
+  </data>
+	<data name="audioFileNotFoundCaption" xml:space="preserve">
+    <value>Lydfil ble ikke funnet</value>
+  </data>
+	<data name="activeRecording" xml:space="preserve">
+    <value>Opptak: {0}</value>
+  </data>
+	<data name="activePlayback" xml:space="preserve">
+    <value>Avspilling: {0}</value>
+  </data>
+	<data name="language" xml:space="preserve">
+		<value>Språk</value>
+  </data>
+	<data name="languageRestartRequired" xml:space="preserve">
+		<value>Språket vil tre i effekt etter at du starter SoundSwitch på ny.
+Ønsker du å starte på nytt nå?</value>
+  </data>
+	<data name="languageRestartRequiredCaption" xml:space="preserve">
+		<value>Omstart behøves</value>
+  </data>
+	<data name="updateNeverTooltip" xml:space="preserve">
+		<value>Ikke oppgrader programmet med mindre det gjøres manuelt.</value>
+  </data>
+	<data name="updateNotifyTooltip" xml:space="preserve">
+		<value>SoundSwitch varsler ny oppgradering med en merknad. Når du klikker denne, får du et oppsprett som laster den ned og spørs deg om du vil installere den.</value>
+  </data>
+	<data name="notificationOptionBanner" xml:space="preserve">
+        <value>Banner</value>
+  </data>
+	<data name="disableCustomSoundTooltip" xml:space="preserve">
+    <value>Skru av satt egendefinert lyd.</value>
+  </data>
+	<data name="foregroundApp" xml:space="preserve">
+    <value>Veksle også forgrunnsprogrammet</value>
+  </data>
+	<data name="foregroundAppTooltip" xml:space="preserve">
+    <value>Veksle også lyden for brukt program. Nyttig i videospill.</value>
+  </data>
+	<data name="iconChange" xml:space="preserve">
+    <value>Systemkurvsikonet</value>
+  </data>
+	<data name="iconChange.tooltip" xml:space="preserve">
+    <value>Velg når systemkurvsikonet for SonudSwitch skal endres.
+
+Aldri: Ikke endre det.
+Avspilling: Når en avspillingenhet veksles.
+Opptak: Når en opptaksenhet veksles.</value>
+  </data>
+</root>

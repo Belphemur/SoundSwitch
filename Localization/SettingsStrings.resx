@@ -1,0 +1,301 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+	<xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="metadata">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" />
+							</xsd:sequence>
+							<xsd:attribute name="name" use="required" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="assembly">
+						<xsd:complexType>
+							<xsd:attribute name="alias" type="xsd:string" />
+							<xsd:attribute name="name" type="xsd:string" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="selected" xml:space="preserve">
+    <value>Selected</value>
+  </data>
+	<data name="connected" xml:space="preserve">
+    <value>Connected</value>
+  </data>
+	<data name="disconnected" xml:space="preserve">
+    <value>Disconnected</value>
+  </data>
+	<data name="recording" xml:space="preserve">
+    <value>Recording</value>
+  </data>
+	<data name="playback" xml:space="preserve">
+    <value>Playback</value>
+  </data>
+	<data name="settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+	<data name="hotkeys" xml:space="preserve">
+    <value>Hotkeys</value>
+  </data>
+	<data name="communicationsDevice" xml:space="preserve">
+    <value>Switch Default Communication Device</value>
+  </data>
+	<data name="startWithWindows" xml:space="preserve">
+    <value>Start automatically with Windows</value>
+  </data>
+	<data name="close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+	<data name="closeTooltip" xml:space="preserve">
+    <value>Changes are automatically saved</value>
+  </data>
+	<data name="communicationsDeviceTooltip" xml:space="preserve">
+    <value>When checked, the 'Default Communication Device' and 'Default Playback Device' are switched together (useful for Skype, TeamSpeak, e.g.).</value>
+  </data>
+	<data name="notification" xml:space="preserve">
+    <value>Notification</value>
+  </data>
+	<data name="updateIncludeBetaVersions" xml:space="preserve">
+    <value>Include Beta versions</value>
+  </data>
+	<data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
+    <value>When checked, SoundSwitch will also check for pre-release versions on GitHub.</value>
+  </data>
+	<data name="audioFiles" xml:space="preserve">
+    <value>Audio Files</value>
+  </data>
+	<data name="selectSoundButtonTooltip" xml:space="preserve">
+    <value>Select the sound file for the notification.</value>
+  </data>
+	<data name="hotkeysTooltip" xml:space="preserve">
+    <value>Check to enable hotkeys.</value>
+  </data>
+	<data name="basicSettings" xml:space="preserve">
+    <value>Basic Settings</value>
+  </data>
+	<data name="audioSettings" xml:space="preserve">
+    <value>Audio Settings</value>
+  </data>
+	<data name="updateSettings" xml:space="preserve">
+    <value>Update Settings</value>
+  </data>
+	<data name="cycleThrough" xml:space="preserve">
+    <value>Cycle through</value>
+  </data>
+	<data name="keepSystemTrayIcon" xml:space="preserve">
+    <value>Keep SoundSwitch's System Tray Icon</value>
+  </data>
+	<data name="keepSystemTrayIconTooltip" xml:space="preserve">
+    <value>When checked, the System Tray Icon won't change when the 'Default Playback Device' changes.</value>
+  </data>
+	<data name="updateInstallAutomatically" xml:space="preserve">
+    <value>Install updates automatically</value>
+  </data>
+	<data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
+    <value>Updates are installed automatically without any prompts.</value>
+  </data>
+	<data name="updateNotify" xml:space="preserve">
+    <value>Notify me when updates are available</value>
+  </data>
+	<data name="updateNever" xml:space="preserve">
+    <value>Never check for updates</value>
+  </data>
+	<data name="tooltipOnHover" xml:space="preserve">
+    <value>Tooltip on Hover</value>
+  </data>
+	<data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
+    <value>All audio devices</value>
+  </data>
+	<data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
+    <value>Only selected audio devices</value>
+  </data>
+	<data name="cycleThroughTooltip" xml:space="preserve">
+    <value>Choose between which devices to switch. Either only between the selected or between all.</value>
+  </data>
+	<data name="notificationOptionWindowsDefault" xml:space="preserve">
+    <value>Windows Notification</value>
+  </data>
+	<data name="notificationOptionSound" xml:space="preserve">
+    <value>Sound Notification</value>
+  </data>
+	<data name="notificationOptionNone" xml:space="preserve">
+    <value>No Notification</value>
+  </data>
+	<data name="notificationOptionToast" xml:space="preserve">
+    <value>Toast Notification</value>
+  </data>
+	<data name="notificationOptionCustomized" xml:space="preserve">
+    <value>Customized Sound Notification</value>
+  </data>
+	<data name="notificationTooltip" xml:space="preserve">
+    <value>Windows Notification: The default windows tray pop-up.
+Sound Notification: Plays a sound on the switched Playback Device.
+Customized Sound Notification: Plays the specified sound on the switched Playback Device.
+Toast Notification: Uses a special form of the windows tray pop-up version.
+Banner: Uses a custom always-on-top frame, useful for in-game usage.</value>
+  </data>
+	<data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
+    <value>Playback Device</value>
+  </data>
+	<data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
+    <value>Recording Device</value>
+  </data>
+	<data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
+    <value>For both Devices</value>
+  </data>
+	<data name="tooltipOnHoverOptionNone" xml:space="preserve">
+    <value>No Tooltip</value>
+  </data>
+	<data name="audioFileNotFound" xml:space="preserve">
+    <value>The audio file you selected to be used as notification can't be found. SoundSwitch switched the notification setting back to {0}.</value>
+  </data>
+	<data name="audioFileNotFoundCaption" xml:space="preserve">
+    <value>Audio file not found</value>
+  </data>
+	<data name="activeRecording" xml:space="preserve">
+    <value>Rec: {0}</value>
+  </data>
+	<data name="activePlayback" xml:space="preserve">
+    <value>Play: {0}</value>
+  </data>
+	<data name="language" xml:space="preserve">
+		<value>Language</value>
+  </data>
+	<data name="languageRestartRequired" xml:space="preserve">
+		<value>The language will change after restarting SoundSwitch.
+Do you want to restart now?</value>
+  </data>
+	<data name="languageRestartRequiredCaption" xml:space="preserve">
+		<value>Need a restart</value>
+  </data>
+	<data name="updateNeverTooltip" xml:space="preserve">
+		<value>Don't update the program unless you do it manually.</value>
+  </data>
+	<data name="updateNotifyTooltip" xml:space="preserve">
+		<value>SoundSwitch will notify you when there is a new update available. When clicking on the notification, you'll get a popup downloading the update for you and asking if you want to install it.</value>
+  </data>
+	<data name="notificationOptionBanner" xml:space="preserve">
+        <value>Banner</value>
+  </data>
+	<data name="disableCustomSoundTooltip" xml:space="preserve">
+		<value>Disable the set Custom Sound.</value>
+  </data>
+	<data name="foregroundApp" xml:space="preserve">
+		<value>Also switch the foreground program</value>
+  </data>
+	<data name="foregroundAppTooltip" xml:space="preserve">
+		<value>Switch also the sound of the currently in use application. Useful with video games.</value>
+  </data>
+	<data name="iconChange" xml:space="preserve">
+		<value>Systray Icon</value>
+  </data>
+	<data name="iconChange.tooltip" xml:space="preserve">
+		<value>Choose when to change the systray Icon of SoundSwitch.
+
+Default: Don't change it. Keep SoundSwitch Icon.
+Playback: When a playback device is switched.
+Recording: When a recording device is switched.
+Both: Change when any type of device is switched.</value>
+  </data>
+</root>
