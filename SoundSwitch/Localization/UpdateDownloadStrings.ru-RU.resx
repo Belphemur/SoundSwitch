@@ -97,4 +97,22 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+	<data name="downloadFailed" xml:space="preserve">
+		<value>Ошибка загрузки</value>
+	</data>
+	<data name="install" xml:space="preserve">
+		<value>Установить</value>
+	</data>
+	<data name="cancel" xml:space="preserve">
+		<value>Отмена</value>
+	</data>
+	<data name="changelog" xml:space="preserve">
+		<value>Изменения</value>
+	</data>
+	<data name="notSigned" xml:space="preserve">
+		<value>Загруженное обновление не подписано действительной подписью. Рекомендуем удалить файл и обратиться к разработчику!</value>
+	</data>
+	<data name="notSignedTitle" xml:space="preserve">
+		<value>Неверная цифровая подпись</value>
+	</data>
 </root>
