@@ -58,7 +58,7 @@
 			: using a System.ComponentModel.TypeConverter
 			: and then encoded with base64 encoding.
 	-->
-	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+	<xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
 		<xsd:element name="root" msdata:IsDataSet="true">
 			<xsd:complexType>
 				<xsd:choice maxOccurs="unbounded">
@@ -97,4 +97,31 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+	<data name="created" xml:space="preserve">
+		<value>Создан</value>
+	</data>
+	<data name="maintained" xml:space="preserve">
+		<value>Поддерживается</value>
+	</data>
+	<data name="version" xml:space="preserve">
+		<value>Версия</value>
+	</data>
+	<data name="author" xml:space="preserve">
+		<value>О программе и авторе</value>
+	</data>
+	<data name="credits" xml:space="preserve">
+		<value>Участники и права</value>
+	</data>
+	<data name="defaultPlaybackDeviceChange" xml:space="preserve">
+		<value>Изменение устройства воспроизведения по умолчанию</value>
+	</data>
+	<data name="keyboardHotkeys" xml:space="preserve">
+		<value>Сочетания клавиш</value>
+	</data>
+	<data name="icons" xml:space="preserve">
+		<value>Значки</value>
+	</data>
+	<data name="logo" xml:space="preserve">
+		<value>Логотип создан</value>
+	</data>
 </root>
