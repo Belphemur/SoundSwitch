@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+	<xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
 		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
 		<xsd:element name="root" msdata:IsDataSet="true">
 			<xsd:complexType>
@@ -117,4 +117,189 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+	<data name="selected" xml:space="preserve">
+    <value>Выбранные</value>
+  </data>
+	<data name="connected" xml:space="preserve">
+    <value>Подсоединенные</value>
+  </data>
+	<data name="disconnected" xml:space="preserve">
+    <value>Отсоединенные</value>
+  </data>
+	<data name="recording" xml:space="preserve">
+    <value>Устройства записи</value>
+  </data>
+	<data name="playback" xml:space="preserve">
+    <value>Устройства воспроизведения</value>
+  </data>
+	<data name="settings" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+	<data name="hotkeys" xml:space="preserve">
+    <value>Клавиши</value>
+  </data>
+	<data name="communicationsDevice" xml:space="preserve">
+    <value>Переключать устройство связи по умолчанию</value>
+  </data>
+	<data name="startWithWindows" xml:space="preserve">
+    <value>Запускать автоматически с Windows</value>
+  </data>
+	<data name="close" xml:space="preserve">
+    <value>Закрыть</value>
+  </data>
+	<data name="closeTooltip" xml:space="preserve">
+    <value>Изменения сохраняются автоматически</value>
+  </data>
+	<data name="communicationsDeviceTooltip" xml:space="preserve">
+    <value>Если флажок установлен, то "Устройство связи" и "Устройство воспроизведения" переключаются вместе.
+(Полезно для Skype, TeamSpeak и т.п.)</value>
+  </data>
+	<data name="notification" xml:space="preserve">
+    <value>Уведомление</value>
+  </data>
+	<data name="updateIncludeBetaVersions" xml:space="preserve">
+    <value>Проверять бета-версии</value>
+  </data>
+	<data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
+    <value>Если флажок установлен, SoundSwitch также проверяет наличие бета версий на GitHub.</value>
+  </data>
+	<data name="audioFiles" xml:space="preserve">
+    <value>Аудио файлы</value>
+  </data>
+	<data name="selectSoundButtonTooltip" xml:space="preserve">
+    <value>Выбор звукового файла для уведомления.</value>
+  </data>
+	<data name="hotkeysTooltip" xml:space="preserve">
+    <value>Установите флажок, чтобы включить горячие клавиши.</value>
+  </data>
+	<data name="basicSettings" xml:space="preserve">
+    <value>Основные настройки</value>
+  </data>
+	<data name="audioSettings" xml:space="preserve">
+    <value>Аудио настройки</value>
+  </data>
+	<data name="updateSettings" xml:space="preserve">
+    <value>Настройки обновления</value>
+  </data>
+	<data name="cycleThrough" xml:space="preserve">
+    <value>Переключать</value>
+  </data>
+	<data name="keepSystemTrayIcon" xml:space="preserve">
+    <value>Статичный значок в системном трее</value>
+  </data>
+	<data name="keepSystemTrayIconTooltip" xml:space="preserve">
+    <value>Если флажок установлен, значок в системном трее не меняется при изменении "Устройства воспроизведения"</value>
+  </data>
+	<data name="updateInstallAutomatically" xml:space="preserve">
+    <value>Автоустановка обновлений</value>
+  </data>
+	<data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
+    <value>Обновления устанавливаются автоматически без вопросов.</value>
+  </data>
+	<data name="updateNotify" xml:space="preserve">
+    <value>Уведомлять о наличии обновлений</value>
+  </data>
+	<data name="updateNever" xml:space="preserve">
+    <value>Не проверять обновления</value>
+  </data>
+	<data name="tooltipOnHover" xml:space="preserve">
+    <value>Подсказка при наведении</value>
+  </data>
+	<data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
+    <value>Все аудиоустройства</value>
+  </data>
+	<data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
+    <value>Только выбранные аудиоустройства</value>
+  </data>
+	<data name="cycleThroughTooltip" xml:space="preserve">
+    <value>Выберите, между какими устройствами переключаться. Все или выбранные.</value>
+  </data>
+	<data name="notificationOptionWindowsDefault" xml:space="preserve">
+    <value>Всплывающее окно</value>
+  </data>
+	<data name="notificationOptionSound" xml:space="preserve">
+    <value>Звуковое уведомление</value>
+  </data>
+	<data name="notificationOptionNone" xml:space="preserve">
+    <value>Без уведомления</value>
+  </data>
+	<data name="notificationOptionToast" xml:space="preserve">
+    <value>Всплывающее уведомление</value>
+  </data>
+	<data name="notificationOptionCustomized" xml:space="preserve">
+    <value>Свой звук</value>
+  </data>
+	<data name="notificationTooltip" xml:space="preserve">
+    <value>Всплывающее окно: всплывающее окно в трее, по умолчанию.
+Звуковое уведомление: воспроизведение звука при переключении устройства воспроизведения.
+Свой звук: воспроизведение указанного звука при переключении устройства воспроизведения.
+Всплывающее уведомление: всплывающее уведомление в трее, другая версия окна.
+Баннер: использует фрейм "всегда сверху", полезно для использования в играх и т.п.</value>
+  </data>
+	<data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
+    <value>Устройство воспроизведения</value>
+  </data>
+	<data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
+    <value>Устройство звукозаписи</value>
+  </data>
+	<data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
+    <value>Для обоих устройств</value>
+  </data>
+	<data name="tooltipOnHoverOptionNone" xml:space="preserve">
+    <value>Без подсказки</value>
+  </data>
+	<data name="audioFileNotFound" xml:space="preserve">
+    <value>Аудиофайл, выбранный для уведомления, не найден. SoundSwitch переключился обратно на {0}.</value>
+  </data>
+	<data name="audioFileNotFoundCaption" xml:space="preserve">
+    <value>Аудиофайл не найден</value>
+  </data>
+	<data name="activeRecording" xml:space="preserve">
+    <value>Rec: {0}</value>
+  </data>
+	<data name="activePlayback" xml:space="preserve">
+    <value>Play: {0}</value>
+  </data>
+	<data name="language" xml:space="preserve">
+		<value>Язык</value>
+  </data>
+	<data name="languageRestartRequired" xml:space="preserve">
+		<value>Язык изменится после перезапуска SoundSwitch.
+Перезапустить сейчас?</value>
+  </data>
+	<data name="languageRestartRequiredCaption" xml:space="preserve">
+		<value>Нужен перезапуск</value>
+  </data>
+	<data name="updateNeverTooltip" xml:space="preserve">
+		<value>Не обновлять программу.</value>
+  </data>
+	<data name="updateNotifyTooltip" xml:space="preserve">
+		<value>SoundSwitch уведомит вас, когда будет доступно новое обновление.
+При нажатии на уведомление вы получите всплывающее окно, с
+вопросом, хотите ли вы его установить.</value>
+  </data>
+	<data name="notificationOptionBanner" xml:space="preserve">
+        <value>Баннер</value>
+  </data>
+	<data name="disableCustomSoundTooltip" xml:space="preserve">
+		<value>Ваш установленный звук отключен.</value>
+  </data>
+	<data name="foregroundApp" xml:space="preserve">
+		<value>Также переключить активную программу (переднего плана)</value>
+  </data>
+	<data name="foregroundAppTooltip" xml:space="preserve">
+		<value>Переключить также звук текущего используемого приложения.
+Полезно для видеоигр.</value>
+  </data>
+	<data name="iconChange" xml:space="preserve">
+		<value>Значок в трее</value>
+  </data>
+	<data name="iconChange.tooltip" xml:space="preserve">
+		<value>Выберите, когда изменить значок SoundSwitch в трее.
+
+По умолчанию: не изменять. Статичный начок SoundSwitch.
+Воспроизведение: при переключении устройства воспроизведения.
+Запись: при переключении устройства звукозаписи.
+Оба: при переключении любого типа устройства.</value>
+  </data>
 </root>
