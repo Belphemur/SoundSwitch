@@ -117,4 +117,67 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+	<data name="noUpdate" xml:space="preserve">
+    <value>Нет доступных обновлений</value>
+  </data>
+	<data name="noDevicesSelected" xml:space="preserve">
+    <value>Нет выбранных устройств</value>
+  </data>
+	<data name="playbackDevices" xml:space="preserve">
+    <value>Устройства воспроизведения</value>
+  </data>
+	<data name="mixer" xml:space="preserve">
+    <value>Микшер</value>
+  </data>
+	<data name="settings" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+	<data name="about" xml:space="preserve">
+    <value>О программе</value>
+  </data>
+	<data name="exit" xml:space="preserve">
+    <value>Выход</value>
+  </data>
+	<data name="updateAvailable" xml:space="preserve">
+    <value>Доступно обновление ({0})</value>
+  </data>
+	<data name="versionAvailable" xml:space="preserve">
+    <value>Доступно обновление SoundSwitch ({0}).</value>
+  </data>
+	<data name="clickToUpdate" xml:space="preserve">
+    <value>Нажмите здесь, чтобы обновить.</value>
+  </data>
+	<data name="playbackChanged" xml:space="preserve">
+    <value>SoundSwitch: Устройство воспроизведения переключено на</value>
+  </data>
+	<data name="recordingChanged" xml:space="preserve">
+    <value>SoundSwitch: Устройство звукозаписи переключено на</value>
+  </data>
+	<data name="configurationNeeded" xml:space="preserve">
+    <value>SoundSwitch: Требуется настройка</value>
+  </data>
+	<data name="configurationNeededExplanation" xml:space="preserve">
+    <value>Нет доступных устройств для переключения. Укажите их в настройках программы.</value>
+  </data>
+	<data name="error" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
+	<data name="help" xml:space="preserve">
+		<value>Справка (сайт)</value>
+	</data>
+	<data name="donate" xml:space="preserve">
+		<value>Поддержать развитие</value>
+	</data>
+	<data name="iconChanger.playback" xml:space="preserve">
+		<value>Воспроизведение</value>
+	</data>
+	<data name="iconChanger.recording" xml:space="preserve">
+		<value>Звукозапись</value>
+	</data>
+	<data name="iconChanger.none" xml:space="preserve">
+		<value>По умолчанию</value>
+	</data>
+	<data name="iconChanger.both" xml:space="preserve">
+		<value>Оба</value>
+	</data>
 </root>
