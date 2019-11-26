@@ -17,7 +17,7 @@ cd /d "%~dp0"
 
 set FILE_DIR=%~dp0
 set BIN_DIR=%FILE_DIR%SoundSwitch\bin
-set LANGS=(fr de es nb pt-BR it-IT zh-CHS)
+set LANGS=(fr de es nb pt-BR it-IT zh-CHS pl-PL ru-RU)
 
 if ["%~1"]==["-legacy"] set USE_LEGACY_VS2015=1
 

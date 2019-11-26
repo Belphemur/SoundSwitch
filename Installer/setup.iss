@@ -61,6 +61,8 @@ Name: "fr"; MessagesFile: "compiler:Languages\French.isl"
 Name: "es"; MessagesFile: "compiler:Languages\Spanish.isl"
 Name: "it"; MessagesFile: "compiler:Languages\Italian.isl"
 Name: "pt_br"; MessagesFile: "compiler:Languages\brazilianPortuguese.isl"
+Name: "ru_ru"; MessagesFile: "compiler:Languages\Russian.isl"
+Name: "pl_pl"; MessagesFile: "compiler:Languages\Polish.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
@@ -71,7 +73,8 @@ Name: deletefiles; Description: "{cm:ExistingSettings}"; Flags: unchecked
 Source: "{#ExeDir}SoundSwitch.exe.config"; DestDir: "{app}"; 
 Source: "{#ExeDir}SoundSwitch.exe"; DestDir: "{app}";  Flags: signonce
 Source: "{#ExeDir}*.dll"; DestDir: "{app}";
-Source: "{#ExeDir}*.pdb"; DestDir: "{app}"; 
+Source: "{#ExeDir}*.pdb"; DestDir: "{app}";
+ 
 Source: "{#ExeDir}fr\*.dll"; DestDir: "{app}\fr";
 Source: "{#ExeDir}de\*.dll"; DestDir: "{app}\de";
 Source: "{#ExeDir}es\*.dll"; DestDir: "{app}\es";
@@ -79,6 +82,8 @@ Source: "{#ExeDir}nb\*.dll"; DestDir: "{app}\nb";
 Source: "{#ExeDir}pt-BR\*.dll"; DestDir: "{app}\pt-BR";
 Source: "{#ExeDir}it-IT\*.dll"; DestDir: "{app}\it-IT";
 Source: "{#ExeDir}zh-CHS\*.dll"; DestDir: "{app}\zh-CHS";
+Source: "{#ExeDir}pl-PL\*.dll"; DestDir: "{app}\pl-PL";
+Source: "{#ExeDir}ru-RU\*.dll"; DestDir: "{app}\ru-RU";
 
 Source: "{#ExeDir}Changelog.html"; DestDir: "{app}"
 Source: "{#ExeDir}Readme.html"; DestDir: "{app}"; DestName: "Readme.html"; Languages: en fr es it pt_br   
