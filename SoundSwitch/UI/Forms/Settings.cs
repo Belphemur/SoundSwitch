@@ -34,6 +34,7 @@ using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Localization;
+using SoundSwitch.Localization.Factory;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
 using SoundSwitch.Util;
@@ -158,8 +159,8 @@ namespace SoundSwitch.UI.Forms
                 SettingsStrings.updateIncludeBetaVersionsTooltip);
 
             // Settings - Language
-            languageComboBox.Items.AddRange(Enum.GetNames(typeof(Language)));
-            languageComboBox.SelectedIndex = (int) AppConfigs.Configuration.Language;
+            new LanguageFactory().ConfigureListControl(languageComboBox);
+            languageComboBox.SelectedValue = AppModel.Instance.Language;
         }
 
         public  async Task PopulateAudioDevices()
@@ -376,12 +377,13 @@ namespace SoundSwitch.UI.Forms
         {
             if (!_loaded)
                 return;
-            var comboBox = (ComboBox) sender;
 
-            if (comboBox == null)
+            var value = (DisplayEnumObject<Language>)((ComboBox) sender).SelectedItem;
+
+            if (value == null)
                 return;
 
-            AppModel.Instance.Language = (Language) languageComboBox.SelectedIndex;
+            AppModel.Instance.Language =  value.Enum;
 
             if (MessageBox.Show(SettingsStrings.languageRestartRequired,
                     SettingsStrings.languageRestartRequiredCaption,

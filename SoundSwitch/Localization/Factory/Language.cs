@@ -12,7 +12,7 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-namespace SoundSwitch.Localization
+namespace SoundSwitch.Localization.Factory
 {
     /// <summary>
     /// The language of the program as enumeration.
@@ -21,12 +21,14 @@ namespace SoundSwitch.Localization
     public enum Language
     {
         English = 0,
-        Français = 1,
-        Deutsche = 2,
-        Español = 3,
-        Norsk = 4,
-        Português = 5,
-        Italiano = 6,
-        Chinese = 7
+        French = 1,
+        German = 2,
+        Spanish = 3,
+        Norwegian = 4,
+        Portuguese = 5,
+        Italian = 6,
+        Chinese = 7,
+        Polish = 8,
+        Russian = 9,
     }
 }

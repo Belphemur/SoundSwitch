@@ -36,6 +36,7 @@ using SoundSwitch.Framework.Minidump;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Localization;
+using SoundSwitch.Localization.Factory;
 using SoundSwitch.Model;
 using SoundSwitch.Util;
 
@@ -65,7 +66,7 @@ namespace SoundSwitch
 #else
             WindowsAPIAdapter.Start();
 #endif
-            Thread.CurrentThread.CurrentUICulture = LanguageParser.ParseLanguage(AppModel.Instance.Language);
+            Thread.CurrentThread.CurrentUICulture = new LanguageFactory().Get(AppModel.Instance.Language).CultureInfo;
 
             using (new Mutex(true, Application.ProductName, out createdNew))
             {

@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ContentModelStore">
     <e p="C:\Users\Antoine\.Rider2019.2\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\Antoine\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_SoundSwitch.-1145894171.00" t="ExcludeRecursive" />
-    <e p="D:\VS\SoundSwitch" t="IncludeFlat">
+    <e p="C:\Users\Antoine\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_SoundSwitch.60712735.00" t="ExcludeRecursive" />
+    <e p="C:\Users\Antoine\source\repos\SoundSwitch" t="IncludeFlat">
       <e p="packages" t="ExcludeRecursive" />
       <e p="SoundSwitch" t="IncludeRecursive">
         <e p="App.config" t="Include" />
@@ -150,8 +150,14 @@
           <e p="AboutStrings.ru-RU.resx" t="Include" />
           <e p="AboutStrings.sv-SE.resx" t="Include" />
           <e p="AboutStrings.zh-CHS.resx" t="Include" />
-          <e p="Language.cs" t="Include" />
-          <e p="LanguageParser.cs" t="Include" />
+          <e p="Factory" t="Include">
+            <e p="Lang" t="Include">
+              <e p="ILang.cs" t="Include" />
+              <e p="Langs.cs" t="Include" />
+            </e>
+            <e p="Language.cs" t="Include" />
+            <e p="LanguageFactory.cs" t="Include" />
+          </e>
           <e p="SettingsStrings.de.resx" t="Include" />
           <e p="SettingsStrings.Designer.cs" t="Include" />
           <e p="SettingsStrings.el-GR.resx" t="Include" />

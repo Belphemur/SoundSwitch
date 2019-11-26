@@ -21,6 +21,7 @@ using SoundSwitch.Framework.TrayIcon.Icon;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Localization;
+using SoundSwitch.Localization.Factory;
 
 namespace SoundSwitch.Framework.Configuration
 {

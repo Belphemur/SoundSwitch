@@ -26,6 +26,7 @@ using SoundSwitch.Framework.TrayIcon.Icon;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Localization;
+using SoundSwitch.Localization.Factory;
 
 namespace SoundSwitch.Framework.Configuration
 {
@@ -49,7 +50,7 @@ namespace SoundSwitch.Framework.Configuration
             IncludeBetaVersions = false;
 
             // Language Settings
-            Language = LanguageParser.ParseLanguage(CultureInfo.InstalledUICulture);
+            Language = new LanguageFactory().GetWindowsLanguage();
             SelectedPlaybackDeviceListId = new HashSet<string>();
             SelectedRecordingDeviceListId = new HashSet<string>();
             PlaybackHotKeys = new HotKeys(Keys.F11, HotKeys.ModifierKeys.Alt | HotKeys.ModifierKeys.Control);

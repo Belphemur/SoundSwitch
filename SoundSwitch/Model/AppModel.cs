@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using SoundSwitch.Framework.Audio.Device;
+using SoundSwitch.Localization.Factory;
 using SoundSwitch.Util.Timer;
 
 namespace SoundSwitch.Model

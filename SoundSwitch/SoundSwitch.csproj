@@ -360,8 +360,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AboutStrings.resx</DependentUpon>
     </Compile>
-    <Compile Include="Localization\Language.cs" />
-    <Compile Include="Localization\LanguageParser.cs" />
+    <Compile Include="Localization\Factory\Language.cs" />
+    <Compile Include="Localization\Factory\LanguageFactory.cs" />
+    <Compile Include="Localization\Factory\Lang\Langs.cs" />
+    <Compile Include="Localization\Factory\Lang\ILang.cs" />
     <Compile Include="Localization\SettingsStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
