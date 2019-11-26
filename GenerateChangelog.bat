@@ -12,7 +12,7 @@ IF NOT EXIST "%FILE_DIR%..\github-key.txt" (
 SET KEY=
 SET /P KEY=<"%FILE_DIR%..\github-key.txt"
 
-github_changelog_generator -t %KEY%
+github_changelog_generator --token %KEY% --user Belphemur --project SoundSwitch
 
 
 :END
