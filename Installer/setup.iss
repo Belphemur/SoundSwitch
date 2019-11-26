@@ -86,7 +86,7 @@ Source: "{#ExeDir}pl-PL\*.dll"; DestDir: "{app}\pl-PL";
 Source: "{#ExeDir}ru-RU\*.dll"; DestDir: "{app}\ru-RU";
 
 Source: "{#ExeDir}Changelog.html"; DestDir: "{app}"
-Source: "{#ExeDir}Readme.html"; DestDir: "{app}"; DestName: "Readme.html"; Languages: en fr es it pt_br   
+Source: "{#ExeDir}Readme.html"; DestDir: "{app}"; DestName: "Readme.html"; Languages: en fr es it pt_br pl_pl ru_ru  
 Source: "{#ExeDir}Readme.de.html"; DestDir: "{app}"; DestName: "Readme.html"; Languages: de  
 
 Source: "{#ExeDir}../tools/Certs/aaflalo.cer"; DestDir: "{app}\certs";
