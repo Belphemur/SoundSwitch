@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -58,4 +58,88 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="selected" xml:space="preserve">
+    <value>Selecionado</value>
+  </data>
+  <data name="connected" xml:space="preserve">
+    <value>Ligado</value>
+  </data>
+  <data name="disconnected" xml:space="preserve">
+    <value>Desligado</value>
+  </data>
+  <data name="recording" xml:space="preserve">
+    <value>Gravação</value>
+  </data>
+  <data name="playback" xml:space="preserve">
+    <value>Reprodução</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>Definições</value>
+  </data>
+  <data name="hotkeys" xml:space="preserve">
+    <value>Teclas chave</value>
+  </data>
+  <data name="communicationsDevice" xml:space="preserve">
+    <value>Mudar Dispositivo de Comunicação Predefinido</value>
+  </data>
+  <data name="startWithWindows" xml:space="preserve">
+    <value>Iniciar automaticamente com o Windows</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>Fechar</value>
+  </data>
+  <data name="closeTooltip" xml:space="preserve">
+    <value>As alterações são guardadas automaticamente</value>
+  </data>
+  <data name="notification" xml:space="preserve">
+    <value>Notificação</value>
+  </data>
+  <data name="updateIncludeBetaVersions" xml:space="preserve">
+    <value>Incluir versões Beta</value>
+  </data>
+  <data name="audioFiles" xml:space="preserve">
+    <value>Ficheiros de Áudio</value>
+  </data>
+  <data name="hotkeysTooltip" xml:space="preserve">
+    <value>Selecione para ativar as teclas chave.</value>
+  </data>
+  <data name="basicSettings" xml:space="preserve">
+    <value>Definições Básicas</value>
+  </data>
+  <data name="audioSettings" xml:space="preserve">
+    <value>Definições de Áudio</value>
+  </data>
+  <data name="updateSettings" xml:space="preserve">
+    <value>Definições de Atualização</value>
+  </data>
+  <data name="updateInstallAutomatically" xml:space="preserve">
+    <value>Instalar atualizações automaticamente</value>
+  </data>
+  <data name="updateNever" xml:space="preserve">
+    <value>Nunca procurar por atualizações</value>
+  </data>
+  <data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
+    <value>Todos os dispositivos de áudio</value>
+  </data>
+  <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
+    <value>Apenas os dispositivos de áudio selecionados</value>
+  </data>
+  <data name="notificationOptionWindowsDefault" xml:space="preserve">
+    <value>Notificação do Windows</value>
+  </data>
+  <data name="notificationOptionSound" xml:space="preserve">
+    <value>Notificação de Som</value>
+  </data>
+  <data name="notificationOptionNone" xml:space="preserve">
+    <value>Sem Notificação</value>
+  </data>
+  <data name="notificationOptionToast" xml:space="preserve">
+    <value>Notificação Não Intrusiva</value>
+  </data>
+  <data name="notificationOptionCustomized" xml:space="preserve">
+    <value>Notificação de Som Personalizada</value>
+  </data>
+  <data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
+    <value>Dispositivo de Reprodução</value>
+  </data>
 </root>
