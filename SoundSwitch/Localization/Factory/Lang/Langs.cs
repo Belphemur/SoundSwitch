@@ -105,4 +105,14 @@ namespace SoundSwitch.Localization.Factory.Lang
         public Language TypeEnum => Language.Russian;
         public string Label => "Pусский";
     }
+	public class KoreanLang : ILang
+    {
+        /// <summary>
+        /// Culture info of this language
+        /// </summary>
+        public CultureInfo CultureInfo => CultureInfo.GetCultureInfo("ko-KR");
+
+        public Language TypeEnum => Language.Korean;
+        public string Label => "한국어";
+    }
 }

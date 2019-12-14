@@ -18,7 +18,8 @@ namespace SoundSwitch.Localization.Factory
             new ItalianLang(),
             new PolishLang(),
             new RussianLang(),
-            new ChineseLang()
+            new ChineseLang(),
+			new KoreanLang()
         })
         {
         }

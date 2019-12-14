@@ -30,5 +30,6 @@ namespace SoundSwitch.Localization.Factory
         Chinese = 7,
         Polish = 8,
         Russian = 9,
+		Korean = 10,
     }
 }
