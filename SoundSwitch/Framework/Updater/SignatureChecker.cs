@@ -29,6 +29,18 @@ namespace SoundSwitch.Framework.Updater
         public static bool IsValid(string filename)
         {
             var certificate = X509Certificate.CreateFromSignedFile(filename);
+            return IsSelfSigned(certificate) || IsCertumSigned(certificate);
+        }
+
+        private static bool IsCertumSigned(X509Certificate certificate)
+        {
+            return certificate.Issuer.Contains("Certum")
+                   && certificate.Subject.Contains("Antoine Aflalo")
+                   && certificate.Subject.Contains("soundswitch");
+        }
+
+        private static bool IsSelfSigned(X509Certificate certificate)
+        {
             return certificate.GetPublicKeyString() == _publicKey
                    && certificate.Issuer.Contains("CN=aaflalo.me")
                    && certificate.GetSerialNumberString() == _serialNumber;

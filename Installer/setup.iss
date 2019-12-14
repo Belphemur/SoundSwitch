@@ -35,7 +35,10 @@ AllowNoIcons=yes
 SetupIconFile="..\SoundSwitch\Resources\Switch-SoundWave.ico"
 SolidCompression=yes
 CloseApplications=yes
+
 SignTool=SoundSwitch
+SignTool=Certum
+
 SignedUninstaller=yes
 LicenseFile={#ExeDir}\LICENSE.txt
 SetupLogging=yes
@@ -89,9 +92,6 @@ Source: "{#ExeDir}Changelog.html"; DestDir: "{app}"
 Source: "{#ExeDir}Readme.html"; DestDir: "{app}"; DestName: "Readme.html"; Languages: en fr es it pt_br pl_pl ru_ru  
 Source: "{#ExeDir}Readme.de.html"; DestDir: "{app}"; DestName: "Readme.html"; Languages: de  
 
-Source: "{#ExeDir}../tools/Certs/aaflalo.cer"; DestDir: "{app}\certs";
-Source: "{#ExeDir}../tools/Certs/SoundSwitch.cer"; DestDir: "{app}\certs";
-
 [Registry]
 Root: HKCU; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Run\{#MyAppSetupName}"; Flags: uninsdeletekey
 
@@ -105,8 +105,6 @@ Filename: "{app}\SoundSwitch.exe"; Description: "{cm:LaunchProgram,{#MyAppSetupN
 Filename: "{app}\Readme.html"; Description: "{cm:ViewReadmeFile}"; Flags: postinstall shellexec skipifsilent
 Filename: "https://soundswitch.aaflalo.me/?utm_source=installer#donate"; Description: "{cm:SupportTheProject}"; Flags: postinstall shellexec skipifsilent runasoriginaluser
 Filename: "{app}\Changelog.html"; Description: "{cm:ViewChangelogFile}"; Flags: postinstall shellexec skipifsilent unchecked
-Filename: "certutil.exe"; Parameters: "-addstore ""Root"" ""{app}\certs\aaflalo.cer"""; Flags: runhidden runascurrentuser skipifsilent;  Tasks: "certs"
-Filename: "certutil.exe"; Parameters: "-addstore ""TrustedPublisher"" ""{app}\certs\SoundSwitch.cer"""; Flags: runhidden runascurrentuser skipifsilent;  Tasks: "certs"
 
 [CustomMessages]
 win_sp_title=Windows %1 Service Pack %2
