@@ -97,22 +97,31 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-	<data name="downloadFailed" xml:space="preserve">
-		<value>Download Failed</value>
+	<data name="created" xml:space="preserve">
+		<value>개발자</value>
 	</data>
-	<data name="install" xml:space="preserve">
-		<value>Install</value>
+	<data name="maintained" xml:space="preserve">
+		<value>관리자</value>
 	</data>
-	<data name="cancel" xml:space="preserve">
-		<value>Cancel</value>
+	<data name="version" xml:space="preserve">
+		<value>버전</value>
 	</data>
-	<data name="changelog" xml:space="preserve">
-		<value>Changelog</value>
+	<data name="author" xml:space="preserve">
+		<value>개발자 및 프로그램 정보</value>
 	</data>
-	<data name="notSigned" xml:space="preserve">
-		<value>The downloaded update isn't signed with a valid signature. We advise you to delete the file and contact the developer!</value>
+	<data name="credits" xml:space="preserve">
+		<value>크레딧 및 기여자</value>
 	</data>
-	<data name="notSignedTitle" xml:space="preserve">
-		<value>Invalid Digital Signature</value>
+	<data name="defaultPlaybackDeviceChange" xml:space="preserve">
+		<value>기본 재생장치 변경</value>
+	</data>
+	<data name="keyboardHotkeys" xml:space="preserve">
+		<value>키보드 핫키 시스템</value>
+	</data>
+	<data name="icons" xml:space="preserve">
+		<value>아이콘</value>
+	</data>
+	<data name="logo" xml:space="preserve">
+		<value>로고</value>
 	</data>
 </root>

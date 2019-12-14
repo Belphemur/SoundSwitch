@@ -98,21 +98,21 @@
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
 	<data name="downloadFailed" xml:space="preserve">
-		<value>Download Failed</value>
+		<value>다운로드 실패</value>
 	</data>
 	<data name="install" xml:space="preserve">
-		<value>Install</value>
+		<value>설치</value>
 	</data>
 	<data name="cancel" xml:space="preserve">
-		<value>Cancel</value>
+		<value>취소</value>
 	</data>
 	<data name="changelog" xml:space="preserve">
-		<value>Changelog</value>
+		<value>변경 내역</value>
 	</data>
 	<data name="notSigned" xml:space="preserve">
-		<value>The downloaded update isn't signed with a valid signature. We advise you to delete the file and contact the developer!</value>
+		<value>다운로드 한 업데이트가 유효한 서명으로 서명되지 않았습니다. 파일 삭제 후 개발자에게 문의하세요.</value>
 	</data>
 	<data name="notSignedTitle" xml:space="preserve">
-		<value>Invalid Digital Signature</value>
+		<value>잘못된 디지털 서명</value>
 	</data>
 </root>
