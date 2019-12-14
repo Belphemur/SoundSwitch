@@ -69,7 +69,6 @@ Name: "pl_pl"; MessagesFile: "compiler:Languages\Polish.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
-Name: "certs"; Description: "{cm:AddCertDescription}"; GroupDescription: "{cm:CertificatesGroup}"
 Name: deletefiles; Description: "{cm:ExistingSettings}"; Flags: unchecked
 
 [Files]
@@ -108,13 +107,6 @@ Filename: "{app}\Changelog.html"; Description: "{cm:ViewChangelogFile}"; Flags: 
 
 [CustomMessages]
 win_sp_title=Windows %1 Service Pack %2
-
-en.AddCertDescription=Trust {#MyAppSetupName} Certficates%nThis way you won't have warnings when {#MyAppSetupName} is updating.
-fr.AddCertDescription=Installer les certificats de {#MyAppSetupName}%nSi sélectionné, Windows reconnaîtra {#MyAppSetupName} comme étant un distributeur valide.
-de.AddCertDescription={#MyAppSetupName} Zertifikaten vertrauen%nDadurch erhalten Sie keine Warnungen mehr, wenn sich {#MyAppSetupName} aktualisiert.
-es.AddCertDescription=Confiar en los certificados de {#MyAppSetupName}%nDe esta forma no tendrá advertencias cada vez que {#MyAppSetupName} se actualice.
-it.AddCertDescription=Accetta i certificati di {#MyAppSetupName}%nIn questo modo non vedrai degli avvisi quando aggiornerai {#MyAppSetupName}.
-pt_br.AddCertDescription=Confiar nos certificados do {#MyAppSetupName}%nDeste modo não receberá alerta quando o {#MyAppSetupName} atualizar.
 
 en.ExistingSettings=Remove any existing settings
 fr.ExistingSettings=Supprimer les paramètres existants
