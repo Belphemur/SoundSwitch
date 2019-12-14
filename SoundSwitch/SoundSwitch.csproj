@@ -423,6 +423,7 @@
     <EmbeddedResource Include="Localization\AboutStrings.fr.resx" />
     <EmbeddedResource Include="Localization\AboutStrings.it-IT.resx" />
     <EmbeddedResource Include="Localization\AboutStrings.ja-JP.resx" />
+	<EmbeddedResource Include="Localization\AboutStrings.ko-KR.resx" />
     <EmbeddedResource Include="Localization\AboutStrings.nb.resx" />
     <EmbeddedResource Include="Localization\AboutStrings.pl-PL.resx" />
     <EmbeddedResource Include="Localization\AboutStrings.pt-BR.resx" />
@@ -442,6 +443,7 @@
     <EmbeddedResource Include="Localization\SettingsStrings.fi-FI.resx" />
     <EmbeddedResource Include="Localization\SettingsStrings.it-IT.resx" />
     <EmbeddedResource Include="Localization\SettingsStrings.ja-JP.resx" />
+	<EmbeddedResource Include="Localization\SettingsStrings.ko-KR.resx" />
     <EmbeddedResource Include="Localization\SettingsStrings.nb.resx" />
     <EmbeddedResource Include="Localization\SettingsStrings.pl-PL.resx" />
     <EmbeddedResource Include="Localization\SettingsStrings.pt-BR.resx" />
@@ -456,6 +458,7 @@
     <EmbeddedResource Include="Localization\TrayIconStrings.fi-FI.resx" />
     <EmbeddedResource Include="Localization\TrayIconStrings.it-IT.resx" />
     <EmbeddedResource Include="Localization\TrayIconStrings.ja-JP.resx" />
+	<EmbeddedResource Include="Localization\TrayIconStrings.ko-KR.resx" />
     <EmbeddedResource Include="Localization\TrayIconStrings.nb.resx" />
     <EmbeddedResource Include="Localization\TrayIconStrings.pl-PL.resx" />
     <EmbeddedResource Include="Localization\TrayIconStrings.pt-BR.resx" />
@@ -468,6 +471,7 @@
     <EmbeddedResource Include="Localization\UpdateDownloadStrings.fi-FI.resx" />
     <EmbeddedResource Include="Localization\UpdateDownloadStrings.it-IT.resx" />
     <EmbeddedResource Include="Localization\UpdateDownloadStrings.ja-JP.resx" />
+	<EmbeddedResource Include="Localization\UpdateDownloadStrings.ko-KR.resx" />
     <EmbeddedResource Include="Localization\UpdateDownloadStrings.nb.resx" />
     <EmbeddedResource Include="Localization\UpdateDownloadStrings.pl-PL.resx" />
     <EmbeddedResource Include="Localization\UpdateDownloadStrings.pt-BR.resx" />
