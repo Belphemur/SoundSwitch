@@ -21,14 +21,15 @@ namespace SoundSwitch.Localization.Factory
     public enum Language
     {
         English = 0,
-        French = 1,
-        German = 2,
-        Spanish = 3,
-        Norwegian = 4,
-        Portuguese = 5,
-        Italian = 6,
-        Chinese = 7,
-        Polish = 8,
-        Russian = 9,
+        French,
+        German,
+        Spanish,
+        Norwegian,
+        Portuguese,
+        Italian,
+        Chinese,
+        Polish,
+        Russian,
+        Korean,
     }
 }
