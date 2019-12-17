@@ -113,6 +113,6 @@ namespace SoundSwitch.Localization.Factory.Lang
         public CultureInfo CultureInfo => CultureInfo.GetCultureInfo("ko");
 
         public Language TypeEnum => Language.Korean;
-        public string Label => "韓國語";
+        public string Label => "한국어";
     }
 }
