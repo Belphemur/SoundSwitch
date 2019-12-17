@@ -66,6 +66,7 @@ Name: "it"; MessagesFile: "compiler:Languages\Italian.isl"
 Name: "pt_br"; MessagesFile: "compiler:Languages\brazilianPortuguese.isl"
 Name: "ru_ru"; MessagesFile: "compiler:Languages\Russian.isl"
 Name: "pl_pl"; MessagesFile: "compiler:Languages\Polish.isl"
+Name: "ko"; MessagesFile: "compiler:Languages\Korean.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
@@ -86,9 +87,10 @@ Source: "{#ExeDir}it-IT\*.dll"; DestDir: "{app}\it-IT";
 Source: "{#ExeDir}zh-CHS\*.dll"; DestDir: "{app}\zh-CHS";
 Source: "{#ExeDir}pl-PL\*.dll"; DestDir: "{app}\pl-PL";
 Source: "{#ExeDir}ru-RU\*.dll"; DestDir: "{app}\ru-RU";
+Source: "{#ExeDir}ko\*.dll"; DestDir: "{app}\ko";
 
 Source: "{#ExeDir}Changelog.html"; DestDir: "{app}"
-Source: "{#ExeDir}Readme.html"; DestDir: "{app}"; DestName: "Readme.html"; Languages: en fr es it pt_br pl_pl ru_ru  
+Source: "{#ExeDir}Readme.html"; DestDir: "{app}"; DestName: "Readme.html"; Languages: en fr es it pt_br pl_pl ru_ru ko 
 Source: "{#ExeDir}Readme.de.html"; DestDir: "{app}"; DestName: "Readme.html"; Languages: de  
 
 [Registry]
