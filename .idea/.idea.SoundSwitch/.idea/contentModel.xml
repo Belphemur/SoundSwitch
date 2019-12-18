@@ -275,6 +275,7 @@
       <e p="SoundSwitch.Audio.Manager" t="IncludeRecursive">
         <e p="AudioSwitcher.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
+        <e p="ForegroundProcessChanged.cs" t="Include" />
         <e p="Interop" t="Include">
           <e p="Client" t="Include">
             <e p="EnumeratorClient.cs" t="Include" />
