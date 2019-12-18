@@ -301,4 +301,13 @@ Both: Change when any type of device is switched.</value>
 	<data name="profile.tab" xml:space="preserve">
 		<value>Profiles</value>
 	</data>
+	<data name="profile.addButton" xml:space="preserve">
+		<value>Add</value>
+	</data>
+	<data name="profile.program" xml:space="preserve">
+		<value>Program</value>
+	</data>
+	<data name="profile.name" xml:space="preserve">
+		<value>Name</value>
+	</data>
 </root>

@@ -87,13 +87,13 @@
       <file filePath="Localization\TrayIconStrings.fr.resx" />
       <file filePath="Localization\TrayIconStrings.it-IT.resx" />
       <file filePath="Localization\TrayIconStrings.ja-JP.resx" />
+      <file filePath="Localization\TrayIconStrings.ko.resx" />
       <file filePath="Localization\TrayIconStrings.nb.resx" />
       <file filePath="Localization\TrayIconStrings.pl-PL.resx" />
       <file filePath="Localization\TrayIconStrings.pt-BR.resx" />
       <file filePath="Localization\TrayIconStrings.ru-RU.resx" />
       <file filePath="Localization\TrayIconStrings.sv-SE.resx" />
       <file filePath="Localization\TrayIconStrings.zh-CHS.resx" />
-      <file filePath="Localization\TrayIconStrings.ko.resx" />
       <remarks>
       </remarks>
     </fileGroup>
@@ -106,13 +106,13 @@
       <file filePath="Localization\UpdateDownloadStrings.fr.resx" />
       <file filePath="Localization\UpdateDownloadStrings.it-IT.resx" />
       <file filePath="Localization\UpdateDownloadStrings.ja-JP.resx" />
+      <file filePath="Localization\UpdateDownloadStrings.ko.resx" />
       <file filePath="Localization\UpdateDownloadStrings.nb.resx" />
       <file filePath="Localization\UpdateDownloadStrings.pl-PL.resx" />
       <file filePath="Localization\UpdateDownloadStrings.pt-BR.resx" />
       <file filePath="Localization\UpdateDownloadStrings.ru-RU.resx" />
       <file filePath="Localization\UpdateDownloadStrings.sv-SE.resx" />
       <file filePath="Localization\UpdateDownloadStrings.zh-CHS.resx" />
-      <file filePath="Localization\UpdateDownloadStrings.ko.resx" />
       <remarks>
       </remarks>
     </fileGroup>

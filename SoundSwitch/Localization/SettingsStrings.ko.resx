@@ -187,7 +187,7 @@
 지금 다시 시작 하시겠습니까?</value>
   </data>
 	<data name="activeRecording" xml:space="preserve">
-    <value>녹음</value>
+    <value>녹음 : {0}</value>
   </data>
 	<data name="audioFiles" xml:space="preserve">
     <value>오디오 파일</value>

@@ -221,6 +221,10 @@
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Accessibility" />
+    <Reference Include="FluentListView, Version=3.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentListView.3.0.4\lib\net45\FluentListView.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Win32.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
@@ -262,7 +266,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Numerics" />
@@ -328,6 +335,7 @@
     <Compile Include="Framework\Banner\BannerForm.Designer.cs">
       <DependentUpon>BannerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Framework\Profile\ProfileSettings.cs" />
     <Compile Include="Framework\TrayIcon\Icon\Changer\AbstractIconChanger.cs" />
     <Compile Include="Framework\TrayIcon\Icon\Changer\AlwaysIconChanger.cs" />
     <Compile Include="Framework\TrayIcon\Icon\Changer\NeverIconIconChanger.cs" />
@@ -599,6 +607,7 @@
       <Name>SoundSwitch.UI.UserControls</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

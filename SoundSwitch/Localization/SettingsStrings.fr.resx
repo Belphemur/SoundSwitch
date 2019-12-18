@@ -280,4 +280,13 @@ Toujours: Quand un périférique audio est switché.</value>
 	<data name="profile.tab" xml:space="preserve">
 		<value>Profiles</value>
 	</data>
+	<data name="profile.program" xml:space="preserve">
+		<value>Programme</value>
+	</data>
+	<data name="profile.addButton" xml:space="preserve">
+		<value>Ajouter</value>
+	</data>
+	<data name="profile.name" xml:space="preserve">
+		<value>Nom</value>
+	</data>
 </root>

@@ -19,7 +19,7 @@ namespace SoundSwitch.Localization {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class SettingsStrings {
@@ -259,7 +259,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change Icon.
+        ///   Looks up a localized string similar to Systray Icon.
         /// </summary>
         internal static string iconChange {
             get {
@@ -268,11 +268,12 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Choose when to change the Systray Icon of SoundSwitch.
+        ///   Looks up a localized string similar to Choose when to change the systray Icon of SoundSwitch.
         ///
-        ///Never: Don&apos;t change it.
+        ///Default: Don&apos;t change it. Keep SoundSwitch Icon.
         ///Playback: When a playback device is switched.
-        ///Recording: When a recording device is switched..
+        ///Recording: When a recording device is switched.
+        ///Both: Change when any type of device is switched..
         /// </summary>
         internal static string iconChange_tooltip {
             get {
@@ -412,6 +413,24 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        internal static string profile_addButton {
+            get {
+                return ResourceManager.GetString("profile.addButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profiles.
+        /// </summary>
+        internal static string profile_tab {
+            get {
+                return ResourceManager.GetString("profile.tab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recording.
         /// </summary>
         internal static string recording {
@@ -430,7 +449,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the sound file for the notification..
+        ///   Looks up a localized string similar to Select the sound file for the notification.
         /// </summary>
         internal static string selectSoundButtonTooltip {
             get {
