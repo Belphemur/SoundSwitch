@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using SoundSwitch.Audio.Manager.Interop.Com.Threading;
 using SoundSwitch.Audio.Manager.Interop.Com.User;
 
@@ -41,22 +42,39 @@ namespace SoundSwitch.Audio.Manager
         {
             _winEventDelegate = (hook, type, hwnd, idObject, child, thread, time) =>
             {
-                var @event = ComThread.Invoke(() =>
+                var windowProcessId = ComThread.Invoke(() =>
                 {
-                    User32.NativeMethods.GetWindowThreadProcessId(hwnd, out var processId);
-                    var process = Process.GetProcessById((int) processId);
-                    var processName = process.MainModule?.FileName;
-                    return new ForegroundProcessChangedEvent(processId, processName);
+                    try
+                    {
+                        User32.NativeMethods.GetWindowThreadProcessId(hwnd, out var processId);
+                        return processId;
+                    }
+                    catch
+                    {
+                        return (uint) 0;
+                    }
                 });
-                Event?.Invoke(this, @event);
+                
+                if (windowProcessId == 0)
+                {
+                    return;
+                }
+
+                Task.Factory.StartNew(() =>
+                {
+                    var process = Process.GetProcessById((int) windowProcessId);
+                    var processName = process.MainModule?.FileName;
+                    Event?.Invoke(this, new ForegroundProcessChangedEvent(windowProcessId, processName));
+                });
             };
 
-            User32.NativeMethods.SetWinEventHook(User32.NativeMethods.EVENT_SYSTEM_FOREGROUND,
-                User32.NativeMethods.EVENT_SYSTEM_FOREGROUND,
-                IntPtr.Zero, _winEventDelegate,
-                0,
-                0,
-                User32.NativeMethods.WINEVENT_OUTOFCONTEXT);
+            ComThread.Invoke(() =>
+                User32.NativeMethods.SetWinEventHook(User32.NativeMethods.EVENT_SYSTEM_FOREGROUND,
+                    User32.NativeMethods.EVENT_SYSTEM_FOREGROUND,
+                    IntPtr.Zero, _winEventDelegate,
+                    0,
+                    0,
+                    User32.NativeMethods.WINEVENT_OUTOFCONTEXT));
         }
     }
 }
