@@ -163,6 +163,11 @@ namespace SoundSwitch.UI.Forms
             new LanguageFactory().ConfigureListControl(languageComboBox);
             languageComboBox.SelectedValue = AppModel.Instance.Language;
 
+            InitializeProfileList();
+        }
+
+        private void InitializeProfileList()
+        {
             profilesListView.View = View.Details;
             profilesListView.FullRowSelect = true;
 
@@ -176,53 +181,54 @@ namespace SoundSwitch.UI.Forms
             profilesListView.DrawColumnHeader += (sender, args) => args.DrawDefault = true;
             profilesListView.DrawSubItem += (sender, args) =>
             {
-                if (args.Header.Index != 1)
+                if (args.Header.Index != 1 || string.IsNullOrEmpty(args.SubItem.Text) || args.Item.Tag == null)
                 {
                     args.DrawDefault = true;
                     return;
                 }
 
-                try
+
+                var icon = (Icon) args.Item.Tag;
+                args.DrawBackground();
+                var executable = args.SubItem.Text.Split('\\').Last();
+
+                if (args.Item.Selected)
                 {
-                    var icon = IconExtractor.Extract(args.SubItem.Text, 0, true);
-                    args.DrawBackground();
-                    var executable = args.SubItem.Text.Split('\\').Last();
-
-                    if (args.Item.Selected)
-                    {
-                        var r = new Rectangle(args.Bounds.Left, args.Bounds.Top, args.Bounds.Right, args.Bounds.Height);
-                        args.Graphics.FillRectangle(SystemBrushes.Highlight, r);
-                        args.SubItem.ForeColor = SystemColors.HighlightText;
-                    }
-                    else
-                    {
-                        args.SubItem.ForeColor = SystemColors.WindowText;
-                    }
-                    var imageRect = new Rectangle(args.Bounds.X, args.Bounds.Y, args.Bounds.Height, args.Bounds.Height);
-                    args.Graphics.DrawIcon(icon, imageRect);
-                    
-                    args.Graphics.DrawString(executable, 
-                        args.SubItem.Font,
-                        new SolidBrush(args.SubItem.ForeColor), 
-                        (args.SubItem.Bounds.Location.X + icon.Width),
-                        args.SubItem.Bounds.Location.Y);
-
-                   
-
-
+                    var r = new Rectangle(args.Bounds.Left, args.Bounds.Top, args.Bounds.Right, args.Bounds.Height);
+                    args.Graphics.FillRectangle(SystemBrushes.Highlight, r);
+                    args.SubItem.ForeColor = SystemColors.HighlightText;
                 }
-                catch (Exception e)
+                else
                 {
-                    args.DrawDefault = true;
-                    return;
+                    args.SubItem.ForeColor = SystemColors.WindowText;
                 }
 
+                var imageRect = new Rectangle(args.Bounds.X, args.Bounds.Y, args.Bounds.Height, args.Bounds.Height);
+                args.Graphics.DrawIcon(icon, imageRect);
+
+                args.Graphics.DrawString(executable,
+                    args.SubItem.Font,
+                    new SolidBrush(args.SubItem.ForeColor),
+                    (args.SubItem.Bounds.Location.X + icon.Width + 5),
+                    args.SubItem.Bounds.Location.Y);
             };
 
             foreach (var profile in AppModel.Instance.ProfileManager.Profiles)
             {
                 var listViewItem = new ListViewItem(profile.ProfileName);
-                listViewItem.SubItems.AddRange(new []
+                if (!string.IsNullOrEmpty(profile.ApplicationPath))
+                {
+                    try
+                    {
+                        listViewItem.Tag = IconExtractor.Extract(profile.ApplicationPath, 0, false);
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+                }
+
+                listViewItem.SubItems.AddRange(new[]
                 {
                     profile.ApplicationPath ?? "",
                     profile.HotKeys?.ToString() ?? "",
