@@ -42,6 +42,7 @@ namespace SoundSwitch.UI.Forms
             this.recordingTabPage = new System.Windows.Forms.TabPage();
             this.recordingListView = new System.Windows.Forms.ListView();
             this.tabProfile = new System.Windows.Forms.TabPage();
+            this.profileFluentListView = new Fluent.FluentListView();
             this.addProfileButton = new System.Windows.Forms.Button();
             this.appSettingTabPage = new System.Windows.Forms.TabPage();
             this.languageGroupBox = new System.Windows.Forms.GroupBox();
@@ -68,7 +69,6 @@ namespace SoundSwitch.UI.Forms
             this.hotkeysLabel = new System.Windows.Forms.Label();
             this.selectSoundFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.hotkeysCheckBox = new System.Windows.Forms.CheckBox();
-            this.profileFluentListView = new Fluent.FluentListView();
             this.tabControl.SuspendLayout();
             this.playbackTabPage.SuspendLayout();
             this.recordingTabPage.SuspendLayout();
@@ -203,6 +203,26 @@ namespace SoundSwitch.UI.Forms
             this.tabProfile.Text = global::SoundSwitch.Localization.SettingsStrings.profile_tab;
             this.tabProfile.UseVisualStyleBackColor = true;
             // 
+            // profileFluentListView
+            // 
+            this.profileFluentListView.ColumnWidth = 0;
+            this.profileFluentListView.EnableCellEditing = false;
+            this.profileFluentListView.EnableDragDropItems = false;
+            this.profileFluentListView.EnableDrop = false;
+            this.profileFluentListView.EnableDropFiles = false;
+            this.profileFluentListView.EnableGifs = false;
+            this.profileFluentListView.EnableRenaming = false;
+            this.profileFluentListView.EnableTileView = false;
+            this.profileFluentListView.ItemFont = null;
+            this.profileFluentListView.Location = new System.Drawing.Point(0, 0);
+            this.profileFluentListView.Name = "profileFluentListView";
+            this.profileFluentListView.ShowColumns = false;
+            this.profileFluentListView.ShowDescription = false;
+            this.profileFluentListView.ShowGroups = false;
+            this.profileFluentListView.ShowIcons = false;
+            this.profileFluentListView.Size = new System.Drawing.Size(709, 315);
+            this.profileFluentListView.TabIndex = 2;
+            // 
             // addProfileButton
             // 
             this.addProfileButton.Location = new System.Drawing.Point(628, 321);
@@ -211,6 +231,7 @@ namespace SoundSwitch.UI.Forms
             this.addProfileButton.TabIndex = 1;
             this.addProfileButton.Text = global::SoundSwitch.Localization.SettingsStrings.profile_addButton;
             this.addProfileButton.UseVisualStyleBackColor = true;
+            this.addProfileButton.Click += new System.EventHandler(this.addProfileButton_Click);
             // 
             // appSettingTabPage
             // 
@@ -480,26 +501,6 @@ namespace SoundSwitch.UI.Forms
             this.hotkeysCheckBox.TabIndex = 20;
             this.hotkeysCheckBox.UseVisualStyleBackColor = true;
             this.hotkeysCheckBox.CheckedChanged += new System.EventHandler(this.hotkeysCheckbox_CheckedChanged);
-            // 
-            // profileFluentListView
-            // 
-            this.profileFluentListView.ColumnWidth = 0;
-            this.profileFluentListView.EnableCellEditing = false;
-            this.profileFluentListView.EnableDragDropItems = false;
-            this.profileFluentListView.EnableDrop = false;
-            this.profileFluentListView.EnableDropFiles = false;
-            this.profileFluentListView.EnableGifs = false;
-            this.profileFluentListView.EnableRenaming = false;
-            this.profileFluentListView.EnableTileView = false;
-            this.profileFluentListView.ItemFont = null;
-            this.profileFluentListView.Location = new System.Drawing.Point(0, 0);
-            this.profileFluentListView.Name = "profileFluentListView";
-            this.profileFluentListView.ShowColumns = false;
-            this.profileFluentListView.ShowDescription = false;
-            this.profileFluentListView.ShowGroups = false;
-            this.profileFluentListView.ShowIcons = false;
-            this.profileFluentListView.Size = new System.Drawing.Size(709, 315);
-            this.profileFluentListView.TabIndex = 2;
             // 
             // SettingsForm
             // 

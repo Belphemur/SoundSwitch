@@ -624,5 +624,10 @@ namespace SoundSwitch.UI.Forms
             
             new IconChangerFactory().Get(item.Enum).ChangeIcon(AppModel.Instance.TrayIcon);
         }
+
+        private void addProfileButton_Click(object sender, EventArgs e)
+        {
+            (new AddProfile()).Show(Owner);
+        }
     }
 }

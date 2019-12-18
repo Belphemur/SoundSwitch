@@ -279,6 +279,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
@@ -445,6 +446,12 @@
       <DependentUpon>UpdateDownloadStrings.resx</DependentUpon>
     </Compile>
     <Compile Include="Model\IAudioDeviceLister.cs" />
+    <Compile Include="UI\Forms\AddProfile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\AddProfile.Designer.cs">
+      <DependentUpon>AddProfile.cs</DependentUpon>
+    </Compile>
     <Compile Include="Util\AssemblyUtils.cs" />
     <Compile Include="Util\AudioDeviceIconExtractor.cs" />
     <Compile Include="Framework\Audio\Lister\CachedAudioDeviceLister.cs" />
@@ -619,6 +626,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\profile.ico" />
+    <None Include="Resources\star.png" />
     <None Include="Resources\Switch-SoundWave.ico" />
     <None Include="packages.config" />
     <None Include="Resources\Switch-Logo.ico" />
