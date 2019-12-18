@@ -171,11 +171,11 @@ namespace SoundSwitch.UI.Forms
             profilesListView.View = View.Details;
             profilesListView.FullRowSelect = true;
 
-            profilesListView.Columns.Add("Profile", 50, HorizontalAlignment.Left);
-            profilesListView.Columns.Add("Application", 155, HorizontalAlignment.Left);
-            profilesListView.Columns.Add("HotKeys", 100, HorizontalAlignment.Left);
-            profilesListView.Columns.Add("Playback", 155, HorizontalAlignment.Left);
-            profilesListView.Columns.Add("Recording", 155, HorizontalAlignment.Left);
+            profilesListView.Columns.Add(SettingsStrings.profile_name, 50, HorizontalAlignment.Left);
+            profilesListView.Columns.Add(SettingsStrings.profile_program, -1, HorizontalAlignment.Left);
+            profilesListView.Columns.Add(SettingsStrings.hotkeys, 100, HorizontalAlignment.Left);
+            profilesListView.Columns.Add(SettingsStrings.playback, 155, HorizontalAlignment.Left);
+            profilesListView.Columns.Add(SettingsStrings.recording, 155, HorizontalAlignment.Left);
 
             profilesListView.OwnerDraw = true;
             profilesListView.DrawColumnHeader += (sender, args) => args.DrawDefault = true;
