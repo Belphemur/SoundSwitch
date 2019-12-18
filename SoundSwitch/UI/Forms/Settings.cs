@@ -168,6 +168,8 @@ namespace SoundSwitch.UI.Forms
 
         private void InitializeProfileList()
         {
+            addProfileButton.Image = Resources.profile_add;
+
             profilesListView.View = View.Details;
             profilesListView.FullRowSelect = true;
 
