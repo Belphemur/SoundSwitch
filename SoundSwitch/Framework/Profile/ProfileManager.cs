@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ResultDotNet;
+using RailSharp;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Framework.Audio.Device;
@@ -16,6 +16,8 @@ namespace SoundSwitch.Framework.Profile
         private readonly Dictionary<string, ProfileSetting> _profileByApplication;
         private readonly ForegroundProcessChanged _foregroundProcessChanged;
         private readonly AudioSwitcher _audioSwitcher;
+
+        public IReadOnlyCollection<ProfileSetting> Profiles => AppConfigs.Configuration.ProfileSettings;
 
         public ProfileManager(ForegroundProcessChanged foregroundProcessChanged, AudioSwitcher audioSwitcher)
         {
@@ -59,8 +61,8 @@ namespace SoundSwitch.Framework.Profile
                 {
                     _audioSwitcher.SwitchProcessTo(device.Id, ERole.ERole_enum_count, (EDataFlow) device.Type,
                         processId);
-                    
                 }
+
                 //Always switch the default device.
                 //Easy way to be sure a notification will be send.
                 //And to be consistent with the default audio device.
@@ -77,36 +79,32 @@ namespace SoundSwitch.Framework.Profile
         {
             if (profile.ApplicationPath == null && profile.HotKeys == null)
             {
-                return Result<ProfileSetting, string>.NewError(SettingsStrings.profile_error_needHKOrPath);
+                return SettingsStrings.profile_error_needHKOrPath;
             }
 
             if (profile.Recording == null && profile.Playback == null)
             {
-                return Result<ProfileSetting, string>.NewError(SettingsStrings.profile_error_needPlaybackOrRecording);
+                return SettingsStrings.profile_error_needPlaybackOrRecording;
             }
 
             if (profile.HotKeys != null && _profileByHotkey.ContainsKey(profile.HotKeys))
             {
-                return Result<ProfileSetting, string>.NewError(string.Format(SettingsStrings.profile_error_hotkey,
-                    profile.HotKeys));
+                return string.Format(SettingsStrings.profile_error_hotkey, profile.HotKeys);
             }
 
             if (profile.ApplicationPath != null && _profileByApplication.ContainsKey(profile.ApplicationPath))
             {
-                return Result<ProfileSetting, string>.NewError(string.Format(SettingsStrings.profile_error_application,
-                    profile.ApplicationPath));
+                return string.Format(SettingsStrings.profile_error_application, profile.ApplicationPath);
             }
 
             if (AppConfigs.Configuration.ProfileSettings.Contains(profile))
             {
-                return Result<ProfileSetting, string>.NewError(string.Format(SettingsStrings.profile_error_name,
-                    profile.ProfileName));
+                return string.Format(SettingsStrings.profile_error_name, profile.ProfileName);
             }
 
             if (profile.HotKeys != null && !WindowsAPIAdapter.RegisterHotKey(profile.HotKeys))
             {
-                return Result<ProfileSetting, string>.NewError(string.Format(SettingsStrings.profile_error_hotkey,
-                    profile.HotKeys));
+                return string.Format(SettingsStrings.profile_error_hotkey, profile.HotKeys);
             }
 
 
@@ -118,7 +116,7 @@ namespace SoundSwitch.Framework.Profile
             AppConfigs.Configuration.ProfileSettings.Add(profile);
             AppConfigs.Configuration.Save();
 
-            return Result.Ok<ProfileSetting, string>(profile);
+            return profile;
         }
     }
 }

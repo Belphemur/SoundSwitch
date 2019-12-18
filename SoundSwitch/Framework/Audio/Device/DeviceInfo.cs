@@ -67,5 +67,10 @@ namespace SoundSwitch.Framework.Audio.Device
             if (idComparison != 0) return idComparison;
             return Type.CompareTo(other.Type);
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

@@ -20,6 +20,7 @@ using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Fluent;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
@@ -29,6 +30,7 @@ using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.Factory;
 using SoundSwitch.Framework.NotificationManager;
+using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.TrayIcon.Icon;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
@@ -163,7 +165,7 @@ namespace SoundSwitch.UI.Forms
             languageComboBox.SelectedValue = AppModel.Instance.Language;
         }
 
-        public  async Task PopulateAudioDevices()
+        public async Task PopulateAudioDevices()
         {
             
             // Playback and Recording
@@ -302,7 +304,7 @@ namespace SoundSwitch.UI.Forms
                     new Tuple<DataFlow, HotKeys>(DataFlow.Capture, AppConfigs.Configuration.RecordingHotKeys);
                 hotkeysCheckBox.Checked = AppConfigs.Configuration.RecordingHotKeys.Enabled;
             }
-            else if (tabControlSender.SelectedTab == appSettingTabPage)
+            else
             {
                 SetHotkeysFieldsVisibility(false);
             }
