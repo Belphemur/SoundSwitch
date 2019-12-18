@@ -31,8 +31,8 @@ namespace SoundSwitch.UI.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
-            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
+            System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
+            System.Windows.Forms.ListViewGroup listViewGroup4 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
             this.startWithWindowsCheckBox = new System.Windows.Forms.CheckBox();
             this.closeButton = new System.Windows.Forms.Button();
             this.switchCommunicationDeviceCheckBox = new System.Windows.Forms.CheckBox();
@@ -42,6 +42,7 @@ namespace SoundSwitch.UI.Forms
             this.recordingTabPage = new System.Windows.Forms.TabPage();
             this.recordingListView = new System.Windows.Forms.ListView();
             this.tabProfile = new System.Windows.Forms.TabPage();
+            this.profilesListView = new System.Windows.Forms.ListView();
             this.addProfileButton = new System.Windows.Forms.Button();
             this.appSettingTabPage = new System.Windows.Forms.TabPage();
             this.languageGroupBox = new System.Windows.Forms.GroupBox();
@@ -145,11 +146,11 @@ namespace SoundSwitch.UI.Forms
             this.playbackListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.playbackListView.CheckBoxes = true;
             this.playbackListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            listViewGroup1.Header = "Selected";
-            listViewGroup1.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
-            listViewGroup1.Name = "selectedGroup";
+            listViewGroup3.Header = "Selected";
+            listViewGroup3.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
+            listViewGroup3.Name = "selectedGroup";
             this.playbackListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup1});
+            listViewGroup3});
             this.playbackListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.playbackListView.HideSelection = false;
             this.playbackListView.Location = new System.Drawing.Point(3, 3);
@@ -176,11 +177,11 @@ namespace SoundSwitch.UI.Forms
             this.recordingListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.recordingListView.CheckBoxes = true;
             this.recordingListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            listViewGroup2.Header = "Selected";
-            listViewGroup2.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
-            listViewGroup2.Name = "selectedGroup";
+            listViewGroup4.Header = "Selected";
+            listViewGroup4.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
+            listViewGroup4.Name = "selectedGroup";
             this.recordingListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup2});
+            listViewGroup4});
             this.recordingListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.recordingListView.HideSelection = false;
             this.recordingListView.Location = new System.Drawing.Point(3, 3);
@@ -192,6 +193,7 @@ namespace SoundSwitch.UI.Forms
             // 
             // tabProfile
             // 
+            this.tabProfile.Controls.Add(this.profilesListView);
             this.tabProfile.Controls.Add(this.addProfileButton);
             this.tabProfile.Location = new System.Drawing.Point(4, 22);
             this.tabProfile.Name = "tabProfile";
@@ -200,6 +202,19 @@ namespace SoundSwitch.UI.Forms
             this.tabProfile.TabIndex = 3;
             this.tabProfile.Text = global::SoundSwitch.Localization.SettingsStrings.profile_tab;
             this.tabProfile.UseVisualStyleBackColor = true;
+            // 
+            // profilesListView
+            // 
+            this.profilesListView.Dock = System.Windows.Forms.DockStyle.Top;
+            this.profilesListView.HideSelection = false;
+            this.profilesListView.Location = new System.Drawing.Point(3, 3);
+            this.profilesListView.MultiSelect = false;
+            this.profilesListView.Name = "profilesListView";
+            this.profilesListView.ShowGroups = false;
+            this.profilesListView.Size = new System.Drawing.Size(703, 309);
+            this.profilesListView.TabIndex = 2;
+            this.profilesListView.UseCompatibleStateImageBehavior = false;
+            this.profilesListView.View = System.Windows.Forms.View.Details;
             // 
             // addProfileButton
             // 
@@ -547,5 +562,6 @@ namespace SoundSwitch.UI.Forms
         private System.Windows.Forms.ComboBox iconChangeChoicesComboBox;
         private System.Windows.Forms.TabPage tabProfile;
         private System.Windows.Forms.Button addProfileButton;
+        private System.Windows.Forms.ListView profilesListView;
     }
 }

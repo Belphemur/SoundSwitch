@@ -20,7 +20,6 @@ using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Fluent;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
@@ -48,6 +47,7 @@ namespace SoundSwitch.UI.Forms
         private static readonly Icon RessourceSettingsIcon = Resources.SettingsIcon;
 
         private bool _loaded;
+
         public SettingsForm()
         {
             // Form itself
@@ -71,16 +71,16 @@ namespace SoundSwitch.UI.Forms
 
             // Settings - Basic
             startWithWindowsCheckBox.Checked = AppModel.Instance.RunAtStartup;
-            
+
             new IconChangerFactory().ConfigureListControl(iconChangeChoicesComboBox);
             iconChangeChoicesComboBox.SelectedValue = AppConfigs.Configuration.SwitchIcon;
-            
+
             var iconChangeToolTip = new ToolTip();
             iconChangeToolTip.SetToolTip(iconChangeLabel, SettingsStrings.iconChange_tooltip);
-            
+
             // Settings - Audio
             switchCommunicationDeviceCheckBox.Checked = AppModel.Instance.SetCommunications;
-           
+
 
             var switchCommunicationsDeviceToolTip = new ToolTip();
             switchCommunicationsDeviceToolTip.SetToolTip(switchCommunicationDeviceCheckBox,
@@ -120,14 +120,13 @@ namespace SoundSwitch.UI.Forms
 
             new DeviceCyclerFactory().ConfigureListControl(cycleThroughComboBox);
             cycleThroughComboBox.SelectedValue = DeviceCyclerManager.CurrentCycler;
-            
-            
+
 
             var cycleThroughToolTip = new ToolTip();
             cycleThroughToolTip.SetToolTip(cycleThroughComboBox, SettingsStrings.cycleThroughTooltip);
 
             foregroundAppCheckbox.Checked = AppModel.Instance.SwitchForegroundProgram;
-     
+
             var foregroundAppToolTip = new ToolTip();
             foregroundAppToolTip.SetToolTip(foregroundAppCheckbox, SettingsStrings.foregroundAppTooltip);
 
@@ -163,11 +162,79 @@ namespace SoundSwitch.UI.Forms
             // Settings - Language
             new LanguageFactory().ConfigureListControl(languageComboBox);
             languageComboBox.SelectedValue = AppModel.Instance.Language;
+
+            profilesListView.View = View.Details;
+            profilesListView.FullRowSelect = true;
+
+            profilesListView.Columns.Add("Profile", 50, HorizontalAlignment.Left);
+            profilesListView.Columns.Add("Application", 155, HorizontalAlignment.Left);
+            profilesListView.Columns.Add("HotKeys", 100, HorizontalAlignment.Left);
+            profilesListView.Columns.Add("Playback", 155, HorizontalAlignment.Left);
+            profilesListView.Columns.Add("Recording", 155, HorizontalAlignment.Left);
+
+            profilesListView.OwnerDraw = true;
+            profilesListView.DrawColumnHeader += (sender, args) => args.DrawDefault = true;
+            profilesListView.DrawSubItem += (sender, args) =>
+            {
+                if (args.Header.Index != 1)
+                {
+                    args.DrawDefault = true;
+                    return;
+                }
+
+                try
+                {
+                    var icon = IconExtractor.Extract(args.SubItem.Text, 0, true);
+                    args.DrawBackground();
+                    var executable = args.SubItem.Text.Split('\\').Last();
+
+                    if (args.Item.Selected)
+                    {
+                        var r = new Rectangle(args.Bounds.Left, args.Bounds.Top, args.Bounds.Right, args.Bounds.Height);
+                        args.Graphics.FillRectangle(SystemBrushes.Highlight, r);
+                        args.SubItem.ForeColor = SystemColors.HighlightText;
+                    }
+                    else
+                    {
+                        args.SubItem.ForeColor = SystemColors.WindowText;
+                    }
+                    var imageRect = new Rectangle(args.Bounds.X, args.Bounds.Y, args.Bounds.Height, args.Bounds.Height);
+                    args.Graphics.DrawIcon(icon, imageRect);
+                    
+                    args.Graphics.DrawString(executable, 
+                        args.SubItem.Font,
+                        new SolidBrush(args.SubItem.ForeColor), 
+                        (args.SubItem.Bounds.Location.X + icon.Width),
+                        args.SubItem.Bounds.Location.Y);
+
+                   
+
+
+                }
+                catch (Exception e)
+                {
+                    args.DrawDefault = true;
+                    return;
+                }
+
+            };
+
+            foreach (var profile in AppModel.Instance.ProfileManager.Profiles)
+            {
+                var listViewItem = new ListViewItem(profile.ProfileName);
+                listViewItem.SubItems.AddRange(new []
+                {
+                    profile.ApplicationPath ?? "",
+                    profile.HotKeys?.ToString() ?? "",
+                    profile.Playback?.ToString() ?? "",
+                    profile.Recording?.ToString() ?? "",
+                });
+                profilesListView.Items.Add(listViewItem);
+            }
         }
 
         public async Task PopulateAudioDevices()
         {
-            
             // Playback and Recording
             using var audioDeviceLister = new CachedAudioDeviceLister(DeviceState.All);
             await audioDeviceLister.Refresh();
@@ -189,6 +256,8 @@ namespace SoundSwitch.UI.Forms
             recordingListView.Groups[0].Header = SettingsStrings.selected;
 
             appSettingTabPage.Text = SettingsStrings.settings;
+            tabProfile.Text = SettingsStrings.profile_tab;
+            addProfileButton.Text = SettingsStrings.profile_addButton;
 
             // Settings - Basic
             basicSettingsGroupBox.Text = SettingsStrings.basicSettings;
@@ -321,11 +390,11 @@ namespace SoundSwitch.UI.Forms
         {
             if (!_loaded)
                 return;
-            var value = (DisplayEnumObject<NotificationTypeEnum>)((ComboBox) sender).SelectedItem;
+            var value = (DisplayEnumObject<NotificationTypeEnum>) ((ComboBox) sender).SelectedItem;
 
             if (value == null)
                 return;
-            
+
             var notificationType = value.Enum;
             if (notificationType == AppModel.Instance.NotificationSettings)
                 return;
@@ -354,12 +423,12 @@ namespace SoundSwitch.UI.Forms
         {
             if (!_loaded)
                 return;
-            var value = (DisplayEnumObject<TooltipInfoTypeEnum>)((ComboBox) sender).SelectedItem;
+            var value = (DisplayEnumObject<TooltipInfoTypeEnum>) ((ComboBox) sender).SelectedItem;
 
             if (value == null)
                 return;
 
-            
+
             TooltipInfoManager.CurrentTooltipInfo = value.Enum;
         }
 
@@ -367,11 +436,11 @@ namespace SoundSwitch.UI.Forms
         {
             if (!_loaded)
                 return;
-            var value = (DisplayEnumObject<DeviceCyclerTypeEnum>)((ComboBox) sender).SelectedItem;
+            var value = (DisplayEnumObject<DeviceCyclerTypeEnum>) ((ComboBox) sender).SelectedItem;
 
             if (value == null)
                 return;
-            
+
             DeviceCyclerManager.CurrentCycler = value.Enum;
         }
 
@@ -380,12 +449,12 @@ namespace SoundSwitch.UI.Forms
             if (!_loaded)
                 return;
 
-            var value = (DisplayEnumObject<Language>)((ComboBox) sender).SelectedItem;
+            var value = (DisplayEnumObject<Language>) ((ComboBox) sender).SelectedItem;
 
             if (value == null)
                 return;
 
-            AppModel.Instance.Language =  value.Enum;
+            AppModel.Instance.Language = value.Enum;
 
             if (MessageBox.Show(SettingsStrings.languageRestartRequired,
                     SettingsStrings.languageRestartRequiredCaption,
@@ -458,7 +527,7 @@ namespace SoundSwitch.UI.Forms
             try
             {
                 PopulateDeviceTypeGroups(listView);
-            
+
                 listView.SmallImageList = new ImageList
                 {
                     ImageSize = new Size(32, 32),
@@ -488,7 +557,8 @@ namespace SoundSwitch.UI.Forms
         /// <param name="selected"></param>
         /// <param name="listView"></param>
         /// <returns></returns>
-        private ListViewItem GenerateListViewItem(DeviceFullInfo device, IEnumerable<DeviceInfo> selected, ListView listView)
+        private ListViewItem GenerateListViewItem(DeviceFullInfo device, IEnumerable<DeviceInfo> selected,
+            ListView listView)
         {
             var listViewItem = new ListViewItem
             {
@@ -496,7 +566,7 @@ namespace SoundSwitch.UI.Forms
                 ImageKey = device.IconPath,
                 Tag = device
             };
-            var selectedDevice =  device;
+            var selectedDevice = device;
             if (selected.Contains(selectedDevice))
             {
                 listViewItem.Checked = true;
@@ -615,15 +685,15 @@ namespace SoundSwitch.UI.Forms
         {
             if (!_loaded)
                 return;
-            var comboBox = (ComboBox)sender;
+            var comboBox = (ComboBox) sender;
 
             if (comboBox == null)
                 return;
 
-            var item = (DisplayEnumObject<IconChangerFactory.ActionEnum>)iconChangeChoicesComboBox.SelectedItem;
+            var item = (DisplayEnumObject<IconChangerFactory.ActionEnum>) iconChangeChoicesComboBox.SelectedItem;
             AppConfigs.Configuration.SwitchIcon = item.Enum;
             AppConfigs.Configuration.Save();
-            
+
             new IconChangerFactory().Get(item.Enum).ChangeIcon(AppModel.Instance.TrayIcon);
         }
 
