@@ -12,13 +12,11 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Audio.Manager;
-using SoundSwitch.Audio.Manager.Interop;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Framework.Audio.Device;
 using SoundSwitch.Model;

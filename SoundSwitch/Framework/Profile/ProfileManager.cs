@@ -59,12 +59,12 @@ namespace SoundSwitch.Framework.Profile
                 {
                     _audioSwitcher.SwitchProcessTo(device.Id, ERole.ERole_enum_count, (EDataFlow) device.Type,
                         processId);
-                    _audioSwitcher.SwitchTo(device.Id, ERole.ERole_enum_count);
+                    
                 }
-                else
-                {
-                    _audioSwitcher.SwitchTo(device.Id, ERole.ERole_enum_count);
-                }
+                //Always switch the default device.
+                //Easy way to be sure a notification will be send.
+                //And to be consistent with the default audio device.
+                _audioSwitcher.SwitchTo(device.Id, ERole.ERole_enum_count);
             }
         }
 
