@@ -163,7 +163,7 @@
 		<value>Audiodateien</value>
   </data>
   <data name="selectSoundButtonTooltip" xml:space="preserve">
-		<value>Wähle eine Audiodatei für die Benachrichtigung.</value>
+		<value>Wähle eine Audiodatei für die Benachrichtigung</value>
   </data>
   <data name="basicSettings" xml:space="preserve">
 		<value>Grundlegende Einstellungen</value>
