@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using SoundSwitch.Audio.Manager.Interop.Com.Threading;
 using SoundSwitch.Audio.Manager.Interop.Com.User;
 
 namespace SoundSwitch.Audio.Manager
@@ -24,6 +25,11 @@ namespace SoundSwitch.Audio.Manager
                 ProcessId = processId;
                 ProcessName = processName;
             }
+
+            public override string ToString()
+            {
+                return $"{nameof(ProcessId)}: {ProcessId}, {nameof(ProcessName)}: {ProcessName}";
+            }
         }
 
         public event EventHandler<ForegroundProcessChangedEvent> Event;
@@ -35,10 +41,14 @@ namespace SoundSwitch.Audio.Manager
         {
             _winEventDelegate = (hook, type, hwnd, idObject, child, thread, time) =>
             {
-                User32.NativeMethods.GetWindowThreadProcessId(hwnd, out var processId);
-                var process = Process.GetProcessById((int) processId);
-                var processName = process.MainModule?.FileName;
-                Event?.Invoke(this, new ForegroundProcessChangedEvent(processId, processName));
+                var @event = ComThread.Invoke(() =>
+                {
+                    User32.NativeMethods.GetWindowThreadProcessId(hwnd, out var processId);
+                    var process = Process.GetProcessById((int) processId);
+                    var processName = process.MainModule?.FileName;
+                    return new ForegroundProcessChangedEvent(processId, processName);
+                });
+                Event?.Invoke(this, @event);
             };
 
             User32.NativeMethods.SetWinEventHook(User32.NativeMethods.EVENT_SYSTEM_FOREGROUND,
