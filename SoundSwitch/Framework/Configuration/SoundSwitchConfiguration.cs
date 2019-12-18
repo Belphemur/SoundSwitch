@@ -22,6 +22,7 @@ using Serilog;
 using SoundSwitch.Framework.Audio.Device;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
+using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.TrayIcon.Icon;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 using SoundSwitch.Framework.Updater;
@@ -81,6 +82,7 @@ namespace SoundSwitch.Framework.Configuration
         public bool KeepSystrayIcon { get; set; }
         public bool SwitchForegroundProgram { get; set; }
         public IconChangerFactory.ActionEnum SwitchIcon { get; set; }
+        public HashSet<ProfileSetting> ProfileSettings { get; set; } = new HashSet<ProfileSetting>();
         
         /// <summary>
         /// Fields of the config that got migrated

@@ -4,7 +4,7 @@ using SoundSwitch.Framework.Audio.Device;
 namespace SoundSwitch.Framework.Profile
 {
 #nullable enable
-    public class ProfileSettings : IEquatable<ProfileSettings>
+    public class ProfileSetting : IEquatable<ProfileSetting>
     {
         public string ProfileName { get; set; }
         public string? ApplicationPath { get; set; }
@@ -12,7 +12,7 @@ namespace SoundSwitch.Framework.Profile
         public DeviceInfo? Playback { get; set; }
         public DeviceInfo? Recording { get; set; }
 
-        public bool Equals(ProfileSettings? other)
+        public bool Equals(ProfileSetting? other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -24,7 +24,7 @@ namespace SoundSwitch.Framework.Profile
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((ProfileSettings) obj);
+            return Equals((ProfileSetting) obj);
         }
 
         public override int GetHashCode()
@@ -32,12 +32,12 @@ namespace SoundSwitch.Framework.Profile
             return ProfileName.GetHashCode();
         }
 
-        public static bool operator ==(ProfileSettings? left, ProfileSettings? right)
+        public static bool operator ==(ProfileSetting? left, ProfileSetting? right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(ProfileSettings? left, ProfileSettings? right)
+        public static bool operator !=(ProfileSetting? left, ProfileSetting? right)
         {
             return !Equals(left, right);
         }

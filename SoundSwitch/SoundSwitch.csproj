@@ -335,7 +335,7 @@
     <Compile Include="Framework\Banner\BannerForm.Designer.cs">
       <DependentUpon>BannerForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Framework\Profile\ProfileSettings.cs" />
+    <Compile Include="Framework\Profile\ProfileSetting.cs" />
     <Compile Include="Framework\TrayIcon\Icon\Changer\AbstractIconChanger.cs" />
     <Compile Include="Framework\TrayIcon\Icon\Changer\AlwaysIconChanger.cs" />
     <Compile Include="Framework\TrayIcon\Icon\Changer\NeverIconIconChanger.cs" />
