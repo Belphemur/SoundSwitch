@@ -33,7 +33,7 @@ namespace SoundSwitch.Localization.Factory.Lang
         public CultureInfo CultureInfo => CultureInfo.GetCultureInfo("de");
 
         public Language TypeEnum => Language.German;
-        public string Label => "Deutsche";
+        public string Label => "Deutsch";
     }
     public class SpanishLang : ILang
     {
