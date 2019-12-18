@@ -289,4 +289,19 @@ Toujours: Quand un périférique audio est switché.</value>
 	<data name="profile.name" xml:space="preserve">
 		<value>Nom</value>
 	</data>
+	<data name="profile.error.hotkey" xml:space="preserve">
+		<value>Le raccourcis {0} est déjà utilisé.</value>
+	</data>
+	<data name="profile.error.application" xml:space="preserve">
+		<value>Cette application {0} a déjà un profile associé.</value>
+	</data>
+	<data name="profile.error.name" xml:space="preserve">
+		<value>Il existe déjà un profile nommé {0}.</value>
+	</data>
+	<data name="profile.error.needHKOrPath" xml:space="preserve">
+		<value>Vous devez configurerun raccourcis clavier et/ou sélectionner un programme.</value>
+	</data>
+	<data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
+		<value>Vous devez sélectionner  un périphérique de lecture ou/et un périphérique d'enregisterement.</value>
+	</data>
 </root>

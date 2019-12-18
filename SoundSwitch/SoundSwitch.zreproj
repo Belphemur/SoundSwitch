@@ -36,83 +36,87 @@
     <globalSetting name="CreateNewFilesForm.destinationLanguagesListBox">57;100;128;152;155;211;226;285</globalSetting>
     <globalSetting name="CreateNewFilesForm.copyTextsCheckBox.Checked">False</globalSetting>
     <globalSetting name="CreateNewFilesForm.automaticallyTranslateCheckBox.Checked">False</globalSetting>
+    <userSetting name="Antoine@OPTIMUS.FindText">
+    </userSetting>
+    <userSetting name="Antoine@OPTIMUS.RecentFiles">D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.de.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.el-GR.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.es.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.fi-FI.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.fr.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.it-IT.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.ja-JP.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.nb.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.pl-PL.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.pt-BR.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.ru-RU.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.sv-SE.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.zh-CHS.resx###***###D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.de.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.el-GR.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.es.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.fi-FI.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.fr.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.it-IT.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.ja-JP.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.nb.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.pl-PL.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.pt-BR.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.ru-RU.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.sv-SE.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.zh-CHS.resx###***###D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.de.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.el-GR.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.es.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.fi-FI.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.fr.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.it-IT.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.ja-JP.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.nb.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.pl-PL.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.pt-BR.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.ru-RU.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.sv-SE.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.zh-CHS.resx###***###D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.de.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.el-GR.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.es.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.fi-FI.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.fr.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.it-IT.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.ja-JP.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.nb.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.pl-PL.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.pt-BR.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.ru-RU.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.sv-SE.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.zh-CHS.resx###***###D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.de.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.el-GR.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.es.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.fi-FI.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.fr.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.it-IT.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.ja-JP.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.nb.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.pl-PL.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.pt-BR.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.ru-RU.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.sv-SE.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.zh-CHS.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.de.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.el-GR.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.es.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.fi-FI.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.fr.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.it-IT.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.ja-JP.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.nb.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.pl-PL.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.pt-BR.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.ru-RU.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.sv-SE.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.zh-CHS.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.de.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.el-GR.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.es.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.fi-FI.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.fr.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.it-IT.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.ja-JP.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.nb.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.pl-PL.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.pt-BR.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.ru-RU.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.sv-SE.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.zh-CHS.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.de.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.el-GR.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.es.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.fi-FI.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.fr.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.it-IT.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.ja-JP.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.nb.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.pl-PL.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.pt-BR.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.ru-RU.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.sv-SE.resx;D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.zh-CHS.resx</userSetting>
+    <userSetting name="Antoine@OPTIMUS.filesInitialDir">D:\VS\SoundSwitch\SoundSwitch\Localization</userSetting>
     <description>
     </description>
   </configuration>
   <fileGroups>
     <fileGroup name="" projectFolderUniqueID="00000000-0000-0000-0000-000000000000" orderPosition="13" ignoreDuringExportAndImport="False" uniqueID="d90a8180-b0b6-4fe9-bf77-b90cfe012700">
-      <file filePath="Localization\AboutStrings.resx" />
-      <file filePath="Localization\AboutStrings.de.resx" />
-      <file filePath="Localization\AboutStrings.el-GR.resx" />
-      <file filePath="Localization\AboutStrings.es.resx" />
-      <file filePath="Localization\AboutStrings.fi-FI.resx" />
-      <file filePath="Localization\AboutStrings.fr.resx" />
-      <file filePath="Localization\AboutStrings.it-IT.resx" />
-      <file filePath="Localization\AboutStrings.ja-JP.resx" />
-      <file filePath="Localization\AboutStrings.ko.resx" />
-      <file filePath="Localization\AboutStrings.nb.resx" />
-      <file filePath="Localization\AboutStrings.pl-PL.resx" />
-      <file filePath="Localization\AboutStrings.pt-BR.resx" />
-      <file filePath="Localization\AboutStrings.ru-RU.resx" />
-      <file filePath="Localization\AboutStrings.sv-SE.resx" />
-      <file filePath="Localization\AboutStrings.zh-CHS.resx" />
+      <file filePath="Localization\AboutStrings.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.resx" uniqueID="3ca6bc8a-0d90-4ed1-94f2-77b02c0d6946" />
+      <file filePath="Localization\AboutStrings.de.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.de.resx" uniqueID="06959cfb-231c-4e22-aaa2-3c8eac1f9375" />
+      <file filePath="Localization\AboutStrings.el-GR.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.el-GR.resx" uniqueID="128a35ec-9dd3-4f95-a4a4-6ca9ce1b67cd" />
+      <file filePath="Localization\AboutStrings.es.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.es.resx" uniqueID="00fdeadb-f14b-4692-b624-7fbbedf4d9cb" />
+      <file filePath="Localization\AboutStrings.fi-FI.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.fi-FI.resx" uniqueID="240c24f1-a835-49f6-9ab4-cc7217a36d9d" />
+      <file filePath="Localization\AboutStrings.fr.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.fr.resx" uniqueID="266a25ff-6056-472a-8689-fb880ebef944" />
+      <file filePath="Localization\AboutStrings.it-IT.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.it-IT.resx" uniqueID="d570d3d5-7cd0-4833-963c-b3e1034568d8" />
+      <file filePath="Localization\AboutStrings.ja-JP.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.ja-JP.resx" uniqueID="60b7ccb9-3d77-432f-b3b3-a94bff2fe61a" />
+      <file filePath="Localization\AboutStrings.ko.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.ko.resx" uniqueID="00000000-0000-0000-0000-000000000000" />
+      <file filePath="Localization\AboutStrings.nb.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.nb.resx" uniqueID="4a09bbcb-ae9a-4998-9d84-973f7ee030a9" />
+      <file filePath="Localization\AboutStrings.pl-PL.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.pl-PL.resx" uniqueID="53fd65d7-58cf-49ee-a51b-6a3b66ca0a4a" />
+      <file filePath="Localization\AboutStrings.pt-BR.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.pt-BR.resx" uniqueID="1d475b5e-d374-4916-8dfa-4168ab0cbe55" />
+      <file filePath="Localization\AboutStrings.ru-RU.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.ru-RU.resx" uniqueID="8e4506a3-e74b-49f4-8075-8ab01b08209b" />
+      <file filePath="Localization\AboutStrings.sv-SE.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.sv-SE.resx" uniqueID="1f9d6145-9b73-430f-a10e-88bdbeacf56d" />
+      <file filePath="Localization\AboutStrings.zh-CHS.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.zh-CHS.resx" uniqueID="08f168dc-a40f-452a-bd32-681a9acc62b2" />
       <remarks>
       </remarks>
     </fileGroup>
     <fileGroup name="" projectFolderUniqueID="00000000-0000-0000-0000-000000000000" orderPosition="15" ignoreDuringExportAndImport="False" uniqueID="55ead1d4-e9b8-4459-b234-b86cc5854a58">
-      <file filePath="Localization\SettingsStrings.resx" />
-      <file filePath="Localization\SettingsStrings.de.resx" />
-      <file filePath="Localization\SettingsStrings.el-GR.resx" />
-      <file filePath="Localization\SettingsStrings.es.resx" />
-      <file filePath="Localization\SettingsStrings.fi-FI.resx" />
-      <file filePath="Localization\SettingsStrings.fr.resx" />
-      <file filePath="Localization\SettingsStrings.it-IT.resx" />
-      <file filePath="Localization\SettingsStrings.ja-JP.resx" />
-      <file filePath="Localization\SettingsStrings.ko.resx" />
-      <file filePath="Localization\SettingsStrings.nb.resx" />
-      <file filePath="Localization\SettingsStrings.pl-PL.resx" />
-      <file filePath="Localization\SettingsStrings.pt-BR.resx" />
-      <file filePath="Localization\SettingsStrings.ru-RU.resx" />
-      <file filePath="Localization\SettingsStrings.sv-SE.resx" />
-      <file filePath="Localization\SettingsStrings.zh-CHS.resx" />
+      <file filePath="Localization\SettingsStrings.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.resx" uniqueID="9eb2f40b-8e91-4567-b6ea-84497e310592" />
+      <file filePath="Localization\SettingsStrings.de.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.de.resx" uniqueID="b50e1ed9-99f0-4556-af2f-c4f7be66b7b7" />
+      <file filePath="Localization\SettingsStrings.el-GR.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.el-GR.resx" uniqueID="4ea30557-9683-4c20-87bb-d67ff60811ee" />
+      <file filePath="Localization\SettingsStrings.es.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.es.resx" uniqueID="4073142d-e447-4224-bc18-05ffc09e8fb9" />
+      <file filePath="Localization\SettingsStrings.fi-FI.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.fi-FI.resx" uniqueID="5e49dbdc-0870-4089-adf1-d31d02a50d9d" />
+      <file filePath="Localization\SettingsStrings.fr.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.fr.resx" uniqueID="97053077-2d9f-4ff5-8677-c31497b2b59e" />
+      <file filePath="Localization\SettingsStrings.it-IT.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.it-IT.resx" uniqueID="4c90b7a6-490e-4462-b5e6-ea35bf403e0e" />
+      <file filePath="Localization\SettingsStrings.ja-JP.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.ja-JP.resx" uniqueID="7640ad47-c1c2-4483-ae2a-755037e71a4b" />
+      <file filePath="Localization\SettingsStrings.ko.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.ko.resx" uniqueID="00000000-0000-0000-0000-000000000000" />
+      <file filePath="Localization\SettingsStrings.nb.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.nb.resx" uniqueID="1d9d7af7-6084-4986-8390-9737142ec4bb" />
+      <file filePath="Localization\SettingsStrings.pl-PL.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.pl-PL.resx" uniqueID="23b19c9b-a86e-4f9a-869f-91a096375f92" />
+      <file filePath="Localization\SettingsStrings.pt-BR.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.pt-BR.resx" uniqueID="80b8b2e1-f404-411d-abe9-2e67d722a5c9" />
+      <file filePath="Localization\SettingsStrings.ru-RU.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.ru-RU.resx" uniqueID="ecff48e1-0887-477e-a588-5ca99f093bf5" />
+      <file filePath="Localization\SettingsStrings.sv-SE.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.sv-SE.resx" uniqueID="56f14d99-bc2b-48cf-b803-07a1debad4eb" />
+      <file filePath="Localization\SettingsStrings.zh-CHS.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.zh-CHS.resx" uniqueID="5f9886f7-e1a0-4f3e-9b2e-d731c04bbd2a" />
       <remarks>
       </remarks>
     </fileGroup>
     <fileGroup name="" projectFolderUniqueID="00000000-0000-0000-0000-000000000000" orderPosition="16" ignoreDuringExportAndImport="False" uniqueID="3ced32d7-4350-4580-ade4-974d79a11c34">
-      <file filePath="Localization\TrayIconStrings.resx" />
-      <file filePath="Localization\TrayIconStrings.de.resx" />
-      <file filePath="Localization\TrayIconStrings.el-GR.resx" />
-      <file filePath="Localization\TrayIconStrings.es.resx" />
-      <file filePath="Localization\TrayIconStrings.fi-FI.resx" />
-      <file filePath="Localization\TrayIconStrings.fr.resx" />
-      <file filePath="Localization\TrayIconStrings.it-IT.resx" />
-      <file filePath="Localization\TrayIconStrings.ja-JP.resx" />
-      <file filePath="Localization\TrayIconStrings.ko.resx" />
-      <file filePath="Localization\TrayIconStrings.nb.resx" />
-      <file filePath="Localization\TrayIconStrings.pl-PL.resx" />
-      <file filePath="Localization\TrayIconStrings.pt-BR.resx" />
-      <file filePath="Localization\TrayIconStrings.ru-RU.resx" />
-      <file filePath="Localization\TrayIconStrings.sv-SE.resx" />
-      <file filePath="Localization\TrayIconStrings.zh-CHS.resx" />
+      <file filePath="Localization\TrayIconStrings.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.resx" uniqueID="5997d419-f1f3-45d6-99c9-c2a3f2684a9e" />
+      <file filePath="Localization\TrayIconStrings.de.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.de.resx" uniqueID="7de086b6-03c2-4d49-a19f-4a2b21bca9fb" />
+      <file filePath="Localization\TrayIconStrings.el-GR.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.el-GR.resx" uniqueID="6b76a8d4-54d4-4488-94dc-d3867a459627" />
+      <file filePath="Localization\TrayIconStrings.es.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.es.resx" uniqueID="99c946a7-bcb2-4316-a358-f18a7f5594cf" />
+      <file filePath="Localization\TrayIconStrings.fi-FI.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.fi-FI.resx" uniqueID="d7b44f72-9b9e-4f11-8659-7a8a88cdfc4f" />
+      <file filePath="Localization\TrayIconStrings.fr.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.fr.resx" uniqueID="43b43d88-2ae2-4344-8fe6-8a99596c9253" />
+      <file filePath="Localization\TrayIconStrings.it-IT.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.it-IT.resx" uniqueID="4c27d5d4-72f1-40c4-a4e1-620b9d7dc543" />
+      <file filePath="Localization\TrayIconStrings.ja-JP.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.ja-JP.resx" uniqueID="c7066e6c-24fa-423a-adbf-ae7c87a21455" />
+      <file filePath="Localization\TrayIconStrings.ko.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.ko.resx" uniqueID="00000000-0000-0000-0000-000000000000" />
+      <file filePath="Localization\TrayIconStrings.nb.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.nb.resx" uniqueID="99621882-959f-44ca-b5df-3f79ef31b9da" />
+      <file filePath="Localization\TrayIconStrings.pl-PL.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.pl-PL.resx" uniqueID="f8387965-af1c-4ff1-a46a-1f49736a307c" />
+      <file filePath="Localization\TrayIconStrings.pt-BR.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.pt-BR.resx" uniqueID="198ffadf-e9d1-47c0-8f1f-ce0dc9ee232b" />
+      <file filePath="Localization\TrayIconStrings.ru-RU.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.ru-RU.resx" uniqueID="877dfe28-a9e1-4778-8211-628334a202df" />
+      <file filePath="Localization\TrayIconStrings.sv-SE.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.sv-SE.resx" uniqueID="2af3dcb2-4557-4127-85da-8265d13fbfb9" />
+      <file filePath="Localization\TrayIconStrings.zh-CHS.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.zh-CHS.resx" uniqueID="95955f57-4e59-4e91-9ab9-fc1df78ed366" />
       <remarks>
       </remarks>
     </fileGroup>
     <fileGroup name="" projectFolderUniqueID="00000000-0000-0000-0000-000000000000" orderPosition="17" ignoreDuringExportAndImport="False" uniqueID="2e3b36f8-c04b-4774-9e23-e0dd3cc91381">
-      <file filePath="Localization\UpdateDownloadStrings.resx" />
-      <file filePath="Localization\UpdateDownloadStrings.de.resx" />
-      <file filePath="Localization\UpdateDownloadStrings.el-GR.resx" />
-      <file filePath="Localization\UpdateDownloadStrings.es.resx" />
-      <file filePath="Localization\UpdateDownloadStrings.fi-FI.resx" />
-      <file filePath="Localization\UpdateDownloadStrings.fr.resx" />
-      <file filePath="Localization\UpdateDownloadStrings.it-IT.resx" />
-      <file filePath="Localization\UpdateDownloadStrings.ja-JP.resx" />
-      <file filePath="Localization\UpdateDownloadStrings.ko.resx" />
-      <file filePath="Localization\UpdateDownloadStrings.nb.resx" />
-      <file filePath="Localization\UpdateDownloadStrings.pl-PL.resx" />
-      <file filePath="Localization\UpdateDownloadStrings.pt-BR.resx" />
-      <file filePath="Localization\UpdateDownloadStrings.ru-RU.resx" />
-      <file filePath="Localization\UpdateDownloadStrings.sv-SE.resx" />
-      <file filePath="Localization\UpdateDownloadStrings.zh-CHS.resx" />
+      <file filePath="Localization\UpdateDownloadStrings.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.resx" uniqueID="89a51186-8688-4d27-8b8e-a85041bcaf79" />
+      <file filePath="Localization\UpdateDownloadStrings.de.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.de.resx" uniqueID="32c372a2-270c-4600-8e0c-6ba3613139d5" />
+      <file filePath="Localization\UpdateDownloadStrings.el-GR.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.el-GR.resx" uniqueID="3f82d0ec-6be7-4945-a40a-6e0ff547daab" />
+      <file filePath="Localization\UpdateDownloadStrings.es.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.es.resx" uniqueID="8643f76d-7505-462c-ad21-aa7a42089727" />
+      <file filePath="Localization\UpdateDownloadStrings.fi-FI.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.fi-FI.resx" uniqueID="561261e5-7284-4d48-87a2-4740e4aa2f9f" />
+      <file filePath="Localization\UpdateDownloadStrings.fr.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.fr.resx" uniqueID="3b55cdf5-294a-4cc0-a636-6c80e6f0a2b2" />
+      <file filePath="Localization\UpdateDownloadStrings.it-IT.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.it-IT.resx" uniqueID="4a1c610e-9cdf-4aac-8e8e-061f20513d81" />
+      <file filePath="Localization\UpdateDownloadStrings.ja-JP.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.ja-JP.resx" uniqueID="e1c38700-a4ee-4671-a69a-1d4a4a2e4226" />
+      <file filePath="Localization\UpdateDownloadStrings.ko.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.ko.resx" uniqueID="00000000-0000-0000-0000-000000000000" />
+      <file filePath="Localization\UpdateDownloadStrings.nb.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.nb.resx" uniqueID="c18bae13-7c1f-47e8-854b-717c8232ba35" />
+      <file filePath="Localization\UpdateDownloadStrings.pl-PL.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.pl-PL.resx" uniqueID="e83e0b7d-b519-4293-a290-508e8ba7acbe" />
+      <file filePath="Localization\UpdateDownloadStrings.pt-BR.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.pt-BR.resx" uniqueID="a45d5e2d-e6af-4eed-a8ed-4a073860ec48" />
+      <file filePath="Localization\UpdateDownloadStrings.ru-RU.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.ru-RU.resx" uniqueID="6c5f2eee-5581-4a81-a19d-b841cb1e9ce1" />
+      <file filePath="Localization\UpdateDownloadStrings.sv-SE.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.sv-SE.resx" uniqueID="e24e52b3-9554-4c70-9a30-900f7329bc61" />
+      <file filePath="Localization\UpdateDownloadStrings.zh-CHS.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.zh-CHS.resx" uniqueID="a3e24304-c3f2-4ddb-b235-302f0331919c" />
       <remarks>
       </remarks>
     </fileGroup>

@@ -16,7 +16,7 @@ namespace SoundSwitch.Framework.Configuration
 {
     public static class AppConfigs
     {
-        public static ISoundSwitchConfiguration Configuration { get; private set; } = ConfigurationManager.LoadConfiguration<SoundSwitchConfiguration>();
-        public static IIPCConfiguration IPCConfiguration { get; private set; } = ConfigurationManager.LoadConfiguration<IPCConfiguration>();
+        public static ISoundSwitchConfiguration Configuration { get; } = ConfigurationManager.LoadConfiguration<SoundSwitchConfiguration>();
+        public static IIPCConfiguration IPCConfiguration { get; } = ConfigurationManager.LoadConfiguration<IPCConfiguration>();
     }
 }

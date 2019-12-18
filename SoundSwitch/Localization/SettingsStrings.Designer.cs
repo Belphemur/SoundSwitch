@@ -422,6 +422,69 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This application {0} has already a linked profile..
+        /// </summary>
+        internal static string profile_error_application {
+            get {
+                return ResourceManager.GetString("profile.error.application", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This hotkey {0} is already registered..
+        /// </summary>
+        internal static string profile_error_hotkey {
+            get {
+                return ResourceManager.GetString("profile.error.hotkey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is already a profile named {0}..
+        /// </summary>
+        internal static string profile_error_name {
+            get {
+                return ResourceManager.GetString("profile.error.name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You need to set either the HotKey or/and the Program..
+        /// </summary>
+        internal static string profile_error_needHKOrPath {
+            get {
+                return ResourceManager.GetString("profile.error.needHKOrPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You need to set a Playback device and/or Recording device..
+        /// </summary>
+        internal static string profile_error_needPlaybackOrRecording {
+            get {
+                return ResourceManager.GetString("profile.error.needPlaybackOrRecording", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        internal static string profile_name {
+            get {
+                return ResourceManager.GetString("profile.name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Program.
+        /// </summary>
+        internal static string profile_program {
+            get {
+                return ResourceManager.GetString("profile.program", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Profiles.
         /// </summary>
         internal static string profile_tab {
