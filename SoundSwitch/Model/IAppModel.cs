@@ -20,6 +20,7 @@ using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Audio.Device;
 using SoundSwitch.Framework.NotificationManager;
+using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Localization;
 using SoundSwitch.Localization.Factory;
@@ -95,6 +96,10 @@ namespace SoundSwitch.Model
         /// Switch also the foreground program
         /// </summary>
         bool SwitchForegroundProgram { get; set; }
+        /// <summary>
+        /// Manage the profile in the application
+        /// </summary>
+        ProfileManager ProfileManager { get; }
 
         #endregion
 

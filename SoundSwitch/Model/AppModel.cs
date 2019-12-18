@@ -27,7 +27,9 @@ using SoundSwitch.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SoundSwitch.Audio.Manager;
 using SoundSwitch.Framework.Audio.Device;
+using SoundSwitch.Framework.Profile;
 using SoundSwitch.Localization.Factory;
 using SoundSwitch.Util.Timer;
 
@@ -56,7 +58,7 @@ namespace SoundSwitch.Model
         private CachedSound _customNotificationCachedSound;
         private readonly DeviceCyclerManager _deviceCyclerManager;
 
-
+        public ProfileManager ProfileManager { get; } = new ProfileManager(new ForegroundProcessChanged(), AudioSwitcher.Instance);
 
         public CachedSound CustomNotificationSound
         {

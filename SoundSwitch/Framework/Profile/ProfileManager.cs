@@ -24,15 +24,31 @@ namespace SoundSwitch.Framework.Profile
             _profileByApplication =
                 AppConfigs.Configuration.ProfileSettings
                     .Where((setting) => setting.ApplicationPath != null)
-                    .ToDictionary(setting => setting.ApplicationPath);
+                    .ToDictionary(setting => setting.ApplicationPath.ToLower());
             _profileByHotkey = AppConfigs.Configuration.ProfileSettings
                 .Where((setting) => setting.HotKeys != null)
                 .ToDictionary(setting => setting.HotKeys);
 
+            RegisterEvents();
+        }
+
+        private void RegisterEvents()
+        {
             _foregroundProcessChanged.Event += (sender, @event) =>
             {
-                
-            }
+                _profileByApplication.TryGetValue(@event.ProcessName.ToLower(), out var profile);
+                if (profile == null)
+                    return;
+                SwitchAudio(profile, @event.ProcessId);
+            };
+
+            WindowsAPIAdapter.HotKeyPressed += (sender, args) =>
+            {
+                _profileByHotkey.TryGetValue(args.HotKeys, out var profile);
+                if (profile == null)
+                    return;
+                SwitchAudio(profile);
+            };
         }
 
         private void SwitchAudio(ProfileSetting profile, uint processId = 0)
@@ -41,7 +57,9 @@ namespace SoundSwitch.Framework.Profile
             {
                 if (processId != 0)
                 {
-
+                    _audioSwitcher.SwitchProcessTo(device.Id, ERole.ERole_enum_count, (EDataFlow) device.Type,
+                        processId);
+                    _audioSwitcher.SwitchTo(device.Id, ERole.ERole_enum_count);
                 }
                 else
                 {
@@ -57,7 +75,6 @@ namespace SoundSwitch.Framework.Profile
         /// <returns></returns>
         public Result<ProfileSetting, string> AddProfile(ProfileSetting profile)
         {
-
             if (profile.ApplicationPath == null && profile.HotKeys == null)
             {
                 return Result<ProfileSetting, string>.NewError(SettingsStrings.profile_error_needHKOrPath);
@@ -94,7 +111,7 @@ namespace SoundSwitch.Framework.Profile
 
 
             if (profile.ApplicationPath != null)
-                _profileByApplication.Add(profile.ApplicationPath, profile);
+                _profileByApplication.Add(profile.ApplicationPath.ToLower(), profile);
             if (profile.HotKeys != null)
                 _profileByHotkey.Add(profile.HotKeys, profile);
 
