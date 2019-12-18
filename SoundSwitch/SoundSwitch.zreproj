@@ -58,6 +58,7 @@
       <file filePath="Localization\AboutStrings.ru-RU.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.ru-RU.resx" uniqueID="8e4506a3-e74b-49f4-8075-8ab01b08209b" />
       <file filePath="Localization\AboutStrings.sv-SE.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.sv-SE.resx" uniqueID="1f9d6145-9b73-430f-a10e-88bdbeacf56d" />
       <file filePath="Localization\AboutStrings.zh-CHS.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.zh-CHS.resx" uniqueID="08f168dc-a40f-452a-bd32-681a9acc62b2" />
+      <file filePath="Localization\AboutStrings.ko.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\AboutStrings.ko.resx" uniqueID="00000000-0000-0000-0000-000000000000" />
       <remarks>
       </remarks>
     </fileGroup>
@@ -70,6 +71,7 @@
       <file filePath="Localization\SettingsStrings.fr.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.fr.resx" uniqueID="97053077-2d9f-4ff5-8677-c31497b2b59e" />
       <file filePath="Localization\SettingsStrings.it-IT.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.it-IT.resx" uniqueID="4c90b7a6-490e-4462-b5e6-ea35bf403e0e" />
       <file filePath="Localization\SettingsStrings.ja-JP.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.ja-JP.resx" uniqueID="7640ad47-c1c2-4483-ae2a-755037e71a4b" />
+      <file filePath="Localization\SettingsStrings.ko.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.ko.resx" uniqueID="00000000-0000-0000-0000-000000000000" />
       <file filePath="Localization\SettingsStrings.nb.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.nb.resx" uniqueID="1d9d7af7-6084-4986-8390-9737142ec4bb" />
       <file filePath="Localization\SettingsStrings.pl-PL.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.pl-PL.resx" uniqueID="23b19c9b-a86e-4f9a-869f-91a096375f92" />
       <file filePath="Localization\SettingsStrings.pt-BR.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\SettingsStrings.pt-BR.resx" uniqueID="80b8b2e1-f404-411d-abe9-2e67d722a5c9" />
@@ -94,6 +96,7 @@
       <file filePath="Localization\TrayIconStrings.ru-RU.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.ru-RU.resx" uniqueID="877dfe28-a9e1-4778-8211-628334a202df" />
       <file filePath="Localization\TrayIconStrings.sv-SE.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.sv-SE.resx" uniqueID="2af3dcb2-4557-4127-85da-8265d13fbfb9" />
       <file filePath="Localization\TrayIconStrings.zh-CHS.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.zh-CHS.resx" uniqueID="95955f57-4e59-4e91-9ab9-fc1df78ed366" />
+      <file filePath="Localization\TrayIconStrings.ko.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\TrayIconStrings.ko.resx" uniqueID="00000000-0000-0000-0000-000000000000" />
       <remarks>
       </remarks>
     </fileGroup>
@@ -112,6 +115,7 @@
       <file filePath="Localization\UpdateDownloadStrings.ru-RU.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.ru-RU.resx" uniqueID="6c5f2eee-5581-4a81-a19d-b841cb1e9ce1" />
       <file filePath="Localization\UpdateDownloadStrings.sv-SE.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.sv-SE.resx" uniqueID="e24e52b3-9554-4c70-9a30-900f7329bc61" />
       <file filePath="Localization\UpdateDownloadStrings.zh-CHS.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.zh-CHS.resx" uniqueID="a3e24304-c3f2-4ddb-b235-302f0331919c" />
+      <file filePath="Localization\UpdateDownloadStrings.ko.resx" absoluteFilePath="D:\VS\SoundSwitch\SoundSwitch\Localization\UpdateDownloadStrings.ko.resx" uniqueID="00000000-0000-0000-0000-000000000000" />
       <remarks>
       </remarks>
     </fileGroup>

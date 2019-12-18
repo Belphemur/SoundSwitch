@@ -277,4 +277,7 @@ Lecture: Quand le périférique de lecture est switché.
 Enregistrement: Quand le périférique d'enregistrement est switché.
 Toujours: Quand un périférique audio est switché.</value>
 	</data>
+	<data name="profile.tab" xml:space="preserve">
+		<value>Profile</value>
+	</data>
 </root>
