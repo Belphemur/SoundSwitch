@@ -30,8 +30,8 @@ namespace SoundSwitch.UI.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewGroup listViewGroup5 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
-            System.Windows.Forms.ListViewGroup listViewGroup6 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
+            System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
+            System.Windows.Forms.ListViewGroup listViewGroup4 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
             this.startWithWindowsCheckBox = new System.Windows.Forms.CheckBox();
             this.closeButton = new System.Windows.Forms.Button();
             this.switchCommunicationDeviceCheckBox = new System.Windows.Forms.CheckBox();
@@ -40,6 +40,7 @@ namespace SoundSwitch.UI.Forms
             this.playbackListView = new System.Windows.Forms.ListView();
             this.recordingTabPage = new System.Windows.Forms.TabPage();
             this.recordingListView = new System.Windows.Forms.ListView();
+            this.tabApplication = new System.Windows.Forms.TabPage();
             this.appSettingTabPage = new System.Windows.Forms.TabPage();
             this.languageGroupBox = new System.Windows.Forms.GroupBox();
             this.languageComboBox = new System.Windows.Forms.ComboBox();
@@ -59,15 +60,18 @@ namespace SoundSwitch.UI.Forms
             this.notificationLabel = new System.Windows.Forms.Label();
             this.notificationComboBox = new System.Windows.Forms.ComboBox();
             this.basicSettingsGroupBox = new System.Windows.Forms.GroupBox();
+            this.iconChangeLabel = new System.Windows.Forms.Label();
+            this.iconChangeChoicesComboBox = new System.Windows.Forms.ComboBox();
             this.hotkeysTextBox = new System.Windows.Forms.TextBox();
             this.hotkeysLabel = new System.Windows.Forms.Label();
             this.selectSoundFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.hotkeysCheckBox = new System.Windows.Forms.CheckBox();
-            this.iconChangeLabel = new System.Windows.Forms.Label();
-            this.iconChangeChoicesComboBox = new System.Windows.Forms.ComboBox();
+            this.applicationListView = new System.Windows.Forms.ListView();
+            this.addApplicationButton = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.playbackTabPage.SuspendLayout();
             this.recordingTabPage.SuspendLayout();
+            this.tabApplication.SuspendLayout();
             this.appSettingTabPage.SuspendLayout();
             this.languageGroupBox.SuspendLayout();
             this.updateSettingsGroupBox.SuspendLayout();
@@ -116,6 +120,7 @@ namespace SoundSwitch.UI.Forms
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl.Controls.Add(this.playbackTabPage);
             this.tabControl.Controls.Add(this.recordingTabPage);
+            this.tabControl.Controls.Add(this.tabApplication);
             this.tabControl.Controls.Add(this.appSettingTabPage);
             this.tabControl.Location = new System.Drawing.Point(12, 6);
             this.tabControl.Name = "tabControl";
@@ -140,11 +145,11 @@ namespace SoundSwitch.UI.Forms
             this.playbackListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.playbackListView.CheckBoxes = true;
             this.playbackListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            listViewGroup5.Header = "Selected";
-            listViewGroup5.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
-            listViewGroup5.Name = "selectedGroup";
+            listViewGroup3.Header = "Selected";
+            listViewGroup3.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
+            listViewGroup3.Name = "selectedGroup";
             this.playbackListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup5});
+            listViewGroup3});
             this.playbackListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.playbackListView.HideSelection = false;
             this.playbackListView.Location = new System.Drawing.Point(3, 3);
@@ -171,11 +176,11 @@ namespace SoundSwitch.UI.Forms
             this.recordingListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.recordingListView.CheckBoxes = true;
             this.recordingListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            listViewGroup6.Header = "Selected";
-            listViewGroup6.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
-            listViewGroup6.Name = "selectedGroup";
+            listViewGroup4.Header = "Selected";
+            listViewGroup4.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
+            listViewGroup4.Name = "selectedGroup";
             this.recordingListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup6});
+            listViewGroup4});
             this.recordingListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.recordingListView.HideSelection = false;
             this.recordingListView.Location = new System.Drawing.Point(3, 3);
@@ -184,6 +189,18 @@ namespace SoundSwitch.UI.Forms
             this.recordingListView.TabIndex = 17;
             this.recordingListView.UseCompatibleStateImageBehavior = false;
             this.recordingListView.View = System.Windows.Forms.View.Details;
+            // 
+            // tabApplication
+            // 
+            this.tabApplication.Controls.Add(this.addApplicationButton);
+            this.tabApplication.Controls.Add(this.applicationListView);
+            this.tabApplication.Location = new System.Drawing.Point(4, 22);
+            this.tabApplication.Name = "tabApplication";
+            this.tabApplication.Padding = new System.Windows.Forms.Padding(3);
+            this.tabApplication.Size = new System.Drawing.Size(709, 354);
+            this.tabApplication.TabIndex = 3;
+            this.tabApplication.Text = "Applications";
+            this.tabApplication.UseVisualStyleBackColor = true;
             // 
             // appSettingTabPage
             // 
@@ -403,6 +420,24 @@ namespace SoundSwitch.UI.Forms
             this.basicSettingsGroupBox.TabStop = false;
             this.basicSettingsGroupBox.Text = "Basic Settings";
             // 
+            // iconChangeLabel
+            // 
+            this.iconChangeLabel.Location = new System.Drawing.Point(3, 49);
+            this.iconChangeLabel.Name = "iconChangeLabel";
+            this.iconChangeLabel.Size = new System.Drawing.Size(89, 13);
+            this.iconChangeLabel.TabIndex = 27;
+            this.iconChangeLabel.Text = "IconChange";
+            // 
+            // iconChangeChoicesComboBox
+            // 
+            this.iconChangeChoicesComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.iconChangeChoicesComboBox.FormattingEnabled = true;
+            this.iconChangeChoicesComboBox.Location = new System.Drawing.Point(98, 46);
+            this.iconChangeChoicesComboBox.Name = "iconChangeChoicesComboBox";
+            this.iconChangeChoicesComboBox.Size = new System.Drawing.Size(247, 21);
+            this.iconChangeChoicesComboBox.TabIndex = 26;
+            this.iconChangeChoicesComboBox.SelectedIndexChanged += new System.EventHandler(this.iconChangeChoicesComboBox_SelectedIndexChanged);
+            // 
             // hotkeysTextBox
             // 
             this.hotkeysTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -436,23 +471,23 @@ namespace SoundSwitch.UI.Forms
             this.hotkeysCheckBox.UseVisualStyleBackColor = true;
             this.hotkeysCheckBox.CheckedChanged += new System.EventHandler(this.hotkeysCheckbox_CheckedChanged);
             // 
-            // iconChangeLabel
+            // applicationListView
             // 
-            this.iconChangeLabel.Location = new System.Drawing.Point(3, 49);
-            this.iconChangeLabel.Name = "iconChangeLabel";
-            this.iconChangeLabel.Size = new System.Drawing.Size(89, 13);
-            this.iconChangeLabel.TabIndex = 27;
-            this.iconChangeLabel.Text = "IconChange";
+            this.applicationListView.HideSelection = false;
+            this.applicationListView.Location = new System.Drawing.Point(-4, 0);
+            this.applicationListView.Name = "applicationListView";
+            this.applicationListView.Size = new System.Drawing.Size(713, 315);
+            this.applicationListView.TabIndex = 0;
+            this.applicationListView.UseCompatibleStateImageBehavior = false;
             // 
-            // iconChangeChoicesComboBox
+            // addApplicationButton
             // 
-            this.iconChangeChoicesComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.iconChangeChoicesComboBox.FormattingEnabled = true;
-            this.iconChangeChoicesComboBox.Location = new System.Drawing.Point(98, 46);
-            this.iconChangeChoicesComboBox.Name = "iconChangeChoicesComboBox";
-            this.iconChangeChoicesComboBox.Size = new System.Drawing.Size(247, 21);
-            this.iconChangeChoicesComboBox.TabIndex = 26;
-            this.iconChangeChoicesComboBox.SelectedIndexChanged += new System.EventHandler(this.iconChangeChoicesComboBox_SelectedIndexChanged);
+            this.addApplicationButton.Location = new System.Drawing.Point(628, 321);
+            this.addApplicationButton.Name = "addApplicationButton";
+            this.addApplicationButton.Size = new System.Drawing.Size(75, 23);
+            this.addApplicationButton.TabIndex = 1;
+            this.addApplicationButton.Text = "Add";
+            this.addApplicationButton.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
@@ -471,6 +506,7 @@ namespace SoundSwitch.UI.Forms
             this.tabControl.ResumeLayout(false);
             this.playbackTabPage.ResumeLayout(false);
             this.recordingTabPage.ResumeLayout(false);
+            this.tabApplication.ResumeLayout(false);
             this.appSettingTabPage.ResumeLayout(false);
             this.languageGroupBox.ResumeLayout(false);
             this.updateSettingsGroupBox.ResumeLayout(false);
@@ -518,5 +554,8 @@ namespace SoundSwitch.UI.Forms
         private System.Windows.Forms.CheckBox foregroundAppCheckbox;
         private System.Windows.Forms.Label iconChangeLabel;
         private System.Windows.Forms.ComboBox iconChangeChoicesComboBox;
+        private System.Windows.Forms.TabPage tabApplication;
+        private System.Windows.Forms.ListView applicationListView;
+        private System.Windows.Forms.Button addApplicationButton;
     }
 }
