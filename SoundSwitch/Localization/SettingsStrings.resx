@@ -299,6 +299,6 @@ Recording: When a recording device is switched.
 Both: Change when any type of device is switched.</value>
   </data>
 	<data name="profile.tab" xml:space="preserve">
-		<value>Profile</value>
+		<value>Profiles</value>
 	</data>
 </root>
