@@ -733,9 +733,16 @@ namespace SoundSwitch.UI.Forms
             new IconChangerFactory().Get(item.Enum).ChangeIcon(AppModel.Instance.TrayIcon);
         }
 
-        private void addProfileButton_Click(object sender, EventArgs e)
+        private async void addProfileButton_Click(object sender, EventArgs e)
         {
-            (new AddProfile()).Show(Owner);
+            await ShowAddProfile();
+        }
+
+        private async Task ShowAddProfile()
+        {
+            using var audioLister = new CachedAudioDeviceLister(DeviceState.All);
+            await audioLister.Refresh();
+            new AddProfile(audioLister.PlaybackDevices, audioLister.RecordingDevices).Show(Owner);
         }
     }
 }
