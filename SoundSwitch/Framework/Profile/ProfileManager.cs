@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using RailSharp;
+using RailSharp.Internal.Result;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Framework.Audio.Device;
@@ -30,8 +31,20 @@ namespace SoundSwitch.Framework.Profile
             _profileByHotkey = AppConfigs.Configuration.ProfileSettings
                 .Where((setting) => setting.HotKeys != null)
                 .ToDictionary(setting => setting.HotKeys);
+        }
 
+        /// <summary>
+        /// Initialize the profile manager. Return the list of Profile that it couldn't register hotkeys for.
+        /// </summary>
+        /// <returns></returns>
+        public Result<ProfileSetting[], VoidSuccess> Init()
+        {
             RegisterEvents();
+
+            return AppConfigs.Configuration.ProfileSettings
+                .Where(setting => setting.HotKeys != null)
+                .Where(profileSetting => !WindowsAPIAdapter.RegisterHotKey(profileSetting.HotKeys))
+                .ToArray();
         }
 
         private void RegisterEvents()
@@ -75,7 +88,7 @@ namespace SoundSwitch.Framework.Profile
         /// </summary>
         /// <param name="profile"></param>
         /// <returns></returns>
-        public Result<ProfileSetting, string> AddProfile(ProfileSetting profile)
+        public Result<string, VoidSuccess> AddProfile(ProfileSetting profile)
         {
             if (profile.ApplicationPath == null && profile.HotKeys == null)
             {
@@ -116,7 +129,7 @@ namespace SoundSwitch.Framework.Profile
             AppConfigs.Configuration.ProfileSettings.Add(profile);
             AppConfigs.Configuration.Save();
 
-            return profile;
+            return Result.Success();
         }
     }
 }

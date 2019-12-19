@@ -307,4 +307,10 @@ Toujours: Quand un périférique audio est switché.</value>
 	<data name="profile.explanation" xml:space="preserve">
 		<value>Un profile vous permet de choisir le périphérique de Lecture et/ou d'enregistrement à switcher quand l'application voulue est utilisée ou que vous avez utilisé le raccourcis clavier.</value>
 	</data>
+	<data name="profile.error.registerHotkeys" xml:space="preserve">
+		<value>Impossible d'enregister les raccourcis clavier des ces profiles : {0}</value>
+	</data>
+	<data name="profile.error.registerHotkeys.title" xml:space="preserve">
+		<value>Raccourcis clavier déjà utilisés.</value>
+	</data>
 </root>

@@ -467,6 +467,24 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Couldn&apos;t register the hotkeys for the following profiles: {0}.
+        /// </summary>
+        internal static string profile_error_registerHotkeys {
+            get {
+                return ResourceManager.GetString("profile.error.registerHotkeys", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Already used HotKeys.
+        /// </summary>
+        internal static string profile_error_registerHotkeys_title {
+            get {
+                return ResourceManager.GetString("profile.error.registerHotkeys.title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Profile let you decide what Recording and/or Plaback device to use when the set program is in focus or the set hot key is used..
         /// </summary>
         internal static string profile_explanation {

@@ -328,4 +328,10 @@ Both: Change when any type of device is switched.</value>
 	<data name="profile.explanation" xml:space="preserve">
 		<value>Profile let you decide what Recording and/or Plaback device to use when the set program is in focus or the set hot key is used.</value>
 	</data>
+	<data name="profile.error.registerHotkeys" xml:space="preserve">
+		<value>Couldn't register the hotkeys for the following profiles: {0}</value>
+	</data>
+	<data name="profile.error.registerHotkeys.title" xml:space="preserve">
+		<value>Already used HotKeys</value>
+	</data>
 </root>

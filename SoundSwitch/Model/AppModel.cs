@@ -27,6 +27,7 @@ using SoundSwitch.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using RailSharp;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Framework.Audio.Device;
 using SoundSwitch.Framework.Profile;
@@ -205,6 +206,15 @@ namespace SoundSwitch.Model
             SetHotkeyCombination(AppConfigs.Configuration.RecordingHotKeys, DataFlow.Capture);
 
             WindowsAPIAdapter.HotKeyPressed += HandleHotkeyPress;
+
+            ProfileManager
+                .Init()
+                .Catch<ProfileSetting[]>(settings =>
+                {
+                    var profileNames = string.Join(", ", settings.Select((setting) => setting.ProfileName));
+                    TrayIcon.ShowError(string.Format(SettingsStrings.profile_error_registerHotkeys, profileNames), SettingsStrings.profile_error_registerHotkeys_title);
+                    return Result.Success();
+                });
 
             InitUpdateChecker();
             _notificationManager.Init();
