@@ -566,7 +566,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\profile-add.png" />
-    <None Include="Resources\profile-add.ico" />
     <None Include="Resources\profile.ico" />
     <None Include="Resources\Switch-SoundWave.ico" />
     <None Include="packages.config" />
