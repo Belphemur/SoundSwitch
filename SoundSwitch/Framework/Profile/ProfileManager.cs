@@ -41,7 +41,7 @@ namespace SoundSwitch.Framework.Profile
         {
             RegisterEvents();
 
-            var errors =  AppConfigs.Configuration.ProfileSettings
+            var errors = AppConfigs.Configuration.ProfileSettings
                 .Where(setting => setting.HotKeys != null)
                 .Where(profileSetting => !WindowsAPIAdapter.RegisterHotKey(profileSetting.HotKeys))
                 .ToArray();
@@ -79,7 +79,10 @@ namespace SoundSwitch.Framework.Profile
             {
                 if (processId != 0)
                 {
-                    _audioSwitcher.SwitchProcessTo(device.Id, ERole.ERole_enum_count, (EDataFlow) device.Type,
+                    _audioSwitcher.SwitchProcessTo(
+                        device.Id,
+                        ERole.ERole_enum_count,
+                        (EDataFlow) device.Type,
                         processId);
                 }
 

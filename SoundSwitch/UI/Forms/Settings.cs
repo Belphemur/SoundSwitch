@@ -168,7 +168,7 @@ namespace SoundSwitch.UI.Forms
         {
             ListViewItem ProfileToListViewItem(ProfileSetting profile)
             {
-                var listViewItem = new ListViewItem(profile.ProfileName);
+                var listViewItem = new ListViewItem(profile.ProfileName) {Tag = profile};
                 Icon appIcon = null;
                 DeviceFullInfo recording = null;
                 DeviceFullInfo playback = null;
@@ -210,10 +210,10 @@ namespace SoundSwitch.UI.Forms
             profilesListView.FullRowSelect = true;
 
             profilesListView.Columns.Add(SettingsStrings.profile_name, 50, HorizontalAlignment.Left);
-            profilesListView.Columns.Add(SettingsStrings.profile_program, -1, HorizontalAlignment.Left);
-            profilesListView.Columns.Add(SettingsStrings.hotkeys, 100, HorizontalAlignment.Left);
-            profilesListView.Columns.Add(SettingsStrings.playback, 155, HorizontalAlignment.Left);
-            profilesListView.Columns.Add(SettingsStrings.recording, 155, HorizontalAlignment.Left);
+            profilesListView.Columns.Add(SettingsStrings.profile_program, -2, HorizontalAlignment.Left);
+            profilesListView.Columns.Add(SettingsStrings.hotkeys, -2, HorizontalAlignment.Left);
+            profilesListView.Columns.Add(SettingsStrings.playback, -2, HorizontalAlignment.Left);
+            profilesListView.Columns.Add(SettingsStrings.recording, -2, HorizontalAlignment.Left);
 
             profilesListView.OwnerDraw = true;
             profilesListView.DrawColumnHeader += (sender, args) => args.DrawDefault = true;
