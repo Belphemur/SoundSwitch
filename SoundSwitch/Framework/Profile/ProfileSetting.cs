@@ -6,11 +6,16 @@ namespace SoundSwitch.Framework.Profile
 #nullable enable
     public class ProfileSetting : IEquatable<ProfileSetting>
     {
-        public string ProfileName { get; set; }
+        public string ProfileName { get; }
         public string? ApplicationPath { get; set; }
         public HotKeys? HotKeys { get; set; }
         public DeviceInfo? Playback { get; set; }
         public DeviceInfo? Recording { get; set; }
+
+        public ProfileSetting(string profileName)
+        {
+            ProfileName = profileName;
+        }
 
         public bool Equals(ProfileSetting? other)
         {

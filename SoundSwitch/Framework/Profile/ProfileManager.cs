@@ -41,10 +41,17 @@ namespace SoundSwitch.Framework.Profile
         {
             RegisterEvents();
 
-            return AppConfigs.Configuration.ProfileSettings
+            var errors =  AppConfigs.Configuration.ProfileSettings
                 .Where(setting => setting.HotKeys != null)
                 .Where(profileSetting => !WindowsAPIAdapter.RegisterHotKey(profileSetting.HotKeys))
                 .ToArray();
+
+            if (errors.Length > 0)
+            {
+                return errors;
+            }
+
+            return Result.Success();
         }
 
         private void RegisterEvents()
