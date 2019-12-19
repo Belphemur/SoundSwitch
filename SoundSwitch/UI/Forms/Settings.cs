@@ -290,6 +290,9 @@ namespace SoundSwitch.UI.Forms
             // Settings - Language
             languageGroupBox.Text = SettingsStrings.language;
 
+            // Settings - Profile
+            profileExplanationLabel.Text = SettingsStrings.profile_explanation;
+
             // Misc
             hotkeysLabel.Text = SettingsStrings.hotkeys;
             closeButton.Text = SettingsStrings.close;

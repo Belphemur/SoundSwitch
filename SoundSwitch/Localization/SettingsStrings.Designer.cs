@@ -467,6 +467,15 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Profile let you decide what Recording and/or Plaback device to use when the set program is in focus or the set hot key is used..
+        /// </summary>
+        internal static string profile_explanation {
+            get {
+                return ResourceManager.GetString("profile.explanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         internal static string profile_name {

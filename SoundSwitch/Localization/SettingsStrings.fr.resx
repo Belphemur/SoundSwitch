@@ -304,4 +304,7 @@ Toujours: Quand un périférique audio est switché.</value>
 	<data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
 		<value>Vous devez sélectionner  un périphérique de lecture ou/et un périphérique d'enregisterement.</value>
 	</data>
+	<data name="profile.explanation" xml:space="preserve">
+		<value>Un profile vous permet de choisir le périphérique de Lecture et/ou d'enregistrement à switcher quand l'application voulue est utilisée ou que vous avez utilisé le raccourcis clavier.</value>
+	</data>
 </root>
