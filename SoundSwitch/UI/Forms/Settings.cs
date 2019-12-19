@@ -162,12 +162,48 @@ namespace SoundSwitch.UI.Forms
             // Settings - Language
             new LanguageFactory().ConfigureListControl(languageComboBox);
             languageComboBox.SelectedValue = AppModel.Instance.Language;
-
-            InitializeProfileList();
         }
 
-        private void InitializeProfileList()
+        private void PopulateProfiles(IAudioDeviceLister deviceLister)
         {
+            ListViewItem ProfileToListViewItem(ProfileSetting profile)
+            {
+                var listViewItem = new ListViewItem(profile.ProfileName);
+                Icon appIcon = null;
+                DeviceFullInfo recording = null;
+                DeviceFullInfo playback = null;
+                if (!string.IsNullOrEmpty(profile.ApplicationPath))
+                {
+                    try
+                    {
+                        appIcon = IconExtractor.Extract(profile.ApplicationPath, 0, false);
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+                }
+
+                if (profile.Playback != null)
+                {
+                    playback = deviceLister.PlaybackDevices.FirstOrDefault(info => info.Id == profile.Playback.Id);
+                }
+
+                if (profile.Recording != null)
+                {
+                    recording = deviceLister.RecordingDevices.FirstOrDefault(info => info.Id == profile.Recording.Id);
+                }
+
+                listViewItem.SubItems.AddRange(new[]
+                {
+                    new ListViewItem.ListViewSubItem(listViewItem, profile.ApplicationPath ?? "") {Tag = appIcon},
+                    new ListViewItem.ListViewSubItem(listViewItem, profile.HotKeys?.ToString() ?? ""),
+                    new ListViewItem.ListViewSubItem(listViewItem, playback?.Name ?? profile.Playback?.ToString() ?? "") {Tag = playback?.SmallIcon},
+                    new ListViewItem.ListViewSubItem(listViewItem, recording?.Name ?? profile.Recording?.ToString() ?? "") {Tag = recording?.SmallIcon},
+                });
+                return listViewItem;
+            }
+
             addProfileButton.Image = Resources.profile_add;
 
             profilesListView.View = View.Details;
@@ -183,16 +219,16 @@ namespace SoundSwitch.UI.Forms
             profilesListView.DrawColumnHeader += (sender, args) => args.DrawDefault = true;
             profilesListView.DrawSubItem += (sender, args) =>
             {
-                if (args.Header.Index != 1 || string.IsNullOrEmpty(args.SubItem.Text) || args.Item.Tag == null)
+                if (string.IsNullOrEmpty(args.SubItem.Text) || args.SubItem.Tag == null)
                 {
                     args.DrawDefault = true;
                     return;
                 }
 
 
-                var icon = (Icon) args.Item.Tag;
+                var icon = (Icon) args.SubItem.Tag;
                 args.DrawBackground();
-                var executable = args.SubItem.Text.Split('\\').Last();
+                var splitPathIfPresent = args.SubItem.Text.Split('\\').Last();
 
                 if (args.Item.Selected)
                 {
@@ -208,7 +244,7 @@ namespace SoundSwitch.UI.Forms
                 var imageRect = new Rectangle(args.Bounds.X, args.Bounds.Y, args.Bounds.Height, args.Bounds.Height);
                 args.Graphics.DrawIcon(icon, imageRect);
 
-                args.Graphics.DrawString(executable,
+                args.Graphics.DrawString(splitPathIfPresent,
                     args.SubItem.Font,
                     new SolidBrush(args.SubItem.ForeColor),
                     (args.SubItem.Bounds.Location.X + icon.Width + 5),
@@ -217,41 +253,30 @@ namespace SoundSwitch.UI.Forms
 
             foreach (var profile in AppModel.Instance.ProfileManager.Profiles)
             {
-                var listViewItem = new ListViewItem(profile.ProfileName);
-                if (!string.IsNullOrEmpty(profile.ApplicationPath))
-                {
-                    try
-                    {
-                        listViewItem.Tag = IconExtractor.Extract(profile.ApplicationPath, 0, false);
-                    }
-                    catch
-                    {
-                        // ignored
-                    }
-                }
-
-                listViewItem.SubItems.AddRange(new[]
-                {
-                    profile.ApplicationPath ?? "",
-                    profile.HotKeys?.ToString() ?? "",
-                    profile.Playback?.ToString() ?? "",
-                    profile.Recording?.ToString() ?? "",
-                });
+                var listViewItem = ProfileToListViewItem(profile);
                 profilesListView.Items.Add(listViewItem);
             }
         }
 
-        public async Task PopulateAudioDevices()
+        public async Task AsyncInit()
         {
             // Playback and Recording
             using var audioDeviceLister = new CachedAudioDeviceLister(DeviceState.All);
             await audioDeviceLister.Refresh();
+            PopulateAudioDevices(audioDeviceLister);
+
+            // Profiles
+            PopulateProfiles(audioDeviceLister);
+
+            _loaded = true;
+        }
+
+        private void PopulateAudioDevices(CachedAudioDeviceLister audioDeviceLister)
+        {
             PopulateAudioList(playbackListView, AppModel.Instance.SelectedDevices,
                 audioDeviceLister.PlaybackDevices);
             PopulateAudioList(recordingListView, AppModel.Instance.SelectedDevices,
                 audioDeviceLister.RecordingDevices);
-
-            _loaded = true;
         }
 
         private void LocalizeForm()

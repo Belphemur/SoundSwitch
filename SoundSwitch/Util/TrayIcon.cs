@@ -273,7 +273,7 @@ namespace SoundSwitch.Util
         public async Task ShowSettings()
         {
             var settingsForm = new SettingsForm();
-            await settingsForm.PopulateAudioDevices();
+            await settingsForm.AsyncInit();
             _context.Send(s => { settingsForm.Show(); }, null);
         }
 
