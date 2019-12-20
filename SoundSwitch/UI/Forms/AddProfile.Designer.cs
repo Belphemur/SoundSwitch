@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+using SoundSwitch.Localization;
 using SoundSwitch.UI.UserControls;
 
 namespace SoundSwitch.UI.Forms
@@ -32,6 +33,8 @@ namespace SoundSwitch.UI.Forms
         private void InitializeComponent()
         {
             this.addProfileGroupBox = new System.Windows.Forms.GroupBox();
+            this.recordingRemoveButton = new System.Windows.Forms.Button();
+            this.playbackRemoveButton = new System.Windows.Forms.Button();
             this.hotKeyTextBox = new SoundSwitch.UI.UserControls.HotKeyTextBox();
             this.recordingLabel = new System.Windows.Forms.Label();
             this.playbackLabel = new System.Windows.Forms.Label();
@@ -45,8 +48,6 @@ namespace SoundSwitch.UI.Forms
             this.nameTextBox = new System.Windows.Forms.TextBox();
             this.selectProgramDialog = new System.Windows.Forms.OpenFileDialog();
             this.createButton = new System.Windows.Forms.Button();
-            this.playbackRemoveButton = new System.Windows.Forms.Button();
-            this.recordingRemoveButton = new System.Windows.Forms.Button();
             this.addProfileGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -73,11 +74,32 @@ namespace SoundSwitch.UI.Forms
             this.addProfileGroupBox.Size = new System.Drawing.Size(365, 244);
             this.addProfileGroupBox.TabIndex = 0;
             this.addProfileGroupBox.TabStop = false;
-            this.addProfileGroupBox.Text = "Profile";
+            this.addProfileGroupBox.Text = SettingsStrings.profile_tab;
+            // 
+            // recordingRemoveButton
+            // 
+            this.recordingRemoveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.recordingRemoveButton.Image = global::SoundSwitch.Properties.Resources.delete;
+            this.recordingRemoveButton.Location = new System.Drawing.Point(318, 201);
+            this.recordingRemoveButton.Name = "recordingRemoveButton";
+            this.recordingRemoveButton.Size = new System.Drawing.Size(22, 22);
+            this.recordingRemoveButton.TabIndex = 13;
+            this.recordingRemoveButton.UseVisualStyleBackColor = true;
+            this.recordingRemoveButton.Click += new System.EventHandler(this.recordingRemoveButton_Click);
+            // 
+            // playbackRemoveButton
+            // 
+            this.playbackRemoveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.playbackRemoveButton.Image = global::SoundSwitch.Properties.Resources.delete;
+            this.playbackRemoveButton.Location = new System.Drawing.Point(318, 152);
+            this.playbackRemoveButton.Name = "playbackRemoveButton";
+            this.playbackRemoveButton.Size = new System.Drawing.Size(22, 22);
+            this.playbackRemoveButton.TabIndex = 12;
+            this.playbackRemoveButton.UseVisualStyleBackColor = true;
+            this.playbackRemoveButton.Click += new System.EventHandler(this.playbackRemoveButton_Click);
             // 
             // hotKeyTextBox
             // 
-            this.hotKeyTextBox.HotKeys = null;
             this.hotKeyTextBox.Location = new System.Drawing.Point(192, 86);
             this.hotKeyTextBox.Name = "hotKeyTextBox";
             this.hotKeyTextBox.Size = new System.Drawing.Size(115, 20);
@@ -92,7 +114,7 @@ namespace SoundSwitch.UI.Forms
             this.recordingLabel.Name = "recordingLabel";
             this.recordingLabel.Size = new System.Drawing.Size(56, 13);
             this.recordingLabel.TabIndex = 10;
-            this.recordingLabel.Text = "Recording";
+            this.recordingLabel.Text = SettingsStrings.recording;
             // 
             // playbackLabel
             // 
@@ -103,7 +125,7 @@ namespace SoundSwitch.UI.Forms
             this.playbackLabel.Name = "playbackLabel";
             this.playbackLabel.Size = new System.Drawing.Size(51, 13);
             this.playbackLabel.TabIndex = 9;
-            this.playbackLabel.Text = "Playback";
+            this.playbackLabel.Text = SettingsStrings.playback;
             // 
             // recordingComboBox
             // 
@@ -152,7 +174,7 @@ namespace SoundSwitch.UI.Forms
             this.programLabel.Name = "programLabel";
             this.programLabel.Size = new System.Drawing.Size(46, 13);
             this.programLabel.TabIndex = 5;
-            this.programLabel.Text = "Program";
+            this.programLabel.Text = SettingsStrings.profile_program;
             // 
             // programTextBox
             // 
@@ -168,7 +190,7 @@ namespace SoundSwitch.UI.Forms
             this.hotKeyLabel.Name = "hotKeyLabel";
             this.hotKeyLabel.Size = new System.Drawing.Size(42, 13);
             this.hotKeyLabel.TabIndex = 3;
-            this.hotKeyLabel.Text = "HotKey";
+            this.hotKeyLabel.Text = SettingsStrings.hotkeys;
             // 
             // nameLabel
             // 
@@ -179,7 +201,7 @@ namespace SoundSwitch.UI.Forms
             this.nameLabel.Name = "nameLabel";
             this.nameLabel.Size = new System.Drawing.Size(35, 13);
             this.nameLabel.TabIndex = 1;
-            this.nameLabel.Text = "Name";
+            this.nameLabel.Text = SettingsStrings.profile_name;
             // 
             // nameTextBox
             // 
@@ -190,7 +212,7 @@ namespace SoundSwitch.UI.Forms
             // 
             // selectProgramDialog
             // 
-            this.selectProgramDialog.FileName = "program";
+            this.selectProgramDialog.FileName = SettingsStrings.profile_program;
             // 
             // createButton
             // 
@@ -199,31 +221,9 @@ namespace SoundSwitch.UI.Forms
             this.createButton.Name = "createButton";
             this.createButton.Size = new System.Drawing.Size(75, 23);
             this.createButton.TabIndex = 1;
-            this.createButton.Text = "Add";
+            this.createButton.Text = SettingsStrings.profile_addButton;
             this.createButton.UseVisualStyleBackColor = true;
             this.createButton.Click += new System.EventHandler(this.createButton_Click);
-            // 
-            // playbackRemoveButton
-            // 
-            this.playbackRemoveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.playbackRemoveButton.Image = global::SoundSwitch.Properties.Resources.delete;
-            this.playbackRemoveButton.Location = new System.Drawing.Point(318, 152);
-            this.playbackRemoveButton.Name = "playbackRemoveButton";
-            this.playbackRemoveButton.Size = new System.Drawing.Size(22, 22);
-            this.playbackRemoveButton.TabIndex = 12;
-            this.playbackRemoveButton.UseVisualStyleBackColor = true;
-            this.playbackRemoveButton.Click += new System.EventHandler(this.playbackRemoveButton_Click);
-            // 
-            // recordingRemoveButton
-            // 
-            this.recordingRemoveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.recordingRemoveButton.Image = global::SoundSwitch.Properties.Resources.delete;
-            this.recordingRemoveButton.Location = new System.Drawing.Point(318, 201);
-            this.recordingRemoveButton.Name = "recordingRemoveButton";
-            this.recordingRemoveButton.Size = new System.Drawing.Size(22, 22);
-            this.recordingRemoveButton.TabIndex = 13;
-            this.recordingRemoveButton.UseVisualStyleBackColor = true;
-            this.recordingRemoveButton.Click += new System.EventHandler(this.recordingRemoveButton_Click);
             // 
             // AddProfile
             // 
@@ -234,7 +234,6 @@ namespace SoundSwitch.UI.Forms
             this.Controls.Add(this.addProfileGroupBox);
             this.MinimumSize = new System.Drawing.Size(400, 304);
             this.Name = "AddProfile";
-            this.Text = "AddProfile";
             this.addProfileGroupBox.ResumeLayout(false);
             this.addProfileGroupBox.PerformLayout();
             this.ResumeLayout(false);

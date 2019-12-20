@@ -94,14 +94,29 @@ namespace SoundSwitch.UI.Forms
 
         private void playbackRemoveButton_Click(object sender, EventArgs e)
         {
+            try
+            {
+                playbackComboBox.SelectedIndex = -1;
+            }
+            catch (ArgumentException)
+            {
+               //Happens because I receive a System.DBNull when there isn't a selection.
+            }
             _profile.Playback = null;
-            playbackComboBox.SelectedValue = null;
+          
         }
 
         private void recordingRemoveButton_Click(object sender, EventArgs e)
         {
+            try
+            {
+                recordingComboBox.SelectedIndex = -1;
+            }
+            catch (ArgumentException)
+            {
+                //Happens because I receive a System.DBNull when there isn't a selection.
+            }
             _profile.Recording = null;
-            recordingComboBox.SelectedValue = null;
         }
     }
 }
