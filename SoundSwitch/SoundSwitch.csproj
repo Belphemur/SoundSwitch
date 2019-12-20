@@ -283,8 +283,6 @@
     <Compile Include="Framework\AutoStart.cs" />
     <Compile Include="Framework\Banner\BannerData.cs" />
     <Compile Include="Framework\Banner\BannerManager.cs" />
-    <Compile Include="Framework\Audio\Device\DeviceFullInfo.cs" />
-    <Compile Include="Framework\Audio\Device\DeviceInfo.cs" />
     <Compile Include="Framework\Configuration\IPCConfiguration.cs" />
     <Compile Include="Framework\Configuration\AppConfigs.cs" />
     <Compile Include="Framework\Configuration\ConfigurationManager.cs" />
@@ -387,7 +385,6 @@
       <DependentUpon>AddProfile.cs</DependentUpon>
     </Compile>
     <Compile Include="Util\AssemblyUtils.cs" />
-    <Compile Include="Util\AudioDeviceIconExtractor.cs" />
     <Compile Include="Framework\Audio\Lister\CachedAudioDeviceLister.cs" />
     <Compile Include="Model\Events.cs" />
     <Compile Include="Model\IAppModel.cs" />
@@ -410,7 +407,6 @@
       <DependentUpon>UpdateDownloadForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Util\CasterExtensions.cs" />
-    <Compile Include="Util\IconExtractor.cs" />
     <Compile Include="Util\Timer\DebounceDispatcher.cs" />
     <Compile Include="Util\ToolStripDeviceItem.cs">
       <SubType>Component</SubType>
@@ -583,8 +579,6 @@
     <None Include="Resources\Blue Icon.ico" />
     <Content Include="Resources\control-equalizer-blue.png" />
     <Content Include="Resources\control-volume-blue.png" />
-    <None Include="Resources\defaultMicrophone.ico" />
-    <None Include="Resources\defaultSpeakers.ico" />
     <None Include="Resources\help-16.png" />
     <None Include="Resources\help.ico" />
   </ItemGroup>

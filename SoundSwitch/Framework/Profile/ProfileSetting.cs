@@ -1,6 +1,6 @@
 ﻿using System;
+using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Common.WinApi.Keyboard;
-using SoundSwitch.Framework.Audio.Device;
 
 namespace SoundSwitch.Framework.Profile
 {

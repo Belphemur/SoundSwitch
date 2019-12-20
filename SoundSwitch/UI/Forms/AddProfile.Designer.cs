@@ -1,5 +1,4 @@
 ﻿using System.Windows.Forms;
-using SoundSwitch.Framework.Audio.Device;
 using SoundSwitch.UI.UserControls;
 
 namespace SoundSwitch.UI.Forms

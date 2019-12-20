@@ -16,10 +16,10 @@
 using System;
 using System.Collections.Generic;
 using NAudio.CoreAudioApi;
+using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Common.WinApi.Keyboard;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
-using SoundSwitch.Framework.Audio.Device;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Updater;

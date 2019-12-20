@@ -5,7 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using SoundSwitch.Framework.Audio.Device;
+using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;

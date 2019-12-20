@@ -2,7 +2,7 @@
 using NAudio.CoreAudioApi;
 using Newtonsoft.Json;
 
-namespace SoundSwitch.Framework.Audio.Device
+namespace SoundSwitch.Common.Framework.Audio.Device
 {
     public class DeviceInfo : IEquatable<DeviceInfo>, IComparable<DeviceInfo>
     {

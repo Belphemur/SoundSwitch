@@ -1,4 +1,4 @@
-﻿using SoundSwitch.Framework.Audio.Device;
+﻿using SoundSwitch.Common.Framework.Audio.Device;
 
 namespace SoundSwitch.Framework.TrayIcon.Icon.Changer
 {

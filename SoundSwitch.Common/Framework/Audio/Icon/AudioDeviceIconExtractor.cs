@@ -13,21 +13,19 @@
 ********************************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Runtime.Caching;
 using NAudio.CoreAudioApi;
 using Serilog;
-using SoundSwitch.Framework;
-using SoundSwitch.Properties;
+using SoundSwitch.Common.Framework.Icon;
+using SoundSwitch.Common.Properties;
 
-namespace SoundSwitch.Util
+namespace SoundSwitch.Common.Framework.Audio.Icon
 {
-    internal class AudioDeviceIconExtractor
+    public class AudioDeviceIconExtractor
     {
 
-        private static readonly Icon DefaultSpeakers = Resources.defaultSpeakers;
-        private static readonly Icon DefaultMicrophone = Resources.defaultMicrophone;
+        private static readonly System.Drawing.Icon DefaultSpeakers = Resources.defaultSpeakers;
+        private static readonly System.Drawing.Icon DefaultMicrophone = Resources.defaultMicrophone;
 
         private static readonly MemoryCache IconCache = new MemoryCache("_iconCache");
         private static readonly CacheItemPolicy CacheItemPolicy = new CacheItemPolicy
@@ -61,20 +59,20 @@ namespace SoundSwitch.Util
         /// <param name="dataFlow"></param>
         /// <param name="largeIcon"></param>
         /// <returns></returns>
-        public static Icon ExtractIconFromPath(string path, DataFlow dataFlow, bool largeIcon)
+        public static System.Drawing.Icon ExtractIconFromPath(string path, DataFlow dataFlow, bool largeIcon)
         {
-            Icon ico;
+            System.Drawing.Icon ico;
             var key = $"{path}-${largeIcon}";
 
             if (IconCache.Contains(key))
             {
-                return (Icon)IconCache.Get(key);
+                return (System.Drawing.Icon)IconCache.Get(key);
             }
             try
             {
                 if (path.EndsWith(".ico"))
                 {
-                    ico = Icon.ExtractAssociatedIcon(path);
+                    ico = System.Drawing.Icon.ExtractAssociatedIcon(path);
                 }
                 else
                 {
@@ -108,7 +106,7 @@ namespace SoundSwitch.Util
         /// <param name="audioDevice"></param>
         /// <param name="largeIcon"></param>
         /// <returns></returns>
-        public static Icon ExtractIconFromAudioDevice(MMDevice audioDevice, bool largeIcon)
+        public static System.Drawing.Icon ExtractIconFromAudioDevice(MMDevice audioDevice, bool largeIcon)
         {
             return ExtractIconFromPath(audioDevice.IconPath, audioDevice.DataFlow, largeIcon);
         }

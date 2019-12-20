@@ -13,7 +13,7 @@
 ********************************************************************/
 
 using NAudio.CoreAudioApi;
-using SoundSwitch.Framework.Audio.Device;
+using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Factory;
 
 namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
