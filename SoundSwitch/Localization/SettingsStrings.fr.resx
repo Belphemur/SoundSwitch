@@ -313,4 +313,7 @@ Toujours: Quand un périférique audio est switché.</value>
 	<data name="profile.error.registerHotkeys.title" xml:space="preserve">
 		<value>Raccourcis clavier déjà utilisés.</value>
 	</data>
+	<data name="profile.feature.add" xml:space="preserve">
+		<value>Ajouter un profile</value>
+	</data>
 </root>

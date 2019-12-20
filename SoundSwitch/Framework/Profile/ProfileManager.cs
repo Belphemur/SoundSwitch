@@ -5,6 +5,8 @@ using RailSharp;
 using RailSharp.Internal.Result;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
+using SoundSwitch.Common.WinApi;
+using SoundSwitch.Common.WinApi.Keyboard;
 using SoundSwitch.Framework.Audio.Device;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Localization;

@@ -19,6 +19,7 @@ using System.Linq;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
 using Serilog;
+using SoundSwitch.Common.WinApi.Keyboard;
 using SoundSwitch.Framework.Audio.Device;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;

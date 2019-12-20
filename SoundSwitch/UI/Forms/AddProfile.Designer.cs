@@ -45,6 +45,7 @@ namespace SoundSwitch.UI.Forms
             this.nameLabel = new System.Windows.Forms.Label();
             this.nameTextBox = new System.Windows.Forms.TextBox();
             this.selectProgramDialog = new System.Windows.Forms.OpenFileDialog();
+            this.createButton = new System.Windows.Forms.Button();
             this.addProfileGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -66,7 +67,7 @@ namespace SoundSwitch.UI.Forms
             this.addProfileGroupBox.Controls.Add(this.nameTextBox);
             this.addProfileGroupBox.Location = new System.Drawing.Point(12, 12);
             this.addProfileGroupBox.Name = "addProfileGroupBox";
-            this.addProfileGroupBox.Size = new System.Drawing.Size(360, 268);
+            this.addProfileGroupBox.Size = new System.Drawing.Size(360, 244);
             this.addProfileGroupBox.TabIndex = 0;
             this.addProfileGroupBox.TabStop = false;
             this.addProfileGroupBox.Text = "Profile";
@@ -183,11 +184,23 @@ namespace SoundSwitch.UI.Forms
             // 
             this.selectProgramDialog.FileName = "program";
             // 
+            // createButton
+            // 
+            this.createButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.createButton.Location = new System.Drawing.Point(297, 262);
+            this.createButton.Name = "createButton";
+            this.createButton.Size = new System.Drawing.Size(75, 23);
+            this.createButton.TabIndex = 1;
+            this.createButton.Text = "Add";
+            this.createButton.UseVisualStyleBackColor = true;
+            this.createButton.Click += new System.EventHandler(this.createButton_Click);
+            // 
             // AddProfile
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(384, 297);
+            this.Controls.Add(this.createButton);
             this.Controls.Add(this.addProfileGroupBox);
             this.MinimumSize = new System.Drawing.Size(400, 304);
             this.Name = "AddProfile";
@@ -213,5 +226,6 @@ namespace SoundSwitch.UI.Forms
         private System.Windows.Forms.Label recordingLabel;
         private IconTextComboBox recordingComboBox;
         private IconTextComboBox playbackComboBox;
+        private Button createButton;
     }
 }

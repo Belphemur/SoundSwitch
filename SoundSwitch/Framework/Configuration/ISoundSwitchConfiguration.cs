@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using SoundSwitch.Common.WinApi.Keyboard;
 using SoundSwitch.Framework.Audio.Device;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;

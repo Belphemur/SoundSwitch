@@ -15,7 +15,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace SoundSwitch.Framework
+namespace SoundSwitch.Common.WinApi.Keyboard
 {
     public class HotKeys : IEquatable<HotKeys>
     {

@@ -29,6 +29,8 @@ using System.Collections.Generic;
 using System.Linq;
 using RailSharp;
 using SoundSwitch.Audio.Manager;
+using SoundSwitch.Common.WinApi;
+using SoundSwitch.Common.WinApi.Keyboard;
 using SoundSwitch.Framework.Audio.Device;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Localization.Factory;
