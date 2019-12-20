@@ -54,26 +54,15 @@ namespace SoundSwitch.UI.Forms
             programTextBox.DataBindings.Add(nameof(TextBox.Text), _profile, nameof(ProfileSetting.ApplicationPath), false, DataSourceUpdateMode.OnPropertyChanged);
             hotKeyTextBox.DataBindings.Add(nameof(HotKeyTextBox.HotKeys), _profile, nameof(ProfileSetting.HotKeys), true, DataSourceUpdateMode.OnPropertyChanged);
 
-            var recordingBinding = new Binding(nameof(ComboBox.SelectedValue),
-                _profile,
-                nameof(ProfileSetting.Recording),
-                false,
-                DataSourceUpdateMode.OnPropertyChanged);
-
-            recordingComboBox.DataBindings.Add(recordingBinding);
-
-            var playbackBinding = new Binding(nameof(ComboBox.SelectedValue),
-                _profile,
-                nameof(ProfileSetting.Playback),
-                false,
-                DataSourceUpdateMode.OnPropertyChanged);
-
-            playbackComboBox.DataBindings.Add(playbackBinding);
+    
+            recordingComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(ProfileSetting.Recording), false, DataSourceUpdateMode.OnPropertyChanged);
+            playbackComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(ProfileSetting.Playback), false, DataSourceUpdateMode.OnPropertyChanged);
         }
 
         private void InitRecordingPlaybackComboBoxes(IEnumerable<DeviceFullInfo> playbacks, IEnumerable<DeviceFullInfo> recordings)
         {
             recordingComboBox.DataSource = recordings
+                .OrderBy(info => info.Name)
                 .Select(info => new IconTextComboBox.DropDownItem
                     {
                         Icon = info.SmallIcon,
@@ -84,6 +73,7 @@ namespace SoundSwitch.UI.Forms
 
 
             playbackComboBox.DataSource = playbacks
+                .OrderBy(info => info.Name)
                 .Select(info => new IconTextComboBox.DropDownItem
                     {
                         Icon = info.SmallIcon,
