@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
+using RailSharp;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Localization;
@@ -26,7 +27,7 @@ namespace SoundSwitch.UI.Forms
             InitializeComponent();
             Text = SettingsStrings.profile_feature_add;
             Icon = Resources.profile;
-            selectProgramDialog.Filter = @"Executable (*.exe)|*.exe";
+            selectProgramDialog.Filter = $@"{SettingsStrings.profile_feature_executable}|*.exe";
 
             _profile = new ProfileSetting();
 
@@ -85,7 +86,7 @@ namespace SoundSwitch.UI.Forms
 
         private void selectProgramButton_Click(object sender, EventArgs e)
         {
-            if (selectProgramDialog.ShowDialog(this) != DialogResult.OK) 
+            if (selectProgramDialog.ShowDialog(this) != DialogResult.OK)
                 return;
             programTextBox.Text = selectProgramDialog.FileName;
             if (string.IsNullOrEmpty(nameTextBox.Text))
@@ -97,7 +98,17 @@ namespace SoundSwitch.UI.Forms
 
         private void createButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(_profile.ToString());
+            var result = AppModel.Instance.ProfileManager.AddProfile(_profile);
+            result.Map(success =>
+                {
+                    Close();
+                    return success;
+                })
+                .Catch<string>(s =>
+                {
+                    MessageBox.Show(s, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return Result.Success();
+                });
         }
 
         private void playbackRemoveButton_Click(object sender, EventArgs e)

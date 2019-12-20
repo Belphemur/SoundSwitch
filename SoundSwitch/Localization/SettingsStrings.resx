@@ -337,4 +337,7 @@ Both: Change when any type of device is switched.</value>
 	<data name="profile.feature.add" xml:space="preserve">
 		<value>Add Profile</value>
 	</data>
+	<data name="profile.feature.executable" xml:space="preserve">
+		<value>Executable (*.exe)</value>
+	</data>
 </root>

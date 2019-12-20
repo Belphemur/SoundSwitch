@@ -316,4 +316,7 @@ Toujours: Quand un périférique audio est switché.</value>
 	<data name="profile.feature.add" xml:space="preserve">
 		<value>Ajouter un profile</value>
 	</data>
+	<data name="profile.feature.executable" xml:space="preserve">
+		<value>Exécutable (*.exe)</value>
+	</data>
 </root>

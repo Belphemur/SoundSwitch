@@ -503,6 +503,15 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Executable (*.exe).
+        /// </summary>
+        internal static string profile_feature_executable {
+            get {
+                return ResourceManager.GetString("profile.feature.executable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         internal static string profile_name {
