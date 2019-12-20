@@ -6,10 +6,6 @@ namespace SoundSwitch.Common.Framework.Audio.Device
 {
     public class DeviceInfo : IEquatable<DeviceInfo>, IComparable<DeviceInfo>
     {
-        public sealed class NullValue
-        {
-
-        }
         public string Name { get;  }
         public string Id { get; }
         public DataFlow Type { get; }
