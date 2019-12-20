@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
@@ -30,8 +31,8 @@ namespace SoundSwitch.UI.Forms
             _profile = new ProfileSetting();
 
             nameTextBox.DataBindings.Add(nameof(TextBox.Text), _profile, nameof(ProfileSetting.ProfileName), false, DataSourceUpdateMode.OnPropertyChanged);
-            hotKeyTextBox.DataBindings.Add(nameof(HotKeyTextBox.HotKeys), _profile, nameof(ProfileSetting.HotKeys),
-                true, DataSourceUpdateMode.OnPropertyChanged);
+            programTextBox.DataBindings.Add(nameof(TextBox.Text), _profile, nameof(ProfileSetting.ApplicationPath), false, DataSourceUpdateMode.OnPropertyChanged);
+            hotKeyTextBox.DataBindings.Add(nameof(HotKeyTextBox.HotKeys), _profile, nameof(ProfileSetting.HotKeys), true, DataSourceUpdateMode.OnPropertyChanged);
 
             InitRecordingPlaybackComboBoxes(playbacks, recordings);
         }
@@ -84,7 +85,14 @@ namespace SoundSwitch.UI.Forms
 
         private void selectProgramButton_Click(object sender, EventArgs e)
         {
-
+            if (selectProgramDialog.ShowDialog(this) != DialogResult.OK) 
+                return;
+            programTextBox.Text = selectProgramDialog.FileName;
+            if (string.IsNullOrEmpty(nameTextBox.Text))
+            {
+                var executableName = selectProgramDialog.FileName?.Split('\\').Last();
+                nameTextBox.Text = executableName?.Substring(0, executableName.Length - 4) ?? "";
+            }
         }
 
         private void createButton_Click(object sender, EventArgs e)
@@ -100,10 +108,10 @@ namespace SoundSwitch.UI.Forms
             }
             catch (ArgumentException)
             {
-               //Happens because I receive a System.DBNull when there isn't a selection.
+                //Happens because I receive a System.DBNull when there isn't a selection.
             }
+
             _profile.Playback = null;
-          
         }
 
         private void recordingRemoveButton_Click(object sender, EventArgs e)
@@ -116,6 +124,7 @@ namespace SoundSwitch.UI.Forms
             {
                 //Happens because I receive a System.DBNull when there isn't a selection.
             }
+
             _profile.Recording = null;
         }
     }
