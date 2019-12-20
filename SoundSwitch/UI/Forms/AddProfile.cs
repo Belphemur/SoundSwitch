@@ -25,19 +25,50 @@ namespace SoundSwitch.UI.Forms
 
         public AddProfile(IEnumerable<DeviceFullInfo> playbacks, IEnumerable<DeviceFullInfo> recordings, SettingsForm settingsForm)
         {
-            _settingsForm = settingsForm;
             InitializeComponent();
-            Text = SettingsStrings.profile_feature_add;
+            _settingsForm = settingsForm;
             Icon = Resources.profile;
-            selectProgramDialog.Filter = $@"{SettingsStrings.profile_feature_executable}|*.exe";
 
             _profile = new ProfileSetting();
 
+            LocalizeForm();
+            InitRecordingPlaybackComboBoxes(playbacks, recordings);
+            InitBindings();
+        }
+
+        private void LocalizeForm()
+        {
+            Text = SettingsStrings.profile_feature_add;
+            selectProgramDialog.Filter = $@"{SettingsStrings.profile_feature_executable}|*.exe";
+
+            nameLabel.Text = SettingsStrings.profile_name;
+            programLabel.Text = SettingsStrings.profile_program;
+            hotKeyLabel.Text = SettingsStrings.hotkeys;
+            recordingLabel.Text = SettingsStrings.recording;
+            playbackLabel.Text = SettingsStrings.playback;
+        }
+
+        private void InitBindings()
+        {
             nameTextBox.DataBindings.Add(nameof(TextBox.Text), _profile, nameof(ProfileSetting.ProfileName), false, DataSourceUpdateMode.OnPropertyChanged);
             programTextBox.DataBindings.Add(nameof(TextBox.Text), _profile, nameof(ProfileSetting.ApplicationPath), false, DataSourceUpdateMode.OnPropertyChanged);
             hotKeyTextBox.DataBindings.Add(nameof(HotKeyTextBox.HotKeys), _profile, nameof(ProfileSetting.HotKeys), true, DataSourceUpdateMode.OnPropertyChanged);
 
-            InitRecordingPlaybackComboBoxes(playbacks, recordings);
+            var recordingBinding = new Binding(nameof(ComboBox.SelectedValue),
+                _profile,
+                nameof(ProfileSetting.Recording),
+                false,
+                DataSourceUpdateMode.OnPropertyChanged);
+
+            recordingComboBox.DataBindings.Add(recordingBinding);
+
+            var playbackBinding = new Binding(nameof(ComboBox.SelectedValue),
+                _profile,
+                nameof(ProfileSetting.Playback),
+                false,
+                DataSourceUpdateMode.OnPropertyChanged);
+
+            playbackComboBox.DataBindings.Add(playbackBinding);
         }
 
         private void InitRecordingPlaybackComboBoxes(IEnumerable<DeviceFullInfo> playbacks, IEnumerable<DeviceFullInfo> recordings)
@@ -52,15 +83,6 @@ namespace SoundSwitch.UI.Forms
                 ).ToArray();
 
 
-            var recordingBinding = new Binding(nameof(ComboBox.SelectedValue),
-                _profile,
-                nameof(ProfileSetting.Recording),
-                false,
-                DataSourceUpdateMode.OnPropertyChanged);
-
-            recordingComboBox.DataBindings.Add(recordingBinding);
-
-
             playbackComboBox.DataSource = playbacks
                 .Select(info => new IconTextComboBox.DropDownItem
                     {
@@ -69,15 +91,6 @@ namespace SoundSwitch.UI.Forms
                         Text = info.Name
                     }
                 ).ToArray();
-
-
-            var playbackBinding = new Binding(nameof(ComboBox.SelectedValue),
-                _profile,
-                nameof(ProfileSetting.Playback),
-                false,
-                DataSourceUpdateMode.OnPropertyChanged);
-
-            playbackComboBox.DataBindings.Add(playbackBinding);
         }
 
         public sealed override string Text
