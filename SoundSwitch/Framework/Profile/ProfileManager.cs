@@ -142,5 +142,34 @@ namespace SoundSwitch.Framework.Profile
 
             return Result.Success();
         }
+        /// <summary>
+        /// Delete the given profile
+        /// </summary>
+        /// <param name="profile"></param>
+        /// <returns></returns>
+        public Result<string, VoidSuccess> DeleteProfile(ProfileSetting profile)
+        {
+            if (!AppConfigs.Configuration.ProfileSettings.Contains(profile))
+            {
+                return SettingsStrings.profile_error_delete;
+            }
+
+
+            if (profile.ApplicationPath != null)
+            {
+                _profileByApplication.Remove(profile.ApplicationPath.ToLower());
+            }
+
+            if (profile.HotKeys != null)
+            {
+                WindowsAPIAdapter.UnRegisterHotKey(profile.HotKeys);
+                _profileByHotkey.Remove(profile.HotKeys);
+            }
+
+            AppConfigs.Configuration.ProfileSettings.Remove(profile);
+            AppConfigs.Configuration.Save();
+
+            return Result.Success();
+        }
     }
 }

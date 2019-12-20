@@ -322,4 +322,10 @@ Toujours: Quand un périférique audio est switché.</value>
 	<data name="profile.error.title" xml:space="preserve">
 		<value>Erreur avec le profile</value>
 	</data>
+	<data name="profile.deleteButton" xml:space="preserve">
+		<value>Supprimer</value>
+	</data>
+	<data name="profile.error.delete" xml:space="preserve">
+		<value>Profile introuvable.</value>
+	</data>
 </root>

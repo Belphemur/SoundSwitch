@@ -422,11 +422,29 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string profile_deleteButton {
+            get {
+                return ResourceManager.GetString("profile.deleteButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This application {0} has already a linked profile..
         /// </summary>
         internal static string profile_error_application {
             get {
                 return ResourceManager.GetString("profile.error.application", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t find the profile..
+        /// </summary>
+        internal static string profile_error_delete {
+            get {
+                return ResourceManager.GetString("profile.error.delete", resourceCulture);
             }
         }
         
