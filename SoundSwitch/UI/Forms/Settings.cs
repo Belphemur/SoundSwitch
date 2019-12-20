@@ -769,11 +769,9 @@ namespace SoundSwitch.UI.Forms
             {
                 return;
             }
-            foreach (ListViewItem selectedItem in profilesListView.SelectedItems)
-            {
-                var profile = (ProfileSetting) selectedItem.Tag;
-                AppModel.Instance.ProfileManager.DeleteProfile(profile);
-            }
+
+            var profiles = profilesListView.SelectedItems.Cast<ListViewItem>().Select(item => (ProfileSetting)item.Tag);
+            AppModel.Instance.ProfileManager.DeleteProfiles(profiles);
 
             if (AppModel.Instance.ProfileManager.Profiles.Count <= 0)
             {

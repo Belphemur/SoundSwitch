@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 using RailSharp;
 using RailSharp.Internal.Result;
 using SoundSwitch.Audio.Manager;
@@ -147,32 +148,45 @@ namespace SoundSwitch.Framework.Profile
 
             return Result.Success();
         }
+
         /// <summary>
-        /// Delete the given profile
+        /// Delete the given profiles.
+        ///
+        /// Result Failure contains the profile that couldn't be deleted because they don't exists.
         /// </summary>
-        /// <param name="profile"></param>
+        /// <param name="profiles"></param>
         /// <returns></returns>
-        public Result<string, VoidSuccess> DeleteProfile(ProfileSetting profile)
+        public Result<ProfileSetting[], VoidSuccess> DeleteProfiles(IEnumerable<ProfileSetting> profiles)
         {
-            if (!AppConfigs.Configuration.ProfileSettings.Contains(profile))
+            var errors = new List<ProfileSetting>();
+            foreach (var profile in profiles)
             {
-                return SettingsStrings.profile_error_delete;
+                if (!AppConfigs.Configuration.ProfileSettings.Contains(profile))
+                {
+                    errors.Add(profile);
+                    continue;
+                }
+
+
+                if (profile.ApplicationPath != null)
+                {
+                    _profileByApplication.Remove(profile.ApplicationPath.ToLower());
+                }
+
+                if (profile.HotKeys != null)
+                {
+                    WindowsAPIAdapter.UnRegisterHotKey(profile.HotKeys);
+                    _profileByHotkey.Remove(profile.HotKeys);
+                }
+
+                AppConfigs.Configuration.ProfileSettings.Remove(profile);
             }
 
-
-            if (profile.ApplicationPath != null)
-            {
-                _profileByApplication.Remove(profile.ApplicationPath.ToLower());
-            }
-
-            if (profile.HotKeys != null)
-            {
-                WindowsAPIAdapter.UnRegisterHotKey(profile.HotKeys);
-                _profileByHotkey.Remove(profile.HotKeys);
-            }
-
-            AppConfigs.Configuration.ProfileSettings.Remove(profile);
             AppConfigs.Configuration.Save();
+            if (errors.Count > 0)
+            {
+                return errors.ToArray();
+            }
 
             return Result.Success();
         }
