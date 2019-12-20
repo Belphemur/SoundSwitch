@@ -485,6 +485,15 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A profile needs a name..
+        /// </summary>
+        internal static string profile_error_no_name {
+            get {
+                return ResourceManager.GetString("profile.error.no-name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Couldn&apos;t register the hotkeys for the following profiles: {0}.
         /// </summary>
         internal static string profile_error_registerHotkeys {

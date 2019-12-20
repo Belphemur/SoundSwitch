@@ -349,4 +349,7 @@ Both: Change when any type of device is switched.</value>
 	<data name="profile.error.delete" xml:space="preserve">
 		<value>Can't find the profile.</value>
 	</data>
+	<data name="profile.error.no-name" xml:space="preserve">
+		<value>A profile needs a name.</value>
+	</data>
 </root>

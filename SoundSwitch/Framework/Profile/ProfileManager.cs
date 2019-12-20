@@ -101,6 +101,11 @@ namespace SoundSwitch.Framework.Profile
         /// <returns></returns>
         public Result<string, VoidSuccess> AddProfile(ProfileSetting profile)
         {
+            if (string.IsNullOrEmpty(profile.ProfileName))
+            {
+                return SettingsStrings.profile_error_no_name;
+            }
+
             if (profile.ApplicationPath == null && profile.HotKeys == null)
             {
                 return SettingsStrings.profile_error_needHKOrPath;

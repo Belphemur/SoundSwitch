@@ -82,9 +82,7 @@ namespace SoundSwitch.Common.WinApi.Keyboard
 
         public override string ToString()
         {
-            var key = Enum.Format(typeof(Keys), Keys, "g");
-            var modKeys = Enum.Format(typeof(ModifierKeys), Modifier, "g");
-            return $"{modKeys.Replace(", ", "+")}+{key}: {Enabled}";
+            return Display();
         }
 
         public string Display()
