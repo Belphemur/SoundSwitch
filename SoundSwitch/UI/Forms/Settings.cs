@@ -169,54 +169,13 @@ namespace SoundSwitch.UI.Forms
 
         private void PopulateProfiles()
         {
-            
-
             addProfileButton.Image = Resources.profile_add;
 
-            profilesListView.View = View.Details;
-            profilesListView.FullRowSelect = true;
-
             profilesListView.Columns.Add(SettingsStrings.profile_name, 50, HorizontalAlignment.Left);
-            profilesListView.Columns.Add(SettingsStrings.profile_program, -2, HorizontalAlignment.Left);
-            profilesListView.Columns.Add(SettingsStrings.hotkeys, -2, HorizontalAlignment.Left);
-            profilesListView.Columns.Add(SettingsStrings.playback, -2, HorizontalAlignment.Left);
-            profilesListView.Columns.Add(SettingsStrings.recording, -2, HorizontalAlignment.Left);
-
-            profilesListView.OwnerDraw = true;
-            profilesListView.DrawColumnHeader += (sender, args) => args.DrawDefault = true;
-            profilesListView.DrawSubItem += (sender, args) =>
-            {
-                if (string.IsNullOrEmpty(args.SubItem.Text) || args.SubItem.Tag == null)
-                {
-                    args.DrawDefault = true;
-                    return;
-                }
-
-
-                var icon = (Icon) args.SubItem.Tag;
-                args.DrawBackground();
-                var splitPathIfPresent = args.SubItem.Text.Split('\\').Last();
-
-                if (args.Item.Selected)
-                {
-                    var r = new Rectangle(args.Bounds.Left, args.Bounds.Top, args.Bounds.Right, args.Bounds.Height);
-                    args.Graphics.FillRectangle(SystemBrushes.Highlight, r);
-                    args.SubItem.ForeColor = SystemColors.HighlightText;
-                }
-                else
-                {
-                    args.SubItem.ForeColor = SystemColors.WindowText;
-                }
-
-                var imageRect = new Rectangle(args.Bounds.X, args.Bounds.Y, args.Bounds.Height, args.Bounds.Height);
-                args.Graphics.DrawIcon(icon, imageRect);
-
-                args.Graphics.DrawString(splitPathIfPresent,
-                    args.SubItem.Font,
-                    new SolidBrush(args.SubItem.ForeColor),
-                    (args.SubItem.Bounds.Location.X + icon.Width + 5),
-                    args.SubItem.Bounds.Location.Y);
-            };
+            profilesListView.Columns.Add(SettingsStrings.profile_program, 100, HorizontalAlignment.Left);
+            profilesListView.Columns.Add(SettingsStrings.hotkeys, 60, HorizontalAlignment.Left);
+            profilesListView.Columns.Add(SettingsStrings.playback, 150, HorizontalAlignment.Left);
+            profilesListView.Columns.Add(SettingsStrings.recording, 150, HorizontalAlignment.Left);
 
             RefreshProfiles();
         }
@@ -253,7 +212,7 @@ namespace SoundSwitch.UI.Forms
 
                 listViewItem.SubItems.AddRange(new[]
                 {
-                    new ListViewItem.ListViewSubItem(listViewItem, profile.ApplicationPath ?? "") {Tag = appIcon},
+                    new ListViewItem.ListViewSubItem(listViewItem, profile.ApplicationPath?.Split('\\').Last() ?? "") {Tag = appIcon},
                     new ListViewItem.ListViewSubItem(listViewItem, profile.HotKeys?.ToString() ?? ""),
                     new ListViewItem.ListViewSubItem(listViewItem, playback?.Name ?? profile.Playback?.ToString() ?? "") {Tag = playback?.SmallIcon},
                     new ListViewItem.ListViewSubItem(listViewItem, recording?.Name ?? profile.Recording?.ToString() ?? "") {Tag = recording?.SmallIcon},
@@ -267,6 +226,14 @@ namespace SoundSwitch.UI.Forms
             {
                 var listViewItem = ProfileToListViewItem(profile);
                 profilesListView.Items.Add(listViewItem);
+            }
+
+            if (AppModel.Instance.ProfileManager.Profiles.Count > 0)
+            {
+                foreach (ColumnHeader column in profilesListView.Columns)
+                {
+                    column.Width = -2;
+                }
             }
         }
 

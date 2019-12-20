@@ -52,6 +52,9 @@
     <Compile Include="HotKeyTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="IconListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="IconTextComboBox.cs">
       <SubType>Component</SubType>
     </Compile>

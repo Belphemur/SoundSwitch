@@ -1,5 +1,6 @@
 ﻿using System;
 using SoundSwitch.Localization;
+using SoundSwitch.UI.UserControls;
 
 namespace SoundSwitch.UI.Forms
 {
@@ -44,7 +45,7 @@ namespace SoundSwitch.UI.Forms
             this.tabProfile = new System.Windows.Forms.TabPage();
             this.deleteProfileButton = new System.Windows.Forms.Button();
             this.profileExplanationLabel = new System.Windows.Forms.Label();
-            this.profilesListView = new System.Windows.Forms.ListView();
+            this.profilesListView = new IconListView();
             this.addProfileButton = new System.Windows.Forms.Button();
             this.appSettingTabPage = new System.Windows.Forms.TabPage();
             this.languageGroupBox = new System.Windows.Forms.GroupBox();
@@ -593,7 +594,7 @@ namespace SoundSwitch.UI.Forms
         private System.Windows.Forms.ComboBox iconChangeChoicesComboBox;
         private System.Windows.Forms.TabPage tabProfile;
         private System.Windows.Forms.Button addProfileButton;
-        private System.Windows.Forms.ListView profilesListView;
+        private IconListView profilesListView;
         private System.Windows.Forms.Label profileExplanationLabel;
         private System.Windows.Forms.Button deleteProfileButton;
     }
