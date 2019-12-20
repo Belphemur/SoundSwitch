@@ -8,34 +8,48 @@ namespace SoundSwitch.UI.UserControls
 {
     public class HotKeyTextBox : TextBox
     {
-        protected override void OnKeyUp(KeyEventArgs e)
+        public class HotKeyChanged : EventArgs
+        {
+        }
+
+        public HotKeys HotKeys
+        {
+            get => _hotKeys;
+            set
+            {
+                _hotKeys = value;
+                Text = value.Display();
+                OnHotKeyChanged?.Invoke(this, new HotKeyChanged());
+            }
+        }
+
+        private HotKeys _hotKeys;
+
+        public event EventHandler<HotKeyChanged> OnHotKeyChanged;
+
+        protected override void OnKeyDown(KeyEventArgs e)
         {
             HotKeys.ModifierKeys modifierKeys = 0;
-            var displayString = "";
             foreach (var pressedModifier in KeyboardWindowsAPI.GetPressedModifiers())
             {
                 if ((pressedModifier & Keys.Modifiers) == Keys.Control)
                 {
                     modifierKeys |= HotKeys.ModifierKeys.Control;
-                    displayString += "Ctrl+";
                 }
 
                 if ((pressedModifier & Keys.Modifiers) == Keys.Alt)
                 {
                     modifierKeys |= HotKeys.ModifierKeys.Alt;
-                    displayString += "Alt+";
                 }
 
                 if ((pressedModifier & Keys.Modifiers) == Keys.Shift)
                 {
                     modifierKeys |= HotKeys.ModifierKeys.Shift;
-                    displayString += "Shift+";
                 }
 
                 if (pressedModifier == Keys.LWin || pressedModifier == Keys.RWin)
                 {
                     modifierKeys |= HotKeys.ModifierKeys.Win;
-                    displayString += "Win+";
                 }
             }
 
@@ -45,13 +59,13 @@ namespace SoundSwitch.UI.UserControls
 
             if (key == Keys.None)
             {
-                Text = displayString;
+                Text = new HotKeys(e.KeyCode, modifierKeys).Display();
                 ForeColor = Color.Crimson;
             }
             else
             {
-                Text = displayString + key;
-                Tag = new HotKeys(e.KeyCode, modifierKeys);
+                HotKeys = new HotKeys(e.KeyCode, modifierKeys);
+                ForeColor = Color.Green;
             }
 
             e.Handled = true;

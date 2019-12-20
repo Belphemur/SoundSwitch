@@ -40,11 +40,11 @@ namespace SoundSwitch.UI.Forms
             this.programLabel = new System.Windows.Forms.Label();
             this.programTextBox = new System.Windows.Forms.TextBox();
             this.hotKeyLabel = new System.Windows.Forms.Label();
-            this.hotKeyTextBox = new System.Windows.Forms.TextBox();
             this.nameLabel = new System.Windows.Forms.Label();
             this.nameTextBox = new System.Windows.Forms.TextBox();
             this.selectProgramDialog = new System.Windows.Forms.OpenFileDialog();
             this.createButton = new System.Windows.Forms.Button();
+            this.hotKeyTextBox = new SoundSwitch.UI.UserControls.HotKeyTextBox();
             this.addProfileGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,6 +53,7 @@ namespace SoundSwitch.UI.Forms
             this.addProfileGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.addProfileGroupBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.addProfileGroupBox.Controls.Add(this.hotKeyTextBox);
             this.addProfileGroupBox.Controls.Add(this.recordingLabel);
             this.addProfileGroupBox.Controls.Add(this.playbackLabel);
             this.addProfileGroupBox.Controls.Add(this.recordingComboBox);
@@ -61,7 +62,6 @@ namespace SoundSwitch.UI.Forms
             this.addProfileGroupBox.Controls.Add(this.programLabel);
             this.addProfileGroupBox.Controls.Add(this.programTextBox);
             this.addProfileGroupBox.Controls.Add(this.hotKeyLabel);
-            this.addProfileGroupBox.Controls.Add(this.hotKeyTextBox);
             this.addProfileGroupBox.Controls.Add(this.nameLabel);
             this.addProfileGroupBox.Controls.Add(this.nameTextBox);
             this.addProfileGroupBox.Location = new System.Drawing.Point(12, 12);
@@ -98,6 +98,7 @@ namespace SoundSwitch.UI.Forms
             this.recordingComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.recordingComboBox.DataSource = null;
+            this.recordingComboBox.DisplayMember = "Tag";
             this.recordingComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.recordingComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.recordingComboBox.FormattingEnabled = true;
@@ -105,12 +106,14 @@ namespace SoundSwitch.UI.Forms
             this.recordingComboBox.Name = "recordingComboBox";
             this.recordingComboBox.Size = new System.Drawing.Size(301, 21);
             this.recordingComboBox.TabIndex = 8;
+            this.recordingComboBox.ValueMember = "Tag";
             // 
             // playbackComboBox
             // 
             this.playbackComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.playbackComboBox.DataSource = null;
+            this.playbackComboBox.DisplayMember = "Tag";
             this.playbackComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.playbackComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.playbackComboBox.FormattingEnabled = true;
@@ -118,6 +121,7 @@ namespace SoundSwitch.UI.Forms
             this.playbackComboBox.Name = "playbackComboBox";
             this.playbackComboBox.Size = new System.Drawing.Size(301, 21);
             this.playbackComboBox.TabIndex = 7;
+            this.playbackComboBox.ValueMember = "Tag";
             // 
             // selectProgramButton
             // 
@@ -154,13 +158,6 @@ namespace SoundSwitch.UI.Forms
             this.hotKeyLabel.TabIndex = 3;
             this.hotKeyLabel.Text = "HotKey";
             // 
-            // hotKeyTextBox
-            // 
-            this.hotKeyTextBox.Location = new System.Drawing.Point(192, 86);
-            this.hotKeyTextBox.Name = "hotKeyTextBox";
-            this.hotKeyTextBox.Size = new System.Drawing.Size(115, 20);
-            this.hotKeyTextBox.TabIndex = 2;
-            // 
             // nameLabel
             // 
             this.nameLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -194,6 +191,13 @@ namespace SoundSwitch.UI.Forms
             this.createButton.UseVisualStyleBackColor = true;
             this.createButton.Click += new System.EventHandler(this.createButton_Click);
             // 
+            // hotKeyTextBox
+            // 
+            this.hotKeyTextBox.Location = new System.Drawing.Point(192, 86);
+            this.hotKeyTextBox.Name = "hotKeyTextBox";
+            this.hotKeyTextBox.Size = new System.Drawing.Size(115, 20);
+            this.hotKeyTextBox.TabIndex = 11;
+            // 
             // AddProfile
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -216,7 +220,6 @@ namespace SoundSwitch.UI.Forms
         private System.Windows.Forms.TextBox nameTextBox;
         private System.Windows.Forms.Label nameLabel;
         private System.Windows.Forms.Label hotKeyLabel;
-        private System.Windows.Forms.TextBox hotKeyTextBox;
         private System.Windows.Forms.OpenFileDialog selectProgramDialog;
         private System.Windows.Forms.Label programLabel;
         private System.Windows.Forms.TextBox programTextBox;
@@ -226,5 +229,6 @@ namespace SoundSwitch.UI.Forms
         private IconTextComboBox recordingComboBox;
         private IconTextComboBox playbackComboBox;
         private Button createButton;
+        private HotKeyTextBox hotKeyTextBox;
     }
 }

@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using NAudio.CoreAudioApi;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Localization;
@@ -30,23 +31,57 @@ namespace SoundSwitch.UI.Forms
 
             nameTextBox.DataBindings.Add(nameof(TextBox.Text), _profile, nameof(ProfileSetting.ProfileName), false, DataSourceUpdateMode.OnPropertyChanged);
 
-            recordingComboBox.DataSource = recordings
-                .Select(info => new IconTextComboBox.DropDownItem
-                    {
-                        Icon = info.SmallIcon,
-                        Tag = info,
-                        Text = info.Name
-                    }
-                ).ToArray();
+            InitRecordingPlaybackComboBoxes(playbacks, recordings);
+        }
 
-            playbackComboBox.DataSource = playbacks
+        private void InitRecordingPlaybackComboBoxes(IEnumerable<DeviceFullInfo> playbacks, IEnumerable<DeviceFullInfo> recordings)
+        {
+            var recordingsItems = recordings
                 .Select(info => new IconTextComboBox.DropDownItem
                     {
                         Icon = info.SmallIcon,
                         Tag = info,
                         Text = info.Name
                     }
-                ).ToArray();
+                ).ToList();
+            recordingsItems.Insert(0, IconTextComboBox.DropDownItem.Empty);
+            recordingComboBox.DataSource = recordingsItems.ToArray();
+
+
+            var recordingBinding = new Binding(nameof(ComboBox.SelectedValue),
+                _profile,
+                nameof(ProfileSetting.Recording),
+                false,
+                DataSourceUpdateMode.OnPropertyChanged)
+            {
+                DataSourceNullValue = new DeviceInfo(null, null, DataFlow.Capture)
+            };
+
+            recordingComboBox.DataBindings.Add(recordingBinding);
+
+
+            var playbackItems = playbacks
+                .Select(info => new IconTextComboBox.DropDownItem
+                    {
+                        Icon = info.SmallIcon,
+                        Tag = info,
+                        Text = info.Name
+                    }
+                ).ToList();
+
+            playbackItems.Insert(0, IconTextComboBox.DropDownItem.Empty);
+            playbackComboBox.DataSource = playbackItems
+                .ToArray();
+
+            var playbackBinding = new Binding(nameof(ComboBox.SelectedValue),
+                _profile,
+                nameof(ProfileSetting.Playback),
+                false,
+                DataSourceUpdateMode.OnPropertyChanged)
+            {
+                DataSourceNullValue = new DeviceInfo(null, null, DataFlow.Render)
+            };
+            playbackComboBox.DataBindings.Add(playbackBinding);
         }
 
         public sealed override string Text

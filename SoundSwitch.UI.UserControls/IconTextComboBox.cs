@@ -10,6 +10,11 @@ namespace SoundSwitch.UI.UserControls
     {
         public class DropDownItem
         {
+            public static DropDownItem Empty = new DropDownItem
+            {
+                Text = ""
+            };
+
             /// <summary>
             /// Tag of the item
             /// </summary>
@@ -40,6 +45,7 @@ namespace SoundSwitch.UI.UserControls
         {
             DrawMode = DrawMode.OwnerDrawFixed;
             DropDownStyle = ComboBoxStyle.DropDownList;
+            ValueMember = nameof(DropDownItem.Tag);
         }
 
         public new DropDownItem[] DataSource
@@ -56,6 +62,12 @@ namespace SoundSwitch.UI.UserControls
             if (e.Index >= 0 && e.Index < Items.Count)
             {
                 var item = (DropDownItem) Items[e.Index];
+
+                if (item == DropDownItem.Empty)
+                {
+                    base.OnDrawItem(e);
+                    return;
+                }
 
                 var icon = item.Icon;
                 e.DrawBackground();
