@@ -30,57 +30,49 @@ namespace SoundSwitch.UI.Forms
             _profile = new ProfileSetting();
 
             nameTextBox.DataBindings.Add(nameof(TextBox.Text), _profile, nameof(ProfileSetting.ProfileName), false, DataSourceUpdateMode.OnPropertyChanged);
+            hotKeyTextBox.DataBindings.Add(nameof(HotKeyTextBox.HotKeys), _profile, nameof(ProfileSetting.HotKeys),
+                true, DataSourceUpdateMode.OnPropertyChanged);
 
             InitRecordingPlaybackComboBoxes(playbacks, recordings);
         }
 
         private void InitRecordingPlaybackComboBoxes(IEnumerable<DeviceFullInfo> playbacks, IEnumerable<DeviceFullInfo> recordings)
         {
-            var recordingsItems = recordings
+            recordingComboBox.DataSource = recordings
                 .Select(info => new IconTextComboBox.DropDownItem
                     {
                         Icon = info.SmallIcon,
                         Tag = info,
                         Text = info.Name
                     }
-                ).ToList();
-            recordingsItems.Insert(0, IconTextComboBox.DropDownItem.Empty);
-            recordingComboBox.DataSource = recordingsItems.ToArray();
+                ).ToArray();
 
 
             var recordingBinding = new Binding(nameof(ComboBox.SelectedValue),
                 _profile,
                 nameof(ProfileSetting.Recording),
                 false,
-                DataSourceUpdateMode.OnPropertyChanged)
-            {
-                DataSourceNullValue = new DeviceInfo(null, null, DataFlow.Capture)
-            };
+                DataSourceUpdateMode.OnPropertyChanged);
 
             recordingComboBox.DataBindings.Add(recordingBinding);
 
 
-            var playbackItems = playbacks
+            playbackComboBox.DataSource = playbacks
                 .Select(info => new IconTextComboBox.DropDownItem
                     {
                         Icon = info.SmallIcon,
                         Tag = info,
                         Text = info.Name
                     }
-                ).ToList();
+                ).ToArray();
 
-            playbackItems.Insert(0, IconTextComboBox.DropDownItem.Empty);
-            playbackComboBox.DataSource = playbackItems
-                .ToArray();
 
             var playbackBinding = new Binding(nameof(ComboBox.SelectedValue),
                 _profile,
                 nameof(ProfileSetting.Playback),
                 false,
-                DataSourceUpdateMode.OnPropertyChanged)
-            {
-                DataSourceNullValue = new DeviceInfo(null, null, DataFlow.Render)
-            };
+                DataSourceUpdateMode.OnPropertyChanged);
+
             playbackComboBox.DataBindings.Add(playbackBinding);
         }
 
@@ -98,6 +90,18 @@ namespace SoundSwitch.UI.Forms
         private void createButton_Click(object sender, EventArgs e)
         {
             MessageBox.Show(_profile.ToString());
+        }
+
+        private void playbackRemoveButton_Click(object sender, EventArgs e)
+        {
+            _profile.Playback = null;
+            playbackComboBox.SelectedValue = null;
+        }
+
+        private void recordingRemoveButton_Click(object sender, EventArgs e)
+        {
+            _profile.Recording = null;
+            recordingComboBox.SelectedValue = null;
         }
     }
 }

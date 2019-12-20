@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -8,24 +9,26 @@ namespace SoundSwitch.UI.UserControls
 {
     public class HotKeyTextBox : TextBox
     {
-        public class HotKeyChanged : EventArgs
+        public class HotKeyChangedEventArgs : EventArgs
         {
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [DefaultValue(null)]
         public HotKeys HotKeys
         {
             get => _hotKeys;
             set
             {
                 _hotKeys = value;
-                Text = value.Display();
-                OnHotKeyChanged?.Invoke(this, new HotKeyChanged());
+                Text = value?.Display() ?? "";
+                HotKeyChanged?.Invoke(this, new HotKeyChangedEventArgs());
             }
         }
 
         private HotKeys _hotKeys;
-
-        public event EventHandler<HotKeyChanged> OnHotKeyChanged;
+        [Browsable(true)]
+        public event EventHandler<HotKeyChangedEventArgs> HotKeyChanged;
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
@@ -59,12 +62,12 @@ namespace SoundSwitch.UI.UserControls
 
             if (key == Keys.None)
             {
-                Text = new HotKeys(e.KeyCode, modifierKeys).Display();
+                Text = new HotKeys(key, modifierKeys).Display();
                 ForeColor = Color.Crimson;
             }
             else
             {
-                HotKeys = new HotKeys(e.KeyCode, modifierKeys);
+                HotKeys = new HotKeys(key, modifierKeys);
                 ForeColor = Color.Green;
             }
 

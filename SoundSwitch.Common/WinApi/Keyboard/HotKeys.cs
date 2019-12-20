@@ -66,7 +66,7 @@ namespace SoundSwitch.Common.WinApi.Keyboard
         {
             unchecked
             {
-                return ((int) Keys*397) ^ (int) Modifier;
+                return ((int) Keys * 397) ^ (int) Modifier;
             }
         }
 
@@ -89,9 +89,9 @@ namespace SoundSwitch.Common.WinApi.Keyboard
 
         public string Display()
         {
-            var key = Enum.Format(typeof(Keys), Keys, "g");
+            var key = (Keys == Keys.None ? "" : "+" + Enum.Format(typeof(Keys), Keys, "g"));
             var modKeys = Enum.Format(typeof(ModifierKeys), Modifier, "g");
-            return $"{modKeys.Replace(", ", "+")}+{key}";
+            return $"{modKeys.Replace(", ", "+")}{key}";
         }
     }
 }
