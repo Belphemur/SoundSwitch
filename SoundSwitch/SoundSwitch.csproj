@@ -548,6 +548,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\profile-delete.png" />
+    <None Include="Resources\program.ico" />
     <None Include="Resources\profile-add.png" />
     <None Include="Resources\profile.ico" />
     <None Include="Resources\Switch-SoundWave.ico" />

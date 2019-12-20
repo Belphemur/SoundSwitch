@@ -196,7 +196,7 @@ namespace SoundSwitch.UI.Forms
                     }
                     catch
                     {
-                        // ignored
+                        appIcon = Resources.program;
                     }
                 }
 
