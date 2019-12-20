@@ -319,4 +319,7 @@ Toujours: Quand un périférique audio est switché.</value>
 	<data name="profile.feature.executable" xml:space="preserve">
 		<value>Exécutable (*.exe)</value>
 	</data>
+	<data name="profile.error.title" xml:space="preserve">
+		<value>Erreur avec le profile</value>
+	</data>
 </root>

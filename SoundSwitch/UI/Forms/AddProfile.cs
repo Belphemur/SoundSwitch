@@ -19,11 +19,13 @@ namespace SoundSwitch.UI.Forms
 {
     public partial class AddProfile : Form
     {
+        private readonly SettingsForm _settingsForm;
         private readonly ProfileSetting _profile;
 
 
-        public AddProfile(IEnumerable<DeviceFullInfo> playbacks, IEnumerable<DeviceFullInfo> recordings)
+        public AddProfile(IEnumerable<DeviceFullInfo> playbacks, IEnumerable<DeviceFullInfo> recordings, SettingsForm settingsForm)
         {
+            _settingsForm = settingsForm;
             InitializeComponent();
             Text = SettingsStrings.profile_feature_add;
             Icon = Resources.profile;
@@ -101,12 +103,14 @@ namespace SoundSwitch.UI.Forms
             var result = AppModel.Instance.ProfileManager.AddProfile(_profile);
             result.Map(success =>
                 {
+                    _settingsForm.RefreshProfiles();
+                    _settingsForm.Focus();
                     Close();
                     return success;
                 })
                 .Catch<string>(s =>
                 {
-                    MessageBox.Show(s, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(s, SettingsStrings.profile_error_title, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return Result.Success();
                 });
         }

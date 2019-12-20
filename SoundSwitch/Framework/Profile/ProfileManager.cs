@@ -116,7 +116,7 @@ namespace SoundSwitch.Framework.Profile
                 return string.Format(SettingsStrings.profile_error_hotkey, profile.HotKeys);
             }
 
-            if (profile.ApplicationPath != null && _profileByApplication.ContainsKey(profile.ApplicationPath))
+            if (profile.ApplicationPath != null && _profileByApplication.ContainsKey(profile.ApplicationPath.ToLower()))
             {
                 return string.Format(SettingsStrings.profile_error_application, profile.ApplicationPath);
             }

@@ -49,6 +49,7 @@ namespace SoundSwitch.UI.Forms
         private static readonly Icon RessourceSettingsIcon = Resources.SettingsIcon;
 
         private bool _loaded;
+        private CachedAudioDeviceLister _audioDeviceLister;
 
         public SettingsForm()
         {
@@ -166,45 +167,9 @@ namespace SoundSwitch.UI.Forms
             languageComboBox.SelectedValue = AppModel.Instance.Language;
         }
 
-        private void PopulateProfiles(IAudioDeviceLister deviceLister)
+        private void PopulateProfiles()
         {
-            ListViewItem ProfileToListViewItem(ProfileSetting profile)
-            {
-                var listViewItem = new ListViewItem(profile.ProfileName) {Tag = profile};
-                Icon appIcon = null;
-                DeviceFullInfo recording = null;
-                DeviceFullInfo playback = null;
-                if (!string.IsNullOrEmpty(profile.ApplicationPath))
-                {
-                    try
-                    {
-                        appIcon = IconExtractor.Extract(profile.ApplicationPath, 0, false);
-                    }
-                    catch
-                    {
-                        // ignored
-                    }
-                }
-
-                if (profile.Playback != null)
-                {
-                    playback = deviceLister.PlaybackDevices.FirstOrDefault(info => info.Id == profile.Playback.Id);
-                }
-
-                if (profile.Recording != null)
-                {
-                    recording = deviceLister.RecordingDevices.FirstOrDefault(info => info.Id == profile.Recording.Id);
-                }
-
-                listViewItem.SubItems.AddRange(new[]
-                {
-                    new ListViewItem.ListViewSubItem(listViewItem, profile.ApplicationPath ?? "") {Tag = appIcon},
-                    new ListViewItem.ListViewSubItem(listViewItem, profile.HotKeys?.ToString() ?? ""),
-                    new ListViewItem.ListViewSubItem(listViewItem, playback?.Name ?? profile.Playback?.ToString() ?? "") {Tag = playback?.SmallIcon},
-                    new ListViewItem.ListViewSubItem(listViewItem, recording?.Name ?? profile.Recording?.ToString() ?? "") {Tag = recording?.SmallIcon},
-                });
-                return listViewItem;
-            }
+            
 
             addProfileButton.Image = Resources.profile_add;
 
@@ -253,6 +218,51 @@ namespace SoundSwitch.UI.Forms
                     args.SubItem.Bounds.Location.Y);
             };
 
+            RefreshProfiles();
+        }
+
+        public void RefreshProfiles()
+        {
+            ListViewItem ProfileToListViewItem(ProfileSetting profile)
+            {
+                var listViewItem = new ListViewItem(profile.ProfileName) {Tag = profile};
+                Icon appIcon = null;
+                DeviceFullInfo recording = null;
+                DeviceFullInfo playback = null;
+                if (!string.IsNullOrEmpty(profile.ApplicationPath))
+                {
+                    try
+                    {
+                        appIcon = IconExtractor.Extract(profile.ApplicationPath, 0, false);
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+                }
+
+                if (profile.Playback != null)
+                {
+                    playback = _audioDeviceLister.PlaybackDevices.FirstOrDefault(info => info.Id == profile.Playback.Id);
+                }
+
+                if (profile.Recording != null)
+                {
+                    recording = _audioDeviceLister.RecordingDevices.FirstOrDefault(info => info.Id == profile.Recording.Id);
+                }
+
+                listViewItem.SubItems.AddRange(new[]
+                {
+                    new ListViewItem.ListViewSubItem(listViewItem, profile.ApplicationPath ?? "") {Tag = appIcon},
+                    new ListViewItem.ListViewSubItem(listViewItem, profile.HotKeys?.ToString() ?? ""),
+                    new ListViewItem.ListViewSubItem(listViewItem, playback?.Name ?? profile.Playback?.ToString() ?? "") {Tag = playback?.SmallIcon},
+                    new ListViewItem.ListViewSubItem(listViewItem, recording?.Name ?? profile.Recording?.ToString() ?? "") {Tag = recording?.SmallIcon},
+                });
+                return listViewItem;
+            }
+
+            profilesListView.Items.Clear();
+
             foreach (var profile in AppModel.Instance.ProfileManager.Profiles)
             {
                 var listViewItem = ProfileToListViewItem(profile);
@@ -263,22 +273,22 @@ namespace SoundSwitch.UI.Forms
         public async Task AsyncInit()
         {
             // Playback and Recording
-            using var audioDeviceLister = new CachedAudioDeviceLister(DeviceState.All);
-            await audioDeviceLister.Refresh();
-            PopulateAudioDevices(audioDeviceLister);
+            _audioDeviceLister = new CachedAudioDeviceLister(DeviceState.All);
+            await _audioDeviceLister.Refresh();
+            PopulateAudioDevices();
 
             // Profiles
-            PopulateProfiles(audioDeviceLister);
+            PopulateProfiles();
 
             _loaded = true;
         }
 
-        private void PopulateAudioDevices(CachedAudioDeviceLister audioDeviceLister)
+        private void PopulateAudioDevices()
         {
             PopulateAudioList(playbackListView, AppModel.Instance.SelectedDevices,
-                audioDeviceLister.PlaybackDevices);
+                _audioDeviceLister.PlaybackDevices);
             PopulateAudioList(recordingListView, AppModel.Instance.SelectedDevices,
-                audioDeviceLister.RecordingDevices);
+                _audioDeviceLister.RecordingDevices);
         }
 
         private void LocalizeForm()
@@ -735,16 +745,9 @@ namespace SoundSwitch.UI.Forms
             new IconChangerFactory().Get(item.Enum).ChangeIcon(AppModel.Instance.TrayIcon);
         }
 
-        private async void addProfileButton_Click(object sender, EventArgs e)
+        private void addProfileButton_Click(object sender, EventArgs e)
         {
-            await ShowAddProfile();
-        }
-
-        private async Task ShowAddProfile()
-        {
-            using var audioLister = new CachedAudioDeviceLister(DeviceState.All);
-            await audioLister.Refresh();
-            new AddProfile(audioLister.PlaybackDevices, audioLister.RecordingDevices).Show(Owner);
+            new AddProfile(_audioDeviceLister.PlaybackDevices, _audioDeviceLister.RecordingDevices, this).Show(Owner);
         }
     }
 }
