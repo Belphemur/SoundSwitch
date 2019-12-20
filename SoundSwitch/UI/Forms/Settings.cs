@@ -302,7 +302,6 @@ namespace SoundSwitch.UI.Forms
 
             appSettingTabPage.Text = SettingsStrings.settings;
             tabProfile.Text = SettingsStrings.profile_tab;
-            addProfileButton.Text = SettingsStrings.profile_addButton;
 
             // Settings - Basic
             basicSettingsGroupBox.Text = SettingsStrings.basicSettings;
@@ -329,6 +328,9 @@ namespace SoundSwitch.UI.Forms
 
             // Settings - Profile
             profileExplanationLabel.Text = SettingsStrings.profile_explanation;
+            addProfileButton.Text = SettingsStrings.profile_addButton;
+            deleteProfileButton.Text = SettingsStrings.profile_deleteButton;
+
 
             // Misc
             hotkeysLabel.Text = SettingsStrings.hotkeys;
@@ -748,6 +750,36 @@ namespace SoundSwitch.UI.Forms
         private void addProfileButton_Click(object sender, EventArgs e)
         {
             new AddProfile(_audioDeviceLister.PlaybackDevices, _audioDeviceLister.RecordingDevices, this).Show(Owner);
+        }
+
+        private void profilesListView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (profilesListView.SelectedIndices.Count > 0)
+            {
+                deleteProfileButton.Enabled = true;
+                return;
+            }
+
+            deleteProfileButton.Enabled = false;
+        }
+
+        private void deleteProfileButton_Click(object sender, EventArgs e)
+        {
+            if (profilesListView.SelectedItems.Count <= 0)
+            {
+                return;
+            }
+            foreach (ListViewItem selectedItem in profilesListView.SelectedItems)
+            {
+                var profile = (ProfileSetting) selectedItem.Tag;
+                AppModel.Instance.ProfileManager.DeleteProfile(profile);
+            }
+
+            if (AppModel.Instance.ProfileManager.Profiles.Count <= 0)
+            {
+                deleteProfileButton.Enabled = false;
+            }
+            RefreshProfiles();
         }
     }
 }

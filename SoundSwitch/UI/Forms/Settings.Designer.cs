@@ -31,8 +31,8 @@ namespace SoundSwitch.UI.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
-            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
+            System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
+            System.Windows.Forms.ListViewGroup listViewGroup4 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
             this.startWithWindowsCheckBox = new System.Windows.Forms.CheckBox();
             this.closeButton = new System.Windows.Forms.Button();
             this.switchCommunicationDeviceCheckBox = new System.Windows.Forms.CheckBox();
@@ -42,6 +42,7 @@ namespace SoundSwitch.UI.Forms
             this.recordingTabPage = new System.Windows.Forms.TabPage();
             this.recordingListView = new System.Windows.Forms.ListView();
             this.tabProfile = new System.Windows.Forms.TabPage();
+            this.deleteProfileButton = new System.Windows.Forms.Button();
             this.profileExplanationLabel = new System.Windows.Forms.Label();
             this.profilesListView = new System.Windows.Forms.ListView();
             this.addProfileButton = new System.Windows.Forms.Button();
@@ -70,7 +71,6 @@ namespace SoundSwitch.UI.Forms
             this.hotkeysLabel = new System.Windows.Forms.Label();
             this.selectSoundFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.hotkeysCheckBox = new System.Windows.Forms.CheckBox();
-            this.deleteProfileButton = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.playbackTabPage.SuspendLayout();
             this.recordingTabPage.SuspendLayout();
@@ -148,11 +148,11 @@ namespace SoundSwitch.UI.Forms
             this.playbackListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.playbackListView.CheckBoxes = true;
             this.playbackListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            listViewGroup1.Header = "Selected";
-            listViewGroup1.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
-            listViewGroup1.Name = "selectedGroup";
+            listViewGroup3.Header = "Selected";
+            listViewGroup3.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
+            listViewGroup3.Name = "selectedGroup";
             this.playbackListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup1});
+            listViewGroup3});
             this.playbackListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.playbackListView.HideSelection = false;
             this.playbackListView.Location = new System.Drawing.Point(3, 3);
@@ -179,11 +179,11 @@ namespace SoundSwitch.UI.Forms
             this.recordingListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.recordingListView.CheckBoxes = true;
             this.recordingListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            listViewGroup2.Header = "Selected";
-            listViewGroup2.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
-            listViewGroup2.Name = "selectedGroup";
+            listViewGroup4.Header = "Selected";
+            listViewGroup4.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
+            listViewGroup4.Name = "selectedGroup";
             this.recordingListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup2});
+            listViewGroup4});
             this.recordingListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.recordingListView.HideSelection = false;
             this.recordingListView.Location = new System.Drawing.Point(3, 3);
@@ -207,11 +207,26 @@ namespace SoundSwitch.UI.Forms
             this.tabProfile.Text = global::SoundSwitch.Localization.SettingsStrings.profile_tab;
             this.tabProfile.UseVisualStyleBackColor = true;
             // 
+            // deleteProfileButton
+            // 
+            this.deleteProfileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.deleteProfileButton.Enabled = false;
+            this.deleteProfileButton.Image = global::SoundSwitch.Properties.Resources.profile_delete;
+            this.deleteProfileButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.deleteProfileButton.Location = new System.Drawing.Point(613, 322);
+            this.deleteProfileButton.Name = "deleteProfileButton";
+            this.deleteProfileButton.Size = new System.Drawing.Size(90, 26);
+            this.deleteProfileButton.TabIndex = 4;
+            this.deleteProfileButton.Text = "Delete";
+            this.deleteProfileButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.deleteProfileButton.UseVisualStyleBackColor = true;
+            this.deleteProfileButton.Click += new System.EventHandler(this.deleteProfileButton_Click);
+            // 
             // profileExplanationLabel
             // 
             this.profileExplanationLabel.Location = new System.Drawing.Point(7, 315);
             this.profileExplanationLabel.Name = "profileExplanationLabel";
-            this.profileExplanationLabel.Size = new System.Drawing.Size(520, 39);
+            this.profileExplanationLabel.Size = new System.Drawing.Size(505, 39);
             this.profileExplanationLabel.TabIndex = 3;
             this.profileExplanationLabel.Text = "Explanation";
             // 
@@ -220,23 +235,25 @@ namespace SoundSwitch.UI.Forms
             this.profilesListView.Dock = System.Windows.Forms.DockStyle.Top;
             this.profilesListView.HideSelection = false;
             this.profilesListView.Location = new System.Drawing.Point(3, 3);
-            this.profilesListView.MultiSelect = false;
             this.profilesListView.Name = "profilesListView";
             this.profilesListView.ShowGroups = false;
             this.profilesListView.Size = new System.Drawing.Size(703, 309);
             this.profilesListView.TabIndex = 2;
             this.profilesListView.UseCompatibleStateImageBehavior = false;
             this.profilesListView.View = System.Windows.Forms.View.Details;
+            this.profilesListView.SelectedIndexChanged += new System.EventHandler(this.profilesListView_SelectedIndexChanged);
             // 
             // addProfileButton
             // 
             this.addProfileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.addProfileButton.Image = global::SoundSwitch.Properties.Resources.profile_add;
             this.addProfileButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.addProfileButton.Location = new System.Drawing.Point(547, 325);
+            this.addProfileButton.Location = new System.Drawing.Point(518, 322);
             this.addProfileButton.Name = "addProfileButton";
-            this.addProfileButton.Size = new System.Drawing.Size(75, 23);
+            this.addProfileButton.Size = new System.Drawing.Size(89, 26);
             this.addProfileButton.TabIndex = 1;
             this.addProfileButton.Text = global::SoundSwitch.Localization.SettingsStrings.profile_addButton;
+            this.addProfileButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.addProfileButton.UseVisualStyleBackColor = true;
             this.addProfileButton.Click += new System.EventHandler(this.addProfileButton_Click);
             // 
@@ -508,17 +525,6 @@ namespace SoundSwitch.UI.Forms
             this.hotkeysCheckBox.TabIndex = 20;
             this.hotkeysCheckBox.UseVisualStyleBackColor = true;
             this.hotkeysCheckBox.CheckedChanged += new System.EventHandler(this.hotkeysCheckbox_CheckedChanged);
-            // 
-            // deleteProfileButton
-            // 
-            this.deleteProfileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.deleteProfileButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.deleteProfileButton.Location = new System.Drawing.Point(628, 325);
-            this.deleteProfileButton.Name = "deleteProfileButton";
-            this.deleteProfileButton.Size = new System.Drawing.Size(75, 23);
-            this.deleteProfileButton.TabIndex = 4;
-            this.deleteProfileButton.Text = "Delete";
-            this.deleteProfileButton.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
