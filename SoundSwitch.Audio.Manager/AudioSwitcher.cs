@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
 using SoundSwitch.Audio.Manager.Interop;
 using SoundSwitch.Audio.Manager.Interop.Client;
 using SoundSwitch.Audio.Manager.Interop.Com.Threading;
@@ -54,7 +55,15 @@ namespace SoundSwitch.Audio.Manager
         {
             if (role != ERole.ERole_enum_count)
             {
-                ComThread.Invoke((() => _policyClient.SetDefaultEndpoint(deviceId, role)));
+                ComThread.Invoke((() =>
+                {
+                    if (_enumerator.IsDefault(deviceId, EDataFlow.eRender, role) || _enumerator.IsDefault(deviceId, EDataFlow.eCapture, role))
+                    {
+                        Trace.WriteLine($"Default endpoint already {deviceId}");
+                        return;
+                    }
+                    _policyClient.SetDefaultEndpoint(deviceId, role);
+                }));
 
                 return;
             }
@@ -72,7 +81,6 @@ namespace SoundSwitch.Audio.Manager
         /// <param name="processId">ProcessID of the process</param>
         public void SwitchProcessTo(string deviceId, ERole role, EDataFlow flow, uint processId)
         {
-
             var roles = new ERole[]
             {
                 ERole.eConsole,
@@ -87,9 +95,16 @@ namespace SoundSwitch.Audio.Manager
                     role
                 };
             }
-
-
-            ComThread.Invoke((() => ExtendPolicyClient.SetDefaultEndPoint(deviceId, flow, roles, processId)));
+            ComThread.Invoke((() =>
+            {
+                var currentEndpoint = ExtendPolicyClient.GetDefaultEndPoint(flow, ERole.eConsole, processId);
+                if (currentEndpoint.Equals(deviceId))
+                {
+                    Trace.WriteLine($"Default endpoint for {processId} already {deviceId}");
+                    return;
+                }
+                ExtendPolicyClient.SetDefaultEndPoint(deviceId, flow, roles, processId);
+            }));
         }
         /// <summary>
         /// Switch the audio device of the Foreground Process
