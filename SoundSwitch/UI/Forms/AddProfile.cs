@@ -45,6 +45,7 @@ namespace SoundSwitch.UI.Forms
             hotKeyLabel.Text = SettingsStrings.hotkeys;
             recordingLabel.Text = SettingsStrings.recording;
             playbackLabel.Text = SettingsStrings.playback;
+            createButton.Text = SettingsStrings.profile_addButton;
         }
 
         private void InitBindings()
@@ -53,7 +54,7 @@ namespace SoundSwitch.UI.Forms
             programTextBox.DataBindings.Add(nameof(TextBox.Text), _profile, nameof(ProfileSetting.ApplicationPath), false, DataSourceUpdateMode.OnPropertyChanged);
             hotKeyTextBox.DataBindings.Add(nameof(HotKeyTextBox.HotKeys), _profile, nameof(ProfileSetting.HotKeys), true, DataSourceUpdateMode.OnPropertyChanged);
 
-    
+
             recordingComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(ProfileSetting.Recording), false, DataSourceUpdateMode.OnPropertyChanged);
             playbackComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(ProfileSetting.Playback), false, DataSourceUpdateMode.OnPropertyChanged);
         }
@@ -119,6 +120,7 @@ namespace SoundSwitch.UI.Forms
 
         private void playbackRemoveButton_Click(object sender, EventArgs e)
         {
+            _profile.Playback = null;
             try
             {
                 playbackComboBox.SelectedIndex = -1;
@@ -128,11 +130,12 @@ namespace SoundSwitch.UI.Forms
                 //Happens because I receive a System.DBNull when there isn't a selection.
             }
 
-            _profile.Playback = null;
+            playbackRemoveButton.Visible = false;
         }
 
         private void recordingRemoveButton_Click(object sender, EventArgs e)
         {
+            _profile.Recording = null;
             try
             {
                 recordingComboBox.SelectedIndex = -1;
@@ -142,7 +145,29 @@ namespace SoundSwitch.UI.Forms
                 //Happens because I receive a System.DBNull when there isn't a selection.
             }
 
-            _profile.Recording = null;
+            recordingRemoveButton.Visible = false;
+        }
+
+        private void playbackComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (playbackComboBox.SelectedIndex == -1)
+            {
+                playbackRemoveButton.Visible = false;
+                return;
+            }
+
+            playbackRemoveButton.Visible = true;
+        }
+
+        private void recordingComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (recordingComboBox.SelectedIndex == -1)
+            {
+                recordingRemoveButton.Visible = false;
+                return;
+            }
+
+            recordingRemoveButton.Visible = true;
         }
     }
 }

@@ -53,8 +53,7 @@ namespace SoundSwitch.UI.Forms
             // 
             // addProfileGroupBox
             // 
-            this.addProfileGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.addProfileGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
             this.addProfileGroupBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.addProfileGroupBox.Controls.Add(this.recordingRemoveButton);
             this.addProfileGroupBox.Controls.Add(this.playbackRemoveButton);
@@ -69,101 +68,101 @@ namespace SoundSwitch.UI.Forms
             this.addProfileGroupBox.Controls.Add(this.hotKeyLabel);
             this.addProfileGroupBox.Controls.Add(this.nameLabel);
             this.addProfileGroupBox.Controls.Add(this.nameTextBox);
-            this.addProfileGroupBox.Location = new System.Drawing.Point(12, 12);
+            this.addProfileGroupBox.Location = new System.Drawing.Point(14, 14);
             this.addProfileGroupBox.Name = "addProfileGroupBox";
-            this.addProfileGroupBox.Size = new System.Drawing.Size(382, 244);
+            this.addProfileGroupBox.Size = new System.Drawing.Size(440, 282);
             this.addProfileGroupBox.TabIndex = 0;
             this.addProfileGroupBox.TabStop = false;
             this.addProfileGroupBox.Text = "Profiles";
             // 
             // recordingRemoveButton
             // 
-            this.recordingRemoveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.recordingRemoveButton.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.recordingRemoveButton.Image = global::SoundSwitch.Properties.Resources.delete;
-            this.recordingRemoveButton.Location = new System.Drawing.Point(335, 201);
+            this.recordingRemoveButton.Location = new System.Drawing.Point(385, 232);
             this.recordingRemoveButton.Name = "recordingRemoveButton";
-            this.recordingRemoveButton.Size = new System.Drawing.Size(22, 22);
+            this.recordingRemoveButton.Size = new System.Drawing.Size(26, 25);
             this.recordingRemoveButton.TabIndex = 13;
             this.recordingRemoveButton.UseVisualStyleBackColor = true;
+            this.recordingRemoveButton.Visible = false;
             this.recordingRemoveButton.Click += new System.EventHandler(this.recordingRemoveButton_Click);
             // 
             // playbackRemoveButton
             // 
-            this.playbackRemoveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.playbackRemoveButton.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.playbackRemoveButton.Image = global::SoundSwitch.Properties.Resources.delete;
-            this.playbackRemoveButton.Location = new System.Drawing.Point(335, 152);
+            this.playbackRemoveButton.Location = new System.Drawing.Point(385, 175);
             this.playbackRemoveButton.Name = "playbackRemoveButton";
-            this.playbackRemoveButton.Size = new System.Drawing.Size(22, 22);
+            this.playbackRemoveButton.Size = new System.Drawing.Size(26, 25);
             this.playbackRemoveButton.TabIndex = 12;
             this.playbackRemoveButton.UseVisualStyleBackColor = true;
+            this.playbackRemoveButton.Visible = false;
             this.playbackRemoveButton.Click += new System.EventHandler(this.playbackRemoveButton_Click);
             // 
             // hotKeyTextBox
             // 
-            this.hotKeyTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.hotKeyTextBox.Location = new System.Drawing.Point(209, 86);
+            this.hotKeyTextBox.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.hotKeyTextBox.Location = new System.Drawing.Point(238, 99);
             this.hotKeyTextBox.Name = "hotKeyTextBox";
-            this.hotKeyTextBox.Size = new System.Drawing.Size(120, 20);
+            this.hotKeyTextBox.Size = new System.Drawing.Size(139, 23);
             this.hotKeyTextBox.TabIndex = 11;
             // 
             // recordingLabel
             // 
-            this.recordingLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.recordingLabel.Anchor = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
             this.recordingLabel.AutoSize = true;
-            this.recordingLabel.Location = new System.Drawing.Point(3, 185);
+            this.recordingLabel.Location = new System.Drawing.Point(3, 213);
             this.recordingLabel.Name = "recordingLabel";
-            this.recordingLabel.Size = new System.Drawing.Size(56, 13);
+            this.recordingLabel.Size = new System.Drawing.Size(61, 15);
             this.recordingLabel.TabIndex = 10;
             this.recordingLabel.Text = "Recording";
             // 
             // playbackLabel
             // 
-            this.playbackLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.playbackLabel.Anchor = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
             this.playbackLabel.AutoSize = true;
-            this.playbackLabel.Location = new System.Drawing.Point(3, 136);
+            this.playbackLabel.Location = new System.Drawing.Point(3, 157);
             this.playbackLabel.Name = "playbackLabel";
-            this.playbackLabel.Size = new System.Drawing.Size(51, 13);
+            this.playbackLabel.Size = new System.Drawing.Size(54, 15);
             this.playbackLabel.TabIndex = 9;
             this.playbackLabel.Text = "Playback";
             // 
             // recordingComboBox
             // 
-            this.recordingComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.recordingComboBox.Anchor = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
             this.recordingComboBox.DataSource = null;
             this.recordingComboBox.DisplayMember = "Tag";
             this.recordingComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.recordingComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.recordingComboBox.FormattingEnabled = true;
-            this.recordingComboBox.Location = new System.Drawing.Point(6, 201);
+            this.recordingComboBox.Location = new System.Drawing.Point(7, 232);
             this.recordingComboBox.Name = "recordingComboBox";
-            this.recordingComboBox.Size = new System.Drawing.Size(323, 21);
+            this.recordingComboBox.Size = new System.Drawing.Size(370, 24);
             this.recordingComboBox.TabIndex = 8;
             this.recordingComboBox.ValueMember = "Tag";
+            this.recordingComboBox.SelectedIndexChanged += new System.EventHandler(this.recordingComboBox_SelectedIndexChanged);
             // 
             // playbackComboBox
             // 
-            this.playbackComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.playbackComboBox.Anchor = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
             this.playbackComboBox.DataSource = null;
             this.playbackComboBox.DisplayMember = "Tag";
             this.playbackComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.playbackComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.playbackComboBox.FormattingEnabled = true;
-            this.playbackComboBox.Location = new System.Drawing.Point(6, 152);
+            this.playbackComboBox.Location = new System.Drawing.Point(7, 175);
             this.playbackComboBox.Name = "playbackComboBox";
-            this.playbackComboBox.Size = new System.Drawing.Size(323, 21);
+            this.playbackComboBox.Size = new System.Drawing.Size(370, 24);
             this.playbackComboBox.TabIndex = 7;
             this.playbackComboBox.ValueMember = "Tag";
+            this.playbackComboBox.SelectedIndexChanged += new System.EventHandler(this.playbackComboBox_SelectedIndexChanged);
             // 
             // selectProgramButton
             // 
-            this.selectProgramButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.selectProgramButton.Location = new System.Drawing.Point(144, 85);
+            this.selectProgramButton.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.selectProgramButton.Location = new System.Drawing.Point(162, 98);
             this.selectProgramButton.Name = "selectProgramButton";
-            this.selectProgramButton.Size = new System.Drawing.Size(24, 20);
+            this.selectProgramButton.Size = new System.Drawing.Size(28, 23);
             this.selectProgramButton.TabIndex = 6;
             this.selectProgramButton.Text = "...";
             this.selectProgramButton.UseVisualStyleBackColor = true;
@@ -172,77 +171,70 @@ namespace SoundSwitch.UI.Forms
             // programLabel
             // 
             this.programLabel.AutoSize = true;
-            this.programLabel.Location = new System.Drawing.Point(3, 70);
+            this.programLabel.Location = new System.Drawing.Point(3, 81);
             this.programLabel.Name = "programLabel";
-            this.programLabel.Size = new System.Drawing.Size(46, 13);
+            this.programLabel.Size = new System.Drawing.Size(53, 15);
             this.programLabel.TabIndex = 5;
             this.programLabel.Text = "Program";
             // 
             // programTextBox
             // 
-            this.programTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.programTextBox.Location = new System.Drawing.Point(6, 85);
+            this.programTextBox.Anchor = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.programTextBox.Location = new System.Drawing.Point(7, 98);
             this.programTextBox.Name = "programTextBox";
-            this.programTextBox.Size = new System.Drawing.Size(132, 20);
+            this.programTextBox.Size = new System.Drawing.Size(147, 23);
             this.programTextBox.TabIndex = 4;
             // 
             // hotKeyLabel
             // 
-            this.hotKeyLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.hotKeyLabel.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.hotKeyLabel.AutoSize = true;
-            this.hotKeyLabel.Location = new System.Drawing.Point(206, 70);
+            this.hotKeyLabel.Location = new System.Drawing.Point(234, 81);
             this.hotKeyLabel.Name = "hotKeyLabel";
-            this.hotKeyLabel.Size = new System.Drawing.Size(46, 13);
+            this.hotKeyLabel.Size = new System.Drawing.Size(50, 15);
             this.hotKeyLabel.TabIndex = 3;
             this.hotKeyLabel.Text = "Hotkeys";
             // 
             // nameLabel
             // 
-            this.nameLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.nameLabel.Anchor = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
             this.nameLabel.AutoSize = true;
-            this.nameLabel.Location = new System.Drawing.Point(3, 14);
+            this.nameLabel.Location = new System.Drawing.Point(3, 16);
             this.nameLabel.Name = "nameLabel";
-            this.nameLabel.Size = new System.Drawing.Size(35, 13);
+            this.nameLabel.Size = new System.Drawing.Size(39, 15);
             this.nameLabel.TabIndex = 1;
             this.nameLabel.Text = "Name";
             // 
             // nameTextBox
             // 
-            this.nameTextBox.Location = new System.Drawing.Point(6, 30);
+            this.nameTextBox.Location = new System.Drawing.Point(7, 35);
             this.nameTextBox.Name = "nameTextBox";
-            this.nameTextBox.Size = new System.Drawing.Size(145, 20);
+            this.nameTextBox.Size = new System.Drawing.Size(168, 23);
             this.nameTextBox.TabIndex = 0;
-            // 
-            // selectProgramDialog
-            // 
-            this.selectProgramDialog.FileName = global::SoundSwitch.Localization.SettingsStrings.profile_program;
             // 
             // createButton
             // 
-            this.createButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.createButton.Location = new System.Drawing.Point(319, 264);
+            this.createButton.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.createButton.Location = new System.Drawing.Point(366, 304);
             this.createButton.Name = "createButton";
-            this.createButton.Size = new System.Drawing.Size(75, 23);
+            this.createButton.Size = new System.Drawing.Size(87, 27);
             this.createButton.TabIndex = 1;
-            this.createButton.Text = global::SoundSwitch.Localization.SettingsStrings.profile_addButton;
+            this.createButton.Text = "Add";
             this.createButton.UseVisualStyleBackColor = true;
             this.createButton.Click += new System.EventHandler(this.createButton_Click);
             // 
             // AddProfile
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(406, 299);
+            this.ClientSize = new System.Drawing.Size(468, 344);
             this.Controls.Add(this.createButton);
             this.Controls.Add(this.addProfileGroupBox);
-            this.MinimumSize = new System.Drawing.Size(400, 304);
+            this.MinimumSize = new System.Drawing.Size(464, 345);
             this.Name = "AddProfile";
             this.addProfileGroupBox.ResumeLayout(false);
             this.addProfileGroupBox.PerformLayout();
             this.ResumeLayout(false);
-
         }
 
         #endregion
@@ -257,11 +249,11 @@ namespace SoundSwitch.UI.Forms
         private System.Windows.Forms.Button selectProgramButton;
         private System.Windows.Forms.Label playbackLabel;
         private System.Windows.Forms.Label recordingLabel;
-        private IconTextComboBox recordingComboBox;
-        private IconTextComboBox playbackComboBox;
-        private Button createButton;
-        private HotKeyTextBox hotKeyTextBox;
-        private Button playbackRemoveButton;
-        private Button recordingRemoveButton;
+        private System.Windows.Forms.Button recordingRemoveButton;
+        private System.Windows.Forms.Button playbackRemoveButton;
+        private SoundSwitch.UI.UserControls.HotKeyTextBox hotKeyTextBox;
+        private System.Windows.Forms.Button createButton;
+        private SoundSwitch.UI.UserControls.IconTextComboBox playbackComboBox;
+        private SoundSwitch.UI.UserControls.IconTextComboBox recordingComboBox;
     }
 }
