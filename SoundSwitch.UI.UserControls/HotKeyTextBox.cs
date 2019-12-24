@@ -27,32 +27,31 @@ namespace SoundSwitch.UI.UserControls
         }
 
         private HotKey _hotKey;
-        [Browsable(true)]
-        public event EventHandler<Event> HotKeyChanged;
+        [Browsable(true)] public event EventHandler<Event> HotKeyChanged;
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
             HotKey.ModifierKeys modifierKeys = 0;
             foreach (var pressedModifier in KeyboardWindowsAPI.GetPressedModifiers())
             {
-                if ((pressedModifier & Keys.Modifiers) == Keys.Control)
+                var modifier = (pressedModifier & Keys.Modifiers);
                 {
-                    modifierKeys |= HotKey.ModifierKeys.Control;
-                }
-
-                if ((pressedModifier & Keys.Modifiers) == Keys.Alt)
-                {
-                    modifierKeys |= HotKey.ModifierKeys.Alt;
-                }
-
-                if ((pressedModifier & Keys.Modifiers) == Keys.Shift)
-                {
-                    modifierKeys |= HotKey.ModifierKeys.Shift;
-                }
-
-                if (pressedModifier == Keys.LWin || pressedModifier == Keys.RWin)
-                {
-                    modifierKeys |= HotKey.ModifierKeys.Win;
+                    switch (modifier)
+                    {
+                        case Keys.Control:
+                            modifierKeys |= HotKey.ModifierKeys.Control;
+                            break;
+                        case Keys.Alt:
+                            modifierKeys |= HotKey.ModifierKeys.Alt;
+                            break;
+                        case Keys.Shift:
+                            modifierKeys |= HotKey.ModifierKeys.Shift;
+                            break;
+                        case Keys.LWin:
+                        case Keys.RWin:
+                            modifierKeys |= HotKey.ModifierKeys.Win;
+                            break;
+                    }
                 }
             }
 
