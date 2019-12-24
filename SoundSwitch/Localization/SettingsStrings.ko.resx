@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-	<xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
 					<xsd:element name="metadata">
 						<xsd:complexType>
 							<xsd:sequence>
@@ -43,177 +43,178 @@
 						</xsd:complexType>
 					</xsd:element>
 				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>2.0</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<data name="close" xml:space="preserve">
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="close" xml:space="preserve">
     <value>닫기</value>
   </data>
-	<data name="notificationOptionCustomized" xml:space="preserve">
+  <data name="notificationOptionCustomized" xml:space="preserve">
     <value>커스텀 소리 알림</value>
   </data>
-	<data name="updateNotify" xml:space="preserve">
-    <value>사용가능한 업데이트 있을 시 알림</value>
+  <data name="updateNotify" xml:space="preserve">
+    <value>사용 가능한 업데이트 있을 시 알림</value>
   </data>
-	<data name="foregroundAppTooltip" xml:space="preserve">
-    <value>현재 실행중인 응용프로그램 소리도 전환합니다. 비디오 게임에 유용합니다.</value>
+  <data name="foregroundAppTooltip" xml:space="preserve">
+    <value>현재 실행 중인 응용프로그램 소리도 전환합니다. 비디오 게임에 유용합니다.</value>
   </data>
-	<data name="notificationOptionWindowsDefault" xml:space="preserve">
+  <data name="notificationOptionWindowsDefault" xml:space="preserve">
     <value>윈도우 알림</value>
   </data>
-	<data name="disconnected" xml:space="preserve">
+  <data name="disconnected" xml:space="preserve">
     <value>연결되지 않음</value>
   </data>
-	<data name="cycleThrough" xml:space="preserve">
+  <data name="cycleThrough" xml:space="preserve">
     <value>전환</value>
   </data>
-	<data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
+  <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
     <value>선택된 재생장치만</value>
   </data>
-	<data name="notificationTooltip" xml:space="preserve">
+  <data name="notificationTooltip" xml:space="preserve">
     <value>윈도우 알림 : 윈도우 기본 트레이 팝업.
 사운드 알림 : 전환된 재생 장치에서 소리를 재생합니다.
 커스텀 사운드 알림 : 전환된 재생 장치에서 지정된 사운드를 재생합니다.
 토스트 형식 알림 : 특수한 형태의 윈도우 트레이 팝업을 사용합니다.
 배너 : 사용자 정의 항상 위 프레임을 사용합니다. 게임 사용 시에 유용합니다.</value>
   </data>
-	<data name="updateNever" xml:space="preserve">
-    <value>업데이트 확인 안함</value>
+  <data name="updateNever" xml:space="preserve">
+    <value>업데이트 확인 안 함</value>
   </data>
-	<data name="audioFileNotFound" xml:space="preserve">
-    <value>알림음으로 선택된 오디오 파일이 없습니다. SoundSwitch는 알림음 기본값을 {0} 으로 전환합니다.</value>
+  <data name="audioFileNotFound" xml:space="preserve">
+    <value>알림음으로 선택된 오디오 파일이 없습니다.
+SoundSwitch는 알림음 기본값을 {0}으로 전환합니다.</value>
   </data>
-	<data name="closeTooltip" xml:space="preserve">
+  <data name="closeTooltip" xml:space="preserve">
     <value>변경 사항을 자동 저장</value>
   </data>
-	<data name="notification" xml:space="preserve">
+  <data name="notification" xml:space="preserve">
     <value>알림</value>
   </data>
-	<data name="disableCustomSoundTooltip" xml:space="preserve">
+  <data name="disableCustomSoundTooltip" xml:space="preserve">
     <value>커스텀 사운드 비활성화</value>
   </data>
-	<data name="notificationOptionToast" xml:space="preserve">
+  <data name="notificationOptionToast" xml:space="preserve">
     <value>토스트 형식 알림</value>
   </data>
-	<data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
+  <data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
     <value>모든 재생장치</value>
   </data>
-	<data name="cycleThroughTooltip" xml:space="preserve">
+  <data name="cycleThroughTooltip" xml:space="preserve">
     <value>선택 항목 또는 모든 항목으로 장치 전환을 선택하세요.</value>
   </data>
-	<data name="basicSettings" xml:space="preserve">
+  <data name="basicSettings" xml:space="preserve">
     <value>기본 설정</value>
   </data>
-	<data name="recording" xml:space="preserve">
+  <data name="recording" xml:space="preserve">
     <value>녹음</value>
   </data>
-	<data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
+  <data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
     <value>녹음장치</value>
   </data>
-	<data name="selected" xml:space="preserve">
+  <data name="selected" xml:space="preserve">
     <value>선택됨</value>
   </data>
-	<data name="notificationOptionNone" xml:space="preserve">
+  <data name="notificationOptionNone" xml:space="preserve">
     <value>알림 없음</value>
   </data>
-	<data name="updateIncludeBetaVersions" xml:space="preserve">
+  <data name="updateIncludeBetaVersions" xml:space="preserve">
     <value>베타버전 포함</value>
   </data>
-	<data name="updateInstallAutomatically" xml:space="preserve">
+  <data name="updateInstallAutomatically" xml:space="preserve">
     <value>업데이트 자동 설치</value>
   </data>
-	<data name="keepSystemTrayIconTooltip" xml:space="preserve">
-    <value>이 옵션을 선택하면 '기본 재생 장치'가 변경 될 때 시스템 트레이 아이콘이 변경되지 않습니다.</value>
+  <data name="keepSystemTrayIconTooltip" xml:space="preserve">
+    <value>이 옵션을 선택하면 '기본 재생 장치'가 변경될 때 시스템 트레이 아이콘이 변경되지 않습니다.</value>
   </data>
-	<data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
+  <data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
     <value>재생장치</value>
   </data>
-	<data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
-    <value>프롬프트 메세지 없이 자동 설치합니다.</value>
+  <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
+    <value>프롬프트 메시지 없이 자동 설치합니다.</value>
   </data>
-	<data name="activePlayback" xml:space="preserve">
+  <data name="activePlayback" xml:space="preserve">
     <value>재생 : {0}</value>
   </data>
-	<data name="languageRestartRequiredCaption" xml:space="preserve">
+  <data name="languageRestartRequiredCaption" xml:space="preserve">
     <value>재시작 필요</value>
   </data>
-	<data name="iconChange" xml:space="preserve">
+  <data name="iconChange" xml:space="preserve">
     <value>트레이 아이콘</value>
   </data>
-	<data name="updateNeverTooltip" xml:space="preserve">
+  <data name="updateNeverTooltip" xml:space="preserve">
     <value>수동으로 업데이트를 확인합니다.</value>
   </data>
-	<data name="connected" xml:space="preserve">
+  <data name="connected" xml:space="preserve">
     <value>연결됨</value>
   </data>
-	<data name="notificationOptionSound" xml:space="preserve">
+  <data name="notificationOptionSound" xml:space="preserve">
     <value>사운드 알림</value>
   </data>
-	<data name="communicationsDevice" xml:space="preserve">
+  <data name="communicationsDevice" xml:space="preserve">
     <value>기본 통신장치 전환</value>
   </data>
-	<data name="language" xml:space="preserve">
+  <data name="language" xml:space="preserve">
     <value>언어</value>
   </data>
-	<data name="updateNotifyTooltip" xml:space="preserve">
-    <value>사용가능한 업데이트가 있으면 SoundSwitch에서 알려줍니다. 알림을 클릭하면 업데이트를 다운로드하여 설치할 지 묻는 팝업이 표시됩니다.</value>
+  <data name="updateNotifyTooltip" xml:space="preserve">
+    <value>사용 가능한 업데이트가 있으면 SoundSwitch에서 알려줍니다. 알림을 클릭하면 업데이트를 다운로드하여 설치할지 묻는 팝업이 표시됩니다.</value>
   </data>
-	<data name="hotkeysTooltip" xml:space="preserve">
+  <data name="hotkeysTooltip" xml:space="preserve">
     <value>핫키 활성화</value>
   </data>
-	<data name="selectSoundButtonTooltip" xml:space="preserve">
+  <data name="selectSoundButtonTooltip" xml:space="preserve">
     <value>알림소리 파일 선택</value>
   </data>
-	<data name="communicationsDeviceTooltip" xml:space="preserve">
-    <value>이 옵션을 선택 시 '기본 재생장치'가 함께 전환합니다. (예: Skype, TeamSpeak에 유용).</value>
+  <data name="communicationsDeviceTooltip" xml:space="preserve">
+    <value>이 옵션을 선택 시 '기본 통신장치'도 함께 전환합니다. (예: Skype, TeamSpeak에 유용).</value>
   </data>
-	<data name="playback" xml:space="preserve">
+  <data name="playback" xml:space="preserve">
     <value>재생</value>
   </data>
-	<data name="languageRestartRequired" xml:space="preserve">
-    <value>SoundSwitch를 다시 시작하면 언어가 변경됩니다.
-지금 다시 시작 하시겠습니까?</value>
+  <data name="languageRestartRequired" xml:space="preserve">
+    <value>언어를 변경하려면 SoundSwitch를 다시 시작해야 합니다.
+지금 다시 시작하시겠습니까?</value>
   </data>
-	<data name="activeRecording" xml:space="preserve">
+  <data name="activeRecording" xml:space="preserve">
     <value>녹음 : {0}</value>
   </data>
-	<data name="audioFiles" xml:space="preserve">
+  <data name="audioFiles" xml:space="preserve">
     <value>오디오 파일</value>
   </data>
-	<data name="foregroundApp" xml:space="preserve">
+  <data name="foregroundApp" xml:space="preserve">
     <value>우선 프로그램 전환</value>
   </data>
-	<data name="keepSystemTrayIcon" xml:space="preserve">
+  <data name="keepSystemTrayIcon" xml:space="preserve">
     <value>SoundSwitch의 시스템 트레이 아이콘 유지</value>
   </data>
-	<data name="settings" xml:space="preserve">
+  <data name="settings" xml:space="preserve">
     <value>설정</value>
   </data>
-	<data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
+  <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
     <value>모든장치</value>
   </data>
-	<data name="updateSettings" xml:space="preserve">
+  <data name="updateSettings" xml:space="preserve">
     <value>업데이트 설정</value>
   </data>
-	<data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
-    <value>체크 시 SoundSwitch는 GitHub에서 시험판 버전도 확인합니다.</value>
+  <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
+    <value>체크 시 SoundSwitch는 GitHub에서 베타 버전도 확인합니다.</value>
   </data>
-	<data name="audioSettings" xml:space="preserve">
+  <data name="audioSettings" xml:space="preserve">
     <value>오디오 설정</value>
   </data>
-	<data name="iconChange.tooltip" xml:space="preserve">
+  <data name="iconChange.tooltip" xml:space="preserve">
     <value>SoundSwitch의 트레이 아이콘 모양을 선택하세요.
 
 기본 : SoundSwitch의 기본 아이콘으로 유지합니다.
@@ -221,22 +222,79 @@
 녹음 : 녹음장치로 변경됩니다.
 모두 : 모든 유형의 장치가 전환될 때 변경됩니다.</value>
   </data>
-	<data name="notificationOptionBanner" xml:space="preserve">
+  <data name="notificationOptionBanner" xml:space="preserve">
     <value>배너</value>
   </data>
-	<data name="audioFileNotFoundCaption" xml:space="preserve">
+  <data name="audioFileNotFoundCaption" xml:space="preserve">
     <value>오디오 파일을 찾을 수 없습니다</value>
   </data>
-	<data name="tooltipOnHover" xml:space="preserve">
+  <data name="tooltipOnHover" xml:space="preserve">
     <value>호버 액션 툴팁</value>
   </data>
-	<data name="startWithWindows" xml:space="preserve">
+  <data name="startWithWindows" xml:space="preserve">
     <value>윈도우 시작 시 자동실행</value>
   </data>
-	<data name="hotkeys" xml:space="preserve">
+  <data name="hotkeys" xml:space="preserve">
     <value>핫키</value>
   </data>
-	<data name="tooltipOnHoverOptionNone" xml:space="preserve">
+  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
     <value>툴팁 사용안함</value>
+  </data>
+  <data name="profile.tab" xml:space="preserve">
+    <value>프로필</value>
+  </data>
+  <data name="profile.addButton" xml:space="preserve">
+    <value>추가</value>
+  </data>
+  <data name="profile.program" xml:space="preserve">
+    <value>응용프로그램</value>
+  </data>
+  <data name="profile.name" xml:space="preserve">
+    <value>이름</value>
+  </data>
+  <data name="profile.error.hotkey" xml:space="preserve">
+    <value>지정된 {0} 핫키는 이미 등록되어 있습니다.</value>
+  </data>
+  <data name="profile.error.application" xml:space="preserve">
+    <value>지정된 {0} 응용프로그램은 이미 연결된 프로필입니다.</value>
+  </data>
+  <data name="profile.error.name" xml:space="preserve">
+    <value>{0}인 프로필 이름이 이미 있습니다.</value>
+  </data>
+  <data name="profile.error.needHKOrPath" xml:space="preserve">
+    <value>핫키와 응용프로그램을 선택해 주세요.</value>
+  </data>
+  <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
+    <value>재생장치 또는 녹음장치를 선택해 주세요.</value>
+  </data>
+  <data name="profile.explanation" xml:space="preserve">
+    <value>특정 응용프로그램이 시작되거나 초점을 둘 때, 재생장치 또는 녹음장치를 전환하는 프로필을 추가합니다.</value>
+  </data>
+  <data name="profile.error.registerHotkeys" xml:space="preserve">
+    <value>다음 프로필에 대한 키를 등록할 수 없습니다 : {0}</value>
+  </data>
+  <data name="profile.error.registerHotkeys.title" xml:space="preserve">
+    <value>이미 사용된 핫키</value>
+  </data>
+  <data name="profile.feature.add" xml:space="preserve">
+    <value>프로필 추가</value>
+  </data>
+  <data name="profile.feature.executable" xml:space="preserve">
+    <value>실행 파일 (*.exe)</value>
+  </data>
+  <data name="profile.error.title" xml:space="preserve">
+    <value>프로필 오류</value>
+  </data>
+  <data name="profile.deleteButton" xml:space="preserve">
+    <value>삭제</value>
+  </data>
+  <data name="profile.error.delete" xml:space="preserve">
+    <value>프로필을 찾을 수 없습니다.</value>
+  </data>
+  <data name="profile.error.no-name" xml:space="preserve">
+    <value>프로필 이름이 필요합니다.</value>
+  </data>
+  <data name="profile.feature.profile" xml:space="preserve">
+    <value>프로필</value>
   </data>
 </root>
