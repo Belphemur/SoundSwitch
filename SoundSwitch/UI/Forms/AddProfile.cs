@@ -53,7 +53,7 @@ namespace SoundSwitch.UI.Forms
         {
             nameTextBox.DataBindings.Add(nameof(TextBox.Text), _profile, nameof(ProfileSetting.ProfileName), false, DataSourceUpdateMode.OnPropertyChanged);
             programTextBox.DataBindings.Add(nameof(TextBox.Text), _profile, nameof(ProfileSetting.ApplicationPath), false, DataSourceUpdateMode.OnPropertyChanged);
-            _hotkeyTextBox.DataBindings.Add(nameof(HotkeyTextBox.Hotkey), _profile, nameof(ProfileSetting.Hotkey), true, DataSourceUpdateMode.OnPropertyChanged);
+            hotKeyTextBox.DataBindings.Add(nameof(HotKeyTextBox.HotKey), _profile, nameof(ProfileSetting.HotKey), true, DataSourceUpdateMode.OnPropertyChanged);
 
 
             recordingComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(ProfileSetting.Recording), false, DataSourceUpdateMode.OnPropertyChanged);

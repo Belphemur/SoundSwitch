@@ -52,7 +52,7 @@ namespace SoundSwitch.UI.Forms
             // Credits and Attribution
             creditsAndAttributionGroupBox.Text = AboutStrings.credits;
             iconsLabel.Text = AboutStrings.icons;
-            keyboardHotkeySystemLabel.Text = AboutStrings.keyboardHotkeys;
+            keyboardHotKeySystemLabel.Text = AboutStrings.keyboardHotkeys;
             defaultPlaybackDeviceChangeLabel.Text = AboutStrings.defaultPlaybackDeviceChange;
         }
 

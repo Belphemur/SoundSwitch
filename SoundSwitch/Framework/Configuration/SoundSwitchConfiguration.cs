@@ -55,8 +55,8 @@ namespace SoundSwitch.Framework.Configuration
             Language = new LanguageFactory().GetWindowsLanguage();
             SelectedPlaybackDeviceListId = new HashSet<string>();
             SelectedRecordingDeviceListId = new HashSet<string>();
-            PlaybackHotKeys = new Hotkey(Keys.F11, Hotkey.ModifierKeys.Alt | Hotkey.ModifierKeys.Control);
-            RecordingHotKeys = new Hotkey(Keys.F7, Hotkey.ModifierKeys.Alt | Hotkey.ModifierKeys.Control);
+            PlaybackHotKey = new HotKey(Keys.F11, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
+            RecordingHotKey = new HotKey(Keys.F7, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
 
             SelectedDevices = new HashSet<DeviceInfo>();
             SwitchIcon = IconChangerFactory.ActionEnum.Never;
@@ -68,8 +68,8 @@ namespace SoundSwitch.Framework.Configuration
         public HashSet<string> SelectedRecordingDeviceListId { get; }
         public HashSet<DeviceInfo> SelectedDevices { get; }
         public bool FirstRun { get; set; }
-        public Hotkey PlaybackHotKeys { get; set; }
-        public Hotkey RecordingHotKeys { get; set; }
+        public HotKey PlaybackHotKey { get; set; }
+        public HotKey RecordingHotKey { get; set; }
         public bool ChangeCommunications { get; set; }
         public uint UpdateCheckInterval { get; set; }
         public UpdateMode UpdateMode { get; set; }

@@ -136,7 +136,7 @@
     <value>Settings</value>
   </data>
 	<data name="hotkeys" xml:space="preserve">
-    <value>Hotkeys</value>
+    <value>Hot key</value>
   </data>
 	<data name="communicationsDevice" xml:space="preserve">
     <value>Switch Default Communication Device</value>
@@ -169,7 +169,7 @@
     <value>Select the sound file for the notification</value>
   </data>
 	<data name="hotkeysTooltip" xml:space="preserve">
-    <value>Check to enable hotkeys.</value>
+    <value>Check to enable hot key.</value>
   </data>
 	<data name="basicSettings" xml:space="preserve">
     <value>Basic Settings</value>
@@ -311,7 +311,7 @@ Both: Change when any type of device is switched.</value>
 		<value>Name</value>
 	</data>
 	<data name="profile.error.hotkey" xml:space="preserve">
-		<value>This hotkey {0} is already registered.</value>
+		<value>This hot key {0} is already registered.</value>
 	</data>
 	<data name="profile.error.application" xml:space="preserve">
 		<value>This application {0} has already a linked profile.</value>
@@ -320,7 +320,7 @@ Both: Change when any type of device is switched.</value>
 		<value>There is already a profile named {0}.</value>
 	</data>
 	<data name="profile.error.needHKOrPath" xml:space="preserve">
-		<value>You need to set either the hotkey or/and the application.</value>
+		<value>You need to set either the hot key or/and the application.</value>
 	</data>
 	<data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
 		<value>You need to set a playback device or recording device.</value>
@@ -329,10 +329,10 @@ Both: Change when any type of device is switched.</value>
 		<value>Add a profile to switch to a certain playback or recording device, when a specific application is started or focused.</value>
 	</data>
 	<data name="profile.error.registerHotkeys" xml:space="preserve">
-		<value>Couldn't register the hotkeys for the following profiles: {0}</value>
+		<value>Couldn't register the hot key for the following profiles: {0}</value>
 	</data>
 	<data name="profile.error.registerHotkeys.title" xml:space="preserve">
-		<value>Already used Hotkeys</value>
+		<value>Already used hot key</value>
 	</data>
 	<data name="profile.feature.add" xml:space="preserve">
 		<value>Add Profile</value>

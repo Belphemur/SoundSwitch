@@ -116,7 +116,7 @@
 		<value>Default Playback device change</value>
   </data>
 	<data name="keyboardHotkeys" xml:space="preserve">
-		<value>Keyboard Hotkey system</value>
+		<value>Keyboard hot key system</value>
   </data>
 	<data name="icons" xml:space="preserve">
 		<value>Icons</value>

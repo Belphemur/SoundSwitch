@@ -38,8 +38,8 @@ namespace SoundSwitch.Framework.Configuration
         HashSet<DeviceInfo> SelectedDevices { get; }
 
         bool FirstRun { get; set; }
-        Hotkey PlaybackHotKeys { get; set; }
-        Hotkey RecordingHotKeys { get; set; }
+        HotKey PlaybackHotKey { get; set; }
+        HotKey RecordingHotKey { get; set; }
         bool ChangeCommunications { get; set; }
         uint UpdateCheckInterval { get; set; }
 

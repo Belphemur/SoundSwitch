@@ -64,10 +64,10 @@ namespace SoundSwitch.UI.Forms
             var closeToolTip = new ToolTip();
             closeToolTip.SetToolTip(closeButton, SettingsStrings.closeTooltip);
 
-            hotkeysTextBox.Text = AppConfigs.Configuration.PlaybackHotKeys.Display();
+            hotkeysTextBox.Text = AppConfigs.Configuration.PlaybackHotKey.Display();
             hotkeysTextBox.Tag =
-                new Tuple<DataFlow, Hotkey>(DataFlow.Render, AppConfigs.Configuration.PlaybackHotKeys);
-            hotkeysTextBox.Enabled = hotkeysCheckBox.Checked = AppConfigs.Configuration.PlaybackHotKeys.Enabled;
+                new Tuple<DataFlow, HotKey>(DataFlow.Render, AppConfigs.Configuration.PlaybackHotKey);
+            hotkeysTextBox.Enabled = hotkeysCheckBox.Checked = AppConfigs.Configuration.PlaybackHotKey.Enabled;
             hotkeysTextBox.KeyDown += (sender, args) => SetHotkey(args);
             var hotkeysToolTip = new ToolTip();
             hotkeysToolTip.SetToolTip(hotkeysCheckBox, SettingsStrings.hotkeysTooltip);
@@ -213,7 +213,7 @@ namespace SoundSwitch.UI.Forms
                 listViewItem.SubItems.AddRange(new[]
                 {
                     new ListViewItem.ListViewSubItem(listViewItem, profile.ApplicationPath?.Split('\\').Last() ?? "") {Tag = appIcon},
-                    new ListViewItem.ListViewSubItem(listViewItem, profile.Hotkey?.ToString() ?? ""),
+                    new ListViewItem.ListViewSubItem(listViewItem, profile.HotKey?.ToString() ?? ""),
                     new ListViewItem.ListViewSubItem(listViewItem, playback?.Name ?? profile.Playback?.ToString() ?? "") {Tag = playback?.SmallIcon},
                     new ListViewItem.ListViewSubItem(listViewItem, recording?.Name ?? profile.Recording?.ToString() ?? "") {Tag = recording?.SmallIcon},
                 });
@@ -313,31 +313,31 @@ namespace SoundSwitch.UI.Forms
 
         private void SetHotkey(KeyEventArgs e)
         {
-            Hotkey.ModifierKeys modifierKeys = 0;
+            HotKey.ModifierKeys modifierKeys = 0;
             var displayString = "";
             foreach (var pressedModifier in KeyboardWindowsAPI.GetPressedModifiers())
             {
                 if ((pressedModifier & Keys.Modifiers) == Keys.Control)
                 {
-                    modifierKeys |= Hotkey.ModifierKeys.Control;
+                    modifierKeys |= HotKey.ModifierKeys.Control;
                     displayString += "Ctrl+";
                 }
 
                 if ((pressedModifier & Keys.Modifiers) == Keys.Alt)
                 {
-                    modifierKeys |= Hotkey.ModifierKeys.Alt;
+                    modifierKeys |= HotKey.ModifierKeys.Alt;
                     displayString += "Alt+";
                 }
 
                 if ((pressedModifier & Keys.Modifiers) == Keys.Shift)
                 {
-                    modifierKeys |= Hotkey.ModifierKeys.Shift;
+                    modifierKeys |= HotKey.ModifierKeys.Shift;
                     displayString += "Shift+";
                 }
 
                 if (pressedModifier == Keys.LWin || pressedModifier == Keys.RWin)
                 {
-                    modifierKeys |= Hotkey.ModifierKeys.Win;
+                    modifierKeys |= HotKey.ModifierKeys.Win;
                     displayString += "Win+";
                 }
             }
@@ -354,8 +354,8 @@ namespace SoundSwitch.UI.Forms
             else
             {
                 hotkeysTextBox.Text = displayString + key;
-                var tuple = (Tuple<DataFlow, Hotkey>) hotkeysTextBox.Tag;
-                var newTuple = new Tuple<DataFlow, Hotkey>(tuple.Item1, new Hotkey(e.KeyCode, modifierKeys));
+                var tuple = (Tuple<DataFlow, HotKey>) hotkeysTextBox.Tag;
+                var newTuple = new Tuple<DataFlow, HotKey>(tuple.Item1, new HotKey(e.KeyCode, modifierKeys));
                 hotkeysTextBox.Tag = newTuple;
                 hotkeysTextBox.ForeColor = AppModel.Instance.SetHotkeyCombination(newTuple.Item2, newTuple.Item1)
                     ? Color.Green
@@ -377,18 +377,18 @@ namespace SoundSwitch.UI.Forms
             if (tabControlSender.SelectedTab == playbackTabPage)
             {
                 SetHotkeysFieldsVisibility(true);
-                hotkeysTextBox.Text = AppConfigs.Configuration.PlaybackHotKeys.Display();
+                hotkeysTextBox.Text = AppConfigs.Configuration.PlaybackHotKey.Display();
                 hotkeysTextBox.Tag =
-                    new Tuple<DataFlow, Hotkey>(DataFlow.Render, AppConfigs.Configuration.PlaybackHotKeys);
-                hotkeysCheckBox.Checked = AppConfigs.Configuration.PlaybackHotKeys.Enabled;
+                    new Tuple<DataFlow, HotKey>(DataFlow.Render, AppConfigs.Configuration.PlaybackHotKey);
+                hotkeysCheckBox.Checked = AppConfigs.Configuration.PlaybackHotKey.Enabled;
             }
             else if (tabControlSender.SelectedTab == recordingTabPage)
             {
                 SetHotkeysFieldsVisibility(true);
-                hotkeysTextBox.Text = AppConfigs.Configuration.RecordingHotKeys.Display();
+                hotkeysTextBox.Text = AppConfigs.Configuration.RecordingHotKey.Display();
                 hotkeysTextBox.Tag =
-                    new Tuple<DataFlow, Hotkey>(DataFlow.Capture, AppConfigs.Configuration.RecordingHotKeys);
-                hotkeysCheckBox.Checked = AppConfigs.Configuration.RecordingHotKeys.Enabled;
+                    new Tuple<DataFlow, HotKey>(DataFlow.Capture, AppConfigs.Configuration.RecordingHotKey);
+                hotkeysCheckBox.Checked = AppConfigs.Configuration.RecordingHotKey.Enabled;
             }
             else
             {
@@ -492,7 +492,7 @@ namespace SoundSwitch.UI.Forms
 
         private void hotkeysCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            var tuple = (Tuple<DataFlow, Hotkey>) hotkeysTextBox.Tag;
+            var tuple = (Tuple<DataFlow, HotKey>) hotkeysTextBox.Tag;
             var currentState = tuple.Item2.Enabled;
             hotkeysTextBox.Enabled = tuple.Item2.Enabled = hotkeysCheckBox.Checked;
             if (currentState != tuple.Item2.Enabled)

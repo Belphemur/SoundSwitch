@@ -241,7 +241,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hotkeys.
+        ///   Looks up a localized string similar to Hot key.
         /// </summary>
         internal static string hotkeys {
             get {
@@ -250,7 +250,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Check to enable hotkeys..
+        ///   Looks up a localized string similar to Check to enable hot key..
         /// </summary>
         internal static string hotkeysTooltip {
             get {
@@ -449,7 +449,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This hotkey {0} is already registered..
+        ///   Looks up a localized string similar to This hot key {0} is already registered..
         /// </summary>
         internal static string profile_error_hotkey {
             get {
@@ -467,7 +467,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You need to set either the hotkey or/and the application..
+        ///   Looks up a localized string similar to You need to set either the hot key or/and the application..
         /// </summary>
         internal static string profile_error_needHKOrPath {
             get {
@@ -494,7 +494,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Couldn&apos;t register the hotkeys for the following profiles: {0}.
+        ///   Looks up a localized string similar to Couldn&apos;t register the hot key for the following profiles: {0}.
         /// </summary>
         internal static string profile_error_registerHotkeys {
             get {
@@ -503,7 +503,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Already used Hotkeys.
+        ///   Looks up a localized string similar to Already used hot key.
         /// </summary>
         internal static string profile_error_registerHotkeys_title {
             get {

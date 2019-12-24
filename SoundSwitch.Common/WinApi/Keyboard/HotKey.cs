@@ -17,7 +17,7 @@ using System.Windows.Forms;
 
 namespace SoundSwitch.Common.WinApi.Keyboard
 {
-    public class Hotkey : IEquatable<Hotkey>
+    public class HotKey : IEquatable<HotKey>
     {
         /// <summary>
         ///     The enumeration of possible modifiers.
@@ -31,14 +31,14 @@ namespace SoundSwitch.Common.WinApi.Keyboard
             Win = 8
         }
 
-        public Hotkey(Keys keys, ModifierKeys modifier)
+        public HotKey(Keys keys, ModifierKeys modifier)
         {
             Keys = keys;
             Modifier = modifier;
             Enabled = true;
         }
 
-        public Hotkey()
+        public HotKey()
         {
             Enabled = true;
         }
@@ -47,7 +47,7 @@ namespace SoundSwitch.Common.WinApi.Keyboard
         public ModifierKeys Modifier { get; set; }
         public bool Enabled { get; set; }
 
-        public bool Equals(Hotkey other)
+        public bool Equals(HotKey other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -59,7 +59,7 @@ namespace SoundSwitch.Common.WinApi.Keyboard
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != GetType()) return false;
-            return Equals((Hotkey) obj);
+            return Equals((HotKey) obj);
         }
 
         public override int GetHashCode()
@@ -70,12 +70,12 @@ namespace SoundSwitch.Common.WinApi.Keyboard
             }
         }
 
-        public static bool operator ==(Hotkey left, Hotkey right)
+        public static bool operator ==(HotKey left, HotKey right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(Hotkey left, Hotkey right)
+        public static bool operator !=(HotKey left, HotKey right)
         {
             return !Equals(left, right);
         }

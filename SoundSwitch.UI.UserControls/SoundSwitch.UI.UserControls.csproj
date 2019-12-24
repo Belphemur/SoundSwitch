@@ -49,7 +49,7 @@
     <Compile Include="ChangelogViewer.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="HotkeyTextBox.cs">
+    <Compile Include="HotKeyTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="IconListView.cs">

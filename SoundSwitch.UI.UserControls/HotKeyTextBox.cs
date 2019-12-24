@@ -7,7 +7,7 @@ using SoundSwitch.Common.WinApi.Keyboard;
 
 namespace SoundSwitch.UI.UserControls
 {
-    public class HotkeyTextBox : TextBox
+    public class HotKeyTextBox : TextBox
     {
         public class Event : EventArgs
         {
@@ -15,44 +15,44 @@ namespace SoundSwitch.UI.UserControls
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         [DefaultValue(null)]
-        public Hotkey Hotkey
+        public HotKey HotKey
         {
-            get => _hotkey;
+            get => _hotKey;
             set
             {
-                _hotkey = value;
+                _hotKey = value;
                 Text = value?.Display() ?? "";
                 HotKeyChanged?.Invoke(this, new Event());
             }
         }
 
-        private Hotkey _hotkey;
+        private HotKey _hotKey;
         [Browsable(true)]
         public event EventHandler<Event> HotKeyChanged;
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            Hotkey.ModifierKeys modifierKeys = 0;
+            HotKey.ModifierKeys modifierKeys = 0;
             foreach (var pressedModifier in KeyboardWindowsAPI.GetPressedModifiers())
             {
                 if ((pressedModifier & Keys.Modifiers) == Keys.Control)
                 {
-                    modifierKeys |= Hotkey.ModifierKeys.Control;
+                    modifierKeys |= HotKey.ModifierKeys.Control;
                 }
 
                 if ((pressedModifier & Keys.Modifiers) == Keys.Alt)
                 {
-                    modifierKeys |= Hotkey.ModifierKeys.Alt;
+                    modifierKeys |= HotKey.ModifierKeys.Alt;
                 }
 
                 if ((pressedModifier & Keys.Modifiers) == Keys.Shift)
                 {
-                    modifierKeys |= Hotkey.ModifierKeys.Shift;
+                    modifierKeys |= HotKey.ModifierKeys.Shift;
                 }
 
                 if (pressedModifier == Keys.LWin || pressedModifier == Keys.RWin)
                 {
-                    modifierKeys |= Hotkey.ModifierKeys.Win;
+                    modifierKeys |= HotKey.ModifierKeys.Win;
                 }
             }
 
@@ -62,12 +62,12 @@ namespace SoundSwitch.UI.UserControls
 
             if (key == Keys.None)
             {
-                Text = new Hotkey(key, modifierKeys).Display();
+                Text = new HotKey(key, modifierKeys).Display();
                 ForeColor = Color.Crimson;
             }
             else
             {
-                Hotkey = new Hotkey(key, modifierKeys);
+                HotKey = new HotKey(key, modifierKeys);
                 ForeColor = Color.Green;
             }
 

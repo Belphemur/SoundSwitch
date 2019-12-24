@@ -35,7 +35,7 @@ namespace SoundSwitch.UI.Forms
             this.addProfileGroupBox = new System.Windows.Forms.GroupBox();
             this.recordingRemoveButton = new System.Windows.Forms.Button();
             this.playbackRemoveButton = new System.Windows.Forms.Button();
-            this._hotkeyTextBox = new SoundSwitch.UI.UserControls.HotkeyTextBox();
+            this.hotKeyTextBox = new SoundSwitch.UI.UserControls.HotKeyTextBox();
             this.recordingLabel = new System.Windows.Forms.Label();
             this.playbackLabel = new System.Windows.Forms.Label();
             this.recordingComboBox = new SoundSwitch.UI.UserControls.IconTextComboBox();
@@ -57,7 +57,7 @@ namespace SoundSwitch.UI.Forms
             this.addProfileGroupBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.addProfileGroupBox.Controls.Add(this.recordingRemoveButton);
             this.addProfileGroupBox.Controls.Add(this.playbackRemoveButton);
-            this.addProfileGroupBox.Controls.Add(this._hotkeyTextBox);
+            this.addProfileGroupBox.Controls.Add(this.hotKeyTextBox);
             this.addProfileGroupBox.Controls.Add(this.recordingLabel);
             this.addProfileGroupBox.Controls.Add(this.playbackLabel);
             this.addProfileGroupBox.Controls.Add(this.recordingComboBox);
@@ -101,11 +101,11 @@ namespace SoundSwitch.UI.Forms
             // 
             // hotKeyTextBox
             // 
-            this._hotkeyTextBox.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this._hotkeyTextBox.Location = new System.Drawing.Point(238, 99);
-            this._hotkeyTextBox.Name = "_hotkeyTextBox";
-            this._hotkeyTextBox.Size = new System.Drawing.Size(139, 23);
-            this._hotkeyTextBox.TabIndex = 11;
+            this.hotKeyTextBox.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.hotKeyTextBox.Location = new System.Drawing.Point(238, 99);
+            this.hotKeyTextBox.Name = "hotKeyTextBox";
+            this.hotKeyTextBox.Size = new System.Drawing.Size(139, 23);
+            this.hotKeyTextBox.TabIndex = 11;
             // 
             // recordingLabel
             // 
@@ -251,7 +251,7 @@ namespace SoundSwitch.UI.Forms
         private System.Windows.Forms.Label recordingLabel;
         private System.Windows.Forms.Button recordingRemoveButton;
         private System.Windows.Forms.Button playbackRemoveButton;
-        private SoundSwitch.UI.UserControls.HotkeyTextBox _hotkeyTextBox;
+        private SoundSwitch.UI.UserControls.HotKeyTextBox hotKeyTextBox;
         private System.Windows.Forms.Button createButton;
         private SoundSwitch.UI.UserControls.IconTextComboBox playbackComboBox;
         private SoundSwitch.UI.UserControls.IconTextComboBox recordingComboBox;

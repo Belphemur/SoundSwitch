@@ -204,10 +204,10 @@ namespace SoundSwitch.Model
             {
                 throw new InvalidOperationException("Already initialized");
             }
-            SetHotkeyCombination(AppConfigs.Configuration.PlaybackHotKeys, DataFlow.Render);
-            SetHotkeyCombination(AppConfigs.Configuration.RecordingHotKeys, DataFlow.Capture);
+            SetHotkeyCombination(AppConfigs.Configuration.PlaybackHotKey, DataFlow.Render);
+            SetHotkeyCombination(AppConfigs.Configuration.RecordingHotKey, DataFlow.Capture);
 
-            WindowsAPIAdapter.HotkeyPressed += HandleHotkeyPress;
+            WindowsAPIAdapter.HotKeyPressed += HandleHotkeyPress;
 
             ProfileManager
                 .Init()
@@ -341,31 +341,31 @@ namespace SoundSwitch.Model
 
         #region Hot keys
 
-        public bool SetHotkeyCombination(Hotkey hotkeys, DataFlow deviceType)
+        public bool SetHotkeyCombination(HotKey hotkeys, DataFlow deviceType)
         {
 
-            Hotkey confHotkey = null;
+            HotKey confHotKey = null;
             switch (deviceType)
             {
                  case DataFlow.Render:
-                    confHotkey = AppConfigs.Configuration.PlaybackHotKeys;
+                    confHotKey = AppConfigs.Configuration.PlaybackHotKey;
                     break;
                 case DataFlow.Capture:
-                    confHotkey = AppConfigs.Configuration.RecordingHotKeys;
+                    confHotKey = AppConfigs.Configuration.RecordingHotKey;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(deviceType), deviceType, null);
             }
 
-            Log.Information("Unregister previous hotkeys {hotkeys}", confHotkey);
-            WindowsAPIAdapter.UnRegisterHotkey(confHotkey);
-            Log.Information("Unregistered previous hotkeys {hotkeys}", confHotkey);
+            Log.Information("Unregister previous hotkeys {hotkeys}", confHotKey);
+            WindowsAPIAdapter.UnRegisterHotKey(confHotKey);
+            Log.Information("Unregistered previous hotkeys {hotkeys}", confHotKey);
 
-            if (hotkeys.Enabled && !WindowsAPIAdapter.RegisterHotkey(hotkeys))
+            if (hotkeys.Enabled && !WindowsAPIAdapter.RegisterHotKey(hotkeys))
             {
                 Log.Warning("Can't register new hotkeys {hotkeys}", hotkeys);
                 ErrorTriggered?.Invoke(this,
-                    new ExceptionEvent(new Exception("Impossible to register Hotkey: " + hotkeys)));
+                    new ExceptionEvent(new Exception("Impossible to register HotKey: " + hotkeys)));
                 return false;
             }
 
@@ -374,10 +374,10 @@ namespace SoundSwitch.Model
             switch (deviceType)
             {
                 case DataFlow.Render:
-                    AppConfigs.Configuration.PlaybackHotKeys = hotkeys;
+                    AppConfigs.Configuration.PlaybackHotKey = hotkeys;
                     break;
                 case DataFlow.Capture:
-                    AppConfigs.Configuration.RecordingHotKeys = hotkeys;
+                    AppConfigs.Configuration.RecordingHotKey = hotkeys;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(deviceType), deviceType, null);
@@ -391,19 +391,19 @@ namespace SoundSwitch.Model
         private void HandleHotkeyPress(object sender, WindowsAPIAdapter.KeyPressedEventArgs e)
         {
 
-            if (e.Hotkey != AppConfigs.Configuration.PlaybackHotKeys && e.Hotkey != AppConfigs.Configuration.RecordingHotKeys)
+            if (e.HotKey != AppConfigs.Configuration.PlaybackHotKey && e.HotKey != AppConfigs.Configuration.RecordingHotKey)
             {
-                Log.Debug("Not the registered Hotkeys {hotkeys}", e.Hotkey);
+                Log.Debug("Not the registered Hotkeys {hotkeys}", e.HotKey);
                 return;
             }
 
             try
             {
-                if (e.Hotkey == AppConfigs.Configuration.PlaybackHotKeys)
+                if (e.HotKey == AppConfigs.Configuration.PlaybackHotKey)
                 {
                     CycleActiveDevice(DataFlow.Render);
                 }
-                else if (e.Hotkey == AppConfigs.Configuration.RecordingHotKeys)
+                else if (e.HotKey == AppConfigs.Configuration.RecordingHotKey)
                 {
                     CycleActiveDevice(DataFlow.Capture);
                 }
