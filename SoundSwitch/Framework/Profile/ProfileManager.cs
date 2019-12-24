@@ -102,6 +102,23 @@ namespace SoundSwitch.Framework.Profile
         /// <returns></returns>
         public Result<string, VoidSuccess> AddProfile(ProfileSetting profile)
         {
+            return ValidateAddProfile(profile)
+                .Map(success =>
+                {
+                    if (profile.ApplicationPath != null)
+                        _profileByApplication.Add(profile.ApplicationPath.ToLower(), profile);
+                    if (profile.Hotkey != null)
+                        _profileByHotkey.Add(profile.Hotkey, profile);
+
+                    AppConfigs.Configuration.ProfileSettings.Add(profile);
+                    AppConfigs.Configuration.Save();
+
+                    return Result.Success();
+                });
+        }
+
+        private Result<string, VoidSuccess> ValidateAddProfile(ProfileSetting profile)
+        {
             if (string.IsNullOrEmpty(profile.ProfileName))
             {
                 return SettingsStrings.profile_error_no_name;
@@ -136,15 +153,6 @@ namespace SoundSwitch.Framework.Profile
             {
                 return string.Format(SettingsStrings.profile_error_hotkey, profile.Hotkey);
             }
-
-
-            if (profile.ApplicationPath != null)
-                _profileByApplication.Add(profile.ApplicationPath.ToLower(), profile);
-            if (profile.Hotkey != null)
-                _profileByHotkey.Add(profile.Hotkey, profile);
-
-            AppConfigs.Configuration.ProfileSettings.Add(profile);
-            AppConfigs.Configuration.Save();
 
             return Result.Success();
         }
