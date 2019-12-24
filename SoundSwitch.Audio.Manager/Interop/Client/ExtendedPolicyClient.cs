@@ -69,10 +69,6 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
         /// <summary>
         /// Get the deviceId of the current DefaultEndpoint
         /// </summary>
-        /// <param name="flow"></param>
-        /// <param name="role"></param>
-        /// <param name="processId"></param>
-        /// <returns></returns>
         public string GetDefaultEndPoint(EDataFlow flow, ERole role, uint processId)
         {
             try
