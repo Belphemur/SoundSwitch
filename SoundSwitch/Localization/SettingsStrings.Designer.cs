@@ -548,6 +548,15 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Profile.
+        /// </summary>
+        internal static string profile_feature_profile {
+            get {
+                return ResourceManager.GetString("profile.feature.profile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         internal static string profile_name {

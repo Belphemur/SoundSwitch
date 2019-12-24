@@ -37,6 +37,8 @@
             this.maintainerLinkLabel = new System.Windows.Forms.LinkLabel();
             this.maintainedByLabel = new System.Windows.Forms.Label();
             this.creditsAndAttributionGroupBox = new System.Windows.Forms.GroupBox();
+            this.logoCreatorLabel = new System.Windows.Forms.LinkLabel();
+            this.logoMadeLabel = new System.Windows.Forms.Label();
             this.defaultPlaybackDeviceChangeLinkLabel = new System.Windows.Forms.LinkLabel();
             this.defaultPlaybackDeviceChangeLabel = new System.Windows.Forms.Label();
             this.keyboardHotkeySystemLinkLabel = new System.Windows.Forms.LinkLabel();
@@ -44,17 +46,15 @@
             this.iconsLinkLabel = new System.Windows.Forms.LinkLabel();
             this.iconsLabel = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.logoCreatorLabel = new System.Windows.Forms.LinkLabel();
-            this.logoMadeLabel = new System.Windows.Forms.Label();
             this.authorAndProgramInfoGroupBox.SuspendLayout();
             this.creditsAndAttributionGroupBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize) (this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // appNameLabel
             // 
             this.appNameLabel.AutoSize = true;
-            this.appNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.appNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.appNameLabel.Location = new System.Drawing.Point(72, 13);
             this.appNameLabel.Name = "appNameLabel";
             this.appNameLabel.Size = new System.Drawing.Size(141, 31);
@@ -66,7 +66,7 @@
             this.createdByLabel.AutoSize = true;
             this.createdByLabel.Location = new System.Drawing.Point(6, 47);
             this.createdByLabel.Name = "createdByLabel";
-            this.createdByLabel.Size = new System.Drawing.Size(58, 13);
+            this.createdByLabel.Size = new System.Drawing.Size(64, 15);
             this.createdByLabel.TabIndex = 1;
             this.createdByLabel.Text = "Created by";
             // 
@@ -75,7 +75,7 @@
             this.creatorLinkLabel.AutoSize = true;
             this.creatorLinkLabel.Location = new System.Drawing.Point(148, 47);
             this.creatorLinkLabel.Name = "creatorLinkLabel";
-            this.creatorLinkLabel.Size = new System.Drawing.Size(81, 13);
+            this.creatorLinkLabel.Size = new System.Drawing.Size(90, 15);
             this.creatorLinkLabel.TabIndex = 2;
             this.creatorLinkLabel.TabStop = true;
             this.creatorLinkLabel.Text = "Jeroen Pelgrims";
@@ -86,7 +86,7 @@
             this.versionLabel.AutoSize = true;
             this.versionLabel.Location = new System.Drawing.Point(6, 71);
             this.versionLabel.Name = "versionLabel";
-            this.versionLabel.Size = new System.Drawing.Size(42, 13);
+            this.versionLabel.Size = new System.Drawing.Size(45, 15);
             this.versionLabel.TabIndex = 3;
             this.versionLabel.Text = "Version";
             // 
@@ -95,7 +95,7 @@
             this.versionLinkLabel.AutoSize = true;
             this.versionLinkLabel.Location = new System.Drawing.Point(148, 71);
             this.versionLinkLabel.Name = "versionLinkLabel";
-            this.versionLinkLabel.Size = new System.Drawing.Size(79, 13);
+            this.versionLinkLabel.Size = new System.Drawing.Size(79, 15);
             this.versionLinkLabel.TabIndex = 4;
             this.versionLinkLabel.TabStop = true;
             this.versionLinkLabel.Text = "X.XX.X.XXXXX";
@@ -121,7 +121,7 @@
             this.maintainerLinkLabel.AutoSize = true;
             this.maintainerLinkLabel.Location = new System.Drawing.Point(148, 21);
             this.maintainerLinkLabel.Name = "maintainerLinkLabel";
-            this.maintainerLinkLabel.Size = new System.Drawing.Size(72, 13);
+            this.maintainerLinkLabel.Size = new System.Drawing.Size(83, 15);
             this.maintainerLinkLabel.TabIndex = 6;
             this.maintainerLinkLabel.TabStop = true;
             this.maintainerLinkLabel.Text = "Antoine Aflalo";
@@ -132,7 +132,7 @@
             this.maintainedByLabel.AutoSize = true;
             this.maintainedByLabel.Location = new System.Drawing.Point(6, 21);
             this.maintainedByLabel.Name = "maintainedByLabel";
-            this.maintainedByLabel.Size = new System.Drawing.Size(73, 13);
+            this.maintainedByLabel.Size = new System.Drawing.Size(83, 15);
             this.maintainedByLabel.TabIndex = 5;
             this.maintainedByLabel.Text = "Maintained by";
             // 
@@ -153,12 +153,31 @@
             this.creditsAndAttributionGroupBox.TabStop = false;
             this.creditsAndAttributionGroupBox.Text = "Credits and Attribution";
             // 
+            // logoCreatorLabel
+            // 
+            this.logoCreatorLabel.AutoSize = true;
+            this.logoCreatorLabel.Location = new System.Drawing.Point(148, 105);
+            this.logoCreatorLabel.Name = "logoCreatorLabel";
+            this.logoCreatorLabel.Size = new System.Drawing.Size(82, 15);
+            this.logoCreatorLabel.TabIndex = 9;
+            this.logoCreatorLabel.TabStop = true;
+            this.logoCreatorLabel.Text = "@linadesteem";
+            this.logoCreatorLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.logoCreatorLabel_LinkClicked);
+            // 
+            // logoMadeLabel
+            // 
+            this.logoMadeLabel.Location = new System.Drawing.Point(6, 105);
+            this.logoMadeLabel.Name = "logoMadeLabel";
+            this.logoMadeLabel.Size = new System.Drawing.Size(137, 28);
+            this.logoMadeLabel.TabIndex = 8;
+            this.logoMadeLabel.Text = "Logo made by";
+            // 
             // defaultPlaybackDeviceChangeLinkLabel
             // 
             this.defaultPlaybackDeviceChangeLinkLabel.AutoSize = true;
             this.defaultPlaybackDeviceChangeLinkLabel.Location = new System.Drawing.Point(148, 71);
             this.defaultPlaybackDeviceChangeLinkLabel.Name = "defaultPlaybackDeviceChangeLinkLabel";
-            this.defaultPlaybackDeviceChangeLinkLabel.Size = new System.Drawing.Size(39, 13);
+            this.defaultPlaybackDeviceChangeLinkLabel.Size = new System.Drawing.Size(38, 15);
             this.defaultPlaybackDeviceChangeLinkLabel.TabIndex = 7;
             this.defaultPlaybackDeviceChangeLinkLabel.TabStop = true;
             this.defaultPlaybackDeviceChangeLinkLabel.Text = "EreTIk";
@@ -177,7 +196,7 @@
             this.keyboardHotkeySystemLinkLabel.AutoSize = true;
             this.keyboardHotkeySystemLinkLabel.Location = new System.Drawing.Point(148, 46);
             this.keyboardHotkeySystemLinkLabel.Name = "keyboardHotkeySystemLinkLabel";
-            this.keyboardHotkeySystemLinkLabel.Size = new System.Drawing.Size(105, 13);
+            this.keyboardHotkeySystemLinkLabel.Size = new System.Drawing.Size(118, 15);
             this.keyboardHotkeySystemLinkLabel.TabIndex = 3;
             this.keyboardHotkeySystemLinkLabel.TabStop = true;
             this.keyboardHotkeySystemLinkLabel.Text = "Christian Liensberger";
@@ -188,7 +207,7 @@
             this.keyboardHotkeySystemLabel.AutoSize = true;
             this.keyboardHotkeySystemLabel.Location = new System.Drawing.Point(6, 46);
             this.keyboardHotkeySystemLabel.Name = "keyboardHotkeySystemLabel";
-            this.keyboardHotkeySystemLabel.Size = new System.Drawing.Size(125, 13);
+            this.keyboardHotkeySystemLabel.Size = new System.Drawing.Size(138, 15);
             this.keyboardHotkeySystemLabel.TabIndex = 2;
             this.keyboardHotkeySystemLabel.Text = "Keyboard Hotkey system";
             // 
@@ -197,7 +216,7 @@
             this.iconsLinkLabel.AutoSize = true;
             this.iconsLinkLabel.Location = new System.Drawing.Point(148, 23);
             this.iconsLinkLabel.Name = "iconsLinkLabel";
-            this.iconsLinkLabel.Size = new System.Drawing.Size(61, 13);
+            this.iconsLinkLabel.Size = new System.Drawing.Size(62, 15);
             this.iconsLinkLabel.TabIndex = 1;
             this.iconsLinkLabel.TabStop = true;
             this.iconsLinkLabel.Text = "Pastel SVG";
@@ -208,7 +227,7 @@
             this.iconsLabel.AutoSize = true;
             this.iconsLabel.Location = new System.Drawing.Point(6, 23);
             this.iconsLabel.Name = "iconsLabel";
-            this.iconsLabel.Size = new System.Drawing.Size(33, 13);
+            this.iconsLabel.Size = new System.Drawing.Size(35, 15);
             this.iconsLabel.TabIndex = 0;
             this.iconsLabel.Text = "Icons";
             // 
@@ -221,25 +240,6 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox1.TabIndex = 7;
             this.pictureBox1.TabStop = false;
-            // 
-            // logoCreatorLabel
-            // 
-            this.logoCreatorLabel.AutoSize = true;
-            this.logoCreatorLabel.Location = new System.Drawing.Point(148, 105);
-            this.logoCreatorLabel.Name = "logoCreatorLabel";
-            this.logoCreatorLabel.Size = new System.Drawing.Size(74, 13);
-            this.logoCreatorLabel.TabIndex = 9;
-            this.logoCreatorLabel.TabStop = true;
-            this.logoCreatorLabel.Text = "@linadesteem";
-            this.logoCreatorLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.logoCreatorLabel_LinkClicked);
-            // 
-            // logoMadeLabel
-            // 
-            this.logoMadeLabel.Location = new System.Drawing.Point(6, 105);
-            this.logoMadeLabel.Name = "logoMadeLabel";
-            this.logoMadeLabel.Size = new System.Drawing.Size(137, 28);
-            this.logoMadeLabel.TabIndex = 8;
-            this.logoMadeLabel.Text = "Logo made by";
             // 
             // About
             // 
@@ -260,10 +260,9 @@
             this.authorAndProgramInfoGroupBox.PerformLayout();
             this.creditsAndAttributionGroupBox.ResumeLayout(false);
             this.creditsAndAttributionGroupBox.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize) (this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion

@@ -46,6 +46,7 @@ namespace SoundSwitch.UI.Forms
             recordingLabel.Text = SettingsStrings.recording;
             playbackLabel.Text = SettingsStrings.playback;
             createButton.Text = SettingsStrings.profile_addButton;
+            addProfileGroupBox.Text = SettingsStrings.profile_feature_profile;
         }
 
         private void InitBindings()
