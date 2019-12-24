@@ -9,7 +9,7 @@ namespace SoundSwitch.UI.UserControls
 {
     public class HotKeyTextBox : TextBox
     {
-        public class HotKeyChangedEventArgs : EventArgs
+        public class Event : EventArgs
         {
         }
 
@@ -22,13 +22,13 @@ namespace SoundSwitch.UI.UserControls
             {
                 _hotKeys = value;
                 Text = value?.Display() ?? "";
-                HotKeyChanged?.Invoke(this, new HotKeyChangedEventArgs());
+                HotKeyChanged?.Invoke(this, new Event());
             }
         }
 
         private HotKeys _hotKeys;
         [Browsable(true)]
-        public event EventHandler<HotKeyChangedEventArgs> HotKeyChanged;
+        public event EventHandler<Event> HotKeyChanged;
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
