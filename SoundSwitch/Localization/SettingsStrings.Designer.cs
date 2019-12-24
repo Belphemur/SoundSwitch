@@ -19,7 +19,7 @@ namespace SoundSwitch.Localization {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class SettingsStrings {
@@ -467,7 +467,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You need to set either the HotKey or/and the Program..
+        ///   Looks up a localized string similar to You need to set either the hotkey or/and the application..
         /// </summary>
         internal static string profile_error_needHKOrPath {
             get {
@@ -476,7 +476,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You need to set a Playback device and/or Recording device..
+        ///   Looks up a localized string similar to You need to set a playback device or recording device..
         /// </summary>
         internal static string profile_error_needPlaybackOrRecording {
             get {
@@ -521,7 +521,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Profile let you decide what Recording and/or Plaback device to use when the set program is in focus or the set hot key is used..
+        ///   Looks up a localized string similar to Add a profile to switch to a certain playback or recording device, when a specific application is started or focused..
         /// </summary>
         internal static string profile_explanation {
             get {
@@ -557,7 +557,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Program.
+        ///   Looks up a localized string similar to Application.
         /// </summary>
         internal static string profile_program {
             get {

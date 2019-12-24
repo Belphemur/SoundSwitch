@@ -305,7 +305,7 @@ Both: Change when any type of device is switched.</value>
 		<value>Add</value>
 	</data>
 	<data name="profile.program" xml:space="preserve">
-		<value>Program</value>
+		<value>Application</value>
 	</data>
 	<data name="profile.name" xml:space="preserve">
 		<value>Name</value>
@@ -320,13 +320,13 @@ Both: Change when any type of device is switched.</value>
 		<value>There is already a profile named {0}.</value>
 	</data>
 	<data name="profile.error.needHKOrPath" xml:space="preserve">
-		<value>You need to set either the HotKey or/and the Program.</value>
+		<value>You need to set either the hotkey or/and the application.</value>
 	</data>
 	<data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
-		<value>You need to set a Playback device and/or Recording device.</value>
+		<value>You need to set a playback device or recording device.</value>
 	</data>
 	<data name="profile.explanation" xml:space="preserve">
-		<value>Profile let you decide what Recording and/or Plaback device to use when the set program is in focus or the set hot key is used.</value>
+		<value>Add a profile to switch to a certain playback or recording device, when a specific application is started or focused.</value>
 	</data>
 	<data name="profile.error.registerHotkeys" xml:space="preserve">
 		<value>Couldn't register the hotkeys for the following profiles: {0}</value>
