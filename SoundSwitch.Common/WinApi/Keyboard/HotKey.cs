@@ -15,9 +15,9 @@
 using System;
 using System.Windows.Forms;
 
-namespace SoundSwitch.Framework
+namespace SoundSwitch.Common.WinApi.Keyboard
 {
-    public class HotKeys : IEquatable<HotKeys>
+    public class HotKey : IEquatable<HotKey>
     {
         /// <summary>
         ///     The enumeration of possible modifiers.
@@ -31,14 +31,14 @@ namespace SoundSwitch.Framework
             Win = 8
         }
 
-        public HotKeys(Keys keys, ModifierKeys modifier)
+        public HotKey(Keys keys, ModifierKeys modifier)
         {
             Keys = keys;
             Modifier = modifier;
             Enabled = true;
         }
 
-        public HotKeys()
+        public HotKey()
         {
             Enabled = true;
         }
@@ -47,7 +47,7 @@ namespace SoundSwitch.Framework
         public ModifierKeys Modifier { get; set; }
         public bool Enabled { get; set; }
 
-        public bool Equals(HotKeys other)
+        public bool Equals(HotKey other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -59,39 +59,36 @@ namespace SoundSwitch.Framework
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != GetType()) return false;
-            return Equals((HotKeys) obj);
+            return Equals((HotKey) obj);
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((int) Keys*397) ^ (int) Modifier;
+                return ((int) Keys * 397) ^ (int) Modifier;
             }
         }
 
-        public static bool operator ==(HotKeys left, HotKeys right)
+        public static bool operator ==(HotKey left, HotKey right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(HotKeys left, HotKeys right)
+        public static bool operator !=(HotKey left, HotKey right)
         {
             return !Equals(left, right);
         }
 
         public override string ToString()
         {
-            var key = Enum.Format(typeof(Keys), Keys, "g");
-            var modKeys = Enum.Format(typeof(ModifierKeys), Modifier, "g");
-            return $"{modKeys.Replace(", ", "+")}+{key}: {Enabled}";
+            return Display();
         }
 
         public string Display()
         {
-            var key = Enum.Format(typeof(Keys), Keys, "g");
-            var modKeys = Enum.Format(typeof(ModifierKeys), Modifier, "g");
-            return $"{modKeys.Replace(", ", "+")}+{key}";
+            var key = (Keys == Keys.None ? "" : $"+{Keys}");
+            return $"{Modifier.ToString().Replace(", ", "+")}{key}";
         }
     }
 }

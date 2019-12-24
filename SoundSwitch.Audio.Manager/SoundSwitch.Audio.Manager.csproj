@@ -9,8 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SoundSwitch.Audio.Manager</RootNamespace>
     <AssemblyName>SoundSwitch.Audio.Manager</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AudioSwitcher.cs" />
+    <Compile Include="ForegroundProcess.cs" />
     <Compile Include="Interop\Client\EnumeratorClient.cs" />
     <Compile Include="Interop\Client\ExtendedPolicyClient.cs" />
     <Compile Include="Interop\Client\PolicyClient.cs" />

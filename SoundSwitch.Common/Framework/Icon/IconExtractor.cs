@@ -14,11 +14,10 @@
 //source : https://stackoverflow.com/questions/6872957/how-can-i-use-the-images-within-shell32-dll-in-my-c-sharp-project
 
 using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 
-namespace SoundSwitch.Util
+namespace SoundSwitch.Common.Framework.Icon
 {
     public class IconExtractionException : Exception
     {
@@ -48,14 +47,14 @@ namespace SoundSwitch.Util
         /// <param name="largeIcon"></param>
         /// <exception cref="IconExtractionException">Problem while extracting the icon</exception>
         /// <returns></returns>
-        public static Icon Extract(string file, int iconIndex, bool largeIcon)
+        public static System.Drawing.Icon Extract(string file, int iconIndex, bool largeIcon)
         {
             IntPtr large;
             IntPtr small;
             NativeMethods.ExtractIconEx(file, iconIndex, out large, out small, 1);
             try
             {
-                return Icon.FromHandle(largeIcon ? large : small);
+                return System.Drawing.Icon.FromHandle(largeIcon ? large : small);
             }
             catch(Exception e)
             {

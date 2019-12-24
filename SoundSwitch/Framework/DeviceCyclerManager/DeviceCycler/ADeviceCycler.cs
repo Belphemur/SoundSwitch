@@ -12,23 +12,19 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Audio.Manager;
-using SoundSwitch.Audio.Manager.Interop;
 using SoundSwitch.Audio.Manager.Interop.Enum;
-using SoundSwitch.Framework.Audio.Device;
+using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
 {
     public abstract class ADeviceCycler : IDeviceCycler
     {
-        private readonly IDictionary<DataFlow, DeviceFullInfo> _lastDevices = new Dictionary<DataFlow, DeviceFullInfo>();
-
         public abstract DeviceCyclerTypeEnum TypeEnum { get; }
         public abstract string Label { get; }
 
@@ -46,10 +42,8 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         /// <returns></returns>
         protected DeviceFullInfo GetNextDevice(IReadOnlyCollection<DeviceFullInfo> audioDevices, DataFlow type)
         {
-            _lastDevices.TryGetValue(type, out var lastDevice);
 
-            var defaultDev = lastDevice ??
-                             audioDevices.FirstOrDefault(device => AudioSwitcher.Instance.IsDefault(device.Id, (EDataFlow)type, ERole.eConsole)) ??
+            var defaultDev = audioDevices.FirstOrDefault(device => AudioSwitcher.Instance.IsDefault(device.Id, (EDataFlow)type, ERole.eConsole)) ??
                              audioDevices.Last();
             var next = audioDevices.SkipWhile((device, i) => device.Id != defaultDev.Id).Skip(1).FirstOrDefault() ??
                        audioDevices.ElementAt(0);
@@ -86,7 +80,6 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
                     AudioSwitcher.Instance.SwitchProcessTo(device.Id, ERole.ERole_enum_count, (EDataFlow)device.Type);
                 }
             }
-            _lastDevices[device.Type] = device;
             return true;
 
         }

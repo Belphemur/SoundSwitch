@@ -14,9 +14,11 @@
 
 using System;
 using System.Collections.Generic;
-using SoundSwitch.Framework.Audio.Device;
+using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Common.WinApi.Keyboard;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
+using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.TrayIcon.Icon;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 using SoundSwitch.Framework.Updater;
@@ -36,8 +38,8 @@ namespace SoundSwitch.Framework.Configuration
         HashSet<DeviceInfo> SelectedDevices { get; }
 
         bool FirstRun { get; set; }
-        HotKeys PlaybackHotKeys { get; set; }
-        HotKeys RecordingHotKeys { get; set; }
+        HotKey PlaybackHotKey { get; set; }
+        HotKey RecordingHotKey { get; set; }
         bool ChangeCommunications { get; set; }
         uint UpdateCheckInterval { get; set; }
 
@@ -56,5 +58,7 @@ namespace SoundSwitch.Framework.Configuration
         /// What to do with the TrayIcon when changing default device
         /// </summary>
         IconChangerFactory.ActionEnum SwitchIcon { get; set; }
+
+        HashSet<ProfileSetting> ProfileSettings { get; set; }
     }
 }

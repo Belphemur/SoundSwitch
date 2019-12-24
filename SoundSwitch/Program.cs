@@ -27,6 +27,7 @@ using NAudio.CoreAudioApi;
 using Serilog;
 using Serilog.Exceptions;
 using Serilog.Formatting.Compact;
+using SoundSwitch.Common.WinApi;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio.Lister;
 using SoundSwitch.Framework.Configuration;

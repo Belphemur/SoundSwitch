@@ -20,8 +20,9 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using Serilog;
+using SoundSwitch.Common.WinApi.Keyboard;
 
-namespace SoundSwitch.Framework
+namespace SoundSwitch.Common.WinApi
 {
     public class WindowsAPIAdapter : Form
     {
@@ -47,7 +48,7 @@ namespace SoundSwitch.Framework
         private const int WM_HOTKEY = 0x0312;
         private static WindowsAPIAdapter _instance;
         private static ThreadExceptionEventHandler _exceptionEventHandler;
-        private readonly Dictionary<HotKeys, int> _registeredHotkeys = new Dictionary<HotKeys, int>();
+        private readonly Dictionary<HotKey, int> _registeredHotkeys = new Dictionary<HotKey, int>();
         private int _hotKeyId;
 
         private WindowsAPIAdapter()
@@ -138,8 +139,8 @@ namespace SoundSwitch.Framework
         /// <summary>
         ///     Registers a HotKey in the system.
         /// </summary>
-        /// <param name="hotKeys">Represent the hotkey to register</param>
-        public static bool RegisterHotKey(HotKeys hotKeys)
+        /// <param name="hotKey">Represent the hotkey to register</param>
+        public static bool RegisterHotKey(HotKey hotKey)
         {
             var count = 0;
             while (_instance == null)
@@ -156,18 +157,18 @@ namespace SoundSwitch.Framework
                 return (bool)_instance.Invoke(new Func<bool>(() =>
                {
 
-                   Log.Information("Registering Hotkeys: {hotkeys}", hotKeys);
-                   if (_instance._registeredHotkeys.ContainsKey(hotKeys))
+                   Log.Information("Registering Hotkeys: {hotkeys}", hotKey);
+                   if (_instance._registeredHotkeys.ContainsKey(hotKey))
                    {
-                       Log.Information("Already registered {hotkeys}", hotKeys);
+                       Log.Information("Already registered {hotkeys}", hotKey);
                        return false;
                    }
 
                    var id = _instance._hotKeyId++;
-                   _instance._registeredHotkeys.Add(hotKeys, id);
+                   _instance._registeredHotkeys.Add(hotKey, id);
                    // register the hot key.
-                   return NativeMethods.RegisterHotKey(_instance.Handle, id, (uint)hotKeys.Modifier,
-                      (uint)hotKeys.Keys);
+                   return NativeMethods.RegisterHotKey(_instance.Handle, id, (uint)hotKey.Modifier,
+                      (uint)hotKey.Keys);
 
                }));
             }
@@ -177,9 +178,9 @@ namespace SoundSwitch.Framework
         /// <summary>
         ///     Unregister a registered HotKey
         /// </summary>
-        /// <param name="hotKeys"></param>
+        /// <param name="hotKey"></param>
         /// <returns></returns>
-        public static bool UnRegisterHotKey(HotKeys hotKeys)
+        public static bool UnRegisterHotKey(HotKey hotKey)
         {
             var count = 0;
             while (_instance == null)
@@ -195,13 +196,13 @@ namespace SoundSwitch.Framework
             {
                 return (bool)_instance.Invoke(new Func<bool>(() =>
                {
-                   Log.Information("Unregistering Hotkeys: {hotkeys}", hotKeys);
-                   if (!_instance._registeredHotkeys.TryGetValue(hotKeys, out var id))
+                   Log.Information("Unregistering Hotkeys: {hotkeys}", hotKey);
+                   if (!_instance._registeredHotkeys.TryGetValue(hotKey, out var id))
                    {
-                       Log.Information("Not registered {hotkeys}", hotKeys);
+                       Log.Information("Not registered {hotkeys}", hotKey);
                        return false;
                    }
-                   _instance._registeredHotkeys.Remove(hotKeys);
+                   _instance._registeredHotkeys.Remove(hotKey);
                    return NativeMethods.UnregisterHotKey(_instance.Handle, id);
                }));
             }
@@ -265,9 +266,9 @@ namespace SoundSwitch.Framework
         private void ProcessHotKeyEvent(Message m)
         {
             var key = (Keys)((ConvertLParam(m.LParam) >> 16) & 0xFFFF);
-            var modifier = (HotKeys.ModifierKeys)(ConvertLParam(m.LParam) & 0xFFFF);
+            var modifier = (HotKey.ModifierKeys)(ConvertLParam(m.LParam) & 0xFFFF);
 
-            HotKeyPressed?.Invoke(this, new KeyPressedEventArgs(new HotKeys(key, modifier)));
+            HotKeyPressed?.Invoke(this, new KeyPressedEventArgs(new HotKey(key, modifier)));
             GC.Collect();
         }
 
@@ -309,12 +310,12 @@ namespace SoundSwitch.Framework
         /// </summary>
         public class KeyPressedEventArgs : EventArgs
         {
-            public KeyPressedEventArgs(HotKeys hotKeys)
+            public KeyPressedEventArgs(HotKey hotKey)
             {
-                HotKeys = hotKeys;
+                HotKey = hotKey;
             }
 
-            public HotKeys HotKeys { get; set; }
+            public HotKey HotKey { get; set; }
         }
 
         #endregion

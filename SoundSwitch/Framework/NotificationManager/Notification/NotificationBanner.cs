@@ -15,11 +15,11 @@
 using System;
 using System.IO;
 using NAudio.CoreAudioApi;
+using SoundSwitch.Common.Framework.Audio.Icon;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
 using SoundSwitch.Framework.Banner;
 using SoundSwitch.Localization;
-using SoundSwitch.Util;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification
 {

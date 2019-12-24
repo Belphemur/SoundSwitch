@@ -52,14 +52,13 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
                 if (!string.IsNullOrWhiteSpace(deviceId))
                 {
                     var str = GenerateDeviceId(deviceId, flow);
-                    ComBase.WindowsCreateString(str, (uint)str.Length, out stringPtrDeviceId);
+                    ComBase.WindowsCreateString(str, (uint) str.Length, out stringPtrDeviceId);
                 }
 
                 foreach (var eRole in roles)
                 {
                     PolicyConfig.SetPersistedDefaultAudioEndpoint(processId, flow, eRole, stringPtrDeviceId);
                 }
-
             }
             catch (Exception ex)
             {
@@ -67,6 +66,9 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
             }
         }
 
+        /// <summary>
+        /// Get the deviceId of the current DefaultEndpoint
+        /// </summary>
         public string GetDefaultEndPoint(EDataFlow flow, ERole role, uint processId)
         {
             try

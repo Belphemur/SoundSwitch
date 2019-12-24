@@ -1,5 +1,5 @@
 ﻿using NAudio.CoreAudioApi;
-using SoundSwitch.Framework.Audio.Device;
+using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Localization;
 
 namespace SoundSwitch.Framework.TrayIcon.Icon.Changer

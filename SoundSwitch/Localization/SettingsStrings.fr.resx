@@ -277,4 +277,61 @@ Lecture: Quand le périférique de lecture est switché.
 Enregistrement: Quand le périférique d'enregistrement est switché.
 Toujours: Quand un périférique audio est switché.</value>
 	</data>
+	<data name="profile.tab" xml:space="preserve">
+		<value>Profiles</value>
+	</data>
+	<data name="profile.program" xml:space="preserve">
+		<value>Programme</value>
+	</data>
+	<data name="profile.addButton" xml:space="preserve">
+		<value>Ajouter</value>
+	</data>
+	<data name="profile.name" xml:space="preserve">
+		<value>Nom</value>
+	</data>
+	<data name="profile.error.hotkey" xml:space="preserve">
+		<value>Le raccourcis {0} est déjà utilisé.</value>
+	</data>
+	<data name="profile.error.application" xml:space="preserve">
+		<value>Cette application {0} a déjà un profile associé.</value>
+	</data>
+	<data name="profile.error.name" xml:space="preserve">
+		<value>Il existe déjà un profile nommé {0}.</value>
+	</data>
+	<data name="profile.error.needHKOrPath" xml:space="preserve">
+		<value>Vous devez configurerun raccourcis clavier et/ou sélectionner un programme.</value>
+	</data>
+	<data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
+		<value>Vous devez sélectionner  un périphérique de lecture ou/et un périphérique d'enregisterement.</value>
+	</data>
+	<data name="profile.explanation" xml:space="preserve">
+		<value>Un profile vous permet de choisir le périphérique de Lecture et/ou d'enregistrement à switcher quand l'application voulue est utilisée ou que vous avez utilisé le raccourcis clavier.</value>
+	</data>
+	<data name="profile.error.registerHotkeys" xml:space="preserve">
+		<value>Impossible d'enregister les raccourcis clavier des ces profiles : {0}</value>
+	</data>
+	<data name="profile.error.registerHotkeys.title" xml:space="preserve">
+		<value>Raccourcis clavier déjà utilisés.</value>
+	</data>
+	<data name="profile.feature.add" xml:space="preserve">
+		<value>Ajouter un profile</value>
+	</data>
+	<data name="profile.feature.executable" xml:space="preserve">
+		<value>Exécutable (*.exe)</value>
+	</data>
+	<data name="profile.error.title" xml:space="preserve">
+		<value>Erreur avec le profile</value>
+	</data>
+	<data name="profile.deleteButton" xml:space="preserve">
+		<value>Supprimer</value>
+	</data>
+	<data name="profile.error.delete" xml:space="preserve">
+		<value>Profile introuvable.</value>
+	</data>
+	<data name="profile.error.no-name" xml:space="preserve">
+		<value>Un profile a besoin d'un nom.</value>
+	</data>
+	<data name="profile.feature.profile" xml:space="preserve">
+		<value>Profile</value>
+	</data>
 </root>

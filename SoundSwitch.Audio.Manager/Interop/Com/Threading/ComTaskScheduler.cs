@@ -31,25 +31,18 @@ namespace SoundSwitch.Audio.Manager.Interop.Com.Threading
 
                 //lightweight pump of the thread
                 Thread.CurrentThread.Join(1);
-            });
+            }) {Name = "ComThread", IsBackground = true};
 
-            _thread.IsBackground = true;
             _thread.SetApartmentState(ApartmentState.STA);
 
             // Start all of the threads
             _thread.Start();
         }
 
-        public int ThreadId
-        {
-            get { return _thread == null ? -1 : _thread.ManagedThreadId; }
-        }
+        public int ThreadId => _thread?.ManagedThreadId ?? -1;
 
         /// <summary>Gets the maximum concurrency level supported by this scheduler.</summary>
-        public override int MaximumConcurrencyLevel
-        {
-            get { return 1; }
-        }
+        public override int MaximumConcurrencyLevel => 1;
 
         /// <summary>
         ///     Cleans up the scheduler by indicating that no more tasks will be queued.

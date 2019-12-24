@@ -2,7 +2,7 @@
 using NAudio.CoreAudioApi;
 using Newtonsoft.Json;
 
-namespace SoundSwitch.Framework.Audio.Device
+namespace SoundSwitch.Common.Framework.Audio.Device
 {
     public class DeviceInfo : IEquatable<DeviceInfo>, IComparable<DeviceInfo>
     {
@@ -66,6 +66,11 @@ namespace SoundSwitch.Framework.Audio.Device
             var idComparison = string.Compare(Id, other.Id, StringComparison.Ordinal);
             if (idComparison != 0) return idComparison;
             return Type.CompareTo(other.Type);
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

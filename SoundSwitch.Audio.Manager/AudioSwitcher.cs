@@ -1,4 +1,7 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Runtime.InteropServices;
 using SoundSwitch.Audio.Manager.Interop;
 using SoundSwitch.Audio.Manager.Interop.Client;
 using SoundSwitch.Audio.Manager.Interop.Com.Threading;
@@ -54,7 +57,16 @@ namespace SoundSwitch.Audio.Manager
         {
             if (role != ERole.ERole_enum_count)
             {
-                ComThread.Invoke((() => _policyClient.SetDefaultEndpoint(deviceId, role)));
+                ComThread.Invoke((() =>
+                {
+                    if (_enumerator.IsDefault(deviceId, EDataFlow.eRender, role) || _enumerator.IsDefault(deviceId, EDataFlow.eCapture, role))
+                    {
+                        Trace.WriteLine($"Default endpoint already {deviceId}");
+                        return;
+                    }
+
+                    _policyClient.SetDefaultEndpoint(deviceId, role);
+                }));
 
                 return;
             }
@@ -63,6 +75,7 @@ namespace SoundSwitch.Audio.Manager
             SwitchTo(deviceId, ERole.eMultimedia);
             SwitchTo(deviceId, ERole.eCommunications);
         }
+
         /// <summary>
         /// Switch the audio endpoint of the given process
         /// </summary>
@@ -72,8 +85,7 @@ namespace SoundSwitch.Audio.Manager
         /// <param name="processId">ProcessID of the process</param>
         public void SwitchProcessTo(string deviceId, ERole role, EDataFlow flow, uint processId)
         {
-
-            var roles = new ERole[]
+            var roles = new[]
             {
                 ERole.eConsole,
                 ERole.eCommunications,
@@ -82,15 +94,25 @@ namespace SoundSwitch.Audio.Manager
 
             if (role != ERole.ERole_enum_count)
             {
-                roles = new ERole[]
+                roles = new[]
                 {
                     role
                 };
             }
 
+            ComThread.Invoke((() =>
+            {
+                var currentEndpoint = roles.Select(eRole => ExtendPolicyClient.GetDefaultEndPoint(flow, eRole, processId)).FirstOrDefault(endpoint => !string.IsNullOrEmpty(endpoint));
+                if (deviceId.Equals(currentEndpoint))
+                {
+                    Trace.WriteLine($"Default endpoint for {processId} already {deviceId}");
+                    return;
+                }
 
-            ComThread.Invoke((() => ExtendPolicyClient.SetDefaultEndPoint(deviceId, flow, roles, processId)));
+                ExtendPolicyClient.SetDefaultEndPoint(deviceId, flow, roles, processId);
+            }));
         }
+
         /// <summary>
         /// Switch the audio device of the Foreground Process
         /// </summary>
@@ -132,7 +154,7 @@ namespace SoundSwitch.Audio.Manager
         /// </summary>
         public void ResetProcessDeviceConfiguration()
         {
-            ComThread.Invoke(() =>  ExtendPolicyClient.ResetAllSetEndpoint());
+            ComThread.Invoke(() => ExtendPolicyClient.ResetAllSetEndpoint());
         }
     }
 }

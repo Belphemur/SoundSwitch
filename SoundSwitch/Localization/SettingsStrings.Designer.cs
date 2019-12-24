@@ -241,7 +241,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hotkeys.
+        ///   Looks up a localized string similar to Hot key.
         /// </summary>
         internal static string hotkeys {
             get {
@@ -250,7 +250,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Check to enable hotkeys..
+        ///   Looks up a localized string similar to Check to enable hot key..
         /// </summary>
         internal static string hotkeysTooltip {
             get {
@@ -259,7 +259,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change Icon.
+        ///   Looks up a localized string similar to Systray Icon.
         /// </summary>
         internal static string iconChange {
             get {
@@ -268,11 +268,12 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Choose when to change the Systray Icon of SoundSwitch.
+        ///   Looks up a localized string similar to Choose when to change the systray Icon of SoundSwitch.
         ///
-        ///Never: Don&apos;t change it.
+        ///Default: Don&apos;t change it. Keep SoundSwitch Icon.
         ///Playback: When a playback device is switched.
-        ///Recording: When a recording device is switched..
+        ///Recording: When a recording device is switched.
+        ///Both: Change when any type of device is switched..
         /// </summary>
         internal static string iconChange_tooltip {
             get {
@@ -412,6 +413,177 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        internal static string profile_addButton {
+            get {
+                return ResourceManager.GetString("profile.addButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string profile_deleteButton {
+            get {
+                return ResourceManager.GetString("profile.deleteButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This application {0} has already a linked profile..
+        /// </summary>
+        internal static string profile_error_application {
+            get {
+                return ResourceManager.GetString("profile.error.application", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t find the profile..
+        /// </summary>
+        internal static string profile_error_delete {
+            get {
+                return ResourceManager.GetString("profile.error.delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This hot key {0} is already registered..
+        /// </summary>
+        internal static string profile_error_hotkey {
+            get {
+                return ResourceManager.GetString("profile.error.hotkey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is already a profile named {0}..
+        /// </summary>
+        internal static string profile_error_name {
+            get {
+                return ResourceManager.GetString("profile.error.name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You need to set either the hot key or/and the application..
+        /// </summary>
+        internal static string profile_error_needHKOrPath {
+            get {
+                return ResourceManager.GetString("profile.error.needHKOrPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You need to set a playback device or recording device..
+        /// </summary>
+        internal static string profile_error_needPlaybackOrRecording {
+            get {
+                return ResourceManager.GetString("profile.error.needPlaybackOrRecording", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A profile needs a name..
+        /// </summary>
+        internal static string profile_error_no_name {
+            get {
+                return ResourceManager.GetString("profile.error.no-name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Couldn&apos;t register the hot key for the following profiles: {0}.
+        /// </summary>
+        internal static string profile_error_registerHotkeys {
+            get {
+                return ResourceManager.GetString("profile.error.registerHotkeys", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Already used hot key.
+        /// </summary>
+        internal static string profile_error_registerHotkeys_title {
+            get {
+                return ResourceManager.GetString("profile.error.registerHotkeys.title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile Error.
+        /// </summary>
+        internal static string profile_error_title {
+            get {
+                return ResourceManager.GetString("profile.error.title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add a profile to switch to a certain playback or recording device, when a specific application is started or focused..
+        /// </summary>
+        internal static string profile_explanation {
+            get {
+                return ResourceManager.GetString("profile.explanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Profile.
+        /// </summary>
+        internal static string profile_feature_add {
+            get {
+                return ResourceManager.GetString("profile.feature.add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Executable (*.exe).
+        /// </summary>
+        internal static string profile_feature_executable {
+            get {
+                return ResourceManager.GetString("profile.feature.executable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile.
+        /// </summary>
+        internal static string profile_feature_profile {
+            get {
+                return ResourceManager.GetString("profile.feature.profile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        internal static string profile_name {
+            get {
+                return ResourceManager.GetString("profile.name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Application.
+        /// </summary>
+        internal static string profile_program {
+            get {
+                return ResourceManager.GetString("profile.program", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profiles.
+        /// </summary>
+        internal static string profile_tab {
+            get {
+                return ResourceManager.GetString("profile.tab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recording.
         /// </summary>
         internal static string recording {
@@ -430,7 +602,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the sound file for the notification..
+        ///   Looks up a localized string similar to Select the sound file for the notification.
         /// </summary>
         internal static string selectSoundButtonTooltip {
             get {

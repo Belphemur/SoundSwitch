@@ -1,16 +1,15 @@
-﻿using System.Drawing;
-using NAudio.CoreAudioApi;
-using SoundSwitch.Util;
+﻿using NAudio.CoreAudioApi;
+using SoundSwitch.Common.Framework.Audio.Icon;
 
-namespace SoundSwitch.Framework.Audio.Device
+namespace SoundSwitch.Common.Framework.Audio.Device
 {
     public class DeviceFullInfo : DeviceInfo
     {
         public string IconPath { get; }
         public DeviceState State { get; }
 
-        public Icon LargeIcon => AudioDeviceIconExtractor.ExtractIconFromPath(IconPath, Type, true);
-        public Icon SmallIcon => AudioDeviceIconExtractor.ExtractIconFromPath(IconPath, Type, false);
+        public System.Drawing.Icon LargeIcon => AudioDeviceIconExtractor.ExtractIconFromPath(IconPath, Type, true);
+        public System.Drawing.Icon SmallIcon => AudioDeviceIconExtractor.ExtractIconFromPath(IconPath, Type, false);
 
         public DeviceFullInfo(string name, string id, DataFlow type, string iconPath, DeviceState state) : base(name, id, type)
         {

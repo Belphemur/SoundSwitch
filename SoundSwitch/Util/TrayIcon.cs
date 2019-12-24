@@ -26,8 +26,8 @@ using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
+using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework;
-using SoundSwitch.Framework.Audio.Device;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.TrayIcon.Icon;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
@@ -273,7 +273,7 @@ namespace SoundSwitch.Util
         public async Task ShowSettings()
         {
             var settingsForm = new SettingsForm();
-            await settingsForm.PopulateAudioDevices();
+            await settingsForm.AsyncInit();
             _context.Send(s => { settingsForm.Show(); }, null);
         }
 

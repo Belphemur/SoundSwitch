@@ -52,6 +52,19 @@ If you want to return to a silent Toast Notification, open the file selector, an
 
 ## Advanced
 
+### 🃏 Profiles
+You are able to automate the sound switching to great details using the profile feature.
+
+In the `Profiles` tab in the Settings interface, you can create profile tailored to your needs.
+
+#### 💾 Application
+Do you want Spotify to only play music on your speaker, while your favorite game is using your headset, it is possible.
+
+Simply set a profile for Spotify and another one for your game, SoundSwitch will takes care of the rest.
+
+#### ⌨️ Hot key
+Or you want to set an hot key that will switch the sound to a specific device ? You can do that too by setting the hot key you need.
+
 ### 🎙 Communications
 SoundSwitch can also change the **Default Communication Device** when asked in the Settings. Windows makes a differentiation between Multimedia and Communication; it means if an application asks to have access to communications audio device, it will receive the Default Communication Device. By default SoundSwitch only changes the multimedia device and not the communication. Now if the checkbox is checked in the settings, it will also change the Communication Device.
 

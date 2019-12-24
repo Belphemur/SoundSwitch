@@ -16,10 +16,12 @@
 using System;
 using System.Collections.Generic;
 using NAudio.CoreAudioApi;
+using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Common.WinApi.Keyboard;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
-using SoundSwitch.Framework.Audio.Device;
 using SoundSwitch.Framework.NotificationManager;
+using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Localization;
 using SoundSwitch.Localization.Factory;
@@ -95,6 +97,10 @@ namespace SoundSwitch.Model
         /// Switch also the foreground program
         /// </summary>
         bool SwitchForegroundProgram { get; set; }
+        /// <summary>
+        /// Manage the profile in the application
+        /// </summary>
+        ProfileManager ProfileManager { get; }
 
         #endregion
 
@@ -165,7 +171,7 @@ namespace SoundSwitch.Model
         /// <param name="hotkeys"></param>
         /// <param name="deviceType"></param>
         /// <returns>if it's successfull</returns>
-        bool SetHotkeyCombination(HotKeys hotkeys, DataFlow deviceType);
+        bool SetHotkeyCombination(HotKey hotkeys, DataFlow deviceType);
 
         /// <summary>
         ///     Attempts to set active device to the specified name

@@ -37,7 +37,7 @@
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>7</ApplicationRevision>
+    <ApplicationRevision>9</ApplicationRevision>
     <ApplicationVersion>2.4.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -74,7 +74,7 @@
     <ManifestKeyFile>SoundSwitch_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>false</GenerateManifests>
+    <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
@@ -217,15 +217,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <LangVersion>8</LangVersion>
   </PropertyGroup>
-  <PropertyGroup>
-    <NoWin32Manifest>true</NoWin32Manifest>
-  </PropertyGroup>
+  <PropertyGroup />
   <ItemGroup>
+    <Reference Include="Accessibility" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Win32.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.3.3, Culture=neutral, PublicKeyToken=8985beaab7ea3f04, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft-WindowsAPICodePack-Core.1.1.3.3\lib\net452\Microsoft.WindowsAPICodePack.dll</HintPath>
     </Reference>
@@ -236,6 +231,9 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="RailSharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RailSharp.1.0.0\lib\netstandard2.0\RailSharp.dll</HintPath>
     </Reference>
     <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10">
       <HintPath>..\packages\Serilog.2.9.0\lib\net46\Serilog.dll</HintPath>
@@ -262,10 +260,13 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression.FileSystem" />
-    <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Windows.Forms" />
@@ -280,8 +281,6 @@
     <Compile Include="Framework\AutoStart.cs" />
     <Compile Include="Framework\Banner\BannerData.cs" />
     <Compile Include="Framework\Banner\BannerManager.cs" />
-    <Compile Include="Framework\Audio\Device\DeviceFullInfo.cs" />
-    <Compile Include="Framework\Audio\Device\DeviceInfo.cs" />
     <Compile Include="Framework\Configuration\IPCConfiguration.cs" />
     <Compile Include="Framework\Configuration\AppConfigs.cs" />
     <Compile Include="Framework\Configuration\ConfigurationManager.cs" />
@@ -300,12 +299,10 @@
     <Compile Include="Framework\Factory\IEnumImpl.cs" />
     <Compile Include="Framework\Factory\EnumImplList.cs" />
     <Compile Include="Framework\Factory\IEnumImplList.cs" />
-    <Compile Include="Framework\HotKeys.cs" />
     <Compile Include="Framework\HourGlass.cs" />
     <Compile Include="Framework\IPC\IPCClient.cs" />
     <Compile Include="Framework\IPC\IPCServer.cs" />
     <Compile Include="Framework\IPC\RemoteObjects\RemoteObject.cs" />
-    <Compile Include="Framework\KeyboardWindowsAPI.cs" />
     <Compile Include="Framework\Logger\Configuration\LoggerConfigurator.cs" />
     <Compile Include="Framework\Logger\Enricher\CallerEnricher.cs" />
     <Compile Include="Framework\Minidump\MemoryDumper.cs" />
@@ -328,6 +325,8 @@
     <Compile Include="Framework\Banner\BannerForm.Designer.cs">
       <DependentUpon>BannerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Framework\Profile\ProfileManager.cs" />
+    <Compile Include="Framework\Profile\ProfileSetting.cs" />
     <Compile Include="Framework\TrayIcon\Icon\Changer\AbstractIconChanger.cs" />
     <Compile Include="Framework\TrayIcon\Icon\Changer\AlwaysIconChanger.cs" />
     <Compile Include="Framework\TrayIcon\Icon\Changer\NeverIconIconChanger.cs" />
@@ -352,9 +351,6 @@
     <Compile Include="Framework\Updater\UpdateMode.cs" />
     <Compile Include="Framework\Updater\UpdateState.cs" />
     <Compile Include="Framework\Updater\WebFile.cs" />
-    <Compile Include="Framework\WindowsAPIAdapter.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Localization\AboutStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -380,8 +376,13 @@
       <DependentUpon>UpdateDownloadStrings.resx</DependentUpon>
     </Compile>
     <Compile Include="Model\IAudioDeviceLister.cs" />
+    <Compile Include="UI\Forms\AddProfile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\AddProfile.Designer.cs">
+      <DependentUpon>AddProfile.cs</DependentUpon>
+    </Compile>
     <Compile Include="Util\AssemblyUtils.cs" />
-    <Compile Include="Util\AudioDeviceIconExtractor.cs" />
     <Compile Include="Framework\Audio\Lister\CachedAudioDeviceLister.cs" />
     <Compile Include="Model\Events.cs" />
     <Compile Include="Model\IAppModel.cs" />
@@ -404,7 +405,6 @@
       <DependentUpon>UpdateDownloadForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Util\CasterExtensions.cs" />
-    <Compile Include="Util\IconExtractor.cs" />
     <Compile Include="Util\Timer\DebounceDispatcher.cs" />
     <Compile Include="Util\ToolStripDeviceItem.cs">
       <SubType>Component</SubType>
@@ -513,6 +513,9 @@
     <EmbeddedResource Include="UI\Forms\About.resx">
       <DependentUpon>About.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\AddProfile.resx">
+      <DependentUpon>AddProfile.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>
     </EmbeddedResource>
@@ -522,9 +525,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
       <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 and x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -537,16 +540,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Visual.C++.14.0.x64">
-      <Visible>False</Visible>
-      <ProductName>Visual C++ "14" Runtime Libraries %28x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Visual.C++.14.0.x86">
-      <Visible>False</Visible>
-      <ProductName>Visual C++ "14" Runtime Libraries %28x86%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
       <Visible>False</Visible>
       <ProductName>Windows Installer 4.5</ProductName>
@@ -554,6 +547,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\profile-delete.png" />
+    <None Include="Resources\program.ico" />
+    <None Include="Resources\profile-add.png" />
+    <None Include="Resources\profile.ico" />
     <None Include="Resources\Switch-SoundWave.ico" />
     <None Include="packages.config" />
     <None Include="Resources\Switch-Logo.ico" />
@@ -572,8 +569,6 @@
     <None Include="Resources\Blue Icon.ico" />
     <Content Include="Resources\control-equalizer-blue.png" />
     <Content Include="Resources\control-volume-blue.png" />
-    <None Include="Resources\defaultMicrophone.ico" />
-    <None Include="Resources\defaultSpeakers.ico" />
     <None Include="Resources\help-16.png" />
     <None Include="Resources\help.ico" />
   </ItemGroup>
@@ -593,6 +588,10 @@
     <ProjectReference Include="..\SoundSwitch.Audio.Manager\SoundSwitch.Audio.Manager.csproj">
       <Project>{b4f7987e-a5fa-45b1-9ae4-5e40144ffc54}</Project>
       <Name>SoundSwitch.Audio.Manager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SoundSwitch.Common\SoundSwitch.Common.csproj">
+      <Project>{45a39bfc-7b67-46f2-a6f2-59bf82b350a4}</Project>
+      <Name>SoundSwitch.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\SoundSwitch.UI.UserControls\SoundSwitch.UI.UserControls.csproj">
       <Project>{082ab6e3-eb26-4791-8025-5ba9682460ea}</Project>

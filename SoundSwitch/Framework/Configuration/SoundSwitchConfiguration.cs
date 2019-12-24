@@ -19,9 +19,11 @@ using System.Linq;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
 using Serilog;
-using SoundSwitch.Framework.Audio.Device;
+using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Common.WinApi.Keyboard;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
+using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.TrayIcon.Icon;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 using SoundSwitch.Framework.Updater;
@@ -36,7 +38,7 @@ namespace SoundSwitch.Framework.Configuration
         {
             // Basic Settings
             FirstRun = true;
-            SwitchForegroundProgram = true;
+            SwitchForegroundProgram = false;
 
             // Audio Settings
             ChangeCommunications = false;
@@ -53,8 +55,8 @@ namespace SoundSwitch.Framework.Configuration
             Language = new LanguageFactory().GetWindowsLanguage();
             SelectedPlaybackDeviceListId = new HashSet<string>();
             SelectedRecordingDeviceListId = new HashSet<string>();
-            PlaybackHotKeys = new HotKeys(Keys.F11, HotKeys.ModifierKeys.Alt | HotKeys.ModifierKeys.Control);
-            RecordingHotKeys = new HotKeys(Keys.F7, HotKeys.ModifierKeys.Alt | HotKeys.ModifierKeys.Control);
+            PlaybackHotKey = new HotKey(Keys.F11, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
+            RecordingHotKey = new HotKey(Keys.F7, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
 
             SelectedDevices = new HashSet<DeviceInfo>();
             SwitchIcon = IconChangerFactory.ActionEnum.Never;
@@ -66,8 +68,8 @@ namespace SoundSwitch.Framework.Configuration
         public HashSet<string> SelectedRecordingDeviceListId { get; }
         public HashSet<DeviceInfo> SelectedDevices { get; }
         public bool FirstRun { get; set; }
-        public HotKeys PlaybackHotKeys { get; set; }
-        public HotKeys RecordingHotKeys { get; set; }
+        public HotKey PlaybackHotKey { get; set; }
+        public HotKey RecordingHotKey { get; set; }
         public bool ChangeCommunications { get; set; }
         public uint UpdateCheckInterval { get; set; }
         public UpdateMode UpdateMode { get; set; }
@@ -81,6 +83,7 @@ namespace SoundSwitch.Framework.Configuration
         public bool KeepSystrayIcon { get; set; }
         public bool SwitchForegroundProgram { get; set; }
         public IconChangerFactory.ActionEnum SwitchIcon { get; set; }
+        public HashSet<ProfileSetting> ProfileSettings { get; set; } = new HashSet<ProfileSetting>();
         
         /// <summary>
         /// Fields of the config that got migrated

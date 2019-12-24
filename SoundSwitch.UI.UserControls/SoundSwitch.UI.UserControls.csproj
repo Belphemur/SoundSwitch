@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SoundSwitch.UI.UserControls</RootNamespace>
     <AssemblyName>SoundSwitch.UI.UserControls</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -49,6 +49,15 @@
     <Compile Include="ChangelogViewer.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="HotKeyTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="IconListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="IconTextComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextProgressBar.cs">
       <SubType>Component</SubType>
@@ -56,6 +65,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SoundSwitch.Common\SoundSwitch.Common.csproj">
+      <Project>{45a39bfc-7b67-46f2-a6f2-59bf82b350a4}</Project>
+      <Name>SoundSwitch.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
