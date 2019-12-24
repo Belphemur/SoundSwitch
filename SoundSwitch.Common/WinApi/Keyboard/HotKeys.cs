@@ -87,9 +87,8 @@ namespace SoundSwitch.Common.WinApi.Keyboard
 
         public string Display()
         {
-            var key = (Keys == Keys.None ? "" : "+" + Enum.Format(typeof(Keys), Keys, "g"));
-            var modKeys = Enum.Format(typeof(ModifierKeys), Modifier, "g");
-            return $"{modKeys.Replace(", ", "+")}{key}";
+            var key = (Keys == Keys.None ? "" : $"+{Keys}");
+            return $"{Modifier.ToString().Replace(", ", "+")}{key}";
         }
     }
 }
