@@ -737,13 +737,9 @@ namespace SoundSwitch.UI.Forms
                 return;
             }
 
-            var profiles = profilesListView.SelectedItems.Cast<ListViewItem>().Select(item => (ProfileSetting)item.Tag);
+            var profiles = profilesListView.SelectedItems.Cast<ListViewItem>().Select(item => (ProfileSetting) item.Tag);
             AppModel.Instance.ProfileManager.DeleteProfiles(profiles);
-
-            if (AppModel.Instance.ProfileManager.Profiles.Count <= 0)
-            {
-                deleteProfileButton.Enabled = false;
-            }
+            deleteProfileButton.Enabled = false;
             RefreshProfiles();
         }
     }
