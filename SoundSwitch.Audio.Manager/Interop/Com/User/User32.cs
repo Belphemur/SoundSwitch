@@ -20,7 +20,8 @@ namespace SoundSwitch.Audio.Manager.Interop.Com.User
             public static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr hmodWinEventProc, WinEventDelegate lpfnWinEventProc, uint idProcess, uint idThread, uint dwFlags);
 
             internal const uint WINEVENT_OUTOFCONTEXT = 0;
-            internal const uint EVENT_SYSTEM_FOREGROUND = 3;
+            internal const uint EVENT_SYSTEM_FOREGROUND = 0x0003;
+            internal const uint EVENT_SYSTEM_MINIMIZEEND = 0x0017;
         }
 
         public static uint ForegroundProcessId

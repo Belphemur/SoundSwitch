@@ -69,12 +69,21 @@ namespace SoundSwitch.Audio.Manager
             };
 
             ComThread.Invoke(() =>
+            {
+                User32.NativeMethods.SetWinEventHook(User32.NativeMethods.EVENT_SYSTEM_MINIMIZEEND,
+                    User32.NativeMethods.EVENT_SYSTEM_MINIMIZEEND,
+                    IntPtr.Zero, _winEventDelegate,
+                    0,
+                    0,
+                    User32.NativeMethods.WINEVENT_OUTOFCONTEXT);
+
                 User32.NativeMethods.SetWinEventHook(User32.NativeMethods.EVENT_SYSTEM_FOREGROUND,
                     User32.NativeMethods.EVENT_SYSTEM_FOREGROUND,
                     IntPtr.Zero, _winEventDelegate,
                     0,
                     0,
-                    User32.NativeMethods.WINEVENT_OUTOFCONTEXT));
+                    User32.NativeMethods.WINEVENT_OUTOFCONTEXT);
+            });
         }
     }
 }
