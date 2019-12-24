@@ -63,7 +63,7 @@ namespace SoundSwitch.Audio.Manager
                 Task.Factory.StartNew(() =>
                 {
                     var process = Process.GetProcessById((int) windowProcessId);
-                    var processName = process.MainModule?.FileName;
+                    var processName = process.MainModule?.FileName ?? "N/A";
                     Changed?.Invoke(this, new Event(windowProcessId, processName));
                 });
             };
