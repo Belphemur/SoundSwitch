@@ -1,5 +1,27 @@
 # Change Log
 
+## [v4.17.0](https://github.com/Belphemur/SoundSwitch/tree/v4.17.0) (2019-12-24)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.16.3...v4.17.0)
+
+**Implemented enhancements:**
+
+- Add Korean language [\#391](https://github.com/Belphemur/SoundSwitch/issues/391)
+- A hotkey to switch audio devices only for specific applications [\#257](https://github.com/Belphemur/SoundSwitch/issues/257)
+- Possible to make a portable install? [\#208](https://github.com/Belphemur/SoundSwitch/issues/208)
+- Add device profiles tab, and add new hotkey combo to switch between them [\#207](https://github.com/Belphemur/SoundSwitch/issues/207)
+
+**Fixed bugs:**
+
+- Unable to set custom sound notification [\#386](https://github.com/Belphemur/SoundSwitch/issues/386)
+
+**Closed issues:**
+
+- Latest version won't install [\#388](https://github.com/Belphemur/SoundSwitch/issues/388)
+
+**Merged pull requests:**
+
+- Feature profile [\#393](https://github.com/Belphemur/SoundSwitch/pull/393) ([Belphemur](https://github.com/Belphemur))
+
 ## [v4.16.3](https://github.com/Belphemur/SoundSwitch/tree/v4.16.3) (2019-12-14)
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.16.2...v4.16.3)
 
