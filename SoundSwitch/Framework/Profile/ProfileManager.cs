@@ -17,14 +17,14 @@ namespace SoundSwitch.Framework.Profile
     {
         private readonly Dictionary<HotKeys, ProfileSetting> _profileByHotkey;
         private readonly Dictionary<string, ProfileSetting> _profileByApplication;
-        private readonly ForegroundProcessChanged _foregroundProcessChanged;
+        private readonly ForegroundProcess _foregroundProcess;
         private readonly AudioSwitcher _audioSwitcher;
 
         public IReadOnlyCollection<ProfileSetting> Profiles => AppConfigs.Configuration.ProfileSettings;
 
-        public ProfileManager(ForegroundProcessChanged foregroundProcessChanged, AudioSwitcher audioSwitcher)
+        public ProfileManager(ForegroundProcess foregroundProcess, AudioSwitcher audioSwitcher)
         {
-            _foregroundProcessChanged = foregroundProcessChanged;
+            _foregroundProcess = foregroundProcess;
             _audioSwitcher = audioSwitcher;
             _profileByApplication =
                 AppConfigs.Configuration.ProfileSettings
@@ -58,7 +58,7 @@ namespace SoundSwitch.Framework.Profile
 
         private void RegisterEvents()
         {
-            _foregroundProcessChanged.Event += (sender, @event) =>
+            _foregroundProcess.Changed += (sender, @event) =>
             {
                 _profileByApplication.TryGetValue(@event.ProcessName.ToLower(), out var profile);
                 if (profile == null)

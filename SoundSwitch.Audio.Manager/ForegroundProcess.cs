@@ -6,9 +6,9 @@ using SoundSwitch.Audio.Manager.Interop.Com.User;
 
 namespace SoundSwitch.Audio.Manager
 {
-    public class ForegroundProcessChanged
+    public class ForegroundProcess
     {
-        public class ForegroundProcessChangedEvent : EventArgs
+        public class Event : EventArgs
         {
             /// <summary>
             /// ID of the process that is now active
@@ -21,7 +21,7 @@ namespace SoundSwitch.Audio.Manager
             public string ProcessName { get; }
 
 
-            public ForegroundProcessChangedEvent(uint processId, string processName)
+            public Event(uint processId, string processName)
             {
                 ProcessId = processId;
                 ProcessName = processName;
@@ -33,12 +33,12 @@ namespace SoundSwitch.Audio.Manager
             }
         }
 
-        public event EventHandler<ForegroundProcessChangedEvent> Event;
+        public event EventHandler<Event> Changed;
 
         private readonly User32.NativeMethods.WinEventDelegate _winEventDelegate;
 
 
-        public ForegroundProcessChanged()
+        public ForegroundProcess()
         {
             _winEventDelegate = (hook, type, hwnd, idObject, child, thread, time) =>
             {
@@ -64,7 +64,7 @@ namespace SoundSwitch.Audio.Manager
                 {
                     var process = Process.GetProcessById((int) windowProcessId);
                     var processName = process.MainModule?.FileName;
-                    Event?.Invoke(this, new ForegroundProcessChangedEvent(windowProcessId, processName));
+                    Changed?.Invoke(this, new Event(windowProcessId, processName));
                 });
             };
 

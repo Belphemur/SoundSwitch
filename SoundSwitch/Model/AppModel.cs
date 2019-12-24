@@ -61,7 +61,7 @@ namespace SoundSwitch.Model
         private CachedSound _customNotificationCachedSound;
         private readonly DeviceCyclerManager _deviceCyclerManager;
 
-        public ProfileManager ProfileManager { get; } = new ProfileManager(new ForegroundProcessChanged(), AudioSwitcher.Instance);
+        public ProfileManager ProfileManager { get; } = new ProfileManager(new ForegroundProcess(), AudioSwitcher.Instance);
 
         public CachedSound CustomNotificationSound
         {

@@ -215,7 +215,7 @@ namespace SoundSwitch.UI.Forms
             // createButton
             // 
             this.createButton.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.createButton.Location = new System.Drawing.Point(366, 304);
+            this.createButton.Location = new System.Drawing.Point(366, 303);
             this.createButton.Name = "createButton";
             this.createButton.Size = new System.Drawing.Size(87, 27);
             this.createButton.TabIndex = 1;
