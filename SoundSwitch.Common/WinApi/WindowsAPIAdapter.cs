@@ -130,7 +130,7 @@ namespace SoundSwitch.Common.WinApi
                     Application.ThreadException -= _exceptionEventHandler;
                 foreach (var hotKeyId in _registeredHotkeys.Values)
                 {
-                    NativeMethods.UnregisterHotkey(_instance.Handle, hotKeyId);
+                    NativeMethods.UnregisterHotKey(_instance.Handle, hotKeyId);
                 }
             }
             base.Dispose(disposing);
@@ -167,7 +167,7 @@ namespace SoundSwitch.Common.WinApi
                    var id = _instance._hotKeyId++;
                    _instance._registeredHotkeys.Add(hotkey, id);
                    // register the hot key.
-                   return NativeMethods.RegisterHotkey(_instance.Handle, id, (uint)hotkey.Modifier,
+                   return NativeMethods.RegisterHotKey(_instance.Handle, id, (uint)hotkey.Modifier,
                       (uint)hotkey.Keys);
 
                }));
@@ -203,7 +203,7 @@ namespace SoundSwitch.Common.WinApi
                        return false;
                    }
                    _instance._registeredHotkeys.Remove(hotkey);
-                   return NativeMethods.UnregisterHotkey(_instance.Handle, id);
+                   return NativeMethods.UnregisterHotKey(_instance.Handle, id);
                }));
             }
         }
@@ -278,11 +278,11 @@ namespace SoundSwitch.Common.WinApi
         {
             // Registers a hot key with Windows.
             [DllImport("user32.dll")]
-            internal static extern bool RegisterHotkey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
+            internal static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
 
             // Unregisters the hot key with Windows.
             [DllImport("user32.dll")]
-            internal static extern bool UnregisterHotkey(IntPtr hWnd, int id);
+            internal static extern bool UnregisterHotKey(IntPtr hWnd, int id);
         }
 
         #endregion
