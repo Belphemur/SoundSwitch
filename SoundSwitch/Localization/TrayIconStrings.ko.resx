@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-	<xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
 					<xsd:element name="metadata">
 						<xsd:complexType>
 							<xsd:sequence>
@@ -43,82 +43,82 @@
 						</xsd:complexType>
 					</xsd:element>
 				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>2.0</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<data name="iconChanger.recording" xml:space="preserve">
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="iconChanger.recording" xml:space="preserve">
     <value>녹음</value>
   </data>
-	<data name="playbackChanged" xml:space="preserve">
+  <data name="playbackChanged" xml:space="preserve">
     <value>SoundSwitch: 재생장치 전환</value>
   </data>
-	<data name="versionAvailable" xml:space="preserve">
+  <data name="versionAvailable" xml:space="preserve">
     <value>SoundSwitch ({0}) 에 대한 업데이트가 가능합니다.</value>
   </data>
-	<data name="iconChanger.playback" xml:space="preserve">
+  <data name="iconChanger.playback" xml:space="preserve">
     <value>재생</value>
   </data>
-	<data name="recordingChanged" xml:space="preserve">
+  <data name="recordingChanged" xml:space="preserve">
     <value>SoundSwitch: 녹음장치 전환</value>
   </data>
-	<data name="updateAvailable" xml:space="preserve">
-    <value>업데이트 사용가능 ({0})</value>
+  <data name="updateAvailable" xml:space="preserve">
+    <value>업데이트 사용 가능 ({0})</value>
   </data>
-	<data name="help" xml:space="preserve">
+  <data name="help" xml:space="preserve">
     <value>도움말</value>
   </data>
-	<data name="exit" xml:space="preserve">
+  <data name="exit" xml:space="preserve">
     <value>종료</value>
   </data>
-	<data name="configurationNeeded" xml:space="preserve">
+  <data name="configurationNeeded" xml:space="preserve">
     <value>SoundSwitch: 필요 환경설정</value>
   </data>
-	<data name="noDevicesSelected" xml:space="preserve">
+  <data name="noDevicesSelected" xml:space="preserve">
     <value>선택된 장치 없음</value>
   </data>
-	<data name="about" xml:space="preserve">
+  <data name="about" xml:space="preserve">
     <value>SoundSwitch에 대하여</value>
   </data>
-	<data name="configurationNeededExplanation" xml:space="preserve">
+  <data name="configurationNeededExplanation" xml:space="preserve">
     <value>전환 가능한 장치가 없습니다. 아이콘을 오른쪽 클릭하여 구성을 여세요.</value>
   </data>
-	<data name="iconChanger.none" xml:space="preserve">
+  <data name="iconChanger.none" xml:space="preserve">
     <value>기본값</value>
   </data>
-	<data name="error" xml:space="preserve">
+  <data name="error" xml:space="preserve">
     <value>오류</value>
   </data>
-	<data name="noUpdate" xml:space="preserve">
-    <value>사용가능 업데이트가 없음</value>
+  <data name="noUpdate" xml:space="preserve">
+    <value>사용 가능 업데이트가 없음</value>
   </data>
-	<data name="donate" xml:space="preserve">
+  <data name="donate" xml:space="preserve">
     <value>기부</value>
   </data>
-	<data name="settings" xml:space="preserve">
+  <data name="settings" xml:space="preserve">
     <value>설정</value>
   </data>
-	<data name="mixer" xml:space="preserve">
+  <data name="mixer" xml:space="preserve">
     <value>볼륨 믹서</value>
   </data>
-	<data name="clickToUpdate" xml:space="preserve">
+  <data name="clickToUpdate" xml:space="preserve">
     <value>업데이트 하려면 클릭하세요.</value>
   </data>
-	<data name="playbackDevices" xml:space="preserve">
+  <data name="playbackDevices" xml:space="preserve">
     <value>재생장치</value>
   </data>
-	<data name="iconChanger.both" xml:space="preserve">
+  <data name="iconChanger.both" xml:space="preserve">
     <value>모두</value>
   </data>
 </root>
