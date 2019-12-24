@@ -352,7 +352,7 @@
         <e p="SoundSwitch.Common.csproj" t="IncludeRecursive" />
         <e p="WinApi" t="Include">
           <e p="Keyboard" t="Include">
-            <e p="HotKeys.cs" t="Include" />
+            <e p="HotKey.cs" t="Include" />
             <e p="KeyboardWindowsAPI.cs" t="Include" />
           </e>
           <e p="WindowsAPIAdapter.cs" t="Include" />
