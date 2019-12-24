@@ -15,8 +15,14 @@ rem but a dummy Changelog and README is created then.
 setlocal
 cd /d "%~dp0"
 
+set buildPlatform=Release
+if "%~1" neq "" (
+    set buildPlatform=%~1
+)
+
+
 set FILE_DIR=%~dp0
-set BIN_DIR=%FILE_DIR%SoundSwitch\bin
+set BIN_DIR=%FILE_DIR%SoundSwitch\bin\%buildPlatform%
 set LANGS=(fr de es nb pt-BR it-IT zh-CHS pl-PL ru-RU ko)
 
 if ["%~1"]==["-legacy"] set USE_LEGACY_VS2015=1
@@ -38,10 +44,6 @@ rmdir /q /s Release >nul 2>nul
 rmdir /q /s %finalDir% >nul 2>nul
 mkdir %finalDir% >nul 2>nul
 
-set buildPlatform=Release
-if "%~1" neq "" (
-    set buildPlatform=%~1
-)
 
 echo.
 echo Determine MSBuild.exe...
@@ -90,13 +92,13 @@ echo Copy LICENSE
 xcopy /y LICENSE.txt %finalDir% >nul 2>nul
 
 echo Copy Binaries
-xcopy /y %BIN_DIR%\Release\*.pdb %finalDir% >nul 2>nul
-xcopy /y %BIN_DIR%\Release\*.dll %finalDir% >nul 2>nul
-xcopy /y %BIN_DIR%\Release\SoundSwitch.exe %finalDir% >nul 2>nul
-xcopy /y %BIN_DIR%\Release\SoundSwitch.exe.config %finalDir% >nul 2>nul
+xcopy /y %BIN_DIR%\*.pdb %finalDir% >nul 2>nul
+xcopy /y %BIN_DIR%\*.dll %finalDir% >nul 2>nul
+xcopy /y %BIN_DIR%\SoundSwitch.exe %finalDir% >nul 2>nul
+xcopy /y %BIN_DIR%\SoundSwitch.exe.config %finalDir% >nul 2>nul
 for %%l in %LANGS% DO (
     mkdir %finalDir%\%%l\ 
-    xcopy /y %BIN_DIR%\Release\%%l\SoundSwitch.resources.dll %finalDir%\%%l\ >nul 2>nul
+    xcopy /y %BIN_DIR%\%%l\SoundSwitch.resources.dll %finalDir%\%%l\ >nul 2>nul
 )
 
 echo START
