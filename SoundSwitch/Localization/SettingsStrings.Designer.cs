@@ -503,7 +503,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Already used HotKeys.
+        ///   Looks up a localized string similar to Already used Hotkeys.
         /// </summary>
         internal static string profile_error_registerHotkeys_title {
             get {

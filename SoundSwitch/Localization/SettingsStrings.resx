@@ -332,7 +332,7 @@ Both: Change when any type of device is switched.</value>
 		<value>Couldn't register the hotkeys for the following profiles: {0}</value>
 	</data>
 	<data name="profile.error.registerHotkeys.title" xml:space="preserve">
-		<value>Already used HotKeys</value>
+		<value>Already used Hotkeys</value>
 	</data>
 	<data name="profile.feature.add" xml:space="preserve">
 		<value>Add Profile</value>

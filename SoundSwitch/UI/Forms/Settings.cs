@@ -66,7 +66,7 @@ namespace SoundSwitch.UI.Forms
 
             hotkeysTextBox.Text = AppConfigs.Configuration.PlaybackHotKeys.Display();
             hotkeysTextBox.Tag =
-                new Tuple<DataFlow, HotKeys>(DataFlow.Render, AppConfigs.Configuration.PlaybackHotKeys);
+                new Tuple<DataFlow, Hotkey>(DataFlow.Render, AppConfigs.Configuration.PlaybackHotKeys);
             hotkeysTextBox.Enabled = hotkeysCheckBox.Checked = AppConfigs.Configuration.PlaybackHotKeys.Enabled;
             hotkeysTextBox.KeyDown += (sender, args) => SetHotkey(args);
             var hotkeysToolTip = new ToolTip();
@@ -213,7 +213,7 @@ namespace SoundSwitch.UI.Forms
                 listViewItem.SubItems.AddRange(new[]
                 {
                     new ListViewItem.ListViewSubItem(listViewItem, profile.ApplicationPath?.Split('\\').Last() ?? "") {Tag = appIcon},
-                    new ListViewItem.ListViewSubItem(listViewItem, profile.HotKeys?.ToString() ?? ""),
+                    new ListViewItem.ListViewSubItem(listViewItem, profile.Hotkey?.ToString() ?? ""),
                     new ListViewItem.ListViewSubItem(listViewItem, playback?.Name ?? profile.Playback?.ToString() ?? "") {Tag = playback?.SmallIcon},
                     new ListViewItem.ListViewSubItem(listViewItem, recording?.Name ?? profile.Recording?.ToString() ?? "") {Tag = recording?.SmallIcon},
                 });
@@ -313,31 +313,31 @@ namespace SoundSwitch.UI.Forms
 
         private void SetHotkey(KeyEventArgs e)
         {
-            HotKeys.ModifierKeys modifierKeys = 0;
+            Hotkey.ModifierKeys modifierKeys = 0;
             var displayString = "";
             foreach (var pressedModifier in KeyboardWindowsAPI.GetPressedModifiers())
             {
                 if ((pressedModifier & Keys.Modifiers) == Keys.Control)
                 {
-                    modifierKeys |= HotKeys.ModifierKeys.Control;
+                    modifierKeys |= Hotkey.ModifierKeys.Control;
                     displayString += "Ctrl+";
                 }
 
                 if ((pressedModifier & Keys.Modifiers) == Keys.Alt)
                 {
-                    modifierKeys |= HotKeys.ModifierKeys.Alt;
+                    modifierKeys |= Hotkey.ModifierKeys.Alt;
                     displayString += "Alt+";
                 }
 
                 if ((pressedModifier & Keys.Modifiers) == Keys.Shift)
                 {
-                    modifierKeys |= HotKeys.ModifierKeys.Shift;
+                    modifierKeys |= Hotkey.ModifierKeys.Shift;
                     displayString += "Shift+";
                 }
 
                 if (pressedModifier == Keys.LWin || pressedModifier == Keys.RWin)
                 {
-                    modifierKeys |= HotKeys.ModifierKeys.Win;
+                    modifierKeys |= Hotkey.ModifierKeys.Win;
                     displayString += "Win+";
                 }
             }
@@ -354,8 +354,8 @@ namespace SoundSwitch.UI.Forms
             else
             {
                 hotkeysTextBox.Text = displayString + key;
-                var tuple = (Tuple<DataFlow, HotKeys>) hotkeysTextBox.Tag;
-                var newTuple = new Tuple<DataFlow, HotKeys>(tuple.Item1, new HotKeys(e.KeyCode, modifierKeys));
+                var tuple = (Tuple<DataFlow, Hotkey>) hotkeysTextBox.Tag;
+                var newTuple = new Tuple<DataFlow, Hotkey>(tuple.Item1, new Hotkey(e.KeyCode, modifierKeys));
                 hotkeysTextBox.Tag = newTuple;
                 hotkeysTextBox.ForeColor = AppModel.Instance.SetHotkeyCombination(newTuple.Item2, newTuple.Item1)
                     ? Color.Green
@@ -379,7 +379,7 @@ namespace SoundSwitch.UI.Forms
                 SetHotkeysFieldsVisibility(true);
                 hotkeysTextBox.Text = AppConfigs.Configuration.PlaybackHotKeys.Display();
                 hotkeysTextBox.Tag =
-                    new Tuple<DataFlow, HotKeys>(DataFlow.Render, AppConfigs.Configuration.PlaybackHotKeys);
+                    new Tuple<DataFlow, Hotkey>(DataFlow.Render, AppConfigs.Configuration.PlaybackHotKeys);
                 hotkeysCheckBox.Checked = AppConfigs.Configuration.PlaybackHotKeys.Enabled;
             }
             else if (tabControlSender.SelectedTab == recordingTabPage)
@@ -387,7 +387,7 @@ namespace SoundSwitch.UI.Forms
                 SetHotkeysFieldsVisibility(true);
                 hotkeysTextBox.Text = AppConfigs.Configuration.RecordingHotKeys.Display();
                 hotkeysTextBox.Tag =
-                    new Tuple<DataFlow, HotKeys>(DataFlow.Capture, AppConfigs.Configuration.RecordingHotKeys);
+                    new Tuple<DataFlow, Hotkey>(DataFlow.Capture, AppConfigs.Configuration.RecordingHotKeys);
                 hotkeysCheckBox.Checked = AppConfigs.Configuration.RecordingHotKeys.Enabled;
             }
             else
@@ -492,7 +492,7 @@ namespace SoundSwitch.UI.Forms
 
         private void hotkeysCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            var tuple = (Tuple<DataFlow, HotKeys>) hotkeysTextBox.Tag;
+            var tuple = (Tuple<DataFlow, Hotkey>) hotkeysTextBox.Tag;
             var currentState = tuple.Item2.Enabled;
             hotkeysTextBox.Enabled = tuple.Item2.Enabled = hotkeysCheckBox.Checked;
             if (currentState != tuple.Item2.Enabled)

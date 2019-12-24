@@ -39,8 +39,8 @@
             this.creditsAndAttributionGroupBox = new System.Windows.Forms.GroupBox();
             this.defaultPlaybackDeviceChangeLinkLabel = new System.Windows.Forms.LinkLabel();
             this.defaultPlaybackDeviceChangeLabel = new System.Windows.Forms.Label();
-            this.keyboardHotKeySystemLinkLabel = new System.Windows.Forms.LinkLabel();
-            this.keyboardHotKeySystemLabel = new System.Windows.Forms.Label();
+            this.keyboardHotkeySystemLinkLabel = new System.Windows.Forms.LinkLabel();
+            this.keyboardHotkeySystemLabel = new System.Windows.Forms.Label();
             this.iconsLinkLabel = new System.Windows.Forms.LinkLabel();
             this.iconsLabel = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -142,8 +142,8 @@
             this.creditsAndAttributionGroupBox.Controls.Add(this.logoMadeLabel);
             this.creditsAndAttributionGroupBox.Controls.Add(this.defaultPlaybackDeviceChangeLinkLabel);
             this.creditsAndAttributionGroupBox.Controls.Add(this.defaultPlaybackDeviceChangeLabel);
-            this.creditsAndAttributionGroupBox.Controls.Add(this.keyboardHotKeySystemLinkLabel);
-            this.creditsAndAttributionGroupBox.Controls.Add(this.keyboardHotKeySystemLabel);
+            this.creditsAndAttributionGroupBox.Controls.Add(this.keyboardHotkeySystemLinkLabel);
+            this.creditsAndAttributionGroupBox.Controls.Add(this.keyboardHotkeySystemLabel);
             this.creditsAndAttributionGroupBox.Controls.Add(this.iconsLinkLabel);
             this.creditsAndAttributionGroupBox.Controls.Add(this.iconsLabel);
             this.creditsAndAttributionGroupBox.Location = new System.Drawing.Point(8, 169);
@@ -172,25 +172,25 @@
             this.defaultPlaybackDeviceChangeLabel.TabIndex = 4;
             this.defaultPlaybackDeviceChangeLabel.Text = "Default Playback device change";
             // 
-            // keyboardHotKeySystemLinkLabel
+            // keyboardHotkeySystemLinkLabel
             // 
-            this.keyboardHotKeySystemLinkLabel.AutoSize = true;
-            this.keyboardHotKeySystemLinkLabel.Location = new System.Drawing.Point(148, 46);
-            this.keyboardHotKeySystemLinkLabel.Name = "keyboardHotKeySystemLinkLabel";
-            this.keyboardHotKeySystemLinkLabel.Size = new System.Drawing.Size(105, 13);
-            this.keyboardHotKeySystemLinkLabel.TabIndex = 3;
-            this.keyboardHotKeySystemLinkLabel.TabStop = true;
-            this.keyboardHotKeySystemLinkLabel.Text = "Christian Liensberger";
-            this.keyboardHotKeySystemLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel3_LinkClicked);
+            this.keyboardHotkeySystemLinkLabel.AutoSize = true;
+            this.keyboardHotkeySystemLinkLabel.Location = new System.Drawing.Point(148, 46);
+            this.keyboardHotkeySystemLinkLabel.Name = "keyboardHotkeySystemLinkLabel";
+            this.keyboardHotkeySystemLinkLabel.Size = new System.Drawing.Size(105, 13);
+            this.keyboardHotkeySystemLinkLabel.TabIndex = 3;
+            this.keyboardHotkeySystemLinkLabel.TabStop = true;
+            this.keyboardHotkeySystemLinkLabel.Text = "Christian Liensberger";
+            this.keyboardHotkeySystemLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel3_LinkClicked);
             // 
-            // keyboardHotKeySystemLabel
+            // keyboardHotkeySystemLabel
             // 
-            this.keyboardHotKeySystemLabel.AutoSize = true;
-            this.keyboardHotKeySystemLabel.Location = new System.Drawing.Point(6, 46);
-            this.keyboardHotKeySystemLabel.Name = "keyboardHotKeySystemLabel";
-            this.keyboardHotKeySystemLabel.Size = new System.Drawing.Size(125, 13);
-            this.keyboardHotKeySystemLabel.TabIndex = 2;
-            this.keyboardHotKeySystemLabel.Text = "Keyboard HotKey system";
+            this.keyboardHotkeySystemLabel.AutoSize = true;
+            this.keyboardHotkeySystemLabel.Location = new System.Drawing.Point(6, 46);
+            this.keyboardHotkeySystemLabel.Name = "keyboardHotkeySystemLabel";
+            this.keyboardHotkeySystemLabel.Size = new System.Drawing.Size(125, 13);
+            this.keyboardHotkeySystemLabel.TabIndex = 2;
+            this.keyboardHotkeySystemLabel.Text = "Keyboard Hotkey system";
             // 
             // iconsLinkLabel
             // 
@@ -277,8 +277,8 @@
         private System.Windows.Forms.GroupBox creditsAndAttributionGroupBox;
         private System.Windows.Forms.LinkLabel iconsLinkLabel;
         private System.Windows.Forms.Label iconsLabel;
-        private System.Windows.Forms.LinkLabel keyboardHotKeySystemLinkLabel;
-        private System.Windows.Forms.Label keyboardHotKeySystemLabel;
+        private System.Windows.Forms.LinkLabel keyboardHotkeySystemLinkLabel;
+        private System.Windows.Forms.Label keyboardHotkeySystemLabel;
         private System.Windows.Forms.Label defaultPlaybackDeviceChangeLabel;
         private System.Windows.Forms.LinkLabel maintainerLinkLabel;
         private System.Windows.Forms.Label maintainedByLabel;

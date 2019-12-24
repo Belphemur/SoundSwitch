@@ -106,7 +106,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Keyboard HotKey system.
+        ///   Looks up a localized string similar to Keyboard Hotkey system.
         /// </summary>
         internal static string keyboardHotkeys {
             get {
@@ -124,7 +124,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mantained by.
+        ///   Looks up a localized string similar to Maintained by.
         /// </summary>
         internal static string maintained {
             get {

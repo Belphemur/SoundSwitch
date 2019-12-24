@@ -171,7 +171,7 @@ namespace SoundSwitch.Model
         /// <param name="hotkeys"></param>
         /// <param name="deviceType"></param>
         /// <returns>if it's successfull</returns>
-        bool SetHotkeyCombination(HotKeys hotkeys, DataFlow deviceType);
+        bool SetHotkeyCombination(Hotkey hotkeys, DataFlow deviceType);
 
         /// <summary>
         ///     Attempts to set active device to the specified name

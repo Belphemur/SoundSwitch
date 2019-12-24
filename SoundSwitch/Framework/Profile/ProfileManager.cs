@@ -15,7 +15,7 @@ namespace SoundSwitch.Framework.Profile
 {
     public class ProfileManager
     {
-        private readonly Dictionary<HotKeys, ProfileSetting> _profileByHotkey;
+        private readonly Dictionary<Hotkey, ProfileSetting> _profileByHotkey;
         private readonly Dictionary<string, ProfileSetting> _profileByApplication;
         private readonly ForegroundProcess _foregroundProcess;
         private readonly AudioSwitcher _audioSwitcher;
@@ -31,8 +31,8 @@ namespace SoundSwitch.Framework.Profile
                     .Where((setting) => setting.ApplicationPath != null)
                     .ToDictionary(setting => setting.ApplicationPath.ToLower());
             _profileByHotkey = AppConfigs.Configuration.ProfileSettings
-                .Where((setting) => setting.HotKeys != null)
-                .ToDictionary(setting => setting.HotKeys);
+                .Where((setting) => setting.Hotkey != null)
+                .ToDictionary(setting => setting.Hotkey);
         }
 
         /// <summary>
@@ -44,8 +44,8 @@ namespace SoundSwitch.Framework.Profile
             RegisterEvents();
 
             var errors = AppConfigs.Configuration.ProfileSettings
-                .Where(setting => setting.HotKeys != null)
-                .Where(profileSetting => !WindowsAPIAdapter.RegisterHotKey(profileSetting.HotKeys))
+                .Where(setting => setting.Hotkey != null)
+                .Where(profileSetting => !WindowsAPIAdapter.RegisterHotkey(profileSetting.Hotkey))
                 .ToArray();
 
             if (errors.Length > 0)
@@ -66,9 +66,9 @@ namespace SoundSwitch.Framework.Profile
                 SwitchAudio(profile, @event.ProcessId);
             };
 
-            WindowsAPIAdapter.HotKeyPressed += (sender, args) =>
+            WindowsAPIAdapter.HotkeyPressed += (sender, args) =>
             {
-                _profileByHotkey.TryGetValue(args.HotKeys, out var profile);
+                _profileByHotkey.TryGetValue(args.Hotkey, out var profile);
                 if (profile == null)
                     return;
                 SwitchAudio(profile);
@@ -107,7 +107,7 @@ namespace SoundSwitch.Framework.Profile
                 return SettingsStrings.profile_error_no_name;
             }
 
-            if (profile.ApplicationPath == null && profile.HotKeys == null)
+            if (profile.ApplicationPath == null && profile.Hotkey == null)
             {
                 return SettingsStrings.profile_error_needHKOrPath;
             }
@@ -117,9 +117,9 @@ namespace SoundSwitch.Framework.Profile
                 return SettingsStrings.profile_error_needPlaybackOrRecording;
             }
 
-            if (profile.HotKeys != null && _profileByHotkey.ContainsKey(profile.HotKeys))
+            if (profile.Hotkey != null && _profileByHotkey.ContainsKey(profile.Hotkey))
             {
-                return string.Format(SettingsStrings.profile_error_hotkey, profile.HotKeys);
+                return string.Format(SettingsStrings.profile_error_hotkey, profile.Hotkey);
             }
 
             if (profile.ApplicationPath != null && _profileByApplication.ContainsKey(profile.ApplicationPath.ToLower()))
@@ -132,16 +132,16 @@ namespace SoundSwitch.Framework.Profile
                 return string.Format(SettingsStrings.profile_error_name, profile.ProfileName);
             }
 
-            if (profile.HotKeys != null && !WindowsAPIAdapter.RegisterHotKey(profile.HotKeys))
+            if (profile.Hotkey != null && !WindowsAPIAdapter.RegisterHotkey(profile.Hotkey))
             {
-                return string.Format(SettingsStrings.profile_error_hotkey, profile.HotKeys);
+                return string.Format(SettingsStrings.profile_error_hotkey, profile.Hotkey);
             }
 
 
             if (profile.ApplicationPath != null)
                 _profileByApplication.Add(profile.ApplicationPath.ToLower(), profile);
-            if (profile.HotKeys != null)
-                _profileByHotkey.Add(profile.HotKeys, profile);
+            if (profile.Hotkey != null)
+                _profileByHotkey.Add(profile.Hotkey, profile);
 
             AppConfigs.Configuration.ProfileSettings.Add(profile);
             AppConfigs.Configuration.Save();
@@ -173,10 +173,10 @@ namespace SoundSwitch.Framework.Profile
                     _profileByApplication.Remove(profile.ApplicationPath.ToLower());
                 }
 
-                if (profile.HotKeys != null)
+                if (profile.Hotkey != null)
                 {
-                    WindowsAPIAdapter.UnRegisterHotKey(profile.HotKeys);
-                    _profileByHotkey.Remove(profile.HotKeys);
+                    WindowsAPIAdapter.UnRegisterHotkey(profile.Hotkey);
+                    _profileByHotkey.Remove(profile.Hotkey);
                 }
 
                 AppConfigs.Configuration.ProfileSettings.Remove(profile);

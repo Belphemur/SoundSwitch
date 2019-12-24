@@ -9,7 +9,7 @@ namespace SoundSwitch.Framework.Profile
     {
         public string ProfileName { get; set; } = "";
         public string? ApplicationPath { get; set; }
-        public HotKeys? HotKeys { get; set; }
+        public Hotkey? Hotkey { get; set; }
         public DeviceInfo? Playback { get; set; }
         public DeviceInfo? Recording { get; set; }
 
@@ -45,7 +45,7 @@ namespace SoundSwitch.Framework.Profile
 
         public override string ToString()
         {
-            return $"{nameof(ProfileName)}: {ProfileName}, {nameof(ApplicationPath)}: {ApplicationPath}, {nameof(HotKeys)}: {HotKeys}, {nameof(Playback)}: {Playback}, {nameof(Recording)}: {Recording}";
+            return $"{nameof(ProfileName)}: {ProfileName}, {nameof(ApplicationPath)}: {ApplicationPath}, {nameof(Hotkey)}: {Hotkey}, {nameof(Playback)}: {Playback}, {nameof(Recording)}: {Recording}";
         }
     }
 }
