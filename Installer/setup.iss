@@ -66,7 +66,6 @@ Name: "it"; MessagesFile: "compiler:Languages\Italian.isl"
 Name: "pt_br"; MessagesFile: "compiler:Languages\brazilianPortuguese.isl"
 Name: "ru_ru"; MessagesFile: "compiler:Languages\Russian.isl"
 Name: "pl_pl"; MessagesFile: "compiler:Languages\Polish.isl"
-Name: "ko"; MessagesFile: "compiler:Languages\Korean.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
