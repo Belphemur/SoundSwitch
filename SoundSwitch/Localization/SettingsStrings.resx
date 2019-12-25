@@ -311,7 +311,7 @@ Both: Change when any type of device is switched.</value>
 		<value>Name</value>
   </data>
   <data name="profile.error.hotkey" xml:space="preserve">
-		<value>This hot key {0} is already registered.</value>
+		<value>This hotkey {0} is already registered.</value>
   </data>
   <data name="profile.error.application" xml:space="preserve">
 		<value>This application {0} has already a linked profile.</value>
