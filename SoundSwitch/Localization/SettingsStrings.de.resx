@@ -313,4 +313,46 @@ Beide: Wenn ein beliebiger Gerätetyp gewechselt wird.</value>
   <data name="profile.error.hotkey" xml:space="preserve">
     <value>Die Tastenkombination {0} ist bereits belegt.</value>
   </data>
+  <data name="profile.error.application" xml:space="preserve">
+    <value>Die Anwendung {0} hat bereits ein verlinktes Profil.</value>
+  </data>
+  <data name="profile.error.name" xml:space="preserve">
+    <value>Es existiert bereits ein Profil mit dem Namen {0}.</value>
+  </data>
+  <data name="profile.error.needHKOrPath" xml:space="preserve">
+    <value>Es muss eine Tastenkombination oder/und eine Anwendung festgelegt werden.</value>
+  </data>
+  <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
+    <value>Es muss ein Wiedergabegerät oder Aufnahmegerät festgelegt werden.</value>
+  </data>
+  <data name="profile.explanation" xml:space="preserve">
+    <value>Füge ein Profil hinzu, um zu einem Wiedergabe- oder Aufnahmegerät zu wechseln, wenn eine bestimmte Anwendung gestartet oder fokussiert wird.</value>
+  </data>
+  <data name="profile.error.registerHotkeys" xml:space="preserve">
+    <value>Für die folgenden Profile konnte die Tastenkombination nicht registriert werden: {0}</value>
+  </data>
+  <data name="profile.error.registerHotkeys.title" xml:space="preserve">
+    <value>Bereits verwendete Tastenkombination</value>
+  </data>
+  <data name="profile.feature.add" xml:space="preserve">
+    <value>Profil hinzufügen</value>
+  </data>
+  <data name="profile.feature.executable" xml:space="preserve">
+    <value>Ausführbare Datei (*.exe)</value>
+  </data>
+  <data name="profile.error.title" xml:space="preserve">
+    <value>Profilfehler</value>
+  </data>
+  <data name="profile.deleteButton" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="profile.error.delete" xml:space="preserve">
+    <value>Profil nicht gefunden.</value>
+  </data>
+  <data name="profile.error.no-name" xml:space="preserve">
+    <value>Ein Profil benötigt einen Namen.</value>
+  </data>
+  <data name="profile.feature.profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
 </root>
