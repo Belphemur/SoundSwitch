@@ -251,4 +251,7 @@ Begge: Endre når enhetstypen byttes.</value>
   <data name="profile.feature.profile" xml:space="preserve">
     <value>Profil</value>
   </data>
+  <data name="profile.program" xml:space="preserve">
+    <value>Program</value>
+  </data>
 </root>
