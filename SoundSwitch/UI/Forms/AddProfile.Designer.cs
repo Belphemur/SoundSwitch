@@ -106,6 +106,7 @@ namespace SoundSwitch.UI.Forms
             this.hotKeyTextBox.Name = "hotKeyTextBox";
             this.hotKeyTextBox.Size = new System.Drawing.Size(139, 23);
             this.hotKeyTextBox.TabIndex = 11;
+            this.hotKeyTextBox.HotKeyChanged += new System.EventHandler<SoundSwitch.UI.UserControls.HotKeyTextBox.Event>(this.hotKeyTextBox_HotKeyChanged);
             // 
             // recordingLabel
             // 

@@ -105,7 +105,7 @@ namespace SoundSwitch.Framework.Profile
             return ValidateAddProfile(profile)
                 .Map(success =>
                 {
-                    if (profile.ApplicationPath != null)
+                    if (!string.IsNullOrEmpty(profile.ApplicationPath))
                         _profileByApplication.Add(profile.ApplicationPath.ToLower(), profile);
                     if (profile.HotKey != null)
                         _profileByHotkey.Add(profile.HotKey, profile);
@@ -124,7 +124,7 @@ namespace SoundSwitch.Framework.Profile
                 return SettingsStrings.profile_error_no_name;
             }
 
-            if (profile.ApplicationPath == null && profile.HotKey == null)
+            if (string.IsNullOrEmpty(profile.ApplicationPath) && profile.HotKey == null)
             {
                 return SettingsStrings.profile_error_needHKOrPath;
             }
@@ -139,7 +139,7 @@ namespace SoundSwitch.Framework.Profile
                 return string.Format(SettingsStrings.profile_error_hotkey, profile.HotKey);
             }
 
-            if (profile.ApplicationPath != null && _profileByApplication.ContainsKey(profile.ApplicationPath.ToLower()))
+            if (!string.IsNullOrEmpty(profile.ApplicationPath) && _profileByApplication.ContainsKey(profile.ApplicationPath.ToLower()))
             {
                 return string.Format(SettingsStrings.profile_error_application, profile.ApplicationPath);
             }
