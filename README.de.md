@@ -50,6 +50,16 @@ Genau wie bei der akustischen Benachrichtigung, aber mit einem Sound, welcher se
 
 Wenn Sie zur stillen Windows Benachrichtigung zurückkehren möchten, öffnen Sie hierzu den Dateiauswahl-Dialog und drücken Abbrechen. Dadurch wird der eingestellte Sound entfernt.
 
+## Profile
+
+Mithilfe von Profilen ist es möglich zu einem bestimmten Gerät zu wechseln, wenn eine Bedingung eintritt. Profile können für die folgenden Zwecke definiert werden:
+
+- ### 💫 Anwendungsprofil
+Wenn eine Anwendung fokussiert wird, werden die Soundeinstellungen auf der Grundlage des Profils geändert. Erstelle zum Beispiel ein Profil für Spotify, damit nur Musik über den Lautsprecher wiedergegeben wird, während das Lieblingsspiel über das Headset läuft.
+
+- ### ⌨️ Hotkeyprofil
+Wenn eine bestimmte Tastenkombination gedrückt wird, werden die Soundeinstellungen auf der Grundlage des Profils geändert. Definiere zum Beispiel eine spezielle Kombination, um als Wiedergabegerät den Fernseher zu verwenden.
+
 ## Erweiterte Funktionen
 
 ### 🎙 Kommunikation
