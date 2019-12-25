@@ -50,18 +50,15 @@ The same as a Sound Notification but you can specify the sound which is played.
 
 If you want to return to a silent Toast Notification, open the file selector, and just do Cancel. Doing that will remove the set sound.
 
-## 🃏 Profiles
-You are able to automate the sound switching to great details using the profile feature.
+## Profiles
 
-In the `Profiles` tab in the Settings interface, you can create profile tailored to your needs.
+Using profiles, it is possible to switch to a specific device when a condition occurs. Profiles can be defined for the following purposes:
 
-### 💾 Application
-Do you want Spotify to only play music on your speaker, while your favorite game is using your headset, it is possible.
+- ### 💫 Application profile
+When a application is focused, the sound settings are switched based on the profile. For example create a profile for Spotify to only play music on your speaker, while your favorite game is using your headset.
 
-Simply set a profile for Spotify and another one for your game, SoundSwitch will takes care of the rest.
-
-### ⌨️ Hot key
-Or you want to set an hot key that will switch the sound to a specific device ? You can do that too by setting the hot key you need.
+- ### ⌨️ Hot key profile
+When a hot key combination is pressed, the sound settings are switched based on the profile. For example you define a special combination to switch your playback device to your television.
 
 ## Advanced
 
