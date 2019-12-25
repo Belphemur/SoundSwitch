@@ -310,4 +310,7 @@ Beide: Wenn ein beliebiger Gerätetyp gewechselt wird.</value>
   <data name="profile.name" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="profile.error.hotkey" xml:space="preserve">
+    <value>Die Tastenkombination {0} ist bereits belegt.</value>
+  </data>
 </root>
