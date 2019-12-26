@@ -14,7 +14,7 @@
 
 using System.Collections.Generic;
 using System.Windows.Forms;
-using CommonMark;
+using Markdig;
 
 namespace SoundSwitch.UI.UserControls
 {
@@ -31,6 +31,7 @@ namespace SoundSwitch.UI.UserControls
             @"<!doctype html>
             <html>
             <head>
+                <meta charset=""utf-8"">
                 <style>
                     body {
                         background: #fff; margin: 0 auto;
@@ -59,9 +60,10 @@ namespace SoundSwitch.UI.UserControls
         /// <param name="changelogLines"></param>
         public void SetChangelog(IEnumerable<string> changelogLines)
         {
+            var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
             var lines = HtmlHeaders;
             lines.Add("<body>");
-            lines.Add(CommonMarkConverter.Convert(string.Join("\n", changelogLines)));
+            lines.Add(Markdown.ToHtml(string.Join("\n", changelogLines), pipeline));
             lines.Add("</body>");
             lines.Add("</html>");
             DocumentText = string.Join("\n", lines);
