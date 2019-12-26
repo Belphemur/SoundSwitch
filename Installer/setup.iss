@@ -157,6 +157,8 @@ Type: files; Name: {app}\Audio.Default.Switcher.Wrapper.*
 Type: files; Name: {app}\AudioDefaultSwitcher.*
 Type: files; Name: {app}\Microsoft.*.dll
 Type: files; Name: {app}\Microsoft.*.pdb
+Type: files; Name: {app}\CommonMark.dll
+Type: files; Name: {app}\CommonMark.pdb
 
 [Code]
 #include "scripts\checkMutex.iss"
