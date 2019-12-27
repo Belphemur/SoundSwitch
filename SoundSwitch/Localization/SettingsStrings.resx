@@ -320,10 +320,10 @@ Both: Change when any type of device is switched.</value>
 		<value>There is already a profile named {0}.</value>
   </data>
   <data name="profile.error.needHKOrPath" xml:space="preserve">
-		<value>You need to set the hot key or/and the application.</value>
+		<value>You need to set the hotkey or/and the application.</value>
   </data>
   <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
-		<value>You need to set a playback device or recording device.</value>
+		<value>You need to set a playback-, or recording device.</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
 		<value>Add a profile to switch to a certain playback or recording device, when a specific application is started or focused.</value>
