@@ -254,4 +254,28 @@ Begge: Endre når enhetstypen byttes.</value>
   <data name="profile.program" xml:space="preserve">
     <value>Program</value>
   </data>
+  <data name="profile.error.hotkey" xml:space="preserve">
+    <value>Denne snarveien {0} er allerede registrert.</value>
+  </data>
+  <data name="profile.error.application" xml:space="preserve">
+    <value>Dette programmet {0} har allerede en lenket profil.</value>
+  </data>
+  <data name="profile.error.name" xml:space="preserve">
+    <value>Det finnes allerede en profil ved navn {0}.</value>
+  </data>
+  <data name="profile.feature.add" xml:space="preserve">
+    <value>Legg til profil</value>
+  </data>
+  <data name="profile.feature.executable" xml:space="preserve">
+    <value>Kjørbar fil (*.exe)</value>
+  </data>
+  <data name="profile.error.title" xml:space="preserve">
+    <value>Profilfeil</value>
+  </data>
+  <data name="profile.deleteButton" xml:space="preserve">
+    <value>Slett</value>
+  </data>
+  <data name="profile.error.no-name" xml:space="preserve">
+    <value>Profiler må navngis.</value>
+  </data>
 </root>
