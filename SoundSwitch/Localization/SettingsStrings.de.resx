@@ -323,7 +323,7 @@ Beide: Wenn ein beliebiger Gerätetyp gewechselt wird.</value>
     <value>Es muss eine Tastenkombination oder/und eine Anwendung festgelegt werden.</value>
   </data>
   <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
-    <value>Es muss ein Wiedergabegerät oder Aufnahmegerät festgelegt werden.</value>
+    <value>Es muss ein Wiedergabe- oder Aufnahmegerät festgelegt werden.</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
     <value>Füge ein Profil hinzu, um zu einem Wiedergabe- oder Aufnahmegerät zu wechseln, wenn eine bestimmte Anwendung gestartet oder fokussiert wird.</value>
