@@ -113,13 +113,13 @@
 		<value>Lecture</value>
   </data>
   <data name="hotkeys" xml:space="preserve">
-		<value>Raccourcis</value>
+		<value>Raccourci</value>
   </data>
   <data name="settings" xml:space="preserve">
-		<value>Configuration</value>
+		<value>Paramètres</value>
   </data>
   <data name="closeTooltip" xml:space="preserve">
-		<value>Les changements sont sauvegardés automatiquement</value>
+		<value>Les modifications sont automatiquement sauvegardées</value>
   </data>
   <data name="close" xml:space="preserve">
 		<value>Fermer</value>
@@ -128,43 +128,43 @@
 		<value>Notification</value>
   </data>
   <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
-		<value>Si la case est cochée, SoundSwitch téléchargera les versions beta du program.</value>
+		<value>Si cette option est cochée, SoundSwitch vérifiera également si des version bêta sont disponibles sur GitHub.</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
 		<value>Fichiers Audio</value>
   </data>
   <data name="selectSoundButtonTooltip" xml:space="preserve">
-		<value>Choissez le fichier audio pour la notification sonore</value>
+		<value>Choisissez le fichier audio pour le son de notification</value>
   </data>
   <data name="basicSettings" xml:space="preserve">
-		<value>Configuration de base</value>
+		<value>Paramètres de base</value>
   </data>
   <data name="audioSettings" xml:space="preserve">
-		<value>Configuration Audio</value>
+		<value>Paramètres audio</value>
   </data>
   <data name="updateSettings" xml:space="preserve">
-		<value>Configuration des MàJ</value>
+		<value>Paramètres des mises à jour</value>
   </data>
   <data name="cycleThrough" xml:space="preserve">
-		<value>Switcher entre</value>
+		<value>Parcourir</value>
   </data>
   <data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
-		<value>Tous les cartes audio</value>
+		<value>Tous les périphériques audio</value>
   </data>
   <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
-		<value>Seulement les cartes sélectionnées</value>
+		<value>Uniquement les périphériques audio sélectionnés</value>
   </data>
   <data name="notificationOptionSound" xml:space="preserve">
-		<value>Notification Sonore</value>
+		<value>Notification sonore</value>
   </data>
   <data name="notificationOptionNone" xml:space="preserve">
-		<value>Aucune Notification</value>
+		<value>Aucune notification</value>
   </data>
   <data name="notificationOptionToast" xml:space="preserve">
-		<value>Notification Popup</value>
+		<value>Notification popup</value>
   </data>
   <data name="notificationOptionCustomized" xml:space="preserve">
-		<value>Notification Sonore Personalisée</value>
+		<value>Notification sonore personnalisée</value>
   </data>
   <data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
 		<value>Périphérique de lecture</value>
@@ -173,86 +173,87 @@
 		<value>Périphérique d'enregistrement</value>
   </data>
   <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-		<value>Pas de notification</value>
+		<value>Aucune information</value>
   </data>
   <data name="audioFileNotFound" xml:space="preserve">
-		<value>Le fichier audio que vous avez sélectionné pour être joué comme notification est introuvable. SoundSwitch a changé ses paramétre de notification pour {0}.</value>
+		<value>Le fichier audio que vous avez sélectionné pour être joué comme notification est introuvable. SoundSwitch a modifié les paramètres de notification pour {0}.</value>
   </data>
   <data name="audioFileNotFoundCaption" xml:space="preserve">
 		<value>Fichier audio introuvable</value>
   </data>
   <data name="activeRecording" xml:space="preserve">
-		<value>Enr: {0}</value>
+		<value>Enregistrement : {0}</value>
   </data>
   <data name="activePlayback" xml:space="preserve">
-		<value>Lec: {0}</value>
+		<value>Lecture : {0}</value>
   </data>
   <data name="communicationsDevice" xml:space="preserve">
-		<value>Changer la carte de communication</value>
+		<value>Modifier le dispositif de communication par défaut</value>
   </data>
   <data name="communicationsDeviceTooltip" xml:space="preserve">
-		<value>Quand cette option est sélectionnée, l'application changera aussi la carte audio utilisée pour la communication.</value>
+		<value>Si cette option est cochée, l'application modifiera aussi la carte audio utilisée pour la communication (utile pour Skype ou TeamSpeak par ex.).</value>
   </data>
   <data name="hotkeysTooltip" xml:space="preserve">
-		<value>Pour activer le raccourcis clavier.</value>
+		<value>Vérifiez que le raccourci clavier est activé.</value>
   </data>
   <data name="keepSystemTrayIcon" xml:space="preserve">
-		<value>Garder l'icone de SoundSwitch</value>
+		<value>Conserver l'icône de SoundSwitch dans la barre d'état</value>
   </data>
   <data name="keepSystemTrayIconTooltip" xml:space="preserve">
-		<value>Pour que l'icone de SoundSwitch ne change pas quand la carte par défault change.</value>
+		<value>Si cette option est cochée, l’icône de SoundSwitch ne changera pas lorsque le dispositif de lecture par défaut sera modifié.</value>
   </data>
   <data name="cycleThroughTooltip" xml:space="preserve">
-		<value>Choisir quel group de carte audio changer. Soit toute, soit celle que vous avez sélectionné.</value>
+		<value>Choisissez entre quels périphériques basculer. Soit seulement entre ceux sélectionnés soit parmi tous.</value>
   </data>
   <data name="notificationOptionWindowsDefault" xml:space="preserve">
 		<value>Notification Windows</value>
   </data>
   <data name="notificationTooltip" xml:space="preserve">
-		<value>Notif. Windows: Popup sur l'icone de système.
-Notif. Sonore: Joue un son.
-Notif. Sonore Perso: Joue le son choisi.
-Notif. Toast: Popup sur le coté de l'écran dans Windows 10.
-Ban. : Bannière discrète sur fond noir transparent sur le coté gauche de l'écran.</value>
+		<value>Notification Windows : Notification Windows par défaut.
+Notification sonore : Joue un son sur le périphérique de lecture sélectionné.
+Notification sonore personnalisée : Joue un son spécifié sur le périphérique de lecture sélectionné.
+Notification popup : Affiche une notification dans la barre d'état.
+Bannière : Utilise une bannière personnalisée toujours au premier plan, utile pendant le jeu.</value>
   </data>
   <data name="language" xml:space="preserve">
 		<value>Langue</value>
   </data>
   <data name="languageRestartRequired" xml:space="preserve">
-		<value>Voulez-vous redémarrer SoundSwitch pour changer la langue ?</value>
+		<value>La langue sera modifiée après le redémarrage de SoundSwitch.
+Voulez-vous redémarrer maintenant ?</value>
   </data>
   <data name="languageRestartRequiredCaption" xml:space="preserve">
-		<value>Besoin de redémarrer</value>
+		<value>Redémarrage nécessaire</value>
   </data>
   <data name="startWithWindows" xml:space="preserve">
-		<value>Démarrer avec Windows</value>
+		<value>Démarrer automatiquement avec Windows</value>
   </data>
   <data name="updateIncludeBetaVersions" xml:space="preserve">
-		<value>Version Beta</value>
+		<value>Inclure les version bêta</value>
   </data>
   <data name="updateInstallAutomatically" xml:space="preserve">
-		<value>Auto-Installation</value>
+		<value>Installer les mises à jour automatiquement</value>
   </data>
   <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
 		<value>Les mise à jour sont téléchargées et installées automatiquement.</value>
   </data>
   <data name="updateNever" xml:space="preserve">
-		<value>Pas de MàJ</value>
+		<value>Ne jamais vérifier les mises à jour</value>
   </data>
   <data name="tooltipOnHover" xml:space="preserve">
-		<value>Information</value>
+		<value>Information au survol</value>
   </data>
   <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
-		<value>Toutes les cartes</value>
+		<value>Pour tous les périphériques</value>
   </data>
   <data name="updateNotify" xml:space="preserve">
-		<value>Notification de MàJ</value>
+		<value>Me notifier lorsque des mises à jour sont disponibles</value>
   </data>
   <data name="updateNeverTooltip" xml:space="preserve">
-		<value>Ne pas mettre à jour le programme. Vous devez télécharger manuelleme les nouvelles versions.</value>
+		<value>Ne met pas à jour le programme à moins que vous ne le fassiez manuellement.</value>
   </data>
   <data name="updateNotifyTooltip" xml:space="preserve">
-		<value>SoundSwitch vous préviendra quand une MàJ est disponible. Il téléchargera pour vous la MàJ et vous demandera si vous voulez l'installer.</value>
+		<value>SoundSwitch vous enverra une notification lorsqu'une mise à jour sera disponible. Cliquer sur la notification affichera une boîte de dialogue de téléchargement et vous demandera si vous souhaitez l'installer.</value>
   </data>
   <data name="notificationOptionBanner" xml:space="preserve">
         <value>Bannière</value>
@@ -261,24 +262,24 @@ Ban. : Bannière discrète sur fond noir transparent sur le coté gauche de l'é
 		<value>Désactiver le son personnalisé.</value>
   </data>
   <data name="foregroundApp" xml:space="preserve">
-		<value>Switcher aussi l'application visible</value>
+		<value>Basculer aussi le programme en arrière plan.</value>
   </data>
   <data name="foregroundAppTooltip" xml:space="preserve">
-		<value>Change aussi l'audio de l'application en avant. Utile pour les jeux vidéo.</value>
+		<value>Bascule également le son du programme en cours d'utilisation. Utile pour les jeux vidéos.</value>
   </data>
   <data name="iconChange" xml:space="preserve">
-		<value>Icône système</value>
+		<value>Icône de la barre d'état</value>
   </data>
   <data name="iconChange.tooltip" xml:space="preserve">
-		<value>Changer l'icone système de SoundSwitch.
+		<value>Choisissez quand modifier l'icône de SoundSwitch dans la barre d'état.
 
-Jamais : Icône du programme.
-Lecture : Quand le périphérique de lecture est switché.
-Enregistrement : Quand le périphérique d'enregistrement est switché.
-Toujours : Quand un périphérique audio est switché.</value>
+Par défaut : Ne pas modifier. Conserver l'icône de SoundSwitch.
+Lecture : Lors de la bascule vers un autre périphérique de lecture.
+Enregistrement : Lors de la bascule vers un autre périphérique d'enregistrement.
+Toujours : Lors de la bascule vers un autre périphérique de lecture ou d'enregistrement.</value>
   </data>
   <data name="profile.tab" xml:space="preserve">
-		<value>Profiles</value>
+		<value>Profils</value>
   </data>
   <data name="profile.program" xml:space="preserve">
 		<value>Programme</value>
@@ -290,53 +291,48 @@ Toujours : Quand un périphérique audio est switché.</value>
 		<value>Nom</value>
   </data>
   <data name="profile.error.hotkey" xml:space="preserve">
-		<value>Le raccourcis {0} est déjà utilisé.</value>
+		<value>Le raccourci {0} est déjà utilisé.</value>
   </data>
   <data name="profile.error.application" xml:space="preserve">
-		<value>Cette application {0} a déjà un profile associé.</value>
+		<value>Cette application {0} a déjà un profil associé.</value>
   </data>
   <data name="profile.error.name" xml:space="preserve">
 		<value>Il existe déjà un profile nommé {0}.</value>
   </data>
   <data name="profile.error.needHKOrPath" xml:space="preserve">
-		<value>Vous devez configurerun raccourcis clavier et/ou sélectionner un programme.</value>
+		<value>Vous devez configurer un raccourci clavier et/ou sélectionner un programme.</value>
   </data>
   <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
-		<value>Changer l'icône système de SoundSwitch.
-
-Jamais : Icône du programme.
-Lecture : Quand le périphérique de lecture est switché.
-Enregistrement : Quand le périphérique d'enregistrement est switché.
-Toujours : Quand un périphérique audio est switché.</value>
+		<value>Vous devez définir un dispositif de lecture ou d'enregistrement.</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
-		<value>Un profile vous permet de choisir le périphérique de Lecture et/ou d'enregistrement à switcher quand l'application voulue est utilisée ou que vous avez utilisé le raccourcis clavier.</value>
+		<value>Un profil vous permet de choisir le périphérique de lecture et/ou d'enregistrement vers lequel basculer quand l'application voulue est utilisée ou que vous avez utilisé le raccourci clavier.</value>
   </data>
   <data name="profile.error.registerHotkeys" xml:space="preserve">
-		<value>Impossible d'enregister les raccourcis clavier des ces profiles : {0}</value>
+		<value>Impossible d’enregistrer le raccourci clavier pour les profils suivants : {0}</value>
   </data>
   <data name="profile.error.registerHotkeys.title" xml:space="preserve">
-		<value>Raccourcis clavier déjà utilisé.</value>
+		<value>Raccourci clavier déjà utilisé</value>
   </data>
   <data name="profile.feature.add" xml:space="preserve">
-		<value>Ajouter un profile</value>
+		<value>Ajouter un profil</value>
   </data>
   <data name="profile.feature.executable" xml:space="preserve">
 		<value>Exécutable (*.exe)</value>
   </data>
   <data name="profile.error.title" xml:space="preserve">
-		<value>Erreur avec le profile</value>
+		<value>Erreur avec le profil</value>
   </data>
   <data name="profile.deleteButton" xml:space="preserve">
 		<value>Supprimer</value>
   </data>
   <data name="profile.error.delete" xml:space="preserve">
-		<value>Profile introuvable.</value>
+		<value>Profil introuvable.</value>
   </data>
   <data name="profile.error.no-name" xml:space="preserve">
-		<value>Un profile a besoin d'un nom.</value>
+		<value>Un profil doit avoir un nom.</value>
   </data>
   <data name="profile.feature.profile" xml:space="preserve">
-		<value>Profile</value>
+		<value>Profil</value>
   </data>
 </root>
