@@ -38,7 +38,7 @@ namespace SoundSwitch.Framework.Configuration
         {
             // Basic Settings
             FirstRun = true;
-            SwitchForegroundProgram = false;
+            SwitchForegroundProgram = true;
 
             // Audio Settings
             ChangeCommunications = false;
