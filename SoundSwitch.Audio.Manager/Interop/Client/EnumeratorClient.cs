@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Audio.Manager.Interop.Interface;
@@ -17,7 +18,6 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
         ~EnumeratorClient()
         {
             _enumerator.Dispose();
-
         }
 
         public bool IsDefault(string deviceId, EDataFlow flow, ERole role)
@@ -32,14 +32,22 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
                 return result;
             }
 
-            var defaultDevice = _enumerator.GetDefaultAudioEndpoint((DataFlow)flow, (Role)role);
-            return deviceId == defaultDevice.ID;
-        } 
+            try
+            {
+                var defaultDevice = _enumerator.GetDefaultAudioEndpoint((DataFlow) flow, (Role) role);
+                return deviceId == defaultDevice.ID;
+            }
+            catch (Exception)
+            {
+                //Happens if there is no default device for the given Data Flow and/or role
+                // See issue #401
+                return false;
+            }
+        }
 
         [ComImport, Guid(ComGuid.AUDIO_IMMDEVICE_ENUMERATOR_OBJECT_IID)]
         private class _MMDeviceEnumerator
         {
-            
         }
     }
 }
