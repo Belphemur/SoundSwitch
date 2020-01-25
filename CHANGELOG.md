@@ -1,5 +1,13 @@
 # Changelog
 
+## [v5.0.1](https://github.com/Belphemur/SoundSwitch/tree/v5.0.1) (2020-01-25)
+
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v5.0.0...v5.0.1)
+
+**Fixed bugs:**
+
+- Crash when switching with v5.0.0 [\#401](https://github.com/Belphemur/SoundSwitch/issues/401)
+
 ## [v5.0.0](https://github.com/Belphemur/SoundSwitch/tree/v5.0.0) (2020-01-24)
 
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.17.1...v5.0.0)
@@ -329,7 +337,6 @@
 **Merged pull requests:**
 
 - Update SettingsStrings.pt-BR.resx [\#266](https://github.com/Belphemur/SoundSwitch/pull/266) ([opus-2](https://github.com/opus-2))
-- Update italian.iss [\#265](https://github.com/Belphemur/SoundSwitch/pull/265) ([bovirus](https://github.com/bovirus))
 - Several updates [\#264](https://github.com/Belphemur/SoundSwitch/pull/264) ([bovirus](https://github.com/bovirus))
 - Update Italian strings [\#263](https://github.com/Belphemur/SoundSwitch/pull/263) ([bovirus](https://github.com/bovirus))
 
@@ -343,6 +350,7 @@
 
 **Merged pull requests:**
 
+- Update italian.iss [\#265](https://github.com/Belphemur/SoundSwitch/pull/265) ([bovirus](https://github.com/bovirus))
 - Maybe fix memory leak caused by not disposing Icons and Bitmaps. [\#262](https://github.com/Belphemur/SoundSwitch/pull/262) ([Niko-O](https://github.com/Niko-O))
 - Update ISS file \(add Italian language\) [\#260](https://github.com/Belphemur/SoundSwitch/pull/260) ([bovirus](https://github.com/bovirus))
 
@@ -452,6 +460,7 @@
 
 **Closed issues:**
 
+- Crash when not selecting a file for the custom sound notification option [\#202](https://github.com/Belphemur/SoundSwitch/issues/202)
 - High CPU usage because of "Windows Audio Device Graph Isolation" process [\#198](https://github.com/Belphemur/SoundSwitch/issues/198)
 - Error popup when trying to install latest update [\#196](https://github.com/Belphemur/SoundSwitch/issues/196)
 - Branding version for GTribe [\#148](https://github.com/Belphemur/SoundSwitch/issues/148)
@@ -477,7 +486,6 @@
 
 **Closed issues:**
 
-- Crash when not selecting a file for the custom sound notification option [\#202](https://github.com/Belphemur/SoundSwitch/issues/202)
 - Recording device hotkey doesn't cycle [\#191](https://github.com/Belphemur/SoundSwitch/issues/191)
 
 **Merged pull requests:**
@@ -961,10 +969,6 @@
 
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.6.0...v3.6.1)
 
-**Implemented enhancements:**
-
-- Add localization [\#27](https://github.com/Belphemur/SoundSwitch/issues/27)
-
 **Fixed bugs:**
 
 - Installer doesn't detect DotNet 4.6.1 [\#35](https://github.com/Belphemur/SoundSwitch/issues/35)
@@ -1013,7 +1017,9 @@
 
 **Implemented enhancements:**
 
+- Add localization [\#27](https://github.com/Belphemur/SoundSwitch/issues/27)
 - Bigger Icons in Settings. Support non standard icons. [\#26](https://github.com/Belphemur/SoundSwitch/issues/26)
+- Group devices by state in Settings [\#22](https://github.com/Belphemur/SoundSwitch/issues/22)
 
 **Fixed bugs:**
 
@@ -1033,12 +1039,7 @@
 
 **Implemented enhancements:**
 
-- Group devices by state in Settings [\#22](https://github.com/Belphemur/SoundSwitch/issues/22)
 - Switch Recording devices [\#19](https://github.com/Belphemur/SoundSwitch/issues/19)
-
-**Fixed bugs:**
-
-- Settings not saving [\#21](https://github.com/Belphemur/SoundSwitch/issues/21)
 
 **Closed issues:**
 
@@ -1047,6 +1048,10 @@
 ## [v3.3.1](https://github.com/Belphemur/SoundSwitch/tree/v3.3.1) (2015-08-29)
 
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.3.0...v3.3.1)
+
+**Fixed bugs:**
+
+- Settings not saving [\#21](https://github.com/Belphemur/SoundSwitch/issues/21)
 
 ## [v3.3.0](https://github.com/Belphemur/SoundSwitch/tree/v3.3.0) (2015-08-27)
 
