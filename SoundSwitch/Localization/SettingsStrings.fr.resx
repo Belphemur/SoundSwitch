@@ -262,7 +262,7 @@ Voulez-vous redémarrer maintenant ?</value>
 		<value>Désactiver le son personnalisé.</value>
   </data>
   <data name="foregroundApp" xml:space="preserve">
-		<value>Basculer aussi le programme en arrière plan.</value>
+		<value>Basculer aussi le programme en arrière plan</value>
   </data>
   <data name="foregroundAppTooltip" xml:space="preserve">
 		<value>Bascule également le son du programme en cours d'utilisation. Utile pour les jeux vidéos.</value>
