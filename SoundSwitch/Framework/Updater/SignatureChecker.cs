@@ -21,7 +21,7 @@ namespace SoundSwitch.Framework.Updater
 {
     public static class SignatureChecker
     {
-        private static string _certumSubject = "E=soundswitch@aaflalo.me, CN=\"Open Source Developer, Antoine Aflalo\", O=Open Source Developer, S=Quebec, C=CA";
+        private static readonly string _certumSubject = "E=soundswitch@aaflalo.me, CN=\"Open Source Developer, Antoine Aflalo\", O=Open Source Developer, S=Quebec, C=CA";
 
         /// <summary>
         /// Does the given file have the right signature
