@@ -418,6 +418,11 @@ begin
 #endif
 
 
+#ifdef use_dotnetfx47
+    dotnetfx47(2); // min allowed version is 4.7.2
+#endif
+
+
 #ifdef use_vc2005
 	vcredist2005();
 #endif

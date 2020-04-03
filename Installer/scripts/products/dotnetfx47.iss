@@ -3,7 +3,7 @@
 // https://www.microsoft.com/en-US/download/details.aspx?id=49982
 
 [CustomMessages]
-dotnetfx47_title=.NET Framework 4.7.0
+dotnetfx47_title=.NET Framework 4.7.2
 
 dotnetfx47_size=1 MB - 65 MB
 
@@ -14,7 +14,7 @@ de.dotnetfx47_lcid=/lcid 1031
 
 [Code]
 const
-	dotnetfx47_url = 'https://download.microsoft.com/download/A/E/A/AEAE0F3F-96E9-4711-AADA-5E35EF902306/NDP47-KB3186500-Web.exe';
+	dotnetfx47_url = 'https://download.microsoft.com/download/0/5/C/05C1EC0E-D5EE-463B-BFE3-9311376A6809/NDP472-KB4054531-Web.exe';
 
 procedure dotnetfx47(minVersion: integer);
 begin
