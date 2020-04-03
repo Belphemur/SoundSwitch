@@ -11,7 +11,7 @@
 
 ## Requirements
 - ⚠ Operating System: Windows 7 or newer
-- ⚠ [Microsoft .NET Framework 4.7.2 (Web Installer)]https://dotnet.microsoft.com/download/dotnet-framework/thank-you/net472-web-installer)
+- ⚠ [Microsoft .NET Framework 4.7.2 (Web Installer)](https://dotnet.microsoft.com/download/dotnet-framework/thank-you/net472-web-installer)
 
 ## Donations
 If you'd like to support the development, we would love to see you [here ❤](https://soundswitch.aaflalo.me/#donate).
