@@ -77,7 +77,7 @@
     <value>Innstillinger</value>
   </data>
   <data name="hotkeys" xml:space="preserve">
-    <value>Snarveier</value>
+    <value>Snarvei</value>
   </data>
   <data name="communicationsDevice" xml:space="preserve">
     <value>Veksle forvalgt kommunikasjonsenhet</value>
@@ -101,7 +101,7 @@
     <value>Inkluder Beta-versjoner</value>
   </data>
   <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
-    <value>Når valgt, vil SoundSwitch også se etter forhåndsversjoner på GitHub.</value>
+    <value>Når valgt, vil SoundSwitch også se etter betaversjoner på GitHub.</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
     <value>Lydfiler</value>
@@ -110,7 +110,7 @@
     <value>Velg lydfil for merknaden.</value>
   </data>
   <data name="hotkeysTooltip" xml:space="preserve">
-    <value>Velg for å skru på snarveier.</value>
+    <value>Velg for å skru på snarvei.</value>
   </data>
   <data name="basicSettings" xml:space="preserve">
     <value>Grunnleggende innstillinger</value>
@@ -277,5 +277,23 @@ Begge: Endre når enhetstypen byttes.</value>
   </data>
   <data name="profile.error.no-name" xml:space="preserve">
     <value>Profiler må navngis.</value>
+  </data>
+  <data name="profile.error.needHKOrPath" xml:space="preserve">
+    <value>Du må sette hurtigtast og/eller program.</value>
+  </data>
+  <data name="profile.error.registerHotkeys.title" xml:space="preserve">
+    <value>Allerede brukt hurtigtast</value>
+  </data>
+  <data name="profile.error.registerHotkeys" xml:space="preserve">
+    <value>Kunne ikke registrere hurtigtast for følgende profiler: {0}</value>
+  </data>
+  <data name="profile.explanation" xml:space="preserve">
+    <value>Legg til en profil for å bytte til gitt avpillings- eller opptaksenhet, når et gitt program er startet eller i fokus.</value>
+  </data>
+  <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
+    <value>Du må sette avspillings- eller opptaksenhet.</value>
+  </data>
+  <data name="profile.error.delete" xml:space="preserve">
+    <value>Kunne ikke finne profilen.</value>
   </data>
 </root>
