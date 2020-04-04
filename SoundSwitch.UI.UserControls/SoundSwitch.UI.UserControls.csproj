@@ -51,9 +51,6 @@
     <Compile Include="ChangelogViewer.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="HotKeyTextBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="HotKeyControl\HotKeyIsSetEventArgs.cs" />
     <Compile Include="HotKeyControl\HotKeyControl.cs">
       <SubType>UserControl</SubType>
