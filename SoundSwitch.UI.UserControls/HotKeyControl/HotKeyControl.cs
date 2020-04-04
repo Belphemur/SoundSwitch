@@ -11,14 +11,14 @@ namespace SoundSwitch.UI.UserControls.HotKeyControl
     /// <summary>Allows adding custom hotkeys.
     /// </summary>
     [DefaultProperty("ForceModifiers"), DefaultEvent("HotKeyIsSet"), ToolboxBitmap(typeof(HotKeyControl), "HotKeyControl.png")]
-    public partial class HotKeyControl : UserControl
+    public sealed partial class HotKeyControl : UserControl
     {
         private string _tooltip;
         private bool _keyisSet;
 
         [DllImport("user32.dll", EntryPoint = "SendMessageW")]
         private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wp, IntPtr lp);
-
+        
         #region **Properties.
 
         /// <summary>Specifies that the control should force the user to use a modifier.

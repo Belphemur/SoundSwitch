@@ -68,7 +68,6 @@ namespace SoundSwitch.UI.Forms
             hotKeyControl.Tag =
                 new Tuple<DataFlow, HotKey>(DataFlow.Render, AppConfigs.Configuration.PlaybackHotKey);
             hotKeyControl.Enabled = hotkeysCheckBox.Checked = AppConfigs.Configuration.PlaybackHotKey.Enabled;
-            hotKeyControl.HotKeyIsSet += HotKeyControlOnHotKeyIsSet;
 
             var hotkeysToolTip = new ToolTip();
             hotkeysToolTip.SetToolTip(hotkeysCheckBox, SettingsStrings.hotkeysTooltip);
@@ -166,18 +165,6 @@ namespace SoundSwitch.UI.Forms
             // Settings - Language
             new LanguageFactory().ConfigureListControl(languageComboBox);
             languageComboBox.SelectedValue = AppModel.Instance.Language;
-        }
-
-        private void HotKeyControlOnHotKeyIsSet(object sender, HotKeyIsSetEventArgs e)
-        {
-            var tuple    = (Tuple<DataFlow, HotKey>) hotKeyControl.Tag;
-            var newTuple = new Tuple<DataFlow, HotKey>(tuple.Item1, e.HotKey);
-            hotKeyControl.Tag = newTuple;
-
-            if (AppModel.Instance.SetHotkeyCombination(newTuple.Item2, newTuple.Item1)) return;
-
-            e.Cancel       = true;
-            e.CancelReason = SettingsStrings.hotkeys;
         }
 
         private void PopulateProfiles()
@@ -700,6 +687,18 @@ namespace SoundSwitch.UI.Forms
             AppModel.Instance.ProfileManager.DeleteProfiles(profiles);
             deleteProfileButton.Enabled = false;
             RefreshProfiles();
+        }
+
+        private void hotKeyControl_HotKeyIsSet(object sender, HotKeyIsSetEventArgs e)
+        {
+            var tuple = (Tuple<DataFlow, HotKey>)hotKeyControl.Tag;
+            var newTuple = new Tuple<DataFlow, HotKey>(tuple.Item1, e.HotKey);
+            hotKeyControl.Tag = newTuple;
+
+            if (AppModel.Instance.SetHotkeyCombination(newTuple.Item2, newTuple.Item1)) return;
+
+            e.Cancel = true;
+            e.CancelReason = SettingsStrings.hotkeys;
         }
     }
 }
