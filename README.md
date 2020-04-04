@@ -98,6 +98,7 @@ Improve an existing or add another language? Translations are online editable [r
 - Portuguese (Brazilian) translation [#258](https://github.com/Belphemur/SoundSwitch/pull/258) [@aleczk](https://github.com/aleczk)
 - Awesome Logo [#278](https://github.com/Belphemur/SoundSwitch/pull/278) [@linadesteem](https://github.com/linadesteem)
 - Icons [Pastel SVG icon set](https://codefisher.org/pastel-svg/), by Michael Buckley ([CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/))
+- Discovered and reported a security vulnerability with the updater and its code signature checker [#415](https://github.com/Belphemur/SoundSwitch/issues/415) [@JarLob](https://github.com/JarLob)
 
 ### 🤝 JetBrains ![JetBrain Tooling](https://i.imgur.com/SN2qAuL.png "JetBrain Tooling")
 
