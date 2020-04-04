@@ -64,6 +64,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="WinApi\Keyboard\Helpers.cs" />
     <Compile Include="WinApi\Keyboard\HotKey.cs" />
     <Compile Include="WinApi\Keyboard\KeyboardWindowsAPI.cs" />
     <Compile Include="WinApi\WindowsAPIAdapter.cs">
