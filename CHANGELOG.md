@@ -1,5 +1,28 @@
 # Changelog
 
+## [v5.0.2](https://github.com/Belphemur/SoundSwitch/tree/v5.0.2) (2020-04-04)
+
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v5.0.1...v5.0.2)
+
+**Fixed bugs:**
+
+- Security Vulnerability in the Updater [\#415](https://github.com/Belphemur/SoundSwitch/issues/415)
+- 5.0.1 crashing on first run [\#413](https://github.com/Belphemur/SoundSwitch/issues/413)
+- My hot-key stopped working after the last patch [\#408](https://github.com/Belphemur/SoundSwitch/issues/408)
+- Install / Upgrade issue [\#404](https://github.com/Belphemur/SoundSwitch/issues/404)
+- SoundSwitchAggregateException / error message [\#397](https://github.com/Belphemur/SoundSwitch/issues/397)
+- Auto Updater is Crashing on v4.15.\* [\#376](https://github.com/Belphemur/SoundSwitch/issues/376)
+
+**Closed issues:**
+
+- Bug - Cannot set hot keys [\#412](https://github.com/Belphemur/SoundSwitch/issues/412)
+- Crash when no audio device available [\#411](https://github.com/Belphemur/SoundSwitch/issues/411)
+- url [\#407](https://github.com/Belphemur/SoundSwitch/issues/407)
+- Hotkey gets various characters in addition to the key I actually want [\#405](https://github.com/Belphemur/SoundSwitch/issues/405)
+- Randomly switch on it own and back when viewing websites, desktop or doing anything  [\#403](https://github.com/Belphemur/SoundSwitch/issues/403)
+- SoundSwitch\_v5.0.1.14646\_Release [\#402](https://github.com/Belphemur/SoundSwitch/issues/402)
+- Forced mode [\#400](https://github.com/Belphemur/SoundSwitch/issues/400)
+
 ## [v5.0.1](https://github.com/Belphemur/SoundSwitch/tree/v5.0.1) (2020-01-25)
 
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v5.0.0...v5.0.1)
@@ -337,6 +360,7 @@
 **Merged pull requests:**
 
 - Update SettingsStrings.pt-BR.resx [\#266](https://github.com/Belphemur/SoundSwitch/pull/266) ([opus-2](https://github.com/opus-2))
+- Update italian.iss [\#265](https://github.com/Belphemur/SoundSwitch/pull/265) ([bovirus](https://github.com/bovirus))
 - Several updates [\#264](https://github.com/Belphemur/SoundSwitch/pull/264) ([bovirus](https://github.com/bovirus))
 - Update Italian strings [\#263](https://github.com/Belphemur/SoundSwitch/pull/263) ([bovirus](https://github.com/bovirus))
 
@@ -350,7 +374,6 @@
 
 **Merged pull requests:**
 
-- Update italian.iss [\#265](https://github.com/Belphemur/SoundSwitch/pull/265) ([bovirus](https://github.com/bovirus))
 - Maybe fix memory leak caused by not disposing Icons and Bitmaps. [\#262](https://github.com/Belphemur/SoundSwitch/pull/262) ([Niko-O](https://github.com/Niko-O))
 - Update ISS file \(add Italian language\) [\#260](https://github.com/Belphemur/SoundSwitch/pull/260) ([bovirus](https://github.com/bovirus))
 
@@ -692,6 +715,7 @@
 **Implemented enhancements:**
 
 - Device-dependent system tray icon [\#122](https://github.com/Belphemur/SoundSwitch/issues/122)
+- Update to .NET 4.6.2 [\#118](https://github.com/Belphemur/SoundSwitch/issues/118)
 
 **Fixed bugs:**
 
@@ -703,7 +727,6 @@
 
 **Implemented enhancements:**
 
-- Update to .NET 4.6.2 [\#118](https://github.com/Belphemur/SoundSwitch/issues/118)
 - Accessing 'help' at any time [\#105](https://github.com/Belphemur/SoundSwitch/issues/105)
 - Request: Notification pop up with custom sound? [\#73](https://github.com/Belphemur/SoundSwitch/issues/73)
 
@@ -1019,7 +1042,6 @@
 
 - Add localization [\#27](https://github.com/Belphemur/SoundSwitch/issues/27)
 - Bigger Icons in Settings. Support non standard icons. [\#26](https://github.com/Belphemur/SoundSwitch/issues/26)
-- Group devices by state in Settings [\#22](https://github.com/Belphemur/SoundSwitch/issues/22)
 
 **Fixed bugs:**
 
@@ -1039,6 +1061,7 @@
 
 **Implemented enhancements:**
 
+- Group devices by state in Settings [\#22](https://github.com/Belphemur/SoundSwitch/issues/22)
 - Switch Recording devices [\#19](https://github.com/Belphemur/SoundSwitch/issues/19)
 
 **Closed issues:**
