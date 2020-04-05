@@ -263,13 +263,14 @@
     <Compile Include="Framework\TrayIcon\TooltipInfoManager\TootipInfo\TooltipInfoTypeEnum.cs" />
     <Compile Include="Framework\Updater\AutoUpdater.cs" />
     <Compile Include="Framework\Updater\GitHubRelease.cs" />
+    <Compile Include="Framework\Updater\Installer\WebFile.cs" />
+    <Compile Include="Framework\Updater\Installer\WebFileRunner.cs" />
     <Compile Include="Framework\Updater\IntervalUpdateChecker.cs" />
     <Compile Include="Framework\Updater\Release.cs" />
     <Compile Include="Framework\Updater\SignatureChecker.cs" />
     <Compile Include="Framework\Updater\UpdateChecker.cs" />
     <Compile Include="Framework\Updater\UpdateMode.cs" />
     <Compile Include="Framework\Updater\UpdateState.cs" />
-    <Compile Include="Framework\Updater\WebFile.cs" />
     <Compile Include="Localization\AboutStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

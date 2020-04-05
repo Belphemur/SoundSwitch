@@ -123,13 +123,16 @@
           <e p="Updater" t="Include">
             <e p="AutoUpdater.cs" t="Include" />
             <e p="GitHubRelease.cs" t="Include" />
+            <e p="Installer" t="Include">
+              <e p="WebFile.cs" t="Include" />
+              <e p="WebFileRunner.cs" t="Include" />
+            </e>
             <e p="IntervalUpdateChecker.cs" t="Include" />
             <e p="Release.cs" t="Include" />
             <e p="SignatureChecker.cs" t="Include" />
             <e p="UpdateChecker.cs" t="Include" />
             <e p="UpdateMode.cs" t="Include" />
             <e p="UpdateState.cs" t="Include" />
-            <e p="WebFile.cs" t="Include" />
           </e>
         </e>
         <e p="Localization" t="Include">

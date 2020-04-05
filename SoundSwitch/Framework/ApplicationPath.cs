@@ -35,7 +35,7 @@ namespace SoundSwitch.Framework
         /// <summary>
         /// Where the application is installed
         /// </summary>
-        public static string InstallDirectory { get; } = Path.GetDirectoryName(Application.ExecutablePath);
+        public static string InstallDirectory { get; } = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
         /// <summary>
         /// Where is the image to be used for toast
         /// </summary>

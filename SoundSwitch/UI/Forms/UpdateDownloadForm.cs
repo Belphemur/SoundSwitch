@@ -18,6 +18,7 @@ using System.Windows.Forms;
 using Serilog;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Updater;
+using SoundSwitch.Framework.Updater.Installer;
 using SoundSwitch.Localization;
 using SoundSwitch.Properties;
 using SoundSwitch.UI.UserControls;
@@ -90,7 +91,7 @@ namespace SoundSwitch.UI.Forms
 
         private void installButton_Click(object sender, EventArgs e)
         {
-            _releaseFile.Start();
+            new WebFileRunner(ApplicationPath.InstallDirectory).RunFile(_releaseFile);
             Close();
         }
 

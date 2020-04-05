@@ -17,6 +17,7 @@ using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using Serilog;
+using SoundSwitch.Framework.Updater.Installer;
 
 namespace SoundSwitch.Framework.Updater
 {
@@ -52,7 +53,8 @@ namespace SoundSwitch.Framework.Updater
                         Log.Error("The file has the wrong signature. Update cancelled.");
                         return;
                     }
-                    file.Start(InstallerParameters);
+
+                    new WebFileRunner(ApplicationPath.InstallDirectory).RunFile(file, InstallerParameters);
                     if (closeApp)
                     {
                         _context.Send(s => { Application.Exit(); }, null);
