@@ -136,7 +136,7 @@
     <value>Настройки</value>
   </data>
   <data name="hotkeys" xml:space="preserve">
-    <value>Клавиши</value>
+    <value>Горячие клавиши</value>
   </data>
   <data name="communicationsDevice" xml:space="preserve">
     <value>Переключать устройство связи по умолчанию</value>
