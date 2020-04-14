@@ -136,7 +136,7 @@
     <value>Impostazioni</value>
   </data>
   <data name="hotkeys" xml:space="preserve">
-    <value>Tasti rapidi</value>
+    <value>Tasto rapido</value>
   </data>
   <data name="communicationsDevice" xml:space="preserve">
     <value>Modifica dispositivo comunicazione predefinito</value>
@@ -166,10 +166,10 @@
     <value>File audio</value>
   </data>
   <data name="selectSoundButtonTooltip" xml:space="preserve">
-    <value>Seleziona il file audio per la notifica.</value>
+    <value>Seleziona il file audio per la notifica</value>
   </data>
   <data name="hotkeysTooltip" xml:space="preserve">
-    <value>Spunta per abilitare i tasti rapidi.</value>
+    <value>Spunta per abilitare il tasto rapido.</value>
   </data>
   <data name="basicSettings" xml:space="preserve">
     <value>Impostazioni di base</value>
@@ -312,7 +312,7 @@ Entrambi: Cambia quando qualsiasi tipo di dispositivo viene cambiato.</value>
     <value>Questo tasto di scelta rapida è già stato registrato.</value>
   </data>
   <data name="profile.error.application" xml:space="preserve">
-    <value>Questa applicazione ha già un profilo associato.</value>
+    <value>Questa applicazione {0} ha già un profilo associato.</value>
   </data>
   <data name="profile.error.name" xml:space="preserve">
     <value>Esiste già un profilo chiamato {0}.</value>
@@ -352,5 +352,8 @@ Entrambi: Cambia quando qualsiasi tipo di dispositivo viene cambiato.</value>
   </data>
   <data name="profile.feature.profile" xml:space="preserve">
     <value>Profilo</value>
+  </data>
+  <data name="foregroundApp" xml:space="preserve">
+    <value>Commuta anche il programma in sottofondo</value>
   </data>
 </root>
