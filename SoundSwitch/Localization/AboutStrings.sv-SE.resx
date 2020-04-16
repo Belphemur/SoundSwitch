@@ -106,4 +106,10 @@
   <data name="created" xml:space="preserve">
     <value>Skapad av</value>
   </data>
+  <data name="logo" xml:space="preserve">
+    <value>Logga skapad av</value>
+  </data>
+  <data name="icons" xml:space="preserve">
+    <value>Ikoner</value>
+  </data>
 </root>
