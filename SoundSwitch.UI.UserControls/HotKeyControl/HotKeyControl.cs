@@ -149,16 +149,18 @@ namespace SoundSwitch.UI.UserControls.HotKeyControl
 
             //A modifier is present. Process each modifier.
             //Modifiers are separated by a ",". So we'll split them and write each one to the textbox.
-            foreach (string modifier in e.Modifiers.ToString().Split(','))
+            foreach (var modifier in KeyboardWindowsAPI.GetPressedModifiers())
             {
-                if (modifier != Keys.None.ToString())
-                    Text += modifier + " + ";
+                if (modifier == Keys.None)
+                    continue;
+
+                Text += $@"{modifier} + ";
             }
 
             //KEYCODE contains the last key pressed by the user.
             //If KEYCODE contains a modifier, then the user has not entered a shortcut. hence, KeyisSet is false
             //But if not, KeyisSet is true.
-            if (e.KeyCode == Keys.ShiftKey | e.KeyCode == Keys.ControlKey | e.KeyCode == Keys.Menu)
+            if (e.KeyCode == Keys.ShiftKey | e.KeyCode == Keys.ControlKey | e.KeyCode == Keys.Menu | e.KeyCode == Keys.LWin | e.KeyCode == Keys.RWin)
             {
                 _keyisSet = false;
             }
