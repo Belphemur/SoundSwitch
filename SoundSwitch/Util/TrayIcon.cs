@@ -158,7 +158,7 @@ namespace SoundSwitch.Util
         {
             var applicationDirectory = Path.GetDirectoryName(Application.ExecutablePath);
             Debug.Assert(applicationDirectory != null, "applicationDirectory != null");
-            var readmeHtml = Path.Combine(applicationDirectory, "Readme.html");
+            var readmeHtml = Path.Combine(applicationDirectory, "Readme.en.html");
             _settingsMenu.Items.Add(
                 Application.ProductName + ' ' + AssemblyUtils.GetReleaseState() + " (" + Application.ProductVersion +
                 ")", SoundSwitchLogoIcon.ToBitmap());

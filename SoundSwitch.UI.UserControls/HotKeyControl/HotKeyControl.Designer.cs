@@ -58,9 +58,9 @@
             this.PerformLayout();
         }
 
-        #endregion
-
         private System.Windows.Forms.TextBox TextBox;
         private System.Windows.Forms.ToolTip ToolTipProvider;
+
+        #endregion
     }
 }

@@ -186,6 +186,7 @@ namespace SoundSwitch
         private static void InitializeLogger()
         {
             LoggerConfigurator.ConfigureLogger();
+            Log.Information($"{Application.ProductName}  {AssemblyUtils.GetReleaseState()} ({Application.ProductVersion})");
         }
 
         /// <summary>
