@@ -29,7 +29,7 @@ namespace SoundSwitch.Common.Framework.Audio.Device
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return Id == other.Id && Type == other.Type;
+            return (Id == other.Id || Name == other.Name) && Type == other.Type;
         }
 
         public override bool Equals(object obj)
