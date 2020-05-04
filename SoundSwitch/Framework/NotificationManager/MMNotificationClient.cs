@@ -51,6 +51,9 @@ namespace SoundSwitch.Framework.NotificationManager
 
         public void OnDefaultDeviceChanged(DataFlow flow, Role role, string defaultDeviceId)
         {
+            if (defaultDeviceId == null)
+                return;
+
             Task.Factory.StartNew(() =>
             {
                 var device = _enumerator.GetDevice(defaultDeviceId);
