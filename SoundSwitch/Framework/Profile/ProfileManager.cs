@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using RailSharp;
@@ -29,10 +31,10 @@ namespace SoundSwitch.Framework.Profile
             _profileByApplication =
                 AppConfigs.Configuration.ProfileSettings
                     .Where((setting) => setting.ApplicationPath != null)
-                    .ToDictionary(setting => setting.ApplicationPath.ToLower());
+                    .ToDictionary(setting => setting.ApplicationPath!.ToLower());
             _profileByHotkey = AppConfigs.Configuration.ProfileSettings
-                .Where((setting) => setting.HotKey != null)
-                .ToDictionary(setting => setting.HotKey);
+                                         .Where((setting) => setting.HotKey != null)
+                                         .ToDictionary(setting => setting.HotKey)!;
         }
 
         /// <summary>
@@ -47,6 +49,8 @@ namespace SoundSwitch.Framework.Profile
                 .Where(setting => setting.HotKey != null)
                 .Where(profileSetting => !WindowsAPIAdapter.RegisterHotKey(profileSetting.HotKey))
                 .ToArray();
+            
+            InitializeProfileExistingProcess();
 
             if (errors.Length > 0)
             {
@@ -82,7 +86,7 @@ namespace SoundSwitch.Framework.Profile
                 if (processId != 0)
                 {
                     _audioSwitcher.SwitchProcessTo(
-                        device.Id,
+                        device!.Id,
                         ERole.ERole_enum_count,
                         (EDataFlow) device.Type,
                         processId);
@@ -91,7 +95,7 @@ namespace SoundSwitch.Framework.Profile
                 //Always switch the default device.
                 //Easy way to be sure a notification will be send.
                 //And to be consistent with the default audio device.
-                _audioSwitcher.SwitchTo(device.Id, ERole.ERole_enum_count);
+                _audioSwitcher.SwitchTo(device!.Id, ERole.ERole_enum_count);
             }
         }
 
@@ -167,6 +171,7 @@ namespace SoundSwitch.Framework.Profile
         public Result<ProfileSetting[], VoidSuccess> DeleteProfiles(IEnumerable<ProfileSetting> profiles)
         {
             var errors = new List<ProfileSetting>();
+            var resetProcessAudio = false;
             foreach (var profile in profiles)
             {
                 if (!AppConfigs.Configuration.ProfileSettings.Contains(profile))
@@ -178,6 +183,7 @@ namespace SoundSwitch.Framework.Profile
 
                 if (profile.ApplicationPath != null)
                 {
+                    resetProcessAudio = true;
                     _profileByApplication.Remove(profile.ApplicationPath.ToLower());
                 }
 
@@ -196,7 +202,40 @@ namespace SoundSwitch.Framework.Profile
                 return errors.ToArray();
             }
 
+            if (resetProcessAudio)
+            {
+                _audioSwitcher.ResetProcessDeviceConfiguration();
+                InitializeProfileExistingProcess();
+            }
+
             return Result.Success();
+        }
+
+        private void InitializeProfileExistingProcess()
+        {
+            foreach (var process in Process.GetProcesses())
+            {
+                try
+                {
+                    if (process.HasExited)
+                        continue;
+                    if (!process.Responding)
+                        continue;
+                    var filePath = process.MainModule.FileName.ToLower();
+                    if (_profileByApplication.TryGetValue(filePath, out var profile))
+                    {
+                        SwitchAudio(profile, (uint) process.Id);
+                    }
+                }
+                catch (Win32Exception)
+                {
+                    //Happen when trying to access process MainModule belonging to windows like svchost
+                }
+                catch (InvalidOperationException)
+                {
+                    //Process in a weird state, can't get MainModule for it.
+                }
+            }
         }
     }
 }
