@@ -19,7 +19,7 @@ namespace SoundSwitch.UI.Forms
 {
     public partial class AddProfile : Form
     {
-        private readonly SettingsForm _settingsForm;
+        private readonly SettingsForm   _settingsForm;
         private readonly ProfileSetting _profile;
 
 
@@ -27,7 +27,7 @@ namespace SoundSwitch.UI.Forms
         {
             InitializeComponent();
             _settingsForm = settingsForm;
-            Icon = Resources.profile;
+            Icon          = Resources.profile;
 
             _profile = new ProfileSetting();
 
@@ -38,15 +38,15 @@ namespace SoundSwitch.UI.Forms
 
         private void LocalizeForm()
         {
-            Text = SettingsStrings.profile_feature_add;
+            Text                       = SettingsStrings.profile_feature_add;
             selectProgramDialog.Filter = $@"{SettingsStrings.profile_feature_executable}|*.exe";
 
-            nameLabel.Text = SettingsStrings.profile_name;
-            programLabel.Text = SettingsStrings.profile_program;
-            hotKeyLabel.Text = SettingsStrings.hotkeys;
-            recordingLabel.Text = SettingsStrings.recording;
-            playbackLabel.Text = SettingsStrings.playback;
-            createButton.Text = SettingsStrings.profile_addButton;
+            nameLabel.Text          = SettingsStrings.profile_name;
+            programLabel.Text       = SettingsStrings.profile_program;
+            hotKeyLabel.Text        = SettingsStrings.hotkeys;
+            recordingLabel.Text     = SettingsStrings.recording;
+            playbackLabel.Text      = SettingsStrings.playback;
+            createButton.Text       = SettingsStrings.profile_addButton;
             addProfileGroupBox.Text = SettingsStrings.profile_feature_profile;
         }
 
@@ -65,26 +65,30 @@ namespace SoundSwitch.UI.Forms
 
         private void InitRecordingPlaybackComboBoxes(IEnumerable<DeviceFullInfo> playbacks, IEnumerable<DeviceFullInfo> recordings)
         {
-            recordingComboBox.DataSource = recordings
-                .OrderBy(info => info.Name)
-                .Select(info => new IconTextComboBox.DropDownItem
-                    {
-                        Icon = info.SmallIcon,
-                        Tag = info,
-                        Text = info.Name
-                    }
-                ).ToArray();
+            recordingComboBox.DataSource =
+                recordings
+                    .OrderBy(info => info.State)
+                    .ThenBy(info => info.Name)
+                    .Select(info => new IconTextComboBox.DropDownItem
+                        {
+                            Icon = info.SmallIcon,
+                            Tag  = info,
+                            Text = info.Name
+                        }
+                    ).ToArray();
 
 
-            playbackComboBox.DataSource = playbacks
-                .OrderBy(info => info.Name)
-                .Select(info => new IconTextComboBox.DropDownItem
-                    {
-                        Icon = info.SmallIcon,
-                        Tag = info,
-                        Text = info.Name
-                    }
-                ).ToArray();
+            playbackComboBox.DataSource =
+                playbacks
+                    .OrderBy(info => info.State)
+                    .ThenBy(info => info.Name)
+                    .Select(info => new IconTextComboBox.DropDownItem
+                        {
+                            Icon = info.SmallIcon,
+                            Tag  = info,
+                            Text = info.Name
+                        }
+                    ).ToArray();
         }
 
         public sealed override string Text
@@ -109,17 +113,17 @@ namespace SoundSwitch.UI.Forms
         {
             var result = AppModel.Instance.ProfileManager.AddProfile(_profile);
             result.Map(success =>
-                {
-                    _settingsForm.RefreshProfiles();
-                    _settingsForm.Focus();
-                    Close();
-                    return success;
-                })
-                .Catch<string>(s =>
-                {
-                    MessageBox.Show(s, SettingsStrings.profile_error_title, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return Result.Success();
-                });
+                  {
+                      _settingsForm.RefreshProfiles();
+                      _settingsForm.Focus();
+                      Close();
+                      return success;
+                  })
+                  .Catch<string>(s =>
+                  {
+                      MessageBox.Show(s, SettingsStrings.profile_error_title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                      return Result.Success();
+                  });
         }
 
         private void playbackRemoveButton_Click(object sender, EventArgs e)
