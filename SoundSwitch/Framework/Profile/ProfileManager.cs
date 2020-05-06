@@ -110,7 +110,7 @@ namespace SoundSwitch.Framework.Profile
                 .Map(success =>
                 {
                     if (!string.IsNullOrEmpty(profile.ApplicationPath))
-                        _profileByApplication.Add(profile.ApplicationPath.ToLower(), profile);
+                        _profileByApplication.Add(profile.ApplicationPath!.ToLower(), profile);
                     if (profile.HotKey != null)
                         _profileByHotkey.Add(profile.HotKey, profile);
 
