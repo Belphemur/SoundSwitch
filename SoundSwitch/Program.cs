@@ -245,6 +245,8 @@ namespace SoundSwitch
                         File.Delete(zipFile);
                     }
 
+                    Log.CloseAndFlush();
+
                     ZipFile.CreateFromDirectory(ApplicationPath.Default, zipFile);
                 }
 
