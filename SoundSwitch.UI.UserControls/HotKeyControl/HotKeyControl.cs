@@ -151,10 +151,18 @@ namespace SoundSwitch.UI.UserControls.HotKeyControl
             //Modifiers are separated by a ",". So we'll split them and write each one to the textbox.
             foreach (var modifier in KeyboardWindowsAPI.GetPressedModifiers())
             {
-                if (modifier == Keys.None)
-                    continue;
-
-                Text += $@"{modifier} + ";
+                switch (modifier)
+                {
+                    case Keys.None:
+                        continue;
+                    case Keys.LWin:
+                    case Keys.RWin:
+                        Text += @"Win + ";
+                        continue;
+                    default:
+                        Text += $@"{modifier} + ";
+                        break;
+                }
             }
 
             //KEYCODE contains the last key pressed by the user.

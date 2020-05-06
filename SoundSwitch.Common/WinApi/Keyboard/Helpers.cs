@@ -63,6 +63,11 @@ namespace SoundSwitch.Common.WinApi.Keyboard
                     hasShift = true;
                 }
 
+                if (entry.Trim() == "Win")
+                {
+                    hasWin = true;
+                }
+
                 //Find the Window key.
                 if (entry.Trim() == Keys.LWin.ToString() && current != result.Length - 1)
                 {
