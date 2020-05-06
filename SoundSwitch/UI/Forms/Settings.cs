@@ -530,16 +530,16 @@ namespace SoundSwitch.UI.Forms
                 Tag = device
             };
             var selectedDevice = device;
-            if (selectedDevice.State == DeviceState.Active && selected.Contains(selectedDevice))
+            var isSelected = selected.Contains(selectedDevice);
+            if (selectedDevice.State == DeviceState.Active && isSelected)
             {
-                listViewItem.Checked = true;
                 listViewItem.Group = listView.Groups["selectedGroup"];
             }
             else
             {
-                listViewItem.Checked = false;
                 listViewItem.Group = GetGroup(device.State, listView);
             }
+            listViewItem.Checked = isSelected;
 
             return listViewItem;
         }
