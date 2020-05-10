@@ -58,7 +58,7 @@
     <Compile Include="HotKeyControl\HotKeyControl.Designer.cs" >
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>SettingsStrings.resx</DependentUpon>
+      <DependentUpon>HotKeyControl.resx</DependentUpon>
     </Compile>
     <Compile Include="IconListView.cs">
       <SubType>Component</SubType>
