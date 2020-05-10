@@ -55,7 +55,11 @@
     <Compile Include="HotKeyControl\HotKeyControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="HotKeyControl\HotKeyControl.Designer.cs" />
+    <Compile Include="HotKeyControl\HotKeyControl.Designer.cs" >
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SettingsStrings.resx</DependentUpon>
+    </Compile>
     <Compile Include="IconListView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -83,6 +87,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="HotKeyControl\HotKeyControl.png" />
+    <EmbeddedResource Include="HotKeyControl\HotKeyControl.resx">
+      <DependentUpon>HotKeyControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

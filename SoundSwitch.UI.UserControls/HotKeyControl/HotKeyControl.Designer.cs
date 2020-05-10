@@ -35,10 +35,11 @@
             // 
             // TextBox
             // 
+            this.TextBox.Anchor           =  ((System.Windows.Forms.AnchorStyles) ((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
             this.TextBox.Location         =  new System.Drawing.Point(0, 0);
             this.TextBox.Name             =  "TextBox";
             this.TextBox.ShortcutsEnabled =  false;
-            this.TextBox.Size             =  new System.Drawing.Size(141, 23);
+            this.TextBox.Size             =  new System.Drawing.Size(213, 23);
             this.TextBox.TabIndex         =  0;
             this.TextBox.KeyDown          += new System.Windows.Forms.KeyEventHandler(this.TextBox_KeyDown);
             this.TextBox.KeyUp            += new System.Windows.Forms.KeyEventHandler(this.TextBox_KeyUp);
@@ -53,7 +54,7 @@
             this.Font   = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name   = "HotKeyControl";
-            this.Size   = new System.Drawing.Size(205, 27);
+            this.Size   = new System.Drawing.Size(216, 29);
             this.ResumeLayout(false);
             this.PerformLayout();
         }

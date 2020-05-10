@@ -99,7 +99,7 @@ namespace SoundSwitch.UI.Forms
             // 
             this.closeButton.Anchor                  =  ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.closeButton.DialogResult            =  System.Windows.Forms.DialogResult.Cancel;
-            this.closeButton.Location                =  new System.Drawing.Point(612, 422);
+            this.closeButton.Location                =  new System.Drawing.Point(598, 378);
             this.closeButton.Name                    =  "closeButton";
             this.closeButton.Size                    =  new System.Drawing.Size(75, 23);
             this.closeButton.TabIndex                =  11;
@@ -128,7 +128,7 @@ namespace SoundSwitch.UI.Forms
             this.tabControl.Location             =  new System.Drawing.Point(12, 6);
             this.tabControl.Name                 =  "tabControl";
             this.tabControl.SelectedIndex        =  0;
-            this.tabControl.Size                 =  new System.Drawing.Size(675, 407);
+            this.tabControl.Size                 =  new System.Drawing.Size(661, 363);
             this.tabControl.TabIndex             =  13;
             this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
             // 
@@ -138,7 +138,7 @@ namespace SoundSwitch.UI.Forms
             this.playbackTabPage.Location                = new System.Drawing.Point(4, 22);
             this.playbackTabPage.Name                    = "playbackTabPage";
             this.playbackTabPage.Padding                 = new System.Windows.Forms.Padding(3);
-            this.playbackTabPage.Size                    = new System.Drawing.Size(667, 381);
+            this.playbackTabPage.Size                    = new System.Drawing.Size(653, 337);
             this.playbackTabPage.TabIndex                = 0;
             this.playbackTabPage.Text                    = "Playback";
             this.playbackTabPage.UseVisualStyleBackColor = true;
@@ -156,7 +156,7 @@ namespace SoundSwitch.UI.Forms
             this.playbackListView.HideSelection                   = false;
             this.playbackListView.Location                        = new System.Drawing.Point(3, 3);
             this.playbackListView.Name                            = "playbackListView";
-            this.playbackListView.Size                            = new System.Drawing.Size(661, 375);
+            this.playbackListView.Size                            = new System.Drawing.Size(647, 331);
             this.playbackListView.TabIndex                        = 14;
             this.playbackListView.UseCompatibleStateImageBehavior = false;
             this.playbackListView.View                            = System.Windows.Forms.View.Details;
@@ -490,7 +490,7 @@ namespace SoundSwitch.UI.Forms
             // hotkeysLabel
             // 
             this.hotkeysLabel.Anchor    = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.hotkeysLabel.Location  = new System.Drawing.Point(-28, 424);
+            this.hotkeysLabel.Location  = new System.Drawing.Point(-28, 380);
             this.hotkeysLabel.Name      = "hotkeysLabel";
             this.hotkeysLabel.Size      = new System.Drawing.Size(100, 13);
             this.hotkeysLabel.TabIndex  = 14;
@@ -505,7 +505,7 @@ namespace SoundSwitch.UI.Forms
             // 
             this.hotkeysCheckBox.Anchor                  =  ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.hotkeysCheckBox.AutoSize                =  true;
-            this.hotkeysCheckBox.Location                =  new System.Drawing.Point(233, 424);
+            this.hotkeysCheckBox.Location                =  new System.Drawing.Point(301, 380);
             this.hotkeysCheckBox.Name                    =  "hotkeysCheckBox";
             this.hotkeysCheckBox.Size                    =  new System.Drawing.Size(15, 14);
             this.hotkeysCheckBox.TabIndex                =  20;
@@ -522,10 +522,10 @@ namespace SoundSwitch.UI.Forms
             hotKey1.Keys                      =  System.Windows.Forms.Keys.None;
             hotKey1.Modifier                  =  SoundSwitch.Common.WinApi.Keyboard.HotKey.ModifierKeys.None;
             this.hotKeyControl.HotKey         =  hotKey1;
-            this.hotKeyControl.Location       =  new System.Drawing.Point(76, 420);
+            this.hotKeyControl.Location       =  new System.Drawing.Point(76, 376);
             this.hotKeyControl.Margin         =  new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.hotKeyControl.Name           =  "hotKeyControl";
-            this.hotKeyControl.Size           =  new System.Drawing.Size(151, 23);
+            this.hotKeyControl.Size           =  new System.Drawing.Size(219, 23);
             this.hotKeyControl.TabIndex       =  21;
             this.hotKeyControl.ToolTip        =  null;
             this.hotKeyControl.HotKeyIsSet    += new SoundSwitch.UI.UserControls.HotKeyControl.HotKeyIsSetEventHandler(this.hotKeyControl_HotKeyIsSet);
@@ -535,7 +535,7 @@ namespace SoundSwitch.UI.Forms
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode       = System.Windows.Forms.AutoScaleMode.Dpi;
             this.CancelButton        = this.closeButton;
-            this.ClientSize          = new System.Drawing.Size(703, 464);
+            this.ClientSize          = new System.Drawing.Size(689, 420);
             this.Controls.Add(this.hotKeyControl);
             this.Controls.Add(this.hotkeysCheckBox);
             this.Controls.Add(this.hotkeysLabel);
