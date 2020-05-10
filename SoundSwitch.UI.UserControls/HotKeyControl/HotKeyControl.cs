@@ -11,7 +11,7 @@ namespace SoundSwitch.UI.UserControls.HotKeyControl
     /// <summary>Allows adding custom hotkeys.
     /// </summary>
     [DefaultProperty("ForceModifiers"), DefaultEvent("HotKeyIsSet"), ToolboxBitmap(typeof(HotKeyControl), "HotKeyControl.png")]
-    public sealed partial class HotKeyControl : UserControl
+    public partial class HotKeyControl : UserControl
     {
         private string _tooltip;
         private bool _keyisSet;

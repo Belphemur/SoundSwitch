@@ -83,9 +83,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="HotKeyControl\HotKeyControl.png" />
-    <EmbeddedResource Include="HotKeyControl\HotKeyControl.resx">
-      <DependentUpon>HotKeyControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

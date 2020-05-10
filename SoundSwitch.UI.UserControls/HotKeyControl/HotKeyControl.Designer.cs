@@ -1,6 +1,6 @@
 ﻿namespace SoundSwitch.UI.UserControls.HotKeyControl
 {
-    public sealed partial class HotKeyControl
+    public partial class HotKeyControl
     {
         /// <summary> 
         /// Required designer variable.
