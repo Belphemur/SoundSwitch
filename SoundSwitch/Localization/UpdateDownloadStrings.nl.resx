@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -58,4 +58,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="notSignedTitle" xml:space="preserve">
+    <value>Ongeldige digitale handtekening</value>
+  </data>
+  <data name="notSigned" xml:space="preserve">
+    <value>De gedownloade update is niet ondertekend met een geldige handtekening. We raden je aan om het bestand te verwijderen en contact op te nemen met de ontwikkelaar!</value>
+  </data>
+  <data name="changelog" xml:space="preserve">
+    <value>Wijzigingen</value>
+  </data>
+  <data name="cancel" xml:space="preserve">
+    <value>Annuleer</value>
+  </data>
+  <data name="install" xml:space="preserve">
+    <value>Installatie</value>
+  </data>
+  <data name="downloadFailed" xml:space="preserve">
+    <value>Download mislukt</value>
+  </data>
 </root>
