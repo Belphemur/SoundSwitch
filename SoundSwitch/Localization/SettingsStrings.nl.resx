@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -58,4 +58,239 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="profile.feature.profile" xml:space="preserve">
+    <value>Profiel</value>
+  </data>
+  <data name="profile.error.no-name" xml:space="preserve">
+    <value>Een profiel heeft een naam nodig.</value>
+  </data>
+  <data name="profile.error.delete" xml:space="preserve">
+    <value>Het profiel kan niet gevonden worden.</value>
+  </data>
+  <data name="profile.deleteButton" xml:space="preserve">
+    <value>Verwijderen</value>
+  </data>
+  <data name="profile.error.title" xml:space="preserve">
+    <value>Profielfout</value>
+  </data>
+  <data name="profile.feature.executable" xml:space="preserve">
+    <value>Uitvoerbaar bestand (* .exe)</value>
+  </data>
+  <data name="profile.feature.add" xml:space="preserve">
+    <value>Profiel toevoegen</value>
+  </data>
+  <data name="profile.error.registerHotkeys.title" xml:space="preserve">
+    <value>Sneltoets is al in gebruik</value>
+  </data>
+  <data name="profile.error.registerHotkeys" xml:space="preserve">
+    <value>Kan de sneltoets niet registreren voor de volgende profielen: {0}</value>
+  </data>
+  <data name="profile.explanation" xml:space="preserve">
+    <value>Voeg een profiel toe om over te schakelen naar een bepaald afspeel- of opnameapparaat wanneer een specifieke toepassing wordt gestart of wanneer de toepassing de focus krijgt.</value>
+  </data>
+  <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
+    <value>U moet een afspeel- of opnameapparaat instellen.</value>
+  </data>
+  <data name="profile.error.needHKOrPath" xml:space="preserve">
+    <value>U moet de sneltoets en / of de applicatie instellen.</value>
+  </data>
+  <data name="profile.error.name" xml:space="preserve">
+    <value>Er is al een profiel met de naam {0}.</value>
+  </data>
+  <data name="profile.error.application" xml:space="preserve">
+    <value>Deze applicatie {0} heeft al een gekoppeld profiel.</value>
+  </data>
+  <data name="profile.error.hotkey" xml:space="preserve">
+    <value>Deze sneltoets {0} is al ingesteld.</value>
+  </data>
+  <data name="profile.name" xml:space="preserve">
+    <value>Naam</value>
+  </data>
+  <data name="profile.program" xml:space="preserve">
+    <value>Applicatie</value>
+  </data>
+  <data name="profile.addButton" xml:space="preserve">
+    <value>Toevoegen</value>
+  </data>
+  <data name="profile.tab" xml:space="preserve">
+    <value>Profielen</value>
+  </data>
+  <data name="iconChange.tooltip" xml:space="preserve">
+    <value>Kies wanneer u het taakbalk icoon van SoundSwitch wilt wijzigen.
+
+Standaard: verander het niet. Bewaar SoundSwitch icoon.
+Afspelen: wanneer een afspeelapparaat wordt geschakeld.
+Opname: wanneer een opnameapparaat wordt geschakeld.
+Beide: wijzigen wanneer een ander apparaat wordt gewisseld.</value>
+  </data>
+  <data name="iconChange" xml:space="preserve">
+    <value>Systeembalk icoon</value>
+  </data>
+  <data name="foregroundAppTooltip" xml:space="preserve">
+    <value>Schakel ook het geluid van de momenteel in gebruik zijnde applicatie. Handig bij videogames.</value>
+  </data>
+  <data name="foregroundApp" xml:space="preserve">
+    <value>Wissel ook het voorgrondprogramma</value>
+  </data>
+  <data name="disableCustomSoundTooltip" xml:space="preserve">
+    <value>Schakel het ingestelde aangepaste geluid uit.</value>
+  </data>
+  <data name="notificationOptionBanner" xml:space="preserve">
+    <value>Banner</value>
+  </data>
+  <data name="updateNotifyTooltip" xml:space="preserve">
+    <value>SoundSwitch laat het je weten wanneer er een nieuwe update beschikbaar is. Wanneer u op de melding klikt, krijgt u een pop-up die de update voor u downloadt en vraagt of u deze wilt installeren.</value>
+  </data>
+  <data name="updateNeverTooltip" xml:space="preserve">
+    <value>Werk het programma niet bij tenzij u het handmatig doet.</value>
+  </data>
+  <data name="languageRestartRequiredCaption" xml:space="preserve">
+    <value>Opnieuw opstarten nodig</value>
+  </data>
+  <data name="languageRestartRequired" xml:space="preserve">
+    <value>De taal verandert na het herstarten van SoundSwitch.
+Wil je nu opnieuw opstarten?</value>
+  </data>
+  <data name="language" xml:space="preserve">
+    <value>Taal</value>
+  </data>
+  <data name="activePlayback" xml:space="preserve">
+    <value>Speel: {0}</value>
+  </data>
+  <data name="activeRecording" xml:space="preserve">
+    <value>Opname: {0}</value>
+  </data>
+  <data name="audioFileNotFoundCaption" xml:space="preserve">
+    <value>Geluidsbestand is niet gevonden</value>
+  </data>
+  <data name="audioFileNotFound" xml:space="preserve">
+    <value>Het geluidsbestand dat u hebt geselecteerd om als melding te gebruiken, kan niet worden gevonden. SoundSwitch heeft de meldingsinstelling teruggezet naar {0}.</value>
+  </data>
+  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
+    <value>Geen knopinfo</value>
+  </data>
+  <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
+    <value>Voor beide apparaten</value>
+  </data>
+  <data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
+    <value>Opname apparaat</value>
+  </data>
+  <data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
+    <value>Afspeelapparaat</value>
+  </data>
+  <data name="notificationTooltip" xml:space="preserve">
+    <value>Windows melding: het standaard meldingenscherm van Windows.
+Geluidsmelding: Speelt een geluid af op het geschakelde afspeelapparaat.
+Aangepaste geluidsmelding: speelt het gespecificeerde geluid af op het geschakelde afspeelapparaat.
+Popup melding: gebruikt een speciale vorm van het meldingscherm in de windows taakbalk.
+Banner: Gebruikt een aangepast scherm dat altijd te zien is. Dit is handig voor gebruik tijdens een spel.</value>
+  </data>
+  <data name="notificationOptionCustomized" xml:space="preserve">
+    <value>Aangepaste geluidsmelding</value>
+  </data>
+  <data name="notificationOptionToast" xml:space="preserve">
+    <value>Melding</value>
+  </data>
+  <data name="notificationOptionNone" xml:space="preserve">
+    <value>Geen melding</value>
+  </data>
+  <data name="notificationOptionSound" xml:space="preserve">
+    <value>Geluidsmelding</value>
+  </data>
+  <data name="notificationOptionWindowsDefault" xml:space="preserve">
+    <value>Windows melding</value>
+  </data>
+  <data name="cycleThroughTooltip" xml:space="preserve">
+    <value>Kies tussen welke apparaten je wilt wisselen. Kies voor alleen de geselecteerde apparateon of alle apparaten.</value>
+  </data>
+  <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
+    <value>Alleen geselecteerde audio apparaten</value>
+  </data>
+  <data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
+    <value>Alle audio apparaten</value>
+  </data>
+  <data name="tooltipOnHover" xml:space="preserve">
+    <value>Knopinfo over zweven</value>
+  </data>
+  <data name="updateNever" xml:space="preserve">
+    <value>Controleer nooit op updates</value>
+  </data>
+  <data name="updateNotify" xml:space="preserve">
+    <value>Laat het me weten als er updates beschikbaar zijn</value>
+  </data>
+  <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
+    <value>Updates worden automatisch geïnstalleerd zonder enige vraag.</value>
+  </data>
+  <data name="updateInstallAutomatically" xml:space="preserve">
+    <value>Installeer updates automatisch</value>
+  </data>
+  <data name="keepSystemTrayIconTooltip" xml:space="preserve">
+    <value>Indien aangevinkt, verandert het systeemvakpictogram niet wanneer het 'Standaard afspeelapparaat' veranderd.</value>
+  </data>
+  <data name="keepSystemTrayIcon" xml:space="preserve">
+    <value>Bewaar het systeemvakpictogram van SoundSwitch</value>
+  </data>
+  <data name="cycleThrough" xml:space="preserve">
+    <value>Doorlopen</value>
+  </data>
+  <data name="updateSettings" xml:space="preserve">
+    <value>Update instellingen</value>
+  </data>
+  <data name="audioSettings" xml:space="preserve">
+    <value>Geluidsinstellingen</value>
+  </data>
+  <data name="basicSettings" xml:space="preserve">
+    <value>Basis instellingen</value>
+  </data>
+  <data name="hotkeysTooltip" xml:space="preserve">
+    <value>Vink aan om sneltoets in te schakelen.</value>
+  </data>
+  <data name="updateIncludeBetaVersions" xml:space="preserve">
+    <value>Inclusief bèta versies</value>
+  </data>
+  <data name="notification" xml:space="preserve">
+    <value>Melding</value>
+  </data>
+  <data name="selectSoundButtonTooltip" xml:space="preserve">
+    <value>Selecteer het geluidsbestand voor de melding</value>
+  </data>
+  <data name="audioFiles" xml:space="preserve">
+    <value>Geluidsbestanden</value>
+  </data>
+  <data name="communicationsDeviceTooltip" xml:space="preserve">
+    <value>Indien aangevinkt, worden de 'Standaard communicatieapparaat' en 'Standaard afspeelapparaat' samen geschakeld (handig voor bijvoorbeeld Skype, TeamSpeak).</value>
+  </data>
+  <data name="closeTooltip" xml:space="preserve">
+    <value>Wijzigingen worden automatisch opgeslagen</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>Sluiten</value>
+  </data>
+  <data name="startWithWindows" xml:space="preserve">
+    <value>Start automatisch met Windows</value>
+  </data>
+  <data name="communicationsDevice" xml:space="preserve">
+    <value>Verander standaard communicatieapparaat</value>
+  </data>
+  <data name="hotkeys" xml:space="preserve">
+    <value>Sneltoets</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>Instellingen</value>
+  </data>
+  <data name="playback" xml:space="preserve">
+    <value>Afspelen</value>
+  </data>
+  <data name="recording" xml:space="preserve">
+    <value>Opname</value>
+  </data>
+  <data name="disconnected" xml:space="preserve">
+    <value>Niet verbonden</value>
+  </data>
+  <data name="connected" xml:space="preserve">
+    <value>Verbonden</value>
+  </data>
+  <data name="selected" xml:space="preserve">
+    <value>Geselecteerd</value>
+  </data>
 </root>
