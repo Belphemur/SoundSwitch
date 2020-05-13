@@ -173,7 +173,7 @@ namespace SoundSwitch.Util
             _settingsMenu.Items.Add("-");
             _settingsMenu.Items.Add(TrayIconStrings.help, RessourceInfoHelpBitmap, (sender, e) =>
             {
-                Process.Start("https://t.me/joinchat/RB4ichzjxhf78V4kY1aKEg");
+                Process.Start("https://discord.gg/gUCw3Ue");
                 if (!File.Exists(readmeHtml))
                 {
                     Log.Error("File {readme} doesn\'t exists", readmeHtml);
