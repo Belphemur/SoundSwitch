@@ -31,5 +31,6 @@ namespace SoundSwitch.Localization.Factory
         Polish,
         Russian,
         Korean,
+        Dutch
     }
 }

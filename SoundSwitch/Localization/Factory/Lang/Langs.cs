@@ -115,4 +115,15 @@ namespace SoundSwitch.Localization.Factory.Lang
         public Language TypeEnum => Language.Korean;
         public string Label => "한국어";
     }
+    
+    public class DutchLang : ILang
+    {
+        /// <summary>
+        /// Culture info of this language
+        /// </summary>
+        public CultureInfo CultureInfo => CultureInfo.GetCultureInfo("nl");
+
+        public Language TypeEnum => Language.Dutch;
+        public string   Label    => "Nederlands";
+    }
 }
