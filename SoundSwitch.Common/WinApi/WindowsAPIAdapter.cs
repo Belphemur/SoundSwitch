@@ -152,6 +152,14 @@ namespace SoundSwitch.Common.WinApi
                 }
             }
 
+            if (_instance.IsDisposed)
+            {
+                //Can happen when the instance got dispose in its own thread
+                //when in the same time the Application thread call the Stop() method.
+                Trace.WriteLine("Thread Race Condition when registering hotkey");
+                return false;
+            }
+
             lock (_instance)
             {
                 return (bool)_instance.Invoke(new Func<bool>(() =>
