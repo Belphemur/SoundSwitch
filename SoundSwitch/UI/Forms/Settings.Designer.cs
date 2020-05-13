@@ -167,7 +167,7 @@ namespace SoundSwitch.UI.Forms
             this.recordingTabPage.Location                = new System.Drawing.Point(4, 22);
             this.recordingTabPage.Name                    = "recordingTabPage";
             this.recordingTabPage.Padding                 = new System.Windows.Forms.Padding(3);
-            this.recordingTabPage.Size                    = new System.Drawing.Size(667, 381);
+            this.recordingTabPage.Size                    = new System.Drawing.Size(653, 337);
             this.recordingTabPage.TabIndex                = 1;
             this.recordingTabPage.Text                    = "Recording";
             this.recordingTabPage.UseVisualStyleBackColor = true;
@@ -186,7 +186,7 @@ namespace SoundSwitch.UI.Forms
             this.recordingListView.HideSelection                   = false;
             this.recordingListView.Location                        = new System.Drawing.Point(3, 3);
             this.recordingListView.Name                            = "recordingListView";
-            this.recordingListView.Size                            = new System.Drawing.Size(661, 375);
+            this.recordingListView.Size                            = new System.Drawing.Size(647, 331);
             this.recordingListView.TabIndex                        = 17;
             this.recordingListView.UseCompatibleStateImageBehavior = false;
             this.recordingListView.View                            = System.Windows.Forms.View.Details;
@@ -200,7 +200,7 @@ namespace SoundSwitch.UI.Forms
             this.tabProfile.Location                = new System.Drawing.Point(4, 22);
             this.tabProfile.Name                    = "tabProfile";
             this.tabProfile.Padding                 = new System.Windows.Forms.Padding(3);
-            this.tabProfile.Size                    = new System.Drawing.Size(667, 381);
+            this.tabProfile.Size                    = new System.Drawing.Size(653, 337);
             this.tabProfile.TabIndex                = 3;
             this.tabProfile.UseVisualStyleBackColor = true;
             // 
@@ -209,7 +209,7 @@ namespace SoundSwitch.UI.Forms
             this.deleteProfileButton.Anchor                  =  ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.deleteProfileButton.Enabled                 =  false;
             this.deleteProfileButton.ImageAlign              =  System.Drawing.ContentAlignment.MiddleLeft;
-            this.deleteProfileButton.Location                =  new System.Drawing.Point(571, 349);
+            this.deleteProfileButton.Location                =  new System.Drawing.Point(557, 305);
             this.deleteProfileButton.Name                    =  "deleteProfileButton";
             this.deleteProfileButton.Size                    =  new System.Drawing.Size(90, 26);
             this.deleteProfileButton.TabIndex                =  4;
@@ -221,7 +221,7 @@ namespace SoundSwitch.UI.Forms
             // profileExplanationLabel
             // 
             this.profileExplanationLabel.Anchor   = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.profileExplanationLabel.Location = new System.Drawing.Point(7, 305);
+            this.profileExplanationLabel.Location = new System.Drawing.Point(7, 261);
             this.profileExplanationLabel.Name     = "profileExplanationLabel";
             this.profileExplanationLabel.Size     = new System.Drawing.Size(505, 39);
             this.profileExplanationLabel.TabIndex = 3;
@@ -236,7 +236,7 @@ namespace SoundSwitch.UI.Forms
             this.profilesListView.Name                            =  "profilesListView";
             this.profilesListView.OwnerDraw                       =  true;
             this.profilesListView.ShowGroups                      =  false;
-            this.profilesListView.Size                            =  new System.Drawing.Size(658, 299);
+            this.profilesListView.Size                            =  new System.Drawing.Size(644, 255);
             this.profilesListView.TabIndex                        =  2;
             this.profilesListView.UseCompatibleStateImageBehavior =  false;
             this.profilesListView.View                            =  System.Windows.Forms.View.Details;
@@ -246,7 +246,7 @@ namespace SoundSwitch.UI.Forms
             // 
             this.addProfileButton.Anchor                  =  ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.addProfileButton.ImageAlign              =  System.Drawing.ContentAlignment.MiddleLeft;
-            this.addProfileButton.Location                =  new System.Drawing.Point(476, 349);
+            this.addProfileButton.Location                =  new System.Drawing.Point(462, 305);
             this.addProfileButton.Name                    =  "addProfileButton";
             this.addProfileButton.Size                    =  new System.Drawing.Size(89, 26);
             this.addProfileButton.TabIndex                =  1;
@@ -262,7 +262,7 @@ namespace SoundSwitch.UI.Forms
             this.appSettingTabPage.Controls.Add(this.basicSettingsGroupBox);
             this.appSettingTabPage.Location                = new System.Drawing.Point(4, 22);
             this.appSettingTabPage.Name                    = "appSettingTabPage";
-            this.appSettingTabPage.Size                    = new System.Drawing.Size(667, 381);
+            this.appSettingTabPage.Size                    = new System.Drawing.Size(653, 337);
             this.appSettingTabPage.TabIndex                = 2;
             this.appSettingTabPage.Text                    = "Settings";
             this.appSettingTabPage.UseVisualStyleBackColor = true;
@@ -273,7 +273,7 @@ namespace SoundSwitch.UI.Forms
             this.languageGroupBox.Controls.Add(this.languageComboBox);
             this.languageGroupBox.Location = new System.Drawing.Point(419, 141);
             this.languageGroupBox.Name     = "languageGroupBox";
-            this.languageGroupBox.Size     = new System.Drawing.Size(291, 61);
+            this.languageGroupBox.Size     = new System.Drawing.Size(277, 61);
             this.languageGroupBox.TabIndex = 15;
             this.languageGroupBox.TabStop  = false;
             this.languageGroupBox.Text     = "Language";
@@ -297,7 +297,7 @@ namespace SoundSwitch.UI.Forms
             this.updateSettingsGroupBox.Controls.Add(this.includeBetaVersionsCheckBox);
             this.updateSettingsGroupBox.Location = new System.Drawing.Point(419, 3);
             this.updateSettingsGroupBox.Name     = "updateSettingsGroupBox";
-            this.updateSettingsGroupBox.Size     = new System.Drawing.Size(291, 132);
+            this.updateSettingsGroupBox.Size     = new System.Drawing.Size(277, 132);
             this.updateSettingsGroupBox.TabIndex = 14;
             this.updateSettingsGroupBox.TabStop  = false;
             this.updateSettingsGroupBox.Text     = "Update Settings";
