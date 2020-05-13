@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using Serilog;
 using Serilog.Exceptions;
@@ -12,16 +13,18 @@ namespace SoundSwitch.Framework.Logger.Configuration
         public static void ConfigureLogger()
         {
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .Enrich.WithThreadId()
-                .Enrich.WithEnvironmentUserName()
-                .Enrich.WithExceptionDetails()
-                .Enrich.WithCaller()
-                .WriteTo.File(Path.Combine(ApplicationPath.Logs, "soundswitch.log"),
-                    rollingInterval: RollingInterval.Day, retainedFileCountLimit: 3,
-                    flushToDiskInterval: TimeSpan.FromMinutes(10),
-                    outputTemplate: "[{Timestamp:HH:mm:ss.fff} {Level:u3}] {Message} (at {Caller}){NewLine}{Exception}")
-                .CreateLogger();
+                         .MinimumLevel.Debug()
+                         .Enrich.WithThreadId()
+                         .Enrich.WithEnvironmentUserName()
+                         .Enrich.WithExceptionDetails()
+                         .Enrich.WithCaller()
+                         .WriteTo.File(Path.Combine(ApplicationPath.Logs, "soundswitch.log"),
+                             rollingInterval: RollingInterval.Day, retainedFileCountLimit: 3,
+                             flushToDiskInterval: TimeSpan.FromMinutes(10),
+                             outputTemplate: "[{Timestamp:HH:mm:ss.fff} {Level:u3}] {Message} (at {Caller}){NewLine}{Exception}")
+                         .CreateLogger();
+            var listener = new global::SerilogTraceListener.SerilogTraceListener();
+            Trace.Listeners.Add(listener);
         }
     }
 }
