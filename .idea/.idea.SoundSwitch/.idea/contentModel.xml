@@ -269,9 +269,6 @@
         <e p="Util" t="Include">
           <e p="AssemblyUtils.cs" t="Include" />
           <e p="CasterExtensions.cs" t="Include" />
-          <e p="Timer" t="Include">
-            <e p="DebounceDispatcher.cs" t="Include" />
-          </e>
           <e p="ToolStripDeviceItem.cs" t="Include" />
           <e p="TrayIcon.cs" t="Include" />
         </e>
@@ -340,6 +337,9 @@
           </e>
           <e p="Icon" t="Include">
             <e p="IconExtractor.cs" t="Include" />
+          </e>
+          <e p="Timer" t="Include">
+            <e p="DebounceDispatcher.cs" t="Include" />
           </e>
         </e>
         <e p="obj" t="ExcludeRecursive" />
