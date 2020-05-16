@@ -115,10 +115,21 @@ namespace SoundSwitch.UI.UserControls.ListView
             }
         }
 
-        public void SetGroupState(ListViewGroupState state)
+        public void SetGroupsState(ListViewGroupState state)
         {
             foreach (ListViewGroup lvg in Groups)
                 SetGrpState(lvg, state);
+        }
+
+        public void SetGroupState(string name, ListViewGroupState state)
+        {
+            var group = Groups[name];
+            if (group == null)
+            {
+                throw new ArgumentOutOfRangeException($"Unknown group {name}");
+            }
+
+            SetGrpState(group, state);
         }
 
         public void SetGroupFooter(ListViewGroup lvg, string footerText)
@@ -345,6 +356,7 @@ namespace SoundSwitch.UI.UserControls.ListView
         SubsetItems = 0x10000
     }
 
+    [Flags]
     public enum ListViewGroupState
     {
         /// <summary>

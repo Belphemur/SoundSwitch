@@ -244,8 +244,11 @@ namespace SoundSwitch.UI.Forms
             _audioDeviceLister = new CachedAudioDeviceLister(DeviceState.All);
             await _audioDeviceLister.Refresh();
             PopulateAudioDevices();
-            playbackListView.SetGroupState(ListViewGroupState.Collapsible);
-            recordingListView.SetGroupState(ListViewGroupState.Collapsible);
+            playbackListView.SetGroupsState(ListViewGroupState.Collapsible);
+            recordingListView.SetGroupsState(ListViewGroupState.Collapsible);
+            
+            playbackListView.SetGroupState(DeviceState.NotPresent.ToString(), ListViewGroupState.Collapsible | ListViewGroupState.Collapsed);
+            recordingListView.SetGroupState(DeviceState.NotPresent.ToString(), ListViewGroupState.Collapsible | ListViewGroupState.Collapsed);
             // Profiles
             PopulateProfiles();
 
