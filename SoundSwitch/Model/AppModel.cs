@@ -341,10 +341,10 @@ namespace SoundSwitch.Model
 
         #region Hot keys
 
-        public bool SetHotkeyCombination(HotKey hotkeys, DataFlow deviceType)
+        public bool SetHotkeyCombination(HotKey hotKey, DataFlow deviceType)
         {
 
-            HotKey confHotKey = null;
+            HotKey confHotKey;
             switch (deviceType)
             {
                  case DataFlow.Render:
@@ -357,33 +357,47 @@ namespace SoundSwitch.Model
                     throw new ArgumentOutOfRangeException(nameof(deviceType), deviceType, null);
             }
 
+            if (confHotKey == hotKey)
+            {
+                Log.Information("HotKey already set {hotkeys}", confHotKey);
+                return true;
+            }
+
             Log.Information("Unregister previous hotkeys {hotkeys}", confHotKey);
             WindowsAPIAdapter.UnRegisterHotKey(confHotKey);
             Log.Information("Unregistered previous hotkeys {hotkeys}", confHotKey);
 
-            if (hotkeys.Enabled && !WindowsAPIAdapter.RegisterHotKey(hotkeys))
-            {
-                Log.Warning("Can't register new hotkeys {hotkeys}", hotkeys);
-                ErrorTriggered?.Invoke(this,
-                    new ExceptionEvent(new Exception("Impossible to register HotKey: " + hotkeys)));
-                return false;
-            }
+            if (!RegisterHotKey(hotKey)) return false;
 
-            Log.Information("New Hotkeys registered {hotkeys}", hotkeys);
+            Log.Information("New Hotkeys registered {hotkeys}", hotKey);
 
             switch (deviceType)
             {
                 case DataFlow.Render:
-                    AppConfigs.Configuration.PlaybackHotKey = hotkeys;
+                    AppConfigs.Configuration.PlaybackHotKey = hotKey;
                     break;
                 case DataFlow.Capture:
-                    AppConfigs.Configuration.RecordingHotKey = hotkeys;
+                    AppConfigs.Configuration.RecordingHotKey = hotKey;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(deviceType), deviceType, null);
             }
             AppConfigs.Configuration.Save();
             return true;
+
+        }
+
+        private bool RegisterHotKey(HotKey hotkeys)
+        {
+            if (!hotkeys.Enabled || WindowsAPIAdapter.RegisterHotKey(hotkeys))
+            {
+                return true;
+            }
+            
+            Log.Warning("Can't register new hotkeys {hotkeys}", hotkeys);
+            ErrorTriggered?.Invoke(this,
+                new ExceptionEvent(new Exception("Impossible to register HotKey: " + hotkeys)));
+            return false;
 
         }
 
