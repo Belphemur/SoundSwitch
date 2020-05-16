@@ -103,26 +103,6 @@ namespace SoundSwitch
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
 
-                // Manage the Closing events send by Windows
-                // Since this app don't use a Form as "main window" the app doesn't close
-                // when it should without this.
-                WindowsAPIAdapter.RestartManagerTriggered += (sender, @event) =>
-                {
-                    Log.Debug("Restart Event received: {Event}", @event);
-                    switch (@event.Type)
-                    {
-                        case WindowsAPIAdapter.RestartManagerEventType.Query:
-                            @event.Result = new IntPtr(1);
-
-                            break;
-                        case WindowsAPIAdapter.RestartManagerEventType.EndSession:
-                        case WindowsAPIAdapter.RestartManagerEventType.ForceClose:
-                            Log.Debug("Close Application");
-                            Application.Exit();
-                            break;
-                    }
-                };
-
                 Log.Information("Set Tray Icon with Main");
 #if !DEBUG
                 try
