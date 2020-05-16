@@ -358,9 +358,9 @@
           <e p="Keyboard" t="Include">
             <e p="Helpers.cs" t="Include" />
             <e p="HotKey.cs" t="Include" />
+            <e p="HotKeyManager.cs" t="Include" />
             <e p="KeyboardWindowsAPI.cs" t="Include" />
           </e>
-          <e p="WindowsAPIAdapter.cs" t="Include" />
         </e>
       </e>
       <e p="SoundSwitch.sln" t="IncludeFlat" />

@@ -47,7 +47,7 @@ namespace SoundSwitch.Framework.Profile
 
             var errors = AppConfigs.Configuration.ProfileSettings
                 .Where(setting => setting.HotKey != null)
-                .Where(profileSetting => !WindowsAPIAdapter.RegisterHotKey(profileSetting.HotKey))
+                .Where(profileSetting => !HotKeyManager.Instance.Register(profileSetting.HotKey, HandleHotKeyPressed))
                 .ToArray();
             
             InitializeProfileExistingProcess();
@@ -60,6 +60,14 @@ namespace SoundSwitch.Framework.Profile
             return Result.Success();
         }
 
+        private void HandleHotKeyPressed(HotKey hotKey)
+        {
+            _profileByHotkey.TryGetValue(hotKey, out var profile);
+            if (profile == null)
+                return;
+            SwitchAudio(profile);
+        }
+
         private void RegisterEvents()
         {
             _foregroundProcess.Changed += (sender, @event) =>
@@ -68,14 +76,6 @@ namespace SoundSwitch.Framework.Profile
                 if (profile == null)
                     return;
                 SwitchAudio(profile, @event.ProcessId);
-            };
-
-            WindowsAPIAdapter.HotKeyPressed += (sender, args) =>
-            {
-                _profileByHotkey.TryGetValue(args.HotKey, out var profile);
-                if (profile == null)
-                    return;
-                SwitchAudio(profile);
             };
         }
 
@@ -153,7 +153,7 @@ namespace SoundSwitch.Framework.Profile
                 return string.Format(SettingsStrings.profile_error_name, profile.ProfileName);
             }
 
-            if (profile.HotKey != null && !WindowsAPIAdapter.RegisterHotKey(profile.HotKey))
+            if (profile.HotKey != null && !HotKeyManager.Instance.Register(profile.HotKey, HandleHotKeyPressed))
             {
                 return string.Format(SettingsStrings.profile_error_hotkey, profile.HotKey);
             }
@@ -189,7 +189,7 @@ namespace SoundSwitch.Framework.Profile
 
                 if (profile.HotKey != null)
                 {
-                    WindowsAPIAdapter.UnRegisterHotKey(profile.HotKey);
+                    HotKeyManager.Instance.UnRegister(profile.HotKey);
                     _profileByHotkey.Remove(profile.HotKey);
                 }
 
