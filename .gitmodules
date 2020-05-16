@@ -1,0 +1,3 @@
+[submodule "Resolve.HotKeys"]
+	path = Resolve.HotKeys
+	url = https://github.com/Belphemur/HotKeys.git
