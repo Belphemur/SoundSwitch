@@ -28,6 +28,7 @@ using Serilog;
 using Serilog.Exceptions;
 using Serilog.Formatting.Compact;
 using SoundSwitch.Common.WinApi;
+using SoundSwitch.Common.WinApi.Keyboard;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio.Lister;
 using SoundSwitch.Framework.Configuration;
@@ -151,6 +152,7 @@ namespace SoundSwitch
 #endif
             }
 
+            HotKeyManager.Instance.Dispose();
             AppModel.Instance.ActiveAudioDeviceLister.Dispose();
             MMNotificationClient.Instance.UnRegister();
             Log.CloseAndFlush();

@@ -19,23 +19,26 @@ namespace SoundSwitch.Common.WinApi.Keyboard
         /// <returns></returns>
         public bool Register(HotKey hotKey, Action<HotKey> action)
         {
-            if (_hotKeys.ContainsKey(hotKey))
-                return false;
-
-            var hotKeyHandle = new Resolve.HotKeys.HotKey(hotKey.Keys, (ModifierKey) hotKey.Modifier);
-            try
+            lock (Instance)
             {
-                hotKeyHandle.Register();
-                hotKeyHandle.Pressed += (sender, args) => action(hotKey);
-            }
-            catch (Win32Exception e)
-            {
-                Trace.WriteLine("Can't register hotkey", e.Message);
-                return false;
-            }
+                if (_hotKeys.ContainsKey(hotKey))
+                    return false;
 
-            _hotKeys.Add(hotKey, hotKeyHandle);
-            return true;
+                var hotKeyHandle = new Resolve.HotKeys.HotKey(hotKey.Keys, (ModifierKey) hotKey.Modifier);
+                try
+                {
+                    hotKeyHandle.Register();
+                    hotKeyHandle.Pressed += (sender, args) => action(hotKey);
+                }
+                catch (Win32Exception e)
+                {
+                    Trace.WriteLine("Can't register hotkey", e.Message);
+                    return false;
+                }
+
+                _hotKeys.Add(hotKey, hotKeyHandle);
+                return true;
+            }
         }
 
         /// <summary>
@@ -45,33 +48,39 @@ namespace SoundSwitch.Common.WinApi.Keyboard
         /// <returns></returns>
         public bool UnRegister(HotKey hotKey)
         {
-            if (!_hotKeys.TryGetValue(hotKey, out var hotKeyHandle))
-                return false;
-            try
+            lock (Instance)
             {
-                hotKeyHandle.Dispose();
-            }
-            catch (Win32Exception e)
-            {
-                Trace.WriteLine("Can't unregister hotkey", e.Message);
-                return false;
-            }
+                if (!_hotKeys.TryGetValue(hotKey, out var hotKeyHandle))
+                    return false;
+                try
+                {
+                    hotKeyHandle.Dispose();
+                }
+                catch (Win32Exception e)
+                {
+                    Trace.WriteLine("Can't unregister hotkey", e.Message);
+                    return false;
+                }
 
-            _hotKeys.Remove(hotKey);
-            return true;
+                _hotKeys.Remove(hotKey);
+                return true;
+            }
         }
 
         public void Dispose()
         {
-            foreach (var hotKeysValue in _hotKeys.Values)
+            lock (Instance)
             {
-                try
+                foreach (var hotKeysValue in _hotKeys.Values)
                 {
-                    hotKeysValue.Dispose();
-                }
-                catch (Exception)
-                {
-                    //Ignored
+                    try
+                    {
+                        hotKeysValue.Dispose();
+                    }
+                    catch (Exception)
+                    {
+                        //Ignored
+                    }
                 }
             }
         }
