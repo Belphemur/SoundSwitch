@@ -374,8 +374,11 @@
           <e p="HotKeyControl.resx" t="Include" />
           <e p="HotKeyIsSetEventArgs.cs" t="Include" />
         </e>
-        <e p="IconListView.cs" t="Include" />
         <e p="IconTextComboBox.cs" t="Include" />
+        <e p="ListView" t="Include">
+          <e p="IconListView.cs" t="Include" />
+          <e p="ListViewExtended.cs" t="Include" />
+        </e>
         <e p="obj" t="ExcludeRecursive" />
         <e p="packages.config" t="Include" />
         <e p="Properties" t="Include">

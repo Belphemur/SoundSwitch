@@ -55,17 +55,18 @@
     <Compile Include="HotKeyControl\HotKeyControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="HotKeyControl\HotKeyControl.Designer.cs" >
+    <Compile Include="HotKeyControl\HotKeyControl.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>HotKeyControl.resx</DependentUpon>
     </Compile>
-    <Compile Include="IconListView.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="IconTextComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ListView\IconListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ListView\ListViewExtended.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -40,6 +40,7 @@ using SoundSwitch.Localization.Factory;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
 using SoundSwitch.UI.UserControls.HotKeyControl;
+using SoundSwitch.UI.UserControls.ListView;
 using SoundSwitch.Util;
 
 namespace SoundSwitch.UI.Forms
@@ -243,7 +244,8 @@ namespace SoundSwitch.UI.Forms
             _audioDeviceLister = new CachedAudioDeviceLister(DeviceState.All);
             await _audioDeviceLister.Refresh();
             PopulateAudioDevices();
-
+            playbackListView.SetGroupState(ListViewGroupState.Collapsible);
+            recordingListView.SetGroupState(ListViewGroupState.Collapsible);
             // Profiles
             PopulateProfiles();
 

@@ -82,8 +82,7 @@ namespace SoundSwitch.Util
 
             PopulateSettingsMenu();
 
-            _selectionMenu.Items.Add(TrayIconStrings.noDevicesSelected, RessourceSettingsSmallBitmap,
-                (sender, e) => ShowSettings().ConfigureAwait(false));
+            _selectionMenu.Items.Add(TrayIconStrings.noDevicesSelected, RessourceSettingsSmallBitmap, async (sender, e) => await ShowSettings());
 
             NotifyIcon.MouseDoubleClick += (sender, args) =>
             {

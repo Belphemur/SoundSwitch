@@ -1,6 +1,7 @@
 ﻿using System;
 using SoundSwitch.Localization;
 using SoundSwitch.UI.UserControls;
+using SoundSwitch.UI.UserControls.ListView;
 
 namespace SoundSwitch.UI.Forms
 {
@@ -40,13 +41,13 @@ namespace SoundSwitch.UI.Forms
             this.switchCommunicationDeviceCheckBox = new System.Windows.Forms.CheckBox();
             this.tabControl                        = new System.Windows.Forms.TabControl();
             this.playbackTabPage                   = new System.Windows.Forms.TabPage();
-            this.playbackListView                  = new System.Windows.Forms.ListView();
+            this.playbackListView                  = new ListViewExtended();
             this.recordingTabPage                  = new System.Windows.Forms.TabPage();
-            this.recordingListView                 = new System.Windows.Forms.ListView();
+            this.recordingListView                 = new ListViewExtended();
             this.tabProfile                        = new System.Windows.Forms.TabPage();
             this.deleteProfileButton               = new System.Windows.Forms.Button();
             this.profileExplanationLabel           = new System.Windows.Forms.Label();
-            this.profilesListView                  = new SoundSwitch.UI.UserControls.IconListView();
+            this.profilesListView                  = new IconListView();
             this.addProfileButton                  = new System.Windows.Forms.Button();
             this.appSettingTabPage                 = new System.Windows.Forms.TabPage();
             this.languageGroupBox                  = new System.Windows.Forms.GroupBox();
@@ -580,11 +581,11 @@ namespace SoundSwitch.UI.Forms
         private System.Windows.Forms.GroupBox languageGroupBox;
         private System.Windows.Forms.ComboBox notificationComboBox;
         private System.Windows.Forms.Label notificationLabel;
-        private System.Windows.Forms.ListView playbackListView;
+        private ListViewExtended playbackListView;
         private System.Windows.Forms.TabPage playbackTabPage;
         private System.Windows.Forms.Label profileExplanationLabel;
-        private SoundSwitch.UI.UserControls.IconListView profilesListView;
-        private System.Windows.Forms.ListView recordingListView;
+        private IconListView profilesListView;
+        private ListViewExtended recordingListView;
         private System.Windows.Forms.TabPage recordingTabPage;
         private System.Windows.Forms.Button selectSoundButton;
         private System.Windows.Forms.OpenFileDialog selectSoundFileDialog;

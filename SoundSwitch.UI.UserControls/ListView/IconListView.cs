@@ -1,10 +1,9 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace SoundSwitch.UI.UserControls
+namespace SoundSwitch.UI.UserControls.ListView
 {
-    public class IconListView : ListView
+    public class IconListView : ListViewExtended
     {
         public IconListView()
         {
