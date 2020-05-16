@@ -1,6 +1,7 @@
-﻿using System;
+﻿#nullable enable
+using System;
 
-namespace SoundSwitch.Util.Timer
+namespace SoundSwitch.Common.Framework.Timer
 {
     /// <summary>
     /// Provides Debounce() and Throttle() methods.
@@ -36,8 +37,7 @@ namespace SoundSwitch.Util.Timer
         /// <param name="param">optional parameter</param>
         /// <param name="priority">optional priorty for the dispatcher</param>
         /// <param name="disp">optional dispatcher. If not passed or null CurrentDispatcher is used.</param>        
-        public void Debounce(int interval, Action<object> action,
-            object param = null)
+        public void Debounce(int interval, Action<object> action, object param = null)
         {
             // kill pending timer and pending ticks
             _timer?.Stop();

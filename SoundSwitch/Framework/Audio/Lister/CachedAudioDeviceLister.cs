@@ -20,9 +20,9 @@ using System.Threading.Tasks;
 using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Common.Framework.Timer;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Model;
-using SoundSwitch.Util.Timer;
 
 namespace SoundSwitch.Framework.Audio.Lister
 {

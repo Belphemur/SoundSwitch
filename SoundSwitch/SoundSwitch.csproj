@@ -331,7 +331,6 @@
       <DependentUpon>UpdateDownloadForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Util\CasterExtensions.cs" />
-    <Compile Include="Util\Timer\DebounceDispatcher.cs" />
     <Compile Include="Util\ToolStripDeviceItem.cs">
       <SubType>Component</SubType>
     </Compile>
