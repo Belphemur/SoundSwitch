@@ -38,6 +38,10 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Resolve.HotKeys, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Resolve.HotKeys.1.0.0\lib\net30\Resolve.HotKeys.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
       <HintPath>..\packages\Serilog.2.9.0\lib\net46\Serilog.dll</HintPath>
     </Reference>
@@ -66,10 +70,8 @@
     </Compile>
     <Compile Include="WinApi\Keyboard\Helpers.cs" />
     <Compile Include="WinApi\Keyboard\HotKey.cs" />
+    <Compile Include="WinApi\Keyboard\HotKeyManager.cs" />
     <Compile Include="WinApi\Keyboard\KeyboardWindowsAPI.cs" />
-    <Compile Include="WinApi\WindowsAPIAdapter.cs">
-      <SubType>Form</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
