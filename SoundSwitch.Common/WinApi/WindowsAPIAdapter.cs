@@ -69,7 +69,7 @@ namespace SoundSwitch.Common.WinApi
 
             _exceptionEventHandler = exceptionEventHandler;
 
-            var t = new Thread(RunForm) { Name = typeof(WindowsAPIAdapter).Name };
+            var t = new Thread(RunForm) { Name = nameof(WindowsAPIAdapter) };
             t.SetApartmentState(ApartmentState.STA);
             t.IsBackground = true;
             t.Start();
@@ -142,15 +142,7 @@ namespace SoundSwitch.Common.WinApi
         /// <param name="hotKey">Represent the hotkey to register</param>
         public static bool RegisterHotKey(HotKey hotKey)
         {
-            var count = 0;
-            while (_instance == null)
-            {
-                Thread.Sleep(250);
-                if (count++ > 3)
-                {
-                    throw new ThreadStateException("Instance isn't set even after waiting 750 ms");
-                }
-            }
+            WaitForHandle();
 
             if (_instance.IsDisposed)
             {
@@ -190,15 +182,7 @@ namespace SoundSwitch.Common.WinApi
         /// <returns></returns>
         public static bool UnRegisterHotKey(HotKey hotKey)
         {
-            var count = 0;
-            while (_instance == null)
-            {
-                Thread.Sleep(250);
-                if (count++ >= 2)
-                {
-                    throw new ThreadStateException("Instance isn't set even after waiting 750 ms");
-                }
-            }
+            WaitForHandle();
 
             lock (_instance)
             {
@@ -213,6 +197,19 @@ namespace SoundSwitch.Common.WinApi
                    _instance._registeredHotkeys.Remove(hotKey);
                    return NativeMethods.UnregisterHotKey(_instance.Handle, id);
                }));
+            }
+        }
+
+        private static void WaitForHandle()
+        {
+            var count = 0;
+            while (_instance == null || !_instance.IsHandleCreated)
+            {
+                Thread.Sleep(250);
+                if (count++ >= 2)
+                {
+                    throw new ThreadStateException("Instance isn't set even after waiting 750 ms");
+                }
             }
         }
 
