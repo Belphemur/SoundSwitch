@@ -241,7 +241,7 @@ namespace SoundSwitch.UI.Forms
         public async Task AsyncInit()
         {
             // Playback and Recording
-            _audioDeviceLister = new CachedAudioDeviceLister(DeviceState.All);
+            _audioDeviceLister = new CachedAudioDeviceLister(DeviceState.Unplugged | DeviceState.Active);
             await _audioDeviceLister.Refresh();
             PopulateAudioDevices();
             playbackListView.SetGroupsState(ListViewGroupState.Collapsible);
