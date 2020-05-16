@@ -338,7 +338,7 @@ namespace SoundSwitch.Model
 
         #region Hot keys
 
-        public bool SetHotkeyCombination(HotKey hotkeys, DataFlow deviceType)
+        public bool SetHotkeyCombination(HotKey hotKey, DataFlow deviceType)
         {
 
             HotKey confHotKey = null;
@@ -359,23 +359,23 @@ namespace SoundSwitch.Model
                 Log.Information("Unregistered previous hotkeys {hotkeys}", confHotKey);
             }
 
-            if (hotkeys.Enabled && !HotKeyManager.Instance.Register(confHotKey, HandleHotkeyPress))
+            if (hotKey.Enabled && !HotKeyManager.Instance.Register(hotKey, HandleHotkeyPress))
             {
-                Log.Warning("Can't register new hotkeys {hotkeys}", hotkeys);
+                Log.Warning("Can't register new hotkeys {hotkeys}", hotKey);
                 ErrorTriggered?.Invoke(this,
-                    new ExceptionEvent(new Exception("Impossible to register HotKey: " + hotkeys)));
+                    new ExceptionEvent(new Exception("Impossible to register HotKey: " + hotKey)));
                 return false;
             }
 
-            Log.Information("New Hotkeys registered {hotkeys}", hotkeys);
+            Log.Information("New Hotkeys registered {hotkeys}", hotKey);
 
             switch (deviceType)
             {
                 case DataFlow.Render:
-                    AppConfigs.Configuration.PlaybackHotKey = hotkeys;
+                    AppConfigs.Configuration.PlaybackHotKey = hotKey;
                     break;
                 case DataFlow.Capture:
-                    AppConfigs.Configuration.RecordingHotKey = hotkeys;
+                    AppConfigs.Configuration.RecordingHotKey = hotKey;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(deviceType), deviceType, null);
