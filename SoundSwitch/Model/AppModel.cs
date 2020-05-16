@@ -203,8 +203,9 @@ namespace SoundSwitch.Model
             {
                 throw new InvalidOperationException("Already initialized");
             }
-            SetHotkeyCombination(AppConfigs.Configuration.PlaybackHotKey, DataFlow.Render);
-            SetHotkeyCombination(AppConfigs.Configuration.RecordingHotKey, DataFlow.Capture);
+
+            RegisterHotKey(AppConfigs.Configuration.PlaybackHotKey);
+            RegisterHotKey(AppConfigs.Configuration.RecordingHotKey);
 
             ProfileManager
                 .Init()
@@ -340,8 +341,7 @@ namespace SoundSwitch.Model
 
         public bool SetHotkeyCombination(HotKey hotKey, DataFlow deviceType)
         {
-
-            HotKey confHotKey = null;
+            HotKey confHotKey;
             switch (deviceType)
             {
                 case DataFlow.Render:
@@ -354,18 +354,18 @@ namespace SoundSwitch.Model
                     throw new ArgumentOutOfRangeException(nameof(deviceType), deviceType, null);
             }
 
+            if (confHotKey == hotKey)
+            {
+                Log.Information("Same Hotkey", confHotKey);
+                return true;
+            }
+
             if (HotKeyManager.Instance.UnRegister(confHotKey))
             {
                 Log.Information("Unregistered previous hotkeys {hotkeys}", confHotKey);
             }
 
-            if (hotKey.Enabled && !HotKeyManager.Instance.Register(hotKey, HandleHotkeyPress))
-            {
-                Log.Warning("Can't register new hotkeys {hotkeys}", hotKey);
-                ErrorTriggered?.Invoke(this,
-                    new ExceptionEvent(new Exception("Impossible to register HotKey: " + hotKey)));
-                return false;
-            }
+            if (!RegisterHotKey(hotKey)) return false;
 
             Log.Information("New Hotkeys registered {hotkeys}", hotKey);
 
@@ -383,6 +383,22 @@ namespace SoundSwitch.Model
             AppConfigs.Configuration.Save();
             return true;
 
+        }
+
+        /// <summary>
+        /// Register hotkeys
+        /// </summary>
+        /// <param name="hotKey"></param>
+        /// <returns></returns>
+        private bool RegisterHotKey(HotKey hotKey)
+        {
+            if (!hotKey.Enabled || HotKeyManager.Instance.Register(hotKey, HandleHotkeyPress))
+            {
+                return true;
+            }
+            Log.Warning("Can't register new hotkeys {hotkeys}", hotKey);
+            ErrorTriggered?.Invoke(this, new ExceptionEvent(new Exception("Impossible to register HotKey: " + hotKey)));
+            return false;
         }
 
 

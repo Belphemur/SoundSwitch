@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundSwitch.Audio.Manager",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundSwitch.Common", "SoundSwitch.Common\SoundSwitch.Common.csproj", "{45A39BFC-7B67-46F2-A6F2-59BF82B350A4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resolve.HotKeys", "Resolve.HotKeys\HotKeys\Resolve.HotKeys.csproj", "{45680BB9-C3CE-4E4A-9BEB-726C5BFB91C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		AppVeyor|Any CPU = AppVeyor|Any CPU
@@ -54,6 +56,14 @@ Global
 		{45A39BFC-7B67-46F2-A6F2-59BF82B350A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45A39BFC-7B67-46F2-A6F2-59BF82B350A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45A39BFC-7B67-46F2-A6F2-59BF82B350A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45680BB9-C3CE-4E4A-9BEB-726C5BFB91C0}.AppVeyor|Any CPU.ActiveCfg = Debug|Any CPU
+		{45680BB9-C3CE-4E4A-9BEB-726C5BFB91C0}.AppVeyor|Any CPU.Build.0 = Debug|Any CPU
+		{45680BB9-C3CE-4E4A-9BEB-726C5BFB91C0}.Beta|Any CPU.ActiveCfg = Debug|Any CPU
+		{45680BB9-C3CE-4E4A-9BEB-726C5BFB91C0}.Beta|Any CPU.Build.0 = Debug|Any CPU
+		{45680BB9-C3CE-4E4A-9BEB-726C5BFB91C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45680BB9-C3CE-4E4A-9BEB-726C5BFB91C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45680BB9-C3CE-4E4A-9BEB-726C5BFB91C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45680BB9-C3CE-4E4A-9BEB-726C5BFB91C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

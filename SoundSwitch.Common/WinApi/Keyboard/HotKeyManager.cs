@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Windows.Forms;
 using Resolve.HotKeys;
 
 namespace SoundSwitch.Common.WinApi.Keyboard
@@ -54,12 +55,12 @@ namespace SoundSwitch.Common.WinApi.Keyboard
                     return false;
                 try
                 {
+                    hotKeyHandle.Unregister();
                     hotKeyHandle.Dispose();
                 }
                 catch (Win32Exception e)
                 {
                     Trace.WriteLine("Can't unregister hotkey", e.Message);
-                    return false;
                 }
 
                 _hotKeys.Remove(hotKey);
