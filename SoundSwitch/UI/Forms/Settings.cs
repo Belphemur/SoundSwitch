@@ -246,9 +246,6 @@ namespace SoundSwitch.UI.Forms
             PopulateAudioDevices();
             playbackListView.SetGroupsState(ListViewGroupState.Collapsible);
             recordingListView.SetGroupsState(ListViewGroupState.Collapsible);
-            
-            playbackListView.SetGroupState(DeviceState.NotPresent.ToString(), ListViewGroupState.Collapsible | ListViewGroupState.Collapsed);
-            recordingListView.SetGroupState(DeviceState.NotPresent.ToString(), ListViewGroupState.Collapsible | ListViewGroupState.Collapsed);
             // Profiles
             PopulateProfiles();
 
