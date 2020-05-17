@@ -495,19 +495,19 @@ namespace SoundSwitch.UI.Forms
 
                 listView.SmallImageList = new ImageList
                 {
-                    ImageSize = new Size(32, 32),
+                    ImageSize  = new Size(32, 32),
                     ColorDepth = ColorDepth.Depth32Bit
                 };
 
                 listView.Columns.Add("Device", -3, HorizontalAlignment.Center);
-                foreach (var device in audioDevices)
-                {
-                    AddDeviceIconSmallImage(device, listView);
+                var items =
+                    audioDevices.Select(device =>
+                                {
+                                    AddDeviceIconSmallImage(device, listView);
 
-                    var listViewItem = GenerateListViewItem(device, selectedDevices, listView);
-
-                    listView.Items.Add(listViewItem);
-                }
+                                    return GenerateListViewItem(device, selectedDevices, listView);
+                                }).OrderBy(item => item.Text);
+                listView.Items.AddRange(items.ToArray());
             }
             finally
             {
