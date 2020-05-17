@@ -204,8 +204,8 @@ namespace SoundSwitch.Model
             {
                 throw new InvalidOperationException("Already initialized");
             }
-            SetHotkeyCombination(AppConfigs.Configuration.PlaybackHotKey, DataFlow.Render);
-            SetHotkeyCombination(AppConfigs.Configuration.RecordingHotKey, DataFlow.Capture);
+            RegisterHotKey(AppConfigs.Configuration.PlaybackHotKey);
+            RegisterHotKey(AppConfigs.Configuration.RecordingHotKey);
 
             WindowsAPIAdapter.HotKeyPressed += HandleHotkeyPress;
 
