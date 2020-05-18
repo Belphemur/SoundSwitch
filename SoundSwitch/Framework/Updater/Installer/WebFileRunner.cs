@@ -22,7 +22,7 @@ namespace SoundSwitch.Framework.Updater.Installer
 
         public Process RunFile(WebFile file, string args = "")
         {
-            args += $" /{(IsInProgramFile() ? "ALLUSERS" : "CURRENTUSER")}";
+            //args += $" /{(IsInProgramFile() ? "ALLUSERS" : "CURRENTUSER")}";
             return file.Start(args);
         }
     }
