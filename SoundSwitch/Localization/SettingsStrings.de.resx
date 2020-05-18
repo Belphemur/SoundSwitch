@@ -229,7 +229,7 @@
 		<value>Tastenkombination</value>
   </data>
   <data name="hotkeysTooltip" xml:space="preserve">
-		<value>Aktiviert die Tastenkombination.</value>
+		<value>Markieren um die Tastenkombination zu aktivieren.</value>
   </data>
   <data name="cycleThrough" xml:space="preserve">
 		<value>Durchwechseln</value>
