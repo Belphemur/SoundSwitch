@@ -23,7 +23,7 @@ if "%~1" neq "" (
 
 set FILE_DIR=%~dp0
 set BIN_DIR=%FILE_DIR%SoundSwitch\bin\%buildPlatform%
-set LANGS=(fr de es nb pt-BR it-IT zh-CHS pl-PL ru-RU ko)
+set LANGS=(fr de es nb pt-BR it-IT zh-CHS pl-PL ru-RU ko nl)
 
 if ["%~1"]==["-legacy"] set USE_LEGACY_VS2015=1
 
