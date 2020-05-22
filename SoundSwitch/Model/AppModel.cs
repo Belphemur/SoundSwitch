@@ -341,7 +341,7 @@ namespace SoundSwitch.Model
 
         #region Hot keys
 
-        public bool SetHotkeyCombination(HotKey hotKey, DataFlow deviceType)
+        public bool SetHotkeyCombination(HotKey hotKey, DataFlow deviceType, bool force)
         {
 
             HotKey confHotKey;
@@ -357,7 +357,7 @@ namespace SoundSwitch.Model
                     throw new ArgumentOutOfRangeException(nameof(deviceType), deviceType, null);
             }
 
-            if (confHotKey == hotKey)
+            if (!force && confHotKey == hotKey)
             {
                 Log.Information("HotKey already set {hotkeys}", confHotKey);
                 return true;

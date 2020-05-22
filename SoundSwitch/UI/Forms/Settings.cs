@@ -444,7 +444,7 @@ namespace SoundSwitch.UI.Forms
             var currentState = tuple.Item2.Enabled;
             hotKeyControl.Enabled = tuple.Item2.Enabled = hotkeysCheckBox.Checked;
             if (currentState != tuple.Item2.Enabled)
-                AppModel.Instance.SetHotkeyCombination(tuple.Item2, tuple.Item1);
+                AppModel.Instance.SetHotkeyCombination(tuple.Item2, tuple.Item1, true);
         }
 
         #region Basic Settings (CheckBoxes)
