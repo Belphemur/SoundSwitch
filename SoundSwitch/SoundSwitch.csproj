@@ -210,6 +210,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SoundSwitch.Audio.Manager\SoundSwitch.Audio.Manager.csproj" />
     <ProjectReference Include="..\SoundSwitch.Common\SoundSwitch.Common.csproj" />
+    <ProjectReference Include="..\SoundSwitch.InterProcess.Communication\SoundSwitch.InterProcess.Communication.csproj" />
     <ProjectReference Include="..\SoundSwitch.UI.UserControls\SoundSwitch.UI.UserControls.csproj" />
   </ItemGroup>
   <ItemGroup>

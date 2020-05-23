@@ -31,6 +31,7 @@ using SoundSwitch.Framework.Logger.Configuration;
 using SoundSwitch.Framework.Minidump;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Updater;
+using SoundSwitch.InterProcess.Communication;
 using SoundSwitch.Localization.Factory;
 using SoundSwitch.Model;
 using SoundSwitch.Util;
@@ -67,8 +68,20 @@ namespace SoundSwitch
             {
                 if (!createdNew)
                 {
-                    //TODO: Application is launched
+                   using var pipeClient = new NamedPipeClient(Application.ProductName);
+                   pipeClient.SendMsg("Close");
+                   RestartApp();
+                   return;
                 }
+
+                var pipeServer = new NamedPipeServer(Application.ProductName);
+                pipeServer.Start(s =>
+                {
+                    if (s == "Close")
+                    {
+                        Application.Exit();
+                    }
+                });
 
                 var deviceActiveLister = new CachedAudioDeviceLister(DeviceState.Active);
                 deviceActiveLister.Refresh().ConfigureAwait(false);
@@ -160,7 +173,7 @@ namespace SoundSwitch
         {
             var info = new ProcessStartInfo
             {
-                Arguments = $"/C ping 127.0.0.1 -n 2 && \"{ApplicationPath.Executable}\"",
+                Arguments = $"/C ping 127.0.0.1 -n 3 && \"{ApplicationPath.Executable}\"",
                 WindowStyle = ProcessWindowStyle.Hidden,
                 CreateNoWindow = true,
                 FileName = "cmd.exe"
