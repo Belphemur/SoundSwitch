@@ -74,7 +74,7 @@ namespace SoundSwitch
                    return;
                 }
 
-                var pipeServer = new NamedPipeServer(Application.ProductName);
+                using var pipeServer = new NamedPipeServer(Application.ProductName);
                 pipeServer.Start(s =>
                 {
                     if (s == "Close")

@@ -7,9 +7,10 @@ using SoundSwitch.InterProcess.Communication.Protocol;
 
 namespace SoundSwitch.InterProcess.Communication
 {
-    public class NamedPipeServer
+    public class NamedPipeServer : IDisposable
     {
         public string Name { get; }
+        private Thread _runningThread;
 
         public NamedPipeServer(string name)
         {
@@ -18,14 +19,14 @@ namespace SoundSwitch.InterProcess.Communication
 
         public void Start(Action<string> handleMessage)
         {
-            var thread = new Thread(ServerThread);
-            thread.Start(handleMessage);
+            _runningThread = new Thread(ServerThread) {IsBackground = true};
+            _runningThread.Start(handleMessage);
         }
 
         private void ServerThread(object data)
         {
             var handleMsg = (Action<string>) data;
-            var pipeServer = new NamedPipeServerStream(Name, PipeDirection.InOut);
+            using var pipeServer = new NamedPipeServerStream(Name, PipeDirection.InOut);
 
             // Wait for a client to connect
             pipeServer.WaitForConnection();
@@ -37,7 +38,6 @@ namespace SoundSwitch.InterProcess.Communication
                 var ss = new StreamString(pipeServer);
                 var msg = ss.ReadString();
                 handleMsg(msg);
-
             }
             // Catch the IOException that is raised if the pipe is broken
             // or disconnected.
@@ -45,7 +45,11 @@ namespace SoundSwitch.InterProcess.Communication
             {
                 Trace.TraceError("ERROR: {0}", e.Message);
             }
-            pipeServer.Close();
+        }
+
+        public void Dispose()
+        {
+            _runningThread.Interrupt();
         }
     }
 }
