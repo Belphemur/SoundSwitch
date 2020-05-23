@@ -11,6 +11,7 @@
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU General Public License for more details.
 ********************************************************************/
+
 using System;
 using System.IO;
 using System.Windows.Forms;
@@ -24,21 +25,31 @@ namespace SoundSwitch.Framework
         /// </summary>
         public static string AppData { get; } = Environment.GetFolderPath(
             Environment.SpecialFolder.ApplicationData);
+
         /// <summary>
         /// Path where the application store it's file like the configuration.
         /// </summary>
         public static string Default { get; } = Path.Combine(AppData, Application.ProductName);
+
         /// <summary>
         /// Path wher ethe application store the logs
         /// </summary>
         public static string Logs { get; } = Path.Combine(Default, "Logs");
+
         /// <summary>
         /// Where the application is installed
         /// </summary>
-        public static string InstallDirectory { get; } = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
+        public static string InstallDirectory { get; } =
+            Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
+
         /// <summary>
         /// Where is the image to be used for toast
         /// </summary>
         public static string DefaultImagePath { get; } = Path.Combine(InstallDirectory, "img", "soundSwitched.png");
+
+        /// <summary>
+        /// Application Executable Path
+        /// </summary>
+        public static string Executable { get; } = Application.ExecutablePath.Replace(".dll", ".exe");
     }
 }

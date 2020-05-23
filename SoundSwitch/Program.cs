@@ -160,7 +160,7 @@ namespace SoundSwitch
         {
             var info = new ProcessStartInfo
             {
-                Arguments = "/C ping 127.0.0.1 -n 2 && \"" + Application.ExecutablePath + "\"",
+                Arguments = $"/C ping 127.0.0.1 -n 2 && \"{ApplicationPath.Executable}\"",
                 WindowStyle = ProcessWindowStyle.Hidden,
                 CreateNoWindow = true,
                 FileName = "cmd.exe"
