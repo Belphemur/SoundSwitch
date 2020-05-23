@@ -1,75 +1,21 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B4F7987E-A5FA-45B1-9AE4-5E40144FFC54}</ProjectGuid>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SoundSwitch.Audio.Manager</RootNamespace>
-    <AssemblyName>SoundSwitch.Audio.Manager</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
     <LangVersion>8</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Deterministic>false</Deterministic>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NAudio, Version=1.10.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\NAudio.1.10.0\lib\net35\NAudio.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AudioSwitcher.cs" />
-    <Compile Include="ForegroundProcess.cs" />
-    <Compile Include="Interop\Client\EnumeratorClient.cs" />
-    <Compile Include="Interop\Client\ExtendedPolicyClient.cs" />
-    <Compile Include="Interop\Client\PolicyClient.cs" />
-    <Compile Include="Interop\Com\Base\ComBase.cs" />
-    <Compile Include="Interop\Com\User\User32.cs" />
-    <Compile Include="Interop\Enum\HRESULT.cs" />
-    <Compile Include="Interop\Factory\AudioPolicyConfigFactory.cs" />
-    <Compile Include="Interop\Interface\Policy\Extended\IAudioPolicyConfigFactory.cs" />
-    <Compile Include="Interop\Com\Threading\ComTaskScheduler.cs" />
-    <Compile Include="Interop\Com\Threading\ComThread.cs" />
-    <Compile Include="Interop\Enum\EDataFlow.cs" />
-    <Compile Include="Interop\Enum\ERole.cs" />
-    <Compile Include="Interop\Interface\ComGuid.cs" />
-    <Compile Include="Interop\Interface\Policy\IPolicyConfig.cs" />
-    <Compile Include="Interop\Interface\Policy\IPolicyConfigVista.cs" />
-    <Compile Include="Interop\Interface\Policy\IPolicyConfigX.cs" />
-    <Compile Include="Interop\Com\Threading\InvalidThreadException.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <PackageReference Include="NAudio" Version="1.10.0" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <Compile Remove="Interop\Interface\IPolicyConfigVista.cs" />
+    <Compile Remove="Interop\Interface\IPolicyConfigX.cs" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
