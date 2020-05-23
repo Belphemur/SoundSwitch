@@ -25,7 +25,6 @@ namespace SoundSwitch.InterProcess.Communication
 
         public void Dispose()
         {
-            _clientStream?.Close();
             _clientStream?.Dispose();
         }
     }
