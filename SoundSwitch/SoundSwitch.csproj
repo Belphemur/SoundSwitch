@@ -9,6 +9,8 @@
     <LangVersion>8</LangVersion>
     <UseWindowsForms>true</UseWindowsForms>
     <Deterministic>false</Deterministic>
+    <Configurations>Debug;Release;Beta</Configurations>
+    <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
   <PropertyGroup>
     <TargetPlatformVersion>8.0</TargetPlatformVersion>
