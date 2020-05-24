@@ -11,7 +11,7 @@
 
 ## Anforderungen
 - ⚠ Betriebssystem: Windows 7 oder neuer
-- ⚠ [Microsoft .NET Framework 4.7 (Web Installer)](https://www.microsoft.com/en-us/download/details.aspx?id=55170)
+- ⚠ [Microsoft .NET Core 3.1.4](https://dotnet.microsoft.com/download/dotnet-core/current/runtime)
 
 ## Spenden
 Wenn Sie die Entwicklung unterstützen möchten, würden wir uns freuen, Sie [hier ❤](https://soundswitch.aaflalo.me/#donate) zu sehen.
