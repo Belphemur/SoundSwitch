@@ -238,14 +238,10 @@
     <Compile Remove="Properties\SettingsString.fr.Designer.cs" />
     <Compile Remove="Properties\TrayIconStrings.fr.Designer.cs" />
     <EmbeddedResource Remove="Localization\AboutStrings.hu.resx" />
-    <EmbeddedResource Remove="Localization\AboutStrings.nl.resx" />
     <EmbeddedResource Remove="Localization\SettingsStrings.hu.resx" />
-    <EmbeddedResource Remove="Localization\SettingsStrings.nl.resx" />
     <EmbeddedResource Remove="Localization\SettingsStrings.pt_PT.resx" />
     <EmbeddedResource Remove="Localization\TrayIconStrings.hu.resx" />
-    <EmbeddedResource Remove="Localization\TrayIconStrings.nl.resx" />
     <EmbeddedResource Remove="Localization\UpdateDownloadStrings.hu.resx" />
-    <EmbeddedResource Remove="Localization\UpdateDownloadStrings.nl.resx" />
   </ItemGroup>
   <PropertyGroup />
 </Project>
