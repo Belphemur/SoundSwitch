@@ -17,7 +17,6 @@ var
 begin	
     underscoreVersion := version;
 	StringChangeEx(underscoreVersion, '.', '_', True);
-	MsgBox( GetString(CustomMessage('dotnet_core_url_' + underscoreVersion), CustomMessage('dotnet_core_url_x64_' + underscoreVersion), ''), mbInformation, MB_OK );
 	if (not hasDotNetCore(version)) then
 		AddProduct('windowsdesktop-runtime-' + version + '.exe',
 			CustomMessage('dotnet_core_lcid') + ' /passive /norestart /showrmui',
