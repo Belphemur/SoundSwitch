@@ -61,3 +61,4 @@ packages/
 *.vsp
 # Publish .NET Core app
 publish/
+*.ini
