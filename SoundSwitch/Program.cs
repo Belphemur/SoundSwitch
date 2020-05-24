@@ -19,24 +19,19 @@ using System.IO;
 using System.IO.Compression;
 using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
-using System.Runtime.Remoting;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
 using Serilog;
-using Serilog.Exceptions;
-using Serilog.Formatting.Compact;
 using SoundSwitch.Common.WinApi;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio.Lister;
 using SoundSwitch.Framework.Configuration;
-using SoundSwitch.Framework.IPC;
 using SoundSwitch.Framework.Logger.Configuration;
 using SoundSwitch.Framework.Minidump;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Updater;
-using SoundSwitch.Localization;
+using SoundSwitch.InterProcess.Communication;
 using SoundSwitch.Localization.Factory;
 using SoundSwitch.Model;
 using SoundSwitch.Util;
@@ -71,26 +66,24 @@ namespace SoundSwitch
 
             using (new Mutex(true, Application.ProductName, out createdNew))
             {
+                //Mutex used by another instance of the app
+                //Ask the other instance to stop and restart this instance to get the mutex again.
                 if (!createdNew)
                 {
-                    Log.Warning("Application already started");
-                    using (var client = new IPCClient(AppConfigs.IPCConfiguration.ClientUrl()))
-                    {
-                        try
-                        {
-                            var service = client.GetService();
-                            service.StopApplication();
-                            RestartApp();
-                            return;
-                        }
-                        catch (RemotingException e)
-                        {
-                            Log.Error(e, "Unable to stop another running application");
-                            Application.Exit();
-                            return;
-                        }
-                    }
+                   using var pipeClient = new NamedPipeClient(Application.ProductName);
+                   pipeClient.SendMsg("Close");
+                   RestartApp();
+                   return;
                 }
+
+                using var pipeServer = new NamedPipeServer(Application.ProductName);
+                pipeServer.Start(message =>
+                {
+                    if (message == "Close")
+                    {
+                        Application.Exit();
+                    }
+                });
 
                 var deviceActiveLister = new CachedAudioDeviceLister(DeviceState.Active);
                 deviceActiveLister.Refresh().ConfigureAwait(false);
@@ -129,22 +122,8 @@ namespace SoundSwitch
                 {
 #endif
                 MMNotificationClient.Instance.Register();
-                using (var ipcServer = new IPCServer(AppConfigs.IPCConfiguration.ServerUrl()))
                 using (var icon = new TrayIcon())
                 {
-                    var available = false;
-                    while (!available)
-                    {
-                        try
-                        {
-                            ipcServer.InitServer();
-                            available = true;
-                        }
-                        catch (RemotingException)
-                        {
-                            Thread.Sleep(250);
-                        }
-                    }
 
                     AppModel.Instance.TrayIcon = icon;
                     AppModel.Instance.InitializeMain();
@@ -196,7 +175,7 @@ namespace SoundSwitch
         {
             var info = new ProcessStartInfo
             {
-                Arguments = "/C ping 127.0.0.1 -n 2 && \"" + Application.ExecutablePath + "\"",
+                Arguments = $"/C ping 127.0.0.1 -n 3 && \"{ApplicationPath.Executable}\"",
                 WindowStyle = ProcessWindowStyle.Hidden,
                 CreateNoWindow = true,
                 FileName = "cmd.exe"

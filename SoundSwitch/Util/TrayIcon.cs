@@ -155,7 +155,7 @@ namespace SoundSwitch.Util
 
         private void PopulateSettingsMenu()
         {
-            var applicationDirectory = Path.GetDirectoryName(Application.ExecutablePath);
+            var applicationDirectory = Path.GetDirectoryName(ApplicationPath.Executable);
             Debug.Assert(applicationDirectory != null, "applicationDirectory != null");
             var readmeHtml = Path.Combine(applicationDirectory, "Readme.html");
             _settingsMenu.Items.Add(

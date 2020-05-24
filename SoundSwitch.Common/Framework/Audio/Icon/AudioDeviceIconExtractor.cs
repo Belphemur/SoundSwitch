@@ -13,7 +13,7 @@
 ********************************************************************/
 
 using System;
-using System.Runtime.Caching;
+using Microsoft.Extensions.Caching.Memory;
 using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Common.Framework.Icon;
@@ -23,29 +23,10 @@ namespace SoundSwitch.Common.Framework.Audio.Icon
 {
     public class AudioDeviceIconExtractor
     {
-
-        private static readonly System.Drawing.Icon DefaultSpeakers = Resources.defaultSpeakers;
+        private static readonly System.Drawing.Icon DefaultSpeakers   = Resources.defaultSpeakers;
         private static readonly System.Drawing.Icon DefaultMicrophone = Resources.defaultMicrophone;
 
-        private static readonly MemoryCache IconCache = new MemoryCache("_iconCache");
-        private static readonly CacheItemPolicy CacheItemPolicy = new CacheItemPolicy
-        {
-            RemovedCallback = CleanupIcon,
-            SlidingExpiration = TimeSpan.FromMinutes(30)
-        };
-
-        private static void CleanupIcon(CacheEntryRemovedArguments arg)
-        {
-            if (!(arg.CacheItem.Value is IDisposable item)) return;
-            try
-            {
-                item.Dispose();
-            }
-            catch (ObjectDisposedException)
-            {
-
-            }
-        }
+        private static readonly IMemoryCache IconCache = new MemoryCache(new MemoryCacheOptions());
 
         private static string GetKey(MMDevice audioDevice, bool largeIcon)
         {
@@ -61,43 +42,47 @@ namespace SoundSwitch.Common.Framework.Audio.Icon
         /// <returns></returns>
         public static System.Drawing.Icon ExtractIconFromPath(string path, DataFlow dataFlow, bool largeIcon)
         {
-            System.Drawing.Icon ico;
             var key = $"{path}-${largeIcon}";
 
-            if (IconCache.Contains(key))
+            return IconCache.GetOrCreate(key, entry =>
             {
-                return (System.Drawing.Icon)IconCache.Get(key);
-            }
-            try
-            {
-                if (path.EndsWith(".ico"))
+                entry.SlidingExpiration = TimeSpan.FromMinutes(30);
+                entry.RegisterPostEvictionCallback((o, value, reason, state) =>
                 {
-                    ico = System.Drawing.Icon.ExtractAssociatedIcon(path);
-                }
-                else
+                    if (!(value is IDisposable disposable)) return;
+                    try
+                    {
+                        disposable.Dispose();
+                    }
+                    catch (ObjectDisposedException)
+                    {
+                    }
+                });
+                try
                 {
-                    var iconInfo = path.Split(',');
-                    var dllPath = iconInfo[0];
-                    var iconIndex = int.Parse(iconInfo[1]);
-                    ico = IconExtractor.Extract(dllPath, iconIndex, largeIcon);
+                    if (path.EndsWith(".ico"))
+                    {
+                        return System.Drawing.Icon.ExtractAssociatedIcon(path);
+                    }
+                    else
+                    {
+                        var iconInfo  = path.Split(',');
+                        var dllPath   = iconInfo[0];
+                        var iconIndex = int.Parse(iconInfo[1]);
+                        return IconExtractor.Extract(dllPath, iconIndex, largeIcon);
+                    }
                 }
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, "Can't extract icon from {path}", path);
-                switch (dataFlow)
+                catch (Exception e)
                 {
-                    case DataFlow.Capture:
-                        return DefaultMicrophone;
-                    case DataFlow.Render:
-                        return DefaultSpeakers;
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                    Log.Error(e, "Can't extract icon from {path}", path);
+                    return dataFlow switch
+                    {
+                        DataFlow.Capture => DefaultMicrophone,
+                        DataFlow.Render  => DefaultSpeakers,
+                        _                => throw new ArgumentOutOfRangeException()
+                    };
                 }
-            }
-
-            IconCache.Add(key, ico, CacheItemPolicy);
-            return ico;
+            });
         }
 
         /// <summary>

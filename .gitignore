@@ -59,3 +59,6 @@ packages/
 /NDependOut
 *.ndproj
 *.vsp
+# Publish .NET Core app
+publish/
+*.ini

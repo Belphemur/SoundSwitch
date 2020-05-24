@@ -22,10 +22,9 @@ if "%~1" neq "" (
 
 
 set FILE_DIR=%~dp0
-set BIN_DIR=%FILE_DIR%SoundSwitch\bin\%buildPlatform%
+set FRAMEWORK=netcoreapp3.1
+set BIN_DIR=%FILE_DIR%SoundSwitch\bin\%buildPlatform%\%FRAMEWORK%
 set LANGS=(fr de es nb pt-BR it-IT zh-CHS pl-PL ru-RU ko nl)
-
-if ["%~1"]==["-legacy"] set USE_LEGACY_VS2015=1
 
 set finalDir=%FILE_DIR%Final
 
@@ -94,12 +93,16 @@ xcopy /y LICENSE.txt %finalDir% >nul 2>nul
 echo Copy Binaries
 xcopy /y %BIN_DIR%\*.pdb %finalDir% >nul 2>nul
 xcopy /y %BIN_DIR%\*.dll %finalDir% >nul 2>nul
+xcopy /y %BIN_DIR%\*.json %finalDir% >nul 2>nul
 xcopy /y %BIN_DIR%\SoundSwitch.exe %finalDir% >nul 2>nul
 xcopy /y %BIN_DIR%\SoundSwitch.exe.config %finalDir% >nul 2>nul
 for %%l in %LANGS% DO (
     mkdir %finalDir%\%%l\ 
     xcopy /y %BIN_DIR%\%%l\SoundSwitch.resources.dll %finalDir%\%%l\ >nul 2>nul
 )
+
+echo Update Icon
+tools\ResourceHacker.exe  -open %finalDir%\SoundSwitch.exe -save %finalDir%\SoundSwitch.exe -action addoverwrite -res SoundSwitch\Resources\Switch-SoundWave.ico -mask ICONGROUP,MAINICON,
 
 echo START
 rem Run installer compiler script

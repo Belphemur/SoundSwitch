@@ -12,6 +12,19 @@ begin
     Result:= 'True';    
 end;
 
+function hasDotNetCore(version: string) : boolean;
+var
+	regInstalled: cardinal;
+	architecture: string;
+begin
+	architecture := 'x64';
+	if(not Is64BitInstallMode) then
+	   architecture := 'x86';
+
+	RegQueryDWordValue(HKLM, 'SOFTWARE\WOW6432Node\dotnet\Setup\InstalledVersions\'+ architecture +'\sharedfx\Microsoft.NETCore.App', version, regInstalled);
+	Result := (regInstalled = 1);
+end;
+
 function netfxinstalled(version: NetFXType; lcid: string): boolean;
 var
 	regVersion: cardinal;

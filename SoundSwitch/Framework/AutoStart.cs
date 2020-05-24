@@ -27,7 +27,7 @@ namespace SoundSwitch.Framework
         /// </summary>
         public static void EnableAutoStart()
         {
-            SstartupKey?.SetValue(Application.ProductName, Application.ExecutablePath);
+            SstartupKey?.SetValue(Application.ProductName, ApplicationPath.Executable);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace SoundSwitch.Framework
         /// <returns></returns>
         public static bool IsAutoStarted()
         {
-            return SstartupKey?.GetValue(Application.ProductName)?.ToString() == Application.ExecutablePath;
+            return SstartupKey?.GetValue(Application.ProductName)?.ToString() == ApplicationPath.Executable;
         }
     }
 }

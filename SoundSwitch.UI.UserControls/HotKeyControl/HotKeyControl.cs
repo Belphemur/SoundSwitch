@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using System.Runtime.Remoting.Messaging;
 using System.Windows.Forms;
 using SoundSwitch.Common.WinApi.Keyboard;
 

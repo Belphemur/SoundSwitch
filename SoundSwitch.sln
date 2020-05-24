@@ -3,16 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29509.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundSwitch", "SoundSwitch\SoundSwitch.csproj", "{A17ECFE0-C4E2-4410-839A-14DF8C11428D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoundSwitch", "SoundSwitch\SoundSwitch.csproj", "{A17ECFE0-C4E2-4410-839A-14DF8C11428D}"
 	ProjectSection(ProjectDependencies) = postProject
 		{082AB6E3-EB26-4791-8025-5BA9682460EA} = {082AB6E3-EB26-4791-8025-5BA9682460EA}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundSwitch.UI.UserControls", "SoundSwitch.UI.UserControls\SoundSwitch.UI.UserControls.csproj", "{082AB6E3-EB26-4791-8025-5BA9682460EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoundSwitch.UI.UserControls", "SoundSwitch.UI.UserControls\SoundSwitch.UI.UserControls.csproj", "{082AB6E3-EB26-4791-8025-5BA9682460EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundSwitch.Audio.Manager", "SoundSwitch.Audio.Manager\SoundSwitch.Audio.Manager.csproj", "{B4F7987E-A5FA-45B1-9AE4-5E40144FFC54}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoundSwitch.Audio.Manager", "SoundSwitch.Audio.Manager\SoundSwitch.Audio.Manager.csproj", "{B4F7987E-A5FA-45B1-9AE4-5E40144FFC54}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundSwitch.Common", "SoundSwitch.Common\SoundSwitch.Common.csproj", "{45A39BFC-7B67-46F2-A6F2-59BF82B350A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoundSwitch.Common", "SoundSwitch.Common\SoundSwitch.Common.csproj", "{45A39BFC-7B67-46F2-A6F2-59BF82B350A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundSwitch.InterProcess.Communication", "SoundSwitch.InterProcess.Communication\SoundSwitch.InterProcess.Communication.csproj", "{B9E2B948-41E3-4C39-AB1E-78FF7EE0FA42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,12 +26,12 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{A17ECFE0-C4E2-4410-839A-14DF8C11428D}.AppVeyor|Any CPU.ActiveCfg = Release|Any CPU
 		{A17ECFE0-C4E2-4410-839A-14DF8C11428D}.AppVeyor|Any CPU.Build.0 = Release|Any CPU
-		{A17ECFE0-C4E2-4410-839A-14DF8C11428D}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
-		{A17ECFE0-C4E2-4410-839A-14DF8C11428D}.Beta|Any CPU.Build.0 = Beta|Any CPU
 		{A17ECFE0-C4E2-4410-839A-14DF8C11428D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A17ECFE0-C4E2-4410-839A-14DF8C11428D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A17ECFE0-C4E2-4410-839A-14DF8C11428D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A17ECFE0-C4E2-4410-839A-14DF8C11428D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A17ECFE0-C4E2-4410-839A-14DF8C11428D}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
+		{A17ECFE0-C4E2-4410-839A-14DF8C11428D}.Beta|Any CPU.Build.0 = Beta|Any CPU
 		{082AB6E3-EB26-4791-8025-5BA9682460EA}.AppVeyor|Any CPU.ActiveCfg = Release|Any CPU
 		{082AB6E3-EB26-4791-8025-5BA9682460EA}.AppVeyor|Any CPU.Build.0 = Release|Any CPU
 		{082AB6E3-EB26-4791-8025-5BA9682460EA}.Beta|Any CPU.ActiveCfg = Release|Any CPU
@@ -54,6 +56,14 @@ Global
 		{45A39BFC-7B67-46F2-A6F2-59BF82B350A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45A39BFC-7B67-46F2-A6F2-59BF82B350A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45A39BFC-7B67-46F2-A6F2-59BF82B350A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9E2B948-41E3-4C39-AB1E-78FF7EE0FA42}.AppVeyor|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9E2B948-41E3-4C39-AB1E-78FF7EE0FA42}.AppVeyor|Any CPU.Build.0 = Debug|Any CPU
+		{B9E2B948-41E3-4C39-AB1E-78FF7EE0FA42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9E2B948-41E3-4C39-AB1E-78FF7EE0FA42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9E2B948-41E3-4C39-AB1E-78FF7EE0FA42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9E2B948-41E3-4C39-AB1E-78FF7EE0FA42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9E2B948-41E3-4C39-AB1E-78FF7EE0FA42}.Beta|Any CPU.ActiveCfg = Release|Any CPU
+		{B9E2B948-41E3-4C39-AB1E-78FF7EE0FA42}.Beta|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
