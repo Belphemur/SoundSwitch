@@ -12,7 +12,7 @@ begin
     Result:= 'True';    
 end;
 
-function hasDotNetCore(version: string) : boolean
+function hasDotNetCore(version: string) : boolean;
 var
    regInstalled: cardinal;
    architecture: string;
