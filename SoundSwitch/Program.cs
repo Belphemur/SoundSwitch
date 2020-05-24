@@ -66,6 +66,8 @@ namespace SoundSwitch
 
             using (new Mutex(true, Application.ProductName, out createdNew))
             {
+                //Mutex used by another instance of the app
+                //Ask the other instance to stop and restart this instance to get the mutex again.
                 if (!createdNew)
                 {
                    using var pipeClient = new NamedPipeClient(Application.ProductName);
@@ -75,9 +77,9 @@ namespace SoundSwitch
                 }
 
                 using var pipeServer = new NamedPipeServer(Application.ProductName);
-                pipeServer.Start(s =>
+                pipeServer.Start(message =>
                 {
-                    if (s == "Close")
+                    if (message == "Close")
                     {
                         Application.Exit();
                     }
