@@ -6,7 +6,7 @@
 #define use_msi45
 #define use_msiproduct
 
-#define use_dotnet_core_314
+#define use_dotnet_core '3.1.4'
 
 ;#define use_vc2017
 
@@ -278,8 +278,8 @@ end;
 #include "scripts\products\dotnetfx47.iss"
 #endif
 
-#ifdef use_dotnet_core_314
-#include "scripts\products\dotnet-core-3.1.4.iss"
+#ifdef use_dotnet_core
+#include "scripts\products\dotnet-core.iss"
 #endif
 
 #ifdef use_wic
@@ -428,6 +428,9 @@ begin
     dotnetfx47(2); // min allowed version is 4.7.2
 #endif
 
+#ifdef use_dotnet_core
+    dotnetCore('{#use_dotnet_core}');
+#endif
 
 #ifdef use_vc2005
 	vcredist2005();
