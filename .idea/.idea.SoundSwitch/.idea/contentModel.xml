@@ -370,7 +370,7 @@
         <e p="NamedPipeClient.cs" t="Include" />
         <e p="NamedPipeServer.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive">
-          <e p="Debug" t="Include">
+          <e p="Release" t="Include">
             <e p="netstandard2.1" t="Include">
               <e p="SoundSwitch.InterProcess.Communication.AssemblyInfo.cs" t="Include" />
             </e>
