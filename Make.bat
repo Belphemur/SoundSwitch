@@ -101,10 +101,10 @@ for %%l in %LANGS% DO (
     xcopy /y %BIN_DIR%\%%l\SoundSwitch.resources.dll %finalDir%\%%l\ >nul 2>nul
 )
 
-echo Update Icon
-tools\ResourceHacker.exe  -open %finalDir%\SoundSwitch.exe -save %finalDir%\SoundSwitch.exe -action addoverwrite -res SoundSwitch\Resources\Switch-SoundWave.ico -mask ICONGROUP,MAINICON,
+rem echo Update Icon
+rem tools\ResourceHacker.exe  -open %finalDir%\SoundSwitch.exe -save %finalDir%\SoundSwitch.exe -action addoverwrite -res SoundSwitch\Resources\Switch-SoundWave.ico -mask ICONGROUP,MAINICON,
 
-echo START
+echo Build Installer
 rem Run installer compiler script
 call ./Installer/Make-Installer.bat %buildPlatform%
 if not %ERRORLEVEL%==0 (set errorMessage=Make-installer.bat failed or not found & goto ERROR_QUIT)

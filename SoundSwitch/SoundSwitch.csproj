@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+  <TargetFrameworks>net472;netcoreapp3.1</TargetFrameworks>
     <OutputType>WinExe</OutputType>
     <StartupObject>SoundSwitch.Program</StartupObject>
     <Nullable>enable</Nullable>
@@ -50,6 +50,22 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <LangVersion>8</LangVersion>
   </PropertyGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' != 'net472' ">
+    <!-- add From files to here to enable designer -->
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
     <Reference Include="System.Configuration" />
@@ -243,5 +259,7 @@
     <EmbeddedResource Remove="Localization\TrayIconStrings.hu.resx" />
     <EmbeddedResource Remove="Localization\UpdateDownloadStrings.hu.resx" />
   </ItemGroup>
-  <PropertyGroup />
+  <PropertyGroup>
+    <ApplicationIcon>Resources\Switch-SoundWave.ico</ApplicationIcon>
+  </PropertyGroup>
 </Project>

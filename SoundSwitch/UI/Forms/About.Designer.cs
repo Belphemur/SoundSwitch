@@ -66,7 +66,7 @@
             this.createdByLabel.AutoSize = true;
             this.createdByLabel.Location = new System.Drawing.Point(6, 47);
             this.createdByLabel.Name     = "createdByLabel";
-            this.createdByLabel.Size     = new System.Drawing.Size(64, 15);
+            this.createdByLabel.Size     = new System.Drawing.Size(58, 13);
             this.createdByLabel.TabIndex = 1;
             this.createdByLabel.Text     = "Created by";
             // 
@@ -75,7 +75,7 @@
             this.creatorLinkLabel.AutoSize    =  true;
             this.creatorLinkLabel.Location    =  new System.Drawing.Point(148, 47);
             this.creatorLinkLabel.Name        =  "creatorLinkLabel";
-            this.creatorLinkLabel.Size        =  new System.Drawing.Size(90, 15);
+            this.creatorLinkLabel.Size        =  new System.Drawing.Size(81, 13);
             this.creatorLinkLabel.TabIndex    =  2;
             this.creatorLinkLabel.TabStop     =  true;
             this.creatorLinkLabel.Text        =  "Jeroen Pelgrims";
@@ -86,7 +86,7 @@
             this.versionLabel.AutoSize = true;
             this.versionLabel.Location = new System.Drawing.Point(6, 71);
             this.versionLabel.Name     = "versionLabel";
-            this.versionLabel.Size     = new System.Drawing.Size(45, 15);
+            this.versionLabel.Size     = new System.Drawing.Size(42, 13);
             this.versionLabel.TabIndex = 3;
             this.versionLabel.Text     = "Version";
             // 
@@ -95,7 +95,7 @@
             this.versionLinkLabel.AutoSize    =  true;
             this.versionLinkLabel.Location    =  new System.Drawing.Point(148, 71);
             this.versionLinkLabel.Name        =  "versionLinkLabel";
-            this.versionLinkLabel.Size        =  new System.Drawing.Size(79, 15);
+            this.versionLinkLabel.Size        =  new System.Drawing.Size(79, 13);
             this.versionLinkLabel.TabIndex    =  4;
             this.versionLinkLabel.TabStop     =  true;
             this.versionLinkLabel.Text        =  "X.XX.X.XXXXX";
@@ -121,7 +121,7 @@
             this.maintainerLinkLabel.AutoSize    =  true;
             this.maintainerLinkLabel.Location    =  new System.Drawing.Point(148, 21);
             this.maintainerLinkLabel.Name        =  "maintainerLinkLabel";
-            this.maintainerLinkLabel.Size        =  new System.Drawing.Size(83, 15);
+            this.maintainerLinkLabel.Size        =  new System.Drawing.Size(72, 13);
             this.maintainerLinkLabel.TabIndex    =  6;
             this.maintainerLinkLabel.TabStop     =  true;
             this.maintainerLinkLabel.Text        =  "Antoine Aflalo";
@@ -132,7 +132,7 @@
             this.maintainedByLabel.AutoSize = true;
             this.maintainedByLabel.Location = new System.Drawing.Point(6, 21);
             this.maintainedByLabel.Name     = "maintainedByLabel";
-            this.maintainedByLabel.Size     = new System.Drawing.Size(83, 15);
+            this.maintainedByLabel.Size     = new System.Drawing.Size(73, 13);
             this.maintainedByLabel.TabIndex = 5;
             this.maintainedByLabel.Text     = "Maintained by";
             // 
@@ -158,7 +158,7 @@
             this.logoCreatorLabel.AutoSize    =  true;
             this.logoCreatorLabel.Location    =  new System.Drawing.Point(148, 105);
             this.logoCreatorLabel.Name        =  "logoCreatorLabel";
-            this.logoCreatorLabel.Size        =  new System.Drawing.Size(82, 15);
+            this.logoCreatorLabel.Size        =  new System.Drawing.Size(74, 13);
             this.logoCreatorLabel.TabIndex    =  9;
             this.logoCreatorLabel.TabStop     =  true;
             this.logoCreatorLabel.Text        =  "@linadesteem";
@@ -177,7 +177,7 @@
             this.defaultPlaybackDeviceChangeLinkLabel.AutoSize    =  true;
             this.defaultPlaybackDeviceChangeLinkLabel.Location    =  new System.Drawing.Point(148, 71);
             this.defaultPlaybackDeviceChangeLinkLabel.Name        =  "defaultPlaybackDeviceChangeLinkLabel";
-            this.defaultPlaybackDeviceChangeLinkLabel.Size        =  new System.Drawing.Size(38, 15);
+            this.defaultPlaybackDeviceChangeLinkLabel.Size        =  new System.Drawing.Size(39, 13);
             this.defaultPlaybackDeviceChangeLinkLabel.TabIndex    =  7;
             this.defaultPlaybackDeviceChangeLinkLabel.TabStop     =  true;
             this.defaultPlaybackDeviceChangeLinkLabel.Text        =  "EreTIk";
@@ -196,7 +196,7 @@
             this.keyboardHotKeySystemLinkLabel.AutoSize    =  true;
             this.keyboardHotKeySystemLinkLabel.Location    =  new System.Drawing.Point(148, 46);
             this.keyboardHotKeySystemLinkLabel.Name        =  "keyboardHotKeySystemLinkLabel";
-            this.keyboardHotKeySystemLinkLabel.Size        =  new System.Drawing.Size(118, 15);
+            this.keyboardHotKeySystemLinkLabel.Size        =  new System.Drawing.Size(105, 13);
             this.keyboardHotKeySystemLinkLabel.TabIndex    =  3;
             this.keyboardHotKeySystemLinkLabel.TabStop     =  true;
             this.keyboardHotKeySystemLinkLabel.Text        =  "Christian Liensberger";
@@ -207,7 +207,7 @@
             this.keyboardHotKeySystemLabel.AutoSize = true;
             this.keyboardHotKeySystemLabel.Location = new System.Drawing.Point(6, 46);
             this.keyboardHotKeySystemLabel.Name     = "keyboardHotKeySystemLabel";
-            this.keyboardHotKeySystemLabel.Size     = new System.Drawing.Size(139, 15);
+            this.keyboardHotKeySystemLabel.Size     = new System.Drawing.Size(125, 13);
             this.keyboardHotKeySystemLabel.TabIndex = 2;
             this.keyboardHotKeySystemLabel.Text     = "Keyboard HotKey system";
             // 
@@ -216,7 +216,7 @@
             this.iconsLinkLabel.AutoSize    =  true;
             this.iconsLinkLabel.Location    =  new System.Drawing.Point(148, 23);
             this.iconsLinkLabel.Name        =  "iconsLinkLabel";
-            this.iconsLinkLabel.Size        =  new System.Drawing.Size(62, 15);
+            this.iconsLinkLabel.Size        =  new System.Drawing.Size(61, 13);
             this.iconsLinkLabel.TabIndex    =  1;
             this.iconsLinkLabel.TabStop     =  true;
             this.iconsLinkLabel.Text        =  "Pastel SVG";
@@ -227,7 +227,7 @@
             this.iconsLabel.AutoSize = true;
             this.iconsLabel.Location = new System.Drawing.Point(6, 23);
             this.iconsLabel.Name     = "iconsLabel";
-            this.iconsLabel.Size     = new System.Drawing.Size(35, 15);
+            this.iconsLabel.Size     = new System.Drawing.Size(33, 13);
             this.iconsLabel.TabIndex = 0;
             this.iconsLabel.Text     = "Icons";
             // 
@@ -265,25 +265,25 @@
             this.PerformLayout();
         }
 
-        #endregion
-
         private System.Windows.Forms.Label appNameLabel;
+        private System.Windows.Forms.GroupBox authorAndProgramInfoGroupBox;
         private System.Windows.Forms.Label createdByLabel;
         private System.Windows.Forms.LinkLabel creatorLinkLabel;
-        private System.Windows.Forms.Label versionLabel;
-        private System.Windows.Forms.LinkLabel versionLinkLabel;
-        private System.Windows.Forms.GroupBox authorAndProgramInfoGroupBox;
         private System.Windows.Forms.GroupBox creditsAndAttributionGroupBox;
-        private System.Windows.Forms.LinkLabel iconsLinkLabel;
-        private System.Windows.Forms.Label iconsLabel;
-        private System.Windows.Forms.LinkLabel keyboardHotKeySystemLinkLabel;
-        private System.Windows.Forms.Label keyboardHotKeySystemLabel;
         private System.Windows.Forms.Label defaultPlaybackDeviceChangeLabel;
-        private System.Windows.Forms.LinkLabel maintainerLinkLabel;
-        private System.Windows.Forms.Label maintainedByLabel;
-        private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.LinkLabel defaultPlaybackDeviceChangeLinkLabel;
+        private System.Windows.Forms.Label iconsLabel;
+        private System.Windows.Forms.LinkLabel iconsLinkLabel;
+        private System.Windows.Forms.Label keyboardHotKeySystemLabel;
+        private System.Windows.Forms.LinkLabel keyboardHotKeySystemLinkLabel;
         private System.Windows.Forms.LinkLabel logoCreatorLabel;
         private System.Windows.Forms.Label logoMadeLabel;
+        private System.Windows.Forms.Label maintainedByLabel;
+        private System.Windows.Forms.LinkLabel maintainerLinkLabel;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label versionLabel;
+        private System.Windows.Forms.LinkLabel versionLinkLabel;
+
+        #endregion
     }
 }
