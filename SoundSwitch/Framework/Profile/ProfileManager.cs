@@ -227,7 +227,11 @@ namespace SoundSwitch.Framework.Profile
                         continue;
                     if (!process.Responding)
                         continue;
-                    var filePath = process.MainModule.FileName.ToLower();
+                    var filePath = process.MainModule?.FileName.ToLower();
+                    if (filePath == null)
+                    {
+                        continue;
+                    }
                     if (_profileByApplication.TryGetValue(filePath, out var profile))
                     {
                         SwitchAudio(profile, (uint) process.Id);
