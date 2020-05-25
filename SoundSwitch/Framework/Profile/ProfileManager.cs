@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using RailSharp;
 using RailSharp.Internal.Result;
+using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.WinApi;
@@ -19,19 +20,19 @@ namespace SoundSwitch.Framework.Profile
     {
         private readonly Dictionary<HotKey, ProfileSetting> _profileByHotkey;
         private readonly Dictionary<string, ProfileSetting> _profileByApplication;
-        private readonly ForegroundProcess _foregroundProcess;
-        private readonly AudioSwitcher _audioSwitcher;
+        private readonly ForegroundProcess                  _foregroundProcess;
+        private readonly AudioSwitcher                      _audioSwitcher;
 
         public IReadOnlyCollection<ProfileSetting> Profiles => AppConfigs.Configuration.ProfileSettings;
 
         public ProfileManager(ForegroundProcess foregroundProcess, AudioSwitcher audioSwitcher)
         {
             _foregroundProcess = foregroundProcess;
-            _audioSwitcher = audioSwitcher;
+            _audioSwitcher     = audioSwitcher;
             _profileByApplication =
                 AppConfigs.Configuration.ProfileSettings
-                    .Where((setting) => setting.ApplicationPath != null)
-                    .ToDictionary(setting => setting.ApplicationPath!.ToLower());
+                          .Where((setting) => setting.ApplicationPath != null)
+                          .ToDictionary(setting => setting.ApplicationPath!.ToLower());
             _profileByHotkey = AppConfigs.Configuration.ProfileSettings
                                          .Where((setting) => setting.HotKey != null)
                                          .ToDictionary(setting => setting.HotKey)!;
@@ -46,10 +47,10 @@ namespace SoundSwitch.Framework.Profile
             RegisterEvents();
 
             var errors = AppConfigs.Configuration.ProfileSettings
-                .Where(setting => setting.HotKey != null)
-                .Where(profileSetting => !WindowsAPIAdapter.RegisterHotKey(profileSetting.HotKey))
-                .ToArray();
-            
+                                   .Where(setting => setting.HotKey != null)
+                                   .Where(profileSetting => !WindowsAPIAdapter.RegisterHotKey(profileSetting.HotKey))
+                                   .ToArray();
+
             InitializeProfileExistingProcess();
 
             if (errors.Length > 0)
@@ -157,7 +158,7 @@ namespace SoundSwitch.Framework.Profile
             {
                 return string.Format(SettingsStrings.profile_error_hotkey, profile.HotKey);
             }
-            
+
             return Result.Success();
         }
 
@@ -170,7 +171,7 @@ namespace SoundSwitch.Framework.Profile
         /// <returns></returns>
         public Result<ProfileSetting[], VoidSuccess> DeleteProfiles(IEnumerable<ProfileSetting> profiles)
         {
-            var errors = new List<ProfileSetting>();
+            var errors            = new List<ProfileSetting>();
             var resetProcessAudio = false;
             foreach (var profile in profiles)
             {
@@ -213,6 +214,11 @@ namespace SoundSwitch.Framework.Profile
 
         private void InitializeProfileExistingProcess()
         {
+            if (_profileByApplication.Count == 0)
+            {
+                return;
+            }
+
             foreach (var process in Process.GetProcesses())
             {
                 try
@@ -234,6 +240,10 @@ namespace SoundSwitch.Framework.Profile
                 catch (InvalidOperationException)
                 {
                     //Process in a weird state, can't get MainModule for it.
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e, "Couldn't get information about the given process.");
                 }
             }
         }
