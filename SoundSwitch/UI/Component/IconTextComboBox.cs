@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace SoundSwitch.UI.UserControls
+namespace SoundSwitch.UI.Component
 {
     public class IconTextComboBox : ComboBox
     {

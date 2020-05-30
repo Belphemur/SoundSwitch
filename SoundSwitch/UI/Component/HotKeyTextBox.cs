@@ -3,7 +3,8 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using SoundSwitch.Common.WinApi.Keyboard;
+using HotKey = SoundSwitch.Framework.WinApi.Keyboard.HotKey;
+using KeyboardWindowsAPI = SoundSwitch.Framework.WinApi.Keyboard.KeyboardWindowsAPI;
 
 namespace SoundSwitch.UI.Component
 {

@@ -68,6 +68,9 @@
     <Compile Update="Framework\Banner\BannerForm.Designer.cs">
       <DependentUpon>BannerForm.cs</DependentUpon>
     </Compile>
+    <Compile Update="Framework\WinApi\WindowsAPIAdapter.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Localization\AboutStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -89,6 +92,9 @@
       <DependentUpon>UpdateDownloadStrings.resx</DependentUpon>
     </Compile>
     <Compile Update="UI\Component\HotKeyTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="UI\Component\IconTextComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="UI\Forms\AddProfile.cs">

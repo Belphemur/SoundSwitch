@@ -17,7 +17,6 @@ using System;
 using System.Collections.Generic;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Common.Framework.Audio.Device;
-using SoundSwitch.Common.WinApi.Keyboard;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager;
@@ -26,6 +25,7 @@ using SoundSwitch.Framework.Updater;
 using SoundSwitch.Localization;
 using SoundSwitch.Localization.Factory;
 using SoundSwitch.Util;
+using HotKey = SoundSwitch.Framework.WinApi.Keyboard.HotKey;
 
 namespace SoundSwitch.Model
 {

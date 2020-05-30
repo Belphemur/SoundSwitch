@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace SoundSwitch.Common.WinApi.Keyboard
+namespace SoundSwitch.Framework.WinApi.Keyboard
 {
     //A class to keep share procedures
     public static class HotKeyShared

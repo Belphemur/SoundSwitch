@@ -30,11 +30,11 @@ using System.Linq;
 using RailSharp;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Device;
-using SoundSwitch.Common.WinApi;
-using SoundSwitch.Common.WinApi.Keyboard;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Localization.Factory;
 using SoundSwitch.Util.Timer;
+using HotKey = SoundSwitch.Framework.WinApi.Keyboard.HotKey;
+using WindowsAPIAdapter = SoundSwitch.Framework.WinApi.WindowsAPIAdapter;
 
 namespace SoundSwitch.Model
 {

@@ -9,10 +9,10 @@ using RailSharp.Internal.Result;
 using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
-using SoundSwitch.Common.WinApi;
-using SoundSwitch.Common.WinApi.Keyboard;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Localization;
+using HotKey = SoundSwitch.Framework.WinApi.Keyboard.HotKey;
+using WindowsAPIAdapter = SoundSwitch.Framework.WinApi.WindowsAPIAdapter;
 
 namespace SoundSwitch.Framework.Profile
 {

@@ -23,7 +23,6 @@ using System.Windows.Forms;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Common.Framework.Icon;
-using SoundSwitch.Common.WinApi.Keyboard;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Audio.Lister;
 using SoundSwitch.Framework.Configuration;
@@ -41,6 +40,7 @@ using SoundSwitch.Model;
 using SoundSwitch.Properties;
 using SoundSwitch.UI.UserControls.ListView;
 using SoundSwitch.Util;
+using HotKey = SoundSwitch.Framework.WinApi.Keyboard.HotKey;
 
 namespace SoundSwitch.UI.Forms
 {

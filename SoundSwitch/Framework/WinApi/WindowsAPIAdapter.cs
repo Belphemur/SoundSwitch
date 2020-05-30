@@ -20,9 +20,9 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using Serilog;
-using SoundSwitch.Common.WinApi.Keyboard;
+using SoundSwitch.Framework.WinApi.Keyboard;
 
-namespace SoundSwitch.Common.WinApi
+namespace SoundSwitch.Framework.WinApi
 {
     public class WindowsAPIAdapter : Form
     {

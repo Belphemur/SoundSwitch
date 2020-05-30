@@ -1,5 +1,6 @@
 ﻿using System.Windows.Forms;
 using SoundSwitch.Localization;
+using SoundSwitch.UI.Component;
 using SoundSwitch.UI.UserControls;
 
 namespace SoundSwitch.UI.Forms
@@ -38,8 +39,8 @@ namespace SoundSwitch.UI.Forms
             this.playbackRemoveButton = new System.Windows.Forms.Button();
             this.recordingLabel = new System.Windows.Forms.Label();
             this.playbackLabel = new System.Windows.Forms.Label();
-            this.recordingComboBox = new SoundSwitch.UI.UserControls.IconTextComboBox();
-            this.playbackComboBox = new SoundSwitch.UI.UserControls.IconTextComboBox();
+            this.recordingComboBox = new IconTextComboBox();
+            this.playbackComboBox = new IconTextComboBox();
             this.selectProgramButton = new System.Windows.Forms.Button();
             this.programLabel = new System.Windows.Forms.Label();
             this.programTextBox = new System.Windows.Forms.TextBox();
@@ -251,12 +252,12 @@ namespace SoundSwitch.UI.Forms
         private System.Windows.Forms.Label hotKeyLabel;
         private System.Windows.Forms.Label nameLabel;
         private System.Windows.Forms.TextBox nameTextBox;
-        private SoundSwitch.UI.UserControls.IconTextComboBox playbackComboBox;
+        private IconTextComboBox playbackComboBox;
         private System.Windows.Forms.Label playbackLabel;
         private System.Windows.Forms.Button playbackRemoveButton;
         private System.Windows.Forms.Label programLabel;
         private System.Windows.Forms.TextBox programTextBox;
-        private SoundSwitch.UI.UserControls.IconTextComboBox recordingComboBox;
+        private IconTextComboBox recordingComboBox;
         private System.Windows.Forms.Label recordingLabel;
         private System.Windows.Forms.Button recordingRemoveButton;
         private System.Windows.Forms.Button selectProgramButton;

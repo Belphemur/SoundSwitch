@@ -14,9 +14,6 @@
     <Compile Update="HotKeyControl\HotKeyControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="IconTextComboBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Update="ListView\IconListView.cs">
       <SubType>Component</SubType>
     </Compile>

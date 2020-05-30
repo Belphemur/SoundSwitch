@@ -1,6 +1,6 @@
 ﻿using System;
 using SoundSwitch.Common.Framework.Audio.Device;
-using SoundSwitch.Common.WinApi.Keyboard;
+using HotKey = SoundSwitch.Framework.WinApi.Keyboard.HotKey;
 
 namespace SoundSwitch.Framework.Profile
 {

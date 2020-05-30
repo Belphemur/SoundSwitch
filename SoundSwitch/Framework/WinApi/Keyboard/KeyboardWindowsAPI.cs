@@ -18,7 +18,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace SoundSwitch.Common.WinApi.Keyboard
+namespace SoundSwitch.Framework.WinApi.Keyboard
 {
     public static class KeyboardWindowsAPI
     {

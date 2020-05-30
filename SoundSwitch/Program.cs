@@ -23,7 +23,6 @@ using System.Threading;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
 using Serilog;
-using SoundSwitch.Common.WinApi;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio.Lister;
 using SoundSwitch.Framework.Configuration;
@@ -35,6 +34,7 @@ using SoundSwitch.InterProcess.Communication;
 using SoundSwitch.Localization.Factory;
 using SoundSwitch.Model;
 using SoundSwitch.Util;
+using WindowsAPIAdapter = SoundSwitch.Framework.WinApi.WindowsAPIAdapter;
 
 namespace SoundSwitch
 {
