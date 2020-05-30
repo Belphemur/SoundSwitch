@@ -77,7 +77,8 @@ Source: "{#ExeDir}SoundSwitch.exe"; DestDir: "{app}";  Flags: signonce
 Source: "{#ExeDir}*.dll"; DestDir: "{app}";
 Source: "{#ExeDir}*.pdb"; DestDir: "{app}";
 Source: "{#ExeDir}*.json"; DestDir: "{app}";
- 
+Source: "{#ExeDir}*.config"; DestDir: "{app}";
+
 Source: "{#ExeDir}fr\*.dll"; DestDir: "{app}\fr";
 Source: "{#ExeDir}de\*.dll"; DestDir: "{app}\de";
 Source: "{#ExeDir}es\*.dll"; DestDir: "{app}\es";
