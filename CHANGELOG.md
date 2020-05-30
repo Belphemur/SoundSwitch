@@ -1,5 +1,22 @@
 # Changelog
 
+## [v5.3.0](https://github.com/Belphemur/SoundSwitch/tree/v5.3.0) (2020-05-30)
+
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v5.2.0...v5.3.0)
+
+**Implemented enhancements:**
+
+- When setting profile using an application, let the user choose if the default audio device is changed too [\#458](https://github.com/Belphemur/SoundSwitch/issues/458)
+- Better error message when launching second instance of SoundSwitch [\#456](https://github.com/Belphemur/SoundSwitch/issues/456)
+
+**Fixed bugs:**
+
+- SoundSwitch crashes on startup:  Can't get information about running process for Profile Feature [\#455](https://github.com/Belphemur/SoundSwitch/issues/455)
+
+**Closed issues:**
+
+- Crash after booting up PC: When using Profile feature and the audio device isn't connected [\#457](https://github.com/Belphemur/SoundSwitch/issues/457)
+
 ## [v5.2.0](https://github.com/Belphemur/SoundSwitch/tree/v5.2.0) (2020-05-24)
 
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v5.1.1...v5.2.0)
@@ -66,6 +83,7 @@
 - Close the log file before packing to zip [\#435](https://github.com/Belphemur/SoundSwitch/pull/435) ([moomons](https://github.com/moomons))
 - Fix NullReferenceException when the last playback device is disabled [\#433](https://github.com/Belphemur/SoundSwitch/pull/433) ([moomons](https://github.com/moomons))
 - Fix crash at startup when all playback devices are disabled [\#428](https://github.com/Belphemur/SoundSwitch/pull/428) ([moomons](https://github.com/moomons))
+- Reconnected devices are not added back to the selected list [\#426](https://github.com/Belphemur/SoundSwitch/pull/426) ([ys27](https://github.com/ys27))
 
 ## [v5.0.3](https://github.com/Belphemur/SoundSwitch/tree/v5.0.3) (2020-04-18)
 
@@ -191,7 +209,6 @@
 
 **Merged pull requests:**
 
-- Reconnected devices are not added back to the selected list [\#426](https://github.com/Belphemur/SoundSwitch/pull/426) ([ys27](https://github.com/ys27))
 - Polish translation added [\#381](https://github.com/Belphemur/SoundSwitch/pull/381) ([ArquesMartin](https://github.com/ArquesMartin))
 - Update AboutStrings.ru-RU.resx [\#380](https://github.com/Belphemur/SoundSwitch/pull/380) ([wvxwxvw](https://github.com/wvxwxvw))
 - Update SettingsStrings.ru-RU.resx [\#379](https://github.com/Belphemur/SoundSwitch/pull/379) ([wvxwxvw](https://github.com/wvxwxvw))
@@ -385,6 +402,7 @@
 **Merged pull requests:**
 
 - Fix performance [\#290](https://github.com/Belphemur/SoundSwitch/pull/290) ([Belphemur](https://github.com/Belphemur))
+- Fix Icon [\#289](https://github.com/Belphemur/SoundSwitch/pull/289) ([Belphemur](https://github.com/Belphemur))
 - Bump version [\#285](https://github.com/Belphemur/SoundSwitch/pull/285) ([Belphemur](https://github.com/Belphemur))
 
 ## [v4.8](https://github.com/Belphemur/SoundSwitch/tree/v4.8) (2018-06-06)
@@ -404,7 +422,6 @@
 
 **Merged pull requests:**
 
-- Fix Icon [\#289](https://github.com/Belphemur/SoundSwitch/pull/289) ([Belphemur](https://github.com/Belphemur))
 - Name fallback [\#284](https://github.com/Belphemur/SoundSwitch/pull/284) ([Belphemur](https://github.com/Belphemur))
 - Cleaned and updated Makefiles [\#280](https://github.com/Belphemur/SoundSwitch/pull/280) ([FireEmerald](https://github.com/FireEmerald))
 - Added logo and ico [\#278](https://github.com/Belphemur/SoundSwitch/pull/278) ([linadesteem](https://github.com/linadesteem))
@@ -480,6 +497,7 @@
 - Improve logging [\#259](https://github.com/Belphemur/SoundSwitch/pull/259) ([Belphemur](https://github.com/Belphemur))
 - Norwegian language [\#255](https://github.com/Belphemur/SoundSwitch/pull/255) ([Belphemur](https://github.com/Belphemur))
 - Added Spanish language in installer [\#246](https://github.com/Belphemur/SoundSwitch/pull/246) ([plextoriano](https://github.com/plextoriano))
+- Add VC Redist 2017 as dependency [\#204](https://github.com/Belphemur/SoundSwitch/pull/204) ([Belphemur](https://github.com/Belphemur))
 
 ## [v4.3](https://github.com/Belphemur/SoundSwitch/tree/v4.3) (2018-03-10)
 
@@ -569,7 +587,6 @@
 
 **Merged pull requests:**
 
-- Add VC Redist 2017 as dependency [\#204](https://github.com/Belphemur/SoundSwitch/pull/204) ([Belphemur](https://github.com/Belphemur))
 - Fixed a crash which happened if the user disabled visual styles e.g. with the 'Windows Classic' theme of Windows 7. [\#195](https://github.com/Belphemur/SoundSwitch/pull/195) ([FireEmerald](https://github.com/FireEmerald))
 
 ## [v3.15.0](https://github.com/Belphemur/SoundSwitch/tree/v3.15.0) (2017-05-31)
@@ -766,6 +783,10 @@
 
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.12.2...v3.12.3)
 
+**Implemented enhancements:**
+
+- Setting to keep the normal SoundSwitch TrayIcon [\#128](https://github.com/Belphemur/SoundSwitch/issues/128)
+
 **Closed issues:**
 
 - Hotkey to switch playback no longer works [\#130](https://github.com/Belphemur/SoundSwitch/issues/130)
@@ -773,6 +794,10 @@
 ## [v3.12.2](https://github.com/Belphemur/SoundSwitch/tree/v3.12.2) (2016-12-01)
 
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.12.1...v3.12.2)
+
+**Implemented enhancements:**
+
+- Add a donate button [\#127](https://github.com/Belphemur/SoundSwitch/issues/127)
 
 **Fixed bugs:**
 
@@ -786,7 +811,6 @@
 
 **Implemented enhancements:**
 
-- Add a donate button [\#127](https://github.com/Belphemur/SoundSwitch/issues/127)
 - Device-dependent system tray icon [\#122](https://github.com/Belphemur/SoundSwitch/issues/122)
 
 **Fixed bugs:**
@@ -799,7 +823,6 @@
 
 **Implemented enhancements:**
 
-- Setting to keep the normal SoundSwitch TrayIcon [\#128](https://github.com/Belphemur/SoundSwitch/issues/128)
 - Update to .NET 4.6.2 [\#118](https://github.com/Belphemur/SoundSwitch/issues/118)
 - Accessing 'help' at any time [\#105](https://github.com/Belphemur/SoundSwitch/issues/105)
 - Request: Notification pop up with custom sound? [\#73](https://github.com/Belphemur/SoundSwitch/issues/73)
@@ -823,6 +846,7 @@
 **Fixed bugs:**
 
 - Not switching "default communications device" [\#106](https://github.com/Belphemur/SoundSwitch/issues/106)
+- C++ 2015 x64 redist installed but installer tries and fails to download and install it again [\#101](https://github.com/Belphemur/SoundSwitch/issues/101)
 
 **Closed issues:**
 
@@ -833,13 +857,17 @@
 
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.10.1...v3.10.2)
 
-**Fixed bugs:**
-
-- C++ 2015 x64 redist installed but installer tries and fails to download and install it again [\#101](https://github.com/Belphemur/SoundSwitch/issues/101)
-
 ## [v3.10.1](https://github.com/Belphemur/SoundSwitch/tree/v3.10.1) (2016-05-22)
 
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.10.0...v3.10.1)
+
+**Implemented enhancements:**
+
+- Support HTTPS download in the installer [\#99](https://github.com/Belphemur/SoundSwitch/issues/99)
+
+**Fixed bugs:**
+
+- SoundSwitch install not working, VCRedist detect and download problem v3.10 Stable [\#98](https://github.com/Belphemur/SoundSwitch/issues/98)
 
 ## [v3.10.0](https://github.com/Belphemur/SoundSwitch/tree/v3.10.0) (2016-05-15)
 
@@ -847,7 +875,6 @@
 
 **Implemented enhancements:**
 
-- Support HTTPS download in the installer [\#99](https://github.com/Belphemur/SoundSwitch/issues/99)
 - High Resolution Icons [\#94](https://github.com/Belphemur/SoundSwitch/issues/94)
 
 ## [v3.9.9](https://github.com/Belphemur/SoundSwitch/tree/v3.9.9) (2016-05-01)
@@ -873,10 +900,6 @@
 - Show active device on hover Systray Icon [\#88](https://github.com/Belphemur/SoundSwitch/issues/88)
 - Playback devices constantly go in the Disconnected section [\#87](https://github.com/Belphemur/SoundSwitch/issues/87)
 
-**Fixed bugs:**
-
-- SoundSwitch install not working, VCRedist detect and download problem v3.10 Stable [\#98](https://github.com/Belphemur/SoundSwitch/issues/98)
-
 ## [v3.9.7](https://github.com/Belphemur/SoundSwitch/tree/v3.9.7) (2016-04-15)
 
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.9.6...v3.9.7)
@@ -891,6 +914,7 @@
 
 - SoundSwitch 3.9.6 Cannot install visual c++ redist [\#84](https://github.com/Belphemur/SoundSwitch/issues/84)
 - Pipe system broken: New instance of SoundSwitch doesn't close the previous one [\#81](https://github.com/Belphemur/SoundSwitch/issues/81)
+- Empty Icon defined for an AudioDevice [\#71](https://github.com/Belphemur/SoundSwitch/issues/71)
 - Switching already running applications [\#70](https://github.com/Belphemur/SoundSwitch/issues/70)
 
 **Closed issues:**
@@ -901,10 +925,6 @@
 ## [v3.9.6](https://github.com/Belphemur/SoundSwitch/tree/v3.9.6) (2016-03-10)
 
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.9.5...v3.9.6)
-
-**Implemented enhancements:**
-
-- Add a "stealth" component to the Auto-Update [\#64](https://github.com/Belphemur/SoundSwitch/issues/64)
 
 **Fixed bugs:**
 
@@ -923,10 +943,6 @@
 ## [v3.9.4](https://github.com/Belphemur/SoundSwitch/tree/v3.9.4) (2016-02-22)
 
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.9.2...v3.9.4)
-
-**Fixed bugs:**
-
-- Empty Icon defined for an AudioDevice [\#71](https://github.com/Belphemur/SoundSwitch/issues/71)
 
 **Closed issues:**
 
@@ -976,6 +992,7 @@
 
 **Implemented enhancements:**
 
+- Add a "stealth" component to the Auto-Update [\#64](https://github.com/Belphemur/SoundSwitch/issues/64)
 - Beta Channel [\#58](https://github.com/Belphemur/SoundSwitch/issues/58)
 
 ## [v3.8.3](https://github.com/Belphemur/SoundSwitch/tree/v3.8.3) (2015-12-31)
@@ -991,13 +1008,16 @@
 
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.8.1...v3.8.2)
 
+**Fixed bugs:**
+
+- Crash when using Windows Notification after SoundSwitch restart and switch device [\#55](https://github.com/Belphemur/SoundSwitch/issues/55)
+
 ## [v3.8.1](https://github.com/Belphemur/SoundSwitch/tree/v3.8.1) (2015-12-30)
 
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.8.0...v3.8.1)
 
 **Fixed bugs:**
 
-- Crash when using Windows Notification after SoundSwitch restart and switch device [\#55](https://github.com/Belphemur/SoundSwitch/issues/55)
 - Soundswitch 3.7.0.23142 crashed when I tried to update it through the update button. [\#54](https://github.com/Belphemur/SoundSwitch/issues/54)
 - App Freeze when using Sound Notification and Unplug device while sound playing. [\#53](https://github.com/Belphemur/SoundSwitch/issues/53)
 - Crashes everytime I try to use it  [\#51](https://github.com/Belphemur/SoundSwitch/issues/51)
@@ -1119,10 +1139,6 @@
 
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.4.0...v3.4.1)
 
-**Implemented enhancements:**
-
-- Group devices by state in Settings [\#22](https://github.com/Belphemur/SoundSwitch/issues/22)
-
 **Fixed bugs:**
 
 - crashes on start: IndexOutOfRangeException [\#23](https://github.com/Belphemur/SoundSwitch/issues/23)
@@ -1133,11 +1149,8 @@
 
 **Implemented enhancements:**
 
+- Group devices by state in Settings [\#22](https://github.com/Belphemur/SoundSwitch/issues/22)
 - Switch Recording devices [\#19](https://github.com/Belphemur/SoundSwitch/issues/19)
-
-**Fixed bugs:**
-
-- SoundSwitch Settings menu cause appcrash [\#10](https://github.com/Belphemur/SoundSwitch/issues/10)
 
 **Closed issues:**
 
@@ -1171,11 +1184,11 @@
 **Implemented enhancements:**
 
 - Add a logger to easily debug release version [\#9](https://github.com/Belphemur/SoundSwitch/issues/9)
-- Make the uinstaller remove the startup registry key [\#4](https://github.com/Belphemur/SoundSwitch/issues/4)
 
 **Fixed bugs:**
 
 - Installer doesn't detect .NET 4.6 Preview [\#11](https://github.com/Belphemur/SoundSwitch/issues/11)
+- SoundSwitch Settings menu cause appcrash [\#10](https://github.com/Belphemur/SoundSwitch/issues/10)
 - SoundSwitch appears to crash immediately after launch [\#5](https://github.com/Belphemur/SoundSwitch/issues/5)
 
 **Closed issues:**
@@ -1196,6 +1209,7 @@
 
 **Implemented enhancements:**
 
+- Make the uinstaller remove the startup registry key [\#4](https://github.com/Belphemur/SoundSwitch/issues/4)
 - Add Changelog in installer [\#3](https://github.com/Belphemur/SoundSwitch/issues/3)
 - Implement a better AutoStart feature [\#2](https://github.com/Belphemur/SoundSwitch/issues/2)
 
