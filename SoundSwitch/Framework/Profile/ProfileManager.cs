@@ -65,16 +65,14 @@ namespace SoundSwitch.Framework.Profile
         {
             _foregroundProcess.Changed += (sender, @event) =>
             {
-                _profileByApplication.TryGetValue(@event.ProcessName.ToLower(), out var profile);
-                if (profile == null)
+                if(!_profileByApplication.TryGetValue(@event.ProcessName.ToLower(), out var profile))
                     return;
                 SwitchAudio(profile, @event.ProcessId);
             };
 
             WindowsAPIAdapter.HotKeyPressed += (sender, args) =>
             {
-                _profileByHotkey.TryGetValue(args.HotKey, out var profile);
-                if (profile == null)
+                if (!_profileByHotkey.TryGetValue(args.HotKey, out var profile))
                     return;
                 SwitchAudio(profile);
             };
