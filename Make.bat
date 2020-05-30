@@ -94,6 +94,7 @@ echo Copy Binaries
 xcopy /y %BIN_DIR%\*.pdb %finalDir% >nul 2>nul
 xcopy /y %BIN_DIR%\*.dll %finalDir% >nul 2>nul
 xcopy /y %BIN_DIR%\*.json %finalDir% >nul 2>nul
+xcopy /y %BIN_DIR%\*.config %finalDir% >nul 2>nul
 xcopy /y %BIN_DIR%\SoundSwitch.exe %finalDir% >nul 2>nul
 xcopy /y %BIN_DIR%\SoundSwitch.exe.config %finalDir% >nul 2>nul
 for %%l in %LANGS% DO (
