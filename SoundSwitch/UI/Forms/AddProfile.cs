@@ -177,9 +177,9 @@ namespace SoundSwitch.UI.Forms
             recordingRemoveButton.Visible = true;
         }
 
-        // private void hotKeyControl_HotKeyIsSet(object sender, HotKeyIsSetEventArgs e)
-        // {
-        //     _profile.HotKey = hotKeyControl.HotKey;
-        // }
+        private void hotKeyControl_HotKeyChanged(object sender, Component.HotKeyTextBox.Event e)
+        {
+            _profile.HotKey = hotKeyControl.HotKey;
+        }
     }
 }
