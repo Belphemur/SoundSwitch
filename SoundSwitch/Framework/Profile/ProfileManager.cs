@@ -12,6 +12,7 @@ using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Localization;
+using SoundSwitch.Model;
 using HotKey = SoundSwitch.Framework.WinApi.Keyboard.HotKey;
 using WindowsAPIAdapter = SoundSwitch.Framework.WinApi.WindowsAPIAdapter;
 
