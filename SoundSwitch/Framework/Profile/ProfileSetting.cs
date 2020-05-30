@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json;
 using SoundSwitch.Common.Framework.Audio.Device;
 using HotKey = SoundSwitch.Framework.WinApi.Keyboard.HotKey;
 
@@ -13,6 +16,9 @@ namespace SoundSwitch.Framework.Profile
         public DeviceInfo? Playback { get; set; }
         public DeviceInfo? Recording { get; set; }
         public bool AlsoSwitchDefaultDevice { get; set; } = true;
+
+        [JsonIgnore]
+        public IEnumerable<DeviceInfo> Devices => new[] {Playback, Recording}.Where(info => info != null)!;
 
         public bool Equals(ProfileSetting? other)
         {

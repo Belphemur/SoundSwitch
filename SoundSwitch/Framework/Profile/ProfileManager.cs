@@ -9,6 +9,7 @@ using RailSharp.Internal.Result;
 using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
+using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Localization;
 using HotKey = SoundSwitch.Framework.WinApi.Keyboard.HotKey;
@@ -78,26 +79,28 @@ namespace SoundSwitch.Framework.Profile
             };
         }
 
-        private void SwitchAudio(ProfileSetting profile, uint processId = 0)
+        private void SwitchAudio(ProfileSetting profile, uint processId)
         {
-            foreach (var device in new[] {profile.Playback, profile.Recording}.Where((info) => info != null))
+            foreach (var device in profile.Devices)
             {
-                if (processId != 0)
-                {
-                    _audioSwitcher.SwitchProcessTo(
-                        device!.Id,
-                        ERole.ERole_enum_count,
-                        (EDataFlow) device.Type,
-                        processId);
-                }
+                _audioSwitcher.SwitchProcessTo(
+                    device!.Id,
+                    ERole.ERole_enum_count,
+                    (EDataFlow) device.Type,
+                    processId);
 
-                //Always switch the default device.
-                //Easy way to be sure a notification will be send.
-                //And to be consistent with the default audio device.
                 if (profile.AlsoSwitchDefaultDevice)
                 {
                     _audioSwitcher.SwitchTo(device!.Id, ERole.ERole_enum_count);
                 }
+            }
+        }
+
+        private void SwitchAudio(ProfileSetting profile)
+        {
+            foreach (var device in profile.Devices)
+            {
+                _audioSwitcher.SwitchTo(device!.Id, ERole.ERole_enum_count);
             }
         }
 
