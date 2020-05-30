@@ -250,7 +250,6 @@
           <e p="Switch-SoundWave.ico" t="Include" />
           <e p="tick.png" t="Include" />
         </e>
-        <e p="SMDiagnostics" t="Include" />
         <e p="SoundSwitch.csproj" t="IncludeRecursive" />
         <e p="UI" t="Include">
           <e p="Forms" t="Include">
@@ -371,7 +370,7 @@
         <e p="NamedPipeServer.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
-            <e p="netstandard2.1" t="Include">
+            <e p="netstandard2.0" t="Include">
               <e p="SoundSwitch.InterProcess.Communication.AssemblyInfo.cs" t="Include" />
             </e>
           </e>
