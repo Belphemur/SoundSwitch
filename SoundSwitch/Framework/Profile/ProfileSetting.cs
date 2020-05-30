@@ -12,6 +12,7 @@ namespace SoundSwitch.Framework.Profile
         public HotKey? HotKey { get; set; }
         public DeviceInfo? Playback { get; set; }
         public DeviceInfo? Recording { get; set; }
+        public bool AlsoSwitchDefaultDevice { get; set; } = true;
 
         public bool Equals(ProfileSetting? other)
         {

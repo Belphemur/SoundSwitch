@@ -65,7 +65,7 @@ namespace SoundSwitch.Framework.Profile
         {
             _foregroundProcess.Changed += (sender, @event) =>
             {
-                if(!_profileByApplication.TryGetValue(@event.ProcessName.ToLower(), out var profile))
+                if (!_profileByApplication.TryGetValue(@event.ProcessName.ToLower(), out var profile))
                     return;
                 SwitchAudio(profile, @event.ProcessId);
             };
@@ -94,7 +94,10 @@ namespace SoundSwitch.Framework.Profile
                 //Always switch the default device.
                 //Easy way to be sure a notification will be send.
                 //And to be consistent with the default audio device.
-                _audioSwitcher.SwitchTo(device!.Id, ERole.ERole_enum_count);
+                if (profile.AlsoSwitchDefaultDevice)
+                {
+                    _audioSwitcher.SwitchTo(device!.Id, ERole.ERole_enum_count);
+                }
             }
         }
 
@@ -230,6 +233,7 @@ namespace SoundSwitch.Framework.Profile
                     {
                         continue;
                     }
+
                     if (_profileByApplication.TryGetValue(filePath, out var profile))
                     {
                         SwitchAudio(profile, (uint) process.Id);
