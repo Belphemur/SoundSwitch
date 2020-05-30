@@ -246,5 +246,6 @@
   </ItemGroup>
   <PropertyGroup>
     <ApplicationIcon>Resources\Switch-SoundWave.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 </Project>

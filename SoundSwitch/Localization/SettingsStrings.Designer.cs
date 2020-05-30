@@ -19,7 +19,7 @@ namespace SoundSwitch.Localization {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class SettingsStrings {
@@ -241,7 +241,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hot key.
+        ///   Looks up a localized string similar to Hotkey.
         /// </summary>
         internal static string hotkeys {
             get {
@@ -250,7 +250,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Check to enable hot key..
+        ///   Looks up a localized string similar to Check to enable hotkey..
         /// </summary>
         internal static string hotkeysTooltip {
             get {
@@ -422,6 +422,24 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Also switch default device.
+        /// </summary>
+        internal static string profile_defaultDevice_checkbox {
+            get {
+                return ResourceManager.GetString("profile.defaultDevice.checkbox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When the application is detected, SoundSwitch will change also the current default device..
+        /// </summary>
+        internal static string profile_defaultDevice_checkbox_tooltip {
+            get {
+                return ResourceManager.GetString("profile.defaultDevice.checkbox.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
         internal static string profile_deleteButton {
@@ -431,7 +449,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This application {0} has already a linked profile..
+        ///   Looks up a localized string similar to This application {0} already has a linked profile..
         /// </summary>
         internal static string profile_error_application {
             get {
@@ -449,7 +467,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This hot key {0} is already registered..
+        ///   Looks up a localized string similar to This hotkey {0} is already registered..
         /// </summary>
         internal static string profile_error_hotkey {
             get {
@@ -467,7 +485,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You need to set either the hot key or/and the application..
+        ///   Looks up a localized string similar to You need to set the hotkey or/and the application..
         /// </summary>
         internal static string profile_error_needHKOrPath {
             get {
@@ -476,7 +494,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You need to set a playback device or recording device..
+        ///   Looks up a localized string similar to You need to set a playback-, or recording device..
         /// </summary>
         internal static string profile_error_needPlaybackOrRecording {
             get {
@@ -494,7 +512,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Couldn&apos;t register the hot key for the following profiles: {0}.
+        ///   Looks up a localized string similar to Couldn&apos;t register hotkey for the following profiles: {0}.
         /// </summary>
         internal static string profile_error_registerHotkeys {
             get {
@@ -503,7 +521,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Already used hot key.
+        ///   Looks up a localized string similar to Already used hotkey.
         /// </summary>
         internal static string profile_error_registerHotkeys_title {
             get {
@@ -683,7 +701,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to When checked, SoundSwitch will also check for pre-release versions on GitHub..
+        ///   Looks up a localized string similar to When checked, SoundSwitch will also check for Beta versions on GitHub..
         /// </summary>
         internal static string updateIncludeBetaVersionsTooltip {
             get {

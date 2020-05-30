@@ -33,6 +33,22 @@ namespace SoundSwitch.UI.Forms
             LocalizeForm();
             InitRecordingPlaybackComboBoxes(playbacks, recordings);
             InitBindings();
+
+            try
+            {
+
+                //Only let user on Windows 10 change the switch also default device
+                //Since the feature isn't available on Windows 7
+                if (Environment.OSVersion.Version.Major >= 10)
+                {
+                    programTextBox.TextChanged += programTextBox_TextChanged;
+                }
+            }
+            catch (Exception)
+            {
+                programTextBox.TextChanged += programTextBox_TextChanged;
+            }
+
         }
 
         private void LocalizeForm()
@@ -47,6 +63,10 @@ namespace SoundSwitch.UI.Forms
             playbackLabel.Text      = SettingsStrings.playback;
             createButton.Text       = SettingsStrings.profile_addButton;
             addProfileGroupBox.Text = SettingsStrings.profile_feature_profile;
+            switchDefaultCheckBox.Text = SettingsStrings.profile_defaultDevice_checkbox;
+            switchDefaultCheckBox.Visible = false;
+            var tooltipSwitchDefault = new ToolTip();
+            tooltipSwitchDefault.SetToolTip(switchDefaultCheckBox, SettingsStrings.profile_defaultDevice_checkbox_tooltip);
         }
 
         private void InitBindings()
@@ -60,6 +80,7 @@ namespace SoundSwitch.UI.Forms
 
             recordingComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(ProfileSetting.Recording), false, DataSourceUpdateMode.OnPropertyChanged);
             playbackComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(ProfileSetting.Playback), false, DataSourceUpdateMode.OnPropertyChanged);
+            switchDefaultCheckBox.DataBindings.Add(nameof(CheckBox.Checked), _profile, nameof(ProfileSetting.AlsoSwitchDefaultDevice), false, DataSourceUpdateMode.OnPropertyChanged);
         }
 
         private void InitRecordingPlaybackComboBoxes(IEnumerable<DeviceFullInfo> playbacks, IEnumerable<DeviceFullInfo> recordings)
@@ -180,6 +201,17 @@ namespace SoundSwitch.UI.Forms
         private void hotKeyControl_HotKeyChanged(object sender, Component.HotKeyTextBox.Event e)
         {
             _profile.HotKey = hotKeyControl.HotKey;
+        }
+
+        private void programTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(programTextBox.Text))
+            {
+                switchDefaultCheckBox.Visible = false;
+                return;
+            }
+
+            switchDefaultCheckBox.Visible = true;
         }
     }
 }
