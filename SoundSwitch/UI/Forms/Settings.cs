@@ -39,7 +39,6 @@ using SoundSwitch.Localization;
 using SoundSwitch.Localization.Factory;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
-using SoundSwitch.UI.UserControls.HotKeyControl;
 using SoundSwitch.UI.UserControls.ListView;
 using SoundSwitch.Util;
 
@@ -203,20 +202,25 @@ namespace SoundSwitch.UI.Forms
 
                 if (profile.Playback != null)
                 {
-                    playback = _audioDeviceLister.PlaybackDevices.FirstOrDefault(info => info.Id == profile.Playback.Id);
+                    playback = _audioDeviceLister.PlaybackDevices.FirstOrDefault(info =>
+                        info.Id == profile.Playback.Id);
                 }
 
                 if (profile.Recording != null)
                 {
-                    recording = _audioDeviceLister.RecordingDevices.FirstOrDefault(info => info.Id == profile.Recording.Id);
+                    recording = _audioDeviceLister.RecordingDevices.FirstOrDefault(info =>
+                        info.Id == profile.Recording.Id);
                 }
 
                 listViewItem.SubItems.AddRange(new[]
                 {
-                    new ListViewItem.ListViewSubItem(listViewItem, profile.ApplicationPath?.Split('\\').Last() ?? "") {Tag = appIcon},
+                    new ListViewItem.ListViewSubItem(listViewItem, profile.ApplicationPath?.Split('\\').Last() ?? "")
+                        {Tag = appIcon},
                     new ListViewItem.ListViewSubItem(listViewItem, profile.HotKey?.ToString() ?? ""),
-                    new ListViewItem.ListViewSubItem(listViewItem, playback?.Name ?? profile.Playback?.ToString() ?? "") {Tag = playback?.SmallIcon},
-                    new ListViewItem.ListViewSubItem(listViewItem, recording?.Name ?? profile.Recording?.ToString() ?? "") {Tag = recording?.SmallIcon},
+                    new ListViewItem.ListViewSubItem(listViewItem, playback?.Name ?? profile.Playback?.ToString() ?? "")
+                        {Tag = playback?.SmallIcon},
+                    new ListViewItem.ListViewSubItem(listViewItem,
+                        recording?.Name ?? profile.Recording?.ToString() ?? "") {Tag = recording?.SmallIcon},
                 });
                 return listViewItem;
             }
@@ -422,8 +426,8 @@ namespace SoundSwitch.UI.Forms
             AppModel.Instance.Language = value.Enum;
 
             if (MessageBox.Show(SettingsStrings.languageRestartRequired,
-                    SettingsStrings.languageRestartRequiredCaption,
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                SettingsStrings.languageRestartRequiredCaption,
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 Program.RestartApp();
             }
@@ -495,18 +499,18 @@ namespace SoundSwitch.UI.Forms
 
                 listView.SmallImageList = new ImageList
                 {
-                    ImageSize  = new Size(32, 32),
+                    ImageSize = new Size(32, 32),
                     ColorDepth = ColorDepth.Depth32Bit
                 };
 
                 listView.Columns.Add("Device", -3, HorizontalAlignment.Center);
                 var items =
                     audioDevices.Select(device =>
-                                {
-                                    AddDeviceIconSmallImage(device, listView);
+                    {
+                        AddDeviceIconSmallImage(device, listView);
 
-                                    return GenerateListViewItem(device, selectedDevices, listView);
-                                }).OrderBy(item => item.Text);
+                        return GenerateListViewItem(device, selectedDevices, listView);
+                    }).OrderBy(item => item.Text);
                 listView.Items.AddRange(items.ToArray());
             }
             finally
@@ -541,6 +545,7 @@ namespace SoundSwitch.UI.Forms
             {
                 listViewItem.Group = GetGroup(device.State, listView);
             }
+
             listViewItem.Checked = isSelected;
 
             return listViewItem;
@@ -685,22 +690,23 @@ namespace SoundSwitch.UI.Forms
                 return;
             }
 
-            var profiles = profilesListView.SelectedItems.Cast<ListViewItem>().Select(item => (ProfileSetting) item.Tag);
+            var profiles = profilesListView.SelectedItems.Cast<ListViewItem>()
+                .Select(item => (ProfileSetting) item.Tag);
             AppModel.Instance.ProfileManager.DeleteProfiles(profiles);
             deleteProfileButton.Enabled = false;
             RefreshProfiles();
         }
 
-        private void hotKeyControl_HotKeyIsSet(object sender, HotKeyIsSetEventArgs e)
+        private void hotKeyControl_HotKeyChanged(object sender, Component.HotKeyTextBox.Event e)
         {
-            var tuple = (Tuple<DataFlow, HotKey>)hotKeyControl.Tag;
-            var newTuple = new Tuple<DataFlow, HotKey>(tuple.Item1, e.HotKey);
+            var tuple = (Tuple<DataFlow, HotKey>) hotKeyControl.Tag;
+            if (tuple == null)
+                return;
+
+            var newTuple = new Tuple<DataFlow, HotKey>(tuple.Item1, hotKeyControl.HotKey);
             hotKeyControl.Tag = newTuple;
 
-            if (AppModel.Instance.SetHotkeyCombination(newTuple.Item2, newTuple.Item1)) return;
-
-            e.Cancel = true;
-            e.CancelReason = SettingsStrings.hotkeys;
+            AppModel.Instance.SetHotkeyCombination(newTuple.Item2, newTuple.Item1);
         }
     }
 }

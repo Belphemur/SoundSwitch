@@ -13,7 +13,6 @@ using SoundSwitch.Localization;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
 using SoundSwitch.UI.UserControls;
-using SoundSwitch.UI.UserControls.HotKeyControl;
 
 namespace SoundSwitch.UI.Forms
 {
@@ -178,9 +177,9 @@ namespace SoundSwitch.UI.Forms
             recordingRemoveButton.Visible = true;
         }
 
-        private void hotKeyControl_HotKeyIsSet(object sender, HotKeyIsSetEventArgs e)
-        {
-            _profile.HotKey = hotKeyControl.HotKey;
-        }
+        // private void hotKeyControl_HotKeyIsSet(object sender, HotKeyIsSetEventArgs e)
+        // {
+        //     _profile.HotKey = hotKeyControl.HotKey;
+        // }
     }
 }

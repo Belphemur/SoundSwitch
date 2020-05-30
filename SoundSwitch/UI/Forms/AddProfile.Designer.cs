@@ -33,7 +33,6 @@ namespace SoundSwitch.UI.Forms
         private void InitializeComponent()
         {
             this.addProfileGroupBox    = new System.Windows.Forms.GroupBox();
-            this.hotKeyControl         = new SoundSwitch.UI.UserControls.HotKeyControl.HotKeyControl();
             this.recordingRemoveButton = new System.Windows.Forms.Button();
             this.playbackRemoveButton  = new System.Windows.Forms.Button();
             this.recordingLabel        = new System.Windows.Forms.Label();
@@ -55,7 +54,6 @@ namespace SoundSwitch.UI.Forms
             // 
             this.addProfileGroupBox.Anchor       = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
             this.addProfileGroupBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.addProfileGroupBox.Controls.Add(this.hotKeyControl);
             this.addProfileGroupBox.Controls.Add(this.recordingRemoveButton);
             this.addProfileGroupBox.Controls.Add(this.playbackRemoveButton);
             this.addProfileGroupBox.Controls.Add(this.recordingLabel);
@@ -74,20 +72,6 @@ namespace SoundSwitch.UI.Forms
             this.addProfileGroupBox.TabIndex = 0;
             this.addProfileGroupBox.TabStop  = false;
             this.addProfileGroupBox.Text     = "Profiles";
-            // 
-            // hotKeyControl
-            // 
-            this.hotKeyControl.Anchor         =  ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.hotKeyControl.BackColor      =  System.Drawing.Color.Transparent;
-            this.hotKeyControl.Font           =  new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (0)));
-            this.hotKeyControl.ForceModifiers =  false;
-            this.hotKeyControl.Location       =  new System.Drawing.Point(224, 87);
-            this.hotKeyControl.Margin         =  new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.hotKeyControl.Name           =  "hotKeyControl";
-            this.hotKeyControl.Size           =  new System.Drawing.Size(222, 23);
-            this.hotKeyControl.TabIndex       =  14;
-            this.hotKeyControl.ToolTip        =  null;
-            this.hotKeyControl.HotKeyIsSet    += new SoundSwitch.UI.UserControls.HotKeyControl.HotKeyIsSetEventHandler(this.hotKeyControl_HotKeyIsSet);
             // 
             // recordingRemoveButton
             // 
@@ -245,7 +229,6 @@ namespace SoundSwitch.UI.Forms
 
         private System.Windows.Forms.GroupBox addProfileGroupBox;
         private System.Windows.Forms.Button createButton;
-        private SoundSwitch.UI.UserControls.HotKeyControl.HotKeyControl hotKeyControl;
         private System.Windows.Forms.Label hotKeyLabel;
         private System.Windows.Forms.Label nameLabel;
         private System.Windows.Forms.TextBox nameTextBox;

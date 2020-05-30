@@ -98,8 +98,8 @@ namespace SoundSwitch.Common.WinApi.Keyboard
 
         public string Display()
         {
-            var key = (Keys == Keys.None ? "" : $"+{Keys}");
-            return $"{Modifier.ToString().Replace(", ", "+")}{key}";
+            var key = Keys == Keys.None ? "" : $" + {Keys}";
+            return $"{Modifier.ToString().Replace(",", "+")}{key}";
         }
     }
 }

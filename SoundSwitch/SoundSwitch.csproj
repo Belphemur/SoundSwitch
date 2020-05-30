@@ -49,6 +49,18 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <LangVersion>8</LangVersion>
   </PropertyGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Update="Framework\Banner\BannerForm.cs">
       <SubType>Form</SubType>
@@ -75,6 +87,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UpdateDownloadStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Update="UI\Component\HotKeyTextBox.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Update="UI\Forms\AddProfile.cs">
       <SubType>Form</SubType>
@@ -210,11 +225,6 @@
     <EmbeddedResource Remove="Localization\SettingsStrings.pt_PT.resx" />
     <EmbeddedResource Remove="Localization\TrayIconStrings.hu.resx" />
     <EmbeddedResource Remove="Localization\UpdateDownloadStrings.hu.resx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="SoundSwitch.UI.UserControls, Version=2.1.0.22935, Culture=neutral, PublicKeyToken=null" Condition="'$(TargetFramework)' == 'net472'">
-      <HintPath>..\SoundSwitch.UI.UserControls\bin\Debug\net472\SoundSwitch.UI.UserControls.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <PropertyGroup>
     <ApplicationIcon>Resources\Switch-SoundWave.ico</ApplicationIcon>
