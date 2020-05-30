@@ -32,7 +32,6 @@ namespace SoundSwitch.UI.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            SoundSwitch.Common.WinApi.Keyboard.HotKey hotKey1 = new SoundSwitch.Common.WinApi.Keyboard.HotKey();
             this.addProfileGroupBox    = new System.Windows.Forms.GroupBox();
             this.hotKeyControl         = new SoundSwitch.UI.UserControls.HotKeyControl.HotKeyControl();
             this.recordingRemoveButton = new System.Windows.Forms.Button();
@@ -82,10 +81,6 @@ namespace SoundSwitch.UI.Forms
             this.hotKeyControl.BackColor      =  System.Drawing.Color.Transparent;
             this.hotKeyControl.Font           =  new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.hotKeyControl.ForceModifiers =  false;
-            hotKey1.Enabled                   =  true;
-            hotKey1.Keys                      =  System.Windows.Forms.Keys.None;
-            hotKey1.Modifier                  =  SoundSwitch.Common.WinApi.Keyboard.HotKey.ModifierKeys.None;
-            this.hotKeyControl.HotKey         =  hotKey1;
             this.hotKeyControl.Location       =  new System.Drawing.Point(224, 87);
             this.hotKeyControl.Margin         =  new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.hotKeyControl.Name           =  "hotKeyControl";

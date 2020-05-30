@@ -250,6 +250,7 @@
           <e p="Switch-SoundWave.ico" t="Include" />
           <e p="tick.png" t="Include" />
         </e>
+        <e p="SMDiagnostics" t="Include" />
         <e p="SoundSwitch.csproj" t="IncludeRecursive" />
         <e p="UI" t="Include">
           <e p="Forms" t="Include">

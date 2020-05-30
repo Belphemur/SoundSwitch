@@ -211,6 +211,11 @@
     <EmbeddedResource Remove="Localization\TrayIconStrings.hu.resx" />
     <EmbeddedResource Remove="Localization\UpdateDownloadStrings.hu.resx" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="SoundSwitch.UI.UserControls, Version=2.1.0.22935, Culture=neutral, PublicKeyToken=null" Condition="'$(TargetFramework)' == 'net472'">
+      <HintPath>..\SoundSwitch.UI.UserControls\bin\Debug\net472\SoundSwitch.UI.UserControls.dll</HintPath>
+    </Reference>
+  </ItemGroup>
   <PropertyGroup>
     <ApplicationIcon>Resources\Switch-SoundWave.ico</ApplicationIcon>
   </PropertyGroup>
