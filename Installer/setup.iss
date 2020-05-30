@@ -163,6 +163,7 @@ Type: files; Name: {app}\Microsoft.*.pdb
 Type: files; Name: {app}\CommonMark.dll
 Type: files; Name: {app}\CommonMark.pdb
 Type: files; Name: {app}\Serilog*.dll
+Type: files; Name: {app}\SoundSwitch.UI.UserControls.*
 
 [Code]
 #include "scripts\checkMutex.iss"
