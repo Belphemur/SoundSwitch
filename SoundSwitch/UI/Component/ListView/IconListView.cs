@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace SoundSwitch.UI.UserControls.ListView
+namespace SoundSwitch.UI.Component.ListView
 {
     public class IconListView : ListViewExtended
     {

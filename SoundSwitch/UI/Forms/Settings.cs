@@ -38,7 +38,7 @@ using SoundSwitch.Localization;
 using SoundSwitch.Localization.Factory;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
-using SoundSwitch.UI.UserControls.ListView;
+using SoundSwitch.UI.Component.ListView;
 using SoundSwitch.Util;
 using HotKey = SoundSwitch.Framework.WinApi.Keyboard.HotKey;
 

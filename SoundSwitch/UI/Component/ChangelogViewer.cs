@@ -16,7 +16,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using Markdig;
 
-namespace SoundSwitch.UI.UserControls
+namespace SoundSwitch.UI.Component
 {
     public class ChangelogWebViewer : WebBrowser
     {

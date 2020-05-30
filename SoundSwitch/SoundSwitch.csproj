@@ -91,10 +91,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>UpdateDownloadStrings.resx</DependentUpon>
     </Compile>
+    <Compile Update="UI\Component\ChangelogViewer.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="UI\Component\HotKeyTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="UI\Component\IconTextComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="UI\Component\ListView\IconListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="UI\Component\ListView\ListViewExtended.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="UI\Component\TextProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="UI\Forms\AddProfile.cs">
@@ -202,10 +214,10 @@
     <ProjectReference Include="..\SoundSwitch.Audio.Manager\SoundSwitch.Audio.Manager.csproj" />
     <ProjectReference Include="..\SoundSwitch.Common\SoundSwitch.Common.csproj" />
     <ProjectReference Include="..\SoundSwitch.InterProcess.Communication\SoundSwitch.InterProcess.Communication.csproj" />
-    <ProjectReference Include="..\SoundSwitch.UI.UserControls\SoundSwitch.UI.UserControls.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AuthenticodeExaminer" Version="0.3.0" />
+    <PackageReference Include="Markdig" Version="0.10.0" />
     <PackageReference Include="Microsoft-WindowsAPICodePack-Core" Version="1.1.4" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="NAudio" Version="1.10.0" />

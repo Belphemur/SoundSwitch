@@ -1,7 +1,6 @@
 ﻿using System.Windows.Forms;
 using SoundSwitch.Localization;
 using SoundSwitch.UI.Component;
-using SoundSwitch.UI.UserControls;
 
 namespace SoundSwitch.UI.Forms
 {

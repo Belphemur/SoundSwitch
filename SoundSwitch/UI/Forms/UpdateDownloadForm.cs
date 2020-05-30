@@ -21,7 +21,7 @@ using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.Updater.Installer;
 using SoundSwitch.Localization;
 using SoundSwitch.Properties;
-using SoundSwitch.UI.UserControls;
+using SoundSwitch.UI.Component;
 
 namespace SoundSwitch.UI.Forms
 {

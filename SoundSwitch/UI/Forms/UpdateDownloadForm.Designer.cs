@@ -1,4 +1,4 @@
-﻿using SoundSwitch.UI.UserControls;
+﻿using SoundSwitch.UI.Component;
 
 namespace SoundSwitch.UI.Forms
 {
@@ -31,10 +31,10 @@ namespace SoundSwitch.UI.Forms
         private void InitializeComponent()
         {
             this.changeLogGroup   = new System.Windows.Forms.GroupBox();
-            this.changeLog        = new SoundSwitch.UI.UserControls.ChangelogWebViewer();
+            this.changeLog        = new ChangelogWebViewer();
             this.cancelButton     = new System.Windows.Forms.Button();
             this.installButton    = new System.Windows.Forms.Button();
-            this.downloadProgress = new SoundSwitch.UI.UserControls.TextProgressBar();
+            this.downloadProgress = new TextProgressBar();
             this.changeLogGroup.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -94,7 +94,7 @@ namespace SoundSwitch.UI.Forms
             // 
             this.downloadProgress.Anchor       = ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
             this.downloadProgress.CustomText   = null;
-            this.downloadProgress.DisplayStyle = SoundSwitch.UI.UserControls.TextProgressBar.ProgressBarDisplayText.Percentage;
+            this.downloadProgress.DisplayStyle = TextProgressBar.ProgressBarDisplayText.Percentage;
             this.downloadProgress.Location     = new System.Drawing.Point(8, 11);
             this.downloadProgress.Margin       = new System.Windows.Forms.Padding(2);
             this.downloadProgress.Name         = "downloadProgress";
@@ -125,7 +125,7 @@ namespace SoundSwitch.UI.Forms
         private System.Windows.Forms.GroupBox changeLogGroup;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Button installButton;
-        private SoundSwitch.UI.UserControls.TextProgressBar downloadProgress;
-        private SoundSwitch.UI.UserControls.ChangelogWebViewer changeLog;
+        private TextProgressBar downloadProgress;
+        private ChangelogWebViewer changeLog;
     }
 }

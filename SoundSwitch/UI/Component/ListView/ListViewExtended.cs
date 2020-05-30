@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace SoundSwitch.UI.UserControls.ListView
+namespace SoundSwitch.UI.Component.ListView
 {
     public class ListViewExtended : System.Windows.Forms.ListView
     {

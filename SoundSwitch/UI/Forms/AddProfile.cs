@@ -13,7 +13,6 @@ using SoundSwitch.Localization;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
 using SoundSwitch.UI.Component;
-using SoundSwitch.UI.UserControls;
 
 namespace SoundSwitch.UI.Forms
 {
