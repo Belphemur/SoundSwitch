@@ -143,6 +143,7 @@
           <e p="AboutStrings.es.resx" t="Include" />
           <e p="AboutStrings.fi-FI.resx" t="Include" />
           <e p="AboutStrings.fr.resx" t="Include" />
+          <e p="AboutStrings.hr.resx" t="Include" />
           <e p="AboutStrings.it-IT.resx" t="Include" />
           <e p="AboutStrings.ja-JP.resx" t="Include" />
           <e p="AboutStrings.ko.resx" t="Include" />
@@ -168,6 +169,7 @@
           <e p="SettingsStrings.es.resx" t="Include" />
           <e p="SettingsStrings.fi-FI.resx" t="Include" />
           <e p="SettingsStrings.fr.resx" t="Include" />
+          <e p="SettingsStrings.hr.resx" t="Include" />
           <e p="SettingsStrings.it-IT.resx" t="Include" />
           <e p="SettingsStrings.ja-JP.resx" t="Include" />
           <e p="SettingsStrings.ko.resx" t="Include" />
@@ -185,6 +187,7 @@
           <e p="TrayIconStrings.es.resx" t="Include" />
           <e p="TrayIconStrings.fi-FI.resx" t="Include" />
           <e p="TrayIconStrings.fr.resx" t="Include" />
+          <e p="TrayIconStrings.hr.resx" t="Include" />
           <e p="TrayIconStrings.it-IT.resx" t="Include" />
           <e p="TrayIconStrings.ja-JP.resx" t="Include" />
           <e p="TrayIconStrings.ko.resx" t="Include" />
@@ -202,6 +205,7 @@
           <e p="UpdateDownloadStrings.es.resx" t="Include" />
           <e p="UpdateDownloadStrings.fi-FI.resx" t="Include" />
           <e p="UpdateDownloadStrings.fr.resx" t="Include" />
+          <e p="UpdateDownloadStrings.hr.resx" t="Include" />
           <e p="UpdateDownloadStrings.it-IT.resx" t="Include" />
           <e p="UpdateDownloadStrings.ja-JP.resx" t="Include" />
           <e p="UpdateDownloadStrings.ko.resx" t="Include" />
