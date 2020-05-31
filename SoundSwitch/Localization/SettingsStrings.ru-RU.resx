@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
 	<!-- 
     Microsoft ResX Schema 
@@ -230,7 +230,7 @@
     <value>Свой звук</value>
   </data>
 	<data name="notificationTooltip" xml:space="preserve">
-    <value>Всплывающее окно: Всплывающее окно в трее, по умолчанию.
+    <value>Уведомление: Всплывающее окно в трее, по умолчанию.
 Звуковое уведомление: Воспроизведение звука при переключении устройства воспроизведения.
 Свой звук: Воспроизведение указанного звука при переключении устройства воспроизведения.
 Всплывающее уведомление: Всплывающее уведомление в трее, другая версия окна.
@@ -275,8 +275,8 @@
   </data>
 	<data name="updateNotifyTooltip" xml:space="preserve">
 		<value>SoundSwitch уведомит вас, когда будет доступно новое обновление.
-При нажатии на уведомление вы получите всплывающее окно, с
-вопросом, хотите ли вы его установить.</value>
+При нажатии на уведомление вы увидите всплывающее окно,
+с вопросом, хотите ли вы его установить сейчас.</value>
   </data>
 	<data name="notificationOptionBanner" xml:space="preserve">
         <value>Баннер</value>
@@ -295,7 +295,7 @@
 		<value>Значок в трее</value>
   </data>
 	<data name="iconChange.tooltip" xml:space="preserve">
-		<value>Выберите, когда изменить значок SoundSwitch в трее.
+		<value>Выберите, когда изменять значок SoundSwitch в трее.
 
 По умолчанию: Не изменять. Статичный начок SoundSwitch.
 Воспроизведение: При переключении устройства воспроизведения.
@@ -359,4 +359,10 @@
 	<data name="profile.feature.profile" xml:space="preserve">
     <value>Профиль</value>
   </data>
+	<data name="profile.defaultDevice.checkbox" xml:space="preserve">
+		<value>Также переключить устройство по умолчанию</value>
+	</data>
+	<data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
+		<value>При обнаружении приложения SoundSwitch также изменит текущее устройство по умолчанию.</value>
+	</data>
 </root>
