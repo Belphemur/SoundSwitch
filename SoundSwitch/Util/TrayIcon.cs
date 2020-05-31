@@ -36,6 +36,7 @@ using SoundSwitch.Localization;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
 using SoundSwitch.UI.Forms;
+using SoundSwitch.Util.Url;
 using TimerForm = System.Windows.Forms.Timer;
 
 namespace SoundSwitch.Util
@@ -172,17 +173,17 @@ namespace SoundSwitch.Util
             _settingsMenu.Items.Add("-");
             _settingsMenu.Items.Add(TrayIconStrings.help, RessourceInfoHelpBitmap, (sender, e) =>
             {
-                Process.Start("https://discord.gg/gUCw3Ue");
+                BrowserUtil.OpenUrl("https://discord.gg/gUCw3Ue");
                 if (!File.Exists(readmeHtml))
                 {
                     Log.Error("File {readme} doesn\'t exists", readmeHtml);
                     return;
                 }
 
-                Process.Start(readmeHtml);
+                BrowserUtil.OpenUrl(readmeHtml);
             });
             _settingsMenu.Items.Add(TrayIconStrings.donate, ResourceDonateBitmap,
-                (sender, e) => Process.Start("https://soundswitch.aaflalo.me/?utm_source=application"));
+                (sender, e) => BrowserUtil.OpenUrl("https://soundswitch.aaflalo.me/?utm_source=application#donate"));
             _settingsMenu.Items.Add(TrayIconStrings.about, RessourceHelpSmallBitmap, (sender, e) => new About().Show());
             _settingsMenu.Items.Add("-");
             _settingsMenu.Items.Add(TrayIconStrings.exit, RessourceExitBitmap, (sender, e) => Application.Exit());

@@ -17,6 +17,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using SoundSwitch.Localization;
 using SoundSwitch.Properties;
+using SoundSwitch.Util.Url;
 
 namespace SoundSwitch.UI.Forms
 {
@@ -58,37 +59,37 @@ namespace SoundSwitch.UI.Forms
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("http://jeroenpelgrims.be");
+            BrowserUtil.OpenUrl("http://jeroenpelgrims.be");
         }
 
         private void Version_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://github.com/Belphemur/SoundSwitch/releases");
+            BrowserUtil.OpenUrl("https://github.com/Belphemur/SoundSwitch/releases");
         }
 
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://codefisher.org/pastel-svg/");
+            BrowserUtil.OpenUrl("https://codefisher.org/pastel-svg/");
         }
 
         private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("http://www.liensberger.it/web/blog/?p=207");
+            BrowserUtil.OpenUrl("http://www.liensberger.it/web/blog/?p=207");
         }
 
         private void maintainerLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://www.aaflalo.me");
+            BrowserUtil.OpenUrl("https://www.aaflalo.me");
         }
 
         private void eretikLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("http://eretik.omegahg.com");
+            BrowserUtil.OpenUrl("http://eretik.omegahg.com");
         }
 
         private void logoCreatorLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://github.com/linadesteem");
+            BrowserUtil.OpenUrl("https://github.com/linadesteem");
         }
     }
 }
