@@ -241,6 +241,15 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hotkey enabled.
+        /// </summary>
+        internal static string hotkeyEnabled {
+            get {
+                return ResourceManager.GetString("hotkeyEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hotkey.
         /// </summary>
         internal static string hotkeys {

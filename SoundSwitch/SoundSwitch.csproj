@@ -77,8 +77,8 @@
       <DependentUpon>AboutStrings.resx</DependentUpon>
     </Compile>
     <Compile Update="Localization\SettingsStrings.Designer.cs">
-      <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
       <DependentUpon>SettingsStrings.resx</DependentUpon>
     </Compile>
     <Compile Update="Localization\TrayIconStrings.Designer.cs">
