@@ -173,7 +173,7 @@ namespace SoundSwitch.UI.Forms
 
             profilesListView.Columns.Add(SettingsStrings.profile_name, 50, HorizontalAlignment.Left);
             profilesListView.Columns.Add(SettingsStrings.profile_program, 100, HorizontalAlignment.Left);
-            profilesListView.Columns.Add(SettingsStrings.hotkeys, 60, HorizontalAlignment.Left);
+            profilesListView.Columns.Add(SettingsStrings.hotkeys, 150, HorizontalAlignment.Left);
             profilesListView.Columns.Add(SettingsStrings.playback, 150, HorizontalAlignment.Left);
             profilesListView.Columns.Add(SettingsStrings.recording, 150, HorizontalAlignment.Left);
 
@@ -306,7 +306,7 @@ namespace SoundSwitch.UI.Forms
 
 
             // Misc
-            hotkeysLabel.Text = SettingsStrings.hotkeys;
+            hotkeysCheckBox.Text = SettingsStrings.hotkeyEnabled;
             closeButton.Text = SettingsStrings.close;
         }
 
@@ -352,7 +352,6 @@ namespace SoundSwitch.UI.Forms
         {
             hotkeysCheckBox.Visible = visibility;
             hotKeyControl.Visible = visibility;
-            hotkeysLabel.Visible = visibility;
         }
 
         private void notificationComboBox_SelectedValueChanged(object sender, EventArgs e)

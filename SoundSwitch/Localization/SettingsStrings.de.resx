@@ -355,4 +355,7 @@ Beide: Wenn ein beliebiger Gerätetyp gewechselt wird.</value>
 	<data name="profile.feature.profile" xml:space="preserve">
     <value>Profile</value>
   </data>
+	<data name="hotkeyEnabled" xml:space="preserve">
+		<value>Tastenkombination aktiviert</value>
+	</data>
 </root>

@@ -34,13 +34,10 @@ namespace SoundSwitch.UI.Forms
         {
             this.addProfileGroupBox = new System.Windows.Forms.GroupBox();
             this.switchDefaultCheckBox = new System.Windows.Forms.CheckBox();
-            this.hotKeyControl = new SoundSwitch.UI.Component.HotKeyTextBox();
             this.recordingRemoveButton = new System.Windows.Forms.Button();
             this.playbackRemoveButton = new System.Windows.Forms.Button();
             this.recordingLabel = new System.Windows.Forms.Label();
             this.playbackLabel = new System.Windows.Forms.Label();
-            this.recordingComboBox = new SoundSwitch.UI.Component.IconTextComboBox();
-            this.playbackComboBox = new SoundSwitch.UI.Component.IconTextComboBox();
             this.selectProgramButton = new System.Windows.Forms.Button();
             this.programLabel = new System.Windows.Forms.Label();
             this.programTextBox = new System.Windows.Forms.TextBox();
@@ -49,6 +46,9 @@ namespace SoundSwitch.UI.Forms
             this.nameTextBox = new System.Windows.Forms.TextBox();
             this.selectProgramDialog = new System.Windows.Forms.OpenFileDialog();
             this.createButton = new System.Windows.Forms.Button();
+            this.hotKeyControl = new SoundSwitch.UI.Component.HotKeyTextBox();
+            this.recordingComboBox = new SoundSwitch.UI.Component.IconTextComboBox();
+            this.playbackComboBox = new SoundSwitch.UI.Component.IconTextComboBox();
             this.addProfileGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -73,35 +73,26 @@ namespace SoundSwitch.UI.Forms
             this.addProfileGroupBox.Controls.Add(this.nameTextBox);
             this.addProfileGroupBox.Location = new System.Drawing.Point(12, 12);
             this.addProfileGroupBox.Name = "addProfileGroupBox";
-            this.addProfileGroupBox.Size = new System.Drawing.Size(510, 244);
+            this.addProfileGroupBox.Size = new System.Drawing.Size(507, 244);
             this.addProfileGroupBox.TabIndex = 0;
             this.addProfileGroupBox.TabStop = false;
-            this.addProfileGroupBox.Text = "Profiles";
+            this.addProfileGroupBox.Text = "Profile";
             // 
             // switchDefaultCheckBox
             // 
             this.switchDefaultCheckBox.AutoSize = true;
-            this.switchDefaultCheckBox.Location = new System.Drawing.Point(7, 112);
+            this.switchDefaultCheckBox.Location = new System.Drawing.Point(7, 106);
             this.switchDefaultCheckBox.Name = "switchDefaultCheckBox";
             this.switchDefaultCheckBox.Size = new System.Drawing.Size(149, 17);
             this.switchDefaultCheckBox.TabIndex = 15;
             this.switchDefaultCheckBox.Text = "Also switch default device";
             this.switchDefaultCheckBox.UseVisualStyleBackColor = true;
             // 
-            // hotKeyControl
-            // 
-            this.hotKeyControl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.hotKeyControl.Location = new System.Drawing.Point(208, 84);
-            this.hotKeyControl.Name = "hotKeyControl";
-            this.hotKeyControl.Size = new System.Drawing.Size(194, 20);
-            this.hotKeyControl.TabIndex = 14;
-            this.hotKeyControl.HotKeyChanged += new System.EventHandler<SoundSwitch.UI.Component.HotKeyTextBox.Event>(this.hotKeyControl_HotKeyChanged);
-            // 
             // recordingRemoveButton
             // 
             this.recordingRemoveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.recordingRemoveButton.Image = global::SoundSwitch.Properties.Resources.delete;
-            this.recordingRemoveButton.Location = new System.Drawing.Point(408, 206);
+            this.recordingRemoveButton.Location = new System.Drawing.Point(479, 207);
             this.recordingRemoveButton.Name = "recordingRemoveButton";
             this.recordingRemoveButton.Size = new System.Drawing.Size(22, 22);
             this.recordingRemoveButton.TabIndex = 13;
@@ -113,7 +104,7 @@ namespace SoundSwitch.UI.Forms
             // 
             this.playbackRemoveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.playbackRemoveButton.Image = global::SoundSwitch.Properties.Resources.delete;
-            this.playbackRemoveButton.Location = new System.Drawing.Point(408, 159);
+            this.playbackRemoveButton.Location = new System.Drawing.Point(479, 158);
             this.playbackRemoveButton.Name = "playbackRemoveButton";
             this.playbackRemoveButton.Size = new System.Drawing.Size(22, 22);
             this.playbackRemoveButton.TabIndex = 12;
@@ -143,42 +134,10 @@ namespace SoundSwitch.UI.Forms
             this.playbackLabel.TabIndex = 9;
             this.playbackLabel.Text = "Playback";
             // 
-            // recordingComboBox
-            // 
-            this.recordingComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.recordingComboBox.DataSource = null;
-            this.recordingComboBox.DisplayMember = "Tag";
-            this.recordingComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.recordingComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.recordingComboBox.FormattingEnabled = true;
-            this.recordingComboBox.Location = new System.Drawing.Point(6, 208);
-            this.recordingComboBox.Name = "recordingComboBox";
-            this.recordingComboBox.Size = new System.Drawing.Size(396, 21);
-            this.recordingComboBox.TabIndex = 8;
-            this.recordingComboBox.ValueMember = "Tag";
-            this.recordingComboBox.SelectedIndexChanged += new System.EventHandler(this.recordingComboBox_SelectedIndexChanged);
-            // 
-            // playbackComboBox
-            // 
-            this.playbackComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.playbackComboBox.DataSource = null;
-            this.playbackComboBox.DisplayMember = "Tag";
-            this.playbackComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.playbackComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.playbackComboBox.FormattingEnabled = true;
-            this.playbackComboBox.Location = new System.Drawing.Point(6, 159);
-            this.playbackComboBox.Name = "playbackComboBox";
-            this.playbackComboBox.Size = new System.Drawing.Size(396, 21);
-            this.playbackComboBox.TabIndex = 7;
-            this.playbackComboBox.ValueMember = "Tag";
-            this.playbackComboBox.SelectedIndexChanged += new System.EventHandler(this.playbackComboBox_SelectedIndexChanged);
-            // 
             // selectProgramButton
             // 
             this.selectProgramButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.selectProgramButton.Location = new System.Drawing.Point(143, 85);
+            this.selectProgramButton.Location = new System.Drawing.Point(289, 80);
             this.selectProgramButton.Name = "selectProgramButton";
             this.selectProgramButton.Size = new System.Drawing.Size(24, 20);
             this.selectProgramButton.TabIndex = 6;
@@ -189,30 +148,30 @@ namespace SoundSwitch.UI.Forms
             // programLabel
             // 
             this.programLabel.AutoSize = true;
-            this.programLabel.Location = new System.Drawing.Point(3, 70);
+            this.programLabel.Location = new System.Drawing.Point(3, 64);
             this.programLabel.Name = "programLabel";
-            this.programLabel.Size = new System.Drawing.Size(46, 13);
+            this.programLabel.Size = new System.Drawing.Size(59, 13);
             this.programLabel.TabIndex = 5;
-            this.programLabel.Text = "Program";
+            this.programLabel.Text = "Application";
             // 
             // programTextBox
             // 
             this.programTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.programTextBox.Location = new System.Drawing.Point(6, 85);
+            this.programTextBox.Location = new System.Drawing.Point(6, 79);
             this.programTextBox.Name = "programTextBox";
-            this.programTextBox.Size = new System.Drawing.Size(131, 20);
+            this.programTextBox.Size = new System.Drawing.Size(277, 20);
             this.programTextBox.TabIndex = 4;
             // 
             // hotKeyLabel
             // 
             this.hotKeyLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.hotKeyLabel.AutoSize = true;
-            this.hotKeyLabel.Location = new System.Drawing.Point(205, 70);
+            this.hotKeyLabel.Location = new System.Drawing.Point(327, 66);
             this.hotKeyLabel.Name = "hotKeyLabel";
-            this.hotKeyLabel.Size = new System.Drawing.Size(46, 13);
+            this.hotKeyLabel.Size = new System.Drawing.Size(41, 13);
             this.hotKeyLabel.TabIndex = 3;
-            this.hotKeyLabel.Text = "Hotkeys";
+            this.hotKeyLabel.Text = "Hotkey";
             // 
             // nameLabel
             // 
@@ -229,29 +188,71 @@ namespace SoundSwitch.UI.Forms
             // 
             this.nameTextBox.Location = new System.Drawing.Point(6, 30);
             this.nameTextBox.Name = "nameTextBox";
-            this.nameTextBox.Size = new System.Drawing.Size(145, 20);
+            this.nameTextBox.Size = new System.Drawing.Size(182, 20);
             this.nameTextBox.TabIndex = 0;
             // 
             // createButton
             // 
             this.createButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.createButton.Location = new System.Drawing.Point(447, 318);
+            this.createButton.Location = new System.Drawing.Point(413, 262);
             this.createButton.Name = "createButton";
-            this.createButton.Size = new System.Drawing.Size(75, 23);
+            this.createButton.Size = new System.Drawing.Size(100, 26);
             this.createButton.TabIndex = 1;
             this.createButton.Text = "Add";
             this.createButton.UseVisualStyleBackColor = true;
             this.createButton.Click += new System.EventHandler(this.createButton_Click);
             // 
+            // hotKeyControl
+            // 
+            this.hotKeyControl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.hotKeyControl.Location = new System.Drawing.Point(330, 80);
+            this.hotKeyControl.Name = "hotKeyControl";
+            this.hotKeyControl.Size = new System.Drawing.Size(143, 20);
+            this.hotKeyControl.TabIndex = 14;
+            this.hotKeyControl.HotKeyChanged += new System.EventHandler<SoundSwitch.UI.Component.HotKeyTextBox.Event>(this.hotKeyControl_HotKeyChanged);
+            // 
+            // recordingComboBox
+            // 
+            this.recordingComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.recordingComboBox.DataSource = null;
+            this.recordingComboBox.DisplayMember = "Tag";
+            this.recordingComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.recordingComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.recordingComboBox.FormattingEnabled = true;
+            this.recordingComboBox.Location = new System.Drawing.Point(6, 208);
+            this.recordingComboBox.Name = "recordingComboBox";
+            this.recordingComboBox.Size = new System.Drawing.Size(467, 21);
+            this.recordingComboBox.TabIndex = 8;
+            this.recordingComboBox.ValueMember = "Tag";
+            this.recordingComboBox.SelectedIndexChanged += new System.EventHandler(this.recordingComboBox_SelectedIndexChanged);
+            // 
+            // playbackComboBox
+            // 
+            this.playbackComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.playbackComboBox.DataSource = null;
+            this.playbackComboBox.DisplayMember = "Tag";
+            this.playbackComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.playbackComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.playbackComboBox.FormattingEnabled = true;
+            this.playbackComboBox.Location = new System.Drawing.Point(6, 159);
+            this.playbackComboBox.Name = "playbackComboBox";
+            this.playbackComboBox.Size = new System.Drawing.Size(467, 21);
+            this.playbackComboBox.TabIndex = 7;
+            this.playbackComboBox.ValueMember = "Tag";
+            this.playbackComboBox.SelectedIndexChanged += new System.EventHandler(this.playbackComboBox_SelectedIndexChanged);
+            // 
             // AddProfile
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(534, 353);
+            this.ClientSize = new System.Drawing.Size(531, 299);
             this.Controls.Add(this.createButton);
             this.Controls.Add(this.addProfileGroupBox);
-            this.MinimumSize = new System.Drawing.Size(400, 304);
+            this.MinimumSize = new System.Drawing.Size(547, 338);
             this.Name = "AddProfile";
+            this.Text = "Add Profile";
             this.addProfileGroupBox.ResumeLayout(false);
             this.addProfileGroupBox.PerformLayout();
             this.ResumeLayout(false);

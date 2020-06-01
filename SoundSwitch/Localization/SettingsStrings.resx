@@ -361,4 +361,7 @@ Both: Change when any type of device is switched.</value>
 	<data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
 		<value>When the application is detected, SoundSwitch will change also the current default device.</value>
 	</data>
+	<data name="hotkeyEnabled" xml:space="preserve">
+		<value>Hotkey enabled</value>
+	</data>
 </root>
