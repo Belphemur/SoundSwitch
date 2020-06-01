@@ -39,13 +39,13 @@ namespace SoundSwitch.UI.Forms
             this.switchCommunicationDeviceCheckBox = new System.Windows.Forms.CheckBox();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.playbackTabPage = new System.Windows.Forms.TabPage();
-            this.playbackListView = new ListViewExtended();
+            this.playbackListView = new SoundSwitch.UI.Component.ListView.ListViewExtended();
             this.recordingTabPage = new System.Windows.Forms.TabPage();
-            this.recordingListView = new ListViewExtended();
+            this.recordingListView = new SoundSwitch.UI.Component.ListView.ListViewExtended();
             this.tabProfile = new System.Windows.Forms.TabPage();
             this.deleteProfileButton = new System.Windows.Forms.Button();
             this.profileExplanationLabel = new System.Windows.Forms.Label();
-            this.profilesListView = new IconListView();
+            this.profilesListView = new SoundSwitch.UI.Component.ListView.IconListView();
             this.addProfileButton = new System.Windows.Forms.Button();
             this.appSettingTabPage = new System.Windows.Forms.TabPage();
             this.languageGroupBox = new System.Windows.Forms.GroupBox();
@@ -68,7 +68,6 @@ namespace SoundSwitch.UI.Forms
             this.basicSettingsGroupBox = new System.Windows.Forms.GroupBox();
             this.iconChangeLabel = new System.Windows.Forms.Label();
             this.iconChangeChoicesComboBox = new System.Windows.Forms.ComboBox();
-            this.hotkeysLabel = new System.Windows.Forms.Label();
             this.selectSoundFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.hotkeysCheckBox = new System.Windows.Forms.CheckBox();
             this.hotKeyControl = new SoundSwitch.UI.Component.HotKeyTextBox();
@@ -98,7 +97,7 @@ namespace SoundSwitch.UI.Forms
             // 
             this.closeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.closeButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.closeButton.Location = new System.Drawing.Point(613, 375);
+            this.closeButton.Location = new System.Drawing.Point(673, 367);
             this.closeButton.Name = "closeButton";
             this.closeButton.Size = new System.Drawing.Size(75, 23);
             this.closeButton.TabIndex = 11;
@@ -129,7 +128,7 @@ namespace SoundSwitch.UI.Forms
             this.tabControl.Location = new System.Drawing.Point(12, 6);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(676, 360);
+            this.tabControl.Size = new System.Drawing.Size(743, 353);
             this.tabControl.TabIndex = 13;
             this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
             // 
@@ -139,7 +138,7 @@ namespace SoundSwitch.UI.Forms
             this.playbackTabPage.Location = new System.Drawing.Point(4, 22);
             this.playbackTabPage.Name = "playbackTabPage";
             this.playbackTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.playbackTabPage.Size = new System.Drawing.Size(668, 334);
+            this.playbackTabPage.Size = new System.Drawing.Size(735, 327);
             this.playbackTabPage.TabIndex = 0;
             this.playbackTabPage.Text = "Playback";
             this.playbackTabPage.UseVisualStyleBackColor = true;
@@ -158,7 +157,7 @@ namespace SoundSwitch.UI.Forms
             this.playbackListView.HideSelection = false;
             this.playbackListView.Location = new System.Drawing.Point(3, 3);
             this.playbackListView.Name = "playbackListView";
-            this.playbackListView.Size = new System.Drawing.Size(662, 328);
+            this.playbackListView.Size = new System.Drawing.Size(729, 321);
             this.playbackListView.TabIndex = 14;
             this.playbackListView.UseCompatibleStateImageBehavior = false;
             this.playbackListView.View = System.Windows.Forms.View.Details;
@@ -169,7 +168,7 @@ namespace SoundSwitch.UI.Forms
             this.recordingTabPage.Location = new System.Drawing.Point(4, 22);
             this.recordingTabPage.Name = "recordingTabPage";
             this.recordingTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.recordingTabPage.Size = new System.Drawing.Size(653, 337);
+            this.recordingTabPage.Size = new System.Drawing.Size(735, 327);
             this.recordingTabPage.TabIndex = 1;
             this.recordingTabPage.Text = "Recording";
             this.recordingTabPage.UseVisualStyleBackColor = true;
@@ -189,7 +188,7 @@ namespace SoundSwitch.UI.Forms
             this.recordingListView.HideSelection = false;
             this.recordingListView.Location = new System.Drawing.Point(3, 3);
             this.recordingListView.Name = "recordingListView";
-            this.recordingListView.Size = new System.Drawing.Size(647, 331);
+            this.recordingListView.Size = new System.Drawing.Size(729, 321);
             this.recordingListView.TabIndex = 17;
             this.recordingListView.UseCompatibleStateImageBehavior = false;
             this.recordingListView.View = System.Windows.Forms.View.Details;
@@ -203,8 +202,9 @@ namespace SoundSwitch.UI.Forms
             this.tabProfile.Location = new System.Drawing.Point(4, 22);
             this.tabProfile.Name = "tabProfile";
             this.tabProfile.Padding = new System.Windows.Forms.Padding(3);
-            this.tabProfile.Size = new System.Drawing.Size(653, 337);
+            this.tabProfile.Size = new System.Drawing.Size(735, 327);
             this.tabProfile.TabIndex = 3;
+            this.tabProfile.Text = "Profiles";
             this.tabProfile.UseVisualStyleBackColor = true;
             // 
             // deleteProfileButton
@@ -212,9 +212,9 @@ namespace SoundSwitch.UI.Forms
             this.deleteProfileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.deleteProfileButton.Enabled = false;
             this.deleteProfileButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.deleteProfileButton.Location = new System.Drawing.Point(557, 305);
+            this.deleteProfileButton.Location = new System.Drawing.Point(624, 300);
             this.deleteProfileButton.Name = "deleteProfileButton";
-            this.deleteProfileButton.Size = new System.Drawing.Size(90, 26);
+            this.deleteProfileButton.Size = new System.Drawing.Size(100, 26);
             this.deleteProfileButton.TabIndex = 4;
             this.deleteProfileButton.Text = "Delete";
             this.deleteProfileButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -224,9 +224,9 @@ namespace SoundSwitch.UI.Forms
             // profileExplanationLabel
             // 
             this.profileExplanationLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.profileExplanationLabel.Location = new System.Drawing.Point(7, 261);
+            this.profileExplanationLabel.Location = new System.Drawing.Point(6, 264);
             this.profileExplanationLabel.Name = "profileExplanationLabel";
-            this.profileExplanationLabel.Size = new System.Drawing.Size(505, 39);
+            this.profileExplanationLabel.Size = new System.Drawing.Size(718, 35);
             this.profileExplanationLabel.TabIndex = 3;
             this.profileExplanationLabel.Text = "Explanation";
             // 
@@ -237,11 +237,11 @@ namespace SoundSwitch.UI.Forms
             | System.Windows.Forms.AnchorStyles.Right)));
             this.profilesListView.FullRowSelect = true;
             this.profilesListView.HideSelection = false;
-            this.profilesListView.Location = new System.Drawing.Point(3, 3);
+            this.profilesListView.Location = new System.Drawing.Point(6, 3);
             this.profilesListView.Name = "profilesListView";
             this.profilesListView.OwnerDraw = true;
             this.profilesListView.ShowGroups = false;
-            this.profilesListView.Size = new System.Drawing.Size(644, 255);
+            this.profilesListView.Size = new System.Drawing.Size(721, 254);
             this.profilesListView.TabIndex = 2;
             this.profilesListView.UseCompatibleStateImageBehavior = false;
             this.profilesListView.View = System.Windows.Forms.View.Details;
@@ -250,11 +250,11 @@ namespace SoundSwitch.UI.Forms
             // addProfileButton
             // 
             this.addProfileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.addProfileButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.addProfileButton.Location = new System.Drawing.Point(462, 305);
+            this.addProfileButton.Location = new System.Drawing.Point(518, 300);
             this.addProfileButton.Name = "addProfileButton";
-            this.addProfileButton.Size = new System.Drawing.Size(89, 26);
+            this.addProfileButton.Size = new System.Drawing.Size(100, 26);
             this.addProfileButton.TabIndex = 1;
+            this.addProfileButton.Text = "Add";
             this.addProfileButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.addProfileButton.UseVisualStyleBackColor = true;
             this.addProfileButton.Click += new System.EventHandler(this.addProfileButton_Click);
@@ -267,7 +267,7 @@ namespace SoundSwitch.UI.Forms
             this.appSettingTabPage.Controls.Add(this.basicSettingsGroupBox);
             this.appSettingTabPage.Location = new System.Drawing.Point(4, 22);
             this.appSettingTabPage.Name = "appSettingTabPage";
-            this.appSettingTabPage.Size = new System.Drawing.Size(653, 337);
+            this.appSettingTabPage.Size = new System.Drawing.Size(735, 327);
             this.appSettingTabPage.TabIndex = 2;
             this.appSettingTabPage.Text = "Settings";
             this.appSettingTabPage.UseVisualStyleBackColor = true;
@@ -277,9 +277,9 @@ namespace SoundSwitch.UI.Forms
             this.languageGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.languageGroupBox.Controls.Add(this.languageComboBox);
-            this.languageGroupBox.Location = new System.Drawing.Point(419, 141);
+            this.languageGroupBox.Location = new System.Drawing.Point(434, 156);
             this.languageGroupBox.Name = "languageGroupBox";
-            this.languageGroupBox.Size = new System.Drawing.Size(277, 61);
+            this.languageGroupBox.Size = new System.Drawing.Size(298, 61);
             this.languageGroupBox.TabIndex = 15;
             this.languageGroupBox.TabStop = false;
             this.languageGroupBox.Text = "Language";
@@ -290,7 +290,7 @@ namespace SoundSwitch.UI.Forms
             this.languageComboBox.FormattingEnabled = true;
             this.languageComboBox.Location = new System.Drawing.Point(8, 23);
             this.languageComboBox.Name = "languageComboBox";
-            this.languageComboBox.Size = new System.Drawing.Size(203, 21);
+            this.languageComboBox.Size = new System.Drawing.Size(247, 21);
             this.languageComboBox.TabIndex = 17;
             this.languageComboBox.SelectedIndexChanged += new System.EventHandler(this.languageComboBox_SelectedIndexChanged);
             // 
@@ -302,9 +302,9 @@ namespace SoundSwitch.UI.Forms
             this.updateSettingsGroupBox.Controls.Add(this.updateNotifyRadioButton);
             this.updateSettingsGroupBox.Controls.Add(this.updateSilentRadioButton);
             this.updateSettingsGroupBox.Controls.Add(this.includeBetaVersionsCheckBox);
-            this.updateSettingsGroupBox.Location = new System.Drawing.Point(419, 3);
+            this.updateSettingsGroupBox.Location = new System.Drawing.Point(434, 12);
             this.updateSettingsGroupBox.Name = "updateSettingsGroupBox";
-            this.updateSettingsGroupBox.Size = new System.Drawing.Size(277, 132);
+            this.updateSettingsGroupBox.Size = new System.Drawing.Size(298, 132);
             this.updateSettingsGroupBox.TabIndex = 14;
             this.updateSettingsGroupBox.TabStop = false;
             this.updateSettingsGroupBox.Text = "Update Settings";
@@ -368,9 +368,9 @@ namespace SoundSwitch.UI.Forms
             this.audioSettingsGroupBox.Controls.Add(this.selectSoundButton);
             this.audioSettingsGroupBox.Controls.Add(this.notificationLabel);
             this.audioSettingsGroupBox.Controls.Add(this.notificationComboBox);
-            this.audioSettingsGroupBox.Location = new System.Drawing.Point(3, 90);
+            this.audioSettingsGroupBox.Location = new System.Drawing.Point(3, 117);
             this.audioSettingsGroupBox.Name = "audioSettingsGroupBox";
-            this.audioSettingsGroupBox.Size = new System.Drawing.Size(410, 193);
+            this.audioSettingsGroupBox.Size = new System.Drawing.Size(425, 193);
             this.audioSettingsGroupBox.TabIndex = 13;
             this.audioSettingsGroupBox.TabStop = false;
             this.audioSettingsGroupBox.Text = "Audio Settings";
@@ -388,7 +388,7 @@ namespace SoundSwitch.UI.Forms
             // 
             // deleteSoundButton
             // 
-            this.deleteSoundButton.Location = new System.Drawing.Point(381, 69);
+            this.deleteSoundButton.Location = new System.Drawing.Point(391, 77);
             this.deleteSoundButton.Name = "deleteSoundButton";
             this.deleteSoundButton.Size = new System.Drawing.Size(23, 23);
             this.deleteSoundButton.TabIndex = 24;
@@ -398,18 +398,18 @@ namespace SoundSwitch.UI.Forms
             // 
             // cycleThroughLabel
             // 
-            this.cycleThroughLabel.Location = new System.Drawing.Point(-8, 145);
+            this.cycleThroughLabel.Location = new System.Drawing.Point(2, 153);
             this.cycleThroughLabel.Name = "cycleThroughLabel";
-            this.cycleThroughLabel.Size = new System.Drawing.Size(100, 13);
+            this.cycleThroughLabel.Size = new System.Drawing.Size(100, 15);
             this.cycleThroughLabel.TabIndex = 23;
             this.cycleThroughLabel.Text = "Cycle through";
-            this.cycleThroughLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.cycleThroughLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // cycleThroughComboBox
             // 
             this.cycleThroughComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cycleThroughComboBox.FormattingEnabled = true;
-            this.cycleThroughComboBox.Location = new System.Drawing.Point(98, 143);
+            this.cycleThroughComboBox.Location = new System.Drawing.Point(108, 151);
             this.cycleThroughComboBox.Name = "cycleThroughComboBox";
             this.cycleThroughComboBox.Size = new System.Drawing.Size(247, 21);
             this.cycleThroughComboBox.TabIndex = 22;
@@ -417,18 +417,18 @@ namespace SoundSwitch.UI.Forms
             // 
             // tooltipOnHoverLabel
             // 
-            this.tooltipOnHoverLabel.Location = new System.Drawing.Point(-8, 109);
+            this.tooltipOnHoverLabel.Location = new System.Drawing.Point(2, 117);
             this.tooltipOnHoverLabel.Name = "tooltipOnHoverLabel";
-            this.tooltipOnHoverLabel.Size = new System.Drawing.Size(100, 13);
+            this.tooltipOnHoverLabel.Size = new System.Drawing.Size(100, 15);
             this.tooltipOnHoverLabel.TabIndex = 21;
             this.tooltipOnHoverLabel.Text = "Tooltip on Hover";
-            this.tooltipOnHoverLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.tooltipOnHoverLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // tooltipInfoComboBox
             // 
             this.tooltipInfoComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.tooltipInfoComboBox.FormattingEnabled = true;
-            this.tooltipInfoComboBox.Location = new System.Drawing.Point(98, 107);
+            this.tooltipInfoComboBox.Location = new System.Drawing.Point(108, 115);
             this.tooltipInfoComboBox.Name = "tooltipInfoComboBox";
             this.tooltipInfoComboBox.Size = new System.Drawing.Size(247, 21);
             this.tooltipInfoComboBox.TabIndex = 20;
@@ -436,7 +436,7 @@ namespace SoundSwitch.UI.Forms
             // 
             // selectSoundButton
             // 
-            this.selectSoundButton.Location = new System.Drawing.Point(351, 69);
+            this.selectSoundButton.Location = new System.Drawing.Point(361, 77);
             this.selectSoundButton.Name = "selectSoundButton";
             this.selectSoundButton.Size = new System.Drawing.Size(24, 23);
             this.selectSoundButton.TabIndex = 19;
@@ -447,18 +447,18 @@ namespace SoundSwitch.UI.Forms
             // 
             // notificationLabel
             // 
-            this.notificationLabel.Location = new System.Drawing.Point(-8, 73);
+            this.notificationLabel.Location = new System.Drawing.Point(2, 81);
             this.notificationLabel.Name = "notificationLabel";
-            this.notificationLabel.Size = new System.Drawing.Size(100, 13);
+            this.notificationLabel.Size = new System.Drawing.Size(100, 15);
             this.notificationLabel.TabIndex = 17;
             this.notificationLabel.Text = "Notification";
-            this.notificationLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.notificationLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // notificationComboBox
             // 
             this.notificationComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.notificationComboBox.FormattingEnabled = true;
-            this.notificationComboBox.Location = new System.Drawing.Point(98, 71);
+            this.notificationComboBox.Location = new System.Drawing.Point(108, 79);
             this.notificationComboBox.Name = "notificationComboBox";
             this.notificationComboBox.Size = new System.Drawing.Size(247, 21);
             this.notificationComboBox.TabIndex = 16;
@@ -469,40 +469,31 @@ namespace SoundSwitch.UI.Forms
             this.basicSettingsGroupBox.Controls.Add(this.iconChangeLabel);
             this.basicSettingsGroupBox.Controls.Add(this.startWithWindowsCheckBox);
             this.basicSettingsGroupBox.Controls.Add(this.iconChangeChoicesComboBox);
-            this.basicSettingsGroupBox.Location = new System.Drawing.Point(3, 3);
+            this.basicSettingsGroupBox.Location = new System.Drawing.Point(3, 12);
             this.basicSettingsGroupBox.Name = "basicSettingsGroupBox";
-            this.basicSettingsGroupBox.Size = new System.Drawing.Size(410, 81);
+            this.basicSettingsGroupBox.Size = new System.Drawing.Size(425, 93);
             this.basicSettingsGroupBox.TabIndex = 0;
             this.basicSettingsGroupBox.TabStop = false;
             this.basicSettingsGroupBox.Text = "Basic Settings";
             // 
             // iconChangeLabel
             // 
-            this.iconChangeLabel.Location = new System.Drawing.Point(3, 49);
+            this.iconChangeLabel.Location = new System.Drawing.Point(2, 53);
             this.iconChangeLabel.Name = "iconChangeLabel";
-            this.iconChangeLabel.Size = new System.Drawing.Size(89, 13);
+            this.iconChangeLabel.Size = new System.Drawing.Size(100, 15);
             this.iconChangeLabel.TabIndex = 27;
-            this.iconChangeLabel.Text = "IconChange";
+            this.iconChangeLabel.Text = "Systray Icon";
+            this.iconChangeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // iconChangeChoicesComboBox
             // 
             this.iconChangeChoicesComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.iconChangeChoicesComboBox.FormattingEnabled = true;
-            this.iconChangeChoicesComboBox.Location = new System.Drawing.Point(98, 46);
+            this.iconChangeChoicesComboBox.Location = new System.Drawing.Point(108, 51);
             this.iconChangeChoicesComboBox.Name = "iconChangeChoicesComboBox";
             this.iconChangeChoicesComboBox.Size = new System.Drawing.Size(247, 21);
             this.iconChangeChoicesComboBox.TabIndex = 26;
             this.iconChangeChoicesComboBox.SelectedIndexChanged += new System.EventHandler(this.iconChangeChoicesComboBox_SelectedIndexChanged);
-            // 
-            // hotkeysLabel
-            // 
-            this.hotkeysLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.hotkeysLabel.Location = new System.Drawing.Point(-28, 377);
-            this.hotkeysLabel.Name = "hotkeysLabel";
-            this.hotkeysLabel.Size = new System.Drawing.Size(100, 13);
-            this.hotkeysLabel.TabIndex = 14;
-            this.hotkeysLabel.Text = "Hotkeys";
-            this.hotkeysLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // selectSoundFileDialog
             // 
@@ -512,20 +503,22 @@ namespace SoundSwitch.UI.Forms
             // 
             this.hotkeysCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.hotkeysCheckBox.AutoSize = true;
-            this.hotkeysCheckBox.Location = new System.Drawing.Point(288, 378);
+            this.hotkeysCheckBox.Location = new System.Drawing.Point(168, 371);
             this.hotkeysCheckBox.Name = "hotkeysCheckBox";
-            this.hotkeysCheckBox.Size = new System.Drawing.Size(15, 14);
+            this.hotkeysCheckBox.Size = new System.Drawing.Size(94, 17);
             this.hotkeysCheckBox.TabIndex = 20;
+            this.hotkeysCheckBox.Text = "Enable hotkey";
             this.hotkeysCheckBox.UseVisualStyleBackColor = true;
             this.hotkeysCheckBox.CheckedChanged += new System.EventHandler(this.hotkeysCheckbox_CheckedChanged);
             // 
             // hotKeyControl
             // 
             this.hotKeyControl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.hotKeyControl.Location = new System.Drawing.Point(79, 375);
+            this.hotKeyControl.Location = new System.Drawing.Point(19, 369);
             this.hotKeyControl.Name = "hotKeyControl";
-            this.hotKeyControl.Size = new System.Drawing.Size(203, 20);
+            this.hotKeyControl.Size = new System.Drawing.Size(138, 20);
             this.hotKeyControl.TabIndex = 21;
+            this.hotKeyControl.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.hotKeyControl.HotKeyChanged += new System.EventHandler<SoundSwitch.UI.Component.HotKeyTextBox.Event>(this.hotKeyControl_HotKeyChanged);
             // 
             // SettingsForm
@@ -533,10 +526,9 @@ namespace SoundSwitch.UI.Forms
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.CancelButton = this.closeButton;
-            this.ClientSize = new System.Drawing.Size(704, 417);
+            this.ClientSize = new System.Drawing.Size(771, 404);
             this.Controls.Add(this.hotKeyControl);
             this.Controls.Add(this.hotkeysCheckBox);
-            this.Controls.Add(this.hotkeysLabel);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.closeButton);
             this.MinimumSize = new System.Drawing.Size(595, 382);
@@ -570,7 +562,6 @@ namespace SoundSwitch.UI.Forms
         private System.Windows.Forms.Button deleteSoundButton;
         private System.Windows.Forms.CheckBox foregroundAppCheckbox;
         private System.Windows.Forms.CheckBox hotkeysCheckBox;
-        private System.Windows.Forms.Label hotkeysLabel;
         private System.Windows.Forms.ComboBox iconChangeChoicesComboBox;
         private System.Windows.Forms.Label iconChangeLabel;
         private System.Windows.Forms.CheckBox includeBetaVersionsCheckBox;
