@@ -210,9 +210,9 @@ namespace SoundSwitch.Framework.WinApi
             while (_instance == null || !_instance.IsHandleCreated)
             {
                 Thread.Sleep(250);
-                if (count++ >= 2)
+                if (count++ >= 5)
                 {
-                    throw new ThreadStateException("Instance isn't set even after waiting 750 ms");
+                    throw new ThreadStateException($"Instance isn't set even after waiting {5 * 250} ms");
                 }
             }
         }
