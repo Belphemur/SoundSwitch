@@ -20,6 +20,18 @@ namespace SoundSwitch.Framework.Profile
         [JsonIgnore]
         public IEnumerable<DeviceInfo> Devices => new[] {Playback, Recording}.Where(info => info != null)!;
 
+        /// <summary>
+        /// Clone the current profile
+        /// </summary>
+        public ProfileSetting Clone() => new ProfileSetting
+        {
+            ProfileName             = ProfileName,
+            ApplicationPath         = ApplicationPath,
+            Playback                = Playback,
+            Recording               = Recording,
+            AlsoSwitchDefaultDevice = AlsoSwitchDefaultDevice
+        };
+
         public bool Equals(ProfileSetting? other)
         {
             if (ReferenceEquals(null, other)) return false;
