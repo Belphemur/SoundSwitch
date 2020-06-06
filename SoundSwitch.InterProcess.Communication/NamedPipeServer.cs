@@ -3,17 +3,20 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Threading;
+using SoundSwitch.InterProcess.Communication.Interop;
 using SoundSwitch.InterProcess.Communication.Protocol;
 
 namespace SoundSwitch.InterProcess.Communication
 {
     public class NamedPipeServer : IDisposable
     {
+        private readonly PipeSecurity _pipeSecurity;
         public string Name { get; }
         private Thread _runningThread;
 
-        public NamedPipeServer(string name)
+        public NamedPipeServer(string name, PipeSecurity pipeSecurity = null)
         {
+            _pipeSecurity = pipeSecurity ?? new PipeSecurity();
             Name = name;
         }
 
@@ -26,7 +29,7 @@ namespace SoundSwitch.InterProcess.Communication
         private void ServerThread(object data)
         {
             var handleMsg = (Action<string>) data;
-            using var pipeServer = new NamedPipeServerStream(Name, PipeDirection.InOut);
+            using var pipeServer = NamedPipeNative.CreateNamedPipe(Name, _pipeSecurity);
 
             // Wait for a client to connect
             pipeServer.WaitForConnection();
