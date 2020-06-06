@@ -202,15 +202,19 @@ namespace SoundSwitch
                 return;
             var zipFile = Path.Combine(ApplicationPath.AppData,
                 $"{Application.ProductName}-crashlog-{DateTime.UtcNow.Date.Day}_{DateTime.UtcNow.Date.Month}_{DateTime.UtcNow.Date.Year}.zip");
-            
+            var exceptionMessage = exception.Message;
+            if (exception.InnerException != null)
+            {
+                exceptionMessage += $"\n{exception.InnerException.Message}";
+            }
             var message =
                 $@"It seems {Application.ProductName} has crashed.
-                {exception.Message}
-                {exception.InnerException?.Message}
 
-                Do you want to save a log of the error that occurred?
-                This could be useful to fix bugs. Please post this file in the issues section
-                File Location: {zipFile}";
+{exceptionMessage}
+
+Do you want to save a log of the error that occurred?
+This could be useful to fix bugs. Please post this file in the issues section
+File Location: {zipFile}";
             var result = MessageBox.Show(message, $@"{Application.ProductName} crashed...", MessageBoxButtons.YesNo,
                 MessageBoxIcon.Error);
 
