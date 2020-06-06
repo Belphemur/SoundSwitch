@@ -46,7 +46,7 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
                     Marshal.ThrowExceptionForHR(_configVista.SetDefaultEndpoint(devId, eRole));
                 }
             }
-            catch (COMException e) when (e.HResult == 0x80070490)
+            catch (COMException e) when((e.ErrorCode & ErrorConst.COM_ERROR_MASK) == ErrorConst.COM_ERROR_NOT_FOUND)
             {
                 throw new DeviceNotFoundException($"[Device Not Found] Can't set default as {devId} with role {eRole}", e, devId);
             }
