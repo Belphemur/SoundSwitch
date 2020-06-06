@@ -167,6 +167,7 @@ namespace SoundSwitch
             LoggerConfigurator.ConfigureLogger();
             Log.Information($"{Application.ProductName}  {AssemblyUtils.GetReleaseState()} ({Application.ProductVersion})");
             Log.Information($"OS: {Environment.OSVersion}");
+            Log.Information($"Framework: {Environment.Version}");
         }
 
         /// <summary>
