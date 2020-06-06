@@ -57,7 +57,8 @@ namespace SoundSwitch
                 };
 
                 Log.Information("Set Exception Handler");
-                Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
+                Application.ThreadException += Application_ThreadException;
+                Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
                 WindowsAPIAdapter.Start(Application_ThreadException);
 #else
             WindowsAPIAdapter.Start();
@@ -198,11 +199,13 @@ namespace SoundSwitch
             var zipFile = Path.Combine(ApplicationPath.AppData,
                 $"{Application.ProductName}-crashlog-{DateTime.UtcNow.Date.Day}_{DateTime.UtcNow.Date.Month}_{DateTime.UtcNow.Date.Year}.zip");
             var message =
-                $"It seems {Application.ProductName} has crashed.\n" +
-                $"Do you want to save a log of the error that occurred?\n" +
-                $"This could be useful to fix bugs. Please post this file in the issues section.\n" +
-                $"File Location: " + zipFile;
-            var result = MessageBox.Show(message, $"{Application.ProductName} crashed...", MessageBoxButtons.YesNo,
+                $@"It seems {Application.ProductName} has crashed.
+                {exception.Message}
+
+                Do you want to save a log of the error that occurred?
+                This could be useful to fix bugs. Please post this file in the issues section
+                File Location: {zipFile}";
+            var result = MessageBox.Show(message, $@"{Application.ProductName} crashed...", MessageBoxButtons.YesNo,
                 MessageBoxIcon.Error);
 
             if (result == DialogResult.Yes)

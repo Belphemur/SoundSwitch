@@ -107,7 +107,11 @@ namespace SoundSwitch.Framework.WinApi
 
             Log.Information("Starting WindowsAPIAdapter thread");
             if (_exceptionEventHandler != null)
+            {
                 Application.ThreadException += _exceptionEventHandler;
+                Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+                AppDomain.CurrentDomain.UnhandledException += (sender, args) => _exceptionEventHandler(sender, new ThreadExceptionEventArgs((Exception)args.ExceptionObject));
+            }
 
             _instance = new WindowsAPIAdapter();
             _instance.CreateHandle();
