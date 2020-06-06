@@ -1,15 +1,18 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
+using NAudio.CoreAudioApi;
 using RailSharp;
 using RailSharp.Internal.Result;
 using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Framework.Audio.Lister;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
@@ -20,24 +23,34 @@ namespace SoundSwitch.Framework.Profile
 {
     public class ProfileManager
     {
+        public delegate void ShowError(string errorMessage, string errorTitle);
+
         private readonly Dictionary<HotKey, ProfileSetting> _profileByHotkey;
         private readonly Dictionary<string, ProfileSetting> _profileByApplication;
         private readonly ForegroundProcess                  _foregroundProcess;
         private readonly AudioSwitcher                      _audioSwitcher;
+        private readonly IAudioDeviceLister                 _activeDeviceLister;
+        private readonly ShowError                          _showError;
 
         public IReadOnlyCollection<ProfileSetting> Profiles => AppConfigs.Configuration.ProfileSettings;
 
-        public ProfileManager(ForegroundProcess foregroundProcess, AudioSwitcher audioSwitcher)
+        public ProfileManager(ForegroundProcess  foregroundProcess,
+                              AudioSwitcher      audioSwitcher,
+                              IAudioDeviceLister activeDeviceLister,
+                              ShowError          showError)
         {
-            _foregroundProcess = foregroundProcess;
-            _audioSwitcher     = audioSwitcher;
+            _foregroundProcess  = foregroundProcess;
+            _audioSwitcher      = audioSwitcher;
+            _activeDeviceLister = activeDeviceLister;
+            _showError          = showError;
             _profileByApplication =
                 AppConfigs.Configuration.ProfileSettings
                           .Where((setting) => setting.ApplicationPath != null)
                           .ToDictionary(setting => setting.ApplicationPath!.ToLower());
-            _profileByHotkey = AppConfigs.Configuration.ProfileSettings
-                                         .Where((setting) => setting.HotKey != null)
-                                         .ToDictionary(setting => setting.HotKey)!;
+            _profileByHotkey =
+                AppConfigs.Configuration.ProfileSettings
+                          .Where((setting) => setting.HotKey != null)
+                          .ToDictionary(setting => setting.HotKey)!;
         }
 
         /// <summary>
@@ -80,19 +93,34 @@ namespace SoundSwitch.Framework.Profile
             };
         }
 
+        private DeviceInfo? CheckDeviceAvailable(DeviceInfo deviceInfo)
+        {
+            return deviceInfo.Type switch
+            {
+                DataFlow.Capture => _activeDeviceLister.RecordingDevices.FirstOrDefault(info => info.Equals(deviceInfo)),
+                _                => _activeDeviceLister.PlaybackDevices.FirstOrDefault(info => info.Equals(deviceInfo))
+            };
+        }
+
         private void SwitchAudio(ProfileSetting profile, uint processId)
         {
             foreach (var device in profile.Devices)
             {
+                var deviceToUse = CheckDeviceAvailable(device);
+                if (deviceToUse == null)
+                {
+                    _showError.Invoke(string.Format(SettingsStrings.profile_error_device_not_found, device.Name), $"{SettingsStrings.profile_error_title}: {profile.ProfileName}");
+                    continue;
+                }
                 _audioSwitcher.SwitchProcessTo(
-                    device!.Id,
+                    deviceToUse.Id,
                     ERole.ERole_enum_count,
-                    (EDataFlow) device.Type,
+                    (EDataFlow) deviceToUse.Type,
                     processId);
 
                 if (profile.AlsoSwitchDefaultDevice)
                 {
-                    _audioSwitcher.SwitchTo(device!.Id, ERole.ERole_enum_count);
+                    _audioSwitcher.SwitchTo(deviceToUse.Id, ERole.ERole_enum_count);
                 }
             }
         }
@@ -101,7 +129,13 @@ namespace SoundSwitch.Framework.Profile
         {
             foreach (var device in profile.Devices)
             {
-                _audioSwitcher.SwitchTo(device!.Id, ERole.ERole_enum_count);
+                var deviceToUse = CheckDeviceAvailable(device);
+                if (deviceToUse == null)
+                {
+                    _showError.Invoke(string.Format(SettingsStrings.profile_error_device_not_found, device.Name), $"{SettingsStrings.profile_error_title}: {profile.ProfileName}");
+                    continue;
+                }
+                _audioSwitcher.SwitchTo(deviceToUse.Id, ERole.ERole_enum_count);
             }
         }
 

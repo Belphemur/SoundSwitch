@@ -61,7 +61,7 @@ namespace SoundSwitch.Model
         private CachedSound _customNotificationCachedSound;
         private readonly DeviceCyclerManager _deviceCyclerManager;
 
-        public ProfileManager ProfileManager { get; } = new ProfileManager(new ForegroundProcess(), AudioSwitcher.Instance);
+        public ProfileManager ProfileManager { get; private set; }
 
         public CachedSound CustomNotificationSound
         {
@@ -204,6 +204,7 @@ namespace SoundSwitch.Model
             {
                 throw new InvalidOperationException("Already initialized");
             }
+            ProfileManager = new ProfileManager(new ForegroundProcess(), AudioSwitcher.Instance, ActiveAudioDeviceLister, TrayIcon.ShowError);
             RegisterHotKey(AppConfigs.Configuration.PlaybackHotKey);
             RegisterHotKey(AppConfigs.Configuration.RecordingHotKey);
 

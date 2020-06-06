@@ -341,4 +341,10 @@ Toujours : Lors de la bascule vers un autre périphérique de lecture ou d'enreg
 	<data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
 		<value>Quand l'application est détectée, SoundSwitch va aussi switcher le périphérique par défaut.</value>
 	</data>
+	<data name="profile.error.device-not-found" xml:space="preserve">
+		<value>Le périphérique {0} n'a pu être trouvé.</value>
+	</data>
+	<data name="hotkeyEnabled" xml:space="preserve">
+		<value>Raccoucis actif</value>
+	</data>
 </root>
