@@ -13,10 +13,32 @@ namespace SoundSwitch.Audio.Manager
     public class AudioSwitcher
     {
         private static AudioSwitcher _instance;
-        private readonly PolicyClient _policyClient = new PolicyClient();
-        private readonly EnumeratorClient _enumerator = new EnumeratorClient();
+        private PolicyClient _policyClient;
+        private EnumeratorClient _enumerator;
 
         private ExtendedPolicyClient _extendedPolicyClient;
+
+        private EnumeratorClient EnumeratorClient
+        {
+            get
+            {
+                if (_enumerator != null)
+                    return _enumerator;
+                
+                return _enumerator = ComThread.Invoke(() => new EnumeratorClient());
+            }
+        }
+
+        private PolicyClient PolicyClient
+        {
+            get
+            {
+                if (_policyClient != null)
+                    return _policyClient;
+
+                return _policyClient = ComThread.Invoke(() => new PolicyClient());
+            }
+        }
 
         private ExtendedPolicyClient ExtendPolicyClient
         {
@@ -57,16 +79,16 @@ namespace SoundSwitch.Audio.Manager
         {
             if (role != ERole.ERole_enum_count)
             {
-                ComThread.Invoke((() =>
+                ComThread.Invoke(() =>
                 {
-                    if (_enumerator.IsDefault(deviceId, EDataFlow.eRender, role) || _enumerator.IsDefault(deviceId, EDataFlow.eCapture, role))
+                    if (EnumeratorClient.IsDefault(deviceId, EDataFlow.eRender, role) || EnumeratorClient.IsDefault(deviceId, EDataFlow.eCapture, role))
                     {
                         Trace.WriteLine($"Default endpoint already {deviceId}");
                         return;
                     }
 
-                    _policyClient.SetDefaultEndpoint(deviceId, role);
-                }));
+                    PolicyClient.SetDefaultEndpoint(deviceId, role);
+                });
 
                 return;
             }
@@ -134,7 +156,7 @@ namespace SoundSwitch.Audio.Manager
         /// <returns></returns>
         public bool IsDefault(string deviceId, EDataFlow flow, ERole role)
         {
-            return ComThread.Invoke(() => _enumerator.IsDefault(deviceId, flow, role));
+            return ComThread.Invoke(() => EnumeratorClient.IsDefault(deviceId, flow, role));
         }
 
         /// <summary>
