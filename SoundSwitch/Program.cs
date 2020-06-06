@@ -69,26 +69,8 @@ namespace SoundSwitch
 
             using (new Mutex(true, Application.ProductName, out createdNew))
             {
-                //Mutex used by another instance of the app
-                //Ask the other instance to stop and restart this instance to get the mutex again.
-                if (!createdNew)
-                {
-                   using var pipeClient = new NamedPipeClient(Application.ProductName);
-                   pipeClient.SendMsg("Close");
-                   RestartApp();
-                   return;
-                }
-                var pipeSecurity = new PipeSecurity();
-                pipeSecurity.AddAccessRule(new PipeAccessRule("Everyone", PipeAccessRights.ReadWrite | PipeAccessRights.CreateNewInstance, AccessControlType.Allow));
-
-                using var pipeServer = new NamedPipeServer(Application.ProductName, pipeSecurity);
-                pipeServer.Start(message =>
-                {
-                    if (message == "Close")
-                    {
-                        Application.Exit();
-                    }
-                });
+                if (KillOtherInstanceAndRestart(createdNew)) 
+                    return;
 
                 var deviceActiveLister = new CachedAudioDeviceLister(DeviceState.Active);
                 deviceActiveLister.Refresh().ConfigureAwait(false);
@@ -162,6 +144,40 @@ namespace SoundSwitch
             MMNotificationClient.Instance.UnRegister();
             WindowsAPIAdapter.Stop();
             Log.CloseAndFlush();
+        }
+
+        private static bool KillOtherInstanceAndRestart(bool createdNew)
+        {
+            var pipeName = Application.ProductName + Environment.UserName;
+            //Mutex used by another instance of the app
+            //Ask the other instance to stop and restart this instance to get the mutex again.
+            if (!createdNew)
+            {
+                try
+                {
+                    using var pipeClient = new NamedPipeClient(pipeName);
+                    pipeClient.SendMsg("Close");
+                    RestartApp();
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e, "Problem with starting named pipe client");
+                }
+            }
+
+            var pipeSecurity = new PipeSecurity();
+            pipeSecurity.AddAccessRule(new PipeAccessRule("Everyone", PipeAccessRights.ReadWrite | PipeAccessRights.CreateNewInstance, AccessControlType.Allow));
+
+            using var pipeServer = new NamedPipeServer(pipeName, pipeSecurity);
+            pipeServer.Start(message =>
+            {
+                if (message == "Close")
+                {
+                    Application.Exit();
+                }
+            });
+            return false;
         }
 
         /// <summary>
