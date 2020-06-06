@@ -310,6 +310,9 @@
         <e p="ForegroundProcess.cs" t="Include" />
         <e p="Interop" t="Include">
           <e p="Client" t="Include">
+            <e p="ClientException" t="Include">
+              <e p="DeviceNotFoundException.cs" t="Include" />
+            </e>
             <e p="EnumeratorClient.cs" t="Include" />
             <e p="ExtendedPolicyClient.cs" t="Include" />
             <e p="PolicyClient.cs" t="Include" />

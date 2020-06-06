@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using SoundSwitch.Audio.Manager.Interop.Client.ClientException;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Audio.Manager.Interop.Interface;
 using SoundSwitch.Audio.Manager.Interop.Interface.Policy;
@@ -30,17 +31,24 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
 
         public void SetDefaultEndpoint(string devId, ERole eRole)
         {
-            if (_configX != null)
+            try
             {
-                Marshal.ThrowExceptionForHR(_configX.SetDefaultEndpoint(devId, eRole));
+                if (_configX != null)
+                {
+                    Marshal.ThrowExceptionForHR(_configX.SetDefaultEndpoint(devId, eRole));
+                }
+                else if (_configVII != null)
+                {
+                    Marshal.ThrowExceptionForHR(_configVII.SetDefaultEndpoint(devId, eRole));
+                }
+                else if (_configVista != null)
+                {
+                    Marshal.ThrowExceptionForHR(_configVista.SetDefaultEndpoint(devId, eRole));
+                }
             }
-            else if (_configVII != null)
+            catch (COMException e) when (e.HResult == 0x80070490)
             {
-                Marshal.ThrowExceptionForHR(_configVII.SetDefaultEndpoint(devId, eRole));
-            }
-            else if (_configVista != null)
-            {
-                Marshal.ThrowExceptionForHR(_configVista.SetDefaultEndpoint(devId, eRole));
+                throw new DeviceNotFoundException($"[Device Not Found] Can't set default as {devId} with role {eRole}", e, devId);
             }
         }
 
