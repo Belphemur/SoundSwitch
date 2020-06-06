@@ -14,6 +14,7 @@
 
 using System;
 using System.Windows.Forms;
+using SoundSwitch.Util;
 
 namespace SoundSwitch.Framework.WinApi.Keyboard
 {
@@ -99,7 +100,7 @@ namespace SoundSwitch.Framework.WinApi.Keyboard
         public string Display()
         {
             var key = Keys == Keys.None ? "" : $" + {Keys}";
-            return $"{Modifier.ToString().Replace(",", "+")}{key}";
+            return $"{string.Join(" + ", Modifier.GetUniqueFlags())}{key}";
         }
     }
 }

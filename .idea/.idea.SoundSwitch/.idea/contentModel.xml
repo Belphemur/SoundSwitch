@@ -294,6 +294,7 @@
         <e p="Util" t="Include">
           <e p="AssemblyUtils.cs" t="Include" />
           <e p="CasterExtensions.cs" t="Include" />
+          <e p="EnumExtensions.cs" t="Include" />
           <e p="Timer" t="Include">
             <e p="DebounceDispatcher.cs" t="Include" />
           </e>
