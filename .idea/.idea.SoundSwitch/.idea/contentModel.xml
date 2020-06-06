@@ -389,13 +389,10 @@
       </e>
       <e p="SoundSwitch.InterProcess.Communication" t="IncludeRecursive">
         <e p="bin" t="ExcludeRecursive" />
-        <e p="Interop" t="Include">
-          <e p="NamedPipeNative.cs" t="Include" />
-        </e>
         <e p="NamedPipeClient.cs" t="Include" />
         <e p="NamedPipeServer.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive">
-          <e p="Release" t="Include">
+          <e p="Debug" t="Include">
             <e p="netstandard2.0" t="Include">
               <e p="SoundSwitch.InterProcess.Communication.AssemblyInfo.cs" t="Include" />
             </e>

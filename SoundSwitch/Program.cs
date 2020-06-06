@@ -49,7 +49,7 @@ namespace SoundSwitch
         [STAThread]
         private static void Main()
         {
-            bool createdNew;
+            
             InitializeLogger();
             Log.Information("Application Starts");
 #if !DEBUG
@@ -66,71 +66,70 @@ namespace SoundSwitch
             WindowsAPIAdapter.Start();
 #endif
             Thread.CurrentThread.CurrentUICulture = new LanguageFactory().Get(AppModel.Instance.Language).CultureInfo;
+            var userMutexName = Application.ProductName + Environment.UserName;
 
-            using (new Mutex(true, Application.ProductName, out createdNew))
+            using var mainMutex = new Mutex(true, Application.ProductName);
+            using var userMutex = new Mutex(true, userMutexName, out var userMutexInUse);
+
+            if (KillOtherInstanceAndRestart(userMutexName, userMutexInUse))
+                return;
+
+            var deviceActiveLister = new CachedAudioDeviceLister(DeviceState.Active);
+            deviceActiveLister.Refresh().ConfigureAwait(false);
+            AppModel.Instance.ActiveAudioDeviceLister = deviceActiveLister;
+            
+            SetProcessDPIAware();
+
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
+            // Manage the Closing events send by Windows
+            // Since this app don't use a Form as "main window" the app doesn't close
+            // when it should without this.
+            WindowsAPIAdapter.RestartManagerTriggered += (sender, @event) =>
             {
-                if (KillOtherInstanceAndRestart(createdNew)) 
-                    return;
-
-                var deviceActiveLister = new CachedAudioDeviceLister(DeviceState.Active);
-                deviceActiveLister.Refresh().ConfigureAwait(false);
-                AppModel.Instance.ActiveAudioDeviceLister = deviceActiveLister;
-
-                // Windows Vista or newer.
-                if (Environment.OSVersion.Version.Major >= 6)
-                    SetProcessDPIAware();
-
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-
-                // Manage the Closing events send by Windows
-                // Since this app don't use a Form as "main window" the app doesn't close
-                // when it should without this.
-                WindowsAPIAdapter.RestartManagerTriggered += (sender, @event) =>
+                Log.Debug("Restart Event received: {Event}", @event);
+                switch (@event.Type)
                 {
-                    Log.Debug("Restart Event received: {Event}", @event);
-                    switch (@event.Type)
-                    {
-                        case WindowsAPIAdapter.RestartManagerEventType.Query:
-                            @event.Result = new IntPtr(1);
+                    case WindowsAPIAdapter.RestartManagerEventType.Query:
+                        @event.Result = new IntPtr(1);
 
-                            break;
-                        case WindowsAPIAdapter.RestartManagerEventType.EndSession:
-                        case WindowsAPIAdapter.RestartManagerEventType.ForceClose:
-                            Log.Debug("Close Application");
-                            Application.Exit();
-                            break;
-                    }
-                };
+                        break;
+                    case WindowsAPIAdapter.RestartManagerEventType.EndSession:
+                    case WindowsAPIAdapter.RestartManagerEventType.ForceClose:
+                        Log.Debug("Close Application");
+                        Application.Exit();
+                        break;
+                }
+            };
 
-                Log.Information("Set Tray Icon with Main");
+            Log.Information("Set Tray Icon with Main");
 #if !DEBUG
                 try
                 {
 #endif
-                MMNotificationClient.Instance.Register();
-                using (var icon = new TrayIcon())
+            MMNotificationClient.Instance.Register();
+            using (var icon = new TrayIcon())
+            {
+                AppModel.Instance.TrayIcon = icon;
+                AppModel.Instance.InitializeMain();
+                AppModel.Instance.NewVersionReleased += (sender, @event) =>
                 {
-
-                    AppModel.Instance.TrayIcon = icon;
-                    AppModel.Instance.InitializeMain();
-                    AppModel.Instance.NewVersionReleased += (sender, @event) =>
+                    if (@event.UpdateMode == UpdateMode.Silent)
                     {
-                        if (@event.UpdateMode == UpdateMode.Silent)
-                        {
-                            new AutoUpdater("/VERYSILENT /NOCANCEL /NORESTART", ApplicationPath.Default).Update(
-                                @event.Release, true);
-                        }
-                    };
-                    if (AppConfigs.Configuration.FirstRun)
-                    {
-                        icon.ShowSettings().ConfigureAwait(false);
-                        AppConfigs.Configuration.FirstRun = false;
-                        Log.Information("First run");
+                        new AutoUpdater("/VERYSILENT /NOCANCEL /NORESTART", ApplicationPath.Default).Update(
+                            @event.Release, true);
                     }
-
-                    Application.Run();
+                };
+                if (AppConfigs.Configuration.FirstRun)
+                {
+                    icon.ShowSettings().ConfigureAwait(false);
+                    AppConfigs.Configuration.FirstRun = false;
+                    Log.Information("First run");
                 }
+
+                Application.Run();
+            }
 #if !DEBUG
                 }
                 catch (Exception ex)
@@ -138,7 +137,7 @@ namespace SoundSwitch
                     HandleException(ex);
                 }
 #endif
-            }
+
 
             AppModel.Instance.ActiveAudioDeviceLister.Dispose();
             MMNotificationClient.Instance.UnRegister();
@@ -146,30 +145,19 @@ namespace SoundSwitch
             Log.CloseAndFlush();
         }
 
-        private static bool KillOtherInstanceAndRestart(bool createdNew)
+        private static bool KillOtherInstanceAndRestart(string pipeName, bool createdNew)
         {
-            var pipeName = Application.ProductName + Environment.UserName;
             //Mutex used by another instance of the app
             //Ask the other instance to stop and restart this instance to get the mutex again.
             if (!createdNew)
             {
-                try
-                {
-                    using var pipeClient = new NamedPipeClient(pipeName);
-                    pipeClient.SendMsg("Close");
-                    RestartApp();
-                    return true;
-                }
-                catch (Exception e)
-                {
-                    Log.Error(e, "Problem with starting named pipe client");
-                }
+                using var pipeClient = new NamedPipeClient(pipeName);
+                pipeClient.SendMsg("Close");
+                RestartApp();
+                return true;
             }
 
-            var pipeSecurity = new PipeSecurity();
-            pipeSecurity.AddAccessRule(new PipeAccessRule("Everyone", PipeAccessRights.ReadWrite | PipeAccessRights.CreateNewInstance, AccessControlType.Allow));
-
-            using var pipeServer = new NamedPipeServer(pipeName, pipeSecurity);
+            using var pipeServer = new NamedPipeServer(pipeName);
             pipeServer.Start(message =>
             {
                 if (message == "Close")
@@ -198,10 +186,10 @@ namespace SoundSwitch
         {
             var info = new ProcessStartInfo
             {
-                Arguments = $"/C ping 127.0.0.1 -n 3 && \"{ApplicationPath.Executable}\"",
-                WindowStyle = ProcessWindowStyle.Hidden,
+                Arguments      = $"/C ping 127.0.0.1 -n 3 && \"{ApplicationPath.Executable}\"",
+                WindowStyle    = ProcessWindowStyle.Hidden,
                 CreateNoWindow = true,
-                FileName = "cmd.exe"
+                FileName       = "cmd.exe"
             };
             Process.Start(info);
             Application.Exit();
@@ -223,6 +211,7 @@ namespace SoundSwitch
             {
                 exceptionMessage += $"\n{exception.InnerException.Message}";
             }
+
             var message =
                 $@"It seems {Application.ProductName} has crashed.
 
