@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-**What were you doing when it crashed ?*
+**What were you doing when it crashed ?**
 A clear and concise description of the action.
 
 **To Reproduce**
