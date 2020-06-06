@@ -17,8 +17,10 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.IO.Pipes;
 using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
+using System.Security.AccessControl;
 using System.Threading;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
@@ -76,8 +78,10 @@ namespace SoundSwitch
                    RestartApp();
                    return;
                 }
+                var pipeSecurity = new PipeSecurity();
+                pipeSecurity.AddAccessRule(new PipeAccessRule("Everyone", PipeAccessRights.ReadWrite | PipeAccessRights.CreateNewInstance, AccessControlType.Allow));
 
-                using var pipeServer = new NamedPipeServer(Application.ProductName);
+                using var pipeServer = new NamedPipeServer(Application.ProductName, pipeSecurity);
                 pipeServer.Start(message =>
                 {
                     if (message == "Close")
