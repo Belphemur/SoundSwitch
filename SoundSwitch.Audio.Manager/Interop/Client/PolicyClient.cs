@@ -48,7 +48,7 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
             }
             catch (COMException e) when((e.ErrorCode & ErrorConst.COM_ERROR_MASK) == ErrorConst.COM_ERROR_NOT_FOUND)
             {
-                throw new DeviceNotFoundException($"[Device Not Found] Can't set default as {devId} with role {eRole}", e, devId);
+                throw new DeviceNotFoundException($"Can't set default as {devId} with role {eRole}", e, devId);
             }
         }
 
