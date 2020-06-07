@@ -299,4 +299,10 @@ Banner: Koristi personalizirani prozor iznad svega, korisno unutar igri.</value>
   <data name="selected" xml:space="preserve">
     <value>Izabrano</value>
   </data>
+  <data name="profile.error.device-not-found" xml:space="preserve">
+    <value>Uređaj {0} nije pronađen.</value>
+  </data>
+  <data name="hotkeyEnabled" xml:space="preserve">
+    <value>Prečac aktiviran</value>
+  </data>
 </root>
