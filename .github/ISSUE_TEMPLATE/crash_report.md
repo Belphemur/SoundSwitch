@@ -2,7 +2,7 @@
 name: Crash report
 about: Upload your ZIP crash file for us to investigate
 title: ''
-labels: Bug, Crash
+labels: Bug-Crash
 assignees: ''
 
 ---
