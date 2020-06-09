@@ -123,7 +123,7 @@ namespace SoundSwitch
                 };
                 if (AppConfigs.Configuration.FirstRun)
                 {
-                    icon.ShowSettings().ConfigureAwait(false);
+                    icon.ShowSettings();
                     AppConfigs.Configuration.FirstRun = false;
                     Log.Information("First run");
                 }

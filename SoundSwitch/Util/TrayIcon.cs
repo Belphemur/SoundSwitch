@@ -83,7 +83,7 @@ namespace SoundSwitch.Util
 
             PopulateSettingsMenu();
 
-            _selectionMenu.Items.Add(TrayIconStrings.noDevicesSelected, RessourceSettingsSmallBitmap, (sender, e) => ShowSettings().ConfigureAwait(false));
+            _selectionMenu.Items.Add(TrayIconStrings.noDevicesSelected, RessourceSettingsSmallBitmap, async (sender, e) => await ShowSettings());
 
             NotifyIcon.MouseDoubleClick += (sender, args) =>
             {
@@ -169,7 +169,7 @@ namespace SoundSwitch.Util
                 (sender, e) => { Process.Start(new ProcessStartInfo("sndvol.exe")); });
             _settingsMenu.Items.Add("-");
             _settingsMenu.Items.Add(_updateMenuItem);
-            _settingsMenu.Items.Add(TrayIconStrings.settings, RessourceSettingsSmallBitmap, (sender, e) => ShowSettings().ConfigureAwait(false));
+            _settingsMenu.Items.Add(TrayIconStrings.settings, RessourceSettingsSmallBitmap, async (sender, e) => await ShowSettings());
             _settingsMenu.Items.Add("-");
             _settingsMenu.Items.Add(TrayIconStrings.help, RessourceInfoHelpBitmap, (sender, e) =>
             {
@@ -271,11 +271,10 @@ namespace SoundSwitch.Util
             _animationTimer.Stop();
             UpdateIcon();
         }
-        public async Task ShowSettings()
+        public Task ShowSettings()
         {
             var settingsForm = new SettingsForm();
-            await settingsForm.AsyncInit();
-            _context.Send(s => { settingsForm.Show(); }, null);
+            return settingsForm.ShowAsync();
         }
 
         /// <summary>

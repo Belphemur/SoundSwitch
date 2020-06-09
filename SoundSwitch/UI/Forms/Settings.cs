@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
@@ -47,12 +48,14 @@ namespace SoundSwitch.UI.Forms
     public sealed partial class SettingsForm : Form
     {
         private static readonly Icon RessourceSettingsIcon = Resources.SettingsIcon;
+        private readonly SynchronizationContext _synchronizationContext;
 
         private bool _loaded;
         private CachedAudioDeviceLister _audioDeviceLister;
 
         public SettingsForm()
         {
+            _synchronizationContext = SynchronizationContext.Current;
             // Form itself
             InitializeComponent();
             Icon = RessourceSettingsIcon;
@@ -242,18 +245,23 @@ namespace SoundSwitch.UI.Forms
             }
         }
 
-        public async Task AsyncInit()
+        public async Task ShowAsync()
         {
             // Playback and Recording
             _audioDeviceLister = new CachedAudioDeviceLister(DeviceState.Unplugged | DeviceState.Active);
             await _audioDeviceLister.Refresh();
-            PopulateAudioDevices();
-            playbackListView.SetGroupsState(ListViewGroupState.Collapsible);
-            recordingListView.SetGroupsState(ListViewGroupState.Collapsible);
-            // Profiles
-            PopulateProfiles();
+            _synchronizationContext.Post(state =>
+            {
+                PopulateAudioDevices();
+                playbackListView.SetGroupsState(ListViewGroupState.Collapsible);
+                recordingListView.SetGroupsState(ListViewGroupState.Collapsible);
+                // Profiles
+                PopulateProfiles();
 
-            _loaded = true;
+                _loaded = true;
+                Show();
+            },this);
+          
         }
 
         private void PopulateAudioDevices()
