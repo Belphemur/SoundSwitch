@@ -228,21 +228,19 @@ namespace SoundSwitch.Framework.WinApi
             switch (m.Msg)
             {
                 case WM_QUERYENDSESSION:
-                    if (ConvertLParam(m.LParam) != ENDSESSION_CLOSEAPP)
-                        break;
                     var closingEvent = new RestartManagerEvent(RestartManagerEventType.Query);
                     RestartManagerTriggered?.Invoke(this, closingEvent);
                     m.Result = closingEvent.Result;
+                    Log.Information($"Received WM_QUERYENDSESSION responded {m.Result}");
                     break;
                 case WM_ENDSESSION:
-                    if (ConvertLParam(m.LParam) != ENDSESSION_CLOSEAPP)
-                        break;
                     RestartManagerTriggered?.Invoke(this, new RestartManagerEvent(RestartManagerEventType.EndSession));
+                    Log.Information("Received WM_ENDSESSION");
                     break;
 
                 case WM_CLOSE:
-                    RestartManagerTriggered?.Invoke(this,
-                        new RestartManagerEvent(RestartManagerEventType.ForceClose));
+                    RestartManagerTriggered?.Invoke(this, new RestartManagerEvent(RestartManagerEventType.ForceClose));
+                    Log.Information("Received WM_CLOSE");
                     break;
                 case WM_DEVICECHANGE:
                     DeviceChanged?.Invoke(this, new DeviceChangeEvent());
@@ -302,7 +300,7 @@ namespace SoundSwitch.Framework.WinApi
         {
             public RestartManagerEvent(RestartManagerEventType type)
             {
-                Result = new IntPtr(0);
+                Result = new IntPtr(1);
                 Type = type;
             }
 
