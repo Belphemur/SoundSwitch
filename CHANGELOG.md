@@ -1,5 +1,33 @@
 # Changelog
 
+## [v5.4.0](https://github.com/Belphemur/SoundSwitch/tree/v5.4.0) (2020-06-10)
+
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v5.3.1...v5.4.0)
+
+**Implemented enhancements:**
+
+- Make an item in the menu for the Community / Discord [\#472](https://github.com/Belphemur/SoundSwitch/issues/472)
+- SoundSwitch - Forum, Discord Chat & FAQs. [\#470](https://github.com/Belphemur/SoundSwitch/issues/470)
+- Add Croatian to the app [\#465](https://github.com/Belphemur/SoundSwitch/issues/465)
+
+**Fixed bugs:**
+
+- Banner + acoustic signal when switching output device [\#471](https://github.com/Belphemur/SoundSwitch/issues/471)
+- Settings Tab Not Displaying Correctly [\#467](https://github.com/Belphemur/SoundSwitch/issues/467)
+- SoundSwitch crash at boot: Instance not initialized [\#464](https://github.com/Belphemur/SoundSwitch/issues/464)
+- SoundSwitch crash at start: Named Pipe access denied [\#463](https://github.com/Belphemur/SoundSwitch/issues/463)
+- Crash when switching to a profile where the device isn't connected [\#462](https://github.com/Belphemur/SoundSwitch/issues/462)
+- SwoundSwitch preventing Windows 10 Sleep mode [\#439](https://github.com/Belphemur/SoundSwitch/issues/439)
+
+**Closed issues:**
+
+- Soundswitch crashes at startup [\#468](https://github.com/Belphemur/SoundSwitch/issues/468)
+- Unable to donate via PayPal [\#312](https://github.com/Belphemur/SoundSwitch/issues/312)
+
+**Merged pull requests:**
+
+- feature/ui-improvements: Various small improvements for the UI [\#461](https://github.com/Belphemur/SoundSwitch/pull/461) ([FireEmerald](https://github.com/FireEmerald))
+
 ## [v5.3.1](https://github.com/Belphemur/SoundSwitch/tree/v5.3.1) (2020-05-31)
 
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v5.3.0...v5.3.1)
@@ -45,7 +73,6 @@
 **Merged pull requests:**
 
 - Net core 3.1 [\#454](https://github.com/Belphemur/SoundSwitch/pull/454) ([Belphemur](https://github.com/Belphemur))
-- Close the log file before packing to zip [\#435](https://github.com/Belphemur/SoundSwitch/pull/435) ([moomons](https://github.com/moomons))
 
 ## [v5.1.1](https://github.com/Belphemur/SoundSwitch/tree/v5.1.1) (2020-05-17)
 
@@ -93,6 +120,7 @@
 
 **Merged pull requests:**
 
+- Close the log file before packing to zip [\#435](https://github.com/Belphemur/SoundSwitch/pull/435) ([moomons](https://github.com/moomons))
 - Fix NullReferenceException when the last playback device is disabled [\#433](https://github.com/Belphemur/SoundSwitch/pull/433) ([moomons](https://github.com/moomons))
 - Fix crash at startup when all playback devices are disabled [\#428](https://github.com/Belphemur/SoundSwitch/pull/428) ([moomons](https://github.com/moomons))
 - Reconnected devices are not added back to the selected list [\#426](https://github.com/Belphemur/SoundSwitch/pull/426) ([ys27](https://github.com/ys27))
@@ -156,10 +184,6 @@
 ## [v4.17.1](https://github.com/Belphemur/SoundSwitch/tree/v4.17.1) (2019-12-26)
 
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.17.0...v4.17.1)
-
-**Implemented enhancements:**
-
-- Combined hotkey for In+Output device [\#110](https://github.com/Belphemur/SoundSwitch/issues/110)
 
 **Fixed bugs:**
 
@@ -315,10 +339,6 @@
 
 - Switch the foreground app also \[WIN10\] [\#334](https://github.com/Belphemur/SoundSwitch/issues/334)
 
-**Closed issues:**
-
-- \[Bug\] No Logitech G533 after updating soundswitch to 4.13 [\#331](https://github.com/Belphemur/SoundSwitch/issues/331)
-
 ## [v4.13.0](https://github.com/Belphemur/SoundSwitch/tree/v4.13.0) (2019-03-21)
 
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v4.12...v4.13.0)
@@ -331,6 +351,7 @@
 
 **Closed issues:**
 
+- \[Bug\] No Logitech G533 after updating soundswitch to 4.13 [\#331](https://github.com/Belphemur/SoundSwitch/issues/331)
 - Link Playback and Recording devices together [\#328](https://github.com/Belphemur/SoundSwitch/issues/328)
 - Installer crashing [\#327](https://github.com/Belphemur/SoundSwitch/issues/327)
 - \[Feature\] Switch device on single click on tray icon [\#325](https://github.com/Belphemur/SoundSwitch/issues/325)
@@ -620,9 +641,17 @@
 
 - Recording device hotkey doesn't cycle [\#191](https://github.com/Belphemur/SoundSwitch/issues/191)
 
+**Merged pull requests:**
+
+- Translations [\#190](https://github.com/Belphemur/SoundSwitch/pull/190) ([Belphemur](https://github.com/Belphemur))
+
 ## [v3.14.2](https://github.com/Belphemur/SoundSwitch/tree/v3.14.2) (2017-05-25)
 
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.14.1...v3.14.2)
+
+**Fixed bugs:**
+
+- Unresponsive after RDC [\#112](https://github.com/Belphemur/SoundSwitch/issues/112)
 
 **Closed issues:**
 
@@ -697,7 +726,6 @@
 
 **Merged pull requests:**
 
-- Translations [\#190](https://github.com/Belphemur/SoundSwitch/pull/190) ([Belphemur](https://github.com/Belphemur))
 - Assigned values to DeviceCyclerTypeEnum and NotificationTypeEnum entries. [\#162](https://github.com/Belphemur/SoundSwitch/pull/162) ([FireEmerald](https://github.com/FireEmerald))
 - Translated some strings into German introduced in 4dedc42. [\#160](https://github.com/Belphemur/SoundSwitch/pull/160) ([FireEmerald](https://github.com/FireEmerald))
 
@@ -829,12 +857,12 @@
 **Implemented enhancements:**
 
 - Update to .NET 4.6.2 [\#118](https://github.com/Belphemur/SoundSwitch/issues/118)
-- Request: WinKey as modifier [\#109](https://github.com/Belphemur/SoundSwitch/issues/109)
+- Accessing 'help' at any time [\#105](https://github.com/Belphemur/SoundSwitch/issues/105)
+- Request: Notification pop up with custom sound? [\#73](https://github.com/Belphemur/SoundSwitch/issues/73)
 
 **Fixed bugs:**
 
 - Don't switch to already default device [\#117](https://github.com/Belphemur/SoundSwitch/issues/117)
-- Unresponsive after RDC [\#112](https://github.com/Belphemur/SoundSwitch/issues/112)
 
 **Closed issues:**
 
@@ -843,6 +871,10 @@
 ## [v3.11.0](https://github.com/Belphemur/SoundSwitch/tree/v3.11.0) (2016-08-21)
 
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.10.2...v3.11.0)
+
+**Implemented enhancements:**
+
+- Request: WinKey as modifier [\#109](https://github.com/Belphemur/SoundSwitch/issues/109)
 
 **Fixed bugs:**
 
@@ -859,7 +891,7 @@
 
 **Implemented enhancements:**
 
-- Accessing 'help' at any time [\#105](https://github.com/Belphemur/SoundSwitch/issues/105)
+- Combined hotkey for In+Output device [\#110](https://github.com/Belphemur/SoundSwitch/issues/110)
 
 **Fixed bugs:**
 
@@ -935,7 +967,6 @@
 
 **Implemented enhancements:**
 
-- Request: Notification pop up with custom sound? [\#73](https://github.com/Belphemur/SoundSwitch/issues/73)
 - Add a "stealth" component to the Auto-Update [\#64](https://github.com/Belphemur/SoundSwitch/issues/64)
 
 **Fixed bugs:**
@@ -1017,6 +1048,7 @@
 **Fixed bugs:**
 
 - SoundSwitch crash when disabling all Playback devices in the Control Panel [\#57](https://github.com/Belphemur/SoundSwitch/issues/57)
+- Notification settings reset when Soundswitch closes when choosing "No Notification" \(3.8.2.25464\) [\#56](https://github.com/Belphemur/SoundSwitch/issues/56)
 
 ## [v3.8.2](https://github.com/Belphemur/SoundSwitch/tree/v3.8.2) (2015-12-30)
 
@@ -1032,7 +1064,6 @@
 
 **Fixed bugs:**
 
-- Notification settings reset when Soundswitch closes when choosing "No Notification" \(3.8.2.25464\) [\#56](https://github.com/Belphemur/SoundSwitch/issues/56)
 - Soundswitch 3.7.0.23142 crashed when I tried to update it through the update button. [\#54](https://github.com/Belphemur/SoundSwitch/issues/54)
 - App Freeze when using Sound Notification and Unplug device while sound playing. [\#53](https://github.com/Belphemur/SoundSwitch/issues/53)
 - Crashes everytime I try to use it  [\#51](https://github.com/Belphemur/SoundSwitch/issues/51)
@@ -1154,6 +1185,10 @@
 
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.4.0...v3.4.1)
 
+**Implemented enhancements:**
+
+- Access the Windows Sound Mixer [\#18](https://github.com/Belphemur/SoundSwitch/issues/18)
+
 **Fixed bugs:**
 
 - crashes on start: IndexOutOfRangeException [\#23](https://github.com/Belphemur/SoundSwitch/issues/23)
@@ -1185,7 +1220,6 @@
 
 **Implemented enhancements:**
 
-- Access the Windows Sound Mixer [\#18](https://github.com/Belphemur/SoundSwitch/issues/18)
 - Update Icons to higher quality [\#17](https://github.com/Belphemur/SoundSwitch/issues/17)
 - Add devices icons in the Settings Form [\#16](https://github.com/Belphemur/SoundSwitch/issues/16)
 - Use AudioEndPointLibrary to manage audio devices [\#15](https://github.com/Belphemur/SoundSwitch/issues/15)
