@@ -184,4 +184,7 @@
   <data name="program" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\program.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="DiscordIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\discord.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
