@@ -185,6 +185,8 @@ namespace SoundSwitch.Model
         }
 
         public IAudioDeviceLister ActiveAudioDeviceLister { get; set; }
+        
+        public IAudioDeviceLister ActiveUnpluggedAudioLister { get; set; }
         public event EventHandler<NotificationSettingsUpdatedEvent> NotificationSettingsChanged;
         public event EventHandler<CustomSoundChangedEvent> CustomSoundChanged;
 

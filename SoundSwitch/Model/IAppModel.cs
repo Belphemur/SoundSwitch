@@ -103,6 +103,13 @@ namespace SoundSwitch.Model
         /// </summary>
         ProfileManager ProfileManager { get; }
 
+        /// <summary>
+        /// Return a list of device that are either Active or Unplugged
+        ///
+        /// Useful for setting menu
+        /// </summary>
+        IAudioDeviceLister ActiveUnpluggedAudioLister { get; set; }
+
         #endregion
 
         #region Events

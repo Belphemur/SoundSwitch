@@ -135,6 +135,7 @@ namespace SoundSwitch
 
 
             AppModel.Instance.ActiveAudioDeviceLister.Dispose();
+            AppModel.Instance.ActiveUnpluggedAudioLister.Dispose();
             MMNotificationClient.Instance.UnRegister();
             WindowsAPIAdapter.Stop();
             Log.CloseAndFlush();
@@ -143,8 +144,11 @@ namespace SoundSwitch
         private static async Task InitAsync(TrayIcon icon)
         {
             var deviceActiveLister = new CachedAudioDeviceLister(DeviceState.Active);
-            await deviceActiveLister.Refresh();
+            var deviceUnpluggedActiveLister = new CachedAudioDeviceLister(DeviceState.Active | DeviceState.Unplugged);
+            await Task.WhenAll(deviceActiveLister.Refresh(), deviceUnpluggedActiveLister.Refresh());
+            
             AppModel.Instance.ActiveAudioDeviceLister = deviceActiveLister;
+            AppModel.Instance.ActiveUnpluggedAudioLister = deviceUnpluggedActiveLister;
 
             AppModel.Instance.TrayIcon = icon;
             AppModel.Instance.InitializeMain();
