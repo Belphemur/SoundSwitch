@@ -388,6 +388,7 @@ namespace SoundSwitch.UI.Forms
             // 
             // deleteSoundButton
             // 
+            this.deleteSoundButton.Image = global::SoundSwitch.Properties.Resources.delete;
             this.deleteSoundButton.Location = new System.Drawing.Point(391, 77);
             this.deleteSoundButton.Name = "deleteSoundButton";
             this.deleteSoundButton.Size = new System.Drawing.Size(23, 23);
