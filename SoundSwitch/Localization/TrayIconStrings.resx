@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
 	<!-- 
     Microsoft ResX Schema 
@@ -179,5 +179,8 @@
 	</data>
 	<data name="iconChanger.both" xml:space="preserve">
 		<value>Both</value>
+	</data>
+	<data name="communityMenu" xml:space="preserve">
+		<value>Community</value>
 	</data>
 </root>

@@ -52,6 +52,7 @@ namespace SoundSwitch.UI.Component
         private static readonly Bitmap RessourceExitBitmap = Resources.exit;
         private static readonly Icon RessourceUpdateIconBitmap = Resources.UpdateIcon;
         private static readonly Icon SoundSwitchLogoIcon = Resources.Switch_SoundWave;
+        private static readonly Icon ResourceDiscord = Resources.DiscordIcon;
 
         private readonly ContextMenuStrip _selectionMenu = new ContextMenuStrip();
         private readonly ContextMenuStrip _settingsMenu = new ContextMenuStrip();
@@ -172,7 +173,6 @@ namespace SoundSwitch.UI.Component
             _settingsMenu.Items.Add("-");
             _settingsMenu.Items.Add(TrayIconStrings.help, RessourceInfoHelpBitmap, (sender, e) =>
             {
-                BrowserUtil.OpenUrl("https://discord.gg/gUCw3Ue");
                 if (!File.Exists(readmeHtml))
                 {
                     Log.Error("File {readme} doesn\'t exists", readmeHtml);
@@ -180,6 +180,10 @@ namespace SoundSwitch.UI.Component
                 }
 
                 BrowserUtil.OpenUrl(readmeHtml);
+            });
+            _settingsMenu.Items.Add(TrayIconStrings.communityMenu, ResourceDiscord.ToBitmap(), (sender, e) =>
+            {
+                BrowserUtil.OpenUrl("https://discord.gg/gUCw3Ue");
             });
             _settingsMenu.Items.Add(TrayIconStrings.donate, ResourceDonateBitmap,
                 (sender, e) => BrowserUtil.OpenUrl("https://soundswitch.aaflalo.me/?utm_source=application#donate"));

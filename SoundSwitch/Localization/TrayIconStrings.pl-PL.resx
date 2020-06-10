@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
 	<!-- 
     Microsoft ResX Schema 
@@ -180,4 +180,7 @@
 	<data name="versionAvailable" xml:space="preserve">
     <value>Uaktualnienie dla SoundSwitch ({0}) jest dostępne.</value>
   </data>
+	<data name="communityMenu" xml:space="preserve">
+		<value>Społeczność</value>
+	</data>
 </root>
