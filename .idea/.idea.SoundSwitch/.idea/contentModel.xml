@@ -275,6 +275,7 @@
               <e p="ListViewExtended.cs" t="Include" />
             </e>
             <e p="TextProgressBar.cs" t="Include" />
+            <e p="TrayIcon.cs" t="Include" />
           </e>
           <e p="Forms" t="Include">
             <e p="About.cs" t="Include" />
@@ -299,7 +300,6 @@
             <e p="DebounceDispatcher.cs" t="Include" />
           </e>
           <e p="ToolStripDeviceItem.cs" t="Include" />
-          <e p="TrayIcon.cs" t="Include" />
           <e p="Url" t="Include">
             <e p="BrowserUtil.cs" t="Include" />
           </e>

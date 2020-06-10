@@ -22,6 +22,7 @@ using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
 using Serilog;
@@ -35,6 +36,7 @@ using SoundSwitch.Framework.Updater;
 using SoundSwitch.InterProcess.Communication;
 using SoundSwitch.Localization.Factory;
 using SoundSwitch.Model;
+using SoundSwitch.UI.Component;
 using SoundSwitch.Util;
 using WindowsAPIAdapter = SoundSwitch.Framework.WinApi.WindowsAPIAdapter;
 
@@ -49,23 +51,23 @@ namespace SoundSwitch
         [STAThread]
         private static void Main()
         {
-            
             InitializeLogger();
             Log.Information("Application Starts");
 #if !DEBUG
-                AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
-                {
-                    HandleException((Exception)args.ExceptionObject);
-                };
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+            {
+                HandleException((Exception) args.ExceptionObject);
+            };
 
-                Log.Information("Set Exception Handler");
-                Application.ThreadException += Application_ThreadException;
-                Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-                WindowsAPIAdapter.Start(Application_ThreadException);
+            Log.Information("Set Exception Handler");
+            Application.ThreadException += Application_ThreadException;
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+            WindowsAPIAdapter.Start(Application_ThreadException);
 #else
             WindowsAPIAdapter.Start();
 #endif
             Thread.CurrentThread.CurrentUICulture = new LanguageFactory().Get(AppModel.Instance.Language).CultureInfo;
+            Thread.CurrentThread.Name = "Main Thread";
             var userMutexName = Application.ProductName + Environment.UserName;
 
             using var mainMutex = new Mutex(true, Application.ProductName);
@@ -74,10 +76,7 @@ namespace SoundSwitch
             if (KillOtherInstanceAndRestart(userMutexName, userMutexInUse))
                 return;
 
-            var deviceActiveLister = new CachedAudioDeviceLister(DeviceState.Active);
-            deviceActiveLister.Refresh().ConfigureAwait(false);
-            AppModel.Instance.ActiveAudioDeviceLister = deviceActiveLister;
-            
+
             SetProcessDPIAware();
 
             Application.EnableVisualStyles();
@@ -105,37 +104,33 @@ namespace SoundSwitch
 
             Log.Information("Set Tray Icon with Main");
 #if !DEBUG
+            try
+            {
+#endif
+                MMNotificationClient.Instance.Register();
+
+
+                using var ctx = new WindowsFormsSynchronizationContext();
+                using var icon = new TrayIcon();
+
+                SynchronizationContext.SetSynchronizationContext(ctx);
                 try
                 {
-#endif
-            MMNotificationClient.Instance.Register();
-            using (var icon = new TrayIcon())
-            {
-                AppModel.Instance.TrayIcon = icon;
-                AppModel.Instance.InitializeMain();
-                AppModel.Instance.NewVersionReleased += (sender, @event) =>
+                    ctx.Post(async iconState => await InitAsync((TrayIcon)iconState), icon);
+                    Application.Run();
+                }
+                finally
                 {
-                    if (@event.UpdateMode == UpdateMode.Silent)
-                    {
-                        new AutoUpdater("/VERYSILENT /NOCANCEL /NORESTART", ApplicationPath.Default).Update(
-                            @event.Release, true);
-                    }
-                };
-                if (AppConfigs.Configuration.FirstRun)
-                {
-                    icon.ShowSettings();
-                    AppConfigs.Configuration.FirstRun = false;
-                    Log.Information("First run");
+                    SynchronizationContext.SetSynchronizationContext(null);
                 }
 
-                Application.Run();
-            }
+
 #if !DEBUG
-                }
-                catch (Exception ex)
-                {
-                    HandleException(ex);
-                }
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
 #endif
 
 
@@ -143,6 +138,32 @@ namespace SoundSwitch
             MMNotificationClient.Instance.UnRegister();
             WindowsAPIAdapter.Stop();
             Log.CloseAndFlush();
+        }
+
+        private static async Task InitAsync(TrayIcon icon)
+        {
+            var deviceActiveLister = new CachedAudioDeviceLister(DeviceState.Active);
+            await deviceActiveLister.Refresh();
+            AppModel.Instance.ActiveAudioDeviceLister = deviceActiveLister;
+
+            AppModel.Instance.TrayIcon = icon;
+            AppModel.Instance.InitializeMain();
+            AppModel.Instance.NewVersionReleased += (sender, @event) =>
+            {
+                if (@event.UpdateMode == UpdateMode.Silent)
+                {
+                    new AutoUpdater("/VERYSILENT /NOCANCEL /NORESTART", ApplicationPath.Default).Update(
+                        @event.Release, true);
+                }
+            };
+
+
+            if (AppConfigs.Configuration.FirstRun)
+            {
+                await icon.ShowSettings();
+                AppConfigs.Configuration.FirstRun = false;
+                Log.Information("First run");
+            }
         }
 
         private static bool KillOtherInstanceAndRestart(string pipeName, bool createdNew)
@@ -174,7 +195,8 @@ namespace SoundSwitch
         private static void InitializeLogger()
         {
             LoggerConfigurator.ConfigureLogger();
-            Log.Information($"{Application.ProductName}  {AssemblyUtils.GetReleaseState()} ({Application.ProductVersion})");
+            Log.Information(
+                $"{Application.ProductName}  {AssemblyUtils.GetReleaseState()} ({Application.ProductVersion})");
             Log.Information($"OS: {Environment.OSVersion}");
             Log.Information($"Framework: {Environment.Version}");
         }
@@ -186,10 +208,10 @@ namespace SoundSwitch
         {
             var info = new ProcessStartInfo
             {
-                Arguments      = $"/C ping 127.0.0.1 -n 3 && \"{ApplicationPath.Executable}\"",
-                WindowStyle    = ProcessWindowStyle.Hidden,
+                Arguments = $"/C ping 127.0.0.1 -n 3 && \"{ApplicationPath.Executable}\"",
+                WindowStyle = ProcessWindowStyle.Hidden,
                 CreateNoWindow = true,
-                FileName       = "cmd.exe"
+                FileName = "cmd.exe"
             };
             Process.Start(info);
             Application.Exit();

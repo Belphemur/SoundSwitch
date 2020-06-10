@@ -32,6 +32,7 @@ using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Localization.Factory;
+using SoundSwitch.UI.Component;
 using SoundSwitch.Util.Timer;
 using HotKey = SoundSwitch.Framework.WinApi.Keyboard.HotKey;
 using WindowsAPIAdapter = SoundSwitch.Framework.WinApi.WindowsAPIAdapter;

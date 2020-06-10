@@ -17,17 +17,15 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
 using Serilog;
-using SoundSwitch.Audio.Manager;
-using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework;
+using SoundSwitch.Framework.Audio.Lister;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.TrayIcon.Icon;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
@@ -36,10 +34,11 @@ using SoundSwitch.Localization;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
 using SoundSwitch.UI.Forms;
+using SoundSwitch.Util;
 using SoundSwitch.Util.Url;
 using TimerForm = System.Windows.Forms.Timer;
 
-namespace SoundSwitch.Util
+namespace SoundSwitch.UI.Component
 {
     public sealed class TrayIcon : IDisposable
     {
@@ -271,10 +270,14 @@ namespace SoundSwitch.Util
             _animationTimer.Stop();
             UpdateIcon();
         }
-        public Task ShowSettings()
+        public async Task ShowSettings()
         {
-            var settingsForm = new SettingsForm();
-            return settingsForm.ShowAsync();
+            var audioDeviceLister = new CachedAudioDeviceLister(DeviceState.Unplugged | DeviceState.Active);
+            await audioDeviceLister.Refresh();
+            _context.Post(state =>
+            {
+                 new SettingsForm(audioDeviceLister).Show();
+            }, null);
         }
 
         /// <summary>

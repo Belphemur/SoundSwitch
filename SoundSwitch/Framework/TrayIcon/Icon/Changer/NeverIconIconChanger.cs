@@ -15,12 +15,12 @@ namespace SoundSwitch.Framework.TrayIcon.Icon.Changer
             return false;
         }
 
-        public void ChangeIcon(Util.TrayIcon trayIcon)
+        public void ChangeIcon(UI.Component.TrayIcon trayIcon)
         {
             trayIcon.ReplaceIcon(Resources.Switch_SoundWave);
         }
 
-        public void ChangeIcon(Util.TrayIcon trayIcon, DeviceFullInfo deviceInfo)
+        public void ChangeIcon(UI.Component.TrayIcon trayIcon, DeviceFullInfo deviceInfo)
         {
         }
     }

@@ -16,11 +16,11 @@ namespace SoundSwitch.Framework.TrayIcon.Icon
         /// Change the icon to the current default device
         /// </summary>
         /// <param name="trayIcon"></param>
-        void ChangeIcon(Util.TrayIcon trayIcon);
+        void ChangeIcon(UI.Component.TrayIcon trayIcon);
         
         /// <summary>
         ///  Change icon to selected device if match the condition
         /// </summary>
-        void ChangeIcon(Util.TrayIcon trayIcon, DeviceFullInfo deviceInfo);
+        void ChangeIcon(UI.Component.TrayIcon trayIcon, DeviceFullInfo deviceInfo);
     }
 }

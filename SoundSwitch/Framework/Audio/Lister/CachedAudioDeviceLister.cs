@@ -67,8 +67,9 @@ namespace SoundSwitch.Framework.Audio.Lister
                 Log.Information("Refreshed recordings: {@Recordings}", recordings.Select(info => new {Name = info.Name, Id = info.Id}));
                 return recordings;
             }));
-            PlaybackDevices = await playbackTask;
-            RecordingDevices = await recordingTask;
+            var result = await Task.WhenAll(playbackTask, recordingTask);
+            PlaybackDevices = result[0];
+            RecordingDevices = result[1];
 
             Log.Information("Refreshed device of state {@State}", _state);
         }

@@ -18,8 +18,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Common.Framework.Audio.Device;
@@ -48,14 +46,13 @@ namespace SoundSwitch.UI.Forms
     public sealed partial class SettingsForm : Form
     {
         private static readonly Icon RessourceSettingsIcon = Resources.SettingsIcon;
-        private readonly SynchronizationContext _synchronizationContext;
 
         private bool _loaded;
         private CachedAudioDeviceLister _audioDeviceLister;
 
-        public SettingsForm()
+        public SettingsForm(CachedAudioDeviceLister audioDeviceLister)
         {
-            _synchronizationContext = SynchronizationContext.Current;
+            _audioDeviceLister = audioDeviceLister;
             // Form itself
             InitializeComponent();
             Icon = RessourceSettingsIcon;
@@ -168,6 +165,19 @@ namespace SoundSwitch.UI.Forms
             // Settings - Language
             new LanguageFactory().ConfigureListControl(languageComboBox);
             languageComboBox.SelectedValue = AppModel.Instance.Language;
+            
+            PopulateSettings();
+
+            _loaded = true;
+        }
+
+        private void PopulateSettings()
+        {
+            PopulateAudioDevices();
+            playbackListView.SetGroupsState(ListViewGroupState.Collapsible);
+            recordingListView.SetGroupsState(ListViewGroupState.Collapsible);
+            // Profiles
+            PopulateProfiles();
         }
 
         private void PopulateProfiles()
@@ -187,10 +197,10 @@ namespace SoundSwitch.UI.Forms
         {
             ListViewItem ProfileToListViewItem(ProfileSetting profile)
             {
-                var listViewItem = new ListViewItem(profile.ProfileName) {Tag = profile};
-                Icon appIcon = null;
-                DeviceFullInfo recording = null;
-                DeviceFullInfo playback = null;
+                var            listViewItem = new ListViewItem(profile.ProfileName) {Tag = profile};
+                Icon           appIcon      = null;
+                DeviceFullInfo recording    = null;
+                DeviceFullInfo playback     = null;
                 if (!string.IsNullOrEmpty(profile.ApplicationPath))
                 {
                     try
@@ -243,25 +253,6 @@ namespace SoundSwitch.UI.Forms
                     column.Width = -2;
                 }
             }
-        }
-
-        public async Task ShowAsync()
-        {
-            // Playback and Recording
-            _audioDeviceLister = new CachedAudioDeviceLister(DeviceState.Unplugged | DeviceState.Active);
-            await _audioDeviceLister.Refresh();
-            _synchronizationContext.Post(state =>
-            {
-                PopulateAudioDevices();
-                playbackListView.SetGroupsState(ListViewGroupState.Collapsible);
-                recordingListView.SetGroupsState(ListViewGroupState.Collapsible);
-                // Profiles
-                PopulateProfiles();
-
-                _loaded = true;
-                Show();
-            },this);
-          
         }
 
         private void PopulateAudioDevices()

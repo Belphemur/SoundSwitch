@@ -15,7 +15,7 @@ namespace SoundSwitch.Framework.TrayIcon.Icon.Changer
             return true;
         }
 
-        public override void ChangeIcon(Util.TrayIcon trayIcon)
+        public override void ChangeIcon(UI.Component.TrayIcon trayIcon)
         {
             using var enumerator = new MMDeviceEnumerator();
             try

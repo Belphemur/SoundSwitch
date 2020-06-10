@@ -24,6 +24,7 @@ using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Localization;
 using SoundSwitch.Localization.Factory;
+using SoundSwitch.UI.Component;
 using SoundSwitch.Util;
 using HotKey = SoundSwitch.Framework.WinApi.Keyboard.HotKey;
 

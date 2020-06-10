@@ -15,7 +15,7 @@ namespace SoundSwitch.Framework.TrayIcon.Icon.Changer
             return deviceInfo.Type == DataFlow.Render;
         }
 
-        public override void ChangeIcon(Util.TrayIcon trayIcon)
+        public override void ChangeIcon(UI.Component.TrayIcon trayIcon)
         {
             using var enumerator = new MMDeviceEnumerator();
             using var defaultAudio = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console);

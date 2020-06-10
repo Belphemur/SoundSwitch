@@ -7,9 +7,9 @@ namespace SoundSwitch.Framework.TrayIcon.Icon.Changer
         public abstract IconChangerFactory.ActionEnum TypeEnum { get; }
         public abstract string Label { get; }
         public abstract bool NeedsToChangeIcon(DeviceInfo deviceInfo);
-        public abstract void ChangeIcon(Util.TrayIcon trayIcon);
+        public abstract void ChangeIcon(UI.Component.TrayIcon trayIcon);
 
-        public void ChangeIcon(Util.TrayIcon trayIcon, DeviceFullInfo deviceInfo)
+        public void ChangeIcon(UI.Component.TrayIcon trayIcon, DeviceFullInfo deviceInfo)
         {
             if (!NeedsToChangeIcon(deviceInfo)) return;
             trayIcon.ReplaceIcon(deviceInfo.SmallIcon);
