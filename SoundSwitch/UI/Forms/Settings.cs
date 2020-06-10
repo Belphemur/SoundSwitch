@@ -48,9 +48,9 @@ namespace SoundSwitch.UI.Forms
         private static readonly Icon RessourceSettingsIcon = Resources.SettingsIcon;
 
         private bool _loaded;
-        private CachedAudioDeviceLister _audioDeviceLister;
+        private IAudioDeviceLister _audioDeviceLister;
 
-        public SettingsForm(CachedAudioDeviceLister audioDeviceLister)
+        public SettingsForm(IAudioDeviceLister audioDeviceLister)
         {
             _audioDeviceLister = audioDeviceLister;
             // Form itself
