@@ -1,6 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
-	<!-- 
+  <!-- 
     Microsoft ResX Schema 
     
     Version 2.0
@@ -59,11 +59,11 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
 					<xsd:element name="metadata">
 						<xsd:complexType>
 							<xsd:sequence>
@@ -102,85 +102,85 @@
 						</xsd:complexType>
 					</xsd:element>
 				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>2.0</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<data name="noUpdate" xml:space="preserve">
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="noUpdate" xml:space="preserve">
     <value>Нет доступных обновлений</value>
   </data>
-	<data name="noDevicesSelected" xml:space="preserve">
+  <data name="noDevicesSelected" xml:space="preserve">
     <value>Нет выбранных устройств</value>
   </data>
-	<data name="playbackDevices" xml:space="preserve">
+  <data name="playbackDevices" xml:space="preserve">
     <value>Устройства воспроизведения</value>
   </data>
-	<data name="mixer" xml:space="preserve">
+  <data name="mixer" xml:space="preserve">
     <value>Микшер</value>
   </data>
-	<data name="settings" xml:space="preserve">
+  <data name="settings" xml:space="preserve">
     <value>Настройки</value>
   </data>
-	<data name="about" xml:space="preserve">
+  <data name="about" xml:space="preserve">
     <value>О программе</value>
   </data>
-	<data name="exit" xml:space="preserve">
+  <data name="exit" xml:space="preserve">
     <value>Выход</value>
   </data>
-	<data name="updateAvailable" xml:space="preserve">
+  <data name="updateAvailable" xml:space="preserve">
     <value>Доступно обновление ({0})</value>
   </data>
-	<data name="versionAvailable" xml:space="preserve">
+  <data name="versionAvailable" xml:space="preserve">
     <value>Доступно обновление SoundSwitch ({0}).</value>
   </data>
-	<data name="clickToUpdate" xml:space="preserve">
+  <data name="clickToUpdate" xml:space="preserve">
     <value>Нажмите здесь, чтобы обновить.</value>
   </data>
-	<data name="playbackChanged" xml:space="preserve">
+  <data name="playbackChanged" xml:space="preserve">
     <value>SoundSwitch: Устройство воспроизведения переключено на</value>
   </data>
-	<data name="recordingChanged" xml:space="preserve">
+  <data name="recordingChanged" xml:space="preserve">
     <value>SoundSwitch: Устройство звукозаписи переключено на</value>
   </data>
-	<data name="configurationNeeded" xml:space="preserve">
+  <data name="configurationNeeded" xml:space="preserve">
     <value>SoundSwitch: Требуется настройка</value>
   </data>
-	<data name="configurationNeededExplanation" xml:space="preserve">
+  <data name="configurationNeededExplanation" xml:space="preserve">
     <value>Нет доступных устройств для переключения. Укажите их в настройках программы.</value>
   </data>
-	<data name="error" xml:space="preserve">
+  <data name="error" xml:space="preserve">
     <value>Ошибка</value>
   </data>
-	<data name="help" xml:space="preserve">
+  <data name="help" xml:space="preserve">
 		<value>Справка (сайт)</value>
-	</data>
-	<data name="donate" xml:space="preserve">
+  </data>
+  <data name="donate" xml:space="preserve">
 		<value>Поддержать развитие</value>
-	</data>
-	<data name="iconChanger.playback" xml:space="preserve">
+  </data>
+  <data name="iconChanger.playback" xml:space="preserve">
 		<value>Воспроизведение</value>
-	</data>
-	<data name="iconChanger.recording" xml:space="preserve">
+  </data>
+  <data name="iconChanger.recording" xml:space="preserve">
 		<value>Звукозапись</value>
-	</data>
-	<data name="iconChanger.none" xml:space="preserve">
+  </data>
+  <data name="iconChanger.none" xml:space="preserve">
 		<value>По умолчанию</value>
-	</data>
-	<data name="iconChanger.both" xml:space="preserve">
+  </data>
+  <data name="iconChanger.both" xml:space="preserve">
 		<value>Оба</value>
-	</data>
-	<data name="communityMenu" xml:space="preserve">
-		<value>сообщество</value>
-	</data>
+  </data>
+  <data name="communityMenu" xml:space="preserve">
+		<value>Сообщество</value>
+  </data>
 </root>
