@@ -14,15 +14,36 @@ end;
 
 function hasDotNetCore(version: string) : boolean;
 var
-	regInstalled: cardinal;
 	architecture: string;
+	runtimes: TArrayOfString;
+	I: Integer;
+	versionCompare: Integer;
 begin
 	architecture := 'x64';
 	if(not Is64BitInstallMode) then
 	   architecture := 'x86';
-
-	RegQueryDWordValue(HKLM, 'SOFTWARE\WOW6432Node\dotnet\Setup\InstalledVersions\'+ architecture +'\sharedfx\Microsoft.NETCore.App', version, regInstalled);
-	Result := (regInstalled = 1);
+	   
+	Log('[.NET] Look for version ' + version);
+	   
+	if not RegGetValueNames(HKLM, 'SOFTWARE\WOW6432Node\dotnet\Setup\InstalledVersions\'+ architecture +'\sharedfx\Microsoft.NETCore.App', runtimes) then
+	begin
+	  Log('[.NET] Issue getting runtimes from registry');
+	  Result := False;
+	  Exit;
+	end;
+	
+    for I := 0 to GetArrayLength(runtimes)-1 do
+	begin
+	  versionCompare := CompareVersion(runtimes[I], version);
+	  Log(Format('[.NET] Compare: %s/%s = %d', [runtimes[I], version, versionCompare]));
+	  if(not versionCompare = -1) then
+	  begin
+	    Result := True;
+	  	Exit;
+	  end;
+    end;
+	   
+	Result := False;
 end;
 
 function netfxinstalled(version: NetFXType; lcid: string): boolean;
