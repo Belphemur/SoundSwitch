@@ -2,7 +2,7 @@
 
 namespace SoundSwitch.Framework.Factory
 {
-    public class DisplayEnumObject<TEnum> where TEnum : struct, IConvertible
+    public class DisplayEnumObject<TEnum> where TEnum : Enum, IConvertible
     {
         /// <summary>
         /// Enum used

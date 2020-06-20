@@ -25,7 +25,7 @@ namespace SoundSwitch.Framework.Factory
     /// <typeparam name="TEnum">Enumeration (Enum)</typeparam>
     /// <typeparam name="TEnumImpl">Implementation of the Enumeration</typeparam>
     public class EnumImplList<TEnum, TEnumImpl> : List<TEnumImpl>, IEnumImplList<TEnum, TEnumImpl> where TEnumImpl : IEnumImpl<TEnum>
-        where TEnum : struct, IConvertible
+        where TEnum : Enum, IConvertible
     {
         /// <summary>
         ///     Convert the list into a ReadOnlyDictionary using the TypeEnum as Key

@@ -16,7 +16,7 @@ using System;
 
 namespace SoundSwitch.Framework.Factory
 {
-    public interface IEnumImpl<out TEnum> where TEnum : struct, IConvertible
+    public interface IEnumImpl<out TEnum> where TEnum : Enum, IConvertible
     {
         /// <summary>
         ///     Type of the Tooltip Info
