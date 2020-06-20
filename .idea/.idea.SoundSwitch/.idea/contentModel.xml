@@ -85,8 +85,13 @@
             <e p="NotificationTypeEnum.cs" t="Include" />
           </e>
           <e p="Profile" t="Include">
+            <e p="Profile.cs" t="Include" />
             <e p="ProfileManager.cs" t="Include" />
             <e p="ProfileSetting.cs" t="Include" />
+            <e p="Trigger" t="Include">
+              <e p="Trigger.cs" t="Include" />
+              <e p="TriggerFactory.cs" t="Include" />
+            </e>
           </e>
           <e p="TrayIcon" t="Include">
             <e p="Icon" t="Include">
