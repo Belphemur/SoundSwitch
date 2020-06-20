@@ -28,11 +28,11 @@ namespace SoundSwitch.Framework.Banner
     /// </summary>
     public partial class BannerForm : Form
     {
-        private Timer timerHide;
-        private bool hiding;
+        private Timer _timerHide;
+        private bool _hiding;
 
 
-        private WasapiOut player;
+        private WasapiOut _player;
 
         /// <summary>
         /// Constructor for the <see cref="BannerForm"/> class
@@ -40,8 +40,11 @@ namespace SoundSwitch.Framework.Banner
         public BannerForm()
         {
             InitializeComponent();
+            var screen = Screen.FromPoint(Cursor.Position);
+            StartPosition = FormStartPosition.Manual;
+            Bounds = screen.Bounds;
 
-            Location = new Point(50, 60);
+            Location = new Point(screen.Bounds.X + 50, screen.Bounds.Y + 60);
         }
 
         protected override bool ShowWithoutActivation => true;
@@ -67,15 +70,14 @@ namespace SoundSwitch.Framework.Banner
         /// <param name="data">The configuration data to setup the notification UI</param>
         internal void SetData(BannerData data)
         {
-            if (timerHide == null)
+            if (_timerHide == null)
             {
-                timerHide = new Timer();
-                timerHide.Interval = 3000;
-                timerHide.Tick += TimerHide_Tick;
+                _timerHide = new Timer {Interval = 3000};
+                _timerHide.Tick += TimerHide_Tick;
             }
             else
             {
-                timerHide.Enabled = false;
+                _timerHide.Enabled = false;
             }
 
             if (data.Image != null)
@@ -88,11 +90,11 @@ namespace SoundSwitch.Framework.Banner
                 PrepareSound(data);
             }
 
-            hiding = false;
+            _hiding = false;
             Opacity = .8;
             lblTop.Text = data.Title;
             lblTitle.Text = data.Text;
-            timerHide.Enabled = true;
+            _timerHide.Enabled = true;
 
             Show();
         }
@@ -103,17 +105,15 @@ namespace SoundSwitch.Framework.Banner
         /// <param name="data"></param>
         private void PrepareSound(BannerData data)
         {
-            player = new WasapiOut();
+            _player = new WasapiOut();
             var task = new Task(() =>
             {
-                using (var waveStream = new CachedSoundWaveStream(data.SoundFile))
+                using var waveStream = new CachedSoundWaveStream(data.SoundFile);
+                _player.Init(waveStream);
+                _player.Play();
+                while (_player.PlaybackState == PlaybackState.Playing)
                 {
-                    player.Init(waveStream);
-                    player.Play();
-                    while (player.PlaybackState == PlaybackState.Playing)
-                    {
-                        Thread.Sleep(500);
-                    }
+                    Thread.Sleep(500);
                 }
             });
             task.Start();
@@ -124,11 +124,11 @@ namespace SoundSwitch.Framework.Banner
         /// </summary>
         private void DestroySound()
         {
-            if (player != null)
+            if (_player != null)
             {
-                player.Stop();
-                player.Dispose();
-                player = null;
+                _player.Stop();
+                _player.Dispose();
+                _player = null;
             }
         }
       
@@ -140,8 +140,8 @@ namespace SoundSwitch.Framework.Banner
         /// <param name="e">Arguments of the event</param>
         private void TimerHide_Tick(object sender, EventArgs e)
         {
-            hiding = true;
-            timerHide.Enabled = false;
+            _hiding = true;
+            _timerHide.Enabled = false;
             DestroySound();
             FadeOut();
         }
@@ -157,12 +157,12 @@ namespace SoundSwitch.Framework.Banner
             {
                 await Task.Delay(50);
 
-                if (!hiding)
+                if (!_hiding)
                     break;
                 Opacity -= 0.05;
             }
 
-            if (hiding)
+            if (_hiding)
             {
                 Dispose();
             }
