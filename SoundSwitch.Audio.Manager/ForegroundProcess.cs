@@ -20,16 +20,27 @@ namespace SoundSwitch.Audio.Manager
             /// </summary>
             public string ProcessName { get; }
 
+            /// <summary>
+            /// Name of the active window
+            /// </summary>
+            public string WindowName { get; }
 
-            public Event(uint processId, string processName)
+            /// <summary>
+            /// Class of the window
+            /// </summary>
+            public string WindowClass { get; }
+
+            public Event(uint processId, string processName, string windowName, string windowClass)
             {
                 ProcessId = processId;
                 ProcessName = processName;
+                WindowName = windowName;
+                WindowClass = windowClass;
             }
 
             public override string ToString()
             {
-                return $"{nameof(ProcessId)}: {ProcessId}, {nameof(ProcessName)}: {ProcessName}";
+                return $"{nameof(ProcessId)}: {ProcessId}, {nameof(ProcessName)}: {ProcessName}, {nameof(WindowName)}: {WindowName}, {nameof(WindowClass)}: {WindowClass}";
             }
         }
 
@@ -54,17 +65,15 @@ namespace SoundSwitch.Audio.Manager
                         return (uint) 0;
                     }
                 });
-                
-                if (windowProcessId == 0)
-                {
-                    return;
-                }
+
+                var wndText  = ComThread.Invoke(() => User32.GetWindowText(hwnd));
+                var wndClass = ComThread.Invoke(() => User32.GetWindowClass(hwnd));
 
                 Task.Factory.StartNew(() =>
                 {
-                    var process = Process.GetProcessById((int) windowProcessId);
+                    var process     = Process.GetProcessById((int) windowProcessId);
                     var processName = process.MainModule?.FileName ?? "N/A";
-                    Changed?.Invoke(this, new Event(windowProcessId, processName));
+                    Changed?.Invoke(this, new Event(windowProcessId, processName, wndText, wndClass));
                 });
             };
 
