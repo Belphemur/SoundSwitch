@@ -13,16 +13,10 @@
 ********************************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Drawing;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using SoundSwitch.Framework.Audio;
 using Timer = System.Windows.Forms.Timer;
@@ -47,7 +41,7 @@ namespace SoundSwitch.Framework.Banner
         {
             InitializeComponent();
 
-            this.Location = new Point(50, 60);
+            Location = new Point(50, 60);
         }
 
         protected override bool ShowWithoutActivation => true;
@@ -73,19 +67,19 @@ namespace SoundSwitch.Framework.Banner
         /// <param name="data">The configuration data to setup the notification UI</param>
         internal void SetData(BannerData data)
         {
-            if (this.timerHide == null)
+            if (timerHide == null)
             {
-                this.timerHide = new Timer();
-                this.timerHide.Interval = 3000;
-                this.timerHide.Tick += TimerHide_Tick;
+                timerHide = new Timer();
+                timerHide.Interval = 3000;
+                timerHide.Tick += TimerHide_Tick;
             }
             else
             {
-                this.timerHide.Enabled = false;
+                timerHide.Enabled = false;
             }
 
             if (data.Image != null)
-                this.pbxLogo.Image = data.Image;
+                pbxLogo.Image = data.Image;
 
             DestroySound();
 
@@ -94,13 +88,13 @@ namespace SoundSwitch.Framework.Banner
                 PrepareSound(data);
             }
 
-            this.hiding = false;
-            this.Opacity = .8;
-            this.lblTop.Text = data.Title;
-            this.lblTitle.Text = data.Text;
-            this.timerHide.Enabled = true;
+            hiding = false;
+            Opacity = .8;
+            lblTop.Text = data.Title;
+            lblTitle.Text = data.Text;
+            timerHide.Enabled = true;
 
-            this.Show();
+            Show();
         }
 
         /// <summary>
@@ -130,11 +124,11 @@ namespace SoundSwitch.Framework.Banner
         /// </summary>
         private void DestroySound()
         {
-            if (this.player != null)
+            if (player != null)
             {
-                this.player.Stop();
-                this.player.Dispose();
-                this.player = null;
+                player.Stop();
+                player.Dispose();
+                player = null;
             }
         }
       
@@ -146,8 +140,8 @@ namespace SoundSwitch.Framework.Banner
         /// <param name="e">Arguments of the event</param>
         private void TimerHide_Tick(object sender, EventArgs e)
         {
-            this.hiding = true;
-            this.timerHide.Enabled = false;
+            hiding = true;
+            timerHide.Enabled = false;
             DestroySound();
             FadeOut();
         }
@@ -159,18 +153,18 @@ namespace SoundSwitch.Framework.Banner
         /// </summary>
         private async void FadeOut()
         {
-            while (this.Opacity > 0.0)
+            while (Opacity > 0.0)
             {
                 await Task.Delay(50);
 
-                if (!this.hiding)
+                if (!hiding)
                     break;
-                this.Opacity -= 0.05;
+                Opacity -= 0.05;
             }
 
-            if (this.hiding)
+            if (hiding)
             {
-                this.Dispose();
+                Dispose();
             }
         }
     }
