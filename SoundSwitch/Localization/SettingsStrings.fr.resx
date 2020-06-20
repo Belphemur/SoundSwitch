@@ -347,4 +347,13 @@ Toujours : Lors de la bascule vers un autre périphérique de lecture ou d'enreg
 	<data name="hotkeyEnabled" xml:space="preserve">
 		<value>Raccoucis actif</value>
 	</data>
+	<data name="profile.trigger.window" xml:space="preserve">
+		<value>Nom du programme</value>
+	</data>
+	<data name="profile.trigger.process" xml:space="preserve">
+		<value>Chemin de l'application</value>
+	</data>
+	<data name="profile.trigger.steam" xml:space="preserve">
+		<value>Steam Big Picture</value>
+	</data>
 </root>

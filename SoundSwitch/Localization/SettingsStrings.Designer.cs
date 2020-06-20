@@ -19,7 +19,7 @@ namespace SoundSwitch.Localization {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class SettingsStrings {
@@ -616,6 +616,33 @@ namespace SoundSwitch.Localization {
         internal static string profile_tab {
             get {
                 return ResourceManager.GetString("profile.tab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Application path .
+        /// </summary>
+        internal static string profile_trigger_process {
+            get {
+                return ResourceManager.GetString("profile.trigger.process", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Steam Big Picture.
+        /// </summary>
+        internal static string profile_trigger_steam {
+            get {
+                return ResourceManager.GetString("profile.trigger.steam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name of the program.
+        /// </summary>
+        internal static string profile_trigger_window {
+            get {
+                return ResourceManager.GetString("profile.trigger.window", resourceCulture);
             }
         }
         
