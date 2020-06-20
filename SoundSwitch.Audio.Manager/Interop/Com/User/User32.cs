@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace SoundSwitch.Audio.Manager.Interop.Com.User
 {
@@ -13,7 +14,11 @@ namespace SoundSwitch.Audio.Manager.Interop.Com.User
 
             [DllImport("user32.dll")]
             public static extern IntPtr GetForegroundWindow();
-
+            
+            [DllImport("user32.dll")]
+            public static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
+            [DllImport("user32.dll")]
+            public static extern int GetClassName(IntPtr hWnd, StringBuilder text, int count);
             internal delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
 
             [DllImport("user32.dll")]
