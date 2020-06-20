@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using SoundSwitch.Audio.Manager.Interop.Enum;
@@ -6,14 +7,14 @@ using SoundSwitch.Common.Framework.Audio.Device;
 
 namespace SoundSwitch.Framework.Profile
 {
-    public class Profile
+    public class Profile : IEquatable<Profile>
     {
-        internal class DeviceWrapper
+        internal class DeviceRoleWrapper
         {
             public DeviceInfo DeviceInfo { get; }
             public ERole      Role       { get; }
 
-            internal DeviceWrapper(DeviceInfo deviceInfo, ERole role)
+            internal DeviceRoleWrapper(DeviceInfo deviceInfo, ERole role)
             {
                 DeviceInfo = deviceInfo;
                 Role       = role;
@@ -25,22 +26,42 @@ namespace SoundSwitch.Framework.Profile
         public DeviceInfo? Recording     { get; set; }
 
         public string               Name     { get; set; } = "";
-        public IEnumerable<Trigger.Trigger> Triggers { get; set; } = new List<Trigger.Trigger>();
+        public IList<Trigger.Trigger> Triggers { get; set; } = new List<Trigger.Trigger>();
 
         public bool AlsoSwitchDefaultDevice { get; set; } = true;
 
         [JsonIgnore]
-        internal IEnumerable<DeviceWrapper> Devices
+        internal IEnumerable<DeviceRoleWrapper> Devices
         {
             get
             {
                 if (Playback != null)
-                    yield return new DeviceWrapper(Playback, Communication == null ? ERole.ERole_enum_count : ERole.eConsole);
+                    yield return new DeviceRoleWrapper(Playback, Communication == null ? ERole.ERole_enum_count : ERole.eConsole);
                 if (Communication != null)
-                    yield return new DeviceWrapper(Communication, ERole.eCommunications);
+                    yield return new DeviceRoleWrapper(Communication, ERole.eCommunications);
                 if (Recording != null)
-                    yield return new DeviceWrapper(Recording, ERole.ERole_enum_count);
+                    yield return new DeviceRoleWrapper(Recording, ERole.ERole_enum_count);
             }
+        }
+
+        public bool Equals(Profile? other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Name == other.Name;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Profile) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
         }
     }
 }

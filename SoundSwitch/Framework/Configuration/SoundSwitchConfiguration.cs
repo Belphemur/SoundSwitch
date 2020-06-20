@@ -23,6 +23,7 @@ using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
+using SoundSwitch.Framework.Profile.Trigger;
 using SoundSwitch.Framework.TrayIcon.Icon;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 using SoundSwitch.Framework.Updater;
@@ -37,60 +38,68 @@ namespace SoundSwitch.Framework.Configuration
         public SoundSwitchConfiguration()
         {
             // Basic Settings
-            FirstRun = true;
+            FirstRun                = true;
             SwitchForegroundProgram = true;
 
             // Audio Settings
             ChangeCommunications = false;
             NotificationSettings = NotificationTypeEnum.BannerNotification;
-            TooltipInfo = TooltipInfoTypeEnum.Playback;
-            CyclerType = DeviceCyclerTypeEnum.Available;
+            TooltipInfo          = TooltipInfoTypeEnum.Playback;
+            CyclerType           = DeviceCyclerTypeEnum.Available;
 
             // Update Settings
             UpdateCheckInterval = 3600 * 24; // 24 hours
-            UpdateMode = UpdateMode.Notify;
+            UpdateMode          = UpdateMode.Notify;
             IncludeBetaVersions = false;
 
             // Language Settings
-            Language = new LanguageFactory().GetWindowsLanguage();
-            SelectedPlaybackDeviceListId = new HashSet<string>();
+            Language                      = new LanguageFactory().GetWindowsLanguage();
+            SelectedPlaybackDeviceListId  = new HashSet<string>();
             SelectedRecordingDeviceListId = new HashSet<string>();
-            PlaybackHotKey = new HotKey(Keys.F11, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
-            RecordingHotKey = new HotKey(Keys.F7, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
+            PlaybackHotKey                = new HotKey(Keys.F11, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
+            RecordingHotKey               = new HotKey(Keys.F7,  HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
 
             SelectedDevices = new HashSet<DeviceInfo>();
-            SwitchIcon = IconChangerFactory.ActionEnum.Never;
-            MigratedFields = new HashSet<string>();
+            SwitchIcon      = IconChangerFactory.ActionEnum.Never;
+            MigratedFields  = new HashSet<string>();
         }
 
 
-        public HashSet<string> SelectedPlaybackDeviceListId { get; }
-        public HashSet<string> SelectedRecordingDeviceListId { get; }
-        public HashSet<DeviceInfo> SelectedDevices { get; }
-        public bool FirstRun { get; set; }
-        public HotKey PlaybackHotKey { get; set; }
-        public HotKey RecordingHotKey { get; set; }
-        public bool ChangeCommunications { get; set; }
-        public uint UpdateCheckInterval { get; set; }
-        public UpdateMode UpdateMode { get; set; }
-        public TooltipInfoTypeEnum TooltipInfo { get; set; }
-        public DeviceCyclerTypeEnum CyclerType { get; set; }
-        public NotificationTypeEnum NotificationSettings { get; set; }
-        public Language Language { get; set; }
-        public bool IncludeBetaVersions { get; set; }
-        public string CustomNotificationFilePath { get; set; }
+        public HashSet<string>      SelectedPlaybackDeviceListId  { get; }
+        public HashSet<string>      SelectedRecordingDeviceListId { get; }
+        public HashSet<DeviceInfo>  SelectedDevices               { get; }
+        public bool                 FirstRun                      { get; set; }
+        public HotKey               PlaybackHotKey                { get; set; }
+        public HotKey               RecordingHotKey               { get; set; }
+        public bool                 ChangeCommunications          { get; set; }
+        public uint                 UpdateCheckInterval           { get; set; }
+        public UpdateMode           UpdateMode                    { get; set; }
+        public TooltipInfoTypeEnum  TooltipInfo                   { get; set; }
+        public DeviceCyclerTypeEnum CyclerType                    { get; set; }
+        public NotificationTypeEnum NotificationSettings          { get; set; }
+        public Language             Language                      { get; set; }
+        public bool                 IncludeBetaVersions           { get; set; }
+        public string               CustomNotificationFilePath    { get; set; }
+
         [Obsolete]
         public bool KeepSystrayIcon { get; set; }
-        public bool SwitchForegroundProgram { get; set; }
-        public IconChangerFactory.ActionEnum SwitchIcon { get; set; }
+
+        public bool                          SwitchForegroundProgram { get; set; }
+        public IconChangerFactory.ActionEnum SwitchIcon              { get; set; }
+
+        [Obsolete]
         public HashSet<ProfileSetting> ProfileSettings { get; set; } = new HashSet<ProfileSetting>();
-        
+
+        public HashSet<Profile.Profile> Profiles { get; set; } = new HashSet<Profile.Profile>();
+
         /// <summary>
         /// Fields of the config that got migrated
         /// </summary>
         public HashSet<string> MigratedFields { get; set; }
+
         // Needed by Interface
         public string FileLocation { get; set; }
+
         /// <summary>
         /// Migrate configuration to a new schema
         /// </summary>
@@ -115,20 +124,52 @@ namespace SoundSwitch.Framework.Configuration
                 NotificationSettings = NotificationTypeEnum.BannerNotification;
             }
 
-            if (!MigratedFields.Contains("KeepSystrayIcon"))
+#pragma warning disable 612
+            if (!MigratedFields.Contains(nameof(KeepSystrayIcon)))
             {
                 SwitchIcon = KeepSystrayIcon ? IconChangerFactory.ActionEnum.Never : IconChangerFactory.ActionEnum.Always;
-                MigratedFields.Add("KeepSystrayIcon");
+                MigratedFields.Add(nameof(KeepSystrayIcon));
             }
-            
+
+            if (!MigratedFields.Contains(nameof(ProfileSettings)))
+            {
+                Profiles = ProfileSettings
+                           .Select(setting =>
+                           {
+                               var profile = new Profile.Profile
+                               {
+                                   AlsoSwitchDefaultDevice = setting.AlsoSwitchDefaultDevice,
+                                   Communication           = null,
+                                   Playback                = setting.Playback,
+                                   Name                    = setting.ProfileName,
+                                   Recording               = setting.Recording
+                               };
+                               if (setting.HotKey != null)
+                               {
+                                   profile.Triggers.Add(new Trigger(TriggerFactory.Enum.HotKey)
+                                   {
+                                       HotKey = setting.HotKey
+                                   });
+                               }
+
+                               if (!string.IsNullOrEmpty(setting.ApplicationPath))
+                               {
+                                   profile.Triggers.Add(new Trigger(TriggerFactory.Enum.Process)
+                                   {
+                                       ApplicationPath = setting.ApplicationPath
+                                   });
+                               } 
+                               return profile;
+                           }).ToHashSet();
+                MigratedFields.Add(nameof(ProfileSettings));
+            }
+#pragma warning restore 612
         }
 
         public void Save()
         {
-
             Log.Debug("Saving configuration ", this);
             ConfigurationManager.SaveConfiguration(this);
-
         }
 
         public override string ToString()
