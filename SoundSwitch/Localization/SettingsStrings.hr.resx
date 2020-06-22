@@ -308,4 +308,13 @@ Banner: Koristi personalizirani prozor iznad svega, korisno unutar igri.</value>
   <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
     <value>Kad je označeno, SoundSwitch će također pretražiti beta verzije na GitHub-u.</value>
   </data>
+  <data name="profile.trigger.process" xml:space="preserve">
+    <value>Putanja do programa </value>
+  </data>
+  <data name="profile.trigger.steam" xml:space="preserve">
+    <value>Steam Big Picture</value>
+  </data>
+  <data name="profile.trigger.window" xml:space="preserve">
+    <value>Ime programa</value>
+  </data>
 </root>
