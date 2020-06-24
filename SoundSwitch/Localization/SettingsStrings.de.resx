@@ -1,6 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
-	<!-- 
+  <!-- 
     Microsoft ResX Schema 
     
     Version 2.0
@@ -59,11 +59,11 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-	<xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
 					<xsd:element name="metadata">
 						<xsd:complexType>
 							<xsd:sequence>
@@ -102,195 +102,195 @@
 						</xsd:complexType>
 					</xsd:element>
 				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>2.0</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<data name="activeRecording" xml:space="preserve">
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="activeRecording" xml:space="preserve">
 		<value>Aufnahme: {0}</value>
   </data>
-	<data name="activePlayback" xml:space="preserve">
+  <data name="activePlayback" xml:space="preserve">
 		<value>Wiedergabe: {0}</value>
   </data>
-	<data name="selected" xml:space="preserve">
+  <data name="selected" xml:space="preserve">
 		<value>Ausgewählt</value>
   </data>
-	<data name="recording" xml:space="preserve">
+  <data name="recording" xml:space="preserve">
 		<value>Aufnahme</value>
   </data>
-	<data name="playback" xml:space="preserve">
+  <data name="playback" xml:space="preserve">
 		<value>Wiedergabe</value>
   </data>
-	<data name="settings" xml:space="preserve">
+  <data name="settings" xml:space="preserve">
 		<value>Einstellungen</value>
   </data>
-	<data name="communicationsDevice" xml:space="preserve">
+  <data name="communicationsDevice" xml:space="preserve">
 		<value>Standardkommunikationsgerät wechseln</value>
   </data>
-	<data name="startWithWindows" xml:space="preserve">
+  <data name="startWithWindows" xml:space="preserve">
 		<value>Automatisch mit Windows starten</value>
   </data>
-	<data name="close" xml:space="preserve">
+  <data name="close" xml:space="preserve">
 		<value>Schließen</value>
   </data>
-	<data name="closeTooltip" xml:space="preserve">
+  <data name="closeTooltip" xml:space="preserve">
 		<value>Änderungen werden automatisch gesichert</value>
   </data>
-	<data name="communicationsDeviceTooltip" xml:space="preserve">
+  <data name="communicationsDeviceTooltip" xml:space="preserve">
 		<value>Falls aktiv, werden das "Standardkommunikationsgerät" und "Standard Wiedergabegerät" gleichzeitig gewechselt (nützlich für Skype, TeamSpeak, etc.).</value>
   </data>
-	<data name="notification" xml:space="preserve">
+  <data name="notification" xml:space="preserve">
 		<value>Benachrichtigung</value>
   </data>
-	<data name="updateIncludeBetaVersions" xml:space="preserve">
+  <data name="updateIncludeBetaVersions" xml:space="preserve">
 		<value>Inklusive Beta Versionen</value>
   </data>
-	<data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
+  <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
 		<value>Falls aktiv, wird SoundSwitch auch nach Beta Versionen auf GitHub suchen.</value>
   </data>
-	<data name="audioFiles" xml:space="preserve">
+  <data name="audioFiles" xml:space="preserve">
 		<value>Audiodateien</value>
   </data>
-	<data name="selectSoundButtonTooltip" xml:space="preserve">
+  <data name="selectSoundButtonTooltip" xml:space="preserve">
 		<value>Wähle eine Audiodatei für die Benachrichtigung</value>
   </data>
-	<data name="basicSettings" xml:space="preserve">
+  <data name="basicSettings" xml:space="preserve">
 		<value>Grundlegende Einstellungen</value>
   </data>
-	<data name="audioSettings" xml:space="preserve">
+  <data name="audioSettings" xml:space="preserve">
 		<value>Akustische Einstellungen</value>
   </data>
-	<data name="updateSettings" xml:space="preserve">
+  <data name="updateSettings" xml:space="preserve">
 		<value>Update Einstellungen</value>
   </data>
-	<data name="updateInstallAutomatically" xml:space="preserve">
+  <data name="updateInstallAutomatically" xml:space="preserve">
 		<value>Updates automatisch installieren</value>
   </data>
-	<data name="updateNotify" xml:space="preserve">
+  <data name="updateNotify" xml:space="preserve">
 		<value>Benachrichtigen falls Update verfügbar</value>
   </data>
-	<data name="updateNever" xml:space="preserve">
+  <data name="updateNever" xml:space="preserve">
 		<value>Nie nach Updates suchen</value>
   </data>
-	<data name="tooltipOnHover" xml:space="preserve">
+  <data name="tooltipOnHover" xml:space="preserve">
 		<value>Tooltip</value>
   </data>
-	<data name="notificationOptionWindowsDefault" xml:space="preserve">
+  <data name="notificationOptionWindowsDefault" xml:space="preserve">
 		<value>Windows Benachrichtigung</value>
   </data>
-	<data name="notificationOptionSound" xml:space="preserve">
+  <data name="notificationOptionSound" xml:space="preserve">
 		<value>Akustische Benachrichtigung</value>
   </data>
-	<data name="notificationOptionNone" xml:space="preserve">
+  <data name="notificationOptionNone" xml:space="preserve">
 		<value>Keine Benachrichtigung</value>
   </data>
-	<data name="notificationOptionToast" xml:space="preserve">
+  <data name="notificationOptionToast" xml:space="preserve">
 		<value>Popup Benachrichtigung</value>
   </data>
-	<data name="notificationOptionCustomized" xml:space="preserve">
+  <data name="notificationOptionCustomized" xml:space="preserve">
 		<value>Angepasste akustische Benachrichtigung</value>
   </data>
-	<data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
+  <data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
 		<value>Wiedergabegerät</value>
   </data>
-	<data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
+  <data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
 		<value>Aufnahmegerät</value>
   </data>
-	<data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
+  <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
 		<value>Für beide Geräte</value>
   </data>
-	<data name="tooltipOnHoverOptionNone" xml:space="preserve">
+  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
 		<value>Kein Tooltip</value>
   </data>
-	<data name="audioFileNotFoundCaption" xml:space="preserve">
+  <data name="audioFileNotFoundCaption" xml:space="preserve">
 		<value>Audiodatei nicht gefunden</value>
   </data>
-	<data name="language" xml:space="preserve">
+  <data name="language" xml:space="preserve">
 		<value>Sprache</value>
   </data>
-	<data name="connected" xml:space="preserve">
+  <data name="connected" xml:space="preserve">
 		<value>Verbunden</value>
   </data>
-	<data name="disconnected" xml:space="preserve">
+  <data name="disconnected" xml:space="preserve">
 		<value>Getrennt</value>
   </data>
-	<data name="hotkeys" xml:space="preserve">
+  <data name="hotkeys" xml:space="preserve">
 		<value>Tastenkombination</value>
   </data>
-	<data name="hotkeysTooltip" xml:space="preserve">
+  <data name="hotkeysTooltip" xml:space="preserve">
 		<value>Markieren um die Tastenkombination zu aktivieren.</value>
   </data>
-	<data name="cycleThrough" xml:space="preserve">
+  <data name="cycleThrough" xml:space="preserve">
 		<value>Durchwechseln</value>
   </data>
-	<data name="keepSystemTrayIcon" xml:space="preserve">
+  <data name="keepSystemTrayIcon" xml:space="preserve">
 		<value>SoundSwitch's Taskleistensymbol beibehalten</value>
   </data>
-	<data name="keepSystemTrayIconTooltip" xml:space="preserve">
+  <data name="keepSystemTrayIconTooltip" xml:space="preserve">
 		<value>Falls aktiv, wird das Symbol von SoundSwitch in der Taskleiste nicht das aktuelle "Standard Wiedergabegerät" anzeigen.</value>
   </data>
-	<data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
+  <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
 		<value>Updates werden automatisch ohne Benutzereingabe installiert.</value>
   </data>
-	<data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
+  <data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
 		<value>Alle Audiogeräte</value>
   </data>
-	<data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
+  <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
 		<value>Nur ausgewählte Audiogeräte</value>
   </data>
-	<data name="cycleThroughTooltip" xml:space="preserve">
+  <data name="cycleThroughTooltip" xml:space="preserve">
 		<value>Wähle zwischen welchen Geräten gewechselt werden soll. Entweder nur zwischen den ausgewählten oder zwischen allen.</value>
   </data>
-	<data name="audioFileNotFound" xml:space="preserve">
+  <data name="audioFileNotFound" xml:space="preserve">
 		<value>Die Audiodatei für die Benachrichtigungen konnte nicht gefunden werden. SoundSwitch wechselte die Benachrichtigungseinstellungen zu {0}.</value>
   </data>
-	<data name="notificationTooltip" xml:space="preserve">
+  <data name="notificationTooltip" xml:space="preserve">
 		<value>Windows Benachrichtigung: Das Standard Windows Pop-Up.
 Akustische Benachrichtigung: Spielt einen Sound auf dem Wiedergabegerät ab.
 Angepasste akustische Benachrichtigung: Spielt einen selbst definierten Sound ab.
 Popup Benachrichtigung: Spezielle Form eines Windows Pop-ups.
 Banner: Ein spezielles Fenster welches immer obenauf angezeigt wird, nützlich bei Spielen.</value>
   </data>
-	<data name="languageRestartRequired" xml:space="preserve">
+  <data name="languageRestartRequired" xml:space="preserve">
 		<value>Die Sprache wird beim Neustart von SoundSwitch übernommen.
 Möchten Sie jetzt neustarten?</value>
   </data>
-	<data name="languageRestartRequiredCaption" xml:space="preserve">
+  <data name="languageRestartRequiredCaption" xml:space="preserve">
 		<value>Neustart notwendig</value>
   </data>
-	<data name="updateNeverTooltip" xml:space="preserve">
+  <data name="updateNeverTooltip" xml:space="preserve">
 		<value>Updates müssen manuell installiert werden.</value>
   </data>
-	<data name="updateNotifyTooltip" xml:space="preserve">
+  <data name="updateNotifyTooltip" xml:space="preserve">
 		<value>SoundSwitch zeigt eine Benachrichtigung, falls ein Update verfügbar ist. Mit einem Klick auf die Benachrichtigung lässt sich das Update dann installieren.</value>
   </data>
-	<data name="notificationOptionBanner" xml:space="preserve">
+  <data name="notificationOptionBanner" xml:space="preserve">
         <value>Banner</value>
   </data>
-	<data name="disableCustomSoundTooltip" xml:space="preserve">
+  <data name="disableCustomSoundTooltip" xml:space="preserve">
     <value>Benutzerdefinierten Sound deaktivieren.</value>
   </data>
-	<data name="foregroundApp" xml:space="preserve">
+  <data name="foregroundApp" xml:space="preserve">
     <value>Auch die aktuell aktive Anwendung umschalten</value>
   </data>
-	<data name="foregroundAppTooltip" xml:space="preserve">
+  <data name="foregroundAppTooltip" xml:space="preserve">
     <value>Schaltet auch den Sound der aktuell aktiven Anwendung um. Nützlich für Spiele.</value>
   </data>
-	<data name="iconChange" xml:space="preserve">
+  <data name="iconChange" xml:space="preserve">
     <value>Taskleistensymbol</value>
   </data>
-	<data name="iconChange.tooltip" xml:space="preserve">
+  <data name="iconChange.tooltip" xml:space="preserve">
     <value>Wann soll sich das Taskleistensymbol von SoundSwitch ändern.
 
 Standard: Nie. SoundSwitch-Symbol beibehalten.
@@ -298,64 +298,82 @@ Wiedergabe: Wenn ein Wiedergabegerät gewechselt wird.
 Aufnahme: Wenn ein Aufnahmegerät gewechselt wird.
 Beide: Wenn ein beliebiger Gerätetyp gewechselt wird.</value>
   </data>
-	<data name="profile.tab" xml:space="preserve">
+  <data name="profile.tab" xml:space="preserve">
     <value>Profile</value>
   </data>
-	<data name="profile.addButton" xml:space="preserve">
+  <data name="profile.addButton" xml:space="preserve">
     <value>Hinzufügen</value>
   </data>
-	<data name="profile.program" xml:space="preserve">
+  <data name="profile.program" xml:space="preserve">
     <value>Anwendung</value>
   </data>
-	<data name="profile.name" xml:space="preserve">
+  <data name="profile.name" xml:space="preserve">
     <value>Name</value>
   </data>
-	<data name="profile.error.hotkey" xml:space="preserve">
+  <data name="profile.error.hotkey" xml:space="preserve">
     <value>Die Tastenkombination {0} ist bereits belegt.</value>
   </data>
-	<data name="profile.error.application" xml:space="preserve">
+  <data name="profile.error.application" xml:space="preserve">
     <value>Die Anwendung {0} hat bereits ein verlinktes Profil.</value>
   </data>
-	<data name="profile.error.name" xml:space="preserve">
+  <data name="profile.error.name" xml:space="preserve">
     <value>Es existiert bereits ein Profil mit dem Namen {0}.</value>
   </data>
-	<data name="profile.error.needHKOrPath" xml:space="preserve">
+  <data name="profile.error.needHKOrPath" xml:space="preserve">
     <value>Es muss eine Tastenkombination oder/und eine Anwendung festgelegt werden.</value>
   </data>
-	<data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
+  <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
     <value>Es muss ein Wiedergabe- oder Aufnahmegerät festgelegt werden.</value>
   </data>
-	<data name="profile.explanation" xml:space="preserve">
+  <data name="profile.explanation" xml:space="preserve">
     <value>Füge ein Profil hinzu, um zu einem Wiedergabe- oder Aufnahmegerät zu wechseln, wenn eine bestimmte Anwendung gestartet oder fokussiert wird.</value>
   </data>
-	<data name="profile.error.registerHotkeys" xml:space="preserve">
+  <data name="profile.error.registerHotkeys" xml:space="preserve">
     <value>Für die folgenden Profile konnte die Tastenkombination nicht registriert werden: {0}</value>
   </data>
-	<data name="profile.error.registerHotkeys.title" xml:space="preserve">
+  <data name="profile.error.registerHotkeys.title" xml:space="preserve">
     <value>Bereits verwendete Tastenkombination</value>
   </data>
-	<data name="profile.feature.add" xml:space="preserve">
+  <data name="profile.feature.add" xml:space="preserve">
     <value>Profil hinzufügen</value>
   </data>
-	<data name="profile.feature.executable" xml:space="preserve">
+  <data name="profile.feature.executable" xml:space="preserve">
     <value>Ausführbare Datei (*.exe)</value>
   </data>
-	<data name="profile.error.title" xml:space="preserve">
+  <data name="profile.error.title" xml:space="preserve">
     <value>Profilfehler</value>
   </data>
-	<data name="profile.deleteButton" xml:space="preserve">
+  <data name="profile.deleteButton" xml:space="preserve">
     <value>Löschen</value>
   </data>
-	<data name="profile.error.delete" xml:space="preserve">
+  <data name="profile.error.delete" xml:space="preserve">
     <value>Profil nicht gefunden.</value>
   </data>
-	<data name="profile.error.no-name" xml:space="preserve">
+  <data name="profile.error.no-name" xml:space="preserve">
     <value>Ein Profil benötigt einen Namen.</value>
   </data>
-	<data name="profile.feature.profile" xml:space="preserve">
+  <data name="profile.feature.profile" xml:space="preserve">
     <value>Profile</value>
   </data>
-	<data name="hotkeyEnabled" xml:space="preserve">
+  <data name="hotkeyEnabled" xml:space="preserve">
 		<value>Tastenkombination aktiviert</value>
-	</data>
+  </data>
+  <data name="profile.trigger.steam" xml:space="preserve">
+    <value>Steam Big Picture</value>
+  </data>
+  <data name="profile.trigger.process" xml:space="preserve">
+    <value>Pfad zum Programm </value>
+  </data>
+  <data name="profile.trigger.window" xml:space="preserve">
+    <value>Name des Programms</value>
+  </data>
+  <data name="profile.error.device-not-found" xml:space="preserve">
+    <value>Gerät {0} konnte nicht gefunden werden.</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
+    <value>Wenn dieses Programm erkannt wird, ändert SoundSwitch auch das Standardgerät.</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox" xml:space="preserve">
+    <value>Auch das Standardgerät ändern</value>
+  </data>
 </root>
