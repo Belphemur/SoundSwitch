@@ -376,4 +376,25 @@ Both: Change when any type of device is switched.</value>
 	<data name="profile.trigger.steam" xml:space="preserve">
 		<value>Steam Big Picture</value>
 	</data>
+	<data name="profile.trigger.hotkey.desc" xml:space="preserve">
+		<value>Hotkey used to activate the profile</value>
+	</data>
+	<data name="profile.trigger.window.desc" xml:space="preserve">
+		<value>Activate the profile if the foregound program contains the following characters</value>
+	</data>
+	<data name="profile.trigger.process.desc" xml:space="preserve">
+		<value>Activate the profile when the selected process is in the foreground</value>
+	</data>
+	<data name="profile.trigger.steam.desc" xml:space="preserve">
+		<value>Activate when Steam Big Picture is detected</value>
+	</data>
+	<data name="profile.desc" xml:space="preserve">
+		<value>Description</value>
+	</data>
+	<data name="profile.trigger.actives" xml:space="preserve">
+		<value>Active Triggers</value>
+	</data>
+	<data name="profile.trigger.available" xml:space="preserve">
+		<value>Available Triggers</value>
+	</data>
 </root>

@@ -458,6 +458,15 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        internal static string profile_desc {
+            get {
+                return ResourceManager.GetString("profile.desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This application {0} already has a linked profile..
         /// </summary>
         internal static string profile_error_application {
@@ -620,11 +629,47 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Active Triggers.
+        /// </summary>
+        internal static string profile_trigger_actives {
+            get {
+                return ResourceManager.GetString("profile.trigger.actives", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Available Triggers.
+        /// </summary>
+        internal static string profile_trigger_available {
+            get {
+                return ResourceManager.GetString("profile.trigger.available", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hotkey used to activate the profile.
+        /// </summary>
+        internal static string profile_trigger_hotkey_desc {
+            get {
+                return ResourceManager.GetString("profile.trigger.hotkey.desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Application path .
         /// </summary>
         internal static string profile_trigger_process {
             get {
                 return ResourceManager.GetString("profile.trigger.process", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Activate the profile when the selected process is in the foreground.
+        /// </summary>
+        internal static string profile_trigger_process_desc {
+            get {
+                return ResourceManager.GetString("profile.trigger.process.desc", resourceCulture);
             }
         }
         
@@ -638,11 +683,29 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Activate when Steam Big Picture is detected.
+        /// </summary>
+        internal static string profile_trigger_steam_desc {
+            get {
+                return ResourceManager.GetString("profile.trigger.steam.desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name of the program.
         /// </summary>
         internal static string profile_trigger_window {
             get {
                 return ResourceManager.GetString("profile.trigger.window", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Activate the profile if the foregound program contains the following characters.
+        /// </summary>
+        internal static string profile_trigger_window_desc {
+            get {
+                return ResourceManager.GetString("profile.trigger.window.desc", resourceCulture);
             }
         }
         

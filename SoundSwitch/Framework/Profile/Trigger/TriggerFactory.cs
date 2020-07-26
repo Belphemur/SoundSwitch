@@ -33,6 +33,8 @@ namespace SoundSwitch.Framework.Profile.Trigger
         /// Maximum number of occurence of this trigger in a profile
         /// </summary>
         public int MaxOccurence { get; set; }
+
+        public string Description { get; set; }
     }
 
     public abstract class BaseTrigger : ITriggerDefinition
@@ -45,24 +47,28 @@ namespace SoundSwitch.Framework.Profile.Trigger
         public virtual TriggerFactory.Enum TypeEnum { get; }
         public virtual string Label { get; }
         public virtual int MaxOccurence { get; set; } = -1;
+        public abstract string Description { get; set; }
     }
 
     public class HotKeyTrigger : BaseTrigger
     {
         public override TriggerFactory.Enum TypeEnum { get; } = TriggerFactory.Enum.HotKey;
         public override string Label => SettingsStrings.hotkeys;
+        public override string Description { get; set; } = SettingsStrings.profile_trigger_hotkey_desc;
     }
 
     public class WindowTrigger : BaseTrigger
     {
         public override TriggerFactory.Enum TypeEnum { get; } = TriggerFactory.Enum.Window;
         public override string Label => SettingsStrings.profile_trigger_window;
+        public override string Description { get; set; } = SettingsStrings.profile_trigger_window_desc;
     }
 
     public class ProcessTrigger : BaseTrigger
     {
         public override TriggerFactory.Enum TypeEnum { get; } = TriggerFactory.Enum.Process;
         public override string Label => SettingsStrings.profile_trigger_process;
+        public override string Description { get; set; } = SettingsStrings.profile_trigger_process_desc;
     }
 
     public class SteamBigPictureTrigger : BaseTrigger
@@ -71,5 +77,6 @@ namespace SoundSwitch.Framework.Profile.Trigger
         public override string Label => SettingsStrings.profile_trigger_steam;
 
         public override int MaxOccurence { get; set; } = 1;
+        public override string Description { get; set; } = SettingsStrings.profile_trigger_steam_desc;
     }
 }

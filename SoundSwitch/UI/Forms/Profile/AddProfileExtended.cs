@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows.Forms;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Profile.Trigger;
+using SoundSwitch.Localization;
 using SoundSwitch.Properties;
 using SoundSwitch.UI.Component;
 
@@ -21,9 +22,18 @@ namespace SoundSwitch.UI.Forms.Profile
 
             textInput.Hide();
             hotKeyControl.Hide();
+            descriptionLabel.Hide();
 
+            LocalizeForm();
             Icon = Resources.profile;
             InitializeFromProfile();
+        }
+
+        private void LocalizeForm()
+        {
+            descriptionBox.Text = SettingsStrings.profile_desc;
+            availableTriggersText.Text = SettingsStrings.profile_trigger_available;
+            activeTriggerLabel.Text = SettingsStrings.profile_trigger_actives;
         }
 
         private void InitializeFromProfile()
@@ -80,6 +90,8 @@ namespace SoundSwitch.UI.Forms.Profile
             }
 
             var trigger = (Trigger) setTriggerBox.SelectedItem;
+            descriptionLabel.Text = _triggerFactory.Get(trigger.Type).Description;
+            descriptionLabel.Show();
             switch (trigger.Type)
             {
                 case TriggerFactory.Enum.HotKey:

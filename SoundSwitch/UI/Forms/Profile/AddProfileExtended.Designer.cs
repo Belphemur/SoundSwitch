@@ -29,15 +29,18 @@
         private void InitializeComponent()
         {
             this.triggerBox = new System.Windows.Forms.GroupBox();
+            this.textInput = new System.Windows.Forms.TextBox();
             this.deleteButton = new System.Windows.Forms.Button();
             this.activeTriggerLabel = new System.Windows.Forms.Label();
             this.availableTriggerBox = new System.Windows.Forms.ComboBox();
             this.addTriggerButton = new System.Windows.Forms.Button();
             this.availableTriggersText = new System.Windows.Forms.Label();
             this.setTriggerBox = new System.Windows.Forms.ListBox();
+            this.descriptionLabel = new System.Windows.Forms.Label();
             this.hotKeyControl = new SoundSwitch.UI.Component.HotKeyTextBox();
-            this.textInput = new System.Windows.Forms.TextBox();
+            this.descriptionBox = new System.Windows.Forms.GroupBox();
             this.triggerBox.SuspendLayout();
+            this.descriptionBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // triggerBox
@@ -45,6 +48,7 @@
             this.triggerBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.triggerBox.Controls.Add(this.descriptionBox);
             this.triggerBox.Controls.Add(this.textInput);
             this.triggerBox.Controls.Add(this.hotKeyControl);
             this.triggerBox.Controls.Add(this.deleteButton);
@@ -55,14 +59,23 @@
             this.triggerBox.Controls.Add(this.setTriggerBox);
             this.triggerBox.Location = new System.Drawing.Point(12, 12);
             this.triggerBox.Name = "triggerBox";
-            this.triggerBox.Size = new System.Drawing.Size(690, 187);
+            this.triggerBox.Size = new System.Drawing.Size(690, 258);
             this.triggerBox.TabIndex = 0;
             this.triggerBox.TabStop = false;
             this.triggerBox.Text = "Triggers";
             // 
+            // textInput
+            // 
+            this.textInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textInput.Location = new System.Drawing.Point(355, 73);
+            this.textInput.Name = "textInput";
+            this.textInput.Size = new System.Drawing.Size(301, 20);
+            this.textInput.TabIndex = 7;
+            // 
             // deleteButton
             // 
-            this.deleteButton.Location = new System.Drawing.Point(175, 138);
+            this.deleteButton.Location = new System.Drawing.Point(181, 138);
             this.deleteButton.Name = "deleteButton";
             this.deleteButton.Size = new System.Drawing.Size(75, 23);
             this.deleteButton.TabIndex = 5;
@@ -112,9 +125,19 @@
             this.setTriggerBox.FormattingEnabled = true;
             this.setTriggerBox.Location = new System.Drawing.Point(154, 37);
             this.setTriggerBox.Name = "setTriggerBox";
-            this.setTriggerBox.Size = new System.Drawing.Size(120, 95);
+            this.setTriggerBox.Size = new System.Drawing.Size(158, 95);
             this.setTriggerBox.TabIndex = 0;
             this.setTriggerBox.SelectedIndexChanged += new System.EventHandler(this.setTriggerBox_SelectedIndexChanged);
+            // 
+            // descriptionLabel
+            // 
+            this.descriptionLabel.AutoSize = true;
+            this.descriptionLabel.Location = new System.Drawing.Point(6, 23);
+            this.descriptionLabel.MaximumSize = new System.Drawing.Size(150, 0);
+            this.descriptionLabel.Name = "descriptionLabel";
+            this.descriptionLabel.Size = new System.Drawing.Size(136, 26);
+            this.descriptionLabel.TabIndex = 8;
+            this.descriptionLabel.Text = "Description of the selected trigger";
             // 
             // hotKeyControl
             // 
@@ -123,14 +146,19 @@
             this.hotKeyControl.Size = new System.Drawing.Size(140, 20);
             this.hotKeyControl.TabIndex = 6;
             // 
-            // textInput
+            // descriptionBox
             // 
-            this.textInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.descriptionBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textInput.Location = new System.Drawing.Point(355, 73);
-            this.textInput.Name = "textInput";
-            this.textInput.Size = new System.Drawing.Size(301, 20);
-            this.textInput.TabIndex = 7;
+            this.descriptionBox.AutoSize = true;
+            this.descriptionBox.Controls.Add(this.descriptionLabel);
+            this.descriptionBox.Location = new System.Drawing.Point(154, 167);
+            this.descriptionBox.Name = "descriptionBox";
+            this.descriptionBox.Size = new System.Drawing.Size(158, 69);
+            this.descriptionBox.TabIndex = 8;
+            this.descriptionBox.TabStop = false;
+            this.descriptionBox.Text = "Description";
             // 
             // AddProfileExtended
             // 
@@ -142,6 +170,8 @@
             this.Text = "AddProfileExtended";
             this.triggerBox.ResumeLayout(false);
             this.triggerBox.PerformLayout();
+            this.descriptionBox.ResumeLayout(false);
+            this.descriptionBox.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -157,5 +187,7 @@
         private System.Windows.Forms.Button deleteButton;
         private Component.HotKeyTextBox hotKeyControl;
         private System.Windows.Forms.TextBox textInput;
+        private System.Windows.Forms.Label descriptionLabel;
+        private System.Windows.Forms.GroupBox descriptionBox;
     }
 }

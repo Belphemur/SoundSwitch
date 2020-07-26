@@ -356,4 +356,25 @@ Toujours : Lors de la bascule vers un autre périphérique de lecture ou d'enreg
 	<data name="profile.trigger.steam" xml:space="preserve">
 		<value>Steam Big Picture</value>
 	</data>
+	<data name="profile.trigger.hotkey.desc" xml:space="preserve">
+		<value>Raccourcis clavier utilisé pour activer ce profile</value>
+	</data>
+	<data name="profile.trigger.process.desc" xml:space="preserve">
+		<value>Active le profile si le processus est actif</value>
+	</data>
+	<data name="profile.trigger.window.desc" xml:space="preserve">
+		<value>Active le profile si le nom de l'application contient ces caractères</value>
+	</data>
+	<data name="profile.trigger.steam.desc" xml:space="preserve">
+		<value>Active quand Steam Big Picture est détecté</value>
+	</data>
+	<data name="profile.trigger.actives" xml:space="preserve">
+		<value>Déclencheurs actifs</value>
+	</data>
+	<data name="profile.trigger.available" xml:space="preserve">
+		<value>Déclencheurs disponibles</value>
+	</data>
+	<data name="profile.desc" xml:space="preserve">
+		<value>Description</value>
+	</data>
 </root>
