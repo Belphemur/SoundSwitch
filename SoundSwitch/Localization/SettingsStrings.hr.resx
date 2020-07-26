@@ -317,4 +317,19 @@ Banner: Koristi personalizirani prozor iznad svega, korisno unutar igri.</value>
   <data name="profile.trigger.window" xml:space="preserve">
     <value>Ime programa</value>
   </data>
+  <data name="profile.trigger.steam.desc" xml:space="preserve">
+    <value>Aktiviraj kad se otkrije Steam Big Picture</value>
+  </data>
+  <data name="profile.trigger.available" xml:space="preserve">
+    <value>Dostupni okidači</value>
+  </data>
+  <data name="profile.trigger.actives" xml:space="preserve">
+    <value>Aktivni okidači</value>
+  </data>
+  <data name="profile.desc" xml:space="preserve">
+    <value>Opis</value>
+  </data>
+  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
+    <value>Prečac za aktiviranje profila</value>
+  </data>
 </root>
