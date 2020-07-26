@@ -142,6 +142,15 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Communication.
+        /// </summary>
+        internal static string communication {
+            get {
+                return ResourceManager.GetString("communication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Switch Default Communication Device.
         /// </summary>
         internal static string communicationsDevice {
@@ -656,7 +665,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Application path.
+        ///   Looks up a localized string similar to Application path .
         /// </summary>
         internal static string profile_trigger_process {
             get {

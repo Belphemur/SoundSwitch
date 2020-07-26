@@ -670,7 +670,7 @@ namespace SoundSwitch.UI.Forms
         private void addProfileButton_Click(object sender, EventArgs e)
         {
             //new AddProfile(_audioDeviceLister.PlaybackDevices, _audioDeviceLister.RecordingDevices, this).Show(Owner);
-            new AddProfileExtended(new Framework.Profile.Profile()).Show(Owner);
+            new AddProfileExtended(new Framework.Profile.Profile(), _audioDeviceLister.PlaybackDevices, _audioDeviceLister.RecordingDevices).Show(Owner);
         }
 
         private void profilesListView_SelectedIndexChanged(object sender, EventArgs e)

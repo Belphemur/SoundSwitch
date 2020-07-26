@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Profile.Trigger;
 using SoundSwitch.Localization;
@@ -14,7 +16,8 @@ namespace SoundSwitch.UI.Forms.Profile
         private readonly Framework.Profile.Profile _profile;
         private readonly TriggerFactory _triggerFactory;
 
-        public AddProfileExtended(Framework.Profile.Profile profile)
+        public AddProfileExtended(Framework.Profile.Profile profile, IEnumerable<DeviceFullInfo> playbacks,
+            IEnumerable<DeviceFullInfo> recordings)
         {
             _profile = profile;
             _triggerFactory = new TriggerFactory();
@@ -27,6 +30,61 @@ namespace SoundSwitch.UI.Forms.Profile
             LocalizeForm();
             Icon = Resources.profile;
             InitializeFromProfile();
+
+            try
+            {
+                //Only let user on Windows 10 change the switch also default device
+                //Since the feature isn't available on Windows 7
+                if (Environment.OSVersion.Version.Major <= 10)
+                {
+                    switchDefaultCheckBox.Hide();
+                }
+            }
+            catch (Exception)
+            {
+            }
+
+            InitRecordingPlaybackComboBoxes(playbacks, recordings);
+        }
+
+        private void InitRecordingPlaybackComboBoxes(IEnumerable<DeviceFullInfo> playbacks,
+            IEnumerable<DeviceFullInfo> recordings)
+        {
+            recordingComboBox.DataSource =
+                recordings
+                    .OrderBy(info => info.State)
+                    .ThenBy(info => info.NameClean)
+                    .Select(info => new IconTextComboBox.DropDownItem
+                        {
+                            Icon = info.SmallIcon,
+                            Tag = info,
+                            Text = info.NameClean
+                        }
+                    ).ToArray();
+
+
+            var playbackItems = playbacks
+                .OrderBy(info => info.State)
+                .ThenBy(info => info.NameClean)
+                .Select(info => new IconTextComboBox.DropDownItem
+                    {
+                        Icon = info.SmallIcon,
+                        Tag = info,
+                        Text = info.NameClean
+                    }
+                ).ToArray();
+            communicationComboBox.DataSource = playbackItems;
+            playbackComboBox.DataSource = playbackItems.ToArray();
+
+            communicationComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile,
+                nameof(Framework.Profile.Profile.Communication), false, DataSourceUpdateMode.OnPropertyChanged);
+            recordingComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile,
+                nameof(Framework.Profile.Profile.Recording), false, DataSourceUpdateMode.OnPropertyChanged);
+            playbackComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile,
+                nameof(Framework.Profile.Profile.Playback), false, DataSourceUpdateMode.OnPropertyChanged);
+            switchDefaultCheckBox.DataBindings.Add(nameof(CheckBox.Checked), _profile,
+                nameof(Framework.Profile.Profile.AlsoSwitchDefaultDevice), false,
+                DataSourceUpdateMode.OnPropertyChanged);
         }
 
         private void LocalizeForm()
@@ -34,6 +92,13 @@ namespace SoundSwitch.UI.Forms.Profile
             descriptionBox.Text = SettingsStrings.profile_desc;
             availableTriggersText.Text = SettingsStrings.profile_trigger_available;
             activeTriggerLabel.Text = SettingsStrings.profile_trigger_actives;
+
+            recordingLabel.Text = SettingsStrings.recording;
+            playbackLabel.Text = SettingsStrings.playback;
+            communicationLabel.Text = SettingsStrings.communication;
+            Text = SettingsStrings.profile_feature_add;
+            selectProgramDialog.Filter = $@"{SettingsStrings.profile_feature_executable}|*.exe";
+            nameLabel.Text = SettingsStrings.profile_name;
         }
 
         private void InitializeFromProfile()
@@ -144,7 +209,8 @@ namespace SoundSwitch.UI.Forms.Profile
             if (setTriggerBox.Items.Count > 0)
             {
                 setTriggerBox.SelectedIndex = 0;
-            } else if (setTriggerBox.Items.Count == 0)
+            }
+            else if (setTriggerBox.Items.Count == 0)
             {
                 HideTriggerComponents();
             }
@@ -155,6 +221,84 @@ namespace SoundSwitch.UI.Forms.Profile
             if (selectProgramDialog.ShowDialog(this) != DialogResult.OK)
                 return;
             textInput.Text = selectProgramDialog.FileName;
+        }
+
+        private void playbackComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (playbackComboBox.SelectedIndex == -1)
+            {
+                playbackRemoveButton.Visible = false;
+                return;
+            }
+
+            playbackRemoveButton.Visible = true;
+        }
+
+        private void recordingComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (recordingComboBox.SelectedIndex == -1)
+            {
+                recordingRemoveButton.Visible = false;
+                return;
+            }
+
+            recordingRemoveButton.Visible = true;
+        }
+
+        private void communicationComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (communicationComboBox.SelectedIndex == -1)
+            {
+                communicationRemoveButton.Visible = false;
+                return;
+            }
+
+            communicationRemoveButton.Visible = true;
+        }
+
+        private void playbackRemoveButton_Click(object sender, EventArgs e)
+        {
+            _profile.Playback = null;
+            try
+            {
+                playbackComboBox.SelectedIndex = -1;
+            }
+            catch (ArgumentException)
+            {
+                //Happens because I receive a System.DBNull when there isn't a selection.
+            }
+
+            playbackRemoveButton.Visible = false;
+        }
+
+        private void recordingRemoveButton_Click(object sender, EventArgs e)
+        {
+            _profile.Recording = null;
+            try
+            {
+                recordingComboBox.SelectedIndex = -1;
+            }
+            catch (ArgumentException)
+            {
+                //Happens because I receive a System.DBNull when there isn't a selection.
+            }
+
+            recordingRemoveButton.Visible = false;
+        }
+
+        private void deleteCommunicationButton_Click(object sender, EventArgs e)
+        {
+            _profile.Communication = null;
+            try
+            {
+                communicationComboBox.SelectedIndex = -1;
+            }
+            catch (ArgumentException)
+            {
+                //Happens because I receive a System.DBNull when there isn't a selection.
+            }
+
+            communicationRemoveButton.Visible = false;
         }
     }
 }

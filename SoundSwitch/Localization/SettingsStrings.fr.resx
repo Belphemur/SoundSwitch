@@ -360,7 +360,7 @@ Toujours : Lors de la bascule vers un autre périphérique de lecture ou d'enreg
 		<value>Raccourcis clavier utilisé pour activer ce profile</value>
 	</data>
 	<data name="profile.trigger.process.desc" xml:space="preserve">
-		<value>Active le profile si le processus est actif</value>
+		<value>Active le profile si l'application est active</value>
 	</data>
 	<data name="profile.trigger.window.desc" xml:space="preserve">
 		<value>Active le profile si le nom de l'application contient ces caractères</value>
@@ -376,5 +376,8 @@ Toujours : Lors de la bascule vers un autre périphérique de lecture ou d'enreg
 	</data>
 	<data name="profile.desc" xml:space="preserve">
 		<value>Description</value>
+	</data>
+	<data name="communication" xml:space="preserve">
+		<value>Communication</value>
 	</data>
 </root>
