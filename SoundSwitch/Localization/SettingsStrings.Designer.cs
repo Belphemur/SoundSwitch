@@ -656,7 +656,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Application path .
+        ///   Looks up a localized string similar to Application path.
         /// </summary>
         internal static string profile_trigger_process {
             get {
@@ -665,7 +665,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Activate the profile when the selected process is in the foreground.
+        ///   Looks up a localized string similar to Activate the profile when the selected application is in the foreground.
         /// </summary>
         internal static string profile_trigger_process_desc {
             get {

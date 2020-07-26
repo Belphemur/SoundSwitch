@@ -283,7 +283,7 @@ namespace SoundSwitch.Framework.Profile
                 }
                 catch (InvalidOperationException)
                 {
-                    //Process in a weird state, can't get MainModule for it.
+                    //ApplicationPath in a weird state, can't get MainModule for it.
                 }
                 catch (Exception e)
                 {

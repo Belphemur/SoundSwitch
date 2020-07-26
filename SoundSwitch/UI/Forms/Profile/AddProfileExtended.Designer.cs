@@ -29,16 +29,18 @@
         private void InitializeComponent()
         {
             this.triggerBox = new System.Windows.Forms.GroupBox();
+            this.descriptionBox = new System.Windows.Forms.GroupBox();
+            this.descriptionLabel = new System.Windows.Forms.Label();
             this.textInput = new System.Windows.Forms.TextBox();
+            this.hotKeyControl = new SoundSwitch.UI.Component.HotKeyTextBox();
             this.deleteButton = new System.Windows.Forms.Button();
             this.activeTriggerLabel = new System.Windows.Forms.Label();
             this.availableTriggerBox = new System.Windows.Forms.ComboBox();
             this.addTriggerButton = new System.Windows.Forms.Button();
             this.availableTriggersText = new System.Windows.Forms.Label();
             this.setTriggerBox = new System.Windows.Forms.ListBox();
-            this.descriptionLabel = new System.Windows.Forms.Label();
-            this.hotKeyControl = new SoundSwitch.UI.Component.HotKeyTextBox();
-            this.descriptionBox = new System.Windows.Forms.GroupBox();
+            this.selectProgramButton = new System.Windows.Forms.Button();
+            this.selectProgramDialog = new System.Windows.Forms.OpenFileDialog();
             this.triggerBox.SuspendLayout();
             this.descriptionBox.SuspendLayout();
             this.SuspendLayout();
@@ -48,6 +50,7 @@
             this.triggerBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.triggerBox.Controls.Add(this.selectProgramButton);
             this.triggerBox.Controls.Add(this.descriptionBox);
             this.triggerBox.Controls.Add(this.textInput);
             this.triggerBox.Controls.Add(this.hotKeyControl);
@@ -64,14 +67,45 @@
             this.triggerBox.TabStop = false;
             this.triggerBox.Text = "Triggers";
             // 
+            // descriptionBox
+            // 
+            this.descriptionBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.descriptionBox.AutoSize = true;
+            this.descriptionBox.Controls.Add(this.descriptionLabel);
+            this.descriptionBox.Location = new System.Drawing.Point(154, 167);
+            this.descriptionBox.Name = "descriptionBox";
+            this.descriptionBox.Size = new System.Drawing.Size(158, 69);
+            this.descriptionBox.TabIndex = 8;
+            this.descriptionBox.TabStop = false;
+            this.descriptionBox.Text = "Description";
+            // 
+            // descriptionLabel
+            // 
+            this.descriptionLabel.AutoSize = true;
+            this.descriptionLabel.Location = new System.Drawing.Point(6, 23);
+            this.descriptionLabel.MaximumSize = new System.Drawing.Size(150, 0);
+            this.descriptionLabel.Name = "descriptionLabel";
+            this.descriptionLabel.Size = new System.Drawing.Size(136, 26);
+            this.descriptionLabel.TabIndex = 8;
+            this.descriptionLabel.Text = "Description of the selected trigger";
+            // 
             // textInput
             // 
             this.textInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textInput.Location = new System.Drawing.Point(355, 73);
             this.textInput.Name = "textInput";
-            this.textInput.Size = new System.Drawing.Size(301, 20);
+            this.textInput.Size = new System.Drawing.Size(285, 20);
             this.textInput.TabIndex = 7;
+            // 
+            // hotKeyControl
+            // 
+            this.hotKeyControl.Location = new System.Drawing.Point(355, 37);
+            this.hotKeyControl.Name = "hotKeyControl";
+            this.hotKeyControl.Size = new System.Drawing.Size(140, 20);
+            this.hotKeyControl.TabIndex = 6;
             // 
             // deleteButton
             // 
@@ -129,36 +163,16 @@
             this.setTriggerBox.TabIndex = 0;
             this.setTriggerBox.SelectedIndexChanged += new System.EventHandler(this.setTriggerBox_SelectedIndexChanged);
             // 
-            // descriptionLabel
+            // selectProgramButton
             // 
-            this.descriptionLabel.AutoSize = true;
-            this.descriptionLabel.Location = new System.Drawing.Point(6, 23);
-            this.descriptionLabel.MaximumSize = new System.Drawing.Size(150, 0);
-            this.descriptionLabel.Name = "descriptionLabel";
-            this.descriptionLabel.Size = new System.Drawing.Size(136, 26);
-            this.descriptionLabel.TabIndex = 8;
-            this.descriptionLabel.Text = "Description of the selected trigger";
-            // 
-            // hotKeyControl
-            // 
-            this.hotKeyControl.Location = new System.Drawing.Point(355, 37);
-            this.hotKeyControl.Name = "hotKeyControl";
-            this.hotKeyControl.Size = new System.Drawing.Size(140, 20);
-            this.hotKeyControl.TabIndex = 6;
-            // 
-            // descriptionBox
-            // 
-            this.descriptionBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.descriptionBox.AutoSize = true;
-            this.descriptionBox.Controls.Add(this.descriptionLabel);
-            this.descriptionBox.Location = new System.Drawing.Point(154, 167);
-            this.descriptionBox.Name = "descriptionBox";
-            this.descriptionBox.Size = new System.Drawing.Size(158, 69);
-            this.descriptionBox.TabIndex = 8;
-            this.descriptionBox.TabStop = false;
-            this.descriptionBox.Text = "Description";
+            this.selectProgramButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.selectProgramButton.Location = new System.Drawing.Point(646, 73);
+            this.selectProgramButton.Name = "selectProgramButton";
+            this.selectProgramButton.Size = new System.Drawing.Size(24, 20);
+            this.selectProgramButton.TabIndex = 9;
+            this.selectProgramButton.Text = "...";
+            this.selectProgramButton.UseVisualStyleBackColor = true;
+            this.selectProgramButton.Click += new System.EventHandler(this.selectProgramButton_Click);
             // 
             // AddProfileExtended
             // 
@@ -189,5 +203,7 @@
         private System.Windows.Forms.TextBox textInput;
         private System.Windows.Forms.Label descriptionLabel;
         private System.Windows.Forms.GroupBox descriptionBox;
+        private System.Windows.Forms.Button selectProgramButton;
+        private System.Windows.Forms.OpenFileDialog selectProgramDialog;
     }
 }
