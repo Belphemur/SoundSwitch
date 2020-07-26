@@ -109,7 +109,7 @@ namespace SoundSwitch.Framework.Profile
                 var deviceToUse = CheckDeviceAvailable(device);
                 if (deviceToUse == null)
                 {
-                    _showError.Invoke(string.Format(SettingsStrings.profile_error_device_not_found, device.Name), $"{SettingsStrings.profile_error_title}: {profile.ProfileName}");
+                    _showError.Invoke(string.Format(SettingsStrings.profile_error_device_not_found, device.NameClean), $"{SettingsStrings.profile_error_title}: {profile.ProfileName}");
                     continue;
                 }
                 _audioSwitcher.SwitchProcessTo(
@@ -132,7 +132,7 @@ namespace SoundSwitch.Framework.Profile
                 var deviceToUse = CheckDeviceAvailable(device);
                 if (deviceToUse == null)
                 {
-                    _showError.Invoke(string.Format(SettingsStrings.profile_error_device_not_found, device.Name), $"{SettingsStrings.profile_error_title}: {profile.ProfileName}");
+                    _showError.Invoke(string.Format(SettingsStrings.profile_error_device_not_found, device.NameClean), $"{SettingsStrings.profile_error_title}: {profile.ProfileName}");
                     continue;
                 }
                 _audioSwitcher.SwitchTo(deviceToUse.Id, ERole.ERole_enum_count);

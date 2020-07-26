@@ -23,9 +23,5 @@ namespace SoundSwitch.Common.Framework.Audio.Device
             State = device.State;
         }
 
-        public override string ToString()
-        {
-            return Name;
-        }
     }
 }

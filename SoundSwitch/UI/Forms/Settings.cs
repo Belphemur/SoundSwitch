@@ -230,10 +230,10 @@ namespace SoundSwitch.UI.Forms
                     new ListViewItem.ListViewSubItem(listViewItem, profile.ApplicationPath?.Split('\\').Last() ?? "")
                         {Tag = appIcon},
                     new ListViewItem.ListViewSubItem(listViewItem, profile.HotKey?.ToString() ?? ""),
-                    new ListViewItem.ListViewSubItem(listViewItem, playback?.Name ?? profile.Playback?.ToString() ?? "")
+                    new ListViewItem.ListViewSubItem(listViewItem, playback?.NameClean ?? profile.Playback?.ToString() ?? "")
                         {Tag = playback?.SmallIcon},
                     new ListViewItem.ListViewSubItem(listViewItem,
-                        recording?.Name ?? profile.Recording?.ToString() ?? "") {Tag = recording?.SmallIcon},
+                        recording?.NameClean ?? profile.Recording?.ToString() ?? "") {Tag = recording?.SmallIcon},
                 });
                 return listViewItem;
             }
@@ -257,9 +257,10 @@ namespace SoundSwitch.UI.Forms
 
         private void PopulateAudioDevices()
         {
-            PopulateAudioList(playbackListView, AppModel.Instance.SelectedDevices,
+            var selectedDevices = AppModel.Instance.SelectedDevices.ToArray();
+            PopulateAudioList(playbackListView, selectedDevices,
                 _audioDeviceLister.PlaybackDevices);
-            PopulateAudioList(recordingListView, AppModel.Instance.SelectedDevices,
+            PopulateAudioList(recordingListView, selectedDevices,
                 _audioDeviceLister.RecordingDevices);
         }
 
@@ -529,7 +530,7 @@ namespace SoundSwitch.UI.Forms
         {
             var listViewItem = new ListViewItem
             {
-                Text = device.Name,
+                Text = device.NameClean,
                 ImageKey = device.IconPath,
                 Tag = device
             };

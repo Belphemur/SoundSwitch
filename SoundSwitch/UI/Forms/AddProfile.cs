@@ -88,12 +88,12 @@ namespace SoundSwitch.UI.Forms
             recordingComboBox.DataSource =
                 recordings
                     .OrderBy(info => info.State)
-                    .ThenBy(info => info.Name)
+                    .ThenBy(info => info.NameClean)
                     .Select(info => new IconTextComboBox.DropDownItem
                         {
                             Icon = info.SmallIcon,
                             Tag  = info,
-                            Text = info.Name
+                            Text = info.NameClean
                         }
                     ).ToArray();
 
@@ -101,12 +101,12 @@ namespace SoundSwitch.UI.Forms
             playbackComboBox.DataSource =
                 playbacks
                     .OrderBy(info => info.State)
-                    .ThenBy(info => info.Name)
+                    .ThenBy(info => info.NameClean)
                     .Select(info => new IconTextComboBox.DropDownItem
                         {
                             Icon = info.SmallIcon,
                             Tag  = info,
-                            Text = info.Name
+                            Text = info.NameClean
                         }
                     ).ToArray();
         }

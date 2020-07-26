@@ -29,7 +29,7 @@ namespace SoundSwitch.Util
         private static readonly Bitmap check = Resources.Check;
 
         public ToolStripDeviceItem(EventHandler onClick, DeviceFullInfo audioDevice)
-            : base(audioDevice.Name, null, onClick)
+            : base(audioDevice.NameClean, null, onClick)
         {
             AudioDevice = audioDevice;
         }
