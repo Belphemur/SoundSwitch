@@ -290,6 +290,11 @@
             <e p="AddProfile.cs" t="Include" />
             <e p="AddProfile.Designer.cs" t="Include" />
             <e p="AddProfile.resx" t="Include" />
+            <e p="Profile" t="Include">
+              <e p="AddProfileExtended.cs" t="Include" />
+              <e p="AddProfileExtended.Designer.cs" t="Include" />
+              <e p="AddProfileExtended.resx" t="Include" />
+            </e>
             <e p="Settings.cs" t="Include" />
             <e p="Settings.Designer.cs" t="Include" />
             <e p="Settings.resx" t="Include" />

@@ -34,6 +34,7 @@
             this.availableTriggersText = new System.Windows.Forms.Label();
             this.setTriggerBox = new System.Windows.Forms.ListBox();
             this.activeTriggerLabel = new System.Windows.Forms.Label();
+            this.deleteButton = new System.Windows.Forms.Button();
             this.triggerBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -42,6 +43,7 @@
             this.triggerBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.triggerBox.Controls.Add(this.deleteButton);
             this.triggerBox.Controls.Add(this.activeTriggerLabel);
             this.triggerBox.Controls.Add(this.availableTriggerBox);
             this.triggerBox.Controls.Add(this.addTriggerButton);
@@ -49,7 +51,7 @@
             this.triggerBox.Controls.Add(this.setTriggerBox);
             this.triggerBox.Location = new System.Drawing.Point(12, 12);
             this.triggerBox.Name = "triggerBox";
-            this.triggerBox.Size = new System.Drawing.Size(690, 160);
+            this.triggerBox.Size = new System.Drawing.Size(690, 187);
             this.triggerBox.TabIndex = 0;
             this.triggerBox.TabStop = false;
             this.triggerBox.Text = "Triggers";
@@ -100,6 +102,16 @@
             this.activeTriggerLabel.TabIndex = 4;
             this.activeTriggerLabel.Text = "Active Triggers";
             // 
+            // deleteButton
+            // 
+            this.deleteButton.Location = new System.Drawing.Point(175, 138);
+            this.deleteButton.Name = "deleteButton";
+            this.deleteButton.Size = new System.Drawing.Size(75, 23);
+            this.deleteButton.TabIndex = 5;
+            this.deleteButton.Text = "Remove";
+            this.deleteButton.UseVisualStyleBackColor = true;
+            this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
+            // 
             // AddProfileExtended
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -122,5 +134,6 @@
         private System.Windows.Forms.Button addTriggerButton;
         private System.Windows.Forms.ComboBox availableTriggerBox;
         private System.Windows.Forms.Label activeTriggerLabel;
+        private System.Windows.Forms.Button deleteButton;
     }
 }

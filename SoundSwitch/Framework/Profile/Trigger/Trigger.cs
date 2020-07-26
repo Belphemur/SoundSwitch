@@ -18,5 +18,18 @@ namespace SoundSwitch.Framework.Profile.Trigger
         {
             return new TriggerFactory().Get(Type).Label;
         }
+
+        protected bool Equals(Trigger other)
+        {
+            return Type == other.Type && WindowName == other.WindowName && ApplicationPath == other.ApplicationPath && Equals(HotKey, other.HotKey);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Trigger) obj);
+        }
     }
 }

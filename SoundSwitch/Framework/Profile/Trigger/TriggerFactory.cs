@@ -29,6 +29,10 @@ namespace SoundSwitch.Framework.Profile.Trigger
 
     public interface ITriggerDefinition : IEnumImpl<TriggerFactory.Enum>
     {
+        /// <summary>
+        /// Maximum number of occurence of this trigger in a profile
+        /// </summary>
+        public int MaxOccurence { get; set; }
     }
 
     public abstract class BaseTrigger : ITriggerDefinition
@@ -40,6 +44,7 @@ namespace SoundSwitch.Framework.Profile.Trigger
 
         public virtual TriggerFactory.Enum TypeEnum { get; }
         public virtual string Label { get; }
+        public virtual int MaxOccurence { get; set; } = -1;
     }
 
     public class HotKeyTrigger : BaseTrigger
@@ -64,5 +69,7 @@ namespace SoundSwitch.Framework.Profile.Trigger
     {
         public override TriggerFactory.Enum TypeEnum { get; } = TriggerFactory.Enum.Steam;
         public override string Label => SettingsStrings.profile_trigger_steam;
+
+        public override int MaxOccurence { get; set; } = 1;
     }
 }
