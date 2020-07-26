@@ -13,13 +13,14 @@ namespace SoundSwitch.Framework.Profile.Trigger
             Steam
         }
 
-        private static readonly IEnumImplList<Enum, ITriggerDefinition> Impl = new EnumImplList<Enum, ITriggerDefinition>()
-        {
-            new HotKeyTrigger(),
-            new ProcessTrigger(),
-            new WindowTrigger(),
-            new SteamBigPictureTrigger()
-        };
+        private static readonly IEnumImplList<Enum, ITriggerDefinition> Impl =
+            new EnumImplList<Enum, ITriggerDefinition>()
+            {
+                new HotKeyTrigger(),
+                new ProcessTrigger(),
+                new WindowTrigger(),
+                new SteamBigPictureTrigger()
+            };
 
         public TriggerFactory() : base(Impl)
         {
@@ -30,27 +31,38 @@ namespace SoundSwitch.Framework.Profile.Trigger
     {
     }
 
-    public class HotKeyTrigger : ITriggerDefinition
+    public abstract class BaseTrigger : ITriggerDefinition
     {
-        public TriggerFactory.Enum TypeEnum { get; } = TriggerFactory.Enum.HotKey;
-        public string              Label    => SettingsStrings.hotkeys;
+        public override string ToString()
+        {
+            return Label;
+        }
+
+        public virtual TriggerFactory.Enum TypeEnum { get; }
+        public virtual string Label { get; }
     }
 
-    public class WindowTrigger : ITriggerDefinition
+    public class HotKeyTrigger : BaseTrigger
     {
-        public TriggerFactory.Enum TypeEnum { get; } = TriggerFactory.Enum.Window;
-        public string              Label    => SettingsStrings.profile_trigger_window;
+        public override TriggerFactory.Enum TypeEnum { get; } = TriggerFactory.Enum.HotKey;
+        public override string Label => SettingsStrings.hotkeys;
     }
 
-    public class ProcessTrigger : ITriggerDefinition
+    public class WindowTrigger : BaseTrigger
     {
-        public TriggerFactory.Enum TypeEnum { get; } = TriggerFactory.Enum.Process;
-        public string              Label    => SettingsStrings.profile_trigger_process;
+        public override TriggerFactory.Enum TypeEnum { get; } = TriggerFactory.Enum.Window;
+        public override string Label => SettingsStrings.profile_trigger_window;
     }
 
-    public class SteamBigPictureTrigger : ITriggerDefinition
+    public class ProcessTrigger : BaseTrigger
     {
-        public TriggerFactory.Enum TypeEnum { get; } = TriggerFactory.Enum.Steam;
-        public string              Label    => SettingsStrings.profile_trigger_steam;
+        public override TriggerFactory.Enum TypeEnum { get; } = TriggerFactory.Enum.Process;
+        public override string Label => SettingsStrings.profile_trigger_process;
+    }
+
+    public class SteamBigPictureTrigger : BaseTrigger
+    {
+        public override TriggerFactory.Enum TypeEnum { get; } = TriggerFactory.Enum.Steam;
+        public override string Label => SettingsStrings.profile_trigger_steam;
     }
 }

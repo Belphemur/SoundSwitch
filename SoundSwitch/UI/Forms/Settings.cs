@@ -38,6 +38,7 @@ using SoundSwitch.Localization.Factory;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
 using SoundSwitch.UI.Component.ListView;
+using SoundSwitch.UI.Forms.Profile;
 using SoundSwitch.Util;
 using HotKey = SoundSwitch.Framework.WinApi.Keyboard.HotKey;
 
@@ -668,7 +669,8 @@ namespace SoundSwitch.UI.Forms
 
         private void addProfileButton_Click(object sender, EventArgs e)
         {
-            new AddProfile(_audioDeviceLister.PlaybackDevices, _audioDeviceLister.RecordingDevices, this).Show(Owner);
+            //new AddProfile(_audioDeviceLister.PlaybackDevices, _audioDeviceLister.RecordingDevices, this).Show(Owner);
+            new AddProfileExtended().Show(Owner);
         }
 
         private void profilesListView_SelectedIndexChanged(object sender, EventArgs e)
