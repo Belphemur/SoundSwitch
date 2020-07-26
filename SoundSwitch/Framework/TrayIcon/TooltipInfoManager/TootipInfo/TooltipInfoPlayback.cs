@@ -31,7 +31,11 @@ namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo
         /// <returns></returns>
         public string TextToDisplay()
         {
-            var audioDevices = AppModel.Instance.ActiveAudioDeviceLister.PlaybackDevices;
+            var audioDevices = AppModel.Instance.ActiveAudioDeviceLister?.PlaybackDevices;
+            if (audioDevices == null)
+            {
+                return string.Format(SettingsStrings.activePlayback, "Unknown");
+            }
 
             var playbackDefaultDevice = audioDevices
                 .FirstOrDefault(device =>
