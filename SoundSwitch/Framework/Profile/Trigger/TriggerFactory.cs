@@ -55,6 +55,7 @@ namespace SoundSwitch.Framework.Profile.Trigger
         public override TriggerFactory.Enum TypeEnum { get; } = TriggerFactory.Enum.HotKey;
         public override string Label => SettingsStrings.hotkeys;
         public override string Description { get; set; } = SettingsStrings.profile_trigger_hotkey_desc;
+        public override int MaxOccurence { get; set; } = 1;
     }
 
     public class WindowTrigger : BaseTrigger
