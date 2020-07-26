@@ -20,10 +20,8 @@ namespace SoundSwitch.UI.Forms.Profile
             _triggerFactory = new TriggerFactory();
             InitializeComponent();
 
-            textInput.Hide();
-            hotKeyControl.Hide();
-            descriptionLabel.Hide();
-            selectProgramButton.Hide();
+            HideTriggerComponents();
+
             hotKeyControl.Location = textInput.Location;
 
             LocalizeForm();
@@ -94,10 +92,7 @@ namespace SoundSwitch.UI.Forms.Profile
             var trigger = (Trigger) setTriggerBox.SelectedItem;
             descriptionLabel.Text = _triggerFactory.Get(trigger.Type).Description;
             descriptionLabel.Show();
-            selectProgramButton.Hide();
-            textInput.Hide();
-            hotKeyControl.Hide();
-            selectProgramButton.Hide();
+            HideTriggerComponents();
             switch (trigger.Type)
             {
                 case TriggerFactory.Enum.HotKey:
@@ -108,12 +103,14 @@ namespace SoundSwitch.UI.Forms.Profile
                     break;
                 case TriggerFactory.Enum.Window:
                     textInput.DataBindings.Clear();
-                    textInput.DataBindings.Add(nameof(TextBox.Text), trigger, nameof(Trigger.WindowName), true, DataSourceUpdateMode.OnPropertyChanged);
+                    textInput.DataBindings.Add(nameof(TextBox.Text), trigger, nameof(Trigger.WindowName), true,
+                        DataSourceUpdateMode.OnPropertyChanged);
                     textInput.Show();
                     break;
                 case TriggerFactory.Enum.Process:
                     textInput.DataBindings.Clear();
-                    textInput.DataBindings.Add(nameof(TextBox.Text), trigger, nameof(Trigger.ApplicationPath), true, DataSourceUpdateMode.OnPropertyChanged);
+                    textInput.DataBindings.Add(nameof(TextBox.Text), trigger, nameof(Trigger.ApplicationPath), true,
+                        DataSourceUpdateMode.OnPropertyChanged);
                     textInput.Show();
                     selectProgramButton.Show();
                     break;
@@ -122,6 +119,14 @@ namespace SoundSwitch.UI.Forms.Profile
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        private void HideTriggerComponents()
+        {
+            selectProgramButton.Hide();
+            textInput.Hide();
+            hotKeyControl.Hide();
+            selectProgramButton.Hide();
         }
 
         private void deleteButton_Click(object sender, EventArgs e)
@@ -139,6 +144,9 @@ namespace SoundSwitch.UI.Forms.Profile
             if (setTriggerBox.Items.Count > 0)
             {
                 setTriggerBox.SelectedIndex = 0;
+            } else if (setTriggerBox.Items.Count == 0)
+            {
+                HideTriggerComponents();
             }
         }
 
