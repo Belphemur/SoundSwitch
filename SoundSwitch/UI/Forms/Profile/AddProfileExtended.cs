@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
+using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Profile.Trigger;
 using SoundSwitch.Properties;
+using SoundSwitch.UI.Component;
 
 namespace SoundSwitch.UI.Forms.Profile
 {
@@ -16,6 +18,10 @@ namespace SoundSwitch.UI.Forms.Profile
             _profile = profile;
             _triggerFactory = new TriggerFactory();
             InitializeComponent();
+
+            textInput.Hide();
+            hotKeyControl.Hide();
+
             Icon = Resources.profile;
             InitializeFromProfile();
         }
@@ -72,6 +78,30 @@ namespace SoundSwitch.UI.Forms.Profile
             {
                 return;
             }
+
+            var trigger = (Trigger) setTriggerBox.SelectedItem;
+            switch (trigger.Type)
+            {
+                case TriggerFactory.Enum.HotKey:
+                    textInput.Hide();
+                    hotKeyControl.HotKey = trigger.HotKey;
+                    hotKeyControl.CleanHotKeyChangedHandler();
+                    hotKeyControl.HotKeyChanged += (o, @event) => trigger.HotKey = hotKeyControl.HotKey;
+                    hotKeyControl.Show();
+                    break;
+                case TriggerFactory.Enum.Window:
+                    hotKeyControl.Hide();
+                    break;
+                case TriggerFactory.Enum.Process:
+                    hotKeyControl.Hide();
+                    break;
+                case TriggerFactory.Enum.Steam:
+                    textInput.Hide();
+                    hotKeyControl.Hide();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         private void deleteButton_Click(object sender, EventArgs e)
@@ -82,10 +112,14 @@ namespace SoundSwitch.UI.Forms.Profile
             }
 
             //Remove first from the profile, else the SelectedItem will be null
-            var trigger = (Trigger)setTriggerBox.SelectedItem;
+            var trigger = (Trigger) setTriggerBox.SelectedItem;
             _profile.Triggers.Remove(trigger);
             setTriggerBox.Items.Remove(trigger);
             InitializeAvailableTriggers();
+            if (setTriggerBox.Items.Count > 0)
+            {
+                setTriggerBox.SelectedIndex = 0;
+            }
         }
     }
 }

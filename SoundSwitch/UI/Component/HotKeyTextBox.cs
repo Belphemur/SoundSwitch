@@ -29,6 +29,11 @@ namespace SoundSwitch.UI.Component
         private HotKey _hotKey;
         [Browsable(true)] public event EventHandler<Event> HotKeyChanged;
 
+        public void CleanHotKeyChangedHandler()
+        {
+            HotKeyChanged = null;
+        }
+
         protected override void OnKeyDown(KeyEventArgs e)
         {
             HotKey.ModifierKeys modifierKeys = 0;

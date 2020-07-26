@@ -29,12 +29,14 @@
         private void InitializeComponent()
         {
             this.triggerBox = new System.Windows.Forms.GroupBox();
+            this.deleteButton = new System.Windows.Forms.Button();
+            this.activeTriggerLabel = new System.Windows.Forms.Label();
             this.availableTriggerBox = new System.Windows.Forms.ComboBox();
             this.addTriggerButton = new System.Windows.Forms.Button();
             this.availableTriggersText = new System.Windows.Forms.Label();
             this.setTriggerBox = new System.Windows.Forms.ListBox();
-            this.activeTriggerLabel = new System.Windows.Forms.Label();
-            this.deleteButton = new System.Windows.Forms.Button();
+            this.hotKeyControl = new SoundSwitch.UI.Component.HotKeyTextBox();
+            this.textInput = new System.Windows.Forms.TextBox();
             this.triggerBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -43,6 +45,8 @@
             this.triggerBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.triggerBox.Controls.Add(this.textInput);
+            this.triggerBox.Controls.Add(this.hotKeyControl);
             this.triggerBox.Controls.Add(this.deleteButton);
             this.triggerBox.Controls.Add(this.activeTriggerLabel);
             this.triggerBox.Controls.Add(this.availableTriggerBox);
@@ -55,6 +59,25 @@
             this.triggerBox.TabIndex = 0;
             this.triggerBox.TabStop = false;
             this.triggerBox.Text = "Triggers";
+            // 
+            // deleteButton
+            // 
+            this.deleteButton.Location = new System.Drawing.Point(175, 138);
+            this.deleteButton.Name = "deleteButton";
+            this.deleteButton.Size = new System.Drawing.Size(75, 23);
+            this.deleteButton.TabIndex = 5;
+            this.deleteButton.Text = "Remove";
+            this.deleteButton.UseVisualStyleBackColor = true;
+            this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
+            // 
+            // activeTriggerLabel
+            // 
+            this.activeTriggerLabel.AutoSize = true;
+            this.activeTriggerLabel.Location = new System.Drawing.Point(154, 19);
+            this.activeTriggerLabel.Name = "activeTriggerLabel";
+            this.activeTriggerLabel.Size = new System.Drawing.Size(78, 13);
+            this.activeTriggerLabel.TabIndex = 4;
+            this.activeTriggerLabel.Text = "Active Triggers";
             // 
             // availableTriggerBox
             // 
@@ -93,24 +116,21 @@
             this.setTriggerBox.TabIndex = 0;
             this.setTriggerBox.SelectedIndexChanged += new System.EventHandler(this.setTriggerBox_SelectedIndexChanged);
             // 
-            // activeTriggerLabel
+            // hotKeyControl
             // 
-            this.activeTriggerLabel.AutoSize = true;
-            this.activeTriggerLabel.Location = new System.Drawing.Point(154, 19);
-            this.activeTriggerLabel.Name = "activeTriggerLabel";
-            this.activeTriggerLabel.Size = new System.Drawing.Size(78, 13);
-            this.activeTriggerLabel.TabIndex = 4;
-            this.activeTriggerLabel.Text = "Active Triggers";
+            this.hotKeyControl.Location = new System.Drawing.Point(355, 37);
+            this.hotKeyControl.Name = "hotKeyControl";
+            this.hotKeyControl.Size = new System.Drawing.Size(140, 20);
+            this.hotKeyControl.TabIndex = 6;
             // 
-            // deleteButton
+            // textInput
             // 
-            this.deleteButton.Location = new System.Drawing.Point(175, 138);
-            this.deleteButton.Name = "deleteButton";
-            this.deleteButton.Size = new System.Drawing.Size(75, 23);
-            this.deleteButton.TabIndex = 5;
-            this.deleteButton.Text = "Remove";
-            this.deleteButton.UseVisualStyleBackColor = true;
-            this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
+            this.textInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textInput.Location = new System.Drawing.Point(355, 73);
+            this.textInput.Name = "textInput";
+            this.textInput.Size = new System.Drawing.Size(301, 20);
+            this.textInput.TabIndex = 7;
             // 
             // AddProfileExtended
             // 
@@ -135,5 +155,7 @@
         private System.Windows.Forms.ComboBox availableTriggerBox;
         private System.Windows.Forms.Label activeTriggerLabel;
         private System.Windows.Forms.Button deleteButton;
+        private Component.HotKeyTextBox hotKeyControl;
+        private System.Windows.Forms.TextBox textInput;
     }
 }
