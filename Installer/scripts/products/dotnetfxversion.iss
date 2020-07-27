@@ -14,18 +14,18 @@ end;
 
 function hasDotNetCore(version: string) : boolean;
 var
-	architecture: string;
 	runtimes: TArrayOfString;
 	I: Integer;
 	versionCompare: Integer;
+	registryKey: string;
 begin
-	architecture := 'x64';
-	if(not Is64BitInstallMode) then
-	   architecture := 'x86';
+	registryKey := 'SOFTWARE\WOW6432Node\dotnet\Setup\InstalledVersions\x64\sharedfx\Microsoft.NETCore.App';
+	if(not IsWin64) then
+	   registryKey :=  'SOFTWARE\dotnet\Setup\InstalledVersions\x86\sharedfx\Microsoft.NETCore.App';
 	   
 	Log('[.NET] Look for version ' + version);
 	   
-	if not RegGetValueNames(HKLM, 'SOFTWARE\dotnet\Setup\InstalledVersions\'+ architecture +'\sharedfx\Microsoft.NETCore.App', runtimes) then
+	if not RegGetValueNames(HKLM, registryKey, runtimes) then
 	begin
 	  Log('[.NET] Issue getting runtimes from registry');
 	  Result := False;
@@ -36,13 +36,14 @@ begin
 	begin
 	  versionCompare := CompareVersion(runtimes[I], version);
 	  Log(Format('[.NET] Compare: %s/%s = %d', [runtimes[I], version, versionCompare]));
-	  if(not versionCompare = -1) then
+	  if(not (versionCompare = -1)) then
 	  begin
+	    Log(Format('[.NET] Selecting %s', [runtimes[I]]));
 	    Result := True;
 	  	Exit;
 	  end;
     end;
-	   
+	Log('[.NET] No compatible found');
 	Result := False;
 end;
 
