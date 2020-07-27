@@ -45,6 +45,7 @@ namespace SoundSwitch.UI.Forms.Profile
             }
 
             InitRecordingPlaybackComboBoxes(playbacks, recordings);
+            switchDefaultCheckBox.DataBindings.Add(nameof(CheckBox.Checked), _profile, nameof(ProfileSetting.AlsoSwitchDefaultDevice), false, DataSourceUpdateMode.OnPropertyChanged);
         }
 
         private void InitRecordingPlaybackComboBoxes(IEnumerable<DeviceFullInfo> playbacks,
@@ -76,15 +77,10 @@ namespace SoundSwitch.UI.Forms.Profile
             communicationComboBox.DataSource = playbackItems;
             playbackComboBox.DataSource = playbackItems.ToArray();
 
-            communicationComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile,
-                nameof(Framework.Profile.Profile.Communication), false, DataSourceUpdateMode.OnPropertyChanged);
-            recordingComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile,
-                nameof(Framework.Profile.Profile.Recording), false, DataSourceUpdateMode.OnPropertyChanged);
-            playbackComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile,
-                nameof(Framework.Profile.Profile.Playback), false, DataSourceUpdateMode.OnPropertyChanged);
-            switchDefaultCheckBox.DataBindings.Add(nameof(CheckBox.Checked), _profile,
-                nameof(Framework.Profile.Profile.AlsoSwitchDefaultDevice), false,
-                DataSourceUpdateMode.OnPropertyChanged);
+            communicationComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(Framework.Profile.Profile.Communication), false, DataSourceUpdateMode.OnPropertyChanged);
+            recordingComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(Framework.Profile.Profile.Recording), false, DataSourceUpdateMode.OnPropertyChanged);
+            playbackComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(Framework.Profile.Profile.Playback), false, DataSourceUpdateMode.OnPropertyChanged);
+            switchDefaultCheckBox.DataBindings.Add(nameof(CheckBox.Checked), _profile, nameof(Framework.Profile.Profile.AlsoSwitchDefaultDevice), false, DataSourceUpdateMode.OnPropertyChanged);
         }
 
         private void LocalizeForm()
