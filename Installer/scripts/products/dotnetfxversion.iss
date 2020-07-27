@@ -25,7 +25,7 @@ begin
 	   
 	Log('[.NET] Look for version ' + version);
 	   
-	if not RegGetValueNames(HKLM, 'SOFTWARE\WOW6432Node\dotnet\Setup\InstalledVersions\'+ architecture +'\sharedfx\Microsoft.NETCore.App', runtimes) then
+	if not RegGetValueNames(HKLM, 'SOFTWARE\dotnet\Setup\InstalledVersions\'+ architecture +'\sharedfx\Microsoft.NETCore.App', runtimes) then
 	begin
 	  Log('[.NET] Issue getting runtimes from registry');
 	  Result := False;
