@@ -42,6 +42,7 @@ namespace SoundSwitch.UI.Forms.Profile
             }
             catch (Exception)
             {
+                // ignored
             }
 
             InitRecordingPlaybackComboBoxes(playbacks, recordings);
@@ -164,14 +165,12 @@ namespace SoundSwitch.UI.Forms.Profile
                     break;
                 case TriggerFactory.Enum.Window:
                     textInput.DataBindings.Clear();
-                    textInput.DataBindings.Add(nameof(TextBox.Text), trigger, nameof(Trigger.WindowName), true,
-                        DataSourceUpdateMode.OnPropertyChanged);
+                    textInput.DataBindings.Add(nameof(TextBox.Text), trigger, nameof(Trigger.WindowName), true, DataSourceUpdateMode.OnPropertyChanged);
                     textInput.Show();
                     break;
                 case TriggerFactory.Enum.Process:
                     textInput.DataBindings.Clear();
-                    textInput.DataBindings.Add(nameof(TextBox.Text), trigger, nameof(Trigger.ApplicationPath), true,
-                        DataSourceUpdateMode.OnPropertyChanged);
+                    textInput.DataBindings.Add(nameof(TextBox.Text), trigger, nameof(Trigger.ApplicationPath), true, DataSourceUpdateMode.OnPropertyChanged);
                     textInput.Show();
                     selectProgramButton.Show();
                     break;
