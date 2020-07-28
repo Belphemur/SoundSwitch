@@ -183,8 +183,6 @@ namespace SoundSwitch.UI.Forms
 
         private void PopulateProfiles()
         {
-            addProfileButton.Image = Resources.profile_add;
-
             profilesListView.Columns.Add(SettingsStrings.profile_name, 50, HorizontalAlignment.Left);
             profilesListView.Columns.Add(SettingsStrings.profile_program, 100, HorizontalAlignment.Left);
             profilesListView.Columns.Add(SettingsStrings.hotkeys, 150, HorizontalAlignment.Left);
