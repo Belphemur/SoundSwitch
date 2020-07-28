@@ -30,6 +30,7 @@ namespace SoundSwitch.Framework.Banner
     {
         private Timer _timerHide;
         private bool _hiding;
+        private BannerData _currentData;
 
 
         private WasapiOut _player;
@@ -70,6 +71,12 @@ namespace SoundSwitch.Framework.Banner
         /// <param name="data">The configuration data to setup the notification UI</param>
         internal void SetData(BannerData data)
         {
+            if (_currentData != null && _currentData.Priority > data.Priority)
+            {
+                return;
+            }
+
+            _currentData = data;
             if (_timerHide == null)
             {
                 _timerHide = new Timer {Interval = 3000};

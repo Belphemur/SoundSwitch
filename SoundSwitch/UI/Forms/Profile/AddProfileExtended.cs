@@ -107,9 +107,6 @@ namespace SoundSwitch.UI.Forms.Profile
 
             var switchTooltip = new ToolTip();
             switchTooltip.SetToolTip(switchDefaultCheckBox, SettingsStrings.profile_defaultDevice_checkbox_tooltip);
-
-
-
         }
 
         private void InitializeFromProfile()

@@ -47,5 +47,11 @@ namespace SoundSwitch.Framework.Banner
         /// Gets/sets the path for a wav sound to be playedc during the notification, this is optional.
         /// </summary>
         public CachedSound SoundFile { get; internal set; }
+
+        /// <summary>
+        /// Set the priority of the notification
+        /// If a notification is being shown a higher priority comes, it will replace it, if a lower, nothing will happens.
+        /// </summary>
+        public int Priority { get; set; } = -1;
     }
 }
