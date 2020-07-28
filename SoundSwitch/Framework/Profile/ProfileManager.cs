@@ -20,6 +20,7 @@ using SoundSwitch.Framework.Profile.Trigger;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
+using SoundSwitch.Util;
 using HotKey = SoundSwitch.Framework.WinApi.Keyboard.HotKey;
 using WindowsAPIAdapter = SoundSwitch.Framework.WinApi.WindowsAPIAdapter;
 
@@ -264,6 +265,27 @@ namespace SoundSwitch.Framework.Profile
 
                     return success;
                 });
+        }
+        
+        /// <summary>
+        /// Update a profile
+        /// </summary>
+        public Result<string, VoidSuccess> UpdateProfile(Profile oldProfile, Profile newProfile)
+        {
+            DeleteProfiles(new[] {oldProfile});
+            return ValidateProfile(newProfile)
+                   .Map(success =>
+                   {
+                       RegisterTriggers(newProfile);
+                       AppConfigs.Configuration.Profiles.Add(newProfile);
+                       AppConfigs.Configuration.Save();
+                       return success;
+                   }).Catch(s =>
+                   {
+                       AddProfile(oldProfile);
+                       return s;
+                   });
+
         }
 
         private Result<string, VoidSuccess> ValidateProfile(Profile profile)
