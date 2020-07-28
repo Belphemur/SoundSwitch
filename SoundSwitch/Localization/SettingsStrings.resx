@@ -400,4 +400,13 @@ Both: Change when any type of device is switched.</value>
 	<data name="communication" xml:space="preserve">
 		<value>Communication</value>
 	</data>
+	<data name="profile.error.triggers.min" xml:space="preserve">
+		<value>You need minimum one trigger.</value>
+	</data>
+	<data name="profile.error.steam" xml:space="preserve">
+		<value>You can only have one profile for Steam Big Picture.</value>
+	</data>
+	<data name="profile.error.window" xml:space="preserve">
+		<value>There is already a profile with this window name: {0}.</value>
+	</data>
 </root>

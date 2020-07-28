@@ -566,11 +566,38 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You can only have one profile for Steam Big Picture..
+        /// </summary>
+        internal static string profile_error_steam {
+            get {
+                return ResourceManager.GetString("profile.error.steam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Profile Error.
         /// </summary>
         internal static string profile_error_title {
             get {
                 return ResourceManager.GetString("profile.error.title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You need minimum one trigger..
+        /// </summary>
+        internal static string profile_error_triggers_min {
+            get {
+                return ResourceManager.GetString("profile.error.triggers.min", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is already a profile with this window name..
+        /// </summary>
+        internal static string profile_error_window {
+            get {
+                return ResourceManager.GetString("profile.error.window", resourceCulture);
             }
         }
         

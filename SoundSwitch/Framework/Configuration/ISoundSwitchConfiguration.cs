@@ -60,5 +60,6 @@ namespace SoundSwitch.Framework.Configuration
         IconChangerFactory.ActionEnum SwitchIcon { get; set; }
 
         HashSet<ProfileSetting> ProfileSettings { get; set; }
+        HashSet<Profile.Profile> Profiles { get; set; }
     }
 }

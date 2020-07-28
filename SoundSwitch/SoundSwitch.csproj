@@ -109,12 +109,6 @@
     <Compile Update="UI\Component\TextProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="UI\Forms\AddProfile.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="UI\Forms\AddProfile.Designer.cs">
-      <DependentUpon>AddProfile.cs</DependentUpon>
-    </Compile>
     <Compile Update="UI\Forms\About.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -183,9 +177,6 @@
     </EmbeddedResource>
     <EmbeddedResource Update="UI\Forms\About.resx">
       <DependentUpon>About.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="UI\Forms\AddProfile.resx">
-      <DependentUpon>AddProfile.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Update="UI\Forms\Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>

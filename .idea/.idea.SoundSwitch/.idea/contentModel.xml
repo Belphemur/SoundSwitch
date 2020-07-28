@@ -287,9 +287,6 @@
             <e p="About.cs" t="Include" />
             <e p="About.Designer.cs" t="Include" />
             <e p="About.resx" t="Include" />
-            <e p="AddProfile.cs" t="Include" />
-            <e p="AddProfile.Designer.cs" t="Include" />
-            <e p="AddProfile.resx" t="Include" />
             <e p="Profile" t="Include">
               <e p="AddProfileExtended.cs" t="Include" />
               <e p="AddProfileExtended.Designer.cs" t="Include" />

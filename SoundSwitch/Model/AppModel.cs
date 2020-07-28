@@ -215,9 +215,9 @@ namespace SoundSwitch.Model
 
             ProfileManager
                 .Init()
-                .Catch<ProfileSetting[]>(settings =>
+                .Catch<Profile[]>(settings =>
                 {
-                    var profileNames = string.Join(", ", settings.Select((setting) => setting.ProfileName));
+                    var profileNames = string.Join(", ", settings.Select((setting) => setting.Name));
                     TrayIcon.ShowError(string.Format(SettingsStrings.profile_error_registerHotkeys, profileNames), SettingsStrings.profile_error_registerHotkeys_title);
                     return Result.Success();
                 });

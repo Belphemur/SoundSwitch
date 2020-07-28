@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
@@ -12,23 +13,44 @@ namespace SoundSwitch.Framework.Profile
         internal class DeviceRoleWrapper
         {
             public DeviceInfo DeviceInfo { get; }
-            public ERole      Role       { get; }
+            public ERole Role { get; }
 
             internal DeviceRoleWrapper(DeviceInfo deviceInfo, ERole role)
             {
                 DeviceInfo = deviceInfo;
-                Role       = role;
+                Role = role;
             }
         }
 
-        public DeviceInfo? Playback      { get; set; }
+        public DeviceInfo? Playback { get; set; }
         public DeviceInfo? Communication { get; set; }
-        public DeviceInfo? Recording     { get; set; }
+        public DeviceInfo? Recording { get; set; }
 
-        public string               Name     { get; set; } = "";
+        public string Name { get; set; } = "";
         public IList<Trigger.Trigger> Triggers { get; set; } = new List<Trigger.Trigger>();
 
         public bool AlsoSwitchDefaultDevice { get; set; } = true;
+
+        /// <summary>
+        /// Deep copy the profile
+        /// </summary>
+        public Profile Copy()
+        {
+            return new Profile
+            {
+                AlsoSwitchDefaultDevice = AlsoSwitchDefaultDevice,
+                Communication = Communication,
+                Name = Name,
+                Playback = Playback,
+                Recording = Recording,
+                Triggers = Triggers.Select(trigger => new Trigger.Trigger(trigger.Type)
+                {
+                    HotKey = trigger.HotKey,
+                    ApplicationPath = trigger.ApplicationPath,
+                    WindowName = trigger.WindowName
+                }).ToList()
+            };
+        }
 
         [JsonIgnore]
         internal IEnumerable<DeviceRoleWrapper> Devices
@@ -36,7 +58,7 @@ namespace SoundSwitch.Framework.Profile
             get
             {
                 if (Playback != null)
-                    yield return new DeviceRoleWrapper(Playback, Communication == null ? ERole.ERole_enum_count : ERole.eConsole);
+                    yield return new DeviceRoleWrapper(Playback, Communication == null ? ERole.ERole_enum_count : ERole.eConsole | ERole.eMultimedia);
                 if (Communication != null)
                     yield return new DeviceRoleWrapper(Communication, ERole.eCommunications);
                 if (Recording != null)

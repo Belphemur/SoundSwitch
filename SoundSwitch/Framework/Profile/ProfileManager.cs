@@ -14,6 +14,7 @@ using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio.Lister;
 using SoundSwitch.Framework.Configuration;
+using SoundSwitch.Framework.Profile.Trigger;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
 using HotKey = SoundSwitch.Framework.WinApi.Keyboard.HotKey;
@@ -25,12 +26,17 @@ namespace SoundSwitch.Framework.Profile
     {
         public delegate void ShowError(string errorMessage, string errorTitle);
 
-        private readonly Dictionary<HotKey, ProfileSetting> _profileByHotkey;
-        private readonly Dictionary<string, ProfileSetting> _profileByApplication;
-        private readonly ForegroundProcess                  _foregroundProcess;
-        private readonly AudioSwitcher                      _audioSwitcher;
-        private readonly IAudioDeviceLister                 _activeDeviceLister;
-        private readonly ShowError                          _showError;
+        private readonly ForegroundProcess  _foregroundProcess;
+        private readonly AudioSwitcher      _audioSwitcher;
+        private readonly IAudioDeviceLister _activeDeviceLister;
+        private readonly ShowError          _showError;
+
+        private Profile? _steamProfile;
+
+        private readonly Dictionary<HotKey, Profile> _profilesByHotkey     = new Dictionary<HotKey, Profile>();
+        private readonly Dictionary<string, Profile> _profileByApplication = new Dictionary<string, Profile>();
+        private readonly Dictionary<string, Profile> _profilesByWindowName = new Dictionary<string, Profile>();
+
 
         public IReadOnlyCollection<ProfileSetting> Profiles => AppConfigs.Configuration.ProfileSettings;
 
@@ -43,28 +49,74 @@ namespace SoundSwitch.Framework.Profile
             _audioSwitcher      = audioSwitcher;
             _activeDeviceLister = activeDeviceLister;
             _showError          = showError;
-            _profileByApplication =
-                AppConfigs.Configuration.ProfileSettings
-                          .Where((setting) => setting.ApplicationPath != null)
-                          .ToDictionary(setting => setting.ApplicationPath!.ToLower());
-            _profileByHotkey =
-                AppConfigs.Configuration.ProfileSettings
-                          .Where((setting) => setting.HotKey != null)
-                          .ToDictionary(setting => setting.HotKey)!;
+
+            foreach (var profile in AppConfigs.Configuration.Profiles)
+            {
+                RegisterTriggers(profile);
+            }
+        }
+
+        private void RegisterTriggers(Profile profile)
+        {
+            foreach (var trigger in profile.Triggers)
+            {
+                switch (trigger.Type)
+                {
+                    case TriggerFactory.Enum.HotKey:
+                        _profilesByHotkey.Add(trigger.HotKey, profile);
+                        break;
+                    case TriggerFactory.Enum.Window:
+                        _profilesByWindowName.Add(trigger.WindowName, profile);
+                        break;
+                    case TriggerFactory.Enum.Process:
+                        _profileByApplication.Add(trigger.ApplicationPath, profile);
+                        break;
+                    case TriggerFactory.Enum.Steam:
+                        _steamProfile = profile;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
+
+        private void UnRegisterTriggers(Profile profile)
+        {
+            foreach (var trigger in profile.Triggers)
+            {
+                switch (trigger.Type)
+                {
+                    case TriggerFactory.Enum.HotKey:
+                        WindowsAPIAdapter.UnRegisterHotKey(trigger.HotKey);
+                        _profilesByHotkey.Remove(trigger.HotKey);
+                        break;
+                    case TriggerFactory.Enum.Window:
+                        _profilesByWindowName.Remove(trigger.WindowName);
+                        break;
+                    case TriggerFactory.Enum.Process:
+                        _profileByApplication.Remove(trigger.ApplicationPath);
+                        break;
+                    case TriggerFactory.Enum.Steam:
+                        _steamProfile = null;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
         }
 
         /// <summary>
         /// Initialize the profile manager. Return the list of Profile that it couldn't register hotkeys for.
         /// </summary>
         /// <returns></returns>
-        public Result<ProfileSetting[], VoidSuccess> Init()
+        public Result<Profile[], VoidSuccess> Init()
         {
             RegisterEvents();
 
-            var errors = AppConfigs.Configuration.ProfileSettings
-                                   .Where(setting => setting.HotKey != null)
-                                   .Where(profileSetting => !WindowsAPIAdapter.RegisterHotKey(profileSetting.HotKey))
-                                   .ToArray();
+            var errors = _profilesByHotkey
+                         .Where(pair => !WindowsAPIAdapter.RegisterHotKey(pair.Key))
+                         .Select(pair => pair.Value)
+                         .ToArray();
 
             InitializeProfileExistingProcess();
 
@@ -87,7 +139,7 @@ namespace SoundSwitch.Framework.Profile
 
             WindowsAPIAdapter.HotKeyPressed += (sender, args) =>
             {
-                if (!_profileByHotkey.TryGetValue(args.HotKey, out var profile))
+                if (!_profilesByHotkey.TryGetValue(args.HotKey, out var profile))
                     return;
                 SwitchAudio(profile);
             };
@@ -102,63 +154,123 @@ namespace SoundSwitch.Framework.Profile
             };
         }
 
-        private void SwitchAudio(ProfileSetting profile, uint processId)
+        private void SwitchAudio(Profile profile, uint processId)
         {
             foreach (var device in profile.Devices)
             {
-                var deviceToUse = CheckDeviceAvailable(device);
+                var deviceToUse = CheckDeviceAvailable(device.DeviceInfo);
                 if (deviceToUse == null)
                 {
-                    _showError.Invoke(string.Format(SettingsStrings.profile_error_device_not_found, device.NameClean), $"{SettingsStrings.profile_error_title}: {profile.ProfileName}");
+                    _showError.Invoke(string.Format(SettingsStrings.profile_error_device_not_found, device.DeviceInfo.NameClean), $"{SettingsStrings.profile_error_title}: {profile.Name}");
                     continue;
                 }
+
                 _audioSwitcher.SwitchProcessTo(
                     deviceToUse.Id,
-                    ERole.ERole_enum_count,
+                    device.Role,
                     (EDataFlow) deviceToUse.Type,
                     processId);
 
                 if (profile.AlsoSwitchDefaultDevice)
                 {
-                    _audioSwitcher.SwitchTo(deviceToUse.Id, ERole.ERole_enum_count);
+                    _audioSwitcher.SwitchTo(deviceToUse.Id, device.Role);
                 }
             }
         }
 
-        private void SwitchAudio(ProfileSetting profile)
+        private void SwitchAudio(Profile profile)
         {
             foreach (var device in profile.Devices)
             {
-                var deviceToUse = CheckDeviceAvailable(device);
+                var deviceToUse = CheckDeviceAvailable(device.DeviceInfo);
                 if (deviceToUse == null)
                 {
-                    _showError.Invoke(string.Format(SettingsStrings.profile_error_device_not_found, device.NameClean), $"{SettingsStrings.profile_error_title}: {profile.ProfileName}");
+                    _showError.Invoke(string.Format(SettingsStrings.profile_error_device_not_found, device.DeviceInfo.NameClean), $"{SettingsStrings.profile_error_title}: {profile.Name}");
                     continue;
                 }
-                _audioSwitcher.SwitchTo(deviceToUse.Id, ERole.ERole_enum_count);
+
+                _audioSwitcher.SwitchTo(deviceToUse.Id, device.Role);
             }
         }
+
 
         /// <summary>
         /// Add a profile to the system
         /// </summary>
-        /// <param name="profile"></param>
-        /// <returns></returns>
-        public Result<string, VoidSuccess> AddProfile(ProfileSetting profile)
+        public Result<string, VoidSuccess> AddProfile(Profile profile)
         {
-            return ValidateAddProfile(profile)
+            return ValidateProfile(profile)
                 .Map(success =>
                 {
-                    if (!string.IsNullOrEmpty(profile.ApplicationPath))
-                        _profileByApplication.Add(profile.ApplicationPath!.ToLower(), profile);
-                    if (profile.HotKey != null)
-                        _profileByHotkey.Add(profile.HotKey, profile);
-
-                    AppConfigs.Configuration.ProfileSettings.Add(profile);
+                    RegisterTriggers(profile);
+                    AppConfigs.Configuration.Profiles.Add(profile);
                     AppConfigs.Configuration.Save();
 
-                    return Result.Success();
+                    return success;
                 });
+        }
+
+        private Result<string, VoidSuccess> ValidateProfile(Profile profile)
+        {
+            if (string.IsNullOrEmpty(profile.Name))
+            {
+                return SettingsStrings.profile_error_no_name;
+            }
+
+            if (profile.Triggers.Count == 0)
+            {
+                return SettingsStrings.profile_error_no_name;
+            }
+
+            if (profile.Recording == null && profile.Playback == null)
+            {
+                return SettingsStrings.profile_error_needPlaybackOrRecording;
+            }
+
+            if (AppConfigs.Configuration.Profiles.Contains(profile))
+            {
+                return string.Format(SettingsStrings.profile_error_name, profile.Name);
+            }
+
+            foreach (var trigger in profile.Triggers)
+            {
+                switch (trigger.Type)
+                {
+                    case TriggerFactory.Enum.HotKey:
+                        if (trigger.HotKey == null || _profilesByHotkey.ContainsKey(trigger.HotKey) || !WindowsAPIAdapter.RegisterHotKey(trigger.HotKey))
+                        {
+                            return string.Format(SettingsStrings.profile_error_hotkey, trigger.HotKey);
+                        }
+
+                        break;
+                    case TriggerFactory.Enum.Window:
+                        if (string.IsNullOrEmpty(trigger.WindowName) || _profilesByWindowName.ContainsKey(trigger.WindowName.ToLower()))
+                        {
+                            return string.Format(SettingsStrings.profile_error_window, trigger.WindowName);
+                        }
+
+                        break;
+                    case TriggerFactory.Enum.Process:
+
+                        if (string.IsNullOrEmpty(trigger.ApplicationPath) || _profileByApplication.ContainsKey(trigger.ApplicationPath.ToLower()))
+                        {
+                            return string.Format(SettingsStrings.profile_error_application, trigger.ApplicationPath);
+                        }
+
+                        break;
+                    case TriggerFactory.Enum.Steam:
+                        if (_steamProfile != null)
+                        {
+                            return SettingsStrings.profile_error_steam;
+                        }
+
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+
+            return Result.Success();
         }
 
         private Result<string, VoidSuccess> ValidateAddProfile(ProfileSetting profile)
@@ -178,7 +290,7 @@ namespace SoundSwitch.Framework.Profile
                 return SettingsStrings.profile_error_needPlaybackOrRecording;
             }
 
-            if (profile.HotKey != null && _profileByHotkey.ContainsKey(profile.HotKey))
+            if (profile.HotKey != null && _profilesByHotkey.ContainsKey(profile.HotKey))
             {
                 return string.Format(SettingsStrings.profile_error_hotkey, profile.HotKey);
             }
@@ -206,34 +318,22 @@ namespace SoundSwitch.Framework.Profile
         ///
         /// Result Failure contains the profile that couldn't be deleted because they don't exists.
         /// </summary>
-        /// <param name="profiles"></param>
-        /// <returns></returns>
-        public Result<ProfileSetting[], VoidSuccess> DeleteProfiles(IEnumerable<ProfileSetting> profiles)
+        public Result<Profile[], VoidSuccess> DeleteProfiles(IEnumerable<Profile> profilesToDelete)
         {
-            var errors            = new List<ProfileSetting>();
-            var resetProcessAudio = false;
+            var errors            = new List<Profile>();
+            var profiles          = profilesToDelete.ToArray();
+            var resetProcessAudio = profiles.Any(profile => profile.Triggers.Any(trigger => trigger.Type == TriggerFactory.Enum.Process || trigger.Type == TriggerFactory.Enum.Window));
             foreach (var profile in profiles)
             {
-                if (!AppConfigs.Configuration.ProfileSettings.Contains(profile))
+                if (!AppConfigs.Configuration.Profiles.Contains(profile))
                 {
                     errors.Add(profile);
                     continue;
                 }
 
+                UnRegisterTriggers(profile);
 
-                if (profile.ApplicationPath != null)
-                {
-                    resetProcessAudio = true;
-                    _profileByApplication.Remove(profile.ApplicationPath.ToLower());
-                }
-
-                if (profile.HotKey != null)
-                {
-                    WindowsAPIAdapter.UnRegisterHotKey(profile.HotKey);
-                    _profileByHotkey.Remove(profile.HotKey);
-                }
-
-                AppConfigs.Configuration.ProfileSettings.Remove(profile);
+                AppConfigs.Configuration.Profiles.Remove(profile);
             }
 
             AppConfigs.Configuration.Save();

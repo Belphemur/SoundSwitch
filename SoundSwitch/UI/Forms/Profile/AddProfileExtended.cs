@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using RailSharp;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Profile.Trigger;
 using SoundSwitch.Localization;
+using SoundSwitch.Model;
 using SoundSwitch.Properties;
 using SoundSwitch.UI.Component;
 
@@ -14,12 +16,13 @@ namespace SoundSwitch.UI.Forms.Profile
     public partial class AddProfileExtended : Form
     {
         private readonly Framework.Profile.Profile _profile;
+        private readonly SettingsForm _settingsForm;
         private readonly TriggerFactory _triggerFactory;
 
-        public AddProfileExtended(Framework.Profile.Profile profile, IEnumerable<DeviceFullInfo> playbacks,
-            IEnumerable<DeviceFullInfo> recordings)
+        public AddProfileExtended(Framework.Profile.Profile profile, IEnumerable<DeviceFullInfo> playbacks, IEnumerable<DeviceFullInfo> recordings, SettingsForm settingsForm)
         {
             _profile = profile;
+            _settingsForm = settingsForm;
             _triggerFactory = new TriggerFactory();
             InitializeComponent();
 
@@ -35,7 +38,7 @@ namespace SoundSwitch.UI.Forms.Profile
             {
                 //Only let user on Windows 10 change the switch also default device
                 //Since the feature isn't available on Windows 7
-                if (Environment.OSVersion.Version.Major <= 10)
+                if (Environment.OSVersion.Version.Major < 10)
                 {
                     switchDefaultCheckBox.Hide();
                 }
@@ -44,7 +47,8 @@ namespace SoundSwitch.UI.Forms.Profile
             {
                 // ignored
             }
-
+            descriptionLabel.Hide();
+            triggerLabel.Hide();
             InitRecordingPlaybackComboBoxes(playbacks, recordings);
             switchDefaultCheckBox.DataBindings.Add(nameof(CheckBox.Checked), _profile, nameof(ProfileSetting.AlsoSwitchDefaultDevice), false, DataSourceUpdateMode.OnPropertyChanged);
         }
@@ -81,7 +85,6 @@ namespace SoundSwitch.UI.Forms.Profile
             communicationComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(Framework.Profile.Profile.Communication), false, DataSourceUpdateMode.OnPropertyChanged);
             recordingComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(Framework.Profile.Profile.Recording), false, DataSourceUpdateMode.OnPropertyChanged);
             playbackComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(Framework.Profile.Profile.Playback), false, DataSourceUpdateMode.OnPropertyChanged);
-            switchDefaultCheckBox.DataBindings.Add(nameof(CheckBox.Checked), _profile, nameof(Framework.Profile.Profile.AlsoSwitchDefaultDevice), false, DataSourceUpdateMode.OnPropertyChanged);
         }
 
         private void LocalizeForm()
@@ -151,10 +154,15 @@ namespace SoundSwitch.UI.Forms.Profile
                 return;
             }
 
-            var trigger = (Trigger) setTriggerBox.SelectedItem;
-            descriptionLabel.Text = _triggerFactory.Get(trigger.Type).Description;
-            descriptionLabel.Show();
             HideTriggerComponents();
+
+            var trigger = (Trigger) setTriggerBox.SelectedItem;
+            var triggerDefinition = _triggerFactory.Get(trigger.Type);
+            descriptionLabel.Text = triggerDefinition.Description;
+            triggerLabel.Text = triggerDefinition.Label;
+            descriptionLabel.Show();
+            triggerLabel.Show();
+
             switch (trigger.Type)
             {
                 case TriggerFactory.Enum.HotKey:
@@ -208,6 +216,8 @@ namespace SoundSwitch.UI.Forms.Profile
             else if (setTriggerBox.Items.Count == 0)
             {
                 HideTriggerComponents();
+                triggerLabel.Hide();
+                descriptionLabel.Hide();
             }
         }
 
@@ -281,7 +291,7 @@ namespace SoundSwitch.UI.Forms.Profile
             recordingRemoveButton.Visible = false;
         }
 
-        private void deleteCommunicationButton_Click(object sender, EventArgs e)
+        private void communicationRemoveButton_Click(object sender, EventArgs e)
         {
             _profile.Communication = null;
             try
@@ -294,6 +304,23 @@ namespace SoundSwitch.UI.Forms.Profile
             }
 
             communicationRemoveButton.Visible = false;
+        }
+
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+            var result = AppModel.Instance.ProfileManager.AddProfile(_profile);
+            result.Map(success =>
+                  {
+                      _settingsForm.RefreshProfiles();
+                      _settingsForm.Focus();
+                      Close();
+                      return success;
+                  })
+                  .Catch<string>(s =>
+                  {
+                      MessageBox.Show(s, SettingsStrings.profile_error_title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                      return Result.Success();
+                  });
         }
     }
 }

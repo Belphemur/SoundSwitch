@@ -670,7 +670,7 @@ namespace SoundSwitch.UI.Forms
         private void addProfileButton_Click(object sender, EventArgs e)
         {
             //new AddProfile(_audioDeviceLister.PlaybackDevices, _audioDeviceLister.RecordingDevices, this).Show(Owner);
-            new AddProfileExtended(new Framework.Profile.Profile(), _audioDeviceLister.PlaybackDevices, _audioDeviceLister.RecordingDevices).Show(Owner);
+            new AddProfileExtended(new Framework.Profile.Profile(), _audioDeviceLister.PlaybackDevices, _audioDeviceLister.RecordingDevices, this).Show(Owner);
         }
 
         private void profilesListView_SelectedIndexChanged(object sender, EventArgs e)
@@ -692,7 +692,7 @@ namespace SoundSwitch.UI.Forms
             }
 
             var profiles = profilesListView.SelectedItems.Cast<ListViewItem>()
-                .Select(item => (ProfileSetting) item.Tag);
+                .Select(item => (Framework.Profile.Profile) item.Tag);
             AppModel.Instance.ProfileManager.DeleteProfiles(profiles);
             deleteProfileButton.Enabled = false;
             RefreshProfiles();

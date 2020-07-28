@@ -29,31 +29,33 @@
         private void InitializeComponent()
         {
             this.triggerBox = new System.Windows.Forms.GroupBox();
+            this.selectProgramButton = new System.Windows.Forms.Button();
             this.descriptionBox = new System.Windows.Forms.GroupBox();
             this.descriptionLabel = new System.Windows.Forms.Label();
             this.textInput = new System.Windows.Forms.TextBox();
+            this.hotKeyControl = new SoundSwitch.UI.Component.HotKeyTextBox();
             this.deleteButton = new System.Windows.Forms.Button();
             this.activeTriggerLabel = new System.Windows.Forms.Label();
             this.availableTriggerBox = new System.Windows.Forms.ComboBox();
             this.addTriggerButton = new System.Windows.Forms.Button();
             this.availableTriggersText = new System.Windows.Forms.Label();
             this.setTriggerBox = new System.Windows.Forms.ListBox();
-            this.selectProgramButton = new System.Windows.Forms.Button();
             this.selectProgramDialog = new System.Windows.Forms.OpenFileDialog();
             this.profileBox = new System.Windows.Forms.GroupBox();
+            this.nameLabel = new System.Windows.Forms.Label();
+            this.nameTextBox = new System.Windows.Forms.TextBox();
+            this.communicationRemoveButton = new System.Windows.Forms.Button();
+            this.communicationLabel = new System.Windows.Forms.Label();
+            this.communicationComboBox = new SoundSwitch.UI.Component.IconTextComboBox();
             this.switchDefaultCheckBox = new System.Windows.Forms.CheckBox();
             this.recordingRemoveButton = new System.Windows.Forms.Button();
             this.playbackRemoveButton = new System.Windows.Forms.Button();
             this.recordingLabel = new System.Windows.Forms.Label();
             this.playbackLabel = new System.Windows.Forms.Label();
-            this.communicationRemoveButton = new System.Windows.Forms.Button();
-            this.communicationLabel = new System.Windows.Forms.Label();
-            this.nameLabel = new System.Windows.Forms.Label();
-            this.nameTextBox = new System.Windows.Forms.TextBox();
-            this.communicationComboBox = new SoundSwitch.UI.Component.IconTextComboBox();
             this.recordingComboBox = new SoundSwitch.UI.Component.IconTextComboBox();
             this.playbackComboBox = new SoundSwitch.UI.Component.IconTextComboBox();
-            this.hotKeyControl = new SoundSwitch.UI.Component.HotKeyTextBox();
+            this.saveButton = new System.Windows.Forms.Button();
+            this.triggerLabel = new System.Windows.Forms.Label();
             this.triggerBox.SuspendLayout();
             this.descriptionBox.SuspendLayout();
             this.profileBox.SuspendLayout();
@@ -63,6 +65,7 @@
             // 
             this.triggerBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.triggerBox.Controls.Add(this.triggerLabel);
             this.triggerBox.Controls.Add(this.selectProgramButton);
             this.triggerBox.Controls.Add(this.descriptionBox);
             this.triggerBox.Controls.Add(this.textInput);
@@ -79,6 +82,17 @@
             this.triggerBox.TabIndex = 0;
             this.triggerBox.TabStop = false;
             this.triggerBox.Text = "Triggers";
+            // 
+            // selectProgramButton
+            // 
+            this.selectProgramButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.selectProgramButton.Location = new System.Drawing.Point(650, 73);
+            this.selectProgramButton.Name = "selectProgramButton";
+            this.selectProgramButton.Size = new System.Drawing.Size(24, 20);
+            this.selectProgramButton.TabIndex = 9;
+            this.selectProgramButton.Text = "...";
+            this.selectProgramButton.UseVisualStyleBackColor = true;
+            this.selectProgramButton.Click += new System.EventHandler(this.selectProgramButton_Click);
             // 
             // descriptionBox
             // 
@@ -112,6 +126,13 @@
             this.textInput.Name = "textInput";
             this.textInput.Size = new System.Drawing.Size(289, 20);
             this.textInput.TabIndex = 7;
+            // 
+            // hotKeyControl
+            // 
+            this.hotKeyControl.Location = new System.Drawing.Point(355, 37);
+            this.hotKeyControl.Name = "hotKeyControl";
+            this.hotKeyControl.Size = new System.Drawing.Size(140, 20);
+            this.hotKeyControl.TabIndex = 6;
             // 
             // deleteButton
             // 
@@ -169,17 +190,6 @@
             this.setTriggerBox.TabIndex = 0;
             this.setTriggerBox.SelectedIndexChanged += new System.EventHandler(this.setTriggerBox_SelectedIndexChanged);
             // 
-            // selectProgramButton
-            // 
-            this.selectProgramButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.selectProgramButton.Location = new System.Drawing.Point(650, 73);
-            this.selectProgramButton.Name = "selectProgramButton";
-            this.selectProgramButton.Size = new System.Drawing.Size(24, 20);
-            this.selectProgramButton.TabIndex = 9;
-            this.selectProgramButton.Text = "...";
-            this.selectProgramButton.UseVisualStyleBackColor = true;
-            this.selectProgramButton.Click += new System.EventHandler(this.selectProgramButton_Click);
-            // 
             // profileBox
             // 
             this.profileBox.Controls.Add(this.nameLabel);
@@ -200,6 +210,63 @@
             this.profileBox.TabIndex = 1;
             this.profileBox.TabStop = false;
             this.profileBox.Text = "Profile";
+            // 
+            // nameLabel
+            // 
+            this.nameLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.nameLabel.AutoSize = true;
+            this.nameLabel.Location = new System.Drawing.Point(8, 20);
+            this.nameLabel.Name = "nameLabel";
+            this.nameLabel.Size = new System.Drawing.Size(35, 13);
+            this.nameLabel.TabIndex = 27;
+            this.nameLabel.Text = "Name";
+            // 
+            // nameTextBox
+            // 
+            this.nameTextBox.Location = new System.Drawing.Point(11, 36);
+            this.nameTextBox.Name = "nameTextBox";
+            this.nameTextBox.Size = new System.Drawing.Size(182, 20);
+            this.nameTextBox.TabIndex = 26;
+            // 
+            // communicationRemoveButton
+            // 
+            this.communicationRemoveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.communicationRemoveButton.Image = global::SoundSwitch.Properties.Resources.delete;
+            this.communicationRemoveButton.Location = new System.Drawing.Point(483, 194);
+            this.communicationRemoveButton.Name = "communicationRemoveButton";
+            this.communicationRemoveButton.Size = new System.Drawing.Size(22, 22);
+            this.communicationRemoveButton.TabIndex = 25;
+            this.communicationRemoveButton.UseVisualStyleBackColor = true;
+            this.communicationRemoveButton.Visible = false;
+            this.communicationRemoveButton.Click += new System.EventHandler(this.communicationRemoveButton_Click);
+            // 
+            // communicationLabel
+            // 
+            this.communicationLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.communicationLabel.AutoSize = true;
+            this.communicationLabel.Location = new System.Drawing.Point(7, 179);
+            this.communicationLabel.Name = "communicationLabel";
+            this.communicationLabel.Size = new System.Drawing.Size(79, 13);
+            this.communicationLabel.TabIndex = 24;
+            this.communicationLabel.Text = "Communication";
+            // 
+            // communicationComboBox
+            // 
+            this.communicationComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.communicationComboBox.DataSource = null;
+            this.communicationComboBox.DisplayMember = "Tag";
+            this.communicationComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.communicationComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.communicationComboBox.FormattingEnabled = true;
+            this.communicationComboBox.Location = new System.Drawing.Point(10, 195);
+            this.communicationComboBox.Name = "communicationComboBox";
+            this.communicationComboBox.Size = new System.Drawing.Size(467, 21);
+            this.communicationComboBox.TabIndex = 23;
+            this.communicationComboBox.ValueMember = "Tag";
+            this.communicationComboBox.SelectedIndexChanged += new System.EventHandler(this.communicationComboBox_SelectedIndexChanged);
             // 
             // switchDefaultCheckBox
             // 
@@ -257,63 +324,6 @@
             this.playbackLabel.TabIndex = 18;
             this.playbackLabel.Text = "Playback";
             // 
-            // communicationRemoveButton
-            // 
-            this.communicationRemoveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.communicationRemoveButton.Image = global::SoundSwitch.Properties.Resources.delete;
-            this.communicationRemoveButton.Location = new System.Drawing.Point(483, 194);
-            this.communicationRemoveButton.Name = "communicationRemoveButton";
-            this.communicationRemoveButton.Size = new System.Drawing.Size(22, 22);
-            this.communicationRemoveButton.TabIndex = 25;
-            this.communicationRemoveButton.UseVisualStyleBackColor = true;
-            this.communicationRemoveButton.Visible = false;
-            this.communicationRemoveButton.Click += new System.EventHandler(this.deleteCommunicationButton_Click);
-            // 
-            // communicationLabel
-            // 
-            this.communicationLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.communicationLabel.AutoSize = true;
-            this.communicationLabel.Location = new System.Drawing.Point(7, 179);
-            this.communicationLabel.Name = "communicationLabel";
-            this.communicationLabel.Size = new System.Drawing.Size(79, 13);
-            this.communicationLabel.TabIndex = 24;
-            this.communicationLabel.Text = "Communication";
-            // 
-            // nameLabel
-            // 
-            this.nameLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.nameLabel.AutoSize = true;
-            this.nameLabel.Location = new System.Drawing.Point(8, 20);
-            this.nameLabel.Name = "nameLabel";
-            this.nameLabel.Size = new System.Drawing.Size(35, 13);
-            this.nameLabel.TabIndex = 27;
-            this.nameLabel.Text = "Name";
-            // 
-            // nameTextBox
-            // 
-            this.nameTextBox.Location = new System.Drawing.Point(11, 36);
-            this.nameTextBox.Name = "nameTextBox";
-            this.nameTextBox.Size = new System.Drawing.Size(182, 20);
-            this.nameTextBox.TabIndex = 26;
-            // 
-            // communicationComboBox
-            // 
-            this.communicationComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.communicationComboBox.DataSource = null;
-            this.communicationComboBox.DisplayMember = "Tag";
-            this.communicationComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.communicationComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.communicationComboBox.FormattingEnabled = true;
-            this.communicationComboBox.Location = new System.Drawing.Point(10, 195);
-            this.communicationComboBox.Name = "communicationComboBox";
-            this.communicationComboBox.Size = new System.Drawing.Size(467, 21);
-            this.communicationComboBox.TabIndex = 23;
-            this.communicationComboBox.ValueMember = "Tag";
-            this.communicationComboBox.SelectedIndexChanged += new System.EventHandler(this.communicationComboBox_SelectedIndexChanged);
-            // 
             // recordingComboBox
             // 
             this.recordingComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -346,18 +356,32 @@
             this.playbackComboBox.ValueMember = "Tag";
             this.playbackComboBox.SelectedIndexChanged += new System.EventHandler(this.playbackComboBox_SelectedIndexChanged);
             // 
-            // hotKeyControl
+            // saveButton
             // 
-            this.hotKeyControl.Location = new System.Drawing.Point(355, 37);
-            this.hotKeyControl.Name = "hotKeyControl";
-            this.hotKeyControl.Size = new System.Drawing.Size(140, 20);
-            this.hotKeyControl.TabIndex = 6;
+            this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.saveButton.Location = new System.Drawing.Point(627, 567);
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Size = new System.Drawing.Size(75, 23);
+            this.saveButton.TabIndex = 2;
+            this.saveButton.Text = "Save";
+            this.saveButton.UseVisualStyleBackColor = true;
+            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
+            // 
+            // triggerLabel
+            // 
+            this.triggerLabel.AutoSize = true;
+            this.triggerLabel.Location = new System.Drawing.Point(352, 57);
+            this.triggerLabel.Name = "triggerLabel";
+            this.triggerLabel.Size = new System.Drawing.Size(40, 13);
+            this.triggerLabel.TabIndex = 10;
+            this.triggerLabel.Text = "Trigger";
             // 
             // AddProfileExtended
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(718, 574);
+            this.ClientSize = new System.Drawing.Size(718, 602);
+            this.Controls.Add(this.saveButton);
             this.Controls.Add(this.profileBox);
             this.Controls.Add(this.triggerBox);
             this.Name = "AddProfileExtended";
@@ -400,5 +424,7 @@
         private Component.IconTextComboBox communicationComboBox;
         private System.Windows.Forms.Label nameLabel;
         private System.Windows.Forms.TextBox nameTextBox;
+        private System.Windows.Forms.Button saveButton;
+        private System.Windows.Forms.Label triggerLabel;
     }
 }

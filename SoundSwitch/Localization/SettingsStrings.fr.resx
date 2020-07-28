@@ -380,4 +380,13 @@ Toujours : Lors de la bascule vers un autre périphérique de lecture ou d'enreg
 	<data name="communication" xml:space="preserve">
 		<value>Communication</value>
 	</data>
+	<data name="profile.error.triggers.min" xml:space="preserve">
+		<value>Minimum un déclencheur.</value>
+	</data>
+	<data name="profile.error.steam" xml:space="preserve">
+		<value>Vous ne pouvez avoir qu'un seul profile avec utilisant Steam Big Picture.</value>
+	</data>
+	<data name="profile.error.window" xml:space="preserve">
+		<value>Il y a déjà un profile utilisant ce nom d'application.</value>
+	</data>
 </root>
