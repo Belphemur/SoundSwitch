@@ -40,6 +40,7 @@ namespace SoundSwitch.UI.Forms.Profile
                 //Since the feature isn't available on Windows 7
                 if (Environment.OSVersion.Version.Major < 10)
                 {
+                    profile.AlsoSwitchDefaultDevice = true;
                     switchDefaultCheckBox.Hide();
                 }
             }

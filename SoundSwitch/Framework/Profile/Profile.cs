@@ -29,7 +29,7 @@ namespace SoundSwitch.Framework.Profile
         public string Name { get; set; } = "";
         public IList<Trigger.Trigger> Triggers { get; set; } = new List<Trigger.Trigger>();
 
-        public bool AlsoSwitchDefaultDevice { get; set; } = true;
+        public bool AlsoSwitchDefaultDevice { get; set; } = false;
 
         /// <summary>
         /// Deep copy the profile
