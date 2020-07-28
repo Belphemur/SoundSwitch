@@ -38,7 +38,7 @@ namespace SoundSwitch.Framework.Profile
         private readonly Dictionary<string, Profile> _profilesByWindowName = new Dictionary<string, Profile>();
 
 
-        public IReadOnlyCollection<ProfileSetting> Profiles => AppConfigs.Configuration.ProfileSettings;
+        public IReadOnlyCollection<Profile> Profiles => AppConfigs.Configuration.Profiles;
 
         public ProfileManager(ForegroundProcess  foregroundProcess,
                               AudioSwitcher      audioSwitcher,

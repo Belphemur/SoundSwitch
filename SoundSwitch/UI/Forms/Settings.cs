@@ -29,6 +29,7 @@ using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.Factory;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
+using SoundSwitch.Framework.Profile.Trigger;
 using SoundSwitch.Framework.TrayIcon.Icon;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
@@ -196,17 +197,21 @@ namespace SoundSwitch.UI.Forms
 
         public void RefreshProfiles()
         {
-            ListViewItem ProfileToListViewItem(ProfileSetting profile)
+            ListViewItem ProfileToListViewItem(Framework.Profile.Profile profile)
             {
-                var            listViewItem = new ListViewItem(profile.ProfileName) {Tag = profile};
+                var            listViewItem = new ListViewItem(profile.Name) {Tag = profile};
                 Icon           appIcon      = null;
                 DeviceFullInfo recording    = null;
                 DeviceFullInfo playback     = null;
-                if (!string.IsNullOrEmpty(profile.ApplicationPath))
+
+                var applicationTrigger = profile.Triggers.FirstOrDefault(trig => trig.Type == TriggerFactory.Enum.Process);
+                var hotkeyTrigger = profile.Triggers.FirstOrDefault(trig => trig.Type == TriggerFactory.Enum.HotKey);
+
+                if (applicationTrigger != null)
                 {
                     try
                     {
-                        appIcon = IconExtractor.Extract(profile.ApplicationPath, 0, false);
+                        appIcon = IconExtractor.Extract(applicationTrigger.ApplicationPath, 0, false);
                     }
                     catch
                     {
@@ -228,9 +233,9 @@ namespace SoundSwitch.UI.Forms
 
                 listViewItem.SubItems.AddRange(new[]
                 {
-                    new ListViewItem.ListViewSubItem(listViewItem, profile.ApplicationPath?.Split('\\').Last() ?? "")
+                    new ListViewItem.ListViewSubItem(listViewItem, applicationTrigger?.ApplicationPath.Split('\\').Last() ?? "")
                         {Tag = appIcon},
-                    new ListViewItem.ListViewSubItem(listViewItem, profile.HotKey?.ToString() ?? ""),
+                    new ListViewItem.ListViewSubItem(listViewItem, hotkeyTrigger?.HotKey.ToString() ?? ""),
                     new ListViewItem.ListViewSubItem(listViewItem, playback?.NameClean ?? profile.Playback?.ToString() ?? "")
                         {Tag = playback?.SmallIcon},
                     new ListViewItem.ListViewSubItem(listViewItem,
