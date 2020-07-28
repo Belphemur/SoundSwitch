@@ -191,6 +191,7 @@ namespace SoundSwitch.UI.Forms
             profilesListView.Columns.Add(SettingsStrings.hotkeys, 150, HorizontalAlignment.Left);
             profilesListView.Columns.Add(SettingsStrings.playback, 150, HorizontalAlignment.Left);
             profilesListView.Columns.Add(SettingsStrings.recording, 150, HorizontalAlignment.Left);
+            profilesListView.Columns.Add(SettingsStrings.communication, 150, HorizontalAlignment.Left);
 
             RefreshProfiles();
         }
@@ -203,6 +204,7 @@ namespace SoundSwitch.UI.Forms
                 Icon           appIcon      = null;
                 DeviceFullInfo recording    = null;
                 DeviceFullInfo playback     = null;
+                DeviceFullInfo communication = null;
 
                 var applicationTrigger = profile.Triggers.FirstOrDefault(trig => trig.Type == TriggerFactory.Enum.Process);
                 var hotkeyTrigger = profile.Triggers.FirstOrDefault(trig => trig.Type == TriggerFactory.Enum.HotKey);
@@ -222,13 +224,19 @@ namespace SoundSwitch.UI.Forms
                 if (profile.Playback != null)
                 {
                     playback = _audioDeviceLister.PlaybackDevices.FirstOrDefault(info =>
-                        info.Id == profile.Playback.Id);
+                        info.Equals(profile.Playback));
                 }
 
                 if (profile.Recording != null)
                 {
                     recording = _audioDeviceLister.RecordingDevices.FirstOrDefault(info =>
-                        info.Id == profile.Recording.Id);
+                        info.Equals(profile.Recording));
+                }
+                
+                if (profile.Communication != null)
+                {
+                    communication = _audioDeviceLister.PlaybackDevices.FirstOrDefault(info =>
+                        info.Equals(profile.Communication));
                 }
 
                 listViewItem.SubItems.AddRange(new[]
@@ -240,7 +248,10 @@ namespace SoundSwitch.UI.Forms
                         {Tag = playback?.SmallIcon},
                     new ListViewItem.ListViewSubItem(listViewItem,
                         recording?.NameClean ?? profile.Recording?.ToString() ?? "") {Tag = recording?.SmallIcon},
+                    new ListViewItem.ListViewSubItem(listViewItem,
+                        communication?.NameClean ?? profile.Communication?.ToString() ?? "") {Tag = communication?.SmallIcon},
                 });
+
                 return listViewItem;
             }
 
