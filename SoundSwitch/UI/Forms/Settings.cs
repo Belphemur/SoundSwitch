@@ -685,8 +685,8 @@ namespace SoundSwitch.UI.Forms
 
         private void addProfileButton_Click(object sender, EventArgs e)
         {
-            //new AddProfile(_audioDeviceLister.PlaybackDevices, _audioDeviceLister.RecordingDevices, this).Show(Owner);
-            new UpsertProfileExtended(new Profile(), _audioDeviceLister.PlaybackDevices, _audioDeviceLister.RecordingDevices, this).Show(Owner);
+            var form = new UpsertProfileExtended(new Profile(), _audioDeviceLister.PlaybackDevices, _audioDeviceLister.RecordingDevices, this);
+            form.Show(this);
         }
 
         private void profilesListView_SelectedIndexChanged(object sender, EventArgs e)
@@ -730,7 +730,8 @@ namespace SoundSwitch.UI.Forms
             }
 
             var profile = (Profile)profilesListView.SelectedItems[0].Tag;
-            new UpsertProfileExtended(profile, _audioDeviceLister.PlaybackDevices, _audioDeviceLister.RecordingDevices, this, true).Show(Owner);
+            var form = new UpsertProfileExtended(profile, _audioDeviceLister.PlaybackDevices, _audioDeviceLister.RecordingDevices, this, true);
+            form.Show(this);
         }
 
         private void profilesListView_DoubleClick(object sender, EventArgs e)

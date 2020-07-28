@@ -227,7 +227,6 @@ namespace SoundSwitch.UI.Forms
             // 
             this.deleteProfileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.deleteProfileButton.Enabled = false;
-            this.deleteProfileButton.Image = global::SoundSwitch.Properties.Resources.profile_delete;
             this.deleteProfileButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.deleteProfileButton.Location = new System.Drawing.Point(624, 296);
             this.deleteProfileButton.Name = "deleteProfileButton";
@@ -268,7 +267,6 @@ namespace SoundSwitch.UI.Forms
             // addProfileButton
             // 
             this.addProfileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.addProfileButton.Image = global::SoundSwitch.Properties.Resources.profile_add;
             this.addProfileButton.Location = new System.Drawing.Point(412, 296);
             this.addProfileButton.Name = "addProfileButton";
             this.addProfileButton.Size = new System.Drawing.Size(100, 26);

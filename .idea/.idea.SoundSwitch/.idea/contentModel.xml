@@ -288,17 +288,15 @@
             <e p="About.cs" t="Include" />
             <e p="About.Designer.cs" t="Include" />
             <e p="About.resx" t="Include" />
-            <e p="Profile" t="Include">
-              <e p="AddProfileExtended.cs" t="Include" />
-              <e p="AddProfileExtended.Designer.cs" t="Include" />
-              <e p="AddProfileExtended.resx" t="Include" />
-            </e>
             <e p="Settings.cs" t="Include" />
             <e p="Settings.Designer.cs" t="Include" />
             <e p="Settings.resx" t="Include" />
             <e p="UpdateDownloadForm.cs" t="Include" />
             <e p="UpdateDownloadForm.Designer.cs" t="Include" />
             <e p="UpdateDownloadForm.resx" t="Include" />
+            <e p="UpsertProfileExtended.cs" t="Include" />
+            <e p="UpsertProfileExtended.Designer.cs" t="Include" />
+            <e p="UpsertProfileExtended.resx" t="Include" />
           </e>
         </e>
         <e p="Util" t="Include">

@@ -23,8 +23,8 @@ namespace SoundSwitch.UI.Forms
 
         public UpsertProfileExtended(Profile profile, IEnumerable<DeviceFullInfo> playbacks, IEnumerable<DeviceFullInfo> recordings, SettingsForm settingsForm, bool editing = false)
         {
-            _oldProfile = profile;
-            _profile = profile.Copy();
+            _oldProfile = editing ? profile : null;
+            _profile = editing ? profile.Copy() : profile;
             _settingsForm = settingsForm;
             _editing = editing;
             _triggerFactory = new TriggerFactory();
