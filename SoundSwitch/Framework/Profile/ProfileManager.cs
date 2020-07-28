@@ -12,11 +12,14 @@ using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework.Audio.Lister;
+using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Profile.Trigger;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
+using SoundSwitch.Properties;
 using HotKey = SoundSwitch.Framework.WinApi.Keyboard.HotKey;
 using WindowsAPIAdapter = SoundSwitch.Framework.WinApi.WindowsAPIAdapter;
 
@@ -26,6 +29,7 @@ namespace SoundSwitch.Framework.Profile
     {
         public delegate void ShowError(string errorMessage, string errorTitle);
 
+        private readonly BannerManager      _bannerManager = new BannerManager();
         private readonly ForegroundProcess  _foregroundProcess;
         private readonly AudioSwitcher      _audioSwitcher;
         private readonly IAudioDeviceLister _activeDeviceLister;
@@ -139,12 +143,13 @@ namespace SoundSwitch.Framework.Profile
                     SwitchAudio(_steamProfile, @event.ProcessId);
                     return;
                 }
+
                 if (_profileByApplication.TryGetValue(@event.ProcessName.ToLower(), out profile))
                 {
                     SwitchAudio(profile, @event.ProcessId);
                     return;
                 }
-                
+
                 var windowNameLower = @event.WindowName.ToLower();
 
                 profile = _profilesByWindowName.FirstOrDefault(pair => windowNameLower.Contains(pair.Key)).Value;
@@ -171,8 +176,40 @@ namespace SoundSwitch.Framework.Profile
             };
         }
 
+        private void NotifyProfileIfNeeded(Profile profile, uint? processId)
+        {
+            if (!profile.NotifyOnActivation)
+            {
+                return;
+            }
+
+          
+            var icon    = Resources.default_profile_image;
+            if (processId.HasValue)
+            {
+                try
+                {
+                    var process = Process.GetProcessById((int) processId.Value);
+                    icon = IconExtractor.Extract(process.MainModule?.FileName, 0, true).ToBitmap();
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+            }
+
+            _bannerManager.ShowNotification(new BannerData
+            {
+                Priority = 1,
+                Image    = icon,
+                Title    = string.Format(SettingsStrings.profile_notification_text, profile.Name),
+                Text     = string.Join("\n", profile.Devices.Select(wrapper => wrapper.DeviceInfo.NameClean))
+            });
+        }
+
         private void SwitchAudio(Profile profile, uint processId)
         {
+            NotifyProfileIfNeeded(profile, processId);
             foreach (var device in profile.Devices)
             {
                 var deviceToUse = CheckDeviceAvailable(device.DeviceInfo);
@@ -195,8 +232,10 @@ namespace SoundSwitch.Framework.Profile
             }
         }
 
+
         private void SwitchAudio(Profile profile)
         {
+            NotifyProfileIfNeeded(profile, null);
             foreach (var device in profile.Devices)
             {
                 var deviceToUse = CheckDeviceAvailable(device.DeviceInfo);

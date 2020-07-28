@@ -390,6 +390,9 @@ Toujours : Lors de la bascule vers un autre périphérique de lecture ou d'enreg
 		<value>Il y a déjà un profile utilisant ce nom d'application : {0}.</value>
 	</data>
 	<data name="profile.notify-on-activation" xml:space="preserve">
-		<value>Notifie quand le profile est enclenché</value>
+		<value>Notifie quand le profile est activé</value>
+	</data>
+	<data name="profile.notification.text" xml:space="preserve">
+		<value>Profile {0} activé</value>
 	</data>
 </root>

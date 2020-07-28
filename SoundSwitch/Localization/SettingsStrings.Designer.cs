@@ -647,6 +647,15 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Profile {0} triggered.
+        /// </summary>
+        internal static string profile_notification_text {
+            get {
+                return ResourceManager.GetString("profile.notification.text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notify when profile is triggered.
         /// </summary>
         internal static string profile_notify_on_activation {
