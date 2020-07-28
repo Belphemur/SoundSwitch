@@ -131,7 +131,7 @@ namespace SoundSwitch.Framework.Configuration
                 MigratedFields.Add(nameof(KeepSystrayIcon));
             }
 
-            if (!MigratedFields.Contains(nameof(ProfileSettings)))
+            if (!MigratedFields.Contains(nameof(ProfileSettings) + "_final"))
             {
                 Profiles = ProfileSettings
                            .Select(setting =>
@@ -161,7 +161,7 @@ namespace SoundSwitch.Framework.Configuration
                                } 
                                return profile;
                            }).ToHashSet();
-                MigratedFields.Add(nameof(ProfileSettings));
+                MigratedFields.Add(nameof(ProfileSettings) + "_final");
             }
 #pragma warning restore 612
         }
