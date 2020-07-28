@@ -409,4 +409,7 @@ Both: Change when any type of device is switched.</value>
 	<data name="profile.error.window" xml:space="preserve">
 		<value>There is already a profile with this window name: {0}.</value>
 	</data>
+	<data name="profile.notify-on-activation" xml:space="preserve">
+		<value>Notify when profile is triggered</value>
+	</data>
 </root>

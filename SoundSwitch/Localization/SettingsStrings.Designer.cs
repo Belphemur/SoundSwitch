@@ -593,7 +593,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There is already a profile with this window name..
+        ///   Looks up a localized string similar to There is already a profile with this window name: {0}..
         /// </summary>
         internal static string profile_error_window {
             get {
@@ -643,6 +643,15 @@ namespace SoundSwitch.Localization {
         internal static string profile_name {
             get {
                 return ResourceManager.GetString("profile.name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notify when profile is triggered.
+        /// </summary>
+        internal static string profile_notify_on_activation {
+            get {
+                return ResourceManager.GetString("profile.notify-on-activation", resourceCulture);
             }
         }
         

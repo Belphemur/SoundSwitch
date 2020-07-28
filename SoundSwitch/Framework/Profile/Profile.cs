@@ -31,6 +31,8 @@ namespace SoundSwitch.Framework.Profile
 
         public bool AlsoSwitchDefaultDevice { get; set; } = false;
 
+        public bool NotifyOnActivation { get; set; } = true;
+
         /// <summary>
         /// Deep copy the profile
         /// </summary>

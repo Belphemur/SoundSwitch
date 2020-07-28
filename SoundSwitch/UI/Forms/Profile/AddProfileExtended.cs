@@ -53,6 +53,7 @@ namespace SoundSwitch.UI.Forms.Profile
             InitRecordingPlaybackComboBoxes(playbacks, recordings);
             switchDefaultCheckBox.DataBindings.Add(nameof(CheckBox.Checked), _profile, nameof(Framework.Profile.Profile.AlsoSwitchDefaultDevice), false, DataSourceUpdateMode.OnPropertyChanged);
             nameTextBox.DataBindings.Add(nameof(TextBox.Text), _profile, nameof(Framework.Profile.Profile.Name), false, DataSourceUpdateMode.OnPropertyChanged);
+            notifyCheckbox.DataBindings.Add(nameof(CheckBox.Checked), _profile, nameof(Framework.Profile.Profile.NotifyOnActivation), false, DataSourceUpdateMode.OnPropertyChanged);
         }
 
         private void InitRecordingPlaybackComboBoxes(IEnumerable<DeviceFullInfo> playbacks,
@@ -101,6 +102,14 @@ namespace SoundSwitch.UI.Forms.Profile
             Text = SettingsStrings.profile_feature_add;
             selectProgramDialog.Filter = $@"{SettingsStrings.profile_feature_executable}|*.exe";
             nameLabel.Text = SettingsStrings.profile_name;
+            notifyCheckbox.Text = SettingsStrings.profile_notify_on_activation;
+            switchDefaultCheckBox.Text = SettingsStrings.profile_defaultDevice_checkbox;
+
+            var switchTooltip = new ToolTip();
+            switchTooltip.SetToolTip(switchDefaultCheckBox, SettingsStrings.profile_defaultDevice_checkbox_tooltip);
+
+
+
         }
 
         private void InitializeFromProfile()

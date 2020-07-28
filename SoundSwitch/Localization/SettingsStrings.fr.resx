@@ -387,6 +387,9 @@ Toujours : Lors de la bascule vers un autre périphérique de lecture ou d'enreg
 		<value>Vous ne pouvez avoir qu'un seul profile avec utilisant Steam Big Picture.</value>
 	</data>
 	<data name="profile.error.window" xml:space="preserve">
-		<value>Il y a déjà un profile utilisant ce nom d'application.</value>
+		<value>Il y a déjà un profile utilisant ce nom d'application : {0}.</value>
+	</data>
+	<data name="profile.notify-on-activation" xml:space="preserve">
+		<value>Notifie quand le profile est enclenché</value>
 	</data>
 </root>
