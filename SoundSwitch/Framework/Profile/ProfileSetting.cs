@@ -8,6 +8,7 @@ using HotKey = SoundSwitch.Framework.WinApi.Keyboard.HotKey;
 namespace SoundSwitch.Framework.Profile
 {
 #nullable enable
+    [Obsolete("Use " + nameof(Profile))]
     public class ProfileSetting : IEquatable<ProfileSetting>
     {
         public string ProfileName { get; set; } = "";

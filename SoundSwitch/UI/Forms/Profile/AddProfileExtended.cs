@@ -50,7 +50,8 @@ namespace SoundSwitch.UI.Forms.Profile
             descriptionLabel.Hide();
             triggerLabel.Hide();
             InitRecordingPlaybackComboBoxes(playbacks, recordings);
-            switchDefaultCheckBox.DataBindings.Add(nameof(CheckBox.Checked), _profile, nameof(ProfileSetting.AlsoSwitchDefaultDevice), false, DataSourceUpdateMode.OnPropertyChanged);
+            switchDefaultCheckBox.DataBindings.Add(nameof(CheckBox.Checked), _profile, nameof(Framework.Profile.Profile.AlsoSwitchDefaultDevice), false, DataSourceUpdateMode.OnPropertyChanged);
+            nameTextBox.DataBindings.Add(nameof(TextBox.Text), _profile, nameof(Framework.Profile.Profile.Name), false, DataSourceUpdateMode.OnPropertyChanged);
         }
 
         private void InitRecordingPlaybackComboBoxes(IEnumerable<DeviceFullInfo> playbacks,
