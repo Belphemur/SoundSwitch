@@ -1,6 +1,6 @@
-﻿namespace SoundSwitch.UI.Forms.Profile
+﻿namespace SoundSwitch.UI.Forms
 {
-    partial class AddProfileExtended
+    partial class UpsertProfileExtended
     {
         /// <summary>
         /// Required designer variable.
@@ -388,7 +388,7 @@
             this.notifyCheckbox.Text = "Notify when profile is triggered";
             this.notifyCheckbox.UseVisualStyleBackColor = true;
             // 
-            // AddProfileExtended
+            // UpsertProfileExtended
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -396,8 +396,8 @@
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.profileBox);
             this.Controls.Add(this.triggerBox);
-            this.Name = "AddProfileExtended";
-            this.Text = "AddProfileExtended";
+            this.Name = "UpsertProfileExtended";
+            this.Text = "UpsertProfileExtended";
             this.triggerBox.ResumeLayout(false);
             this.triggerBox.PerformLayout();
             this.descriptionBox.ResumeLayout(false);

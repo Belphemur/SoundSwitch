@@ -23,7 +23,6 @@ using NAudio.CoreAudioApi;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework.Audio;
-using SoundSwitch.Framework.Audio.Lister;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.Factory;
@@ -34,14 +33,14 @@ using SoundSwitch.Framework.TrayIcon.Icon;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 using SoundSwitch.Framework.Updater;
+using SoundSwitch.Framework.WinApi.Keyboard;
 using SoundSwitch.Localization;
 using SoundSwitch.Localization.Factory;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
+using SoundSwitch.UI.Component;
 using SoundSwitch.UI.Component.ListView;
-using SoundSwitch.UI.Forms.Profile;
 using SoundSwitch.Util;
-using HotKey = SoundSwitch.Framework.WinApi.Keyboard.HotKey;
 
 namespace SoundSwitch.UI.Forms
 {
@@ -198,7 +197,7 @@ namespace SoundSwitch.UI.Forms
 
         public void RefreshProfiles()
         {
-            ListViewItem ProfileToListViewItem(Framework.Profile.Profile profile)
+            ListViewItem ProfileToListViewItem(Profile profile)
             {
                 var            listViewItem = new ListViewItem(profile.Name) {Tag = profile};
                 Icon           appIcon      = null;
@@ -687,7 +686,7 @@ namespace SoundSwitch.UI.Forms
         private void addProfileButton_Click(object sender, EventArgs e)
         {
             //new AddProfile(_audioDeviceLister.PlaybackDevices, _audioDeviceLister.RecordingDevices, this).Show(Owner);
-            new AddProfileExtended(new Framework.Profile.Profile(), _audioDeviceLister.PlaybackDevices, _audioDeviceLister.RecordingDevices, this).Show(Owner);
+            new UpsertProfileExtended(new Profile(), _audioDeviceLister.PlaybackDevices, _audioDeviceLister.RecordingDevices, this).Show(Owner);
         }
 
         private void profilesListView_SelectedIndexChanged(object sender, EventArgs e)
@@ -704,14 +703,14 @@ namespace SoundSwitch.UI.Forms
             }
 
             var profiles = profilesListView.SelectedItems.Cast<ListViewItem>()
-                .Select(item => (Framework.Profile.Profile) item.Tag);
+                .Select(item => (Profile) item.Tag);
             AppModel.Instance.ProfileManager.DeleteProfiles(profiles);
             deleteProfileButton.Enabled = false;
             editProfileButton.Enabled = false;
             RefreshProfiles();
         }
 
-        private void hotKeyControl_HotKeyChanged(object sender, Component.HotKeyTextBox.Event e)
+        private void hotKeyControl_HotKeyChanged(object sender, HotKeyTextBox.Event e)
         {
             var tuple = (Tuple<DataFlow, HotKey>) hotKeyControl.Tag;
             if (tuple == null)
@@ -730,8 +729,8 @@ namespace SoundSwitch.UI.Forms
                 return;
             }
 
-            var profile = (Framework.Profile.Profile)profilesListView.SelectedItems[0].Tag;
-            new AddProfileExtended(profile, _audioDeviceLister.PlaybackDevices, _audioDeviceLister.RecordingDevices, this, true).Show(Owner);
+            var profile = (Profile)profilesListView.SelectedItems[0].Tag;
+            new UpsertProfileExtended(profile, _audioDeviceLister.PlaybackDevices, _audioDeviceLister.RecordingDevices, this, true).Show(Owner);
         }
 
         private void profilesListView_DoubleClick(object sender, EventArgs e)

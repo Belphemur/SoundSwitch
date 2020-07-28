@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using RailSharp;
-using RailSharp.Internal.Result;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Profile.Trigger;
@@ -12,17 +11,17 @@ using SoundSwitch.Model;
 using SoundSwitch.Properties;
 using SoundSwitch.UI.Component;
 
-namespace SoundSwitch.UI.Forms.Profile
+namespace SoundSwitch.UI.Forms
 {
-    public partial class AddProfileExtended : Form
+    public partial class UpsertProfileExtended : Form
     {
-        private readonly Framework.Profile.Profile _profile;
-        private readonly Framework.Profile.Profile _oldProfile;
+        private readonly Profile _profile;
+        private readonly Profile _oldProfile;
         private readonly SettingsForm _settingsForm;
         private readonly bool _editing;
         private readonly TriggerFactory _triggerFactory;
 
-        public AddProfileExtended(Framework.Profile.Profile profile, IEnumerable<DeviceFullInfo> playbacks, IEnumerable<DeviceFullInfo> recordings, SettingsForm settingsForm, bool editing = false)
+        public UpsertProfileExtended(Profile profile, IEnumerable<DeviceFullInfo> playbacks, IEnumerable<DeviceFullInfo> recordings, SettingsForm settingsForm, bool editing = false)
         {
             _oldProfile = profile;
             _profile = profile.Copy();
@@ -56,9 +55,9 @@ namespace SoundSwitch.UI.Forms.Profile
             descriptionLabel.Hide();
             triggerLabel.Hide();
             InitRecordingPlaybackComboBoxes(playbacks, recordings);
-            switchDefaultCheckBox.DataBindings.Add(nameof(CheckBox.Checked), _profile, nameof(Framework.Profile.Profile.AlsoSwitchDefaultDevice), false, DataSourceUpdateMode.OnPropertyChanged);
-            nameTextBox.DataBindings.Add(nameof(TextBox.Text), _profile, nameof(Framework.Profile.Profile.Name), false, DataSourceUpdateMode.OnPropertyChanged);
-            notifyCheckbox.DataBindings.Add(nameof(CheckBox.Checked), _profile, nameof(Framework.Profile.Profile.NotifyOnActivation), false, DataSourceUpdateMode.OnPropertyChanged);
+            switchDefaultCheckBox.DataBindings.Add(nameof(CheckBox.Checked), _profile, nameof(Profile.AlsoSwitchDefaultDevice), false, DataSourceUpdateMode.OnPropertyChanged);
+            nameTextBox.DataBindings.Add(nameof(TextBox.Text), _profile, nameof(Profile.Name), false, DataSourceUpdateMode.OnPropertyChanged);
+            notifyCheckbox.DataBindings.Add(nameof(CheckBox.Checked), _profile, nameof(Profile.NotifyOnActivation), false, DataSourceUpdateMode.OnPropertyChanged);
         }
 
         private void InitRecordingPlaybackComboBoxes(IEnumerable<DeviceFullInfo> playbacks,
@@ -90,9 +89,9 @@ namespace SoundSwitch.UI.Forms.Profile
             communicationComboBox.DataSource = playbackItems;
             playbackComboBox.DataSource = playbackItems.ToArray();
 
-            communicationComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(Framework.Profile.Profile.Communication), false, DataSourceUpdateMode.OnPropertyChanged);
-            recordingComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(Framework.Profile.Profile.Recording), false, DataSourceUpdateMode.OnPropertyChanged);
-            playbackComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(Framework.Profile.Profile.Playback), false, DataSourceUpdateMode.OnPropertyChanged);
+            communicationComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(Profile.Communication), false, DataSourceUpdateMode.OnPropertyChanged);
+            recordingComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(Profile.Recording), false, DataSourceUpdateMode.OnPropertyChanged);
+            playbackComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(Profile.Playback), false, DataSourceUpdateMode.OnPropertyChanged);
         }
 
         private void LocalizeForm()
