@@ -320,6 +320,7 @@ namespace SoundSwitch.UI.Forms
             profileExplanationLabel.Text = SettingsStrings.profile_explanation;
             addProfileButton.Text = SettingsStrings.profile_addButton;
             deleteProfileButton.Text = SettingsStrings.profile_deleteButton;
+            editProfileButton.Text = SettingsStrings.profile_button_edit;
 
 
             // Misc
@@ -691,13 +692,8 @@ namespace SoundSwitch.UI.Forms
 
         private void profilesListView_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (profilesListView.SelectedIndices.Count > 0)
-            {
-                deleteProfileButton.Enabled = true;
-                return;
-            }
-
-            deleteProfileButton.Enabled = false;
+            editProfileButton.Enabled = profilesListView.SelectedIndices.Count == 1;
+            deleteProfileButton.Enabled = profilesListView.SelectedIndices.Count > 0;
         }
 
         private void deleteProfileButton_Click(object sender, EventArgs e)
@@ -711,6 +707,7 @@ namespace SoundSwitch.UI.Forms
                 .Select(item => (Framework.Profile.Profile) item.Tag);
             AppModel.Instance.ProfileManager.DeleteProfiles(profiles);
             deleteProfileButton.Enabled = false;
+            editProfileButton.Enabled = false;
             RefreshProfiles();
         }
 
@@ -724,6 +721,22 @@ namespace SoundSwitch.UI.Forms
             hotKeyControl.Tag = newTuple;
 
             AppModel.Instance.SetHotkeyCombination(newTuple.Item2, newTuple.Item1);
+        }
+
+        private void editProfileButton_Click(object sender, EventArgs e)
+        {
+            if (profilesListView.SelectedItems.Count <= 0)
+            {
+                return;
+            }
+
+            var profile = (Framework.Profile.Profile)profilesListView.SelectedItems[0].Tag;
+            new AddProfileExtended(profile, _audioDeviceLister.PlaybackDevices, _audioDeviceLister.RecordingDevices, this, true).Show(Owner);
+        }
+
+        private void profilesListView_DoubleClick(object sender, EventArgs e)
+        {
+            editProfileButton_Click(sender, e);
         }
     }
 }

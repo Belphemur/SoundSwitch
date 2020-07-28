@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using RailSharp;
+using RailSharp.Internal.Result;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Profile.Trigger;
@@ -16,13 +17,17 @@ namespace SoundSwitch.UI.Forms.Profile
     public partial class AddProfileExtended : Form
     {
         private readonly Framework.Profile.Profile _profile;
+        private readonly Framework.Profile.Profile _oldProfile;
         private readonly SettingsForm _settingsForm;
+        private readonly bool _editing;
         private readonly TriggerFactory _triggerFactory;
 
-        public AddProfileExtended(Framework.Profile.Profile profile, IEnumerable<DeviceFullInfo> playbacks, IEnumerable<DeviceFullInfo> recordings, SettingsForm settingsForm)
+        public AddProfileExtended(Framework.Profile.Profile profile, IEnumerable<DeviceFullInfo> playbacks, IEnumerable<DeviceFullInfo> recordings, SettingsForm settingsForm, bool editing = false)
         {
-            _profile = profile;
+            _oldProfile = profile;
+            _profile = profile.Copy();
             _settingsForm = settingsForm;
+            _editing = editing;
             _triggerFactory = new TriggerFactory();
             InitializeComponent();
 
@@ -104,6 +109,7 @@ namespace SoundSwitch.UI.Forms.Profile
             nameLabel.Text = SettingsStrings.profile_name;
             notifyCheckbox.Text = SettingsStrings.profile_notify_on_activation;
             switchDefaultCheckBox.Text = SettingsStrings.profile_defaultDevice_checkbox;
+            saveButton.Text = SettingsStrings.profile_button_save;
 
             var switchTooltip = new ToolTip();
             switchTooltip.SetToolTip(switchDefaultCheckBox, SettingsStrings.profile_defaultDevice_checkbox_tooltip);
@@ -316,7 +322,8 @@ namespace SoundSwitch.UI.Forms.Profile
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            var result = AppModel.Instance.ProfileManager.AddProfile(_profile);
+            var result = _editing ? AppModel.Instance.ProfileManager.UpdateProfile(_oldProfile, _profile) : AppModel.Instance.ProfileManager.AddProfile(_profile);
+           
             result.Map(success =>
                   {
                       _settingsForm.RefreshProfiles();

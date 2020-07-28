@@ -440,6 +440,24 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        internal static string profile_button_edit {
+            get {
+                return ResourceManager.GetString("profile.button.edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        internal static string profile_button_save {
+            get {
+                return ResourceManager.GetString("profile.button.save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Also switch default device.
         /// </summary>
         internal static string profile_defaultDevice_checkbox {

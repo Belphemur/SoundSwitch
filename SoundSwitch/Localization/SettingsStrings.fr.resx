@@ -395,4 +395,10 @@ Toujours : Lors de la bascule vers un autre périphérique de lecture ou d'enreg
 	<data name="profile.notification.text" xml:space="preserve">
 		<value>Profile {0} activé</value>
 	</data>
+	<data name="profile.button.save" xml:space="preserve">
+		<value>Sauvegarder</value>
+	</data>
+	<data name="profile.button.edit" xml:space="preserve">
+		<value>Editer</value>
+	</data>
 </root>
