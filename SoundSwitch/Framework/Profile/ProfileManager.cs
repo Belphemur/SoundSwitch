@@ -66,10 +66,10 @@ namespace SoundSwitch.Framework.Profile
                         _profilesByHotkey.Add(trigger.HotKey, profile);
                         break;
                     case TriggerFactory.Enum.Window:
-                        _profilesByWindowName.Add(trigger.WindowName, profile);
+                        _profilesByWindowName.Add(trigger.WindowName.ToLower(), profile);
                         break;
                     case TriggerFactory.Enum.Process:
-                        _profileByApplication.Add(trigger.ApplicationPath, profile);
+                        _profileByApplication.Add(trigger.ApplicationPath.ToLower(), profile);
                         break;
                     case TriggerFactory.Enum.Steam:
                         _steamProfile = profile;
@@ -91,10 +91,10 @@ namespace SoundSwitch.Framework.Profile
                         _profilesByHotkey.Remove(trigger.HotKey);
                         break;
                     case TriggerFactory.Enum.Window:
-                        _profilesByWindowName.Remove(trigger.WindowName);
+                        _profilesByWindowName.Remove(trigger.WindowName.ToLower());
                         break;
                     case TriggerFactory.Enum.Process:
-                        _profileByApplication.Remove(trigger.ApplicationPath);
+                        _profileByApplication.Remove(trigger.ApplicationPath.ToLower());
                         break;
                     case TriggerFactory.Enum.Steam:
                         _steamProfile = null;
@@ -132,9 +132,26 @@ namespace SoundSwitch.Framework.Profile
         {
             _foregroundProcess.Changed += (sender, @event) =>
             {
-                if (!_profileByApplication.TryGetValue(@event.ProcessName.ToLower(), out var profile))
+                Profile profile;
+
+                if (_steamProfile != null && @event.WindowName == "Steam" && @event.WindowClass == "CUIEngineWin32")
+                {
+                    SwitchAudio(_steamProfile, @event.ProcessId);
                     return;
-                SwitchAudio(profile, @event.ProcessId);
+                }
+                if (_profileByApplication.TryGetValue(@event.ProcessName.ToLower(), out profile))
+                {
+                    SwitchAudio(profile, @event.ProcessId);
+                    return;
+                }
+                
+                var windowNameLower = @event.WindowName.ToLower();
+
+                profile = _profilesByWindowName.FirstOrDefault(pair => windowNameLower.Contains(pair.Key)).Value;
+                if (profile != null)
+                {
+                    SwitchAudio(profile, @event.ProcessId);
+                }
             };
 
             WindowsAPIAdapter.HotKeyPressed += (sender, args) =>
