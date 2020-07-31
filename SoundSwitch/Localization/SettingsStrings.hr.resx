@@ -332,4 +332,34 @@ Banner: Koristi personalizirani prozor iznad svega, korisno unutar igri.</value>
   <data name="profile.trigger.hotkey.desc" xml:space="preserve">
     <value>Prečac za aktiviranje profila</value>
   </data>
+  <data name="profile.button.edit" xml:space="preserve">
+    <value>Uredi</value>
+  </data>
+  <data name="profile.button.save" xml:space="preserve">
+    <value>Spremi</value>
+  </data>
+  <data name="profile.notification.text" xml:space="preserve">
+    <value>Profil {0} pokrenut</value>
+  </data>
+  <data name="profile.notify-on-activation" xml:space="preserve">
+    <value>Upozori kad se profil pokrene</value>
+  </data>
+  <data name="profile.error.window" xml:space="preserve">
+    <value>Veš postoji profil s ovim imenom prozora: {0}.</value>
+  </data>
+  <data name="profile.error.steam" xml:space="preserve">
+    <value>Za Steam Big Picture možeš imati samo jedan profil.</value>
+  </data>
+  <data name="profile.error.triggers.min" xml:space="preserve">
+    <value>Trebaš barem jedan okidač.</value>
+  </data>
+  <data name="communication" xml:space="preserve">
+    <value>Komunikacija</value>
+  </data>
+  <data name="profile.trigger.process.desc" xml:space="preserve">
+    <value>Aktiviraj profil kad se odabrani program nalazi naprijed</value>
+  </data>
+  <data name="profile.trigger.window.desc" xml:space="preserve">
+    <value>Aktiviraj profil ako prednji program sadrži sljedeće znakove</value>
+  </data>
 </root>
