@@ -297,7 +297,7 @@ namespace SoundSwitch.Framework.Profile
 
             if (profile.Triggers.Count == 0)
             {
-                return SettingsStrings.profile_error_no_name;
+                return SettingsStrings.profile_error_triggers_min;
             }
 
             if (profile.Recording == null && profile.Playback == null)
