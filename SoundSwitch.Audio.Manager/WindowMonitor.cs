@@ -6,7 +6,7 @@ using SoundSwitch.Audio.Manager.Interop.Com.User;
 
 namespace SoundSwitch.Audio.Manager
 {
-    public class ForegroundProcess
+    public class WindowMonitor
     {
         public class Event : EventArgs
         {
@@ -44,12 +44,12 @@ namespace SoundSwitch.Audio.Manager
             }
         }
 
-        public event EventHandler<Event> Changed;
+        public event EventHandler<Event> ForegroundChanged;
 
         private readonly User32.NativeMethods.WinEventDelegate _winEventDelegate;
 
 
-        public ForegroundProcess()
+        public WindowMonitor()
         {
             _winEventDelegate = (hook, type, hwnd, idObject, child, thread, time) =>
             {
@@ -100,7 +100,7 @@ namespace SoundSwitch.Audio.Manager
                 {
                     var process     = Process.GetProcessById((int) windowProcessId);
                     var processName = process.MainModule?.FileName ?? "N/A";
-                    Changed?.Invoke(this, new Event(windowProcessId, processName, wndText, wndClass));
+                    ForegroundChanged?.Invoke(this, new Event(windowProcessId, processName, wndText, wndClass));
                 });
             };
 

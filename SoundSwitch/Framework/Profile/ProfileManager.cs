@@ -31,7 +31,7 @@ namespace SoundSwitch.Framework.Profile
         public delegate void ShowError(string errorMessage, string errorTitle);
 
         private readonly BannerManager      _bannerManager = new BannerManager();
-        private readonly ForegroundProcess  _foregroundProcess;
+        private readonly WindowMonitor  _windowMonitor;
         private readonly AudioSwitcher      _audioSwitcher;
         private readonly IAudioDeviceLister _activeDeviceLister;
         private readonly ShowError          _showError;
@@ -45,12 +45,12 @@ namespace SoundSwitch.Framework.Profile
 
         public IReadOnlyCollection<Profile> Profiles => AppConfigs.Configuration.Profiles;
 
-        public ProfileManager(ForegroundProcess  foregroundProcess,
+        public ProfileManager(WindowMonitor  windowMonitor,
                               AudioSwitcher      audioSwitcher,
                               IAudioDeviceLister activeDeviceLister,
                               ShowError          showError)
         {
-            _foregroundProcess  = foregroundProcess;
+            _windowMonitor  = windowMonitor;
             _audioSwitcher      = audioSwitcher;
             _activeDeviceLister = activeDeviceLister;
             _showError          = showError;
@@ -135,7 +135,7 @@ namespace SoundSwitch.Framework.Profile
 
         private void RegisterEvents()
         {
-            _foregroundProcess.Changed += (sender, @event) =>
+            _windowMonitor.ForegroundChanged += (sender, @event) =>
             {
                 Profile profile;
 

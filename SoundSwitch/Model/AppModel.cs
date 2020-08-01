@@ -207,7 +207,7 @@ namespace SoundSwitch.Model
             {
                 throw new InvalidOperationException("Already initialized");
             }
-            ProfileManager = new ProfileManager(new ForegroundProcess(), AudioSwitcher.Instance, ActiveAudioDeviceLister, TrayIcon.ShowError);
+            ProfileManager = new ProfileManager(new WindowMonitor(), AudioSwitcher.Instance, ActiveAudioDeviceLister, TrayIcon.ShowError);
             RegisterHotKey(AppConfigs.Configuration.PlaybackHotKey);
             RegisterHotKey(AppConfigs.Configuration.RecordingHotKey);
 
