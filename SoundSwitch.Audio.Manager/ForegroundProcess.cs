@@ -53,6 +53,13 @@ namespace SoundSwitch.Audio.Manager
         {
             _winEventDelegate = (hook, type, hwnd, idObject, child, thread, time) =>
             {
+                // ignore any event not pertaining directly to the window
+                if (idObject != User32.NativeMethods.OBJID_WINDOW)
+                    return;
+ 
+                // Ignore if this is a bogus hwnd (shouldn't happen)
+                if (hwnd == IntPtr.Zero)
+                    return;
                 var windowProcessId = ComThread.Invoke(() =>
                 {
                     try

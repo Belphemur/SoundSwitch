@@ -127,6 +127,20 @@ namespace SoundSwitch.Audio.Manager.Interop.Com.User
             internal const uint EVENT_SYSTEM_FOREGROUND  = 0x0003;
             internal const uint EVENT_SYSTEM_MINIMIZEEND = 0x0017;
             internal const int  MAX_PATH                 = 260;
+            
+            
+            //
+            // IAccessible / OLEACC / WinEvents
+            //
+ 
+            public const int CHILDID_SELF             = 0;
+            public const int STATE_SYSTEM_UNAVAILABLE = 0x00000001;
+            public const int STATE_SYSTEM_FOCUSED     = 0x00000004;
+            public const int OBJID_CARET              = -8;
+            public const int OBJID_CLIENT             = -4;
+            public const int OBJID_MENU               = -3;
+            public const int OBJID_SYSMENU            = -1;
+            public const int OBJID_WINDOW             =  0;
         }
 
         public static uint ForegroundProcessId
