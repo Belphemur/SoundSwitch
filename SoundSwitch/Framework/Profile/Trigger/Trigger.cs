@@ -15,6 +15,8 @@ namespace SoundSwitch.Framework.Profile.Trigger
         public string              ApplicationPath { get; set; }
         public HotKey              HotKey          { get; set; }
 
+        public bool RememberState { get; set; } = false;
+
         public override string ToString()
         {
             return new TriggerFactory().Get(Type).Label;
@@ -24,7 +26,7 @@ namespace SoundSwitch.Framework.Profile.Trigger
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return Type == other.Type && WindowName == other.WindowName && ApplicationPath == other.ApplicationPath && Equals(HotKey, other.HotKey);
+            return Type == other.Type && WindowName == other.WindowName && ApplicationPath == other.ApplicationPath && Equals(HotKey, other.HotKey) && RememberState == other.RememberState;
         }
 
         public override bool Equals(object obj)
@@ -43,8 +45,19 @@ namespace SoundSwitch.Framework.Profile.Trigger
                 hashCode = (hashCode * 397) ^ (WindowName != null ? WindowName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (ApplicationPath != null ? ApplicationPath.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (HotKey != null ? HotKey.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ RememberState.GetHashCode();
                 return hashCode;
             }
+        }
+
+        public static bool operator ==(Trigger left, Trigger right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(Trigger left, Trigger right)
+        {
+            return !Equals(left, right);
         }
     }
 }
