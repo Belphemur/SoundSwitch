@@ -75,7 +75,8 @@ namespace SoundSwitch.UI.Component
         {
             UpdateIcon();
             _tooltipInfoManager = new TooltipInfoManager(NotifyIcon);
-            _updateMenuItem = new ToolStripMenuItem(TrayIconStrings.noUpdate, RessourceUpdateBitmap, OnUpdateClick)
+
+            _updateMenuItem = new ToolStripMenuItem(AppConfigs.Configuration.UpdateMode == UpdateMode.Never ? TrayIconStrings.updateDisabled : TrayIconStrings.noUpdate, RessourceUpdateBitmap, OnUpdateClick)
             {
                 Enabled = false
             };
