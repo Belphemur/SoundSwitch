@@ -183,4 +183,7 @@
 	<data name="communityMenu" xml:space="preserve">
 		<value>Community</value>
 	</data>
+	<data name="updateDisabled" xml:space="preserve">
+		<value>Auto-update disabled</value>
+	</data>
 </root>

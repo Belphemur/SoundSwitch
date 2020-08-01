@@ -250,6 +250,15 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Auto-update disabled.
+        /// </summary>
+        internal static string updateDisabled {
+            get {
+                return ResourceManager.GetString("updateDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Update for SoundSwitch ({0}) is available..
         /// </summary>
         internal static string versionAvailable {
