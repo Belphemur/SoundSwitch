@@ -32,9 +32,9 @@ namespace SoundSwitch.Audio.Manager
 
             public Event(uint processId, string processName, string windowName, string windowClass)
             {
-                ProcessId = processId;
+                ProcessId   = processId;
                 ProcessName = processName;
-                WindowName = windowName;
+                WindowName  = windowName;
                 WindowClass = windowClass;
             }
 
@@ -66,8 +66,28 @@ namespace SoundSwitch.Audio.Manager
                     }
                 });
 
-                var wndText  = ComThread.Invoke(() => User32.GetWindowText(hwnd));
-                var wndClass = ComThread.Invoke(() => User32.GetWindowClass(hwnd));
+                var wndText = ComThread.Invoke(() =>
+                {
+                    try
+                    {
+                        return User32.GetWindowText(hwnd);
+                    }
+                    catch (Exception)
+                    {
+                        return "";
+                    }
+                });
+                var wndClass = ComThread.Invoke(() =>
+                {
+                    try
+                    {
+                        return User32.GetWindowClass(hwnd);
+                    }
+                    catch (Exception)
+                    {
+                        return "";
+                    }
+                });
 
                 Task.Factory.StartNew(() =>
                 {
