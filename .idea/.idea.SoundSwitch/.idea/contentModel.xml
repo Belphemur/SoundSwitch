@@ -316,7 +316,6 @@
       <e p="SoundSwitch.Audio.Manager" t="IncludeRecursive">
         <e p="AudioSwitcher.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
-        <e p="ForegroundProcess.cs" t="Include" />
         <e p="Interop" t="Include">
           <e p="Client" t="Include">
             <e p="ClientException" t="Include">
@@ -366,6 +365,7 @@
           <e p="AssemblyInfo.cs" t="Include" />
         </e>
         <e p="SoundSwitch.Audio.Manager.csproj" t="IncludeRecursive" />
+        <e p="WindowMonitor.cs" t="Include" />
       </e>
       <e p="SoundSwitch.Common" t="IncludeRecursive">
         <e p="bin" t="ExcludeRecursive" />

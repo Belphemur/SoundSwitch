@@ -117,6 +117,9 @@ namespace SoundSwitch.Audio.Manager.Interop.Com.User
 
             [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
             public static extern int GetClassName(HWND hWnd, StringBuilder text, int count);
+            
+            [DllImport("user32.dll", CharSet =CharSet.Auto)]
+            public static extern bool IsWindow( HWND hwnd );
 
             public delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType, HWND hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
 
@@ -124,15 +127,16 @@ namespace SoundSwitch.Audio.Manager.Interop.Com.User
             public static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr hmodWinEventProc, WinEventDelegate lpfnWinEventProc, uint idProcess, uint idThread, uint dwFlags);
 
             internal const uint WINEVENT_OUTOFCONTEXT    = 0;
+            internal const int  EVENT_OBJECT_DESTROY     = 0x8001;
             internal const uint EVENT_SYSTEM_FOREGROUND  = 0x0003;
             internal const uint EVENT_SYSTEM_MINIMIZEEND = 0x0017;
             internal const int  MAX_PATH                 = 260;
-            
-            
+
+
             //
             // IAccessible / OLEACC / WinEvents
             //
- 
+
             public const int CHILDID_SELF             = 0;
             public const int STATE_SYSTEM_UNAVAILABLE = 0x00000001;
             public const int STATE_SYSTEM_FOCUSED     = 0x00000004;
@@ -140,7 +144,7 @@ namespace SoundSwitch.Audio.Manager.Interop.Com.User
             public const int OBJID_CLIENT             = -4;
             public const int OBJID_MENU               = -3;
             public const int OBJID_SYSMENU            = -1;
-            public const int OBJID_WINDOW             =  0;
+            public const int OBJID_WINDOW             = 0;
         }
 
         public static uint ForegroundProcessId
