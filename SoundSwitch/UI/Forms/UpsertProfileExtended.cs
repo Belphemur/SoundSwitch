@@ -170,7 +170,7 @@ namespace SoundSwitch.UI.Forms
 
             var trigger = (Trigger) setTriggerBox.SelectedItem;
             var triggerDefinition = _triggerFactory.Get(trigger.Type);
-            descriptionLabel.Text = triggerDefinition.Description;
+            descriptionLabel.Text = $@"{triggerDefinition.Description} (Max: {(triggerDefinition.MaxGlobalOccurence == -1 ? "∞": triggerDefinition.MaxGlobalOccurence.ToString())})";
             triggerLabel.Text = triggerDefinition.Label;
             descriptionLabel.Show();
             triggerLabel.Show();
