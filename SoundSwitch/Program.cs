@@ -180,7 +180,9 @@ namespace SoundSwitch
             if (!createdNew)
             {
                 using var pipeClient = new NamedPipeClient(pipeName);
+                Log.Information("Other instance detected.");
                 pipeClient.SendMsg("Close");
+                Log.Information("Other instance detected: asked to stop, restarting now.");
                 RestartApp();
                 return true;
             }
@@ -190,6 +192,7 @@ namespace SoundSwitch
             {
                 if (message == "Close")
                 {
+                    Log.Information("Other instance detected and asked to stop.");
                     Application.Exit();
                 }
             });
