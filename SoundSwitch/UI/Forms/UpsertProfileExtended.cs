@@ -195,6 +195,7 @@ namespace SoundSwitch.UI.Forms
                     selectProgramButton.Show();
                     break;
                 case TriggerFactory.Enum.Steam:
+                case TriggerFactory.Enum.Startup:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
