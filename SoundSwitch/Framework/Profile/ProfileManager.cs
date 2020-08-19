@@ -195,7 +195,7 @@ namespace SoundSwitch.Framework.Profile
                 _steamStateBeforeSwitchingBigPicture = new Profile
                 {
                     AlsoSwitchDefaultDevice = true,
-                    Name                    = "Steam Big Picture",
+                    Name                    = SettingsStrings.profile_trigger_steam_msg,
                     Communication           = communication,
                     Playback                = playback,
                     Recording               = recording,

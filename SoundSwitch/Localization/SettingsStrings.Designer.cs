@@ -728,7 +728,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Application path .
+        ///   Looks up a localized string similar to Application path.
         /// </summary>
         internal static string profile_trigger_process {
             get {
@@ -755,11 +755,20 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Activate when Steam Big Picture is detected.
+        ///   Looks up a localized string similar to Activate when Steam Big Picture is detected. Will restore the state when Big Picture is closed..
         /// </summary>
         internal static string profile_trigger_steam_desc {
             get {
                 return ResourceManager.GetString("profile.trigger.steam.desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Steam Big Picture closed.
+        /// </summary>
+        internal static string profile_trigger_steam_msg {
+            get {
+                return ResourceManager.GetString("profile.trigger.steam.msg", resourceCulture);
             }
         }
         
