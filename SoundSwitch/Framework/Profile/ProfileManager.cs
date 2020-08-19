@@ -409,6 +409,8 @@ namespace SoundSwitch.Framework.Profile
                         }
 
                         break;
+                    case TriggerFactory.Enum.Startup:
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
