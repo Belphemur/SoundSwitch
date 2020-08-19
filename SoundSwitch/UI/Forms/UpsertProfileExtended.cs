@@ -124,19 +124,18 @@ namespace SoundSwitch.UI.Forms
         {
             var countByTrigger = _profile.Triggers.GroupBy(trigger => trigger.Type)
                 .ToDictionary(triggers => triggers.Key);
-            var availableTriggers = _triggerFactory.AllImplementations
-                .Where(pair =>
-                {
-                    if (countByTrigger.TryGetValue(pair.Key, out var trigger))
-                    {
-                        return pair.Value.MaxOccurence == -1 || trigger.Count() < pair.Value.MaxOccurence;
-                    }
+            var availableTriggers = AppModel.Instance.ProfileManager.AvailableTriggers()
+                                            .Where(pair =>
+                                            {
+                                                if (countByTrigger.TryGetValue(pair.TypeEnum, out var trigger))
+                                                {
+                                                    return pair.MaxOccurence == -1 || trigger.Count() < pair.MaxOccurence;
+                                                }
 
-                    return true;
-                })
-                .Select(pair => pair.Value)
-                .Cast<object>()
-                .ToArray();
+                                                return true;
+                                            })
+                                            .Cast<object>()
+                                            .ToArray();
 
             if (availableTriggerBox.Items.Count != availableTriggers.Length)
             {

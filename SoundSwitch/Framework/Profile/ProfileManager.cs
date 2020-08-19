@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Windows.Forms;
 using NAudio.CoreAudioApi;
 using RailSharp;
 using RailSharp.Internal.Result;
@@ -14,7 +13,6 @@ using SoundSwitch.Audio.Manager.Interop.Com.User;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Common.Framework.Icon;
-using SoundSwitch.Framework.Audio.Lister;
 using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Profile.Trigger;
@@ -182,9 +180,9 @@ namespace SoundSwitch.Framework.Profile
         /// <returns></returns>
         private bool HandleSteamBigPicture(WindowMonitor.Event @event)
         {
-            if (_steamProfile == null || @event.WindowName != "Steam" || @event.WindowClass != "CUIEngineWin32") 
+            if (_steamProfile == null || @event.WindowName != "Steam" || @event.WindowClass != "CUIEngineWin32")
                 return false;
-            
+
             if (_steamStateBeforeSwitchingBigPicture == null)
             {
                 _steamBigPictureHandle = @event.Hwnd;
@@ -202,9 +200,9 @@ namespace SoundSwitch.Framework.Profile
                     NotifyOnActivation      = true
                 };
             }
+
             SwitchAudio(_steamProfile);
             return true;
-
         }
 
         private DeviceInfo? CheckDeviceAvailable(DeviceInfo deviceInfo)
@@ -289,6 +287,27 @@ namespace SoundSwitch.Framework.Profile
             }
         }
 
+        /// <summary>
+        /// Return the globally available triggers
+        /// Remove the one that aren't accessible anymore
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<ITriggerDefinition> AvailableTriggers()
+        {
+            var triggers       = Profiles.SelectMany(profile => profile.Triggers).GroupBy(trigger => trigger.Type).ToDictionary(grouping => grouping.Key, grouping => grouping.Count());
+            var triggerFactory = new TriggerFactory();
+            return triggerFactory.AllImplementations
+                                 .Where(pair =>
+                                 {
+                                     if (triggers.TryGetValue(pair.Key, out var count))
+                                     {
+                                         return pair.Value.MaxGlobalOccurence < count;
+                                     }
+
+                                     return true;
+                                 })
+                                 .Select(pair => pair.Value);
+        }
 
         /// <summary>
         /// Add a profile to the system
