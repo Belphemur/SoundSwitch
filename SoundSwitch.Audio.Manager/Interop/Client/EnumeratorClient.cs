@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Runtime.InteropServices;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Audio.Manager.Interop.Enum;
@@ -32,16 +33,28 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
                 return result;
             }
 
+            var defaultDevice = GetDefaultEndpoint(flow, role);
+            return deviceId == defaultDevice?.ID;
+        }
+
+        /// <summary>
+        /// What is the default endpoint
+        /// </summary>
+        /// <param name="flow"></param>
+        /// <param name="role"></param>
+        /// <returns></returns>
+        public MMDevice? GetDefaultEndpoint(EDataFlow flow, ERole role)
+        {
             try
             {
                 var defaultDevice = _enumerator.GetDefaultAudioEndpoint((DataFlow) flow, (Role) role);
-                return deviceId == defaultDevice.ID;
+                return defaultDevice;
             }
             catch (Exception)
             {
                 //Happens if there is no default device for the given Data Flow and/or role
                 // See issue #401
-                return false;
+                return null;
             }
         }
 

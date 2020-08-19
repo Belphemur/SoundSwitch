@@ -265,10 +265,11 @@ namespace SoundSwitch.Framework.WinApi
                 switch ((Interop.ShellEvents)m.WParam.ToInt32())
                 {
                     case Interop.ShellEvents.HSHELL_WINDOWDESTROYED:
-                        var (_, windowText, windowClass) = WindowMonitor.ProcessWindowInformation(User32.NativeMethods.HWND.Cast(m.LParam));
+                        var hwnd = User32.NativeMethods.HWND.Cast(m.LParam);
+                        var (_, windowText, windowClass) = WindowMonitor.ProcessWindowInformation(hwnd);
                         Task.Factory.StartNew(() =>
                         {
-                            WindowDestroyed?.Invoke(this, new WindowDestroyedEvent(windowClass, windowText));
+                            WindowDestroyed?.Invoke(this, new WindowDestroyedEvent(hwnd));
                         });
                         break;
                 }
@@ -324,13 +325,11 @@ namespace SoundSwitch.Framework.WinApi
 
         public class WindowDestroyedEvent : EventArgs
         {
-            public string WindowClass { get; }
-            public string WindowName { get; }
+            public User32.NativeMethods.HWND Hwnd { get; }
 
-            public WindowDestroyedEvent(string windowClass, string windowName)
+            public WindowDestroyedEvent(User32.NativeMethods.HWND hwnd)
             {
-                WindowClass = windowClass;
-                WindowName = windowName;
+                Hwnd = hwnd;
             }
         }
 

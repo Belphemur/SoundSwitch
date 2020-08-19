@@ -30,12 +30,18 @@ namespace SoundSwitch.Audio.Manager
             /// </summary>
             public string WindowClass { get; }
 
-            public Event(uint processId, string processName, string windowName, string windowClass)
+            /// <summary>
+            /// Handle of the window
+            /// </summary>
+            public User32.NativeMethods.HWND Hwnd { get; }
+
+            public Event(uint processId, string processName, string windowName, string windowClass, User32.NativeMethods.HWND hwnd)
             {
                 ProcessId   = processId;
                 ProcessName = processName;
                 WindowName  = windowName;
                 WindowClass = windowClass;
+                Hwnd        = hwnd;
             }
 
             public override string ToString()
@@ -65,7 +71,7 @@ namespace SoundSwitch.Audio.Manager
                 {
                     var process     = Process.GetProcessById((int) processId);
                     var processName = process.MainModule?.FileName ?? "N/A";
-                    ForegroundChanged?.Invoke(this, new Event(processId, processName, windowText, windowClass));
+                    ForegroundChanged?.Invoke(this, new Event(processId, processName, windowText, windowClass, hwnd));
                 });
             };
 
@@ -92,8 +98,8 @@ namespace SoundSwitch.Audio.Manager
             return ComThread.Invoke(() =>
             {
                 uint processId = 0;
-                var wndText   = "";
-                var wndClass  = "";
+                var  wndText   = "";
+                var  wndClass  = "";
                 try
                 {
                     wndText = User32.GetWindowText(hwnd);
@@ -111,6 +117,7 @@ namespace SoundSwitch.Audio.Manager
                 {
                     // ignored
                 }
+
                 try
                 {
                     User32.NativeMethods.GetWindowThreadProcessId(hwnd, out processId);
@@ -119,7 +126,7 @@ namespace SoundSwitch.Audio.Manager
                 {
                     // ignored
                 }
-              
+
 
                 return (processId, wndText, wndClass);
             });

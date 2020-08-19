@@ -1,20 +1,23 @@
-﻿using System.Collections.Generic;
+﻿#nullable enable
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using NAudio.CoreAudioApi;
 using SoundSwitch.Audio.Manager.Interop;
 using SoundSwitch.Audio.Manager.Interop.Client;
 using SoundSwitch.Audio.Manager.Interop.Com.Threading;
 using SoundSwitch.Audio.Manager.Interop.Com.User;
 using SoundSwitch.Audio.Manager.Interop.Enum;
+using SoundSwitch.Common.Framework.Audio.Device;
 
 namespace SoundSwitch.Audio.Manager
 {
     public class AudioSwitcher
     {
-        private static AudioSwitcher _instance;
-        private PolicyClient _policyClient;
-        private EnumeratorClient _enumerator;
+        private static AudioSwitcher    _instance;
+        private        PolicyClient     _policyClient;
+        private        EnumeratorClient _enumerator;
 
         private ExtendedPolicyClient _extendedPolicyClient;
 
@@ -24,7 +27,7 @@ namespace SoundSwitch.Audio.Manager
             {
                 if (_enumerator != null)
                     return _enumerator;
-                
+
                 return _enumerator = ComThread.Invoke(() => new EnumeratorClient());
             }
         }
@@ -170,6 +173,23 @@ namespace SoundSwitch.Audio.Manager
         {
             return ComThread.Invoke(() => ExtendPolicyClient.GetDefaultEndPoint(flow, role, processId));
         }
+
+        /// <summary>
+        /// Get the current default endpoint
+        /// </summary>
+        /// <param name="flow"></param>
+        /// <param name="role"></param>
+        /// <returns>Null if no default device is defined</returns>
+        public DeviceInfo? GetDefaultAudioEndpoint(EDataFlow flow, ERole role) => ComThread.Invoke(() =>
+        {
+            var defaultEndpoint = EnumeratorClient.GetDefaultEndpoint(flow, role);
+            if (defaultEndpoint == null)
+            {
+                return null;
+            }
+
+            return new DeviceFullInfo(defaultEndpoint);
+        });
 
         /// <summary>
         /// Reset Windows configuration for the process that had their audio device changed

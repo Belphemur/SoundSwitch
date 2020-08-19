@@ -10,6 +10,7 @@ using RailSharp;
 using RailSharp.Internal.Result;
 using Serilog;
 using SoundSwitch.Audio.Manager;
+using SoundSwitch.Audio.Manager.Interop.Com.User;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Common.Framework.Icon;
@@ -31,12 +32,14 @@ namespace SoundSwitch.Framework.Profile
         public delegate void ShowError(string errorMessage, string errorTitle);
 
         private readonly BannerManager      _bannerManager = new BannerManager();
-        private readonly WindowMonitor  _windowMonitor;
+        private readonly WindowMonitor      _windowMonitor;
         private readonly AudioSwitcher      _audioSwitcher;
         private readonly IAudioDeviceLister _activeDeviceLister;
         private readonly ShowError          _showError;
 
-        private Profile? _steamProfile;
+        private Profile?                  _steamProfile;
+        private User32.NativeMethods.HWND _steamBigPictureHandle;
+        private Profile?                  _steamStateBeforeSwitchingBigPicture;
 
         private readonly Dictionary<HotKey, Profile> _profilesByHotkey     = new Dictionary<HotKey, Profile>();
         private readonly Dictionary<string, Profile> _profileByApplication = new Dictionary<string, Profile>();
@@ -45,12 +48,12 @@ namespace SoundSwitch.Framework.Profile
 
         public IReadOnlyCollection<Profile> Profiles => AppConfigs.Configuration.Profiles;
 
-        public ProfileManager(WindowMonitor  windowMonitor,
+        public ProfileManager(WindowMonitor      windowMonitor,
                               AudioSwitcher      audioSwitcher,
                               IAudioDeviceLister activeDeviceLister,
                               ShowError          showError)
         {
-            _windowMonitor  = windowMonitor;
+            _windowMonitor      = windowMonitor;
             _audioSwitcher      = audioSwitcher;
             _activeDeviceLister = activeDeviceLister;
             _showError          = showError;
@@ -139,11 +142,7 @@ namespace SoundSwitch.Framework.Profile
             {
                 Profile profile;
 
-                if (_steamProfile != null && @event.WindowName == "Steam" && @event.WindowClass == "CUIEngineWin32")
-                {
-                    SwitchAudio(_steamProfile, @event.ProcessId);
-                    return;
-                }
+                if (HandleSteamBigPicture(@event)) return;
 
                 if (_profileByApplication.TryGetValue(@event.ProcessName.ToLower(), out profile))
                 {
@@ -166,6 +165,46 @@ namespace SoundSwitch.Framework.Profile
                     return;
                 SwitchAudio(profile);
             };
+            WindowsAPIAdapter.WindowDestroyed += (sender, @event) =>
+            {
+                if (_steamStateBeforeSwitchingBigPicture == null || @event.Hwnd != _steamBigPictureHandle)
+                    return;
+
+                SwitchAudio(_steamStateBeforeSwitchingBigPicture);
+                _steamStateBeforeSwitchingBigPicture = null;
+            };
+        }
+
+        /// <summary>
+        /// Handle steam big picture
+        /// </summary>
+        /// <param name="event"></param>
+        /// <returns></returns>
+        private bool HandleSteamBigPicture(WindowMonitor.Event @event)
+        {
+            if (_steamProfile == null || @event.WindowName != "Steam" || @event.WindowClass != "CUIEngineWin32") 
+                return false;
+            
+            if (_steamStateBeforeSwitchingBigPicture == null)
+            {
+                _steamBigPictureHandle = @event.Hwnd;
+                var communication = _audioSwitcher.GetDefaultAudioEndpoint(EDataFlow.eRender,  ERole.eCommunications);
+                var playback      = _audioSwitcher.GetDefaultAudioEndpoint(EDataFlow.eRender,  ERole.eMultimedia);
+                var recording     = _audioSwitcher.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eMultimedia);
+
+                _steamStateBeforeSwitchingBigPicture = new Profile
+                {
+                    AlsoSwitchDefaultDevice = true,
+                    Name                    = "Steam Big Picture",
+                    Communication           = communication,
+                    Playback                = playback,
+                    Recording               = recording,
+                    NotifyOnActivation      = true
+                };
+            }
+            SwitchAudio(_steamProfile);
+            return true;
+
         }
 
         private DeviceInfo? CheckDeviceAvailable(DeviceInfo deviceInfo)
@@ -184,8 +223,8 @@ namespace SoundSwitch.Framework.Profile
                 return;
             }
 
-          
-            var icon    = Resources.default_profile_image;
+
+            var icon = Resources.default_profile_image;
             if (processId.HasValue)
             {
                 try
@@ -266,7 +305,7 @@ namespace SoundSwitch.Framework.Profile
                     return success;
                 });
         }
-        
+
         /// <summary>
         /// Update a profile
         /// </summary>
@@ -285,7 +324,6 @@ namespace SoundSwitch.Framework.Profile
                        AddProfile(oldProfile);
                        return s;
                    });
-
         }
 
         private Result<string, VoidSuccess> ValidateProfile(Profile profile)
