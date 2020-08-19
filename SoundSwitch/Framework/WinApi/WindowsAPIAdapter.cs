@@ -122,7 +122,7 @@ namespace SoundSwitch.Framework.WinApi
             _instance = new WindowsAPIAdapter();
             _instance.CreateHandle();
             _instance._msgNotifyShell = Interop.RegisterWindowMessage("SHELLHOOK");
-            Interop.RegisterShellHookWindow(_instance.Handle);
+            Interop.RegisterShellHookWindow(User32.NativeMethods.HWND.Cast(_instance.Handle));
             Log.Information("Handle created. Running the application.");
             Application.Run(_instance);
             Log.Information("End of the WindowsAPIAdapter thread");
@@ -142,8 +142,9 @@ namespace SoundSwitch.Framework.WinApi
                     Application.ThreadException -= _exceptionEventHandler;
                 foreach (var hotKeyId in _registeredHotkeys.Values)
                 {
-                    NativeMethods.UnregisterHotKey(_instance.Handle, hotKeyId);
+                    NativeMethods.UnregisterHotKey(Handle, hotKeyId);
                 }
+                Interop.DeregisterShellHookWindow(User32.NativeMethods.HWND.Cast(Handle));
             }
             base.Dispose(disposing);
         }

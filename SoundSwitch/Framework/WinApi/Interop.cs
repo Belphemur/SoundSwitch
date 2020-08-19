@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using SoundSwitch.Audio.Manager.Interop.Com.User;
 
 namespace SoundSwitch.Framework.WinApi
 {
@@ -21,8 +22,8 @@ namespace SoundSwitch.Framework.WinApi
         [DllImport("user32.dll", EntryPoint = "RegisterWindowMessageA", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
         public static extern int RegisterWindowMessage(string lpString);
         [DllImport("user32", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
-        public static extern int DeregisterShellHookWindow(IntPtr hWnd);
+        public static extern int DeregisterShellHookWindow(User32.NativeMethods.HWND hWnd);
         [DllImport("user32", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
-        public static extern int RegisterShellHookWindow(IntPtr hWnd);
+        public static extern int RegisterShellHookWindow(User32.NativeMethods.HWND hWnd);
     }
 }
