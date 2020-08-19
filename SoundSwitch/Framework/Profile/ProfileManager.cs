@@ -58,11 +58,11 @@ namespace SoundSwitch.Framework.Profile
 
             foreach (var profile in AppConfigs.Configuration.Profiles)
             {
-                RegisterTriggers(profile);
+                RegisterTriggers(profile, true);
             }
         }
 
-        private void RegisterTriggers(Profile profile)
+        private void RegisterTriggers(Profile profile, bool onInit = false)
         {
             foreach (var trigger in profile.Triggers)
             {
@@ -79,6 +79,13 @@ namespace SoundSwitch.Framework.Profile
                         break;
                     case TriggerFactory.Enum.Steam:
                         _steamProfile = profile;
+                        break;
+                    case TriggerFactory.Enum.Startup:
+                        if (!onInit)
+                        {
+                            break;
+                        }
+                        SwitchAudio(profile);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -104,6 +111,8 @@ namespace SoundSwitch.Framework.Profile
                         break;
                     case TriggerFactory.Enum.Steam:
                         _steamProfile = null;
+                        break;
+                    case TriggerFactory.Enum.Startup:
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();

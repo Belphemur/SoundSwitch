@@ -20,7 +20,8 @@ namespace SoundSwitch.Framework.Profile.Trigger
                 new HotKeyTrigger(),
                 new ProcessTrigger(),
                 new WindowTrigger(),
-                new SteamBigPictureTrigger()
+                new SteamBigPictureTrigger(),
+                new Startup()
             };
 
         public TriggerFactory() : base(Impl)
