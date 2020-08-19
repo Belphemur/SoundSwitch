@@ -90,6 +90,7 @@
             <e p="ProfileSetting.cs" t="Include" />
             <e p="Trigger" t="Include">
               <e p="Trigger.cs" t="Include" />
+              <e p="TriggerEnumExtensions.cs" t="Include" />
               <e p="TriggerFactory.cs" t="Include" />
             </e>
           </e>

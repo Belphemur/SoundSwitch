@@ -66,30 +66,19 @@ namespace SoundSwitch.Framework.Profile
         {
             foreach (var trigger in profile.Triggers)
             {
-                switch (trigger.Type)
-                {
-                    case TriggerFactory.Enum.HotKey:
-                        _profilesByHotkey.Add(trigger.HotKey, profile);
-                        break;
-                    case TriggerFactory.Enum.Window:
-                        _profilesByWindowName.Add(trigger.WindowName.ToLower(), profile);
-                        break;
-                    case TriggerFactory.Enum.Process:
-                        _profileByApplication.Add(trigger.ApplicationPath.ToLower(), profile);
-                        break;
-                    case TriggerFactory.Enum.Steam:
-                        _steamProfile = profile;
-                        break;
-                    case TriggerFactory.Enum.Startup:
+                trigger.Type.Switch(() => { _profilesByHotkey.Add(trigger.HotKey, profile); },
+                    () => { _profilesByWindowName.Add(trigger.WindowName.ToLower(), profile); },
+                    () => { _profileByApplication.Add(trigger.ApplicationPath.ToLower(), profile); },
+                    () => { _steamProfile = profile; },
+                    () =>
+                    {
                         if (!onInit)
                         {
-                            break;
+                            return;
                         }
+
                         SwitchAudio(profile);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                    });
             }
         }
 
@@ -97,26 +86,14 @@ namespace SoundSwitch.Framework.Profile
         {
             foreach (var trigger in profile.Triggers)
             {
-                switch (trigger.Type)
-                {
-                    case TriggerFactory.Enum.HotKey:
+                trigger.Type.Switch(() =>
+                    {
                         WindowsAPIAdapter.UnRegisterHotKey(trigger.HotKey);
                         _profilesByHotkey.Remove(trigger.HotKey);
-                        break;
-                    case TriggerFactory.Enum.Window:
-                        _profilesByWindowName.Remove(trigger.WindowName.ToLower());
-                        break;
-                    case TriggerFactory.Enum.Process:
-                        _profileByApplication.Remove(trigger.ApplicationPath.ToLower());
-                        break;
-                    case TriggerFactory.Enum.Steam:
-                        _steamProfile = null;
-                        break;
-                    case TriggerFactory.Enum.Startup:
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                    },
+                    () => { _profilesByWindowName.Remove(trigger.WindowName.ToLower()); },
+                    () => { _profileByApplication.Remove(trigger.ApplicationPath.ToLower()); },
+                    () => { _steamProfile = null; }, () => { });
             }
         }
 
@@ -378,41 +355,36 @@ namespace SoundSwitch.Framework.Profile
 
             foreach (var trigger in profile.Triggers)
             {
-                switch (trigger.Type)
-                {
-                    case TriggerFactory.Enum.HotKey:
+                var error = trigger.Type.Match(() =>
+                    {
                         if (trigger.HotKey == null || _profilesByHotkey.ContainsKey(trigger.HotKey) || !WindowsAPIAdapter.RegisterHotKey(trigger.HotKey))
                         {
                             return string.Format(SettingsStrings.profile_error_hotkey, trigger.HotKey);
                         }
 
-                        break;
-                    case TriggerFactory.Enum.Window:
+                        return null;
+                    }, () =>
+                    {
                         if (string.IsNullOrEmpty(trigger.WindowName) || _profilesByWindowName.ContainsKey(trigger.WindowName.ToLower()))
                         {
                             return string.Format(SettingsStrings.profile_error_window, trigger.WindowName);
                         }
 
-                        break;
-                    case TriggerFactory.Enum.Process:
-
+                        return null;
+                    }, () =>
+                    {
                         if (string.IsNullOrEmpty(trigger.ApplicationPath) || _profileByApplication.ContainsKey(trigger.ApplicationPath.ToLower()))
                         {
                             return string.Format(SettingsStrings.profile_error_application, trigger.ApplicationPath);
                         }
 
-                        break;
-                    case TriggerFactory.Enum.Steam:
-                        if (_steamProfile != null)
-                        {
-                            return SettingsStrings.profile_error_steam;
-                        }
-
-                        break;
-                    case TriggerFactory.Enum.Startup:
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                        return null;
+                    },
+                    () => _steamProfile != null ? SettingsStrings.profile_error_steam : null,
+                    () => null);
+                if (error != null)
+                {
+                    return error;
                 }
             }
 
