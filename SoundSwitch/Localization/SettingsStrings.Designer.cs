@@ -746,6 +746,24 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to On Startup.
+        /// </summary>
+        internal static string profile_trigger_startup {
+            get {
+                return ResourceManager.GetString("profile.trigger.startup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The profile will be triggered automatically when SoundSwitch starts.
+        /// </summary>
+        internal static string profile_trigger_startup_desc {
+            get {
+                return ResourceManager.GetString("profile.trigger.startup.desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Steam Big Picture.
         /// </summary>
         internal static string profile_trigger_steam {
