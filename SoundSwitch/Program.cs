@@ -80,6 +80,9 @@ namespace SoundSwitch
             SetProcessDPIAware();
 
             Application.EnableVisualStyles();
+#if NETCORE
+            Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
+#endif
             Application.SetCompatibleTextRenderingDefault(false);
 
             // Manage the Closing events send by Windows
