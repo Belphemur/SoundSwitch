@@ -61,13 +61,13 @@ namespace SoundSwitch.Audio.Manager
                 // Ignore if this is a bogus hwnd (shouldn't happen)
                 if (hwnd == IntPtr.Zero)
                     return;
-                var windowProcessId = ProcessWindowInformation(hwnd, out var wndText, out var wndClass);
+                var (processId, windowText, windowClass) = ProcessWindowInformation(hwnd);
 
                 Task.Factory.StartNew(() =>
                 {
-                    var process     = Process.GetProcessById((int) windowProcessId);
+                    var process     = Process.GetProcessById((int) processId);
                     var processName = process.MainModule?.FileName ?? "N/A";
-                    ForegroundChanged?.Invoke(this, new Event(windowProcessId, processName, wndText, wndClass));
+                    ForegroundChanged?.Invoke(this, new Event(processId, processName, windowText, windowClass));
                 });
             };
             //Window close != Window destroyed
@@ -110,7 +110,7 @@ namespace SoundSwitch.Audio.Manager
             });
         }
 
-        private static uint ProcessWindowInformation(User32.NativeMethods.HWND hwnd, out string wndText, out string wndClass)
+        public static (uint ProcessId, string WindowText, string WindowClass) ProcessWindowInformation(User32.NativeMethods.HWND hwnd)
         {
             var windowProcessId = ComThread.Invoke(() =>
             {
@@ -125,7 +125,7 @@ namespace SoundSwitch.Audio.Manager
                 }
             });
 
-            wndText = ComThread.Invoke(() =>
+            var wndText = ComThread.Invoke(() =>
             {
                 try
                 {
@@ -136,7 +136,7 @@ namespace SoundSwitch.Audio.Manager
                     return "";
                 }
             });
-            wndClass = ComThread.Invoke(() =>
+            var wndClass = ComThread.Invoke(() =>
             {
                 try
                 {
@@ -147,7 +147,7 @@ namespace SoundSwitch.Audio.Manager
                     return "";
                 }
             });
-            return windowProcessId;
+            return (windowProcessId, wndText,wndClass);
         }
     }
 }
