@@ -45,10 +45,8 @@ namespace SoundSwitch.Audio.Manager
         }
 
         public event EventHandler<Event> ForegroundChanged;
-        // public event EventHandler<Event> WindowClosed;
 
         private readonly User32.NativeMethods.WinEventDelegate _foregroundWindowChanged;
-        // private readonly User32.NativeMethods.WinEventDelegate _windowClosed;
 
         public WindowMonitor()
         {
@@ -57,7 +55,7 @@ namespace SoundSwitch.Audio.Manager
                 // ignore any event not pertaining directly to the window
                 if (idObject != User32.NativeMethods.OBJID_WINDOW)
                     return;
- 
+
                 // Ignore if this is a bogus hwnd (shouldn't happen)
                 if (hwnd == IntPtr.Zero)
                     return;
@@ -70,21 +68,6 @@ namespace SoundSwitch.Audio.Manager
                     ForegroundChanged?.Invoke(this, new Event(processId, processName, windowText, windowClass));
                 });
             };
-            //Window close != Window destroyed
-            // _windowClosed = (hook, type, hwnd, idObject, child, thread, time) =>
-            // {
-            //     // Ignore if this is a bogus hwnd (shouldn't happen)
-            //     if (hwnd == IntPtr.Zero || !User32.NativeMethods.IsWindow(hwnd))
-            //         return;
-            //     var windowProcessId = ProcessWindowInformation(hwnd, out var wndText, out var wndClass);
-            //
-            //     Task.Factory.StartNew(() =>
-            //     {
-            //         var process     = Process.GetProcessById((int) windowProcessId);
-            //         var processName = process.MainModule?.FileName ?? "N/A";
-            //         WindowClosed?.Invoke(this, new Event(windowProcessId, processName, wndText, wndClass));
-            //     });
-            // };
 
             ComThread.Invoke(() =>
             {
@@ -101,53 +84,45 @@ namespace SoundSwitch.Audio.Manager
                     0,
                     0,
                     User32.NativeMethods.WINEVENT_OUTOFCONTEXT);
-                // User32.NativeMethods.SetWinEventHook(User32.NativeMethods.EVENT_OBJECT_DESTROY,
-                //     User32.NativeMethods.EVENT_OBJECT_DESTROY,
-                //     IntPtr.Zero, _windowClosed,
-                //     0,
-                //     0,
-                //     User32.NativeMethods.WINEVENT_OUTOFCONTEXT);
             });
         }
 
         public static (uint ProcessId, string WindowText, string WindowClass) ProcessWindowInformation(User32.NativeMethods.HWND hwnd)
         {
-            var windowProcessId = ComThread.Invoke(() =>
+            return ComThread.Invoke(() =>
             {
+                uint processId = 0;
+                var wndText   = "";
+                var wndClass  = "";
                 try
                 {
-                    User32.NativeMethods.GetWindowThreadProcessId(hwnd, out var processId);
-                    return processId;
+                    wndText = User32.GetWindowText(hwnd);
                 }
-                catch
+                catch (Exception)
                 {
-                    return (uint) 0;
+                    // ignored
                 }
-            });
 
-            var wndText = ComThread.Invoke(() =>
-            {
                 try
                 {
-                    return User32.GetWindowText(hwnd);
+                    wndClass = User32.GetWindowClass(hwnd);
                 }
                 catch (Exception)
                 {
-                    return "";
+                    // ignored
                 }
-            });
-            var wndClass = ComThread.Invoke(() =>
-            {
                 try
                 {
-                    return User32.GetWindowClass(hwnd);
+                    User32.NativeMethods.GetWindowThreadProcessId(hwnd, out processId);
                 }
                 catch (Exception)
                 {
-                    return "";
+                    // ignored
                 }
+              
+
+                return (processId, wndText, wndClass);
             });
-            return (windowProcessId, wndText,wndClass);
         }
     }
 }

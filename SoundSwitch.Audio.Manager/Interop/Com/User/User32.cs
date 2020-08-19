@@ -106,16 +106,18 @@ namespace SoundSwitch.Audio.Manager.Interop.Com.User
             }
 
 
-            [DllImport("user32.dll", CharSet = CharSet.Auto)]
+            [DllImport("user32.dll", CharSet = CharSet.Auto,  SetLastError = true, ExactSpelling = true)]
             public static extern IntPtr GetWindowThreadProcessId([In] HWND hWnd, [Out] out uint ProcessId);
 
-            [DllImport("user32.dll", CharSet = CharSet.Auto)]
+            [DllImport("user32.dll", CharSet = CharSet.Ansi)]
             public static extern HWND GetForegroundWindow();
 
-            [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-            public static extern int GetWindowText(HWND hWnd, StringBuilder text, int count);
+            [DllImport("user32", EntryPoint = "GetWindowTextA", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
+            public static extern int GetWindowText(HWND hwnd, StringBuilder lpString, int cch);
+            [DllImport("user32", EntryPoint = "GetWindowTextLengthA", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
+            public static extern int GetWindowTextLength(HWND hwnd);
 
-            [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+            [DllImport("user32", EntryPoint = "GetClassNameA", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
             public static extern int GetClassName(HWND hWnd, StringBuilder text, int count);
             
             [DllImport("user32.dll", CharSet =CharSet.Auto)]
@@ -162,7 +164,8 @@ namespace SoundSwitch.Audio.Manager.Interop.Com.User
         /// </summary>
         public static string GetWindowText(NativeMethods.HWND window)
         {
-            var sb             = new StringBuilder(NativeMethods.MAX_PATH);
+            var length         = NativeMethods.GetWindowTextLength(window) + 1;
+            var sb             = new StringBuilder(length);
             var result         = NativeMethods.GetWindowText(window, sb, NativeMethods.MAX_PATH);
             var lastWin32Error = Marshal.GetLastWin32Error();
 

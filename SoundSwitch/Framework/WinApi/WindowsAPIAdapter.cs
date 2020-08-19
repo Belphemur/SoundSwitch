@@ -18,8 +18,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Serilog;
+using SoundSwitch.Audio.Manager;
+using SoundSwitch.Audio.Manager.Interop.Com.User;
 using SoundSwitch.Framework.WinApi.Keyboard;
 
 namespace SoundSwitch.Framework.WinApi
@@ -50,6 +53,7 @@ namespace SoundSwitch.Framework.WinApi
         private static ThreadExceptionEventHandler _exceptionEventHandler;
         private readonly Dictionary<HotKey, int> _registeredHotkeys = new Dictionary<HotKey, int>();
         private int _hotKeyId;
+        private int _msgNotifyShell;
 
         private WindowsAPIAdapter()
         {
@@ -58,6 +62,7 @@ namespace SoundSwitch.Framework.WinApi
         public static event EventHandler<RestartManagerEvent> RestartManagerTriggered;
         public static event EventHandler<DeviceChangeEvent> DeviceChanged;
         public static event EventHandler<KeyPressedEventArgs> HotKeyPressed;
+        public static event EventHandler<WindowDestroyedEvent> WindowDestroyed;
 
         /// <summary>
         ///     Start the Adapter thread
@@ -116,6 +121,8 @@ namespace SoundSwitch.Framework.WinApi
 
             _instance = new WindowsAPIAdapter();
             _instance.CreateHandle();
+            _instance._msgNotifyShell = Interop.RegisterWindowMessage("SHELLHOOK");
+            Interop.RegisterShellHookWindow(_instance.Handle);
             Log.Information("Handle created. Running the application.");
             Application.Run(_instance);
             Log.Information("End of the WindowsAPIAdapter thread");
@@ -250,6 +257,21 @@ namespace SoundSwitch.Framework.WinApi
                     ProcessHotKeyEvent(m);
                     break;
             }
+            
+            if (m.Msg == _msgNotifyShell)
+            {
+                // Receive shell messages
+                switch ((Interop.ShellEvents)m.WParam.ToInt32())
+                {
+                    case Interop.ShellEvents.HSHELL_WINDOWDESTROYED:
+                        var (_, windowText, windowClass) = WindowMonitor.ProcessWindowInformation(User32.NativeMethods.HWND.Cast(m.LParam));
+                        Task.Factory.StartNew(() =>
+                        {
+                            WindowDestroyed?.Invoke(this, new WindowDestroyedEvent(windowClass, windowText));
+                        });
+                        break;
+                }
+            }
 
             base.WndProc(ref m);
         }
@@ -276,8 +298,10 @@ namespace SoundSwitch.Framework.WinApi
             var key = (Keys)((ConvertLParam(m.LParam) >> 16) & 0xFFFF);
             var modifier = (HotKey.ModifierKeys)(ConvertLParam(m.LParam) & 0xFFFF);
 
-            HotKeyPressed?.Invoke(this, new KeyPressedEventArgs(new HotKey(key, modifier)));
-            GC.Collect();
+            Task.Factory.StartNew(() =>
+            {
+                HotKeyPressed?.Invoke(this, new KeyPressedEventArgs(new HotKey(key, modifier)));
+            });
         }
 
         #region WindowsNativeMethods
@@ -296,6 +320,18 @@ namespace SoundSwitch.Framework.WinApi
         #endregion
 
         #region Events
+
+        public class WindowDestroyedEvent : EventArgs
+        {
+            public string WindowClass { get; }
+            public string WindowName { get; }
+
+            public WindowDestroyedEvent(string windowClass, string windowName)
+            {
+                WindowClass = windowClass;
+                WindowName = windowName;
+            }
+        }
 
         public class RestartManagerEvent : EventArgs
         {

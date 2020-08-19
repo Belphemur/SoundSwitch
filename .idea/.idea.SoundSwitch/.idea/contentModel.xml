@@ -133,6 +133,7 @@
             <e p="UpdateState.cs" t="Include" />
           </e>
           <e p="WinApi" t="Include">
+            <e p="Interop.cs" t="Include" />
             <e p="Keyboard" t="Include">
               <e p="Helpers.cs" t="Include" />
               <e p="HotKey.cs" t="Include" />
