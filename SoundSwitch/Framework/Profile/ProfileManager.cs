@@ -55,11 +55,6 @@ namespace SoundSwitch.Framework.Profile
             _audioSwitcher      = audioSwitcher;
             _activeDeviceLister = activeDeviceLister;
             _showError          = showError;
-
-            foreach (var profile in AppConfigs.Configuration.Profiles)
-            {
-                RegisterTriggers(profile, true);
-            }
         }
 
         private void RegisterTriggers(Profile profile, bool onInit = false)
@@ -103,6 +98,10 @@ namespace SoundSwitch.Framework.Profile
         /// <returns></returns>
         public Result<Profile[], VoidSuccess> Init()
         {
+            foreach (var profile in AppConfigs.Configuration.Profiles)
+            {
+                RegisterTriggers(profile, true);
+            }
             RegisterEvents();
 
             var errors = _profilesByHotkey
