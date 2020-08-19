@@ -28,6 +28,7 @@ using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio.Lister;
+using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Logger.Configuration;
 using SoundSwitch.Framework.Minidump;
@@ -146,6 +147,7 @@ namespace SoundSwitch
 
         private static async Task InitAsync(TrayIcon icon)
         {
+            BannerManager.Setup();
             var deviceActiveLister = new CachedAudioDeviceLister(DeviceState.Active);
             var deviceUnpluggedActiveLister = new CachedAudioDeviceLister(DeviceState.Active | DeviceState.Unplugged);
             await Task.WhenAll(deviceActiveLister.Refresh(), deviceUnpluggedActiveLister.Refresh());

@@ -71,8 +71,6 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
 
         public bool IsAvailable()
         {
-            BannerManager.Setup();
-
             // Available in all Windows versions
             return true;
         }
