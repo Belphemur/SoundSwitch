@@ -80,7 +80,7 @@
     <value>Tecla de atalho</value>
   </data>
   <data name="communicationsDevice" xml:space="preserve">
-    <value>Mudar o Dispositivo de Comunicação Predefinido</value>
+    <value>Mudar o Aparelho de Comunicação Predefinido</value>
   </data>
   <data name="startWithWindows" xml:space="preserve">
     <value>Iniciar automaticamente com o Windows</value>
@@ -119,10 +119,10 @@
     <value>Nunca procurar por atualizações</value>
   </data>
   <data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
-    <value>Todos os dispositivos de áudio</value>
+    <value>Todos os aparelhos de áudio</value>
   </data>
   <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
-    <value>Apenas os dispositivos de áudio selecionados</value>
+    <value>Apenas os aparelhos de áudio selecionados</value>
   </data>
   <data name="notificationOptionWindowsDefault" xml:space="preserve">
     <value>Notificação do Windows</value>
@@ -140,10 +140,10 @@
     <value>Notificação de Som Personalizada</value>
   </data>
   <data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
-    <value>Dispositivo de Reprodução</value>
+    <value>Aparelho de Reprodução</value>
   </data>
   <data name="communicationsDeviceTooltip" xml:space="preserve">
-    <value>Quando marcado, o 'Dispositivo de Comunicação Padrão' e o 'Dispositivo de Gravação Padráo' serão alterados juntamente (útil para aplicações p.ex: Skype, TeamSpeak).</value>
+    <value>Quando marcado, o 'Aparelho de Comunicação Predefinido' e o 'Aparelho de Gravação Predefinido' serão alterados juntamente (útil para aplicações p.ex: Skype, TeamSpeak).</value>
   </data>
   <data name="updateNotifyTooltip" xml:space="preserve">
     <value>SoundSwitch irá notificar-lhe se existir novas actualizações. Quando clicar na notificação, irá receber uma pequena janela a transferir a actualização e a perguntar se deseja instalá-la.</value>
@@ -179,10 +179,10 @@
     <value>Não foi possível registar a tecla de atalho para os perfis seguintes: {0}</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
-    <value>Adiciona um perfil para alterar para um dispositivo de reprodução ou gravação quando uma aplicação específica é iniciada ou realçada para primeiro-plano.</value>
+    <value>Adiciona um perfil para alterar para um aparelho de reprodução ou gravação quando uma aplicação específica é iniciada ou realçada para primeiro-plano.</value>
   </data>
   <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
-    <value>Necessário definir um dispositivo de reprodução ou de gravação.</value>
+    <value>Necessário definir um aparelho de reprodução ou de gravação.</value>
   </data>
   <data name="profile.error.needHKOrPath" xml:space="preserve">
     <value>Necessário introduzir tecla de atalho e/ou a aplicação.</value>
@@ -211,10 +211,10 @@
   <data name="iconChange.tooltip" xml:space="preserve">
     <value>Escolha quando alterar o Ícon da bandeja do sistema do SoundSwitch.
 
-Padrão: Não alterar. Mantenha o ícon padrão do SoundSwitch.
-Reprodução: Quando um dispositivo de reprodução é alterado.
-Gravação: Quando um dispositivo de gravação é alterado.
-Ambos: Alterar quando qualquer dispositivo for alterado.</value>
+Predefinição: Não alterar. Mantenha o ícon predefinido do SoundSwitch.
+Reprodução: Quando um aparelho de reprodução é alterado.
+Gravação: Quando um aparelho de gravação é alterado.
+Ambos: Alterar quando qualquer aparelho for alterado.</value>
   </data>
   <data name="iconChange" xml:space="preserve">
     <value>Ícon da bandeja do sistema</value>
@@ -260,20 +260,20 @@ Deseja reiniciar agora?</value>
     <value>Sem dica de ferramenta</value>
   </data>
   <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
-    <value>Para ambos os dispositivos</value>
+    <value>Para ambos os aparelhos</value>
   </data>
   <data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
-    <value>Dispositivo de Gravação</value>
+    <value>Aparelho de Gravação</value>
   </data>
   <data name="notificationTooltip" xml:space="preserve">
-    <value>Notificação do Windows: A notificação padrão da bandeja do sistema.
-Notificação Sonora: Toca o som padrão no dispositivo activo.
-Notificação Sonora Personalizada: Toca o som escolhido no dispositivo activo.
+    <value>Notificação do Windows: A notificação predefinida da bandeja do sistema.
+Notificação Sonora: Toca o som predefinido no aparelho activo.
+Notificação Sonora Personalizada: Toca o som escolhido no aparelho activo.
 Notificação Não-Modal: Usa uma forma especial de uma janela através da bandeja do sistema.
 Bandeira: Usa uma forma personalizada de janela 'SEMPRE-NO-TOPO', útil para utilização em jogos.</value>
   </data>
   <data name="cycleThroughTooltip" xml:space="preserve">
-    <value>Escolha entre que dispositivos alterar. Entre todos ou apenas os seleccionados.</value>
+    <value>Escolha entre que aparelhos alterar. Entre todos ou apenas os seleccionados.</value>
   </data>
   <data name="tooltipOnHover" xml:space="preserve">
     <value>Dica de ferramenta ao sobrepor o rato</value>
@@ -285,7 +285,7 @@ Bandeira: Usa uma forma personalizada de janela 'SEMPRE-NO-TOPO', útil para uti
     <value>Actualizações são instaladas automaticamente sem interacção.</value>
   </data>
   <data name="keepSystemTrayIconTooltip" xml:space="preserve">
-    <value>Quando marcado, o ícon da bandeja do sistema não será alterado quando o 'Dispositivo de Comunicação Padrão' altera.</value>
+    <value>Quando marcado, o ícon da bandeja do sistema não será alterado quando o 'Aparelho de Comunicação Predefinido' altera.</value>
   </data>
   <data name="cycleThrough" xml:space="preserve">
     <value>Alterna entre</value>
