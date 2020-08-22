@@ -42,6 +42,7 @@ SignTool=Certum
 SignedUninstaller=yes
 LicenseFile={#ExeDir}\LICENSE.txt
 SetupLogging=yes
+RestartApplications=no
 ;AppMutex={#MyAppSetupName}
 
 ;MinVersion default value: "0,5.0 (Windows 2000+) if Unicode Inno Setup, else 4.0,4.0 (Windows 95+)"
@@ -105,9 +106,9 @@ Name: "{group}\{cm:UninstallProgram,{#MyAppSetupName}}"; Filename: "{uninstallex
 Name: "{userdesktop}\{#MyAppSetupName}"; Filename: "{app}\SoundSwitch.exe"; Tasks: desktopicon; AppUserModelID: aaflalo.{#MyAppSetupName}.Application
 
 [Run]
-Filename: "{app}\SoundSwitch.exe"; Description: "{cm:LaunchProgram,{#MyAppSetupName}}"; Flags: nowait postinstall
+Filename: "{app}\SoundSwitch.exe"; Description: "{cm:LaunchProgram,{#MyAppSetupName}}"; Flags: nowait postinstall;
 Filename: "{app}\Readme.html"; Description: "{cm:ViewReadmeFile}"; Flags: postinstall shellexec skipifsilent
-Filename: "https://soundswitch.aaflalo.me/?utm_source={#MyAppVersion}&utm_campaign=installer#donate"; Description: "{cm:SupportTheProject}"; Flags: postinstall shellexec skipifsilent runasoriginaluser
+Filename: "https://soundswitch.aaflalo.me/?utm_source={#MyAppVersion}&utm_campaign=installer#donate"; Description: "{cm:SupportTheProject}"; Flags: postinstall shellexec runasoriginaluser
 Filename: "{app}\Changelog.html"; Description: "{cm:ViewChangelogFile}"; Flags: postinstall shellexec skipifsilent unchecked
 
 [CustomMessages]
