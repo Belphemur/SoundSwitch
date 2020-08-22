@@ -107,13 +107,15 @@ namespace SoundSwitch.Framework.Configuration
         /// <summary>
         /// Migrate configuration to a new schema
         /// </summary>
-        public void Migrate()
+        public bool Migrate()
         {
+            var migrated = false;
             if (SelectedPlaybackDeviceListId.Count > 0)
             {
                 SelectedDevices.UnionWith(
                     SelectedPlaybackDeviceListId.Select((s => new DeviceInfo("", s, DataFlow.Render))));
                 SelectedPlaybackDeviceListId.Clear();
+                migrated = true;
             }
 
             if (SelectedRecordingDeviceListId.Count > 0)
@@ -121,6 +123,7 @@ namespace SoundSwitch.Framework.Configuration
                 SelectedDevices.UnionWith(
                     SelectedRecordingDeviceListId.Select((s => new DeviceInfo("", s, DataFlow.Capture))));
                 SelectedRecordingDeviceListId.Clear();
+                migrated = true;
             }
 
             if (NotificationSettings == NotificationTypeEnum.ToastNotification)
@@ -133,6 +136,7 @@ namespace SoundSwitch.Framework.Configuration
             {
                 SwitchIcon = KeepSystrayIcon ? IconChangerFactory.ActionEnum.Never : IconChangerFactory.ActionEnum.Always;
                 MigratedFields.Add(nameof(KeepSystrayIcon));
+                migrated = true;
             }
 
             if (!MigratedFields.Contains(nameof(ProfileSettings) + "_final"))
@@ -167,13 +171,17 @@ namespace SoundSwitch.Framework.Configuration
                                return profile;
                            }).ToHashSet();
                 MigratedFields.Add(nameof(ProfileSettings) + "_final");
+                migrated = true;
             }
 
             if (!MigratedFields.Contains(nameof(LastDonationNagTime)))
             {
                 LastDonationNagTime = DateTime.UtcNow - TimeSpan.FromDays(10);
                 MigratedFields.Add(nameof(LastDonationNagTime));
+                migrated = true;
             }
+
+            return migrated;
 #pragma warning restore 612
         }
 
