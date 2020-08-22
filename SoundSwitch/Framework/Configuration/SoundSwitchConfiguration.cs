@@ -81,6 +81,10 @@ namespace SoundSwitch.Framework.Configuration
         public bool                 IncludeBetaVersions           { get; set; }
         public string               CustomNotificationFilePath    { get; set; }
 
+        public DateTime LastTimeUpdate { get; set; } = DateTime.UtcNow - TimeSpan.FromDays(10);
+
+        public TimeSpan TimeBetweenDonateNag { get; set; } = TimeSpan.FromDays(15);
+
         [Obsolete]
         public bool KeepSystrayIcon { get; set; }
 
@@ -158,7 +162,8 @@ namespace SoundSwitch.Framework.Configuration
                                    {
                                        ApplicationPath = setting.ApplicationPath
                                    });
-                               } 
+                               }
+
                                return profile;
                            }).ToHashSet();
                 MigratedFields.Add(nameof(ProfileSettings) + "_final");

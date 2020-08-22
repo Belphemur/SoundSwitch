@@ -54,7 +54,7 @@ namespace SoundSwitch.Framework.Updater
                         return;
                     }
 
-                    new WebFileRunner(ApplicationPath.InstallDirectory).RunFile(file, InstallerParameters);
+                    new UpdateRunner().RunUpdate(file, InstallerParameters);
                     if (closeApp)
                     {
                         _context.Send(s => { Application.Exit(); }, null);

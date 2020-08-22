@@ -91,7 +91,7 @@ namespace SoundSwitch.UI.Forms
 
         private void installButton_Click(object sender, EventArgs e)
         {
-            new WebFileRunner(ApplicationPath.InstallDirectory).RunFile(_releaseFile, "/SILENT /NOCANCEL /NORESTART /CLOSEAPPLICATIONS");
+            new UpdateRunner().RunUpdate(_releaseFile, "/SILENT");
             Close();
         }
 

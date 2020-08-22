@@ -123,8 +123,8 @@
             <e p="AutoUpdater.cs" t="Include" />
             <e p="GitHubRelease.cs" t="Include" />
             <e p="Installer" t="Include">
+              <e p="UpdateRunner.cs" t="Include" />
               <e p="WebFile.cs" t="Include" />
-              <e p="WebFileRunner.cs" t="Include" />
             </e>
             <e p="IntervalUpdateChecker.cs" t="Include" />
             <e p="Release.cs" t="Include" />
