@@ -81,7 +81,7 @@ namespace SoundSwitch.Framework.Configuration
         public bool                 IncludeBetaVersions           { get; set; }
         public string               CustomNotificationFilePath    { get; set; }
 
-        public DateTime LastDonationNagTime { get; set; } = DateTime.UtcNow - TimeSpan.FromDays(10);
+        public DateTime LastDonationNagTime { get; set; }
 
         public TimeSpan TimeBetweenDonateNag { get; set; } = TimeSpan.FromDays(15);
 
@@ -167,6 +167,12 @@ namespace SoundSwitch.Framework.Configuration
                                return profile;
                            }).ToHashSet();
                 MigratedFields.Add(nameof(ProfileSettings) + "_final");
+            }
+
+            if (!MigratedFields.Contains(nameof(LastDonationNagTime)))
+            {
+                LastDonationNagTime = DateTime.UtcNow - TimeSpan.FromDays(10);
+                MigratedFields.Add(nameof(LastDonationNagTime));
             }
 #pragma warning restore 612
         }
