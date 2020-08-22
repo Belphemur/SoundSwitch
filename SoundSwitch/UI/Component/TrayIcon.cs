@@ -187,7 +187,7 @@ namespace SoundSwitch.UI.Component
                 BrowserUtil.OpenUrl("https://discord.gg/gUCw3Ue");
             });
             _settingsMenu.Items.Add(TrayIconStrings.donate, ResourceDonateBitmap,
-                (sender, e) => BrowserUtil.OpenUrl("https://soundswitch.aaflalo.me/?utm_source=application#donate"));
+                (sender, e) => BrowserUtil.OpenUrl($"https://soundswitch.aaflalo.me/?utm_campaign=application&utm_source={Application.ProductVersion}#donate"));
             _settingsMenu.Items.Add(TrayIconStrings.about, RessourceHelpSmallBitmap, (sender, e) => new About().Show());
             _settingsMenu.Items.Add("-");
             _settingsMenu.Items.Add(TrayIconStrings.exit, RessourceExitBitmap, (sender, e) => Application.Exit());
