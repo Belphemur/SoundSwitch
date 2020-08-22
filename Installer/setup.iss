@@ -107,7 +107,7 @@ Name: "{userdesktop}\{#MyAppSetupName}"; Filename: "{app}\SoundSwitch.exe"; Task
 [Run]
 Filename: "{app}\SoundSwitch.exe"; Description: "{cm:LaunchProgram,{#MyAppSetupName}}"; Flags: nowait postinstall
 Filename: "{app}\Readme.html"; Description: "{cm:ViewReadmeFile}"; Flags: postinstall shellexec skipifsilent
-Filename: "https://soundswitch.aaflalo.me/?utm_source=installer#donate"; Description: "{cm:SupportTheProject}"; Flags: postinstall shellexec skipifsilent runasoriginaluser
+Filename: "https://soundswitch.aaflalo.me/?utm_source={#MyAppVersion}&utm_campaign=installer#donate"; Description: "{cm:SupportTheProject}"; Flags: postinstall shellexec skipifsilent runasoriginaluser
 Filename: "{app}\Changelog.html"; Description: "{cm:ViewChangelogFile}"; Flags: postinstall shellexec skipifsilent unchecked
 
 [CustomMessages]
