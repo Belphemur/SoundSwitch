@@ -120,7 +120,7 @@ namespace SoundSwitch
                 SynchronizationContext.SetSynchronizationContext(ctx);
                 try
                 {
-                    ctx.Post(async iconState => await InitAsync((TrayIcon)iconState), icon);
+                    ctx.Send(iconState => Init((TrayIcon)iconState), icon);
                     Application.Run();
                 }
                 finally
@@ -145,12 +145,13 @@ namespace SoundSwitch
             Log.CloseAndFlush();
         }
 
-        private static async Task InitAsync(TrayIcon icon)
+        private static void Init(TrayIcon icon)
         {
             BannerManager.Setup();
             var deviceActiveLister = new CachedAudioDeviceLister(DeviceState.Active);
             var deviceUnpluggedActiveLister = new CachedAudioDeviceLister(DeviceState.Active | DeviceState.Unplugged);
-            await Task.WhenAll(deviceActiveLister.Refresh(), deviceUnpluggedActiveLister.Refresh());
+            deviceActiveLister.Refresh();
+            deviceUnpluggedActiveLister.Refresh();
             
             AppModel.Instance.ActiveAudioDeviceLister = deviceActiveLister;
             AppModel.Instance.ActiveUnpluggedAudioLister = deviceUnpluggedActiveLister;

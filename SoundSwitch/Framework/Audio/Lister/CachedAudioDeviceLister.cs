@@ -45,31 +45,44 @@ namespace SoundSwitch.Framework.Audio.Lister
 
         private void DeviceChanged(object sender, DeviceChangedEventBase e)
         {
-            _dispatcher.Debounce(300, async (o) => await Refresh());
+            _dispatcher.Debounce(300, (o) => Refresh());
         }
 
-        public async Task Refresh()
+        private void UpdatePlayback()
+        {
+            Log.Information("Refreshing playback device of state {@State}", _state);
+            using var enumerator = new MMDeviceEnumerator();
+            PlaybackDevices = CreateDeviceList(enumerator.EnumerateAudioEndPoints(DataFlow.Render, _state));
+            Log.Information("Refreshed playbacks: {@Playbacks}", PlaybackDevices.Select(info => new {Name = info.Name, Id = info.Id}));
+        }
+
+        private void UpdateRecording()
+        {
+            Log.Information("Refreshing recording device of state {@State}", _state);
+            using var enumerator = new MMDeviceEnumerator();
+            RecordingDevices = CreateDeviceList(enumerator.EnumerateAudioEndPoints(DataFlow.Capture, _state));
+            Log.Information("Refreshed recordings: {@Recordings}", RecordingDevices.Select(info => new {Name = info.Name, Id = info.Id}));
+        }
+
+        public void Refresh()
         {
             Log.Information("Refreshing device of state {@State}", _state);
-            var playbackTask = Task<IReadOnlyCollection<DeviceFullInfo>>.Factory.StartNew((() =>
+            var threadPlayback = new Thread(UpdatePlayback)
             {
-                Log.Information("Refreshing playback device of state {@State}", _state);
-                using var enumerator = new MMDeviceEnumerator();
-                var playback = CreateDeviceList(enumerator.EnumerateAudioEndPoints(DataFlow.Render, _state));
-                Log.Information("Refreshed playbacks: {@Playbacks}", playback.Select(info => new {Name = info.Name, Id = info.Id}));
-                return playback;
-            }));
-            var recordingTask = Task<IReadOnlyCollection<DeviceFullInfo>>.Factory.StartNew((() =>
+                Name = $"Playback Refresh {_state}",
+                IsBackground = true
+            };
+            var threadRecording = new Thread(UpdateRecording)  
             {
-                Log.Information("Refreshing recording device of state {@State}", _state);
-                using var enumerator = new MMDeviceEnumerator();
-                var recordings = CreateDeviceList(enumerator.EnumerateAudioEndPoints(DataFlow.Capture, _state));
-                Log.Information("Refreshed recordings: {@Recordings}", recordings.Select(info => new {Name = info.Name, Id = info.Id}));
-                return recordings;
-            }));
-            var result = await Task.WhenAll(playbackTask, recordingTask);
-            PlaybackDevices = result[0];
-            RecordingDevices = result[1];
+                Name = $"Recording Refresh {_state}",
+                IsBackground = true
+            };
+            
+            threadPlayback.Start();
+            threadRecording.Start();
+
+            threadPlayback.Join();
+            threadRecording.Join();
 
             Log.Information("Refreshed device of state {@State}", _state);
         }

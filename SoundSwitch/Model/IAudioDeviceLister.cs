@@ -34,6 +34,6 @@ namespace SoundSwitch.Model
         /// <returns></returns>
         IReadOnlyCollection<DeviceFullInfo> RecordingDevices { get; }
 
-        Task Refresh();
+        void Refresh();
     }
 }
