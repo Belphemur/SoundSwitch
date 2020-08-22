@@ -59,21 +59,21 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="profile.error.registerHotkeys" xml:space="preserve">
-    <value>Nije moguće registrirati prečicu za slijedeće profile: {0}</value>
+    <value>Nije moguće registrirati prečac za sljedeće profile: {0}</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
-    <value>Dodaj profil kako bi se promijenio uređaj za slušanje ili snimanje, kada je određena aplikacija pokrenuta ili fokusirana.</value>
+    <value>Dodaj profil kako bi se promijenio uređaj za slušanje ili snimanje, kad se pokrene ili fokusira određena aplikacija.</value>
   </data>
   <data name="iconChange.tooltip" xml:space="preserve">
     <value>Izaberi kada će se SoundSwitch ikona u sistemskoj traci promijeniti.
 
 Standardno: Nemoj mijenjati SoundSwitch ikonu.
-Slušanje: Kada se uređaj za slušanje promijeni.
-Snimanje: Kada se uređaj za snimanjepromijeni.
-Zajedno: Promijeni ikonu kada se bilo koji uređaj promijeni.</value>
+Slušanje: Kad se uređaj za slušanje promijeni.
+Snimanje: Kad se uređaj za snimanje promijeni.
+Zajedno: Promijeni ikonu kad se bilo koji uređaj promijeni.</value>
   </data>
   <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
-    <value>Kada je aplikacija detektirana, SoundSwitch će promijeniti trenutni standardni uređaj.</value>
+    <value>Kad se aplikacija otkrije, SoundSwitch će promijeniti trenutni standardni uređaj.</value>
   </data>
   <data name="profile.defaultDevice.checkbox" xml:space="preserve">
     <value>Također promijeni standardni uređaj</value>
@@ -100,13 +100,13 @@ Zajedno: Promijeni ikonu kada se bilo koji uređaj promijeni.</value>
     <value>Dodaj profil</value>
   </data>
   <data name="profile.error.registerHotkeys.title" xml:space="preserve">
-    <value>Prečac koji se već koristi</value>
+    <value>Već korišteni prečac</value>
   </data>
   <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
     <value>Moraš izabrati uređaj za slušanje, ili uređaj za snimanje.</value>
   </data>
   <data name="profile.error.needHKOrPath" xml:space="preserve">
-    <value>Moraš postaviti prečicu ili/i aplikaciju.</value>
+    <value>Moraš postaviti prečac ili/i aplikaciju.</value>
   </data>
   <data name="profile.error.name" xml:space="preserve">
     <value>Već postoji takav profil: {0}.</value>
@@ -115,7 +115,7 @@ Zajedno: Promijeni ikonu kada se bilo koji uređaj promijeni.</value>
     <value>Ova aplikacija {0} već ima povezani profil.</value>
   </data>
   <data name="profile.error.hotkey" xml:space="preserve">
-    <value>Ovaj prečica {0} se već koristi.</value>
+    <value>Ovaj se prečac {0} već koristi.</value>
   </data>
   <data name="profile.name" xml:space="preserve">
     <value>Ime</value>
@@ -130,7 +130,7 @@ Zajedno: Promijeni ikonu kada se bilo koji uređaj promijeni.</value>
     <value>Profili</value>
   </data>
   <data name="iconChange" xml:space="preserve">
-    <value>Ikona sistemske trake</value>
+    <value>Ikona u sistemskoj traci</value>
   </data>
   <data name="foregroundAppTooltip" xml:space="preserve">
     <value>Također promijeni zvuk u aplikacijama koje trenutno koristiš. Korisno za igre.</value>
@@ -173,7 +173,7 @@ Zajedno: Promijeni ikonu kada se bilo koji uređaj promijeni.</value>
     <value>Zvučna datoteka koju si izabrao nije pronađena. SoundSwitch je promijenio notifikaciju na {0}.</value>
   </data>
   <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-    <value>Bez notifikacija</value>
+    <value>Bez savjeta</value>
   </data>
   <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
     <value>Za oba uređaja</value>
@@ -185,11 +185,11 @@ Zajedno: Promijeni ikonu kada se bilo koji uređaj promijeni.</value>
     <value>Uređaj za slušanje</value>
   </data>
   <data name="notificationTooltip" xml:space="preserve">
-    <value>Windows notifikacije: Standardna windows notifikacija trake sustava.
-Zvučne notifikacije: Sviraj zvuk kada se promijeni uređaj za slušanje.
-Personalizirane zvučne notifikacije: Sviraj specifični zvuk kada se promijeni uređaj za slušanje.
-Toast notifikacije: Koristi specijalnu formu windows notifikacije trake sustava.
-Banner: Koristi personalizirani prozor iznad svega, korisno unutar igri.</value>
+    <value>Windows notifikacije: Standardna windows notifikacija.
+Zvučne notifikacije: Sviraj zvuk kad se promijeni uređaj za slušanje.
+Personalizirane zvučne notifikacije: Sviraj specifični zvuk kad se promijeni uređaj za slušanje.
+Toast notifikacije: Koristi specijalni oblik windows notifikacije.
+Banner: Koristi personalizirani prozor koji se postavlja ispred svih drugih, korisno unutar igri.</value>
   </data>
   <data name="notificationOptionCustomized" xml:space="preserve">
     <value>Personalizirane zvučne notifikacije</value>
@@ -222,7 +222,7 @@ Banner: Koristi personalizirani prozor iznad svega, korisno unutar igri.</value>
     <value>Nemoj provjeravati ima li nadogradnji</value>
   </data>
   <data name="updateNotify" xml:space="preserve">
-    <value>Obavijesti me kada su dostupne nadogradnje</value>
+    <value>Obavijesti me o dostupnim nadogradnjama</value>
   </data>
   <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
     <value>Nadogradnje će biti instalirane automatski i bez pitanja.</value>
@@ -231,10 +231,10 @@ Banner: Koristi personalizirani prozor iznad svega, korisno unutar igri.</value>
     <value>Automatski instaliraj nadogradnje</value>
   </data>
   <data name="keepSystemTrayIconTooltip" xml:space="preserve">
-    <value>Kada je uključeno, ikona u programskoj traci se neće promijeniti kada se promijeni 'Standardni uređaj za slušanje'.</value>
+    <value>Kada je označeno, ikona u sistemskoj traci neće se promijeniti kad se promijeni 'Standardni uređaj za slušanje'.</value>
   </data>
   <data name="keepSystemTrayIcon" xml:space="preserve">
-    <value>Postavi SoundSwitch ikonu u programskoj traci</value>
+    <value>Zadrži SoundSwitch ikonu u sistemskoj traci</value>
   </data>
   <data name="cycleThrough" xml:space="preserve">
     <value>Prođi kroz</value>
@@ -249,7 +249,7 @@ Banner: Koristi personalizirani prozor iznad svega, korisno unutar igri.</value>
     <value>Opcije</value>
   </data>
   <data name="hotkeysTooltip" xml:space="preserve">
-    <value>Izaberi kako bi omogućio prečice.</value>
+    <value>Označi za aktiviranje prečaca.</value>
   </data>
   <data name="selectSoundButtonTooltip" xml:space="preserve">
     <value>Izaberi zvučnu datoteku za notifikaciju</value>
@@ -264,7 +264,7 @@ Banner: Koristi personalizirani prozor iznad svega, korisno unutar igri.</value>
     <value>Notifikacija</value>
   </data>
   <data name="communicationsDeviceTooltip" xml:space="preserve">
-    <value>Kada je izabrano, 'Standardni komunikacijski uređaj' i 'Standardni uređaj za slušanje' se uključuju zajedno (korisno za Skype, TeamSpeak, i sl.).</value>
+    <value>Kad je označeno, 'Standardni komunikacijski uređaj' i 'Standardni uređaj za slušanje' suključuju se zajedno (korisno za Skype, TeamSpeak i sl.).</value>
   </data>
   <data name="closeTooltip" xml:space="preserve">
     <value>Promjene se automatski spremaju</value>
@@ -279,7 +279,7 @@ Banner: Koristi personalizirani prozor iznad svega, korisno unutar igri.</value>
     <value>Promijeni standardni komunikacijski uređaj</value>
   </data>
   <data name="hotkeys" xml:space="preserve">
-    <value>Prečice</value>
+    <value>Prečac</value>
   </data>
   <data name="settings" xml:space="preserve">
     <value>Opcije</value>
@@ -309,7 +309,7 @@ Banner: Koristi personalizirani prozor iznad svega, korisno unutar igri.</value>
     <value>Kad je označeno, SoundSwitch će također pretražiti beta verzije na GitHub-u.</value>
   </data>
   <data name="profile.trigger.process" xml:space="preserve">
-    <value>Putanja do programa </value>
+    <value>Putanja do programa</value>
   </data>
   <data name="profile.trigger.steam" xml:space="preserve">
     <value>Steam Big Picture</value>
@@ -318,7 +318,7 @@ Banner: Koristi personalizirani prozor iznad svega, korisno unutar igri.</value>
     <value>Ime programa</value>
   </data>
   <data name="profile.trigger.steam.desc" xml:space="preserve">
-    <value>Aktiviraj kad se otkrije Steam Big Picture</value>
+    <value>Aktiviraj kad se otkrije Steam Big Picture. Vratit će stanje kad se Big Picture zatvori.</value>
   </data>
   <data name="profile.trigger.available" xml:space="preserve">
     <value>Dostupni okidači</value>
@@ -339,10 +339,10 @@ Banner: Koristi personalizirani prozor iznad svega, korisno unutar igri.</value>
     <value>Spremi</value>
   </data>
   <data name="profile.notification.text" xml:space="preserve">
-    <value>Profil {0} pokrenut</value>
+    <value>Profil {0} aktiviran</value>
   </data>
   <data name="profile.notify-on-activation" xml:space="preserve">
-    <value>Upozori kad se profil pokrene</value>
+    <value>Upozori kad se profil aktivira</value>
   </data>
   <data name="profile.error.window" xml:space="preserve">
     <value>Veš postoji profil s ovim imenom prozora: {0}.</value>
@@ -361,5 +361,14 @@ Banner: Koristi personalizirani prozor iznad svega, korisno unutar igri.</value>
   </data>
   <data name="profile.trigger.window.desc" xml:space="preserve">
     <value>Aktiviraj profil ako prednji program sadrži sljedeće znakove</value>
+  </data>
+  <data name="profile.trigger.startup.desc" xml:space="preserve">
+    <value>Profil će se aktivirati kad se pokrene SoundSwitch</value>
+  </data>
+  <data name="profile.trigger.startup" xml:space="preserve">
+    <value>Pri pokretanju</value>
+  </data>
+  <data name="profile.trigger.steam.msg" xml:space="preserve">
+    <value>Steam Big Picture zatvoren</value>
   </data>
 </root>
