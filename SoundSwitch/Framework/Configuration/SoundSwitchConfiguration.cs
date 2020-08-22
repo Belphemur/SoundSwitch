@@ -81,7 +81,7 @@ namespace SoundSwitch.Framework.Configuration
         public bool                 IncludeBetaVersions           { get; set; }
         public string               CustomNotificationFilePath    { get; set; }
 
-        public DateTime LastTimeUpdate { get; set; } = DateTime.UtcNow - TimeSpan.FromDays(10);
+        public DateTime LastDonationNagTime { get; set; } = DateTime.UtcNow - TimeSpan.FromDays(10);
 
         public TimeSpan TimeBetweenDonateNag { get; set; } = TimeSpan.FromDays(15);
 

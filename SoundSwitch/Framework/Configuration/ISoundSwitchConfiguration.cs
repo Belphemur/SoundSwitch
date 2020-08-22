@@ -61,7 +61,7 @@ namespace SoundSwitch.Framework.Configuration
 
         HashSet<ProfileSetting> ProfileSettings { get; set; }
         HashSet<Profile.Profile> Profiles { get; set; }
-        DateTime LastTimeUpdate { get; set; }
+        DateTime LastDonationNagTime { get; set; }
         TimeSpan TimeBetweenDonateNag { get; set; }
     }
 }
