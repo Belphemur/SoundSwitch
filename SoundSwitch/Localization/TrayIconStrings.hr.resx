@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="iconChanger.both" xml:space="preserve">
-    <value>Zajedno</value>
+    <value>Oboje</value>
   </data>
   <data name="iconChanger.none" xml:space="preserve">
     <value>Standardno</value>
@@ -145,10 +145,10 @@
     <value>SoundSwitch: Potrebna je konfiguracija</value>
   </data>
   <data name="recordingChanged" xml:space="preserve">
-    <value>SoundSwitch: Prebačeno na uređaj</value>
+    <value>SoundSwitch: Uređaj za snimanje prebačen na</value>
   </data>
   <data name="playbackChanged" xml:space="preserve">
-    <value>SoundSwitch: Prebačeno na uređaj</value>
+    <value>SoundSwitch: Uređaj za slušanje prebačen na</value>
   </data>
   <data name="clickToUpdate" xml:space="preserve">
     <value>Klikni ako želiš nadograditi program.</value>
@@ -182,5 +182,8 @@
   </data>
   <data name="communityMenu" xml:space="preserve">
     <value>Zajednica</value>
+  </data>
+  <data name="updateDisabled" xml:space="preserve">
+    <value>Automatska nadogradnja deaktivirana</value>
   </data>
 </root>
