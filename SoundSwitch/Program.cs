@@ -75,7 +75,11 @@ namespace SoundSwitch
             using var userMutex = new Mutex(true, userMutexName, out var userMutexInUse);
 
             if (KillOtherInstanceAndRestart(userMutexName, userMutexInUse))
+            {
+                WindowsAPIAdapter.Stop();
+                Log.CloseAndFlush();
                 return;
+            }
 
 
             SetProcessDPIAware();
@@ -115,13 +119,11 @@ namespace SoundSwitch
 
 
                 using var ctx = new WindowsFormsSynchronizationContext();
-                using var icon = new TrayIcon();
 
                 SynchronizationContext.SetSynchronizationContext(ctx);
                 try
                 {
-                    ctx.Send(iconState => Init((TrayIcon)iconState), icon);
-                    Application.Run();
+                    Application.Run(new SoundSwitchApplicationContext());
                 }
                 finally
                 {
@@ -136,44 +138,13 @@ namespace SoundSwitch
                 HandleException(ex);
             }
 #endif
-
-
             AppModel.Instance.ActiveAudioDeviceLister.Dispose();
             AppModel.Instance.ActiveUnpluggedAudioLister.Dispose();
+            AppModel.Instance.TrayIcon.Dispose();
             MMNotificationClient.Instance.UnRegister();
             WindowsAPIAdapter.Stop();
             Log.CloseAndFlush();
-        }
 
-        private static void Init(TrayIcon icon)
-        {
-            BannerManager.Setup();
-            var deviceActiveLister = new CachedAudioDeviceLister(DeviceState.Active);
-            var deviceUnpluggedActiveLister = new CachedAudioDeviceLister(DeviceState.Active | DeviceState.Unplugged);
-            deviceActiveLister.Refresh();
-            deviceUnpluggedActiveLister.Refresh();
-            
-            AppModel.Instance.ActiveAudioDeviceLister = deviceActiveLister;
-            AppModel.Instance.ActiveUnpluggedAudioLister = deviceUnpluggedActiveLister;
-
-            AppModel.Instance.TrayIcon = icon;
-            AppModel.Instance.InitializeMain();
-            AppModel.Instance.NewVersionReleased += (sender, @event) =>
-            {
-                if (@event.UpdateMode == UpdateMode.Silent)
-                {
-                    new AutoUpdater("/VERYSILENT /NOCANCEL /NORESTART", ApplicationPath.Default).Update(
-                        @event.Release, true);
-                }
-            };
-
-
-            if (AppConfigs.Configuration.FirstRun)
-            {
-                icon.ShowSettings();
-                AppConfigs.Configuration.FirstRun = false;
-                Log.Information("First run");
-            }
         }
 
         private static bool KillOtherInstanceAndRestart(string pipeName, bool createdNew)

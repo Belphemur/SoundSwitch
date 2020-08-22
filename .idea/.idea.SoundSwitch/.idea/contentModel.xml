@@ -230,6 +230,7 @@
           <e p="Events.cs" t="Include" />
           <e p="IAppModel.cs" t="Include" />
           <e p="IAudioDeviceLister.cs" t="Include" />
+          <e p="SoundSwitchApplicationContext.cs" t="Include" />
         </e>
         <e p="obj" t="ExcludeRecursive" />
         <e p="packages.config" t="Include" />
