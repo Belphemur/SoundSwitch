@@ -64,7 +64,8 @@
             // 
             // triggerBox
             // 
-            this.triggerBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.triggerBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.triggerBox.Controls.Add(this.triggerLabel);
             this.triggerBox.Controls.Add(this.selectProgramButton);
@@ -77,9 +78,9 @@
             this.triggerBox.Controls.Add(this.addTriggerButton);
             this.triggerBox.Controls.Add(this.availableTriggersText);
             this.triggerBox.Controls.Add(this.setTriggerBox);
-            this.triggerBox.Location = new System.Drawing.Point(12, 12);
+            this.triggerBox.Location = new System.Drawing.Point(12, 262);
             this.triggerBox.Name = "triggerBox";
-            this.triggerBox.Size = new System.Drawing.Size(694, 301);
+            this.triggerBox.Size = new System.Drawing.Size(573, 213);
             this.triggerBox.TabIndex = 0;
             this.triggerBox.TabStop = false;
             this.triggerBox.Text = "Triggers";
@@ -87,7 +88,7 @@
             // triggerLabel
             // 
             this.triggerLabel.AutoSize = true;
-            this.triggerLabel.Location = new System.Drawing.Point(352, 57);
+            this.triggerLabel.Location = new System.Drawing.Point(279, 64);
             this.triggerLabel.Name = "triggerLabel";
             this.triggerLabel.Size = new System.Drawing.Size(40, 13);
             this.triggerLabel.TabIndex = 10;
@@ -95,8 +96,8 @@
             // 
             // selectProgramButton
             // 
-            this.selectProgramButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.selectProgramButton.Location = new System.Drawing.Point(650, 73);
+            this.selectProgramButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.selectProgramButton.Location = new System.Drawing.Point(530, 155);
             this.selectProgramButton.Name = "selectProgramButton";
             this.selectProgramButton.Size = new System.Drawing.Size(24, 20);
             this.selectProgramButton.TabIndex = 9;
@@ -111,42 +112,43 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.descriptionBox.AutoSize = true;
             this.descriptionBox.Controls.Add(this.descriptionLabel);
-            this.descriptionBox.Location = new System.Drawing.Point(154, 167);
+            this.descriptionBox.Location = new System.Drawing.Point(273, 80);
             this.descriptionBox.Name = "descriptionBox";
-            this.descriptionBox.Size = new System.Drawing.Size(162, 120);
+            this.descriptionBox.Size = new System.Drawing.Size(284, 64);
             this.descriptionBox.TabIndex = 8;
             this.descriptionBox.TabStop = false;
             this.descriptionBox.Text = "Description";
             // 
             // descriptionLabel
             // 
-            this.descriptionLabel.AutoSize = true;
-            this.descriptionLabel.Location = new System.Drawing.Point(6, 23);
-            this.descriptionLabel.MaximumSize = new System.Drawing.Size(150, 0);
+            this.descriptionLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.descriptionLabel.Location = new System.Drawing.Point(3, 16);
             this.descriptionLabel.Name = "descriptionLabel";
-            this.descriptionLabel.Size = new System.Drawing.Size(136, 26);
+            this.descriptionLabel.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            this.descriptionLabel.Size = new System.Drawing.Size(278, 45);
             this.descriptionLabel.TabIndex = 8;
             this.descriptionLabel.Text = "Description of the selected trigger";
             // 
             // textInput
             // 
-            this.textInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.textInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textInput.Location = new System.Drawing.Point(355, 73);
+            this.textInput.Location = new System.Drawing.Point(273, 155);
             this.textInput.Name = "textInput";
-            this.textInput.Size = new System.Drawing.Size(289, 20);
+            this.textInput.Size = new System.Drawing.Size(251, 20);
             this.textInput.TabIndex = 7;
             // 
             // hotKeyControl
             // 
-            this.hotKeyControl.Location = new System.Drawing.Point(355, 37);
+            this.hotKeyControl.Location = new System.Drawing.Point(273, 36);
             this.hotKeyControl.Name = "hotKeyControl";
-            this.hotKeyControl.Size = new System.Drawing.Size(140, 20);
+            this.hotKeyControl.Size = new System.Drawing.Size(138, 20);
             this.hotKeyControl.TabIndex = 6;
             // 
             // deleteButton
             // 
-            this.deleteButton.Location = new System.Drawing.Point(195, 138);
+            this.deleteButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.deleteButton.Location = new System.Drawing.Point(183, 181);
             this.deleteButton.Name = "deleteButton";
             this.deleteButton.Size = new System.Drawing.Size(75, 23);
             this.deleteButton.TabIndex = 5;
@@ -157,7 +159,7 @@
             // activeTriggerLabel
             // 
             this.activeTriggerLabel.AutoSize = true;
-            this.activeTriggerLabel.Location = new System.Drawing.Point(154, 19);
+            this.activeTriggerLabel.Location = new System.Drawing.Point(8, 64);
             this.activeTriggerLabel.Name = "activeTriggerLabel";
             this.activeTriggerLabel.Size = new System.Drawing.Size(78, 13);
             this.activeTriggerLabel.TabIndex = 4;
@@ -167,14 +169,14 @@
             // 
             this.availableTriggerBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.availableTriggerBox.FormattingEnabled = true;
-            this.availableTriggerBox.Location = new System.Drawing.Point(10, 37);
+            this.availableTriggerBox.Location = new System.Drawing.Point(11, 36);
             this.availableTriggerBox.Name = "availableTriggerBox";
-            this.availableTriggerBox.Size = new System.Drawing.Size(121, 21);
+            this.availableTriggerBox.Size = new System.Drawing.Size(166, 21);
             this.availableTriggerBox.TabIndex = 3;
             // 
             // addTriggerButton
             // 
-            this.addTriggerButton.Location = new System.Drawing.Point(10, 73);
+            this.addTriggerButton.Location = new System.Drawing.Point(183, 35);
             this.addTriggerButton.Name = "addTriggerButton";
             this.addTriggerButton.Size = new System.Drawing.Size(75, 23);
             this.addTriggerButton.TabIndex = 2;
@@ -185,7 +187,7 @@
             // availableTriggersText
             // 
             this.availableTriggersText.AutoSize = true;
-            this.availableTriggersText.Location = new System.Drawing.Point(7, 20);
+            this.availableTriggersText.Location = new System.Drawing.Point(8, 19);
             this.availableTriggersText.Name = "availableTriggersText";
             this.availableTriggersText.Size = new System.Drawing.Size(91, 13);
             this.availableTriggersText.TabIndex = 1;
@@ -193,15 +195,19 @@
             // 
             // setTriggerBox
             // 
+            this.setTriggerBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.setTriggerBox.FormattingEnabled = true;
-            this.setTriggerBox.Location = new System.Drawing.Point(154, 37);
+            this.setTriggerBox.Location = new System.Drawing.Point(11, 80);
             this.setTriggerBox.Name = "setTriggerBox";
-            this.setTriggerBox.Size = new System.Drawing.Size(158, 95);
+            this.setTriggerBox.Size = new System.Drawing.Size(247, 95);
             this.setTriggerBox.TabIndex = 0;
             this.setTriggerBox.SelectedIndexChanged += new System.EventHandler(this.setTriggerBox_SelectedIndexChanged);
             // 
             // profileBox
             // 
+            this.profileBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.profileBox.Controls.Add(this.notifyCheckbox);
             this.profileBox.Controls.Add(this.nameLabel);
             this.profileBox.Controls.Add(this.nameTextBox);
@@ -215,9 +221,9 @@
             this.profileBox.Controls.Add(this.playbackLabel);
             this.profileBox.Controls.Add(this.recordingComboBox);
             this.profileBox.Controls.Add(this.playbackComboBox);
-            this.profileBox.Location = new System.Drawing.Point(12, 319);
+            this.profileBox.Location = new System.Drawing.Point(12, 12);
             this.profileBox.Name = "profileBox";
-            this.profileBox.Size = new System.Drawing.Size(690, 264);
+            this.profileBox.Size = new System.Drawing.Size(573, 244);
             this.profileBox.TabIndex = 1;
             this.profileBox.TabStop = false;
             this.profileBox.Text = "Profile";
@@ -225,7 +231,7 @@
             // notifyCheckbox
             // 
             this.notifyCheckbox.AutoSize = true;
-            this.notifyCheckbox.Location = new System.Drawing.Point(11, 85);
+            this.notifyCheckbox.Location = new System.Drawing.Point(11, 83);
             this.notifyCheckbox.Name = "notifyCheckbox";
             this.notifyCheckbox.Size = new System.Drawing.Size(167, 17);
             this.notifyCheckbox.TabIndex = 28;
@@ -247,14 +253,14 @@
             // 
             this.nameTextBox.Location = new System.Drawing.Point(11, 36);
             this.nameTextBox.Name = "nameTextBox";
-            this.nameTextBox.Size = new System.Drawing.Size(182, 20);
+            this.nameTextBox.Size = new System.Drawing.Size(277, 20);
             this.nameTextBox.TabIndex = 26;
             // 
             // communicationRemoveButton
             // 
             this.communicationRemoveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.communicationRemoveButton.Image = global::SoundSwitch.Properties.Resources.delete;
-            this.communicationRemoveButton.Location = new System.Drawing.Point(483, 218);
+            this.communicationRemoveButton.Location = new System.Drawing.Point(539, 210);
             this.communicationRemoveButton.Name = "communicationRemoveButton";
             this.communicationRemoveButton.Size = new System.Drawing.Size(22, 22);
             this.communicationRemoveButton.TabIndex = 25;
@@ -267,7 +273,7 @@
             this.communicationLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.communicationLabel.AutoSize = true;
-            this.communicationLabel.Location = new System.Drawing.Point(7, 203);
+            this.communicationLabel.Location = new System.Drawing.Point(7, 195);
             this.communicationLabel.Name = "communicationLabel";
             this.communicationLabel.Size = new System.Drawing.Size(79, 13);
             this.communicationLabel.TabIndex = 24;
@@ -282,9 +288,9 @@
             this.communicationComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.communicationComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.communicationComboBox.FormattingEnabled = true;
-            this.communicationComboBox.Location = new System.Drawing.Point(10, 219);
+            this.communicationComboBox.Location = new System.Drawing.Point(10, 211);
             this.communicationComboBox.Name = "communicationComboBox";
-            this.communicationComboBox.Size = new System.Drawing.Size(467, 21);
+            this.communicationComboBox.Size = new System.Drawing.Size(523, 21);
             this.communicationComboBox.TabIndex = 23;
             this.communicationComboBox.ValueMember = "Tag";
             this.communicationComboBox.SelectedIndexChanged += new System.EventHandler(this.communicationComboBox_SelectedIndexChanged);
@@ -303,7 +309,7 @@
             // 
             this.recordingRemoveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.recordingRemoveButton.Image = global::SoundSwitch.Properties.Resources.delete;
-            this.recordingRemoveButton.Location = new System.Drawing.Point(483, 170);
+            this.recordingRemoveButton.Location = new System.Drawing.Point(539, 166);
             this.recordingRemoveButton.Name = "recordingRemoveButton";
             this.recordingRemoveButton.Size = new System.Drawing.Size(22, 22);
             this.recordingRemoveButton.TabIndex = 21;
@@ -315,7 +321,7 @@
             // 
             this.playbackRemoveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.playbackRemoveButton.Image = global::SoundSwitch.Properties.Resources.delete;
-            this.playbackRemoveButton.Location = new System.Drawing.Point(483, 121);
+            this.playbackRemoveButton.Location = new System.Drawing.Point(539, 121);
             this.playbackRemoveButton.Name = "playbackRemoveButton";
             this.playbackRemoveButton.Size = new System.Drawing.Size(22, 22);
             this.playbackRemoveButton.TabIndex = 20;
@@ -328,7 +334,7 @@
             this.recordingLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.recordingLabel.AutoSize = true;
-            this.recordingLabel.Location = new System.Drawing.Point(7, 155);
+            this.recordingLabel.Location = new System.Drawing.Point(7, 151);
             this.recordingLabel.Name = "recordingLabel";
             this.recordingLabel.Size = new System.Drawing.Size(56, 13);
             this.recordingLabel.TabIndex = 19;
@@ -354,9 +360,9 @@
             this.recordingComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.recordingComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.recordingComboBox.FormattingEnabled = true;
-            this.recordingComboBox.Location = new System.Drawing.Point(10, 170);
+            this.recordingComboBox.Location = new System.Drawing.Point(10, 166);
             this.recordingComboBox.Name = "recordingComboBox";
-            this.recordingComboBox.Size = new System.Drawing.Size(467, 21);
+            this.recordingComboBox.Size = new System.Drawing.Size(523, 21);
             this.recordingComboBox.TabIndex = 17;
             this.recordingComboBox.ValueMember = "Tag";
             this.recordingComboBox.SelectedIndexChanged += new System.EventHandler(this.recordingComboBox_SelectedIndexChanged);
@@ -372,7 +378,7 @@
             this.playbackComboBox.FormattingEnabled = true;
             this.playbackComboBox.Location = new System.Drawing.Point(10, 122);
             this.playbackComboBox.Name = "playbackComboBox";
-            this.playbackComboBox.Size = new System.Drawing.Size(467, 21);
+            this.playbackComboBox.Size = new System.Drawing.Size(523, 21);
             this.playbackComboBox.TabIndex = 16;
             this.playbackComboBox.ValueMember = "Tag";
             this.playbackComboBox.SelectedIndexChanged += new System.EventHandler(this.playbackComboBox_SelectedIndexChanged);
@@ -380,9 +386,9 @@
             // saveButton
             // 
             this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.saveButton.Location = new System.Drawing.Point(627, 611);
+            this.saveButton.Location = new System.Drawing.Point(479, 484);
             this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(75, 23);
+            this.saveButton.Size = new System.Drawing.Size(100, 26);
             this.saveButton.TabIndex = 2;
             this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
@@ -392,16 +398,16 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(718, 646);
+            this.ClientSize = new System.Drawing.Size(595, 521);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.profileBox);
             this.Controls.Add(this.triggerBox);
+            this.MinimumSize = new System.Drawing.Size(611, 560);
             this.Name = "UpsertProfileExtended";
             this.Text = "UpsertProfileExtended";
             this.triggerBox.ResumeLayout(false);
             this.triggerBox.PerformLayout();
             this.descriptionBox.ResumeLayout(false);
-            this.descriptionBox.PerformLayout();
             this.profileBox.ResumeLayout(false);
             this.profileBox.PerformLayout();
             this.ResumeLayout(false);
