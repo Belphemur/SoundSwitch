@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -58,4 +58,58 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="notification" xml:space="preserve">
+    <value>Upozornění</value>
+  </data>
+  <data name="closeTooltip" xml:space="preserve">
+    <value>Změny jsou automaticky ukládány</value>
+  </data>
+  <data name="startWithWindows" xml:space="preserve">
+    <value>Automaticky zapnout s Windows</value>
+  </data>
+  <data name="hotkeys" xml:space="preserve">
+    <value>Klávesová zkratka</value>
+  </data>
+  <data name="cycleThrough" xml:space="preserve">
+    <value>Přepínat mezi</value>
+  </data>
+  <data name="audioSettings" xml:space="preserve">
+    <value>Zvukové nastavení</value>
+  </data>
+  <data name="hotkeysTooltip" xml:space="preserve">
+    <value>Zatrhni pro povolení klávesové zkratky.</value>
+  </data>
+  <data name="audioFiles" xml:space="preserve">
+    <value>Zvukové soubory</value>
+  </data>
+  <data name="updateIncludeBetaVersions" xml:space="preserve">
+    <value>Přijmout Beta verze</value>
+  </data>
+  <data name="communicationsDeviceTooltip" xml:space="preserve">
+    <value>Při zatrhnutí se "Výchozí komunikační zařízení" a "Výchozí přehrávací zařízení" změní společně (užitečné pro Skype, TeamSpeak, Discord etc.).</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>Zavřít</value>
+  </data>
+  <data name="communicationsDevice" xml:space="preserve">
+    <value>Změň výchozí komunikační zařízení</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>Nastavení</value>
+  </data>
+  <data name="playback" xml:space="preserve">
+    <value>Přehrávací</value>
+  </data>
+  <data name="recording" xml:space="preserve">
+    <value>Nahrávací</value>
+  </data>
+  <data name="disconnected" xml:space="preserve">
+    <value>Odpojené</value>
+  </data>
+  <data name="connected" xml:space="preserve">
+    <value>Připojené</value>
+  </data>
+  <data name="selected" xml:space="preserve">
+    <value>Vybrané</value>
+  </data>
 </root>
