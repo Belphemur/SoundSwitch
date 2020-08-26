@@ -1,6 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
-	<!-- 
+  <!-- 
     Microsoft ResX Schema 
     
     Version 2.0
@@ -59,11 +59,11 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-	<xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
 					<xsd:element name="metadata">
 						<xsd:complexType>
 							<xsd:sequence>
@@ -102,180 +102,224 @@
 						</xsd:complexType>
 					</xsd:element>
 				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>2.0</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<data name="selected" xml:space="preserve">
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="selected" xml:space="preserve">
     <value>Seleccionado</value>
   </data>
-	<data name="connected" xml:space="preserve">
+  <data name="connected" xml:space="preserve">
     <value>Conectado</value>
   </data>
-	<data name="disconnected" xml:space="preserve">
+  <data name="disconnected" xml:space="preserve">
     <value>Desconectado</value>
   </data>
-	<data name="recording" xml:space="preserve">
+  <data name="recording" xml:space="preserve">
     <value>Grabación</value>
   </data>
-	<data name="playback" xml:space="preserve">
+  <data name="playback" xml:space="preserve">
     <value>Reproducción</value>
   </data>
-	<data name="settings" xml:space="preserve">
+  <data name="settings" xml:space="preserve">
     <value>Configuración</value>
   </data>
-	<data name="hotkeys" xml:space="preserve">
-    <value>Atajos</value>
+  <data name="hotkeys" xml:space="preserve">
+    <value>Acceso rápido</value>
   </data>
-	<data name="communicationsDevice" xml:space="preserve">
+  <data name="communicationsDevice" xml:space="preserve">
     <value>Cambia Dispositivo de Comunicación por Defecto</value>
   </data>
-	<data name="startWithWindows" xml:space="preserve">
+  <data name="startWithWindows" xml:space="preserve">
     <value>Iniciar automáticamente con Windows</value>
   </data>
-	<data name="close" xml:space="preserve">
+  <data name="close" xml:space="preserve">
     <value>Cerrar</value>
   </data>
-	<data name="closeTooltip" xml:space="preserve">
+  <data name="closeTooltip" xml:space="preserve">
     <value>Cambios automáticamente guardados</value>
   </data>
-	<data name="communicationsDeviceTooltip" xml:space="preserve">
+  <data name="communicationsDeviceTooltip" xml:space="preserve">
     <value>Cuando es marcado, el 'Dispositivo de comunicación por defeto' y ' Dispositivo de reproducción por defecto' son cambiados simultaneamente (útil para Skype, TeamSpeak, e.g.).</value>
   </data>
-	<data name="notification" xml:space="preserve">
+  <data name="notification" xml:space="preserve">
     <value>Notificación</value>
   </data>
-	<data name="updateIncludeBetaVersions" xml:space="preserve">
+  <data name="updateIncludeBetaVersions" xml:space="preserve">
     <value>Incluir versiones Beta</value>
   </data>
-	<data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
+  <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
     <value>Cuando es marcado, SoundSwitch también buscará versiones preliminares en GitHub.</value>
   </data>
-	<data name="audioFiles" xml:space="preserve">
+  <data name="audioFiles" xml:space="preserve">
     <value>Archivos de Audio</value>
   </data>
-	<data name="selectSoundButtonTooltip" xml:space="preserve">
-    <value>Selecciona el fichero de soniso para la notificación.</value>
+  <data name="selectSoundButtonTooltip" xml:space="preserve">
+    <value>Selecciona el archivo de sonido para la notificación.</value>
   </data>
-	<data name="hotkeysTooltip" xml:space="preserve">
+  <data name="hotkeysTooltip" xml:space="preserve">
     <value>Marca para habilitar atajos.</value>
   </data>
-	<data name="basicSettings" xml:space="preserve">
+  <data name="basicSettings" xml:space="preserve">
     <value>Configuración Básica</value>
   </data>
-	<data name="audioSettings" xml:space="preserve">
+  <data name="audioSettings" xml:space="preserve">
     <value>Configuración de Audio</value>
   </data>
-	<data name="updateSettings" xml:space="preserve">
+  <data name="updateSettings" xml:space="preserve">
     <value>Actualiza Configuración</value>
   </data>
-	<data name="cycleThrough" xml:space="preserve">
+  <data name="cycleThrough" xml:space="preserve">
     <value>Cycle through</value>
   </data>
-	<data name="keepSystemTrayIcon" xml:space="preserve">
+  <data name="keepSystemTrayIcon" xml:space="preserve">
     <value>Mantener SoundSwitch como icono en la barra de sistema</value>
   </data>
-	<data name="keepSystemTrayIconTooltip" xml:space="preserve">
+  <data name="keepSystemTrayIconTooltip" xml:space="preserve">
     <value>Cuando esté marcado, el icono de la bara del sistema cambiará cuando cambie el 'Dispositivo de reproducción predeterminado'.</value>
   </data>
-	<data name="updateInstallAutomatically" xml:space="preserve">
+  <data name="updateInstallAutomatically" xml:space="preserve">
     <value>Instala actualizaciones automáticamente</value>
   </data>
-	<data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
+  <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
     <value>Actualizaciones son instalados automáticamente sin preguntas.</value>
   </data>
-	<data name="updateNotify" xml:space="preserve">
+  <data name="updateNotify" xml:space="preserve">
     <value>Notificar cuando existan actualizaciones disponibles</value>
   </data>
-	<data name="updateNever" xml:space="preserve">
+  <data name="updateNever" xml:space="preserve">
     <value>No comprobar existencia de actualizaciones</value>
   </data>
-	<data name="tooltipOnHover" xml:space="preserve">
+  <data name="tooltipOnHover" xml:space="preserve">
     <value>Barra contextual flotante</value>
   </data>
-	<data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
+  <data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
     <value>Todos los dispositivos de audio</value>
   </data>
-	<data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
+  <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
     <value>Solo seleccionados dispositivos de audio</value>
   </data>
-	<data name="cycleThroughTooltip" xml:space="preserve">
+  <data name="cycleThroughTooltip" xml:space="preserve">
     <value>Selecciona entre que dispositivos cambiar. O solo entre el seleccionado o entre todos.</value>
   </data>
-	<data name="notificationOptionWindowsDefault" xml:space="preserve">
+  <data name="notificationOptionWindowsDefault" xml:space="preserve">
     <value>Notificación de Windows</value>
   </data>
-	<data name="notificationOptionSound" xml:space="preserve">
+  <data name="notificationOptionSound" xml:space="preserve">
     <value>Sonido de notificación</value>
   </data>
-	<data name="notificationOptionNone" xml:space="preserve">
+  <data name="notificationOptionNone" xml:space="preserve">
     <value>Sin Notificación</value>
   </data>
-	<data name="notificationOptionToast" xml:space="preserve">
+  <data name="notificationOptionToast" xml:space="preserve">
     <value>Toast Notification</value>
   </data>
-	<data name="notificationOptionCustomized" xml:space="preserve">
+  <data name="notificationOptionCustomized" xml:space="preserve">
     <value>Notificación de sonido personalizado</value>
   </data>
-	<data name="notificationTooltip" xml:space="preserve">
+  <data name="notificationTooltip" xml:space="preserve">
     <value>Notificación de Windows: La ventana emergente predeterminada de Windows.
 Notificación de Sonido: Reproduce un sonido en el Dispositivo de reproducción seleccionado.
 Sonido de Notificación personalizado: Reproduce el sonido especificado en el Dispositivo de reproducción seleccionado.
 Toast Notification: Uses a special form of the windows tray pop-up version.
 Banner: Uses a custom always-on-top frame, useful for in-game usage.</value>
   </data>
-	<data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
+  <data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
     <value>Dispositivo de Reproducción</value>
   </data>
-	<data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
+  <data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
     <value>Dispositivo de Grabación</value>
   </data>
-	<data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
+  <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
     <value>Para ambos dispositivos</value>
   </data>
-	<data name="tooltipOnHoverOptionNone" xml:space="preserve">
+  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
     <value>Sin menus contextuales</value>
   </data>
-	<data name="audioFileNotFound" xml:space="preserve">
+  <data name="audioFileNotFound" xml:space="preserve">
     <value>El archivo de audio seleccionado para ser usado como notificación no puede ser encontrado. SoundSwitch revertirá la configuración de notificación a {0}.</value>
   </data>
-	<data name="audioFileNotFoundCaption" xml:space="preserve">
+  <data name="audioFileNotFoundCaption" xml:space="preserve">
     <value>Archivo de audio no encontrado</value>
   </data>
-	<data name="activeRecording" xml:space="preserve">
+  <data name="activeRecording" xml:space="preserve">
     <value>Grabar: {0}</value>
   </data>
-	<data name="activePlayback" xml:space="preserve">
+  <data name="activePlayback" xml:space="preserve">
     <value>Reproducir: {0}</value>
   </data>
-	<data name="language" xml:space="preserve">
+  <data name="language" xml:space="preserve">
 		<value>Idioma</value>
   </data>
-	<data name="languageRestartRequired" xml:space="preserve">
+  <data name="languageRestartRequired" xml:space="preserve">
 		<value>El idioma cambiará después de reniciar SoundSwitch.
 ¿Desea reiniciarlo ahora?</value>
   </data>
-	<data name="languageRestartRequiredCaption" xml:space="preserve">
+  <data name="languageRestartRequiredCaption" xml:space="preserve">
 		<value>Es necesario reiniciar la aplicación</value>
   </data>
-	<data name="updateNeverTooltip" xml:space="preserve">
+  <data name="updateNeverTooltip" xml:space="preserve">
 		<value>No actualizar el programa a menos que lo hagas manualmente.</value>
   </data>
-	<data name="updateNotifyTooltip" xml:space="preserve">
+  <data name="updateNotifyTooltip" xml:space="preserve">
 		<value>SoundSwitch te notificará cuando exista una nueva actualización disponible. Cuando clickes en la notificación, aparecerá una ventana emergente con el progreso de la descarga de la actualización y te preguntará si quieres instalarla cuando finalice.</value>
   </data>
-	<data name="notificationOptionBanner" xml:space="preserve">
+  <data name="notificationOptionBanner" xml:space="preserve">
         <value>Banner</value>
+  </data>
+  <data name="profile.error.needHKOrPath" xml:space="preserve">
+    <value>Debes de fijar el atajo y/o la applicación.</value>
+  </data>
+  <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
+    <value>Necesitas fijar un dispositivo para grabar o reproducir.</value>
+  </data>
+  <data name="profile.error.name" xml:space="preserve">
+    <value>Ya hay un perfil con ese nombre {0}.</value>
+  </data>
+  <data name="profile.error.application" xml:space="preserve">
+    <value>Esta applicación {0} ya tiene un perfil conectado.</value>
+  </data>
+  <data name="profile.error.hotkey" xml:space="preserve">
+    <value>Este atajo {0} ya está registrado.</value>
+  </data>
+  <data name="profile.name" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+  <data name="profile.program" xml:space="preserve">
+    <value>Aplicación</value>
+  </data>
+  <data name="profile.addButton" xml:space="preserve">
+    <value>Agregar</value>
+  </data>
+  <data name="profile.tab" xml:space="preserve">
+    <value>Perfiles</value>
+  </data>
+  <data name="iconChange.tooltip" xml:space="preserve">
+    <value>Escoja cuando cambiar el ícono de SoundSwitch de Systray  
+
+Por defecto: No cambiarlo. Mantener el ícono SoundSwitch.
+Reproducción: Cuando un dispositivo de reproducción es cambiado.
+Grabación: Cuando un dispositivo de grabación es cambiado.
+Ambos: Cambiar cuando cualquier tipo de dispositivo es cambiado.</value>
+  </data>
+  <data name="iconChange" xml:space="preserve">
+    <value>Bandeja de iconos</value>
+  </data>
+  <data name="foregroundAppTooltip" xml:space="preserve">
+    <value>Cambiar también el sonido en la aplicación que actualmente está en uso. Útil con video juegos.</value>
+  </data>
+  <data name="disableCustomSoundTooltip" xml:space="preserve">
+    <value>Deshabilitar Sonido Personalizado.</value>
   </data>
 </root>
