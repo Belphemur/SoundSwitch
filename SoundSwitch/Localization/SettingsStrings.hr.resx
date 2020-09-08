@@ -354,7 +354,7 @@ Banner: Koristi personalizirani prozor koji se postavlja ispred svih drugih, kor
     <value>Trebaš barem jedan okidač.</value>
   </data>
   <data name="communication" xml:space="preserve">
-    <value>Komunikacija</value>
+    <value>Standardni uređaj za komunikaciju</value>
   </data>
   <data name="profile.trigger.process.desc" xml:space="preserve">
     <value>Aktiviraj profil kad se odabrani program nalazi naprijed</value>
