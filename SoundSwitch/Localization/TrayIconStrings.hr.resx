@@ -184,6 +184,6 @@
     <value>Zajednica</value>
   </data>
   <data name="updateDisabled" xml:space="preserve">
-    <value>Automatska nadogradnja deaktivirana</value>
+    <value>Traženje novih verzija deaktivirano</value>
   </data>
 </root>
