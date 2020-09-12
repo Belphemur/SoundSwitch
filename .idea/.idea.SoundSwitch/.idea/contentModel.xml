@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\Antoine\AppData\local\JetBrains\Rider2020.1\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\Antoine\AppData\local\JetBrains\Rider2020.1\resharper-host\local\Transient\ReSharperHost\v201\SolutionCaches\_SoundSwitch.60712735.00" t="ExcludeRecursive" />
-    <e p="C:\Users\Antoine\AppData\Roaming\JetBrains\Rider2020.1\scratches" t="IncludeRecursive" />
+    <e p="C:\Users\Antoine\AppData\local\JetBrains\Rider2020.2\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\Antoine\AppData\local\JetBrains\Rider2020.2\resharper-host\local\Transient\Rider\v202\SolutionCaches\_SoundSwitch.60712735.00" t="ExcludeRecursive" />
+    <e p="C:\Users\Antoine\AppData\Roaming\JetBrains\Rider2020.2\scratches" t="IncludeRecursive" />
     <e p="C:\Users\Antoine\source\repos\SoundSwitch" t="IncludeFlat">
       <e p="packages" t="ExcludeRecursive" />
       <e p="SoundSwitch" t="IncludeRecursive">
@@ -144,6 +144,7 @@
           </e>
         </e>
         <e p="Localization" t="Include">
+          <e p="AboutStrings.cs.resx" t="Include" />
           <e p="AboutStrings.de.resx" t="Include" />
           <e p="AboutStrings.Designer.cs" t="Include" />
           <e p="AboutStrings.el-GR.resx" t="Include" />
@@ -158,6 +159,7 @@
           <e p="AboutStrings.nl.resx" t="Include" />
           <e p="AboutStrings.pl-PL.resx" t="Include" />
           <e p="AboutStrings.pt-BR.resx" t="Include" />
+          <e p="AboutStrings.pt.resx" t="Include" />
           <e p="AboutStrings.resx" t="Include" />
           <e p="AboutStrings.ru-RU.resx" t="Include" />
           <e p="AboutStrings.sv-SE.resx" t="Include" />
@@ -170,6 +172,7 @@
             <e p="Language.cs" t="Include" />
             <e p="LanguageFactory.cs" t="Include" />
           </e>
+          <e p="SettingsStrings.cs.resx" t="Include" />
           <e p="SettingsStrings.de.resx" t="Include" />
           <e p="SettingsStrings.Designer.cs" t="Include" />
           <e p="SettingsStrings.el-GR.resx" t="Include" />
@@ -184,10 +187,12 @@
           <e p="SettingsStrings.nl.resx" t="Include" />
           <e p="SettingsStrings.pl-PL.resx" t="Include" />
           <e p="SettingsStrings.pt-BR.resx" t="Include" />
+          <e p="SettingsStrings.pt.resx" t="Include" />
           <e p="SettingsStrings.resx" t="Include" />
           <e p="SettingsStrings.ru-RU.resx" t="Include" />
           <e p="SettingsStrings.sv-SE.resx" t="Include" />
           <e p="SettingsStrings.zh-CHS.resx" t="Include" />
+          <e p="TrayIconStrings.cs.resx" t="Include" />
           <e p="TrayIconStrings.de.resx" t="Include" />
           <e p="TrayIconStrings.Designer.cs" t="Include" />
           <e p="TrayIconStrings.el-GR.resx" t="Include" />
@@ -202,10 +207,12 @@
           <e p="TrayIconStrings.nl.resx" t="Include" />
           <e p="TrayIconStrings.pl-PL.resx" t="Include" />
           <e p="TrayIconStrings.pt-BR.resx" t="Include" />
+          <e p="TrayIconStrings.pt.resx" t="Include" />
           <e p="TrayIconStrings.resx" t="Include" />
           <e p="TrayIconStrings.ru-RU.resx" t="Include" />
           <e p="TrayIconStrings.sv-SE.resx" t="Include" />
           <e p="TrayIconStrings.zh-CHS.resx" t="Include" />
+          <e p="UpdateDownloadStrings.cs.resx" t="Include" />
           <e p="UpdateDownloadStrings.de.resx" t="Include" />
           <e p="UpdateDownloadStrings.Designer.cs" t="Include" />
           <e p="UpdateDownloadStrings.el-GR.resx" t="Include" />
@@ -220,6 +227,7 @@
           <e p="UpdateDownloadStrings.nl.resx" t="Include" />
           <e p="UpdateDownloadStrings.pl-PL.resx" t="Include" />
           <e p="UpdateDownloadStrings.pt-BR.resx" t="Include" />
+          <e p="UpdateDownloadStrings.pt.resx" t="Include" />
           <e p="UpdateDownloadStrings.resx" t="Include" />
           <e p="UpdateDownloadStrings.ru-RU.resx" t="Include" />
           <e p="UpdateDownloadStrings.sv-SE.resx" t="Include" />

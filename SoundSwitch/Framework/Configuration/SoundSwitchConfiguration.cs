@@ -18,6 +18,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
+using Newtonsoft.Json;
 using Serilog;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.DeviceCyclerManager;
@@ -83,7 +84,8 @@ namespace SoundSwitch.Framework.Configuration
 
         public DateTime LastDonationNagTime { get; set; }
 
-        public TimeSpan TimeBetweenDonateNag { get; set; } = TimeSpan.FromDays(15);
+        [JsonIgnore]
+        public TimeSpan TimeBetweenDonateNag { get; set; } = TimeSpan.FromDays(90);
 
         [Obsolete]
         public bool KeepSystrayIcon { get; set; }
