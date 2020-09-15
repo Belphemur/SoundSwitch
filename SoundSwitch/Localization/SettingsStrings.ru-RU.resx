@@ -396,4 +396,16 @@
   <data name="profile.trigger.steam" xml:space="preserve">
     <value>Steam Big Picture</value>
   </data>
+  <data name="profile.trigger.startup" xml:space="preserve">
+    <value>При запуске</value>
+  </data>
+  <data name="profile.trigger.steam.msg" xml:space="preserve">
+    <value>Режим Steam Big Picture закрыт</value>
+  </data>
+  <data name="profile.button.edit" xml:space="preserve">
+    <value>Редактировать</value>
+  </data>
+  <data name="profile.button.save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
 </root>
