@@ -408,4 +408,7 @@
   <data name="profile.button.save" xml:space="preserve">
     <value>Сохранить</value>
   </data>
+  <data name="profile.notification.text" xml:space="preserve">
+    <value>Профиль {0} активирован</value>
+  </data>
 </root>
