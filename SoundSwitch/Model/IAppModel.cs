@@ -99,6 +99,10 @@ namespace SoundSwitch.Model
         /// </summary>
         bool SwitchForegroundProgram { get; set; }
         /// <summary>
+        /// Always show banner on primary screen instead of active screen
+        /// </summary>
+        bool NotifyUsingPrimaryScreen { get; set; }
+        /// <summary>
         /// Manage the profile in the application
         /// </summary>
         ProfileManager ProfileManager { get; }

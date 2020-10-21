@@ -142,7 +142,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Communication.
+        ///   Looks up a localized string similar to Default Communication Device.
         /// </summary>
         internal static string communication {
             get {
@@ -976,6 +976,24 @@ namespace SoundSwitch.Localization {
         internal static string updateSettings {
             get {
                 return ResourceManager.GetString("updateSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Always Use Primary Screen.
+        /// </summary>
+        internal static string usePrimaryScreen {
+            get {
+                return ResourceManager.GetString("usePrimaryScreen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Display banner on primary screen instead of currently active screen..
+        /// </summary>
+        internal static string usePrimaryScreenTooltip {
+            get {
+                return ResourceManager.GetString("usePrimaryScreenTooltip", resourceCulture);
             }
         }
     }

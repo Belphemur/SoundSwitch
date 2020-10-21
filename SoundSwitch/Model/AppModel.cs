@@ -160,6 +160,16 @@ namespace SoundSwitch.Model
             }
         }
 
+        public bool NotifyUsingPrimaryScreen
+        {
+            get => AppConfigs.Configuration.NotifyUsingPrimaryScreen;
+            set
+            {
+                AppConfigs.Configuration.NotifyUsingPrimaryScreen = value;
+                AppConfigs.Configuration.Save();
+            }
+        }
+
         #region Misc settings
 
         /// <summary>

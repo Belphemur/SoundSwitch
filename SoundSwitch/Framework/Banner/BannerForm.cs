@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using NAudio.Wave;
 using SoundSwitch.Framework.Audio;
+using SoundSwitch.Model;
 using Timer = System.Windows.Forms.Timer;
 
 namespace SoundSwitch.Framework.Banner
@@ -41,7 +42,7 @@ namespace SoundSwitch.Framework.Banner
         public BannerForm()
         {
             InitializeComponent();
-            var screen = Screen.FromPoint(Cursor.Position);
+            var screen = AppModel.Instance.NotifyUsingPrimaryScreen ? Screen.PrimaryScreen : Screen.FromPoint(Cursor.Position);
             StartPosition = FormStartPosition.Manual;
             Bounds = screen.Bounds;
 

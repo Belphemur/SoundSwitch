@@ -130,9 +130,14 @@ namespace SoundSwitch.UI.Forms
             cycleThroughToolTip.SetToolTip(cycleThroughComboBox, SettingsStrings.cycleThroughTooltip);
 
             foregroundAppCheckbox.Checked = AppModel.Instance.SwitchForegroundProgram;
+            usePrimaryScreenCheckbox.Checked = AppModel.Instance.NotifyUsingPrimaryScreen;
+            usePrimaryScreenCheckbox.Visible = AppModel.Instance.NotificationSettings == NotificationTypeEnum.BannerNotification;
 
             var foregroundAppToolTip = new ToolTip();
             foregroundAppToolTip.SetToolTip(foregroundAppCheckbox, SettingsStrings.foregroundAppTooltip);
+
+            var usePrimaryScreenTooltip = new ToolTip();
+            usePrimaryScreenTooltip.SetToolTip(usePrimaryScreenCheckbox, SettingsStrings.usePrimaryScreenTooltip);
 
             // Settings - Update
             includeBetaVersionsCheckBox.Checked = AppModel.Instance.IncludeBetaVersions;
@@ -166,7 +171,7 @@ namespace SoundSwitch.UI.Forms
             // Settings - Language
             new LanguageFactory().ConfigureListControl(languageComboBox);
             languageComboBox.SelectedValue = AppModel.Instance.Language;
-            
+
             PopulateSettings();
 
             _loaded = true;
@@ -197,10 +202,10 @@ namespace SoundSwitch.UI.Forms
         {
             ListViewItem ProfileToListViewItem(Profile profile)
             {
-                var            listViewItem = new ListViewItem(profile.Name) {Tag = profile};
-                Icon           appIcon      = null;
-                DeviceFullInfo recording    = null;
-                DeviceFullInfo playback     = null;
+                var listViewItem = new ListViewItem(profile.Name) { Tag = profile };
+                Icon appIcon = null;
+                DeviceFullInfo recording = null;
+                DeviceFullInfo playback = null;
                 DeviceFullInfo communication = null;
 
                 var applicationTrigger = profile.Triggers.FirstOrDefault(trig => trig.Type == TriggerFactory.Enum.Process);
@@ -229,7 +234,7 @@ namespace SoundSwitch.UI.Forms
                     recording = _audioDeviceLister.RecordingDevices.FirstOrDefault(info =>
                         info.Equals(profile.Recording));
                 }
-                
+
                 if (profile.Communication != null)
                 {
                     communication = _audioDeviceLister.PlaybackDevices.FirstOrDefault(info =>
@@ -302,6 +307,7 @@ namespace SoundSwitch.UI.Forms
             tooltipOnHoverLabel.Text = SettingsStrings.tooltipOnHover;
             cycleThroughLabel.Text = SettingsStrings.cycleThrough;
             foregroundAppCheckbox.Text = SettingsStrings.foregroundApp;
+            usePrimaryScreenCheckbox.Text = SettingsStrings.usePrimaryScreen;
 
             // Settings - Update
             updateSettingsGroupBox.Text = SettingsStrings.updateSettings;
@@ -340,7 +346,7 @@ namespace SoundSwitch.UI.Forms
 
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var tabControlSender = (TabControl) sender;
+            var tabControlSender = (TabControl)sender;
             if (tabControlSender.SelectedTab == playbackTabPage)
             {
                 SetHotkeysFieldsVisibility(true);
@@ -373,7 +379,7 @@ namespace SoundSwitch.UI.Forms
         {
             if (!_loaded)
                 return;
-            var value = (DisplayEnumObject<NotificationTypeEnum>) ((ComboBox) sender).SelectedItem;
+            var value = (DisplayEnumObject<NotificationTypeEnum>)((ComboBox)sender).SelectedItem;
 
             if (value == null)
                 return;
@@ -399,6 +405,8 @@ namespace SoundSwitch.UI.Forms
                 }
             }
 
+            usePrimaryScreenCheckbox.Visible = notificationType == NotificationTypeEnum.BannerNotification;
+
             AppModel.Instance.NotificationSettings = notificationType;
         }
 
@@ -406,7 +414,7 @@ namespace SoundSwitch.UI.Forms
         {
             if (!_loaded)
                 return;
-            var value = (DisplayEnumObject<TooltipInfoTypeEnum>) ((ComboBox) sender).SelectedItem;
+            var value = (DisplayEnumObject<TooltipInfoTypeEnum>)((ComboBox)sender).SelectedItem;
 
             if (value == null)
                 return;
@@ -419,7 +427,7 @@ namespace SoundSwitch.UI.Forms
         {
             if (!_loaded)
                 return;
-            var value = (DisplayEnumObject<DeviceCyclerTypeEnum>) ((ComboBox) sender).SelectedItem;
+            var value = (DisplayEnumObject<DeviceCyclerTypeEnum>)((ComboBox)sender).SelectedItem;
 
             if (value == null)
                 return;
@@ -432,7 +440,7 @@ namespace SoundSwitch.UI.Forms
             if (!_loaded)
                 return;
 
-            var value = (DisplayEnumObject<Language>) ((ComboBox) sender).SelectedItem;
+            var value = (DisplayEnumObject<Language>)((ComboBox)sender).SelectedItem;
 
             if (value == null)
                 return;
@@ -458,7 +466,7 @@ namespace SoundSwitch.UI.Forms
 
         private void hotkeysCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            var tuple = (Tuple<DataFlow, HotKey>) hotKeyControl.Tag;
+            var tuple = (Tuple<DataFlow, HotKey>)hotKeyControl.Tag;
             var currentState = tuple.Item2.Enabled;
             hotKeyControl.Enabled = tuple.Item2.Enabled = hotkeysCheckBox.Checked;
             if (currentState != tuple.Item2.Enabled)
@@ -586,10 +594,10 @@ namespace SoundSwitch.UI.Forms
                 switch (e.NewValue)
                 {
                     case CheckState.Checked:
-                        AppModel.Instance.SelectDevice((DeviceFullInfo) ((ListView) sender).Items[e.Index].Tag);
+                        AppModel.Instance.SelectDevice((DeviceFullInfo)((ListView)sender).Items[e.Index].Tag);
                         break;
                     case CheckState.Unchecked:
-                        AppModel.Instance.UnselectDevice((DeviceFullInfo) ((ListView) sender).Items[e.Index].Tag);
+                        AppModel.Instance.UnselectDevice((DeviceFullInfo)((ListView)sender).Items[e.Index].Tag);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -665,16 +673,21 @@ namespace SoundSwitch.UI.Forms
             AppModel.Instance.SwitchForegroundProgram = foregroundAppCheckbox.Checked;
         }
 
+        private void usePrimaryScreenCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            AppModel.Instance.NotifyUsingPrimaryScreen = usePrimaryScreenCheckbox.Checked;
+        }
+
         private void iconChangeChoicesComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!_loaded)
                 return;
-            var comboBox = (ComboBox) sender;
+            var comboBox = (ComboBox)sender;
 
             if (comboBox == null)
                 return;
 
-            var item = (DisplayEnumObject<IconChangerFactory.ActionEnum>) iconChangeChoicesComboBox.SelectedItem;
+            var item = (DisplayEnumObject<IconChangerFactory.ActionEnum>)iconChangeChoicesComboBox.SelectedItem;
             AppConfigs.Configuration.SwitchIcon = item.Enum;
             AppConfigs.Configuration.Save();
 
@@ -701,7 +714,7 @@ namespace SoundSwitch.UI.Forms
             }
 
             var profiles = profilesListView.SelectedItems.Cast<ListViewItem>()
-                .Select(item => (Profile) item.Tag);
+                .Select(item => (Profile)item.Tag);
             AppModel.Instance.ProfileManager.DeleteProfiles(profiles);
             deleteProfileButton.Enabled = false;
             editProfileButton.Enabled = false;
@@ -710,7 +723,7 @@ namespace SoundSwitch.UI.Forms
 
         private void hotKeyControl_HotKeyChanged(object sender, HotKeyTextBox.Event e)
         {
-            var tuple = (Tuple<DataFlow, HotKey>) hotKeyControl.Tag;
+            var tuple = (Tuple<DataFlow, HotKey>)hotKeyControl.Tag;
             if (tuple == null)
                 return;
 

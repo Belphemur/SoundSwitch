@@ -59,49 +59,49 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
-					<xsd:element name="metadata">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" />
-							</xsd:sequence>
-							<xsd:attribute name="name" use="required" type="xsd:string" />
-							<xsd:attribute name="type" type="xsd:string" />
-							<xsd:attribute name="mimetype" type="xsd:string" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="assembly">
-						<xsd:complexType>
-							<xsd:attribute name="alias" type="xsd:string" />
-							<xsd:attribute name="name" type="xsd:string" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
       </xsd:complexType>
     </xsd:element>
   </xsd:schema>
@@ -260,38 +260,38 @@ Banner: Uses a custom always-on-top frame, useful for in-game usage.</value>
     <value>Play: {0}</value>
   </data>
   <data name="language" xml:space="preserve">
-		<value>Language</value>
+    <value>Language</value>
   </data>
   <data name="languageRestartRequired" xml:space="preserve">
-		<value>The language will change after restarting SoundSwitch.
+    <value>The language will change after restarting SoundSwitch.
 Do you want to restart now?</value>
   </data>
   <data name="languageRestartRequiredCaption" xml:space="preserve">
-		<value>Need a restart</value>
+    <value>Need a restart</value>
   </data>
   <data name="updateNeverTooltip" xml:space="preserve">
-		<value>Don't update the program unless you do it manually.</value>
+    <value>Don't update the program unless you do it manually.</value>
   </data>
   <data name="updateNotifyTooltip" xml:space="preserve">
-		<value>SoundSwitch will notify you when there is a new update available. When clicking on the notification, you'll get a popup downloading the update for you and asking if you want to install it.</value>
+    <value>SoundSwitch will notify you when there is a new update available. When clicking on the notification, you'll get a popup downloading the update for you and asking if you want to install it.</value>
   </data>
   <data name="notificationOptionBanner" xml:space="preserve">
-        <value>Banner</value>
+    <value>Banner</value>
   </data>
   <data name="disableCustomSoundTooltip" xml:space="preserve">
-		<value>Disable the set Custom Sound.</value>
+    <value>Disable the set Custom Sound.</value>
   </data>
   <data name="foregroundApp" xml:space="preserve">
-		<value>Also switch the foreground program</value>
+    <value>Also switch the foreground program</value>
   </data>
   <data name="foregroundAppTooltip" xml:space="preserve">
-		<value>Switch also the sound of the currently in use application. Useful with video games.</value>
+    <value>Switch also the sound of the currently in use application. Useful with video games.</value>
   </data>
   <data name="iconChange" xml:space="preserve">
-		<value>Systray Icon</value>
+    <value>Systray Icon</value>
   </data>
   <data name="iconChange.tooltip" xml:space="preserve">
-		<value>Choose when to change the systray Icon of SoundSwitch.
+    <value>Choose when to change the systray Icon of SoundSwitch.
 
 Default: Don't change it. Keep SoundSwitch Icon.
 Playback: When a playback device is switched.
@@ -299,135 +299,141 @@ Recording: When a recording device is switched.
 Both: Change when any type of device is switched.</value>
   </data>
   <data name="profile.tab" xml:space="preserve">
-		<value>Profiles</value>
+    <value>Profiles</value>
   </data>
   <data name="profile.addButton" xml:space="preserve">
-		<value>Add</value>
+    <value>Add</value>
   </data>
   <data name="profile.program" xml:space="preserve">
-		<value>Application</value>
+    <value>Application</value>
   </data>
   <data name="profile.name" xml:space="preserve">
-		<value>Name</value>
+    <value>Name</value>
   </data>
   <data name="profile.error.hotkey" xml:space="preserve">
-		<value>This hotkey {0} is already registered.</value>
+    <value>This hotkey {0} is already registered.</value>
   </data>
   <data name="profile.error.application" xml:space="preserve">
-		<value>This application {0} already has a linked profile.</value>
+    <value>This application {0} already has a linked profile.</value>
   </data>
   <data name="profile.error.name" xml:space="preserve">
-		<value>There is already a profile named {0}.</value>
+    <value>There is already a profile named {0}.</value>
   </data>
   <data name="profile.error.needHKOrPath" xml:space="preserve">
-		<value>You need to set the hotkey or/and the application.</value>
+    <value>You need to set the hotkey or/and the application.</value>
   </data>
   <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
-		<value>You need to set a playback-, or recording device.</value>
+    <value>You need to set a playback-, or recording device.</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
-		<value>Add a profile to switch to a certain playback or recording device, when a specific application is started or focused.</value>
+    <value>Add a profile to switch to a certain playback or recording device, when a specific application is started or focused.</value>
   </data>
   <data name="profile.error.registerHotkeys" xml:space="preserve">
-		<value>Couldn't register hotkey for the following profiles: {0}</value>
+    <value>Couldn't register hotkey for the following profiles: {0}</value>
   </data>
   <data name="profile.error.registerHotkeys.title" xml:space="preserve">
-		<value>Already used hotkey</value>
+    <value>Already used hotkey</value>
   </data>
   <data name="profile.feature.add" xml:space="preserve">
-		<value>Add Profile</value>
+    <value>Add Profile</value>
   </data>
   <data name="profile.feature.executable" xml:space="preserve">
-		<value>Executable (*.exe)</value>
+    <value>Executable (*.exe)</value>
   </data>
   <data name="profile.error.title" xml:space="preserve">
-		<value>Profile Error</value>
+    <value>Profile Error</value>
   </data>
   <data name="profile.deleteButton" xml:space="preserve">
-		<value>Delete</value>
+    <value>Delete</value>
   </data>
   <data name="profile.error.delete" xml:space="preserve">
-		<value>Can't find the profile.</value>
+    <value>Can't find the profile.</value>
   </data>
   <data name="profile.error.no-name" xml:space="preserve">
-		<value>A profile needs a name.</value>
+    <value>A profile needs a name.</value>
   </data>
   <data name="profile.feature.profile" xml:space="preserve">
-		<value>Profile</value>
+    <value>Profile</value>
   </data>
   <data name="profile.defaultDevice.checkbox" xml:space="preserve">
-		<value>Also switch default device</value>
+    <value>Also switch default device</value>
   </data>
   <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
-		<value>When the application is detected, SoundSwitch will change also the current default device.</value>
+    <value>When the application is detected, SoundSwitch will change also the current default device.</value>
   </data>
   <data name="hotkeyEnabled" xml:space="preserve">
-		<value>Hotkey enabled</value>
+    <value>Hotkey enabled</value>
   </data>
   <data name="profile.error.device-not-found" xml:space="preserve">
-		<value>Device {0} couldn't be found.</value>
+    <value>Device {0} couldn't be found.</value>
   </data>
   <data name="profile.trigger.window" xml:space="preserve">
-		<value>Name of the program</value>
+    <value>Name of the program</value>
   </data>
   <data name="profile.trigger.process" xml:space="preserve">
-		<value>Application path</value>
+    <value>Application path</value>
   </data>
   <data name="profile.trigger.steam" xml:space="preserve">
-		<value>Steam Big Picture</value>
+    <value>Steam Big Picture</value>
   </data>
   <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-		<value>Hotkey used to activate the profile</value>
+    <value>Hotkey used to activate the profile</value>
   </data>
   <data name="profile.trigger.window.desc" xml:space="preserve">
-		<value>Activate the profile if the foregound program contains the following characters</value>
+    <value>Activate the profile if the foregound program contains the following characters</value>
   </data>
   <data name="profile.trigger.process.desc" xml:space="preserve">
-		<value>Activate the profile when the selected application is in the foreground</value>
+    <value>Activate the profile when the selected application is in the foreground</value>
   </data>
   <data name="profile.trigger.steam.desc" xml:space="preserve">
-		<value>Activate when Steam Big Picture is detected. Will restore the state when Big Picture is closed.</value>
+    <value>Activate when Steam Big Picture is detected. Will restore the state when Big Picture is closed.</value>
   </data>
   <data name="profile.desc" xml:space="preserve">
-		<value>Description</value>
+    <value>Description</value>
   </data>
   <data name="profile.trigger.actives" xml:space="preserve">
-		<value>Active Triggers</value>
+    <value>Active Triggers</value>
   </data>
   <data name="profile.trigger.available" xml:space="preserve">
-		<value>Available Triggers</value>
+    <value>Available Triggers</value>
   </data>
   <data name="communication" xml:space="preserve">
-		<value>Default Communication Device</value>
+    <value>Default Communication Device</value>
   </data>
   <data name="profile.error.triggers.min" xml:space="preserve">
-		<value>You need minimum one trigger.</value>
+    <value>You need minimum one trigger.</value>
   </data>
   <data name="profile.error.steam" xml:space="preserve">
-		<value>You can only have one profile for Steam Big Picture.</value>
+    <value>You can only have one profile for Steam Big Picture.</value>
   </data>
   <data name="profile.error.window" xml:space="preserve">
-		<value>There is already a profile with this window name: {0}.</value>
+    <value>There is already a profile with this window name: {0}.</value>
   </data>
   <data name="profile.notify-on-activation" xml:space="preserve">
-		<value>Notify when profile is triggered</value>
+    <value>Notify when profile is triggered</value>
   </data>
   <data name="profile.notification.text" xml:space="preserve">
-		<value>Profile {0} triggered</value>
+    <value>Profile {0} triggered</value>
   </data>
   <data name="profile.button.save" xml:space="preserve">
-		<value>Save</value>
+    <value>Save</value>
   </data>
   <data name="profile.button.edit" xml:space="preserve">
-		<value>Edit</value>
+    <value>Edit</value>
   </data>
   <data name="profile.trigger.steam.msg" xml:space="preserve">
-		<value>Steam Big Picture closed</value>
+    <value>Steam Big Picture closed</value>
   </data>
   <data name="profile.trigger.startup" xml:space="preserve">
-		<value>On Startup</value>
+    <value>On Startup</value>
   </data>
   <data name="profile.trigger.startup.desc" xml:space="preserve">
-		<value>The profile will be triggered automatically when SoundSwitch starts</value>
+    <value>The profile will be triggered automatically when SoundSwitch starts</value>
+  </data>
+  <data name="usePrimaryScreen" xml:space="preserve">
+    <value>Always Use Primary Screen</value>
+  </data>
+  <data name="usePrimaryScreenTooltip" xml:space="preserve">
+    <value>Display banner on primary screen instead of currently active screen.</value>
   </data>
 </root>
