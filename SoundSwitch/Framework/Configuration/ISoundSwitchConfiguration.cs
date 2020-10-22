@@ -53,6 +53,7 @@ namespace SoundSwitch.Framework.Configuration
         bool KeepSystrayIcon { get; set; }
 
         bool SwitchForegroundProgram { get; set; }
+        bool NotifyUsingPrimaryScreen { get; set; }
 
         /// <summary>
         /// What to do with the TrayIcon when changing default device

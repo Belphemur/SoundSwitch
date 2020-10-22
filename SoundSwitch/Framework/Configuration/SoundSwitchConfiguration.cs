@@ -81,6 +81,8 @@ namespace SoundSwitch.Framework.Configuration
         public Language             Language                      { get; set; }
         public bool                 IncludeBetaVersions           { get; set; }
         public string               CustomNotificationFilePath    { get; set; }
+        public bool                 NotifyUsingPrimaryScreen      { get; set; }
+
 
         public DateTime LastDonationNagTime { get; set; }
 
