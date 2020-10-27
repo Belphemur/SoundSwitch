@@ -142,10 +142,10 @@ Zajedno: Promijeni ikonu kad se bilo koji uređaj promijeni.</value>
     <value>Onemogući korištenje personaliziranih zvukova.</value>
   </data>
   <data name="notificationOptionBanner" xml:space="preserve">
-    <value>Banner</value>
+    <value>Natpis</value>
   </data>
   <data name="updateNotifyTooltip" xml:space="preserve">
-    <value>SoundSwitch će te obavijestiti kada je dostupna nadogradnja. Kada klikneš na notifikaciju, pojaviti će se obavijest koja će pokrenuti preuzimanje nadogradnje i pitati te da li je želiš instalirati.</value>
+    <value>SoundSwitch će te obavijestiti kad je dostupna nadogradnja. Kad klikneš na obavijest, pojavit će se skočni prozor za preuzimanje nadogradnje.</value>
   </data>
   <data name="updateNeverTooltip" xml:space="preserve">
     <value>Nemoj nadograđivati program osim ako to želim napraviti ručno.</value>
@@ -154,11 +154,11 @@ Zajedno: Promijeni ikonu kad se bilo koji uređaj promijeni.</value>
     <value>Potrebno je ponovno pokretanje</value>
   </data>
   <data name="languageRestartRequired" xml:space="preserve">
-    <value>Jezik koji si odabrao će se promijeniti nakon ponovnog pokretanja SoundSwitch-a.
-Želiš li ga sada ponovno pokrenuti?</value>
+    <value>Jezik će se promijeniti nakon ponovnog pokretanja programa SoundSwitch.
+Želiš li ga sada ponovo pokrenuti?</value>
   </data>
   <data name="language" xml:space="preserve">
-    <value>Izaberi jezik</value>
+    <value>Jezik</value>
   </data>
   <data name="activePlayback" xml:space="preserve">
     <value>Slušanje: {0}</value>
@@ -167,10 +167,10 @@ Zajedno: Promijeni ikonu kad se bilo koji uređaj promijeni.</value>
     <value>Snimanje: {0}</value>
   </data>
   <data name="audioFileNotFoundCaption" xml:space="preserve">
-    <value>Zvučna datoteka nije pronađena</value>
+    <value>Audio datoteka nije pronađena</value>
   </data>
   <data name="audioFileNotFound" xml:space="preserve">
-    <value>Zvučna datoteka koju si izabrao nije pronađena. SoundSwitch je promijenio notifikaciju na {0}.</value>
+    <value>Odabrana audio datoteka nije pronađena. SoundSwitch je promijenio postavku obavijesti na {0}.</value>
   </data>
   <data name="tooltipOnHoverOptionNone" xml:space="preserve">
     <value>Bez savjeta</value>
@@ -185,35 +185,35 @@ Zajedno: Promijeni ikonu kad se bilo koji uređaj promijeni.</value>
     <value>Uređaj za slušanje</value>
   </data>
   <data name="notificationTooltip" xml:space="preserve">
-    <value>Windows notifikacije: Standardna windows notifikacija.
-Zvučne notifikacije: Sviraj zvuk kad se promijeni uređaj za slušanje.
-Personalizirane zvučne notifikacije: Sviraj specifični zvuk kad se promijeni uređaj za slušanje.
-Toast notifikacije: Koristi specijalni oblik windows notifikacije.
-Banner: Koristi personalizirani prozor koji se postavlja ispred svih drugih, korisno unutar igri.</value>
+    <value>Windows obavijest: Standardna skočna obavijest u traci sustava.
+Zvučne obavijest: Svira zvuk na promijenjenom uređaju za slušanje.
+Prilagođene zvučna obavijest: Svira specifični zvuk na promijenjenom uređaju za slušanje.
+Toast obavijest: Koristi specijalni oblik skočne obavijesti u traci sustava.
+Natpis: Koristi prilagođeni prozor koji se postavlja ispred svih drugih, korisno unutar igri.</value>
   </data>
   <data name="notificationOptionCustomized" xml:space="preserve">
-    <value>Personalizirane zvučne notifikacije</value>
+    <value>Prilagođene zvučne obavijesti</value>
   </data>
   <data name="notificationOptionToast" xml:space="preserve">
-    <value>Toast notifikacije</value>
+    <value>Toast obavijesti</value>
   </data>
   <data name="notificationOptionNone" xml:space="preserve">
-    <value>Bez notifikacija</value>
+    <value>Bez obavijesti</value>
   </data>
   <data name="notificationOptionSound" xml:space="preserve">
-    <value>Zvučne notifikacije</value>
+    <value>Zvučne obavijesti</value>
   </data>
   <data name="notificationOptionWindowsDefault" xml:space="preserve">
-    <value>Windows notifikacije</value>
+    <value>Windows obavijesti</value>
   </data>
   <data name="cycleThroughTooltip" xml:space="preserve">
-    <value>Izaberi koje uređaje želiš izmjenjivati. Samo selektirane ili između svih.</value>
+    <value>Odaberi način prebacivanja između uređaja. Samo između odabranih ili između svih.</value>
   </data>
   <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
-    <value>Samo izabrani zvučni uređaji</value>
+    <value>Samo odabrani audio uređaji</value>
   </data>
   <data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
-    <value>Svi zvučni uređaji</value>
+    <value>Svi audio uređaji</value>
   </data>
   <data name="tooltipOnHover" xml:space="preserve">
     <value>Savjeti prilikom prelaska miša</value>
@@ -225,13 +225,13 @@ Banner: Koristi personalizirani prozor koji se postavlja ispred svih drugih, kor
     <value>Obavijesti me o dostupnim nadogradnjama</value>
   </data>
   <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
-    <value>Nadogradnje će biti instalirane automatski i bez pitanja.</value>
+    <value>Nadogradnje se instaliraju automatski bez upita.</value>
   </data>
   <data name="updateInstallAutomatically" xml:space="preserve">
     <value>Automatski instaliraj nadogradnje</value>
   </data>
   <data name="keepSystemTrayIconTooltip" xml:space="preserve">
-    <value>Kada je označeno, ikona u sistemskoj traci neće se promijeniti kad se promijeni 'Standardni uređaj za slušanje'.</value>
+    <value>Kada je označeno, ikona u sistemskoj traci neće se promijeniti kad se promijeni „Standardni uređaj za slušanje”.</value>
   </data>
   <data name="keepSystemTrayIcon" xml:space="preserve">
     <value>Zadrži SoundSwitch ikonu u sistemskoj traci</value>
@@ -240,31 +240,31 @@ Banner: Koristi personalizirani prozor koji se postavlja ispred svih drugih, kor
     <value>Prođi kroz</value>
   </data>
   <data name="updateSettings" xml:space="preserve">
-    <value>Opcije nadogradnje</value>
+    <value>Postavke nadogradnje</value>
   </data>
   <data name="audioSettings" xml:space="preserve">
-    <value>Zvučne opcije</value>
+    <value>Postavke zvuka</value>
   </data>
   <data name="basicSettings" xml:space="preserve">
-    <value>Opcije</value>
+    <value>Osnovne postavke</value>
   </data>
   <data name="hotkeysTooltip" xml:space="preserve">
     <value>Označi za aktiviranje prečaca.</value>
   </data>
   <data name="selectSoundButtonTooltip" xml:space="preserve">
-    <value>Izaberi zvučnu datoteku za notifikaciju</value>
+    <value>Odaberi audio datoteku za obavještavanje</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
     <value>Audio datoteke</value>
   </data>
   <data name="updateIncludeBetaVersions" xml:space="preserve">
-    <value>Preuzmi Beta verzije</value>
+    <value>Preuzmi beta verzije</value>
   </data>
   <data name="notification" xml:space="preserve">
-    <value>Notifikacija</value>
+    <value>Obavijesti</value>
   </data>
   <data name="communicationsDeviceTooltip" xml:space="preserve">
-    <value>Kad je označeno, 'Standardni komunikacijski uređaj' i 'Standardni uređaj za slušanje' suključuju se zajedno (korisno za Skype, TeamSpeak i sl.).</value>
+    <value>Kad je označeno, „Standardni komunikacijski uređaj” i „Standardni uređaj za slušanje” mijenjaju se zajedno (korisno za Skype, TeamSpeak i sl.).</value>
   </data>
   <data name="closeTooltip" xml:space="preserve">
     <value>Promjene se automatski spremaju</value>
@@ -273,7 +273,7 @@ Banner: Koristi personalizirani prozor koji se postavlja ispred svih drugih, kor
     <value>Zatvori</value>
   </data>
   <data name="startWithWindows" xml:space="preserve">
-    <value>Pokreni automatski sa Windows-ima</value>
+    <value>Pokreni automatski s Windows sustavom</value>
   </data>
   <data name="communicationsDevice" xml:space="preserve">
     <value>Promijeni standardni komunikacijski uređaj</value>
@@ -282,7 +282,7 @@ Banner: Koristi personalizirani prozor koji se postavlja ispred svih drugih, kor
     <value>Prečac</value>
   </data>
   <data name="settings" xml:space="preserve">
-    <value>Opcije</value>
+    <value>Postavke</value>
   </data>
   <data name="playback" xml:space="preserve">
     <value>Slušanje</value>
@@ -297,7 +297,7 @@ Banner: Koristi personalizirani prozor koji se postavlja ispred svih drugih, kor
     <value>Spojeno</value>
   </data>
   <data name="selected" xml:space="preserve">
-    <value>Izabrano</value>
+    <value>Odabrano</value>
   </data>
   <data name="profile.error.device-not-found" xml:space="preserve">
     <value>Uređaj {0} nije pronađen.</value>
@@ -306,7 +306,7 @@ Banner: Koristi personalizirani prozor koji se postavlja ispred svih drugih, kor
     <value>Prečac aktiviran</value>
   </data>
   <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
-    <value>Kad je označeno, SoundSwitch će također pretražiti beta verzije na GitHub-u.</value>
+    <value>Kad je označeno, SoundSwitch će također tražiti beta verzije na GitHub-u.</value>
   </data>
   <data name="profile.trigger.process" xml:space="preserve">
     <value>Putanja do programa</value>
@@ -370,5 +370,11 @@ Banner: Koristi personalizirani prozor koji se postavlja ispred svih drugih, kor
   </data>
   <data name="profile.trigger.steam.msg" xml:space="preserve">
     <value>Steam Big Picture zatvoren</value>
+  </data>
+  <data name="usePrimaryScreenTooltip" xml:space="preserve">
+    <value>Prikaži natpis na primarnom ekranu umjesto na trenutačno aktivnom ekranu.</value>
+  </data>
+  <data name="usePrimaryScreen" xml:space="preserve">
+    <value>Uvijek koristi primarni ekran</value>
   </data>
 </root>
