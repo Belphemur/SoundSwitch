@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using RailSharp;
+using Serilog.Formatting.Compact;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Profile.Trigger;
@@ -15,18 +17,19 @@ namespace SoundSwitch.UI.Forms
 {
     public partial class UpsertProfileExtended : Form
     {
-        private readonly Profile _profile;
-        private readonly Profile _oldProfile;
-        private readonly SettingsForm _settingsForm;
-        private readonly bool _editing;
+        private readonly Profile        _profile;
+        private readonly Profile        _oldProfile;
+        private readonly SettingsForm   _settingsForm;
+        private readonly bool           _editing;
         private readonly TriggerFactory _triggerFactory;
+        private          ToolTip        _restoreDeviceToolTip;
 
         public UpsertProfileExtended(Profile profile, IEnumerable<DeviceFullInfo> playbacks, IEnumerable<DeviceFullInfo> recordings, SettingsForm settingsForm, bool editing = false)
         {
-            _oldProfile = editing ? profile : null;
-            _profile = editing ? profile.Copy() : profile;
-            _settingsForm = settingsForm;
-            _editing = editing;
+            _oldProfile     = editing ? profile : null;
+            _profile        = editing ? profile.Copy() : profile;
+            _settingsForm   = settingsForm;
+            _editing        = editing;
             _triggerFactory = new TriggerFactory();
             InitializeComponent();
 
@@ -59,12 +62,10 @@ namespace SoundSwitch.UI.Forms
             switchDefaultCheckBox.DataBindings.Add(nameof(CheckBox.Checked), _profile, nameof(Profile.AlsoSwitchDefaultDevice), false, DataSourceUpdateMode.OnPropertyChanged);
             nameTextBox.DataBindings.Add(nameof(TextBox.Text), _profile, nameof(Profile.Name), false, DataSourceUpdateMode.OnPropertyChanged);
             notifyCheckbox.DataBindings.Add(nameof(CheckBox.Checked), _profile, nameof(Profile.NotifyOnActivation), false, DataSourceUpdateMode.OnPropertyChanged);
-            restoreDevicesCheckBox.Enabled = profile.AlsoSwitchDefaultDevice;
-            
         }
 
         private void InitRecordingPlaybackComboBoxes(IEnumerable<DeviceFullInfo> playbacks,
-            IEnumerable<DeviceFullInfo> recordings)
+                                                     IEnumerable<DeviceFullInfo> recordings)
         {
             recordingComboBox.DataSource =
                 recordings
@@ -73,24 +74,24 @@ namespace SoundSwitch.UI.Forms
                     .Select(info => new IconTextComboBox.DropDownItem
                         {
                             Icon = info.SmallIcon,
-                            Tag = info,
+                            Tag  = info,
                             Text = info.NameClean
                         }
                     ).ToArray();
 
 
             var playbackItems = playbacks
-                .OrderBy(info => info.State)
-                .ThenBy(info => info.NameClean)
-                .Select(info => new IconTextComboBox.DropDownItem
-                    {
-                        Icon = info.SmallIcon,
-                        Tag = info,
-                        Text = info.NameClean
-                    }
-                ).ToArray();
+                                .OrderBy(info => info.State)
+                                .ThenBy(info => info.NameClean)
+                                .Select(info => new IconTextComboBox.DropDownItem
+                                    {
+                                        Icon = info.SmallIcon,
+                                        Tag  = info,
+                                        Text = info.NameClean
+                                    }
+                                ).ToArray();
             communicationComboBox.DataSource = playbackItems;
-            playbackComboBox.DataSource = playbackItems.ToArray();
+            playbackComboBox.DataSource      = playbackItems.ToArray();
 
             communicationComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(Profile.Communication), false, DataSourceUpdateMode.OnPropertyChanged);
             recordingComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(Profile.Recording), false, DataSourceUpdateMode.OnPropertyChanged);
@@ -99,26 +100,25 @@ namespace SoundSwitch.UI.Forms
 
         private void LocalizeForm()
         {
-            descriptionBox.Text = SettingsStrings.profile_desc;
+            descriptionBox.Text        = SettingsStrings.profile_desc;
             availableTriggersText.Text = SettingsStrings.profile_trigger_available;
-            activeTriggerLabel.Text = SettingsStrings.profile_trigger_actives;
+            activeTriggerLabel.Text    = SettingsStrings.profile_trigger_actives;
 
-            recordingLabel.Text = SettingsStrings.recording;
-            playbackLabel.Text = SettingsStrings.playback;
-            communicationLabel.Text = SettingsStrings.communication;
-            Text = SettingsStrings.profile_feature_add;
-            selectProgramDialog.Filter = $@"{SettingsStrings.profile_feature_executable}|*.exe";
-            nameLabel.Text = SettingsStrings.profile_name;
-            notifyCheckbox.Text = SettingsStrings.profile_notify_on_activation;
-            switchDefaultCheckBox.Text = SettingsStrings.profile_defaultDevice_checkbox;
-            saveButton.Text = SettingsStrings.profile_button_save;
+            recordingLabel.Text         = SettingsStrings.recording;
+            playbackLabel.Text          = SettingsStrings.playback;
+            communicationLabel.Text     = SettingsStrings.communication;
+            Text                        = SettingsStrings.profile_feature_add;
+            selectProgramDialog.Filter  = $@"{SettingsStrings.profile_feature_executable}|*.exe";
+            nameLabel.Text              = SettingsStrings.profile_name;
+            notifyCheckbox.Text         = SettingsStrings.profile_notify_on_activation;
+            switchDefaultCheckBox.Text  = SettingsStrings.profile_defaultDevice_checkbox;
+            saveButton.Text             = SettingsStrings.profile_button_save;
             restoreDevicesCheckBox.Text = SettingsStrings.profile_trigger_restoreDevices;
 
-            var switchTooltip = new ToolTip();
-            switchTooltip.SetToolTip(switchDefaultCheckBox, SettingsStrings.profile_defaultDevice_checkbox_tooltip);
+            new ToolTip().SetToolTip(switchDefaultCheckBox, SettingsStrings.profile_defaultDevice_checkbox_tooltip);
 
-            var restoreDeviceToolTip = new ToolTip();
-            restoreDeviceToolTip.SetToolTip(restoreDevicesCheckBox, SettingsStrings.profile_trigger_restoreDevices_desc);
+            _restoreDeviceToolTip = new ToolTip();
+            _restoreDeviceToolTip.SetToolTip(restoreDevicesCheckBox, SettingsStrings.profile_trigger_restoreDevices_desc);
         }
 
         private void InitializeFromProfile()
@@ -130,19 +130,19 @@ namespace SoundSwitch.UI.Forms
         private void InitializeAvailableTriggers()
         {
             var countByTrigger = _profile.Triggers.GroupBy(trigger => trigger.Type)
-                .ToDictionary(triggers => triggers.Key);
+                                         .ToDictionary(triggers => triggers.Key);
             var availableTriggers = AppModel.Instance.ProfileManager.AvailableTriggers()
-                .Where(pair =>
-                {
-                    if (countByTrigger.TryGetValue(pair.TypeEnum, out var trigger))
-                    {
-                        return pair.MaxOccurence == -1 || trigger.Count() < pair.MaxOccurence;
-                    }
+                                            .Where(pair =>
+                                            {
+                                                if (countByTrigger.TryGetValue(pair.TypeEnum, out var trigger))
+                                                {
+                                                    return pair.MaxOccurence == -1 || trigger.Count() < pair.MaxOccurence;
+                                                }
 
-                    return true;
-                })
-                .Cast<object>()
-                .ToArray();
+                                                return true;
+                                            })
+                                            .Cast<object>()
+                                            .ToArray();
 
             if (availableTriggerBox.Items.Count != availableTriggers.Length)
             {
@@ -175,16 +175,16 @@ namespace SoundSwitch.UI.Forms
 
             HideTriggerComponents();
 
-            var trigger = (Trigger) setTriggerBox.SelectedItem;
+            var trigger           = (Trigger) setTriggerBox.SelectedItem;
             var triggerDefinition = _triggerFactory.Get(trigger.Type);
             descriptionLabel.Text = $@"{triggerDefinition.Description} (Max: {(triggerDefinition.MaxGlobalOccurence == -1 ? "∞" : triggerDefinition.MaxGlobalOccurence.ToString())})";
-            triggerLabel.Text = triggerDefinition.Label;
+            triggerLabel.Text     = triggerDefinition.Label;
             descriptionLabel.Show();
             triggerLabel.Show();
 
             restoreDevicesCheckBox.DataBindings.Clear();
 
-            if (triggerDefinition.CanRestoreDevices)
+            if (triggerDefinition.CanRestoreDevices && !triggerDefinition.AlwaysRestoreDefaultDevice)
             {
                 restoreDevicesCheckBox.DataBindings.Add(nameof(CheckBox.Checked), trigger, nameof(Trigger.ShouldRestoreDevices), true, DataSourceUpdateMode.OnPropertyChanged);
                 restoreDevicesCheckBox.Show();
@@ -337,22 +337,46 @@ namespace SoundSwitch.UI.Forms
             var result = _editing ? AppModel.Instance.ProfileManager.UpdateProfile(_oldProfile, _profile) : AppModel.Instance.ProfileManager.AddProfile(_profile);
 
             result.Map(success =>
-                {
-                    _settingsForm.RefreshProfiles();
-                    _settingsForm.Focus();
-                    Close();
-                    return success;
-                })
-                .Catch<string>(s =>
-                {
-                    MessageBox.Show(s, SettingsStrings.profile_error_title, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return Result.Success();
-                });
+                  {
+                      _settingsForm.RefreshProfiles();
+                      _settingsForm.Focus();
+                      Close();
+                      return success;
+                  })
+                  .Catch<string>(s =>
+                  {
+                      MessageBox.Show(s, SettingsStrings.profile_error_title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                      return Result.Success();
+                  });
+        }
+
+        private void restoreDevicesCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_profile.AlsoSwitchDefaultDevice || !restoreDevicesCheckBox.Checked) return;
+
+            restoreDevicesCheckBox.Checked = false;
+            _restoreDeviceToolTip.Show(_restoreDeviceToolTip.GetToolTip(restoreDevicesCheckBox), restoreDevicesCheckBox, restoreDevicesCheckBox.PointToClient(Cursor.Position), 3000);
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            _restoreDeviceToolTip.Hide(restoreDevicesCheckBox);
+            base.OnFormClosing(e);
         }
 
         private void switchDefaultCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            restoreDevicesCheckBox.Enabled = switchDefaultCheckBox.Checked;
+            if (switchDefaultCheckBox.Checked) return;
+
+            if (restoreDevicesCheckBox.Checked)
+            {
+                restoreDevicesCheckBox.Checked = false;
+            }
+
+            foreach (var profileTrigger in _profile.Triggers)
+            {
+                profileTrigger.ShouldRestoreDevices = false;
+            }
         }
     }
 }

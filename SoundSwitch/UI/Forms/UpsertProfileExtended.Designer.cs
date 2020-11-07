@@ -35,7 +35,6 @@
             this.descriptionBox = new System.Windows.Forms.GroupBox();
             this.descriptionLabel = new System.Windows.Forms.Label();
             this.textInput = new System.Windows.Forms.TextBox();
-            this.hotKeyControl = new SoundSwitch.UI.Component.HotKeyTextBox();
             this.deleteButton = new System.Windows.Forms.Button();
             this.activeTriggerLabel = new System.Windows.Forms.Label();
             this.availableTriggerBox = new System.Windows.Forms.ComboBox();
@@ -49,15 +48,16 @@
             this.nameTextBox = new System.Windows.Forms.TextBox();
             this.communicationRemoveButton = new System.Windows.Forms.Button();
             this.communicationLabel = new System.Windows.Forms.Label();
-            this.communicationComboBox = new SoundSwitch.UI.Component.IconTextComboBox();
             this.switchDefaultCheckBox = new System.Windows.Forms.CheckBox();
             this.recordingRemoveButton = new System.Windows.Forms.Button();
             this.playbackRemoveButton = new System.Windows.Forms.Button();
             this.recordingLabel = new System.Windows.Forms.Label();
             this.playbackLabel = new System.Windows.Forms.Label();
+            this.saveButton = new System.Windows.Forms.Button();
+            this.communicationComboBox = new SoundSwitch.UI.Component.IconTextComboBox();
             this.recordingComboBox = new SoundSwitch.UI.Component.IconTextComboBox();
             this.playbackComboBox = new SoundSwitch.UI.Component.IconTextComboBox();
-            this.saveButton = new System.Windows.Forms.Button();
+            this.hotKeyControl = new SoundSwitch.UI.Component.HotKeyTextBox();
             this.triggerBox.SuspendLayout();
             this.descriptionBox.SuspendLayout();
             this.profileBox.SuspendLayout();
@@ -96,6 +96,7 @@
             this.restoreDevicesCheckBox.TabIndex = 11;
             this.restoreDevicesCheckBox.Text = "Restore devices when trigger ends";
             this.restoreDevicesCheckBox.UseVisualStyleBackColor = true;
+            this.restoreDevicesCheckBox.CheckedChanged += new System.EventHandler(this.restoreDevicesCheckBox_CheckedChanged);
             // 
             // triggerLabel
             // 
@@ -149,13 +150,6 @@
             this.textInput.Name = "textInput";
             this.textInput.Size = new System.Drawing.Size(251, 20);
             this.textInput.TabIndex = 7;
-            // 
-            // hotKeyControl
-            // 
-            this.hotKeyControl.Location = new System.Drawing.Point(273, 36);
-            this.hotKeyControl.Name = "hotKeyControl";
-            this.hotKeyControl.Size = new System.Drawing.Size(138, 20);
-            this.hotKeyControl.TabIndex = 6;
             // 
             // deleteButton
             // 
@@ -291,22 +285,6 @@
             this.communicationLabel.TabIndex = 24;
             this.communicationLabel.Text = "Communication";
             // 
-            // communicationComboBox
-            // 
-            this.communicationComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.communicationComboBox.DataSource = null;
-            this.communicationComboBox.DisplayMember = "Tag";
-            this.communicationComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.communicationComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.communicationComboBox.FormattingEnabled = true;
-            this.communicationComboBox.Location = new System.Drawing.Point(10, 211);
-            this.communicationComboBox.Name = "communicationComboBox";
-            this.communicationComboBox.Size = new System.Drawing.Size(523, 21);
-            this.communicationComboBox.TabIndex = 23;
-            this.communicationComboBox.ValueMember = "Tag";
-            this.communicationComboBox.SelectedIndexChanged += new System.EventHandler(this.communicationComboBox_SelectedIndexChanged);
-            // 
             // switchDefaultCheckBox
             // 
             this.switchDefaultCheckBox.AutoSize = true;
@@ -364,6 +342,33 @@
             this.playbackLabel.TabIndex = 18;
             this.playbackLabel.Text = "Playback";
             // 
+            // saveButton
+            // 
+            this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.saveButton.Location = new System.Drawing.Point(479, 514);
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Size = new System.Drawing.Size(100, 26);
+            this.saveButton.TabIndex = 2;
+            this.saveButton.Text = "Save";
+            this.saveButton.UseVisualStyleBackColor = true;
+            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
+            // 
+            // communicationComboBox
+            // 
+            this.communicationComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.communicationComboBox.DataSource = null;
+            this.communicationComboBox.DisplayMember = "Tag";
+            this.communicationComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.communicationComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.communicationComboBox.FormattingEnabled = true;
+            this.communicationComboBox.Location = new System.Drawing.Point(10, 211);
+            this.communicationComboBox.Name = "communicationComboBox";
+            this.communicationComboBox.Size = new System.Drawing.Size(523, 21);
+            this.communicationComboBox.TabIndex = 23;
+            this.communicationComboBox.ValueMember = "Tag";
+            this.communicationComboBox.SelectedIndexChanged += new System.EventHandler(this.communicationComboBox_SelectedIndexChanged);
+            // 
             // recordingComboBox
             // 
             this.recordingComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -396,16 +401,12 @@
             this.playbackComboBox.ValueMember = "Tag";
             this.playbackComboBox.SelectedIndexChanged += new System.EventHandler(this.playbackComboBox_SelectedIndexChanged);
             // 
-            // saveButton
+            // hotKeyControl
             // 
-            this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.saveButton.Location = new System.Drawing.Point(479, 514);
-            this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(100, 26);
-            this.saveButton.TabIndex = 2;
-            this.saveButton.Text = "Save";
-            this.saveButton.UseVisualStyleBackColor = true;
-            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
+            this.hotKeyControl.Location = new System.Drawing.Point(273, 36);
+            this.hotKeyControl.Name = "hotKeyControl";
+            this.hotKeyControl.Size = new System.Drawing.Size(138, 20);
+            this.hotKeyControl.TabIndex = 6;
             // 
             // UpsertProfileExtended
             // 
