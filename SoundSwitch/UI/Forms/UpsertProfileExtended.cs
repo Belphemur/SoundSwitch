@@ -184,7 +184,7 @@ namespace SoundSwitch.UI.Forms
 
             restoreDevicesCheckBox.DataBindings.Clear();
 
-            if (triggerDefinition.CanRestoreDevices && !triggerDefinition.AlwaysRestoreDefaultDevice)
+            if (triggerDefinition.CanRestoreDevices && !triggerDefinition.AlwaysDefaultAndRestoreDevice)
             {
                 restoreDevicesCheckBox.DataBindings.Add(nameof(CheckBox.Checked), trigger, nameof(Trigger.ShouldRestoreDevices), true, DataSourceUpdateMode.OnPropertyChanged);
                 restoreDevicesCheckBox.Show();

@@ -51,13 +51,13 @@ namespace SoundSwitch.Framework.Profile
                               AudioSwitcher      audioSwitcher,
                               IAudioDeviceLister activeDeviceLister,
                               ShowError          showError,
-                              TriggerFactory triggerFactory)
+                              TriggerFactory     triggerFactory)
         {
-            _windowMonitor       = windowMonitor;
-            _audioSwitcher       = audioSwitcher;
-            _activeDeviceLister  = activeDeviceLister;
-            _showError           = showError;
-            _triggerFactory = triggerFactory;
+            _windowMonitor      = windowMonitor;
+            _audioSwitcher      = audioSwitcher;
+            _activeDeviceLister = activeDeviceLister;
+            _showError          = showError;
+            _triggerFactory     = triggerFactory;
         }
 
         private void RegisterTriggers(Profile profile, bool onInit = false)
@@ -162,7 +162,7 @@ namespace SoundSwitch.Framework.Profile
         /// </summary>
         private bool SaveCurrentState(User32.NativeMethods.HWND windowHandle, Profile profile, Trigger.Trigger trigger)
         {
-            if (!(trigger.ShouldRestoreDevices || _triggerFactory.Get(trigger.Type).AlwaysRestoreDefaultDevice) || !profile.AlsoSwitchDefaultDevice )
+            if (!_triggerFactory.Get(trigger.Type).AlwaysDefaultAndRestoreDevice && (!trigger.ShouldRestoreDevices || !profile.AlsoSwitchDefaultDevice))
                 return false;
 
             if (_activeWindowsTrigger.ContainsKey(windowHandle))
