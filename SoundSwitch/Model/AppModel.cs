@@ -54,7 +54,7 @@ namespace SoundSwitch.Model
             _notificationManager = new NotificationManager(this);
 
             _deviceCyclerManager = new DeviceCyclerManager();
-            MMNotificationClient.Instance.DefaultDeviceChanged += (sender, @event) => { _dispatcher.Debounce(50, o => { DefaultDeviceChanged?.Invoke(sender, @event); }); };
+            MMNotificationClient.Instance.DefaultDeviceChanged += (sender, @event) => { _dispatcher.Debounce(250, o => { DefaultDeviceChanged?.Invoke(sender, @event); }); };
         }
 
         public static IAppModel Instance { get; } = new AppModel();
