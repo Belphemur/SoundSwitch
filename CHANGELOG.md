@@ -1,5 +1,23 @@
 # Changelog
 
+## [v5.5.4](https://github.com/Belphemur/SoundSwitch/tree/v5.5.4) (2020-11-07)
+
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v5.5.3...v5.5.4)
+
+**Implemented enhancements:**
+
+- When using a profile with Application and Also Switch default device, let the user choose if he wants to restore the old devices [\#517](https://github.com/Belphemur/SoundSwitch/issues/517)
+- \[Enhancement\] Mirror outputs [\#230](https://github.com/Belphemur/SoundSwitch/issues/230)
+
+**Closed issues:**
+
+- Pop-up shown too often [\#515](https://github.com/Belphemur/SoundSwitch/issues/515)
+- Crash on Startup [\#508](https://github.com/Belphemur/SoundSwitch/issues/508)
+
+**Merged pull requests:**
+
+- Adding in setting to always use primary screen for banner notifications. [\#514](https://github.com/Belphemur/SoundSwitch/pull/514) ([westonhowe98](https://github.com/westonhowe98))
+
 ## [v5.5.3](https://github.com/Belphemur/SoundSwitch/tree/v5.5.3) (2020-09-12)
 
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v5.5.2...v5.5.3)
@@ -338,7 +356,6 @@
 - Update SettingsStrings.ru-RU.resx [\#379](https://github.com/Belphemur/SoundSwitch/pull/379) ([wvxwxvw](https://github.com/wvxwxvw))
 - Update TrayIconStrings.ru-RU.resx [\#378](https://github.com/Belphemur/SoundSwitch/pull/378) ([wvxwxvw](https://github.com/wvxwxvw))
 - Update UpdateDownloadStrings.ru-RU.resx [\#377](https://github.com/Belphemur/SoundSwitch/pull/377) ([wvxwxvw](https://github.com/wvxwxvw))
-- Fresh new look for README [\#371](https://github.com/Belphemur/SoundSwitch/pull/371) ([FireEmerald](https://github.com/FireEmerald))
 
 ## [v4.16.1](https://github.com/Belphemur/SoundSwitch/tree/v4.16.1) (2019-11-24)
 
@@ -379,6 +396,7 @@
 
 **Merged pull requests:**
 
+- Fresh new look for README [\#371](https://github.com/Belphemur/SoundSwitch/pull/371) ([FireEmerald](https://github.com/FireEmerald))
 - Added german README, based on translations from Overload86 [\#369](https://github.com/Belphemur/SoundSwitch/pull/369) ([FireEmerald](https://github.com/FireEmerald))
 
 ## [v4.15.1](https://github.com/Belphemur/SoundSwitch/tree/v4.15.1) (2019-11-13)
@@ -753,6 +771,7 @@
 **Merged pull requests:**
 
 - Add thanks category [\#188](https://github.com/Belphemur/SoundSwitch/pull/188) ([Belphemur](https://github.com/Belphemur))
+- Some improvements and a feature [\#186](https://github.com/Belphemur/SoundSwitch/pull/186) ([ramon18](https://github.com/ramon18))
 
 ## [v3.14.1](https://github.com/Belphemur/SoundSwitch/tree/v3.14.1) (2017-04-08)
 
@@ -818,7 +837,6 @@
 
 - Assigned values to DeviceCyclerTypeEnum and NotificationTypeEnum entries. [\#162](https://github.com/Belphemur/SoundSwitch/pull/162) ([FireEmerald](https://github.com/FireEmerald))
 - Translated some strings into German introduced in 4dedc42. [\#160](https://github.com/Belphemur/SoundSwitch/pull/160) ([FireEmerald](https://github.com/FireEmerald))
-- Allow enable/disable display of notifications [\#33](https://github.com/Belphemur/SoundSwitch/pull/33) ([adamblackburn](https://github.com/adamblackburn))
 
 ## [v3.13.0](https://github.com/Belphemur/SoundSwitch/tree/v3.13.0) (2017-03-04)
 
@@ -841,7 +859,6 @@
 
 **Merged pull requests:**
 
-- Some improvements and a feature [\#186](https://github.com/Belphemur/SoundSwitch/pull/186) ([ramon18](https://github.com/ramon18))
 - Improved the multi-language support, this includes: [\#157](https://github.com/Belphemur/SoundSwitch/pull/157) ([FireEmerald](https://github.com/FireEmerald))
 - Improved the update system to support three different modes [\#152](https://github.com/Belphemur/SoundSwitch/pull/152) ([FireEmerald](https://github.com/FireEmerald))
 
@@ -1218,6 +1235,10 @@
 
 - Installer doesn't detect DotNet 4.6.1 [\#35](https://github.com/Belphemur/SoundSwitch/issues/35)
 
+**Merged pull requests:**
+
+- Allow enable/disable display of notifications [\#33](https://github.com/Belphemur/SoundSwitch/pull/33) ([adamblackburn](https://github.com/adamblackburn))
+
 ## [v3.6.0](https://github.com/Belphemur/SoundSwitch/tree/v3.6.0) (2015-11-14)
 
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.5.3...v3.6.0)
@@ -1258,6 +1279,7 @@
 
 **Implemented enhancements:**
 
+- Add localization [\#27](https://github.com/Belphemur/SoundSwitch/issues/27)
 - Bigger Icons in Settings. Support non standard icons. [\#26](https://github.com/Belphemur/SoundSwitch/issues/26)
 
 **Fixed bugs:**
@@ -1288,10 +1310,6 @@
 ## [v3.3.1](https://github.com/Belphemur/SoundSwitch/tree/v3.3.1) (2015-08-29)
 
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v3.3.0...v3.3.1)
-
-**Implemented enhancements:**
-
-- Add localization [\#27](https://github.com/Belphemur/SoundSwitch/issues/27)
 
 **Fixed bugs:**
 
