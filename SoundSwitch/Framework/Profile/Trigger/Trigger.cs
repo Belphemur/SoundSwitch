@@ -18,7 +18,7 @@ namespace SoundSwitch.Framework.Profile.Trigger
         /// <summary>
         /// Should this trigger restore the devices after the app is closed
         /// </summary>
-        public bool ShouldRestoreDevices { get; set; } = true;
+        public bool ShouldRestoreDevices { get; set; } = false;
 
         public override string ToString()
         {

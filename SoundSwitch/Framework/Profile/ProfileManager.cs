@@ -34,6 +34,7 @@ namespace SoundSwitch.Framework.Profile
         private readonly AudioSwitcher      _audioSwitcher;
         private readonly IAudioDeviceLister _activeDeviceLister;
         private readonly ShowError          _showError;
+        private readonly TriggerFactory     _triggerFactory;
 
         private Profile? _steamProfile;
 
@@ -49,12 +50,14 @@ namespace SoundSwitch.Framework.Profile
         public ProfileManager(WindowMonitor      windowMonitor,
                               AudioSwitcher      audioSwitcher,
                               IAudioDeviceLister activeDeviceLister,
-                              ShowError          showError)
+                              ShowError          showError,
+                              TriggerFactory triggerFactory)
         {
-            _windowMonitor      = windowMonitor;
-            _audioSwitcher      = audioSwitcher;
-            _activeDeviceLister = activeDeviceLister;
-            _showError          = showError;
+            _windowMonitor       = windowMonitor;
+            _audioSwitcher       = audioSwitcher;
+            _activeDeviceLister  = activeDeviceLister;
+            _showError           = showError;
+            _triggerFactory = triggerFactory;
         }
 
         private void RegisterTriggers(Profile profile, bool onInit = false)
@@ -159,7 +162,7 @@ namespace SoundSwitch.Framework.Profile
         /// </summary>
         private bool SaveCurrentState(User32.NativeMethods.HWND windowHandle, Profile profile, Trigger.Trigger trigger)
         {
-            if (!trigger.ShouldRestoreDevices || !profile.AlsoSwitchDefaultDevice)
+            if (!(trigger.ShouldRestoreDevices || _triggerFactory.Get(trigger.Type).AlwaysRestoreDefaultDevice) || !profile.AlsoSwitchDefaultDevice )
                 return false;
 
             if (_activeWindowsTrigger.ContainsKey(windowHandle))

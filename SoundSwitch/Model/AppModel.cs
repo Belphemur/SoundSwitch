@@ -31,6 +31,7 @@ using RailSharp;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Profile;
+using SoundSwitch.Framework.Profile.Trigger;
 using SoundSwitch.Localization.Factory;
 using SoundSwitch.UI.Component;
 using SoundSwitch.Util.Timer;
@@ -217,7 +218,7 @@ namespace SoundSwitch.Model
             {
                 throw new InvalidOperationException("Already initialized");
             }
-            ProfileManager = new ProfileManager(new WindowMonitor(), AudioSwitcher.Instance, ActiveAudioDeviceLister, TrayIcon.ShowError);
+            ProfileManager = new ProfileManager(new WindowMonitor(), AudioSwitcher.Instance, ActiveAudioDeviceLister, TrayIcon.ShowError, new TriggerFactory());
             RegisterHotKey(AppConfigs.Configuration.PlaybackHotKey);
             RegisterHotKey(AppConfigs.Configuration.RecordingHotKey);
 

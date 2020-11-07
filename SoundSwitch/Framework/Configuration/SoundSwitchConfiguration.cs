@@ -185,22 +185,6 @@ namespace SoundSwitch.Framework.Configuration
                 migrated = true;
             }
 
-            if (!MigratedFields.Contains(nameof(Profiles) + "_Restore"))
-            {
-                foreach (var trigger in Profiles.SelectMany(profile => profile.Triggers))
-                {
-                    if (trigger.Type == TriggerFactory.Enum.Steam)
-                    {
-                        trigger.ShouldRestoreDevices = false;
-                        continue;
-                    }
-
-                    trigger.ShouldRestoreDevices = false;
-                }
-
-                MigratedFields.Add(nameof(Profiles) + "_Restore");
-            }
-
             return migrated;
 #pragma warning restore 612
         }
