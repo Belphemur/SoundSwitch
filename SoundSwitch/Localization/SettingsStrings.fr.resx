@@ -416,4 +416,7 @@ Toujours : Lors de la bascule vers un autre périphérique de lecture ou d'enreg
 	<data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
 		<value>Restaurer l'état du système quand l'application est fermée.</value>
 	</data>
+	<data name="profile.trigger.restoreDevices.title" xml:space="preserve">
+		<value>Système audio restauré</value>
+	</data>
 </root>

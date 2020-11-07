@@ -764,6 +764,15 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to System state restored.
+        /// </summary>
+        internal static string profile_trigger_restoreDevices_title {
+            get {
+                return ResourceManager.GetString("profile.trigger.restoreDevices.title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to On Startup.
         /// </summary>
         internal static string profile_trigger_startup {

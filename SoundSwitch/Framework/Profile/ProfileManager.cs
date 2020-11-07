@@ -35,13 +35,13 @@ namespace SoundSwitch.Framework.Profile
         private readonly IAudioDeviceLister _activeDeviceLister;
         private readonly ShowError          _showError;
 
-        private Profile?                  _steamProfile;
-        private User32.NativeMethods.HWND _steamBigPictureHandle;
-        private Profile?                  _steamStateBeforeSwitchingBigPicture;
+        private Profile? _steamProfile;
 
-        private readonly Dictionary<HotKey, Profile> _profilesByHotkey     = new Dictionary<HotKey, Profile>();
-        private readonly Dictionary<string, Profile> _profileByApplication = new Dictionary<string, Profile>();
-        private readonly Dictionary<string, Profile> _profilesByWindowName = new Dictionary<string, Profile>();
+        private readonly Dictionary<User32.NativeMethods.HWND, Profile> _activeWindowsTrigger = new Dictionary<User32.NativeMethods.HWND, Profile>();
+
+        private readonly Dictionary<HotKey, Profile>                                    _profilesByHotkey     = new Dictionary<HotKey, Profile>();
+        private readonly Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)> _profileByApplication = new Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)>();
+        private readonly Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)> _profilesByWindowName = new Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)>();
 
 
         public IReadOnlyCollection<Profile> Profiles => AppConfigs.Configuration.Profiles;
@@ -62,8 +62,8 @@ namespace SoundSwitch.Framework.Profile
             foreach (var trigger in profile.Triggers)
             {
                 trigger.Type.Switch(() => { _profilesByHotkey.Add(trigger.HotKey, profile); },
-                    () => { _profilesByWindowName.Add(trigger.WindowName.ToLower(), profile); },
-                    () => { _profileByApplication.Add(trigger.ApplicationPath.ToLower(), profile); },
+                    () => { _profilesByWindowName.Add(trigger.WindowName.ToLower(), (profile, trigger)); },
+                    () => { _profileByApplication.Add(trigger.ApplicationPath.ToLower(), (profile, trigger)); },
                     () => { _steamProfile = profile; },
                     () =>
                     {
@@ -102,6 +102,7 @@ namespace SoundSwitch.Framework.Profile
             {
                 RegisterTriggers(profile, true);
             }
+
             RegisterEvents();
 
             var errors = _profilesByHotkey
@@ -123,22 +124,24 @@ namespace SoundSwitch.Framework.Profile
         {
             _windowMonitor.ForegroundChanged += (sender, @event) =>
             {
-                Profile profile;
+                (Profile Profile, Trigger.Trigger Trigger) profileTuple;
 
                 if (HandleSteamBigPicture(@event)) return;
 
-                if (_profileByApplication.TryGetValue(@event.ProcessName.ToLower(), out profile))
+                if (_profileByApplication.TryGetValue(@event.ProcessName.ToLower(), out profileTuple))
                 {
-                    SwitchAudio(profile, @event.ProcessId);
+                    SaveCurrentState(@event.Hwnd, profileTuple.Profile, profileTuple.Trigger);
+                    SwitchAudio(profileTuple.Profile, @event.ProcessId);
                     return;
                 }
 
                 var windowNameLower = @event.WindowName.ToLower();
 
-                profile = _profilesByWindowName.FirstOrDefault(pair => windowNameLower.Contains(pair.Key)).Value;
-                if (profile != null)
+                profileTuple = _profilesByWindowName.FirstOrDefault(pair => windowNameLower.Contains(pair.Key)).Value;
+                if (profileTuple != default)
                 {
-                    SwitchAudio(profile, @event.ProcessId);
+                    SaveCurrentState(@event.Hwnd, profileTuple.Profile, profileTuple.Trigger);
+                    SwitchAudio(profileTuple.Profile, @event.ProcessId);
                 }
             };
 
@@ -148,14 +151,54 @@ namespace SoundSwitch.Framework.Profile
                     return;
                 SwitchAudio(profile);
             };
-            WindowsAPIAdapter.WindowDestroyed += (sender, @event) =>
-            {
-                if (_steamStateBeforeSwitchingBigPicture == null || @event.Hwnd != _steamBigPictureHandle)
-                    return;
+            WindowsAPIAdapter.WindowDestroyed += (sender, @event) => { RestoreState(@event.Hwnd); };
+        }
 
-                SwitchAudio(_steamStateBeforeSwitchingBigPicture);
-                _steamStateBeforeSwitchingBigPicture = null;
+        /// <summary>
+        /// Save the current state of the system if it wasn't saved already
+        /// </summary>
+        private bool SaveCurrentState(User32.NativeMethods.HWND windowHandle, Profile profile, Trigger.Trigger trigger)
+        {
+            if (!trigger.ShouldRestoreDevices || !profile.AlsoSwitchDefaultDevice)
+                return false;
+
+            if (_activeWindowsTrigger.ContainsKey(windowHandle))
+            {
+                return false;
+            }
+
+            var communication = _audioSwitcher.GetDefaultAudioEndpoint(EDataFlow.eRender,  ERole.eCommunications);
+            var playback      = _audioSwitcher.GetDefaultAudioEndpoint(EDataFlow.eRender,  ERole.eMultimedia);
+            var recording     = _audioSwitcher.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eMultimedia);
+
+            var currentState = new Profile
+            {
+                AlsoSwitchDefaultDevice = true,
+                Name                    = SettingsStrings.profile_trigger_restoreDevices_title,
+                Communication           = communication,
+                Playback                = playback,
+                Recording               = recording,
+                NotifyOnActivation      = profile.NotifyOnActivation
             };
+            _activeWindowsTrigger.Add(windowHandle, currentState);
+            return true;
+        }
+
+        /// <summary>
+        /// Restore the old state
+        /// </summary>
+        /// <param name="windowHandle"></param>
+        /// <returns></returns>
+        private bool RestoreState(User32.NativeMethods.HWND windowHandle)
+        {
+            if (!_activeWindowsTrigger.TryGetValue(windowHandle, out var oldState))
+            {
+                return false;
+            }
+
+            SwitchAudio(oldState);
+            _activeWindowsTrigger.Remove(windowHandle);
+            return true;
         }
 
         /// <summary>
@@ -168,23 +211,7 @@ namespace SoundSwitch.Framework.Profile
             if (_steamProfile == null || @event.WindowName != "Steam" || @event.WindowClass != "CUIEngineWin32")
                 return false;
 
-            if (_steamStateBeforeSwitchingBigPicture == null)
-            {
-                _steamBigPictureHandle = @event.Hwnd;
-                var communication = _audioSwitcher.GetDefaultAudioEndpoint(EDataFlow.eRender,  ERole.eCommunications);
-                var playback      = _audioSwitcher.GetDefaultAudioEndpoint(EDataFlow.eRender,  ERole.eMultimedia);
-                var recording     = _audioSwitcher.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eMultimedia);
-
-                _steamStateBeforeSwitchingBigPicture = new Profile
-                {
-                    AlsoSwitchDefaultDevice = true,
-                    Name                    = SettingsStrings.profile_trigger_steam_msg,
-                    Communication           = communication,
-                    Playback                = playback,
-                    Recording               = recording,
-                    NotifyOnActivation      = true
-                };
-            }
+            SaveCurrentState(@event.Hwnd, _steamProfile, _steamProfile.Triggers.First(trigger => trigger.Type == TriggerFactory.Enum.Steam));
 
             SwitchAudio(_steamProfile);
             return true;
@@ -491,7 +518,9 @@ namespace SoundSwitch.Framework.Profile
 
                     if (_profileByApplication.TryGetValue(filePath, out var profile))
                     {
-                        SwitchAudio(profile, (uint) process.Id);
+                        var handle = User32.NativeMethods.HWND.Cast(process.Handle);
+                        SaveCurrentState(handle, profile.Profile, profile.Trigger);
+                        SwitchAudio(profile.Profile, (uint) process.Id);
                     }
                 }
                 catch (Win32Exception)
