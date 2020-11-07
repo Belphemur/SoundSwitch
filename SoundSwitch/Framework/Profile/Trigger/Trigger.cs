@@ -15,6 +15,11 @@ namespace SoundSwitch.Framework.Profile.Trigger
         public string              ApplicationPath { get; set; }
         public HotKey              HotKey          { get; set; }
 
+        /// <summary>
+        /// Should this trigger restore the devices after the app is closed
+        /// </summary>
+        public bool ShouldRestoreDevices { get; set; } = false;
+
         public override string ToString()
         {
             return new TriggerFactory().Get(Type).Label;

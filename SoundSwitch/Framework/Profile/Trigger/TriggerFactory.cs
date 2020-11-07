@@ -44,6 +44,11 @@ namespace SoundSwitch.Framework.Profile.Trigger
         public int MaxGlobalOccurence { get; }
 
         public string Description { get; }
+
+        /// <summary>
+        /// This trigger let the user choose if the devices can be restored after the trigger has ended
+        /// </summary>
+        public bool CanRestoreDevices { get; }
     }
 
     public abstract class BaseTrigger : ITriggerDefinition
@@ -58,6 +63,7 @@ namespace SoundSwitch.Framework.Profile.Trigger
         public virtual  int                 MaxOccurence       { get; } = -1;
         public virtual  int                 MaxGlobalOccurence { get; } = -1;
         public abstract string              Description        { get; }
+        public virtual  bool                CanRestoreDevices  { get; } = false;
     }
 
     public class HotKeyTrigger : BaseTrigger
@@ -70,16 +76,19 @@ namespace SoundSwitch.Framework.Profile.Trigger
 
     public class WindowTrigger : BaseTrigger
     {
-        public override TriggerFactory.Enum TypeEnum    { get; } = TriggerFactory.Enum.Window;
-        public override string              Label       => SettingsStrings.profile_trigger_window;
-        public override string              Description { get; } = SettingsStrings.profile_trigger_window_desc;
+        public override TriggerFactory.Enum TypeEnum          { get; } = TriggerFactory.Enum.Window;
+        public override string              Label             => SettingsStrings.profile_trigger_window;
+        public override string              Description       { get; } = SettingsStrings.profile_trigger_window_desc;
+        public override bool                CanRestoreDevices { get; } = true;
     }
 
     public class ProcessTrigger : BaseTrigger
     {
-        public override TriggerFactory.Enum TypeEnum    { get; } = TriggerFactory.Enum.Process;
-        public override string              Label       => SettingsStrings.profile_trigger_process;
-        public override string              Description { get; } = SettingsStrings.profile_trigger_process_desc;
+        public override TriggerFactory.Enum TypeEnum          { get; } = TriggerFactory.Enum.Process;
+        public override string              Label             => SettingsStrings.profile_trigger_process;
+        public override string              Description       { get; } = SettingsStrings.profile_trigger_process_desc;
+        public override bool                CanRestoreDevices { get; } = true;
+
     }
 
     public class SteamBigPictureTrigger : BaseTrigger
@@ -90,6 +99,7 @@ namespace SoundSwitch.Framework.Profile.Trigger
         public override int    MaxOccurence       { get; } = 1;
         public override int    MaxGlobalOccurence { get; } = 1;
         public override string Description        { get; } = SettingsStrings.profile_trigger_steam_desc;
+        public override bool   CanRestoreDevices  { get; } = true;
     }
 
     public class Startup : BaseTrigger
