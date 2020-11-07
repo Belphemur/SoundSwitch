@@ -59,6 +59,8 @@ namespace SoundSwitch.UI.Forms
             switchDefaultCheckBox.DataBindings.Add(nameof(CheckBox.Checked), _profile, nameof(Profile.AlsoSwitchDefaultDevice), false, DataSourceUpdateMode.OnPropertyChanged);
             nameTextBox.DataBindings.Add(nameof(TextBox.Text), _profile, nameof(Profile.Name), false, DataSourceUpdateMode.OnPropertyChanged);
             notifyCheckbox.DataBindings.Add(nameof(CheckBox.Checked), _profile, nameof(Profile.NotifyOnActivation), false, DataSourceUpdateMode.OnPropertyChanged);
+            restoreDevicesCheckBox.Enabled = profile.AlsoSwitchDefaultDevice;
+            
         }
 
         private void InitRecordingPlaybackComboBoxes(IEnumerable<DeviceFullInfo> playbacks,
@@ -350,10 +352,7 @@ namespace SoundSwitch.UI.Forms
 
         private void switchDefaultCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            if (restoreDevicesCheckBox.Visible)
-            {
-                restoreDevicesCheckBox.Visible = switchDefaultCheckBox.Checked;
-            }
+            restoreDevicesCheckBox.Enabled = switchDefaultCheckBox.Checked;
         }
     }
 }

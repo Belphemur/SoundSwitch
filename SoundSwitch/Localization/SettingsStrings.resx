@@ -421,9 +421,6 @@ Both: Change when any type of device is switched.</value>
   <data name="profile.button.edit" xml:space="preserve">
     <value>Edit</value>
   </data>
-  <data name="profile.trigger.steam.msg" xml:space="preserve">
-    <value>Steam Big Picture closed</value>
-  </data>
   <data name="profile.trigger.startup" xml:space="preserve">
     <value>On Startup</value>
   </data>
@@ -440,7 +437,9 @@ Both: Change when any type of device is switched.</value>
     <value>Restore devices when trigger ends</value>
   </data>
   <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
-    <value>Restore the state of the system when the application is closed.</value>
+    <value>Needs "Also switch default device".
+
+Restore the state of the system when the application is closed.</value>
   </data>
   <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
     <value>System state restored</value>

@@ -368,9 +368,6 @@ Natpis: Koristi prilagođeni prozor koji se postavlja ispred svih drugih, korisn
   <data name="profile.trigger.startup" xml:space="preserve">
     <value>Pri pokretanju</value>
   </data>
-  <data name="profile.trigger.steam.msg" xml:space="preserve">
-    <value>Steam Big Picture zatvoren</value>
-  </data>
   <data name="usePrimaryScreenTooltip" xml:space="preserve">
     <value>Prikaži natpis na primarnom ekranu umjesto na trenutačno aktivnom ekranu.</value>
   </data>

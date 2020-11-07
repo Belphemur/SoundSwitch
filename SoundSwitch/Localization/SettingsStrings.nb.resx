@@ -308,9 +308,6 @@ Begge: Endre når enhetstypen byttes.</value>
   <data name="profile.error.device-not-found" xml:space="preserve">
     <value>Fant ikke enhet {0}.</value>
   </data>
-  <data name="profile.trigger.steam.msg" xml:space="preserve">
-    <value>Steam-storbilde lukket</value>
-  </data>
   <data name="profile.notification.text" xml:space="preserve">
     <value>Profil {0} utløst</value>
   </data>

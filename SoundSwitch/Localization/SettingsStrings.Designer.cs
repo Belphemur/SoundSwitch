@@ -755,7 +755,9 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Restore the state of the system when the application is closed..
+        ///   Looks up a localized string similar to Needs &quot;Also switch default device&quot;.
+        ///
+        ///Restore the state of the system when the application is closed..
         /// </summary>
         internal static string profile_trigger_restoreDevices_desc {
             get {
@@ -805,15 +807,6 @@ namespace SoundSwitch.Localization {
         internal static string profile_trigger_steam_desc {
             get {
                 return ResourceManager.GetString("profile.trigger.steam.desc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Steam Big Picture closed.
-        /// </summary>
-        internal static string profile_trigger_steam_msg {
-            get {
-                return ResourceManager.GetString("profile.trigger.steam.msg", resourceCulture);
             }
         }
         

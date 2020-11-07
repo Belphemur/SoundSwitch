@@ -382,9 +382,6 @@ Beide: Wenn ein beliebiger Gerätetyp gewechselt wird.</value>
   <data name="profile.trigger.startup" xml:space="preserve">
     <value>Beim Start</value>
   </data>
-  <data name="profile.trigger.steam.msg" xml:space="preserve">
-    <value>Steam Big Picture beendet</value>
-  </data>
   <data name="profile.button.edit" xml:space="preserve">
     <value>Bearbeiten</value>
   </data>
