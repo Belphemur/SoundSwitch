@@ -19,7 +19,7 @@ namespace SoundSwitch.Localization {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class SettingsStrings {
@@ -742,6 +742,24 @@ namespace SoundSwitch.Localization {
         internal static string profile_trigger_process_desc {
             get {
                 return ResourceManager.GetString("profile.trigger.process.desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore devices when trigger ends.
+        /// </summary>
+        internal static string profile_trigger_restoreDevices {
+            get {
+                return ResourceManager.GetString("profile.trigger.restoreDevices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore the state of the system when the application is closed..
+        /// </summary>
+        internal static string profile_trigger_restoreDevices_desc {
+            get {
+                return ResourceManager.GetString("profile.trigger.restoreDevices.desc", resourceCulture);
             }
         }
         

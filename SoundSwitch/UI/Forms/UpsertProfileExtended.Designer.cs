@@ -57,6 +57,7 @@
             this.recordingComboBox = new SoundSwitch.UI.Component.IconTextComboBox();
             this.playbackComboBox = new SoundSwitch.UI.Component.IconTextComboBox();
             this.saveButton = new System.Windows.Forms.Button();
+            this.restoreDevicesCheckBox = new System.Windows.Forms.CheckBox();
             this.triggerBox.SuspendLayout();
             this.descriptionBox.SuspendLayout();
             this.profileBox.SuspendLayout();
@@ -67,6 +68,7 @@
             this.triggerBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.triggerBox.Controls.Add(this.restoreDevicesCheckBox);
             this.triggerBox.Controls.Add(this.triggerLabel);
             this.triggerBox.Controls.Add(this.selectProgramButton);
             this.triggerBox.Controls.Add(this.descriptionBox);
@@ -80,7 +82,7 @@
             this.triggerBox.Controls.Add(this.setTriggerBox);
             this.triggerBox.Location = new System.Drawing.Point(12, 262);
             this.triggerBox.Name = "triggerBox";
-            this.triggerBox.Size = new System.Drawing.Size(573, 213);
+            this.triggerBox.Size = new System.Drawing.Size(573, 243);
             this.triggerBox.TabIndex = 0;
             this.triggerBox.TabStop = false;
             this.triggerBox.Text = "Triggers";
@@ -97,7 +99,7 @@
             // selectProgramButton
             // 
             this.selectProgramButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.selectProgramButton.Location = new System.Drawing.Point(530, 155);
+            this.selectProgramButton.Location = new System.Drawing.Point(530, 185);
             this.selectProgramButton.Name = "selectProgramButton";
             this.selectProgramButton.Size = new System.Drawing.Size(24, 20);
             this.selectProgramButton.TabIndex = 9;
@@ -114,7 +116,7 @@
             this.descriptionBox.Controls.Add(this.descriptionLabel);
             this.descriptionBox.Location = new System.Drawing.Point(273, 80);
             this.descriptionBox.Name = "descriptionBox";
-            this.descriptionBox.Size = new System.Drawing.Size(284, 64);
+            this.descriptionBox.Size = new System.Drawing.Size(284, 76);
             this.descriptionBox.TabIndex = 8;
             this.descriptionBox.TabStop = false;
             this.descriptionBox.Text = "Description";
@@ -125,7 +127,7 @@
             this.descriptionLabel.Location = new System.Drawing.Point(3, 16);
             this.descriptionLabel.Name = "descriptionLabel";
             this.descriptionLabel.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
-            this.descriptionLabel.Size = new System.Drawing.Size(278, 45);
+            this.descriptionLabel.Size = new System.Drawing.Size(278, 57);
             this.descriptionLabel.TabIndex = 8;
             this.descriptionLabel.Text = "Description of the selected trigger";
             // 
@@ -133,7 +135,7 @@
             // 
             this.textInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textInput.Location = new System.Drawing.Point(273, 155);
+            this.textInput.Location = new System.Drawing.Point(273, 185);
             this.textInput.Name = "textInput";
             this.textInput.Size = new System.Drawing.Size(251, 20);
             this.textInput.TabIndex = 7;
@@ -148,7 +150,7 @@
             // deleteButton
             // 
             this.deleteButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.deleteButton.Location = new System.Drawing.Point(183, 181);
+            this.deleteButton.Location = new System.Drawing.Point(183, 211);
             this.deleteButton.Name = "deleteButton";
             this.deleteButton.Size = new System.Drawing.Size(75, 23);
             this.deleteButton.TabIndex = 5;
@@ -200,7 +202,7 @@
             this.setTriggerBox.FormattingEnabled = true;
             this.setTriggerBox.Location = new System.Drawing.Point(11, 80);
             this.setTriggerBox.Name = "setTriggerBox";
-            this.setTriggerBox.Size = new System.Drawing.Size(247, 95);
+            this.setTriggerBox.Size = new System.Drawing.Size(247, 121);
             this.setTriggerBox.TabIndex = 0;
             this.setTriggerBox.SelectedIndexChanged += new System.EventHandler(this.setTriggerBox_SelectedIndexChanged);
             // 
@@ -386,7 +388,7 @@
             // saveButton
             // 
             this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.saveButton.Location = new System.Drawing.Point(479, 484);
+            this.saveButton.Location = new System.Drawing.Point(479, 514);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(100, 26);
             this.saveButton.TabIndex = 2;
@@ -394,11 +396,21 @@
             this.saveButton.UseVisualStyleBackColor = true;
             this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
+            // restoreDevicesCheckBox
+            // 
+            this.restoreDevicesCheckBox.AutoSize = true;
+            this.restoreDevicesCheckBox.Location = new System.Drawing.Point(273, 163);
+            this.restoreDevicesCheckBox.Name = "restoreDevicesCheckBox";
+            this.restoreDevicesCheckBox.Size = new System.Drawing.Size(190, 17);
+            this.restoreDevicesCheckBox.TabIndex = 11;
+            this.restoreDevicesCheckBox.Text = "Restore devices when trigger ends";
+            this.restoreDevicesCheckBox.UseVisualStyleBackColor = true;
+            // 
             // UpsertProfileExtended
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(595, 521);
+            this.ClientSize = new System.Drawing.Size(595, 551);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.profileBox);
             this.Controls.Add(this.triggerBox);
@@ -445,5 +457,7 @@
         private System.Windows.Forms.Label triggerLabel;
 
         #endregion
+
+        private System.Windows.Forms.CheckBox restoreDevicesCheckBox;
     }
 }
