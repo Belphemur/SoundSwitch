@@ -187,10 +187,15 @@ namespace SoundSwitch.Framework.Configuration
 
             if (!MigratedFields.Contains(nameof(Profiles) + "_Restore"))
             {
-                var steamProfile = Profiles.FirstOrDefault(profile => profile.Triggers.FirstOrDefault(trigger => trigger.Type == TriggerFactory.Enum.Steam) != null);
-                if (steamProfile != null)
+                foreach (var trigger in Profiles.SelectMany(profile => profile.Triggers))
                 {
-                    steamProfile.Triggers.First(trigger => trigger.Type == TriggerFactory.Enum.Steam).ShouldRestoreDevices = true;
+                    if (trigger.Type == TriggerFactory.Enum.Steam)
+                    {
+                        trigger.ShouldRestoreDevices = false;
+                        continue;
+                    }
+
+                    trigger.ShouldRestoreDevices = false;
                 }
 
                 MigratedFields.Add(nameof(Profiles) + "_Restore");
