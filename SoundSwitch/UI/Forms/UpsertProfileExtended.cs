@@ -182,7 +182,7 @@ namespace SoundSwitch.UI.Forms
 
             restoreDevicesCheckBox.DataBindings.Clear();
 
-            if (triggerDefinition.CanRestoreDevices)
+            if (triggerDefinition.CanRestoreDevices && _profile.AlsoSwitchDefaultDevice)
             {
                 restoreDevicesCheckBox.DataBindings.Add(nameof(CheckBox.Checked), trigger, nameof(Trigger.ShouldRestoreDevices), true, DataSourceUpdateMode.OnPropertyChanged);
                 restoreDevicesCheckBox.Show();
@@ -346,6 +346,14 @@ namespace SoundSwitch.UI.Forms
                     MessageBox.Show(s, SettingsStrings.profile_error_title, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return Result.Success();
                 });
+        }
+
+        private void switchDefaultCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (restoreDevicesCheckBox.Visible)
+            {
+                restoreDevicesCheckBox.Visible = switchDefaultCheckBox.Checked;
+            }
         }
     }
 }

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.triggerBox = new System.Windows.Forms.GroupBox();
+            this.restoreDevicesCheckBox = new System.Windows.Forms.CheckBox();
             this.triggerLabel = new System.Windows.Forms.Label();
             this.selectProgramButton = new System.Windows.Forms.Button();
             this.descriptionBox = new System.Windows.Forms.GroupBox();
@@ -57,7 +58,6 @@
             this.recordingComboBox = new SoundSwitch.UI.Component.IconTextComboBox();
             this.playbackComboBox = new SoundSwitch.UI.Component.IconTextComboBox();
             this.saveButton = new System.Windows.Forms.Button();
-            this.restoreDevicesCheckBox = new System.Windows.Forms.CheckBox();
             this.triggerBox.SuspendLayout();
             this.descriptionBox.SuspendLayout();
             this.profileBox.SuspendLayout();
@@ -86,6 +86,16 @@
             this.triggerBox.TabIndex = 0;
             this.triggerBox.TabStop = false;
             this.triggerBox.Text = "Triggers";
+            // 
+            // restoreDevicesCheckBox
+            // 
+            this.restoreDevicesCheckBox.AutoSize = true;
+            this.restoreDevicesCheckBox.Location = new System.Drawing.Point(273, 163);
+            this.restoreDevicesCheckBox.Name = "restoreDevicesCheckBox";
+            this.restoreDevicesCheckBox.Size = new System.Drawing.Size(190, 17);
+            this.restoreDevicesCheckBox.TabIndex = 11;
+            this.restoreDevicesCheckBox.Text = "Restore devices when trigger ends";
+            this.restoreDevicesCheckBox.UseVisualStyleBackColor = true;
             // 
             // triggerLabel
             // 
@@ -306,6 +316,7 @@
             this.switchDefaultCheckBox.TabIndex = 22;
             this.switchDefaultCheckBox.Text = "Also switch default device";
             this.switchDefaultCheckBox.UseVisualStyleBackColor = true;
+            this.switchDefaultCheckBox.CheckedChanged += new System.EventHandler(this.switchDefaultCheckBox_CheckedChanged);
             // 
             // recordingRemoveButton
             // 
@@ -395,16 +406,6 @@
             this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
             this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
-            // 
-            // restoreDevicesCheckBox
-            // 
-            this.restoreDevicesCheckBox.AutoSize = true;
-            this.restoreDevicesCheckBox.Location = new System.Drawing.Point(273, 163);
-            this.restoreDevicesCheckBox.Name = "restoreDevicesCheckBox";
-            this.restoreDevicesCheckBox.Size = new System.Drawing.Size(190, 17);
-            this.restoreDevicesCheckBox.TabIndex = 11;
-            this.restoreDevicesCheckBox.Text = "Restore devices when trigger ends";
-            this.restoreDevicesCheckBox.UseVisualStyleBackColor = true;
             // 
             // UpsertProfileExtended
             // 
