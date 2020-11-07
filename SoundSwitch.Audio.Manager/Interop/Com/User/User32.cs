@@ -57,7 +57,7 @@ namespace SoundSwitch.Audio.Manager.Interop.Com.User
         public static class NativeMethods
         {
             [StructLayout(LayoutKind.Sequential)]
-            public struct HWND
+            public struct HWND : IEquatable<HWND>
             {
                 public IntPtr h;
 
@@ -95,13 +95,17 @@ namespace SoundSwitch.Audio.Manager.Interop.Com.User
 
                 override public bool Equals(object oCompare)
                 {
-                    HWND hr = Cast((HWND) oCompare);
-                    return h == hr.h;
+                    return oCompare is HWND other && Equals(other);
                 }
 
                 public override int GetHashCode()
                 {
-                    return (int) h;
+                    return h.GetHashCode();
+                }
+
+                public bool Equals(HWND other)
+                {
+                    return h.Equals(other.h);
                 }
             }
 
