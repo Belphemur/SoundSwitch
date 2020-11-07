@@ -14,6 +14,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Net;
 using System.Windows.Forms;
 using Serilog;
 using SoundSwitch.Framework;
@@ -29,8 +30,9 @@ namespace SoundSwitch.UI.Forms
     {
         private static readonly System.Drawing.Icon updateIcon = Resources.UpdateIcon;
 
-        private readonly bool _redirectLinks = false;
-        private readonly WebFile _releaseFile;
+        private readonly bool                                _redirectLinks = false;
+        private readonly WebFile                             _releaseFile;
+        private          DownloadProgressChangedEventHandler _releaseFileOnDownloadProgressChanged;
 
         public UpdateDownloadForm(Release release)
         {
@@ -46,10 +48,15 @@ namespace SoundSwitch.UI.Forms
             downloadProgress.CustomText = release.Asset.name;
 
             _releaseFile = new WebFile(new Uri(release.Asset.browser_download_url));
-            _releaseFile.DownloadProgressChanged += (sender, args) =>
+            _releaseFileOnDownloadProgressChanged = (sender, args) =>
             {
+                if (downloadProgress.IsDisposed)
+                {
+                    return;
+                }
                 downloadProgress.Invoke(new Action(() => { downloadProgress.Value = args.ProgressPercentage; }));
             };
+            _releaseFile.DownloadProgressChanged += _releaseFileOnDownloadProgressChanged;
             _releaseFile.DownloadFailed += (sender, @event) =>
             {
                 Log.Error(@event.Exception, "Couldn't download the Release ");
@@ -97,6 +104,7 @@ namespace SoundSwitch.UI.Forms
 
         private void UpdateDownloadForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            _releaseFile.DownloadProgressChanged -= _releaseFileOnDownloadProgressChanged;
             _releaseFile.CancelDownload();
         }
 
