@@ -182,7 +182,12 @@ namespace SoundSwitch.UI.Forms
 
             restoreDevicesCheckBox.Hide();
             restoreDevicesCheckBox.DataBindings.Clear();
-            restoreDevicesCheckBox.DataBindings.Add(nameof(CheckBox.Checked), trigger, nameof(Trigger.ShouldRestoreDevices), true, DataSourceUpdateMode.OnPropertyChanged);
+
+            if (triggerDefinition.CanRestoreDevices)
+            {
+                restoreDevicesCheckBox.DataBindings.Add(nameof(CheckBox.Checked), trigger, nameof(Trigger.ShouldRestoreDevices), true, DataSourceUpdateMode.OnPropertyChanged);
+                restoreDevicesCheckBox.Show();
+            }
 
             trigger.Type.Switch(() =>
                 {
@@ -196,7 +201,6 @@ namespace SoundSwitch.UI.Forms
                     textInput.DataBindings.Clear();
                     textInput.DataBindings.Add(nameof(TextBox.Text), trigger, nameof(Trigger.WindowName), true, DataSourceUpdateMode.OnPropertyChanged);
                     textInput.Show();
-                    restoreDevicesCheckBox.Show();
                 },
                 () =>
                 {
@@ -204,9 +208,8 @@ namespace SoundSwitch.UI.Forms
                     textInput.DataBindings.Add(nameof(TextBox.Text), trigger, nameof(Trigger.ApplicationPath), true, DataSourceUpdateMode.OnPropertyChanged);
                     textInput.Show();
                     selectProgramButton.Show();
-                    restoreDevicesCheckBox.Show();
                 },
-                () => { restoreDevicesCheckBox.Show(); },
+                () => { },
                 () => { });
         }
 
