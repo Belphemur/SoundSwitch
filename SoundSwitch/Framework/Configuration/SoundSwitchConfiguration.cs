@@ -185,6 +185,17 @@ namespace SoundSwitch.Framework.Configuration
                 migrated = true;
             }
 
+            if (!MigratedFields.Contains(nameof(Profiles) + "_Restore"))
+            {
+                var steamProfile = Profiles.FirstOrDefault(profile => profile.Triggers.FirstOrDefault(trigger => trigger.Type == TriggerFactory.Enum.Steam) != null);
+                if (steamProfile != null)
+                {
+                    steamProfile.Triggers.First(trigger => trigger.Type == TriggerFactory.Enum.Steam).ShouldRestoreDevices = true;
+                }
+
+                MigratedFields.Add(nameof(Profiles) + "_Restore");
+            }
+
             return migrated;
 #pragma warning restore 612
         }
