@@ -180,7 +180,6 @@ namespace SoundSwitch.UI.Forms
             descriptionLabel.Show();
             triggerLabel.Show();
 
-            restoreDevicesCheckBox.Hide();
             restoreDevicesCheckBox.DataBindings.Clear();
 
             if (triggerDefinition.CanRestoreDevices)
