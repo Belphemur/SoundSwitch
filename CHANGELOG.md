@@ -568,6 +568,7 @@
 - Cleaned and updated Makefiles [\#280](https://github.com/Belphemur/SoundSwitch/pull/280) ([FireEmerald](https://github.com/FireEmerald))
 - Added logo and ico [\#278](https://github.com/Belphemur/SoundSwitch/pull/278) ([linadesteem](https://github.com/linadesteem))
 - Add Portuguese\(Brazilian\) to the installer. [\#275](https://github.com/Belphemur/SoundSwitch/pull/275) ([aleczk](https://github.com/aleczk))
+- Update SettingsStrings.pt-BR.resx [\#266](https://github.com/Belphemur/SoundSwitch/pull/266) ([opus-2](https://github.com/opus-2))
 
 ## [v4.7](https://github.com/Belphemur/SoundSwitch/tree/v4.7) (2018-05-15)
 
@@ -598,7 +599,6 @@
 
 **Merged pull requests:**
 
-- Update SettingsStrings.pt-BR.resx [\#266](https://github.com/Belphemur/SoundSwitch/pull/266) ([opus-2](https://github.com/opus-2))
 - Update italian.iss [\#265](https://github.com/Belphemur/SoundSwitch/pull/265) ([bovirus](https://github.com/bovirus))
 - Several updates [\#264](https://github.com/Belphemur/SoundSwitch/pull/264) ([bovirus](https://github.com/bovirus))
 - Update Italian strings [\#263](https://github.com/Belphemur/SoundSwitch/pull/263) ([bovirus](https://github.com/bovirus))
@@ -676,7 +676,6 @@
 
 **Fixed bugs:**
 
-- Settings crash when device don't have a friendly name [\#225](https://github.com/Belphemur/SoundSwitch/issues/225)
 - Locking up on switch since Fall Creator's Update [\#219](https://github.com/Belphemur/SoundSwitch/issues/219)
 - Application crashes when activating a bluetooth device - Win7 [\#217](https://github.com/Belphemur/SoundSwitch/issues/217)
 - Soundswitch crash on startup [\#214](https://github.com/Belphemur/SoundSwitch/issues/214)
@@ -701,6 +700,7 @@
 
 **Fixed bugs:**
 
+- Settings crash when device don't have a friendly name [\#225](https://github.com/Belphemur/SoundSwitch/issues/225)
 - App Crash with MP3 file used for Banner Notification \(works fine in Custom Sound Notification\) [\#218](https://github.com/Belphemur/SoundSwitch/issues/218)
 - Invalid sound file make SoundSwitch crash [\#210](https://github.com/Belphemur/SoundSwitch/issues/210)
 
@@ -716,8 +716,8 @@
 **Fixed bugs:**
 
 - Can't install vcredist with the built in installer provided by soundswitch [\#203](https://github.com/Belphemur/SoundSwitch/issues/203)
-- SoundSwitch in Homeoffice/Office [\#199](https://github.com/Belphemur/SoundSwitch/issues/199)
 - Updater Progress bar crash with Classic Visual Theme [\#194](https://github.com/Belphemur/SoundSwitch/issues/194)
+- Installer don't detect .net 4.7 [\#193](https://github.com/Belphemur/SoundSwitch/issues/193)
 
 **Closed issues:**
 
@@ -743,7 +743,7 @@
 
 **Fixed bugs:**
 
-- Installer don't detect .net 4.7 [\#193](https://github.com/Belphemur/SoundSwitch/issues/193)
+- SoundSwitch in Homeoffice/Office [\#199](https://github.com/Belphemur/SoundSwitch/issues/199)
 - Soundswitch crashes on RDP connect [\#187](https://github.com/Belphemur/SoundSwitch/issues/187)
 
 **Closed issues:**
