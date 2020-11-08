@@ -427,4 +427,21 @@ Beide: Wenn ein beliebiger Gerätetyp gewechselt wird.</value>
   <data name="profile.trigger.window.desc" xml:space="preserve">
     <value>Aktiviert das Profil, wenn das Programm im Vordergrund die folgenden Zeichen enthält</value>
   </data>
+  <data name="usePrimaryScreenTooltip" xml:space="preserve">
+    <value>Das Banner auf dem Primärbildschirm anzeigen statt auf dem fokussierten Bildschirm.</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
+    <value>Systemzustand wiederhergestellt</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
+    <value>Erfordert "Ändere auch das Standardgerät".
+
+Stellt den Zustand des Systems wieder her, wenn die Anwendung geschlossen wird.</value>
+  </data>
+  <data name="profile.trigger.restoreDevices" xml:space="preserve">
+    <value>Geräte wiederherstellen, wenn der Trigger endet</value>
+  </data>
+  <data name="usePrimaryScreen" xml:space="preserve">
+    <value>Immer auf Primärbildschirm anzeigen</value>
+  </data>
 </root>
