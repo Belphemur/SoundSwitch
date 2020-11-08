@@ -85,10 +85,20 @@ namespace SoundSwitch.UI.Forms
             // Settings - Audio
             switchCommunicationDeviceCheckBox.Checked = AppModel.Instance.SetCommunications;
 
-
             var switchCommunicationsDeviceToolTip = new ToolTip();
             switchCommunicationsDeviceToolTip.SetToolTip(switchCommunicationDeviceCheckBox,
                 SettingsStrings.communicationsDeviceTooltip);
+
+            foregroundAppCheckbox.Checked = AppModel.Instance.SwitchForegroundProgram;
+
+            var foregroundAppToolTip = new ToolTip();
+            foregroundAppToolTip.SetToolTip(foregroundAppCheckbox, SettingsStrings.foregroundAppTooltip);
+
+            usePrimaryScreenCheckbox.Checked = AppModel.Instance.NotifyUsingPrimaryScreen;
+            usePrimaryScreenCheckbox.Enabled = AppModel.Instance.NotificationSettings == NotificationTypeEnum.BannerNotification;
+
+            var usePrimaryScreenTooltip = new ToolTip();
+            usePrimaryScreenTooltip.SetToolTip(usePrimaryScreenCheckbox, SettingsStrings.usePrimaryScreenTooltip);
 
             var notificationToolTip = new ToolTip();
             notificationToolTip.SetToolTip(notificationComboBox, SettingsStrings.notificationTooltip);
@@ -125,19 +135,8 @@ namespace SoundSwitch.UI.Forms
             new DeviceCyclerFactory().ConfigureListControl(cycleThroughComboBox);
             cycleThroughComboBox.SelectedValue = DeviceCyclerManager.CurrentCycler;
 
-
             var cycleThroughToolTip = new ToolTip();
             cycleThroughToolTip.SetToolTip(cycleThroughComboBox, SettingsStrings.cycleThroughTooltip);
-
-            foregroundAppCheckbox.Checked = AppModel.Instance.SwitchForegroundProgram;
-            usePrimaryScreenCheckbox.Checked = AppModel.Instance.NotifyUsingPrimaryScreen;
-            usePrimaryScreenCheckbox.Visible = AppModel.Instance.NotificationSettings == NotificationTypeEnum.BannerNotification;
-
-            var foregroundAppToolTip = new ToolTip();
-            foregroundAppToolTip.SetToolTip(foregroundAppCheckbox, SettingsStrings.foregroundAppTooltip);
-
-            var usePrimaryScreenTooltip = new ToolTip();
-            usePrimaryScreenTooltip.SetToolTip(usePrimaryScreenCheckbox, SettingsStrings.usePrimaryScreenTooltip);
 
             // Settings - Update
             includeBetaVersionsCheckBox.Checked = AppModel.Instance.IncludeBetaVersions;
@@ -405,7 +404,7 @@ namespace SoundSwitch.UI.Forms
                 }
             }
 
-            usePrimaryScreenCheckbox.Visible = notificationType == NotificationTypeEnum.BannerNotification;
+            usePrimaryScreenCheckbox.Enabled = notificationType == NotificationTypeEnum.BannerNotification;
 
             AppModel.Instance.NotificationSettings = notificationType;
         }
