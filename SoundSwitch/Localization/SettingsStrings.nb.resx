@@ -369,7 +369,7 @@ Begge: Endre når enhetstypen byttes.</value>
     <value>Det finnes allerede en profil med dette vindusnavnet: {0}.</value>
   </data>
   <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
-    <value>Behøver «Bytt forvalgt enhet også» påslått.
+    <value>Behøver «{0}» påslått.
 
 Gjenopprett systemets tilstand når programmet lukkes.</value>
   </data>
