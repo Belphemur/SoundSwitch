@@ -755,7 +755,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Needs &quot;Also switch default device&quot;.
+        ///   Looks up a localized string similar to Requires &quot;{0}&quot; to be enabled.
         ///
         ///Restore the state of the system when the application is closed..
         /// </summary>

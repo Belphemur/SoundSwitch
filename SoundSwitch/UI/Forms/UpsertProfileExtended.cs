@@ -118,7 +118,10 @@ namespace SoundSwitch.UI.Forms
             new ToolTip().SetToolTip(switchDefaultCheckBox, SettingsStrings.profile_defaultDevice_checkbox_tooltip);
 
             _restoreDeviceToolTip = new ToolTip();
-            _restoreDeviceToolTip.SetToolTip(restoreDevicesCheckBox, SettingsStrings.profile_trigger_restoreDevices_desc);
+            _restoreDeviceToolTip.SetToolTip(
+                restoreDevicesCheckBox, 
+                string.Format(SettingsStrings.profile_trigger_restoreDevices_desc, SettingsStrings.profile_defaultDevice_checkbox)
+            );
         }
 
         private void InitializeFromProfile()

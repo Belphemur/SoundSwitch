@@ -437,7 +437,7 @@ Both: Change when any type of device is switched.</value>
     <value>Restore devices when trigger ends</value>
   </data>
   <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
-    <value>Needs "Also switch default device".
+    <value>Requires "{0}" to be enabled.
 
 Restore the state of the system when the application is closed.</value>
   </data>
