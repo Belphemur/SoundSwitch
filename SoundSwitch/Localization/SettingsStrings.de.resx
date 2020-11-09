@@ -434,7 +434,7 @@ Beide: Wenn ein beliebiger Gerätetyp gewechselt wird.</value>
     <value>Systemzustand wiederhergestellt</value>
   </data>
   <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
-    <value>Erfordert "Ändere auch das Standardgerät".
+    <value>Erfordert "{0}".
 
 Stellt den Zustand des Systems wieder her, wenn die Anwendung geschlossen wird.</value>
   </data>
