@@ -292,8 +292,6 @@ namespace SoundSwitch.UI.Forms
             // 
             // languageGroupBox
             // 
-            this.languageGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.languageGroupBox.Controls.Add(this.languageComboBox);
             this.languageGroupBox.Location = new System.Drawing.Point(434, 156);
             this.languageGroupBox.Name = "languageGroupBox";
@@ -314,8 +312,6 @@ namespace SoundSwitch.UI.Forms
             // 
             // updateSettingsGroupBox
             // 
-            this.updateSettingsGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.updateSettingsGroupBox.Controls.Add(this.updateNeverRadioButton);
             this.updateSettingsGroupBox.Controls.Add(this.updateNotifyRadioButton);
             this.updateSettingsGroupBox.Controls.Add(this.updateSilentRadioButton);
@@ -397,7 +393,7 @@ namespace SoundSwitch.UI.Forms
             // usePrimaryScreenCheckbox
             // 
             this.usePrimaryScreenCheckbox.AutoSize = true;
-            this.usePrimaryScreenCheckbox.Location = new System.Drawing.Point(108, 106);
+            this.usePrimaryScreenCheckbox.Location = new System.Drawing.Point(118, 106);
             this.usePrimaryScreenCheckbox.Name = "usePrimaryScreenCheckbox";
             this.usePrimaryScreenCheckbox.Size = new System.Drawing.Size(150, 17);
             this.usePrimaryScreenCheckbox.TabIndex = 26;
@@ -421,7 +417,7 @@ namespace SoundSwitch.UI.Forms
             this.deleteSoundButton.Image = global::SoundSwitch.Properties.Resources.delete;
             this.deleteSoundButton.Location = new System.Drawing.Point(391, 77);
             this.deleteSoundButton.Name = "deleteSoundButton";
-            this.deleteSoundButton.Size = new System.Drawing.Size(23, 23);
+            this.deleteSoundButton.Size = new System.Drawing.Size(24, 24);
             this.deleteSoundButton.TabIndex = 24;
             this.deleteSoundButton.UseVisualStyleBackColor = true;
             this.deleteSoundButton.Visible = false;
@@ -431,7 +427,7 @@ namespace SoundSwitch.UI.Forms
             // 
             this.cycleThroughLabel.Location = new System.Drawing.Point(2, 174);
             this.cycleThroughLabel.Name = "cycleThroughLabel";
-            this.cycleThroughLabel.Size = new System.Drawing.Size(100, 15);
+            this.cycleThroughLabel.Size = new System.Drawing.Size(110, 15);
             this.cycleThroughLabel.TabIndex = 23;
             this.cycleThroughLabel.Text = "Cycle through";
             this.cycleThroughLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -440,9 +436,9 @@ namespace SoundSwitch.UI.Forms
             // 
             this.cycleThroughComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cycleThroughComboBox.FormattingEnabled = true;
-            this.cycleThroughComboBox.Location = new System.Drawing.Point(108, 172);
+            this.cycleThroughComboBox.Location = new System.Drawing.Point(118, 172);
             this.cycleThroughComboBox.Name = "cycleThroughComboBox";
-            this.cycleThroughComboBox.Size = new System.Drawing.Size(247, 21);
+            this.cycleThroughComboBox.Size = new System.Drawing.Size(237, 21);
             this.cycleThroughComboBox.TabIndex = 22;
             this.cycleThroughComboBox.SelectedValueChanged += new System.EventHandler(this.cyclerComboBox_SelectedValueChanged);
             // 
@@ -450,7 +446,7 @@ namespace SoundSwitch.UI.Forms
             // 
             this.tooltipOnHoverLabel.Location = new System.Drawing.Point(2, 138);
             this.tooltipOnHoverLabel.Name = "tooltipOnHoverLabel";
-            this.tooltipOnHoverLabel.Size = new System.Drawing.Size(100, 15);
+            this.tooltipOnHoverLabel.Size = new System.Drawing.Size(110, 15);
             this.tooltipOnHoverLabel.TabIndex = 21;
             this.tooltipOnHoverLabel.Text = "Tooltip on Hover";
             this.tooltipOnHoverLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -459,9 +455,9 @@ namespace SoundSwitch.UI.Forms
             // 
             this.tooltipInfoComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.tooltipInfoComboBox.FormattingEnabled = true;
-            this.tooltipInfoComboBox.Location = new System.Drawing.Point(108, 136);
+            this.tooltipInfoComboBox.Location = new System.Drawing.Point(118, 136);
             this.tooltipInfoComboBox.Name = "tooltipInfoComboBox";
-            this.tooltipInfoComboBox.Size = new System.Drawing.Size(247, 21);
+            this.tooltipInfoComboBox.Size = new System.Drawing.Size(237, 21);
             this.tooltipInfoComboBox.TabIndex = 20;
             this.tooltipInfoComboBox.SelectedValueChanged += new System.EventHandler(this.tooltipInfoComboBox_SelectedValueChanged);
             // 
@@ -469,7 +465,7 @@ namespace SoundSwitch.UI.Forms
             // 
             this.selectSoundButton.Location = new System.Drawing.Point(361, 77);
             this.selectSoundButton.Name = "selectSoundButton";
-            this.selectSoundButton.Size = new System.Drawing.Size(24, 23);
+            this.selectSoundButton.Size = new System.Drawing.Size(24, 24);
             this.selectSoundButton.TabIndex = 19;
             this.selectSoundButton.Text = "...";
             this.selectSoundButton.UseVisualStyleBackColor = true;
@@ -480,7 +476,7 @@ namespace SoundSwitch.UI.Forms
             // 
             this.notificationLabel.Location = new System.Drawing.Point(2, 81);
             this.notificationLabel.Name = "notificationLabel";
-            this.notificationLabel.Size = new System.Drawing.Size(100, 15);
+            this.notificationLabel.Size = new System.Drawing.Size(110, 15);
             this.notificationLabel.TabIndex = 17;
             this.notificationLabel.Text = "Notification";
             this.notificationLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -489,9 +485,9 @@ namespace SoundSwitch.UI.Forms
             // 
             this.notificationComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.notificationComboBox.FormattingEnabled = true;
-            this.notificationComboBox.Location = new System.Drawing.Point(108, 79);
+            this.notificationComboBox.Location = new System.Drawing.Point(118, 79);
             this.notificationComboBox.Name = "notificationComboBox";
-            this.notificationComboBox.Size = new System.Drawing.Size(247, 21);
+            this.notificationComboBox.Size = new System.Drawing.Size(237, 21);
             this.notificationComboBox.TabIndex = 16;
             this.notificationComboBox.SelectedValueChanged += new System.EventHandler(this.notificationComboBox_SelectedValueChanged);
             // 
@@ -511,7 +507,7 @@ namespace SoundSwitch.UI.Forms
             // 
             this.iconChangeLabel.Location = new System.Drawing.Point(2, 53);
             this.iconChangeLabel.Name = "iconChangeLabel";
-            this.iconChangeLabel.Size = new System.Drawing.Size(100, 15);
+            this.iconChangeLabel.Size = new System.Drawing.Size(110, 15);
             this.iconChangeLabel.TabIndex = 27;
             this.iconChangeLabel.Text = "Systray Icon";
             this.iconChangeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -520,9 +516,9 @@ namespace SoundSwitch.UI.Forms
             // 
             this.iconChangeChoicesComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.iconChangeChoicesComboBox.FormattingEnabled = true;
-            this.iconChangeChoicesComboBox.Location = new System.Drawing.Point(108, 51);
+            this.iconChangeChoicesComboBox.Location = new System.Drawing.Point(118, 51);
             this.iconChangeChoicesComboBox.Name = "iconChangeChoicesComboBox";
-            this.iconChangeChoicesComboBox.Size = new System.Drawing.Size(247, 21);
+            this.iconChangeChoicesComboBox.Size = new System.Drawing.Size(237, 21);
             this.iconChangeChoicesComboBox.TabIndex = 26;
             this.iconChangeChoicesComboBox.SelectedIndexChanged += new System.EventHandler(this.iconChangeChoicesComboBox_SelectedIndexChanged);
             // 
