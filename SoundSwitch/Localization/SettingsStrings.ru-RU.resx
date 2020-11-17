@@ -408,4 +408,17 @@
   <data name="profile.notification.text" xml:space="preserve">
     <value>Профиль {0} активирован</value>
   </data>
+  <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
+    <value>Требуется "{0}" , чтобы включить.
+Восстановите состояние системы при закрытии приложения.</value>
+  </data>
+  <data name="profile.trigger.startup.desc" xml:space="preserve">
+    <value>Профиль будет активирован автоматически при запуске SoundSwitch</value>
+  </data>
+  <data name="profile.notify-on-activation" xml:space="preserve">
+    <value>Уведомлять о срабатывании профиля</value>
+  </data>
+  <data name="profile.error.window" xml:space="preserve">
+    <value>Профиль с таким названием окна уже существует: {0}.</value>
+  </data>
 </root>
