@@ -363,15 +363,26 @@ Natpis: Koristi prilagođeni prozor koji se postavlja ispred svih drugih, korisn
     <value>Aktiviraj profil ako prednji program sadrži sljedeće znakove</value>
   </data>
   <data name="profile.trigger.startup.desc" xml:space="preserve">
-    <value>Profil će se aktivirati kad se pokrene SoundSwitch</value>
+    <value>Profil će se automatski aktivirati kad se pokrene SoundSwitch</value>
   </data>
   <data name="profile.trigger.startup" xml:space="preserve">
     <value>Pri pokretanju</value>
   </data>
   <data name="usePrimaryScreenTooltip" xml:space="preserve">
-    <value>Prikaži natpis na primarnom ekranu umjesto na trenutačno aktivnom ekranu.</value>
+    <value>Prikaži natpis na primarnom ekranu umjesto na fokusiranom ekranu.</value>
   </data>
   <data name="usePrimaryScreen" xml:space="preserve">
     <value>Uvijek koristi primarni ekran</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
+    <value>Stanje sustava obnovljeno</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
+    <value>„{0}” mora biti aktivirano.
+
+Obnovi stanje sustava kad se program zatvori.</value>
+  </data>
+  <data name="profile.trigger.restoreDevices" xml:space="preserve">
+    <value>Obnovi uređaje kad aktiviranje završi</value>
   </data>
 </root>
