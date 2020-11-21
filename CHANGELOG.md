@@ -1,5 +1,19 @@
 # Changelog
 
+## [v5.6.0](https://github.com/Belphemur/SoundSwitch/tree/v5.6.0) (2020-11-21)
+
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v5.5.4...v5.6.0)
+
+**Implemented enhancements:**
+
+- Move the restore device checkbox to the profile settings to make it more user friendly [\#521](https://github.com/Belphemur/SoundSwitch/issues/521)
+- Add a profile trigger for UWP apps [\#518](https://github.com/Belphemur/SoundSwitch/issues/518)
+- Add recent version to winget-pkgs? [\#512](https://github.com/Belphemur/SoundSwitch/issues/512)
+
+**Fixed bugs:**
+
+- Restore device choice not saved when editing profile [\#522](https://github.com/Belphemur/SoundSwitch/issues/522)
+
 ## [v5.5.4](https://github.com/Belphemur/SoundSwitch/tree/v5.5.4) (2020-11-07)
 
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v5.5.3...v5.5.4)
