@@ -162,9 +162,12 @@ namespace SoundSwitch.Framework.Profile
         /// </summary>
         private bool SaveCurrentState(User32.NativeMethods.HWND windowHandle, Profile profile, Trigger.Trigger trigger)
         {
-            if (!_triggerFactory.Get(trigger.Type).AlwaysDefaultAndRestoreDevice && (!trigger.ShouldRestoreDevices || !profile.AlsoSwitchDefaultDevice))
+            var triggerDefinition = _triggerFactory.Get(trigger.Type);
+            if (!(triggerDefinition.AlwaysDefaultAndRestoreDevice || (profile.RestoreDevices && triggerDefinition.CanRestoreDevices)))
+            {
                 return false;
-
+            }
+     
             if (_activeWindowsTrigger.ContainsKey(windowHandle))
             {
                 return false;

@@ -32,7 +32,9 @@ namespace SoundSwitch.Framework.Profile
         public IList<Trigger.Trigger> Triggers { get; set; } = new List<Trigger.Trigger>();
 
         public bool AlsoSwitchDefaultDevice { get; set; } = false;
-
+        /// <summary>
+        /// Should the device be restore when the profile is disabled
+        /// </summary>
         public bool RestoreDevices
         {
             get => AlsoSwitchDefaultDevice && (_restoreDevices ?? AlsoSwitchDefaultDevice);
