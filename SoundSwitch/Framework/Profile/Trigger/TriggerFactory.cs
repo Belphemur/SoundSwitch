@@ -124,9 +124,10 @@ namespace SoundSwitch.Framework.Profile.Trigger
 
     public class UwpApp : BaseTrigger
     {
-        public override TriggerFactory.Enum TypeEnum          { get; } = TriggerFactory.Enum.UwpApp;
-        public override string              Label             => SettingsStrings.profile_trigger_uwp;
-        public override bool                CanRestoreDevices { get; } = true;
-        public override string              Description       => SettingsStrings.profile_trigger_uwp_desc;
+        public override TriggerFactory.Enum TypeEnum                      { get; } = TriggerFactory.Enum.UwpApp;
+        public override string              Label                         => SettingsStrings.profile_trigger_uwp;
+        public override bool                CanRestoreDevices             { get; } = true;
+        public override string              Description                   => SettingsStrings.profile_trigger_uwp_desc;
+        public override bool                AlwaysDefaultAndRestoreDevice { get; } = true;
     }
 }
