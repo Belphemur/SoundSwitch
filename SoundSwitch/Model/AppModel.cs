@@ -332,10 +332,10 @@ namespace SoundSwitch.Model
         /// <returns></returns>
         public bool UnselectDevice(DeviceFullInfo device)
         {
-            var result = false;
+            bool result;
             try
             {
-                result = SelectedDevices.Remove(device);
+                result = SelectedDevices.Where(device.Equals).Aggregate(true, (current, deviceInfo) => current & SelectedDevices.Remove(device));
             }
             catch (ArgumentException)
             {
