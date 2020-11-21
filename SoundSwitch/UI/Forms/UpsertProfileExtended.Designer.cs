@@ -102,7 +102,7 @@
             // selectProgramButton
             // 
             this.selectProgramButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.selectProgramButton.Location = new System.Drawing.Point(618, 220);
+            this.selectProgramButton.Location = new System.Drawing.Point(618, 207);
             this.selectProgramButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.selectProgramButton.Name = "selectProgramButton";
             this.selectProgramButton.Size = new System.Drawing.Size(28, 23);
@@ -142,7 +142,7 @@
             // 
             this.textInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textInput.Location = new System.Drawing.Point(318, 220);
+            this.textInput.Location = new System.Drawing.Point(318, 207);
             this.textInput.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.textInput.Name = "textInput";
             this.textInput.Size = new System.Drawing.Size(292, 23);
