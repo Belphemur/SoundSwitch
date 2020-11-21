@@ -158,7 +158,7 @@ namespace SoundSwitch.Framework.Profile
             if (profileTuple != default && @event.WindowClass == "ApplicationFrameWindow")
             {
                 SaveCurrentState(@event.Hwnd, profileTuple.Profile, profileTuple.Trigger);
-                SwitchAudio(profileTuple.Profile, @event.ProcessId);
+                SwitchAudio(profileTuple.Profile);
                 return true;
             }
 
