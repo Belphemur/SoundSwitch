@@ -1,15 +1,16 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-  <TargetFrameworks>netcoreapp3.1;net472</TargetFrameworks>
     <OutputType>WinExe</OutputType>
     <StartupObject>SoundSwitch.Program</StartupObject>
     <PublishUrl>publish/</PublishUrl>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <LangVersion>8</LangVersion>
+    <LangVersion>9</LangVersion>
     <UseWindowsForms>true</UseWindowsForms>
     <Deterministic>false</Deterministic>
     <Configurations>Debug;Release;Beta</Configurations>
     <Platforms>AnyCPU</Platforms>
+    <TargetFramework>net5.0</TargetFramework>
+    <TargetPlatformIdentifier>Windows</TargetPlatformIdentifier>
   </PropertyGroup>
   <PropertyGroup>
     <TargetPlatformVersion>8.0</TargetPlatformVersion>
