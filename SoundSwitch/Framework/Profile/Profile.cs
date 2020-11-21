@@ -10,6 +10,8 @@ namespace SoundSwitch.Framework.Profile
 {
     public class Profile : IEquatable<Profile>
     {
+        private bool? _restoreDevices = null;
+
         internal class DeviceRoleWrapper
         {
             public DeviceInfo DeviceInfo { get; }
@@ -30,6 +32,12 @@ namespace SoundSwitch.Framework.Profile
         public IList<Trigger.Trigger> Triggers { get; set; } = new List<Trigger.Trigger>();
 
         public bool AlsoSwitchDefaultDevice { get; set; } = false;
+
+        public bool RestoreDevices
+        {
+            get => AlsoSwitchDefaultDevice && (_restoreDevices ?? AlsoSwitchDefaultDevice);
+            set => _restoreDevices = value;
+        }
 
         public bool NotifyOnActivation { get; set; } = true;
 
