@@ -11,7 +11,7 @@
 
 ## Requirements
 - ⚠ Operating System: Windows 7 or newer
-- ⚠ [Microsoft .NET Core 3.1.4](https://dotnet.microsoft.com/download/dotnet-core/current/runtime)
+- ⚠ [Microsoft .NET Core 3.1.10](https://dotnet.microsoft.com/download/dotnet-core/current/runtime)
 
 ## Donations
 If you'd like to support the development, we would love to see you [here ❤](https://soundswitch.aaflalo.me/#donate).
