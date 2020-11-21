@@ -24,7 +24,7 @@ if "%~1" neq "" (
 set FILE_DIR=%~dp0
 set FRAMEWORK=net5.0-windows
 set BIN_DIR=%FILE_DIR%SoundSwitch\bin\%buildPlatform%\%FRAMEWORK%\publish
-set LANGS=(fr de es nb pt-BR it-IT zh-CHS pl-PL ru-RU ko nl hr)
+set LANGS=(fr de es nb pt-BR it-IT zh pl-PL ru-RU ko nl hr)
 
 set finalDir=%FILE_DIR%Final
 
