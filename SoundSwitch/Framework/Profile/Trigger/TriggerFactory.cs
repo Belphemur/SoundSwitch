@@ -26,7 +26,7 @@ namespace SoundSwitch.Framework.Profile.Trigger
                 new WindowTrigger(),
                 new SteamBigPictureTrigger(),
                 new Startup(),
-                new UWPApp()
+                new UwpApp()
             };
 
         public TriggerFactory() : base(Impl)
@@ -122,7 +122,7 @@ namespace SoundSwitch.Framework.Profile.Trigger
         public override string Description { get; } = SettingsStrings.profile_trigger_startup_desc;
     }
 
-    public class UWPApp : BaseTrigger
+    public class UwpApp : BaseTrigger
     {
         public override TriggerFactory.Enum TypeEnum          { get; } = TriggerFactory.Enum.UwpApp;
         public override string              Label             => SettingsStrings.profile_trigger_uwp;

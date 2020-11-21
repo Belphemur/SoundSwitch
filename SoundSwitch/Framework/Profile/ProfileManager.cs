@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using Markdig.Syntax.Inlines;
 using NAudio.CoreAudioApi;
 using RailSharp;
 using RailSharp.Internal.Result;
@@ -29,7 +30,7 @@ namespace SoundSwitch.Framework.Profile
     {
         public delegate void ShowError(string errorMessage, string errorTitle);
 
-        private readonly BannerManager      _bannerManager = new BannerManager();
+        private readonly BannerManager      _bannerManager = new();
         private readonly WindowMonitor      _windowMonitor;
         private readonly AudioSwitcher      _audioSwitcher;
         private readonly IAudioDeviceLister _activeDeviceLister;
@@ -38,11 +39,12 @@ namespace SoundSwitch.Framework.Profile
 
         private Profile? _steamProfile;
 
-        private readonly Dictionary<User32.NativeMethods.HWND, Profile> _activeWindowsTrigger = new Dictionary<User32.NativeMethods.HWND, Profile>();
+        private readonly Dictionary<User32.NativeMethods.HWND, Profile> _activeWindowsTrigger = new();
 
-        private readonly Dictionary<HotKey, Profile>                                    _profilesByHotkey     = new Dictionary<HotKey, Profile>();
-        private readonly Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)> _profileByApplication = new Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)>();
-        private readonly Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)> _profilesByWindowName = new Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)>();
+        private readonly Dictionary<HotKey, Profile>                                    _profilesByHotkey     = new();
+        private readonly Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)> _profileByApplication = new();
+        private readonly Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)> _profilesByWindowName = new();
+        private readonly Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)> _profilesByUwpApp     = new();
 
 
         public IReadOnlyCollection<Profile> Profiles => AppConfigs.Configuration.Profiles;
@@ -76,7 +78,7 @@ namespace SoundSwitch.Framework.Profile
                         }
 
                         SwitchAudio(profile);
-                    });
+                    }, () => { _profilesByUwpApp.Add(trigger.WindowName.ToLower(), (profile, trigger)); });
             }
         }
 
@@ -91,7 +93,8 @@ namespace SoundSwitch.Framework.Profile
                     },
                     () => { _profilesByWindowName.Remove(trigger.WindowName.ToLower()); },
                     () => { _profileByApplication.Remove(trigger.ApplicationPath.ToLower()); },
-                    () => { _steamProfile = null; }, () => { });
+                    () => { _steamProfile = null; }, () => { },
+                    () => { _profilesByUwpApp.Remove(trigger.WindowName.ToLower()); });
             }
         }
 
@@ -127,25 +130,13 @@ namespace SoundSwitch.Framework.Profile
         {
             _windowMonitor.ForegroundChanged += (sender, @event) =>
             {
-                (Profile Profile, Trigger.Trigger Trigger) profileTuple;
-
                 if (HandleSteamBigPicture(@event)) return;
 
-                if (_profileByApplication.TryGetValue(@event.ProcessName.ToLower(), out profileTuple))
-                {
-                    SaveCurrentState(@event.Hwnd, profileTuple.Profile, profileTuple.Trigger);
-                    SwitchAudio(profileTuple.Profile, @event.ProcessId);
-                    return;
-                }
+                if (HandleApplication(@event)) return;
 
-                var windowNameLower = @event.WindowName.ToLower();
+                if (HandleUwpApp(@event)) return;
 
-                profileTuple = _profilesByWindowName.FirstOrDefault(pair => windowNameLower.Contains(pair.Key)).Value;
-                if (profileTuple != default)
-                {
-                    SaveCurrentState(@event.Hwnd, profileTuple.Profile, profileTuple.Trigger);
-                    SwitchAudio(profileTuple.Profile, @event.ProcessId);
-                }
+                if (HandleWindowName(@event)) return;
             };
 
             WindowsAPIAdapter.HotKeyPressed += (sender, args) =>
@@ -155,6 +146,52 @@ namespace SoundSwitch.Framework.Profile
                 SwitchAudio(profile);
             };
             WindowsAPIAdapter.WindowDestroyed += (sender, @event) => { RestoreState(@event.Hwnd); };
+        }
+
+        private bool HandleUwpApp(WindowMonitor.Event @event)
+        {
+            (Profile Profile, Trigger.Trigger Trigger) profileTuple;
+            
+            var windowNameLowerCase = @event.WindowName.ToLower();
+
+            profileTuple = _profilesByUwpApp.FirstOrDefault(pair => windowNameLowerCase.Contains(pair.Key)).Value;
+            if (profileTuple != default && @event.WindowClass == "ApplicationFrameWindow")
+            {
+                SaveCurrentState(@event.Hwnd, profileTuple.Profile, profileTuple.Trigger);
+                SwitchAudio(profileTuple.Profile, @event.ProcessId);
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool HandleWindowName(WindowMonitor.Event @event)
+        {
+            (Profile Profile, Trigger.Trigger Trigger) profileTuple;
+            var                                        windowNameLower = @event.WindowName.ToLower();
+
+            profileTuple = _profilesByWindowName.FirstOrDefault(pair => windowNameLower.Contains(pair.Key)).Value;
+            if (profileTuple != default)
+            {
+                SaveCurrentState(@event.Hwnd, profileTuple.Profile, profileTuple.Trigger);
+                SwitchAudio(profileTuple.Profile, @event.ProcessId);
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool HandleApplication(WindowMonitor.Event @event)
+        {
+            (Profile Profile, Trigger.Trigger Trigger) profileTuple;
+            if (_profileByApplication.TryGetValue(@event.ProcessName.ToLower(), out profileTuple))
+            {
+                SaveCurrentState(@event.Hwnd, profileTuple.Profile, profileTuple.Trigger);
+                SwitchAudio(profileTuple.Profile, @event.ProcessId);
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -167,7 +204,7 @@ namespace SoundSwitch.Framework.Profile
             {
                 return false;
             }
-     
+
             if (_activeWindowsTrigger.ContainsKey(windowHandle))
             {
                 return false;
@@ -413,7 +450,16 @@ namespace SoundSwitch.Framework.Profile
                         return null;
                     },
                     () => _steamProfile != null ? SettingsStrings.profile_error_steam : null,
-                    () => null);
+                    () => null,
+                    () =>
+                    {
+                        if (string.IsNullOrEmpty(trigger.WindowName) || _profilesByUwpApp.ContainsKey(trigger.WindowName.ToLower()))
+                        {
+                            return string.Format(SettingsStrings.profile_error_window, trigger.WindowName);
+                        }
+
+                        return null;
+                    });
                 if (error != null)
                 {
                     return error;

@@ -207,7 +207,7 @@ namespace SoundSwitch.UI.Forms
                     selectProgramButton.Show();
                 },
                 () => { },
-                () => { });
+                () => { }, TODO);
         }
 
         private void HideTriggerComponents()
