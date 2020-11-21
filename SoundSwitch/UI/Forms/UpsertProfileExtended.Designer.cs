@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UpsertProfileExtended));
             this.triggerBox = new System.Windows.Forms.GroupBox();
-            this.restoreDevicesCheckBox = new System.Windows.Forms.CheckBox();
             this.triggerLabel = new System.Windows.Forms.Label();
             this.selectProgramButton = new System.Windows.Forms.Button();
             this.descriptionBox = new System.Windows.Forms.GroupBox();
@@ -42,6 +42,7 @@
             this.addTriggerButton = new System.Windows.Forms.Button();
             this.availableTriggersText = new System.Windows.Forms.Label();
             this.setTriggerBox = new System.Windows.Forms.ListBox();
+            this.restoreDevicesCheckBox = new System.Windows.Forms.CheckBox();
             this.selectProgramDialog = new System.Windows.Forms.OpenFileDialog();
             this.profileBox = new System.Windows.Forms.GroupBox();
             this.notifyCheckbox = new System.Windows.Forms.CheckBox();
@@ -87,18 +88,6 @@
             this.triggerBox.TabIndex = 0;
             this.triggerBox.TabStop = false;
             this.triggerBox.Text = "Triggers";
-            // 
-            // restoreDevicesCheckBox
-            // 
-            this.restoreDevicesCheckBox.AutoSize = true;
-            this.restoreDevicesCheckBox.Location = new System.Drawing.Point(13, 90);
-            this.restoreDevicesCheckBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.restoreDevicesCheckBox.Name = "restoreDevicesCheckBox";
-            this.restoreDevicesCheckBox.Size = new System.Drawing.Size(107, 19);
-            this.restoreDevicesCheckBox.TabIndex = 11;
-            this.restoreDevicesCheckBox.Text = "Restore devices";
-            this.restoreDevicesCheckBox.UseVisualStyleBackColor = true;
-            this.restoreDevicesCheckBox.CheckedChanged += new System.EventHandler(this.restoreDevicesCheckBox_CheckedChanged);
             // 
             // triggerLabel
             // 
@@ -233,6 +222,18 @@
             this.setTriggerBox.TabIndex = 0;
             this.setTriggerBox.SelectedIndexChanged += new System.EventHandler(this.setTriggerBox_SelectedIndexChanged);
             // 
+            // restoreDevicesCheckBox
+            // 
+            this.restoreDevicesCheckBox.AutoSize = true;
+            this.restoreDevicesCheckBox.Location = new System.Drawing.Point(13, 90);
+            this.restoreDevicesCheckBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.restoreDevicesCheckBox.Name = "restoreDevicesCheckBox";
+            this.restoreDevicesCheckBox.Size = new System.Drawing.Size(107, 19);
+            this.restoreDevicesCheckBox.TabIndex = 11;
+            this.restoreDevicesCheckBox.Text = "Restore devices";
+            this.restoreDevicesCheckBox.UseVisualStyleBackColor = true;
+            this.restoreDevicesCheckBox.CheckedChanged += new System.EventHandler(this.restoreDevicesCheckBox_CheckedChanged);
+            // 
             // profileBox
             // 
             this.profileBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -294,6 +295,7 @@
             // communicationRemoveButton
             // 
             this.communicationRemoveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.communicationRemoveButton.Image = ((System.Drawing.Image)(resources.GetObject("communicationRemoveButton.Image")));
             this.communicationRemoveButton.Location = new System.Drawing.Point(629, 265);
             this.communicationRemoveButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.communicationRemoveButton.Name = "communicationRemoveButton";
@@ -347,6 +349,7 @@
             // recordingRemoveButton
             // 
             this.recordingRemoveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.recordingRemoveButton.Image = ((System.Drawing.Image)(resources.GetObject("recordingRemoveButton.Image")));
             this.recordingRemoveButton.Location = new System.Drawing.Point(629, 215);
             this.recordingRemoveButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.recordingRemoveButton.Name = "recordingRemoveButton";
@@ -359,6 +362,7 @@
             // playbackRemoveButton
             // 
             this.playbackRemoveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.playbackRemoveButton.Image = ((System.Drawing.Image)(resources.GetObject("playbackRemoveButton.Image")));
             this.playbackRemoveButton.Location = new System.Drawing.Point(629, 163);
             this.playbackRemoveButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.playbackRemoveButton.Name = "playbackRemoveButton";
