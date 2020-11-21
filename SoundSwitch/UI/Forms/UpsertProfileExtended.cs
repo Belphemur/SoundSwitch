@@ -207,7 +207,13 @@ namespace SoundSwitch.UI.Forms
                     selectProgramButton.Show();
                 },
                 () => { },
-                () => { }, TODO);
+                () => { },
+                () =>
+                {
+                    textInput.DataBindings.Clear();
+                    textInput.DataBindings.Add(nameof(TextBox.Text), trigger, nameof(Trigger.WindowName), true, DataSourceUpdateMode.OnPropertyChanged);
+                    textInput.Show();
+                });
         }
 
         private void HideTriggerComponents()
