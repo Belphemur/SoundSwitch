@@ -48,18 +48,20 @@ namespace SoundSwitch.Framework.Profile
         /// </summary>
         public Profile Copy()
         {
-            return new Profile
+            return new()
             {
                 AlsoSwitchDefaultDevice = AlsoSwitchDefaultDevice,
                 Communication = Communication,
                 Name = Name,
                 Playback = Playback,
                 Recording = Recording,
+                RestoreDevices = RestoreDevices,
                 Triggers = Triggers.Select(trigger => new Trigger.Trigger(trigger.Type)
                 {
                     HotKey = trigger.HotKey,
                     ApplicationPath = trigger.ApplicationPath,
-                    WindowName = trigger.WindowName
+                    WindowName = trigger.WindowName,
+                    ShouldRestoreDevices = trigger.ShouldRestoreDevices
                 }).ToList()
             };
         }

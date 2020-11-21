@@ -1,13 +1,328 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\Antoine\AppData\local\JetBrains\Rider2020.2\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\Antoine\AppData\local\JetBrains\Rider2020.2\resharper-host\local\Transient\Rider\v202\SolutionCaches\_SoundSwitch.60712735.00" t="ExcludeRecursive" />
-    <e p="C:\Users\Antoine\AppData\Roaming\JetBrains\Rider2020.2\scratches" t="IncludeRecursive" />
+    <e p="C:\Users\Antoine\AppData\local\JetBrains\Rider2020.3\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\Antoine\AppData\local\JetBrains\Rider2020.3\resharper-host\local\Transient\Rider\v203\SolutionCaches\_SoundSwitch.60712735.00" t="ExcludeRecursive" />
+    <e p="C:\Users\Antoine\AppData\Roaming\JetBrains\Rider2020.3\scratches" t="IncludeRecursive" />
     <e p="C:\Users\Antoine\source\repos\SoundSwitch" t="IncludeFlat">
       <e p="packages" t="ExcludeRecursive" />
       <e p="SoundSwitch" t="IncludeRecursive">
+        <e p="App.config" t="Include" />
+        <e p="app.manifest" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="CleanTranslationProjectFile.bat" t="Include" />
+        <e p="Framework" t="Include">
+          <e p="ApplicationPath.cs" t="Include" />
+          <e p="Audio" t="Include">
+            <e p="CachedSound.cs" t="Include" />
+            <e p="CachedSoundFileNotExistsException.cs" t="Include" />
+            <e p="CachedSoundWaveStream.cs" t="Include" />
+            <e p="Lister" t="Include">
+              <e p="CachedAudioDeviceLister.cs" t="Include" />
+            </e>
+          </e>
+          <e p="AutoStart.cs" t="Include" />
+          <e p="Banner" t="Include">
+            <e p="BannerData.cs" t="Include" />
+            <e p="BannerForm.cs" t="Include" />
+            <e p="BannerForm.Designer.cs" t="Include" />
+            <e p="BannerForm.resx" t="Include" />
+            <e p="BannerManager.cs" t="Include" />
+          </e>
+          <e p="Configuration" t="Include">
+            <e p="AppConfigs.cs" t="Include" />
+            <e p="ConfigurationManager.cs" t="Include" />
+            <e p="ISoundSwitchConfiguration.cs" t="Include" />
+            <e p="SoundSwitchConfiguration.cs" t="Include" />
+          </e>
+          <e p="DeviceCyclerManager" t="Include">
+            <e p="DeviceCycler" t="Include">
+              <e p="ADeviceCycler.cs" t="Include" />
+              <e p="DeviceCyclerAll.cs" t="Include" />
+              <e p="DeviceCyclerAvailable.cs" t="Include" />
+              <e p="IDeviceCycler.cs" t="Include" />
+            </e>
+            <e p="DeviceCyclerFactory.cs" t="Include" />
+            <e p="DeviceCyclerManager.cs" t="Include" />
+            <e p="DeviceCyclerTypeEnum.cs" t="Include" />
+          </e>
+          <e p="Factory" t="Include">
+            <e p="AbstractFactory.cs" t="Include" />
+            <e p="DisplayEnumObject.cs" t="Include" />
+            <e p="EnumImplList.cs" t="Include" />
+            <e p="IEnumImpl.cs" t="Include" />
+            <e p="IEnumImplList.cs" t="Include" />
+          </e>
+          <e p="HourGlass.cs" t="Include" />
+          <e p="Logger" t="Include">
+            <e p="Configuration" t="Include">
+              <e p="LoggerConfigurator.cs" t="Include" />
+            </e>
+            <e p="Enricher" t="Include">
+              <e p="CallerEnricher.cs" t="Include" />
+            </e>
+          </e>
+          <e p="Minidump" t="Include">
+            <e p="MemoryDumper.cs" t="Include" />
+          </e>
+          <e p="NotificationManager" t="Include">
+            <e p="MMNotificationClient.cs" t="Include" />
+            <e p="Notification" t="Include">
+              <e p="Configuration" t="Include">
+                <e p="INotificationConfiguration.cs" t="Include" />
+                <e p="NotificationConfiguration.cs" t="Include" />
+              </e>
+              <e p="INotification.cs" t="Include" />
+              <e p="NotificationBanner.cs" t="Include" />
+              <e p="NotificationCustom.cs" t="Include" />
+              <e p="NotificationNone.cs" t="Include" />
+              <e p="NotificationSound.cs" t="Include" />
+              <e p="NotificationWindows.cs" t="Include" />
+            </e>
+            <e p="NotificationCustomSoundEnum.cs" t="Include" />
+            <e p="NotificationFactory.cs" t="Include" />
+            <e p="NotificationManager.cs" t="Include" />
+            <e p="NotificationTypeEnum.cs" t="Include" />
+          </e>
+          <e p="Profile" t="Include">
+            <e p="Profile.cs" t="Include" />
+            <e p="ProfileManager.cs" t="Include" />
+            <e p="ProfileSetting.cs" t="Include" />
+            <e p="Trigger" t="Include">
+              <e p="Trigger.cs" t="Include" />
+              <e p="TriggerEnumExtensions.cs" t="Include" />
+              <e p="TriggerFactory.cs" t="Include" />
+            </e>
+          </e>
+          <e p="TrayIcon" t="Include">
+            <e p="Icon" t="Include">
+              <e p="Changer" t="Include">
+                <e p="AbstractIconChanger.cs" t="Include" />
+                <e p="AlwaysIconChanger.cs" t="Include" />
+                <e p="NeverIconIconChanger.cs" t="Include" />
+                <e p="PlaybackIconChanger.cs" t="Include" />
+                <e p="RecordingIconChanger.cs" t="Include" />
+              </e>
+              <e p="IconChangerFactory.cs" t="Include" />
+              <e p="IIconChanger.cs" t="Include" />
+            </e>
+            <e p="TooltipInfoManager" t="Include">
+              <e p="TooltipInfoFactory.cs" t="Include" />
+              <e p="TooltipInfoManager.cs" t="Include" />
+              <e p="TootipInfo" t="Include">
+                <e p="ITooltipInfo.cs" t="Include" />
+                <e p="TooltipInfoBoth.cs" t="Include" />
+                <e p="TooltipInfoNone.cs" t="Include" />
+                <e p="TooltipInfoPlayback.cs" t="Include" />
+                <e p="TooltipInfoRecording.cs" t="Include" />
+                <e p="ToolTipInfoTypeEnum.cs" t="Include" />
+              </e>
+            </e>
+          </e>
+          <e p="Updater" t="Include">
+            <e p="AutoUpdater.cs" t="Include" />
+            <e p="GitHubRelease.cs" t="Include" />
+            <e p="Installer" t="Include">
+              <e p="UpdateRunner.cs" t="Include" />
+              <e p="WebFile.cs" t="Include" />
+            </e>
+            <e p="IntervalUpdateChecker.cs" t="Include" />
+            <e p="Release.cs" t="Include" />
+            <e p="SignatureChecker.cs" t="Include" />
+            <e p="UpdateChecker.cs" t="Include" />
+            <e p="UpdateMode.cs" t="Include" />
+            <e p="UpdateState.cs" t="Include" />
+          </e>
+          <e p="WinApi" t="Include">
+            <e p="Interop.cs" t="Include" />
+            <e p="Keyboard" t="Include">
+              <e p="Helpers.cs" t="Include" />
+              <e p="HotKey.cs" t="Include" />
+              <e p="KeyboardWindowsAPI.cs" t="Include" />
+            </e>
+            <e p="WindowsAPIAdapter.cs" t="Include" />
+          </e>
+        </e>
+        <e p="Localization" t="Include">
+          <e p="AboutStrings.cs.resx" t="Include" />
+          <e p="AboutStrings.de.resx" t="Include" />
+          <e p="AboutStrings.Designer.cs" t="Include" />
+          <e p="AboutStrings.el-GR.resx" t="Include" />
+          <e p="AboutStrings.es.resx" t="Include" />
+          <e p="AboutStrings.fi-FI.resx" t="Include" />
+          <e p="AboutStrings.fr.resx" t="Include" />
+          <e p="AboutStrings.hr.resx" t="Include" />
+          <e p="AboutStrings.it-IT.resx" t="Include" />
+          <e p="AboutStrings.ja-JP.resx" t="Include" />
+          <e p="AboutStrings.ko.resx" t="Include" />
+          <e p="AboutStrings.nb.resx" t="Include" />
+          <e p="AboutStrings.nl.resx" t="Include" />
+          <e p="AboutStrings.pl-PL.resx" t="Include" />
+          <e p="AboutStrings.pt-BR.resx" t="Include" />
+          <e p="AboutStrings.pt.resx" t="Include" />
+          <e p="AboutStrings.resx" t="Include" />
+          <e p="AboutStrings.ru-RU.resx" t="Include" />
+          <e p="AboutStrings.sv-SE.resx" t="Include" />
+          <e p="AboutStrings.zh-CHS.resx" t="Include" />
+          <e p="Factory" t="Include">
+            <e p="Lang" t="Include">
+              <e p="ILang.cs" t="Include" />
+              <e p="Langs.cs" t="Include" />
+            </e>
+            <e p="Language.cs" t="Include" />
+            <e p="LanguageFactory.cs" t="Include" />
+          </e>
+          <e p="SettingsStrings.cs.resx" t="Include" />
+          <e p="SettingsStrings.de.resx" t="Include" />
+          <e p="SettingsStrings.Designer.cs" t="Include" />
+          <e p="SettingsStrings.el-GR.resx" t="Include" />
+          <e p="SettingsStrings.es.resx" t="Include" />
+          <e p="SettingsStrings.fi-FI.resx" t="Include" />
+          <e p="SettingsStrings.fr.resx" t="Include" />
+          <e p="SettingsStrings.hr.resx" t="Include" />
+          <e p="SettingsStrings.it-IT.resx" t="Include" />
+          <e p="SettingsStrings.ja-JP.resx" t="Include" />
+          <e p="SettingsStrings.ko.resx" t="Include" />
+          <e p="SettingsStrings.nb.resx" t="Include" />
+          <e p="SettingsStrings.nl.resx" t="Include" />
+          <e p="SettingsStrings.pl-PL.resx" t="Include" />
+          <e p="SettingsStrings.pt-BR.resx" t="Include" />
+          <e p="SettingsStrings.pt.resx" t="Include" />
+          <e p="SettingsStrings.resx" t="Include" />
+          <e p="SettingsStrings.ru-RU.resx" t="Include" />
+          <e p="SettingsStrings.sv-SE.resx" t="Include" />
+          <e p="SettingsStrings.zh-CHS.resx" t="Include" />
+          <e p="TrayIconStrings.cs.resx" t="Include" />
+          <e p="TrayIconStrings.de.resx" t="Include" />
+          <e p="TrayIconStrings.Designer.cs" t="Include" />
+          <e p="TrayIconStrings.el-GR.resx" t="Include" />
+          <e p="TrayIconStrings.es.resx" t="Include" />
+          <e p="TrayIconStrings.fi-FI.resx" t="Include" />
+          <e p="TrayIconStrings.fr.resx" t="Include" />
+          <e p="TrayIconStrings.hr.resx" t="Include" />
+          <e p="TrayIconStrings.it-IT.resx" t="Include" />
+          <e p="TrayIconStrings.ja-JP.resx" t="Include" />
+          <e p="TrayIconStrings.ko.resx" t="Include" />
+          <e p="TrayIconStrings.nb.resx" t="Include" />
+          <e p="TrayIconStrings.nl.resx" t="Include" />
+          <e p="TrayIconStrings.pl-PL.resx" t="Include" />
+          <e p="TrayIconStrings.pt-BR.resx" t="Include" />
+          <e p="TrayIconStrings.pt.resx" t="Include" />
+          <e p="TrayIconStrings.resx" t="Include" />
+          <e p="TrayIconStrings.ru-RU.resx" t="Include" />
+          <e p="TrayIconStrings.sv-SE.resx" t="Include" />
+          <e p="TrayIconStrings.zh-CHS.resx" t="Include" />
+          <e p="UpdateDownloadStrings.cs.resx" t="Include" />
+          <e p="UpdateDownloadStrings.de.resx" t="Include" />
+          <e p="UpdateDownloadStrings.Designer.cs" t="Include" />
+          <e p="UpdateDownloadStrings.el-GR.resx" t="Include" />
+          <e p="UpdateDownloadStrings.es.resx" t="Include" />
+          <e p="UpdateDownloadStrings.fi-FI.resx" t="Include" />
+          <e p="UpdateDownloadStrings.fr.resx" t="Include" />
+          <e p="UpdateDownloadStrings.hr.resx" t="Include" />
+          <e p="UpdateDownloadStrings.it-IT.resx" t="Include" />
+          <e p="UpdateDownloadStrings.ja-JP.resx" t="Include" />
+          <e p="UpdateDownloadStrings.ko.resx" t="Include" />
+          <e p="UpdateDownloadStrings.nb.resx" t="Include" />
+          <e p="UpdateDownloadStrings.nl.resx" t="Include" />
+          <e p="UpdateDownloadStrings.pl-PL.resx" t="Include" />
+          <e p="UpdateDownloadStrings.pt-BR.resx" t="Include" />
+          <e p="UpdateDownloadStrings.pt.resx" t="Include" />
+          <e p="UpdateDownloadStrings.resx" t="Include" />
+          <e p="UpdateDownloadStrings.ru-RU.resx" t="Include" />
+          <e p="UpdateDownloadStrings.sv-SE.resx" t="Include" />
+          <e p="UpdateDownloadStrings.zh-CHS.resx" t="Include" />
+        </e>
+        <e p="Model" t="Include">
+          <e p="AppModel.cs" t="Include" />
+          <e p="Events.cs" t="Include" />
+          <e p="IAppModel.cs" t="Include" />
+          <e p="IAudioDeviceLister.cs" t="Include" />
+          <e p="SoundSwitchApplicationContext.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="packages.config" t="Include" />
+        <e p="Program.cs" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+          <e p="PublishProfiles" t="Include">
+            <e p="FolderProfile.pubxml" t="Include" />
+          </e>
+          <e p="Resources.Designer.cs" t="Include" />
+          <e p="Resources.resx" t="Include" />
+        </e>
+        <e p="repl.bat" t="Include" />
+        <e p="Resources" t="Include">
+          <e p="216676__robinhood76__04864-notification-music-box.wav" t="Include" />
+          <e p="arrow-switch-16.png" t="Include" />
+          <e p="arrow-switch-48.png" t="Include" />
+          <e p="arrow_switch.ico" t="Include" />
+          <e p="Blue Icon.ico" t="Include" />
+          <e p="cog-16.png" t="Include" />
+          <e p="cog.ico" t="Include" />
+          <e p="control-equalizer-blue.png" t="Include" />
+          <e p="control-volume-blue.png" t="Include" />
+          <e p="default_profile_image.png" t="Include" />
+          <e p="delete.png" t="Include" />
+          <e p="discord.ico" t="Include" />
+          <e p="donate-16.png" t="Include" />
+          <e p="exit.png" t="Include" />
+          <e p="help-16.png" t="Include" />
+          <e p="help.ico" t="Include" />
+          <e p="InfoHelp.png" t="Include" />
+          <e p="page-bottom.ico" t="Include" />
+          <e p="page-bottom.png" t="Include" />
+          <e p="profile-add.png" t="Include" />
+          <e p="profile-delete.png" t="Include" />
+          <e p="profile.ico" t="Include" />
+          <e p="program.ico" t="Include" />
+          <e p="Switch-Logo-White.ico" t="Include" />
+          <e p="Switch-Logo.ico" t="Include" />
+          <e p="Switch-SoundWave.ico" t="Include" />
+          <e p="tick.png" t="Include" />
+        </e>
+        <e p="SMDiagnostics" t="Include" />
         <e p="SoundSwitch.csproj" t="IncludeRecursive" />
+        <e p="UI" t="Include">
+          <e p="Component" t="Include">
+            <e p="ChangelogViewer.cs" t="Include" />
+            <e p="HotKeyTextBox.cs" t="Include" />
+            <e p="IconTextComboBox.cs" t="Include" />
+            <e p="ListView" t="Include">
+              <e p="IconListView.cs" t="Include" />
+              <e p="ListViewExtended.cs" t="Include" />
+            </e>
+            <e p="TextProgressBar.cs" t="Include" />
+            <e p="TrayIcon.cs" t="Include" />
+          </e>
+          <e p="Forms" t="Include">
+            <e p="About.cs" t="Include" />
+            <e p="About.Designer.cs" t="Include" />
+            <e p="About.resx" t="Include" />
+            <e p="Settings.cs" t="Include" />
+            <e p="Settings.Designer.cs" t="Include" />
+            <e p="Settings.resx" t="Include" />
+            <e p="UpdateDownloadForm.cs" t="Include" />
+            <e p="UpdateDownloadForm.Designer.cs" t="Include" />
+            <e p="UpdateDownloadForm.resx" t="Include" />
+            <e p="UpsertProfileExtended.cs" t="Include" />
+            <e p="UpsertProfileExtended.Designer.cs" t="Include" />
+            <e p="UpsertProfileExtended.resx" t="Include" />
+          </e>
+        </e>
+        <e p="Util" t="Include">
+          <e p="AssemblyUtils.cs" t="Include" />
+          <e p="CasterExtensions.cs" t="Include" />
+          <e p="EnumExtensions.cs" t="Include" />
+          <e p="ResultTypeExtension.cs" t="Include" />
+          <e p="Timer" t="Include">
+            <e p="DebounceDispatcher.cs" t="Include" />
+          </e>
+          <e p="ToolStripDeviceItem.cs" t="Include" />
+          <e p="Url" t="Include">
+            <e p="BrowserUtil.cs" t="Include" />
+          </e>
+        </e>
       </e>
       <e p="SoundSwitch.Audio.Manager" t="IncludeRecursive">
         <e p="AudioSwitcher.cs" t="Include" />
