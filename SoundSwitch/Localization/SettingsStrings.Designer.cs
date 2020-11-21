@@ -811,6 +811,24 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Microsoft Store app.
+        /// </summary>
+        internal static string profile_trigger_uwp {
+            get {
+                return ResourceManager.GetString("profile.trigger.uwp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Application installed through the windows store. Like Netflix, Amazon Prime video, etc ....
+        /// </summary>
+        internal static string profile_trigger_uwp_desc {
+            get {
+                return ResourceManager.GetString("profile.trigger.uwp.desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name of the program.
         /// </summary>
         internal static string profile_trigger_window {

@@ -418,4 +418,10 @@ Restaurer l'état du système quand l'application est fermée.</value>
   <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
 		<value>Système audio restauré</value>
   </data>
+  <data name="profile.trigger.uwp" xml:space="preserve">
+	  <value>Microsoft Store app</value>
+  </data>
+  <data name="profile.trigger.uwp.desc" xml:space="preserve">
+	  <value>Application installée depuis le Microsoft Store tel que Netflix, Amazon Prime etc ...</value>
+  </data>
 </root>

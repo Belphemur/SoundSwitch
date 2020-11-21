@@ -444,4 +444,10 @@ Restore the state of the system when the application is closed.</value>
   <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
     <value>System state restored</value>
   </data>
+  <data name="profile.trigger.uwp" xml:space="preserve">
+    <value>Microsoft Store app</value>
+  </data>
+  <data name="profile.trigger.uwp.desc" xml:space="preserve">
+    <value>Application installed through the windows store. Like Netflix, Amazon Prime video, etc ...</value>
+  </data>
 </root>
