@@ -6,6 +6,7 @@
 
 **Implemented enhancements:**
 
+- Move to use .NET 5.0 [\#523](https://github.com/Belphemur/SoundSwitch/issues/523)
 - Move the restore device checkbox to the profile settings to make it more user friendly [\#521](https://github.com/Belphemur/SoundSwitch/issues/521)
 - Add a profile trigger for UWP apps [\#518](https://github.com/Belphemur/SoundSwitch/issues/518)
 - Add recent version to winget-pkgs? [\#512](https://github.com/Belphemur/SoundSwitch/issues/512)
