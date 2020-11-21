@@ -9,8 +9,7 @@
     <Deterministic>false</Deterministic>
     <Configurations>Debug;Release;Beta</Configurations>
     <Platforms>AnyCPU</Platforms>
-    <TargetFramework>net5.0</TargetFramework>
-    <TargetPlatformIdentifier>Windows</TargetPlatformIdentifier>
+    <TargetFramework>net5.0-windows</TargetFramework>
   </PropertyGroup>
   <PropertyGroup>
     <TargetPlatformVersion>8.0</TargetPlatformVersion>
