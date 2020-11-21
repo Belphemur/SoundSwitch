@@ -163,7 +163,7 @@
           <e p="AboutStrings.resx" t="Include" />
           <e p="AboutStrings.ru-RU.resx" t="Include" />
           <e p="AboutStrings.sv-SE.resx" t="Include" />
-          <e p="AboutStrings.zh-CHS.resx" t="Include" />
+          <e p="AboutStrings.zh.resx" t="Include" />
           <e p="Factory" t="Include">
             <e p="Lang" t="Include">
               <e p="ILang.cs" t="Include" />
@@ -281,7 +281,6 @@
           <e p="Switch-SoundWave.ico" t="Include" />
           <e p="tick.png" t="Include" />
         </e>
-        <e p="SMDiagnostics" t="Include" />
         <e p="SoundSwitch.csproj" t="IncludeRecursive" />
         <e p="UI" t="Include">
           <e p="Component" t="Include">

@@ -22,8 +22,8 @@ if "%~1" neq "" (
 
 
 set FILE_DIR=%~dp0
-set FRAMEWORK=netcoreapp3.1
-set BIN_DIR=%FILE_DIR%SoundSwitch\bin\%buildPlatform%\%FRAMEWORK%
+set FRAMEWORK=net5.0-windows
+set BIN_DIR=%FILE_DIR%SoundSwitch\bin\%buildPlatform%\%FRAMEWORK%\publish
 set LANGS=(fr de es nb pt-BR it-IT zh-CHS pl-PL ru-RU ko nl hr)
 
 set finalDir=%FILE_DIR%Final
@@ -44,29 +44,12 @@ rmdir /q /s %finalDir% >nul 2>nul
 mkdir %finalDir% >nul 2>nul
 
 
-echo.
-echo Determine MSBuild.exe...
-if defined USE_LEGACY_VS2015 (
-    for /f "usebackq tokens=*" %%i in (`tools\vswhere -legacy -version [14.0^,15.0,16.0] -property installationPath`) do (
-        set msBuildExe=%%i
-    )
-    set msBuildVersion=14.0
-    set msBuildExe="%msBuildExe%\MSBuild\%msBuildVersion%\Bin\MSBuild.exe"
-) else (
-    for /f "delims=" %%i in ('%FILE_DIR%tools\vswhere -latest -products * -requires Microsoft.Component.MSBuild -property installationPath') do (
-        set msBuildExe="%%i\MSBuild\Current\Bin\MSBuild.exe"
-    )    
-)
 
-
-if not exist %msBuildExe% (set errorMessage=MSBuild.exe not found in %msBuildExe% & goto ERROR_QUIT)
-
-echo %msBuildExe%
 echo.
 echo Building SoundSwitch %buildPlatform%
 echo.
 echo Build AnyCPU
-%msBuildExe% SoundSwitch.sln /m /p:Configuration=%buildPlatform% /p:Platform="Any CPU" /v:q /t:rebuild || (set errorMessage=Build AnyCPU failed & goto ERROR_QUIT)
+dotnet publish -c %buildPlatform% || (set errorMessage=Build AnyCPU failed & goto ERROR_QUIT)
 echo.
 
 if %buildChangelogAndReadme%==1 (
