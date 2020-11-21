@@ -6,13 +6,13 @@ using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.NotificationManager
 {
-    public class MMNotificationClient : IMMNotificationClient
+    public class MMNotificationClient : IMMNotificationClient, IDisposable
     {
         public static MMNotificationClient Instance { get; } = new MMNotificationClient();
-        private MMDeviceEnumerator _enumerator;
+        private       MMDeviceEnumerator   _enumerator;
 
         public event EventHandler<DeviceDefaultChangedEvent> DefaultDeviceChanged;
-        public event EventHandler<DeviceChangedEventBase> DevicesChanged;
+        public event EventHandler<DeviceChangedEventBase>    DevicesChanged;
 
         /// <summary>
         /// Register the notification client in the Enumerator
@@ -21,17 +21,6 @@ namespace SoundSwitch.Framework.NotificationManager
         {
             _enumerator = new MMDeviceEnumerator();
             _enumerator.RegisterEndpointNotificationCallback(this);
-        }
-
-        /// <summary>
-        /// Unregister the notification client in the Enumerator
-        /// </summary>
-        public void UnRegister()
-        {
-            using (_enumerator)
-            {
-                _enumerator.UnregisterEndpointNotificationCallback(this);
-            }
         }
 
         public void OnDeviceStateChanged(string deviceId, DeviceState newState)
@@ -76,6 +65,12 @@ namespace SoundSwitch.Framework.NotificationManager
 
                 DevicesChanged?.Invoke(this, new DeviceChangedEventBase(pwstrDeviceId));
             });
+        }
+
+        public void Dispose()
+        {
+            _enumerator.UnregisterEndpointNotificationCallback(this);
+            _enumerator?.Dispose();
         }
     }
 }

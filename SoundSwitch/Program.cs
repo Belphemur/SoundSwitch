@@ -141,8 +141,8 @@ namespace SoundSwitch
             AppModel.Instance.ActiveAudioDeviceLister.Dispose();
             AppModel.Instance.ActiveUnpluggedAudioLister.Dispose();
             AppModel.Instance.TrayIcon.Dispose();
-            MMNotificationClient.Instance.UnRegister();
             WindowsAPIAdapter.Stop();
+            MMNotificationClient.Instance.Dispose();
             Log.CloseAndFlush();
 
         }
