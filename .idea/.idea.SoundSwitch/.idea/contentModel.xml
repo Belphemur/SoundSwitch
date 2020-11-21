@@ -191,7 +191,7 @@
           <e p="SettingsStrings.resx" t="Include" />
           <e p="SettingsStrings.ru-RU.resx" t="Include" />
           <e p="SettingsStrings.sv-SE.resx" t="Include" />
-          <e p="SettingsStrings.zh-CHS.resx" t="Include" />
+          <e p="SettingsStrings.zh.resx" t="Include" />
           <e p="TrayIconStrings.cs.resx" t="Include" />
           <e p="TrayIconStrings.de.resx" t="Include" />
           <e p="TrayIconStrings.Designer.cs" t="Include" />
@@ -211,7 +211,7 @@
           <e p="TrayIconStrings.resx" t="Include" />
           <e p="TrayIconStrings.ru-RU.resx" t="Include" />
           <e p="TrayIconStrings.sv-SE.resx" t="Include" />
-          <e p="TrayIconStrings.zh-CHS.resx" t="Include" />
+          <e p="TrayIconStrings.zh.resx" t="Include" />
           <e p="UpdateDownloadStrings.cs.resx" t="Include" />
           <e p="UpdateDownloadStrings.de.resx" t="Include" />
           <e p="UpdateDownloadStrings.Designer.cs" t="Include" />
@@ -231,7 +231,7 @@
           <e p="UpdateDownloadStrings.resx" t="Include" />
           <e p="UpdateDownloadStrings.ru-RU.resx" t="Include" />
           <e p="UpdateDownloadStrings.sv-SE.resx" t="Include" />
-          <e p="UpdateDownloadStrings.zh-CHS.resx" t="Include" />
+          <e p="UpdateDownloadStrings.zh.resx" t="Include" />
         </e>
         <e p="Model" t="Include">
           <e p="AppModel.cs" t="Include" />

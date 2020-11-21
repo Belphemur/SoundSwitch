@@ -85,7 +85,7 @@ namespace SoundSwitch.Localization.Factory.Lang
         /// <summary>
         /// Culture info of this language
         /// </summary>
-        public CultureInfo CultureInfo => CultureInfo.GetCultureInfo("zh-CHS");
+        public CultureInfo CultureInfo => CultureInfo.GetCultureInfo("zh");
 
         public Language TypeEnum => Language.Chinese;
         public string   Label    => "汉语";
