@@ -4,7 +4,7 @@
     <StartupObject>SoundSwitch.Program</StartupObject>
     <PublishUrl>publish/</PublishUrl>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <LangVersion>9</LangVersion>
+    <LangVersion>latest</LangVersion>
     <UseWindowsForms>true</UseWindowsForms>
     <Deterministic>false</Deterministic>
     <Configurations>Debug;Release;Beta</Configurations>
@@ -12,7 +12,7 @@
     <TargetFramework>net5.0-windows</TargetFramework>
   </PropertyGroup>
   <PropertyGroup>
-    <TargetPlatformVersion>8.0</TargetPlatformVersion>
+    <TargetPlatformVersion>9.0</TargetPlatformVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <CodeAnalysisLogFile>$(SolutionDir)\bin\Debug\SoundSwitch.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
