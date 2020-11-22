@@ -133,7 +133,7 @@ Zajedno: Promijeni ikonu kad se bilo koji uređaj promijeni.</value>
     <value>Ikona u sistemskoj traci</value>
   </data>
   <data name="foregroundAppTooltip" xml:space="preserve">
-    <value>Također promijeni zvuk u aplikacijama koje trenutno koristiš. Korisno za igre.</value>
+    <value>Također promijeni zvuk u programima koje trenutačno koristiš. Korisno za videoigre.</value>
   </data>
   <data name="foregroundApp" xml:space="preserve">
     <value>Također promijeni pozadinski program</value>
@@ -384,5 +384,11 @@ Obnovi stanje sustava kad se program zatvori.</value>
   </data>
   <data name="profile.trigger.restoreDevices" xml:space="preserve">
     <value>Obnovi uređaje kad aktiviranje završi</value>
+  </data>
+  <data name="profile.trigger.uwp.desc" xml:space="preserve">
+    <value>Upiši ime aplikacije instalirane putem Windows trgovine, npr. Netflix, Amazon Prime video, itd …</value>
+  </data>
+  <data name="profile.trigger.uwp" xml:space="preserve">
+    <value>Microsoft Store aplikacija</value>
   </data>
 </root>
