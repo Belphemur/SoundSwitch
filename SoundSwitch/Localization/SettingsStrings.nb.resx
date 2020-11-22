@@ -385,4 +385,10 @@ Gjenopprett systemets tilstand når programmet lukkes.</value>
   <data name="usePrimaryScreen" xml:space="preserve">
     <value>Alltid bruk hovedskjerm</value>
   </data>
+  <data name="profile.trigger.uwp.desc" xml:space="preserve">
+    <value>Skriv inn navnet på programmet installert gjennom Windows-butikken. Som Netflix, Amazon Prime video, osv…</value>
+  </data>
+  <data name="profile.trigger.uwp" xml:space="preserve">
+    <value>Mikrosoft Store-program</value>
+  </data>
 </root>
