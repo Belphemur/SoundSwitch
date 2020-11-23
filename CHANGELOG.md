@@ -1,5 +1,13 @@
 # Changelog
 
+## [v5.6.1](https://github.com/Belphemur/SoundSwitch/tree/v5.6.1) (2020-11-23)
+
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v5.6.0...v5.6.1)
+
+**Fixed bugs:**
+
+- Can't switch audio device because of "Also switch foreground program" & Profile for applications don't work anymore [\#524](https://github.com/Belphemur/SoundSwitch/issues/524)
+
 ## [v5.6.0](https://github.com/Belphemur/SoundSwitch/tree/v5.6.0) (2020-11-21)
 
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v5.5.4...v5.6.0)
