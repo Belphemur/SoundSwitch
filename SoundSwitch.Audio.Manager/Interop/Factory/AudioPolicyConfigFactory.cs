@@ -1,5 +1,6 @@
 ﻿using SoundSwitch.Audio.Manager.Interop.Com.Base;
 using SoundSwitch.Audio.Manager.Interop.Interface.Policy.Extended;
+using WinRT;
 
 namespace SoundSwitch.Audio.Manager.Interop.Factory
 {
@@ -7,9 +8,10 @@ namespace SoundSwitch.Audio.Manager.Interop.Factory
     {
         public static IAudioPolicyConfigFactory Create()
         {
-            var iid = typeof(IAudioPolicyConfigFactory).GUID;
-            ComBase.RoGetActivationFactory("Windows.Media.Internal.AudioPolicyConfig", ref iid, out object factory);
-            return (IAudioPolicyConfigFactory)factory;
+            var iid = GuidGenerator.CreateIID(typeof(IAudioPolicyConfigFactory));
+            using var name = HSTRING.FromString("Windows.Media.Internal.AudioPolicyConfig");
+            ComBase.RoGetActivationFactory(name, ref iid, out object factory);
+            return factory.As<IAudioPolicyConfigFactory>();
         }
     }
 }

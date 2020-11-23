@@ -1,13 +1,19 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using SoundSwitch.Audio.Manager.Interop.Com.Base;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 
 namespace SoundSwitch.Audio.Manager.Interop.Interface.Policy.Extended
 {
     [Guid("2a59116d-6c4f-45e0-a74f-707e3fef9258")]
-    [InterfaceType(ComInterfaceType.InterfaceIsIInspectable)]
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    [ComImport]
     public interface IAudioPolicyConfigFactory
     {
+        void GetIids(out int iidCount, out IntPtr iids);
+        void GetRuntimeClassName(out IntPtr className);
+        void GetTrustLevel(out WinRT.TrustLevel trustLevel);
+
         int __incomplete__add_CtxVolumeChange();
         int __incomplete__remove_CtxVolumeChanged();
         int __incomplete__add_RingerVibrateStateChanged();
@@ -28,9 +34,9 @@ namespace SoundSwitch.Audio.Manager.Interop.Interface.Policy.Extended
         int __incomplete__add_ChatContextChanged();
         int __incomplete__remove_ChatContextChanged();
         [PreserveSig]
-        HRESULT SetPersistedDefaultAudioEndpoint(uint processId, EDataFlow flow, ERole role, IntPtr deviceId);
+        HRESULT SetPersistedDefaultAudioEndpoint([In] uint processId, [In] EDataFlow flow, [In] ERole role, [In] HSTRING deviceId);
         [PreserveSig]
-        HRESULT GetPersistedDefaultAudioEndpoint(uint processId, EDataFlow flow, ERole role, [Out, MarshalAs(UnmanagedType.HString)] out string deviceId);
+        HRESULT GetPersistedDefaultAudioEndpoint([In] uint processId, [In] EDataFlow flow, [In] ERole role, [Out] out HSTRING deviceId);
         [PreserveSig]
         HRESULT ClearAllPersistedApplicationDefaultEndpoints();
     }

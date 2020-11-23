@@ -7,14 +7,8 @@ namespace SoundSwitch.Audio.Manager.Interop.Com.Base
     {
         [DllImport("combase.dll", PreserveSig = false)]
         public static extern void RoGetActivationFactory(
-            [MarshalAs(UnmanagedType.HString)] string activatableClassId,
+            HSTRING activatableClassId,
             [In] ref Guid iid,
-            [Out, MarshalAs(UnmanagedType.IInspectable)] out Object factory);
-
-        [DllImport("combase.dll", PreserveSig = false)]
-        public static extern void WindowsCreateString(
-            [MarshalAs(UnmanagedType.LPWStr)] string src,
-            [In] uint length,
-            [Out] out IntPtr hstring);
+            [Out, MarshalAs(UnmanagedType.IUnknown)] out Object factory);
     }
 }
