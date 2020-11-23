@@ -386,9 +386,9 @@
     <value>기본 통신 장치</value>
   </data>
   <data name="profile.trigger.process.desc" xml:space="preserve">
-    <value>선택한 응용프로그램이 화면에 있을 때 프로파일 활성화</value>
+    <value>선택한 응용프로그램이 화면에 있을 때 프로필 활성화</value>
   </data>
   <data name="profile.trigger.window.desc" xml:space="preserve">
-    <value>화면에 표시되는 프로그램에 다음 문자가 포함된 경우 프로파일 활성화</value>
+    <value>화면에 표시되는 프로그램에 다음 문자가 포함된 경우 프로필 활성화</value>
   </data>
 </root>
