@@ -318,7 +318,7 @@ Natpis: Koristi prilagođeni prozor koji se postavlja ispred svih drugih, korisn
     <value>Ime programa</value>
   </data>
   <data name="profile.trigger.steam.desc" xml:space="preserve">
-    <value>Aktiviraj kad se otkrije Steam Big Picture. Vratit će stanje kad se Big Picture zatvori.</value>
+    <value>Aktiviraj kad se otkrije Steam Big Picture. (Vratit će stanje kad se Big Picture zatvori.)</value>
   </data>
   <data name="profile.trigger.available" xml:space="preserve">
     <value>Dostupni okidači</value>
