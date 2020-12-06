@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -58,4 +58,337 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="languageRestartRequiredCaption" xml:space="preserve">
+    <value>需要重啟</value>
+  </data>
+  <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
+    <value>僅選擇音訊裝置</value>
+  </data>
+  <data name="profile.trigger.steam" xml:space="preserve">
+    <value>Steam Big Picture模式</value>
+  </data>
+  <data name="languageRestartRequired" xml:space="preserve">
+    <value>重新啟動 SoundSwitch 後，語言會發生變化。
+現在要重新啟動嗎？</value>
+  </data>
+  <data name="profile.error.title" xml:space="preserve">
+    <value>設定檔錯誤</value>
+  </data>
+  <data name="notificationOptionSound" xml:space="preserve">
+    <value>聲音通知</value>
+  </data>
+  <data name="basicSettings" xml:space="preserve">
+    <value>基本設定</value>
+  </data>
+  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
+    <value>沒有工具提示</value>
+  </data>
+  <data name="notificationTooltip" xml:space="preserve">
+    <value>Windows通知：預設的Windows托盤彈出窗口。
+聲音通知：在切換的播放裝置上播放聲音。
+自訂聲音通知：在切換的播放裝置上播放指定的聲音。
+彈出通知：使用特殊形式的Windows托盤彈出版本。
+視窗：使用自訂的永遠在線視窗，對遊戲內使用非常有用。</value>
+  </data>
+  <data name="usePrimaryScreen" xml:space="preserve">
+    <value>總是使用主螢幕</value>
+  </data>
+  <data name="updateSettings" xml:space="preserve">
+    <value>更新設定</value>
+  </data>
+  <data name="communication" xml:space="preserve">
+    <value>預設通訊裝置</value>
+  </data>
+  <data name="selected" xml:space="preserve">
+    <value>已選擇</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
+    <value>當偵測到應用程式，SoundSwitch 也將會切換當前的預設裝置。</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
+    <value>需要啟用 "{0}" 。
+
+程式關閉時恢復系統原來的狀態。</value>
+  </data>
+  <data name="audioFileNotFoundCaption" xml:space="preserve">
+    <value>找不到音訊檔案</value>
+  </data>
+  <data name="selectSoundButtonTooltip" xml:space="preserve">
+    <value>選擇通知的音訊檔案</value>
+  </data>
+  <data name="profile.error.triggers.min" xml:space="preserve">
+    <value>最少需要一個觸發器。</value>
+  </data>
+  <data name="profile.notify-on-activation" xml:space="preserve">
+    <value>當設定檔被觸發時發送提醒</value>
+  </data>
+  <data name="notificationOptionWindowsDefault" xml:space="preserve">
+    <value>Windows通知</value>
+  </data>
+  <data name="hotkeyEnabled" xml:space="preserve">
+    <value>快捷鍵啟用</value>
+  </data>
+  <data name="startWithWindows" xml:space="preserve">
+    <value>Windows開機自動啟動</value>
+  </data>
+  <data name="profile.button.edit" xml:space="preserve">
+    <value>編輯</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox" xml:space="preserve">
+    <value>同時切換預設裝置</value>
+  </data>
+  <data name="communicationsDevice" xml:space="preserve">
+    <value>切換預設通訊裝置</value>
+  </data>
+  <data name="activePlayback" xml:space="preserve">
+    <value>播放：{0}</value>
+  </data>
+  <data name="disableCustomSoundTooltip" xml:space="preserve">
+    <value>禁用設定自訂聲音。</value>
+  </data>
+  <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
+    <value>更新會自動安裝，不會有任何提示。</value>
+  </data>
+  <data name="updateIncludeBetaVersions" xml:space="preserve">
+    <value>包括測試版本</value>
+  </data>
+  <data name="profile.error.delete" xml:space="preserve">
+    <value>無法找到設定檔。</value>
+  </data>
+  <data name="profile.button.save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="profile.addButton" xml:space="preserve">
+    <value>新增</value>
+  </data>
+  <data name="audioFiles" xml:space="preserve">
+    <value>音訊檔案</value>
+  </data>
+  <data name="disconnected" xml:space="preserve">
+    <value>未連接</value>
+  </data>
+  <data name="activeRecording" xml:space="preserve">
+    <value>錄音：{0}</value>
+  </data>
+  <data name="profile.error.no-name" xml:space="preserve">
+    <value>請填寫設定檔名稱。</value>
+  </data>
+  <data name="profile.trigger.window" xml:space="preserve">
+    <value>程式名</value>
+  </data>
+  <data name="updateNotify" xml:space="preserve">
+    <value>有更新時通知我</value>
+  </data>
+  <data name="profile.error.steam" xml:space="preserve">
+    <value>只能保存一個 Steam Big Picture模式設定檔。</value>
+  </data>
+  <data name="profile.error.name" xml:space="preserve">
+    <value>名為{0}的設定檔已存在。</value>
+  </data>
+  <data name="profile.feature.profile" xml:space="preserve">
+    <value>用戶設定檔</value>
+  </data>
+  <data name="updateNeverTooltip" xml:space="preserve">
+    <value>除非您手動執行此操作，否則不會更新程式。</value>
+  </data>
+  <data name="profile.explanation" xml:space="preserve">
+    <value>當特定的應用程式已啟動或被聚焦時，新增一個設定檔來切換指定的播放裝置或者錄音裝置。</value>
+  </data>
+  <data name="profile.trigger.startup.desc" xml:space="preserve">
+    <value>當 SoundSwitch 啟動時設定檔將會自動觸發</value>
+  </data>
+  <data name="closeTooltip" xml:space="preserve">
+    <value>自動保存更改</value>
+  </data>
+  <data name="notification" xml:space="preserve">
+    <value>通知</value>
+  </data>
+  <data name="profile.trigger.window.desc" xml:space="preserve">
+    <value>當前台運行的程式包含以下字元時啟動設定檔</value>
+  </data>
+  <data name="language" xml:space="preserve">
+    <value>語言</value>
+  </data>
+  <data name="profile.trigger.available" xml:space="preserve">
+    <value>可用的觸發器</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="hotkeysTooltip" xml:space="preserve">
+    <value>檢查是否啟用快捷鍵。</value>
+  </data>
+  <data name="updateNever" xml:space="preserve">
+    <value>永遠不要檢查更新</value>
+  </data>
+  <data name="cycleThrough" xml:space="preserve">
+    <value>循環</value>
+  </data>
+  <data name="profile.trigger.process" xml:space="preserve">
+    <value>應用程式路徑</value>
+  </data>
+  <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
+    <value>當檢查後，SoundSwitch還將檢查GitHub上的測試版。</value>
+  </data>
+  <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
+    <value>對於兩種裝置</value>
+  </data>
+  <data name="profile.error.hotkey" xml:space="preserve">
+    <value>此快捷鍵{0}已被註冊。</value>
+  </data>
+  <data name="tooltipOnHover" xml:space="preserve">
+    <value>懸停上方工具提示</value>
+  </data>
+  <data name="profile.name" xml:space="preserve">
+    <value>名稱</value>
+  </data>
+  <data name="profile.trigger.process.desc" xml:space="preserve">
+    <value>當選中的應用程式在前台運行時啟動設定檔</value>
+  </data>
+  <data name="profile.error.window" xml:space="preserve">
+    <value>已有設定檔使用該窗口名稱：{0} 。</value>
+  </data>
+  <data name="profile.program" xml:space="preserve">
+    <value>應用程式</value>
+  </data>
+  <data name="keepSystemTrayIconTooltip" xml:space="preserve">
+    <value>選中時，"預設播放裝置"更改時系統托盤圖示不會更改。</value>
+  </data>
+  <data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
+    <value>所有音訊裝置</value>
+  </data>
+  <data name="profile.desc" xml:space="preserve">
+    <value>描述</value>
+  </data>
+  <data name="profile.error.application" xml:space="preserve">
+    <value>該應用程式 {0} 已經有關聯的設定檔。</value>
+  </data>
+  <data name="communicationsDeviceTooltip" xml:space="preserve">
+    <value>當檢查時，"預設通訊裝置"和"預設播放裝置"被切換到一起（對的Skype，TeamSpeak非常有用）。</value>
+  </data>
+  <data name="profile.trigger.uwp.desc" xml:space="preserve">
+    <value>輸入通過 Windows 應用商店安裝的應用程式的名稱， 像是 Netflix，Amazon Prime影片等…</value>
+  </data>
+  <data name="profile.trigger.startup" xml:space="preserve">
+    <value>啟動時</value>
+  </data>
+  <data name="iconChange.tooltip" xml:space="preserve">
+    <value>當系統托盤SoundSwitch圖示改變時可選擇。
+
+預設：不做改變。保留SoundSwitch圖示。
+播放裝置：當一個播放裝置被切換。
+錄音裝置：當一個錄音裝置裝置被切換。
+兩者：當任意類別裝置被切換時進行改變。</value>
+  </data>
+  <data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
+    <value>錄音裝置</value>
+  </data>
+  <data name="iconChange" xml:space="preserve">
+    <value>系統托盤圖示</value>
+  </data>
+  <data name="profile.trigger.uwp" xml:space="preserve">
+    <value>Microsoft Store 應用</value>
+  </data>
+  <data name="profile.error.device-not-found" xml:space="preserve">
+    <value>無法找到裝置 {0} 。</value>
+  </data>
+  <data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
+    <value>播放裝置</value>
+  </data>
+  <data name="audioFileNotFound" xml:space="preserve">
+    <value>找不到您選擇用作通知的音訊檔案。SoundSwitch將通知設定切換回預設 {0}.</value>
+  </data>
+  <data name="updateInstallAutomatically" xml:space="preserve">
+    <value>自動安裝更新</value>
+  </data>
+  <data name="notificationOptionNone" xml:space="preserve">
+    <value>沒有通知</value>
+  </data>
+  <data name="playback" xml:space="preserve">
+    <value>播放</value>
+  </data>
+  <data name="connected" xml:space="preserve">
+    <value>已連接</value>
+  </data>
+  <data name="hotkeys" xml:space="preserve">
+    <value>快捷鍵</value>
+  </data>
+  <data name="updateNotifyTooltip" xml:space="preserve">
+    <value>SoundSwitch會在有新的更新時通知您。點擊通知時，您將獲得一個彈出窗口，為您下載更新並詢問您是否要安裝它。</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>關閉</value>
+  </data>
+  <data name="profile.trigger.steam.desc" xml:space="preserve">
+    <value>當偵測到 Steam Big Picture模式時啟用啟動。（Big Picture模式關閉時會恢復狀態）</value>
+  </data>
+  <data name="foregroundApp" xml:space="preserve">
+    <value>同時切換前台程式</value>
+  </data>
+  <data name="usePrimaryScreenTooltip" xml:space="preserve">
+    <value>在主螢幕而不是焦點螢幕顯示通知橫幅。</value>
+  </data>
+  <data name="notificationOptionCustomized" xml:space="preserve">
+    <value>自訂的聲音通知</value>
+  </data>
+  <data name="cycleThroughTooltip" xml:space="preserve">
+    <value>在哪個裝置之間切換。要嘛只在選擇之間，要嘛在所有之間。</value>
+  </data>
+  <data name="recording" xml:space="preserve">
+    <value>錄音</value>
+  </data>
+  <data name="profile.error.registerHotkeys" xml:space="preserve">
+    <value>無法為以下的設定檔註冊快捷鍵：{0}</value>
+  </data>
+  <data name="profile.deleteButton" xml:space="preserve">
+    <value>刪除</value>
+  </data>
+  <data name="keepSystemTrayIcon" xml:space="preserve">
+    <value>保留SoundSwitch的系統托盤圖示</value>
+  </data>
+  <data name="profile.feature.add" xml:space="preserve">
+    <value>新增設定檔</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
+    <value>系統狀態已復原</value>
+  </data>
+  <data name="profile.trigger.restoreDevices" xml:space="preserve">
+    <value>當觸髮結束時復原裝置</value>
+  </data>
+  <data name="profile.tab" xml:space="preserve">
+    <value>用戶設定檔</value>
+  </data>
+  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
+    <value>用於啟動該設定檔的快捷鍵</value>
+  </data>
+  <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
+    <value>你需要設定一個播放裝置，或者錄音裝置。</value>
+  </data>
+  <data name="notificationOptionBanner" xml:space="preserve">
+    <value>橫幅</value>
+  </data>
+  <data name="profile.feature.executable" xml:space="preserve">
+    <value>可執行文件 (*.exe)</value>
+  </data>
+  <data name="profile.trigger.actives" xml:space="preserve">
+    <value>已啟用的觸發器</value>
+  </data>
+  <data name="profile.notification.text" xml:space="preserve">
+    <value>設定檔 {0} 已被觸發</value>
+  </data>
+  <data name="profile.error.registerHotkeys.title" xml:space="preserve">
+    <value>快捷鍵已被占用</value>
+  </data>
+  <data name="profile.error.needHKOrPath" xml:space="preserve">
+    <value>你需要設定一個快捷鍵，或者和應用程式的路徑。</value>
+  </data>
+  <data name="audioSettings" xml:space="preserve">
+    <value>音訊設定</value>
+  </data>
+  <data name="foregroundAppTooltip" xml:space="preserve">
+    <value>還要切換當前正在使用的應用程式的聲音。對於電視遊戲很有用。</value>
+  </data>
+  <data name="notificationOptionToast" xml:space="preserve">
+    <value>彈出通知</value>
+  </data>
 </root>
