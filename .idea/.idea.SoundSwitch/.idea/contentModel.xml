@@ -335,6 +335,7 @@
           <e p="Com" t="Include">
             <e p="Base" t="Include">
               <e p="ComBase.cs" t="Include" />
+              <e p="HString.cs" t="Include" />
             </e>
             <e p="Threading" t="Include">
               <e p="ComTaskScheduler.cs" t="Include" />
