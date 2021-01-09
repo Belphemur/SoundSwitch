@@ -13,7 +13,6 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using Microsoft.WindowsAPICodePack.ApplicationServices;
 using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Framework;
@@ -49,12 +48,9 @@ namespace SoundSwitch.Model
 
         private AppModel()
         {
-
-            RegisterForRestart();
-            RegisterRecovery();
             _notificationManager = new NotificationManager(this);
 
-            _deviceCyclerManager = new DeviceCyclerManager();
+            _deviceCyclerManager                               =  new DeviceCyclerManager();
             MMNotificationClient.Instance.DefaultDeviceChanged += (sender, @event) => { _dispatcher.Debounce(250, o => { DefaultDeviceChanged?.Invoke(sender, @event); }); };
         }
 
@@ -266,40 +262,6 @@ namespace SoundSwitch.Model
         public event EventHandler<NewReleaseAvailableEvent> NewVersionReleased;
 
         public event EventHandler<DeviceDefaultChangedEvent> DefaultDeviceChanged;
-        
-
-        private void RegisterRecovery()
-        {
-            var settings = new RecoverySettings(new RecoveryData(SaveState, AppConfigs.Configuration), 0);
-            ApplicationRestartRecoveryManager.RegisterForApplicationRecovery(settings);
-            Log.Information("Recovery Registered");
-        }
-
-        private void RegisterForRestart()
-        {
-            var settings = new RestartSettings("/restart", RestartRestrictions.NotOnReboot);
-            ApplicationRestartRecoveryManager.RegisterForApplicationRestart(settings);
-            Log.Information("Restart Registered");
-        }
-
-        private int SaveState(object state)
-        {
-
-            Log.Error("Saving application state");
-            var settings = (SoundSwitchConfiguration)state;
-            var cancelled = ApplicationRestartRecoveryManager.ApplicationRecoveryInProgress();
-            if (cancelled)
-            {
-                Log.Error("Recovery Cancelled");
-                ApplicationRestartRecoveryManager.ApplicationRecoveryFinished(false);
-                return 0;
-            }
-            settings.Save();
-            ApplicationRestartRecoveryManager.ApplicationRecoveryFinished(true);
-            Log.Error("Recovery Success");
-            return 0;
-
-        }
 
         #region Selected devices
 

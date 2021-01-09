@@ -72,12 +72,13 @@ namespace SoundSwitch
             var userMutexName = Application.ProductName + Environment.UserName;
 
             using var mainMutex = new Mutex(true, Application.ProductName);
-            using var userMutex = new Mutex(true, userMutexName, out var userMutexInUse);
-
-            if (KillOtherInstanceAndRestart(userMutexName, userMutexInUse))
+            using var userMutex = new Mutex(true, userMutexName, out var userMutexHasOwnership);
+            if (!userMutexHasOwnership)
             {
-                WindowsAPIAdapter.Stop();
+                Log.Warning("SoundSwitch is already running for this user {@Mutex}", userMutexName);
                 Log.CloseAndFlush();
+                WindowsAPIAdapter.Stop();
+                Application.Exit();
                 return;
             }
 
