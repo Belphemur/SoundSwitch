@@ -33,12 +33,12 @@ namespace SoundSwitch.Framework.Audio.Lister
         /// <inheritdoc />
         public IReadOnlyCollection<DeviceFullInfo> RecordingDevices { get; private set; } = new List<DeviceFullInfo>();
 
-        private readonly DeviceState _state;
+        private readonly DeviceState        _state;
         private readonly DebounceDispatcher _dispatcher = new();
 
         public CachedAudioDeviceLister(DeviceState state)
         {
-            _state = state;
+            _state                                       =  state;
             MMNotificationClient.Instance.DevicesChanged += DeviceChanged;
         }
 
@@ -49,41 +49,41 @@ namespace SoundSwitch.Framework.Audio.Lister
 
         private void UpdatePlayback()
         {
-            Log.Information("Refreshing playback device of state {@State}", _state);
+            Log.Information("[{@State}] Refreshing playback", _state);
             using var enumerator = new MMDeviceEnumerator();
             PlaybackDevices = CreateDeviceList(enumerator.EnumerateAudioEndPoints(DataFlow.Render, _state));
-            Log.Information("Refreshed playbacks: {@Playbacks}", PlaybackDevices.Select(info => new {info.Name, info.Id}));
+            Log.Information("[{@State}] Refreshed playbacks: {@Playbacks}", _state, PlaybackDevices.Select(info => new {info.Name, info.Id}));
         }
 
         private void UpdateRecording()
         {
-            Log.Information("Refreshing recording device of state {@State}", _state);
+            Log.Information("[{@State}] Refreshing recording", _state);
             using var enumerator = new MMDeviceEnumerator();
             RecordingDevices = CreateDeviceList(enumerator.EnumerateAudioEndPoints(DataFlow.Capture, _state));
-            Log.Information("Refreshed recordings: {@Recordings}", RecordingDevices.Select(info => new {info.Name, info.Id}));
+            Log.Information("[{@State}] Refreshed recordings: {@Recordings}", _state, RecordingDevices.Select(info => new {info.Name, info.Id}));
         }
 
         public void Refresh()
         {
-            Log.Information("Refreshing device of state {@State}", _state);
+            Log.Information("[{@State}] Refreshing all devices", _state);
             var threadPlayback = new Thread(UpdatePlayback)
             {
-                Name = $"Playback Refresh {_state}",
+                Name         = $"Playback Refresh {_state}",
                 IsBackground = true
             };
-            var threadRecording = new Thread(UpdateRecording)  
+            var threadRecording = new Thread(UpdateRecording)
             {
-                Name = $"Recording Refresh {_state}",
+                Name         = $"Recording Refresh {_state}",
                 IsBackground = true
             };
-            
+
             threadPlayback.Start();
             threadRecording.Start();
 
             threadPlayback.Join();
             threadRecording.Join();
 
-            Log.Information("Refreshed device of state {@State}", _state);
+            Log.Information("[{@State}] Refreshed all devices", _state);
         }
 
         private static IReadOnlyCollection<DeviceFullInfo> CreateDeviceList(MMDeviceCollection collection)
