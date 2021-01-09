@@ -66,8 +66,8 @@ namespace SoundSwitch
             if (!userMutexHasOwnership)
             {
                 Log.Warning("SoundSwitch is already running for this user {@Mutex}", userMutexName);
-                Log.CloseAndFlush();
                 WindowsAPIAdapter.Stop();
+                Log.CloseAndFlush();
                 Application.Exit();
                 return;
             }
