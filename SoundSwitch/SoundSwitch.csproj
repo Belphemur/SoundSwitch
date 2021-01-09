@@ -55,7 +55,6 @@
     <ItemGroup>
         <ProjectReference Include="..\SoundSwitch.Audio.Manager\SoundSwitch.Audio.Manager.csproj" />
         <ProjectReference Include="..\SoundSwitch.Common\SoundSwitch.Common.csproj" />
-        <ProjectReference Include="..\SoundSwitch.InterProcess.Communication\SoundSwitch.InterProcess.Communication.csproj" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="AuthenticodeExaminer" Version="0.3.0" />

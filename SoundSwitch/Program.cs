@@ -17,29 +17,19 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
-using System.IO.Pipes;
 using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
-using System.Security.AccessControl;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Framework;
-using SoundSwitch.Framework.Audio.Lister;
-using SoundSwitch.Framework.Banner;
-using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Logger.Configuration;
 using SoundSwitch.Framework.Minidump;
 using SoundSwitch.Framework.NotificationManager;
-using SoundSwitch.Framework.Updater;
-using SoundSwitch.InterProcess.Communication;
+using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Localization.Factory;
 using SoundSwitch.Model;
-using SoundSwitch.UI.Component;
 using SoundSwitch.Util;
-using WindowsAPIAdapter = SoundSwitch.Framework.WinApi.WindowsAPIAdapter;
 
 namespace SoundSwitch
 {
@@ -146,32 +136,6 @@ namespace SoundSwitch
             MMNotificationClient.Instance.Dispose();
             Log.CloseAndFlush();
 
-        }
-
-        private static bool KillOtherInstanceAndRestart(string pipeName, bool createdNew)
-        {
-            //Mutex used by another instance of the app
-            //Ask the other instance to stop and restart this instance to get the mutex again.
-            if (!createdNew)
-            {
-                using var pipeClient = new NamedPipeClient(pipeName);
-                Log.Information("Other instance detected.");
-                pipeClient.SendMsg("Close");
-                Log.Information("Other instance detected: asked to stop, restarting now.");
-                RestartApp();
-                return true;
-            }
-
-            using var pipeServer = new NamedPipeServer(pipeName);
-            pipeServer.Start(message =>
-            {
-                if (message == "Close")
-                {
-                    Log.Information("Other instance detected and asked to stop.");
-                    Application.Exit();
-                }
-            });
-            return false;
         }
 
         /// <summary>
