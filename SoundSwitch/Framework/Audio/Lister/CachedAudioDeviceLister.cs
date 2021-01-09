@@ -34,7 +34,7 @@ namespace SoundSwitch.Framework.Audio.Lister
         public IReadOnlyCollection<DeviceFullInfo> RecordingDevices { get; private set; } = new List<DeviceFullInfo>();
 
         private readonly DeviceState _state;
-        private readonly DebounceDispatcher _dispatcher = new DebounceDispatcher();
+        private readonly DebounceDispatcher _dispatcher = new();
 
         public CachedAudioDeviceLister(DeviceState state)
         {
