@@ -18,6 +18,9 @@ namespace SoundSwitch.Framework.Logger.Configuration
                          .Enrich.WithEnvironmentUserName()
                          .Enrich.WithExceptionDetails()
                          .Enrich.WithCaller()
+#if DEBUG
+                         .WriteTo.Console()
+#endif
                          .WriteTo.File(Path.Combine(ApplicationPath.Logs, "soundswitch.log"),
                              rollingInterval: RollingInterval.Day, retainedFileCountLimit: 3,
                              flushToDiskInterval: TimeSpan.FromMinutes(10),
