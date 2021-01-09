@@ -68,6 +68,7 @@ Name: "pt_br"; MessagesFile: "compiler:Languages\brazilianPortuguese.isl"
 Name: "ru_ru"; MessagesFile: "compiler:Languages\Russian.isl"
 Name: "pl_pl"; MessagesFile: "compiler:Languages\Polish.isl"
 Name: "nl"; MessagesFile: "compiler:Languages\Dutch.isl"
+Name: "zh"; MessagesFile: "compiler:Languages\Chinese.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
@@ -87,6 +88,7 @@ Source: "{#ExeDir}nb\*.dll"; DestDir: "{app}\nb";
 Source: "{#ExeDir}pt-BR\*.dll"; DestDir: "{app}\pt-BR";
 Source: "{#ExeDir}it-IT\*.dll"; DestDir: "{app}\it-IT";
 Source: "{#ExeDir}zh\*.dll"; DestDir: "{app}\zh";
+Source: "{#ExeDir}zh-HANT\*.dll"; DestDir: "{app}\zh-HANT";
 Source: "{#ExeDir}pl-PL\*.dll"; DestDir: "{app}\pl-PL";
 Source: "{#ExeDir}ru-RU\*.dll"; DestDir: "{app}\ru-RU";
 Source: "{#ExeDir}ko\*.dll"; DestDir: "{app}\ko";
@@ -94,7 +96,7 @@ Source: "{#ExeDir}nl\*.dll"; DestDir: "{app}\nl";
 Source: "{#ExeDir}hr\*.dll"; DestDir: "{app}\hr";
 
 Source: "{#ExeDir}Changelog.html"; DestDir: "{app}"
-Source: "{#ExeDir}Readme.html"; DestDir: "{app}"; DestName: "Readme.html"; Languages: en fr es it pt_br pl_pl ru_ru nl
+Source: "{#ExeDir}Readme.html"; DestDir: "{app}"; DestName: "Readme.html"; Languages: en fr es it pt_br pl_pl ru_ru nl zh
 Source: "{#ExeDir}Readme.de.html"; DestDir: "{app}"; DestName: "Readme.html"; Languages: de  
 
 [Registry]

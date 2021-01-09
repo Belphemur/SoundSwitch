@@ -90,6 +90,18 @@ namespace SoundSwitch.Localization.Factory.Lang
         public Language TypeEnum => Language.Chinese;
         public string   Label    => "汉语";
     }
+    
+    
+    public class ChineseTraditionalLang : ILang
+    {
+        /// <summary>
+        /// Culture info of this language
+        /// </summary>
+        public CultureInfo CultureInfo => CultureInfo.GetCultureInfo("zh-HANT");
+
+        public Language TypeEnum => Language.ChineseTrad;
+        public string   Label    => "正體字/繁體字";
+    }
 
     public class PolishLang : ILang
     {
