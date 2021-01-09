@@ -88,7 +88,6 @@ Source: "{#ExeDir}nb\*.dll"; DestDir: "{app}\nb";
 Source: "{#ExeDir}pt-BR\*.dll"; DestDir: "{app}\pt-BR";
 Source: "{#ExeDir}it-IT\*.dll"; DestDir: "{app}\it-IT";
 Source: "{#ExeDir}zh\*.dll"; DestDir: "{app}\zh";
-Source: "{#ExeDir}zh-HANT\*.dll"; DestDir: "{app}\zh-HANT";
 Source: "{#ExeDir}pl-PL\*.dll"; DestDir: "{app}\pl-PL";
 Source: "{#ExeDir}ru-RU\*.dll"; DestDir: "{app}\ru-RU";
 Source: "{#ExeDir}ko\*.dll"; DestDir: "{app}\ko";
