@@ -180,7 +180,7 @@ namespace SoundSwitch.Audio.Manager
         /// <param name="flow"></param>
         /// <param name="role"></param>
         /// <returns>Null if no default device is defined</returns>
-        public DeviceInfo? GetDefaultAudioEndpoint(EDataFlow flow, ERole role) => ComThread.Invoke(() =>
+        public DeviceFullInfo? GetDefaultAudioEndpoint(EDataFlow flow, ERole role) => ComThread.Invoke(() =>
         {
             var defaultEndpoint = EnumeratorClient.GetDefaultEndpoint(flow, role);
             if (defaultEndpoint == null)
