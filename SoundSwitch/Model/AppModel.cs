@@ -115,11 +115,11 @@ namespace SoundSwitch.Model
         public ISet<DeviceInfo> SelectedDevices => AppConfigs.Configuration.SelectedDevices;
 
         public IReadOnlyCollection<DeviceFullInfo> AvailablePlaybackDevices =>
-            ActiveAudioDeviceLister.PlaybackDevices.Intersect(SelectedDevices.Where(info => info.Type == DataFlow.Render)).Cast<DeviceFullInfo>().ToArray();
+            ActiveAudioDeviceLister.PlaybackDevices.Where(device => SelectedDevices.FirstOrDefault(device.Equals) != null).ToArray();
 
 
         public IReadOnlyCollection<DeviceFullInfo> AvailableRecordingDevices =>
-            ActiveAudioDeviceLister.RecordingDevices.Intersect(SelectedDevices.Where(info => info.Type == DataFlow.Capture)).Cast<DeviceFullInfo>().ToArray();
+            ActiveAudioDeviceLister.RecordingDevices.Where(device => SelectedDevices.FirstOrDefault(device.Equals) != null).ToArray();
 
         public bool SetCommunications
         {
