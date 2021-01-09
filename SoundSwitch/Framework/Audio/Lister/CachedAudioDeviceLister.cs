@@ -16,7 +16,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Common.Framework.Audio.Device;
@@ -45,7 +44,7 @@ namespace SoundSwitch.Framework.Audio.Lister
 
         private void DeviceChanged(object sender, DeviceChangedEventBase e)
         {
-            _dispatcher.Debounce(300, (o) => Refresh());
+            _dispatcher.Debounce(100, o => Refresh());
         }
 
         private void UpdatePlayback()
@@ -53,7 +52,7 @@ namespace SoundSwitch.Framework.Audio.Lister
             Log.Information("Refreshing playback device of state {@State}", _state);
             using var enumerator = new MMDeviceEnumerator();
             PlaybackDevices = CreateDeviceList(enumerator.EnumerateAudioEndPoints(DataFlow.Render, _state));
-            Log.Information("Refreshed playbacks: {@Playbacks}", PlaybackDevices.Select(info => new {Name = info.Name, Id = info.Id}));
+            Log.Information("Refreshed playbacks: {@Playbacks}", PlaybackDevices.Select(info => new {info.Name, info.Id}));
         }
 
         private void UpdateRecording()
@@ -61,7 +60,7 @@ namespace SoundSwitch.Framework.Audio.Lister
             Log.Information("Refreshing recording device of state {@State}", _state);
             using var enumerator = new MMDeviceEnumerator();
             RecordingDevices = CreateDeviceList(enumerator.EnumerateAudioEndPoints(DataFlow.Capture, _state));
-            Log.Information("Refreshed recordings: {@Recordings}", RecordingDevices.Select(info => new {Name = info.Name, Id = info.Id}));
+            Log.Information("Refreshed recordings: {@Recordings}", RecordingDevices.Select(info => new {info.Name, info.Id}));
         }
 
         public void Refresh()
