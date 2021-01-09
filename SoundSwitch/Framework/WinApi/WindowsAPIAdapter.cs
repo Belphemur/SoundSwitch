@@ -259,7 +259,7 @@ namespace SoundSwitch.Framework.WinApi
                     break;
             }
             
-            if (m.Msg == _msgNotifyShell)
+            if (WindowDestroyed != null && m.Msg == _msgNotifyShell)
             {
                 // Receive shell messages
                 switch ((Interop.ShellEvents)m.WParam.ToInt32())
