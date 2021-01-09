@@ -109,7 +109,7 @@ Vielen Dank für die Open-Source-Lizenz für ihre ausgezeichneten IDEs und Addon
 
 Copyright (C) 2015 Jeroen Pelgrims
 
-Copyright (C) 2015-2020 Antoine Aflalo
+Copyright (C) 2015-2021 Antoine Aflalo
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
