@@ -1,5 +1,23 @@
 # Changelog
 
+## [v5.7.0](https://github.com/Belphemur/SoundSwitch/tree/v5.7.0) (2021-01-12)
+
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v5.6.1...v5.7.0)
+
+**Implemented enhancements:**
+
+- Add translation for Traditional Chinese \(zh\_Hant\) [\#531](https://github.com/Belphemur/SoundSwitch/issues/531)
+
+**Fixed bugs:**
+
+- Taskbar popup not responding and sound lost on headset [\#532](https://github.com/Belphemur/SoundSwitch/issues/532)
+
+**Closed issues:**
+
+- When switching the Systray Icon to Recording mode [\#533](https://github.com/Belphemur/SoundSwitch/issues/533)
+- Crash when there is no output device available after PC starts. [\#530](https://github.com/Belphemur/SoundSwitch/issues/530)
+- Unable to Switch Speakers [\#529](https://github.com/Belphemur/SoundSwitch/issues/529)
+
 ## [v5.6.1](https://github.com/Belphemur/SoundSwitch/tree/v5.6.1) (2020-11-23)
 
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v5.6.0...v5.6.1)

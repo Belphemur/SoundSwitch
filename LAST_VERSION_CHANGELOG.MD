@@ -1,27 +1,22 @@
 # Changelog
 
-## [v5.6.1](https://github.com/Belphemur/SoundSwitch/tree/v5.6.1) (2020-11-23)
+## [v5.7.0](https://github.com/Belphemur/SoundSwitch/tree/v5.7.0) (2021-01-12)
 
-[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v5.6.0...v5.6.1)
-
-**Fixed bugs:**
-
-- Can't switch audio device because of "Also switch foreground program" & Profile for applications don't work anymore [\#524](https://github.com/Belphemur/SoundSwitch/issues/524)
-
-## [v5.6.0](https://github.com/Belphemur/SoundSwitch/tree/v5.6.0) (2020-11-21)
-
-[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v5.5.4...v5.6.0)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v5.6.1...v5.7.0)
 
 **Implemented enhancements:**
 
-- Move to use .NET 5.0 [\#523](https://github.com/Belphemur/SoundSwitch/issues/523)
-- Move the restore device checkbox to the profile settings to make it more user friendly [\#521](https://github.com/Belphemur/SoundSwitch/issues/521)
-- Add a profile trigger for UWP apps [\#518](https://github.com/Belphemur/SoundSwitch/issues/518)
-- Add recent version to winget-pkgs? [\#512](https://github.com/Belphemur/SoundSwitch/issues/512)
+- Add translation for Traditional Chinese \(zh\_Hant\) [\#531](https://github.com/Belphemur/SoundSwitch/issues/531)
 
 **Fixed bugs:**
 
-- Restore device choice not saved when editing profile [\#522](https://github.com/Belphemur/SoundSwitch/issues/522)
+- Taskbar popup not responding and sound lost on headset [\#532](https://github.com/Belphemur/SoundSwitch/issues/532)
+
+**Closed issues:**
+
+- When switching the Systray Icon to Recording mode [\#533](https://github.com/Belphemur/SoundSwitch/issues/533)
+- Crash when there is no output device available after PC starts. [\#530](https://github.com/Belphemur/SoundSwitch/issues/530)
+- Unable to Switch Speakers [\#529](https://github.com/Belphemur/SoundSwitch/issues/529)
 
 
 
