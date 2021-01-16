@@ -18,7 +18,7 @@
 AppName={#MyAppSetupName}
 AppVersion={#MyAppVersion}
 AppVerName={#MyAppSetupName} {#MyAppVersion}
-AppCopyright=Copyright © 2010-2021 {#MyAppSetupName}
+; AppCopyright=Copyright © 2010-2021 {#MyAppSetupName}
 VersionInfoVersion={#MyAppVersion}
 VersionInfoCompany=SoundSwitch                                            
 AppPublisher=Antoine Aflalo
@@ -72,7 +72,7 @@ Name: "zh"; MessagesFile: "compiler:Languages\Chinese.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
-Name: deletefiles; Description: "{cm:ExistingSettings}"; Flags: unchecked
+Name: deletefiles; Description: "{cm:ExistingSettings}"; Flags: unchecked checkedonce
 
 [Files] 
 Source: "{#ExeDir}SoundSwitch.exe"; DestDir: "{app}";  Flags: signonce
