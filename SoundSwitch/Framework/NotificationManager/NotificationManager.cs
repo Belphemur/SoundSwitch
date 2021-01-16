@@ -24,20 +24,20 @@ namespace SoundSwitch.Framework.NotificationManager
 {
     public class NotificationManager
     {
-        private readonly IAppModel _model;
-        private string _lastDeviceId;
-        private INotification _notification;
+        private readonly IAppModel           _model;
+        private          string              _lastDeviceId;
+        private          INotification       _notification;
         private readonly NotificationFactory _notificationFactory;
 
         public NotificationManager(IAppModel model)
         {
-            _model = model;
+            _model               = model;
             _notificationFactory = new NotificationFactory();
         }
 
         public void Init()
         {
-            _model.DefaultDeviceChanged += ModelOnDefaultDeviceChanged;
+            _model.DefaultDeviceChanged        += ModelOnDefaultDeviceChanged;
             _model.NotificationSettingsChanged += ModelOnNotificationSettingsChanged;
             SetNotification(_model.NotificationSettings);
             _model.CustomSoundChanged += ModelOnCustomSoundChanged;
@@ -59,7 +59,7 @@ namespace SoundSwitch.Framework.NotificationManager
             _notification = _notificationFactory.Get(notificationTypeEnum);
             _notification.Configuration = new NotificationConfiguration()
             {
-                Icon = AppModel.Instance.TrayIcon.NotifyIcon,
+                Icon         = _model.TrayIcon.NotifyIcon,
                 DefaultSound = Resources.NotificationSound
             };
             try
@@ -74,7 +74,7 @@ namespace SoundSwitch.Framework.NotificationManager
                 }
 
                 MessageBox.Show(string.Format(SettingsStrings.audioFileNotFound, SettingsStrings.notificationOptionSound),
-                                SettingsStrings.audioFileNotFoundCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    SettingsStrings.audioFileNotFoundCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 _model.NotificationSettings = NotificationTypeEnum.SoundNotification;
             }
         }
@@ -88,11 +88,23 @@ namespace SoundSwitch.Framework.NotificationManager
             _lastDeviceId = deviceDefaultChangedEvent.DeviceId;
         }
 
+        /// <summary>
+        /// Notify on Profile changed
+        /// </summary>
+        public void NotifyProfileChanged(Profile.Profile profile, uint? processId)
+        {
+            if (!profile.NotifyOnActivation)
+            {
+                return;
+            }
+            _notification.NotifyProfileChanged(profile, processId);
+        }
+
         ~NotificationManager()
         {
-            _model.DefaultDeviceChanged -= ModelOnDefaultDeviceChanged;
+            _model.DefaultDeviceChanged        -= ModelOnDefaultDeviceChanged;
             _model.NotificationSettingsChanged -= ModelOnNotificationSettingsChanged;
-            _model.CustomSoundChanged -= ModelOnCustomSoundChanged;
+            _model.CustomSoundChanged          -= ModelOnCustomSoundChanged;
         }
     }
 }

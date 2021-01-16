@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using Markdig.Syntax.Inlines;
 using NAudio.CoreAudioApi;
 using RailSharp;
 using RailSharp.Internal.Result;
@@ -13,16 +12,13 @@ using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Com.User;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
-using SoundSwitch.Common.Framework.Icon;
-using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Profile.Trigger;
+using SoundSwitch.Framework.WinApi;
+using SoundSwitch.Framework.WinApi.Keyboard;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
-using SoundSwitch.Properties;
 using SoundSwitch.Util;
-using HotKey = SoundSwitch.Framework.WinApi.Keyboard.HotKey;
-using WindowsAPIAdapter = SoundSwitch.Framework.WinApi.WindowsAPIAdapter;
 
 namespace SoundSwitch.Framework.Profile
 {
@@ -30,12 +26,12 @@ namespace SoundSwitch.Framework.Profile
     {
         public delegate void ShowError(string errorMessage, string errorTitle);
 
-        private readonly BannerManager      _bannerManager = new();
-        private readonly WindowMonitor      _windowMonitor;
-        private readonly AudioSwitcher      _audioSwitcher;
-        private readonly IAudioDeviceLister _activeDeviceLister;
-        private readonly ShowError          _showError;
-        private readonly TriggerFactory     _triggerFactory;
+        private readonly WindowMonitor                           _windowMonitor;
+        private readonly AudioSwitcher                           _audioSwitcher;
+        private readonly IAudioDeviceLister                      _activeDeviceLister;
+        private readonly ShowError                               _showError;
+        private readonly TriggerFactory                          _triggerFactory;
+        private readonly NotificationManager.NotificationManager _notificationManager;
 
         private Profile? _steamProfile;
 
@@ -49,17 +45,19 @@ namespace SoundSwitch.Framework.Profile
 
         public IReadOnlyCollection<Profile> Profiles => AppConfigs.Configuration.Profiles;
 
-        public ProfileManager(WindowMonitor      windowMonitor,
-                              AudioSwitcher      audioSwitcher,
-                              IAudioDeviceLister activeDeviceLister,
-                              ShowError          showError,
-                              TriggerFactory     triggerFactory)
+        public ProfileManager(WindowMonitor                           windowMonitor,
+                              AudioSwitcher                           audioSwitcher,
+                              IAudioDeviceLister                      activeDeviceLister,
+                              ShowError                               showError,
+                              TriggerFactory                          triggerFactory,
+                              NotificationManager.NotificationManager notificationManager)
         {
-            _windowMonitor      = windowMonitor;
-            _audioSwitcher      = audioSwitcher;
-            _activeDeviceLister = activeDeviceLister;
-            _showError          = showError;
-            _triggerFactory     = triggerFactory;
+            _windowMonitor       = windowMonitor;
+            _audioSwitcher       = audioSwitcher;
+            _activeDeviceLister  = activeDeviceLister;
+            _showError           = showError;
+            _triggerFactory      = triggerFactory;
+            _notificationManager = notificationManager;
         }
 
         private void RegisterTriggers(Profile profile, bool onInit = false)
@@ -151,7 +149,7 @@ namespace SoundSwitch.Framework.Profile
         private bool HandleUwpApp(WindowMonitor.Event @event)
         {
             (Profile Profile, Trigger.Trigger Trigger) profileTuple;
-            
+
             var windowNameLowerCase = @event.WindowName.ToLower();
 
             profileTuple = _profilesByUwpApp.FirstOrDefault(pair => windowNameLowerCase.Contains(pair.Key)).Value;
@@ -167,10 +165,9 @@ namespace SoundSwitch.Framework.Profile
 
         private bool HandleWindowName(WindowMonitor.Event @event)
         {
-            (Profile Profile, Trigger.Trigger Trigger) profileTuple;
-            var                                        windowNameLower = @event.WindowName.ToLower();
+            var windowNameLower = @event.WindowName.ToLower();
 
-            profileTuple = _profilesByWindowName.FirstOrDefault(pair => windowNameLower.Contains(pair.Key)).Value;
+            var profileTuple = _profilesByWindowName.FirstOrDefault(pair => windowNameLower.Contains(pair.Key)).Value;
             if (profileTuple != default)
             {
                 SaveCurrentState(@event.Hwnd, profileTuple.Profile, profileTuple.Trigger);
@@ -269,40 +266,9 @@ namespace SoundSwitch.Framework.Profile
             };
         }
 
-        private void NotifyProfileIfNeeded(Profile profile, uint? processId)
-        {
-            if (!profile.NotifyOnActivation)
-            {
-                return;
-            }
-
-
-            var icon = Resources.default_profile_image;
-            if (processId.HasValue)
-            {
-                try
-                {
-                    var process = Process.GetProcessById((int) processId.Value);
-                    icon = IconExtractor.Extract(process.MainModule?.FileName, 0, true).ToBitmap();
-                }
-                catch (Exception)
-                {
-                    // ignored
-                }
-            }
-
-            _bannerManager.ShowNotification(new BannerData
-            {
-                Priority = 1,
-                Image    = icon,
-                Title    = string.Format(SettingsStrings.profile_notification_text, profile.Name),
-                Text     = string.Join("\n", profile.Devices.Select(wrapper => wrapper.DeviceInfo.NameClean))
-            });
-        }
-
         private void SwitchAudio(Profile profile, uint processId)
         {
-            NotifyProfileIfNeeded(profile, processId);
+            _notificationManager.NotifyProfileChanged(profile, processId);
             foreach (var device in profile.Devices)
             {
                 var deviceToUse = CheckDeviceAvailable(device.DeviceInfo);
@@ -328,7 +294,7 @@ namespace SoundSwitch.Framework.Profile
 
         private void SwitchAudio(Profile profile)
         {
-            NotifyProfileIfNeeded(profile, null);
+            _notificationManager.NotifyProfileChanged(profile, null);
             foreach (var device in profile.Devices)
             {
                 var deviceToUse = CheckDeviceAvailable(device.DeviceInfo);
