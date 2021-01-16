@@ -55,5 +55,12 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         /// </summary>
         /// <returns></returns>
         bool IsAvailable();
+
+        /// <summary>
+        /// Notify when a profile has changed
+        /// </summary>
+        /// <param name="profile"></param>
+        /// <param name="processId"></param>
+        void NotifyProfileChanged(Profile.Profile profile, uint? processId);
     }
 }
