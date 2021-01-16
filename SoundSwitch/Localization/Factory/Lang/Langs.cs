@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using SoundSwitch.Framework.Factory;
 
 namespace SoundSwitch.Localization.Factory.Lang
 {
@@ -88,7 +87,7 @@ namespace SoundSwitch.Localization.Factory.Lang
         public CultureInfo CultureInfo => CultureInfo.GetCultureInfo("zh");
 
         public Language TypeEnum => Language.Chinese;
-        public string   Label    => "汉语";
+        public string   Label    => "中文 (简体)";
     }
     
     
@@ -100,7 +99,7 @@ namespace SoundSwitch.Localization.Factory.Lang
         public CultureInfo CultureInfo => CultureInfo.GetCultureInfo("zh-HANT");
 
         public Language TypeEnum => Language.ChineseTrad;
-        public string   Label    => "正體字/繁體字";
+        public string   Label    => "中文 (正體)";
     }
 
     public class PolishLang : ILang
