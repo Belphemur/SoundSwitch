@@ -13,29 +13,28 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using NAudio.CoreAudioApi;
+using RailSharp;
 using Serilog;
+using SoundSwitch.Audio.Manager;
+using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
-using SoundSwitch.Framework.Updater;
-using SoundSwitch.Localization;
-using SoundSwitch.Util;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using RailSharp;
-using SoundSwitch.Audio.Manager;
-using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Profile.Trigger;
+using SoundSwitch.Framework.Updater;
+using SoundSwitch.Framework.WinApi;
+using SoundSwitch.Framework.WinApi.Keyboard;
+using SoundSwitch.Localization;
 using SoundSwitch.Localization.Factory;
 using SoundSwitch.UI.Component;
 using SoundSwitch.Util.Timer;
-using HotKey = SoundSwitch.Framework.WinApi.Keyboard.HotKey;
-using WindowsAPIAdapter = SoundSwitch.Framework.WinApi.WindowsAPIAdapter;
 
 namespace SoundSwitch.Model
 {
@@ -214,7 +213,9 @@ namespace SoundSwitch.Model
             {
                 throw new InvalidOperationException("Already initialized");
             }
-            ProfileManager = new ProfileManager(new WindowMonitor(), AudioSwitcher.Instance, ActiveAudioDeviceLister, TrayIcon.ShowError, new TriggerFactory());
+            _notificationManager.Init();
+
+            ProfileManager = new ProfileManager(new WindowMonitor(), AudioSwitcher.Instance, ActiveAudioDeviceLister, TrayIcon.ShowError, new TriggerFactory(), _notificationManager);
             RegisterHotKey(AppConfigs.Configuration.PlaybackHotKey);
             RegisterHotKey(AppConfigs.Configuration.RecordingHotKey);
 
@@ -230,7 +231,6 @@ namespace SoundSwitch.Model
                 });
 
             InitUpdateChecker();
-            _notificationManager.Init();
             _initialized = true;
         }
 
