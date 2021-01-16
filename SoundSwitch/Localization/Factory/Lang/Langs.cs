@@ -84,7 +84,7 @@ namespace SoundSwitch.Localization.Factory.Lang
         /// <summary>
         /// Culture info of this language
         /// </summary>
-        public CultureInfo CultureInfo => CultureInfo.GetCultureInfo("zh");
+        public CultureInfo CultureInfo => CultureInfo.GetCultureInfo("zh-Hans");
 
         public Language TypeEnum => Language.Chinese;
         public string   Label    => "中文 (简体)";
@@ -96,7 +96,7 @@ namespace SoundSwitch.Localization.Factory.Lang
         /// <summary>
         /// Culture info of this language
         /// </summary>
-        public CultureInfo CultureInfo => CultureInfo.GetCultureInfo("zh-HANT");
+        public CultureInfo CultureInfo => CultureInfo.GetCultureInfo("zh-Hant");
 
         public Language TypeEnum => Language.ChineseTrad;
         public string   Label    => "中文 (正體)";
