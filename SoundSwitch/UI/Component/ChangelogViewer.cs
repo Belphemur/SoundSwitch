@@ -13,6 +13,7 @@
 ********************************************************************/
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows.Forms;
 using Markdig;
 
@@ -22,11 +23,22 @@ namespace SoundSwitch.UI.Component
     {
         public ChangelogWebViewer()
         {
-            IsWebBrowserContextMenuEnabled = false;
-            WebBrowserShortcutsEnabled = false;
+            IsWebBrowserContextMenuEnabled =  false;
+            WebBrowserShortcutsEnabled     =  false;
+            Navigating                     += OnNavigating;
         }
 
-        protected static List<string> HtmlHeaders => new List<string>
+        private void OnNavigating(object sender, WebBrowserNavigatingEventArgs e)
+        {
+            if (e.Url.ToString() == "about:blank")
+                return;
+            
+            e.Cancel = true;
+            var url = e.Url.ToString().Replace("&", "^&");
+            Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") {CreateNoWindow = true});
+        }
+
+        private static List<string> HtmlHeaders => new()
         {
             @"<!doctype html>
             <html>
@@ -61,7 +73,7 @@ namespace SoundSwitch.UI.Component
         public void SetChangelog(IEnumerable<string> changelogLines)
         {
             var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
-            var lines = HtmlHeaders;
+            var lines    = HtmlHeaders;
             lines.Add("<body>");
             lines.Add(Markdown.ToHtml(string.Join("\n", changelogLines), pipeline));
             lines.Add("</body>");

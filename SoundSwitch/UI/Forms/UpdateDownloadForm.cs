@@ -13,11 +13,9 @@
 ********************************************************************/
 
 using System;
-using System.Diagnostics;
 using System.Net;
 using System.Windows.Forms;
 using Serilog;
-using SoundSwitch.Framework;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.Updater.Installer;
 using SoundSwitch.Localization;
@@ -106,16 +104,6 @@ namespace SoundSwitch.UI.Forms
         {
             _releaseFile.DownloadProgressChanged -= _releaseFileOnDownloadProgressChanged;
             _releaseFile.CancelDownload();
-        }
-
-        private void changeLog_Navigating(object sender, WebBrowserNavigatingEventArgs e)
-        {
-            if (_redirectLinks)
-            {
-                // Redirect links to the users default web browser.
-                e.Cancel = true;
-                Process.Start(e.Url.ToString());
-            }
         }
     }
 }
