@@ -27,7 +27,6 @@ namespace SoundSwitch.UI.Forms
     public sealed partial class UpdateDownloadForm : Form
     {
         private WebFile _releaseFile;
-        private DownloadProgressChangedEventHandler _releaseFileOnDownloadProgressChanged;
 
         public UpdateDownloadForm()
         {
@@ -36,16 +35,19 @@ namespace SoundSwitch.UI.Forms
 
             LocalizeForm();
             downloadProgress.DisplayStyle = TextProgressBar.ProgressBarDisplayText.Both;
+            TopMost = true;
         }
 
         public void DownloadRelease(Release release)
         {
-            Focus();
             changeLog.SetChangelog(release.Changelog);
             Name = release.Name;
             downloadProgress.CustomText = release.Asset.name;
+            downloadProgress.Value = 0;
+            installButton.Enabled = false;
+            downloadProgress.Enabled = true;
             _releaseFile = new WebFile(new Uri(release.Asset.browser_download_url));
-            _releaseFileOnDownloadProgressChanged = (sender, args) =>
+            _releaseFile.DownloadProgressChanged += (DownloadProgressChangedEventHandler) ((sender, args) =>
             {
                 if (downloadProgress.IsDisposed)
                 {
@@ -53,8 +55,7 @@ namespace SoundSwitch.UI.Forms
                 }
 
                 downloadProgress.Invoke(new Action(() => { downloadProgress.Value = args.ProgressPercentage; }));
-            };
-            _releaseFile.DownloadProgressChanged += _releaseFileOnDownloadProgressChanged;
+            });
             _releaseFile.DownloadFailed += (sender, @event) =>
             {
                 Log.Error(@event.Exception, "Couldn't download the Release ");
@@ -79,8 +80,8 @@ namespace SoundSwitch.UI.Forms
                     downloadProgress.Enabled = false;
                 }));
             };
-            ShowDialog();
             _releaseFile.DownloadFile();
+            ShowDialog();
         }
 
         private void LocalizeForm()
@@ -104,7 +105,6 @@ namespace SoundSwitch.UI.Forms
 
         private void UpdateDownloadForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _releaseFile.DownloadProgressChanged -= _releaseFileOnDownloadProgressChanged;
             _releaseFile.CancelDownload();
         }
     }
