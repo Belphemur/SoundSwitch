@@ -1,5 +1,26 @@
 # Changelog
 
+## [v5.7.1](https://github.com/Belphemur/SoundSwitch/tree/v5.7.1) (2021-01-30)
+
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v5.7.0...v5.7.1)
+
+**Implemented enhancements:**
+
+- Win modifier for shortcut [\#535](https://github.com/Belphemur/SoundSwitch/issues/535)
+
+**Fixed bugs:**
+
+- Webclient exception when SoundSwitch tries to update multiple times [\#543](https://github.com/Belphemur/SoundSwitch/issues/543)
+- Windows Notification option displays Banner \(not Windows Notification\) [\#539](https://github.com/Belphemur/SoundSwitch/issues/539)
+- Installer shouldn't remember the state of "remove SoundSwitch config" when updating [\#538](https://github.com/Belphemur/SoundSwitch/issues/538)
+- New option "正體字/繁體字" is not work correctly [\#537](https://github.com/Belphemur/SoundSwitch/issues/537)
+- Updater window open pages inside itself [\#536](https://github.com/Belphemur/SoundSwitch/issues/536)
+
+**Closed issues:**
+
+- Crashing when canceling multiple updates  [\#544](https://github.com/Belphemur/SoundSwitch/issues/544)
+- Unable to add single monitor sound source [\#542](https://github.com/Belphemur/SoundSwitch/issues/542)
+
 ## [v5.7.0](https://github.com/Belphemur/SoundSwitch/tree/v5.7.0) (2021-01-12)
 
 [Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v5.6.1...v5.7.0)

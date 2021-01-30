@@ -1,22 +1,25 @@
 # Changelog
 
-## [v5.7.0](https://github.com/Belphemur/SoundSwitch/tree/v5.7.0) (2021-01-12)
+## [v5.7.1](https://github.com/Belphemur/SoundSwitch/tree/v5.7.1) (2021-01-30)
 
-[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v5.6.1...v5.7.0)
+[Full Changelog](https://github.com/Belphemur/SoundSwitch/compare/v5.7.0...v5.7.1)
 
 **Implemented enhancements:**
 
-- Add translation for Traditional Chinese \(zh\_Hant\) [\#531](https://github.com/Belphemur/SoundSwitch/issues/531)
+- Win modifier for shortcut [\#535](https://github.com/Belphemur/SoundSwitch/issues/535)
 
 **Fixed bugs:**
 
-- Taskbar popup not responding and sound lost on headset [\#532](https://github.com/Belphemur/SoundSwitch/issues/532)
+- Webclient exception when SoundSwitch tries to update multiple times [\#543](https://github.com/Belphemur/SoundSwitch/issues/543)
+- Windows Notification option displays Banner \(not Windows Notification\) [\#539](https://github.com/Belphemur/SoundSwitch/issues/539)
+- Installer shouldn't remember the state of "remove SoundSwitch config" when updating [\#538](https://github.com/Belphemur/SoundSwitch/issues/538)
+- New option "正體字/繁體字" is not work correctly [\#537](https://github.com/Belphemur/SoundSwitch/issues/537)
+- Updater window open pages inside itself [\#536](https://github.com/Belphemur/SoundSwitch/issues/536)
 
 **Closed issues:**
 
-- When switching the Systray Icon to Recording mode [\#533](https://github.com/Belphemur/SoundSwitch/issues/533)
-- Crash when there is no output device available after PC starts. [\#530](https://github.com/Belphemur/SoundSwitch/issues/530)
-- Unable to Switch Speakers [\#529](https://github.com/Belphemur/SoundSwitch/issues/529)
+- Crashing when canceling multiple updates  [\#544](https://github.com/Belphemur/SoundSwitch/issues/544)
+- Unable to add single monitor sound source [\#542](https://github.com/Belphemur/SoundSwitch/issues/542)
 
 
 
