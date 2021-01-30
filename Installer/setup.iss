@@ -68,7 +68,7 @@ Name: "pt_br"; MessagesFile: "compiler:Languages\brazilianPortuguese.isl"
 Name: "ru_ru"; MessagesFile: "compiler:Languages\Russian.isl"
 Name: "pl_pl"; MessagesFile: "compiler:Languages\Polish.isl"
 Name: "nl"; MessagesFile: "compiler:Languages\Dutch.isl"
-Name: "zh-hans"; MessagesFile: "Languages\ChineseSimplified.isl"
+Name: "zh"; MessagesFile: "Languages\ChineseSimplified.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
