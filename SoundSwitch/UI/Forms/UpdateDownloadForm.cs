@@ -26,25 +26,24 @@ namespace SoundSwitch.UI.Forms
 {
     public sealed partial class UpdateDownloadForm : Form
     {
-        private static readonly System.Drawing.Icon updateIcon = Resources.UpdateIcon;
+        private WebFile _releaseFile;
+        private DownloadProgressChangedEventHandler _releaseFileOnDownloadProgressChanged;
 
-        private readonly bool                                _redirectLinks = false;
-        private readonly WebFile                             _releaseFile;
-        private          DownloadProgressChangedEventHandler _releaseFileOnDownloadProgressChanged;
-
-        public UpdateDownloadForm(Release release)
+        public UpdateDownloadForm()
         {
             InitializeComponent();
-            Icon = updateIcon;
-            Text = release.Name;
+            Icon = Resources.UpdateIcon;
+
             LocalizeForm();
-            Focus();
-
-            changeLog.SetChangelog(release.Changelog);
-            _redirectLinks = true;
             downloadProgress.DisplayStyle = TextProgressBar.ProgressBarDisplayText.Both;
-            downloadProgress.CustomText = release.Asset.name;
+        }
 
+        public void DownloadRelease(Release release)
+        {
+            Focus();
+            changeLog.SetChangelog(release.Changelog);
+            Name = release.Name;
+            downloadProgress.CustomText = release.Asset.name;
             _releaseFile = new WebFile(new Uri(release.Asset.browser_download_url));
             _releaseFileOnDownloadProgressChanged = (sender, args) =>
             {
@@ -52,6 +51,7 @@ namespace SoundSwitch.UI.Forms
                 {
                     return;
                 }
+
                 downloadProgress.Invoke(new Action(() => { downloadProgress.Value = args.ProgressPercentage; }));
             };
             _releaseFile.DownloadProgressChanged += _releaseFileOnDownloadProgressChanged;
@@ -59,8 +59,8 @@ namespace SoundSwitch.UI.Forms
             {
                 Log.Error(@event.Exception, "Couldn't download the Release ");
                 MessageBox.Show(@event.Exception.Message,
-                                UpdateDownloadStrings.downloadFailed,
-                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    UpdateDownloadStrings.downloadFailed,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             };
             _releaseFile.Downloaded += (sender, args) =>
             {
@@ -68,16 +68,18 @@ namespace SoundSwitch.UI.Forms
                 {
                     Log.Error("Wrong signature for the release");
                     MessageBox.Show(UpdateDownloadStrings.notSigned,
-                                    UpdateDownloadStrings.notSignedTitle,
-                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        UpdateDownloadStrings.notSignedTitle,
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
+
                 installButton.Invoke(new Action(() =>
                 {
                     installButton.Enabled = true;
                     downloadProgress.Enabled = false;
                 }));
             };
+            ShowDialog();
             _releaseFile.DownloadFile();
         }
 
