@@ -34,7 +34,7 @@ namespace SoundSwitch.UI.Forms
 
             LocalizeForm();
             downloadProgress.DisplayStyle = TextProgressBar.ProgressBarDisplayText.Both;
-            //TopMost = true;
+            TopMost = true;
         }
 
         public void DownloadRelease(Release release)
