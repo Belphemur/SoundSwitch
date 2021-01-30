@@ -121,6 +121,7 @@
           </e>
           <e p="Updater" t="Include">
             <e p="AutoUpdater.cs" t="Include" />
+            <e p="FileDownloader.cs" t="Include" />
             <e p="GitHubRelease.cs" t="Include" />
             <e p="Installer" t="Include">
               <e p="UpdateRunner.cs" t="Include" />

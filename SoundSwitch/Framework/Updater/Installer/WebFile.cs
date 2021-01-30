@@ -13,10 +13,9 @@
 ********************************************************************/
 
 using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Serilog;
@@ -28,8 +27,6 @@ namespace SoundSwitch.Framework.Updater.Installer
         private static readonly string UserAgent =
             $"Mozilla/5.0 (compatible; {Environment.OSVersion.Platform} {Environment.OSVersion.VersionString}; {Application.ProductName}/{Application.ProductVersion};)";
 
-        private readonly WebClient _webClient = new WebClient();
-
         public WebFile(Uri fileUri) : this(fileUri, DefaultFilePath(fileUri))
         {
         }
@@ -40,12 +37,11 @@ namespace SoundSwitch.Framework.Updater.Installer
             {
                 throw new ArgumentNullException();
             }
+
             FileUri = fileUri;
             FilePath = filePath;
-            _webClient.DownloadFileCompleted += WebClientOnDownloadFileCompleted;
-            _webClient.DownloadProgressChanged +=
-                (sender, args) => DownloadProgressChanged?.Invoke(this, args);
         }
+
 
         public Uri FileUri { get; }
         public string FilePath { get; }
@@ -59,39 +55,10 @@ namespace SoundSwitch.Framework.Updater.Installer
         public event EventHandler<EventArgs> Downloaded;
         public event EventHandler<EventArgs> Cancelled;
         public event EventHandler<DownloadFailEvent> DownloadFailed;
-        public event DownloadProgressChangedEventHandler DownloadProgressChanged;
+        public event EventHandler<DownloadProgress> DownloadProgress;
 
-        private void WebClientOnDownloadFileCompleted(object sender, AsyncCompletedEventArgs asyncCompletedEventArgs)
-        {
-            if (asyncCompletedEventArgs.Cancelled)
-            {
-                if (Exists())
-                {
-                    Delete();
-                }
-                Cancelled?.Invoke(this, new EventArgs());
-                return;
-            }
+        private readonly CancellationTokenSource _cancellationTokenSource = new();
 
-            if (asyncCompletedEventArgs.Error != null)
-            {
-                DownloadFailed?.Invoke(this, new DownloadFailEvent(asyncCompletedEventArgs.Error));
-
-                Log.Error(asyncCompletedEventArgs.Error, "Problem downloading file ");
-                return;
-            }
-
-
-            if (Exists())
-            {
-                Downloaded?.Invoke(this, new EventArgs());
-            }
-        }
-
-        protected void PrepareWebClientRequest()
-        {
-            _webClient.Headers.Add("User-Agent", UserAgent);
-        }
 
         public bool Exists()
         {
@@ -109,18 +76,50 @@ namespace SoundSwitch.Framework.Updater.Installer
             {
                 throw new InvalidOperationException("The file to be run doesn't exists");
             }
+
             return args != null ? Process.Start(FilePath, args) : Process.Start(FilePath);
         }
 
         public void DownloadFile()
         {
-            PrepareWebClientRequest();
-            Task.Factory.StartNew(() => _webClient.DownloadFileAsync(FileUri, FilePath));
+            Task.Factory.StartNew(async () =>
+            {
+                try
+                {
+                    await using (var stream = File.OpenWrite(FilePath))
+                    {
+                        await FileDownloader.DownloadFileAsync(
+                            FileUri,
+                            stream,
+                            _cancellationTokenSource.Token,
+                            (downloaded, total) => { DownloadProgress?.Invoke(this, new DownloadProgress(downloaded, total)); }
+                        );
+                    }
+
+                    if (Exists())
+                    {
+                        Downloaded?.Invoke(this, new EventArgs());
+                    }
+                }
+                catch (OperationCanceledException)
+                {
+                    if (Exists())
+                    {
+                        Delete();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e, "Problem downloading file {error}");
+                    DownloadFailed?.Invoke(this, new DownloadFailEvent(e));
+                }
+            });
         }
 
         public void CancelDownload()
         {
-            _webClient.CancelAsync();
+            _cancellationTokenSource.Cancel();
+            Cancelled?.Invoke(this, new EventArgs());
         }
 
         public override string ToString()
@@ -129,6 +128,18 @@ namespace SoundSwitch.Framework.Updater.Installer
         }
     }
 
+    public class DownloadProgress : EventArgs
+    {
+        public long TotalBytes { get; }
+        public long DownloadedBytes { get; }
+        public double Percentage => (double) DownloadedBytes * 100 / TotalBytes;
+
+        public DownloadProgress(long downloadedBytes, long totalBytes)
+        {
+            TotalBytes = totalBytes;
+            DownloadedBytes = downloadedBytes;
+        }
+    }
 
     public class DownloadFailEvent : EventArgs
     {

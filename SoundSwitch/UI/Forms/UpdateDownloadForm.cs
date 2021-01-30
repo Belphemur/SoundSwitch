@@ -13,7 +13,6 @@
 ********************************************************************/
 
 using System;
-using System.Net;
 using System.Windows.Forms;
 using Serilog;
 using SoundSwitch.Framework.Updater;
@@ -35,7 +34,7 @@ namespace SoundSwitch.UI.Forms
 
             LocalizeForm();
             downloadProgress.DisplayStyle = TextProgressBar.ProgressBarDisplayText.Both;
-            TopMost = true;
+            //TopMost = true;
         }
 
         public void DownloadRelease(Release release)
@@ -46,16 +45,25 @@ namespace SoundSwitch.UI.Forms
             downloadProgress.Value = 0;
             installButton.Enabled = false;
             downloadProgress.Enabled = true;
+
             _releaseFile = new WebFile(new Uri(release.Asset.browser_download_url));
-            _releaseFile.DownloadProgressChanged += (DownloadProgressChangedEventHandler) ((sender, args) =>
+
+            _releaseFile.DownloadProgress += (sender, progress) =>
             {
                 if (downloadProgress.IsDisposed)
                 {
                     return;
                 }
 
-                downloadProgress.Invoke(new Action(() => { downloadProgress.Value = args.ProgressPercentage; }));
-            });
+                if (downloadProgress.InvokeRequired)
+                {
+                    downloadProgress.BeginInvoke(new Action(() => { downloadProgress.Value = (int) Math.Ceiling(progress.Percentage); }));
+                }
+                else
+                {
+                    downloadProgress.Value = (int) Math.Ceiling(progress.Percentage);
+                }
+            };
             _releaseFile.DownloadFailed += (sender, @event) =>
             {
                 Log.Error(@event.Exception, "Couldn't download the Release ");
@@ -74,11 +82,19 @@ namespace SoundSwitch.UI.Forms
                     return;
                 }
 
-                installButton.Invoke(new Action(() =>
+                if (installButton.InvokeRequired)
+                {
+                    installButton.BeginInvoke(new Action(() =>
+                    {
+                        installButton.Enabled = true;
+                        downloadProgress.Enabled = false;
+                    }));
+                }
+                else
                 {
                     installButton.Enabled = true;
                     downloadProgress.Enabled = false;
-                }));
+                }
             };
             _releaseFile.DownloadFile();
             ShowDialog();
@@ -94,6 +110,7 @@ namespace SoundSwitch.UI.Forms
 
         private void cancelButton_Click(object sender, EventArgs e)
         {
+            _releaseFile.CancelDownload();
             Close();
         }
 
@@ -105,7 +122,7 @@ namespace SoundSwitch.UI.Forms
 
         private void UpdateDownloadForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _releaseFile.CancelDownload();
+            _releaseFile = null;
         }
     }
 }
