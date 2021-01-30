@@ -68,7 +68,6 @@ namespace SoundSwitch
                 Log.Warning("SoundSwitch is already running for this user {@Mutex}", userMutexName);
                 WindowsAPIAdapter.Stop();
                 Log.CloseAndFlush();
-                Application.Exit();
                 return;
             }
 
@@ -96,7 +95,7 @@ namespace SoundSwitch
                     case WindowsAPIAdapter.RestartManagerEventType.EndSession:
                     case WindowsAPIAdapter.RestartManagerEventType.ForceClose:
                         Log.Debug("Close Application");
-                        Application.Exit();
+                        Environment.Exit(0);
                         break;
                 }
             };
