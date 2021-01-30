@@ -132,6 +132,7 @@ namespace SoundSwitch.UI.Component
 
             NotifyIcon.Dispose();
             _updateMenuItem.Dispose();
+            _updateDownloadForm.Dispose();
         }
 
         public void ReplaceIcon(Icon newIcon)
