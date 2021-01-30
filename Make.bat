@@ -24,7 +24,6 @@ if "%~1" neq "" (
 set FILE_DIR=%~dp0
 set FRAMEWORK=net5.0-windows
 set BIN_DIR=%FILE_DIR%SoundSwitch\bin\%buildPlatform%\%FRAMEWORK%\publish
-set LANGS=(fr de es nb pt-BR it-IT zh pl-PL ru-RU ko nl hr zh-Hans zh-Hant)
 
 set finalDir=%FILE_DIR%Final
 
@@ -73,16 +72,8 @@ xcopy /y img\soundSwitched.png %finalDir% >nul 2>nul
 echo Copy LICENSE
 xcopy /y LICENSE.txt %finalDir% >nul 2>nul
 
-echo Copy Binaries
-xcopy /y %BIN_DIR%\*.pdb %finalDir% >nul 2>nul
-xcopy /y %BIN_DIR%\*.dll %finalDir% >nul 2>nul
-xcopy /y %BIN_DIR%\*.json %finalDir% >nul 2>nul
-xcopy /y %BIN_DIR%\*.config %finalDir% >nul 2>nul
-xcopy /y %BIN_DIR%\SoundSwitch.exe %finalDir% >nul 2>nul
-xcopy /y %BIN_DIR%\SoundSwitch.exe.config %finalDir% >nul 2>nul
-for %%l in %LANGS% DO (
-    mkdir %finalDir%\%%l\ 
-    xcopy /y %BIN_DIR%\%%l\SoundSwitch.resources.dll %finalDir%\%%l\ >nul 2>nul
+echo Copy Published
+xcopy /y %BIN_DIR% %finalDir% /E/H/C/I >nul 2>nul
 )
 
 rem echo Update Icon

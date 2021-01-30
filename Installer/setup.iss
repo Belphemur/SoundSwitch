@@ -76,28 +76,7 @@ Name: deletefiles; Description: "{cm:ExistingSettings}"; Flags: unchecked checke
 
 [Files] 
 Source: "{#ExeDir}SoundSwitch.exe"; DestDir: "{app}";  Flags: signonce
-Source: "{#ExeDir}*.dll"; DestDir: "{app}";
-Source: "{#ExeDir}*.pdb"; DestDir: "{app}";
-Source: "{#ExeDir}*.json"; DestDir: "{app}";
-Source: "{#ExeDir}*.config"; DestDir: "{app}";
-
-Source: "{#ExeDir}fr\*.dll"; DestDir: "{app}\fr";
-Source: "{#ExeDir}de\*.dll"; DestDir: "{app}\de";
-Source: "{#ExeDir}es\*.dll"; DestDir: "{app}\es";
-Source: "{#ExeDir}nb\*.dll"; DestDir: "{app}\nb";
-Source: "{#ExeDir}pt-BR\*.dll"; DestDir: "{app}\pt-BR";
-Source: "{#ExeDir}it-IT\*.dll"; DestDir: "{app}\it-IT";
-Source: "{#ExeDir}zh-Hans\*.dll"; DestDir: "{app}\zh-Hans";
-Source: "{#ExeDir}zh-Hant\*.dll"; DestDir: "{app}\zh-Hant";
-Source: "{#ExeDir}pl-PL\*.dll"; DestDir: "{app}\pl-PL";
-Source: "{#ExeDir}ru-RU\*.dll"; DestDir: "{app}\ru-RU";
-Source: "{#ExeDir}ko\*.dll"; DestDir: "{app}\ko";
-Source: "{#ExeDir}nl\*.dll"; DestDir: "{app}\nl";
-Source: "{#ExeDir}hr\*.dll"; DestDir: "{app}\hr";
-
-Source: "{#ExeDir}Changelog.html"; DestDir: "{app}"
-Source: "{#ExeDir}Readme.html"; DestDir: "{app}"; DestName: "Readme.html"; Languages: en fr es it pt_br pl_pl ru_ru nl zh
-Source: "{#ExeDir}Readme.de.html"; DestDir: "{app}"; DestName: "Readme.html"; Languages: de  
+Source: "{#ExeDir}*"; DestDir: "{app}"; Flags: recursesubdirs;
 
 [Registry]
 Root: HKCU; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Run\{#MyAppSetupName}"; Flags: uninsdeletekey
