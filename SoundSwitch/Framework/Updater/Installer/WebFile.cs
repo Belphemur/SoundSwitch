@@ -107,6 +107,8 @@ namespace SoundSwitch.Framework.Updater.Installer
                     {
                         Delete();
                     }
+
+                    Cancelled?.Invoke(this, new EventArgs());
                 }
                 catch (Exception e)
                 {
@@ -119,7 +121,6 @@ namespace SoundSwitch.Framework.Updater.Installer
         public void CancelDownload()
         {
             _cancellationTokenSource.Cancel();
-            Cancelled?.Invoke(this, new EventArgs());
         }
 
         public override string ToString()
