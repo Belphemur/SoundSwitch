@@ -50,7 +50,11 @@ namespace SoundSwitch.Model
             _notificationManager = new NotificationManager(this);
 
             _deviceCyclerManager                               =  new DeviceCyclerManager();
-            MMNotificationClient.Instance.DefaultDeviceChanged += (sender, @event) => { _dispatcher.Debounce(250, o => { DefaultDeviceChanged?.Invoke(sender, @event); }); };
+            MMNotificationClient.Instance.DefaultDeviceChanged += (sender, @event) => { _dispatcher.Debounce(250, o =>
+            {
+                Log.Information(@"[WINAPI] Default device changed to {device}:{role}", @event.Device, @event.Role);
+                DefaultDeviceChanged?.Invoke(sender, @event);
+            }); };
         }
 
         public static IAppModel Instance { get; } = new AppModel();
@@ -62,10 +66,7 @@ namespace SoundSwitch.Model
 
         public CachedSound CustomNotificationSound
         {
-            get =>
-                _customNotificationCachedSound ??
-                (_customNotificationCachedSound =
-                    new CachedSound(AppConfigs.Configuration.CustomNotificationFilePath));
+            get => _customNotificationCachedSound ??= new CachedSound(AppConfigs.Configuration.CustomNotificationFilePath);
             set
             {
                 var oldSound = _customNotificationCachedSound;
