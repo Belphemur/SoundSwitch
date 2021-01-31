@@ -28,7 +28,6 @@ namespace SoundSwitch.Framework.NotificationManager
         private string _lastDeviceId;
         private INotification _notification;
         private readonly NotificationFactory _notificationFactory;
-        private object _lock = new();
 
         public NotificationManager(IAppModel model)
         {
