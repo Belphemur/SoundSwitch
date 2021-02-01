@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -58,4 +58,339 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="profile.trigger.steam" xml:space="preserve">
+    <value>Zaganjalnik iger za Steam. Omogočite lahko celozaslonski način, imenovan Steam Big Picture.
+
+To je možen sprožilec profila, ko je ta zaznan bo omogočil želeni profil.</value>
+  </data>
+  <data name="profile.desc" xml:space="preserve">
+    <value>Opis</value>
+  </data>
+  <data name="profile.trigger.uwp.desc" xml:space="preserve">
+    <value>Vnesi ime nameščenega programa v trgovini Windows. Tako kot Netflix, Amazon Prime video itd…</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
+    <value>Zahteva, da je omogočeno "{0}".
+
+Obnovi stanje sistema, ko se program zapre.</value>
+  </data>
+  <data name="profile.trigger.restoreDevices" xml:space="preserve">
+    <value>Obnovi naprave do dokončanju sprožilca</value>
+  </data>
+  <data name="usePrimaryScreenTooltip" xml:space="preserve">
+    <value>Prikaži pasico na primarnem zaslonu namesto na zaslonu s fokusom.</value>
+  </data>
+  <data name="usePrimaryScreen" xml:space="preserve">
+    <value>Vedno uporabljaj primarni zaslon</value>
+  </data>
+  <data name="profile.trigger.startup.desc" xml:space="preserve">
+    <value>Profil bo samodejno sprožen ob zagonu SoundSwitcha</value>
+  </data>
+  <data name="profile.trigger.startup" xml:space="preserve">
+    <value>Ob zagonu</value>
+  </data>
+  <data name="profile.button.edit" xml:space="preserve">
+    <value>Uredi</value>
+  </data>
+  <data name="profile.button.save" xml:space="preserve">
+    <value>Shrani</value>
+  </data>
+  <data name="profile.notification.text" xml:space="preserve">
+    <value>Sprožen profil {0}</value>
+  </data>
+  <data name="profile.notify-on-activation" xml:space="preserve">
+    <value>Obvesti, ko je sprožen profil</value>
+  </data>
+  <data name="profile.error.window" xml:space="preserve">
+    <value>Že obstaja profil s tem imenom okna: {0}.</value>
+  </data>
+  <data name="profile.error.steam" xml:space="preserve">
+    <value>Za 'Steam Big Picture' lahko imate samo en profil.</value>
+  </data>
+  <data name="profile.error.triggers.min" xml:space="preserve">
+    <value>Potrebujete vsaj en sprožilec.</value>
+  </data>
+  <data name="communication" xml:space="preserve">
+    <value>Privzeta komunikacijska naprava</value>
+  </data>
+  <data name="profile.trigger.available" xml:space="preserve">
+    <value>Razpoložljivi sprožilci</value>
+  </data>
+  <data name="profile.trigger.actives" xml:space="preserve">
+    <value>Aktivni sprožilci</value>
+  </data>
+  <data name="profile.trigger.steam.desc" xml:space="preserve">
+    <value>Aktiviraj, ko je zagnan 'Steam Big Picture'. (Obnovilo bo stanje, ko se zapre 'Big Picture'.)</value>
+  </data>
+  <data name="profile.trigger.process.desc" xml:space="preserve">
+    <value>Aktiviraj profil, ko je izbrani program v ospredju</value>
+  </data>
+  <data name="profile.trigger.window.desc" xml:space="preserve">
+    <value>Aktiviraj profil, če program v ospredju vsebuje naslednje znake</value>
+  </data>
+  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
+    <value>Uporabljena vroča tipka profila</value>
+  </data>
+  <data name="profile.trigger.process" xml:space="preserve">
+    <value>Pot programa</value>
+  </data>
+  <data name="profile.trigger.window" xml:space="preserve">
+    <value>Ime programa</value>
+  </data>
+  <data name="profile.error.device-not-found" xml:space="preserve">
+    <value>Naprave {0} ni bilo mogoče najti.</value>
+  </data>
+  <data name="hotkeyEnabled" xml:space="preserve">
+    <value>Vroča tipka je omogočena</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
+    <value>Ko zazna program, bo SoundSwitch spremenil tudi trenutno privzeto napravo.</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox" xml:space="preserve">
+    <value>Preklopi tudi privzeto napravo</value>
+  </data>
+  <data name="profile.feature.profile" xml:space="preserve">
+    <value>Profil</value>
+  </data>
+  <data name="profile.error.no-name" xml:space="preserve">
+    <value>Profil potrebuje ime.</value>
+  </data>
+  <data name="profile.error.delete" xml:space="preserve">
+    <value>Profila ni mogoče najti.</value>
+  </data>
+  <data name="profile.deleteButton" xml:space="preserve">
+    <value>Izbriši</value>
+  </data>
+  <data name="profile.error.title" xml:space="preserve">
+    <value>Napaka profila</value>
+  </data>
+  <data name="profile.feature.executable" xml:space="preserve">
+    <value>Izvedljiva datoteka (*.exe)</value>
+  </data>
+  <data name="profile.feature.add" xml:space="preserve">
+    <value>Dodaj profil</value>
+  </data>
+  <data name="profile.error.registerHotkeys.title" xml:space="preserve">
+    <value>Že uporabljena vroča tipka</value>
+  </data>
+  <data name="profile.error.registerHotkeys" xml:space="preserve">
+    <value>Ni bilo mogoče registrirati vroče tipka za naslednje profile: {0}</value>
+  </data>
+  <data name="profile.explanation" xml:space="preserve">
+    <value>Dodajte profil za preklop na določeno napravo za predvajanje ali snemanje, ko se zažene določen program ali je ta v fokusu.</value>
+  </data>
+  <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
+    <value>Nastaviti morate napravo za predvajanje ali snemanje.</value>
+  </data>
+  <data name="profile.error.needHKOrPath" xml:space="preserve">
+    <value>Nastaviti morate vročo tipko ali/in program.</value>
+  </data>
+  <data name="profile.error.name" xml:space="preserve">
+    <value>Profil z imenom {0} že obstaja.</value>
+  </data>
+  <data name="profile.error.application" xml:space="preserve">
+    <value>Ta program {0} že ima povezan profil.</value>
+  </data>
+  <data name="profile.error.hotkey" xml:space="preserve">
+    <value>Ta vroča tipka {0} je že registrirana.</value>
+  </data>
+  <data name="notificationTooltip" xml:space="preserve">
+    <value>Obvestilo sistema Windows: Privzeta pojavna okna programske vrstice Windows.
+Zvočno obvestilo: Predvaja zvok na vklopljeni napravi za predvajanje.
+Prilagojeno zvočno obvestilo: Predvaja določen zvok na vklopljeni napravi za predvajanje.
+'Toast' obvestilo: Uporablja posebno obliko pojavne različice programske vrstice Windows.
+Pasica: Uporablja vedno prikazan,prilagojeni okvir na zaslonu - uporaben za uporabo v igri.</value>
+  </data>
+  <data name="notificationOptionToast" xml:space="preserve">
+    <value>' Toast' obvestilo</value>
+  </data>
+  <data name="notificationOptionCustomized" xml:space="preserve">
+    <value>Prilagojeno zvočno obvestilo</value>
+  </data>
+  <data name="notificationOptionNone" xml:space="preserve">
+    <value>Brez obvestila</value>
+  </data>
+  <data name="notificationOptionSound" xml:space="preserve">
+    <value>Zvočno obvestilo</value>
+  </data>
+  <data name="notificationOptionWindowsDefault" xml:space="preserve">
+    <value>Obvestilo sistema Windows</value>
+  </data>
+  <data name="cycleThroughTooltip" xml:space="preserve">
+    <value>Izberite med napravami, ki jih želite preklopiti. Bodisi samo med izbranimi ali med vsemi.</value>
+  </data>
+  <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
+    <value>Samo izbrane zvočne naprave</value>
+  </data>
+  <data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
+    <value>Vse zvočne naprave</value>
+  </data>
+  <data name="tooltipOnHover" xml:space="preserve">
+    <value>Namig ob prehodu čez, z miško</value>
+  </data>
+  <data name="updateNever" xml:space="preserve">
+    <value>Nikoli ne preverjaj obstoj posodobitev</value>
+  </data>
+  <data name="updateNotify" xml:space="preserve">
+    <value>Obvesti me, ko so na voljo posodobitve</value>
+  </data>
+  <data name="profile.name" xml:space="preserve">
+    <value>Ime</value>
+  </data>
+  <data name="profile.program" xml:space="preserve">
+    <value>Aplikacija</value>
+  </data>
+  <data name="profile.addButton" xml:space="preserve">
+    <value>Dodaj</value>
+  </data>
+  <data name="profile.tab" xml:space="preserve">
+    <value>Profili</value>
+  </data>
+  <data name="iconChange.tooltip" xml:space="preserve">
+    <value>Izberite, kdaj želite spremeniti ikono SoundSwitcha v programski vrstici.
+
+Privzeto: Ne spreminjaj jo. Ohrani ikono SoundSwitcha.
+Predvajanje: Ko je naprava za predvajanje vklopljena.
+Snemanje: Ko je snemalna naprava vklopljena.
+Oboje: Spremeni ob preklopu katere koli vrste naprave.</value>
+  </data>
+  <data name="iconChange" xml:space="preserve">
+    <value>Ikona v programski vrstici</value>
+  </data>
+  <data name="foregroundAppTooltip" xml:space="preserve">
+    <value>Preklopi tudi zvok trenutno uporabljene aplikacije. Uporabno pri video igrah.</value>
+  </data>
+  <data name="foregroundApp" xml:space="preserve">
+    <value>Preklopite tudi program v ospredju</value>
+  </data>
+  <data name="disableCustomSoundTooltip" xml:space="preserve">
+    <value>Onemogoči nastavljeni zvok po meri.</value>
+  </data>
+  <data name="notificationOptionBanner" xml:space="preserve">
+    <value>Pasica</value>
+  </data>
+  <data name="updateNotifyTooltip" xml:space="preserve">
+    <value>SoundSwitch vas bo obvestil, ko bo na voljo nova posodobitev. Ko kliknete na obvestilo, bo prikazano pojavno okno, ki za vas prenese posodobitev in vas vpraša, ali jo želite namestiti.</value>
+  </data>
+  <data name="updateNeverTooltip" xml:space="preserve">
+    <value>Programa ne posodabljajte, če tega ne storite ročno.</value>
+  </data>
+  <data name="languageRestartRequiredCaption" xml:space="preserve">
+    <value>Potrebujete ponovni zagon</value>
+  </data>
+  <data name="languageRestartRequired" xml:space="preserve">
+    <value>Jezik bo spremenjen po ponovnem zagonu SoundSwitcha.
+Ali ga zdaj želite znova zagnati?</value>
+  </data>
+  <data name="language" xml:space="preserve">
+    <value>Jezik</value>
+  </data>
+  <data name="activeRecording" xml:space="preserve">
+    <value>Snemaj: {0}</value>
+  </data>
+  <data name="activePlayback" xml:space="preserve">
+    <value>Predvajaj: {0}</value>
+  </data>
+  <data name="audioFileNotFoundCaption" xml:space="preserve">
+    <value>Zvočna datoteka ni bila najdena</value>
+  </data>
+  <data name="audioFileNotFound" xml:space="preserve">
+    <value>Zvočne datoteke, ki ste jo izbrali za uporabo kot obvestilo, ni mogoče najti. SoundSwitch je nastavitev obvestila preklopil nazaj na {0}.</value>
+  </data>
+  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
+    <value>Brez namiga</value>
+  </data>
+  <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
+    <value>Za obe napravi</value>
+  </data>
+  <data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
+    <value>Naprava za snemanje</value>
+  </data>
+  <data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
+    <value>Naprava za predvajanje</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
+    <value>Obnovljeno stanje sistema</value>
+  </data>
+  <data name="profile.trigger.uwp" xml:space="preserve">
+    <value>Aplikacija Microsoft Store</value>
+  </data>
+  <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
+    <value>Posodobitve se samodejno namestijo brez pozivov.</value>
+  </data>
+  <data name="updateInstallAutomatically" xml:space="preserve">
+    <value>Samodejno namesti posodobitve</value>
+  </data>
+  <data name="keepSystemTrayIconTooltip" xml:space="preserve">
+    <value>Ko je označeno, se ikona programske vrstice ne spremeni pri spremembi 'Privzeta naprava za predvajanje'.</value>
+  </data>
+  <data name="keepSystemTrayIcon" xml:space="preserve">
+    <value>Ohrani ikono programske vrstice SoundSwitcha</value>
+  </data>
+  <data name="cycleThrough" xml:space="preserve">
+    <value>Kroži skozi</value>
+  </data>
+  <data name="updateSettings" xml:space="preserve">
+    <value>Posodobi nastavitve</value>
+  </data>
+  <data name="audioSettings" xml:space="preserve">
+    <value>Zvočne nastavitve</value>
+  </data>
+  <data name="basicSettings" xml:space="preserve">
+    <value>Osnovne nastavitve</value>
+  </data>
+  <data name="hotkeysTooltip" xml:space="preserve">
+    <value>Označite, da omogočite vročo tipko.</value>
+  </data>
+  <data name="selectSoundButtonTooltip" xml:space="preserve">
+    <value>Izberite zvočno datoteko za obvestilo</value>
+  </data>
+  <data name="audioFiles" xml:space="preserve">
+    <value>Zvočne datoteke</value>
+  </data>
+  <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
+    <value>Ko je označeno, bo SoundSwitch preveril tudi različice beta na GitHubu.</value>
+  </data>
+  <data name="updateIncludeBetaVersions" xml:space="preserve">
+    <value>Vključi različice beta</value>
+  </data>
+  <data name="notification" xml:space="preserve">
+    <value>Obvestilo</value>
+  </data>
+  <data name="communicationsDeviceTooltip" xml:space="preserve">
+    <value>Ko je označena, se privzeta komunikacijska naprava in Privzeta naprava za predvajanje zamenjata (uporabno npr. za Skype, TeamSpeak).</value>
+  </data>
+  <data name="closeTooltip" xml:space="preserve">
+    <value>Spremembe se samodejno shranijo</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>Zapri</value>
+  </data>
+  <data name="startWithWindows" xml:space="preserve">
+    <value>Zaženi samodejno z operacijskim sistemom Windows</value>
+  </data>
+  <data name="communicationsDevice" xml:space="preserve">
+    <value>Preklopi privzeto komunikacijsko napravo</value>
+  </data>
+  <data name="hotkeys" xml:space="preserve">
+    <value>Vroča tipka</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>Nastavitve</value>
+  </data>
+  <data name="playback" xml:space="preserve">
+    <value>Predvajanje</value>
+  </data>
+  <data name="recording" xml:space="preserve">
+    <value>Snemanje</value>
+  </data>
+  <data name="disconnected" xml:space="preserve">
+    <value>Odklopljeno</value>
+  </data>
+  <data name="connected" xml:space="preserve">
+    <value>Povezano</value>
+  </data>
+  <data name="selected" xml:space="preserve">
+    <value>Izbrano</value>
+  </data>
 </root>
