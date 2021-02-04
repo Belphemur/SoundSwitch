@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -58,4 +58,337 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
+    <value>"{0}" is engedélyezve kell lennie.
+
+Előző állapot visszaállításra kerül, ha a program bezáródik.</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
+    <value>Amikor az alkalmazás észlelhető, az aktuális alapértelmezett eszköz is le lesz váltva.</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox" xml:space="preserve">
+    <value>Az alapértelmezett eszközt is váltsa</value>
+  </data>
+  <data name="iconChange.tooltip" xml:space="preserve">
+    <value>Válaszd ki mikor változzon meg a SoundSwitch állapotsori ikonja.
+
+Alapértelmezett: nem változik meg az ikon.
+Lejátszáskor: amikor a lejátszóeszköz megváltozik.
+Felvételkor: amikor a felvevőeszköz megváltozik.
+Mindig: ha bármelyik eszköz megváltozik.</value>
+  </data>
+  <data name="foregroundAppTooltip" xml:space="preserve">
+    <value>Az éppen használt program esetén is vált. Hasznos a játékoknál.</value>
+  </data>
+  <data name="foregroundApp" xml:space="preserve">
+    <value>Előtérben lévő program esetén is váltson</value>
+  </data>
+  <data name="disableCustomSoundTooltip" xml:space="preserve">
+    <value>Beállított hang letiltása.</value>
+  </data>
+  <data name="language" xml:space="preserve">
+    <value>Nyelv</value>
+  </data>
+  <data name="activePlayback" xml:space="preserve">
+    <value>Lejátszás:{0}</value>
+  </data>
+  <data name="activeRecording" xml:space="preserve">
+    <value>Felv: {0}</value>
+  </data>
+  <data name="audioFileNotFound" xml:space="preserve">
+    <value>A kiválasztott hangfájl nem található. A Soundswitch visszaállt {0} értesítésre.</value>
+  </data>
+  <data name="notificationTooltip" xml:space="preserve">
+    <value>Windows értesítés: alapértelmezett felugró Windows értesítés.
+Hangértesítés: hang lejátszása lejátszóeszköz váltásakor.
+Egyedi hangértesítés: megadott hang lejátszása lejátszóeszköz váltásakor.
+Lebegő értesítés: a felugró Windows értesítés speciális formája.
+Banner: folyamatosan előtérben megjelenő értesítés, ami hasznos játékok közben.</value>
+  </data>
+  <data name="communicationsDeviceTooltip" xml:space="preserve">
+    <value>Ha engedélyezed, akkor az alapértelmezett lejátszóeszköz és alapértelmezett kommunikációs eszköz együtt kerül átállításra (hasznos Skype, TeamSpeak stb. esetén).</value>
+  </data>
+  <data name="communicationsDevice" xml:space="preserve">
+    <value>Alapértelmezett kommunikációs eszköz váltása</value>
+  </data>
+  <data name="profile.trigger.uwp.desc" xml:space="preserve">
+    <value>Add meg a Microsoft Storeban található alkalmazás nevét. Pl. Netflix, Amazon Prime video stb…</value>
+  </data>
+  <data name="profile.trigger.uwp" xml:space="preserve">
+    <value>Microsoft Store alkalmazás</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
+    <value>Rendszerállapot visszaállítva</value>
+  </data>
+  <data name="profile.trigger.restoreDevices" xml:space="preserve">
+    <value>Eszközök visszaállítása, ha az esemény megszűnt</value>
+  </data>
+  <data name="usePrimaryScreenTooltip" xml:space="preserve">
+    <value>Banner megjelenítése az elsődleges képernyőn a fókuszban lévő helyett.</value>
+  </data>
+  <data name="usePrimaryScreen" xml:space="preserve">
+    <value>Mindig az elsődleges képernyőt használja</value>
+  </data>
+  <data name="profile.trigger.startup.desc" xml:space="preserve">
+    <value>A profil automatikusan aktiválódik a SoundSwitch indításakor</value>
+  </data>
+  <data name="profile.trigger.startup" xml:space="preserve">
+    <value>Indításkor</value>
+  </data>
+  <data name="profile.button.edit" xml:space="preserve">
+    <value>Szerkesztés</value>
+  </data>
+  <data name="profile.button.save" xml:space="preserve">
+    <value>Mentés</value>
+  </data>
+  <data name="profile.notification.text" xml:space="preserve">
+    <value>Profil: {0} aktiválva</value>
+  </data>
+  <data name="profile.notify-on-activation" xml:space="preserve">
+    <value>Értesítsen, ha a profil aktiválódott</value>
+  </data>
+  <data name="profile.error.window" xml:space="preserve">
+    <value>Már létezik profil ezzel az ablaknévvel: {0}.</value>
+  </data>
+  <data name="profile.error.steam" xml:space="preserve">
+    <value>Csak egy profil lehet hozzárendelve a Steam Nagy képhez.</value>
+  </data>
+  <data name="profile.error.triggers.min" xml:space="preserve">
+    <value>Legalább egy kiváltó eseményt meg kell adni.</value>
+  </data>
+  <data name="communication" xml:space="preserve">
+    <value>Alapértelmezett kommunikációs eszköz</value>
+  </data>
+  <data name="profile.trigger.available" xml:space="preserve">
+    <value>Elérhető kiváltó események</value>
+  </data>
+  <data name="profile.trigger.actives" xml:space="preserve">
+    <value>Aktiválást előidézi</value>
+  </data>
+  <data name="profile.desc" xml:space="preserve">
+    <value>Leírás</value>
+  </data>
+  <data name="profile.trigger.steam.desc" xml:space="preserve">
+    <value>Aktiválás, ha a Steam Nagy kép érzékelhető. (Visszaállítás, ha a Nagy kép bezárásra kerül.)</value>
+  </data>
+  <data name="profile.trigger.process.desc" xml:space="preserve">
+    <value>Profil aktiválása, ha a program előtérbe kerül</value>
+  </data>
+  <data name="profile.trigger.window.desc" xml:space="preserve">
+    <value>Profil aktiválása, ha az előtérben lévő alkalmazás neve tartalmazza a megadott karaktereket</value>
+  </data>
+  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
+    <value>Gyorsgomb az aktiváláshoz</value>
+  </data>
+  <data name="profile.trigger.steam" xml:space="preserve">
+    <value>Steam Nagy kép</value>
+  </data>
+  <data name="profile.trigger.process" xml:space="preserve">
+    <value>Elérési út</value>
+  </data>
+  <data name="profile.trigger.window" xml:space="preserve">
+    <value>Program neve</value>
+  </data>
+  <data name="profile.error.device-not-found" xml:space="preserve">
+    <value>A(z) {0} eszköz nem található.</value>
+  </data>
+  <data name="profile.feature.profile" xml:space="preserve">
+    <value>Profil</value>
+  </data>
+  <data name="profile.error.no-name" xml:space="preserve">
+    <value>Adj nevet a profilnak.</value>
+  </data>
+  <data name="profile.error.delete" xml:space="preserve">
+    <value>Profil nem található.</value>
+  </data>
+  <data name="profile.deleteButton" xml:space="preserve">
+    <value>Törlés</value>
+  </data>
+  <data name="profile.error.title" xml:space="preserve">
+    <value>Profil hiba</value>
+  </data>
+  <data name="profile.feature.executable" xml:space="preserve">
+    <value>Futtatható (*.exe)</value>
+  </data>
+  <data name="profile.feature.add" xml:space="preserve">
+    <value>Profil hozzáadása</value>
+  </data>
+  <data name="profile.error.registerHotkeys.title" xml:space="preserve">
+    <value>A gyorsgomb már használatban van</value>
+  </data>
+  <data name="profile.error.registerHotkeys" xml:space="preserve">
+    <value>Nem sikerült a gyorsgomb hozzárendelése a profilhoz: {0}</value>
+  </data>
+  <data name="profile.explanation" xml:space="preserve">
+    <value>Létrehozhatsz profilokat a lejátszó- és felvevőeszközökhöz, amikor egy megadott alkalmazás az előtérbe kerül.</value>
+  </data>
+  <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
+    <value>Be kell állítanod egy lejátszó- vagy felvevőeszközt.</value>
+  </data>
+  <data name="profile.error.needHKOrPath" xml:space="preserve">
+    <value>Meg kell adnod a gyorsgombot és/vagy az alkalmazást.</value>
+  </data>
+  <data name="profile.error.name" xml:space="preserve">
+    <value>Már létezik {0} nevű profil.</value>
+  </data>
+  <data name="profile.error.application" xml:space="preserve">
+    <value>A(z) {0} alkalmazás már profilhoz van rendelve.</value>
+  </data>
+  <data name="profile.error.hotkey" xml:space="preserve">
+    <value>A(z) {0} gyorsgomb már használatban van.</value>
+  </data>
+  <data name="profile.name" xml:space="preserve">
+    <value>Név</value>
+  </data>
+  <data name="profile.program" xml:space="preserve">
+    <value>Alkalmazás</value>
+  </data>
+  <data name="profile.addButton" xml:space="preserve">
+    <value>Hozzáadás</value>
+  </data>
+  <data name="iconChange" xml:space="preserve">
+    <value>Állapotsori ikon</value>
+  </data>
+  <data name="notificationOptionBanner" xml:space="preserve">
+    <value>Banner</value>
+  </data>
+  <data name="updateNotifyTooltip" xml:space="preserve">
+    <value>A SoundSwitch értesítést küld, ha frissítés érhető el. Az értesítésre kattintva megjelenik a letöltési párbeszédablak és megerősítést kér a telepítéshez.</value>
+  </data>
+  <data name="updateNeverTooltip" xml:space="preserve">
+    <value>Ne frissítse a programot kézi beavatkozásig.</value>
+  </data>
+  <data name="languageRestartRequiredCaption" xml:space="preserve">
+    <value>Újraindítás szükséges</value>
+  </data>
+  <data name="languageRestartRequired" xml:space="preserve">
+    <value>A nyelv a SoundSwitch újraindítása után változik meg.
+Szeretnéd most újraindítani a programot?</value>
+  </data>
+  <data name="audioFileNotFoundCaption" xml:space="preserve">
+    <value>Hangfájl nem található</value>
+  </data>
+  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
+    <value>Nincsenek tippek</value>
+  </data>
+  <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
+    <value>Mindkét eszközhöz</value>
+  </data>
+  <data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
+    <value>Lejátszóeszköz</value>
+  </data>
+  <data name="notificationOptionCustomized" xml:space="preserve">
+    <value>Testreszabott hangértesítés</value>
+  </data>
+  <data name="notificationOptionToast" xml:space="preserve">
+    <value>Lebegő értesítés</value>
+  </data>
+  <data name="notificationOptionNone" xml:space="preserve">
+    <value>Nincs értesítés</value>
+  </data>
+  <data name="notificationOptionSound" xml:space="preserve">
+    <value>Hang értesítés</value>
+  </data>
+  <data name="notificationOptionWindowsDefault" xml:space="preserve">
+    <value>Windows értesítés</value>
+  </data>
+  <data name="cycleThroughTooltip" xml:space="preserve">
+    <value>Válasz ki mely eszközök között lehessen váltani. Csak a kiválasztottak között vagy az összes eszköz között.</value>
+  </data>
+  <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
+    <value>Csak a kiválasztott hangeszközök</value>
+  </data>
+  <data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
+    <value>Minden hangeszköz</value>
+  </data>
+  <data name="tooltipOnHover" xml:space="preserve">
+    <value>Tippek megjelenítése rámutatáskor</value>
+  </data>
+  <data name="updateNever" xml:space="preserve">
+    <value>Ne keressen frissítéseket</value>
+  </data>
+  <data name="updateNotify" xml:space="preserve">
+    <value>Értesítsen ha frissítés érhető el</value>
+  </data>
+  <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
+    <value>A frissítések jóváhagyás nélkül telepítésre kerülnek.</value>
+  </data>
+  <data name="updateInstallAutomatically" xml:space="preserve">
+    <value>Frissítések automatikus telepítése</value>
+  </data>
+  <data name="keepSystemTrayIconTooltip" xml:space="preserve">
+    <value>Engedélyezés esetén az állapotsori ikon nem fog megváltozni az "Alapértelmezett lejátszóeszköz" változásakor.</value>
+  </data>
+  <data name="keepSystemTrayIcon" xml:space="preserve">
+    <value>Mindig jelenjen meg a SoundSwitch állapotsori ikonja</value>
+  </data>
+  <data name="cycleThrough" xml:space="preserve">
+    <value>Váltási lehetőség</value>
+  </data>
+  <data name="updateSettings" xml:space="preserve">
+    <value>Frissítési beállítások</value>
+  </data>
+  <data name="audioSettings" xml:space="preserve">
+    <value>Audio beállítások</value>
+  </data>
+  <data name="basicSettings" xml:space="preserve">
+    <value>Alap beállítások</value>
+  </data>
+  <data name="hotkeysTooltip" xml:space="preserve">
+    <value>Jelöld be a gyorsgomb engedélyezéséhez.</value>
+  </data>
+  <data name="selectSoundButtonTooltip" xml:space="preserve">
+    <value>Válassz egy hangfájlt az értesítéshez</value>
+  </data>
+  <data name="audioFiles" xml:space="preserve">
+    <value>Hangfájlok</value>
+  </data>
+  <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
+    <value>Engedélyezés esetén a SoundSwitch a béta verziókat is ellenőrzi GitHub-on.</value>
+  </data>
+  <data name="updateIncludeBetaVersions" xml:space="preserve">
+    <value>Béta verziókra is</value>
+  </data>
+  <data name="notification" xml:space="preserve">
+    <value>Értesítés</value>
+  </data>
+  <data name="closeTooltip" xml:space="preserve">
+    <value>A módosítások automatikusan elmentve</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>Bezárás</value>
+  </data>
+  <data name="startWithWindows" xml:space="preserve">
+    <value>Automatikus indítás a rendszerrel</value>
+  </data>
+  <data name="hotkeys" xml:space="preserve">
+    <value>Gyorsgomb</value>
+  </data>
+  <data name="disconnected" xml:space="preserve">
+    <value>Leválasztva</value>
+  </data>
+  <data name="connected" xml:space="preserve">
+    <value>Csatlakoztatva</value>
+  </data>
+  <data name="selected" xml:space="preserve">
+    <value>Kiválasztva</value>
+  </data>
+  <data name="hotkeyEnabled" xml:space="preserve">
+    <value>Gyorsgomb engedélyezése</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>Beállítások</value>
+  </data>
+  <data name="profile.tab" xml:space="preserve">
+    <value>Profilok</value>
+  </data>
+  <data name="playback" xml:space="preserve">
+    <value>Lejátszás</value>
+  </data>
+  <data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
+    <value>Felvevőeszköz</value>
+  </data>
+  <data name="recording" xml:space="preserve">
+    <value>Felvétel</value>
+  </data>
 </root>
