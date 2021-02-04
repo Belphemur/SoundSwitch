@@ -62,7 +62,7 @@
     <value>Érvénytelen digitális aláírás</value>
   </data>
   <data name="notSigned" xml:space="preserve">
-    <value>A letöltött frissítést nem érvényes. Javasoljuk, hogy törölje a fájlt, és vegye fel a kapcsolatot a fejlesztővel!</value>
+    <value>A letöltött frissítés aláírása érvénytelen. Javasoljuk, hogy töröld a fájlt és vedd fel a kapcsolatot a fejlesztővel!</value>
   </data>
   <data name="downloadFailed" xml:space="preserve">
     <value>Sikertelen letöltés</value>
