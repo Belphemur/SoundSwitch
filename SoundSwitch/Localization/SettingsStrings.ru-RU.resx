@@ -421,4 +421,10 @@
   <data name="profile.error.window" xml:space="preserve">
     <value>Профиль с таким названием окна уже существует: {0}.</value>
   </data>
+  <data name="profile.trigger.uwp" xml:space="preserve">
+    <value>Приложение из Microsoft Store</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
+    <value>Состояние системы восстановлено</value>
+  </data>
 </root>
