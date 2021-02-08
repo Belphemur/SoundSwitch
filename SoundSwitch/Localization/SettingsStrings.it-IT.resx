@@ -276,7 +276,7 @@ Vuoi riavviare SoundSwitch ora?</value>
     <value>SoundSwitch notificherà quando è disponibile un aggiornamento. Facendo clic sulla notifica, apparirà una finestra che scaricherà l'aggiornamento e chiederà se si vuole installarlo.</value>
   </data>
   <data name="notificationOptionBanner" xml:space="preserve">
-    <value>Pubblicità</value>
+    <value>Banner</value>
   </data>
   <data name="disableCustomSoundTooltip" xml:space="preserve">
     <value>Disabilita il set Suoni personalizzati.</value>
@@ -422,7 +422,7 @@ Entrambi: Cambia quando qualsiasi tipo di dispositivo viene cambiato.</value>
     <value>Commuta anche dispositivo predefinito</value>
   </data>
   <data name="profile.trigger.uwp.desc" xml:space="preserve">
-    <value>Inserisci il nome dell'applicazione installata tramite l'archivio di Windows, come Netflix, Amazon Prime Video, ecc …</value>
+    <value>Inserisci il nome dell'applicazione installata tramite l'archivio di Windows, come Netflix, Amazon Prime Video, ecc.</value>
   </data>
   <data name="profile.trigger.uwp" xml:space="preserve">
     <value>App Microsoft Store</value>
