@@ -366,7 +366,7 @@ Toujours : Lors de la bascule vers un autre périphérique de lecture ou d'enreg
 		<value>Active le profile si le nom de l'application contient ces caractères</value>
   </data>
   <data name="profile.trigger.steam.desc" xml:space="preserve">
-		<value>Active quand Steam Big Picture est détecté. Restaure l'état de départ quand Big Picture est fermé.</value>
+		<value>Active quand Steam Big Picture est détecté. (Restaurera l'état quand Big Picture est fermé.)</value>
   </data>
   <data name="profile.trigger.actives" xml:space="preserve">
 		<value>Déclencheurs actifs</value>
@@ -378,7 +378,7 @@ Toujours : Lors de la bascule vers un autre périphérique de lecture ou d'enreg
 		<value>Description</value>
   </data>
   <data name="communication" xml:space="preserve">
-		<value>Communication</value>
+		<value>Dispositif de communication par défaut</value>
   </data>
   <data name="profile.error.triggers.min" xml:space="preserve">
 		<value>Minimum un déclencheur.</value>
@@ -419,9 +419,15 @@ Restaurer l'état du système quand l'application est fermée.</value>
 		<value>Système audio restauré</value>
   </data>
   <data name="profile.trigger.uwp" xml:space="preserve">
-	  <value>Microsoft Store app</value>
+	  <value>Application Microsoft Store</value>
   </data>
   <data name="profile.trigger.uwp.desc" xml:space="preserve">
-	  <value>Remplisser le nom de l'application installée depuis le Microsoft Store tel que Netflix, Amazon Prime etc ...</value>
+	  <value>Saisissez le nom de l'application installée depuis le Windows Store. Par exemple : Netflix, Amazon Prime, etc.</value>
+  </data>
+  <data name="usePrimaryScreenTooltip" xml:space="preserve">
+    <value>Afficher la bannière sur l'écran principal plutôt que l'écran actif.</value>
+  </data>
+  <data name="usePrimaryScreen" xml:space="preserve">
+    <value>Toujours utiliser l'écran principal</value>
   </data>
 </root>
