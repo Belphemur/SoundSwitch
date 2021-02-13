@@ -22,7 +22,8 @@ namespace SoundSwitch.Localization.Factory
             new KoreanLang(),
             new DutchLang(),
             new CroatianLang(),
-            new ChineseTraditionalLang()
+            new ChineseTraditionalLang(),
+            new SlovenianLang()
         })
         {
         }
