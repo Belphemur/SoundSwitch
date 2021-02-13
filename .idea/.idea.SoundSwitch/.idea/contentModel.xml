@@ -162,6 +162,7 @@
           <e p="AboutStrings.pt.resx" t="Include" />
           <e p="AboutStrings.resx" t="Include" />
           <e p="AboutStrings.ru-RU.resx" t="Include" />
+          <e p="AboutStrings.sl.resx" t="Include" />
           <e p="AboutStrings.sv-SE.resx" t="Include" />
           <e p="AboutStrings.zh-Hans.resx" t="Include" />
           <e p="AboutStrings.zh-Hant.resx" t="Include" />
@@ -190,6 +191,7 @@
           <e p="SettingsStrings.pt.resx" t="Include" />
           <e p="SettingsStrings.resx" t="Include" />
           <e p="SettingsStrings.ru-RU.resx" t="Include" />
+          <e p="SettingsStrings.sl.resx" t="Include" />
           <e p="SettingsStrings.sv-SE.resx" t="Include" />
           <e p="SettingsStrings.zh-Hans.resx" t="Include" />
           <e p="SettingsStrings.zh-Hant.resx" t="Include" />
@@ -210,6 +212,7 @@
           <e p="TrayIconStrings.pt.resx" t="Include" />
           <e p="TrayIconStrings.resx" t="Include" />
           <e p="TrayIconStrings.ru-RU.resx" t="Include" />
+          <e p="TrayIconStrings.sl.resx" t="Include" />
           <e p="TrayIconStrings.sv-SE.resx" t="Include" />
           <e p="TrayIconStrings.zh-Hans.resx" t="Include" />
           <e p="TrayIconStrings.zh-Hant.resx" t="Include" />
@@ -230,6 +233,7 @@
           <e p="UpdateDownloadStrings.pt.resx" t="Include" />
           <e p="UpdateDownloadStrings.resx" t="Include" />
           <e p="UpdateDownloadStrings.ru-RU.resx" t="Include" />
+          <e p="UpdateDownloadStrings.sl.resx" t="Include" />
           <e p="UpdateDownloadStrings.sv-SE.resx" t="Include" />
           <e p="UpdateDownloadStrings.zh-Hans.resx" t="Include" />
           <e p="UpdateDownloadStrings.zh-Hant.resx" t="Include" />

@@ -81,14 +81,11 @@ namespace SoundSwitch.Framework.NotificationManager
 
         private void ModelOnDefaultDeviceChanged(object sender, DeviceDefaultChangedEvent deviceDefaultChangedEvent)
         {
-            lock (_lock)
-            {
-                if (_lastDeviceId == deviceDefaultChangedEvent.DeviceId)
-                    return;
+            if (_lastDeviceId == deviceDefaultChangedEvent.DeviceId)
+                return;
 
-                _notification.NotifyDefaultChanged(deviceDefaultChangedEvent.Device);
-                _lastDeviceId = deviceDefaultChangedEvent.DeviceId;
-            }
+            _notification.NotifyDefaultChanged(deviceDefaultChangedEvent.Device);
+            _lastDeviceId = deviceDefaultChangedEvent.DeviceId;
         }
 
         /// <summary>
