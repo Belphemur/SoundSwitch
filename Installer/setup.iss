@@ -6,7 +6,7 @@
 #define use_msi45
 #define use_msiproduct
 
-#define use_dotnet_core '5.0.0'
+#define use_dotnet_core '5.0.3'
 
 ;#define use_vc2017
 

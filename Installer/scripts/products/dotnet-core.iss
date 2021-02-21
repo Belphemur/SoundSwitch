@@ -21,6 +21,10 @@ dotnet_core_url_x64_3_1_10=https://download.visualstudio.microsoft.com/download/
 
 dotnet_core_url_5_0_0=https://download.visualstudio.microsoft.com/download/pr/b2780d75-e54a-448a-95fc-da9721b2b4c2/62310a9e9f0ba7b18741944cbae9f592/windowsdesktop-runtime-5.0.0-win-x86.exe
 dotnet_core_url_x64_5_0_0=https://download.visualstudio.microsoft.com/download/pr/1b3a8899-127a-4465-a3c2-7ce5e4feb07b/1e153ad470768baa40ed3f57e6e7a9d8/windowsdesktop-runtime-5.0.0-win-x64.exe
+
+dotnet_core_url_5_0_0=https://download.visualstudio.microsoft.com/download/pr/a8dcbda1-8720-453c-9ec6-5a9d90935643/28754321a8b966f1ce837e6f59035b48/windowsdesktop-runtime-5.0.3-win-x86.exe
+dotnet_core_url_x64_5_0_3=https://download.visualstudio.microsoft.com/download/pr/c6541c87-42f2-4c5d-b6db-2df0dade5e00/13e89a5fec3ddb224cd93dd18b0761ff/windowsdesktop-runtime-5.0.3-win-x64.exe
+
 [Code]
 procedure dotnetCore(version:string);
 var
