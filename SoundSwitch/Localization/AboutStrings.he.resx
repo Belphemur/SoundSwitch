@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -58,4 +58,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="keyboardHotkeys" xml:space="preserve">
+    <value>מערכת קיצורי מקלדת</value>
+  </data>
+  <data name="logo" xml:space="preserve">
+    <value>לוגו נוצר על ידי</value>
+  </data>
+  <data name="icons" xml:space="preserve">
+    <value>אייקונים</value>
+  </data>
+  <data name="defaultPlaybackDeviceChange" xml:space="preserve">
+    <value>שינוי התקן שמע ברירת המחדל</value>
+  </data>
+  <data name="credits" xml:space="preserve">
+    <value>קרדיט</value>
+  </data>
+  <data name="author" xml:space="preserve">
+    <value>מידע היוצר והתוכנה</value>
+  </data>
+  <data name="version" xml:space="preserve">
+    <value>גרסה</value>
+  </data>
+  <data name="maintained" xml:space="preserve">
+    <value>מתוחזק על ידי</value>
+  </data>
+  <data name="created" xml:space="preserve">
+    <value>נוצר על ידי</value>
+  </data>
 </root>
