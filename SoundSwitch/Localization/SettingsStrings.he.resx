@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -58,4 +58,165 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="notificationOptionBanner" xml:space="preserve">
+    <value>באנר</value>
+  </data>
+  <data name="updateNotifyTooltip" xml:space="preserve">
+    <value>SoundSwitch יתריע לך כאשר יש עדכון זמין. כשאר תלחץ על ההודעה, יופיע חלון בו העדכון ירד ותישאל האם ברצונך להתקינו.</value>
+  </data>
+  <data name="updateNeverTooltip" xml:space="preserve">
+    <value>אל תעדכן את התוכנה אל אם כן עודכנה ידנית.</value>
+  </data>
+  <data name="languageRestartRequiredCaption" xml:space="preserve">
+    <value>צריך הפעלה מחדש</value>
+  </data>
+  <data name="languageRestartRequired" xml:space="preserve">
+    <value>השפה תשתנה לאחר הפעלה מחדש של SoundSwitch.
+האם אתה רוצה להפעיל מחדש כעת?</value>
+  </data>
+  <data name="language" xml:space="preserve">
+    <value>שפה</value>
+  </data>
+  <data name="activePlayback" xml:space="preserve">
+    <value>נגן: {0}</value>
+  </data>
+  <data name="activeRecording" xml:space="preserve">
+    <value>הקלטה: {0}</value>
+  </data>
+  <data name="audioFileNotFoundCaption" xml:space="preserve">
+    <value>קובץ שמע לא נמצא</value>
+  </data>
+  <data name="audioFileNotFound" xml:space="preserve">
+    <value>הקובץ שבחרת עבור ההודעות לא נמצא. SoundSwitch החליף את צליל ההודעה בחזרה אל {0}.</value>
+  </data>
+  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
+    <value>ללא תיאור כלים</value>
+  </data>
+  <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
+    <value>עבור שני ההתקנים</value>
+  </data>
+  <data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
+    <value>התקן הקלטה</value>
+  </data>
+  <data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
+    <value>התקן שמע</value>
+  </data>
+  <data name="notificationTooltip" xml:space="preserve">
+    <value>הודעות ווינדוס: הודעות באמצעות מגש המשימות.
+הודעות קוליות: ינוגן צליל בהתקן אליו הוחלף השמע.
+הודעות קוליות מותאמות אישית: ינוגן צליל שנבחר בהתקן אליו הוחלף השמע.
+הודעות צפות: הודעות צפות מעל מגש המשימות.
+באנר: ההודעות יופיעו מעל הכל, שימושי בזמן משחק.</value>
+  </data>
+  <data name="notificationOptionCustomized" xml:space="preserve">
+    <value>הודעות קוליות מותאמות אישית</value>
+  </data>
+  <data name="notificationOptionSound" xml:space="preserve">
+    <value>הודעות קוליות</value>
+  </data>
+  <data name="notificationOptionToast" xml:space="preserve">
+    <value>הודעות צפות</value>
+  </data>
+  <data name="notificationOptionNone" xml:space="preserve">
+    <value>ללא הודעות</value>
+  </data>
+  <data name="notificationOptionWindowsDefault" xml:space="preserve">
+    <value>הודעות ווינדוס</value>
+  </data>
+  <data name="cycleThroughTooltip" xml:space="preserve">
+    <value>בחר בין אילו התקנים להחליף. בין ההתקנים שנבחרו או בין כולם.</value>
+  </data>
+  <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
+    <value>רק התקני שמע שנבחרו</value>
+  </data>
+  <data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
+    <value>כל התקני השמע</value>
+  </data>
+  <data name="recording" xml:space="preserve">
+    <value>הקלטה</value>
+  </data>
+  <data name="tooltipOnHover" xml:space="preserve">
+    <value>הצג תיאור כלים</value>
+  </data>
+  <data name="updateNever" xml:space="preserve">
+    <value>אל תחפש עדכונים</value>
+  </data>
+  <data name="updateNotify" xml:space="preserve">
+    <value>הודיע לי כאשר ישנם עדכונים זמינים</value>
+  </data>
+  <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
+    <value>עדכונים מותקנים אוטומטית.</value>
+  </data>
+  <data name="updateInstallAutomatically" xml:space="preserve">
+    <value>התקן עדכונים אוטומטית</value>
+  </data>
+  <data name="keepSystemTrayIconTooltip" xml:space="preserve">
+    <value>כאשר נבחר, אייקון שורת המשימות לא ישתנה כש'התקן שמע ברירת המחדל' משתנה.</value>
+  </data>
+  <data name="keepSystemTrayIcon" xml:space="preserve">
+    <value>השאר את האייקון של SoundSwitch בשורת המשימות</value>
+  </data>
+  <data name="communicationsDeviceTooltip" xml:space="preserve">
+    <value>כאשר נבחר, 'התקן תקשורת ברירת מחדל' ו'התקן שמע ברירת מחדל' יוחלפו יחדיו (שימושי עבור סקייפ, טימספיק וכו').</value>
+  </data>
+  <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
+    <value>כאשר נבחר, SoundSwitch יחפש גרסאות בטא גם בGithub.</value>
+  </data>
+  <data name="cycleThrough" xml:space="preserve">
+    <value>עבור בין</value>
+  </data>
+  <data name="updateSettings" xml:space="preserve">
+    <value>הגדרות עדכון תוכנה</value>
+  </data>
+  <data name="audioSettings" xml:space="preserve">
+    <value>הגדרות שמע</value>
+  </data>
+  <data name="basicSettings" xml:space="preserve">
+    <value>הגדרות בסיסיות</value>
+  </data>
+  <data name="hotkeysTooltip" xml:space="preserve">
+    <value>סמן כדי להפעיל את קיצור הדרך.</value>
+  </data>
+  <data name="selectSoundButtonTooltip" xml:space="preserve">
+    <value>בחר קובץ שמע עבור ההודעה</value>
+  </data>
+  <data name="audioFiles" xml:space="preserve">
+    <value>קבצי שמע</value>
+  </data>
+  <data name="updateIncludeBetaVersions" xml:space="preserve">
+    <value>כלול גרסאות בטא</value>
+  </data>
+  <data name="notification" xml:space="preserve">
+    <value>הודעה</value>
+  </data>
+  <data name="closeTooltip" xml:space="preserve">
+    <value>שינויים נשמרים אוטומטית</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>סגור</value>
+  </data>
+  <data name="startWithWindows" xml:space="preserve">
+    <value>התחל אוטומטית עם ווינדוס</value>
+  </data>
+  <data name="communicationsDevice" xml:space="preserve">
+    <value>החלף את התקן התקשורת ברירת מחדל</value>
+  </data>
+  <data name="hotkeys" xml:space="preserve">
+    <value>קיצור דרך</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>הגדרות</value>
+  </data>
+  <data name="playback" xml:space="preserve">
+    <value>השמעה</value>
+  </data>
+  <data name="disconnected" xml:space="preserve">
+    <value>מנותק</value>
+  </data>
+  <data name="connected" xml:space="preserve">
+    <value>מחובר</value>
+  </data>
+  <data name="selected" xml:space="preserve">
+    <value>נבחר</value>
+  </data>
 </root>
