@@ -70,7 +70,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             
             var bannerData = new BannerData
             {
-                Priority = 1,
+                Priority = 2,
                 Image    = icon,
                 Title    = title
                 
