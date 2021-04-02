@@ -11,11 +11,15 @@ namespace SoundSwitch.Common.Framework.Audio.Device
 
         private static readonly Regex NameCleanerRegex = new Regex(@"^\d+\s?-\s?", RegexOptions.Compiled | RegexOptions.Singleline);
 
-        private string   _nameClean;
+        private string _nameClean;
+
         [Obsolete("Use " + nameof(NameClean))]
-        public  string   Name { get; }
-        public  string   Id       { get; }
-        public  DataFlow Type     { get; }
+        public string Name { get; }
+
+        public string Id { get; }
+        public DataFlow Type { get; }
+
+        public bool IsUsb { get; }
 
         public string NameClean
         {
@@ -32,6 +36,7 @@ namespace SoundSwitch.Common.Framework.Audio.Device
                 {
                     return _nameClean = Name;
                 }
+
                 var friendlyName = match.Groups["friendlyName"].Value;
                 var deviceName = match.Groups["deviceName"].Value;
                 return _nameClean = $"{NameCleanerRegex.Replace(friendlyName, "")} ({deviceName})";
@@ -39,18 +44,22 @@ namespace SoundSwitch.Common.Framework.Audio.Device
         }
 
         [JsonConstructor]
-        public DeviceInfo(string name, string id, DataFlow type)
+        public DeviceInfo(string name, string id, DataFlow type, bool isUsb)
         {
             Name = name;
-            Id       = id;
-            Type     = type;
+            Id = id;
+            Type = type;
+            IsUsb = isUsb;
         }
 
         public DeviceInfo(MMDevice device)
         {
             Name = device.FriendlyName;
-            Id       = device.ID;
-            Type     = device.DataFlow;
+            Id = device.ID;
+            Type = device.DataFlow;
+            var deviceProperties = device.Properties;
+            var enumerator = deviceProperties.Contains(PropertyKeys.DEVPKEY_Device_EnumeratorName) ? (string) deviceProperties[PropertyKeys.DEVPKEY_Device_EnumeratorName].Value : "";
+            IsUsb = enumerator == "USB";
         }
 
 
@@ -81,12 +90,14 @@ namespace SoundSwitch.Common.Framework.Audio.Device
             return Type.CompareTo(other.Type);
         }
 
+
         public bool Equals(DeviceInfo other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
             return (Id == other.Id || NameClean == other.NameClean) && Type == other.Type;
         }
+
 
         public override bool Equals(object obj)
         {

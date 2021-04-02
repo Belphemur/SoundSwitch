@@ -151,6 +151,7 @@
           <e p="AboutStrings.es.resx" t="Include" />
           <e p="AboutStrings.fi-FI.resx" t="Include" />
           <e p="AboutStrings.fr.resx" t="Include" />
+          <e p="AboutStrings.he.resx" t="Include" />
           <e p="AboutStrings.hr.resx" t="Include" />
           <e p="AboutStrings.it-IT.resx" t="Include" />
           <e p="AboutStrings.ja-JP.resx" t="Include" />
@@ -180,6 +181,7 @@
           <e p="SettingsStrings.es.resx" t="Include" />
           <e p="SettingsStrings.fi-FI.resx" t="Include" />
           <e p="SettingsStrings.fr.resx" t="Include" />
+          <e p="SettingsStrings.he.resx" t="Include" />
           <e p="SettingsStrings.hr.resx" t="Include" />
           <e p="SettingsStrings.it-IT.resx" t="Include" />
           <e p="SettingsStrings.ja-JP.resx" t="Include" />
@@ -390,6 +392,7 @@
             <e p="Device" t="Include">
               <e p="DeviceFullInfo.cs" t="Include" />
               <e p="DeviceInfo.cs" t="Include" />
+              <e p="PropertyKeys.cs" t="Include" />
             </e>
             <e p="Icon" t="Include">
               <e p="AudioDeviceIconExtractor.cs" t="Include" />
