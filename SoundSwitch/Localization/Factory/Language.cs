@@ -34,6 +34,7 @@ namespace SoundSwitch.Localization.Factory
         Dutch,
         Croatian,
         ChineseTrad,
-        Slovenian
+        Slovenian,
+        Japanese
     }
 }
