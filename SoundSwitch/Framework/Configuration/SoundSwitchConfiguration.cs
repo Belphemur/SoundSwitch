@@ -14,7 +14,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
@@ -28,9 +27,8 @@ using SoundSwitch.Framework.Profile.Trigger;
 using SoundSwitch.Framework.TrayIcon.Icon;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 using SoundSwitch.Framework.Updater;
-using SoundSwitch.Localization;
+using SoundSwitch.Framework.WinApi.Keyboard;
 using SoundSwitch.Localization.Factory;
-using HotKey = SoundSwitch.Framework.WinApi.Keyboard.HotKey;
 
 namespace SoundSwitch.Framework.Configuration
 {
@@ -117,7 +115,7 @@ namespace SoundSwitch.Framework.Configuration
             if (SelectedPlaybackDeviceListId.Count > 0)
             {
                 SelectedDevices.UnionWith(
-                    SelectedPlaybackDeviceListId.Select((s => new DeviceInfo("", s, DataFlow.Render))));
+                    SelectedPlaybackDeviceListId.Select((s => new DeviceInfo("", s, DataFlow.Render, false))));
                 SelectedPlaybackDeviceListId.Clear();
                 migrated = true;
             }
@@ -125,7 +123,7 @@ namespace SoundSwitch.Framework.Configuration
             if (SelectedRecordingDeviceListId.Count > 0)
             {
                 SelectedDevices.UnionWith(
-                    SelectedRecordingDeviceListId.Select((s => new DeviceInfo("", s, DataFlow.Capture))));
+                    SelectedRecordingDeviceListId.Select((s => new DeviceInfo("", s, DataFlow.Capture, false))));
                 SelectedRecordingDeviceListId.Clear();
                 migrated = true;
             }
