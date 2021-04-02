@@ -351,7 +351,7 @@ namespace SoundSwitch.UI.Forms
                 SetHotkeysFieldsVisibility(true);
                 hotKeyControl.HotKey = AppConfigs.Configuration.PlaybackHotKey;
                 hotKeyControl.Tag =
-                    new Tuple<DataFlow, HotKey>(DataFlow.Render, AppConfigs.Configuration.PlaybackHotKey);
+                    new Tuple<HotKeyAction, HotKey>(HotKeyAction.Playback, AppConfigs.Configuration.PlaybackHotKey);
                 hotkeysCheckBox.Checked = AppConfigs.Configuration.PlaybackHotKey.Enabled;
             }
             else if (tabControlSender.SelectedTab == recordingTabPage)
@@ -359,7 +359,7 @@ namespace SoundSwitch.UI.Forms
                 SetHotkeysFieldsVisibility(true);
                 hotKeyControl.HotKey = AppConfigs.Configuration.RecordingHotKey;
                 hotKeyControl.Tag =
-                    new Tuple<DataFlow, HotKey>(DataFlow.Capture, AppConfigs.Configuration.RecordingHotKey);
+                    new Tuple<HotKeyAction, HotKey>(HotKeyAction.Recording, AppConfigs.Configuration.RecordingHotKey);
                 hotkeysCheckBox.Checked = AppConfigs.Configuration.RecordingHotKey.Enabled;
             }
             else
@@ -465,7 +465,7 @@ namespace SoundSwitch.UI.Forms
 
         private void hotkeysCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            var tuple = (Tuple<DataFlow, HotKey>)hotKeyControl.Tag;
+            var tuple = (Tuple<HotKeyAction, HotKey>)hotKeyControl.Tag;
             var currentState = tuple.Item2.Enabled;
             hotKeyControl.Enabled = tuple.Item2.Enabled = hotkeysCheckBox.Checked;
             if (currentState != tuple.Item2.Enabled)
@@ -722,11 +722,11 @@ namespace SoundSwitch.UI.Forms
 
         private void hotKeyControl_HotKeyChanged(object sender, HotKeyTextBox.Event e)
         {
-            var tuple = (Tuple<DataFlow, HotKey>)hotKeyControl.Tag;
+            var tuple = (Tuple<HotKeyAction, HotKey>)hotKeyControl.Tag;
             if (tuple == null)
                 return;
 
-            var newTuple = new Tuple<DataFlow, HotKey>(tuple.Item1, hotKeyControl.HotKey);
+            var newTuple = new Tuple<HotKeyAction, HotKey>(tuple.Item1, hotKeyControl.HotKey);
             hotKeyControl.Tag = newTuple;
 
             AppModel.Instance.SetHotkeyCombination(newTuple.Item2, newTuple.Item1);

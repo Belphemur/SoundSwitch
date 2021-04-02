@@ -246,6 +246,7 @@
         <e p="Model" t="Include">
           <e p="AppModel.cs" t="Include" />
           <e p="Events.cs" t="Include" />
+          <e p="HotKeyAction.cs" t="Include" />
           <e p="IAppModel.cs" t="Include" />
           <e p="IAudioDeviceLister.cs" t="Include" />
           <e p="SoundSwitchApplicationContext.cs" t="Include" />
