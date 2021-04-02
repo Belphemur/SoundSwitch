@@ -23,6 +23,7 @@ using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
+using SoundSwitch.Framework.Audio.Microphone;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
@@ -49,12 +50,15 @@ namespace SoundSwitch.Model
         {
             _notificationManager = new NotificationManager(this);
 
-            _deviceCyclerManager                               =  new DeviceCyclerManager();
-            MMNotificationClient.Instance.DefaultDeviceChanged += (sender, @event) => { _dispatcher.Debounce(250, o =>
+            _deviceCyclerManager = new DeviceCyclerManager();
+            MMNotificationClient.Instance.DefaultDeviceChanged += (sender, @event) =>
             {
-                Log.Information(@"[WINAPI] Default device changed to {device}:{role}", @event.Device, @event.Role);
-                DefaultDeviceChanged?.Invoke(sender, @event);
-            }); };
+                _dispatcher.Debounce(250, o =>
+                {
+                    Log.Information(@"[WINAPI] Default device changed to {device}:{role}", @event.Device, @event.Role);
+                    DefaultDeviceChanged?.Invoke(sender, @event);
+                });
+            };
         }
 
         public static IAppModel Instance { get; } = new AppModel();
@@ -102,6 +106,7 @@ namespace SoundSwitch.Model
                 {
                     _updateChecker.Beta = value;
                 }
+
                 AppConfigs.Configuration.IncludeBetaVersions = value;
                 AppConfigs.Configuration.Save();
             }
@@ -177,7 +182,6 @@ namespace SoundSwitch.Model
             get { return AutoStart.IsAutoStarted(); }
             set
             {
-
                 Log.Information("Set AutoStart: {autostart}", value);
                 if (value)
                 {
@@ -187,18 +191,16 @@ namespace SoundSwitch.Model
                 {
                     AutoStart.DisableAutoStart();
                 }
-
             }
         }
 
         public IAudioDeviceLister ActiveAudioDeviceLister { get; set; }
-        
+
         public IAudioDeviceLister ActiveUnpluggedAudioLister { get; set; }
         public event EventHandler<NotificationSettingsUpdatedEvent> NotificationSettingsChanged;
         public event EventHandler<CustomSoundChangedEvent> CustomSoundChanged;
 
         #endregion
-
 
 
         /// <summary>
@@ -210,15 +212,18 @@ namespace SoundSwitch.Model
             {
                 throw new InvalidOperationException("The devices lister are not configured");
             }
+
             if (_initialized)
             {
                 throw new InvalidOperationException("Already initialized");
             }
+
             _notificationManager.Init();
 
             ProfileManager = new ProfileManager(new WindowMonitor(), AudioSwitcher.Instance, ActiveAudioDeviceLister, TrayIcon.ShowError, new TriggerFactory(), _notificationManager);
             RegisterHotKey(AppConfigs.Configuration.PlaybackHotKey);
             RegisterHotKey(AppConfigs.Configuration.RecordingHotKey);
+            RegisterHotKey(AppConfigs.Configuration.MuteRecordingHotKey);
 
             WindowsAPIAdapter.HotKeyPressed += HandleHotkeyPress;
 
@@ -236,8 +241,6 @@ namespace SoundSwitch.Model
         }
 
 
-
-
         private void InitUpdateChecker()
         {
             if (AppConfigs.Configuration.UpdateMode == UpdateMode.Never)
@@ -250,11 +253,11 @@ namespace SoundSwitch.Model
             const string url = "https://api.github.com/repos/Belphemur/SoundSwitch/releases";
 #endif
             _updateChecker = new IntervalUpdateChecker(new Uri(url),
-                                                       AppConfigs.Configuration.UpdateCheckInterval,
-                                                       AppConfigs.Configuration.IncludeBetaVersions);
+                AppConfigs.Configuration.UpdateCheckInterval,
+                AppConfigs.Configuration.IncludeBetaVersions);
 
             _updateChecker.UpdateAvailable += (sender, @event) => NewVersionReleased?.Invoke(this,
-                                              new NewReleaseAvailableEvent(@event.Release, AppConfigs.Configuration.UpdateMode));
+                new NewReleaseAvailableEvent(@event.Release, AppConfigs.Configuration.UpdateMode));
             _updateChecker.CheckForUpdate();
         }
 
@@ -319,25 +322,20 @@ namespace SoundSwitch.Model
 
         #region Hot keys
 
-        public bool SetHotkeyCombination(HotKey hotKey, DataFlow deviceType, bool force)
-        {
 
-            HotKey confHotKey;
-            switch (deviceType)
+        public bool SetHotkeyCombination(HotKey hotKey, HotKeyAction action, bool force = false)
+        {
+            var confHotKey = action switch
             {
-                 case DataFlow.Render:
-                    confHotKey = AppConfigs.Configuration.PlaybackHotKey;
-                    break;
-                case DataFlow.Capture:
-                    confHotKey = AppConfigs.Configuration.RecordingHotKey;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(deviceType), deviceType, null);
-            }
+                HotKeyAction.Playback  => AppConfigs.Configuration.PlaybackHotKey,
+                HotKeyAction.Recording => AppConfigs.Configuration.RecordingHotKey,
+                HotKeyAction.Mute => AppConfigs.Configuration.MuteRecordingHotKey,
+                _                      => throw new ArgumentOutOfRangeException(nameof(action), action, null)
+            };
 
             if (!force && confHotKey == hotKey)
             {
-                Log.Information("HotKey already set {hotkeys}", confHotKey);
+                Log.Information("HotKey {action} already set {hotkeys}", action, confHotKey);
                 return true;
             }
 
@@ -349,20 +347,23 @@ namespace SoundSwitch.Model
 
             Log.Information("New Hotkeys registered {hotkeys}", hotKey);
 
-            switch (deviceType)
+            switch (action)
             {
-                case DataFlow.Render:
+                case   HotKeyAction.Playback:
                     AppConfigs.Configuration.PlaybackHotKey = hotKey;
                     break;
-                case DataFlow.Capture:
+                case  HotKeyAction.Recording:
                     AppConfigs.Configuration.RecordingHotKey = hotKey;
                     break;
+                case HotKeyAction.Mute:
+                    AppConfigs.Configuration.MuteRecordingHotKey = hotKey;
+                    break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(deviceType), deviceType, null);
+                    throw new ArgumentOutOfRangeException(nameof(action), action, null);
             }
+
             AppConfigs.Configuration.Save();
             return true;
-
         }
 
         private bool RegisterHotKey(HotKey hotkeys)
@@ -371,19 +372,19 @@ namespace SoundSwitch.Model
             {
                 return true;
             }
-            
+
             Log.Warning("Can't register new hotkeys {hotkeys}", hotkeys);
             ErrorTriggered?.Invoke(this,
                 new ExceptionEvent(new Exception("Impossible to register HotKey: " + hotkeys)));
             return false;
-
         }
 
 
         private void HandleHotkeyPress(object sender, WindowsAPIAdapter.KeyPressedEventArgs e)
         {
-
-            if (e.HotKey != AppConfigs.Configuration.PlaybackHotKey && e.HotKey != AppConfigs.Configuration.RecordingHotKey)
+            if (e.HotKey != AppConfigs.Configuration.PlaybackHotKey
+                && e.HotKey != AppConfigs.Configuration.RecordingHotKey
+                && e.HotKey != AppConfigs.Configuration.MuteRecordingHotKey)
             {
                 Log.Debug("Not the registered Hotkeys {hotkeys}", e.HotKey);
                 return;
@@ -399,12 +400,18 @@ namespace SoundSwitch.Model
                 {
                     CycleActiveDevice(DataFlow.Capture);
                 }
+                else if (e.HotKey == AppConfigs.Configuration.MuteRecordingHotKey)
+                {
+                    if (new MicrophoneMuteToggler(AudioSwitcher.Instance, _notificationManager).ToggleDefaultMute() == null)
+                    {
+                        ErrorTriggered?.Invoke(this, new ExceptionEvent(new Exception("No mic found")));
+                    }
+                }
             }
             catch (Exception ex)
             {
                 ErrorTriggered?.Invoke(this, new ExceptionEvent(ex));
             }
-
         }
 
         #endregion
@@ -417,7 +424,6 @@ namespace SoundSwitch.Model
         /// <param name="device"></param>
         public bool SetActiveDevice(DeviceFullInfo device)
         {
-
             try
             {
                 return _deviceCyclerManager.SetAsDefault(device);
@@ -426,8 +432,8 @@ namespace SoundSwitch.Model
             {
                 ErrorTriggered?.Invoke(this, new ExceptionEvent(ex));
             }
-            return false;
 
+            return false;
         }
 
         /// <summary>
@@ -437,7 +443,6 @@ namespace SoundSwitch.Model
         /// </summary>
         public bool CycleActiveDevice(DataFlow type)
         {
-
             try
             {
                 return _deviceCyclerManager.CycleDevice(type);
@@ -446,8 +451,8 @@ namespace SoundSwitch.Model
             {
                 ErrorTriggered?.Invoke(this, new ExceptionEvent(exception));
             }
-            return false;
 
+            return false;
         }
 
         [Serializable]

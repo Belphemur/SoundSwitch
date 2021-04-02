@@ -70,5 +70,11 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             var text  = string.Join("\n", profile.Devices.Select(wrapper => wrapper.DeviceInfo.NameClean));
             Configuration.Icon.ShowBalloonTip(1000, title, text, ToolTipIcon.Info);
         }
+
+        public void NotifyMuteChanged(string microphoneName, bool newMuteState)
+        {
+            var title = newMuteState ? string.Format(SettingsStrings.notification_microphone_muted, microphoneName) : string.Format(SettingsStrings.notification_microphone_unmuted, microphoneName);
+            Configuration.Icon.ShowBalloonTip(1000, title, "", ToolTipIcon.Info);
+        }
     }
 }

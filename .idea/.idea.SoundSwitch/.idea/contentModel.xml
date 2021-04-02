@@ -20,6 +20,9 @@
             <e p="Lister" t="Include">
               <e p="CachedAudioDeviceLister.cs" t="Include" />
             </e>
+            <e p="Microphone" t="Include">
+              <e p="MicrophoneMuteToggler.cs" t="Include" />
+            </e>
           </e>
           <e p="AutoStart.cs" t="Include" />
           <e p="Banner" t="Include">
@@ -243,6 +246,7 @@
         <e p="Model" t="Include">
           <e p="AppModel.cs" t="Include" />
           <e p="Events.cs" t="Include" />
+          <e p="HotKeyAction.cs" t="Include" />
           <e p="IAppModel.cs" t="Include" />
           <e p="IAudioDeviceLister.cs" t="Include" />
           <e p="SoundSwitchApplicationContext.cs" t="Include" />
@@ -277,6 +281,8 @@
           <e p="help-16.png" t="Include" />
           <e p="help.ico" t="Include" />
           <e p="InfoHelp.png" t="Include" />
+          <e p="microphone-alt-slash-solid.png" t="Include" />
+          <e p="microphone-alt-solid.png" t="Include" />
           <e p="page-bottom.ico" t="Include" />
           <e p="page-bottom.png" t="Include" />
           <e p="profile-add.png" t="Include" />

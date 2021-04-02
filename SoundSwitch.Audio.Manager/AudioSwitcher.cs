@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using System;
 using System.Diagnostics;
 using System.Linq;
 using NAudio.CoreAudioApi;
@@ -12,9 +13,9 @@ namespace SoundSwitch.Audio.Manager
 {
     public class AudioSwitcher
     {
-        private static AudioSwitcher    _instance;
-        private        PolicyClient     _policyClient;
-        private        EnumeratorClient _enumerator;
+        private static AudioSwitcher _instance;
+        private PolicyClient _policyClient;
+        private EnumeratorClient _enumerator;
 
         private ExtendedPolicyClient _extendedPolicyClient;
 
@@ -177,12 +178,20 @@ namespace SoundSwitch.Audio.Manager
         /// <param name="flow"></param>
         /// <param name="role"></param>
         /// <returns>Null if no default device is defined</returns>
-        public DeviceFullInfo? GetDefaultAudioEndpoint(EDataFlow flow, ERole role)
+        public DeviceFullInfo? GetDefaultAudioEndpoint(EDataFlow flow, ERole role) => ComThread.Invoke(() =>
         {
-            var defaultEndpoint = GetDefaultMmDevice(flow, role);
+            var defaultEndpoint = EnumeratorClient.GetDefaultEndpoint(flow, role);
             return defaultEndpoint == null ? null : new DeviceFullInfo(defaultEndpoint);
-        }
-        
+        });
+
+        /// <summary>
+        /// Used to interact directly with a <see cref="MMDevice"/>
+        /// </summary>
+        /// <param name="device"></param>
+        /// <param name="interaction"></param>
+        /// <typeparam name="T"></typeparam>
+        public T InteractWithMmDevice<T>(MMDevice device, Func<MMDevice, T> interaction) => ComThread.Invoke(() => interaction(device));
+
         /// <summary>
         /// Get the current default endpoint
         /// </summary>

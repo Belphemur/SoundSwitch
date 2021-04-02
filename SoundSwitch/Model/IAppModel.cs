@@ -17,16 +17,13 @@ using System;
 using System.Collections.Generic;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Common.Framework.Audio.Device;
-using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Updater;
-using SoundSwitch.Localization;
+using SoundSwitch.Framework.WinApi.Keyboard;
 using SoundSwitch.Localization.Factory;
 using SoundSwitch.UI.Component;
-using SoundSwitch.Util;
-using HotKey = SoundSwitch.Framework.WinApi.Keyboard.HotKey;
 
 namespace SoundSwitch.Model
 {
@@ -34,11 +31,11 @@ namespace SoundSwitch.Model
     {
         #region Properties
 
-
         /// <summary>
         /// Devices selected for Switching
         /// </summary>
         ISet<DeviceInfo> SelectedDevices { get; }
+
         /// <summary>
         /// An union between the Active <see cref="IAudioDevice" /> of Windows and <see cref="SelectedPlaybackDevicesList" />
         /// </summary>
@@ -94,14 +91,17 @@ namespace SoundSwitch.Model
         /// The language of the application.
         /// </summary>
         Language Language { get; set; }
+
         /// <summary>
         /// Switch also the foreground program
         /// </summary>
         bool SwitchForegroundProgram { get; set; }
+
         /// <summary>
         /// Always show banner on primary screen instead of active screen
         /// </summary>
         bool NotifyUsingPrimaryScreen { get; set; }
+
         /// <summary>
         /// Manage the profile in the application
         /// </summary>
@@ -147,6 +147,7 @@ namespace SoundSwitch.Model
         /// When the custom sound is changed
         /// </summary>
         event EventHandler<CustomSoundChangedEvent> CustomSoundChanged;
+
         #endregion
 
         #region Methods
@@ -181,10 +182,10 @@ namespace SoundSwitch.Model
         ///     Sets the hotkey combination
         /// </summary>
         /// <param name="hotKey"></param>
-        /// <param name="deviceType"></param>
+        /// <param name="action"></param>
         /// <param name="force"></param>
         /// <returns>if it's successfull</returns>
-        bool SetHotkeyCombination(HotKey hotKey, DataFlow deviceType, bool force = false);
+        public bool SetHotkeyCombination(HotKey hotKey, HotKeyAction action, bool force = false);
 
         /// <summary>
         ///     Attempts to set active device to the specified name
@@ -200,7 +201,5 @@ namespace SoundSwitch.Model
         bool CycleActiveDevice(DataFlow type);
 
         #endregion
-
-
     }
 }

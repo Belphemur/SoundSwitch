@@ -346,11 +346,38 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Toggle mute.
+        /// </summary>
+        internal static string mute_toggle_label {
+            get {
+                return ResourceManager.GetString("mute.toggle.label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notification.
         /// </summary>
         internal static string notification {
             get {
                 return ResourceManager.GetString("notification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is now muted..
+        /// </summary>
+        internal static string notification_microphone_muted {
+            get {
+                return ResourceManager.GetString("notification.microphone.muted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is now unmuted..
+        /// </summary>
+        internal static string notification_microphone_unmuted {
+            get {
+                return ResourceManager.GetString("notification.microphone.unmuted", resourceCulture);
             }
         }
         
@@ -802,7 +829,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Activate when Steam Big Picture is detected. Will restore the state when Big Picture is closed..
+        ///   Looks up a localized string similar to Activate when Steam Big Picture is detected. (Will restore the state when Big Picture is closed.).
         /// </summary>
         internal static string profile_trigger_steam_desc {
             get {
@@ -820,7 +847,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Input the name of the application installed through the windows store. Like Netflix, Amazon Prime video, etc ....
+        ///   Looks up a localized string similar to Input the name of the application installed through the Windows store. Like Netflix, Amazon Prime video, etc….
         /// </summary>
         internal static string profile_trigger_uwp_desc {
             get {
