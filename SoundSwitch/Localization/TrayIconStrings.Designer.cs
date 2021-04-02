@@ -250,7 +250,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Auto-update disabled.
+        ///   Looks up a localized string similar to Update check disabled.
         /// </summary>
         internal static string updateDisabled {
             get {

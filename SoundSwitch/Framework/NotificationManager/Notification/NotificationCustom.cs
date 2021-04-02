@@ -12,6 +12,7 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using NAudio.CoreAudioApi;
@@ -25,7 +26,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
     public class NotificationCustom : INotification
     {
         public NotificationTypeEnum TypeEnum => NotificationTypeEnum.CustomNotification;
-        public string Label => SettingsStrings.notificationOptionCustomized;
+        public string               Label    => SettingsStrings.notificationOptionCustomized;
 
         public INotificationConfiguration Configuration { get; set; }
 
@@ -34,20 +35,17 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         {
             if (audioDevice.DataFlow != DataFlow.Render)
                 return;
-            var task = new Task(() =>
+            Task.Factory.StartNew(() =>
             {
-                using (var output = new WasapiOut(audioDevice, AudioClientShareMode.Shared, true, 10))
-                using (var waveStream = new CachedSoundWaveStream(Configuration.CustomSound))
+                using var output     = new WasapiOut(audioDevice, AudioClientShareMode.Shared, true, 10);
+                using var waveStream = new CachedSoundWaveStream(Configuration.CustomSound);
+                output.Init(waveStream);
+                output.Play();
+                while (output.PlaybackState == PlaybackState.Playing)
                 {
-                    output.Init(waveStream);
-                    output.Play();
-                    while (output.PlaybackState == PlaybackState.Playing)
-                    {
-                        Thread.Sleep(500);
-                    }
+                    Thread.Sleep(500);
                 }
             });
-            task.Start();
         }
 
         public void OnSoundChanged(CachedSound newSound)
@@ -65,6 +63,28 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         public bool IsAvailable()
         {
             return true;
+        }
+
+        public void NotifyProfileChanged(Profile.Profile profile, uint? processId)
+        {
+            if (profile.Playback == null)
+                return;
+            
+            using var enumerator = new MMDeviceEnumerator();
+            try
+            {
+                var device = enumerator.GetDevice(profile.Playback.Id);
+                NotifyDefaultChanged(device);
+            }
+            catch (Exception)
+            {
+                //Ignored
+            }
+        }
+
+        public void NotifyMuteChanged(string microphoneName, bool newMuteState)
+        {
+            
         }
     }
 }

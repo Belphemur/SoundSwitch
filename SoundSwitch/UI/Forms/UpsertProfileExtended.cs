@@ -62,6 +62,7 @@ namespace SoundSwitch.UI.Forms
             switchDefaultCheckBox.DataBindings.Add(nameof(CheckBox.Checked), _profile, nameof(Profile.AlsoSwitchDefaultDevice), false, DataSourceUpdateMode.OnPropertyChanged);
             nameTextBox.DataBindings.Add(nameof(TextBox.Text), _profile, nameof(Profile.Name), false, DataSourceUpdateMode.OnPropertyChanged);
             notifyCheckbox.DataBindings.Add(nameof(CheckBox.Checked), _profile, nameof(Profile.NotifyOnActivation), false, DataSourceUpdateMode.OnPropertyChanged);
+            restoreDevicesCheckBox.DataBindings.Add(nameof(CheckBox.Checked), _profile, nameof(Profile.RestoreDevices), false, DataSourceUpdateMode.OnPropertyChanged);
         }
 
         private void InitRecordingPlaybackComboBoxes(IEnumerable<DeviceFullInfo> playbacks,
@@ -118,7 +119,10 @@ namespace SoundSwitch.UI.Forms
             new ToolTip().SetToolTip(switchDefaultCheckBox, SettingsStrings.profile_defaultDevice_checkbox_tooltip);
 
             _restoreDeviceToolTip = new ToolTip();
-            _restoreDeviceToolTip.SetToolTip(restoreDevicesCheckBox, SettingsStrings.profile_trigger_restoreDevices_desc);
+            _restoreDeviceToolTip.SetToolTip(
+                restoreDevicesCheckBox, 
+                string.Format(SettingsStrings.profile_trigger_restoreDevices_desc, SettingsStrings.profile_defaultDevice_checkbox)
+            );
         }
 
         private void InitializeFromProfile()
@@ -182,14 +186,6 @@ namespace SoundSwitch.UI.Forms
             descriptionLabel.Show();
             triggerLabel.Show();
 
-            restoreDevicesCheckBox.DataBindings.Clear();
-
-            if (triggerDefinition.CanRestoreDevices && !triggerDefinition.AlwaysDefaultAndRestoreDevice)
-            {
-                restoreDevicesCheckBox.DataBindings.Add(nameof(CheckBox.Checked), trigger, nameof(Trigger.ShouldRestoreDevices), true, DataSourceUpdateMode.OnPropertyChanged);
-                restoreDevicesCheckBox.Show();
-            }
-
             trigger.Type.Switch(() =>
                 {
                     hotKeyControl.HotKey = trigger.HotKey;
@@ -211,7 +207,13 @@ namespace SoundSwitch.UI.Forms
                     selectProgramButton.Show();
                 },
                 () => { },
-                () => { });
+                () => { },
+                () =>
+                {
+                    textInput.DataBindings.Clear();
+                    textInput.DataBindings.Add(nameof(TextBox.Text), trigger, nameof(Trigger.WindowName), true, DataSourceUpdateMode.OnPropertyChanged);
+                    textInput.Show();
+                });
         }
 
         private void HideTriggerComponents()
@@ -220,7 +222,10 @@ namespace SoundSwitch.UI.Forms
             textInput.Hide();
             hotKeyControl.Hide();
             selectProgramButton.Hide();
-            restoreDevicesCheckBox.Hide();
+            if (!_profile.AlsoSwitchDefaultDevice)
+            {
+                restoreDevicesCheckBox.Enabled = false;
+            }
         }
 
         private void deleteButton_Click(object sender, EventArgs e)
@@ -366,17 +371,13 @@ namespace SoundSwitch.UI.Forms
 
         private void switchDefaultCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            if (switchDefaultCheckBox.Checked) return;
-
-            if (restoreDevicesCheckBox.Checked)
+            if (switchDefaultCheckBox.Checked)
             {
-                restoreDevicesCheckBox.Checked = false;
+                restoreDevicesCheckBox.Enabled = true;
+                return;
             }
 
-            foreach (var profileTrigger in _profile.Triggers)
-            {
-                profileTrigger.ShouldRestoreDevices = false;
-            }
+            restoreDevicesCheckBox.Enabled = false;
         }
     }
 }

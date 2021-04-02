@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using Serilog;
 using Serilog.Exceptions;
-using Serilog.Formatting.Compact;
 using SoundSwitch.Framework.Logger.Enricher;
 
 namespace SoundSwitch.Framework.Logger.Configuration
@@ -18,6 +17,9 @@ namespace SoundSwitch.Framework.Logger.Configuration
                          .Enrich.WithEnvironmentUserName()
                          .Enrich.WithExceptionDetails()
                          .Enrich.WithCaller()
+#if DEBUG
+                         .WriteTo.Console(theme: Serilog.Sinks.SystemConsole.Themes.AnsiConsoleTheme.Code)
+#endif
                          .WriteTo.File(Path.Combine(ApplicationPath.Logs, "soundswitch.log"),
                              rollingInterval: RollingInterval.Day, retainedFileCountLimit: 3,
                              flushToDiskInterval: TimeSpan.FromMinutes(10),

@@ -13,11 +13,8 @@
 ********************************************************************/
 
 using System;
-using System.Diagnostics;
-using System.Net;
 using System.Windows.Forms;
 using Serilog;
-using SoundSwitch.Framework;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.Updater.Installer;
 using SoundSwitch.Localization;
@@ -28,41 +25,51 @@ namespace SoundSwitch.UI.Forms
 {
     public sealed partial class UpdateDownloadForm : Form
     {
-        private static readonly System.Drawing.Icon updateIcon = Resources.UpdateIcon;
+        private WebFile _releaseFile;
 
-        private readonly bool                                _redirectLinks = false;
-        private readonly WebFile                             _releaseFile;
-        private          DownloadProgressChangedEventHandler _releaseFileOnDownloadProgressChanged;
-
-        public UpdateDownloadForm(Release release)
+        public UpdateDownloadForm()
         {
             InitializeComponent();
-            Icon = updateIcon;
-            Text = release.Name;
-            LocalizeForm();
-            Focus();
+            Icon = Resources.UpdateIcon;
 
-            changeLog.SetChangelog(release.Changelog);
-            _redirectLinks = true;
+            LocalizeForm();
             downloadProgress.DisplayStyle = TextProgressBar.ProgressBarDisplayText.Both;
+            TopMost = true;
+        }
+
+        public void DownloadRelease(Release release)
+        {
+            changeLog.SetChangelog(release.Changelog);
+            Name = release.Name;
             downloadProgress.CustomText = release.Asset.name;
+            downloadProgress.Value = 0;
+            installButton.Enabled = false;
+            downloadProgress.Enabled = true;
 
             _releaseFile = new WebFile(new Uri(release.Asset.browser_download_url));
-            _releaseFileOnDownloadProgressChanged = (sender, args) =>
+
+            _releaseFile.DownloadProgress += (sender, progress) =>
             {
                 if (downloadProgress.IsDisposed)
                 {
                     return;
                 }
-                downloadProgress.Invoke(new Action(() => { downloadProgress.Value = args.ProgressPercentage; }));
+
+                if (downloadProgress.InvokeRequired)
+                {
+                    downloadProgress.BeginInvoke(new Action(() => { downloadProgress.Value = (int) Math.Ceiling(progress.Percentage); }));
+                }
+                else
+                {
+                    downloadProgress.Value = (int) Math.Ceiling(progress.Percentage);
+                }
             };
-            _releaseFile.DownloadProgressChanged += _releaseFileOnDownloadProgressChanged;
             _releaseFile.DownloadFailed += (sender, @event) =>
             {
                 Log.Error(@event.Exception, "Couldn't download the Release ");
                 MessageBox.Show(@event.Exception.Message,
-                                UpdateDownloadStrings.downloadFailed,
-                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    UpdateDownloadStrings.downloadFailed,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             };
             _releaseFile.Downloaded += (sender, args) =>
             {
@@ -70,17 +77,27 @@ namespace SoundSwitch.UI.Forms
                 {
                     Log.Error("Wrong signature for the release");
                     MessageBox.Show(UpdateDownloadStrings.notSigned,
-                                    UpdateDownloadStrings.notSignedTitle,
-                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        UpdateDownloadStrings.notSignedTitle,
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                installButton.Invoke(new Action(() =>
+
+                if (installButton.InvokeRequired)
+                {
+                    installButton.BeginInvoke(new Action(() =>
+                    {
+                        installButton.Enabled = true;
+                        downloadProgress.Enabled = false;
+                    }));
+                }
+                else
                 {
                     installButton.Enabled = true;
                     downloadProgress.Enabled = false;
-                }));
+                }
             };
             _releaseFile.DownloadFile();
+            ShowDialog();
         }
 
         private void LocalizeForm()
@@ -93,6 +110,7 @@ namespace SoundSwitch.UI.Forms
 
         private void cancelButton_Click(object sender, EventArgs e)
         {
+            _releaseFile.CancelDownload();
             Close();
         }
 
@@ -104,18 +122,7 @@ namespace SoundSwitch.UI.Forms
 
         private void UpdateDownloadForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _releaseFile.DownloadProgressChanged -= _releaseFileOnDownloadProgressChanged;
-            _releaseFile.CancelDownload();
-        }
-
-        private void changeLog_Navigating(object sender, WebBrowserNavigatingEventArgs e)
-        {
-            if (_redirectLinks)
-            {
-                // Redirect links to the users default web browser.
-                e.Cancel = true;
-                Process.Start(e.Url.ToString());
-            }
+            _releaseFile = null;
         }
     }
 }

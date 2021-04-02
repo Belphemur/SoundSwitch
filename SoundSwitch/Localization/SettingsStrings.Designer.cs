@@ -346,11 +346,38 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Toggle mute.
+        /// </summary>
+        internal static string mute_toggle_label {
+            get {
+                return ResourceManager.GetString("mute.toggle.label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notification.
         /// </summary>
         internal static string notification {
             get {
                 return ResourceManager.GetString("notification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is now muted..
+        /// </summary>
+        internal static string notification_microphone_muted {
+            get {
+                return ResourceManager.GetString("notification.microphone.muted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is now unmuted..
+        /// </summary>
+        internal static string notification_microphone_unmuted {
+            get {
+                return ResourceManager.GetString("notification.microphone.unmuted", resourceCulture);
             }
         }
         
@@ -755,7 +782,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Needs &quot;Also switch default device&quot;.
+        ///   Looks up a localized string similar to Requires &quot;{0}&quot; to be enabled.
         ///
         ///Restore the state of the system when the application is closed..
         /// </summary>
@@ -802,11 +829,29 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Activate when Steam Big Picture is detected. Will restore the state when Big Picture is closed..
+        ///   Looks up a localized string similar to Activate when Steam Big Picture is detected. (Will restore the state when Big Picture is closed.).
         /// </summary>
         internal static string profile_trigger_steam_desc {
             get {
                 return ResourceManager.GetString("profile.trigger.steam.desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Microsoft Store app.
+        /// </summary>
+        internal static string profile_trigger_uwp {
+            get {
+                return ResourceManager.GetString("profile.trigger.uwp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input the name of the application installed through the Windows store. Like Netflix, Amazon Prime video, etc….
+        /// </summary>
+        internal static string profile_trigger_uwp_desc {
+            get {
+                return ResourceManager.GetString("profile.trigger.uwp.desc", resourceCulture);
             }
         }
         
@@ -1000,7 +1045,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Always Use Primary Screen.
+        ///   Looks up a localized string similar to Always use primary screen.
         /// </summary>
         internal static string usePrimaryScreen {
             get {
@@ -1009,7 +1054,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Display banner on primary screen instead of currently active screen..
+        ///   Looks up a localized string similar to Display banner on primary screen instead of focused screen..
         /// </summary>
         internal static string usePrimaryScreenTooltip {
             get {

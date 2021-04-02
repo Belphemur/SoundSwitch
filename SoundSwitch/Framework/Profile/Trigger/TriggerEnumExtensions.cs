@@ -13,8 +13,9 @@ namespace SoundSwitch.Framework.Profile.Trigger
         /// <param name="process"></param>
         /// <param name="steam"></param>
         /// <param name="startup"></param>
+        /// <param name="uwpApp"></param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public static void Switch(this TriggerFactory.Enum @enum, Action hotkey, Action window, Action process, Action steam, Action startup)
+        public static void Switch(this TriggerFactory.Enum @enum, Action hotkey, Action window, Action process, Action steam, Action startup, Action uwpApp)
         {
             switch (@enum)
             {
@@ -33,6 +34,9 @@ namespace SoundSwitch.Framework.Profile.Trigger
                 case TriggerFactory.Enum.Startup:
                     startup();
                     break;
+                case TriggerFactory.Enum.UwpApp:
+                    uwpApp();
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(@enum), @enum, null);
             }
@@ -47,9 +51,10 @@ namespace SoundSwitch.Framework.Profile.Trigger
         /// <param name="process"></param>
         /// <param name="steam"></param>
         /// <param name="startup"></param>
+        /// <param name="uwpApp"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static T Match<T>(this TriggerFactory.Enum @enum, Func<T> hotkey, Func<T> window, Func<T> process, Func<T> steam, Func<T> startup)
+        public static T Match<T>(this TriggerFactory.Enum @enum, Func<T> hotkey, Func<T> window, Func<T> process, Func<T> steam, Func<T> startup, Func<T> uwpApp)
         {
             return @enum switch
             {
@@ -58,6 +63,7 @@ namespace SoundSwitch.Framework.Profile.Trigger
                 TriggerFactory.Enum.Process => process(),
                 TriggerFactory.Enum.Steam   => steam(),
                 TriggerFactory.Enum.Startup => startup(),
+                TriggerFactory.Enum.UwpApp  => uwpApp(),
                 _                           => throw new ArgumentOutOfRangeException(nameof(@enum), @enum, null)
             };
         }

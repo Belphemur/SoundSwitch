@@ -32,6 +32,9 @@ namespace SoundSwitch.Localization.Factory
         Russian,
         Korean,
         Dutch,
-        Croatian
+        Croatian,
+        ChineseTrad,
+        Slovenian,
+        Japanese
     }
 }

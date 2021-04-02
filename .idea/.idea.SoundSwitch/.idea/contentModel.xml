@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\Antoine\AppData\local\JetBrains\Rider2020.2\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\Antoine\AppData\local\JetBrains\Rider2020.2\resharper-host\local\Transient\Rider\v202\SolutionCaches\_SoundSwitch.60712735.00" t="ExcludeRecursive" />
-    <e p="C:\Users\Antoine\AppData\Roaming\JetBrains\Rider2020.2\scratches" t="IncludeRecursive" />
+    <e p="C:\Users\Antoine\AppData\local\JetBrains\Rider2020.3\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\Antoine\AppData\local\JetBrains\Rider2020.3\resharper-host\local\Transient\Rider\v203\SolutionCaches\_SoundSwitch.60712735.00" t="ExcludeRecursive" />
+    <e p="C:\Users\Antoine\AppData\Roaming\JetBrains\Rider2020.3\scratches" t="IncludeRecursive" />
     <e p="C:\Users\Antoine\source\repos\SoundSwitch" t="IncludeFlat">
       <e p="packages" t="ExcludeRecursive" />
       <e p="SoundSwitch" t="IncludeRecursive">
@@ -19,6 +19,9 @@
             <e p="CachedSoundWaveStream.cs" t="Include" />
             <e p="Lister" t="Include">
               <e p="CachedAudioDeviceLister.cs" t="Include" />
+            </e>
+            <e p="Microphone" t="Include">
+              <e p="MicrophoneMuteToggler.cs" t="Include" />
             </e>
           </e>
           <e p="AutoStart.cs" t="Include" />
@@ -115,12 +118,13 @@
                 <e p="TooltipInfoNone.cs" t="Include" />
                 <e p="TooltipInfoPlayback.cs" t="Include" />
                 <e p="TooltipInfoRecording.cs" t="Include" />
-                <e p="TooltipInfoTypeEnum.cs" t="Include" />
+                <e p="ToolTipInfoTypeEnum.cs" t="Include" />
               </e>
             </e>
           </e>
           <e p="Updater" t="Include">
             <e p="AutoUpdater.cs" t="Include" />
+            <e p="FileDownloader.cs" t="Include" />
             <e p="GitHubRelease.cs" t="Include" />
             <e p="Installer" t="Include">
               <e p="UpdateRunner.cs" t="Include" />
@@ -144,13 +148,13 @@
           </e>
         </e>
         <e p="Localization" t="Include">
-          <e p="AboutStrings.cs.resx" t="Include" />
           <e p="AboutStrings.de.resx" t="Include" />
           <e p="AboutStrings.Designer.cs" t="Include" />
           <e p="AboutStrings.el-GR.resx" t="Include" />
           <e p="AboutStrings.es.resx" t="Include" />
           <e p="AboutStrings.fi-FI.resx" t="Include" />
           <e p="AboutStrings.fr.resx" t="Include" />
+          <e p="AboutStrings.he.resx" t="Include" />
           <e p="AboutStrings.hr.resx" t="Include" />
           <e p="AboutStrings.it-IT.resx" t="Include" />
           <e p="AboutStrings.ja-JP.resx" t="Include" />
@@ -162,8 +166,10 @@
           <e p="AboutStrings.pt.resx" t="Include" />
           <e p="AboutStrings.resx" t="Include" />
           <e p="AboutStrings.ru-RU.resx" t="Include" />
+          <e p="AboutStrings.sl.resx" t="Include" />
           <e p="AboutStrings.sv-SE.resx" t="Include" />
-          <e p="AboutStrings.zh-CHS.resx" t="Include" />
+          <e p="AboutStrings.zh-Hans.resx" t="Include" />
+          <e p="AboutStrings.zh-Hant.resx" t="Include" />
           <e p="Factory" t="Include">
             <e p="Lang" t="Include">
               <e p="ILang.cs" t="Include" />
@@ -172,13 +178,13 @@
             <e p="Language.cs" t="Include" />
             <e p="LanguageFactory.cs" t="Include" />
           </e>
-          <e p="SettingsStrings.cs.resx" t="Include" />
           <e p="SettingsStrings.de.resx" t="Include" />
           <e p="SettingsStrings.Designer.cs" t="Include" />
           <e p="SettingsStrings.el-GR.resx" t="Include" />
           <e p="SettingsStrings.es.resx" t="Include" />
           <e p="SettingsStrings.fi-FI.resx" t="Include" />
           <e p="SettingsStrings.fr.resx" t="Include" />
+          <e p="SettingsStrings.he.resx" t="Include" />
           <e p="SettingsStrings.hr.resx" t="Include" />
           <e p="SettingsStrings.it-IT.resx" t="Include" />
           <e p="SettingsStrings.ja-JP.resx" t="Include" />
@@ -190,9 +196,10 @@
           <e p="SettingsStrings.pt.resx" t="Include" />
           <e p="SettingsStrings.resx" t="Include" />
           <e p="SettingsStrings.ru-RU.resx" t="Include" />
+          <e p="SettingsStrings.sl.resx" t="Include" />
           <e p="SettingsStrings.sv-SE.resx" t="Include" />
-          <e p="SettingsStrings.zh-CHS.resx" t="Include" />
-          <e p="TrayIconStrings.cs.resx" t="Include" />
+          <e p="SettingsStrings.zh-Hans.resx" t="Include" />
+          <e p="SettingsStrings.zh-Hant.resx" t="Include" />
           <e p="TrayIconStrings.de.resx" t="Include" />
           <e p="TrayIconStrings.Designer.cs" t="Include" />
           <e p="TrayIconStrings.el-GR.resx" t="Include" />
@@ -210,9 +217,10 @@
           <e p="TrayIconStrings.pt.resx" t="Include" />
           <e p="TrayIconStrings.resx" t="Include" />
           <e p="TrayIconStrings.ru-RU.resx" t="Include" />
+          <e p="TrayIconStrings.sl.resx" t="Include" />
           <e p="TrayIconStrings.sv-SE.resx" t="Include" />
-          <e p="TrayIconStrings.zh-CHS.resx" t="Include" />
-          <e p="UpdateDownloadStrings.cs.resx" t="Include" />
+          <e p="TrayIconStrings.zh-Hans.resx" t="Include" />
+          <e p="TrayIconStrings.zh-Hant.resx" t="Include" />
           <e p="UpdateDownloadStrings.de.resx" t="Include" />
           <e p="UpdateDownloadStrings.Designer.cs" t="Include" />
           <e p="UpdateDownloadStrings.el-GR.resx" t="Include" />
@@ -230,12 +238,15 @@
           <e p="UpdateDownloadStrings.pt.resx" t="Include" />
           <e p="UpdateDownloadStrings.resx" t="Include" />
           <e p="UpdateDownloadStrings.ru-RU.resx" t="Include" />
+          <e p="UpdateDownloadStrings.sl.resx" t="Include" />
           <e p="UpdateDownloadStrings.sv-SE.resx" t="Include" />
-          <e p="UpdateDownloadStrings.zh-CHS.resx" t="Include" />
+          <e p="UpdateDownloadStrings.zh-Hans.resx" t="Include" />
+          <e p="UpdateDownloadStrings.zh-Hant.resx" t="Include" />
         </e>
         <e p="Model" t="Include">
           <e p="AppModel.cs" t="Include" />
           <e p="Events.cs" t="Include" />
+          <e p="HotKeyAction.cs" t="Include" />
           <e p="IAppModel.cs" t="Include" />
           <e p="IAudioDeviceLister.cs" t="Include" />
           <e p="SoundSwitchApplicationContext.cs" t="Include" />
@@ -270,6 +281,8 @@
           <e p="help-16.png" t="Include" />
           <e p="help.ico" t="Include" />
           <e p="InfoHelp.png" t="Include" />
+          <e p="microphone-alt-slash-solid.png" t="Include" />
+          <e p="microphone-alt-solid.png" t="Include" />
           <e p="page-bottom.ico" t="Include" />
           <e p="page-bottom.png" t="Include" />
           <e p="profile-add.png" t="Include" />
@@ -281,7 +294,6 @@
           <e p="Switch-SoundWave.ico" t="Include" />
           <e p="tick.png" t="Include" />
         </e>
-        <e p="SMDiagnostics" t="Include" />
         <e p="SoundSwitch.csproj" t="IncludeRecursive" />
         <e p="UI" t="Include">
           <e p="Component" t="Include">
@@ -340,6 +352,7 @@
           <e p="Com" t="Include">
             <e p="Base" t="Include">
               <e p="ComBase.cs" t="Include" />
+              <e p="HString.cs" t="Include" />
             </e>
             <e p="Threading" t="Include">
               <e p="ComTaskScheduler.cs" t="Include" />
@@ -385,6 +398,7 @@
             <e p="Device" t="Include">
               <e p="DeviceFullInfo.cs" t="Include" />
               <e p="DeviceInfo.cs" t="Include" />
+              <e p="PropertyKeys.cs" t="Include" />
             </e>
             <e p="Icon" t="Include">
               <e p="AudioDeviceIconExtractor.cs" t="Include" />

@@ -19,13 +19,11 @@ using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework;
-using SoundSwitch.Framework.Audio.Lister;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.TrayIcon.Icon;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
@@ -70,6 +68,7 @@ namespace SoundSwitch.UI.Component
 
         private readonly ToolStripMenuItem _updateMenuItem;
         private TimerForm _animationTimer;
+        private readonly UpdateDownloadForm _updateDownloadForm;
 
         public TrayIcon()
         {
@@ -119,6 +118,7 @@ namespace SoundSwitch.UI.Component
             _selectionMenu.Closed += (sender, args) => _tooltipInfoManager.IsBallontipVisible = false;
             _settingsMenu.Closed += (sender, args) => _tooltipInfoManager.IsBallontipVisible = false;
             SetEventHandlers();
+            _updateDownloadForm = new UpdateDownloadForm();
         }
 
         public void Dispose()
@@ -132,6 +132,7 @@ namespace SoundSwitch.UI.Component
 
             NotifyIcon.Dispose();
             _updateMenuItem.Dispose();
+            _updateDownloadForm.Dispose();
         }
 
         public void ReplaceIcon(Icon newIcon)
@@ -197,10 +198,15 @@ namespace SoundSwitch.UI.Component
         {
             if (_updateMenuItem.Tag == null)
                 return;
+            if (_updateDownloadForm.Visible)
+            {
+                _updateDownloadForm.Focus();
+                return;
+            }
 
             StopAnimationIconUpdate();
-            new UpdateDownloadForm((Release) _updateMenuItem.Tag).ShowDialog();
             NotifyIcon.BalloonTipClicked -= OnUpdateClick;
+            _updateDownloadForm.DownloadRelease((Release)_updateMenuItem.Tag);
         }
 
         private void SetEventHandlers()

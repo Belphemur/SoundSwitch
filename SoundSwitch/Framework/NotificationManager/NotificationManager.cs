@@ -59,7 +59,7 @@ namespace SoundSwitch.Framework.NotificationManager
             _notification = _notificationFactory.Get(notificationTypeEnum);
             _notification.Configuration = new NotificationConfiguration()
             {
-                Icon = AppModel.Instance.TrayIcon.NotifyIcon,
+                Icon = _model.TrayIcon.NotifyIcon,
                 DefaultSound = Resources.NotificationSound
             };
             try
@@ -74,7 +74,7 @@ namespace SoundSwitch.Framework.NotificationManager
                 }
 
                 MessageBox.Show(string.Format(SettingsStrings.audioFileNotFound, SettingsStrings.notificationOptionSound),
-                                SettingsStrings.audioFileNotFoundCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    SettingsStrings.audioFileNotFoundCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 _model.NotificationSettings = NotificationTypeEnum.SoundNotification;
             }
         }
@@ -86,6 +86,24 @@ namespace SoundSwitch.Framework.NotificationManager
 
             _notification.NotifyDefaultChanged(deviceDefaultChangedEvent.Device);
             _lastDeviceId = deviceDefaultChangedEvent.DeviceId;
+        }
+
+        /// <summary>
+        /// Notify on Profile changed
+        /// </summary>
+        public void NotifyProfileChanged(Profile.Profile profile, uint? processId)
+        {
+            if (!profile.NotifyOnActivation)
+            {
+                return;
+            }
+
+            _notification.NotifyProfileChanged(profile, processId);
+        }
+
+        public void NotifyMuteChanged(string microphoneName, bool newMuteState)
+        {
+            _notification.NotifyMuteChanged(microphoneName, newMuteState);
         }
 
         ~NotificationManager()

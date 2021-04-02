@@ -50,6 +50,8 @@ namespace SoundSwitch.Common.Framework.Audio.Icon
                 entry.RegisterPostEvictionCallback((o, value, reason, state) =>
                 {
                     if (!(value is IDisposable disposable)) return;
+                    //Don't dispose the default values
+                    if (value == DefaultMicrophone || value == DefaultSpeakers) return;
                     try
                     {
                         disposable.Dispose();
@@ -64,13 +66,11 @@ namespace SoundSwitch.Common.Framework.Audio.Icon
                     {
                         return System.Drawing.Icon.ExtractAssociatedIcon(path);
                     }
-                    else
-                    {
-                        var iconInfo  = path.Split(',');
-                        var dllPath   = iconInfo[0];
-                        var iconIndex = int.Parse(iconInfo[1]);
-                        return IconExtractor.Extract(dllPath, iconIndex, largeIcon);
-                    }
+
+                    var iconInfo  = path.Split(',');
+                    var dllPath   = iconInfo[0];
+                    var iconIndex = int.Parse(iconInfo[1]);
+                    return IconExtractor.Extract(dllPath, iconIndex, largeIcon);
                 }
                 catch (Exception e)
                 {

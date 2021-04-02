@@ -12,6 +12,7 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
+using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,9 +26,8 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
 {
     public class NotificationSound : INotification
     {
-
         public NotificationTypeEnum TypeEnum => NotificationTypeEnum.SoundNotification;
-        public string Label => SettingsStrings.notificationOptionSound;
+        public string               Label    => SettingsStrings.notificationOptionSound;
 
         public INotificationConfiguration Configuration { get; set; }
 
@@ -36,22 +36,17 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             if (audioDevice.DataFlow != DataFlow.Render)
                 return;
 
-            var task = new Task(() =>
+            Task.Factory.StartNew(() =>
             {
-                using (var memoryStreamedSound = GetStreamCopy())
+                using var memoryStreamedSound = GetStreamCopy();
+                using var output              = new WasapiOut(audioDevice, AudioClientShareMode.Shared, true, 10);
+                output.Init(new WaveFileReader(memoryStreamedSound));
+                output.Play();
+                while (output.PlaybackState == PlaybackState.Playing)
                 {
-                    using (var output = new WasapiOut(audioDevice, AudioClientShareMode.Shared, true, 10))
-                    {
-                        output.Init(new WaveFileReader(memoryStreamedSound));
-                        output.Play();
-                        while (output.PlaybackState == PlaybackState.Playing)
-                        {
-                            Thread.Sleep(500);
-                        }
-                    }
+                    Thread.Sleep(500);
                 }
             });
-            task.Start();
         }
 
         public void OnSoundChanged(CachedSound newSound)
@@ -68,6 +63,28 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         public bool IsAvailable()
         {
             return true;
+        }
+
+        public void NotifyProfileChanged(Profile.Profile profile, uint? processId)
+        {
+            if (profile.Playback == null)
+                return;
+
+            using var enumerator = new MMDeviceEnumerator();
+            try
+            {
+                var device = enumerator.GetDevice(profile.Playback.Id);
+                NotifyDefaultChanged(device);
+            }
+            catch (Exception)
+            {
+                //Ignored
+            }
+        }
+
+        public void NotifyMuteChanged(string microphoneName, bool newMuteState)
+        {
+            
         }
 
         private Stream GetStreamCopy()

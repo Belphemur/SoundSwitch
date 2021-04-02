@@ -17,29 +17,19 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
-using System.IO.Pipes;
 using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
-using System.Security.AccessControl;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Framework;
-using SoundSwitch.Framework.Audio.Lister;
-using SoundSwitch.Framework.Banner;
-using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Logger.Configuration;
 using SoundSwitch.Framework.Minidump;
 using SoundSwitch.Framework.NotificationManager;
-using SoundSwitch.Framework.Updater;
-using SoundSwitch.InterProcess.Communication;
+using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Localization.Factory;
 using SoundSwitch.Model;
-using SoundSwitch.UI.Component;
 using SoundSwitch.Util;
-using WindowsAPIAdapter = SoundSwitch.Framework.WinApi.WindowsAPIAdapter;
 
 namespace SoundSwitch
 {
@@ -72,10 +62,10 @@ namespace SoundSwitch
             var userMutexName = Application.ProductName + Environment.UserName;
 
             using var mainMutex = new Mutex(true, Application.ProductName);
-            using var userMutex = new Mutex(true, userMutexName, out var userMutexInUse);
-
-            if (KillOtherInstanceAndRestart(userMutexName, userMutexInUse))
+            using var userMutex = new Mutex(true, userMutexName, out var userMutexHasOwnership);
+            if (!userMutexHasOwnership)
             {
+                Log.Warning("SoundSwitch is already running for this user {@Mutex}", userMutexName);
                 WindowsAPIAdapter.Stop();
                 Log.CloseAndFlush();
                 return;
@@ -105,7 +95,7 @@ namespace SoundSwitch
                     case WindowsAPIAdapter.RestartManagerEventType.EndSession:
                     case WindowsAPIAdapter.RestartManagerEventType.ForceClose:
                         Log.Debug("Close Application");
-                        Application.Exit();
+                        Environment.Exit(0);
                         break;
                 }
             };
@@ -141,36 +131,10 @@ namespace SoundSwitch
             AppModel.Instance.ActiveAudioDeviceLister.Dispose();
             AppModel.Instance.ActiveUnpluggedAudioLister.Dispose();
             AppModel.Instance.TrayIcon.Dispose();
-            MMNotificationClient.Instance.UnRegister();
             WindowsAPIAdapter.Stop();
+            MMNotificationClient.Instance.Dispose();
             Log.CloseAndFlush();
 
-        }
-
-        private static bool KillOtherInstanceAndRestart(string pipeName, bool createdNew)
-        {
-            //Mutex used by another instance of the app
-            //Ask the other instance to stop and restart this instance to get the mutex again.
-            if (!createdNew)
-            {
-                using var pipeClient = new NamedPipeClient(pipeName);
-                Log.Information("Other instance detected.");
-                pipeClient.SendMsg("Close");
-                Log.Information("Other instance detected: asked to stop, restarting now.");
-                RestartApp();
-                return true;
-            }
-
-            using var pipeServer = new NamedPipeServer(pipeName);
-            pipeServer.Start(message =>
-            {
-                if (message == "Close")
-                {
-                    Log.Information("Other instance detected and asked to stop.");
-                    Application.Exit();
-                }
-            });
-            return false;
         }
 
         /// <summary>

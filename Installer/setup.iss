@@ -6,7 +6,7 @@
 #define use_msi45
 #define use_msiproduct
 
-#define use_dotnet_core '3.1.4'
+#define use_dotnet_core '5.0.3'
 
 ;#define use_vc2017
 
@@ -18,11 +18,11 @@
 AppName={#MyAppSetupName}
 AppVersion={#MyAppVersion}
 AppVerName={#MyAppSetupName} {#MyAppVersion}
-AppCopyright=Copyright © 2010-2020 {#MyAppSetupName}
+AppCopyright=Copyright © 2010-2021 {#MyAppSetupName}
 VersionInfoVersion={#MyAppVersion}
 VersionInfoCompany=SoundSwitch                                            
 AppPublisher=Antoine Aflalo
-AppPublisherURL=https://www.aaflalo.me
+AppPublisherURL=https://soundswitch.aaflalo.me
 AppSupportURL=https://github.com/Belphemur/SoundSwitch
 AppUpdatesURL=https://github.com/Belphemur/SoundSwitch/releases
 OutputBaseFilename={#MyAppSetupName}_v{#MyAppVersion}_{#ReleaseState}_Installer
@@ -68,34 +68,15 @@ Name: "pt_br"; MessagesFile: "compiler:Languages\brazilianPortuguese.isl"
 Name: "ru_ru"; MessagesFile: "compiler:Languages\Russian.isl"
 Name: "pl_pl"; MessagesFile: "compiler:Languages\Polish.isl"
 Name: "nl"; MessagesFile: "compiler:Languages\Dutch.isl"
+Name: "zh"; MessagesFile: "Languages\ChineseSimplified.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
-Name: deletefiles; Description: "{cm:ExistingSettings}"; Flags: unchecked
+Name: deletefiles; Description: "{cm:ExistingSettings}"; Flags: unchecked checkedonce
 
 [Files] 
 Source: "{#ExeDir}SoundSwitch.exe"; DestDir: "{app}";  Flags: signonce
-Source: "{#ExeDir}*.dll"; DestDir: "{app}";
-Source: "{#ExeDir}*.pdb"; DestDir: "{app}";
-Source: "{#ExeDir}*.json"; DestDir: "{app}";
-Source: "{#ExeDir}*.config"; DestDir: "{app}";
-
-Source: "{#ExeDir}fr\*.dll"; DestDir: "{app}\fr";
-Source: "{#ExeDir}de\*.dll"; DestDir: "{app}\de";
-Source: "{#ExeDir}es\*.dll"; DestDir: "{app}\es";
-Source: "{#ExeDir}nb\*.dll"; DestDir: "{app}\nb";
-Source: "{#ExeDir}pt-BR\*.dll"; DestDir: "{app}\pt-BR";
-Source: "{#ExeDir}it-IT\*.dll"; DestDir: "{app}\it-IT";
-Source: "{#ExeDir}zh-CHS\*.dll"; DestDir: "{app}\zh-CHS";
-Source: "{#ExeDir}pl-PL\*.dll"; DestDir: "{app}\pl-PL";
-Source: "{#ExeDir}ru-RU\*.dll"; DestDir: "{app}\ru-RU";
-Source: "{#ExeDir}ko\*.dll"; DestDir: "{app}\ko";
-Source: "{#ExeDir}nl\*.dll"; DestDir: "{app}\nl";
-Source: "{#ExeDir}hr\*.dll"; DestDir: "{app}\hr";
-
-Source: "{#ExeDir}Changelog.html"; DestDir: "{app}"
-Source: "{#ExeDir}Readme.html"; DestDir: "{app}"; DestName: "Readme.html"; Languages: en fr es it pt_br pl_pl ru_ru nl
-Source: "{#ExeDir}Readme.de.html"; DestDir: "{app}"; DestName: "Readme.html"; Languages: de  
+Source: "{#ExeDir}*"; DestDir: "{app}"; Flags: recursesubdirs;
 
 [Registry]
 Root: HKCU; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Run\{#MyAppSetupName}"; Flags: uninsdeletekey
@@ -166,7 +147,8 @@ Type: files; Name: {app}\CommonMark.dll
 Type: files; Name: {app}\CommonMark.pdb
 Type: files; Name: {app}\Serilog*.dll
 Type: files; Name: {app}\SoundSwitch.UI.UserControls.*
-
+Type: files; Name: {app}\SoundSwitch.InterProcess.Communication.*
+Type: files; Name: {app}\Microsoft.WindowsAPICodePack.*
 [Code]
 #include "scripts\checkMutex.iss"
 

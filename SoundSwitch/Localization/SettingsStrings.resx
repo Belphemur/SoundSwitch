@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -386,7 +386,7 @@ Both: Change when any type of device is switched.</value>
     <value>Activate the profile when the selected application is in the foreground</value>
   </data>
   <data name="profile.trigger.steam.desc" xml:space="preserve">
-    <value>Activate when Steam Big Picture is detected. Will restore the state when Big Picture is closed.</value>
+    <value>Activate when Steam Big Picture is detected. (Will restore the state when Big Picture is closed.)</value>
   </data>
   <data name="profile.desc" xml:space="preserve">
     <value>Description</value>
@@ -428,20 +428,35 @@ Both: Change when any type of device is switched.</value>
     <value>The profile will be triggered automatically when SoundSwitch starts</value>
   </data>
   <data name="usePrimaryScreen" xml:space="preserve">
-    <value>Always Use Primary Screen</value>
+    <value>Always use primary screen</value>
   </data>
   <data name="usePrimaryScreenTooltip" xml:space="preserve">
-    <value>Display banner on primary screen instead of currently active screen.</value>
+    <value>Display banner on primary screen instead of focused screen.</value>
   </data>
   <data name="profile.trigger.restoreDevices" xml:space="preserve">
     <value>Restore devices when trigger ends</value>
   </data>
   <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
-    <value>Needs "Also switch default device".
+    <value>Requires "{0}" to be enabled.
 
 Restore the state of the system when the application is closed.</value>
   </data>
   <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
     <value>System state restored</value>
+  </data>
+  <data name="profile.trigger.uwp" xml:space="preserve">
+    <value>Microsoft Store app</value>
+  </data>
+  <data name="profile.trigger.uwp.desc" xml:space="preserve">
+    <value>Input the name of the application installed through the Windows store. Like Netflix, Amazon Prime video, etc…</value>
+  </data>
+  <data name="notification.microphone.muted" xml:space="preserve">
+    <value>{0} is now muted.</value>
+  </data>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>{0} is now unmuted.</value>
+  </data>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>Toggle mute</value>
   </data>
 </root>

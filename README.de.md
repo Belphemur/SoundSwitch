@@ -11,7 +11,7 @@
 
 ## Anforderungen
 - ⚠ Betriebssystem: Windows 7 oder neuer
-- ⚠ [Microsoft .NET Core 3.1.4](https://dotnet.microsoft.com/download/dotnet-core/current/runtime)
+- ⚠ [Microsoft .NET 5.0](https://dotnet.microsoft.com/download/dotnet-core/current/runtime)
 
 ## Spenden
 Wenn Sie die Entwicklung unterstützen möchten, würden wir uns freuen, Sie [hier ❤](https://soundswitch.aaflalo.me/#donate) zu sehen.
@@ -109,7 +109,7 @@ Vielen Dank für die Open-Source-Lizenz für ihre ausgezeichneten IDEs und Addon
 
 Copyright (C) 2015 Jeroen Pelgrims
 
-Copyright (C) 2015-2020 Antoine Aflalo
+Copyright (C) 2015-2021 Antoine Aflalo
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License

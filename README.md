@@ -11,7 +11,7 @@
 
 ## Requirements
 - ⚠ Operating System: Windows 7 or newer
-- ⚠ [Microsoft .NET Core 3.1.4](https://dotnet.microsoft.com/download/dotnet-core/current/runtime)
+- ⚠ [Microsoft .NET 5.0](https://dotnet.microsoft.com/download/dotnet-core/current/runtime)
 
 ## Donations
 If you'd like to support the development, we would love to see you [here ❤](https://soundswitch.aaflalo.me/#donate).
@@ -110,7 +110,7 @@ Thanks for their Open-Source licence to their amazing IDEs and addons like [ReSh
 
 Copyright (C) 2015 Jeroen Pelgrims
 
-Copyright (C) 2015-2020 Antoine Aflalo
+Copyright (C) 2015-2021 Antoine Aflalo
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License

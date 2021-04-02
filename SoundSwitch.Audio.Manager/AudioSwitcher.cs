@@ -1,10 +1,8 @@
 ﻿#nullable enable
-using System.Collections.Generic;
+using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
 using NAudio.CoreAudioApi;
-using SoundSwitch.Audio.Manager.Interop;
 using SoundSwitch.Audio.Manager.Interop.Client;
 using SoundSwitch.Audio.Manager.Interop.Com.Threading;
 using SoundSwitch.Audio.Manager.Interop.Com.User;
@@ -15,9 +13,9 @@ namespace SoundSwitch.Audio.Manager
 {
     public class AudioSwitcher
     {
-        private static AudioSwitcher    _instance;
-        private        PolicyClient     _policyClient;
-        private        EnumeratorClient _enumerator;
+        private static AudioSwitcher _instance;
+        private PolicyClient _policyClient;
+        private EnumeratorClient _enumerator;
 
         private ExtendedPolicyClient _extendedPolicyClient;
 
@@ -180,16 +178,27 @@ namespace SoundSwitch.Audio.Manager
         /// <param name="flow"></param>
         /// <param name="role"></param>
         /// <returns>Null if no default device is defined</returns>
-        public DeviceInfo? GetDefaultAudioEndpoint(EDataFlow flow, ERole role) => ComThread.Invoke(() =>
+        public DeviceFullInfo? GetDefaultAudioEndpoint(EDataFlow flow, ERole role) => ComThread.Invoke(() =>
         {
             var defaultEndpoint = EnumeratorClient.GetDefaultEndpoint(flow, role);
-            if (defaultEndpoint == null)
-            {
-                return null;
-            }
-
-            return new DeviceFullInfo(defaultEndpoint);
+            return defaultEndpoint == null ? null : new DeviceFullInfo(defaultEndpoint);
         });
+
+        /// <summary>
+        /// Used to interact directly with a <see cref="MMDevice"/>
+        /// </summary>
+        /// <param name="device"></param>
+        /// <param name="interaction"></param>
+        /// <typeparam name="T"></typeparam>
+        public T InteractWithMmDevice<T>(MMDevice device, Func<MMDevice, T> interaction) => ComThread.Invoke(() => interaction(device));
+
+        /// <summary>
+        /// Get the current default endpoint
+        /// </summary>
+        /// <param name="flow"></param>
+        /// <param name="role"></param>
+        /// <returns>Null if no default device is defined</returns>
+        public MMDevice? GetDefaultMmDevice(EDataFlow flow, ERole role) => ComThread.Invoke(() => EnumeratorClient.GetDefaultEndpoint(flow, role));
 
         /// <summary>
         /// Reset Windows configuration for the process that had their audio device changed

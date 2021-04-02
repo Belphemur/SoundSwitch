@@ -368,4 +368,27 @@ Begge: Endre når enhetstypen byttes.</value>
   <data name="profile.error.window" xml:space="preserve">
     <value>Det finnes allerede en profil med dette vindusnavnet: {0}.</value>
   </data>
+  <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
+    <value>Behøver «{0}» påslått.
+
+Gjenopprett systemets tilstand når programmet lukkes.</value>
+  </data>
+  <data name="profile.trigger.restoreDevices" xml:space="preserve">
+    <value>Gjenopprett enheter når utløser slutter</value>
+  </data>
+  <data name="usePrimaryScreenTooltip" xml:space="preserve">
+    <value>Vis banner på hovedskjerm istedenfor på aktiv skjerm.</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
+    <value>Systemtilstand gjenopprettet</value>
+  </data>
+  <data name="usePrimaryScreen" xml:space="preserve">
+    <value>Alltid bruk hovedskjerm</value>
+  </data>
+  <data name="profile.trigger.uwp.desc" xml:space="preserve">
+    <value>Skriv inn navnet på programmet installert gjennom Windows-butikken. Som Netflix, Amazon Prime video, osv…</value>
+  </data>
+  <data name="profile.trigger.uwp" xml:space="preserve">
+    <value>Mikrosoft Store-program</value>
+  </data>
 </root>

@@ -1,247 +1,148 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
-  <PropertyGroup>
-  <TargetFrameworks>net472;netcoreapp3.1</TargetFrameworks>
-    <OutputType>WinExe</OutputType>
-    <StartupObject>SoundSwitch.Program</StartupObject>
-    <PublishUrl>publish/</PublishUrl>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <LangVersion>8</LangVersion>
-    <UseWindowsForms>true</UseWindowsForms>
-    <Deterministic>false</Deterministic>
-    <Configurations>Debug;Release;Beta</Configurations>
-    <Platforms>AnyCPU</Platforms>
-  </PropertyGroup>
-  <PropertyGroup>
-    <TargetPlatformVersion>8.0</TargetPlatformVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <CodeAnalysisLogFile>$(SolutionDir)\bin\Debug\SoundSwitch.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
-    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
-    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <CodeAnalysisLogFile>$(SolutionDir)\bin\Release\SoundSwitch.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
-    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
-    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <LangVersion>8</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AppVeyor|AnyCPU'">
-    <OutputPath>$(SolutionDir)\bin\AppVeyor\</OutputPath>
-    <Optimize>true</Optimize>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <LangVersion>8</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Beta|AnyCPU'">
-    <OutputPath>bin\Beta\</OutputPath>
-    <DefineConstants>TRACE;BETA</DefineConstants>
-    <Optimize>true</Optimize>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <LangVersion>8</LangVersion>
-  </PropertyGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Framework\Banner\BannerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Framework\Banner\BannerForm.Designer.cs">
-      <DependentUpon>BannerForm.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Framework\WinApi\WindowsAPIAdapter.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Localization\AboutStrings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AboutStrings.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Localization\SettingsStrings.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>SettingsStrings.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Localization\TrayIconStrings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>TrayIconStrings.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Localization\UpdateDownloadStrings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>UpdateDownloadStrings.resx</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Component\ChangelogViewer.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="UI\Component\HotKeyTextBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="UI\Component\IconTextComboBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="UI\Component\ListView\IconListView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="UI\Component\ListView\ListViewExtended.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="UI\Component\TextProgressBar.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="UI\Forms\About.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="UI\Forms\About.Designer.cs">
-      <DependentUpon>About.cs</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Forms\Settings.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="UI\Forms\Settings.Designer.cs">
-      <DependentUpon>Settings.cs</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Forms\UpdateDownloadForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="UI\Forms\UpdateDownloadForm.Designer.cs">
-      <DependentUpon>UpdateDownloadForm.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Util\ToolStripDeviceItem.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <EmbeddedResource Update="Framework\Banner\BannerForm.resx">
-      <DependentUpon>BannerForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Localization\AboutStrings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>AboutStrings.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Localization\SettingsStrings.de.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Localization\TrayIconStrings.de.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <EmbeddedResource Update="Localization\SettingsStrings.fr.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Localization\SettingsStrings.resx">
-      <SubType>Designer</SubType>
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>SettingsStrings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Localization\TrayIconStrings.fr.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Localization\TrayIconStrings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>TrayIconStrings.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Localization\UpdateDownloadStrings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>UpdateDownloadStrings.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="UI\Forms\About.resx">
-      <DependentUpon>About.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="UI\Forms\Settings.resx">
-      <DependentUpon>Settings.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="UI\Forms\UpdateDownloadForm.resx">
-      <DependentUpon>UpdateDownloadForm.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Resources\profile-delete.png" />
-    <Content Include="Resources\arrow_switch.ico" />
-    <Content Include="Resources\control-equalizer-blue.png" />
-    <Content Include="Resources\control-volume-blue.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <PublishFile Include="SMDiagnostics">
-      <Visible>False</Visible>
-      <Group></Group>
-      <TargetPath></TargetPath>
-      <PublishState>Exclude</PublishState>
-      <IncludeHash>True</IncludeHash>
-      <FileType>Assembly</FileType>
-    </PublishFile>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SoundSwitch.Audio.Manager\SoundSwitch.Audio.Manager.csproj" />
-    <ProjectReference Include="..\SoundSwitch.Common\SoundSwitch.Common.csproj" />
-    <ProjectReference Include="..\SoundSwitch.InterProcess.Communication\SoundSwitch.InterProcess.Communication.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="AuthenticodeExaminer" Version="0.3.0" />
-    <PackageReference Include="Markdig" Version="0.21.1" />
-    <PackageReference Include="Microsoft-WindowsAPICodePack-Core" Version="1.1.4" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="NAudio" Version="1.10.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="RailSharp" Version="1.0.0" />
-    <PackageReference Include="Serilog" Version="2.10.0" />
-    <PackageReference Include="Serilog.Enrichers.Environment" Version="2.1.3" />
-    <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
-    <PackageReference Include="Serilog.Exceptions" Version="5.6.0" />
-    <PackageReference Include="Serilog.Formatting.Compact" Version="1.1.0" />
-    <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
-    <PackageReference Include="SerilogTraceListener" Version="3.2.0" />
-    <PackageReference Include="System.Diagnostics.TraceSource" Version="4.3.0" />
-    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
-    <PackageReference Include="System.Net.Http" Version="4.3.4" />
-    <PackageReference Include="System.Resources.Extensions" Version="4.7.1" />
-    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="Properties\SettingsString.fr.Designer.cs" />
-    <Compile Remove="Properties\TrayIconStrings.fr.Designer.cs" />
-    <EmbeddedResource Remove="Localization\AboutStrings.hu.resx" />
-    <EmbeddedResource Remove="Localization\SettingsStrings.hu.resx" />
-    <EmbeddedResource Remove="Localization\SettingsStrings.pt_PT.resx" />
-    <EmbeddedResource Remove="Localization\TrayIconStrings.hu.resx" />
-    <EmbeddedResource Remove="Localization\UpdateDownloadStrings.hu.resx" />
-  </ItemGroup>
-  <PropertyGroup>
-    <ApplicationIcon>Resources\Switch-SoundWave.ico</ApplicationIcon>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
-  </PropertyGroup>
-  <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^netcoreapp\d'))">
-    <DefineConstants>NETCORE</DefineConstants>
-  </PropertyGroup>
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <StartupObject>SoundSwitch.Program</StartupObject>
+        <PublishUrl>publish/</PublishUrl>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <LangVersion>latest</LangVersion>
+        <UseWindowsForms>true</UseWindowsForms>
+        <Deterministic>false</Deterministic>
+        <Configurations>Debug;Release;Beta</Configurations>
+        <Platforms>AnyCPU</Platforms>
+        <TargetFramework>net5.0-windows</TargetFramework>
+    </PropertyGroup>
+    <PropertyGroup>
+        <TargetPlatformVersion>8.0</TargetPlatformVersion>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+        <CodeAnalysisLogFile>$(SolutionDir)\bin\Debug\SoundSwitch.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+        <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+        <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+        <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+        <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+        <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+        <UseVSHostingProcess>false</UseVSHostingProcess>
+        <RunCodeAnalysis>false</RunCodeAnalysis>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+        <CodeAnalysisLogFile>$(SolutionDir)\bin\Release\SoundSwitch.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+        <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+        <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+        <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+        <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+        <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+        <UseVSHostingProcess>false</UseVSHostingProcess>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AppVeyor|AnyCPU'">
+        <OutputPath>$(SolutionDir)\bin\AppVeyor\</OutputPath>
+        <Optimize>true</Optimize>
+        <UseVSHostingProcess>false</UseVSHostingProcess>
+        <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Beta|AnyCPU'">
+        <OutputPath>bin\Beta\</OutputPath>
+        <DefineConstants>TRACE;BETA</DefineConstants>
+        <Optimize>true</Optimize>
+        <UseVSHostingProcess>false</UseVSHostingProcess>
+        <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+    <ItemGroup>
+        <Content Include="Resources\profile-delete.png" />
+        <Content Include="Resources\arrow_switch.ico" />
+        <Content Include="Resources\control-equalizer-blue.png" />
+        <Content Include="Resources\control-volume-blue.png" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\SoundSwitch.Audio.Manager\SoundSwitch.Audio.Manager.csproj" />
+        <ProjectReference Include="..\SoundSwitch.Common\SoundSwitch.Common.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="AuthenticodeExaminer" Version="0.3.0" />
+        <PackageReference Include="Markdig" Version="0.24.0" />
+        <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+        <PackageReference Include="NAudio" Version="2.0.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="RailSharp" Version="1.0.0" />
+        <PackageReference Include="Serilog" Version="2.10.0" />
+        <PackageReference Include="Serilog.Enrichers.Environment" Version="2.1.3" />
+        <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
+        <PackageReference Include="Serilog.Exceptions" Version="6.1.0" />
+        <PackageReference Include="Serilog.Formatting.Compact" Version="1.1.0" />
+        <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
+        <PackageReference Include="SerilogTraceListener" Version="3.2.0" />
+        <PackageReference Include="System.Diagnostics.TraceSource" Version="4.3.0" />
+        <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
+        <PackageReference Include="System.Net.Http" Version="4.3.4" />
+        <PackageReference Include="System.Resources.Extensions" Version="5.0.0" />
+        <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+        <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Remove="Properties\SettingsString.fr.Designer.cs" />
+        <Compile Remove="Properties\TrayIconStrings.fr.Designer.cs" />
+        <EmbeddedResource Remove="Localization\AboutStrings.hu.resx" />
+        <EmbeddedResource Remove="Localization\SettingsStrings.hu.resx" />
+        <EmbeddedResource Remove="Localization\SettingsStrings.pt_PT.resx" />
+        <EmbeddedResource Remove="Localization\TrayIconStrings.hu.resx" />
+        <EmbeddedResource Remove="Localization\UpdateDownloadStrings.hu.resx" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Update="Localization\AboutStrings.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>AboutStrings.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Localization\SettingsStrings.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>SettingsStrings.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Localization\TrayIconStrings.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>TrayIconStrings.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Localization\UpdateDownloadStrings.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>UpdateDownloadStrings.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\Resources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Resources.resx</DependentUpon>
+        </Compile>
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Update="Localization\AboutStrings.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>AboutStrings.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Localization\SettingsStrings.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>SettingsStrings.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Localization\TrayIconStrings.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>TrayIconStrings.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Localization\UpdateDownloadStrings.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>UpdateDownloadStrings.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\Resources.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
+    <PropertyGroup>
+        <ApplicationIcon>Resources\Switch-SoundWave.ico</ApplicationIcon>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+        <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
+    </PropertyGroup>
+    <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^net\d'))">
+        <DefineConstants>NETCORE</DefineConstants>
+    </PropertyGroup>
 </Project>

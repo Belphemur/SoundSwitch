@@ -78,7 +78,11 @@ namespace SoundSwitch.Framework.Updater
             {
                 if (version > AppVersion)
                 {
-                    var installer = serverRelease.assets.First(asset => asset.name.EndsWith(".exe"));
+                    var installer = serverRelease.assets.SingleOrDefault(asset => asset.name.EndsWith(".exe"));
+                    if (installer == null)
+                    {
+                        return false;
+                    }
                     var release = new Release(version, installer, serverRelease.name);
                     release.Changelog.AddRange(changelog);
                     UpdateAvailable?.Invoke(this, new NewReleaseEvent(release));

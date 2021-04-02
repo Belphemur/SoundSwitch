@@ -21,9 +21,8 @@ using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.TrayIcon.Icon;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 using SoundSwitch.Framework.Updater;
-using SoundSwitch.Localization;
+using SoundSwitch.Framework.WinApi.Keyboard;
 using SoundSwitch.Localization.Factory;
-using HotKey = SoundSwitch.Framework.WinApi.Keyboard.HotKey;
 
 namespace SoundSwitch.Framework.Configuration
 {
@@ -64,5 +63,6 @@ namespace SoundSwitch.Framework.Configuration
         HashSet<Profile.Profile> Profiles { get; set; }
         DateTime LastDonationNagTime { get; set; }
         TimeSpan TimeBetweenDonateNag { get; set; }
+        HotKey MuteRecordingHotKey { get; set; }
     }
 }

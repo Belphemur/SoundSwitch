@@ -14,7 +14,8 @@ namespace SoundSwitch.Framework.Profile.Trigger
             Window,
             Process,
             Steam,
-            Startup
+            Startup,
+            UwpApp
         }
 
         private static readonly IEnumImplList<Enum, ITriggerDefinition> Impl =
@@ -24,7 +25,8 @@ namespace SoundSwitch.Framework.Profile.Trigger
                 new ProcessTrigger(),
                 new WindowTrigger(),
                 new SteamBigPictureTrigger(),
-                new Startup()
+                new Startup(),
+                new UwpApp()
             };
 
         public TriggerFactory() : base(Impl)
@@ -64,12 +66,12 @@ namespace SoundSwitch.Framework.Profile.Trigger
             return Label;
         }
 
-        public virtual  TriggerFactory.Enum TypeEnum                  { get; }
-        public virtual  string              Label                     { get; }
-        public virtual  int                 MaxOccurence              { get; } = -1;
-        public virtual  int                 MaxGlobalOccurence        { get; } = -1;
-        public abstract string              Description               { get; }
-        public virtual  bool                CanRestoreDevices         { get; } = false;
+        public virtual  TriggerFactory.Enum TypeEnum                      { get; }
+        public virtual  string              Label                         { get; }
+        public virtual  int                 MaxOccurence                  { get; } = -1;
+        public virtual  int                 MaxGlobalOccurence            { get; } = -1;
+        public abstract string              Description                   { get; }
+        public virtual  bool                CanRestoreDevices             { get; } = false;
         public virtual  bool                AlwaysDefaultAndRestoreDevice { get; } = false;
     }
 
@@ -102,10 +104,10 @@ namespace SoundSwitch.Framework.Profile.Trigger
         public override TriggerFactory.Enum TypeEnum { get; } = TriggerFactory.Enum.Steam;
         public override string              Label    => SettingsStrings.profile_trigger_steam;
 
-        public override int    MaxOccurence              { get; } = 1;
-        public override int    MaxGlobalOccurence        { get; } = 1;
-        public override string Description               { get; } = SettingsStrings.profile_trigger_steam_desc;
-        public override bool   CanRestoreDevices         { get; } = true;
+        public override int    MaxOccurence                  { get; } = 1;
+        public override int    MaxGlobalOccurence            { get; } = 1;
+        public override string Description                   { get; } = SettingsStrings.profile_trigger_steam_desc;
+        public override bool   CanRestoreDevices             { get; } = true;
         public override bool   AlwaysDefaultAndRestoreDevice { get; } = true;
     }
 
@@ -118,5 +120,14 @@ namespace SoundSwitch.Framework.Profile.Trigger
         public override int MaxGlobalOccurence { get; } = 1;
 
         public override string Description { get; } = SettingsStrings.profile_trigger_startup_desc;
+    }
+
+    public class UwpApp : BaseTrigger
+    {
+        public override TriggerFactory.Enum TypeEnum                      { get; } = TriggerFactory.Enum.UwpApp;
+        public override string              Label                         => SettingsStrings.profile_trigger_uwp;
+        public override bool                CanRestoreDevices             { get; } = true;
+        public override string              Description                   => SettingsStrings.profile_trigger_uwp_desc;
+        public override bool                AlwaysDefaultAndRestoreDevice { get; } = true;
     }
 }

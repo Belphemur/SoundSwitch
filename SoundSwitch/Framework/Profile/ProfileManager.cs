@@ -12,16 +12,13 @@ using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Com.User;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
-using SoundSwitch.Common.Framework.Icon;
-using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Profile.Trigger;
+using SoundSwitch.Framework.WinApi;
+using SoundSwitch.Framework.WinApi.Keyboard;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
-using SoundSwitch.Properties;
 using SoundSwitch.Util;
-using HotKey = SoundSwitch.Framework.WinApi.Keyboard.HotKey;
-using WindowsAPIAdapter = SoundSwitch.Framework.WinApi.WindowsAPIAdapter;
 
 namespace SoundSwitch.Framework.Profile
 {
@@ -29,35 +26,38 @@ namespace SoundSwitch.Framework.Profile
     {
         public delegate void ShowError(string errorMessage, string errorTitle);
 
-        private readonly BannerManager      _bannerManager = new BannerManager();
-        private readonly WindowMonitor      _windowMonitor;
-        private readonly AudioSwitcher      _audioSwitcher;
-        private readonly IAudioDeviceLister _activeDeviceLister;
-        private readonly ShowError          _showError;
-        private readonly TriggerFactory     _triggerFactory;
+        private readonly WindowMonitor                           _windowMonitor;
+        private readonly AudioSwitcher                           _audioSwitcher;
+        private readonly IAudioDeviceLister                      _activeDeviceLister;
+        private readonly ShowError                               _showError;
+        private readonly TriggerFactory                          _triggerFactory;
+        private readonly NotificationManager.NotificationManager _notificationManager;
 
         private Profile? _steamProfile;
 
-        private readonly Dictionary<User32.NativeMethods.HWND, Profile> _activeWindowsTrigger = new Dictionary<User32.NativeMethods.HWND, Profile>();
+        private readonly Dictionary<User32.NativeMethods.HWND, Profile> _activeWindowsTrigger = new();
 
-        private readonly Dictionary<HotKey, Profile>                                    _profilesByHotkey     = new Dictionary<HotKey, Profile>();
-        private readonly Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)> _profileByApplication = new Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)>();
-        private readonly Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)> _profilesByWindowName = new Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)>();
+        private readonly Dictionary<HotKey, Profile>                                    _profilesByHotkey     = new();
+        private readonly Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)> _profileByApplication = new();
+        private readonly Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)> _profilesByWindowName = new();
+        private readonly Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)> _profilesByUwpApp     = new();
 
 
         public IReadOnlyCollection<Profile> Profiles => AppConfigs.Configuration.Profiles;
 
-        public ProfileManager(WindowMonitor      windowMonitor,
-                              AudioSwitcher      audioSwitcher,
-                              IAudioDeviceLister activeDeviceLister,
-                              ShowError          showError,
-                              TriggerFactory     triggerFactory)
+        public ProfileManager(WindowMonitor                           windowMonitor,
+                              AudioSwitcher                           audioSwitcher,
+                              IAudioDeviceLister                      activeDeviceLister,
+                              ShowError                               showError,
+                              TriggerFactory                          triggerFactory,
+                              NotificationManager.NotificationManager notificationManager)
         {
-            _windowMonitor      = windowMonitor;
-            _audioSwitcher      = audioSwitcher;
-            _activeDeviceLister = activeDeviceLister;
-            _showError          = showError;
-            _triggerFactory     = triggerFactory;
+            _windowMonitor       = windowMonitor;
+            _audioSwitcher       = audioSwitcher;
+            _activeDeviceLister  = activeDeviceLister;
+            _showError           = showError;
+            _triggerFactory      = triggerFactory;
+            _notificationManager = notificationManager;
         }
 
         private void RegisterTriggers(Profile profile, bool onInit = false)
@@ -76,7 +76,7 @@ namespace SoundSwitch.Framework.Profile
                         }
 
                         SwitchAudio(profile);
-                    });
+                    }, () => { _profilesByUwpApp.Add(trigger.WindowName.ToLower(), (profile, trigger)); });
             }
         }
 
@@ -91,7 +91,8 @@ namespace SoundSwitch.Framework.Profile
                     },
                     () => { _profilesByWindowName.Remove(trigger.WindowName.ToLower()); },
                     () => { _profileByApplication.Remove(trigger.ApplicationPath.ToLower()); },
-                    () => { _steamProfile = null; }, () => { });
+                    () => { _steamProfile = null; }, () => { },
+                    () => { _profilesByUwpApp.Remove(trigger.WindowName.ToLower()); });
             }
         }
 
@@ -127,25 +128,13 @@ namespace SoundSwitch.Framework.Profile
         {
             _windowMonitor.ForegroundChanged += (sender, @event) =>
             {
-                (Profile Profile, Trigger.Trigger Trigger) profileTuple;
-
                 if (HandleSteamBigPicture(@event)) return;
 
-                if (_profileByApplication.TryGetValue(@event.ProcessName.ToLower(), out profileTuple))
-                {
-                    SaveCurrentState(@event.Hwnd, profileTuple.Profile, profileTuple.Trigger);
-                    SwitchAudio(profileTuple.Profile, @event.ProcessId);
-                    return;
-                }
+                if (HandleApplication(@event)) return;
 
-                var windowNameLower = @event.WindowName.ToLower();
+                if (HandleUwpApp(@event)) return;
 
-                profileTuple = _profilesByWindowName.FirstOrDefault(pair => windowNameLower.Contains(pair.Key)).Value;
-                if (profileTuple != default)
-                {
-                    SaveCurrentState(@event.Hwnd, profileTuple.Profile, profileTuple.Trigger);
-                    SwitchAudio(profileTuple.Profile, @event.ProcessId);
-                }
+                if (HandleWindowName(@event)) return;
             };
 
             WindowsAPIAdapter.HotKeyPressed += (sender, args) =>
@@ -157,13 +146,61 @@ namespace SoundSwitch.Framework.Profile
             WindowsAPIAdapter.WindowDestroyed += (sender, @event) => { RestoreState(@event.Hwnd); };
         }
 
+        private bool HandleUwpApp(WindowMonitor.Event @event)
+        {
+            (Profile Profile, Trigger.Trigger Trigger) profileTuple;
+
+            var windowNameLowerCase = @event.WindowName.ToLower();
+
+            profileTuple = _profilesByUwpApp.FirstOrDefault(pair => windowNameLowerCase.Contains(pair.Key)).Value;
+            if (profileTuple != default && @event.WindowClass == "ApplicationFrameWindow")
+            {
+                SaveCurrentState(@event.Hwnd, profileTuple.Profile, profileTuple.Trigger);
+                SwitchAudio(profileTuple.Profile);
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool HandleWindowName(WindowMonitor.Event @event)
+        {
+            var windowNameLower = @event.WindowName.ToLower();
+
+            var profileTuple = _profilesByWindowName.FirstOrDefault(pair => windowNameLower.Contains(pair.Key)).Value;
+            if (profileTuple != default)
+            {
+                SaveCurrentState(@event.Hwnd, profileTuple.Profile, profileTuple.Trigger);
+                SwitchAudio(profileTuple.Profile, @event.ProcessId);
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool HandleApplication(WindowMonitor.Event @event)
+        {
+            (Profile Profile, Trigger.Trigger Trigger) profileTuple;
+            if (_profileByApplication.TryGetValue(@event.ProcessName.ToLower(), out profileTuple))
+            {
+                SaveCurrentState(@event.Hwnd, profileTuple.Profile, profileTuple.Trigger);
+                SwitchAudio(profileTuple.Profile, @event.ProcessId);
+                return true;
+            }
+
+            return false;
+        }
+
         /// <summary>
         /// Save the current state of the system if it wasn't saved already
         /// </summary>
         private bool SaveCurrentState(User32.NativeMethods.HWND windowHandle, Profile profile, Trigger.Trigger trigger)
         {
-            if (!_triggerFactory.Get(trigger.Type).AlwaysDefaultAndRestoreDevice && (!trigger.ShouldRestoreDevices || !profile.AlsoSwitchDefaultDevice))
+            var triggerDefinition = _triggerFactory.Get(trigger.Type);
+            if (!(triggerDefinition.AlwaysDefaultAndRestoreDevice || (profile.RestoreDevices && triggerDefinition.CanRestoreDevices)))
+            {
                 return false;
+            }
 
             if (_activeWindowsTrigger.ContainsKey(windowHandle))
             {
@@ -229,40 +266,9 @@ namespace SoundSwitch.Framework.Profile
             };
         }
 
-        private void NotifyProfileIfNeeded(Profile profile, uint? processId)
-        {
-            if (!profile.NotifyOnActivation)
-            {
-                return;
-            }
-
-
-            var icon = Resources.default_profile_image;
-            if (processId.HasValue)
-            {
-                try
-                {
-                    var process = Process.GetProcessById((int) processId.Value);
-                    icon = IconExtractor.Extract(process.MainModule?.FileName, 0, true).ToBitmap();
-                }
-                catch (Exception)
-                {
-                    // ignored
-                }
-            }
-
-            _bannerManager.ShowNotification(new BannerData
-            {
-                Priority = 1,
-                Image    = icon,
-                Title    = string.Format(SettingsStrings.profile_notification_text, profile.Name),
-                Text     = string.Join("\n", profile.Devices.Select(wrapper => wrapper.DeviceInfo.NameClean))
-            });
-        }
-
         private void SwitchAudio(Profile profile, uint processId)
         {
-            NotifyProfileIfNeeded(profile, processId);
+            _notificationManager.NotifyProfileChanged(profile, processId);
             foreach (var device in profile.Devices)
             {
                 var deviceToUse = CheckDeviceAvailable(device.DeviceInfo);
@@ -288,7 +294,7 @@ namespace SoundSwitch.Framework.Profile
 
         private void SwitchAudio(Profile profile)
         {
-            NotifyProfileIfNeeded(profile, null);
+            _notificationManager.NotifyProfileChanged(profile, null);
             foreach (var device in profile.Devices)
             {
                 var deviceToUse = CheckDeviceAvailable(device.DeviceInfo);
@@ -410,7 +416,16 @@ namespace SoundSwitch.Framework.Profile
                         return null;
                     },
                     () => _steamProfile != null ? SettingsStrings.profile_error_steam : null,
-                    () => null);
+                    () => null,
+                    () =>
+                    {
+                        if (string.IsNullOrEmpty(trigger.WindowName) || _profilesByUwpApp.ContainsKey(trigger.WindowName.ToLower()))
+                        {
+                            return string.Format(SettingsStrings.profile_error_window, trigger.WindowName);
+                        }
+
+                        return null;
+                    });
                 if (error != null)
                 {
                     return error;

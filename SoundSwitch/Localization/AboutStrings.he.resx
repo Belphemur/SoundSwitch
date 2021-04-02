@@ -58,70 +58,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="playbackChanged" xml:space="preserve">
-    <value>SoundSwitch: Přehrávací zařízení změněno na</value>
+  <data name="keyboardHotkeys" xml:space="preserve">
+    <value>מערכת קיצורי מקלדת</value>
   </data>
-  <data name="mixer" xml:space="preserve">
-    <value>Směšovač hlasitosti</value>
+  <data name="logo" xml:space="preserve">
+    <value>לוגו נוצר על ידי</value>
   </data>
-  <data name="playbackDevices" xml:space="preserve">
-    <value>Přehrávací zařízení</value>
+  <data name="icons" xml:space="preserve">
+    <value>אייקונים</value>
   </data>
-  <data name="noDevicesSelected" xml:space="preserve">
-    <value>Nejsou vybrané žádné zařízení</value>
+  <data name="defaultPlaybackDeviceChange" xml:space="preserve">
+    <value>שינוי התקן שמע ברירת המחדל</value>
   </data>
-  <data name="noUpdate" xml:space="preserve">
-    <value>Není dostupná žádná aktualizace</value>
+  <data name="credits" xml:space="preserve">
+    <value>קרדיט</value>
   </data>
-  <data name="updateDisabled" xml:space="preserve">
-    <value>Kontrola aktualizací vypnuta</value>
+  <data name="author" xml:space="preserve">
+    <value>מידע היוצר והתוכנה</value>
   </data>
-  <data name="communityMenu" xml:space="preserve">
-    <value>Komunita</value>
+  <data name="version" xml:space="preserve">
+    <value>גרסה</value>
   </data>
-  <data name="iconChanger.both" xml:space="preserve">
-    <value>Obojí</value>
+  <data name="maintained" xml:space="preserve">
+    <value>מתוחזק על ידי</value>
   </data>
-  <data name="iconChanger.none" xml:space="preserve">
-    <value>Výchozí</value>
-  </data>
-  <data name="iconChanger.recording" xml:space="preserve">
-    <value>Nahrávání</value>
-  </data>
-  <data name="donate" xml:space="preserve">
-    <value>Přispět</value>
-  </data>
-  <data name="help" xml:space="preserve">
-    <value>Pomoc</value>
-  </data>
-  <data name="error" xml:space="preserve">
-    <value>Chyba</value>
-  </data>
-  <data name="configurationNeededExplanation" xml:space="preserve">
-    <value>Žádné zařízení na které lze přepnout. Otevři nastavení kliknutím pravým tlačítkem na ikonu.</value>
-  </data>
-  <data name="configurationNeeded" xml:space="preserve">
-    <value>SoundSwitch: Vyžaduje nastavení</value>
-  </data>
-  <data name="recordingChanged" xml:space="preserve">
-    <value>SoundSwitch: Nahrávací zařízení změněno na</value>
-  </data>
-  <data name="clickToUpdate" xml:space="preserve">
-    <value>Pro aktualizaci klikni sem.</value>
-  </data>
-  <data name="versionAvailable" xml:space="preserve">
-    <value>Aktualizace pro SoundSwitch ({0}) je dostupná.</value>
-  </data>
-  <data name="updateAvailable" xml:space="preserve">
-    <value>Dostupná aktualizace ({0})</value>
-  </data>
-  <data name="exit" xml:space="preserve">
-    <value>Odejít</value>
-  </data>
-  <data name="about" xml:space="preserve">
-    <value>O SoundSwitch</value>
-  </data>
-  <data name="settings" xml:space="preserve">
-    <value>Nastavení</value>
+  <data name="created" xml:space="preserve">
+    <value>נוצר על ידי</value>
   </data>
 </root>

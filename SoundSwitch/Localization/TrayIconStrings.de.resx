@@ -184,6 +184,6 @@
 		<value>Community</value>
   </data>
   <data name="updateDisabled" xml:space="preserve">
-    <value>Updates deaktiviert</value>
+    <value>Aktualisierungsprüfung deaktiviert</value>
   </data>
 </root>

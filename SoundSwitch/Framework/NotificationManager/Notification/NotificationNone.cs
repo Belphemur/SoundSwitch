@@ -16,14 +16,13 @@ using NAudio.CoreAudioApi;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
 using SoundSwitch.Localization;
-using SoundSwitch.Properties;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification
 {
     public class NotificationNone : INotification
     {
         public NotificationTypeEnum TypeEnum => NotificationTypeEnum.NoNotification;
-        public string Label => SettingsStrings.notificationOptionNone;
+        public string               Label    => SettingsStrings.notificationOptionNone;
 
         public INotificationConfiguration Configuration { get; set; }
 
@@ -45,6 +44,15 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         public bool IsAvailable()
         {
             return true;
+        }
+
+        public void NotifyProfileChanged(Profile.Profile profile, uint? processId)
+        {
+        }
+
+        public void NotifyMuteChanged(string microphoneName, bool newMuteState)
+        {
+            
         }
     }
 }

@@ -49,17 +49,16 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
             Trace.WriteLine($"ExtendedPolicyClient SetDefaultEndPoint {deviceId} [{flow}] {processId}");
             try
             {
-                var stringPtrDeviceId = IntPtr.Zero;
 
-                if (!string.IsNullOrWhiteSpace(deviceId))
+                if (string.IsNullOrEmpty(deviceId))
                 {
-                    var str = GenerateDeviceId(deviceId, flow);
-                    ComBase.WindowsCreateString(str, (uint) str.Length, out stringPtrDeviceId);
+                    return;
                 }
 
+                using var deviceIdStr = HSTRING.FromString(GenerateDeviceId(deviceId, flow));
                 foreach (var eRole in roles)
                 {
-                    PolicyConfig.SetPersistedDefaultAudioEndpoint(processId, flow, eRole, stringPtrDeviceId);
+                    PolicyConfig.SetPersistedDefaultAudioEndpoint(processId, flow, eRole, deviceIdStr);
                 }
             }
             catch (COMException e) when ((e.ErrorCode & ErrorConst.COM_ERROR_MASK) == ErrorConst.COM_ERROR_NOT_FOUND)
@@ -79,8 +78,10 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
         {
             try
             {
-                PolicyConfig.GetPersistedDefaultAudioEndpoint(processId, flow, role, out string deviceId);
-                return UnpackDeviceId(deviceId);
+                PolicyConfig.GetPersistedDefaultAudioEndpoint(processId, flow, role, out var deviceId);
+                var unpacked = UnpackDeviceId(deviceId);
+                deviceId.Dispose();
+                return unpacked;
             }
             catch (Exception ex)
             {

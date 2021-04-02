@@ -63,7 +63,6 @@ namespace SoundSwitch.UI.Forms
             this.changeLog.Size                           =  new System.Drawing.Size(694, 329);
             this.changeLog.TabIndex                       =  0;
             this.changeLog.WebBrowserShortcutsEnabled     =  false;
-            this.changeLog.Navigating                     += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.changeLog_Navigating);
             // 
             // cancelButton
             // 

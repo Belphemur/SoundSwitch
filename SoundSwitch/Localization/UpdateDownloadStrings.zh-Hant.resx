@@ -58,31 +58,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="logo" xml:space="preserve">
-    <value>Logo</value>
+  <data name="notSigned" xml:space="preserve">
+    <value>下載的更新沒有用有效的簽章。我們建議您刪除該文件並聯繫開發人員！</value>
   </data>
-  <data name="icons" xml:space="preserve">
-    <value>Ikony</value>
+  <data name="cancel" xml:space="preserve">
+    <value>取消</value>
   </data>
-  <data name="keyboardHotkeys" xml:space="preserve">
-    <value>Klávesové zkratky</value>
+  <data name="changelog" xml:space="preserve">
+    <value>更新日誌</value>
   </data>
-  <data name="defaultPlaybackDeviceChange" xml:space="preserve">
-    <value>Změna Výchozího přehrávacího zařízení</value>
+  <data name="notSignedTitle" xml:space="preserve">
+    <value>無效數位簽章</value>
   </data>
-  <data name="credits" xml:space="preserve">
-    <value>Zdroje a připsání</value>
+  <data name="install" xml:space="preserve">
+    <value>安裝</value>
   </data>
-  <data name="author" xml:space="preserve">
-    <value>Autoři a informace o programu</value>
-  </data>
-  <data name="version" xml:space="preserve">
-    <value>Verze</value>
-  </data>
-  <data name="maintained" xml:space="preserve">
-    <value>Spravuje</value>
-  </data>
-  <data name="created" xml:space="preserve">
-    <value>Vytvořil</value>
+  <data name="downloadFailed" xml:space="preserve">
+    <value>下載失敗</value>
   </data>
 </root>
