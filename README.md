@@ -11,7 +11,6 @@
 
 ## Requirements
 - ⚠ Operating System: Windows 7 or newer
-- ⚠ [Microsoft .NET 5.0](https://dotnet.microsoft.com/download/dotnet-core/current/runtime)
 
 ## Donations
 If you'd like to support the development, we would love to see you [here ❤](https://soundswitch.aaflalo.me/#donate).
