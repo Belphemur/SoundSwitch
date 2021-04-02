@@ -67,8 +67,12 @@ namespace SoundSwitch.UI.Forms
 
             hotKeyControl.HotKey = AppConfigs.Configuration.PlaybackHotKey;
             hotKeyControl.Tag =
-                new Tuple<DataFlow, HotKey>(DataFlow.Render, AppConfigs.Configuration.PlaybackHotKey);
+                new Tuple<HotKeyAction, HotKey>(HotKeyAction.Playback, AppConfigs.Configuration.PlaybackHotKey);
             hotKeyControl.Enabled = hotkeysCheckBox.Checked = AppConfigs.Configuration.PlaybackHotKey.Enabled;
+
+            muteHotKey.HotKey = AppConfigs.Configuration.MuteRecordingHotKey;
+            muteHotKey.Tag = new Tuple<HotKeyAction, HotKey>(HotKeyAction.Mute, AppConfigs.Configuration.MuteRecordingHotKey);
+            muteHotKey.Enabled = muteHotKeyCheckbox.Checked = AppConfigs.Configuration.MuteRecordingHotKey.Enabled;
 
             var hotkeysToolTip = new ToolTip();
             hotkeysToolTip.SetToolTip(hotkeysCheckBox, SettingsStrings.hotkeysTooltip);
@@ -170,6 +174,10 @@ namespace SoundSwitch.UI.Forms
             // Settings - Language
             new LanguageFactory().ConfigureListControl(languageComboBox);
             languageComboBox.SelectedValue = AppModel.Instance.Language;
+
+            muteHotKey.Visible = false;
+            muteHotKeyCheckbox.Visible = false;
+            toggleMuteLabel.Visible = false;
 
             PopulateSettings();
 
@@ -353,6 +361,9 @@ namespace SoundSwitch.UI.Forms
                 hotKeyControl.Tag =
                     new Tuple<HotKeyAction, HotKey>(HotKeyAction.Playback, AppConfigs.Configuration.PlaybackHotKey);
                 hotkeysCheckBox.Checked = AppConfigs.Configuration.PlaybackHotKey.Enabled;
+                muteHotKey.Visible = false;
+                muteHotKeyCheckbox.Visible = false;
+                toggleMuteLabel.Visible = false;
             }
             else if (tabControlSender.SelectedTab == recordingTabPage)
             {
@@ -361,9 +372,16 @@ namespace SoundSwitch.UI.Forms
                 hotKeyControl.Tag =
                     new Tuple<HotKeyAction, HotKey>(HotKeyAction.Recording, AppConfigs.Configuration.RecordingHotKey);
                 hotkeysCheckBox.Checked = AppConfigs.Configuration.RecordingHotKey.Enabled;
+
+                muteHotKey.Visible = true;
+                muteHotKeyCheckbox.Visible = true;
+                toggleMuteLabel.Visible = true;
             }
             else
             {
+                muteHotKey.Visible = false;
+                muteHotKeyCheckbox.Visible = false;
+                toggleMuteLabel.Visible = false;
                 SetHotkeysFieldsVisibility(false);
             }
         }
@@ -465,11 +483,19 @@ namespace SoundSwitch.UI.Forms
 
         private void hotkeysCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            var tuple = (Tuple<HotKeyAction, HotKey>)hotKeyControl.Tag;
-            var currentState = tuple.Item2.Enabled;
-            hotKeyControl.Enabled = tuple.Item2.Enabled = hotkeysCheckBox.Checked;
-            if (currentState != tuple.Item2.Enabled)
-                AppModel.Instance.SetHotkeyCombination(tuple.Item2, tuple.Item1, true);
+            forceSetHotkeys(sender, hotKeyControl);
+        }
+
+        private void forceSetHotkeys(object sender, HotKeyTextBox hotKeyTextBox)
+        {
+            var control = (CheckBox) sender;
+            if (hotKeyTextBox.Tag == null)
+                return;
+            var (action, hotKey) = (Tuple<HotKeyAction, HotKey>) hotKeyTextBox.Tag;
+            var currentState = hotKey.Enabled;
+            hotKeyTextBox.Enabled = hotKey.Enabled = control.Checked;
+            if (currentState != hotKey.Enabled)
+                AppModel.Instance.SetHotkeyCombination(hotKey, action, true);
         }
 
         #region Basic Settings (CheckBoxes)
@@ -722,11 +748,12 @@ namespace SoundSwitch.UI.Forms
 
         private void hotKeyControl_HotKeyChanged(object sender, HotKeyTextBox.Event e)
         {
-            var tuple = (Tuple<HotKeyAction, HotKey>)hotKeyControl.Tag;
+            var control = (HotKeyTextBox) sender;
+            var tuple = (Tuple<HotKeyAction, HotKey>)control.Tag;
             if (tuple == null)
                 return;
 
-            var newTuple = new Tuple<HotKeyAction, HotKey>(tuple.Item1, hotKeyControl.HotKey);
+            var newTuple = (tuple.Item1, control.HotKey);
             hotKeyControl.Tag = newTuple;
 
             AppModel.Instance.SetHotkeyCombination(newTuple.Item2, newTuple.Item1);
@@ -747,6 +774,11 @@ namespace SoundSwitch.UI.Forms
         private void profilesListView_DoubleClick(object sender, EventArgs e)
         {
             editProfileButton_Click(sender, e);
+        }
+
+        private void muteHotKeyCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            forceSetHotkeys(sender, muteHotKey);
         }
     }
 }
