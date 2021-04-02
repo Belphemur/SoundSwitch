@@ -174,7 +174,7 @@ namespace SoundSwitch.Localization.Factory.Lang
         /// <summary>
         /// Culture info of this language
         /// </summary>
-        public CultureInfo CultureInfo => CultureInfo.GetCultureInfo("jp");
+        public CultureInfo CultureInfo => CultureInfo.GetCultureInfo("ja-JP");
 
         public Language TypeEnum => Language.Japanese;
         public string Label => "日本語";
