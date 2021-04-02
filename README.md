@@ -32,6 +32,9 @@ First set up your devices you want to cycle through, using _right click_ onto th
 - 🎙 To cycle through the **recording devices** press:
   - `Ctrl` + `Alt` + `F7` (default)
 
+- 🔇 To mute the **default microphone** press:
+  - `Ctrl` + `Alt` + `M` (default)
+
 ## _Switched_ Notification
 
 SoundSwitch provides five types of notification when a device was changed:
