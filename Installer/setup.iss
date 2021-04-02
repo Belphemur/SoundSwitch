@@ -6,7 +6,7 @@
 #define use_msi45
 #define use_msiproduct
 
-#define use_dotnet_core '5.0.4'
+;#define use_dotnet_core '5.0.4'
 
 ;#define use_vc2017
 
@@ -49,7 +49,7 @@ RestartApplications=no
 MinVersion=6.1.7601
 PrivilegesRequired=admin
 PrivilegesRequiredOverridesAllowed=commandline dialog
-ArchitecturesAllowed=x86 x64
+ArchitecturesAllowed=x64
 ArchitecturesInstallIn64BitMode=x64
 
 ;Downloading and installing dependencies will only work if the memo/ready page is enabled (default behaviour)
@@ -75,8 +75,8 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: deletefiles; Description: "{cm:ExistingSettings}"; Flags: unchecked checkedonce
 
 [Files] 
-Source: "{#ExeDir}SoundSwitch.exe"; DestDir: "{app}";  Flags: signonce
-Source: "{#ExeDir}*"; DestDir: "{app}"; Flags: recursesubdirs;
+Source: "{#ExeDir}SoundSwitch.exe"; DestDir: "{app}";  Flags: signonce ignoreversion
+Source: "{#ExeDir}*"; DestDir: "{app}"; Flags: recursesubdirs ignoreversion;
 
 [Registry]
 Root: HKCU; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Run\{#MyAppSetupName}"; Flags: uninsdeletekey
