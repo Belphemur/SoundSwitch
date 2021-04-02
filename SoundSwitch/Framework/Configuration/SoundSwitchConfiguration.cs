@@ -57,7 +57,7 @@ namespace SoundSwitch.Framework.Configuration
             SelectedRecordingDeviceListId = new HashSet<string>();
             PlaybackHotKey = new HotKey(Keys.F11, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
             RecordingHotKey = new HotKey(Keys.F7, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
-            MuteRecordingHotKey = new HotKey(Keys.M, HotKey.ModifierKeys.Shift | HotKey.ModifierKeys.Win);
+            MuteRecordingHotKey = new HotKey(Keys.M, HotKey.ModifierKeys.Control | HotKey.ModifierKeys.Alt);
 
             SelectedDevices = new HashSet<DeviceInfo>();
             SwitchIcon = IconChangerFactory.ActionEnum.Never;
