@@ -71,9 +71,9 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             Configuration.Icon.ShowBalloonTip(1000, title, text, ToolTipIcon.Info);
         }
 
-        public void NotifyMuteChanged(string microphoneName, bool newState)
+        public void NotifyMuteChanged(string microphoneName, bool newMuteState)
         {
-            var title = newState ? string.Format(SettingsStrings.notification_microphone_muted, microphoneName) : string.Format(SettingsStrings.notification_microphone_unmuted, microphoneName);
+            var title = newMuteState ? string.Format(SettingsStrings.notification_microphone_muted, microphoneName) : string.Format(SettingsStrings.notification_microphone_unmuted, microphoneName);
             Configuration.Icon.ShowBalloonTip(1000, title, "", ToolTipIcon.Info);
         }
     }

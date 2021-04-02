@@ -62,11 +62,11 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             _bannerManager.ShowNotification(bannerData);
         }
 
-        public void NotifyMuteChanged(string microphoneName, bool newState)
+        public void NotifyMuteChanged(string microphoneName, bool newMuteState)
         {
-            var title = newState ? string.Format(SettingsStrings.notification_microphone_muted, microphoneName) : string.Format(SettingsStrings.notification_microphone_unmuted, microphoneName);
+            var title = newMuteState ? string.Format(SettingsStrings.notification_microphone_muted, microphoneName) : string.Format(SettingsStrings.notification_microphone_unmuted, microphoneName);
 
-            var icon = newState ? Resources.microphone_muted : Resources.microphone_unmuted;
+            var icon = newMuteState ? Resources.microphone_muted : Resources.microphone_unmuted;
             
             var bannerData = new BannerData
             {

@@ -8,10 +8,12 @@ namespace SoundSwitch.Framework.Audio.Microphone
     public class MicrophoneMuteToggler
     {
         private readonly AudioSwitcher _switcher;
+        private readonly NotificationManager.NotificationManager _notificationManager;
 
-        public MicrophoneMuteToggler(AudioSwitcher switcher)
+        public MicrophoneMuteToggler(AudioSwitcher switcher, NotificationManager.NotificationManager notificationManager)
         {
             _switcher = switcher;
+            _notificationManager = notificationManager;
         }
 
         /// <summary>
@@ -33,6 +35,7 @@ namespace SoundSwitch.Framework.Audio.Microphone
                 {
                     var newMuteState = !microphone.AudioEndpointVolume.Mute;
                     device.AudioEndpointVolume.Mute = newMuteState;
+                    _notificationManager.NotifyMuteChanged(device.FriendlyName, newMuteState);
                     return newMuteState;
                 }
                 catch (Exception e)

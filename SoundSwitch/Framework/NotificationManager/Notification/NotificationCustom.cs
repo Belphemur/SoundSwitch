@@ -82,7 +82,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             }
         }
 
-        public void NotifyMuteChanged(string microphoneName, bool newState)
+        public void NotifyMuteChanged(string microphoneName, bool newMuteState)
         {
             
         }

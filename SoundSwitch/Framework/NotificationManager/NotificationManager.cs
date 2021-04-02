@@ -101,9 +101,9 @@ namespace SoundSwitch.Framework.NotificationManager
             _notification.NotifyProfileChanged(profile, processId);
         }
 
-        public void NotifyMuteChanged(string microphoneName, bool newState)
+        public void NotifyMuteChanged(string microphoneName, bool newMuteState)
         {
-            _notification.NotifyMuteChanged(microphoneName, newState);
+            _notification.NotifyMuteChanged(microphoneName, newMuteState);
         }
 
         ~NotificationManager()
