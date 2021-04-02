@@ -402,7 +402,10 @@ namespace SoundSwitch.Model
                 }
                 else if (e.HotKey == AppConfigs.Configuration.MuteRecordingHotKey)
                 {
-                    new MicrophoneMuteToggler(AudioSwitcher.Instance).ToggleDefaultMute();
+                    if (new MicrophoneMuteToggler(AudioSwitcher.Instance, _notificationManager).ToggleDefaultMute() == null)
+                    {
+                        ErrorTriggered?.Invoke(this, new ExceptionEvent(new Exception("No mic found")));
+                    }
                 }
             }
             catch (Exception ex)
