@@ -436,4 +436,7 @@ Restaurer l'état du système quand l'application est fermée.</value>
   <data name="notification.microphone.unmuted" xml:space="preserve">
 	  <value>{0} est réactivé.</value>
   </data>
+  <data name="mute.toggle.label" xml:space="preserve">
+	  <value>Sourdine</value>
+  </data>
 </root>

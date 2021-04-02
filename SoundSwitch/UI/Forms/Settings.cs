@@ -336,6 +336,8 @@ namespace SoundSwitch.UI.Forms
             // Misc
             hotkeysCheckBox.Text = SettingsStrings.hotkeyEnabled;
             closeButton.Text = SettingsStrings.close;
+            toggleMuteLabel.Text = SettingsStrings.mute_toggle_label;
+            muteHotKeyCheckbox.Text = SettingsStrings.hotkeyEnabled;
         }
 
 

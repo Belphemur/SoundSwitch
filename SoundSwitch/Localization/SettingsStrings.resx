@@ -456,4 +456,7 @@ Restore the state of the system when the application is closed.</value>
   <data name="notification.microphone.unmuted" xml:space="preserve">
     <value>{0} is now unmuted.</value>
   </data>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>Toggle mute</value>
+  </data>
 </root>

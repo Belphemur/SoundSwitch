@@ -346,6 +346,15 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Toggle mute.
+        /// </summary>
+        internal static string mute_toggle_label {
+            get {
+                return ResourceManager.GetString("mute.toggle.label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notification.
         /// </summary>
         internal static string notification {
