@@ -37,49 +37,49 @@ namespace SoundSwitch.Framework.Configuration
         public SoundSwitchConfiguration()
         {
             // Basic Settings
-            FirstRun                = true;
+            FirstRun = true;
             SwitchForegroundProgram = true;
 
             // Audio Settings
             ChangeCommunications = false;
             NotificationSettings = NotificationTypeEnum.BannerNotification;
-            TooltipInfo          = TooltipInfoTypeEnum.Playback;
-            CyclerType           = DeviceCyclerTypeEnum.Available;
+            TooltipInfo = TooltipInfoTypeEnum.Playback;
+            CyclerType = DeviceCyclerTypeEnum.Available;
 
             // Update Settings
             UpdateCheckInterval = 3600 * 24; // 24 hours
-            UpdateMode          = UpdateMode.Notify;
+            UpdateMode = UpdateMode.Notify;
             IncludeBetaVersions = false;
 
             // Language Settings
-            Language                      = new LanguageFactory().GetWindowsLanguage();
-            SelectedPlaybackDeviceListId  = new HashSet<string>();
+            Language = new LanguageFactory().GetWindowsLanguage();
+            SelectedPlaybackDeviceListId = new HashSet<string>();
             SelectedRecordingDeviceListId = new HashSet<string>();
-            PlaybackHotKey                = new HotKey(Keys.F11, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
-            RecordingHotKey               = new HotKey(Keys.F7,  HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
+            PlaybackHotKey = new HotKey(Keys.F11, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
+            RecordingHotKey = new HotKey(Keys.F7, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
 
             SelectedDevices = new HashSet<DeviceInfo>();
-            SwitchIcon      = IconChangerFactory.ActionEnum.Never;
-            MigratedFields  = new HashSet<string>();
+            SwitchIcon = IconChangerFactory.ActionEnum.Never;
+            MigratedFields = new HashSet<string>();
         }
 
 
-        public HashSet<string>      SelectedPlaybackDeviceListId  { get; }
-        public HashSet<string>      SelectedRecordingDeviceListId { get; }
-        public HashSet<DeviceInfo>  SelectedDevices               { get; }
-        public bool                 FirstRun                      { get; set; }
-        public HotKey               PlaybackHotKey                { get; set; }
-        public HotKey               RecordingHotKey               { get; set; }
-        public bool                 ChangeCommunications          { get; set; }
-        public uint                 UpdateCheckInterval           { get; set; }
-        public UpdateMode           UpdateMode                    { get; set; }
-        public TooltipInfoTypeEnum  TooltipInfo                   { get; set; }
-        public DeviceCyclerTypeEnum CyclerType                    { get; set; }
-        public NotificationTypeEnum NotificationSettings          { get; set; }
-        public Language             Language                      { get; set; }
-        public bool                 IncludeBetaVersions           { get; set; }
-        public string               CustomNotificationFilePath    { get; set; }
-        public bool                 NotifyUsingPrimaryScreen      { get; set; }
+        public HashSet<string> SelectedPlaybackDeviceListId { get; }
+        public HashSet<string> SelectedRecordingDeviceListId { get; }
+        public HashSet<DeviceInfo> SelectedDevices { get; }
+        public bool FirstRun { get; set; }
+        public HotKey PlaybackHotKey { get; set; }
+        public HotKey RecordingHotKey { get; set; }
+        public bool ChangeCommunications { get; set; }
+        public uint UpdateCheckInterval { get; set; }
+        public UpdateMode UpdateMode { get; set; }
+        public TooltipInfoTypeEnum TooltipInfo { get; set; }
+        public DeviceCyclerTypeEnum CyclerType { get; set; }
+        public NotificationTypeEnum NotificationSettings { get; set; }
+        public Language Language { get; set; }
+        public bool IncludeBetaVersions { get; set; }
+        public string CustomNotificationFilePath { get; set; }
+        public bool NotifyUsingPrimaryScreen { get; set; }
 
 
         public DateTime LastDonationNagTime { get; set; }
@@ -90,8 +90,8 @@ namespace SoundSwitch.Framework.Configuration
         [Obsolete]
         public bool KeepSystrayIcon { get; set; }
 
-        public bool                          SwitchForegroundProgram { get; set; }
-        public IconChangerFactory.ActionEnum SwitchIcon              { get; set; }
+        public bool SwitchForegroundProgram { get; set; }
+        public IconChangerFactory.ActionEnum SwitchIcon { get; set; }
 
         [Obsolete]
         public HashSet<ProfileSetting> ProfileSettings { get; set; } = new HashSet<ProfileSetting>();
@@ -149,10 +149,10 @@ namespace SoundSwitch.Framework.Configuration
                                var profile = new Profile.Profile
                                {
                                    AlsoSwitchDefaultDevice = setting.AlsoSwitchDefaultDevice,
-                                   Communication           = null,
-                                   Playback                = setting.Playback,
-                                   Name                    = setting.ProfileName,
-                                   Recording               = setting.Recording
+                                   Communication = null,
+                                   Playback = setting.Playback,
+                                   Name = setting.ProfileName,
+                                   Recording = setting.Recording
                                };
                                if (setting.HotKey != null)
                                {
