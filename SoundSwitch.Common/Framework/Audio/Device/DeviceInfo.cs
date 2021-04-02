@@ -91,13 +91,19 @@ namespace SoundSwitch.Common.Framework.Audio.Device
         }
 
 
+
         public bool Equals(DeviceInfo other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return (Id == other.Id || NameClean == other.NameClean) && Type == other.Type;
-        }
+            if (Type != other.Type) return false;
+            if (IsUsb != other.IsUsb) return false;
 
+            //Same Id, it's the same device
+            if (Id == other.Id) return true;
+            //When USB device, we can rely on matching the name clean
+            return IsUsb && NameClean == other.NameClean;
+        }
 
         public override bool Equals(object obj)
         {
@@ -108,9 +114,10 @@ namespace SoundSwitch.Common.Framework.Audio.Device
         {
             unchecked
             {
-                var hashCode = NameClean != null ? NameClean.GetHashCode() : 0;
+                var hashCode = (NameClean != null ? NameClean.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Id != null ? Id.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (int) Type;
+                hashCode = (hashCode * 397) ^ IsUsb.GetHashCode();
                 return hashCode;
             }
         }
