@@ -19,7 +19,7 @@ namespace SoundSwitch.Common.Framework.Audio.Device
         public string Id { get; }
         public DataFlow Type { get; }
 
-        public bool IsUsb { get; }
+        public bool IsUsb { get; } = true;
 
         public string NameClean
         {
@@ -97,8 +97,6 @@ namespace SoundSwitch.Common.Framework.Audio.Device
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
             if (Type != other.Type) return false;
-            if (IsUsb != other.IsUsb) return false;
-
             //Same Id, it's the same device
             if (Id == other.Id) return true;
             //When USB device, we can rely on matching the name clean
