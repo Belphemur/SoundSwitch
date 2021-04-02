@@ -1,10 +1,7 @@
 ﻿#nullable enable
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
 using NAudio.CoreAudioApi;
-using SoundSwitch.Audio.Manager.Interop;
 using SoundSwitch.Audio.Manager.Interop.Client;
 using SoundSwitch.Audio.Manager.Interop.Com.Threading;
 using SoundSwitch.Audio.Manager.Interop.Com.User;
@@ -180,16 +177,19 @@ namespace SoundSwitch.Audio.Manager
         /// <param name="flow"></param>
         /// <param name="role"></param>
         /// <returns>Null if no default device is defined</returns>
-        public DeviceFullInfo? GetDefaultAudioEndpoint(EDataFlow flow, ERole role) => ComThread.Invoke(() =>
+        public DeviceFullInfo? GetDefaultAudioEndpoint(EDataFlow flow, ERole role)
         {
-            var defaultEndpoint = EnumeratorClient.GetDefaultEndpoint(flow, role);
-            if (defaultEndpoint == null)
-            {
-                return null;
-            }
-
-            return new DeviceFullInfo(defaultEndpoint);
-        });
+            var defaultEndpoint = GetDefaultMmDevice(flow, role);
+            return defaultEndpoint == null ? null : new DeviceFullInfo(defaultEndpoint);
+        }
+        
+        /// <summary>
+        /// Get the current default endpoint
+        /// </summary>
+        /// <param name="flow"></param>
+        /// <param name="role"></param>
+        /// <returns>Null if no default device is defined</returns>
+        public MMDevice? GetDefaultMmDevice(EDataFlow flow, ERole role) => ComThread.Invoke(() => EnumeratorClient.GetDefaultEndpoint(flow, role));
 
         /// <summary>
         /// Reset Windows configuration for the process that had their audio device changed
