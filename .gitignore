@@ -62,3 +62,4 @@ packages/
 # Publish .NET Core app
 publish/
 *.ini
+node_modules/
