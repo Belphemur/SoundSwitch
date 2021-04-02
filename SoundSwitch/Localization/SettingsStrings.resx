@@ -450,4 +450,10 @@ Restore the state of the system when the application is closed.</value>
   <data name="profile.trigger.uwp.desc" xml:space="preserve">
     <value>Input the name of the application installed through the Windows store. Like Netflix, Amazon Prime video, etc…</value>
   </data>
+  <data name="notification.microphone.muted" xml:space="preserve">
+    <value>{0} is now muted.</value>
+  </data>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>{0} is now unmuted.</value>
+  </data>
 </root>

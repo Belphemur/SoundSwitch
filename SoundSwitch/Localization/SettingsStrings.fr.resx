@@ -430,4 +430,10 @@ Restaurer l'état du système quand l'application est fermée.</value>
   <data name="usePrimaryScreen" xml:space="preserve">
     <value>Toujours utiliser l'écran principal</value>
   </data>
+  <data name="notification.microphone.muted" xml:space="preserve">
+	  <value>{0} est en sourdine.</value>
+  </data>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+	  <value>{0} est réactivé.</value>
+  </data>
 </root>
