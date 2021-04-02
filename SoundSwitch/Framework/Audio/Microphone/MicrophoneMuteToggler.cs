@@ -17,25 +17,29 @@ namespace SoundSwitch.Framework.Audio.Microphone
         /// <summary>
         /// Toggle mute state for the default microphone
         /// </summary>
-        /// <param name="deviceId"></param>
-        public void ToggleDefaultMute()
+        public bool ToggleDefaultMute()
         {
             var microphone = _switcher.GetDefaultMmDevice(EDataFlow.eCapture, ERole.eCommunications);
             if (microphone == null)
             {
                 Log.Information("Couldn't find a default microphone to toggle mute");
-                return;
+                return false;
             }
 
-            try
+            return _switcher.InteractWithMmDevice(microphone, device =>
             {
-               microphone.AudioEndpointVolume.Mute = !microphone.AudioEndpointVolume.Mute;
-            }
-            catch (Exception e)
-            {
-                Log.Error("Couldn't toggle mute on {device}:\n{exception}", microphone.FriendlyName, e);
-            }
-            
+                try
+                {
+                    device.AudioEndpointVolume.Mute = !microphone.AudioEndpointVolume.Mute;
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    Log.Error("Couldn't toggle mute on {device}:\n{exception}", microphone.FriendlyName, e);
+                }
+
+                return false;
+            });
         }
     }
 }
