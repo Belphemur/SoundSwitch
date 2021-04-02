@@ -20,6 +20,9 @@
             <e p="Lister" t="Include">
               <e p="CachedAudioDeviceLister.cs" t="Include" />
             </e>
+            <e p="Microphone" t="Include">
+              <e p="MicrophoneMuteToggler.cs" t="Include" />
+            </e>
           </e>
           <e p="AutoStart.cs" t="Include" />
           <e p="Banner" t="Include">
