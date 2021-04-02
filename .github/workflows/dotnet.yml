@@ -31,7 +31,7 @@ jobs:
       - name: Build
         run: dotnet build -c Release --no-restore SoundSwitch/SoundSwitch.csproj
  
-  deploy:
+  prepare-release:
     needs: build
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
