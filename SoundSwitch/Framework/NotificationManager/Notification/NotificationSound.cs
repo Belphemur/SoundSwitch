@@ -82,6 +82,11 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             }
         }
 
+        public void NotifyMuteChanged(string microphoneName, bool newState)
+        {
+            
+        }
+
         private Stream GetStreamCopy()
         {
             lock (this)
