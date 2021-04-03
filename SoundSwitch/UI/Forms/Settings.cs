@@ -755,7 +755,7 @@ namespace SoundSwitch.UI.Forms
             if (tuple == null)
                 return;
 
-            var newTuple = (tuple.Item1, control.HotKey);
+            var newTuple = new Tuple<HotKeyAction, HotKey>(tuple.Item1, control.HotKey);
             hotKeyControl.Tag = newTuple;
 
             AppModel.Instance.SetHotkeyCombination(newTuple.Item2, newTuple.Item1);
