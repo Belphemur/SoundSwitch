@@ -1,4 +1,32 @@
-# Changelog
+
+# [5.8.0](https://github.com/Belphemur/SoundSwitch/compare/v5.7.2...v5.8.0) (2021-04-02)
+
+
+### Bug Fixes
+
+* **AudioSwitcher:** Add missing return type ([777d5a8](https://github.com/Belphemur/SoundSwitch/commit/777d5a83fb71b2cdd10902ec97c54395ed96420c))
+* **Language:** Add Japanese language ([d02a3c3](https://github.com/Belphemur/SoundSwitch/commit/d02a3c3d401502aa7503da0f3819e0e8a63bdf72)), closes [#552](https://github.com/Belphemur/SoundSwitch/issues/552)
+* **Language:** CultureInfo for Japanese ([1bd87cd](https://github.com/Belphemur/SoundSwitch/commit/1bd87cd985c16288168106ced67c8a0c031ea237))
+* **Mute:** Set default shortcut one not taken by windows ([c3cda41](https://github.com/Belphemur/SoundSwitch/commit/c3cda4122d4a543f68310463752c3b0f575d8946))
+* **Mute:** Use the right context to interact with the MMDevice ([4ef87a4](https://github.com/Belphemur/SoundSwitch/commit/4ef87a4e2a1f6cd6797c5dca28b66d2b5ff4acda))
+* **updater:** Be sure to check for case where there isn't an installer ([4038b77](https://github.com/Belphemur/SoundSwitch/commit/4038b77c6cf58bfb2e19dc34057ea5319432b5dc))
+
+
+### Features
+
+* **AudioSwitcher:** Add method to interact directly with a MMDevice in the ComThread ([a8c95d4](https://github.com/Belphemur/SoundSwitch/commit/a8c95d46a43c1f3ea39b9e417e89ebe1d167fe87))
+* **Mute:** Add localization and proper spacing ([c062df5](https://github.com/Belphemur/SoundSwitch/commit/c062df5b3f168cfaa6e92e5b4f5c1c3ed710444e))
+* **Mute:** Add new string for muted/unmuted ([7334fa4](https://github.com/Belphemur/SoundSwitch/commit/7334fa4876fd775bae1832f150acf05010e70bea))
+* **Mute:** Add notification for microphone muted ([6eb124f](https://github.com/Belphemur/SoundSwitch/commit/6eb124f31b417c4fc7beb50d030761ecf5a7b389))
+* **Mute:** Add service to mute default microphone ([cbe121c](https://github.com/Belphemur/SoundSwitch/commit/cbe121cb94f31e40ea65c246b636913109843d6f))
+* **Mute:** Add the mute feature to UI ([f03f427](https://github.com/Belphemur/SoundSwitch/commit/f03f427a390ef2303566af057d27fa46978395f6))
+* **Mute:** Muted state has higher priority ([00941b8](https://github.com/Belphemur/SoundSwitch/commit/00941b8c0fb72de028612353737f57b8686d13dc))
+* **Mute:** plug the service to the notification ([bb4baa6](https://github.com/Belphemur/SoundSwitch/commit/bb4baa675b14fd7eb9dfb5b9a304805047194c15))
+* **Mute:** Return the state of mute after action ([6d63226](https://github.com/Belphemur/SoundSwitch/commit/6d632264063c581cba93be09e12fb7036226c47e))
+* **USB:** Add detection if USB audio device ([13286bd](https://github.com/Belphemur/SoundSwitch/commit/13286bd7e0790f9c808cc04ba2814eddfdefa5c6))
+
+
+# OLD Changelog
 
 ## [v5.7.1](https://github.com/Belphemur/SoundSwitch/tree/v5.7.1) (2021-01-30)
 

@@ -15,7 +15,8 @@
         "@semantic-release/git",
         {
           "assets": [
-            "SoundSwitch/Properties/AssemblyInfo.cs"
+            "SoundSwitch/Properties/AssemblyInfo.cs",
+            "CHANGELOG.md"
           ]
         }
       ],

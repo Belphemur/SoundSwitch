@@ -23,7 +23,8 @@ if "%~1" neq "" (
 
 set FILE_DIR=%~dp0
 set FRAMEWORK=net5.0-windows
-set BIN_DIR=%FILE_DIR%SoundSwitch\bin\%buildPlatform%\%FRAMEWORK%\publish
+set ARCH=win-x64
+set BIN_DIR=%FILE_DIR%SoundSwitch\bin\%buildPlatform%\%FRAMEWORK%\%ARCH%\publish
 
 set finalDir=%FILE_DIR%Final
 
@@ -48,7 +49,7 @@ echo.
 echo Building SoundSwitch %buildPlatform%
 echo.
 echo Build AnyCPU
-dotnet publish -c %buildPlatform% || (set errorMessage=Build AnyCPU failed & goto ERROR_QUIT)
+dotnet publish -c %buildPlatform%  -r %ARCH% /p:PublishTrimmed=true %FILE_DIR%SoundSwitch\SoundSwitch.csproj || (set errorMessage=Build AnyCPU failed & goto ERROR_QUIT)
 echo.
 
 if %buildChangelogAndReadme%==1 (
