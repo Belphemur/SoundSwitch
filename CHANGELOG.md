@@ -1,3 +1,9 @@
+## [5.8.1](https://github.com/Belphemur/SoundSwitch/compare/v5.8.0...v5.8.1) (2021-04-03)
+
+
+### Bug Fixes
+
+* **Settings:** Not being able to set hotkeys ([ac05bcd](https://github.com/Belphemur/SoundSwitch/commit/ac05bcd7c46316ebcba0e784c840d568341c8c28)), closes [#565](https://github.com/Belphemur/SoundSwitch/issues/565)
 
 # [5.8.0](https://github.com/Belphemur/SoundSwitch/compare/v5.7.2...v5.8.0) (2021-04-02)
 
