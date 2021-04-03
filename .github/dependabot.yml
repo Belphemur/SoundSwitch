@@ -1,15 +1,15 @@
 version: 2
 updates:
-    - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: "npm" # See documentation for possible values
+    directory: "/" # Location of package manifests
     schedule:
       interval: "daily"
     labels:
       - "dependencies"
       # Add Kodiak `merge.automerge_label`
       - "ship it!"
-    - package-ecosystem: "nuget"
-    directory: "/"
+  - package-ecosystem: "nuget" # See documentation for possible values
+    directory: "/" # Location of package manifests
     schedule:
       interval: "daily"
     labels:
