@@ -8,6 +8,9 @@ env:
   # Disable sending usage data to Microsoft
   # DOTNET_CLI_TELEMETRY_OPTOUT: true
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  PROJECT_NAME: "SoundSwitch"
+  ARCH: "win-x64"
+  FRAMEWORK: "net5.0-windows"
 
 jobs:
   build:
@@ -30,7 +33,33 @@ jobs:
         run: dotnet restore
       - name: Build
         run: dotnet build -c Release --no-restore SoundSwitch/SoundSwitch.csproj
- 
+  prerelease:
+    needs: build
+    if: github.ref == 'refs/heads/dev'
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+      - uses: actions/cache@v2
+        with:
+          path: ~/.nuget/packages
+          # Look to see if there is a cache hit for the corresponding requirements file
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget
+      - name: Restore
+        run: dotnet restore
+      - name: Build pre-release
+        run: dotnet publish -c Release --no-restore -r ${{ env.ARCH }} /p:PublishTrimmed=true ${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: ${{ env.PROJECT_NAME }}\bin\Release\${{ env.FRAMEWORK }}\${{ env.ARCH }}\publish
   prepare-release:
     needs: build
     if: github.ref == 'refs/heads/master'
