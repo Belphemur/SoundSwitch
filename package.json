@@ -5,7 +5,7 @@
       [
         "@semantic-release/commit-analyzer",
         {
-          "preset": "angular",
+          "preset": "conventionalcommits",
           "releaseRules": [
             {
               "type": "lang",
@@ -16,26 +16,7 @@
               "release": "patch"
             }
           ],
-          "parserOpts": {
-            "noteKeywords": [
-              "BREAKING CHANGE",
-              "BREAKING CHANGES"
-            ]
-          }
-        }
-      ],
-      [
-        "@semantic-release/release-notes-generator",
-        {
-          "preset": "angular",
-          "parserOpts": {
-            "noteKeywords": [
-              "BREAKING CHANGE",
-              "BREAKING CHANGES",
-              "BREAKING"
-            ]
-          },
-          "writerOpts": {
+          "presetConfig": {
             "types": [
               {
                 "type": "boost",
@@ -45,10 +26,24 @@
                 "type": "lang",
                 "section": "Languages"
               }
-            ],
-            "commitsSort": [
-              "subject",
-              "scope"
+            ]
+          }
+        }
+      ],
+      [
+        "@semantic-release/release-notes-generator",
+        {
+          "preset": "conventionalcommits",
+          "presetConfig": {
+            "types": [
+              {
+                "type": "boost",
+                "section": "Enhancements"
+              },
+              {
+                "type": "lang",
+                "section": "Languages"
+              }
             ]
           }
         }
@@ -79,6 +74,7 @@
     "@semantic-release/git": "^9.0.0",
     "@semantic-release/github": "^7.2.0",
     "@semantic-release/release-notes-generator": "^9.0.2",
+    "conventional-changelog-conventionalcommits": "^4.5.0",
     "semantic-release": "^17.4.2"
   }
 }
