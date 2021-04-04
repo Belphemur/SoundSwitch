@@ -37,8 +37,14 @@
           },
           "writerOpts": {
             "types": [
-                  {"type": "boost", "section": "Enhancements"},
-                  {"type": "lang", "section": "Languages"},
+              {
+                "type": "boost",
+                "section": "Enhancements"
+              },
+              {
+                "type": "lang",
+                "section": "Languages"
+              }
             ],
             "commitsSort": [
               "subject",
