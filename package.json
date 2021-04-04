@@ -2,8 +2,51 @@
   "name": "SoundSwitch",
   "release": {
     "plugins": [
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/release-notes-generator",
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "preset": "angular",
+          "releaseRules": [
+            {
+              "type": "lang",
+              "release": "patch"
+            },
+            {
+              "type": "boost",
+              "release": "patch"
+            }
+          ],
+          "parserOpts": {
+            "noteKeywords": [
+              "BREAKING CHANGE",
+              "BREAKING CHANGES"
+            ]
+          }
+        }
+      ],
+      [
+        "@semantic-release/release-notes-generator",
+        {
+          "preset": "angular",
+          "parserOpts": {
+            "noteKeywords": [
+              "BREAKING CHANGE",
+              "BREAKING CHANGES",
+              "BREAKING"
+            ]
+          },
+          "writerOpts": {
+            "types": [
+                  {"type": "boost", "section": "Enhancements"},
+                  {"type": "lang", "section": "Languages"},
+            ],
+            "commitsSort": [
+              "subject",
+              "scope"
+            ]
+          }
+        }
+      ],
       "@semantic-release/changelog",
       [
         "@semantic-release/exec",
