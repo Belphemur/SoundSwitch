@@ -148,6 +148,7 @@
           </e>
         </e>
         <e p="Localization" t="Include">
+          <e p="AboutStrings.cs.resx" t="Include" />
           <e p="AboutStrings.de.resx" t="Include" />
           <e p="AboutStrings.Designer.cs" t="Include" />
           <e p="AboutStrings.el-GR.resx" t="Include" />
@@ -178,6 +179,7 @@
             <e p="Language.cs" t="Include" />
             <e p="LanguageFactory.cs" t="Include" />
           </e>
+          <e p="SettingsStrings.cs.resx" t="Include" />
           <e p="SettingsStrings.de.resx" t="Include" />
           <e p="SettingsStrings.Designer.cs" t="Include" />
           <e p="SettingsStrings.el-GR.resx" t="Include" />
@@ -200,12 +202,14 @@
           <e p="SettingsStrings.sv-SE.resx" t="Include" />
           <e p="SettingsStrings.zh-Hans.resx" t="Include" />
           <e p="SettingsStrings.zh-Hant.resx" t="Include" />
+          <e p="TrayIconStrings.cs.resx" t="Include" />
           <e p="TrayIconStrings.de.resx" t="Include" />
           <e p="TrayIconStrings.Designer.cs" t="Include" />
           <e p="TrayIconStrings.el-GR.resx" t="Include" />
           <e p="TrayIconStrings.es.resx" t="Include" />
           <e p="TrayIconStrings.fi-FI.resx" t="Include" />
           <e p="TrayIconStrings.fr.resx" t="Include" />
+          <e p="TrayIconStrings.he.resx" t="Include" />
           <e p="TrayIconStrings.hr.resx" t="Include" />
           <e p="TrayIconStrings.it-IT.resx" t="Include" />
           <e p="TrayIconStrings.ja-JP.resx" t="Include" />
@@ -221,12 +225,14 @@
           <e p="TrayIconStrings.sv-SE.resx" t="Include" />
           <e p="TrayIconStrings.zh-Hans.resx" t="Include" />
           <e p="TrayIconStrings.zh-Hant.resx" t="Include" />
+          <e p="UpdateDownloadStrings.cs.resx" t="Include" />
           <e p="UpdateDownloadStrings.de.resx" t="Include" />
           <e p="UpdateDownloadStrings.Designer.cs" t="Include" />
           <e p="UpdateDownloadStrings.el-GR.resx" t="Include" />
           <e p="UpdateDownloadStrings.es.resx" t="Include" />
           <e p="UpdateDownloadStrings.fi-FI.resx" t="Include" />
           <e p="UpdateDownloadStrings.fr.resx" t="Include" />
+          <e p="UpdateDownloadStrings.he.resx" t="Include" />
           <e p="UpdateDownloadStrings.hr.resx" t="Include" />
           <e p="UpdateDownloadStrings.it-IT.resx" t="Include" />
           <e p="UpdateDownloadStrings.ja-JP.resx" t="Include" />

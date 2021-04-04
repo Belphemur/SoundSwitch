@@ -168,7 +168,7 @@ namespace SoundSwitch.Localization.Factory.Lang
         public Language TypeEnum => Language.Slovenian;
         public string Label => "Slovenščina";
     }
-    
+
     public class JapaneseLang : ILang
     {
         /// <summary>
@@ -178,5 +178,16 @@ namespace SoundSwitch.Localization.Factory.Lang
 
         public Language TypeEnum => Language.Japanese;
         public string Label => "日本語";
+    }
+
+    public class HebrewLang : ILang
+    {
+        /// <summary>
+        /// Culture info of this language
+        /// </summary>
+        public CultureInfo CultureInfo => CultureInfo.GetCultureInfo("he");
+
+        public Language TypeEnum => Language.Hebrew;
+        public string Label => "עִבְרִית";
     }
 }
