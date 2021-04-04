@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -58,4 +58,73 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="updateDisabled" xml:space="preserve">
+    <value>בדיקת עדכונים נוטרלה</value>
+  </data>
+  <data name="communityMenu" xml:space="preserve">
+    <value>קהילה</value>
+  </data>
+  <data name="iconChanger.both" xml:space="preserve">
+    <value>שני</value>
+  </data>
+  <data name="iconChanger.none" xml:space="preserve">
+    <value>ברירת מחדל</value>
+  </data>
+  <data name="iconChanger.recording" xml:space="preserve">
+    <value>הקלטה</value>
+  </data>
+  <data name="iconChanger.playback" xml:space="preserve">
+    <value>שמע</value>
+  </data>
+  <data name="donate" xml:space="preserve">
+    <value>תרום</value>
+  </data>
+  <data name="help" xml:space="preserve">
+    <value>עזרה</value>
+  </data>
+  <data name="error" xml:space="preserve">
+    <value>שגיאה</value>
+  </data>
+  <data name="configurationNeededExplanation" xml:space="preserve">
+    <value>לא נמצאו התקנים להחלפה. פתח\י את חלון המאפיינים על ידי לחיצה ימנית על הסמל.</value>
+  </data>
+  <data name="configurationNeeded" xml:space="preserve">
+    <value>SoundSwitch: נדרשת הגדרת מאפיינים</value>
+  </data>
+  <data name="recordingChanged" xml:space="preserve">
+    <value>SoundSwitch: הוחלף מכשיר הקלטה</value>
+  </data>
+  <data name="playbackChanged" xml:space="preserve">
+    <value>SoundSwitch: הוחלף התקן שמע</value>
+  </data>
+  <data name="clickToUpdate" xml:space="preserve">
+    <value>לחץ כאן על מנת לעדכן.</value>
+  </data>
+  <data name="versionAvailable" xml:space="preserve">
+    <value>עדכון זמין עבור SoundSwitch ({0}).</value>
+  </data>
+  <data name="updateAvailable" xml:space="preserve">
+    <value>עדכון זמין ({0})</value>
+  </data>
+  <data name="exit" xml:space="preserve">
+    <value>יציאה</value>
+  </data>
+  <data name="about" xml:space="preserve">
+    <value>אודות Soundswitch</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>הגדרות</value>
+  </data>
+  <data name="mixer" xml:space="preserve">
+    <value>מיקסר</value>
+  </data>
+  <data name="playbackDevices" xml:space="preserve">
+    <value>התקני שמע</value>
+  </data>
+  <data name="noDevicesSelected" xml:space="preserve">
+    <value>לא נבחרו התקנים</value>
+  </data>
+  <data name="noUpdate" xml:space="preserve">
+    <value>אין עדכון זמין</value>
+  </data>
 </root>
