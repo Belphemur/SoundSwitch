@@ -427,4 +427,7 @@
   <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
     <value>Состояние системы восстановлено</value>
   </data>
+  <data name="profile.trigger.window.desc" xml:space="preserve">
+    <value>Активировать профиль, если программа на переднем плане содержит следующие символы</value>
+  </data>
 </root>
