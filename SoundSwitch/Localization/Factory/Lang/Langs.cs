@@ -190,4 +190,14 @@ namespace SoundSwitch.Localization.Factory.Lang
         public Language TypeEnum => Language.Hebrew;
         public string Label => "עִבְרִית";
     }
+    public class Czech : ILang
+    {
+        /// <summary>
+        /// Culture info of this language
+        /// </summary>
+        public CultureInfo CultureInfo => CultureInfo.GetCultureInfo("cz");
+
+        public Language TypeEnum => Language.Czech;
+        public string Label => "Čeština";
+    }
 }
