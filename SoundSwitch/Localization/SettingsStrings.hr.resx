@@ -391,4 +391,13 @@ Obnovi stanje sustava kad se program zatvori.</value>
   <data name="profile.trigger.uwp" xml:space="preserve">
     <value>Microsoft Store aplikacija</value>
   </data>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>Uključi/isključi zvuk</value>
+  </data>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>{0} je sada uključen.</value>
+  </data>
+  <data name="notification.microphone.muted" xml:space="preserve">
+    <value>{0} je sada isključen.</value>
+  </data>
 </root>
