@@ -450,4 +450,13 @@
   <data name="profile.defaultDevice.checkbox" xml:space="preserve">
     <value>同时切换默认设备</value>
   </data>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>切换禁音</value>
+  </data>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>{0} 已取消禁音。</value>
+  </data>
+  <data name="notification.microphone.muted" xml:space="preserve">
+    <value>{0} 已禁音。</value>
+  </data>
 </root>
