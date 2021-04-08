@@ -26,9 +26,9 @@ jobs:
         with:
           path: ~/.nuget/packages
           # Look to see if there is a cache hit for the corresponding requirements file
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.config') }}
+          key: ${{ runner.os }}-nuget-anycpu-${{ hashFiles('**/packages.config') }}
           restore-keys: |
-            ${{ runner.os }}-nuget
+            ${{ runner.os }}-nuget-anycpu
       - name: Restore
         run: dotnet restore
       - name: Build
@@ -48,9 +48,9 @@ jobs:
         with:
           path: ~/.nuget/packages
           # Look to see if there is a cache hit for the corresponding requirements file
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.config') }}
+          key: ${{ runner.os }}-nuget-${{env.ARCH}}-${{ hashFiles('**/packages.config') }}
           restore-keys: |
-            ${{ runner.os }}-nuget
+            ${{ runner.os }}-nuget-${{env.ARCH}}
       - name: Restore
         run: dotnet restore -r ${{ env.ARCH }}
       - name: Build pre-release
