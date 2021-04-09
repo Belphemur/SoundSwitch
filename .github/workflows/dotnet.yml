@@ -1,12 +1,11 @@
 name: .NET
+
 on:
   push:
-    branches:
-      - dev
+    branches: [ dev, master ]
   pull_request:
-    branches:
-      - master
-      - dev
+    # The branches below must be a subset of the branches above
+    branches: [ dev, master ]
 env:
   # Stop wasting time caching packages
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
