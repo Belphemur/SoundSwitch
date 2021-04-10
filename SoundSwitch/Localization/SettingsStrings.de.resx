@@ -450,4 +450,13 @@ Stellt den Zustand des Systems wieder her, wenn die Anwendung geschlossen wird.<
   <data name="profile.trigger.uwp" xml:space="preserve">
     <value>Microsoft Store-Anwendung</value>
   </data>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>Ein-/Ausschalten</value>
+  </data>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>{0} ist jetzt eingeschaltet.</value>
+  </data>
+  <data name="notification.microphone.muted" xml:space="preserve">
+    <value>{0} ist jetzt ausgeschaltet.</value>
+  </data>
 </root>

@@ -392,7 +392,7 @@ Obnovi stanje sustava kad se program zatvori.</value>
     <value>Microsoft Store aplikacija</value>
   </data>
   <data name="mute.toggle.label" xml:space="preserve">
-    <value>Uključi/isključi zvuk</value>
+    <value>Uključi/isključi</value>
   </data>
   <data name="notification.microphone.unmuted" xml:space="preserve">
     <value>{0} je sada uključen.</value>
