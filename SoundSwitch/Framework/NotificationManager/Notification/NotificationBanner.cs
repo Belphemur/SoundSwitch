@@ -89,6 +89,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             if (Configuration.CustomSound != null && File.Exists(Configuration.CustomSound.FilePath))
             {
                 toastData.SoundFile = Configuration.CustomSound;
+                toastData.CurrentDevice = audioDevice;
             }
 
             toastData.Title = audioDevice.DataFlow switch

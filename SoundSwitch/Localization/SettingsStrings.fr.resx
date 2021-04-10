@@ -119,7 +119,7 @@
 		<value>Paramètres</value>
   </data>
   <data name="closeTooltip" xml:space="preserve">
-		<value>Les modifications sont automatiquement sauvegardées</value>
+		<value>Les changements sont automatiquement sauvegardés</value>
   </data>
   <data name="close" xml:space="preserve">
 		<value>Fermer</value>
@@ -188,7 +188,7 @@
 		<value>Lecture : {0}</value>
   </data>
   <data name="communicationsDevice" xml:space="preserve">
-		<value>Modifier le dispositif de communication par défaut</value>
+		<value>Changer le périphérique de communication par défaut</value>
   </data>
   <data name="communicationsDeviceTooltip" xml:space="preserve">
 		<value>Si cette option est cochée, l'application modifiera aussi la carte audio utilisée pour la communication (utile pour Skype ou TeamSpeak par ex.).</value>

@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>Ztlumit</value>
+  </data>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>{0} je nyní obnoven.</value>
+  </data>
+  <data name="notification.microphone.muted" xml:space="preserve">
+    <value>{0} je nyní ztlumen.</value>
+  </data>
+  <data name="profile.trigger.uwp.desc" xml:space="preserve">
+    <value>Zadejte název aplikace nainstalované prostřednictvím obchodu Windows, jako je Netflix, video Amazon Prime atd. …</value>
+  </data>
+  <data name="profile.trigger.uwp" xml:space="preserve">
+    <value>Aplikace Microsoft Store</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
+    <value>Stav systému byl obnoven</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
+    <value>Vyžaduje povolení „{0}“.
+
+Po zavření aplikace obnovte stav systému.</value>
+  </data>
+  <data name="profile.trigger.restoreDevices" xml:space="preserve">
+    <value>Obnovení původních zařízení po ukončení spouštěše</value>
+  </data>
+  <data name="usePrimaryScreenTooltip" xml:space="preserve">
+    <value>Zobrazit oznamovací okno na primární obrazovce místo na aktivní obrazovce.</value>
+  </data>
+  <data name="usePrimaryScreen" xml:space="preserve">
+    <value>Vždy používat primární obrazovku</value>
+  </data>
+  <data name="profile.trigger.startup.desc" xml:space="preserve">
+    <value>Tento profil se automaticky spustí při spuštění programu SoundSwitch</value>
+  </data>
+  <data name="profile.trigger.startup" xml:space="preserve">
+    <value>Při spuštění</value>
+  </data>
+  <data name="profile.button.edit" xml:space="preserve">
+    <value>Upravit</value>
+  </data>
+  <data name="profile.button.save" xml:space="preserve">
+    <value>Uložit</value>
+  </data>
+  <data name="profile.notification.text" xml:space="preserve">
+    <value>Profil {0} spuštěn</value>
+  </data>
+  <data name="profile.notify-on-activation" xml:space="preserve">
+    <value>Upozornit při spuštění profilu</value>
+  </data>
+  <data name="profile.error.window" xml:space="preserve">
+    <value>Profil s tímto názvem okna již existuje: {0}.</value>
+  </data>
+  <data name="profile.error.steam" xml:space="preserve">
+    <value>Pro Steam Big Picture můžete mít pouze jeden profil.</value>
+  </data>
+  <data name="profile.error.triggers.min" xml:space="preserve">
+    <value>Potřebujete alespoň jeden spouštěč.</value>
+  </data>
+  <data name="communication" xml:space="preserve">
+    <value>Výchozí komunikační zařízení</value>
+  </data>
+  <data name="profile.trigger.available" xml:space="preserve">
+    <value>Dostupné spouštěče</value>
+  </data>
+  <data name="profile.trigger.actives" xml:space="preserve">
+    <value>Aktivní spouštěče</value>
+  </data>
+  <data name="profile.desc" xml:space="preserve">
+    <value>Popis</value>
+  </data>
+  <data name="profile.trigger.steam.desc" xml:space="preserve">
+    <value>Aktivuje profil při zjištění spouštěče Steam Big Picture. (Po zavření Steam Big Picture obnoví původní stav.)</value>
+  </data>
+  <data name="profile.trigger.process.desc" xml:space="preserve">
+    <value>Aktivuje tento profil, když je vybraná aplikace v popředí</value>
+  </data>
+  <data name="profile.trigger.window.desc" xml:space="preserve">
+    <value>Aktivuje tento profil, pokud program v popředí obsahuje následující znaky</value>
+  </data>
+  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
+    <value>Klávesová zkratka pro aktivaci profilu</value>
+  </data>
+  <data name="profile.trigger.steam" xml:space="preserve">
+    <value>Spoušťěč her pro Steam</value>
+  </data>
+  <data name="profile.trigger.process" xml:space="preserve">
+    <value>Cesta k aplikaci</value>
+  </data>
+  <data name="profile.trigger.window" xml:space="preserve">
+    <value>Název programu</value>
+  </data>
+  <data name="profile.error.device-not-found" xml:space="preserve">
+    <value>Zařízení {0} nelze najít.</value>
+  </data>
+  <data name="hotkeyEnabled" xml:space="preserve">
+    <value>Klávesová zkratka povolena</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
+    <value>Když je tato aplikace detekována, SoundSwitch změní také aktuální výchozí zařízení.</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox" xml:space="preserve">
+    <value>Přepnout i výchozí zařízení</value>
+  </data>
+  <data name="profile.feature.profile" xml:space="preserve">
+    <value>Profil</value>
+  </data>
+  <data name="profile.error.no-name" xml:space="preserve">
+    <value>Profil vyžaduje název.</value>
+  </data>
+  <data name="profile.error.delete" xml:space="preserve">
+    <value>Profil nelze najít.</value>
+  </data>
+  <data name="profile.deleteButton" xml:space="preserve">
+    <value>Smazat</value>
+  </data>
+  <data name="profile.error.title" xml:space="preserve">
+    <value>Chyba profilu</value>
+  </data>
+  <data name="profile.feature.executable" xml:space="preserve">
+    <value>Spustitelný soubor (* .exe)</value>
+  </data>
+  <data name="profile.feature.add" xml:space="preserve">
+    <value>Přidat profil</value>
+  </data>
+  <data name="profile.error.registerHotkeys.title" xml:space="preserve">
+    <value>Používaná klávesová zkratka</value>
+  </data>
+  <data name="profile.error.registerHotkeys" xml:space="preserve">
+    <value>Nelze zaregistrovat klávesovou zkratku pro následující profily: {0}</value>
+  </data>
+  <data name="profile.explanation" xml:space="preserve">
+    <value>Přidejte profil, abyste mohli přepnout na konkrétní přehrávací nebo záznamové zařízení, když je spuštěna konkrétní aplikace, nebo pokud je na ni přepnuto.</value>
+  </data>
+  <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
+    <value>Musíte nastavit přehrávací nebo záznamové zařízení.</value>
+  </data>
+  <data name="profile.error.needHKOrPath" xml:space="preserve">
+    <value>Musíte nastavit klávesovou zkratku nebo aplikaci.</value>
+  </data>
+  <data name="profile.error.name" xml:space="preserve">
+    <value>Profil s názvem {0} již existuje.</value>
+  </data>
+  <data name="profile.error.application" xml:space="preserve">
+    <value>Tato aplikace {0} již má propojený profil.</value>
+  </data>
+  <data name="profile.error.hotkey" xml:space="preserve">
+    <value>Tato klávesová zkratka {0} se již používá.</value>
+  </data>
+  <data name="profile.name" xml:space="preserve">
+    <value>Název</value>
+  </data>
+  <data name="profile.program" xml:space="preserve">
+    <value>Aplikace</value>
+  </data>
+  <data name="profile.addButton" xml:space="preserve">
+    <value>Přidat</value>
+  </data>
+  <data name="profile.tab" xml:space="preserve">
+    <value>Profily</value>
+  </data>
+  <data name="iconChange.tooltip" xml:space="preserve">
+    <value>Zvolte, kdy chcete změnit ikonu programu SoundSwitch v systémovém panelu.
+
+Výchozí: Neměňte ji. Používat ikonu programu SoundSwitch.
+Přehrávání: Při přepnutí přehrávacího zařízení.
+Záznam: Při přepnutí záznamového zařízení.
+Obojí: Při přepnutí jakéhokoli typu zařízení.</value>
+  </data>
+  <data name="iconChange" xml:space="preserve">
+    <value>Ikona v systémovém panelu</value>
+  </data>
+  <data name="foregroundAppTooltip" xml:space="preserve">
+    <value>Přepněte také zvuk aktuálně používané aplikace. Užitečné při hraní videoher.</value>
+  </data>
+  <data name="foregroundApp" xml:space="preserve">
+    <value>Přepněte také program v popředí</value>
+  </data>
+  <data name="disableCustomSoundTooltip" xml:space="preserve">
+    <value>Zakažte nastavený vlastní zvuk.</value>
+  </data>
+  <data name="notificationOptionBanner" xml:space="preserve">
+    <value>Okno</value>
+  </data>
+  <data name="updateNotifyTooltip" xml:space="preserve">
+    <value>SoundSwitch vás upozorní, až bude k dispozici nová aktualizace. Po kliknutí na oznámení se zobrazí vyskakovací okno s nabídkou stažení aktualizace a dotazem, zda ji chcete nainstalovat.</value>
+  </data>
+  <data name="updateNeverTooltip" xml:space="preserve">
+    <value>Neaktualizujte program jinak než ručně.</value>
+  </data>
+  <data name="languageRestartRequiredCaption" xml:space="preserve">
+    <value>Je zapotřebí restartování</value>
+  </data>
+  <data name="languageRestartRequired" xml:space="preserve">
+    <value>Jazyk prostředí se změní až po znovuspuštění programu SoundSwitch.
+Chcete program restartovat?</value>
+  </data>
+  <data name="language" xml:space="preserve">
+    <value>Jazyk</value>
+  </data>
+  <data name="activePlayback" xml:space="preserve">
+    <value>Přehrát: {0}</value>
+  </data>
+  <data name="activeRecording" xml:space="preserve">
+    <value>Nahrát: {0}</value>
+  </data>
+  <data name="audioFileNotFoundCaption" xml:space="preserve">
+    <value>Zvukový soubor nenalezen</value>
+  </data>
+  <data name="audioFileNotFound" xml:space="preserve">
+    <value>Vybraný soubor se zvukem oznámení nebyl nalezen. SoundSwitch přepnul nastavení oznámení zpět na volbu {0}.</value>
+  </data>
+  <data name="tooltipOnHover" xml:space="preserve">
+    <value>Popisek pod kurzorem myši</value>
+  </data>
+  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
+    <value>Bez popisku</value>
+  </data>
+  <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
+    <value>Pro oba typy zařízení</value>
+  </data>
+  <data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
+    <value>Záznamové zařízení</value>
+  </data>
+  <data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
+    <value>Přehrávací zařízení</value>
+  </data>
+  <data name="notificationTooltip" xml:space="preserve">
+    <value>Oznámení ve Windows: Vyskočí výchozí okno v systémovém panelu.
+Zvukové oznámení: Při přepnutí přehrávacího zařízení přehraje systémový zvuk.
+Vlastní zvukové oznámení: Při přepnutí přehrávacího zařízení přehraje vybraný zvuk.
+Vyskakovací oznámení: Používá zvláštní formu vyskakovacího okna v systémovém panelu.
+Okno: Používá přizpůsobené okno, které je vždy navrchu – užitečné při hraní her.</value>
+  </data>
+  <data name="notificationOptionCustomized" xml:space="preserve">
+    <value>Vlastní zvukové oznámení</value>
+  </data>
+  <data name="notificationOptionToast" xml:space="preserve">
+    <value>Vyskakovací oznámení</value>
+  </data>
+  <data name="notificationOptionNone" xml:space="preserve">
+    <value>Žádné oznámení</value>
+  </data>
+  <data name="notificationOptionSound" xml:space="preserve">
+    <value>Zvukové oznámení</value>
+  </data>
+  <data name="notificationOptionWindowsDefault" xml:space="preserve">
+    <value>Oznámení ve Windows</value>
+  </data>
+  <data name="cycleThroughTooltip" xml:space="preserve">
+    <value>Zvolte, která zařízení se mají přepínat: pouze vybraná nebo všechna.</value>
+  </data>
+  <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
+    <value>Pouze vybraná zvuková zařízení</value>
+  </data>
+  <data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
+    <value>Všechna zvuková zařízení</value>
+  </data>
+  <data name="updateNever" xml:space="preserve">
+    <value>Nikdy nekontrolovat dostupnost aktualizací</value>
+  </data>
+  <data name="updateNotify" xml:space="preserve">
+    <value>Oznamujte mi dostupnost aktualizací</value>
+  </data>
+  <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
+    <value>Aktualizace se budou instalovat automaticky bez jakéhokoli upozornění.</value>
+  </data>
+  <data name="updateInstallAutomatically" xml:space="preserve">
+    <value>Automaticky instalovat aktualizace</value>
+  </data>
+  <data name="keepSystemTrayIconTooltip" xml:space="preserve">
+    <value>Je-li zaškrtnuto, ikona v systémovém panelu se při přepnutí 'Výchozího přehrávacího zařízení' nezmění .</value>
+  </data>
+  <data name="keepSystemTrayIcon" xml:space="preserve">
+    <value>Zobrazovat ikonu v systémovém panelu</value>
+  </data>
+  <data name="cycleThrough" xml:space="preserve">
+    <value>Přepínat</value>
+  </data>
+  <data name="updateSettings" xml:space="preserve">
+    <value>Nastavení aktualizací</value>
+  </data>
+  <data name="audioSettings" xml:space="preserve">
+    <value>Nastavení zvukových zařízení</value>
+  </data>
+  <data name="basicSettings" xml:space="preserve">
+    <value>Základní nastavení</value>
+  </data>
+  <data name="hotkeysTooltip" xml:space="preserve">
+    <value>Zaškrtnutím umožníte používání klávesových zkratek.</value>
+  </data>
+  <data name="selectSoundButtonTooltip" xml:space="preserve">
+    <value>Vyberte soubor, který se bude přehrávat jako oznámení</value>
+  </data>
+  <data name="audioFiles" xml:space="preserve">
+    <value>Audio soubory</value>
+  </data>
+  <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
+    <value>Je-li zaškrtnuto, SoundSwitch bude hledat na GitHubu i beta verze.</value>
+  </data>
+  <data name="updateIncludeBetaVersions" xml:space="preserve">
+    <value>Včetně beta verzí</value>
+  </data>
+  <data name="notification" xml:space="preserve">
+    <value>Oznámení</value>
+  </data>
+  <data name="communicationsDeviceTooltip" xml:space="preserve">
+    <value>Je-li zaškrtnuto, při přepnutí se mění současně 'výchozí komunikační zařízení' a 'Výchozí přehrávací zařízení' (užitečné v programech jako Skype, TeamSpeak atd.).</value>
+  </data>
+  <data name="closeTooltip" xml:space="preserve">
+    <value>Změny byly automaticky uloženy</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>Zavřít</value>
+  </data>
+  <data name="startWithWindows" xml:space="preserve">
+    <value>Automaticky spustit při startu Windows</value>
+  </data>
+  <data name="communicationsDevice" xml:space="preserve">
+    <value>Přepnout výchozí komunikační zařízení</value>
+  </data>
+  <data name="hotkeys" xml:space="preserve">
+    <value>Klávesové zkratky</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>Nastavení</value>
+  </data>
+  <data name="playback" xml:space="preserve">
+    <value>Přehrávání</value>
+  </data>
+  <data name="recording" xml:space="preserve">
+    <value>Záznam</value>
+  </data>
+  <data name="disconnected" xml:space="preserve">
+    <value>Odpojená zařízení</value>
+  </data>
+  <data name="connected" xml:space="preserve">
+    <value>Připojená zařízení</value>
+  </data>
+  <data name="selected" xml:space="preserve">
+    <value>Vybraná zařízení</value>
+  </data>
+</root>

@@ -337,7 +337,7 @@
   </data>
   <data name="notificationTooltip" xml:space="preserve">
     <value>Windowsの通知：Windows規定のトレイポップアップ通知です。
-サウンド通知：再生デバイスの切替時にサウンドを再生します。
+音声通知：再生デバイスの切替時にサウンドを再生します。
 音声通知のカスタマイズ：再生デバイスの切替時に指定したサウンドを再生します。
 トースト通知：特殊なトレイポップアップ通知を使用します。
 バナー：常に最前面に表示され、ゲーム中などに便利です。</value>
@@ -449,5 +449,14 @@
   </data>
   <data name="playback" xml:space="preserve">
     <value>再生</value>
+  </data>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>ミュート切替</value>
+  </data>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>{0}はミュート解除されました。</value>
+  </data>
+  <data name="notification.microphone.muted" xml:space="preserve">
+    <value>{0}はミュート中です。</value>
   </data>
 </root>

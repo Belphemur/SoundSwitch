@@ -450,4 +450,13 @@ Ambos: Mudar quando qualquer tipo de dispositivo é alterado.</value>
   <data name="disableCustomSoundTooltip" xml:space="preserve">
     <value>Desativa a definição de Som Personalizado.</value>
   </data>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>Ativar/desativar mudo</value>
+  </data>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>Mudo desativado de {0} agora.</value>
+  </data>
+  <data name="notification.microphone.muted" xml:space="preserve">
+    <value>Mudo ativado de {0} agora.</value>
+  </data>
 </root>

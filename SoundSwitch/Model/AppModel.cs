@@ -59,12 +59,14 @@ namespace SoundSwitch.Model
                     DefaultDeviceChanged?.Invoke(sender, @event);
                 });
             };
+            _microphoneMuteToggler = new MicrophoneMuteToggler(AudioSwitcher.Instance, _notificationManager);
         }
 
         public static IAppModel Instance { get; } = new AppModel();
         public TrayIcon TrayIcon { get; set; }
         private CachedSound _customNotificationCachedSound;
         private readonly DeviceCyclerManager _deviceCyclerManager;
+        private readonly MicrophoneMuteToggler _microphoneMuteToggler;
 
         public ProfileManager ProfileManager { get; private set; }
 
@@ -402,7 +404,7 @@ namespace SoundSwitch.Model
                 }
                 else if (e.HotKey == AppConfigs.Configuration.MuteRecordingHotKey)
                 {
-                    if (new MicrophoneMuteToggler(AudioSwitcher.Instance, _notificationManager).ToggleDefaultMute() == null)
+                    if (_microphoneMuteToggler.ToggleDefaultMute() == null)
                     {
                         ErrorTriggered?.Invoke(this, new ExceptionEvent(new Exception("No mic found")));
                     }

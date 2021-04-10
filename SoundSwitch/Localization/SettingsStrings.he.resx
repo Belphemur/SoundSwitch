@@ -219,4 +219,185 @@
   <data name="selected" xml:space="preserve">
     <value>נבחר</value>
   </data>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>הפעל\כבה השתקה</value>
+  </data>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>{0} כבר אינו מושתק.</value>
+  </data>
+  <data name="notification.microphone.muted" xml:space="preserve">
+    <value>{0} עכשיו מושתק.</value>
+  </data>
+  <data name="profile.trigger.uwp.desc" xml:space="preserve">
+    <value>הזן את שם האפליקציה המותקנת דרך Windows Store. לדוגמה נטלפיקס, אמזון פריים וכו'.</value>
+  </data>
+  <data name="profile.trigger.uwp" xml:space="preserve">
+    <value>אפליקציית Microsoft Store</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
+    <value>מצב מערכת שוחזר</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
+    <value>מצריך ש"{0}" יהיה פעיל.
+
+שחזר את מצב המערכת כאשר האפליקציה נסגרת.</value>
+  </data>
+  <data name="profile.trigger.restoreDevices" xml:space="preserve">
+    <value>שחזר את ההתקנים כאשר הטריגר מסתיים</value>
+  </data>
+  <data name="usePrimaryScreenTooltip" xml:space="preserve">
+    <value>הצג את הבאנר על המסך הראשי במקום במסך שבשימוש.</value>
+  </data>
+  <data name="usePrimaryScreen" xml:space="preserve">
+    <value>תמיד השתמש במסך הראשי</value>
+  </data>
+  <data name="profile.trigger.startup.desc" xml:space="preserve">
+    <value>הפרופיל יופעל אוטומטית כאשר Soundswitch מופעל</value>
+  </data>
+  <data name="profile.trigger.startup" xml:space="preserve">
+    <value>בהפעלה</value>
+  </data>
+  <data name="profile.button.edit" xml:space="preserve">
+    <value>עריכה</value>
+  </data>
+  <data name="profile.button.save" xml:space="preserve">
+    <value>שמירה</value>
+  </data>
+  <data name="profile.notification.text" xml:space="preserve">
+    <value>פרופיל {0} מופעל</value>
+  </data>
+  <data name="profile.notify-on-activation" xml:space="preserve">
+    <value>התראה כאשר הפרופיל מופעל</value>
+  </data>
+  <data name="profile.error.window" xml:space="preserve">
+    <value>כבר יש פרופיל עם שם חלונות {0}.</value>
+  </data>
+  <data name="profile.error.steam" xml:space="preserve">
+    <value>ניתן להחזיק רק בפרופיל אחד עבור Steam Big Picture.</value>
+  </data>
+  <data name="profile.error.triggers.min" xml:space="preserve">
+    <value>צריך לפחות טריגר אחד.</value>
+  </data>
+  <data name="communication" xml:space="preserve">
+    <value>מכשיר התקשרות ברירת-מחדל</value>
+  </data>
+  <data name="profile.trigger.available" xml:space="preserve">
+    <value>טריגרים זמינים</value>
+  </data>
+  <data name="profile.trigger.actives" xml:space="preserve">
+    <value>טריגרים פעילים</value>
+  </data>
+  <data name="profile.desc" xml:space="preserve">
+    <value>תיאור</value>
+  </data>
+  <data name="profile.trigger.steam.desc" xml:space="preserve">
+    <value>הפעל כאשר Steam Big Picture בשימוש (המצב יחזור לקדמותו כאשר Steam Big Picure יסגר).</value>
+  </data>
+  <data name="profile.trigger.process.desc" xml:space="preserve">
+    <value>הפעל את הפרופיל כאשר התוכנה הנבחרת בקידמת המסך</value>
+  </data>
+  <data name="profile.trigger.window.desc" xml:space="preserve">
+    <value>הפעל את הפרופיל אם התוכנה בקידמת המסך מכילה את התווים הבאים</value>
+  </data>
+  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
+    <value>קיצור מקשים בשימוש להפעלת הפרופיל</value>
+  </data>
+  <data name="profile.trigger.steam" xml:space="preserve">
+    <value>Steam Big Picture</value>
+  </data>
+  <data name="profile.trigger.process" xml:space="preserve">
+    <value>נתיב אפליקציה</value>
+  </data>
+  <data name="profile.trigger.window" xml:space="preserve">
+    <value>שם התוכנה</value>
+  </data>
+  <data name="profile.error.device-not-found" xml:space="preserve">
+    <value>התקן {0} לא נמצא.</value>
+  </data>
+  <data name="hotkeyEnabled" xml:space="preserve">
+    <value>קיצור מקשים הופעל</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
+    <value>כאשר האפליקציה מזוהה, Soundswitch ישנה גם את התקן ברירת המחדל.</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox" xml:space="preserve">
+    <value>החלף גם התקן ברירת מחדל</value>
+  </data>
+  <data name="profile.feature.profile" xml:space="preserve">
+    <value>פרופיל</value>
+  </data>
+  <data name="profile.error.no-name" xml:space="preserve">
+    <value>יש לתת לפרופיל שם.</value>
+  </data>
+  <data name="profile.error.delete" xml:space="preserve">
+    <value>לא נמצא פרופיל.</value>
+  </data>
+  <data name="profile.deleteButton" xml:space="preserve">
+    <value>מחק</value>
+  </data>
+  <data name="profile.error.title" xml:space="preserve">
+    <value>שגיאת פרופיל</value>
+  </data>
+  <data name="profile.feature.executable" xml:space="preserve">
+    <value>קובץ הרצה (*.exe)</value>
+  </data>
+  <data name="profile.feature.add" xml:space="preserve">
+    <value>הוסף פרופיל</value>
+  </data>
+  <data name="profile.error.registerHotkeys.title" xml:space="preserve">
+    <value>קיצור מקשים כבר בשימוש</value>
+  </data>
+  <data name="profile.error.registerHotkeys" xml:space="preserve">
+    <value>כשלון ברישום קיצור מקשים עבור הפרופילים הבא: {0}</value>
+  </data>
+  <data name="profile.explanation" xml:space="preserve">
+    <value>הוסף פרופיל כדי לעבור להתקן שמע או הקלטה כאשר אפליקציה ספציפית מופעלת או מועברת לקדמת המסך.</value>
+  </data>
+  <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
+    <value>עליך לקבוע התקן שמע או התקן הקלטה.</value>
+  </data>
+  <data name="profile.error.needHKOrPath" xml:space="preserve">
+    <value>עליך לקבוע קיצור מקשים ו\או את האפליקציה.</value>
+  </data>
+  <data name="profile.error.name" xml:space="preserve">
+    <value>כבר יש פרופיל בשם {0}.</value>
+  </data>
+  <data name="profile.error.application" xml:space="preserve">
+    <value>האפליקציה {0} כבר מקושרת לפרופיל.</value>
+  </data>
+  <data name="profile.error.hotkey" xml:space="preserve">
+    <value>קיצור המקשים {0} כבר בשימוש.</value>
+  </data>
+  <data name="profile.name" xml:space="preserve">
+    <value>שם</value>
+  </data>
+  <data name="profile.program" xml:space="preserve">
+    <value>אפליקציה</value>
+  </data>
+  <data name="profile.addButton" xml:space="preserve">
+    <value>הוסף</value>
+  </data>
+  <data name="profile.tab" xml:space="preserve">
+    <value>פרופילים</value>
+  </data>
+  <data name="iconChange.tooltip" xml:space="preserve">
+    <value>בחר מתי לשנות את אייקון Soundswitch באיזור ההתראות.
+
+ברירת מחדל: אל תשנה דבר. השאר את האייקון הרגיל.
+שמע: כאשר מוחלף התקן שמע.
+הקלטה: כאשר מוחלף התקן הקלטה.
+שניהם: שנה אייקון כאשר מוחלף כל סוג של התקן.</value>
+  </data>
+  <data name="iconChange" xml:space="preserve">
+    <value>אייקון באיזור ההתראות</value>
+  </data>
+  <data name="foregroundAppTooltip" xml:space="preserve">
+    <value>החלף את השמע גם של אפליקציה שבשימוש כעת. שימושי עבור משחקי מחשב.</value>
+  </data>
+  <data name="foregroundApp" xml:space="preserve">
+    <value>החלף גם את התוכנה שבחזית</value>
+  </data>
+  <data name="disableCustomSoundTooltip" xml:space="preserve">
+    <value>נטרל את צליל ברירת המחדל שנבחר.</value>
+  </data>
 </root>

@@ -1,0 +1,17 @@
+
+name: Weblate automerge
+
+on:
+  pull_request_target:
+    types: opened
+
+jobs:
+  weblate_automerge:
+    runs-on: ubuntu-latest
+    name: Weblate automerge
+    if: github.actor == 'weblate' || github.actor == 'pre-commit-ci[bot]'
+    steps:
+      - uses: actions-ecosystem/action-add-labels@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: "ship it!"
