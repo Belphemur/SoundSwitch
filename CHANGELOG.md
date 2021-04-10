@@ -1,3 +1,24 @@
+### [5.8.2](https://github.com/Belphemur/SoundSwitch/compare/v5.8.1...v5.8.2) (2021-04-10)
+
+
+### Languages
+
+* **Chinese (Simplified):** Translated Settings using Weblate ([1373827](https://github.com/Belphemur/SoundSwitch/commit/137382729361a357fb0ec25e8a01d0ca7c4dbe26))
+* **Croatian:** Translated Settings using Weblate ([760dac8](https://github.com/Belphemur/SoundSwitch/commit/760dac8d8624cd48f51cb56ff21b3b32028077da))
+* **Croatian:** Translated Settings using Weblate ([adce437](https://github.com/Belphemur/SoundSwitch/commit/adce4375a7b92cd0f815e4ea9cf2c351d16b52dc))
+* **Czech:** Add Czech language ([2034aa6](https://github.com/Belphemur/SoundSwitch/commit/2034aa62ef9c380dcc71520b11919a429bce8c2e))
+* **Czech:** Translated using Weblate ([4f31a8b](https://github.com/Belphemur/SoundSwitch/commit/4f31a8b79cbf257cb47c0c963c4134728726688a))
+* **Czech:** Translated using Weblate ([bff272e](https://github.com/Belphemur/SoundSwitch/commit/bff272e7adca85c8b582157ae5d4b9162190505b))
+* **Czech:** Translated using Weblate ([1708699](https://github.com/Belphemur/SoundSwitch/commit/1708699f127665ff8d9c37f2dad3cd7fdc436869))
+* **Czech:** Translated using Weblate ([eb2e1e8](https://github.com/Belphemur/SoundSwitch/commit/eb2e1e858f24e12c963051d35c7b3441a57a9337))
+* **German:** Translated Settings using Weblate ([7e607a8](https://github.com/Belphemur/SoundSwitch/commit/7e607a8423393092e40bc3e626063f482aba8227))
+* **Hebrew:** Add hebrew language ([2fc5fbc](https://github.com/Belphemur/SoundSwitch/commit/2fc5fbc01b40ca22f52ba30451672bc4f839c043))
+* **Hebrew:** Translated using Weblate ([71bc510](https://github.com/Belphemur/SoundSwitch/commit/71bc5103254de6e3f3ff12c28a94d1251593cf62))
+* **Hebrew:** Translated using Weblate ([b72ca12](https://github.com/Belphemur/SoundSwitch/commit/b72ca12948b8c9b4c4b2b36d10f9adfa60f3b940))
+* **Hebrew:** Translated using Weblate ([b45843a](https://github.com/Belphemur/SoundSwitch/commit/b45843a4374774d03a550472db09b833975386d4))
+* **Korean:** Translated using Weblate ([f2c14a4](https://github.com/Belphemur/SoundSwitch/commit/f2c14a45234460da2ecbedf8fadec4fba8735e6f))
+* **Russian:** Translated using Weblate ([94f8a2f](https://github.com/Belphemur/SoundSwitch/commit/94f8a2f753f2bef80637ec37517c3ff942406ec4))
+
 ## [5.8.1](https://github.com/Belphemur/SoundSwitch/compare/v5.8.0...v5.8.1) (2021-04-03)
 
 
