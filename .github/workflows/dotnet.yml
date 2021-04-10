@@ -39,9 +39,9 @@ jobs:
         run: dotnet build -c Release --no-restore ${{env.PROJECT_NAME}}/${{env.PROJECT_NAME}}.csproj
   prerelease:
     env:
-      DAV_SERVER: "https://nc.aaflalo.me/remote.php/webdav"
       DAV_USER: ${{secrets.DAV_USER}}
       DAV_PASS: ${{secrets.DAV_PASS}}
+      DAV_SERVER: "https://nc.aaflalo.me/remote.php/dav/files"
     needs: build
     if: github.ref == 'refs/heads/dev'
     runs-on: windows-latest
@@ -68,7 +68,7 @@ jobs:
       - name: Zip Build ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}
         run: tar cafv ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip -C ${{ env.PROJECT_NAME }}\bin\Release\${{ env.FRAMEWORK }}\${{ env.ARCH }}\publish\ . 
       - name: Upload Artifact
-        run: curl -u "${{env.DAV_USER}}:${{env.DAV_PASS}}" -X PUT ${{env.DAV_SERVER}}/${{env.PROJECT_NAME}}/${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip --upload-file ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip
+        run: curl -u "${{env.DAV_USER}}:${{env.DAV_PASS}}" -X PUT ${{env.DAV_SERVER}}/${{env.DAV_USER}}/${{env.PROJECT_NAME}}/${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip --upload-file ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip
 
   prepare-release:
       needs: build
