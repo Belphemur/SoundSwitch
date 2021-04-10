@@ -29,22 +29,29 @@ namespace SoundSwitch.Framework.Audio.Microphone
                 return null;
             }
 
-            return _switcher.InteractWithMmDevice<bool?>(microphone, device =>
+            var result = _switcher.InteractWithMmDevice<(string Name, bool NewMuteState)>(microphone, device =>
             {
                 try
                 {
-                    var newMuteState = !microphone.AudioEndpointVolume.Mute;
+                    var newMuteState = !device.AudioEndpointVolume.Mute;
                     device.AudioEndpointVolume.Mute = newMuteState;
-                    _notificationManager.NotifyMuteChanged(device.FriendlyName, newMuteState);
-                    return newMuteState;
+                    return (device.FriendlyName, newMuteState);
                 }
                 catch (Exception e)
                 {
-                    Log.Error("Couldn't toggle mute on {device}:\n{exception}", microphone.FriendlyName, e);
+                    Log.Error("Couldn't toggle mute on {device}:\n{exception}", device.FriendlyName, e);
                 }
 
-                return null;
+                return default;
             });
+
+            if (result == default)
+            {
+                return null;
+            }
+
+            _notificationManager.NotifyMuteChanged(result.Name, result.NewMuteState);
+            return result.NewMuteState;
         }
     }
 }
