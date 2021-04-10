@@ -143,7 +143,7 @@ namespace SoundSwitch.UI.Forms
             this.playbackTabPage.Location = new System.Drawing.Point(4, 24);
             this.playbackTabPage.Name = "playbackTabPage";
             this.playbackTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.playbackTabPage.Size = new System.Drawing.Size(828, 381);
+            this.playbackTabPage.Size = new System.Drawing.Size(824, 381);
             this.playbackTabPage.TabIndex = 0;
             this.playbackTabPage.Text = "Playback";
             this.playbackTabPage.UseVisualStyleBackColor = true;
@@ -165,7 +165,7 @@ namespace SoundSwitch.UI.Forms
             this.playbackListView.HideSelection = false;
             this.playbackListView.Location = new System.Drawing.Point(3, 3);
             this.playbackListView.Name = "playbackListView";
-            this.playbackListView.Size = new System.Drawing.Size(822, 375);
+            this.playbackListView.Size = new System.Drawing.Size(818, 375);
             this.playbackListView.TabIndex = 14;
             this.playbackListView.UseCompatibleStateImageBehavior = false;
             this.playbackListView.View = System.Windows.Forms.View.Details;
@@ -176,7 +176,7 @@ namespace SoundSwitch.UI.Forms
             this.recordingTabPage.Location = new System.Drawing.Point(4, 24);
             this.recordingTabPage.Name = "recordingTabPage";
             this.recordingTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.recordingTabPage.Size = new System.Drawing.Size(828, 381);
+            this.recordingTabPage.Size = new System.Drawing.Size(824, 381);
             this.recordingTabPage.TabIndex = 1;
             this.recordingTabPage.Text = "Recording";
             this.recordingTabPage.UseVisualStyleBackColor = true;
@@ -199,7 +199,7 @@ namespace SoundSwitch.UI.Forms
             this.recordingListView.HideSelection = false;
             this.recordingListView.Location = new System.Drawing.Point(3, 3);
             this.recordingListView.Name = "recordingListView";
-            this.recordingListView.Size = new System.Drawing.Size(822, 375);
+            this.recordingListView.Size = new System.Drawing.Size(818, 375);
             this.recordingListView.TabIndex = 17;
             this.recordingListView.UseCompatibleStateImageBehavior = false;
             this.recordingListView.View = System.Windows.Forms.View.Details;
@@ -214,7 +214,7 @@ namespace SoundSwitch.UI.Forms
             this.tabProfile.Location = new System.Drawing.Point(4, 24);
             this.tabProfile.Name = "tabProfile";
             this.tabProfile.Padding = new System.Windows.Forms.Padding(3);
-            this.tabProfile.Size = new System.Drawing.Size(828, 381);
+            this.tabProfile.Size = new System.Drawing.Size(824, 381);
             this.tabProfile.TabIndex = 3;
             this.tabProfile.Text = "Profiles";
             this.tabProfile.UseVisualStyleBackColor = true;
@@ -294,7 +294,7 @@ namespace SoundSwitch.UI.Forms
             this.appSettingTabPage.Controls.Add(this.basicSettingsGroupBox);
             this.appSettingTabPage.Location = new System.Drawing.Point(4, 24);
             this.appSettingTabPage.Name = "appSettingTabPage";
-            this.appSettingTabPage.Size = new System.Drawing.Size(828, 381);
+            this.appSettingTabPage.Size = new System.Drawing.Size(824, 381);
             this.appSettingTabPage.TabIndex = 2;
             this.appSettingTabPage.Text = "Settings";
             this.appSettingTabPage.UseVisualStyleBackColor = true;
@@ -423,6 +423,7 @@ namespace SoundSwitch.UI.Forms
             // 
             // deleteSoundButton
             // 
+            this.deleteSoundButton.Image = global::SoundSwitch.Properties.Resources.delete;
             this.deleteSoundButton.Location = new System.Drawing.Point(391, 77);
             this.deleteSoundButton.Name = "deleteSoundButton";
             this.deleteSoundButton.Size = new System.Drawing.Size(24, 24);
