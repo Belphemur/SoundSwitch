@@ -65,10 +65,10 @@ jobs:
         run: dotnet publish -c Release --no-restore -r ${{ env.ARCH }} /p:PublishTrimmed=true ${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj
       - name: Set Env var from GitHub  
         uses: rlespinasse/github-slug-action@v3.x
-      - name: Zip Build SoundSwitch-${{env.GITHUB_REF_SLUG}}
-        run: tar cafv SoundSwitch-${{env.GITHUB_REF_SLUG}}.zip -C ${{ env.PROJECT_NAME }}-${{env.GITHUB_SHA_SHORT}} ${{ env.PROJECT_NAME }}\bin\Release\${{ env.FRAMEWORK }}\${{ env.ARCH }}\publish\*
+      - name: Zip Build ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}
+        run: tar cafv ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip -C ${{ env.PROJECT_NAME }}-${{env.GITHUB_SHA_SHORT}} ${{ env.PROJECT_NAME }}\bin\Release\${{ env.FRAMEWORK }}\${{ env.ARCH }}\publish\*
       - name: Upload Artifact
-        run: curl -u "${{env.DAV_USER}}:${{env.DAV_PASS}}" -X PUT ${{env.DAV_SERVER}}/${{env.PROJECT_NAME}}/SoundSwitch-${{env.GITHUB_REF_SLUG}}.zip --upload-file SoundSwitch-${{env.GITHUB_REF_SLUG}}.zip
+        run: curl -u "${{env.DAV_USER}}:${{env.DAV_PASS}}" -X PUT ${{env.DAV_SERVER}}/${{env.PROJECT_NAME}}/${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip --upload-file ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip
 
   prepare-release:
       needs: build
