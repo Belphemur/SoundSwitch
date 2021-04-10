@@ -17,6 +17,7 @@ using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Model;
@@ -32,9 +33,7 @@ namespace SoundSwitch.Framework.Banner
         private Timer _timerHide;
         private bool _hiding;
         private BannerData _currentData;
-
-
-        private WasapiOut _player;
+        private CancellationTokenSource _cancellationTokenSource = new();
 
         /// <summary>
         /// Constructor for the <see cref="BannerForm"/> class
@@ -113,18 +112,16 @@ namespace SoundSwitch.Framework.Banner
         /// <param name="data"></param>
         private void PrepareSound(BannerData data)
         {
-            _player = new WasapiOut();
-            var task = new Task(() =>
-            {
-                using var waveStream = new CachedSoundWaveStream(data.SoundFile);
-                _player.Init(waveStream);
-                _player.Play();
-                while (_player.PlaybackState == PlaybackState.Playing)
-                {
-                    Thread.Sleep(500);
-                }
-            });
-            task.Start();
+            var cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(_cancellationTokenSource.Token);
+            Task.Factory.StartNew(async () => {
+                using var player = data.CurrentDevice == null ? new WasapiOut() : new WasapiOut(data.CurrentDevice, AudioClientShareMode.Shared, true, 200);
+                await using var waveStream = new CachedSoundWaveStream(data.SoundFile);
+                player.Init(waveStream);
+                
+                player.PlaybackStopped += (_, _) => cancellationTokenSource.Cancel();
+                player.Play();
+                await Task.Delay(-1, cancellationTokenSource.Token);
+            }, cancellationTokenSource.Token);
         }
 
         /// <summary>
@@ -132,14 +129,27 @@ namespace SoundSwitch.Framework.Banner
         /// </summary>
         private void DestroySound()
         {
-            if (_player != null)
-            {
-                _player.Stop();
-                _player.Dispose();
-                _player = null;
-            }
+            _cancellationTokenSource.Cancel();
+            _cancellationTokenSource.Dispose();
+            _cancellationTokenSource = new();
         }
-      
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _timerHide?.Dispose();
+                _cancellationTokenSource?.Dispose();
+                components?.Dispose();
+            }
+
+            base.Dispose(disposing);
+        }
+
 
         /// <summary>
         /// Event handler for the "hiding" timer.

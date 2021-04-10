@@ -12,13 +12,9 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System;
-using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NAudio.CoreAudioApi;
 using SoundSwitch.Framework.Audio;
 
 namespace SoundSwitch.Framework.Banner
@@ -46,7 +42,14 @@ namespace SoundSwitch.Framework.Banner
         /// <summary>
         /// Gets/sets the path for a wav sound to be playedc during the notification, this is optional.
         /// </summary>
+        [AllowNull]
         public CachedSound SoundFile { get; internal set; }
+        
+        /// <summary>
+        /// On what device to play the <see cref="CachedSound"/>
+        /// </summary>
+        [AllowNull]
+        public MMDevice CurrentDevice { get; internal set; }
 
         /// <summary>
         /// Set the priority of the notification
