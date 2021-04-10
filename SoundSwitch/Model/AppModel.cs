@@ -394,10 +394,6 @@ namespace SoundSwitch.Model
 
             try
             {
-                switch (e.HotKey)
-                {
-                    
-                }
                 if (e.HotKey == AppConfigs.Configuration.PlaybackHotKey)
                 {
                     CycleActiveDevice(DataFlow.Render);
