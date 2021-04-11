@@ -35,19 +35,7 @@
               "type": "boost",
               "release": "patch"
             }
-          ],
-          "presetConfig": {
-            "types": [
-              {
-                "type": "boost",
-                "section": "Enhancements"
-              },
-              {
-                "type": "lang",
-                "section": "Languages"
-              }
-            ]
-          }
+          ]
         }
       ],
       [
@@ -63,6 +51,14 @@
               {
                 "type": "lang",
                 "section": "Languages"
+              },
+              {
+                "type": "fix",
+                "section": "Bug Fixes"
+              },
+              {
+                "type": "feat",
+                "section": "Features"
               }
             ]
           }
