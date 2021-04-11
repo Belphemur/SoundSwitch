@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Linq;
+using Serilog;
 using SoundSwitch.Framework.Factory;
 using SoundSwitch.Localization.Factory.Lang;
 
@@ -38,8 +39,15 @@ namespace SoundSwitch.Localization.Factory
         public Language GetWindowsLanguage()
         {
             var uiLang = CultureInfo.CurrentUICulture;
-
-            return AllImplementations.Values.Where(value => value.CultureInfo.Equals(uiLang)).Select(value => value.TypeEnum).FirstOrDefault();
+            try
+            {
+                return AllImplementations.Values.Where(value => value.CultureInfo.Equals(uiLang)).Select(value => value.TypeEnum).FirstOrDefault();
+            }
+            catch (CultureNotFoundException e)
+            {
+                Log.Error(e,"Couldn't find the language @{lang}", uiLang);
+                return Language.English;
+            }
         }
     }
 }

@@ -37,11 +37,16 @@ jobs:
         run: dotnet restore
       - name: Build
         run: dotnet build -c Release --no-restore ${{env.PROJECT_NAME}}/${{env.PROJECT_NAME}}.csproj
+      - name: Test
+        run: dotnet test -c Release --no-restore  --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}"
+      - name: Upload test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: dotnet-results-${{ matrix.dotnet-version }}
+          path: TestResults-${{ matrix.dotnet-version }}
+        # Use always() to always run this step to publish test results when there are test failures
+        if: ${{ always() }}
   prerelease:
-    env:
-      DAV_USER: ${{secrets.DAV_USER}}
-      DAV_PASS: ${{secrets.DAV_PASS}}
-      DAV_SERVER: "https://nc.aaflalo.me/remote.php/dav/files"
     needs: build
     if: github.ref == 'refs/heads/dev'
     runs-on: windows-latest
@@ -69,6 +74,10 @@ jobs:
         run: tar cafv ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip -C ${{ env.PROJECT_NAME }}\bin\Release\${{ env.FRAMEWORK }}\${{ env.ARCH }}\publish\ *
       - name: Upload Artifact
         run: curl -u "${{env.DAV_USER}}:${{env.DAV_PASS}}" -X PUT ${{env.DAV_SERVER}}/${{env.DAV_USER}}/${{env.PROJECT_NAME}}/${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip --upload-file ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip
+        env:
+          DAV_USER: ${{secrets.DAV_USER}}
+          DAV_PASS: ${{secrets.DAV_PASS}}
+          DAV_SERVER: "https://nc.aaflalo.me/remote.php/dav/files"
 
   prepare-release:
       needs: build

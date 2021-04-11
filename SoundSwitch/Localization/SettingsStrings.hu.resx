@@ -391,4 +391,13 @@ Szeretnéd most újraindítani a programot?</value>
   <data name="recording" xml:space="preserve">
     <value>Felvétel</value>
   </data>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>Némítás állítása</value>
+  </data>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>{0} némítás kikapcsolva.</value>
+  </data>
+  <data name="notification.microphone.muted" xml:space="preserve">
+    <value>{0} némítva.</value>
+  </data>
 </root>
