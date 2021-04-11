@@ -268,6 +268,7 @@ namespace SoundSwitch.UI.Forms
             this.profilesListView.OwnerDraw = true;
             this.profilesListView.ShowGroups = false;
             this.profilesListView.Size = new System.Drawing.Size(818, 294);
+            this.profilesListView.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.profilesListView.TabIndex = 2;
             this.profilesListView.UseCompatibleStateImageBehavior = false;
             this.profilesListView.View = System.Windows.Forms.View.Details;
