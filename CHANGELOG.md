@@ -1,3 +1,29 @@
+### [5.8.3](https://github.com/Belphemur/SoundSwitch/compare/v5.8.2...v5.8.3) (2021-04-11)
+
+
+### Bug Fixes
+
+* **Czech:** Fix recognition of the Czech language ([c4faedc](https://github.com/Belphemur/SoundSwitch/commit/c4faedcd2b6f926c6221b9803bca12ffba6b2b9b)), closes [#586](https://github.com/Belphemur/SoundSwitch/issues/586) [#590](https://github.com/Belphemur/SoundSwitch/issues/590)
+* **language:** Use the native name of the language ([7f3b18d](https://github.com/Belphemur/SoundSwitch/commit/7f3b18d808a307ddbbb4576987975ee116ddc11b))
+* **UI::Profile:** Add proper sorting ([7a8e8fb](https://github.com/Belphemur/SoundSwitch/commit/7a8e8fb0bc76b0654e02c536bf5b52968d89d3dc)), closes [#589](https://github.com/Belphemur/SoundSwitch/issues/589)
+* **UI::Profile:** Possible issue with profile UI ([e795ef1](https://github.com/Belphemur/SoundSwitch/commit/e795ef1e377a66e5cb6372ad96b73cc2eaf2b64c))
+
+
+### Languages
+
+* **Hungarian:** Translated Settings using Weblate ([b206a75](https://github.com/Belphemur/SoundSwitch/commit/b206a754854c2df3509be2e9bb59413bc5368704))
+* **Portuguese (Brazil):** Translated About using Weblate ([1d20c9f](https://github.com/Belphemur/SoundSwitch/commit/1d20c9fbf62ab17da19bdc7cd7d64b80e1fddbb4))
+* **Portuguese (Brazil):** Translated Settings using Weblate ([94054bd](https://github.com/Belphemur/SoundSwitch/commit/94054bde5e03ec51c08a11dbcecb89b0881d3bd6))
+* **Turkish:** Add UpdateDownload ([dc5d85d](https://github.com/Belphemur/SoundSwitch/commit/dc5d85d3a329e0adea3dfe3c625854d3d4741c44))
+* **Turkish:** Added About translation using Weblate ([ae15091](https://github.com/Belphemur/SoundSwitch/commit/ae15091a678b2f27de1bff1a31caea3439bea971))
+* **Turkish:** Added Settings translation using Weblate ([69c939a](https://github.com/Belphemur/SoundSwitch/commit/69c939a9624528b122ebd75fca31d5f6ecf9ab3e))
+* **Turkish:** Added Tray Icon translation using Weblate ([1cdb817](https://github.com/Belphemur/SoundSwitch/commit/1cdb81761dba046bf569b1ae8e3a2e6242ac259d))
+
+
+### Tests
+
+* **Language:** Add test to check the language ([2a08afe](https://github.com/Belphemur/SoundSwitch/commit/2a08afe62025e20c82c4aca5547b46d69884820f))
+
 ### [5.8.2](https://github.com/Belphemur/SoundSwitch/compare/v5.8.1...v5.8.2) (2021-04-11)
 
 
