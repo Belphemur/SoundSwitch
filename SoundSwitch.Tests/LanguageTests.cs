@@ -18,7 +18,7 @@ namespace SoundSwitch.Tests
             {
                 foreach (var lang in langFactory.AllImplementations.Values)
                 {
-                    var _ = lang.CultureInfo;
+                    var _ = lang.Label;
                 }
             });
         }
