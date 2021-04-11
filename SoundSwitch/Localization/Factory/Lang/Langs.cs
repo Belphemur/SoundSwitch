@@ -195,7 +195,7 @@ namespace SoundSwitch.Localization.Factory.Lang
         /// <summary>
         /// Culture info of this language
         /// </summary>
-        public CultureInfo CultureInfo => CultureInfo.GetCultureInfo("cz");
+        public CultureInfo CultureInfo => CultureInfo.GetCultureInfo("cs");
 
         public Language TypeEnum => Language.Czech;
         public string Label => "Čeština";
