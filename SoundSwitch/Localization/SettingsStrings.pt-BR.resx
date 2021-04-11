@@ -136,7 +136,7 @@
 		<value>Configurações</value>
   </data>
   <data name="hotkeys" xml:space="preserve">
-		<value>Atalho</value>
+		<value>Atalhos</value>
   </data>
   <data name="communicationsDevice" xml:space="preserve">
 		<value>Trocar dispositivo de comunicação padrão</value>
@@ -160,16 +160,16 @@
 		<value>Incluir versões Beta</value>
   </data>
   <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
-		<value>Quando marcado, o SoundSwitch irá buscar por versões Beta no GitHub.</value>
+		<value>Quando marcado, o SoundSwitch irá procurar por versões beta no GitHub.</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
 		<value>Arquivos de Áudio</value>
   </data>
   <data name="selectSoundButtonTooltip" xml:space="preserve">
-		<value>Seleciona um arquivo de som para a notificação</value>
+		<value>Selecione o arquivo de áudio para a notificação</value>
   </data>
   <data name="hotkeysTooltip" xml:space="preserve">
-		<value>Marcar para habilitar atalho.</value>
+		<value>Marque para habilitar atalhos.</value>
   </data>
   <data name="basicSettings" xml:space="preserve">
 		<value>Configurações Básicas</value>
