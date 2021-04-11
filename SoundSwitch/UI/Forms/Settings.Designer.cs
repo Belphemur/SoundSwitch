@@ -263,11 +263,11 @@ namespace SoundSwitch.UI.Forms
             | System.Windows.Forms.AnchorStyles.Right)));
             this.profilesListView.FullRowSelect = true;
             this.profilesListView.HideSelection = false;
-            this.profilesListView.Location = new System.Drawing.Point(6, 3);
+            this.profilesListView.Location = new System.Drawing.Point(3, 3);
             this.profilesListView.Name = "profilesListView";
             this.profilesListView.OwnerDraw = true;
             this.profilesListView.ShowGroups = false;
-            this.profilesListView.Size = new System.Drawing.Size(819, 294);
+            this.profilesListView.Size = new System.Drawing.Size(818, 294);
             this.profilesListView.TabIndex = 2;
             this.profilesListView.UseCompatibleStateImageBehavior = false;
             this.profilesListView.View = System.Windows.Forms.View.Details;
@@ -665,8 +665,6 @@ namespace SoundSwitch.UI.Forms
 
         private System.Windows.Forms.CheckBox usePrimaryScreenCheckbox;
         private System.Windows.Forms.Label toggleMuteLabel;
-        private Component.HotKeyTextBox hotKeyTextBox1;
-        private System.Windows.Forms.CheckBox checkBox1;
         private Component.HotKeyTextBox muteHotKey;
         private System.Windows.Forms.CheckBox muteHotKeyCheckbox;
     }
