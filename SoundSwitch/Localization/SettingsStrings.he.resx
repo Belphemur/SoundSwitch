@@ -90,7 +90,7 @@
     <value>הקובץ שבחרת עבור ההודעות לא נמצא. SoundSwitch החליף את צליל ההודעה בחזרה אל {0}.</value>
   </data>
   <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-    <value>ללא תיאור כלים</value>
+    <value>ללא הצגת טיפים</value>
   </data>
   <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
     <value>עבור שני ההתקנים</value>
@@ -102,26 +102,26 @@
     <value>התקן שמע</value>
   </data>
   <data name="notificationTooltip" xml:space="preserve">
-    <value>הודעות ווינדוס: הודעות באמצעות מגש המשימות.
-הודעות קוליות: ינוגן צליל בהתקן אליו הוחלף השמע.
-הודעות קוליות מותאמות אישית: ינוגן צליל שנבחר בהתקן אליו הוחלף השמע.
-הודעות צפות: הודעות צפות מעל מגש המשימות.
-באנר: ההודעות יופיעו מעל הכל, שימושי בזמן משחק.</value>
+    <value>התראת מערכת הפעלה: הודעה סטנדרטית באמצעות מגש המשימות של Windows.
+צליל התראה: ינוגן צליל בעת החלפת התקן השמע.
+התראה קולית מותאמת אישית: ינוגן צליל שהוגדר על ידי המשתמש בעת החלפת התקן השמע.
+הודעות צפות: תופיע הודעה צפה ייחודית מעל מגש המשימות של Windows.
+באנר: ההודעות יופיעו תמיד בקדמת המסך, שימושי בזמן משחקים.</value>
   </data>
   <data name="notificationOptionCustomized" xml:space="preserve">
-    <value>הודעות קוליות מותאמות אישית</value>
+    <value>התראה קולית מותאמת אישית</value>
   </data>
   <data name="notificationOptionSound" xml:space="preserve">
-    <value>הודעות קוליות</value>
+    <value>צליל התראה</value>
   </data>
   <data name="notificationOptionToast" xml:space="preserve">
     <value>הודעות צפות</value>
   </data>
   <data name="notificationOptionNone" xml:space="preserve">
-    <value>ללא הודעות</value>
+    <value>ללא התראה</value>
   </data>
   <data name="notificationOptionWindowsDefault" xml:space="preserve">
-    <value>הודעות ווינדוס</value>
+    <value>התראת מערכת הפעלה</value>
   </data>
   <data name="cycleThroughTooltip" xml:space="preserve">
     <value>בחר בין אילו התקנים להחליף. בין ההתקנים שנבחרו או בין כולם.</value>
@@ -136,13 +136,13 @@
     <value>הקלטה</value>
   </data>
   <data name="tooltipOnHover" xml:space="preserve">
-    <value>הצג תיאור כלים</value>
+    <value>הצגת טיפים בעמידה מעל עם העכבר</value>
   </data>
   <data name="updateNever" xml:space="preserve">
-    <value>אל תחפש עדכונים</value>
+    <value>אל תבדוק אם קיימים עדכונים</value>
   </data>
   <data name="updateNotify" xml:space="preserve">
-    <value>הודיע לי כאשר ישנם עדכונים זמינים</value>
+    <value>הודע לי כאשר ישנם עדכונים זמינים</value>
   </data>
   <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
     <value>עדכונים מותקנים אוטומטית.</value>
@@ -166,7 +166,7 @@
     <value>עבור בין</value>
   </data>
   <data name="updateSettings" xml:space="preserve">
-    <value>הגדרות עדכון תוכנה</value>
+    <value>הגדרות עדכוני תוכנה</value>
   </data>
   <data name="audioSettings" xml:space="preserve">
     <value>הגדרות שמע</value>
@@ -199,7 +199,7 @@
     <value>התחל אוטומטית עם ווינדוס</value>
   </data>
   <data name="communicationsDevice" xml:space="preserve">
-    <value>החלף את התקן התקשורת ברירת מחדל</value>
+    <value>בעת החלפה, החלף גם את התקן התקשורת ברירת-מחדל</value>
   </data>
   <data name="hotkeys" xml:space="preserve">
     <value>קיצור דרך</value>
@@ -208,7 +208,7 @@
     <value>הגדרות</value>
   </data>
   <data name="playback" xml:space="preserve">
-    <value>השמעה</value>
+    <value>שמע</value>
   </data>
   <data name="disconnected" xml:space="preserve">
     <value>מנותק</value>
@@ -243,7 +243,7 @@
 שחזר את מצב המערכת כאשר האפליקציה נסגרת.</value>
   </data>
   <data name="profile.trigger.restoreDevices" xml:space="preserve">
-    <value>שחזר את ההתקנים כאשר הטריגר מסתיים</value>
+    <value>שחזר את המצב הקודם כאשר הטריגר להפעלה חולף (למשל כאשר התוכנה שהוגדרה נסגרת)</value>
   </data>
   <data name="usePrimaryScreenTooltip" xml:space="preserve">
     <value>הצג את הבאנר על המסך הראשי במקום במסך שבשימוש.</value>
@@ -267,7 +267,7 @@
     <value>פרופיל {0} מופעל</value>
   </data>
   <data name="profile.notify-on-activation" xml:space="preserve">
-    <value>התראה כאשר הפרופיל מופעל</value>
+    <value>הצג התראה כאשר הפרופיל מופעל</value>
   </data>
   <data name="profile.error.window" xml:space="preserve">
     <value>כבר יש פרופיל עם שם חלונות {0}.</value>
@@ -315,7 +315,7 @@
     <value>התקן {0} לא נמצא.</value>
   </data>
   <data name="hotkeyEnabled" xml:space="preserve">
-    <value>קיצור מקשים הופעל</value>
+    <value>קיצור מקשים פעיל</value>
   </data>
   <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
     <value>כאשר האפליקציה מזוהה, Soundswitch ישנה גם את התקן ברירת המחדל.</value>
@@ -395,7 +395,7 @@
     <value>החלף את השמע גם של אפליקציה שבשימוש כעת. שימושי עבור משחקי מחשב.</value>
   </data>
   <data name="foregroundApp" xml:space="preserve">
-    <value>החלף גם את התוכנה שבחזית</value>
+    <value>בעת החלפה, החלף גם את התקן השמע של התוכנה שבחזית המסך</value>
   </data>
   <data name="disableCustomSoundTooltip" xml:space="preserve">
     <value>נטרל את צליל ברירת המחדל שנבחר.</value>
