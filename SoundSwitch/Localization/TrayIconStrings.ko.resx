@@ -62,7 +62,7 @@
     <value>녹음</value>
   </data>
   <data name="playbackChanged" xml:space="preserve">
-    <value>SoundSwitch: 재생장치 전환</value>
+    <value>SoundSwitch: 재생 장치가 다음으로 전환됨</value>
   </data>
   <data name="versionAvailable" xml:space="preserve">
     <value>SoundSwitch ({0}) 에 대한 업데이트가 가능합니다.</value>
@@ -71,10 +71,10 @@
     <value>재생</value>
   </data>
   <data name="recordingChanged" xml:space="preserve">
-    <value>SoundSwitch: 녹음장치 전환</value>
+    <value>SoundSwitch: 녹음장치가 다음으로 전환됨</value>
   </data>
   <data name="updateAvailable" xml:space="preserve">
-    <value>업데이트 사용 가능 ({0})</value>
+    <value>사용 가능한 업데이트 ({0})</value>
   </data>
   <data name="help" xml:space="preserve">
     <value>도움말</value>
@@ -83,16 +83,16 @@
     <value>종료</value>
   </data>
   <data name="configurationNeeded" xml:space="preserve">
-    <value>SoundSwitch: 필요 환경설정</value>
+    <value>SoundSwitch: 구성이 필요합니다</value>
   </data>
   <data name="noDevicesSelected" xml:space="preserve">
-    <value>선택된 장치 없음</value>
+    <value>선택한 장치가 없습니다</value>
   </data>
   <data name="about" xml:space="preserve">
-    <value>SoundSwitch에 대하여</value>
+    <value>SoundSwitch 정보</value>
   </data>
   <data name="configurationNeededExplanation" xml:space="preserve">
-    <value>전환 가능한 장치가 없습니다. 아이콘을 오른쪽 클릭하여 구성을 여세요.</value>
+    <value>전환할 수 있는 장치가 없습니다. 아이콘을 마우스 오른쪽 버튼으로 클릭하여 구성을 엽니다.</value>
   </data>
   <data name="iconChanger.none" xml:space="preserve">
     <value>기본값</value>
@@ -101,7 +101,7 @@
     <value>오류</value>
   </data>
   <data name="noUpdate" xml:space="preserve">
-    <value>사용 가능 업데이트가 없음</value>
+    <value>사용할 수 있는 업데이트가 없습니다</value>
   </data>
   <data name="donate" xml:space="preserve">
     <value>기부</value>
@@ -110,13 +110,13 @@
     <value>설정</value>
   </data>
   <data name="mixer" xml:space="preserve">
-    <value>볼륨 믹서</value>
+    <value>믹서</value>
   </data>
   <data name="clickToUpdate" xml:space="preserve">
-    <value>업데이트 하려면 클릭하세요.</value>
+    <value>업데이트하려면 여기를 클릭하십시오.</value>
   </data>
   <data name="playbackDevices" xml:space="preserve">
-    <value>재생장치</value>
+    <value>재생 장치</value>
   </data>
   <data name="iconChanger.both" xml:space="preserve">
     <value>모두</value>
@@ -125,6 +125,6 @@
 		<value>커뮤니티</value>
   </data>
   <data name="updateDisabled" xml:space="preserve">
-    <value>업데이트 확인 비활성화</value>
+    <value>업데이트 확인 사용 안 함</value>
   </data>
 </root>
