@@ -71,7 +71,7 @@
     <value>로고 제작</value>
   </data>
   <data name="defaultPlaybackDeviceChange" xml:space="preserve">
-    <value>기본 재생장치 변경</value>
+    <value>기본 재생 장치 변경</value>
   </data>
   <data name="keyboardHotkeys" xml:space="preserve">
     <value>키보드 단축키 시스템</value>
