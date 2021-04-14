@@ -120,7 +120,7 @@
     <value>녹음</value>
   </data>
   <data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
-    <value>녹음장치</value>
+    <value>녹음 장치</value>
   </data>
   <data name="selected" xml:space="preserve">
     <value>선택됨</value>
@@ -138,7 +138,7 @@
     <value>이 옵션을 선택하면 '기본 재생 장치'가 변경될 때 시스템 트레이 아이콘이 변경되지 않습니다.</value>
   </data>
   <data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
-    <value>재생장치</value>
+    <value>재생 장치</value>
   </data>
   <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
     <value>업데이트는 프롬프트 없이 자동으로 설치됩니다.</value>
@@ -171,13 +171,13 @@
     <value>사용 가능한 새 업데이트가 있으면 SoundSwitch가 알려줍니다. 알림을 클릭하면 업데이트를 다운로드하고 설치할지 묻는 팝업이 나타납니다.</value>
   </data>
   <data name="hotkeysTooltip" xml:space="preserve">
-    <value>핫키를 사용하려면 선택합니다.</value>
+    <value>단축키를 사용하려면 선택합니다.</value>
   </data>
   <data name="selectSoundButtonTooltip" xml:space="preserve">
     <value>알림의 사운드 파일을 선택</value>
   </data>
   <data name="communicationsDeviceTooltip" xml:space="preserve">
-    <value>이 옵션을 선택하면 '기본 통신 장치'와 '기본 재생 장치'가 함께 전환됩니다(예: Skype, TeamSpeak에 유용함).</value>
+    <value>이 옵션을 선택하면 '기본 통신 장치'와 '기본 재생 장치'가 함께 전환됩니다 (예: Skype, TeamSpeak에 유용함).</value>
   </data>
   <data name="playback" xml:space="preserve">
     <value>재생</value>
@@ -214,12 +214,12 @@
     <value>오디오 설정</value>
   </data>
   <data name="iconChange.tooltip" xml:space="preserve">
-    <value>SoundSwitch의 트레이 아이콘을 언제 변경할 지 선택합니다.
+    <value>SoundSwitch의 트레이 아이콘이 변경되는 시점을 선택합니다.
 
-기본값: 변경하지 않습니다. SoundSwitch 아이콘을 유지합니다.
-재생: 재생 장치가 전환 될 때.
-녹음: 녹음 장치가 전환 될 때.
-둘 다: 모든 유형의 장치가 전환될 때 변경됩니다.</value>
+기본값: 변경하지 않음. SoundSwitch 아이콘을 유지.
+재생: 재생 장치가 전환될 때.
+녹음: 녹음 장치가 전환될 때.
+모두: 모든 유형의 장치가 전환될 때 변경.</value>
   </data>
   <data name="notificationOptionBanner" xml:space="preserve">
     <value>배너</value>
@@ -234,7 +234,7 @@
     <value>Windows에서 자동으로 시작</value>
   </data>
   <data name="hotkeys" xml:space="preserve">
-    <value>핫키</value>
+    <value>단축키</value>
   </data>
   <data name="tooltipOnHoverOptionNone" xml:space="preserve">
     <value>도구 설명 안함</value>
@@ -252,7 +252,7 @@
     <value>이름</value>
   </data>
   <data name="profile.error.hotkey" xml:space="preserve">
-    <value>이 핫키 {0}은(는) 이미 등록되어 있습니다.</value>
+    <value>이 단축키 {0}은(는) 이미 등록되어 있습니다.</value>
   </data>
   <data name="profile.error.application" xml:space="preserve">
     <value>이 응용프로그램 {0}에 연결된 프로필이 이미 있습니다.</value>
@@ -261,7 +261,7 @@
     <value>이름이 {0}인 프로파일이 이미 있습니다.</value>
   </data>
   <data name="profile.error.needHKOrPath" xml:space="preserve">
-    <value>핫키 또는/및 응용프로그램을 설정해야 합니다.</value>
+    <value>단축키 또는/및 응용프로그램을 설정해야 합니다.</value>
   </data>
   <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
     <value>재생 또는 녹음 장치를 설정해야 합니다.</value>
@@ -270,10 +270,10 @@
     <value>특정 응용프로그램이 시작되거나 집중될 때 특정 재생 또는 녹음 장치로 전환하려면 프로필을 추가하십시오.</value>
   </data>
   <data name="profile.error.registerHotkeys" xml:space="preserve">
-    <value>다음 프로필에 대한 핫키를 등록할 수 없습니다: {0}</value>
+    <value>다음 프로필에 대한 단축키를 등록할 수 없습니다: {0}</value>
   </data>
   <data name="profile.error.registerHotkeys.title" xml:space="preserve">
-    <value>이미 사용된 핫키입니다</value>
+    <value>이미 사용된 단축키입니다</value>
   </data>
   <data name="profile.feature.add" xml:space="preserve">
     <value>프로필 추가</value>
@@ -306,13 +306,13 @@
     <value>{0} 장치를 찾을 수 없습니다.</value>
   </data>
   <data name="hotkeyEnabled" xml:space="preserve">
-    <value>핫키 사용</value>
+    <value>단축키 사용</value>
   </data>
   <data name="profile.trigger.window" xml:space="preserve">
     <value>프로그램 이름</value>
   </data>
   <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>프로필을 활성화하는데 사용되는 핫키</value>
+    <value>프로필을 활성화하는데 사용되는 단축키</value>
   </data>
   <data name="profile.trigger.steam.desc" xml:space="preserve">
     <value>스팀 Big Picture가 감지되면 활성화합니다. (Big Picture가 닫히면 상태가 복원됩니다.)</value>
