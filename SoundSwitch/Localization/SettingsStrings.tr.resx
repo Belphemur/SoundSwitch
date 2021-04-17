@@ -86,7 +86,7 @@
     <value>Bildirim</value>
   </data>
   <data name="communicationsDeviceTooltip" xml:space="preserve">
-    <value>Seçili olduğunda hem 'Varsayılan çıkış cihazı' hem de 'Varsayılan iletişim cihazı' değiştirilir (Skype, TeamSpeak vb. uygulamalar için faydalı).</value>
+    <value>Seçili olduğunda hem 'Varsayılan çıkış' hem de 'Varsayılan iletişim' cihazı değiştirilir (Skype, TeamSpeak vb. uygulamalar için faydalı).</value>
   </data>
   <data name="closeTooltip" xml:space="preserve">
     <value>Değişiklikler otomatik olarak kaydedilir</value>
@@ -120,5 +120,17 @@
   </data>
   <data name="selected" xml:space="preserve">
     <value>Seçili</value>
+  </data>
+  <data name="updateNever" xml:space="preserve">
+    <value>Güncellemeleri kontrol etme</value>
+  </data>
+  <data name="updateNotify" xml:space="preserve">
+    <value>Güncelleme mevcut olduğunda bildiri ver</value>
+  </data>
+  <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
+    <value>Güncellemeler kullanıcıya bildiri vermeden otomatik olarak yüklenir.</value>
+  </data>
+  <data name="updateInstallAutomatically" xml:space="preserve">
+    <value>Güncellemeleri otomatik olarak yükle</value>
   </data>
 </root>
