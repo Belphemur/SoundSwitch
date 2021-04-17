@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using RailSharp;
-using Serilog.Formatting.Compact;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Profile.Trigger;
@@ -17,19 +15,19 @@ namespace SoundSwitch.UI.Forms
 {
     public partial class UpsertProfileExtended : Form
     {
-        private readonly Profile        _profile;
-        private readonly Profile        _oldProfile;
-        private readonly SettingsForm   _settingsForm;
-        private readonly bool           _editing;
+        private readonly Profile _profile;
+        private readonly Profile _oldProfile;
+        private readonly SettingsForm _settingsForm;
+        private readonly bool _editing;
         private readonly TriggerFactory _triggerFactory;
-        private          ToolTip        _restoreDeviceToolTip;
+        private ToolTip _restoreDeviceToolTip;
 
         public UpsertProfileExtended(Profile profile, IEnumerable<DeviceFullInfo> playbacks, IEnumerable<DeviceFullInfo> recordings, SettingsForm settingsForm, bool editing = false)
         {
-            _oldProfile     = editing ? profile : null;
-            _profile        = editing ? profile.Copy() : profile;
-            _settingsForm   = settingsForm;
-            _editing        = editing;
+            _oldProfile = editing ? profile : null;
+            _profile = editing ? profile.Copy() : profile;
+            _settingsForm = settingsForm;
+            _editing = editing;
             _triggerFactory = new TriggerFactory();
             InitializeComponent();
 
@@ -75,7 +73,7 @@ namespace SoundSwitch.UI.Forms
                     .Select(info => new IconTextComboBox.DropDownItem
                         {
                             Icon = info.SmallIcon,
-                            Tag  = info,
+                            Tag = info,
                             Text = info.NameClean
                         }
                     ).ToArray();
@@ -87,12 +85,12 @@ namespace SoundSwitch.UI.Forms
                                 .Select(info => new IconTextComboBox.DropDownItem
                                     {
                                         Icon = info.SmallIcon,
-                                        Tag  = info,
+                                        Tag = info,
                                         Text = info.NameClean
                                     }
                                 ).ToArray();
             communicationComboBox.DataSource = playbackItems;
-            playbackComboBox.DataSource      = playbackItems.ToArray();
+            playbackComboBox.DataSource = playbackItems.ToArray();
 
             communicationComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(Profile.Communication), false, DataSourceUpdateMode.OnPropertyChanged);
             recordingComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(Profile.Recording), false, DataSourceUpdateMode.OnPropertyChanged);
@@ -101,26 +99,26 @@ namespace SoundSwitch.UI.Forms
 
         private void LocalizeForm()
         {
-            descriptionBox.Text        = SettingsStrings.profile_desc;
+            descriptionBox.Text = SettingsStrings.profile_desc;
             availableTriggersText.Text = SettingsStrings.profile_trigger_available;
-            activeTriggerLabel.Text    = SettingsStrings.profile_trigger_actives;
+            activeTriggerLabel.Text = SettingsStrings.profile_trigger_actives;
 
-            recordingLabel.Text         = SettingsStrings.recording;
-            playbackLabel.Text          = SettingsStrings.playback;
-            communicationLabel.Text     = SettingsStrings.communication;
-            Text                        = SettingsStrings.profile_feature_add;
-            selectProgramDialog.Filter  = $@"{SettingsStrings.profile_feature_executable}|*.exe";
-            nameLabel.Text              = SettingsStrings.profile_name;
-            notifyCheckbox.Text         = SettingsStrings.profile_notify_on_activation;
-            switchDefaultCheckBox.Text  = SettingsStrings.profile_defaultDevice_checkbox;
-            saveButton.Text             = SettingsStrings.profile_button_save;
+            recordingLabel.Text = SettingsStrings.recording;
+            playbackLabel.Text = SettingsStrings.playback;
+            communicationLabel.Text = SettingsStrings.communication;
+            Text = SettingsStrings.profile_feature_add;
+            selectProgramDialog.Filter = $@"{SettingsStrings.profile_feature_executable}|*.exe";
+            nameLabel.Text = SettingsStrings.profile_name;
+            notifyCheckbox.Text = SettingsStrings.profile_notify_on_activation;
+            switchDefaultCheckBox.Text = SettingsStrings.profile_defaultDevice_checkbox;
+            saveButton.Text = SettingsStrings.profile_button_save;
             restoreDevicesCheckBox.Text = SettingsStrings.profile_trigger_restoreDevices;
 
             new ToolTip().SetToolTip(switchDefaultCheckBox, SettingsStrings.profile_defaultDevice_checkbox_tooltip);
 
             _restoreDeviceToolTip = new ToolTip();
             _restoreDeviceToolTip.SetToolTip(
-                restoreDevicesCheckBox, 
+                restoreDevicesCheckBox,
                 string.Format(SettingsStrings.profile_trigger_restoreDevices_desc, SettingsStrings.profile_defaultDevice_checkbox)
             );
         }
@@ -179,10 +177,10 @@ namespace SoundSwitch.UI.Forms
 
             HideTriggerComponents();
 
-            var trigger           = (Trigger) setTriggerBox.SelectedItem;
+            var trigger = (Trigger) setTriggerBox.SelectedItem;
             var triggerDefinition = _triggerFactory.Get(trigger.Type);
             descriptionLabel.Text = $@"{triggerDefinition.Description} (Max: {(triggerDefinition.MaxGlobalOccurence == -1 ? "∞" : triggerDefinition.MaxGlobalOccurence.ToString())})";
-            triggerLabel.Text     = triggerDefinition.Label;
+            triggerLabel.Text = triggerDefinition.Label;
             descriptionLabel.Show();
             triggerLabel.Show();
 
@@ -213,7 +211,8 @@ namespace SoundSwitch.UI.Forms
                     textInput.DataBindings.Clear();
                     textInput.DataBindings.Add(nameof(TextBox.Text), trigger, nameof(Trigger.WindowName), true, DataSourceUpdateMode.OnPropertyChanged);
                     textInput.Show();
-                });
+                },
+                () => { });
         }
 
         private void HideTriggerComponents()

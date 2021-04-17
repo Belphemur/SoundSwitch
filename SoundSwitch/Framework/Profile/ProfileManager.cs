@@ -76,7 +76,8 @@ namespace SoundSwitch.Framework.Profile
                         }
 
                         SwitchAudio(profile);
-                    }, () => { _profilesByUwpApp.Add(trigger.WindowName.ToLower(), (profile, trigger)); });
+                    }, () => { _profilesByUwpApp.Add(trigger.WindowName.ToLower(), (profile, trigger)); },
+                    () => {});
             }
         }
 
@@ -92,7 +93,8 @@ namespace SoundSwitch.Framework.Profile
                     () => { _profilesByWindowName.Remove(trigger.WindowName.ToLower()); },
                     () => { _profileByApplication.Remove(trigger.ApplicationPath.ToLower()); },
                     () => { _steamProfile = null; }, () => { },
-                    () => { _profilesByUwpApp.Remove(trigger.WindowName.ToLower()); });
+                    () => { _profilesByUwpApp.Remove(trigger.WindowName.ToLower()); },
+                    () => {});
             }
         }
 
@@ -425,7 +427,7 @@ namespace SoundSwitch.Framework.Profile
                         }
 
                         return null;
-                    });
+                    }, () => null);
                 if (error != null)
                 {
                     return error;
