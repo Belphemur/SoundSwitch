@@ -128,4 +128,8 @@ namespace SoundSwitch.Framework.Profile.Trigger
         public override string Description => SettingsStrings.profile_trigger_uwp_desc;
         public override bool AlwaysDefaultAndRestoreDevice => true;
     }
+    public class TrayMenu : BaseTrigger
+    {
+        public override string Description { get; }
+    }
 }
