@@ -37,6 +37,7 @@ namespace SoundSwitch.Localization.Factory
         Slovenian,
         Japanese,
         Hebrew,
-        Czech
+        Czech,
+        Turkish
     }
 }
