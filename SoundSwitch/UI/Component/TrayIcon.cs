@@ -166,15 +166,15 @@ namespace SoundSwitch.UI.Component
             Debug.Assert(applicationDirectory != null, "applicationDirectory != null");
             var readmeHtml = Path.Combine(applicationDirectory, "Readme.html");
             _settingsMenu.Items.Add(Application.ProductName + ' ' + AssemblyUtils.GetReleaseState() + " (" + Application.ProductVersion + ")", SoundSwitchLogoIcon.ToBitmap());
-            _settingsMenu.Items.Add("-");
+            _settingsMenu.Items.Add(new ToolStripSeparator());
             _settingsMenu.Items.Add(TrayIconStrings.playbackDevices, RessourcePlaybackDevicesBitmap,
                 (sender, e) => { Process.Start(new ProcessStartInfo("control", "mmsys.cpl sounds")); });
             _settingsMenu.Items.Add(TrayIconStrings.mixer, RessourceMixerBitmap,
                 (sender, e) => { Process.Start(new ProcessStartInfo("sndvol.exe")); });
-            _settingsMenu.Items.Add("-");
+            _settingsMenu.Items.Add(new ToolStripSeparator());
             _settingsMenu.Items.Add(_updateMenuItem);
             _settingsMenu.Items.Add(TrayIconStrings.settings, RessourceSettingsSmallBitmap, (sender, e) => ShowSettings());
-            _settingsMenu.Items.Add("-");
+            _settingsMenu.Items.Add(new ToolStripSeparator());
             _settingsMenu.Items.Add(TrayIconStrings.help, RessourceInfoHelpBitmap, (sender, e) =>
             {
                 if (!File.Exists(readmeHtml))
@@ -192,7 +192,7 @@ namespace SoundSwitch.UI.Component
             _settingsMenu.Items.Add(TrayIconStrings.donate, ResourceDonateBitmap,
                 (sender, e) => BrowserUtil.OpenUrl($"https://soundswitch.aaflalo.me/?utm_campaign=application&utm_source={Application.ProductVersion}#donate"));
             _settingsMenu.Items.Add(TrayIconStrings.about, RessourceHelpSmallBitmap, (sender, e) => new About().Show());
-            _settingsMenu.Items.Add("-");
+            _settingsMenu.Items.Add(new ToolStripSeparator());
             _settingsMenu.Items.Add(TrayIconStrings.exit, RessourceExitBitmap, (sender, e) => Application.Exit());
         }
 
@@ -325,7 +325,7 @@ namespace SoundSwitch.UI.Component
 
             if (recordingDevices.Count > 0)
             {
-                _selectionMenu.Items.Add("-");
+                _selectionMenu.Items.Add(new ToolStripSeparator());
                 foreach (var item in recordingDevices)
                 {
                     _selectionMenu.Items.Add(new ToolStripDeviceItem(DeviceClicked, item));
