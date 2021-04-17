@@ -838,6 +838,24 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to In the app menu.
+        /// </summary>
+        internal static string profile_trigger_trayMenu {
+            get {
+                return ResourceManager.GetString("profile.trigger.trayMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This trigger make the profile visible in the tray icon menu. Left-click on the systray icon to see your profile..
+        /// </summary>
+        internal static string profile_trigger_trayMenu_desc {
+            get {
+                return ResourceManager.GetString("profile.trigger.trayMenu.desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Microsoft Store app.
         /// </summary>
         internal static string profile_trigger_uwp {

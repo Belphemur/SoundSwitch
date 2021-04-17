@@ -459,4 +459,10 @@ Restore the state of the system when the application is closed.</value>
   <data name="mute.toggle.label" xml:space="preserve">
     <value>Toggle mute</value>
   </data>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>In the app menu</value>
+  </data>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>This trigger make the profile visible in the tray icon menu. Left-click on the systray icon to see your profile.</value>
+  </data>
 </root>
