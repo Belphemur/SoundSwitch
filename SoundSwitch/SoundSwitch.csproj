@@ -87,6 +87,9 @@
         <EmbeddedResource Remove="Localization\SettingsStrings.pt_PT.resx" />
         <EmbeddedResource Remove="Localization\TrayIconStrings.hu.resx" />
         <EmbeddedResource Remove="Localization\UpdateDownloadStrings.hu.resx" />
+        <Compile Update="Framework\Profile\UI\ProfileToolStripMenuItem.cs">
+          <SubType>Component</SubType>
+        </Compile>
     </ItemGroup>
     <ItemGroup>
         <Compile Update="Localization\AboutStrings.Designer.cs">

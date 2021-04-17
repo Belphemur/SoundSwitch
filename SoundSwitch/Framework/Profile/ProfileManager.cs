@@ -294,7 +294,7 @@ namespace SoundSwitch.Framework.Profile
         }
 
 
-        private void SwitchAudio(Profile profile)
+        public void SwitchAudio(Profile profile)
         {
             _notificationManager.NotifyProfileChanged(profile, null);
             foreach (var device in profile.Devices)
