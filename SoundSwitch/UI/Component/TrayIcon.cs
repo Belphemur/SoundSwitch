@@ -17,6 +17,7 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
@@ -25,6 +26,7 @@ using Serilog;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
+using SoundSwitch.Framework.Profile.UI;
 using SoundSwitch.Framework.TrayIcon.Icon;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
 using SoundSwitch.Framework.Updater;
@@ -52,19 +54,20 @@ namespace SoundSwitch.UI.Component
         private static readonly Icon SoundSwitchLogoIcon = Resources.Switch_SoundWave;
         private static readonly Icon ResourceDiscord = Resources.DiscordIcon;
 
-        private readonly ContextMenuStrip _selectionMenu = new ContextMenuStrip();
-        private readonly ContextMenuStrip _settingsMenu = new ContextMenuStrip();
+        private readonly ContextMenuStrip _selectionMenu = new();
+        private readonly ContextMenuStrip _settingsMenu = new();
 
         private readonly SynchronizationContext _context =
             SynchronizationContext.Current ?? new SynchronizationContext();
 
-        public NotifyIcon NotifyIcon { get; } = new NotifyIcon
+        public NotifyIcon NotifyIcon { get; } = new()
         {
             Visible = true,
             Text = Application.ProductName
         };
 
         private readonly TooltipInfoManager _tooltipInfoManager;
+        private readonly ProfileTrayIconBuilder _profileTrayIconBuilder;
 
         private readonly ToolStripMenuItem _updateMenuItem;
         private TimerForm _animationTimer;
@@ -74,6 +77,7 @@ namespace SoundSwitch.UI.Component
         {
             UpdateIcon();
             _tooltipInfoManager = new TooltipInfoManager(NotifyIcon);
+            _profileTrayIconBuilder = new ProfileTrayIconBuilder();
 
             _updateMenuItem = new ToolStripMenuItem(AppConfigs.Configuration.UpdateMode == UpdateMode.Never ? TrayIconStrings.updateDisabled : TrayIconStrings.noUpdate, RessourceUpdateBitmap, OnUpdateClick)
             {
@@ -161,9 +165,7 @@ namespace SoundSwitch.UI.Component
             var applicationDirectory = Path.GetDirectoryName(ApplicationPath.Executable);
             Debug.Assert(applicationDirectory != null, "applicationDirectory != null");
             var readmeHtml = Path.Combine(applicationDirectory, "Readme.html");
-            _settingsMenu.Items.Add(
-                Application.ProductName + ' ' + AssemblyUtils.GetReleaseState() + " (" + Application.ProductVersion +
-                ")", SoundSwitchLogoIcon.ToBitmap());
+            _settingsMenu.Items.Add(Application.ProductName + ' ' + AssemblyUtils.GetReleaseState() + " (" + Application.ProductVersion + ")", SoundSwitchLogoIcon.ToBitmap());
             _settingsMenu.Items.Add("-");
             _settingsMenu.Items.Add(TrayIconStrings.playbackDevices, RessourcePlaybackDevicesBitmap,
                 (sender, e) => { Process.Start(new ProcessStartInfo("control", "mmsys.cpl sounds")); });
@@ -294,8 +296,20 @@ namespace SoundSwitch.UI.Component
         /// </summary>
         public void UpdateDeviceSelectionList()
         {
+            _selectionMenu.Items.Clear();
             var playbackDevices = AppModel.Instance.AvailablePlaybackDevices;
             var recordingDevices = AppModel.Instance.AvailableRecordingDevices;
+            var profiles = _profileTrayIconBuilder.GetMenuItems().ToArray();
+        
+
+            if (profiles.Length > 0)
+            {
+                var profileMenu = new ContextMenuStrip();
+                var profileMenuItem = new ToolStripMenuItem(SettingsStrings.profile_tab) {DropDown = profileMenu};
+                profileMenu.Items.AddRange(profiles);
+                _selectionMenu.Items.Add(profileMenuItem);
+                _selectionMenu.Items.Add(new ToolStripSeparator());
+            }
             if (playbackDevices.Count < 0 &&
                 recordingDevices.Count < 0)
             {
@@ -303,7 +317,6 @@ namespace SoundSwitch.UI.Component
                 return;
             }
 
-            _selectionMenu.Items.Clear();
             Log.Information("Set tray icon menu devices");
             foreach (var item in playbackDevices)
             {

@@ -11,14 +11,9 @@ namespace SoundSwitch.Framework.Profile.UI
 {
     public class ProfileTrayIconBuilder
     {
-        private readonly IAudioDeviceLister _audioDeviceLister;
-        private readonly ProfileManager _profileManager;
+        private ProfileManager ProfileManager => AppModel.Instance.ProfileManager;
 
-        public ProfileTrayIconBuilder(IAudioDeviceLister audioDeviceLister, ProfileManager profileManager)
-        {
-            _audioDeviceLister = audioDeviceLister;
-            _profileManager = profileManager;
-        }
+        private IAudioDeviceLister AudioDeviceLister => AppModel.Instance.ActiveAudioDeviceLister;
 
         /// <summary>
         /// Get the menu items for profile that needs to be shown in the menu
@@ -26,9 +21,9 @@ namespace SoundSwitch.Framework.Profile.UI
         /// <returns></returns>
         public IEnumerable<ToolStripMenuItem> GetMenuItems()
         {
-            return _profileManager.Profiles
-                                  .Where(profile => profile.Triggers.Any(trigger => trigger.Type == TriggerFactory.Enum.TrayMenu))
-                                  .Select(BuildMenuItem);
+            return ProfileManager.Profiles
+                                 .Where(profile => profile.Triggers.Any(trigger => trigger.Type == TriggerFactory.Enum.TrayMenu))
+                                 .Select(BuildMenuItem);
         }
 
         private ProfileToolStripMenuItem BuildMenuItem(Profile profile)
@@ -47,12 +42,15 @@ namespace SoundSwitch.Framework.Profile.UI
                 // ignored
             }
 
-            if (image == null)
+            foreach (var wrapper in profile.Devices)
             {
+                if (image != null)
+                    break;
+
                 try
                 {
-                    var playback = _audioDeviceLister.PlaybackDevices.FirstOrDefault(info => info.Equals(profile.Playback));
-                    image = playback?.SmallIcon.ToBitmap();
+                    var device = AudioDeviceLister.PlaybackDevices.FirstOrDefault(info => info.Equals(wrapper.DeviceInfo));
+                    image = device?.SmallIcon.ToBitmap();
                 }
                 catch (Exception)
                 {
@@ -60,7 +58,7 @@ namespace SoundSwitch.Framework.Profile.UI
                 }
             }
 
-            return new ProfileToolStripMenuItem(profile, image, profileClicked => _profileManager.SwitchAudio(profileClicked));
+            return new ProfileToolStripMenuItem(profile, image, profileClicked => ProfileManager.SwitchAudio(profileClicked));
         }
     }
 }
