@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using RailSharp;
@@ -36,7 +37,8 @@ namespace SoundSwitch.UI.Forms
             hotKeyControl.Location = textInput.Location;
 
             LocalizeForm();
-            Icon = Resources.profile;
+            using var iconBitmap = new Bitmap(Resources.profile_menu_icon);
+            Icon = Icon.FromHandle(iconBitmap.GetHicon());
             InitializeFromProfile();
 
             try

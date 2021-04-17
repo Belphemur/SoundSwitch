@@ -305,7 +305,7 @@ namespace SoundSwitch.UI.Component
             if (profiles.Length > 0)
             {
                 var profileMenu = new ContextMenuStrip();
-                var profileMenuItem = new ToolStripMenuItem(SettingsStrings.profile_tab) {DropDown = profileMenu};
+                var profileMenuItem = new ToolStripMenuItem(SettingsStrings.profile_tab) {DropDown = profileMenu, Image = Resources.profile_menu_icon};
                 profileMenu.Items.AddRange(profiles);
                 _selectionMenu.Items.Add(profileMenuItem);
                 _selectionMenu.Items.Add(new ToolStripSeparator());
