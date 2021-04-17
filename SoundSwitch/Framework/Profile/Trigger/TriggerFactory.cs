@@ -1,8 +1,5 @@
-﻿using System;
-using System.Windows.Forms;
-using SoundSwitch.Framework.Factory;
+﻿using SoundSwitch.Framework.Factory;
 using SoundSwitch.Localization;
-using SoundSwitch.Util;
 
 namespace SoundSwitch.Framework.Profile.Trigger
 {
@@ -15,7 +12,8 @@ namespace SoundSwitch.Framework.Profile.Trigger
             Process,
             Steam,
             Startup,
-            UwpApp
+            UwpApp,
+            TrayMenu
         }
 
         private static readonly IEnumImplList<Enum, ITriggerDefinition> Impl =
@@ -66,68 +64,68 @@ namespace SoundSwitch.Framework.Profile.Trigger
             return Label;
         }
 
-        public virtual  TriggerFactory.Enum TypeEnum                      { get; }
-        public virtual  string              Label                         { get; }
-        public virtual  int                 MaxOccurence                  { get; } = -1;
-        public virtual  int                 MaxGlobalOccurence            { get; } = -1;
-        public abstract string              Description                   { get; }
-        public virtual  bool                CanRestoreDevices             { get; } = false;
-        public virtual  bool                AlwaysDefaultAndRestoreDevice { get; } = false;
+        public virtual TriggerFactory.Enum TypeEnum { get; }
+        public virtual string Label { get; }
+        public virtual int MaxOccurence => -1;
+        public virtual int MaxGlobalOccurence => -1;
+        public abstract string Description { get; }
+        public virtual bool CanRestoreDevices => false;
+        public virtual bool AlwaysDefaultAndRestoreDevice => false;
     }
 
     public class HotKeyTrigger : BaseTrigger
     {
-        public override TriggerFactory.Enum TypeEnum     { get; } = TriggerFactory.Enum.HotKey;
-        public override string              Label        => SettingsStrings.hotkeys;
-        public override string              Description  { get; } = SettingsStrings.profile_trigger_hotkey_desc;
-        public override int                 MaxOccurence { get; } = 1;
+        public override TriggerFactory.Enum TypeEnum => TriggerFactory.Enum.HotKey;
+        public override string Label => SettingsStrings.hotkeys;
+        public override string Description { get; } = SettingsStrings.profile_trigger_hotkey_desc;
+        public override int MaxOccurence => 1;
     }
 
     public class WindowTrigger : BaseTrigger
     {
-        public override TriggerFactory.Enum TypeEnum          { get; } = TriggerFactory.Enum.Window;
-        public override string              Label             => SettingsStrings.profile_trigger_window;
-        public override string              Description       { get; } = SettingsStrings.profile_trigger_window_desc;
-        public override bool                CanRestoreDevices { get; } = true;
+        public override TriggerFactory.Enum TypeEnum => TriggerFactory.Enum.Window;
+        public override string Label => SettingsStrings.profile_trigger_window;
+        public override string Description { get; } = SettingsStrings.profile_trigger_window_desc;
+        public override bool CanRestoreDevices => true;
     }
 
     public class ProcessTrigger : BaseTrigger
     {
-        public override TriggerFactory.Enum TypeEnum          { get; } = TriggerFactory.Enum.Process;
-        public override string              Label             => SettingsStrings.profile_trigger_process;
-        public override string              Description       { get; } = SettingsStrings.profile_trigger_process_desc;
-        public override bool                CanRestoreDevices { get; } = true;
+        public override TriggerFactory.Enum TypeEnum => TriggerFactory.Enum.Process;
+        public override string Label => SettingsStrings.profile_trigger_process;
+        public override string Description { get; } = SettingsStrings.profile_trigger_process_desc;
+        public override bool CanRestoreDevices => true;
     }
 
     public class SteamBigPictureTrigger : BaseTrigger
     {
-        public override TriggerFactory.Enum TypeEnum { get; } = TriggerFactory.Enum.Steam;
-        public override string              Label    => SettingsStrings.profile_trigger_steam;
+        public override TriggerFactory.Enum TypeEnum => TriggerFactory.Enum.Steam;
+        public override string Label => SettingsStrings.profile_trigger_steam;
 
-        public override int    MaxOccurence                  { get; } = 1;
-        public override int    MaxGlobalOccurence            { get; } = 1;
-        public override string Description                   { get; } = SettingsStrings.profile_trigger_steam_desc;
-        public override bool   CanRestoreDevices             { get; } = true;
-        public override bool   AlwaysDefaultAndRestoreDevice { get; } = true;
+        public override int MaxOccurence => 1;
+        public override int MaxGlobalOccurence => 1;
+        public override string Description { get; } = SettingsStrings.profile_trigger_steam_desc;
+        public override bool CanRestoreDevices => true;
+        public override bool AlwaysDefaultAndRestoreDevice => true;
     }
 
     public class Startup : BaseTrigger
     {
-        public override TriggerFactory.Enum TypeEnum { get; } = TriggerFactory.Enum.Startup;
-        public override string              Label    => SettingsStrings.profile_trigger_startup;
+        public override TriggerFactory.Enum TypeEnum => TriggerFactory.Enum.Startup;
+        public override string Label => SettingsStrings.profile_trigger_startup;
 
-        public override int MaxOccurence       { get; } = 1;
-        public override int MaxGlobalOccurence { get; } = 1;
+        public override int MaxOccurence => 1;
+        public override int MaxGlobalOccurence => 1;
 
         public override string Description { get; } = SettingsStrings.profile_trigger_startup_desc;
     }
 
     public class UwpApp : BaseTrigger
     {
-        public override TriggerFactory.Enum TypeEnum                      { get; } = TriggerFactory.Enum.UwpApp;
-        public override string              Label                         => SettingsStrings.profile_trigger_uwp;
-        public override bool                CanRestoreDevices             { get; } = true;
-        public override string              Description                   => SettingsStrings.profile_trigger_uwp_desc;
-        public override bool                AlwaysDefaultAndRestoreDevice { get; } = true;
+        public override TriggerFactory.Enum TypeEnum => TriggerFactory.Enum.UwpApp;
+        public override string Label => SettingsStrings.profile_trigger_uwp;
+        public override bool CanRestoreDevices => true;
+        public override string Description => SettingsStrings.profile_trigger_uwp_desc;
+        public override bool AlwaysDefaultAndRestoreDevice => true;
     }
 }
