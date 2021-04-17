@@ -21,12 +21,10 @@ namespace SoundSwitch.Framework.Profile.UI
 {
     internal class ProfileToolStripMenuItem : ToolStripMenuItem
     {
-        public Profile Profile { get; }
 
         public ProfileToolStripMenuItem(Profile profile, Image image, Action<Profile> onClick)
             : base(profile.Name, image, (_, _) => onClick(profile))
         {
-            Profile = profile;
         }
     }
 }
