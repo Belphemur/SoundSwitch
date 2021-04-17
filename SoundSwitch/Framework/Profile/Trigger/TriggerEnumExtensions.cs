@@ -10,7 +10,7 @@ namespace SoundSwitch.Framework.Profile.Trigger
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static void Switch(this TriggerFactory.Enum @enum, Action hotkey, Action window, Action process, Action steam, Action startup, Action uwpApp, Action trayMenu)
         {
-            Match(@enum, () => hotkey, () => window, () => process, () => steam, () => startup, () => uwpApp, () => trayMenu);
+            Match(@enum, () => hotkey, () => window, () => process, () => steam, () => startup, () => uwpApp, () => trayMenu)();
         }
 
         /// <summary>
