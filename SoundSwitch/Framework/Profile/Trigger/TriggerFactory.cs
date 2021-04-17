@@ -135,5 +135,6 @@ namespace SoundSwitch.Framework.Profile.Trigger
         public override string Description => SettingsStrings.profile_trigger_trayMenu_desc;
         public override TriggerFactory.Enum TypeEnum => TriggerFactory.Enum.TrayMenu;
         public override string Label => SettingsStrings.profile_trigger_trayMenu;
+        public override int MaxOccurence => 1;
     }
 }
