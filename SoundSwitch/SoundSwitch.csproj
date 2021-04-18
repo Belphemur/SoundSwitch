@@ -18,43 +18,14 @@
         <TargetPlatformVersion>8.0</TargetPlatformVersion>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-        <CodeAnalysisLogFile>$(SolutionDir)\bin\Debug\SoundSwitch.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
-        <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-        <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
-        <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-        <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
-        <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
-        <UseVSHostingProcess>false</UseVSHostingProcess>
-        <RunCodeAnalysis>false</RunCodeAnalysis>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-        <CodeAnalysisLogFile>$(SolutionDir)\bin\Release\SoundSwitch.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
-        <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-        <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
-        <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-        <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
-        <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
-        <UseVSHostingProcess>false</UseVSHostingProcess>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'AppVeyor|AnyCPU'">
-        <OutputPath>$(SolutionDir)\bin\AppVeyor\</OutputPath>
         <Optimize>true</Optimize>
-        <UseVSHostingProcess>false</UseVSHostingProcess>
-        <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Beta|AnyCPU'">
-        <OutputPath>bin\Beta\</OutputPath>
         <DefineConstants>TRACE;BETA</DefineConstants>
         <Optimize>true</Optimize>
-        <UseVSHostingProcess>false</UseVSHostingProcess>
-        <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
-    <ItemGroup>
-        <Content Include="Resources\profile-delete.png" />
-        <Content Include="Resources\arrow_switch.ico" />
-        <Content Include="Resources\control-equalizer-blue.png" />
-        <Content Include="Resources\control-volume-blue.png" />
-    </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\SoundSwitch.Audio.Manager\SoundSwitch.Audio.Manager.csproj" />
         <ProjectReference Include="..\SoundSwitch.Common\SoundSwitch.Common.csproj" />
@@ -83,13 +54,6 @@
         <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Remove="Properties\SettingsString.fr.Designer.cs" />
-        <Compile Remove="Properties\TrayIconStrings.fr.Designer.cs" />
-        <EmbeddedResource Remove="Localization\AboutStrings.hu.resx" />
-        <EmbeddedResource Remove="Localization\SettingsStrings.hu.resx" />
-        <EmbeddedResource Remove="Localization\SettingsStrings.pt_PT.resx" />
-        <EmbeddedResource Remove="Localization\TrayIconStrings.hu.resx" />
-        <EmbeddedResource Remove="Localization\UpdateDownloadStrings.hu.resx" />
         <Compile Update="Framework\Profile\UI\ProfileToolStripMenuItem.cs">
           <SubType>Component</SubType>
         </Compile>
