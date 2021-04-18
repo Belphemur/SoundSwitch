@@ -459,4 +459,10 @@ Ambos: Mudar quando qualquer tipo de dispositivo é alterado.</value>
   <data name="notification.microphone.muted" xml:space="preserve">
     <value>Mudo ativado de {0} agora.</value>
   </data>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>Este acionador torna visível o perfil no menu da área de notificação. Clique direito no ícone da área de notificação para ver o seu perfil.</value>
+  </data>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>No menu do aplicativo</value>
+  </data>
 </root>
