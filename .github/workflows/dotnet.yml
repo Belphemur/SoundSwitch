@@ -67,7 +67,7 @@ jobs:
       - name: Restore
         run: dotnet restore -r ${{ env.ARCH }}
       - name: Build pre-release
-        run: dotnet publish -c Release --no-restore -r ${{ env.ARCH }} /p:PublishTrimmed=true ${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj
+        run: dotnet publish -c Release --no-restore -r ${{ env.ARCH }} ${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj
       - name: Set Env var from GitHub  
         uses: rlespinasse/github-slug-action@v3.x
       - name: Zip Build ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}

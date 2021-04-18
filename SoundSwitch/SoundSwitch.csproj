@@ -7,8 +7,11 @@
         <LangVersion>latest</LangVersion>
         <UseWindowsForms>true</UseWindowsForms>
         <Deterministic>false</Deterministic>
+        <PublishTrimmed>true</PublishTrimmed>
+        <TrimMode>link</TrimMode>
+        <PublishReadyToRun>true</PublishReadyToRun>
         <Configurations>Debug;Release;Beta</Configurations>
-        <Platforms>AnyCPU</Platforms>
+        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
         <TargetFramework>net5.0-windows</TargetFramework>
     </PropertyGroup>
     <PropertyGroup>

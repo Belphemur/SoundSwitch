@@ -49,7 +49,7 @@ echo.
 echo Building SoundSwitch %buildPlatform%
 echo.
 echo Build AnyCPU
-dotnet publish -c %buildPlatform%  -r %ARCH% /p:PublishTrimmed=true %FILE_DIR%SoundSwitch\SoundSwitch.csproj || (set errorMessage=Build AnyCPU failed & goto ERROR_QUIT)
+dotnet publish -c %buildPlatform% %FILE_DIR%SoundSwitch\SoundSwitch.csproj || (set errorMessage=Build %ARCH% failed & goto ERROR_QUIT)
 echo.
 
 if %buildChangelogAndReadme%==1 (
