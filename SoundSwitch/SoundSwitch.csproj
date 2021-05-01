@@ -9,7 +9,7 @@
         <Deterministic>false</Deterministic>
         <PublishTrimmed>true</PublishTrimmed>
         <TrimMode>link</TrimMode>
-        <PublishReadyToRun>true</PublishReadyToRun>
+        <PublishReadyToRun>false</PublishReadyToRun>
         <Configurations>Debug;Release;Beta</Configurations>
         <RuntimeIdentifier>win-x64</RuntimeIdentifier>
         <TargetFramework>net5.0-windows</TargetFramework>
