@@ -142,7 +142,7 @@
     <value>אל תבדוק אם קיימים עדכונים</value>
   </data>
   <data name="updateNotify" xml:space="preserve">
-    <value>הודע לי כאשר ישנם עדכונים זמינים</value>
+    <value>אמור לי כאשר ישנם עדכונים זמינים</value>
   </data>
   <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
     <value>עדכונים מותקנים אוטומטית.</value>
@@ -187,7 +187,7 @@
     <value>כלול גרסאות בטא</value>
   </data>
   <data name="notification" xml:space="preserve">
-    <value>הודעה</value>
+    <value>התראה</value>
   </data>
   <data name="closeTooltip" xml:space="preserve">
     <value>שינויים נשמרים אוטומטית</value>
@@ -249,7 +249,7 @@
     <value>הצג את הבאנר על המסך הראשי במקום במסך שבשימוש.</value>
   </data>
   <data name="usePrimaryScreen" xml:space="preserve">
-    <value>תמיד השתמש במסך הראשי</value>
+    <value>הצג הודעות תמיד במסך הראשי (במחשבים עם יותר ממסך אחד)</value>
   </data>
   <data name="profile.trigger.startup.desc" xml:space="preserve">
     <value>הפרופיל יופעל אוטומטית כאשר Soundswitch מופעל</value>
@@ -389,7 +389,7 @@
 שניהם: שנה אייקון כאשר מוחלף כל סוג של התקן.</value>
   </data>
   <data name="iconChange" xml:space="preserve">
-    <value>אייקון באיזור ההתראות</value>
+    <value>אייקון בפינת המסך</value>
   </data>
   <data name="foregroundAppTooltip" xml:space="preserve">
     <value>החלף את השמע גם של אפליקציה שבשימוש כעת. שימושי עבור משחקי מחשב.</value>
@@ -399,5 +399,11 @@
   </data>
   <data name="disableCustomSoundTooltip" xml:space="preserve">
     <value>נטרל את צליל ברירת המחדל שנבחר.</value>
+  </data>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>הטריגר יגרום לפרופיל להופיע בתפריט האפליקציה בפינת המסך. לחץ על האייקון של Soundswitch עם המקש השמאלי של העכבר כדי לראות אותו.</value>
+  </data>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>תפריט אפליקציה</value>
   </data>
 </root>

@@ -133,4 +133,63 @@
   <data name="updateInstallAutomatically" xml:space="preserve">
     <value>Güncellemeleri otomatik olarak yükle</value>
   </data>
+  <data name="updateNeverTooltip" xml:space="preserve">
+    <value>Kullanıcı tarafından yapılmadığı sürece program güncellenmez.</value>
+  </data>
+  <data name="languageRestartRequiredCaption" xml:space="preserve">
+    <value>Yeniden başlatma gerekli</value>
+  </data>
+  <data name="languageRestartRequired" xml:space="preserve">
+    <value>Dil seçimi SoundSwitch yeniden başlatıldığında devreye girecek.
+Şimdi yeniden başlatmak ister misiniz?</value>
+  </data>
+  <data name="language" xml:space="preserve">
+    <value>Dil</value>
+  </data>
+  <data name="activePlayback" xml:space="preserve">
+    <value>Çalma: {0}</value>
+  </data>
+  <data name="activeRecording" xml:space="preserve">
+    <value>Kayıt: {0}</value>
+  </data>
+  <data name="audioFileNotFoundCaption" xml:space="preserve">
+    <value>Ses dosyası bulunamadı</value>
+  </data>
+  <data name="notificationOptionCustomized" xml:space="preserve">
+    <value>Özelleştirilmiş ses bildirimi</value>
+  </data>
+  <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
+    <value>Sadece seçili ses cihazları</value>
+  </data>
+  <data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
+    <value>Tüm ses cihazları</value>
+  </data>
+  <data name="notificationTooltip" xml:space="preserve">
+    <value>Windows bildirimi: Windows'un görev simgesinden yapılan alışılagelmiş bildirim
+Ses bildirimi: Geçilen ses çıkış cihazından bir ses çalar
+Kişisel ses bildirimi: Geçilen ses çıkış cihazından kullanıcının seçtiği bir ses çalar
+Ufak bildirim (toast): Windows'un görev simgesinden yaptığı bildirimin farklı bir tipini kullanır
+Bayrak bildirim (banner): Her zaman en üstte görünen özel bir bildirim. Oyun esnasında kullanışlı.</value>
+  </data>
+  <data name="notificationOptionToast" xml:space="preserve">
+    <value>Ufak bildirim (toast)</value>
+  </data>
+  <data name="notificationOptionNone" xml:space="preserve">
+    <value>Bildirim yok</value>
+  </data>
+  <data name="notificationOptionWindowsDefault" xml:space="preserve">
+    <value>Windows tarafından bildirim</value>
+  </data>
+  <data name="notificationOptionSound" xml:space="preserve">
+    <value>Ses bildirimi</value>
+  </data>
+  <data name="keepSystemTrayIconTooltip" xml:space="preserve">
+    <value>Seçili olduğunda, görev çubuğu imgesi varsayılan çıkış cihazını gösterecek şekilde değişmez.</value>
+  </data>
+  <data name="keepSystemTrayIcon" xml:space="preserve">
+    <value>SoundSwitch görev çubuğu simgesi görünsün</value>
+  </data>
+  <data name="cycleThrough" xml:space="preserve">
+    <value>Sunulan cihazlar</value>
+  </data>
 </root>
