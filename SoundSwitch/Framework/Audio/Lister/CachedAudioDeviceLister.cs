@@ -14,7 +14,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Common.Framework.Audio.Device;
@@ -88,30 +87,6 @@ namespace SoundSwitch.Framework.Audio.Lister
 
                 Log.Information("[{@State}] Refreshed all devices. {@Recording}/rec, {@Playback}/play", _state, _recordingDevices.Count, _playbackDevices.Count);
             }
-        }
-
-        private static IReadOnlyCollection<DeviceFullInfo> CreateDeviceList(MMDeviceCollection collection)
-        {
-            var sortedDevices = new SortedList<string, DeviceFullInfo>();
-            foreach (var device in collection)
-            {
-                try
-                {
-                    var deviceInfo = new DeviceFullInfo(device);
-                    if (string.IsNullOrEmpty(deviceInfo.Name))
-                    {
-                        continue;
-                    }
-
-                    sortedDevices.Add(device.ID, deviceInfo);
-                }
-                catch (Exception)
-                {
-                    Log.Warning("Can't get name of device {device}", device.ID);
-                }
-            }
-
-            return sortedDevices.Values.ToArray();
         }
 
         public void Dispose()
