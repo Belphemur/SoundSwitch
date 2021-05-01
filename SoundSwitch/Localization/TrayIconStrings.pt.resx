@@ -95,10 +95,10 @@
     <value>SoundSwitch: configuração necessária</value>
   </data>
   <data name="recordingChanged" xml:space="preserve">
-    <value>SoundSwitch: Aparelho de gravação trocado por</value>
+    <value>SoundSwitch: aparelho de gravação trocado por</value>
   </data>
   <data name="playbackChanged" xml:space="preserve">
-    <value>SoundSwitch: Aparelho de reprodução trocado por</value>
+    <value>SoundSwitch: aparelho de reprodução trocado por</value>
   </data>
   <data name="clickToUpdate" xml:space="preserve">
     <value>Clique aqui para atualizar.</value>
@@ -116,7 +116,7 @@
     <value>Sobre o SoundSwitch</value>
   </data>
   <data name="mixer" xml:space="preserve">
-    <value>Mixer</value>
+    <value>Misturador</value>
   </data>
   <data name="playbackDevices" xml:space="preserve">
     <value>Aparelhos de reprodução</value>

@@ -62,7 +62,7 @@
     <value>Ícones</value>
   </data>
   <data name="defaultPlaybackDeviceChange" xml:space="preserve">
-    <value>Troca de aparelho de reprodução</value>
+    <value>Trocar aparelho de reprodução predefinido</value>
   </data>
   <data name="credits" xml:space="preserve">
     <value>Contribuidores</value>
@@ -75,5 +75,14 @@
   </data>
   <data name="created" xml:space="preserve">
     <value>Criado por</value>
+  </data>
+  <data name="logo" xml:space="preserve">
+    <value>Logótipo feito por</value>
+  </data>
+  <data name="keyboardHotkeys" xml:space="preserve">
+    <value>Sistema de acesso direto de teclado</value>
+  </data>
+  <data name="maintained" xml:space="preserve">
+    <value>Mantido por</value>
   </data>
 </root>
