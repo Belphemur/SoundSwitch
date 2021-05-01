@@ -113,6 +113,6 @@
 		<value>Geçersiz Dijital İmza</value>
   </data>
   <data name="notSigned" xml:space="preserve">
-		<value>İndirilen güncelleme geçerli bir imza barındırmıyor. Dosyayı silip yazılım geliştiricisiyle irtibata geçiniz!</value>
+		<value>İndirilen güncelleme geçerli bir imza barındırmıyor. Dosyayı silip yazılım geliştiricisiyle irtibata geçin!</value>
   </data>
 </root>
