@@ -15,7 +15,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Common.Framework.Audio.Device;
@@ -28,38 +27,20 @@ namespace SoundSwitch.Framework.Audio.Lister
     public class CachedAudioDeviceLister : IAudioDeviceLister
     {
         /// <inheritdoc />
-        public IReadOnlyCollection<DeviceFullInfo> PlaybackDevices
-        {
-            get
-            {
-                lock (_lock)
-                {
-                    return _playbackDevices;
-                }
-            }
-        }
+        public IReadOnlyCollection<DeviceFullInfo> PlaybackDevices => _playbackDevices;
 
         /// <inheritdoc />
-        public IReadOnlyCollection<DeviceFullInfo> RecordingDevices
-        {
-            get
-            {
-                lock (_lock)
-                {
-                    return _recordingDevices;
-                }
-            }
-        }
+        public IReadOnlyCollection<DeviceFullInfo> RecordingDevices => _recordingDevices;
 
-        private readonly DeviceState                         _state;
-        private readonly DebounceDispatcher                  _dispatcher       = new();
-        private readonly object                              _lock             = new();
-        private          IReadOnlyCollection<DeviceFullInfo> _playbackDevices  = new List<DeviceFullInfo>();
-        private          IReadOnlyCollection<DeviceFullInfo> _recordingDevices = new List<DeviceFullInfo>();
+        private readonly DeviceState _state;
+        private readonly DebounceDispatcher _dispatcher = new();
+        private readonly object _lock = new();
+        private readonly HashSet<DeviceFullInfo> _playbackDevices = new();
+        private readonly HashSet<DeviceFullInfo> _recordingDevices = new();
 
         public CachedAudioDeviceLister(DeviceState state)
         {
-            _state                                       =  state;
+            _state = state;
             MMNotificationClient.Instance.DevicesChanged += DeviceChanged;
         }
 
@@ -67,46 +48,45 @@ namespace SoundSwitch.Framework.Audio.Lister
         {
             _dispatcher.Debounce(100, o => Refresh());
         }
-
-        private void UpdatePlayback()
-        {
-            Log.Information("[{@State}] Refreshing playback", _state);
-            using var enumerator = new MMDeviceEnumerator();
-            _playbackDevices = CreateDeviceList(enumerator.EnumerateAudioEndPoints(DataFlow.Render, _state));
-            Log.Information("[{@State}] Refreshed playbacks: {@Playbacks}", _state, _playbackDevices.Select(info => new {info.Name, info.Id}));
-        }
-
-        private void UpdateRecording()
-        {
-            Log.Information("[{@State}] Refreshing recording", _state);
-            using var enumerator = new MMDeviceEnumerator();
-            _recordingDevices = CreateDeviceList(enumerator.EnumerateAudioEndPoints(DataFlow.Capture, _state));
-            Log.Information("[{@State}] Refreshed recordings: {@Recordings}", _state, _recordingDevices.Select(info => new {info.Name, info.Id}));
-        }
-
         public void Refresh()
         {
             lock (_lock)
             {
+                _recordingDevices.Clear();
+                _playbackDevices.Clear();
                 Log.Information("[{@State}] Refreshing all devices", _state);
-                var threadPlayback = new Thread(UpdatePlayback)
+                using var enumerator = new MMDeviceEnumerator();
+                foreach (var endPoint in enumerator.EnumerateAudioEndPoints(DataFlow.All, _state))
                 {
-                    Name         = $"Playback Refresh {_state}",
-                    IsBackground = true
-                };
-                var threadRecording = new Thread(UpdateRecording)
-                {
-                    Name         = $"Recording Refresh {_state}",
-                    IsBackground = true
-                };
+                    try
+                    {
+                        var deviceInfo = new DeviceFullInfo(endPoint);
+                        if (string.IsNullOrEmpty(deviceInfo.Name))
+                        {
+                            continue;
+                        }
 
-                threadPlayback.Start();
-                threadRecording.Start();
+                        switch (deviceInfo.Type)
+                        {
+                            case DataFlow.Render:
+                                _playbackDevices.Add(deviceInfo);
+                                break;
+                            case DataFlow.Capture:
+                                _recordingDevices.Add(deviceInfo);
+                                break;
+                            case DataFlow.All:
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Warning(e, "Can't get name of device {device}", endPoint.ID);
+                    }
+                }
 
-                threadPlayback.Join();
-                threadRecording.Join();
-
-                Log.Information("[{@State}] Refreshed all devices", _state);
+                Log.Information("[{@State}] Refreshed all devices. {@Recording}/rec, {@Playback}/play", _state, _recordingDevices.Count, _playbackDevices.Count);
             }
         }
 
