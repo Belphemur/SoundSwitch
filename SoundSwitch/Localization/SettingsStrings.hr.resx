@@ -400,4 +400,10 @@ Obnovi stanje sustava kad se program zatvori.</value>
   <data name="notification.microphone.muted" xml:space="preserve">
     <value>{0} je sada isključen.</value>
   </data>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>Ovaj prekidač prikazuje profil u izborniku trake ikona. Pritisni lijevim gumbom miša na ikonu za prikaz tvog profila.</value>
+  </data>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>U izborniku programa</value>
+  </data>
 </root>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -58,4 +58,138 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="updateSettings" xml:space="preserve">
+    <value>Güncelleme Ayarları</value>
+  </data>
+  <data name="audioSettings" xml:space="preserve">
+    <value>Ses Ayarları</value>
+  </data>
+  <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
+    <value>İşaretli olduğunda SoundSwitch GitHub'daki beta sürümleri de kontrol edecektir.</value>
+  </data>
+  <data name="hotkeysTooltip" xml:space="preserve">
+    <value>Klavye kısayolunu devreye almak için işaretleyin.</value>
+  </data>
+  <data name="basicSettings" xml:space="preserve">
+    <value>Temel Ayarlar</value>
+  </data>
+  <data name="selectSoundButtonTooltip" xml:space="preserve">
+    <value>Bildirim için kullanılacak ses dosyasını seçin</value>
+  </data>
+  <data name="audioFiles" xml:space="preserve">
+    <value>Ses Dosyaları</value>
+  </data>
+  <data name="updateIncludeBetaVersions" xml:space="preserve">
+    <value>Beta sürümleri dahil et</value>
+  </data>
+  <data name="notification" xml:space="preserve">
+    <value>Bildirim</value>
+  </data>
+  <data name="communicationsDeviceTooltip" xml:space="preserve">
+    <value>Seçili olduğunda hem 'Varsayılan çıkış' hem de 'Varsayılan iletişim' cihazı değiştirilir (Skype, TeamSpeak vb. uygulamalar için faydalı).</value>
+  </data>
+  <data name="closeTooltip" xml:space="preserve">
+    <value>Değişiklikler otomatik olarak kaydedilir</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>Kapat</value>
+  </data>
+  <data name="startWithWindows" xml:space="preserve">
+    <value>Windows ile otomatik başlat</value>
+  </data>
+  <data name="communicationsDevice" xml:space="preserve">
+    <value>Varsayılan iletişim cihazını değiştir</value>
+  </data>
+  <data name="hotkeys" xml:space="preserve">
+    <value>Klavye kısayolu</value>
+  </data>
+  <data name="playback" xml:space="preserve">
+    <value>Çıkış</value>
+  </data>
+  <data name="recording" xml:space="preserve">
+    <value>Kayıt</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>Ayarlar</value>
+  </data>
+  <data name="disconnected" xml:space="preserve">
+    <value>Bağlı Değil</value>
+  </data>
+  <data name="connected" xml:space="preserve">
+    <value>Bağlı</value>
+  </data>
+  <data name="selected" xml:space="preserve">
+    <value>Seçili</value>
+  </data>
+  <data name="updateNever" xml:space="preserve">
+    <value>Güncellemeleri kontrol etme</value>
+  </data>
+  <data name="updateNotify" xml:space="preserve">
+    <value>Güncelleme mevcut olduğunda bildiri ver</value>
+  </data>
+  <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
+    <value>Güncellemeler kullanıcıya bildiri vermeden otomatik olarak yüklenir.</value>
+  </data>
+  <data name="updateInstallAutomatically" xml:space="preserve">
+    <value>Güncellemeleri otomatik olarak yükle</value>
+  </data>
+  <data name="updateNeverTooltip" xml:space="preserve">
+    <value>Kullanıcı tarafından yapılmadığı sürece program güncellenmez.</value>
+  </data>
+  <data name="languageRestartRequiredCaption" xml:space="preserve">
+    <value>Yeniden başlatma gerekli</value>
+  </data>
+  <data name="languageRestartRequired" xml:space="preserve">
+    <value>Dil seçimi SoundSwitch yeniden başlatıldığında devreye girecek.
+Şimdi yeniden başlatmak ister misiniz?</value>
+  </data>
+  <data name="language" xml:space="preserve">
+    <value>Dil</value>
+  </data>
+  <data name="activePlayback" xml:space="preserve">
+    <value>Çalma: {0}</value>
+  </data>
+  <data name="activeRecording" xml:space="preserve">
+    <value>Kayıt: {0}</value>
+  </data>
+  <data name="audioFileNotFoundCaption" xml:space="preserve">
+    <value>Ses dosyası bulunamadı</value>
+  </data>
+  <data name="notificationOptionCustomized" xml:space="preserve">
+    <value>Özelleştirilmiş ses bildirimi</value>
+  </data>
+  <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
+    <value>Sadece seçili ses cihazları</value>
+  </data>
+  <data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
+    <value>Tüm ses cihazları</value>
+  </data>
+  <data name="notificationTooltip" xml:space="preserve">
+    <value>Windows bildirimi: Windows'un görev simgesinden yapılan alışılagelmiş bildirim
+Ses bildirimi: Geçilen ses çıkış cihazından bir ses çalar
+Kişisel ses bildirimi: Geçilen ses çıkış cihazından kullanıcının seçtiği bir ses çalar
+Ufak bildirim (toast): Windows'un görev simgesinden yaptığı bildirimin farklı bir tipini kullanır
+Bayrak bildirim (banner): Her zaman en üstte görünen özel bir bildirim. Oyun esnasında kullanışlı.</value>
+  </data>
+  <data name="notificationOptionToast" xml:space="preserve">
+    <value>Ufak bildirim (toast)</value>
+  </data>
+  <data name="notificationOptionNone" xml:space="preserve">
+    <value>Bildirim yok</value>
+  </data>
+  <data name="notificationOptionWindowsDefault" xml:space="preserve">
+    <value>Windows tarafından bildirim</value>
+  </data>
+  <data name="notificationOptionSound" xml:space="preserve">
+    <value>Ses bildirimi</value>
+  </data>
+  <data name="keepSystemTrayIconTooltip" xml:space="preserve">
+    <value>Seçili olduğunda, görev çubuğu imgesi varsayılan çıkış cihazını gösterecek şekilde değişmez.</value>
+  </data>
+  <data name="keepSystemTrayIcon" xml:space="preserve">
+    <value>SoundSwitch görev çubuğu simgesi görünsün</value>
+  </data>
+  <data name="cycleThrough" xml:space="preserve">
+    <value>Sunulan cihazlar</value>
+  </data>
 </root>

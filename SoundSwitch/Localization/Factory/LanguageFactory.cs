@@ -27,7 +27,8 @@ namespace SoundSwitch.Localization.Factory
             new SlovenianLang(),
             new JapaneseLang(),
             new HebrewLang(),
-            new Czech()
+            new Czech(),
+            new Turkish()
         })
         {
         }

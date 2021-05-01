@@ -1,4 +1,5 @@
 ﻿/********************************************************************
+* Copyright (C) 2015 Jeroen Pelgrims
 * Copyright (C) 2015-2017 Antoine Aflalo
 *
 * This program is free software; you can redistribute it and/or
@@ -12,32 +13,18 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-namespace SoundSwitch.Localization.Factory
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace SoundSwitch.Framework.Profile.UI
 {
-    /// <summary>
-    /// The language of the program as enumeration.
-    /// </summary>
-    /// <remarks>The integer representation has to match with the index of the ComboBox.</remarks>
-    public enum Language
+    internal class ProfileToolStripMenuItem : ToolStripMenuItem
     {
-        English = 0,
-        French,
-        German,
-        Spanish,
-        Norwegian,
-        Portuguese,
-        Italian,
-        Chinese,
-        Polish,
-        Russian,
-        Korean,
-        Dutch,
-        Croatian,
-        ChineseTrad,
-        Slovenian,
-        Japanese,
-        Hebrew,
-        Czech,
-        Turkish
+
+        public ProfileToolStripMenuItem(Profile profile, Image image, Action<Profile> onClick)
+            : base(profile.Name, image, (_, _) => onClick(profile))
+        {
+        }
     }
 }

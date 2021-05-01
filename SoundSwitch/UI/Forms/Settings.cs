@@ -338,6 +338,10 @@ namespace SoundSwitch.UI.Forms
             closeButton.Text = SettingsStrings.close;
             toggleMuteLabel.Text = SettingsStrings.mute_toggle_label;
             muteHotKeyCheckbox.Text = SettingsStrings.hotkeyEnabled;
+
+            addProfileButton.Image = Resources.profile_menu_add;
+            editProfileButton.Image = Resources.profile_menu_edit;
+            deleteProfileButton.Image = Resources.profile_menu_delete;
         }
 
 

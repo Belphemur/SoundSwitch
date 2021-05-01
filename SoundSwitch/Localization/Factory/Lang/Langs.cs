@@ -190,4 +190,14 @@ namespace SoundSwitch.Localization.Factory.Lang
 
         public override Language TypeEnum => Language.Czech;
     }
+    public class Turkish : BaseLang
+    {
+        /// <summary>
+        /// Culture info of this language
+        /// </summary>
+        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("tr");
+
+        public override Language TypeEnum => Language.Turkish;
+    }
+    
 }
