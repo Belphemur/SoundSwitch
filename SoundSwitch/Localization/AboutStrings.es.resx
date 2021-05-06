@@ -107,21 +107,21 @@
 		<value>Versión</value>
   </data>
   <data name="author" xml:space="preserve">
-		<value>Autor e Información de Programa</value>
+		<value>Información de autoría y del programa</value>
   </data>
   <data name="credits" xml:space="preserve">
-		<value>Creditos y Atribuciones</value>
+		<value>Créditos y atribuciones</value>
   </data>
   <data name="defaultPlaybackDeviceChange" xml:space="preserve">
-		<value>Cambio de dispositivo de reproducción</value>
+		<value>Cambio de dispositivo de reproducción predeterminado</value>
   </data>
   <data name="keyboardHotkeys" xml:space="preserve">
-		<value>Sistema de accesos directos de teclado</value>
+		<value>Sistema de atajos de teclado</value>
   </data>
   <data name="icons" xml:space="preserve">
 		<value>Iconos</value>
   </data>
   <data name="logo" xml:space="preserve">
-    <value>Logo hecho por</value>
+    <value>Logotipo creado por</value>
   </data>
 </root>
