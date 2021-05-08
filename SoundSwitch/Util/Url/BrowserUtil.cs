@@ -14,7 +14,15 @@ namespace SoundSwitch.Util.Url
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+                try
+                {
+                    Process.Start(new ProcessStartInfo(url) {UseShellExecute = true});
+                }
+                catch (Exception)
+                {
+                    url = url.Replace("&", "^&");
+                    Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") {CreateNoWindow = true});
+                }
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
@@ -26,9 +34,8 @@ namespace SoundSwitch.Util.Url
             }
             else
             {
-                 throw new ArgumentException("Unknown platform");
+                throw new ArgumentException("Unknown platform");
             }
         }
-        
     }
 }
