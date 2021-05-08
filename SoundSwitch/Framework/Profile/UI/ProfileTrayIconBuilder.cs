@@ -59,7 +59,7 @@ namespace SoundSwitch.Framework.Profile.UI
                 }
             }
 
-            image ??= Resources.default_profile_image;
+            image ??= Resources.profile_menu_icon;
 
             return new ProfileToolStripMenuItem(profile, image, profileClicked => ProfileManager.SwitchAudio(profileClicked));
         }
