@@ -86,7 +86,7 @@
     <value>Bildirim</value>
   </data>
   <data name="communicationsDeviceTooltip" xml:space="preserve">
-    <value>Seçili olduğunda hem 'Varsayılan çıkış' hem de 'Varsayılan iletişim' cihazı değiştirilir (Skype, TeamSpeak vb. uygulamalar için faydalı).</value>
+    <value>Seçili olduğunda hem 'Varsayılan cihaz' hem de 'Varsayılan iletişim cihazı' değiştirilir (Skype, TeamSpeak vb. uygulamalar için faydalı).</value>
   </data>
   <data name="closeTooltip" xml:space="preserve">
     <value>Değişiklikler otomatik olarak kaydedilir</value>
@@ -104,7 +104,7 @@
     <value>Klavye kısayolu</value>
   </data>
   <data name="playback" xml:space="preserve">
-    <value>Çıkış</value>
+    <value>Çalma</value>
   </data>
   <data name="recording" xml:space="preserve">
     <value>Kayıt</value>
@@ -113,10 +113,10 @@
     <value>Ayarlar</value>
   </data>
   <data name="disconnected" xml:space="preserve">
-    <value>Bağlı Değil</value>
+    <value>Bağlı olmayan</value>
   </data>
   <data name="connected" xml:space="preserve">
-    <value>Bağlı</value>
+    <value>Bağlı olan</value>
   </data>
   <data name="selected" xml:space="preserve">
     <value>Seçili</value>
@@ -165,10 +165,10 @@
     <value>Tüm ses cihazları</value>
   </data>
   <data name="notificationTooltip" xml:space="preserve">
-    <value>Windows bildirimi: Windows'un görev simgesinden yapılan alışılagelmiş bildirim
-Ses bildirimi: Geçilen ses çıkış cihazından bir ses çalar
-Kişisel ses bildirimi: Geçilen ses çıkış cihazından kullanıcının seçtiği bir ses çalar
-Ufak bildirim (toast): Windows'un görev simgesinden yaptığı bildirimin farklı bir tipini kullanır
+    <value>Windows bildirimi: Windows'un bildirim alanından yapılan alışılagelmiş bildirim.
+Sesli bildirim: Geçilen ses çıkış cihazından bir ses çalar.
+Kişisel sesli bildirim: Geçilen ses çıkış cihazından kullanıcının seçtiği bir ses çalar.
+Ufak bildirim (toast): Windows'un bildirim alanından yaptığı bildirimin farklı bir tipini kullanır.
 Bayrak bildirim (banner): Her zaman en üstte görünen özel bir bildirim. Oyun esnasında kullanışlı.</value>
   </data>
   <data name="notificationOptionToast" xml:space="preserve">
@@ -184,10 +184,10 @@ Bayrak bildirim (banner): Her zaman en üstte görünen özel bir bildirim. Oyun
     <value>Ses bildirimi</value>
   </data>
   <data name="keepSystemTrayIconTooltip" xml:space="preserve">
-    <value>Seçili olduğunda, görev çubuğu imgesi varsayılan çıkış cihazını gösterecek şekilde değişmez.</value>
+    <value>Seçili olduğunda, bildirim alanı simgesi varsayılan ses cihazını gösterecek şekilde değişmez.</value>
   </data>
   <data name="keepSystemTrayIcon" xml:space="preserve">
-    <value>SoundSwitch görev çubuğu simgesi görünsün</value>
+    <value>SoundSwitch bildirim alanı simgesi görünsün</value>
   </data>
   <data name="cycleThrough" xml:space="preserve">
     <value>Döngüdeki cihazlar</value>
@@ -199,7 +199,7 @@ Bayrak bildirim (banner): Her zaman en üstte görünen özel bir bildirim. Oyun
     <value>Belirli bir uygulama başlatıldığında ya da kullanıma girdiğinde otomatik olarak önceden belirlenmiş ses cihazlarının seçilmesi için bir profil oluşturun.</value>
   </data>
   <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
-    <value>Bu tetikleyici, profili görev bildirim alanında görünür kılar. Görev bildirim alanındaki simgeye ters tıklayarak profilinizi görebilirsiniz.</value>
+    <value>Bu tetikleyici, profili bildirim alanı simgesinin menüsünde görünür kılar. Simgeye ters tıklayarak profilinizi görebilirsiniz.</value>
   </data>
   <data name="profile.trigger.trayMenu" xml:space="preserve">
     <value>Uygulama menüsünde</value>
@@ -344,7 +344,7 @@ Kayıt: Bir kayıt cihazı değiştirildiğinde.
 Her ikisi: Herhangi bir cihaz değiştirildiğinde.</value>
   </data>
   <data name="iconChange" xml:space="preserve">
-    <value>Görev çubuğu bildirim alanı simgesi</value>
+    <value>Bildirim alanı simgesi</value>
   </data>
   <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
     <value>Bir ses kayıt ya da çalma cihazı seçilmiş olmalı.</value>
@@ -377,7 +377,7 @@ Her ikisi: Herhangi bir cihaz değiştirildiğinde.</value>
     <value>Yeni bir güncelleme mevcut olduğunda SoundSwitch size bildirecektir. Bildiriye tıkladığınızda, güncellemeyi indirmek için bir pencere açılacak ve kurmak isteyip istemediğinize dair onayınız sorulacaktır.</value>
   </data>
   <data name="foregroundApp" xml:space="preserve">
-    <value>Devrede olan programı da değiştir</value>
+    <value>Devrede olan program için de değiştir</value>
   </data>
   <data name="foregroundAppTooltip" xml:space="preserve">
     <value>Devrede olan program için de ses cihazlarını değiştirir. Oyunlar için kullanışlıdır.</value>
