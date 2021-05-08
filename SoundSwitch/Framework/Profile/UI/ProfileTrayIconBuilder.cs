@@ -22,7 +22,7 @@ namespace SoundSwitch.Framework.Profile.UI
         /// <returns></returns>
         public IEnumerable<ToolStripMenuItem> GetMenuItems()
         {
-            return ProfileManager.Profiles
+            return (ProfileManager?.Profiles ?? new Profile[0])
                                  .Where(profile => profile.Triggers.Any(trigger => trigger.Type == TriggerFactory.Enum.TrayMenu))
                                  .Select(BuildMenuItem);
         }
