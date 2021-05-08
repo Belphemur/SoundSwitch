@@ -18,6 +18,9 @@ namespace SoundSwitch.Util.Timer
     {
         private System.Timers.Timer? _timer;
         private DateTime TimerStarted { get; set; } = DateTime.UtcNow.AddYears(-1);
+        private readonly object _lockDebounce = new();
+        private readonly object _lockThrottle = new();
+
 
         /// <summary>
         /// Debounce an event by resetting the event timeout every time the event is 
@@ -39,24 +42,26 @@ namespace SoundSwitch.Util.Timer
         public void Debounce(int interval, Action<object> action,
             object param = null)
         {
-            // kill pending timer and pending ticks
-            _timer?.Stop();
-            _timer = null;
-
-            // timer is recreated for each event and effectively
-            // resets the timeout. Action only fires after timeout has fully
-            // elapsed without other events firing in between
-            _timer = new System.Timers.Timer(interval) {AutoReset = false};
-            _timer.Elapsed += (sender, args) =>
+            lock (_lockDebounce)
             {
-                if (_timer == null)
-                    return;
-
+                // kill pending timer and pending ticks
                 _timer?.Stop();
                 _timer = null;
-                action.Invoke(param);
-            };
-            _timer.Start();
+                // timer is recreated for each event and effectively
+                // resets the timeout. Action only fires after timeout has fully
+                // elapsed without other events firing in between
+                _timer = new System.Timers.Timer(interval) {AutoReset = false};
+                _timer.Elapsed += (sender, args) =>
+                {
+                    if (_timer == null)
+                        return;
+
+                    _timer?.Stop();
+                    _timer = null;
+                    action.Invoke(param);
+                };
+                _timer.Start();
+            }
         }
 
         /// <summary>
@@ -72,33 +77,36 @@ namespace SoundSwitch.Util.Timer
         /// <param name="priority">optional priorty for the dispatcher</param>
         /// <param name="disp">optional dispatcher. If not passed or null CurrentDispatcher is used.</param>
         public void Throttle(int interval, Action<object> action,
-            object param = null)
+                             object param = null)
         {
-            // kill pending timer and pending ticks
-            _timer?.Stop();
-            _timer = null;
-
-       
-            var curTime = DateTime.UtcNow;
-
-            // if timeout is not up yet - adjust timeout to fire 
-            // with potentially new Action parameters           
-            if (curTime.Subtract(TimerStarted).TotalMilliseconds < interval)
-                interval -= (int)curTime.Subtract(TimerStarted).TotalMilliseconds;
-
-            _timer = new System.Timers.Timer(interval);
-            _timer.Elapsed += (sender, args) =>
+            lock (_lockThrottle)
             {
-                if (_timer == null)
-                    return;
-
+                // kill pending timer and pending ticks
                 _timer?.Stop();
                 _timer = null;
-                action.Invoke(param);
-            };
-            _timer.Start();
 
-            TimerStarted = curTime;
+
+                var curTime = DateTime.UtcNow;
+
+                // if timeout is not up yet - adjust timeout to fire 
+                // with potentially new Action parameters           
+                if (curTime.Subtract(TimerStarted).TotalMilliseconds < interval)
+                    interval -= (int) curTime.Subtract(TimerStarted).TotalMilliseconds;
+
+                _timer = new System.Timers.Timer(interval);
+                _timer.Elapsed += (sender, args) =>
+                {
+                    if (_timer == null)
+                        return;
+
+                    _timer?.Stop();
+                    _timer = null;
+                    action.Invoke(param);
+                };
+                _timer.Start();
+
+                TimerStarted = curTime;
+            }
         }
     }
 }
