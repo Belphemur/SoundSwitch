@@ -43,7 +43,7 @@ namespace SoundSwitch
         {
             using var _ = SentrySdk.Init(options =>
             {
-                options.Dsn = "https://4961ba10a02d43209b7ae7c5df56c81e@o631137.ingest.sentry.io/5755327";
+                options.Dsn = "https://7d52dfb4f6554bf0b58b256337835332@o631137.ingest.sentry.io/5755327";
                 options.Environment = AssemblyUtils.GetReleaseState().ToString();
             });
             InitializeLogger();
