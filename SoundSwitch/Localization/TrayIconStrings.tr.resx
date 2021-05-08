@@ -71,10 +71,10 @@
     <value>Varsayılan</value>
   </data>
   <data name="iconChanger.recording" xml:space="preserve">
-    <value>Ses kayıt</value>
+    <value>Ses kayıt cihazı</value>
   </data>
   <data name="iconChanger.playback" xml:space="preserve">
-    <value>Ses çalma</value>
+    <value>Ses çalma cihazı</value>
   </data>
   <data name="donate" xml:space="preserve">
     <value>Bağış yap</value>
@@ -110,7 +110,7 @@
     <value>Çık</value>
   </data>
   <data name="about" xml:space="preserve">
-    <value>SoundSwitch Hakkında</value>
+    <value>SoundSwitch hakkında</value>
   </data>
   <data name="settings" xml:space="preserve">
     <value>Ayarlar</value>
@@ -119,7 +119,7 @@
     <value>Ses masası</value>
   </data>
   <data name="playbackDevices" xml:space="preserve">
-    <value>Ses Çıkış Cihazları</value>
+    <value>Ses cihazları</value>
   </data>
   <data name="noDevicesSelected" xml:space="preserve">
     <value>Hiçbir cihaz seçili değil</value>
