@@ -15,21 +15,21 @@
 
 using System;
 using System.Diagnostics;
-using System.IO;
-using System.IO.Compression;
 using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
+using Sentry;
 using Serilog;
 using SoundSwitch.Framework;
+using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Logger.Configuration;
-using SoundSwitch.Framework.Minidump;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Localization.Factory;
 using SoundSwitch.Model;
 using SoundSwitch.Util;
+using SoundSwitch.Util.Url;
 
 namespace SoundSwitch
 {
@@ -42,13 +42,15 @@ namespace SoundSwitch
         [STAThread]
         private static void Main()
         {
+            using var _ = SentrySdk.Init(options =>
+            {
+                options.Dsn = "https://4961ba10a02d43209b7ae7c5df56c81e@o631137.ingest.sentry.io/5755327";
+                options.Environment = AssemblyUtils.GetReleaseState().ToString();
+            });
             InitializeLogger();
             Log.Information("Application Starts");
 #if !DEBUG
-            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
-            {
-                HandleException((Exception) args.ExceptionObject);
-            };
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) => { HandleException((Exception) args.ExceptionObject); };
 
             Log.Information("Set Exception Handler");
             Application.ThreadException += Application_ThreadException;
@@ -134,7 +136,6 @@ namespace SoundSwitch
             WindowsAPIAdapter.Stop();
             MMNotificationClient.Instance.Dispose();
             Log.CloseAndFlush();
-
         }
 
         /// <summary>
@@ -147,6 +148,8 @@ namespace SoundSwitch
                 $"{Application.ProductName}  {AssemblyUtils.GetReleaseState()} ({Application.ProductVersion})");
             Log.Information($"OS: {Environment.OSVersion}");
             Log.Information($"Framework: {Environment.Version}");
+
+            SentrySdk.ConfigureScope(scope => { scope.AddAttachment(AppConfigs.Configuration.FileLocation); });
         }
 
         /// <summary>
@@ -174,8 +177,8 @@ namespace SoundSwitch
         {
             if (exception == null)
                 return;
-            var zipFile = Path.Combine(ApplicationPath.AppData,
-                $"{Application.ProductName}-crashlog-{DateTime.UtcNow.Date.Day}_{DateTime.UtcNow.Date.Month}_{DateTime.UtcNow.Date.Year}.zip");
+            var eventId = SentrySdk.CaptureException(exception);
+
             var exceptionMessage = exception.Message;
             if (exception.InnerException != null)
             {
@@ -187,39 +190,15 @@ namespace SoundSwitch
 
 {exceptionMessage}
 
-Do you want to save a log of the error that occurred?
-This could be useful to fix bugs. Please post this file in the issues section
-File Location: {zipFile}";
+Would you like to share more information with the developers?";
             var result = MessageBox.Show(message, $@"{Application.ProductName} crashed...", MessageBoxButtons.YesNo,
                 MessageBoxIcon.Error);
 
-            if (result == DialogResult.Yes)
+            if (result != DialogResult.Yes) return;
+
+            using (new HourGlass())
             {
-                using (new HourGlass())
-                {
-                    var fileName = Path.Combine(ApplicationPath.Default, Environment.MachineName + ".dmp");
-                    using (
-                        var fs = new FileStream(fileName, FileMode.Create, FileAccess.ReadWrite,
-                            FileShare.Write))
-                    {
-                        MiniDump.Write(fs.SafeFileHandle,
-                            MiniDump.Option.Normal | MiniDump.Option.WithThreadInfo | MiniDump.Option.WithHandleData |
-                            MiniDump.Option.WithDataSegs, MiniDump.ExceptionInfo.Present);
-                    }
-
-                    Log.Fatal(exception, "Exception Occurred ");
-
-                    if (File.Exists(zipFile))
-                    {
-                        File.Delete(zipFile);
-                    }
-
-                    Log.CloseAndFlush();
-
-                    ZipFile.CreateFromDirectory(ApplicationPath.Default, zipFile);
-                }
-
-                Process.Start("explorer.exe", "/select," + @zipFile);
+                BrowserUtil.OpenUrl($"https://soundswitch.aaflalo.me/#sentry?eventId={eventId}");
             }
         }
     }
