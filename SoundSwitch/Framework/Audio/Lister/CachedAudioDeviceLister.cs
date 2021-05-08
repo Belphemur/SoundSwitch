@@ -13,7 +13,9 @@
 ********************************************************************/
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Common.Framework.Audio.Device;
@@ -26,16 +28,16 @@ namespace SoundSwitch.Framework.Audio.Lister
     public class CachedAudioDeviceLister : IAudioDeviceLister
     {
         /// <inheritdoc />
-        public IReadOnlyCollection<DeviceFullInfo> PlaybackDevices => _playbackDevices;
+        public IReadOnlyCollection<DeviceFullInfo> PlaybackDevices => (IReadOnlyCollection<DeviceFullInfo>) _playbackDevices.Values;
 
         /// <inheritdoc />
-        public IReadOnlyCollection<DeviceFullInfo> RecordingDevices => _recordingDevices;
+        public IReadOnlyCollection<DeviceFullInfo> RecordingDevices => (IReadOnlyCollection<DeviceFullInfo>) _recordingDevices.Values;
 
         private readonly DeviceState _state;
         private readonly DebounceDispatcher _dispatcher = new();
         private readonly object _lock = new();
-        private readonly HashSet<DeviceFullInfo> _playbackDevices = new();
-        private readonly HashSet<DeviceFullInfo> _recordingDevices = new();
+        private readonly ConcurrentDictionary<string, DeviceFullInfo> _playbackDevices = new();
+        private readonly ConcurrentDictionary<string,DeviceFullInfo> _recordingDevices = new();
 
         public CachedAudioDeviceLister(DeviceState state)
         {
@@ -51,12 +53,12 @@ namespace SoundSwitch.Framework.Audio.Lister
         {
             lock (_lock)
             {
-                _recordingDevices.Clear();
-                _playbackDevices.Clear();
+                var ids = new HashSet<string>();
                 Log.Information("[{@State}] Refreshing all devices", _state);
                 using var enumerator = new MMDeviceEnumerator();
                 foreach (var endPoint in enumerator.EnumerateAudioEndPoints(DataFlow.All, _state))
                 {
+                    ids.Add(endPoint.ID);
                     try
                     {
                         var deviceInfo = new DeviceFullInfo(endPoint);
@@ -68,10 +70,10 @@ namespace SoundSwitch.Framework.Audio.Lister
                         switch (deviceInfo.Type)
                         {
                             case DataFlow.Render:
-                                _playbackDevices.Add(deviceInfo);
+                                _playbackDevices.AddOrUpdate(deviceInfo.Id, deviceInfo, (_, _) => deviceInfo);
                                 break;
                             case DataFlow.Capture:
-                                _recordingDevices.Add(deviceInfo);
+                                _recordingDevices.AddOrUpdate(deviceInfo.Id, deviceInfo, (_, _) => deviceInfo);
                                 break;
                             case DataFlow.All:
                                 break;
@@ -83,6 +85,16 @@ namespace SoundSwitch.Framework.Audio.Lister
                     {
                         Log.Warning(e, "Can't get name of device {device}", endPoint.ID);
                     }
+                }
+
+                foreach (var deviceId in _playbackDevices.Keys.Except(ids))
+                {
+                    _playbackDevices.TryRemove(deviceId, out _);
+                }
+
+                foreach (var deviceId in _recordingDevices.Keys.Except(ids))
+                {
+                    _recordingDevices.TryRemove(deviceId, out _);
                 }
 
                 Log.Information("[{@State}] Refreshed all devices. {@Recording}/rec, {@Playback}/play", _state, _recordingDevices.Count, _playbackDevices.Count);
