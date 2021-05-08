@@ -222,7 +222,7 @@ namespace SoundSwitch.UI.Component
                 }
                 else
                 {
-                    Log.Error(@event.Exception, "Exception managed");
+                    Log.Warning(@event.Exception, "Exception managed");
                     ShowError(@event.Exception.Message, @event.Exception.GetType().Name);
                 }
             };
