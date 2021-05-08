@@ -1,3 +1,34 @@
+### [5.9.1](https://github.com/Belphemur/SoundSwitch/compare/v5.9.0...v5.9.1) (2021-05-08)
+
+
+### Bug Fixes
+
+* **DeviceLister:** Fix concurrency issue with the TrayIcon ([84ddc78](https://github.com/Belphemur/SoundSwitch/commit/84ddc788db04fea3e073a5dbc4b9a6dedb37f658)), closes [#626](https://github.com/Belphemur/SoundSwitch/issues/626) [#622](https://github.com/Belphemur/SoundSwitch/issues/622)
+* **DeviceLister:** Fix concurrency issue with the TrayIcon ([a73a0de](https://github.com/Belphemur/SoundSwitch/commit/a73a0de7a1921995e7131952f35e433e7b48cac3)), closes [#626](https://github.com/Belphemur/SoundSwitch/issues/626) [#625](https://github.com/Belphemur/SoundSwitch/issues/625)
+
+
+### Languages
+
+* **Hebrew:** Translated Settings using Weblate ([96225dd](https://github.com/Belphemur/SoundSwitch/commit/96225dd5d9ca128efeafa6db60147529d5dd15d6))
+* **Hebrew:** Translated Update Download using Weblate ([a8acb4f](https://github.com/Belphemur/SoundSwitch/commit/a8acb4f3060973808508498def1cadbb005ec5c1))
+* **Portuguese:** Translated About using Weblate ([c58c3c7](https://github.com/Belphemur/SoundSwitch/commit/c58c3c7dea374eea345f326dd0ae0d51a70a4cf2))
+* **Portuguese:** Translated Settings using Weblate ([e29ab0d](https://github.com/Belphemur/SoundSwitch/commit/e29ab0d6880e471efbbcaf9ba1761381f6b277c6))
+* **Portuguese:** Translated Tray Icon using Weblate ([908c67d](https://github.com/Belphemur/SoundSwitch/commit/908c67d35e415d191aace4f35da788edd3f07c34))
+* **Portuguese:** Translated Update Download using Weblate ([b0c9ddc](https://github.com/Belphemur/SoundSwitch/commit/b0c9ddc8c2b2b33010d193365b349514a836c71f))
+* **Spanish:** Translated About using Weblate ([d66c9b8](https://github.com/Belphemur/SoundSwitch/commit/d66c9b8a5303353cbf5bc2b57ad32f1f92d940db))
+* **Spanish:** Translated Settings using Weblate ([8eb75b3](https://github.com/Belphemur/SoundSwitch/commit/8eb75b37dce8f56f2666f7fdbfb6f9f7f2c880a3))
+* **Spanish:** Translated Tray Icon using Weblate ([a97ff96](https://github.com/Belphemur/SoundSwitch/commit/a97ff96a40ebbb2721fdf22011f4e539db220799))
+* **Spanish:** Translated Update Download using Weblate ([1bf75ca](https://github.com/Belphemur/SoundSwitch/commit/1bf75ca5b50c65d8bebe7a4e357ac80173695c4d))
+* **Turkish:** Translated Settings using Weblate ([e789a62](https://github.com/Belphemur/SoundSwitch/commit/e789a6280caa32b4b2a9407a48fdde8cb282290c))
+* **Turkish:** Translated Tray Icon using Weblate ([19e2829](https://github.com/Belphemur/SoundSwitch/commit/19e28296a61faf5e5345c14c2863701c40bd6112))
+* **Turkish:** Translated Update Download using Weblate ([5e4921c](https://github.com/Belphemur/SoundSwitch/commit/5e4921cab0d2a75c432545c52c3383fe4aeb5b6e))
+
+
+### Enhancements
+
+* **ErrorReporting:** Add proper error reporting ([44efc90](https://github.com/Belphemur/SoundSwitch/commit/44efc90ef1c047b83df8f4a8d3571ebf4c4fa7b3)), closes [#546](https://github.com/Belphemur/SoundSwitch/issues/546)
+* **Profile::TrayIcon:** Update the menu to have the profile directly in the menu ([54003ea](https://github.com/Belphemur/SoundSwitch/commit/54003ea46355885f0977257535aa68828e7cecc6)), closes [#628](https://github.com/Belphemur/SoundSwitch/issues/628)
+
 ## [5.9.0](https://github.com/Belphemur/SoundSwitch/compare/v5.8.3...v5.9.0) (2021-05-01)
 
 
