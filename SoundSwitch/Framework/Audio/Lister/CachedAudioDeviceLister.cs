@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Common.Framework.Audio.Device;
@@ -26,16 +27,37 @@ namespace SoundSwitch.Framework.Audio.Lister
     public class CachedAudioDeviceLister : IAudioDeviceLister
     {
         /// <inheritdoc />
-        public IReadOnlyCollection<DeviceFullInfo> PlaybackDevices => _playbackDevices;
+        public IReadOnlyCollection<DeviceFullInfo> PlaybackDevices
+        {
+            get
+            {
+                lock (_lockPlayback)
+                {
+                    return _playbackList;
+                }
+            }
+        }
 
         /// <inheritdoc />
-        public IReadOnlyCollection<DeviceFullInfo> RecordingDevices => _recordingDevices;
+        public IReadOnlyCollection<DeviceFullInfo> RecordingDevices
+        {
+            get
+            {
+                lock (_lockRecording)
+                {
+                    return _recordingList;
+                }
+            }
+        }
 
         private readonly DeviceState _state;
         private readonly DebounceDispatcher _dispatcher = new();
-        private readonly object _lock = new();
-        private readonly HashSet<DeviceFullInfo> _playbackDevices = new();
-        private readonly HashSet<DeviceFullInfo> _recordingDevices = new();
+        private readonly object _lockRefresh = new();
+        private readonly object _lockRecording = new();
+        private readonly object _lockPlayback = new();
+        private IReadOnlyCollection<DeviceFullInfo> _playbackList = new DeviceFullInfo[0];
+        private IReadOnlyCollection<DeviceFullInfo> _recordingList = new DeviceFullInfo[0];
+
 
         public CachedAudioDeviceLister(DeviceState state)
         {
@@ -47,12 +69,13 @@ namespace SoundSwitch.Framework.Audio.Lister
         {
             _dispatcher.Debounce(100, o => Refresh());
         }
+
         public void Refresh()
         {
-            lock (_lock)
+            var playbackDevices = new Dictionary<string, DeviceFullInfo>();
+            var recordingDevices = new Dictionary<string, DeviceFullInfo>();
+            lock (_lockRefresh)
             {
-                _recordingDevices.Clear();
-                _playbackDevices.Clear();
                 Log.Information("[{@State}] Refreshing all devices", _state);
                 using var enumerator = new MMDeviceEnumerator();
                 foreach (var endPoint in enumerator.EnumerateAudioEndPoints(DataFlow.All, _state))
@@ -68,10 +91,10 @@ namespace SoundSwitch.Framework.Audio.Lister
                         switch (deviceInfo.Type)
                         {
                             case DataFlow.Render:
-                                _playbackDevices.Add(deviceInfo);
+                                playbackDevices.Add(deviceInfo.Id, deviceInfo);
                                 break;
                             case DataFlow.Capture:
-                                _recordingDevices.Add(deviceInfo);
+                                recordingDevices.Add(deviceInfo.Id, deviceInfo);
                                 break;
                             case DataFlow.All:
                                 break;
@@ -85,7 +108,17 @@ namespace SoundSwitch.Framework.Audio.Lister
                     }
                 }
 
-                Log.Information("[{@State}] Refreshed all devices. {@Recording}/rec, {@Playback}/play", _state, _recordingDevices.Count, _playbackDevices.Count);
+                lock (_lockPlayback)
+                {
+                    _playbackList = playbackDevices.Values.ToArray();
+                }
+
+                lock (_lockRecording)
+                {
+                    _recordingList = recordingDevices.Values.ToArray();
+                }
+
+                Log.Information("[{@State}] Refreshed all devices. {@Recording}/rec, {@Playback}/play", _state, recordingDevices.Count, playbackDevices.Count);
             }
         }
 

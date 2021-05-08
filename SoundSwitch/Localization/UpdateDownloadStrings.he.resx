@@ -71,7 +71,7 @@
     <value>ביטול</value>
   </data>
   <data name="install" xml:space="preserve">
-    <value>התקן</value>
+    <value>התקנה</value>
   </data>
   <data name="downloadFailed" xml:space="preserve">
     <value>הורדה נכשלה</value>

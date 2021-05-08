@@ -18,6 +18,9 @@ namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo
 {
     public class TooltipInfoBoth : ITooltipInfo
     {
+        private readonly TooltipInfoRecording _tooltipInfoRecording = new();
+        private readonly TooltipInfoPlayback _tooltipInfoPlayback = new();
+
         public TooltipInfoTypeEnum TypeEnum => TooltipInfoTypeEnum.Both;
         public string Label => SettingsStrings.tooltipOnHoverOptionBothDevices;
 
@@ -27,8 +30,8 @@ namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo
         /// <returns></returns>
         public string TextToDisplay()
         {
-            var playbackToDisplay = new TooltipInfoPlayback().TextToDisplay();
-            var recordingToDisplay = new TooltipInfoRecording().TextToDisplay();
+            var playbackToDisplay = _tooltipInfoPlayback.TextToDisplay();
+            var recordingToDisplay = _tooltipInfoRecording.TextToDisplay();
 
             if (playbackToDisplay == null || recordingToDisplay == null)
                 return null;

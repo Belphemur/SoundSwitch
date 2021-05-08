@@ -398,7 +398,7 @@
     <value>בעת החלפה, החלף גם את התקן השמע של התוכנה שבחזית המסך</value>
   </data>
   <data name="disableCustomSoundTooltip" xml:space="preserve">
-    <value>נטרל את צליל ברירת המחדל שנבחר.</value>
+    <value>נטרל את הצליל המותאם אישית.</value>
   </data>
   <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
     <value>הטריגר יגרום לפרופיל להופיע בתפריט האפליקציה בפינת המסך. לחץ על האייקון של Soundswitch עם המקש השמאלי של העכבר כדי לראות אותו.</value>

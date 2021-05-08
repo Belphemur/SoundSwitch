@@ -8,7 +8,7 @@ namespace SoundSwitch.Framework.NotificationManager
 {
     public class MMNotificationClient : IMMNotificationClient, IDisposable
     {
-        public static MMNotificationClient Instance { get; } = new MMNotificationClient();
+        public static MMNotificationClient Instance { get; } = new ();
         private       MMDeviceEnumerator   _enumerator;
 
         public event EventHandler<DeviceDefaultChangedEvent> DefaultDeviceChanged;

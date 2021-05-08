@@ -22,7 +22,8 @@ namespace SoundSwitch.Util
         public enum ReleaseState
         {
             Stable,
-            Beta
+            Beta,
+            Debug
         }
 
         /// <summary>
@@ -43,7 +44,11 @@ namespace SoundSwitch.Util
         /// <returns></returns>
         public static ReleaseState GetReleaseState()
         {
+#if DEBUG
+            return ReleaseState.Debug;
+#else
             return GetAssemblyConfigurationAttribute().Configuration == "Beta" ? ReleaseState.Beta : ReleaseState.Stable;
+#endif
         }
     }
 }

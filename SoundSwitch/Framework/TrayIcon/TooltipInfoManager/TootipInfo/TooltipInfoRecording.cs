@@ -12,18 +12,16 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System.Linq;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Localization;
-using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo
 {
     public class TooltipInfoRecording : ITooltipInfo
     {
         public TooltipInfoTypeEnum TypeEnum => TooltipInfoTypeEnum.Recording;
-        public string              Label    => SettingsStrings.tooltipOnHoverOptionRecordingDevice;
+        public string Label => SettingsStrings.tooltipOnHoverOptionRecordingDevice;
 
         /// <summary>
         /// The text to display for this ToolTip
@@ -31,15 +29,10 @@ namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo
         /// <returns></returns>
         public string TextToDisplay()
         {
-            var recordingDevices = AppModel.Instance.ActiveAudioDeviceLister?.RecordingDevices;
-            if (recordingDevices == null)
-            {
-                return string.Format(SettingsStrings.activeRecording, "Unknown");
-            }
-
-            var recordingDevice = recordingDevices?.FirstOrDefault(device =>
-                AudioSwitcher.Instance.IsDefault(device.Id, (EDataFlow) device.Type, ERole.eConsole));
-            return recordingDevice == null ? null : string.Format(SettingsStrings.activeRecording, recordingDevice);
+            var recordingDevice = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eConsole);
+            return recordingDevice == null
+                ? null
+                : string.Format(SettingsStrings.activeRecording, recordingDevice.NameClean);
         }
 
         public override string ToString()

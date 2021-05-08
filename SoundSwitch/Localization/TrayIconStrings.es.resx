@@ -133,7 +133,7 @@
     <value>Configuración</value>
   </data>
   <data name="about" xml:space="preserve">
-    <value>Sobre SoundSwitch</value>
+    <value>Acerca de SoundSwitch</value>
   </data>
   <data name="exit" xml:space="preserve">
     <value>Salir</value>
@@ -148,13 +148,13 @@
     <value>Pulse aquí para actualizar.</value>
   </data>
   <data name="playbackChanged" xml:space="preserve">
-    <value>SoundSwitch: Dispositivo de reproducción cambiado a</value>
+    <value>SoundSwitch: el dispositivo de reproducción cambió a</value>
   </data>
   <data name="recordingChanged" xml:space="preserve">
-    <value>SoundSwitch: Dispositivo de grabación cambiado a</value>
+    <value>SoundSwitch: el dispositivo de grabación cambió a</value>
   </data>
   <data name="configurationNeeded" xml:space="preserve">
-    <value>SoundSwitch: Configuration necesaria</value>
+    <value>SoundSwitch: se necesita configuración</value>
   </data>
   <data name="configurationNeededExplanation" xml:space="preserve">
     <value>No hay dispositivos disponibles para cambiar. Abra la configuración pulsando con el botón secundario del ratón en el icono.</value>

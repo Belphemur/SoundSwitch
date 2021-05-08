@@ -89,10 +89,7 @@ namespace SoundSwitch.UI.Component
 
             _selectionMenu.Items.Add(TrayIconStrings.noDevicesSelected, RessourceSettingsSmallBitmap, (sender, e) => ShowSettings());
 
-            NotifyIcon.MouseDoubleClick += (sender, args) =>
-            {
-                AppModel.Instance.CycleActiveDevice(DataFlow.Render);
-            };
+            NotifyIcon.MouseDoubleClick += (sender, args) => { AppModel.Instance.CycleActiveDevice(DataFlow.Render); };
 
             NotifyIcon.MouseClick += (sender, e) =>
             {
@@ -143,7 +140,7 @@ namespace SoundSwitch.UI.Component
         {
             if (newIcon.Equals(NotifyIcon.Icon))
                 return;
-            
+
             var oldIcon = NotifyIcon.Icon;
             NotifyIcon.Icon = (Icon) newIcon.Clone();
             try
@@ -185,10 +182,7 @@ namespace SoundSwitch.UI.Component
 
                 BrowserUtil.OpenUrl(readmeHtml);
             });
-            _settingsMenu.Items.Add(TrayIconStrings.communityMenu, ResourceDiscord.ToBitmap(), (sender, e) =>
-            {
-                BrowserUtil.OpenUrl("https://discord.gg/gUCw3Ue");
-            });
+            _settingsMenu.Items.Add(TrayIconStrings.communityMenu, ResourceDiscord.ToBitmap(), (sender, e) => { BrowserUtil.OpenUrl("https://discord.gg/gUCw3Ue"); });
             _settingsMenu.Items.Add(TrayIconStrings.donate, ResourceDonateBitmap,
                 (sender, e) => BrowserUtil.OpenUrl($"https://soundswitch.aaflalo.me/?utm_campaign=application&utm_source={Application.ProductVersion}#donate"));
             _settingsMenu.Items.Add(TrayIconStrings.about, RessourceHelpSmallBitmap, (sender, e) => new About().Show());
@@ -208,7 +202,7 @@ namespace SoundSwitch.UI.Component
 
             StopAnimationIconUpdate();
             NotifyIcon.BalloonTipClicked -= OnUpdateClick;
-            _updateDownloadForm.DownloadRelease((Release)_updateMenuItem.Tag);
+            _updateDownloadForm.DownloadRelease((Release) _updateMenuItem.Tag);
         }
 
         private void SetEventHandlers()
@@ -283,12 +277,10 @@ namespace SoundSwitch.UI.Component
             _animationTimer.Stop();
             UpdateIcon();
         }
+
         public void ShowSettings()
         {
-            _context.Send(state =>
-            {
-                 new SettingsForm(AppModel.Instance.ActiveUnpluggedAudioLister).Show();
-            }, null);
+            _context.Send(state => { new SettingsForm(AppModel.Instance.ActiveUnpluggedAudioLister).Show(); }, null);
         }
 
         /// <summary>
@@ -300,16 +292,13 @@ namespace SoundSwitch.UI.Component
             var playbackDevices = AppModel.Instance.AvailablePlaybackDevices;
             var recordingDevices = AppModel.Instance.AvailableRecordingDevices;
             var profiles = _profileTrayIconBuilder.GetMenuItems().ToArray();
-        
 
             if (profiles.Length > 0)
             {
-                var profileMenu = new ContextMenuStrip();
-                var profileMenuItem = new ToolStripMenuItem(SettingsStrings.profile_tab) {DropDown = profileMenu, Image = Resources.profile_menu_icon};
-                profileMenu.Items.AddRange(profiles);
-                _selectionMenu.Items.Add(profileMenuItem);
+                _selectionMenu.Items.AddRange(profiles);
                 _selectionMenu.Items.Add(new ToolStripSeparator());
             }
+            
             if (playbackDevices.Count < 0 &&
                 recordingDevices.Count < 0)
             {
@@ -331,6 +320,7 @@ namespace SoundSwitch.UI.Component
                     _selectionMenu.Items.Add(new ToolStripDeviceItem(DeviceClicked, item));
                 }
             }
+            
         }
 
         private void DeviceClicked(object sender, EventArgs e)
