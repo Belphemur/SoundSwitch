@@ -12,11 +12,9 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System.Linq;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Localization;
-using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo
 {
@@ -31,18 +29,10 @@ namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo
         /// <returns></returns>
         public string TextToDisplay()
         {
-            var audioDevices = AppModel.Instance.ActiveAudioDeviceLister?.PlaybackDevices;
-            if (audioDevices == null)
-            {
-                return string.Format(SettingsStrings.activePlayback, "Unknown");
-            }
-
-            var playbackDefaultDevice = audioDevices
-                .FirstOrDefault(device =>
-                    AudioSwitcher.Instance.IsDefault(device.Id, (EDataFlow)device.Type, ERole.eConsole));
+            var playbackDefaultDevice = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eConsole);
             return playbackDefaultDevice == null
                 ? null
-                : string.Format(SettingsStrings.activePlayback, playbackDefaultDevice);
+                : string.Format(SettingsStrings.activePlayback, playbackDefaultDevice.NameClean);
         }
 
         public override string ToString()
