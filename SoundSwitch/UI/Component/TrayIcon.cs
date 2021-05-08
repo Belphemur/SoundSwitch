@@ -112,9 +112,16 @@ namespace SoundSwitch.UI.Component
 
             NotifyIcon.MouseMove += (sender, args) =>
             {
-                if (!NotifyIcon.Visible)
-                    return;
-                _tooltipInfoManager.ShowTooltipInfo();
+                try
+                {
+                    if (!NotifyIcon.Visible)
+                        return;
+                    _tooltipInfoManager.ShowTooltipInfo();
+                }
+                catch (Exception)
+                {
+                    //ignored
+                }
             };
             _selectionMenu.Closed += (sender, args) => _tooltipInfoManager.IsBallontipVisible = false;
             _settingsMenu.Closed += (sender, args) => _tooltipInfoManager.IsBallontipVisible = false;

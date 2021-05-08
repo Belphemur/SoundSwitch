@@ -87,7 +87,10 @@ namespace SoundSwitch.Framework.WinApi
         {
             Log.Information("WindowsApiAdapter asked to stop.");
             if (_instance == null)
-                throw new InvalidOperationException("Adapter not started");
+            {
+                Log.Warning("Windows API Adapter wasn't started");
+                return;
+            }
 
             RestartManagerTriggered = null;
             DeviceChanged = null;

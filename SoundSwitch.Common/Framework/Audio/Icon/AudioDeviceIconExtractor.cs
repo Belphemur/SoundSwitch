@@ -74,7 +74,7 @@ namespace SoundSwitch.Common.Framework.Audio.Icon
                 }
                 catch (Exception e)
                 {
-                    Log.Error(e, "Can't extract icon from {path}", path);
+                    Log.Warning(e, "Can't extract icon from {path}", path);
                     return dataFlow switch
                     {
                         DataFlow.Capture => DefaultMicrophone,
