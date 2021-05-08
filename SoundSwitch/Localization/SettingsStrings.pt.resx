@@ -326,7 +326,7 @@ Ambos: alterar quando qualquer aparelho for alterado.</value>
 Restaurar o estado do sistema quando a aplicação é fechada.</value>
   </data>
   <data name="profile.trigger.restoreDevices" xml:space="preserve">
-    <value>Restaurar dispositivos quando o gatilho terminar</value>
+    <value>Restaurar aparelhos quando o gatilho terminar</value>
   </data>
   <data name="usePrimaryScreenTooltip" xml:space="preserve">
     <value>Mostrar bandeira no ecrã principal em vez do ecrã focado.</value>
@@ -362,7 +362,7 @@ Restaurar o estado do sistema quando a aplicação é fechada.</value>
     <value>É necessário no mínimo um gatilho.</value>
   </data>
   <data name="communication" xml:space="preserve">
-    <value>Dispositivo de comunicação padrão</value>
+    <value>Aparelho de comunicação padrão</value>
   </data>
   <data name="profile.trigger.available" xml:space="preserve">
     <value>Gatilhos disponíveis</value>
@@ -395,15 +395,15 @@ Restaurar o estado do sistema quando a aplicação é fechada.</value>
     <value>Nome do programa</value>
   </data>
   <data name="profile.error.device-not-found" xml:space="preserve">
-    <value>O dispositivo {0} não foi encontrado.</value>
+    <value>O aparelho {0} não foi encontrado.</value>
   </data>
   <data name="hotkeyEnabled" xml:space="preserve">
     <value>Tecla de atalho ativada</value>
   </data>
   <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
-    <value>Quando a aplicação é detetada, o SoundSwitch também altera o dispositivo padrão atual.</value>
+    <value>Quando a aplicação é detetada, o SoundSwitch também altera o aparelho padrão atual.</value>
   </data>
   <data name="profile.defaultDevice.checkbox" xml:space="preserve">
-    <value>Também mudar o dispositivo padrão</value>
+    <value>Também mudar o aparelho padrão</value>
   </data>
 </root>
