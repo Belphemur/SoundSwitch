@@ -12,9 +12,9 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System.Diagnostics;
 using System.IO;
 using Newtonsoft.Json;
+using Serilog;
 
 namespace SoundSwitch.Framework.Configuration
 {
@@ -60,26 +60,32 @@ namespace SoundSwitch.Framework.Configuration
             }
             else
             {
-                var contents = File.ReadAllText(filePath);
-                obj = JsonConvert.DeserializeObject<T>(contents);
+                var serializer = new JsonSerializer {NullValueHandling = NullValueHandling.Ignore};
+                using (var fileOpen = File.OpenRead(filePath))
+                using (var reader = new JsonTextReader(new StreamReader(fileOpen)))
+                {
+                    obj = serializer.Deserialize<T>(reader);
+                }
+
                 if (obj == null)
                 {
-                    Trace.WriteLine("Problem with deserialization");
-                    Trace.WriteLine("Contents: " + contents);
+                    Log.Warning("Can't deserialize the config file {type}: {filePath}", typeof(T), filePath);
                     obj = new T();
                 }
             }
+
             obj.FileLocation = filePath;
             if (obj.Migrate())
             {
                 obj.Save();
-            };
+            }
+
             return obj;
         }
 
         private static string GetFilePath<T>() where T : IConfiguration, new()
         {
-            var filePath = Path.Combine(SRoot, typeof (T).Name + ".json");
+            var filePath = Path.Combine(SRoot, typeof(T).Name + ".json");
             return filePath;
         }
 
@@ -91,10 +97,9 @@ namespace SoundSwitch.Framework.Configuration
         {
             configuration.FileLocation = null;
             var serializer = new JsonSerializer {NullValueHandling = NullValueHandling.Ignore};
-            using (var writer = new JsonTextWriter(new StreamWriter(GetFilePath<T>())))
-            {
-                serializer.Serialize(writer, configuration);
-            }
+            using var fileOpen = File.OpenWrite(GetFilePath<T>());
+            using var writer = new JsonTextWriter(new StreamWriter(fileOpen));
+            serializer.Serialize(writer, configuration);
         }
     }
 }

@@ -22,7 +22,6 @@ using System.Windows.Forms;
 using Sentry;
 using Serilog;
 using SoundSwitch.Framework;
-using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Logger.Configuration;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.WinApi;
@@ -44,7 +43,7 @@ namespace SoundSwitch
         {
             using var _ = SentrySdk.Init(options =>
             {
-                options.Dsn = "https://4961ba10a02d43209b7ae7c5df56c81e@o631137.ingest.sentry.io/5755327";
+                options.Dsn = "https://7d52dfb4f6554bf0b58b256337835332@o631137.ingest.sentry.io/5755327";
                 options.Environment = AssemblyUtils.GetReleaseState().ToString();
             });
             InitializeLogger();
@@ -148,8 +147,6 @@ namespace SoundSwitch
                 $"{Application.ProductName}  {AssemblyUtils.GetReleaseState()} ({Application.ProductVersion})");
             Log.Information($"OS: {Environment.OSVersion}");
             Log.Information($"Framework: {Environment.Version}");
-
-            SentrySdk.ConfigureScope(scope => { scope.AddAttachment(AppConfigs.Configuration.FileLocation); });
         }
 
         /// <summary>

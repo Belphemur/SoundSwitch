@@ -30,7 +30,7 @@ jobs:
         with:
           path: ~/.nuget/packages
           # Look to see if there is a cache hit for the corresponding requirements file
-          key: ${{ runner.os }}-nuget-anycpu-${{ hashFiles('**/packages.config') }}
+          key: ${{ runner.os }}-nuget-anycpu-${{ hashFiles('**/*.csproj') }}
           restore-keys: |
             ${{ runner.os }}-nuget-anycpu
       - name: Restore
@@ -61,17 +61,17 @@ jobs:
         with:
           path: ~/.nuget/packages
           # Look to see if there is a cache hit for the corresponding requirements file
-          key: ${{ runner.os }}-nuget-${{env.ARCH}}-${{ hashFiles('**/packages.config') }}
+          key: ${{ runner.os }}-nuget-${{env.ARCH}}-${{ hashFiles('**/*.csproj') }}
           restore-keys: |
             ${{ runner.os }}-nuget-${{env.ARCH}}
       - name: Restore
         run: dotnet restore -r ${{ env.ARCH }}
       - name: Build pre-release
-        run: dotnet publish -c Release --no-restore -r ${{ env.ARCH }} ${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj
+        run: dotnet publish -c Beta --no-restore -r ${{ env.ARCH }} ${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj
       - name: Set Env var from GitHub  
         uses: rlespinasse/github-slug-action@v3.x
       - name: Zip Build ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}
-        run: tar cafv ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip -C ${{ env.PROJECT_NAME }}\bin\Release\${{ env.FRAMEWORK }}\${{ env.ARCH }}\publish\ *
+        run: tar cafv ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip -C ${{ env.PROJECT_NAME }}\bin\Beta\${{ env.FRAMEWORK }}\${{ env.ARCH }}\publish\ *
       - name: Upload Artifact
         run: curl -u "${{env.DAV_USER}}:${{env.DAV_PASS}}" -X PUT ${{env.DAV_SERVER}}/${{env.DAV_USER}}/${{env.PROJECT_NAME}}/${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip --upload-file ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip
         env:

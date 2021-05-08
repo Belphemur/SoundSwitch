@@ -224,14 +224,20 @@ namespace SoundSwitch.Model
 
             ProfileManager = new ProfileManager(new WindowMonitor(), AudioSwitcher.Instance, ActiveAudioDeviceLister, TrayIcon.ShowError, new TriggerFactory(), _notificationManager);
             RegisterHotKey(AppConfigs.Configuration.PlaybackHotKey);
+            var saveConfig = false;
             if (!RegisterHotKey(AppConfigs.Configuration.RecordingHotKey))
             {
                 AppConfigs.Configuration.RecordingHotKey.Enabled = false;
-                AppConfigs.Configuration.Save();
+                saveConfig = true;
             }
             if (!RegisterHotKey(AppConfigs.Configuration.MuteRecordingHotKey))
             {
                 AppConfigs.Configuration.MuteRecordingHotKey.Enabled = false;
+                saveConfig = true;
+            }
+
+            if (saveConfig)
+            {
                 AppConfigs.Configuration.Save();
             }
 

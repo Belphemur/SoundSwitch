@@ -16,7 +16,6 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using NAudio.CoreAudioApi;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
@@ -26,25 +25,16 @@ namespace SoundSwitch.Util
 {
     internal class ToolStripDeviceItem : ToolStripMenuItem
     {
-        private static readonly Bitmap check = Resources.Check;
+        private readonly bool _isDefault;
 
         public ToolStripDeviceItem(EventHandler onClick, DeviceFullInfo audioDevice)
             : base(audioDevice.NameClean, null, onClick)
         {
             AudioDevice = audioDevice;
+            _isDefault = AudioSwitcher.Instance.IsDefault(AudioDevice.Id, (EDataFlow) AudioDevice.Type, ERole.eConsole);
         }
 
-        public override Image Image
-        {
-            get
-            {
-                if (AudioDevice != null &&
-                    AudioSwitcher.Instance.IsDefault(AudioDevice.Id, (EDataFlow)AudioDevice.Type, ERole.eConsole))
-                    return check;
-
-                return null;
-            }
-        }
+        public override Image Image => _isDefault ? Resources.Check : null;
 
         public DeviceFullInfo AudioDevice { get; }
     }
