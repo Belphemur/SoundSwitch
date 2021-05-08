@@ -1,3 +1,13 @@
+### [5.9.2](https://github.com/Belphemur/SoundSwitch/compare/v5.9.1...v5.9.2) (2021-05-08)
+
+
+### Bug Fixes
+
+* **Foreground:** Fix unhandled crash in foreground window detection ([b61c347](https://github.com/Belphemur/SoundSwitch/commit/b61c3475c5dbb584be5603c51487891e894527ab))
+* **HotKey::Recording:** Disable hotkey for recording if can't register it. ([0a5da99](https://github.com/Belphemur/SoundSwitch/commit/0a5da99b1a59ce8967c67bda94ece977cdeabc59))
+* **Microphone::Mute:** Stop telling user that the microphone mute hotkey couldn't be registered ([30d021f](https://github.com/Belphemur/SoundSwitch/commit/30d021fa70887cb9f15dce907f7facf3709c6c13))
+* **Profile::TrayIcon:** possible null case when profile manager isn't defined yet ([234d5bf](https://github.com/Belphemur/SoundSwitch/commit/234d5bf07e9d77e8c774d6ce2be5ae9330573acf))
+
 ### [5.9.1](https://github.com/Belphemur/SoundSwitch/compare/v5.9.0...v5.9.1) (2021-05-08)
 
 
