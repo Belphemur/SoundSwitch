@@ -13,7 +13,6 @@
 ********************************************************************/
 
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using NAudio.CoreAudioApi;
@@ -28,16 +27,37 @@ namespace SoundSwitch.Framework.Audio.Lister
     public class CachedAudioDeviceLister : IAudioDeviceLister
     {
         /// <inheritdoc />
-        public IReadOnlyCollection<DeviceFullInfo> PlaybackDevices => (IReadOnlyCollection<DeviceFullInfo>) _playbackDevices.Values;
+        public IReadOnlyCollection<DeviceFullInfo> PlaybackDevices
+        {
+            get
+            {
+                lock (_lockPlayback)
+                {
+                    return _playbackList;
+                }
+            }
+        }
 
         /// <inheritdoc />
-        public IReadOnlyCollection<DeviceFullInfo> RecordingDevices => (IReadOnlyCollection<DeviceFullInfo>) _recordingDevices.Values;
+        public IReadOnlyCollection<DeviceFullInfo> RecordingDevices
+        {
+            get
+            {
+                lock (_lockRecording)
+                {
+                    return _recordingList;
+                }
+            }
+        }
 
         private readonly DeviceState _state;
         private readonly DebounceDispatcher _dispatcher = new();
-        private readonly object _lock = new();
-        private readonly ConcurrentDictionary<string, DeviceFullInfo> _playbackDevices = new();
-        private readonly ConcurrentDictionary<string,DeviceFullInfo> _recordingDevices = new();
+        private readonly object _lockRefresh = new();
+        private readonly object _lockRecording = new();
+        private readonly object _lockPlayback = new();
+        private IReadOnlyCollection<DeviceFullInfo> _playbackList = new DeviceFullInfo[0];
+        private IReadOnlyCollection<DeviceFullInfo> _recordingList = new DeviceFullInfo[0];
+
 
         public CachedAudioDeviceLister(DeviceState state)
         {
@@ -49,16 +69,17 @@ namespace SoundSwitch.Framework.Audio.Lister
         {
             _dispatcher.Debounce(100, o => Refresh());
         }
+
         public void Refresh()
         {
-            lock (_lock)
+            var playbackDevices = new Dictionary<string, DeviceFullInfo>();
+            var recordingDevices = new Dictionary<string, DeviceFullInfo>();
+            lock (_lockRefresh)
             {
-                var ids = new HashSet<string>();
                 Log.Information("[{@State}] Refreshing all devices", _state);
                 using var enumerator = new MMDeviceEnumerator();
                 foreach (var endPoint in enumerator.EnumerateAudioEndPoints(DataFlow.All, _state))
                 {
-                    ids.Add(endPoint.ID);
                     try
                     {
                         var deviceInfo = new DeviceFullInfo(endPoint);
@@ -70,10 +91,10 @@ namespace SoundSwitch.Framework.Audio.Lister
                         switch (deviceInfo.Type)
                         {
                             case DataFlow.Render:
-                                _playbackDevices.AddOrUpdate(deviceInfo.Id, deviceInfo, (_, _) => deviceInfo);
+                                playbackDevices.Add(deviceInfo.Id, deviceInfo);
                                 break;
                             case DataFlow.Capture:
-                                _recordingDevices.AddOrUpdate(deviceInfo.Id, deviceInfo, (_, _) => deviceInfo);
+                                recordingDevices.Add(deviceInfo.Id, deviceInfo);
                                 break;
                             case DataFlow.All:
                                 break;
@@ -87,17 +108,17 @@ namespace SoundSwitch.Framework.Audio.Lister
                     }
                 }
 
-                foreach (var deviceId in _playbackDevices.Keys.Except(ids))
+                lock (_lockPlayback)
                 {
-                    _playbackDevices.TryRemove(deviceId, out _);
+                    _playbackList = playbackDevices.Values.ToArray();
                 }
 
-                foreach (var deviceId in _recordingDevices.Keys.Except(ids))
+                lock (_lockRecording)
                 {
-                    _recordingDevices.TryRemove(deviceId, out _);
+                    _recordingList = recordingDevices.Values.ToArray();
                 }
 
-                Log.Information("[{@State}] Refreshed all devices. {@Recording}/rec, {@Playback}/play", _state, _recordingDevices.Count, _playbackDevices.Count);
+                Log.Information("[{@State}] Refreshed all devices. {@Recording}/rec, {@Playback}/play", _state, recordingDevices.Count, playbackDevices.Count);
             }
         }
 
