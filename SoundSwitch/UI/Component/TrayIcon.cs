@@ -305,7 +305,7 @@ namespace SoundSwitch.UI.Component
                 _selectionMenu.Items.AddRange(profiles);
                 _selectionMenu.Items.Add(new ToolStripSeparator());
             }
-            
+
             if (playbackDevices.Count < 0 &&
                 recordingDevices.Count < 0)
             {
@@ -314,20 +314,13 @@ namespace SoundSwitch.UI.Component
             }
 
             Log.Information("Set tray icon menu devices");
-            foreach (var item in playbackDevices)
-            {
-                _selectionMenu.Items.Add(new ToolStripDeviceItem(DeviceClicked, item));
-            }
+            _selectionMenu.Items.AddRange(playbackDevices.Select(info => new ToolStripDeviceItem(DeviceClicked, info)).ToArray());
 
             if (recordingDevices.Count > 0)
             {
                 _selectionMenu.Items.Add(new ToolStripSeparator());
-                foreach (var item in recordingDevices)
-                {
-                    _selectionMenu.Items.Add(new ToolStripDeviceItem(DeviceClicked, item));
-                }
+                _selectionMenu.Items.AddRange(recordingDevices.Select(info => new ToolStripDeviceItem(DeviceClicked, info)).ToArray());
             }
-            
         }
 
         private void DeviceClicked(object sender, EventArgs e)
