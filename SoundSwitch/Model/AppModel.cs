@@ -225,7 +225,11 @@ namespace SoundSwitch.Model
             ProfileManager = new ProfileManager(new WindowMonitor(), AudioSwitcher.Instance, ActiveAudioDeviceLister, TrayIcon.ShowError, new TriggerFactory(), _notificationManager);
             RegisterHotKey(AppConfigs.Configuration.PlaybackHotKey);
             RegisterHotKey(AppConfigs.Configuration.RecordingHotKey);
-            RegisterHotKey(AppConfigs.Configuration.MuteRecordingHotKey);
+            if (!RegisterHotKey(AppConfigs.Configuration.MuteRecordingHotKey))
+            {
+                AppConfigs.Configuration.MuteRecordingHotKey.Enabled = false;
+                AppConfigs.Configuration.Save();
+            }
 
             WindowsAPIAdapter.HotKeyPressed += HandleHotkeyPress;
 
