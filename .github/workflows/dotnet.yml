@@ -71,7 +71,7 @@ jobs:
       - name: Set Env var from GitHub  
         uses: rlespinasse/github-slug-action@v3.x
       - name: Zip Build ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}
-        run: tar cafv ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip -C ${{ env.PROJECT_NAME }}\bin\Release\${{ env.FRAMEWORK }}\${{ env.ARCH }}\publish\ *
+        run: tar cafv ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip -C ${{ env.PROJECT_NAME }}\bin\Beta\${{ env.FRAMEWORK }}\${{ env.ARCH }}\publish\ *
       - name: Upload Artifact
         run: curl -u "${{env.DAV_USER}}:${{env.DAV_PASS}}" -X PUT ${{env.DAV_SERVER}}/${{env.DAV_USER}}/${{env.PROJECT_NAME}}/${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip --upload-file ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip
         env:
