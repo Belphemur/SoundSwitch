@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework.Profile.Trigger;
 using SoundSwitch.Model;
+using SoundSwitch.Properties;
 
 namespace SoundSwitch.Framework.Profile.UI
 {
@@ -57,6 +58,8 @@ namespace SoundSwitch.Framework.Profile.UI
                     // ignored
                 }
             }
+
+            image ??= Resources.default_profile_image;
 
             return new ProfileToolStripMenuItem(profile, image, profileClicked => ProfileManager.SwitchAudio(profileClicked));
         }
