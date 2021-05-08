@@ -14,6 +14,7 @@ namespace SoundSwitch.Model
     {
         public SoundSwitchApplicationContext()
         {
+            
             BannerManager.Setup();
             var deviceActiveLister          = new CachedAudioDeviceLister(DeviceState.Active);
             var deviceUnpluggedActiveLister = new CachedAudioDeviceLister(DeviceState.Active | DeviceState.Unplugged);

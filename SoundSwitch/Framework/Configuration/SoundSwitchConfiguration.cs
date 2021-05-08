@@ -107,6 +107,7 @@ namespace SoundSwitch.Framework.Configuration
         public HashSet<string> MigratedFields { get; set; }
 
         // Needed by Interface
+        [JsonIgnore]
         public string FileLocation { get; set; }
 
         /// <summary>
@@ -192,7 +193,7 @@ namespace SoundSwitch.Framework.Configuration
 
         public void Save()
         {
-            Log.Debug("Saving configuration ", this);
+            Log.Debug("Saving configuration {configuration}", this);
             ConfigurationManager.SaveConfiguration(this);
         }
 
