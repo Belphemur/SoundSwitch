@@ -22,6 +22,7 @@ using System.Windows.Forms;
 using Sentry;
 using Serilog;
 using SoundSwitch.Framework;
+using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Logger.Configuration;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.WinApi;
@@ -80,7 +81,6 @@ namespace SoundSwitch
             Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
 #endif
             Application.SetCompatibleTextRenderingDefault(false);
-
             // Manage the Closing events send by Windows
             // Since this app don't use a Form as "main window" the app doesn't close
             // when it should without this.
@@ -106,20 +106,20 @@ namespace SoundSwitch
             try
             {
 #endif
-                MMNotificationClient.Instance.Register();
+            MMNotificationClient.Instance.Register();
 
 
-                using var ctx = new WindowsFormsSynchronizationContext();
+            using var ctx = new WindowsFormsSynchronizationContext();
 
-                SynchronizationContext.SetSynchronizationContext(ctx);
-                try
-                {
-                    Application.Run(new SoundSwitchApplicationContext());
-                }
-                finally
-                {
-                    SynchronizationContext.SetSynchronizationContext(null);
-                }
+            SynchronizationContext.SetSynchronizationContext(ctx);
+            try
+            {
+                Application.Run(new SoundSwitchApplicationContext());
+            }
+            finally
+            {
+                SynchronizationContext.SetSynchronizationContext(null);
+            }
 
 
 #if !DEBUG
@@ -172,7 +172,14 @@ namespace SoundSwitch
         {
             if (exception == null)
                 return;
-            var eventId = SentrySdk.CaptureException(exception);
+
+            SentryId eventId = default;
+            SentrySdk.WithScope(scope =>
+                {
+                    scope.AddAttachment(AppConfigs.Configuration.FileLocation);
+                    eventId = SentrySdk.CaptureException(exception);
+                }
+            );
 
             var exceptionMessage = exception.Message;
             if (exception.InnerException != null)
