@@ -23,6 +23,8 @@ using System.Threading;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
 using Serilog;
+using SoundSwitch.Audio.Manager;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
@@ -72,10 +74,12 @@ namespace SoundSwitch.UI.Component
         private readonly ToolStripMenuItem _updateMenuItem;
         private TimerForm _animationTimer;
         private readonly UpdateDownloadForm _updateDownloadForm;
+        private readonly MethodInfo? _showContextMenu;
 
         public TrayIcon()
         {
             UpdateIcon();
+            _showContextMenu = typeof(NotifyIcon).GetMethod("ShowContextMenu", BindingFlags.Instance | BindingFlags.NonPublic);
             _tooltipInfoManager = new TooltipInfoManager(NotifyIcon);
             _profileTrayIconBuilder = new ProfileTrayIconBuilder();
 
@@ -89,10 +93,18 @@ namespace SoundSwitch.UI.Component
 
             _selectionMenu.Items.Add(TrayIconStrings.noDevicesSelected, RessourceSettingsSmallBitmap, (sender, e) => ShowSettings());
 
-            NotifyIcon.MouseDoubleClick += (sender, args) => { AppModel.Instance.CycleActiveDevice(DataFlow.Render); };
+            //NotifyIcon.MouseDoubleClick += (sender, args) => { AppModel.Instance.CycleActiveDevice(DataFlow.Render); };
 
-            NotifyIcon.MouseClick += (sender, e) =>
+            NotifyIcon.MouseDown += (sender, e) =>
             {
+                Log.Debug("Click on systray icon: {times} {button}", e.Clicks, e.Button);
+                if (e.Clicks == 2)
+                {
+                    NotifyIcon.ContextMenuStrip.Close();
+                    AppModel.Instance.CycleActiveDevice(DataFlow.Render);
+                    return;
+                }
+
                 if (e.Button != MouseButtons.Left) return;
 
                 if (_updateMenuItem.Tag != null)
@@ -103,9 +115,7 @@ namespace SoundSwitch.UI.Component
 
                 UpdateDeviceSelectionList();
                 NotifyIcon.ContextMenuStrip = _selectionMenu;
-                var mi = typeof(NotifyIcon).GetMethod("ShowContextMenu",
-                    BindingFlags.Instance | BindingFlags.NonPublic);
-                mi.Invoke(NotifyIcon, null);
+                _showContextMenu.Invoke(NotifyIcon, null);
 
                 NotifyIcon.ContextMenuStrip = _settingsMenu;
             };
@@ -295,6 +305,7 @@ namespace SoundSwitch.UI.Component
         /// </summary>
         public void UpdateDeviceSelectionList()
         {
+            Log.Information("Set tray icon menu devices");
             _selectionMenu.Items.Clear();
             var playbackDevices = AppModel.Instance.AvailablePlaybackDevices;
             var recordingDevices = AppModel.Instance.AvailableRecordingDevices;
@@ -313,13 +324,15 @@ namespace SoundSwitch.UI.Component
                 return;
             }
 
-            Log.Information("Set tray icon menu devices");
-            _selectionMenu.Items.AddRange(playbackDevices.Select(info => new ToolStripDeviceItem(DeviceClicked, info)).ToArray());
+            var defaultPlayback = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eConsole);
+            _selectionMenu.Items.AddRange(playbackDevices.Select(info => new ToolStripDeviceItem(DeviceClicked, info, info.Equals(defaultPlayback))).ToArray());
 
             if (recordingDevices.Count > 0)
             {
+                var defaultRecording = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eConsole);
+
                 _selectionMenu.Items.Add(new ToolStripSeparator());
-                _selectionMenu.Items.AddRange(recordingDevices.Select(info => new ToolStripDeviceItem(DeviceClicked, info)).ToArray());
+                _selectionMenu.Items.AddRange(recordingDevices.Select(info => new ToolStripDeviceItem(DeviceClicked, info, info.Equals(defaultRecording))).ToArray());
             }
         }
 

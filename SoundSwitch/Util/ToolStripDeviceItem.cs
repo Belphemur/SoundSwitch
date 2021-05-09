@@ -16,8 +16,6 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using SoundSwitch.Audio.Manager;
-using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Properties;
 
@@ -27,11 +25,11 @@ namespace SoundSwitch.Util
     {
         private readonly bool _isDefault;
 
-        public ToolStripDeviceItem(EventHandler onClick, DeviceFullInfo audioDevice)
+        public ToolStripDeviceItem(EventHandler onClick, DeviceFullInfo audioDevice, bool isDefault)
             : base(audioDevice.NameClean, null, onClick)
         {
             AudioDevice = audioDevice;
-            _isDefault = AudioSwitcher.Instance.IsDefault(AudioDevice.Id, (EDataFlow) AudioDevice.Type, ERole.eConsole);
+            _isDefault = isDefault;
         }
 
         public override Image Image => _isDefault ? Resources.Check : null;
