@@ -129,11 +129,9 @@ namespace SoundSwitch
                 HandleException(ex);
             }
 #endif
-            AppModel.Instance.ActiveAudioDeviceLister.Dispose();
-            AppModel.Instance.ActiveUnpluggedAudioLister.Dispose();
-            AppModel.Instance.TrayIcon.Dispose();
+            AppModel.Instance.Dispose();
             WindowsAPIAdapter.Stop();
-            MMNotificationClient.Instance.Dispose();
+            MMNotificationClient.Instance?.Dispose();
             Log.CloseAndFlush();
         }
 

@@ -480,5 +480,12 @@ namespace SoundSwitch.Model
         }
 
         #endregion
+
+        public void Dispose()
+        {
+            TrayIcon?.Dispose();
+            ActiveAudioDeviceLister?.Dispose();
+            ActiveUnpluggedAudioLister?.Dispose();
+        }
     }
 }
