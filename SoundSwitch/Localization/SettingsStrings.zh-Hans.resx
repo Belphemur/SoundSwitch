@@ -459,4 +459,10 @@
   <data name="notification.microphone.muted" xml:space="preserve">
     <value>{0} 已禁音。</value>
   </data>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>打开这个开关会让配置在托盘图标菜单中显示。可以左键点击托盘图标来查看你的配置。</value>
+  </data>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>在软件菜单中显示</value>
+  </data>
 </root>
