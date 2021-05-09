@@ -53,11 +53,11 @@ namespace SoundSwitch.Model
             _deviceCyclerManager = new DeviceCyclerManager();
             MMNotificationClient.Instance.DefaultDeviceChanged += (sender, @event) =>
             {
-                _dispatcher.Debounce(250, o =>
+                _dispatcher.Debounce(TimeSpan.FromMilliseconds(200), defaultDeviceChanged =>
                 {
                     Log.Information(@"[WINAPI] Default device changed to {device}:{role}", @event.Device, @event.Role);
-                    DefaultDeviceChanged?.Invoke(sender, @event);
-                });
+                    defaultDeviceChanged?.Invoke(sender, @event);
+                }, DefaultDeviceChanged);
             };
             _microphoneMuteToggler = new MicrophoneMuteToggler(AudioSwitcher.Instance, _notificationManager);
         }

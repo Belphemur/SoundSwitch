@@ -39,8 +39,7 @@ namespace SoundSwitch.Util.Timer
         /// <param name="param">optional parameter</param>
         /// <param name="priority">optional priorty for the dispatcher</param>
         /// <param name="disp">optional dispatcher. If not passed or null CurrentDispatcher is used.</param>        
-        public void Debounce(int interval, Action<object> action,
-            object param = null)
+        public void Debounce<T>(TimeSpan interval, Action<T> action, T param = default)
         {
             lock (_lockDebounce)
             {
@@ -50,7 +49,7 @@ namespace SoundSwitch.Util.Timer
                 // timer is recreated for each event and effectively
                 // resets the timeout. Action only fires after timeout has fully
                 // elapsed without other events firing in between
-                _timer = new System.Timers.Timer(interval) {AutoReset = false};
+                _timer = new System.Timers.Timer(interval.TotalMilliseconds) {AutoReset = false};
                 _timer.Elapsed += (sender, args) =>
                 {
                     if (_timer == null)
@@ -76,8 +75,7 @@ namespace SoundSwitch.Util.Timer
         /// <param name="param">optional parameter</param>
         /// <param name="priority">optional priorty for the dispatcher</param>
         /// <param name="disp">optional dispatcher. If not passed or null CurrentDispatcher is used.</param>
-        public void Throttle(int interval, Action<object> action,
-                             object param = null)
+        public void Throttle<T>(TimeSpan delay, Action<T> action, T param = default)
         {
             lock (_lockThrottle)
             {
@@ -87,6 +85,7 @@ namespace SoundSwitch.Util.Timer
 
 
                 var curTime = DateTime.UtcNow;
+                var interval = delay.TotalMilliseconds;
 
                 // if timeout is not up yet - adjust timeout to fire 
                 // with potentially new Action parameters           

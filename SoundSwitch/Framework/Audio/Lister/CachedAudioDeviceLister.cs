@@ -45,7 +45,7 @@ namespace SoundSwitch.Framework.Audio.Lister
 
         private void DeviceChanged(object sender, DeviceChangedEventBase e)
         {
-            _dispatcher.Debounce(100, o => Refresh());
+            _dispatcher.Debounce<object>(TimeSpan.FromMilliseconds(100), _ => Refresh());
         }
 
         public void Refresh()

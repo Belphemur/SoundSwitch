@@ -92,15 +92,11 @@ namespace SoundSwitch.UI.Component
             PopulateSettingsMenu();
 
             _selectionMenu.Items.Add(TrayIconStrings.noDevicesSelected, RessourceSettingsSmallBitmap, (sender, e) => ShowSettings());
-
-            //NotifyIcon.MouseDoubleClick += (sender, args) => { AppModel.Instance.CycleActiveDevice(DataFlow.Render); };
-
             NotifyIcon.MouseDown += (sender, e) =>
             {
                 Log.Debug("Click on systray icon: {times} {button}", e.Clicks, e.Button);
                 if (e.Clicks == 2)
                 {
-                    NotifyIcon.ContextMenuStrip.Close();
                     AppModel.Instance.CycleActiveDevice(DataFlow.Render);
                     return;
                 }
@@ -119,24 +115,9 @@ namespace SoundSwitch.UI.Component
 
                 NotifyIcon.ContextMenuStrip = _settingsMenu;
             };
-
-            NotifyIcon.MouseMove += (sender, args) =>
-            {
-                try
-                {
-                    if (!NotifyIcon.Visible)
-                        return;
-                    _tooltipInfoManager.ShowTooltipInfo();
-                }
-                catch (Exception)
-                {
-                    //ignored
-                }
-            };
-            _selectionMenu.Closed += (sender, args) => _tooltipInfoManager.IsBallontipVisible = false;
-            _settingsMenu.Closed += (sender, args) => _tooltipInfoManager.IsBallontipVisible = false;
             SetEventHandlers();
             _updateDownloadForm = new UpdateDownloadForm();
+            _tooltipInfoManager.SetIconText();
         }
 
         public void Dispose()
@@ -245,6 +226,10 @@ namespace SoundSwitch.UI.Component
             {
                 if (@event.UpdateMode == UpdateMode.Notify)
                     _context.Send(s => { NewReleaseAvailable(sender, @event); }, null);
+            };
+            AppModel.Instance.DefaultDeviceChanged += (_, _) =>
+            {
+                _tooltipInfoManager.SetIconText();
             };
         }
 
