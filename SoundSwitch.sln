@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoundSwitch.Audio.Manager",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoundSwitch.Common", "SoundSwitch.Common\SoundSwitch.Common.csproj", "{45A39BFC-7B67-46F2-A6F2-59BF82B350A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundSwitch.Tests", "SoundSwitch.Tests\SoundSwitch.Tests.csproj", "{997DAB74-B16F-449D-82ED-5BD966C0E4DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoundSwitch.Tests", "SoundSwitch.Tests\SoundSwitch.Tests.csproj", "{997DAB74-B16F-449D-82ED-5BD966C0E4DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
