@@ -38,7 +38,7 @@ namespace SoundSwitch.Framework.Configuration
         {
             // Basic Settings
             FirstRun = true;
-            SwitchForegroundProgram = true;
+            SwitchForegroundProgram = false;
 
             // Audio Settings
             ChangeCommunications = false;
@@ -184,6 +184,13 @@ namespace SoundSwitch.Framework.Configuration
             {
                 LastDonationNagTime = DateTime.UtcNow - TimeSpan.FromDays(10);
                 MigratedFields.Add(nameof(LastDonationNagTime));
+                migrated = true;
+            }
+
+            if (!MigratedFields.Contains($"{nameof(SwitchForegroundProgram)}_force_off"))
+            {
+                SwitchForegroundProgram = false;
+                MigratedFields.Add($"{nameof(SwitchForegroundProgram)}_force_off");
                 migrated = true;
             }
 
