@@ -1,3 +1,24 @@
+### [5.9.4](https://github.com/Belphemur/SoundSwitch/compare/v5.9.3...v5.9.4) (2021-05-11)
+
+
+### Bug Fixes
+
+* **Banner::Sound:** Catch execption that could be thrown. ([c7a3059](https://github.com/Belphemur/SoundSwitch/commit/c7a3059c082eadbc6a6f1f0e8c14f3566b83bc37))
+* **Configuration:** Fix likely corruption of configuration. ([60cef81](https://github.com/Belphemur/SoundSwitch/commit/60cef8184720b0d7843b38ab2ebff056b0a848d7))
+* **Program:** Crash when stopping the application ([8da165d](https://github.com/Belphemur/SoundSwitch/commit/8da165d72721b8b473656fde141359ba4efce631))
+* **TrayIcon::Menu:** Fix issue with the menu not showing up when it should. ([8205809](https://github.com/Belphemur/SoundSwitch/commit/820580944a277334fc8ddf53732bbf3cfa2d64cf)), closes [#635](https://github.com/Belphemur/SoundSwitch/issues/635)
+* **TrayIcon::Tooltip:** Fix issue where the trayIcon tooltip kept being rebuilt. ([ca188bd](https://github.com/Belphemur/SoundSwitch/commit/ca188bdff5ca89b78ef7dc3d1fcb1be24be47d7e))
+
+
+### Enhancements
+
+* **Foreground::Switch:** Disable switching foreground application for everybody. Feature should only be on for people that needs it. ([09a8228](https://github.com/Belphemur/SoundSwitch/commit/09a8228459acaea836277bb63c0dd2196559b0e8)), closes [#636](https://github.com/Belphemur/SoundSwitch/issues/636)
+
+
+### Languages
+
+* **Chinese (Simplified):** Translated Settings using Weblate ([e664f6c](https://github.com/Belphemur/SoundSwitch/commit/e664f6c7637e6c5600ab578be1d05816c80216c3))
+
 ### [5.9.3](https://github.com/Belphemur/SoundSwitch/compare/v5.9.2...v5.9.3) (2021-05-08)
 
 
