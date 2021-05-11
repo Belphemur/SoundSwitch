@@ -5,7 +5,6 @@ using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
 using SoundSwitch.Framework.Logger.Enricher;
-using SoundSwitch.Util;
 
 namespace SoundSwitch.Framework.Logger.Configuration
 {
@@ -29,10 +28,8 @@ namespace SoundSwitch.Framework.Logger.Configuration
                          .WriteTo.Sentry(o =>
                          {
                              o.InitializeSdk = false;
-                             o.Dsn = "https://7d52dfb4f6554bf0b58b256337835332@o631137.ingest.sentry.io/5755327";
                              o.MinimumBreadcrumbLevel = LogEventLevel.Debug;
                              o.MinimumEventLevel = LogEventLevel.Error;
-                             o.Environment = AssemblyUtils.GetReleaseState().ToString();
                          })
                          .CreateLogger();
             var listener = new global::SerilogTraceListener.SerilogTraceListener();
