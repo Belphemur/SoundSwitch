@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace SoundSwitch.Audio.Manager.Interop.Com.Threading
 {
@@ -33,7 +34,17 @@ namespace SoundSwitch.Audio.Manager.Interop.Com.Threading
 
         private static Task BeginInvoke(Action action)
         {
-            return Task.Factory.StartNew(action, CancellationToken.None, TaskCreationOptions.None, Scheduler);
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    action();
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e, "Issue while running action in {class}", nameof(ComThread));
+                }
+            }, CancellationToken.None, TaskCreationOptions.None, Scheduler);
         }
 
         public static T Invoke<T>(Func<T> func)
@@ -43,7 +54,19 @@ namespace SoundSwitch.Audio.Manager.Interop.Com.Threading
 
         private static Task<T> BeginInvoke<T>(Func<T> func)
         {
-            return Task<T>.Factory.StartNew(func, CancellationToken.None, TaskCreationOptions.None, Scheduler);
+            return Task<T>.Factory.StartNew(() =>
+            {
+                try
+                {
+                    return func();
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e, "Issue while running func in {class}", nameof(ComThread));
+                    return default;
+                }
+               
+            }, CancellationToken.None, TaskCreationOptions.None, Scheduler);
         }
     }
 }
