@@ -9,11 +9,11 @@ namespace SoundSwitch.Framework.NotificationManager
 {
     public class MMNotificationClient : IMMNotificationClient, IDisposable
     {
-        public static MMNotificationClient Instance { get; } = new ();
-        private       MMDeviceEnumerator   _enumerator;
+        public static MMNotificationClient Instance { get; } = new();
+        private MMDeviceEnumerator _enumerator;
 
         public event EventHandler<DeviceDefaultChangedEvent> DefaultDeviceChanged;
-        public event EventHandler<DeviceChangedEventBase>    DevicesChanged;
+        public event EventHandler<DeviceChangedEventBase> DevicesChanged;
 
         /// <summary>
         /// Register the notification client in the Enumerator
@@ -55,7 +55,6 @@ namespace SoundSwitch.Framework.NotificationManager
                 {
                     Log.Warning(e, "Can't find device {device}", defaultDeviceId);
                 }
-                
             });
         }
 
