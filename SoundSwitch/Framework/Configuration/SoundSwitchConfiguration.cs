@@ -71,7 +71,7 @@ namespace SoundSwitch.Framework.Configuration
         public bool FirstRun { get; set; }
         public HotKey PlaybackHotKey { get; set; }
         public HotKey RecordingHotKey { get; set; }
-        
+
         public HotKey MuteRecordingHotKey { get; set; }
         public bool ChangeCommunications { get; set; }
         public uint UpdateCheckInterval { get; set; }
