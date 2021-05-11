@@ -53,7 +53,7 @@ namespace SoundSwitch.Framework.NotificationManager
                 }
                 catch (Exception e)
                 {
-                    Log.Warning(e, "Can't find device {device}", defaultDeviceId);
+                    Log.Warning(e, "{device} set has default", defaultDeviceId);
                 }
             });
         }
