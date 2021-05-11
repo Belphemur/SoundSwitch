@@ -64,5 +64,10 @@ namespace SoundSwitch.Framework.Configuration
         DateTime LastDonationNagTime { get; set; }
         TimeSpan TimeBetweenDonateNag { get; set; }
         HotKey MuteRecordingHotKey { get; set; }
+
+        /// <summary>
+        /// Unique ID assigned at installation
+        /// </summary>
+        Guid UniqueInstallationId { get; set; }
     }
 }

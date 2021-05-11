@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
+using Serilog;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Model;
 using Timer = System.Windows.Forms.Timer;
@@ -113,14 +114,22 @@ namespace SoundSwitch.Framework.Banner
         private void PrepareSound(BannerData data)
         {
             var cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(_cancellationTokenSource.Token);
-            Task.Factory.StartNew(async () => {
-                using var player = data.CurrentDevice == null ? new WasapiOut() : new WasapiOut(data.CurrentDevice, AudioClientShareMode.Shared, true, 200);
-                await using var waveStream = new CachedSoundWaveStream(data.SoundFile);
-                player.Init(waveStream);
-                
-                player.PlaybackStopped += (_, _) => cancellationTokenSource.Cancel();
-                player.Play();
-                await Task.Delay(-1, cancellationTokenSource.Token);
+            Task.Factory.StartNew(async () =>
+            {
+                try
+                {
+                    using var player = data.CurrentDevice == null ? new WasapiOut() : new WasapiOut(data.CurrentDevice, AudioClientShareMode.Shared, true, 200);
+                    await using var waveStream = new CachedSoundWaveStream(data.SoundFile);
+                    player.Init(waveStream);
+
+                    player.PlaybackStopped += (_, _) => cancellationTokenSource.Cancel();
+                    player.Play();
+                    await Task.Delay(-1, cancellationTokenSource.Token);
+                }
+                catch (Exception e)
+                {
+                    Log.Warning(e, "Issue while playing {sound}", data.SoundFile.FilePath);
+                }
             }, cancellationTokenSource.Token);
         }
 

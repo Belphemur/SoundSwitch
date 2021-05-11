@@ -27,7 +27,7 @@ using SoundSwitch.UI.Component;
 
 namespace SoundSwitch.Model
 {
-    public interface IAppModel
+    public interface IAppModel : IDisposable
     {
         #region Properties
 

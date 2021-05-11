@@ -38,7 +38,7 @@ namespace SoundSwitch.Framework.Configuration
         {
             // Basic Settings
             FirstRun = true;
-            SwitchForegroundProgram = true;
+            SwitchForegroundProgram = false;
 
             // Audio Settings
             ChangeCommunications = false;
@@ -71,7 +71,7 @@ namespace SoundSwitch.Framework.Configuration
         public bool FirstRun { get; set; }
         public HotKey PlaybackHotKey { get; set; }
         public HotKey RecordingHotKey { get; set; }
-        
+
         public HotKey MuteRecordingHotKey { get; set; }
         public bool ChangeCommunications { get; set; }
         public uint UpdateCheckInterval { get; set; }
@@ -97,14 +97,16 @@ namespace SoundSwitch.Framework.Configuration
         public IconChangerFactory.ActionEnum SwitchIcon { get; set; }
 
         [Obsolete]
-        public HashSet<ProfileSetting> ProfileSettings { get; set; } = new HashSet<ProfileSetting>();
+        public HashSet<ProfileSetting> ProfileSettings { get; set; } = new();
 
-        public HashSet<Profile.Profile> Profiles { get; set; } = new HashSet<Profile.Profile>();
+        public HashSet<Profile.Profile> Profiles { get; set; } = new();
 
         /// <summary>
         /// Fields of the config that got migrated
         /// </summary>
         public HashSet<string> MigratedFields { get; set; }
+
+        public Guid UniqueInstallationId { get; set; } = Guid.NewGuid();
 
         // Needed by Interface
         [JsonIgnore]
@@ -184,6 +186,13 @@ namespace SoundSwitch.Framework.Configuration
             {
                 LastDonationNagTime = DateTime.UtcNow - TimeSpan.FromDays(10);
                 MigratedFields.Add(nameof(LastDonationNagTime));
+                migrated = true;
+            }
+
+            if (!MigratedFields.Contains($"{nameof(SwitchForegroundProgram)}_force_off"))
+            {
+                SwitchForegroundProgram = false;
+                MigratedFields.Add($"{nameof(SwitchForegroundProgram)}_force_off");
                 migrated = true;
             }
 

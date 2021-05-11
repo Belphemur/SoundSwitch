@@ -2,17 +2,18 @@
 using System.Threading.Tasks;
 using NAudio.CoreAudioApi;
 using NAudio.CoreAudioApi.Interfaces;
+using Serilog;
 using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.NotificationManager
 {
     public class MMNotificationClient : IMMNotificationClient, IDisposable
     {
-        public static MMNotificationClient Instance { get; } = new ();
-        private       MMDeviceEnumerator   _enumerator;
+        public static MMNotificationClient Instance { get; } = new();
+        private MMDeviceEnumerator _enumerator;
 
         public event EventHandler<DeviceDefaultChangedEvent> DefaultDeviceChanged;
-        public event EventHandler<DeviceChangedEventBase>    DevicesChanged;
+        public event EventHandler<DeviceChangedEventBase> DevicesChanged;
 
         /// <summary>
         /// Register the notification client in the Enumerator
@@ -45,8 +46,15 @@ namespace SoundSwitch.Framework.NotificationManager
 
             Task.Factory.StartNew(() =>
             {
-                var device = _enumerator.GetDevice(defaultDeviceId);
-                DefaultDeviceChanged?.Invoke(this, new DeviceDefaultChangedEvent(device, role));
+                try
+                {
+                    var device = _enumerator.GetDevice(defaultDeviceId);
+                    DefaultDeviceChanged?.Invoke(this, new DeviceDefaultChangedEvent(device, role));
+                }
+                catch (Exception e)
+                {
+                    Log.Warning(e, "{device} set as default", defaultDeviceId);
+                }
             });
         }
 

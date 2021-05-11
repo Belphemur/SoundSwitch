@@ -5,7 +5,6 @@ using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
 using SoundSwitch.Framework.Logger.Enricher;
-using SoundSwitch.Util;
 
 namespace SoundSwitch.Framework.Logger.Configuration
 {
@@ -20,7 +19,7 @@ namespace SoundSwitch.Framework.Logger.Configuration
                          .Enrich.WithExceptionDetails()
                          .Enrich.WithCaller()
 #if DEBUG
-                         .WriteTo.Console(theme: Serilog.Sinks.SystemConsole.Themes.AnsiConsoleTheme.Code)
+                         .WriteTo.Console(LogEventLevel.Verbose, "[{Timestamp:HH:mm:ss.fff} {Level:u3}] {Message} (at {Caller}){NewLine}{Exception}", theme: Serilog.Sinks.SystemConsole.Themes.AnsiConsoleTheme.Code)
 #endif
                          .WriteTo.File(Path.Combine(ApplicationPath.Logs, "soundswitch.log"),
                              rollingInterval: RollingInterval.Day, retainedFileCountLimit: 3,
@@ -29,10 +28,8 @@ namespace SoundSwitch.Framework.Logger.Configuration
                          .WriteTo.Sentry(o =>
                          {
                              o.InitializeSdk = false;
-                             o.Dsn = "https://7d52dfb4f6554bf0b58b256337835332@o631137.ingest.sentry.io/5755327";
                              o.MinimumBreadcrumbLevel = LogEventLevel.Debug;
                              o.MinimumEventLevel = LogEventLevel.Error;
-                             o.Environment = AssemblyUtils.GetReleaseState().ToString();
                          })
                          .CreateLogger();
             var listener = new global::SerilogTraceListener.SerilogTraceListener();

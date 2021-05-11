@@ -27,36 +27,14 @@ namespace SoundSwitch.Framework.Audio.Lister
     public class CachedAudioDeviceLister : IAudioDeviceLister
     {
         /// <inheritdoc />
-        public IReadOnlyCollection<DeviceFullInfo> PlaybackDevices
-        {
-            get
-            {
-                lock (_lockPlayback)
-                {
-                    return _playbackList;
-                }
-            }
-        }
+        public IReadOnlyCollection<DeviceFullInfo> PlaybackDevices { get; private set; } = new DeviceFullInfo[0];
 
         /// <inheritdoc />
-        public IReadOnlyCollection<DeviceFullInfo> RecordingDevices
-        {
-            get
-            {
-                lock (_lockRecording)
-                {
-                    return _recordingList;
-                }
-            }
-        }
+        public IReadOnlyCollection<DeviceFullInfo> RecordingDevices { get; private set; } = new DeviceFullInfo[0];
 
         private readonly DeviceState _state;
         private readonly DebounceDispatcher _dispatcher = new();
         private readonly object _lockRefresh = new();
-        private readonly object _lockRecording = new();
-        private readonly object _lockPlayback = new();
-        private IReadOnlyCollection<DeviceFullInfo> _playbackList = new DeviceFullInfo[0];
-        private IReadOnlyCollection<DeviceFullInfo> _recordingList = new DeviceFullInfo[0];
 
 
         public CachedAudioDeviceLister(DeviceState state)
@@ -67,7 +45,7 @@ namespace SoundSwitch.Framework.Audio.Lister
 
         private void DeviceChanged(object sender, DeviceChangedEventBase e)
         {
-            _dispatcher.Debounce(100, o => Refresh());
+            _dispatcher.Debounce<object>(TimeSpan.FromMilliseconds(100), _ => Refresh());
         }
 
         public void Refresh()
@@ -108,15 +86,9 @@ namespace SoundSwitch.Framework.Audio.Lister
                     }
                 }
 
-                lock (_lockPlayback)
-                {
-                    _playbackList = playbackDevices.Values.ToArray();
-                }
+                PlaybackDevices = playbackDevices.Values.ToArray();
+                RecordingDevices = recordingDevices.Values.ToArray();
 
-                lock (_lockRecording)
-                {
-                    _recordingList = recordingDevices.Values.ToArray();
-                }
 
                 Log.Information("[{@State}] Refreshed all devices. {@Recording}/rec, {@Playback}/play", _state, recordingDevices.Count, playbackDevices.Count);
             }
