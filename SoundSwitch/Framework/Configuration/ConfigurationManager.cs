@@ -95,7 +95,6 @@ namespace SoundSwitch.Framework.Configuration
         /// <param name="configuration">configuration object to save</param>
         public static void SaveConfiguration<T>(T configuration) where T : IConfiguration, new()
         {
-            configuration.FileLocation = null;
             var serializer = new JsonSerializer {NullValueHandling = NullValueHandling.Ignore};
             using var streamWriter = new StreamWriter(GetFilePath<T>());
             using var writer = new JsonTextWriter(streamWriter);

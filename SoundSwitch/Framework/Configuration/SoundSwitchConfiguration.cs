@@ -97,14 +97,16 @@ namespace SoundSwitch.Framework.Configuration
         public IconChangerFactory.ActionEnum SwitchIcon { get; set; }
 
         [Obsolete]
-        public HashSet<ProfileSetting> ProfileSettings { get; set; } = new HashSet<ProfileSetting>();
+        public HashSet<ProfileSetting> ProfileSettings { get; set; } = new();
 
-        public HashSet<Profile.Profile> Profiles { get; set; } = new HashSet<Profile.Profile>();
+        public HashSet<Profile.Profile> Profiles { get; set; } = new();
 
         /// <summary>
         /// Fields of the config that got migrated
         /// </summary>
         public HashSet<string> MigratedFields { get; set; }
+
+        public Guid UniqueInstallationId { get; set; } = Guid.NewGuid();
 
         // Needed by Interface
         [JsonIgnore]
