@@ -181,7 +181,7 @@ namespace SoundSwitch.Model
         /// </summary>
         public bool RunAtStartup
         {
-            get { return AutoStart.IsAutoStarted(); }
+            get => AutoStart.IsAutoStarted();
             set
             {
                 Log.Information("Set AutoStart: {autostart}", value);
@@ -233,6 +233,23 @@ namespace SoundSwitch.Model
             if (!RegisterHotKey(AppConfigs.Configuration.MuteRecordingHotKey))
             {
                 AppConfigs.Configuration.MuteRecordingHotKey.Enabled = false;
+                saveConfig = true;
+            }
+
+            if (!AppConfigs.Configuration.MigratedFields.Contains($"{nameof(SwitchForegroundProgram)}_cleanup")
+             && AppConfigs.Configuration.MigratedFields.Contains($"{nameof(SwitchForegroundProgram)}_force_off") && 
+             !AppConfigs.Configuration.SwitchForegroundProgram)
+            {
+                AppConfigs.Configuration.MigratedFields.Add($"{nameof(SwitchForegroundProgram)}_cleanup");
+                try
+                {
+                    AudioSwitcher.Instance.ResetProcessDeviceConfiguration();
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e, "Trying disable ProcessDevice configuration for migration");
+                }
+
                 saveConfig = true;
             }
 

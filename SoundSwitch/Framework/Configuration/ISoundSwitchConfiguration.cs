@@ -69,5 +69,10 @@ namespace SoundSwitch.Framework.Configuration
         /// Unique ID assigned at installation
         /// </summary>
         Guid UniqueInstallationId { get; set; }
+
+        /// <summary>
+        /// Fields of the config that got migrated
+        /// </summary>
+        HashSet<string> MigratedFields { get; }
     }
 }

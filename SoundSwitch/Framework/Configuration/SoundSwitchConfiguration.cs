@@ -104,7 +104,7 @@ namespace SoundSwitch.Framework.Configuration
         /// <summary>
         /// Fields of the config that got migrated
         /// </summary>
-        public HashSet<string> MigratedFields { get; set; }
+        public HashSet<string> MigratedFields { get; }
 
         public Guid UniqueInstallationId { get; set; } = Guid.NewGuid();
 
