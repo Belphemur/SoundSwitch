@@ -159,7 +159,6 @@ namespace SoundSwitch.UI.Component
         {
             var applicationDirectory = Path.GetDirectoryName(ApplicationPath.Executable);
             Debug.Assert(applicationDirectory != null, "applicationDirectory != null");
-            var readmeHtml = Path.Combine(applicationDirectory, "Readme.html");
             _settingsMenu.Items.Add(Application.ProductName + ' ' + AssemblyUtils.GetReleaseState() + " (" + Application.ProductVersion + ")", SoundSwitchLogoIcon.ToBitmap());
             _settingsMenu.Items.Add(new ToolStripSeparator());
             _settingsMenu.Items.Add(TrayIconStrings.playbackDevices, RessourcePlaybackDevicesBitmap,
@@ -170,16 +169,7 @@ namespace SoundSwitch.UI.Component
             _settingsMenu.Items.Add(_updateMenuItem);
             _settingsMenu.Items.Add(TrayIconStrings.settings, RessourceSettingsSmallBitmap, (sender, e) => ShowSettings());
             _settingsMenu.Items.Add(new ToolStripSeparator());
-            _settingsMenu.Items.Add(TrayIconStrings.help, RessourceInfoHelpBitmap, (sender, e) =>
-            {
-                if (!File.Exists(readmeHtml))
-                {
-                    Log.Error("File {readme} doesn\'t exists", readmeHtml);
-                    return;
-                }
-
-                BrowserUtil.OpenUrl(readmeHtml);
-            });
+            _settingsMenu.Items.Add(TrayIconStrings.help, RessourceInfoHelpBitmap, (sender, e) => BrowserUtil.OpenUrl("https://github.com/Belphemur/SoundSwitch/discussions"));
             _settingsMenu.Items.Add(TrayIconStrings.communityMenu, ResourceDiscord.ToBitmap(), (sender, e) => { BrowserUtil.OpenUrl("https://discord.gg/gUCw3Ue"); });
             _settingsMenu.Items.Add(TrayIconStrings.donate, ResourceDonateBitmap,
                 (sender, e) => BrowserUtil.OpenUrl($"https://soundswitch.aaflalo.me/?utm_campaign=application&utm_source={Application.ProductVersion}#donate"));
