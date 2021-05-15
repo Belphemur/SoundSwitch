@@ -13,13 +13,12 @@
 ********************************************************************/
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Newtonsoft.Json;
+using Sentry;
 using Serilog;
 
 namespace SoundSwitch.Framework.Updater
@@ -32,7 +31,6 @@ namespace SoundSwitch.Framework.Updater
         private static readonly Version AppVersion = new Version(Application.ProductVersion);
 
         private readonly Uri _releaseUrl;
-        private readonly WebClient _webClient = new WebClient();
         public EventHandler<NewReleaseEvent> UpdateAvailable;
         public bool Beta { get; set; }
 
@@ -43,23 +41,7 @@ namespace SoundSwitch.Framework.Updater
         public UpdateChecker(Uri releaseUrl, bool checkBeta)
         {
             _releaseUrl = releaseUrl;
-            _webClient.DownloadStringCompleted += DownloadStringCompleted;
             Beta = checkBeta;
-        }
-
-        private void DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
-        {
-            if (e.Error != null)
-            {
-                Log.Error(e.Error, "Exception while getting release");
-                return;
-            }
-
-            var serverRelease = JsonConvert.DeserializeObject<List<GitHubRelease>>(e.Result);
-            if (!serverRelease.Any(ProcessRelease))
-            {
-                Log.Information("No new Version found: {Releases}", serverRelease);
-            }
         }
 
         private bool ProcessRelease(GitHubRelease serverRelease)
@@ -73,7 +55,6 @@ namespace SoundSwitch.Framework.Updater
             }
 
             var version = new Version(serverRelease.tag_name.Substring(1));
-            var changelog = Regex.Split(serverRelease.body, "\r\n|\r|\n");
             try
             {
                 if (version > AppVersion)
@@ -83,6 +64,7 @@ namespace SoundSwitch.Framework.Updater
                     {
                         return false;
                     }
+                    var changelog = Regex.Split(serverRelease.body, "\r\n|\r|\n");
                     var release = new Release(version, installer, serverRelease.name);
                     release.Changelog.AddRange(changelog);
                     UpdateAvailable?.Invoke(this, new NewReleaseEvent(release));
@@ -102,13 +84,14 @@ namespace SoundSwitch.Framework.Updater
         /// </summary>
         public void CheckForUpdate()
         {
-            _webClient.Headers.Add("User-Agent", UserAgent);
-            Task.Factory.StartNew(() => _webClient.DownloadStringAsync(_releaseUrl));
+            using var httpClient = new HttpClient(new SentryHttpMessageHandler());
+            var releases = httpClient.GetFromJsonAsync<GitHubRelease[]>(_releaseUrl).GetAwaiter().GetResult();
+            foreach (var _ in (releases ?? Array.Empty<GitHubRelease>()).SkipWhile(release => !ProcessRelease(release))) ;
         }
 
         public class NewReleaseEvent : EventArgs
         {
-            public Release Release { get; private set; }
+            public Release Release { get;}
 
             public NewReleaseEvent(Release release)
             {

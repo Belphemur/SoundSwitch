@@ -16,18 +16,18 @@ using System.Collections.Generic;
 
 namespace SoundSwitch.Framework.Updater
 {
-    public class GitHubRelease
+    public record GitHubRelease
     {
-        public string tag_name { get; set; }
-        public string body { get; set; }
-        public string name { get; set; }
-        public bool prerelease { get; set; }
-        public List<Asset> assets { get; set; }
+        public string tag_name { get; init; }
+        public string body { get; init; }
+        public string name { get; init; }
+        public bool prerelease { get; init; }
+        public List<Asset> assets { get; init; }
 
         public class Asset
         {
-            public string name { get; set; }
-            public string browser_download_url { get; set; }
+            public string name { get; init; }
+            public string browser_download_url { get;init; }
         }
 
         public override string ToString()
