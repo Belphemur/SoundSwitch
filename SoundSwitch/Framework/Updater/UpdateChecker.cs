@@ -17,6 +17,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Sentry;
 using Serilog;
@@ -46,7 +48,6 @@ namespace SoundSwitch.Framework.Updater
 
         private bool ProcessRelease(GitHubRelease serverRelease)
         {
-
             Log.Information("Checking version {version} ", serverRelease);
             if (serverRelease.prerelease && !Beta)
             {
@@ -64,6 +65,7 @@ namespace SoundSwitch.Framework.Updater
                     {
                         return false;
                     }
+
                     var changelog = Regex.Split(serverRelease.body, "\r\n|\r|\n");
                     var release = new Release(version, installer, serverRelease.name);
                     release.Changelog.AddRange(changelog);
@@ -75,23 +77,27 @@ namespace SoundSwitch.Framework.Updater
             {
                 Log.Error(ex, "Exception while getting release");
             }
-            return false;
 
+            return false;
         }
 
         /// <summary>
         /// Check for update
         /// </summary>
-        public void CheckForUpdate()
+        public async Task CheckForUpdate(CancellationToken token)
         {
             using var httpClient = new HttpClient(new SentryHttpMessageHandler());
-            var releases = httpClient.GetFromJsonAsync<GitHubRelease[]>(_releaseUrl).GetAwaiter().GetResult();
-            foreach (var _ in (releases ?? Array.Empty<GitHubRelease>()).SkipWhile(release => !ProcessRelease(release))) ;
+            var releases = await httpClient.GetFromJsonAsync<GitHubRelease[]>(_releaseUrl, token);
+            foreach (var release in releases ?? Array.Empty<GitHubRelease>())
+            {
+                token.ThrowIfCancellationRequested();
+                ProcessRelease(release);
+            }
         }
 
         public class NewReleaseEvent : EventArgs
         {
-            public Release Release { get;}
+            public Release Release { get; }
 
             public NewReleaseEvent(Release release)
             {
