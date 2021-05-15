@@ -42,7 +42,7 @@ namespace SoundSwitch.Audio.Manager.Interop.Com.Threading
                 }
                 catch (Exception e)
                 {
-                    Log.Error(e, "Issue while running action in {class}", nameof(ComThread));
+                    Log.Warning(e, "Issue while running action in {class}", nameof(ComThread));
                 }
             }, CancellationToken.None, TaskCreationOptions.None, Scheduler);
         }
@@ -62,7 +62,7 @@ namespace SoundSwitch.Audio.Manager.Interop.Com.Threading
                 }
                 catch (Exception e)
                 {
-                    Log.Error(e, "Issue while running func in {class}", nameof(ComThread));
+                    Log.Warning(e, "Issue while running func in {class}", nameof(ComThread));
                     return default;
                 }
                
