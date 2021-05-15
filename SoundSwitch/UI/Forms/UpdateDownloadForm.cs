@@ -122,7 +122,7 @@ namespace SoundSwitch.UI.Forms
 
         private void UpdateDownloadForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _releaseFile = null;
+            _releaseFile.CancelDownload();
         }
     }
 }
