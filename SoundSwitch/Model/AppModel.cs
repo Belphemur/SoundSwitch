@@ -145,9 +145,14 @@ namespace SoundSwitch.Model
             get => AppConfigs.Configuration.UpdateMode;
             set
             {
-                if (value != AppConfigs.Configuration.UpdateMode && value != UpdateMode.Never)
+                if (value != AppConfigs.Configuration.UpdateMode)
                 {
-                    CheckForUpdate();
+                    if (value != UpdateMode.Never)
+                    {
+                        CheckForUpdate();
+                    }
+
+                    UpdateModeChanged?.Invoke(this, value);
                 }
 
                 AppConfigs.Configuration.UpdateMode = value;
@@ -212,6 +217,7 @@ namespace SoundSwitch.Model
         public IAudioDeviceLister ActiveUnpluggedAudioLister { get; set; }
         public event EventHandler<NotificationSettingsUpdatedEvent> NotificationSettingsChanged;
         public event EventHandler<CustomSoundChangedEvent> CustomSoundChanged;
+        public event EventHandler<UpdateMode> UpdateModeChanged;
 
         #endregion
 

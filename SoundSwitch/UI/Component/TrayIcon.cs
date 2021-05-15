@@ -71,7 +71,7 @@ namespace SoundSwitch.UI.Component
         private readonly TooltipInfoManager _tooltipInfoManager;
         private readonly ProfileTrayIconBuilder _profileTrayIconBuilder;
 
-        private readonly ToolStripMenuItem _updateMenuItem;
+        private ToolStripMenuItem _updateMenuItem;
         private TimerForm _animationTimer;
         private readonly UpdateDownloadForm _updateDownloadForm;
         private readonly MethodInfo? _showContextMenu;
@@ -85,7 +85,7 @@ namespace SoundSwitch.UI.Component
 
             _updateMenuItem = new ToolStripMenuItem(AppConfigs.Configuration.UpdateMode == UpdateMode.Never ? TrayIconStrings.updateDisabled : TrayIconStrings.noUpdate, RessourceUpdateBitmap, OnUpdateClick)
             {
-                Enabled = false
+                Enabled = AppConfigs.Configuration.UpdateMode != UpdateMode.Never
             };
             NotifyIcon.ContextMenuStrip = _settingsMenu;
 
@@ -159,6 +159,7 @@ namespace SoundSwitch.UI.Component
         {
             var applicationDirectory = Path.GetDirectoryName(ApplicationPath.Executable);
             Debug.Assert(applicationDirectory != null, "applicationDirectory != null");
+            _settingsMenu.Items.Clear();
             _settingsMenu.Items.Add(Application.ProductName + ' ' + AssemblyUtils.GetReleaseState() + " (" + Application.ProductVersion + ")", SoundSwitchLogoIcon.ToBitmap());
             _settingsMenu.Items.Add(new ToolStripSeparator());
             _settingsMenu.Items.Add(TrayIconStrings.playbackDevices, RessourcePlaybackDevicesBitmap,
@@ -181,7 +182,11 @@ namespace SoundSwitch.UI.Component
         private void OnUpdateClick(object sender, EventArgs eventArgs)
         {
             if (_updateMenuItem.Tag == null)
+            {
+                AppModel.Instance.CheckForUpdate();
                 return;
+            }
+
             if (_updateDownloadForm.Visible)
             {
                 _updateDownloadForm.Focus();
@@ -217,9 +222,14 @@ namespace SoundSwitch.UI.Component
                 if (@event.UpdateMode == UpdateMode.Notify)
                     _context.Send(s => { NewReleaseAvailable(sender, @event); }, null);
             };
-            AppModel.Instance.DefaultDeviceChanged += (_, _) =>
+            AppModel.Instance.DefaultDeviceChanged += (_, _) => { _tooltipInfoManager.SetIconText(); };
+            AppModel.Instance.UpdateModeChanged += (_, mode) =>
             {
-                _tooltipInfoManager.SetIconText();
+                _updateMenuItem = new ToolStripMenuItem(mode == UpdateMode.Never ? TrayIconStrings.updateDisabled : TrayIconStrings.noUpdate, RessourceUpdateBitmap, OnUpdateClick)
+                {
+                    Enabled = mode != UpdateMode.Never
+                };
+                PopulateSettingsMenu();
             };
         }
 
