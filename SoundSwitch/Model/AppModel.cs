@@ -112,6 +112,7 @@ namespace SoundSwitch.Model
                 if (value != IncludeBetaVersions && _updateChecker != null)
                 {
                     _updateChecker.Beta = value;
+                    CheckForUpdate();
                 }
 
                 AppConfigs.Configuration.IncludeBetaVersions = value;
