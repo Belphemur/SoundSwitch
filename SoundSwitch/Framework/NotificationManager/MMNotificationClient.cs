@@ -24,19 +24,34 @@ namespace SoundSwitch.Framework.NotificationManager
             _enumerator.RegisterEndpointNotificationCallback(this);
         }
 
+        private Task StartInTask(Action action, string eventName)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    action();
+                }
+                catch (Exception e)
+                {
+                    Log.Warning(e, "Issue while processing {event}", eventName);
+                }
+            });
+        }
+
         public void OnDeviceStateChanged(string deviceId, DeviceState newState)
         {
-            Task.Factory.StartNew(() => { DevicesChanged?.Invoke(this, new DeviceChangedEventBase(deviceId)); });
+            StartInTask(() => DevicesChanged?.Invoke(this, new DeviceChangedEventBase(deviceId)), nameof(OnDeviceStateChanged));
         }
 
         public void OnDeviceAdded(string pwstrDeviceId)
         {
-            Task.Factory.StartNew(() => { DevicesChanged?.Invoke(this, new DeviceChangedEventBase(pwstrDeviceId)); });
+            StartInTask(() => DevicesChanged?.Invoke(this, new DeviceChangedEventBase(pwstrDeviceId)), nameof(OnDeviceAdded));
         }
 
         public void OnDeviceRemoved(string deviceId)
         {
-            Task.Factory.StartNew(() => { DevicesChanged?.Invoke(this, new DeviceChangedEventBase(deviceId)); });
+            StartInTask(() => DevicesChanged?.Invoke(this, new DeviceChangedEventBase(deviceId)), nameof(OnDeviceRemoved));
         }
 
         public void OnDefaultDeviceChanged(DataFlow flow, Role role, string defaultDeviceId)
@@ -44,23 +59,16 @@ namespace SoundSwitch.Framework.NotificationManager
             if (defaultDeviceId == null)
                 return;
 
-            Task.Factory.StartNew(() =>
+            StartInTask(() =>
             {
-                try
-                {
-                    var device = _enumerator.GetDevice(defaultDeviceId);
-                    DefaultDeviceChanged?.Invoke(this, new DeviceDefaultChangedEvent(device, role));
-                }
-                catch (Exception e)
-                {
-                    Log.Warning(e, "{device} set as default", defaultDeviceId);
-                }
-            });
+                var device = _enumerator.GetDevice(defaultDeviceId);
+                DefaultDeviceChanged?.Invoke(this, new DeviceDefaultChangedEvent(device, role));
+            }, nameof(OnDefaultDeviceChanged));
         }
 
         public void OnPropertyValueChanged(string pwstrDeviceId, PropertyKey key)
         {
-            Task.Factory.StartNew(() =>
+            StartInTask(() =>
             {
                 if (PropertyKeys.PKEY_DeviceInterface_FriendlyName.formatId != key.formatId
                     && PropertyKeys.PKEY_AudioEndpoint_GUID.formatId != key.formatId
@@ -72,7 +80,7 @@ namespace SoundSwitch.Framework.NotificationManager
                 }
 
                 DevicesChanged?.Invoke(this, new DeviceChangedEventBase(pwstrDeviceId));
-            });
+            }, nameof(OnPropertyValueChanged));
         }
 
         public void Dispose()
