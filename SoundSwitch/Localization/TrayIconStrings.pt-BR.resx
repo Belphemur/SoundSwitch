@@ -186,4 +186,7 @@
   <data name="iconChanger.recording" xml:space="preserve">
     <value>Gravando</value>
   </data>
+  <data name="forceCheckForUpdate" xml:space="preserve">
+    <value>Verificar por atualizações</value>
+  </data>
 </root>
