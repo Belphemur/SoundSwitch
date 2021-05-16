@@ -133,6 +133,15 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check for update.
+        /// </summary>
+        internal static string forceCheckForUpdate {
+            get {
+                return ResourceManager.GetString("forceCheckForUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Help.
         /// </summary>
         internal static string help {

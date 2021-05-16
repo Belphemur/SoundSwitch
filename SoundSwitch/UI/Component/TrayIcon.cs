@@ -83,10 +83,7 @@ namespace SoundSwitch.UI.Component
             _tooltipInfoManager = new TooltipInfoManager(NotifyIcon);
             _profileTrayIconBuilder = new ProfileTrayIconBuilder();
 
-            _updateMenuItem = new ToolStripMenuItem(AppConfigs.Configuration.UpdateMode == UpdateMode.Never ? TrayIconStrings.updateDisabled : TrayIconStrings.noUpdate, RessourceUpdateBitmap, OnUpdateClick)
-            {
-                Enabled = AppConfigs.Configuration.UpdateMode != UpdateMode.Never
-            };
+            SetUpdateMenuItem(AppConfigs.Configuration.UpdateMode);
             NotifyIcon.ContextMenuStrip = _settingsMenu;
 
             PopulateSettingsMenu();
@@ -118,6 +115,11 @@ namespace SoundSwitch.UI.Component
             SetEventHandlers();
             _updateDownloadForm = new UpdateDownloadForm();
             _tooltipInfoManager.SetIconText();
+        }
+
+        private void SetUpdateMenuItem(UpdateMode mode)
+        {
+            _updateMenuItem = new ToolStripMenuItem(mode == UpdateMode.Never ? TrayIconStrings.forceCheckForUpdate : TrayIconStrings.noUpdate, RessourceUpdateBitmap, OnUpdateClick);
         }
 
         public void Dispose()
@@ -219,16 +221,20 @@ namespace SoundSwitch.UI.Component
             };
             AppModel.Instance.NewVersionReleased += (sender, @event) =>
             {
-                if (@event.UpdateMode == UpdateMode.Notify)
-                    _context.Send(s => { NewReleaseAvailable(sender, @event); }, null);
+                switch (@event.UpdateMode)
+                {
+                    case UpdateMode.Never:
+                        _context.Send(state => _updateDownloadForm.DownloadRelease(@event.Release), null);
+                        break;
+                    case UpdateMode.Notify:
+                        _context.Send(s => { NewReleaseAvailable(sender, @event); }, null);
+                        break;
+                }
             };
             AppModel.Instance.DefaultDeviceChanged += (_, _) => { _tooltipInfoManager.SetIconText(); };
             AppModel.Instance.UpdateModeChanged += (_, mode) =>
             {
-                _updateMenuItem = new ToolStripMenuItem(mode == UpdateMode.Never ? TrayIconStrings.updateDisabled : TrayIconStrings.noUpdate, RessourceUpdateBitmap, OnUpdateClick)
-                {
-                    Enabled = mode != UpdateMode.Never
-                };
+                SetUpdateMenuItem(mode);
                 PopulateSettingsMenu();
             };
         }
@@ -237,13 +243,9 @@ namespace SoundSwitch.UI.Component
         {
             StartAnimationIconUpdate();
             _updateMenuItem.Tag = newReleaseEvent.Release;
-            _updateMenuItem.Text =
-                string.Format(TrayIconStrings.updateAvailable, newReleaseEvent.Release.ReleaseVersion);
-            _updateMenuItem.Enabled = true;
+            _updateMenuItem.Text = string.Format(TrayIconStrings.updateAvailable, newReleaseEvent.Release.ReleaseVersion);
             NotifyIcon.BalloonTipClicked += OnUpdateClick;
-            NotifyIcon.ShowBalloonTip(3000,
-                string.Format(TrayIconStrings.versionAvailable, newReleaseEvent.Release.ReleaseVersion),
-                newReleaseEvent.Release.Name + '\n' + TrayIconStrings.clickToUpdate, ToolTipIcon.Info);
+            NotifyIcon.ShowBalloonTip(3000, string.Format(TrayIconStrings.versionAvailable, newReleaseEvent.Release.ReleaseVersion), newReleaseEvent.Release.Name + '\n' + TrayIconStrings.clickToUpdate, ToolTipIcon.Info);
         }
 
         /// <summary>
