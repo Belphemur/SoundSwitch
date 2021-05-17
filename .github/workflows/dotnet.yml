@@ -78,13 +78,20 @@ jobs:
           DAV_USER: ${{secrets.DAV_USER}}
           DAV_PASS: ${{secrets.DAV_PASS}}
           DAV_SERVER: "https://nc.aaflalo.me/remote.php/dav/files"
+    
+  prerelease-notif:
+    needs: prerelease
+    if: github.ref == 'refs/heads/dev'
+    runs-on: ubuntu-latest
+    steps:
       - name: Discord notification
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         uses: Ilshidur/action-discord@master
         with:
           args: 'A new build of {{ EVENT_PAYLOAD.repository.full_name }} is available: https://nc.aaflalo.me/s/8DKytYCTAbrn6yz'
-
+    
+    
   prepare-release:
       needs: build
       if: github.ref == 'refs/heads/master'
