@@ -186,4 +186,7 @@
   <data name="updateDisabled" xml:space="preserve">
     <value>Traženje novih verzija deaktivirano</value>
   </data>
+  <data name="forceCheckForUpdate" xml:space="preserve">
+    <value>Traži novu verziju</value>
+  </data>
 </root>
