@@ -34,17 +34,17 @@ namespace SoundSwitch.UI.Forms
 
             LocalizeForm();
             downloadProgress.DisplayStyle = TextProgressBar.ProgressBarDisplayText.Both;
+            downloadProgress.Visible = false;
             TopMost = true;
         }
 
         public void DownloadRelease(Release release)
         {
+            installButton.Enabled = true;
             changeLog.SetChangelog(release.Changelog);
             Name = release.Name;
             downloadProgress.CustomText = release.Asset.name;
             downloadProgress.Value = 0;
-            installButton.Enabled = false;
-            downloadProgress.Enabled = true;
 
             _releaseFile = new WebFile(new Uri(release.Asset.browser_download_url));
 
@@ -82,21 +82,9 @@ namespace SoundSwitch.UI.Forms
                     return;
                 }
 
-                if (installButton.InvokeRequired)
-                {
-                    installButton.BeginInvoke(new Action(() =>
-                    {
-                        installButton.Enabled = true;
-                        downloadProgress.Enabled = false;
-                    }));
-                }
-                else
-                {
-                    installButton.Enabled = true;
-                    downloadProgress.Enabled = false;
-                }
+                new UpdateRunner().RunUpdate(_releaseFile, "/SILENT");
+                BeginInvoke((Action) Close);
             };
-            _releaseFile.DownloadFile();
             ShowDialog();
         }
 
@@ -116,8 +104,10 @@ namespace SoundSwitch.UI.Forms
 
         private void installButton_Click(object sender, EventArgs e)
         {
-            new UpdateRunner().RunUpdate(_releaseFile, "/SILENT");
-            Close();
+            downloadProgress.Enabled = true;
+            downloadProgress.Visible = true;
+            _releaseFile.DownloadFile();
+            installButton.Enabled = false;
         }
 
         private void UpdateDownloadForm_FormClosing(object sender, FormClosingEventArgs e)
