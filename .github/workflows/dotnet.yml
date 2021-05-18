@@ -89,7 +89,7 @@ jobs:
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         run: |
-           curl -H "Content-Type: application/json" -d '{"content": "A new build [${{ steps.devVersion.outputs.version }}] is now available: https://nc.aaflalo.me/s/8DKytYCTAbrn6yz"}' ${{env.DISCORD_WEBHOOK}}
+           curl -H "Content-Type: application/json" -d '{"content": "A new build [${{ steps.devVersion.outputs.version }}] is now available:\\nhttps:\/\/nc.aaflalo.me\/s\/8DKytYCTAbrn6yz"}' ${{env.DISCORD_WEBHOOK}}
     
     
   prepare-release:
