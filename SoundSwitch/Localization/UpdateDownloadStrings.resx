@@ -115,4 +115,7 @@
 	<data name="notSignedTitle" xml:space="preserve">
 		<value>Invalid Digital Signature</value>
 	</data>
+	<data name="remindMe" xml:space="preserve">
+		<value>Later</value>
+	</data>
 </root>

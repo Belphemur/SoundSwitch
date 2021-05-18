@@ -30,5 +30,10 @@ namespace SoundSwitch.Framework.Updater
         public GitHubRelease.Asset Asset { get; private set; }
         public List<string> Changelog { get; } = new List<string>();
         public string Name { get; private set; }
+
+        public override string ToString()
+        {
+            return $"{nameof(ReleaseVersion)}: {ReleaseVersion}, {nameof(Name)}: {Name}";
+        }
     }
 }

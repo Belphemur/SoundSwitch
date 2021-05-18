@@ -27,6 +27,7 @@ using SoundSwitch.Framework.Profile.Trigger;
 using SoundSwitch.Framework.TrayIcon.Icon;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 using SoundSwitch.Framework.Updater;
+using SoundSwitch.Framework.Updater.Remind;
 using SoundSwitch.Framework.WinApi.Keyboard;
 using SoundSwitch.Localization.Factory;
 
@@ -100,6 +101,8 @@ namespace SoundSwitch.Framework.Configuration
         public HashSet<ProfileSetting> ProfileSettings { get; set; } = new();
 
         public HashSet<Profile.Profile> Profiles { get; set; } = new();
+
+        public ReleasePostponed Postponed { get; set; }
 
         /// <summary>
         /// Fields of the config that got migrated

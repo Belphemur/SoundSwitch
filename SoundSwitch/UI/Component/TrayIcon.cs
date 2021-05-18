@@ -241,9 +241,16 @@ namespace SoundSwitch.UI.Component
 
         private void NewReleaseAvailable(object sender, UpdateChecker.NewReleaseEvent newReleaseEvent)
         {
-            StartAnimationIconUpdate();
+ 
             _updateMenuItem.Tag = newReleaseEvent.Release;
             _updateMenuItem.Text = string.Format(TrayIconStrings.updateAvailable, newReleaseEvent.Release.ReleaseVersion);
+            var configurationPostponed = AppConfigs.Configuration.Postponed;
+            if (configurationPostponed?.ShouldPostpone(newReleaseEvent.Release) ?? false)
+            {
+                Log.Information("Release {release} has been postponed to {date:yyyy-MM-dd hh:mm}", newReleaseEvent.Release, configurationPostponed.Until);
+                return;
+            }
+            StartAnimationIconUpdate();
             NotifyIcon.BalloonTipClicked += OnUpdateClick;
             NotifyIcon.ShowBalloonTip(3000, string.Format(TrayIconStrings.versionAvailable, newReleaseEvent.Release.ReleaseVersion), newReleaseEvent.Release.Name + '\n' + TrayIconStrings.clickToUpdate, ToolTipIcon.Info);
         }

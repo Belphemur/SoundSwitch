@@ -66,6 +66,8 @@ namespace SoundSwitch.Framework.Updater
                         return false;
                     }
 
+              
+
                     var changelog = Regex.Split(serverRelease.body, "\r\n|\r|\n");
                     var release = new Release(version, installer, serverRelease.name);
                     release.Changelog.AddRange(changelog);

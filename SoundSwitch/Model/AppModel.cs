@@ -34,6 +34,7 @@ using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Profile.Trigger;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.Updater.Job;
+using SoundSwitch.Framework.Updater.Remind;
 using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Framework.WinApi.Keyboard;
 using SoundSwitch.Localization;
@@ -156,6 +157,16 @@ namespace SoundSwitch.Model
                 }
 
                 AppConfigs.Configuration.UpdateMode = value;
+                AppConfigs.Configuration.Save();
+            }
+        }
+
+        public ReleasePostponed ReleasePostponed
+        {
+            get => AppConfigs.Configuration.Postponed;
+            set
+            {
+                AppConfigs.Configuration.Postponed = value;
                 AppConfigs.Configuration.Save();
             }
         }

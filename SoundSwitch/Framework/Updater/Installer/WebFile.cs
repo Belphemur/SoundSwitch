@@ -45,6 +45,7 @@ namespace SoundSwitch.Framework.Updater.Installer
 
         public Uri FileUri { get; }
         public string FilePath { get; }
+        public bool DownloadStarted { get; private set; }
 
         private static string DefaultFilePath(Uri fileUri)
         {
@@ -88,6 +89,7 @@ namespace SoundSwitch.Framework.Updater.Installer
                 {
                     await using (var stream = File.OpenWrite(FilePath))
                     {
+                        DownloadStarted = true;
                         await FileDownloader.DownloadFileAsync(
                             FileUri,
                             stream,

@@ -15,9 +15,12 @@
 using System;
 using System.Windows.Forms;
 using Serilog;
+using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.Updater.Installer;
+using SoundSwitch.Framework.Updater.Remind;
 using SoundSwitch.Localization;
+using SoundSwitch.Model;
 using SoundSwitch.Properties;
 using SoundSwitch.UI.Component;
 
@@ -26,6 +29,7 @@ namespace SoundSwitch.UI.Forms
     public sealed partial class UpdateDownloadForm : Form
     {
         private WebFile _releaseFile;
+        private Release _releaseInfo;
 
         public UpdateDownloadForm()
         {
@@ -40,6 +44,7 @@ namespace SoundSwitch.UI.Forms
 
         public void DownloadRelease(Release release)
         {
+            _releaseInfo = release;
             installButton.Enabled = true;
             changeLog.SetChangelog(release.Changelog);
             Name = release.Name;
@@ -83,7 +88,14 @@ namespace SoundSwitch.UI.Forms
                 }
 
                 new UpdateRunner().RunUpdate(_releaseFile, "/SILENT");
-                BeginInvoke((Action) Close);
+                if (InvokeRequired)
+                {
+                    BeginInvoke((Action) Close);
+                }
+                else
+                {
+                    Close();
+                }
             };
             ShowDialog();
         }
@@ -92,13 +104,20 @@ namespace SoundSwitch.UI.Forms
         {
             // Misc
             changeLogGroup.Text = UpdateDownloadStrings.changelog;
-            cancelButton.Text = UpdateDownloadStrings.cancel;
+            cancelButton.Text = UpdateDownloadStrings.remindMe;
             installButton.Text = UpdateDownloadStrings.install;
         }
 
         private void cancelButton_Click(object sender, EventArgs e)
         {
-            _releaseFile.CancelDownload();
+            if (_releaseFile.DownloadStarted)
+            {
+                _releaseFile.CancelDownload();
+            }
+            else
+            {
+                AppModel.Instance.ReleasePostponed = new ReleasePostponed(_releaseInfo.ReleaseVersion, DateTime.UtcNow + 3 * TimeSpan.FromSeconds(AppConfigs.Configuration.UpdateCheckInterval));
+            }
             Close();
         }
 
@@ -108,6 +127,7 @@ namespace SoundSwitch.UI.Forms
             downloadProgress.Visible = true;
             _releaseFile.DownloadFile();
             installButton.Enabled = false;
+            cancelButton.Text = UpdateDownloadStrings.cancel;
         }
 
         private void UpdateDownloadForm_FormClosing(object sender, FormClosingEventArgs e)

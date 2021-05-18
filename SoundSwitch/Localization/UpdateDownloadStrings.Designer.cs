@@ -113,5 +113,14 @@ namespace SoundSwitch.Localization {
                 return ResourceManager.GetString("notSignedTitle", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Later.
+        /// </summary>
+        internal static string remindMe {
+            get {
+                return ResourceManager.GetString("remindMe", resourceCulture);
+            }
+        }
     }
 }

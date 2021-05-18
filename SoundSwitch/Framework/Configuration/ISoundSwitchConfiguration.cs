@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
@@ -21,6 +22,7 @@ using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.TrayIcon.Icon;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 using SoundSwitch.Framework.Updater;
+using SoundSwitch.Framework.Updater.Remind;
 using SoundSwitch.Framework.WinApi.Keyboard;
 using SoundSwitch.Localization.Factory;
 
@@ -69,6 +71,9 @@ namespace SoundSwitch.Framework.Configuration
         /// Unique ID assigned at installation
         /// </summary>
         Guid UniqueInstallationId { get; set; }
+        
+        [CanBeNull]
+        ReleasePostponed Postponed { get; set; }
 
         /// <summary>
         /// Fields of the config that got migrated
