@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -58,4 +58,168 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="disableCustomSoundTooltip" xml:space="preserve">
+    <value>تعطيل مجموعة الصوت المخصص.</value>
+  </data>
+  <data name="notificationOptionBanner" xml:space="preserve">
+    <value>لافتة</value>
+  </data>
+  <data name="updateNotifyTooltip" xml:space="preserve">
+    <value>سوف ينبهك SoundSwitch عند توفر تحديث. عند النقر فوق الرسالة ، ستظهر نافذة تم فيها تنزيل التحديث وسيتم سؤالك عما إذا كنت تريد تثبيته.</value>
+  </data>
+  <data name="updateNeverTooltip" xml:space="preserve">
+    <value>لا تقم بتحديث البرنامج ما لم يتم تحديثه يدويًا.</value>
+  </data>
+  <data name="languageRestartRequiredCaption" xml:space="preserve">
+    <value>يجب إعادة التشغيل</value>
+  </data>
+  <data name="languageRestartRequired" xml:space="preserve">
+    <value>اللغه ستتغير بعد إعادة تشغيل SoundSwitch.
+هل تريد إعادة التشغيل الآن ؟</value>
+  </data>
+  <data name="language" xml:space="preserve">
+    <value>اللغه</value>
+  </data>
+  <data name="activePlayback" xml:space="preserve">
+    <value>تشغيل: {0}</value>
+  </data>
+  <data name="activeRecording" xml:space="preserve">
+    <value>تسجيل: {0}</value>
+  </data>
+  <data name="audioFileNotFoundCaption" xml:space="preserve">
+    <value>ملف الصوت غير موجود</value>
+  </data>
+  <data name="audioFileNotFound" xml:space="preserve">
+    <value>لا يمكن العثور على ملف الصوت الذي حددته لاستخدامه كإشعار. حول SoundSwitch إعداد الإعلام إلى {0}.</value>
+  </data>
+  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
+    <value>من دون تلميحات</value>
+  </data>
+  <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
+    <value>كلا الجهازين</value>
+  </data>
+  <data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
+    <value>جهاز تسجيل</value>
+  </data>
+  <data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
+    <value>جهاز سمع</value>
+  </data>
+  <data name="notificationTooltip" xml:space="preserve">
+    <value>إشعارات الكمبيوتر: الإشعارات الإفتراضية للكمبيوتر.
+إشعارات صوتيه: يشغل صوتا عند تبديل جهاز السمع.
+اشعارات صوتيه حسب الطلب: يشغل الصوت المختار حسب الطلب عند تبديل جهاز السمع.
+إشعارات عائمه: شكل مميز عن الإشعارات الإفتراضيه للكمبيوتر.
+لافته: يستخدم اطار مميز دائما فوق جميع الشبابيك, مفيد للإستخدام لدى الألعاب.</value>
+  </data>
+  <data name="notificationOptionCustomized" xml:space="preserve">
+    <value>إشعارات صوتيه مختاره حسب الطلب</value>
+  </data>
+  <data name="notificationOptionToast" xml:space="preserve">
+    <value>إشعارات عائمه</value>
+  </data>
+  <data name="notificationOptionNone" xml:space="preserve">
+    <value>بدون إشعارات</value>
+  </data>
+  <data name="notificationOptionSound" xml:space="preserve">
+    <value>اشعارات صوتيه</value>
+  </data>
+  <data name="notificationOptionWindowsDefault" xml:space="preserve">
+    <value>اشعارات الكمبيوتر</value>
+  </data>
+  <data name="cycleThroughTooltip" xml:space="preserve">
+    <value>الأختيار بين أي اجهزة يتم التبديل. بين الأجهزة المختاره ام جميع الأجهزة.</value>
+  </data>
+  <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
+    <value>فقط اجهزة السمع المختاره</value>
+  </data>
+  <data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
+    <value>كل أجهزة السمع</value>
+  </data>
+  <data name="tooltipOnHover" xml:space="preserve">
+    <value>تلميحات عند الحوم بفأرة الحاسوب</value>
+  </data>
+  <data name="updateNever" xml:space="preserve">
+    <value>عدم البحث عن التحديثات</value>
+  </data>
+  <data name="updateNotify" xml:space="preserve">
+    <value>أخبرني عن تواجد تحديثات</value>
+  </data>
+  <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
+    <value>التحديثات ينزلن بشكل تلقائي.</value>
+  </data>
+  <data name="updateInstallAutomatically" xml:space="preserve">
+    <value>تنزيل تحديثات تلقائيه</value>
+  </data>
+  <data name="keepSystemTrayIconTooltip" xml:space="preserve">
+    <value>عنج الإختيار, أيقون شريط المهمات لا يتغير عند تغيير 'جهاز السمع الإفتراضي'.</value>
+  </data>
+  <data name="keepSystemTrayIcon" xml:space="preserve">
+    <value>إبقاء أيقون SoundSwitch في شريط المهمات</value>
+  </data>
+  <data name="cycleThrough" xml:space="preserve">
+    <value>التبديل بين</value>
+  </data>
+  <data name="updateSettings" xml:space="preserve">
+    <value>اعدادات التحديث</value>
+  </data>
+  <data name="audioSettings" xml:space="preserve">
+    <value>إعدادات السمع</value>
+  </data>
+  <data name="basicSettings" xml:space="preserve">
+    <value>اعدادات أساسيه</value>
+  </data>
+  <data name="hotkeysTooltip" xml:space="preserve">
+    <value>اضغط لتشغيل اختصارات لوحة المفاتيح.</value>
+  </data>
+  <data name="selectSoundButtonTooltip" xml:space="preserve">
+    <value>اختر ملف السمع للإشعار</value>
+  </data>
+  <data name="audioFiles" xml:space="preserve">
+    <value>ملفات سمع</value>
+  </data>
+  <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
+    <value>عند الإختيار, SoundSwitch سيبحث ايضا عن نسخ تجريبيه في GitHub.</value>
+  </data>
+  <data name="updateIncludeBetaVersions" xml:space="preserve">
+    <value>إشمال النسخ التجريبيه</value>
+  </data>
+  <data name="notification" xml:space="preserve">
+    <value>إشعار</value>
+  </data>
+  <data name="communicationsDeviceTooltip" xml:space="preserve">
+    <value>عندما يتم اختياره, 'جهاز الإتصالات الإفتراضي' و 'جهاز الإتصالات الإفتراضي' يتم تبديلهما مع بعض (جيد للإستخدام لتطبيقات مثل سكايب, تيم سبيك الخ).</value>
+  </data>
+  <data name="closeTooltip" xml:space="preserve">
+    <value>التغييرات تحفظ بشكل تلقائي</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>إغلاق</value>
+  </data>
+  <data name="startWithWindows" xml:space="preserve">
+    <value>تشغيل تلقائي عند تشغيل الكمبيوتر</value>
+  </data>
+  <data name="communicationsDevice" xml:space="preserve">
+    <value>تبديل جهاز الإتصالات الإفتراضي</value>
+  </data>
+  <data name="hotkeys" xml:space="preserve">
+    <value>اختصار لوحة المفاتيح</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>الإعدادات</value>
+  </data>
+  <data name="playback" xml:space="preserve">
+    <value>صوت</value>
+  </data>
+  <data name="recording" xml:space="preserve">
+    <value>تسجيل صوتي</value>
+  </data>
+  <data name="disconnected" xml:space="preserve">
+    <value>غير متصل</value>
+  </data>
+  <data name="connected" xml:space="preserve">
+    <value>متصل</value>
+  </data>
+  <data name="selected" xml:space="preserve">
+    <value>تم اختياره</value>
+  </data>
 </root>
