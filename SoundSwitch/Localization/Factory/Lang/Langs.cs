@@ -199,5 +199,15 @@ namespace SoundSwitch.Localization.Factory.Lang
 
         public override Language TypeEnum => Language.Turkish;
     }
+
+    public class Arabic : BaseLang
+    {
+        /// <summary>
+        /// Culture info of this language
+        /// </summary>
+        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("ar");
+
+        public override Language TypeEnum => Language.Arabic;
+    }
     
 }
