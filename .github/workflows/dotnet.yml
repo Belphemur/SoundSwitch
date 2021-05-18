@@ -53,6 +53,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
@@ -66,15 +68,13 @@ jobs:
             ${{ runner.os }}-nuget-${{env.ARCH}}
       - name: Restore
         run: dotnet restore -r ${{ env.ARCH }}
+      - name: Fetch tags
+        run: git fetch --tags --force
       - name: Calculate version
-        run: $env:DEV_VERSION=$(.\devVersion.ps1)
-      - name: Save version for notification
-        uses: actions/upload-artifact@v2
-        with:
-          name: version
-          path: .\version
+        id: devVersion
+        run: devVersion.ps1
       - name: Build pre-release
-        run: dotnet publish -c Beta --no-restore -r ${{ env.ARCH }} ${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj -p:PackageVersion=${{ env.DEV_VERSION }}
+        run: dotnet publish -c Beta --no-restore -r ${{ env.ARCH }} ${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj -p:PackageVersion=${{ steps.devVersion.outputs.version }}
       - name: Set Env var from GitHub  
         uses: rlespinasse/github-slug-action@v3.x
       - name: Zip Build ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}
@@ -85,24 +85,10 @@ jobs:
           DAV_USER: ${{secrets.DAV_USER}}
           DAV_PASS: ${{secrets.DAV_PASS}}
           DAV_SERVER: "https://nc.aaflalo.me/remote.php/dav/files"
-    
-  prerelease-notif:
-    needs: prerelease
-    if: github.ref == 'refs/heads/dev'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download Artifact
-        uses: actions/download-artifact@v1
-        with:
-          name: version
-      - name: Set build version
-        run: export DEV_VERSION=$(cat version)
-      - name: Discord notification
+      - name: Discord Notification
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        uses: Ilshidur/action-discord@master
-        with:
-          args: 'A new build [$DEV_VERSION] of {{ EVENT_PAYLOAD.repository.full_name }} is available: https://nc.aaflalo.me/s/8DKytYCTAbrn6yz'
+        run: curl -H "Content-Type: application/json" -d '{"content": "A new build [${{ steps.devVersion.outputs.version }}] is now available: https://nc.aaflalo.me/s/8DKytYCTAbrn6yz"}' $DISCORD_WEBHOOK
     
     
   prepare-release:

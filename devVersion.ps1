@@ -1,4 +1,5 @@
-$currentVersion = [Version]$(git describe --tags --abbrev=0).substring(1)
+$latestTag = git describe --tags --abbrev=0
+$currentVersion = [Version]$latestTag.substring(1)
 $currentBuild = $Env:GITHUB_RUN_ID
 $scriptPath = $MyInvocation.MyCommand.Path
 $scriptFolder = Split-Path $scriptPath -Parent
@@ -8,7 +9,5 @@ $newRevision = [int]$currentBuild.substring(5)
 
 $newVersion = [Version]::new($currentVersion.Major, $currentVersion.Minor, $newBuild, $newRevision)
 
-Set-Content -Path "$scriptFolder\version" -Value $newVersion.toString()
 
-echo $newVersion.toString()
-
+echo ::set-output name=version::$($newVersion.toString())
