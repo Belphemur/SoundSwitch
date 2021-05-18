@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-	<!-- 
+  <!-- 
 		Microsoft ResX Schema
 
 		Version 1.3
@@ -58,10 +58,10 @@
 			: using a System.ComponentModel.TypeConverter
 			: and then encoded with base64 encoding.
 	-->
-	<xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
 					<xsd:element name="data">
 						<xsd:complexType>
 							<xsd:sequence>
@@ -82,37 +82,40 @@
 						</xsd:complexType>
 					</xsd:element>
 				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>1.3</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<data name="downloadFailed" xml:space="preserve">
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="downloadFailed" xml:space="preserve">
 		<value>Falha no Download</value>
-	</data>
-	<data name="install" xml:space="preserve">
+  </data>
+  <data name="install" xml:space="preserve">
 		<value>Instalar</value>
-	</data>
-	<data name="cancel" xml:space="preserve">
+  </data>
+  <data name="cancel" xml:space="preserve">
 		<value>Cancelar</value>
-	</data>
-	<data name="changelog" xml:space="preserve">
+  </data>
+  <data name="changelog" xml:space="preserve">
 		<value>Changelog</value>
-	</data>
-	<data name="notSigned" xml:space="preserve">
+  </data>
+  <data name="notSigned" xml:space="preserve">
 		<value>A atualização baixada não foi assinada pela equipe do SoundSwitch. Nós recomendamos apagar o arquivo e contactar o desenvolvedor!</value>
   </data>
-	<data name="notSignedTitle" xml:space="preserve">
+  <data name="notSignedTitle" xml:space="preserve">
 		<value>Assinatura digital inválida</value>
-	</data>
+  </data>
+  <data name="remindMe" xml:space="preserve">
+    <value>Depois</value>
+  </data>
 </root>
