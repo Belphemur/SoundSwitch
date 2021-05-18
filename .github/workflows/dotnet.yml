@@ -98,7 +98,8 @@ jobs:
           color: '#0000FF'
           username: "Beta Build"
           avatarUrl: https://soundswitch.aaflalo.me/img/beta.png
-          details: "A new build [${{ steps.devVersion.outputs.version }}] is now available:\nhttps://nc.aaflalo.me/s/8DKytYCTAbrn6yz" 
+          description: "A new build [${{ steps.devVersion.outputs.version }}] is now available."
+          details: "https://nc.aaflalo.me/s/8DKytYCTAbrn6yz" 
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
     
     
