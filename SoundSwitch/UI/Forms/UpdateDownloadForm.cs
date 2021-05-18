@@ -15,12 +15,10 @@
 using System;
 using System.Windows.Forms;
 using Serilog;
-using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.Updater.Installer;
 using SoundSwitch.Framework.Updater.Remind;
 using SoundSwitch.Localization;
-using SoundSwitch.Model;
 using SoundSwitch.Properties;
 using SoundSwitch.UI.Component;
 
@@ -30,6 +28,7 @@ namespace SoundSwitch.UI.Forms
     {
         private WebFile _releaseFile;
         private Release _releaseInfo;
+        private readonly PostponeService _postponeService = new();
 
         public UpdateDownloadForm()
         {
@@ -116,7 +115,7 @@ namespace SoundSwitch.UI.Forms
             }
             else
             {
-                AppModel.Instance.ReleasePostponed = new ReleasePostponed(_releaseInfo.ReleaseVersion, DateTime.UtcNow + 3 * TimeSpan.FromSeconds(AppConfigs.Configuration.UpdateCheckInterval));
+                _postponeService.PostponeRelease(_releaseInfo);
             }
             Close();
         }

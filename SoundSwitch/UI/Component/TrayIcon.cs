@@ -32,6 +32,7 @@ using SoundSwitch.Framework.Profile.UI;
 using SoundSwitch.Framework.TrayIcon.Icon;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
 using SoundSwitch.Framework.Updater;
+using SoundSwitch.Framework.Updater.Remind;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
@@ -58,6 +59,7 @@ namespace SoundSwitch.UI.Component
 
         private readonly ContextMenuStrip _selectionMenu = new();
         private readonly ContextMenuStrip _settingsMenu = new();
+        private readonly PostponeService _postponeService = new();
 
         private readonly SynchronizationContext _context =
             SynchronizationContext.Current ?? new SynchronizationContext();
@@ -241,15 +243,14 @@ namespace SoundSwitch.UI.Component
 
         private void NewReleaseAvailable(object sender, UpdateChecker.NewReleaseEvent newReleaseEvent)
         {
- 
             _updateMenuItem.Tag = newReleaseEvent.Release;
             _updateMenuItem.Text = string.Format(TrayIconStrings.updateAvailable, newReleaseEvent.Release.ReleaseVersion);
-            var configurationPostponed = AppConfigs.Configuration.Postponed;
-            if (configurationPostponed?.ShouldPostpone(newReleaseEvent.Release) ?? false)
+            if (_postponeService.ShouldPostpone(newReleaseEvent.Release))
             {
-                Log.Information("Release {release} has been postponed to {date:yyyy-MM-dd hh:mm}", newReleaseEvent.Release, configurationPostponed.Until);
+                Log.Information("Release {release} has been postponed", newReleaseEvent.Release);
                 return;
             }
+
             StartAnimationIconUpdate();
             NotifyIcon.BalloonTipClicked += OnUpdateClick;
             NotifyIcon.ShowBalloonTip(3000, string.Format(TrayIconStrings.versionAvailable, newReleaseEvent.Release.ReleaseVersion), newReleaseEvent.Release.Name + '\n' + TrayIconStrings.clickToUpdate, ToolTipIcon.Info);

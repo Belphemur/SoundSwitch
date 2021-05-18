@@ -21,7 +21,6 @@ using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Updater;
-using SoundSwitch.Framework.Updater.Remind;
 using SoundSwitch.Framework.WinApi.Keyboard;
 using SoundSwitch.Localization.Factory;
 using SoundSwitch.UI.Component;
@@ -114,11 +113,6 @@ namespace SoundSwitch.Model
         /// Useful for setting menu
         /// </summary>
         IAudioDeviceLister ActiveUnpluggedAudioLister { get; set; }
-
-        /// <summary>
-        /// Do we have a postponement for a specific release
-        /// </summary>
-        ReleasePostponed ReleasePostponed { get; set; }
 
         #endregion
 
