@@ -104,7 +104,7 @@
     <value>Clique aqui para atualizar.</value>
   </data>
   <data name="versionAvailable" xml:space="preserve">
-    <value>Atualização para Soundswitch ({0}) está disponível.</value>
+    <value>Está disponível uma atualização para o Soundswitch ({0}).</value>
   </data>
   <data name="updateAvailable" xml:space="preserve">
     <value>Atualização disponível ({0})</value>
@@ -126,5 +126,8 @@
   </data>
   <data name="noUpdate" xml:space="preserve">
     <value>Não há atualizações disponíveis</value>
+  </data>
+  <data name="forceCheckForUpdate" xml:space="preserve">
+    <value>Verificar atualizações</value>
   </data>
 </root>
