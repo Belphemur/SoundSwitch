@@ -66,8 +66,15 @@ jobs:
             ${{ runner.os }}-nuget-${{env.ARCH}}
       - name: Restore
         run: dotnet restore -r ${{ env.ARCH }}
+      - name: Calculate version
+        run: $env:DEV_VERSION=$(.\devVersion.ps1)
+      - name: Save version for notification
+        uses: actions/upload-artifact@v2
+        with:
+          name: version
+          path: .\version
       - name: Build pre-release
-        run: dotnet publish -c Beta --no-restore -r ${{ env.ARCH }} ${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj -p:PackageVersion=$(.\devVersion.ps1)
+        run: dotnet publish -c Beta --no-restore -r ${{ env.ARCH }} ${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj -p:PackageVersion=${{ env.DEV_VERSION }}
       - name: Set Env var from GitHub  
         uses: rlespinasse/github-slug-action@v3.x
       - name: Zip Build ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}
@@ -84,12 +91,18 @@ jobs:
     if: github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
     steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: version
+      - name: Set build version
+        run: export DEV_VERSION=$(cat version)
       - name: Discord notification
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         uses: Ilshidur/action-discord@master
         with:
-          args: 'A new build of {{ EVENT_PAYLOAD.repository.full_name }} is available: https://nc.aaflalo.me/s/8DKytYCTAbrn6yz'
+          args: 'A new build [$DEV_VERSION] of {{ EVENT_PAYLOAD.repository.full_name }} is available: https://nc.aaflalo.me/s/8DKytYCTAbrn6yz'
     
     
   prepare-release:
