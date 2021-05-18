@@ -72,7 +72,7 @@ jobs:
         run: git fetch --tags --force
       - name: Calculate version
         id: devVersion
-        run: devVersion.ps1
+        run: .\devVersion.ps1
       - name: Build pre-release
         run: dotnet publish -c Beta --no-restore -r ${{ env.ARCH }} ${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj -p:PackageVersion=${{ steps.devVersion.outputs.version }}
       - name: Set Env var from GitHub  
