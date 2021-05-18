@@ -10,4 +10,4 @@ $newRevision = [int]$currentBuild.substring(5)
 $newVersion = [Version]::new($currentVersion.Major, $currentVersion.Minor, $newBuild, $newRevision)
 
 
-echo ::set-output name=version::$($newVersion.toString())
+echo "::set-output name=version::$($newVersion.toString())"
