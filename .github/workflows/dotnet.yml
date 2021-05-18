@@ -86,15 +86,15 @@ jobs:
           DAV_PASS: ${{secrets.DAV_PASS}}
           DAV_SERVER: "https://nc.aaflalo.me/remote.php/dav/files"
       - name: Discord Notification on success
-          uses: rjstone/discord-webhook-notify@v1
-          if: success()
-          with:
-            severity: info
-            color: '#0000FF'
-            username: "Beta Build"
-            avatarUrl: https://soundswitch.aaflalo.me/img/beta.png
-            details: "A new build [${{ steps.devVersion.outputs.version }}] is now available:\nhttps://nc.aaflalo.me/s/8DKytYCTAbrn6yz" 
-            webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: rjstone/discord-webhook-notify@v1
+        if: success()
+        with:
+          severity: info
+          color: '#0000FF'
+          username: "Beta Build"
+          avatarUrl: https://soundswitch.aaflalo.me/img/beta.png
+          details: "A new build [${{ steps.devVersion.outputs.version }}] is now available:\nhttps://nc.aaflalo.me/s/8DKytYCTAbrn6yz" 
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
     
     
   prepare-release:
