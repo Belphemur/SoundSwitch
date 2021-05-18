@@ -43,6 +43,7 @@ namespace SoundSwitch.UI.Forms
 
         public void DownloadRelease(Release release)
         {
+            Text = release.Name;
             _releaseInfo = release;
             installButton.Enabled = true;
             changeLog.SetChangelog(release.Changelog);
