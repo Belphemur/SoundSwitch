@@ -29,9 +29,7 @@ namespace SoundSwitch.Localization.Factory
             new HebrewLang(),
             new Czech(),
             new Turkish(),
-#if BETA || DEBUG
             new Arabic(),
-#endif
         })
         {
         }
