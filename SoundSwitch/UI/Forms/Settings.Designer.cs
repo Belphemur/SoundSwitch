@@ -102,7 +102,7 @@ namespace SoundSwitch.UI.Forms
             // 
             this.closeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.closeButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.closeButton.Location = new System.Drawing.Point(731, 423);
+            this.closeButton.Location = new System.Drawing.Point(795, 453);
             this.closeButton.Name = "closeButton";
             this.closeButton.Size = new System.Drawing.Size(100, 26);
             this.closeButton.TabIndex = 11;
@@ -133,7 +133,7 @@ namespace SoundSwitch.UI.Forms
             this.tabControl.Location = new System.Drawing.Point(12, 6);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(832, 409);
+            this.tabControl.Size = new System.Drawing.Size(896, 439);
             this.tabControl.TabIndex = 13;
             this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
             // 
@@ -143,7 +143,7 @@ namespace SoundSwitch.UI.Forms
             this.playbackTabPage.Location = new System.Drawing.Point(4, 24);
             this.playbackTabPage.Name = "playbackTabPage";
             this.playbackTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.playbackTabPage.Size = new System.Drawing.Size(824, 381);
+            this.playbackTabPage.Size = new System.Drawing.Size(888, 411);
             this.playbackTabPage.TabIndex = 0;
             this.playbackTabPage.Text = "Playback";
             this.playbackTabPage.UseVisualStyleBackColor = true;
@@ -165,7 +165,7 @@ namespace SoundSwitch.UI.Forms
             this.playbackListView.HideSelection = false;
             this.playbackListView.Location = new System.Drawing.Point(3, 3);
             this.playbackListView.Name = "playbackListView";
-            this.playbackListView.Size = new System.Drawing.Size(818, 375);
+            this.playbackListView.Size = new System.Drawing.Size(882, 405);
             this.playbackListView.TabIndex = 14;
             this.playbackListView.UseCompatibleStateImageBehavior = false;
             this.playbackListView.View = System.Windows.Forms.View.Details;
@@ -540,7 +540,7 @@ namespace SoundSwitch.UI.Forms
             // 
             this.hotkeysCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.hotkeysCheckBox.AutoSize = true;
-            this.hotkeysCheckBox.Location = new System.Drawing.Point(163, 428);
+            this.hotkeysCheckBox.Location = new System.Drawing.Point(163, 458);
             this.hotkeysCheckBox.Name = "hotkeysCheckBox";
             this.hotkeysCheckBox.Size = new System.Drawing.Size(100, 19);
             this.hotkeysCheckBox.TabIndex = 20;
@@ -551,7 +551,7 @@ namespace SoundSwitch.UI.Forms
             // hotKeyControl
             // 
             this.hotKeyControl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.hotKeyControl.Location = new System.Drawing.Point(19, 425);
+            this.hotKeyControl.Location = new System.Drawing.Point(19, 455);
             this.hotKeyControl.Name = "hotKeyControl";
             this.hotKeyControl.Size = new System.Drawing.Size(138, 23);
             this.hotKeyControl.TabIndex = 21;
@@ -560,9 +560,9 @@ namespace SoundSwitch.UI.Forms
             // 
             // toggleMuteLabel
             // 
-            this.toggleMuteLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.toggleMuteLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.toggleMuteLabel.AutoSize = true;
-            this.toggleMuteLabel.Location = new System.Drawing.Point(362, 428);
+            this.toggleMuteLabel.Location = new System.Drawing.Point(362, 458);
             this.toggleMuteLabel.Name = "toggleMuteLabel";
             this.toggleMuteLabel.Size = new System.Drawing.Size(73, 15);
             this.toggleMuteLabel.TabIndex = 22;
@@ -571,7 +571,7 @@ namespace SoundSwitch.UI.Forms
             // muteHotKey
             // 
             this.muteHotKey.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.muteHotKey.Location = new System.Drawing.Point(441, 425);
+            this.muteHotKey.Location = new System.Drawing.Point(441, 455);
             this.muteHotKey.Name = "muteHotKey";
             this.muteHotKey.Size = new System.Drawing.Size(138, 23);
             this.muteHotKey.TabIndex = 24;
@@ -582,7 +582,7 @@ namespace SoundSwitch.UI.Forms
             // 
             this.muteHotKeyCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.muteHotKeyCheckbox.AutoSize = true;
-            this.muteHotKeyCheckbox.Location = new System.Drawing.Point(585, 428);
+            this.muteHotKeyCheckbox.Location = new System.Drawing.Point(585, 458);
             this.muteHotKeyCheckbox.Name = "muteHotKeyCheckbox";
             this.muteHotKeyCheckbox.Size = new System.Drawing.Size(100, 19);
             this.muteHotKeyCheckbox.TabIndex = 23;
@@ -595,7 +595,7 @@ namespace SoundSwitch.UI.Forms
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.CancelButton = this.closeButton;
-            this.ClientSize = new System.Drawing.Size(854, 460);
+            this.ClientSize = new System.Drawing.Size(918, 490);
             this.Controls.Add(this.muteHotKey);
             this.Controls.Add(this.muteHotKeyCheckbox);
             this.Controls.Add(this.toggleMuteLabel);
