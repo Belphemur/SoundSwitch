@@ -1,3 +1,55 @@
+## [5.10.0](https://github.com/Belphemur/SoundSwitch/compare/v5.9.4...v5.10.0) (2021-05-19)
+
+
+### Features
+
+* **Update:** Let's the user be a to manually check for update by clicking the update menu item. ([8dd63c1](https://github.com/Belphemur/SoundSwitch/commit/8dd63c119ee7b4c30991f3f399a3f1d072b9520b)), closes [#642](https://github.com/Belphemur/SoundSwitch/issues/642)
+* **Update::Postpone:** User can now decide to postpone the update and be reminded about it at a later date. ([a2b507e](https://github.com/Belphemur/SoundSwitch/commit/a2b507e7f215deefadda41ca848aec9e000fd239))
+
+
+### Bug Fixes
+
+* **AutoUpdate::Downloader:** Fix crash when closing the download notify. ([58044d1](https://github.com/Belphemur/SoundSwitch/commit/58044d15b9efcb1003d16e8b67a094516d6f6362))
+* **Foreground:** Fix issue where the endpoint would change because of the way foreground feature was disabled. ([0c427fc](https://github.com/Belphemur/SoundSwitch/commit/0c427fc6e65505eca7207ba87ffa24b363b530d5)), closes [#649](https://github.com/Belphemur/SoundSwitch/issues/649)
+* **Update:** Rework the way update are check to trigger a check when the setting is changed. ([dfd2f55](https://github.com/Belphemur/SoundSwitch/commit/dfd2f5517406d157f24d46f0e1e4f45df0502db1)), closes [#641](https://github.com/Belphemur/SoundSwitch/issues/641)
+
+
+### Languages
+
+* **Arabic:** Add arabic to the application. Only in beta. ([3809502](https://github.com/Belphemur/SoundSwitch/commit/38095025b6fd3e8ecf6b166de8d97344f062eae9))
+* **Arabic:** Added About translation using Weblate ([21b81bb](https://github.com/Belphemur/SoundSwitch/commit/21b81bb55cf429933bd1785f6c8d213d25d8b102))
+* **Arabic:** Added Settings translation using Weblate ([a5ec504](https://github.com/Belphemur/SoundSwitch/commit/a5ec50483cd64def2ee548f65457115427c7c2e4))
+* **Arabic:** Added Tray Icon translation using Weblate ([b7ec4c3](https://github.com/Belphemur/SoundSwitch/commit/b7ec4c3bd6f54d86f689695acacea5e5c03a2c5a))
+* **Arabic:** Added Update Download translation using Weblate ([5bc1aa1](https://github.com/Belphemur/SoundSwitch/commit/5bc1aa142b338f5267e3c54c08baf99fd4276788))
+* **Arabic:** Translated About using Weblate ([1416129](https://github.com/Belphemur/SoundSwitch/commit/14161296d9153b0d1dede0692f0582ac5b044766))
+* **Arabic:** Translated About using Weblate ([be0c28a](https://github.com/Belphemur/SoundSwitch/commit/be0c28a3d11337fe14eb4d2a768e8377bdda5d91))
+* **Arabic:** Translated Settings using Weblate ([957eca5](https://github.com/Belphemur/SoundSwitch/commit/957eca56bc58407d74e276e8553f930e354f3cf8))
+* **Arabic:** Translated Settings using Weblate ([6b27b68](https://github.com/Belphemur/SoundSwitch/commit/6b27b681d26e29aa4ac6b816b4f07135226031b1))
+* **Arabic:** Translated Tray Icon using Weblate ([283ba8f](https://github.com/Belphemur/SoundSwitch/commit/283ba8f4a405429b66c1fb9ab598a5ce4988cdf1))
+* **Arabic:** Translated Tray Icon using Weblate ([3e8f7cc](https://github.com/Belphemur/SoundSwitch/commit/3e8f7ccc3f5cb712caf0d467b0978a568131ebc3))
+* **Arabic:** Translated Update Download using Weblate ([bf220df](https://github.com/Belphemur/SoundSwitch/commit/bf220dfc6c2e3a6e4b6082cde8ad4398e6be2d68))
+* **Chinese (Simplified):** Translated Tray Icon using Weblate ([4bda8eb](https://github.com/Belphemur/SoundSwitch/commit/4bda8eb989d3b5d024200516fab6bd05eb97a55a))
+* **Chinese (Simplified):** Translated Update Download using Weblate ([452ec1c](https://github.com/Belphemur/SoundSwitch/commit/452ec1c9753ea7863b4d4373cd485c05bee63eef))
+* **Croatian:** Translated Tray Icon using Weblate ([44d204f](https://github.com/Belphemur/SoundSwitch/commit/44d204f9fd0821d4e710ae84bacd5ebb5a6d010a))
+* **Italian:** Translated Settings using Weblate ([69cd836](https://github.com/Belphemur/SoundSwitch/commit/69cd836ac998474037f90043815462620924810e))
+* **Norwegian Bokmål:** Translated Tray Icon using Weblate ([533b0b1](https://github.com/Belphemur/SoundSwitch/commit/533b0b1aa1ce29b532d527db3b1625d6eff625dc))
+* **Portuguese:** Translated Settings using Weblate ([917c103](https://github.com/Belphemur/SoundSwitch/commit/917c103e6255f40daf2a8c284c0818a2cba0252b))
+* **Portuguese:** Translated Tray Icon using Weblate ([be6ab26](https://github.com/Belphemur/SoundSwitch/commit/be6ab2652ed7d133177038a3329a498aa1ef75c4))
+* **Portuguese:** Translated Update Download using Weblate ([f736183](https://github.com/Belphemur/SoundSwitch/commit/f736183665671715c908fa6f00cd7d2012f04968))
+* **Portuguese (Brazil):** Translated Tray Icon using Weblate ([e82777b](https://github.com/Belphemur/SoundSwitch/commit/e82777b6b341d9ce6088c488eece2689ad08771c))
+* **Portuguese (Brazil):** Translated Update Download using Weblate ([55121e4](https://github.com/Belphemur/SoundSwitch/commit/55121e4d5f9297909c3d6c5ba903ba7ab52796a1))
+
+
+### Enhancements
+
+* **Help:** Help menu send to the discussion on GitHub for the user to be able to ask his questions. ([e9fde1c](https://github.com/Belphemur/SoundSwitch/commit/e9fde1ca7e4d9133c57893f092ecd966e65a9dd2))
+* **Settings:** Increase default size of Setting menu to work better with different language. ([d007d80](https://github.com/Belphemur/SoundSwitch/commit/d007d809d7a00d1ce6967f261822c918813801de))
+* **Update:** Clicking on the update menu item will trigger update ([34a1131](https://github.com/Belphemur/SoundSwitch/commit/34a1131b4df812c8a813d743fd16fc4a2e0316f4)), closes [#641](https://github.com/Belphemur/SoundSwitch/issues/641)
+* **Update:** Don't autodownload when opening the update form. Only after the user click install. ([2029a9b](https://github.com/Belphemur/SoundSwitch/commit/2029a9b44641341521d5e67197040c03a8a61c00)), closes [#528](https://github.com/Belphemur/SoundSwitch/issues/528)
+* **Update:** Improve the way SoundSwitch check for new updates. ([8823e7a](https://github.com/Belphemur/SoundSwitch/commit/8823e7acf9592b573af8c6f042c93ee3c92bc3e7))
+* **Update::Form:** Make the title of the download window be the name of the release. ([1da4f2c](https://github.com/Belphemur/SoundSwitch/commit/1da4f2c0675df4aa5dd713f7eed42a302dfb52a5))
+* **Update::Postpone:** The more the user postpone, the longer it waits before asking to update. ([355dd69](https://github.com/Belphemur/SoundSwitch/commit/355dd69216db91293c361419e95ce9b95a1a789a)), closes [#528](https://github.com/Belphemur/SoundSwitch/issues/528)
+
 ### [5.9.4](https://github.com/Belphemur/SoundSwitch/compare/v5.9.3...v5.9.4) (2021-05-11)
 
 
