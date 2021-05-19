@@ -28,7 +28,8 @@ namespace SoundSwitch.Localization.Factory
             new JapaneseLang(),
             new HebrewLang(),
             new Czech(),
-            new Turkish()
+            new Turkish(),
+            new Arabic(),
         })
         {
         }
@@ -46,7 +47,7 @@ namespace SoundSwitch.Localization.Factory
             }
             catch (CultureNotFoundException e)
             {
-                Log.Error(e,"Couldn't find the language @{lang}", uiLang);
+                Log.Error(e, "Couldn't find the language @{lang}", uiLang);
                 return Language.English;
             }
         }

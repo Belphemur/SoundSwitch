@@ -422,7 +422,7 @@ Entrambi: Cambia quando qualsiasi tipo di dispositivo viene cambiato.</value>
     <value>Commuta anche dispositivo predefinito</value>
   </data>
   <data name="profile.trigger.uwp.desc" xml:space="preserve">
-    <value>Inserisci il nome dell'applicazione installata tramite l'archivio di Windows, come Netflix, Amazon Prime Video, ecc.</value>
+    <value>Inserisci il nome dell'applicazione installata tramite lo store di Windows, come Netflix, Amazon Prime Video, ecc…</value>
   </data>
   <data name="profile.trigger.uwp" xml:space="preserve">
     <value>App Microsoft Store</value>
@@ -449,5 +449,20 @@ Ripristina lo stato del sistema quando l'applicazione viene chiusa.</value>
   </data>
   <data name="profile.trigger.startup" xml:space="preserve">
     <value>All'avvio</value>
+  </data>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>Questo trigger rende il profilo visibile nel menu dell'icona della barra applicazioni. Fai clic con il pulsante sinistro del mouse sull'icona della barra delle applicazioni per visualizzare il profilo.</value>
+  </data>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>Nel menu app</value>
+  </data>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>Audio OFF/ON</value>
+  </data>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>{0} ha ora l'audio attivo.</value>
+  </data>
+  <data name="notification.microphone.muted" xml:space="preserve">
+    <value>{0} ha ora l'audio disabilitato.</value>
   </data>
 </root>

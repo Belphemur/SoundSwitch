@@ -115,4 +115,7 @@
   <data name="notSigned" xml:space="preserve">
 		<value>La mise à jour téléchargée ne comporte pas de signature valide. Nous vous conseillons de supprimer le fichier et de contacter le développeur !</value>
   </data>
+  <data name="remindMe" xml:space="preserve">
+	  <value>Plus tard</value>
+  </data>
 </root>

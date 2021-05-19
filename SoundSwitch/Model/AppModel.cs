@@ -16,6 +16,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using Job.Scheduler.Builder;
+using Job.Scheduler.Scheduler;
 using NAudio.CoreAudioApi;
 using RailSharp;
 using Serilog;
@@ -30,6 +33,7 @@ using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Profile.Trigger;
 using SoundSwitch.Framework.Updater;
+using SoundSwitch.Framework.Updater.Job;
 using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Framework.WinApi.Keyboard;
 using SoundSwitch.Localization;
@@ -43,8 +47,9 @@ namespace SoundSwitch.Model
     {
         private bool _initialized;
         private readonly NotificationManager _notificationManager;
-        private IntervalUpdateChecker _updateChecker;
-        private readonly DebounceDispatcher _dispatcher = new DebounceDispatcher();
+        private UpdateChecker _updateChecker;
+        private readonly DebounceDispatcher _dispatcher = new();
+        private readonly IJobScheduler _jobScheduler = new JobScheduler(new JobRunnerBuilder());
 
         private AppModel()
         {
@@ -107,6 +112,7 @@ namespace SoundSwitch.Model
                 if (value != IncludeBetaVersions && _updateChecker != null)
                 {
                     _updateChecker.Beta = value;
+                    CheckForUpdate();
                 }
 
                 AppConfigs.Configuration.IncludeBetaVersions = value;
@@ -139,6 +145,16 @@ namespace SoundSwitch.Model
             get => AppConfigs.Configuration.UpdateMode;
             set
             {
+                if (value != AppConfigs.Configuration.UpdateMode)
+                {
+                    if (value != UpdateMode.Never)
+                    {
+                        CheckForUpdate();
+                    }
+
+                    UpdateModeChanged?.Invoke(this, value);
+                }
+
                 AppConfigs.Configuration.UpdateMode = value;
                 AppConfigs.Configuration.Save();
             }
@@ -181,7 +197,7 @@ namespace SoundSwitch.Model
         /// </summary>
         public bool RunAtStartup
         {
-            get { return AutoStart.IsAutoStarted(); }
+            get => AutoStart.IsAutoStarted();
             set
             {
                 Log.Information("Set AutoStart: {autostart}", value);
@@ -201,6 +217,7 @@ namespace SoundSwitch.Model
         public IAudioDeviceLister ActiveUnpluggedAudioLister { get; set; }
         public event EventHandler<NotificationSettingsUpdatedEvent> NotificationSettingsChanged;
         public event EventHandler<CustomSoundChangedEvent> CustomSoundChanged;
+        public event EventHandler<UpdateMode> UpdateModeChanged;
 
         #endregion
 
@@ -230,9 +247,27 @@ namespace SoundSwitch.Model
                 AppConfigs.Configuration.RecordingHotKey.Enabled = false;
                 saveConfig = true;
             }
+
             if (!RegisterHotKey(AppConfigs.Configuration.MuteRecordingHotKey))
             {
                 AppConfigs.Configuration.MuteRecordingHotKey.Enabled = false;
+                saveConfig = true;
+            }
+
+            if (!AppConfigs.Configuration.MigratedFields.Contains($"{nameof(SwitchForegroundProgram)}_cleanup")
+                && AppConfigs.Configuration.MigratedFields.Contains($"{nameof(SwitchForegroundProgram)}_force_off") &&
+                !AppConfigs.Configuration.SwitchForegroundProgram)
+            {
+                AppConfigs.Configuration.MigratedFields.Add($"{nameof(SwitchForegroundProgram)}_cleanup");
+                try
+                {
+                    AudioSwitcher.Instance.ResetProcessDeviceConfiguration();
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e, "Trying disable ProcessDevice configuration for migration");
+                }
+
                 saveConfig = true;
             }
 
@@ -259,22 +294,25 @@ namespace SoundSwitch.Model
 
         private void InitUpdateChecker()
         {
-            if (AppConfigs.Configuration.UpdateMode == UpdateMode.Never)
-            {
-                return;
-            }
 #if DEBUG
             const string url = "https://www.aaflalo.me/api.json";
 #else
             const string url = "https://api.github.com/repos/Belphemur/SoundSwitch/releases";
 #endif
-            _updateChecker = new IntervalUpdateChecker(new Uri(url),
-                AppConfigs.Configuration.UpdateCheckInterval,
-                AppConfigs.Configuration.IncludeBetaVersions);
+            _updateChecker = new UpdateChecker(new Uri(url), AppConfigs.Configuration.IncludeBetaVersions);
 
             _updateChecker.UpdateAvailable += (sender, @event) => NewVersionReleased?.Invoke(this,
                 new NewReleaseAvailableEvent(@event.Release, AppConfigs.Configuration.UpdateMode));
-            _updateChecker.CheckForUpdate();
+
+            _jobScheduler.ScheduleJob(new CheckForUpdateRecurringJob(_updateChecker));
+        }
+
+        /// <summary>
+        /// For the app to check for update
+        /// </summary>
+        public void CheckForUpdate()
+        {
+            _jobScheduler.ScheduleJob(new CheckForUpdateOnceJob(_updateChecker));
         }
 
         public event EventHandler<DeviceListChanged> SelectedDeviceChanged;
@@ -338,14 +376,13 @@ namespace SoundSwitch.Model
 
         #region Hot keys
 
-
         public bool SetHotkeyCombination(HotKey hotKey, HotKeyAction action, bool force = false)
         {
             var confHotKey = action switch
             {
                 HotKeyAction.Playback  => AppConfigs.Configuration.PlaybackHotKey,
                 HotKeyAction.Recording => AppConfigs.Configuration.RecordingHotKey,
-                HotKeyAction.Mute => AppConfigs.Configuration.MuteRecordingHotKey,
+                HotKeyAction.Mute      => AppConfigs.Configuration.MuteRecordingHotKey,
                 _                      => throw new ArgumentOutOfRangeException(nameof(action), action, null)
             };
 
@@ -365,10 +402,10 @@ namespace SoundSwitch.Model
 
             switch (action)
             {
-                case   HotKeyAction.Playback:
+                case HotKeyAction.Playback:
                     AppConfigs.Configuration.PlaybackHotKey = hotKey;
                     break;
-                case  HotKeyAction.Recording:
+                case HotKeyAction.Recording:
                     AppConfigs.Configuration.RecordingHotKey = hotKey;
                     break;
                 case HotKeyAction.Mute:
@@ -486,6 +523,8 @@ namespace SoundSwitch.Model
             TrayIcon?.Dispose();
             ActiveAudioDeviceLister?.Dispose();
             ActiveUnpluggedAudioLister?.Dispose();
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(1));
+            _jobScheduler.StopAsync(cts.Token).GetAwaiter().GetResult();
         }
     }
 }

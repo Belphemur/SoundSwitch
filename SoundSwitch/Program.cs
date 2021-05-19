@@ -19,6 +19,7 @@ using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
+using ContribSentry;
 using Sentry;
 using Serilog;
 using SoundSwitch.Framework;
@@ -42,17 +43,25 @@ namespace SoundSwitch
         [STAThread]
         private static void Main()
         {
-            using var _ = SentrySdk.Init(options =>
+            var sentryOptions = new SentryOptions
             {
-                options.Dsn = "https://7d52dfb4f6554bf0b58b256337835332@o631137.ingest.sentry.io/5755327";
-                options.Environment = AssemblyUtils.GetReleaseState().ToString();
-            });
+                Dsn = "https://7d52dfb4f6554bf0b58b256337835332@o631137.ingest.sentry.io/5755327",
+                Environment = AssemblyUtils.GetReleaseState().ToString()
+            };
+            var contribOptions = new ContribSentryOptions() 
+            { 
+                GlobalSessionMode = true,
+                DistinctId = AppConfigs.Configuration.UniqueInstallationId.ToString()
+            };
+            sentryOptions.AddIntegration(new ContribSentrySdkIntegration(contribOptions));
+            using var _ = SentrySdk.Init(sentryOptions);
 
             SentrySdk.ConfigureScope(scope => scope.User = new User
             {
                 Id = AppConfigs.Configuration.UniqueInstallationId.ToString(),
                 Username = Environment.UserName
             });
+            ContribSentrySdk.StartSession();
             InitializeLogger();
             Log.Information("Application Starts");
 #if !DEBUG
@@ -138,6 +147,7 @@ namespace SoundSwitch
             AppModel.Instance.Dispose();
             WindowsAPIAdapter.Stop();
             MMNotificationClient.Instance?.Dispose();
+            ContribSentrySdk.EndSession();
             Log.CloseAndFlush();
         }
 

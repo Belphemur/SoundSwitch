@@ -62,7 +62,7 @@
     <value>O descarregamento falhou</value>
   </data>
   <data name="notSigned" xml:space="preserve">
-    <value>A atualização descarregada não foi assinada pela equipa do SoundSwitch. Recomendamos apagar o ficheiro e contactar o programador!</value>
+    <value>A atualização descarregada não foi assinada pela equipa do SoundSwitch. Recomendamos eliminar o ficheiro e contactar o programador!</value>
   </data>
   <data name="install" xml:space="preserve">
     <value>Instalar</value>
@@ -75,5 +75,8 @@
   </data>
   <data name="cancel" xml:space="preserve">
     <value>Cancelar</value>
+  </data>
+  <data name="remindMe" xml:space="preserve">
+    <value>Mais tarde</value>
   </data>
 </root>

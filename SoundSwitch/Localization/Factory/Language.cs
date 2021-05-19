@@ -38,6 +38,7 @@ namespace SoundSwitch.Localization.Factory
         Japanese,
         Hebrew,
         Czech,
-        Turkish
+        Turkish,
+        Arabic
     }
 }

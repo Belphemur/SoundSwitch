@@ -20,6 +20,11 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.0
+        with:
+          all_but_latest: true
+          access_token: ${{ github.token }}
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup .NET
@@ -53,6 +58,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
@@ -66,8 +73,13 @@ jobs:
             ${{ runner.os }}-nuget-${{env.ARCH}}
       - name: Restore
         run: dotnet restore -r ${{ env.ARCH }}
+      - name: Fetch tags
+        run: git fetch --tags --force
+      - name: Calculate version
+        id: devVersion
+        run: .\devVersion.ps1
       - name: Build pre-release
-        run: dotnet publish -c Beta --no-restore -r ${{ env.ARCH }} ${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj
+        run: dotnet publish -c Beta --no-restore -r ${{ env.ARCH }} ${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj -p:PackageVersion=${{ steps.devVersion.outputs.version }}
       - name: Set Env var from GitHub  
         uses: rlespinasse/github-slug-action@v3.x
       - name: Zip Build ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}
@@ -78,7 +90,19 @@ jobs:
           DAV_USER: ${{secrets.DAV_USER}}
           DAV_PASS: ${{secrets.DAV_PASS}}
           DAV_SERVER: "https://nc.aaflalo.me/remote.php/dav/files"
-
+      - name: Discord Notification on success
+        uses: rjstone/discord-webhook-notify@v1
+        if: success()
+        with:
+          severity: info
+          color: '#0000FF'
+          username: "Beta Build"
+          avatarUrl: https://soundswitch.aaflalo.me/img/beta.png
+          description: "A new build [${{ steps.devVersion.outputs.version }}] is now available."
+          details: "https://nc.aaflalo.me/s/8DKytYCTAbrn6yz" 
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+    
+    
   prepare-release:
       needs: build
       if: github.ref == 'refs/heads/master'

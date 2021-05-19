@@ -166,4 +166,7 @@
   <data name="updateDisabled" xml:space="preserve">
 		<value>Vérification MàJ désactivée</value>
   </data>
+  <data name="forceCheckForUpdate" xml:space="preserve">
+	  <value>Vérifier MàJ</value>
+  </data>
 </root>

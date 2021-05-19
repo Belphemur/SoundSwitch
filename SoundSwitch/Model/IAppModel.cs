@@ -201,5 +201,15 @@ namespace SoundSwitch.Model
         bool CycleActiveDevice(DataFlow type);
 
         #endregion
+
+        /// <summary>
+        /// Triggered when the update mode has been changed
+        /// </summary>
+        event EventHandler<UpdateMode> UpdateModeChanged;
+
+        /// <summary>
+        /// For the app to check for update
+        /// </summary>
+        void CheckForUpdate();
     }
 }

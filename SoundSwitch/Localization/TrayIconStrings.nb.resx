@@ -127,4 +127,7 @@
   <data name="updateDisabled" xml:space="preserve">
     <value>Oppdateringssjekk avskrudd</value>
   </data>
+  <data name="forceCheckForUpdate" xml:space="preserve">
+    <value>Se etter ny version</value>
+  </data>
 </root>

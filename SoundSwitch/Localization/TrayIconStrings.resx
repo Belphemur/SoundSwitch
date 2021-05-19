@@ -186,4 +186,7 @@
   <data name="updateDisabled" xml:space="preserve">
 		<value>Update check disabled</value>
   </data>
+  <data name="forceCheckForUpdate" xml:space="preserve">
+      <value>Check for update</value>
+  </data>
 </root>

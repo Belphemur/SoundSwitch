@@ -294,7 +294,7 @@ Bandeira: usa uma forma personalizada de janela 'sempre por cima', útil para ut
     <value>Selecione o ficheiro de som para a notificação</value>
   </data>
   <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
-    <value>Quando marcado, SoundSwitch também irá verificar versões BETA através do GitHub.</value>
+    <value>Quando ativado, o SoundSwitch também irá verificar versões BETA através do GitHub.</value>
   </data>
   <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
     <value>Este gatilho torna o perfil visível no menu do ícone da barra de tarefas. Clique à esquerda no ícone na barra de tarefas para ver o seu perfil.</value>
