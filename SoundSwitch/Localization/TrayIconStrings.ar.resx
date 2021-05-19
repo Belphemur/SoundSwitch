@@ -61,4 +61,73 @@
   <data name="settings" xml:space="preserve">
     <value>الإعدادات</value>
   </data>
+  <data name="forceCheckForUpdate" xml:space="preserve">
+    <value>إفحص على تحديثات</value>
+  </data>
+  <data name="updateDisabled" xml:space="preserve">
+    <value>الفحص على التحديثات غير مفعل</value>
+  </data>
+  <data name="communityMenu" xml:space="preserve">
+    <value>المجتمع</value>
+  </data>
+  <data name="iconChanger.both" xml:space="preserve">
+    <value>الإثنين</value>
+  </data>
+  <data name="iconChanger.none" xml:space="preserve">
+    <value>إفتراضي</value>
+  </data>
+  <data name="iconChanger.recording" xml:space="preserve">
+    <value>تسجيل</value>
+  </data>
+  <data name="iconChanger.playback" xml:space="preserve">
+    <value>سمع</value>
+  </data>
+  <data name="donate" xml:space="preserve">
+    <value>تبرع</value>
+  </data>
+  <data name="help" xml:space="preserve">
+    <value>مساعدة</value>
+  </data>
+  <data name="error" xml:space="preserve">
+    <value>خطأ</value>
+  </data>
+  <data name="configurationNeededExplanation" xml:space="preserve">
+    <value>لم يوجد أجهزه للإستبدال. إفتح الإعدادات بالضغط بالفأره بالزر اليمين على الآيقون.</value>
+  </data>
+  <data name="configurationNeeded" xml:space="preserve">
+    <value>SoundSwitch: يوجد إعدادات مطلوبه</value>
+  </data>
+  <data name="recordingChanged" xml:space="preserve">
+    <value>SoundSwitch: تم تبديل جهاز التسجيل الى</value>
+  </data>
+  <data name="playbackChanged" xml:space="preserve">
+    <value>SoundSwitch: تم تبديل جهاز السمع الى</value>
+  </data>
+  <data name="clickToUpdate" xml:space="preserve">
+    <value>إضغط هنا للتحديث.</value>
+  </data>
+  <data name="versionAvailable" xml:space="preserve">
+    <value>تحديث متواجد ({0}) لدى SoundSwitch.</value>
+  </data>
+  <data name="updateAvailable" xml:space="preserve">
+    <value>تحديث متواجد ({0})</value>
+  </data>
+  <data name="exit" xml:space="preserve">
+    <value>خروج</value>
+  </data>
+  <data name="about" xml:space="preserve">
+    <value>حول SoundSwitch</value>
+  </data>
+  <data name="mixer" xml:space="preserve">
+    <value>ميكسر</value>
+  </data>
+  <data name="playbackDevices" xml:space="preserve">
+    <value>أجهزة سمع</value>
+  </data>
+  <data name="noDevicesSelected" xml:space="preserve">
+    <value>لم يتم إختيار أجهزة</value>
+  </data>
+  <data name="noUpdate" xml:space="preserve">
+    <value>لا يوجد تحديث متواجد</value>
+  </data>
 </root>
