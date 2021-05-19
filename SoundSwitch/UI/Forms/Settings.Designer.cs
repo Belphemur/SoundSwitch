@@ -176,7 +176,7 @@ namespace SoundSwitch.UI.Forms
             this.recordingTabPage.Location = new System.Drawing.Point(4, 24);
             this.recordingTabPage.Name = "recordingTabPage";
             this.recordingTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.recordingTabPage.Size = new System.Drawing.Size(824, 381);
+            this.recordingTabPage.Size = new System.Drawing.Size(888, 411);
             this.recordingTabPage.TabIndex = 1;
             this.recordingTabPage.Text = "Recording";
             this.recordingTabPage.UseVisualStyleBackColor = true;
@@ -199,7 +199,7 @@ namespace SoundSwitch.UI.Forms
             this.recordingListView.HideSelection = false;
             this.recordingListView.Location = new System.Drawing.Point(3, 3);
             this.recordingListView.Name = "recordingListView";
-            this.recordingListView.Size = new System.Drawing.Size(818, 375);
+            this.recordingListView.Size = new System.Drawing.Size(882, 405);
             this.recordingListView.TabIndex = 17;
             this.recordingListView.UseCompatibleStateImageBehavior = false;
             this.recordingListView.View = System.Windows.Forms.View.Details;
@@ -214,7 +214,7 @@ namespace SoundSwitch.UI.Forms
             this.tabProfile.Location = new System.Drawing.Point(4, 24);
             this.tabProfile.Name = "tabProfile";
             this.tabProfile.Padding = new System.Windows.Forms.Padding(3);
-            this.tabProfile.Size = new System.Drawing.Size(824, 381);
+            this.tabProfile.Size = new System.Drawing.Size(888, 411);
             this.tabProfile.TabIndex = 3;
             this.tabProfile.Text = "Profiles";
             this.tabProfile.UseVisualStyleBackColor = true;
@@ -295,7 +295,7 @@ namespace SoundSwitch.UI.Forms
             this.appSettingTabPage.Controls.Add(this.basicSettingsGroupBox);
             this.appSettingTabPage.Location = new System.Drawing.Point(4, 24);
             this.appSettingTabPage.Name = "appSettingTabPage";
-            this.appSettingTabPage.Size = new System.Drawing.Size(824, 381);
+            this.appSettingTabPage.Size = new System.Drawing.Size(888, 411);
             this.appSettingTabPage.TabIndex = 2;
             this.appSettingTabPage.Text = "Settings";
             this.appSettingTabPage.UseVisualStyleBackColor = true;
@@ -437,7 +437,7 @@ namespace SoundSwitch.UI.Forms
             // 
             this.cycleThroughLabel.Location = new System.Drawing.Point(2, 174);
             this.cycleThroughLabel.Name = "cycleThroughLabel";
-            this.cycleThroughLabel.Size = new System.Drawing.Size(110, 15);
+            this.cycleThroughLabel.Size = new System.Drawing.Size(110, 18);
             this.cycleThroughLabel.TabIndex = 23;
             this.cycleThroughLabel.Text = "Cycle through";
             this.cycleThroughLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -456,7 +456,7 @@ namespace SoundSwitch.UI.Forms
             // 
             this.tooltipOnHoverLabel.Location = new System.Drawing.Point(2, 138);
             this.tooltipOnHoverLabel.Name = "tooltipOnHoverLabel";
-            this.tooltipOnHoverLabel.Size = new System.Drawing.Size(110, 15);
+            this.tooltipOnHoverLabel.Size = new System.Drawing.Size(110, 18);
             this.tooltipOnHoverLabel.TabIndex = 21;
             this.tooltipOnHoverLabel.Text = "Tooltip on Hover";
             this.tooltipOnHoverLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -486,7 +486,7 @@ namespace SoundSwitch.UI.Forms
             // 
             this.notificationLabel.Location = new System.Drawing.Point(2, 81);
             this.notificationLabel.Name = "notificationLabel";
-            this.notificationLabel.Size = new System.Drawing.Size(110, 15);
+            this.notificationLabel.Size = new System.Drawing.Size(110, 18);
             this.notificationLabel.TabIndex = 17;
             this.notificationLabel.Text = "Notification";
             this.notificationLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
