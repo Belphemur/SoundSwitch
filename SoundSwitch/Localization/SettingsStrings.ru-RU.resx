@@ -430,4 +430,40 @@
   <data name="profile.trigger.window.desc" xml:space="preserve">
     <value>Активировать профиль, если программа на переднем плане содержит следующие символы</value>
   </data>
+  <data name="profile.trigger.steam.desc" xml:space="preserve">
+    <value>Активировать, если обнаружен Steam Big Picture. (Восстановит состояние, когда Steam Big Picture будет закрыт)</value>
+  </data>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>Этот триггер сделает профиль видимым в меню значка в трее. Щелкните ЛКМ по значку в трее, чтобы увидеть свой профиль.</value>
+  </data>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>В меню приложения</value>
+  </data>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>Переключить звук</value>
+  </data>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>{0} теперь включен.</value>
+  </data>
+  <data name="notification.microphone.muted" xml:space="preserve">
+    <value>{0} теперь отключен.</value>
+  </data>
+  <data name="profile.trigger.uwp.desc" xml:space="preserve">
+    <value>Введите название приложения, установленного через магазин Windows. Например, Netflix, Amazon Prime video и т.д.</value>
+  </data>
+  <data name="profile.trigger.restoreDevices" xml:space="preserve">
+    <value>Восстановить устройства по окончании триггера</value>
+  </data>
+  <data name="usePrimaryScreenTooltip" xml:space="preserve">
+    <value>Отображать баннер на основном экране вместо экрана в фокусе.</value>
+  </data>
+  <data name="usePrimaryScreen" xml:space="preserve">
+    <value>Всегда использовать основной экран</value>
+  </data>
+  <data name="profile.error.steam" xml:space="preserve">
+    <value>У вас может быть только один профиль для Steam Big Picture.</value>
+  </data>
+  <data name="profile.trigger.process.desc" xml:space="preserve">
+    <value>Активировать профиль, когда указанное приложение находится на переднем плане</value>
+  </data>
 </root>
