@@ -184,6 +184,9 @@
 		<value>Сообщество</value>
   </data>
   <data name="updateDisabled" xml:space="preserve">
-    <value>Проверка обновления отключена</value>
+    <value>Проверка обновлений отключена</value>
+  </data>
+  <data name="forceCheckForUpdate" xml:space="preserve">
+    <value>Проверить обновления</value>
   </data>
 </root>
