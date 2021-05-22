@@ -15,6 +15,7 @@
 
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -47,22 +48,24 @@ namespace SoundSwitch
             {
                 Dsn = "https://7d52dfb4f6554bf0b58b256337835332@o631137.ingest.sentry.io/5755327",
                 Environment = AssemblyUtils.GetReleaseState().ToString(),
-                Release = Application.ProductVersion
+                Release = Application.ProductVersion,
             };
-            var contribOptions = new ContribSentryOptions
-            { 
+            var contribOptions = new ContribSentryOptions(true, true, true)
+            {
                 GlobalSessionMode = true,
-                DistinctId = AppConfigs.Configuration.UniqueInstallationId.ToString()
+                CacheDirPath = Path.Combine(ApplicationPath.Default, "Session")
             };
             sentryOptions.AddIntegration(new ContribSentrySdkIntegration(contribOptions));
             using var _ = SentrySdk.Init(sentryOptions);
-
-            SentrySdk.ConfigureScope(scope => scope.User = new User
+            var user = new User
             {
                 Id = AppConfigs.Configuration.UniqueInstallationId.ToString(),
                 Username = Environment.UserName
-            });
-            ContribSentrySdk.StartSession();
+            };
+
+            SentrySdk.ConfigureScope(scope => { scope.User = user; });
+            ContribSentrySdk.StartSession(user);
+
             InitializeLogger();
             Log.Information("Application Starts");
 #if !DEBUG
