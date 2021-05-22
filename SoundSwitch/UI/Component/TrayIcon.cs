@@ -243,7 +243,6 @@ namespace SoundSwitch.UI.Component
 
         private void NewReleaseAvailable(object sender, UpdateChecker.NewReleaseEvent newReleaseEvent)
         {
-            _updateMenuItem.Tag = newReleaseEvent.Release;
             _updateMenuItem.Text = string.Format(TrayIconStrings.updateAvailable, newReleaseEvent.Release.ReleaseVersion);
             if (_postponeService.ShouldPostpone(newReleaseEvent.Release))
             {
@@ -251,6 +250,7 @@ namespace SoundSwitch.UI.Component
                 return;
             }
 
+            _updateMenuItem.Tag = newReleaseEvent.Release;
             StartAnimationIconUpdate();
             NotifyIcon.BalloonTipClicked += OnUpdateClick;
             NotifyIcon.ShowBalloonTip(3000, string.Format(TrayIconStrings.versionAvailable, newReleaseEvent.Release.ReleaseVersion), newReleaseEvent.Release.Name + '\n' + TrayIconStrings.clickToUpdate, ToolTipIcon.Info);
