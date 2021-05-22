@@ -46,9 +46,10 @@ namespace SoundSwitch
             var sentryOptions = new SentryOptions
             {
                 Dsn = "https://7d52dfb4f6554bf0b58b256337835332@o631137.ingest.sentry.io/5755327",
-                Environment = AssemblyUtils.GetReleaseState().ToString()
+                Environment = AssemblyUtils.GetReleaseState().ToString(),
+                Release = Application.ProductVersion
             };
-            var contribOptions = new ContribSentryOptions() 
+            var contribOptions = new ContribSentryOptions
             { 
                 GlobalSessionMode = true,
                 DistinctId = AppConfigs.Configuration.UniqueInstallationId.ToString()
