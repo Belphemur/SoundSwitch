@@ -87,7 +87,7 @@ namespace SoundSwitch.Framework.Updater.Installer
             {
                 try
                 {
-                    await using (var stream = File.OpenWrite(FilePath))
+                    await using (var stream = File.Open(FilePath, FileMode.Create))
                     {
                         DownloadStarted = true;
                         await FileDownloader.DownloadFileAsync(
