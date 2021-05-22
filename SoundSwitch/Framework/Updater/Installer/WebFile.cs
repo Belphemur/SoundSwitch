@@ -114,7 +114,7 @@ namespace SoundSwitch.Framework.Updater.Installer
                 }
                 catch (Exception e)
                 {
-                    Log.Error(e, "Problem downloading file {error}");
+                    Log.Error(e, "Problem downloading file {file}:{url}", FilePath, FileUri);
                     DownloadFailed?.Invoke(this, new DownloadFailEvent(e));
                 }
             });
