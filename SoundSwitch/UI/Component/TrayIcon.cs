@@ -349,7 +349,7 @@ namespace SoundSwitch.UI.Component
         /// </summary>
         public void ShowNoDevices()
         {
-            Log.Error("No devices available");
+            Log.Warning("No devices available");
             NotifyIcon.ShowBalloonTip(3000,
                 TrayIconStrings.configurationNeeded,
                 TrayIconStrings.configurationNeededExplanation, ToolTipIcon.Warning);
