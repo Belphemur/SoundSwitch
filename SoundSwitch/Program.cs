@@ -148,10 +148,10 @@ namespace SoundSwitch
                 HandleException(ex);
             }
 #endif
+            ContribSentrySdk.EndSession();
             AppModel.Instance.Dispose();
             WindowsAPIAdapter.Stop();
             MMNotificationClient.Instance?.Dispose();
-            ContribSentrySdk.EndSession();
             Log.CloseAndFlush();
         }
 
