@@ -76,4 +76,7 @@
   <data name="downloadFailed" xml:space="preserve">
     <value>הורדה נכשלה</value>
   </data>
+  <data name="remindMe" xml:space="preserve">
+    <value>מאוחר יותר</value>
+  </data>
 </root>
