@@ -333,7 +333,7 @@ Uygulama kapatıldığında cihazların eski durumunu geri getirir.</value>
     <value>Hangi cihazlar arasından seçim yapılabileceğini buradan belirleyin. Yalnızca ses çalma ve ses kayıt sayfalarında seçili olan cihazlar arasından ya da tüm cihazlar arasından seçim yapılabilir.</value>
   </data>
   <data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
-    <value>Ses Çalma Cihazı</value>
+    <value>Ses çalma cihazı</value>
   </data>
   <data name="iconChange.tooltip" xml:space="preserve">
     <value>Bildirim alanı simgesinin ne zaman değiştirileceğini belirle.
@@ -401,9 +401,9 @@ Her ikisi: Herhangi bir cihaz değiştirildiğinde.</value>
     <value>Bayrak bildirim (banner)</value>
   </data>
   <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
-    <value>Cihazların her ikisi için de</value>
+    <value>Her iki cihaz</value>
   </data>
   <data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
-    <value>Ses Kayıt Cihazı</value>
+    <value>Ses kayıt cihazı</value>
   </data>
 </root>
