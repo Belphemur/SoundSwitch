@@ -127,4 +127,7 @@
   <data name="updateDisabled" xml:space="preserve">
     <value>업데이트 확인 사용 안 함</value>
   </data>
+  <data name="forceCheckForUpdate" xml:space="preserve">
+    <value>업데이트 확인</value>
+  </data>
 </root>
