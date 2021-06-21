@@ -60,7 +60,7 @@ namespace SoundSwitch.Framework.Configuration
             RecordingHotKey = new HotKey(Keys.F7, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
             MuteRecordingHotKey = new HotKey(Keys.M, HotKey.ModifierKeys.Control | HotKey.ModifierKeys.Alt);
 
-            SelectedDevices = new HashSet<DeviceInfo>();
+            SelectedDevices = new SortedSet<DeviceInfo>();
             SwitchIcon = IconChangerFactory.ActionEnum.Never;
             MigratedFields = new HashSet<string>();
         }
@@ -68,7 +68,7 @@ namespace SoundSwitch.Framework.Configuration
 
         public HashSet<string> SelectedPlaybackDeviceListId { get; }
         public HashSet<string> SelectedRecordingDeviceListId { get; }
-        public HashSet<DeviceInfo> SelectedDevices { get; }
+        public SortedSet<DeviceInfo> SelectedDevices { get; }
         public bool FirstRun { get; set; }
         public HotKey PlaybackHotKey { get; set; }
         public HotKey RecordingHotKey { get; set; }
@@ -124,7 +124,7 @@ namespace SoundSwitch.Framework.Configuration
             if (SelectedPlaybackDeviceListId.Count > 0)
             {
                 SelectedDevices.UnionWith(
-                    SelectedPlaybackDeviceListId.Select((s => new DeviceInfo("", s, DataFlow.Render, false))));
+                    SelectedPlaybackDeviceListId.Select((s => new DeviceInfo("", s, DataFlow.Render, false, DateTime.UtcNow))));
                 SelectedPlaybackDeviceListId.Clear();
                 migrated = true;
             }
@@ -132,7 +132,7 @@ namespace SoundSwitch.Framework.Configuration
             if (SelectedRecordingDeviceListId.Count > 0)
             {
                 SelectedDevices.UnionWith(
-                    SelectedRecordingDeviceListId.Select((s => new DeviceInfo("", s, DataFlow.Capture, false))));
+                    SelectedRecordingDeviceListId.Select((s => new DeviceInfo("", s, DataFlow.Capture, false, DateTime.UtcNow))));
                 SelectedRecordingDeviceListId.Clear();
                 migrated = true;
             }

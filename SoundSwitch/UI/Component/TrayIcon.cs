@@ -302,8 +302,8 @@ namespace SoundSwitch.UI.Component
         {
             Log.Information("Set tray icon menu devices");
             _selectionMenu.Items.Clear();
-            var playbackDevices = AppModel.Instance.AvailablePlaybackDevices;
-            var recordingDevices = AppModel.Instance.AvailableRecordingDevices;
+            var playbackDevices = AppModel.Instance.AvailablePlaybackDevices.ToArray();
+            var recordingDevices = AppModel.Instance.AvailableRecordingDevices.ToArray();
             var profiles = _profileTrayIconBuilder.GetMenuItems().ToArray();
 
             if (profiles.Length > 0)
@@ -312,8 +312,8 @@ namespace SoundSwitch.UI.Component
                 _selectionMenu.Items.Add(new ToolStripSeparator());
             }
 
-            if (playbackDevices.Count < 0 &&
-                recordingDevices.Count < 0)
+            if (playbackDevices.Length < 0 &&
+                recordingDevices.Length < 0)
             {
                 Log.Information("Device list empty");
                 return;
@@ -322,7 +322,7 @@ namespace SoundSwitch.UI.Component
             var defaultPlayback = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eConsole);
             _selectionMenu.Items.AddRange(playbackDevices.Select(info => new ToolStripDeviceItem(DeviceClicked, info, info.Equals(defaultPlayback))).ToArray());
 
-            if (recordingDevices.Count > 0)
+            if (recordingDevices.Length > 0)
             {
                 var defaultRecording = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eConsole);
 

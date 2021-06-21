@@ -123,12 +123,9 @@ namespace SoundSwitch.Model
 
         public ISet<DeviceInfo> SelectedDevices => AppConfigs.Configuration.SelectedDevices;
 
-        public IReadOnlyCollection<DeviceFullInfo> AvailablePlaybackDevices =>
-            ActiveAudioDeviceLister.PlaybackDevices.Where(device => SelectedDevices.FirstOrDefault(device.Equals) != null).ToArray();
+        public IEnumerable<DeviceInfo> AvailablePlaybackDevices => SelectedDevices.Intersect(ActiveAudioDeviceLister.PlaybackDevices);
 
-
-        public IReadOnlyCollection<DeviceFullInfo> AvailableRecordingDevices =>
-            ActiveAudioDeviceLister.RecordingDevices.Where(device => SelectedDevices.FirstOrDefault(device.Equals) != null).ToArray();
+        public IEnumerable<DeviceInfo> AvailableRecordingDevices => SelectedDevices.Intersect(ActiveAudioDeviceLister.RecordingDevices);
 
         public bool SetCommunications
         {
@@ -332,6 +329,7 @@ namespace SoundSwitch.Model
         {
             try
             {
+                device.DiscoveredAt = DateTime.UtcNow;
                 SelectedDevices.Add(device);
             }
             catch (ArgumentException)
@@ -355,7 +353,8 @@ namespace SoundSwitch.Model
             bool result;
             try
             {
-                result = SelectedDevices.Where(device.Equals).Aggregate(true, (current, deviceInfo) => current & SelectedDevices.Remove(deviceInfo));
+                var list = SelectedDevices.Where(device.Equals).ToArray();
+                result = list.Aggregate(true, (b, info) => b & SelectedDevices.Remove(info));
             }
             catch (ArgumentException)
             {
@@ -475,7 +474,7 @@ namespace SoundSwitch.Model
         ///     Attempts to set active device to the specified name
         /// </summary>
         /// <param name="device"></param>
-        public bool SetActiveDevice(DeviceFullInfo device)
+        public bool SetActiveDevice(DeviceInfo device)
         {
             try
             {

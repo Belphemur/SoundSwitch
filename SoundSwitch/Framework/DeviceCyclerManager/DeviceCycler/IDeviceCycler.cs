@@ -30,6 +30,6 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         ///     Attempts to set active device to the specified name
         /// </summary>
         /// <param name="device"></param>
-        bool SetActiveDevice(DeviceFullInfo device);
+        bool SetActiveDevice(DeviceInfo device);
     }
 }

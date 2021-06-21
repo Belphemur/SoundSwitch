@@ -40,13 +40,13 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         /// <param name="audioDevices"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        protected DeviceFullInfo GetNextDevice(IReadOnlyCollection<DeviceFullInfo> audioDevices, DataFlow type)
+        protected DeviceInfo GetNextDevice(IEnumerable<DeviceInfo> audioDevices, DataFlow type)
         {
-
-            var defaultDev = audioDevices.FirstOrDefault(device => AudioSwitcher.Instance.IsDefault(device.Id, (EDataFlow)type, ERole.eConsole)) ??
-                             audioDevices.Last();
-            var next = audioDevices.SkipWhile((device, i) => device.Id != defaultDev.Id).Skip(1).FirstOrDefault() ??
-                       audioDevices.ElementAt(0);
+            var deviceInfos = audioDevices as DeviceInfo[] ?? audioDevices.ToArray();
+            var defaultDev = deviceInfos.FirstOrDefault(device => AudioSwitcher.Instance.IsDefault(device.Id, (EDataFlow)type, ERole.eConsole)) ??
+                             deviceInfos.Last();
+            var next = deviceInfos.SkipWhile((device, i) => device.Id != defaultDev.Id).Skip(1).FirstOrDefault() ??
+                       deviceInfos.ElementAt(0);
             return next;
         }
 
@@ -54,7 +54,7 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         /// Attempts to set active device to the specified name
         /// </summary>
         /// <param name="device"></param>
-        public bool SetActiveDevice(DeviceFullInfo device)
+        public bool SetActiveDevice(DeviceInfo device)
         {
 
             Log.Information("Set Default device: {Device}", device);
