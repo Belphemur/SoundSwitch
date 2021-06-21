@@ -102,7 +102,7 @@ namespace SoundSwitch.UI.Component
 
                 if (e.Button != MouseButtons.Left) return;
 
-                if (_updateMenuItem.Tag != null)
+                if (_updateMenuItem.Tag != null && !_postponeService.ShouldPostpone((Release) _updateMenuItem.Tag))
                 {
                     OnUpdateClick(sender, e);
                     return;
