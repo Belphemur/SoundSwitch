@@ -15,6 +15,7 @@
 using System;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -66,7 +67,6 @@ namespace SoundSwitch.Framework.Updater
                         return false;
                     }
 
-              
 
                     var changelog = Regex.Split(serverRelease.body, "\r\n|\r|\n");
                     var release = new Release(version, installer, serverRelease.name);
@@ -82,13 +82,16 @@ namespace SoundSwitch.Framework.Updater
 
             return false;
         }
-
+ 
         /// <summary>
         /// Check for update
         /// </summary>
         public async Task CheckForUpdate(CancellationToken token)
         {
             using var httpClient = new HttpClient(new SentryHttpMessageHandler());
+            httpClient.DefaultRequestHeaders.UserAgent.Add(ApplicationInfo.ProductValue);
+            httpClient.DefaultRequestHeaders.UserAgent.Add(ApplicationInfo.CommentValue);
+            httpClient.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
             var releases = await httpClient.GetFromJsonAsync<GitHubRelease[]>(_releaseUrl, token);
             foreach (var release in releases ?? Array.Empty<GitHubRelease>())
             {

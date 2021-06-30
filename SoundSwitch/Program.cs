@@ -48,7 +48,7 @@ namespace SoundSwitch
             {
                 Dsn = "https://7d52dfb4f6554bf0b58b256337835332@o631137.ingest.sentry.io/5755327",
                 Environment = AssemblyUtils.GetReleaseState().ToString(),
-                Release = Application.ProductVersion,
+                Release = $"{Application.ProductName}@{Application.ProductVersion}",
             };
             var contribOptions = new ContribSentryOptions(true, true, true)
             {
@@ -125,20 +125,20 @@ namespace SoundSwitch
             try
             {
 #endif
-            MMNotificationClient.Instance.Register();
+                MMNotificationClient.Instance.Register();
 
 
-            using var ctx = new WindowsFormsSynchronizationContext();
+                using var ctx = new WindowsFormsSynchronizationContext();
 
-            SynchronizationContext.SetSynchronizationContext(ctx);
-            try
-            {
-                Application.Run(new SoundSwitchApplicationContext());
-            }
-            finally
-            {
-                SynchronizationContext.SetSynchronizationContext(null);
-            }
+                SynchronizationContext.SetSynchronizationContext(ctx);
+                try
+                {
+                    Application.Run(new SoundSwitchApplicationContext());
+                }
+                finally
+                {
+                    SynchronizationContext.SetSynchronizationContext(null);
+                }
 
 
 #if !DEBUG

@@ -49,6 +49,8 @@ namespace SoundSwitch.Framework.Updater
             else
             {
                 using var client = new HttpClient();
+                client.DefaultRequestHeaders.UserAgent.Add(ApplicationInfo.ProductValue);
+                client.DefaultRequestHeaders.UserAgent.Add(ApplicationInfo.CommentValue);
                 using var response = await client.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
 
                 if (progressCallback != null)
