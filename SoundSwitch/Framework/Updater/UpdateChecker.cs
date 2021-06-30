@@ -35,8 +35,6 @@ namespace SoundSwitch.Framework.Updater
 
         private readonly Uri _releaseUrl;
         public EventHandler<NewReleaseEvent> UpdateAvailable;
-        private static readonly ProductInfoHeaderValue ProductValue;
-        private static readonly ProductInfoHeaderValue CommentValue;
         public bool Beta { get; set; }
 
         public UpdateChecker(Uri releaseUrl) : this(releaseUrl, false)
@@ -47,12 +45,6 @@ namespace SoundSwitch.Framework.Updater
         {
             _releaseUrl = releaseUrl;
             Beta = checkBeta;
-        }
-
-        static UpdateChecker()
-        {
-            ProductValue = new ProductInfoHeaderValue(Application.ProductName, Application.ProductVersion);
-            CommentValue = new ProductInfoHeaderValue("(+https://soundwitch.aaflalo.me)");
         }
 
         private bool ProcessRelease(GitHubRelease serverRelease)
@@ -97,8 +89,8 @@ namespace SoundSwitch.Framework.Updater
         public async Task CheckForUpdate(CancellationToken token)
         {
             using var httpClient = new HttpClient(new SentryHttpMessageHandler());
-            httpClient.DefaultRequestHeaders.UserAgent.Add(ProductValue);
-            httpClient.DefaultRequestHeaders.UserAgent.Add(CommentValue);
+            httpClient.DefaultRequestHeaders.UserAgent.Add(ApplicationInfo.ProductValue);
+            httpClient.DefaultRequestHeaders.UserAgent.Add(ApplicationInfo.CommentValue);
             httpClient.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
             var releases = await httpClient.GetFromJsonAsync<GitHubRelease[]>(_releaseUrl, token);
             foreach (var release in releases ?? Array.Empty<GitHubRelease>())
