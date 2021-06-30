@@ -15,6 +15,7 @@
 using System;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -34,6 +35,8 @@ namespace SoundSwitch.Framework.Updater
 
         private readonly Uri _releaseUrl;
         public EventHandler<NewReleaseEvent> UpdateAvailable;
+        private static readonly ProductInfoHeaderValue ProductValue;
+        private static readonly ProductInfoHeaderValue CommentValue;
         public bool Beta { get; set; }
 
         public UpdateChecker(Uri releaseUrl) : this(releaseUrl, false)
@@ -44,6 +47,12 @@ namespace SoundSwitch.Framework.Updater
         {
             _releaseUrl = releaseUrl;
             Beta = checkBeta;
+        }
+
+        static UpdateChecker()
+        {
+            ProductValue = new ProductInfoHeaderValue(Application.ProductName, Application.ProductVersion);
+            CommentValue = new ProductInfoHeaderValue("(+https://soundwitch.aaflalo.me)");
         }
 
         private bool ProcessRelease(GitHubRelease serverRelease)
@@ -66,7 +75,6 @@ namespace SoundSwitch.Framework.Updater
                         return false;
                     }
 
-              
 
                     var changelog = Regex.Split(serverRelease.body, "\r\n|\r|\n");
                     var release = new Release(version, installer, serverRelease.name);
@@ -82,13 +90,16 @@ namespace SoundSwitch.Framework.Updater
 
             return false;
         }
-
+ 
         /// <summary>
         /// Check for update
         /// </summary>
         public async Task CheckForUpdate(CancellationToken token)
         {
             using var httpClient = new HttpClient(new SentryHttpMessageHandler());
+            httpClient.DefaultRequestHeaders.UserAgent.Add(ProductValue);
+            httpClient.DefaultRequestHeaders.UserAgent.Add(CommentValue);
+            httpClient.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
             var releases = await httpClient.GetFromJsonAsync<GitHubRelease[]>(_releaseUrl, token);
             foreach (var release in releases ?? Array.Empty<GitHubRelease>())
             {
