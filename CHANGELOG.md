@@ -1,3 +1,11 @@
+### [5.10.2](https://github.com/Belphemur/SoundSwitch/compare/v5.10.1...v5.10.2) (2021-06-30)
+
+
+### Bug Fixes
+
+* **Updater:** User agent missing to check for update ([310d948](https://github.com/Belphemur/SoundSwitch/commit/310d948c6a186f92cbc60d494c7dc560c4b15708))
+* **Updater::Download:** Fix missing user agent for downloading release ([f039dd4](https://github.com/Belphemur/SoundSwitch/commit/f039dd4b453b5d46565cf33bba67039d6ba8fc95))
+
 ### [5.10.1](https://github.com/Belphemur/SoundSwitch/compare/v5.10.0...v5.10.1) (2021-06-30)
 
 
