@@ -95,6 +95,8 @@
     "@semantic-release/github": "^7.2.3",
     "@semantic-release/release-notes-generator": "^9.0.3",
     "conventional-changelog-conventionalcommits": "^4.6.0",
-    "semantic-release": "^17.4.4"
+    "semantic-release": "^17.4.4",
+    "trim-newlines": ">=3.0.1",
+    "normalize-url": ">=5.3.1"
   }
 }
