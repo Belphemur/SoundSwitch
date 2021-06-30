@@ -113,24 +113,28 @@ namespace SoundSwitch.Framework.Banner
         /// <param name="data"></param>
         private void PrepareSound(BannerData data)
         {
-            var cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(_cancellationTokenSource.Token);
             Task.Factory.StartNew(async () =>
             {
                 try
                 {
+                    using var cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(_cancellationTokenSource.Token);
                     using var player = data.CurrentDevice == null ? new WasapiOut() : new WasapiOut(data.CurrentDevice, AudioClientShareMode.Shared, true, 200);
                     await using var waveStream = new CachedSoundWaveStream(data.SoundFile);
                     player.Init(waveStream);
 
-                    player.PlaybackStopped += (_, _) => cancellationTokenSource.Cancel();
+                    player.PlaybackStopped += (_, _) => cancellationTokenSource.CancelAfter(TimeSpan.FromMilliseconds(750));
                     player.Play();
                     await Task.Delay(-1, cancellationTokenSource.Token);
+                }
+                catch (TaskCanceledException)
+                {
+                    //Ignored
                 }
                 catch (Exception e)
                 {
                     Log.Warning(e, "Issue while playing {sound}", data.SoundFile.FilePath);
                 }
-            }, cancellationTokenSource.Token);
+            }, _cancellationTokenSource.Token);
         }
 
         /// <summary>

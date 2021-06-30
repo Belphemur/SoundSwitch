@@ -21,6 +21,8 @@ namespace SoundSwitch.Common.Framework.Audio.Device
 
         public bool IsUsb { get; } = true;
 
+        public DateTime DiscoveredAt { get; set; } = DateTime.UtcNow;
+
         public string NameClean
         {
             get
@@ -43,15 +45,6 @@ namespace SoundSwitch.Common.Framework.Audio.Device
             }
         }
 
-        [JsonConstructor]
-        public DeviceInfo(string name, string id, DataFlow type, bool isUsb)
-        {
-            Name = name;
-            Id = id;
-            Type = type;
-            IsUsb = isUsb;
-        }
-
         public DeviceInfo(MMDevice device)
         {
             Name = device.FriendlyName;
@@ -60,6 +53,16 @@ namespace SoundSwitch.Common.Framework.Audio.Device
             var deviceProperties = device.Properties;
             var enumerator = deviceProperties.Contains(PropertyKeys.DEVPKEY_Device_EnumeratorName) ? (string) deviceProperties[PropertyKeys.DEVPKEY_Device_EnumeratorName].Value : "";
             IsUsb = enumerator == "USB";
+        }
+
+        [JsonConstructor]
+        public DeviceInfo(string name, string id, DataFlow type, bool isUsb, DateTime discoveredAt)
+        {
+            Name = name;
+            Id = id;
+            Type = type;
+            IsUsb = isUsb;
+            DiscoveredAt = discoveredAt;
         }
 
 
@@ -78,18 +81,6 @@ namespace SoundSwitch.Common.Framework.Audio.Device
         {
             return NameClean;
         }
-
-        public int CompareTo(DeviceInfo other)
-        {
-            if (ReferenceEquals(this, other)) return 0;
-            if (ReferenceEquals(null, other)) return 1;
-            var nameComparison = string.Compare(NameClean, other.NameClean, StringComparison.Ordinal);
-            if (nameComparison != 0) return nameComparison;
-            var idComparison = string.Compare(Id, other.Id, StringComparison.Ordinal);
-            if (idComparison != 0) return idComparison;
-            return Type.CompareTo(other.Type);
-        }
-
 
 
         public bool Equals(DeviceInfo other)
@@ -118,6 +109,17 @@ namespace SoundSwitch.Common.Framework.Audio.Device
                 hashCode = (hashCode * 397) ^ IsUsb.GetHashCode();
                 return hashCode;
             }
+        }
+
+        public int CompareTo(DeviceInfo other)
+        {
+            if (ReferenceEquals(this, other)) return 0;
+            if (ReferenceEquals(null, other)) return 1;
+            var discoveredAtComparison = DiscoveredAt.CompareTo(other.DiscoveredAt);
+            if (discoveredAtComparison != 0) return discoveredAtComparison;
+            var nameComparison = string.Compare(Name, other.Name, StringComparison.Ordinal);
+            if (nameComparison != 0) return nameComparison;
+            return string.Compare(Id, other.Id, StringComparison.Ordinal);
         }
     }
 }

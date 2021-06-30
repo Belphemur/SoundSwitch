@@ -127,4 +127,7 @@
   <data name="noUpdate" xml:space="preserve">
     <value>אין עדכון זמין</value>
   </data>
+  <data name="forceCheckForUpdate" xml:space="preserve">
+    <value>לבדוק אם יש עדכונים</value>
+  </data>
 </root>

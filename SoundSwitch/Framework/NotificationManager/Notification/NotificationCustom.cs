@@ -17,6 +17,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
+using Serilog;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
 using SoundSwitch.Localization;
@@ -25,8 +26,9 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
 {
     public class NotificationCustom : INotification
     {
+        private CancellationTokenSource _cancellationTokenSource;
         public NotificationTypeEnum TypeEnum => NotificationTypeEnum.CustomNotification;
-        public string               Label    => SettingsStrings.notificationOptionCustomized;
+        public string Label => SettingsStrings.notificationOptionCustomized;
 
         public INotificationConfiguration Configuration { get; set; }
 
@@ -35,17 +37,32 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         {
             if (audioDevice.DataFlow != DataFlow.Render)
                 return;
-            Task.Factory.StartNew(() =>
+            
+            _cancellationTokenSource?.Cancel();
+            _cancellationTokenSource?.Dispose();
+            _cancellationTokenSource = new CancellationTokenSource();
+            Task.Factory.StartNew(async () =>
             {
-                using var output     = new WasapiOut(audioDevice, AudioClientShareMode.Shared, true, 10);
-                using var waveStream = new CachedSoundWaveStream(Configuration.CustomSound);
-                output.Init(waveStream);
-                output.Play();
-                while (output.PlaybackState == PlaybackState.Playing)
+                try
                 {
-                    Thread.Sleep(500);
+                    using var cts = CancellationTokenSource.CreateLinkedTokenSource(_cancellationTokenSource.Token);
+                    using var player = new WasapiOut(audioDevice, AudioClientShareMode.Shared, true, 200);
+                    await using var waveStream = new CachedSoundWaveStream(Configuration.CustomSound);
+                    player.Init(waveStream);
+
+                    player.PlaybackStopped += (_, _) => cts.CancelAfter(TimeSpan.FromMilliseconds(750));
+                    player.Play();
+                    await Task.Delay(-1, cts.Token);
                 }
-            });
+                catch (TaskCanceledException)
+                {
+                    //Ignored
+                }
+                catch (Exception e)
+                {
+                    Log.Warning(e, "Issue while playing {sound}", Configuration.CustomSound.FilePath);
+                }
+            }, _cancellationTokenSource.Token);
         }
 
         public void OnSoundChanged(CachedSound newSound)
@@ -69,7 +86,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         {
             if (profile.Playback == null)
                 return;
-            
+
             using var enumerator = new MMDeviceEnumerator();
             try
             {
@@ -84,7 +101,6 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
 
         public void NotifyMuteChanged(string microphoneName, bool newMuteState)
         {
-            
         }
     }
 }

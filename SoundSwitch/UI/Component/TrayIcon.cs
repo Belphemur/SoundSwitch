@@ -102,7 +102,7 @@ namespace SoundSwitch.UI.Component
 
                 if (e.Button != MouseButtons.Left) return;
 
-                if (_updateMenuItem.Tag != null)
+                if (_updateMenuItem.Tag != null && !_postponeService.ShouldPostpone((Release) _updateMenuItem.Tag))
                 {
                     OnUpdateClick(sender, e);
                     return;
@@ -243,7 +243,6 @@ namespace SoundSwitch.UI.Component
 
         private void NewReleaseAvailable(object sender, UpdateChecker.NewReleaseEvent newReleaseEvent)
         {
-            _updateMenuItem.Tag = newReleaseEvent.Release;
             _updateMenuItem.Text = string.Format(TrayIconStrings.updateAvailable, newReleaseEvent.Release.ReleaseVersion);
             if (_postponeService.ShouldPostpone(newReleaseEvent.Release))
             {
@@ -251,6 +250,7 @@ namespace SoundSwitch.UI.Component
                 return;
             }
 
+            _updateMenuItem.Tag = newReleaseEvent.Release;
             StartAnimationIconUpdate();
             NotifyIcon.BalloonTipClicked += OnUpdateClick;
             NotifyIcon.ShowBalloonTip(3000, string.Format(TrayIconStrings.versionAvailable, newReleaseEvent.Release.ReleaseVersion), newReleaseEvent.Release.Name + '\n' + TrayIconStrings.clickToUpdate, ToolTipIcon.Info);
@@ -302,8 +302,8 @@ namespace SoundSwitch.UI.Component
         {
             Log.Information("Set tray icon menu devices");
             _selectionMenu.Items.Clear();
-            var playbackDevices = AppModel.Instance.AvailablePlaybackDevices;
-            var recordingDevices = AppModel.Instance.AvailableRecordingDevices;
+            var playbackDevices = AppModel.Instance.AvailablePlaybackDevices.ToArray();
+            var recordingDevices = AppModel.Instance.AvailableRecordingDevices.ToArray();
             var profiles = _profileTrayIconBuilder.GetMenuItems().ToArray();
 
             if (profiles.Length > 0)
@@ -312,8 +312,8 @@ namespace SoundSwitch.UI.Component
                 _selectionMenu.Items.Add(new ToolStripSeparator());
             }
 
-            if (playbackDevices.Count < 0 &&
-                recordingDevices.Count < 0)
+            if (playbackDevices.Length < 0 &&
+                recordingDevices.Length < 0)
             {
                 Log.Information("Device list empty");
                 return;
@@ -322,7 +322,7 @@ namespace SoundSwitch.UI.Component
             var defaultPlayback = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eConsole);
             _selectionMenu.Items.AddRange(playbackDevices.Select(info => new ToolStripDeviceItem(DeviceClicked, info, info.Equals(defaultPlayback))).ToArray());
 
-            if (recordingDevices.Count > 0)
+            if (recordingDevices.Length > 0)
             {
                 var defaultRecording = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eConsole);
 
@@ -349,7 +349,7 @@ namespace SoundSwitch.UI.Component
         /// </summary>
         public void ShowNoDevices()
         {
-            Log.Error("No devices available");
+            Log.Warning("No devices available");
             NotifyIcon.ShowBalloonTip(3000,
                 TrayIconStrings.configurationNeeded,
                 TrayIconStrings.configurationNeededExplanation, ToolTipIcon.Warning);

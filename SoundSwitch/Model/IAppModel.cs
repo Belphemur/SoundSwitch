@@ -39,12 +39,12 @@ namespace SoundSwitch.Model
         /// <summary>
         /// An union between the Active <see cref="IAudioDevice" /> of Windows and <see cref="SelectedPlaybackDevicesList" />
         /// </summary>
-        IReadOnlyCollection<DeviceFullInfo> AvailablePlaybackDevices { get; }
+        IEnumerable<DeviceInfo> AvailablePlaybackDevices { get; }
 
         /// <summary>
         /// An union between the Active <see cref="IAudioDevice" /> of Windows and <see cref="SelectedRecordingDevicesList" />
         /// </summary>
-        IReadOnlyCollection<DeviceFullInfo> AvailableRecordingDevices { get; }
+        IEnumerable<DeviceInfo> AvailableRecordingDevices { get; }
 
         /// <summary>
         /// If the Playback device need also to be set for Communications.
@@ -191,7 +191,7 @@ namespace SoundSwitch.Model
         ///     Attempts to set active device to the specified name
         /// </summary>
         /// <param name="device"></param>
-        bool SetActiveDevice(DeviceFullInfo device);
+        bool SetActiveDevice(DeviceInfo device);
 
         /// <summary>
         ///     Cycles the active device to the next device. Returns true if succesfully switched (at least

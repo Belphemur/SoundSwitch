@@ -1,4 +1,5 @@
-﻿using NAudio.CoreAudioApi;
+﻿using System;
+using NAudio.CoreAudioApi;
 using Newtonsoft.Json;
 using SoundSwitch.Common.Framework.Audio.Icon;
 
@@ -13,7 +14,7 @@ namespace SoundSwitch.Common.Framework.Audio.Device
         public System.Drawing.Icon SmallIcon => AudioDeviceIconExtractor.ExtractIconFromPath(IconPath, Type, false);
 
         [JsonConstructor]
-        public DeviceFullInfo(string name, string id, DataFlow type, string iconPath, DeviceState state, bool isUsb) : base(name, id, type, isUsb)
+        public DeviceFullInfo(string name, string id, DataFlow type, string iconPath, DeviceState state, bool isUsb) : base(name, id, type, isUsb, DateTime.UtcNow)
         {
             IconPath = iconPath;
             State = state;

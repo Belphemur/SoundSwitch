@@ -217,9 +217,9 @@
     <value>SoundSwitch의 트레이 아이콘이 변경되는 시점을 선택합니다.
 
 기본값: 변경하지 않음. SoundSwitch 아이콘을 유지.
-재생: 재생 장치가 전환될 때.
-녹음: 녹음 장치가 전환될 때.
-모두: 모든 유형의 장치가 전환될 때 변경.</value>
+재생: 재생 장치가 전환이 되었을 때.
+녹음: 녹음 장치가 전환이 되었을 때.
+모두: 모든 유형의 장치가 전환이 되었을 때 변경.</value>
   </data>
   <data name="notificationOptionBanner" xml:space="preserve">
     <value>배너</value>
@@ -399,5 +399,11 @@
   </data>
   <data name="mute.toggle.label" xml:space="preserve">
     <value>음소거 전환</value>
+  </data>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>이 트리거는 트레이 아이콘 메뉴에 프로필을 표시합니다. 프로필을 보려면 시스템 아이콘을 마우스 왼쪽 단추로 클릭하십시오.</value>
+  </data>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>앱 메뉴에서</value>
   </data>
 </root>

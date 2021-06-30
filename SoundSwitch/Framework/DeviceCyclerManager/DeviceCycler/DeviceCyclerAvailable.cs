@@ -13,11 +13,10 @@
 ********************************************************************/
 
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using NAudio.CoreAudioApi;
-using SoundSwitch.Common.Framework.Audio.Device;
-using SoundSwitch.Model;
 using SoundSwitch.Localization;
+using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
 {
@@ -32,28 +31,19 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         /// <param name="type"></param>
         public override bool CycleAudioDevice(DataFlow type)
         {
-            IReadOnlyCollection<DeviceFullInfo> audioDevices;
-            switch (type)
+            var audioDevices = (type switch
             {
-                case DataFlow.Render:
-                    audioDevices = AppModel.Instance.AvailablePlaybackDevices;
-                    break;
-                case DataFlow.Capture:
-                    audioDevices = AppModel.Instance.AvailableRecordingDevices;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
-            }
+                DataFlow.Render  => AppModel.Instance.AvailablePlaybackDevices,
+                DataFlow.Capture => AppModel.Instance.AvailableRecordingDevices,
+                _                => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+            }).ToArray();
 
-            switch (audioDevices.Count)
+            return audioDevices switch
             {
-                case 0:
-                    throw new AppModel.NoDevicesException();
-                case 1:
-                    return false;
-            }
-
-            return SetActiveDevice(GetNextDevice(audioDevices, type));
+                {Length: 0} => throw new AppModel.NoDevicesException(),
+                {Length: 1} => false,
+                _           => SetActiveDevice(GetNextDevice(audioDevices, type))
+            };
         }
     }
 }

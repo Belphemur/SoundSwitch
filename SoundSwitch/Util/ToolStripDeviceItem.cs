@@ -25,7 +25,7 @@ namespace SoundSwitch.Util
     {
         private readonly bool _isDefault;
 
-        public ToolStripDeviceItem(EventHandler onClick, DeviceFullInfo audioDevice, bool isDefault)
+        public ToolStripDeviceItem(EventHandler onClick, DeviceInfo audioDevice, bool isDefault)
             : base(audioDevice.NameClean, null, onClick)
         {
             AudioDevice = audioDevice;
@@ -34,6 +34,6 @@ namespace SoundSwitch.Util
 
         public override Image Image => _isDefault ? Resources.Check : null;
 
-        public DeviceFullInfo AudioDevice { get; }
+        public DeviceInfo AudioDevice { get; }
     }
 }

@@ -87,7 +87,7 @@ namespace SoundSwitch.Framework.Updater.Installer
             {
                 try
                 {
-                    await using (var stream = File.OpenWrite(FilePath))
+                    await using (var stream = File.Open(FilePath, FileMode.Create))
                     {
                         DownloadStarted = true;
                         await FileDownloader.DownloadFileAsync(
@@ -114,7 +114,7 @@ namespace SoundSwitch.Framework.Updater.Installer
                 }
                 catch (Exception e)
                 {
-                    Log.Error(e, "Problem downloading file {error}");
+                    Log.Error(e, "Problem downloading file {file}:{url}", FilePath, FileUri);
                     DownloadFailed?.Invoke(this, new DownloadFailEvent(e));
                 }
             });

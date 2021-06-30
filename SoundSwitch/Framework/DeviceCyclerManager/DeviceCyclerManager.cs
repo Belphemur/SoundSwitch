@@ -51,7 +51,7 @@ namespace SoundSwitch.Framework.DeviceCyclerManager
         /// </summary>
         /// <param name="device"></param>
         /// <returns></returns>
-        public bool SetAsDefault(DeviceFullInfo device)
+        public bool SetAsDefault(DeviceInfo device)
         {
             return _deviceCyclerFactory.Get(CurrentCycler).SetActiveDevice(device);
         }
