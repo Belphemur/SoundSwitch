@@ -462,4 +462,7 @@
   <data name="profile.trigger.trayMenu" xml:space="preserve">
     <value>メニューから選択</value>
   </data>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>このトリガーによりトレイアイコンのメニューにプロフィールが表示されます。シストレイのアイコンを左クリックするとこのプロフィールが表示されます。</value>
+  </data>
 </root>
