@@ -459,4 +459,7 @@
   <data name="notification.microphone.muted" xml:space="preserve">
     <value>{0}はミュート中です。</value>
   </data>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>メニューから選択</value>
+  </data>
 </root>
