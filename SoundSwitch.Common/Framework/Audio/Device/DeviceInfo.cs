@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace SoundSwitch.Common.Framework.Audio.Device
 {
-    public class DeviceInfo : IEquatable<DeviceInfo>, IComparable<DeviceInfo>
+    public class DeviceInfo : IEquatable<DeviceInfo>
     {
         private static readonly Regex NameSplitterRegex = new Regex(@"(?<friendlyName>[\w\s-_\.\/\\]+)\s\([\d\s\-|]*(?<deviceName>.+)\)", RegexOptions.Compiled);
 
@@ -90,7 +90,6 @@ namespace SoundSwitch.Common.Framework.Audio.Device
             if (Type != other.Type) return false;
             //Same Id, it's the same device
             if (Id == other.Id) return true;
-            //When USB device, we can rely on matching the name clean
             return IsUsb && NameClean == other.NameClean;
         }
 
@@ -104,22 +103,9 @@ namespace SoundSwitch.Common.Framework.Audio.Device
             unchecked
             {
                 var hashCode = (NameClean != null ? NameClean.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Id != null ? Id.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (int) Type;
-                hashCode = (hashCode * 397) ^ IsUsb.GetHashCode();
                 return hashCode;
             }
-        }
-
-        public int CompareTo(DeviceInfo other)
-        {
-            if (ReferenceEquals(this, other)) return 0;
-            if (ReferenceEquals(null, other)) return 1;
-            var discoveredAtComparison = DiscoveredAt.CompareTo(other.DiscoveredAt);
-            if (discoveredAtComparison != 0) return discoveredAtComparison;
-            var nameComparison = string.Compare(Name, other.Name, StringComparison.Ordinal);
-            if (nameComparison != 0) return nameComparison;
-            return string.Compare(Id, other.Id, StringComparison.Ordinal);
         }
     }
 }
