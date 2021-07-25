@@ -90,6 +90,8 @@ namespace SoundSwitch.Common.Framework.Audio.Device
             if (Type != other.Type) return false;
             //Same Id, it's the same device
             if (Id == other.Id) return true;
+            //Always match on NameClean when Id is different
+            //help recognizing the same device
             return NameClean == other.NameClean;
         }
 
