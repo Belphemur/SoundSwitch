@@ -60,7 +60,7 @@ namespace SoundSwitch.Framework.Configuration
             RecordingHotKey = new HotKey(Keys.F7, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
             MuteRecordingHotKey = new HotKey(Keys.M, HotKey.ModifierKeys.Control | HotKey.ModifierKeys.Alt);
 
-            SelectedDevices = new SortedSet<DeviceInfo>();
+            SelectedDevices = new HashSet<DeviceInfo>();
             SwitchIcon = IconChangerFactory.ActionEnum.Never;
             MigratedFields = new HashSet<string>();
         }
@@ -68,7 +68,7 @@ namespace SoundSwitch.Framework.Configuration
 
         public HashSet<string> SelectedPlaybackDeviceListId { get; }
         public HashSet<string> SelectedRecordingDeviceListId { get; }
-        public SortedSet<DeviceInfo> SelectedDevices { get; }
+        public HashSet<DeviceInfo> SelectedDevices { get; }
         public bool FirstRun { get; set; }
         public HotKey PlaybackHotKey { get; set; }
         public HotKey RecordingHotKey { get; set; }

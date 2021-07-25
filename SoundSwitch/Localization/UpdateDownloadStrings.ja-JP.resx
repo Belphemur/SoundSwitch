@@ -115,4 +115,7 @@
   <data name="downloadFailed" xml:space="preserve">
     <value>ダウンロード失敗</value>
   </data>
+  <data name="remindMe" xml:space="preserve">
+    <value>後で</value>
+  </data>
 </root>

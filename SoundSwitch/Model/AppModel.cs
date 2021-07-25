@@ -121,7 +121,7 @@ namespace SoundSwitch.Model
         }
 
 
-        public ISet<DeviceInfo> SelectedDevices => AppConfigs.Configuration.SelectedDevices;
+        public IEnumerable<DeviceInfo> SelectedDevices => AppConfigs.Configuration.SelectedDevices.OrderBy(info => info.DiscoveredAt);
 
         public IEnumerable<DeviceInfo> AvailablePlaybackDevices => SelectedDevices.Intersect(ActiveAudioDeviceLister.PlaybackDevices);
 
@@ -330,7 +330,7 @@ namespace SoundSwitch.Model
             try
             {
                 device.DiscoveredAt = DateTime.UtcNow;
-                SelectedDevices.Add(device);
+                AppConfigs.Configuration.SelectedDevices.Add(device);
             }
             catch (ArgumentException)
             {
@@ -353,8 +353,8 @@ namespace SoundSwitch.Model
             bool result;
             try
             {
-                var list = SelectedDevices.Where(device.Equals).ToArray();
-                result = list.Aggregate(true, (b, info) => b & SelectedDevices.Remove(info));
+                var list =  AppConfigs.Configuration.SelectedDevices.Where(device.Equals).ToArray();
+                result = list.Aggregate(true, (b, info) => b &  AppConfigs.Configuration.SelectedDevices.Remove(info));
             }
             catch (ArgumentException)
             {

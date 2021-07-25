@@ -34,7 +34,7 @@ namespace SoundSwitch.Model
         /// <summary>
         /// Devices selected for Switching
         /// </summary>
-        ISet<DeviceInfo> SelectedDevices { get; }
+        IEnumerable<DeviceInfo> SelectedDevices { get; }
 
         /// <summary>
         /// An union between the Active <see cref="IAudioDevice" /> of Windows and <see cref="SelectedPlaybackDevicesList" />

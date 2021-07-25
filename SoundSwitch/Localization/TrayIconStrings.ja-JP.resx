@@ -186,4 +186,7 @@
   <data name="settings" xml:space="preserve">
     <value>設定</value>
   </data>
+  <data name="forceCheckForUpdate" xml:space="preserve">
+    <value>アップデートの確認</value>
+  </data>
 </root>
