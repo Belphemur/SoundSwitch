@@ -90,7 +90,7 @@ namespace SoundSwitch.Common.Framework.Audio.Device
             if (Type != other.Type) return false;
             //Same Id, it's the same device
             if (Id == other.Id) return true;
-            return IsUsb && NameClean == other.NameClean;
+            return NameClean == other.NameClean;
         }
 
         public override bool Equals(object obj)
