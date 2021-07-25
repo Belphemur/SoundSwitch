@@ -31,13 +31,6 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 5.0.x
-      - uses: actions/cache@v2
-        with:
-          path: ~/.nuget/packages
-          # Look to see if there is a cache hit for the corresponding requirements file
-          key: ${{ runner.os }}-nuget-anycpu-${{ hashFiles('**/*.csproj') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-anycpu
       - name: Restore
         run: dotnet restore
       - name: Build
@@ -64,13 +57,6 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 5.0.x
-      - uses: actions/cache@v2
-        with:
-          path: ~/.nuget/packages
-          # Look to see if there is a cache hit for the corresponding requirements file
-          key: ${{ runner.os }}-nuget-${{env.ARCH}}-${{ hashFiles('**/*.csproj') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-${{env.ARCH}}
       - name: Restore
         run: dotnet restore -r ${{ env.ARCH }}
       - name: Fetch tags
