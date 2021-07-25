@@ -186,4 +186,7 @@
   <data name="updateDisabled" xml:space="preserve">
     <value>Controllo aggiornamenti disabilitato</value>
   </data>
+  <data name="forceCheckForUpdate" xml:space="preserve">
+    <value>Controlla aggiornamenti</value>
+  </data>
 </root>
