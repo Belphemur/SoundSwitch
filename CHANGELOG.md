@@ -1,3 +1,11 @@
+### [5.11.1](https://github.com/Belphemur/SoundSwitch/compare/v5.11.0...v5.11.1) (2021-07-25)
+
+
+### Bug Fixes
+
+* **Device::Switching:** Fix device switching not working when id is different. ([44ba705](https://github.com/Belphemur/SoundSwitch/commit/44ba705e03762b40d4ab111ba65d4d2a2db13841)), closes [#701](https://github.com/Belphemur/SoundSwitch/issues/701)
+* **Update:** Make the signature checker less restrictive ([19ccadd](https://github.com/Belphemur/SoundSwitch/commit/19ccadddded39d268355cf38c1584f2bae084f72))
+
 ## [5.11.0](https://github.com/Belphemur/SoundSwitch/compare/v5.10.2...v5.11.0) (2021-07-25)
 
 
