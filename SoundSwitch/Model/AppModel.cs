@@ -39,6 +39,7 @@ using SoundSwitch.Framework.WinApi.Keyboard;
 using SoundSwitch.Localization;
 using SoundSwitch.Localization.Factory;
 using SoundSwitch.UI.Component;
+using SoundSwitch.Util.Extension;
 using SoundSwitch.Util.Timer;
 
 namespace SoundSwitch.Model
@@ -123,9 +124,9 @@ namespace SoundSwitch.Model
 
         public IEnumerable<DeviceInfo> SelectedDevices => AppConfigs.Configuration.SelectedDevices.OrderBy(info => info.DiscoveredAt);
 
-        public IEnumerable<DeviceInfo> AvailablePlaybackDevices => SelectedDevices.Intersect(ActiveAudioDeviceLister.PlaybackDevices);
+        public IEnumerable<DeviceInfo> AvailablePlaybackDevices => SelectedDevices.IntersectInverse(ActiveAudioDeviceLister.PlaybackDevices);
 
-        public IEnumerable<DeviceInfo> AvailableRecordingDevices => SelectedDevices.Intersect(ActiveAudioDeviceLister.RecordingDevices);
+        public IEnumerable<DeviceInfo> AvailableRecordingDevices => SelectedDevices.IntersectInverse(ActiveAudioDeviceLister.RecordingDevices);
 
         public bool SetCommunications
         {
