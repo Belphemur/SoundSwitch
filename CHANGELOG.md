@@ -1,3 +1,24 @@
+## [5.11.0](https://github.com/Belphemur/SoundSwitch/compare/v5.10.2...v5.11.0) (2021-07-25)
+
+
+### Features
+
+* **Device::Matching:** Use the Name to match device when id is different. Please rename your device if you have 2 with the same name. ([0dd1ef2](https://github.com/Belphemur/SoundSwitch/commit/0dd1ef261d8e879b778714d2533b2f32d38b47b8))
+
+
+### Bug Fixes
+
+* **Device::Switching:** Fix case where the app doesn't remember the HDMI device after graphic update ([be97b1b](https://github.com/Belphemur/SoundSwitch/commit/be97b1b7af816a3569ee5e5d0063f181bca3bccd)), closes [#698](https://github.com/Belphemur/SoundSwitch/issues/698)
+* **Device::Switching:** Fix device switching not finding all the different selected devices ([9bedd8d](https://github.com/Belphemur/SoundSwitch/commit/9bedd8d918f4bdbb9e0c3a5ee8e87e01b936047b)), closes [#697](https://github.com/Belphemur/SoundSwitch/issues/697)
+
+
+### Languages
+
+* **Japanese:** Translated Settings using Weblate ([dd1b7eb](https://github.com/Belphemur/SoundSwitch/commit/dd1b7ebf64f44d597470ba585a13f54f0beeb48e))
+* **Japanese:** Translated Settings using Weblate ([66c6ab1](https://github.com/Belphemur/SoundSwitch/commit/66c6ab144d41f8f683667b6e85c40a02314c1ffb))
+* **Japanese:** Translated Tray Icon using Weblate ([0905aff](https://github.com/Belphemur/SoundSwitch/commit/0905aff78590134f60f2b78563fed1fa2bf0dc16))
+* **Japanese:** Translated Update Download using Weblate ([17ac3bf](https://github.com/Belphemur/SoundSwitch/commit/17ac3bf88c7f3144307a91ada6f85a4853054408))
+
 ### [5.10.2](https://github.com/Belphemur/SoundSwitch/compare/v5.10.1...v5.10.2) (2021-06-30)
 
 
