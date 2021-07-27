@@ -43,9 +43,8 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         protected DeviceInfo GetNextDevice(IEnumerable<DeviceInfo> audioDevices, DataFlow type)
         {
             var deviceInfos = audioDevices as DeviceInfo[] ?? audioDevices.ToArray();
-            var defaultDev = AudioSwitcher.Instance.GetDefaultAudioEndpoint((EDataFlow) type, ERole.eConsole);
-            var next = deviceInfos.SkipWhile((device, _) => device.Id != defaultDev.Id).Skip(1).FirstOrDefault() ??
-                       deviceInfos[0];
+            var defaultDev = AudioSwitcher.Instance.GetDefaultAudioEndpoint((EDataFlow) type, ERole.eConsole) ?? deviceInfos.Last();
+            var next = deviceInfos.SkipWhile((device, _) => device.Id != defaultDev.Id).Skip(1).FirstOrDefault() ?? deviceInfos[0];
             return next;
         }
 
