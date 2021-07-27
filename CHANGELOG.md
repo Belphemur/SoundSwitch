@@ -1,3 +1,19 @@
+### [5.11.2](https://github.com/Belphemur/SoundSwitch/compare/v5.11.1...v5.11.2) (2021-07-27)
+
+
+### Bug Fixes
+
+* **Device::Matching:** Always match devices by their Id and their clean name. Also follow user order for display/switching. ([646f126](https://github.com/Belphemur/SoundSwitch/commit/646f12601a0e25d6677dcff309348c66f9ff3671)), closes [#706](https://github.com/Belphemur/SoundSwitch/issues/706)
+* **Device::Matching:** Improve the hashcode to clash with other ([718b951](https://github.com/Belphemur/SoundSwitch/commit/718b951634f25d21f3f8ed9f31dc8571ea24ea77))
+* **Log:** Remove unneeded warning in the log ([4188c85](https://github.com/Belphemur/SoundSwitch/commit/4188c85560fa50f3ce617ee6cad6f1bbef3d6aea))
+* **Update:** Use backoff strategy to avoid sending too much unneeded requests. ([a4c97ab](https://github.com/Belphemur/SoundSwitch/commit/a4c97ab592784515e0c89abb2a0f75b9fa8d89b9))
+
+
+### Languages
+
+* **Italian:** Translated Tray Icon using Weblate ([fe68a2a](https://github.com/Belphemur/SoundSwitch/commit/fe68a2a724a0c2c10dfdea73464da05cf8c9378f))
+* **Italian:** Translated Update Download using Weblate ([85890bc](https://github.com/Belphemur/SoundSwitch/commit/85890bcdf9589484567826640626d6e662c104b5))
+
 ### [5.11.1](https://github.com/Belphemur/SoundSwitch/compare/v5.11.0...v5.11.1) (2021-07-25)
 
 
