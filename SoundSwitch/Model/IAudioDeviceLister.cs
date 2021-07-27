@@ -13,9 +13,7 @@
 ********************************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using NAudio.CoreAudioApi;
+using SoundSwitch.Common.Framework.Audio.Collection;
 using SoundSwitch.Common.Framework.Audio.Device;
 
 namespace SoundSwitch.Model
@@ -26,13 +24,13 @@ namespace SoundSwitch.Model
         ///     Get the playback device in the set state
         /// </summary>
         /// <returns></returns>
-        IReadOnlyCollection<DeviceFullInfo> PlaybackDevices { get; }
+        DeviceReadOnlyCollection<DeviceFullInfo> PlaybackDevices { get; }
 
         /// <summary>
         ///     Get the recording device in the set state
         /// </summary>
         /// <returns></returns>
-        IReadOnlyCollection<DeviceFullInfo> RecordingDevices { get; }
+        DeviceReadOnlyCollection<DeviceFullInfo> RecordingDevices { get; }
 
         void Refresh();
     }
