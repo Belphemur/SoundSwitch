@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Serilog;
 using SoundSwitch.Audio.Manager.Interop.Com.Threading;
 using SoundSwitch.Audio.Manager.Interop.Com.User;
 
@@ -79,9 +78,9 @@ namespace SoundSwitch.Audio.Manager
                         var processName = process.MainModule?.FileName ?? "N/A";
                         ForegroundChanged?.Invoke(this, new Event(processId, processName, windowText, windowClass, hwnd));
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
-                        Log.Warning(e, "Couldn't get info about foreground process");
+                      //Ignored
                     }
                 });
             };

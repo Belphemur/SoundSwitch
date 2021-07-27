@@ -39,7 +39,6 @@ using SoundSwitch.Framework.WinApi.Keyboard;
 using SoundSwitch.Localization;
 using SoundSwitch.Localization.Factory;
 using SoundSwitch.UI.Component;
-using SoundSwitch.Util.Extension;
 using SoundSwitch.Util.Timer;
 
 namespace SoundSwitch.Model
@@ -124,9 +123,9 @@ namespace SoundSwitch.Model
 
         public IEnumerable<DeviceInfo> SelectedDevices => AppConfigs.Configuration.SelectedDevices.OrderBy(info => info.DiscoveredAt);
 
-        public IEnumerable<DeviceInfo> AvailablePlaybackDevices => SelectedDevices.IntersectInverse(ActiveAudioDeviceLister.PlaybackDevices);
+        public IEnumerable<DeviceInfo> AvailablePlaybackDevices => ActiveAudioDeviceLister.PlaybackDevices.IntersectWith(SelectedDevices);
 
-        public IEnumerable<DeviceInfo> AvailableRecordingDevices => SelectedDevices.IntersectInverse(ActiveAudioDeviceLister.RecordingDevices);
+        public IEnumerable<DeviceInfo> AvailableRecordingDevices => ActiveAudioDeviceLister.RecordingDevices.IntersectWith(SelectedDevices);
 
         public bool SetCommunications
         {
@@ -354,8 +353,8 @@ namespace SoundSwitch.Model
             bool result;
             try
             {
-                var list =  AppConfigs.Configuration.SelectedDevices.Where(device.Equals).ToArray();
-                result = list.Aggregate(true, (b, info) => b &  AppConfigs.Configuration.SelectedDevices.Remove(info));
+                var list = AppConfigs.Configuration.SelectedDevices.Where(device.Equals).ToArray();
+                result = list.Aggregate(true, (b, info) => b & AppConfigs.Configuration.SelectedDevices.Remove(info));
             }
             catch (ArgumentException)
             {

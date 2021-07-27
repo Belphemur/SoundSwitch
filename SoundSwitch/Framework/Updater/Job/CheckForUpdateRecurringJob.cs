@@ -34,7 +34,7 @@ namespace SoundSwitch.Framework.Updater.Job
             return Task.CompletedTask;
         }
 
-        public IRetryAction FailRule { get; } = new AlwaysRetry(TimeSpan.FromMinutes(30));
+        public IRetryAction FailRule { get; } = new ExponentialBackoffRetry(TimeSpan.FromMinutes(20), null);
         public TimeSpan? MaxRuntime { get; }
         public TimeSpan Delay { get; } = TimeSpan.FromSeconds(AppConfigs.Configuration.UpdateCheckInterval);
     }

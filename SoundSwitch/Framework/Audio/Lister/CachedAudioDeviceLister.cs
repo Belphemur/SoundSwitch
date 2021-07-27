@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NAudio.CoreAudioApi;
 using Serilog;
+using SoundSwitch.Common.Framework.Audio.Collection;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Model;
@@ -27,10 +28,10 @@ namespace SoundSwitch.Framework.Audio.Lister
     public class CachedAudioDeviceLister : IAudioDeviceLister
     {
         /// <inheritdoc />
-        public IReadOnlyCollection<DeviceFullInfo> PlaybackDevices { get; private set; } = new DeviceFullInfo[0];
+        public DeviceReadOnlyCollection<DeviceFullInfo> PlaybackDevices { get; private set; } = new(Enumerable.Empty<DeviceFullInfo>());
 
         /// <inheritdoc />
-        public IReadOnlyCollection<DeviceFullInfo> RecordingDevices { get; private set; } = new DeviceFullInfo[0];
+        public DeviceReadOnlyCollection<DeviceFullInfo> RecordingDevices { get; private set; } = new(Enumerable.Empty<DeviceFullInfo>());
 
         private readonly DeviceState _state;
         private readonly DebounceDispatcher _dispatcher = new();
@@ -86,8 +87,8 @@ namespace SoundSwitch.Framework.Audio.Lister
                     }
                 }
 
-                PlaybackDevices = playbackDevices.Values.ToArray();
-                RecordingDevices = recordingDevices.Values.ToArray();
+                PlaybackDevices = new DeviceReadOnlyCollection<DeviceFullInfo>(playbackDevices.Values);
+                RecordingDevices = new DeviceReadOnlyCollection<DeviceFullInfo>(recordingDevices.Values);
 
 
                 Log.Information("[{@State}] Refreshed all devices. {@Recording}/rec, {@Playback}/play", _state, recordingDevices.Count, playbackDevices.Count);
