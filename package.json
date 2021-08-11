@@ -97,6 +97,6 @@
     "conventional-changelog-conventionalcommits": "^4.6.0",
     "semantic-release": "^17.4.4",
     "trim-newlines": ">=3.0.1",
-    "normalize-url": ">=7.0.0"
+    "normalize-url": ">=7.0.1"
   }
 }
