@@ -465,4 +465,7 @@ Ambos: Mudar quando qualquer tipo de dispositivo é alterado.</value>
   <data name="profile.trigger.trayMenu" xml:space="preserve">
     <value>No menu do aplicativo</value>
   </data>
+  <data name="telemetry" xml:space="preserve">
+    <value>Telemetria</value>
+  </data>
 </root>
