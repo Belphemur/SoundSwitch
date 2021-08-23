@@ -180,6 +180,7 @@ namespace SoundSwitch.UI.Forms
             toggleMuteLabel.Visible = false;
             
             telemetryCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.Telemetry), false, DataSourceUpdateMode.OnPropertyChanged);
+            telemetryCheckbox.Text = SettingsStrings.telemetry;
 
             PopulateSettings();
 

@@ -937,6 +937,15 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Telemetry.
+        /// </summary>
+        internal static string telemetry {
+            get {
+                return ResourceManager.GetString("telemetry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tooltip on Hover.
         /// </summary>
         internal static string tooltipOnHover {

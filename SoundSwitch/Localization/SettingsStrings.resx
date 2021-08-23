@@ -465,4 +465,7 @@ Restore the state of the system when the application is closed.</value>
   <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
     <value>This trigger make the profile visible in the tray icon menu. Left-click on the systray icon to see your profile.</value>
   </data>
+  <data name="telemetry" xml:space="preserve">
+    <value>Telemetry</value>
+  </data>
 </root>
