@@ -79,5 +79,10 @@ namespace SoundSwitch.Framework.Configuration
         /// Fields of the config that got migrated
         /// </summary>
         HashSet<string> MigratedFields { get; }
+
+        /// <summary>
+        /// Is telemetry enabled
+        /// </summary>
+        bool Telemetry { get; set; }
     }
 }

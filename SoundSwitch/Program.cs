@@ -50,26 +50,32 @@ namespace SoundSwitch
                 Environment = AssemblyUtils.GetReleaseState().ToString(),
                 Release = $"{Application.ProductName}@{Application.ProductVersion}",
             };
-            var contribOptions = new ContribSentryOptions(true, true, true)
-            {
-                GlobalSessionMode = true,
-                CacheDirPath = Path.Combine(ApplicationPath.Default, "Session")
-            };
-            sentryOptions.AddIntegration(new ContribSentrySdkIntegration(contribOptions));
-            using var _ = SentrySdk.Init(sentryOptions);
             var user = new User
             {
                 Id = AppConfigs.Configuration.UniqueInstallationId.ToString(),
                 Username = Environment.UserName
             };
+            //Only track session if Telemetry is enabled
+            if (AppConfigs.Configuration.Telemetry)
+            {
+                var contribOptions = new ContribSentryOptions(true, true, true)
+                {
+                    GlobalSessionMode = true,
+                    CacheDirPath = Path.Combine(ApplicationPath.Default, "Session")
+                };
+                sentryOptions.AddIntegration(new ContribSentrySdkIntegration(contribOptions));
+                ContribSentrySdk.StartSession(user);
+            }
+
+            using var _ = SentrySdk.Init(sentryOptions);
+
 
             SentrySdk.ConfigureScope(scope => { scope.User = user; });
-            ContribSentrySdk.StartSession(user);
 
             InitializeLogger();
             Log.Information("Application Starts");
 #if !DEBUG
-            AppDomain.CurrentDomain.UnhandledException += (sender, args) => { HandleException((Exception) args.ExceptionObject); };
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) => { HandleException((Exception)args.ExceptionObject); };
 
             Log.Information("Set Exception Handler");
             Application.ThreadException += Application_ThreadException;

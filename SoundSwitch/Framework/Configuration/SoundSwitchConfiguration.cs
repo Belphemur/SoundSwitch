@@ -111,6 +111,11 @@ namespace SoundSwitch.Framework.Configuration
 
         public Guid UniqueInstallationId { get; set; } = Guid.NewGuid();
 
+        /// <summary>
+        /// Is telemetry enabled
+        /// </summary>
+        public bool Telemetry { get; set; } = true;
+
         // Needed by Interface
         [JsonIgnore]
         public string FileLocation { get; set; }
