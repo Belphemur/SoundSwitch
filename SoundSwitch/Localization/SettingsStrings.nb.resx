@@ -391,4 +391,22 @@ Gjenopprett systemets tilstand når programmet lukkes.</value>
   <data name="profile.trigger.uwp" xml:space="preserve">
     <value>Mikrosoft Store-program</value>
   </data>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>Denne utløseren gjør profilen synlig i systemkurvsikon-menyen. Venstreklikk på systemkurvsikonet for å se profilen din?</value>
+  </data>
+  <data name="telemetry" xml:space="preserve">
+    <value>Telemetri</value>
+  </data>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>I programmenyen</value>
+  </data>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>Veksle forstumming</value>
+  </data>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>{0} har fått sin forstummelse kurert.</value>
+  </data>
+  <data name="notification.microphone.muted" xml:space="preserve">
+    <value>{0} er nå forstummet.</value>
+  </data>
 </root>
