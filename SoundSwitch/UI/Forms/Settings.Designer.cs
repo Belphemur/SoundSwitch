@@ -76,6 +76,7 @@ namespace SoundSwitch.UI.Forms
             this.toggleMuteLabel = new System.Windows.Forms.Label();
             this.muteHotKey = new SoundSwitch.UI.Component.HotKeyTextBox();
             this.muteHotKeyCheckbox = new System.Windows.Forms.CheckBox();
+            this.telemetryCheckbox = new System.Windows.Forms.CheckBox();
             this.tabControl.SuspendLayout();
             this.playbackTabPage.SuspendLayout();
             this.recordingTabPage.SuspendLayout();
@@ -153,12 +154,9 @@ namespace SoundSwitch.UI.Forms
             this.playbackListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.playbackListView.CheckBoxes = true;
             this.playbackListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            listViewGroup1.Footer = "";
             listViewGroup1.Header = "Selected";
             listViewGroup1.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
             listViewGroup1.Name = "selectedGroup";
-            listViewGroup1.Subtitle = "";
-            listViewGroup1.TaskLink = "";
             this.playbackListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
             listViewGroup1});
             this.playbackListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
@@ -187,12 +185,9 @@ namespace SoundSwitch.UI.Forms
             this.recordingListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.recordingListView.CheckBoxes = true;
             this.recordingListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            listViewGroup2.Footer = "";
             listViewGroup2.Header = "Selected";
             listViewGroup2.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
             listViewGroup2.Name = "selectedGroup";
-            listViewGroup2.Subtitle = "";
-            listViewGroup2.TaskLink = "";
             this.recordingListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
             listViewGroup2});
             this.recordingListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
@@ -303,7 +298,7 @@ namespace SoundSwitch.UI.Forms
             // languageGroupBox
             // 
             this.languageGroupBox.Controls.Add(this.languageComboBox);
-            this.languageGroupBox.Location = new System.Drawing.Point(434, 156);
+            this.languageGroupBox.Location = new System.Drawing.Point(434, 174);
             this.languageGroupBox.Name = "languageGroupBox";
             this.languageGroupBox.Size = new System.Drawing.Size(298, 61);
             this.languageGroupBox.TabIndex = 15;
@@ -322,13 +317,14 @@ namespace SoundSwitch.UI.Forms
             // 
             // updateSettingsGroupBox
             // 
+            this.updateSettingsGroupBox.Controls.Add(this.telemetryCheckbox);
             this.updateSettingsGroupBox.Controls.Add(this.updateNeverRadioButton);
             this.updateSettingsGroupBox.Controls.Add(this.updateNotifyRadioButton);
             this.updateSettingsGroupBox.Controls.Add(this.updateSilentRadioButton);
             this.updateSettingsGroupBox.Controls.Add(this.includeBetaVersionsCheckBox);
             this.updateSettingsGroupBox.Location = new System.Drawing.Point(434, 12);
             this.updateSettingsGroupBox.Name = "updateSettingsGroupBox";
-            this.updateSettingsGroupBox.Size = new System.Drawing.Size(298, 132);
+            this.updateSettingsGroupBox.Size = new System.Drawing.Size(298, 156);
             this.updateSettingsGroupBox.TabIndex = 14;
             this.updateSettingsGroupBox.TabStop = false;
             this.updateSettingsGroupBox.Text = "Update Settings";
@@ -590,6 +586,16 @@ namespace SoundSwitch.UI.Forms
             this.muteHotKeyCheckbox.UseVisualStyleBackColor = true;
             this.muteHotKeyCheckbox.CheckedChanged += new System.EventHandler(this.muteHotKeyCheckbox_CheckedChanged);
             // 
+            // telemetryCheckbox
+            // 
+            this.telemetryCheckbox.AutoSize = true;
+            this.telemetryCheckbox.Location = new System.Drawing.Point(7, 130);
+            this.telemetryCheckbox.Name = "telemetryCheckbox";
+            this.telemetryCheckbox.Size = new System.Drawing.Size(77, 19);
+            this.telemetryCheckbox.TabIndex = 22;
+            this.telemetryCheckbox.Text = "Telemetry";
+            this.telemetryCheckbox.UseVisualStyleBackColor = true;
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -668,5 +674,6 @@ namespace SoundSwitch.UI.Forms
         private System.Windows.Forms.Label toggleMuteLabel;
         private Component.HotKeyTextBox muteHotKey;
         private System.Windows.Forms.CheckBox muteHotKeyCheckbox;
+        private System.Windows.Forms.CheckBox telemetryCheckbox;
     }
 }

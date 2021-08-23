@@ -114,6 +114,8 @@ namespace SoundSwitch.Model
         /// </summary>
         IAudioDeviceLister ActiveUnpluggedAudioLister { get; set; }
 
+        bool Telemetry { get; set; }
+
         #endregion
 
         #region Events

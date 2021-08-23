@@ -120,6 +120,16 @@ namespace SoundSwitch.Model
             }
         }
 
+        public bool Telemetry
+        {
+            get => AppConfigs.Configuration.Telemetry;
+            set
+            {
+                AppConfigs.Configuration.Telemetry = value;
+                AppConfigs.Configuration.Save();
+            }
+        }
+
 
         public IEnumerable<DeviceInfo> SelectedDevices => AppConfigs.Configuration.SelectedDevices.OrderBy(info => info.DiscoveredAt);
 

@@ -178,6 +178,8 @@ namespace SoundSwitch.UI.Forms
             muteHotKey.Visible = false;
             muteHotKeyCheckbox.Visible = false;
             toggleMuteLabel.Visible = false;
+            
+            telemetryCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.Telemetry), false, DataSourceUpdateMode.OnPropertyChanged);
 
             PopulateSettings();
 
