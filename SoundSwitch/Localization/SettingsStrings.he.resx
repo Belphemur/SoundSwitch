@@ -193,13 +193,13 @@
     <value>שינויים נשמרים אוטומטית</value>
   </data>
   <data name="close" xml:space="preserve">
-    <value>סגור</value>
+    <value>סגירה</value>
   </data>
   <data name="startWithWindows" xml:space="preserve">
-    <value>התחל אוטומטית עם ווינדוס</value>
+    <value>התחלה אוטומטית עם Windows</value>
   </data>
   <data name="communicationsDevice" xml:space="preserve">
-    <value>בעת החלפה, החלף גם את התקן התקשורת ברירת-מחדל</value>
+    <value>החלפת התקן תקשורת כבררת מחדל</value>
   </data>
   <data name="hotkeys" xml:space="preserve">
     <value>קיצור דרך</value>
@@ -405,5 +405,8 @@
   </data>
   <data name="profile.trigger.trayMenu" xml:space="preserve">
     <value>תפריט אפליקציה</value>
+  </data>
+  <data name="telemetry" xml:space="preserve">
+    <value>מדדים</value>
   </data>
 </root>
