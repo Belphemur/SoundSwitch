@@ -53,7 +53,7 @@ namespace SoundSwitch.Common.Framework.Audio.Collection
                            return found;
                        }
 
-                       if (_byId.TryGetValue(info.NameClean, out found))
+                       if (_byName.TryGetValue(info.NameClean, out found))
                        {
                            return found;
                        }
