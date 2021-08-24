@@ -12,14 +12,14 @@ namespace SoundSwitch.UI.Forms.Components
     {
         public DataContainer CurrentDataContainer { get; }
 
-        public class DataContainer : INotifyPropertyChanged
+        public sealed class DataContainer : INotifyPropertyChanged, IDisposable
         {
             private bool _selected;
             private Image _image;
             private string _label;
             private Icon _icon;
 
-            public bool Selected
+            private bool Selected
             {
                 get => _selected;
                 set
@@ -45,7 +45,7 @@ namespace SoundSwitch.UI.Forms.Components
                 }
             }
 
-            public Icon Icon
+            private Icon Icon
             {
                 get => _icon;
                 set
@@ -92,9 +92,14 @@ namespace SoundSwitch.UI.Forms.Components
             public event PropertyChangedEventHandler PropertyChanged;
 
             [NotifyPropertyChangedInvocator]
-            protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+            private void OnPropertyChanged([CallerMemberName] string propertyName = null)
             {
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
+
+            public void Dispose()
+            {
+                _image?.Dispose();
             }
         }
 
@@ -114,5 +119,6 @@ namespace SoundSwitch.UI.Forms.Components
             deviceName.DataBindings.Add(nameof(Label.Text), CurrentDataContainer, nameof(CurrentDataContainer.Label), false, DataSourceUpdateMode.OnPropertyChanged);
             DataBindings.Add(nameof(BackColor), CurrentDataContainer, nameof(CurrentDataContainer.Color), false, DataSourceUpdateMode.OnPropertyChanged);
         }
+
     }
 }
