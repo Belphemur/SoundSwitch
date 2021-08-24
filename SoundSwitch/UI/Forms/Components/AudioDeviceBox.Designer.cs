@@ -50,7 +50,7 @@ namespace SoundSwitch.UI.Forms.Components
             | System.Windows.Forms.AnchorStyles.Right)));
             this.deviceName.AutoSize = true;
             this.deviceName.ForeColor = System.Drawing.SystemColors.Control;
-            this.deviceName.Location = new System.Drawing.Point(64, 19);
+            this.deviceName.Location = new System.Drawing.Point(64, 17);
             this.deviceName.Name = "deviceName";
             this.deviceName.Size = new System.Drawing.Size(80, 15);
             this.deviceName.TabIndex = 1;
@@ -63,6 +63,7 @@ namespace SoundSwitch.UI.Forms.Components
             this.BackColor = System.Drawing.SystemColors.Desktop;
             this.Controls.Add(this.deviceName);
             this.Controls.Add(this.iconBox);
+            this.Margin = new System.Windows.Forms.Padding(0, 3, 0, 0);
             this.Name = "AudioDeviceBox";
             this.Size = new System.Drawing.Size(278, 54);
             ((System.ComponentModel.ISupportInitialize)(this.iconBox)).EndInit();

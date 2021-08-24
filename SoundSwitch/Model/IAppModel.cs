@@ -39,12 +39,12 @@ namespace SoundSwitch.Model
         /// <summary>
         /// An union between the Active <see cref="IAudioDevice" /> of Windows and <see cref="SelectedPlaybackDevicesList" />
         /// </summary>
-        IEnumerable<DeviceInfo> AvailablePlaybackDevices { get; }
+        IEnumerable<DeviceFullInfo> AvailablePlaybackDevices { get; }
 
         /// <summary>
         /// An union between the Active <see cref="IAudioDevice" /> of Windows and <see cref="SelectedRecordingDevicesList" />
         /// </summary>
-        IEnumerable<DeviceInfo> AvailableRecordingDevices { get; }
+        IEnumerable<DeviceFullInfo> AvailableRecordingDevices { get; }
 
         /// <summary>
         /// If the Playback device need also to be set for Communications.
