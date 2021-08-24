@@ -19,7 +19,7 @@ namespace SoundSwitch.UI.Forms
             get
             {
                 CreateParams p = base.CreateParams;
-                p.ExStyle |= 0x08000000; // WS_EX_NOACTIVATE
+               // p.ExStyle |= 0x08000000; // WS_EX_NOACTIVATE
                 p.ExStyle |= 0x00000008; // WS_EX_TOPMOST
                 return p;
             }
