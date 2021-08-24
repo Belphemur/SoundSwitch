@@ -1,7 +1,7 @@
 ﻿
 namespace SoundSwitch.UI.Forms.Components
 {
-    partial class AudioDeviceBox
+    partial class IconMenuItem
     {
         /// <summary> 
         /// Required designer variable.
@@ -49,10 +49,11 @@ namespace SoundSwitch.UI.Forms.Components
             this.deviceName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.deviceName.AutoSize = true;
+            this.deviceName.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.deviceName.ForeColor = System.Drawing.SystemColors.Control;
-            this.deviceName.Location = new System.Drawing.Point(64, 19);
+            this.deviceName.Location = new System.Drawing.Point(57, 17);
             this.deviceName.Name = "deviceName";
-            this.deviceName.Size = new System.Drawing.Size(80, 15);
+            this.deviceName.Size = new System.Drawing.Size(106, 20);
             this.deviceName.TabIndex = 1;
             this.deviceName.Text = "Speaker (USB)";
             // 
@@ -64,8 +65,8 @@ namespace SoundSwitch.UI.Forms.Components
             this.Controls.Add(this.deviceName);
             this.Controls.Add(this.iconBox);
             this.Margin = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.Name = "AudioDeviceBox";
-            this.Size = new System.Drawing.Size(278, 54);
+            this.Name = "IconMenuItem";
+            this.Size = new System.Drawing.Size(295, 54);
             ((System.ComponentModel.ISupportInitialize)(this.iconBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
