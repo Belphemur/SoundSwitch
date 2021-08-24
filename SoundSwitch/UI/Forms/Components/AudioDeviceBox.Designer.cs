@@ -38,9 +38,9 @@ namespace SoundSwitch.UI.Forms.Components
             // 
             this.iconBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.iconBox.Location = new System.Drawing.Point(3, 3);
+            this.iconBox.Location = new System.Drawing.Point(12, 12);
             this.iconBox.Name = "iconBox";
-            this.iconBox.Size = new System.Drawing.Size(48, 48);
+            this.iconBox.Size = new System.Drawing.Size(32, 32);
             this.iconBox.TabIndex = 0;
             this.iconBox.TabStop = false;
             // 
@@ -50,7 +50,7 @@ namespace SoundSwitch.UI.Forms.Components
             | System.Windows.Forms.AnchorStyles.Right)));
             this.deviceName.AutoSize = true;
             this.deviceName.ForeColor = System.Drawing.SystemColors.Control;
-            this.deviceName.Location = new System.Drawing.Point(64, 17);
+            this.deviceName.Location = new System.Drawing.Point(64, 19);
             this.deviceName.Name = "deviceName";
             this.deviceName.Size = new System.Drawing.Size(80, 15);
             this.deviceName.TabIndex = 1;
