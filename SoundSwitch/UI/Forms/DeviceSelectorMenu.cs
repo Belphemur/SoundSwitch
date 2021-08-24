@@ -26,10 +26,9 @@ namespace SoundSwitch.UI.Forms
         public DeviceSelectorMenu()
         {
             InitializeComponent();
-            SetLocationToCursor();
         }
 
-        public void SetData(IEnumerable<AudioDeviceBox.Payload> payloads)
+        public void SetData(IEnumerable<AudioDeviceBox.Data> payloads)
         {
             Hide();
             SetLocationToCursor();

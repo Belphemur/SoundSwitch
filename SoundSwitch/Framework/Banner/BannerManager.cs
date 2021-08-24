@@ -48,7 +48,7 @@ namespace SoundSwitch.Framework.Banner
                     menu.Disposed += (sender, args) => menu = null;
                 }
 
-                menu.SetData(AppModel.Instance.AvailablePlaybackDevices.Select(info => new AudioDeviceBox.Payload(info.LargeIcon.ToBitmap(), info.NameClean, defaultDevice.Id == info.Id)));
+                menu.SetData(AppModel.Instance.AvailablePlaybackDevices.Select(info => new AudioDeviceBox.Data(info.LargeIcon.ToBitmap(), info.NameClean, defaultDevice.Id == info.Id)));
                 if (banner == null)
                 {
                     banner = new BannerForm();
