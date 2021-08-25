@@ -112,4 +112,16 @@
   <data name="icons" xml:space="preserve">
     <value>Ikoner</value>
   </data>
+  <data name="keyboardHotkeys" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="author" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="defaultPlaybackDeviceChange" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="credits" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
