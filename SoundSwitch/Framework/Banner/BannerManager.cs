@@ -13,13 +13,6 @@
 ********************************************************************/
 
 using System;
-using System.Linq;
-using SoundSwitch.Audio.Manager;
-using SoundSwitch.Audio.Manager.Interop.Enum;
-using SoundSwitch.Common.Framework.Audio.Device;
-using SoundSwitch.Model;
-using SoundSwitch.UI.Menu.Component;
-using SoundSwitch.UI.Menu.Form;
 
 namespace SoundSwitch.Framework.Banner
 {
@@ -30,7 +23,6 @@ namespace SoundSwitch.Framework.Banner
     {
         private static System.Threading.SynchronizationContext syncContext;
         private static BannerForm banner;
-        private static QuickMenu<DeviceFullInfo> menu;
 
         /// <summary>
         /// Show a banner notification with the given data
@@ -38,23 +30,9 @@ namespace SoundSwitch.Framework.Banner
         /// <param name="data"></param>
         public void ShowNotification(BannerData data)
         {
-            var defaultDevice = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eConsole);
-
             // Execute the banner in the context of the UI thread
             syncContext.Post((d) =>
             {
-                if (menu == null)
-                {
-                    menu = new QuickMenu<DeviceFullInfo>();
-                    menu.Disposed += (sender, args) => menu = null;
-                }
-
-                menu.SetData(AppModel.Instance.AvailablePlaybackDevices.Select(info => new IconMenuItem<DeviceFullInfo>.DataContainer(info.LargeIcon, info.NameClean, defaultDevice.Id == info.Id, info.Id, info)));
-                menu.ItemClicked += (sender, @event) =>
-                {
-                    var payload = @event.Item.Payload;
-                    AudioSwitcher.Instance.SwitchTo(payload.Id, ERole.eConsole);
-                };
                 if (banner == null)
                 {
                     banner = new BannerForm();

@@ -17,6 +17,7 @@ namespace SoundSwitch.UI.Menu.Form
         private readonly DebounceDispatcher _debounce = new();
         private bool _hiding = false;
         private readonly MethodInvoker _hideDisposeMethod;
+        private readonly TimeSpan _menuTimeOut = TimeSpan.FromSeconds(2);
 
         [Browsable(true)]
         public event EventHandler<MenuClickedEvent> ItemClicked;
@@ -51,10 +52,8 @@ namespace SoundSwitch.UI.Menu.Form
 
         public void SetData(IEnumerable<IconMenuItem<T>.DataContainer> payloads)
         {
-            _hiding = false;
-            _debounce.Debounce<object>(TimeSpan.FromMilliseconds(1500), _ => BeginInvoke(_hideDisposeMethod));
-            ResetOpacity();
-
+            DebounceHiding();
+            
             var payloadsArray = payloads.ToArray();
             var newPayloads = payloadsArray.ToDictionary(container => container.Id);
             var toRemove = _currentPayloads.Keys.Except(newPayloads.Keys);
@@ -100,8 +99,16 @@ namespace SoundSwitch.UI.Menu.Form
             }
         }
 
+        private void DebounceHiding()
+        {
+            _hiding = false;
+            _debounce.Debounce<object>(_menuTimeOut, _ => BeginInvoke(_hideDisposeMethod));
+            ResetOpacity();
+        }
+
         private void OnItemClicked(IconMenuItem<T> control)
         {
+            DebounceHiding();
             var dataContainer = control.CurrentDataContainer;
             ItemClicked?.Invoke(control, new MenuClickedEvent(dataContainer));
 

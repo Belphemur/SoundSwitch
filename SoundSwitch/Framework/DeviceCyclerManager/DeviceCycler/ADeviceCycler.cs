@@ -19,6 +19,8 @@ using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Framework.QuickMenu;
+using SoundSwitch.Framework.QuickMenu.Model;
 using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
@@ -35,11 +37,19 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         public bool CycleAudioDevice(DataFlow type)
         {
             var audioDevices = GetDevices(type).ToArray();
+
+            bool CycleDevice()
+            {
+                var nextDevice = GetNextDevice(audioDevices, type);
+                QuickMenuManager.Instance.DisplayMenu(audioDevices.Select(info => new DeviceDataContainer(info, info.Id == nextDevice.Id)), @event => SetActiveDevice(@event.Item.Payload));
+                return SetActiveDevice(nextDevice);
+            }
+
             return audioDevices switch
             {
                 { Length: 0 } => throw new AppModel.NoDevicesException(),
                 { Length: 1 } => false,
-                _             => SetActiveDevice(GetNextDevice(audioDevices, type))
+                _             => CycleDevice()
             };
         }
 
