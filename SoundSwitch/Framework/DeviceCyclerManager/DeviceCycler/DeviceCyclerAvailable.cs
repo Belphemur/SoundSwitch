@@ -13,8 +13,9 @@
 ********************************************************************/
 
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using NAudio.CoreAudioApi;
+using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
 
@@ -25,24 +26,13 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         public override DeviceCyclerTypeEnum TypeEnum => DeviceCyclerTypeEnum.Available;
         public override string Label => SettingsStrings.cycleThroughOptionOnlySelectedAudioDevices;
 
-        /// <summary>
-        /// Cycle the audio device for the given type
-        /// </summary>
-        /// <param name="type"></param>
-        public override bool CycleAudioDevice(DataFlow type)
+        protected override IEnumerable<DeviceInfo> GetDevices(DataFlow type)
         {
-            var audioDevices = (type switch
+            return type switch
             {
                 DataFlow.Render  => AppModel.Instance.AvailablePlaybackDevices,
                 DataFlow.Capture => AppModel.Instance.AvailableRecordingDevices,
                 _                => throw new ArgumentOutOfRangeException(nameof(type), type, null)
-            }).ToArray();
-
-            return audioDevices switch
-            {
-                {Length: 0} => throw new AppModel.NoDevicesException(),
-                {Length: 1} => false,
-                _           => SetActiveDevice(GetNextDevice(audioDevices, type))
             };
         }
     }

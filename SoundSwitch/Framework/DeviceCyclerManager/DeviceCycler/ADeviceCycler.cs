@@ -32,7 +32,18 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         /// Cycle the audio device for the given type
         /// </summary>
         /// <param name="type"></param>
-        public abstract bool CycleAudioDevice(DataFlow type);
+        public bool CycleAudioDevice(DataFlow type)
+        {
+            var audioDevices = GetDevices(type).ToArray();
+            return audioDevices switch
+            {
+                { Length: 0 } => throw new AppModel.NoDevicesException(),
+                { Length: 1 } => false,
+                _             => SetActiveDevice(GetNextDevice(audioDevices, type))
+            };
+        }
+
+        protected abstract IEnumerable<DeviceInfo> GetDevices(DataFlow type);
 
         /// <summary>
         /// Get the next device that need to be set as Default
