@@ -294,6 +294,7 @@ namespace SoundSwitch.UI.Forms
 
         private void LocalizeForm()
         {
+            RightToLeft = new LanguageFactory().Get(AppModel.Instance.Language).IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
             // TabPages
             playbackTabPage.Text = SettingsStrings.playback;
             playbackListView.Groups[0].Header = SettingsStrings.selected;

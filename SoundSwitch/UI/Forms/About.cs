@@ -13,9 +13,10 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System.Diagnostics;
 using System.Windows.Forms;
 using SoundSwitch.Localization;
+using SoundSwitch.Localization.Factory;
+using SoundSwitch.Model;
 using SoundSwitch.Properties;
 using SoundSwitch.Util.Url;
 
@@ -27,6 +28,7 @@ namespace SoundSwitch.UI.Forms
 
         public About()
         {
+            RightToLeft = new LanguageFactory().Get(AppModel.Instance.Language).IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
             InitializeComponent();
             Icon = helpIcon;
         }

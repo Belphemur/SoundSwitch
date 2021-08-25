@@ -19,6 +19,8 @@ using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.Updater.Installer;
 using SoundSwitch.Framework.Updater.Remind;
 using SoundSwitch.Localization;
+using SoundSwitch.Localization.Factory;
+using SoundSwitch.Model;
 using SoundSwitch.Properties;
 using SoundSwitch.UI.Component;
 
@@ -32,6 +34,8 @@ namespace SoundSwitch.UI.Forms
 
         public UpdateDownloadForm()
         {
+            RightToLeft = new LanguageFactory().Get(AppModel.Instance.Language).IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
+
             InitializeComponent();
             Icon = Resources.UpdateIcon;
 

@@ -7,6 +7,7 @@ namespace SoundSwitch.Localization.Factory.Lang
         public abstract Language TypeEnum { get; }
         public string Label => CultureInfo.NativeName;
         public abstract CultureInfo CultureInfo { get; }
+        public virtual bool IsRightToLeft { get; }
     }
 
     public class EnglishLang : BaseLang
@@ -179,6 +180,8 @@ namespace SoundSwitch.Localization.Factory.Lang
         public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("he");
 
         public override Language TypeEnum => Language.Hebrew;
+
+        public override bool IsRightToLeft => true;
     }
 
     public class Czech : BaseLang
@@ -208,6 +211,7 @@ namespace SoundSwitch.Localization.Factory.Lang
         public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("ar");
 
         public override Language TypeEnum => Language.Arabic;
+        public override bool IsRightToLeft => true;
     }
     
 }
