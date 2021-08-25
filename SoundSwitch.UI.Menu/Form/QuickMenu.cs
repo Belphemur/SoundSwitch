@@ -53,12 +53,14 @@ namespace SoundSwitch.UI.Menu.Form
         public void SetData(IEnumerable<IconMenuItem<T>.DataContainer> payloads)
         {
             DebounceHiding();
-            
-            var payloadsArray = payloads.ToArray();
-            var newPayloads = payloadsArray.ToDictionary(container => container.Id);
-            var toRemove = _currentPayloads.Keys.Except(newPayloads.Keys);
-            var toAdd = newPayloads.Keys.Except(_currentPayloads.Keys);
-            var toModify = _currentPayloads.Keys.Intersect(newPayloads.Keys);
+
+            //We want to keep the order of the payload
+            var originalOrderPayloads = payloads.ToArray();
+            var newPayloadsById = originalOrderPayloads.ToDictionary(container => container.Id);
+
+            var toRemove = _currentPayloads.Keys.Except(newPayloadsById.Keys);
+            var toAdd = newPayloadsById.Keys.Except(_currentPayloads.Keys);
+            var toModify = _currentPayloads.Keys.Intersect(newPayloadsById.Keys);
 
             var needRearrange = false;
 
@@ -71,13 +73,13 @@ namespace SoundSwitch.UI.Menu.Form
 
             foreach (var key in toModify)
             {
-                _currentPayloads[key].OverrideMetadata(newPayloads[key]);
+                _currentPayloads[key].OverrideMetadata(newPayloadsById[key]);
             }
 
 
             foreach (var key in toAdd)
             {
-                var payload = newPayloads[key];
+                var payload = newPayloadsById[key];
                 var control = new IconMenuItem<T>(payload);
                 control.Click += (_, _) => OnItemClicked(control);
                 Controls.Add(control);
@@ -88,7 +90,7 @@ namespace SoundSwitch.UI.Menu.Form
             if (needRearrange)
             {
                 var top = 5;
-                foreach (var payload in payloadsArray)
+                foreach (var payload in originalOrderPayloads)
                 {
                     var control = Controls[payload.Id];
                     control.Top = top;
