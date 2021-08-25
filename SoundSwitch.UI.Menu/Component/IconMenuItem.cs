@@ -103,6 +103,7 @@ namespace SoundSwitch.UI.Menu.Component
             public void Dispose()
             {
                 _image?.Dispose();
+                GC.SuppressFinalize(this);
             }
         }
 
