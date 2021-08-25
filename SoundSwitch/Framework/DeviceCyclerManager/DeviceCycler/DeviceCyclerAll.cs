@@ -27,7 +27,7 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         public override string Label => SettingsStrings.cycleThroughOptionAllAudioDevices;
         
 
-        protected override IEnumerable<DeviceInfo> GetDevices(DataFlow type)
+        protected override IEnumerable<DeviceFullInfo> GetDevices(DataFlow type)
         {
             return type switch
             {

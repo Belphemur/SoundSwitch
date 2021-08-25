@@ -43,7 +43,7 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
             };
         }
 
-        protected abstract IEnumerable<DeviceInfo> GetDevices(DataFlow type);
+        protected abstract IEnumerable<DeviceFullInfo> GetDevices(DataFlow type);
 
         /// <summary>
         /// Get the next device that need to be set as Default

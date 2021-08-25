@@ -12,14 +12,14 @@ namespace SoundSwitch.UI.Menu.Component
     {
         public DataContainer CurrentDataContainer { get; }
 
-        public sealed class DataContainer : INotifyPropertyChanged, IDisposable
+        public class DataContainer : INotifyPropertyChanged, IDisposable
         {
             private bool _selected;
             private Image _image;
             private string _label;
             private Icon _icon;
 
-            private bool Selected
+            public bool Selected
             {
                 get => _selected;
                 set

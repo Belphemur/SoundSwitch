@@ -21,6 +21,9 @@ namespace SoundSwitch.UI.Menu.Form
         [Browsable(true)]
         public event EventHandler<MenuClickedEvent> ItemClicked;
 
+        [Browsable(true)]
+        public event EventHandler<MenuClickedEvent> SelectionChanged;
+
         protected override bool ShowWithoutActivation => true;
 
         /// <summary>
@@ -77,7 +80,7 @@ namespace SoundSwitch.UI.Menu.Form
             {
                 var payload = newPayloads[key];
                 var control = new IconMenuItem<T>(payload);
-                control.Click += (_, _) => ItemClicked?.Invoke(control, new MenuClickedEvent(control.CurrentDataContainer));
+                control.Click += (_, _) => OnItemClicked(control);
                 Controls.Add(control);
                 _currentPayloads.Add(payload.Id, payload);
                 needRearrange = true;
@@ -95,6 +98,22 @@ namespace SoundSwitch.UI.Menu.Form
 
                 Height = 0;
             }
+        }
+
+        private void OnItemClicked(IconMenuItem<T> control)
+        {
+            var dataContainer = control.CurrentDataContainer;
+            ItemClicked?.Invoke(control, new MenuClickedEvent(dataContainer));
+
+            if (dataContainer.Selected)
+                return;
+
+            foreach (var payload in _currentPayloads.Values)
+            {
+                payload.Selected = payload.Id == dataContainer.Id;
+            }
+
+            SelectionChanged?.Invoke(control, new MenuClickedEvent(dataContainer));
         }
 
         private void HideDispose()

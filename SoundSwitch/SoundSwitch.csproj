@@ -118,9 +118,6 @@
             <LastGenOutput>Resources.Designer.cs</LastGenOutput>
         </EmbeddedResource>
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="UI\Forms\Components" />
-    </ItemGroup>
     <PropertyGroup>
         <ApplicationIcon>Resources\Switch-SoundWave.ico</ApplicationIcon>
         <ApplicationManifest>app.manifest</ApplicationManifest>
