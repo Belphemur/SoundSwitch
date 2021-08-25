@@ -24,6 +24,11 @@ namespace SoundSwitch.UI.Menu.Component
                 get => _selected;
                 set
                 {
+                    if (value == _selected)
+                    {
+                        return;
+                    }
+
                     _selected = value;
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(Color));
@@ -40,6 +45,11 @@ namespace SoundSwitch.UI.Menu.Component
                 get => _label;
                 set
                 {
+                    if (value == _label)
+                    {
+                        return;
+                    }
+
                     _label = value;
                     OnPropertyChanged();
                 }
@@ -50,6 +60,11 @@ namespace SoundSwitch.UI.Menu.Component
                 get => _icon;
                 set
                 {
+                    if (value == _icon)
+                    {
+                        return;
+                    }
+
                     _icon = value;
                     OnPropertyChanged();
                     var oldImage = _image;
@@ -84,12 +99,9 @@ namespace SoundSwitch.UI.Menu.Component
                     throw new ArgumentException(@"Need to have the same ID", nameof(dataContainer));
                 }
 
-                if (Selected != dataContainer.Selected)
-                    Selected = dataContainer.Selected;
-                if (Icon != dataContainer.Icon)
-                    Icon = dataContainer.Icon;
-                if (Label != dataContainer.Label)
-                    Label = dataContainer.Label;
+                Selected = dataContainer.Selected;
+                Icon = dataContainer.Icon;
+                Label = dataContainer.Label;
             }
 
             public event PropertyChangedEventHandler? PropertyChanged;
