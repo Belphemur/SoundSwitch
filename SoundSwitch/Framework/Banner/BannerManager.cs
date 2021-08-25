@@ -16,6 +16,7 @@ using System;
 using System.Linq;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
+using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Model;
 using SoundSwitch.UI.Forms;
 using SoundSwitch.UI.Forms.Components;
@@ -29,7 +30,7 @@ namespace SoundSwitch.Framework.Banner
     {
         private static System.Threading.SynchronizationContext syncContext;
         private static BannerForm banner;
-        private static DeviceSelectorMenu menu;
+        private static DeviceSelectorMenu<DeviceFullInfo> menu;
 
         /// <summary>
         /// Show a banner notification with the given data
@@ -44,11 +45,16 @@ namespace SoundSwitch.Framework.Banner
             {
                 if (menu == null)
                 {
-                    menu = new DeviceSelectorMenu();
+                    menu = new DeviceSelectorMenu<DeviceFullInfo>();
                     menu.Disposed += (sender, args) => menu = null;
                 }
 
-                menu.SetData(AppModel.Instance.AvailablePlaybackDevices.Select(info => new IconMenuItem.DataContainer(info.LargeIcon, info.NameClean, defaultDevice.Id == info.Id, info.Id)));
+                menu.SetData(AppModel.Instance.AvailablePlaybackDevices.Select(info => new IconMenuItem<DeviceFullInfo>.DataContainer(info.LargeIcon, info.NameClean, defaultDevice.Id == info.Id, info.Id, info)));
+                menu.ItemClicked += (sender, @event) =>
+                {
+                    var payload = @event.Item.Payload;
+                    AudioSwitcher.Instance.SwitchTo(payload.Id, ERole.eConsole);
+                };
                 if (banner == null)
                 {
                     banner = new BannerForm();

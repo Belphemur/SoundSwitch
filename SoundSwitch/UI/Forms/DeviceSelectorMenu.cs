@@ -9,11 +9,11 @@ using SoundSwitch.Util.Timer;
 
 namespace SoundSwitch.UI.Forms
 {
-    public partial class DeviceSelectorMenu : Form
+    public partial class DeviceSelectorMenu<T> : Form
     {
-        public record MenuClickedEvent(IconMenuItem.DataContainer Item);
+        public record MenuClickedEvent(IconMenuItem<T>.DataContainer Item);
 
-        private readonly Dictionary<string, IconMenuItem.DataContainer> _currentPayloads = new();
+        private readonly Dictionary<string, IconMenuItem<T>.DataContainer> _currentPayloads = new();
         private readonly DebounceDispatcher _debounce = new();
         private bool _hiding = false;
         private readonly MethodInvoker _hideDisposeMethod;
@@ -42,9 +42,11 @@ namespace SoundSwitch.UI.Forms
         {
             InitializeComponent();
             _hideDisposeMethod = HideDispose;
+            Show();
+            SetLocationToCursor();
         }
 
-        public void SetData(IEnumerable<IconMenuItem.DataContainer> payloads)
+        public void SetData(IEnumerable<IconMenuItem<T>.DataContainer> payloads)
         {
             _hiding = false;
             _debounce.Debounce<object>(TimeSpan.FromMilliseconds(1500), _ => BeginInvoke(_hideDisposeMethod));
@@ -74,7 +76,7 @@ namespace SoundSwitch.UI.Forms
             foreach (var key in toAdd)
             {
                 var payload = newPayloads[key];
-                var control = new IconMenuItem(payload);
+                var control = new IconMenuItem<T>(payload);
                 control.Click += (_, _) => ItemClicked?.Invoke(control, new MenuClickedEvent(control.CurrentDataContainer));
                 Controls.Add(control);
                 _currentPayloads.Add(payload.Id, payload);
@@ -93,9 +95,6 @@ namespace SoundSwitch.UI.Forms
 
                 Height = 0;
             }
-
-            Show();
-            SetLocationToCursor();
         }
 
         private void HideDispose()

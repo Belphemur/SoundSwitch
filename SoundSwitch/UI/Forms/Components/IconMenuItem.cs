@@ -8,7 +8,7 @@ using SoundSwitch.Util;
 
 namespace SoundSwitch.UI.Forms.Components
 {
-    public partial class IconMenuItem : UserControl
+    public partial class IconMenuItem<T> : UserControl
     {
         public DataContainer CurrentDataContainer { get; }
 
@@ -59,15 +59,18 @@ namespace SoundSwitch.UI.Forms.Components
                 }
             }
 
+            public T Payload { get;}
+
             public string Id { get; }
             public Color Color => Selected ? Color.RoyalBlue.WithOpacity(0x80) : Color.Black.WithOpacity(0x70);
 
-            public DataContainer(Icon icon, string label, bool selected, string id)
+            public DataContainer(Icon icon, string label, bool selected, string id, T payload)
             {
                 Selected = selected;
                 Icon = icon;
                 Label = label;
                 Id = id;
+                Payload = payload;
             }
 
             /// <summary>
@@ -78,7 +81,7 @@ namespace SoundSwitch.UI.Forms.Components
             {
                 if (dataContainer.Id != Id)
                 {
-                    throw new ArgumentException("Need to have the same ID", nameof(dataContainer));
+                    throw new ArgumentException(@"Need to have the same ID", nameof(dataContainer));
                 }
 
                 if (Selected != dataContainer.Selected)

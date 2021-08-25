@@ -1,7 +1,7 @@
 ﻿
 namespace SoundSwitch.UI.Forms.Components
 {
-    partial class IconMenuItem
+    partial class IconMenuItem<T>
     {
         /// <summary> 
         /// Required designer variable.

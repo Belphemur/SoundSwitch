@@ -1,7 +1,7 @@
 ﻿
 namespace SoundSwitch.UI.Forms
 {
-    partial class DeviceSelectorMenu
+    partial class DeviceSelectorMenu<T>
     {
         /// <summary>
         /// Required designer variable.
