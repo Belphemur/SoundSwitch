@@ -51,7 +51,7 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         /// <param name="audioDevices"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        protected DeviceInfo GetNextDevice(IEnumerable<DeviceInfo> audioDevices, DataFlow type)
+        private DeviceInfo GetNextDevice(IEnumerable<DeviceInfo> audioDevices, DataFlow type)
         {
             var deviceInfos = audioDevices as DeviceInfo[] ?? audioDevices.ToArray();
             var defaultDev = AudioSwitcher.Instance.GetDefaultAudioEndpoint((EDataFlow) type, ERole.eConsole) ?? deviceInfos.Last();

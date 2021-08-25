@@ -1,7 +1,7 @@
 ﻿
-namespace SoundSwitch.UI.Forms
+namespace SoundSwitch.UI.Menu.Form
 {
-    partial class DeviceSelectorMenu<T>
+    partial class QuickMenu<T>
     {
         /// <summary>
         /// Required designer variable.
@@ -43,7 +43,7 @@ namespace SoundSwitch.UI.Forms
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "DeviceSelectorMenu";
+            this.Name = "QuickMenu";
             this.Padding = new System.Windows.Forms.Padding(0, 5, 0, 5);
             this.ShowIcon = false;
             this.ShowInTaskbar = false;

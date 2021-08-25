@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace SoundSwitch.Util
+namespace SoundSwitch.UI.Menu.Util
 {
     public static class ColorExtensions
     {

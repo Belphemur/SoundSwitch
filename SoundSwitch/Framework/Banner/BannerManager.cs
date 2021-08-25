@@ -18,8 +18,8 @@ using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Model;
-using SoundSwitch.UI.Forms;
-using SoundSwitch.UI.Forms.Components;
+using SoundSwitch.UI.Menu.Component;
+using SoundSwitch.UI.Menu.Form;
 
 namespace SoundSwitch.Framework.Banner
 {
@@ -30,7 +30,7 @@ namespace SoundSwitch.Framework.Banner
     {
         private static System.Threading.SynchronizationContext syncContext;
         private static BannerForm banner;
-        private static DeviceSelectorMenu<DeviceFullInfo> menu;
+        private static QuickMenu<DeviceFullInfo> menu;
 
         /// <summary>
         /// Show a banner notification with the given data
@@ -45,7 +45,7 @@ namespace SoundSwitch.Framework.Banner
             {
                 if (menu == null)
                 {
-                    menu = new DeviceSelectorMenu<DeviceFullInfo>();
+                    menu = new QuickMenu<DeviceFullInfo>();
                     menu.Disposed += (sender, args) => menu = null;
                 }
 

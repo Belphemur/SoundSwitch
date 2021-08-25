@@ -4,12 +4,12 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using SoundSwitch.UI.Forms.Components;
-using SoundSwitch.Util.Timer;
+using SoundSwitch.UI.Menu.Component;
+using SoundSwitch.UI.Menu.Util.Timer;
 
-namespace SoundSwitch.UI.Forms
+namespace SoundSwitch.UI.Menu.Form
 {
-    public partial class DeviceSelectorMenu<T> : Form
+    public partial class QuickMenu<T> : System.Windows.Forms.Form
     {
         public record MenuClickedEvent(IconMenuItem<T>.DataContainer Item);
 
@@ -38,7 +38,7 @@ namespace SoundSwitch.UI.Forms
             }
         }
 
-        public DeviceSelectorMenu()
+        public QuickMenu()
         {
             InitializeComponent();
             _hideDisposeMethod = HideDispose;

@@ -4,9 +4,9 @@ using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using JetBrains.Annotations;
-using SoundSwitch.Util;
+using SoundSwitch.UI.Menu.Util;
 
-namespace SoundSwitch.UI.Forms.Components
+namespace SoundSwitch.UI.Menu.Component
 {
     public partial class IconMenuItem<T> : UserControl
     {
