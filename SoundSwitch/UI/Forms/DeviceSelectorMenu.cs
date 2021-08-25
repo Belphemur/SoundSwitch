@@ -1,13 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using SoundSwitch.UI.Forms.Components;
+using SoundSwitch.Util.Timer;
 
 namespace SoundSwitch.UI.Forms
 {
     public partial class DeviceSelectorMenu : Form
     {
         private readonly Dictionary<string, IconMenuItem.DataContainer> _currentPayloads = new();
+        private readonly DebounceDispatcher _debounce = new();
+        private bool _hiding = false;
+        private readonly MethodInvoker _deleteMethod;
         protected override bool ShowWithoutActivation => true;
 
         /// <summary>
@@ -19,7 +25,7 @@ namespace SoundSwitch.UI.Forms
             get
             {
                 CreateParams p = base.CreateParams;
-               // p.ExStyle |= 0x08000000; // WS_EX_NOACTIVATE
+                // p.ExStyle |= 0x08000000; // WS_EX_NOACTIVATE
                 p.ExStyle |= 0x00000008; // WS_EX_TOPMOST
                 return p;
             }
@@ -28,10 +34,16 @@ namespace SoundSwitch.UI.Forms
         public DeviceSelectorMenu()
         {
             InitializeComponent();
+            ResetOpacity();
+            _deleteMethod = Delete;
         }
 
         public void SetData(IEnumerable<IconMenuItem.DataContainer> payloads)
         {
+            _hiding = false;
+            _debounce.Debounce<object>(TimeSpan.FromMilliseconds(1500), _ => BeginInvoke(_deleteMethod));
+            ResetOpacity();
+
             var payloadsArray = payloads.ToArray();
             var newPayloads = payloadsArray.ToDictionary(container => container.Id);
             var toRemove = _currentPayloads.Keys.Except(newPayloads.Keys);
@@ -77,6 +89,27 @@ namespace SoundSwitch.UI.Forms
 
             Show();
             SetLocationToCursor();
+        }
+
+        private void Delete()
+        {
+            _hiding = true;
+            while (Opacity > 0.0)
+            {
+                Thread.Sleep(50);
+
+                if (!_hiding)
+                    break;
+                Opacity -= 0.05;
+            }
+
+            Hide();
+            Dispose();
+        }
+
+        private void ResetOpacity()
+        {
+            Opacity = 0.7D;
         }
 
         private void SetLocationToCursor()

@@ -44,7 +44,6 @@ namespace SoundSwitch.UI.Forms
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "DeviceSelectorMenu";
-            this.Opacity = 0.7D;
             this.Padding = new System.Windows.Forms.Padding(0, 5, 0, 5);
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
