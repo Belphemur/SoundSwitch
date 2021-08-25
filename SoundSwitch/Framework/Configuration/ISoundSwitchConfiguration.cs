@@ -84,5 +84,10 @@ namespace SoundSwitch.Framework.Configuration
         /// Is telemetry enabled
         /// </summary>
         bool Telemetry { get; set; }
+
+        /// <summary>
+        /// Is the quick menu showed when using a hotkey
+        /// </summary>
+        bool QuickMenuEnabled { get; set; }
     }
 }

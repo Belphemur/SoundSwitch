@@ -892,6 +892,24 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Quick Menu on hotkey.
+        /// </summary>
+        internal static string quickMenu {
+            get {
+                return ResourceManager.GetString("quickMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show a quick menu like Windows language when using a hotkey.
+        /// </summary>
+        internal static string quickMenu_desc {
+            get {
+                return ResourceManager.GetString("quickMenu.desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recording.
         /// </summary>
         internal static string recording {

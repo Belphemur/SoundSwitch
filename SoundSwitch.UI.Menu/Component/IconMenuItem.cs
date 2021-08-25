@@ -15,7 +15,7 @@ namespace SoundSwitch.UI.Menu.Component
         public class DataContainer : INotifyPropertyChanged, IDisposable
         {
             private bool _selected;
-            private Image _image;
+            private Image? _image;
             private string _label;
             private Icon _icon;
 
@@ -92,10 +92,10 @@ namespace SoundSwitch.UI.Menu.Component
                     Label = dataContainer.Label;
             }
 
-            public event PropertyChangedEventHandler PropertyChanged;
+            public event PropertyChangedEventHandler? PropertyChanged;
 
             [NotifyPropertyChangedInvocator]
-            private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+            private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
             {
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
@@ -103,6 +103,7 @@ namespace SoundSwitch.UI.Menu.Component
             public void Dispose()
             {
                 _image?.Dispose();
+                _image = null;
                 GC.SuppressFinalize(this);
             }
         }
@@ -147,8 +148,11 @@ namespace SoundSwitch.UI.Menu.Component
 
         private void AutoResizeLabel(object? sender, EventArgs e)
         {
-            Label lbl = (Label)sender;
-            if (lbl.Image != null) return;
+            if (sender is not Label lbl)
+                return;
+            if (lbl.Image != null)
+                return;
+
             using Graphics cg = lbl.CreateGraphics();
             var labelSize = new SizeF(lbl.Width, lbl.Height);
             var textSize = cg.MeasureString(lbl.Text, lbl.Font, labelSize);

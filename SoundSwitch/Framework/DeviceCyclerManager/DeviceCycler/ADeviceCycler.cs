@@ -19,9 +19,9 @@ using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
-using SoundSwitch.Framework.QuickMenu;
 using SoundSwitch.Framework.QuickMenu.Model;
 using SoundSwitch.Model;
+using SoundSwitch.UI.Menu;
 
 namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
 {
@@ -41,7 +41,11 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
             bool CycleDevice()
             {
                 var nextDevice = GetNextDevice(audioDevices, type);
-                QuickMenuManager.Instance.DisplayMenu(audioDevices.Select(info => new DeviceDataContainer(info, info.Id == nextDevice.Id)), @event => SetActiveDevice(@event.Item.Payload));
+                if (AppModel.Instance.QuickMenuEnabled)
+                {
+                    QuickMenuManager<DeviceFullInfo>.Instance.DisplayMenu(audioDevices.Select(info => new DeviceDataContainer(info, info.Id == nextDevice.Id)), @event => SetActiveDevice(@event.Item.Payload));
+                }
+
                 return SetActiveDevice(nextDevice);
             }
 
@@ -61,11 +65,10 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         /// <param name="audioDevices"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        private DeviceInfo GetNextDevice(IEnumerable<DeviceInfo> audioDevices, DataFlow type)
+        private DeviceInfo GetNextDevice(DeviceInfo[] audioDevices, DataFlow type)
         {
-            var deviceInfos = audioDevices as DeviceInfo[] ?? audioDevices.ToArray();
-            var defaultDev = AudioSwitcher.Instance.GetDefaultAudioEndpoint((EDataFlow) type, ERole.eConsole) ?? deviceInfos.Last();
-            var next = deviceInfos.SkipWhile((device, _) => device.Id != defaultDev.Id).Skip(1).FirstOrDefault() ?? deviceInfos[0];
+            var defaultDev = AudioSwitcher.Instance.GetDefaultAudioEndpoint((EDataFlow) type, ERole.eConsole) ?? audioDevices.Last();
+            var next = audioDevices.SkipWhile((device, _) => device.Id != defaultDev.Id).Skip(1).FirstOrDefault() ?? audioDevices[0];
             return next;
         }
 
