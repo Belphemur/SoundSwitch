@@ -448,4 +448,10 @@ Restaurer l'état du système quand l'application est fermée.</value>
   <data name="telemetry" xml:space="preserve">
 	  <value>Télémétrie</value>
   </data>
+  <data name="quickMenu" xml:space="preserve">
+	  <value>Menu rapide</value>
+  </data>
+  <data name="quickMenu.desc" xml:space="preserve">
+	  <value>Affiche un menu sous la souris quand un raccourcis clavier est utilisé.</value>
+  </data>
 </root>

@@ -116,6 +116,11 @@ namespace SoundSwitch.Framework.Configuration
         /// </summary>
         public bool Telemetry { get; set; } = true;
 
+        /// <summary>
+        /// Is the quick menu showed when using a hotkey
+        /// </summary>
+        public bool QuickMenuEnabled { get; set; } = true;
+
         // Needed by Interface
         [JsonIgnore]
         public string FileLocation { get; set; }

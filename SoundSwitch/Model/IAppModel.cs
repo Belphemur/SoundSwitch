@@ -115,6 +115,7 @@ namespace SoundSwitch.Model
         IAudioDeviceLister ActiveUnpluggedAudioLister { get; set; }
 
         bool Telemetry { get; set; }
+        bool QuickMenuEnabled { get; set; }
 
         #endregion
 
