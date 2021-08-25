@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -10,10 +11,16 @@ namespace SoundSwitch.UI.Forms
 {
     public partial class DeviceSelectorMenu : Form
     {
+        public record MenuClickedEvent(IconMenuItem.DataContainer Item);
+
         private readonly Dictionary<string, IconMenuItem.DataContainer> _currentPayloads = new();
         private readonly DebounceDispatcher _debounce = new();
         private bool _hiding = false;
-        private readonly MethodInvoker _deleteMethod;
+        private readonly MethodInvoker _hideDisposeMethod;
+
+        [Browsable(true)]
+        public event EventHandler<MenuClickedEvent> ItemClicked;
+
         protected override bool ShowWithoutActivation => true;
 
         /// <summary>
@@ -34,14 +41,13 @@ namespace SoundSwitch.UI.Forms
         public DeviceSelectorMenu()
         {
             InitializeComponent();
-            ResetOpacity();
-            _deleteMethod = Delete;
+            _hideDisposeMethod = HideDispose;
         }
 
         public void SetData(IEnumerable<IconMenuItem.DataContainer> payloads)
         {
             _hiding = false;
-            _debounce.Debounce<object>(TimeSpan.FromMilliseconds(1500), _ => BeginInvoke(_deleteMethod));
+            _debounce.Debounce<object>(TimeSpan.FromMilliseconds(1500), _ => BeginInvoke(_hideDisposeMethod));
             ResetOpacity();
 
             var payloadsArray = payloads.ToArray();
@@ -69,6 +75,7 @@ namespace SoundSwitch.UI.Forms
             {
                 var payload = newPayloads[key];
                 var control = new IconMenuItem(payload);
+                control.Click += (_, _) => ItemClicked?.Invoke(control, new MenuClickedEvent(control.CurrentDataContainer));
                 Controls.Add(control);
                 _currentPayloads.Add(payload.Id, payload);
                 needRearrange = true;
@@ -91,7 +98,7 @@ namespace SoundSwitch.UI.Forms
             SetLocationToCursor();
         }
 
-        private void Delete()
+        private void HideDispose()
         {
             _hiding = true;
             while (Opacity > 0.0)
@@ -99,7 +106,7 @@ namespace SoundSwitch.UI.Forms
                 Thread.Sleep(50);
 
                 if (!_hiding)
-                    break;
+                    return;
                 Opacity -= 0.05;
             }
 
@@ -114,8 +121,9 @@ namespace SoundSwitch.UI.Forms
 
         private void SetLocationToCursor()
         {
-            SetDesktopLocation(Cursor.Position.X, Cursor.Position.Y);
-            Location = Cursor.Position;
+            var position = Cursor.Position;
+            SetDesktopLocation(position.X, position.Y);
+            Location = position;
         }
     }
 }
