@@ -129,6 +129,16 @@ namespace SoundSwitch.Model
                 AppConfigs.Configuration.Save();
             }
         }
+        
+        public bool QuickMenuEnabled
+        {
+            get => AppConfigs.Configuration.QuickMenuEnabled;
+            set
+            {
+                AppConfigs.Configuration.QuickMenuEnabled = value;
+                AppConfigs.Configuration.Save();
+            }
+        }
 
 
         public IEnumerable<DeviceInfo> SelectedDevices => AppConfigs.Configuration.SelectedDevices.OrderBy(info => info.DiscoveredAt);
