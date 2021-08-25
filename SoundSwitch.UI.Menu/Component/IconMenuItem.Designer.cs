@@ -48,17 +48,17 @@ namespace SoundSwitch.UI.Menu.Component
             // deviceName
             // 
             this.deviceName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.deviceName.AutoSize = true;
             this.deviceName.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.deviceName.ForeColor = System.Drawing.SystemColors.Control;
             this.deviceName.Location = new System.Drawing.Point(57, 17);
             this.deviceName.Name = "deviceName";
-            this.deviceName.Size = new System.Drawing.Size(106, 20);
+            this.deviceName.Size = new System.Drawing.Size(231, 20);
             this.deviceName.TabIndex = 1;
-            this.deviceName.Text = "Speaker (USB)";
+            this.deviceName.Text = "Speaker (USB) abc1234567891112";
             // 
-            // AudioDeviceBox
+            // IconMenuItem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;

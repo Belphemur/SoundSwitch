@@ -59,7 +59,7 @@ namespace SoundSwitch.UI.Menu.Component
                 }
             }
 
-            public T Payload { get;}
+            public T Payload { get; }
 
             public string Id { get; }
             public Color Color => Selected ? Color.RoyalBlue.WithOpacity(0x80) : Color.Black.WithOpacity(0x70);
@@ -105,17 +105,22 @@ namespace SoundSwitch.UI.Menu.Component
                 _image?.Dispose();
             }
         }
-        
-        public new event EventHandler Click {
-            add {
+
+        public new event EventHandler Click
+        {
+            add
+            {
                 base.Click += value;
-                foreach (Control control in Controls) {
+                foreach (Control control in Controls)
+                {
                     control.Click += value;
                 }
             }
-            remove {
+            remove
+            {
                 base.Click -= value;
-                foreach (Control control in Controls) {
+                foreach (Control control in Controls)
+                {
                     control.Click -= value;
                 }
             }
@@ -136,7 +141,22 @@ namespace SoundSwitch.UI.Menu.Component
             iconBox.DataBindings.Add(nameof(PictureBox.Image), CurrentDataContainer, nameof(CurrentDataContainer.Image), false, DataSourceUpdateMode.OnPropertyChanged);
             deviceName.DataBindings.Add(nameof(Label.Text), CurrentDataContainer, nameof(CurrentDataContainer.Label), false, DataSourceUpdateMode.OnPropertyChanged);
             DataBindings.Add(nameof(BackColor), CurrentDataContainer, nameof(CurrentDataContainer.Color), false, DataSourceUpdateMode.OnPropertyChanged);
+            deviceName.TextChanged += AutoResizeLabel;
         }
 
+        private void AutoResizeLabel(object? sender, EventArgs e)
+        {
+            Label lbl = (Label)sender;
+            if (lbl.Image != null) return;
+            using Graphics cg = lbl.CreateGraphics();
+            var labelSize = new SizeF(lbl.Width, lbl.Height);
+            var textSize = cg.MeasureString(lbl.Text, lbl.Font, labelSize);
+            while (textSize.Width > labelSize.Width - (labelSize.Width * 0.1))
+            {
+                lbl.Font = new Font(lbl.Font.Name, lbl.Font.Size - 0.2f, lbl.Font.Style);
+                textSize = cg.MeasureString(lbl.Text, lbl.Font, labelSize);
+                if (lbl.Font.Size < 8) break;
+            }
+        }
     }
 }
