@@ -409,4 +409,10 @@
   <data name="telemetry" xml:space="preserve">
     <value>מדדים</value>
   </data>
+  <data name="quickMenu.desc" xml:space="preserve">
+    <value>להציג תפריט מהיר כמו השפות ב־Windows בעת שימוש במקש חם</value>
+  </data>
+  <data name="quickMenu" xml:space="preserve">
+    <value>תפריט מהיר עם מקש חם</value>
+  </data>
 </root>
