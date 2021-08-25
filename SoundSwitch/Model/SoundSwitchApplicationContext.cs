@@ -1,13 +1,14 @@
 ﻿using System.Windows.Forms;
 using NAudio.CoreAudioApi;
 using Serilog;
+using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio.Lister;
 using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Configuration;
-using SoundSwitch.Framework.QuickMenu;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.UI.Component;
+using SoundSwitch.UI.Menu;
 
 namespace SoundSwitch.Model
 {
@@ -17,7 +18,7 @@ namespace SoundSwitch.Model
         {
             
             BannerManager.Setup();
-            QuickMenuManager.Instance.Setup();
+            QuickMenuManager<DeviceFullInfo>.Instance.Setup();
             var deviceActiveLister          = new CachedAudioDeviceLister(DeviceState.Active);
             var deviceUnpluggedActiveLister = new CachedAudioDeviceLister(DeviceState.Active | DeviceState.Unplugged);
             deviceActiveLister.Refresh();
