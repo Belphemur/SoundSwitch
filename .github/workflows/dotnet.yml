@@ -3,9 +3,15 @@ name: .NET
 on:
   push:
     branches: [ dev, master ]
+    paths:
+    - 'SoundSwitch*/**'
+    - '.github/**.yml'
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [ dev, master ]
+    paths:
+    - 'SoundSwitch*/**'
+    - '.github/**.yml'
 env:
   # Stop wasting time caching packages
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
