@@ -406,4 +406,13 @@ Restaurar o estado do sistema quando a aplicação é fechada.</value>
   <data name="profile.defaultDevice.checkbox" xml:space="preserve">
     <value>Também mudar o aparelho padrão</value>
   </data>
+  <data name="quickMenu.desc" xml:space="preserve">
+    <value>Mostra um menu rápido, como idioma do Windows, ao usar a tecla de atalho</value>
+  </data>
+  <data name="quickMenu" xml:space="preserve">
+    <value>Menu rápido na tecla de atalho</value>
+  </data>
+  <data name="telemetry" xml:space="preserve">
+    <value>Telemetria</value>
+  </data>
 </root>
