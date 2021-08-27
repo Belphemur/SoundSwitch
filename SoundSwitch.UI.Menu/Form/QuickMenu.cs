@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using SoundSwitch.UI.Menu.Component;
 using SoundSwitch.UI.Menu.Util.Timer;
@@ -11,6 +11,7 @@ namespace SoundSwitch.UI.Menu.Form
 {
     public partial class QuickMenu<T> : System.Windows.Forms.Form
     {
+        private delegate Task MethodInvoker();
         public record MenuClickedEvent(IconMenuItem<T>.DataContainer Item);
 
         private readonly Dictionary<string, IconMenuItem<T>.DataContainer> _currentPayloads = new();
@@ -111,7 +112,7 @@ namespace SoundSwitch.UI.Menu.Form
             ResetOpacity();
         }
 
-        private void OnItemClicked(IconMenuItem<T> control)
+        private void OnItemClicked(IconMenuItem<T> control) 
         {
             DebounceHiding();
             var dataContainer = control.CurrentDataContainer;
@@ -128,12 +129,12 @@ namespace SoundSwitch.UI.Menu.Form
             SelectionChanged?.Invoke(control, new MenuClickedEvent(dataContainer));
         }
 
-        private void HideDispose()
+        private async Task HideDispose()
         {
             _hiding = true;
             while (Opacity > 0.0)
             {
-                Thread.Sleep(50);
+                await Task.Delay(50);
 
                 if (!_hiding)
                     return;
