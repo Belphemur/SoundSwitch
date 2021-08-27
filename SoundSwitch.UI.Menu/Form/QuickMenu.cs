@@ -66,8 +66,10 @@ namespace SoundSwitch.UI.Menu.Form
 
             foreach (var id in toRemove)
             {
-                Controls.RemoveByKey(id);
+                var control = Controls[id];
+                Controls.Remove(control);
                 _currentPayloads.Remove(id);
+                control.Dispose();
                 needRearrange = true;
             }
 
