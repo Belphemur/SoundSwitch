@@ -64,10 +64,11 @@ namespace SoundSwitch.UI.Menu.Form
 
             var needRearrange = false;
 
+            var controlCollection = Controls;
             foreach (var id in toRemove)
             {
-                var control = Controls[id];
-                Controls.Remove(control);
+                var control = controlCollection[id];
+                controlCollection.Remove(control);
                 _currentPayloads.Remove(id);
                 control.Dispose();
                 needRearrange = true;
@@ -84,7 +85,7 @@ namespace SoundSwitch.UI.Menu.Form
                 var payload = newPayloadsById[key];
                 var control = new IconMenuItem<T>(payload);
                 control.Click += (_, _) => OnItemClicked(control);
-                Controls.Add(control);
+                controlCollection.Add(control);
                 _currentPayloads.Add(payload.Id, payload);
                 needRearrange = true;
             }
@@ -94,7 +95,7 @@ namespace SoundSwitch.UI.Menu.Form
                 var top = 5;
                 foreach (var payload in originalOrderPayloads)
                 {
-                    var control = Controls[payload.Id];
+                    var control = controlCollection[payload.Id];
                     control.Top = top;
                     top += control.Height;
                 }
