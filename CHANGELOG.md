@@ -1,3 +1,52 @@
+## [6.0.0](https://github.com/Belphemur/SoundSwitch/compare/v5.11.2...v6.0.0) (2021-08-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* **QuickMenu:** Quick menu will appear when using hotkey akin to the Windows language menu.
+
+Quick Menu is a new feature that changes the way you can interact with your selected devices. You can disable it in the Settings Menu.
+
+### Features
+
+* **DeviceMenu:** Auto-hide after inactivity to not stay on user screen ([59922d6](https://github.com/Belphemur/SoundSwitch/commit/59922d68652d60714a6355f87cd1a4e066c930c3))
+* **Notification::DeviceMenu:** First version of the new device menu triggered by device changed. ([ee6f2c5](https://github.com/Belphemur/SoundSwitch/commit/ee6f2c55ee614fe88cfc78a8140869afed8199f1))
+* **QuickMenu:** Display a quick menu on cursor position when the user use a HotKey. ([8d83ad6](https://github.com/Belphemur/SoundSwitch/commit/8d83ad69334879c2995f4d4222dd183e678fd41a))
+* **QuickMenu:** The user can enable or disable the quick menu in the settings. ([fd44ca3](https://github.com/Belphemur/SoundSwitch/commit/fd44ca342cfe5fbd8a91bd857e13f42ebb566035)), closes [#625](https://github.com/Belphemur/SoundSwitch/issues/625)
+* **Telemetry:** Add setting for telemetry ([38cb95c](https://github.com/Belphemur/SoundSwitch/commit/38cb95ce8b7578874eef18924b2fb4f879624b55))
+
+
+### Bug Fixes
+
+* **Device::Switching:** Fix not finding the device when the ID has changed ([5741cfd](https://github.com/Belphemur/SoundSwitch/commit/5741cfdbfbf2f216b0129efe26fe81465f03c332))
+* **QuickMenu:** Interrupt hiding the quick menu when it's called again ([2ad9500](https://github.com/Belphemur/SoundSwitch/commit/2ad9500708bd5bad8d989fcf1ad7bda99323e2ac))
+
+
+### Languages
+
+* **Chinese (Simplified):** Translated About using Weblate ([bef1eaa](https://github.com/Belphemur/SoundSwitch/commit/bef1eaa9f94c4fdef86a41a351f7d4ab0f44b983))
+* **Dutch:** Translated Settings using Weblate ([7ad3831](https://github.com/Belphemur/SoundSwitch/commit/7ad383156349fec75830f92cda1f445e5451c533))
+* **Dutch:** Translated Tray Icon using Weblate ([41f275b](https://github.com/Belphemur/SoundSwitch/commit/41f275b652992255c6a713a7aed0fff1938ed61f))
+* **Finnish:** Translated About using Weblate ([e405f00](https://github.com/Belphemur/SoundSwitch/commit/e405f00729112ed2073d448c678020c70b7a4088))
+* **German:** Translated Tray Icon using Weblate ([cc008bd](https://github.com/Belphemur/SoundSwitch/commit/cc008bd01c89cad65913f7a01745ffbc43dc8a56))
+* **Greek:** Translated About using Weblate ([f30bcc7](https://github.com/Belphemur/SoundSwitch/commit/f30bcc74482ec54392f732438764a089bfec14cb))
+* **Hebrew:** Translated Settings using Weblate ([a00e0be](https://github.com/Belphemur/SoundSwitch/commit/a00e0be3754e31c2d597a6e6b941b6bf8f766401))
+* **Hebrew:** Translated Settings using Weblate ([209bd49](https://github.com/Belphemur/SoundSwitch/commit/209bd49f6e8be0e7601500cdf7bde79f090eaf9a))
+* **Italian:** Translated About using Weblate ([242095c](https://github.com/Belphemur/SoundSwitch/commit/242095c51b5646eddafb531e57555ec33ceaf924))
+* **Japanese:** Translated About using Weblate ([babc27e](https://github.com/Belphemur/SoundSwitch/commit/babc27eae3f37d1ef9fdfe1864e981428bd92db7))
+* **Korean:** Translated Settings using Weblate ([1aebdb3](https://github.com/Belphemur/SoundSwitch/commit/1aebdb3b1a396cebf893e978cc92f46ca513ec89))
+* **Norwegian Bokmål:** Translated About using Weblate ([7be16c3](https://github.com/Belphemur/SoundSwitch/commit/7be16c39a38da9daa57cf6b369448988c31917af))
+* **Norwegian Bokmål:** Translated Settings using Weblate ([d0eae02](https://github.com/Belphemur/SoundSwitch/commit/d0eae02befe366d97940e9f6389c40b4d7ab7756))
+* **Polish:** Translated About using Weblate ([20f780a](https://github.com/Belphemur/SoundSwitch/commit/20f780a1e4fec11b64f046fceb0ccac93b8ee98b))
+* **Portuguese:** Translated Settings using Weblate ([560710f](https://github.com/Belphemur/SoundSwitch/commit/560710f87fcfa246858f1f82979bc3de9514b1e3))
+* **Portuguese (Brazil):** Translated Settings using Weblate ([ffc852b](https://github.com/Belphemur/SoundSwitch/commit/ffc852b450702ae6a9cf2e66058a672db5be001f))
+* **Portuguese (Brazil):** Translated Settings using Weblate ([39de2ef](https://github.com/Belphemur/SoundSwitch/commit/39de2ef5d918dbbd2999452e0445de52d3c02023))
+* **RightToLeft:** Add support for Right to left languages ([f93597c](https://github.com/Belphemur/SoundSwitch/commit/f93597ca0b8d1b06d713393e95e79de39b31242e)), closes [#601](https://github.com/Belphemur/SoundSwitch/issues/601)
+* **Russian:** Translated About using Weblate ([bf836a4](https://github.com/Belphemur/SoundSwitch/commit/bf836a443626da6b87d8462c42068434224cb366))
+* **Swedish:** Translated About using Weblate ([dc352c4](https://github.com/Belphemur/SoundSwitch/commit/dc352c49074dc1ac7cc4e8193120bfa66cfa0a5e))
+* **Swedish:** Translated About using Weblate ([a187b91](https://github.com/Belphemur/SoundSwitch/commit/a187b9196b1932f5af3f73d7f71fa5074c14452e))
+* **telemetry:** add localization for telemetry ([227a32c](https://github.com/Belphemur/SoundSwitch/commit/227a32cad951126d6c9d4b8aaeefe80d64dd1b73))
+
 ### [5.11.2](https://github.com/Belphemur/SoundSwitch/compare/v5.11.1...v5.11.2) (2021-07-27)
 
 
