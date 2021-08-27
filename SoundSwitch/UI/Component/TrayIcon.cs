@@ -34,6 +34,7 @@ using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.Updater.Remind;
 using SoundSwitch.Localization;
+using SoundSwitch.Localization.Factory;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
 using SoundSwitch.UI.Forms;
@@ -80,6 +81,11 @@ namespace SoundSwitch.UI.Component
 
         public TrayIcon()
         {
+            //Localization
+            var rightToLeft = new LanguageFactory().Get(AppModel.Instance.Language).IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
+            _selectionMenu.RightToLeft = rightToLeft;
+            _settingsMenu.RightToLeft = rightToLeft;
+            
             UpdateIcon();
             _showContextMenu = typeof(NotifyIcon).GetMethod("ShowContextMenu", BindingFlags.Instance | BindingFlags.NonPublic);
             _tooltipInfoManager = new TooltipInfoManager(NotifyIcon);
@@ -102,7 +108,7 @@ namespace SoundSwitch.UI.Component
 
                 if (e.Button != MouseButtons.Left) return;
 
-                if (_updateMenuItem.Tag != null && !_postponeService.ShouldPostpone((Release) _updateMenuItem.Tag))
+                if (_updateMenuItem.Tag != null && !_postponeService.ShouldPostpone((Release)_updateMenuItem.Tag))
                 {
                     OnUpdateClick(sender, e);
                     return;
@@ -144,7 +150,7 @@ namespace SoundSwitch.UI.Component
                 return;
 
             var oldIcon = NotifyIcon.Icon;
-            NotifyIcon.Icon = (Icon) newIcon.Clone();
+            NotifyIcon.Icon = (Icon)newIcon.Clone();
             try
             {
                 oldIcon?.Dispose();
@@ -199,7 +205,7 @@ namespace SoundSwitch.UI.Component
 
             StopAnimationIconUpdate();
             NotifyIcon.BalloonTipClicked -= OnUpdateClick;
-            _updateDownloadForm.DownloadRelease((Release) _updateMenuItem.Tag);
+            _updateDownloadForm.DownloadRelease((Release)_updateMenuItem.Tag);
         }
 
         private void SetEventHandlers()
@@ -264,7 +270,7 @@ namespace SoundSwitch.UI.Component
         {
             if (_animationTimer == null)
             {
-                _animationTimer = new TimerForm() {Interval = 1000};
+                _animationTimer = new TimerForm() { Interval = 1000 };
                 var tick = 0;
                 _animationTimer.Tick += (sender, args) =>
                 {
@@ -335,7 +341,7 @@ namespace SoundSwitch.UI.Component
         {
             try
             {
-                var item = (ToolStripDeviceItem) sender;
+                var item = (ToolStripDeviceItem)sender;
                 AppModel.Instance.SetActiveDevice(item.AudioDevice);
             }
             catch (Exception)

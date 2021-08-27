@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoundSwitch.Common", "Sound
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoundSwitch.Tests", "SoundSwitch.Tests\SoundSwitch.Tests.csproj", "{997DAB74-B16F-449D-82ED-5BD966C0E4DC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundSwitch.UI.Menu", "SoundSwitch.UI.Menu\SoundSwitch.UI.Menu.csproj", "{EAF89214-E434-4FC0-A928-E6DB1D9FBF26}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Beta|Any CPU = Beta|Any CPU
@@ -42,6 +44,12 @@ Global
 		{997DAB74-B16F-449D-82ED-5BD966C0E4DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{997DAB74-B16F-449D-82ED-5BD966C0E4DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{997DAB74-B16F-449D-82ED-5BD966C0E4DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAF89214-E434-4FC0-A928-E6DB1D9FBF26}.Beta|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAF89214-E434-4FC0-A928-E6DB1D9FBF26}.Beta|Any CPU.Build.0 = Debug|Any CPU
+		{EAF89214-E434-4FC0-A928-E6DB1D9FBF26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAF89214-E434-4FC0-A928-E6DB1D9FBF26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAF89214-E434-4FC0-A928-E6DB1D9FBF26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAF89214-E434-4FC0-A928-E6DB1D9FBF26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -79,5 +79,15 @@ namespace SoundSwitch.Framework.Configuration
         /// Fields of the config that got migrated
         /// </summary>
         HashSet<string> MigratedFields { get; }
+
+        /// <summary>
+        /// Is telemetry enabled
+        /// </summary>
+        bool Telemetry { get; set; }
+
+        /// <summary>
+        /// Is the quick menu showed when using a hotkey
+        /// </summary>
+        bool QuickMenuEnabled { get; set; }
     }
 }

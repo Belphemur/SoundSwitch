@@ -186,4 +186,7 @@
   <data name="updateDisabled" xml:space="preserve">
     <value>Aktualisierungsprüfung deaktiviert</value>
   </data>
+  <data name="forceCheckForUpdate" xml:space="preserve">
+    <value>Nach Updates suchen</value>
+  </data>
 </root>

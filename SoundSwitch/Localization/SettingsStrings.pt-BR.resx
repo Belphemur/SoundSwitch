@@ -465,4 +465,13 @@ Ambos: Mudar quando qualquer tipo de dispositivo é alterado.</value>
   <data name="profile.trigger.trayMenu" xml:space="preserve">
     <value>No menu do aplicativo</value>
   </data>
+  <data name="telemetry" xml:space="preserve">
+    <value>Telemetria</value>
+  </data>
+  <data name="quickMenu" xml:space="preserve">
+    <value>Menu Rápido na tecla de atalho</value>
+  </data>
+  <data name="quickMenu.desc" xml:space="preserve">
+    <value>Mostra um menu rápido, como idioma do Windows, ao usar a tecla de atalho</value>
+  </data>
 </root>

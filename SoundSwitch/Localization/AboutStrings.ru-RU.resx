@@ -1,6 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
-	<!-- 
+  <!-- 
 		Microsoft ResX Schema
 
 		Version 1.3
@@ -58,10 +58,10 @@
 			: using a System.ComponentModel.TypeConverter
 			: and then encoded with base64 encoding.
 	-->
-	<xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
 					<xsd:element name="data">
 						<xsd:complexType>
 							<xsd:sequence>
@@ -82,46 +82,46 @@
 						</xsd:complexType>
 					</xsd:element>
 				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>1.3</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<data name="created" xml:space="preserve">
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="created" xml:space="preserve">
 		<value>Создан</value>
-	</data>
-	<data name="maintained" xml:space="preserve">
+  </data>
+  <data name="maintained" xml:space="preserve">
 		<value>Поддерживается</value>
-	</data>
-	<data name="version" xml:space="preserve">
+  </data>
+  <data name="version" xml:space="preserve">
 		<value>Версия</value>
-	</data>
-	<data name="author" xml:space="preserve">
+  </data>
+  <data name="author" xml:space="preserve">
 		<value>О программе и авторе</value>
-	</data>
-	<data name="credits" xml:space="preserve">
+  </data>
+  <data name="credits" xml:space="preserve">
 		<value>Участники и права</value>
-	</data>
-	<data name="defaultPlaybackDeviceChange" xml:space="preserve">
+  </data>
+  <data name="defaultPlaybackDeviceChange" xml:space="preserve">
 		<value>Изменение устройства воспроизведения по умолчанию</value>
-	</data>
-	<data name="keyboardHotkeys" xml:space="preserve">
+  </data>
+  <data name="keyboardHotkeys" xml:space="preserve">
 		<value>Сочетания клавиш</value>
-	</data>
-	<data name="icons" xml:space="preserve">
+  </data>
+  <data name="icons" xml:space="preserve">
 		<value>Значки</value>
-	</data>
-	<data name="logo" xml:space="preserve">
+  </data>
+  <data name="logo" xml:space="preserve">
 		<value>Логотип создан</value>
-	</data>
+  </data>
 </root>

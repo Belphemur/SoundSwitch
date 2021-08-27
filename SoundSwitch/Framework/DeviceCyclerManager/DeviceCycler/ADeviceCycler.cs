@@ -19,7 +19,9 @@ using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Framework.QuickMenu.Model;
 using SoundSwitch.Model;
+using SoundSwitch.UI.Menu;
 
 namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
 {
@@ -32,7 +34,30 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         /// Cycle the audio device for the given type
         /// </summary>
         /// <param name="type"></param>
-        public abstract bool CycleAudioDevice(DataFlow type);
+        public bool CycleAudioDevice(DataFlow type)
+        {
+            var audioDevices = GetDevices(type).ToArray();
+
+            bool CycleDevice()
+            {
+                var nextDevice = GetNextDevice(audioDevices, type);
+                if (AppModel.Instance.QuickMenuEnabled)
+                {
+                    QuickMenuManager<DeviceFullInfo>.Instance.DisplayMenu(audioDevices.Select(info => new DeviceDataContainer(info, info.Id == nextDevice.Id)), @event => SetActiveDevice(@event.Item.Payload));
+                }
+
+                return SetActiveDevice(nextDevice);
+            }
+
+            return audioDevices switch
+            {
+                { Length: 0 } => throw new AppModel.NoDevicesException(),
+                { Length: 1 } => false,
+                _             => CycleDevice()
+            };
+        }
+
+        protected abstract IEnumerable<DeviceFullInfo> GetDevices(DataFlow type);
 
         /// <summary>
         /// Get the next device that need to be set as Default
@@ -40,11 +65,10 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         /// <param name="audioDevices"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        protected DeviceInfo GetNextDevice(IEnumerable<DeviceInfo> audioDevices, DataFlow type)
+        private DeviceInfo GetNextDevice(DeviceInfo[] audioDevices, DataFlow type)
         {
-            var deviceInfos = audioDevices as DeviceInfo[] ?? audioDevices.ToArray();
-            var defaultDev = AudioSwitcher.Instance.GetDefaultAudioEndpoint((EDataFlow) type, ERole.eConsole) ?? deviceInfos.Last();
-            var next = deviceInfos.SkipWhile((device, _) => device.Id != defaultDev.Id).Skip(1).FirstOrDefault() ?? deviceInfos[0];
+            var defaultDev = AudioSwitcher.Instance.GetDefaultAudioEndpoint((EDataFlow) type, ERole.eConsole) ?? audioDevices.Last();
+            var next = audioDevices.SkipWhile((device, _) => device.Id != defaultDev.Id).Skip(1).FirstOrDefault() ?? audioDevices[0];
             return next;
         }
 

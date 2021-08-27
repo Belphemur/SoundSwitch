@@ -445,4 +445,13 @@ Restaurer l'état du système quand l'application est fermée.</value>
   <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
 	  <value>Le profile sera visible dans le menu de l'application. Cliquer avec le bouton gauche sur l'icone de l'application.</value>
   </data>
+  <data name="telemetry" xml:space="preserve">
+	  <value>Télémétrie</value>
+  </data>
+  <data name="quickMenu" xml:space="preserve">
+	  <value>Menu rapide</value>
+  </data>
+  <data name="quickMenu.desc" xml:space="preserve">
+	  <value>Affiche un menu sous la souris quand un raccourcis clavier est utilisé.</value>
+  </data>
 </root>

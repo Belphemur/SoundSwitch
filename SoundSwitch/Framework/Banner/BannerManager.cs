@@ -38,6 +38,7 @@ namespace SoundSwitch.Framework.Banner
                     banner = new BannerForm();
                     banner.Disposed += (s, e) => banner = null;
                 }
+
                 banner.SetData(data);
             }, null);
         }

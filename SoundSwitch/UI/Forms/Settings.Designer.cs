@@ -52,6 +52,7 @@ namespace SoundSwitch.UI.Forms
             this.languageGroupBox = new System.Windows.Forms.GroupBox();
             this.languageComboBox = new System.Windows.Forms.ComboBox();
             this.updateSettingsGroupBox = new System.Windows.Forms.GroupBox();
+            this.telemetryCheckbox = new System.Windows.Forms.CheckBox();
             this.updateNeverRadioButton = new System.Windows.Forms.RadioButton();
             this.updateNotifyRadioButton = new System.Windows.Forms.RadioButton();
             this.updateSilentRadioButton = new System.Windows.Forms.RadioButton();
@@ -76,6 +77,7 @@ namespace SoundSwitch.UI.Forms
             this.toggleMuteLabel = new System.Windows.Forms.Label();
             this.muteHotKey = new SoundSwitch.UI.Component.HotKeyTextBox();
             this.muteHotKeyCheckbox = new System.Windows.Forms.CheckBox();
+            this.quickMenuCheckbox = new System.Windows.Forms.CheckBox();
             this.tabControl.SuspendLayout();
             this.playbackTabPage.SuspendLayout();
             this.recordingTabPage.SuspendLayout();
@@ -153,12 +155,9 @@ namespace SoundSwitch.UI.Forms
             this.playbackListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.playbackListView.CheckBoxes = true;
             this.playbackListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            listViewGroup1.Footer = "";
             listViewGroup1.Header = "Selected";
             listViewGroup1.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
             listViewGroup1.Name = "selectedGroup";
-            listViewGroup1.Subtitle = "";
-            listViewGroup1.TaskLink = "";
             this.playbackListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
             listViewGroup1});
             this.playbackListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
@@ -187,12 +186,9 @@ namespace SoundSwitch.UI.Forms
             this.recordingListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.recordingListView.CheckBoxes = true;
             this.recordingListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            listViewGroup2.Footer = "";
             listViewGroup2.Header = "Selected";
             listViewGroup2.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
             listViewGroup2.Name = "selectedGroup";
-            listViewGroup2.Subtitle = "";
-            listViewGroup2.TaskLink = "";
             this.recordingListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
             listViewGroup2});
             this.recordingListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
@@ -303,7 +299,7 @@ namespace SoundSwitch.UI.Forms
             // languageGroupBox
             // 
             this.languageGroupBox.Controls.Add(this.languageComboBox);
-            this.languageGroupBox.Location = new System.Drawing.Point(434, 156);
+            this.languageGroupBox.Location = new System.Drawing.Point(434, 174);
             this.languageGroupBox.Name = "languageGroupBox";
             this.languageGroupBox.Size = new System.Drawing.Size(298, 61);
             this.languageGroupBox.TabIndex = 15;
@@ -322,16 +318,27 @@ namespace SoundSwitch.UI.Forms
             // 
             // updateSettingsGroupBox
             // 
+            this.updateSettingsGroupBox.Controls.Add(this.telemetryCheckbox);
             this.updateSettingsGroupBox.Controls.Add(this.updateNeverRadioButton);
             this.updateSettingsGroupBox.Controls.Add(this.updateNotifyRadioButton);
             this.updateSettingsGroupBox.Controls.Add(this.updateSilentRadioButton);
             this.updateSettingsGroupBox.Controls.Add(this.includeBetaVersionsCheckBox);
             this.updateSettingsGroupBox.Location = new System.Drawing.Point(434, 12);
             this.updateSettingsGroupBox.Name = "updateSettingsGroupBox";
-            this.updateSettingsGroupBox.Size = new System.Drawing.Size(298, 132);
+            this.updateSettingsGroupBox.Size = new System.Drawing.Size(298, 156);
             this.updateSettingsGroupBox.TabIndex = 14;
             this.updateSettingsGroupBox.TabStop = false;
             this.updateSettingsGroupBox.Text = "Update Settings";
+            // 
+            // telemetryCheckbox
+            // 
+            this.telemetryCheckbox.AutoSize = true;
+            this.telemetryCheckbox.Location = new System.Drawing.Point(7, 130);
+            this.telemetryCheckbox.Name = "telemetryCheckbox";
+            this.telemetryCheckbox.Size = new System.Drawing.Size(77, 19);
+            this.telemetryCheckbox.TabIndex = 22;
+            this.telemetryCheckbox.Text = "Telemetry";
+            this.telemetryCheckbox.UseVisualStyleBackColor = true;
             // 
             // updateNeverRadioButton
             // 
@@ -382,6 +389,7 @@ namespace SoundSwitch.UI.Forms
             // 
             // audioSettingsGroupBox
             // 
+            this.audioSettingsGroupBox.Controls.Add(this.quickMenuCheckbox);
             this.audioSettingsGroupBox.Controls.Add(this.usePrimaryScreenCheckbox);
             this.audioSettingsGroupBox.Controls.Add(this.foregroundAppCheckbox);
             this.audioSettingsGroupBox.Controls.Add(this.deleteSoundButton);
@@ -395,7 +403,7 @@ namespace SoundSwitch.UI.Forms
             this.audioSettingsGroupBox.Controls.Add(this.notificationComboBox);
             this.audioSettingsGroupBox.Location = new System.Drawing.Point(3, 117);
             this.audioSettingsGroupBox.Name = "audioSettingsGroupBox";
-            this.audioSettingsGroupBox.Size = new System.Drawing.Size(425, 207);
+            this.audioSettingsGroupBox.Size = new System.Drawing.Size(425, 242);
             this.audioSettingsGroupBox.TabIndex = 13;
             this.audioSettingsGroupBox.TabStop = false;
             this.audioSettingsGroupBox.Text = "Audio Settings";
@@ -403,7 +411,7 @@ namespace SoundSwitch.UI.Forms
             // usePrimaryScreenCheckbox
             // 
             this.usePrimaryScreenCheckbox.AutoSize = true;
-            this.usePrimaryScreenCheckbox.Location = new System.Drawing.Point(118, 106);
+            this.usePrimaryScreenCheckbox.Location = new System.Drawing.Point(118, 128);
             this.usePrimaryScreenCheckbox.Name = "usePrimaryScreenCheckbox";
             this.usePrimaryScreenCheckbox.Size = new System.Drawing.Size(165, 19);
             this.usePrimaryScreenCheckbox.TabIndex = 26;
@@ -425,7 +433,7 @@ namespace SoundSwitch.UI.Forms
             // deleteSoundButton
             // 
             this.deleteSoundButton.Image = global::SoundSwitch.Properties.Resources.delete;
-            this.deleteSoundButton.Location = new System.Drawing.Point(391, 77);
+            this.deleteSoundButton.Location = new System.Drawing.Point(391, 99);
             this.deleteSoundButton.Name = "deleteSoundButton";
             this.deleteSoundButton.Size = new System.Drawing.Size(24, 24);
             this.deleteSoundButton.TabIndex = 24;
@@ -435,7 +443,7 @@ namespace SoundSwitch.UI.Forms
             // 
             // cycleThroughLabel
             // 
-            this.cycleThroughLabel.Location = new System.Drawing.Point(2, 174);
+            this.cycleThroughLabel.Location = new System.Drawing.Point(2, 196);
             this.cycleThroughLabel.Name = "cycleThroughLabel";
             this.cycleThroughLabel.Size = new System.Drawing.Size(110, 18);
             this.cycleThroughLabel.TabIndex = 23;
@@ -446,7 +454,7 @@ namespace SoundSwitch.UI.Forms
             // 
             this.cycleThroughComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cycleThroughComboBox.FormattingEnabled = true;
-            this.cycleThroughComboBox.Location = new System.Drawing.Point(118, 172);
+            this.cycleThroughComboBox.Location = new System.Drawing.Point(118, 194);
             this.cycleThroughComboBox.Name = "cycleThroughComboBox";
             this.cycleThroughComboBox.Size = new System.Drawing.Size(237, 23);
             this.cycleThroughComboBox.TabIndex = 22;
@@ -454,7 +462,7 @@ namespace SoundSwitch.UI.Forms
             // 
             // tooltipOnHoverLabel
             // 
-            this.tooltipOnHoverLabel.Location = new System.Drawing.Point(2, 138);
+            this.tooltipOnHoverLabel.Location = new System.Drawing.Point(2, 160);
             this.tooltipOnHoverLabel.Name = "tooltipOnHoverLabel";
             this.tooltipOnHoverLabel.Size = new System.Drawing.Size(110, 18);
             this.tooltipOnHoverLabel.TabIndex = 21;
@@ -465,7 +473,7 @@ namespace SoundSwitch.UI.Forms
             // 
             this.tooltipInfoComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.tooltipInfoComboBox.FormattingEnabled = true;
-            this.tooltipInfoComboBox.Location = new System.Drawing.Point(118, 136);
+            this.tooltipInfoComboBox.Location = new System.Drawing.Point(118, 158);
             this.tooltipInfoComboBox.Name = "tooltipInfoComboBox";
             this.tooltipInfoComboBox.Size = new System.Drawing.Size(237, 23);
             this.tooltipInfoComboBox.TabIndex = 20;
@@ -473,7 +481,7 @@ namespace SoundSwitch.UI.Forms
             // 
             // selectSoundButton
             // 
-            this.selectSoundButton.Location = new System.Drawing.Point(361, 77);
+            this.selectSoundButton.Location = new System.Drawing.Point(361, 99);
             this.selectSoundButton.Name = "selectSoundButton";
             this.selectSoundButton.Size = new System.Drawing.Size(24, 24);
             this.selectSoundButton.TabIndex = 19;
@@ -484,7 +492,7 @@ namespace SoundSwitch.UI.Forms
             // 
             // notificationLabel
             // 
-            this.notificationLabel.Location = new System.Drawing.Point(2, 81);
+            this.notificationLabel.Location = new System.Drawing.Point(2, 103);
             this.notificationLabel.Name = "notificationLabel";
             this.notificationLabel.Size = new System.Drawing.Size(110, 18);
             this.notificationLabel.TabIndex = 17;
@@ -495,7 +503,7 @@ namespace SoundSwitch.UI.Forms
             // 
             this.notificationComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.notificationComboBox.FormattingEnabled = true;
-            this.notificationComboBox.Location = new System.Drawing.Point(118, 79);
+            this.notificationComboBox.Location = new System.Drawing.Point(118, 101);
             this.notificationComboBox.Name = "notificationComboBox";
             this.notificationComboBox.Size = new System.Drawing.Size(237, 23);
             this.notificationComboBox.TabIndex = 16;
@@ -590,6 +598,16 @@ namespace SoundSwitch.UI.Forms
             this.muteHotKeyCheckbox.UseVisualStyleBackColor = true;
             this.muteHotKeyCheckbox.CheckedChanged += new System.EventHandler(this.muteHotKeyCheckbox_CheckedChanged);
             // 
+            // quickMenuCheckbox
+            // 
+            this.quickMenuCheckbox.AutoSize = true;
+            this.quickMenuCheckbox.Location = new System.Drawing.Point(6, 74);
+            this.quickMenuCheckbox.Name = "quickMenuCheckbox";
+            this.quickMenuCheckbox.Size = new System.Drawing.Size(144, 19);
+            this.quickMenuCheckbox.TabIndex = 27;
+            this.quickMenuCheckbox.Text = "QuickMenu on hotkey";
+            this.quickMenuCheckbox.UseVisualStyleBackColor = true;
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -668,5 +686,7 @@ namespace SoundSwitch.UI.Forms
         private System.Windows.Forms.Label toggleMuteLabel;
         private Component.HotKeyTextBox muteHotKey;
         private System.Windows.Forms.CheckBox muteHotKeyCheckbox;
+        private System.Windows.Forms.CheckBox telemetryCheckbox;
+        private System.Windows.Forms.CheckBox quickMenuCheckbox;
     }
 }

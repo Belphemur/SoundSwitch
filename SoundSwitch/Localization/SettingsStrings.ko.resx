@@ -406,4 +406,13 @@
   <data name="profile.trigger.trayMenu" xml:space="preserve">
     <value>앱 메뉴에서</value>
   </data>
+  <data name="telemetry" xml:space="preserve">
+    <value>원격</value>
+  </data>
+  <data name="quickMenu.desc" xml:space="preserve">
+    <value>바로 가기 키를 사용할 때 Windows 언어와 같은 빠른 메뉴 표시</value>
+  </data>
+  <data name="quickMenu" xml:space="preserve">
+    <value>바로 가기 키의 빠른 메뉴</value>
+  </data>
 </root>

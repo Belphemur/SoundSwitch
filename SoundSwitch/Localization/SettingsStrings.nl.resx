@@ -293,4 +293,10 @@ Banner: Gebruikt een aangepast scherm dat altijd te zien is. Dit is handig voor 
   <data name="selected" xml:space="preserve">
     <value>Geselecteerd</value>
   </data>
+  <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
+    <value>Wanneer het programma gedetecteerd is zal SoundSwitch overschakelen naar standaard apparaat.</value>
+  </data>
+  <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
+    <value>Wanneer aangevinkt, zoekt SoundSwitch ook naar bèta versies op GitHub.</value>
+  </data>
 </root>

@@ -14,11 +14,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Common.Framework.Audio.Device;
-using SoundSwitch.Model;
 using SoundSwitch.Localization;
+using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
 {
@@ -26,35 +25,16 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
     {
         public override DeviceCyclerTypeEnum TypeEnum => DeviceCyclerTypeEnum.All;
         public override string Label => SettingsStrings.cycleThroughOptionAllAudioDevices;
+        
 
-        /// <summary>
-        /// Cycle the audio device for the given type
-        /// </summary>
-        /// <param name="type"></param>
-        public override bool CycleAudioDevice(DataFlow type)
+        protected override IEnumerable<DeviceFullInfo> GetDevices(DataFlow type)
         {
-            IReadOnlyCollection<DeviceFullInfo> audioDevices;
-            switch (type)
+            return type switch
             {
-                case DataFlow.Render:
-                    audioDevices = AppModel.Instance.ActiveAudioDeviceLister.PlaybackDevices;
-                    break;
-                case DataFlow.Capture:
-                    audioDevices = AppModel.Instance.ActiveAudioDeviceLister.RecordingDevices;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
-            }
-
-            switch (audioDevices.Count)
-            {
-                case 0:
-                    throw new AppModel.NoDevicesException();
-                case 1:
-                    return false;
-            }
-
-            return SetActiveDevice(GetNextDevice(audioDevices.ToList(), type));
+                DataFlow.Render  => AppModel.Instance.ActiveAudioDeviceLister.PlaybackDevices,
+                DataFlow.Capture => AppModel.Instance.ActiveAudioDeviceLister.RecordingDevices,
+                _                => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+            };
         }
     }
 }

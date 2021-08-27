@@ -168,8 +168,7 @@ namespace SoundSwitch.UI.Forms
             updateNeverToolTip.SetToolTip(updateNeverRadioButton, SettingsStrings.updateNeverTooltip);
 
             var includeBetaVersionsToolTip = new ToolTip();
-            includeBetaVersionsToolTip.SetToolTip(includeBetaVersionsCheckBox,
-                SettingsStrings.updateIncludeBetaVersionsTooltip);
+            includeBetaVersionsToolTip.SetToolTip(includeBetaVersionsCheckBox, SettingsStrings.updateIncludeBetaVersionsTooltip);
 
             // Settings - Language
             new LanguageFactory().ConfigureListControl(languageComboBox);
@@ -178,7 +177,12 @@ namespace SoundSwitch.UI.Forms
             muteHotKey.Visible = false;
             muteHotKeyCheckbox.Visible = false;
             toggleMuteLabel.Visible = false;
-
+            
+            telemetryCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.Telemetry), false, DataSourceUpdateMode.OnPropertyChanged);
+            quickMenuCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.QuickMenuEnabled), false, DataSourceUpdateMode.OnPropertyChanged);
+            var quickMenuCheckboxToolTip = new ToolTip();
+            quickMenuCheckboxToolTip.SetToolTip(quickMenuCheckbox, SettingsStrings.quickMenu_desc);
+            
             PopulateSettings();
 
             _loaded = true;
@@ -290,6 +294,7 @@ namespace SoundSwitch.UI.Forms
 
         private void LocalizeForm()
         {
+            RightToLeft = new LanguageFactory().Get(AppModel.Instance.Language).IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
             // TabPages
             playbackTabPage.Text = SettingsStrings.playback;
             playbackListView.Groups[0].Header = SettingsStrings.selected;
@@ -313,6 +318,7 @@ namespace SoundSwitch.UI.Forms
             cycleThroughLabel.Text = SettingsStrings.cycleThrough;
             foregroundAppCheckbox.Text = SettingsStrings.foregroundApp;
             usePrimaryScreenCheckbox.Text = SettingsStrings.usePrimaryScreen;
+            quickMenuCheckbox.Text = SettingsStrings.quickMenu;
 
             // Settings - Update
             updateSettingsGroupBox.Text = SettingsStrings.updateSettings;
@@ -320,6 +326,8 @@ namespace SoundSwitch.UI.Forms
             updateNotifyRadioButton.Text = SettingsStrings.updateNotify;
             updateNeverRadioButton.Text = SettingsStrings.updateNever;
             includeBetaVersionsCheckBox.Text = SettingsStrings.updateIncludeBetaVersions;
+            telemetryCheckbox.Text = SettingsStrings.telemetry;
+
 
             // Settings - Language
             languageGroupBox.Text = SettingsStrings.language;

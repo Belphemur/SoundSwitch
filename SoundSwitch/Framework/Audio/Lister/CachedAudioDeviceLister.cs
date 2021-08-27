@@ -28,10 +28,10 @@ namespace SoundSwitch.Framework.Audio.Lister
     public class CachedAudioDeviceLister : IAudioDeviceLister
     {
         /// <inheritdoc />
-        public DeviceReadOnlyCollection<DeviceFullInfo> PlaybackDevices { get; private set; } = new(Enumerable.Empty<DeviceFullInfo>());
+        public DeviceReadOnlyCollection<DeviceFullInfo> PlaybackDevices { get; private set; } = new(Enumerable.Empty<DeviceFullInfo>(), DataFlow.Render);
 
         /// <inheritdoc />
-        public DeviceReadOnlyCollection<DeviceFullInfo> RecordingDevices { get; private set; } = new(Enumerable.Empty<DeviceFullInfo>());
+        public DeviceReadOnlyCollection<DeviceFullInfo> RecordingDevices { get; private set; } = new(Enumerable.Empty<DeviceFullInfo>(), DataFlow.Capture);
 
         private readonly DeviceState _state;
         private readonly DebounceDispatcher _dispatcher = new();
@@ -87,8 +87,8 @@ namespace SoundSwitch.Framework.Audio.Lister
                     }
                 }
 
-                PlaybackDevices = new DeviceReadOnlyCollection<DeviceFullInfo>(playbackDevices.Values);
-                RecordingDevices = new DeviceReadOnlyCollection<DeviceFullInfo>(recordingDevices.Values);
+                PlaybackDevices = new DeviceReadOnlyCollection<DeviceFullInfo>(playbackDevices.Values, DataFlow.Render);
+                RecordingDevices = new DeviceReadOnlyCollection<DeviceFullInfo>(recordingDevices.Values, DataFlow.Capture);
 
 
                 Log.Information("[{@State}] Refreshed all devices. {@Recording}/rec, {@Playback}/play", _state, recordingDevices.Count, playbackDevices.Count);

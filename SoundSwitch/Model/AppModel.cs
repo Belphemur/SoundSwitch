@@ -120,12 +120,32 @@ namespace SoundSwitch.Model
             }
         }
 
+        public bool Telemetry
+        {
+            get => AppConfigs.Configuration.Telemetry;
+            set
+            {
+                AppConfigs.Configuration.Telemetry = value;
+                AppConfigs.Configuration.Save();
+            }
+        }
+        
+        public bool QuickMenuEnabled
+        {
+            get => AppConfigs.Configuration.QuickMenuEnabled;
+            set
+            {
+                AppConfigs.Configuration.QuickMenuEnabled = value;
+                AppConfigs.Configuration.Save();
+            }
+        }
+
 
         public IEnumerable<DeviceInfo> SelectedDevices => AppConfigs.Configuration.SelectedDevices.OrderBy(info => info.DiscoveredAt);
 
-        public IEnumerable<DeviceInfo> AvailablePlaybackDevices => ActiveAudioDeviceLister.PlaybackDevices.IntersectWith(SelectedDevices);
+        public IEnumerable<DeviceFullInfo> AvailablePlaybackDevices => ActiveAudioDeviceLister.PlaybackDevices.IntersectWith(SelectedDevices);
 
-        public IEnumerable<DeviceInfo> AvailableRecordingDevices => ActiveAudioDeviceLister.RecordingDevices.IntersectWith(SelectedDevices);
+        public IEnumerable<DeviceFullInfo> AvailableRecordingDevices => ActiveAudioDeviceLister.RecordingDevices.IntersectWith(SelectedDevices);
 
         public bool SetCommunications
         {

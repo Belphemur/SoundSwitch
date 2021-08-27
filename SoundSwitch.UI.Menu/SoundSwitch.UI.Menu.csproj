@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <UseWindowsForms>true</UseWindowsForms>
+        <TargetFramework>net5.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Update="Form\QuickMenu.cs">
+        <SubType>Form</SubType>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="JetBrains.Annotations" Version="2021.2.0" />
+    </ItemGroup>
+
+</Project>

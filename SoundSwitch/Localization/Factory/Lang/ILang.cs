@@ -9,5 +9,10 @@ namespace SoundSwitch.Localization.Factory.Lang
         /// Culture info of this language
         /// </summary>
         CultureInfo CultureInfo { get; }
+
+        /// <summary>
+        /// Is this language read from Right to left
+        /// </summary>
+        bool IsRightToLeft { get; }
     }
 }
