@@ -29,7 +29,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
     {
         private CancellationTokenSource _cancellationTokenSource;
         public NotificationTypeEnum TypeEnum => NotificationTypeEnum.SoundNotification;
-        public string               Label    => SettingsStrings.notificationOptionSound;
+        public string Label => SettingsStrings.notificationOptionSound;
 
         public INotificationConfiguration Configuration { get; set; }
 
@@ -37,7 +37,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         {
             if (audioDevice.DataFlow != DataFlow.Render)
                 return;
-            
+
             _cancellationTokenSource?.Cancel();
             _cancellationTokenSource?.Dispose();
             _cancellationTokenSource = new CancellationTokenSource();
@@ -57,8 +57,10 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
                         {
                             return;
                         }
+
                         semaphore.Release();
-                    };                    player.Play();
+                    };
+                    player.Play();
                     await semaphore.WaitAsync(_cancellationTokenSource.Token);
                 }
                 catch (TaskCanceledException)
@@ -107,7 +109,6 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
 
         public void NotifyMuteChanged(string microphoneName, bool newMuteState)
         {
-            
         }
 
         private Stream GetStreamCopy()
