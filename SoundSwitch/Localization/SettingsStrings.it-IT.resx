@@ -465,4 +465,13 @@ Ripristina lo stato del sistema quando l'applicazione viene chiusa.</value>
   <data name="notification.microphone.muted" xml:space="preserve">
     <value>{0} ha ora l'audio disabilitato.</value>
   </data>
+  <data name="quickMenu.desc" xml:space="preserve">
+    <value>Visualizza un menu rapido come la lingua di Windows quando usi un tasto di scelta rapida</value>
+  </data>
+  <data name="quickMenu" xml:space="preserve">
+    <value>Menu rapido con tasto scelta rapida</value>
+  </data>
+  <data name="telemetry" xml:space="preserve">
+    <value>Telemetria</value>
+  </data>
 </root>
