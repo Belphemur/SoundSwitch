@@ -98,9 +98,5 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
                 //Ignored
             }
         }
-
-        public void NotifyMuteChanged(string microphoneName, bool newMuteState)
-        {
-        }
     }
 }

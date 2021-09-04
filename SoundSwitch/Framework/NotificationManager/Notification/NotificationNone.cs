@@ -49,10 +49,5 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         public void NotifyProfileChanged(Profile.Profile profile, uint? processId)
         {
         }
-
-        public void NotifyMuteChanged(string microphoneName, bool newMuteState)
-        {
-            
-        }
     }
 }
