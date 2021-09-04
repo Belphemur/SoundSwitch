@@ -122,5 +122,14 @@ namespace SoundSwitch.Localization {
                 return ResourceManager.GetString("remindMe", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is a problem with the last SoundSwitch update. You&apos;ll need to manually download the new version at {0}.
+        /// </summary>
+        internal static string wrongSignature {
+            get {
+                return ResourceManager.GetString("wrongSignature", resourceCulture);
+            }
+        }
     }
 }
