@@ -415,4 +415,7 @@ Restaurar o estado do sistema quando a aplicação é fechada.</value>
   <data name="telemetry" xml:space="preserve">
     <value>Telemetria</value>
   </data>
+  <data name="telemetry.desc" xml:space="preserve">
+    <value>Recolhe de forma anónima a versão do SoundSwitch que está a ser utilizada. É partilhado apenas com o programador do SoundSwitch.</value>
+  </data>
 </root>
