@@ -350,7 +350,7 @@ Restaura o estado do sistema quando o aplicativo é fechado.</value>
     <value>Ativa o perfil se o programa em primeiro plano conter os seguintes caracteres</value>
   </data>
   <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>Tecla de atalho usada para ativar o perfil. Se você usar duas vezes a mesma tecla, poderá alternar entre os perfis.</value>
+    <value>Tecla de atalho usada para ativar o perfil. Se você usar a mesma tecla de atalho, poderá alternar entre os perfis.</value>
   </data>
   <data name="profile.trigger.steam" xml:space="preserve">
     <value>Modo Big Picture do Steam</value>
