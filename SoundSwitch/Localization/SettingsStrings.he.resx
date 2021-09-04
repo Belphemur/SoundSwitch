@@ -415,4 +415,7 @@
   <data name="quickMenu" xml:space="preserve">
     <value>תפריט מהיר עם מקש חם</value>
   </data>
+  <data name="telemetry.desc" xml:space="preserve">
+    <value>איסוף אלמוני של גרסה ה־SoundSwitch שבשימוש. משותף רק עם המפתח של SoundSwitch.</value>
+  </data>
 </root>
