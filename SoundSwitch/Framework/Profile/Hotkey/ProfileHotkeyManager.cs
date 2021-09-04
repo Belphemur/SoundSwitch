@@ -17,7 +17,7 @@ namespace SoundSwitch.Framework.Profile.Hotkey
 
             internal bool HasOnlyOne => Profiles.Count == 1;
 
-            public Profile NextOne() => Profiles.FirstOrDefault(profile => profile != LastUsed) ?? Profiles.Last();
+            public Profile NextOne() => Profiles.SkipWhile(profile => profile != LastUsed).Skip(1).FirstOrDefault() ?? Profiles.First();
         };
 
         private class HotKeyItem : IconMenuItem<Profile>.DataContainer
