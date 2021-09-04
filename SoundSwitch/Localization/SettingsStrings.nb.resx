@@ -377,7 +377,7 @@ Gjenopprett systemets tilstand når programmet lukkes.</value>
     <value>Gjenopprett enheter når utløser slutter</value>
   </data>
   <data name="usePrimaryScreenTooltip" xml:space="preserve">
-    <value>Vis banner på hovedskjerm istedenfor på aktiv skjerm.</value>
+    <value>Vis banner på hovedskjerm istedenfor på fokusert skjerm.</value>
   </data>
   <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
     <value>Systemtilstand gjenopprettet</value>
@@ -408,5 +408,14 @@ Gjenopprett systemets tilstand når programmet lukkes.</value>
   </data>
   <data name="notification.microphone.muted" xml:space="preserve">
     <value>{0} er nå forstummet.</value>
+  </data>
+  <data name="telemetry.desc" xml:space="preserve">
+    <value>Hent anonym innmelding av hvilken versjon av SoundSwitch som brukes. Deles kun med utvikleren av SoundSwitch.</value>
+  </data>
+  <data name="quickMenu.desc" xml:space="preserve">
+    <value>Vis en hurtigmeny lik Windows language ved bruk av hurtigtast</value>
+  </data>
+  <data name="quickMenu" xml:space="preserve">
+    <value>Hurtigmeny på hurtigtast</value>
   </data>
 </root>
