@@ -13,6 +13,8 @@ namespace SoundSwitch.Common.Framework.Audio.Device
         public System.Drawing.Icon LargeIcon => AudioDeviceIconExtractor.ExtractIconFromPath(IconPath, Type, true);
         public System.Drawing.Icon SmallIcon => AudioDeviceIconExtractor.ExtractIconFromPath(IconPath, Type, false);
 
+        public int Volume { get; } = 0;
+
         [JsonConstructor]
         public DeviceFullInfo(string name, string id, DataFlow type, string iconPath, DeviceState state, bool isUsb) : base(name, id, type, isUsb, DateTime.UtcNow)
         {
@@ -24,6 +26,14 @@ namespace SoundSwitch.Common.Framework.Audio.Device
         {
             IconPath = device.IconPath;
             State = device.State;
+            try
+            {
+                Volume = (int)(device.AudioEndpointVolume.MasterVolumeLevelScalar * 100);
+            }
+            catch
+            {
+                //Ignored
+            }
         }
     }
 }

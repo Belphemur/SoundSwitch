@@ -32,7 +32,7 @@ namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo
             var playbackDefaultDevice = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eConsole);
             return playbackDefaultDevice == null
                 ? null
-                : string.Format(SettingsStrings.activePlayback, playbackDefaultDevice.NameClean);
+                : string.Format(SettingsStrings.activePlayback + " - {1}%", playbackDefaultDevice.NameClean, playbackDefaultDevice.Volume);
         }
 
         public override string ToString()

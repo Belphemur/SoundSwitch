@@ -32,7 +32,7 @@ namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo
             var recordingDevice = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eConsole);
             return recordingDevice == null
                 ? null
-                : string.Format(SettingsStrings.activeRecording, recordingDevice.NameClean);
+                : string.Format(SettingsStrings.activePlayback + " - {1}%", recordingDevice.NameClean, recordingDevice.Volume);
         }
 
         public override string ToString()
