@@ -746,7 +746,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hotkey used to activate the profile. If you use twice the same key, you&apos;ll be able to switch between profiles..
+        ///   Looks up a localized string similar to Hotkey used to activate the profile. If you use the same hotkey, you&apos;ll be able to switch between profiles..
         /// </summary>
         internal static string profile_trigger_hotkey_desc {
             get {
