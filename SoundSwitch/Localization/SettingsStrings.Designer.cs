@@ -964,6 +964,15 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gather anonymously which version of SoundSwitch is in use. Only shared with the developer of SoundSwitch..
+        /// </summary>
+        internal static string telemetry_desc {
+            get {
+                return ResourceManager.GetString("telemetry.desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tooltip on Hover.
         /// </summary>
         internal static string tooltipOnHover {

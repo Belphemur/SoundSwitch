@@ -454,4 +454,7 @@ Restaurer l'état du système quand l'application est fermée.</value>
   <data name="quickMenu.desc" xml:space="preserve">
 	  <value>Affiche un menu sous la souris quand un raccourcis clavier est utilisé.</value>
   </data>
+  <data name="telemetry.desc" xml:space="preserve">
+	  <value>Rassemble anonymement quelle version de SoundSwitch est utilisée. Partagé uniquement avec le developer de SoundSwitch.</value>
+  </data>
 </root>

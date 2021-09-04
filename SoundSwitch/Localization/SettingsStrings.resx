@@ -474,4 +474,7 @@ Restore the state of the system when the application is closed.</value>
   <data name="quickMenu.desc" xml:space="preserve">
     <value>Show a quick menu like Windows language when using a hotkey</value>
   </data>
+  <data name="telemetry.desc" xml:space="preserve">
+    <value>Gather anonymously which version of SoundSwitch is in use. Only shared with the developer of SoundSwitch.</value>
+  </data>
 </root>
