@@ -13,9 +13,9 @@ using SoundSwitch.Audio.Manager.Interop.Com.User;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Configuration;
+using SoundSwitch.Framework.Profile.Hotkey;
 using SoundSwitch.Framework.Profile.Trigger;
 using SoundSwitch.Framework.WinApi;
-using SoundSwitch.Framework.WinApi.Keyboard;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
 using SoundSwitch.Util;
@@ -26,75 +26,94 @@ namespace SoundSwitch.Framework.Profile
     {
         public delegate void ShowError(string errorMessage, string errorTitle);
 
-        private readonly WindowMonitor                           _windowMonitor;
-        private readonly AudioSwitcher                           _audioSwitcher;
-        private readonly IAudioDeviceLister                      _activeDeviceLister;
-        private readonly ShowError                               _showError;
-        private readonly TriggerFactory                          _triggerFactory;
+        private readonly WindowMonitor _windowMonitor;
+        private readonly AudioSwitcher _audioSwitcher;
+        private readonly IAudioDeviceLister _activeDeviceLister;
+        private readonly ShowError _showError;
+        private readonly TriggerFactory _triggerFactory;
         private readonly NotificationManager.NotificationManager _notificationManager;
 
         private Profile? _steamProfile;
 
         private readonly Dictionary<User32.NativeMethods.HWND, Profile> _activeWindowsTrigger = new();
 
-        private readonly Dictionary<HotKey, Profile>                                    _profilesByHotkey     = new();
         private readonly Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)> _profileByApplication = new();
         private readonly Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)> _profilesByWindowName = new();
-        private readonly Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)> _profilesByUwpApp     = new();
+        private readonly Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)> _profilesByUwpApp = new();
+
+        private readonly ProfileHotkeyManager _profileHotkeyManager;
 
 
         public IReadOnlyCollection<Profile> Profiles => AppConfigs.Configuration.Profiles;
 
-        public ProfileManager(WindowMonitor                           windowMonitor,
-                              AudioSwitcher                           audioSwitcher,
-                              IAudioDeviceLister                      activeDeviceLister,
-                              ShowError                               showError,
-                              TriggerFactory                          triggerFactory,
+        public ProfileManager(WindowMonitor windowMonitor,
+                              AudioSwitcher audioSwitcher,
+                              IAudioDeviceLister activeDeviceLister,
+                              ShowError showError,
+                              TriggerFactory triggerFactory,
                               NotificationManager.NotificationManager notificationManager)
         {
-            _windowMonitor       = windowMonitor;
-            _audioSwitcher       = audioSwitcher;
-            _activeDeviceLister  = activeDeviceLister;
-            _showError           = showError;
-            _triggerFactory      = triggerFactory;
+            _windowMonitor = windowMonitor;
+            _audioSwitcher = audioSwitcher;
+            _activeDeviceLister = activeDeviceLister;
+            _showError = showError;
+            _triggerFactory = triggerFactory;
             _notificationManager = notificationManager;
+            _profileHotkeyManager = new(this);
         }
 
-        private void RegisterTriggers(Profile profile, bool onInit = false)
+        private bool RegisterTriggers(Profile profile, bool onInit = false)
         {
+            var success = true;
             foreach (var trigger in profile.Triggers)
             {
-                trigger.Type.Switch(() => { _profilesByHotkey.Add(trigger.HotKey, profile); },
-                    () => { _profilesByWindowName.Add(trigger.WindowName.ToLower(), (profile, trigger)); },
-                    () => { _profileByApplication.Add(trigger.ApplicationPath.ToLower(), (profile, trigger)); },
-                    () => { _steamProfile = profile; },
+                success &= trigger.Type.Match(() => _profileHotkeyManager.Add(trigger.HotKey, profile),
+                    () =>
+                    {
+                        _profilesByWindowName.Add(trigger.WindowName.ToLower(), (profile, trigger));
+                        return true;
+                    },
+                    () =>
+                    {
+                        _profileByApplication.Add(trigger.ApplicationPath.ToLower(), (profile, trigger));
+                        return true;
+                    },
+                    () =>
+                    {
+                        _steamProfile = profile;
+                        return true;
+                    },
                     () =>
                     {
                         if (!onInit)
                         {
-                            return;
+                            return true;
                         }
 
                         SwitchAudio(profile);
-                    }, () => { _profilesByUwpApp.Add(trigger.WindowName.ToLower(), (profile, trigger)); },
-                    () => {});
+                        return true;
+                    }, () =>
+                    {
+                        _profilesByUwpApp.Add(trigger.WindowName.ToLower(), (profile, trigger));
+                        return true;
+                    },
+                    () => true);
+               
             }
+
+            return success;
         }
 
         private void UnRegisterTriggers(Profile profile)
         {
             foreach (var trigger in profile.Triggers)
             {
-                trigger.Type.Switch(() =>
-                    {
-                        WindowsAPIAdapter.UnRegisterHotKey(trigger.HotKey);
-                        _profilesByHotkey.Remove(trigger.HotKey);
-                    },
+                trigger.Type.Switch(() => { _profileHotkeyManager.Remove(trigger.HotKey, profile); },
                     () => { _profilesByWindowName.Remove(trigger.WindowName.ToLower()); },
                     () => { _profileByApplication.Remove(trigger.ApplicationPath.ToLower()); },
                     () => { _steamProfile = null; }, () => { },
                     () => { _profilesByUwpApp.Remove(trigger.WindowName.ToLower()); },
-                    () => {});
+                    () => { });
             }
         }
 
@@ -104,17 +123,9 @@ namespace SoundSwitch.Framework.Profile
         /// <returns></returns>
         public Result<Profile[], VoidSuccess> Init()
         {
-            foreach (var profile in AppConfigs.Configuration.Profiles)
-            {
-                RegisterTriggers(profile, true);
-            }
+            var errors = AppConfigs.Configuration.Profiles.Where(profile => !RegisterTriggers(profile, true)).ToArray();
 
             RegisterEvents();
-
-            var errors = _profilesByHotkey
-                         .Where(pair => !WindowsAPIAdapter.RegisterHotKey(pair.Key))
-                         .Select(pair => pair.Value)
-                         .ToArray();
 
             InitializeProfileExistingProcess();
 
@@ -139,12 +150,6 @@ namespace SoundSwitch.Framework.Profile
                 if (HandleWindowName(@event)) return;
             };
 
-            WindowsAPIAdapter.HotKeyPressed += (sender, args) =>
-            {
-                if (!_profilesByHotkey.TryGetValue(args.HotKey, out var profile))
-                    return;
-                SwitchAudio(profile);
-            };
             WindowsAPIAdapter.WindowDestroyed += (sender, @event) => { RestoreState(@event.Hwnd); };
         }
 
@@ -209,18 +214,18 @@ namespace SoundSwitch.Framework.Profile
                 return false;
             }
 
-            var communication = _audioSwitcher.GetDefaultAudioEndpoint(EDataFlow.eRender,  ERole.eCommunications);
-            var playback      = _audioSwitcher.GetDefaultAudioEndpoint(EDataFlow.eRender,  ERole.eMultimedia);
-            var recording     = _audioSwitcher.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eMultimedia);
+            var communication = _audioSwitcher.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eCommunications);
+            var playback = _audioSwitcher.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia);
+            var recording = _audioSwitcher.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eMultimedia);
 
             var currentState = new Profile
             {
                 AlsoSwitchDefaultDevice = true,
-                Name                    = SettingsStrings.profile_trigger_restoreDevices_title,
-                Communication           = communication,
-                Playback                = playback,
-                Recording               = recording,
-                NotifyOnActivation      = profile.NotifyOnActivation
+                Name = SettingsStrings.profile_trigger_restoreDevices_title,
+                Communication = communication,
+                Playback = playback,
+                Recording = recording,
+                NotifyOnActivation = profile.NotifyOnActivation
             };
             _activeWindowsTrigger.Add(windowHandle, currentState);
             return true;
@@ -283,7 +288,7 @@ namespace SoundSwitch.Framework.Profile
                 _audioSwitcher.SwitchProcessTo(
                     deviceToUse.Id,
                     device.Role,
-                    (EDataFlow) deviceToUse.Type,
+                    (EDataFlow)deviceToUse.Type,
                     processId);
 
                 if (profile.AlsoSwitchDefaultDevice)
@@ -317,7 +322,7 @@ namespace SoundSwitch.Framework.Profile
         /// <returns></returns>
         public IEnumerable<ITriggerDefinition> AvailableTriggers()
         {
-            var triggers       = Profiles.SelectMany(profile => profile.Triggers).GroupBy(trigger => trigger.Type).ToDictionary(grouping => grouping.Key, grouping => grouping.Count());
+            var triggers = Profiles.SelectMany(profile => profile.Triggers).GroupBy(trigger => trigger.Type).ToDictionary(grouping => grouping.Key, grouping => grouping.Count());
             var triggerFactory = new TriggerFactory();
             return triggerFactory.AllImplementations
                                  .Where(pair =>
@@ -353,7 +358,7 @@ namespace SoundSwitch.Framework.Profile
         /// </summary>
         public Result<string, VoidSuccess> UpdateProfile(Profile oldProfile, Profile newProfile)
         {
-            DeleteProfiles(new[] {oldProfile});
+            DeleteProfiles(new[] { oldProfile });
             return ValidateProfile(newProfile)
                    .Map(success =>
                    {
@@ -394,7 +399,7 @@ namespace SoundSwitch.Framework.Profile
             {
                 var error = trigger.Type.Match(() =>
                     {
-                        if (trigger.HotKey == null || _profilesByHotkey.ContainsKey(trigger.HotKey) || !WindowsAPIAdapter.RegisterHotKey(trigger.HotKey))
+                        if (trigger.HotKey == null || !_profileHotkeyManager.IsValidHotkey(trigger.HotKey))
                         {
                             return string.Format(SettingsStrings.profile_error_hotkey, trigger.HotKey);
                         }
@@ -454,7 +459,7 @@ namespace SoundSwitch.Framework.Profile
                 return SettingsStrings.profile_error_needPlaybackOrRecording;
             }
 
-            if (profile.HotKey != null && _profilesByHotkey.ContainsKey(profile.HotKey))
+            if (profile.HotKey != null && !_profileHotkeyManager.IsValidHotkey(profile.HotKey))
             {
                 return string.Format(SettingsStrings.profile_error_hotkey, profile.HotKey);
             }
@@ -484,8 +489,8 @@ namespace SoundSwitch.Framework.Profile
         /// </summary>
         public Result<Profile[], VoidSuccess> DeleteProfiles(IEnumerable<Profile> profilesToDelete)
         {
-            var errors            = new List<Profile>();
-            var profiles          = profilesToDelete.ToArray();
+            var errors = new List<Profile>();
+            var profiles = profilesToDelete.ToArray();
             var resetProcessAudio = profiles.Any(profile => profile.Triggers.Any(trigger => trigger.Type == TriggerFactory.Enum.Process || trigger.Type == TriggerFactory.Enum.Window));
             foreach (var profile in profiles)
             {
@@ -540,7 +545,7 @@ namespace SoundSwitch.Framework.Profile
                     {
                         var handle = User32.NativeMethods.HWND.Cast(process.Handle);
                         SaveCurrentState(handle, profile.Profile, profile.Trigger);
-                        SwitchAudio(profile.Profile, (uint) process.Id);
+                        SwitchAudio(profile.Profile, (uint)process.Id);
                     }
                 }
                 catch (Win32Exception)

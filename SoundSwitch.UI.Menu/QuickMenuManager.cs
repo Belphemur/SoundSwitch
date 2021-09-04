@@ -39,9 +39,10 @@ namespace SoundSwitch.UI.Menu
                 if (_quickMenu == null)
                 {
                     _quickMenu = new QuickMenu<T>();
-                    _quickMenu.SelectionChanged += (sender, @event) => selectionChanged(@event);
                     _quickMenu.Disposed += (_, _) => _quickMenu = null;
                 }
+                _quickMenu.ClearEventHandlers();
+                _quickMenu.SelectionChanged += (sender, @event) => selectionChanged(@event);
 
                 _quickMenu.SetData(payloads);
             }, null);

@@ -38,6 +38,7 @@ namespace SoundSwitch.UI.Forms
             HideTriggerComponents();
 
             hotKeyControl.Location = textInput.Location;
+            hotKeyControl.ListenToHotkey = true;
 
             LocalizeForm();
             using var iconBitmap = new Bitmap(Resources.profile_menu_icon);

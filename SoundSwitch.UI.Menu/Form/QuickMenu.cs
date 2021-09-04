@@ -12,6 +12,7 @@ namespace SoundSwitch.UI.Menu.Form
     public partial class QuickMenu<T> : System.Windows.Forms.Form
     {
         private delegate Task MethodInvoker();
+
         public record MenuClickedEvent(IconMenuItem<T>.DataContainer Item);
 
         private readonly Dictionary<string, IconMenuItem<T>.DataContainer> _currentPayloads = new();
@@ -43,12 +44,21 @@ namespace SoundSwitch.UI.Menu.Form
             }
         }
 
-        public QuickMenu()
+        internal QuickMenu()
         {
             InitializeComponent();
             _hideDisposeMethod = HideDispose;
             Show();
             SetLocationToCursor();
+        }
+
+        /// <summary>
+        /// Clear the event handler for <see cref="ItemClicked"/> and <see cref="SelectionChanged"/>
+        /// </summary>
+        public void ClearEventHandlers()
+        {
+            SelectionChanged = null;
+            ItemClicked = null;
         }
 
         public void SetData(IEnumerable<IconMenuItem<T>.DataContainer> payloads)
@@ -112,7 +122,7 @@ namespace SoundSwitch.UI.Menu.Form
             ResetOpacity();
         }
 
-        private void OnItemClicked(IconMenuItem<T> control) 
+        private void OnItemClicked(IconMenuItem<T> control)
         {
             DebounceHiding();
             var dataContainer = control.CurrentDataContainer;
