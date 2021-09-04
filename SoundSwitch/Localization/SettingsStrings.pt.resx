@@ -383,7 +383,7 @@ Restaurar o estado do sistema quando a aplicação é fechada.</value>
     <value>Ativar o perfil se o programa em primeiro plano contiver os seguintes caracteres</value>
   </data>
   <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>Tecla de atalho utilizada para ativar o perfil</value>
+    <value>Tecla de atalho utilizada para ativar o perfil. Se usar a mesma tecla duas vezes seguidas, poderá alternar entre perfis.</value>
   </data>
   <data name="profile.trigger.steam" xml:space="preserve">
     <value>Imagem grande no Steam</value>
