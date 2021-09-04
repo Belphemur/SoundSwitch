@@ -112,6 +112,11 @@ We reserve the right, at Our sole discretion, to modify or replace these Terms a
 
 By continuing to access or use Our Service after those revisions become effective, You agree to be bound by the revised terms. If You do not agree to the new terms, in whole or in part, please stop using the website and the Service.
 
+# Telemetry terms
+By having the telemetry enabled, you agree to have the version of SoundSwitch you have installed be shared with Us anynoumously using the service provided by [Sentry](https://sentry.io/). This information is only used as a way to gather the adoption of new version of the sofware.
+## Data gathered
+* Version of SoundSwitch
+
 # Contact Us
 
 If you have any questions about these Terms and Conditions, You can contact us:
