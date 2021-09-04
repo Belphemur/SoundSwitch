@@ -201,6 +201,13 @@ namespace SoundSwitch.Audio.Manager
         public MMDevice? GetDefaultMmDevice(EDataFlow flow, ERole role) => ComThread.Invoke(() => EnumeratorClient.GetDefaultEndpoint(flow, role));
 
         /// <summary>
+        /// Get a device with the given id, returns null if not present
+        /// </summary>
+        /// <param name="deviceId"></param>
+        /// <returns></returns>
+        public MMDevice? GetDevice(string deviceId) => ComThread.Invoke(() => EnumeratorClient.GetDevice(deviceId));
+
+        /// <summary>
         /// Reset Windows configuration for the process that had their audio device changed
         /// </summary>
         public void ResetProcessDeviceConfiguration()
