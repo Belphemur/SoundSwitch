@@ -50,6 +50,7 @@ namespace SoundSwitch.Framework.Audio.Microphone
                 return null;
             }
 
+            _notificationManager.NotifyMuteChanged(result.Name, result.NewMuteState);
             return result.NewMuteState;
         }
     }
