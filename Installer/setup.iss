@@ -42,7 +42,8 @@ SignTool=SoundSwitch
 SignTool=Certum
 
 SignedUninstaller=yes
-LicenseFile={#ExeDir}\LICENSE.txt
+LicenseFile={#ExeDir}LICENSE.txt
+InfoBeforeFile={#ExeDir}Terms.txt
 SetupLogging=yes
 RestartApplications=no
 ;AppMutex={#MyAppSetupName}
