@@ -79,4 +79,7 @@
   <data name="remindMe" xml:space="preserve">
     <value>Mais tarde</value>
   </data>
+  <data name="wrongSignature" xml:space="preserve">
+    <value>Surgiu um problema com a última atualização do SoundSwitch. Terá de descarregar manualmente a nova versão em {0}</value>
+  </data>
 </root>
