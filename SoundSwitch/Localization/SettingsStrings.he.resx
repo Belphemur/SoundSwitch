@@ -300,7 +300,7 @@
     <value>הפעל את הפרופיל אם התוכנה בקידמת המסך מכילה את התווים הבאים</value>
   </data>
   <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>קיצור מקשים בשימוש להפעלת הפרופיל</value>
+    <value>קיצור מקשים בשימוש להפעלת הפרופיל. אם ייעשה שימוש באותו המקש החם, תהיה לך אפשרות לעבור בין פרופילים.</value>
   </data>
   <data name="profile.trigger.steam" xml:space="preserve">
     <value>Steam Big Picture</value>
