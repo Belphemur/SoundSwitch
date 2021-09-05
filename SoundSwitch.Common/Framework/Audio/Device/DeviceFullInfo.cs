@@ -17,7 +17,7 @@ namespace SoundSwitch.Common.Framework.Audio.Device
         public System.Drawing.Icon SmallIcon => AudioDeviceIconExtractor.ExtractIconFromPath(IconPath, Type, false);
 
         [JsonIgnore]
-        public int Volume { get; } = 0;
+        public int Volume { get; private set; } = 0;
 
         [JsonConstructor]
         public DeviceFullInfo(string name, string id, DataFlow type, string iconPath, DeviceState state, bool isUsb) : base(name, id, type, isUsb, DateTime.UtcNow)
@@ -35,7 +35,9 @@ namespace SoundSwitch.Common.Framework.Audio.Device
                 //Can only get volume for active devices
                 if (device.State == DeviceState.Active)
                 {
-                    Volume = (int)(device.AudioEndpointVolume.MasterVolumeLevelScalar * 100);
+                    var deviceAudioEndpointVolume = device.AudioEndpointVolume;
+                    Volume = (int)(deviceAudioEndpointVolume.MasterVolumeLevelScalar * 100);
+                    deviceAudioEndpointVolume.OnVolumeNotification += data => Volume = (int)data.MasterVolume * 100;
                 }
             }
             catch
