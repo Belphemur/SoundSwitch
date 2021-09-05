@@ -28,7 +28,11 @@ namespace SoundSwitch.Common.Framework.Audio.Device
             State = device.State;
             try
             {
-                Volume = (int)(device.AudioEndpointVolume.MasterVolumeLevelScalar * 100);
+                //Can only get volume for active devices
+                if (device.State == DeviceState.Active)
+                {
+                    Volume = (int)(device.AudioEndpointVolume.MasterVolumeLevelScalar * 100);
+                }
             }
             catch
             {
