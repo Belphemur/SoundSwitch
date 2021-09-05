@@ -6,9 +6,9 @@
         <LangVersion>latest</LangVersion>
         <UseWindowsForms>true</UseWindowsForms>
         <Deterministic>false</Deterministic>
-        <PublishTrimmed>true</PublishTrimmed>
+        <PublishTrimmed>false</PublishTrimmed>
         <TrimMode>link</TrimMode>
-        <PublishReadyToRun>false</PublishReadyToRun>
+        <PublishReadyToRun>true</PublishReadyToRun>
         <Configurations>Debug;Release;Beta</Configurations>
         <RuntimeIdentifier>win-x64</RuntimeIdentifier>
         <TargetFramework>net5.0-windows</TargetFramework>
