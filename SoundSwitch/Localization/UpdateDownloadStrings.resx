@@ -118,4 +118,7 @@
 	<data name="remindMe" xml:space="preserve">
 		<value>Later</value>
 	</data>
+	<data name="wrongSignature" xml:space="preserve">
+		<value>There is a problem with the last SoundSwitch update. You'll need to manually download the new version at {0}</value>
+	</data>
 </root>

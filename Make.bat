@@ -55,6 +55,8 @@ echo.
 if %buildChangelogAndReadme%==1 (
     echo Generate Changelog
     cmd.exe /c markdown-html CHANGELOG.md -o %finalDir%\Changelog.html > NUL
+    echo Generate Terms
+    cmd.exe /c markdown-html Terms.md -o %finalDir%\Terms.html > NUL
 
     echo Generate README
     cmd.exe /c markdown-html README.md -o %finalDir%\Readme.html > NUL
@@ -72,6 +74,7 @@ xcopy /y img\soundSwitched.png %finalDir% >nul 2>nul
 
 echo Copy LICENSE
 xcopy /y LICENSE.txt %finalDir% >nul 2>nul
+xcopy /y Terms.txt %finalDir% >nul 2>nul
 
 echo Copy Published
 xcopy /y %BIN_DIR% %finalDir% /E/H/C/I >nul 2>nul

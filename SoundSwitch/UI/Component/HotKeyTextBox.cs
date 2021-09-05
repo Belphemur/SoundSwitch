@@ -3,8 +3,8 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using HotKey = SoundSwitch.Framework.WinApi.Keyboard.HotKey;
-using KeyboardWindowsAPI = SoundSwitch.Framework.WinApi.Keyboard.KeyboardWindowsAPI;
+using SoundSwitch.Framework.WinApi;
+using SoundSwitch.Framework.WinApi.Keyboard;
 
 namespace SoundSwitch.UI.Component
 {
@@ -27,11 +27,57 @@ namespace SoundSwitch.UI.Component
         }
 
         private HotKey _hotKey;
-        [Browsable(true)] public event EventHandler<Event> HotKeyChanged;
+        private bool _listenToHotkey;
+
+        [Browsable(true)]
+        public event EventHandler<Event> HotKeyChanged;
+
+        [Browsable(true)]
+        public bool ListenToHotkey
+        {
+            get => _listenToHotkey;
+            set
+            {
+                _listenToHotkey = value;
+                if (value)
+                {
+                    WindowsAPIAdapter.HotKeyPressed += WindowsAPIAdapterOnHotKeyPressed;
+                }
+                else
+                {
+                    WindowsAPIAdapter.HotKeyPressed -= WindowsAPIAdapterOnHotKeyPressed;
+                }
+            }
+        }
 
         public void CleanHotKeyChangedHandler()
         {
             HotKeyChanged = null;
+        }
+
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && ListenToHotkey)
+            {
+                WindowsAPIAdapter.HotKeyPressed -= WindowsAPIAdapterOnHotKeyPressed;
+            }
+            base.Dispose(disposing);
+        }
+
+        private void WindowsAPIAdapterOnHotKeyPressed(object? sender, WindowsAPIAdapter.KeyPressedEventArgs e)
+        {
+            Invoke(new Action(() =>
+            {
+                if (!Visible)
+                {
+                    return;
+                }
+
+                HotKey = e.HotKey;
+                ForeColor = Color.Green;
+                HotKeyChanged?.Invoke(this, new Event());
+            }), null);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)

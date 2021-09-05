@@ -746,7 +746,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hotkey used to activate the profile.
+        ///   Looks up a localized string similar to Hotkey used to activate the profile. If you use the same hotkey, you&apos;ll be able to switch between profiles..
         /// </summary>
         internal static string profile_trigger_hotkey_desc {
             get {
@@ -960,6 +960,15 @@ namespace SoundSwitch.Localization {
         internal static string telemetry {
             get {
                 return ResourceManager.GetString("telemetry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gather anonymously which version of SoundSwitch is in use. Only shared with the developer of SoundSwitch..
+        /// </summary>
+        internal static string telemetry_desc {
+            get {
+                return ResourceManager.GetString("telemetry.desc", resourceCulture);
             }
         }
         

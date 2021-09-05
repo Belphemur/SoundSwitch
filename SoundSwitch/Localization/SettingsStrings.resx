@@ -377,7 +377,7 @@ Both: Change when any type of device is switched.</value>
     <value>Steam Big Picture</value>
   </data>
   <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>Hotkey used to activate the profile</value>
+    <value>Hotkey used to activate the profile. If you use the same hotkey, you'll be able to switch between profiles.</value>
   </data>
   <data name="profile.trigger.window.desc" xml:space="preserve">
     <value>Activate the profile if the foregound program contains the following characters</value>
@@ -473,5 +473,8 @@ Restore the state of the system when the application is closed.</value>
   </data>
   <data name="quickMenu.desc" xml:space="preserve">
     <value>Show a quick menu like Windows language when using a hotkey</value>
+  </data>
+  <data name="telemetry.desc" xml:space="preserve">
+    <value>Gather anonymously which version of SoundSwitch is in use. Only shared with the developer of SoundSwitch.</value>
   </data>
 </root>

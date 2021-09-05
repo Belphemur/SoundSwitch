@@ -47,13 +47,28 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
         {
             try
             {
-                var defaultDevice = _enumerator.GetDefaultAudioEndpoint((DataFlow) flow, (Role) role);
+                var defaultDevice = _enumerator.GetDefaultAudioEndpoint((DataFlow)flow, (Role)role);
                 return defaultDevice;
             }
             catch (Exception)
             {
                 //Happens if there is no default device for the given Data Flow and/or role
                 // See issue #401
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Get device with the given id
+        /// </summary>
+        public MMDevice? GetDevice(string deviceId)
+        {
+            try
+            {
+                return _enumerator.GetDevice(deviceId);
+            }
+            catch
+            {
                 return null;
             }
         }

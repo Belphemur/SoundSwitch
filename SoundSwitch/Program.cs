@@ -64,10 +64,15 @@ namespace SoundSwitch
                     CacheDirPath = Path.Combine(ApplicationPath.Default, "Session")
                 };
                 sentryOptions.AddIntegration(new ContribSentrySdkIntegration(contribOptions));
-                ContribSentrySdk.StartSession(user);
             }
 
             using var _ = SentrySdk.Init(sentryOptions);
+            //Needs to be started AFTER the init of the main SDK
+            //else the ContribSentrySdk isn't enabled and no tracking is done
+            if (AppConfigs.Configuration.Telemetry)
+            {
+                ContribSentrySdk.StartSession(user);
+            }
 
 
             SentrySdk.ConfigureScope(scope => { scope.User = user; });

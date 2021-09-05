@@ -29,7 +29,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
     {
         private CancellationTokenSource _cancellationTokenSource;
         public NotificationTypeEnum TypeEnum => NotificationTypeEnum.SoundNotification;
-        public string               Label    => SettingsStrings.notificationOptionSound;
+        public string Label => SettingsStrings.notificationOptionSound;
 
         public INotificationConfiguration Configuration { get; set; }
 
@@ -37,7 +37,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         {
             if (audioDevice.DataFlow != DataFlow.Render)
                 return;
-            
+
             _cancellationTokenSource?.Cancel();
             _cancellationTokenSource?.Dispose();
             _cancellationTokenSource = new CancellationTokenSource();
@@ -45,15 +45,23 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             {
                 try
                 {
-                    using var cts = CancellationTokenSource.CreateLinkedTokenSource(_cancellationTokenSource.Token);
+                    using var semaphore = new SemaphoreSlim(0);
                     using var player = new WasapiOut(audioDevice, AudioClientShareMode.Shared, true, 200);
                     await using var memoryStreamedSound = GetStreamCopy();
                     await using var waveStream = new WaveFileReader(memoryStreamedSound);
                     player.Init(waveStream);
 
-                    player.PlaybackStopped += (_, _) => cts.CancelAfter(TimeSpan.FromMilliseconds(750));
+                    player.PlaybackStopped += (_, _) =>
+                    {
+                        if (_cancellationTokenSource.Token.IsCancellationRequested)
+                        {
+                            return;
+                        }
+
+                        semaphore.Release();
+                    };
                     player.Play();
-                    await Task.Delay(-1, cts.Token);
+                    await semaphore.WaitAsync(_cancellationTokenSource.Token);
                 }
                 catch (TaskCanceledException)
                 {
@@ -101,7 +109,6 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
 
         public void NotifyMuteChanged(string microphoneName, bool newMuteState)
         {
-            
         }
 
         private Stream GetStreamCopy()

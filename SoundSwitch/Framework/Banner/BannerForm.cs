@@ -80,7 +80,7 @@ namespace SoundSwitch.Framework.Banner
             _currentData = data;
             if (_timerHide == null)
             {
-                _timerHide = new Timer {Interval = 3000};
+                _timerHide = new Timer { Interval = 3000 };
                 _timerHide.Tick += TimerHide_Tick;
             }
             else
@@ -91,10 +91,10 @@ namespace SoundSwitch.Framework.Banner
             if (data.Image != null)
                 pbxLogo.Image = data.Image;
 
-            DestroySound();
 
             if (data.SoundFile != null)
             {
+                DestroySound();
                 PrepareSound(data);
             }
 
@@ -115,16 +115,24 @@ namespace SoundSwitch.Framework.Banner
         {
             Task.Factory.StartNew(async () =>
             {
+                
                 try
                 {
-                    using var cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(_cancellationTokenSource.Token);
+                    using var semaphore = new SemaphoreSlim(0);
                     using var player = data.CurrentDevice == null ? new WasapiOut() : new WasapiOut(data.CurrentDevice, AudioClientShareMode.Shared, true, 200);
                     await using var waveStream = new CachedSoundWaveStream(data.SoundFile);
                     player.Init(waveStream);
 
-                    player.PlaybackStopped += (_, _) => cancellationTokenSource.CancelAfter(TimeSpan.FromMilliseconds(750));
+                    player.PlaybackStopped += (_, _) =>
+                    {
+                        if (_cancellationTokenSource.Token.IsCancellationRequested)
+                        {
+                            return;
+                        }
+                        semaphore.Release();
+                    };
                     player.Play();
-                    await Task.Delay(-1, cancellationTokenSource.Token);
+                    await semaphore.WaitAsync(_cancellationTokenSource.Token);
                 }
                 catch (TaskCanceledException)
                 {

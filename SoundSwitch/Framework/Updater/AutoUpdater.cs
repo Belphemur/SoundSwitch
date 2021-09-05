@@ -18,6 +18,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Serilog;
 using SoundSwitch.Framework.Updater.Installer;
+using SoundSwitch.Localization;
 
 namespace SoundSwitch.Framework.Updater
 {
@@ -51,6 +52,10 @@ namespace SoundSwitch.Framework.Updater
                     if (!SignatureChecker.IsValid(file.FilePath))
                     {
                         Log.Error("The file has the wrong signature. Update cancelled.");
+                        _context.Send(state =>
+                        {
+                            MessageBox.Show(string.Format(UpdateDownloadStrings.wrongSignature, "https://soundswitch.aaflalo.me"), Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }, null);
                         return;
                     }
 

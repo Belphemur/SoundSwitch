@@ -179,6 +179,9 @@ namespace SoundSwitch.UI.Forms
             toggleMuteLabel.Visible = false;
             
             telemetryCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.Telemetry), false, DataSourceUpdateMode.OnPropertyChanged);
+            var telemetryToolTip = new ToolTip();
+            telemetryToolTip.SetToolTip(telemetryCheckbox, SettingsStrings.telemetry_desc);
+            
             quickMenuCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.QuickMenuEnabled), false, DataSourceUpdateMode.OnPropertyChanged);
             var quickMenuCheckboxToolTip = new ToolTip();
             quickMenuCheckboxToolTip.SetToolTip(quickMenuCheckbox, SettingsStrings.quickMenu_desc);

@@ -1,10 +1,14 @@
 ﻿#nullable enable
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using Newtonsoft.Json;
+using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Common.Framework.Audio.Icon;
+using SoundSwitch.Properties;
 
 namespace SoundSwitch.Framework.Profile
 {
@@ -32,6 +36,22 @@ namespace SoundSwitch.Framework.Profile
         public IList<Trigger.Trigger> Triggers { get; set; } = new List<Trigger.Trigger>();
 
         public bool AlsoSwitchDefaultDevice { get; set; } = false;
+
+        [JsonIgnore]
+        public Icon Icon
+        {
+            get
+            {
+                var device = AudioSwitcher.Instance.GetDevice(Devices.First().DeviceInfo.Id);
+                if (device == null)
+                {
+                    return Resources.profile;
+                }
+
+                return AudioSwitcher.Instance.InteractWithMmDevice(device, mmDevice => AudioDeviceIconExtractor.ExtractIconFromPath(mmDevice.IconPath, mmDevice.DataFlow, true));
+            }
+        }
+
         /// <summary>
         /// Should the device be restore when the profile is disabled
         /// </summary>

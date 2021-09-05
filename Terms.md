@@ -1,6 +1,6 @@
 # Terms and Conditions
 
-Last updated: August 04, 2021
+Last updated: September 02, 2021
 
 Please read these terms and conditions carefully before using Our Service.
 
@@ -111,6 +111,11 @@ These Terms and Conditions may have been translated if We have made them availab
 We reserve the right, at Our sole discretion, to modify or replace these Terms at any time. If a revision is material We will make reasonable efforts to provide at least 30 days' notice prior to any new terms taking effect. What constitutes a material change will be determined at Our sole discretion.
 
 By continuing to access or use Our Service after those revisions become effective, You agree to be bound by the revised terms. If You do not agree to the new terms, in whole or in part, please stop using the website and the Service.
+
+# Telemetry terms
+By having the telemetry enabled, you agree to have the version of SoundSwitch you have installed be shared with Us anynoumously using the service provided by [Sentry](https://sentry.io/). This information is only used as a way to gather the adoption of new version of the sofware.
+## Data gathered
+* Version of SoundSwitch
 
 # Contact Us
 
