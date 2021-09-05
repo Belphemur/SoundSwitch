@@ -1,3 +1,44 @@
+## [6.1.0](https://github.com/Belphemur/SoundSwitch/compare/v6.0.0...v6.1.0) (2021-09-05)
+
+
+### Features
+
+* **Profile::Hotkey:** Profile can now share the same hotkey. Doing so let you switch between profile. A quick menu is also displayed. ([85a623e](https://github.com/Belphemur/SoundSwitch/commit/85a623e10c4c41657a99bbeedd9a6b8c0680d126)), closes [#409](https://github.com/Belphemur/SoundSwitch/issues/409)
+
+
+### Bug Fixes
+
+* **.NET:** Disable trimmming. It's recommended to avoid it when having a WinForm application. This will fixes a lot of startup crashes. ([033b968](https://github.com/Belphemur/SoundSwitch/commit/033b968bc459eaaec74acf1fc4824c5c21d68de1))
+* **AutoUpdate:** Show a message box when can't validate signature of file. ([2406d6c](https://github.com/Belphemur/SoundSwitch/commit/2406d6cc976138edff8cfee9e7b901b39a4f732c))
+* **Banner::Sound:** Fix crash when setting a sound for the banner. ([d8fcf3c](https://github.com/Belphemur/SoundSwitch/commit/d8fcf3c604bac5c2c3d87a667aacb03deb226856)), closes [#730](https://github.com/Belphemur/SoundSwitch/issues/730)
+* **Device::Volume:** Only get volume when device is active ([40db2ef](https://github.com/Belphemur/SoundSwitch/commit/40db2ef44ffe0b667a666119ec1bd1c7f80e86d3))
+* **Profile::Hotkey:** Fix the cycling logic between profiles ([009475b](https://github.com/Belphemur/SoundSwitch/commit/009475bbc3e1f2c3e4b56ba27816d91511d73723)), closes [#734](https://github.com/Belphemur/SoundSwitch/issues/734)
+* **Telemetry:** Start telemetry properly ([06ab90c](https://github.com/Belphemur/SoundSwitch/commit/06ab90cadc5cfdc7df10ef16564bad57c02b0188))
+
+
+### Enhancements
+
+* **Systray::Tooltip:** Add volume % when hovering the SoundSwitch icon. ([9b1aba3](https://github.com/Belphemur/SoundSwitch/commit/9b1aba3e8ea30b971506196d179e95edbe0e8d45))
+* **Telemetry:** Add proper tooltip for explaining telemetry ([f90ca7f](https://github.com/Belphemur/SoundSwitch/commit/f90ca7f7a84083a59692e1eeff25f5e2a51484b8)), closes [#736](https://github.com/Belphemur/SoundSwitch/issues/736)
+* **Telemetry:** Clarify the term related to telemetry ([8b2e688](https://github.com/Belphemur/SoundSwitch/commit/8b2e68855bbc5e1ecd95764ed3e01187948d103b))
+
+
+### Languages
+
+* **Hebrew:** Translated Settings using Weblate ([1db0a11](https://github.com/Belphemur/SoundSwitch/commit/1db0a11ad4cb8ab1f7889d89c4f88f78b69bccf6))
+* **Hebrew:** Translated Settings using Weblate ([cf7e3eb](https://github.com/Belphemur/SoundSwitch/commit/cf7e3eb9a31d169da436d087051eb483d67cb40c))
+* **Hebrew:** Translated Update Download using Weblate ([fa90c65](https://github.com/Belphemur/SoundSwitch/commit/fa90c65e7f3e87f184de940ed04c756738eacacb))
+* **Italian:** Translated Settings using Weblate ([1e5871e](https://github.com/Belphemur/SoundSwitch/commit/1e5871e3031a9985e0472d566d26228e25337464))
+* **Norwegian Bokmål:** Translated Settings using Weblate ([04675a9](https://github.com/Belphemur/SoundSwitch/commit/04675a92a6fc1afbef45c278dbe30ab2ceb80d4f))
+* **Portuguese:** Translated Settings using Weblate ([8c4f733](https://github.com/Belphemur/SoundSwitch/commit/8c4f733411be4a6d1a9c0ab6dddff88f68ab0369))
+* **Portuguese:** Translated Settings using Weblate ([872b055](https://github.com/Belphemur/SoundSwitch/commit/872b0556bf2552c76dbd12975cc78ee1d49d03ea))
+* **Portuguese:** Translated Update Download using Weblate ([7cb495e](https://github.com/Belphemur/SoundSwitch/commit/7cb495e5e0a909be653adec79688123a02ec4306))
+* **Portuguese (Brazil):** Translated Settings using Weblate ([4a35ef5](https://github.com/Belphemur/SoundSwitch/commit/4a35ef59212278e8f64c1e1be7d46c80d365045f))
+* **Portuguese (Brazil):** Translated Settings using Weblate ([e0712a4](https://github.com/Belphemur/SoundSwitch/commit/e0712a4c06af7d30a881059c30ccaf4b7094d6f7))
+* **Portuguese (Brazil):** Translated Update Download using Weblate ([2c7f3bd](https://github.com/Belphemur/SoundSwitch/commit/2c7f3bd14ddd5dbfdbf11f09087856c2d18b8f5c))
+* **Profile::Hotkey:** Update description of hotkey feature ([54e52df](https://github.com/Belphemur/SoundSwitch/commit/54e52dff33277aa43cc287b918b6d27d07fde25e))
+* **telemetry:** Add description ([c0a5bdd](https://github.com/Belphemur/SoundSwitch/commit/c0a5bdd8a197b1d062c780df0dd2383ebbaa6251)), closes [#736](https://github.com/Belphemur/SoundSwitch/issues/736)
+
 ## [6.0.0](https://github.com/Belphemur/SoundSwitch/compare/v5.11.2...v6.0.0) (2021-08-27)
 
 
