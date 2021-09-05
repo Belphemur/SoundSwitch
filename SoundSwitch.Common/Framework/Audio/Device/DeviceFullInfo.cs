@@ -10,9 +10,13 @@ namespace SoundSwitch.Common.Framework.Audio.Device
         public string IconPath { get; }
         public DeviceState State { get; }
 
+        [JsonIgnore]
         public System.Drawing.Icon LargeIcon => AudioDeviceIconExtractor.ExtractIconFromPath(IconPath, Type, true);
+
+        [JsonIgnore]
         public System.Drawing.Icon SmallIcon => AudioDeviceIconExtractor.ExtractIconFromPath(IconPath, Type, false);
 
+        [JsonIgnore]
         public int Volume { get; } = 0;
 
         [JsonConstructor]
