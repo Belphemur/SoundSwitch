@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -58,4 +58,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="notSigned" xml:space="preserve">
+    <value>ไฟล์ที่ดาวน์โหลดมามีรหัสข้อมูลไม่ถูกต้อง เราขอแนะนำให้ลบทิ้ง และติดต่อผู้พัฒนา!</value>
+  </data>
+  <data name="wrongSignature" xml:space="preserve">
+    <value>เกิดปัญหาในการอัปเดท SoundSwitch ครั้งล่าสุด คุณต้องดาวน์โหลดเวอร์ชั่นใหม่เองที่ {0}</value>
+  </data>
+  <data name="remindMe" xml:space="preserve">
+    <value>ภายหลัง</value>
+  </data>
+  <data name="notSignedTitle" xml:space="preserve">
+    <value>รหัสลายเซ็นดิจิตอลไม่ถูกต้อง</value>
+  </data>
+  <data name="changelog" xml:space="preserve">
+    <value>ข้อมูลการเปลี่ยนแปลง</value>
+  </data>
+  <data name="cancel" xml:space="preserve">
+    <value>ยกเลิก</value>
+  </data>
+  <data name="install" xml:space="preserve">
+    <value>ติดตั้ง</value>
+  </data>
+  <data name="downloadFailed" xml:space="preserve">
+    <value>ดาวน์โหลดล้มเหลว</value>
+  </data>
 </root>
