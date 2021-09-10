@@ -95,7 +95,7 @@ jobs:
               
   prerelease:
     needs: [build, changes]
-    if: github.ref == 'refs/heads/dev' && ${{ needs.changes.outputs.ci == 'true' }}
+    if: github.ref == 'refs/heads/dev' && needs.changes.outputs.ci == 'true'
     runs-on: windows-latest
     steps:
       - name: Checkout
@@ -140,7 +140,7 @@ jobs:
     
   prepare-release:
       needs: [build, changes]
-      if: github.ref == 'refs/heads/master' && ${{ needs.changes.outputs.ci == 'true' }}
+      if: github.ref == 'refs/heads/master' &&  needs.changes.outputs.ci == 'true'
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v2
