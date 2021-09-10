@@ -61,4 +61,28 @@
   <data name="created" xml:space="preserve">
     <value>สร้างโดย</value>
   </data>
+  <data name="logo" xml:space="preserve">
+    <value>โลโก้ สร้างโดย</value>
+  </data>
+  <data name="icons" xml:space="preserve">
+    <value>ไอคอน</value>
+  </data>
+  <data name="keyboardHotkeys" xml:space="preserve">
+    <value>ระบบปุ่ม hotkey</value>
+  </data>
+  <data name="defaultPlaybackDeviceChange" xml:space="preserve">
+    <value>การเปลี่ยนอุปกรณ์การเล่นเริ่มต้น</value>
+  </data>
+  <data name="credits" xml:space="preserve">
+    <value>เครดิตและแหล่งที่มา</value>
+  </data>
+  <data name="author" xml:space="preserve">
+    <value>เจ้าของและข้อมูลโปรแกรม</value>
+  </data>
+  <data name="version" xml:space="preserve">
+    <value>เวอร์ชั่น</value>
+  </data>
+  <data name="maintained" xml:space="preserve">
+    <value>ปรับปรุง โดย</value>
+  </data>
 </root>
