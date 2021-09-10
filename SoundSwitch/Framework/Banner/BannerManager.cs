@@ -13,6 +13,7 @@
 ********************************************************************/
 
 using System;
+using Serilog;
 
 namespace SoundSwitch.Framework.Banner
 {
@@ -53,6 +54,7 @@ namespace SoundSwitch.Framework.Banner
             syncContext = System.Threading.SynchronizationContext.Current;
             if (!(syncContext is System.Windows.Forms.WindowsFormsSynchronizationContext))
                 throw new InvalidOperationException("BannerManager must be called in the context of the UI thread.");
+            Log.Information("Banner manager initialized");
         }
     }
 }

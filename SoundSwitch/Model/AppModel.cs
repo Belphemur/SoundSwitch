@@ -229,9 +229,9 @@ namespace SoundSwitch.Model
             }
         }
 
-        public IAudioDeviceLister ActiveAudioDeviceLister { get; set; }
+        public IAudioDeviceLister ActiveAudioDeviceLister { get; private set; }
 
-        public IAudioDeviceLister ActiveUnpluggedAudioLister { get; set; }
+        public IAudioDeviceLister ActiveUnpluggedAudioLister { get; private set; }
         public event EventHandler<NotificationSettingsUpdatedEvent> NotificationSettingsChanged;
         public event EventHandler<CustomSoundChangedEvent> CustomSoundChanged;
         public event EventHandler<UpdateMode> UpdateModeChanged;
@@ -242,15 +242,17 @@ namespace SoundSwitch.Model
         /// <summary>
         ///     Initialize the Main class with Updater and Hotkeys
         /// </summary>
-        public void InitializeMain()
+        /// <param name="active"></param>
+        /// <param name="unplugged"></param>
+        public void InitializeMain(IAudioDeviceLister active, IAudioDeviceLister unplugged)
         {
-            if (ActiveAudioDeviceLister == null)
-            {
-                throw new InvalidOperationException("The devices lister are not configured");
-            }
+
+            ActiveAudioDeviceLister = active;
+            ActiveUnpluggedAudioLister = unplugged;
 
             if (_initialized)
             {
+                Log.Fatal("AppModel already initialized");
                 throw new InvalidOperationException("Already initialized");
             }
 
@@ -260,12 +262,14 @@ namespace SoundSwitch.Model
             var saveConfig = false;
             if (!RegisterHotKey(AppConfigs.Configuration.RecordingHotKey))
             {
+                Log.Information("Disabling Recording hotkey: {hotkey}", AppConfigs.Configuration.RecordingHotKey);
                 AppConfigs.Configuration.RecordingHotKey.Enabled = false;
                 saveConfig = true;
             }
 
             if (!RegisterHotKey(AppConfigs.Configuration.MuteRecordingHotKey))
             {
+                Log.Information("Disabling Mute hotkey: {hotkey}", AppConfigs.Configuration.MuteRecordingHotKey);
                 AppConfigs.Configuration.MuteRecordingHotKey.Enabled = false;
                 saveConfig = true;
             }

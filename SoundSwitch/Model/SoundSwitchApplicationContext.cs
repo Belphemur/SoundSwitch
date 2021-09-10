@@ -25,10 +25,7 @@ namespace SoundSwitch.Model
             deviceActiveLister.Refresh();
             deviceUnpluggedActiveLister.Refresh();
 
-            AppModel.Instance.ActiveAudioDeviceLister = deviceActiveLister;
-            AppModel.Instance.ActiveUnpluggedAudioLister = deviceUnpluggedActiveLister;
-
-            AppModel.Instance.InitializeMain();
+            AppModel.Instance.InitializeMain(deviceActiveLister, deviceUnpluggedActiveLister);
             
             AppModel.Instance.NewVersionReleased += (sender, @event) =>
             {
