@@ -37,6 +37,8 @@ namespace SoundSwitch
 {
     internal static class Program
     {
+        private static WindowsFormsSynchronizationContext _synchronizationContext;
+
         [DllImport("user32.dll")]
         private static extern bool SetProcessDPIAware();
 
@@ -138,10 +140,9 @@ namespace SoundSwitch
 #endif
             MMNotificationClient.Instance.Register();
 
+            _synchronizationContext = new WindowsFormsSynchronizationContext();
+            SynchronizationContext.SetSynchronizationContext(_synchronizationContext);
 
-            var ctx = new WindowsFormsSynchronizationContext();
-
-            SynchronizationContext.SetSynchronizationContext(ctx);
             Application.Run(new SoundSwitchApplicationContext());
 
 
@@ -218,12 +219,12 @@ namespace SoundSwitch
 
 Would you like to share more information with the developers?";
             var result = DialogResult.None;
-            SynchronizationContext.Current.Send(state =>
+            _synchronizationContext.Send(state =>
             {
                 result = MessageBox.Show(message, $@"{Application.ProductName} crashed...", MessageBoxButtons.YesNo,
                     MessageBoxIcon.Error);
             }, null);
-   
+
 
             if (result != DialogResult.Yes) return;
 
