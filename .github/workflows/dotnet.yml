@@ -3,15 +3,9 @@ name: .NET
 on:
   push:
     branches: [ dev, master ]
-    paths:
-    - 'SoundSwitch*/**'
-    - '.github/**.yml'
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [ dev, master ]
-    paths:
-    - 'SoundSwitch*/**'
-    - '.github/**.yml'
 env:
   # Stop wasting time caching packages
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
@@ -33,26 +27,75 @@ jobs:
           access_token: ${{ github.token }}
       - name: Checkout
         uses: actions/checkout@v2
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            ci:
+             - '.github/**/*.yml'
+            SoundSwitch:
+              - 'SoundSwitch*/**'
+            node:
+              - 'package.json'
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
+        if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true'
         with:
           dotnet-version: 5.0.x
       - name: Restore
+        if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true'
         run: dotnet restore
       - name: Build
+        if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true'
         run: dotnet build -c Release --no-restore ${{env.PROJECT_NAME}}/${{env.PROJECT_NAME}}.csproj
       - name: Test
+        if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true'
         run: dotnet test -c Release --no-restore  --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}"
       - name: Upload test results
+        if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true'
         uses: actions/upload-artifact@v2
         with:
           name: dotnet-results-${{ matrix.dotnet-version }}
           path: TestResults-${{ matrix.dotnet-version }}
         # Use always() to always run this step to publish test results when there are test failures
-        if: ${{ always() }}
+      - name: Setup Node.js
+        if: steps.filter.outputs.node == 'true'
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - name: Cache node modules
+        if: steps.filter.outputs.node == 'true'
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }} 
+      - name: Install semantic-release dependencies
+        if: steps.filter.outputs.node == 'true'
+        run: npm ci
+      - name: Release dry run
+        if: steps.filter.outputs.node == 'true'
+        run: npx semantic-release -d
+        
+  changes:
+    runs-on: ubuntu-latest
+    # Set job outputs to values from filter step
+    outputs:
+      ci: ${{ steps.filter.outputs.ci }}
+    steps:
+    - uses: actions/checkout@v2
+    - uses: dorny/paths-filter@v2
+      id: filter
+      with:
+          filters: |
+            ci:
+              - '.github/**/*.yml'
+              - 'SoundSwitch*/**'
+              
   prerelease:
-    needs: build
-    if: github.ref == 'refs/heads/dev'
+    needs: [build, changes]
+    if: github.ref == 'refs/heads/dev' && ${{ needs.changes.outputs.ci == 'true' }}
     runs-on: windows-latest
     steps:
       - name: Checkout
@@ -96,8 +139,8 @@ jobs:
     
     
   prepare-release:
-      needs: build
-      if: github.ref == 'refs/heads/master'
+      needs: [build, changes]
+      if: github.ref == 'refs/heads/master' && ${{ needs.changes.outputs.ci == 'true' }}
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v2
