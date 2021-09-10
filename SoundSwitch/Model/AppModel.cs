@@ -68,7 +68,7 @@ namespace SoundSwitch.Model
         }
 
         public static IAppModel Instance { get; } = new AppModel();
-        public TrayIcon TrayIcon { get; set; }
+        public TrayIcon TrayIcon { get; private set; }
         private CachedSound _customNotificationCachedSound;
         private readonly DeviceCyclerManager _deviceCyclerManager;
         private readonly MicrophoneMuteToggler _microphoneMuteToggler;
@@ -254,9 +254,8 @@ namespace SoundSwitch.Model
                 throw new InvalidOperationException("Already initialized");
             }
 
-            _notificationManager.Init();
+         
 
-            ProfileManager = new ProfileManager(new WindowMonitor(), AudioSwitcher.Instance, ActiveAudioDeviceLister, TrayIcon.ShowError, new TriggerFactory(), _notificationManager);
             RegisterHotKey(AppConfigs.Configuration.PlaybackHotKey);
             var saveConfig = false;
             if (!RegisterHotKey(AppConfigs.Configuration.RecordingHotKey))
@@ -295,6 +294,10 @@ namespace SoundSwitch.Model
 
             WindowsAPIAdapter.HotKeyPressed += HandleHotkeyPress;
 
+            TrayIcon = new TrayIcon();
+            _notificationManager.Init();
+            ProfileManager = new ProfileManager(new WindowMonitor(), AudioSwitcher.Instance, ActiveAudioDeviceLister, TrayIcon.ShowError, new TriggerFactory(), _notificationManager);
+
             ProfileManager
                 .Init()
                 .Catch<Profile[]>(settings =>
@@ -322,6 +325,7 @@ namespace SoundSwitch.Model
                 new NewReleaseAvailableEvent(@event.Release, AppConfigs.Configuration.UpdateMode));
 
             _jobScheduler.ScheduleJob(new CheckForUpdateRecurringJob(_updateChecker));
+            Log.Information("Update checker initiated");
         }
 
         /// <summary>

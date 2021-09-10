@@ -64,7 +64,7 @@ namespace SoundSwitch.Model
         /// <summary>
         /// The tray icon of the application
         /// </summary>
-        TrayIcon TrayIcon { get; set; }
+        TrayIcon TrayIcon { get; }
 
         /// <summary>
         /// List the active audio devices

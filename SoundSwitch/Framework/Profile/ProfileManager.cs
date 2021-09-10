@@ -125,16 +125,25 @@ namespace SoundSwitch.Framework.Profile
         {
             var errors = AppConfigs.Configuration.Profiles.Where(profile => !RegisterTriggers(profile, true)).ToArray();
 
-            RegisterEvents();
-
-            InitializeProfileExistingProcess();
-
-            if (errors.Length > 0)
+            try
             {
-                return errors;
-            }
+                RegisterEvents();
 
-            return Result.Success();
+                InitializeProfileExistingProcess();
+
+
+                if (errors.Length > 0)
+                {
+                    Log.Warning("Couldn't initiate all profiles: {profiles}", errors.Select(profile => profile.Name));
+                    return errors;
+                }
+
+                return Result.Success();
+            }
+            finally
+            {
+                Log.Information("Profile manager initiated {profiles} with {errors} errors", AppConfigs.Configuration.Profiles.Count, errors.Length);
+            }
         }
 
         private void RegisterEvents()

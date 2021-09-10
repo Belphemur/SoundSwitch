@@ -131,25 +131,18 @@ namespace SoundSwitch
                 }
             };
 
-            Log.Information("Set Tray Icon with Main");
+            Log.Information("Starting Application context");
 #if !DEBUG
             try
             {
 #endif
-                MMNotificationClient.Instance.Register();
+            MMNotificationClient.Instance.Register();
 
 
-                using var ctx = new WindowsFormsSynchronizationContext();
+            var ctx = new WindowsFormsSynchronizationContext();
 
-                SynchronizationContext.SetSynchronizationContext(ctx);
-                try
-                {
-                    Application.Run(new SoundSwitchApplicationContext());
-                }
-                finally
-                {
-                    SynchronizationContext.SetSynchronizationContext(null);
-                }
+            SynchronizationContext.SetSynchronizationContext(ctx);
+            Application.Run(new SoundSwitchApplicationContext());
 
 
 #if !DEBUG
@@ -224,8 +217,13 @@ namespace SoundSwitch
 {exceptionMessage}
 
 Would you like to share more information with the developers?";
-            var result = MessageBox.Show(message, $@"{Application.ProductName} crashed...", MessageBoxButtons.YesNo,
-                MessageBoxIcon.Error);
+            var result = DialogResult.None;
+            SynchronizationContext.Current.Send(state =>
+            {
+                result = MessageBox.Show(message, $@"{Application.ProductName} crashed...", MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Error);
+            }, null);
+   
 
             if (result != DialogResult.Yes) return;
 
