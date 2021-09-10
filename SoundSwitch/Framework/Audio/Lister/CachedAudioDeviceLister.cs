@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Common.Framework.Audio.Collection;
@@ -35,7 +36,8 @@ namespace SoundSwitch.Framework.Audio.Lister
 
         private readonly DeviceState _state;
         private readonly DebounceDispatcher _dispatcher = new();
-        private readonly object _lockRefresh = new();
+        private readonly SemaphoreSlim _refreshSemaphore = new(1);
+        private readonly TimeSpan _refreshWaitTime = TimeSpan.FromSeconds(5);
 
 
         public CachedAudioDeviceLister(DeviceState state)
@@ -51,11 +53,19 @@ namespace SoundSwitch.Framework.Audio.Lister
 
         public void Refresh()
         {
+            var context = Log.ForContext("State", _state);
             var playbackDevices = new Dictionary<string, DeviceFullInfo>();
             var recordingDevices = new Dictionary<string, DeviceFullInfo>();
-            lock (_lockRefresh)
+
+            if (!_refreshSemaphore.Wait(_refreshWaitTime))
             {
-                Log.Information("[{@State}] Refreshing all devices", _state);
+                context.Error("Can't refresh the devices after {time}", _refreshWaitTime);
+                return;
+            }
+
+            try
+            {
+                context.Information("Refreshing all devices");
                 using var enumerator = new MMDeviceEnumerator();
                 foreach (var endPoint in enumerator.EnumerateAudioEndPoints(DataFlow.All, _state))
                 {
@@ -83,7 +93,7 @@ namespace SoundSwitch.Framework.Audio.Lister
                     }
                     catch (Exception e)
                     {
-                        Log.Warning(e, "Can't get name of device {device}", endPoint.ID);
+                        context.Warning(e, "Can't get name of device {device}", endPoint.ID);
                     }
                 }
 
@@ -91,7 +101,11 @@ namespace SoundSwitch.Framework.Audio.Lister
                 RecordingDevices = new DeviceReadOnlyCollection<DeviceFullInfo>(recordingDevices.Values, DataFlow.Capture);
 
 
-                Log.Information("[{@State}] Refreshed all devices. {@Recording}/rec, {@Playback}/play", _state, recordingDevices.Count, playbackDevices.Count);
+                context.Information("Refreshed all devices. {@Recording}/rec, {@Playback}/play", recordingDevices.Count, playbackDevices.Count);
+            }
+            finally
+            {
+                _refreshSemaphore.Release();
             }
         }
 

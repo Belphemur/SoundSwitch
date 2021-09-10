@@ -15,16 +15,15 @@ namespace SoundSwitch.Framework.Logger.Configuration
             Log.Logger = new LoggerConfiguration()
                          .MinimumLevel.Debug()
                          .Enrich.WithThreadId()
-                         .Enrich.WithEnvironmentUserName()
                          .Enrich.WithExceptionDetails()
                          .Enrich.WithCaller()
 #if DEBUG
-                         .WriteTo.Console(LogEventLevel.Verbose, "[{Timestamp:HH:mm:ss.fff} {Level:u3}][{ThreadId}] {Message} (at {Caller}){NewLine}{Exception}", theme: Serilog.Sinks.SystemConsole.Themes.AnsiConsoleTheme.Code)
+                         .WriteTo.Console(LogEventLevel.Verbose, "[{Timestamp:HH:mm:ss.fff} {Level:u3}][{ThreadId}] {Properties} {Message} (at {Caller}){NewLine}{Exception}", theme: Serilog.Sinks.SystemConsole.Themes.AnsiConsoleTheme.Code)
 #endif
                          .WriteTo.File(Path.Combine(ApplicationPath.Logs, "soundswitch.log"),
                              rollingInterval: RollingInterval.Day, retainedFileCountLimit: 3,
                              flushToDiskInterval: TimeSpan.FromMinutes(10),
-                             outputTemplate: "[{Timestamp:HH:mm:ss.fff} {Level:u3}][{ThreadId}] {Message} (at {Caller}){NewLine}{Exception}")
+                             outputTemplate: "[{Timestamp:HH:mm:ss.fff} {Level:u3}][{ThreadId}] {Properties} {Message} (at {Caller}){NewLine}{Exception}")
                          .WriteTo.Sentry(o =>
                          {
                              o.InitializeSdk = false;
