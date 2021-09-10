@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -58,4 +58,152 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="notificationOptionWindowsDefault" xml:space="preserve">
+    <value>การแจ้งเตือนของวินโดว์</value>
+  </data>
+  <data name="languageRestartRequired" xml:space="preserve">
+    <value>ภาษาที่เลือกจะถูกใช้งานหลังจากเริ่มต้นโปรแกรม SoundSwitch ใหม่
+คุณจะเริ่มต้นโปรแกรมใหม่เลยไหม?</value>
+  </data>
+  <data name="updateNeverTooltip" xml:space="preserve">
+    <value>ไม่อัปเดทใดๆจนกว่าคุณจะจัดการอัปเดทด้วยตัวเอง</value>
+  </data>
+  <data name="languageRestartRequiredCaption" xml:space="preserve">
+    <value>ต้องการเริ่มต้นใหม่</value>
+  </data>
+  <data name="language" xml:space="preserve">
+    <value>ภาษา</value>
+  </data>
+  <data name="activePlayback" xml:space="preserve">
+    <value>เล่น : {0}</value>
+  </data>
+  <data name="activeRecording" xml:space="preserve">
+    <value>บันทึก : {0}</value>
+  </data>
+  <data name="audioFileNotFoundCaption" xml:space="preserve">
+    <value>ไม่พบไฟล์เสียง</value>
+  </data>
+  <data name="audioFileNotFound" xml:space="preserve">
+    <value>ไฟล์เสียงที่คุณเลือกเป็นเสียงแจ้งเตือนหายไป SoundSwitch เปลี่ยนการตั้งค่าเสียงแจ้งเตือนเป็น {0}</value>
+  </data>
+  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
+    <value>ปิดคำอธิบาย</value>
+  </data>
+  <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
+    <value>สำหรับทั้งสองอุปกรณ์</value>
+  </data>
+  <data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
+    <value>อุปกรณ์การบันทึกเสียง</value>
+  </data>
+  <data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
+    <value>อุปกรณ์การเล่นเสียง</value>
+  </data>
+  <data name="notificationOptionCustomized" xml:space="preserve">
+    <value>เลือกเสียงแจ้งเตือน</value>
+  </data>
+  <data name="notificationOptionToast" xml:space="preserve">
+    <value>การแจ้งเตือนแบบ Toast</value>
+  </data>
+  <data name="notificationOptionNone" xml:space="preserve">
+    <value>ไม่แจ้งเตือน</value>
+  </data>
+  <data name="notificationOptionSound" xml:space="preserve">
+    <value>การแจ้งเตือนด้วยเสียง</value>
+  </data>
+  <data name="cycleThroughTooltip" xml:space="preserve">
+    <value>เลือกวิธีการเปลี่ยนการใช้งานอุปกรณ์ ระหว่างอุปกรณ์ที่เลือกไว้หรืออุปกรณ์ทั้งหมด</value>
+  </data>
+  <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
+    <value>เฉพาะอุปกรณ์ที่เลือกไว้</value>
+  </data>
+  <data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
+    <value>อุปกรณ์เล่นเสียงทั้งหมด</value>
+  </data>
+  <data name="tooltipOnHover" xml:space="preserve">
+    <value>ใช้งานคำอธิบายเมื่อวางเมาส์</value>
+  </data>
+  <data name="updateNever" xml:space="preserve">
+    <value>ไม่ต้องตรวจหาการอัปเดท</value>
+  </data>
+  <data name="updateNotify" xml:space="preserve">
+    <value>เตือนเมื่อมีการอัปเดทรุ่นใหม่</value>
+  </data>
+  <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
+    <value>ติดตั้งอัปเดทรุ่นใหม่โดยไม่แจ้งเตือน</value>
+  </data>
+  <data name="updateInstallAutomatically" xml:space="preserve">
+    <value>ติดตั้งการอัปเดทรุ่นใหม่อัตโนมัติ</value>
+  </data>
+  <data name="keepSystemTrayIconTooltip" xml:space="preserve">
+    <value>เมื่อเลือก, เมื่ออุปกรณ์การเล่นเสียงเริ่มต้นถูกเปลี่ยนแปลง แต่ Tray icon จะไม่เปลี่ยนแปลง</value>
+  </data>
+  <data name="keepSystemTrayIcon" xml:space="preserve">
+    <value>เปิดใช้งานไอคอน SoundSwitch ที่ system tray</value>
+  </data>
+  <data name="cycleThrough" xml:space="preserve">
+    <value>รูปแบบการเลือกวน</value>
+  </data>
+  <data name="updateSettings" xml:space="preserve">
+    <value>ตั้งค่าการอัพเดท</value>
+  </data>
+  <data name="audioSettings" xml:space="preserve">
+    <value>การตั้งค่าเสียง</value>
+  </data>
+  <data name="basicSettings" xml:space="preserve">
+    <value>ตั้งค่าเบื้องต้น</value>
+  </data>
+  <data name="hotkeysTooltip" xml:space="preserve">
+    <value>เลือกเพื่อเปิดใช้งานปุ่มลัด</value>
+  </data>
+  <data name="selectSoundButtonTooltip" xml:space="preserve">
+    <value>เลือกไฟล์เสียงสำหรับเสียงแจ้งเตือน</value>
+  </data>
+  <data name="audioFiles" xml:space="preserve">
+    <value>ไฟล์เสียง</value>
+  </data>
+  <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
+    <value>เมื่อเลือก SoundSwitch จะตรวจสอบเวอร์ชั่นทดลองจาก Github.</value>
+  </data>
+  <data name="updateIncludeBetaVersions" xml:space="preserve">
+    <value>รวมทั้งเวอร์ชั่นทดลอง</value>
+  </data>
+  <data name="notification" xml:space="preserve">
+    <value>การแจ้งเตือน</value>
+  </data>
+  <data name="communicationsDeviceTooltip" xml:space="preserve">
+    <value>เมื่อเลือก อุปกรณ์การสื่อสารและอุปกรณ์เล่นเสียง จะถูกเปลี่ยนพร้อมกัน (มีประโยชน์สำหรับ สไกป์,ทีมสปีค,และอื่นๆ)</value>
+  </data>
+  <data name="closeTooltip" xml:space="preserve">
+    <value>การเปลี่ยนแปลงถูกบันทึกโดยอัตโนมัติ</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>ปิด</value>
+  </data>
+  <data name="startWithWindows" xml:space="preserve">
+    <value>เริ่มต้นอัตโนมัติพร้อมวินโดว์</value>
+  </data>
+  <data name="communicationsDevice" xml:space="preserve">
+    <value>อุปกรณ์การสื่อสาร</value>
+  </data>
+  <data name="hotkeys" xml:space="preserve">
+    <value>ปุ่มลัด</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>ตั้งค่า</value>
+  </data>
+  <data name="playback" xml:space="preserve">
+    <value>อุปกรณ์เล่นเสียง</value>
+  </data>
+  <data name="recording" xml:space="preserve">
+    <value>อุปกรณ์รับเสียง</value>
+  </data>
+  <data name="disconnected" xml:space="preserve">
+    <value>ไม่มีการเชื่อมต่อ</value>
+  </data>
+  <data name="connected" xml:space="preserve">
+    <value>เชื่อมต่ออยู่</value>
+  </data>
+  <data name="selected" xml:space="preserve">
+    <value>ถูกเลือกอยู่</value>
+  </data>
 </root>
