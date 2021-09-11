@@ -5,8 +5,8 @@ const exec = util.promisify(require('child_process').exec);
 const webhookUrl = process.argv[2];
 const version = process.argv[3];
 const repo = process.argv[4];
-const commitRegex = /^([\d\w]{7})\s(\w+)\(([\w-]+)\)(.+)/gm;
-const commitSubstitution = `* **$2**($3)$4 [$1](https://github.com/${repo}/commit/$1)`;
+const commitRegex = /^([\d\w]{7})\s(\w+)\((.+)\)(.+)/gm;
+const commitSubstitution = `* **$2**(*$3*)$4 [$1](https://github.com/${repo}/commit/$1)`;
 
 async function main() {
     const hook = new Webhook(webhookUrl);
@@ -17,18 +17,17 @@ async function main() {
         .setColor("#0000FF");
 
     try {
-        let result = await exec("git describe --tags --abbrev=0");
-        const describe = result.stdout.replace("\n", "");
-        result = await exec(`git log  --no-merges --oneline ${describe}..HEAD`);
+        const result = await exec(`git log --no-merges --oneline -10`);
 
         const commits = result.stdout.replace(commitRegex, commitSubstitution);
-        const description = `**Since ${describe}**\n\n${commits}`;
+        const description = `**Last 10 commits**\n\n${commits}`;
         embed.setDescription(description)
             .setTimestamp();
         console.log(description);
-        hook.send(embed);
+        await hook.send(embed);
     } catch (e) {
         console.error(e);
+        process.exit(1);
     }
 }
 
