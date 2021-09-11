@@ -15,6 +15,7 @@ env:
   PROJECT_NAME: "SoundSwitch"
   ARCH: "win-x64"
   FRAMEWORK: "net5.0-windows"
+  NODEJS: 14
 
 jobs:
   build:
@@ -62,7 +63,7 @@ jobs:
         if: steps.filter.outputs.node == 'true'
         uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: ${{env.NODEJS}}
       - name: Cache node modules
         if: steps.filter.outputs.node == 'true'
         uses: actions/cache@v2
@@ -70,33 +71,35 @@ jobs:
           cache-name: cache-node-modules
         with:
           path: "**/node_modules"
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }} 
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
       - name: Install semantic-release dependencies
         if: steps.filter.outputs.node == 'true'
         run: npm ci
       - name: Release dry run
         if: steps.filter.outputs.node == 'true'
         run: npx semantic-release -d
-        
+
   changes:
     runs-on: ubuntu-latest
     # Set job outputs to values from filter step
     outputs:
       ci: ${{ steps.filter.outputs.ci }}
     steps:
-    - uses: actions/checkout@v2
-    - uses: dorny/paths-filter@v2
-      id: filter
-      with:
+      - uses: actions/checkout@v2
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
           filters: |
             ci:
               - '.github/**/*.yml'
               - 'SoundSwitch*/**'
-              
+
   prerelease:
-    needs: [build, changes]
+    needs: [ build, changes ]
     if: github.ref == 'refs/heads/dev' && needs.changes.outputs.ci == 'true'
     runs-on: windows-latest
+    outputs:
+      devVersion: ${{ steps.devVersion.outputs.version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -115,7 +118,7 @@ jobs:
         run: .\devVersion.ps1
       - name: Build pre-release
         run: dotnet publish -c Beta --no-restore -r ${{ env.ARCH }} ${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj -p:PackageVersion=${{ steps.devVersion.outputs.version }}
-      - name: Set Env var from GitHub  
+      - name: Set Env var from GitHub
         uses: rlespinasse/github-slug-action@v3.x
       - name: Zip Build ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}
         run: tar cafv ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip -C ${{ env.PROJECT_NAME }}\bin\Beta\${{ env.FRAMEWORK }}\${{ env.ARCH }}\publish\ *
@@ -125,37 +128,45 @@ jobs:
           DAV_USER: ${{secrets.DAV_USER}}
           DAV_PASS: ${{secrets.DAV_PASS}}
           DAV_SERVER: "https://nc.aaflalo.me/remote.php/dav/files"
-      - name: Discord Notification on success
-        uses: rjstone/discord-webhook-notify@v1
-        if: success()
+
+  prerelease-notify:
+    needs: prerelease
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
         with:
-          severity: info
-          color: '#0000FF'
-          username: "Beta Build"
-          avatarUrl: https://soundswitch.aaflalo.me/img/beta.png
-          description: "A new build [${{ steps.devVersion.outputs.version }}] is now available."
-          details: "https://nc.aaflalo.me/s/8DKytYCTAbrn6yz" 
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-    
-    
+          node-version: ${{env.NODEJS}}
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+      - name: Install semantic-release dependencies
+        run: npm ci
+      - name: Notify about new dev releae
+        run: node devRelease.js "${{ secrets.DISCORD_WEBHOOK }}" "${{needs.prerelease.outputs.devVersion}}"
+
   prepare-release:
-      needs: [build, changes]
-      if: github.ref == 'refs/heads/master' &&  needs.changes.outputs.ci == 'true'
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v2
-        - name: Setup Node.js
-          uses: actions/setup-node@v2
-          with:
-            node-version: 14
-        - name: Cache node modules
-          uses: actions/cache@v2
-          env:
-            cache-name: cache-node-modules
-          with:
-            path: "**/node_modules"
-            key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }} 
-        - name: Install semantic-release dependencies
-          run: npm ci
-        - name: Release
-          run: npx semantic-release
+    needs: [ build, changes ]
+    if: github.ref == 'refs/heads/master' &&  needs.changes.outputs.ci == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{env.NODEJS}}
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+      - name: Install semantic-release dependencies
+        run: npm ci
+      - name: Release
+        run: npx semantic-release
