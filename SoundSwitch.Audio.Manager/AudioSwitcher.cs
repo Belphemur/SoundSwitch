@@ -142,7 +142,7 @@ namespace SoundSwitch.Audio.Manager
         /// <param name="deviceId">Id of the device</param>
         /// <param name="role">Which role to switch</param>
         /// <param name="flow">Which flow to switch</param>
-        public void SwitchProcessTo(string deviceId, ERole role, EDataFlow flow)
+        public void SwitchForegroundProcessTo(string deviceId, ERole role, EDataFlow flow)
         {
             var processId = ComThread.Invoke(() => User32.ForegroundProcessId);
             SwitchProcessTo(deviceId, role, flow, processId);
