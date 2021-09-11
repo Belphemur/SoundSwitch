@@ -4,8 +4,9 @@ const {Webhook, MessageBuilder} = require("discord-webhook-node");
 const exec = util.promisify(require('child_process').exec);
 const webhookUrl = process.argv[2];
 const version = process.argv[3];
+const repo = process.argv[4];
 const commitRegex = /^([\d\w]{7})\s(\w+)\(([\w-]+)\)(.+)/gm;
-const commitSubstitution = "* **$2**(*$3*)$4 ($1)[https://github.com/Belphemur/SoundSwitch/commit/$1]";
+const commitSubstitution = `* **$2**($3)$4 [$1](https://github.com/${repo}/commit/$1)`;
 
 async function main() {
     const hook = new Webhook(webhookUrl);
