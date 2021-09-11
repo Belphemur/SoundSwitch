@@ -108,6 +108,17 @@ namespace SoundSwitch.Audio.Manager
         /// <param name="processId">ProcessID of the process</param>
         public void SwitchProcessTo(string deviceId, ERole role, EDataFlow flow, uint processId)
         {
+            var processName = "";
+            try
+            {
+                var process = Process.GetProcessById((int)processId);
+                processName = process.ProcessName;
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError($"Can't get process info: {e}");
+            }
+            Trace.TraceInformation($"Attempt to switch [{processId}:{processName}] to {deviceId}");
             var roles = new[]
             {
                 ERole.eConsole,
@@ -128,7 +139,7 @@ namespace SoundSwitch.Audio.Manager
                 var currentEndpoint = roles.Select(eRole => ExtendPolicyClient.GetDefaultEndPoint(flow, eRole, processId)).FirstOrDefault(endpoint => !string.IsNullOrEmpty(endpoint));
                 if (deviceId.Equals(currentEndpoint))
                 {
-                    Trace.WriteLine($"Default endpoint for {processId} already {deviceId}");
+                    Trace.WriteLine($"Default endpoint for [{processId}:{processName}] already {deviceId}");
                     return;
                 }
 
