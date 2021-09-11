@@ -5,7 +5,7 @@ $scriptPath = $MyInvocation.MyCommand.Path
 $scriptFolder = Split-Path $scriptPath -Parent
 
 $newBuild = [int]$currentBuild.substring(0,5)
-$newRevision = [int]$currentBuild.substring(5)
+$newRevision = [int]$currentBuild.substring($currentBuild.Length - 4)
 
 $newVersion = [Version]::new($currentVersion.Major, $currentVersion.Minor, $newBuild, $newRevision)
 
