@@ -3,6 +3,7 @@ using System.Linq;
 using JetBrains.Annotations;
 using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Framework.WinApi.Keyboard;
+using SoundSwitch.Model;
 using SoundSwitch.UI.Menu;
 using SoundSwitch.UI.Menu.Component;
 
@@ -54,11 +55,14 @@ namespace SoundSwitch.Framework.Profile.Hotkey
             _profileManager.SwitchAudio(nextProfile);
             hotKeysSelection.LastUsed = nextProfile;
 
-            QuickMenuManager<Profile>.Instance.DisplayMenu(hotKeysSelection.Profiles.Select(profile => new HotKeyItem(nextProfile == profile, profile)), @event =>
+            if (AppModel.Instance.QuickMenuEnabled)
             {
-                hotKeysSelection.LastUsed = @event.Item.Payload;
-                _profileManager.SwitchAudio(@event.Item.Payload);
-            });
+                QuickMenuManager<Profile>.Instance.DisplayMenu(hotKeysSelection.Profiles.Select(profile => new HotKeyItem(nextProfile == profile, profile)), @event =>
+                {
+                    hotKeysSelection.LastUsed = @event.Item.Payload;
+                    _profileManager.SwitchAudio(@event.Item.Payload);
+                });
+            }
         }
 
         /// <summary>
