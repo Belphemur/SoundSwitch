@@ -50,6 +50,7 @@ namespace SoundSwitch
             {
                 Dsn = "https://7d52dfb4f6554bf0b58b256337835332@o631137.ingest.sentry.io/5755327",
                 Environment = AssemblyUtils.GetReleaseState().ToString(),
+                DefaultTags = { { "ReleaseState", AssemblyUtils.GetReleaseState().ToString() } },
                 Release = $"{Application.ProductName}@{Application.ProductVersion}",
             };
             var user = new User
@@ -138,12 +139,12 @@ namespace SoundSwitch
             try
             {
 #endif
-            MMNotificationClient.Instance.Register();
+                MMNotificationClient.Instance.Register();
 
-            _synchronizationContext = new WindowsFormsSynchronizationContext();
-            SynchronizationContext.SetSynchronizationContext(_synchronizationContext);
+                _synchronizationContext = new WindowsFormsSynchronizationContext();
+                SynchronizationContext.SetSynchronizationContext(_synchronizationContext);
 
-            Application.Run(new SoundSwitchApplicationContext());
+                Application.Run(new SoundSwitchApplicationContext());
 
 
 #if !DEBUG

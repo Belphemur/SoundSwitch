@@ -115,7 +115,7 @@ jobs:
         id: devVersion
         run: .\devVersion.ps1
       - name: Build pre-release
-        run: dotnet publish -c Beta --no-restore -r ${{ env.ARCH }} ${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj -p:PackageVersion=${{ steps.devVersion.outputs.version }}
+        run: dotnet publish -c Beta --no-restore -r ${{ env.ARCH }} ${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj -p:AssemblyVersion=${{ steps.devVersion.outputs.version }}
       - name: Set Env var from GitHub
         uses: rlespinasse/github-slug-action@v3.x
       - name: Zip Build ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}
