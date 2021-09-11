@@ -98,7 +98,6 @@ namespace SoundSwitch.Framework.Profile
                         return true;
                     },
                     () => true);
-               
             }
 
             return success;
@@ -402,6 +401,29 @@ namespace SoundSwitch.Framework.Profile
             if (AppConfigs.Configuration.Profiles.Contains(profile))
             {
                 return string.Format(SettingsStrings.profile_error_name, profile.Name);
+            }
+
+            //Only hotkey doesn't need validation since you can have multiple profile with the same hotkey
+            foreach (var groups in profile.Triggers.Where(trigger => trigger.Type != TriggerFactory.Enum.HotKey).GroupBy(trigger => trigger.Type).Where(triggers => triggers.Count() > 1))
+            {
+                //has different trigger of the same type, not a problem
+                if (groups.Distinct().Count() > 1)
+                {
+                    continue;
+                }
+                var trigger = groups.First();
+
+                var error = groups.Key.Match(() => null,
+                    () => string.Format(SettingsStrings.profile_error_window, trigger.WindowName),
+                    () => string.Format(SettingsStrings.profile_error_application, trigger.ApplicationPath),
+                    () => SettingsStrings.profile_error_steam,
+                    () => null,
+                    () => string.Format(SettingsStrings.profile_error_window, trigger.WindowName),
+                    () => null);
+                if (error != null)
+                {
+                    return error;
+                }
             }
 
             foreach (var trigger in profile.Triggers)
