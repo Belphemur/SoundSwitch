@@ -70,7 +70,7 @@ jobs:
         env:
           cache-name: cache-node-modules
         with:
-          path: "**/node_modules"
+          path: ~/.npm
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
       - name: Install semantic-release dependencies
         if: steps.filter.outputs.node == 'true'
@@ -135,7 +135,7 @@ jobs:
         env:
           cache-name: cache-node-modules
         with:
-          path: "**/node_modules"
+          path: ~/.npm
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         run: npm ci --prefer-offline --only=production --silent
@@ -157,7 +157,7 @@ jobs:
         env:
           cache-name: cache-node-modules
         with:
-          path: "**/node_modules"
+          path: ~/.npm
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
       - name: Install semantic-release dependencies
         run: npm ci --prefer-offline --only=production --silent
