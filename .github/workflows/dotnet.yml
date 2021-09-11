@@ -74,7 +74,7 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
       - name: Install semantic-release dependencies
         if: steps.filter.outputs.node == 'true'
-        run: npm install
+        run: npm ci --prefer-offline --only=production --silent
       - name: Release dry run
         if: steps.filter.outputs.node == 'true'
         run: npx semantic-release -d
@@ -138,7 +138,7 @@ jobs:
           path: "**/node_modules"
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
-        run: npm install
+        run: npm ci --prefer-offline --only=production --silent
       - name: Notify about new dev release
         run: node devRelease.js "${{ secrets.DISCORD_WEBHOOK }}" "${{ steps.devVersion.outputs.version }}" "${{env.GITHUB_REPOSITORY_OWNER_PART}}/${{env.GITHUB_REPOSITORY_NAME_PART}}"
 
@@ -160,6 +160,6 @@ jobs:
           path: "**/node_modules"
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
       - name: Install semantic-release dependencies
-        run: npm install
+        run: npm ci --prefer-offline --only=production --silent
       - name: Release
         run: npx semantic-release
