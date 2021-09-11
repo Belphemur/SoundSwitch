@@ -22,6 +22,22 @@ namespace SoundSwitch.Framework.WinApi.Keyboard
 {
     public static class KeyboardWindowsAPI
     {
+        private static readonly IEnumerable<Keys> Blacklist;
+
+        static KeyboardWindowsAPI()
+        {
+            Blacklist = new[]
+            {
+                Keys.FinalMode,
+                Keys.HanguelMode,
+                Keys.HangulMode,
+                Keys.HanjaMode,
+                Keys.JunjaMode,
+                Keys.KanaMode,
+                Keys.KanjiMode,
+                Keys.IMEModeChange
+            }.Distinct().ToHashSet();
+        }
         private static byte Code(Keys key)
         {
             return (byte)((int)key & 0xFF);
@@ -50,7 +66,7 @@ namespace SoundSwitch.Framework.WinApi.Keyboard
             var keyboardState = new byte[256];
             NativeMethods.GetKeyboardState(keyboardState);
 
-            return Enum.GetValues(typeof(Keys)).Cast<Keys>().Where(key =>(keyboardState[Code(key)] & 0x80) != 0).ToList();
+            return Enum.GetValues(typeof(Keys)).Cast<Keys>().Where(key =>(keyboardState[Code(key)] & 0x80) != 0).ToArray();
         }
 
         /// <summary>
@@ -131,7 +147,7 @@ namespace SoundSwitch.Framework.WinApi.Keyboard
         /// <returns></returns>
         public static IEnumerable<Keys> GetNormalPressedKeys()
         {
-            return GetPressedKeys().Where(key => !IsModifier(key)).ToList();
+            return GetPressedKeys().Where(key => !IsModifier(key)).Except(Blacklist).ToArray();
         }
 
         #region WindowsNativeMethods
