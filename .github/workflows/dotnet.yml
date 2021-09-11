@@ -98,8 +98,6 @@ jobs:
     needs: [ build, changes ]
     if: github.ref == 'refs/heads/dev' && needs.changes.outputs.ci == 'true'
     runs-on: windows-latest
-    outputs:
-      devVersion: ${{ steps.devVersion.outputs.version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -128,15 +126,6 @@ jobs:
           DAV_USER: ${{secrets.DAV_USER}}
           DAV_PASS: ${{secrets.DAV_PASS}}
           DAV_SERVER: "https://nc.aaflalo.me/remote.php/dav/files"
-
-  prerelease-notify:
-    needs: prerelease
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
@@ -150,8 +139,8 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         run: npm ci
-      - name: Notify about new dev releae
-        run: node devRelease.js "${{ secrets.DISCORD_WEBHOOK }}" "${{needs.prerelease.outputs.devVersion}}"
+      - name: Notify about new dev release
+        run: node devRelease.js "${{ secrets.DISCORD_WEBHOOK }}" "${{ steps.devVersion.outputs.version }}" "${{env.GITHUB_REPOSITORY_OWNER_PART}}/${{env.GITHUB_REPOSITORY_NAME_PART}}"
 
   prepare-release:
     needs: [ build, changes ]
