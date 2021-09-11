@@ -133,6 +133,10 @@ jobs:
     needs: prerelease
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
@@ -144,7 +148,7 @@ jobs:
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-      - name: Install semantic-release dependencies
+      - name: Install dependencies
         run: npm ci
       - name: Notify about new dev releae
         run: node devRelease.js "${{ secrets.DISCORD_WEBHOOK }}" "${{needs.prerelease.outputs.devVersion}}"
