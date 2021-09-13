@@ -79,4 +79,7 @@
   <data name="remindMe" xml:space="preserve">
     <value>Kasnije</value>
   </data>
+  <data name="wrongSignature" xml:space="preserve">
+    <value>Postoji problem sa aktualnom nadogradnjom. Morat ćeš ju manualno preuzeti sa {0}</value>
+  </data>
 </root>
