@@ -141,7 +141,7 @@
     <value>เปิดใช้งานไอคอน SoundSwitch ที่ system tray</value>
   </data>
   <data name="cycleThrough" xml:space="preserve">
-    <value>รูปแบบการเลือกวน</value>
+    <value>การเลือกสลับอุปกรณ์</value>
   </data>
   <data name="updateSettings" xml:space="preserve">
     <value>ตั้งค่าการอัพเดท</value>
@@ -165,7 +165,7 @@
     <value>เมื่อเลือก SoundSwitch จะตรวจสอบเวอร์ชั่นทดลองจาก Github.</value>
   </data>
   <data name="updateIncludeBetaVersions" xml:space="preserve">
-    <value>รวมทั้งเวอร์ชั่นทดลอง</value>
+    <value>เบต้าเวอร์ชั่น</value>
   </data>
   <data name="notification" xml:space="preserve">
     <value>การแจ้งเตือน</value>
@@ -217,7 +217,7 @@
     <value>ข้อมูล Telemetry</value>
   </data>
   <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
-    <value>ทริกเกอร์นี้ทําให้โพรไฟล์มองเห็นได้ใน systray คลิกซ้ายที่ไอคอน systray เพื่อดูโปรไฟล์ของคุณ</value>
+    <value>เงื่อนไขนี้จะแสดงโปรไฟล์ใน system tray คลิกซ้ายที่ไอคอนใน system tray เพื่อดูโปรไฟล์ของคุณ</value>
   </data>
   <data name="profile.error.application" xml:space="preserve">
     <value>แอปพลิเคชันนี้ {0} มีโปรไฟล์ที่เชื่อมโยงอยู่แล้ว</value>
@@ -235,7 +235,7 @@
     <value>ในเมนูของแอป</value>
   </data>
   <data name="mute.toggle.label" xml:space="preserve">
-    <value>สลับการปิดเปิดเสียง</value>
+    <value>เปิด/ปิด mute</value>
   </data>
   <data name="notification.microphone.unmuted" xml:space="preserve">
     <value>{0} ถูกเปิดเสียงแล้ว</value>
@@ -258,7 +258,7 @@
 คืนค่าสถานะของระบบเมื่อแอปพลิเคชันถูกปิด</value>
   </data>
   <data name="profile.trigger.restoreDevices" xml:space="preserve">
-    <value>คืนค่าอุปกรณ์เมื่อทริกเกอร์สิ้นสุดลง</value>
+    <value>คืนค่าอุปกรณ์เมื่อจบเงื่อนไข</value>
   </data>
   <data name="usePrimaryScreenTooltip" xml:space="preserve">
     <value>แสดงแบนเนอร์บนหน้าจอหลักแทนหน้าจอที่ใช้งานอยู่</value>
@@ -270,7 +270,7 @@
     <value>โปรไฟล์จะถูกเรียกใช้โดยอัตโนมัติเมื่อ SoundSwitch เริ่มทำงาน</value>
   </data>
   <data name="profile.trigger.startup" xml:space="preserve">
-    <value>เมื่อเริ่มต้น</value>
+    <value>เมื่อโปรแกรมเริ่มทำงาน</value>
   </data>
   <data name="profile.button.edit" xml:space="preserve">
     <value>แก้ไข</value>
@@ -291,16 +291,16 @@
     <value>คุณสามารถมีโปรไฟล์สําหรับ Steam Big Picture ได้เพียงโปรไฟล์เดียวเท่านั้น</value>
   </data>
   <data name="profile.error.triggers.min" xml:space="preserve">
-    <value>คุณต้องมีทริกเกอร์อย่างน้อยหนึ่งตัว</value>
+    <value>คุณต้องกำหนดเงื่อนไขก่อน</value>
   </data>
   <data name="communication" xml:space="preserve">
     <value>อุปกรณ์สื่อสารเริ่มต้น</value>
   </data>
   <data name="profile.trigger.available" xml:space="preserve">
-    <value>ทริกเกอร์ที่มีอยู่</value>
+    <value>เงื่อนไขเพื่อเปิดการทำงาน</value>
   </data>
   <data name="profile.trigger.actives" xml:space="preserve">
-    <value>ทริกเกอร์ เพื่อเปิดใช้งาน</value>
+    <value>เงื่อนไขที่ใช้งานอยู่</value>
   </data>
   <data name="profile.desc" xml:space="preserve">
     <value>รายละเอียด</value>
@@ -336,7 +336,7 @@
     <value>เมื่อตรวจพบแอปพลิเคชัน SoundSwitch จะเปลี่ยนอุปกรณ์เริ่มต้นปัจจุบันด้วย</value>
   </data>
   <data name="profile.defaultDevice.checkbox" xml:space="preserve">
-    <value>สลับอุปกรณ์เริ่มต้นด้วย</value>
+    <value>เปลี่ยนเป็นอุปกรณ์เริ่มต้นด้วย</value>
   </data>
   <data name="profile.feature.profile" xml:space="preserve">
     <value>โปรไฟล์</value>
