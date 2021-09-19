@@ -8,6 +8,7 @@ $newBuild = [int]$currentBuild.substring(0,5)
 $newRevision = [int]$currentBuild.substring($currentBuild.Length - 4)
 
 $newVersion = [Version]::new($currentVersion.Major, $currentVersion.Minor, $newBuild, $newRevision)
+(Get-Content SoundSwitch/Properties/AssemblyInfo.cs) -replace "AssemblyVersion\(.+\)","AssemblyVersion(`"$newVersion`")" |  Out-File SoundSwitch/Properties/AssemblyInfo.cs
 
 
 echo "::set-output name=version::$($newVersion.toString())"
