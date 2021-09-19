@@ -13,10 +13,10 @@ namespace SoundSwitch.Framework.Logger.Configuration
         public static void ConfigureLogger()
         {
             Log.Logger = new LoggerConfiguration()
-#if BETA || DEBUG
-                         .MinimumLevel.Verbose()
-#else
+#if RELEASE
                          .MinimumLevel.Debug()
+#else
+                         .MinimumLevel.Verbose()
 #endif
                          .Enrich.WithThreadId()
                          .Enrich.WithExceptionDetails()

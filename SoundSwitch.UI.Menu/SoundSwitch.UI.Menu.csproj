@@ -4,6 +4,8 @@
         <UseWindowsForms>true</UseWindowsForms>
         <TargetFramework>net5.0-windows</TargetFramework>
         <Nullable>enable</Nullable>
+        <Configurations>Debug;Release;Nightly</Configurations>
+        <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
 
     <ItemGroup>

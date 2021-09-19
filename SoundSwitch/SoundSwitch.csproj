@@ -9,9 +9,10 @@
         <PublishTrimmed>false</PublishTrimmed>
         <TrimMode>link</TrimMode>
         <PublishReadyToRun>true</PublishReadyToRun>
-        <Configurations>Debug;Release;Beta</Configurations>
+        <Configurations>Debug;Release;Beta;Nightly</Configurations>
         <RuntimeIdentifier>win-x64</RuntimeIdentifier>
         <TargetFramework>net5.0-windows</TargetFramework>
+        <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
     <PropertyGroup>
         <RuntimeFrameworkVersion>5.0.9</RuntimeFrameworkVersion>
@@ -26,11 +27,16 @@
         <Optimize>false</Optimize>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+        <DefineConstants>RELEASE</DefineConstants>
         <Optimize>true</Optimize>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Beta|AnyCPU'">
         <DefineConstants>TRACE;BETA</DefineConstants>
         <Optimize>true</Optimize>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Nightly' ">
+      <DefineConstants>TRACE;NIGHTLY</DefineConstants>
+      <Optimize>true</Optimize>
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\SoundSwitch.Audio.Manager\SoundSwitch.Audio.Manager.csproj" />

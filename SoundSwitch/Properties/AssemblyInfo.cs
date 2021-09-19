@@ -22,6 +22,8 @@ using System.Runtime.InteropServices;
 
 #if BETA
 [assembly: AssemblyConfiguration("Beta")]
+#elif NIGHTLY
+[assembly: AssemblyConfiguration("Nightly")]
 #else
 [assembly: AssemblyConfiguration("Release")]
 #endif

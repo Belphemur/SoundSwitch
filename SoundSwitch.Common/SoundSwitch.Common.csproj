@@ -8,6 +8,8 @@
     <Deterministic>false</Deterministic>
     <LangVersion>latest</LangVersion>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
+    <Configurations>Debug;Release;Nightly</Configurations>
+    <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Resources\defaultMicrophone.ico" />
