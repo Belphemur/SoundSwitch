@@ -42,6 +42,7 @@ namespace SoundSwitch.Framework.Profile
         private readonly Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)> _profilesByUwpApp = new();
 
         private readonly ProfileHotkeyManager _profileHotkeyManager;
+        private readonly ILogger _logger;
 
 
         public IReadOnlyCollection<Profile> Profiles => AppConfigs.Configuration.Profiles;
@@ -60,6 +61,7 @@ namespace SoundSwitch.Framework.Profile
             _triggerFactory = triggerFactory;
             _notificationManager = notificationManager;
             _profileHotkeyManager = new(this);
+            _logger = Log.ForContext(GetType());
         }
 
         private bool RegisterTriggers(Profile profile, bool onInit = false)
@@ -133,7 +135,7 @@ namespace SoundSwitch.Framework.Profile
 
                 if (errors.Length > 0)
                 {
-                    Log.Warning("Couldn't initiate all profiles: {profiles}", errors.Select(profile => profile.Name));
+                    _logger.Warning("Couldn't initiate all profiles: {profiles}", errors.Select(profile => profile.Name));
                     return errors;
                 }
 
@@ -141,7 +143,7 @@ namespace SoundSwitch.Framework.Profile
             }
             finally
             {
-                Log.Information("Profile manager initiated {profiles} with {errors} errors", AppConfigs.Configuration.Profiles.Count, errors.Length);
+                _logger.Information("Profile manager initiated {profiles} with {errors} errors", AppConfigs.Configuration.Profiles.Count, errors.Length);
             }
         }
 
@@ -157,8 +159,11 @@ namespace SoundSwitch.Framework.Profile
 
                 if (HandleWindowName(@event)) return;
             };
+            _logger.Information("Windows Monitor Registered");
 
             WindowsAPIAdapter.WindowDestroyed += (sender, @event) => { RestoreState(@event.Hwnd); };
+            _logger.Information("Windows Destroyed Registered");
+
         }
 
         private bool HandleUwpApp(WindowMonitor.Event @event)
@@ -411,6 +416,7 @@ namespace SoundSwitch.Framework.Profile
                 {
                     continue;
                 }
+
                 var trigger = groups.First();
 
                 var error = groups.Key.Match(() => null,
@@ -555,6 +561,7 @@ namespace SoundSwitch.Framework.Profile
         {
             if (_profileByApplication.Count == 0)
             {
+                _logger.Information("No profile related to application to load");
                 return;
             }
 
@@ -562,6 +569,7 @@ namespace SoundSwitch.Framework.Profile
             {
                 try
                 {
+                    _logger.Verbose("Checking process: {process}", process);
                     if (process.HasExited)
                         continue;
                     if (!process.Responding)
@@ -574,6 +582,7 @@ namespace SoundSwitch.Framework.Profile
 
                     if (_profileByApplication.TryGetValue(filePath, out var profile))
                     {
+                        _logger.Debug("Profile {profile} match process {process}", profile, process);
                         var handle = User32.NativeMethods.HWND.Cast(process.Handle);
                         SaveCurrentState(handle, profile.Profile, profile.Trigger);
                         SwitchAudio(profile.Profile, (uint)process.Id);
@@ -589,7 +598,7 @@ namespace SoundSwitch.Framework.Profile
                 }
                 catch (Exception e)
                 {
-                    Log.Error(e, "Couldn't get information about the given process.");
+                    _logger.Error(e, "Couldn't get information about the given process.");
                 }
             }
         }
