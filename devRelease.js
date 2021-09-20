@@ -1,7 +1,5 @@
 'use strict'
-import * as fs from 'fs/promises';
 import * as util from 'util';
-import * as crypto from 'crypto';
 import * as path from 'path';
 import {exec} from 'child_process';
 import {Webhook, MessageBuilder} from "discord-webhook-node";
@@ -30,7 +28,7 @@ async function main() {
 
         const fileBasename = path.basename(filePath);
 
-        const response = await bucket.upload(filePath, path.join('nightly',fileBasename));
+        const response = await bucket.upload(filePath, `nightly/${fileBasename}`);
         const hook = new Webhook(webhookUrl);
         const embed = new MessageBuilder()
             .setAuthor("Beta Build", "https://soundswitch.aaflalo.me/img/beta.png")
