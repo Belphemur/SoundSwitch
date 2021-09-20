@@ -1,5 +1,6 @@
 {
   "name": "soundswitch",
+  "type": "module",
   "release": {
     "plugins": [
       [
@@ -98,6 +99,7 @@
     "discord-webhook-node": "^1.1.8",
     "normalize-url": ">=7.0.2",
     "semantic-release": "^17.4.7",
-    "trim-newlines": ">=3.0.1"
+    "trim-newlines": ">=3.0.1",
+    "@uploadcare/upload-client": "^1.1.5"
   }
 }
