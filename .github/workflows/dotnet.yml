@@ -15,7 +15,7 @@ env:
   PROJECT_NAME: "SoundSwitch"
   ARCH: "win-x64"
   FRAMEWORK: "net5.0-windows"
-  NODEJS: 14
+  NODEJS: 16
   CONFIGURATION: "Nightly"
 
 jobs:
