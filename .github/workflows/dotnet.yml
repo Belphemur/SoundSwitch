@@ -35,6 +35,7 @@ jobs:
           filters: |
             ci:
              - '.github/**/*.yml'
+             - 'devRelease.js'
             SoundSwitch:
               - 'SoundSwitch*/**'
             node:
@@ -94,6 +95,7 @@ jobs:
             ci:
               - '.github/**/*.yml'
               - 'SoundSwitch*/**'
+              - 'devRelease.js'
 
   prerelease:
     needs: [ build, changes ]
