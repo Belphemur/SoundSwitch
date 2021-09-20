@@ -99,7 +99,7 @@
     "conventional-changelog-conventionalcommits": "^4.6.1",
     "discord-webhook-node": "^1.1.8",
     "normalize-url": ">=7.0.2",
-    "semantic-release": "^17.4.7",
+    "semantic-release": "^18.0.0",
     "trim-newlines": ">=3.0.1"
   }
 }
