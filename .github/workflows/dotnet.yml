@@ -121,12 +121,6 @@ jobs:
         uses: rlespinasse/github-slug-action@v3.x
       - name: Zip Build ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}
         run: tar cafv ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip -C ${{ env.PROJECT_NAME }}\bin\${{env.CONFIGURATION}}\${{ env.FRAMEWORK }}\${{ env.ARCH }}\publish\ *
-      - name: Upload Artifact
-        run: curl -u "${{env.DAV_USER}}:${{env.DAV_PASS}}" -X PUT ${{env.DAV_SERVER}}/${{env.DAV_USER}}/${{env.PROJECT_NAME}}/${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip --upload-file ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip
-        env:
-          DAV_USER: ${{secrets.DAV_USER}}
-          DAV_PASS: ${{secrets.DAV_PASS}}
-          DAV_SERVER: "https://nc.aaflalo.me/remote.php/dav/files"
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
@@ -140,8 +134,11 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         run: npm ci --prefer-offline --silent
-      - name: Notify about new dev release
-        run: node devRelease.js "${{ secrets.DISCORD_WEBHOOK }}" "${{ steps.devVersion.outputs.version }}" "${{env.GITHUB_REPOSITORY_OWNER_PART}}/${{env.GITHUB_REPOSITORY_NAME_PART}}"
+      - name: Upload prerelease & Notify
+        env:
+          UPLOAD_SECRET: ${{secrets.UPLOAD_SECRET}}
+          UPLOAD_PUBLIC: ${{secrets.UPLOAD_PUBLIC}}
+        run: node devRelease.js "${{ secrets.DISCORD_WEBHOOK }}" "${{ steps.devVersion.outputs.version }}" "${{env.GITHUB_REPOSITORY_OWNER_PART}}/${{env.GITHUB_REPOSITORY_NAME_PART}}" "${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip"
 
   prepare-release:
     needs: [ build, changes ]
