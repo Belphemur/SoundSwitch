@@ -21,6 +21,7 @@ env:
 
 jobs:
   build:
+    if: github.ref != 'refs/heads/dev'
     runs-on: windows-latest
     steps:
       - name: Cancel Previous Runs
@@ -73,11 +74,11 @@ jobs:
         env:
           cache-name: cache-node-modules
         with:
-          path: ~/.npm
+          path: npm-cache
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
       - name: Install semantic-release dependencies
         if: steps.filter.outputs.node == 'true'
-        run: npm ci --prefer-offline --silent
+        run: npm ci --prefer-offline --silent --cache npm-cache
       - name: Release dry run
         if: steps.filter.outputs.node == 'true'
         run: npx semantic-release -d
@@ -98,8 +99,8 @@ jobs:
               - 'SoundSwitch*/**'
               - 'devRelease.js'
 
-  prerelease:
-    needs: [ build, changes ]
+  nightly-release:
+    needs: [ changes ]
     if: github.ref == 'refs/heads/dev' && needs.changes.outputs.ci == 'true'
     runs-on: windows-latest
     steps:
@@ -133,10 +134,10 @@ jobs:
         env:
           cache-name: cache-node-modules
         with:
-          path: ~/.npm
+          path: npm-cache
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
-        run: npm ci --prefer-offline --silent
+        run: npm ci --prefer-offline --silent --cache npm-cache
       - name: Upload prerelease & Notify
         env:
           UPLOAD_SECRET: ${{secrets.UPLOAD_SECRET}}
@@ -144,7 +145,7 @@ jobs:
           UPLOAD_BUCKET: ${{env.PROJECT_NAME}}
         run: node devRelease.js "${{ secrets.DISCORD_WEBHOOK }}" "${{ steps.devVersion.outputs.version }}" "${{env.GITHUB_REPOSITORY_OWNER_PART}}/${{env.GITHUB_REPOSITORY_NAME_PART}}" "${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip"
 
-  prepare-release:
+  master-release:
     needs: [ build, changes ]
     if: github.ref == 'refs/heads/master' &&  needs.changes.outputs.ci == 'true'
     runs-on: ubuntu-latest
@@ -159,9 +160,9 @@ jobs:
         env:
           cache-name: cache-node-modules
         with:
-          path: ~/.npm
+          path: npm-cache
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
       - name: Install semantic-release dependencies
-        run: npm ci --prefer-offline --silent
+        run: npm ci --prefer-offline --silent --cache npm-cache
       - name: Release
         run: npx semantic-release
