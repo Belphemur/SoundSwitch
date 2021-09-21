@@ -16,6 +16,7 @@ env:
   ARCH: "win-x64"
   FRAMEWORK: "net5.0-windows"
   NODEJS: 16
+  DOTNET: "5.0.x"
   CONFIGURATION: "Nightly"
 
 jobs:
@@ -44,7 +45,7 @@ jobs:
         uses: actions/setup-dotnet@v1
         if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true'
         with:
-          dotnet-version: 5.0.x
+          dotnet-version: ${{ env.DOTNET }}
       - name: Restore
         if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true'
         run: dotnet restore
@@ -109,7 +110,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 5.0.x
+          dotnet-version: ${{ env.DOTNET }}
       - name: Restore
         run: dotnet restore -r ${{ env.ARCH }}
       - name: Fetch tags
