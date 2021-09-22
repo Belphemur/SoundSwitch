@@ -347,7 +347,7 @@ Ambos: cambia cuando se cambia cualquier tipo de dispositivo.</value>
     <value>Activar el perfil si el programa en primer plano contiene los caracteres siguientes</value>
   </data>
   <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>Atajo utilizado para activar el perfil</value>
+    <value>Atajo utilizado para activar el perfil. Si acciona el mismo atajo, podrá cambiar entre perfiles.</value>
   </data>
   <data name="hotkeyEnabled" xml:space="preserve">
     <value>Atajo activado</value>
@@ -417,5 +417,64 @@ Ambos: cambia cuando se cambia cualquier tipo de dispositivo.</value>
   </data>
   <data name="profile.error.registerHotkeys.title" xml:space="preserve">
     <value>Ya se utiliza el atajo</value>
+  </data>
+  <data name="usePrimaryScreenTooltip" xml:space="preserve">
+    <value>Mostrar mensaje emergente en la pantalla principal, no la enfocada.</value>
+  </data>
+  <data name="telemetry.desc" xml:space="preserve">
+    <value>Se recupera anónimamente la versión utilizada de SoundSwitch. Solo el desarrollador de SoundSwitch puede verlo.</value>
+  </data>
+  <data name="quickMenu.desc" xml:space="preserve">
+    <value>Muestra un menú rápido, como Idioma de Windows, al utilizar un atajo de teclado</value>
+  </data>
+  <data name="quickMenu" xml:space="preserve">
+    <value>Menú rápido al accionar atajo</value>
+  </data>
+  <data name="telemetry" xml:space="preserve">
+    <value>Telemetría</value>
+  </data>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>Este desencadenador hará visible el perfil en el menú del icono del área de notificación. Pulse en el icono para ver su perfil.</value>
+  </data>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>En el menú de la aplicación</value>
+  </data>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>Alternar silencio</value>
+  </data>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>{0} ahora tiene el sonido restaurado.</value>
+  </data>
+  <data name="notification.microphone.muted" xml:space="preserve">
+    <value>{0} se ha silenciado ahora.</value>
+  </data>
+  <data name="profile.trigger.uwp.desc" xml:space="preserve">
+    <value>Introduzca el nombre de la aplicación instalada a través de la tienda de Windows, como Netflix, Amazon Prime Video, etc.</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
+    <value>Requiere que se active «{0}».
+
+Restaura el estado del sistema cuando se cierra la aplicación.</value>
+  </data>
+  <data name="profile.trigger.restoreDevices" xml:space="preserve">
+    <value>Restaurar dispositivos cuando termine el desencadenador</value>
+  </data>
+  <data name="profile.trigger.startup.desc" xml:space="preserve">
+    <value>El perfil se desencadenará automáticamente cuando inicie SoundSwitch</value>
+  </data>
+  <data name="profile.trigger.startup" xml:space="preserve">
+    <value>Al inicio</value>
+  </data>
+  <data name="profile.error.steam" xml:space="preserve">
+    <value>Solo puede tener un perfil para Big Picture de Steam.</value>
+  </data>
+  <data name="profile.trigger.steam.desc" xml:space="preserve">
+    <value>Activar cuando se detecte el modo Big Picture de Steam. (Se restaurará el estado anterior al cerrar Big Picture.)</value>
+  </data>
+  <data name="profile.trigger.steam" xml:space="preserve">
+    <value>Big Picture de Steam</value>
+  </data>
+  <data name="profile.explanation" xml:space="preserve">
+    <value>Añada un perfil para cambiar a un determinado dispositivo de reproducción o de grabación cuando se inicie o active una aplicación específica.</value>
   </data>
 </root>
