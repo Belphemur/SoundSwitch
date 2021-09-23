@@ -115,4 +115,10 @@
   <data name="notSignedTitle" xml:space="preserve">
 		<value>La firma digital no es válida</value>
   </data>
+  <data name="wrongSignature" xml:space="preserve">
+    <value>Hay un problema con la última actualización de SoundSwitch. Deberá descargar manualmente la versión nueva en {0}</value>
+  </data>
+  <data name="remindMe" xml:space="preserve">
+    <value>Luego</value>
+  </data>
 </root>

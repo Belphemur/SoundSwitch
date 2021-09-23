@@ -398,7 +398,7 @@ Entrambi: Cambia quando qualsiasi tipo di dispositivo viene cambiato.</value>
     <value>Attiva il profilo se il programma in primo piano contiene i seguenti caratteri</value>
   </data>
   <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>Tasto scelta rapida usato per attivare il profilo</value>
+    <value>Tasto scelta rapida usato per attivare il profilo. Se usi lo stesso tasto di scelta rapida, sarai in grado di passare da un profilo all'altro.</value>
   </data>
   <data name="profile.trigger.steam" xml:space="preserve">
     <value>Immagine grande Steam</value>
@@ -473,5 +473,8 @@ Ripristina lo stato del sistema quando l'applicazione viene chiusa.</value>
   </data>
   <data name="telemetry" xml:space="preserve">
     <value>Telemetria</value>
+  </data>
+  <data name="telemetry.desc" xml:space="preserve">
+    <value>Raccogli in modo anonimo quale versione di SoundSwitch è in uso. Info condivisa solo con lo sviluppatore di SoundSwitch.</value>
   </data>
 </root>
