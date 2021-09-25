@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -58,4 +58,364 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="telemetry.desc" xml:space="preserve">
+    <value>Анонимно прибављање верзије SoundSwitch-а коју користите. Једино се шаље развојном тиму програма.</value>
+  </data>
+  <data name="quickMenu.desc" xml:space="preserve">
+    <value>Прикажи брзи мени попут избора језика у систему када користите пречицу</value>
+  </data>
+  <data name="quickMenu" xml:space="preserve">
+    <value>Пречица за Брзи мени</value>
+  </data>
+  <data name="telemetry" xml:space="preserve">
+    <value>Телеметрија</value>
+  </data>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>Овај окидач чини профил видљивим у менију иконе у углу. Леви клик на икону да би видели свој профил.</value>
+  </data>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>У менију апликације</value>
+  </data>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>Утишавање</value>
+  </data>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>{0} је сада укључен.</value>
+  </data>
+  <data name="notification.microphone.muted" xml:space="preserve">
+    <value>{0} је сада утишан.</value>
+  </data>
+  <data name="profile.trigger.uwp.desc" xml:space="preserve">
+    <value>Унеси име апликације инсталиране кроз Windows продавницу. Попут Netflix, Amazon Prime video, итд…</value>
+  </data>
+  <data name="profile.trigger.uwp" xml:space="preserve">
+    <value>Microsoft Store апликација</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
+    <value>Стање система враћено</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
+    <value>Захтева да "{0}" буде омогућен.
+
+Врати стање система када се апликација затвори.</value>
+  </data>
+  <data name="profile.trigger.restoreDevices" xml:space="preserve">
+    <value>Врати уређаје када се окидач заврши</value>
+  </data>
+  <data name="usePrimaryScreenTooltip" xml:space="preserve">
+    <value>Прикажи банер на главном екрану уместо на оном у фокусу.</value>
+  </data>
+  <data name="usePrimaryScreen" xml:space="preserve">
+    <value>Увек користи главни екран</value>
+  </data>
+  <data name="profile.trigger.startup.desc" xml:space="preserve">
+    <value>Профил ће бити аутоматски окинут када се покрене програм</value>
+  </data>
+  <data name="profile.trigger.startup" xml:space="preserve">
+    <value>При покретању</value>
+  </data>
+  <data name="profile.button.edit" xml:space="preserve">
+    <value>Уреди</value>
+  </data>
+  <data name="profile.button.save" xml:space="preserve">
+    <value>Сачувај</value>
+  </data>
+  <data name="profile.notification.text" xml:space="preserve">
+    <value>Профил {0} окинут</value>
+  </data>
+  <data name="profile.notify-on-activation" xml:space="preserve">
+    <value>Обавести ме када се окине профил</value>
+  </data>
+  <data name="profile.error.window" xml:space="preserve">
+    <value>Већ постоји профил са овим називом прозора: {0}.</value>
+  </data>
+  <data name="profile.error.steam" xml:space="preserve">
+    <value>Можете имати само један профил за Steam велики приказ.</value>
+  </data>
+  <data name="profile.error.triggers.min" xml:space="preserve">
+    <value>Потребан вам је најмање један окидач.</value>
+  </data>
+  <data name="communication" xml:space="preserve">
+    <value>Главни уређај за комуникацију</value>
+  </data>
+  <data name="profile.trigger.available" xml:space="preserve">
+    <value>Доступни окидачи</value>
+  </data>
+  <data name="profile.trigger.actives" xml:space="preserve">
+    <value>Активни окидачи</value>
+  </data>
+  <data name="profile.desc" xml:space="preserve">
+    <value>Опис</value>
+  </data>
+  <data name="profile.trigger.steam.desc" xml:space="preserve">
+    <value>Активирај када је детектован Steam велики приказ. (Вратиће се стање када се Велики приказ затвори.)</value>
+  </data>
+  <data name="profile.trigger.process.desc" xml:space="preserve">
+    <value>Активирај профил ако је изабрана апликација активна</value>
+  </data>
+  <data name="profile.trigger.window.desc" xml:space="preserve">
+    <value>Активирај профил ако активни програм садржи следеће карактере</value>
+  </data>
+  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
+    <value>Пречица за активирања профила. Ако корисите исту пречицу, моћићете да вршите промене између профила.</value>
+  </data>
+  <data name="profile.trigger.steam" xml:space="preserve">
+    <value>Steam велики приказ</value>
+  </data>
+  <data name="profile.trigger.process" xml:space="preserve">
+    <value>Путања до апликације</value>
+  </data>
+  <data name="profile.trigger.window" xml:space="preserve">
+    <value>Назив програма</value>
+  </data>
+  <data name="profile.error.device-not-found" xml:space="preserve">
+    <value>Уређај {0} није могао бити пронађен.</value>
+  </data>
+  <data name="hotkeyEnabled" xml:space="preserve">
+    <value>Пречица је омогућена</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox" xml:space="preserve">
+    <value>Такође промени главни уређај</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
+    <value>Када је детектована апликација, SoundSwitch ће такође променити тренутни главни уређај.</value>
+  </data>
+  <data name="profile.feature.profile" xml:space="preserve">
+    <value>Профил</value>
+  </data>
+  <data name="profile.error.no-name" xml:space="preserve">
+    <value>Профилу је потребан назив.</value>
+  </data>
+  <data name="profile.error.delete" xml:space="preserve">
+    <value>Није могуће пронаћи профил.</value>
+  </data>
+  <data name="profile.deleteButton" xml:space="preserve">
+    <value>Обриши</value>
+  </data>
+  <data name="profile.error.title" xml:space="preserve">
+    <value>Грешка профила</value>
+  </data>
+  <data name="profile.feature.executable" xml:space="preserve">
+    <value>Извршна датотека (*.exe)</value>
+  </data>
+  <data name="profile.feature.add" xml:space="preserve">
+    <value>Додај профил</value>
+  </data>
+  <data name="profile.error.registerHotkeys.title" xml:space="preserve">
+    <value>Пречица већ у употреби</value>
+  </data>
+  <data name="profile.error.registerHotkeys" xml:space="preserve">
+    <value>Није могла бити регистрована пречица за следећи профи: {0}</value>
+  </data>
+  <data name="profile.explanation" xml:space="preserve">
+    <value>Додај профил да би сте мењали уређаје за репродукцију или снимање, када је одређена апликација покренута или у фокусу.</value>
+  </data>
+  <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
+    <value>Морате подесити уређај за репродукцију или снимање.</value>
+  </data>
+  <data name="profile.error.needHKOrPath" xml:space="preserve">
+    <value>Морате подесити пречицу или/и апликацију.</value>
+  </data>
+  <data name="profile.error.name" xml:space="preserve">
+    <value>Већ постоји профил са {0} називом.</value>
+  </data>
+  <data name="profile.error.application" xml:space="preserve">
+    <value>Апликација {0} већ има повезан профил.</value>
+  </data>
+  <data name="profile.error.hotkey" xml:space="preserve">
+    <value>Пречица {0} је већ регистрована.</value>
+  </data>
+  <data name="profile.name" xml:space="preserve">
+    <value>Назив</value>
+  </data>
+  <data name="profile.program" xml:space="preserve">
+    <value>Апликација</value>
+  </data>
+  <data name="profile.addButton" xml:space="preserve">
+    <value>Додај</value>
+  </data>
+  <data name="profile.tab" xml:space="preserve">
+    <value>Профили</value>
+  </data>
+  <data name="iconChange.tooltip" xml:space="preserve">
+    <value>Изаберите када да се промени икона програма у углу екрана.
+
+Предефинисано: Не мењај је. Задржи SoundSwitch икону.
+Репродукција: Када се промени уређај за репродукцију.
+Снимање: Кад се промени уређај за снимање.
+Оба: Када се промени било који тип уређаја.</value>
+  </data>
+  <data name="iconChange" xml:space="preserve">
+    <value>Икона у углу екрана</value>
+  </data>
+  <data name="foregroundAppTooltip" xml:space="preserve">
+    <value>Такође промени звук у апликацији која се тада користи. Корисно за видео игре.</value>
+  </data>
+  <data name="foregroundApp" xml:space="preserve">
+    <value>Такође промени приказани програм</value>
+  </data>
+  <data name="disableCustomSoundTooltip" xml:space="preserve">
+    <value>Онемогући изабрани произвољни звук.</value>
+  </data>
+  <data name="notificationOptionBanner" xml:space="preserve">
+    <value>Банер</value>
+  </data>
+  <data name="updateNotifyTooltip" xml:space="preserve">
+    <value>SoundSwitch ће вас обавестити када је доступна нова надоградња. Када кликнете на обавештења, отвориће се прозор за преузимање надоградње и питаће вас да ли желите да је инсталирате.</value>
+  </data>
+  <data name="updateNeverTooltip" xml:space="preserve">
+    <value>Не надограђуј програм осим ако ви то не одрадите ручно.</value>
+  </data>
+  <data name="languageRestartRequiredCaption" xml:space="preserve">
+    <value>Потребно је поновно покретање</value>
+  </data>
+  <data name="languageRestartRequired" xml:space="preserve">
+    <value>Језик ће се променити након поновног покретања SoundSwitch-а.
+Да ли желите поновно покретање сада?</value>
+  </data>
+  <data name="language" xml:space="preserve">
+    <value>Језик</value>
+  </data>
+  <data name="activePlayback" xml:space="preserve">
+    <value>Репродуктор: {0}</value>
+  </data>
+  <data name="activeRecording" xml:space="preserve">
+    <value>Снимач: {0}</value>
+  </data>
+  <data name="audioFileNotFoundCaption" xml:space="preserve">
+    <value>Звучна датотека није пронађена</value>
+  </data>
+  <data name="audioFileNotFound" xml:space="preserve">
+    <value>Звучна датотека коју сте изабрали за обавештења не може бити пронађена. SoundSwitch је променио подешавања обавештења на {0}.</value>
+  </data>
+  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
+    <value>Без балончића помоћи</value>
+  </data>
+  <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
+    <value>За оба уређаја</value>
+  </data>
+  <data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
+    <value>Уређај за снимање</value>
+  </data>
+  <data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
+    <value>Уређај за репродукцију</value>
+  </data>
+  <data name="notificationTooltip" xml:space="preserve">
+    <value>Обавештења система: Предефинисано системско обавештења у углу.
+Звучна обавештења: Репродукује звук на промењеном уређају за репродукцију.
+Прилагођена звучна обавештења: Репродукује изабрани звук на промењеном уређају за репродукцију.
+Тост обавештења: Користи посебну верзију форме системског обавештења у углу.
+Банер: Користи прилагођен оквир увек на врху, користан за употребу у играма.</value>
+  </data>
+  <data name="notificationOptionCustomized" xml:space="preserve">
+    <value>Прилагођена звучна обавештења</value>
+  </data>
+  <data name="notificationOptionToast" xml:space="preserve">
+    <value>Тост обавештења</value>
+  </data>
+  <data name="notificationOptionNone" xml:space="preserve">
+    <value>Без обавештавања</value>
+  </data>
+  <data name="notificationOptionSound" xml:space="preserve">
+    <value>Звучна обавештења</value>
+  </data>
+  <data name="notificationOptionWindowsDefault" xml:space="preserve">
+    <value>Системска обавештења</value>
+  </data>
+  <data name="cycleThroughTooltip" xml:space="preserve">
+    <value>Изабери уређаје за промену. Или само изабране или све.</value>
+  </data>
+  <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
+    <value>Само изабрани звучни уређаји</value>
+  </data>
+  <data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
+    <value>Сви звучни уређаји</value>
+  </data>
+  <data name="tooltipOnHover" xml:space="preserve">
+    <value>Приказ балончића помоћи</value>
+  </data>
+  <data name="updateNever" xml:space="preserve">
+    <value>Никада не проверавај надоградње</value>
+  </data>
+  <data name="updateNotify" xml:space="preserve">
+    <value>Обавести ме када су надоградње доступне</value>
+  </data>
+  <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
+    <value>Надоградње се аутоматски инсталирају без икаквих обавештења.</value>
+  </data>
+  <data name="updateInstallAutomatically" xml:space="preserve">
+    <value>Аутоматски инсталирај надоградње</value>
+  </data>
+  <data name="keepSystemTrayIconTooltip" xml:space="preserve">
+    <value>Када је изабрано, икона у углу екрана се неће мењати када се мења 'Главни уређај за репродукцију'.</value>
+  </data>
+  <data name="keepSystemTrayIcon" xml:space="preserve">
+    <value>Задржи икону програма у углу екрана</value>
+  </data>
+  <data name="cycleThrough" xml:space="preserve">
+    <value>Уређају за промену</value>
+  </data>
+  <data name="updateSettings" xml:space="preserve">
+    <value>Подешавања надоградњи</value>
+  </data>
+  <data name="audioSettings" xml:space="preserve">
+    <value>Подешавања звука</value>
+  </data>
+  <data name="basicSettings" xml:space="preserve">
+    <value>Основна подешавања</value>
+  </data>
+  <data name="hotkeysTooltip" xml:space="preserve">
+    <value>Изаберите да омогућите пречицу.</value>
+  </data>
+  <data name="selectSoundButtonTooltip" xml:space="preserve">
+    <value>Изаберите датотеку звука за обавештење</value>
+  </data>
+  <data name="audioFiles" xml:space="preserve">
+    <value>Датотеке звука</value>
+  </data>
+  <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
+    <value>Када је изабрано, SoundSwitch ће такође проверавати постојање бет верзија на GitHub-у.</value>
+  </data>
+  <data name="updateIncludeBetaVersions" xml:space="preserve">
+    <value>Укључи бета верзије</value>
+  </data>
+  <data name="notification" xml:space="preserve">
+    <value>Обавештење</value>
+  </data>
+  <data name="communicationsDeviceTooltip" xml:space="preserve">
+    <value>Када је изабрано, 'Главни уређај за комуникацију' и 'Главни уређај за репродукцију' се мењају заједно (корисно за Skype, TeamSpeak, итд.).</value>
+  </data>
+  <data name="closeTooltip" xml:space="preserve">
+    <value>Промене се аутоматски чувају</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>Затвори</value>
+  </data>
+  <data name="startWithWindows" xml:space="preserve">
+    <value>Покрени заједно са системом</value>
+  </data>
+  <data name="communicationsDevice" xml:space="preserve">
+    <value>Промени предефинисани уређај за комуникацију</value>
+  </data>
+  <data name="hotkeys" xml:space="preserve">
+    <value>Пречица</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>Подешавања</value>
+  </data>
+  <data name="playback" xml:space="preserve">
+    <value>Репродукција</value>
+  </data>
+  <data name="recording" xml:space="preserve">
+    <value>Снимање</value>
+  </data>
+  <data name="disconnected" xml:space="preserve">
+    <value>Није повезано</value>
+  </data>
+  <data name="connected" xml:space="preserve">
+    <value>Повезано</value>
+  </data>
+  <data name="selected" xml:space="preserve">
+    <value>Изабрано</value>
+  </data>
 </root>
