@@ -199,7 +199,7 @@
     <value>Извршна датотека (*.exe)</value>
   </data>
   <data name="profile.feature.add" xml:space="preserve">
-    <value>Додај профил</value>
+    <value>Додавање профила</value>
   </data>
   <data name="profile.error.registerHotkeys.title" xml:space="preserve">
     <value>Пречица већ у употреби</value>
