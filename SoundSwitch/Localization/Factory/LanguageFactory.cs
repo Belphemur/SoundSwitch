@@ -30,7 +30,8 @@ namespace SoundSwitch.Localization.Factory
             new Czech(),
             new Turkish(),
             new Arabic(),
-            new Thai()
+            new Thai(),
+            new Serbian()
         })
         {
         }
