@@ -14,14 +14,13 @@
 
 using System;
 using System.Threading;
-using System.Threading.Tasks;
 using NAudio.CoreAudioApi;
-using NAudio.Wave;
-using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
+using SoundSwitch.Framework.Audio.Play;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
+using SoundSwitch.Framework.Threading;
 using SoundSwitch.Localization;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification
@@ -43,29 +42,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             _cancellationTokenSource?.Cancel();
             _cancellationTokenSource?.Dispose();
             _cancellationTokenSource = new CancellationTokenSource();
-            Task.Factory.StartNew(async () =>
-            {
-                try
-                {
-                    using var enumerator = new MMDeviceEnumerator();
-                    using var cts = CancellationTokenSource.CreateLinkedTokenSource(_cancellationTokenSource.Token);
-                    using var player = new WasapiOut(enumerator.GetDevice(audioDevice.Id), AudioClientShareMode.Shared, true, 200);
-                    await using var waveStream = new CachedSoundWaveStream(Configuration.CustomSound);
-                    player.Init(waveStream);
-
-                    player.PlaybackStopped += (_, _) => cts.CancelAfter(TimeSpan.FromMilliseconds(750));
-                    player.Play();
-                    await Task.Delay(-1, cts.Token);
-                }
-                catch (TaskCanceledException)
-                {
-                    //Ignored
-                }
-                catch (Exception e)
-                {
-                    Log.Warning(e, "Issue while playing {sound}", Configuration.CustomSound.FilePath);
-                }
-            }, _cancellationTokenSource.Token);
+            JobScheduler.Instance.ScheduleJob(new PlaySoundJob(audioDevice.Id, Configuration.CustomSound), _cancellationTokenSource.Token);
         }
 
         public void OnSoundChanged(CachedSound newSound)

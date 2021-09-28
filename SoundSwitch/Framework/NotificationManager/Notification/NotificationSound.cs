@@ -15,14 +15,14 @@
 using System;
 using System.IO;
 using System.Threading;
-using System.Threading.Tasks;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
-using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
+using SoundSwitch.Framework.Audio.Play;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
+using SoundSwitch.Framework.Threading;
 using SoundSwitch.Localization;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification
@@ -43,38 +43,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             _cancellationTokenSource?.Cancel();
             _cancellationTokenSource?.Dispose();
             _cancellationTokenSource = new CancellationTokenSource();
-            Task.Factory.StartNew(async () =>
-            {
-                try
-                {
-                    using var enumerator = new MMDeviceEnumerator();
-                    using var semaphore = new SemaphoreSlim(0);
-                    using var player = new WasapiOut(enumerator.GetDevice(audioDevice.Id), AudioClientShareMode.Shared, true, 200);
-                    await using var memoryStreamedSound = GetStreamCopy();
-                    await using var waveStream = new WaveFileReader(memoryStreamedSound);
-                    player.Init(waveStream);
-
-                    player.PlaybackStopped += (_, _) =>
-                    {
-                        if (_cancellationTokenSource.Token.IsCancellationRequested)
-                        {
-                            return;
-                        }
-
-                        semaphore.Release();
-                    };
-                    player.Play();
-                    await semaphore.WaitAsync(_cancellationTokenSource.Token);
-                }
-                catch (TaskCanceledException)
-                {
-                    //Ignored
-                }
-                catch (Exception e)
-                {
-                    Log.Warning(e, "Issue while playing default sound");
-                }
-            }, _cancellationTokenSource.Token);
+            JobScheduler.Instance.ScheduleJob(new PlaySoundJob(audioDevice.Id, new CachedSound(GetStreamCopy(), new WaveFormat(44100, 1))), _cancellationTokenSource.Token);
         }
 
         public void OnSoundChanged(CachedSound newSound)
@@ -115,7 +84,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         {
         }
 
-        private Stream GetStreamCopy()
+        private MemoryStream GetStreamCopy()
         {
             lock (this)
             {

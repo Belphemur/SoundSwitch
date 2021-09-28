@@ -14,7 +14,6 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
-using NAudio.CoreAudioApi;
 using SoundSwitch.Framework.Audio;
 
 namespace SoundSwitch.Framework.Banner
@@ -49,7 +48,7 @@ namespace SoundSwitch.Framework.Banner
         /// On what device to play the <see cref="CachedSound"/>
         /// </summary>
         [AllowNull]
-        public MMDevice CurrentDevice { get; internal set; }
+        public string CurrentDeviceId { get; internal set; }
 
         /// <summary>
         /// Set the priority of the notification

@@ -27,6 +27,7 @@ using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Logger.Configuration;
 using SoundSwitch.Framework.NotificationManager;
+using SoundSwitch.Framework.Threading;
 using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Localization.Factory;
 using SoundSwitch.Model;
@@ -158,6 +159,8 @@ namespace SoundSwitch
             AppModel.Instance.Dispose();
             WindowsAPIAdapter.Stop();
             MMNotificationClient.Instance?.Dispose();
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(1));
+            JobScheduler.Instance.StopAsync(cts.Token).GetAwaiter().GetResult();
             Log.CloseAndFlush();
         }
 

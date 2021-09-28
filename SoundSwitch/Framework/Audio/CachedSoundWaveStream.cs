@@ -23,7 +23,7 @@ namespace SoundSwitch.Framework.Audio
 
         public CachedSoundWaveStream(CachedSound cachedSound)
         {
-            this._cachedSound = cachedSound;
+            _cachedSound = cachedSound;
         }
 
         public override WaveFormat WaveFormat => _cachedSound.WaveFormat;

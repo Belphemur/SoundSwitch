@@ -17,8 +17,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Job.Scheduler.Builder;
-using Job.Scheduler.Scheduler;
 using NAudio.CoreAudioApi;
 using RailSharp;
 using Serilog;
@@ -50,7 +48,6 @@ namespace SoundSwitch.Model
         private readonly NotificationManager _notificationManager;
         private UpdateChecker _updateChecker;
         private readonly DebounceDispatcher _dispatcher = new();
-        private readonly IJobScheduler _jobScheduler = new JobScheduler(new JobRunnerBuilder());
 
         private AppModel()
         {
@@ -332,7 +329,7 @@ namespace SoundSwitch.Model
                 new NewReleaseAvailableEvent(@event.Release, AppConfigs.Configuration.UpdateMode));
 
 
-            _jobScheduler.ScheduleJob(new CheckForUpdateRecurringJob(_updateChecker), CancellationToken.None, _updateScheduler);
+            JobScheduler.Instance.ScheduleJob(new CheckForUpdateRecurringJob(_updateChecker), CancellationToken.None, _updateScheduler);
             Log.Information("Update checker initiated");
         }
 
@@ -341,7 +338,7 @@ namespace SoundSwitch.Model
         /// </summary>
         public void CheckForUpdate()
         {
-            _jobScheduler.ScheduleJob(new CheckForUpdateOnceJob(_updateChecker), CancellationToken.None, _updateScheduler);
+            JobScheduler.Instance.ScheduleJob(new CheckForUpdateOnceJob(_updateChecker), CancellationToken.None, _updateScheduler);
         }
 
         public event EventHandler<DeviceListChanged> SelectedDeviceChanged;
@@ -554,8 +551,6 @@ namespace SoundSwitch.Model
             TrayIcon?.Dispose();
             ActiveAudioDeviceLister?.Dispose();
             ActiveUnpluggedAudioLister?.Dispose();
-            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(1));
-            _jobScheduler.StopAsync(cts.Token).GetAwaiter().GetResult();
         }
     }
 }

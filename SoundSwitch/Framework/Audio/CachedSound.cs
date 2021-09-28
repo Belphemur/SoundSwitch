@@ -37,20 +37,26 @@ namespace SoundSwitch.Framework.Audio
             {
                 throw new CachedSoundFileNotExistsException("The audio file doesn't exists");
             }
+
             FilePath = audioFileName;
-            using (var audioFileReader = new AudioFileReader(audioFileName))
+            using var audioFileReader = new AudioFileReader(audioFileName);
+            // TODO: could add resampling in here if required
+            WaveFormat = audioFileReader.WaveFormat;
+            var wholeFile = new List<byte>((int)(audioFileReader.Length));
+            var readBuffer = new byte[audioFileReader.WaveFormat.SampleRate * audioFileReader.WaveFormat.Channels];
+            int samplesRead;
+            while ((samplesRead = audioFileReader.Read(readBuffer, 0, readBuffer.Length)) > 0)
             {
-                // TODO: could add resampling in here if required
-                WaveFormat = audioFileReader.WaveFormat;
-                var wholeFile = new List<byte>((int) (audioFileReader.Length));
-                var readBuffer = new byte[audioFileReader.WaveFormat.SampleRate*audioFileReader.WaveFormat.Channels];
-                int samplesRead;
-                while ((samplesRead = audioFileReader.Read(readBuffer, 0, readBuffer.Length)) > 0)
-                {
-                    wholeFile.AddRange(readBuffer.Take(samplesRead));
-                }
-                AudioData = wholeFile.ToArray();
+                wholeFile.AddRange(readBuffer.Take(samplesRead));
             }
+
+            AudioData = wholeFile.ToArray();
+        }
+
+        public CachedSound(MemoryStream stream, WaveFormat waveFormat)
+        {
+            WaveFormat = waveFormat;
+            AudioData = stream.ToArray();
         }
     }
 }

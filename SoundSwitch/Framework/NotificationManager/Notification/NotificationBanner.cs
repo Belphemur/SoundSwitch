@@ -17,7 +17,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using NAudio.CoreAudioApi;
-using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework.Audio;
@@ -88,7 +87,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             if (audioDevice.Type == DataFlow.Render && Configuration.CustomSound != null && File.Exists(Configuration.CustomSound.FilePath))
             {
                 toastData.SoundFile = Configuration.CustomSound;
-                toastData.CurrentDevice = AudioSwitcher.Instance.GetDevice(audioDevice.Id);
+                toastData.CurrentDeviceId = audioDevice.Id;
             }
 
             toastData.Title = audioDevice.Type switch
