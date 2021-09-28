@@ -94,8 +94,8 @@ namespace SoundSwitch.Model
     public class DeviceDefaultChangedEvent : DeviceChangedEventBase
     {
         public Role Role { get; }
-        public MMDevice Device { get; }
-        public DeviceDefaultChangedEvent(MMDevice device, Role role) : base(device.ID)
+        public DeviceFullInfo Device { get; }
+        public DeviceDefaultChangedEvent(DeviceFullInfo device, Role role) : base(device.Id)
         {
             Device = device;
             Role = role;

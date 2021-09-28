@@ -32,6 +32,7 @@ using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Profile.Trigger;
+using SoundSwitch.Framework.Threading;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.Updater.Job;
 using SoundSwitch.Framework.WinApi;
@@ -65,6 +66,7 @@ namespace SoundSwitch.Model
                 }, DefaultDeviceChanged);
             };
             _microphoneMuteToggler = new MicrophoneMuteToggler(AudioSwitcher.Instance, _notificationManager);
+            _updateScheduler = new LimitedConcurrencyLevelTaskScheduler(1);
         }
 
         public static IAppModel Instance { get; } = new AppModel();
@@ -72,6 +74,7 @@ namespace SoundSwitch.Model
         private CachedSound _customNotificationCachedSound;
         private readonly DeviceCyclerManager _deviceCyclerManager;
         private readonly MicrophoneMuteToggler _microphoneMuteToggler;
+        private readonly LimitedConcurrencyLevelTaskScheduler _updateScheduler;
 
         public ProfileManager ProfileManager { get; private set; }
 
@@ -328,7 +331,8 @@ namespace SoundSwitch.Model
             _updateChecker.UpdateAvailable += (sender, @event) => NewVersionReleased?.Invoke(this,
                 new NewReleaseAvailableEvent(@event.Release, AppConfigs.Configuration.UpdateMode));
 
-            _jobScheduler.ScheduleJob(new CheckForUpdateRecurringJob(_updateChecker));
+
+            _jobScheduler.ScheduleJob(new CheckForUpdateRecurringJob(_updateChecker), CancellationToken.None, _updateScheduler);
             Log.Information("Update checker initiated");
         }
 
@@ -337,7 +341,7 @@ namespace SoundSwitch.Model
         /// </summary>
         public void CheckForUpdate()
         {
-            _jobScheduler.ScheduleJob(new CheckForUpdateOnceJob(_updateChecker));
+            _jobScheduler.ScheduleJob(new CheckForUpdateOnceJob(_updateChecker), CancellationToken.None, _updateScheduler);
         }
 
         public event EventHandler<DeviceListChanged> SelectedDeviceChanged;

@@ -18,6 +18,8 @@ using System.Threading.Tasks;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using Serilog;
+using SoundSwitch.Audio.Manager;
+using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
 using SoundSwitch.Localization;
@@ -33,11 +35,11 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         public INotificationConfiguration Configuration { get; set; }
 
 
-        public void NotifyDefaultChanged(MMDevice audioDevice)
+        public void NotifyDefaultChanged(DeviceFullInfo audioDevice)
         {
-            if (audioDevice.DataFlow != DataFlow.Render)
+            if (audioDevice.Type != DataFlow.Render)
                 return;
-            
+
             _cancellationTokenSource?.Cancel();
             _cancellationTokenSource?.Dispose();
             _cancellationTokenSource = new CancellationTokenSource();
@@ -45,8 +47,9 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             {
                 try
                 {
+                    using var enumerator = new MMDeviceEnumerator();
                     using var cts = CancellationTokenSource.CreateLinkedTokenSource(_cancellationTokenSource.Token);
-                    using var player = new WasapiOut(audioDevice, AudioClientShareMode.Shared, true, 200);
+                    using var player = new WasapiOut(enumerator.GetDevice(audioDevice.Id), AudioClientShareMode.Shared, true, 200);
                     await using var waveStream = new CachedSoundWaveStream(Configuration.CustomSound);
                     player.Init(waveStream);
 
@@ -87,10 +90,10 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             if (profile.Playback == null)
                 return;
 
-            using var enumerator = new MMDeviceEnumerator();
             try
             {
-                var device = enumerator.GetDevice(profile.Playback.Id);
+                var mmDevice = AudioSwitcher.Instance.GetDevice(profile.Playback.Id);
+                var device = AudioSwitcher.Instance.InteractWithMmDevice(mmDevice, device => new DeviceFullInfo(device));
                 NotifyDefaultChanged(device);
             }
             catch (Exception)

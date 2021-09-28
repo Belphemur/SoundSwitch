@@ -25,7 +25,6 @@ using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
-using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Profile.UI;
@@ -225,7 +224,7 @@ namespace SoundSwitch.UI.Component
             AppModel.Instance.DefaultDeviceChanged += (sender, audioChangeEvent) =>
             {
                 var iconChanger = new IconChangerFactory().Get(AppConfigs.Configuration.SwitchIcon);
-                iconChanger.ChangeIcon(this, new DeviceFullInfo(audioChangeEvent.Device));
+                iconChanger.ChangeIcon(this, audioChangeEvent.Device);
             };
             AppModel.Instance.NewVersionReleased += (sender, @event) =>
             {
