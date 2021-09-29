@@ -5,12 +5,6 @@ namespace SoundSwitch.Framework.TrayIcon.Icon
 {
     public interface IIconChanger : IEnumImpl<IconChangerFactory.ActionEnum>
     {
-        /// <summary>
-        /// Should the icon change
-        /// </summary>
-        /// <param name="deviceInfo"></param>
-        /// <returns></returns>
-        bool NeedsToChangeIcon(DeviceInfo deviceInfo);
 
         /// <summary>
         /// Change the icon to the current default device
