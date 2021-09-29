@@ -14,9 +14,9 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   PROJECT_NAME: "SoundSwitch"
   ARCH: "win-x64"
-  FRAMEWORK: "net5.0-windows"
+  FRAMEWORK: "net6.0-windows"
   NODEJS: 16
-  DOTNET: "5.0.x"
+  DOTNET: "6.0.x"
   CONFIGURATION: "Nightly"
 
 jobs:
