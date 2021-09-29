@@ -19,6 +19,7 @@ using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Updater;
+using SoundSwitch.Framework.Updater.Releases;
 
 namespace SoundSwitch.Model
 {
@@ -73,7 +74,7 @@ namespace SoundSwitch.Model
     {
         public UpdateMode UpdateMode { get; }
 
-        public NewReleaseAvailableEvent(Release release, UpdateMode updateMode) : base(release)
+        public NewReleaseAvailableEvent(AppRelease appRelease, UpdateMode updateMode) : base(appRelease)
         {
             UpdateMode = updateMode;
         }

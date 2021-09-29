@@ -326,7 +326,7 @@ namespace SoundSwitch.Model
             _updateChecker = new UpdateChecker(new Uri(url), AppConfigs.Configuration.IncludeBetaVersions);
 
             _updateChecker.UpdateAvailable += (sender, @event) => NewVersionReleased?.Invoke(this,
-                new NewReleaseAvailableEvent(@event.Release, AppConfigs.Configuration.UpdateMode));
+                new NewReleaseAvailableEvent(@event.AppRelease, AppConfigs.Configuration.UpdateMode));
 
 
             JobScheduler.Instance.ScheduleJob(new CheckForUpdateRecurringJob(_updateChecker), CancellationToken.None, _updateScheduler);

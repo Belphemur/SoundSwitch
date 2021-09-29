@@ -32,7 +32,7 @@ namespace SoundSwitch.Model
                 if (@event.UpdateMode == UpdateMode.Silent)
                 {
                     new AutoUpdater("/VERYSILENT", ApplicationPath.Default).Update(
-                        @event.Release, true);
+                        @event.AppRelease, true);
                 }
             };
 

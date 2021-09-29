@@ -31,6 +31,7 @@ using SoundSwitch.Framework.Profile.UI;
 using SoundSwitch.Framework.TrayIcon.Icon;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
 using SoundSwitch.Framework.Updater;
+using SoundSwitch.Framework.Updater.Releases;
 using SoundSwitch.Framework.Updater.Remind;
 using SoundSwitch.Localization;
 using SoundSwitch.Localization.Factory;
@@ -107,7 +108,7 @@ namespace SoundSwitch.UI.Component
 
                 if (e.Button != MouseButtons.Left) return;
 
-                if (_updateMenuItem.Tag != null && !_postponeService.ShouldPostpone((Release)_updateMenuItem.Tag))
+                if (_updateMenuItem.Tag != null && !_postponeService.ShouldPostpone((AppRelease)_updateMenuItem.Tag))
                 {
                     OnUpdateClick(sender, e);
                     return;
@@ -204,7 +205,7 @@ namespace SoundSwitch.UI.Component
 
             StopAnimationIconUpdate();
             NotifyIcon.BalloonTipClicked -= OnUpdateClick;
-            _updateDownloadForm.DownloadRelease((Release)_updateMenuItem.Tag);
+            _updateDownloadForm.DownloadRelease((AppRelease)_updateMenuItem.Tag);
         }
 
         private void SetEventHandlers()
@@ -231,7 +232,7 @@ namespace SoundSwitch.UI.Component
                 switch (@event.UpdateMode)
                 {
                     case UpdateMode.Never:
-                        _context.Send(state => _updateDownloadForm.DownloadRelease(@event.Release), null);
+                        _context.Send(state => _updateDownloadForm.DownloadRelease(@event.AppRelease), null);
                         break;
                     case UpdateMode.Notify:
                         _context.Send(s => { NewReleaseAvailable(sender, @event); }, null);
@@ -248,17 +249,17 @@ namespace SoundSwitch.UI.Component
 
         private void NewReleaseAvailable(object sender, UpdateChecker.NewReleaseEvent newReleaseEvent)
         {
-            _updateMenuItem.Text = string.Format(TrayIconStrings.updateAvailable, newReleaseEvent.Release.ReleaseVersion);
-            if (_postponeService.ShouldPostpone(newReleaseEvent.Release))
+            _updateMenuItem.Text = string.Format(TrayIconStrings.updateAvailable, newReleaseEvent.AppRelease.ReleaseVersion);
+            if (_postponeService.ShouldPostpone(newReleaseEvent.AppRelease))
             {
-                Log.Information("Release {release} has been postponed", newReleaseEvent.Release);
+                Log.Information("Release {release} has been postponed", newReleaseEvent.AppRelease);
                 return;
             }
 
-            _updateMenuItem.Tag = newReleaseEvent.Release;
+            _updateMenuItem.Tag = newReleaseEvent.AppRelease;
             StartAnimationIconUpdate();
             NotifyIcon.BalloonTipClicked += OnUpdateClick;
-            NotifyIcon.ShowBalloonTip(3000, string.Format(TrayIconStrings.versionAvailable, newReleaseEvent.Release.ReleaseVersion), newReleaseEvent.Release.Name + '\n' + TrayIconStrings.clickToUpdate, ToolTipIcon.Info);
+            NotifyIcon.ShowBalloonTip(3000, string.Format(TrayIconStrings.versionAvailable, newReleaseEvent.AppRelease.ReleaseVersion), newReleaseEvent.AppRelease.Name + '\n' + TrayIconStrings.clickToUpdate, ToolTipIcon.Info);
         }
 
         /// <summary>

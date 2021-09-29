@@ -18,6 +18,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Serilog;
 using SoundSwitch.Framework.Updater.Installer;
+using SoundSwitch.Framework.Updater.Releases;
 using SoundSwitch.Localization;
 
 namespace SoundSwitch.Framework.Updater
@@ -42,10 +43,10 @@ namespace SoundSwitch.Framework.Updater
             InstallerFilePath = Path.Combine(filePath, "SoundSwitch_Update.exe");
         }
 
-        public void Update(Release release, bool closeApp)
+        public void Update(AppRelease appRelease, bool closeApp)
         {
           
-                var file = new WebFile(new Uri(release.Asset.browser_download_url), InstallerFilePath);
+                var file = new WebFile(new Uri(appRelease.Asset.BrowserDownloadUrl), InstallerFilePath);
                 file.Downloaded += (sender, args) =>
                 {
                     Log.Information("Update downloaded: {File}", file);
