@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <OutputType>exe</OutputType>
+        <OutputType>WinExe</OutputType>
         <StartupObject>SoundSwitch.Program</StartupObject>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         <LangVersion>latest</LangVersion>
