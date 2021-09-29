@@ -17,6 +17,7 @@ env:
   FRAMEWORK: "net6.0-windows"
   NODEJS: 16
   DOTNET: "6.0.x"
+  DOTNET_PRERELEASE: true
   CONFIGURATION: "Nightly"
 
 jobs:
@@ -47,6 +48,7 @@ jobs:
         if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true'
         with:
           dotnet-version: ${{ env.DOTNET }}
+          include-prerelease: ${{ env.DOTNET_PRERELEASE }}
       - name: Restore
         if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true'
         run: dotnet restore
@@ -112,6 +114,7 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: ${{ env.DOTNET }}
+          include-prerelease: ${{ env.DOTNET_PRERELEASE }}
       - name: Restore
         run: dotnet restore -r ${{ env.ARCH }}
       - name: Fetch tags
