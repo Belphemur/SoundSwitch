@@ -13,11 +13,11 @@ namespace SoundSwitch.Audio.Manager
 {
     public class AudioSwitcher
     {
-        private static AudioSwitcher _instance;
-        private PolicyClient _policyClient;
-        private EnumeratorClient _enumerator;
+        private static AudioSwitcher? _instance;
+        private PolicyClient? _policyClient;
+        private EnumeratorClient? _enumerator;
 
-        private ExtendedPolicyClient _extendedPolicyClient;
+        private ExtendedPolicyClient? _extendedPolicyClient;
 
         private EnumeratorClient EnumeratorClient
         {
@@ -118,6 +118,7 @@ namespace SoundSwitch.Audio.Manager
             {
                 Trace.TraceError($"Can't get process info: {e}");
             }
+
             Trace.TraceInformation($"Attempt to switch [{processId}:{processName}] to {deviceId}");
             var roles = new[]
             {
