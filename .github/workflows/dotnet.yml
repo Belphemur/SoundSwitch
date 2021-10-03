@@ -167,7 +167,7 @@ jobs:
           SENTRY_PROJECT: ${{env.SENTRY_NAME}}
         with:
           environment: Nightly
-          version: "{{env.PROJECT_NAME}}@${{ needs.nightly-release.outputs.devVersion }}"
+          version: "${{env.PROJECT_NAME}}@${{ needs.nightly-release.outputs.devVersion }}"
 
   master-release:
     needs: [ build, changes ]
@@ -201,5 +201,5 @@ jobs:
           SENTRY_PROJECT: ${{env.SENTRY_NAME}}
         with:
           environment: Stable
-          version: "{{env.PROJECT_NAME}}@${{ steps.version.outputs.version }}"
+          version: "${{env.PROJECT_NAME}}@${{ steps.version.outputs.version }}"
 
