@@ -156,11 +156,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Sentry Release
         uses: getsentry/action-release@v1.1.6
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: ${{ env.PROJECT_NAME }}
+          SENTRY_ORG: "soundswitch"
           SENTRY_PROJECT: "soundswitch"
         with:
           environment: Nightly
@@ -195,7 +197,7 @@ jobs:
         uses: getsentry/action-release@v1.1.6
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: ${{ env.PROJECT_NAME }}
+          SENTRY_ORG: "soundswitch"
           SENTRY_PROJECT: "soundswitch"
         with:
           environment: Stable
