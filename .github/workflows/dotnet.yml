@@ -154,16 +154,18 @@ jobs:
     needs: nightly-release
     runs-on: ubuntu-latest
     steps:
-     - name: Sentry Release
-       uses: getsentry/action-release@v1.1.6
-       env:
-         SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-         SENTRY_ORG: ${{ env.PROJECT_NAME }}
-         SENTRY_PROJECT: "soundswitch"
-       with:
-         environment: Nightly
-         version: "${{ needs.nightly-release.outputs.devVersion }}"
-         version_prefix: "v"
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Sentry Release
+        uses: getsentry/action-release@v1.1.6
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ env.PROJECT_NAME }}
+          SENTRY_PROJECT: "soundswitch"
+        with:
+          environment: Nightly
+          version: "${{ needs.nightly-release.outputs.devVersion }}"
+          version_prefix: "v"
 
   master-release:
     needs: [ build, changes ]
