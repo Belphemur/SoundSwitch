@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using NAudio;
 using NAudio.Wave;
 
 namespace SoundSwitch.Framework.Audio
@@ -39,7 +40,7 @@ namespace SoundSwitch.Framework.Audio
             }
 
             FilePath = audioFileName;
-            using var audioFileReader = new AudioFileReader(audioFileName);
+            using var audioFileReader = GetReader(audioFileName);
             // TODO: could add resampling in here if required
             WaveFormat = audioFileReader.WaveFormat;
             var wholeFile = new List<byte>((int)(audioFileReader.Length));
@@ -57,6 +58,18 @@ namespace SoundSwitch.Framework.Audio
         {
             WaveFormat = waveFormat;
             AudioData = stream.ToArray();
+        }
+
+        private static WaveStream GetReader(string filename)
+        {
+            try
+            {
+                return new AudioFileReader(filename);
+            }
+            catch (MmException e)
+            {
+                return new MediaFoundationReader(filename);
+            }
         }
     }
 }
