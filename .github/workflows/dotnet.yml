@@ -19,6 +19,7 @@ env:
   DOTNET: "6.0.x"
   DOTNET_PRERELEASE: true
   CONFIGURATION: "Nightly"
+  SENTRY_NAME: "soundswitch"
 
 jobs:
   build:
@@ -162,12 +163,11 @@ jobs:
         uses: getsentry/action-release@v1.1.6
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: "soundswitch"
-          SENTRY_PROJECT: "soundswitch"
+          SENTRY_ORG: ${{env.SENTRY_NAME}}
+          SENTRY_PROJECT: ${{env.SENTRY_NAME}}
         with:
           environment: Nightly
-          version: "${{ needs.nightly-release.outputs.devVersion }}"
-          version_prefix: "v"
+          version: "{{env.PROJECT_NAME}}@${{ needs.nightly-release.outputs.devVersion }}"
 
   master-release:
     needs: [ build, changes ]
@@ -191,15 +191,15 @@ jobs:
       - name: Release
         run: npx semantic-release
       - name: Latest Version
-        run: echo "::set-output name=version::$(git describe --tags --abbrev=0)"
+        run: echo "::set-output name=version::${$(git describe --tags --abbrev=0):1}"
         id: version
       - name: Sentry Release
         uses: getsentry/action-release@v1.1.6
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: "soundswitch"
-          SENTRY_PROJECT: "soundswitch"
+          SENTRY_ORG: ${{env.SENTRY_NAME}}
+          SENTRY_PROJECT: ${{env.SENTRY_NAME}}
         with:
           environment: Stable
-          version: ${{ steps.version.outputs.version }}
+          version: "{{env.PROJECT_NAME}}@${{ steps.version.outputs.version }}"
 
