@@ -147,6 +147,16 @@ jobs:
           UPLOAD_PUBLIC: ${{secrets.UPLOAD_PUBLIC}}
           UPLOAD_BUCKET: ${{env.PROJECT_NAME}}
         run: node devRelease.js "${{ secrets.DISCORD_WEBHOOK }}" "${{ steps.devVersion.outputs.version }}" "${{env.GITHUB_REPOSITORY_OWNER_PART}}/${{env.GITHUB_REPOSITORY_NAME_PART}}" "${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip"
+      - name: Sentry Release
+        uses: getsentry/action-release@v1.1.6
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ env.PROJECT_NAME }}
+          SENTRY_PROJECT: "soundswitch"
+        with:
+          environment: Nightly
+          version:  "${{ steps.devVersion.outputs.version }}"
+          version_prefix: "v"
 
   master-release:
     needs: [ build, changes ]
@@ -169,3 +179,16 @@ jobs:
         run: npm ci --prefer-offline --silent --cache npm-cache
       - name: Release
         run: npx semantic-release
+      - name: Latest Version
+        run: echo "::set-output name=version::$(git describe --tags --abbrev=0)"
+        id: version
+      - name: Sentry Release
+        uses: getsentry/action-release@v1.1.6
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ env.PROJECT_NAME }}
+          SENTRY_PROJECT: "soundswitch"
+        with:
+          environment: Stable
+          version: ${{ steps.version.outputs.version }}
+
