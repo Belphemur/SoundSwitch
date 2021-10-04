@@ -38,37 +38,39 @@ namespace SoundSwitch.Framework.Audio.Lister
         private readonly DebounceDispatcher _dispatcher = new();
         private readonly SemaphoreSlim _refreshSemaphore = new(1);
         private readonly TimeSpan _refreshWaitTime = TimeSpan.FromSeconds(5);
+        private readonly ILogger _context;
 
 
         public CachedAudioDeviceLister(DeviceState state)
         {
             _state = state;
             MMNotificationClient.Instance.DevicesChanged += DeviceChanged;
+            _context = Log.ForContext("State", _state);
         }
 
         private void DeviceChanged(object sender, DeviceChangedEventBase e)
         {
-            _dispatcher.Debounce<object>(TimeSpan.FromMilliseconds(100), _ => Refresh());
+            _dispatcher.Debounce<object>(TimeSpan.FromMilliseconds(100), _ => Refresh(e.Token));
         }
 
-        public void Refresh()
+        public void Refresh(CancellationToken cancellationToken = default)
         {
-            var context = Log.ForContext("State", _state);
             var playbackDevices = new Dictionary<string, DeviceFullInfo>();
             var recordingDevices = new Dictionary<string, DeviceFullInfo>();
 
-            if (!_refreshSemaphore.Wait(_refreshWaitTime))
+            if (!_refreshSemaphore.Wait(_refreshWaitTime, cancellationToken))
             {
-                context.Error("Can't refresh the devices after {time}", _refreshWaitTime);
+                _context.Error("Can't refresh the devices after {time}", _refreshWaitTime);
                 return;
             }
 
             try
             {
-                context.Information("Refreshing all devices");
+                _context.Information("Refreshing all devices");
                 using var enumerator = new MMDeviceEnumerator();
                 foreach (var endPoint in enumerator.EnumerateAudioEndPoints(DataFlow.All, _state))
                 {
+                    cancellationToken.ThrowIfCancellationRequested();
                     try
                     {
                         var deviceInfo = new DeviceFullInfo(endPoint);
@@ -93,7 +95,7 @@ namespace SoundSwitch.Framework.Audio.Lister
                     }
                     catch (Exception e)
                     {
-                        context.Warning(e, "Can't get name of device {device}", endPoint.ID);
+                        _context.Warning(e, "Can't get name of device {device}", endPoint.ID);
                     }
                 }
 
@@ -101,7 +103,7 @@ namespace SoundSwitch.Framework.Audio.Lister
                 RecordingDevices = new DeviceReadOnlyCollection<DeviceFullInfo>(recordingDevices.Values, DataFlow.Capture);
 
 
-                context.Information("Refreshed all devices. {@Recording}/rec, {@Playback}/play", recordingDevices.Count, playbackDevices.Count);
+                _context.Information("Refreshed all devices. {@Recording}/rec, {@Playback}/play", recordingDevices.Count, playbackDevices.Count);
             }
             finally
             {

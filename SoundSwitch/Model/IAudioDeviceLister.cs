@@ -13,6 +13,7 @@
 ********************************************************************/
 
 using System;
+using System.Threading;
 using SoundSwitch.Common.Framework.Audio.Collection;
 using SoundSwitch.Common.Framework.Audio.Device;
 
@@ -32,6 +33,6 @@ namespace SoundSwitch.Model
         /// <returns></returns>
         DeviceReadOnlyCollection<DeviceFullInfo> RecordingDevices { get; }
 
-        void Refresh();
+        void Refresh(CancellationToken token);
     }
 }

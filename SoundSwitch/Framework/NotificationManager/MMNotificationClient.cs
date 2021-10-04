@@ -38,7 +38,7 @@ namespace SoundSwitch.Framework.NotificationManager
 
             public Task ExecuteAsync(CancellationToken cancellationToken)
             {
-                _notificationClient.DevicesChanged?.Invoke(_notificationClient, new DeviceChangedEventBase(_deviceId));
+                _notificationClient.DevicesChanged?.Invoke(_notificationClient, new DeviceChangedEventBase(_deviceId, cancellationToken));
                 return Task.CompletedTask;
             }
 
@@ -69,7 +69,7 @@ namespace SoundSwitch.Framework.NotificationManager
             {
                 var mmDevice = AudioSwitcher.Instance.GetDevice(_deviceId);
                 var device = AudioSwitcher.Instance.InteractWithMmDevice(mmDevice, device => new DeviceFullInfo(device));
-                _notificationClient.DefaultDeviceChanged?.Invoke(_notificationClient, new DeviceDefaultChangedEvent(device, _role));
+                _notificationClient.DefaultDeviceChanged?.Invoke(_notificationClient, new DeviceDefaultChangedEvent(device, _role, cancellationToken));
                 return Task.CompletedTask;
             }
 

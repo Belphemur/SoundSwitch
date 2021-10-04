@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
@@ -23,7 +24,6 @@ using SoundSwitch.Framework.Updater.Releases;
 
 namespace SoundSwitch.Model
 {
-
     public class ExceptionEvent : EventArgs
     {
         public ExceptionEvent(Exception exception)
@@ -48,7 +48,7 @@ namespace SoundSwitch.Model
 
     public class NotificationSettingsUpdatedEvent : EventArgs
     {
-        public NotificationTypeEnum PrevSettings { get;}
+        public NotificationTypeEnum PrevSettings { get; }
         public NotificationTypeEnum NewSettings { get; }
 
         public NotificationSettingsUpdatedEvent(NotificationTypeEnum prevSettings, NotificationTypeEnum newSettings)
@@ -83,12 +83,13 @@ namespace SoundSwitch.Model
     public class DeviceChangedEventBase : EventArgs
     {
         public string DeviceId { get; }
+        public CancellationToken Token { get; }
 
 
-        public DeviceChangedEventBase(string deviceId)
+        public DeviceChangedEventBase(string deviceId, CancellationToken token)
         {
             DeviceId = deviceId;
-   
+            Token = token;
         }
     }
 
@@ -96,12 +97,11 @@ namespace SoundSwitch.Model
     {
         public Role Role { get; }
         public DeviceFullInfo Device { get; }
-        public DeviceDefaultChangedEvent(DeviceFullInfo device, Role role) : base(device.Id)
+
+        public DeviceDefaultChangedEvent(DeviceFullInfo device, Role role, CancellationToken token) : base(device.Id, token)
         {
             Device = device;
             Role = role;
         }
-
-      
     }
 }
