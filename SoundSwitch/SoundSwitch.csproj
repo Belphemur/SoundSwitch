@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <OutputType>WinExe</OutputType>
         <StartupObject>SoundSwitch.Program</StartupObject>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         <LangVersion>latest</LangVersion>
@@ -22,20 +21,24 @@
         <TargetPlatformVersion>8.0</TargetPlatformVersion>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+        <OutputType>exe</OutputType>
         <DefineConstants>TRACE;DEBUG</DefineConstants>
         <DisableWinExeOutputInference>true</DisableWinExeOutputInference>
         <Optimize>false</Optimize>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+        <OutputType>WinExe</OutputType>
         <DefineConstants>RELEASE</DefineConstants>
         <Optimize>true</Optimize>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Beta|AnyCPU'">
+        <OutputType>WinExe</OutputType>
         <DefineConstants>TRACE;BETA</DefineConstants>
         <Optimize>true</Optimize>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Nightly' ">
-      <DefineConstants>TRACE;NIGHTLY</DefineConstants>
+        <OutputType>WinExe</OutputType>
+        <DefineConstants>TRACE;NIGHTLY</DefineConstants>
       <Optimize>true</Optimize>
     </PropertyGroup>
     <ItemGroup>

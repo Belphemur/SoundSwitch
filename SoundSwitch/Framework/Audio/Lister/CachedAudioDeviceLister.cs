@@ -20,9 +20,10 @@ using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Common.Framework.Audio.Collection;
 using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Framework.Audio.Lister.Job;
 using SoundSwitch.Framework.NotificationManager;
+using SoundSwitch.Framework.Threading;
 using SoundSwitch.Model;
-using SoundSwitch.Util.Timer;
 
 namespace SoundSwitch.Framework.Audio.Lister
 {
@@ -35,7 +36,6 @@ namespace SoundSwitch.Framework.Audio.Lister
         public DeviceReadOnlyCollection<DeviceFullInfo> RecordingDevices { get; private set; } = new(Enumerable.Empty<DeviceFullInfo>(), DataFlow.Capture);
 
         private readonly DeviceState _state;
-        private readonly DebounceDispatcher _dispatcher = new();
         private readonly SemaphoreSlim _refreshSemaphore = new(1);
         private readonly TimeSpan _refreshWaitTime = TimeSpan.FromSeconds(5);
         private readonly ILogger _context;
@@ -50,7 +50,7 @@ namespace SoundSwitch.Framework.Audio.Lister
 
         private void DeviceChanged(object sender, DeviceChangedEventBase e)
         {
-            _dispatcher.Debounce<object>(TimeSpan.FromMilliseconds(100), _ => Refresh(e.Token));
+            JobScheduler.Instance.ScheduleJob(new DebounceRefreshJob(_state, this, _context), e.Token);
         }
 
         public void Refresh(CancellationToken cancellationToken = default)
@@ -63,6 +63,8 @@ namespace SoundSwitch.Framework.Audio.Lister
                 _context.Error("Can't refresh the devices after {time}", _refreshWaitTime);
                 return;
             }
+
+            using var registration = cancellationToken.Register(_ => throw new OperationCanceledException(cancellationToken), null);
 
             try
             {
