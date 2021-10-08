@@ -85,7 +85,7 @@ namespace SoundSwitch.UI.Component
             var rightToLeft = new LanguageFactory().Get(AppModel.Instance.Language).IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
             _selectionMenu.RightToLeft = rightToLeft;
             _settingsMenu.RightToLeft = rightToLeft;
-            
+
             UpdateIcon();
             _showContextMenu = typeof(NotifyIcon).GetMethod("ShowContextMenu", BindingFlags.Instance | BindingFlags.NonPublic);
             _tooltipInfoManager = new TooltipInfoManager(NotifyIcon);
@@ -150,7 +150,7 @@ namespace SoundSwitch.UI.Component
                 return;
 
             var oldIcon = NotifyIcon.Icon;
-            NotifyIcon.Icon = (Icon)newIcon.Clone();
+            _context.Send(icon => { NotifyIcon.Icon = (Icon)icon; }, (Icon)newIcon.Clone());
             try
             {
                 oldIcon?.Dispose();
@@ -232,10 +232,10 @@ namespace SoundSwitch.UI.Component
                 switch (@event.UpdateMode)
                 {
                     case UpdateMode.Never:
-                        _context.Send(state => _updateDownloadForm.DownloadRelease(@event.AppRelease), null);
+                        _context.Send(_ => _updateDownloadForm.DownloadRelease(@event.AppRelease), null);
                         break;
                     case UpdateMode.Notify:
-                        _context.Send(s => { NewReleaseAvailable(sender, @event); }, null);
+                        _context.Send(_ => { NewReleaseAvailable(sender, @event); }, null);
                         break;
                 }
             };
@@ -259,7 +259,8 @@ namespace SoundSwitch.UI.Component
             _updateMenuItem.Tag = newReleaseEvent.AppRelease;
             StartAnimationIconUpdate();
             NotifyIcon.BalloonTipClicked += OnUpdateClick;
-            NotifyIcon.ShowBalloonTip(3000, string.Format(TrayIconStrings.versionAvailable, newReleaseEvent.AppRelease.ReleaseVersion), newReleaseEvent.AppRelease.Name + '\n' + TrayIconStrings.clickToUpdate, ToolTipIcon.Info);
+            NotifyIcon.ShowBalloonTip(3000, string.Format(TrayIconStrings.versionAvailable, newReleaseEvent.AppRelease.ReleaseVersion), newReleaseEvent.AppRelease.Name + '\n' + TrayIconStrings.clickToUpdate,
+                ToolTipIcon.Info);
         }
 
         /// <summary>
