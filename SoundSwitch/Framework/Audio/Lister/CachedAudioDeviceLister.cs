@@ -64,7 +64,15 @@ namespace SoundSwitch.Framework.Audio.Lister
                 return;
             }
 
-            using var registration = cancellationToken.Register(_ => throw new OperationCanceledException(cancellationToken), null);
+            using var registration = cancellationToken.Register(_ =>
+            {
+                if (_refreshSemaphore.CurrentCount == 0)
+                {
+                    _refreshSemaphore.Release();
+                }
+                _context.Warning("Cancellation received.");
+                throw new OperationCanceledException(cancellationToken);
+            }, null);
 
             try
             {
