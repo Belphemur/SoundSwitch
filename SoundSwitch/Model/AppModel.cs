@@ -304,10 +304,13 @@ namespace SoundSwitch.Model
 
             ProfileManager
                 .Init()
-                .Catch<Profile[]>(settings =>
+                .Catch(profileErrors =>
                 {
-                    var profileNames = string.Join(", ", settings.Select((setting) => setting.Name));
-                    TrayIcon.ShowError(string.Format(SettingsStrings.profile_error_registerHotkeys, profileNames), SettingsStrings.profile_error_registerHotkeys_title);
+                    foreach (var profileError in profileErrors)
+                    {
+                        TrayIcon.ShowError($"{profileError.Profile.Name}: {profileError.Error}", SettingsStrings.profile_error_title);
+
+                    }
                     return Result.Success();
                 });
 

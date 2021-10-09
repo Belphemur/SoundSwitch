@@ -122,20 +122,31 @@ namespace SoundSwitch.Framework.Profile
         /// Initialize the profile manager. Return the list of Profile that it couldn't register hotkeys for.
         /// </summary>
         /// <returns></returns>
-        public Result<Profile[], VoidSuccess> Init()
+        public Result<ProfileError[], VoidSuccess> Init()
         {
-            var errors = AppConfigs.Configuration.Profiles.Where(profile => !RegisterTriggers(profile, true)).ToArray();
-
+            var errors = Array.Empty<ProfileError>();
             try
             {
+                errors = AppConfigs.Configuration.Profiles.Select(profile => (Profile: profile, Failure: ValidateProfile(profile, true).UnwrapFailure()))
+                                   .Select(tuple =>
+                                   {
+                                       if (tuple.Failure == null)
+                                       {
+                                           RegisterTriggers(tuple.Profile, true);
+                                       }
+
+                                       return tuple;
+                                   })
+                                   .Where(tuple => tuple.Failure != null)
+                                   .Select(tuple => new ProfileError(tuple.Profile, tuple.Failure))
+                                   .ToArray();
+
                 RegisterEvents();
-
                 InitializeProfileExistingProcess();
-
 
                 if (errors.Length > 0)
                 {
-                    _logger.Warning("Couldn't initiate all profiles: {profiles}", errors.Select(profile => profile.Name));
+                    _logger.Warning("Couldn't initiate all profiles: {profiles}", errors);
                     return errors;
                 }
 
@@ -163,7 +174,6 @@ namespace SoundSwitch.Framework.Profile
 
             WindowsAPIAdapter.WindowDestroyed += (sender, @event) => { RestoreState(@event.Hwnd); };
             _logger.Information("Windows Destroyed Registered");
-
         }
 
         private bool HandleUwpApp(WindowMonitor.Event @event)
@@ -386,7 +396,7 @@ namespace SoundSwitch.Framework.Profile
                    });
         }
 
-        private Result<string, VoidSuccess> ValidateProfile(Profile profile)
+        private Result<string, VoidSuccess> ValidateProfile(Profile profile, bool init = false)
         {
             if (string.IsNullOrEmpty(profile.Name))
             {
@@ -403,7 +413,7 @@ namespace SoundSwitch.Framework.Profile
                 return SettingsStrings.profile_error_needPlaybackOrRecording;
             }
 
-            if (AppConfigs.Configuration.Profiles.Contains(profile))
+            if (!init && AppConfigs.Configuration.Profiles.Contains(profile))
             {
                 return string.Format(SettingsStrings.profile_error_name, profile.Name);
             }
