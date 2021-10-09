@@ -306,10 +306,9 @@ namespace SoundSwitch.Model
                 .Init()
                 .Catch(profileErrors =>
                 {
-                    foreach (var profileError in profileErrors)
+                    foreach (var (profile, error) in profileErrors)
                     {
-                        TrayIcon.ShowError($"{profileError.Profile.Name}: {profileError.Error}", SettingsStrings.profile_error_title);
-
+                        TrayIcon.ShowError($"{profile.Name}: {error}", SettingsStrings.profile_error_title);
                     }
                     return Result.Success();
                 });
