@@ -46,21 +46,21 @@ jobs:
               - 'package.json'
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
-        if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true'
+        if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true' || github.ref == 'refs/heads/master'
         with:
           dotnet-version: ${{ env.DOTNET }}
           include-prerelease: ${{ env.DOTNET_PRERELEASE }}
       - name: Restore
-        if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true'
+        if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true' || github.ref == 'refs/heads/master'
         run: dotnet restore
       - name: Build
-        if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true'
+        if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true' || github.ref == 'refs/heads/master'
         run: dotnet build -c Release --no-restore ${{env.PROJECT_NAME}}/${{env.PROJECT_NAME}}.csproj
       - name: Test
-        if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true'
+        if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true' || github.ref == 'refs/heads/master'
         run: dotnet test -c Release --no-restore  --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}"
       - name: Upload test results
-        if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true'
+        if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true' || github.ref == 'refs/heads/master'
         uses: actions/upload-artifact@v2
         with:
           name: dotnet-results-${{ matrix.dotnet-version }}
@@ -171,7 +171,7 @@ jobs:
 
   master-release:
     needs: [ build, changes ]
-    if: github.ref == 'refs/heads/master' &&  needs.changes.outputs.ci == 'true'
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
