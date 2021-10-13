@@ -1,3 +1,10 @@
+### [6.1.2](https://github.com/Belphemur/SoundSwitch/compare/v6.1.1...v6.1.2) (2021-10-13)
+
+
+### Bug Fixes
+
+* **Updater:** Be sure we can download the new releases ([1077dd2](https://github.com/Belphemur/SoundSwitch/commit/1077dd2b45e0b402b74166b051f7766b630be928))
+
 ### [6.1.1](https://github.com/Belphemur/SoundSwitch/compare/v6.1.0...v6.1.1) (2021-10-13)
 
 
