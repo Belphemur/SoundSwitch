@@ -44,7 +44,15 @@ namespace SoundSwitch.Framework.Audio.Play
 
                 void PlayerOnPlaybackStopped(object o, StoppedEventArgs stoppedEventArgs)
                 {
-                    semaphore.Release();
+                    try
+                    {
+                        semaphore.Release();
+                    }
+                    catch (ObjectDisposedException)
+                    {
+                        //Ignored
+                        //Already disposed, no need to release anything
+                    }
                 }
 
                 player.PlaybackStopped += PlayerOnPlaybackStopped;
