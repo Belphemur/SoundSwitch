@@ -1,3 +1,65 @@
+### [6.1.1](https://github.com/Belphemur/SoundSwitch/compare/v6.1.0...v6.1.1) (2021-10-13)
+
+
+### Bug Fixes
+
+* **.NET::Build:** Fix issue with warnings about API not available ([987043e](https://github.com/Belphemur/SoundSwitch/commit/987043e377806ca4f1ab8c7b0b816c4681bbac5d))
+* **CrashReport:** Fix message box not showing when application crashes ([6179c53](https://github.com/Belphemur/SoundSwitch/commit/6179c53b31c17b775478a29c8855af614c108ded))
+* **HotKey:** Remove detection of any Hanja/Kanji mode key ([2ab20ea](https://github.com/Belphemur/SoundSwitch/commit/2ab20eadf836da2cdd326e17526986caeb668927))
+* **IconChanger:** Fix issue where the icon wouldn't change when the default device is switched. ([b33ef84](https://github.com/Belphemur/SoundSwitch/commit/b33ef848b80252e3b1e132da2e61c1e909adc931))
+* **Notification::CustomSound:** Fix issue loading MP3 file for custom sound. ([a46acb4](https://github.com/Belphemur/SoundSwitch/commit/a46acb448fa7520fe83cb73b6c6fd93520e1c7a1))
+* **Profile::Validation:** Be sure we're not creating/updating a profile with the exact same trigger ([d1312c3](https://github.com/Belphemur/SoundSwitch/commit/d1312c38e764e80eef78fe5d3488f70114b1257a)), closes [#753](https://github.com/Belphemur/SoundSwitch/issues/753)
+* **Profile:** Properly return issue when loading profile at application startup. ([6b27786](https://github.com/Belphemur/SoundSwitch/commit/6b277869b516ee68fa47d4e0462f21e0b44d7dd8))
+* **TrayIcon:** Fix rare time where changing the icon make the application crash ([ae4f30b](https://github.com/Belphemur/SoundSwitch/commit/ae4f30b24e6e02f0057992b7f52fc9a748a681b3))
+
+
+### Languages
+
+* **Chinese (Simplified):** Translated Settings using Weblate ([592cca5](https://github.com/Belphemur/SoundSwitch/commit/592cca5b1cdc7d69c9c6502f957555ba7fea4bd0))
+* **Chinese (Simplified):** Translated Update Download using Weblate ([4f7b24d](https://github.com/Belphemur/SoundSwitch/commit/4f7b24d2b606056ca2ad8439845f315527390857))
+* **Croatian:** Translated Settings using Weblate ([cb560a0](https://github.com/Belphemur/SoundSwitch/commit/cb560a085ddb3003e1789853c633b26dbd998e0f))
+* **Croatian:** Translated Update Download using Weblate ([9678a7f](https://github.com/Belphemur/SoundSwitch/commit/9678a7f4b48d8eea8be213c20be7198a993a18d0))
+* **Italian:** Translated Settings using Weblate ([5888ba1](https://github.com/Belphemur/SoundSwitch/commit/5888ba18062305b4dd99443973b59b035ddf543c))
+* **Italian:** Translated Update Download using Weblate ([a4589fe](https://github.com/Belphemur/SoundSwitch/commit/a4589fed26b1262cf7ef5680923fe3b769afc6ef))
+* **Japanese:** Translated About using Weblate ([7e72027](https://github.com/Belphemur/SoundSwitch/commit/7e72027f1a6fbb369791a87c24ae2effd6058985))
+* **Japanese:** Translated Settings using Weblate ([fdf4d2e](https://github.com/Belphemur/SoundSwitch/commit/fdf4d2e25c2eb7021360cefb5e1d26a5ceae1913))
+* **Japanese:** Translated Update Download using Weblate ([321a886](https://github.com/Belphemur/SoundSwitch/commit/321a886d1c9423552046d7d3ed1f412b987bc515))
+* **Korean:** Translated Settings using Weblate ([083b228](https://github.com/Belphemur/SoundSwitch/commit/083b228d0efd057d948e1271570294aff4c8c1c5))
+* **Portuguese:** Translated Settings using Weblate ([b934427](https://github.com/Belphemur/SoundSwitch/commit/b9344276a826953ff5eeafb2d728818e9143b9ca))
+* **Russian:** Translated Update Download using Weblate ([c8e9840](https://github.com/Belphemur/SoundSwitch/commit/c8e9840bc86f6748ec6f85bca9b1d7342f4ea456))
+* **Serbian:** Add serbian to the application ([5d821f7](https://github.com/Belphemur/SoundSwitch/commit/5d821f7fc025d2ec756a66ba2fbd803c16226b15))
+* **Serbian:** Added About translation using Weblate ([357c9a8](https://github.com/Belphemur/SoundSwitch/commit/357c9a807defe6d9318c0a8daa3f74cc3a5c46c3))
+* **Serbian:** Added Settings translation using Weblate ([d718bf5](https://github.com/Belphemur/SoundSwitch/commit/d718bf5f0a5e7026d80d0673c019e933fa5a56f9))
+* **Serbian:** Added Tray Icon translation using Weblate ([b647a94](https://github.com/Belphemur/SoundSwitch/commit/b647a949189440786be03686f4c961d27deab68e))
+* **Serbian:** Added Update Download translation using Weblate ([fc30f7e](https://github.com/Belphemur/SoundSwitch/commit/fc30f7e8c506f73c0b7817fe2be38b57f6c82025))
+* **Serbian:** Translated About using Weblate ([ceb39e8](https://github.com/Belphemur/SoundSwitch/commit/ceb39e802ccb3b5c87ba57868cc4fe5bdcb66bf8))
+* **Serbian:** Translated Settings using Weblate ([b346d64](https://github.com/Belphemur/SoundSwitch/commit/b346d645ef15be954e44dcccb99a4744bfeab81e))
+* **Serbian:** Translated Settings using Weblate ([6b4bc16](https://github.com/Belphemur/SoundSwitch/commit/6b4bc1605b34c999c3974ae8e6bc09aefacd6398))
+* **Serbian:** Translated Tray Icon using Weblate ([49c6a45](https://github.com/Belphemur/SoundSwitch/commit/49c6a45c5b0771684ff91a07fbfba9f64166af73))
+* **Serbian:** Translated Update Download using Weblate ([3557566](https://github.com/Belphemur/SoundSwitch/commit/3557566496e927bcb50603d5eec0baef498d2fa7))
+* **Spanish:** Translated Settings using Weblate ([2fdaaf3](https://github.com/Belphemur/SoundSwitch/commit/2fdaaf33362719c9ffe1b755c1eb1b03b15284b6))
+* **Spanish:** Translated Tray Icon using Weblate ([0cd5be4](https://github.com/Belphemur/SoundSwitch/commit/0cd5be49b3f3a2ad1ad25488bec0c6f19e17e532))
+* **Spanish:** Translated Update Download using Weblate ([d99a52b](https://github.com/Belphemur/SoundSwitch/commit/d99a52b4cac01b44de4118a666f4b6ee87115367))
+* **Thai:** Add language thai to the application ([57bc75a](https://github.com/Belphemur/SoundSwitch/commit/57bc75a8426fb3111b14f8bd22624c9dce662097))
+* **Thai:** Added About translation using Weblate ([7f79dce](https://github.com/Belphemur/SoundSwitch/commit/7f79dce3fdaa37bd01f9d50639015af5c29808fa))
+* **Thai:** Added Settings translation using Weblate ([750086c](https://github.com/Belphemur/SoundSwitch/commit/750086c10da19f91fe8da1421cc150ce61b6b1db))
+* **Thai:** Added Tray Icon translation using Weblate ([ca24957](https://github.com/Belphemur/SoundSwitch/commit/ca24957e8c3555be29c0fc23953d08fbd434f277))
+* **Thai:** Added Update Download translation using Weblate ([b7738ea](https://github.com/Belphemur/SoundSwitch/commit/b7738eacef888d7060ae68e288335e61ee426035))
+* **Thai:** Translated About using Weblate ([3b135e3](https://github.com/Belphemur/SoundSwitch/commit/3b135e33f0156b45b691ee7ce42052b1321c1dff))
+* **Thai:** Translated About using Weblate ([7fb4fd0](https://github.com/Belphemur/SoundSwitch/commit/7fb4fd050619d3e72d37429c47394f6ab4364109))
+* **Thai:** Translated Settings using Weblate ([bd80ec6](https://github.com/Belphemur/SoundSwitch/commit/bd80ec6c4c9bca9c5504ee0ce7efed084a5a1146))
+* **Thai:** Translated Settings using Weblate ([4b902da](https://github.com/Belphemur/SoundSwitch/commit/4b902da8d0c7b2f3f1a91e7c38428f62a14614aa))
+* **Thai:** Translated Settings using Weblate ([02833e1](https://github.com/Belphemur/SoundSwitch/commit/02833e10de0e48b50ec66ccd4c81fe61d94638e0))
+* **Thai:** Translated Tray Icon using Weblate ([a25c8c7](https://github.com/Belphemur/SoundSwitch/commit/a25c8c7a1dc7a360efda6d5461f63c6b56bb5311))
+* **Thai:** Translated Update Download using Weblate ([a929093](https://github.com/Belphemur/SoundSwitch/commit/a929093bbf9cf7cdbb2e4a120dc48730c1bc6eff))
+
+
+### Enhancements
+
+* **.NET:** Move to .NET 6.0 ([4d1fb42](https://github.com/Belphemur/SoundSwitch/commit/4d1fb4286875d5719fc4106de1cd3126ee2d31de))
+* **Logging:** Improve logging Switch foreground feature for better debugging ([5cfdf74](https://github.com/Belphemur/SoundSwitch/commit/5cfdf7442911c35712bb9b5aa9a5a40ab4807556))
+* **Profile::QuickMenu:** Only display quick menu when selected in the global setting when switching between profiles. ([1e034ae](https://github.com/Belphemur/SoundSwitch/commit/1e034ae2feb7003ec8bd135213bc340d161c3c26)), closes [#745](https://github.com/Belphemur/SoundSwitch/issues/745)
+
 ## [6.1.0](https://github.com/Belphemur/SoundSwitch/compare/v6.0.0...v6.1.0) (2021-09-05)
 
 
