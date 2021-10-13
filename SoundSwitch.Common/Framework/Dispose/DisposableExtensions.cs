@@ -5,16 +5,12 @@ namespace SoundSwitch.Common.Framework.Dispose
 {
     public static class Disposable
     {
+        /// <summary>
+        /// Create a scope that will dispose the <see cref="disposable"/> on dispose or <see cref="token"/> cancellation.
+        /// </summary>
         public static IDisposable DisposeOnCancellation(this IDisposable disposable, CancellationToken token)
         {
-            var cancellationTokenRegistration = token.Register(disposable.Dispose);
-            return new DisposableScope(
-                () =>
-                {
-                    cancellationTokenRegistration.Dispose();
-                    disposable.Dispose();
-                });
+            return new CancellableDisposableScope(disposable.Dispose, token);
         }
-
     }
 }
