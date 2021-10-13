@@ -191,7 +191,9 @@ jobs:
       - name: Release
         run: npx semantic-release
       - name: Latest Version
-        run: echo "::set-output name=version::${$(git describe --tags --abbrev=0):1}"
+        run: | 
+          version=$(git describe --tags --abbrev=0 | cut -c 2-)
+          echo "::set-output name=version::$version"
         id: version
       - name: Sentry Release
         uses: getsentry/action-release@v1.1.6
