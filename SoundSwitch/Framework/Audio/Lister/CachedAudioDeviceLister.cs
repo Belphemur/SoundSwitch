@@ -67,10 +67,6 @@ namespace SoundSwitch.Framework.Audio.Lister
 
             using var registration = cancellationToken.Register(_ =>
             {
-                if (_refreshSemaphore.CurrentCount == 0)
-                {
-                    _refreshSemaphore.Release();
-                }
                 _context.Warning("Cancellation received.");
             }, null);
 
