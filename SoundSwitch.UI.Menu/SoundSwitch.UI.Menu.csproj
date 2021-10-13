@@ -2,8 +2,10 @@
 
     <PropertyGroup>
         <UseWindowsForms>true</UseWindowsForms>
-        <TargetFramework>net5.0-windows</TargetFramework>
+        <TargetFramework>net6.0-windows</TargetFramework>
         <Nullable>enable</Nullable>
+        <Configurations>Debug;Release;Nightly</Configurations>
+        <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
 
     <ItemGroup>
@@ -14,6 +16,7 @@
 
     <ItemGroup>
       <PackageReference Include="JetBrains.Annotations" Version="2021.2.0" />
+      <PackageReference Include="Serilog" Version="2.10.0" />
     </ItemGroup>
 
 </Project>

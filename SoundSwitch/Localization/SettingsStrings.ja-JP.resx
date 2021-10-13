@@ -189,7 +189,7 @@
     <value>動作中のプログラム名に以下の文字が含まれる場合にプロファイルを有効化する</value>
   </data>
   <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>プロファイルを有効化するショートカットキー</value>
+    <value>プロファイルを有効化するホットキー。同じホットキーを使用すると、プロファイルを切り替えることができます。</value>
   </data>
   <data name="profile.trigger.steam" xml:space="preserve">
     <value>Steam Big Picture</value>
@@ -204,7 +204,7 @@
     <value>デバイス{0}が見つかりません。</value>
   </data>
   <data name="hotkeyEnabled" xml:space="preserve">
-    <value>ショートカットキー有効</value>
+    <value>ホットキー有効</value>
   </data>
   <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
     <value>アプリケーションが検出されると、SoundSwitchは現在の規定デバイスも変更します。</value>
@@ -234,19 +234,19 @@
     <value>プロファイルの追加</value>
   </data>
   <data name="profile.error.registerHotkeys.title" xml:space="preserve">
-    <value>既に使用されているショートカットキー</value>
+    <value>既に使用されているホットキー</value>
   </data>
   <data name="profile.error.registerHotkeys" xml:space="preserve">
-    <value>プロファイルのショートカットキーを登録できませんでした：{0}</value>
+    <value>プロファイルのホットキーを登録できませんでした：{0}</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
-    <value>特定のアプリケーションを起動したときやフォーカスしたときに、再生・録音デバイスを切り替えるためのプロフィールを追加します。</value>
+    <value>特定のアプリケーションを起動／フォーカスしたときに、再生・録音デバイスを切り替えるためのプロフィールを追加します。</value>
   </data>
   <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
     <value>再生・録音デバイスを設定する必要があります。</value>
   </data>
   <data name="profile.error.needHKOrPath" xml:space="preserve">
-    <value>ショートカットキーやアプリケーションを設定する必要があります。</value>
+    <value>ホットキーやアプリケーションを設定する必要があります。</value>
   </data>
   <data name="profile.error.name" xml:space="preserve">
     <value>既に{0}という名前のプロフィールが存在します。</value>
@@ -255,7 +255,7 @@
     <value>このアプリケーション{0}は既にプロファイルと連携済です。</value>
   </data>
   <data name="profile.error.hotkey" xml:space="preserve">
-    <value>このショートカットキー{0}は既に登録されています。</value>
+    <value>このホットキー{0}は既に登録されています。</value>
   </data>
   <data name="profile.name" xml:space="preserve">
     <value>名前</value>
@@ -397,7 +397,7 @@
     <value>基本設定</value>
   </data>
   <data name="hotkeysTooltip" xml:space="preserve">
-    <value>ショートカットキーを有効化します。</value>
+    <value>ホットキーを有効化します。</value>
   </data>
   <data name="selectSoundButtonTooltip" xml:space="preserve">
     <value>通知用の音声ファイルを選択</value>
@@ -436,7 +436,7 @@
     <value>規定の通信デバイスとして設定</value>
   </data>
   <data name="hotkeys" xml:space="preserve">
-    <value>ショートカットキー</value>
+    <value>ホットキー</value>
   </data>
   <data name="close" xml:space="preserve">
     <value>閉じる</value>
@@ -464,5 +464,17 @@
   </data>
   <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
     <value>このトリガーによりトレイアイコンのメニューにプロフィールが表示されます。シストレイのアイコンを左クリックするとこのプロフィールが表示されます。</value>
+  </data>
+  <data name="quickMenu.desc" xml:space="preserve">
+    <value>ホットキーを使用時にWindowsの言語切り替えのようなクイックメニューを表示する</value>
+  </data>
+  <data name="telemetry" xml:space="preserve">
+    <value>バージョン情報の共有</value>
+  </data>
+  <data name="telemetry.desc" xml:space="preserve">
+    <value>使用しているSoundSwitchのバージョンを匿名で収集します。SoundSwitchの開発者のみに共有されます。</value>
+  </data>
+  <data name="quickMenu" xml:space="preserve">
+    <value>クイックメニューを表示</value>
   </data>
 </root>

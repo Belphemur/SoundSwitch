@@ -13,11 +13,11 @@ namespace SoundSwitch.Audio.Manager
 {
     public class AudioSwitcher
     {
-        private static AudioSwitcher _instance;
-        private PolicyClient _policyClient;
-        private EnumeratorClient _enumerator;
+        private static AudioSwitcher? _instance;
+        private PolicyClient? _policyClient;
+        private EnumeratorClient? _enumerator;
 
-        private ExtendedPolicyClient _extendedPolicyClient;
+        private ExtendedPolicyClient? _extendedPolicyClient;
 
         private EnumeratorClient EnumeratorClient
         {
@@ -108,6 +108,18 @@ namespace SoundSwitch.Audio.Manager
         /// <param name="processId">ProcessID of the process</param>
         public void SwitchProcessTo(string deviceId, ERole role, EDataFlow flow, uint processId)
         {
+            var processName = "";
+            try
+            {
+                var process = Process.GetProcessById((int)processId);
+                processName = process.ProcessName;
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError($"Can't get process info: {e}");
+            }
+
+            Trace.TraceInformation($"Attempt to switch [{processId}:{processName}] to {deviceId}");
             var roles = new[]
             {
                 ERole.eConsole,
@@ -128,7 +140,7 @@ namespace SoundSwitch.Audio.Manager
                 var currentEndpoint = roles.Select(eRole => ExtendPolicyClient.GetDefaultEndPoint(flow, eRole, processId)).FirstOrDefault(endpoint => !string.IsNullOrEmpty(endpoint));
                 if (deviceId.Equals(currentEndpoint))
                 {
-                    Trace.WriteLine($"Default endpoint for {processId} already {deviceId}");
+                    Trace.WriteLine($"Default endpoint for [{processId}:{processName}] already {deviceId}");
                     return;
                 }
 
@@ -142,7 +154,7 @@ namespace SoundSwitch.Audio.Manager
         /// <param name="deviceId">Id of the device</param>
         /// <param name="role">Which role to switch</param>
         /// <param name="flow">Which flow to switch</param>
-        public void SwitchProcessTo(string deviceId, ERole role, EDataFlow flow)
+        public void SwitchForegroundProcessTo(string deviceId, ERole role, EDataFlow flow)
         {
             var processId = ComThread.Invoke(() => User32.ForegroundProcessId);
             SwitchProcessTo(deviceId, role, flow, processId);

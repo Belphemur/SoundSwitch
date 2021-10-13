@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Antoine Aflalo")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
+[assembly: System.Runtime.Versioning.SupportedOSPlatform("windows7.0")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from
@@ -22,6 +23,8 @@ using System.Runtime.InteropServices;
 
 #if BETA
 [assembly: AssemblyConfiguration("Beta")]
+#elif NIGHTLY
+[assembly: AssemblyConfiguration("Nightly")]
 #else
 [assembly: AssemblyConfiguration("Release")]
 #endif

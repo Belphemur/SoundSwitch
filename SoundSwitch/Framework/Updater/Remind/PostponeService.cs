@@ -1,6 +1,7 @@
 ﻿using System;
 using Serilog;
 using SoundSwitch.Framework.Configuration;
+using SoundSwitch.Framework.Updater.Releases;
 
 namespace SoundSwitch.Framework.Updater.Remind
 {
@@ -9,19 +10,19 @@ namespace SoundSwitch.Framework.Updater.Remind
         /// <summary>
         /// Set the release as postponed
         /// </summary>
-        /// <param name="release"></param>
-        public void PostponeRelease(Release release)
+        /// <param name="appRelease"></param>
+        public void PostponeRelease(AppRelease appRelease)
         {
             var postponed = AppConfigs.Configuration.Postponed;
             try
             {
-                if (postponed == null || postponed.Version < release.ReleaseVersion)
+                if (postponed == null || postponed.Version < appRelease.ReleaseVersion)
                 {
-                    AppConfigs.Configuration.Postponed = new ReleasePostponed(release.ReleaseVersion, DateTime.UtcNow + 3 * TimeSpan.FromSeconds(AppConfigs.Configuration.UpdateCheckInterval), 1);
+                    AppConfigs.Configuration.Postponed = new ReleasePostponed(appRelease.ReleaseVersion, DateTime.UtcNow + 3 * TimeSpan.FromSeconds(AppConfigs.Configuration.UpdateCheckInterval), 1);
                     return;
                 }
 
-                if (postponed.Version == release.ReleaseVersion)
+                if (postponed.Version == appRelease.ReleaseVersion)
                 {
                     var postponedCount = postponed.Count + 1;
                     if (postponedCount > 5)
@@ -36,7 +37,7 @@ namespace SoundSwitch.Framework.Updater.Remind
             }
             finally
             {
-                Log.Information($"Release {release} set as {AppConfigs.Configuration.Postponed}");
+                Log.Information($"Release {appRelease} set as {AppConfigs.Configuration.Postponed}");
                 AppConfigs.Configuration.Save();
             }
         }
@@ -44,9 +45,9 @@ namespace SoundSwitch.Framework.Updater.Remind
         /// <summary>
         /// Return true if the release should be postponed, false if it can be done now.
         /// </summary>
-        /// <param name="release"></param>
+        /// <param name="appRelease"></param>
         /// <returns></returns>
-        public bool ShouldPostpone(Release release)
+        public bool ShouldPostpone(AppRelease appRelease)
         {
             var postponed = AppConfigs.Configuration.Postponed;
             if (postponed == null)
@@ -54,7 +55,7 @@ namespace SoundSwitch.Framework.Updater.Remind
                 return false;
             }
 
-            if (release.ReleaseVersion > postponed.Version)
+            if (appRelease.ReleaseVersion > postponed.Version)
             {
                 return false;
             }

@@ -17,6 +17,7 @@ using System.Windows.Forms;
 using Serilog;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.Updater.Installer;
+using SoundSwitch.Framework.Updater.Releases;
 using SoundSwitch.Framework.Updater.Remind;
 using SoundSwitch.Localization;
 using SoundSwitch.Localization.Factory;
@@ -29,7 +30,7 @@ namespace SoundSwitch.UI.Forms
     public sealed partial class UpdateDownloadForm : Form
     {
         private WebFile _releaseFile;
-        private Release _releaseInfo;
+        private AppRelease _appReleaseInfo;
         private readonly PostponeService _postponeService = new();
 
         public UpdateDownloadForm()
@@ -45,17 +46,17 @@ namespace SoundSwitch.UI.Forms
             TopMost = true;
         }
 
-        public void DownloadRelease(Release release)
+        public void DownloadRelease(AppRelease appRelease)
         {
-            Text = release.Name;
-            _releaseInfo = release;
+            Text = appRelease.Name;
+            _appReleaseInfo = appRelease;
             installButton.Enabled = true;
-            changeLog.SetChangelog(release.Changelog);
-            Name = release.Name;
-            downloadProgress.CustomText = release.Asset.name;
+            changeLog.SetChangelog(appRelease.Changelog);
+            Name = appRelease.Name;
+            downloadProgress.CustomText = appRelease.Asset.Name;
             downloadProgress.Value = 0;
 
-            _releaseFile = new WebFile(new Uri(release.Asset.browser_download_url));
+            _releaseFile = new WebFile(new Uri(appRelease.Asset.BrowserDownloadUrl));
 
             _releaseFile.DownloadProgress += (sender, progress) =>
             {
@@ -120,7 +121,7 @@ namespace SoundSwitch.UI.Forms
             }
             else
             {
-                _postponeService.PostponeRelease(_releaseInfo);
+                _postponeService.PostponeRelease(_appReleaseInfo);
             }
             Close();
         }

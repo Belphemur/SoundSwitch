@@ -10,10 +10,10 @@ namespace SoundSwitch.Framework.Profile.Trigger
             Type = type;
         }
 
-        public TriggerFactory.Enum Type            { get; }
-        public string              WindowName      { get; set; }
-        public string              ApplicationPath { get; set; }
-        public HotKey              HotKey          { get; set; }
+        public TriggerFactory.Enum Type { get; }
+        public string WindowName { get; set; }
+        public string ApplicationPath { get; set; }
+        public HotKey HotKey { get; set; }
 
         /// <summary>
         /// Should this trigger restore the devices after the app is closed
@@ -37,14 +37,14 @@ namespace SoundSwitch.Framework.Profile.Trigger
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((Trigger) obj);
+            return Equals((Trigger)obj);
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                var hashCode = (int) Type;
+                var hashCode = (int)Type;
                 hashCode = (hashCode * 397) ^ (WindowName != null ? WindowName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (ApplicationPath != null ? ApplicationPath.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (HotKey != null ? HotKey.GetHashCode() : 0);

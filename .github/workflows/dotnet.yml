@@ -3,15 +3,9 @@ name: .NET
 on:
   push:
     branches: [ dev, master ]
-    paths:
-    - 'SoundSwitch*/**'
-    - '.github/**.yml'
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [ dev, master ]
-    paths:
-    - 'SoundSwitch*/**'
-    - '.github/**.yml'
 env:
   # Stop wasting time caching packages
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
@@ -20,39 +14,99 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   PROJECT_NAME: "SoundSwitch"
   ARCH: "win-x64"
-  FRAMEWORK: "net5.0-windows"
+  FRAMEWORK: "net6.0-windows"
+  NODEJS: 16
+  DOTNET: "6.0.x"
+  DOTNET_PRERELEASE: true
+  CONFIGURATION: "Nightly"
+  SENTRY_NAME: "soundswitch"
 
 jobs:
   build:
+    if: github.ref != 'refs/heads/dev'
     runs-on: windows-latest
     steps:
       - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.9.0
+        uses: styfle/cancel-workflow-action@0.9.1
         with:
           all_but_latest: true
           access_token: ${{ github.token }}
       - name: Checkout
         uses: actions/checkout@v2
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            ci:
+             - '.github/**/*.yml'
+             - 'devRelease.js'
+            SoundSwitch:
+              - 'SoundSwitch*/**'
+            node:
+              - 'package.json'
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
+        if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true'
         with:
-          dotnet-version: 5.0.x
+          dotnet-version: ${{ env.DOTNET }}
+          include-prerelease: ${{ env.DOTNET_PRERELEASE }}
       - name: Restore
+        if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true'
         run: dotnet restore
       - name: Build
+        if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true'
         run: dotnet build -c Release --no-restore ${{env.PROJECT_NAME}}/${{env.PROJECT_NAME}}.csproj
       - name: Test
+        if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true'
         run: dotnet test -c Release --no-restore  --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}"
       - name: Upload test results
+        if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true'
         uses: actions/upload-artifact@v2
         with:
           name: dotnet-results-${{ matrix.dotnet-version }}
           path: TestResults-${{ matrix.dotnet-version }}
         # Use always() to always run this step to publish test results when there are test failures
-        if: ${{ always() }}
-  prerelease:
-    needs: build
-    if: github.ref == 'refs/heads/dev'
+      - name: Setup Node.js
+        if: steps.filter.outputs.node == 'true'
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{env.NODEJS}}
+      - name: Cache node modules
+        if: steps.filter.outputs.node == 'true'
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: npm-cache
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+      - name: Install semantic-release dependencies
+        if: steps.filter.outputs.node == 'true'
+        run: npm ci --prefer-offline --silent --cache npm-cache
+      - name: Release dry run
+        if: steps.filter.outputs.node == 'true'
+        run: npx semantic-release -d
+
+  changes:
+    runs-on: ubuntu-latest
+    # Set job outputs to values from filter step
+    outputs:
+      ci: ${{ steps.filter.outputs.ci }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            ci:
+              - '.github/**/*.yml'
+              - 'SoundSwitch*/**'
+              - 'devRelease.js'
+
+  nightly-release:
+    needs: [ changes ]
+    if: github.ref == 'refs/heads/dev' && needs.changes.outputs.ci == 'true'
+    outputs:
+      devVersion: ${{ steps.devVersion.outputs.version }}
     runs-on: windows-latest
     steps:
       - name: Checkout
@@ -62,7 +116,8 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 5.0.x
+          dotnet-version: ${{ env.DOTNET }}
+          include-prerelease: ${{ env.DOTNET_PRERELEASE }}
       - name: Restore
         run: dotnet restore -r ${{ env.ARCH }}
       - name: Fetch tags
@@ -71,48 +126,80 @@ jobs:
         id: devVersion
         run: .\devVersion.ps1
       - name: Build pre-release
-        run: dotnet publish -c Beta --no-restore -r ${{ env.ARCH }} ${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj -p:PackageVersion=${{ steps.devVersion.outputs.version }}
-      - name: Set Env var from GitHub  
+        run: dotnet publish -c ${{env.CONFIGURATION}} --no-restore -r ${{ env.ARCH }} ${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj
+      - name: Set Env var from GitHub
         uses: rlespinasse/github-slug-action@v3.x
       - name: Zip Build ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}
-        run: tar cafv ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip -C ${{ env.PROJECT_NAME }}\bin\Beta\${{ env.FRAMEWORK }}\${{ env.ARCH }}\publish\ *
-      - name: Upload Artifact
-        run: curl -u "${{env.DAV_USER}}:${{env.DAV_PASS}}" -X PUT ${{env.DAV_SERVER}}/${{env.DAV_USER}}/${{env.PROJECT_NAME}}/${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip --upload-file ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip
-        env:
-          DAV_USER: ${{secrets.DAV_USER}}
-          DAV_PASS: ${{secrets.DAV_PASS}}
-          DAV_SERVER: "https://nc.aaflalo.me/remote.php/dav/files"
-      - name: Discord Notification on success
-        uses: rjstone/discord-webhook-notify@v1
-        if: success()
+        run: tar cafv ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip -C ${{ env.PROJECT_NAME }}\bin\${{env.CONFIGURATION}}\${{ env.FRAMEWORK }}\${{ env.ARCH }}\publish\ *
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
         with:
-          severity: info
-          color: '#0000FF'
-          username: "Beta Build"
-          avatarUrl: https://soundswitch.aaflalo.me/img/beta.png
-          description: "A new build [${{ steps.devVersion.outputs.version }}] is now available."
-          details: "https://nc.aaflalo.me/s/8DKytYCTAbrn6yz" 
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-    
-    
-  prepare-release:
-      needs: build
-      if: github.ref == 'refs/heads/master'
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v2
-        - name: Setup Node.js
-          uses: actions/setup-node@v2
-          with:
-            node-version: 14
-        - name: Cache node modules
-          uses: actions/cache@v2
-          env:
-            cache-name: cache-node-modules
-          with:
-            path: "**/node_modules"
-            key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }} 
-        - name: Install semantic-release dependencies
-          run: npm ci
-        - name: Release
-          run: npx semantic-release
+          node-version: ${{env.NODEJS}}
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: npm-cache
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        run: npm ci --prefer-offline --silent --cache npm-cache
+      - name: Upload prerelease & Notify
+        env:
+          UPLOAD_SECRET: ${{secrets.UPLOAD_SECRET}}
+          UPLOAD_PUBLIC: ${{secrets.UPLOAD_PUBLIC}}
+          UPLOAD_BUCKET: ${{env.PROJECT_NAME}}
+        run: node devRelease.js "${{ secrets.DISCORD_WEBHOOK }}" "${{ steps.devVersion.outputs.version }}" "${{env.GITHUB_REPOSITORY_OWNER_PART}}/${{env.GITHUB_REPOSITORY_NAME_PART}}" "${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip"
+
+  nightly-sentry:
+    needs: nightly-release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Sentry Release
+        uses: getsentry/action-release@v1.1.6
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{env.SENTRY_NAME}}
+          SENTRY_PROJECT: ${{env.SENTRY_NAME}}
+        with:
+          environment: Nightly
+          version: "${{env.PROJECT_NAME}}@${{ needs.nightly-release.outputs.devVersion }}"
+
+  master-release:
+    needs: [ build, changes ]
+    if: github.ref == 'refs/heads/master' &&  needs.changes.outputs.ci == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{env.NODEJS}}
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: npm-cache
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+      - name: Install semantic-release dependencies
+        run: npm ci --prefer-offline --silent --cache npm-cache
+      - name: Release
+        run: npx semantic-release
+      - name: Latest Version
+        run: echo "::set-output name=version::${$(git describe --tags --abbrev=0):1}"
+        id: version
+      - name: Sentry Release
+        uses: getsentry/action-release@v1.1.6
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{env.SENTRY_NAME}}
+          SENTRY_PROJECT: ${{env.SENTRY_NAME}}
+        with:
+          environment: Stable
+          version: "${{env.PROJECT_NAME}}@${{ steps.version.outputs.version }}"
+

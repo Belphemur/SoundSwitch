@@ -17,7 +17,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using NAudio.CoreAudioApi;
-using SoundSwitch.Common.Framework.Audio.Icon;
+using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Banner;
@@ -30,7 +30,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
     public class NotificationBanner : INotification
     {
         public NotificationTypeEnum TypeEnum => NotificationTypeEnum.BannerNotification;
-        public string               Label    => SettingsStrings.notificationOptionBanner;
+        public string Label => SettingsStrings.notificationOptionBanner;
 
         public INotificationConfiguration Configuration { get; set; }
 
@@ -38,13 +38,12 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
 
         public void NotifyProfileChanged(Profile.Profile profile, uint? processId)
         {
-            
             var icon = Resources.default_profile_image;
             if (processId.HasValue)
             {
                 try
                 {
-                    var process = Process.GetProcessById((int) processId.Value);
+                    var process = Process.GetProcessById((int)processId.Value);
                     icon = IconExtractor.Extract(process.MainModule?.FileName, 0, true).ToBitmap();
                 }
                 catch (Exception)
@@ -52,12 +51,13 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
                     // ignored
                 }
             }
+
             var bannerData = new BannerData
             {
                 Priority = 1,
-                Image    = icon,
-                Title    = string.Format(SettingsStrings.profile_notification_text, profile.Name),
-                Text     = string.Join("\n", profile.Devices.Select(wrapper => wrapper.DeviceInfo.NameClean))
+                Image = icon,
+                Title = string.Format(SettingsStrings.profile_notification_text, profile.Name),
+                Text = string.Join("\n", profile.Devices.Select(wrapper => wrapper.DeviceInfo.NameClean))
             };
             _bannerManager.ShowNotification(bannerData);
         }
@@ -67,36 +67,34 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             var title = newMuteState ? string.Format(SettingsStrings.notification_microphone_muted, microphoneName) : string.Format(SettingsStrings.notification_microphone_unmuted, microphoneName);
 
             var icon = newMuteState ? Resources.microphone_muted : Resources.microphone_unmuted;
-            
+
             var bannerData = new BannerData
             {
                 Priority = 2,
-                Image    = icon,
-                Title    = title
-                
+                Image = icon,
+                Title = title
             };
             _bannerManager.ShowNotification(bannerData);
         }
 
-        public void NotifyDefaultChanged(MMDevice audioDevice)
+        public void NotifyDefaultChanged(DeviceFullInfo audioDevice)
         {
-            var icon = AudioDeviceIconExtractor.ExtractIconFromAudioDevice(audioDevice, true);
             var toastData = new BannerData
             {
-                Image = icon.ToBitmap(),
-                Text  = audioDevice.FriendlyName
+                Image = audioDevice.LargeIcon.ToBitmap(),
+                Text = audioDevice.NameClean
             };
-            if (Configuration.CustomSound != null && File.Exists(Configuration.CustomSound.FilePath))
+            if (audioDevice.Type == DataFlow.Render && Configuration.CustomSound != null && File.Exists(Configuration.CustomSound.FilePath))
             {
                 toastData.SoundFile = Configuration.CustomSound;
-                toastData.CurrentDevice = audioDevice;
+                toastData.CurrentDeviceId = audioDevice.Id;
             }
 
-            toastData.Title = audioDevice.DataFlow switch
+            toastData.Title = audioDevice.Type switch
             {
                 DataFlow.Render  => SettingsStrings.tooltipOnHoverOptionPlaybackDevice,
                 DataFlow.Capture => SettingsStrings.tooltipOnHoverOptionRecordingDevice,
-                _                => throw new ArgumentOutOfRangeException(nameof(audioDevice.DataFlow), audioDevice.DataFlow, null)
+                _                => throw new ArgumentOutOfRangeException(nameof(audioDevice.Type), audioDevice.Type, null)
             };
 
             _bannerManager.ShowNotification(toastData);

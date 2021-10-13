@@ -23,7 +23,8 @@ namespace SoundSwitch.Util
         {
             Stable,
             Beta,
-            Debug
+            Debug,
+            Nightly
         }
 
         /// <summary>
@@ -44,10 +45,14 @@ namespace SoundSwitch.Util
         /// <returns></returns>
         public static ReleaseState GetReleaseState()
         {
-#if DEBUG
+#if BETA
+            return ReleaseState.Beta;
+#elif DEBUG
             return ReleaseState.Debug;
+#elif NIGHTLY
+            return ReleaseState.Nightly;
 #else
-            return GetAssemblyConfigurationAttribute().Configuration == "Beta" ? ReleaseState.Beta : ReleaseState.Stable;
+            return ReleaseState.Stable;
 #endif
         }
     }

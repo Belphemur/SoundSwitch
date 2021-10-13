@@ -214,4 +214,25 @@ namespace SoundSwitch.Localization.Factory.Lang
         public override bool IsRightToLeft => true;
     }
     
+    public class Thai : BaseLang
+    {
+        /// <summary>
+        /// Culture info of this language
+        /// </summary>
+        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("th");
+
+        public override Language TypeEnum => Language.Thai;
+    }
+    
+        
+    public class Serbian : BaseLang
+    {
+        /// <summary>
+        /// Culture info of this language
+        /// </summary>
+        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("sr");
+
+        public override Language TypeEnum => Language.Serbian;
+    }
+    
 }

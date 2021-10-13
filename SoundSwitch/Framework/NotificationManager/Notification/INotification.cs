@@ -12,7 +12,7 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using NAudio.CoreAudioApi;
+using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Factory;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
@@ -30,7 +30,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         /// Notify the change of default audio device
         /// </summary>
         /// <param name="audioDevice"></param>
-        void NotifyDefaultChanged(MMDevice audioDevice);
+        void NotifyDefaultChanged(DeviceFullInfo audioDevice);
 
         /// <summary>
         /// Called when the set sound changed

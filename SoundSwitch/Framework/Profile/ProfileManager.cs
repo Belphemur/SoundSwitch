@@ -42,6 +42,7 @@ namespace SoundSwitch.Framework.Profile
         private readonly Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)> _profilesByUwpApp = new();
 
         private readonly ProfileHotkeyManager _profileHotkeyManager;
+        private readonly ILogger _logger;
 
 
         public IReadOnlyCollection<Profile> Profiles => AppConfigs.Configuration.Profiles;
@@ -60,6 +61,7 @@ namespace SoundSwitch.Framework.Profile
             _triggerFactory = triggerFactory;
             _notificationManager = notificationManager;
             _profileHotkeyManager = new(this);
+            _logger = Log.ForContext(GetType());
         }
 
         private bool RegisterTriggers(Profile profile, bool onInit = false)
@@ -98,7 +100,6 @@ namespace SoundSwitch.Framework.Profile
                         return true;
                     },
                     () => true);
-               
             }
 
             return success;
@@ -121,20 +122,40 @@ namespace SoundSwitch.Framework.Profile
         /// Initialize the profile manager. Return the list of Profile that it couldn't register hotkeys for.
         /// </summary>
         /// <returns></returns>
-        public Result<Profile[], VoidSuccess> Init()
+        public Result<ProfileError[], VoidSuccess> Init()
         {
-            var errors = AppConfigs.Configuration.Profiles.Where(profile => !RegisterTriggers(profile, true)).ToArray();
-
-            RegisterEvents();
-
-            InitializeProfileExistingProcess();
-
-            if (errors.Length > 0)
+            var errors = Array.Empty<ProfileError>();
+            try
             {
-                return errors;
-            }
+                errors = AppConfigs.Configuration.Profiles.Select(profile => (Profile: profile, Failure: ValidateProfile(profile, true).UnwrapFailure()))
+                                   .Select(tuple =>
+                                   {
+                                       if (tuple.Failure == null)
+                                       {
+                                           RegisterTriggers(tuple.Profile, true);
+                                       }
 
-            return Result.Success();
+                                       return tuple;
+                                   })
+                                   .Where(tuple => tuple.Failure != null)
+                                   .Select(tuple => new ProfileError(tuple.Profile, tuple.Failure))
+                                   .ToArray();
+
+                RegisterEvents();
+                InitializeProfileExistingProcess();
+
+                if (errors.Length > 0)
+                {
+                    _logger.Warning("Couldn't initiate all profiles: {profiles}", errors);
+                    return errors;
+                }
+
+                return Result.Success();
+            }
+            finally
+            {
+                _logger.Information("Profile manager initiated {profiles} with {errors} errors", AppConfigs.Configuration.Profiles.Count, errors.Length);
+            }
         }
 
         private void RegisterEvents()
@@ -149,8 +170,10 @@ namespace SoundSwitch.Framework.Profile
 
                 if (HandleWindowName(@event)) return;
             };
+            _logger.Information("Windows Monitor Registered");
 
             WindowsAPIAdapter.WindowDestroyed += (sender, @event) => { RestoreState(@event.Hwnd); };
+            _logger.Information("Windows Destroyed Registered");
         }
 
         private bool HandleUwpApp(WindowMonitor.Event @event)
@@ -373,7 +396,7 @@ namespace SoundSwitch.Framework.Profile
                    });
         }
 
-        private Result<string, VoidSuccess> ValidateProfile(Profile profile)
+        private Result<string, VoidSuccess> ValidateProfile(Profile profile, bool init = false)
         {
             if (string.IsNullOrEmpty(profile.Name))
             {
@@ -390,9 +413,33 @@ namespace SoundSwitch.Framework.Profile
                 return SettingsStrings.profile_error_needPlaybackOrRecording;
             }
 
-            if (AppConfigs.Configuration.Profiles.Contains(profile))
+            if (!init && AppConfigs.Configuration.Profiles.Contains(profile))
             {
                 return string.Format(SettingsStrings.profile_error_name, profile.Name);
+            }
+
+            //Only hotkey doesn't need validation since you can have multiple profile with the same hotkey
+            foreach (var groups in profile.Triggers.Where(trigger => trigger.Type != TriggerFactory.Enum.HotKey).GroupBy(trigger => trigger.Type).Where(triggers => triggers.Count() > 1))
+            {
+                //has different trigger of the same type, not a problem
+                if (groups.Distinct().Count() > 1)
+                {
+                    continue;
+                }
+
+                var trigger = groups.First();
+
+                var error = groups.Key.Match(() => null,
+                    () => string.Format(SettingsStrings.profile_error_window, trigger.WindowName),
+                    () => string.Format(SettingsStrings.profile_error_application, trigger.ApplicationPath),
+                    () => SettingsStrings.profile_error_steam,
+                    () => null,
+                    () => string.Format(SettingsStrings.profile_error_window, trigger.WindowName),
+                    () => null);
+                if (error != null)
+                {
+                    return error;
+                }
             }
 
             foreach (var trigger in profile.Triggers)
@@ -524,6 +571,7 @@ namespace SoundSwitch.Framework.Profile
         {
             if (_profileByApplication.Count == 0)
             {
+                _logger.Information("No profile related to application to load");
                 return;
             }
 
@@ -531,6 +579,7 @@ namespace SoundSwitch.Framework.Profile
             {
                 try
                 {
+                    _logger.Verbose("Checking process: {process}", process);
                     if (process.HasExited)
                         continue;
                     if (!process.Responding)
@@ -543,6 +592,7 @@ namespace SoundSwitch.Framework.Profile
 
                     if (_profileByApplication.TryGetValue(filePath, out var profile))
                     {
+                        _logger.Debug("Profile {profile} match process {process}", profile, process);
                         var handle = User32.NativeMethods.HWND.Cast(process.Handle);
                         SaveCurrentState(handle, profile.Profile, profile.Trigger);
                         SwitchAudio(profile.Profile, (uint)process.Id);
@@ -558,7 +608,7 @@ namespace SoundSwitch.Framework.Profile
                 }
                 catch (Exception e)
                 {
-                    Log.Error(e, "Couldn't get information about the given process.");
+                    _logger.Error(e, "Couldn't get information about the given process.");
                 }
             }
         }

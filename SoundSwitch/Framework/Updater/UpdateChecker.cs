@@ -23,6 +23,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Sentry;
 using Serilog;
+using SoundSwitch.Framework.Updater.Releases;
+using SoundSwitch.Framework.Updater.Releases.Models;
 
 namespace SoundSwitch.Framework.Updater
 {
@@ -37,39 +39,35 @@ namespace SoundSwitch.Framework.Updater
         public EventHandler<NewReleaseEvent> UpdateAvailable;
         public bool Beta { get; set; }
 
-        public UpdateChecker(Uri releaseUrl) : this(releaseUrl, false)
-        {
-        }
-
         public UpdateChecker(Uri releaseUrl, bool checkBeta)
         {
             _releaseUrl = releaseUrl;
             Beta = checkBeta;
         }
 
-        private bool ProcessRelease(GitHubRelease serverRelease)
+        private bool ProcessRelease(Release serverRelease)
         {
             Log.Information("Checking version {version} ", serverRelease);
-            if (serverRelease.prerelease && !Beta)
+            if (serverRelease.Prerelease && !Beta)
             {
                 Log.Information("Pre-release and not in Beta Mode.");
                 return false;
             }
 
-            var version = new Version(serverRelease.tag_name.Substring(1));
+            var version = new Version(serverRelease.TagName.Substring(1));
             try
             {
                 if (version > AppVersion)
                 {
-                    var installer = serverRelease.assets.SingleOrDefault(asset => asset.name.EndsWith(".exe"));
+                    var installer = serverRelease.Assets.SingleOrDefault(asset => asset.Name.EndsWith(".exe"));
                     if (installer == null)
                     {
                         return false;
                     }
 
 
-                    var changelog = Regex.Split(serverRelease.body, "\r\n|\r|\n");
-                    var release = new Release(version, installer, serverRelease.name);
+                    var changelog = Regex.Split(serverRelease.Body, "\r\n|\r|\n");
+                    var release = new AppRelease(version, installer, serverRelease.Name);
                     release.Changelog.AddRange(changelog);
                     UpdateAvailable?.Invoke(this, new NewReleaseEvent(release));
                     return true;
@@ -82,7 +80,7 @@ namespace SoundSwitch.Framework.Updater
 
             return false;
         }
- 
+
         /// <summary>
         /// Check for update
         /// </summary>
@@ -92,8 +90,8 @@ namespace SoundSwitch.Framework.Updater
             httpClient.DefaultRequestHeaders.UserAgent.Add(ApplicationInfo.ProductValue);
             httpClient.DefaultRequestHeaders.UserAgent.Add(ApplicationInfo.CommentValue);
             httpClient.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
-            var releases = await httpClient.GetFromJsonAsync<GitHubRelease[]>(_releaseUrl, token);
-            foreach (var release in releases ?? Array.Empty<GitHubRelease>())
+            var releases = await httpClient.GetFromJsonAsync(_releaseUrl, GithubReleasesJsonContext.Default.ReleaseArray, token);
+            foreach (var release in releases ?? Array.Empty<Release>())
             {
                 token.ThrowIfCancellationRequested();
                 ProcessRelease(release);
@@ -102,11 +100,11 @@ namespace SoundSwitch.Framework.Updater
 
         public class NewReleaseEvent : EventArgs
         {
-            public Release Release { get; }
+            public AppRelease AppRelease { get; }
 
-            public NewReleaseEvent(Release release)
+            public NewReleaseEvent(AppRelease appRelease)
             {
-                Release = release;
+                AppRelease = appRelease;
             }
         }
     }

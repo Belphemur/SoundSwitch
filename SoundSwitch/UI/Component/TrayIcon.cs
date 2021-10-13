@@ -25,13 +25,13 @@ using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
-using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Profile.UI;
 using SoundSwitch.Framework.TrayIcon.Icon;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
 using SoundSwitch.Framework.Updater;
+using SoundSwitch.Framework.Updater.Releases;
 using SoundSwitch.Framework.Updater.Remind;
 using SoundSwitch.Localization;
 using SoundSwitch.Localization.Factory;
@@ -85,7 +85,7 @@ namespace SoundSwitch.UI.Component
             var rightToLeft = new LanguageFactory().Get(AppModel.Instance.Language).IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
             _selectionMenu.RightToLeft = rightToLeft;
             _settingsMenu.RightToLeft = rightToLeft;
-            
+
             UpdateIcon();
             _showContextMenu = typeof(NotifyIcon).GetMethod("ShowContextMenu", BindingFlags.Instance | BindingFlags.NonPublic);
             _tooltipInfoManager = new TooltipInfoManager(NotifyIcon);
@@ -108,7 +108,7 @@ namespace SoundSwitch.UI.Component
 
                 if (e.Button != MouseButtons.Left) return;
 
-                if (_updateMenuItem.Tag != null && !_postponeService.ShouldPostpone((Release)_updateMenuItem.Tag))
+                if (_updateMenuItem.Tag != null && !_postponeService.ShouldPostpone((AppRelease)_updateMenuItem.Tag))
                 {
                     OnUpdateClick(sender, e);
                     return;
@@ -150,7 +150,7 @@ namespace SoundSwitch.UI.Component
                 return;
 
             var oldIcon = NotifyIcon.Icon;
-            NotifyIcon.Icon = (Icon)newIcon.Clone();
+            _context.Send(icon => { NotifyIcon.Icon = (Icon)icon; }, (Icon)newIcon.Clone());
             try
             {
                 oldIcon?.Dispose();
@@ -205,7 +205,7 @@ namespace SoundSwitch.UI.Component
 
             StopAnimationIconUpdate();
             NotifyIcon.BalloonTipClicked -= OnUpdateClick;
-            _updateDownloadForm.DownloadRelease((Release)_updateMenuItem.Tag);
+            _updateDownloadForm.DownloadRelease((AppRelease)_updateMenuItem.Tag);
         }
 
         private void SetEventHandlers()
@@ -225,17 +225,17 @@ namespace SoundSwitch.UI.Component
             AppModel.Instance.DefaultDeviceChanged += (sender, audioChangeEvent) =>
             {
                 var iconChanger = new IconChangerFactory().Get(AppConfigs.Configuration.SwitchIcon);
-                iconChanger.ChangeIcon(this, new DeviceFullInfo(audioChangeEvent.Device));
+                iconChanger.ChangeIcon(this, audioChangeEvent.Device);
             };
             AppModel.Instance.NewVersionReleased += (sender, @event) =>
             {
                 switch (@event.UpdateMode)
                 {
                     case UpdateMode.Never:
-                        _context.Send(state => _updateDownloadForm.DownloadRelease(@event.Release), null);
+                        _context.Send(_ => _updateDownloadForm.DownloadRelease(@event.AppRelease), null);
                         break;
                     case UpdateMode.Notify:
-                        _context.Send(s => { NewReleaseAvailable(sender, @event); }, null);
+                        _context.Send(_ => { NewReleaseAvailable(sender, @event); }, null);
                         break;
                 }
             };
@@ -249,17 +249,18 @@ namespace SoundSwitch.UI.Component
 
         private void NewReleaseAvailable(object sender, UpdateChecker.NewReleaseEvent newReleaseEvent)
         {
-            _updateMenuItem.Text = string.Format(TrayIconStrings.updateAvailable, newReleaseEvent.Release.ReleaseVersion);
-            if (_postponeService.ShouldPostpone(newReleaseEvent.Release))
+            _updateMenuItem.Text = string.Format(TrayIconStrings.updateAvailable, newReleaseEvent.AppRelease.ReleaseVersion);
+            if (_postponeService.ShouldPostpone(newReleaseEvent.AppRelease))
             {
-                Log.Information("Release {release} has been postponed", newReleaseEvent.Release);
+                Log.Information("Release {release} has been postponed", newReleaseEvent.AppRelease);
                 return;
             }
 
-            _updateMenuItem.Tag = newReleaseEvent.Release;
+            _updateMenuItem.Tag = newReleaseEvent.AppRelease;
             StartAnimationIconUpdate();
             NotifyIcon.BalloonTipClicked += OnUpdateClick;
-            NotifyIcon.ShowBalloonTip(3000, string.Format(TrayIconStrings.versionAvailable, newReleaseEvent.Release.ReleaseVersion), newReleaseEvent.Release.Name + '\n' + TrayIconStrings.clickToUpdate, ToolTipIcon.Info);
+            NotifyIcon.ShowBalloonTip(3000, string.Format(TrayIconStrings.versionAvailable, newReleaseEvent.AppRelease.ReleaseVersion), newReleaseEvent.AppRelease.Name + '\n' + TrayIconStrings.clickToUpdate,
+                ToolTipIcon.Info);
         }
 
         /// <summary>

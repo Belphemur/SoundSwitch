@@ -1,13 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <OutputType>Library</OutputType>
     <Deterministic>false</Deterministic>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <UseWindowsForms>true</UseWindowsForms>
     <Deterministic>false</Deterministic>
     <LangVersion>latest</LangVersion>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
+    <Configurations>Debug;Release;Nightly</Configurations>
+    <Platforms>AnyCPU</Platforms>
+    <AssemblyTitle>SoundSwitch.Common</AssemblyTitle>
+    <Version>2.2.0</Version>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Resources\defaultMicrophone.ico" />

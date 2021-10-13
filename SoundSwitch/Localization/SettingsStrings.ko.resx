@@ -312,7 +312,7 @@
     <value>프로그램 이름</value>
   </data>
   <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>프로필을 활성화하는데 사용되는 단축키</value>
+    <value>프로필을 활성화하는데 사용되는 단축키입니다. 동일한 단축키를 사용하면 프로필 간에 전환할 수 있습니다.</value>
   </data>
   <data name="profile.trigger.steam.desc" xml:space="preserve">
     <value>Steam Big Picture가 감지되면 활성화합니다. (Big Picture가 닫히면 상태가 복원됩니다.)</value>
@@ -414,5 +414,8 @@
   </data>
   <data name="quickMenu" xml:space="preserve">
     <value>바로 가기 키의 빠른 메뉴</value>
+  </data>
+  <data name="telemetry.desc" xml:space="preserve">
+    <value>사용 중인 SoundSwitch 버전을 익명으로 수집합니다. SoundSwitch 개발자와만 공유됩니다.</value>
   </data>
 </root>

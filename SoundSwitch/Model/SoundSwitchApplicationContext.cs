@@ -8,7 +8,6 @@ using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Updater;
-using SoundSwitch.UI.Component;
 using SoundSwitch.UI.Menu;
 
 namespace SoundSwitch.Model
@@ -17,27 +16,23 @@ namespace SoundSwitch.Model
     {
         public SoundSwitchApplicationContext()
         {
-            
             BannerManager.Setup();
             QuickMenuManager<DeviceFullInfo>.Instance.Setup();
             QuickMenuManager<Profile>.Instance.Setup();
 
-            var deviceActiveLister          = new CachedAudioDeviceLister(DeviceState.Active);
+            var deviceActiveLister = new CachedAudioDeviceLister(DeviceState.Active);
             var deviceUnpluggedActiveLister = new CachedAudioDeviceLister(DeviceState.Active | DeviceState.Unplugged);
             deviceActiveLister.Refresh();
             deviceUnpluggedActiveLister.Refresh();
-            
-            AppModel.Instance.ActiveAudioDeviceLister    = deviceActiveLister;
-            AppModel.Instance.ActiveUnpluggedAudioLister = deviceUnpluggedActiveLister;
 
-            AppModel.Instance.TrayIcon = new TrayIcon();
-            AppModel.Instance.InitializeMain();
+            AppModel.Instance.InitializeMain(deviceActiveLister, deviceUnpluggedActiveLister);
+            
             AppModel.Instance.NewVersionReleased += (sender, @event) =>
             {
                 if (@event.UpdateMode == UpdateMode.Silent)
                 {
                     new AutoUpdater("/VERYSILENT", ApplicationPath.Default).Update(
-                        @event.Release, true);
+                        @event.AppRelease, true);
                 }
             };
 

@@ -118,4 +118,7 @@
   <data name="remindMe" xml:space="preserve">
     <value>Позже</value>
   </data>
+  <data name="wrongSignature" xml:space="preserve">
+    <value>Возникла проблема с последним обновлением SoundSwitch. Вам нужно вручную загрузить новую версию {0}</value>
+  </data>
 </root>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using Serilog;
 using SoundSwitch.UI.Menu.Component;
 using SoundSwitch.UI.Menu.Form;
 
@@ -19,6 +20,8 @@ namespace SoundSwitch.UI.Menu
             _syncContext = SynchronizationContext.Current;
             if (_syncContext is not System.Windows.Forms.WindowsFormsSynchronizationContext)
                 throw new InvalidOperationException($"{nameof(QuickMenuManager<T>)} must be called in the context of the UI thread.");
+            Log.Information("QuickMenu manager<{type}> initialized", typeof(T));
+
         }
 
 

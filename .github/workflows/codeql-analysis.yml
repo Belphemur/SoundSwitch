@@ -19,7 +19,11 @@ on:
     branches: [ dev ]
   schedule:
     - cron: '40 2 * * 4'
-
+env:
+  DOTNET: "6.0.x"
+  DOTNET_PRERELEASE: true
+  PROJECT_NAME: "SoundSwitch"
+  ARCH: "win-x64"
 jobs:
   analyze:
     name: Analyze
@@ -35,7 +39,7 @@ jobs:
 
     steps:
     - name: Cancel Previous Runs
-      uses: styfle/cancel-workflow-action@0.9.0
+      uses: styfle/cancel-workflow-action@0.9.1
       with:
         all_but_latest: true
         access_token: ${{ github.token }}
@@ -54,19 +58,16 @@ jobs:
 
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v1
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ env.DOTNET }}
+        include-prerelease: ${{ env.DOTNET_PRERELEASE }}
+    - name: Restore
+      run: dotnet restore
+    - name: Build
+      run: dotnet build -c Release --no-restore ${{env.PROJECT_NAME}}/${{env.PROJECT_NAME}}.csproj
 
-    # ℹ️ Command-line programs to run using the OS shell.
-    # 📚 https://git.io/JvXDl
-
-    # ✏️ If the Autobuild fails above, remove it and uncomment the following three lines
-    #    and modify them (or add more) to build your code if your project
-    #    uses a compiled language
-
-    #- run: |
-    #   make bootstrap
-    #   make release
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1

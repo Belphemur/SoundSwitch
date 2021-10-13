@@ -118,4 +118,7 @@
   <data name="remindMe" xml:space="preserve">
     <value>稍后</value>
   </data>
+  <data name="wrongSignature" xml:space="preserve">
+    <value>上次 SoundSwitch 的更新存在问题。需要在 {0} 手动下载新版本</value>
+  </data>
 </root>

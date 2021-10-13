@@ -17,8 +17,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Job.Scheduler.Builder;
-using Job.Scheduler.Scheduler;
 using NAudio.CoreAudioApi;
 using RailSharp;
 using Serilog;
@@ -32,6 +30,7 @@ using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Profile.Trigger;
+using SoundSwitch.Framework.Threading;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.Updater.Job;
 using SoundSwitch.Framework.WinApi;
@@ -49,7 +48,6 @@ namespace SoundSwitch.Model
         private readonly NotificationManager _notificationManager;
         private UpdateChecker _updateChecker;
         private readonly DebounceDispatcher _dispatcher = new();
-        private readonly IJobScheduler _jobScheduler = new JobScheduler(new JobRunnerBuilder());
 
         private AppModel()
         {
@@ -65,13 +63,15 @@ namespace SoundSwitch.Model
                 }, DefaultDeviceChanged);
             };
             _microphoneMuteToggler = new MicrophoneMuteToggler(AudioSwitcher.Instance, _notificationManager);
+            _updateScheduler = new LimitedConcurrencyLevelTaskScheduler(1);
         }
 
         public static IAppModel Instance { get; } = new AppModel();
-        public TrayIcon TrayIcon { get; set; }
+        public TrayIcon TrayIcon { get; private set; }
         private CachedSound _customNotificationCachedSound;
         private readonly DeviceCyclerManager _deviceCyclerManager;
         private readonly MicrophoneMuteToggler _microphoneMuteToggler;
+        private readonly LimitedConcurrencyLevelTaskScheduler _updateScheduler;
 
         public ProfileManager ProfileManager { get; private set; }
 
@@ -229,9 +229,9 @@ namespace SoundSwitch.Model
             }
         }
 
-        public IAudioDeviceLister ActiveAudioDeviceLister { get; set; }
+        public IAudioDeviceLister ActiveAudioDeviceLister { get; private set; }
 
-        public IAudioDeviceLister ActiveUnpluggedAudioLister { get; set; }
+        public IAudioDeviceLister ActiveUnpluggedAudioLister { get; private set; }
         public event EventHandler<NotificationSettingsUpdatedEvent> NotificationSettingsChanged;
         public event EventHandler<CustomSoundChangedEvent> CustomSoundChanged;
         public event EventHandler<UpdateMode> UpdateModeChanged;
@@ -242,31 +242,34 @@ namespace SoundSwitch.Model
         /// <summary>
         ///     Initialize the Main class with Updater and Hotkeys
         /// </summary>
-        public void InitializeMain()
+        /// <param name="active"></param>
+        /// <param name="unplugged"></param>
+        public void InitializeMain(IAudioDeviceLister active, IAudioDeviceLister unplugged)
         {
-            if (ActiveAudioDeviceLister == null)
-            {
-                throw new InvalidOperationException("The devices lister are not configured");
-            }
+
+            ActiveAudioDeviceLister = active;
+            ActiveUnpluggedAudioLister = unplugged;
 
             if (_initialized)
             {
+                Log.Fatal("AppModel already initialized");
                 throw new InvalidOperationException("Already initialized");
             }
 
-            _notificationManager.Init();
+         
 
-            ProfileManager = new ProfileManager(new WindowMonitor(), AudioSwitcher.Instance, ActiveAudioDeviceLister, TrayIcon.ShowError, new TriggerFactory(), _notificationManager);
             RegisterHotKey(AppConfigs.Configuration.PlaybackHotKey);
             var saveConfig = false;
             if (!RegisterHotKey(AppConfigs.Configuration.RecordingHotKey))
             {
+                Log.Information("Disabling Recording hotkey: {hotkey}", AppConfigs.Configuration.RecordingHotKey);
                 AppConfigs.Configuration.RecordingHotKey.Enabled = false;
                 saveConfig = true;
             }
 
             if (!RegisterHotKey(AppConfigs.Configuration.MuteRecordingHotKey))
             {
+                Log.Information("Disabling Mute hotkey: {hotkey}", AppConfigs.Configuration.MuteRecordingHotKey);
                 AppConfigs.Configuration.MuteRecordingHotKey.Enabled = false;
                 saveConfig = true;
             }
@@ -295,12 +298,18 @@ namespace SoundSwitch.Model
 
             WindowsAPIAdapter.HotKeyPressed += HandleHotkeyPress;
 
+            TrayIcon = new TrayIcon();
+            _notificationManager.Init();
+            ProfileManager = new ProfileManager(new WindowMonitor(), AudioSwitcher.Instance, ActiveAudioDeviceLister, TrayIcon.ShowError, new TriggerFactory(), _notificationManager);
+
             ProfileManager
                 .Init()
-                .Catch<Profile[]>(settings =>
+                .Catch(profileErrors =>
                 {
-                    var profileNames = string.Join(", ", settings.Select((setting) => setting.Name));
-                    TrayIcon.ShowError(string.Format(SettingsStrings.profile_error_registerHotkeys, profileNames), SettingsStrings.profile_error_registerHotkeys_title);
+                    foreach (var (profile, error) in profileErrors)
+                    {
+                        TrayIcon.ShowError($"{profile.Name}: {error}", SettingsStrings.profile_error_title);
+                    }
                     return Result.Success();
                 });
 
@@ -319,9 +328,11 @@ namespace SoundSwitch.Model
             _updateChecker = new UpdateChecker(new Uri(url), AppConfigs.Configuration.IncludeBetaVersions);
 
             _updateChecker.UpdateAvailable += (sender, @event) => NewVersionReleased?.Invoke(this,
-                new NewReleaseAvailableEvent(@event.Release, AppConfigs.Configuration.UpdateMode));
+                new NewReleaseAvailableEvent(@event.AppRelease, AppConfigs.Configuration.UpdateMode));
 
-            _jobScheduler.ScheduleJob(new CheckForUpdateRecurringJob(_updateChecker));
+
+            JobScheduler.Instance.ScheduleJob(new CheckForUpdateRecurringJob(_updateChecker), CancellationToken.None, _updateScheduler);
+            Log.Information("Update checker initiated");
         }
 
         /// <summary>
@@ -329,7 +340,7 @@ namespace SoundSwitch.Model
         /// </summary>
         public void CheckForUpdate()
         {
-            _jobScheduler.ScheduleJob(new CheckForUpdateOnceJob(_updateChecker));
+            JobScheduler.Instance.ScheduleJob(new CheckForUpdateOnceJob(_updateChecker), CancellationToken.None, _updateScheduler);
         }
 
         public event EventHandler<DeviceListChanged> SelectedDeviceChanged;
@@ -542,8 +553,6 @@ namespace SoundSwitch.Model
             TrayIcon?.Dispose();
             ActiveAudioDeviceLister?.Dispose();
             ActiveUnpluggedAudioLister?.Dispose();
-            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(1));
-            _jobScheduler.StopAsync(cts.Token).GetAwaiter().GetResult();
         }
     }
 }

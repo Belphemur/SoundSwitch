@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="notificationOptionWindowsDefault" xml:space="preserve">
+    <value>การแจ้งเตือนของวินโดว์</value>
+  </data>
+  <data name="languageRestartRequired" xml:space="preserve">
+    <value>ภาษาที่เลือกจะถูกใช้งานหลังจากเริ่มต้นโปรแกรม SoundSwitch ใหม่
+คุณจะเริ่มต้นโปรแกรมใหม่เลยไหม?</value>
+  </data>
+  <data name="updateNeverTooltip" xml:space="preserve">
+    <value>ไม่อัปเดทใดๆจนกว่าคุณจะจัดการอัปเดทด้วยตัวเอง</value>
+  </data>
+  <data name="languageRestartRequiredCaption" xml:space="preserve">
+    <value>ต้องการเริ่มต้นใหม่</value>
+  </data>
+  <data name="language" xml:space="preserve">
+    <value>ภาษา</value>
+  </data>
+  <data name="activePlayback" xml:space="preserve">
+    <value>เล่น : {0}</value>
+  </data>
+  <data name="activeRecording" xml:space="preserve">
+    <value>บันทึก : {0}</value>
+  </data>
+  <data name="audioFileNotFoundCaption" xml:space="preserve">
+    <value>ไม่พบไฟล์เสียง</value>
+  </data>
+  <data name="audioFileNotFound" xml:space="preserve">
+    <value>ไฟล์เสียงที่คุณเลือกเป็นเสียงแจ้งเตือนหายไป SoundSwitch เปลี่ยนการตั้งค่าเสียงแจ้งเตือนเป็น {0}</value>
+  </data>
+  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
+    <value>ปิดคำอธิบาย</value>
+  </data>
+  <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
+    <value>สำหรับทั้งสองอุปกรณ์</value>
+  </data>
+  <data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
+    <value>อุปกรณ์การบันทึกเสียง</value>
+  </data>
+  <data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
+    <value>อุปกรณ์การเล่นเสียง</value>
+  </data>
+  <data name="notificationOptionCustomized" xml:space="preserve">
+    <value>เลือกเสียงแจ้งเตือน</value>
+  </data>
+  <data name="notificationOptionToast" xml:space="preserve">
+    <value>การแจ้งเตือนแบบ Toast</value>
+  </data>
+  <data name="notificationOptionNone" xml:space="preserve">
+    <value>ไม่แจ้งเตือน</value>
+  </data>
+  <data name="notificationOptionSound" xml:space="preserve">
+    <value>การแจ้งเตือนด้วยเสียง</value>
+  </data>
+  <data name="cycleThroughTooltip" xml:space="preserve">
+    <value>เลือกวิธีการเปลี่ยนการใช้งานอุปกรณ์ ระหว่างอุปกรณ์ที่เลือกไว้หรืออุปกรณ์ทั้งหมด</value>
+  </data>
+  <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
+    <value>เฉพาะอุปกรณ์ที่เลือกไว้</value>
+  </data>
+  <data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
+    <value>อุปกรณ์เล่นเสียงทั้งหมด</value>
+  </data>
+  <data name="tooltipOnHover" xml:space="preserve">
+    <value>เปิดคำอธิบายสำหรับ</value>
+  </data>
+  <data name="updateNever" xml:space="preserve">
+    <value>ไม่ต้องตรวจหาการอัปเดท</value>
+  </data>
+  <data name="updateNotify" xml:space="preserve">
+    <value>เตือนเมื่อมีการอัปเดทรุ่นใหม่</value>
+  </data>
+  <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
+    <value>ติดตั้งอัปเดทรุ่นใหม่โดยไม่แจ้งเตือน</value>
+  </data>
+  <data name="updateInstallAutomatically" xml:space="preserve">
+    <value>ติดตั้งการอัปเดทรุ่นใหม่อัตโนมัติ</value>
+  </data>
+  <data name="keepSystemTrayIconTooltip" xml:space="preserve">
+    <value>เมื่อเลือก, เมื่ออุปกรณ์การเล่นเสียงเริ่มต้นถูกเปลี่ยนแปลง แต่ Tray icon จะไม่เปลี่ยนแปลง</value>
+  </data>
+  <data name="keepSystemTrayIcon" xml:space="preserve">
+    <value>เปิดใช้งานไอคอน SoundSwitch ที่ system tray</value>
+  </data>
+  <data name="cycleThrough" xml:space="preserve">
+    <value>การเลือกสลับอุปกรณ์</value>
+  </data>
+  <data name="updateSettings" xml:space="preserve">
+    <value>ตั้งค่าการอัพเดท</value>
+  </data>
+  <data name="audioSettings" xml:space="preserve">
+    <value>การตั้งค่าเสียง</value>
+  </data>
+  <data name="basicSettings" xml:space="preserve">
+    <value>ตั้งค่าเบื้องต้น</value>
+  </data>
+  <data name="hotkeysTooltip" xml:space="preserve">
+    <value>เลือกเพื่อเปิดใช้งานปุ่มลัด</value>
+  </data>
+  <data name="selectSoundButtonTooltip" xml:space="preserve">
+    <value>เลือกไฟล์เสียงสำหรับเสียงแจ้งเตือน</value>
+  </data>
+  <data name="audioFiles" xml:space="preserve">
+    <value>ไฟล์เสียง</value>
+  </data>
+  <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
+    <value>เมื่อเลือก SoundSwitch จะตรวจสอบเวอร์ชั่นทดลองจาก Github.</value>
+  </data>
+  <data name="updateIncludeBetaVersions" xml:space="preserve">
+    <value>เบต้าเวอร์ชั่น</value>
+  </data>
+  <data name="notification" xml:space="preserve">
+    <value>การแจ้งเตือน</value>
+  </data>
+  <data name="communicationsDeviceTooltip" xml:space="preserve">
+    <value>เมื่อเลือก อุปกรณ์การสื่อสารและอุปกรณ์เล่นเสียง จะถูกเปลี่ยนพร้อมกัน (มีประโยชน์สำหรับ สไกป์,ทีมสปีค,และอื่นๆ)</value>
+  </data>
+  <data name="closeTooltip" xml:space="preserve">
+    <value>การเปลี่ยนแปลงถูกบันทึกโดยอัตโนมัติ</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>ปิด</value>
+  </data>
+  <data name="startWithWindows" xml:space="preserve">
+    <value>เริ่มต้นอัตโนมัติพร้อมวินโดว์</value>
+  </data>
+  <data name="communicationsDevice" xml:space="preserve">
+    <value>สลับเป็นอุปกรณ์สื่อสารเริ่มต้น</value>
+  </data>
+  <data name="hotkeys" xml:space="preserve">
+    <value>ปุ่มลัด</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>ตั้งค่า</value>
+  </data>
+  <data name="playback" xml:space="preserve">
+    <value>อุปกรณ์เล่นเสียง</value>
+  </data>
+  <data name="recording" xml:space="preserve">
+    <value>อุปกรณ์รับเสียง</value>
+  </data>
+  <data name="disconnected" xml:space="preserve">
+    <value>ตัดการเชื่อมต่อแล้ว</value>
+  </data>
+  <data name="connected" xml:space="preserve">
+    <value>เชื่อมต่ออยู่</value>
+  </data>
+  <data name="selected" xml:space="preserve">
+    <value>อุปกรณ์ที่ถูกเลือกอยู่</value>
+  </data>
+  <data name="notificationTooltip" xml:space="preserve">
+    <value>การแจ้งเตือนของ Windows : ป๊อปอัป เริ่มต้นของ windows
+การแจ้งเตือนเสียง : เล่นเสียงบนอุปกรณ์เล่นที่สลับไป
+การแจ้งเตือนเสียงที่กำหนดเอง : เล่นเสียงที่เลือกไว้บนอุปกรณ์ที่สลับไป
+การแจ้งเตือนแบบ Toast : ใช้เวอร์ชั่นพิเศษของป๊อปอัป Windows
+แบนเนอร์ : แสดงแถบแจ้งเตือนลอยที่อยู่ด้านบนเสมอ, มีประโยชน์เมื่ออยู่ในเกม</value>
+  </data>
+  <data name="telemetry" xml:space="preserve">
+    <value>ข้อมูล Telemetry</value>
+  </data>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>เงื่อนไขนี้จะแสดงโปรไฟล์ใน system tray คลิกซ้ายที่ไอคอนใน system tray เพื่อดูโปรไฟล์ของคุณ</value>
+  </data>
+  <data name="profile.error.application" xml:space="preserve">
+    <value>แอปพลิเคชันนี้ {0} มีโปรไฟล์ที่เชื่อมโยงอยู่แล้ว</value>
+  </data>
+  <data name="telemetry.desc" xml:space="preserve">
+    <value>ส่งข้อมูลเวอร์ชั่น SoundSwitch ที่ใช้งานแบบนิรนาม, ส่งให้กับผู้พัฒนา SoundSwitch เท่านั้น</value>
+  </data>
+  <data name="quickMenu.desc" xml:space="preserve">
+    <value>แสดงเมนูด่วน เหมือน การเปลี่ยนภาษาของ Windows เมื่อใช้ปุ่มลัด</value>
+  </data>
+  <data name="quickMenu" xml:space="preserve">
+    <value>เมนูด่วนบนปุ่มลัด</value>
+  </data>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>ในเมนูของแอป</value>
+  </data>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>เปิด/ปิด mute</value>
+  </data>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>{0} ถูกเปิดเสียงแล้ว</value>
+  </data>
+  <data name="notification.microphone.muted" xml:space="preserve">
+    <value>{0} ถูกปิดเสียงแล้ว</value>
+  </data>
+  <data name="profile.trigger.uwp.desc" xml:space="preserve">
+    <value>ใส่ชื่อของโปรแกรมประยุกต์ที่ติดตั้งผ่าน Windows store เช่น Netflix, วิดีโอ Amazon Prime ฯลฯ …</value>
+  </data>
+  <data name="profile.trigger.uwp" xml:space="preserve">
+    <value>แอป Microsoft Store</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
+    <value>สถานะระบบได้รับการคืนค่าแล้ว</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
+    <value>ต้องเปิดใช้งาน "{0}"
+
+คืนค่าสถานะของระบบเมื่อแอปพลิเคชันถูกปิด</value>
+  </data>
+  <data name="profile.trigger.restoreDevices" xml:space="preserve">
+    <value>คืนค่าอุปกรณ์เมื่อจบเงื่อนไข</value>
+  </data>
+  <data name="usePrimaryScreenTooltip" xml:space="preserve">
+    <value>แสดงแบนเนอร์บนหน้าจอหลักแทนหน้าจอที่ใช้งานอยู่</value>
+  </data>
+  <data name="usePrimaryScreen" xml:space="preserve">
+    <value>ใช้หน้าจอหลักเสมอ</value>
+  </data>
+  <data name="profile.trigger.startup.desc" xml:space="preserve">
+    <value>โปรไฟล์จะถูกเรียกใช้โดยอัตโนมัติเมื่อ SoundSwitch เริ่มทำงาน</value>
+  </data>
+  <data name="profile.trigger.startup" xml:space="preserve">
+    <value>เมื่อโปรแกรมเริ่มทำงาน</value>
+  </data>
+  <data name="profile.button.edit" xml:space="preserve">
+    <value>แก้ไข</value>
+  </data>
+  <data name="profile.button.save" xml:space="preserve">
+    <value>บันทึก</value>
+  </data>
+  <data name="profile.notification.text" xml:space="preserve">
+    <value>โปรไฟล์ {0} ถูกเรียก</value>
+  </data>
+  <data name="profile.notify-on-activation" xml:space="preserve">
+    <value>แจ้งเตือนเมื่อโปรไฟล์ถูกเรียกใช้</value>
+  </data>
+  <data name="profile.error.window" xml:space="preserve">
+    <value>มีโปรไฟล์ที่ใช้กับหน้าต่างชื่อนี้อยู่แล้ว: {0}</value>
+  </data>
+  <data name="profile.error.steam" xml:space="preserve">
+    <value>คุณสามารถมีโปรไฟล์สําหรับ Steam Big Picture ได้เพียงโปรไฟล์เดียวเท่านั้น</value>
+  </data>
+  <data name="profile.error.triggers.min" xml:space="preserve">
+    <value>คุณต้องกำหนดเงื่อนไขก่อน</value>
+  </data>
+  <data name="communication" xml:space="preserve">
+    <value>อุปกรณ์สื่อสารเริ่มต้น</value>
+  </data>
+  <data name="profile.trigger.available" xml:space="preserve">
+    <value>เงื่อนไขเพื่อเปิดการทำงาน</value>
+  </data>
+  <data name="profile.trigger.actives" xml:space="preserve">
+    <value>เงื่อนไขที่ใช้งานอยู่</value>
+  </data>
+  <data name="profile.desc" xml:space="preserve">
+    <value>รายละเอียด</value>
+  </data>
+  <data name="profile.trigger.steam.desc" xml:space="preserve">
+    <value>เปิดใช้งานเมื่อตรวจพบ Steam Big Picture (จะคืนค่าสถานะเมื่อปิด Big Picture)</value>
+  </data>
+  <data name="profile.trigger.process.desc" xml:space="preserve">
+    <value>เปิดใช้งานโปรไฟล์เมื่อแอปพลิเคชันที่เลือกทำงานอยู่เบื้องหน้า</value>
+  </data>
+  <data name="profile.trigger.window.desc" xml:space="preserve">
+    <value>เปิดใช้งานโปรไฟล์หากโปรแกรมที่ทำงานมีอักขระต่อไปนี้</value>
+  </data>
+  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
+    <value>ปุ่มลัดใช้เพื่อเปิดใช้งานโปรไฟล์ หากคุณใช้ปุ่มลัดเดียวกัน คุณจะสามารถสลับระหว่างโปรไฟล์ได้</value>
+  </data>
+  <data name="profile.trigger.steam" xml:space="preserve">
+    <value>Steam Big Picture</value>
+  </data>
+  <data name="profile.trigger.process" xml:space="preserve">
+    <value>ที่อยู่ของแอพลิเคชั่น</value>
+  </data>
+  <data name="profile.trigger.window" xml:space="preserve">
+    <value>ชื่อของโปรแกรม</value>
+  </data>
+  <data name="profile.error.device-not-found" xml:space="preserve">
+    <value>ไม่พบอุปกรณ์ {0}</value>
+  </data>
+  <data name="hotkeyEnabled" xml:space="preserve">
+    <value>เปิดใช้งานปุ่มลัด</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
+    <value>เมื่อตรวจพบแอปพลิเคชัน SoundSwitch จะเปลี่ยนอุปกรณ์เริ่มต้นปัจจุบันด้วย</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox" xml:space="preserve">
+    <value>เปลี่ยนเป็นอุปกรณ์เริ่มต้นด้วย</value>
+  </data>
+  <data name="profile.feature.profile" xml:space="preserve">
+    <value>โปรไฟล์</value>
+  </data>
+  <data name="profile.error.no-name" xml:space="preserve">
+    <value>ต้องตั้งชื่อโปรไฟล์</value>
+  </data>
+  <data name="profile.error.delete" xml:space="preserve">
+    <value>ไม่พบโปรไฟล์</value>
+  </data>
+  <data name="profile.deleteButton" xml:space="preserve">
+    <value>ลบ</value>
+  </data>
+  <data name="profile.error.title" xml:space="preserve">
+    <value>โปรไฟล์ผิดพลาด</value>
+  </data>
+  <data name="profile.feature.executable" xml:space="preserve">
+    <value>โปรแกรม (*.exe)</value>
+  </data>
+  <data name="profile.feature.add" xml:space="preserve">
+    <value>เพิ่มโปรไฟล์</value>
+  </data>
+  <data name="profile.error.registerHotkeys.title" xml:space="preserve">
+    <value>ปุ่มลัดซ้ำ</value>
+  </data>
+  <data name="profile.error.registerHotkeys" xml:space="preserve">
+    <value>ไม่สามารถลงทะเบียนแป้นลัดสําหรับโปรไฟล์ต่อไปนี้: {0}</value>
+  </data>
+  <data name="profile.explanation" xml:space="preserve">
+    <value>เพิ่มโปรไฟล์เพื่อสลับไปยังอุปกรณ์เล่นเสียงหรือบันทึกเสียง, เมื่อมีการเปิดใช้งานแอปพลิเคชันที่กำหนดไว้</value>
+  </data>
+  <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
+    <value>คุณต้องตั้งค่าอุปกรณ์การเล่นเสียงหรืออุปกรณ์บันทึกเสียง</value>
+  </data>
+  <data name="profile.error.needHKOrPath" xml:space="preserve">
+    <value>คุณต้องตั้งค่าปุ่มลัดหรือ/และแอปพลิเคชัน</value>
+  </data>
+  <data name="profile.error.name" xml:space="preserve">
+    <value>มีโปรไฟล์ชื่อ {0} อยู่แล้ว</value>
+  </data>
+  <data name="profile.error.hotkey" xml:space="preserve">
+    <value>ปุ่มลัด {0} นี้ถูกใช้งานไปแล้ว</value>
+  </data>
+  <data name="profile.name" xml:space="preserve">
+    <value>ชื่อ</value>
+  </data>
+  <data name="profile.program" xml:space="preserve">
+    <value>แอปพลิเคชัน</value>
+  </data>
+  <data name="profile.addButton" xml:space="preserve">
+    <value>เพิ่ม</value>
+  </data>
+  <data name="profile.tab" xml:space="preserve">
+    <value>โปรไฟล์</value>
+  </data>
+  <data name="iconChange.tooltip" xml:space="preserve">
+    <value>เลือกเวลาที่จะเปลี่ยนไอคอน systray ของ SoundSwitch
+
+ค่าเริ่มต้น: ไม่เปลี่ยน ใช้ไอคอน SoundSwitch
+อุปกรณ์เล่นเสียง: เมื่ออุปกรณ์เล่นเสียงถูกเปลี่ยน
+อุปกรณ์นำเข้าเสียง: เมื่ออุปกรณ์นำเข้าเสียงถูกเปลี่ยน
+ทั้งสองอย่าง: เปลี่ยนเมื่ออุปกรณ์ประเภทใดก็ได้ถูกเปลี่ยน</value>
+  </data>
+  <data name="iconChange" xml:space="preserve">
+    <value>Systray ไอคอน</value>
+  </data>
+  <data name="foregroundAppTooltip" xml:space="preserve">
+    <value>สลับเสียงของแอปพลิเคชันที่กําลังใช้งานอยู่ในปัจจุบัน, มีประโยชน์กับการเล่นเกม</value>
+  </data>
+  <data name="foregroundApp" xml:space="preserve">
+    <value>สลับโปรแกรมที่กำลังทำงานอยู่ด้วย</value>
+  </data>
+  <data name="disableCustomSoundTooltip" xml:space="preserve">
+    <value>ปิดใช้งานการตั้งค่าเสียงที่กำหนดเอง</value>
+  </data>
+  <data name="notificationOptionBanner" xml:space="preserve">
+    <value>แบนเนอร์</value>
+  </data>
+  <data name="updateNotifyTooltip" xml:space="preserve">
+    <value>SoundSwitch จะแจ้งให้คุณทราบเมื่อมีการปรับปรุงรุ่นใหม่ เมื่อคลิกที่การแจ้งเตือนคุณจะได้รับป๊อปอัปดาวน์โหลดการอัปเดตให้คุณ และถามว่าคุณต้องการติดตั้งหรือไม่</value>
+  </data>
+</root>

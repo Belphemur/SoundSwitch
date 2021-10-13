@@ -13,6 +13,7 @@
 ********************************************************************/
 
 using System.Windows.Forms;
+using Serilog;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
@@ -41,6 +42,7 @@ namespace SoundSwitch.Framework.NotificationManager
             _model.NotificationSettingsChanged += ModelOnNotificationSettingsChanged;
             SetNotification(_model.NotificationSettings);
             _model.CustomSoundChanged += ModelOnCustomSoundChanged;
+            Log.Information("Notification manager initiated");
         }
 
         private void ModelOnCustomSoundChanged(object sender, CustomSoundChangedEvent customSoundChangedEvent)

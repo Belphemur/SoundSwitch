@@ -27,6 +27,7 @@ using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Logger.Configuration;
 using SoundSwitch.Framework.NotificationManager;
+using SoundSwitch.Framework.Threading;
 using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Localization.Factory;
 using SoundSwitch.Model;
@@ -37,6 +38,8 @@ namespace SoundSwitch
 {
     internal static class Program
     {
+        private static WindowsFormsSynchronizationContext _synchronizationContext;
+
         [DllImport("user32.dll")]
         private static extern bool SetProcessDPIAware();
 
@@ -48,6 +51,7 @@ namespace SoundSwitch
             {
                 Dsn = "https://7d52dfb4f6554bf0b58b256337835332@o631137.ingest.sentry.io/5755327",
                 Environment = AssemblyUtils.GetReleaseState().ToString(),
+                DefaultTags = { { "ReleaseState", AssemblyUtils.GetReleaseState().ToString() } },
                 Release = $"{Application.ProductName}@{Application.ProductVersion}",
             };
             var user = new User
@@ -131,25 +135,17 @@ namespace SoundSwitch
                 }
             };
 
-            Log.Information("Set Tray Icon with Main");
+            Log.Information("Starting Application context");
 #if !DEBUG
             try
             {
 #endif
                 MMNotificationClient.Instance.Register();
 
+                _synchronizationContext = new WindowsFormsSynchronizationContext();
+                SynchronizationContext.SetSynchronizationContext(_synchronizationContext);
 
-                using var ctx = new WindowsFormsSynchronizationContext();
-
-                SynchronizationContext.SetSynchronizationContext(ctx);
-                try
-                {
-                    Application.Run(new SoundSwitchApplicationContext());
-                }
-                finally
-                {
-                    SynchronizationContext.SetSynchronizationContext(null);
-                }
+                Application.Run(new SoundSwitchApplicationContext());
 
 
 #if !DEBUG
@@ -163,6 +159,8 @@ namespace SoundSwitch
             AppModel.Instance.Dispose();
             WindowsAPIAdapter.Stop();
             MMNotificationClient.Instance?.Dispose();
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(1));
+            JobScheduler.Instance.StopAsync(cts.Token).GetAwaiter().GetResult();
             Log.CloseAndFlush();
         }
 
@@ -224,8 +222,13 @@ namespace SoundSwitch
 {exceptionMessage}
 
 Would you like to share more information with the developers?";
-            var result = MessageBox.Show(message, $@"{Application.ProductName} crashed...", MessageBoxButtons.YesNo,
-                MessageBoxIcon.Error);
+            var result = DialogResult.None;
+            _synchronizationContext.Send(state =>
+            {
+                result = MessageBox.Show(message, $@"{Application.ProductName} crashed...", MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Error);
+            }, null);
+
 
             if (result != DialogResult.Yes) return;
 

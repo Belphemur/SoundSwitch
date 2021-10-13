@@ -86,8 +86,8 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
                 if (AppModel.Instance.SwitchForegroundProgram)
                 {
                     AudioSwitcher.Instance.ResetProcessDeviceConfiguration();
-                    AudioSwitcher.Instance.SwitchProcessTo(device.Id, ERole.eConsole, (EDataFlow) device.Type);
-                    AudioSwitcher.Instance.SwitchProcessTo(device.Id, ERole.eMultimedia, (EDataFlow) device.Type);
+                    AudioSwitcher.Instance.SwitchForegroundProcessTo(device.Id, ERole.eConsole, (EDataFlow) device.Type);
+                    AudioSwitcher.Instance.SwitchForegroundProcessTo(device.Id, ERole.eMultimedia, (EDataFlow) device.Type);
                 }
             }
             else
@@ -97,7 +97,7 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
                 if (AppModel.Instance.SwitchForegroundProgram)
                 {
                     AudioSwitcher.Instance.ResetProcessDeviceConfiguration();
-                    AudioSwitcher.Instance.SwitchProcessTo(device.Id, ERole.ERole_enum_count, (EDataFlow) device.Type);
+                    AudioSwitcher.Instance.SwitchForegroundProcessTo(device.Id, ERole.ERole_enum_count, (EDataFlow) device.Type);
                 }
             }
 

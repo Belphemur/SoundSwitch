@@ -15,13 +15,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Common.Framework.Audio.Collection;
 using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Framework.Audio.Lister.Job;
 using SoundSwitch.Framework.NotificationManager;
+using SoundSwitch.Framework.Threading;
 using SoundSwitch.Model;
-using SoundSwitch.Util.Timer;
 
 namespace SoundSwitch.Framework.Audio.Lister
 {
@@ -34,31 +36,51 @@ namespace SoundSwitch.Framework.Audio.Lister
         public DeviceReadOnlyCollection<DeviceFullInfo> RecordingDevices { get; private set; } = new(Enumerable.Empty<DeviceFullInfo>(), DataFlow.Capture);
 
         private readonly DeviceState _state;
-        private readonly DebounceDispatcher _dispatcher = new();
-        private readonly object _lockRefresh = new();
+        private readonly SemaphoreSlim _refreshSemaphore = new(1);
+        private readonly TimeSpan _refreshWaitTime = TimeSpan.FromSeconds(5);
+        private readonly ILogger _context;
 
 
         public CachedAudioDeviceLister(DeviceState state)
         {
             _state = state;
             MMNotificationClient.Instance.DevicesChanged += DeviceChanged;
+            _context = Log.ForContext("State", _state);
         }
 
         private void DeviceChanged(object sender, DeviceChangedEventBase e)
         {
-            _dispatcher.Debounce<object>(TimeSpan.FromMilliseconds(100), _ => Refresh());
+            JobScheduler.Instance.ScheduleJob(new DebounceRefreshJob(_state, this, _context), e.Token);
         }
 
-        public void Refresh()
+        public void Refresh(CancellationToken cancellationToken = default)
         {
             var playbackDevices = new Dictionary<string, DeviceFullInfo>();
             var recordingDevices = new Dictionary<string, DeviceFullInfo>();
-            lock (_lockRefresh)
+
+            if (!_refreshSemaphore.Wait(_refreshWaitTime, cancellationToken))
             {
-                Log.Information("[{@State}] Refreshing all devices", _state);
+                _context.Error("Can't refresh the devices after {time}", _refreshWaitTime);
+                return;
+            }
+
+            using var registration = cancellationToken.Register(_ =>
+            {
+                if (_refreshSemaphore.CurrentCount == 0)
+                {
+                    _refreshSemaphore.Release();
+                }
+                _context.Warning("Cancellation received.");
+                throw new OperationCanceledException(cancellationToken);
+            }, null);
+
+            try
+            {
+                _context.Information("Refreshing all devices");
                 using var enumerator = new MMDeviceEnumerator();
                 foreach (var endPoint in enumerator.EnumerateAudioEndPoints(DataFlow.All, _state))
                 {
+                    cancellationToken.ThrowIfCancellationRequested();
                     try
                     {
                         var deviceInfo = new DeviceFullInfo(endPoint);
@@ -83,7 +105,7 @@ namespace SoundSwitch.Framework.Audio.Lister
                     }
                     catch (Exception e)
                     {
-                        Log.Warning(e, "Can't get name of device {device}", endPoint.ID);
+                        _context.Warning(e, "Can't get name of device {device}", endPoint.ID);
                     }
                 }
 
@@ -91,7 +113,11 @@ namespace SoundSwitch.Framework.Audio.Lister
                 RecordingDevices = new DeviceReadOnlyCollection<DeviceFullInfo>(recordingDevices.Values, DataFlow.Capture);
 
 
-                Log.Information("[{@State}] Refreshed all devices. {@Recording}/rec, {@Playback}/play", _state, recordingDevices.Count, playbackDevices.Count);
+                _context.Information("Refreshed all devices. {@Recording}/rec, {@Playback}/play", recordingDevices.Count, playbackDevices.Count);
+            }
+            finally
+            {
+                _refreshSemaphore.Release();
             }
         }
 

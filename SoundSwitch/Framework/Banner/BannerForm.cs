@@ -17,10 +17,8 @@ using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using NAudio.CoreAudioApi;
-using NAudio.Wave;
-using Serilog;
-using SoundSwitch.Framework.Audio;
+using SoundSwitch.Framework.Audio.Play;
+using SoundSwitch.Framework.Threading;
 using SoundSwitch.Model;
 using Timer = System.Windows.Forms.Timer;
 
@@ -113,36 +111,7 @@ namespace SoundSwitch.Framework.Banner
         /// <param name="data"></param>
         private void PrepareSound(BannerData data)
         {
-            Task.Factory.StartNew(async () =>
-            {
-                
-                try
-                {
-                    using var semaphore = new SemaphoreSlim(0);
-                    using var player = data.CurrentDevice == null ? new WasapiOut() : new WasapiOut(data.CurrentDevice, AudioClientShareMode.Shared, true, 200);
-                    await using var waveStream = new CachedSoundWaveStream(data.SoundFile);
-                    player.Init(waveStream);
-
-                    player.PlaybackStopped += (_, _) =>
-                    {
-                        if (_cancellationTokenSource.Token.IsCancellationRequested)
-                        {
-                            return;
-                        }
-                        semaphore.Release();
-                    };
-                    player.Play();
-                    await semaphore.WaitAsync(_cancellationTokenSource.Token);
-                }
-                catch (TaskCanceledException)
-                {
-                    //Ignored
-                }
-                catch (Exception e)
-                {
-                    Log.Warning(e, "Issue while playing {sound}", data.SoundFile.FilePath);
-                }
-            }, _cancellationTokenSource.Token);
+            JobScheduler.Instance.ScheduleJob(new PlaySoundJob(data.CurrentDeviceId, data.SoundFile), _cancellationTokenSource.Token);
         }
 
         /// <summary>

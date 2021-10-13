@@ -356,7 +356,7 @@
     <value>用户配置</value>
   </data>
   <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>用于激活该配置的快捷键</value>
+    <value>用于激活该配置的快捷键。如果创建了相同的快捷键，那么将会在对应配置中循环切换。</value>
   </data>
   <data name="hotkeyEnabled" xml:space="preserve">
     <value>快捷键启用</value>
@@ -464,5 +464,17 @@
   </data>
   <data name="profile.trigger.trayMenu" xml:space="preserve">
     <value>在软件菜单中显示</value>
+  </data>
+  <data name="telemetry.desc" xml:space="preserve">
+    <value>匿名地收集正在使用的SoundSwitch的版本。只与SoundSwitch的开发者分享。</value>
+  </data>
+  <data name="quickMenu.desc" xml:space="preserve">
+    <value>按下快捷键时展示类似 Winodws 语言切换的快捷菜单</value>
+  </data>
+  <data name="quickMenu" xml:space="preserve">
+    <value>快捷菜单</value>
+  </data>
+  <data name="telemetry" xml:space="preserve">
+    <value>使用情况数据匿名共享</value>
   </data>
 </root>

@@ -12,27 +12,29 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
+using System;
 using System.Collections.Generic;
+using SoundSwitch.Framework.Updater.Releases.Models;
 
-namespace SoundSwitch.Framework.Updater
+namespace SoundSwitch.Framework.Updater.Releases
 {
-    public record GitHubRelease
+    public class AppRelease
     {
-        public string tag_name { get; init; }
-        public string body { get; init; }
-        public string name { get; init; }
-        public bool prerelease { get; init; }
-        public List<Asset> assets { get; init; }
-
-        public class Asset
+        public AppRelease(Version releaseVersion, Asset asset, string name)
         {
-            public string name { get; init; }
-            public string browser_download_url { get;init; }
+            ReleaseVersion = releaseVersion;
+            Asset = asset;
+            Name = name;
         }
+
+        public Version ReleaseVersion { get; private set; }
+        public Asset Asset { get; }
+        public List<string> Changelog { get; } = new List<string>();
+        public string Name { get; private set; }
 
         public override string ToString()
         {
-            return $"(tag_name: {tag_name}, name: {name}, prerelease: {prerelease})";
+            return $"{nameof(ReleaseVersion)}: {ReleaseVersion}, {nameof(Name)}: {Name}";
         }
     }
 }

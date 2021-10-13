@@ -21,3 +21,12 @@ updates:
       - "dependencies"
       # Add Kodiak `merge.automerge_label`
       - "ship it!"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      # Check for updates to GitHub Actions every weekday
+      interval: "daily"
+    labels:
+      - "dependencies"
+      # Add Kodiak `merge.automerge_label`
+      - "ship it!"

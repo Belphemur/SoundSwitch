@@ -64,12 +64,12 @@ namespace SoundSwitch.Model
         /// <summary>
         /// The tray icon of the application
         /// </summary>
-        TrayIcon TrayIcon { get; set; }
+        TrayIcon TrayIcon { get; }
 
         /// <summary>
         /// List the active audio devices
         /// </summary>
-        IAudioDeviceLister ActiveAudioDeviceLister { get; set; }
+        IAudioDeviceLister ActiveAudioDeviceLister { get;  }
 
         /// <summary>
         /// Beta or Stable channel.
@@ -112,7 +112,7 @@ namespace SoundSwitch.Model
         ///
         /// Useful for setting menu
         /// </summary>
-        IAudioDeviceLister ActiveUnpluggedAudioLister { get; set; }
+        IAudioDeviceLister ActiveUnpluggedAudioLister { get; }
 
         bool Telemetry { get; set; }
         bool QuickMenuEnabled { get; set; }
@@ -158,7 +158,9 @@ namespace SoundSwitch.Model
         /// <summary>
         ///     Initialize the Main class with Updater and Hotkeys
         /// </summary>
-        void InitializeMain();
+        /// <param name="active"></param>
+        /// <param name="unplugged"></param>
+        void InitializeMain(IAudioDeviceLister active, IAudioDeviceLister unplugged);
 
 
         /// <summary>
