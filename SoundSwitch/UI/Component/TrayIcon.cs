@@ -146,9 +146,6 @@ namespace SoundSwitch.UI.Component
 
         public void ReplaceIcon(Icon newIcon)
         {
-            if (newIcon.Equals(NotifyIcon.Icon))
-                return;
-
             var oldIcon = NotifyIcon.Icon;
             _context.Send(icon => { NotifyIcon.Icon = (Icon)icon; }, (Icon)newIcon.Clone());
             try
