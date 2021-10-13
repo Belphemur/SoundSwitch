@@ -24,6 +24,7 @@ using SoundSwitch.Framework.Audio.Lister.Job;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Threading;
 using SoundSwitch.Model;
+using SoundSwitch.Common.Framework.Dispose;
 
 namespace SoundSwitch.Framework.Audio.Lister
 {
@@ -71,13 +72,13 @@ namespace SoundSwitch.Framework.Audio.Lister
                     _refreshSemaphore.Release();
                 }
                 _context.Warning("Cancellation received.");
-                throw new OperationCanceledException(cancellationToken);
             }, null);
 
             try
             {
                 _context.Information("Refreshing all devices");
-                using var enumerator = new MMDeviceEnumerator();
+                var enumerator = new MMDeviceEnumerator();
+                using var _ = enumerator.DisposeOnCancellation(cancellationToken);
                 foreach (var endPoint in enumerator.EnumerateAudioEndPoints(DataFlow.All, _state))
                 {
                     cancellationToken.ThrowIfCancellationRequested();
