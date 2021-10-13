@@ -109,6 +109,11 @@ jobs:
       devVersion: ${{ steps.devVersion.outputs.version }}
     runs-on: windows-latest
     steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          all_but_latest: true
+          access_token: ${{ github.token }}
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -174,6 +179,11 @@ jobs:
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          all_but_latest: true
+          access_token: ${{ github.token }}
       - uses: actions/checkout@v2
       - name: Setup Node.js
         uses: actions/setup-node@v2
