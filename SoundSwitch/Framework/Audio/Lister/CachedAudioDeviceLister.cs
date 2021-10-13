@@ -20,11 +20,11 @@ using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Common.Framework.Audio.Collection;
 using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Common.Framework.Dispose;
 using SoundSwitch.Framework.Audio.Lister.Job;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Threading;
 using SoundSwitch.Model;
-using SoundSwitch.Common.Framework.Dispose;
 
 namespace SoundSwitch.Framework.Audio.Lister
 {
