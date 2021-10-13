@@ -193,7 +193,7 @@ jobs:
       - name: Latest Version
         run: | 
           version=$(git describe --tags --abbrev=0 | cut -c 2-)
-          echo "::set-output name=version::$version"
+          echo "::set-output name=version::$version.0"
         id: version
       - name: Sentry Release
         uses: getsentry/action-release@v1.1.6
