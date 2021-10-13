@@ -238,7 +238,7 @@ public class Release
     public DateTime PublishedAt { get; set; }
 
     [JsonPropertyName("assets")]
-    public List<Asset> Assets { get; } = new();
+    public List<Asset> Assets { get; set; }
 
     [JsonPropertyName("tarball_url")]
     public string TarballUrl { get; set; }
