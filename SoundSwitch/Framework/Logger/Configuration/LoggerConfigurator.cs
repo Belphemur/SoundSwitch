@@ -4,6 +4,7 @@ using System.IO;
 using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
+using Serilog.Formatting.Display;
 using SoundSwitch.Framework.Logger.Enricher;
 
 namespace SoundSwitch.Framework.Logger.Configuration
@@ -12,6 +13,8 @@ namespace SoundSwitch.Framework.Logger.Configuration
     {
         public static void ConfigureLogger()
         {
+            const string baseTemplate = "[{ThreadId}] {Properties} {Message} (at {Caller}){NewLine}{Exception}";
+            const string outputTemplate = "[{Timestamp:HH:mm:ss.fff} {Level:u3}]" + baseTemplate;
             Log.Logger = new LoggerConfiguration()
 #if RELEASE
                          .MinimumLevel.Debug()
@@ -22,17 +25,18 @@ namespace SoundSwitch.Framework.Logger.Configuration
                          .Enrich.WithExceptionDetails()
                          .Enrich.WithCaller()
 #if DEBUG
-                         .WriteTo.Console(LogEventLevel.Verbose, "[{Timestamp:HH:mm:ss.fff} {Level:u3}][{ThreadId}] {Properties} {Message} (at {Caller}){NewLine}{Exception}", theme: Serilog.Sinks.SystemConsole.Themes.AnsiConsoleTheme.Code)
+                         .WriteTo.Console(LogEventLevel.Verbose, outputTemplate, theme: Serilog.Sinks.SystemConsole.Themes.AnsiConsoleTheme.Code)
 #endif
                          .WriteTo.File(Path.Combine(ApplicationPath.Logs, "soundswitch.log"),
                              rollingInterval: RollingInterval.Day, retainedFileCountLimit: 3,
                              flushToDiskInterval: TimeSpan.FromMinutes(10),
-                             outputTemplate: "[{Timestamp:HH:mm:ss.fff} {Level:u3}][{ThreadId}] {Properties} {Message} (at {Caller}){NewLine}{Exception}")
+                             outputTemplate: outputTemplate)
                          .WriteTo.Sentry(o =>
                          {
                              o.InitializeSdk = false;
                              o.MinimumBreadcrumbLevel = LogEventLevel.Debug;
                              o.MinimumEventLevel = LogEventLevel.Error;
+                             o.TextFormatter = new MessageTemplateTextFormatter(baseTemplate);
                          })
                          .CreateLogger();
             var listener = new global::SerilogTraceListener.SerilogTraceListener();
