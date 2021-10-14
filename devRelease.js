@@ -29,11 +29,20 @@ async function main() {
 
         const fileBasename = path.basename(filePath);
 
-        const zipResponse = await bucket.upload(filePath, `nightly/${fileBasename}`);
+
+        const nightlyPrefix = "nightly/";
+        const list = (await bucket.list(nightlyPrefix)).sort((a, b) => a.timestamp > b.timestamp ? 1 : -1);
+
+        if(list.length >= 9) {
+            await bucket.removeFile(list[0]);
+        }
+
+        const zipResponse = await bucket.upload(filePath, `${nightlyPrefix}${fileBasename}`);
 
         const versionData = {latest: version, published: new Date(), url: zipResponse.url};
         await writeFile("version.json", JSON.stringify(versionData));
-        const currentVersionResponse = await bucket.upload("version.json", "nightly/version.json");
+        const currentVersionResponse = await bucket.upload("version.json", `${nightlyPrefix}version.json`);
+
 
         const hook = new Webhook(webhookUrl);
         const embed = new MessageBuilder()
