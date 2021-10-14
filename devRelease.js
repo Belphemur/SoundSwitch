@@ -33,7 +33,7 @@ async function main() {
 
         const versionData = {latest: version, published: new Date(), url: zipResponse.url};
         await writeFile("version.json", JSON.stringify(versionData));
-        const currentVersionResponse = await bucket.upload("version.json", `nightly/version.json`);
+        const currentVersionResponse = await bucket.upload("version.json", "nightly/version.json");
 
         const hook = new Webhook(webhookUrl);
         const embed = new MessageBuilder()
