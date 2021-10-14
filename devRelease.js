@@ -1,4 +1,5 @@
 'use strict'
+import {writeFile} from 'fs/promises';
 import * as util from 'util';
 import * as path from 'path';
 import {exec} from 'child_process';
@@ -28,12 +29,17 @@ async function main() {
 
         const fileBasename = path.basename(filePath);
 
-        const response = await bucket.upload(filePath, `nightly/${fileBasename}`);
+        const zipResponse = await bucket.upload(filePath, `nightly/${fileBasename}`);
+
+        const versionData = {latest: version, published: new Date(), url: zipResponse.url};
+        await writeFile("version.json", JSON.stringify(versionData));
+        const currentVersionResponse = await bucket.upload("version.json", `nightly/version.json`);
+
         const hook = new Webhook(webhookUrl);
         const embed = new MessageBuilder()
             .setAuthor("Beta Build", "https://soundswitch.aaflalo.me/img/beta.png")
             .setTitle(`New Build: ${version}`)
-            .setURL(response.url)
+            .setURL(zipResponse.url)
             .setColor("#0000FF");
 
 
