@@ -134,8 +134,8 @@ jobs:
         run: dotnet publish -c ${{env.CONFIGURATION}} --no-restore -r ${{ env.ARCH }} ${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj
       - name: Set Env var from GitHub
         uses: rlespinasse/github-slug-action@v3.x
-      - name: Zip Build ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}
-        run: tar caf ${{env.PROJECT_NAME}}-${{ steps.devVersion.outputs.version }}.zip -C ${{ env.PROJECT_NAME }}\bin\${{env.CONFIGURATION}}\${{ env.FRAMEWORK }}\${{ env.ARCH }}\publish\ *
+      - name: Zip Build ${{env.PROJECT_NAME}}-${{ steps.devVersion.outputs.version }}
+        run: tar caf   ${{env.PROJECT_NAME}}-${{ steps.devVersion.outputs.version }}.zip -C ${{ env.PROJECT_NAME }}\bin\${{env.CONFIGURATION}}\${{ env.FRAMEWORK }}\${{ env.ARCH }}\publish\ *
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
