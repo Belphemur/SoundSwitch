@@ -135,7 +135,7 @@ jobs:
       - name: Set Env var from GitHub
         uses: rlespinasse/github-slug-action@v3.x
       - name: Zip Build ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}
-        run: tar cafv ${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip -C ${{ env.PROJECT_NAME }}\bin\${{env.CONFIGURATION}}\${{ env.FRAMEWORK }}\${{ env.ARCH }}\publish\ *
+        run: tar caf ${{env.PROJECT_NAME}}-${{ steps.devVersion.outputs.version }}.zip -C ${{ env.PROJECT_NAME }}\bin\${{env.CONFIGURATION}}\${{ env.FRAMEWORK }}\${{ env.ARCH }}\publish\ *
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
@@ -154,7 +154,7 @@ jobs:
           UPLOAD_SECRET: ${{secrets.UPLOAD_SECRET}}
           UPLOAD_PUBLIC: ${{secrets.UPLOAD_PUBLIC}}
           UPLOAD_BUCKET: ${{env.PROJECT_NAME}}
-        run: node devRelease.js "${{ secrets.DISCORD_WEBHOOK }}" "${{ steps.devVersion.outputs.version }}" "${{env.GITHUB_REPOSITORY_OWNER_PART}}/${{env.GITHUB_REPOSITORY_NAME_PART}}" "${{env.PROJECT_NAME}}-${{env.GITHUB_REF_SLUG}}.zip"
+        run: node devRelease.js "${{ secrets.DISCORD_WEBHOOK }}" "${{ steps.devVersion.outputs.version }}" "${{env.GITHUB_REPOSITORY_OWNER_PART}}/${{env.GITHUB_REPOSITORY_NAME_PART}}" "${{env.PROJECT_NAME}}-${{ steps.devVersion.outputs.version }}.zip"
 
   nightly-sentry:
     needs: nightly-release
