@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
+using Serilog;
 using SoundSwitch.Audio.Manager.Interop.Client.ClientException;
 using SoundSwitch.Audio.Manager.Interop.Com.Base;
 using SoundSwitch.Audio.Manager.Interop.Enum;
@@ -12,11 +12,17 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
 {
     internal class ExtendedPolicyClient
     {
-        private const string DEVINTERFACE_AUDIO_RENDER  = "#{e6327cad-dcec-4949-ae8a-991e976a79d2}";
+        private const string DEVINTERFACE_AUDIO_RENDER = "#{e6327cad-dcec-4949-ae8a-991e976a79d2}";
         private const string DEVINTERFACE_AUDIO_CAPTURE = "#{2eef81be-33fa-4800-9670-1cd474972c3f}";
-        private const string MMDEVAPI_TOKEN             = @"\\?\SWD#MMDEVAPI#";
+        private const string MMDEVAPI_TOKEN = @"\\?\SWD#MMDEVAPI#";
 
         private IAudioPolicyConfigFactory _sharedPolicyConfig;
+        private readonly ILogger _log;
+
+        public ExtendedPolicyClient()
+        {
+            _log = Log.ForContext(GetType());
+        }
 
         private IAudioPolicyConfigFactory PolicyConfig
         {
@@ -38,18 +44,17 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
 
         private static string UnpackDeviceId(string deviceId)
         {
-            if (deviceId.StartsWith(MMDEVAPI_TOKEN)) deviceId           = deviceId.Remove(0, MMDEVAPI_TOKEN.Length);
-            if (deviceId.EndsWith(DEVINTERFACE_AUDIO_RENDER)) deviceId  = deviceId.Remove(deviceId.Length - DEVINTERFACE_AUDIO_RENDER.Length);
+            if (deviceId.StartsWith(MMDEVAPI_TOKEN)) deviceId = deviceId.Remove(0, MMDEVAPI_TOKEN.Length);
+            if (deviceId.EndsWith(DEVINTERFACE_AUDIO_RENDER)) deviceId = deviceId.Remove(deviceId.Length - DEVINTERFACE_AUDIO_RENDER.Length);
             if (deviceId.EndsWith(DEVINTERFACE_AUDIO_CAPTURE)) deviceId = deviceId.Remove(deviceId.Length - DEVINTERFACE_AUDIO_CAPTURE.Length);
             return deviceId;
         }
 
         public void SetDefaultEndPoint(string deviceId, EDataFlow flow, IEnumerable<ERole> roles, uint processId)
         {
-            Trace.WriteLine($"ExtendedPolicyClient SetDefaultEndPoint {deviceId} [{flow}] {processId}");
+            _log.Information("ExtendedPolicyClient SetDefaultEndPoint {DeviceId} [{Flow}] {ProcessId}", deviceId, flow, processId);
             try
             {
-
                 if (string.IsNullOrEmpty(deviceId))
                 {
                     return;
@@ -67,7 +72,7 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
             }
             catch (Exception ex)
             {
-                Trace.WriteLine($"{ex}");
+                _log.Error(ex, "Can't set the default endpoint");
             }
         }
 
@@ -85,7 +90,7 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
             }
             catch (Exception ex)
             {
-                Trace.WriteLine($"{ex}");
+                _log.Error(ex, "Can't get the default enpoint");
             }
 
             return null;
@@ -99,7 +104,7 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
             }
             catch (Exception ex)
             {
-                Trace.WriteLine($"{ex}");
+                _log.Error(ex, "Can't reset all endpoints");
             }
         }
     }
