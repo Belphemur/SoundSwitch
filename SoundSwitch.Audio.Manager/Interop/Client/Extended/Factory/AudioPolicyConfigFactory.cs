@@ -7,7 +7,7 @@ namespace SoundSwitch.Audio.Manager.Interop.Client.Extended.Factory
     {
         private const int OS_21H2_VERSION = 21390;
 
-        public static IAudioPolicyConfig CreatePre21H2()
+        public static IAudioPolicyConfig Create()
         {
             if (Environment.OSVersion.Version.Build >= OS_21H2_VERSION)
             {

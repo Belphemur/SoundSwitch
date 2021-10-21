@@ -33,7 +33,7 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
                     return _sharedPolicyConfig;
                 }
 
-                return _sharedPolicyConfig = AudioPolicyConfigFactory.CreatePre21H2();
+                return _sharedPolicyConfig = AudioPolicyConfigFactory.Create();
             }
         }
 
