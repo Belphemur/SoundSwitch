@@ -50,7 +50,7 @@ public class Post21H2AudioPolicyConfig : IAudioPolicyConfig
     public void ClearAllPersistedApplicationDefaultEndpoints()
     {
         var result = _factory.ClearAllPersistedApplicationDefaultEndpoints();
-        if (result != HRESULT.S_OK && result != HRESULT.PROCESS_NO_AUDIO)
+        if (result != HRESULT.S_OK)
         {
             throw new InvalidComObjectException($"Reset audio endpoints: {result}");
         }
