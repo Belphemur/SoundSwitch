@@ -8,6 +8,7 @@ namespace SoundSwitch.Audio.Manager.Interop.Interface.Policy.Extended
 
     [Guid("ab3d4648-e242-459f-b02f-541c70306324")]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    [ComImport]
     public interface IAudioPolicyConfigFactoryVariant21H2Windows11
     {
         int __incomplete__add_CtxVolumeChange();
