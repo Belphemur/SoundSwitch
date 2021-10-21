@@ -16,7 +16,7 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
         private const string DEVINTERFACE_AUDIO_CAPTURE = "#{2eef81be-33fa-4800-9670-1cd474972c3f}";
         private const string MMDEVAPI_TOKEN = @"\\?\SWD#MMDEVAPI#";
 
-        private IAudioPolicyConfig _sharedPolicyConfig;
+        private IAudioPolicyConfig? _sharedPolicyConfig;
         private readonly ILogger _log;
 
         public ExtendedPolicyClient()
