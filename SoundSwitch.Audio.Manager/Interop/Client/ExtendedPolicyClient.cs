@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Serilog;
@@ -41,8 +42,12 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
             return $"{MMDEVAPI_TOKEN}{deviceId}{(flow == EDataFlow.eRender ? DEVINTERFACE_AUDIO_RENDER : DEVINTERFACE_AUDIO_CAPTURE)}";
         }
 
-        private static string UnpackDeviceId(string deviceId)
+        private static string? UnpackDeviceId(string? deviceId)
         {
+            if (deviceId == null)
+            {
+                return null;
+            }
             if (deviceId.StartsWith(MMDEVAPI_TOKEN)) deviceId = deviceId.Remove(0, MMDEVAPI_TOKEN.Length);
             if (deviceId.EndsWith(DEVINTERFACE_AUDIO_RENDER)) deviceId = deviceId.Remove(deviceId.Length - DEVINTERFACE_AUDIO_RENDER.Length);
             if (deviceId.EndsWith(DEVINTERFACE_AUDIO_CAPTURE)) deviceId = deviceId.Remove(deviceId.Length - DEVINTERFACE_AUDIO_CAPTURE.Length);
@@ -78,7 +83,7 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
         /// <summary>
         /// Get the deviceId of the current DefaultEndpoint
         /// </summary>
-        public string GetDefaultEndPoint(EDataFlow flow, ERole role, uint processId)
+        public string? GetDefaultEndPoint(EDataFlow flow, ERole role, uint processId)
         {
             try
             {

@@ -22,12 +22,26 @@ public class Pre21H2AudioPolicyConfig : IAudioPolicyConfig
     public void SetPersistedDefaultAudioEndpoint(uint processId, EDataFlow flow, ERole role, string deviceId)
     {
         using var deviceIdHString = HSTRING.FromString(deviceId);
-        Marshal.ThrowExceptionForHR((int)_factory.SetPersistedDefaultAudioEndpoint(processId, flow, role, deviceIdHString));
+        var result = _factory.SetPersistedDefaultAudioEndpoint(processId, flow, role, deviceIdHString);
+        if (result != HRESULT.S_OK && result != HRESULT.PROCESS_NO_AUDIO)
+        {
+            throw new InvalidComObjectException($"Can't set the persistent audio endpoint: {result}");
+        }
     }
 
     public string GetPersistedDefaultAudioEndpoint(uint processId, EDataFlow flow, ERole role)
     {
-        _factory.GetPersistedDefaultAudioEndpoint(processId, flow, role, out var deviceId);
+        var result = _factory.GetPersistedDefaultAudioEndpoint(processId, flow, role, out var deviceId);
+        if (result != HRESULT.S_OK)
+        {
+            if (result != HRESULT.PROCESS_NO_AUDIO)
+            {
+                throw new InvalidComObjectException($"Can't set the persistent audio endpoint: {result}");
+            }
+
+            return null;
+        }
+
         var deviceIdStr = deviceId.ToString();
         deviceId.Dispose();
         return deviceIdStr;
@@ -35,6 +49,10 @@ public class Pre21H2AudioPolicyConfig : IAudioPolicyConfig
 
     public void ClearAllPersistedApplicationDefaultEndpoints()
     {
-        Marshal.ThrowExceptionForHR((int)_factory.ClearAllPersistedApplicationDefaultEndpoints());
+        var result = _factory.ClearAllPersistedApplicationDefaultEndpoints();
+        if (result != HRESULT.S_OK && result != HRESULT.PROCESS_NO_AUDIO)
+        {
+            throw new InvalidComObjectException($"Reset audio endpoints: {result}");
+        }
     }
 }
