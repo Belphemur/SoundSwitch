@@ -1,8 +1,7 @@
 ﻿using System;
 using SoundSwitch.Audio.Manager.Interop.Interface.Policy.Extended;
-using SoundSwitch.Audio.Manager.Interop.Interface.Policy.Extended.Client;
 
-namespace SoundSwitch.Audio.Manager.Interop.Factory
+namespace SoundSwitch.Audio.Manager.Interop.Client.Extended.Factory
 {
     internal sealed class AudioPolicyConfigFactory
     {
