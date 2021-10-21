@@ -5,16 +5,10 @@ using SoundSwitch.Audio.Manager.Interop.Enum;
 
 namespace SoundSwitch.Audio.Manager.Interop.Interface.Policy.Extended
 {
-    public interface IAudioPolicyConfigFactory
-    {
-        HRESULT SetPersistedDefaultAudioEndpoint(uint processId, EDataFlow flow, ERole role, HSTRING deviceId);
-        HRESULT GetPersistedDefaultAudioEndpoint(uint processId, EDataFlow flow, ERole role, [Out, MarshalAs(UnmanagedType.HString)] out HSTRING deviceId);
-        HRESULT ClearAllPersistedApplicationDefaultEndpoints();
-    }
 
     [Guid("ab3d4648-e242-459f-b02f-541c70306324")]
-    [InterfaceType(ComInterfaceType.InterfaceIsIInspectable)]
-    public interface IAudioPolicyConfigFactoryVariant21H2Windows11 : IAudioPolicyConfigFactory
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IAudioPolicyConfigFactoryVariant21H2Windows11
     {
         int __incomplete__add_CtxVolumeChange();
         int __incomplete__remove_CtxVolumeChanged();
@@ -47,9 +41,9 @@ namespace SoundSwitch.Audio.Manager.Interop.Interface.Policy.Extended
     }
 
     [Guid("2a59116d-6c4f-45e0-a74f-707e3fef9258")]
-    [InterfaceType(ComInterfaceType.InterfaceIsIInspectable)]
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     [ComImport]
-    public interface IAudioPolicyConfigFactoryWindows10Pre21H2 : IAudioPolicyConfigFactory
+    public interface IAudioPolicyConfigFactoryWindows10Pre21H2
     {
         void GetIids(out int iidCount, out IntPtr iids);
         void GetRuntimeClassName(out IntPtr className);

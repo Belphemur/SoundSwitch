@@ -1,7 +1,6 @@
 ﻿using System;
-using SoundSwitch.Audio.Manager.Interop.Com.Base;
 using SoundSwitch.Audio.Manager.Interop.Interface.Policy.Extended;
-using WinRT;
+using SoundSwitch.Audio.Manager.Interop.Interface.Policy.Extended.Client;
 
 namespace SoundSwitch.Audio.Manager.Interop.Factory
 {
@@ -9,20 +8,14 @@ namespace SoundSwitch.Audio.Manager.Interop.Factory
     {
         private const int OS_21H2_VERSION = 21390;
 
-        public static IAudioPolicyConfigFactory Create()
+        public static IAudioPolicyConfig CreatePre21H2()
         {
-            using var name = HSTRING.FromString("Windows.Media.Internal.AudioPolicyConfig");
-
             if (Environment.OSVersion.Version.Build >= OS_21H2_VERSION)
             {
-                var iid21H2 = GuidGenerator.CreateIID(typeof(IAudioPolicyConfigFactoryVariant21H2Windows11));
-                ComBase.RoGetActivationFactory(name, ref iid21H2, out object factory21H2);
-                return factory21H2.As<IAudioPolicyConfigFactoryVariant21H2Windows11>();
+                return new Post21H2AudioPolicyConfig();
             }
 
-            var iid = GuidGenerator.CreateIID(typeof(IAudioPolicyConfigFactoryWindows10Pre21H2));
-            ComBase.RoGetActivationFactory(name, ref iid, out object factory);
-            return factory.As<IAudioPolicyConfigFactoryWindows10Pre21H2>();
+            return new Pre21H2AudioPolicyConfig();
         }
     }
 }

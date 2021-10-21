@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Serilog;
 using SoundSwitch.Audio.Manager.Interop.Client.ClientException;
-using SoundSwitch.Audio.Manager.Interop.Com.Base;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Audio.Manager.Interop.Factory;
 using SoundSwitch.Audio.Manager.Interop.Interface.Policy.Extended;
@@ -16,7 +15,7 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
         private const string DEVINTERFACE_AUDIO_CAPTURE = "#{2eef81be-33fa-4800-9670-1cd474972c3f}";
         private const string MMDEVAPI_TOKEN = @"\\?\SWD#MMDEVAPI#";
 
-        private IAudioPolicyConfigFactory _sharedPolicyConfig;
+        private IAudioPolicyConfig _sharedPolicyConfig;
         private readonly ILogger _log;
 
         public ExtendedPolicyClient()
@@ -24,7 +23,7 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
             _log = Log.ForContext(GetType());
         }
 
-        private IAudioPolicyConfigFactory PolicyConfig
+        private IAudioPolicyConfig PolicyConfig
         {
             get
             {
@@ -33,7 +32,7 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
                     return _sharedPolicyConfig;
                 }
 
-                return _sharedPolicyConfig = AudioPolicyConfigFactory.Create();
+                return _sharedPolicyConfig = AudioPolicyConfigFactory.CreatePre21H2();
             }
         }
 
@@ -60,7 +59,7 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
                     return;
                 }
 
-                using var deviceIdStr = HSTRING.FromString(GenerateDeviceId(deviceId, flow));
+                var deviceIdStr = GenerateDeviceId(deviceId, flow);
                 foreach (var eRole in roles)
                 {
                     PolicyConfig.SetPersistedDefaultAudioEndpoint(processId, flow, eRole, deviceIdStr);
@@ -83,9 +82,8 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
         {
             try
             {
-                PolicyConfig.GetPersistedDefaultAudioEndpoint(processId, flow, role, out var deviceId);
+                var deviceId = PolicyConfig.GetPersistedDefaultAudioEndpoint(processId, flow, role);
                 var unpacked = UnpackDeviceId(deviceId);
-                deviceId.Dispose();
                 return unpacked;
             }
             catch (Exception ex)
