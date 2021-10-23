@@ -3,7 +3,7 @@ using SoundSwitch.Audio.Manager.Interop.Interface.Policy.Extended;
 
 namespace SoundSwitch.Audio.Manager.Interop.Client.Extended.Factory
 {
-    internal sealed class AudioPolicyConfigFactory
+    internal static class AudioPolicyConfigFactory
     {
         private const int OS_21H2_VERSION = 21390;
 
