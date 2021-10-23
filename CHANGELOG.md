@@ -1,3 +1,32 @@
+## [6.2.0](https://github.com/Belphemur/SoundSwitch/compare/v6.1.2...v6.2.0) (2021-10-23)
+
+
+### Features
+
+* **AudioSwitching:** Add support for Windows 11 ([b2e1de5](https://github.com/Belphemur/SoundSwitch/commit/b2e1de5de134dd264d2e2d9d6c2f2e4cad1231d8)), closes [#797](https://github.com/Belphemur/SoundSwitch/issues/797) [#548](https://github.com/Belphemur/SoundSwitch/issues/548)
+
+
+### Bug Fixes
+
+* **AudioSwitcher::Windows11:** Fix possible crash when using profile with application on Windows 11 ([8531ee9](https://github.com/Belphemur/SoundSwitch/commit/8531ee93c325deff4ab2b799b3052afd7ef92a65))
+* **AudioSwitcher:** Properly use the right audio client for Windows post 21H2 (like Windows 11) ([7324b15](https://github.com/Belphemur/SoundSwitch/commit/7324b15e4d4cde859211b44cc1a95ddce90f1a97))
+* **DeviceLister:** Fix crash when device lister is taking too long ([e7efb5c](https://github.com/Belphemur/SoundSwitch/commit/e7efb5c6cc94c3e1f205098eed3c3babab394803))
+* **Notification::Sound:** Fix crash when playing a custom sound. ([f0a7113](https://github.com/Belphemur/SoundSwitch/commit/f0a71138cb0fd76559f284da98c5c75e880b407b)), closes [#790](https://github.com/Belphemur/SoundSwitch/issues/790)
+* **Profile:** Fix systray icon not changing properly when using a profile ([aef15b7](https://github.com/Belphemur/SoundSwitch/commit/aef15b7386d1239bfbf40f10f29f90f3ca18abc2)), closes [#450](https://github.com/Belphemur/SoundSwitch/issues/450)
+
+
+### Languages
+
+* **Russian:** Translated Settings using Weblate ([24cb961](https://github.com/Belphemur/SoundSwitch/commit/24cb961bdc46e00e209e44e53bab444d72d949f1))
+
+
+### Enhancements
+
+* **AudioSwitcher:** Improve the logging of the switching for Windows 11 ([5e0a985](https://github.com/Belphemur/SoundSwitch/commit/5e0a985b59a63cd6225b5583ad5659707b9c22eb))
+* **Mute:** Change the unmute icon ([844ad5f](https://github.com/Belphemur/SoundSwitch/commit/844ad5f619c09c80b538d6d3b5fabf130a5cb998)), closes [#791](https://github.com/Belphemur/SoundSwitch/issues/791)
+* **Mute:** Improve the image to have the same size as device icon ([a840c82](https://github.com/Belphemur/SoundSwitch/commit/a840c82f678af4d37befcc340b62635fbfe83b29)), closes [#791](https://github.com/Belphemur/SoundSwitch/issues/791)
+* **TrayIcon:** Add better logs to understand what's happening with the systray icon not changing. ([99d6243](https://github.com/Belphemur/SoundSwitch/commit/99d62436a038a9b0eb8e67ab80ddd9dd20b75d7d)), closes [#450](https://github.com/Belphemur/SoundSwitch/issues/450)
+
 ### [6.1.2](https://github.com/Belphemur/SoundSwitch/compare/v6.1.1...v6.1.2) (2021-10-13)
 
 
