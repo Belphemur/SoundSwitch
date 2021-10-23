@@ -9,6 +9,10 @@ namespace SoundSwitch.Audio.Manager.Interop.Client.Extended.Factory
 
         public static IAudioPolicyConfig Create()
         {
+            if (Environment.OSVersion.Version.Major < 10)
+            {
+                return new UnsupportedAudioPolicyConfig();
+            }
             if (Environment.OSVersion.Version.Build >= OS_21H2_VERSION)
             {
                 return new Post21H2AudioPolicyConfig();
