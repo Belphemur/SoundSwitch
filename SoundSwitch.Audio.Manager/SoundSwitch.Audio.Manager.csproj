@@ -7,7 +7,7 @@
     <Configurations>Debug;Release;Nightly</Configurations>
     <Platforms>AnyCPU</Platforms>
     <AssemblyTitle>SoundSwitch.Audio.Manager</AssemblyTitle>
-    <Version>3.2.1</Version>
+    <Version>4.0.0</Version>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />

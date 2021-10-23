@@ -179,7 +179,7 @@ namespace SoundSwitch.Audio.Manager
         /// <param name="role"></param>
         /// <param name="processId"></param>
         /// <returns></returns>
-        public string GetUsedDevice(EDataFlow flow, ERole role, uint processId)
+        public string? GetUsedDevice(EDataFlow flow, ERole role, uint processId)
         {
             return ComThread.Invoke(() => ExtendPolicyClient.GetDefaultEndPoint(flow, role, processId));
         }

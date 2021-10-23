@@ -466,4 +466,7 @@
   <data name="profile.trigger.process.desc" xml:space="preserve">
     <value>Активировать профиль, когда указанное приложение находится на переднем плане</value>
   </data>
+  <data name="telemetry" xml:space="preserve">
+    <value>Телеметрия</value>
+  </data>
 </root>

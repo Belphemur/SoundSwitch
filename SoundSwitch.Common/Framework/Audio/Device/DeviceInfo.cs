@@ -79,7 +79,7 @@ namespace SoundSwitch.Common.Framework.Audio.Device
 
         public override string ToString()
         {
-            return NameClean;
+            return $"[{Type}]{NameClean}";
         }
 
 

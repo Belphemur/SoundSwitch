@@ -17,6 +17,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
+using Job.Scheduler.Job;
+using Job.Scheduler.Job.Action;
+using Job.Scheduler.Job.Exception;
 using NAudio.CoreAudioApi;
 using RailSharp;
 using Serilog;
@@ -38,7 +42,6 @@ using SoundSwitch.Framework.WinApi.Keyboard;
 using SoundSwitch.Localization;
 using SoundSwitch.Localization.Factory;
 using SoundSwitch.UI.Component;
-using SoundSwitch.Util.Timer;
 
 namespace SoundSwitch.Model
 {
@@ -47,21 +50,45 @@ namespace SoundSwitch.Model
         private bool _initialized;
         private readonly NotificationManager _notificationManager;
         private UpdateChecker _updateChecker;
-        private readonly DebounceDispatcher _dispatcher = new();
+
+        private class DefaultDeviceChangedJob : IDebounceJob
+        {
+            private readonly AppModel _appModel;
+            private readonly DeviceFullInfo _device;
+            private readonly Role _role;
+
+            public DefaultDeviceChangedJob(AppModel appModel, DeviceFullInfo device, Role role)
+            {
+                _appModel = appModel;
+                _device = device;
+                _role = role;
+                Key = $"default-device-changed-{device.Type}";
+            }
+
+            public Task ExecuteAsync(CancellationToken cancellationToken)
+            {
+                Log.Information(@"[WINAPI] Default device changed to {device}:{role}", _device, _role);
+                _appModel.DefaultDeviceChanged?.Invoke(_appModel, new DeviceDefaultChangedEvent(_device, _role, cancellationToken));
+                return Task.CompletedTask;
+            }
+
+            public Task OnFailure(JobException exception)
+            {
+                return Task.CompletedTask;
+            }
+
+            public IRetryAction FailRule { get; } = new NoRetry();
+            public TimeSpan? MaxRuntime { get; }
+            public string Key { get; }
+            public TimeSpan DebounceTime { get; } = TimeSpan.FromMilliseconds(200);
+        }
 
         private AppModel()
         {
             _notificationManager = new NotificationManager(this);
 
             _deviceCyclerManager = new DeviceCyclerManager();
-            MMNotificationClient.Instance.DefaultDeviceChanged += (sender, @event) =>
-            {
-                _dispatcher.Debounce(TimeSpan.FromMilliseconds(200), defaultDeviceChanged =>
-                {
-                    Log.Information(@"[WINAPI] Default device changed to {device}:{role}", @event.Device, @event.Role);
-                    defaultDeviceChanged?.Invoke(sender, @event);
-                }, DefaultDeviceChanged);
-            };
+            MMNotificationClient.Instance.DefaultDeviceChanged += (sender, @event) => { JobScheduler.Instance.ScheduleJob(new DefaultDeviceChangedJob(this, @event.Device, @event.Role), @event.Token); };
             _microphoneMuteToggler = new MicrophoneMuteToggler(AudioSwitcher.Instance, _notificationManager);
             _updateScheduler = new LimitedConcurrencyLevelTaskScheduler(1);
         }
@@ -129,7 +156,7 @@ namespace SoundSwitch.Model
                 AppConfigs.Configuration.Save();
             }
         }
-        
+
         public bool QuickMenuEnabled
         {
             get => AppConfigs.Configuration.QuickMenuEnabled;
@@ -246,7 +273,6 @@ namespace SoundSwitch.Model
         /// <param name="unplugged"></param>
         public void InitializeMain(IAudioDeviceLister active, IAudioDeviceLister unplugged)
         {
-
             ActiveAudioDeviceLister = active;
             ActiveUnpluggedAudioLister = unplugged;
 
@@ -256,7 +282,6 @@ namespace SoundSwitch.Model
                 throw new InvalidOperationException("Already initialized");
             }
 
-         
 
             RegisterHotKey(AppConfigs.Configuration.PlaybackHotKey);
             var saveConfig = false;
@@ -310,6 +335,7 @@ namespace SoundSwitch.Model
                     {
                         TrayIcon.ShowError($"{profile.Name}: {error}", SettingsStrings.profile_error_title);
                     }
+
                     return Result.Success();
                 });
 
