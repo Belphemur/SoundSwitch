@@ -6,7 +6,7 @@ namespace SoundSwitch.Audio.Manager.Interop.Interface.Policy.Extended;
 public interface IAudioPolicyConfig
 {
     /// <summary>
-    /// Set the audio enpoint for this device
+    /// Set the audio endpoint for the process
     /// </summary>
     /// <param name="processId"></param>
     /// <param name="flow"></param>
@@ -15,7 +15,7 @@ public interface IAudioPolicyConfig
     void SetPersistedDefaultAudioEndpoint(uint processId, EDataFlow flow, ERole role, string deviceId);
 
     /// <summary>
-    /// Get Audio enpoint of the device
+    /// Get Audio endpoint of the process
     /// </summary>
     /// <param name="processId"></param>
     /// <param name="flow"></param>

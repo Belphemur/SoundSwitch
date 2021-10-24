@@ -3,12 +3,16 @@ using SoundSwitch.Audio.Manager.Interop.Interface.Policy.Extended;
 
 namespace SoundSwitch.Audio.Manager.Interop.Client.Extended.Factory
 {
-    internal sealed class AudioPolicyConfigFactory
+    internal static class AudioPolicyConfigFactory
     {
         private const int OS_21H2_VERSION = 21390;
 
         public static IAudioPolicyConfig Create()
         {
+            if (Environment.OSVersion.Version.Major < 10)
+            {
+                return new UnsupportedAudioPolicyConfig();
+            }
             if (Environment.OSVersion.Version.Build >= OS_21H2_VERSION)
             {
                 return new Post21H2AudioPolicyConfig();

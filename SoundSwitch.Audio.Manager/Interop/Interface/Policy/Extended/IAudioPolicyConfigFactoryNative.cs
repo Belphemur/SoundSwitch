@@ -5,7 +5,6 @@ using SoundSwitch.Audio.Manager.Interop.Enum;
 
 namespace SoundSwitch.Audio.Manager.Interop.Interface.Policy.Extended
 {
-
     [Guid("ab3d4648-e242-459f-b02f-541c70306324")]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     [ComImport]
@@ -32,10 +31,10 @@ namespace SoundSwitch.Audio.Manager.Interop.Interface.Policy.Extended
         int __incomplete__remove_ChatContextChanged();
 
         [PreserveSig]
-        HRESULT SetPersistedDefaultAudioEndpoint(uint processId, EDataFlow flow, ERole role, HSTRING deviceId);
+        HRESULT SetPersistedDefaultAudioEndpoint([In] uint processId, [In] EDataFlow flow, [In] ERole role, [In] HSTRING deviceId);
 
         [PreserveSig]
-        HRESULT GetPersistedDefaultAudioEndpoint(uint processId, EDataFlow flow, ERole role, [Out, MarshalAs(UnmanagedType.HString)] out HSTRING deviceId);
+        HRESULT GetPersistedDefaultAudioEndpoint([In] uint processId, [In] EDataFlow flow, [In] ERole role, [Out] out HSTRING deviceId);
 
         [PreserveSig]
         HRESULT ClearAllPersistedApplicationDefaultEndpoints();
