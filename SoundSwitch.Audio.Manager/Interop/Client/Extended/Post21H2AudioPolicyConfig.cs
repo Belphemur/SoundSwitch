@@ -36,7 +36,7 @@ public class Post21H2AudioPolicyConfig : IAudioPolicyConfig
         {
             if (result != HRESULT.PROCESS_NO_AUDIO)
             {
-                throw new InvalidComObjectException($"Can't set the persistent audio endpoint: {result}");
+                throw new InvalidComObjectException($"Can't get the persistent audio endpoint: {result}");
             }
 
             return null;
