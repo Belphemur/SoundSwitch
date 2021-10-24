@@ -1,3 +1,11 @@
+### [6.2.1](https://github.com/Belphemur/SoundSwitch/compare/v6.2.0...v6.2.1) (2021-10-24)
+
+
+### Bug Fixes
+
+* **AudioSwitch:** Don't log crashed when trying to switch application audio endpoint on Windows 7 ([eb0d986](https://github.com/Belphemur/SoundSwitch/commit/eb0d9869f234ad01bc1761eacf780243f76bf141))
+* **AudioSwitching:** Fix audio switching on Windows 11 ([40f5ba1](https://github.com/Belphemur/SoundSwitch/commit/40f5ba119a41d04b8057e75146345c84dfe238c3)), closes [#799](https://github.com/Belphemur/SoundSwitch/issues/799)
+
 ## [6.2.0](https://github.com/Belphemur/SoundSwitch/compare/v6.1.2...v6.2.0) (2021-10-23)
 
 
