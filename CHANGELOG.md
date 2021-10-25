@@ -1,3 +1,10 @@
+### [6.2.2](https://github.com/Belphemur/SoundSwitch/compare/v6.2.1...v6.2.2) (2021-10-25)
+
+
+### Bug Fixes
+
+* **AudioSwitcher:** Fix switching audio device on Windows 11 with "Also foreground app" ([ed6b92a](https://github.com/Belphemur/SoundSwitch/commit/ed6b92a305d16e46938e2e5465c46debf0d989e5)), closes [#802](https://github.com/Belphemur/SoundSwitch/issues/802)
+
 ### [6.2.1](https://github.com/Belphemur/SoundSwitch/compare/v6.2.0...v6.2.1) (2021-10-24)
 
 
