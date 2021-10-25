@@ -10,6 +10,10 @@ namespace SoundSwitch.Audio.Manager.Interop.Interface.Policy.Extended
     [ComImport]
     public interface IAudioPolicyConfigFactoryVariant21H2Windows11
     {
+        void GetIids(out int iidCount, out IntPtr iids);
+        void GetRuntimeClassName(out IntPtr className);
+        void GetTrustLevel(out WinRT.TrustLevel trustLevel);
+
         int __incomplete__add_CtxVolumeChange();
         int __incomplete__remove_CtxVolumeChanged();
         int __incomplete__add_RingerVibrateStateChanged();
