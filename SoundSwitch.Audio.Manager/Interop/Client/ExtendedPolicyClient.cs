@@ -93,7 +93,7 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
             }
             catch (Exception ex)
             {
-                _log.Error(ex, "Can't get the default enpoint");
+                _log.Error(ex, "Can't get the default endpoint");
             }
 
             return null;
