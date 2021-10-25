@@ -1,4 +1,5 @@
 ﻿using System;
+using SoundSwitch.Audio.Manager.Interop.Com.Threading;
 using SoundSwitch.Audio.Manager.Interop.Interface.Policy.Extended;
 
 namespace SoundSwitch.Audio.Manager.Interop.Client.Extended.Factory
@@ -9,7 +10,7 @@ namespace SoundSwitch.Audio.Manager.Interop.Client.Extended.Factory
 
         public static IAudioPolicyConfig Create()
         {
-            return Com.Threading.ComThread.Invoke<IAudioPolicyConfig>(() =>
+            return ComThread.Invoke<IAudioPolicyConfig>(() =>
             {
                 if (Environment.OSVersion.Version.Major < 10)
                 {
