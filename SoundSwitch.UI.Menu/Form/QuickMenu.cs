@@ -112,7 +112,8 @@ namespace SoundSwitch.UI.Menu.Form
 
                 Height = 0;
             }
-            if(!isLocationSet)
+
+            if (!isLocationSet)
             {
                 Show();
                 SetLocationToCursor();
@@ -179,7 +180,6 @@ namespace SoundSwitch.UI.Menu.Form
 
             SetDesktopLocation(qmLoc.X, qmLoc.Y);
             Location = qmLoc;
-
             isLocationSet = true;
         }
     }
