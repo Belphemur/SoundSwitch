@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -48,8 +49,6 @@ namespace SoundSwitch.UI.Menu.Form
         {
             InitializeComponent();
             _hideDisposeMethod = HideDispose;
-            Show();
-            SetLocationToCursor();
         }
 
         /// <summary>
@@ -113,6 +112,12 @@ namespace SoundSwitch.UI.Menu.Form
 
                 Height = 0;
             }
+            if(!isLocationSet)
+            {
+                Show();
+                SetLocationToCursor();
+                isLocationSet = true;
+            }
         }
 
         private void DebounceHiding()
@@ -139,6 +144,8 @@ namespace SoundSwitch.UI.Menu.Form
             SelectionChanged?.Invoke(control, new MenuClickedEvent(dataContainer));
         }
 
+        private bool isLocationSet = false;
+
         private async Task HideDispose()
         {
             _hiding = true;
@@ -153,6 +160,7 @@ namespace SoundSwitch.UI.Menu.Form
 
             Hide();
             Dispose();
+            isLocationSet = false;
         }
 
         private void ResetOpacity()
@@ -162,9 +170,17 @@ namespace SoundSwitch.UI.Menu.Form
 
         private void SetLocationToCursor()
         {
-            var position = Cursor.Position;
-            SetDesktopLocation(position.X, position.Y);
-            Location = position;
+            int screenWidth = Screen.PrimaryScreen.Bounds.Width;
+            int screenHeight = Screen.PrimaryScreen.Bounds.Height;
+            Point qmLoc = new Point(
+                Math.Min(Cursor.Position.X, screenWidth - Width),
+                Math.Min(Cursor.Position.Y, screenHeight - Height)
+            );
+
+            SetDesktopLocation(qmLoc.X, qmLoc.Y);
+            Location = qmLoc;
+
+            isLocationSet = true;
         }
     }
 }
