@@ -1,5 +1,5 @@
 
-name: Weblate automerge
+name: Automerge
 
 on:
   pull_request_target:
@@ -9,7 +9,7 @@ jobs:
   weblate_automerge:
     runs-on: ubuntu-latest
     name: Weblate automerge
-    if: github.actor == 'weblate' || github.actor == 'pre-commit-ci[bot]'
+    if: github.actor == 'weblate' || github.actor == 'pre-commit-ci[bot]' ||  github.actor == 'contrib-readme-bot'
     steps:
       - uses: actions-ecosystem/action-add-labels@v1
         with:
