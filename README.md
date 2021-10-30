@@ -125,7 +125,7 @@ Improve an existing or add another language? Translations are online editable [r
         <a href="https://github.com/milotype">
             <img src="https://avatars.githubusercontent.com/u/43657314?v=4" width="100;" alt="milotype"/>
             <br />
-            <sub><b>milotype</b></sub>
+            <sub><b>Milotype</b></sub>
         </a>
     </td></tr>
 <tr>
@@ -147,7 +147,7 @@ Improve an existing or add another language? Translations are online editable [r
         <a href="https://github.com/kbasaran">
             <img src="https://avatars.githubusercontent.com/u/8277075?v=4" width="100;" alt="kbasaran"/>
             <br />
-            <sub><b>kbasaran</b></sub>
+            <sub><b>Kbasaran</b></sub>
         </a>
     </td>
     <td align="center">
@@ -168,7 +168,7 @@ Improve an existing or add another language? Translations are online editable [r
         <a href="https://github.com/laralem">
             <img src="https://avatars.githubusercontent.com/u/80917261?v=4" width="100;" alt="laralem"/>
             <br />
-            <sub><b>laralem</b></sub>
+            <sub><b>Laralem</b></sub>
         </a>
     </td></tr>
 <tr>
@@ -176,7 +176,7 @@ Improve an existing or add another language? Translations are online editable [r
         <a href="https://github.com/kreis117">
             <img src="https://avatars.githubusercontent.com/u/74777259?v=4" width="100;" alt="kreis117"/>
             <br />
-            <sub><b>kreis117</b></sub>
+            <sub><b>Kreis117</b></sub>
         </a>
     </td>
     <td align="center">
@@ -190,7 +190,7 @@ Improve an existing or add another language? Translations are online editable [r
         <a href="https://github.com/wvxwxvw">
             <img src="https://avatars.githubusercontent.com/u/13194155?v=4" width="100;" alt="wvxwxvw"/>
             <br />
-            <sub><b>wvxwxvw</b></sub>
+            <sub><b>Wvxwxvw</b></sub>
         </a>
     </td>
     <td align="center">
@@ -297,7 +297,7 @@ Improve an existing or add another language? Translations are online editable [r
         <a href="https://github.com/chendong135">
             <img src="https://avatars.githubusercontent.com/u/45531525?v=4" width="100;" alt="chendong135"/>
             <br />
-            <sub><b>chendong135</b></sub>
+            <sub><b>Chendong135</b></sub>
         </a>
     </td></tr>
 <tr>
@@ -312,14 +312,14 @@ Improve an existing or add another language? Translations are online editable [r
         <a href="https://github.com/ztoldy">
             <img src="https://avatars.githubusercontent.com/u/6718491?v=4" width="100;" alt="ztoldy"/>
             <br />
-            <sub><b>ztoldy</b></sub>
+            <sub><b>Ztoldy</b></sub>
         </a>
     </td>
     <td align="center">
         <a href="https://github.com/bh19954">
             <img src="https://avatars.githubusercontent.com/u/31904160?v=4" width="100;" alt="bh19954"/>
             <br />
-            <sub><b>bh19954</b></sub>
+            <sub><b>Bh19954</b></sub>
         </a>
     </td>
     <td align="center">
@@ -333,14 +333,14 @@ Improve an existing or add another language? Translations are online editable [r
         <a href="https://github.com/linadesteem">
             <img src="https://avatars.githubusercontent.com/u/35618068?v=4" width="100;" alt="linadesteem"/>
             <br />
-            <sub><b>linadesteem</b></sub>
+            <sub><b>Linadesteem</b></sub>
         </a>
     </td>
     <td align="center">
         <a href="https://github.com/ramon18">
             <img src="https://avatars.githubusercontent.com/u/5236262?v=4" width="100;" alt="ramon18"/>
             <br />
-            <sub><b>ramon18</b></sub>
+            <sub><b>Ramon18</b></sub>
         </a>
     </td></tr>
 <tr>
@@ -469,7 +469,7 @@ Improve an existing or add another language? Translations are online editable [r
         <a href="https://github.com/westonhowe98">
             <img src="https://avatars.githubusercontent.com/u/16272087?v=4" width="100;" alt="westonhowe98"/>
             <br />
-            <sub><b>westonhowe98</b></sub>
+            <sub><b>Westonhowe98</b></sub>
         </a>
     </td></tr>
 </table>
