@@ -19,6 +19,7 @@ namespace SoundSwitch.UI.Menu.Form
         private readonly Dictionary<string, IconMenuItem<T>.DataContainer> _currentPayloads = new();
         private readonly DebounceDispatcher _debounce = new();
         private bool _hiding = false;
+        private bool _isLocationSet = false;
         private readonly MethodInvoker _hideDisposeMethod;
         private readonly TimeSpan _menuTimeOut = TimeSpan.FromSeconds(2);
 
@@ -113,11 +114,11 @@ namespace SoundSwitch.UI.Menu.Form
                 Height = 0;
             }
 
-            if (!isLocationSet)
+            if (!_isLocationSet)
             {
                 Show();
                 SetLocationToCursor();
-                isLocationSet = true;
+                _isLocationSet = true;
             }
         }
 
@@ -145,7 +146,6 @@ namespace SoundSwitch.UI.Menu.Form
             SelectionChanged?.Invoke(control, new MenuClickedEvent(dataContainer));
         }
 
-        private bool isLocationSet = false;
 
         private async Task HideDispose()
         {
@@ -161,7 +161,7 @@ namespace SoundSwitch.UI.Menu.Form
 
             Hide();
             Dispose();
-            isLocationSet = false;
+            _isLocationSet = false;
         }
 
         private void ResetOpacity()
@@ -180,7 +180,7 @@ namespace SoundSwitch.UI.Menu.Form
 
             SetDesktopLocation(qmLoc.X, qmLoc.Y);
             Location = qmLoc;
-            isLocationSet = true;
+            _isLocationSet = true;
         }
     }
 }
