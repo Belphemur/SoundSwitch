@@ -45,7 +45,11 @@ namespace SoundSwitch.Framework.Updater
             Beta = checkBeta;
         }
 
-        private bool ProcessRelease(Release serverRelease)
+        /// <summary>
+        /// Process the release, and notify about it if it's newer than the version of the app.
+        /// </summary>
+        /// <returns>true if the release is newer and has been notified</returns>
+        private bool ProcessAndNotifyRelease(Release serverRelease)
         {
             Log.Information("Checking version {version} ", serverRelease);
             if (serverRelease.Prerelease && !Beta)
@@ -91,10 +95,13 @@ namespace SoundSwitch.Framework.Updater
             httpClient.DefaultRequestHeaders.UserAgent.Add(ApplicationInfo.CommentValue);
             httpClient.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
             var releases = await httpClient.GetFromJsonAsync(_releaseUrl, GithubReleasesJsonContext.Default.ReleaseArray, token);
-            foreach (var release in releases ?? Array.Empty<Release>())
+            foreach (var release in (releases ?? Array.Empty<Release>()).OrderByDescending(release => new Version(release.TagName.Substring(1))))
             {
                 token.ThrowIfCancellationRequested();
-                ProcessRelease(release);
+                if (ProcessAndNotifyRelease(release))
+                {
+                    break;
+                }
             }
         }
 
