@@ -13,8 +13,8 @@ namespace SoundSwitch.Framework.Logger.Configuration
     {
         public static void ConfigureLogger()
         {
-            const string baseTemplate = "[{ThreadId}] {Properties} {Message} (at {Caller}){NewLine}{Exception}";
-            const string outputTemplate = "[{Timestamp:HH:mm:ss.fff} {Level:u3}]" + baseTemplate;
+            const string sentryTemplate = "{Properties} {Message}";
+            const string outputTemplate = "[{Timestamp:HH:mm:ss.fff} {Level:u3}][{ThreadId}]" + sentryTemplate + "(at {Caller}){NewLine}{Exception}";
             Log.Logger = new LoggerConfiguration()
 #if RELEASE
                          .MinimumLevel.Debug()
@@ -36,7 +36,7 @@ namespace SoundSwitch.Framework.Logger.Configuration
                              o.InitializeSdk = false;
                              o.MinimumBreadcrumbLevel = LogEventLevel.Debug;
                              o.MinimumEventLevel = LogEventLevel.Error;
-                             o.TextFormatter = new MessageTemplateTextFormatter(baseTemplate);
+                             o.TextFormatter = new MessageTemplateTextFormatter(sentryTemplate);
                          })
                          .CreateLogger();
             var listener = new global::SerilogTraceListener.SerilogTraceListener();
