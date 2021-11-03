@@ -112,6 +112,11 @@ namespace SoundSwitch.Framework.Audio.Lister
 
                 _context.Information("Refreshed all devices. {@Recording}/rec, {@Playback}/play", recordingDevices.Count, playbackDevices.Count);
             }
+            //If cancellation token is cancelled, its expected to throw null since the device enumerator has been disposed
+            catch (NullReferenceException e) when (!cancellationToken.IsCancellationRequested)
+            {
+                _context.Error(e, "Can't refresh the devices");
+            }
             finally
             {
                 _refreshSemaphore.Release();
