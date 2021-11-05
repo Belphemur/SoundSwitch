@@ -1,3 +1,13 @@
+### [6.2.3](https://github.com/Belphemur/SoundSwitch/compare/v6.2.2...v6.2.3) (2021-11-05)
+
+
+### Bug Fixes
+
+* **AudioSwitcher:** Switching audio for Windows 10 < 1803 ([8b0f4c9](https://github.com/Belphemur/SoundSwitch/commit/8b0f4c90478f02772114a133227199cbfa5dd4f2))
+* **AudioSwitcher:** Switching audio for Windows 10 < 1803 ([e30e23e](https://github.com/Belphemur/SoundSwitch/commit/e30e23e975e313ae82983c6452ca4c115dcbf5c8))
+* **QuickMenu:** Take into account the edge of the screen and show the quick menu properly ([bc9eccb](https://github.com/Belphemur/SoundSwitch/commit/bc9eccbcc29677fbd482821039da4b60e8e352ed)), closes [#735](https://github.com/Belphemur/SoundSwitch/issues/735)
+* **Update:** Only notify about the latest version, not all version higher than the current one ([337ea6f](https://github.com/Belphemur/SoundSwitch/commit/337ea6f9a0e122b6f421c5f0b784933eda39b822)), closes [#806](https://github.com/Belphemur/SoundSwitch/issues/806)
+
 ### [6.2.2](https://github.com/Belphemur/SoundSwitch/compare/v6.2.1...v6.2.2) (2021-10-25)
 
 
