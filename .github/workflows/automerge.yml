@@ -1,5 +1,5 @@
 
-name: Weblate automerge
+name: Automerge
 
 on:
   pull_request_target:

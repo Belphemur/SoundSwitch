@@ -89,11 +89,11 @@
     ]
   },
   "devDependencies": {
-    "@semantic-release/changelog": "^6.0.0",
+    "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/commit-analyzer": "^9.0.1",
-    "@semantic-release/exec": "^6.0.1",
-    "@semantic-release/git": "^10.0.0",
-    "@semantic-release/github": "^8.0.1",
+    "@semantic-release/exec": "^6.0.2",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^8.0.2",
     "@semantic-release/release-notes-generator": "^10.0.2",
     "conventional-changelog-conventionalcommits": "^4.6.1",
     "discord-webhook-node": "^1.1.8",
