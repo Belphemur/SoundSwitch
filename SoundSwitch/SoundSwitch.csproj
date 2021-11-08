@@ -65,7 +65,7 @@
         <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
         <PackageReference Include="SerilogTraceListener" Version="3.2.0" />
         <PackageReference Include="System.Diagnostics.TraceSource" Version="4.3.0" />
-        <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
+        <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
         <PackageReference Include="System.Net.Http" Version="4.3.4" />
         <PackageReference Include="System.Resources.Extensions" Version="6.0.0" />
         <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
