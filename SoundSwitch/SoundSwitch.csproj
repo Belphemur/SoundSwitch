@@ -71,7 +71,7 @@
         <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
     </ItemGroup>
     <ItemGroup Condition="'$(Configuration)' == 'Debug'">
-        <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
     </ItemGroup>
     <ItemGroup>
         <Compile Update="Framework\Profile\UI\ProfileToolStripMenuItem.cs">
