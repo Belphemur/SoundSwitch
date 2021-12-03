@@ -28,6 +28,14 @@ namespace SoundSwitch.Audio.Manager.Interop.Client.Extended
 
         private const int GUID_SIZE = 16;
 
+        private readonly string[] _knownValidGuids =
+        {
+            // Pre-H1H2
+            "2a59116d-6c4f-45e0-a74f-707e3fef9258",
+            // H1H2/Win11
+            "ab3d4648-e242-459f-b02f-541c70306324"
+        };
+
         public AudioPolicyConfig()
         {
             _ptrSize = Marshal.SizeOf<IntPtr>();
@@ -53,6 +61,10 @@ namespace SoundSwitch.Audio.Manager.Interop.Client.Extended
                 }
 
                 var audioPolicyConfigGuidPtr = GuidPtrs(iids).Last();
+                var audioPolicyConfigGuid = GuidPtrToString(audioPolicyConfigGuidPtr);
+                if (!_knownValidGuids.Contains(audioPolicyConfigGuid))
+                    throw new InvalidComObjectException($"Unknown AudioPolicyConfig GUID: {audioPolicyConfigGuid}");
+
                 var vftable = Marshal.PtrToStructure<IntPtr>(_factory);
                 var queryInterfacePtr = Marshal.PtrToStructure<IntPtr>(vftable);
                 var queryInterface = Marshal.GetDelegateForFunctionPointer<QueryInterface>(queryInterfacePtr);
@@ -66,6 +78,22 @@ namespace SoundSwitch.Audio.Manager.Interop.Client.Extended
             {
                 Marshal.FreeHGlobal(count);
                 Marshal.FreeHGlobal(iids);
+            }
+        }
+
+        private static string GuidPtrToString(IntPtr guidPtr)
+        {
+            var buffer = new byte[GUID_SIZE];
+            Marshal.Copy(guidPtr, buffer, 0, GUID_SIZE);
+            var gchandle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+            try
+            {
+                var guid = (Guid) (Marshal.PtrToStructure(gchandle.AddrOfPinnedObject(), typeof(Guid)) ?? throw new Exception($"Unable to convert GUID"));
+                return $"{guid.Data1:x8}-{guid.Data2:x4}-{guid.Data3:x4}-{guid.Data4[0]:x2}{guid.Data4[1]:x2}-{guid.Data4[2]:x2}{guid.Data4[3]:x2}{guid.Data4[4]:x2}{guid.Data4[5]:x2}{guid.Data4[6]:x2}{guid.Data4[7]:x2}";
+            }
+            finally
+            {
+                gchandle.Free();
             }
         }
 
