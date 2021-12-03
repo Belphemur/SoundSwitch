@@ -101,17 +101,25 @@ namespace SoundSwitch.Audio.Manager.Interop.Client.Extended
         {
             var getPersistedDefaultAudioEndpointPtr = Marshal.PtrToStructure<IntPtr>(_vfTable + (_ptrSize * 26));
             var getPersistedDefaultAudioEndpoint = Marshal.GetDelegateForFunctionPointer<GetPersistedDefaultAudioEndpointDelegate>(getPersistedDefaultAudioEndpointPtr);
-            HSTRING deviceIdPtr = new();
-            var result = getPersistedDefaultAudioEndpoint(_factory, processId, flow, role, ref deviceIdPtr);
-            if (result != HRESULT.S_OK)
+
+            var deviceIdPtr = new HSTRING();
+            try
             {
-                if (result != HRESULT.PROCESS_NO_AUDIO)
-                    throw new InvalidComObjectException($"Can't get the persisted audio endpoint: {result}");
+                var result = getPersistedDefaultAudioEndpoint(_factory, processId, flow, role, ref deviceIdPtr);
+                if (result != HRESULT.S_OK)
+                {
+                    if (result != HRESULT.PROCESS_NO_AUDIO)
+                        throw new InvalidComObjectException($"Can't get the persisted audio endpoint: {result}");
 
-                return null;
+                    return null;
+                }
+
+                return deviceIdPtr.ToString();
             }
-
-            return deviceIdPtr.ToString();
+            finally
+            {
+                deviceIdPtr.Dispose();
+            }
         }
 
         public void SetPersistedDefaultAudioEndpoint(uint processId, EDataFlow flow, ERole role, string deviceId)
