@@ -51,16 +51,11 @@ namespace SoundSwitch.Audio.Manager.Interop.Client.Extended
                 if (result != HRESULT.S_OK)
                     throw new InvalidComObjectException($"Can't get IIDS for {nameof(AudioPolicyConfig)}: {result}");
 
-                IEnumerable<IntPtr> GuidPtrs(IntPtr source)
-                {
-                    var total = GUID_SIZE * (uint)Marshal.ReadInt32(count);
-                    for (var i = 0; i < total; i += GUID_SIZE)
-                    {
-                        yield return source + i;
-                    }
-                }
+                var totalGuids = Marshal.ReadInt32(count);
+                if (totalGuids <= 0)
+                    throw new InvalidComObjectException($"Invalid number of GUIDs found: {totalGuids}");
 
-                var audioPolicyConfigGuidPtr = GuidPtrs(iids).Last();
+                var audioPolicyConfigGuidPtr = iids + GUID_SIZE * (totalGuids - 1);
                 var audioPolicyConfigGuid = GuidPtrToString(audioPolicyConfigGuidPtr);
                 if (!_knownValidGuids.Contains(audioPolicyConfigGuid))
                     throw new InvalidComObjectException($"Unknown AudioPolicyConfig GUID: {audioPolicyConfigGuid}");
