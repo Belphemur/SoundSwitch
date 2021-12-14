@@ -76,4 +76,10 @@
   <data name="downloadFailed" xml:space="preserve">
     <value>Stažení se nezdařilo</value>
   </data>
+  <data name="wrongSignature" xml:space="preserve">
+    <value>Je problém s poslední aktualizací SoundSwitch. Musíte ručně stáhnout novou verzi z {0}</value>
+  </data>
+  <data name="remindMe" xml:space="preserve">
+    <value>Později</value>
+  </data>
 </root>
