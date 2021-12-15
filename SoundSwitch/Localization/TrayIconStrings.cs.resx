@@ -127,4 +127,7 @@
   <data name="noUpdate" xml:space="preserve">
     <value>Žádná aktualizace není k dispozici</value>
   </data>
+  <data name="forceCheckForUpdate" xml:space="preserve">
+    <value>Zkontrolovat aktualizace</value>
+  </data>
 </root>
