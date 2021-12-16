@@ -1,9 +1,10 @@
 ﻿#nullable enable
+using System;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 
 namespace SoundSwitch.Audio.Manager.Interop.Interface.Policy.Extended;
 
-public interface IAudioPolicyConfig
+public interface IAudioPolicyConfig : IDisposable
 {
     /// <summary>
     /// Set the audio endpoint for the process
