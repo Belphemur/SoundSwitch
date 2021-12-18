@@ -13,6 +13,17 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "FireEmerald",
+      "name": "FireEmerald",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1107939?v=4",
+      "profile": "https://fire-emerald.com",
+      "contributions": [
+        "code",
+        "translation",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
