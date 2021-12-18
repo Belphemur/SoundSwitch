@@ -105,9 +105,7 @@ namespace SoundSwitch.Common.Framework.Audio.Device
             unchecked
             {
                 var hashCode = (NameClean != null ? NameClean.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Id != null ? Id.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (int) Type;
-                hashCode = (hashCode * 397) ^ IsUsb.GetHashCode();
                 return hashCode;
             }
         }
