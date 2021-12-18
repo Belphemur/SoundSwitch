@@ -24,7 +24,16 @@
       "contributions": [
         "code"
       ]
-    }    
+    },
+    {
+      "login": "ramon18",
+      "name": "ramon18",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5236262?v=4",
+      "profile": "https://github.com/ramon18",
+      "contributions": [
+        "code"
+      ]
+    }
   ],
   "contributorsPerLine": 7,
   "projectName": "SoundSwitch",
