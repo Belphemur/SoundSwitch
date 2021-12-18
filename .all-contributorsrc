@@ -24,7 +24,16 @@
       "contributions": [
         "code"
       ]
-    }    
+    },
+    {
+      "login": "JarLob",
+      "name": "Jaroslav Lobačevski",
+      "avatar_url": "https://avatars.githubusercontent.com/u/26652396?v=4",
+      "profile": "http://jarlob.github.io",
+      "contributions": [
+        "security"
+      ]
+    }
   ],
   "contributorsPerLine": 7,
   "projectName": "SoundSwitch",
