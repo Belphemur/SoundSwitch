@@ -1,4 +1,7 @@
 <a href="https://soundswitch.aaflalo.me" title="SoundSwitch Website"><img src="https://soundswitch.aaflalo.me/img/Main-Logo-Blue.svg" alt="SoundSwitch Logo" height="180px"></a>
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![.NET](https://github.com/Belphemur/SoundSwitch/actions/workflows/dotnet.yml/badge.svg)](https://github.com/Belphemur/SoundSwitch/actions/workflows/dotnet.yml)[![Last Release](https://img.shields.io/github/release/Belphemur/SoundSwitch.svg)](https://soundswitch.aaflalo.me) [![Downloads for last Release](https://img.shields.io/github/downloads/Belphemur/SoundSwitch/total.svg)](https://soundswitch.aaflalo.me/) [![Translate](https://hosted.weblate.org/widgets/soundswitch/-/svg-badge.svg)](https://hosted.weblate.org/projects/soundswitch/) [![Donate](https://img.shields.io/badge/Donate-paypal%2Fcc-blue.svg)](https://soundswitch.aaflalo.me) [![Help](https://img.shields.io/badge/Discord-Community%20&%20Help-green?style=flat-square&logo=discord)](https://discord.gg/gUCw3Ue)
 
@@ -84,6 +87,19 @@ Improve an existing or add another language? Translations are online editable [r
 ## Contributors
 
 <!-- readme: collaborators,contributors -start -->
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/Ephemerality"><img src="https://avatars.githubusercontent.com/u/7145692?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ephemerality</b></sub></a><br /><a href="https://github.com/Belphemur/SoundSwitch/commits?author=Ephemerality" title="Code">💻</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
 <table>
 <tr>
     <td align="center">
