@@ -24,7 +24,16 @@
       "contributions": [
         "code"
       ]
-    }    
+    },
+    {
+      "login": "linadesteem",
+      "name": "linadesteem",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35618068?v=4",
+      "profile": "https://github.com/linadesteem",
+      "contributions": [
+        "design"
+      ]
+    }
   ],
   "contributorsPerLine": 7,
   "projectName": "SoundSwitch",
