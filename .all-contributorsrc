@@ -17,6 +17,15 @@
       ]
     },
     {
+      "login": "ramon18",
+      "name": "ramon18",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5236262?v=4",
+      "profile": "https://github.com/ramon18",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
       "login": "Ephemerality",
       "name": "Ephemerality",
       "avatar_url": "https://avatars.githubusercontent.com/u/7145692?v=4",
@@ -24,6 +33,43 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "adamblackburn",
+      "name": "Adam Blackburn",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3804080?v=4",
+      "profile": "https://github.com/adamblackburn",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "linadesteem",
+      "name": "linadesteem",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35618068?v=4",
+      "profile": "https://github.com/linadesteem",
+      "contributions": [
+        "design"
+      ]
+    },
+    {
+      "login": "westonhowe98",
+      "name": "westonhowe98",
+      "avatar_url": "https://avatars.githubusercontent.com/u/16272087?v=4",
+      "profile": "https://github.com/westonhowe98",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "JarLob",
+      "name": "Jaroslav Lobačevski",
+      "avatar_url": "https://avatars.githubusercontent.com/u/26652396?v=4",
+      "profile": "http://jarlob.github.io",
+      "contributions": [
+        "security"
+      ]
+    }
     },
     {
       "login": "lpv11",
