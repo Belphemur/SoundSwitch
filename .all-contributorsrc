@@ -24,7 +24,16 @@
       "contributions": [
         "code"
       ]
-    }    
+    },
+    {
+      "login": "lpv11",
+      "name": "lpv",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7538200?v=4",
+      "profile": "https://github.com/lpv11",
+      "contributions": [
+        "code"
+      ]
+    }
   ],
   "contributorsPerLine": 7,
   "projectName": "SoundSwitch",
