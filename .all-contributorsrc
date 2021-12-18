@@ -78,6 +78,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "patgrosse",
+      "name": "Patrick Große",
+      "avatar_url": "https://avatars.githubusercontent.com/u/23578938?v=4",
+      "profile": "https://github.com/patgrosse",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
