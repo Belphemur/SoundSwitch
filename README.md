@@ -1,6 +1,6 @@
 <a href="https://soundswitch.aaflalo.me" title="SoundSwitch Website"><img src="https://soundswitch.aaflalo.me/img/Main-Logo-Blue.svg" alt="SoundSwitch Logo" height="180px"></a>
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![.NET](https://github.com/Belphemur/SoundSwitch/actions/workflows/dotnet.yml/badge.svg)](https://github.com/Belphemur/SoundSwitch/actions/workflows/dotnet.yml)[![Last Release](https://img.shields.io/github/release/Belphemur/SoundSwitch.svg)](https://soundswitch.aaflalo.me) [![Downloads for last Release](https://img.shields.io/github/downloads/Belphemur/SoundSwitch/total.svg)](https://soundswitch.aaflalo.me/) [![Translate](https://hosted.weblate.org/widgets/soundswitch/-/svg-badge.svg)](https://hosted.weblate.org/projects/soundswitch/) [![Donate](https://img.shields.io/badge/Donate-paypal%2Fcc-blue.svg)](https://soundswitch.aaflalo.me) [![Help](https://img.shields.io/badge/Discord-Community%20&%20Help-green?style=flat-square&logo=discord)](https://discord.gg/gUCw3Ue)
@@ -91,8 +91,9 @@ Improve an existing or add another language? Translations are online editable [r
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="https://github.com/Ephemerality"><img src="https://avatars.githubusercontent.com/u/7145692?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ephemerality</b></sub></a><br /><a href="https://github.com/Belphemur/SoundSwitch/commits?author=Ephemerality" title="Code">💻</a></td>
     <td align="center"><a href="https://fire-emerald.com"><img src="https://avatars.githubusercontent.com/u/1107939?v=4?s=100" width="100px;" alt=""/><br /><sub><b>FireEmerald</b></sub></a><br /><a href="https://github.com/Belphemur/SoundSwitch/commits?author=FireEmerald" title="Code">💻</a> <a href="#translation-FireEmerald" title="Translation">🌍</a> <a href="https://github.com/Belphemur/SoundSwitch/commits?author=FireEmerald" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/Ephemerality"><img src="https://avatars.githubusercontent.com/u/7145692?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ephemerality</b></sub></a><br /><a href="https://github.com/Belphemur/SoundSwitch/commits?author=Ephemerality" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/ramon18"><img src="https://avatars.githubusercontent.com/u/5236262?v=4?s=100" width="100px;" alt=""/><br /><sub><b>ramon18</b></sub></a><br /><a href="https://github.com/Belphemur/SoundSwitch/commits?author=ramon18" title="Code">💻</a></td>
   </tr>
 </table>
 
