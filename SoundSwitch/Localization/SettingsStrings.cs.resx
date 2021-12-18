@@ -139,7 +139,7 @@ Po zavření aplikace obnovte stav systému.</value>
     <value>Aktivuje tento profil, pokud program v popředí obsahuje následující znaky</value>
   </data>
   <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>Klávesová zkratka pro aktivaci profilu</value>
+    <value>Klávesová zkratka je použita pro aktivaci profilu. Pokud použijete tutéž zkratku, budete moci přepínat profily.</value>
   </data>
   <data name="profile.trigger.steam" xml:space="preserve">
     <value>Spoušťěč her pro Steam</value>
@@ -399,5 +399,23 @@ Okno: Používá přizpůsobené okno, které je vždy navrchu – užitečné p
   </data>
   <data name="selected" xml:space="preserve">
     <value>Vybraná zařízení</value>
+  </data>
+  <data name="quickMenu" xml:space="preserve">
+    <value>Rychlá nabídka na klávesovou zkratku</value>
+  </data>
+  <data name="quickMenu.desc" xml:space="preserve">
+    <value>Při použití zkratky zobrazí rychlou nabídku jako je nabídka jazyků Windows</value>
+  </data>
+  <data name="telemetry.desc" xml:space="preserve">
+    <value>Anonymně shromažďovat údaj o použité verzi SoundSwitch.  Sdíleno jen s vývojářem SoundSwitch.</value>
+  </data>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>Tento spouštěč zviditelní profil v nabídce ikony na hlavním panelu. Kliknutím levým tlačítkem na ikonu systray zobrazíte svůj profil.</value>
+  </data>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>V aplikační nabídce</value>
+  </data>
+  <data name="telemetry" xml:space="preserve">
+    <value>Telemetrie</value>
   </data>
 </root>

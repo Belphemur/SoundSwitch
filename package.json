@@ -90,15 +90,15 @@
   },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.1",
-    "@semantic-release/commit-analyzer": "^9.0.1",
-    "@semantic-release/exec": "^6.0.2",
+    "@semantic-release/commit-analyzer": "^9.0.2",
+    "@semantic-release/exec": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^8.0.2",
-    "@semantic-release/release-notes-generator": "^10.0.2",
+    "@semantic-release/release-notes-generator": "^10.0.3",
     "conventional-changelog-conventionalcommits": "^4.6.1",
     "discord-webhook-node": "^1.1.8",
     "normalize-url": ">=7.0.2",
-    "semantic-release": "^18.0.0",
+    "semantic-release": "^18.0.1",
     "trim-newlines": ">=3.0.1",
     "backblaze": "github:belphemur/backblaze#master"
 
