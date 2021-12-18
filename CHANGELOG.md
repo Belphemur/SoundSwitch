@@ -1,3 +1,17 @@
+### [6.2.4](https://github.com/Belphemur/SoundSwitch/compare/v6.2.3...v6.2.4) (2021-12-18)
+
+
+### Bug Fixes
+
+* **Device:** Rely completely on the name of the device for it's uniqueness in the selection of devices. ([d5bd9e8](https://github.com/Belphemur/SoundSwitch/commit/d5bd9e869ffde33ac6c1f59a3cbd0feff0b76827))
+
+
+### Languages
+
+* **Czech:** Translated Settings using Weblate ([bc6a46d](https://github.com/Belphemur/SoundSwitch/commit/bc6a46d743ca54b10384d44223c74d720fd044e9))
+* **Czech:** Translated Tray Icon using Weblate ([412ea5a](https://github.com/Belphemur/SoundSwitch/commit/412ea5a897ea2d70204cd92d2e9205aafc2b6301))
+* **Czech:** Translated Update Download using Weblate ([1235d2c](https://github.com/Belphemur/SoundSwitch/commit/1235d2c4a227eda2c8b83ca342e630fa2f048c43))
+
 ### [6.2.3](https://github.com/Belphemur/SoundSwitch/compare/v6.2.2...v6.2.3) (2021-11-05)
 
 
