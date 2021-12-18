@@ -9,7 +9,7 @@ jobs:
   weblate_automerge:
     runs-on: ubuntu-latest
     name: Weblate automerge
-    if: github.actor == 'weblate' || github.actor == 'pre-commit-ci[bot]' || github.actor = 'allcontributors[bot]'
+    if: github.actor == 'weblate' || github.actor == 'pre-commit-ci[bot]' || github.actor == 'allcontributors[bot]'
     steps:
       - uses: actions-ecosystem/action-add-labels@v1
         with:
