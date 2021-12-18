@@ -5,17 +5,17 @@
   "imageSize": 100,
   "commit": false,
   "contributors": [
-  {
-        "login": "FireEmerald",
-        "name": "FireEmerald",
-        "avatar_url": "https://avatars.githubusercontent.com/u/1107939?v=4",
-        "profile": "https://fire-emerald.com",
-        "contributions": [
-          "code",
-          "translation",
-          "doc"
-        ]
-      },
+    {
+      "login": "FireEmerald",
+      "name": "FireEmerald",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1107939?v=4",
+      "profile": "https://fire-emerald.com",
+      "contributions": [
+        "code",
+        "translation",
+        "doc"
+      ]
+    },
     {
       "login": "Ephemerality",
       "name": "Ephemerality",
@@ -24,7 +24,7 @@
       "contributions": [
         "code"
       ]
-    },
+    }    
   ],
   "contributorsPerLine": 7,
   "projectName": "SoundSwitch",
