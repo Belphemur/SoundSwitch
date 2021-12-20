@@ -21,8 +21,8 @@ public sealed class AudioPolicyConfigTests
     public void UnsupportedWindowsVersionTest()
     {
         var audioPolicyConfig = AudioPolicyConfigFactory.Create();
-        if (Environment.OSVersion.Version.Major < 10)
-            Assert.True(audioPolicyConfig is UnsupportedAudioPolicyConfig, $"audioPolicyConfig should be {nameof(UnsupportedAudioPolicyConfig)} if not on Windows 10+");
+        if (Environment.OSVersion.Version.Major < 10 || Environment.OSVersion.Version.Build <= AudioPolicyConfigFactory.OS_1709_VERSION)
+            Assert.True(audioPolicyConfig is UnsupportedAudioPolicyConfig, $"audioPolicyConfig should be {nameof(UnsupportedAudioPolicyConfig)} if not on Windows 10 versions above 1709");
         else
             Assert.True(audioPolicyConfig is AudioPolicyConfig, $"audioPolicyConfig should be a valid {nameof(AudioPolicyConfig)}");
     }

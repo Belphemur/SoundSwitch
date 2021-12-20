@@ -6,7 +6,7 @@ namespace SoundSwitch.Audio.Manager.Interop.Client.Extended.Factory
 {
     internal static class AudioPolicyConfigFactory
     {
-        private const int OS_1709_VERSION = 16299;
+        internal const int OS_1709_VERSION = 16299;
 
         public static IAudioPolicyConfig Create()
         {
