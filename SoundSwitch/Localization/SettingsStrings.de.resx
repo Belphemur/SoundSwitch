@@ -459,4 +459,10 @@ Stellt den Zustand des Systems wieder her, wenn die Anwendung geschlossen wird.<
   <data name="notification.microphone.muted" xml:space="preserve">
     <value>{0} ist jetzt ausgeschaltet.</value>
   </data>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>Im Applikationsmenü</value>
+  </data>
+  <data name="telemetry" xml:space="preserve">
+    <value>Telemetrie</value>
+  </data>
 </root>
