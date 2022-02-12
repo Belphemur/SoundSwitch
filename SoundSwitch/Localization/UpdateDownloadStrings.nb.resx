@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-	<xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
 					<xsd:element name="metadata">
 						<xsd:complexType>
 							<xsd:sequence>
@@ -43,37 +43,43 @@
 						</xsd:complexType>
 					</xsd:element>
 				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>2.0</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<data name="downloadFailed" xml:space="preserve">
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="downloadFailed" xml:space="preserve">
 		<value>Nedlasting mislyktes</value>
   </data>
-	<data name="install" xml:space="preserve">
+  <data name="install" xml:space="preserve">
 		<value>Installer</value>
   </data>
-	<data name="cancel" xml:space="preserve">
+  <data name="cancel" xml:space="preserve">
 		<value>Avbryt</value>
   </data>
-	<data name="changelog" xml:space="preserve">
+  <data name="changelog" xml:space="preserve">
 		<value>Endringslogg</value>
   </data>
-	<data name="notSigned" xml:space="preserve">
+  <data name="notSigned" xml:space="preserve">
 		<value>Nedlastet oppgradering er ikke signert med gyldig signatur. Det anbefales at du sletter filen og kontakter utvikleren!</value>
   </data>
-	<data name="notSignedTitle" xml:space="preserve">
+  <data name="notSignedTitle" xml:space="preserve">
 		<value>Ugyldig digital signatur</value>
+  </data>
+  <data name="remindMe" xml:space="preserve">
+    <value>Senere</value>
+  </data>
+  <data name="wrongSignature" xml:space="preserve">
+    <value>Det er et problem med siste SoundSwitch-oppgradering. Du må manuelt laste ned den siste versjonen fra {0}</value>
   </data>
 </root>
