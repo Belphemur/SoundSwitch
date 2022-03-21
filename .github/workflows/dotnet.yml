@@ -73,7 +73,7 @@ jobs:
           node-version: ${{env.NODEJS}}
       - name: Cache node modules
         if: steps.filter.outputs.node == 'true'
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         env:
           cache-name: cache-node-modules
         with:
@@ -141,7 +141,7 @@ jobs:
         with:
           node-version: ${{env.NODEJS}}
       - name: Cache node modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         env:
           cache-name: cache-node-modules
         with:
@@ -190,7 +190,7 @@ jobs:
         with:
           node-version: ${{env.NODEJS}}
       - name: Cache node modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         env:
           cache-name: cache-node-modules
         with:
