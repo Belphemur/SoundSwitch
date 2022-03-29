@@ -422,7 +422,7 @@ Beide: Wenn ein beliebiger Gerätetyp gewechselt wird.</value>
     <value>Aktiviert das Profil, wenn die ausgewählte Anwendung im Vordergrund ist</value>
   </data>
   <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>Tastenkombination zum aktivieren des Profil</value>
+    <value>Tastenkombination zum aktivieren des Profil. Wenn Sie die selbe Tastenkombination verwenden, können Sie zwischen den Profilen wechseln.</value>
   </data>
   <data name="profile.trigger.window.desc" xml:space="preserve">
     <value>Aktiviert das Profil, wenn das Programm im Vordergrund die folgenden Zeichen enthält</value>
@@ -464,5 +464,17 @@ Stellt den Zustand des Systems wieder her, wenn die Anwendung geschlossen wird.<
   </data>
   <data name="telemetry" xml:space="preserve">
     <value>Telemetrie</value>
+  </data>
+  <data name="quickMenu" xml:space="preserve">
+    <value>Schnellmenü bei Tastenkombination</value>
+  </data>
+  <data name="quickMenu.desc" xml:space="preserve">
+    <value>Anzeige eines Schnellmenüs wie Windows-Sprache, wenn eine Tastenkombination verwendet wird</value>
+  </data>
+  <data name="telemetry.desc" xml:space="preserve">
+    <value>Sammelt anonym Daten darüber, welche Version von SoundSwitch verwendet wird. Wird nur dem Entwickler von SoundSwitch mitgeteilt.</value>
+  </data>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>Dieser Schalter macht das Profil im Traymenü sichtbar. Linksklick auf das Traysymbol um Ihr Profil anzuzeigen.</value>
   </data>
 </root>
