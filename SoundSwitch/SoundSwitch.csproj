@@ -51,7 +51,7 @@
         <PackageReference Include="ContribSentry" Version="4.0.0" />
         <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
         <PackageReference Include="Job.Scheduler" Version="2.7.1" />
-        <PackageReference Include="Markdig" Version="0.30.0" />
+        <PackageReference Include="Markdig" Version="0.30.1" />
         <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
         <PackageReference Include="NAudio" Version="2.0.1" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
