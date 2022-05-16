@@ -79,4 +79,7 @@
   <data name="remindMe" xml:space="preserve">
     <value>나중에</value>
   </data>
+  <data name="wrongSignature" xml:space="preserve">
+    <value>마지막 사운드 스위치 업데이트에 문제가 있습니다. {0}에서 새 버전을 수동으로 다운로드해야 합니다</value>
+  </data>
 </root>
