@@ -466,13 +466,13 @@ Restore the state of the system when the application is closed.</value>
     <value>This trigger make the profile visible in the tray icon menu. Left-click on the systray icon to see your profile.</value>
   </data>
   <data name="profile.trigger.deviceChanged" xml:space="preserve">
-    <value>On Device Change</value>
+    <value>Force profile</value>
   </data>
   <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
-    <value>The profile will be triggered automatically when the current sound device changes</value>
+    <value>The profile will be triggered automatically anytime when the current sound device changes.</value>
   </data>
   <data name="profile.error.deviceChanged" xml:space="preserve">
-    <value>You can only have one profile for On Device Changed.</value>
+    <value>You can only have one forced profile.</value>
   </data>
   <data name="telemetry" xml:space="preserve">
     <value>Telemetry</value>

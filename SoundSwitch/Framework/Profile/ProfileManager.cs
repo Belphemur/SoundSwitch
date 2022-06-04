@@ -34,7 +34,7 @@ namespace SoundSwitch.Framework.Profile
         private readonly NotificationManager.NotificationManager _notificationManager;
 
         private Profile? _steamProfile;
-        private Profile? _deviceChangedProfile;
+        private Profile? _forcedProfile;
 
         private readonly Dictionary<User32.NativeMethods.HWND, Profile> _activeWindowsTrigger = new();
 
@@ -100,9 +100,10 @@ namespace SoundSwitch.Framework.Profile
                         _profilesByUwpApp.Add(trigger.WindowName.ToLower(), (profile, trigger));
                         return true;
                     },
-                    () => true, () =>
+                    () => true, 
+                    () =>
                     {
-                        _deviceChangedProfile = profile;
+                        _forcedProfile = profile;
 
                         SwitchAudio(profile);
                         return true;
@@ -121,7 +122,8 @@ namespace SoundSwitch.Framework.Profile
                     () => { _profileByApplication.Remove(trigger.ApplicationPath.ToLower()); },
                     () => { _steamProfile = null; }, () => { },
                     () => { _profilesByUwpApp.Remove(trigger.WindowName.ToLower()); },
-                    () => { }, () => { _deviceChangedProfile = null; });
+                    () => { },
+                    () => { _forcedProfile = null; });
             }
         }
 
@@ -235,10 +237,9 @@ namespace SoundSwitch.Framework.Profile
 
         private bool HandleDeviceChanged(DeviceDefaultChangedEvent audioChangedEvent)
         {
-            if (_deviceChangedProfile != null)
+            if (_forcedProfile != null)
             {
-                //if (_deviceChangedProfile.Playback != audioChangedEvent.Device)
-                SwitchAudio(_deviceChangedProfile);
+                SwitchAudio(_forcedProfile);
                 return true;
             }
 
@@ -413,7 +414,8 @@ namespace SoundSwitch.Framework.Profile
                        AppConfigs.Configuration.Profiles.Add(newProfile);
                        AppConfigs.Configuration.Save();
                        return success;
-                   }).Catch(s =>
+                   })
+                   .Catch(s =>
                    {
                        AddProfile(oldProfile);
                        return s;
@@ -505,7 +507,8 @@ namespace SoundSwitch.Framework.Profile
 
                         return null;
                     },
-                    () => null, () => _deviceChangedProfile != null ? SettingsStrings.profile_error_deviceChanged : null);
+                    () => null, 
+                    () => _forcedProfile != null ? SettingsStrings.profile_error_deviceChanged : null);
                 if (error != null)
                 {
                     return error;
