@@ -30,7 +30,7 @@ public class DebounceRefreshJob : IDebounceJob
 
     public Task OnFailure(JobException exception)
     {
-        _logger.Error(exception, "Can't refresh devices");
+        _logger.Warning(exception, "Can't refresh devices");
         return Task.CompletedTask;
     }
 
