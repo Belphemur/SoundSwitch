@@ -32,7 +32,9 @@ namespace SoundSwitch.Audio.Manager.Interop.Client.Extended
             // Pre-H1H2
             "2a59116d-6c4f-45e0-a74f-707e3fef9258",
             // H1H2/Win11
-            "ab3d4648-e242-459f-b02f-541c70306324"
+            "ab3d4648-e242-459f-b02f-541c70306324",
+            //Windows 10.0.16299
+            "32aa8e18-6496-4e24-9f94-b800e7eccc45"
         };
 
         public AudioPolicyConfig()
