@@ -218,6 +218,7 @@ namespace SoundSwitch.UI.Forms
                     textInput.DataBindings.Add(nameof(TextBox.Text), trigger, nameof(Trigger.WindowName), true, DataSourceUpdateMode.OnPropertyChanged);
                     textInput.Show();
                 },
+                () => { },
                 () => { });
         }
 

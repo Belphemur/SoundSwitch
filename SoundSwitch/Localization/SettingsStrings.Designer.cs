@@ -19,7 +19,7 @@ namespace SoundSwitch.Localization {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class SettingsStrings {
@@ -548,6 +548,15 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You can only have one profile for On Device Changed..
+        /// </summary>
+        internal static string profile_error_deviceChanged {
+            get {
+                return ResourceManager.GetString("profile.error.deviceChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This hotkey {0} is already registered..
         /// </summary>
         internal static string profile_error_hotkey {
@@ -742,6 +751,24 @@ namespace SoundSwitch.Localization {
         internal static string profile_trigger_available {
             get {
                 return ResourceManager.GetString("profile.trigger.available", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On Device Change.
+        /// </summary>
+        internal static string profile_trigger_deviceChanged {
+            get {
+                return ResourceManager.GetString("profile.trigger.deviceChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The profile will be triggered automatically when the current sound device changes.
+        /// </summary>
+        internal static string profile_trigger_deviceChanged_desc {
+            get {
+                return ResourceManager.GetString("profile.trigger.deviceChanged.desc", resourceCulture);
             }
         }
         

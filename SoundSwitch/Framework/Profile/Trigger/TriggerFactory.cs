@@ -13,7 +13,8 @@ namespace SoundSwitch.Framework.Profile.Trigger
             Steam,
             Startup,
             UwpApp,
-            TrayMenu
+            TrayMenu,
+            Changed
         }
 
         private static readonly IEnumImplList<Enum, ITriggerDefinition> Impl =
@@ -25,7 +26,8 @@ namespace SoundSwitch.Framework.Profile.Trigger
                 new SteamBigPictureTrigger(),
                 new Startup(),
                 new UwpApp(),
-                new TrayMenu()
+                new TrayMenu(),
+                new DeviceChanged()
             };
 
         public TriggerFactory() : base(Impl)
@@ -136,5 +138,16 @@ namespace SoundSwitch.Framework.Profile.Trigger
         public override TriggerFactory.Enum TypeEnum => TriggerFactory.Enum.TrayMenu;
         public override string Label => SettingsStrings.profile_trigger_trayMenu;
         public override int MaxOccurence => 1;
+    }
+
+    public class DeviceChanged : BaseTrigger
+    {
+        public override TriggerFactory.Enum TypeEnum => TriggerFactory.Enum.Changed;
+        public override string Label => SettingsStrings.profile_trigger_deviceChanged;
+
+        public override int MaxOccurence => 1;
+        public override int MaxGlobalOccurence => 1;
+
+        public override string Description { get; } = SettingsStrings.profile_trigger_deviceChanged_desc;
     }
 }
