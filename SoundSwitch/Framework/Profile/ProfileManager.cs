@@ -34,6 +34,7 @@ namespace SoundSwitch.Framework.Profile
         private readonly NotificationManager.NotificationManager _notificationManager;
 
         private Profile? _steamProfile;
+        private Profile? _deviceChangedProfile;
 
         private readonly Dictionary<User32.NativeMethods.HWND, Profile> _activeWindowsTrigger = new();
 
@@ -99,7 +100,13 @@ namespace SoundSwitch.Framework.Profile
                         _profilesByUwpApp.Add(trigger.WindowName.ToLower(), (profile, trigger));
                         return true;
                     },
-                    () => true);
+                    () => true, () =>
+                    {
+                        _deviceChangedProfile = profile;
+
+                        SwitchAudio(profile);
+                        return true;
+                    });
             }
 
             return success;
@@ -114,7 +121,7 @@ namespace SoundSwitch.Framework.Profile
                     () => { _profileByApplication.Remove(trigger.ApplicationPath.ToLower()); },
                     () => { _steamProfile = null; }, () => { },
                     () => { _profilesByUwpApp.Remove(trigger.WindowName.ToLower()); },
-                    () => { });
+                    () => { }, () => { _deviceChangedProfile = null; });
             }
         }
 
@@ -174,6 +181,11 @@ namespace SoundSwitch.Framework.Profile
 
             WindowsAPIAdapter.WindowDestroyed += (sender, @event) => { RestoreState(@event.Hwnd); };
             _logger.Information("Windows Destroyed Registered");
+
+            AppModel.Instance.DefaultDeviceChanged += (sender, audioChangeEvent) =>
+            {
+                if (HandleDeviceChanged(audioChangeEvent)) return;
+            };
         }
 
         private bool HandleUwpApp(WindowMonitor.Event @event)
@@ -215,6 +227,18 @@ namespace SoundSwitch.Framework.Profile
             {
                 SaveCurrentState(@event.Hwnd, profileTuple.Profile, profileTuple.Trigger);
                 SwitchAudio(profileTuple.Profile, @event.ProcessId);
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool HandleDeviceChanged(DeviceDefaultChangedEvent audioChangedEvent)
+        {
+            if (_deviceChangedProfile != null)
+            {
+                //if (_deviceChangedProfile.Playback != audioChangedEvent.Device)
+                SwitchAudio(_deviceChangedProfile);
                 return true;
             }
 
@@ -435,6 +459,7 @@ namespace SoundSwitch.Framework.Profile
                     () => SettingsStrings.profile_error_steam,
                     () => null,
                     () => string.Format(SettingsStrings.profile_error_window, trigger.WindowName),
+                    () => null,
                     () => null);
                 if (error != null)
                 {
@@ -479,7 +504,8 @@ namespace SoundSwitch.Framework.Profile
                         }
 
                         return null;
-                    }, () => null);
+                    },
+                    () => null, () => _deviceChangedProfile != null ? SettingsStrings.profile_error_deviceChanged : null);
                 if (error != null)
                 {
                     return error;
