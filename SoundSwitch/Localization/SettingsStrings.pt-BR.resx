@@ -477,4 +477,13 @@ Ambos: Mudar quando qualquer tipo de dispositivo é alterado.</value>
   <data name="telemetry.desc" xml:space="preserve">
     <value>Recolhe anonimamente qual versão do SoundSwitch está usando. Isso é compartilhado apenas com o desenvolvedor do SoundSwitch.</value>
   </data>
+  <data name="profile.trigger.deviceChanged" xml:space="preserve">
+    <value>Forçar perfil</value>
+  </data>
+  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
+    <value>O perfil será aplicado automaticamente toda vez que o dispositivo de som for alterado.</value>
+  </data>
+  <data name="profile.error.deviceChanged" xml:space="preserve">
+    <value>Você somente pode ter um perfil forçado.</value>
+  </data>
 </root>
