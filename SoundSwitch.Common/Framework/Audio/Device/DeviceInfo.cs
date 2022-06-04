@@ -7,9 +7,9 @@ namespace SoundSwitch.Common.Framework.Audio.Device
 {
     public class DeviceInfo : IEquatable<DeviceInfo>
     {
-        private static readonly Regex NameSplitterRegex = new Regex(@"(?<friendlyName>[\w\s-_\.\/\\]+)\s\([\d\s\-|]*(?<deviceName>.+)\)", RegexOptions.Compiled);
+        private static readonly Regex NameSplitterRegex = new(@"(?<friendlyName>.+)\s\([\d\s\-|]*(?<deviceName>.+)\)", RegexOptions.Compiled);
 
-        private static readonly Regex NameCleanerRegex = new Regex(@"^\d+\s?-\s?", RegexOptions.Compiled | RegexOptions.Singleline);
+        private static readonly Regex NameCleanerRegex = new(@"\s?\(\d\)|^\d+\s?-\s?", RegexOptions.Compiled | RegexOptions.Singleline);
 
         private string _nameClean;
 
