@@ -104,5 +104,6 @@
   "projectOwner": "Belphemur",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "skipCi": true
+  "skipCi": false,
+  "commitConvention": "angular"
 }
