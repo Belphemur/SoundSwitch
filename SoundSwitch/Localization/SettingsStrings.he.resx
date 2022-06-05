@@ -418,4 +418,13 @@
   <data name="telemetry.desc" xml:space="preserve">
     <value>איסוף אלמוני של גרסה ה־SoundSwitch שבשימוש. משותף רק עם המפתח של SoundSwitch.</value>
   </data>
+  <data name="profile.error.deviceChanged" xml:space="preserve">
+    <value>אפשר לאלץ פרופיל אחד בלבד.</value>
+  </data>
+  <data name="profile.trigger.deviceChanged" xml:space="preserve">
+    <value>אילוץ פרופיל</value>
+  </data>
+  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
+    <value>הפרופיל יוקפץ אוטומטית בכל פעם שהתקן השמע הנוכחי מתחלף.</value>
+  </data>
 </root>

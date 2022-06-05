@@ -477,4 +477,13 @@ Ripristina lo stato del sistema quando l'applicazione viene chiusa.</value>
   <data name="telemetry.desc" xml:space="preserve">
     <value>Raccogli in modo anonimo quale versione di SoundSwitch è in uso. Info condivisa solo con lo sviluppatore di SoundSwitch.</value>
   </data>
+  <data name="profile.trigger.deviceChanged" xml:space="preserve">
+    <value>Forza profilo</value>
+  </data>
+  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
+    <value>Il profilo verrà attivato automaticamente ogni volta che cambia il dispositivo audio attuale.</value>
+  </data>
+  <data name="profile.error.deviceChanged" xml:space="preserve">
+    <value>Puoi avere un solo profilo forzato.</value>
+  </data>
 </root>

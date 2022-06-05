@@ -175,13 +175,13 @@
     <value>Registrazione</value>
   </data>
   <data name="iconChanger.none" xml:space="preserve">
-    <value>Default</value>
+    <value>Predefinito</value>
   </data>
   <data name="iconChanger.both" xml:space="preserve">
     <value>Entrambi</value>
   </data>
   <data name="communityMenu" xml:space="preserve">
-		<value>Comunità</value>
+		<value>Community</value>
   </data>
   <data name="updateDisabled" xml:space="preserve">
     <value>Controllo aggiornamenti disabilitato</value>
