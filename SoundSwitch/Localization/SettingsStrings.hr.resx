@@ -413,9 +413,18 @@ Obnovi stanje sustava kad se program zatvori.</value>
     <value>Prikupi anonimno koja se verzija programa koristi. Podatak će biti dostupan jedino programeru SoundSwitch-a.</value>
   </data>
   <data name="quickMenu" xml:space="preserve">
-    <value>Kratki izbornik nakon prečaca</value>
+    <value>Brzi izbornik pomoću prečaca</value>
   </data>
   <data name="telemetry" xml:space="preserve">
     <value>Telemetrija</value>
+  </data>
+  <data name="profile.trigger.deviceChanged" xml:space="preserve">
+    <value>Prisili profil</value>
+  </data>
+  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
+    <value>Profil će se automatski aktivirati kad se promijeni trenutačni zvučni uređaj.</value>
+  </data>
+  <data name="profile.error.deviceChanged" xml:space="preserve">
+    <value>Možeš imati samo jedan prisilni profil.</value>
   </data>
 </root>
