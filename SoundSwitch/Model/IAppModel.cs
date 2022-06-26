@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using NAudio.CoreAudioApi;
+using SoundSwitch.Common.Framework.Audio.Collection;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager;
@@ -34,7 +35,7 @@ namespace SoundSwitch.Model
         /// <summary>
         /// Devices selected for Switching
         /// </summary>
-        IEnumerable<DeviceInfo> SelectedDevices { get; }
+        DeviceCollection<DeviceInfo> SelectedDevices { get; }
 
         /// <summary>
         /// An union between the Active <see cref="IAudioDevice" /> of Windows and <see cref="SelectedPlaybackDevicesList" />

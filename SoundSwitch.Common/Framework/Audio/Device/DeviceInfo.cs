@@ -94,20 +94,30 @@ namespace SoundSwitch.Common.Framework.Audio.Device
             //help recognizing the same device
             return NameClean == other.NameClean;
         }
-
+        
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || obj is DeviceInfo other && Equals(other);
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+
+            return Equals((DeviceInfo)obj);
         }
 
         public override int GetHashCode()
         {
-            unchecked
-            {
-                var hashCode = (NameClean != null ? NameClean.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (int) Type;
-                return hashCode;
-            }
+            return HashCode.Combine(NameClean, Id);
         }
     }
 }

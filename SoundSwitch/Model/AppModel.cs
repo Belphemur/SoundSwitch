@@ -25,6 +25,7 @@ using NAudio.CoreAudioApi;
 using RailSharp;
 using Serilog;
 using SoundSwitch.Audio.Manager;
+using SoundSwitch.Common.Framework.Audio.Collection;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
@@ -50,6 +51,7 @@ namespace SoundSwitch.Model
         private bool _initialized;
         private readonly NotificationManager _notificationManager;
         private UpdateChecker _updateChecker;
+        private DeviceCollection<DeviceInfo> _selectedDevices;
 
         private class DefaultDeviceChangedJob : IDebounceJob
         {
@@ -88,6 +90,7 @@ namespace SoundSwitch.Model
             _notificationManager = new NotificationManager(this);
 
             _deviceCyclerManager = new DeviceCyclerManager();
+            _selectedDevices = null;
             MMNotificationClient.Instance.DefaultDeviceChanged += (sender, @event) => { JobScheduler.Instance.ScheduleJob(new DefaultDeviceChangedJob(this, @event.Device, @event.Role), @event.Token); };
             _microphoneMuteToggler = new MicrophoneMuteToggler(AudioSwitcher.Instance, _notificationManager);
             _updateScheduler = new LimitedConcurrencyLevelTaskScheduler(1);
@@ -168,7 +171,18 @@ namespace SoundSwitch.Model
         }
 
 
-        public IEnumerable<DeviceInfo> SelectedDevices => AppConfigs.Configuration.SelectedDevices.OrderBy(info => info.DiscoveredAt);
+        public DeviceCollection<DeviceInfo> SelectedDevices
+        {
+            get
+            {
+                if (_selectedDevices != null)
+                {
+                    return _selectedDevices;
+                }
+
+                return _selectedDevices = new DeviceCollection<DeviceInfo>(AppConfigs.Configuration.SelectedDevices.OrderBy(info => info.DiscoveredAt));
+            }
+        }
 
         public IEnumerable<DeviceFullInfo> AvailablePlaybackDevices => ActiveAudioDeviceLister.PlaybackDevices.IntersectWith(SelectedDevices);
 
@@ -387,7 +401,8 @@ namespace SoundSwitch.Model
             try
             {
                 device.DiscoveredAt = DateTime.UtcNow;
-                AppConfigs.Configuration.SelectedDevices.Add(device);
+                SelectedDevices.Add(device);
+                AppConfigs.Configuration.SelectedDevices = SelectedDevices.ToHashSet();
             }
             catch (ArgumentException)
             {
@@ -410,8 +425,8 @@ namespace SoundSwitch.Model
             bool result;
             try
             {
-                var list = AppConfigs.Configuration.SelectedDevices.Where(device.Equals).ToArray();
-                result = list.Aggregate(true, (b, info) => b & AppConfigs.Configuration.SelectedDevices.Remove(info));
+                result = SelectedDevices.Remove(device);
+                AppConfigs.Configuration.SelectedDevices = SelectedDevices.ToHashSet();
             }
             catch (ArgumentException)
             {

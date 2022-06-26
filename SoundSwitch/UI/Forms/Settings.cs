@@ -290,7 +290,7 @@ namespace SoundSwitch.UI.Forms
 
         private void PopulateAudioDevices()
         {
-            var selectedDevices = AppModel.Instance.SelectedDevices.ToArray();
+            var selectedDevices = AppModel.Instance.SelectedDevices;
             PopulateAudioList(playbackListView, selectedDevices, _audioDeviceLister.PlaybackDevices);
             PopulateAudioList(recordingListView, selectedDevices, _audioDeviceLister.RecordingDevices);
         }

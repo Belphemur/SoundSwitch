@@ -36,7 +36,7 @@ namespace SoundSwitch.Framework.Configuration
         [Obsolete]
         HashSet<string> SelectedRecordingDeviceListId { get; }
 
-        HashSet<DeviceInfo> SelectedDevices { get; }
+        HashSet<DeviceInfo> SelectedDevices { get; set; }
 
         bool FirstRun { get; set; }
         HotKey PlaybackHotKey { get; set; }
