@@ -209,6 +209,13 @@ namespace SoundSwitch.Framework.Configuration
                 migrated = true;
             }
 
+            if (!MigratedFields.Contains("CleanupSelectedDevices"))
+            {
+                SelectedDevices = SelectedDevices.DistinctBy(info => info.NameClean).ToHashSet();
+                MigratedFields.Add("CleanupSelectedDevices");
+                migrated = true;
+            }
+
             return migrated;
 #pragma warning restore 612
         }
