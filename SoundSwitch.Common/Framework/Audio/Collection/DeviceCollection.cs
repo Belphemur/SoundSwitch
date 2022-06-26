@@ -59,6 +59,7 @@ public class DeviceCollection<T> : ICollection<T> where T : DeviceInfo
         }
 
         return _byId.ContainsKey(item.Id) || _byName.ContainsKey(item.NameClean);
+        
     }
 
     public void CopyTo(T[] array, int arrayIndex)
