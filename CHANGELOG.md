@@ -1,3 +1,42 @@
+## [6.3.0](https://github.com/Belphemur/SoundSwitch/compare/v6.2.4...v6.3.0) (2022-06-26)
+
+
+### Features
+
+* **Profile::Force:** Add trigger for a profile to force that profile to be applied anytime the profile sound device is changed. ([753f0a3](https://github.com/Belphemur/SoundSwitch/commit/753f0a32c9af73274685c94b7749828e4d540458)), closes [#648](https://github.com/Belphemur/SoundSwitch/issues/648)
+
+
+### Bug Fixes
+
+* **AudioSwitching:** Fix issue for Windows 10 <= 1709 where the new audio API aren't available ([ad66ec0](https://github.com/Belphemur/SoundSwitch/commit/ad66ec0066d02bfce32a144b44b35eab1caf62e9))
+* **AudioSwitching:** Fix issue with some version of windows 10 that couldn't switch audio of specific application ([76929b6](https://github.com/Belphemur/SoundSwitch/commit/76929b6164e32cb92cc90ea8ceaf379349a67092))
+* **Device::Name:** Fix the regex used to clean the name of device to not match custom naming. ([3e7b27e](https://github.com/Belphemur/SoundSwitch/commit/3e7b27eb3a634fa87c31d192060e96ca6714eb90)), closes [#909](https://github.com/Belphemur/SoundSwitch/issues/909)
+* **Device:** Fix issue with device changing name, as long as the id is the same, SoundSwitch will find the device. ([1bd6c28](https://github.com/Belphemur/SoundSwitch/commit/1bd6c28c70502d2e3a14deee98db2474ebb4849d)), closes [#868](https://github.com/Belphemur/SoundSwitch/issues/868)
+* **Device:** Fix issue with device having the same name not being show as different device in the UI ([2249ed0](https://github.com/Belphemur/SoundSwitch/commit/2249ed0e2d053644bb2d781603cc7023bc79732d))
+* **Sentry:** Fix spamming sentry with error that can't be fixed ([a74a76f](https://github.com/Belphemur/SoundSwitch/commit/a74a76f238f68d2065f257dfdd4b047ba08ee4b9))
+* **Switching:** Possible crash when trying to switch audio of process that just closed. ([d4894a0](https://github.com/Belphemur/SoundSwitch/commit/d4894a0df1e965bf5c9c0e7b5caab1cfe592367b))
+
+
+### Languages
+
+* **Croatian:** Translated Settings using Weblate ([daa498a](https://github.com/Belphemur/SoundSwitch/commit/daa498a5cc491f555898365ebdea07ed6a27ea44))
+* **German:** Translated Settings using Weblate ([e177bf8](https://github.com/Belphemur/SoundSwitch/commit/e177bf89b14dcc0d223b5b6722766938580333e9))
+* **German:** Translated Settings using Weblate ([6c680db](https://github.com/Belphemur/SoundSwitch/commit/6c680db7535433db316e3c305f98f619ace74d86))
+* **German:** Translated Update Download using Weblate ([ba12587](https://github.com/Belphemur/SoundSwitch/commit/ba12587b2aff2765273e0d5569259355c69fd9c6))
+* **Hebrew:** Translated Settings using Weblate ([1918b35](https://github.com/Belphemur/SoundSwitch/commit/1918b3575c1366551851534c6efa1fe7104c462f))
+* **Italian:** Translated Settings using Weblate ([ff62704](https://github.com/Belphemur/SoundSwitch/commit/ff62704380033343da7585080d5817a3a6557c10))
+* **Italian:** Translated Tray Icon using Weblate ([c417b11](https://github.com/Belphemur/SoundSwitch/commit/c417b111c78ce76f15b60768f42fe8b05fe16625))
+* **Italian:** Translated Tray Icon using Weblate ([6054428](https://github.com/Belphemur/SoundSwitch/commit/6054428060c25d2f0537f66005de18d3e5401829))
+* **Korean:** Translated Update Download using Weblate ([94411c7](https://github.com/Belphemur/SoundSwitch/commit/94411c7dea0c11696c6ecdf4ae5ad8251e86b20d))
+* **Norwegian Bokmål:** Translated Update Download using Weblate ([ca103fe](https://github.com/Belphemur/SoundSwitch/commit/ca103fe8d8bfc241898b381726722870e195643d))
+* **Portuguese (Brazil):** Translated Settings using Weblate ([9984be5](https://github.com/Belphemur/SoundSwitch/commit/9984be5cfad175514551a60d781ad86b76f3d962))
+
+
+### Enhancements
+
+* **AutoUpdate:** Keep the Update in a Temp folder with the real name of the file. Let windows clean them up later. ([59274db](https://github.com/Belphemur/SoundSwitch/commit/59274db95a41db3d13084733d3d62959804a3163))
+* **Configuration:** Cleanup configuration of any duplicated device by name clean ([3826e9b](https://github.com/Belphemur/SoundSwitch/commit/3826e9bd2c38334abd51c782d929083f53ba3d71)), closes [#943](https://github.com/Belphemur/SoundSwitch/issues/943)
+
 ### [6.2.4](https://github.com/Belphemur/SoundSwitch/compare/v6.2.3...v6.2.4) (2021-12-18)
 
 
