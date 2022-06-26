@@ -2,7 +2,6 @@
 using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Common.Framework.Audio.Device;
-using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio.Lister;
 using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Configuration;
@@ -31,7 +30,7 @@ namespace SoundSwitch.Model
             {
                 if (@event.UpdateMode == UpdateMode.Silent)
                 {
-                    new AutoUpdater("/VERYSILENT", ApplicationPath.Default).Update(
+                    new AutoUpdater("/VERYSILENT").Update(
                         @event.AppRelease, true);
                 }
             };

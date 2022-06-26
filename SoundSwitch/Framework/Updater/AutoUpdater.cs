@@ -13,7 +13,6 @@
 ********************************************************************/
 
 using System;
-using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using Serilog;
@@ -30,23 +29,19 @@ namespace SoundSwitch.Framework.Updater
     {
         private readonly SynchronizationContext _context = SynchronizationContext.Current ?? new SynchronizationContext();
         public string InstallerParameters { get; }
-        public string InstallerFilePath { get; }
-
         /// <summary>
         /// Constructor of the AutoUpdater
         /// </summary>
         /// <param name="installerParameters">Parameters given to the installer after downloading it</param>
-        /// <param name="filePath">Where to download the Installer without the filename</param>
-        public AutoUpdater(string installerParameters, string filePath)
+        public AutoUpdater(string installerParameters)
         {
             InstallerParameters = installerParameters;
-            InstallerFilePath = Path.Combine(filePath, "SoundSwitch_Update.exe");
         }
 
         public void Update(AppRelease appRelease, bool closeApp)
         {
           
-                var file = new WebFile(new Uri(appRelease.Asset.BrowserDownloadUrl), InstallerFilePath);
+                var file = new WebFile(new Uri(appRelease.Asset.BrowserDownloadUrl));
                 file.Downloaded += (sender, args) =>
                 {
                     Log.Information("Update downloaded: {File}", file);

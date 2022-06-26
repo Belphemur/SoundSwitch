@@ -119,6 +119,11 @@ namespace SoundSwitch.Audio.Manager
                 Trace.TraceInformation($"Attempt to switch [{processId}] but got exception: {e}");
                 return;
             }
+            catch (ArgumentException e)
+            {
+                Trace.TraceInformation($"Attempt to switch [{processId}] but got exception: {e}");
+                return;
+            }
             catch (Exception e)
             {
                 Trace.TraceError($"Can't get process info: {e}");
