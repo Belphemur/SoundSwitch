@@ -114,6 +114,11 @@ namespace SoundSwitch.Audio.Manager
                 var process = Process.GetProcessById((int)processId);
                 processName = process.ProcessName;
             }
+            catch (InvalidOperationException e)
+            {
+                Trace.TraceInformation($"Attempt to switch [{processId}] but got exception: {e}");
+                return;
+            }
             catch (Exception e)
             {
                 Trace.TraceError($"Can't get process info: {e}");
