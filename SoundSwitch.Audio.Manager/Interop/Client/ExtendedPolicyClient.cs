@@ -48,6 +48,7 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
             {
                 return null;
             }
+
             if (deviceId.StartsWith(MMDEVAPI_TOKEN)) deviceId = deviceId.Remove(0, MMDEVAPI_TOKEN.Length);
             if (deviceId.EndsWith(DEVINTERFACE_AUDIO_RENDER)) deviceId = deviceId.Remove(deviceId.Length - DEVINTERFACE_AUDIO_RENDER.Length);
             if (deviceId.EndsWith(DEVINTERFACE_AUDIO_CAPTURE)) deviceId = deviceId.Remove(deviceId.Length - DEVINTERFACE_AUDIO_CAPTURE.Length);
@@ -70,6 +71,10 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
                     PolicyConfig.SetPersistedDefaultAudioEndpoint(processId, flow, eRole, deviceIdStr);
                 }
             }
+            catch (InvalidComObjectException)
+            {
+                _log.Warning("Set the default endpoint [{DeviceId}]for process {ProcessId}", deviceId, processId);
+            }
             catch (COMException e) when ((e.ErrorCode & ErrorConst.COM_ERROR_MASK) == ErrorConst.COM_ERROR_NOT_FOUND)
             {
                 throw new DeviceNotFoundException($"Can't set default as {deviceId}", e, deviceId);
@@ -90,6 +95,10 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
                 var deviceId = PolicyConfig.GetPersistedDefaultAudioEndpoint(processId, flow, role);
                 var unpacked = UnpackDeviceId(deviceId);
                 return unpacked;
+            }
+            catch (InvalidComObjectException)
+            {
+                _log.Warning("Can't get the default endpoint for process {ProcessId}", processId);
             }
             catch (Exception ex)
             {
