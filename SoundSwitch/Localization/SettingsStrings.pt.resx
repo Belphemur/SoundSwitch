@@ -418,4 +418,13 @@ Restaurar o estado do sistema quando a aplicação é fechada.</value>
   <data name="telemetry.desc" xml:space="preserve">
     <value>Recolhe de forma anónima a versão do SoundSwitch que está a ser utilizada. É partilhado apenas com o programador do SoundSwitch.</value>
   </data>
+  <data name="profile.trigger.deviceChanged" xml:space="preserve">
+    <value>Forçar perfil</value>
+  </data>
+  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
+    <value>O perfil será aplicado automaticamente sempre que o dispositivo de som seja alterado.</value>
+  </data>
+  <data name="profile.error.deviceChanged" xml:space="preserve">
+    <value>Apenas pode ter 1 perfil forçado.</value>
+  </data>
 </root>
