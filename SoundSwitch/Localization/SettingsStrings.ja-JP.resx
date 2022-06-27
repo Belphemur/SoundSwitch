@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="profile.trigger.uwp.desc" xml:space="preserve">
-    <value>Windows Store経由でインストールされるアプリケーションの名前を入力します。例：Netflix, Amazon Prime video, など･･･</value>
+    <value>Microsoft Storeからインストールしたアプリケーションの名前を入力します。NetflixやAmazonプライムビデオなど…</value>
   </data>
   <data name="profile.trigger.uwp" xml:space="preserve">
     <value>Microsoft Storeアプリケーション</value>
@@ -183,7 +183,7 @@
     <value>Steam Big Pictureモードを検出した場合に有効化する。（Big Pictureモードが閉じると元に戻ります。）</value>
   </data>
   <data name="profile.trigger.process.desc" xml:space="preserve">
-    <value>選択したアプリケーションが前面に存在する場合にプロファイルを有効化する</value>
+    <value>選択したアプリケーションが前面にあるときにプロファイルを有効にする</value>
   </data>
   <data name="profile.trigger.window.desc" xml:space="preserve">
     <value>動作中のプログラム名に以下の文字が含まれる場合にプロファイルを有効化する</value>
@@ -240,7 +240,7 @@
     <value>プロファイルのホットキーを登録できませんでした：{0}</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
-    <value>特定のアプリケーションを起動／フォーカスしたときに、再生・録音デバイスを切り替えるためのプロファイルを追加します。</value>
+    <value>特定のアプリケーションを起動、またはフォーカスしたときに再生・録音デバイスを切り替えるプロファイルを追加します。</value>
   </data>
   <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
     <value>再生・録音デバイスを設定する必要があります。</value>
@@ -252,7 +252,7 @@
     <value>既に{0}という名前のプロファイルが存在します。</value>
   </data>
   <data name="profile.error.application" xml:space="preserve">
-    <value>このアプリケーション{0}は既にプロファイルと連携済です。</value>
+    <value>このアプリケーション {0} は既にプロファイルと連携済です。</value>
   </data>
   <data name="profile.error.hotkey" xml:space="preserve">
     <value>このホットキー{0}は既に登録されています。</value>
@@ -281,7 +281,7 @@
     <value>トレイアイコン</value>
   </data>
   <data name="foregroundAppTooltip" xml:space="preserve">
-    <value>現在動作中のアプリケーションの音声も切り替えます。ゲームなどで便利です。</value>
+    <value>現在使用中のアプリケーション音声も切り替えます。ゲームなどで便利です。</value>
   </data>
   <data name="foregroundApp" xml:space="preserve">
     <value>動作中のプログラムも切り替える</value>
@@ -336,14 +336,14 @@
     <value>トースト通知</value>
   </data>
   <data name="notificationTooltip" xml:space="preserve">
-    <value>Windowsの通知：Windows規定のトレイポップアップ通知です。
-音声通知：再生デバイスの切替時にサウンドを再生します。
-音声通知のカスタマイズ：再生デバイスの切替時に指定したサウンドを再生します。
-トースト通知：特殊なトレイポップアップ通知を使用します。
-バナー：常に最前面に表示され、ゲーム中などに便利です。</value>
+    <value>Windows通知: Windows標準の通知です。
+音声通知: 切り替え後の再生デバイスで音声を再生します。
+カスタム音声通知: 切り替え後の再生デバイスで設定された音声を再生します。
+トースト通知: Windows通知の特殊な形式を使用します。
+バナー: ゲーム中に便利な、常に最前面に表示される通知です。</value>
   </data>
   <data name="notificationOptionCustomized" xml:space="preserve">
-    <value>音声通知のカスタマイズ</value>
+    <value>カスタム音声通知</value>
   </data>
   <data name="notificationOptionNone" xml:space="preserve">
     <value>通知しない</value>
@@ -352,7 +352,7 @@
     <value>音声通知</value>
   </data>
   <data name="notificationOptionWindowsDefault" xml:space="preserve">
-    <value>Windowsの通知</value>
+    <value>Windows通知</value>
   </data>
   <data name="cycleThroughTooltip" xml:space="preserve">
     <value>切り替えるデバイスを選択します。選択したデバイス間のみ、またはすべてのデバイス間のいずれかを選択します。</value>
@@ -364,7 +364,7 @@
     <value>全ての音声デバイス</value>
   </data>
   <data name="tooltipOnHover" xml:space="preserve">
-    <value>ツールチップの表示</value>
+    <value>ツールチップ表示</value>
   </data>
   <data name="updateNever" xml:space="preserve">
     <value>更新を確認しない</value>
@@ -415,7 +415,7 @@
     <value>通知</value>
   </data>
   <data name="communicationsDeviceTooltip" xml:space="preserve">
-    <value>有効化すると「規定の通信デバイス」と「規定のデバイス」が同時に切り替わります（Skype、TeamSpeakなどに役立ちます）。</value>
+    <value>有効化すると「既定の通信デバイス」と「既定の再生デバイス」が一緒に切り替わります（Skype、TeamSpeakなどで便利です）。</value>
   </data>
   <data name="closeTooltip" xml:space="preserve">
     <value>変更を自動的に保存</value>
@@ -466,7 +466,7 @@
     <value>このトリガーによりトレイアイコンのメニューにプロフィールが表示されます。シストレイのアイコンを左クリックするとこのプロフィールが表示されます。</value>
   </data>
   <data name="quickMenu.desc" xml:space="preserve">
-    <value>ホットキー使用時にWindowsの言語切り替えのようなクイックメニューを表示する</value>
+    <value>ホットキー使用時にWindowsの言語切り替えのようなクイックメニューを表示します</value>
   </data>
   <data name="telemetry" xml:space="preserve">
     <value>バージョン情報の共有</value>
