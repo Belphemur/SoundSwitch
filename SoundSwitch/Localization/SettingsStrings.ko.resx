@@ -418,4 +418,13 @@
   <data name="telemetry.desc" xml:space="preserve">
     <value>사용 중인 SoundSwitch 버전을 익명으로 수집합니다. SoundSwitch 개발자와만 공유됩니다.</value>
   </data>
+  <data name="profile.trigger.deviceChanged" xml:space="preserve">
+    <value>강제 프로필</value>
+  </data>
+  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
+    <value>현재 사운드 장치가 변경되면 언제든지 프로필이 자동으로 트리거됩니다.</value>
+  </data>
+  <data name="profile.error.deviceChanged" xml:space="preserve">
+    <value>강제 프로파일은 하나만 가질 수 있습니다.</value>
+  </data>
 </root>

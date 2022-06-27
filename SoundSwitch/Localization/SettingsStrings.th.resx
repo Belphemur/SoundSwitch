@@ -418,4 +418,13 @@
   <data name="updateNotifyTooltip" xml:space="preserve">
     <value>SoundSwitch จะแจ้งให้คุณทราบเมื่อมีการปรับปรุงรุ่นใหม่ เมื่อคลิกที่การแจ้งเตือนคุณจะได้รับป๊อปอัปดาวน์โหลดการอัปเดตให้คุณ และถามว่าคุณต้องการติดตั้งหรือไม่</value>
   </data>
+  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
+    <value>Proofile จะถูกเรียกใช้งานทุกครั้งที่อุปกรณ์ปัจจุบันถูกเปลี่ยน</value>
+  </data>
+  <data name="profile.trigger.deviceChanged" xml:space="preserve">
+    <value>Profile แบบบังคับ</value>
+  </data>
+  <data name="profile.error.deviceChanged" xml:space="preserve">
+    <value>คุณสร้าง Profile แบบบังคับได้อันเดียว</value>
+  </data>
 </root>
