@@ -156,7 +156,7 @@
     <value>プロファイル{0}に切替</value>
   </data>
   <data name="profile.notify-on-activation" xml:space="preserve">
-    <value>プロファイルが切り替わった場合に通知する</value>
+    <value>プロファイル切り替え時に通知する</value>
   </data>
   <data name="profile.error.window" xml:space="preserve">
     <value>このウィンドウ名を持つプロファイルが既に存在します：{0}。</value>
@@ -189,7 +189,7 @@
     <value>動作中のプログラム名に以下の文字が含まれる場合にプロファイルを有効化する</value>
   </data>
   <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>プロファイルを有効化するホットキー。同じホットキーを使用すると、プロファイルを切り替えることができます。</value>
+    <value>プロファイルを有効にするために使用するホットキーです。同じホットキーを使用すると、プロファイルを切り替えることができます。</value>
   </data>
   <data name="profile.trigger.steam" xml:space="preserve">
     <value>Steam Big Picture</value>
@@ -240,7 +240,7 @@
     <value>プロファイルのホットキーを登録できませんでした：{0}</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
-    <value>特定のアプリケーションを起動／フォーカスしたときに、再生・録音デバイスを切り替えるためのプロフィールを追加します。</value>
+    <value>特定のアプリケーションを起動／フォーカスしたときに、再生・録音デバイスを切り替えるためのプロファイルを追加します。</value>
   </data>
   <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
     <value>再生・録音デバイスを設定する必要があります。</value>
@@ -249,7 +249,7 @@
     <value>ホットキーやアプリケーションを設定する必要があります。</value>
   </data>
   <data name="profile.error.name" xml:space="preserve">
-    <value>既に{0}という名前のプロフィールが存在します。</value>
+    <value>既に{0}という名前のプロファイルが存在します。</value>
   </data>
   <data name="profile.error.application" xml:space="preserve">
     <value>このアプリケーション{0}は既にプロファイルと連携済です。</value>
@@ -466,7 +466,7 @@
     <value>このトリガーによりトレイアイコンのメニューにプロフィールが表示されます。シストレイのアイコンを左クリックするとこのプロフィールが表示されます。</value>
   </data>
   <data name="quickMenu.desc" xml:space="preserve">
-    <value>ホットキーを使用時にWindowsの言語切り替えのようなクイックメニューを表示する</value>
+    <value>ホットキー使用時にWindowsの言語切り替えのようなクイックメニューを表示する</value>
   </data>
   <data name="telemetry" xml:space="preserve">
     <value>バージョン情報の共有</value>
@@ -476,5 +476,14 @@
   </data>
   <data name="quickMenu" xml:space="preserve">
     <value>クイックメニューを表示</value>
+  </data>
+  <data name="profile.trigger.deviceChanged" xml:space="preserve">
+    <value>強制プロファイル</value>
+  </data>
+  <data name="profile.error.deviceChanged" xml:space="preserve">
+    <value>強制プロファイルは１つしか設定できません。</value>
+  </data>
+  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
+    <value>このプロファイルは現在の音声デバイスが変更されたときに自動的に有効化されます。</value>
   </data>
 </root>
