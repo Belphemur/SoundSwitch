@@ -486,4 +486,10 @@ Ambos: Mudar quando qualquer tipo de dispositivo é alterado.</value>
   <data name="profile.error.deviceChanged" xml:space="preserve">
     <value>Você somente pode ter um perfil forçado.</value>
   </data>
+  <data name="devices.AutoAddNewDevice" xml:space="preserve">
+    <value>Seleção automática de novos dispositivos</value>
+  </data>
+  <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
+    <value>Automaticamente adiciona um novo dispositivo na lista selecionada quando eles estão conectados no computador</value>
+  </data>
 </root>
