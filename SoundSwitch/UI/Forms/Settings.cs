@@ -185,7 +185,11 @@ namespace SoundSwitch.UI.Forms
             quickMenuCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.QuickMenuEnabled), false, DataSourceUpdateMode.OnPropertyChanged);
             var quickMenuCheckboxToolTip = new ToolTip();
             quickMenuCheckboxToolTip.SetToolTip(quickMenuCheckbox, SettingsStrings.quickMenu_desc);
-            
+
+            autoAddDeviceCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.AutoAddNewDevice), false, DataSourceUpdateMode.OnPropertyChanged);
+            var autoAddDeviceCheckboxToolTip = new ToolTip();
+            autoAddDeviceCheckboxToolTip.SetToolTip(autoAddDeviceCheckbox, SettingsStrings.devices_AutoAddNewDevice_Tooltip);
+
             PopulateSettings();
 
             _loaded = true;
@@ -322,6 +326,7 @@ namespace SoundSwitch.UI.Forms
             foregroundAppCheckbox.Text = SettingsStrings.foregroundApp;
             usePrimaryScreenCheckbox.Text = SettingsStrings.usePrimaryScreen;
             quickMenuCheckbox.Text = SettingsStrings.quickMenu;
+            autoAddDeviceCheckbox.Text = SettingsStrings.devices_AutoAddNewDevice;
 
             // Settings - Update
             updateSettingsGroupBox.Text = SettingsStrings.updateSettings;
