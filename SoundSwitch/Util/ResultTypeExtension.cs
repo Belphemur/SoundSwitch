@@ -1,7 +1,7 @@
-﻿using System;
-using RailSharp.Internal.Result;
+﻿#nullable enable
 
-#nullable enable
+using System;
+using RailSharp.Internal.Result;
 
 namespace SoundSwitch.Util
 {
@@ -22,7 +22,25 @@ namespace SoundSwitch.Util
         /// <typeparam name="TFailure"></typeparam>
         /// <typeparam name="TSuccess"></typeparam>
         /// <returns></returns>
-        public static TFailure? UnwrapFailure<TFailure, TSuccess>(this RailSharp.Result<TFailure, TSuccess> result, TFailure defaultValue = default)
+        public static TFailure? UnwrapFailure<TFailure, TSuccess>(this RailSharp.Result<TFailure, TSuccess> result, TFailure? defaultValue = null) where TFailure : class
+        {
+            if (result is Failure<TFailure, TSuccess> failure)
+            {
+                return failure;
+            }
+
+            return defaultValue;
+        }
+
+        /// <summary>
+        /// Unwrap the failure case
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="defaultValue"></param>
+        /// <typeparam name="TFailure"></typeparam>
+        /// <typeparam name="TSuccess"></typeparam>
+        /// <returns></returns>
+        public static TFailure? UnwrapFailure<TFailure, TSuccess>(this RailSharp.Result<TFailure, TSuccess> result, TFailure? defaultValue = null) where TFailure : struct
         {
             if (result is Failure<TFailure, TSuccess> failure)
             {

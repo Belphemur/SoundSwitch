@@ -13,6 +13,8 @@
 ********************************************************************/
 
 using AuthenticodeExaminer;
+using RailSharp;
+using RailSharp.Internal.Result;
 
 namespace SoundSwitch.Framework.Updater
 {
@@ -23,10 +25,16 @@ namespace SoundSwitch.Framework.Updater
         /// </summary>
         /// <param name="filename"></param>
         /// <returns></returns>
-        public static bool IsValid(string filename)
+        public static Result<SignatureCheckResult, VoidSuccess> IsValid(string filename)
         {
             var inspector = new FileInspector(filename);
-            return inspector.Validate() == SignatureCheckResult.Valid;
+            var result = inspector.Validate(RevocationChecking.Online);
+            if (result != SignatureCheckResult.Valid)
+            {
+                return result;
+            }
+
+            return Result.Success();
         }
     }
 }

@@ -12,6 +12,7 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
+#nullable enable
 using System;
 using System.Threading;
 using System.Windows.Forms;
@@ -19,6 +20,7 @@ using Serilog;
 using SoundSwitch.Framework.Updater.Installer;
 using SoundSwitch.Framework.Updater.Releases;
 using SoundSwitch.Localization;
+using SoundSwitch.Util;
 
 namespace SoundSwitch.Framework.Updater
 {
@@ -29,6 +31,7 @@ namespace SoundSwitch.Framework.Updater
     {
         private readonly SynchronizationContext _context = SynchronizationContext.Current ?? new SynchronizationContext();
         public string InstallerParameters { get; }
+
         /// <summary>
         /// Constructor of the AutoUpdater
         /// </summary>
@@ -40,29 +43,26 @@ namespace SoundSwitch.Framework.Updater
 
         public void Update(AppRelease appRelease, bool closeApp)
         {
-          
-                var file = new WebFile(new Uri(appRelease.Asset.BrowserDownloadUrl));
-                file.Downloaded += (sender, args) =>
+            var file = new WebFile(new Uri(appRelease.Asset.BrowserDownloadUrl));
+            file.Downloaded += (sender, args) =>
+            {
+                Log.Information("Update downloaded: {File}", file);
+                var signatureResult = SignatureChecker.IsValid(file.FilePath).UnwrapFailure();
+                if (signatureResult != null)
                 {
-                    Log.Information("Update downloaded: {File}", file);
-                    if (!SignatureChecker.IsValid(file.FilePath))
-                    {
-                        Log.Error("The file has the wrong signature. Update cancelled.");
-                        _context.Send(state =>
-                        {
-                            MessageBox.Show(string.Format(UpdateDownloadStrings.wrongSignature, "https://soundswitch.aaflalo.me"), Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }, null);
-                        return;
-                    }
+                    Log.Error("The file has the wrong signature. Update cancelled. {signatureResult}", signatureResult);
+                    _context.Send(state => { MessageBox.Show(string.Format(UpdateDownloadStrings.wrongSignature, "https://soundswitch.aaflalo.me"), Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error); },
+                        null);
+                    return;
+                }
 
-                    new UpdateRunner().RunUpdate(file, InstallerParameters);
-                    if (closeApp)
-                    {
-                        _context.Send(s => { Application.Exit(); }, null);
-                    }
-                };
-                file.DownloadFile();
-            
+                new UpdateRunner().RunUpdate(file, InstallerParameters);
+                if (closeApp)
+                {
+                    _context.Send(s => { Application.Exit(); }, null);
+                }
+            };
+            file.DownloadFile();
         }
     }
 }
