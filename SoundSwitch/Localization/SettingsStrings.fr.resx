@@ -457,4 +457,10 @@ Restaurer l'état du système quand l'application est fermée.</value>
   <data name="telemetry.desc" xml:space="preserve">
 	  <value>Rassemble anonymement quelle version de SoundSwitch est utilisée. Partagé uniquement avec le developer de SoundSwitch.</value>
   </data>
+  <data name="devices.AutoAddNewDevice" xml:space="preserve">
+	  <value>Selection automatique de périphérique</value>
+  </data>
+  <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
+	  <value>Ajoute automatiquement les nouveau périphériques quand ils sont connectés au pc.</value>
+  </data>
 </root>
