@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using SoundSwitch.Common.Framework.Audio.Device;
 
 namespace SoundSwitch.Common.Framework.Audio.Collection;
@@ -26,7 +27,7 @@ public class DeviceCollection<T> : ICollection<T> where T : DeviceInfo
 
     public IEnumerator<T> GetEnumerator()
     {
-        return _byId.Values.GetEnumerator();
+        return _byId.Values.OrderBy(info => info.DiscoveredAt).GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
