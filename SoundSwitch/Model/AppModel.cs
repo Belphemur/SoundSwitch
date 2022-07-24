@@ -104,6 +104,7 @@ namespace SoundSwitch.Model
                 {
                     return;
                 }
+                Log.Information("New device detected {device}, auto added to the selection.", device);
 
                 SelectDevice(device);
             };
