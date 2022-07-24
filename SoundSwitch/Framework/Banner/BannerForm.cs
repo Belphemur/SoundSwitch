@@ -43,26 +43,27 @@ namespace SoundSwitch.Framework.Banner
             var screen = AppModel.Instance.NotifyUsingPrimaryScreen ? Screen.PrimaryScreen : Screen.FromPoint(Cursor.Position);
             StartPosition = FormStartPosition.Manual;
             Bounds = screen.Bounds;
+            TopMost = true;
 
             Location = new Point(screen.Bounds.X + 50, screen.Bounds.Y + 60);
         }
 
         protected override bool ShowWithoutActivation => true;
 
-        /// <summary>
-        /// Override the parameters used to create the window handle.
-        /// Ensure that the window will be top-most and do not activate or take focus.
-        /// </summary>
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                CreateParams p = base.CreateParams;
-                p.ExStyle |= 0x08000000; // WS_EX_NOACTIVATE
-                p.ExStyle |= 0x00000008; // WS_EX_TOPMOST
-                return p;
-            }
-        }
+        // /// <summary>
+        // /// Override the parameters used to create the window handle.
+        // /// Ensure that the window will be top-most and do not activate or take focus.
+        // /// </summary>
+        // protected override CreateParams CreateParams
+        // {
+        //     get
+        //     {
+        //         CreateParams p = base.CreateParams;
+        //         p.ExStyle |= 0x08000000; // WS_EX_NOACTIVATE
+        //         p.ExStyle |= 0x00000008; // WS_EX_TOPMOST
+        //         return p;
+        //     }
+        // }
 
         /// <summary>
         /// Called internally to configure pass notification parameters
