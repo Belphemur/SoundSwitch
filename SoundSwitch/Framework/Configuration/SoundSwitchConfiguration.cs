@@ -123,7 +123,7 @@ namespace SoundSwitch.Framework.Configuration
         /// <summary>
         /// Is the quick menu showed when using a hotkey
         /// </summary>
-        public bool QuickMenuEnabled { get; set; } = true;
+        public bool QuickMenuEnabled { get; set; } = false;
 
         // Needed by Interface
         [JsonIgnore]
