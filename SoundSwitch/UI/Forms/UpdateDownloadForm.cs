@@ -24,6 +24,7 @@ using SoundSwitch.Localization.Factory;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
 using SoundSwitch.UI.Component;
+using SoundSwitch.Util;
 
 namespace SoundSwitch.UI.Forms
 {
@@ -67,11 +68,11 @@ namespace SoundSwitch.UI.Forms
 
                 if (downloadProgress.InvokeRequired)
                 {
-                    downloadProgress.BeginInvoke(new Action(() => { downloadProgress.Value = (int) Math.Ceiling(progress.Percentage); }));
+                    downloadProgress.BeginInvoke(new Action(() => { downloadProgress.Value = (int)Math.Ceiling(progress.Percentage); }));
                 }
                 else
                 {
-                    downloadProgress.Value = (int) Math.Ceiling(progress.Percentage);
+                    downloadProgress.Value = (int)Math.Ceiling(progress.Percentage);
                 }
             };
             _releaseFile.DownloadFailed += (sender, @event) =>
@@ -83,9 +84,10 @@ namespace SoundSwitch.UI.Forms
             };
             _releaseFile.Downloaded += (sender, args) =>
             {
-                if (!SignatureChecker.IsValid(_releaseFile.FilePath))
+                var signatureResult = SignatureChecker.IsValid(_releaseFile.FilePath).UnwrapFailure();
+                if (signatureResult != null)
                 {
-                    Log.Error("Wrong signature for the release");
+                    Log.Error("Wrong signature for the release: {signatureResult}", signatureResult);
                     MessageBox.Show(UpdateDownloadStrings.notSigned,
                         UpdateDownloadStrings.notSignedTitle,
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -95,7 +97,7 @@ namespace SoundSwitch.UI.Forms
                 new UpdateRunner().RunUpdate(_releaseFile, "/SILENT");
                 if (InvokeRequired)
                 {
-                    BeginInvoke((Action) Close);
+                    BeginInvoke(Close);
                 }
                 else
                 {
@@ -123,6 +125,7 @@ namespace SoundSwitch.UI.Forms
             {
                 _postponeService.PostponeRelease(_appReleaseInfo);
             }
+
             Close();
         }
 
