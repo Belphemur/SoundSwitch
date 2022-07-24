@@ -486,4 +486,10 @@ Restore the state of the system when the application is closed.</value>
   <data name="telemetry.desc" xml:space="preserve">
     <value>Gather anonymously which version of SoundSwitch is in use. Only shared with the developer of SoundSwitch.</value>
   </data>
+  <data name="devices.AutoAddNewDevice" xml:space="preserve">
+    <value>Auto select new devices</value>
+  </data>
+  <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
+    <value>Auto add new device to the selected list when they are connected to the computer</value>
+  </data>
 </root>

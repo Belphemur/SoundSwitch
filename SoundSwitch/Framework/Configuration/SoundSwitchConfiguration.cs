@@ -60,6 +60,8 @@ namespace SoundSwitch.Framework.Configuration
             RecordingHotKey = new HotKey(Keys.F7, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
             MuteRecordingHotKey = new HotKey(Keys.M, HotKey.ModifierKeys.Control | HotKey.ModifierKeys.Alt);
 
+            AutoAddNewConnectedDevices = true;
+
             SelectedDevices = new HashSet<DeviceInfo>();
             SwitchIcon = IconChangerFactory.ActionEnum.Never;
             MigratedFields = new HashSet<string>();
@@ -84,6 +86,8 @@ namespace SoundSwitch.Framework.Configuration
         public bool IncludeBetaVersions { get; set; }
         public string CustomNotificationFilePath { get; set; }
         public bool NotifyUsingPrimaryScreen { get; set; }
+
+        public bool AutoAddNewConnectedDevices { get; set; }
 
 
         public DateTime LastDonationNagTime { get; set; }
@@ -190,7 +194,8 @@ namespace SoundSwitch.Framework.Configuration
                                }
 
                                return profile;
-                           }).ToHashSet();
+                           })
+                           .ToHashSet();
                 MigratedFields.Add(nameof(ProfileSettings) + "_final");
                 migrated = true;
             }

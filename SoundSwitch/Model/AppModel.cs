@@ -42,6 +42,7 @@ using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Framework.WinApi.Keyboard;
 using SoundSwitch.Localization;
 using SoundSwitch.Localization.Factory;
+using SoundSwitch.Model.Job;
 using SoundSwitch.UI.Component;
 
 namespace SoundSwitch.Model
@@ -92,6 +93,15 @@ namespace SoundSwitch.Model
             _deviceCyclerManager = new DeviceCyclerManager();
             _selectedDevices = null;
             MMNotificationClient.Instance.DefaultDeviceChanged += (sender, @event) => { JobScheduler.Instance.ScheduleJob(new DefaultDeviceChangedJob(this, @event.Device, @event.Role), @event.Token); };
+            MMNotificationClient.Instance.DeviceAdded += (sender, @event) =>
+            {
+                if (!AutoAddNewDevice)
+                {
+                    return;
+                }
+
+                JobScheduler.Instance.ScheduleJob(new DeviceAddedJob(this, @event.DeviceId), @event.Token);
+            };
             _microphoneMuteToggler = new MicrophoneMuteToggler(AudioSwitcher.Instance, _notificationManager);
             _updateScheduler = new LimitedConcurrencyLevelTaskScheduler(1);
         }
@@ -248,6 +258,17 @@ namespace SoundSwitch.Model
             }
         }
 
+
+        public bool AutoAddNewDevice
+        {
+            get => AppConfigs.Configuration.AutoAddNewConnectedDevices;
+            set
+            {
+                AppConfigs.Configuration.AutoAddNewConnectedDevices = value;
+                AppConfigs.Configuration.Save();
+            }
+        }
+
         #region Misc settings
 
         /// <summary>
@@ -400,6 +421,12 @@ namespace SoundSwitch.Model
         {
             try
             {
+                //Dont add device already selected
+                if (SelectedDevices.Contains(device))
+                {
+                    return false;
+                }
+
                 device.DiscoveredAt = DateTime.UtcNow;
                 SelectedDevices.Add(device);
                 AppConfigs.Configuration.SelectedDevices = SelectedDevices.ToHashSet();
