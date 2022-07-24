@@ -42,6 +42,7 @@ using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Framework.WinApi.Keyboard;
 using SoundSwitch.Localization;
 using SoundSwitch.Localization.Factory;
+using SoundSwitch.Model.Job;
 using SoundSwitch.UI.Component;
 
 namespace SoundSwitch.Model
@@ -99,14 +100,7 @@ namespace SoundSwitch.Model
                     return;
                 }
 
-                var device = ActiveAudioDeviceLister.PlaybackDevices.FirstOrDefault(info => info.Id == @event.DeviceId) ?? ActiveAudioDeviceLister.RecordingDevices.FirstOrDefault(info => info.Id == @event.DeviceId);
-                if (device == null)
-                {
-                    return;
-                }
-                Log.Information("New device detected {device}, auto added to the selection.", device);
-
-                SelectDevice(device);
+                JobScheduler.Instance.ScheduleJob(new DeviceAddedJob(this, @event.DeviceId), @event.Token);
             };
             _microphoneMuteToggler = new MicrophoneMuteToggler(AudioSwitcher.Instance, _notificationManager);
             _updateScheduler = new LimitedConcurrencyLevelTaskScheduler(1);

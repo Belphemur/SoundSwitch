@@ -33,6 +33,8 @@ namespace SoundSwitch.Model
         /// <returns></returns>
         DeviceReadOnlyCollection<DeviceFullInfo> RecordingDevices { get; }
 
+        bool Refreshing { get; }
+
         void Refresh(CancellationToken token);
     }
 }

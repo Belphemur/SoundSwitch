@@ -40,7 +40,23 @@ namespace SoundSwitch.Framework.Audio.Lister
         private readonly SemaphoreSlim _refreshSemaphore = new(1);
         private readonly TimeSpan _refreshWaitTime = TimeSpan.FromSeconds(5);
         private readonly ILogger _context;
+        private uint _threadSafeRefreshing = 0;
 
+        public bool Refreshing
+        {
+            get => Interlocked.CompareExchange(ref _threadSafeRefreshing, 1, 1) == 1;
+            private set
+            {
+                if (value)
+                {
+                    Interlocked.CompareExchange(ref _threadSafeRefreshing, 1, 0);
+                }
+                else
+                {
+                    Interlocked.CompareExchange(ref _threadSafeRefreshing, 0, 1);
+                }
+            }
+        }
 
         public CachedAudioDeviceLister(DeviceState state)
         {
@@ -51,75 +67,80 @@ namespace SoundSwitch.Framework.Audio.Lister
 
         private void DeviceChanged(object sender, DeviceChangedEventBase e)
         {
+            Refreshing = true;
             JobScheduler.Instance.ScheduleJob(new DebounceRefreshJob(_state, this, _context), e.Token);
         }
 
         public void Refresh(CancellationToken cancellationToken = default)
         {
-            var playbackDevices = new Dictionary<string, DeviceFullInfo>();
-            var recordingDevices = new Dictionary<string, DeviceFullInfo>();
-
-            if (!_refreshSemaphore.Wait(_refreshWaitTime, cancellationToken))
-            {
-                _context.Error("Can't refresh the devices after {time}", _refreshWaitTime);
-                return;
-            }
-
-            using var registration = cancellationToken.Register(_ =>
-            {
-                _context.Warning("Cancellation received.");
-            }, null);
-
             try
             {
-                _context.Information("Refreshing all devices");
-                var enumerator = new MMDeviceEnumerator();
-                using var _ = enumerator.DisposeOnCancellation(cancellationToken);
-                foreach (var endPoint in enumerator.EnumerateAudioEndPoints(DataFlow.All, _state))
-                {
-                    cancellationToken.ThrowIfCancellationRequested();
-                    try
-                    {
-                        var deviceInfo = new DeviceFullInfo(endPoint);
-                        if (string.IsNullOrEmpty(deviceInfo.Name))
-                        {
-                            continue;
-                        }
+                var playbackDevices = new Dictionary<string, DeviceFullInfo>();
+                var recordingDevices = new Dictionary<string, DeviceFullInfo>();
 
-                        switch (deviceInfo.Type)
-                        {
-                            case DataFlow.Render:
-                                playbackDevices.Add(deviceInfo.Id, deviceInfo);
-                                break;
-                            case DataFlow.Capture:
-                                recordingDevices.Add(deviceInfo.Id, deviceInfo);
-                                break;
-                            case DataFlow.All:
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException();
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        _context.Warning(e, "Can't get name of device {device}", endPoint.ID);
-                    }
+                if (!_refreshSemaphore.Wait(_refreshWaitTime, cancellationToken))
+                {
+                    _context.Error("Can't refresh the devices after {time}", _refreshWaitTime);
+                    return;
                 }
 
-                PlaybackDevices = new DeviceReadOnlyCollection<DeviceFullInfo>(playbackDevices.Values, DataFlow.Render);
-                RecordingDevices = new DeviceReadOnlyCollection<DeviceFullInfo>(recordingDevices.Values, DataFlow.Capture);
+                using var registration = cancellationToken.Register(_ => { _context.Warning("Cancellation received."); }, null);
+
+                try
+                {
+                    _context.Information("Refreshing all devices");
+                    var enumerator = new MMDeviceEnumerator();
+                    using var _ = enumerator.DisposeOnCancellation(cancellationToken);
+                    foreach (var endPoint in enumerator.EnumerateAudioEndPoints(DataFlow.All, _state))
+                    {
+                        cancellationToken.ThrowIfCancellationRequested();
+                        try
+                        {
+                            var deviceInfo = new DeviceFullInfo(endPoint);
+                            if (string.IsNullOrEmpty(deviceInfo.Name))
+                            {
+                                continue;
+                            }
+
+                            switch (deviceInfo.Type)
+                            {
+                                case DataFlow.Render:
+                                    playbackDevices.Add(deviceInfo.Id, deviceInfo);
+                                    break;
+                                case DataFlow.Capture:
+                                    recordingDevices.Add(deviceInfo.Id, deviceInfo);
+                                    break;
+                                case DataFlow.All:
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            _context.Warning(e, "Can't get name of device {device}", endPoint.ID);
+                        }
+                    }
+
+                    PlaybackDevices = new DeviceReadOnlyCollection<DeviceFullInfo>(playbackDevices.Values, DataFlow.Render);
+                    RecordingDevices = new DeviceReadOnlyCollection<DeviceFullInfo>(recordingDevices.Values, DataFlow.Capture);
 
 
-                _context.Information("Refreshed all devices. {@Recording}/rec, {@Playback}/play", recordingDevices.Count, playbackDevices.Count);
-            }
-            //If cancellation token is cancelled, its expected to throw null since the device enumerator has been disposed
-            catch (NullReferenceException e) when (!cancellationToken.IsCancellationRequested)
-            {
-                _context.Error(e, "Can't refresh the devices");
+                    _context.Information("Refreshed all devices. {@Recording}/rec, {@Playback}/play", recordingDevices.Count, playbackDevices.Count);
+                }
+                //If cancellation token is cancelled, its expected to throw null since the device enumerator has been disposed
+                catch (NullReferenceException e) when (!cancellationToken.IsCancellationRequested)
+                {
+                    _context.Error(e, "Can't refresh the devices");
+                }
+                finally
+                {
+                    _refreshSemaphore.Release();
+                }
             }
             finally
             {
-                _refreshSemaphore.Release();
+                Refreshing = false;
             }
         }
 

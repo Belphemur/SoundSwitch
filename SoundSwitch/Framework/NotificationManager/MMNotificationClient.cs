@@ -103,7 +103,7 @@ namespace SoundSwitch.Framework.NotificationManager
 
         public void OnDeviceStateChanged(string deviceId, DeviceState newState)
         {
-            JobScheduler.Instance.ScheduleJob(new DeviceChangedJob(this, deviceId), CancellationToken.None, _taskScheduler);
+            JobScheduler.Instance.ScheduleJob(new DeviceChangedJob(this, deviceId, newState == DeviceState.Active), CancellationToken.None, _taskScheduler);
         }
 
         public void OnDeviceAdded(string deviceId)
