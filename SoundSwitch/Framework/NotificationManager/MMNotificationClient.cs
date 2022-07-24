@@ -22,6 +22,7 @@ namespace SoundSwitch.Framework.NotificationManager
 
         public event EventHandler<DeviceDefaultChangedEvent> DefaultDeviceChanged;
         public event EventHandler<DeviceChangedEventBase> DevicesChanged;
+        public event EventHandler<DeviceChangedEventBase> DeviceAdded;
 
         private readonly TaskScheduler _taskScheduler = new LimitedConcurrencyLevelTaskScheduler(1);
 
@@ -29,15 +30,22 @@ namespace SoundSwitch.Framework.NotificationManager
         {
             private readonly MMNotificationClient _notificationClient;
             private readonly string _deviceId;
+            private readonly bool _deviceAdded;
 
-            public DeviceChangedJob(MMNotificationClient notificationClient, string deviceId)
+            public DeviceChangedJob(MMNotificationClient notificationClient, string deviceId, bool deviceAdded = false)
             {
                 _notificationClient = notificationClient;
                 _deviceId = deviceId;
+                _deviceAdded = deviceAdded;
             }
 
             public Task ExecuteAsync(CancellationToken cancellationToken)
             {
+                if (_deviceAdded)
+                {
+                    _notificationClient.DeviceAdded?.Invoke(_notificationClient, new DeviceChangedEventBase(_deviceId, cancellationToken));
+                }
+
                 _notificationClient.DevicesChanged?.Invoke(_notificationClient, new DeviceChangedEventBase(_deviceId, cancellationToken));
                 return Task.CompletedTask;
             }
@@ -99,7 +107,7 @@ namespace SoundSwitch.Framework.NotificationManager
 
         public void OnDeviceAdded(string deviceId)
         {
-            JobScheduler.Instance.ScheduleJob(new DeviceChangedJob(this, deviceId), CancellationToken.None, _taskScheduler);
+            JobScheduler.Instance.ScheduleJob(new DeviceChangedJob(this, deviceId, true), CancellationToken.None, _taskScheduler);
         }
 
         public void OnDeviceRemoved(string deviceId)
@@ -121,7 +129,7 @@ namespace SoundSwitch.Framework.NotificationManager
                 && PropertyKeys.PKEY_AudioEndpoint_GUID.formatId != key.formatId
                 && PropertyKeys.PKEY_Device_IconPath.formatId != key.formatId
                 && PropertyKeys.PKEY_Device_FriendlyName.formatId != key.formatId
-            )
+               )
             {
                 return;
             }
