@@ -41,12 +41,13 @@ namespace SoundSwitch.Framework.NotificationManager
 
             public Task ExecuteAsync(CancellationToken cancellationToken)
             {
+                _notificationClient.DevicesChanged?.Invoke(_notificationClient, new DeviceChangedEventBase(_deviceId, cancellationToken));
+
                 if (_deviceAdded)
                 {
                     _notificationClient.DeviceAdded?.Invoke(_notificationClient, new DeviceChangedEventBase(_deviceId, cancellationToken));
                 }
 
-                _notificationClient.DevicesChanged?.Invoke(_notificationClient, new DeviceChangedEventBase(_deviceId, cancellationToken));
                 return Task.CompletedTask;
             }
 

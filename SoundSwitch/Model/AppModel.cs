@@ -92,6 +92,21 @@ namespace SoundSwitch.Model
             _deviceCyclerManager = new DeviceCyclerManager();
             _selectedDevices = null;
             MMNotificationClient.Instance.DefaultDeviceChanged += (sender, @event) => { JobScheduler.Instance.ScheduleJob(new DefaultDeviceChangedJob(this, @event.Device, @event.Role), @event.Token); };
+            MMNotificationClient.Instance.DeviceAdded += (sender, @event) =>
+            {
+                if (!AutoAddNewDevice)
+                {
+                    return;
+                }
+
+                var device = ActiveAudioDeviceLister.PlaybackDevices.FirstOrDefault(info => info.Id == @event.DeviceId) ?? ActiveAudioDeviceLister.RecordingDevices.FirstOrDefault(info => info.Id == @event.DeviceId);
+                if (device == null)
+                {
+                    return;
+                }
+
+                SelectDevice(device);
+            };
             _microphoneMuteToggler = new MicrophoneMuteToggler(AudioSwitcher.Instance, _notificationManager);
             _updateScheduler = new LimitedConcurrencyLevelTaskScheduler(1);
         }
@@ -416,6 +431,7 @@ namespace SoundSwitch.Model
                 {
                     return false;
                 }
+
                 device.DiscoveredAt = DateTime.UtcNow;
                 SelectedDevices.Add(device);
                 AppConfigs.Configuration.SelectedDevices = SelectedDevices.ToHashSet();
