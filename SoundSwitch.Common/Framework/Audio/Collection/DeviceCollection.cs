@@ -16,7 +16,7 @@ public class DeviceCollection<T> : ICollection<T> where T : DeviceInfo
         {
             if (item == null)
             {
-                return;
+                continue;
             }
 
             _byId[item.Id] = item;
