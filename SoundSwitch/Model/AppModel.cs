@@ -248,6 +248,17 @@ namespace SoundSwitch.Model
             }
         }
 
+
+        public bool AutoAddNewDevice
+        {
+            get => AppConfigs.Configuration.AutoAddNewConnectedDevices;
+            set
+            {
+                AppConfigs.Configuration.AutoAddNewConnectedDevices = value;
+                AppConfigs.Configuration.Save();
+            }
+        }
+
         #region Misc settings
 
         /// <summary>

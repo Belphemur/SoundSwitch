@@ -55,6 +55,8 @@ namespace SoundSwitch.Framework.Configuration
 
         bool SwitchForegroundProgram { get; set; }
         bool NotifyUsingPrimaryScreen { get; set; }
+        
+        bool AutoAddNewConnectedDevices { get; set; }
 
         /// <summary>
         /// What to do with the TrayIcon when changing default device

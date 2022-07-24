@@ -117,6 +117,7 @@ namespace SoundSwitch.Model
 
         bool Telemetry { get; set; }
         bool QuickMenuEnabled { get; set; }
+        bool AutoAddNewDevice { get; set; }
 
         #endregion
 
