@@ -411,6 +411,11 @@ namespace SoundSwitch.Model
         {
             try
             {
+                //Dont add device already selected
+                if (SelectedDevices.Contains(device))
+                {
+                    return false;
+                }
                 device.DiscoveredAt = DateTime.UtcNow;
                 SelectedDevices.Add(device);
                 AppConfigs.Configuration.SelectedDevices = SelectedDevices.ToHashSet();
