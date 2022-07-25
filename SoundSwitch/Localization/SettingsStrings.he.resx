@@ -427,4 +427,10 @@
   <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
     <value>הפרופיל יוקפץ אוטומטית בכל פעם שהתקן השמע הנוכחי מתחלף.</value>
   </data>
+  <data name="devices.AutoAddNewDevice" xml:space="preserve">
+    <value>לבחור בהתקנים חדשים אוטומטית</value>
+  </data>
+  <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
+    <value>להוסיף התקנים חדשים לרשימה הנבחרת אוטומטית בעת חיבורם למחשב</value>
+  </data>
 </root>
