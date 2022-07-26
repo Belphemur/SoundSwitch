@@ -427,4 +427,10 @@ Obnovi stanje sustava kad se program zatvori.</value>
   <data name="profile.error.deviceChanged" xml:space="preserve">
     <value>Možeš imati samo jedan prisilni profil.</value>
   </data>
+  <data name="devices.AutoAddNewDevice" xml:space="preserve">
+    <value>Automatski odaberi novi uređaj</value>
+  </data>
+  <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
+    <value>Automatski dodaj nove uređaje u odbrani popis kad su spojeni s računalom</value>
+  </data>
 </root>
