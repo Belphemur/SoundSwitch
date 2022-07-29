@@ -427,4 +427,10 @@ Restaurar o estado do sistema quando a aplicação é fechada.</value>
   <data name="profile.error.deviceChanged" xml:space="preserve">
     <value>Apenas pode ter 1 perfil forçado.</value>
   </data>
+  <data name="devices.AutoAddNewDevice" xml:space="preserve">
+    <value>Selecionar automaticamente novos dispositivos</value>
+  </data>
+  <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
+    <value>Adiciona automaticamente um novo dispositivo na lista selecionada quando este é conectado ao computador</value>
+  </data>
 </root>
