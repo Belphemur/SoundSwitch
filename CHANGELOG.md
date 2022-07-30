@@ -1,3 +1,37 @@
+## [6.4.0](https://github.com/Belphemur/SoundSwitch/compare/v6.3.0...v6.4.0) (2022-07-30)
+
+
+### Features
+
+* **AutoAdd:** Auto select new device when they are connected and SoundSwitch is running ([a463873](https://github.com/Belphemur/SoundSwitch/commit/a463873b21eb1015d0cb4ec27c4294986c459c36)), closes [#924](https://github.com/Belphemur/SoundSwitch/issues/924)
+
+
+### Bug Fixes
+
+* **Banner:** Avoid issue where the banner wouldn't be shown ([c6e1c6b](https://github.com/Belphemur/SoundSwitch/commit/c6e1c6b59fd55b017a4c779c2dc58c2d88d9480b)), closes [#960](https://github.com/Belphemur/SoundSwitch/issues/960)
+* **DeviceCollection:** Fix possible issue where we wouldn't import the full list of selected devices ([a78377c](https://github.com/Belphemur/SoundSwitch/commit/a78377c01f48c33b3fcedf80e46b45673a534765))
+
+
+### Enhancements
+
+* **Autoupdate:** improve logged error message when signature check fails ([e017bc5](https://github.com/Belphemur/SoundSwitch/commit/e017bc54974bbe635a3b1b5580a2f5f1cb9eb410))
+* **DeviceCollection:** Return device order by discovery ([0154286](https://github.com/Belphemur/SoundSwitch/commit/015428669b844c62838f64af1448e5e0d54d1625))
+* **QuickMenu:** Don't enable quick menu by default for new users. ([94327e7](https://github.com/Belphemur/SoundSwitch/commit/94327e76d804d50eb0fb683fa9c989328dcb4c77))
+
+
+### Languages
+
+* **Croatian:** Translated Settings using Weblate ([f6cff4c](https://github.com/Belphemur/SoundSwitch/commit/f6cff4c1686dc644beba974553743d42a30e4de1))
+* **Hebrew:** Translated Settings using Weblate ([64a9a91](https://github.com/Belphemur/SoundSwitch/commit/64a9a91f4f7377829a7347bfa4ec1f698d2038fa))
+* **Italian:** Translated Settings using Weblate ([b35e0e1](https://github.com/Belphemur/SoundSwitch/commit/b35e0e1c693926a690dbb89694c3d45ccd5fa779))
+* **Japanese:** Translated Settings using Weblate ([f0b1cbd](https://github.com/Belphemur/SoundSwitch/commit/f0b1cbdc6dcfe63a1f61716aaeffab068130e89e))
+* **Japanese:** Translated Settings using Weblate ([211e299](https://github.com/Belphemur/SoundSwitch/commit/211e299f7d494ecae5c3c19fcd11758465de6ee2))
+* **Korean:** Translated Settings using Weblate ([0671498](https://github.com/Belphemur/SoundSwitch/commit/0671498bbc02e372a26b503a848e3a1b82781cf3))
+* **Portuguese (Brazil):** Translated Settings using Weblate ([3ab4cd6](https://github.com/Belphemur/SoundSwitch/commit/3ab4cd6795d4e53f458d8823ce14fb6cd74dff9f))
+* **Portuguese:** Translated Settings using Weblate ([d899f50](https://github.com/Belphemur/SoundSwitch/commit/d899f50d3d10e163a450a33c9ec28df206a6a331))
+* **Portuguese:** Translated Settings using Weblate ([25e0409](https://github.com/Belphemur/SoundSwitch/commit/25e0409103e1e70ad016ddcbf83fbf68c393836b))
+* **Thai:** Translated Settings using Weblate ([b724e0e](https://github.com/Belphemur/SoundSwitch/commit/b724e0e8f59d1258ef849345cf40592127797da2))
+
 ## [6.3.0](https://github.com/Belphemur/SoundSwitch/compare/v6.2.4...v6.3.0) (2022-06-26)
 
 
