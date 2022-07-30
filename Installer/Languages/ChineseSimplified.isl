@@ -1,4 +1,4 @@
-; *** Inno Setup version 6.1.0+ Chinese Simplified messages ***
+﻿; *** Inno Setup version 6.1.0+ Chinese Simplified messages ***
 ;
 ; To download user-contributed translations of this file, go to:
 ;   https://jrsoftware.org/files/istrans/
@@ -115,7 +115,7 @@ ButtonNewFolder=新建文件夹(&M)
 
 ; *** “选择语言”对话框消息
 SelectLanguageTitle=选择安装语言
-SelectLanguageLabel=选择安装时要使用的语言。
+SelectLanguageLabel=选择安装时使用的语言。
 
 ; *** 公共向导文字
 ClickNext=点击“下一步”继续，或点击“取消”退出安装程序。
@@ -161,13 +161,13 @@ UserInfoNameRequired=您必须输入用户名。
 ; *** “选择目标目录”向导页
 WizardSelectDir=选择目标位置
 SelectDirDesc=您想将 [name] 安装在哪里？
-SelectDirLabel3=安装程序将安装 [name] 到下列文件夹中。
+SelectDirLabel3=安装程序将安装 [name] 到下面的文件夹中。
 SelectDirBrowseLabel=点击“下一步”继续。如果您想选择其它文件夹，点击“浏览”。
 DiskSpaceGBLabel=至少需要有 [gb] GB 的可用磁盘空间。
 DiskSpaceMBLabel=至少需要有 [mb] MB 的可用磁盘空间。
 CannotInstallToNetworkDrive=安装程序无法安装到一个网络驱动器。
 CannotInstallToUNCPath=安装程序无法安装到一个UNC路径。
-InvalidPath=您必须输入一个带驱动器卷标的完整路径，例如：%n%nC:\APP%n%n或下列形式的UNC路径：%n%n\\server\share
+InvalidPath=您必须输入一个带驱动器卷标的完整路径，例如：%n%nC:\APP%n%n或UNC路径：%n%n\\server\share
 InvalidDrive=您选定的驱动器或 UNC 共享不存在或不能访问。请选择其它位置。
 DiskSpaceWarningTitle=磁盘空间不足
 DiskSpaceWarning=安装程序至少需要 %1 KB 的可用空间才能安装，但选定驱动器只有 %2 KB 的可用空间。%n%n您一定要继续吗？
@@ -202,7 +202,7 @@ SelectTasksLabel2=选择您想要安装程序在安装 [name] 时执行的附加
 ; *** “选择开始菜单文件夹”向导页
 WizardSelectProgramGroup=选择开始菜单文件夹
 SelectStartMenuFolderDesc=安装程序应该在哪里放置程序的快捷方式？
-SelectStartMenuFolderLabel3=安装程序现在将在下列开始菜单文件夹中创建程序的快捷方式。
+SelectStartMenuFolderLabel3=安装程序将在下列开始菜单文件夹中创建程序的快捷方式。
 SelectStartMenuFolderBrowseLabel=点击“下一步”继续。如果您想选择其它文件夹，点击“浏览”。
 MustEnterGroupName=您必须输入一个文件夹名。
 GroupNameTooLong=文件夹名或路径太长。
@@ -212,8 +212,8 @@ NoProgramGroupCheck2=不创建开始菜单文件夹(&D)
 
 ; *** “准备安装”向导页
 WizardReady=准备安装
-ReadyLabel1=安装程序现在准备开始安装 [name] 到您的电脑中。
-ReadyLabel2a=点击“安装”继续此安装程序。如果您想要回顾或修改设置，请点击“上一步”。
+ReadyLabel1=安装程序准备好了，现在可以开始安装 [name] 到您的电脑中。
+ReadyLabel2a=点击“安装”继续此安装程序。如果您想要重新考虑或修改任何设置，请点击“上一步”。
 ReadyLabel2b=点击“安装”继续此安装程序？
 ReadyMemoUserInfo=用户信息：
 ReadyMemoDir=目标位置：
@@ -240,7 +240,7 @@ PreparingDesc=安装程序正在准备安装 [name] 到您的电脑中。
 PreviousInstallNotCompleted=先前程序的安装/卸载未完成。您需要重新启动您的电脑才能完成安装。%n%n在重新启动电脑后，再运行安装完成 [name] 的安装。
 CannotContinue=安装程序不能继续。请点击“取消”退出。
 ApplicationsFound=以下应用程序正在使用需要由安装程序更新的文件。建议您允许安装程序自动关闭这些应用程序。
-ApplicationsFound2=以下应用程序正在使用需要由安装程序更新的文件。建议您允许安装程序自动关闭这些应用程序。安装完成后，安装程序将尝试重新启动应用程序。
+ApplicationsFound2=以下应用程序正在使用需要由安装程序更新的文件。建议您允许安装程序自动关闭这些应用程序。安装完成后，安装程序将尝试重新启动这些应用程序。
 CloseApplications=自动关闭该应用程序(&A)
 DontCloseApplications=不要关闭该应用程序(&D)
 ErrorCloseApplications=安装程序无法自动关闭所有应用程序。建议您在继续之前关闭所有使用需要由安装程序更新的文件的应用程序。
@@ -356,7 +356,7 @@ UninstallNotFound=文件“%1”不存在。无法卸载。
 UninstallOpenError=文件“%1”不能打开。无法卸载。
 UninstallUnsupportedVer=此版本的卸载程序无法识别卸载日志文件“%1”的格式。无法卸载
 UninstallUnknownEntry=在卸载日志中遇到一个未知的条目 (%1)
-ConfirmUninstall=您确认想要完全删除 %1 及它的所有组件吗？
+ConfirmUninstall=您确认想要完全删除 %1 及其所有组件吗？
 UninstallOnlyOnWin64=这个安装程序只能在64位Windows中进行卸载。
 OnlyAdminCanUninstall=这个安装的程序需要有管理员权限的用户才能卸载。
 UninstallStatusLabel=正在从您的电脑中删除 %1，请稍等。
