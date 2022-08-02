@@ -284,7 +284,7 @@
     <value>現在使用中のアプリケーション音声も切り替えます。ゲームなどで便利です。</value>
   </data>
   <data name="foregroundApp" xml:space="preserve">
-    <value>動作中のプログラムも切り替える</value>
+    <value>前面のプログラムも切替</value>
   </data>
   <data name="disableCustomSoundTooltip" xml:space="preserve">
     <value>設定したカスタム音声を無効にします。</value>
@@ -485,5 +485,11 @@
   </data>
   <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
     <value>このプロファイルは現在の音声デバイスが変更されたときに自動的に有効化されます。</value>
+  </data>
+  <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
+    <value>新しいデバイスがコンピュータに接続されると、選択済リストに自動的に追加されます</value>
+  </data>
+  <data name="devices.AutoAddNewDevice" xml:space="preserve">
+    <value>新しいデバイスの自動選択</value>
   </data>
 </root>
