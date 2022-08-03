@@ -76,4 +76,10 @@
   <data name="downloadFailed" xml:space="preserve">
     <value>Prenos ni uspel</value>
   </data>
+  <data name="wrongSignature" xml:space="preserve">
+    <value>Pri zadnji posodobitvi SoundSwitch je prišlo do težave. Novo različico boste morali ročno prenesti z {0}</value>
+  </data>
+  <data name="remindMe" xml:space="preserve">
+    <value>Kasneje</value>
+  </data>
 </root>
