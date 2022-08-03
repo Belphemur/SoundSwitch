@@ -1,3 +1,23 @@
+## [6.4.1](https://github.com/Belphemur/SoundSwitch/compare/v6.4.0...v6.4.1) (2022-08-03)
+
+
+### Bug Fixes
+
+* **AutoAdd:** Only trigger the auto add when a new device is actually added ([fe26910](https://github.com/Belphemur/SoundSwitch/commit/fe2691063218d8d7032ff691dbe5b863c65cb8b3))
+* **Crash:** Fix crash when crashing. Be sure we can get the message and tell the user to report the issue. ([8303e30](https://github.com/Belphemur/SoundSwitch/commit/8303e302c7241dd9771de9c14b3583b5d9bf5f65))
+* **lang:** Chinese installer language ([0b3203f](https://github.com/Belphemur/SoundSwitch/commit/0b3203f79860694912377cde75bbea0739081918))
+
+
+### Languages
+
+* **Japanese:** Translated Settings using Weblate ([87daa76](https://github.com/Belphemur/SoundSwitch/commit/87daa7611d4cab958181ee1746d6b84a3739978e))
+
+
+### Enhancements
+
+* **quickmenu:** Make quick menu rounded like banner ([fd421aa](https://github.com/Belphemur/SoundSwitch/commit/fd421aa382890fd8b98074d169734da4a90a0f54))
+* **Rounded:** Add rounded corner to the banner and menus ([4358c88](https://github.com/Belphemur/SoundSwitch/commit/4358c883904b2bd142c1667cd0482aad9c2f532c)), closes [#971](https://github.com/Belphemur/SoundSwitch/issues/971)
+
 ## [6.4.0](https://github.com/Belphemur/SoundSwitch/compare/v6.3.0...v6.4.0) (2022-07-30)
 
 
