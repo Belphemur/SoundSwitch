@@ -38,6 +38,7 @@ using SoundSwitch.Localization.Factory;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
 using SoundSwitch.UI.Forms;
+using SoundSwitch.UI.Menu.Util;
 using SoundSwitch.Util;
 using SoundSwitch.Util.Url;
 using TimerForm = System.Windows.Forms.Timer;
@@ -184,6 +185,8 @@ namespace SoundSwitch.UI.Component
             _settingsMenu.Items.Add(TrayIconStrings.about, RessourceHelpSmallBitmap, (sender, e) => new About().Show());
             _settingsMenu.Items.Add(new ToolStripSeparator());
             _settingsMenu.Items.Add(TrayIconStrings.exit, RessourceExitBitmap, (sender, e) => Application.Exit());
+            
+            RoundedCorner.RoundCorner(_settingsMenu.Handle, RoundedCorner.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUNDSMALL);
         }
 
         private void OnUpdateClick(object sender, EventArgs eventArgs)
@@ -333,6 +336,8 @@ namespace SoundSwitch.UI.Component
                 _selectionMenu.Items.Add(new ToolStripSeparator());
                 _selectionMenu.Items.AddRange(recordingDevices.Select(info => new ToolStripDeviceItem(DeviceClicked, info, info.Equals(defaultRecording))).ToArray());
             }
+            RoundedCorner.RoundCorner(_selectionMenu.Handle, RoundedCorner.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUNDSMALL);
+        
         }
 
         private void DeviceClicked(object sender, EventArgs e)

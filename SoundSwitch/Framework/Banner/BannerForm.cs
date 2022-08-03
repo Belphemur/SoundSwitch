@@ -20,6 +20,7 @@ using System.Windows.Forms;
 using SoundSwitch.Framework.Audio.Play;
 using SoundSwitch.Framework.Threading;
 using SoundSwitch.Model;
+using SoundSwitch.UI.Menu.Util;
 using Timer = System.Windows.Forms.Timer;
 
 namespace SoundSwitch.Framework.Banner
@@ -101,6 +102,8 @@ namespace SoundSwitch.Framework.Banner
             Opacity = .8;
             lblTop.Text = data.Title;
             lblTitle.Text = data.Text;
+            Region = Region.FromHrgn(RoundedCorner.CreateRoundRectRgn(0, 0, Width, Height , 20, 20));
+
             _timerHide.Enabled = true;
 
             Show();
