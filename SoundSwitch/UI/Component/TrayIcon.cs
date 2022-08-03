@@ -186,7 +186,7 @@ namespace SoundSwitch.UI.Component
             _settingsMenu.Items.Add(new ToolStripSeparator());
             _settingsMenu.Items.Add(TrayIconStrings.exit, RessourceExitBitmap, (sender, e) => Application.Exit());
             
-            RoundedCorner.RoundCorner(_settingsMenu.Handle, RoundedCorner.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUNDSMALL);
+            RoundedCorner.RoundCorner(_settingsMenu.Handle, RoundedCorner.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND);
         }
 
         private void OnUpdateClick(object sender, EventArgs eventArgs)
@@ -336,7 +336,7 @@ namespace SoundSwitch.UI.Component
                 _selectionMenu.Items.Add(new ToolStripSeparator());
                 _selectionMenu.Items.AddRange(recordingDevices.Select(info => new ToolStripDeviceItem(DeviceClicked, info, info.Equals(defaultRecording))).ToArray());
             }
-            RoundedCorner.RoundCorner(_selectionMenu.Handle, RoundedCorner.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUNDSMALL);
+            RoundedCorner.RoundCorner(_selectionMenu.Handle, RoundedCorner.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND);
         
         }
 
