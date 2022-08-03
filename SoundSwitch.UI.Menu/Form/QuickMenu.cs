@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SoundSwitch.UI.Menu.Component;
+using SoundSwitch.UI.Menu.Util;
 using SoundSwitch.UI.Menu.Util.Timer;
 
 namespace SoundSwitch.UI.Menu.Form
@@ -30,26 +31,12 @@ namespace SoundSwitch.UI.Menu.Form
         public event EventHandler<MenuClickedEvent> SelectionChanged;
 
         protected override bool ShowWithoutActivation => true;
-
-        /// <summary>
-        /// Override the parameters used to create the window handle.
-        /// Ensure that the window will be top-most and do not activate or take focus.
-        /// </summary>
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                CreateParams p = base.CreateParams;
-                // p.ExStyle |= 0x08000000; // WS_EX_NOACTIVATE
-                p.ExStyle |= 0x00000008; // WS_EX_TOPMOST
-                return p;
-            }
-        }
-
+        
         internal QuickMenu()
         {
             InitializeComponent();
             _hideDisposeMethod = HideDispose;
+            TopMost = true;
         }
 
         /// <summary>
@@ -116,6 +103,7 @@ namespace SoundSwitch.UI.Menu.Form
 
             if (!_isLocationSet)
             {
+                Region = Region.FromHrgn(RoundedCorner.CreateRoundRectRgn(0, 0, Width, Height , 20, 20));
                 Show();
                 SetLocationToCursor();
                 _isLocationSet = true;

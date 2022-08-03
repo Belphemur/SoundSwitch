@@ -223,7 +223,8 @@ namespace SoundSwitch
 
 Would you like to share more information with the developers?";
             var result = DialogResult.None;
-            _synchronizationContext.Send(state =>
+            var syncContext = _synchronizationContext ?? SynchronizationContext.Current;
+            syncContext.Send(state =>
             {
                 result = MessageBox.Show(message, $@"{Application.ProductName} crashed...", MessageBoxButtons.YesNo,
                     MessageBoxIcon.Error);
