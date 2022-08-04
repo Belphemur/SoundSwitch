@@ -59,9 +59,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="profile.trigger.steam" xml:space="preserve">
-    <value>Zaganjalnik iger za Steam. Omogočite lahko celozaslonski način, imenovan Steam Big Picture.
-
-To je možen sprožilec profila, ko je ta zaznan bo omogočil želeni profil.</value>
+    <value>Velika slika Steam</value>
   </data>
   <data name="profile.desc" xml:space="preserve">
     <value>Opis</value>
@@ -75,7 +73,7 @@ To je možen sprožilec profila, ko je ta zaznan bo omogočil želeni profil.</v
 Obnovi stanje sistema, ko se program zapre.</value>
   </data>
   <data name="profile.trigger.restoreDevices" xml:space="preserve">
-    <value>Obnovi naprave do dokončanju sprožilca</value>
+    <value>Obnovi naprave po dokončanju sprožilca</value>
   </data>
   <data name="usePrimaryScreenTooltip" xml:space="preserve">
     <value>Prikaži pasico na primarnem zaslonu namesto na zaslonu s fokusom.</value>
@@ -129,7 +127,7 @@ Obnovi stanje sistema, ko se program zapre.</value>
     <value>Aktiviraj profil, če program v ospredju vsebuje naslednje znake</value>
   </data>
   <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>Uporabljena vroča tipka profila</value>
+    <value>Uporabljena vroča tipka profila. Če uporabljate isto vročo tipko, boste lahko preklapljali med profili.</value>
   </data>
   <data name="profile.trigger.process" xml:space="preserve">
     <value>Pot programa</value>
@@ -392,5 +390,47 @@ Ali ga zdaj želite znova zagnati?</value>
   </data>
   <data name="selected" xml:space="preserve">
     <value>Izbrano</value>
+  </data>
+  <data name="quickMenu" xml:space="preserve">
+    <value>Hitri meni na vroči tipki</value>
+  </data>
+  <data name="quickMenu.desc" xml:space="preserve">
+    <value>Prikaži hitri meni, kot je jezik Windows, pri uporabi vroče tipke</value>
+  </data>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>{0} je zdaj vklopljen.</value>
+  </data>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>Preklopi na izklopljeno</value>
+  </data>
+  <data name="notification.microphone.muted" xml:space="preserve">
+    <value>{0} je zdaj izklopljen.</value>
+  </data>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>V meniju aplikacije</value>
+  </data>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>Ta sprožilec naredi profil viden v meniju ikon programske vrstice. Levi klik na ikono v sistemski programski vrstici, da vidite svoj profil.</value>
+  </data>
+  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
+    <value>Profil se bo samodejno sprožil kadar koli, ko se spremeni trenutna zvočna naprava.</value>
+  </data>
+  <data name="telemetry" xml:space="preserve">
+    <value>Telemetrija</value>
+  </data>
+  <data name="telemetry.desc" xml:space="preserve">
+    <value>Anonimno zberi, katera različica SoundSwitch je v uporabi. Deljeno le z razvijalcem SoundSwitcha.</value>
+  </data>
+  <data name="profile.trigger.deviceChanged" xml:space="preserve">
+    <value>Vsili profil</value>
+  </data>
+  <data name="profile.error.deviceChanged" xml:space="preserve">
+    <value>Imate lahko le en vsiljen profil.</value>
+  </data>
+  <data name="devices.AutoAddNewDevice" xml:space="preserve">
+    <value>Samodejno izberi nove naprave</value>
+  </data>
+  <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
+    <value>Samodejno dodaj nove naprave na izbrani seznam, ko so povezane z računalnikom</value>
   </data>
 </root>
