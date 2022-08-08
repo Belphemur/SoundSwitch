@@ -37,15 +37,19 @@ public static class RoundedCorner
     /// </summary>
     /// <param name="handle"></param>
     /// <param name="preference"></param>
-    public static void RoundCorner(IntPtr handle, DWM_WINDOW_CORNER_PREFERENCE preference)
+    public static bool RoundCorner(IntPtr handle, DWM_WINDOW_CORNER_PREFERENCE preference)
     {
         if (Environment.OSVersion.Version.Major < 10 || Environment.OSVersion.Version.Build < OS_WINDOWS_11)
         {
             return;
         }
-
-        var pref = preference;
-        DwmSetWindowAttribute(handle, DWMWINDOWATTRIBUTE.DWMWA_WINDOW_CORNER_PREFERENCE, ref pref, sizeof(uint));
+        try {
+            var pref = preference;
+            DwmSetWindowAttribute(handle, DWMWINDOWATTRIBUTE.DWMWA_WINDOW_CORNER_PREFERENCE, ref pref, sizeof(uint));
+            return true;
+        } catch(Exception) {
+            return false;
+        }
     }
 
 
