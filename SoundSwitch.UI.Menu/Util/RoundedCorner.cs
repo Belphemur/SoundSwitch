@@ -41,7 +41,7 @@ public static class RoundedCorner
     {
         if (Environment.OSVersion.Version.Major < 10 || Environment.OSVersion.Version.Build < OS_WINDOWS_11)
         {
-            return;
+            return false;
         }
         try {
             var pref = preference;
