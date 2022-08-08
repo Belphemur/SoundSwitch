@@ -76,7 +76,14 @@ public class DeviceCollection<T> : ICollection<T> where T : DeviceInfo
         }
 
         var removeId = _byId.Remove(item.Id);
-        var removeName = _byName.Remove(item.NameClean);
+        var removeName = _byName.Remove(item.NameClean, out var removedByName);
+
+        //If we found it by name, remove it also with it's id
+        //this avoid the case that a device is removed because of name matching
+        //but it's still used since we iterate the _byId
+        if(removeName) {
+            _byId.Remove(removedByName.Id);
+        }
 
         return removeId || removeName;
     }
