@@ -1,3 +1,18 @@
+## [6.4.2](https://github.com/Belphemur/SoundSwitch/compare/v6.4.1...v6.4.2) (2022-08-09)
+
+
+### Bug Fixes
+
+* **Collection:** Remove properly device when unselected from the list. ([2f70eb2](https://github.com/Belphemur/SoundSwitch/commit/2f70eb2824852ff9012842bfa9b5ac42a02dd151)), closes [#978](https://github.com/Belphemur/SoundSwitch/issues/978)
+* **Win11::RoundedCorner:** Fix possible crash when showing menu and trying to apply the rounding. ([d6050e4](https://github.com/Belphemur/SoundSwitch/commit/d6050e4404141d3dfb42a346ec6a8c5c87a7612a)), closes [#977](https://github.com/Belphemur/SoundSwitch/issues/977)
+
+
+### Languages
+
+* **Slovenian:** Translated Settings using Weblate ([4dad868](https://github.com/Belphemur/SoundSwitch/commit/4dad86837a7ea4def6dd109024bb132aa792ac2c))
+* **Slovenian:** Translated Tray Icon using Weblate ([0fe7a50](https://github.com/Belphemur/SoundSwitch/commit/0fe7a50166defbc9f96a537323f672790d40d5da))
+* **Slovenian:** Translated Update Download using Weblate ([06f8b44](https://github.com/Belphemur/SoundSwitch/commit/06f8b4444f9b540b5bd299f4d5042e864eb2d9ad))
+
 ## [6.4.1](https://github.com/Belphemur/SoundSwitch/compare/v6.4.0...v6.4.1) (2022-08-03)
 
 
