@@ -489,4 +489,7 @@ Stellt den Zustand des Systems wieder her, wenn die Anwendung geschlossen wird.<
   <data name="devices.AutoAddNewDevice" xml:space="preserve">
     <value>Neue Geräte automatisch auswählen</value>
   </data>
+  <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
+    <value>Neues Gerät automatisch zur ausgewählten Liste hinzufügen, wenn es mit dem Computer verbunden ist</value>
+  </data>
 </root>
