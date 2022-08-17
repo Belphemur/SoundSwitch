@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -58,4 +58,161 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="communicationsDevice" xml:space="preserve">
+    <value>Skift standard kommunikationsenhed</value>
+  </data>
+  <data name="startWithWindows" xml:space="preserve">
+    <value>Start automatisk med Windows</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>Luk</value>
+  </data>
+  <data name="closeTooltip" xml:space="preserve">
+    <value>Ændringer gemmes automatisk</value>
+  </data>
+  <data name="notification" xml:space="preserve">
+    <value>Notifikation</value>
+  </data>
+  <data name="updateIncludeBetaVersions" xml:space="preserve">
+    <value>Inkludér beta-udgaver</value>
+  </data>
+  <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
+    <value>Når markeret, vil SoundSwitch også se efter beta-udgaver på GitHub.</value>
+  </data>
+  <data name="audioFiles" xml:space="preserve">
+    <value>Lydfiler</value>
+  </data>
+  <data name="selectSoundButtonTooltip" xml:space="preserve">
+    <value>Vælg lydfil til notifikation</value>
+  </data>
+  <data name="hotkeys" xml:space="preserve">
+    <value>Genvej</value>
+  </data>
+  <data name="hotkeysTooltip" xml:space="preserve">
+    <value>Markér for at aktivere genvej.</value>
+  </data>
+  <data name="basicSettings" xml:space="preserve">
+    <value>Grundlæggende indstillinger</value>
+  </data>
+  <data name="audioSettings" xml:space="preserve">
+    <value>Lydindstillinger</value>
+  </data>
+  <data name="updateSettings" xml:space="preserve">
+    <value>Opdateringsindstillinger</value>
+  </data>
+  <data name="cycleThrough" xml:space="preserve">
+    <value>Skift igennem</value>
+  </data>
+  <data name="keepSystemTrayIcon" xml:space="preserve">
+    <value>Behold SoundSwitch System Tray ikon</value>
+  </data>
+  <data name="keepSystemTrayIconTooltip" xml:space="preserve">
+    <value>Når markeret, vil System Tray ikonet ikke skifte når "Standard afspilningsenhed" skifter.</value>
+  </data>
+  <data name="updateNotify" xml:space="preserve">
+    <value>Giv mig besked når der er tilgængelige opdateringer</value>
+  </data>
+  <data name="updateNever" xml:space="preserve">
+    <value>Kig aldrig efter opdateringer</value>
+  </data>
+  <data name="tooltipOnHover" xml:space="preserve">
+    <value>Værktøjstip ved svævning</value>
+  </data>
+  <data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
+    <value>Alle lydenheder</value>
+  </data>
+  <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
+    <value>Kun valgte lydenheder</value>
+  </data>
+  <data name="cycleThroughTooltip" xml:space="preserve">
+    <value>Vælg mellem de enheder der skal skiftes. Enten mellem de valgte eller alle.</value>
+  </data>
+  <data name="notificationOptionWindowsDefault" xml:space="preserve">
+    <value>Windows Notifikation</value>
+  </data>
+  <data name="notificationOptionSound" xml:space="preserve">
+    <value>Lydnotifikation</value>
+  </data>
+  <data name="notificationOptionNone" xml:space="preserve">
+    <value>Ingen notifikation</value>
+  </data>
+  <data name="notificationOptionToast" xml:space="preserve">
+    <value>Toast-notifkation</value>
+  </data>
+  <data name="notificationOptionCustomized" xml:space="preserve">
+    <value>Skræddersyet lydnotifikation</value>
+  </data>
+  <data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
+    <value>Afspilningsenhed</value>
+  </data>
+  <data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
+    <value>Optagelsesenhed</value>
+  </data>
+  <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
+    <value>For begge enheder</value>
+  </data>
+  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
+    <value>Ingen værktøjstip</value>
+  </data>
+  <data name="audioFileNotFound" xml:space="preserve">
+    <value>Lydfilen du valgte til notifikation, kunne ikke findes. SoundSwitch ændrede notifikations-indstillingen tilbage til {0}.</value>
+  </data>
+  <data name="audioFileNotFoundCaption" xml:space="preserve">
+    <value>Lydfil ikke fundet</value>
+  </data>
+  <data name="activePlayback" xml:space="preserve">
+    <value>Afspil: {0}</value>
+  </data>
+  <data name="language" xml:space="preserve">
+    <value>Sprog</value>
+  </data>
+  <data name="languageRestartRequired" xml:space="preserve">
+    <value>Sproget ændres efter genstart af SoundSwitch.
+Vil du genstarte nu?</value>
+  </data>
+  <data name="languageRestartRequiredCaption" xml:space="preserve">
+    <value>Kræver genstart</value>
+  </data>
+  <data name="foregroundApp" xml:space="preserve">
+    <value>Skift også i programmet i forgrunden</value>
+  </data>
+  <data name="communicationsDeviceTooltip" xml:space="preserve">
+    <value>Når markeret, vil "Standard kommunikationsenhed" og "Standard afspilningsenhed" blive skiftet samtidigt (anvendeligt i Skype, TeamSpeak o.l.).</value>
+  </data>
+  <data name="disconnected" xml:space="preserve">
+    <value>Afbrudt</value>
+  </data>
+  <data name="selected" xml:space="preserve">
+    <value>Valgt</value>
+  </data>
+  <data name="connected" xml:space="preserve">
+    <value>Tilsluttet</value>
+  </data>
+  <data name="playback" xml:space="preserve">
+    <value>Afspil</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>Indstillinger</value>
+  </data>
+  <data name="recording" xml:space="preserve">
+    <value>Optager</value>
+  </data>
+  <data name="updateInstallAutomatically" xml:space="preserve">
+    <value>Installér opdateringer automatisk</value>
+  </data>
+  <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
+    <value>Opdateringer bliver automatisk installeret uden at spørge om tilladelse.</value>
+  </data>
+  <data name="disableCustomSoundTooltip" xml:space="preserve">
+    <value>Deaktivér den indstillede, skræddersyede lyd.</value>
+  </data>
+  <data name="updateNeverTooltip" xml:space="preserve">
+    <value>Opdatér ikke programmet med mindre du gør det manuelt.</value>
+  </data>
+  <data name="updateNotifyTooltip" xml:space="preserve">
+    <value>SoundSwitch giver dig besked når der er en opdatering tilgængelig. Når du klikker på notifikationen, får du en popup der henter opdateringen og du vil blive spurgt om du installere den.</value>
+  </data>
+  <data name="notificationOptionBanner" xml:space="preserve">
+    <value>Banner</value>
+  </data>
 </root>
