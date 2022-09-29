@@ -45,7 +45,7 @@ jobs:
             node:
               - 'package.json'
       - name: Setup .NET
-        uses: actions/setup-dotnet@v2
+        uses: actions/setup-dotnet@v3.0.0
         if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true' || github.ref == 'refs/heads/master'
         with:
           dotnet-version: ${{ env.DOTNET }}
@@ -119,7 +119,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Setup .NET
-        uses: actions/setup-dotnet@v2
+        uses: actions/setup-dotnet@v3.0.0
         with:
           dotnet-version: ${{ env.DOTNET }}
           include-prerelease: ${{ env.DOTNET_PRERELEASE }}
