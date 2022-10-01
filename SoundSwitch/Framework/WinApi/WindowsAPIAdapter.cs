@@ -44,6 +44,7 @@ namespace SoundSwitch.Framework.WinApi
             #define WM_DEVICECHANGE                 0x0219
         */
         private const int WM_QUERYENDSESSION = 0x0011;
+
         private const int WM_ENDSESSION = 0x0016;
         private const int ENDSESSION_CLOSEAPP = 0x00000001;
         private const int WM_CLOSE = 0x0010;
@@ -113,7 +114,6 @@ namespace SoundSwitch.Framework.WinApi
 
         private static void RunForm()
         {
-
             Log.Information("Starting WindowsAPIAdapter thread");
             if (_exceptionEventHandler != null)
             {
@@ -129,7 +129,6 @@ namespace SoundSwitch.Framework.WinApi
             Log.Information("Handle created. Running the application.");
             Application.Run(_instance);
             Log.Information("End of the WindowsAPIAdapter thread");
-
         }
 
         private void EndForm()
@@ -147,8 +146,10 @@ namespace SoundSwitch.Framework.WinApi
                 {
                     NativeMethods.UnregisterHotKey(Handle, hotKeyId);
                 }
+
                 Interop.DeregisterShellHookWindow(User32.NativeMethods.HWND.Cast(Handle));
             }
+
             base.Dispose(disposing);
         }
 
@@ -171,24 +172,21 @@ namespace SoundSwitch.Framework.WinApi
             lock (_instance)
             {
                 return (bool)_instance.Invoke(new Func<bool>(() =>
-               {
+                {
+                    Log.Information("Registering Hotkeys: {hotkeys}", hotKey);
+                    if (_instance._registeredHotkeys.ContainsKey(hotKey))
+                    {
+                        Log.Information("Already registered {hotkeys}", hotKey);
+                        return false;
+                    }
 
-                   Log.Information("Registering Hotkeys: {hotkeys}", hotKey);
-                   if (_instance._registeredHotkeys.ContainsKey(hotKey))
-                   {
-                       Log.Information("Already registered {hotkeys}", hotKey);
-                       return false;
-                   }
-
-                   var id = _instance._hotKeyId++;
-                   _instance._registeredHotkeys.Add(hotKey, id);
-                   // register the hot key.
-                   return NativeMethods.RegisterHotKey(_instance.Handle, id, (uint)hotKey.Modifier,
-                      (uint)hotKey.Keys);
-
-               }));
+                    var id = _instance._hotKeyId++;
+                    _instance._registeredHotkeys.Add(hotKey, id);
+                    // register the hot key.
+                    return NativeMethods.RegisterHotKey(_instance.Handle, id, (uint)hotKey.Modifier,
+                        (uint)hotKey.Keys);
+                }));
             }
-
         }
 
         /// <summary>
@@ -203,16 +201,17 @@ namespace SoundSwitch.Framework.WinApi
             lock (_instance)
             {
                 return (bool)_instance.Invoke(new Func<bool>(() =>
-               {
-                   Log.Information("Unregistering Hotkeys: {hotkeys}", hotKey);
-                   if (!_instance._registeredHotkeys.TryGetValue(hotKey, out var id))
-                   {
-                       Log.Information("Not registered {hotkeys}", hotKey);
-                       return false;
-                   }
-                   _instance._registeredHotkeys.Remove(hotKey);
-                   return NativeMethods.UnregisterHotKey(_instance.Handle, id);
-               }));
+                {
+                    Log.Information("Unregistering Hotkeys: {hotkeys}", hotKey);
+                    if (!_instance._registeredHotkeys.TryGetValue(hotKey, out var id))
+                    {
+                        Log.Information("Not registered {hotkeys}", hotKey);
+                        return false;
+                    }
+
+                    _instance._registeredHotkeys.Remove(hotKey);
+                    return NativeMethods.UnregisterHotKey(_instance.Handle, id);
+                }));
             }
         }
 
@@ -261,7 +260,7 @@ namespace SoundSwitch.Framework.WinApi
                     ProcessHotKeyEvent(m);
                     break;
             }
-            
+
             if (WindowDestroyed != null && m.Msg == _msgNotifyShell)
             {
                 // Receive shell messages
@@ -270,10 +269,7 @@ namespace SoundSwitch.Framework.WinApi
                     case Interop.ShellEvents.HSHELL_WINDOWDESTROYED:
                         var hwnd = User32.NativeMethods.HWND.Cast(m.LParam);
                         var (_, windowText, windowClass) = WindowMonitor.ProcessWindowInformation(hwnd);
-                        Task.Factory.StartNew(() =>
-                        {
-                            WindowDestroyed?.Invoke(this, new WindowDestroyedEvent(hwnd));
-                        });
+                        Task.Factory.StartNew(() => { WindowDestroyed?.Invoke(this, new WindowDestroyedEvent(hwnd)); });
                         break;
                 }
             }
@@ -303,10 +299,7 @@ namespace SoundSwitch.Framework.WinApi
             var key = (Keys)((ConvertLParam(m.LParam) >> 16) & 0xFFFF);
             var modifier = (HotKey.ModifierKeys)(ConvertLParam(m.LParam) & 0xFFFF);
 
-            Task.Factory.StartNew(() =>
-            {
-                HotKeyPressed?.Invoke(this, new KeyPressedEventArgs(new HotKey(key, modifier)));
-            });
+            Task.Factory.StartNew(() => { HotKeyPressed?.Invoke(this, new KeyPressedEventArgs(new HotKey(key, modifier))); });
         }
 
         #region WindowsNativeMethods
@@ -314,11 +307,11 @@ namespace SoundSwitch.Framework.WinApi
         public static class NativeMethods
         {
             // Registers a hot key with Windows.
-            [DllImport("user32.dll")]
+            [DllImport("user32.dll", SetLastError = true)]
             internal static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
 
             // Unregisters the hot key with Windows.
-            [DllImport("user32.dll")]
+            [DllImport("user32.dll", SetLastError = true)]
             internal static extern bool UnregisterHotKey(IntPtr hWnd, int id);
         }
 
