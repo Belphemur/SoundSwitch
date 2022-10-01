@@ -60,7 +60,7 @@ namespace SoundSwitch.Framework.Configuration
             RecordingHotKey = new HotKey(Keys.F7, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
             MuteRecordingHotKey = new HotKey(Keys.M, HotKey.ModifierKeys.Control | HotKey.ModifierKeys.Alt);
 
-            AutoAddNewConnectedDevices = true;
+            AutoAddNewConnectedDevices = false;
 
             SelectedDevices = new HashSet<DeviceInfo>();
             SwitchIcon = IconChangerFactory.ActionEnum.Never;
