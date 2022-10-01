@@ -31,7 +31,8 @@ namespace SoundSwitch.Localization.Factory
             new Turkish(),
             new Arabic(),
             new Thai(),
-            new Serbian()
+            new Serbian(),
+            new Danish()
         })
         {
         }
