@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundSwitch.UI.Menu", "Soun
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundSwitch.Audio.Manager.Tests", "SoundSwitch.Audio.Manager.Tests\SoundSwitch.Audio.Manager.Tests.csproj", "{2B15926A-26C1-4F6C-A6B4-260A5CCC84A2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundSwitch.Bluetooth", "SoundSwitch.Bluetooth\SoundSwitch.Bluetooth.csproj", "{BE9A24AF-E7B9-4A5D-B26D-2EAEB4D9F94D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Beta|Any CPU = Beta|Any CPU
@@ -71,6 +73,14 @@ Global
 		{2B15926A-26C1-4F6C-A6B4-260A5CCC84A2}.Nightly|Any CPU.Build.0 = Debug|Any CPU
 		{2B15926A-26C1-4F6C-A6B4-260A5CCC84A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B15926A-26C1-4F6C-A6B4-260A5CCC84A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE9A24AF-E7B9-4A5D-B26D-2EAEB4D9F94D}.Beta|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE9A24AF-E7B9-4A5D-B26D-2EAEB4D9F94D}.Beta|Any CPU.Build.0 = Debug|Any CPU
+		{BE9A24AF-E7B9-4A5D-B26D-2EAEB4D9F94D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE9A24AF-E7B9-4A5D-B26D-2EAEB4D9F94D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE9A24AF-E7B9-4A5D-B26D-2EAEB4D9F94D}.Nightly|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE9A24AF-E7B9-4A5D-B26D-2EAEB4D9F94D}.Nightly|Any CPU.Build.0 = Debug|Any CPU
+		{BE9A24AF-E7B9-4A5D-B26D-2EAEB4D9F94D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE9A24AF-E7B9-4A5D-B26D-2EAEB4D9F94D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

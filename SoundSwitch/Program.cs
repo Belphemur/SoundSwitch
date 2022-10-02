@@ -23,6 +23,7 @@ using System.Windows.Forms;
 using ContribSentry;
 using Sentry;
 using Serilog;
+using SoundSwitch.Bluetooth;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Logger.Configuration;
@@ -47,6 +48,8 @@ namespace SoundSwitch
         [STAThread]
         private static void Main()
         {
+            using var bl = new BluetoothManager();
+            bl.Start();
             var sentryOptions = new SentryOptions
             {
                 Dsn = "https://7d52dfb4f6554bf0b58b256337835332@o631137.ingest.sentry.io/5755327",
