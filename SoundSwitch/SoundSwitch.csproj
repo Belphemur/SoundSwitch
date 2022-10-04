@@ -50,7 +50,7 @@
         <PackageReference Include="AuthenticodeExaminer" Version="0.3.0" />
         <PackageReference Include="ContribSentry" Version="4.0.0" />
         <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
-        <PackageReference Include="Job.Scheduler" Version="2.9.0" />
+        <PackageReference Include="Job.Scheduler" Version="3.0.1" />
         <PackageReference Include="Markdig" Version="0.30.4" />
         <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
         <PackageReference Include="RailSharp" Version="1.0.0" />
