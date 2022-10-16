@@ -477,4 +477,19 @@ Restaura el estado del sistema cuando se cierra la aplicación.</value>
   <data name="profile.explanation" xml:space="preserve">
     <value>Añada un perfil para cambiar a un determinado dispositivo de reproducción o de grabación cuando se inicie o active una aplicación específica.</value>
   </data>
+  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
+    <value>El perfil se activará automáticamente cuando cambie el dispositivo de sonido actual.</value>
+  </data>
+  <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
+    <value>Añadir automáticamente nuevos dispositivos a la lista seleccionada cuando se conectan al ordenador</value>
+  </data>
+  <data name="profile.trigger.deviceChanged" xml:space="preserve">
+    <value>Forzar perfil</value>
+  </data>
+  <data name="profile.error.deviceChanged" xml:space="preserve">
+    <value>Sólo puedes tener un perfil forzado.</value>
+  </data>
+  <data name="devices.AutoAddNewDevice" xml:space="preserve">
+    <value>Selección automática de nuevos dispositivos</value>
+  </data>
 </root>
