@@ -10,7 +10,7 @@
         <PublishReadyToRun>true</PublishReadyToRun>
         <Configurations>Debug;Release;Beta;Nightly</Configurations>
         <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-        <TargetFramework>net6.0-windows</TargetFramework>
+        <TargetFramework>net7.0-windows</TargetFramework>
         <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
 <!--    <PropertyGroup>-->
