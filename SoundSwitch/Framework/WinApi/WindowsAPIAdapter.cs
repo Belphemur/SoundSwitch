@@ -171,7 +171,7 @@ namespace SoundSwitch.Framework.WinApi
 
             lock (_instance)
             {
-                return (bool)_instance.Invoke(new Func<bool>(() =>
+                return (bool)_instance.Invoke(() =>
                 {
                     Log.Information("Registering Hotkeys: {hotkeys}", hotKey);
                     if (_instance._registeredHotkeys.ContainsKey(hotKey))
@@ -185,7 +185,7 @@ namespace SoundSwitch.Framework.WinApi
                     // register the hot key.
                     return NativeMethods.RegisterHotKey(_instance.Handle, id, (uint)hotKey.Modifier,
                         (uint)hotKey.Keys);
-                }));
+                });
             }
         }
 
