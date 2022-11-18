@@ -140,13 +140,17 @@ namespace SoundSwitch.Framework.WinApi
             {
                 return;
             }
+
             Log.Information("Computer coming back from sleep, re-registering hotkeys");
 
             foreach (var (hotKey, hotKeyId) in _instance._registeredHotkeys)
             {
-                var wasRegistered = NativeMethods.UnregisterHotKey(_instance.Handle, hotKeyId);
-                var isRegistered = NativeMethods.RegisterHotKey(_instance.Handle, hotKeyId, (uint)hotKey.Modifier, (uint)hotKey.Keys);
-                Log.Information("Re-registering hotkey {Hotkey}: Result({WasRegistered}, {IsRegistered})", hotKey, wasRegistered, isRegistered);
+                _instance.Invoke(() =>
+                {
+                    var wasRegistered = NativeMethods.UnregisterHotKey(_instance.Handle, hotKeyId);
+                    var isRegistered = NativeMethods.RegisterHotKey(_instance.Handle, hotKeyId, (uint)hotKey.Modifier, (uint)hotKey.Keys);
+                    Log.Information("Re-registering hotkey {Hotkey}: Result(Was: {WasRegistered}, Is:{IsRegistered})", hotKey, wasRegistered, isRegistered);
+                });
             }
         }
 
