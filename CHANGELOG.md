@@ -1,3 +1,28 @@
+## [6.4.3](https://github.com/Belphemur/SoundSwitch/compare/v6.4.2...v6.4.3) (2022-11-18)
+
+
+### Bug Fixes
+
+* **Hotkey:** Fix hotkey not being registered when computer comes back from sleep ([ed05d62](https://github.com/Belphemur/SoundSwitch/commit/ed05d624bf1af1ab51e6cc46dc9971587baa219b)), closes [#1041](https://github.com/Belphemur/SoundSwitch/issues/1041) [#997](https://github.com/Belphemur/SoundSwitch/issues/997)
+
+
+### Languages
+
+* Add danish to the application ([1d5ff6b](https://github.com/Belphemur/SoundSwitch/commit/1d5ff6b4a49386e12f4eebca079ea5b3c1dc3ccb))
+* **Croatian:** Translated Settings using Weblate ([63bf492](https://github.com/Belphemur/SoundSwitch/commit/63bf4927367257a834e3641abaef29ae7aada8a8))
+* **Danish:** Added About translation using Weblate ([76221bf](https://github.com/Belphemur/SoundSwitch/commit/76221bf35af224937e7bbe8b55703279685517f9))
+* **Danish:** Translated About using Weblate ([b0b9ddd](https://github.com/Belphemur/SoundSwitch/commit/b0b9dddf6d87f8e3336421fd0ba7d63e9b300e16))
+* **Danish:** Translated Settings using Weblate ([cfa248f](https://github.com/Belphemur/SoundSwitch/commit/cfa248fd7d0a3a7c6bd54193e187ae8c80f9b804))
+* **German:** Translated Settings using Weblate ([39a2e80](https://github.com/Belphemur/SoundSwitch/commit/39a2e807d18df80fdf88cc21020b2fe6cfa4717a))
+* **German:** Translated Settings using Weblate ([76d4691](https://github.com/Belphemur/SoundSwitch/commit/76d469153c52732459264d0960c28aa0baa361ec))
+* **German:** Translated Update Download using Weblate ([5e8d91b](https://github.com/Belphemur/SoundSwitch/commit/5e8d91b1af2bc46ddec9f165cc437ab0c7e0f52b))
+* **Spanish:** Translated Settings using Weblate ([25f9ab9](https://github.com/Belphemur/SoundSwitch/commit/25f9ab9b88a811126f7d87f3c92eba8371604e80))
+
+
+### Enhancements
+
+* **.NET:** Update to .NET 7.0 ([72cb6b8](https://github.com/Belphemur/SoundSwitch/commit/72cb6b841a0d815a5efe131ddfb800cfc99b040b))
+
 ## [6.4.2](https://github.com/Belphemur/SoundSwitch/compare/v6.4.1...v6.4.2) (2022-08-09)
 
 
