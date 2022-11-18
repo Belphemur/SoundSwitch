@@ -477,4 +477,19 @@ Stellt den Zustand des Systems wieder her, wenn die Anwendung geschlossen wird.<
   <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
     <value>Dieser Schalter macht das Profil im Traymenü sichtbar. Linksklick auf das Traysymbol um Ihr Profil anzuzeigen.</value>
   </data>
+  <data name="profile.trigger.deviceChanged" xml:space="preserve">
+    <value>Profil erzwingen</value>
+  </data>
+  <data name="profile.error.deviceChanged" xml:space="preserve">
+    <value>Nur ein erzwungenes Profil ist möglich.</value>
+  </data>
+  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
+    <value>Das Profil wird jederzeit automatisch ausgelöst, wenn sich das aktuelle Audiogerät ändert.</value>
+  </data>
+  <data name="devices.AutoAddNewDevice" xml:space="preserve">
+    <value>Neue Geräte automatisch auswählen</value>
+  </data>
+  <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
+    <value>Neues Gerät automatisch zur ausgewählten Liste hinzufügen, wenn es mit dem Computer verbunden ist</value>
+  </data>
 </root>

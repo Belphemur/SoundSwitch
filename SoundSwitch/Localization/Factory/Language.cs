@@ -41,6 +41,7 @@ namespace SoundSwitch.Localization.Factory
         Turkish,
         Arabic,
         Thai,
-        Serbian
+        Serbian,
+        Danish
     }
 }

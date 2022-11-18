@@ -20,7 +20,7 @@ on:
   schedule:
     - cron: '40 2 * * 4'
 env:
-  DOTNET: "6.0.x"
+  DOTNET: "7.0.x"
   DOTNET_PRERELEASE: true
   PROJECT_NAME: "SoundSwitch"
   ARCH: "win-x64"
@@ -39,7 +39,7 @@ jobs:
 
     steps:
     - name: Cancel Previous Runs
-      uses: styfle/cancel-workflow-action@0.10.0
+      uses: styfle/cancel-workflow-action@0.11.0
       with:
         all_but_latest: true
         access_token: ${{ github.token }}
@@ -59,7 +59,7 @@ jobs:
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
     - name: Setup .NET
-      uses: actions/setup-dotnet@v2
+      uses: actions/setup-dotnet@v3.0.3
       with:
         dotnet-version: ${{ env.DOTNET }}
         include-prerelease: ${{ env.DOTNET_PRERELEASE }}
