@@ -20,6 +20,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Win32;
 using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Com.User;
@@ -122,6 +123,8 @@ namespace SoundSwitch.Framework.WinApi
                 AppDomain.CurrentDomain.UnhandledException += (sender, args) => _exceptionEventHandler(sender, new ThreadExceptionEventArgs((Exception)args.ExceptionObject));
             }
 
+            SystemEvents.PowerModeChanged += SystemEventsOnPowerModeChanged;
+
             _instance = new WindowsAPIAdapter();
             _instance.CreateHandle();
             _instance._msgNotifyShell = Interop.RegisterWindowMessage("SHELLHOOK");
@@ -131,9 +134,26 @@ namespace SoundSwitch.Framework.WinApi
             Log.Information("End of the WindowsAPIAdapter thread");
         }
 
+        private static void SystemEventsOnPowerModeChanged(object sender, PowerModeChangedEventArgs e)
+        {
+            if (e.Mode != PowerModes.Resume)
+            {
+                return;
+            }
+            Log.Information("Computer coming back from sleep, re-registering hotkeys");
+
+            foreach (var (hotKey, hotKeyId) in _instance._registeredHotkeys)
+            {
+                var wasRegistered = NativeMethods.UnregisterHotKey(_instance.Handle, hotKeyId);
+                var isRegistered = NativeMethods.RegisterHotKey(_instance.Handle, hotKeyId, (uint)hotKey.Modifier, (uint)hotKey.Keys);
+                Log.Information("Re-registering hotkey {Hotkey}: Result({WasRegistered}, {IsRegistered})", hotKey, wasRegistered, isRegistered);
+            }
+        }
+
         private void EndForm()
         {
             Close();
+            SystemEvents.PowerModeChanged -= SystemEventsOnPowerModeChanged;
         }
 
         protected override void Dispose(bool disposing)
