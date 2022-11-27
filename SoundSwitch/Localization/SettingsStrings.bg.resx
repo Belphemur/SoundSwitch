@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -58,4 +58,379 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="communicationsDevice" xml:space="preserve">
+    <value>Включи комуникационното устройство по подразбиране</value>
+  </data>
+  <data name="disconnected" xml:space="preserve">
+    <value>Изключени</value>
+  </data>
+  <data name="connected" xml:space="preserve">
+    <value>Включени</value>
+  </data>
+  <data name="recording" xml:space="preserve">
+    <value>Запис</value>
+  </data>
+  <data name="playback" xml:space="preserve">
+    <value>Възпроизвеждане</value>
+  </data>
+  <data name="hotkeys" xml:space="preserve">
+    <value>Клавишна комбинация</value>
+  </data>
+  <data name="closeTooltip" xml:space="preserve">
+    <value>Промените се записват автоматично</value>
+  </data>
+  <data name="notification" xml:space="preserve">
+    <value>Известие</value>
+  </data>
+  <data name="updateIncludeBetaVersions" xml:space="preserve">
+    <value>Включване на бета версии</value>
+  </data>
+  <data name="audioFiles" xml:space="preserve">
+    <value>Аудио файлове</value>
+  </data>
+  <data name="selectSoundButtonTooltip" xml:space="preserve">
+    <value>Изберете звуков файл за известието</value>
+  </data>
+  <data name="basicSettings" xml:space="preserve">
+    <value>Основни настройки</value>
+  </data>
+  <data name="audioSettings" xml:space="preserve">
+    <value>Аудио настройки</value>
+  </data>
+  <data name="updateSettings" xml:space="preserve">
+    <value>Настройки за актуализация</value>
+  </data>
+  <data name="updateInstallAutomatically" xml:space="preserve">
+    <value>Автоматично инсталиране на актуализациите</value>
+  </data>
+  <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
+    <value>Актуализациите се инсталират автоматично, без никакви подкани.</value>
+  </data>
+  <data name="updateNotify" xml:space="preserve">
+    <value>Известяване, когато са налични актуализации</value>
+  </data>
+  <data name="updateNever" xml:space="preserve">
+    <value>Без проверка за актуализации</value>
+  </data>
+  <data name="cycleThrough" xml:space="preserve">
+    <value>Превключване между</value>
+  </data>
+  <data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
+    <value>Всички аудио устройства</value>
+  </data>
+  <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
+    <value>Маркираните аудио устройства</value>
+  </data>
+  <data name="notificationOptionWindowsDefault" xml:space="preserve">
+    <value>Windows известие</value>
+  </data>
+  <data name="notificationOptionNone" xml:space="preserve">
+    <value>Без известие</value>
+  </data>
+  <data name="notificationOptionToast" xml:space="preserve">
+    <value>Изскачащо известие</value>
+  </data>
+  <data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
+    <value>Възпроизвеждащо устройство</value>
+  </data>
+  <data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
+    <value>Записващо устройство</value>
+  </data>
+  <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
+    <value>За двете устройства</value>
+  </data>
+  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
+    <value>Без подсказка</value>
+  </data>
+  <data name="activeRecording" xml:space="preserve">
+    <value>Запис: {0}</value>
+  </data>
+  <data name="activePlayback" xml:space="preserve">
+    <value>Възпроизвеждане: {0}</value>
+  </data>
+  <data name="language" xml:space="preserve">
+    <value>Език</value>
+  </data>
+  <data name="languageRestartRequiredCaption" xml:space="preserve">
+    <value>Нуждаете се от рестартиране</value>
+  </data>
+  <data name="notificationOptionBanner" xml:space="preserve">
+    <value>Банер</value>
+  </data>
+  <data name="disableCustomSoundTooltip" xml:space="preserve">
+    <value>Деактивиране на зададения персонализиран звук.</value>
+  </data>
+  <data name="foregroundApp" xml:space="preserve">
+    <value>Също така превключи и за активната в момента програма</value>
+  </data>
+  <data name="iconChange" xml:space="preserve">
+    <value>Икона в системната лента</value>
+  </data>
+  <data name="profile.addButton" xml:space="preserve">
+    <value>Добави</value>
+  </data>
+  <data name="profile.name" xml:space="preserve">
+    <value>Име</value>
+  </data>
+  <data name="profile.error.hotkey" xml:space="preserve">
+    <value>Тази клавишна комбинация {0} вече е регистрирана.</value>
+  </data>
+  <data name="profile.error.name" xml:space="preserve">
+    <value>Вече има профил с име {0}.</value>
+  </data>
+  <data name="profile.error.registerHotkeys" xml:space="preserve">
+    <value>Неуспешно регистриране на клавишна комбинация за следните профили: {0}</value>
+  </data>
+  <data name="profile.feature.add" xml:space="preserve">
+    <value>Добавяне на профил</value>
+  </data>
+  <data name="profile.feature.executable" xml:space="preserve">
+    <value>Изпълним файл (*.exe)</value>
+  </data>
+  <data name="profile.error.title" xml:space="preserve">
+    <value>Грешка в профила</value>
+  </data>
+  <data name="profile.deleteButton" xml:space="preserve">
+    <value>Изтриване</value>
+  </data>
+  <data name="profile.feature.profile" xml:space="preserve">
+    <value>Профил</value>
+  </data>
+  <data name="hotkeyEnabled" xml:space="preserve">
+    <value>Активиран клавиш за бърз достъп</value>
+  </data>
+  <data name="profile.trigger.window" xml:space="preserve">
+    <value>Име на програмата</value>
+  </data>
+  <data name="profile.trigger.process" xml:space="preserve">
+    <value>Път до програмата</value>
+  </data>
+  <data name="profile.trigger.steam" xml:space="preserve">
+    <value>Екран в Steam</value>
+  </data>
+  <data name="profile.trigger.process.desc" xml:space="preserve">
+    <value>Активиране на профила, когато избраната програма е активна</value>
+  </data>
+  <data name="profile.desc" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="profile.trigger.actives" xml:space="preserve">
+    <value>Активни тригери</value>
+  </data>
+  <data name="profile.trigger.available" xml:space="preserve">
+    <value>Налични тригери</value>
+  </data>
+  <data name="communication" xml:space="preserve">
+    <value>Комуникационно устройство по подразбиране</value>
+  </data>
+  <data name="profile.error.window" xml:space="preserve">
+    <value>Вече има профил с това име: {0}.</value>
+  </data>
+  <data name="profile.notify-on-activation" xml:space="preserve">
+    <value>Известие при активиране на този профил</value>
+  </data>
+  <data name="profile.notification.text" xml:space="preserve">
+    <value>Профилът {0} е стартиран</value>
+  </data>
+  <data name="profile.button.save" xml:space="preserve">
+    <value>Запазване</value>
+  </data>
+  <data name="profile.button.edit" xml:space="preserve">
+    <value>Редактиране</value>
+  </data>
+  <data name="usePrimaryScreen" xml:space="preserve">
+    <value>Винаги използвай основния екран</value>
+  </data>
+  <data name="profile.trigger.restoreDevices" xml:space="preserve">
+    <value>Възстановяване на устройствата след деактивиране на тригера</value>
+  </data>
+  <data name="notification.microphone.muted" xml:space="preserve">
+    <value>{0} е заглушен.</value>
+  </data>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>{0} вече не е заглушен.</value>
+  </data>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>Превключване на заглушаването на звука</value>
+  </data>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>В менюто на програмата</value>
+  </data>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>Този тригер прави профила видим в менюто в системната лента. Щракнете с левия бутон на мишката върху иконата в системната лента, за да видите профила си.</value>
+  </data>
+  <data name="profile.trigger.deviceChanged" xml:space="preserve">
+    <value>Форсиран профил</value>
+  </data>
+  <data name="profile.error.deviceChanged" xml:space="preserve">
+    <value>Можете да имате само един форсиран профил.</value>
+  </data>
+  <data name="telemetry" xml:space="preserve">
+    <value>Телеметрия</value>
+  </data>
+  <data name="quickMenu" xml:space="preserve">
+    <value>Бързо меню при натискане на клавишна комбинация</value>
+  </data>
+  <data name="quickMenu.desc" xml:space="preserve">
+    <value>Показване на бързо меню (както при смяна на езика) при използване на клавишна комбинация</value>
+  </data>
+  <data name="telemetry.desc" xml:space="preserve">
+    <value>Получаване анонимно коя версия на SoundSwitch се използва. Споделя се само с разработчика на SoundSwitch.</value>
+  </data>
+  <data name="devices.AutoAddNewDevice" xml:space="preserve">
+    <value>Автоматичен избор на нови устройства</value>
+  </data>
+  <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
+    <value>Автоматично добавяне на нови устройства към избрания списък, когато бъдат свързани към компютъра</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="selected" xml:space="preserve">
+    <value>Избрани</value>
+  </data>
+  <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
+    <value>Когато е маркирано, SoundSwitch ще проверява и за бета версии в GitHub.</value>
+  </data>
+  <data name="startWithWindows" xml:space="preserve">
+    <value>Автоматично стартиране с Windows</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>Затвори</value>
+  </data>
+  <data name="communicationsDeviceTooltip" xml:space="preserve">
+    <value>Когато е маркирано, "Комуникационното устройство по подразбиране" и "Устройството за възпроизвеждане по подразбиране" се превключват заедно (полезно за Skype, TeamSpeak, напр.).</value>
+  </data>
+  <data name="hotkeysTooltip" xml:space="preserve">
+    <value>Поставете отметка, за да активирате клавишната комбинация.</value>
+  </data>
+  <data name="keepSystemTrayIcon" xml:space="preserve">
+    <value>Запазване на иконата на SoundSwitch в системната лента</value>
+  </data>
+  <data name="tooltipOnHover" xml:space="preserve">
+    <value>Подсказка при посочване с мишката</value>
+  </data>
+  <data name="keepSystemTrayIconTooltip" xml:space="preserve">
+    <value>Когато е маркирано, иконата в системната лента няма да се променя при промяна на "Устройство за възпроизвеждане по подразбиране".</value>
+  </data>
+  <data name="notificationOptionSound" xml:space="preserve">
+    <value>Звуково известие</value>
+  </data>
+  <data name="cycleThroughTooltip" xml:space="preserve">
+    <value>Изберете между кои устройства да превключвате. Или само между избраните, или между всички.</value>
+  </data>
+  <data name="notificationOptionCustomized" xml:space="preserve">
+    <value>Персонализирано звуково известие</value>
+  </data>
+  <data name="notificationTooltip" xml:space="preserve">
+    <value>Windows известие: Системно известие по подразбиране.
+Звуково известие: Възпроизвежда звук от превключеното устройство за възпроизвеждане.
+Персонализирано звуково известие: Възпроизвежда зададения звук на превключеното устройство за възпроизвеждане.
+Изскачащо известие: Използва подробна форма на известие от системната лента.
+Банер: Използва персонализирана рамка, която е винаги на преден план, полезно за използване в игра.</value>
+  </data>
+  <data name="languageRestartRequired" xml:space="preserve">
+    <value>Езикът ще се промени след рестартиране на SoundSwitch.
+Искате ли да рестартирате сега?</value>
+  </data>
+  <data name="updateNeverTooltip" xml:space="preserve">
+    <value>Без актуализация на програмата, освен ако не го направите ръчно.</value>
+  </data>
+  <data name="profile.error.needHKOrPath" xml:space="preserve">
+    <value>Трябва да зададете клавишната комбинация и/или програмата.</value>
+  </data>
+  <data name="audioFileNotFound" xml:space="preserve">
+    <value>Аудиофайлът, който сте избрали да бъде използван като известие, не може да бъде намерен. SoundSwitch превключи настройката за уведомяване обратно на {0}.</value>
+  </data>
+  <data name="audioFileNotFoundCaption" xml:space="preserve">
+    <value>Аудиофайлът не е намерен</value>
+  </data>
+  <data name="updateNotifyTooltip" xml:space="preserve">
+    <value>SoundSwitch ще ви уведоми, когато има налична нова актуализация. Когато щракнете върху известието, ще се появи изскачащ прозорец, който изтегля актуализацията за вас и ви пита дали искате да я инсталирате.</value>
+  </data>
+  <data name="foregroundAppTooltip" xml:space="preserve">
+    <value>Превключва звука на използваната в момента програма. Полезно при видеоигри.</value>
+  </data>
+  <data name="profile.program" xml:space="preserve">
+    <value>Програма</value>
+  </data>
+  <data name="profile.error.application" xml:space="preserve">
+    <value>Тази програма {0} вече има свързан профил.</value>
+  </data>
+  <data name="profile.error.registerHotkeys.title" xml:space="preserve">
+    <value>Вече използван клавиш за бърз достъп</value>
+  </data>
+  <data name="iconChange.tooltip" xml:space="preserve">
+    <value>Изберете кога да се променя иконата на SoundSwitch в системната лента.
+
+По подразбиране: Без промяна. Запазва се иконата на SoundSwitch.
+Възпроизвеждане: Когато се превключва устройство за възпроизвеждане.
+Запис: Когато се превключва устройство за запис.
+И двете: Променя се, когато се превключва всеки тип устройство.</value>
+  </data>
+  <data name="profile.tab" xml:space="preserve">
+    <value>Профили</value>
+  </data>
+  <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
+    <value>Трябва да зададете устройство за възпроизвеждане или запис.</value>
+  </data>
+  <data name="profile.explanation" xml:space="preserve">
+    <value>Добавете профил за превключване към определено устройство за възпроизвеждане или запис, когато се стартира или фокусира определена програма.</value>
+  </data>
+  <data name="profile.error.delete" xml:space="preserve">
+    <value>Профилът не може да бъде намерен.</value>
+  </data>
+  <data name="profile.error.no-name" xml:space="preserve">
+    <value>Профилът се нуждае от име.</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox" xml:space="preserve">
+    <value>Също така превключи устройството по подразбиране</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
+    <value>Когато програмата бъде стартирана, SoundSwitch ще промени и текущото устройство по подразбиране.</value>
+  </data>
+  <data name="profile.error.device-not-found" xml:space="preserve">
+    <value>Устройство {0} не може да бъде намерено.</value>
+  </data>
+  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
+    <value>Клавишна комбинация, използвана за активиране на профила. Ако използвате същата комбинация, ще можете да превключвате между профилите.</value>
+  </data>
+  <data name="profile.trigger.window.desc" xml:space="preserve">
+    <value>Активиране на профила, ако стартираната програма съдържа следните символи</value>
+  </data>
+  <data name="profile.trigger.steam.desc" xml:space="preserve">
+    <value>Активиране, когато се открие Steam Big Picture. (Ще възстанови състоянието, когато Big Picture бъде затворен.)</value>
+  </data>
+  <data name="profile.error.triggers.min" xml:space="preserve">
+    <value>Необходим ви е минимум един тригер.</value>
+  </data>
+  <data name="profile.error.steam" xml:space="preserve">
+    <value>Можете да имате само един профил за Steam Big Picture.</value>
+  </data>
+  <data name="profile.trigger.startup.desc" xml:space="preserve">
+    <value>Профилът ще бъде задействан автоматично, когато SoundSwitch стартира</value>
+  </data>
+  <data name="profile.trigger.startup" xml:space="preserve">
+    <value>При стартиране</value>
+  </data>
+  <data name="usePrimaryScreenTooltip" xml:space="preserve">
+    <value>Показване на банер на основния екран вместо на активния в момента екран.</value>
+  </data>
+  <data name="profile.trigger.uwp" xml:space="preserve">
+    <value>Приложение от Microsoft Store</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
+    <value>Изисква "{0}" да бъде активиран.
+
+Възстановяване на състоянието на системата при затваряне на приложението.</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
+    <value>Възстановено състояние на системата</value>
+  </data>
+  <data name="profile.trigger.uwp.desc" xml:space="preserve">
+    <value>Въведете името на приложението, инсталирано чрез магазина на Windows. Например Netflix, Amazon Prime video и др…</value>
+  </data>
+  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
+    <value>Профилът ще се задейства автоматично по всяко време, когато текущото звуково устройство се промени.</value>
+  </data>
 </root>
