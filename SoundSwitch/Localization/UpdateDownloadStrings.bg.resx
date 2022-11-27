@@ -70,4 +70,16 @@
   <data name="changelog" xml:space="preserve">
     <value>Списък на промените</value>
   </data>
+  <data name="notSignedTitle" xml:space="preserve">
+    <value>Невалиден цифров подпис</value>
+  </data>
+  <data name="remindMe" xml:space="preserve">
+    <value>По-късно</value>
+  </data>
+  <data name="notSigned" xml:space="preserve">
+    <value>Изтеглената актуализация не е подписана с валиден подпис. Съветваме ви да изтриете файла и да се свържете с разработчика!</value>
+  </data>
+  <data name="wrongSignature" xml:space="preserve">
+    <value>Има проблем с последната актуализация на SoundSwitch. Ще трябва ръчно да изтеглите новата версия на адрес {0}</value>
+  </data>
 </root>
