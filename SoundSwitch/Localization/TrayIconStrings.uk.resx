@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -58,4 +58,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="exit" xml:space="preserve">
+    <value>Вийти</value>
+  </data>
+  <data name="updateAvailable" xml:space="preserve">
+    <value>Доступне оновлення ({0})</value>
+  </data>
+  <data name="noUpdate" xml:space="preserve">
+    <value>Немає доступних оновлень</value>
+  </data>
+  <data name="noDevicesSelected" xml:space="preserve">
+    <value>Не вибрано жодного пристрою</value>
+  </data>
+  <data name="playbackDevices" xml:space="preserve">
+    <value>Пристрої відтворення</value>
+  </data>
+  <data name="mixer" xml:space="preserve">
+    <value>Мікшер</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>Налаштування</value>
+  </data>
+  <data name="about" xml:space="preserve">
+    <value>Про SoundSwitch</value>
+  </data>
+  <data name="versionAvailable" xml:space="preserve">
+    <value>Доступно оновлення для SoundSwitch ({0}).</value>
+  </data>
+  <data name="clickToUpdate" xml:space="preserve">
+    <value>Натисніть тут, щоб оновити.</value>
+  </data>
+  <data name="playbackChanged" xml:space="preserve">
+    <value>SoundSwitch: Пристрій відтворення переключено на</value>
+  </data>
+  <data name="recordingChanged" xml:space="preserve">
+    <value>SoundSwitch: Пристрій запису переключено на</value>
+  </data>
+  <data name="configurationNeeded" xml:space="preserve">
+    <value>SoundSwitch: Необхідна конфігурація</value>
+  </data>
 </root>
