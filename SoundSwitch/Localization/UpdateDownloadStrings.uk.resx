@@ -58,31 +58,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="maintained" xml:space="preserve">
-    <value>Підтримується</value>
+  <data name="install" xml:space="preserve">
+    <value>Встановлення</value>
   </data>
-  <data name="version" xml:space="preserve">
-    <value>Версія</value>
+  <data name="cancel" xml:space="preserve">
+    <value>Скасувати</value>
   </data>
-  <data name="created" xml:space="preserve">
-    <value>Створено</value>
+  <data name="downloadFailed" xml:space="preserve">
+    <value>Помилка завантаження</value>
   </data>
-  <data name="author" xml:space="preserve">
-    <value>Інформація про автора та додаток</value>
+  <data name="changelog" xml:space="preserve">
+    <value>Перелік змін</value>
   </data>
-  <data name="defaultPlaybackDeviceChange" xml:space="preserve">
-    <value>Пристрій відтворення за замовчуванням</value>
+  <data name="notSigned" xml:space="preserve">
+    <value>Завантажене оновлення не підписане дійсним підписом. Радимо видалити файл та звернутися до розробника!</value>
   </data>
-  <data name="keyboardHotkeys" xml:space="preserve">
-    <value>Гарячі клавіши</value>
+  <data name="notSignedTitle" xml:space="preserve">
+    <value>Недійсний цифровий підпис</value>
   </data>
-  <data name="icons" xml:space="preserve">
-    <value>Іконки</value>
+  <data name="remindMe" xml:space="preserve">
+    <value>Пізніше</value>
   </data>
-  <data name="logo" xml:space="preserve">
-    <value>Автор логотипу</value>
-  </data>
-  <data name="credits" xml:space="preserve">
-    <value>Долучились до проекту</value>
+  <data name="wrongSignature" xml:space="preserve">
+    <value>Виникла проблема з останнім оновленням SoundSwitch. Вам потрібно вручну завантажити нову версію за адресою {0}</value>
   </data>
 </root>
