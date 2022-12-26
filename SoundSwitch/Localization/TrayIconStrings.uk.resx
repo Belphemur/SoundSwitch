@@ -97,4 +97,37 @@
   <data name="configurationNeeded" xml:space="preserve">
     <value>SoundSwitch: Необхідна конфігурація</value>
   </data>
+  <data name="configurationNeededExplanation" xml:space="preserve">
+    <value>Немає пристроїв, на які можна переключитися. Відкрийте конфігурацію, натиснувши правою кнопкою миші на іконку.</value>
+  </data>
+  <data name="error" xml:space="preserve">
+    <value>Помилка</value>
+  </data>
+  <data name="help" xml:space="preserve">
+    <value>Довідка</value>
+  </data>
+  <data name="donate" xml:space="preserve">
+    <value>Підтримати</value>
+  </data>
+  <data name="iconChanger.playback" xml:space="preserve">
+    <value>Відтворення</value>
+  </data>
+  <data name="iconChanger.recording" xml:space="preserve">
+    <value>Запис</value>
+  </data>
+  <data name="iconChanger.none" xml:space="preserve">
+    <value>За замовчуванням</value>
+  </data>
+  <data name="iconChanger.both" xml:space="preserve">
+    <value>Обидва</value>
+  </data>
+  <data name="communityMenu" xml:space="preserve">
+    <value>Спільнота</value>
+  </data>
+  <data name="updateDisabled" xml:space="preserve">
+    <value>Перевірка оновлення відключена</value>
+  </data>
+  <data name="forceCheckForUpdate" xml:space="preserve">
+    <value>Перевірити оновлення</value>
+  </data>
 </root>
