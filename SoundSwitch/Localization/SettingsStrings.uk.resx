@@ -59,7 +59,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="selected" xml:space="preserve">
-    <value>Вибрано</value>
+    <value>Обрано</value>
   </data>
   <data name="disconnected" xml:space="preserve">
     <value>Відключено</value>
@@ -356,10 +356,10 @@
     <value>Сповіщати мене про доступні оновлення</value>
   </data>
   <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
-    <value>Тільки вибрані звукові пристрої</value>
+    <value>Тільки обрані звукові пристрої</value>
   </data>
   <data name="cycleThroughTooltip" xml:space="preserve">
-    <value>Виберіть між якими звуковими пристроями виконувати перемикання - між всіма чи тільки між вибраними.</value>
+    <value>Виберіть між якими звуковими пристроями виконувати перемикання - між всіма чи тільки між обраними.</value>
   </data>
   <data name="notificationTooltip" xml:space="preserve">
     <value>Сповіщення Windows: спливаюче вікно панелі Windows за замовчуванням.
