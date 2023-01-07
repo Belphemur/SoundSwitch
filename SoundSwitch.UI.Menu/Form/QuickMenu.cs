@@ -60,7 +60,7 @@ namespace SoundSwitch.UI.Menu.Form
             var toAdd = newPayloadsById.Keys.Except(_currentPayloads.Keys);
             var toModify = _currentPayloads.Keys.Intersect(newPayloadsById.Keys);
 
-            var currentPayloadSizeDifferentNewPayloads = _currentPayloads.Count != originalOrderPayloads.Length;
+            var needResizing = _currentPayloads.Count != originalOrderPayloads.Length || !_isLocationSet;
             var needRearrange = false;
 
             var controlCollection = Controls;
@@ -102,7 +102,7 @@ namespace SoundSwitch.UI.Menu.Form
                 Height = 0;
             }
 
-            if (!_isLocationSet || currentPayloadSizeDifferentNewPayloads)
+            if (needResizing)
             {
                 Region = Region.FromHrgn(RoundedCorner.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
             }
