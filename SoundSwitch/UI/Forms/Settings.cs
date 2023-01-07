@@ -212,6 +212,7 @@ namespace SoundSwitch.UI.Forms
             profilesListView.Columns.Add(SettingsStrings.playback, 150, HorizontalAlignment.Left);
             profilesListView.Columns.Add(SettingsStrings.recording, 150, HorizontalAlignment.Left);
             profilesListView.Columns.Add(SettingsStrings.communication, 150, HorizontalAlignment.Left);
+            profilesListView.Columns.Add(SettingsStrings.communication, 150, HorizontalAlignment.Left);
 
             RefreshProfiles();
         }
