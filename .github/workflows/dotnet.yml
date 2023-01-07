@@ -33,6 +33,8 @@ jobs:
           access_token: ${{ github.token }}
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Set PATH with git
+        run: echo "C:\Program Files\Git\bin\" >> $GITHUB_PATH
       - uses: dorny/paths-filter@v2
         id: filter
         with:
