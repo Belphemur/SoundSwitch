@@ -35,7 +35,7 @@ AllowNoIcons=yes
 SetupIconFile="..\SoundSwitch\Resources\Switch-SoundWave.ico"
 SolidCompression=yes
 CloseApplications=yes
-Compression=lzma2/ultra64
+Compression=lzma2/max
 LZMANumBlockThreads=2
 
 SignTool=SoundSwitch
