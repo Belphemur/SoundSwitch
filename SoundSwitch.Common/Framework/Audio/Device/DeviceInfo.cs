@@ -107,12 +107,12 @@ namespace SoundSwitch.Common.Framework.Audio.Device
                 return true;
             }
 
-            if (obj.GetType() != GetType())
+            if (obj is not DeviceInfo info)
             {
                 return false;
             }
 
-            return Equals((DeviceInfo)obj);
+            return Equals(info);
         }
 
         public override int GetHashCode()
