@@ -303,8 +303,20 @@ namespace SoundSwitch.Framework.Profile
         /// <returns></returns>
         private bool HandleSteamBigPicture(WindowMonitor.Event @event)
         {
-            if (_steamProfile == null || @event.WindowName != "Steam" || @event.WindowClass != "CUIEngineWin32")
+            if (_steamProfile == null)
+            {
                 return false;
+            }
+
+            if (!@event.ProcessName.Contains("steam"))
+            {
+                return false;
+            }
+
+            if (@event.WindowName != "SP" || @event.WindowClass != "SDL_app")
+            {
+                return false;
+            }
 
             SaveCurrentState(@event.Hwnd, _steamProfile, _steamProfile.Triggers.First(trigger => trigger.Type == TriggerFactory.Enum.Steam));
 
