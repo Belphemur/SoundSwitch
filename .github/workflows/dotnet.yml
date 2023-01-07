@@ -15,7 +15,7 @@ env:
   PROJECT_NAME: "SoundSwitch"
   ARCH: "win-x64"
   FRAMEWORK: "net7.0-windows"
-  NODEJS: 16
+  NODEJS: 18
   DOTNET: "7.0.x"
   DOTNET_PRERELEASE: true
   CONFIGURATION: "Nightly"
