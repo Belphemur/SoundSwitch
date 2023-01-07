@@ -255,4 +255,14 @@ namespace SoundSwitch.Localization.Factory.Lang
 
         public override Language TypeEnum => Language.Ukrainian;
     }
+    
+    public class Bulgarian : BaseLang
+    {
+        /// <summary>
+        /// Culture info of this language
+        /// </summary>
+        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("bg");
+
+        public override Language TypeEnum => Language.Bulgarian;
+    }
 }

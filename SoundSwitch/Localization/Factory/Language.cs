@@ -43,6 +43,7 @@ namespace SoundSwitch.Localization.Factory
         Thai,
         Serbian,
         Danish,
-        Ukrainian
+        Ukrainian,
+        Bulgarian
     }
 }
