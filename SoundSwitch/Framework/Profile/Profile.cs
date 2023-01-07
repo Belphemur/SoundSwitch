@@ -31,6 +31,8 @@ namespace SoundSwitch.Framework.Profile
         public DeviceInfo? Playback { get; set; }
         public DeviceInfo? Communication { get; set; }
         public DeviceInfo? Recording { get; set; }
+        
+        public DeviceInfo? RecordingCommunication { get; set; }
 
         public string Name { get; set; } = "";
         public IList<Trigger.Trigger> Triggers { get; set; } = new List<Trigger.Trigger>();
@@ -75,6 +77,7 @@ namespace SoundSwitch.Framework.Profile
                 Name = Name,
                 Playback = Playback,
                 Recording = Recording,
+                RecordingCommunication = RecordingCommunication,
                 RestoreDevices = RestoreDevices,
                 Triggers = Triggers.Select(trigger => new Trigger.Trigger(trigger.Type)
                 {
@@ -96,7 +99,9 @@ namespace SoundSwitch.Framework.Profile
                 if (Communication != null)
                     yield return new DeviceRoleWrapper(Communication, ERole.eCommunications);
                 if (Recording != null)
-                    yield return new DeviceRoleWrapper(Recording, ERole.ERole_enum_count);
+                    yield return new DeviceRoleWrapper(Recording, RecordingCommunication == null ? ERole.ERole_enum_count : ERole.eConsole | ERole.eMultimedia);
+                if (RecordingCommunication != null)
+                    yield return new DeviceRoleWrapper(RecordingCommunication, ERole.eCommunications);
             }
         }
 

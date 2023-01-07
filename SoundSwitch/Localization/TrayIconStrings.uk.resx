@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="exit" xml:space="preserve">
+    <value>Вийти</value>
+  </data>
+  <data name="updateAvailable" xml:space="preserve">
+    <value>Доступне оновлення ({0})</value>
+  </data>
+  <data name="noUpdate" xml:space="preserve">
+    <value>Немає доступних оновлень</value>
+  </data>
+  <data name="noDevicesSelected" xml:space="preserve">
+    <value>Не вибрано жодного пристрою</value>
+  </data>
+  <data name="playbackDevices" xml:space="preserve">
+    <value>Пристрої відтворення</value>
+  </data>
+  <data name="mixer" xml:space="preserve">
+    <value>Мікшер</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>Налаштування</value>
+  </data>
+  <data name="about" xml:space="preserve">
+    <value>Про SoundSwitch</value>
+  </data>
+  <data name="versionAvailable" xml:space="preserve">
+    <value>Доступно оновлення для SoundSwitch ({0}).</value>
+  </data>
+  <data name="clickToUpdate" xml:space="preserve">
+    <value>Натисніть тут, щоб оновити.</value>
+  </data>
+  <data name="playbackChanged" xml:space="preserve">
+    <value>SoundSwitch: Пристрій відтворення переключено на</value>
+  </data>
+  <data name="recordingChanged" xml:space="preserve">
+    <value>SoundSwitch: Пристрій запису переключено на</value>
+  </data>
+  <data name="configurationNeeded" xml:space="preserve">
+    <value>SoundSwitch: Необхідна конфігурація</value>
+  </data>
+  <data name="configurationNeededExplanation" xml:space="preserve">
+    <value>Немає пристроїв, на які можна переключитися. Відкрийте конфігурацію, натиснувши правою кнопкою миші на іконку.</value>
+  </data>
+  <data name="error" xml:space="preserve">
+    <value>Помилка</value>
+  </data>
+  <data name="help" xml:space="preserve">
+    <value>Довідка</value>
+  </data>
+  <data name="donate" xml:space="preserve">
+    <value>Підтримати</value>
+  </data>
+  <data name="iconChanger.playback" xml:space="preserve">
+    <value>Відтворення</value>
+  </data>
+  <data name="iconChanger.recording" xml:space="preserve">
+    <value>Запис</value>
+  </data>
+  <data name="iconChanger.none" xml:space="preserve">
+    <value>За замовчуванням</value>
+  </data>
+  <data name="iconChanger.both" xml:space="preserve">
+    <value>Обидва</value>
+  </data>
+  <data name="communityMenu" xml:space="preserve">
+    <value>Спільнота</value>
+  </data>
+  <data name="updateDisabled" xml:space="preserve">
+    <value>Перевірка оновлення відключена</value>
+  </data>
+  <data name="forceCheckForUpdate" xml:space="preserve">
+    <value>Перевірити оновлення</value>
+  </data>
+</root>

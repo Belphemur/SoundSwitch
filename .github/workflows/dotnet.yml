@@ -15,7 +15,7 @@ env:
   PROJECT_NAME: "SoundSwitch"
   ARCH: "win-x64"
   FRAMEWORK: "net7.0-windows"
-  NODEJS: 16
+  NODEJS: "lts/*"
   DOTNET: "7.0.x"
   DOTNET_PRERELEASE: true
   CONFIGURATION: "Nightly"
@@ -68,7 +68,7 @@ jobs:
         # Use always() to always run this step to publish test results when there are test failures
       - name: Setup Node.js
         if: steps.filter.outputs.node == 'true'
-        uses: actions/setup-node@v3.5.1
+        uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{env.NODEJS}}
       - name: Cache node modules
@@ -137,7 +137,7 @@ jobs:
       - name: Zip Build ${{env.PROJECT_NAME}}-${{ steps.devVersion.outputs.version }}
         run: tar caf   ${{env.PROJECT_NAME}}-${{ steps.devVersion.outputs.version }}.zip -C ${{ env.PROJECT_NAME }}\bin\${{env.CONFIGURATION}}\${{ env.FRAMEWORK }}\${{ env.ARCH }}\publish\ *
       - name: Setup Node.js
-        uses: actions/setup-node@v3.5.1
+        uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{env.NODEJS}}
       - name: Cache node modules
@@ -186,7 +186,7 @@ jobs:
           access_token: ${{ github.token }}
       - uses: actions/checkout@v3
       - name: Setup Node.js
-        uses: actions/setup-node@v3.5.1
+        uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{env.NODEJS}}
       - name: Cache node modules

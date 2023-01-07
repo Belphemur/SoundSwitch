@@ -245,4 +245,14 @@ namespace SoundSwitch.Localization.Factory.Lang
         public override Language TypeEnum => Language.Danish;
     }
     
+    
+    public class Ukrainian : BaseLang
+    {
+        /// <summary>
+        /// Culture info of this language
+        /// </summary>
+        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("uk");
+
+        public override Language TypeEnum => Language.Ukrainian;
+    }
 }

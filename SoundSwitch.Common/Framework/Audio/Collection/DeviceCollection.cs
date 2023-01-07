@@ -21,9 +21,17 @@ public class DeviceCollection<T> : ICollection<T> where T : DeviceInfo
             }
 
             _byId[item.Id] = item;
-            _byName[item.NameClean] = item;
+            _byName[GetNameKey(item)] = item;
         }
     }
+
+    /// <summary>
+    /// Generate a key that merge together the type of device and their name.
+    /// </summary>
+    /// <remarks>Recording and Playback device can share the same name, this is done to avoid conflict between the two</remarks>
+    /// <param name="item"></param>
+    /// <returns></returns>
+    private string GetNameKey(T item) => $"{item.Type}-{item.NameClean}";
 
     public IEnumerator<T> GetEnumerator()
     {
@@ -43,7 +51,7 @@ public class DeviceCollection<T> : ICollection<T> where T : DeviceInfo
         }
 
         _byId.TryAdd(item.Id, item);
-        _byName.TryAdd(item.NameClean, item);
+        _byName.TryAdd(GetNameKey(item), item);
     }
 
     public void Clear()
@@ -59,8 +67,7 @@ public class DeviceCollection<T> : ICollection<T> where T : DeviceInfo
             throw new ArgumentNullException();
         }
 
-        return _byId.ContainsKey(item.Id) || _byName.ContainsKey(item.NameClean);
-        
+        return _byId.ContainsKey(item.Id) || _byName.ContainsKey(GetNameKey(item));
     }
 
     public void CopyTo(T[] array, int arrayIndex)
@@ -76,12 +83,13 @@ public class DeviceCollection<T> : ICollection<T> where T : DeviceInfo
         }
 
         var removeId = _byId.Remove(item.Id);
-        var removeName = _byName.Remove(item.NameClean, out var removedByName);
+        var removeName = _byName.Remove(GetNameKey(item), out var removedByName);
 
         //If we found it by name, remove it also with it's id
         //this avoid the case that a device is removed because of name matching
         //but it's still used since we iterate the _byId
-        if(removeName) {
+        if (removeName)
+        {
             _byId.Remove(removedByName.Id);
         }
 

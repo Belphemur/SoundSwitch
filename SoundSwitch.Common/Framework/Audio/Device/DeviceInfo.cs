@@ -51,7 +51,7 @@ namespace SoundSwitch.Common.Framework.Audio.Device
             Id = device.ID;
             Type = device.DataFlow;
             var deviceProperties = device.Properties;
-            var enumerator = deviceProperties.Contains(PropertyKeys.DEVPKEY_Device_EnumeratorName) ? (string) deviceProperties[PropertyKeys.DEVPKEY_Device_EnumeratorName].Value : "";
+            var enumerator = deviceProperties.Contains(PropertyKeys.DEVPKEY_Device_EnumeratorName) ? (string)deviceProperties[PropertyKeys.DEVPKEY_Device_EnumeratorName].Value : "";
             IsUsb = enumerator == "USB";
         }
 
@@ -94,7 +94,7 @@ namespace SoundSwitch.Common.Framework.Audio.Device
             //help recognizing the same device
             return NameClean == other.NameClean;
         }
-        
+
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
@@ -107,17 +107,17 @@ namespace SoundSwitch.Common.Framework.Audio.Device
                 return true;
             }
 
-            if (obj.GetType() != GetType())
+            if (obj is not DeviceInfo info)
             {
                 return false;
             }
 
-            return Equals((DeviceInfo)obj);
+            return Equals(info);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(NameClean, Id);
+            return HashCode.Combine(Type, NameClean, Id);
         }
     }
 }
