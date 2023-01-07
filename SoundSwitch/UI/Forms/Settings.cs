@@ -225,7 +225,8 @@ namespace SoundSwitch.UI.Forms
                 DeviceFullInfo recording = null;
                 DeviceFullInfo playback = null;
                 DeviceFullInfo communication = null;
-
+                DeviceFullInfo recordingCommunication = null;
+                
                 var applicationTrigger = profile.Triggers.FirstOrDefault(trig => trig.Type == TriggerFactory.Enum.Process);
                 var hotkeyTrigger = profile.Triggers.FirstOrDefault(trig => trig.Type == TriggerFactory.Enum.HotKey);
 
@@ -258,6 +259,12 @@ namespace SoundSwitch.UI.Forms
                     communication = _audioDeviceLister.PlaybackDevices.FirstOrDefault(info =>
                         info.Equals(profile.Communication));
                 }
+                
+                if (profile.RecordingCommunication != null)
+                {
+                    recordingCommunication = _audioDeviceLister.RecordingDevices.FirstOrDefault(info =>
+                        info.Equals(profile.RecordingCommunication));
+                }
 
                 listViewItem.SubItems.AddRange(new[]
                 {
@@ -270,6 +277,8 @@ namespace SoundSwitch.UI.Forms
                         recording?.NameClean ?? profile.Recording?.ToString() ?? "") {Tag = recording?.SmallIcon},
                     new ListViewItem.ListViewSubItem(listViewItem,
                         communication?.NameClean ?? profile.Communication?.ToString() ?? "") {Tag = communication?.SmallIcon},
+                    new ListViewItem.ListViewSubItem(listViewItem,
+                        recordingCommunication?.NameClean ?? profile.RecordingCommunication?.ToString() ?? "") {Tag = recordingCommunication?.SmallIcon},
                 });
 
                 return listViewItem;

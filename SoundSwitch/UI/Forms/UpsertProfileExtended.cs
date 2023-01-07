@@ -72,18 +72,17 @@ namespace SoundSwitch.UI.Forms
         private void InitRecordingPlaybackComboBoxes(IEnumerable<DeviceFullInfo> playbacks,
                                                      IEnumerable<DeviceFullInfo> recordings)
         {
-            recordingComboBox.DataSource =
-                recordings
-                    .OrderBy(info => info.State)
-                    .ThenBy(info => info.NameClean)
-                    .Select(info => new IconTextComboBox.DropDownItem
-                        {
-                            Icon = info.SmallIcon,
-                            Tag = info,
-                            Text = info.NameClean
-                        }
-                    ).ToArray();
-
+            var recordingItems = recordings
+                                 .OrderBy(info => info.State)
+                                 .ThenBy(info => info.NameClean)
+                                 .Select(info => new IconTextComboBox.DropDownItem
+                                     {
+                                         Icon = info.SmallIcon,
+                                         Tag = info,
+                                         Text = info.NameClean
+                                     }
+                                 )
+                                 .ToArray();
 
             var playbackItems = playbacks
                                 .OrderBy(info => info.State)
@@ -94,13 +93,19 @@ namespace SoundSwitch.UI.Forms
                                         Tag = info,
                                         Text = info.NameClean
                                     }
-                                ).ToArray();
+                                )
+                                .ToArray();
+
             communicationComboBox.DataSource = playbackItems;
             playbackComboBox.DataSource = playbackItems.ToArray();
 
-            communicationComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(Profile.Communication), false, DataSourceUpdateMode.OnPropertyChanged);
-            recordingComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(Profile.Recording), false, DataSourceUpdateMode.OnPropertyChanged);
-            playbackComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(Profile.Playback), false, DataSourceUpdateMode.OnPropertyChanged);
+            recordingComboBox.DataSource = recordingItems;
+            communicationRecordingComboBox.DataSource = recordingItems.ToArray();
+
+            communicationComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(Profile.Communication), true, DataSourceUpdateMode.OnPropertyChanged);
+            recordingComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(Profile.Recording), true, DataSourceUpdateMode.OnPropertyChanged);
+            playbackComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(Profile.Playback), true, DataSourceUpdateMode.OnPropertyChanged);
+            communicationRecordingComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(Profile.RecordingCommunication), true, DataSourceUpdateMode.OnPropertyChanged);
         }
 
         private void LocalizeForm()
@@ -111,7 +116,9 @@ namespace SoundSwitch.UI.Forms
 
             recordingLabel.Text = SettingsStrings.recording;
             playbackLabel.Text = SettingsStrings.playback;
-            communicationLabel.Text = SettingsStrings.communication;
+            communicationLabel.Text = SettingsStrings.playback;
+            communicationRecordingLabel.Text = SettingsStrings.recording;
+            communicationBox.Text = SettingsStrings.communication;
             Text = SettingsStrings.profile_feature_add;
             selectProgramDialog.Filter = $@"{SettingsStrings.profile_feature_executable}|*.exe";
             nameLabel.Text = SettingsStrings.profile_name;
@@ -167,7 +174,7 @@ namespace SoundSwitch.UI.Forms
                 return;
             }
 
-            var trigger = new Trigger(((ITriggerDefinition) availableTriggerBox.SelectedItem).TypeEnum);
+            var trigger = new Trigger(((ITriggerDefinition)availableTriggerBox.SelectedItem).TypeEnum);
             setTriggerBox.Items.Add(trigger);
             setTriggerBox.SelectedItem = trigger;
             _profile.Triggers.Add(trigger);
@@ -183,7 +190,7 @@ namespace SoundSwitch.UI.Forms
 
             HideTriggerComponents();
 
-            var trigger = (Trigger) setTriggerBox.SelectedItem;
+            var trigger = (Trigger)setTriggerBox.SelectedItem;
             var triggerDefinition = _triggerFactory.Get(trigger.Type);
             descriptionLabel.Text = $@"{triggerDefinition.Description} (Max: {(triggerDefinition.MaxGlobalOccurence == -1 ? "∞" : triggerDefinition.MaxGlobalOccurence.ToString())})";
             triggerLabel.Text = triggerDefinition.Label;
@@ -242,7 +249,7 @@ namespace SoundSwitch.UI.Forms
             }
 
             //Remove first from the profile, else the SelectedItem will be null
-            var trigger = (Trigger) setTriggerBox.SelectedItem;
+            var trigger = (Trigger)setTriggerBox.SelectedItem;
             _profile.Triggers.Remove(trigger);
             setTriggerBox.Items.Remove(trigger);
             InitializeAvailableTriggers();
@@ -274,6 +281,17 @@ namespace SoundSwitch.UI.Forms
             }
 
             playbackRemoveButton.Visible = true;
+        }
+
+        private void communicationRecordingComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (communicationRecordingComboBox.SelectedIndex == -1)
+            {
+                communicationRecordingRemoveButton.Visible = false;
+                return;
+            }
+
+            communicationRecordingRemoveButton.Visible = true;
         }
 
         private void recordingComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -341,6 +359,21 @@ namespace SoundSwitch.UI.Forms
             }
 
             communicationRemoveButton.Visible = false;
+        }
+
+        private void communicationRecordingRemoveButton_Click(object sender, EventArgs e)
+        {
+            _profile.RecordingCommunication = null;
+            try
+            {
+                communicationRecordingComboBox.SelectedIndex = -1;
+            }
+            catch (ArgumentException)
+            {
+                //Happens because I receive a System.DBNull when there isn't a selection.
+            }
+
+            communicationRecordingRemoveButton.Visible = false;
         }
 
         private void saveButton_Click(object sender, EventArgs e)

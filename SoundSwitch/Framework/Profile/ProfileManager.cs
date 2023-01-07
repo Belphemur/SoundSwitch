@@ -265,6 +265,7 @@ namespace SoundSwitch.Framework.Profile
             var communication = _audioSwitcher.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eCommunications);
             var playback = _audioSwitcher.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia);
             var recording = _audioSwitcher.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eMultimedia);
+            var recordingCommunication = _audioSwitcher.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eCommunications);
 
             var currentState = new Profile
             {
@@ -273,6 +274,7 @@ namespace SoundSwitch.Framework.Profile
                 Communication = communication,
                 Playback = playback,
                 Recording = recording,
+                RecordingCommunication = recordingCommunication,
                 NotifyOnActivation = profile.NotifyOnActivation
             };
             _activeWindowsTrigger.Add(windowHandle, currentState);
