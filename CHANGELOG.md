@@ -1,3 +1,43 @@
+## [6.5.0](https://github.com/Belphemur/SoundSwitch/compare/v6.4.3...v6.5.0) (2023-01-07)
+
+
+### Features
+
+* **Profile::RecordingCommunication:** Add possibility to set communication device for recording device in Profile.cs ([2ef778b](https://github.com/Belphemur/SoundSwitch/commit/2ef778ba3293b06553463f2d22cdc251b5e84641)), closes [#793](https://github.com/Belphemur/SoundSwitch/issues/793)
+
+
+### Bug Fixes
+
+* **Device::Matching:** Fix device matching between deviceinfo and any that inherit from it ([7881f16](https://github.com/Belphemur/SoundSwitch/commit/7881f16aca706798a183ea601e0fd29c0de324f4))
+* **Device::Selection:** Fix issue with recording and playback device having the same name not appearing in selected devices. ([f1aef5d](https://github.com/Belphemur/SoundSwitch/commit/f1aef5d92adb9982c06c9d936ddefb983543d0a4)), closes [#1070](https://github.com/Belphemur/SoundSwitch/issues/1070)
+* **Profile::SteamBigPicture:** Fix detecting the new big picture of steam. ([cd7c31f](https://github.com/Belphemur/SoundSwitch/commit/cd7c31fd92ec72ae4fce6ad09dd58dd5fde1da16)), closes [#1074](https://github.com/Belphemur/SoundSwitch/issues/1074)
+* **QuickMenu:** Fix resizing the quick menu when the number of items changes ([5b1eaec](https://github.com/Belphemur/SoundSwitch/commit/5b1eaece9466f1e09f3da0542b18868b2494aaaa)), closes [#1086](https://github.com/Belphemur/SoundSwitch/issues/1086)
+
+
+### Languages
+
+* **Bulgarian:** Add Bulgarian to the application ([74cce0d](https://github.com/Belphemur/SoundSwitch/commit/74cce0db9dc26f70fcfc51332d5d9b609b3491c3))
+* **Bulgarian:** Added About translation using Weblate ([d1c3fb3](https://github.com/Belphemur/SoundSwitch/commit/d1c3fb3d1024ae7403cf22b9119049469ce091ec))
+* **Bulgarian:** Added Settings translation using Weblate ([c05edfe](https://github.com/Belphemur/SoundSwitch/commit/c05edfe52611e7c6d8bf00aeb5a36a593b66cac3))
+* **Bulgarian:** Added Tray Icon translation using Weblate ([e523b8c](https://github.com/Belphemur/SoundSwitch/commit/e523b8cad7fc37223c3c31ac09c2101fe8cd091a))
+* **Bulgarian:** Added Update Download translation using Weblate ([4fdd134](https://github.com/Belphemur/SoundSwitch/commit/4fdd1340a0916e36c601ba8a176460b91750a460))
+* **Bulgarian:** Translated About using Weblate ([8bfea2a](https://github.com/Belphemur/SoundSwitch/commit/8bfea2ab36a32668561b21868dac35945684ddc6))
+* **Bulgarian:** Translated Settings using Weblate ([4f79f46](https://github.com/Belphemur/SoundSwitch/commit/4f79f461f5709b0e4ad9ad71cef5e329536fe6bb))
+* **Bulgarian:** Translated Tray Icon using Weblate ([5f2fc01](https://github.com/Belphemur/SoundSwitch/commit/5f2fc012193338d72eb4bc0effa98b3434a9dc61))
+* **Bulgarian:** Translated Update Download using Weblate ([6b05d44](https://github.com/Belphemur/SoundSwitch/commit/6b05d44f7758f4e0f42b7bf8c856085b51abab9a))
+* **Bulgarian:** Translated Update Download using Weblate ([f587f06](https://github.com/Belphemur/SoundSwitch/commit/f587f066e4212f37154012df9d08089407bd3ae8))
+* **Ukrainian:** Add Ukrainian to the list of supported languages ([a3684d3](https://github.com/Belphemur/SoundSwitch/commit/a3684d323f7e01e1b157658e2e9481be516d8c82))
+* **Ukrainian:** Added About translation using Weblate ([e584982](https://github.com/Belphemur/SoundSwitch/commit/e584982781a2ae6f7f79aaf6c4eed911eb5c7c8d))
+* **Ukrainian:** Added Settings translation using Weblate ([9490b89](https://github.com/Belphemur/SoundSwitch/commit/9490b89ecfe4e21f9a7abedda0a8a53457e1b171))
+* **Ukrainian:** Added Tray Icon translation using Weblate ([b57f6e0](https://github.com/Belphemur/SoundSwitch/commit/b57f6e00b6363ffb6f7dd1c5488c5c98a51dfcfd))
+* **Ukrainian:** Added Update Download translation using Weblate ([e64d78e](https://github.com/Belphemur/SoundSwitch/commit/e64d78e39f44a2d65e066debe141ae80a9bdb814))
+* **Ukrainian:** Translated About using Weblate ([cc7ac86](https://github.com/Belphemur/SoundSwitch/commit/cc7ac86e221efad0daa8694232c4b8a916bf5b54))
+* **Ukrainian:** Translated Settings using Weblate ([edb8ab4](https://github.com/Belphemur/SoundSwitch/commit/edb8ab497230caa4aadcefc2c6f3d289d41b00f1))
+* **Ukrainian:** Translated Settings using Weblate ([c50c67e](https://github.com/Belphemur/SoundSwitch/commit/c50c67ead79eb4ae74d85778235692d78078c7b8))
+* **Ukrainian:** Translated Tray Icon using Weblate ([d82d954](https://github.com/Belphemur/SoundSwitch/commit/d82d95489ea079c88c9149029252397b72f6ce96))
+* **Ukrainian:** Translated Tray Icon using Weblate ([0250383](https://github.com/Belphemur/SoundSwitch/commit/02503832f10ca76ecefcd196e2c8fc4783370a17))
+* **Ukrainian:** Translated Update Download using Weblate ([0c80e2e](https://github.com/Belphemur/SoundSwitch/commit/0c80e2e5384e04757bcc9d469aa2896657e9d9d7))
+
 ## [6.4.3](https://github.com/Belphemur/SoundSwitch/compare/v6.4.2...v6.4.3) (2022-11-18)
 
 
