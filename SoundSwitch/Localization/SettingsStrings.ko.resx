@@ -427,4 +427,10 @@
   <data name="profile.error.deviceChanged" xml:space="preserve">
     <value>강제 프로파일은 하나만 가질 수 있습니다.</value>
   </data>
+  <data name="devices.AutoAddNewDevice" xml:space="preserve">
+    <value>새 장치 자동 선택</value>
+  </data>
+  <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
+    <value>새 장치가 컴퓨터에 연결되면 선택한 목록에 자동으로 추가</value>
+  </data>
 </root>
