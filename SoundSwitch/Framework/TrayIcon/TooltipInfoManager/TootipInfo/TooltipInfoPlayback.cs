@@ -12,16 +12,31 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
+using NAudio.CoreAudioApi;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
+using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Localization;
+using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo
 {
     public class TooltipInfoPlayback : ITooltipInfo
     {
+        private DeviceFullInfo _defaultDevice;
         public TooltipInfoTypeEnum TypeEnum => TooltipInfoTypeEnum.Playback;
         public string Label => SettingsStrings.tooltipOnHoverOptionPlaybackDevice;
+
+        public TooltipInfoPlayback()
+        {
+            AppModel.Instance.DefaultDeviceChanged += (sender, @event) =>
+            {
+                if (@event.Device.Type != DataFlow.Render)
+                    return;
+                _defaultDevice = @event.Device;
+            };
+            _defaultDevice = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eConsole);
+        }
 
         /// <summary>
         /// The text to display for this ToolTip
@@ -29,10 +44,9 @@ namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo
         /// <returns></returns>
         public string TextToDisplay()
         {
-            var playbackDefaultDevice = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eConsole);
-            return playbackDefaultDevice == null
+            return _defaultDevice == null
                 ? null
-                : string.Format(SettingsStrings.activePlayback + " - {1}%", playbackDefaultDevice.NameClean, playbackDefaultDevice.Volume);
+                : string.Format(SettingsStrings.activePlayback + " - {1}%", _defaultDevice.NameClean, _defaultDevice.Volume);
         }
 
         public override string ToString()

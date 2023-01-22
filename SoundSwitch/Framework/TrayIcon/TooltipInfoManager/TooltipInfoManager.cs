@@ -72,6 +72,11 @@ namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager
 
             if (text == null)
                 return;
+            //Only if changed
+            if (_icon.Text == text)
+            {
+                return;
+            }
             Fixes.SetNotifyIconText(_icon, $"{Application.ProductName}\n{text}");
         }
     }

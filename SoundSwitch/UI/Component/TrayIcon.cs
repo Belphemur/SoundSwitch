@@ -185,7 +185,7 @@ namespace SoundSwitch.UI.Component
             _settingsMenu.Items.Add(TrayIconStrings.about, RessourceHelpSmallBitmap, (sender, e) => new About().Show());
             _settingsMenu.Items.Add(new ToolStripSeparator());
             _settingsMenu.Items.Add(TrayIconStrings.exit, RessourceExitBitmap, (sender, e) => Application.Exit());
-            
+
             RoundedCorner.RoundCorner(_settingsMenu.Handle, RoundedCorner.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND);
         }
 
@@ -239,12 +239,12 @@ namespace SoundSwitch.UI.Component
                         break;
                 }
             };
-            AppModel.Instance.DefaultDeviceChanged += (_, _) => { _tooltipInfoManager.SetIconText(); };
             AppModel.Instance.UpdateModeChanged += (_, mode) =>
             {
                 SetUpdateMenuItem(mode);
                 PopulateSettingsMenu();
             };
+            NotifyIcon.MouseMove += (sender, args) => { _tooltipInfoManager.SetIconText(); };
         }
 
         private void NewReleaseAvailable(object sender, UpdateChecker.NewReleaseEvent newReleaseEvent)
@@ -336,8 +336,8 @@ namespace SoundSwitch.UI.Component
                 _selectionMenu.Items.Add(new ToolStripSeparator());
                 _selectionMenu.Items.AddRange(recordingDevices.Select(info => new ToolStripDeviceItem(DeviceClicked, info, info.Equals(defaultRecording))).ToArray());
             }
+
             RoundedCorner.RoundCorner(_selectionMenu.Handle, RoundedCorner.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND);
-        
         }
 
         private void DeviceClicked(object sender, EventArgs e)
