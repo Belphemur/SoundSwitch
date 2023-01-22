@@ -31,9 +31,7 @@ namespace SoundSwitch.Framework.Profile
         public DeviceInfo? Playback { get; set; }
         public DeviceInfo? Communication { get; set; }
         public DeviceInfo? Recording { get; set; }
-        
         public DeviceInfo? RecordingCommunication { get; set; }
-
         public string Name { get; set; } = "";
         public IList<Trigger.Trigger> Triggers { get; set; } = new List<Trigger.Trigger>();
 
@@ -80,12 +78,13 @@ namespace SoundSwitch.Framework.Profile
                 RecordingCommunication = RecordingCommunication,
                 RestoreDevices = RestoreDevices,
                 Triggers = Triggers.Select(trigger => new Trigger.Trigger(trigger.Type)
-                {
-                    HotKey = trigger.HotKey,
-                    ApplicationPath = trigger.ApplicationPath,
-                    WindowName = trigger.WindowName,
-                    ShouldRestoreDevices = trigger.ShouldRestoreDevices
-                }).ToList()
+                                   {
+                                       HotKey = trigger.HotKey,
+                                       ApplicationPath = trigger.ApplicationPath,
+                                       WindowName = trigger.WindowName,
+                                       ShouldRestoreDevices = trigger.ShouldRestoreDevices
+                                   })
+                                   .ToList()
             };
         }
 
@@ -95,12 +94,12 @@ namespace SoundSwitch.Framework.Profile
             get
             {
                 if (Playback != null)
-                    yield return new DeviceRoleWrapper(Playback, Communication == null ? ERole.ERole_enum_count : ERole.eConsole | ERole.eMultimedia);
-                if (Communication != null)
+                    yield return new DeviceRoleWrapper(Playback, Communication == null || !Playback.Equals(Communication) ? ERole.ERole_enum_count : ERole.eConsole | ERole.eMultimedia);
+                if (Communication != null && !Communication.Equals(Playback))
                     yield return new DeviceRoleWrapper(Communication, ERole.eCommunications);
                 if (Recording != null)
-                    yield return new DeviceRoleWrapper(Recording, RecordingCommunication == null ? ERole.ERole_enum_count : ERole.eConsole | ERole.eMultimedia);
-                if (RecordingCommunication != null)
+                    yield return new DeviceRoleWrapper(Recording, RecordingCommunication == null || !Recording.Equals(RecordingCommunication) ? ERole.ERole_enum_count : ERole.eConsole | ERole.eMultimedia);
+                if (RecordingCommunication != null && !RecordingCommunication.Equals(Recording))
                     yield return new DeviceRoleWrapper(RecordingCommunication, ERole.eCommunications);
             }
         }
@@ -117,7 +116,7 @@ namespace SoundSwitch.Framework.Profile
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((Profile) obj);
+            return Equals((Profile)obj);
         }
 
         public override int GetHashCode()
