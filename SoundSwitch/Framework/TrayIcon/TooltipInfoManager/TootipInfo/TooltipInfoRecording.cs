@@ -46,7 +46,7 @@ namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo
         {
             return _defaultDevice == null
                 ? null
-                : string.Format(SettingsStrings.activeRecording + " - {1}%", _defaultDevice.NameClean, _defaultDevice.Volume);
+                : string.Format("[{1}%] " + SettingsStrings.activeRecording, _defaultDevice.NameClean, _defaultDevice.Volume);
         }
 
         public override string ToString()
