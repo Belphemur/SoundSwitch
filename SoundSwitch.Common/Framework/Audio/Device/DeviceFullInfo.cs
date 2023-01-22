@@ -36,8 +36,8 @@ namespace SoundSwitch.Common.Framework.Audio.Device
                 if (device.State == DeviceState.Active)
                 {
                     var deviceAudioEndpointVolume = device.AudioEndpointVolume;
-                    Volume = (int)(deviceAudioEndpointVolume.MasterVolumeLevelScalar * 100);
-                    deviceAudioEndpointVolume.OnVolumeNotification += data => Volume = (int)data.MasterVolume * 100;
+                    Volume = (int)Math.Round(deviceAudioEndpointVolume.MasterVolumeLevelScalar * 100);
+                    deviceAudioEndpointVolume.OnVolumeNotification += data => Volume = (int)Math.Round(data.MasterVolume * 100F);
                 }
             }
             catch
