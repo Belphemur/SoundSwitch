@@ -17,6 +17,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
+using SoundSwitch.Util;
 
 namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager
 {
@@ -72,6 +73,9 @@ namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager
 
             if (text == null)
                 return;
+
+            //Taken from NotifyIcon.MaxTextSize
+            text = text.Truncate(127);
             //Only if changed
             if (_icon.Text == text)
             {
