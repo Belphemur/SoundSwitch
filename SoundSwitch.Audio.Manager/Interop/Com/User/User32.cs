@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -109,8 +108,11 @@ namespace SoundSwitch.Audio.Manager.Interop.Com.User
                 }
             }
 
+            [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+            internal static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, [Out] StringBuilder lParam);
 
-            [DllImport("user32.dll", CharSet = CharSet.Auto,  SetLastError = true, ExactSpelling = true)]
+
+            [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
             public static extern IntPtr GetWindowThreadProcessId([In] HWND hWnd, [Out] out uint ProcessId);
 
             [DllImport("user32.dll", CharSet = CharSet.Ansi)]
@@ -118,39 +120,46 @@ namespace SoundSwitch.Audio.Manager.Interop.Com.User
 
             [DllImport("user32", EntryPoint = "GetWindowTextA", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
             public static extern int GetWindowText(HWND hwnd, StringBuilder lpString, int cch);
+
             [DllImport("user32", EntryPoint = "GetWindowTextLengthA", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
             public static extern int GetWindowTextLength(HWND hwnd);
 
             [DllImport("user32", EntryPoint = "GetClassNameA", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
             public static extern int GetClassName(HWND hWnd, StringBuilder text, int count);
-            
-            [DllImport("user32.dll", CharSet =CharSet.Auto)]
-            public static extern bool IsWindow( HWND hwnd );
+
+            [DllImport("user32.dll", CharSet = CharSet.Auto)]
+            public static extern bool IsWindow(HWND hwnd);
 
             public delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType, HWND hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
 
             [DllImport("user32.dll")]
             public static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr hmodWinEventProc, WinEventDelegate lpfnWinEventProc, uint idProcess, uint idThread, uint dwFlags);
 
-            internal const uint WINEVENT_OUTOFCONTEXT    = 0;
-            internal const int  EVENT_OBJECT_DESTROY     = 0x8001;
-            internal const uint EVENT_SYSTEM_FOREGROUND  = 0x0003;
+            internal const uint WINEVENT_OUTOFCONTEXT = 0;
+            internal const int EVENT_OBJECT_DESTROY = 0x8001;
+            internal const uint EVENT_SYSTEM_FOREGROUND = 0x0003;
             internal const uint EVENT_SYSTEM_MINIMIZEEND = 0x0017;
-            internal const int  MAX_PATH                 = 260;
+            internal const int MAX_PATH = 260;
+            //
+            // Window text
+            //
+            
+            internal const uint WM_GETTEXTLENGTH = 0x000E;
+            internal const uint WM_GETTEXT = 0x000D;
 
 
             //
             // IAccessible / OLEACC / WinEvents
             //
 
-            public const int CHILDID_SELF             = 0;
+            public const int CHILDID_SELF = 0;
             public const int STATE_SYSTEM_UNAVAILABLE = 0x00000001;
-            public const int STATE_SYSTEM_FOCUSED     = 0x00000004;
-            public const int OBJID_CARET              = -8;
-            public const int OBJID_CLIENT             = -4;
-            public const int OBJID_MENU               = -3;
-            public const int OBJID_SYSMENU            = -1;
-            public const int OBJID_WINDOW             = 0;
+            public const int STATE_SYSTEM_FOCUSED = 0x00000004;
+            public const int OBJID_CARET = -8;
+            public const int OBJID_CLIENT = -4;
+            public const int OBJID_MENU = -3;
+            public const int OBJID_SYSMENU = -1;
+            public const int OBJID_WINDOW = 0;
         }
 
         public static uint ForegroundProcessId
@@ -168,9 +177,9 @@ namespace SoundSwitch.Audio.Manager.Interop.Com.User
         /// </summary>
         public static string GetWindowText(NativeMethods.HWND window)
         {
-            var length         = NativeMethods.GetWindowTextLength(window) + 1;
-            var sb             = new StringBuilder(length);
-            var result         = NativeMethods.GetWindowText(window, sb, NativeMethods.MAX_PATH);
+            var length = (int)NativeMethods.SendMessage(window, NativeMethods.WM_GETTEXTLENGTH, IntPtr.Zero, null);
+            var sb = new StringBuilder(length+1);
+            var result = NativeMethods.SendMessage(window, NativeMethods.WM_GETTEXT, sb.Capacity, sb);
             var lastWin32Error = Marshal.GetLastWin32Error();
 
             if (result == 0)
@@ -186,8 +195,8 @@ namespace SoundSwitch.Audio.Manager.Interop.Com.User
         /// </summary>
         public static string GetWindowClass(NativeMethods.HWND window)
         {
-            var sb             = new StringBuilder(NativeMethods.MAX_PATH);
-            var result         = NativeMethods.GetClassName(window, sb, NativeMethods.MAX_PATH);
+            var sb = new StringBuilder(NativeMethods.MAX_PATH);
+            var result = NativeMethods.GetClassName(window, sb, NativeMethods.MAX_PATH);
             var lastWin32Error = Marshal.GetLastWin32Error();
 
             if (result == 0)
