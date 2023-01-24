@@ -333,6 +333,7 @@ namespace SoundSwitch.Framework.Profile
             {
                 case "Steam" when @event.WindowClass == "CUIEngineWin32":
                 case "SP" when @event.WindowClass == "SDL_app":
+                case "Steam Big Picture Mode" when @event.WindowClass == "SDL_app":
                     return true;
                 default:
                     return false;
