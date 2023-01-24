@@ -100,7 +100,7 @@ namespace SoundSwitch.Framework.Profile
                         _profilesByUwpApp.Add(trigger.WindowName.ToLower(), (profile, trigger));
                         return true;
                     },
-                    () => true, 
+                    () => true,
                     () =>
                     {
                         _forcedProfile = profile;
@@ -310,12 +310,7 @@ namespace SoundSwitch.Framework.Profile
                 return false;
             }
 
-            if (!@event.ProcessName.Contains("steam"))
-            {
-                return false;
-            }
-
-            if (@event.WindowName != "SP" || @event.WindowClass != "SDL_app")
+            if (!IsSteamBigPicture(@event))
             {
                 return false;
             }
@@ -324,6 +319,23 @@ namespace SoundSwitch.Framework.Profile
 
             SwitchAudio(_steamProfile);
             return true;
+        }
+
+        private bool IsSteamBigPicture(WindowMonitor.Event @event)
+        {
+            if (!@event.ProcessName.ToLower().Contains("steam"))
+            {
+                return false;
+            }
+
+            switch (@event.WindowName)
+            {
+                case "Steam" when @event.WindowClass == "CUIEngineWin32":
+                case "SP" when @event.WindowClass == "SDL_app":
+                    return true;
+                default:
+                    return false;
+            }
         }
 
         private DeviceInfo? CheckDeviceAvailable(DeviceInfo deviceInfo)
@@ -521,7 +533,7 @@ namespace SoundSwitch.Framework.Profile
 
                         return null;
                     },
-                    () => null, 
+                    () => null,
                     () => _forcedProfile != null ? SettingsStrings.profile_error_deviceChanged : null);
                 if (error != null)
                 {
