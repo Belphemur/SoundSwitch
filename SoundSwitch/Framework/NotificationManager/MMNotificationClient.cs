@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Job.Scheduler.Job;
@@ -105,7 +106,7 @@ namespace SoundSwitch.Framework.NotificationManager
         {
             _enumerator = new MMDeviceEnumerator();
             _enumerator.RegisterEndpointNotificationCallback(this);
-            foreach (var flow in Enum.GetValues<DataFlow>())
+            foreach (var flow in Enum.GetValues<DataFlow>().Where(flow => flow != DataFlow.All))
             {
                 foreach (var role in Enum.GetValues<Role>())
                 {
