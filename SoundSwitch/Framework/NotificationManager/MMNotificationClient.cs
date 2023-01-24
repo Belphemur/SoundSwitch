@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Job.Scheduler.Job;
@@ -8,6 +9,7 @@ using NAudio.CoreAudioApi;
 using NAudio.CoreAudioApi.Interfaces;
 using Serilog;
 using SoundSwitch.Audio.Manager;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Threading;
 using SoundSwitch.Model;
@@ -17,8 +19,12 @@ namespace SoundSwitch.Framework.NotificationManager
 {
     public class MMNotificationClient : IMMNotificationClient, IDisposable
     {
+        private record DeviceRole(DataFlow flow, Role role);
+
         public static MMNotificationClient Instance { get; } = new();
         private MMDeviceEnumerator _enumerator;
+
+        private readonly Dictionary<DeviceRole, string> _lastRoleDevice = new();
 
         public event EventHandler<DeviceDefaultChangedEvent> DefaultDeviceChanged;
         public event EventHandler<DeviceChangedEventBase> DevicesChanged;
@@ -99,6 +105,17 @@ namespace SoundSwitch.Framework.NotificationManager
         {
             _enumerator = new MMDeviceEnumerator();
             _enumerator.RegisterEndpointNotificationCallback(this);
+            foreach (var flow in Enum.GetValues<DataFlow>())
+            {
+                foreach (var role in Enum.GetValues<Role>())
+                {
+                    var device = AudioSwitcher.Instance.GetDefaultAudioEndpoint((EDataFlow)flow, (ERole)role);
+                    if (device == null)
+                        continue;
+
+                    _lastRoleDevice[new DeviceRole(flow, role)] = device.Id;
+                }
+            }
         }
 
         public void OnDeviceStateChanged(string deviceId, DeviceState newState)
@@ -121,6 +138,13 @@ namespace SoundSwitch.Framework.NotificationManager
             if (deviceId == null)
                 return;
 
+            var deviceRole = new DeviceRole(flow, role);
+            if (_lastRoleDevice.TryGetValue(deviceRole, out var oldDeviceId) && oldDeviceId == deviceId)
+            {
+                return;
+            }
+
+            _lastRoleDevice[deviceRole] = deviceId;
             JobScheduler.Instance.ScheduleJob(new DefaultDeviceChangedJob(this, deviceId, role), CancellationToken.None, _taskScheduler);
         }
 
