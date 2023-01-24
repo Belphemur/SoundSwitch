@@ -77,6 +77,7 @@ namespace SoundSwitch.Framework.Profile
                 Recording = Recording,
                 RecordingCommunication = RecordingCommunication,
                 RestoreDevices = RestoreDevices,
+                NotifyOnActivation = NotifyOnActivation,
                 Triggers = Triggers.Select(trigger => new Trigger.Trigger(trigger.Type)
                                    {
                                        HotKey = trigger.HotKey,
