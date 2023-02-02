@@ -13,7 +13,7 @@ namespace SoundSwitch.Framework.Logger.Configuration
     {
         public static void ConfigureLogger()
         {
-            const string sentryTemplate = "{Properties} {Message}";
+            const string sentryTemplate = "{Message}\n{Properties}";
             const string outputTemplate = "[{Timestamp:HH:mm:ss.fff} {Level:u3}][{ThreadId}]" + sentryTemplate + "(at {Caller}){NewLine}{Exception}";
             Log.Logger = new LoggerConfiguration()
 #if RELEASE
