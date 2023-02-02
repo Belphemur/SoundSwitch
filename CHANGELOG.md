@@ -1,3 +1,32 @@
+## [6.5.1](https://github.com/Belphemur/SoundSwitch/compare/v6.5.0...v6.5.1) (2023-02-02)
+
+
+### Bug Fixes
+
+* **Crash::NoError:** Fix crashing without error ([4d2ee17](https://github.com/Belphemur/SoundSwitch/commit/4d2ee17d15907d556df563085c046b76c176257b))
+* **logging:** Make foreground change message verbose ([6c69344](https://github.com/Belphemur/SoundSwitch/commit/6c693441cd56d0b8834f636643e3957e00902b2d))
+* **Notification::Banner:** Fix double notification (for both playback and recording device) in Win 11 ([a28b70d](https://github.com/Belphemur/SoundSwitch/commit/a28b70dd28caf8c51185aca6f9002b8e73bfa798))
+* **Notification::Win11:** Fix double notification ([ed20fd5](https://github.com/Belphemur/SoundSwitch/commit/ed20fd5483570a9c1d4ac1f6da4c3eb86972463e)), closes [#893](https://github.com/Belphemur/SoundSwitch/issues/893)
+* **Profile::Editing:** Fix inability to change the Notify for profile ([0b0cd0c](https://github.com/Belphemur/SoundSwitch/commit/0b0cd0cfea2fc6ce153f2bd3fe6a79b987706791)), closes [#1090](https://github.com/Belphemur/SoundSwitch/issues/1090)
+* **Steam::BigPicture:** Improve detection of steam big picture ([2e7a2af](https://github.com/Belphemur/SoundSwitch/commit/2e7a2afde8891ee6d4319249be3394d13aafe5d0))
+* **Tooltip::Volume:** Be sure the volume of the tooltip is properly shown ([8fc9cc4](https://github.com/Belphemur/SoundSwitch/commit/8fc9cc4ee65cdee4d7e823166a2304b7067755ab)), closes [#1096](https://github.com/Belphemur/SoundSwitch/issues/1096)
+* **Tooltip::Volume:** Fix how to show the volume in the tooltip. Start with the volume then name of device. ([9b21dc8](https://github.com/Belphemur/SoundSwitch/commit/9b21dc81ddc3c58d3148203823a1152a5d9da671)), closes [#1096](https://github.com/Belphemur/SoundSwitch/issues/1096)
+* **Volume:** Fix volume calculation ([9b692c8](https://github.com/Belphemur/SoundSwitch/commit/9b692c8f512ff0bde4c3eca0fdc85d4e15c9ec24)), closes [#1096](https://github.com/Belphemur/SoundSwitch/issues/1096)
+* **Window::Name:** Fix possible crash when trying to get the name of a Window ([6b45a50](https://github.com/Belphemur/SoundSwitch/commit/6b45a50a3ae427e4a5caa5bc6b4128cd528c806e)), closes [#1095](https://github.com/Belphemur/SoundSwitch/issues/1095)
+
+
+### Languages
+
+* **Korean:** Translated Settings using Weblate ([ab0aab7](https://github.com/Belphemur/SoundSwitch/commit/ab0aab7cae43b01c424eb84a5eae537544b8abae))
+
+
+### Enhancements
+
+* **logs:** Improve sentry log message in case of crash ([b1b093e](https://github.com/Belphemur/SoundSwitch/commit/b1b093e22d1986ead4ace76d43a51d070d53ccd5))
+* **logs:** Remove unneeded threadid ([8e73936](https://github.com/Belphemur/SoundSwitch/commit/8e7393682e66bde4af6a1622e6e1f84fe276e2ee))
+* **Profile::Form:** Reduce the size of the form to edit/create profile ([7e8c42a](https://github.com/Belphemur/SoundSwitch/commit/7e8c42af1f54c1de24df5397b009750caa18185b)), closes [#1091](https://github.com/Belphemur/SoundSwitch/issues/1091)
+* **Profile::Steam:** Improve the detection of Steam Big Picture mode in Windows 11 ([af955f2](https://github.com/Belphemur/SoundSwitch/commit/af955f2962ec3140c7096abd3bc663ff6f16eec0))
+
 ## [6.5.0](https://github.com/Belphemur/SoundSwitch/compare/v6.4.3...v6.5.0) (2023-01-07)
 
 
