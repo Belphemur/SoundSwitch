@@ -29,7 +29,7 @@ namespace SoundSwitch.Framework.Logger.Configuration
 #endif
                          .WriteTo.File(Path.Combine(ApplicationPath.Logs, "soundswitch.log"),
                              rollingInterval: RollingInterval.Day, retainedFileCountLimit: 3,
-                             flushToDiskInterval: TimeSpan.FromMinutes(10),
+                             flushToDiskInterval: TimeSpan.FromMinutes(5),
                              outputTemplate: outputTemplate)
                          .WriteTo.Sentry(o =>
                          {
