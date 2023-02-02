@@ -171,7 +171,7 @@ namespace SoundSwitch.Framework.Profile
         {
             _windowMonitor.ForegroundChanged += (sender, @event) =>
             {
-                Log.Debug("Foreground changed: [{0}] {1} - {2}", @event.ProcessName, @event.WindowName, @event.WindowClass);
+                Log.Verbose("Foreground changed: [{0}] {1} - {2}", @event.ProcessName, @event.WindowName, @event.WindowClass);
                 if (HandleSteamBigPicture(@event)) return;
 
                 if (HandleApplication(@event)) return;
