@@ -202,13 +202,7 @@ namespace SoundSwitch
             if (exception == null)
                 return;
 
-            SentryId eventId = default;
-            SentrySdk.WithScope(scope =>
-                {
-                    scope.AddAttachment(AppConfigs.Configuration.FileLocation);
-                    eventId = SentrySdk.CaptureException(exception);
-                }
-            );
+            var eventId = SentrySdk.CaptureException(exception, scope => { scope.AddAttachment(AppConfigs.Configuration.FileLocation); });
 
             var exceptionMessage = exception.Message;
             if (exception.InnerException != null)
@@ -224,10 +218,25 @@ namespace SoundSwitch
 Would you like to share more information with the developers?";
             var result = DialogResult.None;
             var syncContext = _synchronizationContext ?? SynchronizationContext.Current;
-            syncContext.Send(state =>
+            syncContext?.Send(state =>
             {
-                result = MessageBox.Show(message, $@"{Application.ProductName} crashed...", MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Error);
+                try
+                {
+                    try
+                    {
+                        result = MessageBox.Show(message, $@"{Application.ProductName} crashed...", MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Error);
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        result = MessageBox.Show(message, $@"{Application.ProductName} crashed...", MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.ServiceNotification);
+                    }
+                }
+                catch (Exception)
+                {
+                    Log.Warning("Couldn't warn the user about the crash");
+                }
             }, null);
 
 
