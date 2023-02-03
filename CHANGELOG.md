@@ -1,3 +1,10 @@
+## [6.5.2](https://github.com/Belphemur/SoundSwitch/compare/v6.5.1...v6.5.2) (2023-02-03)
+
+
+### Bug Fixes
+
+* **Profile::Communication:** Set properly the communication device from a profile. ([4a83ac5](https://github.com/Belphemur/SoundSwitch/commit/4a83ac5dd38709508af7b47ee0cd1e56bf99b9a8)), closes [#1104](https://github.com/Belphemur/SoundSwitch/issues/1104)
+
 ## [6.5.1](https://github.com/Belphemur/SoundSwitch/compare/v6.5.0...v6.5.1) (2023-02-02)
 
 
