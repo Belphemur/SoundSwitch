@@ -95,11 +95,11 @@ namespace SoundSwitch.Framework.Profile
             get
             {
                 if (Playback != null)
-                    yield return new DeviceRoleWrapper(Playback, Communication == null || !Playback.Equals(Communication) ? ERole.ERole_enum_count : ERole.eConsole | ERole.eMultimedia);
+                    yield return new DeviceRoleWrapper(Playback, Playback.Equals(Communication) ? ERole.ERole_enum_count : ERole.eConsole | ERole.eMultimedia);
                 if (Communication != null && !Communication.Equals(Playback))
                     yield return new DeviceRoleWrapper(Communication, ERole.eCommunications);
                 if (Recording != null)
-                    yield return new DeviceRoleWrapper(Recording, RecordingCommunication == null || !Recording.Equals(RecordingCommunication) ? ERole.ERole_enum_count : ERole.eConsole | ERole.eMultimedia);
+                    yield return new DeviceRoleWrapper(Recording, Recording.Equals(RecordingCommunication) ? ERole.ERole_enum_count : ERole.eConsole | ERole.eMultimedia);
                 if (RecordingCommunication != null && !RecordingCommunication.Equals(Recording))
                     yield return new DeviceRoleWrapper(RecordingCommunication, ERole.eCommunications);
             }
