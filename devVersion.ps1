@@ -9,5 +9,6 @@ $newRevision = [int]$currentDate.DayOfYear * 24 + $currentDate.Day + $currentDat
 $newVersion = [Version]::new($currentVersion.Major, $currentVersion.Minor, $currentVersion.Build, $newRevision)
 (Get-Content SoundSwitch/Properties/AssemblyInfo.cs) -replace "AssemblyVersion\(.+\)","AssemblyVersion(`"$newVersion`")" |  Out-File SoundSwitch/Properties/AssemblyInfo.cs
 
+"version=$($newVersion.toString())" |  Out-File $Env:GITHUB_OUTPUT
 
 echo "::set-output name=version::$($newVersion.toString())"
