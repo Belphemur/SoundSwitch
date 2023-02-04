@@ -13,6 +13,7 @@
 ********************************************************************/
 
 using System;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
@@ -65,7 +66,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             return true;
         }
 
-        public void NotifyProfileChanged(Profile.Profile profile, uint? processId)
+        public void NotifyProfileChanged(Profile.Profile profile, Bitmap icon, uint? processId)
         {
             var title = string.Format(SettingsStrings.profile_notification_text, profile.Name);
             var text  = string.Join("\n", profile.Devices.Select(wrapper => wrapper.DeviceInfo.NameClean));

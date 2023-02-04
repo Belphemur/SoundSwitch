@@ -12,8 +12,15 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
+using System;
+using System.Diagnostics;
+using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
+using NAudio.CoreAudioApi;
 using Serilog;
+using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
@@ -90,6 +97,15 @@ namespace SoundSwitch.Framework.NotificationManager
             _lastDeviceId = deviceDefaultChangedEvent.DeviceId;
         }
 
+        private DeviceFullInfo? CheckDeviceAvailable(DeviceInfo deviceInfo)
+        {
+            return deviceInfo.Type switch
+            {
+                DataFlow.Capture => _model.AvailableRecordingDevices.FirstOrDefault(info => info.Equals(deviceInfo)),
+                _                => _model.AvailablePlaybackDevices.FirstOrDefault(info => info.Equals(deviceInfo))
+            };
+        }
+
         /// <summary>
         /// Notify on Profile changed
         /// </summary>
@@ -100,7 +116,42 @@ namespace SoundSwitch.Framework.NotificationManager
                 return;
             }
 
-            _notification.NotifyProfileChanged(profile, processId);
+            var icon = GetIcon(profile, processId);
+
+            _notification.NotifyProfileChanged(profile, icon, processId);
+        }
+
+        private Bitmap GetIcon(Profile.Profile profile, uint? processId)
+        {
+            if (!_notification.SupportIcon)
+            {
+                return null;
+            }
+            
+            Bitmap icon = null;
+            if (processId.HasValue)
+            {
+                try
+                {
+                    var process = Process.GetProcessById((int)processId.Value);
+                    icon = IconExtractor.Extract(process.MainModule?.FileName, 0, true).ToBitmap();
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+            }
+
+            if (icon == null)
+            {
+                var device = profile.Devices.Select(wrapper => CheckDeviceAvailable(wrapper.DeviceInfo)).FirstOrDefault(info => info != null);
+                if (device != null)
+                {
+                    icon = device.LargeIcon.ToBitmap();
+                }
+            }
+
+            return icon ?? Resources.default_profile_image;
         }
 
         public void NotifyMuteChanged(string microphoneName, bool newMuteState)

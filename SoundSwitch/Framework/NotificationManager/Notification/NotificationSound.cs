@@ -13,6 +13,7 @@
 ********************************************************************/
 
 using System;
+using System.Drawing;
 using System.IO;
 using System.Threading;
 using NAudio.CoreAudioApi;
@@ -62,7 +63,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             return true;
         }
 
-        public void NotifyProfileChanged(Profile.Profile profile, uint? processId)
+        public void NotifyProfileChanged(Profile.Profile profile, Bitmap icon, uint? processId)
         {
             if (profile.Playback == null)
                 return;

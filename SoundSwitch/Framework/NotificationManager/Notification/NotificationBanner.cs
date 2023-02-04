@@ -13,12 +13,11 @@
 ********************************************************************/
 
 using System;
-using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Common.Framework.Audio.Device;
-using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
@@ -36,22 +35,10 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
 
         private readonly BannerManager _bannerManager = new();
 
-        public void NotifyProfileChanged(Profile.Profile profile, uint? processId)
-        {
-            var icon = Resources.default_profile_image;
-            if (processId.HasValue)
-            {
-                try
-                {
-                    var process = Process.GetProcessById((int)processId.Value);
-                    icon = IconExtractor.Extract(process.MainModule?.FileName, 0, true).ToBitmap();
-                }
-                catch (Exception)
-                {
-                    // ignored
-                }
-            }
+        public bool SupportIcon => true;
 
+        public void NotifyProfileChanged(Profile.Profile profile, Bitmap icon, uint? processId)
+        {
             var bannerData = new BannerData
             {
                 Priority = 1,

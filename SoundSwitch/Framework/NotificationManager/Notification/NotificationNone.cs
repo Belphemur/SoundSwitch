@@ -12,6 +12,7 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
+using System.Drawing;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
@@ -46,7 +47,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             return true;
         }
 
-        public void NotifyProfileChanged(Profile.Profile profile, uint? processId)
+        public void NotifyProfileChanged(Profile.Profile profile, Bitmap icon, uint? processId)
         {
         }
 

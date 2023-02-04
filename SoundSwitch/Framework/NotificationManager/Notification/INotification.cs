@@ -12,6 +12,8 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
+using System.Drawing;
+using JetBrains.Annotations;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Factory;
@@ -25,6 +27,11 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         /// Configuration of the Notification
         /// </summary>
         INotificationConfiguration Configuration { get; set; }
+
+        /// <summary>
+        /// Does this notification support showing an icon
+        /// </summary>
+        bool SupportIcon => false;
 
         /// <summary>
         /// Notify the change of default audio device
@@ -60,8 +67,9 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         /// Notify when a profile has changed
         /// </summary>
         /// <param name="profile"></param>
+        /// <param name="icon"></param>
         /// <param name="processId"></param>
-        void NotifyProfileChanged(Profile.Profile profile, uint? processId);
+        void NotifyProfileChanged(Profile.Profile profile, [CanBeNull] Bitmap icon, uint? processId);
 
         /// <summary>
         /// Notify about the mute state having changed
