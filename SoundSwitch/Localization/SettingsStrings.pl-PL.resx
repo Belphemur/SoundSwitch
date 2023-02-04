@@ -365,7 +365,7 @@ Brak powiadomień: Brak powiadomień o przełączeniu urządzenia.</value>
     <value>Stan systemu przywrócony</value>
   </data>
   <data name="profile.trigger.restoreDevices" xml:space="preserve">
-    <value>Przywróć urządzenia po zakończeniu działania.</value>
+    <value>Przywróć urządzenia po zakończeniu działania</value>
   </data>
   <data name="usePrimaryScreenTooltip" xml:space="preserve">
     <value>Wyświetlaj banner na głównym ekranie, zamiast na ekranie skupienia.</value>
@@ -422,7 +422,7 @@ Brak powiadomień: Brak powiadomień o przełączeniu urządzenia.</value>
     <value>Aktywuj profil, jeżeli bieżący program zawiera następujące znaki (argumenty)</value>
   </data>
   <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>Skrót klawiszowy użyty do aktywacji profilu</value>
+    <value>Skrót klawiszowy użyty do aktywacji profilu. Jeżeli użyjesz tego samego skrótu, będziesz mógł zmieniać profile.</value>
   </data>
   <data name="profile.trigger.steam" xml:space="preserve">
     <value>Tryb pracy na Steam - Big Picture</value>
@@ -444,5 +444,25 @@ Brak powiadomień: Brak powiadomień o przełączeniu urządzenia.</value>
   </data>
   <data name="profile.trigger.process" xml:space="preserve">
     <value>Ścieżka do programu</value>
+  </data>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>W menu aplikacji</value>
+  </data>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>Ten przycisk powoduje, że profil jest widoczny w menu ikon. Naciśnij lewym przyciskiem myszy na ikonę na pasku zadań aby zobaczyć swój profil.</value>
+  </data>
+  <data name="notification.microphone.muted" xml:space="preserve">
+    <value>{0} jest wyciszony.</value>
+  </data>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>{0} jest odciszony.</value>
+  </data>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>Załącz wyciszenie</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
+    <value>Wymaga włączenia "{}"
+
+Przywróć stan systemu po zamknięciu aplikacji.</value>
   </data>
 </root>
