@@ -20,7 +20,7 @@ namespace SoundSwitch.Framework.NotificationManager
 {
     public class MMNotificationClient : IMMNotificationClient, IDisposable
     {
-        private record DeviceRole(DataFlow Flow, Role Role);
+        private record struct DeviceRole(DataFlow Flow, Role Role);
 
         public static MMNotificationClient Instance { get; } = new();
         private MMDeviceEnumerator _enumerator;

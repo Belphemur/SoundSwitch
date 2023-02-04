@@ -238,13 +238,25 @@ namespace SoundSwitch.Framework.Profile
 
         private bool HandleDeviceChanged(DeviceDefaultChangedEvent audioChangedEvent)
         {
-            if (_forcedProfile != null)
+            if (_forcedProfile == null)
             {
-                SwitchAudio(_forcedProfile);
-                return true;
+                return false;
             }
+            
+            _logger.Debug("We have a force profile set and audio device changed. Checking ....");
 
-            return false;
+            //No need to trigger force profile if
+            if (_forcedProfile.Devices.Any(wrapper => wrapper.DeviceInfo.Equals(audioChangedEvent.Device) && wrapper.Role.HasFlag((ERole)audioChangedEvent.Role)))
+            {
+                _logger.Debug("No need to force switching, already using forced profile.");
+                return false;
+            }
+            
+            _logger.Debug("Forced profile activated: {profile}", _forcedProfile);
+
+            SwitchAudio(_forcedProfile);
+            return true;
+
         }
 
         /// <summary>

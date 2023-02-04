@@ -120,6 +120,11 @@ namespace SoundSwitch.Framework.Profile
             return Equals((Profile)obj);
         }
 
+        public override string ToString()
+        {
+            return $"{nameof(Name)}: {Name}, {nameof(Devices)}: [{string.Join(", ", Devices)}]";
+        }
+
         public override int GetHashCode()
         {
             return Name.GetHashCode();
