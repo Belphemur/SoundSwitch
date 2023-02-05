@@ -1,3 +1,15 @@
+## [6.5.3](https://github.com/Belphemur/SoundSwitch/compare/v6.5.2...v6.5.3) (2023-02-05)
+
+
+### Bug Fixes
+
+* **Profile::ForceProfile:** Fix issue with force profile crashing SoundSwitch. Fix infinite loop. ([988448c](https://github.com/Belphemur/SoundSwitch/commit/988448cdddbbf9671e4b1eb9589ae070e670810d)), closes [#1103](https://github.com/Belphemur/SoundSwitch/issues/1103)
+
+
+### Enhancements
+
+* **Profile::Icon:** Always have an icon for the profile banner notification. Default to the first device of the profile when it's not linked to an application. ([c2f64d8](https://github.com/Belphemur/SoundSwitch/commit/c2f64d8638b9850492499f17774d8b070cc95da2)), closes [#1109](https://github.com/Belphemur/SoundSwitch/issues/1109)
+
 ## [6.5.2](https://github.com/Belphemur/SoundSwitch/compare/v6.5.1...v6.5.2) (2023-02-03)
 
 
