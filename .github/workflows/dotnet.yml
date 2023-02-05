@@ -172,7 +172,7 @@ jobs:
           SENTRY_PROJECT: ${{env.SENTRY_NAME}}
         with:
           environment: Nightly
-          version: "${{env.PROJECT_NAME}}@${{ needs.nightly-release.outputs.devVersion }}"
+          version: "${{env.PROJECT_NAME}}@${{ env.devVersion }}"
 
   master-release:
     needs: [ build, changes ]
@@ -203,7 +203,7 @@ jobs:
       - name: Latest Version
         run: | 
           version=$(git describe --tags --abbrev=0 | cut -c 2-)
-          echo "::set-output name=version::$version.0"
+          echo "version=$version.0" >> $GITHUB_OUTPUT
         id: version
       - name: Sentry Release
         uses: getsentry/action-release@v1.2.1
@@ -213,5 +213,5 @@ jobs:
           SENTRY_PROJECT: ${{env.SENTRY_NAME}}
         with:
           environment: Stable
-          version: "${{env.PROJECT_NAME}}@${{ steps.version.outputs.version }}"
+          version: "${{env.PROJECT_NAME}}@${{ env.version }}"
 
