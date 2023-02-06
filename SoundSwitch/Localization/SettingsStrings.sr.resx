@@ -418,4 +418,19 @@
   <data name="selected" xml:space="preserve">
     <value>Изабрано</value>
   </data>
+  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
+    <value>Профил ће аутоматски бити окинут кад год се промени тренутни уређај звука.</value>
+  </data>
+  <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
+    <value>Аутоматски додај нови уређај на листу одабраних када се повежу на рачунар</value>
+  </data>
+  <data name="profile.trigger.deviceChanged" xml:space="preserve">
+    <value>Приморај профил</value>
+  </data>
+  <data name="profile.error.deviceChanged" xml:space="preserve">
+    <value>Можете имати само један приморан профил.</value>
+  </data>
+  <data name="devices.AutoAddNewDevice" xml:space="preserve">
+    <value>Аутоматски изабери нове уређаје</value>
+  </data>
 </root>

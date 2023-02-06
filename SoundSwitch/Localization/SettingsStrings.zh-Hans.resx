@@ -477,4 +477,19 @@
   <data name="telemetry" xml:space="preserve">
     <value>使用情况数据匿名共享</value>
   </data>
+  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
+    <value>当正在使用的声音设备发生变化时，这个配置将会自动触发。</value>
+  </data>
+  <data name="profile.trigger.deviceChanged" xml:space="preserve">
+    <value>强制配置</value>
+  </data>
+  <data name="profile.error.deviceChanged" xml:space="preserve">
+    <value>只能拥有一个强制配置。</value>
+  </data>
+  <data name="devices.AutoAddNewDevice" xml:space="preserve">
+    <value>自动选择新的设备</value>
+  </data>
+  <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
+    <value>当新设备连接到电脑时，自动添加到选择列表</value>
+  </data>
 </root>
