@@ -30,6 +30,12 @@ public class DebounceRefreshJob : IDebounceJob
 
     public Task OnFailure(JobException exception)
     {
+        if (exception.InnerException is OperationCanceledException)
+        {
+            _logger.Warning("Refresh of device interrupted");
+            return Task.CompletedTask;
+        }
+
         _logger.Warning(exception, "Can't refresh devices");
         return Task.CompletedTask;
     }
