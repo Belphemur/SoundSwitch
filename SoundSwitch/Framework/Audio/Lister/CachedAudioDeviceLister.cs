@@ -68,6 +68,7 @@ namespace SoundSwitch.Framework.Audio.Lister
         private void DeviceChanged(object sender, DeviceChangedEventBase e)
         {
             Refreshing = true;
+            _context.Verbose("Device Changed received, triggering job");
             JobScheduler.Instance.ScheduleJob(new DebounceRefreshJob(_state, this, _context), e.Token);
         }
 
