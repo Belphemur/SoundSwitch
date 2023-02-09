@@ -31,7 +31,7 @@ namespace SoundSwitch.Framework.NotificationManager
         public event EventHandler<DeviceChangedEventBase> DevicesChanged;
         public event EventHandler<DeviceChangedEventBase> DeviceAdded;
 
-        private readonly TaskScheduler _taskScheduler = new LimitedConcurrencyLevelTaskScheduler(1);
+        private readonly TaskScheduler _taskScheduler = new LimitedConcurrencyLevelTaskScheduler(2);
 
         private class DeviceChangedJob : IJob
         {
