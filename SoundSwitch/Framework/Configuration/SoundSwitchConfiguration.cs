@@ -40,6 +40,7 @@ namespace SoundSwitch.Framework.Configuration
             // Basic Settings
             FirstRun = true;
             SwitchForegroundProgram = false;
+            ForceSelectedProfile = false;
 
             // Audio Settings
             ChangeCommunications = false;
@@ -100,6 +101,8 @@ namespace SoundSwitch.Framework.Configuration
 
         public bool SwitchForegroundProgram { get; set; }
         public IconChangerFactory.ActionEnum SwitchIcon { get; set; }
+
+        public bool ForceSelectedProfile { get; set; }
 
         [Obsolete]
         public HashSet<ProfileSetting> ProfileSettings { get; set; } = new();
