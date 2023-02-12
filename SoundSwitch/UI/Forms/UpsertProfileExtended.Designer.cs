@@ -35,8 +35,8 @@
             this.descriptionBox = new System.Windows.Forms.GroupBox();
             this.descriptionLabel = new System.Windows.Forms.Label();
             this.textInput = new System.Windows.Forms.TextBox();
-            this.hotKeyControl = new SoundSwitch.UI.Component.HotKeyTextBox();
             this.deleteButton = new System.Windows.Forms.Button();
+            this.hotKeyControl = new SoundSwitch.UI.Component.HotKeyTextBox();
             this.activeTriggerLabel = new System.Windows.Forms.Label();
             this.availableTriggerBox = new System.Windows.Forms.ComboBox();
             this.addTriggerButton = new System.Windows.Forms.Button();
@@ -63,6 +63,7 @@
             this.communicationComboBox = new SoundSwitch.UI.Component.IconTextComboBox();
             this.saveButton = new System.Windows.Forms.Button();
             this.communicationBox = new System.Windows.Forms.GroupBox();
+            this.switchForegroundCheckbox = new System.Windows.Forms.CheckBox();
             this.triggerBox.SuspendLayout();
             this.descriptionBox.SuspendLayout();
             this.profileBox.SuspendLayout();
@@ -153,15 +154,6 @@
             this.textInput.Size = new System.Drawing.Size(292, 23);
             this.textInput.TabIndex = 7;
             // 
-            // hotKeyControl
-            // 
-            this.hotKeyControl.ListenToHotkey = false;
-            this.hotKeyControl.Location = new System.Drawing.Point(318, 42);
-            this.hotKeyControl.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.hotKeyControl.Name = "hotKeyControl";
-            this.hotKeyControl.Size = new System.Drawing.Size(160, 23);
-            this.hotKeyControl.TabIndex = 6;
-            // 
             // deleteButton
             // 
             this.deleteButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -173,6 +165,15 @@
             this.deleteButton.Text = "Remove";
             this.deleteButton.UseVisualStyleBackColor = true;
             this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
+            // 
+            // hotKeyControl
+            // 
+            this.hotKeyControl.ListenToHotkey = false;
+            this.hotKeyControl.Location = new System.Drawing.Point(318, 42);
+            this.hotKeyControl.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.hotKeyControl.Name = "hotKeyControl";
+            this.hotKeyControl.Size = new System.Drawing.Size(160, 23);
+            this.hotKeyControl.TabIndex = 6;
             // 
             // activeTriggerLabel
             // 
@@ -244,6 +245,7 @@
             // 
             this.profileBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.profileBox.Controls.Add(this.switchForegroundCheckbox);
             this.profileBox.Controls.Add(this.restoreDevicesCheckBox);
             this.profileBox.Controls.Add(this.notifyCheckbox);
             this.profileBox.Controls.Add(this.nameLabel);
@@ -504,6 +506,17 @@
             this.communicationBox.TabStop = false;
             this.communicationBox.Text = "Communication";
             // 
+            // switchForegroundCheckbox
+            // 
+            this.switchForegroundCheckbox.AutoSize = true;
+            this.switchForegroundCheckbox.Location = new System.Drawing.Point(318, 72);
+            this.switchForegroundCheckbox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.switchForegroundCheckbox.Name = "switchForegroundCheckbox";
+            this.switchForegroundCheckbox.Size = new System.Drawing.Size(126, 19);
+            this.switchForegroundCheckbox.TabIndex = 29;
+            this.switchForegroundCheckbox.Text = "Switch Foreground";
+            this.switchForegroundCheckbox.UseVisualStyleBackColor = true;
+            // 
             // UpsertProfileExtended
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -565,5 +578,6 @@
         private System.Windows.Forms.Label communicationRecordingLabel;
         private Component.IconTextComboBox communicationRecordingComboBox;
         private System.Windows.Forms.GroupBox communicationBox;
+        private System.Windows.Forms.CheckBox switchForegroundCheckbox;
     }
 }

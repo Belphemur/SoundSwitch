@@ -242,7 +242,7 @@ namespace SoundSwitch.Framework.Profile
             {
                 return false;
             }
-            
+
             _logger.Debug("We have a force profile set and audio device changed. Checking ....");
 
             //No need to trigger force profile if
@@ -251,12 +251,11 @@ namespace SoundSwitch.Framework.Profile
                 _logger.Debug("No need to force switching, already using forced profile.");
                 return false;
             }
-            
+
             _logger.Debug("Forced profile activated: {profile}", _forcedProfile);
 
             SwitchAudio(_forcedProfile);
             return true;
-
         }
 
         /// <summary>
@@ -400,6 +399,10 @@ namespace SoundSwitch.Framework.Profile
                 }
 
                 _audioSwitcher.SwitchTo(deviceToUse.Id, device.Role);
+                if (profile.SwitchForegroundApp)
+                {
+                    _audioSwitcher.SwitchForegroundProcessTo(deviceToUse.Id, device.Role, (EDataFlow)deviceToUse.Type);
+                }
             }
         }
 
