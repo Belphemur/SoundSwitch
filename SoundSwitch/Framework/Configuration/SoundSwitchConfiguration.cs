@@ -224,6 +224,18 @@ namespace SoundSwitch.Framework.Configuration
                 migrated = true;
             }
 
+            if (Environment.OSVersion.Version.Major < 10 && !MigratedFields.Contains("ProfileWin7"))
+            {
+                Profiles = Profiles.Select(profile =>
+                                   {
+                                       profile.SwitchForegroundApp = false;
+                                       return profile;
+                                   })
+                                   .ToHashSet();
+                MigratedFields.Add("ProfileWin7");
+                migrated = true;
+            } 
+
             return migrated;
 #pragma warning restore 612
         }

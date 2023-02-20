@@ -37,6 +37,10 @@ namespace SoundSwitch.Framework.Profile
 
         public bool AlsoSwitchDefaultDevice { get; set; } = false;
 
+        public bool SwitchForegroundApp { get; set; } = true;
+
+        public bool NotifyOnActivation { get; set; } = true;
+
         [JsonIgnore]
         public Icon Icon
         {
@@ -61,7 +65,6 @@ namespace SoundSwitch.Framework.Profile
             set => _restoreDevices = value;
         }
 
-        public bool NotifyOnActivation { get; set; } = true;
 
         /// <summary>
         /// Deep copy the profile
@@ -78,6 +81,7 @@ namespace SoundSwitch.Framework.Profile
                 RecordingCommunication = RecordingCommunication,
                 RestoreDevices = RestoreDevices,
                 NotifyOnActivation = NotifyOnActivation,
+                SwitchForegroundApp = SwitchForegroundApp,
                 Triggers = Triggers.Select(trigger => new Trigger.Trigger(trigger.Type)
                                    {
                                        HotKey = trigger.HotKey,

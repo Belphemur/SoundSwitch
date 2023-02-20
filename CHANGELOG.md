@@ -1,3 +1,17 @@
+## [6.5.4](https://github.com/Belphemur/SoundSwitch/compare/v6.5.3...v6.5.4) (2023-02-09)
+
+
+### Bug Fixes
+
+* **Device::Refresh:** Fix issue where the list of device wouldn't be properly refresh after new device added/removed. ([cbb7d25](https://github.com/Belphemur/SoundSwitch/commit/cbb7d25bd239d22c9ee4735c1c437964661119ef)), closes [#1113](https://github.com/Belphemur/SoundSwitch/issues/1113)
+
+
+### Languages
+
+* **Chinese (Simplified):** Translated Settings using Weblate ([fccb108](https://github.com/Belphemur/SoundSwitch/commit/fccb108a22d61d873dc9333017cb9944c08035e9))
+* **Polish:** Translated Settings using Weblate ([be6880a](https://github.com/Belphemur/SoundSwitch/commit/be6880a6c2f622d8ffb909deaceed926f86046fc))
+* **Serbian:** Translated Settings using Weblate ([2b70f3e](https://github.com/Belphemur/SoundSwitch/commit/2b70f3e59c671f608be864b50645a014fbdb31d1))
+
 ## [6.5.3](https://github.com/Belphemur/SoundSwitch/compare/v6.5.2...v6.5.3) (2023-02-05)
 
 
