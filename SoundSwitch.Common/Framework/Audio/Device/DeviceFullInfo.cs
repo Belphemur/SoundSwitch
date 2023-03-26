@@ -1,12 +1,14 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using NAudio.CoreAudioApi;
 using Newtonsoft.Json;
 using SoundSwitch.Common.Framework.Audio.Icon;
 
 namespace SoundSwitch.Common.Framework.Audio.Device
 {
-    public class DeviceFullInfo : DeviceInfo
+    public class DeviceFullInfo : DeviceInfo, IDisposable
     {
+        private readonly MMDevice _device;
         public string IconPath { get; }
         public DeviceState State { get; }
 
@@ -28,6 +30,7 @@ namespace SoundSwitch.Common.Framework.Audio.Device
 
         public DeviceFullInfo(MMDevice device) : base(device)
         {
+            _device = device;
             IconPath = device.IconPath;
             State = device.State;
             try
@@ -37,12 +40,31 @@ namespace SoundSwitch.Common.Framework.Audio.Device
                 {
                     var deviceAudioEndpointVolume = device.AudioEndpointVolume;
                     Volume = (int)Math.Round(deviceAudioEndpointVolume.MasterVolumeLevelScalar * 100);
-                    deviceAudioEndpointVolume.OnVolumeNotification += data => Volume = (int)Math.Round(data.MasterVolume * 100F);
+                    deviceAudioEndpointVolume.OnVolumeNotification += DeviceAudioEndpointVolumeOnOnVolumeNotification;
                 }
             }
             catch
             {
                 //Ignored
+            }
+        }
+
+        private void DeviceAudioEndpointVolumeOnOnVolumeNotification(AudioVolumeNotificationData data)
+        {
+            Volume = (int)Math.Round(data.MasterVolume * 100F);
+        }
+
+        public void Dispose()
+        {
+            try
+            {
+      
+                _device.AudioEndpointVolume.OnVolumeNotification -= DeviceAudioEndpointVolumeOnOnVolumeNotification;
+                _device.Dispose();
+            }
+            catch (Exception)
+            {
+                //ignored
             }
         }
     }

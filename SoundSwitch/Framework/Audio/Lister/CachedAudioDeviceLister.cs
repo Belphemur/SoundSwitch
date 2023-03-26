@@ -123,6 +123,11 @@ namespace SoundSwitch.Framework.Audio.Lister
                         }
                     }
 
+                    foreach (var device in PlaybackDevices.Union(RecordingDevices))
+                    {
+                        device.Dispose();
+                    }
+
                     PlaybackDevices = new DeviceReadOnlyCollection<DeviceFullInfo>(playbackDevices.Values, DataFlow.Render);
                     RecordingDevices = new DeviceReadOnlyCollection<DeviceFullInfo>(recordingDevices.Values, DataFlow.Capture);
 
