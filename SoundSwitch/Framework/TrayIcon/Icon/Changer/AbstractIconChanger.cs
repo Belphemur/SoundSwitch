@@ -28,14 +28,20 @@ namespace SoundSwitch.Framework.TrayIcon.Icon.Changer
         public void ChangeIcon(UI.Component.TrayIcon trayIcon)
         {
             var audio = AudioSwitcher.Instance.GetDefaultAudioEndpoint((EDataFlow)Flow, ERole.eConsole);
-            ChangeIcon(trayIcon, audio);
+            ChangeIcon(trayIcon, audio, ERole.eConsole);
         }
 
-        public void ChangeIcon(UI.Component.TrayIcon trayIcon, DeviceFullInfo deviceInfo)
+        public void ChangeIcon(UI.Component.TrayIcon trayIcon, DeviceFullInfo deviceInfo, ERole role)
         {
             var log = _log.ForContext("Device", deviceInfo);
             log.Information("Changing icon");
             if (deviceInfo == null)
+            {
+                return;
+            }
+
+            //Don't change icon for communication device
+            if (role == ERole.eCommunications)
             {
                 return;
             }

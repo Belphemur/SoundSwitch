@@ -37,6 +37,10 @@ namespace SoundSwitch.Framework.Profile
 
         public bool AlsoSwitchDefaultDevice { get; set; } = false;
 
+        public bool SwitchForegroundApp { get; set; } = true;
+
+        public bool NotifyOnActivation { get; set; } = true;
+
         [JsonIgnore]
         public Icon Icon
         {
@@ -61,7 +65,6 @@ namespace SoundSwitch.Framework.Profile
             set => _restoreDevices = value;
         }
 
-        public bool NotifyOnActivation { get; set; } = true;
 
         /// <summary>
         /// Deep copy the profile
@@ -78,6 +81,7 @@ namespace SoundSwitch.Framework.Profile
                 RecordingCommunication = RecordingCommunication,
                 RestoreDevices = RestoreDevices,
                 NotifyOnActivation = NotifyOnActivation,
+                SwitchForegroundApp = SwitchForegroundApp,
                 Triggers = Triggers.Select(trigger => new Trigger.Trigger(trigger.Type)
                                    {
                                        HotKey = trigger.HotKey,
@@ -95,12 +99,12 @@ namespace SoundSwitch.Framework.Profile
             get
             {
                 if (Playback != null)
-                    yield return new DeviceRoleWrapper(Playback, Playback.Equals(Communication) ? ERole.ERole_enum_count : ERole.eConsole | ERole.eMultimedia);
-                if (Communication != null && !Communication.Equals(Playback))
+                    yield return new DeviceRoleWrapper(Playback, ERole.eConsole | ERole.eMultimedia);
+                if (Communication != null)
                     yield return new DeviceRoleWrapper(Communication, ERole.eCommunications);
                 if (Recording != null)
-                    yield return new DeviceRoleWrapper(Recording, Recording.Equals(RecordingCommunication) ? ERole.ERole_enum_count : ERole.eConsole | ERole.eMultimedia);
-                if (RecordingCommunication != null && !RecordingCommunication.Equals(Recording))
+                    yield return new DeviceRoleWrapper(Recording, ERole.eConsole | ERole.eMultimedia);
+                if (RecordingCommunication != null)
                     yield return new DeviceRoleWrapper(RecordingCommunication, ERole.eCommunications);
             }
         }

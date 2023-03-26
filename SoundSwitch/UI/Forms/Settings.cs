@@ -177,11 +177,11 @@ namespace SoundSwitch.UI.Forms
             muteHotKey.Visible = false;
             muteHotKeyCheckbox.Visible = false;
             toggleMuteLabel.Visible = false;
-            
+
             telemetryCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.Telemetry), false, DataSourceUpdateMode.OnPropertyChanged);
             var telemetryToolTip = new ToolTip();
             telemetryToolTip.SetToolTip(telemetryCheckbox, SettingsStrings.telemetry_desc);
-            
+
             quickMenuCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.QuickMenuEnabled), false, DataSourceUpdateMode.OnPropertyChanged);
             var quickMenuCheckboxToolTip = new ToolTip();
             quickMenuCheckboxToolTip.SetToolTip(quickMenuCheckbox, SettingsStrings.quickMenu_desc);
@@ -221,13 +221,13 @@ namespace SoundSwitch.UI.Forms
         {
             ListViewItem ProfileToListViewItem(Profile profile)
             {
-                var listViewItem = new ListViewItem(profile.Name) {Tag = profile};
+                var listViewItem = new ListViewItem(profile.Name) { Tag = profile };
                 Icon appIcon = null;
                 DeviceFullInfo recording = null;
                 DeviceFullInfo playback = null;
                 DeviceFullInfo communication = null;
                 DeviceFullInfo recordingCommunication = null;
-                
+
                 var applicationTrigger = profile.Triggers.FirstOrDefault(trig => trig.Type == TriggerFactory.Enum.Process);
                 var hotkeyTrigger = profile.Triggers.FirstOrDefault(trig => trig.Type == TriggerFactory.Enum.HotKey);
 
@@ -260,7 +260,7 @@ namespace SoundSwitch.UI.Forms
                     communication = _audioDeviceLister.PlaybackDevices.FirstOrDefault(info =>
                         info.Equals(profile.Communication));
                 }
-                
+
                 if (profile.RecordingCommunication != null)
                 {
                     recordingCommunication = _audioDeviceLister.RecordingDevices.FirstOrDefault(info =>
@@ -270,16 +270,16 @@ namespace SoundSwitch.UI.Forms
                 listViewItem.SubItems.AddRange(new[]
                 {
                     new ListViewItem.ListViewSubItem(listViewItem, applicationTrigger?.ApplicationPath.Split('\\').Last() ?? "")
-                        {Tag = appIcon},
+                        { Tag = appIcon },
                     new ListViewItem.ListViewSubItem(listViewItem, hotkeyTrigger?.HotKey.ToString() ?? ""),
                     new ListViewItem.ListViewSubItem(listViewItem, playback?.NameClean ?? profile.Playback?.ToString() ?? "")
-                        {Tag = playback?.SmallIcon},
+                        { Tag = playback?.SmallIcon },
                     new ListViewItem.ListViewSubItem(listViewItem,
-                        recording?.NameClean ?? profile.Recording?.ToString() ?? "") {Tag = recording?.SmallIcon},
+                        recording?.NameClean ?? profile.Recording?.ToString() ?? "") { Tag = recording?.SmallIcon },
                     new ListViewItem.ListViewSubItem(listViewItem,
-                        communication?.NameClean ?? profile.Communication?.ToString() ?? "") {Tag = communication?.SmallIcon},
+                        communication?.NameClean ?? profile.Communication?.ToString() ?? "") { Tag = communication?.SmallIcon },
                     new ListViewItem.ListViewSubItem(listViewItem,
-                        recordingCommunication?.NameClean ?? profile.RecordingCommunication?.ToString() ?? "") {Tag = recordingCommunication?.SmallIcon},
+                        recordingCommunication?.NameClean ?? profile.RecordingCommunication?.ToString() ?? "") { Tag = recordingCommunication?.SmallIcon },
                 });
 
                 return listViewItem;
@@ -371,7 +371,16 @@ namespace SoundSwitch.UI.Forms
 
         private void SelectSoundFileDialogOnFileOk(object sender, CancelEventArgs cancelEventArgs)
         {
-            AppModel.Instance.CustomNotificationSound = new CachedSound(selectSoundFileDialog.FileName);
+            try
+            {
+                AppModel.Instance.CustomNotificationSound = new CachedSound(selectSoundFileDialog.FileName);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(@"Please select another file", @"Invalid Sound file", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             deleteSoundButton.Visible = true;
         }
 
@@ -383,7 +392,7 @@ namespace SoundSwitch.UI.Forms
 
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var tabControlSender = (TabControl) sender;
+            var tabControlSender = (TabControl)sender;
             if (tabControlSender.SelectedTab == playbackTabPage)
             {
                 SetHotkeysFieldsVisibility(true);
@@ -426,7 +435,7 @@ namespace SoundSwitch.UI.Forms
         {
             if (!_loaded)
                 return;
-            var value = (DisplayEnumObject<NotificationTypeEnum>) ((ComboBox) sender).SelectedItem;
+            var value = (DisplayEnumObject<NotificationTypeEnum>)((ComboBox)sender).SelectedItem;
 
             if (value == null)
                 return;
@@ -461,7 +470,7 @@ namespace SoundSwitch.UI.Forms
         {
             if (!_loaded)
                 return;
-            var value = (DisplayEnumObject<TooltipInfoTypeEnum>) ((ComboBox) sender).SelectedItem;
+            var value = (DisplayEnumObject<TooltipInfoTypeEnum>)((ComboBox)sender).SelectedItem;
 
             if (value == null)
                 return;
@@ -474,7 +483,7 @@ namespace SoundSwitch.UI.Forms
         {
             if (!_loaded)
                 return;
-            var value = (DisplayEnumObject<DeviceCyclerTypeEnum>) ((ComboBox) sender).SelectedItem;
+            var value = (DisplayEnumObject<DeviceCyclerTypeEnum>)((ComboBox)sender).SelectedItem;
 
             if (value == null)
                 return;
@@ -487,7 +496,7 @@ namespace SoundSwitch.UI.Forms
             if (!_loaded)
                 return;
 
-            var value = (DisplayEnumObject<Language>) ((ComboBox) sender).SelectedItem;
+            var value = (DisplayEnumObject<Language>)((ComboBox)sender).SelectedItem;
 
             if (value == null)
                 return;
@@ -495,8 +504,8 @@ namespace SoundSwitch.UI.Forms
             AppModel.Instance.Language = value.Enum;
 
             if (MessageBox.Show(SettingsStrings.languageRestartRequired,
-                SettingsStrings.languageRestartRequiredCaption,
-                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    SettingsStrings.languageRestartRequiredCaption,
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 Program.RestartApp();
             }
@@ -518,10 +527,10 @@ namespace SoundSwitch.UI.Forms
 
         private void forceSetHotkeys(object sender, HotKeyTextBox hotKeyTextBox)
         {
-            var control = (CheckBox) sender;
+            var control = (CheckBox)sender;
             if (hotKeyTextBox.Tag == null)
                 return;
-            var (action, hotKey) = (Tuple<HotKeyAction, HotKey>) hotKeyTextBox.Tag;
+            var (action, hotKey) = (Tuple<HotKeyAction, HotKey>)hotKeyTextBox.Tag;
             var currentState = hotKey.Enabled;
             hotKeyTextBox.Enabled = hotKey.Enabled = control.Checked;
             if (currentState != hotKey.Enabled)
@@ -582,11 +591,12 @@ namespace SoundSwitch.UI.Forms
                 listView.Columns.Add("Device", -3, HorizontalAlignment.Center);
                 var items =
                     audioDevices.Select(device =>
-                    {
-                        AddDeviceIconSmallImage(device, listView);
+                                {
+                                    AddDeviceIconSmallImage(device, listView);
 
-                        return GenerateListViewItem(device, selectedDevices, listView);
-                    }).OrderBy(item => item.Text);
+                                    return GenerateListViewItem(device, selectedDevices, listView);
+                                })
+                                .OrderBy(item => item.Text);
                 listView.Items.AddRange(items.ToArray());
             }
             finally
@@ -646,10 +656,10 @@ namespace SoundSwitch.UI.Forms
                 switch (e.NewValue)
                 {
                     case CheckState.Checked:
-                        AppModel.Instance.SelectDevice((DeviceFullInfo) ((ListView) sender).Items[e.Index].Tag);
+                        AppModel.Instance.SelectDevice((DeviceFullInfo)((ListView)sender).Items[e.Index].Tag);
                         break;
                     case CheckState.Unchecked:
-                        AppModel.Instance.UnselectDevice((DeviceFullInfo) ((ListView) sender).Items[e.Index].Tag);
+                        AppModel.Instance.UnselectDevice((DeviceFullInfo)((ListView)sender).Items[e.Index].Tag);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -734,12 +744,12 @@ namespace SoundSwitch.UI.Forms
         {
             if (!_loaded)
                 return;
-            var comboBox = (ComboBox) sender;
+            var comboBox = (ComboBox)sender;
 
             if (comboBox == null)
                 return;
 
-            var item = (DisplayEnumObject<IconChangerFactory.ActionEnum>) iconChangeChoicesComboBox.SelectedItem;
+            var item = (DisplayEnumObject<IconChangerFactory.ActionEnum>)iconChangeChoicesComboBox.SelectedItem;
             AppConfigs.Configuration.SwitchIcon = item.Enum;
             AppConfigs.Configuration.Save();
 
@@ -766,7 +776,7 @@ namespace SoundSwitch.UI.Forms
             }
 
             var profiles = profilesListView.SelectedItems.Cast<ListViewItem>()
-                                           .Select(item => (Profile) item.Tag);
+                                           .Select(item => (Profile)item.Tag);
             AppModel.Instance.ProfileManager.DeleteProfiles(profiles);
             deleteProfileButton.Enabled = false;
             editProfileButton.Enabled = false;
@@ -775,8 +785,8 @@ namespace SoundSwitch.UI.Forms
 
         private void hotKeyControl_HotKeyChanged(object sender, HotKeyTextBox.Event e)
         {
-            var control = (HotKeyTextBox) sender;
-            var tuple = (Tuple<HotKeyAction, HotKey>) control.Tag;
+            var control = (HotKeyTextBox)sender;
+            var tuple = (Tuple<HotKeyAction, HotKey>)control.Tag;
             if (tuple == null)
                 return;
 
@@ -793,7 +803,7 @@ namespace SoundSwitch.UI.Forms
                 return;
             }
 
-            var profile = (Profile) profilesListView.SelectedItems[0].Tag;
+            var profile = (Profile)profilesListView.SelectedItems[0].Tag;
             var form = new UpsertProfileExtended(profile, _audioDeviceLister.PlaybackDevices, _audioDeviceLister.RecordingDevices, this, true);
             form.Show(this);
         }

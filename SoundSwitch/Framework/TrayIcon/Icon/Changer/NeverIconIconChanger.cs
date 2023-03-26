@@ -1,4 +1,5 @@
-﻿using SoundSwitch.Common.Framework.Audio.Device;
+﻿using SoundSwitch.Audio.Manager.Interop.Enum;
+using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Localization;
 using SoundSwitch.Properties;
 
@@ -14,7 +15,7 @@ namespace SoundSwitch.Framework.TrayIcon.Icon.Changer
             trayIcon.ReplaceIcon(Resources.Switch_SoundWave);
         }
 
-        public void ChangeIcon(UI.Component.TrayIcon trayIcon, DeviceFullInfo deviceInfo)
+        public void ChangeIcon(UI.Component.TrayIcon trayIcon, DeviceFullInfo deviceInfo, ERole role)
         {
         }
     }

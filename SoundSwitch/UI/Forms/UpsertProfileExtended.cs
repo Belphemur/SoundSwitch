@@ -52,7 +52,9 @@ namespace SoundSwitch.UI.Forms
                 if (Environment.OSVersion.Version.Major < 10)
                 {
                     profile.AlsoSwitchDefaultDevice = true;
+                    profile.SwitchForegroundApp = false;
                     switchDefaultCheckBox.Hide();
+                    switchForegroundCheckbox.Hide();
                 }
             }
             catch (Exception)
@@ -67,6 +69,7 @@ namespace SoundSwitch.UI.Forms
             nameTextBox.DataBindings.Add(nameof(TextBox.Text), _profile, nameof(Profile.Name), false, DataSourceUpdateMode.OnPropertyChanged);
             notifyCheckbox.DataBindings.Add(nameof(CheckBox.Checked), _profile, nameof(Profile.NotifyOnActivation), false, DataSourceUpdateMode.OnPropertyChanged);
             restoreDevicesCheckBox.DataBindings.Add(nameof(CheckBox.Checked), _profile, nameof(Profile.RestoreDevices), false, DataSourceUpdateMode.OnPropertyChanged);
+            switchForegroundCheckbox.DataBindings.Add(nameof(CheckBox.Checked), _profile, nameof(Profile.SwitchForegroundApp), false, DataSourceUpdateMode.OnPropertyChanged);
         }
 
         private void InitRecordingPlaybackComboBoxes(IEnumerable<DeviceFullInfo> playbacks,
@@ -126,8 +129,11 @@ namespace SoundSwitch.UI.Forms
             switchDefaultCheckBox.Text = SettingsStrings.profile_defaultDevice_checkbox;
             saveButton.Text = SettingsStrings.profile_button_save;
             restoreDevicesCheckBox.Text = SettingsStrings.profile_trigger_restoreDevices;
+            switchForegroundCheckbox.Text = SettingsStrings.foregroundApp;
 
             new ToolTip().SetToolTip(switchDefaultCheckBox, SettingsStrings.profile_defaultDevice_checkbox_tooltip);
+            new ToolTip().SetToolTip(switchForegroundCheckbox, SettingsStrings.foregroundAppTooltip);
+
 
             _restoreDeviceToolTip = new ToolTip();
             _restoreDeviceToolTip.SetToolTip(
