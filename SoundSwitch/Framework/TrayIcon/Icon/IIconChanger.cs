@@ -1,4 +1,5 @@
-﻿using SoundSwitch.Common.Framework.Audio.Device;
+﻿using SoundSwitch.Audio.Manager.Interop.Enum;
+using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Factory;
 
 namespace SoundSwitch.Framework.TrayIcon.Icon
@@ -15,6 +16,6 @@ namespace SoundSwitch.Framework.TrayIcon.Icon
         /// <summary>
         ///  Change icon to selected device if match the condition
         /// </summary>
-        void ChangeIcon(UI.Component.TrayIcon trayIcon, DeviceFullInfo deviceInfo);
+        void ChangeIcon(UI.Component.TrayIcon trayIcon, DeviceFullInfo deviceInfo, ERole role);
     }
 }
