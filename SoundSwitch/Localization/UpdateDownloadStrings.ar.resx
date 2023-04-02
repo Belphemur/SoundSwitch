@@ -79,4 +79,7 @@
   <data name="downloadFailed" xml:space="preserve">
     <value>التنزيل فشل</value>
   </data>
+  <data name="wrongSignature" xml:space="preserve">
+    <value>توجد مشكلة في آخر تحديث لبرنامج SoundSwitch. ستحتاج إلى تنزيل الإصدار الجديد يدويًا من {0}</value>
+  </data>
 </root>
