@@ -309,7 +309,7 @@
     <value>تشغيل البروفيل إذا إسم التطبيق الذي بخلفية الشاشة يحتوي على الأحرف التاليه</value>
   </data>
   <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>اختصار لوحة المفاتيح المختار لتشغيل البروفيل</value>
+    <value>اختصار لوحة المفاتيح المختارة لتفعيل البروفايل. اذا استخدم نفس الاختصار , يمكنك تغير بين البرفايلز</value>
   </data>
   <data name="profile.trigger.steam" xml:space="preserve">
     <value>Steam Big Picture</value>
@@ -405,5 +405,32 @@
   </data>
   <data name="foregroundApp" xml:space="preserve">
     <value>تبديل ايضا جهاز السمع لدى جميع البرامج المصغره</value>
+  </data>
+  <data name="telemetry" xml:space="preserve">
+    <value>القياس عن بعد</value>
+  </data>
+  <data name="quickMenu" xml:space="preserve">
+    <value>قائمة سريعة على مفتاح الاختصار</value>
+  </data>
+  <data name="quickMenu.desc" xml:space="preserve">
+    <value>عرض قائمة سريعة مثل لغة Windows عند استخدام مفتاح الاختصار</value>
+  </data>
+  <data name="telemetry.desc" xml:space="preserve">
+    <value>اجمع بشكل مجهول إصدار SoundSwitch المستخدم. معروف فقط مع مطور SoundSwitch.</value>
+  </data>
+  <data name="profile.trigger.deviceChanged" xml:space="preserve">
+    <value>فرض البروفايل</value>
+  </data>
+  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
+    <value>سيتم تشغيل البروفايل تلقائيًا في أي وقت عندما يتغير جهاز الصوت الحالي.</value>
+  </data>
+  <data name="profile.error.deviceChanged" xml:space="preserve">
+    <value>يمكنك فقط الحصول على بروفايل إجباري واحد.</value>
+  </data>
+  <data name="devices.AutoAddNewDevice" xml:space="preserve">
+    <value>تحديد تلقائي للأجهزة الجديدة</value>
+  </data>
+  <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
+    <value>إضافة جهاز جديد تلقائيًا إلى القائمة المحددة عند توصيلها بالكمبيوتر</value>
   </data>
 </root>
