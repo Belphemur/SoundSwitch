@@ -1,3 +1,25 @@
+## [6.6.0](https://github.com/Belphemur/SoundSwitch/compare/v6.5.4...v6.6.0) (2023-04-09)
+
+
+### Features
+
+* **Profile::Foreground:** Let profile be able to switch the foreground application. ([a63eac9](https://github.com/Belphemur/SoundSwitch/commit/a63eac9e4f05512dd6e0d500b4db6f4564ac3cd7)), closes [#1117](https://github.com/Belphemur/SoundSwitch/issues/1117)
+
+
+### Bug Fixes
+
+* **CustomSound:** Don't crash on invalid custom sound. ([5a0acf2](https://github.com/Belphemur/SoundSwitch/commit/5a0acf2d1d5ecce98896629c1118c1f46be874cc)), closes [#1130](https://github.com/Belphemur/SoundSwitch/issues/1130)
+* **Icon:** Don't change icon when communication device is changed. ([84b7b46](https://github.com/Belphemur/SoundSwitch/commit/84b7b4674a53708b9b619ce5d7b0e73aec1c38a0)), closes [#1134](https://github.com/Belphemur/SoundSwitch/issues/1134)
+* **Profile:** Not switching all devices ([b23fffc](https://github.com/Belphemur/SoundSwitch/commit/b23fffc7970269dcf0e1903bdcf131434e5bc33c)), closes [#1126](https://github.com/Belphemur/SoundSwitch/issues/1126)
+* **Tooltip:** Fix not showing the right recording device in tooltip when SoundSwitch starts ([c2bd813](https://github.com/Belphemur/SoundSwitch/commit/c2bd813dc5006a83c0c15c3021122d81dcd80840)), closes [#1123](https://github.com/Belphemur/SoundSwitch/issues/1123)
+* **Tooltip:** Fix not showing the right recording device in tooltip when SoundSwitch starts ([41ea9ac](https://github.com/Belphemur/SoundSwitch/commit/41ea9ace513c3dff8f39bf8aee23c63d14b57eaa)), closes [#1123](https://github.com/Belphemur/SoundSwitch/issues/1123)
+
+
+### Languages
+
+* **Arabic:** Translated Settings using Weblate ([0a76385](https://github.com/Belphemur/SoundSwitch/commit/0a76385f4fb3f8fc905482e5983eebaaa7a1231e))
+* **Arabic:** Translated Update Download using Weblate ([2942b01](https://github.com/Belphemur/SoundSwitch/commit/2942b01f943c7a7ea0c21deeb476a7806708b24b))
+
 ## [6.5.4](https://github.com/Belphemur/SoundSwitch/compare/v6.5.3...v6.5.4) (2023-02-09)
 
 
