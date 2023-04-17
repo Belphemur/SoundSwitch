@@ -26,7 +26,7 @@ jobs:
     if: github.ref != 'refs/heads/dev'
     runs-on: windows-latest
     concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}-${{github.job}}
+      group: ${{ github.workflow }}-${{ github.ref }}-${{env.GITHUB_JOB}}
       cancel-in-progress: true
     steps:
       - name: Checkout
@@ -86,7 +86,7 @@ jobs:
 
   changes:
     concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}-${{github.job}}
+      group: ${{ github.workflow }}-${{ github.ref }}-${{env.GITHUB_JOB}}
       cancel-in-progress: true
     runs-on: ubuntu-latest
     # Set job outputs to values from filter step
@@ -105,7 +105,7 @@ jobs:
 
   nightly-release:
     concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}-${{github.job}}
+      group: ${{ github.workflow }}-${{ github.ref }}-${{env.GITHUB_JOB}}
       cancel-in-progress: true
     needs: [ changes ]
     if: github.ref == 'refs/heads/dev' && needs.changes.outputs.ci == 'true'
@@ -157,7 +157,7 @@ jobs:
 
   nightly-sentry:
     concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}-${{github.job}}
+      group: ${{ github.workflow }}-${{ github.ref }}-${{env.GITHUB_JOB}}
       cancel-in-progress: true
     needs: nightly-release
     runs-on: ubuntu-latest
@@ -178,7 +178,7 @@ jobs:
 
   master-release:
     concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}-${{github.job}}
+      group: ${{ github.workflow }}-${{ github.ref }}-${{env.GITHUB_JOB}}
       cancel-in-progress: true
     needs: [ build, changes ]
     if: github.ref == 'refs/heads/master'
