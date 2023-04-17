@@ -220,6 +220,16 @@ namespace SoundSwitch.Framework.Configuration
                 MigratedFields.Add("CleanupSelectedDevices");
                 migrated = true;
             }
+            
+            if (!MigratedFields.Contains("CleanupProfilesForeground"))
+            {
+                foreach (var profile in Profiles)
+                {
+                    profile.SwitchForegroundApp = false;
+                }
+                MigratedFields.Add("CleanupProfilesForeground");
+                migrated = true;
+            }
 
             if (Environment.OSVersion.Version.Major < 10 && !MigratedFields.Contains("ProfileWin7"))
             {

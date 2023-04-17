@@ -37,7 +37,7 @@ namespace SoundSwitch.Framework.Profile
 
         public bool AlsoSwitchDefaultDevice { get; set; } = false;
 
-        public bool SwitchForegroundApp { get; set; } = true;
+        public bool SwitchForegroundApp { get; set; } = false;
 
         public bool NotifyOnActivation { get; set; } = true;
 
