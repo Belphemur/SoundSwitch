@@ -25,12 +25,10 @@ jobs:
   build:
     if: github.ref != 'refs/heads/dev'
     runs-on: windows-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}-${{github.job}}
+      cancel-in-progress: true
     steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.11.0
-        with:
-          all_but_latest: true
-          access_token: ${{ github.token }}
       - name: Checkout
         uses: actions/checkout@v3
       - uses: dorny/paths-filter@v2
@@ -87,6 +85,9 @@ jobs:
         run: npx semantic-release -d
 
   changes:
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}-${{github.job}}
+      cancel-in-progress: true
     runs-on: ubuntu-latest
     # Set job outputs to values from filter step
     outputs:
@@ -103,17 +104,15 @@ jobs:
               - 'devRelease.js'
 
   nightly-release:
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}-${{github.job}}
+      cancel-in-progress: true
     needs: [ changes ]
     if: github.ref == 'refs/heads/dev' && needs.changes.outputs.ci == 'true'
     outputs:
       devVersion: ${{ steps.devVersion.outputs.version }}
     runs-on: windows-latest
     steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.11.0
-        with:
-          all_but_latest: true
-          access_token: ${{ github.token }}
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -157,6 +156,9 @@ jobs:
         run: node devRelease.js "${{ secrets.DISCORD_WEBHOOK }}" "${{ steps.devVersion.outputs.version }}" "${{env.GITHUB_REPOSITORY_OWNER_PART}}/${{env.GITHUB_REPOSITORY_NAME_PART}}" "${{env.PROJECT_NAME}}-${{ steps.devVersion.outputs.version }}.zip"
 
   nightly-sentry:
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}-${{github.job}}
+      cancel-in-progress: true
     needs: nightly-release
     runs-on: ubuntu-latest
     steps:
@@ -175,15 +177,13 @@ jobs:
           version: "${{env.PROJECT_NAME}}@${{ needs.nightly-release.outputs.devVersion }}"
 
   master-release:
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}-${{github.job}}
+      cancel-in-progress: true
     needs: [ build, changes ]
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.11.0
-        with:
-          all_but_latest: true
-          access_token: ${{ github.token }}
       - uses: actions/checkout@v3
       - name: Setup Node.js
         uses: actions/setup-node@v3.6.0
