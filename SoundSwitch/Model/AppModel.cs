@@ -65,7 +65,7 @@ namespace SoundSwitch.Model
                 _appModel = appModel;
                 _device = device;
                 _role = role;
-                Key = $"default-device-changed-{device.Type}";
+                Key = $"default-device-changed-{device.Type}-{role}";
             }
 
             public Task ExecuteAsync(CancellationToken cancellationToken)
