@@ -1,3 +1,11 @@
+## [6.6.1](https://github.com/Belphemur/SoundSwitch/compare/v6.6.0...v6.6.1) (2023-04-17)
+
+
+### Bug Fixes
+
+* **Icon:** Fix icon not changing ([553b409](https://github.com/Belphemur/SoundSwitch/commit/553b409556378c52cb7e3c06d54e718ee3a49d1e)), closes [#1159](https://github.com/Belphemur/SoundSwitch/issues/1159)
+* **Profile:** Disable profile from switching foreground app by default. ([f798580](https://github.com/Belphemur/SoundSwitch/commit/f798580106a95fab57bfa987eba406b4310b04f2))
+
 ## [6.6.0](https://github.com/Belphemur/SoundSwitch/compare/v6.5.4...v6.6.0) (2023-04-09)
 
 
