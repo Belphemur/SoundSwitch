@@ -407,7 +407,7 @@ Obnovi stanje sustava kad se program zatvori.</value>
     <value>U izborniku programa</value>
   </data>
   <data name="quickMenu.desc" xml:space="preserve">
-    <value>Prikaži brzi izbornik poput Windows jezika kad koristiš prečac</value>
+    <value>Prikaži brzi izbornik kad koristiš prečac (slično Windows izborniku jezika)</value>
   </data>
   <data name="telemetry.desc" xml:space="preserve">
     <value>Prikupi anonimno koja se verzija programa koristi. Podatak će biti dostupan jedino programeru SoundSwitch-a.</value>
