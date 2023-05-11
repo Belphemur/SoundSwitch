@@ -59,7 +59,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="notificationOptionBanner" xml:space="preserve">
-    <value>באנר</value>
+    <value>הצג באנר</value>
   </data>
   <data name="updateNotifyTooltip" xml:space="preserve">
     <value>SoundSwitch יתריע לך כאשר יש עדכון זמין. כשאר תלחץ על ההודעה, יופיע חלון בו העדכון ירד ותישאל האם ברצונך להתקינו.</value>
@@ -96,10 +96,10 @@
     <value>עבור שני ההתקנים</value>
   </data>
   <data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
-    <value>התקן הקלטה</value>
+    <value>התקן הקלטה בלבד</value>
   </data>
   <data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
-    <value>התקן שמע</value>
+    <value>התקן שמע בלבד</value>
   </data>
   <data name="notificationTooltip" xml:space="preserve">
     <value>התראת מערכת הפעלה: הודעה סטנדרטית באמצעות מגש המשימות של Windows.
@@ -142,7 +142,7 @@
     <value>אל תבדוק אם קיימים עדכונים</value>
   </data>
   <data name="updateNotify" xml:space="preserve">
-    <value>אמור לי כאשר ישנם עדכונים זמינים</value>
+    <value>הצג התראה כאשר ישנם עדכונים זמינים</value>
   </data>
   <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
     <value>עדכונים מותקנים אוטומטית.</value>
