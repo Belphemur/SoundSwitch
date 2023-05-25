@@ -59,7 +59,7 @@ jobs:
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
     - name: Setup .NET
-      uses: actions/setup-dotnet@v3.0.3
+      uses: actions/setup-dotnet@v3.1.0
       with:
         dotnet-version: ${{ env.DOTNET }}
         include-prerelease: ${{ env.DOTNET_PRERELEASE }}
