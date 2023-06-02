@@ -112,6 +112,7 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
         {
             try
             {
+                _log.Information("Resetting Persisted Application Default Endpoints");
                 PolicyConfig.ClearAllPersistedApplicationDefaultEndpoints();
             }
             catch (Exception ex)
