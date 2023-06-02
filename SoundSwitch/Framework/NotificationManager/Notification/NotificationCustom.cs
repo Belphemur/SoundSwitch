@@ -15,7 +15,7 @@
 using System;
 using System.Drawing;
 using System.Threading;
-using NAudio.CoreAudioApi;
+using CoreAudio;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;

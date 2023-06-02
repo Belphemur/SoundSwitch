@@ -14,7 +14,7 @@
 
 using System;
 using System.Collections.Generic;
-using NAudio.CoreAudioApi;
+using CoreAudio;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;

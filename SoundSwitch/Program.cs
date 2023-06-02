@@ -140,7 +140,6 @@ namespace SoundSwitch
             try
             {
 #endif
-                MMNotificationClient.Instance.Register();
 
                 _synchronizationContext = new WindowsFormsSynchronizationContext();
                 SynchronizationContext.SetSynchronizationContext(_synchronizationContext);

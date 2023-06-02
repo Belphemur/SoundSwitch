@@ -16,7 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using NAudio.CoreAudioApi;
+using CoreAudio;
 using Newtonsoft.Json;
 using Serilog;
 using SoundSwitch.Common.Framework.Audio.Device;

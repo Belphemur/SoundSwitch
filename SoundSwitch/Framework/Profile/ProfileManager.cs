@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using NAudio.CoreAudioApi;
+using CoreAudio;
 using RailSharp;
 using RailSharp.Internal.Result;
 using Serilog;

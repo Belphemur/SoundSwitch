@@ -1,4 +1,4 @@
-﻿using NAudio.CoreAudioApi;
+﻿using CoreAudio;
 using SoundSwitch.Localization;
 
 namespace SoundSwitch.Framework.TrayIcon.Icon.Changer

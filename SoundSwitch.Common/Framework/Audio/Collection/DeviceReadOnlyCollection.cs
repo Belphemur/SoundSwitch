@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using NAudio.CoreAudioApi;
+using CoreAudio;
 using SoundSwitch.Common.Framework.Audio.Device;
 
 namespace SoundSwitch.Common.Framework.Audio.Collection

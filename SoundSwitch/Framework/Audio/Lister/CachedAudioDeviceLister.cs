@@ -16,7 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using NAudio.CoreAudioApi;
+using CoreAudio;
 using Serilog;
 using SoundSwitch.Common.Framework.Audio.Collection;
 using SoundSwitch.Common.Framework.Audio.Device;
@@ -25,6 +25,7 @@ using SoundSwitch.Framework.Audio.Lister.Job;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Threading;
 using SoundSwitch.Model;
+using MMNotificationClient = SoundSwitch.Framework.NotificationManager.MMNotificationClient;
 
 namespace SoundSwitch.Framework.Audio.Lister
 {
@@ -90,8 +91,7 @@ namespace SoundSwitch.Framework.Audio.Lister
                 try
                 {
                     _context.Information("Refreshing all devices");
-                    var enumerator = new MMDeviceEnumerator();
-                    using var _ = enumerator.DisposeOnCancellation(cancellationToken);
+                    var enumerator = new MMDeviceEnumerator(Guid.NewGuid());
                     foreach (var endPoint in enumerator.EnumerateAudioEndPoints(DataFlow.All, _state))
                     {
                         cancellationToken.ThrowIfCancellationRequested();

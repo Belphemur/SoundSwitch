@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using CoreAudio;
 using Job.Scheduler.Job;
 using Job.Scheduler.Job.Action;
 using Job.Scheduler.Job.Exception;
-using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Model;
 

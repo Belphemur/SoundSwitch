@@ -16,7 +16,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using NAudio.CoreAudioApi;
+using CoreAudio;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;

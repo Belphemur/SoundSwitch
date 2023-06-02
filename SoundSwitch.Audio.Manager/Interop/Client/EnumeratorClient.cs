@@ -1,7 +1,7 @@
 ﻿#nullable enable
 using System;
 using System.Runtime.InteropServices;
-using NAudio.CoreAudioApi;
+using CoreAudio;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Audio.Manager.Interop.Interface;
 
@@ -13,12 +13,7 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
 
         public EnumeratorClient()
         {
-            _enumerator = new MMDeviceEnumerator();
-        }
-
-        ~EnumeratorClient()
-        {
-            _enumerator.Dispose();
+            _enumerator = new MMDeviceEnumerator(Guid.NewGuid());
         }
 
         public bool IsDefault(string deviceId, EDataFlow flow, ERole role)

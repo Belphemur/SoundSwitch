@@ -1,4 +1,4 @@
-﻿using NAudio.CoreAudioApi;
+﻿using CoreAudio;
 using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;

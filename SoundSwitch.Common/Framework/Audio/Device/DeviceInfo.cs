@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using NAudio.CoreAudioApi;
+using CoreAudio;
 using Newtonsoft.Json;
 
 namespace SoundSwitch.Common.Framework.Audio.Device
@@ -47,11 +47,11 @@ namespace SoundSwitch.Common.Framework.Audio.Device
 
         public DeviceInfo(MMDevice device)
         {
-            Name = device.FriendlyName;
+            Name = device.DeviceFriendlyName;
             Id = device.ID;
             Type = device.DataFlow;
             var deviceProperties = device.Properties;
-            var enumerator = deviceProperties.Contains(PropertyKeys.DEVPKEY_Device_EnumeratorName) ? (string)deviceProperties[PropertyKeys.DEVPKEY_Device_EnumeratorName].Value : "";
+            var enumerator = deviceProperties?.Contains(PropertyKeys.DEVPKEY_Device_EnumeratorName) ?? false ? (string)deviceProperties[PropertyKeys.DEVPKEY_Device_EnumeratorName]?.Value : "";
             IsUsb = enumerator == "USB";
         }
 
