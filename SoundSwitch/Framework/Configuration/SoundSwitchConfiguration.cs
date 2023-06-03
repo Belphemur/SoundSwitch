@@ -246,7 +246,7 @@ namespace SoundSwitch.Framework.Configuration
             }
 
             var switchForegroundFix = $"{nameof(SwitchForegroundProgram)}_fix";
-            if (!MigratedFields.Contains(switchForegroundFix) && SwitchForegroundProgram)
+            if (!MigratedFields.Contains(switchForegroundFix) && (SwitchForegroundProgram || Profiles.Any(profile => profile.SwitchForegroundApp)))
             {
                 AudioSwitcher.Instance.ResetProcessDeviceConfiguration();
                 MigratedFields.Add(switchForegroundFix);
