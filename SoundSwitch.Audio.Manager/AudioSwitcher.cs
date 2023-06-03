@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using CoreAudio;
+using Serilog;
 using SoundSwitch.Audio.Manager.Interop.Client;
 using SoundSwitch.Audio.Manager.Interop.Com.Threading;
 using SoundSwitch.Audio.Manager.Interop.Com.User;
@@ -167,6 +168,11 @@ namespace SoundSwitch.Audio.Manager
         public void SwitchForegroundProcessTo(string deviceId, ERole role, EDataFlow flow)
         {
             var processId = ComThread.Invoke(() => User32.ForegroundProcessId);
+            if (processId == Environment.ProcessId)
+            {
+                Log.Warning("Tried to switch audio device of the app");
+                return;
+            }
             SwitchProcessTo(deviceId, role, flow, processId);
         }
 

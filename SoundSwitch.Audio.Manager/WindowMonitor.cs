@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Serilog;
 using SoundSwitch.Audio.Manager.Interop.Com.Threading;
 using SoundSwitch.Audio.Manager.Interop.Com.User;
 
@@ -69,6 +70,12 @@ namespace SoundSwitch.Audio.Manager
 
                 //Couldn't find the processId of the window
                 if (processId == 0) return;
+
+                if (processId == Environment.ProcessId)
+                {
+                    Log.Information("Foreground = SoundSwitch, don't save.");
+                    return;
+                }
 
                 Task.Factory.StartNew(() =>
                 {

@@ -19,6 +19,7 @@ using System.Windows.Forms;
 using CoreAudio;
 using Newtonsoft.Json;
 using Serilog;
+using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
@@ -220,13 +221,14 @@ namespace SoundSwitch.Framework.Configuration
                 MigratedFields.Add("CleanupSelectedDevices");
                 migrated = true;
             }
-            
+
             if (!MigratedFields.Contains("CleanupProfilesForeground"))
             {
                 foreach (var profile in Profiles)
                 {
                     profile.SwitchForegroundApp = false;
                 }
+
                 MigratedFields.Add("CleanupProfilesForeground");
                 migrated = true;
             }
@@ -241,7 +243,15 @@ namespace SoundSwitch.Framework.Configuration
                                    .ToHashSet();
                 MigratedFields.Add("ProfileWin7");
                 migrated = true;
-            } 
+            }
+
+            var switchForegroundFix = $"{nameof(SwitchForegroundProgram)}_fix";
+            if (!MigratedFields.Contains(switchForegroundFix) && SwitchForegroundProgram)
+            {
+                AudioSwitcher.Instance.ResetProcessDeviceConfiguration();
+                MigratedFields.Add(switchForegroundFix);
+                migrated = true;
+            }
 
             return migrated;
 #pragma warning restore 612
