@@ -130,4 +130,7 @@
   <data name="forceCheckForUpdate" xml:space="preserve">
     <value>לבדוק אם יש עדכונים</value>
   </data>
+  <data name="resetAudioDevices" xml:space="preserve">
+    <value>איפוס שמע לפי יישום</value>
+  </data>
 </root>
