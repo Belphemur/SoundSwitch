@@ -189,4 +189,7 @@
   <data name="forceCheckForUpdate" xml:space="preserve">
     <value>Traži novu verziju</value>
   </data>
+  <data name="resetAudioDevices" xml:space="preserve">
+    <value>Resetiraj audio uređaje</value>
+  </data>
 </root>
