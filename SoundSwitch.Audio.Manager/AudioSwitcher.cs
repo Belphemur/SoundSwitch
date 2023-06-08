@@ -173,6 +173,7 @@ namespace SoundSwitch.Audio.Manager
                 Log.Warning("Tried to switch audio device of the app");
                 return;
             }
+
             SwitchProcessTo(deviceId, role, flow, processId);
         }
 
@@ -234,6 +235,17 @@ namespace SoundSwitch.Audio.Manager
         /// <param name="deviceId"></param>
         /// <returns></returns>
         public MMDevice? GetDevice(string deviceId) => ComThread.Invoke(() => EnumeratorClient.GetDevice(deviceId));
+
+        /// <summary>
+        /// Get a device with the given id, returns null if not present
+        /// </summary>
+        /// <param name="deviceId"></param>
+        /// <returns></returns>
+        public DeviceFullInfo? GetAudioEndpoint(string deviceId) => ComThread.Invoke(() =>
+        {
+            var device = EnumeratorClient.GetDevice(deviceId);
+            return device == null ? null : new DeviceFullInfo(device);
+        });
 
         /// <summary>
         /// Reset Windows configuration for the process that had their audio device changed
