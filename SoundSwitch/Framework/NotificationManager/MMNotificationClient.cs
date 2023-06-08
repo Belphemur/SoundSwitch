@@ -174,11 +174,12 @@ namespace SoundSwitch.Framework.NotificationManager
 
         public void Dispose()
         {
-            _notificationClient.DeviceAdded -= OnDeviceAdded;
-            _notificationClient.DeviceRemoved -= OnDeviceRemoved;
-            _notificationClient.DevicePropertyChanged -= OnPropertyValueChanged;
-            _notificationClient.DeviceStateChanged -= OnDeviceStateChanged;
-            _notificationClient.DefaultDeviceChanged -= OnDefaultDeviceChanged;
+            //If register wasn't called, _notificationClient can be null
+            _notificationClient?.DeviceAdded -= OnDeviceAdded;
+            _notificationClient?.DeviceRemoved -= OnDeviceRemoved;
+            _notificationClient?.DevicePropertyChanged -= OnPropertyValueChanged;
+            _notificationClient?.DeviceStateChanged -= OnDeviceStateChanged;
+            _notificationClient?.DefaultDeviceChanged -= OnDefaultDeviceChanged;
             _notificationClient = null;
             _mmDeviceEnumerator = null;
         }
