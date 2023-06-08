@@ -9,6 +9,7 @@ using Job.Scheduler.Job.Action;
 using Job.Scheduler.Job.Exception;
 using Serilog;
 using SoundSwitch.Audio.Manager;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Threading;
 using SoundSwitch.Model;
@@ -115,8 +116,12 @@ namespace SoundSwitch.Framework.NotificationManager
             {
                 foreach (var role in Enum.GetValues<Role>().Where(role => role != Role.EnumCount))
                 {
-                    var device = _mmDeviceEnumerator.GetDefaultAudioEndpoint(flow, role);
-                    _lastRoleDevice[new DeviceRole(flow, role)] = device.ID;
+                    var device = AudioSwitcher.Instance.GetDefaultAudioEndpoint((EDataFlow)flow, (ERole)role);
+                    if (device == null)
+                    {
+                        continue;
+                    }
+                    _lastRoleDevice[new DeviceRole(flow, role)] = device.Id;
                 }
             }
         }
