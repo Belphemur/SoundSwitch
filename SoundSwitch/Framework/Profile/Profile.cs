@@ -12,7 +12,7 @@ using SoundSwitch.Properties;
 
 namespace SoundSwitch.Framework.Profile
 {
-    public class Profile : IEquatable<Profile>
+    public class Profile : IEquatable<Profile>, IDisposable
     {
         private bool? _restoreDevices = null;
 
@@ -127,6 +127,14 @@ namespace SoundSwitch.Framework.Profile
         public override string ToString()
         {
             return $"{nameof(Name)}: {Name}, {nameof(Devices)}: [{string.Join(", ", Devices)}]";
+        }
+
+        public void Dispose()
+        {
+            foreach (var device in Devices.Select(wrapper => wrapper.DeviceInfo).Where(info => info is DeviceFullInfo).Cast<DeviceFullInfo>())
+            {
+                device.Dispose();
+            }
         }
 
         public override int GetHashCode()

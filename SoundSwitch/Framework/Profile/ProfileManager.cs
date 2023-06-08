@@ -306,6 +306,7 @@ namespace SoundSwitch.Framework.Profile
             }
 
             SwitchAudio(oldState);
+            oldState.Dispose();
             _activeWindowsTrigger.Remove(windowHandle);
             return true;
         }

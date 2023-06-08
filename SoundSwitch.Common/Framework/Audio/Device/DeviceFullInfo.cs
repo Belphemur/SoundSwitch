@@ -12,6 +12,8 @@ namespace SoundSwitch.Common.Framework.Audio.Device
         public string IconPath { get; }
         public DeviceState State { get; }
 
+        private bool _disposed = false;
+
         [JsonIgnore]
         public System.Drawing.Icon LargeIcon => AudioDeviceIconExtractor.ExtractIconFromPath(IconPath, Type, true);
 
@@ -44,7 +46,7 @@ namespace SoundSwitch.Common.Framework.Audio.Device
                         Volume = 0;
                         return;
                     }
-                
+
                     Volume = (int)Math.Round(deviceAudioEndpointVolume.MasterVolumeLevelScalar * 100);
                     deviceAudioEndpointVolume.OnVolumeNotification += DeviceAudioEndpointVolumeOnOnVolumeNotification;
                 }
@@ -62,6 +64,11 @@ namespace SoundSwitch.Common.Framework.Audio.Device
 
         public void Dispose()
         {
+            if (_disposed)
+            {
+                return;
+            }
+
             try
             {
                 if (_device.AudioEndpointVolume != null)
@@ -71,6 +78,10 @@ namespace SoundSwitch.Common.Framework.Audio.Device
             catch (Exception)
             {
                 //ignored
+            }
+            finally
+            {
+                _disposed = true;
             }
         }
     }

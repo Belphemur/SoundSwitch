@@ -33,6 +33,10 @@ namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo
             {
                 if (@event.Device.Type != DataFlow.Capture)
                     return;
+                if (_defaultDevice != null)
+                {
+                    _defaultDevice.Dispose();
+                }
                 _defaultDevice = @event.Device;
             };
             _defaultDevice = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eConsole);

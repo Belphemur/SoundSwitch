@@ -27,7 +27,7 @@ namespace SoundSwitch.Framework.TrayIcon.Icon.Changer
 
         public void ChangeIcon(UI.Component.TrayIcon trayIcon)
         {
-            var audio = AudioSwitcher.Instance.GetDefaultAudioEndpoint((EDataFlow)Flow, ERole.eConsole);
+            using var audio = AudioSwitcher.Instance.GetDefaultAudioEndpoint((EDataFlow)Flow, ERole.eConsole);
             ChangeIcon(trayIcon, audio, ERole.eConsole);
         }
 

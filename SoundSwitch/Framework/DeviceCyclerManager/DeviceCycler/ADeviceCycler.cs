@@ -67,7 +67,8 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         /// <returns></returns>
         private DeviceInfo GetNextDevice(DeviceInfo[] audioDevices, DataFlow type)
         {
-            var defaultDev = AudioSwitcher.Instance.GetDefaultAudioEndpoint((EDataFlow) type, ERole.eConsole) ?? audioDevices.Last();
+            using var currentDefaultDevice = AudioSwitcher.Instance.GetDefaultAudioEndpoint((EDataFlow) type, ERole.eConsole);
+            var defaultDev = currentDefaultDevice ?? audioDevices.Last();
             var next = audioDevices.SkipWhile((device, _) => device.Id != defaultDev.Id).Skip(1).FirstOrDefault() ?? audioDevices[0];
             return next;
         }
