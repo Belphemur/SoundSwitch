@@ -116,7 +116,7 @@ namespace SoundSwitch.Framework.NotificationManager
             {
                 foreach (var role in Enum.GetValues<Role>().Where(role => role != Role.EnumCount))
                 {
-                    var device = AudioSwitcher.Instance.GetDefaultAudioEndpoint((EDataFlow)flow, (ERole)role);
+                    using var device = AudioSwitcher.Instance.GetDefaultAudioEndpoint((EDataFlow)flow, (ERole)role);
                     if (device == null)
                     {
                         continue;
