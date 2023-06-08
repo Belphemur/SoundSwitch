@@ -73,6 +73,7 @@ namespace SoundSwitch.Model
             {
                 Log.Information(@"[WINAPI] Default device changed to {device}:{role}", _device, _role);
                 _appModel.DefaultDeviceChanged?.Invoke(_appModel, new DeviceDefaultChangedEvent(_device, _role, cancellationToken));
+                _device.Dispose();
                 return Task.CompletedTask;
             }
 
