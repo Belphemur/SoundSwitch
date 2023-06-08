@@ -1,3 +1,28 @@
+## [6.7.0](https://github.com/Belphemur/SoundSwitch/compare/v6.6.1...v6.7.0) (2023-06-08)
+
+
+### Features
+
+* **Core::Reset:** Add a mneu item to reset the Windows 10/11 per application audio settings. ([a5c07e8](https://github.com/Belphemur/SoundSwitch/commit/a5c07e83af729af04d2a675e6c45712c1b0e5dd5))
+* **Core:** Replace core of the software by the CoreAudio library ([899058b](https://github.com/Belphemur/SoundSwitch/commit/899058b89a047bcdd6cae93279f731b4d353349b)), closes [#1184](https://github.com/Belphemur/SoundSwitch/issues/1184) [#1164](https://github.com/Belphemur/SoundSwitch/issues/1164) [#1175](https://github.com/Belphemur/SoundSwitch/issues/1175)
+
+
+### Bug Fixes
+
+* **Foreground:** Issue with Foreground application wrongly detected as SoundSwitch causing SoundSwitch to stop notifying when audio is changed. ([31e6fe1](https://github.com/Belphemur/SoundSwitch/commit/31e6fe1dc4e65a31ed4714b64854d4a2e99e10a6))
+
+
+### Languages
+
+* **Croatian:** Translated Settings using Weblate ([08c491a](https://github.com/Belphemur/SoundSwitch/commit/08c491a29790e8fe2886621b4b9629fd70dc4751))
+* **Croatian:** Translated Tray Icon using Weblate ([dd1212b](https://github.com/Belphemur/SoundSwitch/commit/dd1212b20ecd5cf1c21f5e31d4a19df35cf74941))
+* **Hebrew:** Translated Settings using Weblate ([a8cb593](https://github.com/Belphemur/SoundSwitch/commit/a8cb593801e51bdee50173bc0eb3458e6b5402b7))
+* **Hebrew:** Translated Settings using Weblate ([325911d](https://github.com/Belphemur/SoundSwitch/commit/325911de272f97830c06dbdba62feb547f3bf99e))
+* **Hebrew:** Translated Tray Icon using Weblate ([e715d44](https://github.com/Belphemur/SoundSwitch/commit/e715d444f370fa6f25fbee064d59c77645417d10))
+* **Italian:** Translated Tray Icon using Weblate ([3ebd3ec](https://github.com/Belphemur/SoundSwitch/commit/3ebd3ec487e335da183bc86a24403965a5b44c67))
+* **Portuguese (Brazil):** Translated Tray Icon using Weblate ([f6b406b](https://github.com/Belphemur/SoundSwitch/commit/f6b406b19155f86ddc89900232561437d093804d))
+* **Spanish:** Translated Tray Icon using Weblate ([f0fd9e6](https://github.com/Belphemur/SoundSwitch/commit/f0fd9e662b8b8d5f925a94ef2a14eaca6a853509))
+
 ## [6.6.1](https://github.com/Belphemur/SoundSwitch/compare/v6.6.0...v6.6.1) (2023-04-17)
 
 
