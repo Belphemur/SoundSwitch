@@ -1,3 +1,10 @@
+## [6.7.1](https://github.com/Belphemur/SoundSwitch/compare/v6.7.0...v6.7.1) (2023-06-08)
+
+
+### Bug Fixes
+
+* **MMNotification:** Fix getting the current state of Default device at application startup. No more crash when there isn't a communication device set. ([e97330e](https://github.com/Belphemur/SoundSwitch/commit/e97330eb66c75108b900aa710ef234bc2219a709)), closes [#1200](https://github.com/Belphemur/SoundSwitch/issues/1200)
+
 ## [6.7.0](https://github.com/Belphemur/SoundSwitch/compare/v6.6.1...v6.7.0) (2023-06-08)
 
 
