@@ -1,4 +1,4 @@
-﻿using CoreAudio;
+﻿using NAudio.CoreAudioApi;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Localization;
 

@@ -21,7 +21,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
-using CoreAudio;
+using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;

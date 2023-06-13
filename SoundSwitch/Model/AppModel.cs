@@ -18,10 +18,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using CoreAudio;
 using Job.Scheduler.Job;
 using Job.Scheduler.Job.Action;
 using Job.Scheduler.Job.Exception;
+using NAudio.CoreAudioApi;
 using RailSharp;
 using Serilog;
 using SoundSwitch.Audio.Manager;
@@ -44,7 +44,6 @@ using SoundSwitch.Localization;
 using SoundSwitch.Localization.Factory;
 using SoundSwitch.Model.Job;
 using SoundSwitch.UI.Component;
-using MMNotificationClient = SoundSwitch.Framework.NotificationManager.MMNotificationClient;
 
 namespace SoundSwitch.Model
 {

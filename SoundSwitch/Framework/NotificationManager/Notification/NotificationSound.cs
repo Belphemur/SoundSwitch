@@ -16,7 +16,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Threading;
-using CoreAudio;
+using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Device;
@@ -68,6 +68,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             if (profile.Playback == null)
                 return;
 
+            using var enumerator = new MMDeviceEnumerator();
             try
             {
                 var mmDevice = AudioSwitcher.Instance.GetDevice(profile.Playback.Id);

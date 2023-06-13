@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using CoreAudio;
 using Job.Scheduler.Job;
 using Job.Scheduler.Job.Action;
 using Job.Scheduler.Job.Exception;
+using NAudio.CoreAudioApi;
+using NAudio.CoreAudioApi.Interfaces;
 using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
@@ -17,11 +18,12 @@ using PropertyKeys = NAudio.CoreAudioApi.PropertyKeys;
 
 namespace SoundSwitch.Framework.NotificationManager
 {
-    public class MMNotificationClient : IDisposable
+    public class MMNotificationClient : IMMNotificationClient, IDisposable
     {
         private record struct DeviceRole(DataFlow Flow, Role Role);
 
         public static MMNotificationClient Instance { get; } = new();
+        private MMDeviceEnumerator _enumerator;
 
         private readonly Dictionary<DeviceRole, string> _lastRoleDevice = new();
 
@@ -30,9 +32,6 @@ namespace SoundSwitch.Framework.NotificationManager
         public event EventHandler<DeviceChangedEventBase> DeviceAdded;
 
         private readonly TaskScheduler _taskScheduler = new LimitedConcurrencyLevelTaskScheduler(1);
-
-        private CoreAudio.MMNotificationClient _notificationClient;
-        private MMDeviceEnumerator _mmDeviceEnumerator;
 
         private class DeviceChangedJob : IJob
         {
@@ -105,47 +104,40 @@ namespace SoundSwitch.Framework.NotificationManager
         /// </summary>
         public void Register()
         {
-            _mmDeviceEnumerator = new MMDeviceEnumerator(Guid.NewGuid());
-            _notificationClient = new CoreAudio.MMNotificationClient(_mmDeviceEnumerator);
-            _notificationClient.DeviceAdded += OnDeviceAdded;
-            _notificationClient.DeviceRemoved += OnDeviceRemoved;
-            _notificationClient.DevicePropertyChanged += OnPropertyValueChanged;
-            _notificationClient.DeviceStateChanged += OnDeviceStateChanged;
-            _notificationClient.DefaultDeviceChanged += OnDefaultDeviceChanged;
+            _enumerator = new MMDeviceEnumerator();
+            _enumerator.RegisterEndpointNotificationCallback(this);
             foreach (var flow in Enum.GetValues<DataFlow>().Where(flow => flow != DataFlow.All))
             {
-                foreach (var role in Enum.GetValues<Role>().Where(role => role != Role.EnumCount))
+                foreach (var role in Enum.GetValues<Role>())
                 {
-                    using var device = AudioSwitcher.Instance.GetDefaultAudioEndpoint((EDataFlow)flow, (ERole)role);
+                    var device = AudioSwitcher.Instance.GetDefaultAudioEndpoint((EDataFlow)flow, (ERole)role);
                     if (device == null)
-                    {
                         continue;
-                    }
+
                     _lastRoleDevice[new DeviceRole(flow, role)] = device.Id;
                 }
             }
         }
 
-        public void OnDeviceStateChanged(object sender, DeviceStateChangedEventArgs deviceStateChangedEventArgs)
+        public void OnDeviceStateChanged(string deviceId, DeviceState newState)
         {
-            JobScheduler.Instance.ScheduleJob(new DeviceChangedJob(this, deviceStateChangedEventArgs.DeviceId), CancellationToken.None, _taskScheduler);
+            JobScheduler.Instance.ScheduleJob(new DeviceChangedJob(this, deviceId), CancellationToken.None, _taskScheduler);
         }
 
-        public void OnDeviceAdded(object sender, DeviceNotificationEventArgs deviceNotificationEventArgs)
+        public void OnDeviceAdded(string deviceId)
         {
-            JobScheduler.Instance.ScheduleJob(new DeviceChangedJob(this, deviceNotificationEventArgs.DeviceId, true), CancellationToken.None, _taskScheduler);
+            JobScheduler.Instance.ScheduleJob(new DeviceChangedJob(this, deviceId, true), CancellationToken.None, _taskScheduler);
         }
 
-        public void OnDeviceRemoved(object sender, DeviceNotificationEventArgs deviceNotificationEventArgs)
+        public void OnDeviceRemoved(string deviceId)
         {
-            JobScheduler.Instance.ScheduleJob(new DeviceChangedJob(this, deviceNotificationEventArgs.DeviceId), CancellationToken.None, _taskScheduler);
+            JobScheduler.Instance.ScheduleJob(new DeviceChangedJob(this, deviceId), CancellationToken.None, _taskScheduler);
         }
 
-        public void OnDefaultDeviceChanged(object sender, DefaultDeviceChangedEventArgs defaultDeviceChangedEventArgs)
+        public void OnDefaultDeviceChanged(DataFlow flow, Role role, string deviceId)
         {
-            var deviceId = defaultDeviceChangedEventArgs.DeviceId;
-            var flow = defaultDeviceChangedEventArgs.DataFlow;
-            var role = defaultDeviceChangedEventArgs.Role;
+            if (deviceId == null)
+                return;
 
             var deviceRole = new DeviceRole(flow, role);
             if (_lastRoleDevice.TryGetValue(deviceRole, out var oldDeviceId) && oldDeviceId == deviceId)
@@ -157,33 +149,24 @@ namespace SoundSwitch.Framework.NotificationManager
             JobScheduler.Instance.ScheduleJob(new DefaultDeviceChangedJob(this, deviceId, role), CancellationToken.None, _taskScheduler);
         }
 
-        public void OnPropertyValueChanged(object sender, DevicePropertyChangedEventArgs devicePropertyChangedEventArgs)
+        public void OnPropertyValueChanged(string pwstrDeviceId, PropertyKey key)
         {
-            var key = devicePropertyChangedEventArgs.PropertyKey;
-            if (PropertyKeys.PKEY_DeviceInterface_FriendlyName.formatId != key.fmtId
-                && PropertyKeys.PKEY_AudioEndpoint_GUID.formatId != key.fmtId
-                && PropertyKeys.PKEY_Device_IconPath.formatId != key.fmtId
-                && PropertyKeys.PKEY_Device_FriendlyName.formatId != key.fmtId
+            if (PropertyKeys.PKEY_DeviceInterface_FriendlyName.formatId != key.formatId
+                && PropertyKeys.PKEY_AudioEndpoint_GUID.formatId != key.formatId
+                && PropertyKeys.PKEY_Device_IconPath.formatId != key.formatId
+                && PropertyKeys.PKEY_Device_FriendlyName.formatId != key.formatId
                )
             {
                 return;
             }
 
-            JobScheduler.Instance.ScheduleJob(new DeviceChangedJob(this, devicePropertyChangedEventArgs.DeviceId), CancellationToken.None, _taskScheduler);
+            JobScheduler.Instance.ScheduleJob(new DeviceChangedJob(this, pwstrDeviceId), CancellationToken.None, _taskScheduler);
         }
 
         public void Dispose()
         {
-            //If register wasn't called, _notificationClient can be null
-            if(_notificationClient != null) {
-                _notificationClient.DeviceAdded -= OnDeviceAdded;
-                _notificationClient.DeviceRemoved -= OnDeviceRemoved;
-                _notificationClient.DevicePropertyChanged -= OnPropertyValueChanged;
-                _notificationClient.DeviceStateChanged -= OnDeviceStateChanged;
-                _notificationClient.DefaultDeviceChanged -= OnDefaultDeviceChanged;
-            }
-            _notificationClient = null;
-            _mmDeviceEnumerator = null;
+            _enumerator.UnregisterEndpointNotificationCallback(this);
+            _enumerator?.Dispose();
         }
     }
 }

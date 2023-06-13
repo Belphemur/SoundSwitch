@@ -1,6 +1,6 @@
 ﻿#nullable enable
 using System;
-using CoreAudio;
+using NAudio.CoreAudioApi;
 using Newtonsoft.Json;
 using SoundSwitch.Common.Framework.Audio.Icon;
 
@@ -8,7 +8,7 @@ namespace SoundSwitch.Common.Framework.Audio.Device
 {
     public class DeviceFullInfo : DeviceInfo, IDisposable
     {
-        private readonly MMDevice? _device;
+        private readonly MMDevice _device;
         public string IconPath { get; }
         public DeviceState State { get; }
 
@@ -30,7 +30,7 @@ namespace SoundSwitch.Common.Framework.Audio.Device
             State = state;
         }
 
-        public DeviceFullInfo(MMDevice? device) : base(device)
+        public DeviceFullInfo(MMDevice device) : base(device)
         {
             _device = device;
             IconPath = device.IconPath;
@@ -72,7 +72,10 @@ namespace SoundSwitch.Common.Framework.Audio.Device
             try
             {
                 if (_device.AudioEndpointVolume != null)
+                {
                     _device.AudioEndpointVolume.OnVolumeNotification -= DeviceAudioEndpointVolumeOnOnVolumeNotification;
+                }
+
                 _device.Dispose();
             }
             catch (Exception)

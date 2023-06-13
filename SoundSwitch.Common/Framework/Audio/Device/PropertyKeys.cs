@@ -1,5 +1,5 @@
 ﻿using System;
-using CoreAudio;
+using NAudio.CoreAudioApi;
 
 namespace SoundSwitch.Common.Framework.Audio.Device
 {

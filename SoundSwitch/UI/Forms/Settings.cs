@@ -19,7 +19,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using CoreAudio;
+using NAudio.CoreAudioApi;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework.Audio;

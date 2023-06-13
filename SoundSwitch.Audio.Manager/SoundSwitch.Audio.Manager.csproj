@@ -10,7 +10,6 @@
     <Version>4.0.0</Version>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="CoreAudio" Version="1.27.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.0.3" />
     <PackageReference Include="Serilog" Version="2.12.0" />

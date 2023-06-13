@@ -2,7 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
-using CoreAudio;
+using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Audio.Manager.Interop.Client;
 using SoundSwitch.Audio.Manager.Interop.Com.Threading;
@@ -219,7 +219,7 @@ namespace SoundSwitch.Audio.Manager
         /// <param name="device"></param>
         /// <param name="interaction"></param>
         /// <typeparam name="T"></typeparam>
-        public T InteractWithMmDevice<T>(MMDevice? device, Func<MMDevice?, T> interaction) => ComThread.Invoke(() => interaction(device));
+        public T InteractWithMmDevice<T>(MMDevice device, Func<MMDevice, T> interaction) => ComThread.Invoke(() => interaction(device));
 
         /// <summary>
         /// Get the current default endpoint

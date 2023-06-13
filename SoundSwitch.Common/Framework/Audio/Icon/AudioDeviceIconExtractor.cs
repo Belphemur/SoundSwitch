@@ -13,8 +13,8 @@
 ********************************************************************/
 
 using System;
-using CoreAudio;
 using Microsoft.Extensions.Caching.Memory;
+using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Common.Properties;

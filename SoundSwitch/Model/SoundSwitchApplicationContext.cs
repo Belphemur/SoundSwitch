@@ -1,5 +1,5 @@
 ﻿using System.Windows.Forms;
-using CoreAudio;
+using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio.Lister;
@@ -8,7 +8,6 @@ using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.UI.Menu;
-using MMNotificationClient = SoundSwitch.Framework.NotificationManager.MMNotificationClient;
 
 namespace SoundSwitch.Model
 {
@@ -26,7 +25,7 @@ namespace SoundSwitch.Model
             deviceUnpluggedActiveLister.Refresh();
 
             AppModel.Instance.InitializeMain(deviceActiveLister, deviceUnpluggedActiveLister);
-
+            
             AppModel.Instance.NewVersionReleased += (sender, @event) =>
             {
                 if (@event.UpdateMode == UpdateMode.Silent)
@@ -43,8 +42,6 @@ namespace SoundSwitch.Model
                 AppConfigs.Configuration.FirstRun = false;
                 Log.Information("First run");
             }
-
-            MMNotificationClient.Instance.Register();
         }
     }
 }
