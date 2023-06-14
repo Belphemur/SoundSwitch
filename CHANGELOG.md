@@ -1,3 +1,21 @@
+## [6.7.2](https://github.com/Belphemur/SoundSwitch/compare/v6.7.1...v6.7.2) (2023-06-14)
+
+
+### Bug Fixes
+
+* **MMNotificationClient:** Fix possible crash when closing the app ([ab8c0ee](https://github.com/Belphemur/SoundSwitch/commit/ab8c0ee7d8d59470c67fdc40b44185cccc0a4cad)), closes [#1201](https://github.com/Belphemur/SoundSwitch/issues/1201)
+* **Notification:** Fix missing sound in audio notification ([131c9d4](https://github.com/Belphemur/SoundSwitch/commit/131c9d42bec8ead3951123a12aa97b72e1afe3fd)), closes [#1203](https://github.com/Belphemur/SoundSwitch/issues/1203)
+
+
+### Enhancements
+
+* **Device::Refresh:** Wait a little longer before refreshing list of devices ([cb3d63f](https://github.com/Belphemur/SoundSwitch/commit/cb3d63f3c292939db5bcbebe7bc384f3b4758eea)), closes [#SOUNDSWITCH-151](https://github.com/Belphemur/SoundSwitch/issues/SOUNDSWITCH-151)
+
+
+### Languages
+
+* **Portuguese:** Translated Tray Icon using Weblate ([2e87f22](https://github.com/Belphemur/SoundSwitch/commit/2e87f220a76a4aa4254f004a5ef035c92b4e1d80))
+
 ## [6.7.1](https://github.com/Belphemur/SoundSwitch/compare/v6.7.0...v6.7.1) (2023-06-08)
 
 
