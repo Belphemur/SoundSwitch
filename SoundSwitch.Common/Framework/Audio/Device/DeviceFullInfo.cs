@@ -64,6 +64,17 @@ namespace SoundSwitch.Common.Framework.Audio.Device
 
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~DeviceFullInfo()
+        {
+            Dispose(false);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
             if (_disposed)
             {
                 return;
