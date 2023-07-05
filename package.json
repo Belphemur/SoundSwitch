@@ -98,7 +98,7 @@
     "conventional-changelog-conventionalcommits": "^6.1.0",
     "discord-webhook-node": "^1.1.8",
     "normalize-url": ">=8.0.0",
-    "semantic-release": "^21.0.6",
+    "semantic-release": "^21.0.7",
     "trim-newlines": ">=5.0.0",
     "backblaze": "github:belphemur/backblaze#master"
 
