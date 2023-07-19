@@ -169,4 +169,7 @@
   <data name="forceCheckForUpdate" xml:space="preserve">
 	  <value>Vérifier MàJ</value>
   </data>
+  <data name="resetAudioDevices" xml:space="preserve">
+    <value>Réinitialiser l'audio par application</value>
+  </data>
 </root>
