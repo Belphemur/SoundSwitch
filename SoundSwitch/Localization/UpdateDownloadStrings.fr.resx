@@ -119,6 +119,6 @@
 	  <value>Plus tard</value>
   </data>
   <data name="wrongSignature" xml:space="preserve">
-	  <value>Il y a un problème avec la dernière MàJ de SoundSwitch. Il va falloir la télécharger manuellement à {0}.</value>
+	  <value>Il y a un problème avec la dernière MàJ de SoundSwitch. Il va falloir la télécharger manuellement à {0}</value>
   </data>
 </root>
