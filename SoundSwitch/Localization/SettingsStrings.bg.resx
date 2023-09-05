@@ -161,7 +161,7 @@
     <value>Деактивиране на зададения персонализиран звук.</value>
   </data>
   <data name="foregroundApp" xml:space="preserve">
-    <value>Също така превключи и за активната в момента програма</value>
+    <value>Превключи и за активната в момента програма</value>
   </data>
   <data name="iconChange" xml:space="preserve">
     <value>Икона в системната лента</value>
@@ -236,7 +236,7 @@
     <value>Запазване</value>
   </data>
   <data name="profile.button.edit" xml:space="preserve">
-    <value>Редактиране</value>
+    <value>Редакция</value>
   </data>
   <data name="usePrimaryScreen" xml:space="preserve">
     <value>Винаги използвай основния екран</value>
@@ -384,7 +384,7 @@
     <value>Профилът се нуждае от име.</value>
   </data>
   <data name="profile.defaultDevice.checkbox" xml:space="preserve">
-    <value>Също така превключи устройството по подразбиране</value>
+    <value>Превключи и устройството по подразбиране</value>
   </data>
   <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
     <value>Когато програмата бъде стартирана, SoundSwitch ще промени и текущото устройство по подразбиране.</value>
