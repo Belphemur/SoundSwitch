@@ -130,4 +130,7 @@
   <data name="configurationNeededExplanation" xml:space="preserve">
     <value>Няма налични устройства, към които да превключите. Отворете конфигурацията, като щракнете с десния бутон на мишката върху иконата.</value>
   </data>
+  <data name="resetAudioDevices" xml:space="preserve">
+    <value>Нулиране на аудио за приложения</value>
+  </data>
 </root>
