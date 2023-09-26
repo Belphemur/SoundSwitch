@@ -1,5 +1,6 @@
 ﻿#nullable enable
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -36,7 +37,7 @@ namespace SoundSwitch.Framework.Profile
         private Profile? _steamProfile;
         private Profile? _forcedProfile;
 
-        private readonly Dictionary<User32.NativeMethods.HWND, Profile> _activeWindowsTrigger = new();
+        private readonly ConcurrentDictionary<User32.NativeMethods.HWND, Profile> _activeWindowsTrigger = new();
 
         private readonly Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)> _profileByApplication = new();
         private readonly Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)> _profilesByWindowName = new();
@@ -289,7 +290,7 @@ namespace SoundSwitch.Framework.Profile
                 RecordingCommunication = recordingCommunication,
                 NotifyOnActivation = profile.NotifyOnActivation
             };
-            _activeWindowsTrigger.Add(windowHandle, currentState);
+            _activeWindowsTrigger.TryAdd(windowHandle, currentState);
             return true;
         }
 
@@ -307,7 +308,7 @@ namespace SoundSwitch.Framework.Profile
 
             SwitchAudio(oldState);
             oldState.Dispose();
-            _activeWindowsTrigger.Remove(windowHandle);
+            _activeWindowsTrigger.TryRemove(windowHandle, out _);
             return true;
         }
 
