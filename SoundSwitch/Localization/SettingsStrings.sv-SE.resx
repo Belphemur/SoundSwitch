@@ -337,4 +337,117 @@ Båda: Ändra när någon typ av enhet ändras.</value>
   <data name="tooltipOnHoverOptionNone" xml:space="preserve">
     <value>Inga verktygstips</value>
   </data>
+  <data name="profile.trigger.steam" xml:space="preserve">
+    <value>Steam Big Picture</value>
+  </data>
+  <data name="profile.trigger.process.desc" xml:space="preserve">
+    <value>Aktivera profilen när den valda programmet är i förgrunden</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
+    <value>Systemtillstånd återställt</value>
+  </data>
+  <data name="profile.error.device-not-found" xml:space="preserve">
+    <value>Kunde inte hitta enhet {0}.</value>
+  </data>
+  <data name="hotkeyEnabled" xml:space="preserve">
+    <value>Snabbtangenter aktiverade</value>
+  </data>
+  <data name="profile.trigger.uwp.desc" xml:space="preserve">
+    <value>Ange namnet på applikationen installerad via Windows-butiken. Så som Netflix, Amazon Prime video, etc…</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox" xml:space="preserve">
+    <value>Ändra även standardenhet</value>
+  </data>
+  <data name="usePrimaryScreen" xml:space="preserve">
+    <value>Använd alltid den primära skärmen</value>
+  </data>
+  <data name="profile.notification.text" xml:space="preserve">
+    <value>Profilen {0} utlöst</value>
+  </data>
+  <data name="profile.feature.profile" xml:space="preserve">
+    <value>Profil</value>
+  </data>
+  <data name="profile.desc" xml:space="preserve">
+    <value>Beskrivning</value>
+  </data>
+  <data name="profile.notify-on-activation" xml:space="preserve">
+    <value>Meddela när profilen utlöses</value>
+  </data>
+  <data name="profile.trigger.actives" xml:space="preserve">
+    <value>Aktiva utlösare</value>
+  </data>
+  <data name="profile.trigger.startup" xml:space="preserve">
+    <value>Vid uppstart</value>
+  </data>
+  <data name="profile.error.no-name" xml:space="preserve">
+    <value>En profil behöver ett namn.</value>
+  </data>
+  <data name="profile.trigger.steam.desc" xml:space="preserve">
+    <value>Aktivera när Steam Big Picture upptäcks. (Kommer att återställa tillståndet när Big Picture stängs.)</value>
+  </data>
+  <data name="usePrimaryScreenTooltip" xml:space="preserve">
+    <value>Visa bannern på den primära skärmen i stället för på den fokuserade skärmen.</value>
+  </data>
+  <data name="profile.trigger.uwp" xml:space="preserve">
+    <value>Microsoft Store app</value>
+  </data>
+  <data name="profile.error.delete" xml:space="preserve">
+    <value>Kan inte hitta profilen.</value>
+  </data>
+  <data name="profile.trigger.window" xml:space="preserve">
+    <value>Namn på programmet</value>
+  </data>
+  <data name="profile.trigger.startup.desc" xml:space="preserve">
+    <value>Profilen löser ut automatiskt när SoundSwitch startar</value>
+  </data>
+  <data name="notification.microphone.muted" xml:space="preserve">
+    <value>{0} är nu tystad.</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
+    <value>När applikationen detekterar, ändrar SoundSwitch även den aktuella standardenheten.</value>
+  </data>
+  <data name="profile.trigger.restoreDevices" xml:space="preserve">
+    <value>Återställ enheter när utlösaren slutar</value>
+  </data>
+  <data name="profile.trigger.process" xml:space="preserve">
+    <value>Applikationssökväg</value>
+  </data>
+  <data name="profile.deleteButton" xml:space="preserve">
+    <value>Ta bort</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
+    <value>Kräver "{0}" för att aktiveras.
+
+Återställ systemets tillstånd när applikationen är stängd.</value>
+  </data>
+  <data name="profile.error.window" xml:space="preserve">
+    <value>Det finns redan en profil med detta fönsternamn: {0}.</value>
+  </data>
+  <data name="profile.error.triggers.min" xml:space="preserve">
+    <value>Du behöver minst en utlösare.</value>
+  </data>
+  <data name="profile.error.steam" xml:space="preserve">
+    <value>Du kan endast ha en profil för Steam Big Picture.</value>
+  </data>
+  <data name="profile.button.edit" xml:space="preserve">
+    <value>Redigera</value>
+  </data>
+  <data name="profile.error.title" xml:space="preserve">
+    <value>Profilfel</value>
+  </data>
+  <data name="profile.button.save" xml:space="preserve">
+    <value>Spara</value>
+  </data>
+  <data name="communication" xml:space="preserve">
+    <value>Standardenhet för kommunikation</value>
+  </data>
+  <data name="profile.trigger.available" xml:space="preserve">
+    <value>Tillgängliga utlösare</value>
+  </data>
+  <data name="profile.trigger.window.desc" xml:space="preserve">
+    <value>Aktivera profilen om det förgrundsprogrammet innehåller följande tecken</value>
+  </data>
+  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
+    <value>Snabbtangenter används för att aktivera profilen. Om du använder samma snabbtangent kan du växla mellan profilerna.</value>
+  </data>
 </root>
