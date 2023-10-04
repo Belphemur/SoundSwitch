@@ -130,4 +130,7 @@
   <data name="forceCheckForUpdate" xml:space="preserve">
     <value>업데이트 확인</value>
   </data>
+  <data name="resetAudioDevices" xml:space="preserve">
+    <value>앱별 오디오 재설정</value>
+  </data>
 </root>
