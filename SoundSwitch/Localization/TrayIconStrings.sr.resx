@@ -130,4 +130,7 @@
   <data name="noUpdate" xml:space="preserve">
     <value>Нема доступне надоградње</value>
   </data>
+  <data name="resetAudioDevices" xml:space="preserve">
+    <value>Ресетуј звук по апликацији</value>
+  </data>
 </root>
