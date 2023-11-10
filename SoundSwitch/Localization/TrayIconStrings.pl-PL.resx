@@ -183,4 +183,13 @@
   <data name="communityMenu" xml:space="preserve">
 		<value>Społeczność</value>
   </data>
+  <data name="updateDisabled" xml:space="preserve">
+    <value>Sprawdzanie aktualizacji wyłączone</value>
+  </data>
+  <data name="forceCheckForUpdate" xml:space="preserve">
+    <value>Sprawdź dostępność aktualizacji</value>
+  </data>
+  <data name="resetAudioDevices" xml:space="preserve">
+    <value>Resetuj audio dla aplikacji</value>
+  </data>
 </root>
