@@ -465,4 +465,16 @@ Brak powiadomień: Brak powiadomień o przełączeniu urządzenia.</value>
 
 Przywróć stan systemu po zamknięciu aplikacji.</value>
   </data>
+  <data name="profile.trigger.deviceChanged" xml:space="preserve">
+    <value>Wymuś profil</value>
+  </data>
+  <data name="devices.AutoAddNewDevice" xml:space="preserve">
+    <value>Automatyczne wybieranie nowych urządzeń</value>
+  </data>
+  <data name="quickMenu" xml:space="preserve">
+    <value>Skrót menu podręcznego</value>
+  </data>
+  <data name="telemetry" xml:space="preserve">
+    <value>Telemetria</value>
+  </data>
 </root>
