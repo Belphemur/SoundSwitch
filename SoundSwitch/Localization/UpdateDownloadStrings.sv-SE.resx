@@ -101,7 +101,7 @@
     <value>Ogiltig digital signatur</value>
   </data>
   <data name="notSigned" xml:space="preserve">
-    <value>Den nerladdade uppdateringen är inte signerad med en giltig signatur. Vi rekommenderar dig att ta bort filen och kontakta utvecklaren!</value>
+    <value>Den nerladdade uppdateringen är inte signerad med en giltig signatur. Vi råder dig att ta bort filen och kontakta utvecklaren!</value>
   </data>
   <data name="downloadFailed" xml:space="preserve">
     <value>Nerladdning misslyckades</value>
