@@ -139,7 +139,7 @@
     <value>Frånkopplad</value>
   </data>
   <data name="cycleThrough" xml:space="preserve">
-    <value>Bläddra igenom</value>
+    <value>Växla mellan</value>
   </data>
   <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
     <value>Endast valda ljudenheter</value>
@@ -158,7 +158,7 @@ Banner: Använder en anpassad ram som alltid är överst, användbar i spel.</va
     <value>Ljudfilen du valde som meddelande hittas inte. SoundSwitch ändrade meddelandeinställningen tillbaka till {0}.</value>
   </data>
   <data name="closeTooltip" xml:space="preserve">
-    <value>Ändringarna sparas automatiskt</value>
+    <value>Ändringar sparas automatiskt</value>
   </data>
   <data name="notification" xml:space="preserve">
     <value>Meddelande</value>
@@ -185,7 +185,7 @@ Banner: Använder en anpassad ram som alltid är överst, användbar i spel.</va
     <value>Grundinställningar</value>
   </data>
   <data name="recording" xml:space="preserve">
-    <value>Spelar in</value>
+    <value>Inspelning</value>
   </data>
   <data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
     <value>Inspelningsenhet</value>
@@ -260,7 +260,7 @@ Banner: Använder en anpassad ram som alltid är överst, användbar i spel.</va
     <value>SoundSwitch kommer att meddela dig när det finns en ny uppdatering tillgänglig. När du klickar på meddelandet får du en popup som laddar ner uppdateringen och frågar om du vill installera den.</value>
   </data>
   <data name="hotkeysTooltip" xml:space="preserve">
-    <value>Markera för att aktivera snabbtangenter.</value>
+    <value>Markera för att aktivera snabbtangent.</value>
   </data>
   <data name="profile.tab" xml:space="preserve">
     <value>Profiler</value>
@@ -291,7 +291,7 @@ Vill du starta om nu?</value>
     <value>Visa alltid SoundSwitch i meddelandefältet</value>
   </data>
   <data name="settings" xml:space="preserve">
-    <value>inställningar</value>
+    <value>Inställningar</value>
   </data>
   <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
     <value>För båda enheterna</value>
@@ -323,7 +323,7 @@ Båda: Ändra när någon typ av enhet ändras.</value>
     <value>Banner</value>
   </data>
   <data name="audioFileNotFoundCaption" xml:space="preserve">
-    <value>Hittades inte ljudfilen</value>
+    <value>Ljudfilen hittades inte</value>
   </data>
   <data name="tooltipOnHover" xml:space="preserve">
     <value>Verktygstips vid mus över</value>
