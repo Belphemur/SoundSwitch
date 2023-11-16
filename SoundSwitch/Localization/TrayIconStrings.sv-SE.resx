@@ -142,7 +142,7 @@
     <value>Uppdatering tillgänglig ({0})</value>
   </data>
   <data name="forceCheckForUpdate" xml:space="preserve">
-    <value>Sök efter uppdateringar</value>
+    <value>Sök efter uppdatering</value>
   </data>
   <data name="help" xml:space="preserve">
     <value>Hjälp</value>
@@ -169,13 +169,13 @@
     <value>Fel</value>
   </data>
   <data name="noUpdate" xml:space="preserve">
-    <value>Inga uppdateringar tillgängliga</value>
+    <value>Ingen uppdatering tillgänglig</value>
   </data>
   <data name="donate" xml:space="preserve">
     <value>Donera</value>
   </data>
   <data name="settings" xml:space="preserve">
-    <value>inställningar</value>
+    <value>Inställningar</value>
   </data>
   <data name="mixer" xml:space="preserve">
     <value>Mixer</value>
