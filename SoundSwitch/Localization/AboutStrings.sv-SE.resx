@@ -116,12 +116,12 @@
     <value>Snabbtangentssystem för tangentbord</value>
   </data>
   <data name="author" xml:space="preserve">
-    <value>Författare och programinfo</value>
+    <value>Upphovsman och programinfo</value>
   </data>
   <data name="defaultPlaybackDeviceChange" xml:space="preserve">
-    <value>Ändring av standarduppspelningsenhet</value>
+    <value>Ändra standarduppspelningsenhet</value>
   </data>
   <data name="credits" xml:space="preserve">
-    <value>Krediter och erkännande</value>
+    <value>Medverkande</value>
   </data>
 </root>
