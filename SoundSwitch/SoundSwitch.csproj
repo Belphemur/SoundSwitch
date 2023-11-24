@@ -54,7 +54,7 @@
         <PackageReference Include="Markdig" Version="0.33.0" />
         <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
         <PackageReference Include="RailSharp" Version="1.0.0" />
-        <PackageReference Include="Sentry.Serilog" Version="3.41.1" />
+        <PackageReference Include="Sentry.Serilog" Version="3.41.2" />
         <PackageReference Include="Serilog" Version="3.1.1" />
         <PackageReference Include="Serilog.Enrichers.Environment" Version="2.3.0" />
         <PackageReference Include="Serilog.Exceptions" Version="8.4.0+build.694" />
