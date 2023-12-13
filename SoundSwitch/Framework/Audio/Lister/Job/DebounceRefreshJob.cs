@@ -41,7 +41,7 @@ public class DebounceRefreshJob : IDebounceJob
     }
 
     public IRetryAction FailRule { get; } = new NoRetry();
-    public TimeSpan? MaxRuntime { get; } = TimeSpan.FromSeconds(5);
+    public TimeSpan? MaxRuntime { get; } = TimeSpan.FromSeconds(3);
     public string Key { get; }
     public TimeSpan DebounceTime { get; } = TimeSpan.FromMilliseconds(175);
 }

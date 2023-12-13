@@ -107,12 +107,16 @@ namespace SoundSwitch.Framework.Audio.Lister
                 var playbackDevices = new Dictionary<string, DeviceFullInfo>();
                 var recordingDevices = new Dictionary<string, DeviceFullInfo>();
 
-                using var registration = cancellationToken.Register(_ => { _context.Warning("Cancellation received."); }, null);
+                using var registration = cancellationToken.Register(_ =>
+                {
+                    _context.Warning("Cancellation received.");
+                    throw new OperationCanceledException("Stop refreshing", cancellationToken);
+                }, null);
 
                 try
                 {
                     _context.Information("Refreshing all devices");
-                    using var enumerator = new MMDeviceEnumerator();
+                    var enumerator = new MMDeviceEnumerator();
                     using var _ = enumerator.DisposeOnCancellation(cancellationToken);
                     foreach (var endPoint in enumerator.EnumerateAudioEndPoints(DataFlow.All, _state))
                     {
