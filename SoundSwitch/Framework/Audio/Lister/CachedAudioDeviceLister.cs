@@ -57,7 +57,7 @@ namespace SoundSwitch.Framework.Audio.Lister
         private readonly DeviceState _state;
         private readonly ILogger _context;
         private uint _threadSafeRefreshing;
-        private DateTime _lastRefresh = DateTime.UtcNow;
+        private CancellationTokenSource _refreshCancellationTokenSource = new CancellationTokenSource();
 
         public bool Refreshing
         {
@@ -90,20 +90,19 @@ namespace SoundSwitch.Framework.Audio.Lister
 
         public void Refresh(CancellationToken cancellationToken = default)
         {
-            if (Refreshing)
+            // Cancel the previous refresh operation, if any
+            var previousCts = Interlocked.Exchange(ref _refreshCancellationTokenSource, CancellationTokenSource.CreateLinkedTokenSource(cancellationToken));
+            if (previousCts != null)
             {
-                _context.Warning("Can't refresh, already refreshing since {LastRefresh}", _lastRefresh);
-                //We want to be sure we get the latest refresh, it's not because we are refreshing that we'll get the latest info
-                JobScheduler.Instance.ScheduleJob(new DebounceRefreshJob(_state, this, _context));
-
-                return;
+                previousCts.Cancel();
+                previousCts.Dispose();
             }
+            cancellationToken = _refreshCancellationTokenSource.Token;
 
             var stopWatch = Stopwatch.StartNew();
             try
             {
                 Refreshing = true;
-                _lastRefresh = DateTime.UtcNow;
                 var playbackDevices = new Dictionary<string, DeviceFullInfo>();
                 var recordingDevices = new Dictionary<string, DeviceFullInfo>();
 
@@ -164,6 +163,9 @@ namespace SoundSwitch.Framework.Audio.Lister
                 catch (NullReferenceException e) when (!cancellationToken.IsCancellationRequested)
                 {
                     _context.Error(e, "Can't refresh the devices");
+                } catch(NullReferenceException e) when (cancellationToken.IsCancellationRequested)
+                {
+                    _context.Information(e, "Cancellation requested and enumerator is disposed, ignoring");
                 }
             }
             finally
@@ -181,6 +183,8 @@ namespace SoundSwitch.Framework.Audio.Lister
             {
                 device.Dispose();
             }
+
+            _refreshCancellationTokenSource.Dispose();
         }
     }
 }
