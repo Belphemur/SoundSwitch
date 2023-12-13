@@ -35,6 +35,12 @@ public class DebounceRefreshJob : IDebounceJob
             _logger.Warning("Refresh of device interrupted");
             return Task.CompletedTask;
         }
+        
+        if(exception.InnerException is AggregateException aggregateException && aggregateException.InnerExceptions.FirstOrDefault() is OperationCanceledException)
+        {
+            _logger.Warning("Refresh of device interrupted");
+            return Task.CompletedTask;
+        }
 
         _logger.Warning(exception, "Can't refresh devices");
         return Task.CompletedTask;

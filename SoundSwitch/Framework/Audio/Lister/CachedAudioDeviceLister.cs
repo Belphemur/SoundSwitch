@@ -90,10 +90,12 @@ namespace SoundSwitch.Framework.Audio.Lister
 
         public void Refresh(CancellationToken cancellationToken = default)
         {
+            var logContext = _context.ForContext("TaskId", Task.CurrentId);
             // Cancel the previous refresh operation, if any
             var previousCts = Interlocked.Exchange(ref _refreshCancellationTokenSource, CancellationTokenSource.CreateLinkedTokenSource(cancellationToken));
             if (previousCts != null)
             {
+                logContext.Info("Cancelling Previous Context");
                 previousCts.Cancel();
                 previousCts.Dispose();
             }
@@ -108,13 +110,13 @@ namespace SoundSwitch.Framework.Audio.Lister
 
                 using var registration = cancellationToken.Register(_ =>
                 {
-                    _context.Warning("Cancellation received.");
+                    logContext.Warning("Cancellation received.");
                     throw new OperationCanceledException("Stop refreshing", cancellationToken);
                 }, null);
 
                 try
                 {
-                    _context.Information("Refreshing all devices");
+                    logContext.Information("Refreshing all devices");
                     var enumerator = new MMDeviceEnumerator();
                     using var _ = enumerator.DisposeOnCancellation(cancellationToken);
                     foreach (var endPoint in enumerator.EnumerateAudioEndPoints(DataFlow.All, _state))
@@ -144,7 +146,7 @@ namespace SoundSwitch.Framework.Audio.Lister
                         }
                         catch (Exception e)
                         {
-                            _context.Warning(e, "Can't get name of device {device}", endPoint.ID);
+                            logContext.Warning(e, "Can't get name of device {device}", endPoint.ID);
                         }
                     }
 
@@ -157,15 +159,15 @@ namespace SoundSwitch.Framework.Audio.Lister
                     RecordingDevices = recordingDevices.Values.ToArray();
 
 
-                    _context.Information("Refreshed all devices in {@StopTime}. {@Recording}/rec, {@Playback}/play", stopWatch.Elapsed, recordingDevices.Count, playbackDevices.Count);
+                    logContext.Information("Refreshed all devices in {@StopTime}. {@Recording}/rec, {@Playback}/play", stopWatch.Elapsed, recordingDevices.Count, playbackDevices.Count);
                 }
                 //If cancellation token is cancelled, its expected to throw null since the device enumerator has been disposed
                 catch (NullReferenceException e) when (!cancellationToken.IsCancellationRequested)
                 {
-                    _context.Error(e, "Can't refresh the devices");
+                    logContext.Error(e, "Can't refresh the devices");
                 } catch(NullReferenceException e) when (cancellationToken.IsCancellationRequested)
                 {
-                    _context.Information(e, "Cancellation requested and enumerator is disposed, ignoring");
+                    logContext.Information(e, "Cancellation requested and enumerator is disposed, ignoring");
                 }
             }
             finally
