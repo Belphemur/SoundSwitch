@@ -48,8 +48,8 @@ namespace SoundSwitch.Framework.Audio.Lister
         {
             return type switch
             {
-                DataFlow.Render  => new DeviceReadOnlyCollection<DeviceFullInfo>(PlaybackDevices.Where(info => _state.HasFlag(info.State)), type),
-                DataFlow.Capture => new DeviceReadOnlyCollection<DeviceFullInfo>(RecordingDevices.Where(info => _state.HasFlag(info.State)), type),
+                DataFlow.Render  => new DeviceReadOnlyCollection<DeviceFullInfo>(PlaybackDevices.Where(info => state.HasFlag(info.State)), type),
+                DataFlow.Capture => new DeviceReadOnlyCollection<DeviceFullInfo>(RecordingDevices.Where(info => state.HasFlag(info.State)), type),
                 _                => throw new ArgumentOutOfRangeException(nameof(type), type, null)
             };
         }
