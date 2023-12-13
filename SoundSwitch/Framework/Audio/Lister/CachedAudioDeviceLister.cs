@@ -26,6 +26,7 @@ using SoundSwitch.Framework.Audio.Lister.Job;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Threading;
 using SoundSwitch.Model;
+using System.Linq;
 
 namespace SoundSwitch.Framework.Audio.Lister
 {
