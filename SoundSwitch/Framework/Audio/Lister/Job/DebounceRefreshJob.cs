@@ -7,6 +7,8 @@ using Job.Scheduler.Job.Exception;
 using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Model;
+using System.Linq;
+
 
 namespace SoundSwitch.Framework.Audio.Lister.Job;
 
