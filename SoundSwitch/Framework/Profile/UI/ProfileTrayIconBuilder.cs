@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using NAudio.CoreAudioApi;
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework.Profile.Trigger;
 using SoundSwitch.Model;
@@ -14,7 +15,7 @@ namespace SoundSwitch.Framework.Profile.UI
     {
         private ProfileManager ProfileManager => AppModel.Instance.ProfileManager;
 
-        private IAudioDeviceLister AudioDeviceLister => AppModel.Instance.ActiveAudioDeviceLister;
+        private IAudioDeviceLister AudioDeviceLister => AppModel.Instance.AudioDeviceLister;
 
         /// <summary>
         /// Get the menu items for profile that needs to be shown in the menu
@@ -50,7 +51,7 @@ namespace SoundSwitch.Framework.Profile.UI
 
                 try
                 {
-                    var device = AudioDeviceLister.PlaybackDevices.FirstOrDefault(info => info.Equals(wrapper.DeviceInfo));
+                    var device = AudioDeviceLister.GetDevices(DataFlow.Render, DeviceState.Active).FirstOrDefault(info => info.Equals(wrapper.DeviceInfo));
                     image = device?.SmallIcon.ToBitmap();
                 }
                 catch (Exception)

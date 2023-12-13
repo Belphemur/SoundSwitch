@@ -195,9 +195,9 @@ namespace SoundSwitch.Model
             }
         }
 
-        public IEnumerable<DeviceFullInfo> AvailablePlaybackDevices => ActiveAudioDeviceLister.PlaybackDevices.IntersectWith(SelectedDevices);
+        public IEnumerable<DeviceFullInfo> AvailablePlaybackDevices => AudioDeviceLister.GetDevices(DataFlow.Render, DeviceState.Active).IntersectWith(SelectedDevices);
 
-        public IEnumerable<DeviceFullInfo> AvailableRecordingDevices => ActiveAudioDeviceLister.RecordingDevices.IntersectWith(SelectedDevices);
+        public IEnumerable<DeviceFullInfo> AvailableRecordingDevices => AudioDeviceLister.GetDevices(DataFlow.Capture, DeviceState.Active).IntersectWith(SelectedDevices);
 
         public bool SetCommunications
         {
@@ -292,9 +292,7 @@ namespace SoundSwitch.Model
             }
         }
 
-        public IAudioDeviceLister ActiveAudioDeviceLister { get; private set; }
-
-        public IAudioDeviceLister ActiveUnpluggedAudioLister { get; private set; }
+        public IAudioDeviceLister AudioDeviceLister { get; private set; }
         public event EventHandler<NotificationSettingsUpdatedEvent> NotificationSettingsChanged;
         public event EventHandler<CustomSoundChangedEvent> CustomSoundChanged;
         public event EventHandler<UpdateMode> UpdateModeChanged;
@@ -306,12 +304,9 @@ namespace SoundSwitch.Model
         ///     Initialize the Main class with Updater and Hotkeys
         /// </summary>
         /// <param name="active"></param>
-        /// <param name="unplugged"></param>
-        public void InitializeMain(IAudioDeviceLister active, IAudioDeviceLister unplugged)
+        public void InitializeMain(IAudioDeviceLister active)
         {
-            ActiveAudioDeviceLister = active;
-            ActiveUnpluggedAudioLister = unplugged;
-
+            AudioDeviceLister = active;
             if (_initialized)
             {
                 Log.Fatal("AppModel already initialized");
@@ -361,7 +356,7 @@ namespace SoundSwitch.Model
 
             TrayIcon = new TrayIcon();
             _notificationManager.Init();
-            ProfileManager = new ProfileManager(new WindowMonitor(), AudioSwitcher.Instance, ActiveAudioDeviceLister, TrayIcon.ShowError, new TriggerFactory(), _notificationManager);
+            ProfileManager = new ProfileManager(new WindowMonitor(), AudioSwitcher.Instance, AudioDeviceLister, TrayIcon.ShowError, new TriggerFactory(), _notificationManager);
 
             ProfileManager
                 .Init()
@@ -620,8 +615,7 @@ namespace SoundSwitch.Model
         public void Dispose()
         {
             TrayIcon?.Dispose();
-            ActiveAudioDeviceLister?.Dispose();
-            ActiveUnpluggedAudioLister?.Dispose();
+            AudioDeviceLister?.Dispose();
         }
     }
 }

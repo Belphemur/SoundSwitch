@@ -31,16 +31,33 @@ namespace SoundSwitch.Framework.Audio.Lister
     public class CachedAudioDeviceLister : IAudioDeviceLister
     {
         /// <inheritdoc />
-        public DeviceReadOnlyCollection<DeviceFullInfo> PlaybackDevices { get; private set; } = new(Enumerable.Empty<DeviceFullInfo>(), DataFlow.Render);
+        private DeviceReadOnlyCollection<DeviceFullInfo> PlaybackDevices {  get;  set; } = new(Enumerable.Empty<DeviceFullInfo>(), DataFlow.Render);
 
         /// <inheritdoc />
-        public DeviceReadOnlyCollection<DeviceFullInfo> RecordingDevices { get; private set; } = new(Enumerable.Empty<DeviceFullInfo>(), DataFlow.Capture);
+        private DeviceReadOnlyCollection<DeviceFullInfo> RecordingDevices {  get;  set; } = new(Enumerable.Empty<DeviceFullInfo>(), DataFlow.Capture);
+
+        /// <summary>
+        /// Get devices per type and state
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public DeviceReadOnlyCollection<DeviceFullInfo> GetDevices(DataFlow type, DeviceState state)
+        {
+            return type switch
+            {
+                DataFlow.Render  => new DeviceReadOnlyCollection<DeviceFullInfo>(PlaybackDevices.Where(info => _state.HasFlag(info.State)), type),
+                DataFlow.Capture => new DeviceReadOnlyCollection<DeviceFullInfo>(RecordingDevices.Where(info => _state.HasFlag(info.State)), type),
+                _                => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+            };
+        }
 
         private readonly DeviceState _state;
         private readonly SemaphoreSlim _refreshSemaphore = new(1);
-        private readonly TimeSpan _refreshWaitTime = TimeSpan.FromSeconds(5);
+        private readonly TimeSpan _refreshWaitTime = TimeSpan.FromSeconds(10);
         private readonly ILogger _context;
-        private uint _threadSafeRefreshing = 0;
+        private uint _threadSafeRefreshing;
 
         public bool Refreshing
         {

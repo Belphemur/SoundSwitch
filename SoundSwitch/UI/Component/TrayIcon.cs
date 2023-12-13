@@ -301,7 +301,7 @@ namespace SoundSwitch.UI.Component
 
         public void ShowSettings()
         {
-            _context.Send(state => { new SettingsForm(AppModel.Instance.ActiveUnpluggedAudioLister).Show(); }, null);
+            _context.Send(state => { new SettingsForm(AppModel.Instance.AudioDeviceLister).Show(); }, null);
         }
 
         /// <summary>

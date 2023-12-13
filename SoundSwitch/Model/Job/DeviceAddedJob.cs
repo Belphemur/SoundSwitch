@@ -6,6 +6,7 @@ using Job.Scheduler.Job;
 using Job.Scheduler.Job.Action;
 using Job.Scheduler.Job.Exception;
 using Job.Scheduler.Utils;
+using NAudio.CoreAudioApi;
 using Serilog;
 
 namespace SoundSwitch.Model.Job;
@@ -28,7 +29,7 @@ public class DeviceAddedJob : IDelayedJob
             return;
         }
 
-        while (_appModel.ActiveAudioDeviceLister.Refreshing && !cancellationToken.IsCancellationRequested)
+        while (_appModel.AudioDeviceLister.Refreshing && !cancellationToken.IsCancellationRequested)
         {
             await TaskUtils.WaitForDelayOrCancellation(TimeSpan.FromSeconds(1), cancellationToken);
         }
@@ -43,8 +44,8 @@ public class DeviceAddedJob : IDelayedJob
 
     private void SelectDevice()
     {
-        var device = _appModel.ActiveAudioDeviceLister.PlaybackDevices.FirstOrDefault(info => info.Id == _deviceId) 
-                     ?? _appModel.ActiveAudioDeviceLister.RecordingDevices.FirstOrDefault(info => info.Id == _deviceId);
+        var device = _appModel.AudioDeviceLister.GetDevices(DataFlow.Render, DeviceState.Active).FirstOrDefault(info => info.Id == _deviceId) 
+                     ?? _appModel.AudioDeviceLister.GetDevices(DataFlow.Capture, DeviceState.Active).FirstOrDefault(info => info.Id == _deviceId);
         if (device == null)
         {
             Log.Warning("Couldn't find device with ID {deviceId}.", _deviceId);

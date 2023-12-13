@@ -14,6 +14,7 @@
 
 using System;
 using System.Threading;
+using NAudio.CoreAudioApi;
 using SoundSwitch.Common.Framework.Audio.Collection;
 using SoundSwitch.Common.Framework.Audio.Device;
 
@@ -21,20 +22,18 @@ namespace SoundSwitch.Model
 {
     public interface IAudioDeviceLister : IDisposable
     {
-        /// <summary>
-        ///     Get the playback device in the set state
-        /// </summary>
-        /// <returns></returns>
-        DeviceReadOnlyCollection<DeviceFullInfo> PlaybackDevices { get; }
-
-        /// <summary>
-        ///     Get the recording device in the set state
-        /// </summary>
-        /// <returns></returns>
-        DeviceReadOnlyCollection<DeviceFullInfo> RecordingDevices { get; }
 
         bool Refreshing { get; }
 
         void Refresh(CancellationToken token);
+
+        /// <summary>
+        /// Get devices per type and state
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        DeviceReadOnlyCollection<DeviceFullInfo> GetDevices(DataFlow type, DeviceState state);
     }
 }

@@ -12,7 +12,6 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System;
 using System.Collections.Generic;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Common.Framework.Audio.Device;
@@ -29,12 +28,7 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
 
         protected override IEnumerable<DeviceFullInfo> GetDevices(DataFlow type)
         {
-            return type switch
-            {
-                DataFlow.Render  => AppModel.Instance.ActiveAudioDeviceLister.PlaybackDevices,
-                DataFlow.Capture => AppModel.Instance.ActiveAudioDeviceLister.RecordingDevices,
-                _                => throw new ArgumentOutOfRangeException(nameof(type), type, null)
-            };
+            return AppModel.Instance.AudioDeviceLister.GetDevices(type, DeviceState.Active);
         }
     }
 }

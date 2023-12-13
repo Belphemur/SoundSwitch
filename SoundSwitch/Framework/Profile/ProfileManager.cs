@@ -355,11 +355,7 @@ namespace SoundSwitch.Framework.Profile
 
         private DeviceInfo? CheckDeviceAvailable(DeviceInfo deviceInfo)
         {
-            return deviceInfo.Type switch
-            {
-                DataFlow.Capture => _activeDeviceLister.RecordingDevices.FirstOrDefault(info => info.Equals(deviceInfo)),
-                _                => _activeDeviceLister.PlaybackDevices.FirstOrDefault(info => info.Equals(deviceInfo))
-            };
+            return AppModel.Instance.AudioDeviceLister.GetDevices(deviceInfo.Type, DeviceState.Active).FirstOrDefault(info => info.Equals(deviceInfo));
         }
 
         private void SwitchAudio(Profile profile, uint processId)

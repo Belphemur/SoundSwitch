@@ -70,7 +70,7 @@ namespace SoundSwitch.Model
         /// <summary>
         /// List the active audio devices
         /// </summary>
-        IAudioDeviceLister ActiveAudioDeviceLister { get;  }
+        IAudioDeviceLister AudioDeviceLister { get;  }
 
         /// <summary>
         /// Beta or Stable channel.
@@ -107,13 +107,6 @@ namespace SoundSwitch.Model
         /// Manage the profile in the application
         /// </summary>
         ProfileManager ProfileManager { get; }
-
-        /// <summary>
-        /// Return a list of device that are either Active or Unplugged
-        ///
-        /// Useful for setting menu
-        /// </summary>
-        IAudioDeviceLister ActiveUnpluggedAudioLister { get; }
 
         bool Telemetry { get; set; }
         bool QuickMenuEnabled { get; set; }
@@ -161,8 +154,7 @@ namespace SoundSwitch.Model
         ///     Initialize the Main class with Updater and Hotkeys
         /// </summary>
         /// <param name="active"></param>
-        /// <param name="unplugged"></param>
-        void InitializeMain(IAudioDeviceLister active, IAudioDeviceLister unplugged);
+        void InitializeMain(IAudioDeviceLister active);
 
 
         /// <summary>

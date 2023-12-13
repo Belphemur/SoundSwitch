@@ -245,25 +245,25 @@ namespace SoundSwitch.UI.Forms
 
                 if (profile.Playback != null)
                 {
-                    playback = _audioDeviceLister.PlaybackDevices.FirstOrDefault(info =>
+                    playback = _audioDeviceLister.GetDevices(DataFlow.Render, DeviceState.Active).FirstOrDefault(info =>
                         info.Equals(profile.Playback));
                 }
 
                 if (profile.Recording != null)
                 {
-                    recording = _audioDeviceLister.RecordingDevices.FirstOrDefault(info =>
+                    recording = _audioDeviceLister.GetDevices(DataFlow.Capture, DeviceState.Active).FirstOrDefault(info =>
                         info.Equals(profile.Recording));
                 }
 
                 if (profile.Communication != null)
                 {
-                    communication = _audioDeviceLister.PlaybackDevices.FirstOrDefault(info =>
+                    communication = _audioDeviceLister.GetDevices(DataFlow.Render, DeviceState.Active).FirstOrDefault(info =>
                         info.Equals(profile.Communication));
                 }
 
                 if (profile.RecordingCommunication != null)
                 {
-                    recordingCommunication = _audioDeviceLister.RecordingDevices.FirstOrDefault(info =>
+                    recordingCommunication = _audioDeviceLister.GetDevices(DataFlow.Capture, DeviceState.Active).FirstOrDefault(info =>
                         info.Equals(profile.RecordingCommunication));
                 }
 
@@ -305,8 +305,8 @@ namespace SoundSwitch.UI.Forms
         private void PopulateAudioDevices()
         {
             var selectedDevices = AppModel.Instance.SelectedDevices;
-            PopulateAudioList(playbackListView, selectedDevices, _audioDeviceLister.PlaybackDevices);
-            PopulateAudioList(recordingListView, selectedDevices, _audioDeviceLister.RecordingDevices);
+            PopulateAudioList(playbackListView, selectedDevices, _audioDeviceLister.GetDevices(DataFlow.Render, DeviceState.Active | DeviceState.Unplugged));
+            PopulateAudioList(recordingListView, selectedDevices, _audioDeviceLister.GetDevices(DataFlow.Capture, DeviceState.Active | DeviceState.Unplugged));
         }
 
         private void LocalizeForm()
@@ -758,7 +758,7 @@ namespace SoundSwitch.UI.Forms
 
         private void addProfileButton_Click(object sender, EventArgs e)
         {
-            var form = new UpsertProfileExtended(new Profile(), _audioDeviceLister.PlaybackDevices, _audioDeviceLister.RecordingDevices, this);
+            var form = new UpsertProfileExtended(new Profile(), _audioDeviceLister.GetDevices(DataFlow.Render, DeviceState.Active | DeviceState.Unplugged), _audioDeviceLister.GetDevices(DataFlow.Capture, DeviceState.Active | DeviceState.Unplugged), this);
             form.Show(this);
         }
 
@@ -804,7 +804,7 @@ namespace SoundSwitch.UI.Forms
             }
 
             var profile = (Profile)profilesListView.SelectedItems[0].Tag;
-            var form = new UpsertProfileExtended(profile, _audioDeviceLister.PlaybackDevices, _audioDeviceLister.RecordingDevices, this, true);
+            var form = new UpsertProfileExtended(profile, _audioDeviceLister.GetDevices(DataFlow.Render, DeviceState.Active | DeviceState.Unplugged), _audioDeviceLister.GetDevices(DataFlow.Capture, DeviceState.Active | DeviceState.Unplugged), this, true);
             form.Show(this);
         }
 

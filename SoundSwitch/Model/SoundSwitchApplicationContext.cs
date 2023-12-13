@@ -19,12 +19,10 @@ namespace SoundSwitch.Model
             QuickMenuManager<DeviceFullInfo>.Instance.Setup();
             QuickMenuManager<Profile>.Instance.Setup();
 
-            var deviceActiveLister = new CachedAudioDeviceLister(DeviceState.Active);
-            var deviceUnpluggedActiveLister = new CachedAudioDeviceLister(DeviceState.Active | DeviceState.Unplugged);
+            var deviceActiveLister = new CachedAudioDeviceLister(DeviceState.Active | DeviceState.Unplugged);
             deviceActiveLister.Refresh();
-            deviceUnpluggedActiveLister.Refresh();
 
-            AppModel.Instance.InitializeMain(deviceActiveLister, deviceUnpluggedActiveLister);
+            AppModel.Instance.InitializeMain(deviceActiveLister);
             
             AppModel.Instance.NewVersionReleased += (sender, @event) =>
             {
