@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using NAudio.CoreAudioApi;
@@ -54,11 +55,9 @@ namespace SoundSwitch.Framework.Audio.Lister
         }
 
         private readonly DeviceState _state;
-        private readonly SemaphoreSlim _refreshSemaphore = new(1);
-        private readonly TimeSpan _refreshWaitTime = TimeSpan.FromSeconds(10);
         private readonly ILogger _context;
         private uint _threadSafeRefreshing;
-
+        private DateTime _lastRefresh = DateTime.UtcNow;
         public bool Refreshing
         {
             get => Interlocked.CompareExchange(ref _threadSafeRefreshing, 1, 1) == 1;
@@ -84,30 +83,33 @@ namespace SoundSwitch.Framework.Audio.Lister
 
         private void DeviceChanged(object sender, DeviceChangedEventBase e)
         {
-            Refreshing = true;
             _context.Verbose("Device Changed received, triggering job");
             JobScheduler.Instance.ScheduleJob(new DebounceRefreshJob(_state, this, _context), e.Token);
         }
 
         public void Refresh(CancellationToken cancellationToken = default)
         {
+            if (Refreshing)
+            {
+                _context.Warning("Can't refresh, already refreshing since {LastRefresh}", _lastRefresh);
+                //We want to be sure we get the latest refresh, it's not because we are refreshing that we'll get the latest info
+                JobScheduler.Instance.ScheduleJob(new DebounceRefreshJob(_state, this, _context));
+                return;
+            }
+            var stopWatch = Stopwatch.StartNew();
             try
             {
+                Refreshing = true;
+                _lastRefresh = DateTime.UtcNow;
                 var playbackDevices = new Dictionary<string, DeviceFullInfo>();
                 var recordingDevices = new Dictionary<string, DeviceFullInfo>();
-
-                if (!_refreshSemaphore.Wait(_refreshWaitTime, cancellationToken))
-                {
-                    _context.Error("Can't refresh the devices after {time}", _refreshWaitTime);
-                    return;
-                }
 
                 using var registration = cancellationToken.Register(_ => { _context.Warning("Cancellation received."); }, null);
 
                 try
                 {
                     _context.Information("Refreshing all devices");
-                    var enumerator = new MMDeviceEnumerator();
+                    using var enumerator = new MMDeviceEnumerator();
                     using var _ = enumerator.DisposeOnCancellation(cancellationToken);
                     foreach (var endPoint in enumerator.EnumerateAudioEndPoints(DataFlow.All, _state))
                     {
@@ -149,27 +151,29 @@ namespace SoundSwitch.Framework.Audio.Lister
                     RecordingDevices = new DeviceReadOnlyCollection<DeviceFullInfo>(recordingDevices.Values, DataFlow.Capture);
 
 
-                    _context.Information("Refreshed all devices. {@Recording}/rec, {@Playback}/play", recordingDevices.Count, playbackDevices.Count);
+                    _context.Information("Refreshed all devices in {@StopTime}. {@Recording}/rec, {@Playback}/play", stopWatch.Elapsed,recordingDevices.Count, playbackDevices.Count);
                 }
                 //If cancellation token is cancelled, its expected to throw null since the device enumerator has been disposed
                 catch (NullReferenceException e) when (!cancellationToken.IsCancellationRequested)
                 {
                     _context.Error(e, "Can't refresh the devices");
                 }
-                finally
-                {
-                    _refreshSemaphore.Release();
-                }
             }
             finally
             {
                 Refreshing = false;
+                stopWatch.Stop();
             }
         }
 
         public void Dispose()
         {
             MMNotificationClient.Instance.DevicesChanged -= DeviceChanged;
+            
+            foreach (var device in PlaybackDevices.Union(RecordingDevices))
+            {
+                device.Dispose();
+            }
         }
     }
 }
