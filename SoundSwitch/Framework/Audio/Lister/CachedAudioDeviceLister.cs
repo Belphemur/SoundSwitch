@@ -32,10 +32,10 @@ namespace SoundSwitch.Framework.Audio.Lister
     public class CachedAudioDeviceLister : IAudioDeviceLister
     {
         /// <inheritdoc />
-        private DeviceReadOnlyCollection<DeviceFullInfo> PlaybackDevices { get; set; } = new(Enumerable.Empty<DeviceFullInfo>(), DataFlow.Render);
+        private DeviceFullInfo[] PlaybackDevices { get; set; } = Array.Empty<DeviceFullInfo>();
 
         /// <inheritdoc />
-        private DeviceReadOnlyCollection<DeviceFullInfo> RecordingDevices { get; set; } = new(Enumerable.Empty<DeviceFullInfo>(), DataFlow.Capture);
+        private DeviceFullInfo[] RecordingDevices { get; set; } = Array.Empty<DeviceFullInfo>();
 
         /// <summary>
         /// Get devices per type and state
@@ -150,8 +150,8 @@ namespace SoundSwitch.Framework.Audio.Lister
                         device.Dispose();
                     }
 
-                    PlaybackDevices = new DeviceReadOnlyCollection<DeviceFullInfo>(playbackDevices.Values, DataFlow.Render);
-                    RecordingDevices = new DeviceReadOnlyCollection<DeviceFullInfo>(recordingDevices.Values, DataFlow.Capture);
+                    PlaybackDevices = playbackDevices.Values.ToArray();
+                    RecordingDevices = recordingDevices.Values.ToArray();
 
 
                     _context.Information("Refreshed all devices in {@StopTime}. {@Recording}/rec, {@Playback}/play", stopWatch.Elapsed, recordingDevices.Count, playbackDevices.Count);
