@@ -1,16 +1,16 @@
 ﻿/********************************************************************
-* Copyright (C) 2015-2017 Antoine Aflalo
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-********************************************************************/
+ * Copyright (C) 2015-2017 Antoine Aflalo
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ ********************************************************************/
 
 using System;
 using System.Collections.Generic;
@@ -32,10 +32,10 @@ namespace SoundSwitch.Framework.Audio.Lister
     public class CachedAudioDeviceLister : IAudioDeviceLister
     {
         /// <inheritdoc />
-        private DeviceReadOnlyCollection<DeviceFullInfo> PlaybackDevices {  get;  set; } = new(Enumerable.Empty<DeviceFullInfo>(), DataFlow.Render);
+        private DeviceReadOnlyCollection<DeviceFullInfo> PlaybackDevices { get; set; } = new(Enumerable.Empty<DeviceFullInfo>(), DataFlow.Render);
 
         /// <inheritdoc />
-        private DeviceReadOnlyCollection<DeviceFullInfo> RecordingDevices {  get;  set; } = new(Enumerable.Empty<DeviceFullInfo>(), DataFlow.Capture);
+        private DeviceReadOnlyCollection<DeviceFullInfo> RecordingDevices { get; set; } = new(Enumerable.Empty<DeviceFullInfo>(), DataFlow.Capture);
 
         /// <summary>
         /// Get devices per type and state
@@ -58,6 +58,7 @@ namespace SoundSwitch.Framework.Audio.Lister
         private readonly ILogger _context;
         private uint _threadSafeRefreshing;
         private DateTime _lastRefresh = DateTime.UtcNow;
+
         public bool Refreshing
         {
             get => Interlocked.CompareExchange(ref _threadSafeRefreshing, 1, 1) == 1;
@@ -94,8 +95,10 @@ namespace SoundSwitch.Framework.Audio.Lister
                 _context.Warning("Can't refresh, already refreshing since {LastRefresh}", _lastRefresh);
                 //We want to be sure we get the latest refresh, it's not because we are refreshing that we'll get the latest info
                 JobScheduler.Instance.ScheduleJob(new DebounceRefreshJob(_state, this, _context));
+
                 return;
             }
+
             var stopWatch = Stopwatch.StartNew();
             try
             {
@@ -151,7 +154,7 @@ namespace SoundSwitch.Framework.Audio.Lister
                     RecordingDevices = new DeviceReadOnlyCollection<DeviceFullInfo>(recordingDevices.Values, DataFlow.Capture);
 
 
-                    _context.Information("Refreshed all devices in {@StopTime}. {@Recording}/rec, {@Playback}/play", stopWatch.Elapsed,recordingDevices.Count, playbackDevices.Count);
+                    _context.Information("Refreshed all devices in {@StopTime}. {@Recording}/rec, {@Playback}/play", stopWatch.Elapsed, recordingDevices.Count, playbackDevices.Count);
                 }
                 //If cancellation token is cancelled, its expected to throw null since the device enumerator has been disposed
                 catch (NullReferenceException e) when (!cancellationToken.IsCancellationRequested)
@@ -169,7 +172,7 @@ namespace SoundSwitch.Framework.Audio.Lister
         public void Dispose()
         {
             MMNotificationClient.Instance.DevicesChanged -= DeviceChanged;
-            
+
             foreach (var device in PlaybackDevices.Union(RecordingDevices))
             {
                 device.Dispose();
