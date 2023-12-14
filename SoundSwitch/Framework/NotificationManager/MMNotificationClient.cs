@@ -30,9 +30,6 @@ namespace SoundSwitch.Framework.NotificationManager
         public event EventHandler<DeviceDefaultChangedEvent> DefaultDeviceChanged;
         public event EventHandler<DeviceChangedEventBase> DevicesChanged;
         public event EventHandler<DeviceChangedEventBase> DeviceAdded;
-
-        private readonly TaskScheduler _taskScheduler = new LimitedConcurrencyLevelTaskScheduler(1);
-
         private class DeviceChangedJob : IJob
         {
             private readonly MMNotificationClient _notificationClient;
@@ -121,17 +118,17 @@ namespace SoundSwitch.Framework.NotificationManager
 
         public void OnDeviceStateChanged(string deviceId, DeviceState newState)
         {
-            JobScheduler.Instance.ScheduleJob(new DeviceChangedJob(this, deviceId), CancellationToken.None, _taskScheduler);
+            JobScheduler.Instance.ScheduleJob(new DeviceChangedJob(this, deviceId), CancellationToken.None);
         }
 
         public void OnDeviceAdded(string deviceId)
         {
-            JobScheduler.Instance.ScheduleJob(new DeviceChangedJob(this, deviceId, true), CancellationToken.None, _taskScheduler);
+            JobScheduler.Instance.ScheduleJob(new DeviceChangedJob(this, deviceId, true), CancellationToken.None);
         }
 
         public void OnDeviceRemoved(string deviceId)
         {
-            JobScheduler.Instance.ScheduleJob(new DeviceChangedJob(this, deviceId), CancellationToken.None, _taskScheduler);
+            JobScheduler.Instance.ScheduleJob(new DeviceChangedJob(this, deviceId), CancellationToken.None);
         }
 
         public void OnDefaultDeviceChanged(DataFlow flow, Role role, string deviceId)
@@ -146,7 +143,7 @@ namespace SoundSwitch.Framework.NotificationManager
             }
 
             _lastRoleDevice[deviceRole] = deviceId;
-            JobScheduler.Instance.ScheduleJob(new DefaultDeviceChangedJob(this, deviceId, role), CancellationToken.None, _taskScheduler);
+            JobScheduler.Instance.ScheduleJob(new DefaultDeviceChangedJob(this, deviceId, role), CancellationToken.None);
         }
 
         public void OnPropertyValueChanged(string pwstrDeviceId, PropertyKey key)
@@ -160,7 +157,7 @@ namespace SoundSwitch.Framework.NotificationManager
                 return;
             }
 
-            JobScheduler.Instance.ScheduleJob(new DeviceChangedJob(this, pwstrDeviceId), CancellationToken.None, _taskScheduler);
+            JobScheduler.Instance.ScheduleJob(new DeviceChangedJob(this, pwstrDeviceId), CancellationToken.None);
         }
 
         public void Dispose()

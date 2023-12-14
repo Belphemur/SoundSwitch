@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Job.Scheduler.Job;
@@ -7,8 +8,6 @@ using Job.Scheduler.Job.Exception;
 using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Model;
-using System.Linq;
-
 
 namespace SoundSwitch.Framework.Audio.Lister.Job;
 
@@ -26,8 +25,7 @@ public class DebounceRefreshJob : IDebounceJob
 
     public Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        _lister.Refresh(cancellationToken);
-        return Task.CompletedTask;
+        return Task.Factory.StartNew(() => _lister.Refresh(cancellationToken), cancellationToken);
     }
 
     public Task OnFailure(JobException exception)
@@ -51,5 +49,5 @@ public class DebounceRefreshJob : IDebounceJob
     public IRetryAction FailRule { get; } = new NoRetry();
     public TimeSpan? MaxRuntime { get; } = TimeSpan.FromSeconds(3);
     public string Key { get; }
-    public TimeSpan DebounceTime { get; } = TimeSpan.FromMilliseconds(200);
+    public TimeSpan DebounceTime { get; } = TimeSpan.FromMilliseconds(175);
 }

@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using NAudio.CoreAudioApi;
@@ -49,9 +50,9 @@ namespace SoundSwitch.Framework.Audio.Lister
         {
             return type switch
             {
-                DataFlow.Render  => new DeviceReadOnlyCollection<DeviceFullInfo>(PlaybackDevices.Where(info => state.HasFlag(info.State)), type),
+                DataFlow.Render => new DeviceReadOnlyCollection<DeviceFullInfo>(PlaybackDevices.Where(info => state.HasFlag(info.State)), type),
                 DataFlow.Capture => new DeviceReadOnlyCollection<DeviceFullInfo>(RecordingDevices.Where(info => state.HasFlag(info.State)), type),
-                _                => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+                _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
             };
         }
 
@@ -91,7 +92,7 @@ namespace SoundSwitch.Framework.Audio.Lister
 
         public void Refresh(CancellationToken cancellationToken = default)
         {
-            var logContext = _context.ForContext("TaskId", Task.CurrentId);
+            var logContext = _context.ForContext("TaskID", Task.CurrentId).ForContext("ThreadID", Environment.CurrentManagedThreadId);
             // Cancel the previous refresh operation, if any
             var previousCts = Interlocked.Exchange(ref _refreshCancellationTokenSource, CancellationTokenSource.CreateLinkedTokenSource(cancellationToken));
             if (previousCts != null)
@@ -100,6 +101,7 @@ namespace SoundSwitch.Framework.Audio.Lister
                 previousCts.Cancel();
                 previousCts.Dispose();
             }
+
             cancellationToken = _refreshCancellationTokenSource.Token;
 
             var stopWatch = Stopwatch.StartNew();
@@ -109,11 +111,7 @@ namespace SoundSwitch.Framework.Audio.Lister
                 var playbackDevices = new Dictionary<string, DeviceFullInfo>();
                 var recordingDevices = new Dictionary<string, DeviceFullInfo>();
 
-                using var registration = cancellationToken.Register(_ =>
-                {
-                    logContext.Warning("Cancellation received.");
-                    throw new OperationCanceledException("Stop refreshing", cancellationToken);
-                }, null);
+                using var registration = cancellationToken.Register(_ => { logContext.Warning("Cancellation received."); }, null);
 
                 try
                 {
@@ -163,12 +161,13 @@ namespace SoundSwitch.Framework.Audio.Lister
                     logContext.Information("Refreshed all devices in {@StopTime}. {@Recording}/rec, {@Playback}/play", stopWatch.Elapsed, recordingDevices.Count, playbackDevices.Count);
                 }
                 //If cancellation token is cancelled, its expected to throw null since the device enumerator has been disposed
-                catch (NullReferenceException e) when (!cancellationToken.IsCancellationRequested)
-                {
-                    logContext.Error(e, "Can't refresh the devices");
-                } catch(NullReferenceException e) when (cancellationToken.IsCancellationRequested)
+                catch (Exception e) when (cancellationToken.IsCancellationRequested && e is NullReferenceException or InvalidComObjectException)
                 {
                     logContext.Information(e, "Cancellation requested and enumerator is disposed, ignoring");
+                }
+                catch (Exception e) when (!cancellationToken.IsCancellationRequested)
+                {
+                    logContext.Error(e, "Can't refresh the devices");
                 }
             }
             finally
