@@ -124,8 +124,8 @@ jobs:
           include-prerelease: ${{ env.DOTNET_PRERELEASE }}
       - name: Restore
         run: dotnet restore -r ${{ env.ARCH }}
-      - name: Tets
-        run: dotnet test -c Debug --no-restore  --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}"
+      - name: Tests
+        run: dotnet test -c ${{env.CONFIGURATION}}  --no-restore  --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}"
       - name: Fetch tags
         run: git fetch --tags --force
       - name: Calculate version
