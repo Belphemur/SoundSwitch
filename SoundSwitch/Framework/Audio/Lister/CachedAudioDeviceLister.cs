@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Common.Framework.Audio.Collection;
@@ -95,7 +96,7 @@ namespace SoundSwitch.Framework.Audio.Lister
             var previousCts = Interlocked.Exchange(ref _refreshCancellationTokenSource, CancellationTokenSource.CreateLinkedTokenSource(cancellationToken));
             if (previousCts != null)
             {
-                logContext.Info("Cancelling Previous Context");
+                logContext.Information("Cancelling Previous Context");
                 previousCts.Cancel();
                 previousCts.Dispose();
             }
