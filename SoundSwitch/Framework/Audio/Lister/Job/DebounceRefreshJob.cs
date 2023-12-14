@@ -25,7 +25,8 @@ public class DebounceRefreshJob : IDebounceJob
 
     public Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        return Task.Factory.StartNew(() => _lister.Refresh(cancellationToken), cancellationToken);
+        _lister.Refresh(cancellationToken);
+        return Task.CompletedTask;
     }
 
     public Task OnFailure(JobException exception)
