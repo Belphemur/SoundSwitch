@@ -8,7 +8,7 @@ namespace SoundSwitch.Common.Framework.Audio.Device
 {
     public class DeviceFullInfo : DeviceInfo, IDisposable
     {
-        private readonly MMDevice _device;
+        private readonly MMDevice? _device;
         public string IconPath { get; }
         public DeviceState State { get; }
 
@@ -27,7 +27,7 @@ namespace SoundSwitch.Common.Framework.Audio.Device
         {
             get
             {
-                if (State != DeviceState.Active)
+                if (State != DeviceState.Active || _device == null)
                 {
                     return 0;
                 }
@@ -97,12 +97,12 @@ namespace SoundSwitch.Common.Framework.Audio.Device
 
             try
             {
-                if (_volume.HasValue && _device.AudioEndpointVolume != null)
+                if (_volume.HasValue && _device?.AudioEndpointVolume != null)
                 {
                     _device.AudioEndpointVolume.OnVolumeNotification -= DeviceAudioEndpointVolumeOnOnVolumeNotification;
                 }
 
-                _device.Dispose();
+                _device?.Dispose();
             }
             catch (Exception)
             {
