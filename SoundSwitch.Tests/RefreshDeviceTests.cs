@@ -25,6 +25,11 @@ public class RefreshDeviceTests
     [Test]
     public async Task TestMultipleRefresh()
     {
+        if (Environment.GetEnvironmentVariable("CI") != null)
+        {
+            Assert.Ignore("CI doesn't have audio device to make this test work");
+        }
+
         var cachedAudioDeviceLister = new CachedAudioDeviceLister(DeviceState.All);
 
         var refresh = async () =>
