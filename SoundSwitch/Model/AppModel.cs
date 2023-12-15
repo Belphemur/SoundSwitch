@@ -181,6 +181,15 @@ namespace SoundSwitch.Model
             }
         }
 
+        public bool KeepVolumeEnabled
+        {
+            get => AppConfigs.Configuration.KeepVolumeEnabled;
+            set
+            {
+                AppConfigs.Configuration.KeepVolumeEnabled = value;
+                AppConfigs.Configuration.Save();
+            }
+        }
 
         public DeviceCollection<DeviceInfo> SelectedDevices
         {

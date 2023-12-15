@@ -126,6 +126,11 @@ namespace SoundSwitch.Framework.Configuration
         /// </summary>
         public bool QuickMenuEnabled { get; set; } = false;
 
+        /// <summary>
+        /// Is keep volume enabled
+        /// </summary>
+        public bool KeepVolumeEnabled { get; set; } = false;
+
         // Needed by Interface
         [JsonIgnore]
         public string FileLocation { get; set; }

@@ -178,6 +178,23 @@ namespace SoundSwitch.Audio.Manager
         }
 
         /// <summary>
+        /// Set the same master volume level from the default audio device to the next device
+        /// </summary>
+        /// <param name="deviceId">Id of the device</param>
+        /// <param name="role">Which role to switch</param>
+        /// <param name="flow">Which flow to switch</param>
+        public void SetVolumeFromDefaultDevice (DeviceInfo device) {
+            MMDeviceEnumerator devEnum = new();
+            MMDevice defaultDevice = devEnum.GetDefaultAudioEndpoint(device.Type, (Role) ERole.eConsole);
+            var currentVolume = defaultDevice.AudioEndpointVolume.MasterVolumeLevelScalar;
+            var IsMute = defaultDevice.AudioEndpointVolume.Mute;
+            
+            var nextDevice = devEnum.GetDevice(device.Id);
+            nextDevice.AudioEndpointVolume.MasterVolumeLevelScalar = currentVolume;
+            nextDevice.AudioEndpointVolume.Mute = IsMute;
+        }
+
+        /// <summary>
         /// Is the given deviceId the default audio device in the system
         /// </summary>
         /// <param name="deviceId"></param>

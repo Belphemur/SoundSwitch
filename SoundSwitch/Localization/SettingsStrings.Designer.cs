@@ -952,6 +952,24 @@ namespace SoundSwitch.Localization {
                 return ResourceManager.GetString("quickMenu.desc", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Keep volume level across devices.
+        /// </summary>
+        internal static string keepVolume {
+            get {
+                return ResourceManager.GetString("keepVolume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keep the same volume level when switching audio devices.
+        /// </summary>
+        internal static string keepVolume_desc {
+            get {
+                return ResourceManager.GetString("keepVolume.desc", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Recording.
