@@ -120,8 +120,6 @@ namespace SoundSwitch.Framework.Audio.Lister
                     using var _ = enumerator.DisposeOnCancellation(cancellationToken);
                     foreach (var endPoint in enumerator.EnumerateAudioEndPoints(DataFlow.All, _state))
                     {
-                        var deviceContextLogger = logContext.ForContext("Device", endPoint.ID).ForContext("DeviceName", endPoint.FriendlyName).ForContext("DeviceState", endPoint.State).ForContext("DeviceType", endPoint.DataFlow);
-                        deviceContextLogger.Verbose("Refreshing device");
                         cancellationToken.ThrowIfCancellationRequested();
                         try
                         {
@@ -148,10 +146,6 @@ namespace SoundSwitch.Framework.Audio.Lister
                         catch (Exception e)
                         {
                             logContext.Warning(e, "Can't get name of device {device}", endPoint.ID);
-                        }
-                        finally
-                        {
-                            deviceContextLogger.Verbose("Device refreshed");
                         }
                     }
 
