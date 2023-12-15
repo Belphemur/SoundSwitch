@@ -14,8 +14,6 @@ namespace SoundSwitch.Common.Framework.Audio.Device
 
         private bool _disposed = false;
 
-        private int? _volume;
-
         [JsonIgnore]
         public System.Drawing.Icon LargeIcon => AudioDeviceIconExtractor.ExtractIconFromPath(IconPath, Type, true);
 
@@ -23,40 +21,7 @@ namespace SoundSwitch.Common.Framework.Audio.Device
         public System.Drawing.Icon SmallIcon => AudioDeviceIconExtractor.ExtractIconFromPath(IconPath, Type, false);
 
         [JsonIgnore]
-        public int Volume
-        {
-            get
-            {
-                if (State != DeviceState.Active || _device == null)
-                {
-                    return 0;
-                }
-
-                if (_volume.HasValue)
-                {
-                    return _volume.Value;
-                }
-
-                try
-                {
-                    var deviceAudioEndpointVolume = _device.AudioEndpointVolume;
-                    if (deviceAudioEndpointVolume == null)
-                    {
-                        _volume = 0;
-                        return _volume.Value;
-                    }
-
-                    _volume = (int)Math.Round(deviceAudioEndpointVolume.MasterVolumeLevelScalar * 100);
-                    deviceAudioEndpointVolume.OnVolumeNotification += DeviceAudioEndpointVolumeOnOnVolumeNotification;
-                    return _volume.Value;
-                }
-                catch
-                {
-                    _volume = 0;
-                    return _volume.Value;
-                }
-            }
-        }
+        public int Volume { get; private set; } = 0;
 
         [JsonConstructor]
         public DeviceFullInfo(string name, string id, DataFlow type, string iconPath, DeviceState state, bool isUsb) : base(name, id, type, isUsb, DateTime.UtcNow)
@@ -70,11 +35,31 @@ namespace SoundSwitch.Common.Framework.Audio.Device
             _device = device;
             IconPath = device.IconPath;
             State = device.State;
+            try
+            {
+                //Can only get volume for active devices
+                if (device.State == DeviceState.Active)
+                {
+                    var deviceAudioEndpointVolume = device.AudioEndpointVolume;
+                    if (deviceAudioEndpointVolume == null)
+                    {
+                        Volume = 0;
+                        return;
+                    }
+
+                    Volume = (int)Math.Round(deviceAudioEndpointVolume.MasterVolumeLevelScalar * 100);
+                    deviceAudioEndpointVolume.OnVolumeNotification += DeviceAudioEndpointVolumeOnOnVolumeNotification;
+                }
+            }
+            catch
+            {
+                //Ignored
+            }
         }
 
         private void DeviceAudioEndpointVolumeOnOnVolumeNotification(AudioVolumeNotificationData data)
         {
-            _volume = (int)Math.Round(data.MasterVolume * 100F);
+            Volume = (int)Math.Round(data.MasterVolume * 100F);
         }
 
         public void Dispose()
@@ -97,7 +82,7 @@ namespace SoundSwitch.Common.Framework.Audio.Device
 
             try
             {
-                if (_volume.HasValue && _device?.AudioEndpointVolume != null)
+                if (_device?.AudioEndpointVolume != null)
                 {
                     _device.AudioEndpointVolume.OnVolumeNotification -= DeviceAudioEndpointVolumeOnOnVolumeNotification;
                 }
