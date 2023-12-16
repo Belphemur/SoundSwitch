@@ -186,6 +186,10 @@ namespace SoundSwitch.UI.Forms
             var quickMenuCheckboxToolTip = new ToolTip();
             quickMenuCheckboxToolTip.SetToolTip(quickMenuCheckbox, SettingsStrings.quickMenu_desc);
 
+            keepVolumeCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.KeepVolumeEnabled), false, DataSourceUpdateMode.OnPropertyChanged);
+            var keepVolumeCheckboxToolTip = new ToolTip();
+            keepVolumeCheckboxToolTip.SetToolTip(keepVolumeCheckbox, SettingsStrings.keepVolume_desc);
+
             autoAddDeviceCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.AutoAddNewDevice), false, DataSourceUpdateMode.OnPropertyChanged);
             var autoAddDeviceCheckboxToolTip = new ToolTip();
             autoAddDeviceCheckboxToolTip.SetToolTip(autoAddDeviceCheckbox, SettingsStrings.devices_AutoAddNewDevice_Tooltip);
@@ -336,6 +340,7 @@ namespace SoundSwitch.UI.Forms
             foregroundAppCheckbox.Text = SettingsStrings.foregroundApp;
             usePrimaryScreenCheckbox.Text = SettingsStrings.usePrimaryScreen;
             quickMenuCheckbox.Text = SettingsStrings.quickMenu;
+            keepVolumeCheckbox.Text = SettingsStrings.keepVolume;
             autoAddDeviceCheckbox.Text = SettingsStrings.devices_AutoAddNewDevice;
 
             // Settings - Update
@@ -733,6 +738,11 @@ namespace SoundSwitch.UI.Forms
         private void ForegroundAppCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             AppModel.Instance.SwitchForegroundProgram = foregroundAppCheckbox.Checked;
+        }
+
+        private void keepVolumeCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            AppModel.Instance.KeepVolumeEnabled = keepVolumeCheckbox.Checked;
         }
 
         private void usePrimaryScreenCheckbox_CheckedChanged(object sender, EventArgs e)

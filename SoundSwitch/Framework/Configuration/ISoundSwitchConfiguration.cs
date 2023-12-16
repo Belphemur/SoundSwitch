@@ -91,5 +91,10 @@ namespace SoundSwitch.Framework.Configuration
         /// Is the quick menu showed when using a hotkey
         /// </summary>
         bool QuickMenuEnabled { get; set; }
+
+        /// <summary>
+        /// Is keep volume enabled
+        /// </summary>
+        bool KeepVolumeEnabled { get; set; }
     }
 }

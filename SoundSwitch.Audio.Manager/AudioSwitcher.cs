@@ -178,6 +178,58 @@ namespace SoundSwitch.Audio.Manager
         }
 
         /// <summary>
+        /// Set the same master volume level from the default audio device to the next device
+        /// </summary>
+        /// <param name="deviceId">Id of the device</param>
+        /// <param name="role">Which role to switch</param>
+        /// <param name="flow">Which flow to switch</param>
+        /// <summary>
+        /// Get the current default endpoint
+        /// </summary>
+        /// <param name="flow"></param>
+        /// <param name="role"></param>
+        /// <returns>Null if no default device is defined</returns>
+        private MMDevice? GetMmDefaultAudioEndpoint(EDataFlow flow, ERole role) => ComThread.Invoke(() => EnumeratorClient.GetDefaultEndpoint(flow, role));
+
+        /// <summary>
+        /// Set the same master volume level from the default audio device to the next device
+        /// </summary>
+        /// <param name="device"></param>
+        public void SetVolumeFromDefaultDevice(DeviceInfo device)
+        {
+            var currentDefault = GetMmDefaultAudioEndpoint((EDataFlow)device.Type, ERole.eConsole);
+            if (currentDefault == null)
+                return;
+            var audioInfo = InteractWithMmDevice(currentDefault, mmDevice =>
+            {
+                var defaultDeviceAudioEndpointVolume = mmDevice.AudioEndpointVolume;
+                return defaultDeviceAudioEndpointVolume == null ? default : (Volume: defaultDeviceAudioEndpointVolume.MasterVolumeLevelScalar, IsMuted: defaultDeviceAudioEndpointVolume.Mute);
+            });
+
+            if (audioInfo == default)
+                return;
+
+            var nextDevice = GetDevice(device.Id);
+            
+            if(nextDevice == null)
+                return;
+            
+            InteractWithMmDevice(nextDevice, mmDevice =>
+            {
+                if (mmDevice is not { State: DeviceState.Active })
+                    return nextDevice;
+                
+                if (mmDevice.AudioEndpointVolume == null)
+                    return nextDevice;
+
+                mmDevice.AudioEndpointVolume.MasterVolumeLevelScalar = audioInfo.Volume;
+                mmDevice.AudioEndpointVolume.Mute = audioInfo.IsMuted;
+                return mmDevice;
+            });
+        }
+
+
+        /// <summary>
         /// Is the given deviceId the default audio device in the system
         /// </summary>
         /// <param name="deviceId"></param>

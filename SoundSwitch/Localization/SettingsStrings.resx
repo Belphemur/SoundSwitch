@@ -477,14 +477,20 @@ Restore the state of the system when the application is closed.</value>
   <data name="telemetry" xml:space="preserve">
     <value>Telemetry</value>
   </data>
+  <data name="telemetry.desc" xml:space="preserve">
+    <value>Gather anonymously which version of SoundSwitch is in use. Only shared with the developer of SoundSwitch.</value>
+  </data>
   <data name="quickMenu" xml:space="preserve">
     <value>Quick Menu on hotkey</value>
   </data>
   <data name="quickMenu.desc" xml:space="preserve">
     <value>Show a quick menu like Windows language when using a hotkey</value>
   </data>
-  <data name="telemetry.desc" xml:space="preserve">
-    <value>Gather anonymously which version of SoundSwitch is in use. Only shared with the developer of SoundSwitch.</value>
+  <data name="keepVolume" xml:space="preserve">
+    <value>Keep volume level across devices</value>
+  </data>
+  <data name="keepVolume.desc" xml:space="preserve">
+    <value>Keep the same volume level when switching playback devices</value>
   </data>
   <data name="devices.AutoAddNewDevice" xml:space="preserve">
     <value>Auto select new devices</value>
