@@ -11,7 +11,6 @@ using NAudio.CoreAudioApi.Interfaces;
 using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
-using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Threading;
 using SoundSwitch.Model;
 using PropertyKeys = NAudio.CoreAudioApi.PropertyKeys;
@@ -80,8 +79,7 @@ namespace SoundSwitch.Framework.NotificationManager
 
             public Task ExecuteAsync(CancellationToken cancellationToken)
             {
-                var mmDevice = AudioSwitcher.Instance.GetDevice(_deviceId);
-                var device = AudioSwitcher.Instance.InteractWithMmDevice(mmDevice, device => new DeviceFullInfo(device));
+                var device = AudioSwitcher.Instance.GetAudioEndpoint(_deviceId);
                 _notificationClient.DefaultDeviceChanged?.Invoke(_notificationClient, new DeviceDefaultChangedEvent(device, _role, cancellationToken));
                 return Task.CompletedTask;
             }

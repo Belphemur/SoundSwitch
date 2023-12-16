@@ -2,7 +2,7 @@
 
 [![.NET](https://github.com/Belphemur/SoundSwitch/actions/workflows/dotnet.yml/badge.svg)](https://github.com/Belphemur/SoundSwitch/actions/workflows/dotnet.yml)[![Last Release](https://img.shields.io/github/release/Belphemur/SoundSwitch.svg)](https://soundswitch.aaflalo.me) [![Downloads for last Release](https://img.shields.io/github/downloads/Belphemur/SoundSwitch/total.svg)](https://soundswitch.aaflalo.me/) [![Translate](https://hosted.weblate.org/widgets/soundswitch/-/svg-badge.svg)](https://hosted.weblate.org/projects/soundswitch/) [![Donate](https://img.shields.io/badge/Donate-paypal%2Fcc-blue.svg)](https://soundswitch.aaflalo.me) [![Help](https://img.shields.io/badge/Discord-Community%20&%20Help-green?style=flat-square&logo=discord)](https://discord.gg/gUCw3Ue)
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-11-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 **SoundSwitch** offers you the opportunity to switch your playback and recording devices using simple **hotkeys**.
 
@@ -89,20 +89,23 @@ Want to improve an existing language or add another one? Translations are online
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
 <table>
-  <tr>
-    <td align="center"><a href="https://fire-emerald.com"><img src="https://avatars.githubusercontent.com/u/1107939?v=4?s=100" width="100px;" alt=""/><br /><sub><b>FireEmerald</b></sub></a><br /><a href="https://github.com/Belphemur/SoundSwitch/commits?author=FireEmerald" title="Code">💻</a> <a href="#translation-FireEmerald" title="Translation">🌍</a> <a href="https://github.com/Belphemur/SoundSwitch/commits?author=FireEmerald" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://github.com/ramon18"><img src="https://avatars.githubusercontent.com/u/5236262?v=4?s=100" width="100px;" alt=""/><br /><sub><b>ramon18</b></sub></a><br /><a href="https://github.com/Belphemur/SoundSwitch/commits?author=ramon18" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/Ephemerality"><img src="https://avatars.githubusercontent.com/u/7145692?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ephemerality</b></sub></a><br /><a href="https://github.com/Belphemur/SoundSwitch/commits?author=Ephemerality" title="Code">💻</a> <a href="https://github.com/Belphemur/SoundSwitch/commits?author=Ephemerality" title="Tests">⚠️</a></td>
-    <td align="center"><a href="https://github.com/adamblackburn"><img src="https://avatars.githubusercontent.com/u/3804080?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Adam Blackburn</b></sub></a><br /><a href="https://github.com/Belphemur/SoundSwitch/commits?author=adamblackburn" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/linadesteem"><img src="https://avatars.githubusercontent.com/u/35618068?v=4?s=100" width="100px;" alt=""/><br /><sub><b>linadesteem</b></sub></a><br /><a href="#design-linadesteem" title="Design">🎨</a></td>
-    <td align="center"><a href="https://github.com/westonhowe98"><img src="https://avatars.githubusercontent.com/u/16272087?v=4?s=100" width="100px;" alt=""/><br /><sub><b>westonhowe98</b></sub></a><br /><a href="https://github.com/Belphemur/SoundSwitch/commits?author=westonhowe98" title="Code">💻</a></td>
-    <td align="center"><a href="http://jarlob.github.io"><img src="https://avatars.githubusercontent.com/u/26652396?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jaroslav Lobačevski</b></sub></a><br /><a href="#security-JarLob" title="Security">🛡️</a></td>
-  </tr>
-  <tr>
-    <td align="center"><a href="https://github.com/lpv11"><img src="https://avatars.githubusercontent.com/u/7538200?v=4?s=100" width="100px;" alt=""/><br /><sub><b>lpv</b></sub></a><br /><a href="https://github.com/Belphemur/SoundSwitch/commits?author=lpv11" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/patgrosse"><img src="https://avatars.githubusercontent.com/u/23578938?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Patrick Große</b></sub></a><br /><a href="https://github.com/Belphemur/SoundSwitch/commits?author=patgrosse" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/codemann8"><img src="https://avatars.githubusercontent.com/u/1323444?v=4?s=100" width="100px;" alt=""/><br /><sub><b>codemann8</b></sub></a><br /><a href="https://github.com/Belphemur/SoundSwitch/commits?author=codemann8" title="Code">💻</a></td>
-  </tr>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://fire-emerald.com"><img src="https://avatars.githubusercontent.com/u/1107939?v=4?s=100" width="100px;" alt="FireEmerald"/><br /><sub><b>FireEmerald</b></sub></a><br /><a href="https://github.com/Belphemur/SoundSwitch/commits?author=FireEmerald" title="Code">💻</a> <a href="#translation-FireEmerald" title="Translation">🌍</a> <a href="https://github.com/Belphemur/SoundSwitch/commits?author=FireEmerald" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/ramon18"><img src="https://avatars.githubusercontent.com/u/5236262?v=4?s=100" width="100px;" alt="ramon18"/><br /><sub><b>ramon18</b></sub></a><br /><a href="https://github.com/Belphemur/SoundSwitch/commits?author=ramon18" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Ephemerality"><img src="https://avatars.githubusercontent.com/u/7145692?v=4?s=100" width="100px;" alt="Ephemerality"/><br /><sub><b>Ephemerality</b></sub></a><br /><a href="https://github.com/Belphemur/SoundSwitch/commits?author=Ephemerality" title="Code">💻</a> <a href="https://github.com/Belphemur/SoundSwitch/commits?author=Ephemerality" title="Tests">⚠️</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/adamblackburn"><img src="https://avatars.githubusercontent.com/u/3804080?v=4?s=100" width="100px;" alt="Adam Blackburn"/><br /><sub><b>Adam Blackburn</b></sub></a><br /><a href="https://github.com/Belphemur/SoundSwitch/commits?author=adamblackburn" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/linadesteem"><img src="https://avatars.githubusercontent.com/u/35618068?v=4?s=100" width="100px;" alt="linadesteem"/><br /><sub><b>linadesteem</b></sub></a><br /><a href="#design-linadesteem" title="Design">🎨</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/westonhowe98"><img src="https://avatars.githubusercontent.com/u/16272087?v=4?s=100" width="100px;" alt="westonhowe98"/><br /><sub><b>westonhowe98</b></sub></a><br /><a href="https://github.com/Belphemur/SoundSwitch/commits?author=westonhowe98" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://jarlob.github.io"><img src="https://avatars.githubusercontent.com/u/26652396?v=4?s=100" width="100px;" alt="Jaroslav Lobačevski"/><br /><sub><b>Jaroslav Lobačevski</b></sub></a><br /><a href="#security-JarLob" title="Security">🛡️</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/lpv11"><img src="https://avatars.githubusercontent.com/u/7538200?v=4?s=100" width="100px;" alt="lpv"/><br /><sub><b>lpv</b></sub></a><br /><a href="https://github.com/Belphemur/SoundSwitch/commits?author=lpv11" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/patgrosse"><img src="https://avatars.githubusercontent.com/u/23578938?v=4?s=100" width="100px;" alt="Patrick Große"/><br /><sub><b>Patrick Große</b></sub></a><br /><a href="https://github.com/Belphemur/SoundSwitch/commits?author=patgrosse" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/codemann8"><img src="https://avatars.githubusercontent.com/u/1323444?v=4?s=100" width="100px;" alt="codemann8"/><br /><sub><b>codemann8</b></sub></a><br /><a href="https://github.com/Belphemur/SoundSwitch/commits?author=codemann8" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/XangelMusic"><img src="https://avatars.githubusercontent.com/u/22012301?v=4?s=100" width="100px;" alt="XangelMusic"/><br /><sub><b>XangelMusic</b></sub></a><br /><a href="https://github.com/Belphemur/SoundSwitch/commits?author=XangelMusic" title="Code">💻</a></td>
+    </tr>
+  </tbody>
 </table>
 
 <!-- markdownlint-restore -->

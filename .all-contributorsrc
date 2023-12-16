@@ -97,6 +97,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "XangelMusic",
+      "name": "XangelMusic",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22012301?v=4",
+      "profile": "https://github.com/XangelMusic",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -105,5 +114,6 @@
   "repoType": "github",
   "repoHost": "https://github.com",
   "skipCi": false,
-  "commitConvention": "angular"
+  "commitConvention": "angular",
+  "commitType": "docs"
 }
