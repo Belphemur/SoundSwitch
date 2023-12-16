@@ -77,6 +77,8 @@ namespace SoundSwitch.UI.Forms
             var hotkeysToolTip = new ToolTip();
             hotkeysToolTip.SetToolTip(hotkeysCheckBox, SettingsStrings.hotkeysTooltip);
 
+            forceSelectedProfileCheckbox.Checked = AppConfigs.Configuration.ForceSelectedProfile;
+
             // Settings - Basic
             startWithWindowsCheckBox.Checked = AppModel.Instance.RunAtStartup;
 
@@ -817,5 +819,11 @@ namespace SoundSwitch.UI.Forms
         {
             forceSetHotkeys(sender, muteHotKey);
         }
+
+        private void forceSelectedProfileCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            AppModel.Instance.ForceSelectedProfile = forceSelectedProfileCheckbox.Checked;
+        }
+
     }
 }

@@ -99,6 +99,12 @@ namespace SoundSwitch.Model
         bool SwitchForegroundProgram { get; set; }
 
         /// <summary>
+        /// Behaves same as Having a frofile trigger set to force, but maintains it on the selected profile.
+        /// Allows changing between desired profiles, while preventing other programs from changing sound settings.
+        /// </summary>
+        bool ForceSelectedProfile { get; set; }
+
+        /// <summary>
         /// Always show banner on primary screen instead of active screen
         /// </summary>
         bool NotifyUsingPrimaryScreen { get; set; }

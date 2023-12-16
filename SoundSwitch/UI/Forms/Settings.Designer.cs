@@ -43,6 +43,7 @@ namespace SoundSwitch.UI.Forms
             this.recordingTabPage = new System.Windows.Forms.TabPage();
             this.recordingListView = new SoundSwitch.UI.Component.ListView.ListViewExtended();
             this.tabProfile = new System.Windows.Forms.TabPage();
+            this.forceSelectedProfileCheckbox = new System.Windows.Forms.CheckBox();
             this.editProfileButton = new System.Windows.Forms.Button();
             this.deleteProfileButton = new System.Windows.Forms.Button();
             this.profileExplanationLabel = new System.Windows.Forms.Label();
@@ -201,6 +202,7 @@ namespace SoundSwitch.UI.Forms
             // 
             // tabProfile
             // 
+            this.tabProfile.Controls.Add(this.forceSelectedProfileCheckbox);
             this.tabProfile.Controls.Add(this.editProfileButton);
             this.tabProfile.Controls.Add(this.deleteProfileButton);
             this.tabProfile.Controls.Add(this.profileExplanationLabel);
@@ -213,6 +215,17 @@ namespace SoundSwitch.UI.Forms
             this.tabProfile.TabIndex = 3;
             this.tabProfile.Text = "Profiles";
             this.tabProfile.UseVisualStyleBackColor = true;
+            // 
+            // forceSelectedProfileCheckbox
+            // 
+            this.forceSelectedProfileCheckbox.AutoSize = true;
+            this.forceSelectedProfileCheckbox.Location = new System.Drawing.Point(6, 342);
+            this.forceSelectedProfileCheckbox.Name = "forceSelectedProfileCheckbox";
+            this.forceSelectedProfileCheckbox.Size = new System.Drawing.Size(139, 19);
+            this.forceSelectedProfileCheckbox.TabIndex = 6;
+            this.forceSelectedProfileCheckbox.Text = "Force Selected Profile";
+            this.forceSelectedProfileCheckbox.UseVisualStyleBackColor = true;
+            this.forceSelectedProfileCheckbox.CheckedChanged += new System.EventHandler(this.forceSelectedProfileCheckbox_CheckedChanged);
             // 
             // editProfileButton
             // 
@@ -639,6 +652,7 @@ namespace SoundSwitch.UI.Forms
             this.playbackTabPage.ResumeLayout(false);
             this.recordingTabPage.ResumeLayout(false);
             this.tabProfile.ResumeLayout(false);
+            this.tabProfile.PerformLayout();
             this.appSettingTabPage.ResumeLayout(false);
             this.languageGroupBox.ResumeLayout(false);
             this.updateSettingsGroupBox.ResumeLayout(false);
@@ -700,5 +714,6 @@ namespace SoundSwitch.UI.Forms
         private System.Windows.Forms.CheckBox telemetryCheckbox;
         private System.Windows.Forms.CheckBox quickMenuCheckbox;
         private System.Windows.Forms.CheckBox autoAddDeviceCheckbox;
+        private System.Windows.Forms.CheckBox forceSelectedProfileCheckbox;
     }
 }

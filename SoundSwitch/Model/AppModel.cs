@@ -270,6 +270,16 @@ namespace SoundSwitch.Model
             }
         }
 
+        public bool ForceSelectedProfile
+        {
+            get => AppConfigs.Configuration.ForceSelectedProfile;
+            set
+            {
+                AppConfigs.Configuration.ForceSelectedProfile = value;
+                AppConfigs.Configuration.Save();
+            }
+        }
+
         #region Misc settings
 
         /// <summary>

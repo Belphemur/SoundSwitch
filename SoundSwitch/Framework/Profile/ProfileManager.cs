@@ -361,6 +361,12 @@ namespace SoundSwitch.Framework.Profile
         private void SwitchAudio(Profile profile, uint processId)
         {
             _notificationManager.NotifyProfileChanged(profile, processId);
+			
+            if (AppModel.Instance.ForceSelectedProfile)
+            {
+                _forcedProfile = profile;
+            }
+            
             foreach (var device in profile.Devices)
             {
                 var deviceToUse = CheckDeviceAvailable(device.DeviceInfo);
@@ -387,6 +393,12 @@ namespace SoundSwitch.Framework.Profile
         public void SwitchAudio(Profile profile)
         {
             _notificationManager.NotifyProfileChanged(profile, null);
+			
+            if (AppModel.Instance.ForceSelectedProfile)
+            {
+                _forcedProfile = profile;
+            }
+			
             foreach (var device in profile.Devices)
             {
                 var deviceToUse = CheckDeviceAvailable(device.DeviceInfo);
