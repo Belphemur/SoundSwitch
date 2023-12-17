@@ -492,4 +492,10 @@ Båda: Ändra när någon typ av enhet ändras.</value>
   <data name="quickMenu.desc" xml:space="preserve">
     <value>Visa en snabbmeny liknande den Windows har vid språkbyte när du använder en snabbtangent</value>
   </data>
+  <data name="keepVolume" xml:space="preserve">
+    <value>Håll volymnivå mellan enheter</value>
+  </data>
+  <data name="keepVolume.desc" xml:space="preserve">
+    <value>Håll samma volymnivå när du byter uppspelningsenheter</value>
+  </data>
 </root>
