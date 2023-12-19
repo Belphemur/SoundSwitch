@@ -51,7 +51,7 @@ namespace SoundSwitch.Framework.Profile.UI
 
                 try
                 {
-                    var device = AudioDeviceLister.GetDevices(DataFlow.Render, DeviceState.Active).FirstOrDefault(info => info.Equals(wrapper.DeviceInfo));
+                    var device = AudioDeviceLister.GetDevices(wrapper.DeviceInfo.Type, DeviceState.Active).FirstOrDefault(info => info.Equals(wrapper.DeviceInfo));
                     image = device?.SmallIcon.ToBitmap();
                 }
                 catch (Exception)
