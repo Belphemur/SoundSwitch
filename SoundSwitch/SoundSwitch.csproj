@@ -7,6 +7,7 @@
         <Deterministic>false</Deterministic>
         <PublishTrimmed>false</PublishTrimmed>
         <TrimMode>link</TrimMode>
+        <SelfContained>true</SelfContained>
         <PublishReadyToRun>true</PublishReadyToRun>
         <Configurations>Debug;Release;Beta;Nightly</Configurations>
         <RuntimeIdentifier>win-x64</RuntimeIdentifier>
