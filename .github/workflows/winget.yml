@@ -1,0 +1,14 @@
+﻿name: Publish to WinGet
+on:
+  release:
+    types: [released]
+  workflow_dispatch:
+jobs:
+  publish:
+    runs-on: windows-latest
+    steps:
+      - uses: vedantmgoyal2009/winget-releaser@v2
+        with:
+          identifier: AntoineAflalo.SoundSwitch
+          installers-regex: '\.exe$' # Only .exe files
+          token: ${{ secrets.WINGET_PAT }}
