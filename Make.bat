@@ -22,7 +22,7 @@ if "%~1" neq "" (
 
 
 set FILE_DIR=%~dp0
-set FRAMEWORK=net7.0-windows
+set FRAMEWORK=net8.0-windows
 set ARCH=win-x64
 set BIN_DIR=%FILE_DIR%SoundSwitch\bin\%buildPlatform%\%FRAMEWORK%\%ARCH%\publish
 
