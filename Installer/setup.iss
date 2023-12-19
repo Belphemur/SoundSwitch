@@ -18,7 +18,7 @@
 AppName={#MyAppSetupName}
 AppVersion={#MyAppVersion}
 AppVerName={#MyAppSetupName} {#MyAppVersion}
-AppCopyright=Copyright © 2010-2021 {#MyAppSetupName}
+AppCopyright=Copyright Â© 2010-2021 {#MyAppSetupName}
 VersionInfoVersion={#MyAppVersion}
 VersionInfoCompany=SoundSwitch                                            
 AppPublisher=Antoine Aflalo
@@ -72,6 +72,8 @@ Name: "ru_ru"; MessagesFile: "compiler:Languages\Russian.isl"
 Name: "pl_pl"; MessagesFile: "compiler:Languages\Polish.isl"
 Name: "nl"; MessagesFile: "compiler:Languages\Dutch.isl"
 Name: "zh"; MessagesFile: "Languages\ChineseSimplified.isl"
+Name: "ko"; MessagesFile: "Languages\Korean.isl"
+
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
@@ -99,18 +101,18 @@ Filename: "{app}\Changelog.html"; Description: "{cm:ViewChangelogFile}"; Flags: 
 win_sp_title=Windows %1 Service Pack %2
 
 en.ExistingSettings=Remove any existing settings
-fr.ExistingSettings=Supprimer les paramètres existants
-de.ExistingSettings=Alle vorhandenen Einstellungen löschen
-es.ExistingSettings=Elimiar cualquier configuración existente
+fr.ExistingSettings=Supprimer les paramÃ¨tres existants
+de.ExistingSettings=Alle vorhandenen Einstellungen lÃ¶schen
+es.ExistingSettings=Elimiar cualquier configuraciÃ³n existente
 it.ExistingSettings=Rimuovi impostazioni esistenti
-pt_br.ExistingSettings=Remover configurações já existentes
+pt_br.ExistingSettings=Remover configuraÃ§Ãµes jÃ¡ existentes
 
 en.UninstallQuestion=Do you want to remove {#MyAppSetupName}'s settings?
-fr.UninstallQuestion=Voulez-vous aussi supprimer les paramètres de {#MyAppSetupName} ?
-de.UninstallQuestion=Sollen deine {#MyAppSetupName} Einstellungen gelöscht werden?
-es.UninstallQuestion=¿Quieres eliminar la configuración de {#MyAppSetupName}?
+fr.UninstallQuestion=Voulez-vous aussi supprimer les paramÃ¨tres de {#MyAppSetupName} ?
+de.UninstallQuestion=Sollen deine {#MyAppSetupName} Einstellungen gelÃ¶scht werden?
+es.UninstallQuestion=Â¿Quieres eliminar la configuraciÃ³n de {#MyAppSetupName}?
 it.UninstallQuestion=Vuoi rimuovere le impostazioni di {#MyAppSetupName}?
-pt_br.UninstallQuestion=Deseja remover as configurações do {#MyAppSetupName}?
+pt_br.UninstallQuestion=Deseja remover as configuraÃ§Ãµes do {#MyAppSetupName}?
 
 en.CertificatesGroup=Certificates:
 fr.CertificatesGroup=Certificats:
