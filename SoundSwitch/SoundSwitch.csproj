@@ -13,10 +13,6 @@
         <TargetFramework>net8.0-windows</TargetFramework>
         <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
-<!--    <PropertyGroup>-->
-<!--        <RuntimeFrameworkVersion>5.0.9</RuntimeFrameworkVersion>-->
-<!--    </PropertyGroup>-->
-
     <PropertyGroup>
         <TargetPlatformVersion>8.0</TargetPlatformVersion>
     </PropertyGroup>
