@@ -1,3 +1,54 @@
+## [6.8.0](https://github.com/Belphemur/SoundSwitch/compare/v6.7.2...v6.8.0) (2023-12-19)
+
+
+### Enhancements
+
+* **.NET:** Move to .NET 8.0 ([43f0d60](https://github.com/Belphemur/SoundSwitch/commit/43f0d600ee98bb714294c81ed4962c84de947219))
+* **device::cache:** Improve the performance and speed of caching devices ([594b49c](https://github.com/Belphemur/SoundSwitch/commit/594b49ca680b9582c02acd4a8ee9b865df3572fb))
+* **device::cache:** Increase the TTL for refreshing device list ([6ab8028](https://github.com/Belphemur/SoundSwitch/commit/6ab8028c0e84642d9af995405a638d13c8417fe6))
+* **device::cache:** keep only one cache alive for all devices ([9b3a126](https://github.com/Belphemur/SoundSwitch/commit/9b3a12657d4e527fe5366fa323b2a3f62ed644bb))
+* **device::cache:** rework the logic behind refreshing devices when changes are detected in the system. ([3c12b3f](https://github.com/Belphemur/SoundSwitch/commit/3c12b3f1f87b6f253e45bc8b8786b9aa75f3c1a0))
+
+
+### Languages
+
+* **Bulgarian:** Translated Settings using Weblate ([b2cf464](https://github.com/Belphemur/SoundSwitch/commit/b2cf464a543546b71cb80ca16ed2a11c2c126ceb))
+* **Bulgarian:** Translated Tray Icon using Weblate ([fffe534](https://github.com/Belphemur/SoundSwitch/commit/fffe534eeb24f2fb9335de2da672f6ccd8f6183d))
+* **Chinese (Traditional):** Translated Settings using Weblate ([4582119](https://github.com/Belphemur/SoundSwitch/commit/45821192d165f5ab9498129367709cc30d9959e8))
+* **French:** Translated Settings using Weblate ([4496335](https://github.com/Belphemur/SoundSwitch/commit/449633547683ccc4c8aeba85f5aaac180d597bcd))
+* **French:** Translated Tray Icon using Weblate ([76905a4](https://github.com/Belphemur/SoundSwitch/commit/76905a462abf08384c212c4b0e51575e1f6d5d0b))
+* **French:** Translated Update Download using Weblate ([67c281b](https://github.com/Belphemur/SoundSwitch/commit/67c281bae62c0e0710df0a5f6fe67707c62b672f))
+* **German:** Translated Settings using Weblate ([061583c](https://github.com/Belphemur/SoundSwitch/commit/061583c95ef9f7b5170125a1e1b896fbbddb2dba))
+* **German:** Translated Tray Icon using Weblate ([3da0c83](https://github.com/Belphemur/SoundSwitch/commit/3da0c83caa517fd781320b9a4b9ebf5daf0f85c8))
+* **Korean:** Translated Tray Icon using Weblate ([4ca2b15](https://github.com/Belphemur/SoundSwitch/commit/4ca2b15c4a7c4efc115b007dc7e7df5f6a89013b))
+* **Polish:** Translated Settings using Weblate ([43f8fa2](https://github.com/Belphemur/SoundSwitch/commit/43f8fa2a7dca5e8fc8a04b90c6fb7ed535a5ced7))
+* **Polish:** Translated Tray Icon using Weblate ([3b05aeb](https://github.com/Belphemur/SoundSwitch/commit/3b05aeb37557089a7f7b0a5e29cde786a4793538))
+* **Polish:** Translated Update Download using Weblate ([6cd0022](https://github.com/Belphemur/SoundSwitch/commit/6cd0022ebb483e8dbc61fa5ccc5cb55c2a479aa0))
+* **Serbian:** Translated Tray Icon using Weblate ([d17e650](https://github.com/Belphemur/SoundSwitch/commit/d17e65077aebc4c1731ae5cf81cbd56e783a9e0f))
+* **Slovenian:** Translated Tray Icon using Weblate ([b8c4269](https://github.com/Belphemur/SoundSwitch/commit/b8c4269a0dbf58cb7447c86501bdad1b8b6f8d3f))
+* **Swedish:** Translated About using Weblate ([2b0a112](https://github.com/Belphemur/SoundSwitch/commit/2b0a112d45b5ba9269690fb4b7b2b8a7c59fe602))
+* **Swedish:** Translated About using Weblate ([943befb](https://github.com/Belphemur/SoundSwitch/commit/943befb13e8a0ec9a7d8e5707c9727c06c26bf93))
+* **Swedish:** Translated Settings using Weblate ([9a182a1](https://github.com/Belphemur/SoundSwitch/commit/9a182a1e7712c11008aa440a5d9089b23cd40305))
+* **Swedish:** Translated Settings using Weblate ([49d3fcc](https://github.com/Belphemur/SoundSwitch/commit/49d3fccbc36288e265a2cded7d379e13a9e58f55))
+* **Swedish:** Translated Settings using Weblate ([f2eb255](https://github.com/Belphemur/SoundSwitch/commit/f2eb255b2b9622de57cf6cb2ab2986904198ef29))
+* **Swedish:** Translated Settings using Weblate ([d9e285f](https://github.com/Belphemur/SoundSwitch/commit/d9e285fb6c8990c958a66258b6bb0dfdebc06dde))
+* **Swedish:** Translated Settings using Weblate ([3454648](https://github.com/Belphemur/SoundSwitch/commit/3454648677750551490b48b907b8fb5bbdbc2c68))
+* **Swedish:** Translated Tray Icon using Weblate ([e939073](https://github.com/Belphemur/SoundSwitch/commit/e939073b62fc58285131be9fa65c278bd0824364))
+* **Swedish:** Translated Tray Icon using Weblate ([fe21446](https://github.com/Belphemur/SoundSwitch/commit/fe2144620d63a61fd50cb11ac80e220f53688ec7))
+* **Swedish:** Translated Update Download using Weblate ([c95fe6e](https://github.com/Belphemur/SoundSwitch/commit/c95fe6e8a2b298065992a5d9fe9fa3bf5daebd96))
+* **Swedish:** Translated Update Download using Weblate ([1b65fa4](https://github.com/Belphemur/SoundSwitch/commit/1b65fa4a16a8d87957f24edc042419b33f001471))
+
+
+### Bug Fixes
+
+* **Device::Cache:** Devices not being refreshed ([a113175](https://github.com/Belphemur/SoundSwitch/commit/a1131753e06eb48d61ed93f872d95f9d1e734153)), closes [#1323](https://github.com/Belphemur/SoundSwitch/issues/1323)
+* **profile:** possible issue with profile where the the state couldn't be restored after the profile ended. ([a648e4e](https://github.com/Belphemur/SoundSwitch/commit/a648e4e66e90e280f73131c09e02cde8e05c90f6))
+
+
+### Features
+
+* **volume:** Add an option to keep volume level across audio devices ([ca293b5](https://github.com/Belphemur/SoundSwitch/commit/ca293b529c420397db63ecdc03d2e295cbdc96ff)), closes [#1328](https://github.com/Belphemur/SoundSwitch/issues/1328)
+
 ## [6.7.2](https://github.com/Belphemur/SoundSwitch/compare/v6.7.1...v6.7.2) (2023-06-14)
 
 
