@@ -433,4 +433,10 @@ Restaurar o estado do sistema quando a aplicação é fechada.</value>
   <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
     <value>Adiciona automaticamente um novo dispositivo na lista selecionada quando este é conectado ao computador</value>
   </data>
+  <data name="keepVolume" xml:space="preserve">
+    <value>Mantenha o nível de volume entre dispositivos diferentes</value>
+  </data>
+  <data name="keepVolume.desc" xml:space="preserve">
+    <value>Mantenha o nível de volume ao alternar dispositivos de reprodução</value>
+  </data>
 </root>
