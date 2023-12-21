@@ -492,4 +492,10 @@ Restaura el estado del sistema cuando se cierra la aplicación.</value>
   <data name="devices.AutoAddNewDevice" xml:space="preserve">
     <value>Selección automática de nuevos dispositivos</value>
   </data>
+  <data name="keepVolume" xml:space="preserve">
+    <value>Mantén el nivel de volumen en todos los dispositivos</value>
+  </data>
+  <data name="keepVolume.desc" xml:space="preserve">
+    <value>Mantén el mismo nivel de volumen al cambiar de dispositivo de reproducción</value>
+  </data>
 </root>

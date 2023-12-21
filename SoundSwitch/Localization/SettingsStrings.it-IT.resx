@@ -492,4 +492,10 @@ Ripristina lo stato del sistema quando l'applicazione viene chiusa.</value>
   <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
     <value>Aggiungi automaticamente un nuovo dispositivo all'elenco selezionato quando sono collegati al computer</value>
   </data>
+  <data name="keepVolume" xml:space="preserve">
+    <value>Mantieni il livello del volume su tutti i dispositivi</value>
+  </data>
+  <data name="keepVolume.desc" xml:space="preserve">
+    <value>Mantieni lo stesso livello di volume quando cambi dispositivo di riproduzione</value>
+  </data>
 </root>
