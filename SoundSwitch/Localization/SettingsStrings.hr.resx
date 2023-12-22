@@ -433,4 +433,10 @@ Obnovi stanje sustava kad se program zatvori.</value>
   <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
     <value>Automatski dodaj nove uređaje u odbrani popis kad su spojeni s računalom</value>
   </data>
+  <data name="keepVolume" xml:space="preserve">
+    <value>Zadrži razinu glasnoće na svim uređajima</value>
+  </data>
+  <data name="keepVolume.desc" xml:space="preserve">
+    <value>Zadrži istu razinu glasnoće za sve uređaje</value>
+  </data>
 </root>
