@@ -25,6 +25,7 @@ namespace SoundSwitch.Framework.Profile.UI
         {
             return (ProfileManager?.Profiles ?? new Profile[0])
                                  .Where(profile => profile.Triggers.Any(trigger => trigger.Type == TriggerFactory.Enum.TrayMenu))
+                                 .OrderBy(profile => profile.Name)
                                  .Select(BuildMenuItem);
         }
 
