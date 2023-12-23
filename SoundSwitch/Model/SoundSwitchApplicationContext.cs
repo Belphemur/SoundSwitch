@@ -5,6 +5,7 @@ using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio.Lister;
 using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Configuration;
+using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.UI.Menu;
@@ -21,9 +22,10 @@ namespace SoundSwitch.Model
 
             var deviceActiveLister = new CachedAudioDeviceLister(DeviceState.Active | DeviceState.Unplugged);
             deviceActiveLister.Refresh();
+            MMNotificationClient.Instance.Register();
 
             AppModel.Instance.InitializeMain(deviceActiveLister);
-            
+
             AppModel.Instance.NewVersionReleased += (sender, @event) =>
             {
                 if (@event.UpdateMode == UpdateMode.Silent)
