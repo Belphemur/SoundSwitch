@@ -89,7 +89,7 @@
         "@semantic-release/github",
         {
           "draftRelease": true,
-          "releaseNameTemplate": "SoundSwitch v<%= nextverison.name %>"
+          "releaseNameTemplate": "SoundSwitch v<%= nextversion.name %>"
         }
       ]
     ]
