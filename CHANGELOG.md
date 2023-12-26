@@ -1,3 +1,25 @@
+## [6.8.1](https://github.com/Belphemur/SoundSwitch/compare/v6.8.0...v6.8.1) (2023-12-24)
+
+
+### Enhancements
+
+* **installer:** add Korean language to the installer ([d30cdfd](https://github.com/Belphemur/SoundSwitch/commit/d30cdfd0f91489fb3395ca9263ead0fe2fded9ed))
+* **profile::icon:** Check all device in profile for icon in systray menu ([f354698](https://github.com/Belphemur/SoundSwitch/commit/f3546986583dc60085414a65627491316817ad8e)), closes [#1332](https://github.com/Belphemur/SoundSwitch/issues/1332)
+* **profile:** Order by alphabetical when showing profile in the systray menu ([58bec3f](https://github.com/Belphemur/SoundSwitch/commit/58bec3f2fea3ccf6bd28b4b7f52f311d134a18a4))
+
+
+### Languages
+
+* **Croatian:** Translated Settings using Weblate ([04bf70d](https://github.com/Belphemur/SoundSwitch/commit/04bf70de3f710892d7090643f07d56b50a6064a9))
+* **Italian:** Translated Settings using Weblate ([d62ee5b](https://github.com/Belphemur/SoundSwitch/commit/d62ee5b5d2253a1553a8cd6d87f12f1bbfaa8dca))
+* **Portuguese:** Translated Settings using Weblate ([ce245db](https://github.com/Belphemur/SoundSwitch/commit/ce245db1115b5e2b66ab230932c40e386fb98566))
+* **Spanish:** Translated Settings using Weblate ([e156252](https://github.com/Belphemur/SoundSwitch/commit/e156252be3ea93f1e043e603cfb01f840a8352de))
+
+
+### Bug Fixes
+
+* **Startup:** Fix possible startup crash ([f841977](https://github.com/Belphemur/SoundSwitch/commit/f8419772624f8a4612746593bd8d75408524f2d2)), closes [#1341](https://github.com/Belphemur/SoundSwitch/issues/1341)
+
 ## [6.8.0](https://github.com/Belphemur/SoundSwitch/compare/v6.7.2...v6.8.0) (2023-12-19)
 
 
