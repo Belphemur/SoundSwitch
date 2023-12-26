@@ -492,4 +492,10 @@ Stellt den Zustand des Systems wieder her, wenn die Anwendung geschlossen wird.<
   <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
     <value>Neues Gerät automatisch zur ausgewählten Liste hinzufügen, wenn es mit dem Computer verbunden ist</value>
   </data>
+  <data name="keepVolume" xml:space="preserve">
+    <value>Lautstärke auf allen Geräten beibehalten</value>
+  </data>
+  <data name="keepVolume.desc" xml:space="preserve">
+    <value>Beim Wechseln des Wiedergabegeräts die gleiche Lautstärke beibehalten</value>
+  </data>
 </root>
