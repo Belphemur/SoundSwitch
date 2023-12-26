@@ -68,7 +68,7 @@
     <value>Sistem vročih tipk</value>
   </data>
   <data name="defaultPlaybackDeviceChange" xml:space="preserve">
-    <value>Privzeta sprememba naprave za predvajanje</value>
+    <value>Privzeta sprememba predvajalne naprave</value>
   </data>
   <data name="credits" xml:space="preserve">
     <value>Zasluge in dodeljevanje</value>
