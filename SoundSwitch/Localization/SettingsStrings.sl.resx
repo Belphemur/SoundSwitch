@@ -433,4 +433,10 @@ Ali ga zdaj želite znova zagnati?</value>
   <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
     <value>Samodejno dodaj nove naprave na izbrani seznam, ko so povezane z računalnikom</value>
   </data>
+  <data name="keepVolume" xml:space="preserve">
+    <value>Obdrži raven glasnosti v vseh napravah</value>
+  </data>
+  <data name="keepVolume.desc" xml:space="preserve">
+    <value>Pri menjavi predvajalnih naprav obdrži enako glasnost</value>
+  </data>
 </root>
