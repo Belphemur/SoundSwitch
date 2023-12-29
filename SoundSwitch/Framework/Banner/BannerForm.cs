@@ -41,12 +41,10 @@ namespace SoundSwitch.Framework.Banner
         public BannerForm()
         {
             InitializeComponent();
-            var screen = AppModel.Instance.NotifyUsingPrimaryScreen ? Screen.PrimaryScreen : Screen.FromPoint(Cursor.Position);
+            var screen = GetScreen();
             StartPosition = FormStartPosition.Manual;
             Bounds = screen.Bounds;
             TopMost = true;
-
-            Location = new Point(screen.Bounds.X + 50, screen.Bounds.Y + 60);
         }
 
         protected override bool ShowWithoutActivation => true;
@@ -65,6 +63,14 @@ namespace SoundSwitch.Framework.Banner
         //         return p;
         //     }
         // }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private static Screen GetScreen()
+        {
+            return AppModel.Instance.NotifyUsingPrimaryScreen ? Screen.PrimaryScreen : Screen.FromPoint(Cursor.Position);
+        }
 
         /// <summary>
         /// Called internally to configure pass notification parameters
@@ -103,6 +109,31 @@ namespace SoundSwitch.Framework.Banner
             lblTop.Text = data.Title;
             lblTitle.Text = data.Text;
             Region = Region.FromHrgn(RoundedCorner.CreateRoundRectRgn(0, 0, Width, Height , 20, 20));
+
+            var screen = GetScreen();
+            int positionLeft = screen.Bounds.X + 50;
+            int positionRight = screen.Bounds.Width - Width - positionLeft;
+            int positionTop = screen.Bounds.Y + 60;
+            int positionBottom = screen.Bounds.Height - Height - positionTop;
+            int pointX = 0, pointY = 0;
+
+            switch (AppModel.Instance.BannerPosition)
+            {
+                case BannerPositionEnum.TopLeft:
+                    (pointX, pointY) = (positionLeft, positionTop);
+                    break;
+                case BannerPositionEnum.TopRight:
+                    (pointX, pointY) = (positionRight, positionTop);
+                    break;
+                case BannerPositionEnum.BottomLeft:
+                    (pointX, pointY) = (positionLeft, positionBottom);
+                    break;
+                case BannerPositionEnum.BottomRight:
+                    (pointX, pointY) = (positionRight, positionBottom);
+                    break;
+            }
+
+            Location = new Point(pointX, pointY);
 
             _timerHide.Enabled = true;
 

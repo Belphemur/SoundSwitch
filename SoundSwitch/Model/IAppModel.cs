@@ -19,6 +19,7 @@ using NAudio.CoreAudioApi;
 using SoundSwitch.Common.Framework.Audio.Collection;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
+using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Updater;
@@ -61,6 +62,11 @@ namespace SoundSwitch.Model
         /// What did the user want as Notification of device changed
         /// </summary>
         NotificationTypeEnum NotificationSettings { get; set; }
+
+        /// <summary>
+        /// What did the user want as Banner Position of device changed
+        /// </summary>
+        BannerPositionEnum BannerPosition { get; set; }
 
         /// <summary>
         /// The tray icon of the application
@@ -141,6 +147,11 @@ namespace SoundSwitch.Model
         /// If the NotificationSettings has been modified
         /// </summary>
         event EventHandler<NotificationSettingsUpdatedEvent> NotificationSettingsChanged;
+
+        /// <summary>
+        /// If the BannerPosition has been modified
+        /// </summary>
+        event EventHandler<BannerPositionUpdatedEvent> BannerPositionChanged;
 
         /// <summary>
         /// When the custom sound is changed

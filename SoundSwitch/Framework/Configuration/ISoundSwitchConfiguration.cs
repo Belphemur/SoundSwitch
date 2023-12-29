@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
@@ -45,6 +46,7 @@ namespace SoundSwitch.Framework.Configuration
         uint UpdateCheckInterval { get; set; }
 
         NotificationTypeEnum NotificationSettings { get; set; }
+        BannerPositionEnum BannerPosition { get; set; }
         bool IncludeBetaVersions { get; set; }
         string CustomNotificationFilePath { get; set; }
         UpdateMode UpdateMode { get; set; }

@@ -14,30 +14,25 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using SoundSwitch.Framework.Banner;
+using SoundSwitch.Framework.Banner.Position;
 using SoundSwitch.Framework.Factory;
-using SoundSwitch.Framework.NotificationManager.Notification;
 
 namespace SoundSwitch.Framework.NotificationManager
 {
-    public class NotificationFactory : AbstractFactory<NotificationTypeEnum, INotification>
+    public class BannerPositionFactory : AbstractFactory<BannerPositionEnum, IPosition>
     {
-        private static readonly IEnumImplList<NotificationTypeEnum, INotification> Notifications = new EnumImplList
-            <NotificationTypeEnum, INotification>
+        private static readonly IEnumImplList<BannerPositionEnum, IPosition> Positions = new EnumImplList
+            <BannerPositionEnum, IPosition>
             {
-                new NotificationWindows(),
-                new NotificationSound(),
-                new NotificationCustom(),
-                new NotificationBanner(),
-                new NotificationNone()
+                new PositionTopLeft(),
+                new PositionTopRight(),
+                new PositionBottomLeft(),
+                new PositionBottomRight()
             };
 
-        public NotificationFactory() : base(Notifications)
+        public BannerPositionFactory() : base(Positions)
         {
-        }
-
-        protected override IReadOnlyDictionary<NotificationTypeEnum, INotification> DataSource()
-        {
-            return AllImplementations.Where(pair => pair.Value.IsAvailable()).ToDictionary(pair => pair.Key, pair => pair.Value);
         }
     }
 }

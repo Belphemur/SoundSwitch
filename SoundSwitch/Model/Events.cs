@@ -18,6 +18,7 @@ using System.Threading;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
+using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.Updater.Releases;
@@ -55,6 +56,17 @@ namespace SoundSwitch.Model
         {
             PrevSettings = prevSettings;
             NewSettings = newSettings;
+        }
+    }
+
+    public class BannerPositionUpdatedEvent : EventArgs
+    {
+        public BannerPositionEnum PrevBannerPosition { get; }
+        public BannerPositionEnum NewBannerPosition { get; }
+        public BannerPositionUpdatedEvent(BannerPositionEnum prevBannerPosition, BannerPositionEnum newBannerPosition)
+        {
+            PrevBannerPosition = prevBannerPosition;
+            NewBannerPosition = newBannerPosition;
         }
     }
 

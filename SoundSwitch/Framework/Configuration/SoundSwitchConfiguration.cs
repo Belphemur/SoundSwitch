@@ -21,6 +21,7 @@ using Newtonsoft.Json;
 using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
@@ -44,7 +45,6 @@ namespace SoundSwitch.Framework.Configuration
 
             // Audio Settings
             ChangeCommunications = false;
-            NotificationSettings = NotificationTypeEnum.BannerNotification;
             TooltipInfo = TooltipInfoTypeEnum.Playback;
             CyclerType = DeviceCyclerTypeEnum.Available;
 
@@ -60,6 +60,10 @@ namespace SoundSwitch.Framework.Configuration
             PlaybackHotKey = new HotKey(Keys.F11, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
             RecordingHotKey = new HotKey(Keys.F7, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
             MuteRecordingHotKey = new HotKey(Keys.M, HotKey.ModifierKeys.Control | HotKey.ModifierKeys.Alt);
+
+            // Notification Settings
+            NotificationSettings = NotificationTypeEnum.BannerNotification;
+            BannerPosition = BannerPositionEnum.TopLeft;
 
             AutoAddNewConnectedDevices = false;
 
@@ -83,6 +87,7 @@ namespace SoundSwitch.Framework.Configuration
         public TooltipInfoTypeEnum TooltipInfo { get; set; }
         public DeviceCyclerTypeEnum CyclerType { get; set; }
         public NotificationTypeEnum NotificationSettings { get; set; }
+        public BannerPositionEnum BannerPosition { get; set; }
         public Language Language { get; set; }
         public bool IncludeBetaVersions { get; set; }
         public string CustomNotificationFilePath { get; set; }
