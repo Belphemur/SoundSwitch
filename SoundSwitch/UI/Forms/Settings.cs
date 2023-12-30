@@ -23,6 +23,7 @@ using NAudio.CoreAudioApi;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework.Audio;
+using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.Factory;
@@ -84,7 +85,7 @@ namespace SoundSwitch.UI.Forms
             iconChangeChoicesComboBox.SelectedValue = AppConfigs.Configuration.SwitchIcon;
 
             var iconChangeToolTip = new ToolTip();
-            iconChangeToolTip.SetToolTip(iconChangeLabel, SettingsStrings.iconChange_tooltip);
+            iconChangeToolTip.SetToolTip(iconChangeChoicesComboBox, SettingsStrings.iconChange_tooltip);
 
             // Settings - Audio
             switchCommunicationDeviceCheckBox.Checked = AppModel.Instance.SetCommunications;
@@ -110,6 +111,13 @@ namespace SoundSwitch.UI.Forms
             var notificationFactory = new NotificationFactory();
             notificationFactory.ConfigureListControl(notificationComboBox);
             notificationComboBox.SelectedValue = AppModel.Instance.NotificationSettings;
+
+            var positionToolTip = new ToolTip();
+            positionToolTip.SetToolTip(positionComboBox, SettingsStrings.positionTooltip);
+
+            var bannerPositionFactory = new BannerPositionFactory();
+            bannerPositionFactory.ConfigureListControl(positionComboBox);
+            positionComboBox.SelectedValue = AppModel.Instance.BannerPosition;
 
             selectSoundFileDialog.Filter = SettingsStrings.audioFiles + @" (*.wav;*.mp3)|*.wav;*.mp3;*.aiff";
             selectSoundFileDialog.FileOk += SelectSoundFileDialogOnFileOk;
@@ -334,11 +342,9 @@ namespace SoundSwitch.UI.Forms
             // Settings - Audio
             audioSettingsGroupBox.Text = SettingsStrings.audioSettings;
             switchCommunicationDeviceCheckBox.Text = SettingsStrings.communicationsDevice;
-            notificationLabel.Text = SettingsStrings.notification;
             tooltipOnHoverLabel.Text = SettingsStrings.tooltipOnHover;
             cycleThroughLabel.Text = SettingsStrings.cycleThrough;
             foregroundAppCheckbox.Text = SettingsStrings.foregroundApp;
-            usePrimaryScreenCheckbox.Text = SettingsStrings.usePrimaryScreen;
             quickMenuCheckbox.Text = SettingsStrings.quickMenu;
             keepVolumeCheckbox.Text = SettingsStrings.keepVolume;
             autoAddDeviceCheckbox.Text = SettingsStrings.devices_AutoAddNewDevice;
@@ -351,9 +357,13 @@ namespace SoundSwitch.UI.Forms
             includeBetaVersionsCheckBox.Text = SettingsStrings.updateIncludeBetaVersions;
             telemetryCheckbox.Text = SettingsStrings.telemetry;
 
-
             // Settings - Language
             languageGroupBox.Text = SettingsStrings.language;
+
+            // Settings - Notifcation
+            notificationComboBox.Text = SettingsStrings.notification;
+            usePrimaryScreenCheckbox.Text = SettingsStrings.usePrimaryScreen;
+            positionLabel.Text = SettingsStrings.position;
 
             // Settings - Profile
             profileExplanationLabel.Text = SettingsStrings.profile_explanation;
@@ -466,9 +476,18 @@ namespace SoundSwitch.UI.Forms
                 }
             }
 
-            usePrimaryScreenCheckbox.Enabled = notificationType == NotificationTypeEnum.BannerNotification;
+            usePrimaryScreenCheckbox.Enabled = positionComboBox.Enabled = notificationType == NotificationTypeEnum.BannerNotification;
 
             AppModel.Instance.NotificationSettings = notificationType;
+        }
+
+        private void positionComboBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (!_loaded) return;
+            var value = (DisplayEnumObject<BannerPositionEnum>)((ComboBox)sender).SelectedItem;
+            if (value == null) return;
+
+            AppModel.Instance.BannerPosition = value.Enum;
         }
 
         private void tooltipInfoComboBox_SelectedValueChanged(object sender, EventArgs e)

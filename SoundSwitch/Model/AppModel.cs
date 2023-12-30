@@ -30,6 +30,7 @@ using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Audio.Microphone;
+using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
@@ -141,6 +142,17 @@ namespace SoundSwitch.Model
             }
         }
 
+        public BannerPositionEnum BannerPosition
+        {
+            get => AppConfigs.Configuration.BannerPosition;
+            set
+            {
+                AppConfigs.Configuration.BannerPosition = value;
+                AppConfigs.Configuration.Save();
+                BannerPositionChanged?.Invoke(this,
+                    new BannerPositionUpdatedEvent(BannerPosition, value));
+            }
+        }
 
         /// <summary>
         /// Beta or Stable channel.
@@ -303,6 +315,7 @@ namespace SoundSwitch.Model
 
         public IAudioDeviceLister AudioDeviceLister { get; private set; }
         public event EventHandler<NotificationSettingsUpdatedEvent> NotificationSettingsChanged;
+        public event EventHandler<BannerPositionUpdatedEvent> BannerPositionChanged;
         public event EventHandler<CustomSoundChangedEvent> CustomSoundChanged;
         public event EventHandler<UpdateMode> UpdateModeChanged;
 

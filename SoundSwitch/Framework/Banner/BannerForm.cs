@@ -41,12 +41,10 @@ namespace SoundSwitch.Framework.Banner
         public BannerForm()
         {
             InitializeComponent();
-            var screen = AppModel.Instance.NotifyUsingPrimaryScreen ? Screen.PrimaryScreen : Screen.FromPoint(Cursor.Position);
+            var screen = GetScreen();
             StartPosition = FormStartPosition.Manual;
             Bounds = screen.Bounds;
             TopMost = true;
-
-            Location = new Point(screen.Bounds.X + 50, screen.Bounds.Y + 60);
         }
 
         protected override bool ShowWithoutActivation => true;
@@ -65,6 +63,14 @@ namespace SoundSwitch.Framework.Banner
         //         return p;
         //     }
         // }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private static Screen GetScreen()
+        {
+            return AppModel.Instance.NotifyUsingPrimaryScreen ? Screen.PrimaryScreen : Screen.FromPoint(Cursor.Position);
+        }
 
         /// <summary>
         /// Called internally to configure pass notification parameters
@@ -103,6 +109,21 @@ namespace SoundSwitch.Framework.Banner
             lblTop.Text = data.Title;
             lblTitle.Text = data.Text;
             Region = Region.FromHrgn(RoundedCorner.CreateRoundRectRgn(0, 0, Width, Height , 20, 20));
+
+            var screen = GetScreen();
+            var positionLeft = screen.Bounds.X + 50;
+            var positionRight = screen.Bounds.Width - Width - positionLeft;
+            var positionTop = screen.Bounds.Y + 60;
+            var positionBottom = screen.Bounds.Height - Height - positionTop;
+
+            Location =  AppModel.Instance.BannerPosition switch
+            {
+                BannerPositionEnum.TopLeft =>  new Point(positionLeft, positionTop),
+                BannerPositionEnum.TopRight =>  new Point(positionRight, positionTop),
+                BannerPositionEnum.BottomLeft =>  new Point(positionLeft, positionBottom),
+                BannerPositionEnum.BottomRight =>  new Point(positionRight, positionBottom),
+                _ =>  new Point(0, 0)
+            };
 
             _timerHide.Enabled = true;
 
