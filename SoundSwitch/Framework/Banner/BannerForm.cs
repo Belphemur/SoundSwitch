@@ -111,29 +111,19 @@ namespace SoundSwitch.Framework.Banner
             Region = Region.FromHrgn(RoundedCorner.CreateRoundRectRgn(0, 0, Width, Height , 20, 20));
 
             var screen = GetScreen();
-            int positionLeft = screen.Bounds.X + 50;
-            int positionRight = screen.Bounds.Width - Width - positionLeft;
-            int positionTop = screen.Bounds.Y + 60;
-            int positionBottom = screen.Bounds.Height - Height - positionTop;
-            int pointX = 0, pointY = 0;
+            var positionLeft = screen.Bounds.X + 50;
+            var positionRight = screen.Bounds.Width - Width - positionLeft;
+            var positionTop = screen.Bounds.Y + 60;
+            var positionBottom = screen.Bounds.Height - Height - positionTop;
 
-            switch (AppModel.Instance.BannerPosition)
+            Location =  AppModel.Instance.BannerPosition switch
             {
-                case BannerPositionEnum.TopLeft:
-                    (pointX, pointY) = (positionLeft, positionTop);
-                    break;
-                case BannerPositionEnum.TopRight:
-                    (pointX, pointY) = (positionRight, positionTop);
-                    break;
-                case BannerPositionEnum.BottomLeft:
-                    (pointX, pointY) = (positionLeft, positionBottom);
-                    break;
-                case BannerPositionEnum.BottomRight:
-                    (pointX, pointY) = (positionRight, positionBottom);
-                    break;
-            }
-
-            Location = new Point(pointX, pointY);
+                BannerPositionEnum.TopLeft =>  new Point(positionLeft, positionTop),
+                BannerPositionEnum.TopRight =>  new Point(positionRight, positionTop),
+                BannerPositionEnum.BottomLeft =>  new Point(positionLeft, positionBottom),
+                BannerPositionEnum.BottomRight =>  new Point(positionRight, positionBottom),
+                _ =>  new Point(0, 0)
+            };
 
             _timerHide.Enabled = true;
 
