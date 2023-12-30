@@ -516,4 +516,10 @@ Restore the state of the system when the application is closed.</value>
   <data name="positionOptionTopRight" xml:space="preserve">
     <value>Top Right</value>
   </data>
+  <data name="positionOptionBottomCenter" xml:space="preserve">
+    <value>Bottom Center</value>
+  </data>
+  <data name="positionOptionTopCenter" xml:space="preserve">
+    <value>Top Center</value>
+  </data>
 </root>

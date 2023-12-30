@@ -113,14 +113,17 @@ namespace SoundSwitch.Framework.Banner
             var screen = GetScreen();
             var positionLeft = screen.Bounds.X + 50;
             var positionRight = screen.Bounds.Width - Width - positionLeft;
+            var positionCenterH = (screen.Bounds.Width - Width) / 2;
             var positionTop = screen.Bounds.Y + 60;
             var positionBottom = screen.Bounds.Height - Height - positionTop;
 
             Location =  AppModel.Instance.BannerPosition switch
             {
                 BannerPositionEnum.TopLeft =>  new Point(positionLeft, positionTop),
+                BannerPositionEnum.TopCenter => new Point(positionCenterH, positionTop),
                 BannerPositionEnum.TopRight =>  new Point(positionRight, positionTop),
                 BannerPositionEnum.BottomLeft =>  new Point(positionLeft, positionBottom),
+                BannerPositionEnum.BottomCenter => new Point(positionCenterH, positionBottom),
                 BannerPositionEnum.BottomRight =>  new Point(positionRight, positionBottom),
                 _ =>  new Point(0, 0)
             };

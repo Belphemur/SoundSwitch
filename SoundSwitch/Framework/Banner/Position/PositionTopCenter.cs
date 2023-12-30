@@ -12,15 +12,13 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-namespace SoundSwitch.Framework.Banner
+using SoundSwitch.Localization;
+
+namespace SoundSwitch.Framework.Banner.Position
 {
-    public enum BannerPositionEnum
+    internal class PositionTopCenter : IPosition
     {
-        TopLeft = 0,
-        TopCenter = 1,
-        TopRight = 2,
-        BottomLeft = 3,
-        BottomCenter = 4,
-        BottomRight = 5
+        public BannerPositionEnum TypeEnum => BannerPositionEnum.TopCenter;
+        public string Label => SettingsStrings.positionOptionTopCenter;
     }
 }
