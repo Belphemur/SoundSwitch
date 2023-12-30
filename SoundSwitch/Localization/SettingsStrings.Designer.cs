@@ -503,6 +503,15 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bottom Center.
+        /// </summary>
+        internal static string positionOptionBottomCenter {
+            get {
+                return ResourceManager.GetString("positionOptionBottomCenter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bottom Left.
         /// </summary>
         internal static string positionOptionBottomLeft {
@@ -517,6 +526,15 @@ namespace SoundSwitch.Localization {
         internal static string positionOptionBottomRight {
             get {
                 return ResourceManager.GetString("positionOptionBottomRight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Top Center.
+        /// </summary>
+        internal static string positionOptionTopCenter {
+            get {
+                return ResourceManager.GetString("positionOptionTopCenter", resourceCulture);
             }
         }
         

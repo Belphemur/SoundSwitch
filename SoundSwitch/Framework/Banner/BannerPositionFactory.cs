@@ -12,8 +12,6 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System.Collections.Generic;
-using System.Linq;
 using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Banner.Position;
 using SoundSwitch.Framework.Factory;
@@ -26,8 +24,10 @@ namespace SoundSwitch.Framework.NotificationManager
             <BannerPositionEnum, IPosition>
             {
                 new PositionTopLeft(),
+                new PositionTopCenter(),
                 new PositionTopRight(),
                 new PositionBottomLeft(),
+                new PositionBottomCenter(),
                 new PositionBottomRight()
             };
 
