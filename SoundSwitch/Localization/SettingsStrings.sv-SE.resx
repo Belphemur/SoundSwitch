@@ -498,4 +498,28 @@ Båda: Ändra när någon typ av enhet ändras.</value>
   <data name="keepVolume.desc" xml:space="preserve">
     <value>Håll samma volymnivå när du byter uppspelningsenheter</value>
   </data>
+  <data name="position" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="positionOptionBottomLeft" xml:space="preserve">
+    <value>Nedre vänster</value>
+  </data>
+  <data name="positionOptionTopLeft" xml:space="preserve">
+    <value>Övre vänster</value>
+  </data>
+  <data name="positionOptionTopCenter" xml:space="preserve">
+    <value>Översta mitten</value>
+  </data>
+  <data name="positionOptionTopRight" xml:space="preserve">
+    <value>Övre höger</value>
+  </data>
+  <data name="positionOptionBottomCenter" xml:space="preserve">
+    <value>Nedre mitten</value>
+  </data>
+  <data name="positionOptionBottomRight" xml:space="preserve">
+    <value>Nedre höger</value>
+  </data>
+  <data name="positionTooltip" xml:space="preserve">
+    <value>Ställ in positionen för banneraviseringen.</value>
+  </data>
 </root>
