@@ -1,16 +1,16 @@
 ﻿/********************************************************************
-* Copyright (C) 2015-2017 Antoine Aflalo
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-********************************************************************/
+ * Copyright (C) 2015-2017 Antoine Aflalo
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ ********************************************************************/
 
 using System;
 using System.Diagnostics;
@@ -49,7 +49,13 @@ namespace SoundSwitch.Framework.NotificationManager
             _model.NotificationSettingsChanged += ModelOnNotificationSettingsChanged;
             SetNotification(_model.NotificationSettings);
             _model.CustomSoundChanged += ModelOnCustomSoundChanged;
+            _model.BannerPositionChanged += ModelOnBannerPositionChanged;
             Log.Information("Notification manager initiated");
+        }
+
+        private void ModelOnBannerPositionChanged(object sender, BannerPositionUpdatedEvent e)
+        {
+            _notification.Configuration.BannerPosition = e.NewBannerPosition;
         }
 
         private void ModelOnCustomSoundChanged(object sender, CustomSoundChangedEvent customSoundChangedEvent)
@@ -69,7 +75,8 @@ namespace SoundSwitch.Framework.NotificationManager
             _notification.Configuration = new NotificationConfiguration()
             {
                 Icon = _model.TrayIcon.NotifyIcon,
-                DefaultSound = Resources.NotificationSound
+                DefaultSound = Resources.NotificationSound,
+                BannerPosition = AppModel.Instance.BannerPosition,
             };
             try
             {
@@ -102,7 +109,7 @@ namespace SoundSwitch.Framework.NotificationManager
             return deviceInfo.Type switch
             {
                 DataFlow.Capture => _model.AvailableRecordingDevices.FirstOrDefault(info => info.Equals(deviceInfo)),
-                _                => _model.AvailablePlaybackDevices.FirstOrDefault(info => info.Equals(deviceInfo))
+                _ => _model.AvailablePlaybackDevices.FirstOrDefault(info => info.Equals(deviceInfo))
             };
         }
 
@@ -127,7 +134,7 @@ namespace SoundSwitch.Framework.NotificationManager
             {
                 return null;
             }
-            
+
             Bitmap icon = null;
             if (processId.HasValue)
             {

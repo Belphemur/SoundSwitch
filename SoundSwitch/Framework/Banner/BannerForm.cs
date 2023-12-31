@@ -1,16 +1,16 @@
 ﻿/********************************************************************
-* Copyright (C) 2015-2017 Antoine Aflalo
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-********************************************************************/
+ * Copyright (C) 2015-2017 Antoine Aflalo
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ ********************************************************************/
 
 using System;
 using System.Drawing;
@@ -111,22 +111,8 @@ namespace SoundSwitch.Framework.Banner
             Region = Region.FromHrgn(RoundedCorner.CreateRoundRectRgn(0, 0, Width, Height , 20, 20));
 
             var screen = GetScreen();
-            var positionLeft = screen.Bounds.X + 50;
-            var positionRight = screen.Bounds.Width - Width - positionLeft;
-            var positionCenterH = (screen.Bounds.Width - Width) / 2;
-            var positionTop = screen.Bounds.Y + 60;
-            var positionBottom = screen.Bounds.Height - Height - positionTop;
-
-            Location =  AppModel.Instance.BannerPosition switch
-            {
-                BannerPositionEnum.TopLeft =>  new Point(positionLeft, positionTop),
-                BannerPositionEnum.TopCenter => new Point(positionCenterH, positionTop),
-                BannerPositionEnum.TopRight =>  new Point(positionRight, positionTop),
-                BannerPositionEnum.BottomLeft =>  new Point(positionLeft, positionBottom),
-                BannerPositionEnum.BottomCenter => new Point(positionCenterH, positionBottom),
-                BannerPositionEnum.BottomRight =>  new Point(positionRight, positionBottom),
-                _ =>  new Point(0, 0)
-            };
+            
+            Location =  data.Position.GetScreenPosition(screen, Height, Width);
 
             _timerHide.Enabled = true;
 

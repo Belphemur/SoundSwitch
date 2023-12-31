@@ -1,20 +1,21 @@
 ﻿/********************************************************************
-* Copyright (C) 2015-2017 Antoine Aflalo
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-********************************************************************/
+ * Copyright (C) 2015-2017 Antoine Aflalo
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ ********************************************************************/
 
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using SoundSwitch.Framework.Audio;
+using SoundSwitch.Framework.Banner.Position;
 
 namespace SoundSwitch.Framework.Banner
 {
@@ -43,12 +44,17 @@ namespace SoundSwitch.Framework.Banner
         /// </summary>
         [AllowNull]
         public CachedSound SoundFile { get; internal set; }
-        
+
         /// <summary>
         /// On what device to play the <see cref="CachedSound"/>
         /// </summary>
         [AllowNull]
         public string CurrentDeviceId { get; internal set; }
+
+        /// <summary>
+        /// Position of the banner
+        /// </summary>
+        public IPosition Position { get; internal set; }
 
         /// <summary>
         /// Set the priority of the notification
