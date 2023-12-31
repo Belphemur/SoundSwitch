@@ -498,4 +498,28 @@ Restaura el estado del sistema cuando se cierra la aplicación.</value>
   <data name="keepVolume.desc" xml:space="preserve">
     <value>Mantén el mismo nivel de volumen al cambiar de dispositivo de reproducción</value>
   </data>
+  <data name="position" xml:space="preserve">
+    <value>Posición</value>
+  </data>
+  <data name="positionOptionBottomLeft" xml:space="preserve">
+    <value>Parte inferior izquierda</value>
+  </data>
+  <data name="positionOptionTopLeft" xml:space="preserve">
+    <value>Parte superior izquierda</value>
+  </data>
+  <data name="positionOptionTopCenter" xml:space="preserve">
+    <value>Parte central superior</value>
+  </data>
+  <data name="positionOptionTopRight" xml:space="preserve">
+    <value>Parte superior derecha</value>
+  </data>
+  <data name="positionOptionBottomCenter" xml:space="preserve">
+    <value>Parte central</value>
+  </data>
+  <data name="positionOptionBottomRight" xml:space="preserve">
+    <value>Parte inferior derecha</value>
+  </data>
+  <data name="positionTooltip" xml:space="preserve">
+    <value>Fije la posición de la notificación del banner.</value>
+  </data>
 </root>
