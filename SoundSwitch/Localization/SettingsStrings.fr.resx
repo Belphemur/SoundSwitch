@@ -472,4 +472,34 @@ Restaurer l'état du système quand l'application est fermée.</value>
   <data name="profile.error.deviceChanged" xml:space="preserve">
     <value>Vous ne pouvez avoir qu'un seul profil forcé.</value>
   </data>
+  <data name="position" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="positionOptionBottomLeft" xml:space="preserve">
+    <value>En bas à gauche</value>
+  </data>
+  <data name="keepVolume" xml:space="preserve">
+    <value>Synchroniser le volume</value>
+  </data>
+  <data name="positionOptionTopLeft" xml:space="preserve">
+    <value>En haut à gauche</value>
+  </data>
+  <data name="keepVolume.desc" xml:space="preserve">
+    <value>Garder le même niveau sonore lors du changement de périphérique</value>
+  </data>
+  <data name="positionOptionTopCenter" xml:space="preserve">
+    <value>En haut au centre</value>
+  </data>
+  <data name="positionOptionTopRight" xml:space="preserve">
+    <value>En haut à droite</value>
+  </data>
+  <data name="positionOptionBottomCenter" xml:space="preserve">
+    <value>En bas au centre</value>
+  </data>
+  <data name="positionOptionBottomRight" xml:space="preserve">
+    <value>En bas à droite</value>
+  </data>
+  <data name="positionTooltip" xml:space="preserve">
+    <value>Choisir le positionnement de la bannière.</value>
+  </data>
 </root>
