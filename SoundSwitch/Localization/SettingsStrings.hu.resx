@@ -178,7 +178,7 @@ Banner: folyamatosan előtérben megjelenő értesítés, ami hasznos játékok 
     <value>Profil aktiválása, ha az előtérben lévő alkalmazás neve tartalmazza a megadott karaktereket</value>
   </data>
   <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>Gyorsgomb az aktiváláshoz</value>
+    <value>Gyorsgomb az aktiváláshoz. Ha ugyanazt a gyorsgombot használod, váltani tudsz majd a profilok között.</value>
   </data>
   <data name="profile.trigger.steam" xml:space="preserve">
     <value>Steam Nagy kép</value>
@@ -399,5 +399,23 @@ Szeretnéd most újraindítani a programot?</value>
   </data>
   <data name="notification.microphone.muted" xml:space="preserve">
     <value>{0} némítva.</value>
+  </data>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>Az applikáció menüjében</value>
+  </data>
+  <data name="profile.trigger.deviceChanged" xml:space="preserve">
+    <value>Profil kényszerítése</value>
+  </data>
+  <data name="profile.error.deviceChanged" xml:space="preserve">
+    <value>Csak egy kényszerített profilod lehet.</value>
+  </data>
+  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
+    <value>A profil automatikusan be lesz kapcsolva, amikor a hangeszköz változik.</value>
+  </data>
+  <data name="telemetry.desc" xml:space="preserve">
+    <value>Információkat gyűjt a SoundSwitch jelenlegi verziójáról. Csak a SoundSwitch fejlesztőivel van megosztva.</value>
+  </data>
+  <data name="quickMenu" xml:space="preserve">
+    <value>Gyorsmenü a billentyűkombinációval</value>
   </data>
 </root>
