@@ -439,4 +439,25 @@ Restaurar o estado do sistema quando a aplicação é fechada.</value>
   <data name="keepVolume.desc" xml:space="preserve">
     <value>Mantenha o nível de volume ao alternar dispositivos de reprodução</value>
   </data>
+  <data name="positionOptionBottomLeft" xml:space="preserve">
+    <value>Inferior esquerdo</value>
+  </data>
+  <data name="positionOptionBottomRight" xml:space="preserve">
+    <value>Inferior direito</value>
+  </data>
+  <data name="positionOptionTopLeft" xml:space="preserve">
+    <value>Superior esquerdo</value>
+  </data>
+  <data name="positionOptionTopRight" xml:space="preserve">
+    <value>Superior direito</value>
+  </data>
+  <data name="positionOptionTopCenter" xml:space="preserve">
+    <value>Centro superior</value>
+  </data>
+  <data name="position" xml:space="preserve">
+    <value>Posição</value>
+  </data>
+  <data name="positionOptionBottomCenter" xml:space="preserve">
+    <value>Centro inferior</value>
+  </data>
 </root>
