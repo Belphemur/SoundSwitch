@@ -127,4 +127,7 @@
   <data name="settings" xml:space="preserve">
     <value>Beállítások</value>
   </data>
+  <data name="forceCheckForUpdate" xml:space="preserve">
+    <value>Frissítések keresése</value>
+  </data>
 </root>
