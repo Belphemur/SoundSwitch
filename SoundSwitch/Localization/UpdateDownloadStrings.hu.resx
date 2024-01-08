@@ -76,4 +76,10 @@
   <data name="install" xml:space="preserve">
     <value>Telepítés</value>
   </data>
+  <data name="remindMe" xml:space="preserve">
+    <value>később</value>
+  </data>
+  <data name="wrongSignature" xml:space="preserve">
+    <value>Probléma akadt a SoundSwitch frissítése során. Le kell tölsdt manuálisan az újabb verziót a {0}</value>
+  </data>
 </root>
