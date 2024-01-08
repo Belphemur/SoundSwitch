@@ -38,9 +38,9 @@ First set up your devices you want to cycle through, using _right click_ on the 
 
 ## _Switched_ Notification
 
-SoundSwitch provides five types of notification when a device is changed:
+SoundSwitch provides four types of notification when a device is changed:
 
-- #### 🎟 Banner
+- #### 🎟 Banner Notification
 Uses a custom always-on-top frame, useful for in-game usage. This is the recommended default display style.
 
 - #### 🗨 Windows Notification
@@ -48,11 +48,6 @@ Uses the balloon tip of Windows. In the case of Windows 7, it's the little ballo
 
 - #### 🎵 Sound Notification
 This notification is a sound played on the switched device. This way when you are switching devices, the new device will 'chime' to tell you it's selected.
-
-- #### 🎶 Customized Sound Notification
-The same as a Sound Notification but you can specify the sound which is played.
-
-If you want to return to a silent Toast Notification, open the file selector, and just press Cancel. Doing that will remove the set sound.
 
 ## Profiles
 

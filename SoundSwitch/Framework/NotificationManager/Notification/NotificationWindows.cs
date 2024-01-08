@@ -24,10 +24,10 @@ using SoundSwitch.Localization;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification
 {
-    public class NotificationWindows : INotification
+    internal class NotificationWindows : INotification
     {
         public NotificationTypeEnum TypeEnum => NotificationTypeEnum.DefaultWindowsNotification;
-        public string               Label    => SettingsStrings.notificationOptionWindowsDefault;
+        public string Label => SettingsStrings.notificationOptionWindowsDefault;
 
         public INotificationConfiguration Configuration { get; set; }
 
@@ -50,22 +50,6 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             }
         }
 
-        public void OnSoundChanged(CachedSound newSound)
-        {
-        }
-
-        public NotificationCustomSoundEnum SupportCustomSound() => NotificationCustomSoundEnum.NotSupported;
-
-        public bool NeedCustomSound()
-        {
-            return false;
-        }
-
-        public bool IsAvailable()
-        {
-            return true;
-        }
-
         public void NotifyProfileChanged(Profile.Profile profile, Bitmap icon, uint? processId)
         {
             var title = string.Format(SettingsStrings.profile_notification_text, profile.Name);
@@ -78,5 +62,11 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             var title = newMuteState ? string.Format(SettingsStrings.notification_microphone_muted, microphoneName) : string.Format(SettingsStrings.notification_microphone_unmuted, microphoneName);
             Configuration.Icon.ShowBalloonTip(1000, title, microphoneName, ToolTipIcon.Info);
         }
+
+        public void OnSoundChanged(CachedSound newSound) { }
+
+        public bool SupportCustomSound() => false;
+
+        public bool IsAvailable() => true;
     }
 }

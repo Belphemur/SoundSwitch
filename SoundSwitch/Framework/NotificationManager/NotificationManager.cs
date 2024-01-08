@@ -16,7 +16,6 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Windows.Forms;
 using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Common.Framework.Audio.Device;
@@ -24,7 +23,6 @@ using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
-using SoundSwitch.Localization;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
 
@@ -84,14 +82,6 @@ namespace SoundSwitch.Framework.NotificationManager
             }
             catch (CachedSoundFileNotExistsException)
             {
-                if (!_notification.NeedCustomSound())
-                {
-                    return;
-                }
-
-                MessageBox.Show(string.Format(SettingsStrings.audioFileNotFound, SettingsStrings.notificationOptionSound),
-                    SettingsStrings.audioFileNotFoundCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                _model.NotificationSettings = NotificationTypeEnum.SoundNotification;
             }
         }
 

@@ -19,20 +19,14 @@ namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo
     public class TooltipInfoNone : ITooltipInfo
     {
         public TooltipInfoTypeEnum TypeEnum => TooltipInfoTypeEnum.None;
-        public string Label => SettingsStrings.tooltipOnHoverOptionNone;
+        public string Label => SettingsStrings.none;
 
         /// <summary>
         /// The text to display for this ToolTip
         /// </summary>
         /// <returns></returns>
-        public string TextToDisplay()
-        {
-            return null;
-        }
+        public string TextToDisplay() => null;
 
-        public override string ToString()
-        {
-            return Label;
-        }
+        public override string ToString() => Label;
     }
 }

@@ -308,16 +308,6 @@ namespace SoundSwitch.UI.Forms
             notificationGroupBox.TabStop = false;
             notificationGroupBox.Text = "Notification";
             // 
-            // positionComboBox
-            // 
-            positionComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            positionComboBox.FormattingEnabled = true;
-            positionComboBox.Location = new System.Drawing.Point(122, 76);
-            positionComboBox.Name = "positionComboBox";
-            positionComboBox.Size = new System.Drawing.Size(121, 23);
-            positionComboBox.TabIndex = 17;
-            positionComboBox.SelectedValueChanged += positionComboBox_SelectedValueChanged;
-            // 
             // notificationComboBox
             // 
             notificationComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -328,16 +318,24 @@ namespace SoundSwitch.UI.Forms
             notificationComboBox.TabIndex = 16;
             notificationComboBox.SelectedValueChanged += notificationComboBox_SelectedValueChanged;
             // 
-            // selectSoundButton
+            // positionLabel
             // 
-            selectSoundButton.Location = new System.Drawing.Point(249, 20);
-            selectSoundButton.Name = "selectSoundButton";
-            selectSoundButton.Size = new System.Drawing.Size(24, 24);
-            selectSoundButton.TabIndex = 19;
-            selectSoundButton.Text = "...";
-            selectSoundButton.UseVisualStyleBackColor = true;
-            selectSoundButton.Visible = false;
-            selectSoundButton.Click += selectSoundButton_Click;
+            positionLabel.Location = new System.Drawing.Point(6, 76);
+            positionLabel.Name = "positionLabel";
+            positionLabel.Size = new System.Drawing.Size(110, 23);
+            positionLabel.TabIndex = 17;
+            positionLabel.Text = "Position";
+            positionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // positionComboBox
+            // 
+            positionComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            positionComboBox.FormattingEnabled = true;
+            positionComboBox.Location = new System.Drawing.Point(122, 76);
+            positionComboBox.Name = "positionComboBox";
+            positionComboBox.Size = new System.Drawing.Size(121, 23);
+            positionComboBox.TabIndex = 17;
+            positionComboBox.SelectedValueChanged += positionComboBox_SelectedValueChanged;
             // 
             // usePrimaryScreenCheckbox
             // 
@@ -350,25 +348,27 @@ namespace SoundSwitch.UI.Forms
             usePrimaryScreenCheckbox.UseVisualStyleBackColor = true;
             usePrimaryScreenCheckbox.CheckedChanged += usePrimaryScreenCheckbox_CheckedChanged;
             // 
+            // selectSoundButton
+            // 
+            selectSoundButton.Location = new System.Drawing.Point(249, 21);
+            selectSoundButton.Name = "selectSoundButton";
+            selectSoundButton.Size = new System.Drawing.Size(24, 24);
+            selectSoundButton.TabIndex = 19;
+            selectSoundButton.Text = "...";
+            selectSoundButton.UseVisualStyleBackColor = true;
+            selectSoundButton.Visible = false;
+            selectSoundButton.Click += selectSoundButton_Click;
+            // 
             // deleteSoundButton
             // 
             deleteSoundButton.Image = Properties.Resources.delete;
-            deleteSoundButton.Location = new System.Drawing.Point(279, 20);
+            deleteSoundButton.Location = new System.Drawing.Point(279, 21);
             deleteSoundButton.Name = "deleteSoundButton";
             deleteSoundButton.Size = new System.Drawing.Size(24, 24);
             deleteSoundButton.TabIndex = 24;
             deleteSoundButton.UseVisualStyleBackColor = true;
             deleteSoundButton.Visible = false;
             deleteSoundButton.Click += deleteSoundButton_Click;
-            // 
-            // positionLabel
-            // 
-            positionLabel.Location = new System.Drawing.Point(6, 76);
-            positionLabel.Name = "positionLabel";
-            positionLabel.Size = new System.Drawing.Size(110, 23);
-            positionLabel.TabIndex = 17;
-            positionLabel.Text = "Position";
-            positionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // languageGroupBox
             // 
@@ -521,9 +521,9 @@ namespace SoundSwitch.UI.Forms
             // 
             // cycleThroughLabel
             // 
-            cycleThroughLabel.Location = new System.Drawing.Point(2, 192);
+            cycleThroughLabel.Location = new System.Drawing.Point(6, 190);
             cycleThroughLabel.Name = "cycleThroughLabel";
-            cycleThroughLabel.Size = new System.Drawing.Size(110, 18);
+            cycleThroughLabel.Size = new System.Drawing.Size(106, 23);
             cycleThroughLabel.TabIndex = 23;
             cycleThroughLabel.Text = "Cycle through";
             cycleThroughLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -540,9 +540,9 @@ namespace SoundSwitch.UI.Forms
             // 
             // tooltipOnHoverLabel
             // 
-            tooltipOnHoverLabel.Location = new System.Drawing.Point(2, 156);
+            tooltipOnHoverLabel.Location = new System.Drawing.Point(6, 154);
             tooltipOnHoverLabel.Name = "tooltipOnHoverLabel";
-            tooltipOnHoverLabel.Size = new System.Drawing.Size(110, 18);
+            tooltipOnHoverLabel.Size = new System.Drawing.Size(106, 23);
             tooltipOnHoverLabel.TabIndex = 21;
             tooltipOnHoverLabel.Text = "Tooltip on Hover";
             tooltipOnHoverLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -571,9 +571,9 @@ namespace SoundSwitch.UI.Forms
             // 
             // iconChangeLabel
             // 
-            iconChangeLabel.Location = new System.Drawing.Point(2, 53);
+            iconChangeLabel.Location = new System.Drawing.Point(6, 51);
             iconChangeLabel.Name = "iconChangeLabel";
-            iconChangeLabel.Size = new System.Drawing.Size(110, 15);
+            iconChangeLabel.Size = new System.Drawing.Size(106, 23);
             iconChangeLabel.TabIndex = 27;
             iconChangeLabel.Text = "Systray Icon";
             iconChangeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;

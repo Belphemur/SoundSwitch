@@ -22,10 +22,10 @@ namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager
         private static readonly IEnumImplList<TooltipInfoTypeEnum, ITooltipInfo> TooltipInfos = new EnumImplList
             <TooltipInfoTypeEnum, ITooltipInfo>
         {
+            new TooltipInfoNone(),
             new TooltipInfoPlayback(),
             new TooltipInfoRecording(),
-            new TooltipInfoBoth(),
-            new TooltipInfoNone()
+            new TooltipInfoBoth()
         };
 
         public TooltipInfoFactory() : base(TooltipInfos)

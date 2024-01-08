@@ -54,9 +54,6 @@ namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo
                 : string.Format("[{1}%] " + SettingsStrings.activePlayback, _defaultDevice.NameClean, _defaultDevice.Volume);
         }
 
-        public override string ToString()
-        {
-            return Label;
-        }
+        public override string ToString() => Label;
     }
 }

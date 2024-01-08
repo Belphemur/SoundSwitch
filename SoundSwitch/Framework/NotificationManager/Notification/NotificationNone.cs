@@ -20,40 +20,23 @@ using SoundSwitch.Localization;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification
 {
-    public class NotificationNone : INotification
+    internal class NotificationNone : INotification
     {
         public NotificationTypeEnum TypeEnum => NotificationTypeEnum.NoNotification;
-        public string               Label    => SettingsStrings.notificationOptionNone;
+        public string Label => SettingsStrings.none;
 
         public INotificationConfiguration Configuration { get; set; }
 
-        public void NotifyDefaultChanged(DeviceFullInfo audioDevice)
-        {
-        }
+        public void NotifyDefaultChanged(DeviceFullInfo audioDevice) { }
 
-        public void OnSoundChanged(CachedSound newSound)
-        {
-        }
+        public void NotifyProfileChanged(Profile.Profile profile, Bitmap icon, uint? processId) { }
 
-        public NotificationCustomSoundEnum SupportCustomSound() => NotificationCustomSoundEnum.NotSupported;
+        public void NotifyMuteChanged(string microphoneName, bool newMuteState) { }
 
-        public bool NeedCustomSound()
-        {
-            return false;
-        }
+        public void OnSoundChanged(CachedSound newSound) { }
 
-        public bool IsAvailable()
-        {
-            return true;
-        }
+        public bool SupportCustomSound() => false;
 
-        public void NotifyProfileChanged(Profile.Profile profile, Bitmap icon, uint? processId)
-        {
-        }
-
-        public void NotifyMuteChanged(string microphoneName, bool newMuteState)
-        {
-            
-        }
+        public bool IsAvailable() => true;
     }
 }

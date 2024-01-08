@@ -99,24 +99,42 @@ namespace SoundSwitch.UI.Forms
             var foregroundAppToolTip = new ToolTip();
             foregroundAppToolTip.SetToolTip(foregroundAppCheckbox, SettingsStrings.foregroundAppTooltip);
 
+            quickMenuCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.QuickMenuEnabled), false, DataSourceUpdateMode.OnPropertyChanged);
+            var quickMenuCheckboxToolTip = new ToolTip();
+            quickMenuCheckboxToolTip.SetToolTip(quickMenuCheckbox, SettingsStrings.quickMenu_desc);
+
+            keepVolumeCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.KeepVolumeEnabled), false, DataSourceUpdateMode.OnPropertyChanged);
+            var keepVolumeCheckboxToolTip = new ToolTip();
+            keepVolumeCheckboxToolTip.SetToolTip(keepVolumeCheckbox, SettingsStrings.keepVolume_desc);
+
+            autoAddDeviceCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.AutoAddNewDevice), false, DataSourceUpdateMode.OnPropertyChanged);
+            var autoAddDeviceCheckboxToolTip = new ToolTip();
+            autoAddDeviceCheckboxToolTip.SetToolTip(autoAddDeviceCheckbox, SettingsStrings.devices_AutoAddNewDevice_Tooltip);
+
+            new TooltipInfoFactory().ConfigureListControl(tooltipInfoComboBox);
+            tooltipInfoComboBox.SelectedValue = TooltipInfoManager.CurrentTooltipInfo;
+            
+            new DeviceCyclerFactory().ConfigureListControl(cycleThroughComboBox);
+            cycleThroughComboBox.SelectedValue = DeviceCyclerManager.CurrentCycler;
+            var cycleThroughToolTip = new ToolTip();
+            cycleThroughToolTip.SetToolTip(cycleThroughComboBox, SettingsStrings.cycleThroughTooltip);
+
+            // Settings - Notification
+            var notificationFactory = new NotificationFactory();
+            notificationFactory.ConfigureListControl(notificationComboBox);
+            var notificationToolTip = new ToolTip();
+            notificationToolTip.SetToolTip(notificationComboBox, SettingsStrings.notificationTooltip);
+            notificationComboBox.SelectedValue = AppModel.Instance.NotificationSettings;
+
             usePrimaryScreenCheckbox.Checked = AppModel.Instance.NotifyUsingPrimaryScreen;
             usePrimaryScreenCheckbox.Enabled = AppModel.Instance.NotificationSettings == NotificationTypeEnum.BannerNotification;
-
             var usePrimaryScreenTooltip = new ToolTip();
             usePrimaryScreenTooltip.SetToolTip(usePrimaryScreenCheckbox, SettingsStrings.usePrimaryScreenTooltip);
 
-            var notificationToolTip = new ToolTip();
-            notificationToolTip.SetToolTip(notificationComboBox, SettingsStrings.notificationTooltip);
-
-            var notificationFactory = new NotificationFactory();
-            notificationFactory.ConfigureListControl(notificationComboBox);
-            notificationComboBox.SelectedValue = AppModel.Instance.NotificationSettings;
-
-            var positionToolTip = new ToolTip();
-            positionToolTip.SetToolTip(positionComboBox, SettingsStrings.positionTooltip);
-
             var bannerPositionFactory = new BannerPositionFactory();
             bannerPositionFactory.ConfigureListControl(positionComboBox);
+            var positionToolTip = new ToolTip();
+            positionToolTip.SetToolTip(positionComboBox, SettingsStrings.positionTooltip);
             positionComboBox.SelectedValue = AppModel.Instance.BannerPosition;
 
             selectSoundFileDialog.Filter = SettingsStrings.audioFiles + @" (*.wav;*.mp3)|*.wav;*.mp3;*.aiff";
@@ -124,33 +142,16 @@ namespace SoundSwitch.UI.Forms
             selectSoundFileDialog.CheckFileExists = true;
             selectSoundFileDialog.CheckPathExists = true;
 
-            var soundSupported = notificationFactory.Get(AppModel.Instance.NotificationSettings).SupportCustomSound() !=
-                                 NotificationCustomSoundEnum.NotSupported;
-            selectSoundButton.Visible = soundSupported;
-
-            var removeCustomSoundToolTip = new ToolTip();
-            removeCustomSoundToolTip.SetToolTip(deleteSoundButton, SettingsStrings.disableCustomSoundTooltip);
-            try
-            {
-                deleteSoundButton.Visible = soundSupported && AppModel.Instance.CustomNotificationSound != null;
-            }
-            catch (CachedSoundFileNotExistsException)
-            {
-            }
-
+            var supportCustomSound = notificationFactory.Get(AppModel.Instance.NotificationSettings).SupportCustomSound();
+            selectSoundButton.Visible = supportCustomSound;
             var selectSoundButtonToolTip = new ToolTip();
             selectSoundButtonToolTip.SetToolTip(selectSoundButton, SettingsStrings.selectSoundButtonTooltip);
 
-            new TooltipInfoFactory().ConfigureListControl(tooltipInfoComboBox);
-            tooltipInfoComboBox.SelectedValue = TooltipInfoManager.CurrentTooltipInfo;
+            DeleteSoundButtonVisible(supportCustomSound);
+            var removeCustomSoundToolTip = new ToolTip();
+            removeCustomSoundToolTip.SetToolTip(deleteSoundButton, SettingsStrings.disableCustomSoundTooltip);
 
-            new DeviceCyclerFactory().ConfigureListControl(cycleThroughComboBox);
-            cycleThroughComboBox.SelectedValue = DeviceCyclerManager.CurrentCycler;
-
-            var cycleThroughToolTip = new ToolTip();
-            cycleThroughToolTip.SetToolTip(cycleThroughComboBox, SettingsStrings.cycleThroughTooltip);
-
-            // Settings - Update
+             // Settings - Update
             includeBetaVersionsCheckBox.Checked = AppModel.Instance.IncludeBetaVersions;
 
             switch (AppModel.Instance.UpdateMode)
@@ -189,18 +190,6 @@ namespace SoundSwitch.UI.Forms
             telemetryCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.Telemetry), false, DataSourceUpdateMode.OnPropertyChanged);
             var telemetryToolTip = new ToolTip();
             telemetryToolTip.SetToolTip(telemetryCheckbox, SettingsStrings.telemetry_desc);
-
-            quickMenuCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.QuickMenuEnabled), false, DataSourceUpdateMode.OnPropertyChanged);
-            var quickMenuCheckboxToolTip = new ToolTip();
-            quickMenuCheckboxToolTip.SetToolTip(quickMenuCheckbox, SettingsStrings.quickMenu_desc);
-
-            keepVolumeCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.KeepVolumeEnabled), false, DataSourceUpdateMode.OnPropertyChanged);
-            var keepVolumeCheckboxToolTip = new ToolTip();
-            keepVolumeCheckboxToolTip.SetToolTip(keepVolumeCheckbox, SettingsStrings.keepVolume_desc);
-
-            autoAddDeviceCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.AutoAddNewDevice), false, DataSourceUpdateMode.OnPropertyChanged);
-            var autoAddDeviceCheckboxToolTip = new ToolTip();
-            autoAddDeviceCheckboxToolTip.SetToolTip(autoAddDeviceCheckbox, SettingsStrings.devices_AutoAddNewDevice_Tooltip);
 
             PopulateSettings();
 
@@ -371,7 +360,6 @@ namespace SoundSwitch.UI.Forms
             deleteProfileButton.Text = SettingsStrings.profile_deleteButton;
             editProfileButton.Text = SettingsStrings.profile_button_edit;
 
-
             // Misc
             hotkeysCheckBox.Text = SettingsStrings.hotkeyEnabled;
             closeButton.Text = SettingsStrings.close;
@@ -383,27 +371,10 @@ namespace SoundSwitch.UI.Forms
             deleteProfileButton.Image = Resources.profile_menu_delete;
         }
 
-
-        private void SelectSoundFileDialogOnFileOk(object sender, CancelEventArgs cancelEventArgs)
-        {
-            try
-            {
-                AppModel.Instance.CustomNotificationSound = new CachedSound(selectSoundFileDialog.FileName);
-            }
-            catch (Exception)
-            {
-                MessageBox.Show(@"Please select another file", @"Invalid Sound file", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            deleteSoundButton.Visible = true;
-        }
-
         private void closeButton_Click(object sender, EventArgs e)
         {
             Close();
         }
-
 
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -446,102 +417,25 @@ namespace SoundSwitch.UI.Forms
             hotKeyControl.Visible = visibility;
         }
 
-        private void notificationComboBox_SelectedValueChanged(object sender, EventArgs e)
+        private void SelectSoundFileDialogOnFileOk(object sender, CancelEventArgs cancelEventArgs)
         {
-            if (!_loaded)
-                return;
-            var value = (DisplayEnumObject<NotificationTypeEnum>)((ComboBox)sender).SelectedItem;
-
-            if (value == null)
-                return;
-
-            var notificationType = value.Enum;
-            if (notificationType == AppModel.Instance.NotificationSettings)
-                return;
-
-            var supportCustomSound =
-                new NotificationFactory().Get(notificationType).SupportCustomSound();
-            selectSoundButton.Visible = supportCustomSound != NotificationCustomSoundEnum.NotSupported;
-
-            if (supportCustomSound == NotificationCustomSoundEnum.Required)
+            try
             {
-                try
-                {
-                    var sound = AppModel.Instance.CustomNotificationSound;
-                    deleteSoundButton.Visible = true;
-                }
-                catch (CachedSoundFileNotExistsException)
-                {
-                    selectSoundFileDialog.ShowDialog(this);
-                }
+                AppModel.Instance.CustomNotificationSound = new CachedSound(selectSoundFileDialog.FileName);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(@"Please select another file", @"Invalid Sound file", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
 
-            usePrimaryScreenCheckbox.Enabled = positionComboBox.Enabled = notificationType == NotificationTypeEnum.BannerNotification;
-
-            AppModel.Instance.NotificationSettings = notificationType;
+            deleteSoundButton.Visible = true;
         }
 
-        private void positionComboBox_SelectedValueChanged(object sender, EventArgs e)
+
+        private void DeleteSoundButtonVisible(bool supportCustomSound)
         {
-            if (!_loaded) return;
-            var value = (DisplayEnumObject<BannerPositionEnum>)((ComboBox)sender).SelectedItem;
-            if (value == null) return;
-
-            AppModel.Instance.BannerPosition = value.Enum;
-        }
-
-        private void tooltipInfoComboBox_SelectedValueChanged(object sender, EventArgs e)
-        {
-            if (!_loaded)
-                return;
-            var value = (DisplayEnumObject<TooltipInfoTypeEnum>)((ComboBox)sender).SelectedItem;
-
-            if (value == null)
-                return;
-
-
-            TooltipInfoManager.CurrentTooltipInfo = value.Enum;
-        }
-
-        private void cyclerComboBox_SelectedValueChanged(object sender, EventArgs e)
-        {
-            if (!_loaded)
-                return;
-            var value = (DisplayEnumObject<DeviceCyclerTypeEnum>)((ComboBox)sender).SelectedItem;
-
-            if (value == null)
-                return;
-
-            DeviceCyclerManager.CurrentCycler = value.Enum;
-        }
-
-        private void languageComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!_loaded)
-                return;
-
-            var value = (DisplayEnumObject<Language>)((ComboBox)sender).SelectedItem;
-
-            if (value == null)
-                return;
-
-            AppModel.Instance.Language = value.Enum;
-
-            if (MessageBox.Show(SettingsStrings.languageRestartRequired,
-                    SettingsStrings.languageRestartRequiredCaption,
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                Program.RestartApp();
-            }
-        }
-
-        private void selectSoundButton_Click(object sender, EventArgs e)
-        {
-            var result = selectSoundFileDialog.ShowDialog(this);
-            if (result == DialogResult.Cancel)
-            {
-                AppModel.Instance.CustomNotificationSound = null;
-            }
+            deleteSoundButton.Visible = supportCustomSound && AppModel.Instance.CustomNotificationSound != null;
         }
 
         private void hotkeysCheckbox_CheckedChanged(object sender, EventArgs e)
@@ -549,11 +443,16 @@ namespace SoundSwitch.UI.Forms
             forceSetHotkeys(sender, hotKeyControl);
         }
 
+        private void muteHotKeyCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            forceSetHotkeys(sender, muteHotKey);
+        }
+
         private void forceSetHotkeys(object sender, HotKeyTextBox hotKeyTextBox)
         {
             var control = (CheckBox)sender;
-            if (hotKeyTextBox.Tag == null)
-                return;
+            if (hotKeyTextBox.Tag == null) return;
+
             var (action, hotKey) = (Tuple<HotKeyAction, HotKey>)hotKeyTextBox.Tag;
             var currentState = hotKey.Enabled;
             hotKeyTextBox.Enabled = hotKey.Enabled = control.Checked;
@@ -561,42 +460,17 @@ namespace SoundSwitch.UI.Forms
                 AppModel.Instance.SetHotkeyCombination(hotKey, action, true);
         }
 
-        #region Basic Settings (CheckBoxes)
-
-        private void RunAtStartup_CheckedChanged(object sender, EventArgs e)
+        private void hotKeyControl_HotKeyChanged(object sender, HotKeyTextBox.Event e)
         {
-            var ras = startWithWindowsCheckBox.Checked;
-            try
-            {
-                AppModel.Instance.RunAtStartup = ras;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(@"Error changing run at startup setting: " + ex.Message);
-                startWithWindowsCheckBox.Checked = AppModel.Instance.RunAtStartup;
-            }
-        }
+            var control = (HotKeyTextBox)sender;
+            var tuple = (Tuple<HotKeyAction, HotKey>)control.Tag;
+            if (tuple == null) return;
 
-        private void communicationCheckbox_CheckedChanged(object sender, EventArgs e)
-        {
-            var comm = switchCommunicationDeviceCheckBox.Checked;
-            try
-            {
-                AppModel.Instance.SetCommunications = comm;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(@"Error changing run at startup setting: " + ex.Message);
-                switchCommunicationDeviceCheckBox.Checked = AppModel.Instance.SetCommunications;
-            }
-        }
+            var newTuple = new Tuple<HotKeyAction, HotKey>(tuple.Item1, control.HotKey);
+            hotKeyControl.Tag = newTuple;
 
-        private void betaVersionCheckbox_CheckedChanged(object sender, EventArgs e)
-        {
-            AppModel.Instance.IncludeBetaVersions = includeBetaVersionsCheckBox.Checked;
+            AppModel.Instance.SetHotkeyCombination(newTuple.Item2, newTuple.Item1);
         }
-
-        #endregion
 
         #region Device List Playback
 
@@ -724,66 +598,7 @@ namespace SoundSwitch.UI.Forms
 
         #endregion
 
-        private void updateSilentRadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            if (updateSilentRadioButton.Checked)
-            {
-                AppModel.Instance.UpdateMode = UpdateMode.Silent;
-            }
-        }
-
-        private void updateNotifyRadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            if (updateNotifyRadioButton.Checked)
-            {
-                AppModel.Instance.UpdateMode = UpdateMode.Notify;
-            }
-        }
-
-        private void updateNeverRadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            if (updateNeverRadioButton.Checked)
-            {
-                AppModel.Instance.UpdateMode = UpdateMode.Never;
-            }
-        }
-
-        private void deleteSoundButton_Click(object sender, EventArgs e)
-        {
-            AppModel.Instance.CustomNotificationSound = null;
-            deleteSoundButton.Visible = false;
-        }
-
-        private void ForegroundAppCheckbox_CheckedChanged(object sender, EventArgs e)
-        {
-            AppModel.Instance.SwitchForegroundProgram = foregroundAppCheckbox.Checked;
-        }
-
-        private void keepVolumeCheckbox_CheckedChanged(object sender, EventArgs e)
-        {
-            AppModel.Instance.KeepVolumeEnabled = keepVolumeCheckbox.Checked;
-        }
-
-        private void usePrimaryScreenCheckbox_CheckedChanged(object sender, EventArgs e)
-        {
-            AppModel.Instance.NotifyUsingPrimaryScreen = usePrimaryScreenCheckbox.Checked;
-        }
-
-        private void iconChangeChoicesComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!_loaded)
-                return;
-            var comboBox = (ComboBox)sender;
-
-            if (comboBox == null)
-                return;
-
-            var item = (DisplayEnumObject<IconChangerFactory.ActionEnum>)iconChangeChoicesComboBox.SelectedItem;
-            AppConfigs.Configuration.SwitchIcon = item.Enum;
-            AppConfigs.Configuration.Save();
-
-            new IconChangerFactory().Get(item.Enum).ChangeIcon(AppModel.Instance.TrayIcon);
-        }
+        #region Profiles
 
         private void addProfileButton_Click(object sender, EventArgs e)
         {
@@ -812,19 +627,6 @@ namespace SoundSwitch.UI.Forms
             RefreshProfiles();
         }
 
-        private void hotKeyControl_HotKeyChanged(object sender, HotKeyTextBox.Event e)
-        {
-            var control = (HotKeyTextBox)sender;
-            var tuple = (Tuple<HotKeyAction, HotKey>)control.Tag;
-            if (tuple == null)
-                return;
-
-            var newTuple = new Tuple<HotKeyAction, HotKey>(tuple.Item1, control.HotKey);
-            hotKeyControl.Tag = newTuple;
-
-            AppModel.Instance.SetHotkeyCombination(newTuple.Item2, newTuple.Item1);
-        }
-
         private void editProfileButton_Click(object sender, EventArgs e)
         {
             if (profilesListView.SelectedItems.Count <= 0)
@@ -842,9 +644,183 @@ namespace SoundSwitch.UI.Forms
             editProfileButton_Click(sender, e);
         }
 
-        private void muteHotKeyCheckbox_CheckedChanged(object sender, EventArgs e)
+        #endregion
+
+        #region Basic Settings
+
+        private void RunAtStartup_CheckedChanged(object sender, EventArgs e)
         {
-            forceSetHotkeys(sender, muteHotKey);
+            var ras = startWithWindowsCheckBox.Checked;
+            try
+            {
+                AppModel.Instance.RunAtStartup = ras;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(@"Error changing run at startup setting: " + ex.Message);
+                startWithWindowsCheckBox.Checked = AppModel.Instance.RunAtStartup;
+            }
         }
+
+        private void iconChangeChoicesComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!_loaded) return;
+            var comboBox = (ComboBox)sender;
+            if (comboBox == null) return;
+
+            var item = (DisplayEnumObject<IconChangerFactory.ActionEnum>)iconChangeChoicesComboBox.SelectedItem;
+            AppConfigs.Configuration.SwitchIcon = item.Enum;
+            AppConfigs.Configuration.Save();
+
+            new IconChangerFactory().Get(item.Enum).ChangeIcon(AppModel.Instance.TrayIcon);
+        }
+
+        #endregion
+
+        #region Audio Settings
+
+        private void communicationCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            var comm = switchCommunicationDeviceCheckBox.Checked;
+            try
+            {
+                AppModel.Instance.SetCommunications = comm;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(@"Error changing run at startup setting: " + ex.Message);
+                switchCommunicationDeviceCheckBox.Checked = AppModel.Instance.SetCommunications;
+            }
+        }
+
+        private void ForegroundAppCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            AppModel.Instance.SwitchForegroundProgram = foregroundAppCheckbox.Checked;
+        }
+
+        private void keepVolumeCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            AppModel.Instance.KeepVolumeEnabled = keepVolumeCheckbox.Checked;
+        }
+
+        private void tooltipInfoComboBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (!_loaded) return;
+            var value = (DisplayEnumObject<TooltipInfoTypeEnum>)((ComboBox)sender).SelectedItem;
+            if (value == null) return;
+
+            TooltipInfoManager.CurrentTooltipInfo = value.Enum;
+        }
+
+        private void cyclerComboBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (!_loaded) return;
+            var value = (DisplayEnumObject<DeviceCyclerTypeEnum>)((ComboBox)sender).SelectedItem;
+            if (value == null) return;
+
+            DeviceCyclerManager.CurrentCycler = value.Enum;
+        }
+
+        #endregion
+
+        #region Update Settings
+
+        private void updateSilentRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (updateSilentRadioButton.Checked)
+            {
+                AppModel.Instance.UpdateMode = UpdateMode.Silent;
+            }
+        }
+
+        private void updateNotifyRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (updateNotifyRadioButton.Checked)
+            {
+                AppModel.Instance.UpdateMode = UpdateMode.Notify;
+            }
+        }
+
+        private void updateNeverRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (updateNeverRadioButton.Checked)
+            {
+                AppModel.Instance.UpdateMode = UpdateMode.Never;
+            }
+        }
+
+        private void betaVersionCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            AppModel.Instance.IncludeBetaVersions = includeBetaVersionsCheckBox.Checked;
+        }
+
+        #endregion
+
+        #region Language
+
+        private void languageComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!_loaded) return;
+            var value = (DisplayEnumObject<Language>)((ComboBox)sender).SelectedItem;
+            if (value == null) return;
+
+            AppModel.Instance.Language = value.Enum;
+
+            if (MessageBox.Show(SettingsStrings.languageRestartRequired,
+                    SettingsStrings.languageRestartRequiredCaption,
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                Program.RestartApp();
+            }
+        }
+
+        #endregion
+
+        #region Notification
+
+        private void notificationComboBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (!_loaded) return;
+            var value = (DisplayEnumObject<NotificationTypeEnum>)((ComboBox)sender).SelectedItem;
+            if (value == null) return;
+
+            var notificationType = value.Enum;
+            if (notificationType == AppModel.Instance.NotificationSettings) return;
+
+            var supportCustomSound = new NotificationFactory().Get(notificationType).SupportCustomSound();
+            selectSoundButton.Visible = supportCustomSound;
+            DeleteSoundButtonVisible(supportCustomSound);
+
+            usePrimaryScreenCheckbox.Enabled = positionComboBox.Enabled = notificationType == NotificationTypeEnum.BannerNotification;
+
+            AppModel.Instance.NotificationSettings = notificationType;
+        }
+
+        private void positionComboBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (!_loaded) return;
+            var value = (DisplayEnumObject<BannerPositionEnum>)((ComboBox)sender).SelectedItem;
+            if (value == null) return;
+
+            AppModel.Instance.BannerPosition = value.Enum;
+        }
+
+        private void selectSoundButton_Click(object sender, EventArgs e)
+        {
+            selectSoundFileDialog.ShowDialog(this);
+        }
+
+        private void deleteSoundButton_Click(object sender, EventArgs e)
+        {
+            AppModel.Instance.CustomNotificationSound = null;
+            deleteSoundButton.Visible = false;
+        }
+
+        private void usePrimaryScreenCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            AppModel.Instance.NotifyUsingPrimaryScreen = usePrimaryScreenCheckbox.Checked;
+        }
+
+        #endregion
     }
 }

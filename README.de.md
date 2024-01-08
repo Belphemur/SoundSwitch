@@ -33,9 +33,9 @@ Wählen Sie zuerst, wie im vorigen Abschnitt beschrieben, Ihre gewünschten Ger�
 
 ## _Umschalten_ Benachrichtigung
 
-SoundSwitch bietet fünf verschiedenen Arten der Benachrichtigung, wenn ein Gerät gewechselt wird:
+SoundSwitch bietet vier verschiedenen Arten der Benachrichtigung, wenn ein Gerät gewechselt wird:
 
-- #### 🎟 Banner
+- #### 🎟 Banner Benachrichtigung
 Verwendet ein Anzeigeelement, welches über allem liegt (always-on-top), nützlich für die Verwendung in Spielen. Dies ist die Standardart der Benachrichtigung.
 
 - #### 🗨 Windows Benachrichtigung
@@ -43,11 +43,6 @@ Verwendet die Standard Windows Benachrichtigung. Im Falle von Windows 7, ist die
 
 - #### 🎵 Akustische Benachrichtigung
 Diese Benachrichtigung ist ein Ton, der über das aktuell aktive Augabegerät abgespielt wird. Auf diese Weise teilt das neue Gerät ihnen mit, dass es ausgewählt ist.
-
-- #### 🎶 Angepasste Akustische Benachrichtigung
-Genau wie bei der akustischen Benachrichtigung, aber mit einem Sound, welcher selbst definiert werden kann.
-
-Wenn Sie zur stillen Windows Benachrichtigung zurückkehren möchten, öffnen Sie hierzu den Dateiauswahl-Dialog und drücken Abbrechen. Dadurch wird der eingestellte Sound entfernt.
 
 ## Profile
 
