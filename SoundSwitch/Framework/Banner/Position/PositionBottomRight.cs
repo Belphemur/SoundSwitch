@@ -18,18 +18,17 @@ using SoundSwitch.Localization;
 
 namespace SoundSwitch.Framework.Banner.Position
 {
-    internal class PositionBottomRight : IPosition
+    internal class PositionBottomRight : APosition, IPosition
     {
         public BannerPositionEnum TypeEnum => BannerPositionEnum.BottomRight;
         public string Label => SettingsStrings.positionOptionBottomRight;
 
         public Point GetScreenPosition(Screen screen, int height, int width)
         {
-            var positionLeft = screen.Bounds.X + 50;
-            var positionRight = screen.Bounds.Width - width - positionLeft;
-            var positionTop = screen.Bounds.Y + 60;
-            var positionBottom = screen.Bounds.Height - height - positionTop;
-            return new Point(positionRight, positionBottom);
+            return new Point(
+                PositionRight(screen, width),
+                PositionBottom(screen, height)
+                );
         }
     }
 }
