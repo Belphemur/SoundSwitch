@@ -428,15 +428,39 @@ Obnovi stanje sustava kad se program zatvori.</value>
     <value>Možeš imati samo jedan prisilni profil.</value>
   </data>
   <data name="devices.AutoAddNewDevice" xml:space="preserve">
-    <value>Automatski odaberi novi uređaj</value>
+    <value>Automatski odaberi nove uređaje</value>
   </data>
   <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
-    <value>Automatski dodaj nove uređaje u odbrani popis kad su spojeni s računalom</value>
+    <value>Automatski dodaj novi uređaj u popis odabira kad je spojen s računalom</value>
   </data>
   <data name="keepVolume" xml:space="preserve">
     <value>Zadrži razinu glasnoće na svim uređajima</value>
   </data>
   <data name="keepVolume.desc" xml:space="preserve">
     <value>Zadrži istu razinu glasnoće za sve uređaje</value>
+  </data>
+  <data name="position" xml:space="preserve">
+    <value>Položaj</value>
+  </data>
+  <data name="positionTooltip" xml:space="preserve">
+    <value>Postavi položaj natpisa.</value>
+  </data>
+  <data name="positionOptionBottomLeft" xml:space="preserve">
+    <value>Dolje lijevo</value>
+  </data>
+  <data name="positionOptionBottomRight" xml:space="preserve">
+    <value>Dolje desno</value>
+  </data>
+  <data name="positionOptionTopRight" xml:space="preserve">
+    <value>Gore desno</value>
+  </data>
+  <data name="positionOptionBottomCenter" xml:space="preserve">
+    <value>Dolje centrirano</value>
+  </data>
+  <data name="positionOptionTopLeft" xml:space="preserve">
+    <value>Gore lijevo</value>
+  </data>
+  <data name="positionOptionTopCenter" xml:space="preserve">
+    <value>Gore centrirano</value>
   </data>
 </root>
