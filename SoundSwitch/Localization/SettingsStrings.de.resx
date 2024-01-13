@@ -498,4 +498,28 @@ Stellt den Zustand des Systems wieder her, wenn die Anwendung geschlossen wird.<
   <data name="keepVolume.desc" xml:space="preserve">
     <value>Beim Wechseln des Wiedergabegeräts die gleiche Lautstärke beibehalten</value>
   </data>
+  <data name="position" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="positionTooltip" xml:space="preserve">
+    <value>Position der Banner-Benachrichtigung festlegen.</value>
+  </data>
+  <data name="positionOptionBottomLeft" xml:space="preserve">
+    <value>Unten links</value>
+  </data>
+  <data name="positionOptionBottomRight" xml:space="preserve">
+    <value>Unten rechts</value>
+  </data>
+  <data name="positionOptionTopRight" xml:space="preserve">
+    <value>Oben rechts</value>
+  </data>
+  <data name="positionOptionBottomCenter" xml:space="preserve">
+    <value>Unten mittig</value>
+  </data>
+  <data name="positionOptionTopLeft" xml:space="preserve">
+    <value>Oben links</value>
+  </data>
+  <data name="positionOptionTopCenter" xml:space="preserve">
+    <value>Oben mittig</value>
+  </data>
 </root>
