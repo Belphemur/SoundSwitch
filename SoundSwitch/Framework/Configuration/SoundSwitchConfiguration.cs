@@ -170,6 +170,7 @@ namespace SoundSwitch.Framework.Configuration
             if (NotificationSettings == NotificationTypeEnum.CustomNotification)
             {
                 NotificationSettings = NotificationTypeEnum.SoundNotification;
+                migrated = true;
             }
 
 #pragma warning disable 612
