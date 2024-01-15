@@ -37,7 +37,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         private readonly BannerManager _bannerManager = new();
         private readonly BannerPositionFactory _bannerPositionFactory = new();
 
-        private IPosition BannerPosition() => _bannerPositionFactory.Get(Configuration.BannerPosition);
+        private IPosition BannerPosition => _bannerPositionFactory.Get(Configuration.BannerPosition);
 
         public void NotifyDefaultChanged(DeviceFullInfo audioDevice)
         {
