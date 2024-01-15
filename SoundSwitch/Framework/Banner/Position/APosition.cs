@@ -12,23 +12,16 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
-using System.Drawing;
 using System.Windows.Forms;
-using SoundSwitch.Localization;
 
 namespace SoundSwitch.Framework.Banner.Position
 {
-    internal class PositionBottomLeft : APosition, IPosition
+    internal class APosition
     {
-        public BannerPositionEnum TypeEnum => BannerPositionEnum.BottomLeft;
-        public string Label => SettingsStrings.positionOptionBottomLeft;
-
-        public Point GetScreenPosition(Screen screen, int height, int width)
-        {
-            return new Point(
-                PositionLeft(screen),
-                PositionBottom(screen, height)
-                );
-        }
+        public int PositionTop(Screen screen) => screen.Bounds.X + 50;
+        public int PositionLeft(Screen screen) => screen.Bounds.Y + 60;
+        public int PositionBottom(Screen screen, int height) => screen.Bounds.Height - height - PositionTop(screen);
+        public int PositionRight(Screen screen, int width) => screen.Bounds.Width - width - PositionLeft(screen);
+        public int PositionCenter(Screen screen, int width) => (screen.Bounds.Width - width) / 2;
     }
 }
