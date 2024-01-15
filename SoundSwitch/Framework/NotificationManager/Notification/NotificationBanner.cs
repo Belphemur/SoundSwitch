@@ -87,7 +87,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
                 Priority = 2,
                 Image = icon,
                 Title = title,
-                Position = BannerPosition()
+                Position = BannerPosition
             };
             _bannerManager.ShowNotification(bannerData);
         }
