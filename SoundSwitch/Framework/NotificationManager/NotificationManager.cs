@@ -82,6 +82,8 @@ namespace SoundSwitch.Framework.NotificationManager
             }
             catch (CachedSoundFileNotExistsException)
             {
+                MessageBox.Show(string.Format(SettingsStrings.audioFileNotFound, SettingsStrings.notificationOptionSound),
+                    SettingsStrings.audioFileNotFoundCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
