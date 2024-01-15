@@ -45,7 +45,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             {
                 Image = audioDevice.LargeIcon.ToBitmap(),
                 Text = audioDevice.NameClean,
-                Position = BannerPosition()
+                Position = BannerPosition
             };
             if (CustomSoundCheck(audioDevice))
             {
