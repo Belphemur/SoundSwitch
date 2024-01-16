@@ -84,14 +84,8 @@ namespace SoundSwitch.Framework.NotificationManager
             }
             catch (CachedSoundFileNotExistsException)
             {
-                if (!_notification.NeedCustomSound())
-                {
-                    return;
-                }
-
                 MessageBox.Show(string.Format(SettingsStrings.audioFileNotFound, SettingsStrings.notificationOptionSound),
                     SettingsStrings.audioFileNotFoundCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                _model.NotificationSettings = NotificationTypeEnum.SoundNotification;
             }
         }
 

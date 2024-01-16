@@ -119,7 +119,17 @@ namespace SoundSwitch.Model
 
         public CachedSound CustomNotificationSound
         {
-            get => _customNotificationCachedSound ??= new CachedSound(AppConfigs.Configuration.CustomNotificationFilePath);
+            get
+            {
+                try
+                {
+                    return _customNotificationCachedSound ??= new CachedSound(AppConfigs.Configuration.CustomNotificationFilePath);
+                }
+                catch (CachedSoundFileNotExistsException)
+                {
+                    return null;
+                }
+            }
             set
             {
                 var oldSound = _customNotificationCachedSound;
@@ -279,7 +289,6 @@ namespace SoundSwitch.Model
                 AppConfigs.Configuration.Save();
             }
         }
-
 
         public bool AutoAddNewDevice
         {

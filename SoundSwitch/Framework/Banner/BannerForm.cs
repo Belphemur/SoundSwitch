@@ -36,6 +36,14 @@ namespace SoundSwitch.Framework.Banner
         private CancellationTokenSource _cancellationTokenSource = new();
 
         /// <summary>
+        /// Get the Screen object
+        /// </summary>
+        private static Screen GetScreen()
+        {
+            return AppModel.Instance.NotifyUsingPrimaryScreen ? Screen.PrimaryScreen : Screen.FromPoint(Cursor.Position);
+        }
+
+        /// <summary>
         /// Constructor for the <see cref="BannerForm"/> class
         /// </summary>
         public BannerForm()
@@ -63,14 +71,6 @@ namespace SoundSwitch.Framework.Banner
         //         return p;
         //     }
         // }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private static Screen GetScreen()
-        {
-            return AppModel.Instance.NotifyUsingPrimaryScreen ? Screen.PrimaryScreen : Screen.FromPoint(Cursor.Position);
-        }
 
         /// <summary>
         /// Called internally to configure pass notification parameters
@@ -112,7 +112,7 @@ namespace SoundSwitch.Framework.Banner
 
             var screen = GetScreen();
             
-            Location =  data.Position.GetScreenPosition(screen, Height, Width);
+            Location = data.Position.GetScreenPosition(screen, Height, Width);
 
             _timerHide.Enabled = true;
 
@@ -153,7 +153,6 @@ namespace SoundSwitch.Framework.Banner
 
             base.Dispose(disposing);
         }
-
 
         /// <summary>
         /// Event handler for the "hiding" timer.

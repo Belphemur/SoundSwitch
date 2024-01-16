@@ -167,6 +167,12 @@ namespace SoundSwitch.Framework.Configuration
                 NotificationSettings = NotificationTypeEnum.BannerNotification;
             }
 
+            if (NotificationSettings == NotificationTypeEnum.CustomNotification)
+            {
+                NotificationSettings = NotificationTypeEnum.SoundNotification;
+                migrated = true;
+            }
+
 #pragma warning disable 612
             if (!MigratedFields.Contains(nameof(KeepSystrayIcon)))
             {

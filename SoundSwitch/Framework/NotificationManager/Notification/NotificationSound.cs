@@ -28,47 +28,35 @@ using SoundSwitch.Localization;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification
 {
-    public class NotificationSound : INotification
+    internal class NotificationSound : INotification
     {
         private CancellationTokenSource _cancellationTokenSource;
         public NotificationTypeEnum TypeEnum => NotificationTypeEnum.SoundNotification;
         public string Label => SettingsStrings.notificationOptionSound;
-
         public INotificationConfiguration Configuration { get; set; }
 
         public void NotifyDefaultChanged(DeviceFullInfo audioDevice)
         {
-            if (audioDevice.Type != DataFlow.Render)
-                return;
+            if (audioDevice.Type != DataFlow.Render) return;
+
+            CachedSound soundNotification;
 
             _cancellationTokenSource?.Cancel();
             _cancellationTokenSource?.Dispose();
             _cancellationTokenSource = new CancellationTokenSource();
-            JobScheduler.Instance.ScheduleJob(new PlaySoundJob(audioDevice.Id, new CachedSound(GetStreamCopy(), new WaveFormat(44100, 1))), _cancellationTokenSource.Token);
-        }
 
-        public void OnSoundChanged(CachedSound newSound)
-        {
-        }
+            if (CustomSoundCheck(audioDevice))
+                soundNotification = Configuration.CustomSound;
+            else
+                soundNotification = new CachedSound(GetStreamCopy(), new WaveFormat(44100, 1));
 
-        public NotificationCustomSoundEnum SupportCustomSound() => NotificationCustomSoundEnum.NotSupported;
-
-        public bool NeedCustomSound()
-        {
-            return false;
-        }
-
-        public bool IsAvailable()
-        {
-            return true;
+            JobScheduler.Instance.ScheduleJob(new PlaySoundJob(audioDevice.Id, soundNotification), _cancellationTokenSource.Token);
         }
 
         public void NotifyProfileChanged(Profile.Profile profile, Bitmap icon, uint? processId)
         {
-            if (profile.Playback == null)
-                return;
+            if (profile.Playback == null) return;
 
-            using var enumerator = new MMDeviceEnumerator();
             try
             {
                 var mmDevice = AudioSwitcher.Instance.GetDevice(profile.Playback.Id);
@@ -84,6 +72,14 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         public void NotifyMuteChanged(string microphoneName, bool newMuteState)
         {
         }
+
+        public void OnSoundChanged(CachedSound newSound) => Configuration.CustomSound = newSound;
+
+        public bool SupportCustomSound() => true;
+
+        public bool IsAvailable() => true;
+
+        public bool CustomSoundCheck(DeviceFullInfo audioDevice) => audioDevice.Type == DataFlow.Render && Configuration.CustomSound != null && File.Exists(Configuration.CustomSound.FilePath);
 
         private MemoryStream GetStreamCopy()
         {

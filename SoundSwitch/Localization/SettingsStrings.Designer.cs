@@ -391,6 +391,15 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        internal static string none {
+            get {
+                return ResourceManager.GetString("none", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notification.
         /// </summary>
         internal static string notification {
@@ -418,7 +427,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Banner.
+        ///   Looks up a localized string similar to Banner Notification.
         /// </summary>
         internal static string notificationOptionBanner {
             get {
@@ -432,15 +441,6 @@ namespace SoundSwitch.Localization {
         internal static string notificationOptionCustomized {
             get {
                 return ResourceManager.GetString("notificationOptionCustomized", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No Notification.
-        /// </summary>
-        internal static string notificationOptionNone {
-            get {
-                return ResourceManager.GetString("notificationOptionNone", resourceCulture);
             }
         }
         
@@ -1122,15 +1122,6 @@ namespace SoundSwitch.Localization {
         internal static string tooltipOnHoverOptionBothDevices {
             get {
                 return ResourceManager.GetString("tooltipOnHoverOptionBothDevices", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No Tooltip.
-        /// </summary>
-        internal static string tooltipOnHoverOptionNone {
-            get {
-                return ResourceManager.GetString("tooltipOnHoverOptionNone", resourceCulture);
             }
         }
         

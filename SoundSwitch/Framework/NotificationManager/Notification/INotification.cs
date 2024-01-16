@@ -29,39 +29,10 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         INotificationConfiguration Configuration { get; set; }
 
         /// <summary>
-        /// Does this notification support showing an icon
-        /// </summary>
-        bool SupportIcon => false;
-
-        /// <summary>
         /// Notify the change of default audio device
         /// </summary>
         /// <param name="audioDevice"></param>
         void NotifyDefaultChanged(DeviceFullInfo audioDevice);
-
-        /// <summary>
-        /// Called when the set sound changed
-        /// </summary>
-        /// <param name="newSound"></param>
-        void OnSoundChanged(CachedSound newSound);
-
-        /// <summary>
-        /// Does the notification support a Custom Sound
-        /// </summary>
-        /// <returns></returns>
-        NotificationCustomSoundEnum SupportCustomSound();
-
-        /// <summary>
-        /// Does the notification need a Custom Sound set to work
-        /// </summary>
-        /// <returns></returns>
-        bool NeedCustomSound();
-
-        /// <summary>
-        /// Is this notification available
-        /// </summary>
-        /// <returns></returns>
-        bool IsAvailable();
 
         /// <summary>
         /// Notify when a profile has changed
@@ -75,5 +46,28 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         /// Notify about the mute state having changed
         /// </summary>
         void NotifyMuteChanged(string microphoneName, bool newMuteState);
+
+        /// <summary>
+        /// Does this notification support showing an icon
+        /// </summary>
+        bool SupportIcon => false;
+
+        /// <summary>
+        /// Called when the set sound changed
+        /// </summary>
+        /// <param name="newSound"></param>
+        void OnSoundChanged(CachedSound newSound);
+
+        /// <summary>
+        /// Does the notification support a Custom Sound
+        /// </summary>
+        /// <returns></returns>
+        bool SupportCustomSound();
+
+        /// <summary>
+        /// Is this notification available
+        /// </summary>
+        /// <returns></returns>
+        bool IsAvailable();
     }
 }

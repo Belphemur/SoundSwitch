@@ -219,8 +219,8 @@
   <data name="notificationOptionSound" xml:space="preserve">
     <value>Sound Notification</value>
   </data>
-  <data name="notificationOptionNone" xml:space="preserve">
-    <value>No Notification</value>
+  <data name="none" xml:space="preserve">
+    <value>None</value>
   </data>
   <data name="notificationOptionToast" xml:space="preserve">
     <value>Toast Notification</value>
@@ -243,9 +243,6 @@ Banner: Uses a custom always-on-top frame, useful for in-game usage.</value>
   </data>
   <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
     <value>For both Devices</value>
-  </data>
-  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-    <value>No Tooltip</value>
   </data>
   <data name="audioFileNotFound" xml:space="preserve">
     <value>The audio file you selected to be used as notification can't be found. SoundSwitch switched the notification setting back to {0}.</value>
@@ -276,7 +273,7 @@ Do you want to restart now?</value>
     <value>SoundSwitch will notify you when there is a new update available. When clicking on the notification, you'll get a popup downloading the update for you and asking if you want to install it.</value>
   </data>
   <data name="notificationOptionBanner" xml:space="preserve">
-    <value>Banner</value>
+    <value>Banner Notification</value>
   </data>
   <data name="disableCustomSoundTooltip" xml:space="preserve">
     <value>Disable the set Custom Sound.</value>

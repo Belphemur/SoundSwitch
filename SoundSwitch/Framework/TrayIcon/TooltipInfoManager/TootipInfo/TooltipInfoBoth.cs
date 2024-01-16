@@ -39,9 +39,6 @@ namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo
             return string.Concat(playbackToDisplay, "\n", recordingToDisplay);
         }
 
-        public override string ToString()
-        {
-            return Label;
-        }
+        public override string ToString() => Label;
     }
 }

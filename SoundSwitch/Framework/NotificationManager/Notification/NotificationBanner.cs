@@ -20,23 +20,48 @@ using NAudio.CoreAudioApi;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Banner;
+using SoundSwitch.Framework.Banner.Position;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
 using SoundSwitch.Localization;
+using SoundSwitch.Model;
 using SoundSwitch.Properties;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification
 {
-    public class NotificationBanner : INotification
+    internal class NotificationBanner : INotification
     {
         public NotificationTypeEnum TypeEnum => NotificationTypeEnum.BannerNotification;
         public string Label => SettingsStrings.notificationOptionBanner;
 
         public INotificationConfiguration Configuration { get; set; }
-
         private readonly BannerManager _bannerManager = new();
         private readonly BannerPositionFactory _bannerPositionFactory = new();
 
-        public bool SupportIcon => true;
+        private IPosition BannerPosition => _bannerPositionFactory.Get(Configuration.BannerPosition);
+
+        public void NotifyDefaultChanged(DeviceFullInfo audioDevice)
+        {
+            var toastData = new BannerData
+            {
+                Image = audioDevice.LargeIcon.ToBitmap(),
+                Text = audioDevice.NameClean,
+                Position = BannerPosition
+            };
+            if (CustomSoundCheck(audioDevice))
+            {
+                toastData.SoundFile = Configuration.CustomSound;
+                toastData.CurrentDeviceId = audioDevice.Id;
+            }
+
+            toastData.Title = audioDevice.Type switch
+            {
+                DataFlow.Render => SettingsStrings.tooltipOnHoverOptionPlaybackDevice,
+                DataFlow.Capture => SettingsStrings.tooltipOnHoverOptionRecordingDevice,
+                _ => throw new ArgumentOutOfRangeException(nameof(audioDevice.Type), audioDevice.Type, null)
+            };
+
+            _bannerManager.ShowNotification(toastData);
+        }
 
         public void NotifyProfileChanged(Profile.Profile profile, Bitmap icon, uint? processId)
         {
@@ -46,7 +71,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
                 Image = icon,
                 Title = string.Format(SettingsStrings.profile_notification_text, profile.Name),
                 Text = string.Join("\n", profile.Devices.Select(wrapper => wrapper.DeviceInfo.NameClean).Distinct()),
-                Position = _bannerPositionFactory.Get(Configuration.BannerPosition)
+                Position = BannerPosition
             };
             _bannerManager.ShowNotification(bannerData);
         }
@@ -62,51 +87,20 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
                 Priority = 2,
                 Image = icon,
                 Title = title,
-                Position = _bannerPositionFactory.Get(Configuration.BannerPosition)
+                Position = BannerPosition
             };
             _bannerManager.ShowNotification(bannerData);
         }
 
-        public void NotifyDefaultChanged(DeviceFullInfo audioDevice)
-        {
-            var toastData = new BannerData
-            {
-                Image = audioDevice.LargeIcon.ToBitmap(),
-                Text = audioDevice.NameClean,
-                Position = _bannerPositionFactory.Get(Configuration.BannerPosition)
-            };
-            if (audioDevice.Type == DataFlow.Render && Configuration.CustomSound != null && File.Exists(Configuration.CustomSound.FilePath))
-            {
-                toastData.SoundFile = Configuration.CustomSound;
-                toastData.CurrentDeviceId = audioDevice.Id;
-            }
+        public bool SupportIcon => true;
 
-            toastData.Title = audioDevice.Type switch
-            {
-                DataFlow.Render  => SettingsStrings.tooltipOnHoverOptionPlaybackDevice,
-                DataFlow.Capture => SettingsStrings.tooltipOnHoverOptionRecordingDevice,
-                _                => throw new ArgumentOutOfRangeException(nameof(audioDevice.Type), audioDevice.Type, null)
-            };
+        public void OnSoundChanged(CachedSound newSound) => Configuration.CustomSound = newSound;
 
-            _bannerManager.ShowNotification(toastData);
-        }
+        public bool SupportCustomSound() => true;
 
-        public void OnSoundChanged(CachedSound newSound)
-        {
-            Configuration.CustomSound = newSound;
-        }
+        // Available in all Windows versions
+        public bool IsAvailable() => true;
 
-        public NotificationCustomSoundEnum SupportCustomSound() => NotificationCustomSoundEnum.Optional;
-
-        public bool NeedCustomSound()
-        {
-            return false;
-        }
-
-        public bool IsAvailable()
-        {
-            // Available in all Windows versions
-            return true;
-        }
+        public bool CustomSoundCheck(DeviceFullInfo audioDevice) => audioDevice.Type == DataFlow.Render && Configuration.CustomSound != null && File.Exists(Configuration.CustomSound.FilePath);
     }
 }

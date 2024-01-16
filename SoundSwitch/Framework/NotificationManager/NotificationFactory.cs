@@ -24,11 +24,10 @@ namespace SoundSwitch.Framework.NotificationManager
         private static readonly IEnumImplList<NotificationTypeEnum, INotification> Notifications = new EnumImplList
             <NotificationTypeEnum, INotification>
             {
-                new NotificationWindows(),
-                new NotificationSound(),
-                new NotificationCustom(),
+                new NotificationNone(),
                 new NotificationBanner(),
-                new NotificationNone()
+                new NotificationWindows(),
+                new NotificationSound()
             };
 
         public NotificationFactory() : base(Notifications)
