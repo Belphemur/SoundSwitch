@@ -320,7 +320,7 @@ Inspelning: När en inspelningsenhet ändras.
 Båda: Ändra när någon typ av enhet ändras.</value>
   </data>
   <data name="notificationOptionBanner" xml:space="preserve">
-    <value>Banner</value>
+    <value>Banner meddelanden</value>
   </data>
   <data name="audioFileNotFoundCaption" xml:space="preserve">
     <value>Ljudfilen hittades inte</value>
@@ -521,5 +521,8 @@ Båda: Ändra när någon typ av enhet ändras.</value>
   </data>
   <data name="positionTooltip" xml:space="preserve">
     <value>Ställ in positionen för banneraviseringen.</value>
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>Ingen</value>
   </data>
 </root>
