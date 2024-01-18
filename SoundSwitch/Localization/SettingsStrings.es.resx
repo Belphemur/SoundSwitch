@@ -276,7 +276,7 @@ Banner: Uses a custom always-on-top frame, useful for in-game usage.</value>
 		<value>SoundSwitch le notificará cuando haya una actualización disponible. Cuando pulse en la notificación, aparecerá una ventana emergente con el progreso de la descarga de la actualización y le preguntará si quiere instalarla cuando finalice.</value>
   </data>
   <data name="notificationOptionBanner" xml:space="preserve">
-        <value>Banner</value>
+        <value>Notificación por banner</value>
   </data>
   <data name="profile.error.needHKOrPath" xml:space="preserve">
     <value>Debe establecer el atajo y/o la aplicación.</value>
@@ -521,5 +521,8 @@ Restaura el estado del sistema cuando se cierra la aplicación.</value>
   </data>
   <data name="positionTooltip" xml:space="preserve">
     <value>Fije la posición de la notificación del banner.</value>
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>Ninguno</value>
   </data>
 </root>
