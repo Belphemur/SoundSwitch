@@ -170,7 +170,7 @@
     <value>Мова</value>
   </data>
   <data name="notificationOptionBanner" xml:space="preserve">
-    <value>Банер</value>
+    <value>Сповіщення у банері</value>
   </data>
   <data name="activePlayback" xml:space="preserve">
     <value>Відтворення: {0}</value>
@@ -432,5 +432,38 @@
   </data>
   <data name="usePrimaryScreenTooltip" xml:space="preserve">
     <value>Відображати банер на основному екрані замість сфокусованого.</value>
+  </data>
+  <data name="keepVolume.desc" xml:space="preserve">
+    <value>Зберігати однаковий рівень гучності під час перемикання пристроїв відтворення</value>
+  </data>
+  <data name="positionTooltip" xml:space="preserve">
+    <value>Налаштувати позицію сповіщення у банері.</value>
+  </data>
+  <data name="positionOptionBottomCenter" xml:space="preserve">
+    <value>Внизу по центру</value>
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>Ні</value>
+  </data>
+  <data name="keepVolume" xml:space="preserve">
+    <value>Зберігати рівень гучності на всіх пристроях</value>
+  </data>
+  <data name="position" xml:space="preserve">
+    <value>Позиція</value>
+  </data>
+  <data name="positionOptionBottomLeft" xml:space="preserve">
+    <value>Внизу зліва</value>
+  </data>
+  <data name="positionOptionBottomRight" xml:space="preserve">
+    <value>Внизу справа</value>
+  </data>
+  <data name="positionOptionTopLeft" xml:space="preserve">
+    <value>Вгорі зліва</value>
+  </data>
+  <data name="positionOptionTopRight" xml:space="preserve">
+    <value>Вгорі справа</value>
+  </data>
+  <data name="positionOptionTopCenter" xml:space="preserve">
+    <value>Вгорі по центру</value>
   </data>
 </root>
