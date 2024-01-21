@@ -142,7 +142,7 @@ Zajedno: Promijeni ikonu kad se bilo koji uređaj promijeni.</value>
     <value>Onemogući korištenje personaliziranih zvukova.</value>
   </data>
   <data name="notificationOptionBanner" xml:space="preserve">
-    <value>Natpis</value>
+    <value>Natpis obavijesti</value>
   </data>
   <data name="updateNotifyTooltip" xml:space="preserve">
     <value>SoundSwitch će te obavijestiti kad je dostupna nadogradnja. Kad klikneš na obavijest, pojavit će se skočni prozor za preuzimanje nadogradnje.</value>
@@ -462,5 +462,8 @@ Obnovi stanje sustava kad se program zatvori.</value>
   </data>
   <data name="positionOptionTopCenter" xml:space="preserve">
     <value>Gore centrirano</value>
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>Bez</value>
   </data>
 </root>

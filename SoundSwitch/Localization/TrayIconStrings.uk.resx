@@ -130,4 +130,7 @@
   <data name="forceCheckForUpdate" xml:space="preserve">
     <value>Перевірити оновлення</value>
   </data>
+  <data name="resetAudioDevices" xml:space="preserve">
+    <value>Скинути звук для кожної програми</value>
+  </data>
 </root>
