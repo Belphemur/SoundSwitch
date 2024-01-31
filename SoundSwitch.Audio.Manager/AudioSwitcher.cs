@@ -200,6 +200,7 @@ namespace SoundSwitch.Audio.Manager
             var currentDefault = GetMmDefaultAudioEndpoint((EDataFlow)device.Type, ERole.eConsole);
             if (currentDefault == null)
                 return;
+
             var audioInfo = InteractWithMmDevice(currentDefault, mmDevice =>
             {
                 var defaultDeviceAudioEndpointVolume = mmDevice.AudioEndpointVolume;
@@ -222,7 +223,15 @@ namespace SoundSwitch.Audio.Manager
                 if (mmDevice.AudioEndpointVolume == null)
                     return nextDevice;
 
-                mmDevice.AudioEndpointVolume.MasterVolumeLevelScalar = audioInfo.Volume;
+                if (mmDevice.AudioEndpointVolume.Channels.Count == 2)
+                {
+                    mmDevice.AudioEndpointVolume.Channels[0].VolumeLevelScalar = audioInfo.Volume;
+                    mmDevice.AudioEndpointVolume.Channels[1].VolumeLevelScalar = audioInfo.Volume;
+                }
+                else
+                { 
+                    mmDevice.AudioEndpointVolume.MasterVolumeLevelScalar = audioInfo.Volume;
+                }
                 mmDevice.AudioEndpointVolume.Mute = audioInfo.IsMuted;
                 return mmDevice;
             });
