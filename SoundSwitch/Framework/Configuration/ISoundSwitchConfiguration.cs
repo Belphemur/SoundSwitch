@@ -63,7 +63,7 @@ namespace SoundSwitch.Framework.Configuration
         /// <summary>
         /// What to do with the TrayIcon when changing default device
         /// </summary>
-        IconChangerFactory.ActionEnum SwitchIcon { get; set; }
+        IconChangerEnum SwitchIcon { get; set; }
 
         HashSet<ProfileSetting> ProfileSettings { get; set; }
         HashSet<Profile.Profile> Profiles { get; set; }

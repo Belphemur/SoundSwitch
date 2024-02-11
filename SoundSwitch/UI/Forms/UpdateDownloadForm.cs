@@ -115,7 +115,7 @@ namespace SoundSwitch.UI.Forms
             installButton.Text = UpdateDownloadStrings.install;
         }
 
-        private void cancelButton_Click(object sender, EventArgs e)
+        private void CancelButton_Click(object sender, EventArgs e)
         {
             if (_releaseFile.DownloadStarted)
             {
@@ -129,7 +129,7 @@ namespace SoundSwitch.UI.Forms
             Close();
         }
 
-        private void installButton_Click(object sender, EventArgs e)
+        private void InstallButton_Click(object sender, EventArgs e)
         {
             downloadProgress.Enabled = true;
             downloadProgress.Visible = true;

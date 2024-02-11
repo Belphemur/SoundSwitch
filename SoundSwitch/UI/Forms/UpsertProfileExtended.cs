@@ -1,4 +1,18 @@
-﻿using System;
+﻿/********************************************************************
+* Copyright (C) 2015-2017 Antoine Aflalo
+*
+* This program is free software; you can redistribute it and/or
+* modify it under the terms of the GNU General Public License
+* as published by the Free Software Foundation; either version 2
+* of the License, or (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+********************************************************************/
+
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -173,7 +187,7 @@ namespace SoundSwitch.UI.Forms
             }
         }
 
-        private void addTriggerButton_Click(object sender, EventArgs e)
+        private void AddTriggerButton_Click(object sender, EventArgs e)
         {
             if (availableTriggerBox.SelectedItem == null)
             {
@@ -187,7 +201,7 @@ namespace SoundSwitch.UI.Forms
             InitializeAvailableTriggers();
         }
 
-        private void setTriggerBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void SetTriggerBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (setTriggerBox.SelectedItem == null)
             {
@@ -247,7 +261,7 @@ namespace SoundSwitch.UI.Forms
             }
         }
 
-        private void deleteButton_Click(object sender, EventArgs e)
+        private void DeleteButton_Click(object sender, EventArgs e)
         {
             if (setTriggerBox.SelectedItem == null)
             {
@@ -271,14 +285,14 @@ namespace SoundSwitch.UI.Forms
             }
         }
 
-        private void selectProgramButton_Click(object sender, EventArgs e)
+        private void SelectProgramButton_Click(object sender, EventArgs e)
         {
             if (selectProgramDialog.ShowDialog(this) != DialogResult.OK)
                 return;
             textInput.Text = selectProgramDialog.FileName;
         }
 
-        private void playbackComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void PlaybackComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (playbackComboBox.SelectedIndex == -1)
             {
@@ -289,7 +303,7 @@ namespace SoundSwitch.UI.Forms
             playbackRemoveButton.Visible = true;
         }
 
-        private void communicationRecordingComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void CommunicationRecordingComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (communicationRecordingComboBox.SelectedIndex == -1)
             {
@@ -300,7 +314,7 @@ namespace SoundSwitch.UI.Forms
             communicationRecordingRemoveButton.Visible = true;
         }
 
-        private void recordingComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void RecordingComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (recordingComboBox.SelectedIndex == -1)
             {
@@ -311,7 +325,7 @@ namespace SoundSwitch.UI.Forms
             recordingRemoveButton.Visible = true;
         }
 
-        private void communicationComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void CommunicationComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (communicationComboBox.SelectedIndex == -1)
             {
@@ -322,7 +336,7 @@ namespace SoundSwitch.UI.Forms
             communicationRemoveButton.Visible = true;
         }
 
-        private void playbackRemoveButton_Click(object sender, EventArgs e)
+        private void PlaybackRemoveButton_Click(object sender, EventArgs e)
         {
             _profile.Playback = null;
             try
@@ -337,7 +351,7 @@ namespace SoundSwitch.UI.Forms
             playbackRemoveButton.Visible = false;
         }
 
-        private void recordingRemoveButton_Click(object sender, EventArgs e)
+        private void RecordingRemoveButton_Click(object sender, EventArgs e)
         {
             _profile.Recording = null;
             try
@@ -352,7 +366,7 @@ namespace SoundSwitch.UI.Forms
             recordingRemoveButton.Visible = false;
         }
 
-        private void communicationRemoveButton_Click(object sender, EventArgs e)
+        private void CommunicationRemoveButton_Click(object sender, EventArgs e)
         {
             _profile.Communication = null;
             try
@@ -367,7 +381,7 @@ namespace SoundSwitch.UI.Forms
             communicationRemoveButton.Visible = false;
         }
 
-        private void communicationRecordingRemoveButton_Click(object sender, EventArgs e)
+        private void CommunicationRecordingRemoveButton_Click(object sender, EventArgs e)
         {
             _profile.RecordingCommunication = null;
             try
@@ -382,7 +396,7 @@ namespace SoundSwitch.UI.Forms
             communicationRecordingRemoveButton.Visible = false;
         }
 
-        private void saveButton_Click(object sender, EventArgs e)
+        private void SaveButton_Click(object sender, EventArgs e)
         {
             var result = _editing ? AppModel.Instance.ProfileManager.UpdateProfile(_oldProfile, _profile) : AppModel.Instance.ProfileManager.AddProfile(_profile);
 
@@ -400,7 +414,7 @@ namespace SoundSwitch.UI.Forms
                   });
         }
 
-        private void restoreDevicesCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void RestoreDevicesCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             if (_profile.AlsoSwitchDefaultDevice || !restoreDevicesCheckBox.Checked) return;
 
@@ -414,7 +428,7 @@ namespace SoundSwitch.UI.Forms
             base.OnFormClosing(e);
         }
 
-        private void switchDefaultCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void SwitchDefaultCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             if (switchDefaultCheckBox.Checked)
             {

@@ -1,23 +1,29 @@
-﻿using SoundSwitch.Framework.Factory;
+﻿/********************************************************************
+* Copyright (C) 2015-2017 Antoine Aflalo
+*
+* This program is free software; you can redistribute it and/or
+* modify it under the terms of the GNU General Public License
+* as published by the Free Software Foundation; either version 2
+* of the License, or (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+********************************************************************/
+
+using SoundSwitch.Framework.Factory;
 using SoundSwitch.Framework.TrayIcon.Icon.Changer;
 
 namespace SoundSwitch.Framework.TrayIcon.Icon
 {
-    public class IconChangerFactory : AbstractFactory<IconChangerFactory.ActionEnum, IIconChanger>
+    public class IconChangerFactory : AbstractFactory<IconChangerEnum, IIconChanger>
     {
-        public enum ActionEnum
+        private static readonly IEnumImplList<IconChangerEnum, IIconChanger> Impl = new EnumImplList<IconChangerEnum, IIconChanger>()
         {
-            Never,
-            Recording,
-            Playback,
-            Always
-        }
-
-        private static readonly IEnumImplList<IconChangerFactory.ActionEnum, IIconChanger> Impl = new EnumImplList<ActionEnum, IIconChanger>()
-        {
+            new NeverIconIconChanger(),
             new PlaybackIconChanger(),
             new RecordingIconChanger(),
-            new NeverIconIconChanger(),
             new AlwaysIconChanger()
         };
 

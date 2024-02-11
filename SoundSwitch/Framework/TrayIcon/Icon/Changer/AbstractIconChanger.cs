@@ -1,4 +1,18 @@
-﻿using NAudio.CoreAudioApi;
+﻿/********************************************************************
+* Copyright (C) 2015-2017 Antoine Aflalo
+*
+* This program is free software; you can redistribute it and/or
+* modify it under the terms of the GNU General Public License
+* as published by the Free Software Foundation; either version 2
+* of the License, or (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+********************************************************************/
+
+using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
@@ -10,20 +24,14 @@ namespace SoundSwitch.Framework.TrayIcon.Icon.Changer
     {
         private readonly ILogger _log;
 
-        protected AbstractIconChanger()
-        {
-            _log = Log.ForContext("IconChanger", TypeEnum);
-        }
+        protected AbstractIconChanger() => _log = Log.ForContext("IconChanger", TypeEnum);
 
-        public abstract IconChangerFactory.ActionEnum TypeEnum { get; }
+        public abstract IconChangerEnum TypeEnum { get; }
         public abstract string Label { get; }
 
         protected abstract DataFlow Flow { get; }
 
-        protected virtual bool NeedsToChangeIcon(DeviceInfo deviceInfo)
-        {
-            return deviceInfo.Type == Flow;
-        }
+        protected virtual bool NeedsToChangeIcon(DeviceInfo deviceInfo) => deviceInfo.Type == Flow;
 
         public void ChangeIcon(UI.Component.TrayIcon trayIcon)
         {
