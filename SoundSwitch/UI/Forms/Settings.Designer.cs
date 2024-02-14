@@ -115,7 +115,7 @@ namespace SoundSwitch.UI.Forms
             closeButton.TabIndex = 11;
             closeButton.Text = "Close";
             closeButton.UseVisualStyleBackColor = true;
-            closeButton.Click += closeButton_Click;
+            closeButton.Click += CloseButton_Click;
             // 
             // switchCommunicationDeviceCheckBox
             // 
@@ -126,7 +126,7 @@ namespace SoundSwitch.UI.Forms
             switchCommunicationDeviceCheckBox.TabIndex = 12;
             switchCommunicationDeviceCheckBox.Text = "Switch Default Communication Device";
             switchCommunicationDeviceCheckBox.UseVisualStyleBackColor = true;
-            switchCommunicationDeviceCheckBox.CheckedChanged += communicationCheckbox_CheckedChanged;
+            switchCommunicationDeviceCheckBox.CheckedChanged += CommunicationCheckbox_CheckedChanged;
             // 
             // tabControl
             // 
@@ -140,7 +140,7 @@ namespace SoundSwitch.UI.Forms
             tabControl.SelectedIndex = 0;
             tabControl.Size = new System.Drawing.Size(896, 439);
             tabControl.TabIndex = 13;
-            tabControl.SelectedIndexChanged += tabControl_SelectedIndexChanged;
+            tabControl.SelectedIndexChanged += TabControl_SelectedIndexChanged;
             // 
             // playbackTabPage
             // 
@@ -226,7 +226,7 @@ namespace SoundSwitch.UI.Forms
             editProfileButton.Text = "Edit";
             editProfileButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             editProfileButton.UseVisualStyleBackColor = true;
-            editProfileButton.Click += editProfileButton_Click;
+            editProfileButton.Click += EditProfileButton_Click;
             // 
             // deleteProfileButton
             // 
@@ -240,7 +240,7 @@ namespace SoundSwitch.UI.Forms
             deleteProfileButton.Text = "Delete";
             deleteProfileButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             deleteProfileButton.UseVisualStyleBackColor = true;
-            deleteProfileButton.Click += deleteProfileButton_Click;
+            deleteProfileButton.Click += DeleteProfileButton_Click;
             // 
             // profileExplanationLabel
             // 
@@ -264,8 +264,8 @@ namespace SoundSwitch.UI.Forms
             profilesListView.TabIndex = 2;
             profilesListView.UseCompatibleStateImageBehavior = false;
             profilesListView.View = System.Windows.Forms.View.Details;
-            profilesListView.SelectedIndexChanged += profilesListView_SelectedIndexChanged;
-            profilesListView.DoubleClick += profilesListView_DoubleClick;
+            profilesListView.SelectedIndexChanged += ProfilesListView_SelectedIndexChanged;
+            profilesListView.DoubleClick += ProfilesListView_DoubleClick;
             // 
             // addProfileButton
             // 
@@ -277,7 +277,7 @@ namespace SoundSwitch.UI.Forms
             addProfileButton.Text = "Add";
             addProfileButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             addProfileButton.UseVisualStyleBackColor = true;
-            addProfileButton.Click += addProfileButton_Click;
+            addProfileButton.Click += AddProfileButton_Click;
             // 
             // appSettingTabPage
             // 
@@ -316,7 +316,7 @@ namespace SoundSwitch.UI.Forms
             notificationComboBox.Name = "notificationComboBox";
             notificationComboBox.Size = new System.Drawing.Size(237, 23);
             notificationComboBox.TabIndex = 16;
-            notificationComboBox.SelectedValueChanged += notificationComboBox_SelectedValueChanged;
+            notificationComboBox.SelectedValueChanged += NotificationComboBox_SelectedValueChanged;
             // 
             // positionLabel
             // 
@@ -335,7 +335,7 @@ namespace SoundSwitch.UI.Forms
             positionComboBox.Name = "positionComboBox";
             positionComboBox.Size = new System.Drawing.Size(121, 23);
             positionComboBox.TabIndex = 17;
-            positionComboBox.SelectedValueChanged += positionComboBox_SelectedValueChanged;
+            positionComboBox.SelectedValueChanged += PositionComboBox_SelectedValueChanged;
             // 
             // usePrimaryScreenCheckbox
             // 
@@ -346,7 +346,7 @@ namespace SoundSwitch.UI.Forms
             usePrimaryScreenCheckbox.TabIndex = 26;
             usePrimaryScreenCheckbox.Text = "Always use primary screen";
             usePrimaryScreenCheckbox.UseVisualStyleBackColor = true;
-            usePrimaryScreenCheckbox.CheckedChanged += usePrimaryScreenCheckbox_CheckedChanged;
+            usePrimaryScreenCheckbox.CheckedChanged += UsePrimaryScreenCheckbox_CheckedChanged;
             // 
             // selectSoundButton
             // 
@@ -357,7 +357,7 @@ namespace SoundSwitch.UI.Forms
             selectSoundButton.Text = "...";
             selectSoundButton.UseVisualStyleBackColor = true;
             selectSoundButton.Visible = false;
-            selectSoundButton.Click += selectSoundButton_Click;
+            selectSoundButton.Click += SelectSoundButton_Click;
             // 
             // deleteSoundButton
             // 
@@ -368,7 +368,7 @@ namespace SoundSwitch.UI.Forms
             deleteSoundButton.TabIndex = 24;
             deleteSoundButton.UseVisualStyleBackColor = true;
             deleteSoundButton.Visible = false;
-            deleteSoundButton.Click += deleteSoundButton_Click;
+            deleteSoundButton.Click += DeleteSoundButton_Click;
             // 
             // languageGroupBox
             // 
@@ -388,7 +388,7 @@ namespace SoundSwitch.UI.Forms
             languageComboBox.Name = "languageComboBox";
             languageComboBox.Size = new System.Drawing.Size(237, 23);
             languageComboBox.TabIndex = 17;
-            languageComboBox.SelectedIndexChanged += languageComboBox_SelectedIndexChanged;
+            languageComboBox.SelectedIndexChanged += LanguageComboBox_SelectedIndexChanged;
             // 
             // updateSettingsGroupBox
             // 
@@ -424,7 +424,7 @@ namespace SoundSwitch.UI.Forms
             updateNeverRadioButton.TabStop = true;
             updateNeverRadioButton.Text = "Never check for updates";
             updateNeverRadioButton.UseVisualStyleBackColor = true;
-            updateNeverRadioButton.CheckedChanged += updateNeverRadioButton_CheckedChanged;
+            updateNeverRadioButton.CheckedChanged += UpdateNeverRadioButton_CheckedChanged;
             // 
             // updateNotifyRadioButton
             // 
@@ -436,7 +436,7 @@ namespace SoundSwitch.UI.Forms
             updateNotifyRadioButton.TabStop = true;
             updateNotifyRadioButton.Text = "Notify me when updates are available";
             updateNotifyRadioButton.UseVisualStyleBackColor = true;
-            updateNotifyRadioButton.CheckedChanged += updateNotifyRadioButton_CheckedChanged;
+            updateNotifyRadioButton.CheckedChanged += UpdateNotifyRadioButton_CheckedChanged;
             // 
             // updateSilentRadioButton
             // 
@@ -448,7 +448,7 @@ namespace SoundSwitch.UI.Forms
             updateSilentRadioButton.TabStop = true;
             updateSilentRadioButton.Text = "Install updates automatically";
             updateSilentRadioButton.UseVisualStyleBackColor = true;
-            updateSilentRadioButton.CheckedChanged += updateSilentRadioButton_CheckedChanged;
+            updateSilentRadioButton.CheckedChanged += UpdateSilentRadioButton_CheckedChanged;
             // 
             // includeBetaVersionsCheckBox
             // 
@@ -459,7 +459,7 @@ namespace SoundSwitch.UI.Forms
             includeBetaVersionsCheckBox.TabIndex = 18;
             includeBetaVersionsCheckBox.Text = "Include Beta versions";
             includeBetaVersionsCheckBox.UseVisualStyleBackColor = true;
-            includeBetaVersionsCheckBox.CheckedChanged += betaVersionCheckbox_CheckedChanged;
+            includeBetaVersionsCheckBox.CheckedChanged += BetaVersionCheckbox_CheckedChanged;
             // 
             // audioSettingsGroupBox
             // 
@@ -506,7 +506,7 @@ namespace SoundSwitch.UI.Forms
             keepVolumeCheckbox.Size = new System.Drawing.Size(277, 24);
             keepVolumeCheckbox.TabIndex = 29;
             keepVolumeCheckbox.Text = "Keep volume levels across playback devices";
-            keepVolumeCheckbox.CheckedChanged += keepVolumeCheckbox_CheckedChanged;
+            keepVolumeCheckbox.CheckedChanged += KeepVolumeCheckbox_CheckedChanged;
             // 
             // foregroundAppCheckbox
             // 
@@ -536,7 +536,7 @@ namespace SoundSwitch.UI.Forms
             cycleThroughComboBox.Name = "cycleThroughComboBox";
             cycleThroughComboBox.Size = new System.Drawing.Size(237, 23);
             cycleThroughComboBox.TabIndex = 22;
-            cycleThroughComboBox.SelectedValueChanged += cyclerComboBox_SelectedValueChanged;
+            cycleThroughComboBox.SelectedValueChanged += CyclerComboBox_SelectedValueChanged;
             // 
             // tooltipOnHoverLabel
             // 
@@ -555,7 +555,7 @@ namespace SoundSwitch.UI.Forms
             tooltipInfoComboBox.Name = "tooltipInfoComboBox";
             tooltipInfoComboBox.Size = new System.Drawing.Size(237, 23);
             tooltipInfoComboBox.TabIndex = 20;
-            tooltipInfoComboBox.SelectedValueChanged += tooltipInfoComboBox_SelectedValueChanged;
+            tooltipInfoComboBox.SelectedValueChanged += TooltipInfoComboBox_SelectedValueChanged;
             // 
             // basicSettingsGroupBox
             // 
@@ -586,7 +586,7 @@ namespace SoundSwitch.UI.Forms
             iconChangeChoicesComboBox.Name = "iconChangeChoicesComboBox";
             iconChangeChoicesComboBox.Size = new System.Drawing.Size(237, 23);
             iconChangeChoicesComboBox.TabIndex = 26;
-            iconChangeChoicesComboBox.SelectedIndexChanged += iconChangeChoicesComboBox_SelectedIndexChanged;
+            iconChangeChoicesComboBox.SelectedIndexChanged += IconChangeChoicesComboBox_SelectedIndexChanged;
             // 
             // selectSoundFileDialog
             // 
@@ -602,7 +602,7 @@ namespace SoundSwitch.UI.Forms
             hotkeysCheckBox.TabIndex = 20;
             hotkeysCheckBox.Text = "Enable hotkey";
             hotkeysCheckBox.UseVisualStyleBackColor = true;
-            hotkeysCheckBox.CheckedChanged += hotkeysCheckbox_CheckedChanged;
+            hotkeysCheckBox.CheckedChanged += HotkeysCheckbox_CheckedChanged;
             // 
             // hotKeyControl
             // 
@@ -613,7 +613,7 @@ namespace SoundSwitch.UI.Forms
             hotKeyControl.Size = new System.Drawing.Size(138, 23);
             hotKeyControl.TabIndex = 21;
             hotKeyControl.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            hotKeyControl.HotKeyChanged += hotKeyControl_HotKeyChanged;
+            hotKeyControl.HotKeyChanged += HotKeyControl_HotKeyChanged;
             // 
             // toggleMuteLabel
             // 
@@ -634,7 +634,7 @@ namespace SoundSwitch.UI.Forms
             muteHotKey.Size = new System.Drawing.Size(138, 23);
             muteHotKey.TabIndex = 24;
             muteHotKey.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            muteHotKey.HotKeyChanged += hotKeyControl_HotKeyChanged;
+            muteHotKey.HotKeyChanged += HotKeyControl_HotKeyChanged;
             // 
             // muteHotKeyCheckbox
             // 
@@ -646,7 +646,7 @@ namespace SoundSwitch.UI.Forms
             muteHotKeyCheckbox.TabIndex = 23;
             muteHotKeyCheckbox.Text = "Enable hotkey";
             muteHotKeyCheckbox.UseVisualStyleBackColor = true;
-            muteHotKeyCheckbox.CheckedChanged += muteHotKeyCheckbox_CheckedChanged;
+            muteHotKeyCheckbox.CheckedChanged += MuteHotKeyCheckbox_CheckedChanged;
             // 
             // SettingsForm
             // 

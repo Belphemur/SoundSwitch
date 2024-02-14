@@ -371,12 +371,12 @@ namespace SoundSwitch.UI.Forms
             deleteProfileButton.Image = Resources.profile_menu_delete;
         }
 
-        private void closeButton_Click(object sender, EventArgs e)
+        private void CloseButton_Click(object sender, EventArgs e)
         {
             Close();
         }
 
-        private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
+        private void TabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
             var tabControlSender = (TabControl)sender;
             if (tabControlSender.SelectedTab == playbackTabPage)
@@ -438,17 +438,17 @@ namespace SoundSwitch.UI.Forms
             deleteSoundButton.Visible = supportCustomSound && AppModel.Instance.CustomNotificationSound != null;
         }
 
-        private void hotkeysCheckbox_CheckedChanged(object sender, EventArgs e)
+        private void HotkeysCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            forceSetHotkeys(sender, hotKeyControl);
+            ForceSetHotkeys(sender, hotKeyControl);
         }
 
-        private void muteHotKeyCheckbox_CheckedChanged(object sender, EventArgs e)
+        private void MuteHotKeyCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            forceSetHotkeys(sender, muteHotKey);
+            ForceSetHotkeys(sender, muteHotKey);
         }
 
-        private void forceSetHotkeys(object sender, HotKeyTextBox hotKeyTextBox)
+        private void ForceSetHotkeys(object sender, HotKeyTextBox hotKeyTextBox)
         {
             var control = (CheckBox)sender;
             if (hotKeyTextBox.Tag == null) return;
@@ -460,7 +460,7 @@ namespace SoundSwitch.UI.Forms
                 AppModel.Instance.SetHotkeyCombination(hotKey, action, true);
         }
 
-        private void hotKeyControl_HotKeyChanged(object sender, HotKeyTextBox.Event e)
+        private void HotKeyControl_HotKeyChanged(object sender, HotKeyTextBox.Event e)
         {
             var control = (HotKeyTextBox)sender;
             var tuple = (Tuple<HotKeyAction, HotKey>)control.Tag;
@@ -600,19 +600,19 @@ namespace SoundSwitch.UI.Forms
 
         #region Profiles
 
-        private void addProfileButton_Click(object sender, EventArgs e)
+        private void AddProfileButton_Click(object sender, EventArgs e)
         {
             var form = new UpsertProfileExtended(new Profile(), _audioDeviceLister.GetDevices(DataFlow.Render, DeviceState.Active | DeviceState.Unplugged), _audioDeviceLister.GetDevices(DataFlow.Capture, DeviceState.Active | DeviceState.Unplugged), this);
             form.Show(this);
         }
 
-        private void profilesListView_SelectedIndexChanged(object sender, EventArgs e)
+        private void ProfilesListView_SelectedIndexChanged(object sender, EventArgs e)
         {
             editProfileButton.Enabled = profilesListView.SelectedIndices.Count == 1;
             deleteProfileButton.Enabled = profilesListView.SelectedIndices.Count > 0;
         }
 
-        private void deleteProfileButton_Click(object sender, EventArgs e)
+        private void DeleteProfileButton_Click(object sender, EventArgs e)
         {
             if (profilesListView.SelectedItems.Count <= 0)
             {
@@ -627,7 +627,7 @@ namespace SoundSwitch.UI.Forms
             RefreshProfiles();
         }
 
-        private void editProfileButton_Click(object sender, EventArgs e)
+        private void EditProfileButton_Click(object sender, EventArgs e)
         {
             if (profilesListView.SelectedItems.Count <= 0)
             {
@@ -639,9 +639,9 @@ namespace SoundSwitch.UI.Forms
             form.Show(this);
         }
 
-        private void profilesListView_DoubleClick(object sender, EventArgs e)
+        private void ProfilesListView_DoubleClick(object sender, EventArgs e)
         {
-            editProfileButton_Click(sender, e);
+            EditProfileButton_Click(sender, e);
         }
 
         #endregion
@@ -662,13 +662,13 @@ namespace SoundSwitch.UI.Forms
             }
         }
 
-        private void iconChangeChoicesComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void IconChangeChoicesComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!_loaded) return;
             var comboBox = (ComboBox)sender;
             if (comboBox == null) return;
 
-            var item = (DisplayEnumObject<IconChangerFactory.ActionEnum>)iconChangeChoicesComboBox.SelectedItem;
+            var item = (DisplayEnumObject<IconChangerEnum>)iconChangeChoicesComboBox.SelectedItem;
             AppConfigs.Configuration.SwitchIcon = item.Enum;
             AppConfigs.Configuration.Save();
 
@@ -679,7 +679,7 @@ namespace SoundSwitch.UI.Forms
 
         #region Audio Settings
 
-        private void communicationCheckbox_CheckedChanged(object sender, EventArgs e)
+        private void CommunicationCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             var comm = switchCommunicationDeviceCheckBox.Checked;
             try
@@ -698,12 +698,12 @@ namespace SoundSwitch.UI.Forms
             AppModel.Instance.SwitchForegroundProgram = foregroundAppCheckbox.Checked;
         }
 
-        private void keepVolumeCheckbox_CheckedChanged(object sender, EventArgs e)
+        private void KeepVolumeCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             AppModel.Instance.KeepVolumeEnabled = keepVolumeCheckbox.Checked;
         }
 
-        private void tooltipInfoComboBox_SelectedValueChanged(object sender, EventArgs e)
+        private void TooltipInfoComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
             if (!_loaded) return;
             var value = (DisplayEnumObject<TooltipInfoTypeEnum>)((ComboBox)sender).SelectedItem;
@@ -712,7 +712,7 @@ namespace SoundSwitch.UI.Forms
             TooltipInfoManager.CurrentTooltipInfo = value.Enum;
         }
 
-        private void cyclerComboBox_SelectedValueChanged(object sender, EventArgs e)
+        private void CyclerComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
             if (!_loaded) return;
             var value = (DisplayEnumObject<DeviceCyclerTypeEnum>)((ComboBox)sender).SelectedItem;
@@ -725,7 +725,7 @@ namespace SoundSwitch.UI.Forms
 
         #region Update Settings
 
-        private void updateSilentRadioButton_CheckedChanged(object sender, EventArgs e)
+        private void UpdateSilentRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             if (updateSilentRadioButton.Checked)
             {
@@ -733,7 +733,7 @@ namespace SoundSwitch.UI.Forms
             }
         }
 
-        private void updateNotifyRadioButton_CheckedChanged(object sender, EventArgs e)
+        private void UpdateNotifyRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             if (updateNotifyRadioButton.Checked)
             {
@@ -741,7 +741,7 @@ namespace SoundSwitch.UI.Forms
             }
         }
 
-        private void updateNeverRadioButton_CheckedChanged(object sender, EventArgs e)
+        private void UpdateNeverRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             if (updateNeverRadioButton.Checked)
             {
@@ -749,7 +749,7 @@ namespace SoundSwitch.UI.Forms
             }
         }
 
-        private void betaVersionCheckbox_CheckedChanged(object sender, EventArgs e)
+        private void BetaVersionCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             AppModel.Instance.IncludeBetaVersions = includeBetaVersionsCheckBox.Checked;
         }
@@ -758,7 +758,7 @@ namespace SoundSwitch.UI.Forms
 
         #region Language
 
-        private void languageComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void LanguageComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!_loaded) return;
             var value = (DisplayEnumObject<Language>)((ComboBox)sender).SelectedItem;
@@ -778,7 +778,7 @@ namespace SoundSwitch.UI.Forms
 
         #region Notification
 
-        private void notificationComboBox_SelectedValueChanged(object sender, EventArgs e)
+        private void NotificationComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
             if (!_loaded) return;
             var value = (DisplayEnumObject<NotificationTypeEnum>)((ComboBox)sender).SelectedItem;
@@ -796,7 +796,7 @@ namespace SoundSwitch.UI.Forms
             AppModel.Instance.NotificationSettings = notificationType;
         }
 
-        private void positionComboBox_SelectedValueChanged(object sender, EventArgs e)
+        private void PositionComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
             if (!_loaded) return;
             var value = (DisplayEnumObject<BannerPositionEnum>)((ComboBox)sender).SelectedItem;
@@ -805,18 +805,18 @@ namespace SoundSwitch.UI.Forms
             AppModel.Instance.BannerPosition = value.Enum;
         }
 
-        private void selectSoundButton_Click(object sender, EventArgs e)
+        private void SelectSoundButton_Click(object sender, EventArgs e)
         {
             selectSoundFileDialog.ShowDialog(this);
         }
 
-        private void deleteSoundButton_Click(object sender, EventArgs e)
+        private void DeleteSoundButton_Click(object sender, EventArgs e)
         {
             AppModel.Instance.CustomNotificationSound = null;
             deleteSoundButton.Visible = false;
         }
 
-        private void usePrimaryScreenCheckbox_CheckedChanged(object sender, EventArgs e)
+        private void UsePrimaryScreenCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             AppModel.Instance.NotifyUsingPrimaryScreen = usePrimaryScreenCheckbox.Checked;
         }

@@ -115,7 +115,7 @@
             this.selectProgramButton.TabIndex = 9;
             this.selectProgramButton.Text = "...";
             this.selectProgramButton.UseVisualStyleBackColor = true;
-            this.selectProgramButton.Click += new System.EventHandler(this.selectProgramButton_Click);
+            this.selectProgramButton.Click += new System.EventHandler(this.SelectProgramButton_Click);
             // 
             // descriptionBox
             // 
@@ -164,7 +164,7 @@
             this.deleteButton.TabIndex = 5;
             this.deleteButton.Text = "Remove";
             this.deleteButton.UseVisualStyleBackColor = true;
-            this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
+            this.deleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
             // 
             // hotKeyControl
             // 
@@ -204,7 +204,7 @@
             this.addTriggerButton.TabIndex = 2;
             this.addTriggerButton.Text = "Add";
             this.addTriggerButton.UseVisualStyleBackColor = true;
-            this.addTriggerButton.Click += new System.EventHandler(this.addTriggerButton_Click);
+            this.addTriggerButton.Click += new System.EventHandler(this.AddTriggerButton_Click);
             // 
             // availableTriggersText
             // 
@@ -227,7 +227,7 @@
             this.setTriggerBox.Name = "setTriggerBox";
             this.setTriggerBox.Size = new System.Drawing.Size(288, 109);
             this.setTriggerBox.TabIndex = 0;
-            this.setTriggerBox.SelectedIndexChanged += new System.EventHandler(this.setTriggerBox_SelectedIndexChanged);
+            this.setTriggerBox.SelectedIndexChanged += new System.EventHandler(this.SetTriggerBox_SelectedIndexChanged);
             // 
             // restoreDevicesCheckBox
             // 
@@ -239,7 +239,7 @@
             this.restoreDevicesCheckBox.TabIndex = 11;
             this.restoreDevicesCheckBox.Text = "Restore devices";
             this.restoreDevicesCheckBox.UseVisualStyleBackColor = true;
-            this.restoreDevicesCheckBox.CheckedChanged += new System.EventHandler(this.restoreDevicesCheckBox_CheckedChanged);
+            this.restoreDevicesCheckBox.CheckedChanged += new System.EventHandler(this.RestoreDevicesCheckBox_CheckedChanged);
             // 
             // profileBox
             // 
@@ -307,7 +307,7 @@
             this.switchDefaultCheckBox.TabIndex = 22;
             this.switchDefaultCheckBox.Text = "Also switch default device";
             this.switchDefaultCheckBox.UseVisualStyleBackColor = true;
-            this.switchDefaultCheckBox.CheckedChanged += new System.EventHandler(this.switchDefaultCheckBox_CheckedChanged);
+            this.switchDefaultCheckBox.CheckedChanged += new System.EventHandler(this.SwitchDefaultCheckBox_CheckedChanged);
             // 
             // recordingRemoveButton
             // 
@@ -320,7 +320,7 @@
             this.recordingRemoveButton.TabIndex = 21;
             this.recordingRemoveButton.UseVisualStyleBackColor = true;
             this.recordingRemoveButton.Visible = false;
-            this.recordingRemoveButton.Click += new System.EventHandler(this.recordingRemoveButton_Click);
+            this.recordingRemoveButton.Click += new System.EventHandler(this.RecordingRemoveButton_Click);
             // 
             // playbackRemoveButton
             // 
@@ -333,7 +333,7 @@
             this.playbackRemoveButton.TabIndex = 20;
             this.playbackRemoveButton.UseVisualStyleBackColor = true;
             this.playbackRemoveButton.Visible = false;
-            this.playbackRemoveButton.Click += new System.EventHandler(this.playbackRemoveButton_Click);
+            this.playbackRemoveButton.Click += new System.EventHandler(this.PlaybackRemoveButton_Click);
             // 
             // recordingLabel
             // 
@@ -374,7 +374,7 @@
             this.recordingComboBox.Size = new System.Drawing.Size(610, 24);
             this.recordingComboBox.TabIndex = 17;
             this.recordingComboBox.ValueMember = "Tag";
-            this.recordingComboBox.SelectedIndexChanged += new System.EventHandler(this.recordingComboBox_SelectedIndexChanged);
+            this.recordingComboBox.SelectedIndexChanged += new System.EventHandler(this.RecordingComboBox_SelectedIndexChanged);
             // 
             // playbackComboBox
             // 
@@ -391,7 +391,7 @@
             this.playbackComboBox.Size = new System.Drawing.Size(610, 24);
             this.playbackComboBox.TabIndex = 16;
             this.playbackComboBox.ValueMember = "Tag";
-            this.playbackComboBox.SelectedIndexChanged += new System.EventHandler(this.playbackComboBox_SelectedIndexChanged);
+            this.playbackComboBox.SelectedIndexChanged += new System.EventHandler(this.PlaybackComboBox_SelectedIndexChanged);
             // 
             // communicationRecordingRemoveButton
             // 
@@ -404,7 +404,7 @@
             this.communicationRecordingRemoveButton.TabIndex = 31;
             this.communicationRecordingRemoveButton.UseVisualStyleBackColor = true;
             this.communicationRecordingRemoveButton.Visible = false;
-            this.communicationRecordingRemoveButton.Click += new System.EventHandler(this.communicationRecordingRemoveButton_Click);
+            this.communicationRecordingRemoveButton.Click += new System.EventHandler(this.CommunicationRecordingRemoveButton_Click);
             // 
             // communicationRecordingLabel
             // 
@@ -433,7 +433,7 @@
             this.communicationRecordingComboBox.Size = new System.Drawing.Size(613, 24);
             this.communicationRecordingComboBox.TabIndex = 29;
             this.communicationRecordingComboBox.ValueMember = "Tag";
-            this.communicationRecordingComboBox.SelectedIndexChanged += new System.EventHandler(this.communicationRecordingComboBox_SelectedIndexChanged);
+            this.communicationRecordingComboBox.SelectedIndexChanged += new System.EventHandler(this.CommunicationRecordingComboBox_SelectedIndexChanged);
             // 
             // communicationRemoveButton
             // 
@@ -446,7 +446,7 @@
             this.communicationRemoveButton.TabIndex = 25;
             this.communicationRemoveButton.UseVisualStyleBackColor = true;
             this.communicationRemoveButton.Visible = false;
-            this.communicationRemoveButton.Click += new System.EventHandler(this.communicationRemoveButton_Click);
+            this.communicationRemoveButton.Click += new System.EventHandler(this.CommunicationRemoveButton_Click);
             // 
             // communicationLabel
             // 
@@ -475,7 +475,7 @@
             this.communicationComboBox.Size = new System.Drawing.Size(613, 24);
             this.communicationComboBox.TabIndex = 23;
             this.communicationComboBox.ValueMember = "Tag";
-            this.communicationComboBox.SelectedIndexChanged += new System.EventHandler(this.communicationComboBox_SelectedIndexChanged);
+            this.communicationComboBox.SelectedIndexChanged += new System.EventHandler(this.CommunicationComboBox_SelectedIndexChanged);
             // 
             // saveButton
             // 
@@ -487,7 +487,7 @@
             this.saveButton.TabIndex = 2;
             this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
-            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
+            this.saveButton.Click += new System.EventHandler(this.SaveButton_Click);
             // 
             // communicationBox
             // 

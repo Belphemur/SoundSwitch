@@ -23,7 +23,6 @@ using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Banner.Position;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
 using SoundSwitch.Localization;
-using SoundSwitch.Model;
 using SoundSwitch.Properties;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification

@@ -68,7 +68,7 @@ namespace SoundSwitch.Framework.Configuration
             AutoAddNewConnectedDevices = false;
 
             SelectedDevices = new HashSet<DeviceInfo>();
-            SwitchIcon = IconChangerFactory.ActionEnum.Never;
+            SwitchIcon = IconChangerEnum.Never;
             MigratedFields = new HashSet<string>();
         }
 
@@ -105,7 +105,7 @@ namespace SoundSwitch.Framework.Configuration
         public bool KeepSystrayIcon { get; set; }
 
         public bool SwitchForegroundProgram { get; set; }
-        public IconChangerFactory.ActionEnum SwitchIcon { get; set; }
+        public IconChangerEnum SwitchIcon { get; set; }
 
         [Obsolete]
         public HashSet<ProfileSetting> ProfileSettings { get; set; } = new();
@@ -176,7 +176,7 @@ namespace SoundSwitch.Framework.Configuration
 #pragma warning disable 612
             if (!MigratedFields.Contains(nameof(KeepSystrayIcon)))
             {
-                SwitchIcon = KeepSystrayIcon ? IconChangerFactory.ActionEnum.Never : IconChangerFactory.ActionEnum.Always;
+                SwitchIcon = KeepSystrayIcon ? IconChangerEnum.Never : IconChangerEnum.Always;
                 MigratedFields.Add(nameof(KeepSystrayIcon));
                 migrated = true;
             }

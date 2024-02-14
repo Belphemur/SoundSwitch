@@ -75,7 +75,7 @@ namespace SoundSwitch.UI.Forms
             this.cancelButton.TabIndex = 2;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
-            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+            this.cancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // installButton
             // 
@@ -87,7 +87,7 @@ namespace SoundSwitch.UI.Forms
             this.installButton.TabIndex = 3;
             this.installButton.Text = "Install";
             this.installButton.UseVisualStyleBackColor = true;
-            this.installButton.Click += new System.EventHandler(this.installButton_Click);
+            this.installButton.Click += new System.EventHandler(this.InstallButton_Click);
             // 
             // downloadProgress
             // 
