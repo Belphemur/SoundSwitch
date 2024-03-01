@@ -242,7 +242,7 @@ Banner: Uses a custom always-on-top frame, useful for in-game usage.</value>
     <value>Recording Device</value>
   </data>
   <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
-    <value>For both Devices</value>
+    <value>Both Devices</value>
   </data>
   <data name="audioFileNotFound" xml:space="preserve">
     <value>The audio file you selected to be used as notification can't be found. SoundSwitch switched the notification setting back to {0}.</value>
@@ -487,7 +487,7 @@ Restore the state of the system when the application is closed.</value>
     <value>Keep volume level across devices</value>
   </data>
   <data name="keepVolume.desc" xml:space="preserve">
-    <value>Keep the same volume level when switching playback devices</value>
+    <value>Keep the same volume level when switching devices</value>
   </data>
   <data name="devices.AutoAddNewDevice" xml:space="preserve">
     <value>Auto select new devices</value>
