@@ -294,7 +294,7 @@ Vill du starta om nu?</value>
     <value>Inställningar</value>
   </data>
   <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
-    <value>För båda enheterna</value>
+    <value>Båda enheterna</value>
   </data>
   <data name="profile.error.application" xml:space="preserve">
     <value>Applikationen {0} har redan en länkad profil.</value>
@@ -496,7 +496,7 @@ Båda: Ändra när någon typ av enhet ändras.</value>
     <value>Håll volymnivå mellan enheter</value>
   </data>
   <data name="keepVolume.desc" xml:space="preserve">
-    <value>Håll samma volymnivå när du byter uppspelningsenheter</value>
+    <value>Håll samma volymnivå när du byter enheter</value>
   </data>
   <data name="position" xml:space="preserve">
     <value>Position</value>
