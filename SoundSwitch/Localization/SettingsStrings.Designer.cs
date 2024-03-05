@@ -345,7 +345,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Keep the same volume level when switching playback devices.
+        ///   Looks up a localized string similar to Keep the same volume level when switching devices.
         /// </summary>
         internal static string keepVolume_desc {
             get {
@@ -1117,7 +1117,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to For both Devices.
+        ///   Looks up a localized string similar to Both Devices.
         /// </summary>
         internal static string tooltipOnHoverOptionBothDevices {
             get {

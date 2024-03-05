@@ -79,7 +79,7 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
         /// <param name="device"></param>
         public bool SetActiveDevice(DeviceInfo device)
         {
-            if (device.Type != DataFlow.Capture && AppModel.Instance.KeepVolumeEnabled)
+            if (AppModel.Instance.KeepVolumeEnabled)
             {
                 AudioSwitcher.Instance.SetVolumeFromDefaultDevice(device);
             }

@@ -178,12 +178,6 @@ namespace SoundSwitch.Audio.Manager
         }
 
         /// <summary>
-        /// Set the same master volume level from the default audio device to the next device
-        /// </summary>
-        /// <param name="deviceId">Id of the device</param>
-        /// <param name="role">Which role to switch</param>
-        /// <param name="flow">Which flow to switch</param>
-        /// <summary>
         /// Get the current default endpoint
         /// </summary>
         /// <param name="flow"></param>
