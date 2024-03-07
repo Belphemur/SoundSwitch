@@ -391,7 +391,7 @@
     <value>Описание</value>
   </data>
   <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>Горячая клавиша, используемая для активации профиля</value>
+    <value>Горячая клавиша, используемая для активации профиля. Если вы используете одну и ту же горячую клавишу, вы сможете переключаться между профилями.</value>
   </data>
   <data name="profile.trigger.steam" xml:space="preserve">
     <value>Steam Big Picture</value>
@@ -468,5 +468,62 @@
   </data>
   <data name="telemetry" xml:space="preserve">
     <value>Телеметрия</value>
+  </data>
+  <data name="position" xml:space="preserve">
+    <value>Позиция</value>
+  </data>
+  <data name="positionOptionBottomCenter" xml:space="preserve">
+    <value>Снизу-Посередине</value>
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>Пусто</value>
+  </data>
+  <data name="profile.error.deviceChanged" xml:space="preserve">
+    <value>У вас может быть только один принудительный профиль.</value>
+  </data>
+  <data name="quickMenu" xml:space="preserve">
+    <value>Быстрое меню по горячей клавише</value>
+  </data>
+  <data name="quickMenu.desc" xml:space="preserve">
+    <value>Показать быстрое меню (как при смене языка), используя горячую клавишу</value>
+  </data>
+  <data name="devices.AutoAddNewDevice" xml:space="preserve">
+    <value>Автоматический выбор нового устройства</value>
+  </data>
+  <data name="positionOptionBottomLeft" xml:space="preserve">
+    <value>Снизу-Слева</value>
+  </data>
+  <data name="positionOptionBottomRight" xml:space="preserve">
+    <value>Снизу-Справа</value>
+  </data>
+  <data name="positionOptionTopRight" xml:space="preserve">
+    <value>Сверху-Справа</value>
+  </data>
+  <data name="positionOptionTopCenter" xml:space="preserve">
+    <value>Сверху-Посередине</value>
+  </data>
+  <data name="telemetry.desc" xml:space="preserve">
+    <value>Анонимный сбор информации о том, какая версия SoundSwitch используется. Предоставляется только разработчику SoundSwitch.</value>
+  </data>
+  <data name="keepVolume" xml:space="preserve">
+    <value>Одинаковый уровень громкости для всех устройств</value>
+  </data>
+  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
+    <value>Профиль будет запускаться автоматически в любое время при смене текущего звукового устройства.</value>
+  </data>
+  <data name="profile.trigger.deviceChanged" xml:space="preserve">
+    <value>Принудительный профиль</value>
+  </data>
+  <data name="keepVolume.desc" xml:space="preserve">
+    <value>Сохранять текущий уровень громкости при переключении устройств</value>
+  </data>
+  <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
+    <value>Добавлять новое подключенное устройство в список выбранных</value>
+  </data>
+  <data name="positionTooltip" xml:space="preserve">
+    <value>Установите позицию для всплывающих оповещений.</value>
+  </data>
+  <data name="positionOptionTopLeft" xml:space="preserve">
+    <value>Сверху-Слева</value>
   </data>
 </root>
