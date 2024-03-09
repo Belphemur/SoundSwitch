@@ -242,7 +242,7 @@ Banner: Uses a custom always-on-top frame, useful for in-game usage.</value>
     <value>Dispositivo de grabación</value>
   </data>
   <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
-    <value>Para ambos dispositivos</value>
+    <value>Ambos dispositivos</value>
   </data>
   <data name="tooltipOnHoverOptionNone" xml:space="preserve">
     <value>Sin descripción emergente</value>
@@ -496,7 +496,7 @@ Restaura el estado del sistema cuando se cierra la aplicación.</value>
     <value>Mantén el nivel de volumen en todos los dispositivos</value>
   </data>
   <data name="keepVolume.desc" xml:space="preserve">
-    <value>Mantén el mismo nivel de volumen al cambiar de dispositivo de reproducción</value>
+    <value>Mantén el mismo nivel de volumen al cambiar de dispositivo</value>
   </data>
   <data name="position" xml:space="preserve">
     <value>Posición</value>
