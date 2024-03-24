@@ -146,7 +146,7 @@
     <value>Quando marcado, o 'Aparelho de comunicação predefinido' e o 'Aparelho de gravação predefinido' serão alterados juntamente (útil para aplicações por ex: Skype, TeamSpeak).</value>
   </data>
   <data name="updateNotifyTooltip" xml:space="preserve">
-    <value>SoundSwitch irá notificar-lhe se existir novas atualizações. Quando clicar na notificação, irá receber uma pequena janela a transferir a atualização e a perguntar se deseja instalá-la.</value>
+    <value>SoundSwitch irá notificar-lhe se novas atualizações existirem. Quando clicar na notificação, irá receber uma pequena janela a descarregar a atualização e a perguntar se deseja instalá-la.</value>
   </data>
   <data name="keepSystemTrayIcon" xml:space="preserve">
     <value>Manter ícone do SoundSwitch na barra de tarefas</value>
