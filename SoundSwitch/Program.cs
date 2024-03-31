@@ -15,12 +15,10 @@
 
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
-using ContribSentry;
 using Sentry;
 using Serilog;
 using SoundSwitch.Framework;
@@ -53,34 +51,19 @@ namespace SoundSwitch
                 Environment = AssemblyUtils.GetReleaseState().ToString(),
                 DefaultTags = { { "ReleaseState", AssemblyUtils.GetReleaseState().ToString() } },
                 Release = $"{Application.ProductName}@{Application.ProductVersion}",
+                // Only track session if telemetry is enabled
+                AutoSessionTracking = AppConfigs.Configuration.Telemetry,
             };
-            var user = new User
+            var user = new SentryUser
             {
                 Id = AppConfigs.Configuration.UniqueInstallationId.ToString(),
                 Username = Environment.UserName
             };
-            //Only track session if Telemetry is enabled
-            if (AppConfigs.Configuration.Telemetry)
-            {
-                var contribOptions = new ContribSentryOptions(true, true, true)
-                {
-                    GlobalSessionMode = true,
-                    CacheDirPath = Path.Combine(ApplicationPath.Default, "Session")
-                };
-                sentryOptions.AddIntegration(new ContribSentrySdkIntegration(contribOptions));
-            }
 
             using var _ = SentrySdk.Init(sentryOptions);
-            //Needs to be started AFTER the init of the main SDK
-            //else the ContribSentrySdk isn't enabled and no tracking is done
-            if (AppConfigs.Configuration.Telemetry)
-            {
-                ContribSentrySdk.StartSession(user);
-            }
 
 
             SentrySdk.ConfigureScope(scope => { scope.User = user; });
-
             InitializeLogger();
             Log.Information("Application Starts");
 #if !DEBUG
@@ -140,10 +123,10 @@ namespace SoundSwitch
             try
             {
 #endif
-                _synchronizationContext = new WindowsFormsSynchronizationContext();
-                SynchronizationContext.SetSynchronizationContext(_synchronizationContext);
+            _synchronizationContext = new WindowsFormsSynchronizationContext();
+            SynchronizationContext.SetSynchronizationContext(_synchronizationContext);
 
-                Application.Run(new SoundSwitchApplicationContext());
+            Application.Run(new SoundSwitchApplicationContext());
 
 
 #if !DEBUG
@@ -153,7 +136,7 @@ namespace SoundSwitch
                 HandleException(ex);
             }
 #endif
-            ContribSentrySdk.EndSession();
+            SentrySdk.EndSession();
             AppModel.Instance.Dispose();
             WindowsAPIAdapter.Stop();
             MMNotificationClient.Instance?.Dispose();
