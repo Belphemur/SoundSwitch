@@ -50,8 +50,8 @@ public class DeviceCollection<T> : ICollection<T> where T : DeviceInfo
             throw new ArgumentNullException();
         }
 
-        _byId.TryAdd(item.Id, item);
-        _byName.TryAdd(GetNameKey(item), item);
+        _byId[item.Id] = item;
+        _byName[GetNameKey(item)] = item;
     }
 
     public void Clear()
@@ -82,7 +82,7 @@ public class DeviceCollection<T> : ICollection<T> where T : DeviceInfo
             throw new ArgumentNullException();
         }
 
-        var removeId = _byId.Remove(item.Id);
+        var removeId = _byId.Remove(item.Id, out var removedById);
         var removeName = _byName.Remove(GetNameKey(item), out var removedByName);
 
         //If we found it by name, remove it also with it's id
@@ -91,6 +91,12 @@ public class DeviceCollection<T> : ICollection<T> where T : DeviceInfo
         if (removeName)
         {
             _byId.Remove(removedByName.Id);
+        }
+
+        //Same thing if we removed it by ID, try to remove from the name in case the name had changed
+        if (removeId)
+        {
+            _byName.Remove(GetNameKey(removedById));
         }
 
         return removeId || removeName;
