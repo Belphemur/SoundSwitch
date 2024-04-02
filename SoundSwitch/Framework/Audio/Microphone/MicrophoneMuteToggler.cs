@@ -29,7 +29,7 @@ namespace SoundSwitch.Framework.Audio.Microphone
                 return null;
             }
 
-            var result = _switcher.InteractWithMmDevice<(string Name, bool NewMuteState)>(microphone, device =>
+            var result = _switcher.InteractWithDevice<(string Name, bool NewMuteState)>(microphone, device =>
             {
                 try
                 {

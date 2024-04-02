@@ -329,7 +329,7 @@ namespace SoundSwitch.Audio.Manager
                     }
                     catch (Exception e)
                     {
-                        Trace.TraceError("Couldn't get device info: {0}", e);
+                        Trace.TraceError("Couldn't get device info [{0}]: {1}", device.ID, e);
                         return null;
                     }
                 })
