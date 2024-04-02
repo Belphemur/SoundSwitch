@@ -21,6 +21,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NAudio.CoreAudioApi;
 using Serilog;
+using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Collection;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Common.Framework.Dispose;
@@ -34,10 +35,10 @@ namespace SoundSwitch.Framework.Audio.Lister
     public class CachedAudioDeviceLister : IAudioDeviceLister
     {
         /// <inheritdoc />
-        private DeviceFullInfo[] PlaybackDevices { get; set; } = Array.Empty<DeviceFullInfo>();
+        private Dictionary<string, DeviceFullInfo> PlaybackDevices { get; set; } = new ();
 
         /// <inheritdoc />
-        private DeviceFullInfo[] RecordingDevices { get; set; } = Array.Empty<DeviceFullInfo>();
+        private Dictionary<string, DeviceFullInfo> RecordingDevices { get; set; } = new();
 
         /// <summary>
         /// Get devices per type and state
@@ -50,8 +51,8 @@ namespace SoundSwitch.Framework.Audio.Lister
         {
             return type switch
             {
-                DataFlow.Render => new DeviceReadOnlyCollection<DeviceFullInfo>(PlaybackDevices.Where(info => state.HasFlag(info.State)), type),
-                DataFlow.Capture => new DeviceReadOnlyCollection<DeviceFullInfo>(RecordingDevices.Where(info => state.HasFlag(info.State)), type),
+                DataFlow.Render => new DeviceReadOnlyCollection<DeviceFullInfo>(PlaybackDevices.Values.Where(info => state.HasFlag(info.State)), type),
+                DataFlow.Capture => new DeviceReadOnlyCollection<DeviceFullInfo>(RecordingDevices.Values.Where(info => state.HasFlag(info.State)), type),
                 _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
             };
         }
@@ -88,6 +89,61 @@ namespace SoundSwitch.Framework.Audio.Lister
         {
             _context.Verbose("Device Changed received, triggering job");
             JobScheduler.Instance.ScheduleJob(new DebounceRefreshJob(_state, this, _context), e.Token);
+        }
+        
+        public void ProcessDeviceUpdates(SortedSet<DeviceChangedEvent> deviceChangedEvents)
+        {
+            void UpdateDeviceCache(DeviceChangedEvent deviceChangedEvent)
+            {
+                var device = AudioSwitcher.Instance.GetAudioEndpoint(deviceChangedEvent.DeviceId);
+                if (device == null)
+                {
+                    _context.Warning("Can't get device {deviceId}", deviceChangedEvent.DeviceId);
+                    return;
+                }
+                
+                switch (device.Type)
+                {
+                    case DataFlow.Render:
+                        if (PlaybackDevices.TryGetValue(device.Id, out var oldPlaybackDevice))
+                        {
+                            oldPlaybackDevice.Dispose();
+                        }
+                        PlaybackDevices[device.Id] = device;
+                        break;
+                    case DataFlow.Capture:
+                        if (RecordingDevices.TryGetValue(device.Id, out var oldRecordingDevice))
+                        {
+                            oldRecordingDevice.Dispose();
+                        }
+                        RecordingDevices[device.Id] = device;
+                        break;
+                    case DataFlow.All:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+
+            foreach (var deviceChangedEvent in deviceChangedEvents)
+            {
+                switch (deviceChangedEvent.Action)
+                {
+                    case EventType.Removed:
+                        PlaybackDevices.Remove(deviceChangedEvent.DeviceId);
+                        RecordingDevices.Remove(deviceChangedEvent.DeviceId);
+                        break;
+                    case EventType.Added:
+                    case EventType.StateChanged:
+                    case EventType.PropertyChanged:
+                        UpdateDeviceCache(deviceChangedEvent);
+                        break;
+                    case EventType.DefaultChanged:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
         }
 
         public void Refresh(CancellationToken cancellationToken = default)
@@ -151,11 +207,11 @@ namespace SoundSwitch.Framework.Audio.Lister
 
                     foreach (var device in PlaybackDevices.Union(RecordingDevices))
                     {
-                        device.Dispose();
+                        device.Value.Dispose();
                     }
 
-                    PlaybackDevices = playbackDevices.Values.ToArray();
-                    RecordingDevices = recordingDevices.Values.ToArray();
+                    PlaybackDevices = playbackDevices;
+                    RecordingDevices = recordingDevices;
 
 
                     logContext.Information("Refreshed all devices in {@StopTime}. {@Recording}/rec, {@Playback}/play", stopWatch.Elapsed, recordingDevices.Count, playbackDevices.Count);
@@ -179,11 +235,9 @@ namespace SoundSwitch.Framework.Audio.Lister
 
         public void Dispose()
         {
-            MMNotificationClient.Instance.DevicesChanged -= DeviceChanged;
-
             foreach (var device in PlaybackDevices.Union(RecordingDevices))
             {
-                device.Dispose();
+                device.Value.Dispose();
             }
 
             _refreshCancellationTokenSource.Dispose();
