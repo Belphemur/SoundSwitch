@@ -332,8 +332,9 @@ namespace SoundSwitch.Audio.Manager
                         Trace.TraceError("Couldn't get device info: {0}", e);
                         return null;
                     }
-                }).Where(device => device != null)
-                .Where(device => string.IsNullOrEmpty(device?.Name))
+                })
+                .Where(device => device != null)
+                .Where(device => !string.IsNullOrEmpty(device?.Name))
                 .Cast<DeviceFullInfo>().ToArray();
         });
 
