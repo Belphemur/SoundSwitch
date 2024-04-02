@@ -95,7 +95,7 @@ namespace SoundSwitch.Framework.Audio.Lister
         /// </summary>
         /// <param name="deviceChangedEvents"></param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public void ProcessDeviceUpdates(SortedSet<DeviceChangedEvent> deviceChangedEvents)
+        public void ProcessDeviceUpdates(IEnumerable<DeviceChangedEvent> deviceChangedEvents)
         {
             void UpdateDeviceCache(DeviceChangedEvent deviceChangedEvent)
             {

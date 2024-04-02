@@ -30,13 +30,17 @@ namespace SoundSwitch.Framework.NotificationManager
         /// Get the last events and clear the queue of events
         /// </summary>
         /// <returns></returns>
-        public SortedSet<DeviceChangedEvent> GetLastEvents()
+        public IEnumerable<DeviceChangedEvent> GetLastEvents()
         {
+            if (_deviceChangedEvents.IsEmpty)
+                return ArraySegment<DeviceChangedEvent>.Empty;
+
             var events = new SortedSet<DeviceChangedEvent>();
             while (_deviceChangedEvents.TryDequeue(out var deviceChangedEvent))
             {
                 events.Add(deviceChangedEvent);
             }
+
             return events;
         }
 

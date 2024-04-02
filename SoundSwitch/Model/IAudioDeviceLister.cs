@@ -42,6 +42,6 @@ namespace SoundSwitch.Model
         /// </summary>
         /// <param name="deviceChangedEvents"></param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        void ProcessDeviceUpdates(SortedSet<DeviceChangedEvent> deviceChangedEvents);
+        void ProcessDeviceUpdates(IEnumerable<DeviceChangedEvent> deviceChangedEvents);
     }
 }
