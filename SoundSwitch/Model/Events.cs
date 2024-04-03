@@ -62,6 +62,7 @@ namespace SoundSwitch.Model
     {
         public BannerPositionEnum PrevBannerPosition { get; }
         public BannerPositionEnum NewBannerPosition { get; }
+
         public BannerPositionUpdatedEvent(BannerPositionEnum prevBannerPosition, BannerPositionEnum newBannerPosition)
         {
             PrevBannerPosition = prevBannerPosition;
@@ -90,25 +91,14 @@ namespace SoundSwitch.Model
             UpdateMode = updateMode;
         }
     }
-    
 
-    public class DeviceChangedEventBase : EventArgs
+    public class DeviceDefaultChangedEvent
     {
-        public string DeviceId { get; }
-
-
-        public DeviceChangedEventBase(string deviceId)
-        {
-            DeviceId = deviceId;
-        }
-    }
-
-    public class DeviceDefaultChangedEvent : DeviceChangedEventBase
-    {
+        public string DeviceId => Device.Id;
         public Role Role { get; }
         public DeviceFullInfo Device { get; }
 
-        public DeviceDefaultChangedEvent(DeviceFullInfo device, Role role) : base(device.Id)
+        public DeviceDefaultChangedEvent(DeviceFullInfo device, Role role)
         {
             Device = device;
             Role = role;

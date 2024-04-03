@@ -21,9 +21,7 @@ namespace SoundSwitch.Framework.NotificationManager
         private readonly Dictionary<DeviceRole, string> _lastRoleDevice = new();
 
         private readonly ConcurrentQueue<DeviceChangedEvent> _deviceChangedEvents = new();
-
-        public event EventHandler<DeviceChangedEventBase> DeviceAdded;
-
+        
         /// <summary>
         /// Get the last events and clear the queue of events
         /// </summary>
