@@ -29,7 +29,7 @@ using SoundSwitch.Framework.Updater.Releases.Models;
 
 namespace SoundSwitch.Framework.Updater
 {
-    public class UpdateChecker
+    public partial class UpdateChecker
     {
         private static readonly string UserAgent =
             $"Mozilla/5.0 (compatible; {Environment.OSVersion.Platform} {Environment.OSVersion.VersionString}; {Application.ProductName}/{Application.ProductVersion};)";
@@ -59,7 +59,11 @@ namespace SoundSwitch.Framework.Updater
                 return false;
             }
 
-            var version = SemanticVersion.Parse(serverRelease.TagName.Substring(1));
+            if (!SemanticVersion.TryParse(serverRelease.TagName.Substring(1), out var version))
+            {
+                Log.Error("Invalid version: {version}", serverRelease.TagName);
+                return false;
+            }
             try
             {
                 if (version > AppVersion)
@@ -71,7 +75,7 @@ namespace SoundSwitch.Framework.Updater
                     }
 
 
-                    var changelog = Regex.Split(serverRelease.Body, "\r\n|\r|\n");
+                    var changelog = BodyRegex().Split(serverRelease.Body);
                     var release = new AppRelease(version, installer, serverRelease.Name);
                     release.Changelog.AddRange(changelog);
                     UpdateAvailable?.Invoke(this, new NewReleaseEvent(release));
@@ -115,5 +119,8 @@ namespace SoundSwitch.Framework.Updater
                 AppRelease = appRelease;
             }
         }
+
+        [GeneratedRegex("\r\n|\r|\n")]
+        private static partial Regex BodyRegex();
     }
 }
