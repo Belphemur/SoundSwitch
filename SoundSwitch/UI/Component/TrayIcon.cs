@@ -77,11 +77,20 @@ namespace SoundSwitch.UI.Component
 
         private ToolStripMenuItem _updateMenuItem;
         private TimerForm _animationTimer;
-        private readonly Lazy<UpdateDownloadForm> _updateDownloadForm = new(() => new UpdateDownloadForm());
+        private readonly Lazy<UpdateDownloadForm> _updateDownloadForm;
         private readonly MethodInfo? _showContextMenu;
 
         public TrayIcon()
         {
+            _updateDownloadForm = new Lazy<UpdateDownloadForm>(() =>
+            {
+                UpdateDownloadForm form = null;
+                _context.Send(_ =>
+                {
+                    form = new UpdateDownloadForm();
+                }, null);
+                return form;
+            });
             //Localization
             var rightToLeft = new LanguageFactory().Get(AppModel.Instance.Language).IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
             _selectionMenu.RightToLeft = rightToLeft;
