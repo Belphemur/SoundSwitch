@@ -14,7 +14,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
@@ -96,13 +95,11 @@ namespace SoundSwitch.Model
     public class DeviceChangedEventBase : EventArgs
     {
         public string DeviceId { get; }
-        public CancellationToken Token { get; }
 
 
-        public DeviceChangedEventBase(string deviceId, CancellationToken token)
+        public DeviceChangedEventBase(string deviceId)
         {
             DeviceId = deviceId;
-            Token = token;
         }
     }
 
@@ -111,7 +108,7 @@ namespace SoundSwitch.Model
         public Role Role { get; }
         public DeviceFullInfo Device { get; }
 
-        public DeviceDefaultChangedEvent(DeviceFullInfo device, Role role, CancellationToken token) : base(device.Id, token)
+        public DeviceDefaultChangedEvent(DeviceFullInfo device, Role role) : base(device.Id)
         {
             Device = device;
             Role = role;

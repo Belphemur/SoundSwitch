@@ -22,8 +22,6 @@ namespace SoundSwitch.Framework.NotificationManager
 
         private readonly ConcurrentQueue<DeviceChangedEvent> _deviceChangedEvents = new();
 
-        public event EventHandler<DeviceDefaultChangedEvent> DefaultDeviceChanged;
-        public event EventHandler<DeviceChangedEventBase> DevicesChanged;
         public event EventHandler<DeviceChangedEventBase> DeviceAdded;
 
         /// <summary>
@@ -91,7 +89,7 @@ namespace SoundSwitch.Framework.NotificationManager
             }
 
             _lastRoleDevice[deviceRole] = deviceId;
-            _deviceChangedEvents.Enqueue(new DeviceChangedEvent(EventType.DefaultChanged, deviceId));
+            _deviceChangedEvents.Enqueue(new DefaultDeviceChangedEvent(EventType.DefaultChanged, deviceId, role));
         }
 
         public void OnPropertyValueChanged(string pwstrDeviceId, PropertyKey key)

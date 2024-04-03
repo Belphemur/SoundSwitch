@@ -17,10 +17,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
-using Job.Scheduler.Job;
-using Job.Scheduler.Job.Action;
-using Job.Scheduler.Job.Exception;
 using NAudio.CoreAudioApi;
 using RailSharp;
 using Serilog;
@@ -55,47 +51,12 @@ namespace SoundSwitch.Model
         private readonly NotificationManager _notificationManager;
         private UpdateChecker _updateChecker;
         private DeviceCollection<DeviceInfo> _selectedDevices;
-
-        private class DefaultDeviceChangedJob : IDebounceJob
-        {
-            private readonly AppModel _appModel;
-            private readonly DeviceFullInfo _device;
-            private readonly Role _role;
-
-            public DefaultDeviceChangedJob(AppModel appModel, DeviceFullInfo device, Role role)
-            {
-                _appModel = appModel;
-                _device = device;
-                _role = role;
-                Key = $"default-device-changed-{device.Type}-{role}";
-            }
-
-            public Task ExecuteAsync(CancellationToken cancellationToken)
-            {
-                Log.Information(@"[WINAPI] Default device changed to {device}:{role}", _device, _role);
-                _appModel.DefaultDeviceChanged?.Invoke(_appModel, new DeviceDefaultChangedEvent(_device, _role, cancellationToken));
-                _device.Dispose();
-                return Task.CompletedTask;
-            }
-
-            public Task OnFailure(JobException exception)
-            {
-                return Task.CompletedTask;
-            }
-
-            public IRetryAction FailRule { get; } = new NoRetry();
-            public TimeSpan? MaxRuntime { get; }
-            public string Key { get; }
-            public TimeSpan DebounceTime { get; } = TimeSpan.FromMilliseconds(200);
-        }
-
         private AppModel()
         {
             _notificationManager = new NotificationManager(this);
 
             _deviceCyclerManager = new DeviceCyclerManager();
             _selectedDevices = null;
-            MMNotificationClient.Instance.DefaultDeviceChanged += (sender, @event) => { JobScheduler.Instance.ScheduleJob(new DefaultDeviceChangedJob(this, @event.Device, @event.Role), @event.Token); };
             MMNotificationClient.Instance.DeviceAdded += (sender, @event) =>
             {
                 if (!AutoAddNewDevice)
@@ -103,7 +64,7 @@ namespace SoundSwitch.Model
                     return;
                 }
 
-                JobScheduler.Instance.ScheduleJob(new DeviceAddedJob(this, @event.DeviceId), @event.Token);
+                JobScheduler.Instance.ScheduleJob(new DeviceAddedJob(this, @event.DeviceId));
             };
             _microphoneMuteToggler = new MicrophoneMuteToggler(AudioSwitcher.Instance, _notificationManager);
             _updateScheduler = new LimitedConcurrencyLevelTaskScheduler(1);
@@ -346,6 +307,10 @@ namespace SoundSwitch.Model
             
             AudioDeviceLister = active;
             JobScheduler.Instance.ScheduleJob(new ProcessNotificationEventsJob());
+            AudioDeviceLister.DefaultDeviceChanged.Subscribe((@event) =>
+            {
+                DefaultDeviceChanged?.Invoke(this, new DeviceDefaultChangedEvent(@event.Device, @event.Role));
+            });
 
             RegisterHotKey(AppConfigs.Configuration.PlaybackHotKey);
             var saveConfig = false;

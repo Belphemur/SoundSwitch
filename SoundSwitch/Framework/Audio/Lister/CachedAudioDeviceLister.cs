@@ -16,6 +16,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -36,6 +38,9 @@ namespace SoundSwitch.Framework.Audio.Lister
 
         /// <inheritdoc />
         private Dictionary<string, DeviceFullInfo> RecordingDevices { get; set; } = new();
+
+        private readonly ISubject<DefaultDevicePayload> _defaultDeviceChanged = new Subject<DefaultDevicePayload>();
+        public IObservable<DefaultDevicePayload> DefaultDeviceChanged => _defaultDeviceChanged.AsObservable();
 
         /// <summary>
         /// Get devices per type and state
@@ -97,14 +102,21 @@ namespace SoundSwitch.Framework.Audio.Lister
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public void ProcessDeviceUpdates(IEnumerable<DeviceChangedEvent> deviceChangedEvents)
         {
-            void UpdateDeviceCache(DeviceChangedEvent deviceChangedEvent)
+            bool GetDevice(DeviceChangedEvent deviceChangedEvent, out DeviceFullInfo device)
             {
-                var device = AudioSwitcher.Instance.GetAudioEndpoint(deviceChangedEvent.DeviceId);
+                device = AudioSwitcher.Instance.GetAudioEndpoint(deviceChangedEvent.DeviceId);
                 if (device == null)
                 {
                     _context.Warning("Can't get device {deviceId}", deviceChangedEvent.DeviceId);
-                    return;
+                    return true;
                 }
+
+                return false;
+            }
+
+            void UpdateDeviceCache(DeviceChangedEvent deviceChangedEvent)
+            {
+                if (GetDevice(deviceChangedEvent, out var device)) return;
 
                 switch (device.Type)
                 {
@@ -157,6 +169,13 @@ namespace SoundSwitch.Framework.Audio.Lister
                             UpdateDeviceCache(deviceChangedEvent);
                             break;
                         case EventType.DefaultChanged:
+                            if (!PlaybackDevices.TryGetValue(deviceChangedEvent.DeviceId, out var device) && !RecordingDevices.TryGetValue(deviceChangedEvent.DeviceId, out device))
+                            {
+                                _context.Warning("Can't get device {deviceId}", deviceChangedEvent.DeviceId);
+                                break;
+                            }
+
+                            _defaultDeviceChanged.OnNext(new DefaultDevicePayload(device, ((DefaultDeviceChangedEvent)deviceChangedEvent).Role));
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();

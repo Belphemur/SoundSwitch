@@ -18,6 +18,7 @@ using System.Threading;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Common.Framework.Audio.Collection;
 using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Framework.Audio.Lister;
 
 namespace SoundSwitch.Model
 {
@@ -25,6 +26,7 @@ namespace SoundSwitch.Model
     {
 
         bool Refreshing { get; }
+        IObservable<DefaultDevicePayload> DefaultDeviceChanged { get; }
 
         void Refresh(CancellationToken token);
 
