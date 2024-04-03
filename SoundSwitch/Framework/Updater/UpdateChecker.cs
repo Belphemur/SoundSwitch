@@ -21,6 +21,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using NuGet.Versioning;
 using Sentry;
 using Serilog;
 using SoundSwitch.Framework.Updater.Releases;
@@ -33,7 +34,7 @@ namespace SoundSwitch.Framework.Updater
         private static readonly string UserAgent =
             $"Mozilla/5.0 (compatible; {Environment.OSVersion.Platform} {Environment.OSVersion.VersionString}; {Application.ProductName}/{Application.ProductVersion};)";
 
-        private static readonly Version AppVersion = new Version(Application.ProductVersion.Split("-")[0]);
+        private static readonly SemanticVersion AppVersion = SemanticVersion.Parse(Application.ProductVersion);
 
         private readonly Uri _releaseUrl;
         public EventHandler<NewReleaseEvent> UpdateAvailable;
@@ -58,7 +59,7 @@ namespace SoundSwitch.Framework.Updater
                 return false;
             }
 
-            var version = new Version(serverRelease.TagName.Substring(1).Split("-")[0]);
+            var version = SemanticVersion.Parse(serverRelease.TagName.Substring(1));
             try
             {
                 if (version > AppVersion)
@@ -95,7 +96,7 @@ namespace SoundSwitch.Framework.Updater
             httpClient.DefaultRequestHeaders.UserAgent.Add(ApplicationInfo.CommentValue);
             httpClient.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
             var releases = await httpClient.GetFromJsonAsync(_releaseUrl, GithubReleasesJsonContext.Default.ReleaseArray, token);
-            foreach (var release in (releases ?? Array.Empty<Release>()).OrderByDescending(release => new Version(release.TagName.Substring(1))))
+            foreach (var release in (releases ?? Array.Empty<Release>()).OrderByDescending(release => SemanticVersion.Parse(release.TagName.Substring(1))))
             {
                 token.ThrowIfCancellationRequested();
                 if (ProcessAndNotifyRelease(release))
