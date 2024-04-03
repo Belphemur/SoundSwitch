@@ -40,7 +40,6 @@ using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Framework.WinApi.Keyboard;
 using SoundSwitch.Localization;
 using SoundSwitch.Localization.Factory;
-using SoundSwitch.Model.Job;
 using SoundSwitch.UI.Component;
 
 namespace SoundSwitch.Model
@@ -57,15 +56,6 @@ namespace SoundSwitch.Model
 
             _deviceCyclerManager = new DeviceCyclerManager();
             _selectedDevices = null;
-            MMNotificationClient.Instance.DeviceAdded += (sender, @event) =>
-            {
-                if (!AutoAddNewDevice)
-                {
-                    return;
-                }
-
-                JobScheduler.Instance.ScheduleJob(new DeviceAddedJob(this, @event.DeviceId));
-            };
             _microphoneMuteToggler = new MicrophoneMuteToggler(AudioSwitcher.Instance, _notificationManager);
             _updateScheduler = new LimitedConcurrencyLevelTaskScheduler(1);
         }
@@ -248,16 +238,6 @@ namespace SoundSwitch.Model
             set
             {
                 AppConfigs.Configuration.NotifyUsingPrimaryScreen = value;
-                AppConfigs.Configuration.Save();
-            }
-        }
-
-        public bool AutoAddNewDevice
-        {
-            get => AppConfigs.Configuration.AutoAddNewConnectedDevices;
-            set
-            {
-                AppConfigs.Configuration.AutoAddNewConnectedDevices = value;
                 AppConfigs.Configuration.Save();
             }
         }
