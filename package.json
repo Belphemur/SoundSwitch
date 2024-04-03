@@ -77,6 +77,17 @@
         }
       ],
       [
+        "@semantic-release/exec",
+        {
+          "prepareCmd": "sed -i -E 's/AssemblyFileVersion\\(.+\\)/AssemblyFileVersion(\"${nextRelease.version}\")/' SoundSwitch/Properties/AssemblyInfo.cs"
+        }
+      ],
+      [
+        "@semantic-release/exec",
+        {
+          "prepareCmd": "sed -i -E 's/AssemblyFileVersion\\(\"(.+?)(-[^\"]+)?\"\\)/AssemblyFileVersion(\"\\1\")/' SoundSwitch/Properties/AssemblyInfo.cs"        }
+      ],
+      [
         "@semantic-release/git",
         {
           "assets": [
