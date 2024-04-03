@@ -1,17 +1,17 @@
 ﻿/********************************************************************
-* Copyright (C) 2015 Jeroen Pelgrims
-* Copyright (C) 2015-2017 Antoine Aflalo
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-********************************************************************/
+ * Copyright (C) 2015 Jeroen Pelgrims
+ * Copyright (C) 2015-2017 Antoine Aflalo
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ ********************************************************************/
 
 using System;
 using System.Collections.Generic;
@@ -106,10 +106,6 @@ namespace SoundSwitch.UI.Forms
             keepVolumeCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.KeepVolumeEnabled), false, DataSourceUpdateMode.OnPropertyChanged);
             var keepVolumeCheckboxToolTip = new ToolTip();
             keepVolumeCheckboxToolTip.SetToolTip(keepVolumeCheckbox, SettingsStrings.keepVolume_desc);
-
-            autoAddDeviceCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.AutoAddNewDevice), false, DataSourceUpdateMode.OnPropertyChanged);
-            var autoAddDeviceCheckboxToolTip = new ToolTip();
-            autoAddDeviceCheckboxToolTip.SetToolTip(autoAddDeviceCheckbox, SettingsStrings.devices_AutoAddNewDevice_Tooltip);
 
             new TooltipInfoFactory().ConfigureListControl(tooltipInfoComboBox);
             tooltipInfoComboBox.SelectedValue = TooltipInfoManager.CurrentTooltipInfo;
@@ -336,7 +332,6 @@ namespace SoundSwitch.UI.Forms
             foregroundAppCheckbox.Text = SettingsStrings.foregroundApp;
             quickMenuCheckbox.Text = SettingsStrings.quickMenu;
             keepVolumeCheckbox.Text = SettingsStrings.keepVolume;
-            autoAddDeviceCheckbox.Text = SettingsStrings.devices_AutoAddNewDevice;
 
             // Settings - Update
             updateSettingsGroupBox.Text = SettingsStrings.updateSettings;

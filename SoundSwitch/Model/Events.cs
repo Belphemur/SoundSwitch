@@ -1,20 +1,19 @@
 ﻿/********************************************************************
-* Copyright (C) 2015-2017 Antoine Aflalo
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-********************************************************************/
+ * Copyright (C) 2015-2017 Antoine Aflalo
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ ********************************************************************/
 
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
@@ -63,6 +62,7 @@ namespace SoundSwitch.Model
     {
         public BannerPositionEnum PrevBannerPosition { get; }
         public BannerPositionEnum NewBannerPosition { get; }
+
         public BannerPositionUpdatedEvent(BannerPositionEnum prevBannerPosition, BannerPositionEnum newBannerPosition)
         {
             PrevBannerPosition = prevBannerPosition;
@@ -92,25 +92,13 @@ namespace SoundSwitch.Model
         }
     }
 
-    public class DeviceChangedEventBase : EventArgs
+    public class DeviceDefaultChangedEvent
     {
-        public string DeviceId { get; }
-        public CancellationToken Token { get; }
-
-
-        public DeviceChangedEventBase(string deviceId, CancellationToken token)
-        {
-            DeviceId = deviceId;
-            Token = token;
-        }
-    }
-
-    public class DeviceDefaultChangedEvent : DeviceChangedEventBase
-    {
+        public string DeviceId => Device.Id;
         public Role Role { get; }
         public DeviceFullInfo Device { get; }
 
-        public DeviceDefaultChangedEvent(DeviceFullInfo device, Role role, CancellationToken token) : base(device.Id, token)
+        public DeviceDefaultChangedEvent(DeviceFullInfo device, Role role)
         {
             Device = device;
             Role = role;
