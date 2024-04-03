@@ -1,17 +1,17 @@
 ﻿/********************************************************************
-* Copyright (C) 2015 Jeroen Pelgrims
-* Copyright (C) 2015-2017 Antoine Aflalo
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-********************************************************************/
+ * Copyright (C) 2015 Jeroen Pelgrims
+ * Copyright (C) 2015-2017 Antoine Aflalo
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ ********************************************************************/
 
 using System;
 using System.Diagnostics;
@@ -77,7 +77,7 @@ namespace SoundSwitch.UI.Component
 
         private ToolStripMenuItem _updateMenuItem;
         private TimerForm _animationTimer;
-        private readonly UpdateDownloadForm _updateDownloadForm;
+        private readonly Lazy<UpdateDownloadForm> _updateDownloadForm = new(() => new UpdateDownloadForm());
         private readonly MethodInfo? _showContextMenu;
 
         public TrayIcon()
@@ -122,7 +122,6 @@ namespace SoundSwitch.UI.Component
                 NotifyIcon.ContextMenuStrip = _settingsMenu;
             };
             SetEventHandlers();
-            _updateDownloadForm = new UpdateDownloadForm();
             _tooltipInfoManager.SetIconText();
         }
 
@@ -142,7 +141,8 @@ namespace SoundSwitch.UI.Component
 
             NotifyIcon.Dispose();
             _updateMenuItem.Dispose();
-            _updateDownloadForm.Dispose();
+            if (_updateDownloadForm.IsValueCreated)
+                _updateDownloadForm.Value.Dispose();
         }
 
         public void ReplaceIcon(Icon newIcon)
@@ -199,15 +199,15 @@ namespace SoundSwitch.UI.Component
                 return;
             }
 
-            if (_updateDownloadForm.Visible)
+            if (_updateDownloadForm.Value.Visible)
             {
-                _updateDownloadForm.Focus();
+                _updateDownloadForm.Value.Focus();
                 return;
             }
 
             StopAnimationIconUpdate();
             NotifyIcon.BalloonTipClicked -= OnUpdateClick;
-            _updateDownloadForm.DownloadRelease((AppRelease)_updateMenuItem.Tag);
+            _updateDownloadForm.Value.DownloadRelease((AppRelease)_updateMenuItem.Tag);
         }
 
         private void SetEventHandlers()
@@ -234,7 +234,7 @@ namespace SoundSwitch.UI.Component
                 switch (@event.UpdateMode)
                 {
                     case UpdateMode.Never:
-                        _context.Send(_ => _updateDownloadForm.DownloadRelease(@event.AppRelease), null);
+                        _context.Send(_ => _updateDownloadForm.Value.DownloadRelease(@event.AppRelease), null);
                         break;
                     case UpdateMode.Notify:
                         _context.Send(_ => { NewReleaseAvailable(sender, @event); }, null);
