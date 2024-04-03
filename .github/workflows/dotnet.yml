@@ -2,10 +2,10 @@ name: .NET
 
 on:
   push:
-    branches: [ dev, master ]
+    branches: [ dev, master, beta ]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [ dev, master ]
+    branches: [ dev, master, beta ]
 env:
   # Stop wasting time caching packages
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
@@ -183,7 +183,7 @@ jobs:
       group: ${{ github.workflow }}-${{ github.ref }}-release
       cancel-in-progress: true
     needs: [ build, changes ]
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/beta'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
