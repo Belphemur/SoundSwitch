@@ -33,7 +33,7 @@ namespace SoundSwitch.Framework.Updater
         private static readonly string UserAgent =
             $"Mozilla/5.0 (compatible; {Environment.OSVersion.Platform} {Environment.OSVersion.VersionString}; {Application.ProductName}/{Application.ProductVersion};)";
 
-        private static readonly Version AppVersion = new Version(Application.ProductVersion);
+        private static readonly Version AppVersion = new Version(Application.ProductVersion.Split("-")[0]);
 
         private readonly Uri _releaseUrl;
         public EventHandler<NewReleaseEvent> UpdateAvailable;

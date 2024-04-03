@@ -73,7 +73,7 @@
       [
         "@semantic-release/exec",
         {
-          "prepareCmd": "sed -i -E 's/AssemblyVersion\\(.+\\)/AssemblyVersion(\"${nextRelease.version}\")/' SoundSwitch/Properties/AssemblyInfo.cs"
+          "prepareCmd": "sed -i -E 's/AssemblyInformationalVersion\\(.+\\)/AssemblyInformationalVersion(\"${nextRelease.version}\")/' SoundSwitch/Properties/AssemblyInfo.cs"
         }
       ],
       [
