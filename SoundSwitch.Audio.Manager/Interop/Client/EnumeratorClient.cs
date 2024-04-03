@@ -1,5 +1,7 @@
 ﻿#nullable enable
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Audio.Manager.Interop.Enum;
@@ -71,6 +73,19 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
             {
                 return null;
             }
+        }
+
+        /// <summary>
+        ///  Get all the endpoints of specific dataflow and state
+        /// </summary>
+        /// <param name="dataFlow"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
+        public IEnumerable<MMDevice> GetEndpoints(EDataFlow dataFlow, EDeviceState state)
+        {
+            var deviceCollection = _enumerator.EnumerateAudioEndPoints((DataFlow)dataFlow, (DeviceState)state);
+
+            return deviceCollection.ToArray();
         }
 
         [ComImport, Guid(ComGuid.AUDIO_IMMDEVICE_ENUMERATOR_OBJECT_IID)]

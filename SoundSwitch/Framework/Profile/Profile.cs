@@ -52,7 +52,7 @@ namespace SoundSwitch.Framework.Profile
                     return Resources.profile;
                 }
 
-                return AudioSwitcher.Instance.InteractWithMmDevice(device, mmDevice => AudioDeviceIconExtractor.ExtractIconFromPath(mmDevice.IconPath, mmDevice.DataFlow, true));
+                return AudioSwitcher.Instance.InteractWithDevice(device, mmDevice => AudioDeviceIconExtractor.ExtractIconFromPath(mmDevice.IconPath, mmDevice.DataFlow, true));
             }
         }
 

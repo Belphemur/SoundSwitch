@@ -1,26 +1,22 @@
 ﻿/********************************************************************
-* Copyright (C) 2015 Jeroen Pelgrims
-* Copyright (C) 2015-2017 Antoine Aflalo
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-********************************************************************/
+ * Copyright (C) 2015 Jeroen Pelgrims
+ * Copyright (C) 2015-2017 Antoine Aflalo
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ ********************************************************************/
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
-using Job.Scheduler.Job;
-using Job.Scheduler.Job.Action;
-using Job.Scheduler.Job.Exception;
 using NAudio.CoreAudioApi;
 using RailSharp;
 using Serilog;
@@ -29,6 +25,7 @@ using SoundSwitch.Common.Framework.Audio.Collection;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
+using SoundSwitch.Framework.Audio.Lister.Job;
 using SoundSwitch.Framework.Audio.Microphone;
 using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Configuration;
@@ -43,7 +40,6 @@ using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Framework.WinApi.Keyboard;
 using SoundSwitch.Localization;
 using SoundSwitch.Localization.Factory;
-using SoundSwitch.Model.Job;
 using SoundSwitch.UI.Component;
 
 namespace SoundSwitch.Model
@@ -54,56 +50,12 @@ namespace SoundSwitch.Model
         private readonly NotificationManager _notificationManager;
         private UpdateChecker _updateChecker;
         private DeviceCollection<DeviceInfo> _selectedDevices;
-
-        private class DefaultDeviceChangedJob : IDebounceJob
-        {
-            private readonly AppModel _appModel;
-            private readonly DeviceFullInfo _device;
-            private readonly Role _role;
-
-            public DefaultDeviceChangedJob(AppModel appModel, DeviceFullInfo device, Role role)
-            {
-                _appModel = appModel;
-                _device = device;
-                _role = role;
-                Key = $"default-device-changed-{device.Type}-{role}";
-            }
-
-            public Task ExecuteAsync(CancellationToken cancellationToken)
-            {
-                Log.Information(@"[WINAPI] Default device changed to {device}:{role}", _device, _role);
-                _appModel.DefaultDeviceChanged?.Invoke(_appModel, new DeviceDefaultChangedEvent(_device, _role, cancellationToken));
-                _device.Dispose();
-                return Task.CompletedTask;
-            }
-
-            public Task OnFailure(JobException exception)
-            {
-                return Task.CompletedTask;
-            }
-
-            public IRetryAction FailRule { get; } = new NoRetry();
-            public TimeSpan? MaxRuntime { get; }
-            public string Key { get; }
-            public TimeSpan DebounceTime { get; } = TimeSpan.FromMilliseconds(200);
-        }
-
         private AppModel()
         {
             _notificationManager = new NotificationManager(this);
 
             _deviceCyclerManager = new DeviceCyclerManager();
             _selectedDevices = null;
-            MMNotificationClient.Instance.DefaultDeviceChanged += (sender, @event) => { JobScheduler.Instance.ScheduleJob(new DefaultDeviceChangedJob(this, @event.Device, @event.Role), @event.Token); };
-            MMNotificationClient.Instance.DeviceAdded += (sender, @event) =>
-            {
-                if (!AutoAddNewDevice)
-                {
-                    return;
-                }
-
-                JobScheduler.Instance.ScheduleJob(new DeviceAddedJob(this, @event.DeviceId), @event.Token);
-            };
             _microphoneMuteToggler = new MicrophoneMuteToggler(AudioSwitcher.Instance, _notificationManager);
             _updateScheduler = new LimitedConcurrencyLevelTaskScheduler(1);
         }
@@ -290,16 +242,6 @@ namespace SoundSwitch.Model
             }
         }
 
-        public bool AutoAddNewDevice
-        {
-            get => AppConfigs.Configuration.AutoAddNewConnectedDevices;
-            set
-            {
-                AppConfigs.Configuration.AutoAddNewConnectedDevices = value;
-                AppConfigs.Configuration.Save();
-            }
-        }
-
         #region Misc settings
 
         /// <summary>
@@ -337,13 +279,18 @@ namespace SoundSwitch.Model
         /// <param name="active"></param>
         public void InitializeMain(IAudioDeviceLister active)
         {
-            AudioDeviceLister = active;
             if (_initialized)
             {
                 Log.Fatal("AppModel already initialized");
                 throw new InvalidOperationException("Already initialized");
             }
-
+            
+            AudioDeviceLister = active;
+            JobScheduler.Instance.ScheduleJob(new ProcessNotificationEventsJob());
+            AudioDeviceLister.DefaultDeviceChanged.Subscribe((@event) =>
+            {
+                DefaultDeviceChanged?.Invoke(this, new DeviceDefaultChangedEvent(@event.Device, @event.Role));
+            });
 
             RegisterHotKey(AppConfigs.Configuration.PlaybackHotKey);
             var saveConfig = false;

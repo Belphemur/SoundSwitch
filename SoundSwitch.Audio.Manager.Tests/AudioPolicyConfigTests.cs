@@ -1,4 +1,5 @@
 using System;
+using FluentAssertions;
 using NUnit.Framework;
 using SoundSwitch.Audio.Manager.Interop.Client.Extended;
 using SoundSwitch.Audio.Manager.Interop.Client.Extended.Factory;
@@ -11,10 +12,7 @@ public sealed class AudioPolicyConfigTests
     [Test]
     public void CreateAudioPolicyConfigTest()
     {
-        Assert.DoesNotThrow(() =>
-        {
-            AudioPolicyConfigFactory.Create();
-        });
+        Assert.DoesNotThrow(() => { AudioPolicyConfigFactory.Create(); });
     }
 
     [Test]
@@ -22,8 +20,15 @@ public sealed class AudioPolicyConfigTests
     {
         var audioPolicyConfig = AudioPolicyConfigFactory.Create();
         if (Environment.OSVersion.Version.Major < 10 || Environment.OSVersion.Version.Build <= AudioPolicyConfigFactory.OS_1709_VERSION)
-            Assert.True(audioPolicyConfig is UnsupportedAudioPolicyConfig, $"audioPolicyConfig should be {nameof(UnsupportedAudioPolicyConfig)} if not on Windows 10 versions above 1709");
+
+        {
+            var noConfig = audioPolicyConfig is UnsupportedAudioPolicyConfig;
+            noConfig.Should().BeTrue($"audioPolicyConfig should be {nameof(UnsupportedAudioPolicyConfig)} if not on Windows 10 versions above 1709");
+        }
         else
-            Assert.True(audioPolicyConfig is AudioPolicyConfig, $"audioPolicyConfig should be a valid {nameof(AudioPolicyConfig)}");
+        {
+            var foundConfig = audioPolicyConfig is AudioPolicyConfig;
+            foundConfig.Should().BeTrue($"audioPolicyConfig should be a valid {nameof(AudioPolicyConfig)}");
+        }
     }
 }

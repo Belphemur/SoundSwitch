@@ -176,7 +176,7 @@ Zajedno: Promijeni ikonu kad se bilo koji uređaj promijeni.</value>
     <value>Bez savjeta</value>
   </data>
   <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
-    <value>Za oba uređaja</value>
+    <value>Oba uređaja</value>
   </data>
   <data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
     <value>Uređaj za snimanje</value>
@@ -437,7 +437,7 @@ Obnovi stanje sustava kad se program zatvori.</value>
     <value>Zadrži razinu glasnoće na svim uređajima</value>
   </data>
   <data name="keepVolume.desc" xml:space="preserve">
-    <value>Zadrži istu razinu glasnoće za sve uređaje</value>
+    <value>Zadrži istu glasnoću pri mijenjanju uređaja</value>
   </data>
   <data name="position" xml:space="preserve">
     <value>Položaj</value>

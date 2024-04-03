@@ -1,5 +1,6 @@
 ﻿#nullable enable
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using NAudio.CoreAudioApi;
@@ -195,7 +196,7 @@ namespace SoundSwitch.Audio.Manager
             if (currentDefault == null)
                 return;
 
-            var audioInfo = InteractWithMmDevice(currentDefault, mmDevice =>
+            var audioInfo = InteractWithDevice(currentDefault, mmDevice =>
             {
                 var defaultDeviceAudioEndpointVolume = mmDevice.AudioEndpointVolume;
                 return defaultDeviceAudioEndpointVolume == null ? default : (Volume: defaultDeviceAudioEndpointVolume.MasterVolumeLevelScalar, IsMuted: defaultDeviceAudioEndpointVolume.Mute);
@@ -205,15 +206,15 @@ namespace SoundSwitch.Audio.Manager
                 return;
 
             var nextDevice = GetDevice(device.Id);
-            
-            if(nextDevice == null)
+
+            if (nextDevice == null)
                 return;
-            
-            InteractWithMmDevice(nextDevice, mmDevice =>
+
+            InteractWithDevice(nextDevice, mmDevice =>
             {
                 if (mmDevice is not { State: DeviceState.Active })
                     return nextDevice;
-                
+
                 if (mmDevice.AudioEndpointVolume == null)
                     return nextDevice;
 
@@ -223,9 +224,10 @@ namespace SoundSwitch.Audio.Manager
                     mmDevice.AudioEndpointVolume.Channels[1].VolumeLevelScalar = audioInfo.Volume;
                 }
                 else
-                { 
+                {
                     mmDevice.AudioEndpointVolume.MasterVolumeLevelScalar = audioInfo.Volume;
                 }
+
                 mmDevice.AudioEndpointVolume.Mute = audioInfo.IsMuted;
                 return mmDevice;
             });
@@ -274,7 +276,15 @@ namespace SoundSwitch.Audio.Manager
         /// <param name="device"></param>
         /// <param name="interaction"></param>
         /// <typeparam name="T"></typeparam>
-        public T InteractWithMmDevice<T>(MMDevice device, Func<MMDevice, T> interaction) => ComThread.Invoke(() => interaction(device));
+        public T InteractWithDevice<T>(MMDevice device, Func<MMDevice, T> interaction) => ComThread.Invoke(() => interaction(device));
+
+        /// <summary>
+        /// Used to interact directly with a <see cref="DeviceFullInfo"/>
+        /// </summary>
+        /// <param name="device"></param>
+        /// <param name="interaction"></param>
+        /// <typeparam name="T"></typeparam>
+        public T InteractWithDevice<T>(DeviceFullInfo device, Func<DeviceFullInfo, T> interaction) => ComThread.Invoke(() => interaction(device));
 
         /// <summary>
         /// Get the current default endpoint
@@ -300,6 +310,32 @@ namespace SoundSwitch.Audio.Manager
         {
             var device = EnumeratorClient.GetDevice(deviceId);
             return device == null ? null : new DeviceFullInfo(device);
+        });
+
+        /// <summary>
+        /// Get audio endpoints for the given flow and state
+        /// </summary>
+        /// <param name="flow"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
+        public IEnumerable<DeviceFullInfo> GetAudioEndpoints(EDataFlow flow, EDeviceState state) => ComThread.Invoke(() =>
+        {
+            var devices = EnumeratorClient.GetEndpoints(flow, state);
+            return devices.Select(device =>
+                {
+                    try
+                    {
+                        return new DeviceFullInfo(device);
+                    }
+                    catch (Exception e)
+                    {
+                        Trace.TraceError("Couldn't get device info [{0}]: {1}", device.ID, e);
+                        return null;
+                    }
+                })
+                .Where(device => device != null)
+                .Where(device => !string.IsNullOrEmpty(device?.Name))
+                .Cast<DeviceFullInfo>().ToArray();
         });
 
         /// <summary>

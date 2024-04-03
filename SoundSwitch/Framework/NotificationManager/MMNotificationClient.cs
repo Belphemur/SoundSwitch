@@ -1,17 +1,11 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Job.Scheduler.Job;
-using Job.Scheduler.Job.Action;
-using Job.Scheduler.Job.Exception;
 using NAudio.CoreAudioApi;
 using NAudio.CoreAudioApi.Interfaces;
-using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
-using SoundSwitch.Framework.Threading;
 using SoundSwitch.Model;
 using PropertyKeys = NAudio.CoreAudioApi.PropertyKeys;
 
@@ -26,72 +20,24 @@ namespace SoundSwitch.Framework.NotificationManager
 
         private readonly Dictionary<DeviceRole, string> _lastRoleDevice = new();
 
-        public event EventHandler<DeviceDefaultChangedEvent> DefaultDeviceChanged;
-        public event EventHandler<DeviceChangedEventBase> DevicesChanged;
-        public event EventHandler<DeviceChangedEventBase> DeviceAdded;
-        private class DeviceChangedJob : IJob
+        private readonly ConcurrentQueue<DeviceChangedEvent> _deviceChangedEvents = new();
+        
+        /// <summary>
+        /// Get the last events and clear the queue of events
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<DeviceChangedEvent> GetLastEvents()
         {
-            private readonly MMNotificationClient _notificationClient;
-            private readonly string _deviceId;
-            private readonly bool _deviceAdded;
+            if (_deviceChangedEvents.IsEmpty)
+                return ArraySegment<DeviceChangedEvent>.Empty;
 
-            public DeviceChangedJob(MMNotificationClient notificationClient, string deviceId, bool deviceAdded = false)
+            var events = new SortedSet<DeviceChangedEvent>();
+            while (_deviceChangedEvents.TryDequeue(out var deviceChangedEvent))
             {
-                _notificationClient = notificationClient;
-                _deviceId = deviceId;
-                _deviceAdded = deviceAdded;
+                events.Add(deviceChangedEvent);
             }
 
-            public Task ExecuteAsync(CancellationToken cancellationToken)
-            {
-                _notificationClient.DevicesChanged?.Invoke(_notificationClient, new DeviceChangedEventBase(_deviceId, cancellationToken));
-
-                if (_deviceAdded)
-                {
-                    _notificationClient.DeviceAdded?.Invoke(_notificationClient, new DeviceChangedEventBase(_deviceId, cancellationToken));
-                }
-
-                return Task.CompletedTask;
-            }
-
-            public Task OnFailure(JobException exception)
-            {
-                Log.ForContext<DeviceChangedJob>().Warning(exception, "Can't notify about {device} changing", _deviceId);
-                return Task.CompletedTask;
-            }
-
-            public IRetryAction FailRule { get; } = new NoRetry();
-            public TimeSpan? MaxRuntime => null;
-        }
-
-        private class DefaultDeviceChangedJob : IJob
-        {
-            private readonly MMNotificationClient _notificationClient;
-            private readonly string _deviceId;
-            private readonly Role _role;
-
-            public DefaultDeviceChangedJob(MMNotificationClient notificationClient, string deviceId, Role role)
-            {
-                _notificationClient = notificationClient;
-                _deviceId = deviceId;
-                _role = role;
-            }
-
-            public Task ExecuteAsync(CancellationToken cancellationToken)
-            {
-                var device = AudioSwitcher.Instance.GetAudioEndpoint(_deviceId);
-                _notificationClient.DefaultDeviceChanged?.Invoke(_notificationClient, new DeviceDefaultChangedEvent(device, _role, cancellationToken));
-                return Task.CompletedTask;
-            }
-
-            public Task OnFailure(JobException exception)
-            {
-                Log.ForContext<DeviceChangedJob>().Warning(exception, "Can't notify about {device} changing", _deviceId);
-                return Task.CompletedTask;
-            }
-
-            public IRetryAction FailRule { get; } = new NoRetry();
-            public TimeSpan? MaxRuntime => null;
+            return events;
         }
 
         /// <summary>
@@ -116,17 +62,17 @@ namespace SoundSwitch.Framework.NotificationManager
 
         public void OnDeviceStateChanged(string deviceId, DeviceState newState)
         {
-            JobScheduler.Instance.ScheduleJob(new DeviceChangedJob(this, deviceId), CancellationToken.None);
+            _deviceChangedEvents.Enqueue(new DeviceChangedEvent(EventType.StateChanged, deviceId));
         }
 
         public void OnDeviceAdded(string deviceId)
         {
-            JobScheduler.Instance.ScheduleJob(new DeviceChangedJob(this, deviceId, true), CancellationToken.None);
+            _deviceChangedEvents.Enqueue(new DeviceChangedEvent(EventType.Added, deviceId));
         }
 
         public void OnDeviceRemoved(string deviceId)
         {
-            JobScheduler.Instance.ScheduleJob(new DeviceChangedJob(this, deviceId), CancellationToken.None);
+            _deviceChangedEvents.Enqueue(new DeviceChangedEvent(EventType.Removed, deviceId));
         }
 
         public void OnDefaultDeviceChanged(DataFlow flow, Role role, string deviceId)
@@ -141,7 +87,7 @@ namespace SoundSwitch.Framework.NotificationManager
             }
 
             _lastRoleDevice[deviceRole] = deviceId;
-            JobScheduler.Instance.ScheduleJob(new DefaultDeviceChangedJob(this, deviceId, role), CancellationToken.None);
+            _deviceChangedEvents.Enqueue(new DefaultDeviceChangedEvent(EventType.DefaultChanged, deviceId, role));
         }
 
         public void OnPropertyValueChanged(string pwstrDeviceId, PropertyKey key)
@@ -155,7 +101,7 @@ namespace SoundSwitch.Framework.NotificationManager
                 return;
             }
 
-            JobScheduler.Instance.ScheduleJob(new DeviceChangedJob(this, pwstrDeviceId), CancellationToken.None);
+            _deviceChangedEvents.Enqueue(new DeviceChangedEvent(EventType.PropertyChanged, pwstrDeviceId));
         }
 
         public void Dispose()
