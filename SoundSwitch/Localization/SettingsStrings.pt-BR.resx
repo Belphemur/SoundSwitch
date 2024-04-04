@@ -242,7 +242,7 @@ Banner: Usa uma moldura 'sempre no topo'; útil para uso em jogos.</value>
 		<value>Dispositivo de Gravação</value>
   </data>
   <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
-		<value>Para ambos os dispositivos</value>
+		<value>Ambos os dispositivos</value>
   </data>
   <data name="tooltipOnHoverOptionNone" xml:space="preserve">
 		<value>Sem dicas contextuais</value>
@@ -276,7 +276,7 @@ Reiniciar agora?</value>
 		<value>SoundSwitch irá te notificar quando uma nova atualização estiver disponível. Quando clicar na notificação, uma janela para download e instalação do update aparecerá.</value>
   </data>
   <data name="notificationOptionBanner" xml:space="preserve">
-		<value>Banner</value>
+		<value>Banner de notificação</value>
   </data>
   <data name="profile.trigger.uwp.desc" xml:space="preserve">
     <value>Entre o nome do aplicativo instalado pela Microsoft Store. Como Netflix, Amazon Prime, etc…</value>
@@ -491,5 +491,38 @@ Ambos: Mudar quando qualquer tipo de dispositivo é alterado.</value>
   </data>
   <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
     <value>Automaticamente adiciona um novo dispositivo na lista selecionada quando eles estão conectados no computador</value>
+  </data>
+  <data name="positionOptionBottomLeft" xml:space="preserve">
+    <value>Inferior esquerdo</value>
+  </data>
+  <data name="positionOptionBottomRight" xml:space="preserve">
+    <value>Inferior direito</value>
+  </data>
+  <data name="positionOptionTopRight" xml:space="preserve">
+    <value>Superior direito</value>
+  </data>
+  <data name="positionOptionBottomCenter" xml:space="preserve">
+    <value>Inferior centralizado</value>
+  </data>
+  <data name="positionOptionTopCenter" xml:space="preserve">
+    <value>Superior centralizado</value>
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>Nenhum</value>
+  </data>
+  <data name="position" xml:space="preserve">
+    <value>Posição</value>
+  </data>
+  <data name="positionTooltip" xml:space="preserve">
+    <value>Define a posição do banner de notificação.</value>
+  </data>
+  <data name="positionOptionTopLeft" xml:space="preserve">
+    <value>Superior esquerdo</value>
+  </data>
+  <data name="keepVolume" xml:space="preserve">
+    <value>Manter nível do volume entre dispositivos</value>
+  </data>
+  <data name="keepVolume.desc" xml:space="preserve">
+    <value>Manter mesmo nível de volume ao alternar entre dispositivos</value>
   </data>
 </root>
