@@ -1,22 +1,3 @@
-## [6.10.0-beta.1](https://github.com/Belphemur/SoundSwitch/compare/v6.9.0...v6.10.0-beta.1) (2024-04-05)
-
-
-### Languages
-
-* **Portuguese (Brazil):** Translated Settings using Weblate ([b8e50fb](https://github.com/Belphemur/SoundSwitch/commit/b8e50fb679054336eee55548835c438f15ded5c1))
-
-
-### Bug Fixes
-
-* **auto-update:** parsing of version with beta ([8ef4e51](https://github.com/Belphemur/SoundSwitch/commit/8ef4e516172e93fdb6fa0d7f948bdbd28fd781aa))
-* **updater:** fix possible issue with the updater crashing at SoundSwitch startup. ([4de67e6](https://github.com/Belphemur/SoundSwitch/commit/4de67e69b0152c59d32187444f82e47e6ce14d5f))
-* **version:** fix the file version of the app ([8de2d5b](https://github.com/Belphemur/SoundSwitch/commit/8de2d5b02597156f0d8e3545d0ee68beeabbfff3))
-
-
-### Features
-
-* **banner:** Make banner stackable instead of replacing content ([b26eb7c](https://github.com/Belphemur/SoundSwitch/commit/b26eb7c7f103eb7b9d7cc3a7ed69e0415aec53d6))
-
 ## [6.9.0-beta.1](https://github.com/Belphemur/SoundSwitch/compare/v6.8.1...v6.9.0-beta.1) (2024-04-03)
 
 
