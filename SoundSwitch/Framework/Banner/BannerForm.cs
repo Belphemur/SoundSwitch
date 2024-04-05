@@ -78,15 +78,13 @@ namespace SoundSwitch.Framework.Banner
         /// Called internally to configure pass notification parameters
         /// </summary>
         /// <param name="data">The configuration data to setup the notification UI</param>
-        /// <param name="positionOffset"></param>
-        internal void SetData(BannerData data, int positionOffset)
+        internal void SetData(BannerData data)
         {
             if (_currentData != null && _currentData.Priority > data.Priority)
             {
                 return;
             }
 
-            _currentOffset = positionOffset;
             _currentData = data;
             if (_timerHide == null)
             {
@@ -116,7 +114,7 @@ namespace SoundSwitch.Framework.Banner
 
             var screen = GetScreen();
             
-            Location = data.Position.GetScreenPosition(screen, Height, Width, positionOffset);
+            Location = data.Position.GetScreenPosition(screen, Height, Width, _currentOffset);
 
             _timerHide.Enabled = true;
 
@@ -130,7 +128,7 @@ namespace SoundSwitch.Framework.Banner
         public void UpdateLocation(int positionChange)
         {
             var screen = GetScreen();
-            _currentOffset -= positionChange;
+            _currentOffset += positionChange;
             Location = _currentData.Position.GetScreenPosition(screen, Height, Width, _currentOffset);
         }
 

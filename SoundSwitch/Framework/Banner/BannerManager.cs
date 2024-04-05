@@ -24,8 +24,8 @@ namespace SoundSwitch.Framework.Banner
     public class BannerManager
     {
         private static System.Threading.SynchronizationContext _syncContext;
-        private int _currentOffset = 0;
         private readonly Dictionary<Guid, BannerForm> _bannerForms = new();
+        private const int SPACING = 10;
 
         /// <summary>
         /// Show a banner notification with the given data
@@ -39,15 +39,13 @@ namespace SoundSwitch.Framework.Banner
                 var banner = new BannerForm();
                 banner.Disposed += (s, e) =>
                 {
-                    _currentOffset -= banner.Height;
                     _bannerForms.Remove(banner.Id);
-                    foreach (var bannerForm in _bannerForms.Values)
-                    {
-                        bannerForm.UpdateLocation(banner.Height);
-                    }
                 };
-                banner.SetData(data, _currentOffset);
-                _currentOffset += banner.Height;
+                banner.SetData(data);
+                foreach (var bannerForm in _bannerForms.Values)
+                {
+                    bannerForm.UpdateLocation(banner.Height + SPACING);
+                }
                 _bannerForms.Add(banner.Id, banner);
             }, null);
         }
