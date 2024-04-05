@@ -59,6 +59,12 @@ namespace SoundSwitch.Framework.Updater
                 return false;
             }
 
+            //Fix for beta releases that aren't using semantic versioning to be sure the comparison works
+            if (serverRelease.Prerelease && !serverRelease.TagName.Contains("-beta."))
+            {
+                serverRelease.TagName += "-beta.1";
+            }
+
             if (!SemanticVersion.TryParse(serverRelease.TagName.Substring(1), out var version))
             {
                 Log.Error("Invalid version: {version}", serverRelease.TagName);
