@@ -461,7 +461,7 @@ Brak powiadomień: Brak powiadomień o przełączeniu urządzenia.</value>
     <value>Załącz wyciszenie</value>
   </data>
   <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
-    <value>Wymaga włączenia "{}"
+    <value>Wymaga włączenia "{0}"
 
 Przywróć stan systemu po zamknięciu aplikacji.</value>
   </data>
