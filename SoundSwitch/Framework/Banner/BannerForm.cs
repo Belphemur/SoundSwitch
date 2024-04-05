@@ -34,6 +34,8 @@ namespace SoundSwitch.Framework.Banner
         private bool _hiding;
         private BannerData _currentData;
         private CancellationTokenSource _cancellationTokenSource = new();
+        private int _currentOffset;
+        public Guid Id { get; } = Guid.NewGuid();
 
         /// <summary>
         /// Get the Screen object
@@ -76,13 +78,15 @@ namespace SoundSwitch.Framework.Banner
         /// Called internally to configure pass notification parameters
         /// </summary>
         /// <param name="data">The configuration data to setup the notification UI</param>
-        internal void SetData(BannerData data)
+        /// <param name="positionOffset"></param>
+        internal void SetData(BannerData data, int positionOffset)
         {
             if (_currentData != null && _currentData.Priority > data.Priority)
             {
                 return;
             }
 
+            _currentOffset = positionOffset;
             _currentData = data;
             if (_timerHide == null)
             {
@@ -112,11 +116,22 @@ namespace SoundSwitch.Framework.Banner
 
             var screen = GetScreen();
             
-            Location = data.Position.GetScreenPosition(screen, Height, Width);
+            Location = data.Position.GetScreenPosition(screen, Height, Width, positionOffset);
 
             _timerHide.Enabled = true;
 
             Show();
+        }
+        
+        /// <summary>
+        /// Update Location of banner depending of the position change
+        /// </summary>
+        /// <param name="positionChange"></param>
+        public void UpdateLocation(int positionChange)
+        {
+            var screen = GetScreen();
+            _currentOffset -= positionChange;
+            Location = _currentData.Position.GetScreenPosition(screen, Height, Width, _currentOffset);
         }
 
         /// <summary>

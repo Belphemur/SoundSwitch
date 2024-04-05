@@ -23,11 +23,11 @@ namespace SoundSwitch.Framework.Banner.Position
         public BannerPositionEnum TypeEnum => BannerPositionEnum.TopRight;
         public string Label => SettingsStrings.positionOptionTopRight;
 
-        public Point GetScreenPosition(Screen screen, int height, int width)
+        public Point GetScreenPosition(Screen screen, int height, int width, int offset)
         {
             return new Point(
                 PositionRight(screen, width),
-                PositionTop(screen)
+                PositionTop(screen, offset)
                 );
         }
     }

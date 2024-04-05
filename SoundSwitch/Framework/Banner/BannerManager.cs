@@ -13,6 +13,7 @@
  ********************************************************************/
 
 using System;
+using System.Collections.Generic;
 using Serilog;
 
 namespace SoundSwitch.Framework.Banner
@@ -22,8 +23,9 @@ namespace SoundSwitch.Framework.Banner
     /// </summary>
     public class BannerManager
     {
-        private static System.Threading.SynchronizationContext syncContext;
-        private static BannerForm banner;
+        private static System.Threading.SynchronizationContext _syncContext;
+        private int _currentOffset = 0;
+        private readonly Dictionary<Guid, BannerForm> _bannerForms = new();
 
         /// <summary>
         /// Show a banner notification with the given data
@@ -32,15 +34,21 @@ namespace SoundSwitch.Framework.Banner
         public void ShowNotification(BannerData data)
         {
             // Execute the banner in the context of the UI thread
-            syncContext.Send(_ =>
+            _syncContext.Send(_ =>
             {
-                if (banner == null)
+                var banner = new BannerForm();
+                banner.Disposed += (s, e) =>
                 {
-                    banner = new BannerForm();
-                    banner.Disposed += (s, e) => banner = null;
-                }
-
-                banner.SetData(data);
+                    _currentOffset -= banner.Height;
+                    _bannerForms.Remove(banner.Id);
+                    foreach (var bannerForm in _bannerForms.Values)
+                    {
+                        bannerForm.UpdateLocation(banner.Height);
+                    }
+                };
+                banner.SetData(data, _currentOffset);
+                _currentOffset += banner.Height;
+                _bannerForms.Add(banner.Id, banner);
             }, null);
         }
 
@@ -51,8 +59,8 @@ namespace SoundSwitch.Framework.Banner
         internal static void Setup()
         {
             // Grab the synchronization context of the UI thread!
-            syncContext = System.Threading.SynchronizationContext.Current;
-            if (!(syncContext is System.Windows.Forms.WindowsFormsSynchronizationContext))
+            _syncContext = System.Threading.SynchronizationContext.Current;
+            if (!(_syncContext is System.Windows.Forms.WindowsFormsSynchronizationContext))
                 throw new InvalidOperationException("BannerManager must be called in the context of the UI thread.");
             Log.Information("Banner manager initialized");
         }

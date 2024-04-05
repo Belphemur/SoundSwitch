@@ -26,7 +26,8 @@ namespace SoundSwitch.Framework.Banner.Position
         /// <param name="screen"></param>
         /// <param name="height"></param>
         /// <param name="width"></param>
+        /// <param name="offset"></param>
         /// <returns></returns>
-        public Point GetScreenPosition(Screen screen, int height, int width);
+        public Point GetScreenPosition(Screen screen, int height, int width, int offset);
     }
 }

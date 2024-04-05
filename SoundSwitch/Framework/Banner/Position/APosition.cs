@@ -18,9 +18,9 @@ namespace SoundSwitch.Framework.Banner.Position
 {
     internal class APosition
     {
-        public int PositionTop(Screen screen) => screen.Bounds.X + 50;
-        public int PositionLeft(Screen screen) => screen.Bounds.Y + 60;
-        public int PositionBottom(Screen screen, int height) => screen.Bounds.Height - height - PositionTop(screen);
+        public int PositionTop(Screen screen, int offset) => screen.Bounds.Y + 60 + offset;
+        public int PositionLeft(Screen screen) => screen.Bounds.X + 50;
+        public int PositionBottom(Screen screen, int height, int offset) => screen.Bounds.Height - height - PositionTop(screen, 0) - offset;
         public int PositionRight(Screen screen, int width) => screen.Bounds.Width - width - PositionLeft(screen);
         public int PositionCenter(Screen screen, int width) => (screen.Bounds.Width - width) / 2;
     }
