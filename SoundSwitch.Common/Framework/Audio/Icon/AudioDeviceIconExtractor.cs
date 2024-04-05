@@ -66,7 +66,7 @@ namespace SoundSwitch.Common.Framework.Audio.Icon
             try
             {
                 icon = ExtractAssociatedIcon();
-                var entry = IconCache.CreateEntry(key);
+                using var entry = IconCache.CreateEntry(key);
                 entry.SetValue(icon)
                     .SetSize(icon.Size.Height * icon.Size.Width)
                     .SetSlidingExpiration(TimeSpan.FromMinutes(30))
