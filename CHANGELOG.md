@@ -1,3 +1,15 @@
+## [6.10.1-beta.1](https://github.com/Belphemur/SoundSwitch/compare/v6.10.0...v6.10.1-beta.1) (2024-04-05)
+
+
+### Enhancements
+
+* **banner:** Always have the latest banner at the top of the stack ([95575f9](https://github.com/Belphemur/SoundSwitch/commit/95575f976306afe434911181b4faf144c73e83dc))
+
+
+### Bug Fixes
+
+* **auto-update:** fix bootloop of SoundSwitch when auto-updating with the new beta ([e19a21d](https://github.com/Belphemur/SoundSwitch/commit/e19a21dc08a35d1b58b1a6e6ef77bfc626d1c794)), closes [#1422](https://github.com/Belphemur/SoundSwitch/issues/1422)
+
 ## [6.10.0-beta.1](https://github.com/Belphemur/SoundSwitch/compare/v6.9.0...v6.10.0-beta.1) (2024-04-05)
 
 
