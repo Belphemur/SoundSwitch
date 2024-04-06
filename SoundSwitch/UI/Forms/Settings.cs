@@ -118,20 +118,21 @@ namespace SoundSwitch.UI.Forms
             // Settings - Notification
             var notificationFactory = new NotificationFactory();
             notificationFactory.ConfigureListControl(notificationComboBox);
+            notificationComboBox.SelectedValue = AppModel.Instance.NotificationSettings;
             var notificationToolTip = new ToolTip();
             notificationToolTip.SetToolTip(notificationComboBox, SettingsStrings.notificationTooltip);
-            notificationComboBox.SelectedValue = AppModel.Instance.NotificationSettings;
-
-            usePrimaryScreenCheckbox.Checked = AppModel.Instance.NotifyUsingPrimaryScreen;
-            usePrimaryScreenCheckbox.Enabled = AppModel.Instance.NotificationSettings == NotificationTypeEnum.BannerNotification;
-            var usePrimaryScreenTooltip = new ToolTip();
-            usePrimaryScreenTooltip.SetToolTip(usePrimaryScreenCheckbox, SettingsStrings.usePrimaryScreenTooltip);
 
             var bannerPositionFactory = new BannerPositionFactory();
             bannerPositionFactory.ConfigureListControl(positionComboBox);
+            positionComboBox.SelectedValue = AppModel.Instance.BannerPosition;
             var positionToolTip = new ToolTip();
             positionToolTip.SetToolTip(positionComboBox, SettingsStrings.positionTooltip);
-            positionComboBox.SelectedValue = AppModel.Instance.BannerPosition;
+
+            usePrimaryScreenCheckbox.Checked = AppModel.Instance.NotifyUsingPrimaryScreen;
+            var usePrimaryScreenTooltip = new ToolTip();
+            usePrimaryScreenTooltip.SetToolTip(usePrimaryScreenCheckbox, SettingsStrings.usePrimaryScreenTooltip);
+            
+            usePrimaryScreenCheckbox.Visible = positionLabel.Visible = positionComboBox.Visible = AppModel.Instance.NotificationSettings == NotificationTypeEnum.BannerNotification;
 
             selectSoundFileDialog.Filter = SettingsStrings.audioFiles + @" (*.wav;*.mp3)|*.wav;*.mp3;*.aiff";
             selectSoundFileDialog.FileOk += SelectSoundFileDialogOnFileOk;
@@ -786,7 +787,7 @@ namespace SoundSwitch.UI.Forms
             selectSoundButton.Visible = supportCustomSound;
             DeleteSoundButtonVisible(supportCustomSound);
 
-            usePrimaryScreenCheckbox.Enabled = positionComboBox.Enabled = notificationType == NotificationTypeEnum.BannerNotification;
+            usePrimaryScreenCheckbox.Visible = positionLabel.Visible = positionComboBox.Visible = notificationType == NotificationTypeEnum.BannerNotification;
 
             AppModel.Instance.NotificationSettings = notificationType;
         }
