@@ -1,3 +1,16 @@
+## [6.10.2](https://github.com/Belphemur/SoundSwitch/compare/v6.10.1...v6.10.2) (2024-04-07)
+
+
+### Languages
+
+* **Japanese:** Translated Settings using Weblate ([3bd9ef2](https://github.com/Belphemur/SoundSwitch/commit/3bd9ef2ee179d6f84d367050508b711eb43001e9))
+* **Japanese:** Translated Tray Icon using Weblate ([3e5e936](https://github.com/Belphemur/SoundSwitch/commit/3e5e9366922feefbc9e52cb57d1bd4f9d755947e))
+
+
+### Bug Fixes
+
+* **settings:** Hide Primary Screen CheckBox and Position ComboBox when Banner Position not selected ([c775eb5](https://github.com/Belphemur/SoundSwitch/commit/c775eb5d7205401d9980dc21118ee0f6991409fa))
+
 ## [6.10.1-beta.1](https://github.com/Belphemur/SoundSwitch/compare/v6.10.0...v6.10.1-beta.1) (2024-04-05)
 
 
