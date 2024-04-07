@@ -118,30 +118,30 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="profile.trigger.uwp.desc" xml:space="preserve">
-    <value>Microsoft Storeからインストールしたアプリケーションの名前を入力します。NetflixやAmazonプライムビデオなど…</value>
+    <value>Windowsストアを通じてインストールされたアプリケーションの名前を入力してください。Netflix、Amazon Prime Videoなど…</value>
   </data>
   <data name="profile.trigger.uwp" xml:space="preserve">
-    <value>Microsoft Storeアプリケーション</value>
+    <value>Microsoft Store アプリ</value>
   </data>
   <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
-    <value>システム状態の復元</value>
+    <value>システムの状態が復元されました</value>
   </data>
   <data name="profile.trigger.restoreDevices" xml:space="preserve">
-    <value>トリガーが終了した際にデバイスを復元する</value>
+    <value>トリガー終了時にデバイスを復元</value>
   </data>
   <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
-    <value>有効化には「{0}」が必要です。
+    <value>"{0}" が有効になっている必要があります。
 
-アプリケーションを閉じたときの状態を復元します。</value>
+アプリケーションが閉じられたときにシステムの状態を復元します。</value>
   </data>
   <data name="usePrimaryScreenTooltip" xml:space="preserve">
-    <value>フォーカスされている画面ではなく、メインディスプレイにバナーを表示します。</value>
+    <value>フォーカスされたスクリーンではなく、プライマリスクリーンにバナーを表示します。</value>
   </data>
   <data name="usePrimaryScreen" xml:space="preserve">
-    <value>常にメインディスプレイを使用する</value>
+    <value>常にプライマリスクリーンを使用</value>
   </data>
   <data name="profile.trigger.startup.desc" xml:space="preserve">
-    <value>SoundSwitchの起動時に自動的にプロファイルを切り替える</value>
+    <value>SoundSwitchが起動したときにプロファイルが自動的にトリガーされます</value>
   </data>
   <data name="profile.trigger.startup" xml:space="preserve">
     <value>起動時</value>
@@ -153,19 +153,19 @@
     <value>保存</value>
   </data>
   <data name="profile.notification.text" xml:space="preserve">
-    <value>プロファイル{0}に切替</value>
+    <value>プロファイル {0} がトリガーされました</value>
   </data>
   <data name="profile.notify-on-activation" xml:space="preserve">
-    <value>プロファイル切り替え時に通知する</value>
+    <value>プロファイルがトリガーされたときに通知</value>
   </data>
   <data name="profile.error.window" xml:space="preserve">
-    <value>このウィンドウ名を持つプロファイルが既に存在します：{0}。</value>
+    <value>このウィンドウ名のプロファイルは既に存在します: {0}。</value>
   </data>
   <data name="profile.error.steam" xml:space="preserve">
-    <value>Steam Big Pictureモードのプロファイルはひとつしか作成できません。</value>
+    <value>Steam Big Picture用のプロファイルは1つだけ作成できます。</value>
   </data>
   <data name="profile.error.triggers.min" xml:space="preserve">
-    <value>最低１つのトリガーが必要です。</value>
+    <value>少なくとも1つのトリガーが必要です。</value>
   </data>
   <data name="communication" xml:space="preserve">
     <value>規定の通信デバイス</value>
@@ -174,22 +174,22 @@
     <value>利用可能なトリガー</value>
   </data>
   <data name="profile.trigger.actives" xml:space="preserve">
-    <value>有効なトリガー</value>
+    <value>アクティブトリガー</value>
   </data>
   <data name="profile.desc" xml:space="preserve">
     <value>説明</value>
   </data>
   <data name="profile.trigger.steam.desc" xml:space="preserve">
-    <value>Steam Big Pictureモードを検出した場合に有効化する。（Big Pictureモードが閉じると元に戻ります。）</value>
+    <value>Steam Big Pictureが検出された場合にアクティブにします。（Big Pictureが閉じられたときに状態を復元します。）</value>
   </data>
   <data name="profile.trigger.process.desc" xml:space="preserve">
-    <value>選択したアプリケーションが前面にあるときにプロファイルを有効にする</value>
+    <value>選択したアプリケーションがフォアグラウンドにある場合、プロファイルをアクティブにします</value>
   </data>
   <data name="profile.trigger.window.desc" xml:space="preserve">
-    <value>動作中のプログラム名に以下の文字が含まれる場合にプロファイルを有効化する</value>
+    <value>フォアグラウンドプログラムに指定の文字列が含まれている場合、プロファイルをアクティブにします</value>
   </data>
   <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>プロファイルを有効にするために使用するホットキーです。同じホットキーを使用すると、プロファイルを切り替えることができます。</value>
+    <value>プロファイルをアクティブにするためのホットキー。同じホットキーを使用すると、プロファイル間を切り替えることができます。</value>
   </data>
   <data name="profile.trigger.steam" xml:space="preserve">
     <value>Steam Big Picture</value>
@@ -201,13 +201,13 @@
     <value>プログラム名</value>
   </data>
   <data name="profile.error.device-not-found" xml:space="preserve">
-    <value>デバイス{0}が見つかりません。</value>
+    <value>デバイス {0} が見つかりませんでした。</value>
   </data>
   <data name="hotkeyEnabled" xml:space="preserve">
     <value>ホットキー有効</value>
   </data>
   <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
-    <value>アプリケーションが検出されると、SoundSwitchは現在の規定デバイスも変更します。</value>
+    <value>アプリケーションが検出された場合、SoundSwitchは現在の規定のデバイスも変更します。</value>
   </data>
   <data name="profile.defaultDevice.checkbox" xml:space="preserve">
     <value>規定のデバイスも切り替える</value>
@@ -216,7 +216,7 @@
     <value>プロファイル</value>
   </data>
   <data name="profile.error.no-name" xml:space="preserve">
-    <value>プロファイル名が必要です。</value>
+    <value>プロファイルには名前が必要です。</value>
   </data>
   <data name="profile.error.delete" xml:space="preserve">
     <value>プロファイルが見つかりません。</value>
@@ -228,34 +228,34 @@
     <value>プロファイルエラー</value>
   </data>
   <data name="profile.feature.executable" xml:space="preserve">
-    <value>アプリケーション（*.exe）</value>
+    <value>実行可能ファイル (*.exe)</value>
   </data>
   <data name="profile.feature.add" xml:space="preserve">
-    <value>プロファイルの追加</value>
+    <value>プロファイルを追加</value>
   </data>
   <data name="profile.error.registerHotkeys.title" xml:space="preserve">
     <value>既に使用されているホットキー</value>
   </data>
   <data name="profile.error.registerHotkeys" xml:space="preserve">
-    <value>プロファイルのホットキーを登録できませんでした：{0}</value>
+    <value>プロファイルのホットキーを登録できませんでした: {0}</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
-    <value>特定のアプリケーションを起動、またはフォーカスしたときに再生・録音デバイスを切り替えるプロファイルを追加します。</value>
+    <value>特定のアプリケーションが起動またはフォーカスされたときに特定の再生または録音デバイスに切り替えるためのプロファイルを追加します。</value>
   </data>
   <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
-    <value>再生・録音デバイスを設定する必要があります。</value>
+    <value>再生または録音デバイスを設定する必要があります。</value>
   </data>
   <data name="profile.error.needHKOrPath" xml:space="preserve">
-    <value>ホットキーやアプリケーションを設定する必要があります。</value>
+    <value>ホットキーまたは/およびアプリケーションを設定する必要があります。</value>
   </data>
   <data name="profile.error.name" xml:space="preserve">
-    <value>既に{0}という名前のプロファイルが存在します。</value>
+    <value>既に {0} という名前のプロファイルが存在します。</value>
   </data>
   <data name="profile.error.application" xml:space="preserve">
     <value>このアプリケーション {0} は既にプロファイルと連携済です。</value>
   </data>
   <data name="profile.error.hotkey" xml:space="preserve">
-    <value>このホットキー{0}は既に登録されています。</value>
+    <value>このホットキー {0} は既に登録されています。</value>
   </data>
   <data name="profile.name" xml:space="preserve">
     <value>名前</value>
@@ -270,30 +270,30 @@
     <value>プロファイル</value>
   </data>
   <data name="iconChange.tooltip" xml:space="preserve">
-    <value>いつSoundSwitchのトレイアイコンを変更するかを選択します。
+    <value>SoundSwitchのシステムトレイアイコンを変更するタイミングを選択します。
 
-規定：変更しない。SoundSwitchのアイコンを維持します。
-再生：再生機器が切り替わったとき。
-録音：録音機器が切り替わったときに変更します。
-両方：どちらかのデバイスが切り替わったときに変更します。</value>
+デフォルト: 変更しない。SoundSwitchアイコンを保持します。
+再生: 再生デバイスが切り替わったとき。
+録音: 録音デバイスが切り替わったとき。
+両方: どのタイプのデバイスが切り替わっても変更します。</value>
   </data>
   <data name="iconChange" xml:space="preserve">
-    <value>トレイアイコン</value>
+    <value>システムトレイアイコン</value>
   </data>
   <data name="foregroundAppTooltip" xml:space="preserve">
-    <value>現在使用中のアプリケーション音声も切り替えます。ゲームなどで便利です。</value>
+    <value>現在使用中のアプリケーションのサウンドも切り替えます。ビデオゲームなどで便利です。</value>
   </data>
   <data name="foregroundApp" xml:space="preserve">
-    <value>前面のプログラムも切替</value>
+    <value>フォアグラウンドプログラムも切り替える</value>
   </data>
   <data name="disableCustomSoundTooltip" xml:space="preserve">
-    <value>設定したカスタム音声を無効にします。</value>
+    <value>設定されたカスタムサウンドを無効にします。</value>
   </data>
   <data name="notificationOptionBanner" xml:space="preserve">
-    <value>バナー</value>
+    <value>バナー通知</value>
   </data>
   <data name="updateNotifyTooltip" xml:space="preserve">
-    <value>SoundSwitchが利用可能な新しい更新がある場合に通知を行います。通知をクリックすると更新をダウンロードするポップアップが表示され、インストールするかどうかを尋ねてきます。</value>
+    <value>新しいアップデートが利用可能になると、SoundSwitchは通知します。通知をクリックすると、アップデートをダウンロードし、インストールするかどうかを尋ねるポップアップが表示されます。</value>
   </data>
   <data name="updateNeverTooltip" xml:space="preserve">
     <value>手動で確認したとき以外、プログラムの更新を行いません。</value>
@@ -302,23 +302,23 @@
     <value>再起動が必要</value>
   </data>
   <data name="languageRestartRequired" xml:space="preserve">
-    <value>言語設定を反映するためにSoundSwitchの再起動が必要です。
+    <value>言語はSoundSwitchを再起動後に変更されます。
 今すぐ再起動しますか？</value>
   </data>
   <data name="language" xml:space="preserve">
     <value>言語</value>
   </data>
   <data name="activePlayback" xml:space="preserve">
-    <value>再生：{0}</value>
+    <value>再生: {0}</value>
   </data>
   <data name="activeRecording" xml:space="preserve">
-    <value>録音：{0}</value>
+    <value>録音: {0}</value>
   </data>
   <data name="audioFileNotFoundCaption" xml:space="preserve">
-    <value>音声ファイルが見つかりません</value>
+    <value>オーディオファイルが見つかりません</value>
   </data>
   <data name="audioFileNotFound" xml:space="preserve">
-    <value>選択した音声ファイルが見つかりません。SoundSwitchの通知設定を{0}に戻しました。</value>
+    <value>通知として使用するオーディオファイルが見つかりませんでした。SoundSwitchは通知設定を{0}に戻しました。</value>
   </data>
   <data name="tooltipOnHoverOptionNone" xml:space="preserve">
     <value>ツールチップを表示しない</value>
@@ -336,53 +336,53 @@
     <value>トースト通知</value>
   </data>
   <data name="notificationTooltip" xml:space="preserve">
-    <value>Windows通知: Windows標準の通知です。
-音声通知: 切り替え後の再生デバイスで音声を再生します。
-カスタム音声通知: 切り替え後の再生デバイスで設定された音声を再生します。
-トースト通知: Windows通知の特殊な形式を使用します。
-バナー: ゲーム中に便利な、常に最前面に表示される通知です。</value>
+    <value>Windows 通知: デフォルトの Windows トレイポップアップ。
+サウンド通知: 切り替えた再生デバイスでサウンドを再生します。
+カスタマイズされたサウンド通知: 切り替えた再生デバイスで指定したサウンドを再生します。
+トースト通知: Windows トレイポップアップの特別な形式を使用します。
+バナー: カスタムの常に最前面のフレームで、ゲーム中に便利です。</value>
   </data>
   <data name="notificationOptionCustomized" xml:space="preserve">
-    <value>カスタム音声通知</value>
+    <value>カスタムサウンド通知</value>
   </data>
   <data name="notificationOptionNone" xml:space="preserve">
     <value>通知しない</value>
   </data>
   <data name="notificationOptionSound" xml:space="preserve">
-    <value>音声通知</value>
+    <value>サウンド通知</value>
   </data>
   <data name="notificationOptionWindowsDefault" xml:space="preserve">
-    <value>Windows通知</value>
+    <value>Windows 通知</value>
   </data>
   <data name="cycleThroughTooltip" xml:space="preserve">
-    <value>切り替えるデバイスを選択します。選択したデバイス間のみ、またはすべてのデバイス間のいずれかを選択します。</value>
+    <value>切り替えるデバイスを選択してください。選択したデバイスのみまたはすべてのデバイスのいずれかを選択できます。</value>
   </data>
   <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
-    <value>選択されている音声デバイスのみ</value>
+    <value>選択したオーディオデバイスのみ</value>
   </data>
   <data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
-    <value>全ての音声デバイス</value>
+    <value>すべてのオーディオデバイス</value>
   </data>
   <data name="tooltipOnHover" xml:space="preserve">
-    <value>ツールチップ表示</value>
+    <value>ホバー時のツールチップ</value>
   </data>
   <data name="updateNever" xml:space="preserve">
     <value>更新を確認しない</value>
   </data>
   <data name="updateNotify" xml:space="preserve">
-    <value>更新がある場合に通知</value>
+    <value>更新が利用可能な場合に通知</value>
   </data>
   <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
-    <value>確認せずに自動的に更新がインストールされます。</value>
+    <value>プロンプトなしで更新が自動的にインストールされます。</value>
   </data>
   <data name="updateInstallAutomatically" xml:space="preserve">
     <value>自動的に更新をインストール</value>
   </data>
   <data name="keepSystemTrayIconTooltip" xml:space="preserve">
-    <value>有効化すると「規定のデバイス」が変更されてもトレイアイコンが変わりません。</value>
+    <value>有効化すると「規定の再生デバイス」が変更されてもシステムトレイアイコンは変わりません。</value>
   </data>
   <data name="keepSystemTrayIcon" xml:space="preserve">
-    <value>SoundSwitchのトレイアイコンを保持</value>
+    <value>SoundSwitch のシステムトレイアイコンを保持</value>
   </data>
   <data name="cycleThrough" xml:space="preserve">
     <value>循環</value>
@@ -391,25 +391,25 @@
     <value>更新設定</value>
   </data>
   <data name="audioSettings" xml:space="preserve">
-    <value>音声設定</value>
+    <value>オーディオ設定</value>
   </data>
   <data name="basicSettings" xml:space="preserve">
     <value>基本設定</value>
   </data>
   <data name="hotkeysTooltip" xml:space="preserve">
-    <value>ホットキーを有効化します。</value>
+    <value>ホットキーを有効化する。</value>
   </data>
   <data name="selectSoundButtonTooltip" xml:space="preserve">
-    <value>通知用の音声ファイルを選択</value>
+    <value>通知用のサウンドファイルを選択</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
-    <value>音声ファイル</value>
+    <value>オーディオファイル</value>
   </data>
   <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
-    <value>有効化するとGitHubのベータ版を確認します。</value>
+    <value>有効化すると SoundSwitch は GitHub のベータ版もチェックします。</value>
   </data>
   <data name="updateIncludeBetaVersions" xml:space="preserve">
-    <value>ベータ版を含む</value>
+    <value>ベータ版を含める</value>
   </data>
   <data name="notification" xml:space="preserve">
     <value>通知</value>
@@ -421,19 +421,19 @@
     <value>変更を自動的に保存</value>
   </data>
   <data name="selected" xml:space="preserve">
-    <value>選択</value>
+    <value>選択済</value>
   </data>
   <data name="disconnected" xml:space="preserve">
-    <value>切断</value>
+    <value>切断済</value>
   </data>
   <data name="connected" xml:space="preserve">
-    <value>接続</value>
+    <value>接続済</value>
   </data>
   <data name="startWithWindows" xml:space="preserve">
-    <value>パソコン起動時に自動開始</value>
+    <value>Windows の起動時に自動的に開始</value>
   </data>
   <data name="communicationsDevice" xml:space="preserve">
-    <value>規定の通信デバイスとして設定</value>
+    <value>規定の通信デバイスを切り替える</value>
   </data>
   <data name="hotkeys" xml:space="preserve">
     <value>ホットキー</value>
@@ -451,45 +451,78 @@
     <value>再生</value>
   </data>
   <data name="mute.toggle.label" xml:space="preserve">
-    <value>ミュート切替</value>
+    <value>ミュートの切り替え</value>
   </data>
   <data name="notification.microphone.unmuted" xml:space="preserve">
-    <value>{0}はミュート解除されました。</value>
+    <value>{0} はミュート解除されました。</value>
   </data>
   <data name="notification.microphone.muted" xml:space="preserve">
-    <value>{0}はミュート中です。</value>
+    <value>{0} はミュートされました。</value>
   </data>
   <data name="profile.trigger.trayMenu" xml:space="preserve">
-    <value>メニューから選択</value>
+    <value>アプリメニューから選択</value>
   </data>
   <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
-    <value>このトリガーによりトレイアイコンのメニューにプロフィールが表示されます。シストレイのアイコンを左クリックするとこのプロフィールが表示されます。</value>
+    <value>このトリガーはプロファイルをシステムトレイアイコンメニューで表示します。システムトレイアイコンを左クリックしてプロファイルを表示できます。</value>
   </data>
   <data name="quickMenu.desc" xml:space="preserve">
-    <value>ホットキー使用時にWindowsの言語切り替えのようなクイックメニューを表示します</value>
+    <value>ホットキーを使用する際に、Windows言語のようなクイックメニューを表示</value>
   </data>
   <data name="telemetry" xml:space="preserve">
     <value>バージョン情報の共有</value>
   </data>
   <data name="telemetry.desc" xml:space="preserve">
-    <value>使用しているSoundSwitchのバージョンを匿名で収集します。SoundSwitchの開発者のみに共有されます。</value>
+    <value>SoundSwitchの使用バージョンを匿名で収集します。SoundSwitchの開発者とのみ共有されます。</value>
   </data>
   <data name="quickMenu" xml:space="preserve">
-    <value>クイックメニューを表示</value>
+    <value>ホットキーでクイックメニューを表示</value>
   </data>
   <data name="profile.trigger.deviceChanged" xml:space="preserve">
     <value>強制プロファイル</value>
   </data>
   <data name="profile.error.deviceChanged" xml:space="preserve">
-    <value>強制プロファイルは１つしか設定できません。</value>
+    <value>強制プロファイルは1つだけ作成できます。</value>
   </data>
   <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
-    <value>このプロファイルは現在の音声デバイスが変更されたときに自動的に有効化されます。</value>
+    <value>現在のサウンドデバイスが変更されるたびに、プロファイルが自動的にトリガーされます。</value>
   </data>
   <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
-    <value>新しいデバイスがコンピュータに接続されると、選択済リストに自動的に追加されます</value>
+    <value>新しいデバイスがコンピュータに接続されたとき、選択リストに自動的に追加します</value>
   </data>
   <data name="devices.AutoAddNewDevice" xml:space="preserve">
-    <value>新しいデバイスの自動選択</value>
+    <value>新しいデバイスを自動選択</value>
+  </data>
+  <data name="position" xml:space="preserve">
+    <value>位置</value>
+  </data>
+  <data name="positionOptionTopCenter" xml:space="preserve">
+    <value>中央上</value>
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>なし</value>
+  </data>
+  <data name="positionTooltip" xml:space="preserve">
+    <value>バナー通知の位置を設定します。</value>
+  </data>
+  <data name="positionOptionBottomLeft" xml:space="preserve">
+    <value>左下</value>
+  </data>
+  <data name="positionOptionTopLeft" xml:space="preserve">
+    <value>左上</value>
+  </data>
+  <data name="positionOptionBottomRight" xml:space="preserve">
+    <value>右下</value>
+  </data>
+  <data name="positionOptionTopRight" xml:space="preserve">
+    <value>右上</value>
+  </data>
+  <data name="positionOptionBottomCenter" xml:space="preserve">
+    <value>中央下</value>
+  </data>
+  <data name="keepVolume" xml:space="preserve">
+    <value>デバイス間で音量レベルを保持</value>
+  </data>
+  <data name="keepVolume.desc" xml:space="preserve">
+    <value>デバイスを切り替える際に同じ音量レベルを保持します</value>
   </data>
 </root>

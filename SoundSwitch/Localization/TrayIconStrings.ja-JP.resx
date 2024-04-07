@@ -189,4 +189,7 @@
   <data name="forceCheckForUpdate" xml:space="preserve">
     <value>アップデートの確認</value>
   </data>
+  <data name="resetAudioDevices" xml:space="preserve">
+    <value>アプリごとにオーディオをリセット</value>
+  </data>
 </root>
