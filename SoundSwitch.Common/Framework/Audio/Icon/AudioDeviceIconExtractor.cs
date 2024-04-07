@@ -12,11 +12,11 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
+#nullable enable
 using System;
 using Microsoft.Extensions.Caching.Memory;
 using NAudio.CoreAudioApi;
 using Serilog;
-using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Common.Properties;
 
 namespace SoundSwitch.Common.Framework.Audio.Icon
@@ -28,7 +28,7 @@ namespace SoundSwitch.Common.Framework.Audio.Icon
 
         private static readonly IMemoryCache IconCache = new MemoryCache(new MemoryCacheOptions
         {
-            SizeLimit = 5120
+            SizeLimit = 500
         });
 
         private static string GetKey(MMDevice audioDevice, bool largeIcon)
@@ -45,7 +45,7 @@ namespace SoundSwitch.Common.Framework.Audio.Icon
         /// <returns></returns>
         public static System.Drawing.Icon ExtractIconFromPath(string path, DataFlow dataFlow, bool largeIcon)
         {
-            System.Drawing.Icon ExtractAssociatedIcon()
+            System.Drawing.Icon? ExtractAssociatedIcon()
             {
                 if (path.EndsWith(".ico"))
                 {
@@ -55,20 +55,34 @@ namespace SoundSwitch.Common.Framework.Audio.Icon
                 var iconInfo = path.Split(',');
                 var dllPath = iconInfo[0];
                 var iconIndex = int.Parse(iconInfo[1]);
-                return IconExtractor.Extract(dllPath, iconIndex, largeIcon);
+                return System.Drawing.Icon.ExtractIcon(dllPath, iconIndex, largeIcon ? 32 : 16);
             }
 
             var key = $"{path}-${largeIcon}";
 
-            if (IconCache.TryGetValue<System.Drawing.Icon>(key, out var icon))
-                return icon;
+            System.Drawing.Icon? icon;
+            try
+            {
+                if (IconCache.TryGetValue(key, out icon) && icon != null && icon.Handle != IntPtr.Zero)
+                    return icon;
+            }
+            catch (ObjectDisposedException)
+            {
+                // The icon has been disposed, we need to remove it from the cache
+                IconCache.Remove(key);
+            }
 
             try
             {
                 icon = ExtractAssociatedIcon();
+                if (icon == null)
+                {
+                    throw new ArgumentException("Can't find icon");
+                }
+
                 using var entry = IconCache.CreateEntry(key);
                 entry.SetValue(icon)
-                    .SetSize(icon.Size.Height * icon.Size.Width)
+                    .SetSize(largeIcon ? 2 : 1)
                     .SetSlidingExpiration(TimeSpan.FromMinutes(30))
                     .SetPriority(largeIcon ? CacheItemPriority.High : CacheItemPriority.Low)
                     .RegisterPostEvictionCallback((o, value, reason, state) =>
