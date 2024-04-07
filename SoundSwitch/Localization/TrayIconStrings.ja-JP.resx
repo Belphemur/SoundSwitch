@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="updateDisabled" xml:space="preserve">
-    <value>更新確認無効</value>
+    <value>更新チェックが無効化されました</value>
   </data>
   <data name="communityMenu" xml:space="preserve">
     <value>コミュニティ</value>
@@ -127,7 +127,7 @@
     <value>両方</value>
   </data>
   <data name="iconChanger.none" xml:space="preserve">
-    <value>規定</value>
+    <value>デフォルト</value>
   </data>
   <data name="iconChanger.recording" xml:space="preserve">
     <value>録音</value>
@@ -145,25 +145,25 @@
     <value>エラー</value>
   </data>
   <data name="configurationNeededExplanation" xml:space="preserve">
-    <value>切替可能なデバイスがありません。アイコンを右クリックして設定画面を開いてください。</value>
+    <value>切り替えるデバイスが利用できません。アイコンを右クリックして設定を開きます。</value>
   </data>
   <data name="configurationNeeded" xml:space="preserve">
-    <value>SoundSwitch：設定が必要です</value>
+    <value>SoundSwitch: 設定が必要です</value>
   </data>
   <data name="recordingChanged" xml:space="preserve">
-    <value>SoundSwitch：録音デバイスが切り替わりました</value>
+    <value>SoundSwitch: 録音デバイスが切り替えられました</value>
   </data>
   <data name="playbackChanged" xml:space="preserve">
-    <value>SoundSwitch：再生デバイスが切り替わりました</value>
+    <value>SoundSwitch: 再生デバイスが切り替えられました</value>
   </data>
   <data name="clickToUpdate" xml:space="preserve">
-    <value>更新するにはここをクリック。</value>
+    <value>ここをクリックして更新します。</value>
   </data>
   <data name="versionAvailable" xml:space="preserve">
-    <value>SoundSwitch（{0}）の更新を行いました。</value>
+    <value>SoundSwitchの更新が利用可能です ({0})。</value>
   </data>
   <data name="updateAvailable" xml:space="preserve">
-    <value>更新があります（{0}）</value>
+    <value>更新が利用可能です ({0})</value>
   </data>
   <data name="exit" xml:space="preserve">
     <value>終了</value>
@@ -178,18 +178,18 @@
     <value>再生デバイス</value>
   </data>
   <data name="noDevicesSelected" xml:space="preserve">
-    <value>選択されたデバイスはありません</value>
+    <value>デバイスが選択されていません</value>
   </data>
   <data name="noUpdate" xml:space="preserve">
-    <value>更新はありません</value>
+    <value>利用可能な更新はありません</value>
   </data>
   <data name="settings" xml:space="preserve">
     <value>設定</value>
   </data>
   <data name="forceCheckForUpdate" xml:space="preserve">
-    <value>アップデートの確認</value>
+    <value>更新をチェック</value>
   </data>
   <data name="resetAudioDevices" xml:space="preserve">
-    <value>アプリごとにオーディオをリセット</value>
+    <value>アプリごとのオーディオをリセット</value>
   </data>
 </root>
