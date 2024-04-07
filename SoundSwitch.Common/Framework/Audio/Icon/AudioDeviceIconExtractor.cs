@@ -60,8 +60,17 @@ namespace SoundSwitch.Common.Framework.Audio.Icon
 
             var key = $"{path}-${largeIcon}";
 
-            if (IconCache.TryGetValue<System.Drawing.Icon>(key, out var icon))
-                return icon!;
+            System.Drawing.Icon? icon;
+            try
+            {
+                if (IconCache.TryGetValue(key, out icon) && icon != null &&  icon.Handle != IntPtr.Zero)
+                    return icon;
+            }
+            catch (ObjectDisposedException)
+            {
+                // The icon has been disposed, we need to remove it from the cache
+                IconCache.Remove(key);
+            }
 
             try
             {
