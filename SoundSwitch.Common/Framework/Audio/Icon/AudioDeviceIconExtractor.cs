@@ -28,7 +28,7 @@ namespace SoundSwitch.Common.Framework.Audio.Icon
 
         private static readonly IMemoryCache IconCache = new MemoryCache(new MemoryCacheOptions
         {
-            SizeLimit = 3200
+            SizeLimit = 500
         });
 
         private static string GetKey(MMDevice audioDevice, bool largeIcon)
@@ -72,7 +72,7 @@ namespace SoundSwitch.Common.Framework.Audio.Icon
                 }
                 using var entry = IconCache.CreateEntry(key);
                 entry.SetValue(icon)
-                    .SetSize(icon.Size.Height)
+                    .SetSize(largeIcon? 2 : 1)
                     .SetSlidingExpiration(TimeSpan.FromMinutes(30))
                     .SetPriority(largeIcon ? CacheItemPriority.High : CacheItemPriority.Low)
                     .RegisterPostEvictionCallback((o, value, reason, state) =>
