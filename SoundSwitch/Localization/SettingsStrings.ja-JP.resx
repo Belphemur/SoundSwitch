@@ -159,7 +159,7 @@
     <value>プロファイルがトリガーされたときに通知</value>
   </data>
   <data name="profile.error.window" xml:space="preserve">
-    <value>このウィンドウ名のプロファイルは既に存在します: {0}。</value>
+    <value>このウィンドウ名のプロファイルはすでに存在します: {0}。</value>
   </data>
   <data name="profile.error.steam" xml:space="preserve">
     <value>Steam Big Picture用のプロファイルは1つだけ作成できます。</value>
@@ -234,28 +234,28 @@
     <value>プロファイルを追加</value>
   </data>
   <data name="profile.error.registerHotkeys.title" xml:space="preserve">
-    <value>既に使用されているホットキー</value>
+    <value>すでに使用されているホットキー</value>
   </data>
   <data name="profile.error.registerHotkeys" xml:space="preserve">
     <value>プロファイルのホットキーを登録できませんでした: {0}</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
-    <value>特定のアプリケーションが起動またはフォーカスされたときに特定の再生または録音デバイスに切り替えるためのプロファイルを追加します。</value>
+    <value>特定のアプリケーションが起動またはフォーカスされたときに特定の再生デバイスまたは録音デバイスに切り替えるプロファイルを追加します。</value>
   </data>
   <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
-    <value>再生または録音デバイスを設定する必要があります。</value>
+    <value>再生デバイスまたは録音デバイスを設定する必要があります。</value>
   </data>
   <data name="profile.error.needHKOrPath" xml:space="preserve">
-    <value>ホットキーまたは/およびアプリケーションを設定する必要があります。</value>
+    <value>ホットキーまたはアプリケーションを設定する必要があります。</value>
   </data>
   <data name="profile.error.name" xml:space="preserve">
-    <value>既に {0} という名前のプロファイルが存在します。</value>
+    <value>すでに {0} という名前のプロファイルが存在します。</value>
   </data>
   <data name="profile.error.application" xml:space="preserve">
-    <value>このアプリケーション {0} は既にプロファイルと連携済です。</value>
+    <value>このアプリケーション {0} はすでにプロファイルと連携済です。</value>
   </data>
   <data name="profile.error.hotkey" xml:space="preserve">
-    <value>このホットキー {0} は既に登録されています。</value>
+    <value>このホットキー {0} はすでに登録されています。</value>
   </data>
   <data name="profile.name" xml:space="preserve">
     <value>名前</value>
