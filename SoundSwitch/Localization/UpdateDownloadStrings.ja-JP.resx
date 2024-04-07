@@ -98,10 +98,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="notSignedTitle" xml:space="preserve">
-    <value>無効な電子署名</value>
+    <value>無効なデジタル署名</value>
   </data>
   <data name="notSigned" xml:space="preserve">
-    <value>ダウンロードした更新プログラムは有効な署名がされていません。ファイルを削除して開発者に連絡することをお勧めします！</value>
+    <value>ダウンロードした更新に有効な署名がありません。ファイルを削除し、開発者に連絡することをお勧めします！</value>
   </data>
   <data name="changelog" xml:space="preserve">
     <value>変更履歴</value>
@@ -113,12 +113,12 @@
     <value>インストール</value>
   </data>
   <data name="downloadFailed" xml:space="preserve">
-    <value>ダウンロード失敗</value>
+    <value>ダウンロードに失敗しました</value>
   </data>
   <data name="remindMe" xml:space="preserve">
     <value>後で</value>
   </data>
   <data name="wrongSignature" xml:space="preserve">
-    <value>前回のSoundSwitchアップデートに問題があります。{0}で最新バージョンを手動ダウンロードしてください</value>
+    <value>最後のSoundSwitchの更新に問題があります。新しいバージョンを {0} で手動でダウンロードする必要があります</value>
   </data>
 </root>
