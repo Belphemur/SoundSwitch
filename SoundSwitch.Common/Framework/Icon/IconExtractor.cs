@@ -14,7 +14,6 @@
 //source : https://stackoverflow.com/questions/6872957/how-can-i-use-the-images-within-shell32-dll-in-my-c-sharp-project
 
 using System;
-using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 
 namespace SoundSwitch.Common.Framework.Icon
@@ -49,25 +48,14 @@ namespace SoundSwitch.Common.Framework.Icon
         /// <returns></returns>
         public static System.Drawing.Icon Extract(string file, int iconIndex, bool largeIcon)
         {
-            IntPtr large;
-            IntPtr small;
-            NativeMethods.ExtractIconEx(file, iconIndex, out large, out small, 1);
             try
             {
-                return System.Drawing.Icon.FromHandle(largeIcon ? large : small);
+                return System.Drawing.Icon.ExtractIcon(file, iconIndex, !largeIcon);
             }
             catch(Exception e)
             {
                 throw new IconExtractionException($"Can't extract icon from file: {file} / index:{iconIndex}", e);
             }
-        }
-
-        private static class NativeMethods
-        {
-            [DllImport("Shell32.dll", EntryPoint = "ExtractIconExW", CharSet = CharSet.Unicode, ExactSpelling = true,
-                CallingConvention = CallingConvention.StdCall)]
-            public static extern int ExtractIconEx(string sFile, int iIndex, out IntPtr piLargeVersion,
-                out IntPtr piSmallVersion, int amountIcons);
         }
     }
 }
