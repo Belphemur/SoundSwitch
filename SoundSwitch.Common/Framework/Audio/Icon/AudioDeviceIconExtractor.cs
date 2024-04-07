@@ -63,7 +63,7 @@ namespace SoundSwitch.Common.Framework.Audio.Icon
             System.Drawing.Icon? icon;
             try
             {
-                if (IconCache.TryGetValue(key, out icon) && icon != null &&  icon.Handle != IntPtr.Zero)
+                if (IconCache.TryGetValue(key, out icon) && icon != null && icon.Handle != IntPtr.Zero)
                     return icon;
             }
             catch (ObjectDisposedException)
