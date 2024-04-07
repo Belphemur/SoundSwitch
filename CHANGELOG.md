@@ -1,3 +1,16 @@
+## [6.10.3](https://github.com/Belphemur/SoundSwitch/compare/v6.10.2...v6.10.3) (2024-04-07)
+
+
+### Enhancements
+
+* **icon:** improve the logic that cache device icons ([886bd81](https://github.com/Belphemur/SoundSwitch/commit/886bd81135f1dbb3b9f2557dc6b695e1fc21b51d))
+
+
+### Bug Fixes
+
+* **device:icon:** Force max size of 32px instead of what's available as large ([c389f27](https://github.com/Belphemur/SoundSwitch/commit/c389f2769a150f59893e1537e5728b1902ff485f))
+* **settings:** fix issue with device list (settings) crashing when too many devices ([180ca33](https://github.com/Belphemur/SoundSwitch/commit/180ca33a43f9572588703cb8ad37330d563e2e20))
+
 ## [6.10.2](https://github.com/Belphemur/SoundSwitch/compare/v6.10.1...v6.10.2) (2024-04-07)
 
 
