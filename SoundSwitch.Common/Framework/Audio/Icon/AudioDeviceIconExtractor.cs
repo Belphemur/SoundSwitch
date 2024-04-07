@@ -55,7 +55,7 @@ namespace SoundSwitch.Common.Framework.Audio.Icon
                 var iconInfo = path.Split(',');
                 var dllPath = iconInfo[0];
                 var iconIndex = int.Parse(iconInfo[1]);
-                return System.Drawing.Icon.ExtractIcon(dllPath, iconIndex, !largeIcon);
+                return System.Drawing.Icon.ExtractIcon(dllPath, iconIndex, largeIcon ? 32 : 16);
             }
 
             var key = $"{path}-${largeIcon}";
@@ -70,9 +70,10 @@ namespace SoundSwitch.Common.Framework.Audio.Icon
                 {
                     throw new ArgumentException("Can't find icon");
                 }
+
                 using var entry = IconCache.CreateEntry(key);
                 entry.SetValue(icon)
-                    .SetSize(largeIcon? 2 : 1)
+                    .SetSize(largeIcon ? 2 : 1)
                     .SetSlidingExpiration(TimeSpan.FromMinutes(30))
                     .SetPriority(largeIcon ? CacheItemPriority.High : CacheItemPriority.Low)
                     .RegisterPostEvictionCallback((o, value, reason, state) =>
