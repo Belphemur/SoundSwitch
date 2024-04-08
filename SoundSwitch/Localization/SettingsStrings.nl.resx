@@ -136,7 +136,7 @@ Beide: wijzigen wanneer een ander apparaat wordt gewisseld.</value>
     <value>Schakel het ingestelde aangepaste geluid uit.</value>
   </data>
   <data name="notificationOptionBanner" xml:space="preserve">
-    <value>Banner</value>
+    <value>Banner Notificatie</value>
   </data>
   <data name="updateNotifyTooltip" xml:space="preserve">
     <value>SoundSwitch laat het je weten wanneer er een nieuwe update beschikbaar is. Wanneer u op de melding klikt, krijgt u een pop-up die de update voor u downloadt en vraagt of u deze wilt installeren.</value>
@@ -189,7 +189,7 @@ Banner: Gebruikt een aangepast scherm dat altijd te zien is. Dit is handig voor 
     <value>Aangepaste geluidsmelding</value>
   </data>
   <data name="notificationOptionToast" xml:space="preserve">
-    <value>Melding</value>
+    <value>Popup melding</value>
   </data>
   <data name="notificationOptionNone" xml:space="preserve">
     <value>Geen melding</value>
@@ -228,7 +228,7 @@ Banner: Gebruikt een aangepast scherm dat altijd te zien is. Dit is handig voor 
     <value>Indien aangevinkt, verandert het systeemvakpictogram niet wanneer het 'Standaard afspeelapparaat' veranderd.</value>
   </data>
   <data name="keepSystemTrayIcon" xml:space="preserve">
-    <value>Bewaar het systeemvakpictogram van SoundSwitch</value>
+    <value>Behoud het systeemvakpictogram van SoundSwitch</value>
   </data>
   <data name="cycleThrough" xml:space="preserve">
     <value>Doorlopen</value>
@@ -298,5 +298,73 @@ Banner: Gebruikt een aangepast scherm dat altijd te zien is. Dit is handig voor 
   </data>
   <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
     <value>Wanneer aangevinkt, zoekt SoundSwitch ook naar bèta versies op GitHub.</value>
+  </data>
+  <data name="position" xml:space="preserve">
+    <value>Positie</value>
+  </data>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>Dempen omschakelen</value>
+  </data>
+  <data name="telemetry.desc" xml:space="preserve">
+    <value>Verzend anoniem welke versie van SoundSwitch in gebruik is. Alleen gedeeld met de ontwikkelaars van SoundSwitch.</value>
+  </data>
+  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
+    <value>Sneltoets die wordt gebruikt om het profiel te activeren. Als u dezelfde sneltoets gebruikt, kunt u tussen profielen schakelen.</value>
+  </data>
+  <data name="profile.trigger.window.desc" xml:space="preserve">
+    <value>Aktiveer het profiel als het voorgrond programma de volgende karakters bevat</value>
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>Geen</value>
+  </data>
+  <data name="hotkeyEnabled" xml:space="preserve">
+    <value>Sneltoets ingeschakeld</value>
+  </data>
+  <data name="profile.error.device-not-found" xml:space="preserve">
+    <value>Apparaat {0} is niet gevonden.</value>
+  </data>
+  <data name="profile.trigger.window" xml:space="preserve">
+    <value>Naam van het programma</value>
+  </data>
+  <data name="profile.trigger.process" xml:space="preserve">
+    <value>Applicatie pad</value>
+  </data>
+  <data name="communication" xml:space="preserve">
+    <value>Standaard Communicatie Apparaat</value>
+  </data>
+  <data name="profile.button.save" xml:space="preserve">
+    <value>Opslaan</value>
+  </data>
+  <data name="profile.button.edit" xml:space="preserve">
+    <value>Wijzig</value>
+  </data>
+  <data name="usePrimaryScreen" xml:space="preserve">
+    <value>Gebruik altijd primair scherm</value>
+  </data>
+  <data name="usePrimaryScreenTooltip" xml:space="preserve">
+    <value>Geef banner weer op primair scherm inplaats van gefocussed venster.</value>
+  </data>
+  <data name="profile.trigger.restoreDevices" xml:space="preserve">
+    <value>Herstel apparaten wanneer trigger eindigt</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
+    <value>Vereist dat "{0}" is ingeschakeld.
+
+Herstel systeemstatus wanneer de applicatie wordt gesloten.</value>
+  </data>
+  <data name="keepVolume" xml:space="preserve">
+    <value>Behoud volume nivo tussen apparaten</value>
+  </data>
+  <data name="quickMenu.desc" xml:space="preserve">
+    <value>Laat een snelmenu zien (als Windows-Taal) bij gebruik van een sneltoets</value>
+  </data>
+  <data name="quickMenu" xml:space="preserve">
+    <value>Snelmenu door sneltoets</value>
+  </data>
+  <data name="keepVolume.desc" xml:space="preserve">
+    <value>Behoudt hetzelfde volume nivo wanneer tussen apparaten wordt omgeschakeld</value>
+  </data>
+  <data name="telemetry" xml:space="preserve">
+    <value>Telemetrie</value>
   </data>
 </root>
