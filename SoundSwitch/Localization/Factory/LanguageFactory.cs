@@ -34,7 +34,8 @@ namespace SoundSwitch.Localization.Factory
             new Serbian(),
             new Danish(),
             new Ukrainian(),
-            new Bulgarian()
+            new Bulgarian(),
+            new Swedish()
         })
         {
         }

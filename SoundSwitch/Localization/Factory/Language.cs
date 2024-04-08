@@ -44,6 +44,7 @@ namespace SoundSwitch.Localization.Factory
         Serbian,
         Danish,
         Ukrainian,
-        Bulgarian
+        Bulgarian,
+        Swedish,
     }
 }

@@ -265,4 +265,14 @@ namespace SoundSwitch.Localization.Factory.Lang
 
         public override Language TypeEnum => Language.Bulgarian;
     }
+    
+    public class Swedish : BaseLang
+    {
+        /// <summary>
+        /// Culture info of this language
+        /// </summary>
+        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("sv-SE");
+
+        public override Language TypeEnum => Language.Swedish;
+    }
 }
