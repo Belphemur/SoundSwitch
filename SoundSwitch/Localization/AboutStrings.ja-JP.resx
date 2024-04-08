@@ -98,10 +98,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="created" xml:space="preserve">
-    <value>制作者</value>
+    <value>作成者</value>
   </data>
   <data name="maintained" xml:space="preserve">
-    <value>管理者</value>
+    <value>維持管理者</value>
   </data>
   <data name="version" xml:space="preserve">
     <value>バージョン</value>
@@ -113,13 +113,13 @@
     <value>クレジットと帰属</value>
   </data>
   <data name="defaultPlaybackDeviceChange" xml:space="preserve">
-    <value>規定の再生デバイス</value>
+    <value>規定の再生デバイスの変更</value>
   </data>
   <data name="keyboardHotkeys" xml:space="preserve">
-    <value>ホットキー</value>
+    <value>キーボードのホットキーシステム</value>
   </data>
   <data name="logo" xml:space="preserve">
-    <value>ロゴ</value>
+    <value>ロゴ制作</value>
   </data>
   <data name="icons" xml:space="preserve">
     <value>アイコン</value>
