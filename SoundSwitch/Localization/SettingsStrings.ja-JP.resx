@@ -135,10 +135,10 @@
 アプリケーションが閉じられたときにシステムの状態を復元します。</value>
   </data>
   <data name="usePrimaryScreenTooltip" xml:space="preserve">
-    <value>フォーカスされたスクリーンではなく、プライマリスクリーンにバナーを表示します。</value>
+    <value>フォーカスされたディスプレイではなく、メイン ディスプレイにバナーを表示します。</value>
   </data>
   <data name="usePrimaryScreen" xml:space="preserve">
-    <value>常にプライマリスクリーンを使用</value>
+    <value>常にメイン ディスプレイを使用</value>
   </data>
   <data name="profile.trigger.startup.desc" xml:space="preserve">
     <value>SoundSwitchが起動したときにプロファイルが自動的にトリガーされます</value>
@@ -451,7 +451,7 @@
     <value>再生</value>
   </data>
   <data name="mute.toggle.label" xml:space="preserve">
-    <value>ミュートの切り替え</value>
+    <value>ミュート切替</value>
   </data>
   <data name="notification.microphone.unmuted" xml:space="preserve">
     <value>{0} はミュート解除されました。</value>
