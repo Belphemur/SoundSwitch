@@ -170,7 +170,7 @@ Wil je nu opnieuw opstarten?</value>
     <value>Geen knopinfo</value>
   </data>
   <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
-    <value>Voor beide apparaten</value>
+    <value>Beide apparaten</value>
   </data>
   <data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
     <value>Opname apparaat</value>
@@ -366,5 +366,83 @@ Herstel systeemstatus wanneer de applicatie wordt gesloten.</value>
   </data>
   <data name="telemetry" xml:space="preserve">
     <value>Telemetrie</value>
+  </data>
+  <data name="notification.microphone.muted" xml:space="preserve">
+    <value>{0} is nu gedempt.</value>
+  </data>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>{0} is niet gedempt.</value>
+  </data>
+  <data name="profile.trigger.actives" xml:space="preserve">
+    <value>Aktieve Triggers</value>
+  </data>
+  <data name="profile.trigger.available" xml:space="preserve">
+    <value>Beschikbare Triggers</value>
+  </data>
+  <data name="profile.error.triggers.min" xml:space="preserve">
+    <value>U hebt minimaal één trigger nodig.</value>
+  </data>
+  <data name="profile.trigger.startup" xml:space="preserve">
+    <value>Tijdens Opstarten</value>
+  </data>
+  <data name="profile.notify-on-activation" xml:space="preserve">
+    <value>Meldt wanneer profiel wordt geactiveerd</value>
+  </data>
+  <data name="profile.trigger.uwp.desc" xml:space="preserve">
+    <value>Voer de naam in van de applicatie die via de Windows Store is geïnstalleerd. Zoals Netflix, Amazon Prime video, enz…</value>
+  </data>
+  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
+    <value>Het profiel wordt op elk moment automatisch geactiveerd wanneer het huidige geluidsapparaat verandert.</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox" xml:space="preserve">
+    <value>Schakel ook het standaardapparaat</value>
+  </data>
+  <data name="profile.trigger.process.desc" xml:space="preserve">
+    <value>Aktiveer het profiel wanneer de geselecteerde applicatie in de voorgrond is</value>
+  </data>
+  <data name="profile.desc" xml:space="preserve">
+    <value>Omschrijving</value>
+  </data>
+  <data name="profile.error.window" xml:space="preserve">
+    <value>Er is al een profiel met dit venster naam: {0}.</value>
+  </data>
+  <data name="profile.notification.text" xml:space="preserve">
+    <value>Profiel {0} geactiveerd</value>
+  </data>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>In het app menu</value>
+  </data>
+  <data name="profile.trigger.deviceChanged" xml:space="preserve">
+    <value>Forceer profiel</value>
+  </data>
+  <data name="devices.AutoAddNewDevice" xml:space="preserve">
+    <value>Automatische selectie van nieuwe apparaten</value>
+  </data>
+  <data name="profile.error.deviceChanged" xml:space="preserve">
+    <value>U kunt slechts één geforceerd profiel hebben.</value>
+  </data>
+  <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
+    <value>Voeg automatisch nieuw apparaat toe aan de geselecteerde lijst wanneer het op de computer is aangesloten</value>
+  </data>
+  <data name="positionOptionBottomLeft" xml:space="preserve">
+    <value>Onder Links</value>
+  </data>
+  <data name="positionOptionBottomRight" xml:space="preserve">
+    <value>Onder Rechts</value>
+  </data>
+  <data name="positionTooltip" xml:space="preserve">
+    <value>Stel de positie van de bannermelding in.</value>
+  </data>
+  <data name="positionOptionTopLeft" xml:space="preserve">
+    <value>Boven Links</value>
+  </data>
+  <data name="positionOptionTopRight" xml:space="preserve">
+    <value>Boven Rechts</value>
+  </data>
+  <data name="positionOptionBottomCenter" xml:space="preserve">
+    <value>Onder Midden</value>
+  </data>
+  <data name="positionOptionTopCenter" xml:space="preserve">
+    <value>Boven Midden</value>
   </data>
 </root>
