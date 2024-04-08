@@ -242,7 +242,7 @@ Banner: usa uno speciale riquadro sempre in primo piano, utile per l'uso durante
     <value>Dispositivo registrazione</value>
   </data>
   <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
-    <value>Per entrambi i dispositivi</value>
+    <value>Entrambi i dispositivi</value>
   </data>
   <data name="tooltipOnHoverOptionNone" xml:space="preserve">
     <value>Nessun suggerimento</value>
@@ -276,7 +276,7 @@ Vuoi riavviare SoundSwitch ora?</value>
     <value>SoundSwitch notificherà quando è disponibile un aggiornamento. Facendo clic sulla notifica, apparirà una finestra che scaricherà l'aggiornamento e chiederà se si vuole installarlo.</value>
   </data>
   <data name="notificationOptionBanner" xml:space="preserve">
-    <value>Banner</value>
+    <value>Notifica banner</value>
   </data>
   <data name="disableCustomSoundTooltip" xml:space="preserve">
     <value>Disabilita il set Suoni personalizzati.</value>
@@ -496,6 +496,33 @@ Ripristina lo stato del sistema quando l'applicazione viene chiusa.</value>
     <value>Mantieni il livello del volume su tutti i dispositivi</value>
   </data>
   <data name="keepVolume.desc" xml:space="preserve">
-    <value>Mantieni lo stesso livello di volume quando cambi dispositivo di riproduzione</value>
+    <value>Quando cambi dispositivo mantieni lo stesso volume</value>
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>Nessuno</value>
+  </data>
+  <data name="position" xml:space="preserve">
+    <value>Posizione</value>
+  </data>
+  <data name="positionTooltip" xml:space="preserve">
+    <value>Imposta la posizione della notifica del banner.</value>
+  </data>
+  <data name="positionOptionBottomLeft" xml:space="preserve">
+    <value>In basso a sinistra</value>
+  </data>
+  <data name="positionOptionBottomRight" xml:space="preserve">
+    <value>In basso a destra</value>
+  </data>
+  <data name="positionOptionTopLeft" xml:space="preserve">
+    <value>In alto a sinistra</value>
+  </data>
+  <data name="positionOptionTopRight" xml:space="preserve">
+    <value>In alto a destra</value>
+  </data>
+  <data name="positionOptionBottomCenter" xml:space="preserve">
+    <value>In basso al centro</value>
+  </data>
+  <data name="positionOptionTopCenter" xml:space="preserve">
+    <value>In alto al centro</value>
   </data>
 </root>
