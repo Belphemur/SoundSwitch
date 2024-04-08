@@ -71,7 +71,7 @@
     <value>Annuleer</value>
   </data>
   <data name="install" xml:space="preserve">
-    <value>Installatie</value>
+    <value>Installeer</value>
   </data>
   <data name="downloadFailed" xml:space="preserve">
     <value>Download mislukt</value>
