@@ -1,16 +1,16 @@
 ﻿/********************************************************************
-* Copyright (C) 2015-2017 Antoine Aflalo
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-********************************************************************/
+ * Copyright (C) 2015-2017 Antoine Aflalo
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ ********************************************************************/
 //source : https://stackoverflow.com/questions/6872957/how-can-i-use-the-images-within-shell32-dll-in-my-c-sharp-project
 
 using System;
@@ -36,6 +36,7 @@ namespace SoundSwitch.Common.Framework.Icon
         {
         }
     }
+
     public static class IconExtractor
     {
         /// <summary>
@@ -50,9 +51,9 @@ namespace SoundSwitch.Common.Framework.Icon
         {
             try
             {
-                return System.Drawing.Icon.ExtractIcon(file, iconIndex, !largeIcon);
+                return System.Drawing.Icon.ExtractIcon(file, iconIndex, largeIcon ? 32 : 16);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new IconExtractionException($"Can't extract icon from file: {file} / index:{iconIndex}", e);
             }
