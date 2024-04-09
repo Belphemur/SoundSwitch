@@ -107,7 +107,7 @@ namespace SoundSwitch.UI.Menu.Form
                 Region = Region.FromHrgn(RoundedCorner.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
             }
 
-            if (!_isLocationSet)
+            if (!_isLocationSet && !Disposing)
             {
                 Show();
                 SetLocationToCursor();
