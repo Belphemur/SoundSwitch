@@ -323,7 +323,7 @@ Both: Change when any type of device is switched.</value>
     <value>You need to set a playback-, or recording device.</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
-    <value>Add a profile to switch to a certain playback or recording device, when a specific application is started or focused.</value>
+    <value>Add a profile to switch to a certain playback or recording device, when a specific application is started or focused. You can also set your own hotkey for specific device combo.</value>
   </data>
   <data name="profile.error.registerHotkeys" xml:space="preserve">
     <value>Couldn't register hotkey for the following profiles: {0}</value>
