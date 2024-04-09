@@ -11,7 +11,7 @@ namespace SoundSwitch.Tests;
 [TestFixture]
 public class FileDownloaderTests
 {
-    private bool IsMP4(MemoryStream stream)
+    private bool IsMP4(Stream stream)
     {
         // Check if the stream has enough bytes for the magic number
         if (stream.Length < 8)
@@ -44,6 +44,6 @@ public class FileDownloaderTests
 
         //Assert
         downloaded.Should().Be(fileSize);
-        IsMP4(stream).Should().BeTrue();
+        stream.Should().Match(memStream => IsMP4(memStream));
     }
 }
