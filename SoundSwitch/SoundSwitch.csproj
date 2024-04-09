@@ -47,7 +47,7 @@
         <PackageReference Include="AuthenticodeExaminer" Version="0.3.0" />
         <PackageReference Include="JetBrains.Annotations" Version="2023.3.0" />
         <PackageReference Include="Job.Scheduler" Version="3.1.8" />
-        <PackageReference Include="Markdig" Version="0.36.2" />
+        <PackageReference Include="Markdig" Version="0.37.0" />
         <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
         <PackageReference Include="NuGet.Versioning" Version="6.9.1" />
         <PackageReference Include="Polly.Core" Version="8.3.1" />
