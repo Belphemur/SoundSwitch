@@ -205,7 +205,7 @@ jobs:
       - name: Latest Version
         run: | 
           version=$(git describe --tags --abbrev=0 | cut -c 2-)
-          echo "version=$version.0" >> $GITHUB_OUTPUT
+          echo "version=$version" >> $GITHUB_OUTPUT
         id: version
       - name: Sentry Release
         uses: getsentry/action-release@v1.7.0
