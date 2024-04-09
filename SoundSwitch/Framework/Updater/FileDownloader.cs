@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -62,7 +63,10 @@ namespace SoundSwitch.Framework.Updater
 
         private static async Task DownloadFileFromUrl(Uri uri, Stream toStream, Action<long, long> progressCallback, CancellationToken cancellationToken)
         {
-            using var client = new HttpClient();
+            using var client = new HttpClient(new HttpClientHandler
+            {
+                AutomaticDecompression = DecompressionMethods.All
+            });
             client.DefaultRequestHeaders.UserAgent.Add(ApplicationInfo.ProductValue);
             client.DefaultRequestHeaders.UserAgent.Add(ApplicationInfo.CommentValue);
             
