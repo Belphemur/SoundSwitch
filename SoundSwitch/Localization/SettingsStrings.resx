@@ -460,7 +460,7 @@ Restore the state of the system when the application is closed.</value>
     <value>In the app menu</value>
   </data>
   <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
-    <value>This trigger make the profile visible in the tray icon menu. Left-click on the systray icon to see your profile.</value>
+    <value>This trigger makes the profile visible in the tray icon menu. Left-click on the systray icon to see your profile.</value>
   </data>
   <data name="profile.trigger.deviceChanged" xml:space="preserve">
     <value>Force profile</value>
