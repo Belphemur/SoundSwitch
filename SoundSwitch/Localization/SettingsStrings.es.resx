@@ -344,7 +344,7 @@ Ambos: cambia cuando se cambia cualquier tipo de dispositivo.</value>
     <value>Activar el perfil cuando la aplicación seleccionada esté en primer plano</value>
   </data>
   <data name="profile.trigger.window.desc" xml:space="preserve">
-    <value>Activar el perfil si el programa en primer plano contiene los caracteres siguientes</value>
+    <value>Active el perfil si el programa en primer plano contiene los siguientes caracteres</value>
   </data>
   <data name="profile.trigger.hotkey.desc" xml:space="preserve">
     <value>Atajo utilizado para activar el perfil. Si acciona el mismo atajo, podrá cambiar entre perfiles.</value>
@@ -434,7 +434,7 @@ Ambos: cambia cuando se cambia cualquier tipo de dispositivo.</value>
     <value>Telemetría</value>
   </data>
   <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
-    <value>Este desencadenador hará visible el perfil en el menú del icono del área de notificación. Pulse en el icono para ver su perfil.</value>
+    <value>Este activador hace visible el perfil en el menú de iconos de la bandeja. Haga clic con el botón izquierdo en el icono de la bandeja del sistema para ver su perfil.</value>
   </data>
   <data name="profile.trigger.trayMenu" xml:space="preserve">
     <value>En el menú de la aplicación</value>
@@ -475,7 +475,7 @@ Restaura el estado del sistema cuando se cierra la aplicación.</value>
     <value>Big Picture de Steam</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
-    <value>Añada un perfil para cambiar a un determinado dispositivo de reproducción o de grabación cuando se inicie o active una aplicación específica.</value>
+    <value>Añade un perfil para cambiar a un determinado dispositivo de reproducción o grabación cuando se inicie o se active una aplicación específica. También puedes configurar tu propia tecla de acceso directo para una combinación específica de dispositivos.</value>
   </data>
   <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
     <value>El perfil se activará automáticamente cuando cambie el dispositivo de sonido actual.</value>

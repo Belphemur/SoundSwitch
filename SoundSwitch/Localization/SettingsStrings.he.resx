@@ -351,7 +351,7 @@
     <value>כשלון ברישום קיצור מקשים עבור הפרופילים הבא: {0}</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
-    <value>הוסף פרופיל כדי לעבור להתקן שמע או הקלטה כאשר אפליקציה ספציפית מופעלת או מועברת לקדמת המסך.</value>
+    <value>אפשר להוסיף פרופיל כדי לעבור להתקן שמע או הקלטה כאשר יישום מסוים מופעל או עובר לקדמת המסך. אפשר גם להגדיר מקשי קיצור משלך לשילוב התקנים מסוים.</value>
   </data>
   <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
     <value>עליך לקבוע התקן שמע או התקן הקלטה.</value>

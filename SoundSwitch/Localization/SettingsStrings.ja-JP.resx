@@ -240,7 +240,7 @@
     <value>プロファイルのホットキーを登録できませんでした: {0}</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
-    <value>特定のアプリケーションが起動またはフォーカスされたときに特定の再生デバイスまたは録音デバイスに切り替えるプロファイルを追加します。</value>
+    <value>特定のアプリケーションが起動またはフォーカスされたときに特定の再生デバイスまたは録音デバイスに切り替えるプロファイルを追加します。また、特定のデバイスの組み合わせに対してホットキーを設定することもできます。</value>
   </data>
   <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
     <value>再生デバイスまたは録音デバイスを設定する必要があります。</value>
@@ -463,7 +463,7 @@
     <value>アプリメニューから選択</value>
   </data>
   <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
-    <value>このトリガーはプロファイルをシステムトレイアイコンメニューで表示します。システムトレイアイコンを左クリックしてプロファイルを表示できます。</value>
+    <value>このトリガーはプロファイルをシステムトレイアイコンのメニューで表示します。システムトレイアイコンを左クリックしてプロファイルを表示できます。</value>
   </data>
   <data name="quickMenu.desc" xml:space="preserve">
     <value>ホットキーを使用する際に、Windows言語のようなクイックメニューを表示</value>
