@@ -64,6 +64,7 @@ namespace SoundSwitch.Framework.Configuration
             // Notification Settings
             NotificationSettings = NotificationTypeEnum.BannerNotification;
             BannerPosition = BannerPositionEnum.TopLeft;
+            MaxNumberNotification = 5;
 
             AutoAddNewConnectedDevices = false;
 
@@ -72,7 +73,7 @@ namespace SoundSwitch.Framework.Configuration
             MigratedFields = new HashSet<string>();
         }
 
-
+        public int MaxNumberNotification { get; set; }
         public HashSet<string> SelectedPlaybackDeviceListId { get; }
         public HashSet<string> SelectedRecordingDeviceListId { get; }
         public HashSet<DeviceInfo> SelectedDevices { get; set; }
