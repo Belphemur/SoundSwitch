@@ -525,4 +525,10 @@
   <data name="keepVolume.desc" xml:space="preserve">
     <value>デバイスを切り替える際に同じ音量レベルを保持します</value>
   </data>
+  <data name="notification.single" xml:space="preserve">
+    <value>バナーは一つだけ</value>
+  </data>
+  <data name="notification.single.tooltip" xml:space="preserve">
+    <value>一度に一つのバナーだけを表示し、その内容を置き換えます。</value>
+  </data>
 </root>
