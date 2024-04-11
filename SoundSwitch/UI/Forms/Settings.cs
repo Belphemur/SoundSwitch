@@ -128,12 +128,17 @@ namespace SoundSwitch.UI.Forms
             var positionToolTip = new ToolTip();
             positionToolTip.SetToolTip(positionComboBox, SettingsStrings.positionTooltip);
 
+            var singleNotification = new ToolTip();
+            singleNotification.SetToolTip(singleNotificationCheckbox, SettingsStrings.notification_single_tooltip);
+            singleNotificationCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.IsSingleNotification), false, DataSourceUpdateMode.OnPropertyChanged);
+
+
             usePrimaryScreenCheckbox.Checked = AppModel.Instance.NotifyUsingPrimaryScreen;
             var usePrimaryScreenTooltip = new ToolTip();
             usePrimaryScreenTooltip.SetToolTip(usePrimaryScreenCheckbox, SettingsStrings.usePrimaryScreenTooltip);
             
-            usePrimaryScreenCheckbox.Visible = positionLabel.Visible = positionComboBox.Visible = AppModel.Instance.NotificationSettings == NotificationTypeEnum.BannerNotification;
-
+            usePrimaryScreenCheckbox.Visible = positionLabel.Visible = positionComboBox.Visible = singleNotificationCheckbox.Visible =  AppModel.Instance.NotificationSettings == NotificationTypeEnum.BannerNotification;
+            
             selectSoundFileDialog.Filter = SettingsStrings.audioFiles + @" (*.wav;*.mp3)|*.wav;*.mp3;*.aiff";
             selectSoundFileDialog.FileOk += SelectSoundFileDialogOnFileOk;
             selectSoundFileDialog.CheckFileExists = true;
@@ -349,6 +354,7 @@ namespace SoundSwitch.UI.Forms
             notificationComboBox.Text = SettingsStrings.notification;
             usePrimaryScreenCheckbox.Text = SettingsStrings.usePrimaryScreen;
             positionLabel.Text = SettingsStrings.position;
+            singleNotificationCheckbox.Text = SettingsStrings.notification_single;
 
             // Settings - Profile
             profileExplanationLabel.Text = SettingsStrings.profile_explanation;
@@ -787,7 +793,7 @@ namespace SoundSwitch.UI.Forms
             selectSoundButton.Visible = supportCustomSound;
             DeleteSoundButtonVisible(supportCustomSound);
 
-            usePrimaryScreenCheckbox.Visible = positionLabel.Visible = positionComboBox.Visible = notificationType == NotificationTypeEnum.BannerNotification;
+            usePrimaryScreenCheckbox.Visible = positionLabel.Visible = positionComboBox.Visible = singleNotificationCheckbox.Visible = notificationType == NotificationTypeEnum.BannerNotification;
 
             AppModel.Instance.NotificationSettings = notificationType;
         }

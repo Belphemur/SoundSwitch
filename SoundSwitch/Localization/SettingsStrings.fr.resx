@@ -502,4 +502,10 @@ Restaurer l'état du système quand l'application est fermée.</value>
   <data name="positionTooltip" xml:space="preserve">
     <value>Choisir le positionnement de la bannière.</value>
   </data>
+  <data name="notification.single" xml:space="preserve">
+	  <value>Une seule bannière</value>
+  </data>
+  <data name="notification.single.tooltip" xml:space="preserve">
+	  <value>Ne montrer qu'une seule bannière et remplacer son contenu lors d'une notification.</value>
+  </data>
 </root>

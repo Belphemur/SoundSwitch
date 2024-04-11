@@ -118,6 +118,16 @@ namespace SoundSwitch.Model
         bool QuickMenuEnabled { get; set; }
         bool KeepVolumeEnabled { get; set; }
 
+        /// <summary>
+        /// How many notification to show at the same time
+        /// </summary>
+        int MaxNumberNotification { get; set; }
+
+        /// <summary>
+        /// Is there only 1 concurrent notification enabled ?
+        /// </summary>
+        bool IsSingleNotification { get; set; }
+
         #endregion
 
         #region Events

@@ -50,6 +50,7 @@ namespace SoundSwitch.Model
         private readonly NotificationManager _notificationManager;
         private UpdateChecker _updateChecker;
         private DeviceCollection<DeviceInfo> _selectedDevices;
+
         private AppModel()
         {
             _notificationManager = new NotificationManager(this);
@@ -68,6 +69,29 @@ namespace SoundSwitch.Model
         private readonly LimitedConcurrencyLevelTaskScheduler _updateScheduler;
 
         public ProfileManager ProfileManager { get; private set; }
+
+        /// <summary>
+        /// How many notification to show at the same time
+        /// </summary>
+        public int MaxNumberNotification
+        {
+            get => AppConfigs.Configuration.MaxNumberNotification;
+            set
+            {
+                if (value is > 100 or <= 0) return;
+                AppConfigs.Configuration.MaxNumberNotification = value;
+                AppConfigs.Configuration.Save();
+            }
+        }
+        
+        /// <summary>
+        /// Is there only 1 concurrent notification enabled ?
+        /// </summary>
+        public bool IsSingleNotification
+        {
+            get => AppConfigs.Configuration.MaxNumberNotification == 1;
+            set => MaxNumberNotification = value ? 1 : 5;
+        }
 
         public CachedSound CustomNotificationSound
         {
@@ -284,13 +308,10 @@ namespace SoundSwitch.Model
                 Log.Fatal("AppModel already initialized");
                 throw new InvalidOperationException("Already initialized");
             }
-            
+
             AudioDeviceLister = active;
             JobScheduler.Instance.ScheduleJob(new ProcessNotificationEventsJob());
-            AudioDeviceLister.DefaultDeviceChanged.Subscribe((@event) =>
-            {
-                DefaultDeviceChanged?.Invoke(this, new DeviceDefaultChangedEvent(@event.Device, @event.Role));
-            });
+            AudioDeviceLister.DefaultDeviceChanged.Subscribe((@event) => { DefaultDeviceChanged?.Invoke(this, new DeviceDefaultChangedEvent(@event.Device, @event.Role)); });
 
             RegisterHotKey(AppConfigs.Configuration.PlaybackHotKey);
             var saveConfig = false;
@@ -452,10 +473,10 @@ namespace SoundSwitch.Model
         {
             var confHotKey = action switch
             {
-                HotKeyAction.Playback  => AppConfigs.Configuration.PlaybackHotKey,
+                HotKeyAction.Playback => AppConfigs.Configuration.PlaybackHotKey,
                 HotKeyAction.Recording => AppConfigs.Configuration.RecordingHotKey,
-                HotKeyAction.Mute      => AppConfigs.Configuration.MuteRecordingHotKey,
-                _                      => throw new ArgumentOutOfRangeException(nameof(action), action, null)
+                HotKeyAction.Mute => AppConfigs.Configuration.MuteRecordingHotKey,
+                _ => throw new ArgumentOutOfRangeException(nameof(action), action, null)
             };
 
             if (!force && confHotKey == hotKey)
