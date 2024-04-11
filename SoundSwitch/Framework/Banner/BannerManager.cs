@@ -26,7 +26,7 @@ namespace SoundSwitch.Framework.Banner
     {
         private static System.Threading.SynchronizationContext _syncContext;
         private readonly Dictionary<Guid, BannerForm> _bannerForms = new();
-        private BannerForm _singleBanner = null;
+        private BannerForm _singleBanner;
         private const int SPACING = 10;
 
         /// <summary>
