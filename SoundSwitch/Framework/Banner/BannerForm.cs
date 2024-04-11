@@ -35,6 +35,7 @@ namespace SoundSwitch.Framework.Banner
         private BannerData _currentData;
         private CancellationTokenSource _cancellationTokenSource = new();
         private int _currentOffset;
+        private int _hide = 100;
         public Guid Id { get; } = Guid.NewGuid();
 
         /// <summary>
@@ -42,7 +43,7 @@ namespace SoundSwitch.Framework.Banner
         /// </summary>
         private static Screen GetScreen()
         {
-            return AppModel.Instance.NotifyUsingPrimaryScreen ? Screen.PrimaryScreen : Screen.FromPoint(Cursor.Position);
+            return (AppModel.Instance.NotifyUsingPrimaryScreen ? Screen.PrimaryScreen : Screen.FromPoint(Cursor.Position))!;
         }
 
         /// <summary>
@@ -89,7 +90,7 @@ namespace SoundSwitch.Framework.Banner
             if (_timerHide == null)
             {
                 _timerHide = new Timer { Interval = 3000 };
-                _timerHide.Tick += TimerHide_Tick;
+                _timerHide.Tick += TimerHide_Tick!;
             }
             else
             {
@@ -107,29 +108,38 @@ namespace SoundSwitch.Framework.Banner
             }
 
             _hiding = false;
-            Opacity = .8;
+            Opacity = .9;
             lblTop.Text = data.Title;
             lblTitle.Text = data.Text;
-            Region = Region.FromHrgn(RoundedCorner.CreateRoundRectRgn(0, 0, Width, Height , 20, 20));
+            Region = Region.FromHrgn(RoundedCorner.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
 
             var screen = GetScreen();
-            
+
             Location = data.Position.GetScreenPosition(screen, Height, Width, _currentOffset);
 
             _timerHide.Enabled = true;
 
             Show();
         }
-        
+
         /// <summary>
         /// Update Location of banner depending of the position change
         /// </summary>
         /// <param name="positionChange"></param>
-        public void UpdateLocation(int positionChange)
+        /// <param name="opacityChange"></param>
+        /// <param name="hideChange"></param>
+        public void UpdateLocationOpacity(int positionChange, double opacityChange, int hideChange)
         {
             var screen = GetScreen();
             _currentOffset += positionChange;
             Location = _currentData.Position.GetScreenPosition(screen, Height, Width, _currentOffset);
+            Opacity -= opacityChange;
+            _hide -= hideChange;
+            if (Opacity <= 0.0 || _hide <= 0)
+            {
+                _hiding = true;
+                Dispose();
+            }
         }
 
         /// <summary>
@@ -174,6 +184,16 @@ namespace SoundSwitch.Framework.Banner
         /// <param name="e">Arguments of the event</param>
         private void TimerHide_Tick(object sender, EventArgs e)
         {
+            TriggerHidingDisposal();
+        }
+
+        /// <summary>
+        /// Trigger hiding the banner and dispose when done fading out.
+        /// </summary>
+        private void TriggerHidingDisposal()
+        {
+            if (_hiding) return;
+
             _hiding = true;
             _timerHide.Enabled = false;
             DestroySound();

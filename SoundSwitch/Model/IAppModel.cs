@@ -123,6 +123,11 @@ namespace SoundSwitch.Model
         /// </summary>
         int MaxNumberNotification { get; set; }
 
+        /// <summary>
+        /// Is there only 1 concurrent notification enabled ?
+        /// </summary>
+        bool IsSingleNotification { get; set; }
+
         #endregion
 
         #region Events

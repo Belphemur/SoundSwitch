@@ -81,6 +81,7 @@ namespace SoundSwitch.UI.Forms
             toggleMuteLabel = new System.Windows.Forms.Label();
             muteHotKey = new Component.HotKeyTextBox();
             muteHotKeyCheckbox = new System.Windows.Forms.CheckBox();
+            singleNotificationCheckbox = new System.Windows.Forms.CheckBox();
             tabControl.SuspendLayout();
             playbackTabPage.SuspendLayout();
             recordingTabPage.SuspendLayout();
@@ -108,7 +109,7 @@ namespace SoundSwitch.UI.Forms
             // 
             closeButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             closeButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            closeButton.Location = new System.Drawing.Point(703, 437);
+            closeButton.Location = new System.Drawing.Point(703, 465);
             closeButton.Name = "closeButton";
             closeButton.Size = new System.Drawing.Size(72, 26);
             closeButton.TabIndex = 11;
@@ -137,7 +138,7 @@ namespace SoundSwitch.UI.Forms
             tabControl.Location = new System.Drawing.Point(12, 6);
             tabControl.Name = "tabControl";
             tabControl.SelectedIndex = 0;
-            tabControl.Size = new System.Drawing.Size(762, 405);
+            tabControl.Size = new System.Drawing.Size(762, 433);
             tabControl.TabIndex = 13;
             tabControl.SelectedIndexChanged += TabControl_SelectedIndexChanged;
             // 
@@ -147,7 +148,7 @@ namespace SoundSwitch.UI.Forms
             playbackTabPage.Location = new System.Drawing.Point(4, 25);
             playbackTabPage.Name = "playbackTabPage";
             playbackTabPage.Padding = new System.Windows.Forms.Padding(3);
-            playbackTabPage.Size = new System.Drawing.Size(771, 377);
+            playbackTabPage.Size = new System.Drawing.Size(754, 376);
             playbackTabPage.TabIndex = 0;
             playbackTabPage.Text = "Playback";
             playbackTabPage.UseVisualStyleBackColor = true;
@@ -164,7 +165,7 @@ namespace SoundSwitch.UI.Forms
             playbackListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             playbackListView.Location = new System.Drawing.Point(3, 3);
             playbackListView.Name = "playbackListView";
-            playbackListView.Size = new System.Drawing.Size(765, 371);
+            playbackListView.Size = new System.Drawing.Size(748, 370);
             playbackListView.TabIndex = 14;
             playbackListView.UseCompatibleStateImageBehavior = false;
             playbackListView.View = System.Windows.Forms.View.Details;
@@ -175,7 +176,7 @@ namespace SoundSwitch.UI.Forms
             recordingTabPage.Location = new System.Drawing.Point(4, 25);
             recordingTabPage.Name = "recordingTabPage";
             recordingTabPage.Padding = new System.Windows.Forms.Padding(3);
-            recordingTabPage.Size = new System.Drawing.Size(771, 377);
+            recordingTabPage.Size = new System.Drawing.Size(754, 376);
             recordingTabPage.TabIndex = 1;
             recordingTabPage.Text = "Recording";
             recordingTabPage.UseVisualStyleBackColor = true;
@@ -193,7 +194,7 @@ namespace SoundSwitch.UI.Forms
             recordingListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             recordingListView.Location = new System.Drawing.Point(3, 3);
             recordingListView.Name = "recordingListView";
-            recordingListView.Size = new System.Drawing.Size(765, 371);
+            recordingListView.Size = new System.Drawing.Size(748, 370);
             recordingListView.TabIndex = 17;
             recordingListView.UseCompatibleStateImageBehavior = false;
             recordingListView.View = System.Windows.Forms.View.Details;
@@ -208,7 +209,7 @@ namespace SoundSwitch.UI.Forms
             tabProfile.Location = new System.Drawing.Point(4, 25);
             tabProfile.Name = "tabProfile";
             tabProfile.Padding = new System.Windows.Forms.Padding(3);
-            tabProfile.Size = new System.Drawing.Size(771, 377);
+            tabProfile.Size = new System.Drawing.Size(754, 376);
             tabProfile.TabIndex = 3;
             tabProfile.Text = "Profiles";
             tabProfile.UseVisualStyleBackColor = true;
@@ -289,13 +290,14 @@ namespace SoundSwitch.UI.Forms
             appSettingTabPage.Controls.Add(basicSettingsGroupBox);
             appSettingTabPage.Location = new System.Drawing.Point(4, 25);
             appSettingTabPage.Name = "appSettingTabPage";
-            appSettingTabPage.Size = new System.Drawing.Size(754, 376);
+            appSettingTabPage.Size = new System.Drawing.Size(754, 404);
             appSettingTabPage.TabIndex = 2;
             appSettingTabPage.Text = "Settings";
             appSettingTabPage.UseVisualStyleBackColor = true;
             // 
             // notificationGroupBox
             // 
+            notificationGroupBox.Controls.Add(singleNotificationCheckbox);
             notificationGroupBox.Controls.Add(positionComboBox);
             notificationGroupBox.Controls.Add(notificationComboBox);
             notificationGroupBox.Controls.Add(selectSoundButton);
@@ -304,7 +306,7 @@ namespace SoundSwitch.UI.Forms
             notificationGroupBox.Controls.Add(positionLabel);
             notificationGroupBox.Location = new System.Drawing.Point(434, 241);
             notificationGroupBox.Name = "notificationGroupBox";
-            notificationGroupBox.Size = new System.Drawing.Size(315, 118);
+            notificationGroupBox.Size = new System.Drawing.Size(315, 138);
             notificationGroupBox.TabIndex = 16;
             notificationGroupBox.TabStop = false;
             notificationGroupBox.Text = "Notification";
@@ -474,7 +476,7 @@ namespace SoundSwitch.UI.Forms
             audioSettingsGroupBox.Controls.Add(switchCommunicationDeviceCheckBox);
             audioSettingsGroupBox.Location = new System.Drawing.Point(3, 117);
             audioSettingsGroupBox.Name = "audioSettingsGroupBox";
-            audioSettingsGroupBox.Size = new System.Drawing.Size(425, 242);
+            audioSettingsGroupBox.Size = new System.Drawing.Size(425, 262);
             audioSettingsGroupBox.TabIndex = 13;
             audioSettingsGroupBox.TabStop = false;
             audioSettingsGroupBox.Text = "Audio Settings";
@@ -586,7 +588,7 @@ namespace SoundSwitch.UI.Forms
             // 
             hotkeysCheckBox.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             hotkeysCheckBox.AutoSize = true;
-            hotkeysCheckBox.Location = new System.Drawing.Point(163, 441);
+            hotkeysCheckBox.Location = new System.Drawing.Point(163, 469);
             hotkeysCheckBox.Name = "hotkeysCheckBox";
             hotkeysCheckBox.Size = new System.Drawing.Size(100, 20);
             hotkeysCheckBox.TabIndex = 20;
@@ -598,7 +600,7 @@ namespace SoundSwitch.UI.Forms
             // 
             hotKeyControl.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             hotKeyControl.ListenToHotkey = false;
-            hotKeyControl.Location = new System.Drawing.Point(19, 439);
+            hotKeyControl.Location = new System.Drawing.Point(19, 467);
             hotKeyControl.Name = "hotKeyControl";
             hotKeyControl.Size = new System.Drawing.Size(138, 23);
             hotKeyControl.TabIndex = 21;
@@ -609,7 +611,7 @@ namespace SoundSwitch.UI.Forms
             // 
             toggleMuteLabel.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             toggleMuteLabel.AutoSize = true;
-            toggleMuteLabel.Location = new System.Drawing.Point(441, 420);
+            toggleMuteLabel.Location = new System.Drawing.Point(441, 448);
             toggleMuteLabel.Name = "toggleMuteLabel";
             toggleMuteLabel.Size = new System.Drawing.Size(72, 16);
             toggleMuteLabel.TabIndex = 22;
@@ -620,7 +622,7 @@ namespace SoundSwitch.UI.Forms
             // 
             muteHotKey.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             muteHotKey.ListenToHotkey = false;
-            muteHotKey.Location = new System.Drawing.Point(441, 439);
+            muteHotKey.Location = new System.Drawing.Point(441, 467);
             muteHotKey.Name = "muteHotKey";
             muteHotKey.Size = new System.Drawing.Size(138, 23);
             muteHotKey.TabIndex = 24;
@@ -631,7 +633,7 @@ namespace SoundSwitch.UI.Forms
             // 
             muteHotKeyCheckbox.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             muteHotKeyCheckbox.AutoSize = true;
-            muteHotKeyCheckbox.Location = new System.Drawing.Point(585, 441);
+            muteHotKeyCheckbox.Location = new System.Drawing.Point(585, 469);
             muteHotKeyCheckbox.Name = "muteHotKeyCheckbox";
             muteHotKeyCheckbox.Size = new System.Drawing.Size(100, 20);
             muteHotKeyCheckbox.TabIndex = 23;
@@ -639,12 +641,22 @@ namespace SoundSwitch.UI.Forms
             muteHotKeyCheckbox.UseVisualStyleBackColor = true;
             muteHotKeyCheckbox.CheckedChanged += MuteHotKeyCheckbox_CheckedChanged;
             // 
+            // singleNotificationCheckbox
+            // 
+            singleNotificationCheckbox.AutoSize = true;
+            singleNotificationCheckbox.Location = new System.Drawing.Point(78, 106);
+            singleNotificationCheckbox.Name = "singleNotificationCheckbox";
+            singleNotificationCheckbox.Size = new System.Drawing.Size(124, 20);
+            singleNotificationCheckbox.TabIndex = 27;
+            singleNotificationCheckbox.Text = "Single Notification";
+            singleNotificationCheckbox.UseVisualStyleBackColor = true;
+            // 
             // SettingsForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             CancelButton = closeButton;
-            ClientSize = new System.Drawing.Size(784, 474);
+            ClientSize = new System.Drawing.Size(784, 502);
             Controls.Add(muteHotKey);
             Controls.Add(muteHotKeyCheckbox);
             Controls.Add(toggleMuteLabel);
@@ -724,5 +736,6 @@ namespace SoundSwitch.UI.Forms
         private System.Windows.Forms.CheckBox keepVolumeCheckbox;
         private System.Windows.Forms.GroupBox notificationGroupBox;
         private System.Windows.Forms.ComboBox positionComboBox;
+        private System.Windows.Forms.CheckBox singleNotificationCheckbox;
     }
 }

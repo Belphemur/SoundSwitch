@@ -78,9 +78,19 @@ namespace SoundSwitch.Model
             get => AppConfigs.Configuration.MaxNumberNotification;
             set
             {
+                if (value is > 100 or <= 0) return;
                 AppConfigs.Configuration.MaxNumberNotification = value;
                 AppConfigs.Configuration.Save();
             }
+        }
+        
+        /// <summary>
+        /// Is there only 1 concurrent notification enabled ?
+        /// </summary>
+        public bool IsSingleNotification
+        {
+            get => AppConfigs.Configuration.MaxNumberNotification == 1;
+            set => MaxNumberNotification = value ? 1 : 5;
         }
 
         public CachedSound CustomNotificationSound

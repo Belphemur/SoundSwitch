@@ -426,6 +426,24 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Only one banner.
+        /// </summary>
+        internal static string notification_single {
+            get {
+                return ResourceManager.GetString("notification.single", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only show one banner at a time and replace its content..
+        /// </summary>
+        internal static string notification_single_tooltip {
+            get {
+                return ResourceManager.GetString("notification.single.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Banner Notification.
         /// </summary>
         internal static string notificationOptionBanner {
@@ -981,7 +999,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This trigger make the profile visible in the tray icon menu. Left-click on the systray icon to see your profile..
+        ///   Looks up a localized string similar to This trigger makes the profile visible in the tray icon menu. Left-click on the systray icon to see your profile..
         /// </summary>
         internal static string profile_trigger_trayMenu_desc {
             get {
@@ -1017,7 +1035,7 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Activate the profile if the foregound program contains the following characters.
+        ///   Looks up a localized string similar to Activate the profile if the foreground program contains the following characters.
         /// </summary>
         internal static string profile_trigger_window_desc {
             get {

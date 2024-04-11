@@ -519,4 +519,10 @@ Restore the state of the system when the application is closed.</value>
   <data name="positionOptionTopCenter" xml:space="preserve">
     <value>Top Center</value>
   </data>
+  <data name="notification.single" xml:space="preserve">
+    <value>Only one banner</value>
+  </data>
+  <data name="notification.single.tooltip" xml:space="preserve">
+    <value>Only show one banner at a time and replace its content.</value>
+  </data>
 </root>
