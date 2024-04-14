@@ -466,4 +466,10 @@
   <data name="positionOptionBottomLeft" xml:space="preserve">
     <value>משמאל למטה</value>
   </data>
+  <data name="notification.single" xml:space="preserve">
+    <value>רק כרזה אחת</value>
+  </data>
+  <data name="notification.single.tooltip" xml:space="preserve">
+    <value>להציג רק כרזה אחת בכל פעם ולהחליף את התוכן שלה.</value>
+  </data>
 </root>
