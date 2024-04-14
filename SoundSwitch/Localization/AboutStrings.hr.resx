@@ -59,13 +59,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="logo" xml:space="preserve">
-    <value>Izrada logotipa</value>
+    <value>Autor logotipa</value>
   </data>
   <data name="icons" xml:space="preserve">
     <value>Ikone</value>
   </data>
   <data name="keyboardHotkeys" xml:space="preserve">
-    <value>Sistem prečica</value>
+    <value>Sistem prečaca</value>
   </data>
   <data name="defaultPlaybackDeviceChange" xml:space="preserve">
     <value>Izmjena zadanog uređaja</value>
