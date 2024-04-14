@@ -168,7 +168,7 @@
     <value>少なくとも1つのトリガーが必要です。</value>
   </data>
   <data name="communication" xml:space="preserve">
-    <value>規定の通信デバイス</value>
+    <value>既定の通信デバイス</value>
   </data>
   <data name="profile.trigger.available" xml:space="preserve">
     <value>利用可能なトリガー</value>
@@ -207,10 +207,10 @@
     <value>ホットキー有効</value>
   </data>
   <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
-    <value>アプリケーションが検出された場合、SoundSwitchは現在の規定のデバイスも変更します。</value>
+    <value>アプリケーションが検出された場合、SoundSwitchは現在の既定のデバイスも変更します。</value>
   </data>
   <data name="profile.defaultDevice.checkbox" xml:space="preserve">
-    <value>規定のデバイスも切り替える</value>
+    <value>既定のデバイスも切り替える</value>
   </data>
   <data name="profile.feature.profile" xml:space="preserve">
     <value>プロファイル</value>
@@ -296,13 +296,13 @@
     <value>新しいアップデートが利用可能になると、SoundSwitchは通知します。通知をクリックすると、アップデートをダウンロードし、インストールするかどうかを尋ねるポップアップが表示されます。</value>
   </data>
   <data name="updateNeverTooltip" xml:space="preserve">
-    <value>手動で確認したとき以外、プログラムの更新を行いません。</value>
+    <value>手動で確認したとき以外、プログラムのアップデートを行いません。</value>
   </data>
   <data name="languageRestartRequiredCaption" xml:space="preserve">
     <value>再起動が必要</value>
   </data>
   <data name="languageRestartRequired" xml:space="preserve">
-    <value>言語はSoundSwitchを再起動後に変更されます。
+    <value>SoundSwitchを再起動すると言語が変更されます。 
 今すぐ再起動しますか？</value>
   </data>
   <data name="language" xml:space="preserve">
@@ -367,19 +367,19 @@
     <value>ホバー時のツールチップ</value>
   </data>
   <data name="updateNever" xml:space="preserve">
-    <value>更新を確認しない</value>
+    <value>アップデートを確認しない</value>
   </data>
   <data name="updateNotify" xml:space="preserve">
-    <value>更新が利用可能な場合に通知</value>
+    <value>アップデートが利用可能な場合に通知</value>
   </data>
   <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
-    <value>プロンプトなしで更新が自動的にインストールされます。</value>
+    <value>プロンプトなしでアップデートが自動的にインストールされます。</value>
   </data>
   <data name="updateInstallAutomatically" xml:space="preserve">
-    <value>自動的に更新をインストール</value>
+    <value>自動的にアップデートをインストール</value>
   </data>
   <data name="keepSystemTrayIconTooltip" xml:space="preserve">
-    <value>有効化すると「規定の再生デバイス」が変更されてもシステムトレイアイコンは変わりません。</value>
+    <value>有効化すると「既定の再生デバイス」が変更されてもシステムトレイアイコンは変わりません。</value>
   </data>
   <data name="keepSystemTrayIcon" xml:space="preserve">
     <value>SoundSwitch のシステムトレイアイコンを保持</value>
@@ -388,7 +388,7 @@
     <value>循環</value>
   </data>
   <data name="updateSettings" xml:space="preserve">
-    <value>更新設定</value>
+    <value>アップデート設定</value>
   </data>
   <data name="audioSettings" xml:space="preserve">
     <value>オーディオ設定</value>
@@ -430,10 +430,10 @@
     <value>接続済</value>
   </data>
   <data name="startWithWindows" xml:space="preserve">
-    <value>Windows の起動時に自動的に開始</value>
+    <value>Windows の起動時に自動的に開始する</value>
   </data>
   <data name="communicationsDevice" xml:space="preserve">
-    <value>規定の通信デバイスを切り替える</value>
+    <value>既定の通信デバイスを切り替える</value>
   </data>
   <data name="hotkeys" xml:space="preserve">
     <value>ホットキー</value>
