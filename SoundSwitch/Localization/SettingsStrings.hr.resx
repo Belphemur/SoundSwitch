@@ -62,7 +62,7 @@
     <value>Nije moguće registrirati prečac za sljedeće profile: {0}</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
-    <value>Dodaj profil kako bi se promijenio uređaj za slušanje ili snimanje, kad se pokrene ili fokusira određena aplikacija.</value>
+    <value>Dodaj profil za prebacivanje na određeni uređaj za reprodukciju ili snimanje kada se određena aplikacija pokrene ili kada je aktivna. Osim toga možeš postaviti vlastiti prečac za određenu kombinaciju uređaja.</value>
   </data>
   <data name="iconChange.tooltip" xml:space="preserve">
     <value>Izaberi kada će se SoundSwitch ikona u sistemskoj traci promijeniti.
@@ -142,7 +142,7 @@ Zajedno: Promijeni ikonu kad se bilo koji uređaj promijeni.</value>
     <value>Onemogući korištenje personaliziranih zvukova.</value>
   </data>
   <data name="notificationOptionBanner" xml:space="preserve">
-    <value>Natpis obavijesti</value>
+    <value>Natpis</value>
   </data>
   <data name="updateNotifyTooltip" xml:space="preserve">
     <value>SoundSwitch će te obavijestiti kad je dostupna nadogradnja. Kad klikneš na obavijest, pojavit će se skočni prozor za preuzimanje nadogradnje.</value>
@@ -465,5 +465,11 @@ Obnovi stanje sustava kad se program zatvori.</value>
   </data>
   <data name="none" xml:space="preserve">
     <value>Bez</value>
+  </data>
+  <data name="notification.single" xml:space="preserve">
+    <value>Samo jedan natpis</value>
+  </data>
+  <data name="notification.single.tooltip" xml:space="preserve">
+    <value>Prikaži samo jedan natpis odjednom i zamijeni njegov sadržaj.</value>
   </data>
 </root>
