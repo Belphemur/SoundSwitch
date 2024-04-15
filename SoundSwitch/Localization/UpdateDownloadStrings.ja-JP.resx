@@ -101,7 +101,7 @@
     <value>無効なデジタル署名</value>
   </data>
   <data name="notSigned" xml:space="preserve">
-    <value>ダウンロードした更新に有効な署名がありません。ファイルを削除し、開発者に連絡することをお勧めします！</value>
+    <value>ダウンロードしたアップデートに有効な署名がありません。ファイルを削除し、開発者に連絡することをお勧めします！</value>
   </data>
   <data name="changelog" xml:space="preserve">
     <value>変更履歴</value>
@@ -119,6 +119,6 @@
     <value>後で</value>
   </data>
   <data name="wrongSignature" xml:space="preserve">
-    <value>最後のSoundSwitchの更新に問題があります。新しいバージョンを {0} で手動でダウンロードする必要があります</value>
+    <value>最後のSoundSwitchのアップデートに問題があります。新しいバージョンを {0} で手動でダウンロードする必要があります</value>
   </data>
 </root>

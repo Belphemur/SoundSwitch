@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="updateDisabled" xml:space="preserve">
-    <value>更新チェックが無効化されました</value>
+    <value>アップデートの確認が無効化されました</value>
   </data>
   <data name="communityMenu" xml:space="preserve">
     <value>コミュニティ</value>
@@ -157,13 +157,13 @@
     <value>SoundSwitch: 再生デバイスが切り替えられました</value>
   </data>
   <data name="clickToUpdate" xml:space="preserve">
-    <value>ここをクリックして更新します。</value>
+    <value>ここをクリックしてアップデートします。</value>
   </data>
   <data name="versionAvailable" xml:space="preserve">
-    <value>SoundSwitchの更新が利用可能です ({0})。</value>
+    <value>SoundSwitchのアップデートが利用可能です ({0})。</value>
   </data>
   <data name="updateAvailable" xml:space="preserve">
-    <value>更新が利用可能です ({0})</value>
+    <value>アップデートが利用可能です ({0})</value>
   </data>
   <data name="exit" xml:space="preserve">
     <value>終了</value>
@@ -181,13 +181,13 @@
     <value>デバイスが選択されていません</value>
   </data>
   <data name="noUpdate" xml:space="preserve">
-    <value>利用可能な更新はありません</value>
+    <value>利用可能なアップデートはありません</value>
   </data>
   <data name="settings" xml:space="preserve">
     <value>設定</value>
   </data>
   <data name="forceCheckForUpdate" xml:space="preserve">
-    <value>更新をチェック</value>
+    <value>アップデートの確認</value>
   </data>
   <data name="resetAudioDevices" xml:space="preserve">
     <value>アプリごとのオーディオをリセット</value>
