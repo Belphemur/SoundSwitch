@@ -139,14 +139,14 @@ namespace SoundSwitch.UI.Forms
             Text = SettingsStrings.profile_feature_add;
             selectProgramDialog.Filter = $@"{SettingsStrings.profile_feature_executable}|*.exe";
             nameLabel.Text = SettingsStrings.profile_name;
-            notifyCheckbox.Text = SettingsStrings.profile_notify_on_activation;
+            notifyCheckbox.Text = SettingsStrings.profile_notifyOnActivation;
             switchDefaultCheckBox.Text = SettingsStrings.profile_defaultDevice_checkbox;
-            saveButton.Text = SettingsStrings.profile_button_save;
+            saveButton.Text = SettingsStrings.button_save;
             restoreDevicesCheckBox.Text = SettingsStrings.profile_trigger_restoreDevices;
             switchForegroundCheckbox.Text = SettingsStrings.foregroundApp;
 
             new ToolTip().SetToolTip(switchDefaultCheckBox, SettingsStrings.profile_defaultDevice_checkbox_tooltip);
-            new ToolTip().SetToolTip(switchForegroundCheckbox, SettingsStrings.foregroundAppTooltip);
+            new ToolTip().SetToolTip(switchForegroundCheckbox, SettingsStrings.foregroundApp_tooltip);
 
 
             _restoreDeviceToolTip = new ToolTip();

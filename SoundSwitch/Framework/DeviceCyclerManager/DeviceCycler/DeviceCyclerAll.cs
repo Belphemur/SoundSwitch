@@ -23,7 +23,7 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
     public class DeviceCyclerAll : ADeviceCycler
     {
         public override DeviceCyclerTypeEnum TypeEnum => DeviceCyclerTypeEnum.All;
-        public override string Label => SettingsStrings.cycleThroughOptionAllAudioDevices;
+        public override string Label => SettingsStrings.cycleThrough_option_allAudioDevices;
         
 
         protected override IEnumerable<DeviceFullInfo> GetDevices(DataFlow type)

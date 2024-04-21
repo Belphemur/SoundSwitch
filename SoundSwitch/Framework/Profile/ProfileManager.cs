@@ -366,7 +366,7 @@ namespace SoundSwitch.Framework.Profile
                 var deviceToUse = CheckDeviceAvailable(device.DeviceInfo);
                 if (deviceToUse == null)
                 {
-                    _showError.Invoke(string.Format(SettingsStrings.profile_error_device_not_found, device.DeviceInfo.NameClean), $"{SettingsStrings.profile_error_title}: {profile.Name}");
+                    _showError.Invoke(string.Format(SettingsStrings.profile_error_deviceNotFound, device.DeviceInfo.NameClean), $"{SettingsStrings.profile_error_title}: {profile.Name}");
                     continue;
                 }
 
@@ -392,7 +392,7 @@ namespace SoundSwitch.Framework.Profile
                 var deviceToUse = CheckDeviceAvailable(device.DeviceInfo);
                 if (deviceToUse == null)
                 {
-                    _showError.Invoke(string.Format(SettingsStrings.profile_error_device_not_found, device.DeviceInfo.NameClean), $"{SettingsStrings.profile_error_title}: {profile.Name}");
+                    _showError.Invoke(string.Format(SettingsStrings.profile_error_deviceNotFound, device.DeviceInfo.NameClean), $"{SettingsStrings.profile_error_title}: {profile.Name}");
                     continue;
                 }
 
@@ -467,7 +467,7 @@ namespace SoundSwitch.Framework.Profile
         {
             if (string.IsNullOrEmpty(profile.Name))
             {
-                return SettingsStrings.profile_error_no_name;
+                return SettingsStrings.profile_error_noName;
             }
 
             if (profile.Triggers.Count == 0)
@@ -563,7 +563,7 @@ namespace SoundSwitch.Framework.Profile
         {
             if (string.IsNullOrEmpty(profile.ProfileName))
             {
-                return SettingsStrings.profile_error_no_name;
+                return SettingsStrings.profile_error_noName;
             }
 
             if (string.IsNullOrEmpty(profile.ApplicationPath) && profile.HotKey == null)

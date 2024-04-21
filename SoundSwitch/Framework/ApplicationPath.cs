@@ -32,7 +32,7 @@ namespace SoundSwitch.Framework
         public static string Default { get; } = Path.Combine(AppData, Application.ProductName);
 
         /// <summary>
-        /// Path wher ethe application store the logs
+        /// Path where the application store the logs
         /// </summary>
         public static string Logs { get; } = Path.Combine(Default, "Logs");
 

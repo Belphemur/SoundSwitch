@@ -22,7 +22,7 @@ namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo
         private readonly TooltipInfoPlayback _tooltipInfoPlayback = new();
 
         public TooltipInfoTypeEnum TypeEnum => TooltipInfoTypeEnum.Both;
-        public string Label => SettingsStrings.tooltipOnHoverOptionBothDevices;
+        public string Label => SettingsStrings.tooltipOnHover_option_bothDevices;
 
         /// <summary>
         /// The text to display for this ToolTip

@@ -30,7 +30,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
     internal class NotificationBanner : INotification
     {
         public NotificationTypeEnum TypeEnum => NotificationTypeEnum.BannerNotification;
-        public string Label => SettingsStrings.notificationOptionBanner;
+        public string Label => SettingsStrings.notification_option_banner;
 
         public INotificationConfiguration Configuration { get; set; }
         private readonly BannerManager _bannerManager = new();
@@ -54,8 +54,8 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
 
             toastData.Title = audioDevice.Type switch
             {
-                DataFlow.Render => SettingsStrings.tooltipOnHoverOptionPlaybackDevice,
-                DataFlow.Capture => SettingsStrings.tooltipOnHoverOptionRecordingDevice,
+                DataFlow.Render => SettingsStrings.tooltipOnHover_option_playbackDevice,
+                DataFlow.Capture => SettingsStrings.tooltipOnHover_option_recordingDevice,
                 _ => throw new ArgumentOutOfRangeException(nameof(audioDevice.Type), audioDevice.Type, null)
             };
 

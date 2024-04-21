@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -135,7 +135,7 @@
   <data name="settings" xml:space="preserve">
     <value>Settings</value>
   </data>
-  <data name="hotkeys" xml:space="preserve">
+  <data name="hotkey" xml:space="preserve">
     <value>Hotkey</value>
   </data>
   <data name="communicationsDevice" xml:space="preserve">
@@ -144,31 +144,31 @@
   <data name="startWithWindows" xml:space="preserve">
     <value>Start automatically with Windows</value>
   </data>
-  <data name="close" xml:space="preserve">
+  <data name="button.close" xml:space="preserve">
     <value>Close</value>
   </data>
-  <data name="closeTooltip" xml:space="preserve">
+  <data name="button.close.tooltip" xml:space="preserve">
     <value>Changes are automatically saved</value>
   </data>
-  <data name="communicationsDeviceTooltip" xml:space="preserve">
+  <data name="communicationsDevice.tooltip" xml:space="preserve">
     <value>When checked, the 'Default Communication Device' and 'Default Playback Device' are switched together (useful for Skype, TeamSpeak, e.g.).</value>
   </data>
   <data name="notification" xml:space="preserve">
     <value>Notification</value>
   </data>
-  <data name="updateIncludeBetaVersions" xml:space="preserve">
+  <data name="update.includeBetaVersions" xml:space="preserve">
     <value>Include Beta versions</value>
   </data>
-  <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
+  <data name="update.includeBetaVersions.tooltip" xml:space="preserve">
     <value>When checked, SoundSwitch will also check for Beta versions on GitHub.</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
     <value>Audio Files</value>
   </data>
-  <data name="selectSoundButtonTooltip" xml:space="preserve">
+  <data name="selectSoundButton.tooltip" xml:space="preserve">
     <value>Select the sound file for the notification</value>
   </data>
-  <data name="hotkeysTooltip" xml:space="preserve">
+  <data name="hotkey.tooltip" xml:space="preserve">
     <value>Check to enable hotkey.</value>
   </data>
   <data name="basicSettings" xml:space="preserve">
@@ -186,68 +186,68 @@
   <data name="keepSystemTrayIcon" xml:space="preserve">
     <value>Keep SoundSwitch's System Tray Icon</value>
   </data>
-  <data name="keepSystemTrayIconTooltip" xml:space="preserve">
+  <data name="keepSystemTrayIcon.tooltip" xml:space="preserve">
     <value>When checked, the System Tray Icon won't change when the 'Default Playback Device' changes.</value>
   </data>
-  <data name="updateInstallAutomatically" xml:space="preserve">
+  <data name="update.installAutomatically" xml:space="preserve">
     <value>Install updates automatically</value>
   </data>
-  <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
+  <data name="update.installAutomatically.tooltip" xml:space="preserve">
     <value>Updates are installed automatically without any prompts.</value>
   </data>
-  <data name="updateNotify" xml:space="preserve">
+  <data name="update.notify" xml:space="preserve">
     <value>Notify me when updates are available</value>
   </data>
-  <data name="updateNever" xml:space="preserve">
+  <data name="update.never" xml:space="preserve">
     <value>Never check for updates</value>
   </data>
   <data name="tooltipOnHover" xml:space="preserve">
     <value>Tooltip on Hover</value>
   </data>
-  <data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
+  <data name="cycleThrough.option.allAudioDevices" xml:space="preserve">
     <value>All audio devices</value>
   </data>
-  <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
+  <data name="cycleThrough.option.onlySelectedAudioDevices" xml:space="preserve">
     <value>Only selected audio devices</value>
   </data>
-  <data name="cycleThroughTooltip" xml:space="preserve">
+  <data name="cycleThrough.tooltip" xml:space="preserve">
     <value>Choose between which devices to switch. Either only between the selected or between all.</value>
   </data>
-  <data name="notificationOptionWindowsDefault" xml:space="preserve">
+  <data name="notification.option.windowsDefault" xml:space="preserve">
     <value>Windows Notification</value>
   </data>
-  <data name="notificationOptionSound" xml:space="preserve">
+  <data name="notification.option.sound" xml:space="preserve">
     <value>Sound Notification</value>
   </data>
   <data name="none" xml:space="preserve">
     <value>None</value>
   </data>
-  <data name="notificationOptionToast" xml:space="preserve">
+  <data name="notification.option.toast" xml:space="preserve">
     <value>Toast Notification</value>
   </data>
-  <data name="notificationOptionCustomized" xml:space="preserve">
+  <data name="notification.option.customized" xml:space="preserve">
     <value>Customized Sound Notification</value>
   </data>
-  <data name="notificationTooltip" xml:space="preserve">
+  <data name="notification.tooltip" xml:space="preserve">
     <value>Windows Notification: The default windows tray pop-up.
 Sound Notification: Plays a sound on the switched Playback Device.
 Customized Sound Notification: Plays the specified sound on the switched Playback Device.
 Toast Notification: Uses a special form of the windows tray pop-up version.
 Banner: Uses a custom always-on-top frame, useful for in-game usage.</value>
   </data>
-  <data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
+  <data name="tooltipOnHover.option.playbackDevice" xml:space="preserve">
     <value>Playback Device</value>
   </data>
-  <data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
+  <data name="tooltipOnHover.option.recordingDevice" xml:space="preserve">
     <value>Recording Device</value>
   </data>
-  <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
+  <data name="tooltipOnHover.option.bothDevices" xml:space="preserve">
     <value>Both Devices</value>
   </data>
   <data name="audioFileNotFound" xml:space="preserve">
     <value>The audio file you selected to be used as notification can't be found. SoundSwitch switched the notification setting back to {0}.</value>
   </data>
-  <data name="audioFileNotFoundCaption" xml:space="preserve">
+  <data name="audioFileNotFound.caption" xml:space="preserve">
     <value>Audio file not found</value>
   </data>
   <data name="activeRecording" xml:space="preserve">
@@ -263,25 +263,25 @@ Banner: Uses a custom always-on-top frame, useful for in-game usage.</value>
     <value>The language will change after restarting SoundSwitch.
 Do you want to restart now?</value>
   </data>
-  <data name="languageRestartRequiredCaption" xml:space="preserve">
+  <data name="languageRestartRequired.caption" xml:space="preserve">
     <value>Need a restart</value>
   </data>
-  <data name="updateNeverTooltip" xml:space="preserve">
+  <data name="updatenever.tooltip" xml:space="preserve">
     <value>Don't update the program unless you do it manually.</value>
   </data>
-  <data name="updateNotifyTooltip" xml:space="preserve">
+  <data name="update.notify.tooltip" xml:space="preserve">
     <value>SoundSwitch will notify you when there is a new update available. When clicking on the notification, you'll get a popup downloading the update for you and asking if you want to install it.</value>
   </data>
-  <data name="notificationOptionBanner" xml:space="preserve">
+  <data name="notification.option.banner" xml:space="preserve">
     <value>Banner Notification</value>
   </data>
-  <data name="disableCustomSoundTooltip" xml:space="preserve">
+  <data name="disableCustomSound.tooltip" xml:space="preserve">
     <value>Disable the set Custom Sound.</value>
   </data>
   <data name="foregroundApp" xml:space="preserve">
     <value>Also switch the foreground program</value>
   </data>
-  <data name="foregroundAppTooltip" xml:space="preserve">
+  <data name="foregroundApp.tooltip" xml:space="preserve">
     <value>Switch also the sound of the currently in use application. Useful with video games.</value>
   </data>
   <data name="iconChange" xml:space="preserve">
@@ -298,7 +298,7 @@ Both: Change when any type of device is switched.</value>
   <data name="profile.tab" xml:space="preserve">
     <value>Profiles</value>
   </data>
-  <data name="profile.addButton" xml:space="preserve">
+  <data name="button.add" xml:space="preserve">
     <value>Add</value>
   </data>
   <data name="profile.program" xml:space="preserve">
@@ -340,13 +340,13 @@ Both: Change when any type of device is switched.</value>
   <data name="profile.error.title" xml:space="preserve">
     <value>Profile Error</value>
   </data>
-  <data name="profile.deleteButton" xml:space="preserve">
+  <data name="button.delete" xml:space="preserve">
     <value>Delete</value>
   </data>
   <data name="profile.error.delete" xml:space="preserve">
     <value>Can't find the profile.</value>
   </data>
-  <data name="profile.error.no-name" xml:space="preserve">
+  <data name="profile.error.noName" xml:space="preserve">
     <value>A profile needs a name.</value>
   </data>
   <data name="profile.feature.profile" xml:space="preserve">
@@ -361,7 +361,7 @@ Both: Change when any type of device is switched.</value>
   <data name="hotkeyEnabled" xml:space="preserve">
     <value>Hotkey enabled</value>
   </data>
-  <data name="profile.error.device-not-found" xml:space="preserve">
+  <data name="profile.error.deviceNotFound" xml:space="preserve">
     <value>Device {0} couldn't be found.</value>
   </data>
   <data name="profile.trigger.window" xml:space="preserve">
@@ -406,16 +406,16 @@ Both: Change when any type of device is switched.</value>
   <data name="profile.error.window" xml:space="preserve">
     <value>There is already a profile with this window name: {0}.</value>
   </data>
-  <data name="profile.notify-on-activation" xml:space="preserve">
+  <data name="profile.notifyOnActivation" xml:space="preserve">
     <value>Notify when profile is triggered</value>
   </data>
   <data name="profile.notification.text" xml:space="preserve">
     <value>Profile {0} triggered</value>
   </data>
-  <data name="profile.button.save" xml:space="preserve">
+  <data name="button.save" xml:space="preserve">
     <value>Save</value>
   </data>
-  <data name="profile.button.edit" xml:space="preserve">
+  <data name="button.edit" xml:space="preserve">
     <value>Edit</value>
   </data>
   <data name="profile.trigger.startup" xml:space="preserve">
@@ -427,7 +427,7 @@ Both: Change when any type of device is switched.</value>
   <data name="usePrimaryScreen" xml:space="preserve">
     <value>Always use primary screen</value>
   </data>
-  <data name="usePrimaryScreenTooltip" xml:space="preserve">
+  <data name="usePrimaryScreen.tooltip" xml:space="preserve">
     <value>Display banner on primary screen instead of focused screen.</value>
   </data>
   <data name="profile.trigger.restoreDevices" xml:space="preserve">
@@ -474,49 +474,49 @@ Restore the state of the system when the application is closed.</value>
   <data name="telemetry" xml:space="preserve">
     <value>Telemetry</value>
   </data>
-  <data name="telemetry.desc" xml:space="preserve">
+  <data name="telemetry.tooltip" xml:space="preserve">
     <value>Gather anonymously which version of SoundSwitch is in use. Only shared with the developer of SoundSwitch.</value>
   </data>
   <data name="quickMenu" xml:space="preserve">
     <value>Quick Menu on hotkey</value>
   </data>
-  <data name="quickMenu.desc" xml:space="preserve">
+  <data name="quickMenu.tooltip" xml:space="preserve">
     <value>Show a quick menu like Windows language when using a hotkey</value>
   </data>
   <data name="keepVolume" xml:space="preserve">
     <value>Keep volume level across devices</value>
   </data>
-  <data name="keepVolume.desc" xml:space="preserve">
+  <data name="keepVolume.tooltip" xml:space="preserve">
     <value>Keep the same volume level when switching devices</value>
   </data>
-  <data name="devices.AutoAddNewDevice" xml:space="preserve">
+  <data name="devices.autoAddNewDevice" xml:space="preserve">
     <value>Auto select new devices</value>
   </data>
-  <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
+  <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
     <value>Auto add new device to the selected list when they are connected to the computer</value>
   </data>
   <data name="position" xml:space="preserve">
     <value>Position</value>
   </data>
-  <data name="positionTooltip" xml:space="preserve">
+  <data name="position.tooltip" xml:space="preserve">
     <value>Set the position of the Banner notification.</value>
   </data>
-  <data name="positionOptionBottomLeft" xml:space="preserve">
+  <data name="position.option.bottomLeft" xml:space="preserve">
     <value>Bottom Left</value>
   </data>
-  <data name="positionOptionBottomRight" xml:space="preserve">
+  <data name="position.option.bottomRight" xml:space="preserve">
     <value>Bottom Right</value>
   </data>
-  <data name="positionOptionTopLeft" xml:space="preserve">
+  <data name="position.option.topLeft" xml:space="preserve">
     <value>Top Left</value>
   </data>
-  <data name="positionOptionTopRight" xml:space="preserve">
+  <data name="position.option.topRight" xml:space="preserve">
     <value>Top Right</value>
   </data>
-  <data name="positionOptionBottomCenter" xml:space="preserve">
+  <data name="position.option.bottomCenter" xml:space="preserve">
     <value>Bottom Center</value>
   </data>
-  <data name="positionOptionTopCenter" xml:space="preserve">
+  <data name="position.option.topCenter" xml:space="preserve">
     <value>Top Center</value>
   </data>
   <data name="notification.single" xml:space="preserve">
@@ -524,5 +524,38 @@ Restore the state of the system when the application is closed.</value>
   </data>
   <data name="notification.single.tooltip" xml:space="preserve">
     <value>Only show one banner at a time and replace its content.</value>
+  </data>
+  <data name="link.community" xml:space="preserve">
+    <value>Community Discord</value>
+  </data>
+  <data name="link.donate" xml:space="preserve">
+    <value>Donate</value>
+  </data>
+  <data name="link.help" xml:space="preserve">
+    <value>Help Discussion</value>
+  </data>
+  <data name="resetAudioDevices.desc" xml:space="preserve">
+    <value>Resets the audio device assignment to specified programs in Windows in case audio devices are not reassigned to programs when switching devices.</value>
+  </data>
+  <data name="button.reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="resetAudioDevices" xml:space="preserve">
+    <value>Reset Per App Audio</value>
+  </data>
+  <data name="exportLogFiles" xml:space="preserve">
+    <value>Export Log Files</value>
+  </data>
+  <data name="exportLogFiles.desc" xml:space="preserve">
+    <value>Export all log files into a zip archive for further troubleshooting in either the Help Discussions or Community Discord.</value>
+  </data>
+  <data name="button.export" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="troubleshooting" xml:space="preserve">
+    <value>Troubleshooting</value>
+  </data>
+  <data name="troubleshooting.desc" xml:space="preserve">
+    <value>If you need any help or further troubleshooting with SoundSwitch, you can visit the Help Discussion or Community Discord link, or help support us by visiting the Donate link below.</value>
   </data>
 </root>

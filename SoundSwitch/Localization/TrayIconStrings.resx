@@ -59,49 +59,49 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
-					<xsd:element name="metadata">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" />
-							</xsd:sequence>
-							<xsd:attribute name="name" use="required" type="xsd:string" />
-							<xsd:attribute name="type" type="xsd:string" />
-							<xsd:attribute name="mimetype" type="xsd:string" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="assembly">
-						<xsd:complexType>
-							<xsd:attribute name="alias" type="xsd:string" />
-							<xsd:attribute name="name" type="xsd:string" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
       </xsd:complexType>
     </xsd:element>
   </xsd:schema>
@@ -126,8 +126,8 @@
   <data name="playbackDevices" xml:space="preserve">
     <value>Playback Devices</value>
   </data>
-  <data name="mixer" xml:space="preserve">
-    <value>Mixer</value>
+  <data name="volumeMixer" xml:space="preserve">
+    <value>Volume Mixer</value>
   </data>
   <data name="settings" xml:space="preserve">
     <value>Settings</value>
@@ -135,8 +135,8 @@
   <data name="about" xml:space="preserve">
     <value>About SoundSwitch</value>
   </data>
-  <data name="exit" xml:space="preserve">
-    <value>Exit</value>
+  <data name="quit" xml:space="preserve">
+    <value>Quit SoundSwitch</value>
   </data>
   <data name="updateAvailable" xml:space="preserve">
     <value>Update Available ({0})</value>
@@ -163,33 +163,30 @@
     <value>Error</value>
   </data>
   <data name="help" xml:space="preserve">
-		<value>Help</value>
+    <value>Help</value>
   </data>
   <data name="donate" xml:space="preserve">
-		<value>Donate</value>
+    <value>Donate</value>
   </data>
   <data name="iconChanger.playback" xml:space="preserve">
-		<value>Playback</value>
+    <value>Playback</value>
   </data>
   <data name="iconChanger.recording" xml:space="preserve">
-		<value>Recording</value>
+    <value>Recording</value>
   </data>
   <data name="iconChanger.none" xml:space="preserve">
-		<value>Default</value>
+    <value>Default</value>
   </data>
   <data name="iconChanger.both" xml:space="preserve">
-		<value>Both</value>
+    <value>Both</value>
   </data>
-  <data name="communityMenu" xml:space="preserve">
-		<value>Community</value>
+  <data name="community" xml:space="preserve">
+    <value>Community</value>
   </data>
   <data name="updateDisabled" xml:space="preserve">
-		<value>Update check disabled</value>
+    <value>Update check disabled</value>
   </data>
   <data name="forceCheckForUpdate" xml:space="preserve">
-      <value>Check for update</value>
-  </data>
-  <data name="resetAudioDevices" xml:space="preserve">
-      <value>Reset per app audio</value>
+    <value>Check for update</value>
   </data>
 </root>

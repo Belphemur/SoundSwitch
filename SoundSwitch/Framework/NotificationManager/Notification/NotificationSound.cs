@@ -32,7 +32,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
     {
         private CancellationTokenSource _cancellationTokenSource;
         public NotificationTypeEnum TypeEnum => NotificationTypeEnum.SoundNotification;
-        public string Label => SettingsStrings.notificationOptionSound;
+        public string Label => SettingsStrings.notification_option_sound;
         public INotificationConfiguration Configuration { get; set; }
 
         public void NotifyDefaultChanged(DeviceFullInfo audioDevice)
