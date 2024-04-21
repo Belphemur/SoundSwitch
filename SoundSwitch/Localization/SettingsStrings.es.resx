@@ -525,4 +525,10 @@ Restaura el estado del sistema cuando se cierra la aplicación.</value>
   <data name="none" xml:space="preserve">
     <value>Ninguno</value>
   </data>
+  <data name="notification.single" xml:space="preserve">
+    <value>Solo un banner</value>
+  </data>
+  <data name="notification.single.tooltip" xml:space="preserve">
+    <value>Mostrar solo un banner a la vez y sustituir su contenido.</value>
+  </data>
 </root>
