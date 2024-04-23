@@ -873,7 +873,7 @@ namespace SoundSwitch.UI.Forms
                 Log.CloseAndFlush();
 
                 var files = Directory.EnumerateFiles(ApplicationPath.Logs, "*.log");
-                using zip = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
+                using var zip = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
                 foreach (var file in files)
                 {
                     // Add the entry for each file
