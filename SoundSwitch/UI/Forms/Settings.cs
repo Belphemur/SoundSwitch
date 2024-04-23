@@ -858,8 +858,7 @@ namespace SoundSwitch.UI.Forms
         {
             var saveFileDialog = new SaveFileDialog
             {
-                InitialDirectory = "C://",
-                Title = "Export Log Files",
+                Title = SettingsStrings.exportLogFiles,
                 FileName = "soundswitch_logs",
                 DefaultExt = "zip",
                 Filter = "Zip Archive (*.zip)|*.zip",
@@ -874,14 +873,12 @@ namespace SoundSwitch.UI.Forms
                 Log.CloseAndFlush();
 
                 var files = Directory.EnumerateFiles(ApplicationPath.Logs, "*.log");
-                var zip = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
+                using zip = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
                 foreach (var file in files)
                 {
                     // Add the entry for each file
                     zip.CreateEntryFromFile(file, Path.GetFileName(file), CompressionLevel.Optimal);
                 }
-                // Dispose of the object when we are done
-                zip.Dispose();
 
                 LoggerConfigurator.ConfigureLogger();
             }
