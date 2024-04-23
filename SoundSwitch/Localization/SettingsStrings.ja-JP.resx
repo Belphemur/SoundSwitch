@@ -59,49 +59,49 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
-					<xsd:element name="metadata">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" />
-							</xsd:sequence>
-							<xsd:attribute name="name" use="required" type="xsd:string" />
-							<xsd:attribute name="type" type="xsd:string" />
-							<xsd:attribute name="mimetype" type="xsd:string" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="assembly">
-						<xsd:complexType>
-							<xsd:attribute name="alias" type="xsd:string" />
-							<xsd:attribute name="name" type="xsd:string" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
       </xsd:complexType>
     </xsd:element>
   </xsd:schema>
@@ -134,7 +134,7 @@
 
 アプリケーションが閉じられたときにシステムの状態を復元します。</value>
   </data>
-  <data name="usePrimaryScreenTooltip" xml:space="preserve">
+  <data name="usePrimaryScreen.tooltip" xml:space="preserve">
     <value>フォーカスされたディスプレイではなく、メイン ディスプレイにバナーを表示します。</value>
   </data>
   <data name="usePrimaryScreen" xml:space="preserve">
@@ -146,16 +146,16 @@
   <data name="profile.trigger.startup" xml:space="preserve">
     <value>起動時</value>
   </data>
-  <data name="profile.button.edit" xml:space="preserve">
+  <data name="buttonEdit" xml:space="preserve">
     <value>編集</value>
   </data>
-  <data name="profile.button.save" xml:space="preserve">
+  <data name="buttonSave" xml:space="preserve">
     <value>保存</value>
   </data>
   <data name="profile.notification.text" xml:space="preserve">
     <value>プロファイル {0} がトリガーされました</value>
   </data>
-  <data name="profile.notify-on-activation" xml:space="preserve">
+  <data name="profile.notifyOnActivation" xml:space="preserve">
     <value>プロファイルがトリガーされたときに通知</value>
   </data>
   <data name="profile.error.window" xml:space="preserve">
@@ -200,7 +200,7 @@
   <data name="profile.trigger.window" xml:space="preserve">
     <value>プログラム名</value>
   </data>
-  <data name="profile.error.device-not-found" xml:space="preserve">
+  <data name="profile.error.deviceNotFound" xml:space="preserve">
     <value>デバイス {0} が見つかりませんでした。</value>
   </data>
   <data name="hotkeyEnabled" xml:space="preserve">
@@ -215,13 +215,13 @@
   <data name="profile.feature.profile" xml:space="preserve">
     <value>プロファイル</value>
   </data>
-  <data name="profile.error.no-name" xml:space="preserve">
+  <data name="profile.error.noName" xml:space="preserve">
     <value>プロファイルには名前が必要です。</value>
   </data>
   <data name="profile.error.delete" xml:space="preserve">
     <value>プロファイルが見つかりません。</value>
   </data>
-  <data name="profile.deleteButton" xml:space="preserve">
+  <data name="buttonDelete" xml:space="preserve">
     <value>削除</value>
   </data>
   <data name="profile.error.title" xml:space="preserve">
@@ -263,7 +263,7 @@
   <data name="profile.program" xml:space="preserve">
     <value>アプリケーション</value>
   </data>
-  <data name="profile.addButton" xml:space="preserve">
+  <data name="buttonAdd" xml:space="preserve">
     <value>追加</value>
   </data>
   <data name="profile.tab" xml:space="preserve">
@@ -280,25 +280,25 @@
   <data name="iconChange" xml:space="preserve">
     <value>システムトレイアイコン</value>
   </data>
-  <data name="foregroundAppTooltip" xml:space="preserve">
+  <data name="foregroundApp.tooltip" xml:space="preserve">
     <value>現在使用中のアプリケーションのサウンドも切り替えます。ビデオゲームなどで便利です。</value>
   </data>
   <data name="foregroundApp" xml:space="preserve">
     <value>フォアグラウンドプログラムも切り替える</value>
   </data>
-  <data name="disableCustomSoundTooltip" xml:space="preserve">
+  <data name="disableCustomSound.tooltip" xml:space="preserve">
     <value>設定されたカスタムサウンドを無効にします。</value>
   </data>
-  <data name="notificationOptionBanner" xml:space="preserve">
+  <data name="notification.option.banner" xml:space="preserve">
     <value>バナー通知</value>
   </data>
-  <data name="updateNotifyTooltip" xml:space="preserve">
+  <data name="updateNotify.tooltip" xml:space="preserve">
     <value>新しいアップデートが利用可能になると、SoundSwitchは通知します。通知をクリックすると、アップデートをダウンロードし、インストールするかどうかを尋ねるポップアップが表示されます。</value>
   </data>
-  <data name="updateNeverTooltip" xml:space="preserve">
+  <data name="updateNever.tooltip" xml:space="preserve">
     <value>手動で確認したとき以外、プログラムのアップデートを行いません。</value>
   </data>
-  <data name="languageRestartRequiredCaption" xml:space="preserve">
+  <data name="languageRestartRequired.caption" xml:space="preserve">
     <value>再起動が必要</value>
   </data>
   <data name="languageRestartRequired" xml:space="preserve">
@@ -323,44 +323,44 @@
   <data name="tooltipOnHoverOptionNone" xml:space="preserve">
     <value>ツールチップを表示しない</value>
   </data>
-  <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
+  <data name="tooltipOnHover.option.bothDevices" xml:space="preserve">
     <value>両方のデバイス</value>
   </data>
-  <data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
+  <data name="tooltipOnHover.option.recordingDevice" xml:space="preserve">
     <value>録音デバイス</value>
   </data>
-  <data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
+  <data name="tooltipOnHover.option.playbackDevice" xml:space="preserve">
     <value>再生デバイス</value>
   </data>
-  <data name="notificationOptionToast" xml:space="preserve">
+  <data name="notification.option.toast" xml:space="preserve">
     <value>トースト通知</value>
   </data>
-  <data name="notificationTooltip" xml:space="preserve">
+  <data name="notification.tooltip" xml:space="preserve">
     <value>Windows 通知: デフォルトの Windows トレイポップアップ。
 サウンド通知: 切り替えた再生デバイスでサウンドを再生します。
 カスタマイズされたサウンド通知: 切り替えた再生デバイスで指定したサウンドを再生します。
 トースト通知: Windows トレイポップアップの特別な形式を使用します。
 バナー: カスタムの常に最前面のフレームで、ゲーム中に便利です。</value>
   </data>
-  <data name="notificationOptionCustomized" xml:space="preserve">
+  <data name="notification.option.customized" xml:space="preserve">
     <value>カスタムサウンド通知</value>
   </data>
   <data name="notificationOptionNone" xml:space="preserve">
     <value>通知しない</value>
   </data>
-  <data name="notificationOptionSound" xml:space="preserve">
+  <data name="notification.option.sound" xml:space="preserve">
     <value>サウンド通知</value>
   </data>
-  <data name="notificationOptionWindowsDefault" xml:space="preserve">
+  <data name="notification.option.windowsDefault" xml:space="preserve">
     <value>Windows 通知</value>
   </data>
-  <data name="cycleThroughTooltip" xml:space="preserve">
+  <data name="cycleThrough.tooltip" xml:space="preserve">
     <value>切り替えるデバイスを選択してください。選択したデバイスのみまたはすべてのデバイスのいずれかを選択できます。</value>
   </data>
-  <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
+  <data name="cycleThrough.option.onlySelectedAudioDevices" xml:space="preserve">
     <value>選択したオーディオデバイスのみ</value>
   </data>
-  <data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
+  <data name="cycleThrough.option.allAudioDevices" xml:space="preserve">
     <value>すべてのオーディオデバイス</value>
   </data>
   <data name="tooltipOnHover" xml:space="preserve">
@@ -372,13 +372,13 @@
   <data name="updateNotify" xml:space="preserve">
     <value>アップデートが利用可能な場合に通知</value>
   </data>
-  <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
+  <data name="updateInstallAutomatically.tooltip" xml:space="preserve">
     <value>プロンプトなしでアップデートが自動的にインストールされます。</value>
   </data>
   <data name="updateInstallAutomatically" xml:space="preserve">
     <value>自動的にアップデートをインストール</value>
   </data>
-  <data name="keepSystemTrayIconTooltip" xml:space="preserve">
+  <data name="keepSystemTrayIcon.tooltip" xml:space="preserve">
     <value>有効化すると「既定の再生デバイス」が変更されてもシステムトレイアイコンは変わりません。</value>
   </data>
   <data name="keepSystemTrayIcon" xml:space="preserve">
@@ -396,16 +396,16 @@
   <data name="basicSettings" xml:space="preserve">
     <value>基本設定</value>
   </data>
-  <data name="hotkeysTooltip" xml:space="preserve">
+  <data name="hotkey.tooltip" xml:space="preserve">
     <value>ホットキーを有効化する。</value>
   </data>
-  <data name="selectSoundButtonTooltip" xml:space="preserve">
+  <data name="selectSoundButton.tooltip" xml:space="preserve">
     <value>通知用のサウンドファイルを選択</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
     <value>オーディオファイル</value>
   </data>
-  <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
+  <data name="updateIncludeBetaVersions.tooltip" xml:space="preserve">
     <value>有効化すると SoundSwitch は GitHub のベータ版もチェックします。</value>
   </data>
   <data name="updateIncludeBetaVersions" xml:space="preserve">
@@ -414,10 +414,10 @@
   <data name="notification" xml:space="preserve">
     <value>通知</value>
   </data>
-  <data name="communicationsDeviceTooltip" xml:space="preserve">
+  <data name="communicationsDevice.tooltip" xml:space="preserve">
     <value>有効化すると「既定の通信デバイス」と「既定の再生デバイス」が一緒に切り替わります（Skype、TeamSpeakなどで便利です）。</value>
   </data>
-  <data name="closeTooltip" xml:space="preserve">
+  <data name="buttonClose.tooltip" xml:space="preserve">
     <value>変更を自動的に保存</value>
   </data>
   <data name="selected" xml:space="preserve">
@@ -435,10 +435,10 @@
   <data name="communicationsDevice" xml:space="preserve">
     <value>既定の通信デバイスを切り替える</value>
   </data>
-  <data name="hotkeys" xml:space="preserve">
+  <data name="hotkey" xml:space="preserve">
     <value>ホットキー</value>
   </data>
-  <data name="close" xml:space="preserve">
+  <data name="buttonClose" xml:space="preserve">
     <value>閉じる</value>
   </data>
   <data name="settings" xml:space="preserve">
@@ -486,7 +486,7 @@
   <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
     <value>現在のサウンドデバイスが変更されるたびに、プロファイルが自動的にトリガーされます。</value>
   </data>
-  <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
+  <data name="devices.AutoAddNewDevice..tooltip" xml:space="preserve">
     <value>新しいデバイスがコンピュータに接続されたとき、選択リストに自動的に追加します</value>
   </data>
   <data name="devices.AutoAddNewDevice" xml:space="preserve">
@@ -495,28 +495,28 @@
   <data name="position" xml:space="preserve">
     <value>位置</value>
   </data>
-  <data name="positionOptionTopCenter" xml:space="preserve">
+  <data name="position.option.topCenter" xml:space="preserve">
     <value>中央上</value>
   </data>
   <data name="none" xml:space="preserve">
     <value>なし</value>
   </data>
-  <data name="positionTooltip" xml:space="preserve">
+  <data name="position.tooltip" xml:space="preserve">
     <value>バナー通知の位置を設定します。</value>
   </data>
-  <data name="positionOptionBottomLeft" xml:space="preserve">
+  <data name="position.option.bottomLeft" xml:space="preserve">
     <value>左下</value>
   </data>
-  <data name="positionOptionTopLeft" xml:space="preserve">
+  <data name="position.option.topLeft" xml:space="preserve">
     <value>左上</value>
   </data>
-  <data name="positionOptionBottomRight" xml:space="preserve">
+  <data name="position.option.bottomRight" xml:space="preserve">
     <value>右下</value>
   </data>
-  <data name="positionOptionTopRight" xml:space="preserve">
+  <data name="position.option.topRight" xml:space="preserve">
     <value>右上</value>
   </data>
-  <data name="positionOptionBottomCenter" xml:space="preserve">
+  <data name="position.option.bottomCenter" xml:space="preserve">
     <value>中央下</value>
   </data>
   <data name="keepVolume" xml:space="preserve">
@@ -530,5 +530,8 @@
   </data>
   <data name="notification.single.tooltip" xml:space="preserve">
     <value>一度に一つのバナーだけを表示し、その内容を置き換えます。</value>
+  </data>
+  <data name="resetAudioDevices" xml:space="preserve">
+    <value>アプリごとのオーディオをリセット</value>
   </data>
 </root>

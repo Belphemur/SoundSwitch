@@ -1,6 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -75,7 +134,7 @@ Obnovi stanje sistema, ko se program zapre.</value>
   <data name="profile.trigger.restoreDevices" xml:space="preserve">
     <value>Obnovi naprave po dokončanju sprožilca</value>
   </data>
-  <data name="usePrimaryScreenTooltip" xml:space="preserve">
+  <data name="usePrimaryScreen.tooltip" xml:space="preserve">
     <value>Prikaži pasico na primarnem zaslonu namesto na zaslonu s fokusom.</value>
   </data>
   <data name="usePrimaryScreen" xml:space="preserve">
@@ -87,16 +146,16 @@ Obnovi stanje sistema, ko se program zapre.</value>
   <data name="profile.trigger.startup" xml:space="preserve">
     <value>Ob zagonu</value>
   </data>
-  <data name="profile.button.edit" xml:space="preserve">
+  <data name="buttonEdit" xml:space="preserve">
     <value>Uredi</value>
   </data>
-  <data name="profile.button.save" xml:space="preserve">
+  <data name="buttonSave" xml:space="preserve">
     <value>Shrani</value>
   </data>
   <data name="profile.notification.text" xml:space="preserve">
     <value>Sprožen profil {0}</value>
   </data>
-  <data name="profile.notify-on-activation" xml:space="preserve">
+  <data name="profile.notifyOnActivation" xml:space="preserve">
     <value>Obvesti, ko je sprožen profil</value>
   </data>
   <data name="profile.error.window" xml:space="preserve">
@@ -135,7 +194,7 @@ Obnovi stanje sistema, ko se program zapre.</value>
   <data name="profile.trigger.window" xml:space="preserve">
     <value>Ime programa</value>
   </data>
-  <data name="profile.error.device-not-found" xml:space="preserve">
+  <data name="profile.error.deviceNotFound" xml:space="preserve">
     <value>Naprave {0} ni bilo mogoče najti.</value>
   </data>
   <data name="hotkeyEnabled" xml:space="preserve">
@@ -150,13 +209,13 @@ Obnovi stanje sistema, ko se program zapre.</value>
   <data name="profile.feature.profile" xml:space="preserve">
     <value>Profil</value>
   </data>
-  <data name="profile.error.no-name" xml:space="preserve">
+  <data name="profile.error.noName" xml:space="preserve">
     <value>Profil potrebuje ime.</value>
   </data>
   <data name="profile.error.delete" xml:space="preserve">
     <value>Profila ni mogoče najti.</value>
   </data>
-  <data name="profile.deleteButton" xml:space="preserve">
+  <data name="buttonDelete" xml:space="preserve">
     <value>Izbriši</value>
   </data>
   <data name="profile.error.title" xml:space="preserve">
@@ -192,35 +251,35 @@ Obnovi stanje sistema, ko se program zapre.</value>
   <data name="profile.error.hotkey" xml:space="preserve">
     <value>Ta vroča tipka {0} je že registrirana.</value>
   </data>
-  <data name="notificationTooltip" xml:space="preserve">
+  <data name="notification.tooltip" xml:space="preserve">
     <value>Obvestilo sistema Windows: Privzeta pojavna okna programske vrstice Windows.
 Zvočno obvestilo: Predvaja zvok na vklopljeni napravi za predvajanje.
 Prilagojeno zvočno obvestilo: Predvaja določen zvok na vklopljeni napravi za predvajanje.
 'Toast' obvestilo: Uporablja posebno obliko pojavne različice programske vrstice Windows.
 Pasica: Uporablja vedno prikazan,prilagojeni okvir na zaslonu - uporaben za uporabo v igri.</value>
   </data>
-  <data name="notificationOptionToast" xml:space="preserve">
+  <data name="notification.option.toast" xml:space="preserve">
     <value>' Toast' obvestilo</value>
   </data>
-  <data name="notificationOptionCustomized" xml:space="preserve">
+  <data name="notification.option.customized" xml:space="preserve">
     <value>Prilagojeno zvočno obvestilo</value>
   </data>
   <data name="notificationOptionNone" xml:space="preserve">
     <value>Brez obvestila</value>
   </data>
-  <data name="notificationOptionSound" xml:space="preserve">
+  <data name="notification.option.sound" xml:space="preserve">
     <value>Zvočno obvestilo</value>
   </data>
-  <data name="notificationOptionWindowsDefault" xml:space="preserve">
+  <data name="notification.option.windowsDefault" xml:space="preserve">
     <value>Obvestilo sistema Windows</value>
   </data>
-  <data name="cycleThroughTooltip" xml:space="preserve">
+  <data name="cycleThrough.tooltip" xml:space="preserve">
     <value>Izberite med napravami, ki jih želite preklopiti. Bodisi samo med izbranimi ali med vsemi.</value>
   </data>
-  <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
+  <data name="cycleThrough.option.onlySelectedAudioDevices" xml:space="preserve">
     <value>Samo izbrane zvočne naprave</value>
   </data>
-  <data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
+  <data name="cycleThrough.option.allAudioDevices" xml:space="preserve">
     <value>Vse zvočne naprave</value>
   </data>
   <data name="tooltipOnHover" xml:space="preserve">
@@ -238,7 +297,7 @@ Pasica: Uporablja vedno prikazan,prilagojeni okvir na zaslonu - uporaben za upor
   <data name="profile.program" xml:space="preserve">
     <value>Aplikacija</value>
   </data>
-  <data name="profile.addButton" xml:space="preserve">
+  <data name="buttonAdd" xml:space="preserve">
     <value>Dodaj</value>
   </data>
   <data name="profile.tab" xml:space="preserve">
@@ -255,25 +314,25 @@ Oboje: Spremeni ob preklopu katere koli vrste naprave.</value>
   <data name="iconChange" xml:space="preserve">
     <value>Ikona v programski vrstici</value>
   </data>
-  <data name="foregroundAppTooltip" xml:space="preserve">
+  <data name="foregroundApp.tooltip" xml:space="preserve">
     <value>Preklopi tudi zvok trenutno uporabljene aplikacije. Uporabno pri video igrah.</value>
   </data>
   <data name="foregroundApp" xml:space="preserve">
     <value>Preklopite tudi program v ospredju</value>
   </data>
-  <data name="disableCustomSoundTooltip" xml:space="preserve">
+  <data name="disableCustomSound.tooltip" xml:space="preserve">
     <value>Onemogoči nastavljeni zvok po meri.</value>
   </data>
-  <data name="notificationOptionBanner" xml:space="preserve">
+  <data name="notification.option.banner" xml:space="preserve">
     <value>Pasica</value>
   </data>
-  <data name="updateNotifyTooltip" xml:space="preserve">
+  <data name="updateNotify.tooltip" xml:space="preserve">
     <value>SoundSwitch vas bo obvestil, ko bo na voljo nova posodobitev. Ko kliknete na obvestilo, bo prikazano pojavno okno, ki za vas prenese posodobitev in vas vpraša, ali jo želite namestiti.</value>
   </data>
-  <data name="updateNeverTooltip" xml:space="preserve">
+  <data name="updateNever.tooltip" xml:space="preserve">
     <value>Programa ne posodabljajte, če tega ne storite ročno.</value>
   </data>
-  <data name="languageRestartRequiredCaption" xml:space="preserve">
+  <data name="languageRestartRequired.caption" xml:space="preserve">
     <value>Potrebujete ponovni zagon</value>
   </data>
   <data name="languageRestartRequired" xml:space="preserve">
@@ -298,13 +357,13 @@ Ali ga zdaj želite znova zagnati?</value>
   <data name="tooltipOnHoverOptionNone" xml:space="preserve">
     <value>Brez namiga</value>
   </data>
-  <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
+  <data name="tooltipOnHover.option.bothDevices" xml:space="preserve">
     <value>Za obe napravi</value>
   </data>
-  <data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
+  <data name="tooltipOnHover.option.recordingDevice" xml:space="preserve">
     <value>Naprava za snemanje</value>
   </data>
-  <data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
+  <data name="tooltipOnHover.option.playbackDevice" xml:space="preserve">
     <value>Naprava za predvajanje</value>
   </data>
   <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
@@ -313,13 +372,13 @@ Ali ga zdaj želite znova zagnati?</value>
   <data name="profile.trigger.uwp" xml:space="preserve">
     <value>Aplikacija Microsoft Store</value>
   </data>
-  <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
+  <data name="updateInstallAutomatically.tooltip" xml:space="preserve">
     <value>Posodobitve se samodejno namestijo brez pozivov.</value>
   </data>
   <data name="updateInstallAutomatically" xml:space="preserve">
     <value>Samodejno namesti posodobitve</value>
   </data>
-  <data name="keepSystemTrayIconTooltip" xml:space="preserve">
+  <data name="keepSystemTrayIcon.tooltip" xml:space="preserve">
     <value>Ko je označeno, se ikona programske vrstice ne spremeni pri spremembi 'Privzeta naprava za predvajanje'.</value>
   </data>
   <data name="keepSystemTrayIcon" xml:space="preserve">
@@ -337,16 +396,16 @@ Ali ga zdaj želite znova zagnati?</value>
   <data name="basicSettings" xml:space="preserve">
     <value>Osnovne nastavitve</value>
   </data>
-  <data name="hotkeysTooltip" xml:space="preserve">
+  <data name="hotkey.tooltip" xml:space="preserve">
     <value>Označite, da omogočite vročo tipko.</value>
   </data>
-  <data name="selectSoundButtonTooltip" xml:space="preserve">
+  <data name="selectSoundButton.tooltip" xml:space="preserve">
     <value>Izberite zvočno datoteko za obvestilo</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
     <value>Zvočne datoteke</value>
   </data>
-  <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
+  <data name="updateIncludeBetaVersions.tooltip" xml:space="preserve">
     <value>Ko je označeno, bo SoundSwitch preveril tudi različice beta na GitHubu.</value>
   </data>
   <data name="updateIncludeBetaVersions" xml:space="preserve">
@@ -355,13 +414,13 @@ Ali ga zdaj želite znova zagnati?</value>
   <data name="notification" xml:space="preserve">
     <value>Obvestilo</value>
   </data>
-  <data name="communicationsDeviceTooltip" xml:space="preserve">
+  <data name="communicationsDevice.tooltip" xml:space="preserve">
     <value>Ko je označena, se privzeta komunikacijska naprava in Privzeta naprava za predvajanje zamenjata (uporabno npr. za Skype, TeamSpeak).</value>
   </data>
-  <data name="closeTooltip" xml:space="preserve">
+  <data name="buttonClose.tooltip" xml:space="preserve">
     <value>Spremembe se samodejno shranijo</value>
   </data>
-  <data name="close" xml:space="preserve">
+  <data name="buttonClose" xml:space="preserve">
     <value>Zapri</value>
   </data>
   <data name="startWithWindows" xml:space="preserve">
@@ -370,7 +429,7 @@ Ali ga zdaj želite znova zagnati?</value>
   <data name="communicationsDevice" xml:space="preserve">
     <value>Preklopi privzeto komunikacijsko napravo</value>
   </data>
-  <data name="hotkeys" xml:space="preserve">
+  <data name="hotkey" xml:space="preserve">
     <value>Vroča tipka</value>
   </data>
   <data name="settings" xml:space="preserve">
@@ -430,7 +489,7 @@ Ali ga zdaj želite znova zagnati?</value>
   <data name="devices.AutoAddNewDevice" xml:space="preserve">
     <value>Samodejno izberi nove naprave</value>
   </data>
-  <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
+  <data name="devices.AutoAddNewDevice..tooltip" xml:space="preserve">
     <value>Samodejno dodaj nove naprave na izbrani seznam, ko so povezane z računalnikom</value>
   </data>
   <data name="keepVolume" xml:space="preserve">
@@ -438,5 +497,8 @@ Ali ga zdaj želite znova zagnati?</value>
   </data>
   <data name="keepVolume.desc" xml:space="preserve">
     <value>Pri menjavi predvajalnih naprav obdrži enako glasnost</value>
+  </data>
+  <data name="resetAudioDevices" xml:space="preserve">
+    <value>Ponastavi zvok na aplikacijo</value>
   </data>
 </root>

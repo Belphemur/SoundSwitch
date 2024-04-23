@@ -100,7 +100,7 @@
   <data name="configurationNeededExplanation" xml:space="preserve">
     <value>沒有可用的設備切換。通過右鍵單擊圖示打開設定檔。</value>
   </data>
-  <data name="communityMenu" xml:space="preserve">
+  <data name="community" xml:space="preserve">
     <value>社群</value>
   </data>
   <data name="error" xml:space="preserve">
@@ -109,7 +109,7 @@
   <data name="iconChanger.none" xml:space="preserve">
     <value>預設</value>
   </data>
-  <data name="mixer" xml:space="preserve">
+  <data name="volumeMixer" xml:space="preserve">
     <value>音量混合器</value>
   </data>
   <data name="about" xml:space="preserve">
@@ -121,7 +121,7 @@
   <data name="versionAvailable" xml:space="preserve">
     <value>SoundSwitch ({0})的更新是可用的。</value>
   </data>
-  <data name="exit" xml:space="preserve">
+  <data name="quit" xml:space="preserve">
     <value>退出</value>
   </data>
   <data name="donate" xml:space="preserve">

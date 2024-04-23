@@ -17,16 +17,22 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
+using Serilog;
+using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Common.Framework.Icon;
+using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.Factory;
+using SoundSwitch.Framework.Logger.Configuration;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Profile.Trigger;
@@ -42,6 +48,7 @@ using SoundSwitch.Properties;
 using SoundSwitch.UI.Component;
 using SoundSwitch.UI.Component.ListView;
 using SoundSwitch.Util;
+using SoundSwitch.Util.Url;
 
 namespace SoundSwitch.UI.Forms
 {
@@ -64,7 +71,7 @@ namespace SoundSwitch.UI.Forms
             LocalizeForm();
 
             var closeToolTip = new ToolTip();
-            closeToolTip.SetToolTip(closeButton, SettingsStrings.closeTooltip);
+            closeToolTip.SetToolTip(closeButton, SettingsStrings.buttonClose_tooltip);
 
             hotKeyControl.HotKey = AppConfigs.Configuration.PlaybackHotKey;
             hotKeyControl.Tag =
@@ -76,7 +83,7 @@ namespace SoundSwitch.UI.Forms
             muteHotKey.Enabled = muteHotKeyCheckbox.Checked = AppConfigs.Configuration.MuteRecordingHotKey.Enabled;
 
             var hotkeysToolTip = new ToolTip();
-            hotkeysToolTip.SetToolTip(hotkeysCheckBox, SettingsStrings.hotkeysTooltip);
+            hotkeysToolTip.SetToolTip(hotkeysCheckBox, SettingsStrings.hotkey_tooltip);
 
             // Settings - Basic
             startWithWindowsCheckBox.Checked = AppModel.Instance.RunAtStartup;
@@ -92,41 +99,41 @@ namespace SoundSwitch.UI.Forms
 
             var switchCommunicationsDeviceToolTip = new ToolTip();
             switchCommunicationsDeviceToolTip.SetToolTip(switchCommunicationDeviceCheckBox,
-                SettingsStrings.communicationsDeviceTooltip);
+                SettingsStrings.communicationsDevice_tooltip);
 
             foregroundAppCheckbox.Checked = AppModel.Instance.SwitchForegroundProgram;
 
             var foregroundAppToolTip = new ToolTip();
-            foregroundAppToolTip.SetToolTip(foregroundAppCheckbox, SettingsStrings.foregroundAppTooltip);
+            foregroundAppToolTip.SetToolTip(foregroundAppCheckbox, SettingsStrings.foregroundApp_tooltip);
 
             quickMenuCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.QuickMenuEnabled), false, DataSourceUpdateMode.OnPropertyChanged);
             var quickMenuCheckboxToolTip = new ToolTip();
-            quickMenuCheckboxToolTip.SetToolTip(quickMenuCheckbox, SettingsStrings.quickMenu_desc);
+            quickMenuCheckboxToolTip.SetToolTip(quickMenuCheckbox, SettingsStrings.quickMenu_tooltip);
 
             keepVolumeCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.KeepVolumeEnabled), false, DataSourceUpdateMode.OnPropertyChanged);
             var keepVolumeCheckboxToolTip = new ToolTip();
-            keepVolumeCheckboxToolTip.SetToolTip(keepVolumeCheckbox, SettingsStrings.keepVolume_desc);
+            keepVolumeCheckboxToolTip.SetToolTip(keepVolumeCheckbox, SettingsStrings.keepVolume_tooltip);
 
             new TooltipInfoFactory().ConfigureListControl(tooltipInfoComboBox);
             tooltipInfoComboBox.SelectedValue = TooltipInfoManager.CurrentTooltipInfo;
-            
+
             new DeviceCyclerFactory().ConfigureListControl(cycleThroughComboBox);
             cycleThroughComboBox.SelectedValue = DeviceCyclerManager.CurrentCycler;
             var cycleThroughToolTip = new ToolTip();
-            cycleThroughToolTip.SetToolTip(cycleThroughComboBox, SettingsStrings.cycleThroughTooltip);
+            cycleThroughToolTip.SetToolTip(cycleThroughComboBox, SettingsStrings.cycleThrough_tooltip);
 
             // Settings - Notification
             var notificationFactory = new NotificationFactory();
             notificationFactory.ConfigureListControl(notificationComboBox);
             notificationComboBox.SelectedValue = AppModel.Instance.NotificationSettings;
             var notificationToolTip = new ToolTip();
-            notificationToolTip.SetToolTip(notificationComboBox, SettingsStrings.notificationTooltip);
+            notificationToolTip.SetToolTip(notificationComboBox, SettingsStrings.notification_tooltip);
 
             var bannerPositionFactory = new BannerPositionFactory();
             bannerPositionFactory.ConfigureListControl(positionComboBox);
             positionComboBox.SelectedValue = AppModel.Instance.BannerPosition;
             var positionToolTip = new ToolTip();
-            positionToolTip.SetToolTip(positionComboBox, SettingsStrings.positionTooltip);
+            positionToolTip.SetToolTip(positionComboBox, SettingsStrings.position_tooltip);
 
             var singleNotification = new ToolTip();
             singleNotification.SetToolTip(singleNotificationCheckbox, SettingsStrings.notification_single_tooltip);
@@ -135,10 +142,10 @@ namespace SoundSwitch.UI.Forms
 
             usePrimaryScreenCheckbox.Checked = AppModel.Instance.NotifyUsingPrimaryScreen;
             var usePrimaryScreenTooltip = new ToolTip();
-            usePrimaryScreenTooltip.SetToolTip(usePrimaryScreenCheckbox, SettingsStrings.usePrimaryScreenTooltip);
-            
-            usePrimaryScreenCheckbox.Visible = positionLabel.Visible = positionComboBox.Visible = singleNotificationCheckbox.Visible =  AppModel.Instance.NotificationSettings == NotificationTypeEnum.BannerNotification;
-            
+            usePrimaryScreenTooltip.SetToolTip(usePrimaryScreenCheckbox, SettingsStrings.usePrimaryScreen_tooltip);
+
+            usePrimaryScreenCheckbox.Visible = positionLabel.Visible = positionComboBox.Visible = singleNotificationCheckbox.Visible = AppModel.Instance.NotificationSettings == NotificationTypeEnum.BannerNotification;
+
             selectSoundFileDialog.Filter = SettingsStrings.audioFiles + @" (*.wav;*.mp3)|*.wav;*.mp3;*.aiff";
             selectSoundFileDialog.FileOk += SelectSoundFileDialogOnFileOk;
             selectSoundFileDialog.CheckFileExists = true;
@@ -147,13 +154,13 @@ namespace SoundSwitch.UI.Forms
             var supportCustomSound = notificationFactory.Get(AppModel.Instance.NotificationSettings).SupportCustomSound();
             selectSoundButton.Visible = supportCustomSound;
             var selectSoundButtonToolTip = new ToolTip();
-            selectSoundButtonToolTip.SetToolTip(selectSoundButton, SettingsStrings.selectSoundButtonTooltip);
+            selectSoundButtonToolTip.SetToolTip(selectSoundButton, SettingsStrings.selectSoundButton_tooltip);
 
-            DeleteSoundButtonVisible(supportCustomSound);
+            DeleteSoundButton_Visible(supportCustomSound);
             var removeCustomSoundToolTip = new ToolTip();
-            removeCustomSoundToolTip.SetToolTip(deleteSoundButton, SettingsStrings.disableCustomSoundTooltip);
+            removeCustomSoundToolTip.SetToolTip(deleteSoundButton, SettingsStrings.disableCustomSound_tooltip);
 
-             // Settings - Update
+            // Settings - Update
             includeBetaVersionsCheckBox.Checked = AppModel.Instance.IncludeBetaVersions;
 
             switch (AppModel.Instance.UpdateMode)
@@ -172,14 +179,14 @@ namespace SoundSwitch.UI.Forms
             }
 
             var updateSilentToolTip = new ToolTip();
-            updateSilentToolTip.SetToolTip(updateSilentRadioButton, SettingsStrings.updateInstallAutomaticallyTooltip);
+            updateSilentToolTip.SetToolTip(updateSilentRadioButton, SettingsStrings.updateInstallAutomatically_tooltip);
             var updateNotifyToolTip = new ToolTip();
-            updateNotifyToolTip.SetToolTip(updateNotifyRadioButton, SettingsStrings.updateNotifyTooltip);
+            updateNotifyToolTip.SetToolTip(updateNotifyRadioButton, SettingsStrings.updateNotify_tooltip);
             var updateNeverToolTip = new ToolTip();
-            updateNeverToolTip.SetToolTip(updateNeverRadioButton, SettingsStrings.updateNeverTooltip);
+            updateNeverToolTip.SetToolTip(updateNeverRadioButton, SettingsStrings.updateNever_tooltip);
 
             var includeBetaVersionsToolTip = new ToolTip();
-            includeBetaVersionsToolTip.SetToolTip(includeBetaVersionsCheckBox, SettingsStrings.updateIncludeBetaVersionsTooltip);
+            includeBetaVersionsToolTip.SetToolTip(includeBetaVersionsCheckBox, SettingsStrings.updateIncludeBetaVersions_tooltip);
 
             // Settings - Language
             new LanguageFactory().ConfigureListControl(languageComboBox);
@@ -191,7 +198,7 @@ namespace SoundSwitch.UI.Forms
 
             telemetryCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.Telemetry), false, DataSourceUpdateMode.OnPropertyChanged);
             var telemetryToolTip = new ToolTip();
-            telemetryToolTip.SetToolTip(telemetryCheckbox, SettingsStrings.telemetry_desc);
+            telemetryToolTip.SetToolTip(telemetryCheckbox, SettingsStrings.telemetry_tooltip);
 
             PopulateSettings();
 
@@ -211,7 +218,7 @@ namespace SoundSwitch.UI.Forms
         {
             profilesListView.Columns.Add(SettingsStrings.profile_name, 50, HorizontalAlignment.Left);
             profilesListView.Columns.Add(SettingsStrings.profile_program, 100, HorizontalAlignment.Left);
-            profilesListView.Columns.Add(SettingsStrings.hotkeys, 150, HorizontalAlignment.Left);
+            profilesListView.Columns.Add(SettingsStrings.hotkey, 150, HorizontalAlignment.Left);
             profilesListView.Columns.Add(SettingsStrings.playback, 150, HorizontalAlignment.Left);
             profilesListView.Columns.Add(SettingsStrings.recording, 150, HorizontalAlignment.Left);
             profilesListView.Columns.Add(SettingsStrings.communication, 150, HorizontalAlignment.Left);
@@ -322,8 +329,9 @@ namespace SoundSwitch.UI.Forms
             recordingTabPage.Text = SettingsStrings.recording;
             recordingListView.Groups[0].Header = SettingsStrings.selected;
 
+            profileTabPage.Text = SettingsStrings.profile_tab;
             appSettingTabPage.Text = SettingsStrings.settings;
-            tabProfile.Text = SettingsStrings.profile_tab;
+            troubleshootingTabPage.Text = SettingsStrings.troubleshooting;
 
             // Settings - Basic
             basicSettingsGroupBox.Text = SettingsStrings.basicSettings;
@@ -339,6 +347,12 @@ namespace SoundSwitch.UI.Forms
             quickMenuCheckbox.Text = SettingsStrings.quickMenu;
             keepVolumeCheckbox.Text = SettingsStrings.keepVolume;
 
+            // Settings - Profile
+            profileExplanationLabel.Text = SettingsStrings.profile_explanation;
+            addProfileButton.Text = SettingsStrings.buttonAdd;
+            deleteProfileButton.Text = SettingsStrings.buttonDelete;
+            editProfileButton.Text = SettingsStrings.buttonEdit;
+
             // Settings - Update
             updateSettingsGroupBox.Text = SettingsStrings.updateSettings;
             updateSilentRadioButton.Text = SettingsStrings.updateInstallAutomatically;
@@ -350,21 +364,29 @@ namespace SoundSwitch.UI.Forms
             // Settings - Language
             languageGroupBox.Text = SettingsStrings.language;
 
-            // Settings - Notifcation
+            // Settings - Notification
             notificationComboBox.Text = SettingsStrings.notification;
             usePrimaryScreenCheckbox.Text = SettingsStrings.usePrimaryScreen;
             positionLabel.Text = SettingsStrings.position;
             singleNotificationCheckbox.Text = SettingsStrings.notification_single;
 
-            // Settings - Profile
-            profileExplanationLabel.Text = SettingsStrings.profile_explanation;
-            addProfileButton.Text = SettingsStrings.profile_addButton;
-            deleteProfileButton.Text = SettingsStrings.profile_deleteButton;
-            editProfileButton.Text = SettingsStrings.profile_button_edit;
+            // Settings - Troubleshooting
+            resetAudioDevicesGroupBox.Text = SettingsStrings.resetAudioDevices;
+            resetAudioDevicesLabel.Text = SettingsStrings.resetAudioDevices_desc;
+            resetAudioDevicesButton.Text = SettingsStrings.buttonReset;
+            exportLogFilesGroupBox.Text = SettingsStrings.exportLogFiles;
+            exportLogFilesLabel.Text = SettingsStrings.exportLogFiles_desc;
+            exportLogFilesButton.Text = SettingsStrings.buttonExport;
+
+            appNameLabel.Text = Application.ProductName;
+            troubleshootingLabel.Text = SettingsStrings.troubleshooting_desc;
+            gitHubHelpLinkLabel.Text = SettingsStrings.link_help;
+            discordCommunityLinkLabel.Text = SettingsStrings.link_community;
+            donateLinkLabel.Text = SettingsStrings.link_donate;
 
             // Misc
             hotkeysCheckBox.Text = SettingsStrings.hotkeyEnabled;
-            closeButton.Text = SettingsStrings.close;
+            closeButton.Text = SettingsStrings.buttonClose;
             toggleMuteLabel.Text = SettingsStrings.mute_toggle_label;
             muteHotKeyCheckbox.Text = SettingsStrings.hotkeyEnabled;
 
@@ -435,7 +457,7 @@ namespace SoundSwitch.UI.Forms
         }
 
 
-        private void DeleteSoundButtonVisible(bool supportCustomSound)
+        private void DeleteSoundButton_Visible(bool supportCustomSound)
         {
             deleteSoundButton.Visible = supportCustomSound && AppModel.Instance.CustomNotificationSound != null;
         }
@@ -769,7 +791,7 @@ namespace SoundSwitch.UI.Forms
             AppModel.Instance.Language = value.Enum;
 
             if (MessageBox.Show(SettingsStrings.languageRestartRequired,
-                    SettingsStrings.languageRestartRequiredCaption,
+                    SettingsStrings.languageRestartRequired_caption,
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 Program.RestartApp();
@@ -791,7 +813,7 @@ namespace SoundSwitch.UI.Forms
 
             var supportCustomSound = new NotificationFactory().Get(notificationType).SupportCustomSound();
             selectSoundButton.Visible = supportCustomSound;
-            DeleteSoundButtonVisible(supportCustomSound);
+            DeleteSoundButton_Visible(supportCustomSound);
 
             usePrimaryScreenCheckbox.Visible = positionLabel.Visible = positionComboBox.Visible = singleNotificationCheckbox.Visible = notificationType == NotificationTypeEnum.BannerNotification;
 
@@ -821,6 +843,75 @@ namespace SoundSwitch.UI.Forms
         private void UsePrimaryScreenCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             AppModel.Instance.NotifyUsingPrimaryScreen = usePrimaryScreenCheckbox.Checked;
+        }
+
+        #endregion
+
+        #region Troubleshooting
+
+        private void ResetAudioDevicesButton_Click(object sender, EventArgs e)
+        {
+            AudioSwitcher.Instance.ResetProcessDeviceConfiguration();
+        }
+
+        private void ExportLogFilesButton_Click(object sender, EventArgs e)
+        {
+            var saveFileDialog = new SaveFileDialog
+            {
+                Title = SettingsStrings.exportLogFiles,
+                FileName = "soundswitch_logs",
+                DefaultExt = "zip",
+                Filter = "Zip Archive (*.zip)|*.zip",
+                RestoreDirectory = true
+            };
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                if (File.Exists(saveFileDialog.FileName))
+                    File.Delete(saveFileDialog.FileName);
+
+                Log.CloseAndFlush();
+
+                var files = Directory.EnumerateFiles(ApplicationPath.Logs, "*.log");
+                using var zip = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
+                foreach (var file in files)
+                {
+                    // Add the entry for each file
+                    zip.CreateEntryFromFile(file, Path.GetFileName(file), CompressionLevel.Optimal);
+                }
+
+                LoggerConfigurator.ConfigureLogger();
+            }
+        }
+
+        private void GitHubHelpLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            GitHubHelpLink();
+        }
+
+        private void DiscordCommunityLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            DiscordCommunityLink();
+        }
+
+        private void DonateLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            DonateLink();
+        }
+
+        internal static void GitHubHelpLink()
+        {
+            BrowserUtil.OpenUrl("https://github.com/Belphemur/SoundSwitch/discussions");
+        }
+
+        internal static void DiscordCommunityLink()
+        {
+            BrowserUtil.OpenUrl("https://discord.gg/gUCw3Ue");
+        }
+
+        internal static void DonateLink()
+        {
+            BrowserUtil.OpenUrl($"https://soundswitch.aaflalo.me/?utm_campaign=application&utm_source={Application.ProductVersion}#donate");
         }
 
         #endregion

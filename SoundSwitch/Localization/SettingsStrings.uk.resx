@@ -1,6 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -73,16 +132,16 @@
   <data name="settings" xml:space="preserve">
     <value>Налаштування</value>
   </data>
-  <data name="hotkeys" xml:space="preserve">
+  <data name="hotkey" xml:space="preserve">
     <value>Гаряча клавіша</value>
   </data>
   <data name="communicationsDevice" xml:space="preserve">
     <value>Перемкнути пристрій зв'язку за замовчуванням</value>
   </data>
-  <data name="close" xml:space="preserve">
+  <data name="buttonClose" xml:space="preserve">
     <value>Закрити</value>
   </data>
-  <data name="closeTooltip" xml:space="preserve">
+  <data name="buttonClose.tooltip" xml:space="preserve">
     <value>Зміни автоматично збережені</value>
   </data>
   <data name="notification" xml:space="preserve">
@@ -91,13 +150,13 @@
   <data name="updateIncludeBetaVersions" xml:space="preserve">
     <value>Включити бета версії</value>
   </data>
-  <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
+  <data name="updateIncludeBetaVersions.tooltip" xml:space="preserve">
     <value>Коли вибрано, SoundSwitch буде перевіряти наявність бета версій на GitHub.</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
     <value>Звукові файли</value>
   </data>
-  <data name="selectSoundButtonTooltip" xml:space="preserve">
+  <data name="selectSoundButton.tooltip" xml:space="preserve">
     <value>Виберіть звуковий файл для сповіщень</value>
   </data>
   <data name="basicSettings" xml:space="preserve">
@@ -118,7 +177,7 @@
   <data name="updateInstallAutomatically" xml:space="preserve">
     <value>Встановлювати оновлення автоматично</value>
   </data>
-  <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
+  <data name="updateInstallAutomatically.tooltip" xml:space="preserve">
     <value>Оновлення встановлюютсья автоматично без попередження.</value>
   </data>
   <data name="updateNever" xml:space="preserve">
@@ -127,31 +186,31 @@
   <data name="tooltipOnHover" xml:space="preserve">
     <value>Підказка при наведенні</value>
   </data>
-  <data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
+  <data name="cycleThrough.option.allAudioDevices" xml:space="preserve">
     <value>Усі звукові пристрої</value>
   </data>
-  <data name="notificationOptionWindowsDefault" xml:space="preserve">
+  <data name="notification.option.windowsDefault" xml:space="preserve">
     <value>Сповіщення Windows</value>
   </data>
-  <data name="notificationOptionSound" xml:space="preserve">
+  <data name="notification.option.sound" xml:space="preserve">
     <value>Звукові сповіщення</value>
   </data>
   <data name="notificationOptionNone" xml:space="preserve">
     <value>Без сповіщень</value>
   </data>
-  <data name="notificationOptionToast" xml:space="preserve">
+  <data name="notification.option.toast" xml:space="preserve">
     <value>Спливаюче повідомлення</value>
   </data>
-  <data name="notificationOptionCustomized" xml:space="preserve">
+  <data name="notification.option.customized" xml:space="preserve">
     <value>Спеціальне звукове сповіщення</value>
   </data>
-  <data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
+  <data name="tooltipOnHover.option.playbackDevice" xml:space="preserve">
     <value>Пристрій відтворення</value>
   </data>
-  <data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
+  <data name="tooltipOnHover.option.recordingDevice" xml:space="preserve">
     <value>Пристрій запису</value>
   </data>
-  <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
+  <data name="tooltipOnHover.option.bothDevices" xml:space="preserve">
     <value>Для обох пристроїв</value>
   </data>
   <data name="tooltipOnHoverOptionNone" xml:space="preserve">
@@ -169,34 +228,34 @@
   <data name="language" xml:space="preserve">
     <value>Мова</value>
   </data>
-  <data name="notificationOptionBanner" xml:space="preserve">
+  <data name="notification.option.banner" xml:space="preserve">
     <value>Сповіщення у банері</value>
   </data>
   <data name="activePlayback" xml:space="preserve">
     <value>Відтворення: {0}</value>
   </data>
-  <data name="languageRestartRequiredCaption" xml:space="preserve">
+  <data name="languageRestartRequired.caption" xml:space="preserve">
     <value>Потрібен перезапуск</value>
   </data>
-  <data name="updateNeverTooltip" xml:space="preserve">
+  <data name="updateNever.tooltip" xml:space="preserve">
     <value>Оновлювати застосунок тільки вручну.</value>
   </data>
   <data name="iconChange" xml:space="preserve">
     <value>Іконка системної панелі</value>
   </data>
-  <data name="disableCustomSoundTooltip" xml:space="preserve">
+  <data name="disableCustomSound.tooltip" xml:space="preserve">
     <value>Вимкнути встановлений спеціальний звук.</value>
   </data>
   <data name="foregroundApp" xml:space="preserve">
     <value>Також переключіть програму переднього плану</value>
   </data>
-  <data name="foregroundAppTooltip" xml:space="preserve">
+  <data name="foregroundApp.tooltip" xml:space="preserve">
     <value>Перемикає також звук поточного додатка. Корисно для відеоігор.</value>
   </data>
   <data name="profile.tab" xml:space="preserve">
     <value>Профілі</value>
   </data>
-  <data name="profile.addButton" xml:space="preserve">
+  <data name="buttonAdd" xml:space="preserve">
     <value>Додати</value>
   </data>
   <data name="profile.program" xml:space="preserve">
@@ -226,13 +285,13 @@
   <data name="profile.error.title" xml:space="preserve">
     <value>Помилка профілю</value>
   </data>
-  <data name="profile.deleteButton" xml:space="preserve">
+  <data name="buttonDelete" xml:space="preserve">
     <value>Видалити</value>
   </data>
   <data name="profile.error.delete" xml:space="preserve">
     <value>Не вдається знайти профіль.</value>
   </data>
-  <data name="profile.error.no-name" xml:space="preserve">
+  <data name="profile.error.noName" xml:space="preserve">
     <value>Профілю потрібна назва.</value>
   </data>
   <data name="profile.feature.profile" xml:space="preserve">
@@ -244,7 +303,7 @@
   <data name="hotkeyEnabled" xml:space="preserve">
     <value>Гаряча клавіша ввімкнена</value>
   </data>
-  <data name="profile.error.device-not-found" xml:space="preserve">
+  <data name="profile.error.deviceNotFound" xml:space="preserve">
     <value>Пристрій {0} не знайдено.</value>
   </data>
   <data name="profile.trigger.window" xml:space="preserve">
@@ -280,16 +339,16 @@
   <data name="profile.error.window" xml:space="preserve">
     <value>Профіль з таким ім'ям вікна вже існує: {0}.</value>
   </data>
-  <data name="profile.notify-on-activation" xml:space="preserve">
+  <data name="profile.notifyOnActivation" xml:space="preserve">
     <value>Сповіщати про активацію профілю</value>
   </data>
   <data name="profile.notification.text" xml:space="preserve">
     <value>Активовано профіль {0}</value>
   </data>
-  <data name="profile.button.save" xml:space="preserve">
+  <data name="buttonSave" xml:space="preserve">
     <value>Зберегти</value>
   </data>
-  <data name="profile.button.edit" xml:space="preserve">
+  <data name="buttonEdit" xml:space="preserve">
     <value>Редагувати</value>
   </data>
   <data name="profile.trigger.startup" xml:space="preserve">
@@ -331,7 +390,7 @@
   <data name="devices.AutoAddNewDevice" xml:space="preserve">
     <value>Автоматичний вибір нових пристроїв</value>
   </data>
-  <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
+  <data name="devices.AutoAddNewDevice..tooltip" xml:space="preserve">
     <value>Автоматичне додавання нових пристроїв до обраного списку при їх підключенні до комп'ютера</value>
   </data>
   <data name="connected" xml:space="preserve">
@@ -340,13 +399,13 @@
   <data name="startWithWindows" xml:space="preserve">
     <value>Автоматично запускати разом із Windows</value>
   </data>
-  <data name="communicationsDeviceTooltip" xml:space="preserve">
+  <data name="communicationsDevice.tooltip" xml:space="preserve">
     <value>Коли вибрано, "Пристрій зв'язку за замовчуванням" та "Пристрій відтворення за замовчуванням" перемикаються разом (корисно для Skype, TeamSpeak та ін.).</value>
   </data>
-  <data name="hotkeysTooltip" xml:space="preserve">
+  <data name="hotkey.tooltip" xml:space="preserve">
     <value>Виберіть для активації гарячої клавіши.</value>
   </data>
-  <data name="keepSystemTrayIconTooltip" xml:space="preserve">
+  <data name="keepSystemTrayIcon.tooltip" xml:space="preserve">
     <value>Коли вибрано, іконка на панелі завдань не буде змінюватись коли змінюєтсья "Пристрій відтворення за замовчуванням".</value>
   </data>
   <data name="communication" xml:space="preserve">
@@ -355,13 +414,13 @@
   <data name="updateNotify" xml:space="preserve">
     <value>Сповіщати мене про доступні оновлення</value>
   </data>
-  <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
+  <data name="cycleThrough.option.onlySelectedAudioDevices" xml:space="preserve">
     <value>Тільки обрані звукові пристрої</value>
   </data>
-  <data name="cycleThroughTooltip" xml:space="preserve">
+  <data name="cycleThrough.tooltip" xml:space="preserve">
     <value>Виберіть між якими звуковими пристроями виконувати перемикання - між всіма чи тільки між обраними.</value>
   </data>
-  <data name="notificationTooltip" xml:space="preserve">
+  <data name="notification.tooltip" xml:space="preserve">
     <value>Сповіщення Windows: спливаюче вікно панелі Windows за замовчуванням.
 Звукове сповіщення: відтворення звуку на переключеному пристрої відтворення.
 Спеціальне звукове сповіщення: відтворює вказаний звук на переключеному пристрої відтворення.
@@ -375,7 +434,7 @@
     <value>Мову буде змінено піля перезапуску SoundSwitch.
 Перезапустити зараз?</value>
   </data>
-  <data name="updateNotifyTooltip" xml:space="preserve">
+  <data name="updateNotify.tooltip" xml:space="preserve">
     <value>SoundSwitch повідомить вас, коли буде доступне нове оновлення. Натиснувши сповіщення, ви отримаєте спливаюче вікно із завантаженням оновлення та запитом, чи хочете ви його встановити.</value>
   </data>
   <data name="profile.error.name" xml:space="preserve">
@@ -430,16 +489,16 @@
   <data name="telemetry.desc" xml:space="preserve">
     <value>Анонімно збирати інформацію про те, яка версія SoundSwitch використовується. Інформація буде доступна лише розробнику SoundSwitch.</value>
   </data>
-  <data name="usePrimaryScreenTooltip" xml:space="preserve">
+  <data name="usePrimaryScreen.tooltip" xml:space="preserve">
     <value>Відображати банер на основному екрані замість сфокусованого.</value>
   </data>
   <data name="keepVolume.desc" xml:space="preserve">
     <value>Зберігати однаковий рівень гучності під час перемикання пристроїв відтворення</value>
   </data>
-  <data name="positionTooltip" xml:space="preserve">
+  <data name="position.tooltip" xml:space="preserve">
     <value>Налаштувати позицію сповіщення у банері.</value>
   </data>
-  <data name="positionOptionBottomCenter" xml:space="preserve">
+  <data name="position.option.bottomCenter" xml:space="preserve">
     <value>Внизу по центру</value>
   </data>
   <data name="none" xml:space="preserve">
@@ -451,19 +510,22 @@
   <data name="position" xml:space="preserve">
     <value>Позиція</value>
   </data>
-  <data name="positionOptionBottomLeft" xml:space="preserve">
+  <data name="position.option.bottomLeft" xml:space="preserve">
     <value>Внизу зліва</value>
   </data>
-  <data name="positionOptionBottomRight" xml:space="preserve">
+  <data name="position.option.bottomRight" xml:space="preserve">
     <value>Внизу справа</value>
   </data>
-  <data name="positionOptionTopLeft" xml:space="preserve">
+  <data name="position.option.topLeft" xml:space="preserve">
     <value>Вгорі зліва</value>
   </data>
-  <data name="positionOptionTopRight" xml:space="preserve">
+  <data name="position.option.topRight" xml:space="preserve">
     <value>Вгорі справа</value>
   </data>
-  <data name="positionOptionTopCenter" xml:space="preserve">
+  <data name="position.option.topCenter" xml:space="preserve">
     <value>Вгорі по центру</value>
+  </data>
+  <data name="resetAudioDevices" xml:space="preserve">
+    <value>Скинути звук для кожної програми</value>
   </data>
 </root>

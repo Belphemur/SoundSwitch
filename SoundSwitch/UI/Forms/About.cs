@@ -58,8 +58,13 @@ namespace SoundSwitch.UI.Forms
             keyboardHotKeySystemLabel.Text = AboutStrings.keyboardHotkeys;
             defaultPlaybackDeviceChangeLabel.Text = AboutStrings.defaultPlaybackDeviceChange;
         }
+        private void MaintainerLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            BrowserUtil.OpenUrl("https://www.aaflalo.me");
+        }
 
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+
+        private void CreatorLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             BrowserUtil.OpenUrl("http://jeroenpelgrims.be");
         }
@@ -69,27 +74,22 @@ namespace SoundSwitch.UI.Forms
             BrowserUtil.OpenUrl("https://github.com/Belphemur/SoundSwitch/releases");
         }
 
-        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void IconsLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             BrowserUtil.OpenUrl("https://codefisher.org/pastel-svg/");
         }
 
-        private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void LiensbergerLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             BrowserUtil.OpenUrl("http://www.liensberger.it/web/blog/?p=207");
         }
 
-        private void maintainerLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            BrowserUtil.OpenUrl("https://www.aaflalo.me");
-        }
-
-        private void eretikLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void EretikLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             BrowserUtil.OpenUrl("http://eretik.omegahg.com");
         }
 
-        private void logoCreatorLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void LogoCreatorLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             BrowserUtil.OpenUrl("https://github.com/linadesteem");
         }

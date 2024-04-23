@@ -58,7 +58,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="communityMenu" xml:space="preserve">
+  <data name="community" xml:space="preserve">
     <value>Közösség</value>
   </data>
   <data name="updateDisabled" xml:space="preserve">
@@ -106,13 +106,13 @@
   <data name="updateAvailable" xml:space="preserve">
     <value>Frissítés érhető el: ({0})</value>
   </data>
-  <data name="exit" xml:space="preserve">
+  <data name="quit" xml:space="preserve">
     <value>Kilépés</value>
   </data>
   <data name="about" xml:space="preserve">
     <value>SoundSwitch névjegye</value>
   </data>
-  <data name="mixer" xml:space="preserve">
+  <data name="volumeMixer" xml:space="preserve">
     <value>Hangerőkeverő</value>
   </data>
   <data name="playbackDevices" xml:space="preserve">

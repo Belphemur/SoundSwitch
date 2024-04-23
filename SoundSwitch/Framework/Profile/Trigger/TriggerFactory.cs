@@ -79,7 +79,7 @@ namespace SoundSwitch.Framework.Profile.Trigger
     public class HotKeyTrigger : BaseTrigger
     {
         public override TriggerFactory.Enum TypeEnum => TriggerFactory.Enum.HotKey;
-        public override string Label => SettingsStrings.hotkeys;
+        public override string Label => SettingsStrings.hotkey;
         public override string Description { get; } = SettingsStrings.profile_trigger_hotkey_desc;
         public override int MaxOccurence => 1;
     }

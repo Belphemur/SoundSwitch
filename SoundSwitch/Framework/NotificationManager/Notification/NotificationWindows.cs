@@ -27,7 +27,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
     internal class NotificationWindows : INotification
     {
         public NotificationTypeEnum TypeEnum => NotificationTypeEnum.DefaultWindowsNotification;
-        public string Label => SettingsStrings.notificationOptionWindowsDefault;
+        public string Label => SettingsStrings.notification_option_windowsDefault;
 
         public INotificationConfiguration Configuration { get; set; }
 

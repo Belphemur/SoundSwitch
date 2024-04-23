@@ -21,7 +21,7 @@ namespace SoundSwitch.Framework.Banner.Position
     internal class PositionBottomRight : APosition, IPosition
     {
         public BannerPositionEnum TypeEnum => BannerPositionEnum.BottomRight;
-        public string Label => SettingsStrings.positionOptionBottomRight;
+        public string Label => SettingsStrings.position_option_bottomRight;
 
         public Point GetScreenPosition(Screen screen, int height, int width, int offset)
         {

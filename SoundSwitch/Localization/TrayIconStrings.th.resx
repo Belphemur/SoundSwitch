@@ -64,7 +64,7 @@
   <data name="updateDisabled" xml:space="preserve">
     <value>การเลือกอัปเดทถูกปิด</value>
   </data>
-  <data name="communityMenu" xml:space="preserve">
+  <data name="community" xml:space="preserve">
     <value>ชุมชน</value>
   </data>
   <data name="iconChanger.both" xml:space="preserve">
@@ -109,13 +109,13 @@
   <data name="updateAvailable" xml:space="preserve">
     <value>มีรุ่นใหม่ ({0})</value>
   </data>
-  <data name="exit" xml:space="preserve">
+  <data name="quit" xml:space="preserve">
     <value>ออก</value>
   </data>
   <data name="about" xml:space="preserve">
     <value>เกี่ยวกับ SoundSwitch</value>
   </data>
-  <data name="mixer" xml:space="preserve">
+  <data name="volumeMixer" xml:space="preserve">
     <value>มิกเซอร์</value>
   </data>
   <data name="playbackDevices" xml:space="preserve">

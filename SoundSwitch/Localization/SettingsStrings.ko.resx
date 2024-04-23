@@ -1,48 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
-					<xsd:element name="metadata">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" />
-							</xsd:sequence>
-							<xsd:attribute name="name" use="required" type="xsd:string" />
-							<xsd:attribute name="type" type="xsd:string" />
-							<xsd:attribute name="mimetype" type="xsd:string" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="assembly">
-						<xsd:complexType>
-							<xsd:attribute name="alias" type="xsd:string" />
-							<xsd:attribute name="name" type="xsd:string" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
       </xsd:complexType>
     </xsd:element>
   </xsd:schema>
@@ -58,19 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="close" xml:space="preserve">
+  <data name="buttonClose" xml:space="preserve">
     <value>닫기</value>
   </data>
-  <data name="notificationOptionCustomized" xml:space="preserve">
+  <data name="notification.option.customized" xml:space="preserve">
     <value>사용자 정의 사운드 알림</value>
   </data>
   <data name="updateNotify" xml:space="preserve">
     <value>업데이트를 사용할 수 있을 때 알림</value>
   </data>
-  <data name="foregroundAppTooltip" xml:space="preserve">
+  <data name="foregroundApp.tooltip" xml:space="preserve">
     <value>현재 사용 중인 응용프로그램의 사운드도 전환합니다. 비디오 게임에 유용합니다.</value>
   </data>
-  <data name="notificationOptionWindowsDefault" xml:space="preserve">
+  <data name="notification.option.windowsDefault" xml:space="preserve">
     <value>Windows 알림</value>
   </data>
   <data name="disconnected" xml:space="preserve">
@@ -79,10 +138,10 @@
   <data name="cycleThrough" xml:space="preserve">
     <value>순환</value>
   </data>
-  <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
+  <data name="cycleThrough.option.onlySelectedAudioDevices" xml:space="preserve">
     <value>선택된 오디오 장치만</value>
   </data>
-  <data name="notificationTooltip" xml:space="preserve">
+  <data name="notification.tooltip" xml:space="preserve">
     <value>Windows 알림: 기본 창 트레이가 팝업됩니다.
 사운드 알림: 전환된 재생 장치에서 소리를 재생합니다.
 사용자 정의 사운드 알림: 전환된 재생 장치에서 지정된 소리를 재생합니다.
@@ -95,22 +154,22 @@
   <data name="audioFileNotFound" xml:space="preserve">
     <value>알림으로 사용하도록 선택한 오디오 파일을 찾을 수 없습니다. SoundSwitch가 알림 설정을 {0}으로 다시 전환했습니다.</value>
   </data>
-  <data name="closeTooltip" xml:space="preserve">
+  <data name="buttonClose.tooltip" xml:space="preserve">
     <value>변경 사항이 자동으로 저장됩니다</value>
   </data>
   <data name="notification" xml:space="preserve">
     <value>알림</value>
   </data>
-  <data name="disableCustomSoundTooltip" xml:space="preserve">
+  <data name="disableCustomSound.tooltip" xml:space="preserve">
     <value>설정된 사용자 정의 사운드를 사용하지 않습니다.</value>
   </data>
-  <data name="notificationOptionToast" xml:space="preserve">
+  <data name="notification.option.toast" xml:space="preserve">
     <value>토스트 알림</value>
   </data>
-  <data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
+  <data name="cycleThrough.option.allAudioDevices" xml:space="preserve">
     <value>모든 오디오 장치</value>
   </data>
-  <data name="cycleThroughTooltip" xml:space="preserve">
+  <data name="cycleThrough.tooltip" xml:space="preserve">
     <value>전환할 장치를 선택하십시오. 선택한 항목 사이 또는 모든 항목 사이 중 하나입니다.</value>
   </data>
   <data name="basicSettings" xml:space="preserve">
@@ -119,7 +178,7 @@
   <data name="recording" xml:space="preserve">
     <value>녹음</value>
   </data>
-  <data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
+  <data name="tooltipOnHover.option.recordingDevice" xml:space="preserve">
     <value>녹음 장치</value>
   </data>
   <data name="selected" xml:space="preserve">
@@ -134,31 +193,31 @@
   <data name="updateInstallAutomatically" xml:space="preserve">
     <value>업데이트 자동 설치</value>
   </data>
-  <data name="keepSystemTrayIconTooltip" xml:space="preserve">
+  <data name="keepSystemTrayIcon.tooltip" xml:space="preserve">
     <value>선택하면 '기본 재생 장치'가 변경될 때 시스템 트레이 아이콘이 변경되지 않습니다.</value>
   </data>
-  <data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
+  <data name="tooltipOnHover.option.playbackDevice" xml:space="preserve">
     <value>재생 장치</value>
   </data>
-  <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
+  <data name="updateInstallAutomatically.tooltip" xml:space="preserve">
     <value>업데이트는 프롬프트 없이 자동으로 설치됩니다.</value>
   </data>
   <data name="activePlayback" xml:space="preserve">
     <value>재생 : {0}</value>
   </data>
-  <data name="languageRestartRequiredCaption" xml:space="preserve">
+  <data name="languageRestartRequired.caption" xml:space="preserve">
     <value>재시작 필요</value>
   </data>
   <data name="iconChange" xml:space="preserve">
     <value>트레이 아이콘</value>
   </data>
-  <data name="updateNeverTooltip" xml:space="preserve">
+  <data name="updateNever.tooltip" xml:space="preserve">
     <value>수동으로 수행하지 않으면 프로그램을 업데이트하지 않습니다.</value>
   </data>
   <data name="connected" xml:space="preserve">
     <value>연결됨</value>
   </data>
-  <data name="notificationOptionSound" xml:space="preserve">
+  <data name="notification.option.sound" xml:space="preserve">
     <value>사운드 알림</value>
   </data>
   <data name="communicationsDevice" xml:space="preserve">
@@ -167,16 +226,16 @@
   <data name="language" xml:space="preserve">
     <value>언어</value>
   </data>
-  <data name="updateNotifyTooltip" xml:space="preserve">
+  <data name="updateNotify.tooltip" xml:space="preserve">
     <value>사용 가능한 새 업데이트가 있으면 SoundSwitch가 알려줍니다. 알림을 클릭하면 업데이트를 다운로드하고 설치할지 묻는 팝업이 나타납니다.</value>
   </data>
-  <data name="hotkeysTooltip" xml:space="preserve">
+  <data name="hotkey.tooltip" xml:space="preserve">
     <value>단축키를 사용하려면 선택합니다.</value>
   </data>
-  <data name="selectSoundButtonTooltip" xml:space="preserve">
+  <data name="selectSoundButton.tooltip" xml:space="preserve">
     <value>알림의 사운드 파일을 선택</value>
   </data>
-  <data name="communicationsDeviceTooltip" xml:space="preserve">
+  <data name="communicationsDevice.tooltip" xml:space="preserve">
     <value>선택하면 '기본 통신 장치'와 '기본 재생 장치'가 함께 전환됩니다 (예: Skype, TeamSpeak에 유용함).</value>
   </data>
   <data name="playback" xml:space="preserve">
@@ -201,13 +260,13 @@
   <data name="settings" xml:space="preserve">
     <value>설정</value>
   </data>
-  <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
+  <data name="tooltipOnHover.option.bothDevices" xml:space="preserve">
     <value>두 장치 모두</value>
   </data>
   <data name="updateSettings" xml:space="preserve">
     <value>업데이트 설정</value>
   </data>
-  <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
+  <data name="updateIncludeBetaVersions.tooltip" xml:space="preserve">
     <value>선택하면 SoundSwitch는 GitHub에서 베타 버전도 확인합니다.</value>
   </data>
   <data name="audioSettings" xml:space="preserve">
@@ -221,7 +280,7 @@
 녹음: 녹음 장치가 전환이 되었을 때.
 모두: 모든 유형의 장치가 전환이 되었을 때 변경.</value>
   </data>
-  <data name="notificationOptionBanner" xml:space="preserve">
+  <data name="notification.option.banner" xml:space="preserve">
     <value>배너</value>
   </data>
   <data name="audioFileNotFoundCaption" xml:space="preserve">
@@ -233,7 +292,7 @@
   <data name="startWithWindows" xml:space="preserve">
     <value>Windows에서 자동으로 시작</value>
   </data>
-  <data name="hotkeys" xml:space="preserve">
+  <data name="hotkey" xml:space="preserve">
     <value>단축키</value>
   </data>
   <data name="tooltipOnHoverOptionNone" xml:space="preserve">
@@ -242,7 +301,7 @@
   <data name="profile.tab" xml:space="preserve">
     <value>프로필</value>
   </data>
-  <data name="profile.addButton" xml:space="preserve">
+  <data name="buttonAdd" xml:space="preserve">
     <value>추가</value>
   </data>
   <data name="profile.program" xml:space="preserve">
@@ -284,13 +343,13 @@
   <data name="profile.error.title" xml:space="preserve">
     <value>프로필 오류</value>
   </data>
-  <data name="profile.deleteButton" xml:space="preserve">
+  <data name="buttonDelete" xml:space="preserve">
     <value>삭제</value>
   </data>
   <data name="profile.error.delete" xml:space="preserve">
     <value>프로필을 찾을 수 없습니다.</value>
   </data>
-  <data name="profile.error.no-name" xml:space="preserve">
+  <data name="profile.error.noName" xml:space="preserve">
     <value>프로필 이름이 필요합니다.</value>
   </data>
   <data name="profile.feature.profile" xml:space="preserve">
@@ -302,7 +361,7 @@
   <data name="profile.defaultDevice.checkbox" xml:space="preserve">
     <value>기본 장치도 전환</value>
   </data>
-  <data name="profile.error.device-not-found" xml:space="preserve">
+  <data name="profile.error.deviceNotFound" xml:space="preserve">
     <value>{0} 장치를 찾을 수 없습니다.</value>
   </data>
   <data name="hotkeyEnabled" xml:space="preserve">
@@ -323,7 +382,7 @@
   <data name="profile.trigger.process" xml:space="preserve">
     <value>응용프로그램 경로</value>
   </data>
-  <data name="profile.notify-on-activation" xml:space="preserve">
+  <data name="profile.notifyOnActivation" xml:space="preserve">
     <value>프로필이 트리거될 때 알림</value>
   </data>
   <data name="profile.trigger.available" xml:space="preserve">
@@ -335,10 +394,10 @@
   <data name="profile.desc" xml:space="preserve">
     <value>설명</value>
   </data>
-  <data name="profile.button.save" xml:space="preserve">
+  <data name="buttonSave" xml:space="preserve">
     <value>저장</value>
   </data>
-  <data name="profile.button.edit" xml:space="preserve">
+  <data name="buttonEdit" xml:space="preserve">
     <value>편집</value>
   </data>
   <data name="profile.trigger.uwp.desc" xml:space="preserve">
@@ -347,7 +406,7 @@
   <data name="profile.error.window" xml:space="preserve">
     <value>이미 이 창 이름이 있는 프로필이 있습니다: {0}.</value>
   </data>
-  <data name="usePrimaryScreenTooltip" xml:space="preserve">
+  <data name="usePrimaryScreen.tooltip" xml:space="preserve">
     <value>배너를 집중 화면 대신 기본 화면에 표시합니다.</value>
   </data>
   <data name="profile.trigger.startup.desc" xml:space="preserve">
@@ -430,7 +489,10 @@
   <data name="devices.AutoAddNewDevice" xml:space="preserve">
     <value>새 장치 자동 선택</value>
   </data>
-  <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
+  <data name="devices.AutoAddNewDevice..tooltip" xml:space="preserve">
     <value>새 장치가 컴퓨터에 연결되면 선택한 목록에 자동으로 추가</value>
+  </data>
+  <data name="resetAudioDevices" xml:space="preserve">
+    <value>앱별 오디오 재설정</value>
   </data>
 </root>

@@ -59,49 +59,49 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
-					<xsd:element name="metadata">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" />
-							</xsd:sequence>
-							<xsd:attribute name="name" use="required" type="xsd:string" />
-							<xsd:attribute name="type" type="xsd:string" />
-							<xsd:attribute name="mimetype" type="xsd:string" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="assembly">
-						<xsd:complexType>
-							<xsd:attribute name="alias" type="xsd:string" />
-							<xsd:attribute name="name" type="xsd:string" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
       </xsd:complexType>
     </xsd:element>
   </xsd:schema>
@@ -135,7 +135,7 @@
   <data name="settings" xml:space="preserve">
     <value>Configuración</value>
   </data>
-  <data name="hotkeys" xml:space="preserve">
+  <data name="hotkey" xml:space="preserve">
     <value>Atajo</value>
   </data>
   <data name="communicationsDevice" xml:space="preserve">
@@ -144,13 +144,13 @@
   <data name="startWithWindows" xml:space="preserve">
     <value>Iniciar automáticamente con Windows</value>
   </data>
-  <data name="close" xml:space="preserve">
+  <data name="buttonClose" xml:space="preserve">
     <value>Cerrar</value>
   </data>
-  <data name="closeTooltip" xml:space="preserve">
+  <data name="buttonClose.tooltip" xml:space="preserve">
     <value>Los cambios se guardan automáticamente</value>
   </data>
-  <data name="communicationsDeviceTooltip" xml:space="preserve">
+  <data name="communicationsDevice.tooltip" xml:space="preserve">
     <value>Si se activa, tanto el «Dispositivo de comunicación predeterminado» como el «Dispositivo de reproducción predeterminado» se cambian a la vez (útil para, p. ej., Skype y TeamSpeak).</value>
   </data>
   <data name="notification" xml:space="preserve">
@@ -159,16 +159,16 @@
   <data name="updateIncludeBetaVersions" xml:space="preserve">
     <value>Incluir versiones beta</value>
   </data>
-  <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
+  <data name="updateIncludeBetaVersions.tooltip" xml:space="preserve">
     <value>Si se activa, SoundSwitch comprobará también si hay versiones beta en GitHub.</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
     <value>Archivos de audio</value>
   </data>
-  <data name="selectSoundButtonTooltip" xml:space="preserve">
+  <data name="selectSoundButton.tooltip" xml:space="preserve">
     <value>Seleccione el archivo de sonido para la notificación</value>
   </data>
-  <data name="hotkeysTooltip" xml:space="preserve">
+  <data name="hotkey.tooltip" xml:space="preserve">
     <value>Marque para activar el atajo.</value>
   </data>
   <data name="basicSettings" xml:space="preserve">
@@ -186,13 +186,13 @@
   <data name="keepSystemTrayIcon" xml:space="preserve">
     <value>Mantener icono de SoundSwitch en bandeja de sistema</value>
   </data>
-  <data name="keepSystemTrayIconTooltip" xml:space="preserve">
+  <data name="keepSystemTrayIcon.tooltip" xml:space="preserve">
     <value>Si se activa, el icono en la bandeja del sistema no cambiará cuando cambie el «Dispositivo de reproducción predeterminado».</value>
   </data>
   <data name="updateInstallAutomatically" xml:space="preserve">
     <value>Instala actualizaciones automáticamente</value>
   </data>
-  <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
+  <data name="updateInstallAutomatically.tooltip" xml:space="preserve">
     <value>Se instalan actualizaciones automáticamente, sin preguntar.</value>
   </data>
   <data name="updateNotify" xml:space="preserve">
@@ -204,44 +204,44 @@
   <data name="tooltipOnHover" xml:space="preserve">
     <value>Descripción emergente al posar el ratón</value>
   </data>
-  <data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
+  <data name="cycleThrough.option.allAudioDevices" xml:space="preserve">
     <value>Todos los dispositivos de audio</value>
   </data>
-  <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
+  <data name="cycleThrough.option.onlySelectedAudioDevices" xml:space="preserve">
     <value>Solo dispositivos de audio seleccionados</value>
   </data>
-  <data name="cycleThroughTooltip" xml:space="preserve">
+  <data name="cycleThrough.tooltip" xml:space="preserve">
     <value>Elija entre qué dispositivos cambiar, sea solo entre los seleccionados o entre todos.</value>
   </data>
-  <data name="notificationOptionWindowsDefault" xml:space="preserve">
+  <data name="notification.option.windowsDefault" xml:space="preserve">
     <value>Notificación de Windows</value>
   </data>
-  <data name="notificationOptionSound" xml:space="preserve">
+  <data name="notification.option.sound" xml:space="preserve">
     <value>Notificación sonora</value>
   </data>
   <data name="notificationOptionNone" xml:space="preserve">
     <value>Ninguna notificación</value>
   </data>
-  <data name="notificationOptionToast" xml:space="preserve">
+  <data name="notification.option.toast" xml:space="preserve">
     <value>Notificación de sistema</value>
   </data>
-  <data name="notificationOptionCustomized" xml:space="preserve">
+  <data name="notification.option.customized" xml:space="preserve">
     <value>Notificación sonora personalizada</value>
   </data>
-  <data name="notificationTooltip" xml:space="preserve">
+  <data name="notification.tooltip" xml:space="preserve">
     <value>Notificación de Windows: La ventana emergente predeterminada de Windows.
 Notificación de Sonido: Reproduce un sonido en el Dispositivo de reproducción seleccionado.
 Sonido de Notificación personalizado: Reproduce el sonido especificado en el Dispositivo de reproducción seleccionado.
 Toast Notification: Uses a special form of the windows tray pop-up version.
 Banner: Uses a custom always-on-top frame, useful for in-game usage.</value>
   </data>
-  <data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
+  <data name="tooltipOnHover.option.playbackDevice" xml:space="preserve">
     <value>Dispositivo de reproducción</value>
   </data>
-  <data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
+  <data name="tooltipOnHover.option.recordingDevice" xml:space="preserve">
     <value>Dispositivo de grabación</value>
   </data>
-  <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
+  <data name="tooltipOnHover.option.bothDevices" xml:space="preserve">
     <value>Ambos dispositivos</value>
   </data>
   <data name="tooltipOnHoverOptionNone" xml:space="preserve">
@@ -260,23 +260,23 @@ Banner: Uses a custom always-on-top frame, useful for in-game usage.</value>
     <value>Repr.: {0}</value>
   </data>
   <data name="language" xml:space="preserve">
-		<value>Idioma</value>
+    <value>Idioma</value>
   </data>
   <data name="languageRestartRequired" xml:space="preserve">
-		<value>El idioma cambiará luego de reiniciar SoundSwitch.
+    <value>El idioma cambiará luego de reiniciar SoundSwitch.
 ¿Quiere reiniciarlo ahora?</value>
   </data>
-  <data name="languageRestartRequiredCaption" xml:space="preserve">
-		<value>Es necesario reiniciar</value>
+  <data name="languageRestartRequired.caption" xml:space="preserve">
+    <value>Es necesario reiniciar</value>
   </data>
-  <data name="updateNeverTooltip" xml:space="preserve">
-		<value>No actualizar el programa a menos que lo haga manualmente.</value>
+  <data name="updateNever.tooltip" xml:space="preserve">
+    <value>No actualizar el programa a menos que lo haga manualmente.</value>
   </data>
-  <data name="updateNotifyTooltip" xml:space="preserve">
-		<value>SoundSwitch le notificará cuando haya una actualización disponible. Cuando pulse en la notificación, aparecerá una ventana emergente con el progreso de la descarga de la actualización y le preguntará si quiere instalarla cuando finalice.</value>
+  <data name="updateNotify.tooltip" xml:space="preserve">
+    <value>SoundSwitch le notificará cuando haya una actualización disponible. Cuando pulse en la notificación, aparecerá una ventana emergente con el progreso de la descarga de la actualización y le preguntará si quiere instalarla cuando finalice.</value>
   </data>
-  <data name="notificationOptionBanner" xml:space="preserve">
-        <value>Notificación por banner</value>
+  <data name="notification.option.banner" xml:space="preserve">
+    <value>Notificación por banner</value>
   </data>
   <data name="profile.error.needHKOrPath" xml:space="preserve">
     <value>Debe establecer el atajo y/o la aplicación.</value>
@@ -299,7 +299,7 @@ Banner: Uses a custom always-on-top frame, useful for in-game usage.</value>
   <data name="profile.program" xml:space="preserve">
     <value>Aplicación</value>
   </data>
-  <data name="profile.addButton" xml:space="preserve">
+  <data name="buttonAdd" xml:space="preserve">
     <value>Añadir</value>
   </data>
   <data name="profile.tab" xml:space="preserve">
@@ -316,10 +316,10 @@ Ambos: cambia cuando se cambia cualquier tipo de dispositivo.</value>
   <data name="iconChange" xml:space="preserve">
     <value>Icono de la bandeja del sistema</value>
   </data>
-  <data name="foregroundAppTooltip" xml:space="preserve">
+  <data name="foregroundApp.tooltip" xml:space="preserve">
     <value>Cambiar también el sonido en la aplicación que actualmente está en uso. Útil con videojuegos.</value>
   </data>
-  <data name="disableCustomSoundTooltip" xml:space="preserve">
+  <data name="disableCustomSound.tooltip" xml:space="preserve">
     <value>Desactivar el sonido personalizado establecido.</value>
   </data>
   <data name="usePrimaryScreen" xml:space="preserve">
@@ -334,7 +334,7 @@ Ambos: cambia cuando se cambia cualquier tipo de dispositivo.</value>
   <data name="profile.notification.text" xml:space="preserve">
     <value>Se desencadenó el perfil {0}</value>
   </data>
-  <data name="profile.notify-on-activation" xml:space="preserve">
+  <data name="profile.notifyOnActivation" xml:space="preserve">
     <value>Notificar cuando se desencadene el perfil</value>
   </data>
   <data name="profile.error.window" xml:space="preserve">
@@ -361,10 +361,10 @@ Ambos: cambia cuando se cambia cualquier tipo de dispositivo.</value>
   <data name="foregroundApp" xml:space="preserve">
     <value>También cambiar el programa en primer plano</value>
   </data>
-  <data name="profile.button.edit" xml:space="preserve">
+  <data name="buttonEdit" xml:space="preserve">
     <value>Editar</value>
   </data>
-  <data name="profile.button.save" xml:space="preserve">
+  <data name="buttonSave" xml:space="preserve">
     <value>Guardar</value>
   </data>
   <data name="profile.error.triggers.min" xml:space="preserve">
@@ -388,7 +388,7 @@ Ambos: cambia cuando se cambia cualquier tipo de dispositivo.</value>
   <data name="profile.trigger.window" xml:space="preserve">
     <value>Nombre del programa</value>
   </data>
-  <data name="profile.error.device-not-found" xml:space="preserve">
+  <data name="profile.error.deviceNotFound" xml:space="preserve">
     <value>No se pudo encontrar el dispositivo {0}.</value>
   </data>
   <data name="profile.defaultDevice.checkbox" xml:space="preserve">
@@ -397,13 +397,13 @@ Ambos: cambia cuando se cambia cualquier tipo de dispositivo.</value>
   <data name="profile.feature.profile" xml:space="preserve">
     <value>Perfil</value>
   </data>
-  <data name="profile.error.no-name" xml:space="preserve">
+  <data name="profile.error.noName" xml:space="preserve">
     <value>El perfil necesita un nombre.</value>
   </data>
   <data name="profile.error.delete" xml:space="preserve">
     <value>No se puede encontrar el perfil.</value>
   </data>
-  <data name="profile.deleteButton" xml:space="preserve">
+  <data name="buttonDelete" xml:space="preserve">
     <value>Eliminar</value>
   </data>
   <data name="profile.error.title" xml:space="preserve">
@@ -418,7 +418,7 @@ Ambos: cambia cuando se cambia cualquier tipo de dispositivo.</value>
   <data name="profile.error.registerHotkeys.title" xml:space="preserve">
     <value>Ya se utiliza el atajo</value>
   </data>
-  <data name="usePrimaryScreenTooltip" xml:space="preserve">
+  <data name="usePrimaryScreen.tooltip" xml:space="preserve">
     <value>Mostrar mensaje emergente en la pantalla principal, no la enfocada.</value>
   </data>
   <data name="telemetry.desc" xml:space="preserve">
@@ -480,7 +480,7 @@ Restaura el estado del sistema cuando se cierra la aplicación.</value>
   <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
     <value>El perfil se activará automáticamente cuando cambie el dispositivo de sonido actual.</value>
   </data>
-  <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
+  <data name="devices.AutoAddNewDevice..tooltip" xml:space="preserve">
     <value>Añadir automáticamente nuevos dispositivos a la lista seleccionada cuando se conectan al ordenador</value>
   </data>
   <data name="profile.trigger.deviceChanged" xml:space="preserve">
@@ -501,25 +501,25 @@ Restaura el estado del sistema cuando se cierra la aplicación.</value>
   <data name="position" xml:space="preserve">
     <value>Posición</value>
   </data>
-  <data name="positionOptionBottomLeft" xml:space="preserve">
+  <data name="position.option.bottomLeft" xml:space="preserve">
     <value>Parte inferior izquierda</value>
   </data>
-  <data name="positionOptionTopLeft" xml:space="preserve">
+  <data name="position.option.topLeft" xml:space="preserve">
     <value>Parte superior izquierda</value>
   </data>
-  <data name="positionOptionTopCenter" xml:space="preserve">
+  <data name="position.option.topCenter" xml:space="preserve">
     <value>Parte central superior</value>
   </data>
-  <data name="positionOptionTopRight" xml:space="preserve">
+  <data name="position.option.topRight" xml:space="preserve">
     <value>Parte superior derecha</value>
   </data>
-  <data name="positionOptionBottomCenter" xml:space="preserve">
+  <data name="position.option.bottomCenter" xml:space="preserve">
     <value>Parte central</value>
   </data>
-  <data name="positionOptionBottomRight" xml:space="preserve">
+  <data name="position.option.bottomRight" xml:space="preserve">
     <value>Parte inferior derecha</value>
   </data>
-  <data name="positionTooltip" xml:space="preserve">
+  <data name="position.tooltip" xml:space="preserve">
     <value>Fije la posición de la notificación del banner.</value>
   </data>
   <data name="none" xml:space="preserve">
@@ -530,5 +530,8 @@ Restaura el estado del sistema cuando se cierra la aplicación.</value>
   </data>
   <data name="notification.single.tooltip" xml:space="preserve">
     <value>Mostrar solo un banner a la vez y sustituir su contenido.</value>
+  </data>
+  <data name="resetAudioDevices" xml:space="preserve">
+    <value>Restablecer el audio por aplicación</value>
   </data>
 </root>
