@@ -126,72 +126,72 @@ namespace SoundSwitch.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Add.
         /// </summary>
-        internal static string button_add {
+        internal static string buttonAdd {
             get {
-                return ResourceManager.GetString("button.add", resourceCulture);
+                return ResourceManager.GetString("buttonAdd", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Close.
         /// </summary>
-        internal static string button_close {
+        internal static string buttonClose {
             get {
-                return ResourceManager.GetString("button.close", resourceCulture);
+                return ResourceManager.GetString("buttonClose", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Changes are automatically saved.
         /// </summary>
-        internal static string button_close_tooltip {
+        internal static string buttonClose_tooltip {
             get {
-                return ResourceManager.GetString("button.close.tooltip", resourceCulture);
+                return ResourceManager.GetString("buttonClose.tooltip", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
-        internal static string button_delete {
+        internal static string buttonDelete {
             get {
-                return ResourceManager.GetString("button.delete", resourceCulture);
+                return ResourceManager.GetString("buttonDelete", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
-        internal static string button_edit {
+        internal static string buttonEdit {
             get {
-                return ResourceManager.GetString("button.edit", resourceCulture);
+                return ResourceManager.GetString("buttonEdit", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Export.
         /// </summary>
-        internal static string button_export {
+        internal static string buttonExport {
             get {
-                return ResourceManager.GetString("button.export", resourceCulture);
+                return ResourceManager.GetString("buttonExport", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Reset.
         /// </summary>
-        internal static string button_reset {
+        internal static string buttonReset {
             get {
-                return ResourceManager.GetString("button.reset", resourceCulture);
+                return ResourceManager.GetString("buttonReset", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
-        internal static string button_save {
+        internal static string buttonSave {
             get {
-                return ResourceManager.GetString("button.save", resourceCulture);
+                return ResourceManager.GetString("buttonSave", resourceCulture);
             }
         }
         
@@ -1263,72 +1263,72 @@ namespace SoundSwitch.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Include Beta versions.
         /// </summary>
-        internal static string update_includeBetaVersions {
+        internal static string updateIncludeBetaVersions {
             get {
-                return ResourceManager.GetString("update.includeBetaVersions", resourceCulture);
+                return ResourceManager.GetString("updateIncludeBetaVersions", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to When checked, SoundSwitch will also check for Beta versions on GitHub..
         /// </summary>
-        internal static string update_includeBetaVersions_tooltip {
+        internal static string updateIncludeBetaVersions_tooltip {
             get {
-                return ResourceManager.GetString("update.includeBetaVersions.tooltip", resourceCulture);
+                return ResourceManager.GetString("updateIncludeBetaVersions.tooltip", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Install updates automatically.
         /// </summary>
-        internal static string update_installAutomatically {
+        internal static string updateInstallAutomatically {
             get {
-                return ResourceManager.GetString("update.installAutomatically", resourceCulture);
+                return ResourceManager.GetString("updateInstallAutomatically", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Updates are installed automatically without any prompts..
         /// </summary>
-        internal static string update_installAutomatically_tooltip {
+        internal static string updateInstallAutomatically_tooltip {
             get {
-                return ResourceManager.GetString("update.installAutomatically.tooltip", resourceCulture);
+                return ResourceManager.GetString("updateInstallAutomatically.tooltip", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Never check for updates.
         /// </summary>
-        internal static string update_never {
+        internal static string updateNever {
             get {
-                return ResourceManager.GetString("update.never", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Notify me when updates are available.
-        /// </summary>
-        internal static string update_notify {
-            get {
-                return ResourceManager.GetString("update.notify", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to SoundSwitch will notify you when there is a new update available. When clicking on the notification, you&apos;ll get a popup downloading the update for you and asking if you want to install it..
-        /// </summary>
-        internal static string update_notify_tooltip {
-            get {
-                return ResourceManager.GetString("update.notify.tooltip", resourceCulture);
+                return ResourceManager.GetString("updateNever", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Don&apos;t update the program unless you do it manually..
         /// </summary>
-        internal static string updatenever_tooltip {
+        internal static string updateNever_tooltip {
             get {
-                return ResourceManager.GetString("updatenever.tooltip", resourceCulture);
+                return ResourceManager.GetString("updateNever.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notify me when updates are available.
+        /// </summary>
+        internal static string updateNotify {
+            get {
+                return ResourceManager.GetString("updateNotify", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SoundSwitch will notify you when there is a new update available. When clicking on the notification, you&apos;ll get a popup downloading the update for you and asking if you want to install it..
+        /// </summary>
+        internal static string updateNotify_tooltip {
+            get {
+                return ResourceManager.GetString("updateNotify.tooltip", resourceCulture);
             }
         }
         

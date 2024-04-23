@@ -71,7 +71,7 @@ namespace SoundSwitch.UI.Forms
             LocalizeForm();
 
             var closeToolTip = new ToolTip();
-            closeToolTip.SetToolTip(closeButton, SettingsStrings.button_close_tooltip);
+            closeToolTip.SetToolTip(closeButton, SettingsStrings.buttonClose_tooltip);
 
             hotKeyControl.HotKey = AppConfigs.Configuration.PlaybackHotKey;
             hotKeyControl.Tag =
@@ -179,14 +179,14 @@ namespace SoundSwitch.UI.Forms
             }
 
             var updateSilentToolTip = new ToolTip();
-            updateSilentToolTip.SetToolTip(updateSilentRadioButton, SettingsStrings.update_installAutomatically_tooltip);
+            updateSilentToolTip.SetToolTip(updateSilentRadioButton, SettingsStrings.updateInstallAutomatically_tooltip);
             var updateNotifyToolTip = new ToolTip();
-            updateNotifyToolTip.SetToolTip(updateNotifyRadioButton, SettingsStrings.update_notify_tooltip);
+            updateNotifyToolTip.SetToolTip(updateNotifyRadioButton, SettingsStrings.updateNotify_tooltip);
             var updateNeverToolTip = new ToolTip();
-            updateNeverToolTip.SetToolTip(updateNeverRadioButton, SettingsStrings.updatenever_tooltip);
+            updateNeverToolTip.SetToolTip(updateNeverRadioButton, SettingsStrings.updateNever_tooltip);
 
             var includeBetaVersionsToolTip = new ToolTip();
-            includeBetaVersionsToolTip.SetToolTip(includeBetaVersionsCheckBox, SettingsStrings.update_includeBetaVersions_tooltip);
+            includeBetaVersionsToolTip.SetToolTip(includeBetaVersionsCheckBox, SettingsStrings.updateIncludeBetaVersions_tooltip);
 
             // Settings - Language
             new LanguageFactory().ConfigureListControl(languageComboBox);
@@ -349,16 +349,16 @@ namespace SoundSwitch.UI.Forms
 
             // Settings - Profile
             profileExplanationLabel.Text = SettingsStrings.profile_explanation;
-            addProfileButton.Text = SettingsStrings.button_add;
-            deleteProfileButton.Text = SettingsStrings.button_delete;
-            editProfileButton.Text = SettingsStrings.button_edit;
+            addProfileButton.Text = SettingsStrings.buttonAdd;
+            deleteProfileButton.Text = SettingsStrings.buttonDelete;
+            editProfileButton.Text = SettingsStrings.buttonEdit;
 
             // Settings - Update
             updateSettingsGroupBox.Text = SettingsStrings.updateSettings;
-            updateSilentRadioButton.Text = SettingsStrings.update_installAutomatically;
-            updateNotifyRadioButton.Text = SettingsStrings.update_notify;
-            updateNeverRadioButton.Text = SettingsStrings.update_never;
-            includeBetaVersionsCheckBox.Text = SettingsStrings.update_includeBetaVersions;
+            updateSilentRadioButton.Text = SettingsStrings.updateInstallAutomatically;
+            updateNotifyRadioButton.Text = SettingsStrings.updateNotify;
+            updateNeverRadioButton.Text = SettingsStrings.updateNever;
+            includeBetaVersionsCheckBox.Text = SettingsStrings.updateIncludeBetaVersions;
             telemetryCheckbox.Text = SettingsStrings.telemetry;
 
             // Settings - Language
@@ -373,10 +373,10 @@ namespace SoundSwitch.UI.Forms
             // Settings - Troubleshooting
             resetAudioDevicesGroupBox.Text = SettingsStrings.resetAudioDevices;
             resetAudioDevicesLabel.Text = SettingsStrings.resetAudioDevices_desc;
-            resetAudioDevicesButton.Text = SettingsStrings.button_reset;
+            resetAudioDevicesButton.Text = SettingsStrings.buttonReset;
             exportLogFilesGroupBox.Text = SettingsStrings.exportLogFiles;
             exportLogFilesLabel.Text = SettingsStrings.exportLogFiles_desc;
-            exportLogFilesButton.Text = SettingsStrings.button_export;
+            exportLogFilesButton.Text = SettingsStrings.buttonExport;
 
             appNameLabel.Text = Application.ProductName;
             troubleshootingLabel.Text = SettingsStrings.troubleshooting_desc;
@@ -386,7 +386,7 @@ namespace SoundSwitch.UI.Forms
 
             // Misc
             hotkeysCheckBox.Text = SettingsStrings.hotkeyEnabled;
-            closeButton.Text = SettingsStrings.button_close;
+            closeButton.Text = SettingsStrings.buttonClose;
             toggleMuteLabel.Text = SettingsStrings.mute_toggle_label;
             muteHotKeyCheckbox.Text = SettingsStrings.hotkeyEnabled;
 

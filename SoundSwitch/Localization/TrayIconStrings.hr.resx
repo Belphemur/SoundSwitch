@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -159,7 +159,7 @@
   <data name="updateAvailable" xml:space="preserve">
     <value>Dostupna je nadogradnja ({0})</value>
   </data>
-  <data name="exit" xml:space="preserve">
+  <data name="quit" xml:space="preserve">
     <value>Zatvori SoundSwitch</value>
   </data>
   <data name="about" xml:space="preserve">
@@ -168,7 +168,7 @@
   <data name="settings" xml:space="preserve">
     <value>Postavke</value>
   </data>
-  <data name="mixer" xml:space="preserve">
+  <data name="volumeMixer" xml:space="preserve">
     <value>Mikser</value>
   </data>
   <data name="playbackDevices" xml:space="preserve">
@@ -180,7 +180,7 @@
   <data name="noUpdate" xml:space="preserve">
     <value>Nema nadogradnji</value>
   </data>
-  <data name="communityMenu" xml:space="preserve">
+  <data name="community" xml:space="preserve">
     <value>Zajednica</value>
   </data>
   <data name="updateDisabled" xml:space="preserve">
@@ -188,8 +188,5 @@
   </data>
   <data name="forceCheckForUpdate" xml:space="preserve">
     <value>Traži novu verziju</value>
-  </data>
-  <data name="resetAudioDevices" xml:space="preserve">
-    <value>Resetiraj audio uređaje</value>
   </data>
 </root>

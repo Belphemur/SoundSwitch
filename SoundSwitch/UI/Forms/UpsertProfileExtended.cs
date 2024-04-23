@@ -141,7 +141,7 @@ namespace SoundSwitch.UI.Forms
             nameLabel.Text = SettingsStrings.profile_name;
             notifyCheckbox.Text = SettingsStrings.profile_notifyOnActivation;
             switchDefaultCheckBox.Text = SettingsStrings.profile_defaultDevice_checkbox;
-            saveButton.Text = SettingsStrings.button_save;
+            saveButton.Text = SettingsStrings.buttonSave;
             restoreDevicesCheckBox.Text = SettingsStrings.profile_trigger_restoreDevices;
             switchForegroundCheckbox.Text = SettingsStrings.foregroundApp;
 

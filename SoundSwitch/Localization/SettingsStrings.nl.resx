@@ -61,13 +61,13 @@
   <data name="profile.feature.profile" xml:space="preserve">
     <value>Profiel</value>
   </data>
-  <data name="profile.error.no-name" xml:space="preserve">
+  <data name="profile.error.noName" xml:space="preserve">
     <value>Een profiel heeft een naam nodig.</value>
   </data>
   <data name="profile.error.delete" xml:space="preserve">
     <value>Het profiel kan niet gevonden worden.</value>
   </data>
-  <data name="profile.deleteButton" xml:space="preserve">
+  <data name="buttonDelete" xml:space="preserve">
     <value>Verwijderen</value>
   </data>
   <data name="profile.error.title" xml:space="preserve">
@@ -109,7 +109,7 @@
   <data name="profile.program" xml:space="preserve">
     <value>Applicatie</value>
   </data>
-  <data name="profile.addButton" xml:space="preserve">
+  <data name="buttonAdd" xml:space="preserve">
     <value>Toevoegen</value>
   </data>
   <data name="profile.tab" xml:space="preserve">
@@ -126,25 +126,25 @@ Beide: wijzigen wanneer een ander apparaat wordt gewisseld.</value>
   <data name="iconChange" xml:space="preserve">
     <value>Systeembalk icoon</value>
   </data>
-  <data name="foregroundAppTooltip" xml:space="preserve">
+  <data name="foregroundApp.tooltip" xml:space="preserve">
     <value>Schakel ook het geluid van de momenteel in gebruik zijnde applicatie. Handig bij videogames.</value>
   </data>
   <data name="foregroundApp" xml:space="preserve">
     <value>Wissel ook het voorgrondprogramma</value>
   </data>
-  <data name="disableCustomSoundTooltip" xml:space="preserve">
+  <data name="disableCustomSound.tooltip" xml:space="preserve">
     <value>Schakel het ingestelde aangepaste geluid uit.</value>
   </data>
-  <data name="notificationOptionBanner" xml:space="preserve">
+  <data name="notification.option.banner" xml:space="preserve">
     <value>Banner Notificatie</value>
   </data>
-  <data name="updateNotifyTooltip" xml:space="preserve">
+  <data name="updateNotify.tooltip" xml:space="preserve">
     <value>SoundSwitch laat het je weten wanneer er een nieuwe update beschikbaar is. Wanneer u op de melding klikt, krijgt u een pop-up die de update voor u downloadt en vraagt of u deze wilt installeren.</value>
   </data>
-  <data name="updateNeverTooltip" xml:space="preserve">
+  <data name="updateNever.tooltip" xml:space="preserve">
     <value>Werk het programma niet bij tenzij u het handmatig doet.</value>
   </data>
-  <data name="languageRestartRequiredCaption" xml:space="preserve">
+  <data name="languageRestartRequired.caption" xml:space="preserve">
     <value>Opnieuw opstarten nodig</value>
   </data>
   <data name="languageRestartRequired" xml:space="preserve">
@@ -169,44 +169,44 @@ Wil je nu opnieuw opstarten?</value>
   <data name="tooltipOnHoverOptionNone" xml:space="preserve">
     <value>Geen knopinfo</value>
   </data>
-  <data name="tooltipOnHoverOptionBothDevices" xml:space="preserve">
+  <data name="tooltipOnHover.option.bothDevices" xml:space="preserve">
     <value>Beide apparaten</value>
   </data>
-  <data name="tooltipOnHoverOptionRecordingDevice" xml:space="preserve">
+  <data name="tooltipOnHover.option.recordingDevice" xml:space="preserve">
     <value>Opname apparaat</value>
   </data>
-  <data name="tooltipOnHoverOptionPlaybackDevice" xml:space="preserve">
+  <data name="tooltipOnHover.option.playbackDevice" xml:space="preserve">
     <value>Afspeelapparaat</value>
   </data>
-  <data name="notificationTooltip" xml:space="preserve">
+  <data name="notification.tooltip" xml:space="preserve">
     <value>Windows melding: het standaard meldingenscherm van Windows.
 Geluidsmelding: Speelt een geluid af op het geschakelde afspeelapparaat.
 Aangepaste geluidsmelding: speelt het gespecificeerde geluid af op het geschakelde afspeelapparaat.
 Popup melding: gebruikt een speciale vorm van het meldingscherm in de windows taakbalk.
 Banner: Gebruikt een aangepast scherm dat altijd te zien is. Dit is handig voor gebruik tijdens een spel.</value>
   </data>
-  <data name="notificationOptionCustomized" xml:space="preserve">
+  <data name="notification.option.customized" xml:space="preserve">
     <value>Aangepaste geluidsmelding</value>
   </data>
-  <data name="notificationOptionToast" xml:space="preserve">
+  <data name="notification.option.toast" xml:space="preserve">
     <value>Popup melding</value>
   </data>
   <data name="notificationOptionNone" xml:space="preserve">
     <value>Geen melding</value>
   </data>
-  <data name="notificationOptionSound" xml:space="preserve">
+  <data name="notification.option.sound" xml:space="preserve">
     <value>Geluidsmelding</value>
   </data>
-  <data name="notificationOptionWindowsDefault" xml:space="preserve">
+  <data name="notification.option.windowsDefault" xml:space="preserve">
     <value>Windows melding</value>
   </data>
-  <data name="cycleThroughTooltip" xml:space="preserve">
+  <data name="cycleThrough.tooltip" xml:space="preserve">
     <value>Kies tussen welke apparaten je wilt wisselen. Kies voor alleen de geselecteerde apparateon of alle apparaten.</value>
   </data>
-  <data name="cycleThroughOptionOnlySelectedAudioDevices" xml:space="preserve">
+  <data name="cycleThrough.option.onlySelectedAudioDevices" xml:space="preserve">
     <value>Alleen geselecteerde audio apparaten</value>
   </data>
-  <data name="cycleThroughOptionAllAudioDevices" xml:space="preserve">
+  <data name="cycleThrough.option.allAudioDevices" xml:space="preserve">
     <value>Alle audio apparaten</value>
   </data>
   <data name="tooltipOnHover" xml:space="preserve">
@@ -218,13 +218,13 @@ Banner: Gebruikt een aangepast scherm dat altijd te zien is. Dit is handig voor 
   <data name="updateNotify" xml:space="preserve">
     <value>Laat het me weten als er updates beschikbaar zijn</value>
   </data>
-  <data name="updateInstallAutomaticallyTooltip" xml:space="preserve">
+  <data name="updateInstallAutomatically.tooltip" xml:space="preserve">
     <value>Updates worden automatisch geïnstalleerd zonder enige vraag.</value>
   </data>
   <data name="updateInstallAutomatically" xml:space="preserve">
     <value>Installeer updates automatisch</value>
   </data>
-  <data name="keepSystemTrayIconTooltip" xml:space="preserve">
+  <data name="keepSystemTrayIcon.tooltip" xml:space="preserve">
     <value>Indien aangevinkt, verandert het systeemvakpictogram niet wanneer het 'Standaard afspeelapparaat' veranderd.</value>
   </data>
   <data name="keepSystemTrayIcon" xml:space="preserve">
@@ -242,7 +242,7 @@ Banner: Gebruikt een aangepast scherm dat altijd te zien is. Dit is handig voor 
   <data name="basicSettings" xml:space="preserve">
     <value>Basis instellingen</value>
   </data>
-  <data name="hotkeysTooltip" xml:space="preserve">
+  <data name="hotkey.tooltip" xml:space="preserve">
     <value>Vink aan om sneltoets in te schakelen.</value>
   </data>
   <data name="updateIncludeBetaVersions" xml:space="preserve">
@@ -251,19 +251,19 @@ Banner: Gebruikt een aangepast scherm dat altijd te zien is. Dit is handig voor 
   <data name="notification" xml:space="preserve">
     <value>Melding</value>
   </data>
-  <data name="selectSoundButtonTooltip" xml:space="preserve">
+  <data name="selectSoundButton.tooltip" xml:space="preserve">
     <value>Selecteer het geluidsbestand voor de melding</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
     <value>Geluidsbestanden</value>
   </data>
-  <data name="communicationsDeviceTooltip" xml:space="preserve">
+  <data name="communicationsDevice.tooltip" xml:space="preserve">
     <value>Indien aangevinkt, worden de 'Standaard communicatieapparaat' en 'Standaard afspeelapparaat' samen geschakeld (handig voor bijvoorbeeld Skype, TeamSpeak).</value>
   </data>
-  <data name="closeTooltip" xml:space="preserve">
+  <data name="buttonClose.tooltip" xml:space="preserve">
     <value>Wijzigingen worden automatisch opgeslagen</value>
   </data>
-  <data name="close" xml:space="preserve">
+  <data name="buttonClose" xml:space="preserve">
     <value>Sluiten</value>
   </data>
   <data name="startWithWindows" xml:space="preserve">
@@ -272,7 +272,7 @@ Banner: Gebruikt een aangepast scherm dat altijd te zien is. Dit is handig voor 
   <data name="communicationsDevice" xml:space="preserve">
     <value>Verander standaard communicatieapparaat</value>
   </data>
-  <data name="hotkeys" xml:space="preserve">
+  <data name="hotkey" xml:space="preserve">
     <value>Sneltoets</value>
   </data>
   <data name="settings" xml:space="preserve">
@@ -296,7 +296,7 @@ Banner: Gebruikt een aangepast scherm dat altijd te zien is. Dit is handig voor 
   <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
     <value>Wanneer het programma gedetecteerd is zal SoundSwitch overschakelen naar standaard apparaat.</value>
   </data>
-  <data name="updateIncludeBetaVersionsTooltip" xml:space="preserve">
+  <data name="updateIncludeBetaVersions.tooltip" xml:space="preserve">
     <value>Wanneer aangevinkt, zoekt SoundSwitch ook naar bèta versies op GitHub.</value>
   </data>
   <data name="position" xml:space="preserve">
@@ -320,7 +320,7 @@ Banner: Gebruikt een aangepast scherm dat altijd te zien is. Dit is handig voor 
   <data name="hotkeyEnabled" xml:space="preserve">
     <value>Sneltoets ingeschakeld</value>
   </data>
-  <data name="profile.error.device-not-found" xml:space="preserve">
+  <data name="profile.error.deviceNotFound" xml:space="preserve">
     <value>Apparaat {0} is niet gevonden.</value>
   </data>
   <data name="profile.trigger.window" xml:space="preserve">
@@ -332,16 +332,16 @@ Banner: Gebruikt een aangepast scherm dat altijd te zien is. Dit is handig voor 
   <data name="communication" xml:space="preserve">
     <value>Standaard Communicatie Apparaat</value>
   </data>
-  <data name="profile.button.save" xml:space="preserve">
+  <data name="buttonSave" xml:space="preserve">
     <value>Opslaan</value>
   </data>
-  <data name="profile.button.edit" xml:space="preserve">
+  <data name="buttonEdit" xml:space="preserve">
     <value>Wijzig</value>
   </data>
   <data name="usePrimaryScreen" xml:space="preserve">
     <value>Gebruik altijd primair scherm</value>
   </data>
-  <data name="usePrimaryScreenTooltip" xml:space="preserve">
+  <data name="usePrimaryScreen.tooltip" xml:space="preserve">
     <value>Geef banner weer op primair scherm inplaats van gefocussed venster.</value>
   </data>
   <data name="profile.trigger.restoreDevices" xml:space="preserve">
@@ -385,7 +385,7 @@ Herstel systeemstatus wanneer de applicatie wordt gesloten.</value>
   <data name="profile.trigger.startup" xml:space="preserve">
     <value>Tijdens Opstarten</value>
   </data>
-  <data name="profile.notify-on-activation" xml:space="preserve">
+  <data name="profile.notifyOnActivation" xml:space="preserve">
     <value>Meldt wanneer profiel wordt geactiveerd</value>
   </data>
   <data name="profile.trigger.uwp.desc" xml:space="preserve">
@@ -421,28 +421,28 @@ Herstel systeemstatus wanneer de applicatie wordt gesloten.</value>
   <data name="profile.error.deviceChanged" xml:space="preserve">
     <value>U kunt slechts één geforceerd profiel hebben.</value>
   </data>
-  <data name="devices.AutoAddNewDevice.Tooltip" xml:space="preserve">
+  <data name="devices.AutoAddNewDevice..tooltip" xml:space="preserve">
     <value>Voeg automatisch nieuw apparaat toe aan de geselecteerde lijst wanneer het op de computer is aangesloten</value>
   </data>
-  <data name="positionOptionBottomLeft" xml:space="preserve">
+  <data name="position.option.bottomLeft" xml:space="preserve">
     <value>Onder Links</value>
   </data>
-  <data name="positionOptionBottomRight" xml:space="preserve">
+  <data name="position.option.bottomRight" xml:space="preserve">
     <value>Onder Rechts</value>
   </data>
-  <data name="positionTooltip" xml:space="preserve">
+  <data name="position.tooltip" xml:space="preserve">
     <value>Stel de positie van de bannermelding in.</value>
   </data>
-  <data name="positionOptionTopLeft" xml:space="preserve">
+  <data name="position.option.topLeft" xml:space="preserve">
     <value>Boven Links</value>
   </data>
-  <data name="positionOptionTopRight" xml:space="preserve">
+  <data name="position.option.topRight" xml:space="preserve">
     <value>Boven Rechts</value>
   </data>
-  <data name="positionOptionBottomCenter" xml:space="preserve">
+  <data name="position.option.bottomCenter" xml:space="preserve">
     <value>Onder Midden</value>
   </data>
-  <data name="positionOptionTopCenter" xml:space="preserve">
+  <data name="position.option.topCenter" xml:space="preserve">
     <value>Boven Midden</value>
   </data>
 </root>

@@ -144,10 +144,10 @@
   <data name="startWithWindows" xml:space="preserve">
     <value>Start automatically with Windows</value>
   </data>
-  <data name="button.close" xml:space="preserve">
+  <data name="buttonClose" xml:space="preserve">
     <value>Close</value>
   </data>
-  <data name="button.close.tooltip" xml:space="preserve">
+  <data name="buttonClose.tooltip" xml:space="preserve">
     <value>Changes are automatically saved</value>
   </data>
   <data name="communicationsDevice.tooltip" xml:space="preserve">
@@ -156,10 +156,10 @@
   <data name="notification" xml:space="preserve">
     <value>Notification</value>
   </data>
-  <data name="update.includeBetaVersions" xml:space="preserve">
+  <data name="updateIncludeBetaVersions" xml:space="preserve">
     <value>Include Beta versions</value>
   </data>
-  <data name="update.includeBetaVersions.tooltip" xml:space="preserve">
+  <data name="updateIncludeBetaVersions.tooltip" xml:space="preserve">
     <value>When checked, SoundSwitch will also check for Beta versions on GitHub.</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
@@ -189,16 +189,16 @@
   <data name="keepSystemTrayIcon.tooltip" xml:space="preserve">
     <value>When checked, the System Tray Icon won't change when the 'Default Playback Device' changes.</value>
   </data>
-  <data name="update.installAutomatically" xml:space="preserve">
+  <data name="updateInstallAutomatically" xml:space="preserve">
     <value>Install updates automatically</value>
   </data>
-  <data name="update.installAutomatically.tooltip" xml:space="preserve">
+  <data name="updateInstallAutomatically.tooltip" xml:space="preserve">
     <value>Updates are installed automatically without any prompts.</value>
   </data>
-  <data name="update.notify" xml:space="preserve">
+  <data name="updateNotify" xml:space="preserve">
     <value>Notify me when updates are available</value>
   </data>
-  <data name="update.never" xml:space="preserve">
+  <data name="updateNever" xml:space="preserve">
     <value>Never check for updates</value>
   </data>
   <data name="tooltipOnHover" xml:space="preserve">
@@ -266,10 +266,10 @@ Do you want to restart now?</value>
   <data name="languageRestartRequired.caption" xml:space="preserve">
     <value>Need a restart</value>
   </data>
-  <data name="updatenever.tooltip" xml:space="preserve">
+  <data name="updateNever.tooltip" xml:space="preserve">
     <value>Don't update the program unless you do it manually.</value>
   </data>
-  <data name="update.notify.tooltip" xml:space="preserve">
+  <data name="updateNotify.tooltip" xml:space="preserve">
     <value>SoundSwitch will notify you when there is a new update available. When clicking on the notification, you'll get a popup downloading the update for you and asking if you want to install it.</value>
   </data>
   <data name="notification.option.banner" xml:space="preserve">
@@ -298,7 +298,7 @@ Both: Change when any type of device is switched.</value>
   <data name="profile.tab" xml:space="preserve">
     <value>Profiles</value>
   </data>
-  <data name="button.add" xml:space="preserve">
+  <data name="buttonAdd" xml:space="preserve">
     <value>Add</value>
   </data>
   <data name="profile.program" xml:space="preserve">
@@ -340,7 +340,7 @@ Both: Change when any type of device is switched.</value>
   <data name="profile.error.title" xml:space="preserve">
     <value>Profile Error</value>
   </data>
-  <data name="button.delete" xml:space="preserve">
+  <data name="buttonDelete" xml:space="preserve">
     <value>Delete</value>
   </data>
   <data name="profile.error.delete" xml:space="preserve">
@@ -412,10 +412,10 @@ Both: Change when any type of device is switched.</value>
   <data name="profile.notification.text" xml:space="preserve">
     <value>Profile {0} triggered</value>
   </data>
-  <data name="button.save" xml:space="preserve">
+  <data name="buttonSave" xml:space="preserve">
     <value>Save</value>
   </data>
-  <data name="button.edit" xml:space="preserve">
+  <data name="buttonEdit" xml:space="preserve">
     <value>Edit</value>
   </data>
   <data name="profile.trigger.startup" xml:space="preserve">
@@ -537,7 +537,7 @@ Restore the state of the system when the application is closed.</value>
   <data name="resetAudioDevices.desc" xml:space="preserve">
     <value>Resets the audio device assignment to specified programs in Windows in case audio devices are not reassigned to programs when switching devices.</value>
   </data>
-  <data name="button.reset" xml:space="preserve">
+  <data name="buttonReset" xml:space="preserve">
     <value>Reset</value>
   </data>
   <data name="resetAudioDevices" xml:space="preserve">
@@ -549,7 +549,7 @@ Restore the state of the system when the application is closed.</value>
   <data name="exportLogFiles.desc" xml:space="preserve">
     <value>Export all log files into a zip archive for further troubleshooting in either the Help Discussions or Community Discord.</value>
   </data>
-  <data name="button.export" xml:space="preserve">
+  <data name="buttonExport" xml:space="preserve">
     <value>Export</value>
   </data>
   <data name="troubleshooting" xml:space="preserve">

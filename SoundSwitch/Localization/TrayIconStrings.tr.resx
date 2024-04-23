@@ -61,7 +61,7 @@
   <data name="updateDisabled" xml:space="preserve">
     <value>Yeni güncelleme kontrolü devre dışı</value>
   </data>
-  <data name="communityMenu" xml:space="preserve">
+  <data name="community" xml:space="preserve">
     <value>Topluluk</value>
   </data>
   <data name="iconChanger.both" xml:space="preserve">
@@ -106,7 +106,7 @@
   <data name="updateAvailable" xml:space="preserve">
     <value>Güncelleme mevcut ({0})</value>
   </data>
-  <data name="exit" xml:space="preserve">
+  <data name="quit" xml:space="preserve">
     <value>Çık</value>
   </data>
   <data name="about" xml:space="preserve">
@@ -115,7 +115,7 @@
   <data name="settings" xml:space="preserve">
     <value>Ayarlar</value>
   </data>
-  <data name="mixer" xml:space="preserve">
+  <data name="volumeMixer" xml:space="preserve">
     <value>Ses masası</value>
   </data>
   <data name="playbackDevices" xml:space="preserve">

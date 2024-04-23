@@ -67,7 +67,7 @@
   <data name="playbackDevices" xml:space="preserve">
     <value>Avspillingsenheter</value>
   </data>
-  <data name="mixer" xml:space="preserve">
+  <data name="volumeMixer" xml:space="preserve">
     <value>Mikser</value>
   </data>
   <data name="settings" xml:space="preserve">
@@ -76,7 +76,7 @@
   <data name="about" xml:space="preserve">
     <value>Om</value>
   </data>
-  <data name="exit" xml:space="preserve">
+  <data name="quit" xml:space="preserve">
     <value>Avslutt</value>
   </data>
   <data name="updateAvailable" xml:space="preserve">
@@ -121,7 +121,7 @@
   <data name="iconChanger.both" xml:space="preserve">
     <value>Begge</value>
   </data>
-  <data name="communityMenu" xml:space="preserve">
+  <data name="community" xml:space="preserve">
 		<value>Samfunnet</value>
   </data>
   <data name="updateDisabled" xml:space="preserve">
