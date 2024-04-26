@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -323,7 +323,7 @@ Entrambi: Cambia quando qualsiasi tipo di dispositivo viene cambiato.</value>
     <value>Devi impostare un dispositivo di riproduzione o di registrazione.</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
-    <value>Aggiungo un profilo per selezionare un certo dispositivo di riproduzione o di registrazione, quando una specifica applicazione è avviata o selezionata.</value>
+    <value>Aggiungi un profilo per selezionare un certo dispositivo di riproduzione o di registrazione quando una specifica applicazione è avviata o selezionata.</value>
   </data>
   <data name="profile.error.registerHotkeys" xml:space="preserve">
     <value>Non è stato possibile registrare il tasto di scelta rapida per i seguenti profili: {0}</value>
@@ -451,7 +451,7 @@ Ripristina lo stato del sistema quando l'applicazione viene chiusa.</value>
     <value>All'avvio</value>
   </data>
   <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
-    <value>Questo trigger rende il profilo visibile nel menu dell'icona della barra applicazioni. Fai clic con il pulsante sinistro del mouse sull'icona della barra delle applicazioni per visualizzare il profilo.</value>
+    <value>Questo trigger rende il profilo visibile nel menu dell'icona della barra applicazioni. Per visualizzare il profilo fai clic con il pulsante sinistro del mouse sull'icona della barra delle applicazioni.</value>
   </data>
   <data name="profile.trigger.trayMenu" xml:space="preserve">
     <value>Nel menu app</value>
@@ -527,5 +527,59 @@ Ripristina lo stato del sistema quando l'applicazione viene chiusa.</value>
   </data>
   <data name="resetAudioDevices" xml:space="preserve">
     <value>Ripristino per app audio</value>
+  </data>
+  <data name="audioFileNotFound.caption" xml:space="preserve">
+    <value>File audio non trovato</value>
+  </data>
+  <data name="quickMenu.tooltip" xml:space="preserve">
+    <value>Quando si usa un tasto di scelta rapida visualizza un menu rapido come la lingua di Windows</value>
+  </data>
+  <data name="devices.autoAddNewDevice" xml:space="preserve">
+    <value>Seleziona automaticamente nuovi dispositivi</value>
+  </data>
+  <data name="link.community" xml:space="preserve">
+    <value>Comunità Discord</value>
+  </data>
+  <data name="link.donate" xml:space="preserve">
+    <value>Dona</value>
+  </data>
+  <data name="link.help" xml:space="preserve">
+    <value>Discussione supporto</value>
+  </data>
+  <data name="resetAudioDevices.desc" xml:space="preserve">
+    <value>Quando si cambiano i dispositivi nel caso in cui i dispositivi audio non vengano riassegnati ai programmi reimposta l'assegnazione del dispositivo audio ai programmi specificati in Windows.</value>
+  </data>
+  <data name="buttonReset" xml:space="preserve">
+    <value>Ripristina</value>
+  </data>
+  <data name="exportLogFiles" xml:space="preserve">
+    <value>Esporta file registro eventi</value>
+  </data>
+  <data name="buttonExport" xml:space="preserve">
+    <value>Esporta</value>
+  </data>
+  <data name="troubleshooting" xml:space="preserve">
+    <value>Risoluzione problemi</value>
+  </data>
+  <data name="troubleshooting.desc" xml:space="preserve">
+    <value>Se hai bisogno di aiuto o di ulteriore supporto per SoundSwitch, puoi visitare la discussione di supporto, o la comunità Discord, o aiutarci a sostenere il nostro progetto selezionando 'Dona' di seguito.</value>
+  </data>
+  <data name="notification.single" xml:space="preserve">
+    <value>Un solo striscione</value>
+  </data>
+  <data name="notification.single.tooltip" xml:space="preserve">
+    <value>Visualizza solo uno striscione alla volta e sostituisci il suo contenuto.</value>
+  </data>
+  <data name="keepVolume.tooltip" xml:space="preserve">
+    <value>Quando cambi dispositivo mantieni lo stesso livello di volume</value>
+  </data>
+  <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
+    <value>Quando è collegato al computer un nuovo dispositivo aggiungilo automaticamente all'elenco selezionato</value>
+  </data>
+  <data name="telemetry.tooltip" xml:space="preserve">
+    <value>Raccogli in modo anonimo l'info su quale versione di SoundSwitch è in uso. Info condivisa solo con lo sviluppatore di SoundSwitch.</value>
+  </data>
+  <data name="exportLogFiles.desc" xml:space="preserve">
+    <value>Esporta tutti i file registro eventi in un archivio zip per un'ulteriore risoluzione dei problemi nelle discussioni di supporto o nella comunità Discord.</value>
   </data>
 </root>
