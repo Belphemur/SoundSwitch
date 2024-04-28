@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -463,7 +463,7 @@ Restaurer l'état du système quand l'application est fermée.</value>
     <value>Menu de l'application</value>
   </data>
   <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
-    <value>Le profile sera visible dans le menu de l'application. Cliquer avec le bouton gauche sur l'icone de l'application.</value>
+    <value>Le profile sera visible dans le menu de l'application. Cliquer avec le bouton gauche sur l'icône de l'application.</value>
   </data>
   <data name="telemetry" xml:space="preserve">
     <value>Télémétrie</value>
@@ -530,5 +530,56 @@ Restaurer l'état du système quand l'application est fermée.</value>
   </data>
   <data name="resetAudioDevices" xml:space="preserve">
     <value>Réinitialiser l'audio par application</value>
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>Aucune</value>
+  </data>
+  <data name="audioFileNotFound.caption" xml:space="preserve">
+    <value>Fichier audio introuvable</value>
+  </data>
+  <data name="keepVolume.tooltip" xml:space="preserve">
+    <value>Garder le même niveau de volume lors d'un changement de périphérique audio</value>
+  </data>
+  <data name="link.community" xml:space="preserve">
+    <value>Serveur Discord</value>
+  </data>
+  <data name="exportLogFiles.desc" xml:space="preserve">
+    <value>Exporter tous les fichiers de journal dans une archive zip pour poursuivre le dépannage dans les discussions d'aide ou sur le serveur Discord.</value>
+  </data>
+  <data name="telemetry.tooltip" xml:space="preserve">
+    <value>Transmet quelle version de SoundSwitch est utilisée. Partagé uniquement avec le développeur de SoundSwitch.</value>
+  </data>
+  <data name="quickMenu.tooltip" xml:space="preserve">
+    <value>Affiche un menu sous la souris quand un raccourcis clavier est utilisé</value>
+  </data>
+  <data name="devices.autoAddNewDevice" xml:space="preserve">
+    <value>Selection automatique de périphérique</value>
+  </data>
+  <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
+    <value>Ajoute automatiquement les nouveaux périphériques quand ils sont connectés au pc</value>
+  </data>
+  <data name="link.donate" xml:space="preserve">
+    <value>Donation</value>
+  </data>
+  <data name="link.help" xml:space="preserve">
+    <value>Aide communautaire</value>
+  </data>
+  <data name="resetAudioDevices.desc" xml:space="preserve">
+    <value>Réinitialise l'attribution du périphérique audio aux programmes spécifiés dans Windows au cas où les périphériques audio ne seraient pas réattribués aux programmes lors du changement de périphériques.</value>
+  </data>
+  <data name="buttonReset" xml:space="preserve">
+    <value>Réinitialiser</value>
+  </data>
+  <data name="exportLogFiles" xml:space="preserve">
+    <value>Exporter les fichiers journal</value>
+  </data>
+  <data name="buttonExport" xml:space="preserve">
+    <value>Exporter</value>
+  </data>
+  <data name="troubleshooting.desc" xml:space="preserve">
+    <value>Si vous avez besoin d'aide ou d'un dépannage supplémentaire avec SoundSwitch, vous pouvez visiter le lien de discussion d'aide ou de Discord communautaire, ou nous aider en visitant le lien de don ci-dessous.</value>
+  </data>
+  <data name="troubleshooting" xml:space="preserve">
+    <value>Dépannage</value>
   </data>
 </root>
