@@ -22,6 +22,7 @@ namespace SoundSwitch.Framework.Banner.Position
         public int PositionLeft(Screen screen) => screen.Bounds.X + 50;
         public int PositionBottom(Screen screen, int height, int offset) => screen.Bounds.Height - height - PositionTop(screen, 0) - offset;
         public int PositionRight(Screen screen, int width) => screen.Bounds.Width - width - PositionLeft(screen);
-        public int PositionCenter(Screen screen, int width) => (screen.Bounds.Width - width) / 2;
+        public int PositionCenterH(Screen screen, int width) => (screen.Bounds.Width - width) / 2;
+        public int PositionCenterV(Screen screen, int height) => (screen.Bounds.Height - height) / 2;
     }
 }
