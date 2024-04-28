@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -524,5 +524,8 @@ Restore the state of the system when the application is closed.</value>
   </data>
   <data name="notification.single.tooltip" xml:space="preserve">
     <value>Only show one banner at a time and replace its content.</value>
+  </data>
+  <data name="positionOptionCenter" xml:space="preserve">
+    <value>Center</value>
   </data>
 </root>

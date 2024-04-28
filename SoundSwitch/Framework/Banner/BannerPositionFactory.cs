@@ -25,9 +25,10 @@ namespace SoundSwitch.Framework.Banner
                 new PositionTopLeft(),
                 new PositionTopCenter(),
                 new PositionTopRight(),
+                new PositionCenter(),
                 new PositionBottomLeft(),
                 new PositionBottomCenter(),
-                new PositionBottomRight()
+                new PositionBottomRight(),
             };
 
         public BannerPositionFactory() : base(Positions)

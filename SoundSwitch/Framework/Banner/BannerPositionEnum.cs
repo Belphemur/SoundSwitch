@@ -21,6 +21,7 @@ namespace SoundSwitch.Framework.Banner
         TopRight = 2,
         BottomLeft = 3,
         BottomCenter = 4,
-        BottomRight = 5
+        BottomRight = 5,
+        Center = 6
     }
 }

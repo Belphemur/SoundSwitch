@@ -26,7 +26,7 @@ namespace SoundSwitch.Framework.Banner.Position
         public Point GetScreenPosition(Screen screen, int height, int width, int offset)
         {
             return new Point(
-                PositionCenter(screen, width),
+                PositionCenterH(screen, width),
                 PositionTop(screen, offset)
                 );
         }
