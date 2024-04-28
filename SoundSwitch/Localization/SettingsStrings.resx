@@ -558,4 +558,7 @@ Restore the state of the system when the application is closed.</value>
   <data name="troubleshooting.desc" xml:space="preserve">
     <value>If you need any help or further troubleshooting with SoundSwitch, you can visit the Help Discussion or Community Discord link, or help support us by visiting the Donate link below.</value>
   </data>
+  <data name="position.option.center" xml:space="preserve">
+    <value>Center</value>
+  </data>
 </root>

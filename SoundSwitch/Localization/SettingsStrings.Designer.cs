@@ -647,6 +647,15 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Center.
+        /// </summary>
+        internal static string position_option_center {
+            get {
+                return ResourceManager.GetString("position.option.center", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Top Center.
         /// </summary>
         internal static string position_option_topCenter {
