@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -533,5 +533,56 @@
   </data>
   <data name="resetAudioDevices" xml:space="preserve">
     <value>アプリごとのオーディオをリセット</value>
+  </data>
+  <data name="audioFileNotFound.caption" xml:space="preserve">
+    <value>オーディオファイルが見つかりません</value>
+  </data>
+  <data name="telemetry.tooltip" xml:space="preserve">
+    <value>SoundSwitchの使用中のバージョンを匿名で収集します。開発者のSoundSwitchとのみ共有されます。</value>
+  </data>
+  <data name="quickMenu.tooltip" xml:space="preserve">
+    <value>ホットキーを使用するときにWindows言語のようなクイックメニューを表示します</value>
+  </data>
+  <data name="keepVolume.tooltip" xml:space="preserve">
+    <value>デバイスを切り替えるときに同じ音量レベルを保持します</value>
+  </data>
+  <data name="devices.autoAddNewDevice" xml:space="preserve">
+    <value>新しいデバイスを自動選択します</value>
+  </data>
+  <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
+    <value>新しいデバイスがコンピュータに接続されたときに、選択済リストに新しいデバイスを自動追加します</value>
+  </data>
+  <data name="link.community" xml:space="preserve">
+    <value>コミュニティDiscord</value>
+  </data>
+  <data name="resetAudioDevices.desc" xml:space="preserve">
+    <value>デバイスを切り替えるときにプログラムにオーディオデバイスが再割り当てされない場合、Windowsの指定プログラムへのオーディオデバイスの割り当てをリセットします。</value>
+  </data>
+  <data name="buttonReset" xml:space="preserve">
+    <value>リセット</value>
+  </data>
+  <data name="exportLogFiles" xml:space="preserve">
+    <value>ログファイルをエクスポートする</value>
+  </data>
+  <data name="exportLogFiles.desc" xml:space="preserve">
+    <value>すべてのログファイルをzipアーカイブにエクスポートし、ヘルプディスカッションまたはコミュニティDiscordでのさらなるトラブルシューティングに使用します。</value>
+  </data>
+  <data name="buttonExport" xml:space="preserve">
+    <value>エクスポート</value>
+  </data>
+  <data name="troubleshooting" xml:space="preserve">
+    <value>トラブルシューティング</value>
+  </data>
+  <data name="link.donate" xml:space="preserve">
+    <value>寄付する</value>
+  </data>
+  <data name="link.help" xml:space="preserve">
+    <value>ヘルプディスカッション</value>
+  </data>
+  <data name="troubleshooting.desc" xml:space="preserve">
+    <value>SoundSwitchのヘルプやさらなるトラブルシューティングが必要な場合は、ヘルプディスカッションまたはコミュニティDiscordのリンクを訪れるか、以下の寄付リンクを訪れてサポートをお願いします。</value>
+  </data>
+  <data name="position.option.center" xml:space="preserve">
+    <value>中央</value>
   </data>
 </root>

@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -533,5 +533,56 @@ Restaura el estado del sistema cuando se cierra la aplicación.</value>
   </data>
   <data name="resetAudioDevices" xml:space="preserve">
     <value>Restablecer el audio por aplicación</value>
+  </data>
+  <data name="audioFileNotFound.caption" xml:space="preserve">
+    <value>Archivo de audio no encontrado</value>
+  </data>
+  <data name="telemetry.tooltip" xml:space="preserve">
+    <value>Recopilar de forma anónima qué versión de SoundSwitch se está utilizando. Solo se comparte con el desarrollador de SoundSwitch.</value>
+  </data>
+  <data name="quickMenu.tooltip" xml:space="preserve">
+    <value>Mostrar un menú rápido como el idioma de Windows cuando se utiliza una tecla de acceso rápido</value>
+  </data>
+  <data name="link.community" xml:space="preserve">
+    <value>Comunidad en Discord</value>
+  </data>
+  <data name="link.donate" xml:space="preserve">
+    <value>Donar</value>
+  </data>
+  <data name="link.help" xml:space="preserve">
+    <value>Soporte</value>
+  </data>
+  <data name="resetAudioDevices.desc" xml:space="preserve">
+    <value>Restablece la asignación del dispositivo de audio a los programas especificados en Windows en caso de que los dispositivos de audio no se reasignen a los programas al cambiar de dispositivo.</value>
+  </data>
+  <data name="buttonReset" xml:space="preserve">
+    <value>Restablecer</value>
+  </data>
+  <data name="exportLogFiles" xml:space="preserve">
+    <value>Exportar archivos de registro</value>
+  </data>
+  <data name="exportLogFiles.desc" xml:space="preserve">
+    <value>Exporte todos los archivos de registro a un archivo zip para continuar con la resolución de problemas en el Soporte o en Discord.</value>
+  </data>
+  <data name="buttonExport" xml:space="preserve">
+    <value>Exportar</value>
+  </data>
+  <data name="troubleshooting" xml:space="preserve">
+    <value>Solución de problemas</value>
+  </data>
+  <data name="troubleshooting.desc" xml:space="preserve">
+    <value>Si necesitas ayuda o solucionar algún problema relacionado con SoundSwitch, puedes visitar el soporte o el enlace Discord de la comunidad, o ayudarnos visitando el enlace Donar que aparece a continuación.</value>
+  </data>
+  <data name="position.option.center" xml:space="preserve">
+    <value>Centro</value>
+  </data>
+  <data name="keepVolume.tooltip" xml:space="preserve">
+    <value>Mantén el mismo nivel de volumen al cambiar de dispositivo</value>
+  </data>
+  <data name="devices.autoAddNewDevice" xml:space="preserve">
+    <value>Selección automática de nuevos dispositivos</value>
+  </data>
+  <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
+    <value>Añadir automáticamente nuevos dispositivos a la lista seleccionada cuando se conectan al ordenador</value>
   </data>
 </root>
