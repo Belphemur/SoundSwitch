@@ -37,6 +37,21 @@ namespace SoundSwitch.UI.Menu.Form
             InitializeComponent();
             _hideDisposeMethod = HideDispose;
             TopMost = true;
+            FormBorderStyle = FormBorderStyle.None;
+            ShowInTaskbar = false;
+        }
+        
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                // turn on WS_EX_TOOLWINDOW style bit
+                // Used to hide the banner from alt+tab
+                // source: https://www.csharp411.com/hide-form-from-alttab/
+                cp.ExStyle |= 0x80;
+                return cp;
+            }
         }
 
         /// <summary>
