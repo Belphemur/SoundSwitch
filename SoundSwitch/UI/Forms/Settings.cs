@@ -150,7 +150,8 @@ namespace SoundSwitch.UI.Forms
             var usePrimaryScreenTooltip = new ToolTip();
             usePrimaryScreenTooltip.SetToolTip(usePrimaryScreenCheckbox, SettingsStrings.usePrimaryScreen_tooltip);
 
-            usePrimaryScreenCheckbox.Visible = positionLabel.Visible = positionComboBox.Visible = singleNotificationCheckbox.Visible = AppModel.Instance.NotificationSettings == NotificationTypeEnum.BannerNotification;
+            onScreenUpDown.Visible = onScreenTimeLabel.Visible =  usePrimaryScreenCheckbox.Visible = positionLabel.Visible = positionComboBox.Visible = singleNotificationCheckbox.Visible =
+                AppModel.Instance.NotificationSettings == NotificationTypeEnum.BannerNotification;
 
             selectSoundFileDialog.Filter = SettingsStrings.audioFiles + @" (*.wav;*.mp3)|*.wav;*.mp3;*.aiff";
             selectSoundFileDialog.FileOk += SelectSoundFileDialogOnFileOk;
@@ -822,8 +823,8 @@ namespace SoundSwitch.UI.Forms
             selectSoundButton.Visible = supportCustomSound;
             DeleteSoundButton_Visible(supportCustomSound);
 
-            usePrimaryScreenCheckbox.Visible = positionLabel.Visible = positionComboBox.Visible = singleNotificationCheckbox.Visible = notificationType == NotificationTypeEnum.BannerNotification;
-
+            onScreenUpDown.Visible = onScreenTimeLabel.Visible =  usePrimaryScreenCheckbox.Visible = positionLabel.Visible = positionComboBox.Visible = singleNotificationCheckbox.Visible =
+                notificationType== NotificationTypeEnum.BannerNotification;
             AppModel.Instance.NotificationSettings = notificationType;
         }
 
