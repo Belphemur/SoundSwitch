@@ -84,6 +84,8 @@ namespace SoundSwitch.Model
                 if(value >= TimeSpan.FromMinutes(1)) return;
                 AppConfigs.Configuration.BannerOnScreenTime = value;
                 AppConfigs.Configuration.Save();
+                BannerSettingsChanged?.Invoke(this,
+                    new BannerDataChangedEvent(BannerPosition, BannerPosition, BannerOnScreenTime, value));
             }
         }
         /// <summary>
@@ -151,8 +153,8 @@ namespace SoundSwitch.Model
             {
                 AppConfigs.Configuration.BannerPosition = value;
                 AppConfigs.Configuration.Save();
-                BannerPositionChanged?.Invoke(this,
-                    new BannerPositionUpdatedEvent(BannerPosition, value));
+                BannerSettingsChanged?.Invoke(this,
+                    new BannerDataChangedEvent(BannerPosition, value, BannerOnScreenTime, BannerOnScreenTime));
             }
         }
 
@@ -306,7 +308,7 @@ namespace SoundSwitch.Model
 
         public IAudioDeviceLister AudioDeviceLister { get; private set; }
         public event EventHandler<NotificationSettingsUpdatedEvent> NotificationSettingsChanged;
-        public event EventHandler<BannerPositionUpdatedEvent> BannerPositionChanged;
+        public event EventHandler<BannerDataChangedEvent> BannerSettingsChanged;
         public event EventHandler<CustomSoundChangedEvent> CustomSoundChanged;
         public event EventHandler<UpdateMode> UpdateModeChanged;
 

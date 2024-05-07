@@ -49,13 +49,14 @@ namespace SoundSwitch.Framework.NotificationManager
             _model.NotificationSettingsChanged += ModelOnNotificationSettingsChanged;
             SetNotification(_model.NotificationSettings);
             _model.CustomSoundChanged += ModelOnCustomSoundChanged;
-            _model.BannerPositionChanged += ModelOnBannerPositionChanged;
+            _model.BannerSettingsChanged += ModelOnBannerPositionChanged;
             Log.Information("Notification manager initiated");
         }
 
-        private void ModelOnBannerPositionChanged(object sender, BannerPositionUpdatedEvent e)
+        private void ModelOnBannerPositionChanged(object sender, BannerDataChangedEvent e)
         {
             _notification.Configuration.BannerPosition = e.NewBannerPosition;
+            _notification.Configuration.Ttl = e.NewTtl;
         }
 
         private void ModelOnCustomSoundChanged(object sender, CustomSoundChangedEvent customSoundChangedEvent)
@@ -77,6 +78,7 @@ namespace SoundSwitch.Framework.NotificationManager
                 Icon = _model.TrayIcon.NotifyIcon,
                 DefaultSound = Resources.NotificationSound,
                 BannerPosition = AppModel.Instance.BannerPosition,
+                Ttl = AppModel.Instance.BannerOnScreenTime
             };
             try
             {

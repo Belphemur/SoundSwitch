@@ -104,7 +104,7 @@ namespace SoundSwitch.Framework.Banner
             _currentData = data;
             if (_timerHide == null)
             {
-                _timerHide = new Timer { Interval = 3000 };
+                _timerHide = new Timer { Interval = (int)data.Ttl.TotalMilliseconds };
                 _timerHide.Tick += TimerHide_Tick!;
             }
             else

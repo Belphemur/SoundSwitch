@@ -58,15 +58,21 @@ namespace SoundSwitch.Model
         }
     }
 
-    public class BannerPositionUpdatedEvent : EventArgs
+    public class BannerDataChangedEvent : EventArgs
     {
         public BannerPositionEnum PrevBannerPosition { get; }
         public BannerPositionEnum NewBannerPosition { get; }
+        
+        public TimeSpan PrevTtl { get; }
+        
+        public TimeSpan NewTtl { get; }
 
-        public BannerPositionUpdatedEvent(BannerPositionEnum prevBannerPosition, BannerPositionEnum newBannerPosition)
+        public BannerDataChangedEvent(BannerPositionEnum prevBannerPosition, BannerPositionEnum newBannerPosition, TimeSpan prevTtl, TimeSpan newTtl)
         {
             PrevBannerPosition = prevBannerPosition;
             NewBannerPosition = newBannerPosition;
+            PrevTtl = prevTtl;
+            NewTtl = newTtl;
         }
     }
 

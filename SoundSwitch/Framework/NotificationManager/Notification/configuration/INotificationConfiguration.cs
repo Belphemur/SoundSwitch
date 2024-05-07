@@ -12,6 +12,7 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
+using System;
 using System.IO;
 using System.Windows.Forms;
 using SoundSwitch.Framework.Audio;
@@ -25,5 +26,6 @@ namespace SoundSwitch.Framework.NotificationManager.Notification.Configuration
         Stream DefaultSound { get; set; }
         CachedSound CustomSound { get; set; }
         BannerPositionEnum BannerPosition { get; set; }
+        TimeSpan Ttl { get; set; }
     }
 }

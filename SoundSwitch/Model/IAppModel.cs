@@ -163,7 +163,7 @@ namespace SoundSwitch.Model
         /// <summary>
         /// If the BannerPosition has been modified
         /// </summary>
-        event EventHandler<BannerPositionUpdatedEvent> BannerPositionChanged;
+        event EventHandler<BannerDataChangedEvent> BannerSettingsChanged;
 
         /// <summary>
         /// When the custom sound is changed
