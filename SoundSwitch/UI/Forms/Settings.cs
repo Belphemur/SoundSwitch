@@ -134,7 +134,13 @@ namespace SoundSwitch.UI.Forms
             positionComboBox.SelectedValue = AppModel.Instance.BannerPosition;
             var positionToolTip = new ToolTip();
             positionToolTip.SetToolTip(positionComboBox, SettingsStrings.position_tooltip);
-
+            
+            
+            var onScreenTimeTooltip = new ToolTip();
+            onScreenTimeTooltip.SetToolTip(onScreenUpDown, SettingsStrings.notification_banner_onscreen_time_tooltip);
+            onScreenTimeTooltip.SetToolTip(onScreenTimeLabel, SettingsStrings.notification_banner_onscreen_time_tooltip);
+            onScreenUpDown.DataBindings.Add(nameof(NumericUpDown.Value), AppModel.Instance, nameof(AppModel.BannerOnScreenTimeSecs), false, DataSourceUpdateMode.OnPropertyChanged);
+            
             var singleNotification = new ToolTip();
             singleNotification.SetToolTip(singleNotificationCheckbox, SettingsStrings.notification_single_tooltip);
             singleNotificationCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.IsSingleNotification), false, DataSourceUpdateMode.OnPropertyChanged);
@@ -369,7 +375,8 @@ namespace SoundSwitch.UI.Forms
             usePrimaryScreenCheckbox.Text = SettingsStrings.usePrimaryScreen;
             positionLabel.Text = SettingsStrings.position;
             singleNotificationCheckbox.Text = SettingsStrings.notification_single;
-
+            onScreenTimeLabel.Text = SettingsStrings.notification_banner_onscreen_time;
+            
             // Settings - Troubleshooting
             resetAudioDevicesGroupBox.Text = SettingsStrings.resetAudioDevices;
             resetAudioDevicesLabel.Text = SettingsStrings.resetAudioDevices_desc;

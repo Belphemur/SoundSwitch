@@ -582,4 +582,10 @@ Restaurer l'état du système quand l'application est fermée.</value>
   <data name="troubleshooting" xml:space="preserve">
     <value>Dépannage</value>
   </data>
+  <data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>Seconde visible</value>
+  </data>
+  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+    <value>Durée de visibilité de la bannière à l'écran en secondes.</value>
+  </data>
 </root>

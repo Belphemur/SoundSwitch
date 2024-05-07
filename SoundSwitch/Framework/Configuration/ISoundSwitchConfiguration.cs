@@ -103,5 +103,7 @@ namespace SoundSwitch.Framework.Configuration
         /// How many banner notification can be displayed at the same time on the screen
         /// </summary>
         int MaxNumberNotification { get; set; }
+
+        TimeSpan BannerOnScreenTime { get; set; }
     }
 }

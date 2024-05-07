@@ -70,6 +70,22 @@ namespace SoundSwitch.Model
 
         public ProfileManager ProfileManager { get; private set; }
 
+        public int BannerOnScreenTimeSecs
+        {
+            get => (int)BannerOnScreenTime.TotalSeconds;
+            set => BannerOnScreenTime = TimeSpan.FromSeconds(value);
+        }
+        public TimeSpan BannerOnScreenTime
+        {
+            get => AppConfigs.Configuration.BannerOnScreenTime;
+            set
+            {
+                if (value <= TimeSpan.FromSeconds(1)) return;
+                if(value >= TimeSpan.FromMinutes(1)) return;
+                AppConfigs.Configuration.BannerOnScreenTime = value;
+                AppConfigs.Configuration.Save();
+            }
+        }
         /// <summary>
         /// How many notification to show at the same time
         /// </summary>

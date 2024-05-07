@@ -561,4 +561,10 @@ Restore the state of the system when the application is closed.</value>
   <data name="position.option.center" xml:space="preserve">
     <value>Center</value>
   </data>
+  <data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>On screen time</value>
+  </data>
+  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+    <value>How long the banner stays on the screen in seconds.</value>
+  </data>
 </root>

@@ -128,6 +128,9 @@ namespace SoundSwitch.Model
         /// </summary>
         bool IsSingleNotification { get; set; }
 
+        TimeSpan BannerOnScreenTime { get; set; }
+        int BannerOnScreenTimeSecs { get; set; }
+
         #endregion
 
         #region Events

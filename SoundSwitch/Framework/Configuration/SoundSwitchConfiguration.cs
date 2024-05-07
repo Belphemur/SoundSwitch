@@ -65,6 +65,7 @@ namespace SoundSwitch.Framework.Configuration
             NotificationSettings = NotificationTypeEnum.BannerNotification;
             BannerPosition = BannerPositionEnum.TopLeft;
             MaxNumberNotification = 5;
+            BannerOnScreenTime = TimeSpan.FromSeconds(3);
 
             AutoAddNewConnectedDevices = false;
 
@@ -72,6 +73,8 @@ namespace SoundSwitch.Framework.Configuration
             SwitchIcon = IconChangerEnum.Never;
             MigratedFields = new HashSet<string>();
         }
+
+        public TimeSpan BannerOnScreenTime { get; set; }
 
         public int MaxNumberNotification { get; set; }
         public HashSet<string> SelectedPlaybackDeviceListId { get; }
