@@ -585,4 +585,10 @@ Restaura el estado del sistema cuando se cierra la aplicación.</value>
   <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
     <value>Añadir automáticamente nuevos dispositivos a la lista seleccionada cuando se conectan al ordenador</value>
   </data>
+  <data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>Tiempo en pantalla</value>
+  </data>
+  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+    <value>El tiempo que el banner permanece en la pantalla en segundos.</value>
+  </data>
 </root>
