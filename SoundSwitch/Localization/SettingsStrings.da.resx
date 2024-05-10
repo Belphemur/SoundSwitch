@@ -215,4 +215,19 @@ Vil du genstarte nu?</value>
   <data name="notification.option.banner" xml:space="preserve">
     <value>Banner</value>
   </data>
+  <data name="none" xml:space="preserve">
+    <value>Ingen</value>
+  </data>
+  <data name="activeRecording" xml:space="preserve">
+    <value>Opt: {0}</value>
+  </data>
+  <data name="iconChange" xml:space="preserve">
+    <value>Systray Ikon</value>
+  </data>
+  <data name="audioFileNotFound.caption" xml:space="preserve">
+    <value>Lydfil ikke fundet</value>
+  </data>
+  <data name="foregroundApp.tooltip" xml:space="preserve">
+    <value>Skift også lyden i den aktuelt, brugte applikation. Brugbart i fx. computerspil.</value>
+  </data>
 </root>
