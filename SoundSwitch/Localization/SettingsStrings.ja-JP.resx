@@ -585,4 +585,10 @@
   <data name="position.option.center" xml:space="preserve">
     <value>中央</value>
   </data>
+  <data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>表示時間</value>
+  </data>
+  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+    <value>バナーが画面に表示される時間（秒）。</value>
+  </data>
 </root>
