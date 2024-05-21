@@ -9,20 +9,14 @@ if ($latestTag.StartsWith("v")) {
 $versionParts = $latestTag.Split('.')
 $major = $versionParts[0]
 $minor = $versionParts[1]
-$build = $versionParts[2]
+$build = $versionParts[2].Split('-')[0]
 
-# Handle the beta version separately
-if ($versionParts.Length -gt 3) {
-    # Assuming the beta version follows the pattern 'major.minor.build-beta'
-    $revision = $versionParts[3].Split('-')[0] # Extract the numeric part before '-beta'
-} else {
-    # No beta version, so use the last part as the revision
-    $revision = $versionParts[3]
-}
+# Calculate the new revision number
+$currentDate = Get-Date
+$newRevision = [int]$currentDate.DayOfYear * 24 + $currentDate.Day + $currentDate.Hour + $currentDate.Minute
 
 # Construct the new version with the calculated revision
-$newRevision = [int]$currentDate.DayOfYear * 24 + $currentDate.Day + $currentDate.Hour + $currentDate.Minute
-$newVersion = New-Object System.Version($major, $minor, $build, $revision)
+$newVersion = New-Object System.Version($major, $minor, $build, $newRevision)
 
 # Replace the AssemblyVersion in AssemblyInfo.cs
 (Get-Content SoundSwitch/Properties/AssemblyInfo.cs) -replace "AssemblyVersion\(.+\)", "AssemblyVersion(`"$newVersion`")" | Set-Content SoundSwitch/Properties/AssemblyInfo.cs
