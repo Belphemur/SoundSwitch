@@ -1,4 +1,10 @@
 $latestTag = git describe --tags --abbrev=0
+
+# Remove the leading 'v' character if present
+if ($latestTag.StartsWith("v")) {
+    $latestTag = $latestTag.Substring(1)
+}
+
 # Split the version string into major, minor, build, and revision components
 $versionParts = $latestTag.Split('.')
 $major = $versionParts[0]
