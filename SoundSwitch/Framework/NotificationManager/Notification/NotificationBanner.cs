@@ -71,7 +71,8 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
                 Image = icon,
                 Title = string.Format(SettingsStrings.profile_notification_text, profile.Name),
                 Text = string.Join("\n", profile.Devices.Select(wrapper => wrapper.DeviceInfo.NameClean).Distinct()),
-                Position = BannerPosition
+                Position = BannerPosition,
+                Ttl = Configuration.Ttl
             };
             _bannerManager.ShowNotification(bannerData);
         }
