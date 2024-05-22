@@ -326,7 +326,7 @@
     <value>你需要设置一个播放设备，或者录音设备。</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
-    <value>当特定的应用程序已启动或被聚焦时，添加一个配置来切换指定的播放设备或者录音设备。</value>
+    <value>当特定的应用程序已启动或被有焦点时，添加一个配置来切换指定的播放设备或者录音设备。你也可以为设置热键组合。</value>
   </data>
   <data name="profile.error.registerHotkeys" xml:space="preserve">
     <value>无法为以下的配置注册快捷键：{0}</value>
@@ -491,5 +491,26 @@
   </data>
   <data name="devices.AutoAddNewDevice..tooltip" xml:space="preserve">
     <value>当新设备连接到电脑时，自动添加到选择列表</value>
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>无</value>
+  </data>
+  <data name="keepVolume" xml:space="preserve">
+    <value>跨设备保持音量级别</value>
+  </data>
+  <data name="audioFileNotFound.caption" xml:space="preserve">
+    <value>音频文件未找到</value>
+  </data>
+  <data name="telemetry.tooltip" xml:space="preserve">
+    <value>匿名方式收集使用的SoundSwitch版本，仅共享给开发人员。</value>
+  </data>
+  <data name="quickMenu.tooltip" xml:space="preserve">
+    <value>当使用热键时像界面语言一样显示快捷菜单。</value>
+  </data>
+  <data name="keepVolume.tooltip" xml:space="preserve">
+    <value>当切换设备时保持同样的音量级别</value>
+  </data>
+  <data name="devices.autoAddNewDevice" xml:space="preserve">
+    <value>自动选择新设备</value>
   </data>
 </root>
