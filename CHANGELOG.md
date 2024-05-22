@@ -1,3 +1,20 @@
+## [6.11.0-beta.2](https://github.com/Belphemur/SoundSwitch/compare/v6.11.0-beta.1...v6.11.0-beta.2) (2024-05-22)
+
+
+### Languages
+
+* **Danish:** Translated Settings using Weblate ([6d5d619](https://github.com/Belphemur/SoundSwitch/commit/6d5d619e44af73bf63d8859524e279d4e1651be5))
+* **Japanese:** Translated Settings using Weblate ([2b89880](https://github.com/Belphemur/SoundSwitch/commit/2b89880ea87a7696b2fd26c5fb1ef9267afae73f))
+* **Spanish:** Translated Settings using Weblate ([dd90865](https://github.com/Belphemur/SoundSwitch/commit/dd9086585df1a89233adc0f58de5eb4f3fbbfc4a))
+
+
+### Bug Fixes
+
+* **ci:** downgrade conventianl commits ([c54c3e0](https://github.com/Belphemur/SoundSwitch/commit/c54c3e0c3732fc4096e28a627a65e8f5d78dc424))
+* **ci:** fix dev version calculation ([81253d4](https://github.com/Belphemur/SoundSwitch/commit/81253d4652e85b597bdea14caf392c6d13085b8f))
+* dev version calculation ([8fecb98](https://github.com/Belphemur/SoundSwitch/commit/8fecb98aca7ba7a62bad9cbad138cc4c5f295949))
+* **profile:** fix crashing when switching profile ([0bf93e6](https://github.com/Belphemur/SoundSwitch/commit/0bf93e6879b03e6a5369646e87a86b652f96a60c)), closes [#1481](https://github.com/Belphemur/SoundSwitch/issues/1481)
+
 ## [6.11.0-beta.1](https://github.com/Belphemur/SoundSwitch/compare/v6.10.3...v6.11.0-beta.1) (2024-05-07)
 
 
