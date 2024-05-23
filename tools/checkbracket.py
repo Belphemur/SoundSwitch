@@ -1,5 +1,5 @@
 ﻿import sys
-import os
+from git import Repo
 
 def check_brackets(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
@@ -23,13 +23,19 @@ def check_brackets(file_path):
     print(f"All brackets are properly closed in file {file_path}.")
     return True
 
-def main():
-    if len(sys.argv) < 2:
-        print("Usage: python check_brackets.py <file_path1> <file_path2> ...")
-        sys.exit(1)
+def get_changed_resx_files(repo_path):
+    repo = Repo(repo_path)
+    changed_files = [item.a_path for item in repo.index.diff(None) if item.a_path.endswith('.resx')]
+    return changed_files
+
+def main(repo_path):
+    changed_resx_files = get_changed_resx_files(repo_path)
+    if not changed_resx_files:
+        print("No .resx files changed.")
+        return
     
     all_files_valid = True
-    for file_path in sys.argv[1:]:
+    for file_path in changed_resx_files:
         if not check_brackets(file_path):
             all_files_valid = False
     
@@ -37,4 +43,9 @@ def main():
         sys.exit(1)
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) != 2:
+        print("Usage: python check_brackets.py <repo_path>")
+        sys.exit(1)
+    
+    repo_path = sys.argv[1]
+    main(repo_path)
