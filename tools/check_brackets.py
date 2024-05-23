@@ -23,13 +23,15 @@ def check_brackets(file_path):
     print(f"All brackets are properly closed in file {file_path}.")
     return True
 
-def get_changed_resx_files(repo_path):
+def get_changed_resx_files(repo_path, source_branch='main'):
     repo = Repo(repo_path)
-    changed_files = [item.a_path for item in repo.index.diff(None) if item.a_path.endswith('.resx')]
+    current_branch = repo.active_branch.name
+    diff = repo.git.diff(f'{source_branch}...{current_branch}', name_only=True)
+    changed_files = [file for file in diff.split('\n') if file.endswith('.resx')]
     return changed_files
 
-def main(repo_path):
-    changed_resx_files = get_changed_resx_files(repo_path)
+def main(repo_path, source_branch='main'):
+    changed_resx_files = get_changed_resx_files(repo_path, source_branch)
     if not changed_resx_files:
         print("No .resx files changed.")
         return
@@ -43,9 +45,10 @@ def main(repo_path):
         sys.exit(1)
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python check_brackets.py <repo_path>")
+    if len(sys.argv) < 2:
+        print("Usage: python check_brackets.py <repo_path> [<source_branch>]")
         sys.exit(1)
     
     repo_path = sys.argv[1]
-    main(repo_path)
+    source_branch = sys.argv[2] if len(sys.argv) > 2 else 'main'
+    main(repo_path, source_branch)
