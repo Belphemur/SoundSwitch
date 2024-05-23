@@ -42,6 +42,29 @@ jobs:
               - 'SoundSwitch*/**'
             node:
               - 'package.json'
+            translations:
+              - '*.resx'
+      - name: Install Python
+        if: steps.filter.outputs.translations == 'true'
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - name: Get changed .resx files
+        id: get_changed_files
+        if: steps.filter.outputs.translations == 'true'
+        uses: jitterbit/get-changed-files@v1
+        with:
+          format: 'json'
+      - name: Run bracket check on changed .resx files
+        if: steps.filter.outputs.translations == 'true'
+        run: |
+          changed_files=$(jq -r '.[]' <<< "${{ steps.get_changed_files.outputs.all }}")
+          resx_files=$(echo "$changed_files" | grep -E '\.resx$' || true)
+          if [ -n "$resx_files" ]; then
+            python tools/check_brackets.py $resx_files
+          else
+            echo "No .resx files changed."
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4.0.0
         if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true' || github.ref == 'refs/heads/master'

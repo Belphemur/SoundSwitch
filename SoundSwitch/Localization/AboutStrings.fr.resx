@@ -116,7 +116,7 @@
 		<value>Modification d'un périphérique de lecture par défaut</value>
   </data>
   <data name="keyboardHotkeys" xml:space="preserve">
-		<value>Système de raccourcis claviers</value>
+	  <value>Librairie de raccourcis claviers</value>
   </data>
   <data name="icons" xml:space="preserve">
 		<value>Icônes</value>
