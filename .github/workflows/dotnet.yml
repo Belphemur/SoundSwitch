@@ -55,7 +55,7 @@ jobs:
 
       - name: Validate the string of translation (brackets)
         if: steps.filter.outputs.translations == 'true'
-        run: python check_brackets.py $GITHUB_WORKSPACE
+        run: python tools\check_brackets.py ${{ github.workspace }}
       - name: Setup .NET
         uses: actions/setup-dotnet@v4.0.0
         if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true' || github.ref == 'refs/heads/master'
