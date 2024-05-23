@@ -43,7 +43,7 @@ jobs:
             node:
               - 'package.json'
             translations:
-              - '*.resx'
+              - 'SoundSwitch/**/*.resx'
       - name: Install Python
         if: steps.filter.outputs.translations == 'true'
         uses: actions/setup-python@v2
