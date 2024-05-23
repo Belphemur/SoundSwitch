@@ -1,5 +1,5 @@
 ﻿import sys
-from git import Repo
+from git import Repo, GitCommandError
 
 def check_brackets(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
@@ -25,8 +25,31 @@ def check_brackets(file_path):
 
 def get_changed_resx_files(repo_path, source_branch='main'):
     repo = Repo(repo_path)
-    current_branch = repo.active_branch.name
-    diff = repo.git.diff(f'{source_branch}...{current_branch}', name_only=True)
+    
+    # Fetch the branches to ensure they are available locally
+    try:
+        repo.git.fetch('origin', source_branch)
+        repo.git.fetch('origin', repo.active_branch.name)
+    except GitCommandError as e:
+        print(f"Error fetching branches: {e}")
+        sys.exit(1)
+    
+    try:
+        current_branch = repo.active_branch.name
+    except TypeError:
+        # Handle detached HEAD state
+        current_branch = repo.git.rev_parse('--abbrev-ref', 'HEAD')
+        if current_branch == 'HEAD':
+            current_branch = repo.head.commit.hexsha
+
+    # Get the diff between the current branch and the source branch
+    try:
+        diff = repo.git.diff(f'origin/{source_branch}...{current_branch}', name_only=True)
+    except GitCommandError as e:
+        print(f"Error running git diff: {e}")
+        sys.exit(1)
+    
+    # Filter the diff to include only .resx files
     changed_files = [file for file in diff.split('\n') if file.endswith('.resx')]
     return changed_files
 
