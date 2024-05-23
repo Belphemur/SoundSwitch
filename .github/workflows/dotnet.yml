@@ -34,6 +34,7 @@ jobs:
       - uses: dorny/paths-filter@v3
         id: filter
         with:
+          list-files: shell
           filters: |
             ci:
              - '.github/**/*.yml'
@@ -42,6 +43,17 @@ jobs:
               - 'SoundSwitch*/**'
             node:
               - 'package.json'
+            translations:
+              - 'SoundSwitch/**/*.resx'
+      - name: Install Python
+        if: steps.filter.outputs.translations == 'true'
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+          
+      - name: Validate the string of translation (brackets)
+        if: steps.filter.outputs.translations == 'true'
+        run: python tools\check_brackets.py ${{ steps.filter.outputs.translations_files }}
       - name: Setup .NET
         uses: actions/setup-dotnet@v4.0.0
         if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true' || github.ref == 'refs/heads/master'
