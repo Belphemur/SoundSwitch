@@ -364,7 +364,7 @@
     <value>すべてのオーディオデバイス</value>
   </data>
   <data name="tooltipOnHover" xml:space="preserve">
-    <value>ホバー時のツールチップ</value>
+    <value>ホバー時のヒント</value>
   </data>
   <data name="updateNever" xml:space="preserve">
     <value>アップデートを確認しない</value>
@@ -526,10 +526,10 @@
     <value>デバイスを切り替える際に同じ音量レベルを保持します</value>
   </data>
   <data name="notification.single" xml:space="preserve">
-    <value>バナーは一つだけ</value>
+    <value>バナーはひとつだけ</value>
   </data>
   <data name="notification.single.tooltip" xml:space="preserve">
-    <value>一度に一つのバナーだけを表示し、その内容を置き換えます。</value>
+    <value>一度にひとつのバナーだけを表示し、その内容を置き換えます。</value>
   </data>
   <data name="resetAudioDevices" xml:space="preserve">
     <value>アプリごとのオーディオをリセット</value>
@@ -562,7 +562,7 @@
     <value>リセット</value>
   </data>
   <data name="exportLogFiles" xml:space="preserve">
-    <value>ログファイルをエクスポートする</value>
+    <value>ログファイルのエクスポート</value>
   </data>
   <data name="exportLogFiles.desc" xml:space="preserve">
     <value>すべてのログファイルをzipアーカイブにエクスポートし、ヘルプディスカッションまたはコミュニティDiscordでのさらなるトラブルシューティングに使用します。</value>
