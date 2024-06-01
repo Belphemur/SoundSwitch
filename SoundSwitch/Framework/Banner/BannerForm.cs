@@ -13,6 +13,7 @@
  ********************************************************************/
 
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
@@ -222,18 +223,32 @@ namespace SoundSwitch.Framework.Banner
         /// </summary>
         private async void FadeOut()
         {
-            while (Opacity > 0.0)
+            try
             {
-                await Task.Delay(50);
+                while (Opacity > 0.0)
+                {
+                    await Task.Delay(50);
 
-                if (!_hiding)
-                    break;
-                Opacity -= 0.05;
+                    if (!_hiding)
+                        break;
+                    Opacity -= 0.05;
+                }
+
+                if (_hiding)
+                {
+                    Dispose();
+                }
             }
-
-            if (_hiding)
+            catch (Win32Exception)
             {
-                Dispose();
+                try
+                {
+                    Dispose();
+                }
+                catch (Exception)
+                {
+                    //Ignored
+                }
             }
         }
     }
