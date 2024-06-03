@@ -1,134 +1,140 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <StartupObject>SoundSwitch.Program</StartupObject>
-        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-        <LangVersion>latest</LangVersion>
-        <UseWindowsForms>true</UseWindowsForms>
-        <Deterministic>false</Deterministic>
-        <PublishTrimmed>false</PublishTrimmed>
-        <TrimMode>link</TrimMode>
-        <SelfContained>true</SelfContained>
-        <PublishReadyToRun>true</PublishReadyToRun>
-        <Configurations>Debug;Release;Beta;Nightly</Configurations>
-        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-        <TargetFramework>net8.0-windows</TargetFramework>
-        <Platforms>AnyCPU</Platforms>
-    </PropertyGroup>
-    <PropertyGroup>
-        <TargetPlatformVersion>8.0</TargetPlatformVersion>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-        <OutputType>exe</OutputType>
-        <DefineConstants>TRACE;DEBUG</DefineConstants>
-        <DisableWinExeOutputInference>true</DisableWinExeOutputInference>
-        <Optimize>false</Optimize>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-        <OutputType>WinExe</OutputType>
-        <DefineConstants>RELEASE</DefineConstants>
-        <Optimize>true</Optimize>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Beta|AnyCPU'">
-        <OutputType>WinExe</OutputType>
-        <DefineConstants>TRACE;BETA</DefineConstants>
-        <Optimize>true</Optimize>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)' == 'Nightly' ">
-        <OutputType>WinExe</OutputType>
-        <DefineConstants>TRACE;NIGHTLY</DefineConstants>
-      <Optimize>true</Optimize>
-    </PropertyGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\SoundSwitch.Audio.Manager\SoundSwitch.Audio.Manager.csproj" />
-        <ProjectReference Include="..\SoundSwitch.Common\SoundSwitch.Common.csproj" />
-        <ProjectReference Include="..\SoundSwitch.UI.Menu\SoundSwitch.UI.Menu.csproj" />
-    </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="AuthenticodeExaminer" Version="0.3.0" />
-        <PackageReference Include="JetBrains.Annotations" Version="2023.3.0" />
-        <PackageReference Include="Job.Scheduler" Version="3.1.8" />
-        <PackageReference Include="Markdig" Version="0.37.0" />
-        <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-        <PackageReference Include="NuGet.Versioning" Version="6.10.0" />
-        <PackageReference Include="Polly.Core" Version="8.4.0" />
-        <PackageReference Include="RailSharp" Version="1.0.0" />
-        <PackageReference Include="Sentry.Serilog" Version="4.7.0" />
-        <PackageReference Include="Serilog" Version="3.1.1" />
-        <PackageReference Include="Serilog.Enrichers.Environment" Version="2.3.0" />
-        <PackageReference Include="Serilog.Exceptions" Version="8.4.0+build.694" />
-        <PackageReference Include="Serilog.Formatting.Compact" Version="2.0.0" />
-        <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-        <PackageReference Include="SerilogTraceListener" Version="3.2.0" />
-        <PackageReference Include="System.Diagnostics.TraceSource" Version="4.3.0" />
-        <PackageReference Include="System.Drawing.Common" Version="8.0.6" />
-        <PackageReference Include="System.Net.Http" Version="4.3.4" />
-        <PackageReference Include="System.Reactive.Linq" Version="6.0.1" />
-        <PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
-        <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
-    </ItemGroup>
-    <ItemGroup Condition="'$(Configuration)' == 'Debug'">
-        <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
-    </ItemGroup>
-    <ItemGroup>
-        <Compile Update="Framework\Profile\UI\ProfileToolStripMenuItem.cs">
-          <SubType>Component</SubType>
-        </Compile>
-    </ItemGroup>
-    <ItemGroup>
-        <Compile Update="Localization\AboutStrings.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>AboutStrings.resx</DependentUpon>
-        </Compile>
-        <Compile Update="Localization\SettingsStrings.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>SettingsStrings.resx</DependentUpon>
-        </Compile>
-        <Compile Update="Localization\TrayIconStrings.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>TrayIconStrings.resx</DependentUpon>
-        </Compile>
-        <Compile Update="Localization\UpdateDownloadStrings.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>UpdateDownloadStrings.resx</DependentUpon>
-        </Compile>
-        <Compile Update="Properties\Resources.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>Resources.resx</DependentUpon>
-        </Compile>
-    </ItemGroup>
-    <ItemGroup>
-        <EmbeddedResource Update="Localization\AboutStrings.resx">
-            <Generator>ResXFileCodeGenerator</Generator>
-            <LastGenOutput>AboutStrings.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
-        <EmbeddedResource Update="Localization\SettingsStrings.resx">
-            <Generator>ResXFileCodeGenerator</Generator>
-            <LastGenOutput>SettingsStrings.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
-        <EmbeddedResource Update="Localization\TrayIconStrings.resx">
-            <Generator>ResXFileCodeGenerator</Generator>
-            <LastGenOutput>TrayIconStrings.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
-        <EmbeddedResource Update="Localization\UpdateDownloadStrings.resx">
-            <Generator>ResXFileCodeGenerator</Generator>
-            <LastGenOutput>UpdateDownloadStrings.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
-        <EmbeddedResource Update="Properties\Resources.resx">
-            <Generator>ResXFileCodeGenerator</Generator>
-            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
-    </ItemGroup>
-    <PropertyGroup>
-        <ApplicationIcon>Resources\Switch-SoundWave.ico</ApplicationIcon>
-        <ApplicationManifest>app.manifest</ApplicationManifest>
-        <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
-    </PropertyGroup>
-    <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^net\d'))">
-        <DefineConstants>NETCORE</DefineConstants>
-    </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>SoundSwitch.Program</StartupObject>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <LangVersion>latest</LangVersion>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Deterministic>false</Deterministic>
+    <PublishTrimmed>false</PublishTrimmed>
+    <TrimMode>link</TrimMode>
+    <SelfContained>true</SelfContained>
+    <PublishReadyToRun>true</PublishReadyToRun>
+    <Configurations>Debug;Release;Beta;Nightly</Configurations>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Platforms>AnyCPU</Platforms>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetPlatformVersion>8.0</TargetPlatformVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <OutputType>exe</OutputType>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DisableWinExeOutputInference>true</DisableWinExeOutputInference>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputType>WinExe</OutputType>
+    <DefineConstants>RELEASE</DefineConstants>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Beta|AnyCPU'">
+    <OutputType>WinExe</OutputType>
+    <DefineConstants>TRACE;BETA</DefineConstants>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Nightly' ">
+    <OutputType>WinExe</OutputType>
+    <DefineConstants>TRACE;NIGHTLY</DefineConstants>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SoundSwitch.Audio.Manager\SoundSwitch.Audio.Manager.csproj" />
+    <ProjectReference Include="..\SoundSwitch.Common\SoundSwitch.Common.csproj" />
+    <ProjectReference Include="..\SoundSwitch.UI.Menu\SoundSwitch.UI.Menu.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AuthenticodeExaminer" Version="0.3.0" />
+    <PackageReference Include="JetBrains.Annotations" Version="2023.3.0" />
+    <PackageReference Include="Job.Scheduler" Version="3.1.8" />
+    <PackageReference Include="Markdig" Version="0.37.0" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="NuGet.Versioning" Version="6.10.0" />
+    <PackageReference Include="Polly.Core" Version="8.4.0" />
+    <PackageReference Include="RailSharp" Version="1.0.0" />
+    <PackageReference Include="Sentry.Serilog" Version="4.7.0" />
+    <PackageReference Include="Serilog" Version="4.0.0" />
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="2.3.0" />
+    <PackageReference Include="Serilog.Exceptions" Version="8.4.0+build.694" />
+    <PackageReference Include="Serilog.Formatting.Compact" Version="2.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageReference Include="SerilogTraceListener" Version="3.2.0" />
+    <PackageReference Include="System.Diagnostics.TraceSource" Version="4.3.0" />
+    <PackageReference Include="System.Drawing.Common" Version="8.0.6" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+    <PackageReference Include="System.Reactive.Linq" Version="6.0.1" />
+    <PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
+    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+    <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Framework\Profile\UI\ProfileToolStripMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Localization\AboutStrings.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AboutStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Localization\SettingsStrings.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SettingsStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Localization\TrayIconStrings.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TrayIconStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Localization\UpdateDownloadStrings.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>UpdateDownloadStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Localization\AboutStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AboutStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Localization\SettingsStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SettingsStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Localization\TrayIconStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TrayIconStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Localization\UpdateDownloadStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>UpdateDownloadStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Serilog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10">
+      <HintPath>..\packages\Serilog.4.0.0\lib\net8.0\Serilog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\Switch-SoundWave.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
+  </PropertyGroup>
+  <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^net\d'))">
+    <DefineConstants>NETCORE</DefineConstants>
+  </PropertyGroup>
 </Project>
