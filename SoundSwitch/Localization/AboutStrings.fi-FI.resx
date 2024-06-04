@@ -98,30 +98,30 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="defaultPlaybackDeviceChange" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="keyboardHotkeys" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="author" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="credits" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="icons" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="maintained" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="logo" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="version" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="created" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
 </root>
