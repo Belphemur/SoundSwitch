@@ -219,7 +219,7 @@ Vil du genstarte nu?</value>
     <value>Ingen</value>
   </data>
   <data name="activeRecording" xml:space="preserve">
-    <value>Opt: {0]</value>
+    <value>Opt: {0}</value>
   </data>
   <data name="iconChange" xml:space="preserve">
     <value>Systray Ikon</value>
