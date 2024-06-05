@@ -186,7 +186,7 @@ Vil du genstarte nu?</value>
     <value>Valgt</value>
   </data>
   <data name="connected" xml:space="preserve">
-    <value>Tilsluttet</value>
+    <value>Forbundet</value>
   </data>
   <data name="playback" xml:space="preserve">
     <value>Afspil</value>
@@ -229,5 +229,80 @@ Vil du genstarte nu?</value>
   </data>
   <data name="foregroundApp.tooltip" xml:space="preserve">
     <value>Skift også lyden i den aktuelt, brugte applikation. Brugbart i fx. computerspil.</value>
+  </data>
+  <data name="profile.feature.executable" xml:space="preserve">
+    <value>Eksekverbar (*.exe)</value>
+  </data>
+  <data name="profile.tab" xml:space="preserve">
+    <value>Profiler</value>
+  </data>
+  <data name="profile.program" xml:space="preserve">
+    <value>Applikation</value>
+  </data>
+  <data name="profile.name" xml:space="preserve">
+    <value>Navn</value>
+  </data>
+  <data name="profile.error.hotkey" xml:space="preserve">
+    <value>Denne genvejstast {0} er allrede registreret.</value>
+  </data>
+  <data name="profile.error.application" xml:space="preserve">
+    <value>Denne applikation {0} har allerede en linket profil.</value>
+  </data>
+  <data name="profile.error.name" xml:space="preserve">
+    <value>Der findes allerede en profil med navnet {0}.</value>
+  </data>
+  <data name="profile.error.needHKOrPath" xml:space="preserve">
+    <value>Du mangler at definere en genvejstast og/eller en applikation.</value>
+  </data>
+  <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
+    <value>Du mangler at definere en afspilnings - eller optageenhed.</value>
+  </data>
+  <data name="profile.explanation" xml:space="preserve">
+    <value>Vælg en profil for at skifte til en bestemt afspilnings - eller optageenhed, når en specifik applikation startes eller kommer i fokus. Du kan også definere din egen genvejstast til en specifik gruppe af enheder.</value>
+  </data>
+  <data name="profile.error.registerHotkeys" xml:space="preserve">
+    <value>Kunne ikke registrere en genvejstast for disse profiler: {0}</value>
+  </data>
+  <data name="profile.error.registerHotkeys.title" xml:space="preserve">
+    <value>Genvejstasten er allerede i brug</value>
+  </data>
+  <data name="profile.feature.add" xml:space="preserve">
+    <value>Tilføj profil</value>
+  </data>
+  <data name="profile.error.title" xml:space="preserve">
+    <value>Fejl i profil</value>
+  </data>
+  <data name="profile.error.delete" xml:space="preserve">
+    <value>Kan ikke finde profil.</value>
+  </data>
+  <data name="profile.feature.profile" xml:space="preserve">
+    <value>Profil</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox" xml:space="preserve">
+    <value>Skift også standardenhed</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
+    <value>Når applikationen detekteres, skifter SoundSwitch også den aktuelle standardenhed.</value>
+  </data>
+  <data name="hotkeyEnabled" xml:space="preserve">
+    <value>Genvejstast aktiveret</value>
+  </data>
+  <data name="profile.trigger.window" xml:space="preserve">
+    <value>Programmets navn</value>
+  </data>
+  <data name="profile.trigger.process" xml:space="preserve">
+    <value>Programmets sti</value>
+  </data>
+  <data name="profile.error.noName" xml:space="preserve">
+    <value>En profil skal have et navn.</value>
+  </data>
+  <data name="profile.error.deviceNotFound" xml:space="preserve">
+    <value>Enheden {0} kunne ikke findes.</value>
+  </data>
+  <data name="buttonAdd" xml:space="preserve">
+    <value>Tilføj</value>
+  </data>
+  <data name="buttonDelete" xml:space="preserve">
+    <value>Slet</value>
   </data>
 </root>
