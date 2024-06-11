@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -533,5 +533,38 @@ Obnovi stanje sustava kad se program zatvori.</value>
   </data>
   <data name="resetAudioDevices" xml:space="preserve">
     <value>Resetiraj audio uređaje</value>
+  </data>
+  <data name="audioFileNotFound.caption" xml:space="preserve">
+    <value>Audio datoteka nije pronađena</value>
+  </data>
+  <data name="keepVolume.tooltip" xml:space="preserve">
+    <value>Zadrži istu razinu glasnoće pri mijenjanju uređaja</value>
+  </data>
+  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+    <value>Trajanje prikaza natpisa na ekranu u sekundama.</value>
+  </data>
+  <data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>Vrijeme na ekranu</value>
+  </data>
+  <data name="exportLogFiles" xml:space="preserve">
+    <value>Izvezi datoteke dnevnika</value>
+  </data>
+  <data name="devices.autoAddNewDevice" xml:space="preserve">
+    <value>Automatski odaberi nove uređaje</value>
+  </data>
+  <data name="link.donate" xml:space="preserve">
+    <value>Doniraj</value>
+  </data>
+  <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
+    <value>Automatski dodaj novi uređaj u odabrani popis kada je povezan s računalom</value>
+  </data>
+  <data name="buttonReset" xml:space="preserve">
+    <value>Resetiraj</value>
+  </data>
+  <data name="buttonExport" xml:space="preserve">
+    <value>Izvezi</value>
+  </data>
+  <data name="position.option.center" xml:space="preserve">
+    <value>Centriraj</value>
   </data>
 </root>
