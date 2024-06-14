@@ -132,6 +132,10 @@
       <HintPath>..\packages\Serilog.Enrichers.Environment.3.0.0\lib\net8.0\Serilog.Enrichers.Environment.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Serilog.Enrichers.Thread, Version=4.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10">
+      <HintPath>..\packages\Serilog.Enrichers.Thread.4.0.0\lib\net8.0\Serilog.Enrichers.Thread.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Serilog.Formatting.Compact, Version=3.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10">
       <HintPath>..\packages\Serilog.Formatting.Compact.3.0.0\lib\net8.0\Serilog.Formatting.Compact.dll</HintPath>
       <Private>True</Private>
