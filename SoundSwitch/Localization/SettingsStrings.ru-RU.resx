@@ -151,8 +151,7 @@
     <value>Изменения сохраняются автоматически</value>
   </data>
   <data name="communicationsDevice.tooltip" xml:space="preserve">
-    <value>Если флажок установлен, то "Устройство связи" и "Устройство воспроизведения" переключаются вместе.
-Полезно для Skype, TeamSpeak и т.п.</value>
+    <value>Если флажок установлен, то "Устройство связи" и "Устройство воспроизведения" переключаются вместе. Полезно для Skype, TeamSpeak и т.п.</value>
   </data>
   <data name="notification" xml:space="preserve">
     <value>Уведомление</value>
@@ -328,7 +327,7 @@
     <value>Вам нужно установить устройство воспроизведения или записи.</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
-    <value>Добавьте профиль для переключения на определенное устройство воспроизведения или записи, при запуске или активации определенного приложения.</value>
+    <value>Добавьте профиль для переключения на определенное устройство воспроизведения или записи, при запуске или активации определенного приложения. Также Вы можете назначить свое сочетание клавиш для определенного набора устройств.</value>
   </data>
   <data name="profile.error.registerHotkeys" xml:space="preserve">
     <value>Не удалось зарегистрировать горячую клавишу для следующих профилей: {0}</value>
@@ -428,13 +427,13 @@
     <value>Состояние системы восстановлено</value>
   </data>
   <data name="profile.trigger.window.desc" xml:space="preserve">
-    <value>Активировать профиль, если программа на переднем плане содержит следующие символы</value>
+    <value>Активировать профиль, если активная программа содержит следующие символы</value>
   </data>
   <data name="profile.trigger.steam.desc" xml:space="preserve">
     <value>Активировать, если обнаружен Steam Big Picture. (Восстановит состояние, когда Steam Big Picture будет закрыт)</value>
   </data>
   <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
-    <value>Этот триггер сделает профиль видимым в меню значка в трее. Щелкните ЛКМ по значку в трее, чтобы увидеть свой профиль.</value>
+    <value>Этот переключатель сделает профиль видимым в меню значка в трее. Щелкните ЛКМ по значку в трее, чтобы увидеть свой профиль.</value>
   </data>
   <data name="profile.trigger.trayMenu" xml:space="preserve">
     <value>В меню приложения</value>
@@ -525,5 +524,71 @@
   </data>
   <data name="position.option.topLeft" xml:space="preserve">
     <value>Сверху-Слева</value>
+  </data>
+  <data name="resetAudioDevices.desc" xml:space="preserve">
+    <value>Сбрасывает назначение аудиоустройств в выбранных программах Windows в случае, когда переключатся устройство и если аудиоустройства не переназначены для этих программ.</value>
+  </data>
+  <data name="troubleshooting.desc" xml:space="preserve">
+    <value>Если Вам нужна любая помощь или дальнейшее решение проблемы с SoundSwitch, Вы можете перейти по ссылке в раздел "Помощь" или "Сообщество" в Discord, или поддержать нас по ссылке "Пожертвовать" ниже.</value>
+  </data>
+  <data name="quickMenu.tooltip" xml:space="preserve">
+    <value>Показывать краткое меню, как при выборе языка в Windows, когда используется сочетание клавиш</value>
+  </data>
+  <data name="devices.autoAddNewDevice" xml:space="preserve">
+    <value>Автоматический выбор новых устройств</value>
+  </data>
+  <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
+    <value>Автоматически добавлять новое устройство в выбранный список, когда они подключены к компьютеру</value>
+  </data>
+  <data name="audioFileNotFound.caption" xml:space="preserve">
+    <value>Аудиофайл не найден</value>
+  </data>
+  <data name="telemetry.tooltip" xml:space="preserve">
+    <value>Анонимно собирать данные о используемой версии SoundSwitch. Данные отправляются только разработчику SoundSwitch.</value>
+  </data>
+  <data name="keepVolume.tooltip" xml:space="preserve">
+    <value>Оставлять прежний уровень громкости при смене устройств</value>
+  </data>
+  <data name="link.community" xml:space="preserve">
+    <value>Сообщество в Discord</value>
+  </data>
+  <data name="link.donate" xml:space="preserve">
+    <value>Пожертвовать</value>
+  </data>
+  <data name="link.help" xml:space="preserve">
+    <value>Помощь</value>
+  </data>
+  <data name="buttonReset" xml:space="preserve">
+    <value>Сброс</value>
+  </data>
+  <data name="exportLogFiles" xml:space="preserve">
+    <value>Экспортировать Log-файлы</value>
+  </data>
+  <data name="resetAudioDevices" xml:space="preserve">
+    <value>Сброс аудио для каждого приложения</value>
+  </data>
+  <data name="exportLogFiles.desc" xml:space="preserve">
+    <value>Экспортируйте все Log-файлы в zip-архив для дальнейшего решения проблем в разделе Помощь или Сообществе в Discord.</value>
+  </data>
+  <data name="buttonExport" xml:space="preserve">
+    <value>Экспорт</value>
+  </data>
+  <data name="troubleshooting" xml:space="preserve">
+    <value>Решение проблем</value>
+  </data>
+  <data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>Время на экране</value>
+  </data>
+  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+    <value>Как долго оповещение остается на экране в секундах.</value>
+  </data>
+  <data name="notification.single" xml:space="preserve">
+    <value>Только одно оповещение</value>
+  </data>
+  <data name="notification.single.tooltip" xml:space="preserve">
+    <value>Показывать только одно оповещение и заменять его содержимое.</value>
+  </data>
+  <data name="position.option.center" xml:space="preserve">
+    <value>Центр</value>
   </data>
 </root>
