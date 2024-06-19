@@ -130,7 +130,7 @@
     <value>Устройства звукозаписи</value>
   </data>
   <data name="playback" xml:space="preserve">
-    <value>Устройства воспроизведения</value>
+    <value>Воспроизведение</value>
   </data>
   <data name="settings" xml:space="preserve">
     <value>Настройки</value>
@@ -285,8 +285,7 @@
 		<value>Также переключить активную программу (переднего плана)</value>
   </data>
   <data name="foregroundApp.tooltip" xml:space="preserve">
-		<value>Переключить также звук текущего используемого приложения.
-Полезно для видеоигр.</value>
+		<value>Переключить также звук текущего используемого приложения. Полезно для видеоигр.</value>
   </data>
   <data name="iconChange" xml:space="preserve">
 		<value>Значок в трее</value>
@@ -409,7 +408,8 @@
   </data>
   <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
     <value>Требуется "{0}" , чтобы включить.
-Восстановите состояние системы при закрытии приложения.</value>
+
+Восстановить состояние системы при закрытии приложения.</value>
   </data>
   <data name="profile.trigger.startup.desc" xml:space="preserve">
     <value>Профиль будет активирован автоматически при запуске SoundSwitch</value>
@@ -448,7 +448,7 @@
     <value>{0} теперь отключен.</value>
   </data>
   <data name="profile.trigger.uwp.desc" xml:space="preserve">
-    <value>Введите название приложения, установленного через магазин Windows. Например, Netflix, Amazon Prime video и т.д.</value>
+    <value>Введите название приложения, установленного через магазин Windows. Например, Netflix, Amazon Prime video и т.д…</value>
   </data>
   <data name="profile.trigger.restoreDevices" xml:space="preserve">
     <value>Восстановить устройства по окончании триггера</value>
