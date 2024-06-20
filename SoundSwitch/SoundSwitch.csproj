@@ -54,7 +54,7 @@
     <PackageReference Include="RailSharp" Version="1.0.0" />
     <PackageReference Include="Sentry.Serilog" Version="4.7.0" />
     <PackageReference Include="Serilog" Version="4.0.0" />
-    <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.0" />
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1" />
     <PackageReference Include="Serilog.Exceptions" Version="8.4.0+build.694" />
     <PackageReference Include="Serilog.Formatting.Compact" Version="3.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
@@ -128,8 +128,8 @@
       <HintPath>..\packages\Serilog.4.0.0\lib\net8.0\Serilog.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Serilog.Enrichers.Environment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\Serilog.Enrichers.Environment.3.0.0\lib\net8.0\Serilog.Enrichers.Environment.dll</HintPath>
+    <Reference Include="Serilog.Enrichers.Environment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10">
+      <HintPath>..\packages\Serilog.Enrichers.Environment.3.0.1\lib\net8.0\Serilog.Enrichers.Environment.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Serilog.Enrichers.Thread, Version=4.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10">
