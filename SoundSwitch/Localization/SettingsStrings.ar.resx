@@ -217,13 +217,13 @@
     <value>غير متصل</value>
   </data>
   <data name="connected" xml:space="preserve">
-    <value>متصل</value>
+    <value>تم الاتصال</value>
   </data>
   <data name="selected" xml:space="preserve">
-    <value>تم اختياره</value>
+    <value>مُحدّد</value>
   </data>
   <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
-    <value>هذا المشغل يجعل البروفيل موجود داخل القائمه بزاوية الشاشه. إضغط على الآيقون لرؤية البروفيلات المتواجده.</value>
+    <value>هذا المشغل يجعل البروفايل موجود داخل القائمه بزاوية الشاشه. إضغط على رمز النظام لرؤية البروفايلات المتواجده.</value>
   </data>
   <data name="profile.trigger.trayMenu" xml:space="preserve">
     <value>القائمه داخل التطبيق</value>
@@ -306,10 +306,10 @@
     <value>تشغيل البروفيل اذا التطبيق المختار موجود بخلفية الشاشه</value>
   </data>
   <data name="profile.trigger.window.desc" xml:space="preserve">
-    <value>تشغيل البروفيل إذا إسم التطبيق الذي بخلفية الشاشة يحتوي على الأحرف التاليه</value>
+    <value>تشغيل البروفايل عند احتواء البرنامح الخلفي على الأحرف التالية</value>
   </data>
   <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>اختصار لوحة المفاتيح المختارة لتفعيل البروفايل. اذا استخدم نفس الاختصار , يمكنك تغير بين البرفايلز</value>
+    <value>اختصار لوحة المفاتيح المختارة لتفعيل البروفايل. اذا استخدم نفس الاختصار , يمكنك تغير بين عدة بروفايلات.</value>
   </data>
   <data name="profile.trigger.steam" xml:space="preserve">
     <value>Steam Big Picture</value>
@@ -360,7 +360,7 @@
     <value>لم يستطع تسجيل اختصار لوحة المفاتيح: {0}</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
-    <value>إضافة بروفيل لتبديل الى جهاز سمع أو تسجيل, عند فتح أو التركيز على تطبيق معين.</value>
+    <value>إضافة بروفايل لتبديل الى جهاز سمعي أو جهاز تسجيل, عند فتح أو التركيز على تطبيق معين. يمكنك أيضًا تعيين مفتاح التشغيل السريع الخاص بك لجهاز محدد.</value>
   </data>
   <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
     <value>عليك ضبط جهاز صوت و\أو جهاز تسجيل.</value>
@@ -432,5 +432,101 @@
   </data>
   <data name="devices.AutoAddNewDevice..tooltip" xml:space="preserve">
     <value>إضافة جهاز جديد تلقائيًا إلى القائمة المحددة عند توصيلها بالكمبيوتر</value>
+  </data>
+  <data name="position.tooltip" xml:space="preserve">
+    <value>إضبط مكان الاشعارات.</value>
+  </data>
+  <data name="link.donate" xml:space="preserve">
+    <value>تبرع</value>
+  </data>
+  <data name="position.option.topLeft" xml:space="preserve">
+    <value>أعلى يسار</value>
+  </data>
+  <data name="position.option.topRight" xml:space="preserve">
+    <value>أعلى يمين</value>
+  </data>
+  <data name="position.option.topCenter" xml:space="preserve">
+    <value>أعلى وسط</value>
+  </data>
+  <data name="position.option.bottomCenter" xml:space="preserve">
+    <value>‫أسفل وسط</value>
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>لا يوجد</value>
+  </data>
+  <data name="position" xml:space="preserve">
+    <value>مكان الإشعارات</value>
+  </data>
+  <data name="keepVolume" xml:space="preserve">
+    <value>إبقاء مستوى الصوت لجميع الاصوات</value>
+  </data>
+  <data name="audioFileNotFound.caption" xml:space="preserve">
+    <value>الملف الصوتي غير متوفر</value>
+  </data>
+  <data name="telemetry.tooltip" xml:space="preserve">
+    <value>اجمع بشكل مجهول إصدار SoundSwitch قيد الاستخدام. فقط ماتم مشاركته مع مطور SoundSwitch.</value>
+  </data>
+  <data name="quickMenu.tooltip" xml:space="preserve">
+    <value>إظهار قائمة سريعة عند استخدام مفتاح التشغيل السريع</value>
+  </data>
+  <data name="keepVolume.tooltip" xml:space="preserve">
+    <value>إبقاء مستوى الصوت حتى عند الانتقال جهاز صوتي لآخر</value>
+  </data>
+  <data name="devices.autoAddNewDevice" xml:space="preserve">
+    <value>تحديد تلقائي للأجهزة الجديدة</value>
+  </data>
+  <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
+    <value>إضافة جهاز جديد تلقائيًا إلى القائمة المحددة عند توصيله بالكمبيوتر</value>
+  </data>
+  <data name="buttonReset" xml:space="preserve">
+    <value>إعادة الضبط</value>
+  </data>
+  <data name="position.option.bottomLeft" xml:space="preserve">
+    <value>بالأسفل يسار</value>
+  </data>
+  <data name="position.option.bottomRight" xml:space="preserve">
+    <value>بالأسفل يمين</value>
+  </data>
+  <data name="link.community" xml:space="preserve">
+    <value>مجتمع ديسكورت</value>
+  </data>
+  <data name="link.help" xml:space="preserve">
+    <value>المساعدة</value>
+  </data>
+  <data name="resetAudioDevices.desc" xml:space="preserve">
+    <value>إعادة تعيين أداة الصوت لبرامج محددة في حالة عدم إعادة تعيين أجهزة الصوت للبرامج عند تبديل الأجهزة.</value>
+  </data>
+  <data name="resetAudioDevices" xml:space="preserve">
+    <value>إعادة تعيين الصوت لكل تطبيق</value>
+  </data>
+  <data name="exportLogFiles" xml:space="preserve">
+    <value>تصدير السجلات</value>
+  </data>
+  <data name="buttonExport" xml:space="preserve">
+    <value>تصدير</value>
+  </data>
+  <data name="troubleshooting" xml:space="preserve">
+    <value>استكشاف الأخطاء وإصلاحها</value>
+  </data>
+  <data name="exportLogFiles.desc" xml:space="preserve">
+    <value>تصدير جميع ملفات السجلات إلى محفوظات zip للمزيد من مزيد من استكشاف الأخطاء وإصلاحها في موقع المساعدة أو مجتمع ديسكورت.</value>
+  </data>
+  <data name="troubleshooting.desc" xml:space="preserve">
+    <value>إذا كنت بحاجة إلى أي مساعدة أو مزيد من استكشاف الأخطاء وإصلاحها باستخدام SoundSwitch، فيمكنك زيارة رابط المساعدو أو رابط Discord ، أو المساعدة في دعمنا من خلال زيارة رابط التبرع أدناه.</value>
+  </data>
+  <data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>في وقت الشاشة</value>
+  </data>
+  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+    <value>ماهي مدة بقاء الشعار على الشاشة بالثواني.</value>
+  </data>
+  <data name="notification.single" xml:space="preserve">
+    <value>فقط شريط إعلاني واحد</value>
+  </data>
+  <data name="notification.single.tooltip" xml:space="preserve">
+    <value>عرض شعار واحد فقط في كل مرة واستبدال محتواه.</value>
+  </data>
+  <data name="position.option.center" xml:space="preserve">
+    <value>وسط</value>
   </data>
 </root>
