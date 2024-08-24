@@ -17,5 +17,4 @@
     <ItemGroup>
       <ProjectReference Include="..\SoundSwitch.Audio.Manager\SoundSwitch.Audio.Manager.csproj" />
     </ItemGroup>
-
 </Project>
