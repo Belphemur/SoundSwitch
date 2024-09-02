@@ -567,4 +567,28 @@ Obnovi stanje sustava kad se program zatvori.</value>
   <data name="position.option.center" xml:space="preserve">
     <value>Centriraj</value>
   </data>
+  <data name="telemetry.tooltip" xml:space="preserve">
+    <value>Anonimno prikupi podatke o korištenoj SoundSwitch verziji. Dijeli se samo s programerom aplikacije SoundSwitch.</value>
+  </data>
+  <data name="quickMenu.tooltip" xml:space="preserve">
+    <value>Prikaži brzi izbornik poput onoga za biranje jezika u Windows sustavu kada koristiš tipkovni prečac</value>
+  </data>
+  <data name="link.help" xml:space="preserve">
+    <value>Pomoć za rasprave</value>
+  </data>
+  <data name="link.community" xml:space="preserve">
+    <value>Discord zajednica</value>
+  </data>
+  <data name="exportLogFiles.desc" xml:space="preserve">
+    <value>Izvezi sve datoteke dnevnika u zip arhivu za daljnje rješavanje problema u pomoći za rasprave ili Discordu zajednice.</value>
+  </data>
+  <data name="troubleshooting" xml:space="preserve">
+    <value>Rješavanje problema</value>
+  </data>
+  <data name="resetAudioDevices.desc" xml:space="preserve">
+    <value>Resetira dodjeljivanje audio uređaja određenim programima u sustavu Windows u slučaju da audio uređaji nisu ponovno dodijeljeni programima prilikom mijenjanja uređaja.</value>
+  </data>
+  <data name="troubleshooting.desc" xml:space="preserve">
+    <value>Ako trebaš bilo kakvu pomoć ili daljnje rješavanje problema sa SoundSwitchom, posjeti stranicu „Pomoć za rasprave” ili „Discord zajednica” ili nas podrži donacijom.</value>
+  </data>
 </root>
