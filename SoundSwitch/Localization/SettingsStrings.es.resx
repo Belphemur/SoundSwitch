@@ -449,7 +449,7 @@ Ambos: cambia cuando se cambia cualquier tipo de dispositivo.</value>
     <value>{0} se ha silenciado ahora.</value>
   </data>
   <data name="profile.trigger.uwp.desc" xml:space="preserve">
-    <value>Introduzca el nombre de la aplicación instalada a través de la tienda de Windows, como Netflix, Amazon Prime Video, etc.</value>
+    <value>Introduzca el nombre de la aplicación instalada a través de la tienda de Windows, como Netflix, Amazon Prime Video, etc…</value>
   </data>
   <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
     <value>Requiere que se active «{0}».
