@@ -127,7 +127,7 @@
     <value>업데이트를 사용할 수 있을 때 알림</value>
   </data>
   <data name="foregroundApp.tooltip" xml:space="preserve">
-    <value>현재 사용 중인 응용프로그램의 사운드도 전환합니다. 비디오 게임에 유용합니다.</value>
+    <value>현재 사용 중인 응용 프로그램의 사운드도 전환합니다. 비디오 게임에 유용합니다.</value>
   </data>
   <data name="notification.option.windowsDefault" xml:space="preserve">
     <value>Windows 알림</value>
@@ -170,7 +170,7 @@
     <value>모든 오디오 장치</value>
   </data>
   <data name="cycleThrough.tooltip" xml:space="preserve">
-    <value>전환할 장치를 선택하십시오. 선택한 항목 사이 또는 모든 항목 사이 중 하나입니다.</value>
+    <value>전환할 장치를 선택하세요. 선택한 항목 사이 또는 모든 항목 사이 중 하나입니다.</value>
   </data>
   <data name="basicSettings" xml:space="preserve">
     <value>기본 설정</value>
@@ -305,7 +305,7 @@
     <value>추가</value>
   </data>
   <data name="profile.program" xml:space="preserve">
-    <value>응용프로그램</value>
+    <value>응용 프로그램</value>
   </data>
   <data name="profile.name" xml:space="preserve">
     <value>이름</value>
@@ -314,19 +314,19 @@
     <value>이 단축키 {0}은(는) 이미 등록되어 있습니다.</value>
   </data>
   <data name="profile.error.application" xml:space="preserve">
-    <value>이 응용프로그램 {0}에 연결된 프로필이 이미 있습니다.</value>
+    <value>이 응용 프로그램 {0}에 연결된 프로필이 이미 있습니다.</value>
   </data>
   <data name="profile.error.name" xml:space="preserve">
     <value>이름이 {0}인 프로파일이 이미 있습니다.</value>
   </data>
   <data name="profile.error.needHKOrPath" xml:space="preserve">
-    <value>단축키 또는/및 응용프로그램을 설정해야 합니다.</value>
+    <value>단축키 또는/및 응용 프로그램을 설정해야 합니다.</value>
   </data>
   <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
     <value>재생 또는 녹음 장치를 설정해야 합니다.</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
-    <value>특정 응용프로그램이 시작되거나 집중될 때 특정 재생 또는 녹음 장치로 전환하려면 프로필을 추가하십시오.</value>
+    <value>특정 응용 프로그램이 시작되거나 집중될 때 특정 재생 또는 녹음 장치로 전환하려면 프로필을 추가하세요.</value>
   </data>
   <data name="profile.error.registerHotkeys" xml:space="preserve">
     <value>다음 프로필에 대한 단축키를 등록할 수 없습니다: {0}</value>
@@ -356,7 +356,7 @@
     <value>프로필</value>
   </data>
   <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
-    <value>응용프로그램이 감지되면 SoundSwitch는 현재 기본 장치도 변경됩니다.</value>
+    <value>응용 프로그램이 감지되면 SoundSwitch는 현재 기본 장치도 변경됩니다.</value>
   </data>
   <data name="profile.defaultDevice.checkbox" xml:space="preserve">
     <value>기본 장치도 전환</value>
@@ -380,7 +380,7 @@
     <value>Steam Big Picture</value>
   </data>
   <data name="profile.trigger.process" xml:space="preserve">
-    <value>응용프로그램 경로</value>
+    <value>응용 프로그램 경로</value>
   </data>
   <data name="profile.notifyOnActivation" xml:space="preserve">
     <value>프로필이 트리거될 때 알림</value>
@@ -401,7 +401,7 @@
     <value>편집</value>
   </data>
   <data name="profile.trigger.uwp.desc" xml:space="preserve">
-    <value>Windows 스토어를 통해 설치된 응용프로그램의 이름을 입력합니다. Netflix, Amazon Prime video 등…</value>
+    <value>Windows 스토어를 통해 설치된 응용 프로그램의 이름을 입력합니다. Netflix, Amazon Prime video 등…</value>
   </data>
   <data name="profile.error.window" xml:space="preserve">
     <value>이미 이 창 이름이 있는 프로필이 있습니다: {0}.</value>
@@ -415,7 +415,7 @@
   <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
     <value>{0}을(를) 사용하도록 설정해야 합니다.
 
-응용프로그램이 닫힐 때 시스템 상태를 복원합니다.</value>
+응용 프로그램이 닫힐 때 시스템 상태를 복원합니다.</value>
   </data>
   <data name="usePrimaryScreen" xml:space="preserve">
     <value>항상 기본 화면 사용</value>
@@ -445,7 +445,7 @@
     <value>기본 통신 장치</value>
   </data>
   <data name="profile.trigger.process.desc" xml:space="preserve">
-    <value>선택한 응용프로그램이 전경에 있을 때 프로필 활성화</value>
+    <value>선택한 응용 프로그램이 전경에 있을 때 프로필 활성화</value>
   </data>
   <data name="profile.trigger.window.desc" xml:space="preserve">
     <value>전경 프로그램에 다음 문자가 포함된 경우 프로필 활성화</value>
@@ -460,7 +460,7 @@
     <value>음소거 전환</value>
   </data>
   <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
-    <value>이 트리거는 트레이 아이콘 메뉴에 프로필을 표시합니다. 프로필을 보려면 시스템 아이콘을 마우스 왼쪽 단추로 클릭하십시오.</value>
+    <value>이 트리거는 트레이 아이콘 메뉴에 프로필을 표시합니다. 프로필을 보려면 시스템 아이콘을 마우스 왼쪽 단추로 클릭하세요.</value>
   </data>
   <data name="profile.trigger.trayMenu" xml:space="preserve">
     <value>앱 메뉴에서</value>
