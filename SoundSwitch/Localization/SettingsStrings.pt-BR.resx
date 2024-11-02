@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -401,7 +401,7 @@ Restaura o estado do sistema quando o aplicativo é fechado.</value>
     <value>Não foi possível registrar o atalho para os seguintes perfis: {0}</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
-    <value>Adiciona um perfil para mudar para um certo dispositivo de reprodução ou gravação, quando um aplicativo específico é iniciado ou focado.</value>
+    <value>Adiciona um perfil para mudar para um certo dispositivo de reprodução ou gravação, quando um aplicativo específico é iniciado ou focado. Addicionalmente você pode especificar o seu próprio tecla de atalho para uma combinação específica pra um despositivo.</value>
   </data>
   <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
     <value>Você precisa definir um dispositivo de reprodução ou gravação.</value>
@@ -527,5 +527,29 @@ Ambos: Mudar quando qualquer tipo de dispositivo é alterado.</value>
   </data>
   <data name="resetAudioDevices" xml:space="preserve">
     <value>Redefinir áudio por aplicativo</value>
+  </data>
+  <data name="audioFileNotFound.caption" xml:space="preserve">
+    <value>Arquivo de áudio não encountrado</value>
+  </data>
+  <data name="keepVolume.tooltip" xml:space="preserve">
+    <value>Mentem o mesmo nível de volume ao trocar de dispositivo</value>
+  </data>
+  <data name="telemetry.tooltip" xml:space="preserve">
+    <value>Colete anonimamente qual versão do SoundSwitch que está em uso. Somente compartilhado com o desenvolvedor do SoundSwitch.</value>
+  </data>
+  <data name="quickMenu.tooltip" xml:space="preserve">
+    <value>Mostra um menu rapido como a lingua no Windows quando usando uma tecla atalho</value>
+  </data>
+  <data name="devices.autoAddNewDevice" xml:space="preserve">
+    <value>Automaticamente selecione novo dispositivos</value>
+  </data>
+  <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
+    <value>Automaticamente adicione um novo dispositivo para a lista selecionado quando está conectado para o computado</value>
+  </data>
+  <data name="notification.single" xml:space="preserve">
+    <value>Só um banner</value>
+  </data>
+  <data name="notification.single.tooltip" xml:space="preserve">
+    <value>Só mostra um banner cada vez e substitui o conteúdo dele.</value>
   </data>
 </root>
