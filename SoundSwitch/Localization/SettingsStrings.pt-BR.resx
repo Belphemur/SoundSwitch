@@ -416,7 +416,7 @@ Restaura o estado do sistema quando o aplicativo é fechado.</value>
     <value>Este aplicativo {0} já possui um perfil vinculado.</value>
   </data>
   <data name="profile.error.hotkey" xml:space="preserve">
-    <value>Este atalho [0} já está registrado.</value>
+    <value>Este atalho {0} já está registrado.</value>
   </data>
   <data name="profile.name" xml:space="preserve">
     <value>Nome</value>
