@@ -1,0 +1,84 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29509.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoundSwitch", "SoundSwitch\SoundSwitch.csproj", "{A17ECFE0-C4E2-4410-839A-14DF8C11428D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoundSwitch.Audio.Manager", "SoundSwitch.Audio.Manager\SoundSwitch.Audio.Manager.csproj", "{B4F7987E-A5FA-45B1-9AE4-5E40144FFC54}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoundSwitch.Common", "SoundSwitch.Common\SoundSwitch.Common.csproj", "{45A39BFC-7B67-46F2-A6F2-59BF82B350A4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoundSwitch.Tests", "SoundSwitch.Tests\SoundSwitch.Tests.csproj", "{997DAB74-B16F-449D-82ED-5BD966C0E4DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundSwitch.UI.Menu", "SoundSwitch.UI.Menu\SoundSwitch.UI.Menu.csproj", "{EAF89214-E434-4FC0-A928-E6DB1D9FBF26}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundSwitch.Audio.Manager.Tests", "SoundSwitch.Audio.Manager.Tests\SoundSwitch.Audio.Manager.Tests.csproj", "{2B15926A-26C1-4F6C-A6B4-260A5CCC84A2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Beta|Any CPU = Beta|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Nightly|Any CPU = Nightly|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A17ECFE0-C4E2-4410-839A-14DF8C11428D}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
+		{A17ECFE0-C4E2-4410-839A-14DF8C11428D}.Beta|Any CPU.Build.0 = Beta|Any CPU
+		{A17ECFE0-C4E2-4410-839A-14DF8C11428D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A17ECFE0-C4E2-4410-839A-14DF8C11428D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A17ECFE0-C4E2-4410-839A-14DF8C11428D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A17ECFE0-C4E2-4410-839A-14DF8C11428D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A17ECFE0-C4E2-4410-839A-14DF8C11428D}.Nightly|Any CPU.ActiveCfg = Nightly|Any CPU
+		{A17ECFE0-C4E2-4410-839A-14DF8C11428D}.Nightly|Any CPU.Build.0 = Nightly|Any CPU
+		{B4F7987E-A5FA-45B1-9AE4-5E40144FFC54}.Beta|Any CPU.ActiveCfg = Release|Any CPU
+		{B4F7987E-A5FA-45B1-9AE4-5E40144FFC54}.Beta|Any CPU.Build.0 = Release|Any CPU
+		{B4F7987E-A5FA-45B1-9AE4-5E40144FFC54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4F7987E-A5FA-45B1-9AE4-5E40144FFC54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4F7987E-A5FA-45B1-9AE4-5E40144FFC54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4F7987E-A5FA-45B1-9AE4-5E40144FFC54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4F7987E-A5FA-45B1-9AE4-5E40144FFC54}.Nightly|Any CPU.ActiveCfg = Nightly|Any CPU
+		{B4F7987E-A5FA-45B1-9AE4-5E40144FFC54}.Nightly|Any CPU.Build.0 = Nightly|Any CPU
+		{45A39BFC-7B67-46F2-A6F2-59BF82B350A4}.Beta|Any CPU.ActiveCfg = Release|Any CPU
+		{45A39BFC-7B67-46F2-A6F2-59BF82B350A4}.Beta|Any CPU.Build.0 = Release|Any CPU
+		{45A39BFC-7B67-46F2-A6F2-59BF82B350A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45A39BFC-7B67-46F2-A6F2-59BF82B350A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45A39BFC-7B67-46F2-A6F2-59BF82B350A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45A39BFC-7B67-46F2-A6F2-59BF82B350A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45A39BFC-7B67-46F2-A6F2-59BF82B350A4}.Nightly|Any CPU.ActiveCfg = Nightly|Any CPU
+		{45A39BFC-7B67-46F2-A6F2-59BF82B350A4}.Nightly|Any CPU.Build.0 = Nightly|Any CPU
+		{997DAB74-B16F-449D-82ED-5BD966C0E4DC}.Beta|Any CPU.ActiveCfg = Debug|Any CPU
+		{997DAB74-B16F-449D-82ED-5BD966C0E4DC}.Beta|Any CPU.Build.0 = Debug|Any CPU
+		{997DAB74-B16F-449D-82ED-5BD966C0E4DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{997DAB74-B16F-449D-82ED-5BD966C0E4DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{997DAB74-B16F-449D-82ED-5BD966C0E4DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{997DAB74-B16F-449D-82ED-5BD966C0E4DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{997DAB74-B16F-449D-82ED-5BD966C0E4DC}.Nightly|Any CPU.ActiveCfg = Nightly|Any CPU
+		{997DAB74-B16F-449D-82ED-5BD966C0E4DC}.Nightly|Any CPU.Build.0 = Nightly|Any CPU
+		{EAF89214-E434-4FC0-A928-E6DB1D9FBF26}.Beta|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAF89214-E434-4FC0-A928-E6DB1D9FBF26}.Beta|Any CPU.Build.0 = Debug|Any CPU
+		{EAF89214-E434-4FC0-A928-E6DB1D9FBF26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAF89214-E434-4FC0-A928-E6DB1D9FBF26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAF89214-E434-4FC0-A928-E6DB1D9FBF26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAF89214-E434-4FC0-A928-E6DB1D9FBF26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAF89214-E434-4FC0-A928-E6DB1D9FBF26}.Nightly|Any CPU.ActiveCfg = Nightly|Any CPU
+		{EAF89214-E434-4FC0-A928-E6DB1D9FBF26}.Nightly|Any CPU.Build.0 = Nightly|Any CPU
+		{2B15926A-26C1-4F6C-A6B4-260A5CCC84A2}.Beta|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B15926A-26C1-4F6C-A6B4-260A5CCC84A2}.Beta|Any CPU.Build.0 = Debug|Any CPU
+		{2B15926A-26C1-4F6C-A6B4-260A5CCC84A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B15926A-26C1-4F6C-A6B4-260A5CCC84A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B15926A-26C1-4F6C-A6B4-260A5CCC84A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B15926A-26C1-4F6C-A6B4-260A5CCC84A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B15926A-26C1-4F6C-A6B4-260A5CCC84A2}.Nightly|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B15926A-26C1-4F6C-A6B4-260A5CCC84A2}.Nightly|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A8DB62D4-9BA4-4968-B860-42DDC24EF79F}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
+EndGlobal

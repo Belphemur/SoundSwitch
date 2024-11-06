@@ -1,0 +1,25 @@
+﻿<Solution>
+  <Configurations>
+    <BuildType Name="Beta" />
+    <BuildType Name="Debug" />
+    <BuildType Name="Nightly" />
+    <BuildType Name="Release" />
+  </Configurations>
+  <Project Path="SoundSwitch.Audio.Manager.Tests\SoundSwitch.Audio.Manager.Tests.csproj" Type="Classic C#">
+    <Configuration Solution="Beta|Any CPU" Project="Debug|Any CPU" />
+    <Configuration Solution="Nightly|Any CPU" Project="Debug|Any CPU" />
+  </Project>
+  <Project Path="SoundSwitch.Audio.Manager\SoundSwitch.Audio.Manager.csproj">
+    <Configuration Solution="Beta|Any CPU" Project="Release|Any CPU" />
+  </Project>
+  <Project Path="SoundSwitch.Common\SoundSwitch.Common.csproj">
+    <Configuration Solution="Beta|Any CPU" Project="Release|Any CPU" />
+  </Project>
+  <Project Path="SoundSwitch.Tests\SoundSwitch.Tests.csproj">
+    <Configuration Solution="Beta|Any CPU" Project="Debug|Any CPU" />
+  </Project>
+  <Project Path="SoundSwitch.UI.Menu\SoundSwitch.UI.Menu.csproj" Type="Classic C#">
+    <Configuration Solution="Beta|Any CPU" Project="Debug|Any CPU" />
+  </Project>
+  <Project Path="SoundSwitch\SoundSwitch.csproj" />
+</Solution>
