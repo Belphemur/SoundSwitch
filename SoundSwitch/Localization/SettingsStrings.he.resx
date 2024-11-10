@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -533,5 +533,62 @@
   </data>
   <data name="resetAudioDevices" xml:space="preserve">
     <value>איפוס שמע לפי יישום</value>
+  </data>
+  <data name="devices.autoAddNewDevice" xml:space="preserve">
+    <value>לבחור התקנים חדשים אוטומטית</value>
+  </data>
+  <data name="quickMenu.tooltip" xml:space="preserve">
+    <value>הצגת תפריט מהיר כמו השפה של Windows בעת שימוש במקש קיצור</value>
+  </data>
+  <data name="keepVolume.tooltip" xml:space="preserve">
+    <value>לשמור על אותה עוצמת שמע בעת החלפה בין התקנים</value>
+  </data>
+  <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
+    <value>הוספת התקנים חדשים אוטומטית לרשימה הנבחרת כשהם מחוברים למחשב</value>
+  </data>
+  <data name="resetAudioDevices.desc" xml:space="preserve">
+    <value>איפוס הקצאת התקן השמע לתוכניות מסוימות ב־Windows אם התקני שמע לא מוקצים מחדש לתוכניות בעת מעבר בין התקנים.</value>
+  </data>
+  <data name="exportLogFiles.desc" xml:space="preserve">
+    <value>ייצוא קובצי היומן לארכיון zip לסיוע בפתרון תקלות או דרך דיוני העזרה או ב־Discord הקהילתי.</value>
+  </data>
+  <data name="audioFileNotFound.caption" xml:space="preserve">
+    <value>לא נמצא קובץ שמע</value>
+  </data>
+  <data name="telemetry.tooltip" xml:space="preserve">
+    <value>איסוף אלמוני של גרסת SoundSwitch בשימוש. משותף רק עם המפתחים של SoundSwitch.</value>
+  </data>
+  <data name="link.community" xml:space="preserve">
+    <value>ה־Discord הקהילתי</value>
+  </data>
+  <data name="link.donate" xml:space="preserve">
+    <value>תרומה</value>
+  </data>
+  <data name="link.help" xml:space="preserve">
+    <value>דיון עזרה</value>
+  </data>
+  <data name="buttonReset" xml:space="preserve">
+    <value>איפוס</value>
+  </data>
+  <data name="exportLogFiles" xml:space="preserve">
+    <value>ייצוא קובצי יומן</value>
+  </data>
+  <data name="buttonExport" xml:space="preserve">
+    <value>ייצוא</value>
+  </data>
+  <data name="troubleshooting" xml:space="preserve">
+    <value>פתרון תקלות</value>
+  </data>
+  <data name="troubleshooting.desc" xml:space="preserve">
+    <value>לקבלת עזרה או פתרון תקלות עם SoundSwitch, אפשר לבקר בקישור לדיון העזרה או ב־Discord הקהילתי או לסייע בתמיכה על ידי ביקור הקישור התרומה שלהלן.</value>
+  </data>
+  <data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>בו־זמנית</value>
+  </data>
+  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+    <value>כמה זמן תישאר הכרזה על המסך בשניות.</value>
+  </data>
+  <data name="position.option.center" xml:space="preserve">
+    <value>מרכז</value>
   </data>
 </root>
