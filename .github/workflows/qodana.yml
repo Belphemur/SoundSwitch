@@ -22,6 +22,6 @@ jobs:
       - name: Setup dotnet
         uses: actions/setup-dotnet@v4
       - name: 'Qodana Scan'
-        uses: JetBrains/qodana-action@v2024.2
+        uses: JetBrains/qodana-action@v2024.3
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
