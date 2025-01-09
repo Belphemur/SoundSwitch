@@ -251,7 +251,7 @@ Banner: Använder en anpassad ram som alltid är överst, användbar i spel.</va
     <value>Lägg till</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
-    <value>Lägg till en profil för att ändra till en viss uppspelnings- eller inspelningsenhet när en specifik applikation startas eller är i fokus.</value>
+    <value>Lägg till en profil för att byta till en viss uppspelnings- eller inspelningsenhet, när en specifik applikation startas eller fokuseras. Du kan också ställa in din egen snabbtangent för specifik enhet combo.</value>
   </data>
   <data name="language" xml:space="preserve">
     <value>Språk</value>
@@ -320,7 +320,7 @@ Inspelning: När en inspelningsenhet ändras.
 Båda: Ändra när någon typ av enhet ändras.</value>
   </data>
   <data name="notification.option.banner" xml:space="preserve">
-    <value>Banner meddelanden</value>
+    <value>Banner-meddelanden</value>
   </data>
   <data name="audioFileNotFoundCaption" xml:space="preserve">
     <value>Ljudfilen hittades inte</value>
@@ -445,7 +445,7 @@ Båda: Ändra när någon typ av enhet ändras.</value>
     <value>Tillgängliga utlösare</value>
   </data>
   <data name="profile.trigger.window.desc" xml:space="preserve">
-    <value>Aktivera profilen om det förgrundsprogrammet innehåller följande tecken</value>
+    <value>Aktivera profilen om förgrundsprogrammet innehåller följande tecken</value>
   </data>
   <data name="profile.trigger.hotkey.desc" xml:space="preserve">
     <value>Snabbtangenter används för att aktivera profilen. Om du använder samma snabbtangent kan du växla mellan profilerna.</value>
@@ -520,7 +520,7 @@ Båda: Ändra när någon typ av enhet ändras.</value>
     <value>Nedre höger</value>
   </data>
   <data name="position.tooltip" xml:space="preserve">
-    <value>Ställ in positionen för banneraviseringen.</value>
+    <value>Ange positionen för banner-meddelande.</value>
   </data>
   <data name="none" xml:space="preserve">
     <value>Ingen</value>
@@ -530,5 +530,62 @@ Båda: Ändra när någon typ av enhet ändras.</value>
   </data>
   <data name="audioFileNotFound.caption" xml:space="preserve">
     <value>Ljudfil ej hittad</value>
+  </data>
+  <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
+    <value>Lägg automatiskt till nya enheter i listan när de är anslutna till datorn</value>
+  </data>
+  <data name="buttonExport" xml:space="preserve">
+    <value>Exportera</value>
+  </data>
+  <data name="telemetry.tooltip" xml:space="preserve">
+    <value>Samla anonymt in vilken version av SoundSwitch som används. Delas endast med utvecklaren av SoundSwitch.</value>
+  </data>
+  <data name="quickMenu.tooltip" xml:space="preserve">
+    <value>Visa en snabbmeny liknande den Windows har vid språkbyte när du använder en snabbtangent</value>
+  </data>
+  <data name="keepVolume.tooltip" xml:space="preserve">
+    <value>Behåll samma volymnivå när du byter enheter</value>
+  </data>
+  <data name="devices.autoAddNewDevice" xml:space="preserve">
+    <value>Välj nya enheter automatiskt</value>
+  </data>
+  <data name="link.community" xml:space="preserve">
+    <value>Community Discord</value>
+  </data>
+  <data name="link.donate" xml:space="preserve">
+    <value>Donera</value>
+  </data>
+  <data name="link.help" xml:space="preserve">
+    <value>Hjälpdiskussion</value>
+  </data>
+  <data name="resetAudioDevices.desc" xml:space="preserve">
+    <value>Återställ ljudenhetstilldelningen till specifika program i Windows om ljudenheter inte återställts till programmen när du byter enheter.</value>
+  </data>
+  <data name="buttonReset" xml:space="preserve">
+    <value>Återställa</value>
+  </data>
+  <data name="exportLogFiles" xml:space="preserve">
+    <value>Exportera loggfiler</value>
+  </data>
+  <data name="exportLogFiles.desc" xml:space="preserve">
+    <value>Exportera alla loggfiler i ett zip-arkiv för ytterligare felsökning i antingen Hjälpdiskussioner eller Community Discord.</value>
+  </data>
+  <data name="troubleshooting" xml:space="preserve">
+    <value>Felsökning</value>
+  </data>
+  <data name="troubleshooting.desc" xml:space="preserve">
+    <value>Om du behöver någon hjälp eller ytterligare felsökning med SoundSwitch kan du besöka länken Hjälpdiskussion eller Community Discord eller hjälpa till att stöda oss genom att besöka länken Donera nedan.</value>
+  </data>
+  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+    <value>Hur länge bannern visas på skärmen i sekunder.</value>
+  </data>
+  <data name="notification.single" xml:space="preserve">
+    <value>Endast en banner</value>
+  </data>
+  <data name="notification.single.tooltip" xml:space="preserve">
+    <value>Visa endast en banner åt gången och ersätt innehållet.</value>
+  </data>
+  <data name="position.option.center" xml:space="preserve">
+    <value>Centrerat</value>
   </data>
 </root>
