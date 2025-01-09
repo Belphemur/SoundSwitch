@@ -529,7 +529,7 @@
     <value>Скинути звук для кожної програми</value>
   </data>
   <data name="quickMenu.tooltip" xml:space="preserve">
-    <value>Відобразити швидке меню (на кшталт Мова Windows) за допомогою гарячих клавіш.</value>
+    <value>Відобразити швидке меню (на кшталт Мова Windows) за допомогою гарячих клавіш</value>
   </data>
   <data name="audioFileNotFound.caption" xml:space="preserve">
     <value>Аудіо файл не знайдено</value>
