@@ -588,4 +588,7 @@ Båda: Ändra när någon typ av enhet ändras.</value>
   <data name="position.option.center" xml:space="preserve">
     <value>Centrerat</value>
   </data>
+  <data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>Visningstid</value>
+  </data>
 </root>
