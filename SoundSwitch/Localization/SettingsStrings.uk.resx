@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -428,7 +428,7 @@
 Банер: використовує спеціальну рамку, що завжди знаходиться зверху, корисно для використання під час гри.</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
-    <value>Додайте профіль, щоб перемикатися на певний пристрій відтворення або запису, коли певна програма запускається або розгортається.</value>
+    <value>Додайте профіль, щоб перемикатися на певний пристрій відтворення або запису, коли певна програма запускається або розгортається. Ви також можете створити власну комбінацію клавіш для конкретної дії з пристроєм.</value>
   </data>
   <data name="languageRestartRequired" xml:space="preserve">
     <value>Мову буде змінено піля перезапуску SoundSwitch.
@@ -527,5 +527,14 @@
   </data>
   <data name="resetAudioDevices" xml:space="preserve">
     <value>Скинути звук для кожної програми</value>
+  </data>
+  <data name="quickMenu.tooltip" xml:space="preserve">
+    <value>Відобразити швидке меню (на кшталт Мова Windows) за допомогою гарячих клавіш.</value>
+  </data>
+  <data name="audioFileNotFound.caption" xml:space="preserve">
+    <value>Аудіо файл не знайдено</value>
+  </data>
+  <data name="telemetry.tooltip" xml:space="preserve">
+    <value>Зирає анонімну інформацію щодо версії що використовується. Ця інформаця доступна виключно розробнику SoundSwitch.</value>
   </data>
 </root>
