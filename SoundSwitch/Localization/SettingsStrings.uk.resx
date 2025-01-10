@@ -574,12 +574,21 @@
     <value>Усунення проблем</value>
   </data>
   <data name="troubleshooting.desc" xml:space="preserve">
-    <value>Якщо вам потрібна допомога або подальша усунення неполадок з SoundSwitch, ви можете відвідати посилання "Допомога та Обговорення" або "Спільнота Discord", або допомогти нам, відвідавши посилання «Донат».</value>
+    <value>Якщо вам потрібна допомога або подальше усунення неполадок з SoundSwitch, ви можете відвідати посилання "Допомога та Обговорення" або "Спільнота Discord", або допомогти нам, відвідавши посилання «Донат».</value>
   </data>
   <data name="notification.single" xml:space="preserve">
     <value>Тільки один банер</value>
   </data>
   <data name="notification.single.tooltip" xml:space="preserve">
     <value>Показувати одночасно тільки один банер та заміняти його вміст.</value>
+  </data>
+  <data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>Час відображення</value>
+  </data>
+  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+    <value>Скільки буде відображатися банер на екрані в секундах.</value>
+  </data>
+  <data name="position.option.center" xml:space="preserve">
+    <value>По центру</value>
   </data>
 </root>
