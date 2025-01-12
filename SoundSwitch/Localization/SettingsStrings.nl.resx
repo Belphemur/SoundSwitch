@@ -445,4 +445,10 @@ Herstel systeemstatus wanneer de applicatie wordt gesloten.</value>
   <data name="position.option.topCenter" xml:space="preserve">
     <value>Boven Midden</value>
   </data>
+  <data name="audioFileNotFound.caption" xml:space="preserve">
+    <value>Geluidsbestand niet gevonden</value>
+  </data>
+  <data name="keepVolume.tooltip" xml:space="preserve">
+    <value>Behoud hetzelfde volume niveau wanneer er van apparaten wordt gewisseld.</value>
+  </data>
 </root>
