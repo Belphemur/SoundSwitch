@@ -50,7 +50,7 @@
     <PackageReference Include="Markdig" Version="0.40.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="NuGet.Versioning" Version="6.12.1" />
-    <PackageReference Include="Polly.Core" Version="8.5.0" />
+    <PackageReference Include="Polly.Core" Version="8.5.1" />
     <PackageReference Include="RailSharp" Version="1.0.0" />
     <PackageReference Include="Sentry.Serilog" Version="5.0.1" />
     <PackageReference Include="Serilog" Version="4.2.0" />
