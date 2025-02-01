@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <UseWindowsForms>true</UseWindowsForms>
-        <TargetFramework>net8.0-windows</TargetFramework>
+        <TargetFramework>net9.0-windows</TargetFramework>
         <Nullable>enable</Nullable>
         <Configurations>Debug;Release;Nightly</Configurations>
         <Platforms>AnyCPU</Platforms>
