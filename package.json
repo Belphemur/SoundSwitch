@@ -101,7 +101,8 @@
         "@semantic-release/github",
         {
           "draftRelease": true,
-          "releaseNameTemplate": "SoundSwitch v<%= nextRelease.version %>"
+          "releaseNameTemplate": "SoundSwitch v<%= nextRelease.version %>",
+          "successCommentCondition": "<% return issue.user.type !== 'Bot'; %>"
         }
       ]
     ]
