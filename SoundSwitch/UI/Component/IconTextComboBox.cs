@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace SoundSwitch.UI.Component
@@ -45,6 +46,7 @@ namespace SoundSwitch.UI.Component
             ValueMember = nameof(DropDownItem.Tag);
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new DropDownItem[] DataSource
         {
             get => (DropDownItem[]) base.DataSource;

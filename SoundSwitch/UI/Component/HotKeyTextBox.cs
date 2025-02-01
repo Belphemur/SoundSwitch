@@ -33,6 +33,7 @@ namespace SoundSwitch.UI.Component
         public event EventHandler<Event> HotKeyChanged;
 
         [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool ListenToHotkey
         {
             get => _listenToHotkey;
