@@ -50,11 +50,11 @@ namespace SoundSwitch.Framework.Profile
         public IReadOnlyCollection<Profile> Profiles => AppConfigs.Configuration.Profiles;
 
         public ProfileManager(WindowMonitor windowMonitor,
-                              AudioSwitcher audioSwitcher,
-                              IAudioDeviceLister activeDeviceLister,
-                              ShowError showError,
-                              TriggerFactory triggerFactory,
-                              NotificationManager.NotificationManager notificationManager)
+            AudioSwitcher audioSwitcher,
+            IAudioDeviceLister activeDeviceLister,
+            ShowError showError,
+            TriggerFactory triggerFactory,
+            NotificationManager.NotificationManager notificationManager)
         {
             _windowMonitor = windowMonitor;
             _audioSwitcher = audioSwitcher;
@@ -138,18 +138,18 @@ namespace SoundSwitch.Framework.Profile
             try
             {
                 errors = AppConfigs.Configuration.Profiles.Select(profile => (Profile: profile, Failure: ValidateProfile(profile, true).UnwrapFailure()))
-                                   .Select(tuple =>
-                                   {
-                                       if (tuple.Failure == null)
-                                       {
-                                           RegisterTriggers(tuple.Profile, true);
-                                       }
+                    .Select(tuple =>
+                    {
+                        if (tuple.Failure == null)
+                        {
+                            RegisterTriggers(tuple.Profile, true);
+                        }
 
-                                       return tuple;
-                                   })
-                                   .Where(tuple => tuple.Failure != null)
-                                   .Select(tuple => new ProfileError(tuple.Profile, tuple.Failure))
-                                   .ToArray();
+                        return tuple;
+                    })
+                    .Where(tuple => tuple.Failure != null)
+                    .Select(tuple => new ProfileError(tuple.Profile, tuple.Failure))
+                    .ToArray();
 
                 RegisterEvents();
                 InitializeProfileExistingProcess();
@@ -341,8 +341,9 @@ namespace SoundSwitch.Framework.Profile
             {
                 return false;
             }
-            
-            if(@event.WindowName.ToLowerInvariant().Contains("big picture") && @event.WindowClass == "SDL_app")
+
+            var windowNameLowerCase = @event.WindowName.ToLowerInvariant();
+            if (@event.WindowClass == "SDL_app" && windowNameLowerCase.Contains("big") && windowNameLowerCase.Contains("picture"))
             {
                 return true;
             }
@@ -418,16 +419,16 @@ namespace SoundSwitch.Framework.Profile
             var triggers = Profiles.SelectMany(profile => profile.Triggers).GroupBy(trigger => trigger.Type).ToDictionary(grouping => grouping.Key, grouping => grouping.Count());
             var triggerFactory = new TriggerFactory();
             return triggerFactory.AllImplementations
-                                 .Where(pair =>
-                                 {
-                                     if (triggers.TryGetValue(pair.Key, out var count))
-                                     {
-                                         return pair.Value.MaxGlobalOccurence < count;
-                                     }
+                .Where(pair =>
+                {
+                    if (triggers.TryGetValue(pair.Key, out var count))
+                    {
+                        return pair.Value.MaxGlobalOccurence < count;
+                    }
 
-                                     return true;
-                                 })
-                                 .Select(pair => pair.Value);
+                    return true;
+                })
+                .Select(pair => pair.Value);
         }
 
         /// <summary>
@@ -453,18 +454,18 @@ namespace SoundSwitch.Framework.Profile
         {
             DeleteProfiles(new[] { oldProfile });
             return ValidateProfile(newProfile)
-                   .Map(success =>
-                   {
-                       RegisterTriggers(newProfile);
-                       AppConfigs.Configuration.Profiles.Add(newProfile);
-                       AppConfigs.Configuration.Save();
-                       return success;
-                   })
-                   .Catch(s =>
-                   {
-                       AddProfile(oldProfile);
-                       return s;
-                   });
+                .Map(success =>
+                {
+                    RegisterTriggers(newProfile);
+                    AppConfigs.Configuration.Profiles.Add(newProfile);
+                    AppConfigs.Configuration.Save();
+                    return success;
+                })
+                .Catch(s =>
+                {
+                    AddProfile(oldProfile);
+                    return s;
+                });
         }
 
         private Result<string, VoidSuccess> ValidateProfile(Profile profile, bool init = false)
