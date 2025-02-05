@@ -18,13 +18,13 @@
     <Content Include="Resources\defaultSpeakers.ico" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="NAudio" Version="2.2.1" />
-    <PackageReference Include="NAudio.Wasapi" Version="22.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Serilog" Version="4.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.1" />
-    <PackageReference Include="System.Drawing.Common" Version="9.0.1" />
-    <PackageReference Include="System.Resources.Extensions" Version="9.0.1" />
+    <PackageReference Include="NAudio" />
+    <PackageReference Include="NAudio.Wasapi" />
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="Serilog" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" />
+    <PackageReference Include="System.Drawing.Common" />
+    <PackageReference Include="System.Resources.Extensions" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Serilog, Version=4.1.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10">
