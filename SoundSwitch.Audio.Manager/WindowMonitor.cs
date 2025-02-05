@@ -82,8 +82,18 @@ namespace SoundSwitch.Audio.Manager
                             Log.Information("Foreground = SoundSwitch, don't save.");
                             return;
                         }
+
                         var process = Process.GetProcessById((int)processId);
-                        var processName = process.MainModule?.FileName ?? "N/A";
+                        var processName = "N/A";
+                        try
+                        {
+                            processName = process.MainModule?.FileName ?? "N/A";
+                        }
+                        catch (Exception)
+                        {
+                            // ignored
+                        }
+
                         ForegroundChanged?.Invoke(this, new Event(processId, processName, windowText, windowClass, hwnd));
                     }
                     catch (Exception)
@@ -118,6 +128,15 @@ namespace SoundSwitch.Audio.Manager
             var wndClass = "";
             try
             {
+                User32.NativeMethods.GetWindowThreadProcessId(hwnd, out processId);
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+
+            try
+            {
                 wndText = User32.GetWindowText(hwnd);
             }
             catch (Exception)
@@ -133,16 +152,6 @@ namespace SoundSwitch.Audio.Manager
             {
                 // ignored
             }
-
-            try
-            {
-                User32.NativeMethods.GetWindowThreadProcessId(hwnd, out processId);
-            }
-            catch (Exception)
-            {
-                // ignored
-            }
-
 
             return (processId, wndText, wndClass);
         }
