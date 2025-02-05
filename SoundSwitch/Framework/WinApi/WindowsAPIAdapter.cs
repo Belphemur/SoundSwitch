@@ -1,17 +1,17 @@
 ﻿/********************************************************************
-* Copyright (C) 2015 Jeroen Pelgrims
-* Copyright (C) 2015-2017 Antoine Aflalo
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public License
-* as published by the Free Software Foundation; either version 2
-* of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-********************************************************************/
+ * Copyright (C) 2015 Jeroen Pelgrims
+ * Copyright (C) 2015-2017 Antoine Aflalo
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ ********************************************************************/
 
 using System;
 using System.Collections.Generic;
@@ -22,7 +22,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using Serilog;
-using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Com.User;
 using SoundSwitch.Framework.WinApi.Keyboard;
 
@@ -292,7 +291,6 @@ namespace SoundSwitch.Framework.WinApi
                 {
                     case Interop.ShellEvents.HSHELL_WINDOWDESTROYED:
                         var hwnd = User32.NativeMethods.HWND.Cast(m.LParam);
-                        var (_, windowText, windowClass) = WindowMonitor.ProcessWindowInformation(hwnd);
                         Task.Factory.StartNew(() => { WindowDestroyed?.Invoke(this, new WindowDestroyedEvent(hwnd)); });
                         break;
                 }
