@@ -20,7 +20,7 @@
     <PackageVersion Include="NuGet.Versioning" Version="6.12.1" />
     <PackageVersion Include="NUnit" Version="4.3.2" />
     <PackageVersion Include="NUnit3TestAdapter" Version="4.6.0" />
-    <PackageVersion Include="Polly.Core" Version="8.5.1" />
+    <PackageVersion Include="Polly.Core" Version="8.5.2" />
     <PackageVersion Include="RailSharp" Version="1.0.0" />
     <PackageVersion Include="Sentry.Serilog" Version="5.1.0" />
     <PackageVersion Include="Serilog" Version="4.2.0" />
