@@ -1,3 +1,48 @@
+## [6.12.0](https://github.com/Belphemur/SoundSwitch/compare/v6.11.0...v6.12.0) (2025-02-05)
+
+### Languages
+
+* **Arabic:** Translated Settings using Weblate ([f1fc3ff](https://github.com/Belphemur/SoundSwitch/commit/f1fc3ff797feff2a005966e621614e8a2f056b83))
+* **Croatian:** Translated Settings using Weblate ([bbf054b](https://github.com/Belphemur/SoundSwitch/commit/bbf054b6f068b5ad557ef081f7987e5f4daef929))
+* **Croatian:** Translated Settings using Weblate ([29b1c3f](https://github.com/Belphemur/SoundSwitch/commit/29b1c3f314d353a82269970fe8744da2a78ccf3e))
+* **Danish:** Added Tray Icon translation using Weblate ([e86d491](https://github.com/Belphemur/SoundSwitch/commit/e86d491500f5fdb8f776212fc479c2b29b16b920))
+* **Danish:** Added Update Download translation using Weblate ([fa179c9](https://github.com/Belphemur/SoundSwitch/commit/fa179c9a473432f7d12c61ba77943dceef2e7139))
+* **Danish:** Translated Settings using Weblate ([97b7cbd](https://github.com/Belphemur/SoundSwitch/commit/97b7cbd841a12c9d565b6e7f2b8ca59c3e9fb4c6))
+* **Danish:** Translated Settings using Weblate ([f9de1ab](https://github.com/Belphemur/SoundSwitch/commit/f9de1ab58680b299644b0befe570449b8f2e2121))
+* **Danish:** Translated Settings using Weblate ([8e79d8a](https://github.com/Belphemur/SoundSwitch/commit/8e79d8af036d5ea822bfb313f3a2f0dae33cad8a))
+* **Dutch:** Translated Settings using Weblate ([8e1e1be](https://github.com/Belphemur/SoundSwitch/commit/8e1e1be32e6ef848de19069aad1f99e3f2e350e3))
+* **Finnish:** Translated About using Weblate ([15b0003](https://github.com/Belphemur/SoundSwitch/commit/15b0003e11f5b20cfcafed12f2068845a87e85b9))
+* **Greek:** Translated About using Weblate ([9ba7cfb](https://github.com/Belphemur/SoundSwitch/commit/9ba7cfb63b3079ab55583e95b0c49791437df223))
+* **Hebrew:** Translated Settings using Weblate ([c12486c](https://github.com/Belphemur/SoundSwitch/commit/c12486cec92d75e41d17f89e6c801a21329586d3))
+* **Korean:** Translated Settings using Weblate ([dea1edb](https://github.com/Belphemur/SoundSwitch/commit/dea1edbdb5c00f50ae3479321f3b56f28d2060d1))
+* **Korean:** Translated Settings using Weblate ([547b10f](https://github.com/Belphemur/SoundSwitch/commit/547b10f136ff05a37d4c5b02cf2fe7cee7bb2b51))
+* **Portuguese (Brazil):** Translated Settings using Weblate ([f1953c4](https://github.com/Belphemur/SoundSwitch/commit/f1953c42df2bc41b82f1ca176d032eafb1f8e6ba))
+* **Portuguese (Brazil):** Translated Settings using Weblate ([f37ec33](https://github.com/Belphemur/SoundSwitch/commit/f37ec3388491c5f9364d685b7a9948a8f59f79eb))
+* **Russian:** Translated Settings using Weblate ([89ef328](https://github.com/Belphemur/SoundSwitch/commit/89ef3284fd69f1c535654a18986a220dddc8e629))
+* **Russian:** Translated Settings using Weblate ([006d8ec](https://github.com/Belphemur/SoundSwitch/commit/006d8ec6406888dffd41275e82c1067a5a4ffa81))
+* **Spanish:** Translated Settings using Weblate ([409ecd5](https://github.com/Belphemur/SoundSwitch/commit/409ecd5caafa72f2c09594e0b280544f04ce7b3b))
+* **Swedish:** Translated Settings using Weblate ([1595260](https://github.com/Belphemur/SoundSwitch/commit/1595260a9a68c600468bdae60cda0a8375875337))
+* **Swedish:** Translated Settings using Weblate ([101c56d](https://github.com/Belphemur/SoundSwitch/commit/101c56d9ac4a304ef8aec87835989a8869dce067))
+* **Ukrainian:** Translated Settings using Weblate ([29a4254](https://github.com/Belphemur/SoundSwitch/commit/29a4254e5813919182f0d495a409feeef1c0a307))
+* **Ukrainian:** Translated Settings using Weblate ([5ac9654](https://github.com/Belphemur/SoundSwitch/commit/5ac96547486b4cab15782f048be600560fc06220))
+* **Ukrainian:** Translated Settings using Weblate ([8caacba](https://github.com/Belphemur/SoundSwitch/commit/8caacbade53f3477126fc2d627fdfe484cab2cd8))
+* **Ukrainian:** Translated Settings using Weblate ([bd3f44e](https://github.com/Belphemur/SoundSwitch/commit/bd3f44ea2f4ad3b94f493adc79006c71cfb79ed4))
+* **Ukrainian:** Translated Settings using Weblate ([21515db](https://github.com/Belphemur/SoundSwitch/commit/21515dbc932c124c100197f9e20841c8375d7ad3))
+
+### Bug Fixes
+
+* **.NET:** Fix components for .NET 9.0 ([ec45a8e](https://github.com/Belphemur/SoundSwitch/commit/ec45a8ebe6bf928eb86caacce3b17b0697fc0f13))
+* file format ([6ea931e](https://github.com/Belphemur/SoundSwitch/commit/6ea931e223a26ec4d1286ea79430936fde274797))
+* formatting of file ([f633666](https://github.com/Belphemur/SoundSwitch/commit/f6336663ecbb2c10a9163792a6c0e7b0ebf9e0cf))
+* **Fornite:** Fix SoundSwitch compatibility with Fornite ([ea25a25](https://github.com/Belphemur/SoundSwitch/commit/ea25a2545570357d2be34802b9748fada9af33d2)), closes [#1588](https://github.com/Belphemur/SoundSwitch/issues/1588) [#1553](https://github.com/Belphemur/SoundSwitch/issues/1553)
+* **fortnite:** possible fix with Fortnite freeze SoundSwitch ([04ad1ee](https://github.com/Belphemur/SoundSwitch/commit/04ad1eecdc2f3f648a4a774c2de327a1bcb2c643))
+* **profile:steam big picture:** Fix detecting big picture in different languages ([78fc229](https://github.com/Belphemur/SoundSwitch/commit/78fc229d153da1af20efd0c2f2b33fdeafd46858)), closes [#1403](https://github.com/Belphemur/SoundSwitch/issues/1403)
+* **profile:steam big picture:** Fix detecting big picture in most language ([12bd798](https://github.com/Belphemur/SoundSwitch/commit/12bd798178beaf42b8ac533a0a97bb676bb92c72)), closes [#1403](https://github.com/Belphemur/SoundSwitch/issues/1403)
+
+### Features
+
+* **.NET:** move to .NET 9.0 ([53878ab](https://github.com/Belphemur/SoundSwitch/commit/53878ab8576b36daf6d4ccbc4eb830b364fc9c77))
+
 ## [6.11.0](https://github.com/Belphemur/SoundSwitch/compare/v6.10.3...v6.11.0) (2024-06-04)
 
 ### Enhancements
