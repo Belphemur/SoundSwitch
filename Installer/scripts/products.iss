@@ -272,17 +272,10 @@ begin
 	Result := Is64BitInstallMode and (ProcessorArchitecture = paX64);
 end;
 
-function IsIA64: boolean;
-begin
-	Result := Is64BitInstallMode and (ProcessorArchitecture = paIA64);
-end;
-
 function GetString(x86, x64, ia64: String): String;
 begin
 	if IsX64() and (x64 <> '') then begin
 		Result := x64;
-	end else if IsIA64() and (ia64 <> '') then begin
-		Result := ia64;
 	end else begin
 		Result := x86;
 	end;
@@ -292,8 +285,6 @@ function GetArchitectureString(): String;
 begin
 	if IsX64() then begin
 		Result := '_x64';
-	end else if IsIA64() then begin
-		Result := '_ia64';
 	end else begin
 		Result := '';
 	end;
