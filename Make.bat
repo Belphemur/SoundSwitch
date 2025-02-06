@@ -12,7 +12,7 @@ rem
 rem You may run this script without markdown-html,
 rem but a dummy Changelog and README is created then.
 
-setlocal
+setlocal enabledelayedexpansion
 cd /d "%~dp0"
 
 set buildPlatform=Release
@@ -20,20 +20,29 @@ if "%~1" neq "" (
     set buildPlatform=%~1
 )
 
-
 set FILE_DIR=%~dp0
-set FRAMEWORK=net8.0-windows
+
+rem Extract TargetFramework from .csproj using XML parsing
+for /f "delims=" %%a in ('findstr /C:"<TargetFramework>" "%FILE_DIR%SoundSwitch\SoundSwitch.csproj"') do (
+    set "line=%%a"
+    set "line=!line:*<TargetFramework>=!"
+    set "FRAMEWORK=!line:</TargetFramework>=!"
+)
+
+echo Building SoundSwitch %buildPlatform% for %FRAMEWORK%
+
 set ARCH=win-x64
 set BIN_DIR=%FILE_DIR%SoundSwitch\bin\%buildPlatform%\%FRAMEWORK%\%ARCH%\publish
 
 set finalDir=%FILE_DIR%Final
 
-rem Check if required commands exist
-where markdown-html >nul 2>nul
-set /a buildChangelogAndReadme=!%ERRORLEVEL%
-if %buildChangelogAndReadme%==0 (
-    echo markdown-html command not found, building with dummy Changelog and README!
-)
+@REM rem Check if required commands exist
+@REM where markdown-html >nul 2>nul
+@REM set /a buildChangelogAndReadme=!ERRORLEVEL!
+@REM if %buildChangelogAndReadme% == 0 (
+@REM     echo markdown-html command not found, building with dummy Changelog and README!
+@REM )
+set /a buildChangelogAndReadme=1
 
 echo Cleaning build directories
 rmdir /q /s bin >nul 2>nul
@@ -43,16 +52,11 @@ rmdir /q /s Release >nul 2>nul
 rmdir /q /s %finalDir% >nul 2>nul
 mkdir %finalDir% >nul 2>nul
 
-
-
-echo.
-echo Building SoundSwitch %buildPlatform%
-echo.
 echo Build AnyCPU
 dotnet publish -c %buildPlatform% %FILE_DIR%SoundSwitch\SoundSwitch.csproj || (set errorMessage=Build %ARCH% failed & goto ERROR_QUIT)
 echo.
 
-if %buildChangelogAndReadme%==1 (
+if %buildChangelogAndReadme% == 1 (
     echo Generate Changelog
     cmd.exe /c markdown-html CHANGELOG.md -o %finalDir%\Changelog.html > NUL
     echo Generate Terms
@@ -64,7 +68,7 @@ if %buildChangelogAndReadme%==1 (
 ) else (
     echo Generate dummy Changelog
     echo ^<html^>^<body^>^<h1^>Dummy Changelog, markdown-html is required^</h1^>^</body^>^</html^> > %finalDir%\Changelog.html
-    
+
     echo Generate dummy README
     echo ^<html^>^<body^>^<h1^>Dummy README, markdown-html is required^</h1^>^</body^>^</html^> > %finalDir%\Readme.html
 )
@@ -78,15 +82,11 @@ xcopy /y Terms.txt %finalDir% >nul 2>nul
 
 echo Copy Published
 xcopy /y %BIN_DIR% %finalDir% /E/H/C/I >nul 2>nul
-)
-
-rem echo Update Icon
-rem tools\ResourceHacker.exe  -open %finalDir%\SoundSwitch.exe -save %finalDir%\SoundSwitch.exe -action addoverwrite -res SoundSwitch\Resources\Switch-SoundWave.ico -mask ICONGROUP,MAINICON,
 
 echo Build Installer
 rem Run installer compiler script
 call ./Installer/Make-Installer.bat %buildPlatform%
-if not %ERRORLEVEL%==0 (set errorMessage=Make-installer.bat failed or not found & goto ERROR_QUIT)
+if not %ERRORLEVEL% == 0 (set errorMessage=Make-installer.bat failed or not found & goto ERROR_QUIT)
 
 echo.
 echo All operations completed successfully.
