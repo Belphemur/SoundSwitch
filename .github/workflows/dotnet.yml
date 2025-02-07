@@ -181,7 +181,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Sentry Release
-        uses: getsentry/action-release@v1.10.1
+        uses: getsentry/action-release@v1.10.2
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{env.SENTRY_NAME}}
@@ -220,7 +220,7 @@ jobs:
           echo "version=$version" >> $GITHUB_OUTPUT
         id: version
       - name: Sentry Release
-        uses: getsentry/action-release@v1.10.1
+        uses: getsentry/action-release@v1.10.2
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{env.SENTRY_NAME}}
