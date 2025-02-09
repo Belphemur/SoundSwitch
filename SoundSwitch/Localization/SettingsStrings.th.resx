@@ -306,7 +306,7 @@
     <value>รายละเอียด</value>
   </data>
   <data name="profile.trigger.steam.desc" xml:space="preserve">
-    <value>เปิดใช้งานเมื่อตรวจพบ Steam Big Picture (จะคืนค่าสถานะเมื่อปิด Big Picture)</value>
+    <value>เปิดใช้งานเมื่อ Steam Big Picture ถูกตรวจพบ (และจะคืนค่าสถานะเดิมเมื่อปิด Big Picture)</value>
   </data>
   <data name="profile.trigger.process.desc" xml:space="preserve">
     <value>เปิดใช้งานโปรไฟล์เมื่อแอปพลิเคชันที่เลือกทำงานอยู่เบื้องหน้า</value>
@@ -426,5 +426,38 @@
   </data>
   <data name="profile.error.deviceChanged" xml:space="preserve">
     <value>คุณสร้าง Profile แบบบังคับได้อันเดียว</value>
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>ไม่มี</value>
+  </data>
+  <data name="keepVolume" xml:space="preserve">
+    <value>รักษาระดับเสียงให้คงที่เมื่อเปลี่ยนอุปกรณ์</value>
+  </data>
+  <data name="keepVolume.tooltip" xml:space="preserve">
+    <value>รักษาระดับเสียงให้เท่าเดิมเมื่อเปลี่ยนอุปกรณ์</value>
+  </data>
+  <data name="devices.autoAddNewDevice" xml:space="preserve">
+    <value>เลือกอุปกรณ์ใหม่โดยอัตโนมัติ</value>
+  </data>
+  <data name="resetAudioDevices" xml:space="preserve">
+    <value>รีเซ็ตค่าเสียงการแยก App</value>
+  </data>
+  <data name="troubleshooting" xml:space="preserve">
+    <value>การแก้ไขปัญหา</value>
+  </data>
+  <data name="audioFileNotFound.caption" xml:space="preserve">
+    <value>ไม่พบไฟล์เสียง</value>
+  </data>
+  <data name="resetAudioDevices.desc" xml:space="preserve">
+    <value>รีเซ็ตการกำหนดค่าอุปกรณ์เสียงให้กับโปรแกรมที่กำหนดใน Windows ในกรณีที่อุปกรณ์เสียงไม่ได้ถูกกำหนดใหม่ให้กับโปรแกรมเมื่อเปลี่ยนอุปกรณ์</value>
+  </data>
+  <data name="telemetry.tooltip" xml:space="preserve">
+    <value>รวบรวมข้อมูลเวอร์ชันของ SoundSwitch ที่กำลังใช้งานโดยไม่ระบุชื่อ และแชร์เฉพาะกับนักพัฒนาของ SoundSwitch เท่านั้น</value>
+  </data>
+  <data name="quickMenu.tooltip" xml:space="preserve">
+    <value>แสดงเมนูด่วนแบบเดียวกับเมนูเปลี่ยนภาษาของ Windows เมื่อกดปุ่มลัด</value>
+  </data>
+  <data name="troubleshooting.desc" xml:space="preserve">
+    <value>หากคุณต้องการความช่วยเหลือหรือแก้ไขปัญหาเพิ่มเติมเกี่ยวกับ SoundSwitch คุณสามารถเข้าไปที่ลิงก์ Help Discussion หรือ Community Discord หรือสนับสนุนเราได้ผ่านลิงก์ Donate ด้านล่าง</value>
   </data>
 </root>
