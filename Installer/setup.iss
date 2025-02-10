@@ -12,7 +12,7 @@
 
 #define MyAppSetupName 'SoundSwitch'
 #define ExeDir  '..\Final\'
-#define MyAppVersion GetFileVersion('..\Final\SoundSwitch.exe')
+#define MyAppVersion GetVersionNumbersString('..\Final\SoundSwitch.exe')
 
 [Setup]
 AppName={#MyAppSetupName}
@@ -36,7 +36,7 @@ SetupIconFile="..\SoundSwitch\Resources\Switch-SoundWave.ico"
 SolidCompression=yes
 CloseApplications=yes
 Compression=lzma2/ultra64
-LZMANumBlockThreads=2
+LZMANumBlockThreads=3
 
 //SignTool=SoundSwitch
 SignTool=Certum
@@ -52,8 +52,8 @@ RestartApplications=no
 MinVersion=6.1.7601
 PrivilegesRequired=admin
 PrivilegesRequiredOverridesAllowed=commandline dialog
-ArchitecturesAllowed=x64
-ArchitecturesInstallIn64BitMode=x64
+ArchitecturesAllowed=x64compatible
+ArchitecturesInstallIn64BitMode=x64compatible
 
 ;Downloading and installing dependencies will only work if the memo/ready page is enabled (default behaviour)
 DisableReadyPage=no
