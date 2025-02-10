@@ -1,3 +1,24 @@
+## [6.13.0-beta.1](https://github.com/Belphemur/SoundSwitch/compare/v6.12.0...v6.13.0-beta.1) (2025-02-10)
+
+### Enhancements
+
+* **installer:** make installer compatible with ARM64 using compatibility layer ([fc31118](https://github.com/Belphemur/SoundSwitch/commit/fc311187ae154453fa7714e80d110ad8643db894))
+* **ipc:** Be sure two instance of SoundSwitch can communicate. ([118681a](https://github.com/Belphemur/SoundSwitch/commit/118681a9a015e99f1580c6691641c8cecac0c2e5))
+* **Reset Audio:** Bring back shortcut to reset per app audio ([b87f96c](https://github.com/Belphemur/SoundSwitch/commit/b87f96c40cdb5b3b9efb75adf1fb146ff162790e)), closes [#1630](https://github.com/Belphemur/SoundSwitch/issues/1630) [#1539](https://github.com/Belphemur/SoundSwitch/issues/1539) [#860](https://github.com/Belphemur/SoundSwitch/issues/860) [#1107](https://github.com/Belphemur/SoundSwitch/issues/1107) [#1515](https://github.com/Belphemur/SoundSwitch/issues/1515)
+
+### Languages
+
+* **Thai:** Translated Settings using Weblate ([75a58b3](https://github.com/Belphemur/SoundSwitch/commit/75a58b3eccab2b533b278281c0f3b134a7e59831))
+
+### Bug Fixes
+
+* **communication:** Possible crash on closing the software ([5b8fd5c](https://github.com/Belphemur/SoundSwitch/commit/5b8fd5c49c98d8766e2c8ec6134ae24a16cc0181))
+* **release:** fix building right version of application ([ba16256](https://github.com/Belphemur/SoundSwitch/commit/ba16256de99e4119b947a33a4175a6d13709c86f)), closes [#1669](https://github.com/Belphemur/SoundSwitch/issues/1669)
+
+### Features
+
+* **Settings:** reopen settings when opening another SoundSwitch. ([22920cd](https://github.com/Belphemur/SoundSwitch/commit/22920cd2f9c2c279f612127245db433832963590)), closes [#850](https://github.com/Belphemur/SoundSwitch/issues/850)
+
 ## [6.12.0](https://github.com/Belphemur/SoundSwitch/compare/v6.11.0...v6.12.0) (2025-02-05)
 
 ### Languages
