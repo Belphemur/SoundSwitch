@@ -21,6 +21,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Sentry;
 using Serilog;
+using SoundSwitch.Common.Framework.Pipe;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Logger.Configuration;
@@ -45,6 +46,7 @@ namespace SoundSwitch
         [STAThread]
         private static void Main()
         {
+            using var mainCts = new CancellationTokenSource();
             var sentryOptions = new SentryOptions
             {
                 Dsn = "https://7d52dfb4f6554bf0b58b256337835332@o631137.ingest.sentry.io/5755327",
@@ -85,6 +87,7 @@ namespace SoundSwitch
             if (!userMutexHasOwnership)
             {
                 Log.Warning("SoundSwitch is already running for this user {@Mutex}", userMutexName);
+                NamedPipe.SendMessageToExistingInstance(userMutexName, NamedPipe.MessageEnum.OpenSettings);
                 WindowsAPIAdapter.Stop();
                 Log.CloseAndFlush();
                 return;
@@ -125,6 +128,8 @@ namespace SoundSwitch
 #endif
             _synchronizationContext = new WindowsFormsSynchronizationContext();
             SynchronizationContext.SetSynchronizationContext(_synchronizationContext);
+            
+            NamedPipe.StartListening(userMutexName, mainCts.Token);
 
             Application.Run(new SoundSwitchApplicationContext());
 

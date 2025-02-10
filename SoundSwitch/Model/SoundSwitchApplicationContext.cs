@@ -2,6 +2,7 @@
 using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Common.Framework.Pipe;
 using SoundSwitch.Framework.Audio.Lister;
 using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Configuration;
@@ -33,6 +34,14 @@ namespace SoundSwitch.Model
                     new AutoUpdater("/VERYSILENT").Update(
                         @event.AppRelease, true);
                 }
+            };
+
+            NamedPipe.OnMessageReceived += @enum =>
+            {
+                if (@enum != NamedPipe.MessageEnum.OpenSettings)
+                    return;
+                AppModel.Instance.TrayIcon.ShowSettings();
+                Log.Information("Asked by other instance to show settings");
             };
 
 

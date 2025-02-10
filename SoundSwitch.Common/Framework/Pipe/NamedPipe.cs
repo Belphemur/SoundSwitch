@@ -38,9 +38,17 @@ public static class NamedPipe
     
     public static void SendMessageToExistingInstance(string pipeName, MessageEnum messageEnum)
     {
-        using var client = new NamedPipeClientStream(".", pipeName, PipeDirection.Out);
-        client.Connect();
-        using var writer = new StreamWriter(client);
-        writer.WriteLine(messageEnum.ToString());
+        try
+        {
+            using var client = new NamedPipeClientStream(".", pipeName, PipeDirection.Out);
+            client.Connect(TimeSpan.FromSeconds(5));
+            using var writer = new StreamWriter(client);
+            writer.WriteLine(messageEnum.ToString());
+        }
+        catch (TimeoutException)
+        {
+            // Ignored
+            // Can happen if the other instance is not ready to receive the message
+        }
     }
 }
