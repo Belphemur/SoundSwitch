@@ -116,6 +116,15 @@ namespace SoundSwitch
                     case WindowsAPIAdapter.RestartManagerEventType.EndSession:
                     case WindowsAPIAdapter.RestartManagerEventType.ForceClose:
                         Log.Debug("Close Application");
+                        try
+                        {
+                            mainCts.Cancel();
+                        }
+                        catch (Exception)
+                        {
+                            // We're closing anyway
+                        }
+
                         Environment.Exit(0);
                         break;
                 }
