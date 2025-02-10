@@ -179,7 +179,9 @@ namespace SoundSwitch.UI.Component
             _settingsMenu.Items.Add(TrayIconStrings.playbackDevices, ResourcePlaybackDevicesBitmap,
                 (sender, e) => { Process.Start(new ProcessStartInfo("control", "mmsys.cpl sounds")); });
             _settingsMenu.Items.Add(TrayIconStrings.volumeMixer, ResourceMixerBitmap,
-                (sender, e) => { Process.Start(new ProcessStartInfo("sndvol.exe")); });        
+                (sender, e) => { Process.Start(new ProcessStartInfo("sndvol.exe")); });  
+            _settingsMenu.Items.Add(SettingsStrings.resetAudioDevices, Resources.resetAudioDevice.ToBitmap(),
+                (sender, e) => { AudioSwitcher.Instance.ResetProcessDeviceConfiguration(); });
             _settingsMenu.Items.Add(TrayIconStrings.settings, ResourceSettingsSmallBitmap,
                 (sender, e) => ShowSettings());
             _settingsMenu.Items.Add(new ToolStripSeparator());
