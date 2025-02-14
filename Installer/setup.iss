@@ -203,14 +203,29 @@ end;
 procedure DeinitializeSetup();
 var
   logfilepathname, logfilename, newfilepathname: string;
+  setupExe: string;
+  tempPath: string;
+  isTempPath: Boolean;
 begin
+  // Handle log file copying
   logfilepathname := ExpandConstant('{log}');
   logfilename := ExtractFileName(logfilepathname);
-  // Set the new target path as the directory where the installer is being run from
   newfilepathname := ExpandConstant('{tmp}\..') + logfilename;
-
   FileCopy(logfilepathname, newfilepathname, false);
-end; 
+  
+  // Check if installer is running from temp folder and delete if true
+  setupExe := ExpandConstant('{srcexe}');
+  tempPath := GetTempDir;
+  isTempPath := Pos(LowerCase(tempPath), LowerCase(ExtractFilePath(setupExe))) = 1;
+  
+  if isTempPath then
+  begin
+    // Delete installer executable after 5 seconds
+    Sleep(5000);
+    DeleteFile(setupExe);
+  end;
+end;
+
 // shared code for installing the products
 #include "scripts\products.iss"
 // helper functions
