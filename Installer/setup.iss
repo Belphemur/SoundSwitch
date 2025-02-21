@@ -193,9 +193,19 @@ begin
   case CurUninstallStep of
     usPostUninstall:
       begin
-        mres := MsgBox(ExpandConstant('{cm:UninstallQuestion}'), mbConfirmation, MB_YESNO or MB_DEFBUTTON2)
+        // Always delete program files when running as admin
+        if IsAdminLoggedOn then
+        begin
+          DelTree(ExpandConstant('{commonpf}\{#MyAppSetupName}'), True, True, True);
+          DelTree(ExpandConstant('{userpf}\{#MyAppSetupName}'), True, True, True);
+        end;
+        
+        // Ask about deleting settings
+        mres := MsgBox(ExpandConstant('{cm:UninstallQuestion}'), mbConfirmation, MB_YESNO or MB_DEFBUTTON2);
         if mres = IDYES then
+        begin
           DelTree(ExpandConstant('{userappdata}\SoundSwitch'), True, True, True);
+        end;
       end;  
   end;
 end;
