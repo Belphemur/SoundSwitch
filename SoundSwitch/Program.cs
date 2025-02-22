@@ -154,6 +154,7 @@ namespace SoundSwitch
             AppModel.Instance.Dispose();
             WindowsAPIAdapter.Stop();
             MMNotificationClient.Instance?.Dispose();
+            NamedPipe.Cleanup();
             using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(1));
             JobScheduler.Instance.StopAsync(cts.Token).GetAwaiter().GetResult();
             Log.CloseAndFlush();
