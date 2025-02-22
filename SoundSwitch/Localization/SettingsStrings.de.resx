@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -326,7 +326,7 @@ Beide: Wenn ein beliebiger Gerätetyp gewechselt wird.</value>
     <value>Es muss ein Wiedergabe- oder Aufnahmegerät festgelegt werden.</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
-    <value>Füge ein Profil hinzu, um zu einem Wiedergabe- oder Aufnahmegerät zu wechseln, wenn eine bestimmte Anwendung gestartet oder fokussiert wird.</value>
+    <value>Füge ein Profil hinzu, um zu einem Wiedergabe- oder Aufnahmegerät zu wechseln, wenn eine bestimmte Anwendung gestartet oder fokussiert wird. Sie können auch Ihren eigenes Tastenkürel für eine bestimmte Geräte-Kombination einstellen.</value>
   </data>
   <data name="profile.error.registerHotkeys" xml:space="preserve">
     <value>Für die folgenden Profile konnte die Tastenkombination nicht registriert werden: {0}</value>
@@ -524,5 +524,71 @@ Stellt den Zustand des Systems wieder her, wenn die Anwendung geschlossen wird.<
   </data>
   <data name="resetAudioDevices" xml:space="preserve">
     <value>Audio pro App zurücksetzen</value>
+  </data>
+  <data name="resetAudioDevices.desc" xml:space="preserve">
+    <value>Setzt die Zuordnung von Audiogeräten in festgelegte Programme in Windows zurück, falls Audiogeräte beim Umschalten von Geräten nicht zu Programmen zugewiesen werden.</value>
+  </data>
+  <data name="exportLogFiles.desc" xml:space="preserve">
+    <value>Exportiert alle Protokolldateien in ein ZIP-Archiv, um eine weitere Fehlerbehebung in den Hilfe-Diskussionen oder in der Discord-Community zu ermöglichen.</value>
+  </data>
+  <data name="quickMenu.tooltip" xml:space="preserve">
+    <value>Ein Schnellmenü wie die Windows-Sprache anzeigen, wenn ein Tastenkürel verwendet wird</value>
+  </data>
+  <data name="troubleshooting.desc" xml:space="preserve">
+    <value>Wenn Sie Hilfe oder eine weitere Fehlerbehebung mit Soundswitch benötigen, können Sie die Hilfe-Diskussion oder den Link zur Discord-Community besuchen, oder uns helfen indem Sie den folgenden Spenden-Link besuchen.</value>
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>Keine</value>
+  </data>
+  <data name="audioFileNotFound.caption" xml:space="preserve">
+    <value>Audiodatei nicht gefunden</value>
+  </data>
+  <data name="telemetry.tooltip" xml:space="preserve">
+    <value>Anonyme Erhebung welche Version von Soundswitch verwendet wird. Wird ausschließlich mit dem Entwickler von Soundswitch geteilt.</value>
+  </data>
+  <data name="keepVolume.tooltip" xml:space="preserve">
+    <value>Gleiches Volumenpegel beim Wechsel der Geräte beibehalten</value>
+  </data>
+  <data name="devices.autoAddNewDevice" xml:space="preserve">
+    <value>Automatisch neue Geräte auswählen</value>
+  </data>
+  <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
+    <value>Automatisch ein neues Gerät in die ausgewählte Liste hinzufügen, wenn sie mit dem Computer verbunden sind</value>
+  </data>
+  <data name="link.community" xml:space="preserve">
+    <value>Community Discord</value>
+  </data>
+  <data name="link.donate" xml:space="preserve">
+    <value>Spenden</value>
+  </data>
+  <data name="link.help" xml:space="preserve">
+    <value>Hilfe-Diskussion</value>
+  </data>
+  <data name="buttonReset" xml:space="preserve">
+    <value>Zurücksetzen</value>
+  </data>
+  <data name="exportLogFiles" xml:space="preserve">
+    <value>Protokolldateien exportieren</value>
+  </data>
+  <data name="buttonExport" xml:space="preserve">
+    <value>Exportieren</value>
+  </data>
+  <data name="troubleshooting" xml:space="preserve">
+    <value>Fehlerbehebung</value>
+  </data>
+  <data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>Bildschirmzeit</value>
+  </data>
+  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+    <value>Wie lange das Banner auf dem Bildschirm angezeigt wird (in Sekunden).</value>
+  </data>
+  <data name="notification.single" xml:space="preserve">
+    <value>Nur ein Banner</value>
+  </data>
+  <data name="notification.single.tooltip" xml:space="preserve">
+    <value>Zeigen Sie jeweils nur ein Banner und ersetzen Sie den Inhalt.</value>
+  </data>
+  <data name="position.option.center" xml:space="preserve">
+    <value>Mitte</value>
   </data>
 </root>
