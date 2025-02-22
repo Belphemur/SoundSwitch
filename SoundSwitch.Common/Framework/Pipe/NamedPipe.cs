@@ -10,11 +10,42 @@ namespace SoundSwitch.Common.Framework.Pipe;
 
 public static class NamedPipe
 {
-    private static readonly MessagePackSerializerOptions SerializerOptions = MessagePackSerializerOptions.Standard.WithResolver(MessagePack.Resolvers.StandardResolver.Instance);
+    private static readonly MessagePackSerializerOptions SerializerOptions = MessagePackSerializerOptions.Standard.WithResolver(MessagePack.Resolvers.ContractlessStandardResolverAllowPrivate.Instance);
     private static NamedPipeServerStream? _serverStream;
     private static NamedPipeClientStream? _clientStream;
+    private const int ConnectionTimeout = 5000; // 5 seconds
 
-    public static event Action<IPipeMessage>? OnMessageReceived;
+    public static async Task<TResponse> SendRequestAsync<TResponse>(string pipeName, IPipeMessage request, CancellationToken token = default) where TResponse : IPipeMessage
+    {
+        try
+        {
+            if (_clientStream == null || !_clientStream.IsConnected)
+            {
+                _clientStream?.Dispose();
+                _clientStream = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.Asynchronous);
+            }
+
+            await _clientStream.ConnectAsync(ConnectionTimeout, token);
+            await MessagePackSerializer.SerializeAsync(_clientStream, request, SerializerOptions, token);
+            await _clientStream.FlushAsync(token);
+
+            var response = await MessagePackSerializer.DeserializeAsync<TResponse>(_clientStream, SerializerOptions, token);
+            if (response == null)
+            {
+                throw new InvalidOperationException("Received null response from server");
+            }
+            return response;
+        }
+        catch (Exception)
+        {
+            _clientStream?.Dispose();
+            _clientStream = null;
+            throw;
+        }
+    }
+
+    public delegate Task<IPipeMessage> MessageHandler(IPipeMessage request, CancellationToken token);
+    public static event MessageHandler? OnMessageReceived;
 
     public static void StartListening(string pipeName, CancellationToken token)
     {
@@ -25,18 +56,22 @@ public static class NamedPipe
                 try
                 {
                     _serverStream?.Dispose();
-                    _serverStream = new NamedPipeServerStream(pipeName, PipeDirection.In, 1, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
+                    _serverStream = new NamedPipeServerStream(pipeName, PipeDirection.InOut, 1, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
 
                     while (!token.IsCancellationRequested)
                     {
                         try
                         {
                             await _serverStream.WaitForConnectionAsync(token);
-                            var message = await MessagePackSerializer.DeserializeAsync<IPipeMessage>(_serverStream, SerializerOptions, token);
-                            if (message != null)
+
+                            var request = await MessagePackSerializer.DeserializeAsync<IPipeMessage>(_serverStream, SerializerOptions, token);
+                            if (request != null && OnMessageReceived != null)
                             {
-                                OnMessageReceived?.Invoke(message);
+                                var response = await OnMessageReceived(request, token);
+                                await MessagePackSerializer.SerializeAsync(_serverStream, response, SerializerOptions, token);
+                                await _serverStream.FlushAsync(token);
                             }
+
                             _serverStream.Disconnect();
                         }
                         catch (IOException)
@@ -53,33 +88,6 @@ public static class NamedPipe
                 }
             }
         }, token);
-    }
-
-    public static void SendMessageToExistingInstance(string pipeName, IPipeMessage message)
-    {
-        try
-        {
-            if (_clientStream == null || !_clientStream.IsConnected)
-            {
-                _clientStream?.Dispose();
-                _clientStream = new NamedPipeClientStream(".", pipeName, PipeDirection.Out, PipeOptions.Asynchronous);
-            }
-
-            _clientStream.Connect(TimeSpan.FromSeconds(5));
-            MessagePackSerializer.Serialize(_clientStream, message, SerializerOptions);
-            _clientStream.Flush();
-        }
-        catch (TimeoutException)
-        {
-            // Ignored
-            // Can happen if the other instance is not ready to receive the message
-        }
-        catch (Exception)
-        {
-            // Reset the client stream on error
-            _clientStream?.Dispose();
-            _clientStream = null;
-        }
     }
 
     public static void Cleanup()

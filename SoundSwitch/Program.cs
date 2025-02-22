@@ -18,6 +18,7 @@ using System.Diagnostics;
 using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Sentry;
 using Serilog;
@@ -42,9 +43,8 @@ namespace SoundSwitch
         [DllImport("user32.dll")]
         private static extern bool SetProcessDPIAware();
 
-        [HandleProcessCorruptedStateExceptions]
         [STAThread]
-        private static void Main()
+        private static async Task Main()
         {
             using var mainCts = new CancellationTokenSource();
             var sentryOptions = new SentryOptions
@@ -87,7 +87,18 @@ namespace SoundSwitch
             if (!userMutexHasOwnership)
             {
                 Log.Warning("SoundSwitch is already running for this user {@Mutex}", userMutexName);
-                NamedPipe.SendMessageToExistingInstance(userMutexName, new OpenSettingsPayload());
+                try
+                {
+                    var response = await NamedPipe.SendRequestAsync<OpenSettingsResponse>(userMutexName, new OpenSettingsRequest());
+                    if (!response.Success)
+                    {
+                        Log.Error("Failed to open settings in existing instance");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "Failed to communicate with existing instance");
+                }
                 WindowsAPIAdapter.Stop();
                 Log.CloseAndFlush();
                 return;

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
 using Serilog;
@@ -37,7 +38,7 @@ namespace SoundSwitch.Model
                 }
             };
 
-            NamedPipe.OnMessageReceived += HandlePipeMessage;
+            NamedPipe.OnMessageReceived += HandlePipeMessageAsync;
 
             if (AppConfigs.Configuration.FirstRun)
             {
@@ -47,38 +48,58 @@ namespace SoundSwitch.Model
             }
         }
 
-        void HandlePipeMessage(IPipeMessage message)
+        async Task<IPipeMessage> HandlePipeMessageAsync(IPipeMessage message, System.Threading.CancellationToken token)
         {
             switch (message)
             {
-                case OpenSettingsPayload:
-                    AppModel.Instance.TrayIcon.ShowSettings();
+                case OpenSettingsRequest:
                     Log.Information("Asked by other instance to show settings");
-                    break;
-                case TriggerProfilePayload profilePayload:
-                    Log.Information("Triggering profile: {ProfileName}", profilePayload.ProfileName);
-                    var profile = AppModel.Instance.ProfileManager.Profiles.FirstOrDefault(p => p.Name == profilePayload.ProfileName);
+                    AppModel.Instance.TrayIcon.ShowSettings();
+                    return new OpenSettingsResponse { Success = true };
+
+                case TriggerProfileRequest profileRequest:
+                    Log.Information("Triggering profile: {ProfileName}", profileRequest.ProfileName);
+                    var profile = AppModel.Instance.ProfileManager.Profiles.FirstOrDefault(p => p.Name == profileRequest.ProfileName);
                     if (profile != null)
                     {
                         AppModel.Instance.ProfileManager.SwitchAudio(profile);
+                        return new TriggerProfileResponse { Success = true };
                     }
-                    else
+                    Log.Warning("Profile not found: {ProfileName}", profileRequest.ProfileName);
+                    return new TriggerProfileResponse
                     {
-                        Log.Warning("Profile not found: {ProfileName}", profilePayload.ProfileName);
-                    }
-                    break;
-                case TriggerSwitchPayload switchPayload:
-                    Log.Information("Triggering switch: {AudioType}", switchPayload.Type);
-                    // Call appropriate switch method based on type
-                    if (switchPayload.Type == AudioType.Recording)
+                        Success = false,
+                        Error = $"Profile {profileRequest.ProfileName} not found"
+                    };
+
+                case TriggerSwitchRequest switchRequest:
+                    Log.Information("Triggering switch: {AudioType}", switchRequest.Type);
+                    try
                     {
-                        AppModel.Instance.CycleActiveDevice(DataFlow.Capture);
+                        if (switchRequest.Type == AudioType.Recording)
+                        {
+                            AppModel.Instance.CycleActiveDevice(DataFlow.Capture);
+                        }
+                        else
+                        {
+                            AppModel.Instance.CycleActiveDevice(DataFlow.Render);
+                        }
+                        return new TriggerSwitchResponse { Success = true };
                     }
-                    else
+                    catch
                     {
-                        AppModel.Instance.CycleActiveDevice(DataFlow.Render);
+                        return new TriggerSwitchResponse { Success = false };
                     }
-                    break;
+
+                case GetProfileListRequest:
+                    var profiles = AppModel.Instance.ProfileManager.Profiles
+                        .Select(p => p.Name)
+                        .ToArray();
+                    return new GetProfileListResponse { ProfileNames = profiles };
+
+                default:
+                    Log.Warning("Unknown message type received: {MessageType}", message.GetType());
+                    throw new System.ArgumentException($"Unknown message type: {message.GetType()}");
             }
         }
     }
