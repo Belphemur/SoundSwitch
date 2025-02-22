@@ -12,7 +12,7 @@ public static class NamedPipe
 {
     private static readonly MessagePackSerializerOptions SerializerOptions = MessagePackSerializerOptions.Standard.WithResolver(MessagePack.Resolvers.StandardResolver.Instance);
 
-    public static event Action<PipeMessage>? OnMessageReceived;
+    public static event Action<IPipeMessage>? OnMessageReceived;
 
     public static void StartListening(string pipeName, CancellationToken token)
     {
@@ -24,7 +24,7 @@ public static class NamedPipe
                 {
                     await using var server = new NamedPipeServerStream(pipeName, PipeDirection.In);
                     await server.WaitForConnectionAsync(token);
-                    var message = await MessagePackSerializer.DeserializeAsync<PipeMessage>(server, SerializerOptions, token);
+                    var message = await MessagePackSerializer.DeserializeAsync<IPipeMessage>(server, SerializerOptions, token);
                     if (message != null)
                     {
                         OnMessageReceived?.Invoke(message);
@@ -38,7 +38,7 @@ public static class NamedPipe
         }, token);
     }
 
-    public static void SendMessageToExistingInstance(string pipeName, PipeMessage message)
+    public static void SendMessageToExistingInstance(string pipeName, IPipeMessage message)
     {
         try
         {

@@ -47,15 +47,15 @@ namespace SoundSwitch.Model
             }
         }
 
-        void HandlePipeMessage(PipeMessage message)
+        void HandlePipeMessage(IPipeMessage message)
         {
-            switch (message.Type)
+            switch (message)
             {
-                case PipeMessage.MessageType.OpenSettings:
+                case OpenSettingsPayload:
                     AppModel.Instance.TrayIcon.ShowSettings();
                     Log.Information("Asked by other instance to show settings");
                     break;
-                case PipeMessage.MessageType.TriggerProfile when message.Payload is TriggerProfilePayload profilePayload:
+                case TriggerProfilePayload profilePayload:
                     Log.Information("Triggering profile: {ProfileName}", profilePayload.ProfileName);
                     var profile = AppModel.Instance.ProfileManager.Profiles.FirstOrDefault(p => p.Name == profilePayload.ProfileName);
                     if (profile != null)
@@ -67,7 +67,7 @@ namespace SoundSwitch.Model
                         Log.Warning("Profile not found: {ProfileName}", profilePayload.ProfileName);
                     }
                     break;
-                case PipeMessage.MessageType.TriggerSwitch when message.Payload is TriggerSwitchPayload switchPayload:
+                case TriggerSwitchPayload switchPayload:
                     Log.Information("Triggering switch: {AudioType}", switchPayload.Type);
                     // Call appropriate switch method based on type
                     if (switchPayload.Type == AudioType.Recording)

@@ -87,7 +87,7 @@ namespace SoundSwitch
             if (!userMutexHasOwnership)
             {
                 Log.Warning("SoundSwitch is already running for this user {@Mutex}", userMutexName);
-                NamedPipe.SendMessageToExistingInstance(userMutexName, PipeMessage.CreateOpenSettings());
+                NamedPipe.SendMessageToExistingInstance(userMutexName, new OpenSettingsPayload());
                 WindowsAPIAdapter.Stop();
                 Log.CloseAndFlush();
                 return;
@@ -137,7 +137,7 @@ namespace SoundSwitch
 #endif
             _synchronizationContext = new WindowsFormsSynchronizationContext();
             SynchronizationContext.SetSynchronizationContext(_synchronizationContext);
-            
+
             NamedPipe.StartListening(userMutexName, mainCts.Token);
 
             Application.Run(new SoundSwitchApplicationContext());
