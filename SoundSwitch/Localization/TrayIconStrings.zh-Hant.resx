@@ -127,4 +127,7 @@
   <data name="donate" xml:space="preserve">
     <value>捐贈</value>
   </data>
+  <data name="forceCheckForUpdate" xml:space="preserve">
+    <value>檢查更新</value>
+  </data>
 </root>
