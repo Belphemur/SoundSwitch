@@ -1,7 +1,7 @@
 #nullable enable
 using MessagePack;
 
-namespace SoundSwitch.Common.Framework.Pipe;
+namespace SoundSwitch.IPC.Pipe;
 
 public enum AudioType
 {

@@ -2,7 +2,7 @@
 using MessagePack;
 using System;
 
-namespace SoundSwitch.Common.Framework.Pipe;
+namespace SoundSwitch.IPC.Pipe;
 
 [Union(0, typeof(OpenSettingsRequest))]
 [Union(1, typeof(TriggerProfileRequest))]
@@ -36,7 +36,7 @@ public class TriggerProfileResponse : IPipeMessage
 {
     [Key(0)]
     public bool Success { get; set; }
-
+    
     [Key(1)]
     public string? Error { get; set; }
 }

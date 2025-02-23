@@ -1,22 +1,25 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Common.Framework.Audio.Device;
-using SoundSwitch.Common.Framework.Pipe;
 using SoundSwitch.Framework.Audio.Lister;
 using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Updater;
+using SoundSwitch.IPC.Pipe;
 using SoundSwitch.UI.Menu;
 
 namespace SoundSwitch.Model
 {
     public class SoundSwitchApplicationContext : ApplicationContext
     {
+        private readonly Guid _messageHandlerId;
+
         public SoundSwitchApplicationContext()
         {
             BannerManager.Setup();
@@ -38,7 +41,7 @@ namespace SoundSwitch.Model
                 }
             };
 
-            NamedPipe.OnMessageReceived += HandlePipeMessageAsync;
+            _messageHandlerId = NamedPipe.RegisterMessageHandler(HandlePipeMessageAsync);
 
             if (AppConfigs.Configuration.FirstRun)
             {
@@ -46,6 +49,15 @@ namespace SoundSwitch.Model
                 AppConfigs.Configuration.FirstRun = false;
                 Log.Information("First run");
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                NamedPipe.UnregisterMessageHandler(_messageHandlerId);
+            }
+            base.Dispose(disposing);
         }
 
         async Task<IPipeMessage> HandlePipeMessageAsync(IPipeMessage message, System.Threading.CancellationToken token)

@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Sentry;
 using Serilog;
-using SoundSwitch.Common.Framework.Pipe;
+using SoundSwitch.IPC.Pipe;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Logger.Configuration;

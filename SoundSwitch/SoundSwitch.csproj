@@ -41,6 +41,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SoundSwitch.Audio.Manager\SoundSwitch.Audio.Manager.csproj" />
     <ProjectReference Include="..\SoundSwitch.Common\SoundSwitch.Common.csproj" />
+    <ProjectReference Include="..\SoundSwitch.IPC\SoundSwitch.IPC.csproj" />
     <ProjectReference Include="..\SoundSwitch.UI.Menu\SoundSwitch.UI.Menu.csproj" />
   </ItemGroup>
   <ItemGroup>
@@ -128,19 +129,25 @@
       <HintPath>..\packages\Serilog.4.1.0\lib\net8.0\Serilog.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Serilog.Enrichers.Environment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10">
-      <HintPath>..\packages\Serilog.Enrichers.Environment.3.0.1\lib\net8.0\Serilog.Enrichers.Environment.dll</HintPath>
+    <Reference
+      Include="Serilog.Enrichers.Environment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10">
+      <HintPath>
+        ..\packages\Serilog.Enrichers.Environment.3.0.1\lib\net8.0\Serilog.Enrichers.Environment.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Serilog.Enrichers.Thread, Version=4.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10">
+    <Reference
+      Include="Serilog.Enrichers.Thread, Version=4.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10">
       <HintPath>..\packages\Serilog.Enrichers.Thread.4.0.0\lib\net8.0\Serilog.Enrichers.Thread.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Serilog.Formatting.Compact, Version=3.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10">
-      <HintPath>..\packages\Serilog.Formatting.Compact.3.0.0\lib\net8.0\Serilog.Formatting.Compact.dll</HintPath>
+    <Reference
+      Include="Serilog.Formatting.Compact, Version=3.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10">
+      <HintPath>
+        ..\packages\Serilog.Formatting.Compact.3.0.0\lib\net8.0\Serilog.Formatting.Compact.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Serilog.Sinks.File, Version=6.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10">
+    <Reference
+      Include="Serilog.Sinks.File, Version=6.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10">
       <HintPath>..\packages\Serilog.Sinks.File.6.0.0\lib\net8.0\Serilog.Sinks.File.dll</HintPath>
       <Private>True</Private>
     </Reference>
@@ -150,7 +157,8 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>
-  <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^net\d'))">
+  <PropertyGroup
+    Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^net\d'))">
     <DefineConstants>NETCORE</DefineConstants>
   </PropertyGroup>
 </Project>
