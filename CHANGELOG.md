@@ -1,3 +1,23 @@
+## [6.13.0-beta.2](https://github.com/Belphemur/SoundSwitch/compare/v6.13.0-beta.1...v6.13.0-beta.2) (2025-02-24)
+
+### Languages
+
+* **German:** Translated Settings using Weblate ([9482857](https://github.com/Belphemur/SoundSwitch/commit/948285741777e37f2c2b0a0a9fb746eb4a14e249))
+
+### Bug Fixes
+
+* **cli:** add missing mute command ([8f298c5](https://github.com/Belphemur/SoundSwitch/commit/8f298c5ae97a67b106b729e4d1fccd343975ccbc))
+* **installer:** Make the uninstaller delete any trace of the program ([464f05c](https://github.com/Belphemur/SoundSwitch/commit/464f05c6b356832b939d5e270fb77656b09d3557))
+* **pipe:** be sure we can have full communication on the pipe ([1362535](https://github.com/Belphemur/SoundSwitch/commit/136253565858fdac0c6e9ecd9095bc8566eefaff))
+
+### Features
+
+* **cli::installer:** be sure the cli is installed and signed by the installer ([de470f6](https://github.com/Belphemur/SoundSwitch/commit/de470f63aed2c3d4c77e57f750a12f2b79f1dcc8))
+* **cli:** add microphone muting to the CLI ([6613d2a](https://github.com/Belphemur/SoundSwitch/commit/6613d2ab918b277af5888d16ba85492767ecb0c7))
+* **cli:** Add profile details like what device is setup in it ([0a3544d](https://github.com/Belphemur/SoundSwitch/commit/0a3544d1208908628c755b4b85f7891b5322fa92))
+* **cli:** First version of the CLI for SoundSwitch ([add5240](https://github.com/Belphemur/SoundSwitch/commit/add524091f7b86407cf72c6e40bde312085fd540)), closes [#1664](https://github.com/Belphemur/SoundSwitch/issues/1664)
+* **pipe:** implement MessagePack serialization for inter-process communication. Prepare the ground for a CLI. ([5b0f473](https://github.com/Belphemur/SoundSwitch/commit/5b0f473df5d064931e0372e4f0e8b7bf05257332))
+
 ## [6.13.0-beta.1](https://github.com/Belphemur/SoundSwitch/compare/v6.12.0...v6.13.0-beta.1) (2025-02-10)
 
 ### Enhancements
