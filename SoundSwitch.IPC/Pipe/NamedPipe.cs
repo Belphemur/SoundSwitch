@@ -12,17 +12,17 @@ namespace SoundSwitch.IPC.Pipe;
 
 public static class NamedPipe
 {
-    private static readonly MessagePackSerializerOptions SerializerOptions = MessagePackSerializerOptions.Standard.WithResolver(MessagePack.Resolvers.ContractlessStandardResolverAllowPrivate.Instance);
+    private static readonly MessagePackSerializerOptions SerializerOptions = MessagePackSerializerOptions.Standard;
     private static NamedPipeServerStream? _serverStream;
     private static NamedPipeClientStream? _clientStream;
-    private const int ConnectionTimeout = 5000; // 5 seconds
+    private const int CONNECTION_TIMEOUT = 5000; // 5 seconds
 
-    private static readonly CancellationTokenSource _cancellationTokenSource = new();
-    private static readonly ConcurrentDictionary<Guid, Func<IPipeMessage, CancellationToken, Task<IPipeMessage>>> _messageHandlers = new();
+    private static readonly CancellationTokenSource CancellationTokenSource = new();
+    private static readonly ConcurrentDictionary<Guid, Func<IPipeMessage, CancellationToken, Task<IPipeMessage>>> MessageHandlers = new();
 
     public static async Task<TResponse> SendRequestAsync<TResponse>(string pipeName, IPipeMessage request, CancellationToken cancellationToken = default) where TResponse : IPipeMessage
     {
-        using var linkedTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _cancellationTokenSource.Token);
+        using var linkedTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, CancellationTokenSource.Token);
         var token = linkedTokenSource.Token;
         try
         {
@@ -32,16 +32,28 @@ public static class NamedPipe
                 _clientStream = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.Asynchronous);
             }
 
-            await _clientStream.ConnectAsync(ConnectionTimeout, token);
-            await MessagePackSerializer.SerializeAsync(_clientStream, request, SerializerOptions, token);
+            await _clientStream.ConnectAsync(CONNECTION_TIMEOUT, token);
+
+            // Write with length prefix
+            var buffer = MessagePackSerializer.Serialize(request, SerializerOptions, cancellationToken);
+            var length = BitConverter.GetBytes(buffer.Length);
+            await _clientStream.WriteAsync(length, token);
+            await _clientStream.WriteAsync(buffer, token);
             await _clientStream.FlushAsync(token);
 
-            var response = await MessagePackSerializer.DeserializeAsync<TResponse>(_clientStream, SerializerOptions, token);
+            // Read response with length prefix
+            var lengthBuffer = new byte[4];
+            await ReadExactAsync(_clientStream, lengthBuffer, 0, 4, token);
+            var responseLength = BitConverter.ToInt32(lengthBuffer, 0);
+            var responseBuffer = new byte[responseLength];
+            await ReadExactAsync(_clientStream, responseBuffer, 0, responseLength, token);
+
+            var response = MessagePackSerializer.Deserialize<IPipeMessage>(responseBuffer, SerializerOptions, cancellationToken);
             if (response == null)
             {
                 throw new InvalidOperationException("Received null response from server");
             }
-            return response;
+            return (TResponse)response;
         }
         catch (Exception)
         {
@@ -54,18 +66,18 @@ public static class NamedPipe
     public static Guid RegisterMessageHandler(Func<IPipeMessage, CancellationToken, Task<IPipeMessage>> handler)
     {
         var id = Guid.NewGuid();
-        _messageHandlers.TryAdd(id, handler);
+        MessageHandlers.TryAdd(id, handler);
         return id;
     }
 
     public static void UnregisterMessageHandler(Guid handlerId)
     {
-        _messageHandlers.TryRemove(handlerId, out _);
+        MessageHandlers.TryRemove(handlerId, out _);
     }
 
     public static void StartListening(string pipeName, CancellationToken cancellationToken = default)
     {
-        using var linkedTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _cancellationTokenSource.Token);
+        using var linkedTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, CancellationTokenSource.Token);
         var token = linkedTokenSource.Token;
         Task.Run(async () =>
         {
@@ -76,7 +88,7 @@ public static class NamedPipe
                 try
                 {
                     _serverStream?.Dispose();
-                    _serverStream = new NamedPipeServerStream(pipeName, PipeDirection.InOut, 1, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
+                    _serverStream = new NamedPipeServerStream(pipeName, PipeDirection.InOut, NamedPipeServerStream.MaxAllowedServerInstances, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
 
                     while (!token.IsCancellationRequested)
                     {
@@ -85,18 +97,24 @@ public static class NamedPipe
                             context.Information("Waiting for connection");
                             await _serverStream.WaitForConnectionAsync(token);
 
-                            var request = await MessagePackSerializer.DeserializeAsync<IPipeMessage>(_serverStream, SerializerOptions, token);
+                            // Read request with length prefix
+                            var lengthBuffer = new byte[4];
+                            await ReadExactAsync(_serverStream, lengthBuffer, 0, 4, token);
+                            var messageLength = BitConverter.ToInt32(lengthBuffer, 0);
+                            var messageBuffer = new byte[messageLength];
+                            await ReadExactAsync(_serverStream, messageBuffer, 0, messageLength, token);
+
+                            var request = MessagePackSerializer.Deserialize<IPipeMessage>(messageBuffer, SerializerOptions);
                             context.Verbose("Received message: {Message}", request);
-                            if (request != null && _messageHandlers.Count > 0)
+                            if (!MessageHandlers.IsEmpty)
                             {
                                 IPipeMessage? response = null;
-                                foreach (var handler in _messageHandlers.Values)
+                                foreach (var handler in MessageHandlers.Values)
                                 {
                                     try
                                     {
                                         response = await handler(request, token);
-                                        if (response != null)
-                                            break;
+                                        break;
                                     }
                                     catch (Exception ex)
                                     {
@@ -106,7 +124,11 @@ public static class NamedPipe
 
                                 if (response != null)
                                 {
-                                    await MessagePackSerializer.SerializeAsync(_serverStream, response, SerializerOptions, token);
+                                    // Write response with length prefix
+                                    var responseBuffer = MessagePackSerializer.Serialize(response, SerializerOptions);
+                                    var responseLength = BitConverter.GetBytes(responseBuffer.Length);
+                                    await _serverStream.WriteAsync(responseLength, token);
+                                    await _serverStream.WriteAsync(responseBuffer, token);
                                     await _serverStream.FlushAsync(token);
                                 }
                             }
@@ -129,11 +151,23 @@ public static class NamedPipe
         }, linkedTokenSource.Token);
     }
 
+    private static async Task ReadExactAsync(PipeStream stream, byte[] buffer, int offset, int count, CancellationToken token)
+    {
+        var bytesRead = 0;
+        while (bytesRead < count)
+        {
+            var read = await stream.ReadAsync(buffer, offset + bytesRead, count - bytesRead, token);
+            if (read == 0)
+                throw new EndOfStreamException();
+            bytesRead += read;
+        }
+    }
+
     public static void Cleanup()
     {
-        _messageHandlers.Clear();
-        _cancellationTokenSource.Cancel();
-        _cancellationTokenSource.Dispose();
+        MessageHandlers.Clear();
+        CancellationTokenSource.Cancel();
+        CancellationTokenSource.Dispose();
         _serverStream?.Dispose();
         _clientStream?.Dispose();
         _serverStream = null;

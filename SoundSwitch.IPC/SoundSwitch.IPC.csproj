@@ -10,10 +10,6 @@
   <ItemGroup>
     <PackageReference Include="Serilog" />
     <PackageReference Include="MessagePack" />
-    <PackageReference Include="MessagePack.SourceGenerator">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
   </ItemGroup>
 
 </Project>
