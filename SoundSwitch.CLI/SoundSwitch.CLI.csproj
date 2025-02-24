@@ -1,12 +1,38 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net9.0</TargetFramework>
+    <Version>1.0.0</Version>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <Deterministic>false</Deterministic>
+    <PublishTrimmed>false</PublishTrimmed>
+    <TrimMode>link</TrimMode>
+    <SelfContained>true</SelfContained>
+    <PublishReadyToRun>true</PublishReadyToRun>
+    <Configurations>Debug;Release;Beta;Nightly</Configurations>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
-
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DisableWinExeOutputInference>true</DisableWinExeOutputInference>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <DefineConstants>RELEASE</DefineConstants>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Beta|AnyCPU'">
+    <DefineConstants>TRACE;BETA</DefineConstants>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Nightly' ">
+    <DefineConstants>TRACE;NIGHTLY</DefineConstants>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="MessagePack" />
     <PackageReference Include="Spectre.Console" />
