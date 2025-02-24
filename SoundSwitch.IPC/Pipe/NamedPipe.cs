@@ -4,6 +4,7 @@ using System.IO.Pipes;
 using System.Runtime.Versioning;
 using MessagePack;
 using Serilog;
+using Serilog.Context;
 using SoundSwitch.IPC.Pipe.Messages;
 
 namespace SoundSwitch.IPC.Pipe;
@@ -11,7 +12,6 @@ namespace SoundSwitch.IPC.Pipe;
 public static class NamedPipe
 {
     private static readonly MessagePackSerializerOptions SerializerOptions = MessagePackSerializerOptions.Standard;
-    private static NamedPipeServerStream? _serverStream;
     private static NamedPipeClientStream? _clientStream;
     private const int CONNECTION_TIMEOUT = 5000; // 5 seconds
 
@@ -24,13 +24,14 @@ public static class NamedPipe
         var token = linkedTokenSource.Token;
         try
         {
-            if (_clientStream == null || !_clientStream.IsConnected)
+            if (_clientStream is not { IsConnected: true })
             {
                 _clientStream?.Dispose();
                 _clientStream = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.Asynchronous);
             }
 
-            await _clientStream.ConnectAsync(CONNECTION_TIMEOUT, token);
+            if (!_clientStream.IsConnected)
+                await _clientStream.ConnectAsync(CONNECTION_TIMEOUT, token);
 
             // Write with length prefix
             var buffer = MessagePackSerializer.Serialize(request, SerializerOptions, cancellationToken);
@@ -51,6 +52,7 @@ public static class NamedPipe
             {
                 throw new InvalidOperationException("Received null response from server");
             }
+
             return (TResponse)response;
         }
         catch (Exception)
@@ -79,66 +81,18 @@ public static class NamedPipe
         var token = linkedTokenSource.Token;
         Task.Run(async () =>
         {
-            var context = Log.ForContext("SourceContext", nameof(NamedPipe));
-            context.Information("Starting named pipe server");
+            using var _ = LogContext.PushProperty("SourceContext", nameof(NamedPipe));
+            Log.Information("Starting named pipe server");
             while (!token.IsCancellationRequested)
             {
                 try
                 {
-                    _serverStream?.Dispose();
-                    _serverStream = new NamedPipeServerStream(pipeName, PipeDirection.InOut, NamedPipeServerStream.MaxAllowedServerInstances, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
+                    var pipeId = Guid.NewGuid();
+                    var serverStream = new NamedPipeServerStream(pipeName, PipeDirection.InOut, NamedPipeServerStream.MaxAllowedServerInstances, PipeTransmissionMode.Byte, PipeOptions.Asynchronous);
+                    Log.ForContext("PipeId", pipeId).Information("Waiting for connection");
+                    await serverStream.WaitForConnectionAsync(token);
 
-                    while (!token.IsCancellationRequested)
-                    {
-                        try
-                        {
-                            context.Information("Waiting for connection");
-                            await _serverStream.WaitForConnectionAsync(token);
-
-                            // Read request with length prefix
-                            var lengthBuffer = new byte[4];
-                            await ReadExactAsync(_serverStream, lengthBuffer, 0, 4, token);
-                            var messageLength = BitConverter.ToInt32(lengthBuffer, 0);
-                            var messageBuffer = new byte[messageLength];
-                            await ReadExactAsync(_serverStream, messageBuffer, 0, messageLength, token);
-
-                            var request = MessagePackSerializer.Deserialize<IPipeMessage>(messageBuffer, SerializerOptions);
-                            context.Verbose("Received message: {Message}", request);
-                            if (!MessageHandlers.IsEmpty)
-                            {
-                                IPipeMessage? response = null;
-                                foreach (var handler in MessageHandlers.Values)
-                                {
-                                    try
-                                    {
-                                        response = await handler(request, token);
-                                        break;
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Log.Error(ex, "Error executing message handler");
-                                    }
-                                }
-
-                                if (response != null)
-                                {
-                                    // Write response with length prefix
-                                    var responseBuffer = MessagePackSerializer.Serialize(response, SerializerOptions);
-                                    var responseLength = BitConverter.GetBytes(responseBuffer.Length);
-                                    await _serverStream.WriteAsync(responseLength, token);
-                                    await _serverStream.WriteAsync(responseBuffer, token);
-                                    await _serverStream.FlushAsync(token);
-                                }
-                            }
-
-                            _serverStream.Disconnect();
-                        }
-                        catch (IOException)
-                        {
-                            // Connection was broken, continue to wait for new connections
-                            continue;
-                        }
-                    }
+                    ClientConnectedAsync(serverStream, pipeId, token);
                 }
                 catch (Exception)
                 {
@@ -147,6 +101,98 @@ public static class NamedPipe
                 }
             }
         }, linkedTokenSource.Token);
+    }
+
+    private static async Task HandleCommunicationAsync(NamedPipeServerStream stream, Guid id, CancellationToken cancellationToken)
+    {
+        var logger = Log.ForContext("PipeId", id);
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        var token = cts.Token;
+        var timeout = TimeSpan.FromSeconds(10);
+        cts.CancelAfter(timeout);
+        token.Register(() =>
+        {
+            logger.Warning("No message received in the last {Timeout}", timeout);
+            if (stream.IsConnected)
+            {
+                logger.Information("Disconnecting client");
+                stream.Disconnect();
+            }
+        });
+        while (!token.IsCancellationRequested)
+        {
+            try
+            {
+                // Read request with length prefix
+                var lengthBuffer = new byte[4];
+                await ReadExactAsync(stream, lengthBuffer, 0, 4, token);
+                var messageLength = BitConverter.ToInt32(lengthBuffer, 0);
+                var messageBuffer = new byte[messageLength];
+                await ReadExactAsync(stream, messageBuffer, 0, messageLength, token);
+
+                cts.CancelAfter(timeout);
+                var request = MessagePackSerializer.Deserialize<IPipeMessage>(messageBuffer, SerializerOptions, token);
+                logger.Verbose("Message {MessageType} received", request.GetType().Name);
+                if (!MessageHandlers.IsEmpty)
+                {
+                    IPipeMessage? response = null;
+                    foreach (var handler in MessageHandlers.Values)
+                    {
+                        try
+                        {
+                            response = await handler(request, token);
+                            break;
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Error(ex, "Error executing message handler");
+                        }
+                    }
+
+                    if (response != null)
+                    {
+                        // Write response with length prefix
+                        var responseBuffer = MessagePackSerializer.Serialize(response, SerializerOptions);
+                        var responseLength = BitConverter.GetBytes(responseBuffer.Length);
+                        await stream.WriteAsync(responseLength, token);
+                        await stream.WriteAsync(responseBuffer, token);
+                        await stream.FlushAsync(token);
+                        logger.Verbose("Response {ResponseType} sent", response.GetType().Name);
+                    }
+                }
+            }
+            catch (IOException)
+            {
+                await Task.Delay(500, token);
+            }
+            catch (OperationCanceledException)
+            {
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Error handling communication");
+            }
+        }
+    }
+
+    private static async Task ClientConnectedAsync(NamedPipeServerStream stream, Guid id, CancellationToken token)
+    {
+        try
+        {
+            await HandleCommunicationAsync(stream, id, token).ConfigureAwait(false);
+        }
+        catch (Exception)
+        {
+            Log.ForContext("PipeId", id).Information("Disposing pipe");
+            await stream.DisposeAsync().ConfigureAwait(false);
+            return;
+        }
+
+        if (!stream.IsConnected)
+        {
+            Log.ForContext("PipeId", id).Information("Disposing pipe");
+            await stream.DisposeAsync().ConfigureAwait(false);
+        }
     }
 
     private static async Task ReadExactAsync(PipeStream stream, byte[] buffer, int offset, int count, CancellationToken token)
@@ -166,9 +212,7 @@ public static class NamedPipe
         MessageHandlers.Clear();
         CancellationTokenSource.Cancel();
         CancellationTokenSource.Dispose();
-        _serverStream?.Dispose();
         _clientStream?.Dispose();
-        _serverStream = null;
         _clientStream = null;
     }
 }

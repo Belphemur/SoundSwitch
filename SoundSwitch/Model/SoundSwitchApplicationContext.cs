@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
 using Serilog;
+using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio.Lister;
 using SoundSwitch.Framework.Banner;
@@ -66,6 +67,7 @@ public class SoundSwitchApplicationContext : ApplicationContext
         {
             NamedPipe.UnregisterMessageHandler(_messageHandlerId);
         }
+
         base.Dispose(disposing);
     }
 
@@ -76,23 +78,32 @@ public class SoundSwitchApplicationContext : ApplicationContext
             case MicrophoneStateRequest:
                 try
                 {
-                    var defaultDevice = await Task.Run(() => Audio.Manager.AudioSwitcher.Instance.GetDefaultMmDevice(
-                        Audio.Manager.Interop.Enum.EDataFlow.eCapture,
-                        Audio.Manager.Interop.Enum.ERole.eCommunications
-                    ), token);
+                    var stateResponse = await Task.Run(() =>
+                    {
+                        var defaultDevice = AudioSwitcher.Instance.GetDefaultMmDevice(
+                            Audio.Manager.Interop.Enum.EDataFlow.eCapture,
+                            Audio.Manager.Interop.Enum.ERole.eCommunications
+                        );
+                        if (defaultDevice == null)
+                        {
+                            return null;
+                        }
 
-                    if (defaultDevice == null)
+                        return AudioSwitcher.Instance.InteractWithDevice(defaultDevice, device => new MicrophoneStateResponse
+                        {
+                            Success = true,
+                            IsMuted = device.AudioEndpointVolume.Mute,
+                            DeviceName = device.FriendlyName
+                        });
+                    }, token);
+
+                    if (stateResponse == null)
                     {
                         Log.Warning("No default capture device found");
                         return new MicrophoneStateResponse { Success = false, IsMuted = false, DeviceName = "" };
                     }
 
-                    return new MicrophoneStateResponse
-                    {
-                        Success = true,
-                        IsMuted = defaultDevice.AudioEndpointVolume.Mute,
-                        DeviceName = defaultDevice.FriendlyName
-                    };
+                    return stateResponse;
                 }
                 catch (Exception ex)
                 {
@@ -101,31 +112,42 @@ public class SoundSwitchApplicationContext : ApplicationContext
                 }
 
             case MuteRequest muteRequest:
-                Log.Information("Setting microphone mute state to: {Mute}", muteRequest.Mute);
                 try
                 {
-                    var defaultDevice = await Task.Run(() => Audio.Manager.AudioSwitcher.Instance.GetDefaultMmDevice(
-                        Audio.Manager.Interop.Enum.EDataFlow.eCapture,
-                        Audio.Manager.Interop.Enum.ERole.eCommunications
-                    ), token);
+                    Log.Information("Setting microphone mute state to: {Mute}", muteRequest.Mute);
+                    var muteResponse = await Task.Run(() =>
+                    {
+                        var defaultDevice = AudioSwitcher.Instance.GetDefaultMmDevice(
+                            Audio.Manager.Interop.Enum.EDataFlow.eCapture,
+                            Audio.Manager.Interop.Enum.ERole.eCommunications
+                        );
+                        if (defaultDevice == null)
+                        {
+                            return null;
+                        }
 
-                    if (defaultDevice == null)
+                        return AudioSwitcher.Instance.InteractWithDevice(defaultDevice, device =>
+                        {
+                            device.AudioEndpointVolume.Mute = muteRequest.Mute;
+                            return new MicrophoneStateResponse
+                            {
+                                Success = true,
+                                IsMuted = device.AudioEndpointVolume.Mute,
+                                DeviceName = device.FriendlyName
+                            };
+                        });
+                    }, token);
+                    if (muteResponse == null)
                     {
                         Log.Warning("No default capture device found");
                         return new MicrophoneStateResponse { Success = false, IsMuted = false, DeviceName = "" };
                     }
 
-                    defaultDevice.AudioEndpointVolume.Mute = muteRequest.Mute;
-                    return new MicrophoneStateResponse
-                    {
-                        Success = true,
-                        IsMuted = defaultDevice.AudioEndpointVolume.Mute,
-                        DeviceName = defaultDevice.FriendlyName
-                    };
+                    return muteResponse;
                 }
                 catch (Exception ex)
                 {
-                    Log.Error(ex, "Failed to set microphone mute state");
+                    Log.Error(ex, "Failed to set microphone state");
                     return new MicrophoneStateResponse { Success = false, IsMuted = false, DeviceName = "" };
                 }
 
@@ -142,6 +164,7 @@ public class SoundSwitchApplicationContext : ApplicationContext
                     AppModel.Instance.ProfileManager.SwitchAudio(profile);
                     return new TriggerProfileResponse { Success = true };
                 }
+
                 Log.Warning("Profile not found: {ProfileName}", profileRequest.ProfileName);
                 return new TriggerProfileResponse
                 {
