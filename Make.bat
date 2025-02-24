@@ -32,7 +32,6 @@ for /f "delims=" %%a in ('findstr /C:"<TargetFramework>" "%FILE_DIR%SoundSwitch\
 echo Building SoundSwitch %buildPlatform% for %FRAMEWORK%
 
 set ARCH=win-x64
-set BIN_DIR=%FILE_DIR%SoundSwitch\bin\%buildPlatform%\%FRAMEWORK%\%ARCH%\publish
 
 set finalDir=%FILE_DIR%Final
 
@@ -53,7 +52,9 @@ rmdir /q /s %finalDir% >nul 2>nul
 mkdir %finalDir% >nul 2>nul
 
 echo Build AnyCPU
-dotnet publish -c %buildPlatform% %FILE_DIR%SoundSwitch\SoundSwitch.csproj || (set errorMessage=Build %ARCH% failed & goto ERROR_QUIT)
+dotnet publish -c %buildPlatform% %FILE_DIR%SoundSwitch\SoundSwitch.csproj -o %finalDir% || (set errorMessage=Build %ARCH% failed & goto ERROR_QUIT)
+dotnet publish -c %buildPlatform% %FILE_DIR%SoundSwitch.CLI\SoundSwitch.CLI.csproj -o %finalDir% || (set errorMessage=Build %ARCH% failed & goto ERROR_QUIT)
+
 echo.
 
 if %buildChangelogAndReadme% == 1 (
@@ -79,9 +80,6 @@ xcopy /y img\soundSwitched.png %finalDir% >nul 2>nul
 echo Copy LICENSE
 xcopy /y LICENSE.txt %finalDir% >nul 2>nul
 xcopy /y Terms.txt %finalDir% >nul 2>nul
-
-echo Copy Published
-xcopy /y %BIN_DIR% %finalDir% /E/H/C/I >nul 2>nul
 
 echo Build Installer
 rem Run installer compiler script

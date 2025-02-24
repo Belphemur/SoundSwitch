@@ -81,6 +81,7 @@ Name: deletefiles; Description: "{cm:ExistingSettings}"; Flags: unchecked checke
 
 [Files] 
 Source: "{#ExeDir}SoundSwitch.exe"; DestDir: "{app}";  Flags: signonce ignoreversion
+Source: "{#ExeDir}SoundSwitch.CLI.exe"; DestDir: "{app}";  Flags: signonce ignoreversion
 Source: "{#ExeDir}*"; DestDir: "{app}"; Flags: recursesubdirs ignoreversion;
 
 [Registry]
