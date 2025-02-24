@@ -25,6 +25,12 @@ public static class Program
 
             config.AddCommand<SettingsCommand>("settings")
                 .WithDescription("Open SoundSwitch settings");
+
+            config.AddCommand<MuteCommand>("mute")
+                .WithDescription("Control microphone mute state")
+                .WithExample("mute", "--state", "true")
+                .WithExample("mute", "--toggle")
+                .WithExample("mute");
         });
 
         return await app.RunAsync(args);
