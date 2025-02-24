@@ -21,7 +21,7 @@ namespace SoundSwitch.Framework.Logger.Enricher
                     return;
                 }
 
-                if (method.DeclaringType.Assembly != typeof(Serilog.Log).Assembly &&//Exclude serilog methods
+                if (method.DeclaringType.Assembly != typeof(Log).Assembly &&//Exclude serilog methods
                     method.DeclaringType.Name != "SerilogLogger")//Exclude methods from the SerilogLogger implementation class
                 {
                     var caller = $"{method.DeclaringType.FullName}.{method.Name}";

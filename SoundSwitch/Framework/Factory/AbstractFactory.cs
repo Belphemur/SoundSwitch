@@ -26,7 +26,7 @@ namespace SoundSwitch.Framework.Factory
     /// <typeparam name="TEnum">The Enum defining the type</typeparam>
     /// <typeparam name="TImplementation">The implementation of the enum</typeparam>
     public abstract class AbstractFactory<TEnum, TImplementation> where TImplementation : IEnumImpl<TEnum>
-        where TEnum : System.Enum, IConvertible
+        where TEnum : Enum, IConvertible
     {
         protected AbstractFactory(IEnumImplList<TEnum, TImplementation> enumImplList)
         {

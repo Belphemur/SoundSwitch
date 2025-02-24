@@ -88,14 +88,17 @@ namespace SoundSwitch.Model
                     Log.Information("Triggering switch: {AudioType}", switchRequest.Type);
                     try
                     {
-                        if (switchRequest.Type == AudioType.Recording)
+                        switch (switchRequest.Type)
                         {
-                            AppModel.Instance.CycleActiveDevice(DataFlow.Capture);
+                            case AudioType.Recording:
+                                AppModel.Instance.CycleActiveDevice(DataFlow.Capture);
+                                break;
+                            case AudioType.Playback:
+                            default:
+                                AppModel.Instance.CycleActiveDevice(DataFlow.Render);
+                                break;
                         }
-                        else
-                        {
-                            AppModel.Instance.CycleActiveDevice(DataFlow.Render);
-                        }
+
                         return new TriggerSwitchResponse { Success = true };
                     }
                     catch
@@ -111,7 +114,7 @@ namespace SoundSwitch.Model
 
                 default:
                     Log.Warning("Unknown message type received: {MessageType}", message.GetType());
-                    throw new System.ArgumentException($"Unknown message type: {message.GetType()}");
+                    throw new ArgumentException($"Unknown message type: {message.GetType()}");
             }
         }
     }

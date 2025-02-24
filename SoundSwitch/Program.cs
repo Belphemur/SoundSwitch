@@ -22,13 +22,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Sentry;
 using Serilog;
-using SoundSwitch.IPC.Pipe;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Logger.Configuration;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Threading;
 using SoundSwitch.Framework.WinApi;
+using SoundSwitch.IPC.Pipe;
 using SoundSwitch.Localization.Factory;
 using SoundSwitch.Model;
 using SoundSwitch.Util;
@@ -80,7 +80,7 @@ namespace SoundSwitch
 #endif
             Thread.CurrentThread.CurrentUICulture = new LanguageFactory().Get(AppModel.Instance.Language).CultureInfo;
             Thread.CurrentThread.Name = "Main Thread";
-            var userMutexName = Application.ProductName + Environment.UserName;
+            var userMutexName = PipeConstants.GetUserPipeName();
 
             using var mainMutex = new Mutex(true, Application.ProductName);
             using var userMutex = new Mutex(true, userMutexName, out var userMutexHasOwnership);

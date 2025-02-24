@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundSwitch.Audio.Manager.T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundSwitch.IPC", "SoundSwitch.IPC\SoundSwitch.IPC.csproj", "{A7715821-22A6-4F1B-A302-3EBC1EBC42B2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundSwitch.CLI", "SoundSwitch.CLI\SoundSwitch.CLI.csproj", "{D5655B17-6644-4255-BD7C-2248B8E16789}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Beta|Any CPU = Beta|Any CPU
@@ -201,6 +203,30 @@ Global
 		{A7715821-22A6-4F1B-A302-3EBC1EBC42B2}.Release|x64.Build.0 = Release|Any CPU
 		{A7715821-22A6-4F1B-A302-3EBC1EBC42B2}.Release|x86.ActiveCfg = Release|Any CPU
 		{A7715821-22A6-4F1B-A302-3EBC1EBC42B2}.Release|x86.Build.0 = Release|Any CPU
+		{D5655B17-6644-4255-BD7C-2248B8E16789}.Beta|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5655B17-6644-4255-BD7C-2248B8E16789}.Beta|Any CPU.Build.0 = Debug|Any CPU
+		{D5655B17-6644-4255-BD7C-2248B8E16789}.Beta|x64.ActiveCfg = Debug|Any CPU
+		{D5655B17-6644-4255-BD7C-2248B8E16789}.Beta|x64.Build.0 = Debug|Any CPU
+		{D5655B17-6644-4255-BD7C-2248B8E16789}.Beta|x86.ActiveCfg = Debug|Any CPU
+		{D5655B17-6644-4255-BD7C-2248B8E16789}.Beta|x86.Build.0 = Debug|Any CPU
+		{D5655B17-6644-4255-BD7C-2248B8E16789}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5655B17-6644-4255-BD7C-2248B8E16789}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5655B17-6644-4255-BD7C-2248B8E16789}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D5655B17-6644-4255-BD7C-2248B8E16789}.Debug|x64.Build.0 = Debug|Any CPU
+		{D5655B17-6644-4255-BD7C-2248B8E16789}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D5655B17-6644-4255-BD7C-2248B8E16789}.Debug|x86.Build.0 = Debug|Any CPU
+		{D5655B17-6644-4255-BD7C-2248B8E16789}.Nightly|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5655B17-6644-4255-BD7C-2248B8E16789}.Nightly|Any CPU.Build.0 = Debug|Any CPU
+		{D5655B17-6644-4255-BD7C-2248B8E16789}.Nightly|x64.ActiveCfg = Debug|Any CPU
+		{D5655B17-6644-4255-BD7C-2248B8E16789}.Nightly|x64.Build.0 = Debug|Any CPU
+		{D5655B17-6644-4255-BD7C-2248B8E16789}.Nightly|x86.ActiveCfg = Debug|Any CPU
+		{D5655B17-6644-4255-BD7C-2248B8E16789}.Nightly|x86.Build.0 = Debug|Any CPU
+		{D5655B17-6644-4255-BD7C-2248B8E16789}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5655B17-6644-4255-BD7C-2248B8E16789}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5655B17-6644-4255-BD7C-2248B8E16789}.Release|x64.ActiveCfg = Release|Any CPU
+		{D5655B17-6644-4255-BD7C-2248B8E16789}.Release|x64.Build.0 = Release|Any CPU
+		{D5655B17-6644-4255-BD7C-2248B8E16789}.Release|x86.ActiveCfg = Release|Any CPU
+		{D5655B17-6644-4255-BD7C-2248B8E16789}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
