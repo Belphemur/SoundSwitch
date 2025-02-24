@@ -5,11 +5,11 @@ using Newtonsoft.Json;
 
 namespace SoundSwitch.Common.Framework.Audio.Device
 {
-    public class DeviceInfo : IEquatable<DeviceInfo>
+    public partial class DeviceInfo : IEquatable<DeviceInfo>
     {
-        private static readonly Regex NameSplitterRegex = new(@"(?<friendlyName>.+)\s\([\d\s\-|]*(?<deviceName>.+)\)", RegexOptions.Compiled);
+        private static readonly Regex NameSplitterRegex = NameSplitterRegex();
 
-        private static readonly Regex NameCleanerRegex = new(@"\s?\(\d\)|^\d+\s?-\s?", RegexOptions.Compiled | RegexOptions.Singleline);
+        private static readonly Regex NameCleanerRegex = NameCleanerRegex();
 
         private string _nameClean;
 
@@ -119,5 +119,10 @@ namespace SoundSwitch.Common.Framework.Audio.Device
         {
             return HashCode.Combine(Type, NameClean, Id);
         }
+
+        [GeneratedRegex(@"(?<friendlyName>.+)\s\([\d\s\-|]*(?<deviceName>.+)\)", RegexOptions.Compiled)]
+        private static partial Regex NameSplitterRegex();
+        [GeneratedRegex(@"\s?\(\d\)|^\d+\s?-\s?", RegexOptions.Compiled | RegexOptions.Singleline)]
+        private static partial Regex NameCleanerRegex();
     }
 }

@@ -1,6 +1,6 @@
 #nullable enable
-using MessagePack;
 using System;
+using MessagePack;
 
 namespace SoundSwitch.IPC.Pipe;
 
@@ -12,6 +12,9 @@ namespace SoundSwitch.IPC.Pipe;
 [Union(5, typeof(TriggerProfileResponse))]
 [Union(6, typeof(TriggerSwitchResponse))]
 [Union(7, typeof(GetProfileListResponse))]
+[Union(8, typeof(MuteRequest))]
+[Union(9, typeof(MicrophoneStateResponse))]
+[Union(10, typeof(MicrophoneStateRequest))]
 public interface IPipeMessage
 {
 }
@@ -72,4 +75,23 @@ public class ProfileInfo
     public string RecordingDevice { get; set; } = "";
     public string PlaybackCommunicationDevice { get; set; } = "";
     public string RecordingCommunicationDevice { get; set; } = "";
+}
+
+[MessagePackObject(keyAsPropertyName: true)]
+public class MuteRequest : IPipeMessage
+{
+    public bool Mute { get; set; }
+}
+
+[MessagePackObject(keyAsPropertyName: true)]
+public class MicrophoneStateRequest : IPipeMessage
+{
+}
+
+[MessagePackObject(keyAsPropertyName: true)]
+public class MicrophoneStateResponse : IPipeMessage
+{
+    public bool Success { get; set; }
+    public bool IsMuted { get; set; }
+    public string DeviceName { get; set; } = "";
 }

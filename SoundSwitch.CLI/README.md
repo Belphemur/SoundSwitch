@@ -11,6 +11,15 @@ soundswitch switch --type Recording
 soundswitch switch --type Playback
 ```
 
+### Microphone Control
+Manage microphone mute state:
+```shell
+soundswitch mute              # Show current mute state
+soundswitch mute --state true # Mute the microphone
+soundswitch mute -s false     # Unmute the microphone
+soundswitch mute --toggle     # Toggle mute state
+```
+
 ### Profile Management
 List all available profiles:
 ```shell
@@ -55,6 +64,13 @@ soundswitch profile --name "Headphones + Mic"
 soundswitch settings
 ```
 
+6. Mute/Unmute microphone:
+```shell
+soundswitch mute -t          # Toggle mute
+soundswitch mute -s true     # Mute
+soundswitch mute --state false # Unmute
+```
+
 ## Error Handling
 
 The CLI provides clear error messages when:
@@ -62,5 +78,6 @@ The CLI provides clear error messages when:
 - Profile names are invalid
 - Connection issues occur
 - Invalid commands or options are provided
+- No default microphone is set (for mute commands)
 
 All commands support the `--help` flag for additional information.
