@@ -7,9 +7,9 @@ namespace SoundSwitch.Common.Framework.Audio.Device
 {
     public partial class DeviceInfo : IEquatable<DeviceInfo>
     {
-        private static readonly Regex NameSplitterRegex = NameSplitterRegex();
+        private static readonly Regex NameSplitterRegex = NameSplitterRegexCompiled();
 
-        private static readonly Regex NameCleanerRegex = NameCleanerRegex();
+        private static readonly Regex NameCleanerRegex = NameCleanerRegexCompiled();
 
         private string _nameClean;
 
@@ -121,8 +121,8 @@ namespace SoundSwitch.Common.Framework.Audio.Device
         }
 
         [GeneratedRegex(@"(?<friendlyName>.+)\s\([\d\s\-|]*(?<deviceName>.+)\)", RegexOptions.Compiled)]
-        private static partial Regex NameSplitterRegex();
+        private static partial Regex NameSplitterRegexCompiled();
         [GeneratedRegex(@"\s?\(\d\)|^\d+\s?-\s?", RegexOptions.Compiled | RegexOptions.Singleline)]
-        private static partial Regex NameCleanerRegex();
+        private static partial Regex NameCleanerRegexCompiled();
     }
 }
