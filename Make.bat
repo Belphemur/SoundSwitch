@@ -77,6 +77,9 @@ if %buildChangelogAndReadme% == 1 (
 echo Copy soundSwitched image
 xcopy /y img\soundSwitched.png %finalDir% >nul 2>nul
 
+echo Copy CLI README
+xcopy /y  SoundSwitch.CLI\README.md %finalDir% >nul 2>nul
+
 echo Copy LICENSE
 xcopy /y LICENSE.txt %finalDir% >nul 2>nul
 xcopy /y Terms.txt %finalDir% >nul 2>nul
