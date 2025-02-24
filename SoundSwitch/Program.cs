@@ -29,6 +29,7 @@ using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Threading;
 using SoundSwitch.Framework.WinApi;
 using SoundSwitch.IPC.Pipe;
+using SoundSwitch.IPC.Pipe.Messages.OpenSettings;
 using SoundSwitch.Localization.Factory;
 using SoundSwitch.Model;
 using SoundSwitch.Util;
@@ -89,7 +90,7 @@ namespace SoundSwitch
                 Log.Warning("SoundSwitch is already running for this user {@Mutex}", userMutexName);
                 try
                 {
-                    var response = await NamedPipe.SendRequestAsync<OpenSettingsResponse>(userMutexName, new OpenSettingsRequest());
+                    var response = await NamedPipe.SendRequestAsync<OpenSettingsResponse>(userMutexName, new OpenSettingsRequest(), mainCts.Token);
                     if (!response.Success)
                     {
                         Log.Error("Failed to open settings in existing instance");

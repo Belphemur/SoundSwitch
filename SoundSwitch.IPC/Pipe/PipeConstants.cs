@@ -1,5 +1,3 @@
-using System;
-
 namespace SoundSwitch.IPC.Pipe;
 
 public static class PipeConstants
