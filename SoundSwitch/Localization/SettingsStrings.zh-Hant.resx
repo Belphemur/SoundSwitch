@@ -272,11 +272,11 @@
     <value>啟動時</value>
   </data>
   <data name="iconChange.tooltip" xml:space="preserve">
-    <value>當系統托盤SoundSwitch圖示改變時可選擇。
+    <value>選擇何時改變工作列的SoundSwitch圖示。
 
 預設：不做改變。保留SoundSwitch圖示。
-播放裝置：當一個播放裝置被切換。
-錄音裝置：當一個錄音裝置裝置被切換。
+播放裝置：當一個播放裝置被切換時。
+錄音裝置：當一個錄音裝置裝置被切換時。
 兩者：當任意類別裝置被切換時進行改變。</value>
   </data>
   <data name="tooltipOnHover.option.recordingDevice" xml:space="preserve">

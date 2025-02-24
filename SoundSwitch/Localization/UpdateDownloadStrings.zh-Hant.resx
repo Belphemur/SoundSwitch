@@ -76,4 +76,10 @@
   <data name="downloadFailed" xml:space="preserve">
     <value>下載失敗</value>
   </data>
+  <data name="remindMe" xml:space="preserve">
+    <value>稍後提醒我</value>
+  </data>
+  <data name="wrongSignature" xml:space="preserve">
+    <value>SoundSwitch更新發生錯誤。請至{0}手動下載新版本</value>
+  </data>
 </root>
