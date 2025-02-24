@@ -31,6 +31,20 @@ Wählen Sie zuerst, wie im vorigen Abschnitt beschrieben, Ihre gewünschten Ger�
 - 🎙 Um durch Ihre **Aufnahmegeräte** zu wechseln, verwenden Sie:
   - `Strg` + `Alt` + `F7` (Standard)
 
+- 🔇 Um das **Standardmikrofon** stummzuschalten:
+  - `Strg` + `Alt` + `M` (Standard)
+
+## 💻 Kommandozeile (CLI)
+
+SoundSwitch verfügt über eine leistungsfähige Kommandozeilen-Schnittstelle, mit der Sie die Anwendung über die Befehlszeile steuern können:
+
+- Zwischen Wiedergabe- und Aufnahmegeräten wechseln
+- Mikrofon-Stummschaltung steuern
+- Profile verwalten
+- Einstellungen aufrufen
+
+Weitere Details zu den verfügbaren Befehlen und deren Verwendung finden Sie in der [CLI-Dokumentation](SoundSwitch.CLI/README.md).
+
 ## _Umschalten_ Benachrichtigung
 
 SoundSwitch bietet vier verschiedenen Arten der Benachrichtigung, wenn ein Gerät gewechselt wird:
@@ -69,7 +83,7 @@ Es gibt drei verschiedene Arten, wie Updates installiert werden:
 - **Niemals**, ist selbsterklärend.
 
 ### 🌎 Unterstütze Sprachen
-Es stehen fünf Sprachen zur Verfügung: **Englisch**, **Französisch**, **Deutsch**, **Spanisch**, **Italienisch** and **Portugiesisch (Brasilien)**.
+SoundSwitch ist in mehr als 20 Sprachen verfügbar, darunter **Englisch**, **Französisch**, **Deutsch**, **Spanisch**, **Italienisch**, **Portugiesisch (Brasilien)**, **Russisch**, **Chinesisch** und viele mehr.
 
 Sie möchten etwas verbessern oder eine neue Sprache hinzufügen? Übersetzungen sind online editierbar [gleich hier](https://hosted.weblate.org/projects/soundswitch/#languages)!
 
@@ -104,12 +118,12 @@ Vielen Dank für die Open-Source-Lizenz für ihre ausgezeichneten IDEs und Addon
 
 Copyright (C) 2015 Jeroen Pelgrims
 
-Copyright (C) 2015-2021 Antoine Aflalo
+Copyright (C) 2015-2025 Antoine Aflalo
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
 as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+of the License, or any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of

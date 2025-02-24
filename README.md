@@ -36,6 +36,17 @@ First set up your devices you want to cycle through, using _right click_ on the 
 - 🔇 To mute the **default microphone** press:
   - `Ctrl` + `Alt` + `M` (default)
 
+## 💻 Command Line Interface
+
+SoundSwitch includes a powerful CLI that allows you to control the application through command line:
+
+- Switch between playback/recording devices
+- Control microphone mute state
+- Manage audio profiles
+- Access settings
+
+See the [CLI documentation](SoundSwitch.CLI/README.md) for more details about available commands and usage.
+
 ## _Switched_ Notification
 
 SoundSwitch provides four types of notification when a device is changed:
@@ -74,7 +85,7 @@ There are three different options available on how updates are installed:
 - **Never**, well this is self-explained.
 
 ### 🌎 Multi-Language Support
-There are five languages available: **English**, **French**, **German**, **Spanish**, **Italian** and **Portuguese (Brazilian)**.
+SoundSwitch is available in more than 20 languages including **English**, **French**, **German**, **Spanish**, **Italian**, **Portuguese (Brazilian)**, **Russian**, **Chinese**, and many more.
 
 Want to improve an existing language or add another one? Translations are online editable [right here](https://hosted.weblate.org/projects/soundswitch/#languages)!
 
@@ -139,7 +150,7 @@ Thanks for their Open-Source licence to their amazing IDEs and addons like [ReSh
 
 Copyright (C) 2015 Jeroen Pelgrims
 
-Copyright (C) 2015-2023 Antoine Aflalo
+Copyright (C) 2015-2025 Antoine Aflalo
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
