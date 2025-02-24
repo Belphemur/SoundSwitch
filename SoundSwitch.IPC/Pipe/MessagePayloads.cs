@@ -61,5 +61,15 @@ public class GetProfileListRequest : IPipeMessage
 [MessagePackObject(keyAsPropertyName: true)]
 public class GetProfileListResponse : IPipeMessage
 {
-    public string[] ProfileNames { get; set; } = [];
+    public ProfileInfo[] Profiles { get; set; } = [];
+}
+
+[MessagePackObject(keyAsPropertyName: true)]
+public class ProfileInfo
+{
+    public string Name { get; set; } = "";
+    public string PlaybackDevice { get; set; } = "";
+    public string RecordingDevice { get; set; } = "";
+    public string PlaybackCommunicationDevice { get; set; } = "";
+    public string RecordingCommunicationDevice { get; set; } = "";
 }

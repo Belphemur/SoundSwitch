@@ -108,9 +108,16 @@ namespace SoundSwitch.Model
 
                 case GetProfileListRequest:
                     var profiles = AppModel.Instance.ProfileManager.Profiles
-                        .Select(p => p.Name)
+                        .Select(p => new ProfileInfo
+                        {
+                            Name = p.Name,
+                            PlaybackDevice = p.Playback?.NameClean ?? "Not set",
+                            RecordingDevice = p.Recording?.NameClean ?? "Not set",
+                            PlaybackCommunicationDevice = p.Communication?.NameClean ?? "Not set",
+                            RecordingCommunicationDevice = p.RecordingCommunication?.NameClean ?? "Not set"
+                        })
                         .ToArray();
-                    return new GetProfileListResponse { ProfileNames = profiles };
+                    return new GetProfileListResponse { Profiles = profiles };
 
                 default:
                     Log.Warning("Unknown message type received: {MessageType}", message.GetType());

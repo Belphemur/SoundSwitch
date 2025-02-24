@@ -28,12 +28,22 @@ public class ProfileCommand : AsyncCommand<ProfileCommand.Settings>
                             new GetProfileListRequest());
 
                         var table = new Table()
-                            .AddColumn("Available Profiles")
+                            .AddColumn("Profile")
+                            .AddColumn(new TableColumn("[green]Playback[/]"))
+                            .AddColumn(new TableColumn("[green]Playback Comm[/]"))
+                            .AddColumn(new TableColumn("[red]Recording[/]"))
+                            .AddColumn(new TableColumn("[red]Recording Comm[/]"))
                             .Border(TableBorder.Rounded);
 
-                        foreach (var profile in response.ProfileNames)
+                        foreach (var profile in response.Profiles)
                         {
-                            table.AddRow(profile);
+                            table.AddRow(
+                                profile.Name,
+                                $"[green]{profile.PlaybackDevice}[/]",
+                                $"[green]{profile.PlaybackCommunicationDevice}[/]",
+                                $"[red]{profile.RecordingDevice}[/]",
+                                $"[red]{profile.RecordingCommunicationDevice}[/]"
+                            );
                         }
 
                         AnsiConsole.Write(table);
