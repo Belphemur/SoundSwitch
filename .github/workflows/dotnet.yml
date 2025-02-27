@@ -136,6 +136,17 @@ jobs:
           include-prerelease: ${{ env.DOTNET_PRERELEASE }}
       - name: Restore
         run: dotnet restore -r ${{ env.ARCH }}
+      - name: Install Virtual Audio Cable
+        run: |
+          choco install virtual-audio-cable -y
+          Start-Sleep -Seconds 10
+      - name: Configure Audio Devices
+        run: |
+          $devices = Get-AudioDevice -List
+          if ($devices.Count -lt 2) {
+            Write-Error "Not enough audio devices to perform the switch test."
+            exit 1
+          }
       - name: Tests
         run: dotnet test -c ${{env.CONFIGURATION}}  --no-restore  --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}"
       - name: Fetch tags
@@ -228,4 +239,3 @@ jobs:
         with:
           environment: Stable
           version: "${{env.PROJECT_NAME}}@${{ steps.version.outputs.version }}"
-
