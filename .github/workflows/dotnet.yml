@@ -66,6 +66,19 @@ jobs:
       - name: Build
         if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true' || github.ref == 'refs/heads/master'
         run: dotnet build -c Release --no-restore ${{env.PROJECT_NAME}}/${{env.PROJECT_NAME}}.csproj
+      - name: Install Virtual Audio Cable
+        if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true' || github.ref == 'refs/heads/master'
+        run: |
+          choco install virtual-audio-cable -y
+          Start-Sleep -Seconds 10
+      - name: Configure Audio Devices
+        if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true' || github.ref == 'refs/heads/master'
+        run: |
+          $devices = Get-AudioDevice -List
+          if ($devices.Count -lt 2) {
+            Write-Error "Not enough audio devices to perform the switch test."
+            exit 1
+          }
       - name: Test
         if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true' || github.ref == 'refs/heads/master'
         run: dotnet test -c Release --no-restore  --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}"
