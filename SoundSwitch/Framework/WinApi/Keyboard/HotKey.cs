@@ -13,6 +13,8 @@
 ********************************************************************/
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using SoundSwitch.Util;
 
@@ -99,8 +101,10 @@ namespace SoundSwitch.Framework.WinApi.Keyboard
 
         public string Display()
         {
-            var key = Keys == Keys.None ? "" : $" + {Keys}";
-            return $"{string.Join(" + ", Modifier.GetUniqueFlags())}{key}";
+            List<string> keyNamesToDisplay = new List<string>();
+            keyNamesToDisplay.AddRange(Modifier.GetUniqueFlags().Select(f => f.ToString()));
+            if (Keys != Keys.None) keyNamesToDisplay.Add(Keys.ToString());
+            return string.Join(" + ", keyNamesToDisplay);
         }
     }
 }
