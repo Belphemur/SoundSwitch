@@ -69,7 +69,7 @@ jobs:
       - name: Install Virtual Audio Cable
         if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true' || github.ref == 'refs/heads/master'
         run: |
-          choco install virtual-audio-cable -y
+          choco install vb-cable -y
           Start-Sleep -Seconds 10
       - name: Configure Audio Devices
         if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true' || github.ref == 'refs/heads/master'
@@ -151,7 +151,7 @@ jobs:
         run: dotnet restore -r ${{ env.ARCH }}
       - name: Install Virtual Audio Cable
         run: |
-          choco install virtual-audio-cable -y
+          choco install vb-cable -y
           Start-Sleep -Seconds 10
       - name: Configure Audio Devices
         run: |
