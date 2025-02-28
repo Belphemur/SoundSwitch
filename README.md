@@ -2,7 +2,7 @@
 
 [![.NET](https://github.com/Belphemur/SoundSwitch/actions/workflows/dotnet.yml/badge.svg)](https://github.com/Belphemur/SoundSwitch/actions/workflows/dotnet.yml)[![Last Release](https://img.shields.io/github/release/Belphemur/SoundSwitch.svg)](https://soundswitch.aaflalo.me) [![Downloads for last Release](https://img.shields.io/github/downloads/Belphemur/SoundSwitch/total.svg)](https://soundswitch.aaflalo.me/) [![Translate](https://hosted.weblate.org/widgets/soundswitch/-/svg-badge.svg)](https://hosted.weblate.org/projects/soundswitch/) [![Donate](https://img.shields.io/badge/Donate-paypal%2Fcc-blue.svg)](https://soundswitch.aaflalo.me) [![Help](https://img.shields.io/badge/Discord-Community%20&%20Help-green?style=flat-square&logo=discord)](https://discord.gg/gUCw3Ue)
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-11-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-12-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 **SoundSwitch** offers you the opportunity to switch your playback and recording devices using simple **hotkeys**.
 
@@ -110,6 +110,7 @@ Want to improve an existing language or add another one? Translations are online
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/patgrosse"><img src="https://avatars.githubusercontent.com/u/23578938?v=4?s=100" width="100px;" alt="Patrick Große"/><br /><sub><b>Patrick Große</b></sub></a><br /><a href="https://github.com/Belphemur/SoundSwitch/commits?author=patgrosse" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/codemann8"><img src="https://avatars.githubusercontent.com/u/1323444?v=4?s=100" width="100px;" alt="codemann8"/><br /><sub><b>codemann8</b></sub></a><br /><a href="https://github.com/Belphemur/SoundSwitch/commits?author=codemann8" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/XangelMusic"><img src="https://avatars.githubusercontent.com/u/22012301?v=4?s=100" width="100px;" alt="XangelMusic"/><br /><sub><b>XangelMusic</b></sub></a><br /><a href="https://github.com/Belphemur/SoundSwitch/commits?author=XangelMusic" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://gradyn.com"><img src="https://avatars.githubusercontent.com/u/20762604?v=4?s=100" width="100px;" alt="Gradyn Wursten"/><br /><sub><b>Gradyn Wursten</b></sub></a><br /><a href="https://github.com/Belphemur/SoundSwitch/commits?author=GNUGradyn" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
