@@ -109,21 +109,91 @@ namespace SoundSwitch.UI.Component
             var normalPressedKeys = KeyboardWindowsAPI.GetNormalPressedKeys();
             var key = normalPressedKeys.FirstOrDefault();
 
-
+            // Case 1: No key pressed - show error state
             if (key == Keys.None)
             {
-                Text = new HotKey(key, modifierKeys).Display();
-                ForeColor = Color.Crimson;
+                SetInvalidState(key, modifierKeys);
+                e.Handled = true;
+                base.OnKeyUp(e);
+                return;
             }
-            else
+
+            // Case 2: No modifiers - only accept special keys
+            if (modifierKeys == 0 && !IsSpecialKey(key))
             {
-                HotKey = new HotKey(key, modifierKeys);
-                ForeColor = Color.Green;
-                HotKeyChanged?.Invoke(this, new Event());
+                SetInvalidState(key, modifierKeys);
+                e.Handled = true;
+                base.OnKeyUp(e);
+                return;
             }
+
+            // Valid hotkey - set and trigger change event
+            SetValidHotKey(key, modifierKeys);
 
             e.Handled = true;
             base.OnKeyUp(e);
+        }
+
+        private void SetValidHotKey(Keys key, HotKey.ModifierKeys modifierKeys)
+        {
+            HotKey = new HotKey(key, modifierKeys);
+            ForeColor = Color.Green;
+            HotKeyChanged?.Invoke(this, new Event());
+        }
+
+        private void SetInvalidState(Keys key, HotKey.ModifierKeys modifierKeys)
+        {
+            Text = new HotKey(key, modifierKeys).Display();
+            ForeColor = Color.Crimson;
+        }
+
+        private static bool IsSpecialKey(Keys key)
+        {
+            // Function keys
+            if (key >= Keys.F1 && key <= Keys.F24)
+                return true;
+
+            // Media and special keys
+            switch (key)
+            {
+                case Keys.PrintScreen:
+                case Keys.Scroll:
+                case Keys.Pause:
+                case Keys.Insert:
+                case Keys.Home:
+                case Keys.PageUp:
+                case Keys.Delete:
+                case Keys.End:
+                case Keys.PageDown:
+                case Keys.Left:
+                case Keys.Up:
+                case Keys.Right:
+                case Keys.Down:
+                case Keys.NumLock:
+                case Keys.Play:
+                case Keys.Zoom:
+                case Keys.SelectMedia:
+                case Keys.MediaStop:
+                case Keys.MediaPlayPause:
+                case Keys.MediaNextTrack:
+                case Keys.MediaPreviousTrack:
+                case Keys.VolumeDown:
+                case Keys.VolumeUp:
+                case Keys.VolumeMute:
+                case Keys.BrowserBack:
+                case Keys.BrowserFavorites:
+                case Keys.BrowserForward:
+                case Keys.BrowserHome:
+                case Keys.BrowserRefresh:
+                case Keys.BrowserSearch:
+                case Keys.BrowserStop:
+                case Keys.LaunchApplication1:
+                case Keys.LaunchApplication2:
+                case Keys.LaunchMail:
+                    return true;
+                default:
+                    return false;
+            }
         }
     }
 }
