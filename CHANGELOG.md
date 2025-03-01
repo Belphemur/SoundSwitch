@@ -1,3 +1,17 @@
+## [6.13.0-beta.3](https://github.com/Belphemur/SoundSwitch/compare/v6.13.0-beta.2...v6.13.0-beta.3) (2025-03-01)
+
+### Enhancements
+
+* **hotkey:** accept alone keys for hot keys like PrintScr, Pause, Home, End, etc ... and any function key alone too. ([65c7863](https://github.com/Belphemur/SoundSwitch/commit/65c7863006dee941c57cfc416351b4e05a06e928))
+* **hotkey:** Change the display of hotkeys modifier to always follow ctrl, shift, alt, win. ([b518688](https://github.com/Belphemur/SoundSwitch/commit/b5186887ad536a4dc208b84c9ac854a75510631d))
+* **hotkey:** support setting only one key for hotkey ([c9e8131](https://github.com/Belphemur/SoundSwitch/commit/c9e81319fd17104272fcacb4e7ae987bf682ccbe))
+
+### Languages
+
+* **Chinese (Traditional Han script):** Translated Settings using Weblate ([05b085b](https://github.com/Belphemur/SoundSwitch/commit/05b085b35a6fc986c90ca14f9aaff1c07ebc117b))
+* **Chinese (Traditional Han script):** Translated Tray Icon using Weblate ([986cfa8](https://github.com/Belphemur/SoundSwitch/commit/986cfa808802d0d9ef29ddf615fe4c12534f4718))
+* **Chinese (Traditional Han script):** Translated Update Download using Weblate ([dbf1303](https://github.com/Belphemur/SoundSwitch/commit/dbf13034418c9362a7b65f972ba37fab8dc181d7))
+
 ## [6.13.0-beta.2](https://github.com/Belphemur/SoundSwitch/compare/v6.13.0-beta.1...v6.13.0-beta.2) (2025-02-24)
 
 ### Languages
