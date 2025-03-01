@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using SoundSwitch.Util;
@@ -30,18 +31,28 @@ namespace SoundSwitch.Framework.WinApi.Keyboard
         {
             /// <summary>Specifies that the key should be treated as is, without any modifier.
             /// </summary>
+            [Description("None")]
+            [Order(0)]
             None = 0x0000,
-            /// <summary>Specifies that the Accelerator key (ALT) is pressed with the key.
-            /// </summary>
-            Alt = 0x0001,
             /// <summary>Specifies that the Control key is pressed with the key.
             /// </summary>
+            [Description("Ctrl")]
+            [Order(1)]
             Control = 0x0002,
             /// <summary>Specifies that the Shift key is pressed with the associated key.
             /// </summary>
+            [Description("Shift")]
+            [Order(2)]
             Shift = 0x0004,
+            /// <summary>Specifies that the Accelerator key (ALT) is pressed with the key.
+            /// </summary>
+            [Description("Alt")]
+            [Order(3)]
+            Alt = 0x0001,
             /// <summary>Specifies that the Window key is pressed with the associated key.
             /// </summary>
+            [Description("Win")]
+            [Order(4)]
             Win = 0x0008
         }
 
@@ -73,14 +84,14 @@ namespace SoundSwitch.Framework.WinApi.Keyboard
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != GetType()) return false;
-            return Equals((HotKey) obj);
+            return Equals((HotKey)obj);
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((int) Keys * 397) ^ (int) Modifier;
+                return ((int)Keys * 397) ^ (int)Modifier;
             }
         }
 
@@ -101,10 +112,35 @@ namespace SoundSwitch.Framework.WinApi.Keyboard
 
         public string Display()
         {
-            List<string> keyNamesToDisplay = new List<string>();
-            keyNamesToDisplay.AddRange(Modifier.GetUniqueFlags().Select(f => f.ToString()));
+            List<string> keyNamesToDisplay = [.. Modifier.GetUniqueFlags()
+                .OrderBy(flag => flag.GetOrder())
+                .Select(f => f.ToString())];
+
             if (Keys != Keys.None) keyNamesToDisplay.Add(Keys.ToString());
             return string.Join(" + ", keyNamesToDisplay);
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Field)]
+    public class OrderAttribute : Attribute
+    {
+        public int Order { get; }
+
+        public OrderAttribute(int order)
+        {
+            Order = order;
+        }
+    }
+
+    public static class ModifierKeysExtensions
+    {
+        public static int GetOrder(this HotKey.ModifierKeys flag)
+        {
+            var fieldInfo = flag.GetType().GetField(flag.ToString());
+            if (fieldInfo == null) return int.MaxValue;
+
+            var attribute = (OrderAttribute)Attribute.GetCustomAttribute(fieldInfo, typeof(OrderAttribute));
+            return attribute?.Order ?? int.MaxValue;
         }
     }
 }

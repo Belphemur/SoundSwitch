@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace SoundSwitch.Util
 {
@@ -28,5 +29,15 @@ namespace SoundSwitch.Util
             }
         }
 
+        /// <summary>
+        /// Gets the attribute of type T for an enum value
+        /// </summary>
+        public static T GetAttribute<T>(this Enum value) where T : Attribute
+        {
+            var fieldInfo = value.GetType().GetField(value.ToString());
+            if (fieldInfo == null) return null;
+
+            return (T)Attribute.GetCustomAttribute(fieldInfo, typeof(T));
+        }
     }
 }
