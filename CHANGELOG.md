@@ -1,3 +1,9 @@
+## [6.13.0-beta.4](https://github.com/Belphemur/SoundSwitch/compare/v6.13.0-beta.3...v6.13.0-beta.4) (2025-03-03)
+
+### Bug Fixes
+
+* **update:** fix update ui crashing. ([70ba6c1](https://github.com/Belphemur/SoundSwitch/commit/70ba6c1d7015768aa3d775239ad45bc98d9f9b16)), closes [#1693](https://github.com/Belphemur/SoundSwitch/issues/1693)
+
 ## [6.13.0-beta.3](https://github.com/Belphemur/SoundSwitch/compare/v6.13.0-beta.2...v6.13.0-beta.3) (2025-03-01)
 
 ### Enhancements
