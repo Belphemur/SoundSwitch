@@ -83,10 +83,7 @@ namespace SoundSwitch.UI.Component
             _updateDownloadForm = new Lazy<UpdateDownloadForm>(() =>
             {
                 UpdateDownloadForm form = null;
-                _context.Send(_ =>
-                {
-                    form = new UpdateDownloadForm();
-                }, null);
+                _context.Send(_ => { form = new UpdateDownloadForm(); }, null);
                 return form;
             });
             //Localization
@@ -179,7 +176,7 @@ namespace SoundSwitch.UI.Component
             _settingsMenu.Items.Add(TrayIconStrings.playbackDevices, ResourcePlaybackDevicesBitmap,
                 (sender, e) => { Process.Start(new ProcessStartInfo("control", "mmsys.cpl sounds")); });
             _settingsMenu.Items.Add(TrayIconStrings.volumeMixer, ResourceMixerBitmap,
-                (sender, e) => { Process.Start(new ProcessStartInfo("sndvol.exe")); });  
+                (sender, e) => { Process.Start(new ProcessStartInfo("sndvol.exe")); });
             _settingsMenu.Items.Add(SettingsStrings.resetAudioDevices, Resources.resetAudioDevice.ToBitmap(),
                 (sender, e) => { AudioSwitcher.Instance.ResetProcessDeviceConfiguration(); });
             _settingsMenu.Items.Add(TrayIconStrings.settings, ResourceSettingsSmallBitmap,
@@ -213,7 +210,7 @@ namespace SoundSwitch.UI.Component
 
             StopAnimationIconUpdate();
             NotifyIcon.BalloonTipClicked -= OnUpdateClick;
-            _updateDownloadForm.Value.DownloadRelease((AppRelease)_updateMenuItem.Tag);
+            _context.Send(_ => { _updateDownloadForm.Value.DownloadRelease((AppRelease)_updateMenuItem.Tag); }, null);
         }
 
         private void SetEventHandlers()

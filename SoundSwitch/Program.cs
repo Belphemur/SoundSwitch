@@ -43,9 +43,11 @@ namespace SoundSwitch
 
         [DllImport("user32.dll")]
         private static extern bool SetProcessDPIAware();
-
+        
         [STAThread]
-        private static async Task Main()
+        private static void Main() => OldMain().GetAwaiter().GetResult();
+ 
+        private static async Task OldMain()
         {
             using var mainCts = new CancellationTokenSource();
             var sentryOptions = new SentryOptions
