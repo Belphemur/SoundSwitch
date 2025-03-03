@@ -76,7 +76,7 @@ namespace SoundSwitch.Model
         /// <summary>
         /// List the active audio devices
         /// </summary>
-        IAudioDeviceLister AudioDeviceLister { get;  }
+        IAudioDeviceLister AudioDeviceLister { get; }
 
         /// <summary>
         /// Beta or Stable channel.
@@ -124,7 +124,7 @@ namespace SoundSwitch.Model
         int MaxNumberNotification { get; set; }
 
         /// <summary>
-        /// Is there only 1 concurrent notification enabled ?
+        /// Is there only 1 concurrent notification enabled ? 
         /// </summary>
         bool IsSingleNotification { get; set; }
 
@@ -222,6 +222,19 @@ namespace SoundSwitch.Model
         ///     if there are no devices configured.
         /// </summary>
         bool CycleActiveDevice(DataFlow type);
+
+        /// <summary>
+        /// Toggles the mute state of the default microphone
+        /// </summary>
+        /// <returns>Tuple with device name and mute state, null if no default microphone found or operation failed</returns>
+        (string DeviceName, bool IsMuted)? ToggleMicrophoneMute();
+
+        /// <summary>
+        /// Sets the mute state of the default microphone
+        /// </summary>
+        /// <param name="muteState">The desired mute state</param>
+        /// <returns>Tuple with device name and mute state, null if no default microphone found or operation failed</returns>
+        (string DeviceName, bool IsMuted)? SetMicrophoneMuteState(bool muteState);
 
         #endregion
 

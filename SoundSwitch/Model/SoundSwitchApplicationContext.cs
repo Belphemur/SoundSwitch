@@ -115,35 +115,20 @@ public class SoundSwitchApplicationContext : ApplicationContext
                 try
                 {
                     Log.Information("Setting microphone mute state to: {Mute}", muteRequest.Mute);
-                    var muteResponse = await Task.Run(() =>
-                    {
-                        var defaultDevice = AudioSwitcher.Instance.GetDefaultMmDevice(
-                            Audio.Manager.Interop.Enum.EDataFlow.eCapture,
-                            Audio.Manager.Interop.Enum.ERole.eCommunications
-                        );
-                        if (defaultDevice == null)
-                        {
-                            return null;
-                        }
+                    var result = AppModel.Instance.SetMicrophoneMuteState(muteRequest.Mute);
 
-                        return AudioSwitcher.Instance.InteractWithDevice(defaultDevice, device =>
-                        {
-                            device.AudioEndpointVolume.Mute = muteRequest.Mute;
-                            return new MicrophoneStateResponse
-                            {
-                                Success = true,
-                                IsMuted = device.AudioEndpointVolume.Mute,
-                                DeviceName = device.FriendlyName
-                            };
-                        });
-                    }, token);
-                    if (muteResponse == null)
+                    if (result == null)
                     {
                         Log.Warning("No default capture device found");
                         return new MicrophoneStateResponse { Success = false, IsMuted = false, DeviceName = "" };
                     }
 
-                    return muteResponse;
+                    return new MicrophoneStateResponse
+                    {
+                        Success = true,
+                        IsMuted = result.Value.IsMuted,
+                        DeviceName = result.Value.DeviceName
+                    };
                 }
                 catch (Exception ex)
                 {

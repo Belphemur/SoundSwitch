@@ -81,7 +81,7 @@ namespace SoundSwitch.Model
             set
             {
                 if (value <= TimeSpan.FromSeconds(1)) return;
-                if(value >= TimeSpan.FromMinutes(1)) return;
+                if (value >= TimeSpan.FromMinutes(1)) return;
                 AppConfigs.Configuration.BannerOnScreenTime = value;
                 AppConfigs.Configuration.Save();
                 BannerSettingsChanged?.Invoke(this,
@@ -101,7 +101,7 @@ namespace SoundSwitch.Model
                 AppConfigs.Configuration.Save();
             }
         }
-        
+
         /// <summary>
         /// Is there only 1 concurrent notification enabled ?
         /// </summary>
@@ -566,9 +566,14 @@ namespace SoundSwitch.Model
                 }
                 else if (e.HotKey == AppConfigs.Configuration.MuteRecordingHotKey)
                 {
-                    if (_microphoneMuteToggler.ToggleDefaultMute() == null)
+                    var result = ToggleMicrophoneMute();
+                    if (result == null)
                     {
-                        ErrorTriggered?.Invoke(this, new ExceptionEvent(new Exception("No mic found")));
+                        Log.Error("No mic found or unable to toggle mute state");
+                    }
+                    else
+                    {
+                        Log.Information("Microphone {DeviceName} mute state is now {IsMuted}", result.Value.DeviceName, result.Value.IsMuted);
                     }
                 }
             }
@@ -576,6 +581,39 @@ namespace SoundSwitch.Model
             {
                 ErrorTriggered?.Invoke(this, new ExceptionEvent(ex));
             }
+        }
+
+        #endregion
+
+        #region Microphone control
+
+        /// <summary>
+        /// Toggles the mute state of the default microphone
+        /// </summary>
+        /// <returns>Tuple with device name and mute state, null if no default microphone found or operation failed</returns>
+        public (string DeviceName, bool IsMuted)? ToggleMicrophoneMute()
+        {
+            var result = _microphoneMuteToggler.ToggleDefaultMute();
+            if (result == null)
+            {
+                ErrorTriggered?.Invoke(this, new ExceptionEvent(new Exception("No mic found or unable to toggle mute state")));
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Sets the mute state of the default microphone
+        /// </summary>
+        /// <param name="muteState">The desired mute state</param>
+        /// <returns>Tuple with device name and mute state, null if no default microphone found or operation failed</returns>
+        public (string DeviceName, bool IsMuted)? SetMicrophoneMuteState(bool muteState)
+        {
+            var result = _microphoneMuteToggler.SetDefaultMuteState(muteState);
+            if (result == null)
+            {
+                ErrorTriggered?.Invoke(this, new ExceptionEvent(new Exception("No mic found or unable to set mute state")));
+            }
+            return result;
         }
 
         #endregion

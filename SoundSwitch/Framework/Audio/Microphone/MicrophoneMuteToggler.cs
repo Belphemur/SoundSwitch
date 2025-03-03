@@ -18,9 +18,9 @@ namespace SoundSwitch.Framework.Audio.Microphone
 
         /// <summary>
         /// Toggle mute state for the default microphone
-        /// <returns>The current mute state, null if couldn't interact with the microphone</returns>
+        /// <returns>Tuple with the device name and current mute state, null if couldn't interact with the microphone</returns>
         /// </summary>
-        public bool? ToggleDefaultMute()
+        public (string Name, bool MuteState)? ToggleDefaultMute()
         {
             var microphone = _switcher.GetDefaultMmDevice(EDataFlow.eCapture, ERole.eCommunications);
             if (microphone == null)
@@ -51,7 +51,45 @@ namespace SoundSwitch.Framework.Audio.Microphone
             }
 
             _notificationManager.NotifyMuteChanged(result.Name, result.NewMuteState);
-            return result.NewMuteState;
+            return result;
+        }
+
+        /// <summary>
+        /// Set mute state for the default microphone
+        /// <param name="muteState">The mute state to set</param>
+        /// <returns>Tuple with the device name and current mute state, null if couldn't interact with the microphone</returns>
+        /// </summary>
+        public (string Name, bool MuteState)? SetDefaultMuteState(bool muteState)
+        {
+            var microphone = _switcher.GetDefaultMmDevice(EDataFlow.eCapture, ERole.eCommunications);
+            if (microphone == null)
+            {
+                Log.Information("Couldn't find a default microphone to set mute state");
+                return null;
+            }
+
+            var result = _switcher.InteractWithDevice<(string Name, bool NewMuteState)>(microphone, device =>
+            {
+                try
+                {
+                    device.AudioEndpointVolume.Mute = muteState;
+                    return (device.FriendlyName, muteState);
+                }
+                catch (Exception e)
+                {
+                    Log.Error("Couldn't set mute state to {state} on {device}:\n{exception}", muteState, device.FriendlyName, e);
+                }
+
+                return default;
+            });
+
+            if (result == default)
+            {
+                return null;
+            }
+
+            _notificationManager.NotifyMuteChanged(result.Name, result.NewMuteState);
+            return result;
         }
     }
 }
