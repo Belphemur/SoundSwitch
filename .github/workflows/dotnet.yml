@@ -55,7 +55,7 @@ jobs:
         if: steps.filter.outputs.translations == 'true'
         run: python tools\check_brackets.py ${{ steps.filter.outputs.translations_files }}
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4.0.0
+        uses: actions/setup-dotnet@v4.3.0
         if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true' || github.ref == 'refs/heads/master'
         with:
           dotnet-version: ${{ env.DOTNET }}
@@ -130,7 +130,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4.0.0
+        uses: actions/setup-dotnet@v4.3.0
         with:
           dotnet-version: ${{ env.DOTNET }}
           include-prerelease: ${{ env.DOTNET_PRERELEASE }}
