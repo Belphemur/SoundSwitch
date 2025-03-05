@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -58,4 +58,76 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="community" xml:space="preserve">
+    <value>சமூகம்</value>
+  </data>
+  <data name="noUpdate" xml:space="preserve">
+    <value>புதுப்பிப்பு எதுவும் கிடைக்கவில்லை</value>
+  </data>
+  <data name="noDevicesSelected" xml:space="preserve">
+    <value>சாதனங்கள் எதுவும் தேர்ந்தெடுக்கப்படவில்லை</value>
+  </data>
+  <data name="clickToUpdate" xml:space="preserve">
+    <value>புதுப்பிக்க இங்கே சொடுக்கு செய்க.</value>
+  </data>
+  <data name="playbackDevices" xml:space="preserve">
+    <value>பின்னணி சாதனங்கள்</value>
+  </data>
+  <data name="volumeMixer" xml:space="preserve">
+    <value>தொகுதி மிக்சர்</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>அமைப்புகள்</value>
+  </data>
+  <data name="about" xml:space="preserve">
+    <value>சவுண்ட்ச்விட்ச் பற்றி</value>
+  </data>
+  <data name="quit" xml:space="preserve">
+    <value>சவுண்ட்ச்விட்சை விட்டு வெளியேறவும்</value>
+  </data>
+  <data name="updateAvailable" xml:space="preserve">
+    <value>புதுப்பிப்பு கிடைக்கிறது ({0})</value>
+  </data>
+  <data name="versionAvailable" xml:space="preserve">
+    <value>சவுண்ட்ச்விட்சிற்கான புதுப்பிப்பு ({0}) கிடைக்கிறது.</value>
+  </data>
+  <data name="playbackChanged" xml:space="preserve">
+    <value>சவுண்ட்ச்விட்ச்: பிளேபேக் சாதனம் மாறியது</value>
+  </data>
+  <data name="recordingChanged" xml:space="preserve">
+    <value>சவுண்ட்ச்விட்ச்: பதிவு சாதனம் மாறியது</value>
+  </data>
+  <data name="configurationNeeded" xml:space="preserve">
+    <value>சவுண்ட்ச்விட்ச்: உள்ளமைவு தேவை</value>
+  </data>
+  <data name="configurationNeededExplanation" xml:space="preserve">
+    <value>மாற சாதனங்கள் எதுவும் கிடைக்கவில்லை. ஐகானில் வலது சொடுக்கு செய்வதன் மூலம் உள்ளமைவைத் திறக்கவும்.</value>
+  </data>
+  <data name="error" xml:space="preserve">
+    <value>பிழை</value>
+  </data>
+  <data name="help" xml:space="preserve">
+    <value>உதவி</value>
+  </data>
+  <data name="donate" xml:space="preserve">
+    <value>நன்கொடை</value>
+  </data>
+  <data name="iconChanger.playback" xml:space="preserve">
+    <value>பின்னணி</value>
+  </data>
+  <data name="iconChanger.recording" xml:space="preserve">
+    <value>பதிவு</value>
+  </data>
+  <data name="iconChanger.none" xml:space="preserve">
+    <value>இயல்புநிலை</value>
+  </data>
+  <data name="iconChanger.both" xml:space="preserve">
+    <value>இரண்டும்</value>
+  </data>
+  <data name="updateDisabled" xml:space="preserve">
+    <value>புதுப்பிப்பு காசோலை முடக்கப்பட்டது</value>
+  </data>
+  <data name="forceCheckForUpdate" xml:space="preserve">
+    <value>புதுப்பிப்புக்கு சரிபார்க்கவும்</value>
+  </data>
 </root>
