@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -58,4 +58,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="downloadFailed" xml:space="preserve">
+    <value>பதிவிறக்கம் தோல்வியடைந்தது</value>
+  </data>
+  <data name="install" xml:space="preserve">
+    <value>நிறுவவும்</value>
+  </data>
+  <data name="cancel" xml:space="preserve">
+    <value>ரத்துசெய்</value>
+  </data>
+  <data name="changelog" xml:space="preserve">
+    <value>மாற்றபதிவு</value>
+  </data>
+  <data name="remindMe" xml:space="preserve">
+    <value>பின்னர்</value>
+  </data>
+  <data name="notSigned" xml:space="preserve">
+    <value>பதிவிறக்கம் செய்யப்பட்ட புதுப்பிப்பு சரியான கையொப்பத்துடன் கையொப்பமிடப்படவில்லை. கோப்பை நீக்கி டெவலப்பரைத் தொடர்பு கொள்ள நாங்கள் உங்களுக்கு அறிவுறுத்துகிறோம்!</value>
+  </data>
+  <data name="notSignedTitle" xml:space="preserve">
+    <value>தவறான டிசிட்டல் கையொப்பம்</value>
+  </data>
+  <data name="wrongSignature" xml:space="preserve">
+    <value>கடைசி சவுண்ட்ச்விட்ச் புதுப்பிப்பில் சிக்கல் உள்ளது. புதிய பதிப்பை {0 at இல் கைமுறையாக பதிவிறக்கம் செய்ய வேண்டும்</value>
+  </data>
 </root>
