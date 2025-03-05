@@ -6,7 +6,7 @@
   <ItemGroup>
     <PackageVersion Include="AuthenticodeExaminer" Version="0.3.0" />
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
-    <PackageVersion Include="FluentAssertions" Version="8.0.1" />
+    <PackageVersion Include="FluentAssertions" Version="8.1.1" />
     <PackageVersion Include="JetBrains.Annotations" Version="2024.3.0" />
     <PackageVersion Include="Job.Scheduler" Version="3.1.8" />
     <PackageVersion Include="Markdig" Version="0.40.0" />
