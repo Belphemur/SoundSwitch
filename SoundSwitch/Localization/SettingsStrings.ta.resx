@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -58,4 +58,454 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="connected" xml:space="preserve">
+    <value>இணைக்கப்பட்டுள்ளது</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>அமைப்புகள்</value>
+  </data>
+  <data name="selected" xml:space="preserve">
+    <value>தேர்ந்தெடுக்கப்பட்டது</value>
+  </data>
+  <data name="disconnected" xml:space="preserve">
+    <value>துண்டிக்கப்பட்டது</value>
+  </data>
+  <data name="recording" xml:space="preserve">
+    <value>பதிவு</value>
+  </data>
+  <data name="playback" xml:space="preserve">
+    <value>பின்னணி</value>
+  </data>
+  <data name="hotkey" xml:space="preserve">
+    <value>ஆட்ச்கி</value>
+  </data>
+  <data name="communicationsDevice" xml:space="preserve">
+    <value>இயல்புநிலை தொடர்பு சாதனத்தை மாற்றவும்</value>
+  </data>
+  <data name="startWithWindows" xml:space="preserve">
+    <value>விண்டோசுடன் தானாகவே தொடங்கவும்</value>
+  </data>
+  <data name="buttonClose" xml:space="preserve">
+    <value>மூடு</value>
+  </data>
+  <data name="buttonClose.tooltip" xml:space="preserve">
+    <value>மாற்றங்கள் தானாகவே சேமிக்கப்படும்</value>
+  </data>
+  <data name="communicationsDevice.tooltip" xml:space="preserve">
+    <value>சரிபார்க்கும்போது, 'இயல்புநிலை தொடர்பு சாதனம்' மற்றும் 'இயல்புநிலை பிளேபேக் சாதனம்' ஆகியவை ஒன்றாக மாற்றப்படுகின்றன (ச்கைப், டீம்ச்பீக், எ.கா.</value>
+  </data>
+  <data name="notification" xml:space="preserve">
+    <value>அறிவிப்பு</value>
+  </data>
+  <data name="updateIncludeBetaVersions" xml:space="preserve">
+    <value>பீட்டா பதிப்புகளைச் சேர்க்கவும்</value>
+  </data>
+  <data name="updateIncludeBetaVersions.tooltip" xml:space="preserve">
+    <value>சரிபார்க்கும்போது, கிட்அப்பில் பீட்டா பதிப்புகளையும் சவுண்ட்ச்விட்ச் சரிபார்க்கும்.</value>
+  </data>
+  <data name="audioFiles" xml:space="preserve">
+    <value>ஆடியோ கோப்புகள்</value>
+  </data>
+  <data name="selectSoundButton.tooltip" xml:space="preserve">
+    <value>அறிவிப்புக்கு ஒலி கோப்பைத் தேர்ந்தெடுக்கவும்</value>
+  </data>
+  <data name="hotkey.tooltip" xml:space="preserve">
+    <value>ஆட்ச்கியை இயக்க சரிபார்க்கவும்.</value>
+  </data>
+  <data name="basicSettings" xml:space="preserve">
+    <value>அடிப்படை அமைப்புகள்</value>
+  </data>
+  <data name="audioSettings" xml:space="preserve">
+    <value>ஆடியோ அமைப்புகள்</value>
+  </data>
+  <data name="updateSettings" xml:space="preserve">
+    <value>அமைப்புகளை புதுப்பிக்கவும்</value>
+  </data>
+  <data name="cycleThrough" xml:space="preserve">
+    <value>மூலம் சுழற்சி</value>
+  </data>
+  <data name="keepSystemTrayIcon" xml:space="preserve">
+    <value>சவுண்ட்ச்விட்சின் கணினி தட்டு ஐகானை வைத்திருங்கள்</value>
+  </data>
+  <data name="keepSystemTrayIcon.tooltip" xml:space="preserve">
+    <value>சரிபார்க்கும்போது, 'இயல்புநிலை பிளேபேக் சாதனம்' மாறும்போது கணினி தட்டு படவுரு மாறாது.</value>
+  </data>
+  <data name="updateInstallAutomatically" xml:space="preserve">
+    <value>புதுப்பிப்புகளை தானாக நிறுவவும்</value>
+  </data>
+  <data name="updateInstallAutomatically.tooltip" xml:space="preserve">
+    <value>எந்த அறிவுகளும் இல்லாமல் புதுப்பிப்புகள் தானாக நிறுவப்படுகின்றன.</value>
+  </data>
+  <data name="updateNotify" xml:space="preserve">
+    <value>புதுப்பிப்புகள் கிடைக்கும்போது எனக்கு அறிவிக்கவும்</value>
+  </data>
+  <data name="updateNever" xml:space="preserve">
+    <value>புதுப்பிப்புகளை ஒருபோதும் சரிபார்க்க வேண்டாம்</value>
+  </data>
+  <data name="tooltipOnHover" xml:space="preserve">
+    <value>ஓவர் மீது உதவிக்குறிப்பு</value>
+  </data>
+  <data name="cycleThrough.option.allAudioDevices" xml:space="preserve">
+    <value>அனைத்து ஆடியோ சாதனங்களும்</value>
+  </data>
+  <data name="cycleThrough.option.onlySelectedAudioDevices" xml:space="preserve">
+    <value>தேர்ந்தெடுக்கப்பட்ட ஆடியோ சாதனங்கள் மட்டுமே</value>
+  </data>
+  <data name="cycleThrough.tooltip" xml:space="preserve">
+    <value>எந்த சாதனங்களை மாற்ற வேண்டும் என்பதைத் தேர்வுசெய்க. தேர்ந்தெடுக்கப்பட்டவற்றுக்கு இடையில் அல்லது அனைவருக்கும் இடையில் மட்டுமே.</value>
+  </data>
+  <data name="notification.option.windowsDefault" xml:space="preserve">
+    <value>சாளரங்கள் அறிவிப்பு</value>
+  </data>
+  <data name="notification.option.sound" xml:space="preserve">
+    <value>ஒலி அறிவிப்பு</value>
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>எதுவுமில்லை</value>
+  </data>
+  <data name="notification.option.toast" xml:space="preserve">
+    <value>சிற்றுண்டி அறிவிப்பு</value>
+  </data>
+  <data name="notification.option.customized" xml:space="preserve">
+    <value>தனிப்பயனாக்கப்பட்ட ஒலி அறிவிப்பு</value>
+  </data>
+  <data name="notification.tooltip" xml:space="preserve">
+    <value>சாளரங்கள் அறிவிப்பு: இயல்புநிலை சாளரங்கள் தட்டு பாப்-அப்.
+ ஒலி அறிவிப்பு: சுவிட்ச் பிளேபேக் சாதனத்தில் ஒலியை இயக்குகிறது.
+ தனிப்பயனாக்கப்பட்ட ஒலி அறிவிப்பு: சுவிட்ச் பிளேபேக் சாதனத்தில் குறிப்பிட்ட ஒலியை இயக்குகிறது.
+ சிற்றுண்டி அறிவிப்பு: சாளரங்கள் தட்டு பாப்-அப் பதிப்பின் சிறப்பு வடிவத்தைப் பயன்படுத்துகிறது.
+ பேனர்: விளையாட்டில் பயன்பாட்டிற்கு பயனுள்ள தனிப்பயன் எப்போதும்-மேல் சட்டகத்தைப் பயன்படுத்துகிறது.</value>
+  </data>
+  <data name="tooltipOnHover.option.playbackDevice" xml:space="preserve">
+    <value>பின்னணி சாதனம்</value>
+  </data>
+  <data name="audioFileNotFound" xml:space="preserve">
+    <value>அறிவிப்பாக பயன்படுத்த நீங்கள் தேர்ந்தெடுத்த ஆடியோ கோப்பைக் கண்டுபிடிக்க முடியாது. சவுண்ட்ச்விட்ச் அறிவிப்பு அமைப்பை மீண்டும் {0 பெறுநர் க்கு மாற்றியது.</value>
+  </data>
+  <data name="tooltipOnHover.option.recordingDevice" xml:space="preserve">
+    <value>பதிவு செய்யும் சாதனம்</value>
+  </data>
+  <data name="tooltipOnHover.option.bothDevices" xml:space="preserve">
+    <value>இரண்டு சாதனங்களும்</value>
+  </data>
+  <data name="audioFileNotFound.caption" xml:space="preserve">
+    <value>ஆடியோ கோப்பு கிடைக்கவில்லை</value>
+  </data>
+  <data name="activeRecording" xml:space="preserve">
+    <value>Rec: {0}</value>
+  </data>
+  <data name="activePlayback" xml:space="preserve">
+    <value>விளையாடு: {0}</value>
+  </data>
+  <data name="language" xml:space="preserve">
+    <value>மொழி</value>
+  </data>
+  <data name="languageRestartRequired" xml:space="preserve">
+    <value>சவுண்ட்ச்விட்சை மறுதொடக்கம் செய்த பிறகு மொழி மாறும்.
+ நீங்கள் இப்போது மறுதொடக்கம் செய்ய விரும்புகிறீர்களா?</value>
+  </data>
+  <data name="languageRestartRequired.caption" xml:space="preserve">
+    <value>மறுதொடக்கம் தேவை</value>
+  </data>
+  <data name="updateNever.tooltip" xml:space="preserve">
+    <value>நீங்கள் கைமுறையாக செய்யாவிட்டால் நிரலை புதுப்பிக்க வேண்டாம்.</value>
+  </data>
+  <data name="updateNotify.tooltip" xml:space="preserve">
+    <value>புதிய புதுப்பிப்பு கிடைக்கும்போது சவுண்ட்ச்விட்ச் உங்களுக்கு அறிவிக்கும். அறிவிப்பைக் சொடுக்கு செய்யும் போது, உங்களுக்கான புதுப்பிப்பைப் பதிவிறக்கி, அதை நிறுவ விரும்புகிறீர்களா என்று கேட்பீர்கள்.</value>
+  </data>
+  <data name="notification.option.banner" xml:space="preserve">
+    <value>பேனர் அறிவிப்பு</value>
+  </data>
+  <data name="disableCustomSound.tooltip" xml:space="preserve">
+    <value>தொகுப்பு தனிப்பயன் ஒலியை முடக்கவும்.</value>
+  </data>
+  <data name="foregroundApp" xml:space="preserve">
+    <value>முன்புற நிரலையும் மாற்றவும்</value>
+  </data>
+  <data name="foregroundApp.tooltip" xml:space="preserve">
+    <value>தற்போது பயன்பாட்டு பயன்பாட்டின் ஒலியையும் மாற்றவும். வீடியோ கேம்களுடன் பயனுள்ளதாக இருக்கும்.</value>
+  </data>
+  <data name="iconChange" xml:space="preserve">
+    <value>சிச்ட்ரே படவுரு</value>
+  </data>
+  <data name="profile.tab" xml:space="preserve">
+    <value>சுயவிவரங்கள்</value>
+  </data>
+  <data name="iconChange.tooltip" xml:space="preserve">
+    <value>சவுண்ட்ச்விட்சின் சிச்ட்ரே ஐகானை எப்போது மாற்ற வேண்டும் என்பதைத் தேர்வுசெய்க.
+
+ இயல்புநிலை: அதை மாற்ற வேண்டாம். சவுண்ட்ச்விட்ச் ஐகானை வைத்திருங்கள்.
+ பிளேபேக்: பிளேபேக் சாதனம் மாற்றப்படும் போது.
+ பதிவு: பதிவு செய்யும் சாதனம் மாறும்போது.
+ இரண்டுமே: எந்த வகையான சாதனமும் மாறும்போது மாற்றவும்.</value>
+  </data>
+  <data name="buttonAdd" xml:space="preserve">
+    <value>கூட்டு</value>
+  </data>
+  <data name="profile.program" xml:space="preserve">
+    <value>பயன்பாடு</value>
+  </data>
+  <data name="profile.name" xml:space="preserve">
+    <value>பெயர்</value>
+  </data>
+  <data name="profile.error.hotkey" xml:space="preserve">
+    <value>இந்த ஆட்ச்கி {0} ஏற்கனவே பதிவு செய்யப்பட்டுள்ளது.</value>
+  </data>
+  <data name="profile.error.application" xml:space="preserve">
+    <value>இந்த பயன்பாடு {0} ஏற்கனவே இணைக்கப்பட்ட சுயவிவரத்தைக் கொண்டுள்ளது.</value>
+  </data>
+  <data name="profile.error.name" xml:space="preserve">
+    <value>ஏற்கனவே {0} என்ற சுயவிவரம் உள்ளது.</value>
+  </data>
+  <data name="profile.error.needHKOrPath" xml:space="preserve">
+    <value>நீங்கள் ஆட்ச்கி அல்லது/மற்றும் பயன்பாட்டை அமைக்க வேண்டும்.</value>
+  </data>
+  <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
+    <value>நீங்கள் ஒரு பின்னணி- அல்லது பதிவு செய்யும் சாதனத்தை அமைக்க வேண்டும்.</value>
+  </data>
+  <data name="profile.explanation" xml:space="preserve">
+    <value>ஒரு குறிப்பிட்ட பயன்பாடு தொடங்கப்படும்போது அல்லது கவனம் செலுத்தும்போது, ஒரு குறிப்பிட்ட பின்னணி அல்லது பதிவு சாதனத்திற்கு மாற ஒரு சுயவிவரத்தைச் சேர்க்கவும். குறிப்பிட்ட சாதன காம்போவுக்கு உங்கள் சொந்த ஆட்ச்கியை அமைக்கலாம்.</value>
+  </data>
+  <data name="profile.error.registerHotkeys" xml:space="preserve">
+    <value>பின்வரும் சுயவிவரங்களுக்கு ஆட்ச்கியை பதிவு செய்ய முடியவில்லை: {0}</value>
+  </data>
+  <data name="profile.error.registerHotkeys.title" xml:space="preserve">
+    <value>ஏற்கனவே பயன்படுத்தப்பட்ட ஆட்ச்கி</value>
+  </data>
+  <data name="profile.feature.add" xml:space="preserve">
+    <value>சுயவிவரத்தைச் சேர்க்கவும்</value>
+  </data>
+  <data name="profile.feature.executable" xml:space="preserve">
+    <value>இயங்கக்கூடிய (*.exe)</value>
+  </data>
+  <data name="profile.error.title" xml:space="preserve">
+    <value>சுயவிவர பிழை</value>
+  </data>
+  <data name="buttonDelete" xml:space="preserve">
+    <value>நீக்கு</value>
+  </data>
+  <data name="profile.error.delete" xml:space="preserve">
+    <value>சுயவிவரத்தைக் கண்டுபிடிக்க முடியவில்லை.</value>
+  </data>
+  <data name="profile.error.noName" xml:space="preserve">
+    <value>ஒரு சுயவிவரத்திற்கு ஒரு பெயர் தேவை.</value>
+  </data>
+  <data name="profile.feature.profile" xml:space="preserve">
+    <value>சுயவிவரம்</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox" xml:space="preserve">
+    <value>இயல்புநிலை சாதனத்தையும் மாற்றவும்</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
+    <value>பயன்பாடு கண்டறியப்படும்போது, சவுண்ட்ச்விட்ச் தற்போதைய இயல்புநிலை சாதனத்தையும் மாற்றும்.</value>
+  </data>
+  <data name="hotkeyEnabled" xml:space="preserve">
+    <value>ஆட்கி இயக்கப்பட்டது</value>
+  </data>
+  <data name="profile.error.deviceNotFound" xml:space="preserve">
+    <value>சாதனம் {0} கண்டுபிடிக்க முடியவில்லை.</value>
+  </data>
+  <data name="profile.trigger.window" xml:space="preserve">
+    <value>நிரலின் பெயர்</value>
+  </data>
+  <data name="profile.trigger.process" xml:space="preserve">
+    <value>பயன்பாட்டு பாதை</value>
+  </data>
+  <data name="profile.trigger.steam" xml:space="preserve">
+    <value>நீராவி பெரிய படம்</value>
+  </data>
+  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
+    <value>சுயவிவரத்தை செயல்படுத்த ஆட்கி பயன்படுத்தப்படுகிறது. நீங்கள் அதே ஆட்ச்கியைப் பயன்படுத்தினால், நீங்கள் சுயவிவரங்களுக்கு இடையில் மாற முடியும்.</value>
+  </data>
+  <data name="profile.trigger.window.desc" xml:space="preserve">
+    <value>முன்புற நிரலில் பின்வரும் எழுத்துக்கள் இருந்தால் சுயவிவரத்தை செயல்படுத்தவும்</value>
+  </data>
+  <data name="profile.trigger.process.desc" xml:space="preserve">
+    <value>தேர்ந்தெடுக்கப்பட்ட பயன்பாடு முன்புறத்தில் இருக்கும்போது சுயவிவரத்தை செயல்படுத்தவும்</value>
+  </data>
+  <data name="profile.trigger.steam.desc" xml:space="preserve">
+    <value>நீராவி பெரிய படம் கண்டறியப்படும்போது செயல்படுத்தவும். (பெரிய படம் மூடப்படும் போது மாநிலத்தை மீட்டெடுக்கும்.)</value>
+  </data>
+  <data name="profile.desc" xml:space="preserve">
+    <value>விவரம்</value>
+  </data>
+  <data name="profile.trigger.actives" xml:space="preserve">
+    <value>செயலில் தூண்டுதல்கள்</value>
+  </data>
+  <data name="profile.trigger.available" xml:space="preserve">
+    <value>கிடைக்கும் தூண்டுதல்கள்</value>
+  </data>
+  <data name="communication" xml:space="preserve">
+    <value>இயல்புநிலை தொடர்பு சாதனம்</value>
+  </data>
+  <data name="profile.error.triggers.min" xml:space="preserve">
+    <value>உங்களுக்கு குறைந்தபட்சம் ஒரு தூண்டுதல் தேவை.</value>
+  </data>
+  <data name="profile.error.steam" xml:space="preserve">
+    <value>நீராவி பெரிய படத்திற்கு ஒரு சுயவிவரத்தை மட்டுமே நீங்கள் வைத்திருக்க முடியும்.</value>
+  </data>
+  <data name="profile.error.window" xml:space="preserve">
+    <value>இந்த சாளர பெயருடன் ஏற்கனவே ஒரு சுயவிவரம் உள்ளது: {0}.</value>
+  </data>
+  <data name="profile.notifyOnActivation" xml:space="preserve">
+    <value>சுயவிவரம் தூண்டப்படும்போது அறிவிக்கவும்</value>
+  </data>
+  <data name="profile.notification.text" xml:space="preserve">
+    <value>சுயவிவரம் {0} தூண்டப்பட்டது</value>
+  </data>
+  <data name="buttonSave" xml:space="preserve">
+    <value>சேமி</value>
+  </data>
+  <data name="buttonEdit" xml:space="preserve">
+    <value>தொகு</value>
+  </data>
+  <data name="profile.trigger.startup" xml:space="preserve">
+    <value>தொடக்கத்தில்</value>
+  </data>
+  <data name="profile.trigger.startup.desc" xml:space="preserve">
+    <value>சவுண்ட்ச்விட்ச் தொடங்கும் போது சுயவிவரம் தானாகவே தூண்டப்படும்</value>
+  </data>
+  <data name="usePrimaryScreen" xml:space="preserve">
+    <value>எப்போதும் முதன்மைத் திரையைப் பயன்படுத்துங்கள்</value>
+  </data>
+  <data name="usePrimaryScreen.tooltip" xml:space="preserve">
+    <value>கவனம் செலுத்திய திரைக்கு பதிலாக முதன்மை திரையில் பேனரைக் காண்பி.</value>
+  </data>
+  <data name="profile.trigger.restoreDevices" xml:space="preserve">
+    <value>தூண்டுதல் முடிவடையும் போது சாதனங்களை மீட்டமைக்கவும்</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
+    <value>"{0}" இயக்கப்பட வேண்டும்.
+
+ விண்ணப்பம் மூடப்படும் போது அமைப்பின் நிலையை மீட்டெடுக்கவும்.</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
+    <value>கணினி நிலை மீட்டெடுக்கப்பட்டது</value>
+  </data>
+  <data name="profile.trigger.uwp" xml:space="preserve">
+    <value>நுண்மென் கடை பயன்பாடு</value>
+  </data>
+  <data name="profile.trigger.uwp.desc" xml:space="preserve">
+    <value>சாளரங்கள் கடை மூலம் நிறுவப்பட்ட பயன்பாட்டின் பெயரை உள்ளிடவும். நெட்ஃபிக்ச், அமேசான் பிரைம் வீடியோ போன்றவை…</value>
+  </data>
+  <data name="notification.microphone.muted" xml:space="preserve">
+    <value>{0} இப்போது முடக்கப்பட்டுள்ளது.</value>
+  </data>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>{0} இப்போது அசைக்காது.</value>
+  </data>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>ஊமியை மாற்றவும்</value>
+  </data>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>பயன்பாட்டு பட்டியலில்</value>
+  </data>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>இந்த தூண்டுதல் தட்டு படவுரு பட்டியலில் சுயவிவரத்தை காண வைக்கிறது. உங்கள் சுயவிவரத்தைக் காண சிச்ட்ரே ஐகானில் இடது சொடுக்கு செய்யவும்.</value>
+  </data>
+  <data name="profile.trigger.deviceChanged" xml:space="preserve">
+    <value>படை சுயவிவரம்</value>
+  </data>
+  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
+    <value>தற்போதைய ஒலி சாதனம் மாறும்போது எந்த நேரத்திலும் சுயவிவரம் தானாகவே தூண்டப்படும்.</value>
+  </data>
+  <data name="profile.error.deviceChanged" xml:space="preserve">
+    <value>நீங்கள் ஒரு கட்டாய சுயவிவரத்தை மட்டுமே வைத்திருக்க முடியும்.</value>
+  </data>
+  <data name="telemetry" xml:space="preserve">
+    <value>டெலிமெட்ரி</value>
+  </data>
+  <data name="telemetry.tooltip" xml:space="preserve">
+    <value>சவுண்ட்ச்விட்சின் எந்த பதிப்பு பயன்பாட்டில் உள்ளது என்பதை அநாமதேயமாக சேகரிக்கவும். சவுண்ட்ச்விட்சின் டெவலப்பருடன் மட்டுமே பகிரப்பட்டது.</value>
+  </data>
+  <data name="quickMenu" xml:space="preserve">
+    <value>ஆட்ச்கியில் விரைவான பட்டியல்</value>
+  </data>
+  <data name="quickMenu.tooltip" xml:space="preserve">
+    <value>ஆட்ச்கியைப் பயன்படுத்தும் போது சாளரங்கள் மொழி போன்ற விரைவான மெனுவைக் காட்டு</value>
+  </data>
+  <data name="keepVolume" xml:space="preserve">
+    <value>சாதனங்களில் தொகுதி அளவை வைத்திருங்கள்</value>
+  </data>
+  <data name="keepVolume.tooltip" xml:space="preserve">
+    <value>சாதனங்களை மாற்றும்போது அதே தொகுதி அளவை வைத்திருங்கள்</value>
+  </data>
+  <data name="devices.autoAddNewDevice" xml:space="preserve">
+    <value>ஆட்டோ புதிய சாதனங்களைத் தேர்ந்தெடுக்கவும்</value>
+  </data>
+  <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
+    <value>தேர்ந்தெடுக்கப்பட்ட பட்டியலில் புதிய சாதனத்தை கணினியுடன் இணைக்கும்போது தானாக சேர்க்கவும்</value>
+  </data>
+  <data name="position" xml:space="preserve">
+    <value>நிலை</value>
+  </data>
+  <data name="position.tooltip" xml:space="preserve">
+    <value>பேனர் அறிவிப்பின் நிலையை அமைக்கவும்.</value>
+  </data>
+  <data name="position.option.bottomLeft" xml:space="preserve">
+    <value>கீழே இடது</value>
+  </data>
+  <data name="position.option.bottomRight" xml:space="preserve">
+    <value>கீழே வலது</value>
+  </data>
+  <data name="position.option.topLeft" xml:space="preserve">
+    <value>மேல் இடது</value>
+  </data>
+  <data name="position.option.topRight" xml:space="preserve">
+    <value>மேல் வலது</value>
+  </data>
+  <data name="position.option.bottomCenter" xml:space="preserve">
+    <value>கீழே நடுவண்</value>
+  </data>
+  <data name="position.option.topCenter" xml:space="preserve">
+    <value>மேல் நடுவண்</value>
+  </data>
+  <data name="notification.single" xml:space="preserve">
+    <value>ஒரே ஒரு பேனர்</value>
+  </data>
+  <data name="notification.single.tooltip" xml:space="preserve">
+    <value>ஒரு நேரத்தில் ஒரு பேனரைக் காட்டி அதன் உள்ளடக்கத்தை மாற்றவும்.</value>
+  </data>
+  <data name="link.community" xml:space="preserve">
+    <value>சமூக முரண்பாடு</value>
+  </data>
+  <data name="link.donate" xml:space="preserve">
+    <value>நன்கொடை</value>
+  </data>
+  <data name="link.help" xml:space="preserve">
+    <value>கலந்துரையாடலுக்கு உதவுங்கள்</value>
+  </data>
+  <data name="resetAudioDevices.desc" xml:space="preserve">
+    <value>சாதனங்களை மாற்றும்போது ஆடியோ சாதனங்கள் நிரலுக்கு ஒதுக்கப்படாவிட்டால், சாளரங்களில் குறிப்பிட்ட நிரல்களுக்கு ஆடியோ சாதன ஒதுக்கீட்டை மீட்டமைக்கவும்.</value>
+  </data>
+  <data name="buttonReset" xml:space="preserve">
+    <value>மீட்டமை</value>
+  </data>
+  <data name="resetAudioDevices" xml:space="preserve">
+    <value>பயன்பாட்டு ஆடியோவுக்கு மீட்டமைக்கவும்</value>
+  </data>
+  <data name="exportLogFiles" xml:space="preserve">
+    <value>பதிவு கோப்புகளை ஏற்றுமதி செய்யுங்கள்</value>
+  </data>
+  <data name="exportLogFiles.desc" xml:space="preserve">
+    <value>உதவி விவாதங்கள் அல்லது சமூக முரண்பாட்டில் மேலும் சரிசெய்ய அனைத்து பதிவு கோப்புகளையும் ஒரு சிப் காப்பகத்தில் ஏற்றுமதி செய்யுங்கள்.</value>
+  </data>
+  <data name="buttonExport" xml:space="preserve">
+    <value>ஏற்றுமதி</value>
+  </data>
+  <data name="troubleshooting" xml:space="preserve">
+    <value>சரிசெய்தல்</value>
+  </data>
+  <data name="troubleshooting.desc" xml:space="preserve">
+    <value>சவுண்ட்ச்விட்சுடன் உங்களுக்கு ஏதேனும் உதவி அல்லது மேலும் சரிசெய்தல் தேவைப்பட்டால், நீங்கள் உதவி கலந்துரையாடல் அல்லது சமூக முரண்பாடு இணைப்பைப் பார்வையிடலாம் அல்லது கீழேயுள்ள நன்கொடை இணைப்பைப் பார்வையிடுவதன் மூலம் எங்களை ஆதரிக்க உதவலாம்.</value>
+  </data>
+  <data name="position.option.center" xml:space="preserve">
+    <value>நடுவண்</value>
+  </data>
+  <data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>திரை நேரத்தில்</value>
+  </data>
+  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+    <value>பதாகை எவ்வளவு நேரம் திரையில் நொடிகளில் இருக்கும்.</value>
+  </data>
 </root>
