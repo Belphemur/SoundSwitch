@@ -60,6 +60,7 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET }}
           include-prerelease: ${{ env.DOTNET_PRERELEASE }}
+          cache: true
       - name: Restore
         if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true' || github.ref == 'refs/heads/master'
         run: dotnet restore
@@ -134,6 +135,7 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET }}
           include-prerelease: ${{ env.DOTNET_PRERELEASE }}
+          cache: true
       - name: Restore
         run: dotnet restore -r ${{ env.ARCH }}
       - name: Tests
