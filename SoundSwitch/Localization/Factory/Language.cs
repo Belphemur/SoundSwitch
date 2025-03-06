@@ -46,5 +46,6 @@ namespace SoundSwitch.Localization.Factory
         Ukrainian,
         Bulgarian,
         Swedish,
+        Tamil,
     }
 }

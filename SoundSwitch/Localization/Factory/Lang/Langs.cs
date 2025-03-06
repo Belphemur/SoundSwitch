@@ -213,7 +213,7 @@ namespace SoundSwitch.Localization.Factory.Lang
         public override Language TypeEnum => Language.Arabic;
         public override bool IsRightToLeft => true;
     }
-    
+
     public class Thai : BaseLang
     {
         /// <summary>
@@ -223,8 +223,8 @@ namespace SoundSwitch.Localization.Factory.Lang
 
         public override Language TypeEnum => Language.Thai;
     }
-    
-        
+
+
     public class Serbian : BaseLang
     {
         /// <summary>
@@ -234,7 +234,7 @@ namespace SoundSwitch.Localization.Factory.Lang
 
         public override Language TypeEnum => Language.Serbian;
     }
-    
+
     public class Danish : BaseLang
     {
         /// <summary>
@@ -244,8 +244,8 @@ namespace SoundSwitch.Localization.Factory.Lang
 
         public override Language TypeEnum => Language.Danish;
     }
-    
-    
+
+
     public class Ukrainian : BaseLang
     {
         /// <summary>
@@ -255,7 +255,7 @@ namespace SoundSwitch.Localization.Factory.Lang
 
         public override Language TypeEnum => Language.Ukrainian;
     }
-    
+
     public class Bulgarian : BaseLang
     {
         /// <summary>
@@ -265,7 +265,7 @@ namespace SoundSwitch.Localization.Factory.Lang
 
         public override Language TypeEnum => Language.Bulgarian;
     }
-    
+
     public class Swedish : BaseLang
     {
         /// <summary>
@@ -274,5 +274,15 @@ namespace SoundSwitch.Localization.Factory.Lang
         public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("sv-SE");
 
         public override Language TypeEnum => Language.Swedish;
+    }
+
+    public class Tamil : BaseLang
+    {
+        /// <summary>
+        /// Culture info of this language
+        /// </summary>
+        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("ta");
+
+        public override Language TypeEnum => Language.Tamil;
     }
 }
