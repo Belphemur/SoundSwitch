@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -53,10 +54,12 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="connected" xml:space="preserve">
     <value>இணைக்கப்பட்டுள்ளது</value>
@@ -180,7 +183,7 @@
     <value>பின்னணி சாதனம்</value>
   </data>
   <data name="audioFileNotFound" xml:space="preserve">
-    <value>அறிவிப்பாக பயன்படுத்த நீங்கள் தேர்ந்தெடுத்த ஆடியோ கோப்பைக் கண்டுபிடிக்க முடியாது. சவுண்ட்ச்விட்ச் அறிவிப்பு அமைப்பை மீண்டும் {0 பெறுநர் க்கு மாற்றியது.</value>
+    <value>அறிவிப்பாக பயன்படுத்த நீங்கள் தேர்ந்தெடுத்த ஆடியோ கோப்பைக் கண்டுபிடிக்க முடியாது. சவுண்ட்ச்விட்ச் அறிவிப்பு அமைப்பை மீண்டும் {0} பெறுநர் க்கு மாற்றியது.</value>
   </data>
   <data name="tooltipOnHover.option.recordingDevice" xml:space="preserve">
     <value>பதிவு செய்யும் சாதனம்</value>
