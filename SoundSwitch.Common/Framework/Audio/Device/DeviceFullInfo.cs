@@ -1,5 +1,6 @@
 ﻿#nullable enable
 using System;
+using System.Threading.Tasks;
 using NAudio.CoreAudioApi;
 using Newtonsoft.Json;
 using SoundSwitch.Common.Framework.Audio.Icon;
@@ -22,9 +23,14 @@ namespace SoundSwitch.Common.Framework.Audio.Device
 
         [JsonIgnore]
         public int Volume { get; private set; } = 0;
-        
+
         [JsonIgnore]
         public bool IsMuted { get; private set; }
+
+        /// <summary>
+        /// Event raised when the device's volume or mute state changes
+        /// </summary>
+        public event EventHandler<VolumeChangedEventArgs>? MuteVolumeChanged;
 
         [JsonConstructor]
         public DeviceFullInfo(string name, string id, DataFlow type, string iconPath, DeviceState state, bool isUsb) : base(name, id, type, isUsb, DateTime.UtcNow)
@@ -66,6 +72,13 @@ namespace SoundSwitch.Common.Framework.Audio.Device
         {
             Volume = (int)Math.Round(data.MasterVolume * 100F);
             IsMuted = data.Muted;
+
+            Task.Run(() =>
+            {
+                // Trigger the event with our custom event args
+                MuteVolumeChanged?.Invoke(this, new VolumeChangedEventArgs(Volume, IsMuted));
+            });
+
         }
 
         public void Dispose()
@@ -88,9 +101,19 @@ namespace SoundSwitch.Common.Framework.Audio.Device
 
             try
             {
+
                 if (_device?.AudioEndpointVolume != null)
                 {
                     _device.AudioEndpointVolume.OnVolumeNotification -= DeviceAudioEndpointVolumeOnOnVolumeNotification;
+                }
+
+                // Clean up event subscribers to prevent memory leaks
+                if (MuteVolumeChanged != null)
+                {
+                    foreach (var subscriber in MuteVolumeChanged.GetInvocationList())
+                    {
+                        MuteVolumeChanged -= (EventHandler<VolumeChangedEventArgs>)subscriber;
+                    }
                 }
 
                 _device?.Dispose();
