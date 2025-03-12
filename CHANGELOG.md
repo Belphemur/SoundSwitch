@@ -1,3 +1,29 @@
+## [6.13.0-beta.5](https://github.com/Belphemur/SoundSwitch/compare/v6.13.0-beta.4...v6.13.0-beta.5) (2025-03-12)
+
+### Languages
+
+* **tamil:** Add tamil language to the application ([31a2f04](https://github.com/Belphemur/SoundSwitch/commit/31a2f04fa8fe2735a3502637a67125060843e9ca))
+* **Tamil:** Added About translation using Weblate ([7b16918](https://github.com/Belphemur/SoundSwitch/commit/7b1691803c1226a6354944a202500cb94b7930e2))
+* **Tamil:** Added Settings translation using Weblate ([fc63fb5](https://github.com/Belphemur/SoundSwitch/commit/fc63fb5cff5145bd1be6066f9ff8ff3b88e23f7a))
+* **Tamil:** Added Tray Icon translation using Weblate ([4b6b4df](https://github.com/Belphemur/SoundSwitch/commit/4b6b4dfc8b42e47f7c886f8066bac2fb27025e73))
+* **Tamil:** Added Update Download translation using Weblate ([c8ee970](https://github.com/Belphemur/SoundSwitch/commit/c8ee970be58c7caadc3a9956352e02cf6f14690e))
+* **Tamil:** Translated About using Weblate ([15ac998](https://github.com/Belphemur/SoundSwitch/commit/15ac998a35194f1686447c8177dc31bbed8d9e4f))
+* **Tamil:** Translated Settings using Weblate ([e5fa0d8](https://github.com/Belphemur/SoundSwitch/commit/e5fa0d84645023da085b4bae0da7779aa9483891))
+* **Tamil:** Translated Tray Icon using Weblate ([2dd3920](https://github.com/Belphemur/SoundSwitch/commit/2dd3920feb443274a9810050dc9edf5cc7d87e79))
+* **Tamil:** Translated Update Download using Weblate ([afc7c76](https://github.com/Belphemur/SoundSwitch/commit/afc7c76ae423f9fdea73ad736a847ff7bd66b892))
+
+### Bug Fixes
+
+* **cli:mute:** notify on microphone muted state ([86e5843](https://github.com/Belphemur/SoundSwitch/commit/86e5843768a584496e833b5cd3d38f22c0c04942))
+* **localization:** correct formatting in SettingsStrings.ta.resx and improve bracket checking in check_brackets.py ([365c3b8](https://github.com/Belphemur/SoundSwitch/commit/365c3b8f7d1a700b459685c422dc40a55e07c0b1))
+* **localization:** improve formatting and correct placeholder in UpdateDownloadStrings.ta.resx ([74e0393](https://github.com/Belphemur/SoundSwitch/commit/74e03935dd30876b80b207d80043c2166da6b1c6))
+
+### Features
+
+* **audio:** add event for volume and mute state changes ([f7013a2](https://github.com/Belphemur/SoundSwitch/commit/f7013a258f67d4fbfb0de7342ed389ad4a4d860f))
+* **device:** track if the the device is muted. ([5b506d7](https://github.com/Belphemur/SoundSwitch/commit/5b506d786a36813a69e15a7181c8f40953ec9c23))
+* **microphone:** Notify on any microphone being muted. ([b464e2d](https://github.com/Belphemur/SoundSwitch/commit/b464e2dd0de50b5711f9a056eb7989aa2d15c3e5))
+
 ## [6.13.0-beta.4](https://github.com/Belphemur/SoundSwitch/compare/v6.13.0-beta.3...v6.13.0-beta.4) (2025-03-03)
 
 ### Bug Fixes
