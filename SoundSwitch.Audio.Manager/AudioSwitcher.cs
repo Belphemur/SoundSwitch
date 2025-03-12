@@ -333,8 +333,7 @@ namespace SoundSwitch.Audio.Manager
                         return null;
                     }
                 })
-                .Where(device => device != null)
-                .Where(device => !string.IsNullOrEmpty(device?.Name))
+                .Where(device => !string.IsNullOrEmpty(device?.NameClean))
                 .Cast<DeviceFullInfo>().ToArray();
         });
 
