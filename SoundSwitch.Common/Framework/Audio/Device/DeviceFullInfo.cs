@@ -22,6 +22,9 @@ namespace SoundSwitch.Common.Framework.Audio.Device
 
         [JsonIgnore]
         public int Volume { get; private set; } = 0;
+        
+        [JsonIgnore]
+        public bool IsMuted { get; private set; }
 
         [JsonConstructor]
         public DeviceFullInfo(string name, string id, DataFlow type, string iconPath, DeviceState state, bool isUsb) : base(name, id, type, isUsb, DateTime.UtcNow)
@@ -44,10 +47,12 @@ namespace SoundSwitch.Common.Framework.Audio.Device
                     if (deviceAudioEndpointVolume == null)
                     {
                         Volume = 0;
+                        IsMuted = false;
                         return;
                     }
 
                     Volume = (int)Math.Round(deviceAudioEndpointVolume.MasterVolumeLevelScalar * 100);
+                    IsMuted = deviceAudioEndpointVolume.Mute;
                     deviceAudioEndpointVolume.OnVolumeNotification += DeviceAudioEndpointVolumeOnOnVolumeNotification;
                 }
             }
@@ -60,6 +65,7 @@ namespace SoundSwitch.Common.Framework.Audio.Device
         private void DeviceAudioEndpointVolumeOnOnVolumeNotification(AudioVolumeNotificationData data)
         {
             Volume = (int)Math.Round(data.MasterVolume * 100F);
+            IsMuted = data.Muted;
         }
 
         public void Dispose()
