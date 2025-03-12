@@ -5,21 +5,26 @@ using SoundSwitch.Audio.Manager.Interop.Enum;
 
 namespace SoundSwitch.Framework.Audio.Microphone
 {
+    /// <summary>
+    /// Provides functionality to toggle microphone mute state
+    /// </summary>
     public class MicrophoneMuteToggler
     {
         private readonly AudioSwitcher _switcher;
-        private readonly NotificationManager.NotificationManager _notificationManager;
 
-        public MicrophoneMuteToggler(AudioSwitcher switcher, NotificationManager.NotificationManager notificationManager)
+        /// <summary>
+        /// Initializes a new instance of the MicrophoneMuteToggler class
+        /// </summary>
+        /// <param name="switcher">The audio switcher instance</param>
+        public MicrophoneMuteToggler(AudioSwitcher switcher)
         {
             _switcher = switcher;
-            _notificationManager = notificationManager;
         }
 
         /// <summary>
         /// Toggle mute state for the default microphone
-        /// <returns>Tuple with the device name and current mute state, null if couldn't interact with the microphone</returns>
         /// </summary>
+        /// <returns>Tuple with the device name and current mute state, null if couldn't interact with the microphone</returns>
         public (string Name, bool MuteState)? ToggleDefaultMute()
         {
             var microphone = _switcher.GetDefaultMmDevice(EDataFlow.eCapture, ERole.eCommunications);
@@ -45,20 +50,14 @@ namespace SoundSwitch.Framework.Audio.Microphone
                 return default;
             });
 
-            if (result == default)
-            {
-                return null;
-            }
-
-            _notificationManager.NotifyMuteChanged(result.Name, result.NewMuteState);
-            return result;
+            return result == default ? null : result;
         }
 
         /// <summary>
         /// Set mute state for the default microphone
+        /// </summary>
         /// <param name="muteState">The mute state to set</param>
         /// <returns>Tuple with the device name and current mute state, null if couldn't interact with the microphone</returns>
-        /// </summary>
         public (string Name, bool MuteState)? SetDefaultMuteState(bool muteState)
         {
             var microphone = _switcher.GetDefaultMmDevice(EDataFlow.eCapture, ERole.eCommunications);
@@ -83,13 +82,7 @@ namespace SoundSwitch.Framework.Audio.Microphone
                 return default;
             });
 
-            if (result == default)
-            {
-                return null;
-            }
-
-            _notificationManager.NotifyMuteChanged(result.Name, result.NewMuteState);
-            return result;
+            return result == default ? null : result;
         }
     }
 }

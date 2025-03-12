@@ -28,6 +28,11 @@ namespace SoundSwitch.Model
         bool Refreshing { get; }
         IObservable<DefaultDevicePayload> DefaultDeviceChanged { get; }
 
+        /// <summary>
+        /// Observable that emits when a device's volume or mute state changes
+        /// </summary>
+        IObservable<DeviceVolumeChangedPayload> DeviceVolumeChanged { get; }
+
         void Refresh(CancellationToken token);
 
         /// <summary>

@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading;
 using NAudio.CoreAudioApi;
 using RailSharp;
@@ -57,7 +58,7 @@ namespace SoundSwitch.Model
 
             _deviceCyclerManager = new DeviceCyclerManager();
             _selectedDevices = null;
-            _microphoneMuteToggler = new MicrophoneMuteToggler(AudioSwitcher.Instance, _notificationManager);
+            _microphoneMuteToggler = new MicrophoneMuteToggler(AudioSwitcher.Instance);
             _updateScheduler = new LimitedConcurrencyLevelTaskScheduler(1);
         }
 
@@ -331,6 +332,15 @@ namespace SoundSwitch.Model
             JobScheduler.Instance.ScheduleJob(new ProcessNotificationEventsJob());
             AudioDeviceLister.DefaultDeviceChanged.Subscribe((@event) => { DefaultDeviceChanged?.Invoke(this, new DeviceDefaultChangedEvent(@event.Device, @event.Role)); });
 
+            // Subscribe to volume change events for microphones
+            AudioDeviceLister.DeviceVolumeChanged
+                .Where(payload =>
+                    // Only listen for recording devices (microphones)
+                    payload.Device.Type == DataFlow.Capture &&
+                    // Only care about mute changes
+                    payload.MuteChanged)
+                .Subscribe(HandleMicrophoneMuteChanged);
+
             RegisterHotKey(AppConfigs.Configuration.PlaybackHotKey);
             var saveConfig = false;
             if (!RegisterHotKey(AppConfigs.Configuration.RecordingHotKey))
@@ -389,6 +399,20 @@ namespace SoundSwitch.Model
 
             InitUpdateChecker();
             _initialized = true;
+        }
+
+
+        /// <summary>
+        /// Handles microphone mute state changes and triggers appropriate notifications
+        /// </summary>
+        /// <param name="payload">The volume changed payload</param>
+        private void HandleMicrophoneMuteChanged(DeviceVolumeChangedPayload payload)
+        {
+            Log.Information("Microphone {DeviceName} mute state changed from {WasMuted} to {IsMuted}",
+                payload.Device.NameClean, payload.WasMuted, payload.IsMuted);
+
+            // Notify about the mute state change
+            _notificationManager.NotifyMuteChanged(payload.Device.NameClean, payload.IsMuted);
         }
 
 
