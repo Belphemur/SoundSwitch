@@ -70,15 +70,23 @@ namespace SoundSwitch.Common.Framework.Audio.Device
 
         private void DeviceAudioEndpointVolumeOnOnVolumeNotification(AudioVolumeNotificationData data)
         {
+            // Store previous values before updating
+            var previousVolume = Volume;
+            var wasMuted = IsMuted;
+
+            // Update current values
             Volume = (int)Math.Round(data.MasterVolume * 100F);
             IsMuted = data.Muted;
 
-            Task.Run(() =>
+            // Only raise event if there's an actual change
+            if (previousVolume != Volume || wasMuted != IsMuted)
             {
-                // Trigger the event with our custom event args
-                MuteVolumeChanged?.Invoke(this, new VolumeChangedEventArgs(Volume, IsMuted));
-            });
-
+                Task.Run(() =>
+                {
+                    // Trigger the event with our custom event args that includes previous values
+                    MuteVolumeChanged?.Invoke(this, new VolumeChangedEventArgs(Volume, previousVolume, IsMuted, wasMuted));
+                });
+            }
         }
 
         public void Dispose()
@@ -101,7 +109,6 @@ namespace SoundSwitch.Common.Framework.Audio.Device
 
             try
             {
-
                 if (_device?.AudioEndpointVolume != null)
                 {
                     _device.AudioEndpointVolume.OnVolumeNotification -= DeviceAudioEndpointVolumeOnOnVolumeNotification;

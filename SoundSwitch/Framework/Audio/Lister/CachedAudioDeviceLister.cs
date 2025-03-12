@@ -42,6 +42,9 @@ namespace SoundSwitch.Framework.Audio.Lister
         private readonly ISubject<DefaultDevicePayload> _defaultDeviceChanged = new Subject<DefaultDevicePayload>();
         public IObservable<DefaultDevicePayload> DefaultDeviceChanged => _defaultDeviceChanged.AsObservable();
 
+        private readonly ISubject<DeviceVolumeChangedPayload> _deviceVolumeChanged = new Subject<DeviceVolumeChangedPayload>();
+        public IObservable<DeviceVolumeChangedPayload> DeviceVolumeChanged => _deviceVolumeChanged.AsObservable();
+
         /// <summary>
         /// Get devices per type and state
         /// </summary>
@@ -86,8 +89,31 @@ namespace SoundSwitch.Framework.Audio.Lister
             _context = Log.ForContext("State", _state);
         }
 
+        private void SubscribeToDeviceEvents(DeviceFullInfo deviceFullInfo)
+        {
+            // Subscribe to volume change events for this device
+            deviceFullInfo.MuteVolumeChanged += DeviceOnMuteVolumeChanged;
+        }
+
+        private void UnsubscribeFromDeviceEvents(DeviceFullInfo deviceFullInfo)
+        {
+            // Unsubscribe from volume change events
+            deviceFullInfo.MuteVolumeChanged -= DeviceOnMuteVolumeChanged;
+        }
+
+        private void DeviceOnMuteVolumeChanged(object sender, VolumeChangedEventArgs e)
+        {
+            if (sender is DeviceFullInfo device)
+            {
+                // Create and emit volume change payload through the subject
+                _deviceVolumeChanged.OnNext(new DeviceVolumeChangedPayload(device, e));
+            }
+        }
+
         private void DisposeDevice(DeviceFullInfo deviceFullInfo)
         {
+            UnsubscribeFromDeviceEvents(deviceFullInfo);
+
             _ = AudioSwitcher.Instance.InteractWithDevice(deviceFullInfo, device =>
             {
                 device.Dispose();
@@ -127,6 +153,7 @@ namespace SoundSwitch.Framework.Audio.Lister
                         }
 
                         PlaybackDevices[device.Id] = device;
+                        SubscribeToDeviceEvents(device);
                         break;
                     case DataFlow.Capture:
                         if (RecordingDevices.TryGetValue(device.Id, out var oldRecordingDevice))
@@ -135,6 +162,7 @@ namespace SoundSwitch.Framework.Audio.Lister
                         }
 
                         RecordingDevices[device.Id] = device;
+                        SubscribeToDeviceEvents(device);
                         break;
                     case DataFlow.All:
                         break;
@@ -217,6 +245,10 @@ namespace SoundSwitch.Framework.Audio.Lister
                     foreach (var deviceInfo in AudioSwitcher.Instance.GetAudioEndpoints((EDataFlow)DataFlow.All, (EDeviceState)_state))
                     {
                         cancellationToken.ThrowIfCancellationRequested();
+
+                        // Subscribe to device events
+                        SubscribeToDeviceEvents(deviceInfo);
+
                         switch (deviceInfo.Type)
                         {
                             case DataFlow.Render:
@@ -266,6 +298,10 @@ namespace SoundSwitch.Framework.Audio.Lister
             {
                 DisposeDevice(device.Value);
             }
+
+            // Dispose subjects and clear all subscriptions
+            (_defaultDeviceChanged as Subject<DefaultDevicePayload>)?.Dispose();
+            (_deviceVolumeChanged as Subject<DeviceVolumeChangedPayload>)?.Dispose();
 
             _refreshCancellationTokenSource.Dispose();
         }
