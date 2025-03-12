@@ -91,3 +91,7 @@ SoundSwitch is a Windows application for switching audio playback and recording 
 2. Test changes thoroughly across different Windows versions
 3. Use GitHub flow for contributions (feature branches and PRs)
 4. Update documentation and CHANGELOG.md with significant changes
+
+## DeviceFullInfo
+
+Never use the Name property. Always use the NameClean property instead. Ensure that any handling of device names is done using NameClean to avoid potential issues with formatting or invalid characters.
