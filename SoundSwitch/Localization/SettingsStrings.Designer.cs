@@ -480,6 +480,24 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Microphone Off.
+        /// </summary>
+        internal static string microphone_off {
+            get {
+                return ResourceManager.GetString("microphone.off", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Microphone On.
+        /// </summary>
+        internal static string microphone_on {
+            get {
+                return ResourceManager.GetString("microphone.on", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Toggle mute.
         /// </summary>
         internal static string mute_toggle_label {

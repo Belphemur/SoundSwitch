@@ -37,6 +37,9 @@ namespace SoundSwitch.Framework.Banner
         private CancellationTokenSource _cancellationTokenSource = new();
         private int _currentOffset;
         private int _hide = 100;
+        private float _defaultFontSize;
+        private Size _defaultPictureSize;
+        private Padding _defaultPadding;
         public Guid Id { get; } = Guid.NewGuid();
 
         /// <summary>
@@ -59,10 +62,15 @@ namespace SoundSwitch.Framework.Banner
             TopMost = true;
             FormBorderStyle = FormBorderStyle.None;
             ShowInTaskbar = false;
+
+            // Store default sizes for compact mode calculations
+            _defaultFontSize = Font.Size;
+            _defaultPictureSize = pbxLogo.Size;
+            _defaultPadding = Padding;
         }
 
         protected override bool ShowWithoutActivation => true;
-        
+
         protected override CreateParams CreateParams
         {
             get
@@ -127,6 +135,10 @@ namespace SoundSwitch.Framework.Banner
             Opacity = .9;
             lblTop.Text = data.Title;
             lblTitle.Text = data.Text;
+
+            // Apply compact mode scaling if requested
+            ApplyCompactMode(data.CompactMode);
+
             Region = Region.FromHrgn(RoundedCorner.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
 
             var screen = GetScreen();
@@ -175,6 +187,44 @@ namespace SoundSwitch.Framework.Banner
             _cancellationTokenSource.Cancel();
             _cancellationTokenSource.Dispose();
             _cancellationTokenSource = new();
+        }
+
+        /// <summary>
+        /// Applies or removes compact mode styling to the banner
+        /// </summary>
+        /// <param name="compact">Whether to use compact mode</param>
+        private void ApplyCompactMode(bool compact)
+        {
+            var scaleFactorImage = compact ? 0.1f : 1.0f;
+            var scaleFactorFont = compact ? 0.8f : 1.0f;
+
+            // Scale font
+            Font = new Font(Font.FontFamily, _defaultFontSize * scaleFactorFont, Font.Style);
+            lblTop.Font = new Font(lblTop.Font.FontFamily, lblTop.Font.Size * scaleFactorFont, lblTop.Font.Style);
+            lblTitle.Font = new Font(lblTitle.Font.FontFamily, lblTitle.Font.Size * scaleFactorFont, lblTitle.Font.Style);
+
+            // Scale image
+            if (pbxLogo.Image != null && _defaultPictureSize.Width > 0 && _defaultPictureSize.Height > 0)
+            {
+                int newWidth = (int)(_defaultPictureSize.Width * scaleFactorImage);
+                int newHeight = (int)(_defaultPictureSize.Height * scaleFactorImage);
+
+                if (newWidth > 0 && newHeight > 0)
+                {
+                    pbxLogo.Size = new Size(newWidth, newHeight);
+                }
+            }
+
+            // Scale padding
+            Padding = new Padding(
+                (int)(_defaultPadding.Left * scaleFactorImage),
+                (int)(_defaultPadding.Top * scaleFactorImage),
+                (int)(_defaultPadding.Right * scaleFactorImage),
+                (int)(_defaultPadding.Bottom * scaleFactorImage)
+            );
+
+            // Force the form to recalculate its size
+            PerformLayout();
         }
 
         /// <summary>
