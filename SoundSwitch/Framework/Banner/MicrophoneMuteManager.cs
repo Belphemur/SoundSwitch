@@ -30,9 +30,10 @@ namespace SoundSwitch.Framework.Banner
     {
         private static System.Threading.SynchronizationContext _syncContext;
         private readonly Dictionary<string, BannerForm> _activeBanners = new();
-        private readonly BannerPositionFactory _bannerPositionFactory = new();
         private const int SPACING = 10;
-        private IPosition BannerPosition => _bannerPositionFactory.Get(AppModel.Instance.BannerPosition);
+        
+        // Remove the local position factory and accessor
+        private IPosition BannerPosition => AppModel.Instance.BannerPositionImpl;
 
         /// <summary>
         /// Updates or creates a banner when a microphone's mute state changes

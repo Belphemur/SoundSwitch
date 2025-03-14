@@ -29,6 +29,7 @@ using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Audio.Lister.Job;
 using SoundSwitch.Framework.Audio.Microphone;
 using SoundSwitch.Framework.Banner;
+using SoundSwitch.Framework.Banner.Position;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
@@ -51,6 +52,7 @@ namespace SoundSwitch.Model
         private readonly NotificationManager _notificationManager;
         private UpdateChecker _updateChecker;
         private DeviceCollection<DeviceInfo> _selectedDevices;
+        private readonly BannerPositionFactory _bannerPositionFactory = new BannerPositionFactory();
 
         private AppModel()
         {
@@ -158,6 +160,11 @@ namespace SoundSwitch.Model
                     new BannerDataChangedEvent(BannerPosition, value, BannerOnScreenTime, BannerOnScreenTime));
             }
         }
+
+        /// <summary>
+        /// Current banner position implementation based on the BannerPosition setting
+        /// </summary>
+        public IPosition BannerPositionImpl => _bannerPositionFactory.Get(BannerPosition);
 
         /// <summary>
         /// Beta or Stable channel.

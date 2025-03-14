@@ -20,6 +20,7 @@ using SoundSwitch.Common.Framework.Audio.Collection;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Banner;
+using SoundSwitch.Framework.Banner.Position;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Updater;
@@ -130,6 +131,11 @@ namespace SoundSwitch.Model
 
         TimeSpan BannerOnScreenTime { get; set; }
         int BannerOnScreenTimeSecs { get; set; }
+
+        /// <summary>
+        /// Current banner position implementation based on the BannerPosition setting
+        /// </summary>
+        IPosition BannerPositionImpl { get; }
 
         #endregion
 
