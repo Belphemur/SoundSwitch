@@ -70,7 +70,7 @@ namespace SoundSwitch.Framework.Banner
             _defaultPadding = Padding;
 
             // Add click event handlers
-            this.Click += BannerForm_Click;
+            Click += BannerForm_Click;
             lblTitle.Click += BannerForm_Click;
             lblTop.Click += BannerForm_Click;
             pbxLogo.Click += BannerForm_Click;
@@ -224,7 +224,7 @@ namespace SoundSwitch.Framework.Banner
             // If already in compact mode, do nothing
             if (_isCompact)
                 return;
-            
+
             const float scaleFactorImage = 0.1f;
             const float scaleFactorFont = 0.8f;
 

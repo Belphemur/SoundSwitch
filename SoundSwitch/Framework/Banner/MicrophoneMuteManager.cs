@@ -107,6 +107,7 @@ namespace SoundSwitch.Framework.Banner
                 Title = SettingsStrings.microphone_on,
                 Position = AppModel.Instance.BannerPositionImpl,
                 Ttl = TimeSpan.FromSeconds(3),
+                OnClick = (sender, args) => AppModel.Instance.SetMicrophoneMuteState(microphoneId, true),
                 CompactMode = true
             };
 
@@ -115,10 +116,10 @@ namespace SoundSwitch.Framework.Banner
             {
                 // Update the existing banner
                 existingBanner.SetData(unmuteBannerData);
-                
+
                 // Remove from our tracking dictionary
                 _activeBanners.Remove(microphoneId);
-                
+
                 // Banner will auto-dispose after TTL expires
                 existingBanner.Disposed += (s, e) => RearrangeBanners();
             }
@@ -128,7 +129,7 @@ namespace SoundSwitch.Framework.Banner
                 var newBanner = new BannerForm();
                 newBanner.SetData(unmuteBannerData);
                 newBanner.Disposed += (s, e) => RearrangeBanners();
-                
+
                 // No need to track in _activeBanners since it's temporary
                 RearrangeBanners();
             }
@@ -140,7 +141,7 @@ namespace SoundSwitch.Framework.Banner
         private void RearrangeBanners()
         {
             var offset = 0;
-            
+
             foreach (var banner in _activeBanners.Values)
             {
                 banner.UpdatePosition(offset);
