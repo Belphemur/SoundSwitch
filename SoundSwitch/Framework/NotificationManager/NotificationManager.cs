@@ -157,9 +157,9 @@ namespace SoundSwitch.Framework.NotificationManager
             return icon ?? Resources.default_profile_image;
         }
 
-        public void NotifyMuteChanged(string microphoneName, bool newMuteState)
+        public void NotifyMuteChanged(string deviceId, string microphoneName, bool newMuteState)
         {
-            _notification.NotifyMuteChanged(microphoneName, newMuteState);
+            _notification.NotifyMuteChanged(deviceId, microphoneName, newMuteState);
         }
 
         ~NotificationManager()

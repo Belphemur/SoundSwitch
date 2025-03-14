@@ -62,10 +62,21 @@ namespace SoundSwitch.Framework.Banner
         /// If a notification is being shown a higher priority comes, it will replace it, if a lower, nothing will happens.
         /// </summary>
         public int Priority { get; set; } = -1;
-        
+
         /// <summary>
         /// How long to keep the banner on the screen
         /// </summary>
         public TimeSpan Ttl { get; internal set; }
+
+        /// <summary>
+        /// When enabled, displays the banner in compact mode (half the normal size)
+        /// </summary>
+        public bool CompactMode { get; internal set; }
+        
+        /// <summary>
+        /// Callback that is triggered when the banner is clicked
+        /// </summary>
+        [AllowNull]
+        public EventHandler? OnClick { get; internal set; }
     }
 }

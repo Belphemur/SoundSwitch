@@ -45,7 +45,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         /// <summary>
         /// Notify about the mute state having changed
         /// </summary>
-        void NotifyMuteChanged(string microphoneName, bool newMuteState);
+        void NotifyMuteChanged(string deviceId, string microphoneName, bool newMuteState);
 
         /// <summary>
         /// Does this notification support showing an icon

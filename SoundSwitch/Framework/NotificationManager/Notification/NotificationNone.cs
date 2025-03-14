@@ -31,7 +31,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
 
         public void NotifyProfileChanged(Profile.Profile profile, Bitmap icon, uint? processId) { }
 
-        public void NotifyMuteChanged(string microphoneName, bool newMuteState) { }
+        public void NotifyMuteChanged(string deviceId, string microphoneName, bool newMuteState) { }
 
         public void OnSoundChanged(CachedSound newSound) { }
 

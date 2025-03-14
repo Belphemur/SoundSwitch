@@ -567,4 +567,10 @@ Restore the state of the system when the application is closed.</value>
   <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
     <value>How long the banner stays on the screen in seconds.</value>
   </data>
+  <data name="microphone.on" xml:space="preserve">
+    <value>Microphone On</value>
+  </data>
+  <data name="microphone.off" xml:space="preserve">
+    <value>Microphone Off</value>
+  </data>
 </root>

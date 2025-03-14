@@ -588,4 +588,10 @@ Restaurer l'état du système quand l'application est fermée.</value>
   <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
     <value>Durée de visibilité de la bannière à l'écran en secondes.</value>
   </data>
+  <data name="microphone.on" xml:space="preserve">
+    <value>Microphone On</value>
+  </data>
+  <data name="microphone.off" xml:space="preserve">
+    <value>Microphone Off</value>
+  </data>
 </root>

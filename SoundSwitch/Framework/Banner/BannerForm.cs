@@ -37,12 +37,16 @@ namespace SoundSwitch.Framework.Banner
         private CancellationTokenSource _cancellationTokenSource = new();
         private int _currentOffset;
         private int _hide = 100;
+        private float _defaultFontSize;
+        private Size _defaultPictureSize;
+        private Padding _defaultPadding;
+        private bool _isCompact = false;
         public Guid Id { get; } = Guid.NewGuid();
 
         /// <summary>
         /// Get the Screen object
         /// </summary>
-        private static Screen GetScreen()
+        private Screen GetScreen()
         {
             return (AppModel.Instance.NotifyUsingPrimaryScreen ? Screen.PrimaryScreen : Screen.FromPoint(Cursor.Position))!;
         }
@@ -59,10 +63,21 @@ namespace SoundSwitch.Framework.Banner
             TopMost = true;
             FormBorderStyle = FormBorderStyle.None;
             ShowInTaskbar = false;
+
+            // Store default sizes for compact mode calculations
+            _defaultFontSize = Font.Size;
+            _defaultPictureSize = pbxLogo.Size;
+            _defaultPadding = Padding;
+
+            // Add click event handlers
+            this.Click += BannerForm_Click;
+            lblTitle.Click += BannerForm_Click;
+            lblTop.Click += BannerForm_Click;
+            pbxLogo.Click += BannerForm_Click;
         }
 
         protected override bool ShowWithoutActivation => true;
-        
+
         protected override CreateParams CreateParams
         {
             get
@@ -103,14 +118,18 @@ namespace SoundSwitch.Framework.Banner
             }
 
             _currentData = data;
-            if (_timerHide == null)
+            // No need for timer since there isn't any ttl
+            if (data.Ttl != TimeSpan.MaxValue)
             {
-                _timerHide = new Timer { Interval = (int)data.Ttl.TotalMilliseconds };
-                _timerHide.Tick += TimerHide_Tick!;
-            }
-            else
-            {
-                _timerHide.Enabled = false;
+                if (_timerHide == null)
+                {
+                    _timerHide = new Timer { Interval = (int)data.Ttl.TotalMilliseconds };
+                    _timerHide.Tick += TimerHide_Tick!;
+                }
+                else
+                {
+                    _timerHide.Enabled = false;
+                }
             }
 
             if (data.Image != null)
@@ -127,15 +146,35 @@ namespace SoundSwitch.Framework.Banner
             Opacity = .9;
             lblTop.Text = data.Title;
             lblTitle.Text = data.Text;
+
+            // Apply compact mode scaling if requested
+            if (data.CompactMode)
+                ApplyCompactMode();
+
             Region = Region.FromHrgn(RoundedCorner.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
 
             var screen = GetScreen();
 
             Location = data.Position.GetScreenPosition(screen, Height, Width, _currentOffset);
 
-            _timerHide.Enabled = true;
+            if (_timerHide != null)
+                _timerHide.Enabled = true;
 
             Show();
+        }
+
+        /// <summary>
+        /// Updates the banner's position using its configured position settings and the provided offset
+        /// </summary>
+        /// <param name="offset">Vertical offset to apply to the banner's position</param>
+        public void UpdatePosition(int offset)
+        {
+            if (_currentData?.Position == null)
+                return;
+
+            var screen = GetScreen();
+            Location = _currentData.Position.GetScreenPosition(screen, Height, Width, offset);
+            _currentOffset = offset;
         }
 
         /// <summary>
@@ -175,6 +214,48 @@ namespace SoundSwitch.Framework.Banner
             _cancellationTokenSource.Cancel();
             _cancellationTokenSource.Dispose();
             _cancellationTokenSource = new();
+        }
+
+        /// <summary>
+        /// Applies or removes compact mode styling to the banner
+        /// </summary>
+        private void ApplyCompactMode()
+        {
+            // If already in compact mode, do nothing
+            if (_isCompact)
+                return;
+            
+            const float scaleFactorImage = 0.1f;
+            const float scaleFactorFont = 0.8f;
+
+            // Scale font
+            Font = new Font(Font.FontFamily, _defaultFontSize * scaleFactorFont, Font.Style);
+            lblTop.Font = new Font(lblTop.Font.FontFamily, lblTop.Font.Size * scaleFactorFont, lblTop.Font.Style);
+            lblTitle.Font = new Font(lblTitle.Font.FontFamily, lblTitle.Font.Size * scaleFactorFont, lblTitle.Font.Style);
+
+            // Scale image
+            if (pbxLogo.Image != null && _defaultPictureSize.Width > 0 && _defaultPictureSize.Height > 0)
+            {
+                var newWidth = (int)(_defaultPictureSize.Width * scaleFactorImage);
+                var newHeight = (int)(_defaultPictureSize.Height * scaleFactorImage);
+
+                if (newWidth > 0 && newHeight > 0)
+                {
+                    pbxLogo.Size = new Size(newWidth, newHeight);
+                }
+            }
+
+            // Scale padding
+            Padding = new Padding(
+                (int)(_defaultPadding.Left * scaleFactorImage),
+                (int)(_defaultPadding.Top * scaleFactorImage),
+                (int)(_defaultPadding.Right * scaleFactorImage),
+                (int)(_defaultPadding.Bottom * scaleFactorImage)
+            );
+
+            // Force the form to recalculate its size
+            PerformLayout();
+            _isCompact = true;
         }
 
         /// <summary>
@@ -250,6 +331,17 @@ namespace SoundSwitch.Framework.Banner
                     //Ignored
                 }
             }
+        }
+
+        /// <summary>
+        /// Event handler for clicks on any part of the banner
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">Arguments of the event</param>
+        private void BannerForm_Click(object sender, EventArgs e)
+        {
+            // Invoke the click callback if it's set
+            _currentData?.OnClick?.Invoke(this, e);
         }
     }
 }

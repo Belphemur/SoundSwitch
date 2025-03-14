@@ -1,23 +1,31 @@
 <a href="https://soundswitch.aaflalo.me" title="SoundSwitch Website"><img src="https://soundswitch.aaflalo.me/img/Main-Logo-Blue.svg" alt="SoundSwitch Logo" height="180px"></a>
 
 [![.NET](https://github.com/Belphemur/SoundSwitch/actions/workflows/dotnet.yml/badge.svg)](https://github.com/Belphemur/SoundSwitch/actions/workflows/dotnet.yml)[![Last Release](https://img.shields.io/github/release/Belphemur/SoundSwitch.svg)](https://soundswitch.aaflalo.me) [![Downloads for last Release](https://img.shields.io/github/downloads/Belphemur/SoundSwitch/total.svg)](https://soundswitch.aaflalo.me/) [![Translate](https://hosted.weblate.org/widgets/soundswitch/-/svg-badge.svg)](https://hosted.weblate.org/projects/soundswitch/) [![Donate](https://img.shields.io/badge/Donate-paypal%2Fcc-blue.svg)](https://soundswitch.aaflalo.me) [![Help](https://img.shields.io/badge/Discord-Community%20&%20Help-green?style=flat-square&logo=discord)](https://discord.gg/gUCw3Ue)
+
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-12-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
+
 **SoundSwitch** offers you the opportunity to switch your playback and recording devices using simple **hotkeys**.
 
 **No more** navigating througth several menus and screens. Just configure SoundSwitch **once** and you are able to switch between your devices faster than ever before!
 
 ## ✨ Preview
+
 ![Preview](https://soundswitch.aaflalo.me/img/preview.gif?v=20191124)
 
 ## Requirements
+
 - ⚠ Operating System: Windows 7 or newer
 
 ## Donations
+
 If you'd like to support development, we would love to see you [here ❤](https://soundswitch.aaflalo.me/#donate).
 
 ## Configuration
+
 _Right click_ the SoundSwitch icon in your system tray and choose _Settings_. Now select the devices between which you want to toggle. Optionally, you can also change the keyboard combination. If you want the application to start automatically when your PC boots up, check the box _Start automatically with Windows_.
 
 ## Usage
@@ -27,14 +35,19 @@ First set up your devices you want to cycle through, using _right click_ on the 
 **After you configured** SoundSwitch you can use the following hotkeys:
 
 - 🔊 To cycle through the **playback devices** press:
+
   - `Ctrl` + `Alt` + `F11` (default) **or**
   - Double click on the `System Tray Icon` of SoundSwitch.
 
 - 🎙 To cycle through the **recording devices** press:
+
   - `Ctrl` + `Alt` + `F7` (default)
 
 - 🔇 To mute the **default microphone** press:
+
   - `Ctrl` + `Alt` + `M` (default)
+
+  When a microphone is muted, a persistent banner will appear on your screen to remind you that your microphone is muted. The banner will remain visible until you unmute the microphone or click on the banner to unmute it directly.
 
 ## 💻 Command Line Interface
 
@@ -52,39 +65,47 @@ See the [CLI documentation](SoundSwitch.CLI/README.md) for more details about av
 SoundSwitch provides four types of notification when a device is changed:
 
 - #### 🎟 Banner Notification
-Uses a custom always-on-top frame, useful for in-game usage. This is the recommended default display style.
+
+  Uses a custom always-on-top frame, useful for in-game usage. This is the recommended default display style.
 
 - #### 🗨 Windows Notification
-Uses the balloon tip of Windows. In the case of Windows 7, it's the little balloon that opens next to the systray icon. For Windows 10, it's the notification system that slides from the right corner of the screen.
+
+  Uses the balloon tip of Windows. In the case of Windows 7, it's the little balloon that opens next to the systray icon. For Windows 10, it's the notification system that slides from the right corner of the screen.
 
 - #### 🎵 Sound Notification
-This notification is a sound played on the switched device. This way when you are switching devices, the new device will 'chime' to tell you it's selected.
+  This notification is a sound played on the switched device. This way when you are switching devices, the new device will 'chime' to tell you it's selected.
 
 ## Profiles
 
 Using profiles, it is possible to switch to a specific device when a condition occurs. Profiles can be defined for the following purposes:
 
 - ### 💫 Application profile
-When a application is focused, the sound settings are switched based on the profile. For example create a profile for Spotify to only play music on your speaker, while your favorite game is using your headset.
+
+  When a application is focused, the sound settings are switched based on the profile. For example create a profile for Spotify to only play music on your speaker, while your favorite game is using your headset.
 
 - ### ⌨️ Hot key profile
-When a hot key combination is pressed, the sound settings are switched based on the profile. For example you define a special combination to switch your playback device to your television.
+  When a hot key combination is pressed, the sound settings are switched based on the profile. For example you define a special combination to switch your playback device to your television.
 
 ## Advanced
 
 ### 🎙 Communications
+
 SoundSwitch can also change the **Default Communication Device** when asked in the Settings. Windows differentiates between Multimedia and Communication; it means if an application asks to have access to communications audio device, it will receive the Default Communication Device. By default SoundSwitch only changes the multimedia device and not the communication device. Now if the checkbox is checked in the settings, it will also change the Communication Device.
 
 ### 📥 Auto-Updater
+
 Every 24 hours SoundSwitch checks the GitHub repository (thanks to the GitHub API) for a new release. If a new one is available you will get a notification and the 'No update available' in the context menu will change to 'Update Available'. The new version gets automatically downloaded and installed, depeding on your _Update Mode_. We also provide a changelog with the latest improvements of SoundSwitch.
 
 #### 🚥 Update Modes
+
 There are three different options available on how updates are installed:
+
 - **Silent**, means the program updates itself in the background without any prompts.
 - **Notify**, you will be notified when there's an update available.
 - **Never**, well this is self-explained.
 
 ### 🌎 Multi-Language Support
+
 SoundSwitch is available in more than 20 languages including **English**, **French**, **German**, **Spanish**, **Italian**, **Portuguese (Brazilian)**, **Russian**, **Chinese**, and many more.
 
 Want to improve an existing language or add another one? Translations are online editable [right here](https://hosted.weblate.org/projects/soundswitch/#languages)!
@@ -130,7 +151,7 @@ Want to improve an existing language or add another one? Translations are online
 
 - Original Developer: [Jeroen Pelgrims](http://jeroenpelgrims.be)
 - Disabling Notification [#33](https://github.com/Belphemur/SoundSwitch/pull/33) [@adamblackburn](https://github.com/adamblackburn)
-- Localization and german translation [#157](https://github.com/Belphemur/SoundSwitch/pull/157) [@FireEmerald](https://github.com/FireEmerald) 
+- Localization and german translation [#157](https://github.com/Belphemur/SoundSwitch/pull/157) [@FireEmerald](https://github.com/FireEmerald)
 - Banner Notification [#186](https://github.com/Belphemur/SoundSwitch/pull/186) [@ramon18](https://github.com/ramon18)
 - Keyboard hook, [Christian Liensberger](http://www.liensberger.it/web/blog/?p=207)
 - Changing default sound device, [EreTIk](http://eretik.omegahg.com/)
@@ -141,6 +162,7 @@ Want to improve an existing language or add another one? Translations are online
 - Icons [Pastel SVG icon set](https://codefisher.org/pastel-svg/), by Michael Buckley ([CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/))
 - Discovered and reported a security vulnerability with the updater and its code signature checker [#415](https://github.com/Belphemur/SoundSwitch/issues/415) [@JarLob](https://github.com/JarLob)
 - Free Icons from [Font Awesome](https://fontawesome.com/), Creative Commons Attribution 4.0 International license: [License](https://fontawesome.com/license/free)
+
 ### 🤝 JetBrains ![JetBrain Tooling](https://i.imgur.com/SN2qAuL.png "JetBrain Tooling")
 
 Thanks for their Open-Source licence to their amazing IDEs and addons like [ReSharper](https://www.jetbrains.com/resharper) for Visual Studio.
@@ -160,7 +182,7 @@ of the License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 The complete GPLv2 license file is located [here](https://github.com/Belphemur/SoundSwitch/blob/master/LICENSE.txt).

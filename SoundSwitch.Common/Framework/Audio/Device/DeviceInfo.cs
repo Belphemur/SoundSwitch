@@ -16,6 +16,12 @@ namespace SoundSwitch.Common.Framework.Audio.Device
 
         [Obsolete("Use " + nameof(NameClean))]
         public string Name { get; }
+        
+        [JsonIgnore]
+        public string FriendlyName { get; private set; }
+        
+        [JsonIgnore]
+        public string DeviceName { get; private set; }
 
         public string Id { get; }
         public DataFlow Type { get; }
@@ -37,12 +43,14 @@ namespace SoundSwitch.Common.Framework.Audio.Device
                 //Old naming, can't do anything about this
                 if (!match.Success)
                 {
+                    FriendlyName = Name;
+                    DeviceName = string.Empty;
                     return _nameClean = Name;
                 }
 
-                var friendlyName = match.Groups["friendlyName"].Value;
-                var deviceName = match.Groups["deviceName"].Value;
-                return _nameClean = $"{NameCleanerRegex.Replace(friendlyName, "")} ({deviceName})";
+                FriendlyName = match.Groups["friendlyName"].Value;
+                DeviceName = match.Groups["deviceName"].Value;
+                return _nameClean = $"{NameCleanerRegex.Replace(FriendlyName, "")} ({DeviceName})";
             }
         }
 
