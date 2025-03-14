@@ -1,3 +1,13 @@
+## [6.13.0-beta.6](https://github.com/Belphemur/SoundSwitch/compare/v6.13.0-beta.5...v6.13.0-beta.6) (2025-03-14)
+
+### Features
+
+* **mute:** add a compact banner for the microphone mute state ([48f0aa4](https://github.com/Belphemur/SoundSwitch/commit/48f0aa40ea8859df7e6fc7fa5226701b9655b403))
+* **mute:** Only show friendly name for the device for mute notification ([09eeffb](https://github.com/Belphemur/SoundSwitch/commit/09eeffb32cab571c5fe4d7a72b399af474144ffd))
+* **notification::mute:** Support clicking the banner to unmute. ([67e2b3f](https://github.com/Belphemur/SoundSwitch/commit/67e2b3fe1630294de949520455d19656b2cd0d56))
+* **notification::mute:** Use a compact notification for Mute that stays on the screen until the microphone is unmuted. ([7439388](https://github.com/Belphemur/SoundSwitch/commit/7439388e9d34c37e2248f9f87065c1b83d7821dd))
+* **resources:** add microphone and mute images ([b221ab3](https://github.com/Belphemur/SoundSwitch/commit/b221ab3bada5c4703e91b815826e35897bfe0fe8))
+
 ## [6.13.0-beta.5](https://github.com/Belphemur/SoundSwitch/compare/v6.13.0-beta.4...v6.13.0-beta.5) (2025-03-12)
 
 ### Languages
