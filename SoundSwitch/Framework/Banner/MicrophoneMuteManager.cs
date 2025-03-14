@@ -106,7 +106,7 @@ namespace SoundSwitch.Framework.Banner
                 Text = microphoneName,
                 Title = SettingsStrings.microphone_on,
                 Position = AppModel.Instance.BannerPositionImpl,
-                Ttl = TimeSpan.FromSeconds(3),
+                Ttl = TimeSpan.FromMilliseconds(1500),
                 OnClick = (sender, args) => AppModel.Instance.SetMicrophoneMuteState(microphoneId, true),
                 CompactMode = true
             };
