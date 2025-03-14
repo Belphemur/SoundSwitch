@@ -148,7 +148,8 @@ namespace SoundSwitch.Framework.Banner
             lblTitle.Text = data.Text;
 
             // Apply compact mode scaling if requested
-            ApplyCompactMode(data.CompactMode);
+            if (data.CompactMode)
+                ApplyCompactMode();
 
             Region = Region.FromHrgn(RoundedCorner.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
 
@@ -170,7 +171,7 @@ namespace SoundSwitch.Framework.Banner
         {
             if (_currentData?.Position == null)
                 return;
-                
+
             var screen = GetScreen();
             Location = _currentData.Position.GetScreenPosition(screen, Height, Width, offset);
             _currentOffset = offset;
@@ -218,13 +219,14 @@ namespace SoundSwitch.Framework.Banner
         /// <summary>
         /// Applies or removes compact mode styling to the banner
         /// </summary>
-        /// <param name="compact">Whether to use compact mode</param>
-        private void ApplyCompactMode(bool compact)
+        private void ApplyCompactMode()
         {
+            // If already in compact mode, do nothing
             if (_isCompact)
                 return;
-            var scaleFactorImage = compact ? 0.1f : 1.0f;
-            var scaleFactorFont = compact ? 0.8f : 1.0f;
+            
+            const float scaleFactorImage = 0.1f;
+            const float scaleFactorFont = 0.8f;
 
             // Scale font
             Font = new Font(Font.FontFamily, _defaultFontSize * scaleFactorFont, Font.Style);
@@ -234,8 +236,8 @@ namespace SoundSwitch.Framework.Banner
             // Scale image
             if (pbxLogo.Image != null && _defaultPictureSize.Width > 0 && _defaultPictureSize.Height > 0)
             {
-                int newWidth = (int)(_defaultPictureSize.Width * scaleFactorImage);
-                int newHeight = (int)(_defaultPictureSize.Height * scaleFactorImage);
+                var newWidth = (int)(_defaultPictureSize.Width * scaleFactorImage);
+                var newHeight = (int)(_defaultPictureSize.Height * scaleFactorImage);
 
                 if (newWidth > 0 && newHeight > 0)
                 {
