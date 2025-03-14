@@ -74,6 +74,16 @@ namespace SoundSwitch.Framework.Banner
             lblTitle.Click += BannerForm_Click;
             lblTop.Click += BannerForm_Click;
             pbxLogo.Click += BannerForm_Click;
+            // Enable double buffering to reduce flicker
+            SetStyle(ControlStyles.OptimizedDoubleBuffer |
+                     ControlStyles.AllPaintingInWmPaint |
+                     ControlStyles.UserPaint, true);
+
+            // Also enable double buffering for container controls
+            foreach (Control control in Controls)
+            {
+                EnableDoubleBuffering(control);
+            }
         }
 
         protected override bool ShowWithoutActivation => true;
@@ -92,6 +102,64 @@ namespace SoundSwitch.Framework.Banner
                 return cp;
             }
         }
+
+        // Add this method to the BannerForm class
+
+        /// <summary>
+        /// Override the window procedure to handle paint messages and fix WS_EX_NOACTIVATE click issues
+        /// </summary>
+        /// <param name="m">The Windows message to process</param>
+        protected override void WndProc(ref Message m)
+        {
+            const int WM_NCHITTEST = 0x0084;
+            const int HTCLIENT = 1;
+            const int WM_LBUTTONUP = 0x0202;
+            const int WM_ERASEBKGND = 0x0014;
+
+            if (m.Msg == WM_NCHITTEST)
+            {
+                // Return HTCLIENT to handle mouse clicks properly with WS_EX_NOACTIVATE style
+                m.Result = (IntPtr)HTCLIENT;
+                return;
+            }
+            else if (m.Msg == WM_LBUTTONUP)
+            {
+                // Handle mouse clicks manually for WS_EX_NOACTIVATE windows
+                Point location = PointToClient(new Point(m.LParam.ToInt32() & 0xFFFF, m.LParam.ToInt32() >> 16));
+                BannerForm_Click(this, new MouseEventArgs(MouseButtons.Left, 1, location.X, location.Y, 0));
+                m.Result = IntPtr.Zero;
+                return;
+            }
+            else if (m.Msg == WM_ERASEBKGND)
+            {
+                // Return non-zero to indicate we handled erasing the background
+                // This prevents flickering during resize/update operations
+                m.Result = (IntPtr)1;
+                return;
+            }
+
+            base.WndProc(ref m);
+        }
+
+        /// <summary>
+        /// Enables double buffering for a control to reduce flickering
+        /// </summary>
+        /// <param name="control">The control to enable double buffering on</param>
+        private void EnableDoubleBuffering(Control control)
+        {
+            // Use reflection to enable double buffering on the control
+            typeof(Control).GetProperty("DoubleBuffered",
+                System.Reflection.BindingFlags.NonPublic |
+                System.Reflection.BindingFlags.Instance)?
+                .SetValue(control, true);
+
+            // Apply to child controls recursively
+            foreach (Control childControl in control.Controls)
+            {
+                EnableDoubleBuffering(childControl);
+            }
+        }
+
 
         /// <summary>
         /// Called internally to configure pass notification parameters
@@ -131,8 +199,8 @@ namespace SoundSwitch.Framework.Banner
 
             _hiding = false;
             Opacity = .9;
-            lblTop.Text = data.Title;
             lblTitle.Text = data.Text;
+            lblTop.Text = data.Title;
 
             // Apply compact mode scaling if requested
             if (data.CompactMode)
@@ -148,6 +216,7 @@ namespace SoundSwitch.Framework.Banner
                 _timerHide.Enabled = true;
 
             Show();
+
         }
 
         /// <summary>
