@@ -31,9 +31,6 @@ namespace SoundSwitch.Framework.Banner
         private static System.Threading.SynchronizationContext _syncContext;
         private readonly Dictionary<string, BannerForm> _activeBanners = new();
         private const int SPACING = 10;
-        
-        // Remove the local position factory and accessor
-        private IPosition BannerPosition => AppModel.Instance.BannerPositionImpl;
 
         /// <summary>
         /// Updates or creates a banner when a microphone's mute state changes
@@ -72,7 +69,7 @@ namespace SoundSwitch.Framework.Banner
                 Image = Resources.MicrophoneOff,
                 Text = microphoneName,
                 Title = SettingsStrings.microphone_off,
-                Position = BannerPosition,
+                Position = AppModel.Instance.BannerPositionImpl,
                 Ttl = TimeSpan.MaxValue, // Effectively "infinite" until explicitly dismissed
                 CompactMode = true,
                 OnClick = (sender, args) => AppModel.Instance.SetMicrophoneMuteState(microphoneId, false)
@@ -108,7 +105,7 @@ namespace SoundSwitch.Framework.Banner
                 Image = Resources.MicrophoneOn,
                 Text = microphoneName,
                 Title = SettingsStrings.microphone_on,
-                Position = BannerPosition,
+                Position = AppModel.Instance.BannerPositionImpl,
                 Ttl = TimeSpan.FromSeconds(3),
                 CompactMode = true
             };
