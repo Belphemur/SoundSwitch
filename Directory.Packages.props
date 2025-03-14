@@ -4,7 +4,7 @@
     <CentralPackageTransitivePinningEnabled>false</CentralPackageTransitivePinningEnabled>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="AuthenticodeExaminer" Version="0.3.0" />
+    <PackageVersion Include="AuthenticodeExaminer" Version="0.4.0" />
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
     <PackageVersion Include="FluentAssertions" Version="8.1.1" />
     <PackageVersion Include="JetBrains.Annotations" Version="2024.3.0" />
