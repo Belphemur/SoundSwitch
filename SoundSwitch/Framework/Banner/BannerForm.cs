@@ -327,6 +327,12 @@ namespace SoundSwitch.Framework.Banner
         /// <param name="e">Arguments of the event</param>
         private void BannerForm_Click(object sender, EventArgs e)
         {
+            if (_currentData?.OnClick == null)
+            {
+                TriggerHidingDisposal();
+                return;
+            }
+
             // Invoke the click callback if it's set
             _currentData?.OnClick?.Invoke(this, e);
         }
