@@ -86,25 +86,12 @@ namespace SoundSwitch.Framework.Banner
                 // turn on WS_EX_TOOLWINDOW style bit
                 // Used to hide the banner from alt+tab
                 // source: https://www.csharp411.com/hide-form-from-alttab/
-                cp.ExStyle |= 0x80;
+                cp.ExStyle |= 0x80;  // WS_EX_TOOLWINDOW
+                // Add WS_EX_NOACTIVATE to prevent stealing focus
+                cp.ExStyle |= 0x08000000; // WS_EX_NOACTIVATE
                 return cp;
             }
         }
-
-        // /// <summary>
-        // /// Override the parameters used to create the window handle.
-        // /// Ensure that the window will be top-most and do not activate or take focus.
-        // /// </summary>
-        // protected override CreateParams CreateParams
-        // {
-        //     get
-        //     {
-        //         CreateParams p = base.CreateParams;
-        //         p.ExStyle |= 0x08000000; // WS_EX_NOACTIVATE
-        //         p.ExStyle |= 0x00000008; // WS_EX_TOPMOST
-        //         return p;
-        //     }
-        // }
 
         /// <summary>
         /// Called internally to configure pass notification parameters
