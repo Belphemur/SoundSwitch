@@ -624,6 +624,20 @@ namespace SoundSwitch.Model
             }
             return result;
         }
+        
+        /// <summary>
+        /// Toggles the mute state of the microphone
+        /// </summary>
+        /// <returns>Tuple with device name and mute state, null if no default microphone found or operation failed</returns>
+        public (string DeviceName, bool IsMuted)? SetMicrophoneMuteState(string deviceId, bool muteState)
+        {
+            var result = _microphoneMuteToggler.SetMicrophoneMuteState(deviceId, muteState);
+            if (result == null)
+            {
+                ErrorTriggered?.Invoke(this, new ExceptionEvent(new Exception("No mic found or unable to toggle mute state")));
+            }
+            return result;
+        }
 
         /// <summary>
         /// Sets the mute state of the default microphone

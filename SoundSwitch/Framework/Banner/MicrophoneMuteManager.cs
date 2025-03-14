@@ -73,7 +73,8 @@ namespace SoundSwitch.Framework.Banner
                 Title = SettingsStrings.microphone_off,
                 Position = BannerPosition,
                 Ttl = TimeSpan.MaxValue, // Effectively "infinite" until explicitly dismissed
-                CompactMode = true
+                CompactMode = true,
+                OnClick = (sender, args) => AppModel.Instance.SetMicrophoneMuteState(microphoneId, false)
             };
 
             if (!_activeBanners.TryGetValue(microphoneId, out var existingBanner))
@@ -99,10 +100,7 @@ namespace SoundSwitch.Framework.Banner
         /// <param name="microphoneName">User-friendly name of the microphone</param>
         private void ShowTempUnmuteNotification(string microphoneId, string microphoneName)
         {
-            // First remove the persistent banner if it exists
-            if (!_activeBanners.TryGetValue(microphoneId, out var banner))
-                return;
-            // Update with "unmuted" data and short TTL to trigger auto-dismiss
+            // Create unmute notification data
             var unmuteBannerData = new BannerData
             {
                 Priority = 3,
@@ -114,13 +112,28 @@ namespace SoundSwitch.Framework.Banner
                 CompactMode = true
             };
 
-            banner.SetData(unmuteBannerData);
-
-            // Remove from our tracking dictionary
-            _activeBanners.Remove(microphoneId);
-
-            // Banner will auto-dispose after TTL expires
-            banner.Disposed += (s, e) => RearrangeBanners();
+            // Check if we have an existing banner for this microphone
+            if (_activeBanners.TryGetValue(microphoneId, out var existingBanner))
+            {
+                // Update the existing banner
+                existingBanner.SetData(unmuteBannerData);
+                
+                // Remove from our tracking dictionary
+                _activeBanners.Remove(microphoneId);
+                
+                // Banner will auto-dispose after TTL expires
+                existingBanner.Disposed += (s, e) => RearrangeBanners();
+            }
+            else
+            {
+                // Create a new temporary banner
+                var newBanner = new BannerForm();
+                newBanner.SetData(unmuteBannerData);
+                newBanner.Disposed += (s, e) => RearrangeBanners();
+                
+                // No need to track in _activeBanners since it's temporary
+                RearrangeBanners();
+            }
         }
 
         /// <summary>

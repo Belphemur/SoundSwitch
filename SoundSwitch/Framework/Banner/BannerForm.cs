@@ -68,6 +68,12 @@ namespace SoundSwitch.Framework.Banner
             _defaultFontSize = Font.Size;
             _defaultPictureSize = pbxLogo.Size;
             _defaultPadding = Padding;
+
+            // Add click event handlers
+            this.Click += BannerForm_Click;
+            lblTitle.Click += BannerForm_Click;
+            lblTop.Click += BannerForm_Click;
+            pbxLogo.Click += BannerForm_Click;
         }
 
         protected override bool ShowWithoutActivation => true;
@@ -323,6 +329,17 @@ namespace SoundSwitch.Framework.Banner
                     //Ignored
                 }
             }
+        }
+
+        /// <summary>
+        /// Event handler for clicks on any part of the banner
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">Arguments of the event</param>
+        private void BannerForm_Click(object sender, EventArgs e)
+        {
+            // Invoke the click callback if it's set
+            _currentData?.OnClick?.Invoke(this, e);
         }
     }
 }

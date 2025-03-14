@@ -247,5 +247,11 @@ namespace SoundSwitch.Model
         /// For the app to check for update
         /// </summary>
         void CheckForUpdate();
+
+        /// <summary>
+        /// Toggles the mute state of the microphone
+        /// </summary>
+        /// <returns>Tuple with device name and mute state, null if no default microphone found or operation failed</returns>
+        (string DeviceName, bool IsMuted)? SetMicrophoneMuteState(string deviceId, bool muteState);
     }
 }

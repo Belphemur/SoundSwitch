@@ -72,5 +72,11 @@ namespace SoundSwitch.Framework.Banner
         /// When enabled, displays the banner in compact mode (half the normal size)
         /// </summary>
         public bool CompactMode { get; internal set; }
+        
+        /// <summary>
+        /// Callback that is triggered when the banner is clicked
+        /// </summary>
+        [AllowNull]
+        public EventHandler? OnClick { get; internal set; }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using JetBrains.Annotations;
+using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
@@ -61,6 +63,23 @@ namespace SoundSwitch.Framework.Audio.Microphone
         public (string Name, bool MuteState)? SetDefaultMuteState(bool muteState)
         {
             var microphone = _switcher.GetDefaultMmDevice(EDataFlow.eCapture, ERole.eCommunications);
+            return SetMuteState(muteState, microphone);
+        }
+
+        /// <summary>
+        /// Set mute state for the microphone
+        /// </summary>
+        /// <param name="deviceId"></param>
+        /// <param name="muteState">The mute state to set</param>
+        /// <returns>Tuple with the device name and current mute state, null if couldn't interact with the microphone</returns>
+        public (string Name, bool MuteState)? SetMicrophoneMuteState(string deviceId, bool muteState)
+        {
+            var microphone = _switcher.GetDevice(deviceId);
+            return SetMuteState(muteState, microphone);
+        }
+
+        private (string Name, bool MuteState)? SetMuteState(bool muteState, [CanBeNull] MMDevice microphone)
+        {
             if (microphone == null)
             {
                 Log.Information("Couldn't find a default microphone to set mute state");
