@@ -7,15 +7,19 @@
 **Nie wieder** durch mehrere Bildschirme und Menüs navigieren. SoundSwitch **einmalig** einstellen - und schon können Sie zwischen Geräten schneller wechseln, als jemals zuvor!
 
 ## ✨ Vorschau
+
 ![Vorschau](https://soundswitch.aaflalo.me/img/preview.gif)
 
 ## Anforderungen
+
 - ⚠ Betriebssystem: Windows 7 oder neuer
 
 ## Spenden
+
 Wenn Sie die Entwicklung unterstützen möchten, würden wir uns freuen, Sie [hier ❤](https://soundswitch.aaflalo.me/#donate) zu sehen.
 
 ## Einrichtung
+
 _Rechtsklicken_ Sie das SoundSwitch Symbol in ihrer Taskleiste und wählen Sie _Einstellungen_. Jetzt wählen Sie aus, zwischen welchen Geräten Sie wechseln möchten. Optional können Sie hier auch die Tastatur-Kombinationen ändern, welche die Geräte wechselt. Wenn Sie möchten, dass das Programm automatisch startet wenn Sie Ihren PC einschalten, wählen Sie die Schaltfläche _Automatisch mit Windows starten_ aus.
 
 ## Bedienung
@@ -25,14 +29,19 @@ Wählen Sie zuerst, wie im vorigen Abschnitt beschrieben, Ihre gewünschten Ger�
 **Nachdem Sie SoundSwitch eingerichtet haben** können Sie die folgenden Hotkeys verwenden:
 
 - 🔊 Um durch Ihre **Wiedergabegeräte** zu schalten:
+
   - `Strg` + `Alt` + `F11` (Standard) **oder**
   - Doppelklicken auf das `SoundSwitch Symbol in der Taskleiste`.
 
 - 🎙 Um durch Ihre **Aufnahmegeräte** zu wechseln, verwenden Sie:
+
   - `Strg` + `Alt` + `F7` (Standard)
 
 - 🔇 Um das **Standardmikrofon** stummzuschalten:
+
   - `Strg` + `Alt` + `M` (Standard)
+
+  Wenn ein Mikrofon stummgeschaltet wird, erscheint ein dauerhaftes Banner auf Ihrem Bildschirm, um Sie daran zu erinnern, dass Ihr Mikrofon stummgeschaltet ist. Das Banner bleibt sichtbar, bis Sie die Stummschaltung des Mikrofons aufheben oder auf das Banner klicken, um es direkt zu aktivieren.
 
 ## 💻 Kommandozeile (CLI)
 
@@ -50,39 +59,47 @@ Weitere Details zu den verfügbaren Befehlen und deren Verwendung finden Sie in 
 SoundSwitch bietet vier verschiedenen Arten der Benachrichtigung, wenn ein Gerät gewechselt wird:
 
 - #### 🎟 Banner Benachrichtigung
-Verwendet ein Anzeigeelement, welches über allem liegt (always-on-top), nützlich für die Verwendung in Spielen. Dies ist die Standardart der Benachrichtigung.
+
+  Verwendet ein Anzeigeelement, welches über allem liegt (always-on-top), nützlich für die Verwendung in Spielen. Dies ist die Standardart der Benachrichtigung.
 
 - #### 🗨 Windows Benachrichtigung
-Verwendet die Standard Windows Benachrichtigung. Im Falle von Windows 7, ist dies das kleine Popup, welches überhalb der Taskleiste auftaucht. Für Windows 10, ist dies das Benachrichtigungssystem, welches von der rechten Kante des Bildschirms ins Bild gleitet.
+
+  Verwendet die Standard Windows Benachrichtigung. Im Falle von Windows 7, ist dies das kleine Popup, welches überhalb der Taskleiste auftaucht. Für Windows 10, ist dies das Benachrichtigungssystem, welches von der rechten Kante des Bildschirms ins Bild gleitet.
 
 - #### 🎵 Akustische Benachrichtigung
-Diese Benachrichtigung ist ein Ton, der über das aktuell aktive Augabegerät abgespielt wird. Auf diese Weise teilt das neue Gerät ihnen mit, dass es ausgewählt ist.
+  Diese Benachrichtigung ist ein Ton, der über das aktuell aktive Augabegerät abgespielt wird. Auf diese Weise teilt das neue Gerät ihnen mit, dass es ausgewählt ist.
 
 ## Profile
 
 Mithilfe von Profilen ist es möglich zu einem bestimmten Gerät zu wechseln, wenn eine Bedingung eintritt. Profile können für die folgenden Zwecke definiert werden:
 
 - ### 💫 Anwendungsprofil
-Wenn eine Anwendung fokussiert wird, werden die Soundeinstellungen auf der Grundlage des Profils geändert. Erstelle zum Beispiel ein Profil für Spotify, damit nur Musik über den Lautsprecher wiedergegeben wird, während das Lieblingsspiel über das Headset läuft.
+
+  Wenn eine Anwendung fokussiert wird, werden die Soundeinstellungen auf der Grundlage des Profils geändert. Erstelle zum Beispiel ein Profil für Spotify, damit nur Musik über den Lautsprecher wiedergegeben wird, während das Lieblingsspiel über das Headset läuft.
 
 - ### ⌨️ Hotkeyprofil
-Wenn eine bestimmte Tastenkombination gedrückt wird, werden die Soundeinstellungen auf der Grundlage des Profils geändert. Definiere zum Beispiel eine spezielle Kombination, um als Wiedergabegerät den Fernseher zu verwenden.
+  Wenn eine bestimmte Tastenkombination gedrückt wird, werden die Soundeinstellungen auf der Grundlage des Profils geändert. Definiere zum Beispiel eine spezielle Kombination, um als Wiedergabegerät den Fernseher zu verwenden.
 
 ## Erweiterte Funktionen
 
 ### 🎙 Kommunikation
+
 SoundSwitch kann ebenfalls ihr **Standardkommunikationsgerät** wechseln, wenn Sie dies in den Einstellungen auswählen. Windows unterscheidet zwischen Multimedia- und Kommunikationsgeräten; dies bedeutet, wenn ein Programm Zugriff auf das Kommunikationsgerät haben möchte, liefert Windows das Standardkommunikationsgerät. Standardmäßig ändert SoundSwitch nur das Multimediagerät, nicht jedoch das Kommunikationsgerät. Wenn Sie jedoch die entsprechende Option in den Einstellungen wählen, wird zusätzlich das Kommunikationsgerät geändert.
 
 ### 📥 Auto-Updater
+
 Alle 24 Stunden überprüft SoundSwitch das GitHub-Repository (dank der GitHub-API) auf ein neues Release. Falls ein neues Update verfügbar ist, erhalten Sie eine Benachrichtigung und der Menüpunkt "Kein Update verfügbar", im Kontextmenü des Taskleisten-Symbols, ändert sich zu "Update verfügbar". Die neue Version wird automatisch heruntergeladen und installiert, je nach aktueller _Update Einstellung_. Wir bieten dabei auch einen Changelog mit den neuesten Verbesserungen von SoundSwitch.
 
 #### 🚥 Update Einstellungen
+
 Es gibt drei verschiedene Arten, wie Updates installiert werden:
+
 - **Updates automatisch installieren**, das Programm aktualisiert sich im Hintergrund selbständig ohne Nutzerinteraktion.
 - **Benachrichtigen falls Update verfügbar**, benachrichtigt Sie im Falle das ein Update verfügbar ist.
 - **Niemals**, ist selbsterklärend.
 
 ### 🌎 Unterstütze Sprachen
+
 SoundSwitch ist in mehr als 20 Sprachen verfügbar, darunter **Englisch**, **Französisch**, **Deutsch**, **Spanisch**, **Italienisch**, **Portugiesisch (Brasilien)**, **Russisch**, **Chinesisch** und viele mehr.
 
 Sie möchten etwas verbessern oder eine neue Sprache hinzufügen? Übersetzungen sind online editierbar [gleich hier](https://hosted.weblate.org/projects/soundswitch/#languages)!
@@ -97,7 +114,7 @@ Sie möchten etwas verbessern oder eine neue Sprache hinzufügen? Übersetzungen
 
 - Original Developer: [Jeroen Pelgrims](http://jeroenpelgrims.be)
 - Disabling Notification [#33](https://github.com/Belphemur/SoundSwitch/pull/33) [@adamblackburn](https://github.com/adamblackburn)
-- Localization and german translation [#157](https://github.com/Belphemur/SoundSwitch/pull/157) [@FireEmerald](https://github.com/FireEmerald) 
+- Localization and german translation [#157](https://github.com/Belphemur/SoundSwitch/pull/157) [@FireEmerald](https://github.com/FireEmerald)
 - Banner Notification [#186](https://github.com/Belphemur/SoundSwitch/pull/186) [@ramon18](https://github.com/ramon18)
 - Keyboard hook, [Christian Liensberger](http://www.liensberger.it/web/blog/?p=207)
 - Changing default sound device, [EreTIk](http://eretik.omegahg.com/)
@@ -127,7 +144,7 @@ of the License, or any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 Die vollständige GPLv2-Lizenzdatei befindet sich [hier](https://github.com/Belphemur/SoundSwitch/blob/master/LICENSE.txt).
