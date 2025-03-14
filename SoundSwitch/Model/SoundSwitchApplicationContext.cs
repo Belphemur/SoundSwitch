@@ -33,6 +33,7 @@ public class SoundSwitchApplicationContext : ApplicationContext
     public SoundSwitchApplicationContext()
     {
         BannerManager.Setup();
+        MicrophoneMuteBannerManager.Setup();
         QuickMenuManager<DeviceFullInfo>.Instance.Setup();
         QuickMenuManager<Profile>.Instance.Setup();
 

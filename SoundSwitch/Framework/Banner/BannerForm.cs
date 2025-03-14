@@ -40,12 +40,13 @@ namespace SoundSwitch.Framework.Banner
         private float _defaultFontSize;
         private Size _defaultPictureSize;
         private Padding _defaultPadding;
+        private bool _isCompact = false;
         public Guid Id { get; } = Guid.NewGuid();
 
         /// <summary>
         /// Get the Screen object
         /// </summary>
-        private static Screen GetScreen()
+        private Screen GetScreen()
         {
             return (AppModel.Instance.NotifyUsingPrimaryScreen ? Screen.PrimaryScreen : Screen.FromPoint(Cursor.Position))!;
         }
@@ -111,14 +112,18 @@ namespace SoundSwitch.Framework.Banner
             }
 
             _currentData = data;
-            if (_timerHide == null)
+            // No need for timer since there isn't any ttl
+            if (data.Ttl != TimeSpan.MaxValue)
             {
-                _timerHide = new Timer { Interval = (int)data.Ttl.TotalMilliseconds };
-                _timerHide.Tick += TimerHide_Tick!;
-            }
-            else
-            {
-                _timerHide.Enabled = false;
+                if (_timerHide == null)
+                {
+                    _timerHide = new Timer { Interval = (int)data.Ttl.TotalMilliseconds };
+                    _timerHide.Tick += TimerHide_Tick!;
+                }
+                else
+                {
+                    _timerHide.Enabled = false;
+                }
             }
 
             if (data.Image != null)
@@ -145,9 +150,24 @@ namespace SoundSwitch.Framework.Banner
 
             Location = data.Position.GetScreenPosition(screen, Height, Width, _currentOffset);
 
-            _timerHide.Enabled = true;
+            if (_timerHide != null)
+                _timerHide.Enabled = true;
 
             Show();
+        }
+
+        /// <summary>
+        /// Updates the banner's position using its configured position settings and the provided offset
+        /// </summary>
+        /// <param name="offset">Vertical offset to apply to the banner's position</param>
+        public void UpdatePosition(int offset)
+        {
+            if (_currentData?.Position == null)
+                return;
+                
+            var screen = GetScreen();
+            Location = _currentData.Position.GetScreenPosition(screen, Height, Width, offset);
+            _currentOffset = offset;
         }
 
         /// <summary>
@@ -195,6 +215,8 @@ namespace SoundSwitch.Framework.Banner
         /// <param name="compact">Whether to use compact mode</param>
         private void ApplyCompactMode(bool compact)
         {
+            if (_isCompact)
+                return;
             var scaleFactorImage = compact ? 0.1f : 1.0f;
             var scaleFactorFont = compact ? 0.8f : 1.0f;
 
@@ -225,6 +247,7 @@ namespace SoundSwitch.Framework.Banner
 
             // Force the form to recalculate its size
             PerformLayout();
+            _isCompact = true;
         }
 
         /// <summary>

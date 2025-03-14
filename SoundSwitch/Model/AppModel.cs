@@ -412,7 +412,7 @@ namespace SoundSwitch.Model
                 payload.Device.NameClean, payload.WasMuted, payload.IsMuted);
 
             // Notify about the mute state change
-            _notificationManager.NotifyMuteChanged(payload.Device.FriendlyName, payload.IsMuted);
+            _notificationManager.NotifyMuteChanged(payload.Device.Id, payload.Device.FriendlyName, payload.IsMuted);
         }
 
 

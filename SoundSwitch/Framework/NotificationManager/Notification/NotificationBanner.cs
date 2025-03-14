@@ -35,6 +35,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         public INotificationConfiguration Configuration { get; set; }
         private readonly BannerManager _bannerManager = new();
         private readonly BannerPositionFactory _bannerPositionFactory = new();
+        private readonly MicrophoneMuteBannerManager _microphoneMuteBannerManager = new();
 
         private IPosition BannerPosition => _bannerPositionFactory.Get(Configuration.BannerPosition);
 
@@ -77,18 +78,24 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
             _bannerManager.ShowNotification(bannerData);
         }
 
-        public void NotifyMuteChanged(string microphoneName, bool newMuteState)
+        public void NotifyMuteChanged(string deviceId, string microphoneName, bool newMuteState)
         {
-            var icon = newMuteState ? Resources.MicrophoneOff : Resources.MicrophoneOn;
+            _microphoneMuteBannerManager.UpdateMicrophoneMuteState(deviceId, microphoneName, newMuteState);
+        }
+
+        private void FullBanner(string microphoneName, bool newMuteState)
+        {
+            var title = newMuteState ? string.Format(SettingsStrings.notification_microphone_muted, microphoneName) : string.Format(SettingsStrings.notification_microphone_unmuted, microphoneName);
+
+            var icon = newMuteState ? Resources.microphone_muted : Resources.microphone_unmuted;
+
             var bannerData = new BannerData
             {
                 Priority = 2,
                 Image = icon,
-                Text = microphoneName,
-                Title = newMuteState ? SettingsStrings.microphone_off : SettingsStrings.microphone_on,
+                Title = title,
                 Position = BannerPosition,
-                Ttl = Configuration.Ttl,
-                CompactMode = true,
+                Ttl = Configuration.Ttl
             };
             _bannerManager.ShowNotification(bannerData);
         }
