@@ -198,13 +198,24 @@ public static class NamedPipe
     private static async Task ReadExactAsync(PipeStream stream, byte[] buffer, int offset, int count, CancellationToken token)
     {
         var bytesRead = 0;
-        while (bytesRead < count)
+        var attempts = 0;
+        const int maxAttempts = 3;
+        while (bytesRead < count && attempts < maxAttempts)
         {
-            var read = await stream.ReadAsync(buffer, offset + bytesRead, count - bytesRead, token);
+            var read = await stream.ReadAsync(buffer.AsMemory(offset + bytesRead, count - bytesRead), token);
             if (read == 0)
-                throw new EndOfStreamException();
+            {
+                attempts++;
+                await Task.Delay(TimeSpan.FromMilliseconds(100), token);
+                continue;
+            }
             bytesRead += read;
         }
+        if (bytesRead < count)
+        {
+            throw new EndOfStreamException();
+        }
+
     }
 
     public static void Cleanup()
