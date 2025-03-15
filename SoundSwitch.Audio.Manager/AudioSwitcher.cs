@@ -309,7 +309,15 @@ namespace SoundSwitch.Audio.Manager
         public DeviceFullInfo? GetAudioEndpoint(string deviceId) => ComThread.Invoke(() =>
         {
             var device = EnumeratorClient.GetDevice(deviceId);
-            return device == null ? null : new DeviceFullInfo(device);
+            try
+            {
+                return device == null ? null : new DeviceFullInfo(device);
+            }
+            catch (Exception e)
+            {
+                Trace.TraceWarning("Couldn't get device info [{0}]: {1}", deviceId, e);
+                return null;
+            }
         });
 
         /// <summary>
