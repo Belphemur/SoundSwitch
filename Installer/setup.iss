@@ -76,7 +76,7 @@ Name: "ko"; MessagesFile: "Languages\Korean.isl"
 
 
 [Tasks]
-Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
+Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Check: not IsVerySilent
 Name: deletefiles; Description: "{cm:ExistingSettings}"; Flags: unchecked checkedonce
 
 [Files] 
@@ -508,6 +508,11 @@ begin
 	sql2008express();
 #endif
 	Result := true;
+end;
+
+function IsVerySilent: Boolean;
+begin
+  Result := CmdLineParamExists('/VERYSILENT');
 end;
 
 procedure InitializeWizard();
