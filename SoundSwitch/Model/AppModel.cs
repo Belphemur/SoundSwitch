@@ -415,8 +415,10 @@ namespace SoundSwitch.Model
                     }
 
                     return Result.Success();
-                    _initialized = true;
-                }
+                });
+            InitUpdateChecker();
+            _initialized = true;
+        }
 
 
         /// <summary>
