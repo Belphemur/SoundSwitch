@@ -88,7 +88,7 @@ namespace SoundSwitch.Model
                 AppConfigs.Configuration.BannerOnScreenTime = value;
                 AppConfigs.Configuration.Save();
                 BannerSettingsChanged?.Invoke(this,
-                    new BannerDataChangedEvent(BannerPosition, BannerPosition, BannerOnScreenTime, value));
+                    new BannerDataChangedEvent(BannerPosition, BannerPosition, BannerOnScreenTime, value, PersistentMuteNotification, PersistentMuteNotification));
             }
         }
         /// <summary>
@@ -157,7 +157,7 @@ namespace SoundSwitch.Model
                 AppConfigs.Configuration.BannerPosition = value;
                 AppConfigs.Configuration.Save();
                 BannerSettingsChanged?.Invoke(this,
-                    new BannerDataChangedEvent(BannerPosition, value, BannerOnScreenTime, BannerOnScreenTime));
+                    new BannerDataChangedEvent(BannerPosition, value, BannerOnScreenTime, BannerOnScreenTime, PersistentMuteNotification, PersistentMuteNotification));
             }
         }
 
@@ -171,8 +171,11 @@ namespace SoundSwitch.Model
             get => AppConfigs.Configuration.PersistentMuteNotification;
             set
             {
+                var prevValue = AppConfigs.Configuration.PersistentMuteNotification;
                 AppConfigs.Configuration.PersistentMuteNotification = value;
                 AppConfigs.Configuration.Save();
+                BannerSettingsChanged?.Invoke(this,
+                    new BannerDataChangedEvent(BannerPosition, BannerPosition, BannerOnScreenTime, BannerOnScreenTime, prevValue, value));
             }
         }
 
@@ -412,11 +415,8 @@ namespace SoundSwitch.Model
                     }
 
                     return Result.Success();
-                });
-
-            InitUpdateChecker();
-            _initialized = true;
-        }
+                    _initialized = true;
+                }
 
 
         /// <summary>

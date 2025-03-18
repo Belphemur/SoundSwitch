@@ -97,7 +97,7 @@ namespace SoundSwitch.Framework.Configuration
         public bool IncludeBetaVersions { get; set; }
         public string CustomNotificationFilePath { get; set; }
         public bool NotifyUsingPrimaryScreen { get; set; }
-        public bool PersistentMuteNotification { get; set; }
+        public bool PersistentMuteNotification { get; set; } = true;
 
         [Obsolete("Feature has been removed")]
         public bool AutoAddNewConnectedDevices { get; set; }
