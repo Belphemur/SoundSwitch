@@ -134,13 +134,13 @@ namespace SoundSwitch.UI.Forms
             positionComboBox.SelectedValue = AppModel.Instance.BannerPosition;
             var positionToolTip = new ToolTip();
             positionToolTip.SetToolTip(positionComboBox, SettingsStrings.position_tooltip);
-            
-            
+
+
             var onScreenTimeTooltip = new ToolTip();
             onScreenTimeTooltip.SetToolTip(onScreenUpDown, SettingsStrings.notification_banner_onscreen_time_tooltip);
             onScreenTimeTooltip.SetToolTip(onScreenTimeLabel, SettingsStrings.notification_banner_onscreen_time_tooltip);
             onScreenUpDown.DataBindings.Add(nameof(NumericUpDown.Value), AppModel.Instance, nameof(AppModel.BannerOnScreenTimeSecs), false, DataSourceUpdateMode.OnPropertyChanged);
-            
+
             var singleNotification = new ToolTip();
             singleNotification.SetToolTip(singleNotificationCheckbox, SettingsStrings.notification_single_tooltip);
             singleNotificationCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.IsSingleNotification), false, DataSourceUpdateMode.OnPropertyChanged);
@@ -150,7 +150,7 @@ namespace SoundSwitch.UI.Forms
             var usePrimaryScreenTooltip = new ToolTip();
             usePrimaryScreenTooltip.SetToolTip(usePrimaryScreenCheckbox, SettingsStrings.usePrimaryScreen_tooltip);
 
-            onScreenUpDown.Visible = onScreenTimeLabel.Visible =  usePrimaryScreenCheckbox.Visible = positionLabel.Visible = positionComboBox.Visible = singleNotificationCheckbox.Visible =
+            persistentMuteNotificationCheckBox.Visible = onScreenUpDown.Visible = onScreenTimeLabel.Visible = usePrimaryScreenCheckbox.Visible = positionLabel.Visible = positionComboBox.Visible = singleNotificationCheckbox.Visible =
                 AppModel.Instance.NotificationSettings == NotificationTypeEnum.BannerNotification;
 
             selectSoundFileDialog.Filter = SettingsStrings.audioFiles + @" (*.wav;*.mp3)|*.wav;*.mp3;*.aiff";
@@ -191,6 +191,11 @@ namespace SoundSwitch.UI.Forms
             updateNotifyToolTip.SetToolTip(updateNotifyRadioButton, SettingsStrings.updateNotify_tooltip);
             var updateNeverToolTip = new ToolTip();
             updateNeverToolTip.SetToolTip(updateNeverRadioButton, SettingsStrings.updateNever_tooltip);
+
+            var persistentMuteBannerToolTip = new ToolTip();
+            persistentMuteBannerToolTip.SetToolTip(persistentMuteNotificationCheckBox, SettingsStrings.banner_mute_persistent_tooltip);
+            persistentMuteNotificationCheckBox.Checked = AppModel.Instance.PersistentMuteNotification;
+            persistentMuteNotificationCheckBox.CheckedChanged += PersistentMuteNotificationCheckBox_CheckedChanged;
 
             var includeBetaVersionsToolTip = new ToolTip();
             includeBetaVersionsToolTip.SetToolTip(includeBetaVersionsCheckBox, SettingsStrings.updateIncludeBetaVersions_tooltip);
@@ -377,7 +382,8 @@ namespace SoundSwitch.UI.Forms
             positionLabel.Text = SettingsStrings.position;
             singleNotificationCheckbox.Text = SettingsStrings.notification_single;
             onScreenTimeLabel.Text = SettingsStrings.notification_banner_onscreen_time;
-            
+            persistentMuteNotificationCheckBox.Text = SettingsStrings.banner_mute_persistent;
+
             // Settings - Troubleshooting
             resetAudioDevicesGroupBox.Text = SettingsStrings.resetAudioDevices;
             resetAudioDevicesLabel.Text = SettingsStrings.resetAudioDevices_desc;
@@ -823,8 +829,8 @@ namespace SoundSwitch.UI.Forms
             selectSoundButton.Visible = supportCustomSound;
             DeleteSoundButton_Visible(supportCustomSound);
 
-            onScreenUpDown.Visible = onScreenTimeLabel.Visible =  usePrimaryScreenCheckbox.Visible = positionLabel.Visible = positionComboBox.Visible = singleNotificationCheckbox.Visible =
-                notificationType== NotificationTypeEnum.BannerNotification;
+            persistentMuteNotificationCheckBox.Visible = onScreenUpDown.Visible = onScreenTimeLabel.Visible = usePrimaryScreenCheckbox.Visible = positionLabel.Visible = positionComboBox.Visible = singleNotificationCheckbox.Visible =
+                notificationType == NotificationTypeEnum.BannerNotification;
             AppModel.Instance.NotificationSettings = notificationType;
         }
 
@@ -851,6 +857,11 @@ namespace SoundSwitch.UI.Forms
         private void UsePrimaryScreenCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             AppModel.Instance.NotifyUsingPrimaryScreen = usePrimaryScreenCheckbox.Checked;
+        }
+
+        private void PersistentMuteNotificationCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            AppModel.Instance.PersistentMuteNotification = persistentMuteNotificationCheckBox.Checked;
         }
 
         #endregion

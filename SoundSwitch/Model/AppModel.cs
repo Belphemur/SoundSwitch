@@ -88,7 +88,7 @@ namespace SoundSwitch.Model
                 AppConfigs.Configuration.BannerOnScreenTime = value;
                 AppConfigs.Configuration.Save();
                 BannerSettingsChanged?.Invoke(this,
-                    new BannerDataChangedEvent(BannerPosition, BannerPosition, BannerOnScreenTime, value));
+                    new BannerDataChangedEvent(BannerPosition, BannerPosition, BannerOnScreenTime, value, PersistentMuteNotification, PersistentMuteNotification));
             }
         }
         /// <summary>
@@ -157,7 +157,7 @@ namespace SoundSwitch.Model
                 AppConfigs.Configuration.BannerPosition = value;
                 AppConfigs.Configuration.Save();
                 BannerSettingsChanged?.Invoke(this,
-                    new BannerDataChangedEvent(BannerPosition, value, BannerOnScreenTime, BannerOnScreenTime));
+                    new BannerDataChangedEvent(BannerPosition, value, BannerOnScreenTime, BannerOnScreenTime, PersistentMuteNotification, PersistentMuteNotification));
             }
         }
 
@@ -165,6 +165,19 @@ namespace SoundSwitch.Model
         /// Current banner position implementation based on the BannerPosition setting
         /// </summary>
         public IPosition BannerPositionImpl => _bannerPositionFactory.Get(BannerPosition);
+
+        public bool PersistentMuteNotification
+        {
+            get => AppConfigs.Configuration.PersistentMuteNotification;
+            set
+            {
+                var prevValue = AppConfigs.Configuration.PersistentMuteNotification;
+                AppConfigs.Configuration.PersistentMuteNotification = value;
+                AppConfigs.Configuration.Save();
+                BannerSettingsChanged?.Invoke(this,
+                    new BannerDataChangedEvent(BannerPosition, BannerPosition, BannerOnScreenTime, BannerOnScreenTime, prevValue, value));
+            }
+        }
 
         /// <summary>
         /// Beta or Stable channel.
@@ -403,7 +416,6 @@ namespace SoundSwitch.Model
 
                     return Result.Success();
                 });
-
             InitUpdateChecker();
             _initialized = true;
         }
@@ -631,7 +643,7 @@ namespace SoundSwitch.Model
             }
             return result;
         }
-        
+
         /// <summary>
         /// Toggles the mute state of the microphone
         /// </summary>

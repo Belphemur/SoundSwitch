@@ -62,17 +62,23 @@ namespace SoundSwitch.Model
     {
         public BannerPositionEnum PrevBannerPosition { get; }
         public BannerPositionEnum NewBannerPosition { get; }
-        
+
         public TimeSpan PrevTtl { get; }
-        
+
         public TimeSpan NewTtl { get; }
 
-        public BannerDataChangedEvent(BannerPositionEnum prevBannerPosition, BannerPositionEnum newBannerPosition, TimeSpan prevTtl, TimeSpan newTtl)
+        public bool PrevPersistentMuteNotification { get; }
+
+        public bool NewPersistentMuteNotification { get; }
+
+        public BannerDataChangedEvent(BannerPositionEnum prevBannerPosition, BannerPositionEnum newBannerPosition, TimeSpan prevTtl, TimeSpan newTtl, bool prevPersistentMuteNotification, bool newPersistentMuteNotification)
         {
             PrevBannerPosition = prevBannerPosition;
             NewBannerPosition = newBannerPosition;
             PrevTtl = prevTtl;
             NewTtl = newTtl;
+            PrevPersistentMuteNotification = prevPersistentMuteNotification;
+            NewPersistentMuteNotification = newPersistentMuteNotification;
         }
     }
 

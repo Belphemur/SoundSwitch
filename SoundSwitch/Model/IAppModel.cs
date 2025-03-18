@@ -137,6 +137,11 @@ namespace SoundSwitch.Model
         /// </summary>
         IPosition BannerPositionImpl { get; }
 
+        /// <summary>
+        /// Show a persistent banner when microphone is muted
+        /// </summary>
+        bool PersistentMuteNotification { get; set; }
+
         #endregion
 
         #region Events

@@ -27,5 +27,6 @@ namespace SoundSwitch.Framework.NotificationManager.Notification.Configuration
         CachedSound CustomSound { get; set; }
         BannerPositionEnum BannerPosition { get; set; }
         TimeSpan Ttl { get; set; }
+        bool PersistentMuteNotification { get; set; }
     }
 }

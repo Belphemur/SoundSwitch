@@ -33,8 +33,8 @@ namespace SoundSwitch.UI.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
-            System.Windows.Forms.ListViewGroup listViewGroup4 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
+            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
+            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
             startWithWindowsCheckBox = new System.Windows.Forms.CheckBox();
             closeButton = new System.Windows.Forms.Button();
             switchCommunicationDeviceCheckBox = new System.Windows.Forms.CheckBox();
@@ -51,6 +51,7 @@ namespace SoundSwitch.UI.Forms
             addProfileButton = new System.Windows.Forms.Button();
             appSettingTabPage = new System.Windows.Forms.TabPage();
             notificationGroupBox = new System.Windows.Forms.GroupBox();
+            persistentMuteNotificationCheckBox = new System.Windows.Forms.CheckBox();
             onScreenTimeLabel = new System.Windows.Forms.Label();
             onScreenUpDown = new System.Windows.Forms.NumericUpDown();
             singleNotificationCheckbox = new System.Windows.Forms.CheckBox();
@@ -97,9 +98,9 @@ namespace SoundSwitch.UI.Forms
             gitHubPictureBox = new System.Windows.Forms.PictureBox();
             selectSoundFileDialog = new System.Windows.Forms.OpenFileDialog();
             hotkeysCheckBox = new System.Windows.Forms.CheckBox();
-            hotKeyControl = new Component.HotKeyTextBox();
+            hotKeyControl = new SoundSwitch.UI.Component.HotKeyTextBox();
             toggleMuteLabel = new System.Windows.Forms.Label();
-            muteHotKey = new Component.HotKeyTextBox();
+            muteHotKey = new SoundSwitch.UI.Component.HotKeyTextBox();
             muteHotKeyCheckbox = new System.Windows.Forms.CheckBox();
             tabControl.SuspendLayout();
             playbackTabPage.SuspendLayout();
@@ -186,10 +187,10 @@ namespace SoundSwitch.UI.Forms
             playbackListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             playbackListView.CheckBoxes = true;
             playbackListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            listViewGroup3.Header = "Selected";
-            listViewGroup3.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
-            listViewGroup3.Name = "selectedGroup";
-            playbackListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] { listViewGroup3 });
+            listViewGroup1.Header = "Selected";
+            listViewGroup1.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
+            listViewGroup1.Name = "selectedGroup";
+            playbackListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] { listViewGroup1 });
             playbackListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             playbackListView.Location = new System.Drawing.Point(3, 3);
             playbackListView.Name = "playbackListView";
@@ -215,10 +216,10 @@ namespace SoundSwitch.UI.Forms
             recordingListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             recordingListView.CheckBoxes = true;
             recordingListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            listViewGroup4.Header = "Selected";
-            listViewGroup4.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
-            listViewGroup4.Name = "selectedGroup";
-            recordingListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] { listViewGroup4 });
+            listViewGroup2.Header = "Selected";
+            listViewGroup2.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
+            listViewGroup2.Name = "selectedGroup";
+            recordingListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] { listViewGroup2 });
             recordingListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             recordingListView.Location = new System.Drawing.Point(3, 3);
             recordingListView.Name = "recordingListView";
@@ -325,6 +326,7 @@ namespace SoundSwitch.UI.Forms
             // 
             // notificationGroupBox
             // 
+            notificationGroupBox.Controls.Add(persistentMuteNotificationCheckBox);
             notificationGroupBox.Controls.Add(onScreenTimeLabel);
             notificationGroupBox.Controls.Add(onScreenUpDown);
             notificationGroupBox.Controls.Add(singleNotificationCheckbox);
@@ -340,6 +342,18 @@ namespace SoundSwitch.UI.Forms
             notificationGroupBox.TabIndex = 16;
             notificationGroupBox.TabStop = false;
             notificationGroupBox.Text = "Notification";
+            // 
+            // persistentMuteNotificationCheckBox
+            // 
+            persistentMuteNotificationCheckBox.AutoSize = true;
+            persistentMuteNotificationCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            persistentMuteNotificationCheckBox.Location = new System.Drawing.Point(256, 107);
+            persistentMuteNotificationCheckBox.Name = "persistentMuteNotificationCheckBox";
+            persistentMuteNotificationCheckBox.Size = new System.Drawing.Size(148, 20);
+            persistentMuteNotificationCheckBox.TabIndex = 30;
+            persistentMuteNotificationCheckBox.Text = "Persistent Mute Banner";
+            persistentMuteNotificationCheckBox.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            persistentMuteNotificationCheckBox.UseVisualStyleBackColor = true;
             // 
             // onScreenTimeLabel
             // 
@@ -845,7 +859,6 @@ namespace SoundSwitch.UI.Forms
             // hotKeyControl
             // 
             hotKeyControl.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            hotKeyControl.ListenToHotkey = false;
             hotKeyControl.Location = new System.Drawing.Point(19, 438);
             hotKeyControl.Name = "hotKeyControl";
             hotKeyControl.Size = new System.Drawing.Size(138, 23);
@@ -867,7 +880,6 @@ namespace SoundSwitch.UI.Forms
             // muteHotKey
             // 
             muteHotKey.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            muteHotKey.ListenToHotkey = false;
             muteHotKey.Location = new System.Drawing.Point(441, 438);
             muteHotKey.Name = "muteHotKey";
             muteHotKey.Size = new System.Drawing.Size(138, 23);
@@ -1000,5 +1012,6 @@ namespace SoundSwitch.UI.Forms
 
         private System.Windows.Forms.Label onScreenTimeLabel;
         private System.Windows.Forms.NumericUpDown onScreenUpDown;
+        private System.Windows.Forms.CheckBox persistentMuteNotificationCheckBox;
     }
 }
