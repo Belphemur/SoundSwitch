@@ -166,6 +166,16 @@ namespace SoundSwitch.Model
         /// </summary>
         public IPosition BannerPositionImpl => _bannerPositionFactory.Get(BannerPosition);
 
+        public bool PersistentMuteNotification
+        {
+            get => AppConfigs.Configuration.PersistentMuteNotification;
+            set
+            {
+                AppConfigs.Configuration.PersistentMuteNotification = value;
+                AppConfigs.Configuration.Save();
+            }
+        }
+
         /// <summary>
         /// Beta or Stable channel.
         /// </summary>
@@ -631,7 +641,7 @@ namespace SoundSwitch.Model
             }
             return result;
         }
-        
+
         /// <summary>
         /// Toggles the mute state of the microphone
         /// </summary>

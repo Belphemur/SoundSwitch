@@ -114,6 +114,24 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Persistent Mute Banner.
+        /// </summary>
+        internal static string banner_mute_persistent {
+            get {
+                return ResourceManager.GetString("banner.mute.persistent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show a persistent mute banner when the microphone is muted.
+        /// </summary>
+        internal static string banner_mute_persistent_tooltip {
+            get {
+                return ResourceManager.GetString("banner.mute.persistent.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Basic Settings.
         /// </summary>
         internal static string basicSettings {

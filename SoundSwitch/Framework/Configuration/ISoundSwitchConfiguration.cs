@@ -31,7 +31,7 @@ namespace SoundSwitch.Framework.Configuration
 {
     public interface ISoundSwitchConfiguration : IConfiguration
     {
-    
+
         [Obsolete]
         HashSet<string> SelectedPlaybackDeviceListId { get; }
         [Obsolete]
@@ -57,7 +57,7 @@ namespace SoundSwitch.Framework.Configuration
 
         bool SwitchForegroundProgram { get; set; }
         bool NotifyUsingPrimaryScreen { get; set; }
-        
+
         bool AutoAddNewConnectedDevices { get; set; }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace SoundSwitch.Framework.Configuration
         /// Unique ID assigned at installation
         /// </summary>
         Guid UniqueInstallationId { get; set; }
-        
+
         [CanBeNull]
         ReleasePostponed Postponed { get; set; }
 
@@ -105,5 +105,10 @@ namespace SoundSwitch.Framework.Configuration
         int MaxNumberNotification { get; set; }
 
         TimeSpan BannerOnScreenTime { get; set; }
+
+        /// <summary>
+        /// Show a persistent banner when microphone is muted
+        /// </summary>
+        bool PersistentMuteNotification { get; set; }
     }
 }

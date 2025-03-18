@@ -573,4 +573,10 @@ Restore the state of the system when the application is closed.</value>
   <data name="microphone.off" xml:space="preserve">
     <value>Microphone Off</value>
   </data>
+  <data name="banner.mute.persistent" xml:space="preserve">
+    <value>Persistent Mute Banner</value>
+  </data>
+  <data name="banner.mute.persistent.tooltip" xml:space="preserve">
+    <value>Show a persistent mute banner when the microphone is muted</value>
+  </data>
 </root>
