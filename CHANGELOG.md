@@ -1,3 +1,20 @@
+## [6.13.0-beta.7](https://github.com/Belphemur/SoundSwitch/compare/v6.13.0-beta.6...v6.13.0-beta.7) (2025-03-20)
+
+### Bug Fixes
+
+* **banner:** add WS_EX_NOACTIVATE style to prevent focus stealing ([bf31371](https://github.com/Belphemur/SoundSwitch/commit/bf3137148c22f5a0707204bc5dac9d119ee2263a))
+* **banner:** implement double buffering to reduce flickering and improve click handling ([0cdb808](https://github.com/Belphemur/SoundSwitch/commit/0cdb808cb2485970a33b3bdad6b8b52ae70e9331))
+* **installer:** Don't recreate desktop icon when VerySilent (from auto updater). ([00cc3b3](https://github.com/Belphemur/SoundSwitch/commit/00cc3b3d4e72d419a33b26b1a9048c03ff23341f)), closes [#1720](https://github.com/Belphemur/SoundSwitch/issues/1720)
+* **notification::mute:** mute microphone on clicking the banner when the microphone is On ([bfe5ece](https://github.com/Belphemur/SoundSwitch/commit/bfe5ece253ad43d68de04f4d30e00bb1c41ff021))
+* **notification::mute:** reduce microphone mute banner display time to 1.5 seconds ([e82ccc4](https://github.com/Belphemur/SoundSwitch/commit/e82ccc4cfc1df2785993a6a922cdd798e294bfa7))
+* **Settings:** Ensure persistent mute notification checkbox visibility is correctly set ([96eb04b](https://github.com/Belphemur/SoundSwitch/commit/96eb04ba41aac1981a365029d2908c38e1ee4df3))
+
+### Features
+
+* **banner:** hide banner when clicked on ([3601270](https://github.com/Belphemur/SoundSwitch/commit/36012705b7788075d379072c5abcf1b8aec61023))
+* **Notification:** Add persistent mute notification configuration and update related logic ([3cecbf4](https://github.com/Belphemur/SoundSwitch/commit/3cecbf4af35f752be257582ef7d83caac1b2db4c))
+* **Settings:** Let the user choose what type of notification they have for mute ([a1e181f](https://github.com/Belphemur/SoundSwitch/commit/a1e181f698ba56fc5679bede167f6a5a1a58371b))
+
 ## [6.13.0-beta.6](https://github.com/Belphemur/SoundSwitch/compare/v6.13.0-beta.5...v6.13.0-beta.6) (2025-03-14)
 
 ### Features
