@@ -1,3 +1,5 @@
+#ifndef checkMutexIss
+#define checkMutexIss
 [Code]
 function PromptUntilProgramClosedOrInstallationCanceled(
               mutex: String ): Boolean;  
@@ -18,3 +20,5 @@ begin
   // Has the program been closed?
   Result := Not CheckForMutexes(mutex);
 end;
+
+#endif

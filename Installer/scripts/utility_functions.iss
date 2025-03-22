@@ -1,11 +1,13 @@
 // SoundSwitch installer utility functions
 // Copyright © 2010-2025 SoundSwitch
 
+#ifndef utilityFunctionsIss
+#define utilityFunctionsIss
+
 [Code]
 // Constants
 const
   WM_SETTINGCHANGE = 26;
-  HWND_BROADCAST = $FFFF;
   SMTO_ABORTIFHUNG = 2;
 
 function CmdLineParamExists(const Value: string): Boolean;
@@ -58,3 +60,5 @@ begin
 		Result := '';
 	end;
 end;
+
+#endif

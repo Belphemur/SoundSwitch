@@ -1,15 +1,13 @@
 // SoundSwitch installer UI customization
 // Copyright © 2010-2025 SoundSwitch
+#define installerUiIss
+
+#ifndef installerUiIss
+#define installerUiIss
 
 #include "utility_functions.iss"
 
 [Code]
-// Variables from installer_events.iss that need to be accessed
-var
-  AddToPathCheckBox: TNewCheckBox;
-  CleanSettings: Boolean;
-  CleanCheckBox: TNewCheckBox;
-
 // Create custom options page
 procedure CreateCustomOptionPage();
 var
@@ -87,3 +85,5 @@ begin
 
   Result := True;
 end;
+
+#endif

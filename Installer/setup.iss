@@ -16,7 +16,7 @@
 #define public Dependency_NoExternalPath
 #define AppId "{{2DEF0022-7605-408D-B7FF-118DD098A7BD}"
 
-#include "scripts\products.iss"
+;#include "scripts\products.iss"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -40,8 +40,6 @@ OutputBaseFilename={#MyAppSetupName}_{#MyAppVersion}_Installer
 Compression=lzma2/ultra64
 SolidCompression=yes
 SetupIconFile=..\SoundSwitch\Resources\arrow_switch.ico
-WizardImageFile=img\installer_wizard_image.bmp
-WizardSmallImageFile=img\installer_wizard_small_image.bmp
 UninstallDisplayIcon={app}\{#MyAppExeName}
 UninstallDisplayName={#MyAppSetupName}
 DisableProgramGroupPage=no
@@ -52,6 +50,7 @@ DisableWelcomePage=no
 MinVersion=6.1
 ArchitecturesInstallIn64BitMode=x64
 ArchitecturesAllowed=x86 x64
+ChangesEnvironment=yes
 
 ; Include theme configuration
 #include "scripts\theme.iss"
@@ -59,7 +58,7 @@ ArchitecturesAllowed=x86 x64
 ; Include all the installer sections
 #include "scripts\languages.iss"
 #include "scripts\setup_sections.iss"
-#include "scripts\checkMutex.iss"
+;#include "scripts\checkMutex.iss"
 
 ; Code sections
 #include "scripts\utility_functions.iss"

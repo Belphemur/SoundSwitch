@@ -1,6 +1,9 @@
 // SoundSwitch installer setup sections
 // Copyright © 2010-2025 SoundSwitch
 
+#ifndef setupSectionIss
+#define setupSectionIss
+
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; OnlyBelowVersion: 0,6.1
@@ -32,3 +35,5 @@ Root: HKCR; Subkey: "SoundSwitch.Profile\shell\open\command"; ValueType: string;
 Filename: "{app}\SoundSwitch.exe"; Description: "{cm:LaunchProgram,{#StringChange(MyAppSetupName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 Filename: "{app}\README.txt"; Description: "{cm:ViewReadmeFile}"; Flags: postinstall shellexec skipifsilent
 Filename: "{app}\CHANGELOG.txt"; Description: "{cm:ViewChangelogFile}"; Flags: postinstall shellexec skipifsilent
+
+#endif

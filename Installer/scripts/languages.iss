@@ -1,6 +1,9 @@
 // SoundSwitch installer language configuration
 // Copyright © 2010-2025 SoundSwitch
 
+#ifndef languagesIss
+#define languagesIss
+
 [Languages]
 Name: "en"; MessagesFile: "compiler:Default.isl"; LicenseFile: "..\LICENSE.txt"
 Name: "de"; MessagesFile: "compiler:Languages\German.isl"; LicenseFile: "..\LICENSE.txt"
@@ -26,3 +29,5 @@ Name: "zh"; MessagesFile: "Languages\ChineseSimplified.isl"; LicenseFile: "..\LI
 #include "..\Languages\CustomMessages.ru_ru.iss"
 #include "..\Languages\CustomMessages.ko.iss"
 #include "..\Languages\CustomMessages.zh.iss"
+
+#endif

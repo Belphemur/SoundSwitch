@@ -1,3 +1,6 @@
+#ifndef productsIss
+#define productsIss
+
 #include "idp\idp.iss"
 #include "idp\idplang\german.iss"
 #include "idp\idplang\french.iss"
@@ -289,3 +292,4 @@ begin
 		Result := '';
 	end;
 end;
+#endif

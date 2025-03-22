@@ -1,6 +1,9 @@
 // SoundSwitch installer events
 // Copyright © 2010-2025 SoundSwitch
 
+#ifndef installerEventsIss
+#define installerEventsIss
+
 #include "utility_functions.iss"
 #include "path_operations.iss"
 
@@ -73,3 +76,5 @@ begin
     RemoveFromPath(AppPath, 0); // 0 for User PATH
   end;
 end;
+
+#endif
