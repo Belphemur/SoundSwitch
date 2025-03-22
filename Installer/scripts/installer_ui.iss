@@ -1,7 +1,5 @@
 // SoundSwitch installer UI customization
 // Copyright © 2010-2025 SoundSwitch
-#define installerUiIss
-
 #ifndef installerUiIss
 #define installerUiIss
 
