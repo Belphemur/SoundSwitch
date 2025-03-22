@@ -63,18 +63,17 @@ Uninstallable=yes
 CreateUninstallRegKey=yes
 
 [Languages]
-Name: "en"; MessagesFile: "compiler:Default.isl"
-Name: "de"; MessagesFile: "compiler:Languages\German.isl"
-Name: "fr"; MessagesFile: "compiler:Languages\French.isl"
-Name: "es"; MessagesFile: "compiler:Languages\Spanish.isl"
-Name: "it"; MessagesFile: "compiler:Languages\Italian.isl"
-Name: "pt_br"; MessagesFile: "compiler:Languages\brazilianPortuguese.isl"
-Name: "ru_ru"; MessagesFile: "compiler:Languages\Russian.isl"
-Name: "pl_pl"; MessagesFile: "compiler:Languages\Polish.isl"
-Name: "nl"; MessagesFile: "compiler:Languages\Dutch.isl"
-Name: "zh"; MessagesFile: "Languages\ChineseSimplified.isl"
-Name: "ko"; MessagesFile: "Languages\Korean.isl"
-
+Name: "en"; MessagesFile: "compiler:Default.isl,Languages\en_US.iss"
+Name: "de"; MessagesFile: "compiler:Languages\German.isl,Languages\de_DE.iss"
+Name: "fr"; MessagesFile: "compiler:Languages\French.isl,Languages\fr_FR.iss"
+Name: "es"; MessagesFile: "compiler:Languages\Spanish.isl,Languages\es_ES.iss"
+Name: "it"; MessagesFile: "compiler:Languages\Italian.isl,Languages\it_IT.iss"
+Name: "pt_br"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl,Languages\pt_BR.iss"
+Name: "ru_ru"; MessagesFile: "compiler:Languages\Russian.isl,Languages\ru_RU.iss"
+Name: "pl_pl"; MessagesFile: "compiler:Languages\Polish.isl,Languages\pl_PL.iss"
+Name: "nl"; MessagesFile: "compiler:Languages\Dutch.isl,Languages\nl_NL.iss"
+Name: "zh"; MessagesFile: "Languages\ChineseSimplified.isl,Languages\zh_CN.iss"
+Name: "ko"; MessagesFile: "Languages\Korean.isl,Languages\ko_KR.iss"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Check: not IsVerySilent
@@ -100,70 +99,9 @@ Filename: "{app}\Readme.html"; Description: "{cm:ViewReadmeFile}"; Flags: postin
 Filename: "https://soundswitch.aaflalo.me/?utm_source={#MyAppVersion}&utm_campaign=installer#donate"; Description: "{cm:SupportTheProject}"; Flags: postinstall shellexec runasoriginaluser; Check: ShowDonate
 Filename: "{app}\Changelog.html"; Description: "{cm:ViewChangelogFile}"; Flags: postinstall shellexec skipifsilent unchecked
 
-[CustomMessages]
-win_sp_title=Windows %1 Service Pack %2
-
-en.ExistingSettings=Remove any existing settings
-fr.ExistingSettings=Supprimer les paramètres existants
-de.ExistingSettings=Alle vorhandenen Einstellungen löschen
-es.ExistingSettings=Elimiar cualquier configuración existente
-it.ExistingSettings=Rimuovi impostazioni esistenti
-pt_br.ExistingSettings=Remover configurações já existentes
-
-en.UninstallQuestion=Do you want to remove {#MyAppSetupName}'s settings?
-fr.UninstallQuestion=Voulez-vous aussi supprimer les paramètres de {#MyAppSetupName} ?
-de.UninstallQuestion=Sollen deine {#MyAppSetupName} Einstellungen gelöscht werden?
-es.UninstallQuestion=¿Quieres eliminar la configuración de {#MyAppSetupName}?
-it.UninstallQuestion=Vuoi rimuovere le impostazioni di {#MyAppSetupName}?
-pt_br.UninstallQuestion=Deseja remover as configurações do {#MyAppSetupName}?
-
-en.CertificatesGroup=Certificates:
-fr.CertificatesGroup=Certificats:
-de.CertificatesGroup=Zertifikate:
-es.CertificatesGroup=Certificados:
-it.CertificatesGroup=Certificati:
-pt_br.CertificatesGroup=Certificados:
-
-en.ViewReadmeFile=View the README file
-it.ViewReadmeFile=Visualizza file README
-pt_br.ViewReadmeFile=Visualizar o arquivo README
-
-en.SupportTheProject=Support the project
-it.SupportTheProject=Supporta il progetto
-pt_br.SupportTheProject=Apoiar o projeto
-
-en.ViewChangelogFile=View the CHANGELOG file
-it.ViewChangelogFile=Visualizza file CHANGELOG
-pt_br.ViewChangelogFile=Visualizar o CHANGELOG
-
-en.CLIOptions=Command Line Interface:
-fr.CLIOptions=Interface en ligne de commande:
-de.CLIOptions=Kommandozeilenschnittstelle:
-es.CLIOptions=Interfaz de línea de comandos:
-it.CLIOptions=Interfaccia a riga di comando:
-pt_br.CLIOptions=Interface de linha de comando:
-zh.CLIOptions=命令行界面:
-ko.CLIOptions=명령줄 인터페이스:
-nl.CLIOptions=Opdrachtregelinterface:
-ru_ru.CLIOptions=Интерфейс командной строки:
-pl_pl.CLIOptions=Interfejs wiersza poleceń:
-
-en.AddToPath=Add SoundSwitch CLI to PATH
-fr.AddToPath=Ajouter SoundSwitch CLI au PATH
-de.AddToPath=SoundSwitch CLI zum PATH hinzufügen
-es.AddToPath=Añadir SoundSwitch CLI al PATH
-it.AddToPath=Aggiungi SoundSwitch CLI al PATH
-pt_br.AddToPath=Adicionar SoundSwitch CLI ao PATH
-zh.AddToPath=将 SoundSwitch CLI 添加到 PATH
-ko.AddToPath=SoundSwitch CLI를 PATH에 추가
-nl.AddToPath=SoundSwitch CLI toevoegen aan PATH
-ru_ru.AddToPath=Добавить SoundSwitch CLI в PATH
-pl_pl.AddToPath=Dodaj SoundSwitch CLI do PATH
-
 [UninstallRun]
 Filename: "certutil.exe"; Parameters: "-delstore ""Root"" ""eb db 8a 0a 72 a6 02 91 40 74 9e a2 af 63 d2 fc""" ; Flags: runhidden runascurrentuser
 Filename: "certutil.exe"; Parameters: "-delstore ""TrustedPublisher"" ""942A37BCA9A9889442F6710533CB5548""" ; Flags: runhidden runascurrentuser
-
 
 [InstallDelete]
 Type: filesandordirs; Name: {userappdata}\SoundSwitch; Tasks: deletefiles
