@@ -78,6 +78,7 @@ Name: "ko"; MessagesFile: "Languages\Korean.isl"
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Check: not IsVerySilent
 Name: deletefiles; Description: "{cm:ExistingSettings}"; Flags: unchecked checkedonce
+Name: addtopath; Description: "{cm:AddToPath}"; GroupDescription: "{cm:CLIOptions}"; Flags: checkedonce
 
 [Files] 
 Source: "{#ExeDir}SoundSwitch.exe"; DestDir: "{app}";  Flags: signonce ignoreversion
@@ -134,6 +135,30 @@ en.ViewChangelogFile=View the CHANGELOG file
 it.ViewChangelogFile=Visualizza file CHANGELOG
 pt_br.ViewChangelogFile=Visualizar o CHANGELOG
 
+en.CLIOptions=Command Line Interface:
+fr.CLIOptions=Interface en ligne de commande:
+de.CLIOptions=Kommandozeilenschnittstelle:
+es.CLIOptions=Interfaz de línea de comandos:
+it.CLIOptions=Interfaccia a riga di comando:
+pt_br.CLIOptions=Interface de linha de comando:
+zh.CLIOptions=命令行界面:
+ko.CLIOptions=명령줄 인터페이스:
+nl.CLIOptions=Opdrachtregelinterface:
+ru_ru.CLIOptions=Интерфейс командной строки:
+pl_pl.CLIOptions=Interfejs wiersza poleceń:
+
+en.AddToPath=Add SoundSwitch CLI to PATH
+fr.AddToPath=Ajouter SoundSwitch CLI au PATH
+de.AddToPath=SoundSwitch CLI zum PATH hinzufügen
+es.AddToPath=Añadir SoundSwitch CLI al PATH
+it.AddToPath=Aggiungi SoundSwitch CLI al PATH
+pt_br.AddToPath=Adicionar SoundSwitch CLI ao PATH
+zh.AddToPath=将 SoundSwitch CLI 添加到 PATH
+ko.AddToPath=SoundSwitch CLI를 PATH에 추가
+nl.AddToPath=SoundSwitch CLI toevoegen aan PATH
+ru_ru.AddToPath=Добавить SoundSwitch CLI в PATH
+pl_pl.AddToPath=Dodaj SoundSwitch CLI do PATH
+
 [UninstallRun]
 Filename: "certutil.exe"; Parameters: "-delstore ""Root"" ""eb db 8a 0a 72 a6 02 91 40 74 9e a2 af 63 d2 fc""" ; Flags: runhidden runascurrentuser
 Filename: "certutil.exe"; Parameters: "-delstore ""TrustedPublisher"" ""942A37BCA9A9889442F6710533CB5548""" ; Flags: runhidden runascurrentuser
@@ -176,6 +201,118 @@ begin
   Result := not CmdLineParamExists('/NODONATE');
 end;
 
+procedure ModifyPath(const ValueToAdd: string; PathType: Integer);
+var
+  OldPath: string;
+  NewPath: string;
+  RegPathKey: string;
+begin
+  // PathType: 0 = user path, 1 = system path
+  if PathType = 0 then
+    RegPathKey := 'HKCU\Environment'
+  else
+    RegPathKey := 'HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment';
+  
+  // Get the old path value
+  if not RegQueryStringValue(RegPathKey, 'Path', OldPath) then
+    OldPath := '';
+    
+  // Check if it already exists in the path
+  if Pos(UpperCase(ValueToAdd), UpperCase(OldPath)) > 0 then
+    Exit; // Already in the path
+    
+  // Append to the path, ensuring proper separation with semicolons
+  if Copy(OldPath, Length(OldPath), 1) <> ';' then
+    NewPath := OldPath + ';' + ValueToAdd
+  else
+    NewPath := OldPath + ValueToAdd;
+    
+  // Write the new path back to registry
+  if RegWriteStringValue(RegPathKey, 'Path', NewPath) then
+  begin
+    // Notify Windows about the environment change
+    if PathType = 1 then
+      // Use SendMessageTimeout for system-wide environment change
+      SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, 0, 'Environment', SMTO_ABORTIFHUNG, 5000, 0);
+  end;
+end;
+
+procedure RemoveFromPath(const ValueToRemove: string; PathType: Integer);
+var
+  OldPath: string;
+  NewPath: string;
+  RegPathKey: string;
+  P: Integer;
+  PathLen: Integer;
+begin
+  // PathType: 0 = user path, 1 = system path
+  if PathType = 0 then
+    RegPathKey := 'HKCU\Environment'
+  else
+    RegPathKey := 'HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment';
+  
+  // Get the old path value
+  if not RegQueryStringValue(RegPathKey, 'Path', OldPath) then
+    Exit; // No path to modify
+    
+  // Find the position of the value in the path
+  P := Pos(UpperCase(ValueToRemove), UpperCase(OldPath));
+  if P <= 0 then
+    Exit; // Not in the path
+    
+  PathLen := Length(ValueToRemove);
+  // Remove the value from the path
+  if (P > 1) and (OldPath[P-1] = ';') then
+  begin
+    // If preceded by a semicolon, remove that too
+    Delete(OldPath, P-1, PathLen+1);
+  end
+  else if (P + PathLen <= Length(OldPath)) and (OldPath[P + PathLen] = ';') then
+  begin
+    // If followed by a semicolon, remove that too
+    Delete(OldPath, P, PathLen+1);
+  end
+  else
+  begin
+    // Just remove the value itself
+    Delete(OldPath, P, PathLen);
+  end;
+  
+  // Clean up any double semicolons
+  OldPath := StringReplace(OldPath, ';;', ';', [rfReplaceAll]);
+  
+  // If path ends with semicolon, remove it
+  if (Length(OldPath) > 0) and (OldPath[Length(OldPath)] = ';') then
+    OldPath := Copy(OldPath, 1, Length(OldPath)-1);
+  
+  // Write the new path back to registry
+  if RegWriteStringValue(RegPathKey, 'Path', OldPath) then
+  begin
+    // Notify Windows about the environment change
+    if PathType = 1 then
+      SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, 0, 'Environment', SMTO_ABORTIFHUNG, 5000, 0);
+  end;
+end;
+
+// This function gets called during setup
+procedure CurStepChanged(CurStep: TSetupStep);
+begin
+  if CurStep = ssPostInstall then
+  begin
+    // Add to PATH if the user selected that option
+    if IsTaskSelected('addtopath') then
+    begin
+      // Add to appropriate PATH based on installation privileges
+      if IsAdminLoggedOn then
+        // System PATH
+        ModifyPath(ExpandConstant('{app}'), 1) 
+      else
+        // User PATH
+        ModifyPath(ExpandConstant('{app}'), 0);
+    end;
+  end;
+end;
+
 function InitializeUninstall(): Boolean;
 begin
   Result := PromptUntilProgramClosedOrInstallationCanceled('{#MyAppSetupName}');
@@ -186,12 +323,23 @@ begin
   end;  
 end;
 
-
 procedure CurUninstallStepChanged (CurUninstallStep: TUninstallStep);
 var
   mres : integer;
+  appDir: string;
 begin
   case CurUninstallStep of
+    usUninstall:
+      begin
+        // Save the app directory for later
+        appDir := ExpandConstant('{app}');
+        
+        // Remove from PATH
+        if IsAdminLoggedOn then
+          RemoveFromPath(appDir, 1)
+        else
+          RemoveFromPath(appDir, 0);
+      end;
     usPostUninstall:
       begin
         // Always delete program files when running as admin
@@ -236,6 +384,12 @@ begin
     DeleteFile(setupExe);
   end;
 end;
+
+// Add missing constants for Windows messages
+const
+  WM_SETTINGCHANGE = 26;
+  HWND_BROADCAST = $FFFF;
+  SMTO_ABORTIFHUNG = 2;
 
 // shared code for installing the products
 #include "scripts\products.iss"
