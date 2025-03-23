@@ -591,4 +591,16 @@
   <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
     <value>バナーが画面に表示される時間（秒）。</value>
   </data>
+  <data name="microphone.on" xml:space="preserve">
+    <value>マイクオン</value>
+  </data>
+  <data name="microphone.off" xml:space="preserve">
+    <value>マイクオフ</value>
+  </data>
+  <data name="banner.mute.persistent" xml:space="preserve">
+    <value>持続的ミュートバナー</value>
+  </data>
+  <data name="banner.mute.persistent.tooltip" xml:space="preserve">
+    <value>マイクがミュートされている場合、持続的にミュートバナーを表示する</value>
+  </data>
 </root>
