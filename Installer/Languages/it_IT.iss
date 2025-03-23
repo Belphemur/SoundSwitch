@@ -1,10 +1,10 @@
 
 [CustomMessages]
 ExistingSettings=Rimuovi impostazioni esistenti
-UninstallQuestion=Vuoi rimuovere le impostazioni di SoundSwitch?
+UninstallQuestion=Vuoi rimuovere le impostazioni di %1?
 CertificatesGroup=Certificati:
 ViewReadmeFile=Visualizza file README
 SupportTheProject=Supporta il progetto
 ViewChangelogFile=Visualizza file CHANGELOG
 CLIOptions=Interfaccia a riga di comando:
-AddToPath=Aggiungi SoundSwitch CLI al PATH
+AddToPath=Aggiungi %1 CLI al PATH

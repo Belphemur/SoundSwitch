@@ -44,7 +44,7 @@ begin
         end;
         
         // Ask about deleting settings
-        mres := MsgBox(ExpandConstant('{cm:UninstallQuestion}'), mbConfirmation, MB_YESNO or MB_DEFBUTTON2);
+        mres := MsgBox(ExpandConstant('{cm:UninstallQuestion,{#MyAppSetupName}}'), mbConfirmation, MB_YESNO or MB_DEFBUTTON2);
         if mres = IDYES then
         begin
           DelTree(ExpandConstant('{userappdata}\{#MyAppSetupName}'), True, True, True);
