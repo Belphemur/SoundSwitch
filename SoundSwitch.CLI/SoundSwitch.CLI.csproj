@@ -6,8 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
-    <Deterministic>false</Deterministic>
-    <PublishTrimmed>false</PublishTrimmed>
+    <Deterministic>true</Deterministic>
+    <PublishTrimmed>true</PublishTrimmed>
     <TrimMode>link</TrimMode>
     <SelfContained>true</SelfContained>
     <PublishReadyToRun>true</PublishReadyToRun>
