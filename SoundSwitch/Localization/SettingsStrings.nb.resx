@@ -1,48 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
-					<xsd:element name="metadata">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" />
-							</xsd:sequence>
-							<xsd:attribute name="name" use="required" type="xsd:string" />
-							<xsd:attribute name="type" type="xsd:string" />
-							<xsd:attribute name="mimetype" type="xsd:string" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="assembly">
-						<xsd:complexType>
-							<xsd:attribute name="alias" type="xsd:string" />
-							<xsd:attribute name="name" type="xsd:string" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
       </xsd:complexType>
     </xsd:element>
   </xsd:schema>
@@ -53,10 +54,12 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="selected" xml:space="preserve">
     <value>Valgt</value>
@@ -417,5 +420,89 @@ Gjenopprett systemets tilstand når programmet lukkes.</value>
   </data>
   <data name="quickMenu" xml:space="preserve">
     <value>Hurtigmeny på hurtigtast</value>
+  </data>
+  <data name="position" xml:space="preserve">
+    <value>Posisjon</value>
+  </data>
+  <data name="position.tooltip" xml:space="preserve">
+    <value>Velg posisjonen for banneret.</value>
+  </data>
+  <data name="position.option.bottomLeft" xml:space="preserve">
+    <value>Nederst til venstre</value>
+  </data>
+  <data name="position.option.bottomRight" xml:space="preserve">
+    <value>Nederst til høyre</value>
+  </data>
+  <data name="position.option.topLeft" xml:space="preserve">
+    <value>Øverst til venstre</value>
+  </data>
+  <data name="position.option.topRight" xml:space="preserve">
+    <value>Øverst til høyre</value>
+  </data>
+  <data name="position.option.bottomCenter" xml:space="preserve">
+    <value>Nederst i midten</value>
+  </data>
+  <data name="position.option.topCenter" xml:space="preserve">
+    <value>Øverst i midten</value>
+  </data>
+  <data name="position.option.center" xml:space="preserve">
+    <value>I midten</value>
+  </data>
+  <data name="notification.single" xml:space="preserve">
+    <value>Kun ett banner</value>
+  </data>
+  <data name="notification.single.tooltip" xml:space="preserve">
+    <value>Vis kun ett banner og oppdater innholdet.</value>
+  </data>
+  <data name="link.community" xml:space="preserve">
+    <value>Discord-samfunn</value>
+  </data>
+  <data name="link.donate" xml:space="preserve">
+    <value>Donér</value>
+  </data>
+  <data name="link.help" xml:space="preserve">
+    <value>Hjelp</value>
+  </data>
+  <data name="resetAudioDevices.desc" xml:space="preserve">
+    <value>Tilbakestill lydenhettilordninger til bestemte programmer i Windows hvis lydenheter ikke tilordnes riktig ved bytting.</value>
+  </data>
+  <data name="buttonReset" xml:space="preserve">
+    <value>Tilbakestill</value>
+  </data>
+  <data name="resetAudioDevices" xml:space="preserve">
+    <value>Tilbakestill lyd for hvert program</value>
+  </data>
+  <data name="exportLogFiles" xml:space="preserve">
+    <value>Eksporter loggfiler</value>
+  </data>
+  <data name="exportLogFiles.desc" xml:space="preserve">
+    <value>Eksporter alle loggfiler til et zip-arkiv for videre feilsøking i enten hjelpediskusjoner eller Discord-samfunnet.</value>
+  </data>
+  <data name="buttonExport" xml:space="preserve">
+    <value>Eksporter</value>
+  </data>
+  <data name="troubleshooting" xml:space="preserve">
+    <value>Feilsøking</value>
+  </data>
+  <data name="troubleshooting.desc" xml:space="preserve">
+    <value>Hvis du trenger hjelp eller ytterligere feilsøking med SoundSwitch, kan du besøke hjelpelenken eller Discord-samfunnet, eller støtte oss ved å besøke donasjonslenken nedenfor.</value>
+  </data>
+  <data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>Visningstid</value>
+  </data>
+  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+    <value>Hvor lenge banneret skal vises på skjermen i sekunder.</value>
+  </data>
+  <data name="microphone.on" xml:space="preserve">
+    <value>Mikrofon på</value>
+  </data>
+  <data name="microphone.off" xml:space="preserve">
+    <value>Mikrofon av</value>
+  </data>
+  <data name="banner.mute.persistent" xml:space="preserve">
+    <value>Permanent forstummingsbanner</value>
+  </data>
+  <data name="banner.mute.persistent.tooltip" xml:space="preserve">
+    <value>Vis et permanent banner når mikrofonen er forstummet</value>
   </data>
 </root>

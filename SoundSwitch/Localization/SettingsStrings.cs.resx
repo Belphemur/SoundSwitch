@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -53,10 +54,12 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="mute.toggle.label" xml:space="preserve">
     <value>Ztlumit</value>
@@ -417,5 +420,104 @@ Okno: Používá přizpůsobené okno, které je vždy navrchu – užitečné p
   </data>
   <data name="telemetry" xml:space="preserve">
     <value>Telemetrie</value>
+  </data>
+  <data name="profile.trigger.deviceChanged" xml:space="preserve">
+    <value>Vynutit profil</value>
+  </data>
+  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
+    <value>Profil se automaticky spustí vždy, když se změní aktuální zvukové zařízení.</value>
+  </data>
+  <data name="profile.error.deviceChanged" xml:space="preserve">
+    <value>Můžete mít pouze jeden vynucený profil.</value>
+  </data>
+  <data name="devices.AutoAddNewDevice" xml:space="preserve">
+    <value>Automaticky vybrat nová zařízení</value>
+  </data>
+  <data name="devices.AutoAddNewDevice.tooltip" xml:space="preserve">
+    <value>Automaticky přidat nové zařízení do vybraného seznamu, když jsou připojena k počítači</value>
+  </data>
+  <data name="position" xml:space="preserve">
+    <value>Pozice</value>
+  </data>
+  <data name="position.tooltip" xml:space="preserve">
+    <value>Nastavte pozici oznamovacího okna.</value>
+  </data>
+  <data name="position.option.bottomLeft" xml:space="preserve">
+    <value>Vlevo dole</value>
+  </data>
+  <data name="position.option.bottomRight" xml:space="preserve">
+    <value>Vpravo dole</value>
+  </data>
+  <data name="position.option.topLeft" xml:space="preserve">
+    <value>Vlevo nahoře</value>
+  </data>
+  <data name="position.option.topRight" xml:space="preserve">
+    <value>Vpravo nahoře</value>
+  </data>
+  <data name="position.option.bottomCenter" xml:space="preserve">
+    <value>Uprostřed dole</value>
+  </data>
+  <data name="position.option.topCenter" xml:space="preserve">
+    <value>Uprostřed nahoře</value>
+  </data>
+  <data name="position.option.center" xml:space="preserve">
+    <value>Uprostřed</value>
+  </data>
+  <data name="notification.single" xml:space="preserve">
+    <value>Pouze jedno okno</value>
+  </data>
+  <data name="notification.single.tooltip" xml:space="preserve">
+    <value>Zobrazit pouze jedno oznamovací okno a nahradit jeho obsah.</value>
+  </data>
+  <data name="link.community" xml:space="preserve">
+    <value>Discord komunita</value>
+  </data>
+  <data name="link.donate" xml:space="preserve">
+    <value>Přispět</value>
+  </data>
+  <data name="link.help" xml:space="preserve">
+    <value>Nápověda</value>
+  </data>
+  <data name="resetAudioDevices.desc" xml:space="preserve">
+    <value>Resetuje přiřazení zvukových zařízení určeným programům ve Windows, pokud se zvuková zařízení při přepínání správně nepřiřadí.</value>
+  </data>
+  <data name="buttonReset" xml:space="preserve">
+    <value>Resetovat</value>
+  </data>
+  <data name="resetAudioDevices" xml:space="preserve">
+    <value>Resetovat zvuk pro každou aplikaci</value>
+  </data>
+  <data name="exportLogFiles" xml:space="preserve">
+    <value>Exportovat protokoly</value>
+  </data>
+  <data name="exportLogFiles.desc" xml:space="preserve">
+    <value>Exportovat všechny soubory protokolů do zip archivu pro další řešení problémů v nápovědě nebo Discord komunitě.</value>
+  </data>
+  <data name="buttonExport" xml:space="preserve">
+    <value>Exportovat</value>
+  </data>
+  <data name="troubleshooting" xml:space="preserve">
+    <value>Řešení problémů</value>
+  </data>
+  <data name="troubleshooting.desc" xml:space="preserve">
+    <value>Pokud potřebujete pomoc nebo další řešení problémů s aplikací SoundSwitch, můžete navštívit odkaz na nápovědu nebo komunitní Discord, případně nás můžete podpořit přes odkaz na příspěvek níže.</value>
+  </data>
+  <data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>Doba zobrazení</value>
+  </data>
+  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+    <value>Jak dlouho zůstane oznamovací okno na obrazovce v sekundách.</value>
+  </data>
+  <data name="microphone.on" xml:space="preserve">
+    <value>Mikrofon zapnutý</value>
+  </data>
+  <data name="microphone.off" xml:space="preserve">
+    <value>Mikrofon vypnutý</value>
+  </data>
+  <data name="banner.mute.persistent" xml:space="preserve">
+    <value>Trvalé okno ztlumení</value>
+  </data>
+  <data name="banner.mute.persistent.tooltip" xml:space="preserve">
+    <value>Zobrazit trvalé okno oznámení, když je mikrofon ztlumený</value>
   </data>
 </root>

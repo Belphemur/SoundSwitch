@@ -22,8 +22,10 @@
     <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
         <value>[base64 mime encoded serialized .NET Framework object]</value>
     </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing"
+  mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework
+  object]</value>
         <comment>This is a comment</comment>
     </data>
                 
@@ -59,49 +61,50 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
-					<xsd:element name="metadata">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" />
-							</xsd:sequence>
-							<xsd:attribute name="name" use="required" type="xsd:string" />
-							<xsd:attribute name="type" type="xsd:string" />
-							<xsd:attribute name="mimetype" type="xsd:string" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="assembly">
-						<xsd:complexType>
-							<xsd:attribute name="alias" type="xsd:string" />
-							<xsd:attribute name="name" type="xsd:string" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
       </xsd:complexType>
     </xsd:element>
   </xsd:schema>
@@ -112,10 +115,12 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="selected" xml:space="preserve">
     <value>已选择</value>
@@ -512,5 +517,92 @@
   </data>
   <data name="devices.autoAddNewDevice" xml:space="preserve">
     <value>自动选择新设备</value>
+  </data>
+  <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
+    <value>当新设备连接到电脑时，自动添加到选择列表中</value>
+  </data>
+  <data name="position" xml:space="preserve">
+    <value>位置</value>
+  </data>
+  <data name="position.tooltip" xml:space="preserve">
+    <value>设置横幅通知的显示位置。</value>
+  </data>
+  <data name="position.option.bottomLeft" xml:space="preserve">
+    <value>左下角</value>
+  </data>
+  <data name="position.option.bottomRight" xml:space="preserve">
+    <value>右下角</value>
+  </data>
+  <data name="position.option.topLeft" xml:space="preserve">
+    <value>左上角</value>
+  </data>
+  <data name="position.option.topRight" xml:space="preserve">
+    <value>右上角</value>
+  </data>
+  <data name="position.option.bottomCenter" xml:space="preserve">
+    <value>底部居中</value>
+  </data>
+  <data name="position.option.topCenter" xml:space="preserve">
+    <value>顶部居中</value>
+  </data>
+  <data name="notification.single" xml:space="preserve">
+    <value>仅显示一个横幅</value>
+  </data>
+  <data name="notification.single.tooltip" xml:space="preserve">
+    <value>一次仅显示一个横幅并替换其内容。</value>
+  </data>
+  <data name="link.community" xml:space="preserve">
+    <value>Discord社区</value>
+  </data>
+  <data name="link.donate" xml:space="preserve">
+    <value>捐赠</value>
+  </data>
+  <data name="link.help" xml:space="preserve">
+    <value>帮助讨论</value>
+  </data>
+  <data name="resetAudioDevices.desc" xml:space="preserve">
+    <value>在切换设备时如果程序的音频设备未能正确重新分配，则重置Windows中指定程序的音频设备分配。</value>
+  </data>
+  <data name="buttonReset" xml:space="preserve">
+    <value>重置</value>
+  </data>
+  <data name="resetAudioDevices" xml:space="preserve">
+    <value>重置每个程序的音频</value>
+  </data>
+  <data name="exportLogFiles" xml:space="preserve">
+    <value>导出日志文件</value>
+  </data>
+  <data name="exportLogFiles.desc" xml:space="preserve">
+    <value>将所有日志文件导出到zip压缩包中，以便在帮助讨论或Discord社区中进行进一步故障排除。</value>
+  </data>
+  <data name="buttonExport" xml:space="preserve">
+    <value>导出</value>
+  </data>
+  <data name="troubleshooting" xml:space="preserve">
+    <value>故障排除</value>
+  </data>
+  <data name="troubleshooting.desc" xml:space="preserve">
+    <value>如果您需要任何帮助或需要对SoundSwitch进行进一步的故障排除，可以访问帮助讨论或Discord社区链接，或者通过访问下方的捐赠链接来支持我们。</value>
+  </data>
+  <data name="position.option.center" xml:space="preserve">
+    <value>居中</value>
+  </data>
+  <data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>屏幕显示时间</value>
+  </data>
+  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+    <value>横幅在屏幕上停留的秒数。</value>
+  </data>
+  <data name="microphone.on" xml:space="preserve">
+    <value>麦克风开启</value>
+  </data>
+  <data name="microphone.off" xml:space="preserve">
+    <value>麦克风关闭</value>
+  </data>
+  <data name="banner.mute.persistent" xml:space="preserve">
+    <value>持久性静音横幅</value>
+  </data>
+  <data name="banner.mute.persistent.tooltip" xml:space="preserve">
+    <value>麦克风静音时显示持久性静音横幅</value>
   </data>
 </root>

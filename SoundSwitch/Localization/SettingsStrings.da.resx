@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -53,10 +54,12 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="communicationsDevice" xml:space="preserve">
     <value>Skift standard kommunikationsenhed</value>
@@ -304,5 +307,130 @@ Vil du genstarte nu?</value>
   </data>
   <data name="buttonDelete" xml:space="preserve">
     <value>Slet</value>
+  </data>
+  <data name="iconChange.tooltip" xml:space="preserve">
+    <value>Vælg hvornår SoundSwitch ikonet i systembakken skal ændres.
+
+Standard: Ingen ændring. Behold SoundSwitch ikonet.
+Afspilning: Når en afspilningsenhed skiftes.
+Optagelse: Når en optagelsesenhed skiftes.
+Begge: Når enhver type enhed skiftes.</value>
+  </data>
+  <data name="profile.trigger.deviceChanged" xml:space="preserve">
+    <value>Tving profil</value>
+  </data>
+  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
+    <value>Profilen vil automatisk blive aktiveret når den aktuelle lydenhed ændres.</value>
+  </data>
+  <data name="profile.error.deviceChanged" xml:space="preserve">
+    <value>Du kan kun have én tvungen profil.</value>
+  </data>
+  <data name="devices.AutoAddNewDevice" xml:space="preserve">
+    <value>Vælg automatisk nye enheder</value>
+  </data>
+  <data name="devices.AutoAddNewDevice.tooltip" xml:space="preserve">
+    <value>Når nye enheder tilsluttes computeren, tilføjes de automatisk til den valgte liste</value>
+  </data>
+  <data name="position" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="position.tooltip" xml:space="preserve">
+    <value>Vælg bannerens placering.</value>
+  </data>
+  <data name="position.option.bottomLeft" xml:space="preserve">
+    <value>Nederst til venstre</value>
+  </data>
+  <data name="position.option.bottomRight" xml:space="preserve">
+    <value>Nederst til højre</value>
+  </data>
+  <data name="position.option.topLeft" xml:space="preserve">
+    <value>Øverst til venstre</value>
+  </data>
+  <data name="position.option.topRight" xml:space="preserve">
+    <value>Øverst til højre</value>
+  </data>
+  <data name="position.option.bottomCenter" xml:space="preserve">
+    <value>Nederst i midten</value>
+  </data>
+  <data name="position.option.topCenter" xml:space="preserve">
+    <value>Øverst i midten</value>
+  </data>
+  <data name="position.option.center" xml:space="preserve">
+    <value>Midt på</value>
+  </data>
+  <data name="notification.single" xml:space="preserve">
+    <value>Kun ét banner</value>
+  </data>
+  <data name="notification.single.tooltip" xml:space="preserve">
+    <value>Vis kun ét banner og opdater dets indhold.</value>
+  </data>
+  <data name="link.community" xml:space="preserve">
+    <value>Discord fællesskab</value>
+  </data>
+  <data name="link.donate" xml:space="preserve">
+    <value>Donér</value>
+  </data>
+  <data name="link.help" xml:space="preserve">
+    <value>Hjælp</value>
+  </data>
+  <data name="resetAudioDevices.desc" xml:space="preserve">
+    <value>Nulstil lydenheder tildelt specifikke programmer i Windows, hvis lydenhederne ikke bliver korrekt gentildelt ved skift af enheder.</value>
+  </data>
+  <data name="buttonReset" xml:space="preserve">
+    <value>Nulstil</value>
+  </data>
+  <data name="resetAudioDevices" xml:space="preserve">
+    <value>Nulstil lyd for hvert program</value>
+  </data>
+  <data name="exportLogFiles" xml:space="preserve">
+    <value>Eksportér logfiler</value>
+  </data>
+  <data name="exportLogFiles.desc" xml:space="preserve">
+    <value>Eksportér alle logfiler til en zip-arkiv til videre fejlfinding i hjælpediskussioner eller Discord fællesskabet.</value>
+  </data>
+  <data name="buttonExport" xml:space="preserve">
+    <value>Eksportér</value>
+  </data>
+  <data name="troubleshooting" xml:space="preserve">
+    <value>Fejlfinding</value>
+  </data>
+  <data name="troubleshooting.desc" xml:space="preserve">
+    <value>Hvis du har brug for hjælp eller yderligere fejlfinding med SoundSwitch, kan du besøge hjælpelinket eller Discord fællesskabet, eller støtte os ved at besøge donationslinket nedenfor.</value>
+  </data>
+  <data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>Visningstid</value>
+  </data>
+  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+    <value>Hvor længe banneret skal vises på skærmen i sekunder.</value>
+  </data>
+  <data name="microphone.on" xml:space="preserve">
+    <value>Mikrofon tændt</value>
+  </data>
+  <data name="microphone.off" xml:space="preserve">
+    <value>Mikrofon slukket</value>
+  </data>
+  <data name="banner.mute.persistent" xml:space="preserve">
+    <value>Permanent lydløs-banner</value>
+  </data>
+  <data name="banner.mute.persistent.tooltip" xml:space="preserve">
+    <value>Vis et permanent banner når mikrofonen er lydløs</value>
+  </data>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>I program-menuen</value>
+  </data>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>Denne trigger gør profilen synlig i systembakkens menu. Venstreklik på systembakkeikonet for at se din profil.</value>
+  </data>
+  <data name="telemetry" xml:space="preserve">
+    <value>Telemetri</value>
+  </data>
+  <data name="telemetry.desc" xml:space="preserve">
+    <value>Indsaml anonymt hvilken version af SoundSwitch der bruges. Deles kun med SoundSwitch udvikleren.</value>
+  </data>
+  <data name="quickMenu" xml:space="preserve">
+    <value>Hurtigmenu ved genvejstast</value>
+  </data>
+  <data name="quickMenu.desc" xml:space="preserve">
+    <value>Vis en hurtigmenu (ligesom Windows sprogmenu) når en genvejstast bruges</value>
   </data>
 </root>

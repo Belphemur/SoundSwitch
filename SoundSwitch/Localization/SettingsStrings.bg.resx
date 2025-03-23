@@ -495,4 +495,85 @@
   <data name="resetAudioDevices" xml:space="preserve">
     <value>Нулиране на аудио за приложения</value>
   </data>
+  <data name="position" xml:space="preserve">
+    <value>Позиция</value>
+  </data>
+  <data name="position.tooltip" xml:space="preserve">
+    <value>Изберете позицията на банера.</value>
+  </data>
+  <data name="position.option.bottomLeft" xml:space="preserve">
+    <value>Долу вляво</value>
+  </data>
+  <data name="position.option.bottomRight" xml:space="preserve">
+    <value>Долу вдясно</value>
+  </data>
+  <data name="position.option.topLeft" xml:space="preserve">
+    <value>Горе вляво</value>
+  </data>
+  <data name="position.option.topRight" xml:space="preserve">
+    <value>Горе вдясно</value>
+  </data>
+  <data name="position.option.bottomCenter" xml:space="preserve">
+    <value>Долу в центъра</value>
+  </data>
+  <data name="position.option.topCenter" xml:space="preserve">
+    <value>Горе в центъра</value>
+  </data>
+  <data name="position.option.center" xml:space="preserve">
+    <value>В центъра</value>
+  </data>
+  <data name="notification.single" xml:space="preserve">
+    <value>Само един банер</value>
+  </data>
+  <data name="notification.single.tooltip" xml:space="preserve">
+    <value>Показване само на един банер и подмяна на съдържанието му.</value>
+  </data>
+  <data name="link.community" xml:space="preserve">
+    <value>Discord общност</value>
+  </data>
+  <data name="link.donate" xml:space="preserve">
+    <value>Дарение</value>
+  </data>
+  <data name="link.help" xml:space="preserve">
+    <value>Помощ</value>
+  </data>
+  <data name="resetAudioDevices.desc" xml:space="preserve">
+    <value>Нулиране на зададените аудио устройства за приложенията в Windows, в случай че аудио устройствата не се пренасочват правилно при превключване.</value>
+  </data>
+  <data name="buttonReset" xml:space="preserve">
+    <value>Нулиране</value>
+  </data>
+  <data name="exportLogFiles" xml:space="preserve">
+    <value>Експортиране на логове</value>
+  </data>
+  <data name="exportLogFiles.desc" xml:space="preserve">
+    <value>Експортиране на всички лог файлове в ZIP архив за по-нататъшно отстраняване на грешки в дискусиите за помощ или в Discord общността.</value>
+  </data>
+  <data name="buttonExport" xml:space="preserve">
+    <value>Експортиране</value>
+  </data>
+  <data name="troubleshooting" xml:space="preserve">
+    <value>Отстраняване на проблеми</value>
+  </data>
+  <data name="troubleshooting.desc" xml:space="preserve">
+    <value>Ако се нуждаете от помощ или допълнително отстраняване на проблеми със SoundSwitch, можете да посетите връзката за помощ или Discord общността, или да ни подкрепите чрез връзката за дарение по-долу.</value>
+  </data>
+  <data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>Време на показване</value>
+  </data>
+  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+    <value>Колко секунди да стои банера на екрана.</value>
+  </data>
+  <data name="microphone.on" xml:space="preserve">
+    <value>Микрофонът е включен</value>
+  </data>
+  <data name="microphone.off" xml:space="preserve">
+    <value>Микрофонът е изключен</value>
+  </data>
+  <data name="banner.mute.persistent" xml:space="preserve">
+    <value>Постоянен банер при заглушаване</value>
+  </data>
+  <data name="banner.mute.persistent.tooltip" xml:space="preserve">
+    <value>Показване на постоянен банер, когато микрофонът е заглушен</value>
+  </data>
 </root>

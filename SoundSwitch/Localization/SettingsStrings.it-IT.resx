@@ -582,4 +582,25 @@ Ripristina lo stato del sistema quando l'applicazione viene chiusa.</value>
   <data name="exportLogFiles.desc" xml:space="preserve">
     <value>Esporta tutti i file registro eventi in un archivio zip per un'ulteriore risoluzione dei problemi nelle discussioni di supporto o nella comunità Discord.</value>
   </data>
+  <data name="position.option.center" xml:space="preserve">
+    <value>Al centro</value>
+  </data>
+  <data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>Tempo di visualizzazione</value>
+  </data>
+  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+    <value>Per quanti secondi il banner deve rimanere visibile sullo schermo.</value>
+  </data>
+  <data name="microphone.on" xml:space="preserve">
+    <value>Microfono acceso</value>
+  </data>
+  <data name="microphone.off" xml:space="preserve">
+    <value>Microfono spento</value>
+  </data>
+  <data name="banner.mute.persistent" xml:space="preserve">
+    <value>Banner persistente microfono disattivato</value>
+  </data>
+  <data name="banner.mute.persistent.tooltip" xml:space="preserve">
+    <value>Mostra un banner persistente quando il microfono è disattivato</value>
+  </data>
 </root>

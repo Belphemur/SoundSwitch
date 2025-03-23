@@ -84,10 +84,13 @@
 					<xsd:element name="data">
 						<xsd:complexType>
 							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+								<xsd:element name="value" type="xsd:string" minOccurs="0"
+									msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0"
+									msdata:Ordinal="2" />
 							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+							<xsd:attribute name="name" type="xsd:string" use="required"
+								msdata:Ordinal="1" />
 							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
 							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
 							<xsd:attribute ref="xml:space" />
@@ -96,7 +99,8 @@
 					<xsd:element name="resheader">
 						<xsd:complexType>
 							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="value" type="xsd:string" minOccurs="0"
+									msdata:Ordinal="1" />
 							</xsd:sequence>
 							<xsd:attribute name="name" type="xsd:string" use="required" />
 						</xsd:complexType>
@@ -117,4 +121,271 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+	<data name="selected" xml:space="preserve">
+    <value>Επιλεγμένο</value>
+  </data>
+	<data name="connected" xml:space="preserve">
+    <value>Συνδεδεμένο</value>
+  </data>
+	<data name="disconnected" xml:space="preserve">
+    <value>Αποσυνδεδεμένο</value>
+  </data>
+	<data name="recording" xml:space="preserve">
+    <value>Εγγραφή</value>
+  </data>
+	<data name="playback" xml:space="preserve">
+    <value>Αναπαραγωγή</value>
+  </data>
+	<data name="settings" xml:space="preserve">
+    <value>Ρυθμίσεις</value>
+  </data>
+	<data name="hotkey" xml:space="preserve">
+    <value>Συντόμευση</value>
+  </data>
+	<data name="communicationsDevice" xml:space="preserve">
+    <value>Εναλλαγή προεπιλεγμένης συσκευής επικοινωνίας</value>
+  </data>
+	<data name="startWithWindows" xml:space="preserve">
+    <value>Αυτόματη εκκίνηση με τα Windows</value>
+  </data>
+	<data name="buttonClose" xml:space="preserve">
+    <value>Κλείσιμο</value>
+  </data>
+	<data name="buttonClose.tooltip" xml:space="preserve">
+    <value>Οι αλλαγές αποθηκεύονται αυτόματα</value>
+  </data>
+	<data name="notification" xml:space="preserve">
+    <value>Ειδοποίηση</value>
+  </data>
+	<data name="updateIncludeBetaVersions" xml:space="preserve">
+    <value>Συμπερίληψη εκδόσεων Beta</value>
+  </data>
+	<data name="updateIncludeBetaVersions.tooltip" xml:space="preserve">
+    <value>Όταν επιλεγεί, το SoundSwitch θα ελέγχει επίσης για εκδόσεις beta στο GitHub.</value>
+  </data>
+	<data name="audioFiles" xml:space="preserve">
+    <value>Αρχεία ήχου</value>
+  </data>
+	<data name="selectSoundButton.tooltip" xml:space="preserve">
+    <value>Επιλογή αρχείου ήχου για την ειδοποίηση</value>
+  </data>
+	<data name="hotkey.tooltip" xml:space="preserve">
+    <value>Επιλέξτε για ενεργοποίηση συντόμευσης.</value>
+  </data>
+	<data name="basicSettings" xml:space="preserve">
+    <value>Βασικές ρυθμίσεις</value>
+  </data>
+	<data name="audioSettings" xml:space="preserve">
+    <value>Ρυθμίσεις ήχου</value>
+  </data>
+	<data name="updateSettings" xml:space="preserve">
+    <value>Ρυθμίσεις ενημερώσεων</value>
+  </data>
+	<data name="cycleThrough" xml:space="preserve">
+    <value>Εναλλαγή μεταξύ</value>
+  </data>
+	<data name="keepSystemTrayIcon" xml:space="preserve">
+    <value>Διατήρηση εικονιδίου SoundSwitch στην περιοχή ειδοποιήσεων</value>
+  </data>
+	<data name="updateInstallAutomatically" xml:space="preserve">
+    <value>Αυτόματη εγκατάσταση ενημερώσεων</value>
+  </data>
+	<data name="updateNotify" xml:space="preserve">
+    <value>Ειδοποίηση για διαθέσιμες ενημερώσεις</value>
+  </data>
+	<data name="updateNever" xml:space="preserve">
+    <value>Να μην γίνεται έλεγχος για ενημερώσεις</value>
+  </data>
+	<data name="tooltipOnHover" xml:space="preserve">
+    <value>Επεξήγηση κατά την αιώρηση</value>
+  </data>
+	<data name="cycleThrough.option.allAudioDevices" xml:space="preserve">
+    <value>Όλες οι συσκευές ήχου</value>
+  </data>
+	<data name="cycleThrough.option.onlySelectedAudioDevices" xml:space="preserve">
+    <value>Μόνο επιλεγμένες συσκευές ήχου</value>
+  </data>
+	<data name="notification.option.windowsDefault" xml:space="preserve">
+    <value>Ειδοποίηση Windows</value>
+  </data>
+	<data name="notification.option.sound" xml:space="preserve">
+    <value>Ηχητική ειδοποίηση</value>
+  </data>
+	<data name="notificationOptionNone" xml:space="preserve">
+    <value>Καμία ειδοποίηση</value>
+  </data>
+	<data name="notification.option.toast" xml:space="preserve">
+    <value>Αναδυόμενη ειδοποίηση</value>
+  </data>
+	<data name="notification.option.customized" xml:space="preserve">
+    <value>Προσαρμοσμένη ηχητική ειδοποίηση</value>
+  </data>
+	<data name="tooltipOnHover.option.playbackDevice" xml:space="preserve">
+    <value>Συσκευή αναπαραγωγής</value>
+  </data>
+	<data name="tooltipOnHover.option.recordingDevice" xml:space="preserve">
+    <value>Συσκευή εγγραφής</value>
+  </data>
+	<data name="tooltipOnHover.option.bothDevices" xml:space="preserve">
+    <value>Και οι δύο συσκευές</value>
+  </data>
+	<data name="tooltipOnHoverOptionNone" xml:space="preserve">
+    <value>Καμία επεξήγηση</value>
+  </data>
+	<data name="audioFileNotFound" xml:space="preserve">
+    <value>Το επιλεγμένο αρχείο ήχου για ειδοποίηση δεν βρέθηκε. Το SoundSwitch επέστρεψε στη ρύθμιση ειδοποίησης {0}.</value>
+  </data>
+	<data name="audioFileNotFoundCaption" xml:space="preserve">
+    <value>Το αρχείο ήχου δεν βρέθηκε</value>
+  </data>
+	<data name="activeRecording" xml:space="preserve">
+    <value>Εγγραφή: {0}</value>
+  </data>
+	<data name="activePlayback" xml:space="preserve">
+    <value>Αναπαραγωγή: {0}</value>
+  </data>
+	<data name="language" xml:space="preserve">
+    <value>Γλώσσα</value>
+  </data>
+	<data name="languageRestartRequired" xml:space="preserve">
+    <value>Η γλώσσα θα αλλάξει μετά την επανεκκίνηση του SoundSwitch.
+Θέλετε να γίνει επανεκκίνηση τώρα;</value>
+  </data>
+	<data name="languageRestartRequired.caption" xml:space="preserve">
+    <value>Απαιτείται επανεκκίνηση</value>
+  </data>
+	<data name="notification.option.banner" xml:space="preserve">
+    <value>Πανό</value>
+  </data>
+	<data name="disableCustomSound.tooltip" xml:space="preserve">
+    <value>Απενεργοποίηση προσαρμοσμένων ήχων.</value>
+  </data>
+	<data name="iconChange" xml:space="preserve">
+    <value>Εικονίδιο περιοχής ειδοποιήσεων</value>
+  </data>
+	<data name="iconChange.tooltip" xml:space="preserve">
+    <value>Επιλέξτε πότε θα αλλάζει το εικονίδιο του SoundSwitch στην περιοχή ειδοποιήσεων.
+
+Προεπιλογή: Χωρίς αλλαγή. Διατήρηση εικονιδίου SoundSwitch.
+Αναπαραγωγή: Όταν αλλάζει συσκευή αναπαραγωγής.
+Εγγραφή: Όταν αλλάζει συσκευή εγγραφής.
+Και τα δύο: Όταν αλλάζει οποιαδήποτε συσκευή.</value>
+  </data>
+	<data name="profile.tab" xml:space="preserve">
+    <value>Προφίλ</value>
+  </data>
+	<data name="profile.name" xml:space="preserve">
+    <value>Όνομα</value>
+  </data>
+	<data name="profile.program" xml:space="preserve">
+    <value>Εφαρμογή</value>
+  </data>
+	<data name="profile.trigger.steam" xml:space="preserve">
+    <value>Steam Big Picture</value>
+  </data>
+	<data name="profile.trigger.process" xml:space="preserve">
+    <value>Διαδρομή εφαρμογής</value>
+  </data>
+	<data name="profile.trigger.window" xml:space="preserve">
+    <value>Όνομα προγράμματος</value>
+  </data>
+	<data name="profile.trigger.uwp" xml:space="preserve">
+    <value>Εφαρμογή Microsoft Store</value>
+  </data>
+	<data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>Στο μενού εφαρμογής</value>
+  </data>
+	<data name="profile.desc" xml:space="preserve">
+    <value>Περιγραφή</value>
+  </data>
+	<data name="profile.defaultDevice.checkbox" xml:space="preserve">
+    <value>Αλλαγή και προεπιλεγμένης συσκευής</value>
+  </data>
+	<data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
+    <value>Όταν εντοπιστεί η εφαρμογή, το SoundSwitch θα αλλάξει επίσης την τρέχουσα προεπιλεγμένη συσκευή.</value>
+  </data>
+	<data name="position" xml:space="preserve">
+    <value>Θέση</value>
+  </data>
+	<data name="position.tooltip" xml:space="preserve">
+    <value>Επιλέξτε τη θέση του πανό ειδοποιήσεων.</value>
+  </data>
+	<data name="position.option.bottomLeft" xml:space="preserve">
+    <value>Κάτω αριστερά</value>
+  </data>
+	<data name="position.option.bottomRight" xml:space="preserve">
+    <value>Κάτω δεξιά</value>
+  </data>
+	<data name="position.option.topLeft" xml:space="preserve">
+    <value>Πάνω αριστερά</value>
+  </data>
+	<data name="position.option.topRight" xml:space="preserve">
+    <value>Πάνω δεξιά</value>
+  </data>
+	<data name="position.option.bottomCenter" xml:space="preserve">
+    <value>Κάτω κέντρο</value>
+  </data>
+	<data name="position.option.topCenter" xml:space="preserve">
+    <value>Πάνω κέντρο</value>
+  </data>
+	<data name="position.option.center" xml:space="preserve">
+    <value>Κέντρο</value>
+  </data>
+	<data name="notification.single" xml:space="preserve">
+    <value>Μόνο ένα πανό</value>
+  </data>
+	<data name="notification.single.tooltip" xml:space="preserve">
+    <value>Εμφάνιση μόνο ενός πανό και αντικατάσταση του περιεχομένου του.</value>
+  </data>
+	<data name="link.community" xml:space="preserve">
+    <value>Κοινότητα Discord</value>
+  </data>
+	<data name="link.donate" xml:space="preserve">
+    <value>Δωρεά</value>
+  </data>
+	<data name="link.help" xml:space="preserve">
+    <value>Συζήτηση βοήθειας</value>
+  </data>
+	<data name="resetAudioDevices" xml:space="preserve">
+    <value>Επαναφορά ήχου ανά εφαρμογή</value>
+  </data>
+	<data name="resetAudioDevices.desc" xml:space="preserve">
+    <value>Επαναφορά της εκχώρησης συσκευής ήχου σε συγκεκριμένα προγράμματα στα Windows εάν οι συσκευές ήχου δεν επανεκχωρούνται στα προγράμματα κατά την εναλλαγή.</value>
+  </data>
+	<data name="buttonReset" xml:space="preserve">
+    <value>Επαναφορά</value>
+  </data>
+	<data name="exportLogFiles" xml:space="preserve">
+    <value>Εξαγωγή αρχείων καταγραφής</value>
+  </data>
+	<data name="exportLogFiles.desc" xml:space="preserve">
+    <value>Εξαγωγή όλων των αρχείων καταγραφής σε αρχείο zip για περαιτέρω αντιμετώπιση προβλημάτων είτε στις συζητήσεις βοήθειας είτε στην κοινότητα Discord.</value>
+  </data>
+	<data name="buttonExport" xml:space="preserve">
+    <value>Εξαγωγή</value>
+  </data>
+	<data name="troubleshooting" xml:space="preserve">
+    <value>Αντιμετώπιση προβλημάτων</value>
+  </data>
+	<data name="troubleshooting.desc" xml:space="preserve">
+    <value>Εάν χρειάζεστε βοήθεια ή περαιτέρω αντιμετώπιση προβλημάτων με το SoundSwitch, μπορείτε να επισκεφθείτε τη συζήτηση βοήθειας ή την κοινότητα Discord, ή να μας βοηθήσετε επιλέγοντας τον σύνδεσμο δωρεάς παρακάτω.</value>
+  </data>
+	<data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>Χρόνος εμφάνισης</value>
+  </data>
+	<data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+    <value>Πόσα δευτερόλεπτα θα εμφανίζεται το πανό στην οθόνη.</value>
+  </data>
+	<data name="microphone.on" xml:space="preserve">
+    <value>Μικρόφωνο ενεργό</value>
+  </data>
+	<data name="microphone.off" xml:space="preserve">
+    <value>Μικρόφωνο ανενεργό</value>
+  </data>
+	<data name="banner.mute.persistent" xml:space="preserve">
+    <value>Μόνιμο πανό σίγασης</value>
+  </data>
+	<data name="banner.mute.persistent.tooltip" xml:space="preserve">
+    <value>Εμφάνιση μόνιμου πανό όταν το μικρόφωνο είναι σε σίγαση</value>
+  </data>
 </root>
