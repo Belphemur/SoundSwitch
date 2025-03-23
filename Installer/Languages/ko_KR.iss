@@ -1,5 +1,5 @@
-
 [CustomMessages]
+SettingsGroupDescription=응용 프로그램 설정:
 ExistingSettings=기존 설정 삭제
 UninstallQuestion=%1의 설정을 삭제하시겠습니까?
 CertificatesGroup=인증서:

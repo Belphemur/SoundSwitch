@@ -1,5 +1,5 @@
-
 [CustomMessages]
+SettingsGroupDescription=Настройки приложения:
 ExistingSettings=Удалить существующие настройки
 UninstallQuestion=Хотите удалить настройки %1?
 CertificatesGroup=Сертификаты:

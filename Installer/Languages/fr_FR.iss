@@ -1,5 +1,5 @@
-
 [CustomMessages]
+SettingsGroupDescription=Paramètres de l'application:
 ExistingSettings=Supprimer les paramètres existants
 UninstallQuestion=Voulez-vous aussi supprimer les paramètres de %1 ?
 CertificatesGroup=Certificats:

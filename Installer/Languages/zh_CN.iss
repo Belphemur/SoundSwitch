@@ -1,5 +1,5 @@
-
 [CustomMessages]
+SettingsGroupDescription=应用程序设置:
 ExistingSettings=删除现有设置
 UninstallQuestion=您想要删除 %1 的设置吗？
 CertificatesGroup=证书：

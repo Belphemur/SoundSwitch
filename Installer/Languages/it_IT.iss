@@ -1,6 +1,6 @@
-
 [CustomMessages]
-ExistingSettings=Rimuovi impostazioni esistenti
+SettingsGroupDescription=Impostazioni applicazione:
+ExistingSettings=Elimina impostazioni esistenti
 UninstallQuestion=Vuoi rimuovere le impostazioni di %1?
 CertificatesGroup=Certificati:
 ViewReadmeFile=Visualizza file README

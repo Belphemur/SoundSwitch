@@ -72,9 +72,9 @@ Name: "zh"; MessagesFile: "Languages\ChineseSimplified.isl,Languages\zh_CN.iss"
 Name: "ko"; MessagesFile: "Languages\Korean.isl,Languages\ko_KR.iss"
 
 [Tasks]
-Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Check: not IsVerySilent
-Name: deletefiles; Description: "{cm:ExistingSettings}"; Flags: unchecked checkedonce
-Name: addtopath; Description: "{cm:AddToPath}"; GroupDescription: "{cm:CLIOptions}"; Flags: checkedonce
+Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Check: not IsVerySilent; Flags: checkedonce
+Name: addtopath; Description: "{cm:AddToPath,{#MyAppSetupName}}"; GroupDescription: "{cm:CLIOptions}"; Flags: checkedonce
+Name: deletefiles; Description: "{cm:ExistingSettings}"; GroupDescription: "{cm:SettingsGroupDescription}"; Flags: unchecked checkedonce
 
 [Files] 
 Source: "{#ExeDir}SoundSwitch.exe"; DestDir: "{app}";  Flags: signonce ignoreversion
