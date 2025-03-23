@@ -591,4 +591,16 @@ Restaura el estado del sistema cuando se cierra la aplicación.</value>
   <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
     <value>El tiempo que el banner permanece en la pantalla en segundos.</value>
   </data>
+  <data name="microphone.on" xml:space="preserve">
+    <value>Micrófono encendido</value>
+  </data>
+  <data name="microphone.off" xml:space="preserve">
+    <value>Micrófono apagado</value>
+  </data>
+  <data name="banner.mute.persistent" xml:space="preserve">
+    <value>Banner de silencio persistente</value>
+  </data>
+  <data name="banner.mute.persistent.tooltip" xml:space="preserve">
+    <value>Mostrar un banner de silencio persistente cuando el micrófono está silenciado</value>
+  </data>
 </root>

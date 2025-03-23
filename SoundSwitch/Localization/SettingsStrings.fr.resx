@@ -61,8 +61,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -388,7 +387,7 @@ Toujours : Lors de la bascule vers un autre périphérique de lecture ou d'enreg
     <value>Si l'application sélectionnée est en cours d'utilisation le profile sera activé</value>
   </data>
   <data name="profile.trigger.window.desc" xml:space="preserve">
-    <value>Active le profile si le nom de l'application contient ces caractères</value>
+    <value>Activez le profil si le programme d'avant-plan contient les caractères suivants</value>
   </data>
   <data name="profile.trigger.steam.desc" xml:space="preserve">
     <value>Active quand Steam Big Picture est détecté. (Restaurera l'état quand Big Picture est fermé.)</value>
@@ -604,5 +603,8 @@ Restaurer l'état du système quand l'application est fermée.</value>
   </data>
   <data name="banner.mute.persistent.tooltip" xml:space="preserve">
     <value>Afficher une bannière persistante lorsque le microphone est en sourdine</value>
+  </data>
+  <data name="position.option.center" xml:space="preserve">
+    <value>Centre</value>
   </data>
 </root>
