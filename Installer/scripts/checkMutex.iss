@@ -1,4 +1,4 @@
-// SoundSwitch command line parameter utility functions
+// SoundSwitch check for mutex state
 // Copyright © 2010-2025 SoundSwitch
 
 #ifndef checkMutexIss
