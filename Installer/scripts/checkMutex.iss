@@ -1,3 +1,9 @@
+// SoundSwitch check for mutex state
+// Copyright © 2010-2025 SoundSwitch
+
+#ifndef checkMutexIss
+#define checkMutexIss
+
 [Code]
 function PromptUntilProgramClosedOrInstallationCanceled(
               mutex: String ): Boolean;  
@@ -18,3 +24,4 @@ begin
   // Has the program been closed?
   Result := Not CheckForMutexes(mutex);
 end;
+#endif
