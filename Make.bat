@@ -52,8 +52,9 @@ rmdir /q /s %finalDir% >nul 2>nul
 mkdir %finalDir% >nul 2>nul
 
 echo Build AnyCPU
-dotnet publish -c %buildPlatform% %FILE_DIR%SoundSwitch\SoundSwitch.csproj -o %finalDir% || (set errorMessage=Build %ARCH% failed & goto ERROR_QUIT)
 dotnet publish -c %buildPlatform% %FILE_DIR%SoundSwitch.CLI\SoundSwitch.CLI.csproj -o %finalDir% || (set errorMessage=Build %ARCH% failed & goto ERROR_QUIT)
+dotnet publish -c %buildPlatform% %FILE_DIR%SoundSwitch\SoundSwitch.csproj -o %finalDir% || (set errorMessage=Build %ARCH% failed & goto ERROR_QUIT)
+
 
 echo.
 
