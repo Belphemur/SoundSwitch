@@ -5,27 +5,20 @@
 #define pathOperationIss
 
 [Code]
-procedure ModifyPath(const ValueToAdd: string; PathType: Integer);
+procedure ModifyPath(const ValueToAdd: string);
 var
   OldPath: string;
   NewPath: string;
   RegPathKey: string;
-  Root: Integer;
 begin
-// PathType: 0 = user path, 1 = system path
-  if PathType = 0 then
-    begin
-      Root := HKCU;
-      RegPathKey := 'Environment';
-    end 
+  // Select appropriate registry key based on installation mode
+  if IsAdminInstallMode then
+    RegPathKey := 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment'
   else
-    begin
-      Root := HKLM;
-      RegPathKey := 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment';
-    end; 
+    RegPathKey := 'Environment';
   
   // Get the old path value
-  if not RegQueryStringValue(Root, RegPathKey, 'Path', OldPath) then
+  if not RegQueryStringValue(HKA, RegPathKey, 'Path', OldPath) then
     OldPath := '';
     
   // Check if it already exists in the path
@@ -39,30 +32,24 @@ begin
     NewPath := OldPath + ValueToAdd;
     
   // Write the new path back to registry
-  RegWriteStringValue(Root, RegPathKey, 'Path', NewPath);
+  RegWriteStringValue(HKA, RegPathKey, 'Path', NewPath);
 end;
 
-procedure RemoveFromPath(const ValueToRemove: string; PathType: Integer);
+procedure RemoveFromPath(const ValueToRemove: string);
 var
   OldPath: string;
   RegPathKey: string;
   P: Integer;
   PathLen: Integer;
-  Root: Integer;
 begin
-  // PathType: 0 = user path, 1 = system path
-  if PathType = 0 then
-    begin
-      Root := HKCU;
-      RegPathKey := 'Environment';
-    end 
+  // Select appropriate registry key based on installation mode
+  if IsAdminInstallMode then
+    RegPathKey := 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment'
   else
-    begin
-      Root := HKLM;
-      RegPathKey := 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment';
-    end; 
+    RegPathKey := 'Environment';
+  
   // Get the old path value
-  if not RegQueryStringValue(Root, RegPathKey, 'Path', OldPath) then
+  if not RegQueryStringValue(HKA, RegPathKey, 'Path', OldPath) then
     Exit; // No path to modify
     
   // Find the position of the value in the path
@@ -96,6 +83,6 @@ begin
     OldPath := Copy(OldPath, 1, Length(OldPath)-1);
   
   // Write the new path back to registry
-  RegWriteStringValue(Root, RegPathKey, 'Path', OldPath);
+  RegWriteStringValue(HKA, RegPathKey, 'Path', OldPath);
 end;
 #endif

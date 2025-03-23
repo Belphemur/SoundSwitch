@@ -13,13 +13,8 @@ begin
     // Add to PATH if the user selected that option
     if WizardIsTaskSelected('addtopath') then
     begin
-      // Add to appropriate PATH based on installation privileges
-      if IsAdmin then
-        // System PATH
-        ModifyPath(ExpandConstant('{app}'), 1) 
-      else
-        // User PATH
-        ModifyPath(ExpandConstant('{app}'), 0);
+      // Add to PATH (function now handles admin/user mode internally)
+      ModifyPath(ExpandConstant('{app}'));
     end;
   end;
 end;

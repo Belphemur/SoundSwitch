@@ -1,7 +1,7 @@
-#include "app_defines.iss"
+
 [CustomMessages]
 ExistingSettings=删除现有设置
-UninstallQuestion=您想要删除 {#MyAppSetupName} 的设置吗？
+UninstallQuestion=您想要删除 SoundSwitch 的设置吗？
 CertificatesGroup=证书：
 ViewReadmeFile=查看 README 文件
 SupportTheProject=支持项目

@@ -1,7 +1,7 @@
-#include "app_defines.iss"
+
 [CustomMessages]
 ExistingSettings=Usuń istniejące ustawienia
-UninstallQuestion=Czy chcesz usunąć ustawienia {#MyAppSetupName}?
+UninstallQuestion=Czy chcesz usunąć ustawienia SoundSwitch?
 CertificatesGroup=Certyfikaty:
 ViewReadmeFile=Zobacz plik README
 SupportTheProject=Wesprzyj projekt

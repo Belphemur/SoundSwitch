@@ -32,15 +32,12 @@ begin
         appDir := ExpandConstant('{app}');
         
         // Remove from PATH
-        if IsAdminLoggedOn then
-          RemoveFromPath(appDir, 1)
-        else
-          RemoveFromPath(appDir, 0);
+        RemoveFromPath(appDir);
       end;
     usPostUninstall:
       begin
         // Always delete program files when running as admin
-        if IsAdminLoggedOn then
+        if IsAdminInstallMode then
         begin
           DelTree(ExpandConstant('{commonpf}\{#MyAppSetupName}'), True, True, True);
           DelTree(ExpandConstant('{userpf}\{#MyAppSetupName}'), True, True, True);
