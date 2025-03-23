@@ -11,7 +11,7 @@ public static class Program
 
         app.Configure(config =>
         {
-            config.SetApplicationName("soundswitch");
+            config.SetApplicationName("SoundSwitch.CLI");
 
             config.AddCommand<SwitchCommand>("switch")
                 .WithDescription("Switch audio device type")
