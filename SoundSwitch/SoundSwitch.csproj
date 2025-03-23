@@ -63,7 +63,7 @@
     <PackageReference Include="System.Diagnostics.TraceSource" />
     <PackageReference Include="System.Drawing.Common" />
     <PackageReference Include="System.Net.Http" />
-    <PackageReference Include="System.Reactive.Linq" />
+    <PackageReference Include="System.Reactive" />
     <PackageReference Include="System.Resources.Extensions" />
     <PackageReference Include="System.Text.RegularExpressions" />
   </ItemGroup>
