@@ -1,3 +1,4 @@
+#include "app_defines.iss"
 [CustomMessages]
 ExistingSettings=Remover configurações já existentes
 UninstallQuestion=Deseja remover as configurações do {#MyAppSetupName}?

@@ -1,6 +1,7 @@
-#define MyAppSetupName 'SoundSwitch'
-#define ExeDir  '..\Final\'
-#define MyAppVersion GetVersionNumbersString('..\Final\SoundSwitch.exe')
+#include "scripts\app_defines.iss"
+// ReleaseState is expected to be defined through the command line with /D parameter
+// e.g. iscc /DReleaseState=Beta setup.iss
+
 
 [Setup]
 AppName={#MyAppSetupName}
@@ -29,7 +30,7 @@ ChangesEnvironment=yes
 WizardStyle=modern
 WizardResizable=yes
 WizardSizePercent=120
-WindowStartMaximized=no
+WindowStartMaximized=yes
 WindowVisible=yes
 WizardImageFile="logo.bmp"
 WizardSmallImageFile="logo.bmp"

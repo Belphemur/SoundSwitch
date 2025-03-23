@@ -1,3 +1,4 @@
+#include "app_defines.iss"
 [CustomMessages]
 ExistingSettings=기존 설정 삭제
 UninstallQuestion={#MyAppSetupName}의 설정을 삭제하시겠습니까?

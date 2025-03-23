@@ -2,6 +2,7 @@
 // Copyright © 2010-2025 SoundSwitch
 
 #include "checkMutex.iss"
+#include "app_defines.iss"
 
 #ifndef uninstallUtilsIss
 #define uninstallUtilsIss
@@ -49,7 +50,7 @@ begin
         mres := MsgBox(ExpandConstant('{cm:UninstallQuestion}'), mbConfirmation, MB_YESNO or MB_DEFBUTTON2);
         if mres = IDYES then
         begin
-          DelTree(ExpandConstant('{userappdata}\SoundSwitch'), True, True, True);
+          DelTree(ExpandConstant('{userappdata}\{#MyAppSetupName}'), True, True, True);
         end;
       end;  
   end;

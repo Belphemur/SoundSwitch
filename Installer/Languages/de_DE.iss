@@ -1,3 +1,4 @@
+#include "app_defines.iss"
 [CustomMessages]
 ExistingSettings=Alle vorhandenen Einstellungen löschen
 UninstallQuestion=Sollen deine {#MyAppSetupName} Einstellungen gelöscht werden?
