@@ -34,6 +34,7 @@ WindowStartMaximized=yes
 WindowVisible=yes
 WizardImageFile="logo.bmp"
 WizardSmallImageFile="logo.bmp"
+WizardImageStretch=no
 
 //SignTool=SoundSwitch
 SignTool=Certum
@@ -46,7 +47,7 @@ RestartApplications=no
 ;AppMutex={#MyAppSetupName}
 
 ;MinVersion default value: "0,5.0 (Windows 2000+) if Unicode Inno Setup, else 4.0,4.0 (Windows 95+)"
-MinVersion=6.1.7601
+MinVersion=6.1.7601sp1
 PrivilegesRequired=admin
 PrivilegesRequiredOverridesAllowed=commandline dialog
 ArchitecturesAllowed=x64compatible
@@ -96,8 +97,8 @@ Filename: "https://soundswitch.aaflalo.me/?utm_source={#MyAppVersion}&utm_campai
 Filename: "{app}\Changelog.html"; Description: "{cm:ViewChangelogFile}"; Flags: postinstall shellexec skipifsilent unchecked
 
 [UninstallRun]
-Filename: "certutil.exe"; Parameters: "-delstore ""Root"" ""eb db 8a 0a 72 a6 02 91 40 74 9e a2 af 63 d2 fc""" ; Flags: runhidden runascurrentuser
-Filename: "certutil.exe"; Parameters: "-delstore ""TrustedPublisher"" ""942A37BCA9A9889442F6710533CB5548""" ; Flags: runhidden runascurrentuser
+Filename: "certutil.exe"; Parameters: "-delstore ""Root"" ""eb db 8a 0a 72 a6 02 91 40 74 9e a2 af 63 d2 fc""" ; Flags: runhidden runascurrentuser; RunOnceId: "DeleteRootCert"
+Filename: "certutil.exe"; Parameters: "-delstore ""TrustedPublisher"" ""942A37BCA9A9889442F6710533CB5548""" ; Flags: runhidden runascurrentuser; RunOnceId: "DeletePublisherCert"
 
 [InstallDelete]
 Type: filesandordirs; Name: {userappdata}\SoundSwitch; Tasks: deletefiles

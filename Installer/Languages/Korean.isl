@@ -240,6 +240,13 @@ PrepareToInstallNeedsRestart=컴퓨터를 다시 시작해야 합니다. 컴퓨�
 WizardInstalling=설치 중
 InstallingLabel=컴퓨터에 [name]을(를) 설치하는 동안 잠시 기다려 주십시오.
 
+; *** Extraction related messages
+ExtractionLabel=파일을 추출하는 중...
+ButtonStopExtraction=추출 중지(&S)
+StopExtraction=추출을 중지하시겠습니까?
+ErrorExtractionAborted=추출이 중지되었습니다
+ErrorExtractionFailed=추출 실패: %1
+
 ; *** "Setup Completed" wizard page
 FinishedHeadingLabel=[name] 설치 마법사 완료
 FinishedLabelNoIcons=컴퓨터에 [name] 설치를 완료했습니다.

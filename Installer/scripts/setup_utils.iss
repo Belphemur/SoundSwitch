@@ -11,10 +11,10 @@ begin
   if CurStep = ssPostInstall then
   begin
     // Add to PATH if the user selected that option
-    if IsTaskSelected('addtopath') then
+    if WizardIsTaskSelected('addtopath') then
     begin
       // Add to appropriate PATH based on installation privileges
-      if IsAdminLoggedOn then
+      if IsAdmin then
         // System PATH
         ModifyPath(ExpandConstant('{app}'), 1) 
       else
@@ -36,7 +36,7 @@ begin
   logfilepathname := ExpandConstant('{log}');
   logfilename := ExtractFileName(logfilepathname);
   newfilepathname := ExpandConstant('{tmp}\..') + logfilename;
-  FileCopy(logfilepathname, newfilepathname, false);
+  CopyFile(logfilepathname, newfilepathname, false);
   
   // Check if installer is running from temp folder and delete if true
   setupExe := ExpandConstant('{srcexe}');

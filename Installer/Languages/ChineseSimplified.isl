@@ -250,6 +250,13 @@ PrepareToInstallNeedsRestart=安装程序必须重新启动计算机。重新启
 WizardInstalling=正在安装
 InstallingLabel=安装程序正在安装 [name] 到您的电脑中，请稍等。
 
+; *** Extraction related messages
+ExtractionLabel=正在解压文件...
+ButtonStopExtraction=停止解压(&S)
+StopExtraction=您确定要停止解压吗？
+ErrorExtractionAborted=解压已中止
+ErrorExtractionFailed=解压失败：%1
+
 ; *** “安装完成”向导页
 FinishedHeadingLabel=[name] 安装完成
 FinishedLabelNoIcons=安装程序已在您的电脑中安装了 [name]。

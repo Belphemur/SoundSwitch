@@ -45,7 +45,6 @@ end;
 procedure RemoveFromPath(const ValueToRemove: string; PathType: Integer);
 var
   OldPath: string;
-  NewPath: string;
   RegPathKey: string;
   P: Integer;
   PathLen: Integer;
