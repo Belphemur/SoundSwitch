@@ -12,7 +12,7 @@
     <PackageVersion Include="Markdig" Version="0.40.0" />
     <PackageVersion Include="MessagePack" Version="3.1.3" />
     <PackageVersion Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="9.0.3" />
+    <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="9.0.4" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageVersion Include="Microsoft.Windows.CsWinRT" Version="2.2.0" />
     <PackageVersion Include="NAudio" Version="2.2.1" />
@@ -23,7 +23,7 @@
     <PackageVersion Include="NUnit3TestAdapter" Version="5.0.0" />
     <PackageVersion Include="Polly.Core" Version="8.5.2" />
     <PackageVersion Include="RailSharp" Version="1.0.0" />
-    <PackageVersion Include="Sentry.Serilog" Version="5.5.0" />
+    <PackageVersion Include="Sentry.Serilog" Version="5.5.1" />
     <PackageVersion Include="Serilog" Version="4.2.0" />
     <PackageVersion Include="Serilog.Enrichers.Environment" Version="3.0.1" />
     <PackageVersion Include="Serilog.Exceptions" Version="8.4.0+build.694" />
@@ -31,8 +31,8 @@
     <PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
     <PackageVersion Include="Serilog.Sinks.File" Version="6.0.0" />
     <PackageVersion Include="SerilogTraceListener" Version="3.2.0" />
-    <PackageVersion Include="Spectre.Console" Version="0.49.1" />
-    <PackageVersion Include="Spectre.Console.Cli" Version="0.49.1" />
+    <PackageVersion Include="Spectre.Console" Version="0.50.0" />
+    <PackageVersion Include="Spectre.Console.Cli" Version="0.50.0" />
     <PackageVersion Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
     <PackageVersion Include="System.Diagnostics.TraceSource" Version="4.3.0" />
     <PackageVersion Include="System.Drawing.Common" Version="9.0.4" />
