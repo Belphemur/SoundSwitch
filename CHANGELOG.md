@@ -1,3 +1,81 @@
+## [6.13.0](https://github.com/Belphemur/SoundSwitch/compare/v6.12.0...v6.13.0) (2025-04-08)
+
+### Enhancements
+
+* **hotkey:** accept alone keys for hot keys like PrintScr, Pause, Home, End, etc ... and any function key alone too. ([65c7863](https://github.com/Belphemur/SoundSwitch/commit/65c7863006dee941c57cfc416351b4e05a06e928))
+* **hotkey:** Change the display of hotkeys modifier to always follow ctrl, shift, alt, win. ([b518688](https://github.com/Belphemur/SoundSwitch/commit/b5186887ad536a4dc208b84c9ac854a75510631d))
+* **hotkey:** support setting only one key for hotkey ([c9e8131](https://github.com/Belphemur/SoundSwitch/commit/c9e81319fd17104272fcacb4e7ae987bf682ccbe))
+* **installer:** add global application definitions and update uninstall logic ([0d8a215](https://github.com/Belphemur/SoundSwitch/commit/0d8a215f2152439b7d7b3ccc69b54100f0ddb596))
+* **installer:** make installer compatible with ARM64 using compatibility layer ([fc31118](https://github.com/Belphemur/SoundSwitch/commit/fc311187ae154453fa7714e80d110ad8643db894))
+* **installer:** mordernize the look ([6496ee3](https://github.com/Belphemur/SoundSwitch/commit/6496ee30c330438a8e76c9a730ad389551c09d9f))
+* **ipc:** Be sure two instance of SoundSwitch can communicate. ([118681a](https://github.com/Belphemur/SoundSwitch/commit/118681a9a015e99f1580c6691641c8cecac0c2e5))
+* **Reset Audio:** Bring back shortcut to reset per app audio ([b87f96c](https://github.com/Belphemur/SoundSwitch/commit/b87f96c40cdb5b3b9efb75adf1fb146ff162790e)), closes [#1630](https://github.com/Belphemur/SoundSwitch/issues/1630) [#1539](https://github.com/Belphemur/SoundSwitch/issues/1539) [#860](https://github.com/Belphemur/SoundSwitch/issues/860) [#1107](https://github.com/Belphemur/SoundSwitch/issues/1107) [#1515](https://github.com/Belphemur/SoundSwitch/issues/1515)
+
+### Languages
+
+* **ai:** Add mising translation with Claude ([826da9a](https://github.com/Belphemur/SoundSwitch/commit/826da9a30fe1f4da74e421482e7ad8593a03e06b))
+* **Chinese (Traditional Han script):** Translated Settings using Weblate ([05b085b](https://github.com/Belphemur/SoundSwitch/commit/05b085b35a6fc986c90ca14f9aaff1c07ebc117b))
+* **Chinese (Traditional Han script):** Translated Tray Icon using Weblate ([986cfa8](https://github.com/Belphemur/SoundSwitch/commit/986cfa808802d0d9ef29ddf615fe4c12534f4718))
+* **Chinese (Traditional Han script):** Translated Update Download using Weblate ([dbf1303](https://github.com/Belphemur/SoundSwitch/commit/dbf13034418c9362a7b65f972ba37fab8dc181d7))
+* **French:** Translated Settings using Weblate ([6031996](https://github.com/Belphemur/SoundSwitch/commit/603199609113f88bf936db36e417ee04d0cffcec))
+* **German:** Translated Settings using Weblate ([9482857](https://github.com/Belphemur/SoundSwitch/commit/948285741777e37f2c2b0a0a9fb746eb4a14e249))
+* **Greek:** Translated Settings using Weblate ([4c1d3d2](https://github.com/Belphemur/SoundSwitch/commit/4c1d3d2abc934ad64cc2bb008b8451aedc18a8f6))
+* **Japanese:** Translated Settings using Weblate ([a031562](https://github.com/Belphemur/SoundSwitch/commit/a031562a4580a265cd0a2af30e63fc99faf4bf65))
+* **Spanish:** Translated Settings using Weblate ([5f4c381](https://github.com/Belphemur/SoundSwitch/commit/5f4c381d0ae16038003cb9464bc0aac293c5a69f))
+* **tamil:** Add tamil language to the application ([31a2f04](https://github.com/Belphemur/SoundSwitch/commit/31a2f04fa8fe2735a3502637a67125060843e9ca))
+* **Tamil:** Added About translation using Weblate ([7b16918](https://github.com/Belphemur/SoundSwitch/commit/7b1691803c1226a6354944a202500cb94b7930e2))
+* **Tamil:** Added Settings translation using Weblate ([fc63fb5](https://github.com/Belphemur/SoundSwitch/commit/fc63fb5cff5145bd1be6066f9ff8ff3b88e23f7a))
+* **Tamil:** Added Tray Icon translation using Weblate ([4b6b4df](https://github.com/Belphemur/SoundSwitch/commit/4b6b4dfc8b42e47f7c886f8066bac2fb27025e73))
+* **Tamil:** Added Update Download translation using Weblate ([c8ee970](https://github.com/Belphemur/SoundSwitch/commit/c8ee970be58c7caadc3a9956352e02cf6f14690e))
+* **Tamil:** Translated About using Weblate ([15ac998](https://github.com/Belphemur/SoundSwitch/commit/15ac998a35194f1686447c8177dc31bbed8d9e4f))
+* **Tamil:** Translated Settings using Weblate ([917d1ae](https://github.com/Belphemur/SoundSwitch/commit/917d1ae9ab0ae7bb5d749a6a228d0466acd0aeec))
+* **Tamil:** Translated Settings using Weblate ([e5fa0d8](https://github.com/Belphemur/SoundSwitch/commit/e5fa0d84645023da085b4bae0da7779aa9483891))
+* **Tamil:** Translated Tray Icon using Weblate ([2dd3920](https://github.com/Belphemur/SoundSwitch/commit/2dd3920feb443274a9810050dc9edf5cc7d87e79))
+* **Tamil:** Translated Update Download using Weblate ([afc7c76](https://github.com/Belphemur/SoundSwitch/commit/afc7c76ae423f9fdea73ad736a847ff7bd66b892))
+* **Thai:** Translated Settings using Weblate ([75a58b3](https://github.com/Belphemur/SoundSwitch/commit/75a58b3eccab2b533b278281c0f3b134a7e59831))
+
+### Bug Fixes
+
+* **banner:** add WS_EX_NOACTIVATE style to prevent focus stealing ([bf31371](https://github.com/Belphemur/SoundSwitch/commit/bf3137148c22f5a0707204bc5dac9d119ee2263a))
+* **banner:** implement double buffering to reduce flickering and improve click handling ([0cdb808](https://github.com/Belphemur/SoundSwitch/commit/0cdb808cb2485970a33b3bdad6b8b52ae70e9331))
+* **cli:mute:** notify on microphone muted state ([86e5843](https://github.com/Belphemur/SoundSwitch/commit/86e5843768a584496e833b5cd3d38f22c0c04942))
+* **cli:** add missing mute command ([8f298c5](https://github.com/Belphemur/SoundSwitch/commit/8f298c5ae97a67b106b729e4d1fccd343975ccbc))
+* **cli:** fix the name of the CLI application ([3daef8f](https://github.com/Belphemur/SoundSwitch/commit/3daef8f06c733940d8547e901840c00afb5c5b24))
+* **communication:** Possible crash on closing the software ([5b8fd5c](https://github.com/Belphemur/SoundSwitch/commit/5b8fd5c49c98d8766e2c8ec6134ae24a16cc0181))
+* **installer:** add missing section about deleting old settings ([7d2f567](https://github.com/Belphemur/SoundSwitch/commit/7d2f5676d5ab3c39c4ec5840a66126368a4fc175))
+* **installer:** Don't recreate desktop icon when VerySilent (from auto updater). ([00cc3b3](https://github.com/Belphemur/SoundSwitch/commit/00cc3b3d4e72d419a33b26b1a9048c03ff23341f)), closes [#1720](https://github.com/Belphemur/SoundSwitch/issues/1720)
+* **installer:** fix adding CLI to PATH ([4d1432b](https://github.com/Belphemur/SoundSwitch/commit/4d1432b99d95b2c1a179e7fe5c9f2a0306c41d46))
+* **installer:** Make the uninstaller delete any trace of the program ([464f05c](https://github.com/Belphemur/SoundSwitch/commit/464f05c6b356832b939d5e270fb77656b09d3557))
+* **localization:** correct formatting in SettingsStrings.ta.resx and improve bracket checking in check_brackets.py ([365c3b8](https://github.com/Belphemur/SoundSwitch/commit/365c3b8f7d1a700b459685c422dc40a55e07c0b1))
+* **localization:** improve formatting and correct placeholder in UpdateDownloadStrings.ta.resx ([74e0393](https://github.com/Belphemur/SoundSwitch/commit/74e03935dd30876b80b207d80043c2166da6b1c6))
+* **notification::mute:** mute microphone on clicking the banner when the microphone is On ([bfe5ece](https://github.com/Belphemur/SoundSwitch/commit/bfe5ece253ad43d68de04f4d30e00bb1c41ff021))
+* **notification::mute:** reduce microphone mute banner display time to 1.5 seconds ([e82ccc4](https://github.com/Belphemur/SoundSwitch/commit/e82ccc4cfc1df2785993a6a922cdd798e294bfa7))
+* **pipe:** be sure we can have full communication on the pipe ([1362535](https://github.com/Belphemur/SoundSwitch/commit/136253565858fdac0c6e9ecd9095bc8566eefaff))
+* **release:** fix building right version of application ([ba16256](https://github.com/Belphemur/SoundSwitch/commit/ba16256de99e4119b947a33a4175a6d13709c86f)), closes [#1669](https://github.com/Belphemur/SoundSwitch/issues/1669)
+* **Settings:** Ensure persistent mute notification checkbox visibility is correctly set ([96eb04b](https://github.com/Belphemur/SoundSwitch/commit/96eb04ba41aac1981a365029d2908c38e1ee4df3))
+* **update:** fix update ui crashing. ([70ba6c1](https://github.com/Belphemur/SoundSwitch/commit/70ba6c1d7015768aa3d775239ad45bc98d9f9b16)), closes [#1693](https://github.com/Belphemur/SoundSwitch/issues/1693)
+
+### Features
+
+* **audio:** add event for volume and mute state changes ([f7013a2](https://github.com/Belphemur/SoundSwitch/commit/f7013a258f67d4fbfb0de7342ed389ad4a4d860f))
+* **banner:** hide banner when clicked on ([3601270](https://github.com/Belphemur/SoundSwitch/commit/36012705b7788075d379072c5abcf1b8aec61023))
+* **cli::installer:** be sure the cli is installed and signed by the installer ([de470f6](https://github.com/Belphemur/SoundSwitch/commit/de470f63aed2c3d4c77e57f750a12f2b79f1dcc8))
+* **cli:** add microphone muting to the CLI ([6613d2a](https://github.com/Belphemur/SoundSwitch/commit/6613d2ab918b277af5888d16ba85492767ecb0c7))
+* **cli:** Add profile details like what device is setup in it ([0a3544d](https://github.com/Belphemur/SoundSwitch/commit/0a3544d1208908628c755b4b85f7891b5322fa92))
+* **cli:** Add the CLI to windows PATH ([fb4324e](https://github.com/Belphemur/SoundSwitch/commit/fb4324e8484d9b2c4eb90045e10eb6b07716acb3)), closes [#1730](https://github.com/Belphemur/SoundSwitch/issues/1730)
+* **cli:** First version of the CLI for SoundSwitch ([add5240](https://github.com/Belphemur/SoundSwitch/commit/add524091f7b86407cf72c6e40bde312085fd540)), closes [#1664](https://github.com/Belphemur/SoundSwitch/issues/1664)
+* **device:** track if the the device is muted. ([5b506d7](https://github.com/Belphemur/SoundSwitch/commit/5b506d786a36813a69e15a7181c8f40953ec9c23))
+* **microphone:** Notify on any microphone being muted. ([b464e2d](https://github.com/Belphemur/SoundSwitch/commit/b464e2dd0de50b5711f9a056eb7989aa2d15c3e5))
+* **mute:** add a compact banner for the microphone mute state ([48f0aa4](https://github.com/Belphemur/SoundSwitch/commit/48f0aa40ea8859df7e6fc7fa5226701b9655b403))
+* **mute:** Only show friendly name for the device for mute notification ([09eeffb](https://github.com/Belphemur/SoundSwitch/commit/09eeffb32cab571c5fe4d7a72b399af474144ffd))
+* **notification::mute:** Support clicking the banner to unmute. ([67e2b3f](https://github.com/Belphemur/SoundSwitch/commit/67e2b3fe1630294de949520455d19656b2cd0d56))
+* **notification::mute:** Use a compact notification for Mute that stays on the screen until the microphone is unmuted. ([7439388](https://github.com/Belphemur/SoundSwitch/commit/7439388e9d34c37e2248f9f87065c1b83d7821dd))
+* **Notification:** Add persistent mute notification configuration and update related logic ([3cecbf4](https://github.com/Belphemur/SoundSwitch/commit/3cecbf4af35f752be257582ef7d83caac1b2db4c))
+* **pipe:** implement MessagePack serialization for inter-process communication. Prepare the ground for a CLI. ([5b0f473](https://github.com/Belphemur/SoundSwitch/commit/5b0f473df5d064931e0372e4f0e8b7bf05257332))
+* **resources:** add microphone and mute images ([b221ab3](https://github.com/Belphemur/SoundSwitch/commit/b221ab3bada5c4703e91b815826e35897bfe0fe8))
+* **Settings:** Let the user choose what type of notification they have for mute ([a1e181f](https://github.com/Belphemur/SoundSwitch/commit/a1e181f698ba56fc5679bede167f6a5a1a58371b))
+* **Settings:** reopen settings when opening another SoundSwitch. ([22920cd](https://github.com/Belphemur/SoundSwitch/commit/22920cd2f9c2c279f612127245db433832963590)), closes [#850](https://github.com/Belphemur/SoundSwitch/issues/850)
+
 ## [6.13.0-beta.7](https://github.com/Belphemur/SoundSwitch/compare/v6.13.0-beta.6...v6.13.0-beta.7) (2025-03-20)
 
 ### Bug Fixes
