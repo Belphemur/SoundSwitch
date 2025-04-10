@@ -281,7 +281,7 @@ Begge: Endre når enhetstypen byttes.</value>
     <value>Profiler må ha et navn.</value>
   </data>
   <data name="profile.error.needHKOrPath" xml:space="preserve">
-    <value>Du må angi en hurtigtast og/eller programmet.</value>
+    <value>Du må velge en hurtigtast og/eller et program.</value>
   </data>
   <data name="profile.error.registerHotkeys.title" xml:space="preserve">
     <value>Hurtigtast allerede i bruk</value>
@@ -305,7 +305,7 @@ Begge: Endre når enhetstypen byttes.</value>
     <value>Når programmet oppdages, vil SoundSwitch også bytte standardenhet.</value>
   </data>
   <data name="hotkeyEnabled" xml:space="preserve">
-    <value>Snarveistast skrudd på</value>
+    <value>Hurtigtast aktivert</value>
   </data>
   <data name="profile.error.deviceNotFound" xml:space="preserve">
     <value>Fant ikke enhet {0}.</value>
@@ -317,13 +317,13 @@ Begge: Endre når enhetstypen byttes.</value>
     <value>Varsle når profil utløses</value>
   </data>
   <data name="profile.error.steam" xml:space="preserve">
-    <value>Du kan kun ha én profil for Steam-storbilde.</value>
+    <value>Du kan kun ha én profil for Steam-storbildemodus.</value>
   </data>
   <data name="profile.error.triggers.min" xml:space="preserve">
     <value>Du trenger minst én utløser.</value>
   </data>
   <data name="communication" xml:space="preserve">
-    <value>Forvalgt kommuniksjonsenhet</value>
+    <value>Standard kommuniksjonsenhet</value>
   </data>
   <data name="profile.trigger.available" xml:space="preserve">
     <value>Tilgjengelige utløsere</value>
@@ -335,16 +335,16 @@ Begge: Endre når enhetstypen byttes.</value>
     <value>Beskrivelse</value>
   </data>
   <data name="profile.trigger.steam.desc" xml:space="preserve">
-    <value>Aktiver når Steam-storbilde oppdages. Vil gjenopprette tilstand når storbilde lukkes.</value>
+    <value>Aktiver når Steam-storbildemodus oppdages. (Vil stille seg tilbake når storbildemodus lukkes.)</value>
   </data>
   <data name="profile.trigger.process.desc" xml:space="preserve">
     <value>Aktiver profilen når valgt program er i forgrunnen</value>
   </data>
   <data name="profile.trigger.window.desc" xml:space="preserve">
-    <value>Aktiver profilen hvis forgrunnsprogrammet inneholder følgende tegn</value>
+    <value>Aktiver profilen hvis programmet i forgrunnen inneholder følgende tegn</value>
   </data>
   <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>Hurtigtast for å aktivere profilen</value>
+    <value>Hurtigtast for å aktivere profilen. Hvis du bruker samme hurtigtast, vil du kunne bytte mellom profiler.</value>
   </data>
   <data name="profile.trigger.steam" xml:space="preserve">
     <value>Steam-storbildemodus</value>
@@ -371,7 +371,7 @@ Begge: Endre når enhetstypen byttes.</value>
     <value>Det finnes allerede en profil med dette vindusnavnet: {0}.</value>
   </data>
   <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
-    <value>Behøver «{0}» påslått.
+    <value>Nødvendig at «{0}» er påslått.
 
 Gjenopprett systemets tilstand når programmet lukkes.</value>
   </data>
@@ -391,10 +391,10 @@ Gjenopprett systemets tilstand når programmet lukkes.</value>
     <value>Skriv inn navnet på programmet installert gjennom Windows-butikken. Som Netflix, Amazon Prime video, osv…</value>
   </data>
   <data name="profile.trigger.uwp" xml:space="preserve">
-    <value>Mikrosoft Store-program</value>
+    <value>Microsoft Store-program</value>
   </data>
   <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
-    <value>Denne utløseren gjør profilen synlig i systemkurvsikon-menyen. Venstreklikk på systemkurvsikonet for å se profilen din?</value>
+    <value>Denne utløseren gjør profilen synlig i systemkurvsikon-menyen. Venstreklikk på systemkurvsikonet for å se profilen din.</value>
   </data>
   <data name="telemetry" xml:space="preserve">
     <value>Telemetri</value>
@@ -403,13 +403,13 @@ Gjenopprett systemets tilstand når programmet lukkes.</value>
     <value>I programmenyen</value>
   </data>
   <data name="mute.toggle.label" xml:space="preserve">
-    <value>Veksle forstumming</value>
+    <value>Demp av/på</value>
   </data>
   <data name="notification.microphone.unmuted" xml:space="preserve">
-    <value>{0} har fått sin forstummelse kurert.</value>
+    <value>{0} er nå ikke dempet.</value>
   </data>
   <data name="notification.microphone.muted" xml:space="preserve">
-    <value>{0} er nå forstummet.</value>
+    <value>{0} er nå dempet.</value>
   </data>
   <data name="telemetry.desc" xml:space="preserve">
     <value>Hent anonym innmelding av hvilken versjon av SoundSwitch som brukes. Deles kun med utvikleren av SoundSwitch.</value>
@@ -451,19 +451,19 @@ Gjenopprett systemets tilstand når programmet lukkes.</value>
     <value>Kun ett banner</value>
   </data>
   <data name="notification.single.tooltip" xml:space="preserve">
-    <value>Vis kun ett banner og oppdater innholdet.</value>
+    <value>Vis kun ett banner og oppdater innholdet i det.</value>
   </data>
   <data name="link.community" xml:space="preserve">
     <value>Discord-samfunn</value>
   </data>
   <data name="link.donate" xml:space="preserve">
-    <value>Donér</value>
+    <value>Doner</value>
   </data>
   <data name="link.help" xml:space="preserve">
-    <value>Hjelp</value>
+    <value>Hjelpediskusjon</value>
   </data>
   <data name="resetAudioDevices.desc" xml:space="preserve">
-    <value>Tilbakestill lydenhettilordninger til bestemte programmer i Windows hvis lydenheter ikke tilordnes riktig ved bytting.</value>
+    <value>Tilbakestill lydenhettilordninger til bestemte programmer i Windows hvis lydenhetene ikke tilordnes riktig ved bytting.</value>
   </data>
   <data name="buttonReset" xml:space="preserve">
     <value>Tilbakestill</value>
@@ -487,7 +487,7 @@ Gjenopprett systemets tilstand når programmet lukkes.</value>
     <value>Hvis du trenger hjelp eller ytterligere feilsøking med SoundSwitch, kan du besøke hjelpelenken eller Discord-samfunnet, eller støtte oss ved å besøke donasjonslenken nedenfor.</value>
   </data>
   <data name="notification.banner.onscreen.time" xml:space="preserve">
-    <value>Visningstid</value>
+    <value>Tid på skjermen</value>
   </data>
   <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
     <value>Hvor lenge banneret skal vises på skjermen i sekunder.</value>
@@ -499,15 +499,42 @@ Gjenopprett systemets tilstand når programmet lukkes.</value>
     <value>Mikrofon av</value>
   </data>
   <data name="banner.mute.persistent" xml:space="preserve">
-    <value>Permanent forstummingsbanner</value>
+    <value>Permanent dempningsbanner</value>
   </data>
   <data name="banner.mute.persistent.tooltip" xml:space="preserve">
-    <value>Vis et permanent banner når mikrofonen er forstummet</value>
+    <value>Vis et permanent banner når mikrofonen er dempet</value>
   </data>
   <data name="none" xml:space="preserve">
     <value>Ingen</value>
   </data>
   <data name="audioFileNotFound.caption" xml:space="preserve">
     <value>Lydfil ikke funnet</value>
+  </data>
+  <data name="profile.trigger.deviceChanged" xml:space="preserve">
+    <value>Tving profil på</value>
+  </data>
+  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
+    <value>Denne profilen vil bli valgt automatisk når den gjeldende lydenheten endres.</value>
+  </data>
+  <data name="profile.error.deviceChanged" xml:space="preserve">
+    <value>Du kan bare ha en profil tvunget på.</value>
+  </data>
+  <data name="keepVolume" xml:space="preserve">
+    <value>Behold volumnivået på tvers av enheter</value>
+  </data>
+  <data name="quickMenu.tooltip" xml:space="preserve">
+    <value>Vis en hurtigmeny som ligner den i Windows når du bruker en hurtigtast</value>
+  </data>
+  <data name="keepVolume.tooltip" xml:space="preserve">
+    <value>Behold volumnivået når du bytter enheter</value>
+  </data>
+  <data name="devices.autoAddNewDevice" xml:space="preserve">
+    <value>Velg nye enheter automatisk</value>
+  </data>
+  <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
+    <value>Legg til nye enheter til listen automatisk når de kobles til</value>
+  </data>
+  <data name="telemetry.tooltip" xml:space="preserve">
+    <value>Samle inn informasjon om hvilken versjon av SoundSwitch som er i bruk. Kun tilgjengelig for utvikleren av SoundSwitch.</value>
   </data>
 </root>
