@@ -101,7 +101,7 @@
     <value>作成者</value>
   </data>
   <data name="maintained" xml:space="preserve">
-    <value>維持管理者</value>
+    <value>管理者</value>
   </data>
   <data name="version" xml:space="preserve">
     <value>バージョン</value>
@@ -116,7 +116,7 @@
     <value>既定の再生デバイスの変更</value>
   </data>
   <data name="keyboardHotkeys" xml:space="preserve">
-    <value>キーボードのホットキーシステム</value>
+    <value>キーボードショートカット機能</value>
   </data>
   <data name="logo" xml:space="preserve">
     <value>ロゴ制作</value>
