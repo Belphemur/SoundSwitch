@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -83,7 +82,7 @@
     <value>Snarvei</value>
   </data>
   <data name="communicationsDevice" xml:space="preserve">
-    <value>Veksle forvalgt kommunikasjonsenhet</value>
+    <value>Bytt standard kommunikasjonsenhet</value>
   </data>
   <data name="startWithWindows" xml:space="preserve">
     <value>Start automatisk med Windows</value>
@@ -95,16 +94,16 @@
     <value>Endringer blir lagret automatisk</value>
   </data>
   <data name="communicationsDevice.tooltip" xml:space="preserve">
-    <value>Når valgt, vil "Forvalgt kommunikasjonsenhet" og "Forvalgt avspillingsenhet" byttes sammen (nyttig for Mumble, Jitsi osv.).</value>
+    <value>Når dette velges, vil «Standard kommunikasjonsenhet» og «Standard avspillingsenhet» byttes sammen (nyttig for Mumble, Jitsi osv.).</value>
   </data>
   <data name="notification" xml:space="preserve">
     <value>Merknad</value>
   </data>
   <data name="updateIncludeBetaVersions" xml:space="preserve">
-    <value>Inkluder Beta-versjoner</value>
+    <value>Inkluder betaversjoner</value>
   </data>
   <data name="updateIncludeBetaVersions.tooltip" xml:space="preserve">
-    <value>Når valgt, vil SoundSwitch også se etter betaversjoner på GitHub.</value>
+    <value>Når dette velges, vil SoundSwitch også se etter betaversjoner på GitHub.</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
     <value>Lydfiler</value>
@@ -122,7 +121,7 @@
     <value>Lydinnstillinger</value>
   </data>
   <data name="updateSettings" xml:space="preserve">
-    <value>Oppdater innstillinger</value>
+    <value>Oppdateringsinnstillinger</value>
   </data>
   <data name="cycleThrough" xml:space="preserve">
     <value>Veksle gjennom</value>
@@ -131,19 +130,19 @@
     <value>Behold Soundswitch sitt systemkurvsikon</value>
   </data>
   <data name="keepSystemTrayIcon.tooltip" xml:space="preserve">
-    <value>Når valgt, vil ikke systemkurvsikonet endre seg når "Forvalg avspillingsenhet" endres.</value>
+    <value>Når dette velges, vil ikke systemkurvsikonet endre seg når «Standard avspillingsenhet» endres.</value>
   </data>
   <data name="updateInstallAutomatically" xml:space="preserve">
     <value>Installer oppgraderinger automatisk</value>
   </data>
   <data name="updateInstallAutomatically.tooltip" xml:space="preserve">
-    <value>Oppgraderinger installeres automatisk uten forvarsel.</value>
+    <value>Oppdateringer installeres automatisk uten forvarsel.</value>
   </data>
   <data name="updateNotify" xml:space="preserve">
-    <value>Varsle meg om nye oppgraderinger</value>
+    <value>Varsle meg om nye oppdateringer</value>
   </data>
   <data name="updateNever" xml:space="preserve">
-    <value>Aldri se etter oppgraderinger</value>
+    <value>Aldri se etter oppdateringer</value>
   </data>
   <data name="tooltipOnHover" xml:space="preserve">
     <value>Verktøystips ved musesveving</value>
@@ -155,7 +154,7 @@
     <value>Kun valgte lydenheter</value>
   </data>
   <data name="cycleThrough.tooltip" xml:space="preserve">
-    <value>Velg mellom enhetene det skal byttes mellom. Enten mellom valgte eller mellom alle.</value>
+    <value>Velg enhetene det skal byttes mellom. Enten mellom valgte eller mellom alle.</value>
   </data>
   <data name="notification.option.windowsDefault" xml:space="preserve">
     <value>Windows-merknad</value>
@@ -173,11 +172,11 @@
     <value>Egendefinert lydmerknad</value>
   </data>
   <data name="notification.tooltip" xml:space="preserve">
-    <value>Windows-merknad: Forvalgt oppsprett for Windows.
-Lydmerknad: Spiller en lyd på byttet avspillingsenhet.
-Egendefinert lydmerknad: Spiller en angitt lyd på byttet avspillingsenhet.
-Hjørnemerknad: Bruker en spesiell type av systemkurvsoppsprettet for windows.
-Banner: Bruker en ramme som alltid er i forgrunnen, nyttig inne i spill.</value>
+    <value>Windows-merknad: Standard oppsprett for Windows.
+Lydmerknad: Spiller en lyd ved bytte av avspillingsenhet.
+Egendefinert lydmerknad: Spiller en angitt lyd ved bytte av avspillingsenhet.
+Hjørnemerknad: Bruker en spesiell type av systemkurvsoppsprettet for Windows.
+Banner: Bruker en ramme som alltid er i forgrunnen, nyttig til bruk i spill.</value>
   </data>
   <data name="tooltipOnHover.option.playbackDevice" xml:space="preserve">
     <value>Avspillingsenhet</value>
@@ -207,39 +206,39 @@ Banner: Bruker en ramme som alltid er i forgrunnen, nyttig inne i spill.</value>
 		<value>Språk</value>
   </data>
   <data name="languageRestartRequired" xml:space="preserve">
-		<value>Språket vil tre i effekt etter at du starter SoundSwitch på ny.
+		<value>Språket vil endre seg etter at du starter SoundSwitch på nytt.
 Ønsker du å starte på nytt nå?</value>
   </data>
   <data name="languageRestartRequired.caption" xml:space="preserve">
-		<value>Omstart behøves</value>
+		<value>Omstart kreves</value>
   </data>
   <data name="updateNever.tooltip" xml:space="preserve">
-		<value>Ikke oppgrader programmet med mindre det gjøres manuelt.</value>
+		<value>Ikke oppdater programmet med mindre det gjøres manuelt.</value>
   </data>
   <data name="updateNotify.tooltip" xml:space="preserve">
-		<value>SoundSwitch varsler ny oppgradering med en merknad. Når du klikker denne, får du et oppsprett som laster den ned og spørs deg om du vil installere den.</value>
+		<value>SoundSwitch varsler om ny oppdatering med en merknad. Når du klikker på denne, får du en melding som laster den ned og spør deg om du vil installere den.</value>
   </data>
   <data name="notification.option.banner" xml:space="preserve">
         <value>Banner</value>
   </data>
   <data name="disableCustomSound.tooltip" xml:space="preserve">
-    <value>Skru av satt egendefinert lyd.</value>
+    <value>Skru av den egendefinerte lyden.</value>
   </data>
   <data name="foregroundApp" xml:space="preserve">
-    <value>Veksle også forgrunnsprogrammet</value>
+    <value>Bytt også forgrunnsprogrammet</value>
   </data>
   <data name="foregroundApp.tooltip" xml:space="preserve">
-    <value>Veksle også lyden for brukt program. Nyttig i videospill.</value>
+    <value>Bytt også lyden for programmet i bruk. Nyttig i videospill.</value>
   </data>
   <data name="iconChange" xml:space="preserve">
     <value>Systemkurvsikonet</value>
   </data>
   <data name="iconChange.tooltip" xml:space="preserve">
-    <value>Velg når systemkurvsikonet for SonudSwitch skal endres.
+    <value>Velg når systemkurvsikonet til SonudSwitch skal endres.
 
-Forvalg: Ikke endre det. Behold SoundSwitch-ikonet.
-Avspilling: Når en avspillingenhet veksles.
-Opptak: Når en opptaksenhet veksles.
+Standard: Ikke endre det. Behold SoundSwitch-ikonet.
+Avspilling: Når en avspillingsenhet byttes.
+Opptak: Når en opptaksenhet byttes.
 Begge: Endre når enhetstypen byttes.</value>
   </data>
   <data name="profile.tab" xml:space="preserve">
@@ -264,7 +263,7 @@ Begge: Endre når enhetstypen byttes.</value>
     <value>Dette programmet {0} har allerede en lenket profil.</value>
   </data>
   <data name="profile.error.name" xml:space="preserve">
-    <value>Det finnes allerede en profil ved navn {0}.</value>
+    <value>Det finnes allerede en profil ved navnet {0}.</value>
   </data>
   <data name="profile.feature.add" xml:space="preserve">
     <value>Legg til profil</value>
@@ -279,19 +278,19 @@ Begge: Endre når enhetstypen byttes.</value>
     <value>Slett</value>
   </data>
   <data name="profile.error.noName" xml:space="preserve">
-    <value>Profiler må navngis.</value>
+    <value>Profiler må ha et navn.</value>
   </data>
   <data name="profile.error.needHKOrPath" xml:space="preserve">
-    <value>Du må sette hurtigtast og/eller program.</value>
+    <value>Du må angi en hurtigtast og/eller programmet.</value>
   </data>
   <data name="profile.error.registerHotkeys.title" xml:space="preserve">
-    <value>Allerede brukt hurtigtast</value>
+    <value>Hurtigtast allerede i bruk</value>
   </data>
   <data name="profile.error.registerHotkeys" xml:space="preserve">
     <value>Kunne ikke registrere hurtigtast for følgende profiler: {0}</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
-    <value>Legg til en profil for å bytte til gitt avpillings- eller opptaksenhet, når et gitt program er startet eller i fokus.</value>
+    <value>Legg til en profil for å bytte til angitt avpillings- eller opptaksenhet, når et gitt program er startet eller i fokus.</value>
   </data>
   <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
     <value>Du må sette avspillings- eller opptaksenhet.</value>
@@ -300,13 +299,13 @@ Begge: Endre når enhetstypen byttes.</value>
     <value>Kunne ikke finne profilen.</value>
   </data>
   <data name="profile.defaultDevice.checkbox" xml:space="preserve">
-    <value>Bytt forvalgt enhet også</value>
+    <value>Bytt standardenhet også</value>
   </data>
   <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
-    <value>Når programmet oppdages, vil SoundSwitch også bytte forvalgt enhet.</value>
+    <value>Når programmet oppdages, vil SoundSwitch også bytte standardenhet.</value>
   </data>
   <data name="hotkeyEnabled" xml:space="preserve">
-    <value>Snarveistast påskrudd</value>
+    <value>Snarveistast skrudd på</value>
   </data>
   <data name="profile.error.deviceNotFound" xml:space="preserve">
     <value>Fant ikke enhet {0}.</value>
@@ -345,10 +344,10 @@ Begge: Endre når enhetstypen byttes.</value>
     <value>Aktiver profilen hvis forgrunnsprogrammet inneholder følgende tegn</value>
   </data>
   <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>Snarveistast for å aktivere profilen</value>
+    <value>Hurtigtast for å aktivere profilen</value>
   </data>
   <data name="profile.trigger.steam" xml:space="preserve">
-    <value>Steam-storbilde</value>
+    <value>Steam-storbildemodus</value>
   </data>
   <data name="profile.trigger.process" xml:space="preserve">
     <value>Programsti</value>
@@ -504,5 +503,11 @@ Gjenopprett systemets tilstand når programmet lukkes.</value>
   </data>
   <data name="banner.mute.persistent.tooltip" xml:space="preserve">
     <value>Vis et permanent banner når mikrofonen er forstummet</value>
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>Ingen</value>
+  </data>
+  <data name="audioFileNotFound.caption" xml:space="preserve">
+    <value>Lydfil ikke funnet</value>
   </data>
 </root>

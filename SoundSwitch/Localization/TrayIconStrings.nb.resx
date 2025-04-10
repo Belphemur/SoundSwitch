@@ -59,7 +59,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="noUpdate" xml:space="preserve">
-    <value>Ingen oppgraderinger</value>
+    <value>Ingen oppdatering tilgjengelig</value>
   </data>
   <data name="noDevicesSelected" xml:space="preserve">
     <value>Ingen enheter valgt</value>
@@ -74,19 +74,19 @@
     <value>Innstillinger</value>
   </data>
   <data name="about" xml:space="preserve">
-    <value>Om</value>
+    <value>Om SoundSwitch</value>
   </data>
   <data name="quit" xml:space="preserve">
     <value>Avslutt</value>
   </data>
   <data name="updateAvailable" xml:space="preserve">
-    <value>Oppgradering tilgjengelig ({0})</value>
+    <value>Oppdatering tilgjengelig ({0})</value>
   </data>
   <data name="versionAvailable" xml:space="preserve">
-    <value>Oppgradering for SoundSwitch ({0}) tilgjngelig.</value>
+    <value>En oppdatering til SoundSwitch ({0}) er tilgjengelig.</value>
   </data>
   <data name="clickToUpdate" xml:space="preserve">
-    <value>Klikk her for å oppgradere.</value>
+    <value>Klikk her for å oppdatere.</value>
   </data>
   <data name="playbackChanged" xml:space="preserve">
     <value>SoundSwitch: Avspillingsnehet endret til</value>
@@ -95,10 +95,10 @@
     <value>SoundSwitch: Opptaksenhet endret til</value>
   </data>
   <data name="configurationNeeded" xml:space="preserve">
-    <value>SoundSwitch: Oppsett nødvendig</value>
+    <value>SoundSwitch: Konfigurering må utføres</value>
   </data>
   <data name="configurationNeededExplanation" xml:space="preserve">
-    <value>Ingen enheter tilgjengelige å bytte til. Åpne oppsettet ved å høyreklikke på ikonet.</value>
+    <value>Ingen enheter kan byttes til. Åpne innstillingene ved å høyreklikke på ikonet.</value>
   </data>
   <data name="error" xml:space="preserve">
     <value>Feil</value>
@@ -110,13 +110,13 @@
 		<value>Doner</value>
   </data>
   <data name="iconChanger.playback" xml:space="preserve">
-		<value>Avspillingsenheter</value>
+		<value>Avspilling</value>
   </data>
   <data name="iconChanger.recording" xml:space="preserve">
     <value>Opptak</value>
   </data>
   <data name="iconChanger.none" xml:space="preserve">
-    <value>Forvalg</value>
+    <value>Standard</value>
   </data>
   <data name="iconChanger.both" xml:space="preserve">
     <value>Begge</value>
@@ -125,7 +125,7 @@
 		<value>Samfunnet</value>
   </data>
   <data name="updateDisabled" xml:space="preserve">
-    <value>Oppdateringssjekk avskrudd</value>
+    <value>Oppdateringssjekk skrudd av</value>
   </data>
   <data name="forceCheckForUpdate" xml:space="preserve">
     <value>Se etter ny version</value>

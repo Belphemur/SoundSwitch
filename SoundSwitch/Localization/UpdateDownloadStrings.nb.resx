@@ -71,7 +71,7 @@
 		<value>Endringslogg</value>
   </data>
   <data name="notSigned" xml:space="preserve">
-		<value>Nedlastet oppgradering er ikke signert med gyldig signatur. Det anbefales at du sletter filen og kontakter utvikleren!</value>
+		<value>Den nedlastede oppdateringen er ikke signert med en gyldig signatur. Vi anbefaler deg at du sletter filen og kontakter utvikleren!</value>
   </data>
   <data name="notSignedTitle" xml:space="preserve">
 		<value>Ugyldig digital signatur</value>
@@ -80,6 +80,6 @@
     <value>Senere</value>
   </data>
   <data name="wrongSignature" xml:space="preserve">
-    <value>Det er et problem med siste SoundSwitch-oppgradering. Du må manuelt laste ned den siste versjonen fra {0}</value>
+    <value>Det er et problem med siste SoundSwitch-oppdatering. Du må laste ned den siste versjonen manuelt fra {0}</value>
   </data>
 </root>
