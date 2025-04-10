@@ -74,7 +74,7 @@
 		<value>Bidragsytere</value>
   </data>
   <data name="defaultPlaybackDeviceChange" xml:space="preserve">
-		<value>Forvalgt avspillingsenhetsbytte</value>
+		<value>Endre standard avspillingsenhet</value>
   </data>
   <data name="keyboardHotkeys" xml:space="preserve">
 		<value>Tastatursnarveissystem</value>
