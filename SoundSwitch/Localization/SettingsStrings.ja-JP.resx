@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="profile.trigger.uwp.desc" xml:space="preserve">
-    <value>Windowsストアを通じてインストールされたアプリケーションの名前を入力してください。Netflix、Amazon Prime Videoなど…</value>
+    <value>Microsoft Store でインストールされたアプリの名前を入力してください。Netflix、Amazon Prime Videoなど…</value>
   </data>
   <data name="profile.trigger.uwp" xml:space="preserve">
     <value>Microsoft Store アプリ</value>
@@ -135,7 +135,7 @@
 アプリケーションが閉じられたときにシステムの状態を復元します。</value>
   </data>
   <data name="usePrimaryScreen.tooltip" xml:space="preserve">
-    <value>フォーカスされたディスプレイではなく、メイン ディスプレイにバナーを表示します。</value>
+    <value>フォーカスされたディスプレイではなく、メイン ディスプレイに通知を表示します。</value>
   </data>
   <data name="usePrimaryScreen" xml:space="preserve">
     <value>常にメイン ディスプレイを使用</value>
@@ -174,22 +174,22 @@
     <value>利用可能なトリガー</value>
   </data>
   <data name="profile.trigger.actives" xml:space="preserve">
-    <value>アクティブトリガー</value>
+    <value>有効なトリガー</value>
   </data>
   <data name="profile.desc" xml:space="preserve">
     <value>説明</value>
   </data>
   <data name="profile.trigger.steam.desc" xml:space="preserve">
-    <value>Steam Big Pictureが検出された場合にアクティブにします。（Big Pictureが閉じられたときに状態を復元します。）</value>
+    <value>Steam Big Picture が検出されると有効になります。（Big Picture が終了すると元の状態に戻ります。）</value>
   </data>
   <data name="profile.trigger.process.desc" xml:space="preserve">
-    <value>選択したアプリケーションがフォアグラウンドにある場合、プロファイルをアクティブにします</value>
+    <value>選択したアプリケーションがフォアグラウンドにある場合、プロファイルを有効にします</value>
   </data>
   <data name="profile.trigger.window.desc" xml:space="preserve">
-    <value>フォアグラウンドプログラムに指定の文字列が含まれている場合、プロファイルをアクティブにします</value>
+    <value>フォアグラウンドプログラムに指定の文字列が含まれている場合、プロファイルを有効にします</value>
   </data>
   <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>プロファイルをアクティブにするためのホットキー。同じホットキーを使用すると、プロファイル間を切り替えることができます。</value>
+    <value>プロファイルを有効にするためのショートカット。同じショートカットを使用すると、プロファイル間を切り替えることができます。</value>
   </data>
   <data name="profile.trigger.steam" xml:space="preserve">
     <value>Steam Big Picture</value>
@@ -204,7 +204,7 @@
     <value>デバイス {0} が見つかりませんでした。</value>
   </data>
   <data name="hotkeyEnabled" xml:space="preserve">
-    <value>ホットキー有効</value>
+    <value>ショートカット有効</value>
   </data>
   <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
     <value>アプリケーションが検出された場合、SoundSwitchは現在の既定のデバイスも変更します。</value>
@@ -234,19 +234,19 @@
     <value>プロファイルを追加</value>
   </data>
   <data name="profile.error.registerHotkeys.title" xml:space="preserve">
-    <value>すでに使用されているホットキー</value>
+    <value>すでに使用されているショートカット</value>
   </data>
   <data name="profile.error.registerHotkeys" xml:space="preserve">
-    <value>プロファイルのホットキーを登録できませんでした: {0}</value>
+    <value>プロファイルのショートカットを登録できませんでした: {0}</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
-    <value>特定のアプリケーションが起動またはフォーカスされたときに特定の再生デバイスまたは録音デバイスに切り替えるプロファイルを追加します。また、特定のデバイスの組み合わせに対してホットキーを設定することもできます。</value>
+    <value>特定のアプリケーションが起動またはフォーカスされたときに特定の再生デバイスまたは録音デバイスに切り替えるプロファイルを追加します。また、特定のデバイスの組み合わせに対してショートカットを設定することもできます。</value>
   </data>
   <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
     <value>再生デバイスまたは録音デバイスを設定する必要があります。</value>
   </data>
   <data name="profile.error.needHKOrPath" xml:space="preserve">
-    <value>ホットキーまたはアプリケーションを設定する必要があります。</value>
+    <value>ショートカットまたはアプリケーションを設定する必要があります。</value>
   </data>
   <data name="profile.error.name" xml:space="preserve">
     <value>すでに {0} という名前のプロファイルが存在します。</value>
@@ -255,7 +255,7 @@
     <value>このアプリケーション {0} はすでにプロファイルと連携済です。</value>
   </data>
   <data name="profile.error.hotkey" xml:space="preserve">
-    <value>このホットキー {0} はすでに登録されています。</value>
+    <value>ショートカット{0} はすでに登録されています。</value>
   </data>
   <data name="profile.name" xml:space="preserve">
     <value>名前</value>
@@ -336,11 +336,11 @@
     <value>トースト通知</value>
   </data>
   <data name="notification.tooltip" xml:space="preserve">
-    <value>Windows 通知: デフォルトの Windows トレイポップアップ。
-サウンド通知: 切り替えた再生デバイスでサウンドを再生します。
-カスタマイズされたサウンド通知: 切り替えた再生デバイスで指定したサウンドを再生します。
+    <value>Windows 通知: Windows の標準通知を使用します。
+サウンド通知: 切り替え後の再生デバイスでサウンドを再生します。
+カスタマイズされたサウンド通知: 切り替え後の再生デバイスで指定したサウンドを再生します。
 トースト通知: Windows トレイポップアップの特別な形式を使用します。
-バナー: カスタムの常に最前面のフレームで、ゲーム中に便利です。</value>
+バナー通知：常に最前面に表示されるカスタムフレームを使用し、ゲーム中に便利。</value>
   </data>
   <data name="notification.option.customized" xml:space="preserve">
     <value>カスタムサウンド通知</value>
@@ -379,7 +379,7 @@
     <value>自動的にアップデートをインストール</value>
   </data>
   <data name="keepSystemTrayIcon.tooltip" xml:space="preserve">
-    <value>有効化すると「既定の再生デバイス」が変更されてもシステムトレイアイコンは変わりません。</value>
+    <value>有効にすると「既定の再生デバイス」が変更されてもシステムトレイアイコンは変わりません。</value>
   </data>
   <data name="keepSystemTrayIcon" xml:space="preserve">
     <value>SoundSwitch のシステムトレイアイコンを保持</value>
@@ -397,7 +397,7 @@
     <value>基本設定</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
-    <value>ホットキーを有効化する。</value>
+    <value>ショートカットを有効にする。</value>
   </data>
   <data name="selectSoundButton.tooltip" xml:space="preserve">
     <value>通知用のサウンドファイルを選択</value>
@@ -406,7 +406,7 @@
     <value>オーディオファイル</value>
   </data>
   <data name="updateIncludeBetaVersions.tooltip" xml:space="preserve">
-    <value>有効化すると SoundSwitch は GitHub のベータ版もチェックします。</value>
+    <value>有効にすると SoundSwitch は GitHub のベータ版もチェックします。</value>
   </data>
   <data name="updateIncludeBetaVersions" xml:space="preserve">
     <value>ベータ版を含める</value>
@@ -415,7 +415,7 @@
     <value>通知</value>
   </data>
   <data name="communicationsDevice.tooltip" xml:space="preserve">
-    <value>有効化すると「既定の通信デバイス」と「既定の再生デバイス」が一緒に切り替わります（Skype、TeamSpeakなどで便利です）。</value>
+    <value>有効にすると「既定の通信デバイス」と「既定の再生デバイス」が一緒に切り替わります（Skype、TeamSpeakなどで便利です）。</value>
   </data>
   <data name="buttonClose.tooltip" xml:space="preserve">
     <value>変更を自動的に保存</value>
@@ -436,7 +436,7 @@
     <value>既定の通信デバイスを切り替える</value>
   </data>
   <data name="hotkey" xml:space="preserve">
-    <value>ホットキー</value>
+    <value>ショートカット</value>
   </data>
   <data name="buttonClose" xml:space="preserve">
     <value>閉じる</value>
@@ -475,7 +475,7 @@
     <value>SoundSwitchの使用バージョンを匿名で収集します。SoundSwitchの開発者とのみ共有されます。</value>
   </data>
   <data name="quickMenu" xml:space="preserve">
-    <value>ホットキーでクイックメニューを表示</value>
+    <value>ショートカットでクイックメニューを表示</value>
   </data>
   <data name="profile.trigger.deviceChanged" xml:space="preserve">
     <value>強制プロファイル</value>
@@ -526,10 +526,10 @@
     <value>デバイスを切り替える際に同じ音量レベルを保持します</value>
   </data>
   <data name="notification.single" xml:space="preserve">
-    <value>バナーはひとつだけ</value>
+    <value>通知はひとつだけ</value>
   </data>
   <data name="notification.single.tooltip" xml:space="preserve">
-    <value>一度にひとつのバナーだけを表示し、その内容を置き換えます。</value>
+    <value>一度にひとつの通知だけを表示し、その内容を置き換えます。</value>
   </data>
   <data name="resetAudioDevices" xml:space="preserve">
     <value>アプリごとのオーディオをリセット</value>
@@ -541,7 +541,7 @@
     <value>SoundSwitchの使用中のバージョンを匿名で収集します。開発者のSoundSwitchとのみ共有されます。</value>
   </data>
   <data name="quickMenu.tooltip" xml:space="preserve">
-    <value>ホットキーを使用するときにWindows言語のようなクイックメニューを表示します</value>
+    <value>ショートカットを使用するときにWindows言語のようなクイックメニューを表示します</value>
   </data>
   <data name="keepVolume.tooltip" xml:space="preserve">
     <value>デバイスを切り替えるときに同じ音量レベルを保持します</value>
@@ -589,7 +589,7 @@
     <value>表示時間</value>
   </data>
   <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
-    <value>バナーが画面に表示される時間（秒）。</value>
+    <value>通知が画面に表示される時間（秒）。</value>
   </data>
   <data name="microphone.on" xml:space="preserve">
     <value>マイクオン</value>
@@ -598,9 +598,9 @@
     <value>マイクオフ</value>
   </data>
   <data name="banner.mute.persistent" xml:space="preserve">
-    <value>持続的ミュートバナー</value>
+    <value>常時ミュート通知</value>
   </data>
   <data name="banner.mute.persistent.tooltip" xml:space="preserve">
-    <value>マイクがミュートされている場合、持続的にミュートバナーを表示する</value>
+    <value>マイクがミュートされているときに常時ミュート通知を表示する</value>
   </data>
 </root>
