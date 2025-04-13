@@ -93,12 +93,15 @@ namespace SoundSwitch.Framework.Audio.Lister
         {
             // Subscribe to volume change events for this device
             deviceFullInfo.MuteVolumeChanged += DeviceOnMuteVolumeChanged;
+            // Attempt to subscribe to OS-level volume notifications
+            deviceFullInfo.SubscribeToVolumeNotifications();
         }
 
         private void UnsubscribeFromDeviceEvents(DeviceFullInfo deviceFullInfo)
         {
             // Unsubscribe from volume change events
             deviceFullInfo.MuteVolumeChanged -= DeviceOnMuteVolumeChanged;
+            // Note: OS-level unsubscription happens within deviceFullInfo.Dispose()
         }
 
         private void DeviceOnMuteVolumeChanged(object sender, VolumeChangedEventArgs e)
@@ -246,8 +249,8 @@ namespace SoundSwitch.Framework.Audio.Lister
                     {
                         cancellationToken.ThrowIfCancellationRequested();
 
-                        // Subscribe to device events
-                        SubscribeToDeviceEvents(deviceInfo);
+                        // Subscription is now handled after adding to the dictionary
+                        // SubscribeToDeviceEvents(deviceInfo);
 
                         switch (deviceInfo.Type)
                         {
@@ -264,13 +267,21 @@ namespace SoundSwitch.Framework.Audio.Lister
                         }
                     }
 
+                    // Dispose old devices first
                     foreach (var device in PlaybackDevices.Union(RecordingDevices))
                     {
                         DisposeDevice(device.Value);
                     }
 
+                    // Update caches
                     PlaybackDevices = playbackDevices;
                     RecordingDevices = recordingDevices;
+
+                    // Now subscribe to events for the new devices in the cache
+                    foreach (var device in PlaybackDevices.Values.Concat(RecordingDevices.Values))
+                    {
+                        SubscribeToDeviceEvents(device);
+                    }
 
 
                     logContext.Information("Refreshed all devices in {@StopTime}. {@Recording}/rec, {@Playback}/play", stopWatch.Elapsed, recordingDevices.Count, playbackDevices.Count);
