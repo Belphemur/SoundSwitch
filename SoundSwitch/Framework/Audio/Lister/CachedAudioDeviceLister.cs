@@ -94,7 +94,12 @@ namespace SoundSwitch.Framework.Audio.Lister
             // Subscribe to volume change events for this device
             deviceFullInfo.MuteVolumeChanged += DeviceOnMuteVolumeChanged;
             // Attempt to subscribe to OS-level volume notifications
-            deviceFullInfo.SubscribeToVolumeNotifications();
+            AudioSwitcher.Instance.InteractWithDevice(deviceFullInfo, device =>
+            {
+                // Subscribe to OS-level volume notifications
+                device.SubscribeToVolumeNotifications();
+                return device;
+            });
         }
 
         private void UnsubscribeFromDeviceEvents(DeviceFullInfo deviceFullInfo)
