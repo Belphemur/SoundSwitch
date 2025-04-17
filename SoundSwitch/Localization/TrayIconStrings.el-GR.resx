@@ -1,6 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
-	<!-- 
+  <!-- 
     Microsoft ResX Schema 
     
     Version 2.0
@@ -59,11 +59,11 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
+	<xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
 					<xsd:element name="metadata">
 						<xsd:complexType>
 							<xsd:sequence>
@@ -102,19 +102,91 @@
 						</xsd:complexType>
 					</xsd:element>
 				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>2.0</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="donate" xml:space="preserve">
+    <value>Δωρεά</value>
+  </data>
+  <data name="configurationNeededExplanation" xml:space="preserve">
+    <value>Δεν υπάρχουν διαθέσιμες συσκευές για εναλλαγή. Ανοίξτε τη διαμόρφωση κάνοντας δεξί κλικ στο εικονίδιο.</value>
+  </data>
+  <data name="error" xml:space="preserve">
+    <value>Σφάλμα</value>
+  </data>
+  <data name="forceCheckForUpdate" xml:space="preserve">
+    <value>Έλεγχος για ενημέρωση</value>
+  </data>
+  <data name="noDevicesSelected" xml:space="preserve">
+    <value>Δεν έχουν επιλεγεί συσκευές</value>
+  </data>
+  <data name="clickToUpdate" xml:space="preserve">
+    <value>Κάντε κλικ εδώ για να ενημερώσετε.</value>
+  </data>
+  <data name="playbackDevices" xml:space="preserve">
+    <value>Συσκευές αναπαραγωγής</value>
+  </data>
+  <data name="help" xml:space="preserve">
+    <value>Βοήθεια</value>
+  </data>
+  <data name="iconChanger.both" xml:space="preserve">
+    <value>Και οι δύο</value>
+  </data>
+  <data name="noUpdate" xml:space="preserve">
+    <value>Δεν υπάρχει διαθέσιμη ενημέρωση</value>
+  </data>
+  <data name="updateDisabled" xml:space="preserve">
+    <value>Έλεγχος ενημέρωσης απενεργοποιημένος</value>
+  </data>
+  <data name="iconChanger.recording" xml:space="preserve">
+    <value>Καταγραφή</value>
+  </data>
+  <data name="iconChanger.none" xml:space="preserve">
+    <value>Προεπιλογή</value>
+  </data>
+  <data name="iconChanger.playback" xml:space="preserve">
+    <value>Αναπαραγωγή</value>
+  </data>
+  <data name="configurationNeeded" xml:space="preserve">
+    <value>SoundSwitch: Απαιτείται διαμόρφωση</value>
+  </data>
+  <data name="recordingChanged" xml:space="preserve">
+    <value>SoundSwitch: Συσκευή εγγραφής που άλλαξε σε</value>
+  </data>
+  <data name="versionAvailable" xml:space="preserve">
+    <value>Η ενημέρωση για το SoundSwitch ({0}) είναι διαθέσιμη.</value>
+  </data>
+  <data name="playbackChanged" xml:space="preserve">
+    <value>SoundSwitch: Συσκευή αναπαραγωγής που άλλαξε σε</value>
+  </data>
+  <data name="about" xml:space="preserve">
+    <value>Σχετικά με το SoundSwitch</value>
+  </data>
+  <data name="updateAvailable" xml:space="preserve">
+    <value>Ενημέρωση διαθέσιμη ({0})</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>Ρυθμίσεις</value>
+  </data>
+  <data name="volumeMixer" xml:space="preserve">
+    <value>Μίξερ έντασης ήχου</value>
+  </data>
+  <data name="quit" xml:space="preserve">
+    <value>Έξοδος από το SoundSwitch</value>
+  </data>
+  <data name="community" xml:space="preserve">
+    <value>Κοινότητα</value>
+  </data>
 </root>
