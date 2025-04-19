@@ -781,6 +781,7 @@ namespace SoundSwitch.UI.Forms
             var value = (DisplayEnumObject<Language>)((ComboBox)sender).SelectedItem;
             if (value == null) return;
 
+            if (AppModel.Instance.Language == value.Enum) return;
             AppModel.Instance.Language = value.Enum;
 
             if (MessageBox.Show(SettingsStrings.languageRestartRequired,
