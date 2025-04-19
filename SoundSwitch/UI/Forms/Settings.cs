@@ -355,6 +355,7 @@ namespace SoundSwitch.UI.Forms
             bannerGroupBox.Text = SettingsStrings.notification_bannerOptions;
             positionLabel.Text = SettingsStrings.position;
             onScreenTimeLabel.Text = SettingsStrings.notification_banner_onscreen_time;
+            secondsLabel.Text = SettingsStrings.seconds;
             microphoneMuteLabel.Text = SettingsStrings.banner_mute;
             usePrimaryScreenCheckbox.Text = SettingsStrings.usePrimaryScreen;
             singleNotificationCheckbox.Text = SettingsStrings.notification_single;
