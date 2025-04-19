@@ -15,7 +15,6 @@
 using System;
 using System.Collections.Generic;
 using Serilog;
-using SoundSwitch.Framework.Banner.Position;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
@@ -24,9 +23,9 @@ namespace SoundSwitch.Framework.Banner
 {
     /// <summary>
     /// Specialized banner manager for microphone mute notifications.
-    /// Displays persistent banners for muted microphones and removes them when unmuted.
+    /// Displays banners for muted microphones and removes them when unmuted.
     /// </summary>
-    public class MicrophoneMuteBannerManager
+    public class MicrophoneMuteManager
     {
         private static System.Threading.SynchronizationContext _syncContext;
         private readonly Dictionary<string, BannerForm> _activeBanners = new();
@@ -44,25 +43,25 @@ namespace SoundSwitch.Framework.Banner
             {
                 if (isMuted)
                 {
-                    // Create or update a persistent banner for the muted microphone
+                    // Create or update a banner for the muted microphone
                     ShowMuteBanner(microphoneId, microphoneName);
                 }
                 else
                 {
-                    // Show temporary unmute notification and remove the persistent banner
+                    // Show temporary unmute notification and remove the banner
                     ShowTempUnmuteNotification(microphoneId, microphoneName);
                 }
             }, null);
         }
 
         /// <summary>
-        /// Shows a persistent banner that indicates a microphone is muted
+        /// Shows a banner that indicates a microphone is muted
         /// </summary>
         /// <param name="microphoneId">Unique identifier for the microphone</param>
         /// <param name="microphoneName">User-friendly name of the microphone</param>
         private void ShowMuteBanner(string microphoneId, string microphoneName)
         {
-            // Create banner data with very long TTL (persistent)
+            // Create banner data with very long TTL
             var data = new BannerData
             {
                 Priority = 3, // Higher than regular notifications
@@ -75,7 +74,12 @@ namespace SoundSwitch.Framework.Banner
                 OnClick = (sender, args) => AppModel.Instance.SetMicrophoneMuteState(microphoneId, false)
             };
 
-            if (!_activeBanners.TryGetValue(microphoneId, out var existingBanner))
+            if (_activeBanners.TryGetValue(microphoneId, out var existingBanner))
+            {
+                // Update existing banner
+                existingBanner.SetData(data);
+            }
+            else
             {
                 // Create new banner
                 var newBanner = new BannerForm();
@@ -84,15 +88,10 @@ namespace SoundSwitch.Framework.Banner
                 _activeBanners.Add(microphoneId, newBanner);
                 RearrangeBanners();
             }
-            else
-            {
-                // Update existing banner
-                existingBanner.SetData(data);
-            }
         }
 
         /// <summary>
-        /// Shows a temporary unmute notification and removes the persistent mute banner
+        /// Shows a temporary unmute notification and removes the mute banner
         /// </summary>
         /// <param name="microphoneId">Unique identifier for the microphone</param>
         /// <param name="microphoneName">User-friendly name of the microphone</param>
@@ -133,6 +132,17 @@ namespace SoundSwitch.Framework.Banner
                 // No need to track in _activeBanners since it's temporary
                 RearrangeBanners();
             }
+        }
+
+        /// <summary>
+        /// Removes persistent banner that indicates a microphone is muted
+        /// </summary>
+        /// <param name="microphoneId">Unique identifier for the microphone</param>
+        public void RemovePersistentMuteBanner(string microphoneId)
+        {
+            if (!_activeBanners.TryGetValue(microphoneId, out var existingBanner)) return;
+            existingBanner.Dispose();
+            _activeBanners.Clear();
         }
 
         /// <summary>

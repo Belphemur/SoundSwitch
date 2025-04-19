@@ -1,6 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -58,51 +117,113 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="disableCustomSound.tooltip" xml:space="preserve">
-    <value>تعطيل مجموعة الصوت المخصص.</value>
+  <data name="selected" xml:space="preserve">
+    <value>مُحدّد</value>
   </data>
-  <data name="notification.option.banner" xml:space="preserve">
-    <value>لافتة</value>
+  <data name="connected" xml:space="preserve">
+    <value>تم الاتصال</value>
   </data>
-  <data name="updateNotify.tooltip" xml:space="preserve">
-    <value>سوف ينبهك SoundSwitch عند توفر تحديث. عند النقر فوق الرسالة ، ستظهر نافذة تم فيها تنزيل التحديث وسيتم سؤالك عما إذا كنت تريد تثبيته.</value>
+  <data name="disconnected" xml:space="preserve">
+    <value>غير متصل</value>
   </data>
-  <data name="updateNever.tooltip" xml:space="preserve">
-    <value>لا تقم بتحديث البرنامج ما لم يتم تحديثه يدويًا.</value>
+  <data name="recording" xml:space="preserve">
+    <value>تسجيل صوتي</value>
   </data>
-  <data name="languageRestartRequired.caption" xml:space="preserve">
-    <value>يجب إعادة التشغيل</value>
+  <data name="playback" xml:space="preserve">
+    <value>صوت</value>
   </data>
-  <data name="languageRestartRequired" xml:space="preserve">
-    <value>اللغه ستتغير بعد إعادة تشغيل SoundSwitch.
-هل تريد إعادة التشغيل الآن ؟</value>
+  <data name="settings" xml:space="preserve">
+    <value>الإعدادات</value>
   </data>
-  <data name="language" xml:space="preserve">
-    <value>اللغه</value>
+  <data name="hotkey" xml:space="preserve">
+    <value>اختصار لوحة المفاتيح</value>
   </data>
-  <data name="activePlayback" xml:space="preserve">
-    <value>تشغيل: {0}</value>
+  <data name="communicationsDevice" xml:space="preserve">
+    <value>تبديل جهاز الإتصالات الإفتراضي</value>
   </data>
-  <data name="activeRecording" xml:space="preserve">
-    <value>تسجيل: {0}</value>
+  <data name="startWithWindows" xml:space="preserve">
+    <value>تشغيل تلقائي عند تشغيل الكمبيوتر</value>
   </data>
-  <data name="audioFileNotFoundCaption" xml:space="preserve">
-    <value>ملف الصوت غير موجود</value>
+  <data name="buttonClose" xml:space="preserve">
+    <value>إغلاق</value>
   </data>
-  <data name="audioFileNotFound" xml:space="preserve">
-    <value>لا يمكن العثور على ملف الصوت الذي حددته لاستخدامه كإشعار. حول SoundSwitch إعداد الإعلام إلى {0}.</value>
+  <data name="buttonClose.tooltip" xml:space="preserve">
+    <value>التغييرات تحفظ بشكل تلقائي</value>
   </data>
-  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-    <value>من دون تلميحات</value>
+  <data name="communicationsDevice.tooltip" xml:space="preserve">
+    <value>عندما يتم اختياره, 'جهاز الإتصالات الإفتراضي' و 'جهاز الإتصالات الإفتراضي' يتم تبديلهما مع بعض (جيد للإستخدام لتطبيقات مثل سكايب, تيم سبيك الخ).</value>
   </data>
-  <data name="tooltipOnHover.option.bothDevices" xml:space="preserve">
-    <value>كلا الجهازين</value>
+  <data name="updateIncludeBetaVersions" xml:space="preserve">
+    <value>إشمال النسخ التجريبيه</value>
   </data>
-  <data name="tooltipOnHover.option.recordingDevice" xml:space="preserve">
-    <value>جهاز تسجيل</value>
+  <data name="updateIncludeBetaVersions.tooltip" xml:space="preserve">
+    <value>عند الإختيار, SoundSwitch سيبحث ايضا عن نسخ تجريبيه في GitHub.</value>
   </data>
-  <data name="tooltipOnHover.option.playbackDevice" xml:space="preserve">
-    <value>جهاز سمع</value>
+  <data name="audioFiles" xml:space="preserve">
+    <value>ملفات سمع</value>
+  </data>
+  <data name="selectSoundButton.tooltip" xml:space="preserve">
+    <value>اختر ملف السمع للإشعار</value>
+  </data>
+  <data name="hotkey.tooltip" xml:space="preserve">
+    <value>اضغط لتشغيل اختصارات لوحة المفاتيح.</value>
+  </data>
+  <data name="basicSettings" xml:space="preserve">
+    <value>اعدادات أساسيه</value>
+  </data>
+  <data name="audioSettings" xml:space="preserve">
+    <value>إعدادات السمع</value>
+  </data>
+  <data name="updateSettings" xml:space="preserve">
+    <value>اعدادات التحديث</value>
+  </data>
+  <data name="cycleThrough" xml:space="preserve">
+    <value>التبديل بين</value>
+  </data>
+  <data name="keepSystemTrayIcon" xml:space="preserve">
+    <value>إبقاء أيقون SoundSwitch في شريط المهمات</value>
+  </data>
+  <data name="keepSystemTrayIcon.tooltip" xml:space="preserve">
+    <value>عنج الإختيار, أيقون شريط المهمات لا يتغير عند تغيير 'جهاز السمع الإفتراضي'.</value>
+  </data>
+  <data name="updateInstallAutomatically" xml:space="preserve">
+    <value>تنزيل تحديثات تلقائيه</value>
+  </data>
+  <data name="updateInstallAutomatically.tooltip" xml:space="preserve">
+    <value>التحديثات ينزلن بشكل تلقائي.</value>
+  </data>
+  <data name="updateNotify" xml:space="preserve">
+    <value>أخبرني عن تواجد تحديثات</value>
+  </data>
+  <data name="updateNever" xml:space="preserve">
+    <value>عدم البحث عن التحديثات</value>
+  </data>
+  <data name="tooltipOnHover" xml:space="preserve">
+    <value>تلميحات عند الحوم بفأرة الحاسوب</value>
+  </data>
+  <data name="cycleThrough.option.allAudioDevices" xml:space="preserve">
+    <value>كل أجهزة السمع</value>
+  </data>
+  <data name="cycleThrough.option.onlySelectedAudioDevices" xml:space="preserve">
+    <value>فقط اجهزة السمع المختاره</value>
+  </data>
+  <data name="cycleThrough.tooltip" xml:space="preserve">
+    <value>الأختيار بين أي اجهزة يتم التبديل. بين الأجهزة المختاره ام جميع الأجهزة.</value>
+  </data>
+  <data name="notification.option.windowsDefault" xml:space="preserve">
+    <value>اشعارات الكمبيوتر</value>
+  </data>
+  <data name="notification.option.sound" xml:space="preserve">
+    <value>اشعارات صوتيه</value>
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>لا يوجد</value>
+  </data>
+  <data name="notification.option.toast" xml:space="preserve">
+    <value>إشعارات عائمه</value>
+  </data>
+  <data name="notification.option.customized" xml:space="preserve">
+    <value>إشعارات صوتيه مختاره حسب الطلب</value>
   </data>
   <data name="notification.tooltip" xml:space="preserve">
     <value>إشعارات الكمبيوتر: الإشعارات الإفتراضية للكمبيوتر.
@@ -111,283 +232,57 @@
 إشعارات عائمه: شكل مميز عن الإشعارات الإفتراضيه للكمبيوتر.
 لافته: يستخدم اطار مميز دائما فوق جميع الشبابيك, مفيد للإستخدام لدى الألعاب.</value>
   </data>
-  <data name="notification.option.customized" xml:space="preserve">
-    <value>إشعارات صوتيه مختاره حسب الطلب</value>
+  <data name="tooltipOnHover.option.playbackDevice" xml:space="preserve">
+    <value>جهاز سمع</value>
   </data>
-  <data name="notification.option.toast" xml:space="preserve">
-    <value>إشعارات عائمه</value>
+  <data name="tooltipOnHover.option.recordingDevice" xml:space="preserve">
+    <value>جهاز تسجيل</value>
   </data>
-  <data name="notificationOptionNone" xml:space="preserve">
-    <value>بدون إشعارات</value>
+  <data name="tooltipOnHover.option.bothDevices" xml:space="preserve">
+    <value>كلا الجهازين</value>
   </data>
-  <data name="notification.option.sound" xml:space="preserve">
-    <value>اشعارات صوتيه</value>
+  <data name="audioFileNotFound" xml:space="preserve">
+    <value>لا يمكن العثور على ملف الصوت الذي حددته لاستخدامه كإشعار. حول SoundSwitch إعداد الإعلام إلى {0}.</value>
   </data>
-  <data name="notification.option.windowsDefault" xml:space="preserve">
-    <value>اشعارات الكمبيوتر</value>
+  <data name="audioFileNotFound.caption" xml:space="preserve">
+    <value>الملف الصوتي غير متوفر</value>
   </data>
-  <data name="cycleThrough.tooltip" xml:space="preserve">
-    <value>الأختيار بين أي اجهزة يتم التبديل. بين الأجهزة المختاره ام جميع الأجهزة.</value>
+  <data name="activeRecording" xml:space="preserve">
+    <value>تسجيل: {0}</value>
   </data>
-  <data name="cycleThrough.option.onlySelectedAudioDevices" xml:space="preserve">
-    <value>فقط اجهزة السمع المختاره</value>
+  <data name="activePlayback" xml:space="preserve">
+    <value>تشغيل: {0}</value>
   </data>
-  <data name="cycleThrough.option.allAudioDevices" xml:space="preserve">
-    <value>كل أجهزة السمع</value>
+  <data name="language" xml:space="preserve">
+    <value>اللغه</value>
   </data>
-  <data name="tooltipOnHover" xml:space="preserve">
-    <value>تلميحات عند الحوم بفأرة الحاسوب</value>
+  <data name="languageRestartRequired" xml:space="preserve">
+    <value>اللغه ستتغير بعد إعادة تشغيل SoundSwitch.
+هل تريد إعادة التشغيل الآن ؟</value>
   </data>
-  <data name="updateNever" xml:space="preserve">
-    <value>عدم البحث عن التحديثات</value>
+  <data name="languageRestartRequired.caption" xml:space="preserve">
+    <value>يجب إعادة التشغيل</value>
   </data>
-  <data name="updateNotify" xml:space="preserve">
-    <value>أخبرني عن تواجد تحديثات</value>
+  <data name="updateNever.tooltip" xml:space="preserve">
+    <value>لا تقم بتحديث البرنامج ما لم يتم تحديثه يدويًا.</value>
   </data>
-  <data name="updateInstallAutomatically.tooltip" xml:space="preserve">
-    <value>التحديثات ينزلن بشكل تلقائي.</value>
+  <data name="updateNotify.tooltip" xml:space="preserve">
+    <value>سوف ينبهك SoundSwitch عند توفر تحديث. عند النقر فوق الرسالة ، ستظهر نافذة تم فيها تنزيل التحديث وسيتم سؤالك عما إذا كنت تريد تثبيته.</value>
   </data>
-  <data name="updateInstallAutomatically" xml:space="preserve">
-    <value>تنزيل تحديثات تلقائيه</value>
+  <data name="notification.option.banner" xml:space="preserve">
+    <value>لافتة</value>
   </data>
-  <data name="keepSystemTrayIcon.tooltip" xml:space="preserve">
-    <value>عنج الإختيار, أيقون شريط المهمات لا يتغير عند تغيير 'جهاز السمع الإفتراضي'.</value>
+  <data name="disableCustomSound.tooltip" xml:space="preserve">
+    <value>تعطيل مجموعة الصوت المخصص.</value>
   </data>
-  <data name="keepSystemTrayIcon" xml:space="preserve">
-    <value>إبقاء أيقون SoundSwitch في شريط المهمات</value>
+  <data name="foregroundApp" xml:space="preserve">
+    <value>تبديل ايضا جهاز السمع لدى جميع البرامج المصغره</value>
   </data>
-  <data name="cycleThrough" xml:space="preserve">
-    <value>التبديل بين</value>
+  <data name="foregroundApp.tooltip" xml:space="preserve">
+    <value>بدل ايضا البرامج التي في الأستعمال حاليا. مفيد لألعاب الفيديو.</value>
   </data>
-  <data name="updateSettings" xml:space="preserve">
-    <value>اعدادات التحديث</value>
-  </data>
-  <data name="audioSettings" xml:space="preserve">
-    <value>إعدادات السمع</value>
-  </data>
-  <data name="basicSettings" xml:space="preserve">
-    <value>اعدادات أساسيه</value>
-  </data>
-  <data name="hotkey.tooltip" xml:space="preserve">
-    <value>اضغط لتشغيل اختصارات لوحة المفاتيح.</value>
-  </data>
-  <data name="selectSoundButton.tooltip" xml:space="preserve">
-    <value>اختر ملف السمع للإشعار</value>
-  </data>
-  <data name="audioFiles" xml:space="preserve">
-    <value>ملفات سمع</value>
-  </data>
-  <data name="updateIncludeBetaVersions.tooltip" xml:space="preserve">
-    <value>عند الإختيار, SoundSwitch سيبحث ايضا عن نسخ تجريبيه في GitHub.</value>
-  </data>
-  <data name="updateIncludeBetaVersions" xml:space="preserve">
-    <value>إشمال النسخ التجريبيه</value>
-  </data>
-  <data name="notification" xml:space="preserve">
-    <value>إشعار</value>
-  </data>
-  <data name="communicationsDevice.tooltip" xml:space="preserve">
-    <value>عندما يتم اختياره, 'جهاز الإتصالات الإفتراضي' و 'جهاز الإتصالات الإفتراضي' يتم تبديلهما مع بعض (جيد للإستخدام لتطبيقات مثل سكايب, تيم سبيك الخ).</value>
-  </data>
-  <data name="buttonClose.tooltip" xml:space="preserve">
-    <value>التغييرات تحفظ بشكل تلقائي</value>
-  </data>
-  <data name="buttonClose" xml:space="preserve">
-    <value>إغلاق</value>
-  </data>
-  <data name="startWithWindows" xml:space="preserve">
-    <value>تشغيل تلقائي عند تشغيل الكمبيوتر</value>
-  </data>
-  <data name="communicationsDevice" xml:space="preserve">
-    <value>تبديل جهاز الإتصالات الإفتراضي</value>
-  </data>
-  <data name="hotkey" xml:space="preserve">
-    <value>اختصار لوحة المفاتيح</value>
-  </data>
-  <data name="settings" xml:space="preserve">
-    <value>الإعدادات</value>
-  </data>
-  <data name="playback" xml:space="preserve">
-    <value>صوت</value>
-  </data>
-  <data name="recording" xml:space="preserve">
-    <value>تسجيل صوتي</value>
-  </data>
-  <data name="disconnected" xml:space="preserve">
-    <value>غير متصل</value>
-  </data>
-  <data name="connected" xml:space="preserve">
-    <value>تم الاتصال</value>
-  </data>
-  <data name="selected" xml:space="preserve">
-    <value>مُحدّد</value>
-  </data>
-  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
-    <value>هذا المشغل يجعل البروفايل موجود داخل القائمه بزاوية الشاشه. إضغط على رمز النظام لرؤية البروفايلات المتواجده.</value>
-  </data>
-  <data name="profile.trigger.trayMenu" xml:space="preserve">
-    <value>القائمه داخل التطبيق</value>
-  </data>
-  <data name="mute.toggle.label" xml:space="preserve">
-    <value>تشغيل\إيقاف الوضع الصامت</value>
-  </data>
-  <data name="notification.microphone.unmuted" xml:space="preserve">
-    <value>{0} الآن غير صامت.</value>
-  </data>
-  <data name="notification.microphone.muted" xml:space="preserve">
-    <value>{0} الآن صامت.</value>
-  </data>
-  <data name="profile.trigger.uwp.desc" xml:space="preserve">
-    <value>أدخل إسم التطبيق المنزل من Windows Store. مثل Netflix, Amazon Prime Video, الخ…</value>
-  </data>
-  <data name="profile.trigger.uwp" xml:space="preserve">
-    <value>تطبيقات Microsoft Store</value>
-  </data>
-  <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
-    <value>تم إستعادة الوضع المسبق للكمبيوتر</value>
-  </data>
-  <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
-    <value>يجب على الجهاز "{0}" ان يكون مشغل.
-
-إستعادة الوضع المسبق للكمبيوتر عند إغلاق التطبيق.</value>
-  </data>
-  <data name="profile.trigger.restoreDevices" xml:space="preserve">
-    <value>إستعادة وضع الأجهزه المسبق عندما ينتهي المشغل</value>
-  </data>
-  <data name="usePrimaryScreen.tooltip" xml:space="preserve">
-    <value>اظهار لافته على الشاشه الرئيسيه بدلا من الشاشه المركز عليها.</value>
-  </data>
-  <data name="usePrimaryScreen" xml:space="preserve">
-    <value>إستخدم دائما الشاشه الإساسيه</value>
-  </data>
-  <data name="profile.trigger.startup.desc" xml:space="preserve">
-    <value>البروفيل سيتم تشغيله تلقائيا عندما يتم تشغيل SoundSwitch</value>
-  </data>
-  <data name="profile.trigger.startup" xml:space="preserve">
-    <value>عند تشغيل الكمبيوتر</value>
-  </data>
-  <data name="buttonEdit" xml:space="preserve">
-    <value>تعديل</value>
-  </data>
-  <data name="buttonSave" xml:space="preserve">
-    <value>حفظ</value>
-  </data>
-  <data name="profile.notification.text" xml:space="preserve">
-    <value>البروفيل {0} تم تشغيله</value>
-  </data>
-  <data name="profile.notifyOnActivation" xml:space="preserve">
-    <value>اظهار إشعار عند تشغيل البروفيل</value>
-  </data>
-  <data name="profile.error.window" xml:space="preserve">
-    <value>يوجد بروفيل قيد الإستخدام مع إسم التطبيق{0}.</value>
-  </data>
-  <data name="profile.error.steam" xml:space="preserve">
-    <value>يمكنك إستخدام بروفيل واحد لSteam Big Picture.</value>
-  </data>
-  <data name="profile.error.triggers.min" xml:space="preserve">
-    <value>تحتاج الى مشغل واحد على الأقل.</value>
-  </data>
-  <data name="communication" xml:space="preserve">
-    <value>جهاز الإتصالات الإفتراضي</value>
-  </data>
-  <data name="profile.trigger.available" xml:space="preserve">
-    <value>مشغلات البروفيل المتواجده</value>
-  </data>
-  <data name="profile.trigger.actives" xml:space="preserve">
-    <value>مشغلات البروفيلات المشغله</value>
-  </data>
-  <data name="profile.desc" xml:space="preserve">
-    <value>وصف</value>
-  </data>
-  <data name="profile.trigger.steam.desc" xml:space="preserve">
-    <value>التشغيل عندما Steam Big Picture يكون قيد الإستخدام (الوضع الحالي يرجع إلى وضعه الطبيعي عندما Steam Big Picture يغلق.)</value>
-  </data>
-  <data name="profile.trigger.process.desc" xml:space="preserve">
-    <value>تشغيل البروفيل اذا التطبيق المختار موجود بخلفية الشاشه</value>
-  </data>
-  <data name="profile.trigger.window.desc" xml:space="preserve">
-    <value>تشغيل البروفايل عند احتواء البرنامح الخلفي على الأحرف التالية</value>
-  </data>
-  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>اختصار لوحة المفاتيح المختارة لتفعيل البروفايل. اذا استخدم نفس الاختصار , يمكنك تغير بين عدة بروفايلات.</value>
-  </data>
-  <data name="profile.trigger.steam" xml:space="preserve">
-    <value>Steam Big Picture</value>
-  </data>
-  <data name="profile.trigger.process" xml:space="preserve">
-    <value>مسار التطبيق</value>
-  </data>
-  <data name="profile.trigger.window" xml:space="preserve">
-    <value>إسم التطبيق</value>
-  </data>
-  <data name="profile.error.deviceNotFound" xml:space="preserve">
-    <value>لم يستطع إيجاد الجهاز {0}.</value>
-  </data>
-  <data name="hotkeyEnabled" xml:space="preserve">
-    <value>تشغيل إختصار لوحة المفاتيح</value>
-  </data>
-  <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
-    <value>عندما التطبيق يحدد بالفتح, SoundSwitch يبدل أيضا الجهاز الإفتراضي.</value>
-  </data>
-  <data name="profile.defaultDevice.checkbox" xml:space="preserve">
-    <value>أيضا تبديل الجهاز الإفتراضي</value>
-  </data>
-  <data name="profile.feature.profile" xml:space="preserve">
-    <value>بروفيل</value>
-  </data>
-  <data name="profile.error.noName" xml:space="preserve">
-    <value>البروفيل يحتاج إلى إسم.</value>
-  </data>
-  <data name="profile.error.delete" xml:space="preserve">
-    <value>لم يستطع إيجاد البروفيل.</value>
-  </data>
-  <data name="buttonDelete" xml:space="preserve">
-    <value>إزاله</value>
-  </data>
-  <data name="profile.error.title" xml:space="preserve">
-    <value>خطأ بروفيل</value>
-  </data>
-  <data name="profile.feature.executable" xml:space="preserve">
-    <value>ملف تطبيق (*.exe)</value>
-  </data>
-  <data name="profile.feature.add" xml:space="preserve">
-    <value>إضافة بروفيل</value>
-  </data>
-  <data name="profile.error.registerHotkeys.title" xml:space="preserve">
-    <value>اختصار لوحة المفاتيح قيد الإستخدام من قبل</value>
-  </data>
-  <data name="profile.error.registerHotkeys" xml:space="preserve">
-    <value>لم يستطع تسجيل اختصار لوحة المفاتيح: {0}</value>
-  </data>
-  <data name="profile.explanation" xml:space="preserve">
-    <value>إضافة بروفايل لتبديل الى جهاز سمعي أو جهاز تسجيل, عند فتح أو التركيز على تطبيق معين. يمكنك أيضًا تعيين مفتاح التشغيل السريع الخاص بك لجهاز محدد.</value>
-  </data>
-  <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
-    <value>عليك ضبط جهاز صوت و\أو جهاز تسجيل.</value>
-  </data>
-  <data name="profile.error.needHKOrPath" xml:space="preserve">
-    <value>عليك تسجيل اختصار لوحة المفاتيح و\أو التطبيق.</value>
-  </data>
-  <data name="profile.error.name" xml:space="preserve">
-    <value>البروفيل بإسم {0} قيد الإستخدام.</value>
-  </data>
-  <data name="profile.error.application" xml:space="preserve">
-    <value>التطبيق {0} قيد الإتصال ببروفيل مسبقا.</value>
-  </data>
-  <data name="profile.error.hotkey" xml:space="preserve">
-    <value>هذا الإختصار {0} قيد الإستخدام.</value>
-  </data>
-  <data name="profile.name" xml:space="preserve">
-    <value>الأسم</value>
-  </data>
-  <data name="profile.program" xml:space="preserve">
-    <value>تطبيق</value>
-  </data>
-  <data name="buttonAdd" xml:space="preserve">
-    <value>اضافه</value>
-  </data>
-  <data name="profile.tab" xml:space="preserve">
-    <value>البروفيلات</value>
+  <data name="iconChange" xml:space="preserve">
+    <value>أيقون في زاوية الشاشه</value>
   </data>
   <data name="iconChange.tooltip" xml:space="preserve">
     <value>حدد متى يتغير رمز SoundSwitch في منطقة الإشعارات.
@@ -397,26 +292,172 @@
 التسجيل: عند استبدال جهاز التسجيل.
 كلاهما: قم بتغيير الرمز عند استبدال أي نوع من الأجهزة.</value>
   </data>
-  <data name="iconChange" xml:space="preserve">
-    <value>أيقون في زاوية الشاشه</value>
+  <data name="profile.tab" xml:space="preserve">
+    <value>البروفيلات</value>
   </data>
-  <data name="foregroundApp.tooltip" xml:space="preserve">
-    <value>بدل ايضا البرامج التي في الأستعمال حاليا. مفيد لألعاب الفيديو.</value>
+  <data name="buttonAdd" xml:space="preserve">
+    <value>اضافه</value>
   </data>
-  <data name="foregroundApp" xml:space="preserve">
-    <value>تبديل ايضا جهاز السمع لدى جميع البرامج المصغره</value>
+  <data name="profile.program" xml:space="preserve">
+    <value>تطبيق</value>
   </data>
-  <data name="telemetry" xml:space="preserve">
-    <value>القياس عن بعد</value>
+  <data name="profile.name" xml:space="preserve">
+    <value>الأسم</value>
   </data>
-  <data name="quickMenu" xml:space="preserve">
-    <value>قائمة سريعة على مفتاح الاختصار</value>
+  <data name="profile.error.hotkey" xml:space="preserve">
+    <value>هذا الإختصار {0} قيد الإستخدام.</value>
   </data>
-  <data name="quickMenu.desc" xml:space="preserve">
-    <value>عرض قائمة سريعة مثل لغة Windows عند استخدام مفتاح الاختصار</value>
+  <data name="profile.error.application" xml:space="preserve">
+    <value>التطبيق {0} قيد الإتصال ببروفيل مسبقا.</value>
   </data>
-  <data name="telemetry.desc" xml:space="preserve">
-    <value>اجمع بشكل مجهول إصدار SoundSwitch المستخدم. معروف فقط مع مطور SoundSwitch.</value>
+  <data name="profile.error.name" xml:space="preserve">
+    <value>البروفيل بإسم {0} قيد الإستخدام.</value>
+  </data>
+  <data name="profile.error.needHKOrPath" xml:space="preserve">
+    <value>عليك تسجيل اختصار لوحة المفاتيح و\أو التطبيق.</value>
+  </data>
+  <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
+    <value>عليك ضبط جهاز صوت و\أو جهاز تسجيل.</value>
+  </data>
+  <data name="profile.explanation" xml:space="preserve">
+    <value>إضافة بروفايل لتبديل الى جهاز سمعي أو جهاز تسجيل, عند فتح أو التركيز على تطبيق معين. يمكنك أيضًا تعيين مفتاح التشغيل السريع الخاص بك لجهاز محدد.</value>
+  </data>
+  <data name="profile.error.registerHotkeys" xml:space="preserve">
+    <value>لم يستطع تسجيل اختصار لوحة المفاتيح: {0}</value>
+  </data>
+  <data name="profile.error.registerHotkeys.title" xml:space="preserve">
+    <value>اختصار لوحة المفاتيح قيد الإستخدام من قبل</value>
+  </data>
+  <data name="profile.feature.add" xml:space="preserve">
+    <value>إضافة بروفيل</value>
+  </data>
+  <data name="profile.feature.executable" xml:space="preserve">
+    <value>ملف تطبيق (*.exe)</value>
+  </data>
+  <data name="profile.error.title" xml:space="preserve">
+    <value>خطأ بروفيل</value>
+  </data>
+  <data name="buttonDelete" xml:space="preserve">
+    <value>إزاله</value>
+  </data>
+  <data name="profile.error.delete" xml:space="preserve">
+    <value>لم يستطع إيجاد البروفيل.</value>
+  </data>
+  <data name="profile.error.noName" xml:space="preserve">
+    <value>البروفيل يحتاج إلى إسم.</value>
+  </data>
+  <data name="profile.feature.profile" xml:space="preserve">
+    <value>بروفيل</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox" xml:space="preserve">
+    <value>أيضا تبديل الجهاز الإفتراضي</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
+    <value>عندما التطبيق يحدد بالفتح, SoundSwitch يبدل أيضا الجهاز الإفتراضي.</value>
+  </data>
+  <data name="hotkeyEnabled" xml:space="preserve">
+    <value>تشغيل إختصار لوحة المفاتيح</value>
+  </data>
+  <data name="profile.error.deviceNotFound" xml:space="preserve">
+    <value>لم يستطع إيجاد الجهاز {0}.</value>
+  </data>
+  <data name="profile.trigger.window" xml:space="preserve">
+    <value>إسم التطبيق</value>
+  </data>
+  <data name="profile.trigger.process" xml:space="preserve">
+    <value>مسار التطبيق</value>
+  </data>
+  <data name="profile.trigger.steam" xml:space="preserve">
+    <value>Steam Big Picture</value>
+  </data>
+  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
+    <value>اختصار لوحة المفاتيح المختارة لتفعيل البروفايل. اذا استخدم نفس الاختصار , يمكنك تغير بين عدة بروفايلات.</value>
+  </data>
+  <data name="profile.trigger.window.desc" xml:space="preserve">
+    <value>تشغيل البروفايل عند احتواء البرنامح الخلفي على الأحرف التالية</value>
+  </data>
+  <data name="profile.trigger.process.desc" xml:space="preserve">
+    <value>تشغيل البروفيل اذا التطبيق المختار موجود بخلفية الشاشه</value>
+  </data>
+  <data name="profile.trigger.steam.desc" xml:space="preserve">
+    <value>التشغيل عندما Steam Big Picture يكون قيد الإستخدام (الوضع الحالي يرجع إلى وضعه الطبيعي عندما Steam Big Picture يغلق.)</value>
+  </data>
+  <data name="profile.desc" xml:space="preserve">
+    <value>وصف</value>
+  </data>
+  <data name="profile.trigger.actives" xml:space="preserve">
+    <value>مشغلات البروفيلات المشغله</value>
+  </data>
+  <data name="profile.trigger.available" xml:space="preserve">
+    <value>مشغلات البروفيل المتواجده</value>
+  </data>
+  <data name="communication" xml:space="preserve">
+    <value>جهاز الإتصالات الإفتراضي</value>
+  </data>
+  <data name="profile.error.triggers.min" xml:space="preserve">
+    <value>تحتاج الى مشغل واحد على الأقل.</value>
+  </data>
+  <data name="profile.error.steam" xml:space="preserve">
+    <value>يمكنك إستخدام بروفيل واحد لSteam Big Picture.</value>
+  </data>
+  <data name="profile.error.window" xml:space="preserve">
+    <value>يوجد بروفيل قيد الإستخدام مع إسم التطبيق{0}.</value>
+  </data>
+  <data name="profile.notifyOnActivation" xml:space="preserve">
+    <value>اظهار إشعار عند تشغيل البروفيل</value>
+  </data>
+  <data name="profile.notification.text" xml:space="preserve">
+    <value>البروفيل {0} تم تشغيله</value>
+  </data>
+  <data name="buttonSave" xml:space="preserve">
+    <value>حفظ</value>
+  </data>
+  <data name="buttonEdit" xml:space="preserve">
+    <value>تعديل</value>
+  </data>
+  <data name="profile.trigger.startup" xml:space="preserve">
+    <value>عند تشغيل الكمبيوتر</value>
+  </data>
+  <data name="profile.trigger.startup.desc" xml:space="preserve">
+    <value>البروفيل سيتم تشغيله تلقائيا عندما يتم تشغيل SoundSwitch</value>
+  </data>
+  <data name="usePrimaryScreen" xml:space="preserve">
+    <value>إستخدم دائما الشاشه الإساسيه</value>
+  </data>
+  <data name="usePrimaryScreen.tooltip" xml:space="preserve">
+    <value>اظهار لافته على الشاشه الرئيسيه بدلا من الشاشه المركز عليها.</value>
+  </data>
+  <data name="profile.trigger.restoreDevices" xml:space="preserve">
+    <value>إستعادة وضع الأجهزه المسبق عندما ينتهي المشغل</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
+    <value>يجب على الجهاز "{0}" ان يكون مشغل.
+
+إستعادة الوضع المسبق للكمبيوتر عند إغلاق التطبيق.</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
+    <value>تم إستعادة الوضع المسبق للكمبيوتر</value>
+  </data>
+  <data name="profile.trigger.uwp" xml:space="preserve">
+    <value>تطبيقات Microsoft Store</value>
+  </data>
+  <data name="profile.trigger.uwp.desc" xml:space="preserve">
+    <value>أدخل إسم التطبيق المنزل من Windows Store. مثل Netflix, Amazon Prime Video, الخ…</value>
+  </data>
+  <data name="notification.microphone.muted" xml:space="preserve">
+    <value>{0} الآن صامت.</value>
+  </data>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>{0} الآن غير صامت.</value>
+  </data>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>تشغيل\إيقاف الوضع الصامت</value>
+  </data>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>القائمه داخل التطبيق</value>
+  </data>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>هذا المشغل يجعل البروفايل موجود داخل القائمه بزاوية الشاشه. إضغط على رمز النظام لرؤية البروفايلات المتواجده.</value>
   </data>
   <data name="profile.trigger.deviceChanged" xml:space="preserve">
     <value>فرض البروفايل</value>
@@ -427,47 +468,20 @@
   <data name="profile.error.deviceChanged" xml:space="preserve">
     <value>يمكنك فقط الحصول على بروفايل إجباري واحد.</value>
   </data>
-  <data name="devices.AutoAddNewDevice" xml:space="preserve">
-    <value>تحديد تلقائي للأجهزة الجديدة</value>
-  </data>
-  <data name="devices.AutoAddNewDevice..tooltip" xml:space="preserve">
-    <value>إضافة جهاز جديد تلقائيًا إلى القائمة المحددة عند توصيلها بالكمبيوتر</value>
-  </data>
-  <data name="position.tooltip" xml:space="preserve">
-    <value>إضبط مكان الاشعارات.</value>
-  </data>
-  <data name="link.donate" xml:space="preserve">
-    <value>تبرع</value>
-  </data>
-  <data name="position.option.topLeft" xml:space="preserve">
-    <value>أعلى يسار</value>
-  </data>
-  <data name="position.option.topRight" xml:space="preserve">
-    <value>أعلى يمين</value>
-  </data>
-  <data name="position.option.topCenter" xml:space="preserve">
-    <value>أعلى وسط</value>
-  </data>
-  <data name="position.option.bottomCenter" xml:space="preserve">
-    <value>‫أسفل وسط</value>
-  </data>
-  <data name="none" xml:space="preserve">
-    <value>لا يوجد</value>
-  </data>
-  <data name="position" xml:space="preserve">
-    <value>مكان الإشعارات</value>
-  </data>
-  <data name="keepVolume" xml:space="preserve">
-    <value>إبقاء مستوى الصوت لجميع الاصوات</value>
-  </data>
-  <data name="audioFileNotFound.caption" xml:space="preserve">
-    <value>الملف الصوتي غير متوفر</value>
+  <data name="telemetry" xml:space="preserve">
+    <value>القياس عن بعد</value>
   </data>
   <data name="telemetry.tooltip" xml:space="preserve">
     <value>اجمع بشكل مجهول إصدار SoundSwitch قيد الاستخدام. فقط ماتم مشاركته مع مطور SoundSwitch.</value>
   </data>
+  <data name="quickMenu" xml:space="preserve">
+    <value>قائمة سريعة على مفتاح الاختصار</value>
+  </data>
   <data name="quickMenu.tooltip" xml:space="preserve">
     <value>إظهار قائمة سريعة عند استخدام مفتاح التشغيل السريع</value>
+  </data>
+  <data name="keepVolume" xml:space="preserve">
+    <value>إبقاء مستوى الصوت لجميع الاصوات</value>
   </data>
   <data name="keepVolume.tooltip" xml:space="preserve">
     <value>إبقاء مستوى الصوت حتى عند الانتقال جهاز صوتي لآخر</value>
@@ -478,8 +492,11 @@
   <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
     <value>إضافة جهاز جديد تلقائيًا إلى القائمة المحددة عند توصيله بالكمبيوتر</value>
   </data>
-  <data name="buttonReset" xml:space="preserve">
-    <value>إعادة الضبط</value>
+  <data name="position" xml:space="preserve">
+    <value>مكان الإشعارات</value>
+  </data>
+  <data name="position.tooltip" xml:space="preserve">
+    <value>إضبط مكان الاشعارات.</value>
   </data>
   <data name="position.option.bottomLeft" xml:space="preserve">
     <value>بالأسفل يسار</value>
@@ -487,38 +504,17 @@
   <data name="position.option.bottomRight" xml:space="preserve">
     <value>بالأسفل يمين</value>
   </data>
-  <data name="link.community" xml:space="preserve">
-    <value>مجتمع ديسكورت</value>
+  <data name="position.option.topLeft" xml:space="preserve">
+    <value>أعلى يسار</value>
   </data>
-  <data name="link.help" xml:space="preserve">
-    <value>المساعدة</value>
+  <data name="position.option.topRight" xml:space="preserve">
+    <value>أعلى يمين</value>
   </data>
-  <data name="resetAudioDevices.desc" xml:space="preserve">
-    <value>إعادة تعيين أداة الصوت لبرامج محددة في حالة عدم إعادة تعيين أجهزة الصوت للبرامج عند تبديل الأجهزة.</value>
+  <data name="position.option.bottomCenter" xml:space="preserve">
+    <value>‫أسفل وسط</value>
   </data>
-  <data name="resetAudioDevices" xml:space="preserve">
-    <value>إعادة تعيين الصوت لكل تطبيق</value>
-  </data>
-  <data name="exportLogFiles" xml:space="preserve">
-    <value>تصدير السجلات</value>
-  </data>
-  <data name="buttonExport" xml:space="preserve">
-    <value>تصدير</value>
-  </data>
-  <data name="troubleshooting" xml:space="preserve">
-    <value>استكشاف الأخطاء وإصلاحها</value>
-  </data>
-  <data name="exportLogFiles.desc" xml:space="preserve">
-    <value>تصدير جميع ملفات السجلات إلى محفوظات zip للمزيد من مزيد من استكشاف الأخطاء وإصلاحها في موقع المساعدة أو مجتمع ديسكورت.</value>
-  </data>
-  <data name="troubleshooting.desc" xml:space="preserve">
-    <value>إذا كنت بحاجة إلى أي مساعدة أو مزيد من استكشاف الأخطاء وإصلاحها باستخدام SoundSwitch، فيمكنك زيارة رابط المساعدو أو رابط Discord ، أو المساعدة في دعمنا من خلال زيارة رابط التبرع أدناه.</value>
-  </data>
-  <data name="notification.banner.onscreen.time" xml:space="preserve">
-    <value>في وقت الشاشة</value>
-  </data>
-  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
-    <value>ماهي مدة بقاء الشعار على الشاشة بالثواني.</value>
+  <data name="position.option.topCenter" xml:space="preserve">
+    <value>أعلى وسط</value>
   </data>
   <data name="notification.single" xml:space="preserve">
     <value>فقط شريط إعلاني واحد</value>
@@ -526,7 +522,82 @@
   <data name="notification.single.tooltip" xml:space="preserve">
     <value>عرض شعار واحد فقط في كل مرة واستبدال محتواه.</value>
   </data>
+  <data name="link.community" xml:space="preserve">
+    <value>مجتمع ديسكورت</value>
+  </data>
+  <data name="link.donate" xml:space="preserve">
+    <value>تبرع</value>
+  </data>
+  <data name="link.help" xml:space="preserve">
+    <value>المساعدة</value>
+  </data>
+  <data name="resetAudioDevices.desc" xml:space="preserve">
+    <value>إعادة تعيين أداة الصوت لبرامج محددة في حالة عدم إعادة تعيين أجهزة الصوت للبرامج عند تبديل الأجهزة.</value>
+  </data>
+  <data name="buttonReset" xml:space="preserve">
+    <value>إعادة الضبط</value>
+  </data>
+  <data name="resetAudioDevices" xml:space="preserve">
+    <value>إعادة تعيين الصوت لكل تطبيق</value>
+  </data>
+  <data name="exportLogFiles" xml:space="preserve">
+    <value>تصدير السجلات</value>
+  </data>
+  <data name="exportLogFiles.desc" xml:space="preserve">
+    <value>تصدير جميع ملفات السجلات إلى محفوظات zip للمزيد من مزيد من استكشاف الأخطاء وإصلاحها في موقع المساعدة أو مجتمع ديسكورت.</value>
+  </data>
+  <data name="buttonExport" xml:space="preserve">
+    <value>تصدير</value>
+  </data>
+  <data name="troubleshooting" xml:space="preserve">
+    <value>استكشاف الأخطاء وإصلاحها</value>
+  </data>
+  <data name="troubleshooting.desc" xml:space="preserve">
+    <value>إذا كنت بحاجة إلى أي مساعدة أو مزيد من استكشاف الأخطاء وإصلاحها باستخدام SoundSwitch، فيمكنك زيارة رابط المساعدو أو رابط Discord ، أو المساعدة في دعمنا من خلال زيارة رابط التبرع أدناه.</value>
+  </data>
   <data name="position.option.center" xml:space="preserve">
     <value>وسط</value>
+  </data>
+  <data name="banner.mute.option.fading" xml:space="preserve">
+    <value />
+  </data>
+  <data name="banner.mute.option.persistent" xml:space="preserve">
+    <value />
+  </data>
+  <data name="switch.device.label" xml:space="preserve">
+    <value />
+  </data>
+  <data name="audioFileNotFoundCaption" xml:space="preserve">
+    <value>ملف الصوت غير موجود</value>
+  </data>
+  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
+    <value>من دون تلميحات</value>
+  </data>
+  <data name="notificationOptionNone" xml:space="preserve">
+    <value>بدون إشعارات</value>
+  </data>
+  <data name="quickMenu.desc" xml:space="preserve">
+    <value>عرض قائمة سريعة مثل لغة Windows عند استخدام مفتاح الاختصار</value>
+  </data>
+  <data name="telemetry.desc" xml:space="preserve">
+    <value>اجمع بشكل مجهول إصدار SoundSwitch المستخدم. معروف فقط مع مطور SoundSwitch.</value>
+  </data>
+  <data name="devices.AutoAddNewDevice..tooltip" xml:space="preserve">
+    <value>إضافة جهاز جديد تلقائيًا إلى القائمة المحددة عند توصيلها بالكمبيوتر</value>
+  </data>
+  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+    <value>ماهي مدة بقاء الشعار على الشاشة بالثواني.</value>
+  </data>
+  <data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>في وقت الشاشة</value>
+  </data>
+  <data name="notification" xml:space="preserve">
+    <value>إشعار</value>
+  </data>
+  <data name="notification.bannerOptions" xml:space="preserve">
+    <value />
+  </data>
+  <data name="seconds" xml:space="preserve">
+    <value />
   </data>
 </root>

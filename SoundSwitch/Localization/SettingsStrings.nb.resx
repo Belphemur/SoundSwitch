@@ -1,6 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -53,12 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0,
-      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0,
-      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="selected" xml:space="preserve">
     <value>Valgt</value>
@@ -95,9 +152,6 @@
   </data>
   <data name="communicationsDevice.tooltip" xml:space="preserve">
     <value>Når dette velges, vil «Standard kommunikasjonsenhet» og «Standard avspillingsenhet» byttes sammen (nyttig for Mumble, Jitsi osv.).</value>
-  </data>
-  <data name="notification" xml:space="preserve">
-    <value>Merknad</value>
   </data>
   <data name="updateIncludeBetaVersions" xml:space="preserve">
     <value>Inkluder betaversjoner</value>
@@ -162,8 +216,8 @@
   <data name="notification.option.sound" xml:space="preserve">
     <value>Lydmerknad</value>
   </data>
-  <data name="notificationOptionNone" xml:space="preserve">
-    <value>Uten merknad</value>
+  <data name="none" xml:space="preserve">
+    <value>Ingen</value>
   </data>
   <data name="notification.option.toast" xml:space="preserve">
     <value>Hjørnemerknad</value>
@@ -187,14 +241,11 @@ Banner: Bruker en ramme som alltid er i forgrunnen, nyttig til bruk i spill.</va
   <data name="tooltipOnHover.option.bothDevices" xml:space="preserve">
     <value>For begge enheter</value>
   </data>
-  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-    <value>Uten verktøystips</value>
-  </data>
   <data name="audioFileNotFound" xml:space="preserve">
     <value>Lydfilen du valgte til bruk for merknadsvarsling ble ikke funnet. SoundSwitch byttet merknadsinnstillingen tilbake til {0}.</value>
   </data>
-  <data name="audioFileNotFoundCaption" xml:space="preserve">
-    <value>Lydfil ble ikke funnet</value>
+  <data name="audioFileNotFound.caption" xml:space="preserve">
+    <value>Lydfil ikke funnet</value>
   </data>
   <data name="activeRecording" xml:space="preserve">
     <value>Opptak: {0}</value>
@@ -203,23 +254,23 @@ Banner: Bruker en ramme som alltid er i forgrunnen, nyttig til bruk i spill.</va
     <value>Avspilling: {0}</value>
   </data>
   <data name="language" xml:space="preserve">
-		<value>Språk</value>
+    <value>Språk</value>
   </data>
   <data name="languageRestartRequired" xml:space="preserve">
-		<value>Språket vil endre seg etter at du starter SoundSwitch på nytt.
+    <value>Språket vil endre seg etter at du starter SoundSwitch på nytt.
 Ønsker du å starte på nytt nå?</value>
   </data>
   <data name="languageRestartRequired.caption" xml:space="preserve">
-		<value>Omstart kreves</value>
+    <value>Omstart kreves</value>
   </data>
   <data name="updateNever.tooltip" xml:space="preserve">
-		<value>Ikke oppdater programmet med mindre det gjøres manuelt.</value>
+    <value>Ikke oppdater programmet med mindre det gjøres manuelt.</value>
   </data>
   <data name="updateNotify.tooltip" xml:space="preserve">
-		<value>SoundSwitch varsler om ny oppdatering med en merknad. Når du klikker på denne, får du en melding som laster den ned og spør deg om du vil installere den.</value>
+    <value>SoundSwitch varsler om ny oppdatering med en merknad. Når du klikker på denne, får du en melding som laster den ned og spør deg om du vil installere den.</value>
   </data>
   <data name="notification.option.banner" xml:space="preserve">
-        <value>Banner</value>
+    <value>Banner</value>
   </data>
   <data name="disableCustomSound.tooltip" xml:space="preserve">
     <value>Skru av den egendefinerte lyden.</value>
@@ -247,14 +298,11 @@ Begge: Endre når enhetstypen byttes.</value>
   <data name="buttonAdd" xml:space="preserve">
     <value>Legg til</value>
   </data>
-  <data name="profile.name" xml:space="preserve">
-    <value>Navn</value>
-  </data>
-  <data name="profile.feature.profile" xml:space="preserve">
-    <value>Profil</value>
-  </data>
   <data name="profile.program" xml:space="preserve">
     <value>Program</value>
+  </data>
+  <data name="profile.name" xml:space="preserve">
+    <value>Navn</value>
   </data>
   <data name="profile.error.hotkey" xml:space="preserve">
     <value>Denne snarveien {0} er allerede registrert.</value>
@@ -264,6 +312,21 @@ Begge: Endre når enhetstypen byttes.</value>
   </data>
   <data name="profile.error.name" xml:space="preserve">
     <value>Det finnes allerede en profil ved navnet {0}.</value>
+  </data>
+  <data name="profile.error.needHKOrPath" xml:space="preserve">
+    <value>Du må velge en hurtigtast og/eller et program.</value>
+  </data>
+  <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
+    <value>Du må sette avspillings- eller opptaksenhet.</value>
+  </data>
+  <data name="profile.explanation" xml:space="preserve">
+    <value>Legg til en profil for å bytte til angitt avpillings- eller opptaksenhet, når et gitt program er startet eller i fokus.</value>
+  </data>
+  <data name="profile.error.registerHotkeys" xml:space="preserve">
+    <value>Kunne ikke registrere hurtigtast for følgende profiler: {0}</value>
+  </data>
+  <data name="profile.error.registerHotkeys.title" xml:space="preserve">
+    <value>Hurtigtast allerede i bruk</value>
   </data>
   <data name="profile.feature.add" xml:space="preserve">
     <value>Legg til profil</value>
@@ -277,26 +340,14 @@ Begge: Endre når enhetstypen byttes.</value>
   <data name="buttonDelete" xml:space="preserve">
     <value>Slett</value>
   </data>
+  <data name="profile.error.delete" xml:space="preserve">
+    <value>Kunne ikke finne profilen.</value>
+  </data>
   <data name="profile.error.noName" xml:space="preserve">
     <value>Profiler må ha et navn.</value>
   </data>
-  <data name="profile.error.needHKOrPath" xml:space="preserve">
-    <value>Du må velge en hurtigtast og/eller et program.</value>
-  </data>
-  <data name="profile.error.registerHotkeys.title" xml:space="preserve">
-    <value>Hurtigtast allerede i bruk</value>
-  </data>
-  <data name="profile.error.registerHotkeys" xml:space="preserve">
-    <value>Kunne ikke registrere hurtigtast for følgende profiler: {0}</value>
-  </data>
-  <data name="profile.explanation" xml:space="preserve">
-    <value>Legg til en profil for å bytte til angitt avpillings- eller opptaksenhet, når et gitt program er startet eller i fokus.</value>
-  </data>
-  <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
-    <value>Du må sette avspillings- eller opptaksenhet.</value>
-  </data>
-  <data name="profile.error.delete" xml:space="preserve">
-    <value>Kunne ikke finne profilen.</value>
+  <data name="profile.feature.profile" xml:space="preserve">
+    <value>Profil</value>
   </data>
   <data name="profile.defaultDevice.checkbox" xml:space="preserve">
     <value>Bytt standardenhet også</value>
@@ -310,115 +361,136 @@ Begge: Endre når enhetstypen byttes.</value>
   <data name="profile.error.deviceNotFound" xml:space="preserve">
     <value>Fant ikke enhet {0}.</value>
   </data>
-  <data name="profile.notification.text" xml:space="preserve">
-    <value>Profil {0} utløst</value>
-  </data>
-  <data name="profile.notifyOnActivation" xml:space="preserve">
-    <value>Varsle når profil utløses</value>
-  </data>
-  <data name="profile.error.steam" xml:space="preserve">
-    <value>Du kan kun ha én profil for Steam-storbildemodus.</value>
-  </data>
-  <data name="profile.error.triggers.min" xml:space="preserve">
-    <value>Du trenger minst én utløser.</value>
-  </data>
-  <data name="communication" xml:space="preserve">
-    <value>Standard kommuniksjonsenhet</value>
-  </data>
-  <data name="profile.trigger.available" xml:space="preserve">
-    <value>Tilgjengelige utløsere</value>
-  </data>
-  <data name="profile.trigger.actives" xml:space="preserve">
-    <value>Aktive utløsere</value>
-  </data>
-  <data name="profile.desc" xml:space="preserve">
-    <value>Beskrivelse</value>
-  </data>
-  <data name="profile.trigger.steam.desc" xml:space="preserve">
-    <value>Aktiver når Steam-storbildemodus oppdages. (Vil stille seg tilbake når storbildemodus lukkes.)</value>
-  </data>
-  <data name="profile.trigger.process.desc" xml:space="preserve">
-    <value>Aktiver profilen når valgt program er i forgrunnen</value>
-  </data>
-  <data name="profile.trigger.window.desc" xml:space="preserve">
-    <value>Aktiver profilen hvis programmet i forgrunnen inneholder følgende tegn</value>
-  </data>
-  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>Hurtigtast for å aktivere profilen. Hvis du bruker samme hurtigtast, vil du kunne bytte mellom profiler.</value>
-  </data>
-  <data name="profile.trigger.steam" xml:space="preserve">
-    <value>Steam-storbildemodus</value>
+  <data name="profile.trigger.window" xml:space="preserve">
+    <value>Programmets navn</value>
   </data>
   <data name="profile.trigger.process" xml:space="preserve">
     <value>Programsti</value>
   </data>
-  <data name="profile.trigger.window" xml:space="preserve">
-    <value>Programmets navn</value>
+  <data name="profile.trigger.steam" xml:space="preserve">
+    <value>Steam-storbildemodus</value>
   </data>
-  <data name="profile.trigger.startup.desc" xml:space="preserve">
-    <value>Denne profilen vil bli brukt automatisk når SoundSwitch starter</value>
+  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
+    <value>Hurtigtast for å aktivere profilen. Hvis du bruker samme hurtigtast, vil du kunne bytte mellom profiler.</value>
   </data>
-  <data name="profile.trigger.startup" xml:space="preserve">
-    <value>Ved oppstart</value>
+  <data name="profile.trigger.window.desc" xml:space="preserve">
+    <value>Aktiver profilen hvis programmet i forgrunnen inneholder følgende tegn</value>
   </data>
-  <data name="buttonEdit" xml:space="preserve">
-    <value>Rediger</value>
+  <data name="profile.trigger.process.desc" xml:space="preserve">
+    <value>Aktiver profilen når valgt program er i forgrunnen</value>
+  </data>
+  <data name="profile.trigger.steam.desc" xml:space="preserve">
+    <value>Aktiver når Steam-storbildemodus oppdages. (Vil stille seg tilbake når storbildemodus lukkes.)</value>
+  </data>
+  <data name="profile.desc" xml:space="preserve">
+    <value>Beskrivelse</value>
+  </data>
+  <data name="profile.trigger.actives" xml:space="preserve">
+    <value>Aktive utløsere</value>
+  </data>
+  <data name="profile.trigger.available" xml:space="preserve">
+    <value>Tilgjengelige utløsere</value>
+  </data>
+  <data name="communication" xml:space="preserve">
+    <value>Standard kommuniksjonsenhet</value>
+  </data>
+  <data name="profile.error.triggers.min" xml:space="preserve">
+    <value>Du trenger minst én utløser.</value>
+  </data>
+  <data name="profile.error.steam" xml:space="preserve">
+    <value>Du kan kun ha én profil for Steam-storbildemodus.</value>
+  </data>
+  <data name="profile.error.window" xml:space="preserve">
+    <value>Det finnes allerede en profil med dette vindusnavnet: {0}.</value>
+  </data>
+  <data name="profile.notifyOnActivation" xml:space="preserve">
+    <value>Varsle når profil utløses</value>
+  </data>
+  <data name="profile.notification.text" xml:space="preserve">
+    <value>Profil {0} utløst</value>
   </data>
   <data name="buttonSave" xml:space="preserve">
     <value>Lagre</value>
   </data>
-  <data name="profile.error.window" xml:space="preserve">
-    <value>Det finnes allerede en profil med dette vindusnavnet: {0}.</value>
+  <data name="buttonEdit" xml:space="preserve">
+    <value>Rediger</value>
+  </data>
+  <data name="profile.trigger.startup" xml:space="preserve">
+    <value>Ved oppstart</value>
+  </data>
+  <data name="profile.trigger.startup.desc" xml:space="preserve">
+    <value>Denne profilen vil bli brukt automatisk når SoundSwitch starter</value>
+  </data>
+  <data name="usePrimaryScreen" xml:space="preserve">
+    <value>Alltid bruk hovedskjerm</value>
+  </data>
+  <data name="usePrimaryScreen.tooltip" xml:space="preserve">
+    <value>Vis banner på hovedskjerm istedenfor på fokusert skjerm.</value>
+  </data>
+  <data name="profile.trigger.restoreDevices" xml:space="preserve">
+    <value>Gjenopprett enheter når utløser slutter</value>
   </data>
   <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
     <value>Nødvendig at «{0}» er påslått.
 
 Gjenopprett systemets tilstand når programmet lukkes.</value>
   </data>
-  <data name="profile.trigger.restoreDevices" xml:space="preserve">
-    <value>Gjenopprett enheter når utløser slutter</value>
-  </data>
-  <data name="usePrimaryScreen.tooltip" xml:space="preserve">
-    <value>Vis banner på hovedskjerm istedenfor på fokusert skjerm.</value>
-  </data>
   <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
     <value>Systemtilstand gjenopprettet</value>
-  </data>
-  <data name="usePrimaryScreen" xml:space="preserve">
-    <value>Alltid bruk hovedskjerm</value>
-  </data>
-  <data name="profile.trigger.uwp.desc" xml:space="preserve">
-    <value>Skriv inn navnet på programmet installert gjennom Windows-butikken. Som Netflix, Amazon Prime video, osv…</value>
   </data>
   <data name="profile.trigger.uwp" xml:space="preserve">
     <value>Microsoft Store-program</value>
   </data>
-  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
-    <value>Denne utløseren gjør profilen synlig i systemkurvsikon-menyen. Venstreklikk på systemkurvsikonet for å se profilen din.</value>
-  </data>
-  <data name="telemetry" xml:space="preserve">
-    <value>Telemetri</value>
-  </data>
-  <data name="profile.trigger.trayMenu" xml:space="preserve">
-    <value>I programmenyen</value>
-  </data>
-  <data name="mute.toggle.label" xml:space="preserve">
-    <value>Demp av/på</value>
-  </data>
-  <data name="notification.microphone.unmuted" xml:space="preserve">
-    <value>{0} er nå ikke dempet.</value>
+  <data name="profile.trigger.uwp.desc" xml:space="preserve">
+    <value>Skriv inn navnet på programmet installert gjennom Windows-butikken. Som Netflix, Amazon Prime video, osv…</value>
   </data>
   <data name="notification.microphone.muted" xml:space="preserve">
     <value>{0} er nå dempet.</value>
   </data>
-  <data name="telemetry.desc" xml:space="preserve">
-    <value>Hent anonym innmelding av hvilken versjon av SoundSwitch som brukes. Deles kun med utvikleren av SoundSwitch.</value>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>{0} er nå ikke dempet.</value>
   </data>
-  <data name="quickMenu.desc" xml:space="preserve">
-    <value>Vis en hurtigmeny lik Windows language ved bruk av hurtigtast</value>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>Demp av/på</value>
+  </data>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>I programmenyen</value>
+  </data>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>Denne utløseren gjør profilen synlig i systemkurvsikon-menyen. Venstreklikk på systemkurvsikonet for å se profilen din.</value>
+  </data>
+  <data name="profile.trigger.deviceChanged" xml:space="preserve">
+    <value>Tving profil på</value>
+  </data>
+  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
+    <value>Denne profilen vil bli valgt automatisk når den gjeldende lydenheten endres.</value>
+  </data>
+  <data name="profile.error.deviceChanged" xml:space="preserve">
+    <value>Du kan bare ha en profil tvunget på.</value>
+  </data>
+  <data name="telemetry" xml:space="preserve">
+    <value>Telemetri</value>
+  </data>
+  <data name="telemetry.tooltip" xml:space="preserve">
+    <value>Samle inn informasjon om hvilken versjon av SoundSwitch som er i bruk. Kun tilgjengelig for utvikleren av SoundSwitch.</value>
   </data>
   <data name="quickMenu" xml:space="preserve">
     <value>Hurtigmeny på hurtigtast</value>
+  </data>
+  <data name="quickMenu.tooltip" xml:space="preserve">
+    <value>Vis en hurtigmeny som ligner den i Windows når du bruker en hurtigtast</value>
+  </data>
+  <data name="keepVolume" xml:space="preserve">
+    <value>Behold volumnivået på tvers av enheter</value>
+  </data>
+  <data name="keepVolume.tooltip" xml:space="preserve">
+    <value>Behold volumnivået når du bytter enheter</value>
+  </data>
+  <data name="devices.autoAddNewDevice" xml:space="preserve">
+    <value>Velg nye enheter automatisk</value>
+  </data>
+  <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
+    <value>Legg til nye enheter til listen automatisk når de kobles til</value>
   </data>
   <data name="position" xml:space="preserve">
     <value>Posisjon</value>
@@ -443,9 +515,6 @@ Gjenopprett systemets tilstand når programmet lukkes.</value>
   </data>
   <data name="position.option.topCenter" xml:space="preserve">
     <value>Øverst i midten</value>
-  </data>
-  <data name="position.option.center" xml:space="preserve">
-    <value>I midten</value>
   </data>
   <data name="notification.single" xml:space="preserve">
     <value>Kun ett banner</value>
@@ -486,11 +555,8 @@ Gjenopprett systemets tilstand når programmet lukkes.</value>
   <data name="troubleshooting.desc" xml:space="preserve">
     <value>Hvis du trenger hjelp eller ytterligere feilsøking med SoundSwitch, kan du besøke hjelpelenken eller Discord-samfunnet, eller støtte oss ved å besøke donasjonslenken nedenfor.</value>
   </data>
-  <data name="notification.banner.onscreen.time" xml:space="preserve">
-    <value>Tid på skjermen</value>
-  </data>
-  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
-    <value>Hvor lenge banneret skal vises på skjermen i sekunder.</value>
+  <data name="position.option.center" xml:space="preserve">
+    <value>I midten</value>
   </data>
   <data name="microphone.on" xml:space="preserve">
     <value>Mikrofon på</value>
@@ -498,43 +564,49 @@ Gjenopprett systemets tilstand når programmet lukkes.</value>
   <data name="microphone.off" xml:space="preserve">
     <value>Mikrofon av</value>
   </data>
-  <data name="banner.mute.persistent" xml:space="preserve">
+  <data name="banner.mute" xml:space="preserve">
     <value>Permanent dempningsbanner</value>
   </data>
-  <data name="banner.mute.persistent.tooltip" xml:space="preserve">
+  <data name="banner.mute.tooltip" xml:space="preserve">
     <value>Vis et permanent banner når mikrofonen er dempet</value>
   </data>
-  <data name="none" xml:space="preserve">
-    <value>Ingen</value>
+  <data name="banner.mute.option.fading" xml:space="preserve">
+    <value />
   </data>
-  <data name="audioFileNotFound.caption" xml:space="preserve">
-    <value>Lydfil ikke funnet</value>
+  <data name="banner.mute.option.persistent" xml:space="preserve">
+    <value />
   </data>
-  <data name="profile.trigger.deviceChanged" xml:space="preserve">
-    <value>Tving profil på</value>
+  <data name="switch.device.label" xml:space="preserve">
+    <value />
   </data>
-  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
-    <value>Denne profilen vil bli valgt automatisk når den gjeldende lydenheten endres.</value>
+  <data name="audioFileNotFoundCaption" xml:space="preserve">
+    <value>Lydfil ble ikke funnet</value>
   </data>
-  <data name="profile.error.deviceChanged" xml:space="preserve">
-    <value>Du kan bare ha en profil tvunget på.</value>
+  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
+    <value>Uten verktøystips</value>
   </data>
-  <data name="keepVolume" xml:space="preserve">
-    <value>Behold volumnivået på tvers av enheter</value>
+  <data name="notificationOptionNone" xml:space="preserve">
+    <value>Uten merknad</value>
   </data>
-  <data name="quickMenu.tooltip" xml:space="preserve">
-    <value>Vis en hurtigmeny som ligner den i Windows når du bruker en hurtigtast</value>
+  <data name="quickMenu.desc" xml:space="preserve">
+    <value>Vis en hurtigmeny lik Windows language ved bruk av hurtigtast</value>
   </data>
-  <data name="keepVolume.tooltip" xml:space="preserve">
-    <value>Behold volumnivået når du bytter enheter</value>
+  <data name="telemetry.desc" xml:space="preserve">
+    <value>Hent anonym innmelding av hvilken versjon av SoundSwitch som brukes. Deles kun med utvikleren av SoundSwitch.</value>
   </data>
-  <data name="devices.autoAddNewDevice" xml:space="preserve">
-    <value>Velg nye enheter automatisk</value>
+  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+    <value>Hvor lenge banneret skal vises på skjermen i sekunder.</value>
   </data>
-  <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
-    <value>Legg til nye enheter til listen automatisk når de kobles til</value>
+  <data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>Tid på skjermen</value>
   </data>
-  <data name="telemetry.tooltip" xml:space="preserve">
-    <value>Samle inn informasjon om hvilken versjon av SoundSwitch som er i bruk. Kun tilgjengelig for utvikleren av SoundSwitch.</value>
+  <data name="notification" xml:space="preserve">
+    <value>Merknad</value>
+  </data>
+  <data name="notification.bannerOptions" xml:space="preserve">
+    <value />
+  </data>
+  <data name="seconds" xml:space="preserve">
+    <value />
   </data>
 </root>

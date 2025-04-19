@@ -88,7 +88,7 @@ namespace SoundSwitch.Model
                 AppConfigs.Configuration.BannerOnScreenTime = value;
                 AppConfigs.Configuration.Save();
                 BannerSettingsChanged?.Invoke(this,
-                    new BannerDataChangedEvent(BannerPosition, BannerPosition, BannerOnScreenTime, value, PersistentMuteNotification, PersistentMuteNotification));
+                    new BannerDataChangedEvent(BannerPosition, BannerPosition, BannerOnScreenTime, value, MicrophoneMuteNotification, MicrophoneMuteNotification));
             }
         }
         /// <summary>
@@ -157,7 +157,7 @@ namespace SoundSwitch.Model
                 AppConfigs.Configuration.BannerPosition = value;
                 AppConfigs.Configuration.Save();
                 BannerSettingsChanged?.Invoke(this,
-                    new BannerDataChangedEvent(BannerPosition, value, BannerOnScreenTime, BannerOnScreenTime, PersistentMuteNotification, PersistentMuteNotification));
+                    new BannerDataChangedEvent(BannerPosition, value, BannerOnScreenTime, BannerOnScreenTime, MicrophoneMuteNotification, MicrophoneMuteNotification));
             }
         }
 
@@ -166,13 +166,13 @@ namespace SoundSwitch.Model
         /// </summary>
         public IPosition BannerPositionImpl => _bannerPositionFactory.Get(BannerPosition);
 
-        public bool PersistentMuteNotification
+        public MicrophoneMuteEnum MicrophoneMuteNotification
         {
-            get => AppConfigs.Configuration.PersistentMuteNotification;
+            get => AppConfigs.Configuration.MicrophoneMuteNotification;
             set
             {
-                var prevValue = AppConfigs.Configuration.PersistentMuteNotification;
-                AppConfigs.Configuration.PersistentMuteNotification = value;
+                var prevValue = AppConfigs.Configuration.MicrophoneMuteNotification;
+                AppConfigs.Configuration.MicrophoneMuteNotification = value;
                 AppConfigs.Configuration.Save();
                 BannerSettingsChanged?.Invoke(this,
                     new BannerDataChangedEvent(BannerPosition, BannerPosition, BannerOnScreenTime, BannerOnScreenTime, prevValue, value));

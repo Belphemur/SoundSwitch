@@ -1,6 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -53,21 +112,16 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0,
-      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0,
-      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="connected" xml:space="preserve">
-    <value>இணைக்கப்பட்டுள்ளது</value>
-  </data>
-  <data name="settings" xml:space="preserve">
-    <value>அமைப்புகள்</value>
-  </data>
   <data name="selected" xml:space="preserve">
     <value>தேர்ந்தெடுக்கப்பட்டது</value>
+  </data>
+  <data name="connected" xml:space="preserve">
+    <value>இணைக்கப்பட்டுள்ளது</value>
   </data>
   <data name="disconnected" xml:space="preserve">
     <value>துண்டிக்கப்பட்டது</value>
@@ -77,6 +131,9 @@
   </data>
   <data name="playback" xml:space="preserve">
     <value>பின்னணி</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>அமைப்புகள்</value>
   </data>
   <data name="hotkey" xml:space="preserve">
     <value>ஆட்ச்கி</value>
@@ -95,9 +152,6 @@
   </data>
   <data name="communicationsDevice.tooltip" xml:space="preserve">
     <value>சரிபார்க்கும்போது, 'இயல்புநிலை தொடர்பு சாதனம்' மற்றும் 'இயல்புநிலை பிளேபேக் சாதனம்' ஆகியவை ஒன்றாக மாற்றப்படுகின்றன (ச்கைப், டீம்ச்பீக், எ.கா.</value>
-  </data>
-  <data name="notification" xml:space="preserve">
-    <value>அறிவிப்பு</value>
   </data>
   <data name="updateIncludeBetaVersions" xml:space="preserve">
     <value>பீட்டா பதிப்புகளைச் சேர்க்கவும்</value>
@@ -181,14 +235,14 @@
   <data name="tooltipOnHover.option.playbackDevice" xml:space="preserve">
     <value>பின்னணி சாதனம்</value>
   </data>
-  <data name="audioFileNotFound" xml:space="preserve">
-    <value>அறிவிப்பாக பயன்படுத்த நீங்கள் தேர்ந்தெடுத்த ஆடியோ கோப்பைக் கண்டுபிடிக்க முடியாது. சவுண்ட்ச்விட்ச் அறிவிப்பு அமைப்பை மீண்டும் {0} பெறுநர் க்கு மாற்றியது.</value>
-  </data>
   <data name="tooltipOnHover.option.recordingDevice" xml:space="preserve">
     <value>பதிவு செய்யும் சாதனம்</value>
   </data>
   <data name="tooltipOnHover.option.bothDevices" xml:space="preserve">
     <value>இரண்டு சாதனங்களும்</value>
+  </data>
+  <data name="audioFileNotFound" xml:space="preserve">
+    <value>அறிவிப்பாக பயன்படுத்த நீங்கள் தேர்ந்தெடுத்த ஆடியோ கோப்பைக் கண்டுபிடிக்க முடியாது. சவுண்ட்ச்விட்ச் அறிவிப்பு அமைப்பை மீண்டும் {0} பெறுநர் க்கு மாற்றியது.</value>
   </data>
   <data name="audioFileNotFound.caption" xml:space="preserve">
     <value>ஆடியோ கோப்பு கிடைக்கவில்லை</value>
@@ -230,9 +284,6 @@
   <data name="iconChange" xml:space="preserve">
     <value>சிச்ட்ரே படவுரு</value>
   </data>
-  <data name="profile.tab" xml:space="preserve">
-    <value>சுயவிவரங்கள்</value>
-  </data>
   <data name="iconChange.tooltip" xml:space="preserve">
     <value>சவுண்ட்ச்விட்சின் சிச்ட்ரே ஐகானை எப்போது மாற்ற வேண்டும் என்பதைத் தேர்வுசெய்க.
 
@@ -240,6 +291,9 @@
  பிளேபேக்: பிளேபேக் சாதனம் மாற்றப்படும் போது.
  பதிவு: பதிவு செய்யும் சாதனம் மாறும்போது.
  இரண்டுமே: எந்த வகையான சாதனமும் மாறும்போது மாற்றவும்.</value>
+  </data>
+  <data name="profile.tab" xml:space="preserve">
+    <value>சுயவிவரங்கள்</value>
   </data>
   <data name="buttonAdd" xml:space="preserve">
     <value>கூட்டு</value>
@@ -504,16 +558,34 @@
   <data name="position.option.center" xml:space="preserve">
     <value>நடுவண்</value>
   </data>
-  <data name="notification.banner.onscreen.time" xml:space="preserve">
-    <value>திரை நேரத்தில்</value>
-  </data>
-  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
-    <value>பதாகை எவ்வளவு நேரம் திரையில் நொடிகளில் இருக்கும்.</value>
-  </data>
   <data name="microphone.on" xml:space="preserve">
     <value>மைக்ரோஃபோன் ஆன்</value>
   </data>
   <data name="microphone.off" xml:space="preserve">
     <value>மைக்ரோஃபோன் ஆஃப்</value>
+  </data>
+  <data name="banner.mute.option.fading" xml:space="preserve">
+    <value />
+  </data>
+  <data name="banner.mute.option.persistent" xml:space="preserve">
+    <value />
+  </data>
+  <data name="switch.device.label" xml:space="preserve">
+    <value />
+  </data>
+  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+    <value>பதாகை எவ்வளவு நேரம் திரையில் நொடிகளில் இருக்கும்.</value>
+  </data>
+  <data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>திரை நேரத்தில்</value>
+  </data>
+  <data name="notification" xml:space="preserve">
+    <value>அறிவிப்பு</value>
+  </data>
+  <data name="notification.bannerOptions" xml:space="preserve">
+    <value />
+  </data>
+  <data name="seconds" xml:space="preserve">
+    <value />
   </data>
 </root>

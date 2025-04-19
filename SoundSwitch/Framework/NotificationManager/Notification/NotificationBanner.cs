@@ -35,7 +35,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
         public INotificationConfiguration Configuration { get; set; }
         private readonly BannerManager _bannerManager = new();
         private readonly BannerPositionFactory _bannerPositionFactory = new();
-        private readonly MicrophoneMuteBannerManager _microphoneMuteBannerManager = new();
+        private readonly MicrophoneMuteManager _microphoneMuteManager = new();
 
         private IPosition BannerPosition => _bannerPositionFactory.Get(Configuration.BannerPosition);
 
@@ -80,15 +80,23 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
 
         public void NotifyMuteChanged(string deviceId, string microphoneName, bool newMuteState)
         {
-            if (Configuration.PersistentMuteNotification)
+            switch (Configuration.MicrophoneMuteNotification)
             {
-                _microphoneMuteBannerManager.UpdateMicrophoneMuteState(deviceId, microphoneName, newMuteState);
-                return;
+                case MicrophoneMuteEnum.Persistent:
+                    _microphoneMuteManager.UpdateMicrophoneMuteState(deviceId, microphoneName, newMuteState);
+                    return;
+                case MicrophoneMuteEnum.Fading:
+                    FullBanner(deviceId, microphoneName, newMuteState);
+                    goto case MicrophoneMuteEnum.None;
+                case MicrophoneMuteEnum.None:
+                    _microphoneMuteManager.RemovePersistentMuteBanner(deviceId);
+                    return;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
-            FullBanner(microphoneName, newMuteState);
         }
 
-        private void FullBanner(string microphoneName, bool newMuteState)
+        private void FullBanner(string deviceId, string microphoneName, bool newMuteState)
         {
             var title = newMuteState ? string.Format(SettingsStrings.notification_microphone_muted, microphoneName) : string.Format(SettingsStrings.notification_microphone_unmuted, microphoneName);
 

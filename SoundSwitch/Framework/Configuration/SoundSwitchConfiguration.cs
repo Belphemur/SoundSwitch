@@ -66,7 +66,7 @@ namespace SoundSwitch.Framework.Configuration
             BannerPosition = BannerPositionEnum.TopLeft;
             MaxNumberNotification = 5;
             BannerOnScreenTime = TimeSpan.FromSeconds(3);
-            PersistentMuteNotification = true;
+            MicrophoneMuteNotification = MicrophoneMuteEnum.None;
 
             AutoAddNewConnectedDevices = false;
 
@@ -97,7 +97,7 @@ namespace SoundSwitch.Framework.Configuration
         public bool IncludeBetaVersions { get; set; }
         public string CustomNotificationFilePath { get; set; }
         public bool NotifyUsingPrimaryScreen { get; set; }
-        public bool PersistentMuteNotification { get; set; }
+        public MicrophoneMuteEnum MicrophoneMuteNotification { get; set; }
 
         [Obsolete("Feature has been removed")]
         public bool AutoAddNewConnectedDevices { get; set; }

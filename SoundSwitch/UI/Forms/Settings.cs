@@ -54,7 +54,7 @@ namespace SoundSwitch.UI.Forms
 {
     public sealed partial class SettingsForm : Form
     {
-        private static readonly Icon RessourceSettingsIcon = Resources.SettingsIcon;
+        private static readonly Icon ResourceSettingsIcon = Resources.SettingsIcon;
 
         private bool _loaded;
         private IAudioDeviceLister _audioDeviceLister;
@@ -64,14 +64,13 @@ namespace SoundSwitch.UI.Forms
             _audioDeviceLister = audioDeviceLister;
             // Form itself
             InitializeComponent();
-            Icon = RessourceSettingsIcon;
+            Icon = ResourceSettingsIcon;
             Text = AssemblyUtils.GetReleaseState() == AssemblyUtils.ReleaseState.Beta
                 ? $"{SettingsStrings.settings} {AssemblyUtils.GetReleaseState()}"
                 : SettingsStrings.settings;
             LocalizeForm();
 
-            var closeToolTip = new ToolTip();
-            closeToolTip.SetToolTip(closeButton, SettingsStrings.buttonClose_tooltip);
+            new ToolTip().SetToolTip(closeButton, SettingsStrings.buttonClose_tooltip);
 
             hotKeyControl.HotKey = AppConfigs.Configuration.PlaybackHotKey;
             hotKeyControl.Tag =
@@ -82,75 +81,62 @@ namespace SoundSwitch.UI.Forms
             muteHotKey.Tag = new Tuple<HotKeyAction, HotKey>(HotKeyAction.Mute, AppConfigs.Configuration.MuteRecordingHotKey);
             muteHotKey.Enabled = muteHotKeyCheckbox.Checked = AppConfigs.Configuration.MuteRecordingHotKey.Enabled;
 
-            var hotkeysToolTip = new ToolTip();
-            hotkeysToolTip.SetToolTip(hotkeysCheckBox, SettingsStrings.hotkey_tooltip);
+            new ToolTip().SetToolTip(hotkeysCheckBox, SettingsStrings.hotkey_tooltip);
 
             // Settings - Basic
             startWithWindowsCheckBox.Checked = AppModel.Instance.RunAtStartup;
 
             new IconChangerFactory().ConfigureListControl(iconChangeChoicesComboBox);
             iconChangeChoicesComboBox.SelectedValue = AppConfigs.Configuration.SwitchIcon;
-
-            var iconChangeToolTip = new ToolTip();
-            iconChangeToolTip.SetToolTip(iconChangeChoicesComboBox, SettingsStrings.iconChange_tooltip);
+            new ToolTip().SetToolTip(iconChangeChoicesComboBox, SettingsStrings.iconChange_tooltip);
 
             // Settings - Audio
             switchCommunicationDeviceCheckBox.Checked = AppModel.Instance.SetCommunications;
-
-            var switchCommunicationsDeviceToolTip = new ToolTip();
-            switchCommunicationsDeviceToolTip.SetToolTip(switchCommunicationDeviceCheckBox,
-                SettingsStrings.communicationsDevice_tooltip);
+            new ToolTip().SetToolTip(switchCommunicationDeviceCheckBox, SettingsStrings.communicationsDevice_tooltip);
 
             foregroundAppCheckbox.Checked = AppModel.Instance.SwitchForegroundProgram;
-
-            var foregroundAppToolTip = new ToolTip();
-            foregroundAppToolTip.SetToolTip(foregroundAppCheckbox, SettingsStrings.foregroundApp_tooltip);
+            new ToolTip().SetToolTip(foregroundAppCheckbox, SettingsStrings.foregroundApp_tooltip);
 
             quickMenuCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.QuickMenuEnabled), false, DataSourceUpdateMode.OnPropertyChanged);
-            var quickMenuCheckboxToolTip = new ToolTip();
-            quickMenuCheckboxToolTip.SetToolTip(quickMenuCheckbox, SettingsStrings.quickMenu_tooltip);
+            new ToolTip().SetToolTip(quickMenuCheckbox, SettingsStrings.quickMenu_tooltip);
 
             keepVolumeCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.KeepVolumeEnabled), false, DataSourceUpdateMode.OnPropertyChanged);
-            var keepVolumeCheckboxToolTip = new ToolTip();
-            keepVolumeCheckboxToolTip.SetToolTip(keepVolumeCheckbox, SettingsStrings.keepVolume_tooltip);
+            new ToolTip().SetToolTip(keepVolumeCheckbox, SettingsStrings.keepVolume_tooltip);
 
             new TooltipInfoFactory().ConfigureListControl(tooltipInfoComboBox);
             tooltipInfoComboBox.SelectedValue = TooltipInfoManager.CurrentTooltipInfo;
 
             new DeviceCyclerFactory().ConfigureListControl(cycleThroughComboBox);
             cycleThroughComboBox.SelectedValue = DeviceCyclerManager.CurrentCycler;
-            var cycleThroughToolTip = new ToolTip();
-            cycleThroughToolTip.SetToolTip(cycleThroughComboBox, SettingsStrings.cycleThrough_tooltip);
+            new ToolTip().SetToolTip(cycleThroughComboBox, SettingsStrings.cycleThrough_tooltip);
 
             // Settings - Notification
             var notificationFactory = new NotificationFactory();
             notificationFactory.ConfigureListControl(notificationComboBox);
             notificationComboBox.SelectedValue = AppModel.Instance.NotificationSettings;
-            var notificationToolTip = new ToolTip();
-            notificationToolTip.SetToolTip(notificationComboBox, SettingsStrings.notification_tooltip);
+            new ToolTip().SetToolTip(notificationComboBox, SettingsStrings.notification_tooltip);
 
-            var bannerPositionFactory = new BannerPositionFactory();
-            bannerPositionFactory.ConfigureListControl(positionComboBox);
+            new BannerPositionFactory().ConfigureListControl(positionComboBox);
             positionComboBox.SelectedValue = AppModel.Instance.BannerPosition;
-            var positionToolTip = new ToolTip();
-            positionToolTip.SetToolTip(positionComboBox, SettingsStrings.position_tooltip);
-
+            new ToolTip().SetToolTip(positionComboBox, SettingsStrings.position_tooltip);
 
             var onScreenTimeTooltip = new ToolTip();
             onScreenTimeTooltip.SetToolTip(onScreenUpDown, SettingsStrings.notification_banner_onscreen_time_tooltip);
             onScreenTimeTooltip.SetToolTip(onScreenTimeLabel, SettingsStrings.notification_banner_onscreen_time_tooltip);
             onScreenUpDown.DataBindings.Add(nameof(NumericUpDown.Value), AppModel.Instance, nameof(AppModel.BannerOnScreenTimeSecs), false, DataSourceUpdateMode.OnPropertyChanged);
 
-            var singleNotification = new ToolTip();
-            singleNotification.SetToolTip(singleNotificationCheckbox, SettingsStrings.notification_single_tooltip);
+            //var singleNotification = new ToolTip();
+            new ToolTip().SetToolTip(singleNotificationCheckbox, SettingsStrings.notification_single_tooltip);
             singleNotificationCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.IsSingleNotification), false, DataSourceUpdateMode.OnPropertyChanged);
 
-
             usePrimaryScreenCheckbox.Checked = AppModel.Instance.NotifyUsingPrimaryScreen;
-            var usePrimaryScreenTooltip = new ToolTip();
-            usePrimaryScreenTooltip.SetToolTip(usePrimaryScreenCheckbox, SettingsStrings.usePrimaryScreen_tooltip);
+            new ToolTip().SetToolTip(usePrimaryScreenCheckbox, SettingsStrings.usePrimaryScreen_tooltip);
 
-            persistentMuteNotificationCheckBox.Visible = onScreenUpDown.Visible = onScreenTimeLabel.Visible = usePrimaryScreenCheckbox.Visible = positionLabel.Visible = positionComboBox.Visible = singleNotificationCheckbox.Visible =
+            new MicrophoneMuteFactory().ConfigureListControl(microphoneMuteComboBox);
+            microphoneMuteComboBox.SelectedValue = AppModel.Instance.MicrophoneMuteNotification;
+            new ToolTip().SetToolTip(microphoneMuteComboBox, SettingsStrings.banner_mute_tooltip);
+
+            microphoneMuteComboBox.Visible = onScreenUpDown.Visible = onScreenTimeLabel.Visible = usePrimaryScreenCheckbox.Visible = positionLabel.Visible = positionComboBox.Visible = singleNotificationCheckbox.Visible =
                 AppModel.Instance.NotificationSettings == NotificationTypeEnum.BannerNotification;
 
             selectSoundFileDialog.Filter = SettingsStrings.audioFiles + @" (*.wav;*.mp3)|*.wav;*.mp3;*.aiff";
@@ -160,12 +146,10 @@ namespace SoundSwitch.UI.Forms
 
             var supportCustomSound = notificationFactory.Get(AppModel.Instance.NotificationSettings).SupportCustomSound();
             selectSoundButton.Visible = supportCustomSound;
-            var selectSoundButtonToolTip = new ToolTip();
-            selectSoundButtonToolTip.SetToolTip(selectSoundButton, SettingsStrings.selectSoundButton_tooltip);
+            new ToolTip().SetToolTip(selectSoundButton, SettingsStrings.selectSoundButton_tooltip);
 
             DeleteSoundButton_Visible(supportCustomSound);
-            var removeCustomSoundToolTip = new ToolTip();
-            removeCustomSoundToolTip.SetToolTip(deleteSoundButton, SettingsStrings.disableCustomSound_tooltip);
+            new ToolTip().SetToolTip(deleteSoundButton, SettingsStrings.disableCustomSound_tooltip);
 
             // Settings - Update
             includeBetaVersionsCheckBox.Checked = AppModel.Instance.IncludeBetaVersions;
@@ -185,20 +169,11 @@ namespace SoundSwitch.UI.Forms
                     throw new ArgumentOutOfRangeException();
             }
 
-            var updateSilentToolTip = new ToolTip();
-            updateSilentToolTip.SetToolTip(updateSilentRadioButton, SettingsStrings.updateInstallAutomatically_tooltip);
-            var updateNotifyToolTip = new ToolTip();
-            updateNotifyToolTip.SetToolTip(updateNotifyRadioButton, SettingsStrings.updateNotify_tooltip);
-            var updateNeverToolTip = new ToolTip();
-            updateNeverToolTip.SetToolTip(updateNeverRadioButton, SettingsStrings.updateNever_tooltip);
+            new ToolTip().SetToolTip(updateSilentRadioButton, SettingsStrings.updateInstallAutomatically_tooltip);
+            new ToolTip().SetToolTip(updateNotifyRadioButton, SettingsStrings.updateNotify_tooltip);
+            new ToolTip().SetToolTip(updateNeverRadioButton, SettingsStrings.updateNever_tooltip);
 
-            var persistentMuteBannerToolTip = new ToolTip();
-            persistentMuteBannerToolTip.SetToolTip(persistentMuteNotificationCheckBox, SettingsStrings.banner_mute_persistent_tooltip);
-            persistentMuteNotificationCheckBox.Checked = AppModel.Instance.PersistentMuteNotification;
-            persistentMuteNotificationCheckBox.CheckedChanged += PersistentMuteNotificationCheckBox_CheckedChanged;
-
-            var includeBetaVersionsToolTip = new ToolTip();
-            includeBetaVersionsToolTip.SetToolTip(includeBetaVersionsCheckBox, SettingsStrings.updateIncludeBetaVersions_tooltip);
+            new ToolTip().SetToolTip(includeBetaVersionsCheckBox, SettingsStrings.updateIncludeBetaVersions_tooltip);
 
             // Settings - Language
             new LanguageFactory().ConfigureListControl(languageComboBox);
@@ -209,8 +184,7 @@ namespace SoundSwitch.UI.Forms
             toggleMuteLabel.Visible = false;
 
             telemetryCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.Telemetry), false, DataSourceUpdateMode.OnPropertyChanged);
-            var telemetryToolTip = new ToolTip();
-            telemetryToolTip.SetToolTip(telemetryCheckbox, SettingsStrings.telemetry_tooltip);
+            new ToolTip().SetToolTip(telemetryCheckbox, SettingsStrings.telemetry_tooltip);
 
             PopulateSettings();
 
@@ -377,12 +351,13 @@ namespace SoundSwitch.UI.Forms
             languageGroupBox.Text = SettingsStrings.language;
 
             // Settings - Notification
-            notificationComboBox.Text = SettingsStrings.notification;
-            usePrimaryScreenCheckbox.Text = SettingsStrings.usePrimaryScreen;
+            notificationsGroupBox.Text = SettingsStrings.notification;
+            bannerGroupBox.Text = SettingsStrings.notification_bannerOptions;
             positionLabel.Text = SettingsStrings.position;
-            singleNotificationCheckbox.Text = SettingsStrings.notification_single;
             onScreenTimeLabel.Text = SettingsStrings.notification_banner_onscreen_time;
-            persistentMuteNotificationCheckBox.Text = SettingsStrings.banner_mute_persistent;
+            microphoneMuteLabel.Text = SettingsStrings.banner_mute;
+            usePrimaryScreenCheckbox.Text = SettingsStrings.usePrimaryScreen;
+            singleNotificationCheckbox.Text = SettingsStrings.notification_single;
 
             // Settings - Troubleshooting
             resetAudioDevicesGroupBox.Text = SettingsStrings.resetAudioDevices;
@@ -401,6 +376,7 @@ namespace SoundSwitch.UI.Forms
             // Misc
             hotkeysCheckBox.Text = SettingsStrings.hotkeyEnabled;
             closeButton.Text = SettingsStrings.buttonClose;
+            switchDeviceLabel.Text = SettingsStrings.switch_device_label;
             toggleMuteLabel.Text = SettingsStrings.mute_toggle_label;
             muteHotKeyCheckbox.Text = SettingsStrings.hotkeyEnabled;
 
@@ -426,6 +402,7 @@ namespace SoundSwitch.UI.Forms
                 hotkeysCheckBox.Checked = AppConfigs.Configuration.PlaybackHotKey.Enabled;
                 muteHotKey.Visible = false;
                 muteHotKeyCheckbox.Visible = false;
+                switchDeviceLabel.Visible = true;
                 toggleMuteLabel.Visible = false;
             }
             else if (tabControlSender.SelectedTab == recordingTabPage)
@@ -438,12 +415,14 @@ namespace SoundSwitch.UI.Forms
 
                 muteHotKey.Visible = true;
                 muteHotKeyCheckbox.Visible = true;
+                switchDeviceLabel.Visible = true;
                 toggleMuteLabel.Visible = true;
             }
             else
             {
                 muteHotKey.Visible = false;
                 muteHotKeyCheckbox.Visible = false;
+                switchDeviceLabel.Visible = false;
                 toggleMuteLabel.Visible = false;
                 SetHotkeysFieldsVisibility(false);
             }
@@ -829,8 +808,7 @@ namespace SoundSwitch.UI.Forms
             selectSoundButton.Visible = supportCustomSound;
             DeleteSoundButton_Visible(supportCustomSound);
 
-            persistentMuteNotificationCheckBox.Visible = onScreenUpDown.Visible = onScreenTimeLabel.Visible = usePrimaryScreenCheckbox.Visible = positionLabel.Visible = positionComboBox.Visible = singleNotificationCheckbox.Visible =
-                notificationType == NotificationTypeEnum.BannerNotification;
+            bannerGroupBox.Enabled = notificationType == NotificationTypeEnum.BannerNotification;
             AppModel.Instance.NotificationSettings = notificationType;
         }
 
@@ -859,9 +837,13 @@ namespace SoundSwitch.UI.Forms
             AppModel.Instance.NotifyUsingPrimaryScreen = usePrimaryScreenCheckbox.Checked;
         }
 
-        private void PersistentMuteNotificationCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void MicrophoneMuteNotificationComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
-            AppModel.Instance.PersistentMuteNotification = persistentMuteNotificationCheckBox.Checked;
+            if (!_loaded) return;
+            var value = (DisplayEnumObject<MicrophoneMuteEnum>)((ComboBox)sender).SelectedItem;
+            if (value == null) return;
+
+            AppModel.Instance.MicrophoneMuteNotification = value.Enum;
         }
 
         #endregion

@@ -33,8 +33,8 @@ namespace SoundSwitch.UI.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
-            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
+            System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
+            System.Windows.Forms.ListViewGroup listViewGroup4 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
             startWithWindowsCheckBox = new System.Windows.Forms.CheckBox();
             closeButton = new System.Windows.Forms.Button();
             switchCommunicationDeviceCheckBox = new System.Windows.Forms.CheckBox();
@@ -50,17 +50,20 @@ namespace SoundSwitch.UI.Forms
             profilesListView = new IconListView();
             addProfileButton = new System.Windows.Forms.Button();
             appSettingTabPage = new System.Windows.Forms.TabPage();
-            notificationGroupBox = new System.Windows.Forms.GroupBox();
-            persistentMuteNotificationCheckBox = new System.Windows.Forms.CheckBox();
+            notificationsGroupBox = new System.Windows.Forms.GroupBox();
+            bannerGroupBox = new System.Windows.Forms.GroupBox();
+            positionLabel = new System.Windows.Forms.Label();
+            secondsLabel = new System.Windows.Forms.Label();
+            usePrimaryScreenCheckbox = new System.Windows.Forms.CheckBox();
+            microphoneMuteLabel = new System.Windows.Forms.Label();
+            positionComboBox = new System.Windows.Forms.ComboBox();
+            microphoneMuteComboBox = new System.Windows.Forms.ComboBox();
+            singleNotificationCheckbox = new System.Windows.Forms.CheckBox();
             onScreenTimeLabel = new System.Windows.Forms.Label();
             onScreenUpDown = new System.Windows.Forms.NumericUpDown();
-            singleNotificationCheckbox = new System.Windows.Forms.CheckBox();
-            positionComboBox = new System.Windows.Forms.ComboBox();
             notificationComboBox = new System.Windows.Forms.ComboBox();
             selectSoundButton = new System.Windows.Forms.Button();
-            usePrimaryScreenCheckbox = new System.Windows.Forms.CheckBox();
             deleteSoundButton = new System.Windows.Forms.Button();
-            positionLabel = new System.Windows.Forms.Label();
             languageGroupBox = new System.Windows.Forms.GroupBox();
             languageComboBox = new System.Windows.Forms.ComboBox();
             updateSettingsGroupBox = new System.Windows.Forms.GroupBox();
@@ -81,45 +84,49 @@ namespace SoundSwitch.UI.Forms
             iconChangeLabel = new System.Windows.Forms.Label();
             iconChangeChoicesComboBox = new System.Windows.Forms.ComboBox();
             troubleshootingTabPage = new System.Windows.Forms.TabPage();
-            troubleshootingLabel = new System.Windows.Forms.Label();
-            soundSwitchPictureBox = new System.Windows.Forms.PictureBox();
-            discordCommunityLinkLabel = new System.Windows.Forms.LinkLabel();
-            gitHubHelpLinkLabel = new System.Windows.Forms.LinkLabel();
             exportLogFilesGroupBox = new System.Windows.Forms.GroupBox();
             exportLogFilesButton = new System.Windows.Forms.Button();
             exportLogFilesLabel = new System.Windows.Forms.Label();
-            appNameLabel = new System.Windows.Forms.Label();
             resetAudioDevicesGroupBox = new System.Windows.Forms.GroupBox();
             resetAudioDevicesLabel = new System.Windows.Forms.Label();
             resetAudioDevicesButton = new System.Windows.Forms.Button();
-            donateLinkLabel = new System.Windows.Forms.LinkLabel();
+            soundSwitchGroupBox = new System.Windows.Forms.GroupBox();
+            troubleshootingLabel = new System.Windows.Forms.Label();
+            soundSwitchPictureBox = new System.Windows.Forms.PictureBox();
             discordPictureBox = new System.Windows.Forms.PictureBox();
-            donatePictureBox = new System.Windows.Forms.PictureBox();
+            donateLinkLabel = new System.Windows.Forms.LinkLabel();
             gitHubPictureBox = new System.Windows.Forms.PictureBox();
+            gitHubHelpLinkLabel = new System.Windows.Forms.LinkLabel();
+            appNameLabel = new System.Windows.Forms.Label();
+            discordCommunityLinkLabel = new System.Windows.Forms.LinkLabel();
+            donatePictureBox = new System.Windows.Forms.PictureBox();
             selectSoundFileDialog = new System.Windows.Forms.OpenFileDialog();
             hotkeysCheckBox = new System.Windows.Forms.CheckBox();
             hotKeyControl = new SoundSwitch.UI.Component.HotKeyTextBox();
             toggleMuteLabel = new System.Windows.Forms.Label();
             muteHotKey = new SoundSwitch.UI.Component.HotKeyTextBox();
             muteHotKeyCheckbox = new System.Windows.Forms.CheckBox();
+            switchDeviceLabel = new System.Windows.Forms.Label();
             tabControl.SuspendLayout();
             playbackTabPage.SuspendLayout();
             recordingTabPage.SuspendLayout();
             profileTabPage.SuspendLayout();
             appSettingTabPage.SuspendLayout();
-            notificationGroupBox.SuspendLayout();
+            notificationsGroupBox.SuspendLayout();
+            bannerGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)onScreenUpDown).BeginInit();
             languageGroupBox.SuspendLayout();
             updateSettingsGroupBox.SuspendLayout();
             audioSettingsGroupBox.SuspendLayout();
             basicSettingsGroupBox.SuspendLayout();
             troubleshootingTabPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)soundSwitchPictureBox).BeginInit();
             exportLogFilesGroupBox.SuspendLayout();
             resetAudioDevicesGroupBox.SuspendLayout();
+            soundSwitchGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)soundSwitchPictureBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)discordPictureBox).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)donatePictureBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gitHubPictureBox).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)donatePictureBox).BeginInit();
             SuspendLayout();
             // 
             // startWithWindowsCheckBox
@@ -127,7 +134,7 @@ namespace SoundSwitch.UI.Forms
             startWithWindowsCheckBox.AutoSize = true;
             startWithWindowsCheckBox.Location = new System.Drawing.Point(6, 23);
             startWithWindowsCheckBox.Name = "startWithWindowsCheckBox";
-            startWithWindowsCheckBox.Size = new System.Drawing.Size(202, 20);
+            startWithWindowsCheckBox.Size = new System.Drawing.Size(203, 19);
             startWithWindowsCheckBox.TabIndex = 7;
             startWithWindowsCheckBox.Text = "Start automatically with Windows";
             startWithWindowsCheckBox.UseVisualStyleBackColor = true;
@@ -137,7 +144,7 @@ namespace SoundSwitch.UI.Forms
             // 
             closeButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             closeButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            closeButton.Location = new System.Drawing.Point(806, 436);
+            closeButton.Location = new System.Drawing.Point(698, 517);
             closeButton.Name = "closeButton";
             closeButton.Size = new System.Drawing.Size(72, 26);
             closeButton.TabIndex = 11;
@@ -150,7 +157,7 @@ namespace SoundSwitch.UI.Forms
             switchCommunicationDeviceCheckBox.AutoSize = true;
             switchCommunicationDeviceCheckBox.Location = new System.Drawing.Point(6, 23);
             switchCommunicationDeviceCheckBox.Name = "switchCommunicationDeviceCheckBox";
-            switchCommunicationDeviceCheckBox.Size = new System.Drawing.Size(227, 20);
+            switchCommunicationDeviceCheckBox.Size = new System.Drawing.Size(230, 19);
             switchCommunicationDeviceCheckBox.TabIndex = 12;
             switchCommunicationDeviceCheckBox.Text = "Switch Default Communication Device";
             switchCommunicationDeviceCheckBox.UseVisualStyleBackColor = true;
@@ -167,17 +174,17 @@ namespace SoundSwitch.UI.Forms
             tabControl.Location = new System.Drawing.Point(12, 6);
             tabControl.Name = "tabControl";
             tabControl.SelectedIndex = 0;
-            tabControl.Size = new System.Drawing.Size(865, 404);
+            tabControl.Size = new System.Drawing.Size(757, 485);
             tabControl.TabIndex = 13;
             tabControl.SelectedIndexChanged += TabControl_SelectedIndexChanged;
             // 
             // playbackTabPage
             // 
             playbackTabPage.Controls.Add(playbackListView);
-            playbackTabPage.Location = new System.Drawing.Point(4, 25);
+            playbackTabPage.Location = new System.Drawing.Point(4, 24);
             playbackTabPage.Name = "playbackTabPage";
             playbackTabPage.Padding = new System.Windows.Forms.Padding(3);
-            playbackTabPage.Size = new System.Drawing.Size(857, 375);
+            playbackTabPage.Size = new System.Drawing.Size(749, 457);
             playbackTabPage.TabIndex = 0;
             playbackTabPage.Text = "Playback";
             playbackTabPage.UseVisualStyleBackColor = true;
@@ -187,14 +194,14 @@ namespace SoundSwitch.UI.Forms
             playbackListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             playbackListView.CheckBoxes = true;
             playbackListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            listViewGroup1.Header = "Selected";
-            listViewGroup1.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
-            listViewGroup1.Name = "selectedGroup";
-            playbackListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] { listViewGroup1 });
+            listViewGroup3.Header = "Selected";
+            listViewGroup3.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
+            listViewGroup3.Name = "selectedGroup";
+            playbackListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] { listViewGroup3 });
             playbackListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             playbackListView.Location = new System.Drawing.Point(3, 3);
             playbackListView.Name = "playbackListView";
-            playbackListView.Size = new System.Drawing.Size(851, 369);
+            playbackListView.Size = new System.Drawing.Size(743, 451);
             playbackListView.TabIndex = 14;
             playbackListView.UseCompatibleStateImageBehavior = false;
             playbackListView.View = System.Windows.Forms.View.Details;
@@ -202,10 +209,10 @@ namespace SoundSwitch.UI.Forms
             // recordingTabPage
             // 
             recordingTabPage.Controls.Add(recordingListView);
-            recordingTabPage.Location = new System.Drawing.Point(4, 25);
+            recordingTabPage.Location = new System.Drawing.Point(4, 24);
             recordingTabPage.Name = "recordingTabPage";
             recordingTabPage.Padding = new System.Windows.Forms.Padding(3);
-            recordingTabPage.Size = new System.Drawing.Size(857, 375);
+            recordingTabPage.Size = new System.Drawing.Size(749, 457);
             recordingTabPage.TabIndex = 1;
             recordingTabPage.Text = "Recording";
             recordingTabPage.UseVisualStyleBackColor = true;
@@ -216,14 +223,14 @@ namespace SoundSwitch.UI.Forms
             recordingListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             recordingListView.CheckBoxes = true;
             recordingListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            listViewGroup2.Header = "Selected";
-            listViewGroup2.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
-            listViewGroup2.Name = "selectedGroup";
-            recordingListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] { listViewGroup2 });
+            listViewGroup4.Header = "Selected";
+            listViewGroup4.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
+            listViewGroup4.Name = "selectedGroup";
+            recordingListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] { listViewGroup4 });
             recordingListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             recordingListView.Location = new System.Drawing.Point(3, 3);
             recordingListView.Name = "recordingListView";
-            recordingListView.Size = new System.Drawing.Size(851, 369);
+            recordingListView.Size = new System.Drawing.Size(743, 451);
             recordingListView.TabIndex = 17;
             recordingListView.UseCompatibleStateImageBehavior = false;
             recordingListView.View = System.Windows.Forms.View.Details;
@@ -235,10 +242,10 @@ namespace SoundSwitch.UI.Forms
             profileTabPage.Controls.Add(profileExplanationLabel);
             profileTabPage.Controls.Add(profilesListView);
             profileTabPage.Controls.Add(addProfileButton);
-            profileTabPage.Location = new System.Drawing.Point(4, 25);
+            profileTabPage.Location = new System.Drawing.Point(4, 24);
             profileTabPage.Name = "profileTabPage";
             profileTabPage.Padding = new System.Windows.Forms.Padding(3);
-            profileTabPage.Size = new System.Drawing.Size(857, 375);
+            profileTabPage.Size = new System.Drawing.Size(749, 457);
             profileTabPage.TabIndex = 3;
             profileTabPage.Text = "Profiles";
             profileTabPage.UseVisualStyleBackColor = true;
@@ -248,7 +255,7 @@ namespace SoundSwitch.UI.Forms
             editProfileButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             editProfileButton.Enabled = false;
             editProfileButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            editProfileButton.Location = new System.Drawing.Point(542, 344);
+            editProfileButton.Location = new System.Drawing.Point(537, 425);
             editProfileButton.Name = "editProfileButton";
             editProfileButton.Size = new System.Drawing.Size(100, 26);
             editProfileButton.TabIndex = 5;
@@ -262,7 +269,7 @@ namespace SoundSwitch.UI.Forms
             deleteProfileButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             deleteProfileButton.Enabled = false;
             deleteProfileButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            deleteProfileButton.Location = new System.Drawing.Point(648, 344);
+            deleteProfileButton.Location = new System.Drawing.Point(643, 425);
             deleteProfileButton.Name = "deleteProfileButton";
             deleteProfileButton.Size = new System.Drawing.Size(100, 26);
             deleteProfileButton.TabIndex = 4;
@@ -275,10 +282,10 @@ namespace SoundSwitch.UI.Forms
             // 
             profileExplanationLabel.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             profileExplanationLabel.AutoSize = true;
-            profileExplanationLabel.Location = new System.Drawing.Point(6, 257);
+            profileExplanationLabel.Location = new System.Drawing.Point(6, 338);
             profileExplanationLabel.MaximumSize = new System.Drawing.Size(500, 0);
             profileExplanationLabel.Name = "profileExplanationLabel";
-            profileExplanationLabel.Size = new System.Drawing.Size(99, 32);
+            profileExplanationLabel.Size = new System.Drawing.Size(100, 30);
             profileExplanationLabel.TabIndex = 3;
             profileExplanationLabel.Text = "Explanation line 1\r\nOptional line 2";
             // 
@@ -290,7 +297,7 @@ namespace SoundSwitch.UI.Forms
             profilesListView.Name = "profilesListView";
             profilesListView.OwnerDraw = true;
             profilesListView.ShowGroups = false;
-            profilesListView.Size = new System.Drawing.Size(748, 247);
+            profilesListView.Size = new System.Drawing.Size(740, 328);
             profilesListView.Sorting = System.Windows.Forms.SortOrder.Ascending;
             profilesListView.TabIndex = 2;
             profilesListView.UseCompatibleStateImageBehavior = false;
@@ -301,7 +308,7 @@ namespace SoundSwitch.UI.Forms
             // addProfileButton
             // 
             addProfileButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            addProfileButton.Location = new System.Drawing.Point(436, 344);
+            addProfileButton.Location = new System.Drawing.Point(431, 425);
             addProfileButton.Name = "addProfileButton";
             addProfileButton.Size = new System.Drawing.Size(100, 26);
             addProfileButton.TabIndex = 1;
@@ -312,87 +319,137 @@ namespace SoundSwitch.UI.Forms
             // 
             // appSettingTabPage
             // 
-            appSettingTabPage.Controls.Add(notificationGroupBox);
+            appSettingTabPage.Controls.Add(notificationsGroupBox);
             appSettingTabPage.Controls.Add(languageGroupBox);
             appSettingTabPage.Controls.Add(updateSettingsGroupBox);
             appSettingTabPage.Controls.Add(audioSettingsGroupBox);
             appSettingTabPage.Controls.Add(basicSettingsGroupBox);
-            appSettingTabPage.Location = new System.Drawing.Point(4, 25);
+            appSettingTabPage.Location = new System.Drawing.Point(4, 24);
             appSettingTabPage.Name = "appSettingTabPage";
-            appSettingTabPage.Size = new System.Drawing.Size(857, 375);
+            appSettingTabPage.Size = new System.Drawing.Size(749, 457);
             appSettingTabPage.TabIndex = 2;
             appSettingTabPage.Text = "Settings";
             appSettingTabPage.UseVisualStyleBackColor = true;
             // 
-            // notificationGroupBox
+            // notificationsGroupBox
             // 
-            notificationGroupBox.Controls.Add(persistentMuteNotificationCheckBox);
-            notificationGroupBox.Controls.Add(onScreenTimeLabel);
-            notificationGroupBox.Controls.Add(onScreenUpDown);
-            notificationGroupBox.Controls.Add(singleNotificationCheckbox);
-            notificationGroupBox.Controls.Add(positionComboBox);
-            notificationGroupBox.Controls.Add(notificationComboBox);
-            notificationGroupBox.Controls.Add(selectSoundButton);
-            notificationGroupBox.Controls.Add(usePrimaryScreenCheckbox);
-            notificationGroupBox.Controls.Add(deleteSoundButton);
-            notificationGroupBox.Controls.Add(positionLabel);
-            notificationGroupBox.Location = new System.Drawing.Point(434, 232);
-            notificationGroupBox.Name = "notificationGroupBox";
-            notificationGroupBox.Size = new System.Drawing.Size(410, 138);
-            notificationGroupBox.TabIndex = 16;
-            notificationGroupBox.TabStop = false;
-            notificationGroupBox.Text = "Notification";
+            notificationsGroupBox.Controls.Add(bannerGroupBox);
+            notificationsGroupBox.Controls.Add(notificationComboBox);
+            notificationsGroupBox.Controls.Add(selectSoundButton);
+            notificationsGroupBox.Controls.Add(deleteSoundButton);
+            notificationsGroupBox.Location = new System.Drawing.Point(396, 232);
+            notificationsGroupBox.Name = "notificationsGroupBox";
+            notificationsGroupBox.Size = new System.Drawing.Size(347, 219);
+            notificationsGroupBox.TabIndex = 16;
+            notificationsGroupBox.TabStop = false;
+            notificationsGroupBox.Text = "Notifications";
             // 
-            // persistentMuteNotificationCheckBox
+            // bannerGroupBox
             // 
-            persistentMuteNotificationCheckBox.AutoSize = true;
-            persistentMuteNotificationCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            persistentMuteNotificationCheckBox.Location = new System.Drawing.Point(256, 107);
-            persistentMuteNotificationCheckBox.Name = "persistentMuteNotificationCheckBox";
-            persistentMuteNotificationCheckBox.Size = new System.Drawing.Size(148, 20);
-            persistentMuteNotificationCheckBox.TabIndex = 30;
-            persistentMuteNotificationCheckBox.Text = "Persistent Mute Banner";
-            persistentMuteNotificationCheckBox.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            persistentMuteNotificationCheckBox.UseVisualStyleBackColor = true;
+            bannerGroupBox.Controls.Add(positionLabel);
+            bannerGroupBox.Controls.Add(secondsLabel);
+            bannerGroupBox.Controls.Add(usePrimaryScreenCheckbox);
+            bannerGroupBox.Controls.Add(microphoneMuteLabel);
+            bannerGroupBox.Controls.Add(positionComboBox);
+            bannerGroupBox.Controls.Add(microphoneMuteComboBox);
+            bannerGroupBox.Controls.Add(singleNotificationCheckbox);
+            bannerGroupBox.Controls.Add(onScreenTimeLabel);
+            bannerGroupBox.Controls.Add(onScreenUpDown);
+            bannerGroupBox.Location = new System.Drawing.Point(6, 51);
+            bannerGroupBox.Name = "bannerGroupBox";
+            bannerGroupBox.Size = new System.Drawing.Size(335, 162);
+            bannerGroupBox.TabIndex = 34;
+            bannerGroupBox.TabStop = false;
+            bannerGroupBox.Text = "Banner Options";
             // 
-            // onScreenTimeLabel
+            // positionLabel
             // 
-            onScreenTimeLabel.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            onScreenTimeLabel.AutoSize = true;
-            onScreenTimeLabel.Location = new System.Drawing.Point(273, 82);
-            onScreenTimeLabel.Name = "onScreenTimeLabel";
-            onScreenTimeLabel.Size = new System.Drawing.Size(86, 16);
-            onScreenTimeLabel.TabIndex = 29;
-            onScreenTimeLabel.Text = "On screen time";
-            onScreenTimeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            positionLabel.Location = new System.Drawing.Point(6, 19);
+            positionLabel.Name = "positionLabel";
+            positionLabel.Size = new System.Drawing.Size(155, 23);
+            positionLabel.TabIndex = 17;
+            positionLabel.Text = "Position";
+            positionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // onScreenUpDown
+            // secondsLabel
             // 
-            onScreenUpDown.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            onScreenUpDown.Location = new System.Drawing.Point(365, 80);
-            onScreenUpDown.Name = "onScreenUpDown";
-            onScreenUpDown.Size = new System.Drawing.Size(39, 23);
-            onScreenUpDown.TabIndex = 28;
+            secondsLabel.Location = new System.Drawing.Point(212, 48);
+            secondsLabel.Margin = new System.Windows.Forms.Padding(3);
+            secondsLabel.Name = "secondsLabel";
+            secondsLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            secondsLabel.Size = new System.Drawing.Size(85, 23);
+            secondsLabel.TabIndex = 33;
+            secondsLabel.Text = "seconds";
+            secondsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // singleNotificationCheckbox
+            // usePrimaryScreenCheckbox
             // 
-            singleNotificationCheckbox.AutoSize = true;
-            singleNotificationCheckbox.Location = new System.Drawing.Point(7, 107);
-            singleNotificationCheckbox.Name = "singleNotificationCheckbox";
-            singleNotificationCheckbox.Size = new System.Drawing.Size(124, 20);
-            singleNotificationCheckbox.TabIndex = 27;
-            singleNotificationCheckbox.Text = "Single Notification";
-            singleNotificationCheckbox.UseVisualStyleBackColor = true;
+            usePrimaryScreenCheckbox.AutoSize = true;
+            usePrimaryScreenCheckbox.Location = new System.Drawing.Point(6, 106);
+            usePrimaryScreenCheckbox.Name = "usePrimaryScreenCheckbox";
+            usePrimaryScreenCheckbox.Size = new System.Drawing.Size(165, 19);
+            usePrimaryScreenCheckbox.TabIndex = 26;
+            usePrimaryScreenCheckbox.Text = "Always use primary screen";
+            usePrimaryScreenCheckbox.UseVisualStyleBackColor = true;
+            usePrimaryScreenCheckbox.CheckedChanged += UsePrimaryScreenCheckbox_CheckedChanged;
+            // 
+            // microphoneMuteLabel
+            // 
+            microphoneMuteLabel.Location = new System.Drawing.Point(6, 77);
+            microphoneMuteLabel.Name = "microphoneMuteLabel";
+            microphoneMuteLabel.Size = new System.Drawing.Size(155, 23);
+            microphoneMuteLabel.TabIndex = 32;
+            microphoneMuteLabel.Text = "Microphone Muted";
+            microphoneMuteLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // positionComboBox
             // 
             positionComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             positionComboBox.FormattingEnabled = true;
-            positionComboBox.Location = new System.Drawing.Point(122, 51);
+            positionComboBox.Location = new System.Drawing.Point(167, 19);
             positionComboBox.Name = "positionComboBox";
-            positionComboBox.Size = new System.Drawing.Size(121, 24);
+            positionComboBox.Size = new System.Drawing.Size(130, 23);
             positionComboBox.TabIndex = 17;
             positionComboBox.SelectedValueChanged += PositionComboBox_SelectedValueChanged;
+            // 
+            // microphoneMuteComboBox
+            // 
+            microphoneMuteComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            microphoneMuteComboBox.FormattingEnabled = true;
+            microphoneMuteComboBox.Location = new System.Drawing.Point(167, 77);
+            microphoneMuteComboBox.Name = "microphoneMuteComboBox";
+            microphoneMuteComboBox.Size = new System.Drawing.Size(130, 23);
+            microphoneMuteComboBox.TabIndex = 31;
+            microphoneMuteComboBox.SelectedValueChanged += MicrophoneMuteNotificationComboBox_SelectedValueChanged;
+            // 
+            // singleNotificationCheckbox
+            // 
+            singleNotificationCheckbox.AutoSize = true;
+            singleNotificationCheckbox.Location = new System.Drawing.Point(6, 131);
+            singleNotificationCheckbox.Name = "singleNotificationCheckbox";
+            singleNotificationCheckbox.Size = new System.Drawing.Size(124, 19);
+            singleNotificationCheckbox.TabIndex = 27;
+            singleNotificationCheckbox.Text = "Single Notification";
+            singleNotificationCheckbox.UseVisualStyleBackColor = true;
+            // 
+            // onScreenTimeLabel
+            // 
+            onScreenTimeLabel.Location = new System.Drawing.Point(6, 48);
+            onScreenTimeLabel.Margin = new System.Windows.Forms.Padding(3);
+            onScreenTimeLabel.Name = "onScreenTimeLabel";
+            onScreenTimeLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            onScreenTimeLabel.Size = new System.Drawing.Size(155, 23);
+            onScreenTimeLabel.TabIndex = 29;
+            onScreenTimeLabel.Text = "On-screen time";
+            onScreenTimeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // onScreenUpDown
+            // 
+            onScreenUpDown.Location = new System.Drawing.Point(167, 48);
+            onScreenUpDown.Name = "onScreenUpDown";
+            onScreenUpDown.Size = new System.Drawing.Size(39, 23);
+            onScreenUpDown.TabIndex = 28;
+            onScreenUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // notificationComboBox
             // 
@@ -400,13 +457,13 @@ namespace SoundSwitch.UI.Forms
             notificationComboBox.FormattingEnabled = true;
             notificationComboBox.Location = new System.Drawing.Point(6, 22);
             notificationComboBox.Name = "notificationComboBox";
-            notificationComboBox.Size = new System.Drawing.Size(237, 24);
+            notificationComboBox.Size = new System.Drawing.Size(237, 23);
             notificationComboBox.TabIndex = 16;
             notificationComboBox.SelectedValueChanged += NotificationComboBox_SelectedValueChanged;
             // 
             // selectSoundButton
             // 
-            selectSoundButton.Location = new System.Drawing.Point(249, 21);
+            selectSoundButton.Location = new System.Drawing.Point(249, 22);
             selectSoundButton.Name = "selectSoundButton";
             selectSoundButton.Size = new System.Drawing.Size(24, 24);
             selectSoundButton.TabIndex = 19;
@@ -414,17 +471,6 @@ namespace SoundSwitch.UI.Forms
             selectSoundButton.UseVisualStyleBackColor = true;
             selectSoundButton.Visible = false;
             selectSoundButton.Click += SelectSoundButton_Click;
-            // 
-            // usePrimaryScreenCheckbox
-            // 
-            usePrimaryScreenCheckbox.AutoSize = true;
-            usePrimaryScreenCheckbox.Location = new System.Drawing.Point(6, 81);
-            usePrimaryScreenCheckbox.Name = "usePrimaryScreenCheckbox";
-            usePrimaryScreenCheckbox.Size = new System.Drawing.Size(164, 20);
-            usePrimaryScreenCheckbox.TabIndex = 26;
-            usePrimaryScreenCheckbox.Text = "Always use primary screen";
-            usePrimaryScreenCheckbox.UseVisualStyleBackColor = true;
-            usePrimaryScreenCheckbox.CheckedChanged += UsePrimaryScreenCheckbox_CheckedChanged;
             // 
             // deleteSoundButton
             // 
@@ -437,21 +483,12 @@ namespace SoundSwitch.UI.Forms
             deleteSoundButton.Visible = false;
             deleteSoundButton.Click += DeleteSoundButton_Click;
             // 
-            // positionLabel
-            // 
-            positionLabel.Location = new System.Drawing.Point(6, 51);
-            positionLabel.Name = "positionLabel";
-            positionLabel.Size = new System.Drawing.Size(110, 23);
-            positionLabel.TabIndex = 17;
-            positionLabel.Text = "Position";
-            positionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // languageGroupBox
             // 
             languageGroupBox.Controls.Add(languageComboBox);
-            languageGroupBox.Location = new System.Drawing.Point(434, 165);
+            languageGroupBox.Location = new System.Drawing.Point(396, 165);
             languageGroupBox.Name = "languageGroupBox";
-            languageGroupBox.Size = new System.Drawing.Size(410, 61);
+            languageGroupBox.Size = new System.Drawing.Size(347, 61);
             languageGroupBox.TabIndex = 15;
             languageGroupBox.TabStop = false;
             languageGroupBox.Text = "Language";
@@ -462,7 +499,7 @@ namespace SoundSwitch.UI.Forms
             languageComboBox.FormattingEnabled = true;
             languageComboBox.Location = new System.Drawing.Point(6, 22);
             languageComboBox.Name = "languageComboBox";
-            languageComboBox.Size = new System.Drawing.Size(237, 24);
+            languageComboBox.Size = new System.Drawing.Size(237, 23);
             languageComboBox.TabIndex = 17;
             languageComboBox.SelectedIndexChanged += LanguageComboBox_SelectedIndexChanged;
             // 
@@ -473,9 +510,9 @@ namespace SoundSwitch.UI.Forms
             updateSettingsGroupBox.Controls.Add(updateNotifyRadioButton);
             updateSettingsGroupBox.Controls.Add(updateSilentRadioButton);
             updateSettingsGroupBox.Controls.Add(includeBetaVersionsCheckBox);
-            updateSettingsGroupBox.Location = new System.Drawing.Point(434, 3);
+            updateSettingsGroupBox.Location = new System.Drawing.Point(396, 3);
             updateSettingsGroupBox.Name = "updateSettingsGroupBox";
-            updateSettingsGroupBox.Size = new System.Drawing.Size(410, 156);
+            updateSettingsGroupBox.Size = new System.Drawing.Size(347, 156);
             updateSettingsGroupBox.TabIndex = 14;
             updateSettingsGroupBox.TabStop = false;
             updateSettingsGroupBox.Text = "Update Settings";
@@ -483,9 +520,9 @@ namespace SoundSwitch.UI.Forms
             // telemetryCheckbox
             // 
             telemetryCheckbox.AutoSize = true;
-            telemetryCheckbox.Location = new System.Drawing.Point(7, 130);
+            telemetryCheckbox.Location = new System.Drawing.Point(6, 130);
             telemetryCheckbox.Name = "telemetryCheckbox";
-            telemetryCheckbox.Size = new System.Drawing.Size(76, 20);
+            telemetryCheckbox.Size = new System.Drawing.Size(77, 19);
             telemetryCheckbox.TabIndex = 22;
             telemetryCheckbox.Text = "Telemetry";
             telemetryCheckbox.UseVisualStyleBackColor = true;
@@ -493,9 +530,9 @@ namespace SoundSwitch.UI.Forms
             // updateNeverRadioButton
             // 
             updateNeverRadioButton.AutoSize = true;
-            updateNeverRadioButton.Location = new System.Drawing.Point(7, 71);
+            updateNeverRadioButton.Location = new System.Drawing.Point(6, 71);
             updateNeverRadioButton.Name = "updateNeverRadioButton";
-            updateNeverRadioButton.Size = new System.Drawing.Size(153, 20);
+            updateNeverRadioButton.Size = new System.Drawing.Size(153, 19);
             updateNeverRadioButton.TabIndex = 21;
             updateNeverRadioButton.TabStop = true;
             updateNeverRadioButton.Text = "Never check for updates";
@@ -505,9 +542,9 @@ namespace SoundSwitch.UI.Forms
             // updateNotifyRadioButton
             // 
             updateNotifyRadioButton.AutoSize = true;
-            updateNotifyRadioButton.Location = new System.Drawing.Point(7, 46);
+            updateNotifyRadioButton.Location = new System.Drawing.Point(6, 46);
             updateNotifyRadioButton.Name = "updateNotifyRadioButton";
-            updateNotifyRadioButton.Size = new System.Drawing.Size(222, 20);
+            updateNotifyRadioButton.Size = new System.Drawing.Size(223, 19);
             updateNotifyRadioButton.TabIndex = 20;
             updateNotifyRadioButton.TabStop = true;
             updateNotifyRadioButton.Text = "Notify me when updates are available";
@@ -517,9 +554,9 @@ namespace SoundSwitch.UI.Forms
             // updateSilentRadioButton
             // 
             updateSilentRadioButton.AutoSize = true;
-            updateSilentRadioButton.Location = new System.Drawing.Point(7, 21);
+            updateSilentRadioButton.Location = new System.Drawing.Point(6, 21);
             updateSilentRadioButton.Name = "updateSilentRadioButton";
-            updateSilentRadioButton.Size = new System.Drawing.Size(175, 20);
+            updateSilentRadioButton.Size = new System.Drawing.Size(176, 19);
             updateSilentRadioButton.TabIndex = 19;
             updateSilentRadioButton.TabStop = true;
             updateSilentRadioButton.Text = "Install updates automatically";
@@ -529,9 +566,9 @@ namespace SoundSwitch.UI.Forms
             // includeBetaVersionsCheckBox
             // 
             includeBetaVersionsCheckBox.AutoSize = true;
-            includeBetaVersionsCheckBox.Location = new System.Drawing.Point(7, 103);
+            includeBetaVersionsCheckBox.Location = new System.Drawing.Point(6, 103);
             includeBetaVersionsCheckBox.Name = "includeBetaVersionsCheckBox";
-            includeBetaVersionsCheckBox.Size = new System.Drawing.Size(137, 20);
+            includeBetaVersionsCheckBox.Size = new System.Drawing.Size(137, 19);
             includeBetaVersionsCheckBox.TabIndex = 18;
             includeBetaVersionsCheckBox.Text = "Include Beta versions";
             includeBetaVersionsCheckBox.UseVisualStyleBackColor = true;
@@ -547,9 +584,9 @@ namespace SoundSwitch.UI.Forms
             audioSettingsGroupBox.Controls.Add(tooltipOnHoverLabel);
             audioSettingsGroupBox.Controls.Add(tooltipInfoComboBox);
             audioSettingsGroupBox.Controls.Add(switchCommunicationDeviceCheckBox);
-            audioSettingsGroupBox.Location = new System.Drawing.Point(3, 102);
+            audioSettingsGroupBox.Location = new System.Drawing.Point(3, 99);
             audioSettingsGroupBox.Name = "audioSettingsGroupBox";
-            audioSettingsGroupBox.Size = new System.Drawing.Size(425, 268);
+            audioSettingsGroupBox.Size = new System.Drawing.Size(387, 352);
             audioSettingsGroupBox.TabIndex = 13;
             audioSettingsGroupBox.TabStop = false;
             audioSettingsGroupBox.Text = "Audio Settings";
@@ -559,7 +596,7 @@ namespace SoundSwitch.UI.Forms
             quickMenuCheckbox.AutoSize = true;
             quickMenuCheckbox.Location = new System.Drawing.Point(6, 103);
             quickMenuCheckbox.Name = "quickMenuCheckbox";
-            quickMenuCheckbox.Size = new System.Drawing.Size(144, 20);
+            quickMenuCheckbox.Size = new System.Drawing.Size(144, 19);
             quickMenuCheckbox.TabIndex = 27;
             quickMenuCheckbox.Text = "QuickMenu on hotkey";
             quickMenuCheckbox.UseVisualStyleBackColor = true;
@@ -578,7 +615,7 @@ namespace SoundSwitch.UI.Forms
             foregroundAppCheckbox.AutoSize = true;
             foregroundAppCheckbox.Location = new System.Drawing.Point(6, 48);
             foregroundAppCheckbox.Name = "foregroundAppCheckbox";
-            foregroundAppCheckbox.Size = new System.Drawing.Size(149, 20);
+            foregroundAppCheckbox.Size = new System.Drawing.Size(149, 19);
             foregroundAppCheckbox.TabIndex = 25;
             foregroundAppCheckbox.Text = "Switch Foreground app";
             foregroundAppCheckbox.UseVisualStyleBackColor = true;
@@ -588,7 +625,7 @@ namespace SoundSwitch.UI.Forms
             // 
             cycleThroughLabel.Location = new System.Drawing.Point(6, 190);
             cycleThroughLabel.Name = "cycleThroughLabel";
-            cycleThroughLabel.Size = new System.Drawing.Size(106, 23);
+            cycleThroughLabel.Size = new System.Drawing.Size(155, 23);
             cycleThroughLabel.TabIndex = 23;
             cycleThroughLabel.Text = "Cycle through";
             cycleThroughLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -597,9 +634,9 @@ namespace SoundSwitch.UI.Forms
             // 
             cycleThroughComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             cycleThroughComboBox.FormattingEnabled = true;
-            cycleThroughComboBox.Location = new System.Drawing.Point(118, 190);
+            cycleThroughComboBox.Location = new System.Drawing.Point(167, 190);
             cycleThroughComboBox.Name = "cycleThroughComboBox";
-            cycleThroughComboBox.Size = new System.Drawing.Size(237, 24);
+            cycleThroughComboBox.Size = new System.Drawing.Size(182, 23);
             cycleThroughComboBox.TabIndex = 22;
             cycleThroughComboBox.SelectedValueChanged += CyclerComboBox_SelectedValueChanged;
             // 
@@ -607,7 +644,7 @@ namespace SoundSwitch.UI.Forms
             // 
             tooltipOnHoverLabel.Location = new System.Drawing.Point(6, 154);
             tooltipOnHoverLabel.Name = "tooltipOnHoverLabel";
-            tooltipOnHoverLabel.Size = new System.Drawing.Size(106, 23);
+            tooltipOnHoverLabel.Size = new System.Drawing.Size(155, 23);
             tooltipOnHoverLabel.TabIndex = 21;
             tooltipOnHoverLabel.Text = "Tooltip on Hover";
             tooltipOnHoverLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -616,9 +653,9 @@ namespace SoundSwitch.UI.Forms
             // 
             tooltipInfoComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             tooltipInfoComboBox.FormattingEnabled = true;
-            tooltipInfoComboBox.Location = new System.Drawing.Point(118, 154);
+            tooltipInfoComboBox.Location = new System.Drawing.Point(167, 154);
             tooltipInfoComboBox.Name = "tooltipInfoComboBox";
-            tooltipInfoComboBox.Size = new System.Drawing.Size(237, 24);
+            tooltipInfoComboBox.Size = new System.Drawing.Size(182, 23);
             tooltipInfoComboBox.TabIndex = 20;
             tooltipInfoComboBox.SelectedValueChanged += TooltipInfoComboBox_SelectedValueChanged;
             // 
@@ -629,7 +666,7 @@ namespace SoundSwitch.UI.Forms
             basicSettingsGroupBox.Controls.Add(iconChangeChoicesComboBox);
             basicSettingsGroupBox.Location = new System.Drawing.Point(3, 3);
             basicSettingsGroupBox.Name = "basicSettingsGroupBox";
-            basicSettingsGroupBox.Size = new System.Drawing.Size(425, 93);
+            basicSettingsGroupBox.Size = new System.Drawing.Size(387, 90);
             basicSettingsGroupBox.TabIndex = 0;
             basicSettingsGroupBox.TabStop = false;
             basicSettingsGroupBox.Text = "Basic Settings";
@@ -638,7 +675,7 @@ namespace SoundSwitch.UI.Forms
             // 
             iconChangeLabel.Location = new System.Drawing.Point(6, 51);
             iconChangeLabel.Name = "iconChangeLabel";
-            iconChangeLabel.Size = new System.Drawing.Size(106, 23);
+            iconChangeLabel.Size = new System.Drawing.Size(155, 23);
             iconChangeLabel.TabIndex = 27;
             iconChangeLabel.Text = "Systray Icon";
             iconChangeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -647,82 +684,24 @@ namespace SoundSwitch.UI.Forms
             // 
             iconChangeChoicesComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             iconChangeChoicesComboBox.FormattingEnabled = true;
-            iconChangeChoicesComboBox.Location = new System.Drawing.Point(118, 51);
+            iconChangeChoicesComboBox.Location = new System.Drawing.Point(167, 51);
             iconChangeChoicesComboBox.Name = "iconChangeChoicesComboBox";
-            iconChangeChoicesComboBox.Size = new System.Drawing.Size(237, 24);
+            iconChangeChoicesComboBox.Size = new System.Drawing.Size(182, 23);
             iconChangeChoicesComboBox.TabIndex = 26;
             iconChangeChoicesComboBox.SelectedIndexChanged += IconChangeChoicesComboBox_SelectedIndexChanged;
             // 
             // troubleshootingTabPage
             // 
-            troubleshootingTabPage.Controls.Add(troubleshootingLabel);
-            troubleshootingTabPage.Controls.Add(soundSwitchPictureBox);
-            troubleshootingTabPage.Controls.Add(discordCommunityLinkLabel);
-            troubleshootingTabPage.Controls.Add(gitHubHelpLinkLabel);
             troubleshootingTabPage.Controls.Add(exportLogFilesGroupBox);
-            troubleshootingTabPage.Controls.Add(appNameLabel);
             troubleshootingTabPage.Controls.Add(resetAudioDevicesGroupBox);
-            troubleshootingTabPage.Controls.Add(donateLinkLabel);
-            troubleshootingTabPage.Controls.Add(discordPictureBox);
-            troubleshootingTabPage.Controls.Add(donatePictureBox);
-            troubleshootingTabPage.Controls.Add(gitHubPictureBox);
-            troubleshootingTabPage.Location = new System.Drawing.Point(4, 25);
+            troubleshootingTabPage.Controls.Add(soundSwitchGroupBox);
+            troubleshootingTabPage.Location = new System.Drawing.Point(4, 24);
             troubleshootingTabPage.Name = "troubleshootingTabPage";
             troubleshootingTabPage.Padding = new System.Windows.Forms.Padding(3);
-            troubleshootingTabPage.Size = new System.Drawing.Size(857, 375);
+            troubleshootingTabPage.Size = new System.Drawing.Size(749, 457);
             troubleshootingTabPage.TabIndex = 4;
             troubleshootingTabPage.Text = "Troubleshooting";
             troubleshootingTabPage.UseVisualStyleBackColor = true;
-            // 
-            // troubleshootingLabel
-            // 
-            troubleshootingLabel.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            troubleshootingLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic);
-            troubleshootingLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            troubleshootingLabel.Location = new System.Drawing.Point(299, 72);
-            troubleshootingLabel.Name = "troubleshootingLabel";
-            troubleshootingLabel.Padding = new System.Windows.Forms.Padding(60, 30, 30, 30);
-            troubleshootingLabel.Size = new System.Drawing.Size(452, 162);
-            troubleshootingLabel.TabIndex = 11;
-            troubleshootingLabel.Text = "If you need any help or further troubleshooting with SoundSwitch, you can visit the Help Discussion or Community Discord link, or help support us by visiting the Donate link below.";
-            // 
-            // soundSwitchPictureBox
-            // 
-            soundSwitchPictureBox.Image = Properties.Resources.SoundSwitch48;
-            soundSwitchPictureBox.Location = new System.Drawing.Point(414, 20);
-            soundSwitchPictureBox.Name = "soundSwitchPictureBox";
-            soundSwitchPictureBox.Size = new System.Drawing.Size(51, 49);
-            soundSwitchPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            soundSwitchPictureBox.TabIndex = 9;
-            soundSwitchPictureBox.TabStop = false;
-            // 
-            // discordCommunityLinkLabel
-            // 
-            discordCommunityLinkLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            discordCommunityLinkLabel.AutoSize = true;
-            discordCommunityLinkLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            discordCommunityLinkLabel.Location = new System.Drawing.Point(480, 280);
-            discordCommunityLinkLabel.Name = "discordCommunityLinkLabel";
-            discordCommunityLinkLabel.Size = new System.Drawing.Size(149, 21);
-            discordCommunityLinkLabel.TabIndex = 1;
-            discordCommunityLinkLabel.TabStop = true;
-            discordCommunityLinkLabel.Text = "Community Discord";
-            discordCommunityLinkLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            discordCommunityLinkLabel.LinkClicked += DiscordCommunityLinkLabel_LinkClicked;
-            // 
-            // gitHubHelpLinkLabel
-            // 
-            gitHubHelpLinkLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            gitHubHelpLinkLabel.AutoSize = true;
-            gitHubHelpLinkLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            gitHubHelpLinkLabel.Location = new System.Drawing.Point(480, 242);
-            gitHubHelpLinkLabel.Name = "gitHubHelpLinkLabel";
-            gitHubHelpLinkLabel.Size = new System.Drawing.Size(120, 21);
-            gitHubHelpLinkLabel.TabIndex = 0;
-            gitHubHelpLinkLabel.TabStop = true;
-            gitHubHelpLinkLabel.Text = "Help Discussion";
-            gitHubHelpLinkLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            gitHubHelpLinkLabel.LinkClicked += GitHubHelpLinkLabel_LinkClicked;
             // 
             // exportLogFilesGroupBox
             // 
@@ -755,16 +734,6 @@ namespace SoundSwitch.UI.Forms
             exportLogFilesLabel.TabIndex = 2;
             exportLogFilesLabel.Text = "Export all log files into a zip archive for further troubleshooting in either the Help Discussions or Community Discord.\r\n";
             // 
-            // appNameLabel
-            // 
-            appNameLabel.AutoSize = true;
-            appNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
-            appNameLabel.Location = new System.Drawing.Point(465, 31);
-            appNameLabel.Name = "appNameLabel";
-            appNameLabel.Size = new System.Drawing.Size(184, 31);
-            appNameLabel.TabIndex = 8;
-            appNameLabel.Text = "SoundSwitch";
-            // 
             // resetAudioDevicesGroupBox
             // 
             resetAudioDevicesGroupBox.Controls.Add(resetAudioDevicesLabel);
@@ -796,12 +765,61 @@ namespace SoundSwitch.UI.Forms
             resetAudioDevicesButton.UseVisualStyleBackColor = true;
             resetAudioDevicesButton.Click += ResetAudioDevicesButton_Click;
             // 
+            // soundSwitchGroupBox
+            // 
+            soundSwitchGroupBox.Controls.Add(troubleshootingLabel);
+            soundSwitchGroupBox.Controls.Add(soundSwitchPictureBox);
+            soundSwitchGroupBox.Controls.Add(discordPictureBox);
+            soundSwitchGroupBox.Controls.Add(donateLinkLabel);
+            soundSwitchGroupBox.Controls.Add(gitHubPictureBox);
+            soundSwitchGroupBox.Controls.Add(gitHubHelpLinkLabel);
+            soundSwitchGroupBox.Controls.Add(appNameLabel);
+            soundSwitchGroupBox.Controls.Add(discordCommunityLinkLabel);
+            soundSwitchGroupBox.Controls.Add(donatePictureBox);
+            soundSwitchGroupBox.Location = new System.Drawing.Point(299, 3);
+            soundSwitchGroupBox.Name = "soundSwitchGroupBox";
+            soundSwitchGroupBox.Size = new System.Drawing.Size(447, 448);
+            soundSwitchGroupBox.TabIndex = 12;
+            soundSwitchGroupBox.TabStop = false;
+            // 
+            // troubleshootingLabel
+            // 
+            troubleshootingLabel.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            troubleshootingLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic);
+            troubleshootingLabel.Location = new System.Drawing.Point(6, 94);
+            troubleshootingLabel.Name = "troubleshootingLabel";
+            troubleshootingLabel.Padding = new System.Windows.Forms.Padding(30);
+            troubleshootingLabel.Size = new System.Drawing.Size(435, 175);
+            troubleshootingLabel.TabIndex = 11;
+            troubleshootingLabel.Text = "If you need any help or further troubleshooting with SoundSwitch, you can visit the Help Discussion or Community Discord link, or help support us by visiting the Donate link below.";
+            troubleshootingLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // soundSwitchPictureBox
+            // 
+            soundSwitchPictureBox.Image = Properties.Resources.SoundSwitch48;
+            soundSwitchPictureBox.Location = new System.Drawing.Point(102, 42);
+            soundSwitchPictureBox.Name = "soundSwitchPictureBox";
+            soundSwitchPictureBox.Size = new System.Drawing.Size(51, 49);
+            soundSwitchPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            soundSwitchPictureBox.TabIndex = 9;
+            soundSwitchPictureBox.TabStop = false;
+            // 
+            // discordPictureBox
+            // 
+            discordPictureBox.Image = Properties.Resources.DiscordMarkBlue32;
+            discordPictureBox.Location = new System.Drawing.Point(126, 310);
+            discordPictureBox.Name = "discordPictureBox";
+            discordPictureBox.Size = new System.Drawing.Size(32, 32);
+            discordPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            discordPictureBox.TabIndex = 4;
+            discordPictureBox.TabStop = false;
+            // 
             // donateLinkLabel
             // 
             donateLinkLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             donateLinkLabel.AutoSize = true;
             donateLinkLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            donateLinkLabel.Location = new System.Drawing.Point(480, 318);
+            donateLinkLabel.Location = new System.Drawing.Point(164, 348);
             donateLinkLabel.Name = "donateLinkLabel";
             donateLinkLabel.Size = new System.Drawing.Size(60, 21);
             donateLinkLabel.TabIndex = 2;
@@ -810,35 +828,63 @@ namespace SoundSwitch.UI.Forms
             donateLinkLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             donateLinkLabel.LinkClicked += DonateLinkLabel_LinkClicked;
             // 
-            // discordPictureBox
-            // 
-            discordPictureBox.Image = Properties.Resources.DiscordMarkBlue32;
-            discordPictureBox.Location = new System.Drawing.Point(442, 275);
-            discordPictureBox.Name = "discordPictureBox";
-            discordPictureBox.Size = new System.Drawing.Size(32, 32);
-            discordPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            discordPictureBox.TabIndex = 4;
-            discordPictureBox.TabStop = false;
-            // 
-            // donatePictureBox
-            // 
-            donatePictureBox.Image = Properties.Resources.Heart32;
-            donatePictureBox.Location = new System.Drawing.Point(442, 313);
-            donatePictureBox.Name = "donatePictureBox";
-            donatePictureBox.Size = new System.Drawing.Size(32, 32);
-            donatePictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            donatePictureBox.TabIndex = 5;
-            donatePictureBox.TabStop = false;
-            // 
             // gitHubPictureBox
             // 
             gitHubPictureBox.Image = Properties.Resources.GitHubMark32;
-            gitHubPictureBox.Location = new System.Drawing.Point(442, 237);
+            gitHubPictureBox.Location = new System.Drawing.Point(126, 272);
             gitHubPictureBox.Name = "gitHubPictureBox";
             gitHubPictureBox.Size = new System.Drawing.Size(32, 32);
             gitHubPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             gitHubPictureBox.TabIndex = 3;
             gitHubPictureBox.TabStop = false;
+            // 
+            // gitHubHelpLinkLabel
+            // 
+            gitHubHelpLinkLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            gitHubHelpLinkLabel.AutoSize = true;
+            gitHubHelpLinkLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            gitHubHelpLinkLabel.Location = new System.Drawing.Point(164, 272);
+            gitHubHelpLinkLabel.Name = "gitHubHelpLinkLabel";
+            gitHubHelpLinkLabel.Size = new System.Drawing.Size(120, 21);
+            gitHubHelpLinkLabel.TabIndex = 0;
+            gitHubHelpLinkLabel.TabStop = true;
+            gitHubHelpLinkLabel.Text = "Help Discussion";
+            gitHubHelpLinkLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            gitHubHelpLinkLabel.LinkClicked += GitHubHelpLinkLabel_LinkClicked;
+            // 
+            // appNameLabel
+            // 
+            appNameLabel.AutoSize = true;
+            appNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
+            appNameLabel.Location = new System.Drawing.Point(153, 50);
+            appNameLabel.Name = "appNameLabel";
+            appNameLabel.Size = new System.Drawing.Size(184, 31);
+            appNameLabel.TabIndex = 8;
+            appNameLabel.Text = "SoundSwitch";
+            // 
+            // discordCommunityLinkLabel
+            // 
+            discordCommunityLinkLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            discordCommunityLinkLabel.AutoSize = true;
+            discordCommunityLinkLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            discordCommunityLinkLabel.Location = new System.Drawing.Point(164, 310);
+            discordCommunityLinkLabel.Name = "discordCommunityLinkLabel";
+            discordCommunityLinkLabel.Size = new System.Drawing.Size(149, 21);
+            discordCommunityLinkLabel.TabIndex = 1;
+            discordCommunityLinkLabel.TabStop = true;
+            discordCommunityLinkLabel.Text = "Community Discord";
+            discordCommunityLinkLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            discordCommunityLinkLabel.LinkClicked += DiscordCommunityLinkLabel_LinkClicked;
+            // 
+            // donatePictureBox
+            // 
+            donatePictureBox.Image = Properties.Resources.Heart32;
+            donatePictureBox.Location = new System.Drawing.Point(126, 348);
+            donatePictureBox.Name = "donatePictureBox";
+            donatePictureBox.Size = new System.Drawing.Size(32, 32);
+            donatePictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            donatePictureBox.TabIndex = 5;
+            donatePictureBox.TabStop = false;
             // 
             // selectSoundFileDialog
             // 
@@ -848,9 +894,9 @@ namespace SoundSwitch.UI.Forms
             // 
             hotkeysCheckBox.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             hotkeysCheckBox.AutoSize = true;
-            hotkeysCheckBox.Location = new System.Drawing.Point(163, 440);
+            hotkeysCheckBox.Location = new System.Drawing.Point(163, 522);
             hotkeysCheckBox.Name = "hotkeysCheckBox";
-            hotkeysCheckBox.Size = new System.Drawing.Size(100, 20);
+            hotkeysCheckBox.Size = new System.Drawing.Size(100, 19);
             hotkeysCheckBox.TabIndex = 20;
             hotkeysCheckBox.Text = "Enable hotkey";
             hotkeysCheckBox.UseVisualStyleBackColor = true;
@@ -859,7 +905,7 @@ namespace SoundSwitch.UI.Forms
             // hotKeyControl
             // 
             hotKeyControl.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            hotKeyControl.Location = new System.Drawing.Point(19, 438);
+            hotKeyControl.Location = new System.Drawing.Point(19, 519);
             hotKeyControl.Name = "hotKeyControl";
             hotKeyControl.Size = new System.Drawing.Size(138, 23);
             hotKeyControl.TabIndex = 21;
@@ -870,9 +916,9 @@ namespace SoundSwitch.UI.Forms
             // 
             toggleMuteLabel.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             toggleMuteLabel.AutoSize = true;
-            toggleMuteLabel.Location = new System.Drawing.Point(441, 419);
+            toggleMuteLabel.Location = new System.Drawing.Point(441, 500);
             toggleMuteLabel.Name = "toggleMuteLabel";
-            toggleMuteLabel.Size = new System.Drawing.Size(72, 16);
+            toggleMuteLabel.Size = new System.Drawing.Size(73, 15);
             toggleMuteLabel.TabIndex = 22;
             toggleMuteLabel.Text = "Toggle mute";
             toggleMuteLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -880,7 +926,7 @@ namespace SoundSwitch.UI.Forms
             // muteHotKey
             // 
             muteHotKey.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            muteHotKey.Location = new System.Drawing.Point(441, 438);
+            muteHotKey.Location = new System.Drawing.Point(441, 519);
             muteHotKey.Name = "muteHotKey";
             muteHotKey.Size = new System.Drawing.Size(138, 23);
             muteHotKey.TabIndex = 24;
@@ -891,20 +937,32 @@ namespace SoundSwitch.UI.Forms
             // 
             muteHotKeyCheckbox.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             muteHotKeyCheckbox.AutoSize = true;
-            muteHotKeyCheckbox.Location = new System.Drawing.Point(585, 440);
+            muteHotKeyCheckbox.Location = new System.Drawing.Point(585, 522);
             muteHotKeyCheckbox.Name = "muteHotKeyCheckbox";
-            muteHotKeyCheckbox.Size = new System.Drawing.Size(100, 20);
+            muteHotKeyCheckbox.Size = new System.Drawing.Size(100, 19);
             muteHotKeyCheckbox.TabIndex = 23;
             muteHotKeyCheckbox.Text = "Enable hotkey";
             muteHotKeyCheckbox.UseVisualStyleBackColor = true;
             muteHotKeyCheckbox.CheckedChanged += MuteHotKeyCheckbox_CheckedChanged;
+            // 
+            // switchDeviceLabel
+            // 
+            switchDeviceLabel.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            switchDeviceLabel.AutoSize = true;
+            switchDeviceLabel.Location = new System.Drawing.Point(19, 500);
+            switchDeviceLabel.Name = "switchDeviceLabel";
+            switchDeviceLabel.Size = new System.Drawing.Size(79, 15);
+            switchDeviceLabel.TabIndex = 25;
+            switchDeviceLabel.Text = "Switch device";
+            switchDeviceLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // SettingsForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             CancelButton = closeButton;
-            ClientSize = new System.Drawing.Size(887, 473);
+            ClientSize = new System.Drawing.Size(779, 554);
+            Controls.Add(switchDeviceLabel);
             Controls.Add(muteHotKey);
             Controls.Add(muteHotKeyCheckbox);
             Controls.Add(toggleMuteLabel);
@@ -912,7 +970,7 @@ namespace SoundSwitch.UI.Forms
             Controls.Add(hotkeysCheckBox);
             Controls.Add(tabControl);
             Controls.Add(closeButton);
-            MinimumSize = new System.Drawing.Size(900, 512);
+            MinimumSize = new System.Drawing.Size(795, 560);
             Name = "SettingsForm";
             Text = "Settings";
             tabControl.ResumeLayout(false);
@@ -921,8 +979,9 @@ namespace SoundSwitch.UI.Forms
             profileTabPage.ResumeLayout(false);
             profileTabPage.PerformLayout();
             appSettingTabPage.ResumeLayout(false);
-            notificationGroupBox.ResumeLayout(false);
-            notificationGroupBox.PerformLayout();
+            notificationsGroupBox.ResumeLayout(false);
+            bannerGroupBox.ResumeLayout(false);
+            bannerGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)onScreenUpDown).EndInit();
             languageGroupBox.ResumeLayout(false);
             updateSettingsGroupBox.ResumeLayout(false);
@@ -932,13 +991,14 @@ namespace SoundSwitch.UI.Forms
             basicSettingsGroupBox.ResumeLayout(false);
             basicSettingsGroupBox.PerformLayout();
             troubleshootingTabPage.ResumeLayout(false);
-            troubleshootingTabPage.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)soundSwitchPictureBox).EndInit();
             exportLogFilesGroupBox.ResumeLayout(false);
             resetAudioDevicesGroupBox.ResumeLayout(false);
+            soundSwitchGroupBox.ResumeLayout(false);
+            soundSwitchGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)soundSwitchPictureBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)discordPictureBox).EndInit();
-            ((System.ComponentModel.ISupportInitialize)donatePictureBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)gitHubPictureBox).EndInit();
+            ((System.ComponentModel.ISupportInitialize)donatePictureBox).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -988,7 +1048,7 @@ namespace SoundSwitch.UI.Forms
         private System.Windows.Forms.CheckBox telemetryCheckbox;
         private System.Windows.Forms.CheckBox quickMenuCheckbox;
         private System.Windows.Forms.CheckBox keepVolumeCheckbox;
-        private System.Windows.Forms.GroupBox notificationGroupBox;
+        private System.Windows.Forms.GroupBox notificationsGroupBox;
         private System.Windows.Forms.ComboBox positionComboBox;
         private System.Windows.Forms.CheckBox singleNotificationCheckbox;
         private System.Windows.Forms.TabPage troubleshootingTabPage;
@@ -1012,6 +1072,11 @@ namespace SoundSwitch.UI.Forms
 
         private System.Windows.Forms.Label onScreenTimeLabel;
         private System.Windows.Forms.NumericUpDown onScreenUpDown;
-        private System.Windows.Forms.CheckBox persistentMuteNotificationCheckBox;
+        private System.Windows.Forms.Label switchDeviceLabel;
+        private System.Windows.Forms.Label microphoneMuteLabel;
+        private System.Windows.Forms.ComboBox microphoneMuteComboBox;
+        private System.Windows.Forms.Label secondsLabel;
+        private System.Windows.Forms.GroupBox bannerGroupBox;
+        private System.Windows.Forms.GroupBox soundSwitchGroupBox;
     }
 }
