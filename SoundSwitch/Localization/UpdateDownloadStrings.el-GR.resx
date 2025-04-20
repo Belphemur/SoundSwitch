@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-	<!-- 
+  <!-- 
 		Microsoft ResX Schema
 
 		Version 1.3
@@ -58,10 +58,10 @@
 			: using a System.ComponentModel.TypeConverter
 			: and then encoded with base64 encoding.
 	-->
-	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
+	<xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
 					<xsd:element name="data">
 						<xsd:complexType>
 							<xsd:sequence>
@@ -82,19 +82,43 @@
 						</xsd:complexType>
 					</xsd:element>
 				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>1.3</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="wrongSignature" xml:space="preserve">
+    <value>Υπάρχει ένα πρόβλημα με την τελευταία ενημέρωση του SoundSwitch. Θα πρέπει να κατεβάσετε χειροκίνητα τη νέα έκδοση στη διεύθυνση {0}</value>
+  </data>
+  <data name="remindMe" xml:space="preserve">
+    <value>Αργότερα</value>
+  </data>
+  <data name="cancel" xml:space="preserve">
+    <value>Ακύρωση</value>
+  </data>
+  <data name="downloadFailed" xml:space="preserve">
+    <value>Λήψη Αποτυχημένη</value>
+  </data>
+  <data name="install" xml:space="preserve">
+    <value>Εγκατάσταση</value>
+  </data>
+  <data name="notSignedTitle" xml:space="preserve">
+    <value>Μη έγκυρη ψηφιακή υπογραφή</value>
+  </data>
+  <data name="notSigned" xml:space="preserve">
+    <value>Η ενημερωμένη έκδοση που κατεβάσατε δεν είναι υπογεγραμμένη με έγκυρη υπογραφή. Σας συμβουλεύουμε να διαγράψετε το αρχείο και να επικοινωνήσετε με τον προγραμματιστή!</value>
+  </data>
+  <data name="changelog" xml:space="preserve">
+    <value>Κατάλογος αλλαγών</value>
+  </data>
 </root>
