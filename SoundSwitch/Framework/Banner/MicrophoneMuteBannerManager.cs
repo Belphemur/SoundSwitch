@@ -25,7 +25,7 @@ namespace SoundSwitch.Framework.Banner
     /// Specialized banner manager for microphone mute notifications.
     /// Displays banners for muted microphones and removes them when unmuted.
     /// </summary>
-    public class MicrophoneMuteManager
+    public class MicrophoneMuteBannerManager
     {
         private static System.Threading.SynchronizationContext _syncContext;
         private readonly Dictionary<string, BannerForm> _activeBanners = new();
@@ -168,7 +168,7 @@ namespace SoundSwitch.Framework.Banner
             // Grab the synchronization context of the UI thread!
             _syncContext = System.Threading.SynchronizationContext.Current;
             if (!(_syncContext is System.Windows.Forms.WindowsFormsSynchronizationContext))
-                throw new InvalidOperationException("MicrophoneMuteManager must be called in the context of the UI thread.");
+                throw new InvalidOperationException("MicrophoneMuteBannerManager must be called in the context of the UI thread.");
             Log.Information("Microphone mute banner manager initialized");
         }
     }
