@@ -22,6 +22,7 @@ using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Banner;
+using SoundSwitch.Framework.Banner.MicrophoneMute;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
@@ -97,6 +98,7 @@ namespace SoundSwitch.Framework.Configuration
         public bool IncludeBetaVersions { get; set; }
         public string CustomNotificationFilePath { get; set; }
         public bool NotifyUsingPrimaryScreen { get; set; }
+        [Obsolete("Replaced by "+nameof(MicrophoneMutePersistent))]
         public bool PersistentMuteNotification { get; set; }
         public MicrophoneMuteEnum MicrophoneMuteNotification { get; set; }
 
@@ -182,9 +184,10 @@ namespace SoundSwitch.Framework.Configuration
                 migrated = true;
             }
 
-            if (!PersistentMuteNotification)
+            if (!PersistentMuteNotification && !MigratedFields.Contains(nameof(PersistentMuteNotification)))
             {
                 MicrophoneMuteNotification = MicrophoneMuteEnum.None;
+                MigratedFields.Add(nameof(PersistentMuteNotification));
                 migrated = true;
             }
 
