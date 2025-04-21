@@ -248,7 +248,7 @@
     <value>ஆடியோ கோப்பு கிடைக்கவில்லை</value>
   </data>
   <data name="activeRecording" xml:space="preserve">
-    <value>Rec: {0}</value>
+    <value>பதி: {0}</value>
   </data>
   <data name="activePlayback" xml:space="preserve">
     <value>விளையாடு: {0}</value>
