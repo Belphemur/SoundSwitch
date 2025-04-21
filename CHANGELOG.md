@@ -1,3 +1,38 @@
+## [6.14.0-beta.1](https://github.com/Belphemur/SoundSwitch/compare/v6.13.0...v6.14.0-beta.1) (2025-04-21)
+
+### Enhancements
+
+* **logging:** Improve logging of setting up the volume listener. ([f36fc56](https://github.com/Belphemur/SoundSwitch/commit/f36fc56c0e86e6b93111c0a15dc86e20dc9abb48))
+* Microphone Muted is now a drop down; ([9fb0659](https://github.com/Belphemur/SoundSwitch/commit/9fb0659ee65babbdd5101fbf73a6c59ee75f3f81))
+
+### Languages
+
+* **Greek:** Translated About using Weblate ([99956a6](https://github.com/Belphemur/SoundSwitch/commit/99956a6023ab1ebad8b85c2ee44c01aeb6404eac))
+* **Greek:** Translated Settings using Weblate ([d9c1ffe](https://github.com/Belphemur/SoundSwitch/commit/d9c1ffe3b867f7f5b4c8ccf058758640f7f0f2e3))
+* **Greek:** Translated Tray Icon using Weblate ([720dde0](https://github.com/Belphemur/SoundSwitch/commit/720dde0a0a4ed2e7a31ad10eb1603818e542f096))
+* **Greek:** Translated Update Download using Weblate ([b4a1647](https://github.com/Belphemur/SoundSwitch/commit/b4a16470c4a278344aa412f0d2b407a49966df1f))
+* **Japanese:** Translated About using Weblate ([08d15e3](https://github.com/Belphemur/SoundSwitch/commit/08d15e3b58396616589910b6f11df24a5a09bcbd))
+* **Japanese:** Translated Settings using Weblate ([f2d0c04](https://github.com/Belphemur/SoundSwitch/commit/f2d0c045a538906e32a82f9535cb9c95948808c4))
+* **Norwegian Bokmål:** Translated About using Weblate ([6b618be](https://github.com/Belphemur/SoundSwitch/commit/6b618be41be350eb1e73643cca8a7c8497cca00c))
+* **Norwegian Bokmål:** Translated Settings using Weblate ([7befd0b](https://github.com/Belphemur/SoundSwitch/commit/7befd0b6bf95f2569e35208f32a56e768fe5a3c9))
+* **Norwegian Bokmål:** Translated Settings using Weblate ([c18788f](https://github.com/Belphemur/SoundSwitch/commit/c18788f339c98cf15714c4c7f85fb8c4609a1ba1))
+* **Norwegian Bokmål:** Translated Tray Icon using Weblate ([6493bbb](https://github.com/Belphemur/SoundSwitch/commit/6493bbbe21767d98c754f275b6b41aea079524de))
+* **Norwegian Bokmål:** Translated Update Download using Weblate ([933e9b9](https://github.com/Belphemur/SoundSwitch/commit/933e9b92d3343a0feec42b1abbbef77a5699db23))
+* **Tamil:** Translated Settings using Weblate ([6760569](https://github.com/Belphemur/SoundSwitch/commit/676056910a8d8b6e58e8116104d99e19f923eab4))
+
+### Bug Fixes
+
+* **audio:** Subscribe to OS-level volume notifications for devices ([f59cc2c](https://github.com/Belphemur/SoundSwitch/commit/f59cc2cf14d187bd7e47ec38b28d710cff5d1da6))
+* **cli:** fix building CLI ([0f8232d](https://github.com/Belphemur/SoundSwitch/commit/0f8232d2c36cab3d7c3e2a4ae163075cc6e2e7b3))
+* **config:** fix migrating to new configuration for persistent mute ([465a0c9](https://github.com/Belphemur/SoundSwitch/commit/465a0c94adb9adf45f81e9143fa97ee40f7e2868))
+* Dialog box won't show when current UI language is selected ([2956336](https://github.com/Belphemur/SoundSwitch/commit/29563364b785d74f37091294ff6dcf4588447846))
+* FullBanner(), MicrophoneMuteManager renamed, PersistentMuteNotification migrated ([7a03b2c](https://github.com/Belphemur/SoundSwitch/commit/7a03b2cb9031ec29b9b5c83fafd206cc05134592))
+* secondsLabel ready for localization ([7cd7221](https://github.com/Belphemur/SoundSwitch/commit/7cd7221e49a917cbe3330209e82533132299585e))
+
+### Features
+
+* **mute:** choose the style of banner for the mute or no banner at all. ([227b70b](https://github.com/Belphemur/SoundSwitch/commit/227b70b899788c2ccc0fd9b7a8d55dc3ce890ba5)), closes [#1746](https://github.com/Belphemur/SoundSwitch/issues/1746)
+
 ## [6.13.0](https://github.com/Belphemur/SoundSwitch/compare/v6.12.0...v6.13.0) (2025-04-08)
 
 ### Enhancements
