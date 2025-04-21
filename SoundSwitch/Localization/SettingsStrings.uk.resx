@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -120,6 +120,9 @@
   <data name="selected" xml:space="preserve">
     <value>Обрано</value>
   </data>
+  <data name="connected" xml:space="preserve">
+    <value>Підключено</value>
+  </data>
   <data name="disconnected" xml:space="preserve">
     <value>Відключено</value>
   </data>
@@ -138,14 +141,17 @@
   <data name="communicationsDevice" xml:space="preserve">
     <value>Перемкнути пристрій зв'язку за замовчуванням</value>
   </data>
+  <data name="startWithWindows" xml:space="preserve">
+    <value>Автоматично запускати разом із Windows</value>
+  </data>
   <data name="buttonClose" xml:space="preserve">
     <value>Закрити</value>
   </data>
   <data name="buttonClose.tooltip" xml:space="preserve">
     <value>Зміни автоматично збережені</value>
   </data>
-  <data name="notification" xml:space="preserve">
-    <value>Сповіщення</value>
+  <data name="communicationsDevice.tooltip" xml:space="preserve">
+    <value>Коли вибрано, "Пристрій зв'язку за замовчуванням" та "Пристрій відтворення за замовчуванням" перемикаються разом (корисно для Skype, TeamSpeak та ін.).</value>
   </data>
   <data name="updateIncludeBetaVersions" xml:space="preserve">
     <value>Включити бета версії</value>
@@ -158,6 +164,9 @@
   </data>
   <data name="selectSoundButton.tooltip" xml:space="preserve">
     <value>Виберіть звуковий файл для сповіщень</value>
+  </data>
+  <data name="hotkey.tooltip" xml:space="preserve">
+    <value>Виберіть для активації гарячої клавіши.</value>
   </data>
   <data name="basicSettings" xml:space="preserve">
     <value>Базові налаштування</value>
@@ -174,11 +183,17 @@
   <data name="keepSystemTrayIcon" xml:space="preserve">
     <value>Зберігати іконку SoundSwitch на панелі завдань</value>
   </data>
+  <data name="keepSystemTrayIcon.tooltip" xml:space="preserve">
+    <value>Коли вибрано, іконка на панелі завдань не буде змінюватись коли змінюєтсья "Пристрій відтворення за замовчуванням".</value>
+  </data>
   <data name="updateInstallAutomatically" xml:space="preserve">
     <value>Встановлювати оновлення автоматично</value>
   </data>
   <data name="updateInstallAutomatically.tooltip" xml:space="preserve">
     <value>Оновлення встановлюютсья автоматично без попередження.</value>
+  </data>
+  <data name="updateNotify" xml:space="preserve">
+    <value>Сповіщати мене про доступні оновлення</value>
   </data>
   <data name="updateNever" xml:space="preserve">
     <value>Ніколи не перевіряти оновлення</value>
@@ -189,20 +204,33 @@
   <data name="cycleThrough.option.allAudioDevices" xml:space="preserve">
     <value>Усі звукові пристрої</value>
   </data>
+  <data name="cycleThrough.option.onlySelectedAudioDevices" xml:space="preserve">
+    <value>Тільки обрані звукові пристрої</value>
+  </data>
+  <data name="cycleThrough.tooltip" xml:space="preserve">
+    <value>Виберіть між якими звуковими пристроями виконувати перемикання - між всіма чи тільки між обраними.</value>
+  </data>
   <data name="notification.option.windowsDefault" xml:space="preserve">
     <value>Сповіщення Windows</value>
   </data>
   <data name="notification.option.sound" xml:space="preserve">
     <value>Звукові сповіщення</value>
   </data>
-  <data name="notificationOptionNone" xml:space="preserve">
-    <value>Без сповіщень</value>
+  <data name="none" xml:space="preserve">
+    <value>Ні</value>
   </data>
   <data name="notification.option.toast" xml:space="preserve">
     <value>Спливаюче повідомлення</value>
   </data>
   <data name="notification.option.customized" xml:space="preserve">
     <value>Спеціальне звукове сповіщення</value>
+  </data>
+  <data name="notification.tooltip" xml:space="preserve">
+    <value>Сповіщення Windows: спливаюче вікно панелі Windows за замовчуванням.
+Звукове сповіщення: відтворення звуку на переключеному пристрої відтворення.
+Спеціальне звукове сповіщення: відтворює вказаний звук на переключеному пристрої відтворення.
+Спливаюче сповіщення: Використовує спеціальну форму спливаючої версії панелі Windows.
+Банер: використовує спеціальну рамку, що завжди знаходиться зверху, корисно для використання під час гри.</value>
   </data>
   <data name="tooltipOnHover.option.playbackDevice" xml:space="preserve">
     <value>Пристрій відтворення</value>
@@ -213,26 +241,24 @@
   <data name="tooltipOnHover.option.bothDevices" xml:space="preserve">
     <value>Для обох пристроїв</value>
   </data>
-  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-    <value>Без підказок</value>
-  </data>
   <data name="audioFileNotFound" xml:space="preserve">
     <value>Звуковий файл який ви вибрали для сповіщень не знайдено. SoundSwitch переключив налаштування сповіщень до {0}.</value>
   </data>
-  <data name="audioFileNotFoundCaption" xml:space="preserve">
-    <value>Звуковий файл не знайдено</value>
+  <data name="audioFileNotFound.caption" xml:space="preserve">
+    <value>Аудіо файл не знайдено</value>
   </data>
   <data name="activeRecording" xml:space="preserve">
     <value>Запис: {0}</value>
   </data>
+  <data name="activePlayback" xml:space="preserve">
+    <value>Відтворення: {0}</value>
+  </data>
   <data name="language" xml:space="preserve">
     <value>Мова</value>
   </data>
-  <data name="notification.option.banner" xml:space="preserve">
-    <value>Сповіщення у банері</value>
-  </data>
-  <data name="activePlayback" xml:space="preserve">
-    <value>Відтворення: {0}</value>
+  <data name="languageRestartRequired" xml:space="preserve">
+    <value>Мову буде змінено піля перезапуску SoundSwitch.
+Перезапустити зараз?</value>
   </data>
   <data name="languageRestartRequired.caption" xml:space="preserve">
     <value>Потрібен перезапуск</value>
@@ -240,8 +266,11 @@
   <data name="updateNever.tooltip" xml:space="preserve">
     <value>Оновлювати застосунок тільки вручну.</value>
   </data>
-  <data name="iconChange" xml:space="preserve">
-    <value>Іконка системної панелі</value>
+  <data name="updateNotify.tooltip" xml:space="preserve">
+    <value>SoundSwitch повідомить вас, коли буде доступне нове оновлення. Натиснувши сповіщення, ви отримаєте спливаюче вікно із завантаженням оновлення та запитом, чи хочете ви його встановити.</value>
+  </data>
+  <data name="notification.option.banner" xml:space="preserve">
+    <value>Сповіщення у банері</value>
   </data>
   <data name="disableCustomSound.tooltip" xml:space="preserve">
     <value>Вимкнути встановлений спеціальний звук.</value>
@@ -252,6 +281,17 @@
   <data name="foregroundApp.tooltip" xml:space="preserve">
     <value>Перемикає також звук поточного додатка. Корисно для відеоігор.</value>
   </data>
+  <data name="iconChange" xml:space="preserve">
+    <value>Іконка системної панелі</value>
+  </data>
+  <data name="iconChange.tooltip" xml:space="preserve">
+    <value>Виберіть, коли змінити піктограму системної панелі SoundSwitch.
+
+За замовчуванням: не змінювати. Зберегти значок SoundSwitch.
+Відтворення: Коли пристрій відтворення перемикається.
+Запис: Коли записуючий пристрій перемикається.
+Обидва: змінюється під час перемикання будь-якого типу пристрою.</value>
+  </data>
   <data name="profile.tab" xml:space="preserve">
     <value>Профілі</value>
   </data>
@@ -261,14 +301,26 @@
   <data name="profile.program" xml:space="preserve">
     <value>Застосунок</value>
   </data>
+  <data name="profile.name" xml:space="preserve">
+    <value>Ім'я</value>
+  </data>
   <data name="profile.error.hotkey" xml:space="preserve">
     <value>Ця гаряча клвіша {0} вже використовуєтсья.</value>
   </data>
   <data name="profile.error.application" xml:space="preserve">
     <value>Цей застосунок {0} вже має приєднаний профіль.</value>
   </data>
+  <data name="profile.error.name" xml:space="preserve">
+    <value>Профіль з ім'ям {0} вже існує.</value>
+  </data>
   <data name="profile.error.needHKOrPath" xml:space="preserve">
     <value>Вам необхідно задати гарячу клавішу або/та застосунок.</value>
+  </data>
+  <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
+    <value>Вам необхідно встановити пристрій відтворення або запису.</value>
+  </data>
+  <data name="profile.explanation" xml:space="preserve">
+    <value>Додайте профіль, щоб перемикатися на певний пристрій відтворення або запису, коли певна програма запускається або розгортається. Ви також можете створити власну комбінацію клавіш для конкретної дії з пристроєм.</value>
   </data>
   <data name="profile.error.registerHotkeys" xml:space="preserve">
     <value>Не вдалося зареєструвати гарячу клавішу для наступних профілів: {0}</value>
@@ -300,6 +352,9 @@
   <data name="profile.defaultDevice.checkbox" xml:space="preserve">
     <value>Також перемикати пристрій за умовчанням</value>
   </data>
+  <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
+    <value>При виявленні програми SoundSwitch також змінить поточний пристрій за замовчуванням.</value>
+  </data>
   <data name="hotkeyEnabled" xml:space="preserve">
     <value>Гаряча клавіша ввімкнена</value>
   </data>
@@ -311,6 +366,15 @@
   </data>
   <data name="profile.trigger.process" xml:space="preserve">
     <value>Розташування застосунку</value>
+  </data>
+  <data name="profile.trigger.steam" xml:space="preserve">
+    <value>Steam Big Picture</value>
+  </data>
+  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
+    <value>Гаряча клавіша, яка використовується для активації профілю. Якщо ви використовуєте одну і ту ж гарячу клавішу, ви зможете перемикатися між профілями.</value>
+  </data>
+  <data name="profile.trigger.window.desc" xml:space="preserve">
+    <value>Активуйте профіль, якщо програма на передньому плані містить наступні символи</value>
   </data>
   <data name="profile.trigger.process.desc" xml:space="preserve">
     <value>Активувати профіль, коли обраний застосунок знаходиться на передньому плані</value>
@@ -327,8 +391,8 @@
   <data name="profile.trigger.available" xml:space="preserve">
     <value>Доступні тригери</value>
   </data>
-  <data name="profile.trigger.steam" xml:space="preserve">
-    <value>Steam Big Picture</value>
+  <data name="communication" xml:space="preserve">
+    <value>Пристрій зв'язку за замовчуванням</value>
   </data>
   <data name="profile.error.triggers.min" xml:space="preserve">
     <value>Вам потрібен мінімум один тригер.</value>
@@ -354,8 +418,22 @@
   <data name="profile.trigger.startup" xml:space="preserve">
     <value>Під час запуску</value>
   </data>
+  <data name="profile.trigger.startup.desc" xml:space="preserve">
+    <value>Профіль запускатиметься автоматично під час запуску SoundSwitch</value>
+  </data>
+  <data name="usePrimaryScreen" xml:space="preserve">
+    <value>Завжди використовувати основний екран</value>
+  </data>
+  <data name="usePrimaryScreen.tooltip" xml:space="preserve">
+    <value>Відображати банер на основному екрані замість сфокусованого.</value>
+  </data>
   <data name="profile.trigger.restoreDevices" xml:space="preserve">
     <value>Відновлення пристроїв після закінчення дії тригера</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
+    <value>Потребує ввімкнення "{0}".
+
+Відновити стан системи при закритті програми.</value>
   </data>
   <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
     <value>Стан системи відновлено</value>
@@ -366,11 +444,20 @@
   <data name="profile.trigger.uwp.desc" xml:space="preserve">
     <value>Введіть назву програми, встановленої через магазин Windows. Наприклад, Netflix, Amazon Prime video тощо…</value>
   </data>
+  <data name="notification.microphone.muted" xml:space="preserve">
+    <value>{0} вимкнено.</value>
+  </data>
   <data name="notification.microphone.unmuted" xml:space="preserve">
     <value>{0} увімкнено.</value>
   </data>
   <data name="mute.toggle.label" xml:space="preserve">
     <value>Вимкнути звук</value>
+  </data>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>У меню застосунку</value>
+  </data>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>Цей тригер робить профіль видимим у меню системної панелі. Клацніть лівою кнопкою миші на піктограмі системної панелі, щоб переглянути свій профіль.</value>
   </data>
   <data name="profile.trigger.deviceChanged" xml:space="preserve">
     <value>Примусовий профіль</value>
@@ -384,131 +471,32 @@
   <data name="telemetry" xml:space="preserve">
     <value>Телеметрія</value>
   </data>
+  <data name="telemetry.tooltip" xml:space="preserve">
+    <value>Зирає анонімну інформацію щодо версії що використовується. Ця інформаця доступна виключно розробнику SoundSwitch.</value>
+  </data>
   <data name="quickMenu" xml:space="preserve">
     <value>Швидке меню на гарячій клавіші</value>
   </data>
-  <data name="devices.AutoAddNewDevice" xml:space="preserve">
-    <value>Автоматичний вибір нових пристроїв</value>
-  </data>
-  <data name="devices.AutoAddNewDevice..tooltip" xml:space="preserve">
-    <value>Автоматичне додавання нових пристроїв до обраного списку при їх підключенні до комп'ютера</value>
-  </data>
-  <data name="connected" xml:space="preserve">
-    <value>Підключено</value>
-  </data>
-  <data name="startWithWindows" xml:space="preserve">
-    <value>Автоматично запускати разом із Windows</value>
-  </data>
-  <data name="communicationsDevice.tooltip" xml:space="preserve">
-    <value>Коли вибрано, "Пристрій зв'язку за замовчуванням" та "Пристрій відтворення за замовчуванням" перемикаються разом (корисно для Skype, TeamSpeak та ін.).</value>
-  </data>
-  <data name="hotkey.tooltip" xml:space="preserve">
-    <value>Виберіть для активації гарячої клавіши.</value>
-  </data>
-  <data name="keepSystemTrayIcon.tooltip" xml:space="preserve">
-    <value>Коли вибрано, іконка на панелі завдань не буде змінюватись коли змінюєтсья "Пристрій відтворення за замовчуванням".</value>
-  </data>
-  <data name="communication" xml:space="preserve">
-    <value>Пристрій зв'язку за замовчуванням</value>
-  </data>
-  <data name="updateNotify" xml:space="preserve">
-    <value>Сповіщати мене про доступні оновлення</value>
-  </data>
-  <data name="cycleThrough.option.onlySelectedAudioDevices" xml:space="preserve">
-    <value>Тільки обрані звукові пристрої</value>
-  </data>
-  <data name="cycleThrough.tooltip" xml:space="preserve">
-    <value>Виберіть між якими звуковими пристроями виконувати перемикання - між всіма чи тільки між обраними.</value>
-  </data>
-  <data name="notification.tooltip" xml:space="preserve">
-    <value>Сповіщення Windows: спливаюче вікно панелі Windows за замовчуванням.
-Звукове сповіщення: відтворення звуку на переключеному пристрої відтворення.
-Спеціальне звукове сповіщення: відтворює вказаний звук на переключеному пристрої відтворення.
-Спливаюче сповіщення: Використовує спеціальну форму спливаючої версії панелі Windows.
-Банер: використовує спеціальну рамку, що завжди знаходиться зверху, корисно для використання під час гри.</value>
-  </data>
-  <data name="profile.explanation" xml:space="preserve">
-    <value>Додайте профіль, щоб перемикатися на певний пристрій відтворення або запису, коли певна програма запускається або розгортається. Ви також можете створити власну комбінацію клавіш для конкретної дії з пристроєм.</value>
-  </data>
-  <data name="languageRestartRequired" xml:space="preserve">
-    <value>Мову буде змінено піля перезапуску SoundSwitch.
-Перезапустити зараз?</value>
-  </data>
-  <data name="updateNotify.tooltip" xml:space="preserve">
-    <value>SoundSwitch повідомить вас, коли буде доступне нове оновлення. Натиснувши сповіщення, ви отримаєте спливаюче вікно із завантаженням оновлення та запитом, чи хочете ви його встановити.</value>
-  </data>
-  <data name="profile.error.name" xml:space="preserve">
-    <value>Профіль з ім'ям {0} вже існує.</value>
-  </data>
-  <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
-    <value>При виявленні програми SoundSwitch також змінить поточний пристрій за замовчуванням.</value>
-  </data>
-  <data name="profile.name" xml:space="preserve">
-    <value>Ім'я</value>
-  </data>
-  <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
-    <value>Вам необхідно встановити пристрій відтворення або запису.</value>
-  </data>
-  <data name="profile.trigger.window.desc" xml:space="preserve">
-    <value>Активуйте профіль, якщо програма на передньому плані містить наступні символи</value>
-  </data>
-  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
-    <value>Цей тригер робить профіль видимим у меню системної панелі. Клацніть лівою кнопкою миші на піктограмі системної панелі, щоб переглянути свій профіль.</value>
-  </data>
-  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>Гаряча клавіша, яка використовується для активації профілю. Якщо ви використовуєте одну і ту ж гарячу клавішу, ви зможете перемикатися між профілями.</value>
-  </data>
-  <data name="iconChange.tooltip" xml:space="preserve">
-    <value>Виберіть, коли змінити піктограму системної панелі SoundSwitch.
-
-За замовчуванням: не змінювати. Зберегти значок SoundSwitch.
-Відтворення: Коли пристрій відтворення перемикається.
-Запис: Коли записуючий пристрій перемикається.
-Обидва: змінюється під час перемикання будь-якого типу пристрою.</value>
-  </data>
-  <data name="usePrimaryScreen" xml:space="preserve">
-    <value>Завжди використовувати основний екран</value>
-  </data>
-  <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
-    <value>Потребує ввімкнення "{0}".
-
-Відновити стан системи при закритті програми.</value>
-  </data>
-  <data name="profile.trigger.startup.desc" xml:space="preserve">
-    <value>Профіль запускатиметься автоматично під час запуску SoundSwitch</value>
-  </data>
-  <data name="profile.trigger.trayMenu" xml:space="preserve">
-    <value>У меню застосунку</value>
-  </data>
-  <data name="quickMenu.desc" xml:space="preserve">
-    <value>Відображати швидке меню на кшталт перемикання мов у Windows при використанні гарячої клавіші</value>
-  </data>
-  <data name="notification.microphone.muted" xml:space="preserve">
-    <value>{0} вимкнено.</value>
-  </data>
-  <data name="telemetry.desc" xml:space="preserve">
-    <value>Анонімно збирати інформацію про те, яка версія SoundSwitch використовується. Інформація буде доступна лише розробнику SoundSwitch.</value>
-  </data>
-  <data name="usePrimaryScreen.tooltip" xml:space="preserve">
-    <value>Відображати банер на основному екрані замість сфокусованого.</value>
-  </data>
-  <data name="keepVolume.desc" xml:space="preserve">
-    <value>Зберігати однаковий рівень гучності під час перемикання пристроїв відтворення</value>
-  </data>
-  <data name="position.tooltip" xml:space="preserve">
-    <value>Налаштувати позицію сповіщення у банері.</value>
-  </data>
-  <data name="position.option.bottomCenter" xml:space="preserve">
-    <value>Внизу по центру</value>
-  </data>
-  <data name="none" xml:space="preserve">
-    <value>Ні</value>
+  <data name="quickMenu.tooltip" xml:space="preserve">
+    <value>Відобразити швидке меню (на кшталт Мова Windows) за допомогою гарячих клавіш</value>
   </data>
   <data name="keepVolume" xml:space="preserve">
     <value>Зберігати рівень гучності на всіх пристроях</value>
   </data>
+  <data name="keepVolume.tooltip" xml:space="preserve">
+    <value>Зберегти рівень гучності при перемиканні пристроїв</value>
+  </data>
+  <data name="devices.autoAddNewDevice" xml:space="preserve">
+    <value>Автоматичний вибір нових пристроїв</value>
+  </data>
+  <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
+    <value>Автоматично додавати в перелік вибраних нові пристрої, колли їх під'єднано до комп'ютера</value>
+  </data>
   <data name="position" xml:space="preserve">
     <value>Позиція</value>
+  </data>
+  <data name="position.tooltip" xml:space="preserve">
+    <value>Налаштувати позицію сповіщення у банері.</value>
   </data>
   <data name="position.option.bottomLeft" xml:space="preserve">
     <value>Внизу зліва</value>
@@ -522,32 +510,17 @@
   <data name="position.option.topRight" xml:space="preserve">
     <value>Вгорі справа</value>
   </data>
+  <data name="position.option.bottomCenter" xml:space="preserve">
+    <value>Внизу по центру</value>
+  </data>
   <data name="position.option.topCenter" xml:space="preserve">
     <value>Вгорі по центру</value>
   </data>
-  <data name="resetAudioDevices" xml:space="preserve">
-    <value>Скинути звук для кожної програми</value>
+  <data name="notification.single" xml:space="preserve">
+    <value>Тільки один банер</value>
   </data>
-  <data name="quickMenu.tooltip" xml:space="preserve">
-    <value>Відобразити швидке меню (на кшталт Мова Windows) за допомогою гарячих клавіш</value>
-  </data>
-  <data name="audioFileNotFound.caption" xml:space="preserve">
-    <value>Аудіо файл не знайдено</value>
-  </data>
-  <data name="telemetry.tooltip" xml:space="preserve">
-    <value>Зирає анонімну інформацію щодо версії що використовується. Ця інформаця доступна виключно розробнику SoundSwitch.</value>
-  </data>
-  <data name="devices.autoAddNewDevice" xml:space="preserve">
-    <value>Автоматичний вибір нових пристроїв</value>
-  </data>
-  <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
-    <value>Автоматично додавати в перелік вибраних нові пристрої, колли їх під'єднано до комп'ютера</value>
-  </data>
-  <data name="exportLogFiles.desc" xml:space="preserve">
-    <value>Експортувати всі log файли в архів zip для подальшого усунення неполадок у повідомленнях або в Discord спільноти.</value>
-  </data>
-  <data name="keepVolume.tooltip" xml:space="preserve">
-    <value>Зберегти рівень гучності при перемиканні пристроїв</value>
+  <data name="notification.single.tooltip" xml:space="preserve">
+    <value>Показувати одночасно тільки один банер та заміняти його вміст.</value>
   </data>
   <data name="link.community" xml:space="preserve">
     <value>Спільнота Discord</value>
@@ -564,8 +537,14 @@
   <data name="buttonReset" xml:space="preserve">
     <value>Скидання</value>
   </data>
+  <data name="resetAudioDevices" xml:space="preserve">
+    <value>Скинути звук для кожної програми</value>
+  </data>
   <data name="exportLogFiles" xml:space="preserve">
     <value>Експорт Log файлів</value>
+  </data>
+  <data name="exportLogFiles.desc" xml:space="preserve">
+    <value>Експортувати всі log файли в архів zip для подальшого усунення неполадок у повідомленнях або в Discord спільноти.</value>
   </data>
   <data name="buttonExport" xml:space="preserve">
     <value>Експортувати</value>
@@ -576,19 +555,52 @@
   <data name="troubleshooting.desc" xml:space="preserve">
     <value>Якщо вам потрібна допомога або подальше усунення неполадок з SoundSwitch, ви можете відвідати посилання "Допомога та Обговорення" або "Спільнота Discord", або допомогти нам, відвідавши посилання «Донат».</value>
   </data>
-  <data name="notification.single" xml:space="preserve">
-    <value>Тільки один банер</value>
+  <data name="position.option.center" xml:space="preserve">
+    <value>По центру</value>
   </data>
-  <data name="notification.single.tooltip" xml:space="preserve">
-    <value>Показувати одночасно тільки один банер та заміняти його вміст.</value>
+  <data name="banner.mute.option.fading" xml:space="preserve">
+    <value />
   </data>
-  <data name="notification.banner.onscreen.time" xml:space="preserve">
-    <value>Час відображення</value>
+  <data name="banner.mute.option.persistent" xml:space="preserve">
+    <value />
+  </data>
+  <data name="switch.device.label" xml:space="preserve">
+    <value />
+  </data>
+  <data name="audioFileNotFoundCaption" xml:space="preserve">
+    <value>Звуковий файл не знайдено</value>
+  </data>
+  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
+    <value>Без підказок</value>
+  </data>
+  <data name="notificationOptionNone" xml:space="preserve">
+    <value>Без сповіщень</value>
+  </data>
+  <data name="quickMenu.desc" xml:space="preserve">
+    <value>Відображати швидке меню на кшталт перемикання мов у Windows при використанні гарячої клавіші</value>
+  </data>
+  <data name="telemetry.desc" xml:space="preserve">
+    <value>Анонімно збирати інформацію про те, яка версія SoundSwitch використовується. Інформація буде доступна лише розробнику SoundSwitch.</value>
+  </data>
+  <data name="devices.AutoAddNewDevice..tooltip" xml:space="preserve">
+    <value>Автоматичне додавання нових пристроїв до обраного списку при їх підключенні до комп'ютера</value>
+  </data>
+  <data name="keepVolume.desc" xml:space="preserve">
+    <value>Зберігати однаковий рівень гучності під час перемикання пристроїв відтворення</value>
   </data>
   <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
     <value>Скільки буде відображатися банер на екрані в секундах.</value>
   </data>
-  <data name="position.option.center" xml:space="preserve">
-    <value>По центру</value>
+  <data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>Час відображення</value>
+  </data>
+  <data name="notification" xml:space="preserve">
+    <value>Сповіщення</value>
+  </data>
+  <data name="notification.bannerOptions" xml:space="preserve">
+    <value />
+  </data>
+  <data name="seconds" xml:space="preserve">
+    <value />
   </data>
 </root>

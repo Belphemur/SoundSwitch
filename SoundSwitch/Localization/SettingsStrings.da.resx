@@ -1,7 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -54,13 +112,32 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0,
-      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0,
-      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="selected" xml:space="preserve">
+    <value>Valgt</value>
+  </data>
+  <data name="connected" xml:space="preserve">
+    <value>Forbundet</value>
+  </data>
+  <data name="disconnected" xml:space="preserve">
+    <value>Afbrudt</value>
+  </data>
+  <data name="recording" xml:space="preserve">
+    <value>Optager</value>
+  </data>
+  <data name="playback" xml:space="preserve">
+    <value>Afspil</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>Indstillinger</value>
+  </data>
+  <data name="hotkey" xml:space="preserve">
+    <value>Genvej</value>
+  </data>
   <data name="communicationsDevice" xml:space="preserve">
     <value>Skift standard kommunikationsenhed</value>
   </data>
@@ -73,8 +150,8 @@
   <data name="buttonClose.tooltip" xml:space="preserve">
     <value>Ændringer gemmes automatisk</value>
   </data>
-  <data name="notification" xml:space="preserve">
-    <value>Notifikation</value>
+  <data name="communicationsDevice.tooltip" xml:space="preserve">
+    <value>Når markeret, vil "Standard kommunikationsenhed" og "Standard afspilningsenhed" blive skiftet samtidigt (anvendeligt i Skype, TeamSpeak o.l.).</value>
   </data>
   <data name="updateIncludeBetaVersions" xml:space="preserve">
     <value>Inkludér beta-udgaver</value>
@@ -87,9 +164,6 @@
   </data>
   <data name="selectSoundButton.tooltip" xml:space="preserve">
     <value>Vælg lydfil til notifikation</value>
-  </data>
-  <data name="hotkey" xml:space="preserve">
-    <value>Genvej</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Markér for at aktivere genvej.</value>
@@ -111,6 +185,12 @@
   </data>
   <data name="keepSystemTrayIcon.tooltip" xml:space="preserve">
     <value>Når markeret, vil System Tray ikonet ikke skifte når "Standard afspilningsenhed" skifter.</value>
+  </data>
+  <data name="updateInstallAutomatically" xml:space="preserve">
+    <value>Installér opdateringer automatisk</value>
+  </data>
+  <data name="updateInstallAutomatically.tooltip" xml:space="preserve">
+    <value>Opdateringer bliver automatisk installeret uden at spørge om tilladelse.</value>
   </data>
   <data name="updateNotify" xml:space="preserve">
     <value>Giv mig besked når der er tilgængelige opdateringer</value>
@@ -136,8 +216,8 @@
   <data name="notification.option.sound" xml:space="preserve">
     <value>Lydnotifikation</value>
   </data>
-  <data name="notificationOptionNone" xml:space="preserve">
-    <value>Ingen notifikation</value>
+  <data name="none" xml:space="preserve">
+    <value>Ingen</value>
   </data>
   <data name="notification.option.toast" xml:space="preserve">
     <value>Toast-notifkation</value>
@@ -154,14 +234,14 @@
   <data name="tooltipOnHover.option.bothDevices" xml:space="preserve">
     <value>For begge enheder</value>
   </data>
-  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-    <value>Ingen værktøjstip</value>
-  </data>
   <data name="audioFileNotFound" xml:space="preserve">
     <value>Lydfilen du valgte til notifikation, kunne ikke findes. SoundSwitch ændrede notifikations-indstillingen tilbage til {0}.</value>
   </data>
-  <data name="audioFileNotFoundCaption" xml:space="preserve">
+  <data name="audioFileNotFound.caption" xml:space="preserve">
     <value>Lydfil ikke fundet</value>
+  </data>
+  <data name="activeRecording" xml:space="preserve">
+    <value>Opt: {0}</value>
   </data>
   <data name="activePlayback" xml:space="preserve">
     <value>Afspil: {0}</value>
@@ -176,39 +256,6 @@ Vil du genstarte nu?</value>
   <data name="languageRestartRequired.caption" xml:space="preserve">
     <value>Kræver genstart</value>
   </data>
-  <data name="foregroundApp" xml:space="preserve">
-    <value>Skift også i programmet i forgrunden</value>
-  </data>
-  <data name="communicationsDevice.tooltip" xml:space="preserve">
-    <value>Når markeret, vil "Standard kommunikationsenhed" og "Standard afspilningsenhed" blive skiftet samtidigt (anvendeligt i Skype, TeamSpeak o.l.).</value>
-  </data>
-  <data name="disconnected" xml:space="preserve">
-    <value>Afbrudt</value>
-  </data>
-  <data name="selected" xml:space="preserve">
-    <value>Valgt</value>
-  </data>
-  <data name="connected" xml:space="preserve">
-    <value>Forbundet</value>
-  </data>
-  <data name="playback" xml:space="preserve">
-    <value>Afspil</value>
-  </data>
-  <data name="settings" xml:space="preserve">
-    <value>Indstillinger</value>
-  </data>
-  <data name="recording" xml:space="preserve">
-    <value>Optager</value>
-  </data>
-  <data name="updateInstallAutomatically" xml:space="preserve">
-    <value>Installér opdateringer automatisk</value>
-  </data>
-  <data name="updateInstallAutomatically.tooltip" xml:space="preserve">
-    <value>Opdateringer bliver automatisk installeret uden at spørge om tilladelse.</value>
-  </data>
-  <data name="disableCustomSound.tooltip" xml:space="preserve">
-    <value>Deaktivér den indstillede, skræddersyede lyd.</value>
-  </data>
   <data name="updateNever.tooltip" xml:space="preserve">
     <value>Opdatér ikke programmet med mindre du gør det manuelt.</value>
   </data>
@@ -218,26 +265,31 @@ Vil du genstarte nu?</value>
   <data name="notification.option.banner" xml:space="preserve">
     <value>Banner</value>
   </data>
-  <data name="none" xml:space="preserve">
-    <value>Ingen</value>
+  <data name="disableCustomSound.tooltip" xml:space="preserve">
+    <value>Deaktivér den indstillede, skræddersyede lyd.</value>
   </data>
-  <data name="activeRecording" xml:space="preserve">
-    <value>Opt: {0}</value>
-  </data>
-  <data name="iconChange" xml:space="preserve">
-    <value>Systray Ikon</value>
-  </data>
-  <data name="audioFileNotFound.caption" xml:space="preserve">
-    <value>Lydfil ikke fundet</value>
+  <data name="foregroundApp" xml:space="preserve">
+    <value>Skift også i programmet i forgrunden</value>
   </data>
   <data name="foregroundApp.tooltip" xml:space="preserve">
     <value>Skift også lyden i den aktuelt, brugte applikation. Brugbart i fx. computerspil.</value>
   </data>
-  <data name="profile.feature.executable" xml:space="preserve">
-    <value>Eksekverbar (*.exe)</value>
+  <data name="iconChange" xml:space="preserve">
+    <value>Systray Ikon</value>
+  </data>
+  <data name="iconChange.tooltip" xml:space="preserve">
+    <value>Vælg hvornår SoundSwitch ikonet i systembakken skal ændres.
+
+Standard: Ingen ændring. Behold SoundSwitch ikonet.
+Afspilning: Når en afspilningsenhed skiftes.
+Optagelse: Når en optagelsesenhed skiftes.
+Begge: Når enhver type enhed skiftes.</value>
   </data>
   <data name="profile.tab" xml:space="preserve">
     <value>Profiler</value>
+  </data>
+  <data name="buttonAdd" xml:space="preserve">
+    <value>Tilføj</value>
   </data>
   <data name="profile.program" xml:space="preserve">
     <value>Applikation</value>
@@ -272,11 +324,20 @@ Vil du genstarte nu?</value>
   <data name="profile.feature.add" xml:space="preserve">
     <value>Tilføj profil</value>
   </data>
+  <data name="profile.feature.executable" xml:space="preserve">
+    <value>Eksekverbar (*.exe)</value>
+  </data>
   <data name="profile.error.title" xml:space="preserve">
     <value>Fejl i profil</value>
   </data>
+  <data name="buttonDelete" xml:space="preserve">
+    <value>Slet</value>
+  </data>
   <data name="profile.error.delete" xml:space="preserve">
     <value>Kan ikke finde profil.</value>
+  </data>
+  <data name="profile.error.noName" xml:space="preserve">
+    <value>En profil skal have et navn.</value>
   </data>
   <data name="profile.feature.profile" xml:space="preserve">
     <value>Profil</value>
@@ -290,31 +351,20 @@ Vil du genstarte nu?</value>
   <data name="hotkeyEnabled" xml:space="preserve">
     <value>Genvejstast aktiveret</value>
   </data>
+  <data name="profile.error.deviceNotFound" xml:space="preserve">
+    <value>Enheden {0} kunne ikke findes.</value>
+  </data>
   <data name="profile.trigger.window" xml:space="preserve">
     <value>Programmets navn</value>
   </data>
   <data name="profile.trigger.process" xml:space="preserve">
     <value>Programmets sti</value>
   </data>
-  <data name="profile.error.noName" xml:space="preserve">
-    <value>En profil skal have et navn.</value>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>I program-menuen</value>
   </data>
-  <data name="profile.error.deviceNotFound" xml:space="preserve">
-    <value>Enheden {0} kunne ikke findes.</value>
-  </data>
-  <data name="buttonAdd" xml:space="preserve">
-    <value>Tilføj</value>
-  </data>
-  <data name="buttonDelete" xml:space="preserve">
-    <value>Slet</value>
-  </data>
-  <data name="iconChange.tooltip" xml:space="preserve">
-    <value>Vælg hvornår SoundSwitch ikonet i systembakken skal ændres.
-
-Standard: Ingen ændring. Behold SoundSwitch ikonet.
-Afspilning: Når en afspilningsenhed skiftes.
-Optagelse: Når en optagelsesenhed skiftes.
-Begge: Når enhver type enhed skiftes.</value>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>Denne trigger gør profilen synlig i systembakkens menu. Venstreklik på systembakkeikonet for at se din profil.</value>
   </data>
   <data name="profile.trigger.deviceChanged" xml:space="preserve">
     <value>Tving profil</value>
@@ -325,10 +375,16 @@ Begge: Når enhver type enhed skiftes.</value>
   <data name="profile.error.deviceChanged" xml:space="preserve">
     <value>Du kan kun have én tvungen profil.</value>
   </data>
-  <data name="devices.AutoAddNewDevice" xml:space="preserve">
+  <data name="telemetry" xml:space="preserve">
+    <value>Telemetri</value>
+  </data>
+  <data name="quickMenu" xml:space="preserve">
+    <value>Hurtigmenu ved genvejstast</value>
+  </data>
+  <data name="devices.autoAddNewDevice" xml:space="preserve">
     <value>Vælg automatisk nye enheder</value>
   </data>
-  <data name="devices.AutoAddNewDevice.tooltip" xml:space="preserve">
+  <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
     <value>Når nye enheder tilsluttes computeren, tilføjes de automatisk til den valgte liste</value>
   </data>
   <data name="position" xml:space="preserve">
@@ -354,9 +410,6 @@ Begge: Når enhver type enhed skiftes.</value>
   </data>
   <data name="position.option.topCenter" xml:space="preserve">
     <value>Øverst i midten</value>
-  </data>
-  <data name="position.option.center" xml:space="preserve">
-    <value>Midt på</value>
   </data>
   <data name="notification.single" xml:space="preserve">
     <value>Kun ét banner</value>
@@ -397,11 +450,8 @@ Begge: Når enhver type enhed skiftes.</value>
   <data name="troubleshooting.desc" xml:space="preserve">
     <value>Hvis du har brug for hjælp eller yderligere fejlfinding med SoundSwitch, kan du besøge hjælpelinket eller Discord fællesskabet, eller støtte os ved at besøge donationslinket nedenfor.</value>
   </data>
-  <data name="notification.banner.onscreen.time" xml:space="preserve">
-    <value>Visningstid</value>
-  </data>
-  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
-    <value>Hvor længe banneret skal vises på skærmen i sekunder.</value>
+  <data name="position.option.center" xml:space="preserve">
+    <value>Midt på</value>
   </data>
   <data name="microphone.on" xml:space="preserve">
     <value>Mikrofon tændt</value>
@@ -409,28 +459,49 @@ Begge: Når enhver type enhed skiftes.</value>
   <data name="microphone.off" xml:space="preserve">
     <value>Mikrofon slukket</value>
   </data>
-  <data name="banner.mute.persistent" xml:space="preserve">
+  <data name="banner.mute" xml:space="preserve">
     <value>Permanent lydløs-banner</value>
   </data>
-  <data name="banner.mute.persistent.tooltip" xml:space="preserve">
+  <data name="banner.mute.tooltip" xml:space="preserve">
     <value>Vis et permanent banner når mikrofonen er lydløs</value>
   </data>
-  <data name="profile.trigger.trayMenu" xml:space="preserve">
-    <value>I program-menuen</value>
+  <data name="banner.mute.option.fading" xml:space="preserve">
+    <value />
   </data>
-  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
-    <value>Denne trigger gør profilen synlig i systembakkens menu. Venstreklik på systembakkeikonet for at se din profil.</value>
+  <data name="banner.mute.option.persistent" xml:space="preserve">
+    <value />
   </data>
-  <data name="telemetry" xml:space="preserve">
-    <value>Telemetri</value>
+  <data name="switch.device.label" xml:space="preserve">
+    <value />
+  </data>
+  <data name="audioFileNotFoundCaption" xml:space="preserve">
+    <value>Lydfil ikke fundet</value>
+  </data>
+  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
+    <value>Ingen værktøjstip</value>
+  </data>
+  <data name="notificationOptionNone" xml:space="preserve">
+    <value>Ingen notifikation</value>
+  </data>
+  <data name="quickMenu.desc" xml:space="preserve">
+    <value>Vis en hurtigmenu (ligesom Windows sprogmenu) når en genvejstast bruges</value>
   </data>
   <data name="telemetry.desc" xml:space="preserve">
     <value>Indsaml anonymt hvilken version af SoundSwitch der bruges. Deles kun med SoundSwitch udvikleren.</value>
   </data>
-  <data name="quickMenu" xml:space="preserve">
-    <value>Hurtigmenu ved genvejstast</value>
+  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+    <value>Hvor længe banneret skal vises på skærmen i sekunder.</value>
   </data>
-  <data name="quickMenu.desc" xml:space="preserve">
-    <value>Vis en hurtigmenu (ligesom Windows sprogmenu) når en genvejstast bruges</value>
+  <data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>Visningstid</value>
+  </data>
+  <data name="notification" xml:space="preserve">
+    <value>Notifikation</value>
+  </data>
+  <data name="notification.bannerOptions" xml:space="preserve">
+    <value />
+  </data>
+  <data name="seconds" xml:space="preserve">
+    <value />
   </data>
 </root>

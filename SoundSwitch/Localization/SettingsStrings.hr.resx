@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -117,11 +117,172 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="profile.error.registerHotkeys" xml:space="preserve">
-    <value>Nije moguće registrirati prečac za sljedeće profile: {0}</value>
+  <data name="selected" xml:space="preserve">
+    <value>Odabrano</value>
   </data>
-  <data name="profile.explanation" xml:space="preserve">
-    <value>Dodaj profil za prebacivanje na određeni uređaj za reprodukciju ili snimanje kada se određena aplikacija pokrene ili kada je aktivna. Osim toga možeš postaviti vlastiti prečac za određenu kombinaciju uređaja.</value>
+  <data name="connected" xml:space="preserve">
+    <value>Spojeno</value>
+  </data>
+  <data name="disconnected" xml:space="preserve">
+    <value>Odspojeno</value>
+  </data>
+  <data name="recording" xml:space="preserve">
+    <value>Snimanje</value>
+  </data>
+  <data name="playback" xml:space="preserve">
+    <value>Slušanje</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>Postavke</value>
+  </data>
+  <data name="hotkey" xml:space="preserve">
+    <value>Prečac</value>
+  </data>
+  <data name="communicationsDevice" xml:space="preserve">
+    <value>Promijeni standardni komunikacijski uređaj</value>
+  </data>
+  <data name="startWithWindows" xml:space="preserve">
+    <value>Pokreni automatski s Windows sustavom</value>
+  </data>
+  <data name="buttonClose" xml:space="preserve">
+    <value>Zatvori</value>
+  </data>
+  <data name="buttonClose.tooltip" xml:space="preserve">
+    <value>Promjene se automatski spremaju</value>
+  </data>
+  <data name="communicationsDevice.tooltip" xml:space="preserve">
+    <value>Kad je označeno, „Standardni komunikacijski uređaj” i „Standardni uređaj za slušanje” mijenjaju se zajedno (korisno za Skype, TeamSpeak i sl.).</value>
+  </data>
+  <data name="updateIncludeBetaVersions" xml:space="preserve">
+    <value>Preuzmi beta verzije</value>
+  </data>
+  <data name="updateIncludeBetaVersions.tooltip" xml:space="preserve">
+    <value>Kad je označeno, SoundSwitch će također tražiti beta verzije na GitHub-u.</value>
+  </data>
+  <data name="audioFiles" xml:space="preserve">
+    <value>Audio datoteke</value>
+  </data>
+  <data name="selectSoundButton.tooltip" xml:space="preserve">
+    <value>Odaberi audio datoteku za obavještavanje</value>
+  </data>
+  <data name="hotkey.tooltip" xml:space="preserve">
+    <value>Označi za aktiviranje prečaca.</value>
+  </data>
+  <data name="basicSettings" xml:space="preserve">
+    <value>Osnovne postavke</value>
+  </data>
+  <data name="audioSettings" xml:space="preserve">
+    <value>Postavke zvuka</value>
+  </data>
+  <data name="updateSettings" xml:space="preserve">
+    <value>Postavke nadogradnje</value>
+  </data>
+  <data name="cycleThrough" xml:space="preserve">
+    <value>Prođi kroz</value>
+  </data>
+  <data name="keepSystemTrayIcon" xml:space="preserve">
+    <value>Zadrži SoundSwitch ikonu u sistemskoj traci</value>
+  </data>
+  <data name="keepSystemTrayIcon.tooltip" xml:space="preserve">
+    <value>Kada je označeno, ikona u sistemskoj traci neće se promijeniti kad se promijeni „Standardni uređaj za slušanje”.</value>
+  </data>
+  <data name="updateInstallAutomatically" xml:space="preserve">
+    <value>Automatski instaliraj nadogradnje</value>
+  </data>
+  <data name="updateInstallAutomatically.tooltip" xml:space="preserve">
+    <value>Nadogradnje se instaliraju automatski bez upita.</value>
+  </data>
+  <data name="updateNotify" xml:space="preserve">
+    <value>Obavijesti me o dostupnim nadogradnjama</value>
+  </data>
+  <data name="updateNever" xml:space="preserve">
+    <value>Nemoj provjeravati ima li nadogradnji</value>
+  </data>
+  <data name="tooltipOnHover" xml:space="preserve">
+    <value>Savjeti prilikom prelaska miša</value>
+  </data>
+  <data name="cycleThrough.option.allAudioDevices" xml:space="preserve">
+    <value>Svi audio uređaji</value>
+  </data>
+  <data name="cycleThrough.option.onlySelectedAudioDevices" xml:space="preserve">
+    <value>Samo odabrani audio uređaji</value>
+  </data>
+  <data name="cycleThrough.tooltip" xml:space="preserve">
+    <value>Odaberi način prebacivanja između uređaja. Samo između odabranih ili između svih.</value>
+  </data>
+  <data name="notification.option.windowsDefault" xml:space="preserve">
+    <value>Windows obavijesti</value>
+  </data>
+  <data name="notification.option.sound" xml:space="preserve">
+    <value>Zvučne obavijesti</value>
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>Bez</value>
+  </data>
+  <data name="notification.option.toast" xml:space="preserve">
+    <value>Toast obavijesti</value>
+  </data>
+  <data name="notification.option.customized" xml:space="preserve">
+    <value>Prilagođene zvučne obavijesti</value>
+  </data>
+  <data name="notification.tooltip" xml:space="preserve">
+    <value>Windows obavijest: Standardna skočna obavijest u traci sustava.
+Zvučne obavijest: Svira zvuk na promijenjenom uređaju za slušanje.
+Prilagođene zvučna obavijest: Svira specifični zvuk na promijenjenom uređaju za slušanje.
+Toast obavijest: Koristi specijalni oblik skočne obavijesti u traci sustava.
+Natpis: Koristi prilagođeni prozor koji se postavlja ispred svih drugih, korisno unutar igri.</value>
+  </data>
+  <data name="tooltipOnHover.option.playbackDevice" xml:space="preserve">
+    <value>Uređaj za slušanje</value>
+  </data>
+  <data name="tooltipOnHover.option.recordingDevice" xml:space="preserve">
+    <value>Uređaj za snimanje</value>
+  </data>
+  <data name="tooltipOnHover.option.bothDevices" xml:space="preserve">
+    <value>Oba uređaja</value>
+  </data>
+  <data name="audioFileNotFound" xml:space="preserve">
+    <value>Odabrana audio datoteka nije pronađena. SoundSwitch je promijenio postavku obavijesti na {0}.</value>
+  </data>
+  <data name="audioFileNotFound.caption" xml:space="preserve">
+    <value>Audio datoteka nije pronađena</value>
+  </data>
+  <data name="activeRecording" xml:space="preserve">
+    <value>Snimanje: {0}</value>
+  </data>
+  <data name="activePlayback" xml:space="preserve">
+    <value>Slušanje: {0}</value>
+  </data>
+  <data name="language" xml:space="preserve">
+    <value>Jezik</value>
+  </data>
+  <data name="languageRestartRequired" xml:space="preserve">
+    <value>Jezik će se promijeniti nakon ponovnog pokretanja programa SoundSwitch.
+Želiš li ga sada ponovo pokrenuti?</value>
+  </data>
+  <data name="languageRestartRequired.caption" xml:space="preserve">
+    <value>Potrebno je ponovno pokretanje</value>
+  </data>
+  <data name="updateNever.tooltip" xml:space="preserve">
+    <value>Nemoj nadograđivati program osim ako to želim napraviti ručno.</value>
+  </data>
+  <data name="updateNotify.tooltip" xml:space="preserve">
+    <value>SoundSwitch će te obavijestiti kad je dostupna nadogradnja. Kad klikneš na obavijest, pojavit će se skočni prozor za preuzimanje nadogradnje.</value>
+  </data>
+  <data name="notification.option.banner" xml:space="preserve">
+    <value>Natpis</value>
+  </data>
+  <data name="disableCustomSound.tooltip" xml:space="preserve">
+    <value>Onemogući korištenje personaliziranih zvukova.</value>
+  </data>
+  <data name="foregroundApp" xml:space="preserve">
+    <value>Također promijeni pozadinski program</value>
+  </data>
+  <data name="foregroundApp.tooltip" xml:space="preserve">
+    <value>Također promijeni zvuk u programima koje trenutačno koristiš. Korisno za videoigre.</value>
+  </data>
+  <data name="iconChange" xml:space="preserve">
+    <value>Ikona u sistemskoj traci</value>
   </data>
   <data name="iconChange.tooltip" xml:space="preserve">
     <value>Izaberi kada će se SoundSwitch ikona u sistemskoj traci promijeniti.
@@ -131,241 +292,77 @@ Slušanje: Kad se uređaj za slušanje promijeni.
 Snimanje: Kad se uređaj za snimanje promijeni.
 Zajedno: Promijeni ikonu kad se bilo koji uređaj promijeni.</value>
   </data>
-  <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
-    <value>Kad se aplikacija otkrije, SoundSwitch će promijeniti trenutni standardni uređaj.</value>
-  </data>
-  <data name="profile.defaultDevice.checkbox" xml:space="preserve">
-    <value>Također promijeni standardni uređaj</value>
-  </data>
-  <data name="profile.feature.profile" xml:space="preserve">
-    <value>Profil</value>
-  </data>
-  <data name="profile.error.noName" xml:space="preserve">
-    <value>Potrebno je postaviti ima profila.</value>
-  </data>
-  <data name="profile.error.delete" xml:space="preserve">
-    <value>Nije moguće pronaći profil.</value>
-  </data>
-  <data name="buttonDelete" xml:space="preserve">
-    <value>Obriši</value>
-  </data>
-  <data name="profile.error.title" xml:space="preserve">
-    <value>Greška profila</value>
-  </data>
-  <data name="profile.feature.executable" xml:space="preserve">
-    <value>Izvršna datoteka (*.exe)</value>
-  </data>
-  <data name="profile.feature.add" xml:space="preserve">
-    <value>Dodaj profil</value>
-  </data>
-  <data name="profile.error.registerHotkeys.title" xml:space="preserve">
-    <value>Već korišteni prečac</value>
-  </data>
-  <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
-    <value>Moraš izabrati uređaj za slušanje, ili uređaj za snimanje.</value>
-  </data>
-  <data name="profile.error.needHKOrPath" xml:space="preserve">
-    <value>Moraš postaviti prečac ili/i aplikaciju.</value>
-  </data>
-  <data name="profile.error.name" xml:space="preserve">
-    <value>Već postoji takav profil: {0}.</value>
-  </data>
-  <data name="profile.error.application" xml:space="preserve">
-    <value>Ova aplikacija {0} već ima povezani profil.</value>
-  </data>
-  <data name="profile.error.hotkey" xml:space="preserve">
-    <value>Ovaj se prečac {0} već koristi.</value>
-  </data>
-  <data name="profile.name" xml:space="preserve">
-    <value>Ime</value>
-  </data>
-  <data name="profile.program" xml:space="preserve">
-    <value>Aplikacija</value>
+  <data name="profile.tab" xml:space="preserve">
+    <value>Profili</value>
   </data>
   <data name="buttonAdd" xml:space="preserve">
     <value>Dodaj</value>
   </data>
-  <data name="profile.tab" xml:space="preserve">
-    <value>Profili</value>
+  <data name="profile.program" xml:space="preserve">
+    <value>Aplikacija</value>
   </data>
-  <data name="iconChange" xml:space="preserve">
-    <value>Ikona u sistemskoj traci</value>
+  <data name="profile.name" xml:space="preserve">
+    <value>Ime</value>
   </data>
-  <data name="foregroundApp.tooltip" xml:space="preserve">
-    <value>Također promijeni zvuk u programima koje trenutačno koristiš. Korisno za videoigre.</value>
+  <data name="profile.error.hotkey" xml:space="preserve">
+    <value>Ovaj se prečac {0} već koristi.</value>
   </data>
-  <data name="foregroundApp" xml:space="preserve">
-    <value>Također promijeni pozadinski program</value>
+  <data name="profile.error.application" xml:space="preserve">
+    <value>Ova aplikacija {0} već ima povezani profil.</value>
   </data>
-  <data name="disableCustomSound.tooltip" xml:space="preserve">
-    <value>Onemogući korištenje personaliziranih zvukova.</value>
+  <data name="profile.error.name" xml:space="preserve">
+    <value>Već postoji takav profil: {0}.</value>
   </data>
-  <data name="notification.option.banner" xml:space="preserve">
-    <value>Natpis</value>
+  <data name="profile.error.needHKOrPath" xml:space="preserve">
+    <value>Moraš postaviti prečac ili/i aplikaciju.</value>
   </data>
-  <data name="updateNotify.tooltip" xml:space="preserve">
-    <value>SoundSwitch će te obavijestiti kad je dostupna nadogradnja. Kad klikneš na obavijest, pojavit će se skočni prozor za preuzimanje nadogradnje.</value>
+  <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
+    <value>Moraš izabrati uređaj za slušanje, ili uređaj za snimanje.</value>
   </data>
-  <data name="updateNever.tooltip" xml:space="preserve">
-    <value>Nemoj nadograđivati program osim ako to želim napraviti ručno.</value>
+  <data name="profile.explanation" xml:space="preserve">
+    <value>Dodaj profil za prebacivanje na određeni uređaj za reprodukciju ili snimanje kada se određena aplikacija pokrene ili kada je aktivna. Osim toga možeš postaviti vlastiti prečac za određenu kombinaciju uređaja.</value>
   </data>
-  <data name="languageRestartRequired.caption" xml:space="preserve">
-    <value>Potrebno je ponovno pokretanje</value>
+  <data name="profile.error.registerHotkeys" xml:space="preserve">
+    <value>Nije moguće registrirati prečac za sljedeće profile: {0}</value>
   </data>
-  <data name="languageRestartRequired" xml:space="preserve">
-    <value>Jezik će se promijeniti nakon ponovnog pokretanja programa SoundSwitch.
-Želiš li ga sada ponovo pokrenuti?</value>
+  <data name="profile.error.registerHotkeys.title" xml:space="preserve">
+    <value>Već korišteni prečac</value>
   </data>
-  <data name="language" xml:space="preserve">
-    <value>Jezik</value>
+  <data name="profile.feature.add" xml:space="preserve">
+    <value>Dodaj profil</value>
   </data>
-  <data name="activePlayback" xml:space="preserve">
-    <value>Slušanje: {0}</value>
+  <data name="profile.feature.executable" xml:space="preserve">
+    <value>Izvršna datoteka (*.exe)</value>
   </data>
-  <data name="activeRecording" xml:space="preserve">
-    <value>Snimanje: {0}</value>
+  <data name="profile.error.title" xml:space="preserve">
+    <value>Greška profila</value>
   </data>
-  <data name="audioFileNotFoundCaption" xml:space="preserve">
-    <value>Audio datoteka nije pronađena</value>
+  <data name="buttonDelete" xml:space="preserve">
+    <value>Obriši</value>
   </data>
-  <data name="audioFileNotFound" xml:space="preserve">
-    <value>Odabrana audio datoteka nije pronađena. SoundSwitch je promijenio postavku obavijesti na {0}.</value>
+  <data name="profile.error.delete" xml:space="preserve">
+    <value>Nije moguće pronaći profil.</value>
   </data>
-  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-    <value>Bez savjeta</value>
+  <data name="profile.error.noName" xml:space="preserve">
+    <value>Potrebno je postaviti ima profila.</value>
   </data>
-  <data name="tooltipOnHover.option.bothDevices" xml:space="preserve">
-    <value>Oba uređaja</value>
+  <data name="profile.feature.profile" xml:space="preserve">
+    <value>Profil</value>
   </data>
-  <data name="tooltipOnHover.option.recordingDevice" xml:space="preserve">
-    <value>Uređaj za snimanje</value>
+  <data name="profile.defaultDevice.checkbox" xml:space="preserve">
+    <value>Također promijeni standardni uređaj</value>
   </data>
-  <data name="tooltipOnHover.option.playbackDevice" xml:space="preserve">
-    <value>Uređaj za slušanje</value>
-  </data>
-  <data name="notification.tooltip" xml:space="preserve">
-    <value>Windows obavijest: Standardna skočna obavijest u traci sustava.
-Zvučne obavijest: Svira zvuk na promijenjenom uređaju za slušanje.
-Prilagođene zvučna obavijest: Svira specifični zvuk na promijenjenom uređaju za slušanje.
-Toast obavijest: Koristi specijalni oblik skočne obavijesti u traci sustava.
-Natpis: Koristi prilagođeni prozor koji se postavlja ispred svih drugih, korisno unutar igri.</value>
-  </data>
-  <data name="notification.option.customized" xml:space="preserve">
-    <value>Prilagođene zvučne obavijesti</value>
-  </data>
-  <data name="notification.option.toast" xml:space="preserve">
-    <value>Toast obavijesti</value>
-  </data>
-  <data name="notificationOptionNone" xml:space="preserve">
-    <value>Bez obavijesti</value>
-  </data>
-  <data name="notification.option.sound" xml:space="preserve">
-    <value>Zvučne obavijesti</value>
-  </data>
-  <data name="notification.option.windowsDefault" xml:space="preserve">
-    <value>Windows obavijesti</value>
-  </data>
-  <data name="cycleThrough.tooltip" xml:space="preserve">
-    <value>Odaberi način prebacivanja između uređaja. Samo između odabranih ili između svih.</value>
-  </data>
-  <data name="cycleThrough.option.onlySelectedAudioDevices" xml:space="preserve">
-    <value>Samo odabrani audio uređaji</value>
-  </data>
-  <data name="cycleThrough.option.allAudioDevices" xml:space="preserve">
-    <value>Svi audio uređaji</value>
-  </data>
-  <data name="tooltipOnHover" xml:space="preserve">
-    <value>Savjeti prilikom prelaska miša</value>
-  </data>
-  <data name="updateNever" xml:space="preserve">
-    <value>Nemoj provjeravati ima li nadogradnji</value>
-  </data>
-  <data name="updateNotify" xml:space="preserve">
-    <value>Obavijesti me o dostupnim nadogradnjama</value>
-  </data>
-  <data name="updateInstallAutomatically.tooltip" xml:space="preserve">
-    <value>Nadogradnje se instaliraju automatski bez upita.</value>
-  </data>
-  <data name="updateInstallAutomatically" xml:space="preserve">
-    <value>Automatski instaliraj nadogradnje</value>
-  </data>
-  <data name="keepSystemTrayIcon.tooltip" xml:space="preserve">
-    <value>Kada je označeno, ikona u sistemskoj traci neće se promijeniti kad se promijeni „Standardni uređaj za slušanje”.</value>
-  </data>
-  <data name="keepSystemTrayIcon" xml:space="preserve">
-    <value>Zadrži SoundSwitch ikonu u sistemskoj traci</value>
-  </data>
-  <data name="cycleThrough" xml:space="preserve">
-    <value>Prođi kroz</value>
-  </data>
-  <data name="updateSettings" xml:space="preserve">
-    <value>Postavke nadogradnje</value>
-  </data>
-  <data name="audioSettings" xml:space="preserve">
-    <value>Postavke zvuka</value>
-  </data>
-  <data name="basicSettings" xml:space="preserve">
-    <value>Osnovne postavke</value>
-  </data>
-  <data name="hotkey.tooltip" xml:space="preserve">
-    <value>Označi za aktiviranje prečaca.</value>
-  </data>
-  <data name="selectSoundButton.tooltip" xml:space="preserve">
-    <value>Odaberi audio datoteku za obavještavanje</value>
-  </data>
-  <data name="audioFiles" xml:space="preserve">
-    <value>Audio datoteke</value>
-  </data>
-  <data name="updateIncludeBetaVersions" xml:space="preserve">
-    <value>Preuzmi beta verzije</value>
-  </data>
-  <data name="notification" xml:space="preserve">
-    <value>Obavijesti</value>
-  </data>
-  <data name="communicationsDevice.tooltip" xml:space="preserve">
-    <value>Kad je označeno, „Standardni komunikacijski uređaj” i „Standardni uređaj za slušanje” mijenjaju se zajedno (korisno za Skype, TeamSpeak i sl.).</value>
-  </data>
-  <data name="buttonClose.tooltip" xml:space="preserve">
-    <value>Promjene se automatski spremaju</value>
-  </data>
-  <data name="buttonClose" xml:space="preserve">
-    <value>Zatvori</value>
-  </data>
-  <data name="startWithWindows" xml:space="preserve">
-    <value>Pokreni automatski s Windows sustavom</value>
-  </data>
-  <data name="communicationsDevice" xml:space="preserve">
-    <value>Promijeni standardni komunikacijski uređaj</value>
-  </data>
-  <data name="hotkey" xml:space="preserve">
-    <value>Prečac</value>
-  </data>
-  <data name="settings" xml:space="preserve">
-    <value>Postavke</value>
-  </data>
-  <data name="playback" xml:space="preserve">
-    <value>Slušanje</value>
-  </data>
-  <data name="recording" xml:space="preserve">
-    <value>Snimanje</value>
-  </data>
-  <data name="disconnected" xml:space="preserve">
-    <value>Odspojeno</value>
-  </data>
-  <data name="connected" xml:space="preserve">
-    <value>Spojeno</value>
-  </data>
-  <data name="selected" xml:space="preserve">
-    <value>Odabrano</value>
-  </data>
-  <data name="profile.error.deviceNotFound" xml:space="preserve">
-    <value>Uređaj {0} nije pronađen.</value>
+  <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
+    <value>Kad se aplikacija otkrije, SoundSwitch će promijeniti trenutni standardni uređaj.</value>
   </data>
   <data name="hotkeyEnabled" xml:space="preserve">
     <value>Prečac aktiviran</value>
   </data>
-  <data name="updateIncludeBetaVersions.tooltip" xml:space="preserve">
-    <value>Kad je označeno, SoundSwitch će također tražiti beta verzije na GitHub-u.</value>
+  <data name="profile.error.deviceNotFound" xml:space="preserve">
+    <value>Uređaj {0} nije pronađen.</value>
+  </data>
+  <data name="profile.trigger.window" xml:space="preserve">
+    <value>Ime programa</value>
   </data>
   <data name="profile.trigger.process" xml:space="preserve">
     <value>Putanja do programa</value>
@@ -373,109 +370,94 @@ Natpis: Koristi prilagođeni prozor koji se postavlja ispred svih drugih, korisn
   <data name="profile.trigger.steam" xml:space="preserve">
     <value>Steam Big Picture</value>
   </data>
-  <data name="profile.trigger.window" xml:space="preserve">
-    <value>Ime programa</value>
-  </data>
-  <data name="profile.trigger.steam.desc" xml:space="preserve">
-    <value>Aktiviraj kad se otkrije Steam Big Picture. (Vratit će stanje kad se Big Picture zatvori.)</value>
-  </data>
-  <data name="profile.trigger.available" xml:space="preserve">
-    <value>Dostupni okidači</value>
-  </data>
-  <data name="profile.trigger.actives" xml:space="preserve">
-    <value>Aktivni okidači</value>
-  </data>
-  <data name="profile.desc" xml:space="preserve">
-    <value>Opis</value>
-  </data>
   <data name="profile.trigger.hotkey.desc" xml:space="preserve">
     <value>Prečac za aktiviranje profila. Ukoliko koristiš isti prečac, moći ćeš mijenjati profile.</value>
-  </data>
-  <data name="buttonEdit" xml:space="preserve">
-    <value>Uredi</value>
-  </data>
-  <data name="buttonSave" xml:space="preserve">
-    <value>Spremi</value>
-  </data>
-  <data name="profile.notification.text" xml:space="preserve">
-    <value>Profil {0} aktiviran</value>
-  </data>
-  <data name="profile.notifyOnActivation" xml:space="preserve">
-    <value>Upozori kad se profil aktivira</value>
-  </data>
-  <data name="profile.error.window" xml:space="preserve">
-    <value>Veš postoji profil s ovim imenom prozora: {0}.</value>
-  </data>
-  <data name="profile.error.steam" xml:space="preserve">
-    <value>Za Steam Big Picture možeš imati samo jedan profil.</value>
-  </data>
-  <data name="profile.error.triggers.min" xml:space="preserve">
-    <value>Trebaš barem jedan okidač.</value>
-  </data>
-  <data name="communication" xml:space="preserve">
-    <value>Standardni uređaj za komunikaciju</value>
-  </data>
-  <data name="profile.trigger.process.desc" xml:space="preserve">
-    <value>Aktiviraj profil kad se odabrani program nalazi naprijed</value>
   </data>
   <data name="profile.trigger.window.desc" xml:space="preserve">
     <value>Aktiviraj profil ako prednji program sadrži sljedeće znakove</value>
   </data>
-  <data name="profile.trigger.startup.desc" xml:space="preserve">
-    <value>Profil će se automatski aktivirati kad se pokrene SoundSwitch</value>
+  <data name="profile.trigger.process.desc" xml:space="preserve">
+    <value>Aktiviraj profil kad se odabrani program nalazi naprijed</value>
+  </data>
+  <data name="profile.trigger.steam.desc" xml:space="preserve">
+    <value>Aktiviraj kad se otkrije Steam Big Picture. (Vratit će stanje kad se Big Picture zatvori.)</value>
+  </data>
+  <data name="profile.desc" xml:space="preserve">
+    <value>Opis</value>
+  </data>
+  <data name="profile.trigger.actives" xml:space="preserve">
+    <value>Aktivni okidači</value>
+  </data>
+  <data name="profile.trigger.available" xml:space="preserve">
+    <value>Dostupni okidači</value>
+  </data>
+  <data name="communication" xml:space="preserve">
+    <value>Standardni uređaj za komunikaciju</value>
+  </data>
+  <data name="profile.error.triggers.min" xml:space="preserve">
+    <value>Trebaš barem jedan okidač.</value>
+  </data>
+  <data name="profile.error.steam" xml:space="preserve">
+    <value>Za Steam Big Picture možeš imati samo jedan profil.</value>
+  </data>
+  <data name="profile.error.window" xml:space="preserve">
+    <value>Veš postoji profil s ovim imenom prozora: {0}.</value>
+  </data>
+  <data name="profile.notifyOnActivation" xml:space="preserve">
+    <value>Upozori kad se profil aktivira</value>
+  </data>
+  <data name="profile.notification.text" xml:space="preserve">
+    <value>Profil {0} aktiviran</value>
+  </data>
+  <data name="buttonSave" xml:space="preserve">
+    <value>Spremi</value>
+  </data>
+  <data name="buttonEdit" xml:space="preserve">
+    <value>Uredi</value>
   </data>
   <data name="profile.trigger.startup" xml:space="preserve">
     <value>Pri pokretanju</value>
   </data>
-  <data name="usePrimaryScreen.tooltip" xml:space="preserve">
-    <value>Prikaži natpis na primarnom ekranu umjesto na fokusiranom ekranu.</value>
+  <data name="profile.trigger.startup.desc" xml:space="preserve">
+    <value>Profil će se automatski aktivirati kad se pokrene SoundSwitch</value>
   </data>
   <data name="usePrimaryScreen" xml:space="preserve">
     <value>Uvijek koristi primarni ekran</value>
   </data>
-  <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
-    <value>Stanje sustava obnovljeno</value>
+  <data name="usePrimaryScreen.tooltip" xml:space="preserve">
+    <value>Prikaži natpis na primarnom ekranu umjesto na fokusiranom ekranu.</value>
+  </data>
+  <data name="profile.trigger.restoreDevices" xml:space="preserve">
+    <value>Obnovi uređaje kad aktiviranje završi</value>
   </data>
   <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
     <value>„{0}” mora biti aktivirano.
 
 Obnovi stanje sustava kad se program zatvori.</value>
   </data>
-  <data name="profile.trigger.restoreDevices" xml:space="preserve">
-    <value>Obnovi uređaje kad aktiviranje završi</value>
-  </data>
-  <data name="profile.trigger.uwp.desc" xml:space="preserve">
-    <value>Upiši ime aplikacije instalirane putem Windows trgovine, npr. Netflix, Amazon Prime video, itd …</value>
+  <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
+    <value>Stanje sustava obnovljeno</value>
   </data>
   <data name="profile.trigger.uwp" xml:space="preserve">
     <value>Microsoft Store aplikacija</value>
   </data>
-  <data name="mute.toggle.label" xml:space="preserve">
-    <value>Uključi/isključi</value>
-  </data>
-  <data name="notification.microphone.unmuted" xml:space="preserve">
-    <value>{0} je sada uključen.</value>
+  <data name="profile.trigger.uwp.desc" xml:space="preserve">
+    <value>Upiši ime aplikacije instalirane putem Windows trgovine, npr. Netflix, Amazon Prime video, itd …</value>
   </data>
   <data name="notification.microphone.muted" xml:space="preserve">
     <value>{0} je sada isključen.</value>
   </data>
-  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
-    <value>Ovaj prekidač prikazuje profil u izborniku trake ikona. Pritisni lijevim gumbom miša na ikonu za prikaz tvog profila.</value>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>{0} je sada uključen.</value>
+  </data>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>Uključi/isključi</value>
   </data>
   <data name="profile.trigger.trayMenu" xml:space="preserve">
     <value>U izborniku programa</value>
   </data>
-  <data name="quickMenu.desc" xml:space="preserve">
-    <value>Prikaži brzi izbornik kad koristiš prečac (slično Windows izborniku jezika)</value>
-  </data>
-  <data name="telemetry.desc" xml:space="preserve">
-    <value>Prikupi anonimno koja se verzija programa koristi. Podatak će biti dostupan jedino programeru SoundSwitch-a.</value>
-  </data>
-  <data name="quickMenu" xml:space="preserve">
-    <value>Brzi izbornik pomoću prečaca</value>
-  </data>
-  <data name="telemetry" xml:space="preserve">
-    <value>Telemetrija</value>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>Ovaj prekidač prikazuje profil u izborniku trake ikona. Pritisni lijevim gumbom miša na ikonu za prikaz tvog profila.</value>
   </data>
   <data name="profile.trigger.deviceChanged" xml:space="preserve">
     <value>Prisili profil</value>
@@ -486,17 +468,29 @@ Obnovi stanje sustava kad se program zatvori.</value>
   <data name="profile.error.deviceChanged" xml:space="preserve">
     <value>Možeš imati samo jedan prisilni profil.</value>
   </data>
-  <data name="devices.AutoAddNewDevice" xml:space="preserve">
-    <value>Automatski odaberi nove uređaje</value>
+  <data name="telemetry" xml:space="preserve">
+    <value>Telemetrija</value>
   </data>
-  <data name="devices.AutoAddNewDevice..tooltip" xml:space="preserve">
-    <value>Automatski dodaj novi uređaj u popis odabira kad je spojen s računalom</value>
+  <data name="telemetry.tooltip" xml:space="preserve">
+    <value>Anonimno prikupi podatke o korištenoj SoundSwitch verziji. Dijeli se samo s programerom aplikacije SoundSwitch.</value>
+  </data>
+  <data name="quickMenu" xml:space="preserve">
+    <value>Brzi izbornik pomoću prečaca</value>
+  </data>
+  <data name="quickMenu.tooltip" xml:space="preserve">
+    <value>Prikaži brzi izbornik poput onoga za biranje jezika u Windows sustavu kada koristiš tipkovni prečac</value>
   </data>
   <data name="keepVolume" xml:space="preserve">
     <value>Zadrži razinu glasnoće na svim uređajima</value>
   </data>
-  <data name="keepVolume.desc" xml:space="preserve">
-    <value>Zadrži istu glasnoću pri mijenjanju uređaja</value>
+  <data name="keepVolume.tooltip" xml:space="preserve">
+    <value>Zadrži istu razinu glasnoće pri mijenjanju uređaja</value>
+  </data>
+  <data name="devices.autoAddNewDevice" xml:space="preserve">
+    <value>Automatski odaberi nove uređaje</value>
+  </data>
+  <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
+    <value>Automatski dodaj novi uređaj u odabrani popis kada je povezan s računalom</value>
   </data>
   <data name="position" xml:space="preserve">
     <value>Položaj</value>
@@ -510,20 +504,17 @@ Obnovi stanje sustava kad se program zatvori.</value>
   <data name="position.option.bottomRight" xml:space="preserve">
     <value>Dolje desno</value>
   </data>
+  <data name="position.option.topLeft" xml:space="preserve">
+    <value>Gore lijevo</value>
+  </data>
   <data name="position.option.topRight" xml:space="preserve">
     <value>Gore desno</value>
   </data>
   <data name="position.option.bottomCenter" xml:space="preserve">
     <value>Dolje centrirano</value>
   </data>
-  <data name="position.option.topLeft" xml:space="preserve">
-    <value>Gore lijevo</value>
-  </data>
   <data name="position.option.topCenter" xml:space="preserve">
     <value>Gore centrirano</value>
-  </data>
-  <data name="none" xml:space="preserve">
-    <value>Bez</value>
   </data>
   <data name="notification.single" xml:space="preserve">
     <value>Samo jedan natpis</value>
@@ -531,14 +522,71 @@ Obnovi stanje sustava kad se program zatvori.</value>
   <data name="notification.single.tooltip" xml:space="preserve">
     <value>Prikaži samo jedan natpis odjednom i zamijeni njegov sadržaj.</value>
   </data>
+  <data name="link.community" xml:space="preserve">
+    <value>Discord zajednica</value>
+  </data>
+  <data name="link.donate" xml:space="preserve">
+    <value>Doniraj</value>
+  </data>
+  <data name="link.help" xml:space="preserve">
+    <value>Pomoć za rasprave</value>
+  </data>
+  <data name="resetAudioDevices.desc" xml:space="preserve">
+    <value>Resetira dodjeljivanje audio uređaja određenim programima u sustavu Windows u slučaju da audio uređaji nisu ponovno dodijeljeni programima prilikom mijenjanja uređaja.</value>
+  </data>
+  <data name="buttonReset" xml:space="preserve">
+    <value>Resetiraj</value>
+  </data>
   <data name="resetAudioDevices" xml:space="preserve">
     <value>Resetiraj audio uređaje</value>
   </data>
-  <data name="audioFileNotFound.caption" xml:space="preserve">
+  <data name="exportLogFiles" xml:space="preserve">
+    <value>Izvezi datoteke dnevnika</value>
+  </data>
+  <data name="exportLogFiles.desc" xml:space="preserve">
+    <value>Izvezi sve datoteke dnevnika u zip arhivu za daljnje rješavanje problema u pomoći za rasprave ili Discordu zajednice.</value>
+  </data>
+  <data name="buttonExport" xml:space="preserve">
+    <value>Izvezi</value>
+  </data>
+  <data name="troubleshooting" xml:space="preserve">
+    <value>Rješavanje problema</value>
+  </data>
+  <data name="troubleshooting.desc" xml:space="preserve">
+    <value>Ako trebaš bilo kakvu pomoć ili daljnje rješavanje problema sa SoundSwitchom, posjeti stranicu „Pomoć za rasprave” ili „Discord zajednica” ili nas podrži donacijom.</value>
+  </data>
+  <data name="position.option.center" xml:space="preserve">
+    <value>Centriraj</value>
+  </data>
+  <data name="banner.mute.option.fading" xml:space="preserve">
+    <value />
+  </data>
+  <data name="banner.mute.option.persistent" xml:space="preserve">
+    <value />
+  </data>
+  <data name="switch.device.label" xml:space="preserve">
+    <value />
+  </data>
+  <data name="audioFileNotFoundCaption" xml:space="preserve">
     <value>Audio datoteka nije pronađena</value>
   </data>
-  <data name="keepVolume.tooltip" xml:space="preserve">
-    <value>Zadrži istu razinu glasnoće pri mijenjanju uređaja</value>
+  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
+    <value>Bez savjeta</value>
+  </data>
+  <data name="notificationOptionNone" xml:space="preserve">
+    <value>Bez obavijesti</value>
+  </data>
+  <data name="quickMenu.desc" xml:space="preserve">
+    <value>Prikaži brzi izbornik kad koristiš prečac (slično Windows izborniku jezika)</value>
+  </data>
+  <data name="telemetry.desc" xml:space="preserve">
+    <value>Prikupi anonimno koja se verzija programa koristi. Podatak će biti dostupan jedino programeru SoundSwitch-a.</value>
+  </data>
+  <data name="devices.AutoAddNewDevice..tooltip" xml:space="preserve">
+    <value>Automatski dodaj novi uređaj u popis odabira kad je spojen s računalom</value>
+  </data>
+  <data name="keepVolume.desc" xml:space="preserve">
+    <value>Zadrži istu glasnoću pri mijenjanju uređaja</value>
   </data>
   <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
     <value>Trajanje prikaza natpisa na ekranu u sekundama.</value>
@@ -546,49 +594,13 @@ Obnovi stanje sustava kad se program zatvori.</value>
   <data name="notification.banner.onscreen.time" xml:space="preserve">
     <value>Vrijeme na ekranu</value>
   </data>
-  <data name="exportLogFiles" xml:space="preserve">
-    <value>Izvezi datoteke dnevnika</value>
+  <data name="notification" xml:space="preserve">
+    <value>Obavijesti</value>
   </data>
-  <data name="devices.autoAddNewDevice" xml:space="preserve">
-    <value>Automatski odaberi nove uređaje</value>
+  <data name="notification.bannerOptions" xml:space="preserve">
+    <value />
   </data>
-  <data name="link.donate" xml:space="preserve">
-    <value>Doniraj</value>
-  </data>
-  <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
-    <value>Automatski dodaj novi uređaj u odabrani popis kada je povezan s računalom</value>
-  </data>
-  <data name="buttonReset" xml:space="preserve">
-    <value>Resetiraj</value>
-  </data>
-  <data name="buttonExport" xml:space="preserve">
-    <value>Izvezi</value>
-  </data>
-  <data name="position.option.center" xml:space="preserve">
-    <value>Centriraj</value>
-  </data>
-  <data name="telemetry.tooltip" xml:space="preserve">
-    <value>Anonimno prikupi podatke o korištenoj SoundSwitch verziji. Dijeli se samo s programerom aplikacije SoundSwitch.</value>
-  </data>
-  <data name="quickMenu.tooltip" xml:space="preserve">
-    <value>Prikaži brzi izbornik poput onoga za biranje jezika u Windows sustavu kada koristiš tipkovni prečac</value>
-  </data>
-  <data name="link.help" xml:space="preserve">
-    <value>Pomoć za rasprave</value>
-  </data>
-  <data name="link.community" xml:space="preserve">
-    <value>Discord zajednica</value>
-  </data>
-  <data name="exportLogFiles.desc" xml:space="preserve">
-    <value>Izvezi sve datoteke dnevnika u zip arhivu za daljnje rješavanje problema u pomoći za rasprave ili Discordu zajednice.</value>
-  </data>
-  <data name="troubleshooting" xml:space="preserve">
-    <value>Rješavanje problema</value>
-  </data>
-  <data name="resetAudioDevices.desc" xml:space="preserve">
-    <value>Resetira dodjeljivanje audio uređaja određenim programima u sustavu Windows u slučaju da audio uređaji nisu ponovno dodijeljeni programima prilikom mijenjanja uređaja.</value>
-  </data>
-  <data name="troubleshooting.desc" xml:space="preserve">
-    <value>Ako trebaš bilo kakvu pomoć ili daljnje rješavanje problema sa SoundSwitchom, posjeti stranicu „Pomoć za rasprave” ili „Discord zajednica” ili nas podrži donacijom.</value>
+  <data name="seconds" xml:space="preserve">
+    <value />
   </data>
 </root>

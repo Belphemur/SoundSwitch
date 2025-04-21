@@ -107,8 +107,8 @@ namespace SoundSwitch.Framework.Configuration
         TimeSpan BannerOnScreenTime { get; set; }
 
         /// <summary>
-        /// Show a persistent banner when microphone is muted
+        /// Show a banner when microphone is muted
         /// </summary>
-        bool PersistentMuteNotification { get; set; }
+        MicrophoneMuteEnum MicrophoneMuteNotification { get; set; }
     }
 }

@@ -129,8 +129,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>
-  <PropertyGroup
-    Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^net\d'))">
+  <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^net\d'))">
     <DefineConstants>NETCORE</DefineConstants>
   </PropertyGroup>
 </Project>

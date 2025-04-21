@@ -153,9 +153,6 @@
   <data name="communicationsDevice.tooltip" xml:space="preserve">
     <value>When checked, the 'Default Communication Device' and 'Default Playback Device' are switched together (useful for Skype, TeamSpeak, e.g.).</value>
   </data>
-  <data name="notification" xml:space="preserve">
-    <value>Notification</value>
-  </data>
   <data name="updateIncludeBetaVersions" xml:space="preserve">
     <value>Include Beta versions</value>
   </data>
@@ -561,22 +558,40 @@ Restore the state of the system when the application is closed.</value>
   <data name="position.option.center" xml:space="preserve">
     <value>Center</value>
   </data>
-  <data name="notification.banner.onscreen.time" xml:space="preserve">
-    <value>On screen time</value>
-  </data>
-  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
-    <value>How long the banner stays on the screen in seconds.</value>
-  </data>
   <data name="microphone.on" xml:space="preserve">
     <value>Microphone On</value>
   </data>
   <data name="microphone.off" xml:space="preserve">
     <value>Microphone Off</value>
   </data>
-  <data name="banner.mute.persistent" xml:space="preserve">
-    <value>Persistent Mute Banner</value>
+  <data name="banner.mute" xml:space="preserve">
+    <value>Microphone Muted</value>
   </data>
-  <data name="banner.mute.persistent.tooltip" xml:space="preserve">
-    <value>Show a persistent mute banner when the microphone is muted</value>
+  <data name="banner.mute.tooltip" xml:space="preserve">
+    <value>Show banner when the microphone is muted or unmuted. Persistent will mean it's always visible on the screen when muted</value>
+  </data>
+  <data name="banner.mute.option.fading" xml:space="preserve">
+    <value>Fading</value>
+  </data>
+  <data name="banner.mute.option.persistent" xml:space="preserve">
+    <value>Persistent</value>
+  </data>
+  <data name="switch.device.label" xml:space="preserve">
+    <value>Switch device</value>
+  </data>
+  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+    <value>How long the banner stays on the screen in seconds.</value>
+  </data>
+  <data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>On-screen time</value>
+  </data>
+  <data name="notification" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="notification.bannerOptions" xml:space="preserve">
+    <value>Banner Options</value>
+  </data>
+  <data name="seconds" xml:space="preserve">
+    <value>seconds</value>
   </data>
 </root>
