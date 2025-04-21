@@ -183,15 +183,14 @@ namespace SoundSwitch.Framework.Configuration
                 NotificationSettings = NotificationTypeEnum.SoundNotification;
                 migrated = true;
             }
-
+#pragma warning disable 612
+#pragma warning disable CS0618 // Type or member is obsolete
             if (!PersistentMuteNotification && !MigratedFields.Contains(nameof(PersistentMuteNotification)))
             {
                 MicrophoneMuteNotification = MicrophoneMuteEnum.None;
                 MigratedFields.Add(nameof(PersistentMuteNotification));
                 migrated = true;
             }
-
-#pragma warning disable 612
             if (!MigratedFields.Contains(nameof(KeepSystrayIcon)))
             {
                 SwitchIcon = KeepSystrayIcon ? IconChangerEnum.Never : IconChangerEnum.Always;
@@ -289,6 +288,7 @@ namespace SoundSwitch.Framework.Configuration
 
             return migrated;
 #pragma warning restore 612
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         public void Save()
