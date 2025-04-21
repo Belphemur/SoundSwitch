@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -153,9 +153,6 @@
   <data name="communicationsDevice.tooltip" xml:space="preserve">
     <value>Si se activa, tanto el «Dispositivo de comunicación predeterminado» como el «Dispositivo de reproducción predeterminado» se cambian a la vez (útil para, p. ej., Skype y TeamSpeak).</value>
   </data>
-  <data name="notification" xml:space="preserve">
-    <value>Notificación</value>
-  </data>
   <data name="updateIncludeBetaVersions" xml:space="preserve">
     <value>Incluir versiones beta</value>
   </data>
@@ -219,8 +216,8 @@
   <data name="notification.option.sound" xml:space="preserve">
     <value>Notificación sonora</value>
   </data>
-  <data name="notificationOptionNone" xml:space="preserve">
-    <value>Ninguna notificación</value>
+  <data name="none" xml:space="preserve">
+    <value>Ninguno</value>
   </data>
   <data name="notification.option.toast" xml:space="preserve">
     <value>Notificación de sistema</value>
@@ -244,14 +241,11 @@ Banner: Uses a custom always-on-top frame, useful for in-game usage.</value>
   <data name="tooltipOnHover.option.bothDevices" xml:space="preserve">
     <value>Ambos dispositivos</value>
   </data>
-  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-    <value>Sin descripción emergente</value>
-  </data>
   <data name="audioFileNotFound" xml:space="preserve">
     <value>No se puede encontrar el archivo de audio que seleccionó para emplear como notificación. SoundSwitch cambió la configuración de vuelta a {0}.</value>
   </data>
-  <data name="audioFileNotFoundCaption" xml:space="preserve">
-    <value>No se encontró el archivo de audio</value>
+  <data name="audioFileNotFound.caption" xml:space="preserve">
+    <value>Archivo de audio no encontrado</value>
   </data>
   <data name="activeRecording" xml:space="preserve">
     <value>Grab.: {0}</value>
@@ -278,32 +272,17 @@ Banner: Uses a custom always-on-top frame, useful for in-game usage.</value>
   <data name="notification.option.banner" xml:space="preserve">
     <value>Notificación por banner</value>
   </data>
-  <data name="profile.error.needHKOrPath" xml:space="preserve">
-    <value>Debe establecer el atajo y/o la aplicación.</value>
+  <data name="disableCustomSound.tooltip" xml:space="preserve">
+    <value>Desactivar el sonido personalizado establecido.</value>
   </data>
-  <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
-    <value>Debe establecer un dispositivo de reproducción o de grabación.</value>
+  <data name="foregroundApp" xml:space="preserve">
+    <value>También cambiar el programa en primer plano</value>
   </data>
-  <data name="profile.error.name" xml:space="preserve">
-    <value>Ya existe un perfil con el nombre {0}.</value>
+  <data name="foregroundApp.tooltip" xml:space="preserve">
+    <value>Cambiar también el sonido en la aplicación que actualmente está en uso. Útil con videojuegos.</value>
   </data>
-  <data name="profile.error.application" xml:space="preserve">
-    <value>Esta aplicación, {0}, ya tiene un perfil conectado.</value>
-  </data>
-  <data name="profile.error.hotkey" xml:space="preserve">
-    <value>Este atajo, {0}, ya está registrado.</value>
-  </data>
-  <data name="profile.name" xml:space="preserve">
-    <value>Nombre</value>
-  </data>
-  <data name="profile.program" xml:space="preserve">
-    <value>Aplicación</value>
-  </data>
-  <data name="buttonAdd" xml:space="preserve">
-    <value>Añadir</value>
-  </data>
-  <data name="profile.tab" xml:space="preserve">
-    <value>Perfiles</value>
+  <data name="iconChange" xml:space="preserve">
+    <value>Icono de la bandeja del sistema</value>
   </data>
   <data name="iconChange.tooltip" xml:space="preserve">
     <value>Elija cuándo debe cambiarse el icono en bandeja de sistema de SoundSwitch.
@@ -313,17 +292,148 @@ Reproducción: cuando se cambia un dispositivo de reproducción.
 Grabación: cuando se cambia un dispositivo de grabación.
 Ambos: cambia cuando se cambia cualquier tipo de dispositivo.</value>
   </data>
-  <data name="iconChange" xml:space="preserve">
-    <value>Icono de la bandeja del sistema</value>
+  <data name="profile.tab" xml:space="preserve">
+    <value>Perfiles</value>
   </data>
-  <data name="foregroundApp.tooltip" xml:space="preserve">
-    <value>Cambiar también el sonido en la aplicación que actualmente está en uso. Útil con videojuegos.</value>
+  <data name="buttonAdd" xml:space="preserve">
+    <value>Añadir</value>
   </data>
-  <data name="disableCustomSound.tooltip" xml:space="preserve">
-    <value>Desactivar el sonido personalizado establecido.</value>
+  <data name="profile.program" xml:space="preserve">
+    <value>Aplicación</value>
+  </data>
+  <data name="profile.name" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+  <data name="profile.error.hotkey" xml:space="preserve">
+    <value>Este atajo, {0}, ya está registrado.</value>
+  </data>
+  <data name="profile.error.application" xml:space="preserve">
+    <value>Esta aplicación, {0}, ya tiene un perfil conectado.</value>
+  </data>
+  <data name="profile.error.name" xml:space="preserve">
+    <value>Ya existe un perfil con el nombre {0}.</value>
+  </data>
+  <data name="profile.error.needHKOrPath" xml:space="preserve">
+    <value>Debe establecer el atajo y/o la aplicación.</value>
+  </data>
+  <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
+    <value>Debe establecer un dispositivo de reproducción o de grabación.</value>
+  </data>
+  <data name="profile.explanation" xml:space="preserve">
+    <value>Añade un perfil para cambiar a un determinado dispositivo de reproducción o grabación cuando se inicie o se active una aplicación específica. También puedes configurar tu propia tecla de acceso directo para una combinación específica de dispositivos.</value>
+  </data>
+  <data name="profile.error.registerHotkeys" xml:space="preserve">
+    <value>No se pudo registrar el atajo para los perfiles siguientes: {0}</value>
+  </data>
+  <data name="profile.error.registerHotkeys.title" xml:space="preserve">
+    <value>Ya se utiliza el atajo</value>
+  </data>
+  <data name="profile.feature.add" xml:space="preserve">
+    <value>Añadir perfil</value>
+  </data>
+  <data name="profile.feature.executable" xml:space="preserve">
+    <value>Ejecutable (*.exe)</value>
+  </data>
+  <data name="profile.error.title" xml:space="preserve">
+    <value>Error en el perfil</value>
+  </data>
+  <data name="buttonDelete" xml:space="preserve">
+    <value>Eliminar</value>
+  </data>
+  <data name="profile.error.delete" xml:space="preserve">
+    <value>No se puede encontrar el perfil.</value>
+  </data>
+  <data name="profile.error.noName" xml:space="preserve">
+    <value>El perfil necesita un nombre.</value>
+  </data>
+  <data name="profile.feature.profile" xml:space="preserve">
+    <value>Perfil</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox" xml:space="preserve">
+    <value>Cambiar también el dispositivo predeterminado</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
+    <value>Cuando se detecte la aplicación, SoundSwitch cambiará también el dispositivo predeterminado actual.</value>
+  </data>
+  <data name="hotkeyEnabled" xml:space="preserve">
+    <value>Atajo activado</value>
+  </data>
+  <data name="profile.error.deviceNotFound" xml:space="preserve">
+    <value>No se pudo encontrar el dispositivo {0}.</value>
+  </data>
+  <data name="profile.trigger.window" xml:space="preserve">
+    <value>Nombre del programa</value>
+  </data>
+  <data name="profile.trigger.process" xml:space="preserve">
+    <value>Ruta de la aplicación</value>
+  </data>
+  <data name="profile.trigger.steam" xml:space="preserve">
+    <value>Big Picture de Steam</value>
+  </data>
+  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
+    <value>Atajo utilizado para activar el perfil. Si acciona el mismo atajo, podrá cambiar entre perfiles.</value>
+  </data>
+  <data name="profile.trigger.window.desc" xml:space="preserve">
+    <value>Active el perfil si el programa en primer plano contiene los siguientes caracteres</value>
+  </data>
+  <data name="profile.trigger.process.desc" xml:space="preserve">
+    <value>Activar el perfil cuando la aplicación seleccionada esté en primer plano</value>
+  </data>
+  <data name="profile.trigger.steam.desc" xml:space="preserve">
+    <value>Activar cuando se detecte el modo Big Picture de Steam. (Se restaurará el estado anterior al cerrar Big Picture.)</value>
+  </data>
+  <data name="profile.desc" xml:space="preserve">
+    <value>Descripción</value>
+  </data>
+  <data name="profile.trigger.actives" xml:space="preserve">
+    <value>Desencadenadores activos</value>
+  </data>
+  <data name="profile.trigger.available" xml:space="preserve">
+    <value>Desencadenadores disponibles</value>
+  </data>
+  <data name="communication" xml:space="preserve">
+    <value>Dispositivo de comunicación predeterminado</value>
+  </data>
+  <data name="profile.error.triggers.min" xml:space="preserve">
+    <value>Necesita por lo menos un desencadenador.</value>
+  </data>
+  <data name="profile.error.steam" xml:space="preserve">
+    <value>Solo puede tener un perfil para Big Picture de Steam.</value>
+  </data>
+  <data name="profile.error.window" xml:space="preserve">
+    <value>Ya existe un perfil con este nombre de ventana: {0}.</value>
+  </data>
+  <data name="profile.notifyOnActivation" xml:space="preserve">
+    <value>Notificar cuando se desencadene el perfil</value>
+  </data>
+  <data name="profile.notification.text" xml:space="preserve">
+    <value>Se desencadenó el perfil {0}</value>
+  </data>
+  <data name="buttonSave" xml:space="preserve">
+    <value>Guardar</value>
+  </data>
+  <data name="buttonEdit" xml:space="preserve">
+    <value>Editar</value>
+  </data>
+  <data name="profile.trigger.startup" xml:space="preserve">
+    <value>Al inicio</value>
+  </data>
+  <data name="profile.trigger.startup.desc" xml:space="preserve">
+    <value>El perfil se desencadenará automáticamente cuando inicie SoundSwitch</value>
   </data>
   <data name="usePrimaryScreen" xml:space="preserve">
     <value>Siempre utilizar la pantalla principal</value>
+  </data>
+  <data name="usePrimaryScreen.tooltip" xml:space="preserve">
+    <value>Mostrar mensaje emergente en la pantalla principal, no la enfocada.</value>
+  </data>
+  <data name="profile.trigger.restoreDevices" xml:space="preserve">
+    <value>Restaurar dispositivos cuando termine el desencadenador</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
+    <value>Requiere que se active «{0}».
+
+Restaura el estado del sistema cuando se cierra la aplicación.</value>
   </data>
   <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
     <value>Se restauró el estado del sistema</value>
@@ -331,184 +441,71 @@ Ambos: cambia cuando se cambia cualquier tipo de dispositivo.</value>
   <data name="profile.trigger.uwp" xml:space="preserve">
     <value>Aplicación de Microsoft Store</value>
   </data>
-  <data name="profile.notification.text" xml:space="preserve">
-    <value>Se desencadenó el perfil {0}</value>
-  </data>
-  <data name="profile.notifyOnActivation" xml:space="preserve">
-    <value>Notificar cuando se desencadene el perfil</value>
-  </data>
-  <data name="profile.error.window" xml:space="preserve">
-    <value>Ya existe un perfil con este nombre de ventana: {0}.</value>
-  </data>
-  <data name="profile.trigger.process.desc" xml:space="preserve">
-    <value>Activar el perfil cuando la aplicación seleccionada esté en primer plano</value>
-  </data>
-  <data name="profile.trigger.window.desc" xml:space="preserve">
-    <value>Active el perfil si el programa en primer plano contiene los siguientes caracteres</value>
-  </data>
-  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>Atajo utilizado para activar el perfil. Si acciona el mismo atajo, podrá cambiar entre perfiles.</value>
-  </data>
-  <data name="hotkeyEnabled" xml:space="preserve">
-    <value>Atajo activado</value>
-  </data>
-  <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
-    <value>Cuando se detecte la aplicación, SoundSwitch cambiará también el dispositivo predeterminado actual.</value>
-  </data>
-  <data name="profile.error.registerHotkeys" xml:space="preserve">
-    <value>No se pudo registrar el atajo para los perfiles siguientes: {0}</value>
-  </data>
-  <data name="foregroundApp" xml:space="preserve">
-    <value>También cambiar el programa en primer plano</value>
-  </data>
-  <data name="buttonEdit" xml:space="preserve">
-    <value>Editar</value>
-  </data>
-  <data name="buttonSave" xml:space="preserve">
-    <value>Guardar</value>
-  </data>
-  <data name="profile.error.triggers.min" xml:space="preserve">
-    <value>Necesita por lo menos un desencadenador.</value>
-  </data>
-  <data name="communication" xml:space="preserve">
-    <value>Dispositivo de comunicación predeterminado</value>
-  </data>
-  <data name="profile.trigger.available" xml:space="preserve">
-    <value>Desencadenadores disponibles</value>
-  </data>
-  <data name="profile.trigger.actives" xml:space="preserve">
-    <value>Desencadenadores activos</value>
-  </data>
-  <data name="profile.desc" xml:space="preserve">
-    <value>Descripción</value>
-  </data>
-  <data name="profile.trigger.process" xml:space="preserve">
-    <value>Ruta de la aplicación</value>
-  </data>
-  <data name="profile.trigger.window" xml:space="preserve">
-    <value>Nombre del programa</value>
-  </data>
-  <data name="profile.error.deviceNotFound" xml:space="preserve">
-    <value>No se pudo encontrar el dispositivo {0}.</value>
-  </data>
-  <data name="profile.defaultDevice.checkbox" xml:space="preserve">
-    <value>Cambiar también el dispositivo predeterminado</value>
-  </data>
-  <data name="profile.feature.profile" xml:space="preserve">
-    <value>Perfil</value>
-  </data>
-  <data name="profile.error.noName" xml:space="preserve">
-    <value>El perfil necesita un nombre.</value>
-  </data>
-  <data name="profile.error.delete" xml:space="preserve">
-    <value>No se puede encontrar el perfil.</value>
-  </data>
-  <data name="buttonDelete" xml:space="preserve">
-    <value>Eliminar</value>
-  </data>
-  <data name="profile.error.title" xml:space="preserve">
-    <value>Error en el perfil</value>
-  </data>
-  <data name="profile.feature.executable" xml:space="preserve">
-    <value>Ejecutable (*.exe)</value>
-  </data>
-  <data name="profile.feature.add" xml:space="preserve">
-    <value>Añadir perfil</value>
-  </data>
-  <data name="profile.error.registerHotkeys.title" xml:space="preserve">
-    <value>Ya se utiliza el atajo</value>
-  </data>
-  <data name="usePrimaryScreen.tooltip" xml:space="preserve">
-    <value>Mostrar mensaje emergente en la pantalla principal, no la enfocada.</value>
-  </data>
-  <data name="telemetry.desc" xml:space="preserve">
-    <value>Se recupera anónimamente la versión utilizada de SoundSwitch. Solo el desarrollador de SoundSwitch puede verlo.</value>
-  </data>
-  <data name="quickMenu.desc" xml:space="preserve">
-    <value>Muestra un menú rápido, como Idioma de Windows, al utilizar un atajo de teclado</value>
-  </data>
-  <data name="quickMenu" xml:space="preserve">
-    <value>Menú rápido al accionar atajo</value>
-  </data>
-  <data name="telemetry" xml:space="preserve">
-    <value>Telemetría</value>
-  </data>
-  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
-    <value>Este activador hace visible el perfil en el menú de iconos de la bandeja. Haga clic con el botón izquierdo en el icono de la bandeja del sistema para ver su perfil.</value>
-  </data>
-  <data name="profile.trigger.trayMenu" xml:space="preserve">
-    <value>En el menú de la aplicación</value>
-  </data>
-  <data name="mute.toggle.label" xml:space="preserve">
-    <value>Alternar silencio</value>
-  </data>
-  <data name="notification.microphone.unmuted" xml:space="preserve">
-    <value>{0} ahora tiene el sonido restaurado.</value>
+  <data name="profile.trigger.uwp.desc" xml:space="preserve">
+    <value>Introduzca el nombre de la aplicación instalada a través de la tienda de Windows, como Netflix, Amazon Prime Video, etc…</value>
   </data>
   <data name="notification.microphone.muted" xml:space="preserve">
     <value>{0} se ha silenciado ahora.</value>
   </data>
-  <data name="profile.trigger.uwp.desc" xml:space="preserve">
-    <value>Introduzca el nombre de la aplicación instalada a través de la tienda de Windows, como Netflix, Amazon Prime Video, etc…</value>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>{0} ahora tiene el sonido restaurado.</value>
   </data>
-  <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
-    <value>Requiere que se active «{0}».
-
-Restaura el estado del sistema cuando se cierra la aplicación.</value>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>Alternar silencio</value>
   </data>
-  <data name="profile.trigger.restoreDevices" xml:space="preserve">
-    <value>Restaurar dispositivos cuando termine el desencadenador</value>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>En el menú de la aplicación</value>
   </data>
-  <data name="profile.trigger.startup.desc" xml:space="preserve">
-    <value>El perfil se desencadenará automáticamente cuando inicie SoundSwitch</value>
-  </data>
-  <data name="profile.trigger.startup" xml:space="preserve">
-    <value>Al inicio</value>
-  </data>
-  <data name="profile.error.steam" xml:space="preserve">
-    <value>Solo puede tener un perfil para Big Picture de Steam.</value>
-  </data>
-  <data name="profile.trigger.steam.desc" xml:space="preserve">
-    <value>Activar cuando se detecte el modo Big Picture de Steam. (Se restaurará el estado anterior al cerrar Big Picture.)</value>
-  </data>
-  <data name="profile.trigger.steam" xml:space="preserve">
-    <value>Big Picture de Steam</value>
-  </data>
-  <data name="profile.explanation" xml:space="preserve">
-    <value>Añade un perfil para cambiar a un determinado dispositivo de reproducción o grabación cuando se inicie o se active una aplicación específica. También puedes configurar tu propia tecla de acceso directo para una combinación específica de dispositivos.</value>
-  </data>
-  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
-    <value>El perfil se activará automáticamente cuando cambie el dispositivo de sonido actual.</value>
-  </data>
-  <data name="devices.AutoAddNewDevice..tooltip" xml:space="preserve">
-    <value>Añadir automáticamente nuevos dispositivos a la lista seleccionada cuando se conectan al ordenador</value>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>Este activador hace visible el perfil en el menú de iconos de la bandeja. Haga clic con el botón izquierdo en el icono de la bandeja del sistema para ver su perfil.</value>
   </data>
   <data name="profile.trigger.deviceChanged" xml:space="preserve">
     <value>Forzar perfil</value>
   </data>
+  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
+    <value>El perfil se activará automáticamente cuando cambie el dispositivo de sonido actual.</value>
+  </data>
   <data name="profile.error.deviceChanged" xml:space="preserve">
     <value>Sólo puedes tener un perfil forzado.</value>
   </data>
-  <data name="devices.AutoAddNewDevice" xml:space="preserve">
-    <value>Selección automática de nuevos dispositivos</value>
+  <data name="telemetry" xml:space="preserve">
+    <value>Telemetría</value>
+  </data>
+  <data name="telemetry.tooltip" xml:space="preserve">
+    <value>Recopilar de forma anónima qué versión de SoundSwitch se está utilizando. Solo se comparte con el desarrollador de SoundSwitch.</value>
+  </data>
+  <data name="quickMenu" xml:space="preserve">
+    <value>Menú rápido al accionar atajo</value>
+  </data>
+  <data name="quickMenu.tooltip" xml:space="preserve">
+    <value>Mostrar un menú rápido como el idioma de Windows cuando se utiliza una tecla de acceso rápido</value>
   </data>
   <data name="keepVolume" xml:space="preserve">
     <value>Mantén el nivel de volumen en todos los dispositivos</value>
   </data>
-  <data name="keepVolume.desc" xml:space="preserve">
+  <data name="keepVolume.tooltip" xml:space="preserve">
     <value>Mantén el mismo nivel de volumen al cambiar de dispositivo</value>
+  </data>
+  <data name="devices.autoAddNewDevice" xml:space="preserve">
+    <value>Selección automática de nuevos dispositivos</value>
+  </data>
+  <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
+    <value>Añadir automáticamente nuevos dispositivos a la lista seleccionada cuando se conectan al ordenador</value>
   </data>
   <data name="position" xml:space="preserve">
     <value>Posición</value>
   </data>
+  <data name="position.tooltip" xml:space="preserve">
+    <value>Fije la posición de la notificación del banner.</value>
+  </data>
   <data name="position.option.bottomLeft" xml:space="preserve">
     <value>Parte inferior izquierda</value>
   </data>
+  <data name="position.option.bottomRight" xml:space="preserve">
+    <value>Parte inferior derecha</value>
+  </data>
   <data name="position.option.topLeft" xml:space="preserve">
     <value>Parte superior izquierda</value>
-  </data>
-  <data name="position.option.topCenter" xml:space="preserve">
-    <value>Parte central superior</value>
   </data>
   <data name="position.option.topRight" xml:space="preserve">
     <value>Parte superior derecha</value>
@@ -516,32 +513,14 @@ Restaura el estado del sistema cuando se cierra la aplicación.</value>
   <data name="position.option.bottomCenter" xml:space="preserve">
     <value>Parte central</value>
   </data>
-  <data name="position.option.bottomRight" xml:space="preserve">
-    <value>Parte inferior derecha</value>
-  </data>
-  <data name="position.tooltip" xml:space="preserve">
-    <value>Fije la posición de la notificación del banner.</value>
-  </data>
-  <data name="none" xml:space="preserve">
-    <value>Ninguno</value>
+  <data name="position.option.topCenter" xml:space="preserve">
+    <value>Parte central superior</value>
   </data>
   <data name="notification.single" xml:space="preserve">
     <value>Solo un banner</value>
   </data>
   <data name="notification.single.tooltip" xml:space="preserve">
     <value>Mostrar solo un banner a la vez y sustituir su contenido.</value>
-  </data>
-  <data name="resetAudioDevices" xml:space="preserve">
-    <value>Restablecer el audio por aplicación</value>
-  </data>
-  <data name="audioFileNotFound.caption" xml:space="preserve">
-    <value>Archivo de audio no encontrado</value>
-  </data>
-  <data name="telemetry.tooltip" xml:space="preserve">
-    <value>Recopilar de forma anónima qué versión de SoundSwitch se está utilizando. Solo se comparte con el desarrollador de SoundSwitch.</value>
-  </data>
-  <data name="quickMenu.tooltip" xml:space="preserve">
-    <value>Mostrar un menú rápido como el idioma de Windows cuando se utiliza una tecla de acceso rápido</value>
   </data>
   <data name="link.community" xml:space="preserve">
     <value>Comunidad en Discord</value>
@@ -557,6 +536,9 @@ Restaura el estado del sistema cuando se cierra la aplicación.</value>
   </data>
   <data name="buttonReset" xml:space="preserve">
     <value>Restablecer</value>
+  </data>
+  <data name="resetAudioDevices" xml:space="preserve">
+    <value>Restablecer el audio por aplicación</value>
   </data>
   <data name="exportLogFiles" xml:space="preserve">
     <value>Exportar archivos de registro</value>
@@ -576,31 +558,61 @@ Restaura el estado del sistema cuando se cierra la aplicación.</value>
   <data name="position.option.center" xml:space="preserve">
     <value>Centro</value>
   </data>
-  <data name="keepVolume.tooltip" xml:space="preserve">
-    <value>Mantén el mismo nivel de volumen al cambiar de dispositivo</value>
-  </data>
-  <data name="devices.autoAddNewDevice" xml:space="preserve">
-    <value>Selección automática de nuevos dispositivos</value>
-  </data>
-  <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
-    <value>Añadir automáticamente nuevos dispositivos a la lista seleccionada cuando se conectan al ordenador</value>
-  </data>
-  <data name="notification.banner.onscreen.time" xml:space="preserve">
-    <value>Tiempo en pantalla</value>
-  </data>
-  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
-    <value>El tiempo que el banner permanece en la pantalla en segundos.</value>
-  </data>
   <data name="microphone.on" xml:space="preserve">
     <value>Micrófono encendido</value>
   </data>
   <data name="microphone.off" xml:space="preserve">
     <value>Micrófono apagado</value>
   </data>
-  <data name="banner.mute.persistent" xml:space="preserve">
+  <data name="banner.mute" xml:space="preserve">
     <value>Banner de silencio persistente</value>
   </data>
-  <data name="banner.mute.persistent.tooltip" xml:space="preserve">
+  <data name="banner.mute.tooltip" xml:space="preserve">
     <value>Mostrar un banner de silencio persistente cuando el micrófono está silenciado</value>
+  </data>
+  <data name="banner.mute.option.fading" xml:space="preserve">
+    <value />
+  </data>
+  <data name="banner.mute.option.persistent" xml:space="preserve">
+    <value />
+  </data>
+  <data name="switch.device.label" xml:space="preserve">
+    <value />
+  </data>
+  <data name="audioFileNotFoundCaption" xml:space="preserve">
+    <value>No se encontró el archivo de audio</value>
+  </data>
+  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
+    <value>Sin descripción emergente</value>
+  </data>
+  <data name="notificationOptionNone" xml:space="preserve">
+    <value>Ninguna notificación</value>
+  </data>
+  <data name="quickMenu.desc" xml:space="preserve">
+    <value>Muestra un menú rápido, como Idioma de Windows, al utilizar un atajo de teclado</value>
+  </data>
+  <data name="telemetry.desc" xml:space="preserve">
+    <value>Se recupera anónimamente la versión utilizada de SoundSwitch. Solo el desarrollador de SoundSwitch puede verlo.</value>
+  </data>
+  <data name="devices.AutoAddNewDevice..tooltip" xml:space="preserve">
+    <value>Añadir automáticamente nuevos dispositivos a la lista seleccionada cuando se conectan al ordenador</value>
+  </data>
+  <data name="keepVolume.desc" xml:space="preserve">
+    <value>Mantén el mismo nivel de volumen al cambiar de dispositivo</value>
+  </data>
+  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+    <value>El tiempo que el banner permanece en la pantalla en segundos.</value>
+  </data>
+  <data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>Tiempo en pantalla</value>
+  </data>
+  <data name="notification" xml:space="preserve">
+    <value>Notificación</value>
+  </data>
+  <data name="notification.bannerOptions" xml:space="preserve">
+    <value />
+  </data>
+  <data name="seconds" xml:space="preserve">
+    <value />
   </data>
 </root>

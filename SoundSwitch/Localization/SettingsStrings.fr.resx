@@ -22,10 +22,8 @@
     <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
         <value>[base64 mime encoded serialized .NET Framework object]</value>
     </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing"
-  mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework
-  object]</value>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
                 
@@ -61,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -114,12 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0,
-      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0,
-      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="selected" xml:space="preserve">
     <value>Sélectionné</value>
@@ -136,20 +132,29 @@
   <data name="playback" xml:space="preserve">
     <value>Lecture</value>
   </data>
-  <data name="hotkey" xml:space="preserve">
-    <value>Raccourci</value>
-  </data>
   <data name="settings" xml:space="preserve">
     <value>Paramètres</value>
   </data>
-  <data name="buttonClose.tooltip" xml:space="preserve">
-    <value>Les changements sont automatiquement sauvegardés</value>
+  <data name="hotkey" xml:space="preserve">
+    <value>Raccourci</value>
+  </data>
+  <data name="communicationsDevice" xml:space="preserve">
+    <value>Changer le périphérique de communication par défaut</value>
+  </data>
+  <data name="startWithWindows" xml:space="preserve">
+    <value>Démarrer automatiquement avec Windows</value>
   </data>
   <data name="buttonClose" xml:space="preserve">
     <value>Fermer</value>
   </data>
-  <data name="notification" xml:space="preserve">
-    <value>Notification</value>
+  <data name="buttonClose.tooltip" xml:space="preserve">
+    <value>Les changements sont automatiquement sauvegardés</value>
+  </data>
+  <data name="communicationsDevice.tooltip" xml:space="preserve">
+    <value>Si cette option est cochée, l'application modifiera aussi la carte audio utilisée pour la communication (utile pour Skype ou TeamSpeak par ex.).</value>
+  </data>
+  <data name="updateIncludeBetaVersions" xml:space="preserve">
+    <value>Inclure les version bêta</value>
   </data>
   <data name="updateIncludeBetaVersions.tooltip" xml:space="preserve">
     <value>Si cette option est cochée, SoundSwitch vérifiera également si des version bêta sont disponibles sur GitHub.</value>
@@ -159,6 +164,9 @@
   </data>
   <data name="selectSoundButton.tooltip" xml:space="preserve">
     <value>Choisissez le fichier audio pour le son de notification</value>
+  </data>
+  <data name="hotkey.tooltip" xml:space="preserve">
+    <value>Vérifiez que le raccourci clavier est activé.</value>
   </data>
   <data name="basicSettings" xml:space="preserve">
     <value>Paramètres de base</value>
@@ -172,59 +180,32 @@
   <data name="cycleThrough" xml:space="preserve">
     <value>Parcourir</value>
   </data>
-  <data name="cycleThrough.option.allAudioDevices" xml:space="preserve">
-    <value>Tous les périphériques audio</value>
-  </data>
-  <data name="cycleThrough.option.onlySelectedAudioDevices" xml:space="preserve">
-    <value>Uniquement les périphériques audio sélectionnés</value>
-  </data>
-  <data name="notification.option.sound" xml:space="preserve">
-    <value>Notification sonore</value>
-  </data>
-  <data name="notificationOptionNone" xml:space="preserve">
-    <value>Aucune notification</value>
-  </data>
-  <data name="notification.option.toast" xml:space="preserve">
-    <value>Notification popup</value>
-  </data>
-  <data name="notification.option.customized" xml:space="preserve">
-    <value>Notification sonore personnalisée</value>
-  </data>
-  <data name="tooltipOnHover.option.playbackDevice" xml:space="preserve">
-    <value>Périphérique de lecture</value>
-  </data>
-  <data name="tooltipOnHover.option.recordingDevice" xml:space="preserve">
-    <value>Périphérique d'enregistrement</value>
-  </data>
-  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-    <value>Aucune information</value>
-  </data>
-  <data name="audioFileNotFound" xml:space="preserve">
-    <value>Le fichier audio que vous avez sélectionné pour être joué comme notification est introuvable. SoundSwitch a modifié les paramètres de notification pour {0}.</value>
-  </data>
-  <data name="audioFileNotFoundCaption" xml:space="preserve">
-    <value>Fichier audio introuvable</value>
-  </data>
-  <data name="activeRecording" xml:space="preserve">
-    <value>Enregistrement : {0}</value>
-  </data>
-  <data name="activePlayback" xml:space="preserve">
-    <value>Lecture : {0}</value>
-  </data>
-  <data name="communicationsDevice" xml:space="preserve">
-    <value>Changer le périphérique de communication par défaut</value>
-  </data>
-  <data name="communicationsDevice.tooltip" xml:space="preserve">
-    <value>Si cette option est cochée, l'application modifiera aussi la carte audio utilisée pour la communication (utile pour Skype ou TeamSpeak par ex.).</value>
-  </data>
-  <data name="hotkey.tooltip" xml:space="preserve">
-    <value>Vérifiez que le raccourci clavier est activé.</value>
-  </data>
   <data name="keepSystemTrayIcon" xml:space="preserve">
     <value>Conserver l'icône de SoundSwitch dans la barre d'état</value>
   </data>
   <data name="keepSystemTrayIcon.tooltip" xml:space="preserve">
     <value>Si cette option est cochée, l’icône de SoundSwitch ne changera pas lorsque le dispositif de lecture par défaut sera modifié.</value>
+  </data>
+  <data name="updateInstallAutomatically" xml:space="preserve">
+    <value>Installer les mises à jour automatiquement</value>
+  </data>
+  <data name="updateInstallAutomatically.tooltip" xml:space="preserve">
+    <value>Les mise à jour sont téléchargées et installées automatiquement.</value>
+  </data>
+  <data name="updateNotify" xml:space="preserve">
+    <value>Me notifier lorsque des mises à jour sont disponibles</value>
+  </data>
+  <data name="updateNever" xml:space="preserve">
+    <value>Ne jamais vérifier les mises à jour</value>
+  </data>
+  <data name="tooltipOnHover" xml:space="preserve">
+    <value>Information au survol</value>
+  </data>
+  <data name="cycleThrough.option.allAudioDevices" xml:space="preserve">
+    <value>Tous les périphériques audio</value>
+  </data>
+  <data name="cycleThrough.option.onlySelectedAudioDevices" xml:space="preserve">
+    <value>Uniquement les périphériques audio sélectionnés</value>
   </data>
   <data name="cycleThrough.tooltip" xml:space="preserve">
     <value>Choisissez entre quels périphériques basculer. Soit seulement entre ceux sélectionnés soit parmi tous.</value>
@@ -232,12 +213,45 @@
   <data name="notification.option.windowsDefault" xml:space="preserve">
     <value>Notification Windows</value>
   </data>
+  <data name="notification.option.sound" xml:space="preserve">
+    <value>Notification sonore</value>
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>Aucune</value>
+  </data>
+  <data name="notification.option.toast" xml:space="preserve">
+    <value>Notification popup</value>
+  </data>
+  <data name="notification.option.customized" xml:space="preserve">
+    <value>Notification sonore personnalisée</value>
+  </data>
   <data name="notification.tooltip" xml:space="preserve">
     <value>Notification Windows : Notification Windows par défaut.
 Notification sonore : Joue un son sur le périphérique de lecture sélectionné.
 Notification sonore personnalisée : Joue un son spécifié sur le périphérique de lecture sélectionné.
 Notification popup : Affiche une notification dans la barre d'état.
 Bannière : Utilise une bannière personnalisée toujours au premier plan, utile pendant le jeu.</value>
+  </data>
+  <data name="tooltipOnHover.option.playbackDevice" xml:space="preserve">
+    <value>Périphérique de lecture</value>
+  </data>
+  <data name="tooltipOnHover.option.recordingDevice" xml:space="preserve">
+    <value>Périphérique d'enregistrement</value>
+  </data>
+  <data name="tooltipOnHover.option.bothDevices" xml:space="preserve">
+    <value>Pour tous les périphériques</value>
+  </data>
+  <data name="audioFileNotFound" xml:space="preserve">
+    <value>Le fichier audio que vous avez sélectionné pour être joué comme notification est introuvable. SoundSwitch a modifié les paramètres de notification pour {0}.</value>
+  </data>
+  <data name="audioFileNotFound.caption" xml:space="preserve">
+    <value>Fichier audio introuvable</value>
+  </data>
+  <data name="activeRecording" xml:space="preserve">
+    <value>Enregistrement : {0}</value>
+  </data>
+  <data name="activePlayback" xml:space="preserve">
+    <value>Lecture : {0}</value>
   </data>
   <data name="language" xml:space="preserve">
     <value>Langue</value>
@@ -248,30 +262,6 @@ Voulez-vous redémarrer maintenant ?</value>
   </data>
   <data name="languageRestartRequired.caption" xml:space="preserve">
     <value>Redémarrage nécessaire</value>
-  </data>
-  <data name="startWithWindows" xml:space="preserve">
-    <value>Démarrer automatiquement avec Windows</value>
-  </data>
-  <data name="updateIncludeBetaVersions" xml:space="preserve">
-    <value>Inclure les version bêta</value>
-  </data>
-  <data name="updateInstallAutomatically" xml:space="preserve">
-    <value>Installer les mises à jour automatiquement</value>
-  </data>
-  <data name="updateInstallAutomatically.tooltip" xml:space="preserve">
-    <value>Les mise à jour sont téléchargées et installées automatiquement.</value>
-  </data>
-  <data name="updateNever" xml:space="preserve">
-    <value>Ne jamais vérifier les mises à jour</value>
-  </data>
-  <data name="tooltipOnHover" xml:space="preserve">
-    <value>Information au survol</value>
-  </data>
-  <data name="tooltipOnHover.option.bothDevices" xml:space="preserve">
-    <value>Pour tous les périphériques</value>
-  </data>
-  <data name="updateNotify" xml:space="preserve">
-    <value>Me notifier lorsque des mises à jour sont disponibles</value>
   </data>
   <data name="updateNever.tooltip" xml:space="preserve">
     <value>Ne met pas à jour le programme à moins que vous ne le fassiez manuellement.</value>
@@ -305,11 +295,11 @@ Toujours : Lors de la bascule vers un autre périphérique de lecture ou d'enreg
   <data name="profile.tab" xml:space="preserve">
     <value>Profils</value>
   </data>
-  <data name="profile.program" xml:space="preserve">
-    <value>Programme</value>
-  </data>
   <data name="buttonAdd" xml:space="preserve">
     <value>Ajouter</value>
+  </data>
+  <data name="profile.program" xml:space="preserve">
+    <value>Programme</value>
   </data>
   <data name="profile.name" xml:space="preserve">
     <value>Nom</value>
@@ -365,11 +355,11 @@ Toujours : Lors de la bascule vers un autre périphérique de lecture ou d'enreg
   <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
     <value>Quand l'application est détectée, SoundSwitch va aussi switcher le périphérique par défaut.</value>
   </data>
-  <data name="profile.error.deviceNotFound" xml:space="preserve">
-    <value>Le périphérique {0} n'a pu être trouvé.</value>
-  </data>
   <data name="hotkeyEnabled" xml:space="preserve">
     <value>Raccoucis actif</value>
+  </data>
+  <data name="profile.error.deviceNotFound" xml:space="preserve">
+    <value>Le périphérique {0} n'a pu être trouvé.</value>
   </data>
   <data name="profile.trigger.window" xml:space="preserve">
     <value>Nom du programme</value>
@@ -383,23 +373,23 @@ Toujours : Lors de la bascule vers un autre périphérique de lecture ou d'enreg
   <data name="profile.trigger.hotkey.desc" xml:space="preserve">
     <value>Raccourcis clavier utilisé pour activer ce profil. Si vous utilisez le même raccourcis qu'un autre profil, vous pourrez switcher entre les différents profils.</value>
   </data>
-  <data name="profile.trigger.process.desc" xml:space="preserve">
-    <value>Si l'application sélectionnée est en cours d'utilisation le profile sera activé</value>
-  </data>
   <data name="profile.trigger.window.desc" xml:space="preserve">
     <value>Activez le profil si le programme d'avant-plan contient les caractères suivants</value>
   </data>
+  <data name="profile.trigger.process.desc" xml:space="preserve">
+    <value>Si l'application sélectionnée est en cours d'utilisation le profile sera activé</value>
+  </data>
   <data name="profile.trigger.steam.desc" xml:space="preserve">
     <value>Active quand Steam Big Picture est détecté. (Restaurera l'état quand Big Picture est fermé.)</value>
+  </data>
+  <data name="profile.desc" xml:space="preserve">
+    <value>Description</value>
   </data>
   <data name="profile.trigger.actives" xml:space="preserve">
     <value>Déclencheurs actifs</value>
   </data>
   <data name="profile.trigger.available" xml:space="preserve">
     <value>Déclencheurs disponibles</value>
-  </data>
-  <data name="profile.desc" xml:space="preserve">
-    <value>Description</value>
   </data>
   <data name="communication" xml:space="preserve">
     <value>Dispositif de communication par défaut</value>
@@ -431,6 +421,12 @@ Toujours : Lors de la bascule vers un autre périphérique de lecture ou d'enreg
   <data name="profile.trigger.startup.desc" xml:space="preserve">
     <value>Le profile sera activé directement au démarrage de SoundSwitch</value>
   </data>
+  <data name="usePrimaryScreen" xml:space="preserve">
+    <value>Toujours utiliser l'écran principal</value>
+  </data>
+  <data name="usePrimaryScreen.tooltip" xml:space="preserve">
+    <value>Afficher la bannière sur l'écran principal plutôt que l'écran actif.</value>
+  </data>
   <data name="profile.trigger.restoreDevices" xml:space="preserve">
     <value>Restaurer l'état après le déclenchement</value>
   </data>
@@ -448,12 +444,6 @@ Restaurer l'état du système quand l'application est fermée.</value>
   <data name="profile.trigger.uwp.desc" xml:space="preserve">
     <value>Saisissez le nom de l'application installée depuis le Windows Store. Par exemple : Netflix, Amazon Prime, etc.</value>
   </data>
-  <data name="usePrimaryScreen.tooltip" xml:space="preserve">
-    <value>Afficher la bannière sur l'écran principal plutôt que l'écran actif.</value>
-  </data>
-  <data name="usePrimaryScreen" xml:space="preserve">
-    <value>Toujours utiliser l'écran principal</value>
-  </data>
   <data name="notification.microphone.muted" xml:space="preserve">
     <value>{0} est en sourdine.</value>
   </data>
@@ -469,24 +459,6 @@ Restaurer l'état du système quand l'application est fermée.</value>
   <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
     <value>Le profile sera visible dans le menu de l'application. Cliquer avec le bouton gauche sur l'icône de l'application.</value>
   </data>
-  <data name="telemetry" xml:space="preserve">
-    <value>Télémétrie</value>
-  </data>
-  <data name="quickMenu" xml:space="preserve">
-    <value>Menu rapide</value>
-  </data>
-  <data name="quickMenu.desc" xml:space="preserve">
-    <value>Affiche un menu sous la souris quand un raccourcis clavier est utilisé</value>
-  </data>
-  <data name="telemetry.desc" xml:space="preserve">
-    <value>Rassemble anonymement quelle version de SoundSwitch est utilisée. Partagé uniquement avec le developer de SoundSwitch.</value>
-  </data>
-  <data name="devices.AutoAddNewDevice" xml:space="preserve">
-    <value>Selection automatique de périphérique</value>
-  </data>
-  <data name="devices.AutoAddNewDevice..tooltip" xml:space="preserve">
-    <value>Ajoute automatiquement les nouveaux périphériques quand ils sont connectés au PC</value>
-  </data>
   <data name="profile.trigger.deviceChanged" xml:space="preserve">
     <value>Forcer le profil</value>
   </data>
@@ -496,23 +468,44 @@ Restaurer l'état du système quand l'application est fermée.</value>
   <data name="profile.error.deviceChanged" xml:space="preserve">
     <value>Vous ne pouvez avoir qu'un seul profil forcé.</value>
   </data>
-  <data name="position" xml:space="preserve">
-    <value>Position</value>
+  <data name="telemetry" xml:space="preserve">
+    <value>Télémétrie</value>
   </data>
-  <data name="position.option.bottomLeft" xml:space="preserve">
-    <value>En bas à gauche</value>
+  <data name="telemetry.tooltip" xml:space="preserve">
+    <value>Transmet quelle version de SoundSwitch est utilisée. Partagé uniquement avec le développeur de SoundSwitch.</value>
+  </data>
+  <data name="quickMenu" xml:space="preserve">
+    <value>Menu rapide</value>
+  </data>
+  <data name="quickMenu.tooltip" xml:space="preserve">
+    <value>Affiche un menu sous la souris quand un raccourcis clavier est utilisé</value>
   </data>
   <data name="keepVolume" xml:space="preserve">
     <value>Synchroniser le volume</value>
   </data>
+  <data name="keepVolume.tooltip" xml:space="preserve">
+    <value>Garder le même niveau de volume lors d'un changement de périphérique audio</value>
+  </data>
+  <data name="devices.autoAddNewDevice" xml:space="preserve">
+    <value>Selection automatique de périphérique</value>
+  </data>
+  <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
+    <value>Ajoute automatiquement les nouveaux périphériques quand ils sont connectés au pc</value>
+  </data>
+  <data name="position" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="position.tooltip" xml:space="preserve">
+    <value>Choisir le positionnement de la bannière.</value>
+  </data>
+  <data name="position.option.bottomLeft" xml:space="preserve">
+    <value>En bas à gauche</value>
+  </data>
+  <data name="position.option.bottomRight" xml:space="preserve">
+    <value>En bas à droite</value>
+  </data>
   <data name="position.option.topLeft" xml:space="preserve">
     <value>En haut à gauche</value>
-  </data>
-  <data name="keepVolume.desc" xml:space="preserve">
-    <value>Garder le même niveau sonore lors du changement de périphérique</value>
-  </data>
-  <data name="position.option.topCenter" xml:space="preserve">
-    <value>En haut au centre</value>
   </data>
   <data name="position.option.topRight" xml:space="preserve">
     <value>En haut à droite</value>
@@ -520,11 +513,8 @@ Restaurer l'état du système quand l'application est fermée.</value>
   <data name="position.option.bottomCenter" xml:space="preserve">
     <value>En bas au centre</value>
   </data>
-  <data name="position.option.bottomRight" xml:space="preserve">
-    <value>En bas à droite</value>
-  </data>
-  <data name="position.tooltip" xml:space="preserve">
-    <value>Choisir le positionnement de la bannière.</value>
+  <data name="position.option.topCenter" xml:space="preserve">
+    <value>En haut au centre</value>
   </data>
   <data name="notification.single" xml:space="preserve">
     <value>Une seule bannière</value>
@@ -532,35 +522,8 @@ Restaurer l'état du système quand l'application est fermée.</value>
   <data name="notification.single.tooltip" xml:space="preserve">
     <value>Ne montrer qu'une seule bannière et remplacer son contenu lors d'une notification.</value>
   </data>
-  <data name="resetAudioDevices" xml:space="preserve">
-    <value>Réinitialiser l'audio par application</value>
-  </data>
-  <data name="none" xml:space="preserve">
-    <value>Aucune</value>
-  </data>
-  <data name="audioFileNotFound.caption" xml:space="preserve">
-    <value>Fichier audio introuvable</value>
-  </data>
-  <data name="keepVolume.tooltip" xml:space="preserve">
-    <value>Garder le même niveau de volume lors d'un changement de périphérique audio</value>
-  </data>
   <data name="link.community" xml:space="preserve">
     <value>Serveur Discord</value>
-  </data>
-  <data name="exportLogFiles.desc" xml:space="preserve">
-    <value>Exporter tous les fichiers de journal dans une archive zip pour poursuivre le dépannage dans les discussions d'aide ou sur le serveur Discord.</value>
-  </data>
-  <data name="telemetry.tooltip" xml:space="preserve">
-    <value>Transmet quelle version de SoundSwitch est utilisée. Partagé uniquement avec le développeur de SoundSwitch.</value>
-  </data>
-  <data name="quickMenu.tooltip" xml:space="preserve">
-    <value>Affiche un menu sous la souris quand un raccourcis clavier est utilisé</value>
-  </data>
-  <data name="devices.autoAddNewDevice" xml:space="preserve">
-    <value>Selection automatique de périphérique</value>
-  </data>
-  <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
-    <value>Ajoute automatiquement les nouveaux périphériques quand ils sont connectés au pc</value>
   </data>
   <data name="link.donate" xml:space="preserve">
     <value>Donation</value>
@@ -574,23 +537,26 @@ Restaurer l'état du système quand l'application est fermée.</value>
   <data name="buttonReset" xml:space="preserve">
     <value>Réinitialiser</value>
   </data>
+  <data name="resetAudioDevices" xml:space="preserve">
+    <value>Réinitialiser l'audio par application</value>
+  </data>
   <data name="exportLogFiles" xml:space="preserve">
     <value>Exporter les fichiers journal</value>
+  </data>
+  <data name="exportLogFiles.desc" xml:space="preserve">
+    <value>Exporter tous les fichiers de journal dans une archive zip pour poursuivre le dépannage dans les discussions d'aide ou sur le serveur Discord.</value>
   </data>
   <data name="buttonExport" xml:space="preserve">
     <value>Exporter</value>
   </data>
-  <data name="troubleshooting.desc" xml:space="preserve">
-    <value>Si vous avez besoin d'aide ou d'un dépannage supplémentaire avec SoundSwitch, vous pouvez visiter le lien de discussion d'aide ou de Discord communautaire, ou nous aider en visitant le lien de don ci-dessous.</value>
-  </data>
   <data name="troubleshooting" xml:space="preserve">
     <value>Dépannage</value>
   </data>
-  <data name="notification.banner.onscreen.time" xml:space="preserve">
-    <value>Seconde visible</value>
+  <data name="troubleshooting.desc" xml:space="preserve">
+    <value>Si vous avez besoin d'aide ou d'un dépannage supplémentaire avec SoundSwitch, vous pouvez visiter le lien de discussion d'aide ou de Discord communautaire, ou nous aider en visitant le lien de don ci-dessous.</value>
   </data>
-  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
-    <value>Durée de visibilité de la bannière à l'écran en secondes.</value>
+  <data name="position.option.center" xml:space="preserve">
+    <value>Centre</value>
   </data>
   <data name="microphone.on" xml:space="preserve">
     <value>Microphone On</value>
@@ -598,13 +564,55 @@ Restaurer l'état du système quand l'application est fermée.</value>
   <data name="microphone.off" xml:space="preserve">
     <value>Microphone Off</value>
   </data>
-  <data name="banner.mute.persistent" xml:space="preserve">
+  <data name="banner.mute" xml:space="preserve">
     <value>Bannière de sourdine persistante</value>
   </data>
-  <data name="banner.mute.persistent.tooltip" xml:space="preserve">
+  <data name="banner.mute.tooltip" xml:space="preserve">
     <value>Afficher une bannière persistante lorsque le microphone est en sourdine</value>
   </data>
-  <data name="position.option.center" xml:space="preserve">
-    <value>Centre</value>
+  <data name="banner.mute.option.fading" xml:space="preserve">
+    <value />
+  </data>
+  <data name="banner.mute.option.persistent" xml:space="preserve">
+    <value />
+  </data>
+  <data name="switch.device.label" xml:space="preserve">
+    <value />
+  </data>
+  <data name="audioFileNotFoundCaption" xml:space="preserve">
+    <value>Fichier audio introuvable</value>
+  </data>
+  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
+    <value>Aucune information</value>
+  </data>
+  <data name="notificationOptionNone" xml:space="preserve">
+    <value>Aucune notification</value>
+  </data>
+  <data name="quickMenu.desc" xml:space="preserve">
+    <value>Affiche un menu sous la souris quand un raccourcis clavier est utilisé</value>
+  </data>
+  <data name="telemetry.desc" xml:space="preserve">
+    <value>Rassemble anonymement quelle version de SoundSwitch est utilisée. Partagé uniquement avec le developer de SoundSwitch.</value>
+  </data>
+  <data name="devices.AutoAddNewDevice..tooltip" xml:space="preserve">
+    <value>Ajoute automatiquement les nouveaux périphériques quand ils sont connectés au PC</value>
+  </data>
+  <data name="keepVolume.desc" xml:space="preserve">
+    <value>Garder le même niveau sonore lors du changement de périphérique</value>
+  </data>
+  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+    <value>Durée de visibilité de la bannière à l'écran en secondes.</value>
+  </data>
+  <data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>Seconde visible</value>
+  </data>
+  <data name="notification" xml:space="preserve">
+    <value>Notification</value>
+  </data>
+  <data name="notification.bannerOptions" xml:space="preserve">
+    <value />
+  </data>
+  <data name="seconds" xml:space="preserve">
+    <value />
   </data>
 </root>

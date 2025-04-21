@@ -117,17 +117,32 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="selected" xml:space="preserve">
+    <value>Wybrane</value>
+  </data>
   <data name="connected" xml:space="preserve">
     <value>Połączone</value>
   </data>
   <data name="disconnected" xml:space="preserve">
     <value>Niepołączone</value>
   </data>
+  <data name="recording" xml:space="preserve">
+    <value>Nagrywanie</value>
+  </data>
+  <data name="playback" xml:space="preserve">
+    <value>Odtwarzanie</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>Ustawienia</value>
+  </data>
   <data name="hotkey" xml:space="preserve">
     <value>Skrót</value>
   </data>
   <data name="communicationsDevice" xml:space="preserve">
     <value>Przełącz domyślne urządzenie komunikacyjne</value>
+  </data>
+  <data name="startWithWindows" xml:space="preserve">
+    <value>Uruchamiaj przy starcie systemu Windows</value>
   </data>
   <data name="buttonClose" xml:space="preserve">
     <value>Zamknij</value>
@@ -138,8 +153,17 @@
   <data name="communicationsDevice.tooltip" xml:space="preserve">
     <value>Kiedy zaznaczone także domyślne urządzenie komunikacyjne zostanie przełączone razem z domyślnym urządzeniem (przydatne w Skype, TeamSpeak itd.).</value>
   </data>
+  <data name="updateIncludeBetaVersions" xml:space="preserve">
+    <value>Instaluj wersje beta</value>
+  </data>
+  <data name="updateIncludeBetaVersions.tooltip" xml:space="preserve">
+    <value>Jeśli zaznaczone, SoundSwitch będzie instalował także wersje beta z GitHuba.</value>
+  </data>
   <data name="audioFiles" xml:space="preserve">
     <value>Pliki audio</value>
+  </data>
+  <data name="selectSoundButton.tooltip" xml:space="preserve">
+    <value>Wybierz plik dźwiękowy do użycia jako dźwięk powiadomień</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Zaznacz by włączyć skrót klawiszowy.</value>
@@ -150,11 +174,32 @@
   <data name="audioSettings" xml:space="preserve">
     <value>Ustawienia dźwięku</value>
   </data>
+  <data name="updateSettings" xml:space="preserve">
+    <value>Ustawienia uaktualnień</value>
+  </data>
   <data name="cycleThrough" xml:space="preserve">
     <value>Przełączaj</value>
   </data>
   <data name="keepSystemTrayIcon" xml:space="preserve">
     <value>Pozostaw ikonę SoundSwitch</value>
+  </data>
+  <data name="keepSystemTrayIcon.tooltip" xml:space="preserve">
+    <value>Zaznacz by nie zmieniać ikony w zasobniku kiedy domyślne urządzenie odtwarzania zostało przełączone.</value>
+  </data>
+  <data name="updateInstallAutomatically" xml:space="preserve">
+    <value>Automatycznie instaluj uaktualnienia</value>
+  </data>
+  <data name="updateInstallAutomatically.tooltip" xml:space="preserve">
+    <value>Uaktualnienia będą instalowane automatycznie.</value>
+  </data>
+  <data name="updateNotify" xml:space="preserve">
+    <value>Powiadom mnie kiedy uaktualnienie będzie dostępne</value>
+  </data>
+  <data name="updateNever" xml:space="preserve">
+    <value>Nigdy nie sprawdzaj dostępnych uaktualnień</value>
+  </data>
+  <data name="tooltipOnHover" xml:space="preserve">
+    <value>Informacja po najechaniu na ikonę</value>
   </data>
   <data name="cycleThrough.option.allAudioDevices" xml:space="preserve">
     <value>Wszystkie urządzenia audio</value>
@@ -165,17 +210,61 @@
   <data name="cycleThrough.tooltip" xml:space="preserve">
     <value>Wybierz czy przełączać między wszystkimi urządzeniami czy jedynie wybranymi.</value>
   </data>
+  <data name="notification.option.windowsDefault" xml:space="preserve">
+    <value>Powiadomienie Windows</value>
+  </data>
+  <data name="notification.option.sound" xml:space="preserve">
+    <value>Powiadomienie dźwiękowe</value>
+  </data>
+  <data name="notification.option.toast" xml:space="preserve">
+    <value>Wyskakujące powiadomienie</value>
+  </data>
+  <data name="notification.option.customized" xml:space="preserve">
+    <value>Spersonalizowane powiadomienia dźwiękowe</value>
+  </data>
+  <data name="notification.tooltip" xml:space="preserve">
+    <value>Powiadomienie Windows: Domyślne wyskakujące powiadomienie systemu Windows
+Powiadomienie dźwiękowe: Odtwarza powiadomienie na urządzeniu domyślnym
+Spersonalizowane powiadomienie dźwiękowe: Odtwarza wskazany dźwięk na domyślnym urządzeniu audio
+Baner: Używa specjalnego powiadomienia wyskakującego z zasobnika systemowego
+Brak powiadomień: Brak powiadomień o przełączeniu urządzenia.</value>
+  </data>
+  <data name="tooltipOnHover.option.playbackDevice" xml:space="preserve">
+    <value>Urządzenie odtwarzania</value>
+  </data>
+  <data name="tooltipOnHover.option.recordingDevice" xml:space="preserve">
+    <value>Urządzenie nagrywania</value>
+  </data>
+  <data name="tooltipOnHover.option.bothDevices" xml:space="preserve">
+    <value>Wszystkie urządzenia</value>
+  </data>
   <data name="audioFileNotFound" xml:space="preserve">
     <value>Plik audio wskazany jako dźwięk powiadomienia nie mógł zostać znaleziony. SoundSwitch będzie używał {0} jako sposobu powiadamiania.</value>
-  </data>
-  <data name="audioFileNotFoundCaption" xml:space="preserve">
-    <value>Plik audio nie mógł zostać znaleziony</value>
   </data>
   <data name="activeRecording" xml:space="preserve">
     <value>Nagrywanie: {0}</value>
   </data>
   <data name="activePlayback" xml:space="preserve">
     <value>Odtwarzanie: {0}</value>
+  </data>
+  <data name="language" xml:space="preserve">
+    <value>Język</value>
+  </data>
+  <data name="languageRestartRequired" xml:space="preserve">
+    <value>Język zostanie zmieniony po ponownym uruchomieniu SoundSwitch. 
+Uruchomić ponownie?</value>
+  </data>
+  <data name="languageRestartRequired.caption" xml:space="preserve">
+    <value>Wymaga ponownego uruchomienia</value>
+  </data>
+  <data name="updateNever.tooltip" xml:space="preserve">
+    <value>SoundSwitch nie będzie instalował uaktualnień, o ile nie zainstalujesz ich ręcznie.</value>
+  </data>
+  <data name="updateNotify.tooltip" xml:space="preserve">
+    <value>SoundSwitch poinformuje o dostępności nowego uaktualnienia. Po kliknięciu na powiadomienie uaktualnienie zostanie pobrane i pojawi się zapytanie czy powinno zostać zainstalowane.</value>
+  </data>
+  <data name="notification.option.banner" xml:space="preserve">
+    <value>Baner</value>
   </data>
   <data name="disableCustomSound.tooltip" xml:space="preserve">
     <value>Wyłącz spersonalizowane dźwięki.</value>
@@ -197,235 +286,62 @@ Urządzenie odtwarzania: Kiedy urządzenie audio zostało przełączone.
 Urządzenie nagrywania: Kiedy urządzenie nagrywania zostało przełączone.
 Oba urządzenia: Zmień ikonę, kiedy którekolwiek z urządzeń zostało przełączone.</value>
   </data>
-  <data name="notification" xml:space="preserve">
-    <value>Powiadomienia</value>
-  </data>
-  <data name="keepSystemTrayIcon.tooltip" xml:space="preserve">
-    <value>Zaznacz by nie zmieniać ikony w zasobniku kiedy domyślne urządzenie odtwarzania zostało przełączone.</value>
-  </data>
-  <data name="notification.option.windowsDefault" xml:space="preserve">
-    <value>Powiadomienie Windows</value>
-  </data>
-  <data name="notification.option.sound" xml:space="preserve">
-    <value>Powiadomienie dźwiękowe</value>
-  </data>
-  <data name="notificationOptionNone" xml:space="preserve">
-    <value>Brak powiadomień</value>
-  </data>
-  <data name="notification.option.toast" xml:space="preserve">
-    <value>Wyskakujące powiadomienie</value>
-  </data>
-  <data name="notification.option.customized" xml:space="preserve">
-    <value>Spersonalizowane powiadomienia dźwiękowe</value>
-  </data>
-  <data name="language" xml:space="preserve">
-    <value>Język</value>
-  </data>
-  <data name="languageRestartRequired" xml:space="preserve">
-    <value>Język zostanie zmieniony po ponownym uruchomieniu SoundSwitch. 
-Uruchomić ponownie?</value>
-  </data>
-  <data name="languageRestartRequired.caption" xml:space="preserve">
-    <value>Wymaga ponownego uruchomienia</value>
-  </data>
-  <data name="notification.option.banner" xml:space="preserve">
-    <value>Baner</value>
-  </data>
-  <data name="notification.tooltip" xml:space="preserve">
-    <value>Powiadomienie Windows: Domyślne wyskakujące powiadomienie systemu Windows
-Powiadomienie dźwiękowe: Odtwarza powiadomienie na urządzeniu domyślnym
-Spersonalizowane powiadomienie dźwiękowe: Odtwarza wskazany dźwięk na domyślnym urządzeniu audio
-Baner: Używa specjalnego powiadomienia wyskakującego z zasobnika systemowego
-Brak powiadomień: Brak powiadomień o przełączeniu urządzenia.</value>
-  </data>
-  <data name="selected" xml:space="preserve">
-    <value>Wybrane</value>
-  </data>
-  <data name="recording" xml:space="preserve">
-    <value>Nagrywanie</value>
-  </data>
-  <data name="playback" xml:space="preserve">
-    <value>Odtwarzanie</value>
-  </data>
-  <data name="settings" xml:space="preserve">
-    <value>Ustawienia</value>
-  </data>
-  <data name="startWithWindows" xml:space="preserve">
-    <value>Uruchamiaj przy starcie systemu Windows</value>
-  </data>
-  <data name="updateIncludeBetaVersions" xml:space="preserve">
-    <value>Instaluj wersje beta</value>
-  </data>
-  <data name="selectSoundButton.tooltip" xml:space="preserve">
-    <value>Wybierz plik dźwiękowy do użycia jako dźwięk powiadomień</value>
-  </data>
-  <data name="tooltipOnHover" xml:space="preserve">
-    <value>Informacja po najechaniu na ikonę</value>
-  </data>
-  <data name="tooltipOnHover.option.playbackDevice" xml:space="preserve">
-    <value>Urządzenie odtwarzania</value>
-  </data>
-  <data name="tooltipOnHover.option.recordingDevice" xml:space="preserve">
-    <value>Urządzenie nagrywania</value>
-  </data>
-  <data name="tooltipOnHover.option.bothDevices" xml:space="preserve">
-    <value>Wszystkie urządzenia</value>
-  </data>
-  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-    <value>Brak informacji</value>
-  </data>
-  <data name="updateIncludeBetaVersions.tooltip" xml:space="preserve">
-    <value>Jeśli zaznaczone, SoundSwitch będzie instalował także wersje beta z GitHuba.</value>
-  </data>
-  <data name="updateInstallAutomatically" xml:space="preserve">
-    <value>Automatycznie instaluj uaktualnienia</value>
-  </data>
-  <data name="updateInstallAutomatically.tooltip" xml:space="preserve">
-    <value>Uaktualnienia będą instalowane automatycznie.</value>
-  </data>
-  <data name="updateNotify" xml:space="preserve">
-    <value>Powiadom mnie kiedy uaktualnienie będzie dostępne</value>
-  </data>
-  <data name="updateNever" xml:space="preserve">
-    <value>Nigdy nie sprawdzaj dostępnych uaktualnień</value>
-  </data>
-  <data name="updateNever.tooltip" xml:space="preserve">
-    <value>SoundSwitch nie będzie instalował uaktualnień, o ile nie zainstalujesz ich ręcznie.</value>
-  </data>
-  <data name="updateNotify.tooltip" xml:space="preserve">
-    <value>SoundSwitch poinformuje o dostępności nowego uaktualnienia. Po kliknięciu na powiadomienie uaktualnienie zostanie pobrane i pojawi się zapytanie czy powinno zostać zainstalowane.</value>
-  </data>
-  <data name="updateSettings" xml:space="preserve">
-    <value>Ustawienia uaktualnień</value>
-  </data>
   <data name="profile.tab" xml:space="preserve">
     <value>Profile</value>
-  </data>
-  <data name="profile.feature.profile" xml:space="preserve">
-    <value>Profil</value>
-  </data>
-  <data name="profile.error.noName" xml:space="preserve">
-    <value>Profil musi mieć nazwę.</value>
-  </data>
-  <data name="profile.error.delete" xml:space="preserve">
-    <value>Profil nie może zostać odnaleziony.</value>
-  </data>
-  <data name="buttonDelete" xml:space="preserve">
-    <value>Usuń</value>
-  </data>
-  <data name="profile.error.title" xml:space="preserve">
-    <value>Błąd profilu</value>
-  </data>
-  <data name="profile.feature.executable" xml:space="preserve">
-    <value>Plik wykonywalny (*.exe)</value>
-  </data>
-  <data name="profile.feature.add" xml:space="preserve">
-    <value>Utwórz profil</value>
-  </data>
-  <data name="profile.error.registerHotkeys.title" xml:space="preserve">
-    <value>Skrót już w użyciu</value>
-  </data>
-  <data name="profile.error.registerHotkeys" xml:space="preserve">
-    <value>Nie udało się zapisać skrótu klawiszowego dla następujących profili: {0}</value>
-  </data>
-  <data name="profile.explanation" xml:space="preserve">
-    <value>Utwórz profil by przełączyć na dane urządzenie odtwarzania lub nagrywania kiedy wskazana aplikacja zostanie uruchomiona albo aktywowana.</value>
-  </data>
-  <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
-    <value>Musisz ustawić urządzenie odtwarzania (albo nagrywania).</value>
-  </data>
-  <data name="profile.error.needHKOrPath" xml:space="preserve">
-    <value>Musisz ustawić skrót klawiszowy i/lub aplikację.</value>
-  </data>
-  <data name="profile.error.name" xml:space="preserve">
-    <value>Profil o nazwie {0} już istnieje.</value>
-  </data>
-  <data name="profile.error.application" xml:space="preserve">
-    <value>Do aplikacji {0} jest już podłączony profil.</value>
-  </data>
-  <data name="profile.error.hotkey" xml:space="preserve">
-    <value>Ten skrót {0} jest już używany.</value>
-  </data>
-  <data name="profile.name" xml:space="preserve">
-    <value>Nazwa</value>
-  </data>
-  <data name="profile.program" xml:space="preserve">
-    <value>Aplikacja</value>
   </data>
   <data name="buttonAdd" xml:space="preserve">
     <value>Dodaj</value>
   </data>
-  <data name="profile.trigger.uwp.desc" xml:space="preserve">
-    <value>Wprowadź nazwę aplikacji zainstalowanej z Windows store, analogicznie jak z Netflix, Amazon Prime Video itd…</value>
+  <data name="profile.program" xml:space="preserve">
+    <value>Aplikacja</value>
   </data>
-  <data name="profile.trigger.uwp" xml:space="preserve">
-    <value>Aplikacje witryny 'Microsoft Store'</value>
+  <data name="profile.name" xml:space="preserve">
+    <value>Nazwa</value>
   </data>
-  <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
-    <value>Stan systemu przywrócony</value>
+  <data name="profile.error.hotkey" xml:space="preserve">
+    <value>Ten skrót {0} jest już używany.</value>
   </data>
-  <data name="profile.trigger.restoreDevices" xml:space="preserve">
-    <value>Przywróć urządzenia po zakończeniu działania</value>
+  <data name="profile.error.application" xml:space="preserve">
+    <value>Do aplikacji {0} jest już podłączony profil.</value>
   </data>
-  <data name="usePrimaryScreen.tooltip" xml:space="preserve">
-    <value>Wyświetlaj banner na głównym ekranie, zamiast na ekranie skupienia.</value>
+  <data name="profile.error.name" xml:space="preserve">
+    <value>Profil o nazwie {0} już istnieje.</value>
   </data>
-  <data name="usePrimaryScreen" xml:space="preserve">
-    <value>Zawsze używaj ekranu głównego</value>
+  <data name="profile.error.needHKOrPath" xml:space="preserve">
+    <value>Musisz ustawić skrót klawiszowy i/lub aplikację.</value>
   </data>
-  <data name="profile.trigger.startup.desc" xml:space="preserve">
-    <value>Profil zostanie automatycznie uruchomiony wraz z programem SoundSwitch</value>
+  <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
+    <value>Musisz ustawić urządzenie odtwarzania (albo nagrywania).</value>
   </data>
-  <data name="profile.trigger.startup" xml:space="preserve">
-    <value>Na początku</value>
+  <data name="profile.explanation" xml:space="preserve">
+    <value>Utwórz profil by przełączyć na dane urządzenie odtwarzania lub nagrywania kiedy wskazana aplikacja zostanie uruchomiona albo aktywowana.</value>
   </data>
-  <data name="buttonEdit" xml:space="preserve">
-    <value>Edytuj</value>
+  <data name="profile.error.registerHotkeys" xml:space="preserve">
+    <value>Nie udało się zapisać skrótu klawiszowego dla następujących profili: {0}</value>
   </data>
-  <data name="buttonSave" xml:space="preserve">
-    <value>Zapisz</value>
+  <data name="profile.error.registerHotkeys.title" xml:space="preserve">
+    <value>Skrót już w użyciu</value>
   </data>
-  <data name="profile.notification.text" xml:space="preserve">
-    <value>Profil {0} został uruchomiony</value>
+  <data name="profile.feature.add" xml:space="preserve">
+    <value>Utwórz profil</value>
   </data>
-  <data name="profile.notifyOnActivation" xml:space="preserve">
-    <value>Powiadamiaj o uruchomieniu profilu</value>
+  <data name="profile.feature.executable" xml:space="preserve">
+    <value>Plik wykonywalny (*.exe)</value>
   </data>
-  <data name="profile.error.window" xml:space="preserve">
-    <value>Istnieje już profil o nazwie {0}.</value>
+  <data name="profile.error.title" xml:space="preserve">
+    <value>Błąd profilu</value>
   </data>
-  <data name="profile.error.steam" xml:space="preserve">
-    <value>Może mieć tylko jeden profil dla 'Steam Big Picture'.</value>
+  <data name="buttonDelete" xml:space="preserve">
+    <value>Usuń</value>
   </data>
-  <data name="profile.error.triggers.min" xml:space="preserve">
-    <value>Potrzebujesz minimum jednego przełącznika.</value>
+  <data name="profile.error.delete" xml:space="preserve">
+    <value>Profil nie może zostać odnaleziony.</value>
   </data>
-  <data name="communication" xml:space="preserve">
-    <value>Domyślne urządzenie komunikacyjne</value>
+  <data name="profile.error.noName" xml:space="preserve">
+    <value>Profil musi mieć nazwę.</value>
   </data>
-  <data name="profile.trigger.available" xml:space="preserve">
-    <value>Dostępne skróty</value>
-  </data>
-  <data name="profile.trigger.actives" xml:space="preserve">
-    <value>Aktywne skróty</value>
-  </data>
-  <data name="profile.desc" xml:space="preserve">
-    <value>Opis</value>
-  </data>
-  <data name="profile.trigger.steam.desc" xml:space="preserve">
-    <value>Aktywu po wykryciu Steam Big Picture. (Przywróci poprzedni stan po zamknięciu).</value>
-  </data>
-  <data name="profile.trigger.process.desc" xml:space="preserve">
-    <value>Aktywuj profil, jeżeli bieżąca aplikacja jest aktywna</value>
-  </data>
-  <data name="profile.trigger.window.desc" xml:space="preserve">
-    <value>Aktywuj profil, jeżeli bieżący program zawiera następujące znaki (argumenty)</value>
-  </data>
-  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>Skrót klawiszowy użyty do aktywacji profilu. Jeżeli użyjesz tego samego skrótu, będziesz mógł zmieniać profile.</value>
-  </data>
-  <data name="profile.trigger.steam" xml:space="preserve">
-    <value>Tryb pracy na Steam - Big Picture</value>
+  <data name="profile.feature.profile" xml:space="preserve">
+    <value>Profil</value>
   </data>
   <data name="profile.defaultDevice.checkbox" xml:space="preserve">
     <value>Zmień także urządzenie domyślne</value>
@@ -445,11 +361,82 @@ Brak powiadomień: Brak powiadomień o przełączeniu urządzenia.</value>
   <data name="profile.trigger.process" xml:space="preserve">
     <value>Ścieżka do programu</value>
   </data>
-  <data name="profile.trigger.trayMenu" xml:space="preserve">
-    <value>W menu aplikacji</value>
+  <data name="profile.trigger.steam" xml:space="preserve">
+    <value>Tryb pracy na Steam - Big Picture</value>
   </data>
-  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
-    <value>Ten przycisk powoduje, że profil jest widoczny w menu ikon. Naciśnij lewym przyciskiem myszy na ikonę na pasku zadań aby zobaczyć swój profil.</value>
+  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
+    <value>Skrót klawiszowy użyty do aktywacji profilu. Jeżeli użyjesz tego samego skrótu, będziesz mógł zmieniać profile.</value>
+  </data>
+  <data name="profile.trigger.window.desc" xml:space="preserve">
+    <value>Aktywuj profil, jeżeli bieżący program zawiera następujące znaki (argumenty)</value>
+  </data>
+  <data name="profile.trigger.process.desc" xml:space="preserve">
+    <value>Aktywuj profil, jeżeli bieżąca aplikacja jest aktywna</value>
+  </data>
+  <data name="profile.trigger.steam.desc" xml:space="preserve">
+    <value>Aktywu po wykryciu Steam Big Picture. (Przywróci poprzedni stan po zamknięciu).</value>
+  </data>
+  <data name="profile.desc" xml:space="preserve">
+    <value>Opis</value>
+  </data>
+  <data name="profile.trigger.actives" xml:space="preserve">
+    <value>Aktywne skróty</value>
+  </data>
+  <data name="profile.trigger.available" xml:space="preserve">
+    <value>Dostępne skróty</value>
+  </data>
+  <data name="communication" xml:space="preserve">
+    <value>Domyślne urządzenie komunikacyjne</value>
+  </data>
+  <data name="profile.error.triggers.min" xml:space="preserve">
+    <value>Potrzebujesz minimum jednego przełącznika.</value>
+  </data>
+  <data name="profile.error.steam" xml:space="preserve">
+    <value>Może mieć tylko jeden profil dla 'Steam Big Picture'.</value>
+  </data>
+  <data name="profile.error.window" xml:space="preserve">
+    <value>Istnieje już profil o nazwie {0}.</value>
+  </data>
+  <data name="profile.notifyOnActivation" xml:space="preserve">
+    <value>Powiadamiaj o uruchomieniu profilu</value>
+  </data>
+  <data name="profile.notification.text" xml:space="preserve">
+    <value>Profil {0} został uruchomiony</value>
+  </data>
+  <data name="buttonSave" xml:space="preserve">
+    <value>Zapisz</value>
+  </data>
+  <data name="buttonEdit" xml:space="preserve">
+    <value>Edytuj</value>
+  </data>
+  <data name="profile.trigger.startup" xml:space="preserve">
+    <value>Na początku</value>
+  </data>
+  <data name="profile.trigger.startup.desc" xml:space="preserve">
+    <value>Profil zostanie automatycznie uruchomiony wraz z programem SoundSwitch</value>
+  </data>
+  <data name="usePrimaryScreen" xml:space="preserve">
+    <value>Zawsze używaj ekranu głównego</value>
+  </data>
+  <data name="usePrimaryScreen.tooltip" xml:space="preserve">
+    <value>Wyświetlaj banner na głównym ekranie, zamiast na ekranie skupienia.</value>
+  </data>
+  <data name="profile.trigger.restoreDevices" xml:space="preserve">
+    <value>Przywróć urządzenia po zakończeniu działania</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
+    <value>Wymaga włączenia "{0}"
+
+Przywróć stan systemu po zamknięciu aplikacji.</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
+    <value>Stan systemu przywrócony</value>
+  </data>
+  <data name="profile.trigger.uwp" xml:space="preserve">
+    <value>Aplikacje witryny 'Microsoft Store'</value>
+  </data>
+  <data name="profile.trigger.uwp.desc" xml:space="preserve">
+    <value>Wprowadź nazwę aplikacji zainstalowanej z Windows store, analogicznie jak z Netflix, Amazon Prime Video itd…</value>
   </data>
   <data name="notification.microphone.muted" xml:space="preserve">
     <value>{0} jest wyciszony.</value>
@@ -460,24 +447,52 @@ Brak powiadomień: Brak powiadomień o przełączeniu urządzenia.</value>
   <data name="mute.toggle.label" xml:space="preserve">
     <value>Załącz wyciszenie</value>
   </data>
-  <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
-    <value>Wymaga włączenia "{0}"
-
-Przywróć stan systemu po zamknięciu aplikacji.</value>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>W menu aplikacji</value>
+  </data>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>Ten przycisk powoduje, że profil jest widoczny w menu ikon. Naciśnij lewym przyciskiem myszy na ikonę na pasku zadań aby zobaczyć swój profil.</value>
   </data>
   <data name="profile.trigger.deviceChanged" xml:space="preserve">
     <value>Wymuś profil</value>
   </data>
-  <data name="devices.AutoAddNewDevice" xml:space="preserve">
-    <value>Automatyczne wybieranie nowych urządzeń</value>
+  <data name="telemetry" xml:space="preserve">
+    <value>Telemetria</value>
   </data>
   <data name="quickMenu" xml:space="preserve">
     <value>Skrót menu podręcznego</value>
   </data>
-  <data name="telemetry" xml:space="preserve">
-    <value>Telemetria</value>
+  <data name="devices.autoAddNewDevice" xml:space="preserve">
+    <value>Automatyczne wybieranie nowych urządzeń</value>
   </data>
   <data name="resetAudioDevices" xml:space="preserve">
     <value>Resetuj audio dla aplikacji</value>
+  </data>
+  <data name="banner.mute.option.fading" xml:space="preserve">
+    <value />
+  </data>
+  <data name="banner.mute.option.persistent" xml:space="preserve">
+    <value />
+  </data>
+  <data name="switch.device.label" xml:space="preserve">
+    <value />
+  </data>
+  <data name="audioFileNotFoundCaption" xml:space="preserve">
+    <value>Plik audio nie mógł zostać znaleziony</value>
+  </data>
+  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
+    <value>Brak informacji</value>
+  </data>
+  <data name="notificationOptionNone" xml:space="preserve">
+    <value>Brak powiadomień</value>
+  </data>
+  <data name="notification" xml:space="preserve">
+    <value>Powiadomienia</value>
+  </data>
+  <data name="notification.bannerOptions" xml:space="preserve">
+    <value />
+  </data>
+  <data name="seconds" xml:space="preserve">
+    <value />
   </data>
 </root>

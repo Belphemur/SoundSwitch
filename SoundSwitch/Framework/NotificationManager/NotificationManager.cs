@@ -57,7 +57,7 @@ namespace SoundSwitch.Framework.NotificationManager
         {
             _notification.Configuration.BannerPosition = e.NewBannerPosition;
             _notification.Configuration.Ttl = e.NewTtl;
-            _notification.Configuration.PersistentMuteNotification = e.NewPersistentMuteNotification;
+            _notification.Configuration.MicrophoneMuteNotification = e.NewMicrophoneMuteNotification;
         }
 
         private void ModelOnCustomSoundChanged(object sender, CustomSoundChangedEvent customSoundChangedEvent)
@@ -80,7 +80,7 @@ namespace SoundSwitch.Framework.NotificationManager
                 DefaultSound = Resources.NotificationSound,
                 BannerPosition = AppModel.Instance.BannerPosition,
                 Ttl = AppModel.Instance.BannerOnScreenTime,
-                PersistentMuteNotification = AppModel.Instance.PersistentMuteNotification
+                MicrophoneMuteNotification = AppModel.Instance.MicrophoneMuteNotification
             };
             try
             {

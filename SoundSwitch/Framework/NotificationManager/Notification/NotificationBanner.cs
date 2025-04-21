@@ -80,12 +80,22 @@ namespace SoundSwitch.Framework.NotificationManager.Notification
 
         public void NotifyMuteChanged(string deviceId, string microphoneName, bool newMuteState)
         {
-            if (Configuration.PersistentMuteNotification)
+            if (Configuration.MicrophoneMuteNotification != MicrophoneMuteEnum.Persistent)
+                _microphoneMuteBannerManager.RemovePersistentMuteBanner(deviceId);
+
+            switch (Configuration.MicrophoneMuteNotification)
             {
-                _microphoneMuteBannerManager.UpdateMicrophoneMuteState(deviceId, microphoneName, newMuteState);
-                return;
+                case MicrophoneMuteEnum.Persistent:
+                    _microphoneMuteBannerManager.UpdateMicrophoneMuteState(deviceId, microphoneName, newMuteState);
+                    return;
+                case MicrophoneMuteEnum.Fading:
+                    FullBanner(microphoneName, newMuteState);
+                    return;
+                case MicrophoneMuteEnum.None:
+                    return;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
-            FullBanner(microphoneName, newMuteState);
         }
 
         private void FullBanner(string microphoneName, bool newMuteState)

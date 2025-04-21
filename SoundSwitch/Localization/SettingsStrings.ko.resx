@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -117,29 +117,113 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="buttonClose" xml:space="preserve">
-    <value>닫기</value>
+  <data name="selected" xml:space="preserve">
+    <value>선택됨</value>
   </data>
-  <data name="notification.option.customized" xml:space="preserve">
-    <value>사용자 정의 사운드 알림</value>
-  </data>
-  <data name="updateNotify" xml:space="preserve">
-    <value>업데이트를 사용할 수 있을 때 알림</value>
-  </data>
-  <data name="foregroundApp.tooltip" xml:space="preserve">
-    <value>현재 사용 중인 응용 프로그램의 사운드도 전환합니다. 비디오 게임에 유용합니다.</value>
-  </data>
-  <data name="notification.option.windowsDefault" xml:space="preserve">
-    <value>Windows 알림</value>
+  <data name="connected" xml:space="preserve">
+    <value>연결됨</value>
   </data>
   <data name="disconnected" xml:space="preserve">
     <value>연결되지 않음</value>
   </data>
+  <data name="recording" xml:space="preserve">
+    <value>녹음</value>
+  </data>
+  <data name="playback" xml:space="preserve">
+    <value>재생</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>설정</value>
+  </data>
+  <data name="hotkey" xml:space="preserve">
+    <value>단축키</value>
+  </data>
+  <data name="communicationsDevice" xml:space="preserve">
+    <value>기본 통신 장치 전환</value>
+  </data>
+  <data name="startWithWindows" xml:space="preserve">
+    <value>Windows에서 자동으로 시작</value>
+  </data>
+  <data name="buttonClose" xml:space="preserve">
+    <value>닫기</value>
+  </data>
+  <data name="buttonClose.tooltip" xml:space="preserve">
+    <value>변경 사항이 자동으로 저장됩니다</value>
+  </data>
+  <data name="communicationsDevice.tooltip" xml:space="preserve">
+    <value>선택하면 '기본 통신 장치'와 '기본 재생 장치'가 함께 전환됩니다 (예: Skype, TeamSpeak에 유용함).</value>
+  </data>
+  <data name="updateIncludeBetaVersions" xml:space="preserve">
+    <value>베타 버전 포함</value>
+  </data>
+  <data name="updateIncludeBetaVersions.tooltip" xml:space="preserve">
+    <value>선택하면 SoundSwitch는 GitHub에서 베타 버전도 확인합니다.</value>
+  </data>
+  <data name="audioFiles" xml:space="preserve">
+    <value>오디오 파일</value>
+  </data>
+  <data name="selectSoundButton.tooltip" xml:space="preserve">
+    <value>알림의 사운드 파일을 선택</value>
+  </data>
+  <data name="hotkey.tooltip" xml:space="preserve">
+    <value>단축키를 사용하려면 선택합니다.</value>
+  </data>
+  <data name="basicSettings" xml:space="preserve">
+    <value>기본 설정</value>
+  </data>
+  <data name="audioSettings" xml:space="preserve">
+    <value>오디오 설정</value>
+  </data>
+  <data name="updateSettings" xml:space="preserve">
+    <value>업데이트 설정</value>
+  </data>
   <data name="cycleThrough" xml:space="preserve">
     <value>순환</value>
   </data>
+  <data name="keepSystemTrayIcon" xml:space="preserve">
+    <value>SoundSwitch의 시스템 트레이 아이콘 유지</value>
+  </data>
+  <data name="keepSystemTrayIcon.tooltip" xml:space="preserve">
+    <value>선택하면 '기본 재생 장치'가 변경될 때 시스템 트레이 아이콘이 변경되지 않습니다.</value>
+  </data>
+  <data name="updateInstallAutomatically" xml:space="preserve">
+    <value>업데이트 자동 설치</value>
+  </data>
+  <data name="updateInstallAutomatically.tooltip" xml:space="preserve">
+    <value>업데이트는 프롬프트 없이 자동으로 설치됩니다.</value>
+  </data>
+  <data name="updateNotify" xml:space="preserve">
+    <value>업데이트를 사용할 수 있을 때 알림</value>
+  </data>
+  <data name="updateNever" xml:space="preserve">
+    <value>업데이트를 확인하지 않음</value>
+  </data>
+  <data name="tooltipOnHover" xml:space="preserve">
+    <value>호버에서의 도구 설명</value>
+  </data>
+  <data name="cycleThrough.option.allAudioDevices" xml:space="preserve">
+    <value>모든 오디오 장치</value>
+  </data>
   <data name="cycleThrough.option.onlySelectedAudioDevices" xml:space="preserve">
     <value>선택된 오디오 장치만</value>
+  </data>
+  <data name="cycleThrough.tooltip" xml:space="preserve">
+    <value>전환할 장치를 선택하세요. 선택한 항목 사이 또는 모든 항목 사이 중 하나입니다.</value>
+  </data>
+  <data name="notification.option.windowsDefault" xml:space="preserve">
+    <value>Windows 알림</value>
+  </data>
+  <data name="notification.option.sound" xml:space="preserve">
+    <value>사운드 알림</value>
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>없음</value>
+  </data>
+  <data name="notification.option.toast" xml:space="preserve">
+    <value>토스트 알림</value>
+  </data>
+  <data name="notification.option.customized" xml:space="preserve">
+    <value>사용자 정의 사운드 알림</value>
   </data>
   <data name="notification.tooltip" xml:space="preserve">
     <value>Windows 알림: 기본 창 트레이가 팝업됩니다.
@@ -148,129 +232,57 @@
 토스트 알림: 특수 형식의 Windows 트레이 팝업 버전을 사용합니다.
 배너: 게임 내 사용에 유용한 사용자 지정 항상 맨 위 프레임을 사용합니다.</value>
   </data>
-  <data name="updateNever" xml:space="preserve">
-    <value>업데이트를 확인하지 않음</value>
-  </data>
-  <data name="audioFileNotFound" xml:space="preserve">
-    <value>알림으로 사용하도록 선택한 오디오 파일을 찾을 수 없습니다. SoundSwitch가 알림 설정을 {0}으로 다시 전환했습니다.</value>
-  </data>
-  <data name="buttonClose.tooltip" xml:space="preserve">
-    <value>변경 사항이 자동으로 저장됩니다</value>
-  </data>
-  <data name="notification" xml:space="preserve">
-    <value>알림</value>
-  </data>
-  <data name="disableCustomSound.tooltip" xml:space="preserve">
-    <value>설정된 사용자 정의 사운드를 사용하지 않습니다.</value>
-  </data>
-  <data name="notification.option.toast" xml:space="preserve">
-    <value>토스트 알림</value>
-  </data>
-  <data name="cycleThrough.option.allAudioDevices" xml:space="preserve">
-    <value>모든 오디오 장치</value>
-  </data>
-  <data name="cycleThrough.tooltip" xml:space="preserve">
-    <value>전환할 장치를 선택하세요. 선택한 항목 사이 또는 모든 항목 사이 중 하나입니다.</value>
-  </data>
-  <data name="basicSettings" xml:space="preserve">
-    <value>기본 설정</value>
-  </data>
-  <data name="recording" xml:space="preserve">
-    <value>녹음</value>
+  <data name="tooltipOnHover.option.playbackDevice" xml:space="preserve">
+    <value>재생 장치</value>
   </data>
   <data name="tooltipOnHover.option.recordingDevice" xml:space="preserve">
     <value>녹음 장치</value>
   </data>
-  <data name="selected" xml:space="preserve">
-    <value>선택됨</value>
+  <data name="tooltipOnHover.option.bothDevices" xml:space="preserve">
+    <value>두 장치 모두</value>
   </data>
-  <data name="notificationOptionNone" xml:space="preserve">
-    <value>알림 없음</value>
+  <data name="audioFileNotFound" xml:space="preserve">
+    <value>알림으로 사용하도록 선택한 오디오 파일을 찾을 수 없습니다. SoundSwitch가 알림 설정을 {0}으로 다시 전환했습니다.</value>
   </data>
-  <data name="updateIncludeBetaVersions" xml:space="preserve">
-    <value>베타 버전 포함</value>
+  <data name="audioFileNotFound.caption" xml:space="preserve">
+    <value>오디오 파일을 찾을 수 없습니다</value>
   </data>
-  <data name="updateInstallAutomatically" xml:space="preserve">
-    <value>업데이트 자동 설치</value>
-  </data>
-  <data name="keepSystemTrayIcon.tooltip" xml:space="preserve">
-    <value>선택하면 '기본 재생 장치'가 변경될 때 시스템 트레이 아이콘이 변경되지 않습니다.</value>
-  </data>
-  <data name="tooltipOnHover.option.playbackDevice" xml:space="preserve">
-    <value>재생 장치</value>
-  </data>
-  <data name="updateInstallAutomatically.tooltip" xml:space="preserve">
-    <value>업데이트는 프롬프트 없이 자동으로 설치됩니다.</value>
+  <data name="activeRecording" xml:space="preserve">
+    <value>녹음 : {0}</value>
   </data>
   <data name="activePlayback" xml:space="preserve">
     <value>재생 : {0}</value>
   </data>
-  <data name="languageRestartRequired.caption" xml:space="preserve">
-    <value>재시작 필요</value>
-  </data>
-  <data name="iconChange" xml:space="preserve">
-    <value>트레이 아이콘</value>
-  </data>
-  <data name="updateNever.tooltip" xml:space="preserve">
-    <value>수동으로 수행하지 않으면 프로그램을 업데이트하지 않습니다.</value>
-  </data>
-  <data name="connected" xml:space="preserve">
-    <value>연결됨</value>
-  </data>
-  <data name="notification.option.sound" xml:space="preserve">
-    <value>사운드 알림</value>
-  </data>
-  <data name="communicationsDevice" xml:space="preserve">
-    <value>기본 통신 장치 전환</value>
-  </data>
   <data name="language" xml:space="preserve">
     <value>언어</value>
-  </data>
-  <data name="updateNotify.tooltip" xml:space="preserve">
-    <value>사용 가능한 새 업데이트가 있으면 SoundSwitch가 알려줍니다. 알림을 클릭하면 업데이트를 다운로드하고 설치할지 묻는 팝업이 나타납니다.</value>
-  </data>
-  <data name="hotkey.tooltip" xml:space="preserve">
-    <value>단축키를 사용하려면 선택합니다.</value>
-  </data>
-  <data name="selectSoundButton.tooltip" xml:space="preserve">
-    <value>알림의 사운드 파일을 선택</value>
-  </data>
-  <data name="communicationsDevice.tooltip" xml:space="preserve">
-    <value>선택하면 '기본 통신 장치'와 '기본 재생 장치'가 함께 전환됩니다 (예: Skype, TeamSpeak에 유용함).</value>
-  </data>
-  <data name="playback" xml:space="preserve">
-    <value>재생</value>
   </data>
   <data name="languageRestartRequired" xml:space="preserve">
     <value>SoundSwitch를 다시 시작한 후에 언어가 변경됩니다.
 지금 다시 시작하시겠습니까?</value>
   </data>
-  <data name="activeRecording" xml:space="preserve">
-    <value>녹음 : {0}</value>
+  <data name="languageRestartRequired.caption" xml:space="preserve">
+    <value>재시작 필요</value>
   </data>
-  <data name="audioFiles" xml:space="preserve">
-    <value>오디오 파일</value>
+  <data name="updateNever.tooltip" xml:space="preserve">
+    <value>수동으로 수행하지 않으면 프로그램을 업데이트하지 않습니다.</value>
+  </data>
+  <data name="updateNotify.tooltip" xml:space="preserve">
+    <value>사용 가능한 새 업데이트가 있으면 SoundSwitch가 알려줍니다. 알림을 클릭하면 업데이트를 다운로드하고 설치할지 묻는 팝업이 나타납니다.</value>
+  </data>
+  <data name="notification.option.banner" xml:space="preserve">
+    <value>배너</value>
+  </data>
+  <data name="disableCustomSound.tooltip" xml:space="preserve">
+    <value>설정된 사용자 정의 사운드를 사용하지 않습니다.</value>
   </data>
   <data name="foregroundApp" xml:space="preserve">
     <value>전경 프로그램도 전환</value>
   </data>
-  <data name="keepSystemTrayIcon" xml:space="preserve">
-    <value>SoundSwitch의 시스템 트레이 아이콘 유지</value>
+  <data name="foregroundApp.tooltip" xml:space="preserve">
+    <value>현재 사용 중인 응용 프로그램의 사운드도 전환합니다. 비디오 게임에 유용합니다.</value>
   </data>
-  <data name="settings" xml:space="preserve">
-    <value>설정</value>
-  </data>
-  <data name="tooltipOnHover.option.bothDevices" xml:space="preserve">
-    <value>두 장치 모두</value>
-  </data>
-  <data name="updateSettings" xml:space="preserve">
-    <value>업데이트 설정</value>
-  </data>
-  <data name="updateIncludeBetaVersions.tooltip" xml:space="preserve">
-    <value>선택하면 SoundSwitch는 GitHub에서 베타 버전도 확인합니다.</value>
-  </data>
-  <data name="audioSettings" xml:space="preserve">
-    <value>오디오 설정</value>
+  <data name="iconChange" xml:space="preserve">
+    <value>트레이 아이콘</value>
   </data>
   <data name="iconChange.tooltip" xml:space="preserve">
     <value>SoundSwitch의 트레이 아이콘이 변경되는 시점을 선택합니다.
@@ -279,24 +291,6 @@
 재생: 재생 장치가 전환이 되었을 때.
 녹음: 녹음 장치가 전환이 되었을 때.
 모두: 모든 유형의 장치가 전환이 되었을 때 변경.</value>
-  </data>
-  <data name="notification.option.banner" xml:space="preserve">
-    <value>배너</value>
-  </data>
-  <data name="audioFileNotFoundCaption" xml:space="preserve">
-    <value>오디오 파일을 찾을 수 없습니다</value>
-  </data>
-  <data name="tooltipOnHover" xml:space="preserve">
-    <value>호버에서의 도구 설명</value>
-  </data>
-  <data name="startWithWindows" xml:space="preserve">
-    <value>Windows에서 자동으로 시작</value>
-  </data>
-  <data name="hotkey" xml:space="preserve">
-    <value>단축키</value>
-  </data>
-  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-    <value>도구 설명 안함</value>
   </data>
   <data name="profile.tab" xml:space="preserve">
     <value>프로필</value>
@@ -355,44 +349,65 @@
   <data name="profile.feature.profile" xml:space="preserve">
     <value>프로필</value>
   </data>
-  <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
-    <value>응용 프로그램이 감지되면 SoundSwitch는 현재 기본 장치도 변경됩니다.</value>
-  </data>
   <data name="profile.defaultDevice.checkbox" xml:space="preserve">
     <value>기본 장치도 전환</value>
   </data>
-  <data name="profile.error.deviceNotFound" xml:space="preserve">
-    <value>{0} 장치를 찾을 수 없습니다.</value>
+  <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
+    <value>응용 프로그램이 감지되면 SoundSwitch는 현재 기본 장치도 변경됩니다.</value>
   </data>
   <data name="hotkeyEnabled" xml:space="preserve">
     <value>단축키 사용</value>
   </data>
+  <data name="profile.error.deviceNotFound" xml:space="preserve">
+    <value>{0} 장치를 찾을 수 없습니다.</value>
+  </data>
   <data name="profile.trigger.window" xml:space="preserve">
     <value>프로그램 이름</value>
-  </data>
-  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>프로필을 활성화하는데 사용되는 단축키입니다. 동일한 단축키를 사용하면 프로필 간에 전환할 수 있습니다.</value>
-  </data>
-  <data name="profile.trigger.steam.desc" xml:space="preserve">
-    <value>Steam Big Picture가 감지되면 활성화합니다. (Big Picture가 닫히면 상태가 복원됩니다.)</value>
-  </data>
-  <data name="profile.trigger.steam" xml:space="preserve">
-    <value>Steam Big Picture</value>
   </data>
   <data name="profile.trigger.process" xml:space="preserve">
     <value>응용 프로그램 경로</value>
   </data>
-  <data name="profile.notifyOnActivation" xml:space="preserve">
-    <value>프로필이 트리거될 때 알림</value>
+  <data name="profile.trigger.steam" xml:space="preserve">
+    <value>Steam Big Picture</value>
   </data>
-  <data name="profile.trigger.available" xml:space="preserve">
-    <value>사용 가능한 트리거</value>
+  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
+    <value>프로필을 활성화하는데 사용되는 단축키입니다. 동일한 단축키를 사용하면 프로필 간에 전환할 수 있습니다.</value>
+  </data>
+  <data name="profile.trigger.window.desc" xml:space="preserve">
+    <value>전경 프로그램에 다음 문자가 포함된 경우 프로필 활성화</value>
+  </data>
+  <data name="profile.trigger.process.desc" xml:space="preserve">
+    <value>선택한 응용 프로그램이 전경에 있을 때 프로필 활성화</value>
+  </data>
+  <data name="profile.trigger.steam.desc" xml:space="preserve">
+    <value>Steam Big Picture가 감지되면 활성화합니다. (Big Picture가 닫히면 상태가 복원됩니다.)</value>
+  </data>
+  <data name="profile.desc" xml:space="preserve">
+    <value>설명</value>
   </data>
   <data name="profile.trigger.actives" xml:space="preserve">
     <value>활성한 트리거</value>
   </data>
-  <data name="profile.desc" xml:space="preserve">
-    <value>설명</value>
+  <data name="profile.trigger.available" xml:space="preserve">
+    <value>사용 가능한 트리거</value>
+  </data>
+  <data name="communication" xml:space="preserve">
+    <value>기본 통신 장치</value>
+  </data>
+  <data name="profile.error.triggers.min" xml:space="preserve">
+    <value>최소 한 개의 트리거가 필요합니다.</value>
+  </data>
+  <data name="profile.error.steam" xml:space="preserve">
+    <value>Steam Big Picture에 대한 프로필은 하나만 가질 수 있습니다.</value>
+  </data>
+  <data name="profile.error.window" xml:space="preserve">
+    <value>이미 이 창 이름이 있는 프로필이 있습니다: {0}.</value>
+  </data>
+  <data name="profile.notifyOnActivation" xml:space="preserve">
+    <value>프로필이 트리거될 때 알림</value>
+  </data>
+  <data name="profile.notification.text" xml:space="preserve">
+    <value>{0} 프로필이 트리거되었습니다</value>
   </data>
   <data name="buttonSave" xml:space="preserve">
     <value>저장</value>
@@ -400,28 +415,25 @@
   <data name="buttonEdit" xml:space="preserve">
     <value>편집</value>
   </data>
-  <data name="profile.trigger.uwp.desc" xml:space="preserve">
-    <value>Windows 스토어를 통해 설치된 응용 프로그램의 이름을 입력합니다. Netflix, Amazon Prime video 등…</value>
+  <data name="profile.trigger.startup" xml:space="preserve">
+    <value>시작시</value>
   </data>
-  <data name="profile.error.window" xml:space="preserve">
-    <value>이미 이 창 이름이 있는 프로필이 있습니다: {0}.</value>
+  <data name="profile.trigger.startup.desc" xml:space="preserve">
+    <value>SoundSwitch가 시작되면 프로필이 자동으로 트리거됩니다</value>
+  </data>
+  <data name="usePrimaryScreen" xml:space="preserve">
+    <value>항상 기본 화면 사용</value>
   </data>
   <data name="usePrimaryScreen.tooltip" xml:space="preserve">
     <value>배너를 집중 화면 대신 기본 화면에 표시합니다.</value>
   </data>
-  <data name="profile.trigger.startup.desc" xml:space="preserve">
-    <value>SoundSwitch가 시작되면 프로필이 자동으로 트리거됩니다</value>
+  <data name="profile.trigger.restoreDevices" xml:space="preserve">
+    <value>트리거가 종료되면 장치를 복원합니다</value>
   </data>
   <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
     <value>{0}을(를) 사용하도록 설정해야 합니다.
 
 응용 프로그램이 닫힐 때 시스템 상태를 복원합니다.</value>
-  </data>
-  <data name="usePrimaryScreen" xml:space="preserve">
-    <value>항상 기본 화면 사용</value>
-  </data>
-  <data name="profile.trigger.restoreDevices" xml:space="preserve">
-    <value>트리거가 종료되면 장치를 복원합니다</value>
   </data>
   <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
     <value>시스템 상태가 복원되었습니다</value>
@@ -429,26 +441,8 @@
   <data name="profile.trigger.uwp" xml:space="preserve">
     <value>Microsoft 스토어 앱</value>
   </data>
-  <data name="profile.error.steam" xml:space="preserve">
-    <value>Steam Big Picture에 대한 프로필은 하나만 가질 수 있습니다.</value>
-  </data>
-  <data name="profile.trigger.startup" xml:space="preserve">
-    <value>시작시</value>
-  </data>
-  <data name="profile.notification.text" xml:space="preserve">
-    <value>{0} 프로필이 트리거되었습니다</value>
-  </data>
-  <data name="profile.error.triggers.min" xml:space="preserve">
-    <value>최소 한 개의 트리거가 필요합니다.</value>
-  </data>
-  <data name="communication" xml:space="preserve">
-    <value>기본 통신 장치</value>
-  </data>
-  <data name="profile.trigger.process.desc" xml:space="preserve">
-    <value>선택한 응용 프로그램이 전경에 있을 때 프로필 활성화</value>
-  </data>
-  <data name="profile.trigger.window.desc" xml:space="preserve">
-    <value>전경 프로그램에 다음 문자가 포함된 경우 프로필 활성화</value>
+  <data name="profile.trigger.uwp.desc" xml:space="preserve">
+    <value>Windows 스토어를 통해 설치된 응용 프로그램의 이름을 입력합니다. Netflix, Amazon Prime video 등…</value>
   </data>
   <data name="notification.microphone.muted" xml:space="preserve">
     <value>{0}이(가) 이제 음소거되었습니다.</value>
@@ -459,23 +453,11 @@
   <data name="mute.toggle.label" xml:space="preserve">
     <value>음소거 전환</value>
   </data>
-  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
-    <value>이 트리거는 트레이 아이콘 메뉴에 프로필을 표시합니다. 프로필을 보려면 시스템 아이콘을 마우스 왼쪽 단추로 클릭하세요.</value>
-  </data>
   <data name="profile.trigger.trayMenu" xml:space="preserve">
     <value>앱 메뉴에서</value>
   </data>
-  <data name="telemetry" xml:space="preserve">
-    <value>원격</value>
-  </data>
-  <data name="quickMenu.desc" xml:space="preserve">
-    <value>바로 가기 키를 사용할 때 Windows 언어와 같은 빠른 메뉴 표시</value>
-  </data>
-  <data name="quickMenu" xml:space="preserve">
-    <value>바로 가기 키의 빠른 메뉴</value>
-  </data>
-  <data name="telemetry.desc" xml:space="preserve">
-    <value>사용 중인 SoundSwitch 버전을 익명으로 수집합니다. SoundSwitch 개발자와만 공유됩니다.</value>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>이 트리거는 트레이 아이콘 메뉴에 프로필을 표시합니다. 프로필을 보려면 시스템 아이콘을 마우스 왼쪽 단추로 클릭하세요.</value>
   </data>
   <data name="profile.trigger.deviceChanged" xml:space="preserve">
     <value>강제 프로필</value>
@@ -486,23 +468,17 @@
   <data name="profile.error.deviceChanged" xml:space="preserve">
     <value>강제 프로파일은 하나만 가질 수 있습니다.</value>
   </data>
-  <data name="devices.AutoAddNewDevice" xml:space="preserve">
-    <value>새 장치 자동 선택</value>
+  <data name="telemetry" xml:space="preserve">
+    <value>원격</value>
   </data>
-  <data name="devices.AutoAddNewDevice..tooltip" xml:space="preserve">
-    <value>새 장치가 컴퓨터에 연결되면 선택한 목록에 자동으로 추가</value>
+  <data name="telemetry.tooltip" xml:space="preserve">
+    <value>사용 중인 SoundSwitch 버전을 익명으로 수집합니다. SoundSwitch 개발자와만 공유됩니다.</value>
   </data>
-  <data name="resetAudioDevices" xml:space="preserve">
-    <value>앱별 오디오 재설정</value>
+  <data name="quickMenu" xml:space="preserve">
+    <value>바로 가기 키의 빠른 메뉴</value>
   </data>
-  <data name="troubleshooting.desc" xml:space="preserve">
-    <value>SoundSwitch에 대한 도움이나 추가 문제 해결이 필요한 경우 도움말 토론 또는 Discord 커뮤니티 링크를 방문하거나 아래 기부 링크를 방문하여 지원을 받을 수 있습니다.</value>
-  </data>
-  <data name="none" xml:space="preserve">
-    <value>없음</value>
-  </data>
-  <data name="position" xml:space="preserve">
-    <value>위치</value>
+  <data name="quickMenu.tooltip" xml:space="preserve">
+    <value>단축키를 사용할 때 Windows 언어와 같은 빠른 메뉴 표시</value>
   </data>
   <data name="keepVolume" xml:space="preserve">
     <value>여러 디바이스에서 볼륨 수준 유지</value>
@@ -513,23 +489,17 @@
   <data name="devices.autoAddNewDevice" xml:space="preserve">
     <value>새 장치 자동 선택</value>
   </data>
-  <data name="position.option.bottomLeft" xml:space="preserve">
-    <value>왼쪽 하단</value>
-  </data>
-  <data name="audioFileNotFound.caption" xml:space="preserve">
-    <value>오디오 파일을 찾을 수 없습니다</value>
-  </data>
-  <data name="telemetry.tooltip" xml:space="preserve">
-    <value>사용 중인 SoundSwitch 버전을 익명으로 수집합니다. SoundSwitch 개발자와만 공유됩니다.</value>
-  </data>
-  <data name="quickMenu.tooltip" xml:space="preserve">
-    <value>단축키를 사용할 때 Windows 언어와 같은 빠른 메뉴 표시</value>
-  </data>
   <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
     <value>컴퓨터에 연결된 새 장치를 선택한 목록에 자동으로 추가</value>
   </data>
+  <data name="position" xml:space="preserve">
+    <value>위치</value>
+  </data>
   <data name="position.tooltip" xml:space="preserve">
     <value>배너 알림의 위치를 설정합니다.</value>
+  </data>
+  <data name="position.option.bottomLeft" xml:space="preserve">
+    <value>왼쪽 하단</value>
   </data>
   <data name="position.option.bottomRight" xml:space="preserve">
     <value>오른쪽 하단</value>
@@ -546,20 +516,29 @@
   <data name="position.option.topCenter" xml:space="preserve">
     <value>상단 중앙</value>
   </data>
+  <data name="notification.single" xml:space="preserve">
+    <value>하나의 배너만</value>
+  </data>
+  <data name="notification.single.tooltip" xml:space="preserve">
+    <value>한 번에 하나의 배너만 표시하고 해당 콘텐츠를 바꿉니다.</value>
+  </data>
   <data name="link.community" xml:space="preserve">
     <value>Discord 커뮤니티</value>
   </data>
   <data name="link.donate" xml:space="preserve">
     <value>기부하기</value>
   </data>
-  <data name="resetAudioDevices.desc" xml:space="preserve">
-    <value>장치를 전환할 때 오디오 장치가 프로그램에 재할당되지 않은 경우를 대비하여 Windows에서 지정된 프로그램에 오디오 장치 할당을 재설정합니다.</value>
-  </data>
   <data name="link.help" xml:space="preserve">
     <value>도움 토론</value>
   </data>
+  <data name="resetAudioDevices.desc" xml:space="preserve">
+    <value>장치를 전환할 때 오디오 장치가 프로그램에 재할당되지 않은 경우를 대비하여 Windows에서 지정된 프로그램에 오디오 장치 할당을 재설정합니다.</value>
+  </data>
   <data name="buttonReset" xml:space="preserve">
     <value>재설정</value>
+  </data>
+  <data name="resetAudioDevices" xml:space="preserve">
+    <value>앱별 오디오 재설정</value>
   </data>
   <data name="exportLogFiles" xml:space="preserve">
     <value>로그 파일 내보내기</value>
@@ -573,19 +552,52 @@
   <data name="troubleshooting" xml:space="preserve">
     <value>문제 해결</value>
   </data>
-  <data name="notification.banner.onscreen.time" xml:space="preserve">
-    <value>화면 표시 시간</value>
+  <data name="troubleshooting.desc" xml:space="preserve">
+    <value>SoundSwitch에 대한 도움이나 추가 문제 해결이 필요한 경우 도움말 토론 또는 Discord 커뮤니티 링크를 방문하거나 아래 기부 링크를 방문하여 지원을 받을 수 있습니다.</value>
+  </data>
+  <data name="position.option.center" xml:space="preserve">
+    <value>중앙</value>
+  </data>
+  <data name="banner.mute.option.fading" xml:space="preserve">
+    <value />
+  </data>
+  <data name="banner.mute.option.persistent" xml:space="preserve">
+    <value />
+  </data>
+  <data name="switch.device.label" xml:space="preserve">
+    <value />
+  </data>
+  <data name="audioFileNotFoundCaption" xml:space="preserve">
+    <value>오디오 파일을 찾을 수 없습니다</value>
+  </data>
+  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
+    <value>도구 설명 안함</value>
+  </data>
+  <data name="notificationOptionNone" xml:space="preserve">
+    <value>알림 없음</value>
+  </data>
+  <data name="quickMenu.desc" xml:space="preserve">
+    <value>바로 가기 키를 사용할 때 Windows 언어와 같은 빠른 메뉴 표시</value>
+  </data>
+  <data name="telemetry.desc" xml:space="preserve">
+    <value>사용 중인 SoundSwitch 버전을 익명으로 수집합니다. SoundSwitch 개발자와만 공유됩니다.</value>
+  </data>
+  <data name="devices.AutoAddNewDevice..tooltip" xml:space="preserve">
+    <value>새 장치가 컴퓨터에 연결되면 선택한 목록에 자동으로 추가</value>
   </data>
   <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
     <value>배너가 화면에 유지되는 시간 (초)입니다.</value>
   </data>
-  <data name="notification.single" xml:space="preserve">
-    <value>하나의 배너만</value>
+  <data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>화면 표시 시간</value>
   </data>
-  <data name="notification.single.tooltip" xml:space="preserve">
-    <value>한 번에 하나의 배너만 표시하고 해당 콘텐츠를 바꿉니다.</value>
+  <data name="notification" xml:space="preserve">
+    <value>알림</value>
   </data>
-  <data name="position.option.center" xml:space="preserve">
-    <value>중앙</value>
+  <data name="notification.bannerOptions" xml:space="preserve">
+    <value />
+  </data>
+  <data name="seconds" xml:space="preserve">
+    <value />
   </data>
 </root>

@@ -138,9 +138,9 @@ namespace SoundSwitch.Model
         IPosition BannerPositionImpl { get; }
 
         /// <summary>
-        /// Show a persistent banner when microphone is muted
+        /// Show a banner when microphone is muted
         /// </summary>
-        bool PersistentMuteNotification { get; set; }
+        MicrophoneMuteEnum MicrophoneMuteNotification { get; set; }
 
         #endregion
 

@@ -59,49 +59,49 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
-					<xsd:element name="metadata">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" />
-							</xsd:sequence>
-							<xsd:attribute name="name" use="required" type="xsd:string" />
-							<xsd:attribute name="type" type="xsd:string" />
-							<xsd:attribute name="mimetype" type="xsd:string" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="assembly">
-						<xsd:complexType>
-							<xsd:attribute name="alias" type="xsd:string" />
-							<xsd:attribute name="name" type="xsd:string" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
       </xsd:complexType>
     </xsd:element>
   </xsd:schema>
@@ -152,9 +152,6 @@
   </data>
   <data name="communicationsDevice.tooltip" xml:space="preserve">
     <value>Если флажок установлен, то "Устройство связи" и "Устройство воспроизведения" переключаются вместе. Полезно для Skype, TeamSpeak и т.п.</value>
-  </data>
-  <data name="notification" xml:space="preserve">
-    <value>Уведомление</value>
   </data>
   <data name="updateIncludeBetaVersions" xml:space="preserve">
     <value>Проверять бета-версии</value>
@@ -219,8 +216,8 @@
   <data name="notification.option.sound" xml:space="preserve">
     <value>Звуковое уведомление</value>
   </data>
-  <data name="notificationOptionNone" xml:space="preserve">
-    <value>Без уведомления</value>
+  <data name="none" xml:space="preserve">
+    <value>Пусто</value>
   </data>
   <data name="notification.option.toast" xml:space="preserve">
     <value>Всплывающее уведомление</value>
@@ -244,13 +241,10 @@
   <data name="tooltipOnHover.option.bothDevices" xml:space="preserve">
     <value>Для обоих устройств</value>
   </data>
-  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-    <value>Без подсказки</value>
-  </data>
   <data name="audioFileNotFound" xml:space="preserve">
     <value>Аудиофайл, выбранный для уведомления, не найден. SoundSwitch переключился обратно на {0}.</value>
   </data>
-  <data name="audioFileNotFoundCaption" xml:space="preserve">
+  <data name="audioFileNotFound.caption" xml:space="preserve">
     <value>Аудиофайл не найден</value>
   </data>
   <data name="activeRecording" xml:space="preserve">
@@ -260,38 +254,38 @@
     <value>Воспроизведения: {0}</value>
   </data>
   <data name="language" xml:space="preserve">
-		<value>Язык</value>
+    <value>Язык</value>
   </data>
   <data name="languageRestartRequired" xml:space="preserve">
-		<value>Язык изменится после перезапуска SoundSwitch.
+    <value>Язык изменится после перезапуска SoundSwitch.
 Перезапустить сейчас?</value>
   </data>
   <data name="languageRestartRequired.caption" xml:space="preserve">
-		<value>Нужен перезапуск</value>
+    <value>Нужен перезапуск</value>
   </data>
   <data name="updateNever.tooltip" xml:space="preserve">
-		<value>Не обновлять программу.</value>
+    <value>Не обновлять программу.</value>
   </data>
   <data name="updateNotify.tooltip" xml:space="preserve">
-		<value>SoundSwitch уведомит вас, когда будет доступно новое обновление. При нажатии на уведомление вы увидите всплывающее окно, с вопросом, хотите ли вы его установить сейчас.</value>
+    <value>SoundSwitch уведомит вас, когда будет доступно новое обновление. При нажатии на уведомление вы увидите всплывающее окно, с вопросом, хотите ли вы его установить сейчас.</value>
   </data>
   <data name="notification.option.banner" xml:space="preserve">
-        <value>Баннер</value>
+    <value>Баннер</value>
   </data>
   <data name="disableCustomSound.tooltip" xml:space="preserve">
-		<value>Ваш установленный звук отключен.</value>
+    <value>Ваш установленный звук отключен.</value>
   </data>
   <data name="foregroundApp" xml:space="preserve">
-		<value>Также переключить активную программу (переднего плана)</value>
+    <value>Также переключить активную программу (переднего плана)</value>
   </data>
   <data name="foregroundApp.tooltip" xml:space="preserve">
-		<value>Переключить также звук текущего используемого приложения. Полезно для видеоигр.</value>
+    <value>Переключить также звук текущего используемого приложения. Полезно для видеоигр.</value>
   </data>
   <data name="iconChange" xml:space="preserve">
-		<value>Значок в трее</value>
+    <value>Значок в трее</value>
   </data>
   <data name="iconChange.tooltip" xml:space="preserve">
-		<value>Выберите, когда изменять значок SoundSwitch в трее.
+    <value>Выберите, когда изменять значок SoundSwitch в трее.
 
 По умолчанию: Не изменять. Статичный начок SoundSwitch.
 Воспроизведение: При переключении устройства воспроизведения.
@@ -356,10 +350,10 @@
     <value>Профиль</value>
   </data>
   <data name="profile.defaultDevice.checkbox" xml:space="preserve">
-		<value>Также переключить устройство по умолчанию</value>
+    <value>Также переключить устройство по умолчанию</value>
   </data>
   <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
-		<value>При обнаружении приложения SoundSwitch также изменит текущее устройство по умолчанию.</value>
+    <value>При обнаружении приложения SoundSwitch также изменит текущее устройство по умолчанию.</value>
   </data>
   <data name="hotkeyEnabled" xml:space="preserve">
     <value>Горячие клавиши включены</value>
@@ -367,11 +361,35 @@
   <data name="profile.error.deviceNotFound" xml:space="preserve">
     <value>Не удалось найти устройство {0}.</value>
   </data>
+  <data name="profile.trigger.window" xml:space="preserve">
+    <value>Название программы</value>
+  </data>
   <data name="profile.trigger.process" xml:space="preserve">
     <value>Путь приложения</value>
   </data>
-  <data name="profile.trigger.window" xml:space="preserve">
-    <value>Название программы</value>
+  <data name="profile.trigger.steam" xml:space="preserve">
+    <value>Steam Big Picture</value>
+  </data>
+  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
+    <value>Горячая клавиша, используемая для активации профиля. Если вы используете одну и ту же горячую клавишу, вы сможете переключаться между профилями.</value>
+  </data>
+  <data name="profile.trigger.window.desc" xml:space="preserve">
+    <value>Активировать профиль, если активная программа содержит следующие символы</value>
+  </data>
+  <data name="profile.trigger.process.desc" xml:space="preserve">
+    <value>Активировать профиль, когда указанное приложение находится на переднем плане</value>
+  </data>
+  <data name="profile.trigger.steam.desc" xml:space="preserve">
+    <value>Активировать, если обнаружен Steam Big Picture. (Восстановит состояние, когда Steam Big Picture будет закрыт)</value>
+  </data>
+  <data name="profile.desc" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="profile.trigger.actives" xml:space="preserve">
+    <value>Активные триггеры</value>
+  </data>
+  <data name="profile.trigger.available" xml:space="preserve">
+    <value>Доступные триггеры</value>
   </data>
   <data name="communication" xml:space="preserve">
     <value>Устройство связи по умолчанию</value>
@@ -379,160 +397,94 @@
   <data name="profile.error.triggers.min" xml:space="preserve">
     <value>Вам нужен как минимум один триггер.</value>
   </data>
-  <data name="profile.trigger.available" xml:space="preserve">
-    <value>Доступные триггеры</value>
+  <data name="profile.error.steam" xml:space="preserve">
+    <value>У вас может быть только один профиль для Steam Big Picture.</value>
   </data>
-  <data name="profile.trigger.actives" xml:space="preserve">
-    <value>Активные триггеры</value>
+  <data name="profile.error.window" xml:space="preserve">
+    <value>Профиль с таким названием окна уже существует: {0}.</value>
   </data>
-  <data name="profile.desc" xml:space="preserve">
-    <value>Описание</value>
+  <data name="profile.notifyOnActivation" xml:space="preserve">
+    <value>Уведомлять о срабатывании профиля</value>
   </data>
-  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>Горячая клавиша, используемая для активации профиля. Если вы используете одну и ту же горячую клавишу, вы сможете переключаться между профилями.</value>
-  </data>
-  <data name="profile.trigger.steam" xml:space="preserve">
-    <value>Steam Big Picture</value>
-  </data>
-  <data name="profile.trigger.startup" xml:space="preserve">
-    <value>При запуске</value>
-  </data>
-  <data name="buttonEdit" xml:space="preserve">
-    <value>Редактировать</value>
+  <data name="profile.notification.text" xml:space="preserve">
+    <value>Профиль {0} активирован</value>
   </data>
   <data name="buttonSave" xml:space="preserve">
     <value>Сохранить</value>
   </data>
-  <data name="profile.notification.text" xml:space="preserve">
-    <value>Профиль {0} активирован</value>
+  <data name="buttonEdit" xml:space="preserve">
+    <value>Редактировать</value>
+  </data>
+  <data name="profile.trigger.startup" xml:space="preserve">
+    <value>При запуске</value>
+  </data>
+  <data name="profile.trigger.startup.desc" xml:space="preserve">
+    <value>Профиль будет активирован автоматически при запуске SoundSwitch</value>
+  </data>
+  <data name="usePrimaryScreen" xml:space="preserve">
+    <value>Всегда использовать основной экран</value>
+  </data>
+  <data name="usePrimaryScreen.tooltip" xml:space="preserve">
+    <value>Отображать баннер на основном экране вместо экрана в фокусе.</value>
+  </data>
+  <data name="profile.trigger.restoreDevices" xml:space="preserve">
+    <value>Восстановить устройства по окончании триггера</value>
   </data>
   <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
     <value>Требуется "{0}" , чтобы включить.
 
 Восстановить состояние системы при закрытии приложения.</value>
   </data>
-  <data name="profile.trigger.startup.desc" xml:space="preserve">
-    <value>Профиль будет активирован автоматически при запуске SoundSwitch</value>
-  </data>
-  <data name="profile.notifyOnActivation" xml:space="preserve">
-    <value>Уведомлять о срабатывании профиля</value>
-  </data>
-  <data name="profile.error.window" xml:space="preserve">
-    <value>Профиль с таким названием окна уже существует: {0}.</value>
+  <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
+    <value>Состояние системы восстановлено</value>
   </data>
   <data name="profile.trigger.uwp" xml:space="preserve">
     <value>Приложение из Microsoft Store</value>
   </data>
-  <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
-    <value>Состояние системы восстановлено</value>
-  </data>
-  <data name="profile.trigger.window.desc" xml:space="preserve">
-    <value>Активировать профиль, если активная программа содержит следующие символы</value>
-  </data>
-  <data name="profile.trigger.steam.desc" xml:space="preserve">
-    <value>Активировать, если обнаружен Steam Big Picture. (Восстановит состояние, когда Steam Big Picture будет закрыт)</value>
-  </data>
-  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
-    <value>Этот переключатель сделает профиль видимым в меню значка в трее. Щелкните ЛКМ по значку в трее, чтобы увидеть свой профиль.</value>
-  </data>
-  <data name="profile.trigger.trayMenu" xml:space="preserve">
-    <value>В меню приложения</value>
-  </data>
-  <data name="mute.toggle.label" xml:space="preserve">
-    <value>Переключить звук</value>
-  </data>
-  <data name="notification.microphone.unmuted" xml:space="preserve">
-    <value>{0} теперь включен.</value>
+  <data name="profile.trigger.uwp.desc" xml:space="preserve">
+    <value>Введите название приложения, установленного через магазин Windows. Например, Netflix, Amazon Prime video и т.д…</value>
   </data>
   <data name="notification.microphone.muted" xml:space="preserve">
     <value>{0} теперь отключен.</value>
   </data>
-  <data name="profile.trigger.uwp.desc" xml:space="preserve">
-    <value>Введите название приложения, установленного через магазин Windows. Например, Netflix, Amazon Prime video и т.д…</value>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>{0} теперь включен.</value>
   </data>
-  <data name="profile.trigger.restoreDevices" xml:space="preserve">
-    <value>Восстановить устройства по окончании триггера</value>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>Переключить звук</value>
   </data>
-  <data name="usePrimaryScreen.tooltip" xml:space="preserve">
-    <value>Отображать баннер на основном экране вместо экрана в фокусе.</value>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>В меню приложения</value>
   </data>
-  <data name="usePrimaryScreen" xml:space="preserve">
-    <value>Всегда использовать основной экран</value>
-  </data>
-  <data name="profile.error.steam" xml:space="preserve">
-    <value>У вас может быть только один профиль для Steam Big Picture.</value>
-  </data>
-  <data name="profile.trigger.process.desc" xml:space="preserve">
-    <value>Активировать профиль, когда указанное приложение находится на переднем плане</value>
-  </data>
-  <data name="telemetry" xml:space="preserve">
-    <value>Телеметрия</value>
-  </data>
-  <data name="position" xml:space="preserve">
-    <value>Позиция</value>
-  </data>
-  <data name="position.option.bottomCenter" xml:space="preserve">
-    <value>Снизу-Посередине</value>
-  </data>
-  <data name="none" xml:space="preserve">
-    <value>Пусто</value>
-  </data>
-  <data name="profile.error.deviceChanged" xml:space="preserve">
-    <value>У вас может быть только один принудительный профиль.</value>
-  </data>
-  <data name="quickMenu" xml:space="preserve">
-    <value>Быстрое меню по горячей клавише</value>
-  </data>
-  <data name="quickMenu.desc" xml:space="preserve">
-    <value>Показать быстрое меню (как при смене языка), используя горячую клавишу</value>
-  </data>
-  <data name="devices.AutoAddNewDevice" xml:space="preserve">
-    <value>Автоматический выбор нового устройства</value>
-  </data>
-  <data name="position.option.bottomLeft" xml:space="preserve">
-    <value>Снизу-Слева</value>
-  </data>
-  <data name="position.option.bottomRight" xml:space="preserve">
-    <value>Снизу-Справа</value>
-  </data>
-  <data name="position.option.topRight" xml:space="preserve">
-    <value>Сверху-Справа</value>
-  </data>
-  <data name="position.option.topCenter" xml:space="preserve">
-    <value>Сверху-Посередине</value>
-  </data>
-  <data name="telemetry.desc" xml:space="preserve">
-    <value>Анонимный сбор информации о том, какая версия SoundSwitch используется. Предоставляется только разработчику SoundSwitch.</value>
-  </data>
-  <data name="keepVolume" xml:space="preserve">
-    <value>Одинаковый уровень громкости для всех устройств</value>
-  </data>
-  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
-    <value>Профиль будет запускаться автоматически в любое время при смене текущего звукового устройства.</value>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>Этот переключатель сделает профиль видимым в меню значка в трее. Щелкните ЛКМ по значку в трее, чтобы увидеть свой профиль.</value>
   </data>
   <data name="profile.trigger.deviceChanged" xml:space="preserve">
     <value>Принудительный профиль</value>
   </data>
-  <data name="keepVolume.desc" xml:space="preserve">
-    <value>Сохранять текущий уровень громкости при переключении устройств</value>
+  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
+    <value>Профиль будет запускаться автоматически в любое время при смене текущего звукового устройства.</value>
   </data>
-  <data name="devices.AutoAddNewDevice..tooltip" xml:space="preserve">
-    <value>Добавлять новое подключенное устройство в список выбранных</value>
+  <data name="profile.error.deviceChanged" xml:space="preserve">
+    <value>У вас может быть только один принудительный профиль.</value>
   </data>
-  <data name="position.tooltip" xml:space="preserve">
-    <value>Установите позицию для всплывающих оповещений.</value>
+  <data name="telemetry" xml:space="preserve">
+    <value>Телеметрия</value>
   </data>
-  <data name="position.option.topLeft" xml:space="preserve">
-    <value>Сверху-Слева</value>
+  <data name="telemetry.tooltip" xml:space="preserve">
+    <value>Анонимно собирать данные о используемой версии SoundSwitch. Данные отправляются только разработчику SoundSwitch.</value>
   </data>
-  <data name="resetAudioDevices.desc" xml:space="preserve">
-    <value>Сбрасывает назначение аудиоустройств в выбранных программах Windows в случае, когда переключатся устройство и если аудиоустройства не переназначены для этих программ.</value>
-  </data>
-  <data name="troubleshooting.desc" xml:space="preserve">
-    <value>Если Вам нужна любая помощь или дальнейшее решение проблемы с SoundSwitch, Вы можете перейти по ссылке в раздел "Помощь" или "Сообщество" в Discord, или поддержать нас по ссылке "Пожертвовать" ниже.</value>
+  <data name="quickMenu" xml:space="preserve">
+    <value>Быстрое меню по горячей клавише</value>
   </data>
   <data name="quickMenu.tooltip" xml:space="preserve">
     <value>Показывать краткое меню, как при выборе языка в Windows, когда используется сочетание клавиш</value>
+  </data>
+  <data name="keepVolume" xml:space="preserve">
+    <value>Одинаковый уровень громкости для всех устройств</value>
+  </data>
+  <data name="keepVolume.tooltip" xml:space="preserve">
+    <value>Оставлять прежний уровень громкости при смене устройств</value>
   </data>
   <data name="devices.autoAddNewDevice" xml:space="preserve">
     <value>Автоматический выбор новых устройств</value>
@@ -540,14 +492,35 @@
   <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
     <value>Автоматически добавлять новое устройство в выбранный список, когда они подключены к компьютеру</value>
   </data>
-  <data name="audioFileNotFound.caption" xml:space="preserve">
-    <value>Аудиофайл не найден</value>
+  <data name="position" xml:space="preserve">
+    <value>Позиция</value>
   </data>
-  <data name="telemetry.tooltip" xml:space="preserve">
-    <value>Анонимно собирать данные о используемой версии SoundSwitch. Данные отправляются только разработчику SoundSwitch.</value>
+  <data name="position.tooltip" xml:space="preserve">
+    <value>Установите позицию для всплывающих оповещений.</value>
   </data>
-  <data name="keepVolume.tooltip" xml:space="preserve">
-    <value>Оставлять прежний уровень громкости при смене устройств</value>
+  <data name="position.option.bottomLeft" xml:space="preserve">
+    <value>Снизу-Слева</value>
+  </data>
+  <data name="position.option.bottomRight" xml:space="preserve">
+    <value>Снизу-Справа</value>
+  </data>
+  <data name="position.option.topLeft" xml:space="preserve">
+    <value>Сверху-Слева</value>
+  </data>
+  <data name="position.option.topRight" xml:space="preserve">
+    <value>Сверху-Справа</value>
+  </data>
+  <data name="position.option.bottomCenter" xml:space="preserve">
+    <value>Снизу-Посередине</value>
+  </data>
+  <data name="position.option.topCenter" xml:space="preserve">
+    <value>Сверху-Посередине</value>
+  </data>
+  <data name="notification.single" xml:space="preserve">
+    <value>Только одно оповещение</value>
+  </data>
+  <data name="notification.single.tooltip" xml:space="preserve">
+    <value>Показывать только одно оповещение и заменять его содержимое.</value>
   </data>
   <data name="link.community" xml:space="preserve">
     <value>Сообщество в Discord</value>
@@ -558,14 +531,17 @@
   <data name="link.help" xml:space="preserve">
     <value>Помощь</value>
   </data>
+  <data name="resetAudioDevices.desc" xml:space="preserve">
+    <value>Сбрасывает назначение аудиоустройств в выбранных программах Windows в случае, когда переключатся устройство и если аудиоустройства не переназначены для этих программ.</value>
+  </data>
   <data name="buttonReset" xml:space="preserve">
     <value>Сброс</value>
   </data>
-  <data name="exportLogFiles" xml:space="preserve">
-    <value>Экспортировать Log-файлы</value>
-  </data>
   <data name="resetAudioDevices" xml:space="preserve">
     <value>Сброс аудио для каждого приложения</value>
+  </data>
+  <data name="exportLogFiles" xml:space="preserve">
+    <value>Экспортировать Log-файлы</value>
   </data>
   <data name="exportLogFiles.desc" xml:space="preserve">
     <value>Экспортируйте все Log-файлы в zip-архив для дальнейшего решения проблем в разделе Помощь или Сообществе в Discord.</value>
@@ -576,19 +552,55 @@
   <data name="troubleshooting" xml:space="preserve">
     <value>Решение проблем</value>
   </data>
-  <data name="notification.banner.onscreen.time" xml:space="preserve">
-    <value>Время на экране</value>
+  <data name="troubleshooting.desc" xml:space="preserve">
+    <value>Если Вам нужна любая помощь или дальнейшее решение проблемы с SoundSwitch, Вы можете перейти по ссылке в раздел "Помощь" или "Сообщество" в Discord, или поддержать нас по ссылке "Пожертвовать" ниже.</value>
+  </data>
+  <data name="position.option.center" xml:space="preserve">
+    <value>Центр</value>
+  </data>
+  <data name="banner.mute.option.fading" xml:space="preserve">
+    <value />
+  </data>
+  <data name="banner.mute.option.persistent" xml:space="preserve">
+    <value />
+  </data>
+  <data name="switch.device.label" xml:space="preserve">
+    <value />
+  </data>
+  <data name="audioFileNotFoundCaption" xml:space="preserve">
+    <value>Аудиофайл не найден</value>
+  </data>
+  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
+    <value>Без подсказки</value>
+  </data>
+  <data name="notificationOptionNone" xml:space="preserve">
+    <value>Без уведомления</value>
+  </data>
+  <data name="quickMenu.desc" xml:space="preserve">
+    <value>Показать быстрое меню (как при смене языка), используя горячую клавишу</value>
+  </data>
+  <data name="telemetry.desc" xml:space="preserve">
+    <value>Анонимный сбор информации о том, какая версия SoundSwitch используется. Предоставляется только разработчику SoundSwitch.</value>
+  </data>
+  <data name="devices.AutoAddNewDevice..tooltip" xml:space="preserve">
+    <value>Добавлять новое подключенное устройство в список выбранных</value>
+  </data>
+  <data name="keepVolume.desc" xml:space="preserve">
+    <value>Сохранять текущий уровень громкости при переключении устройств</value>
   </data>
   <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
     <value>Как долго оповещение остается на экране в секундах.</value>
   </data>
-  <data name="notification.single" xml:space="preserve">
-    <value>Только одно оповещение</value>
+  <data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>Время на экране</value>
   </data>
-  <data name="notification.single.tooltip" xml:space="preserve">
-    <value>Показывать только одно оповещение и заменять его содержимое.</value>
+  <data name="notification" xml:space="preserve">
+    <value>Уведомление</value>
   </data>
-  <data name="position.option.center" xml:space="preserve">
-    <value>Центр</value>
+  <data name="notification.bannerOptions" xml:space="preserve">
+    <value />
+  </data>
+  <data name="seconds" xml:space="preserve">
+    <value />
   </data>
 </root>

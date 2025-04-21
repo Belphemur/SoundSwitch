@@ -1,6 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -58,14 +117,53 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="updateSettings" xml:space="preserve">
-    <value>Güncelleme Ayarları</value>
+  <data name="selected" xml:space="preserve">
+    <value>Seçili</value>
   </data>
-  <data name="audioSettings" xml:space="preserve">
-    <value>Ses Ayarları</value>
+  <data name="connected" xml:space="preserve">
+    <value>Bağlı olan</value>
+  </data>
+  <data name="disconnected" xml:space="preserve">
+    <value>Bağlı olmayan</value>
+  </data>
+  <data name="recording" xml:space="preserve">
+    <value>Kayıt</value>
+  </data>
+  <data name="playback" xml:space="preserve">
+    <value>Çalma</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>Ayarlar</value>
+  </data>
+  <data name="hotkey" xml:space="preserve">
+    <value>Klavye kısayolu</value>
+  </data>
+  <data name="communicationsDevice" xml:space="preserve">
+    <value>Varsayılan iletişim cihazını değiştir</value>
+  </data>
+  <data name="startWithWindows" xml:space="preserve">
+    <value>Windows ile otomatik başlat</value>
+  </data>
+  <data name="buttonClose" xml:space="preserve">
+    <value>Kapat</value>
+  </data>
+  <data name="buttonClose.tooltip" xml:space="preserve">
+    <value>Değişiklikler otomatik olarak kaydedilir</value>
+  </data>
+  <data name="communicationsDevice.tooltip" xml:space="preserve">
+    <value>Seçili olduğunda hem 'Varsayılan cihaz' hem de 'Varsayılan iletişim cihazı' değiştirilir (Skype, TeamSpeak vb. uygulamalar için faydalı).</value>
+  </data>
+  <data name="updateIncludeBetaVersions" xml:space="preserve">
+    <value>Beta sürümleri dahil et</value>
   </data>
   <data name="updateIncludeBetaVersions.tooltip" xml:space="preserve">
     <value>İşaretli olduğunda SoundSwitch GitHub'daki beta sürümleri de kontrol edecektir.</value>
+  </data>
+  <data name="audioFiles" xml:space="preserve">
+    <value>Ses Dosyaları</value>
+  </data>
+  <data name="selectSoundButton.tooltip" xml:space="preserve">
+    <value>Bildirim için kullanılacak ses dosyasını seçin</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Klavye kısayolunu etkin hale getirmek için işaretleyin.</value>
@@ -73,96 +171,56 @@
   <data name="basicSettings" xml:space="preserve">
     <value>Temel Ayarlar</value>
   </data>
-  <data name="selectSoundButton.tooltip" xml:space="preserve">
-    <value>Bildirim için kullanılacak ses dosyasını seçin</value>
+  <data name="audioSettings" xml:space="preserve">
+    <value>Ses Ayarları</value>
   </data>
-  <data name="audioFiles" xml:space="preserve">
-    <value>Ses Dosyaları</value>
+  <data name="updateSettings" xml:space="preserve">
+    <value>Güncelleme Ayarları</value>
   </data>
-  <data name="updateIncludeBetaVersions" xml:space="preserve">
-    <value>Beta sürümleri dahil et</value>
+  <data name="cycleThrough" xml:space="preserve">
+    <value>Döngüdeki cihazlar</value>
   </data>
-  <data name="notification" xml:space="preserve">
-    <value>Bildirim</value>
+  <data name="keepSystemTrayIcon" xml:space="preserve">
+    <value>SoundSwitch bildirim alanı simgesi görünsün</value>
   </data>
-  <data name="communicationsDevice.tooltip" xml:space="preserve">
-    <value>Seçili olduğunda hem 'Varsayılan cihaz' hem de 'Varsayılan iletişim cihazı' değiştirilir (Skype, TeamSpeak vb. uygulamalar için faydalı).</value>
-  </data>
-  <data name="buttonClose.tooltip" xml:space="preserve">
-    <value>Değişiklikler otomatik olarak kaydedilir</value>
-  </data>
-  <data name="buttonClose" xml:space="preserve">
-    <value>Kapat</value>
-  </data>
-  <data name="startWithWindows" xml:space="preserve">
-    <value>Windows ile otomatik başlat</value>
-  </data>
-  <data name="communicationsDevice" xml:space="preserve">
-    <value>Varsayılan iletişim cihazını değiştir</value>
-  </data>
-  <data name="hotkey" xml:space="preserve">
-    <value>Klavye kısayolu</value>
-  </data>
-  <data name="playback" xml:space="preserve">
-    <value>Çalma</value>
-  </data>
-  <data name="recording" xml:space="preserve">
-    <value>Kayıt</value>
-  </data>
-  <data name="settings" xml:space="preserve">
-    <value>Ayarlar</value>
-  </data>
-  <data name="disconnected" xml:space="preserve">
-    <value>Bağlı olmayan</value>
-  </data>
-  <data name="connected" xml:space="preserve">
-    <value>Bağlı olan</value>
-  </data>
-  <data name="selected" xml:space="preserve">
-    <value>Seçili</value>
-  </data>
-  <data name="updateNever" xml:space="preserve">
-    <value>Güncellemeleri kontrol etme</value>
-  </data>
-  <data name="updateNotify" xml:space="preserve">
-    <value>Güncelleme mevcut olduğunda bildiri ver</value>
-  </data>
-  <data name="updateInstallAutomatically.tooltip" xml:space="preserve">
-    <value>Güncellemeler kullanıcıya bildiri vermeden otomatik olarak yüklenir.</value>
+  <data name="keepSystemTrayIcon.tooltip" xml:space="preserve">
+    <value>Seçili olduğunda, bildirim alanı simgesi varsayılan ses cihazını gösterecek şekilde değişmez.</value>
   </data>
   <data name="updateInstallAutomatically" xml:space="preserve">
     <value>Güncellemeleri otomatik yükle</value>
   </data>
-  <data name="updateNever.tooltip" xml:space="preserve">
-    <value>Kullanıcının kendisi tarafından yapılmadığı sürece program güncellenmez.</value>
+  <data name="updateInstallAutomatically.tooltip" xml:space="preserve">
+    <value>Güncellemeler kullanıcıya bildiri vermeden otomatik olarak yüklenir.</value>
   </data>
-  <data name="languageRestartRequired.caption" xml:space="preserve">
-    <value>Yeniden başlatma gerekli</value>
+  <data name="updateNotify" xml:space="preserve">
+    <value>Güncelleme mevcut olduğunda bildiri ver</value>
   </data>
-  <data name="languageRestartRequired" xml:space="preserve">
-    <value>Dil seçimi yalnızca SoundSwitch yeniden başlatıldığında devreye girecek.
-Şimdi yeniden başlatmak ister misiniz?</value>
+  <data name="updateNever" xml:space="preserve">
+    <value>Güncellemeleri kontrol etme</value>
   </data>
-  <data name="language" xml:space="preserve">
-    <value>Dil</value>
+  <data name="tooltipOnHover" xml:space="preserve">
+    <value>Araç ipucu</value>
   </data>
-  <data name="activePlayback" xml:space="preserve">
-    <value>Çalma: {0}</value>
-  </data>
-  <data name="activeRecording" xml:space="preserve">
-    <value>Kayıt: {0}</value>
-  </data>
-  <data name="audioFileNotFoundCaption" xml:space="preserve">
-    <value>Ses dosyası bulunamadı</value>
-  </data>
-  <data name="notification.option.customized" xml:space="preserve">
-    <value>Özelleştirilmiş ses bildirimi</value>
+  <data name="cycleThrough.option.allAudioDevices" xml:space="preserve">
+    <value>Tüm ses cihazları</value>
   </data>
   <data name="cycleThrough.option.onlySelectedAudioDevices" xml:space="preserve">
     <value>Sadece seçili ses cihazları</value>
   </data>
-  <data name="cycleThrough.option.allAudioDevices" xml:space="preserve">
-    <value>Tüm ses cihazları</value>
+  <data name="cycleThrough.tooltip" xml:space="preserve">
+    <value>Hangi cihazlar arasından seçim yapılabileceğini buradan belirleyin. Yalnızca ses çalma ve ses kayıt sayfalarında seçili olan cihazlar arasından ya da tüm cihazlar arasından seçim yapılabilir.</value>
+  </data>
+  <data name="notification.option.windowsDefault" xml:space="preserve">
+    <value>Windows tarafından bildirim</value>
+  </data>
+  <data name="notification.option.sound" xml:space="preserve">
+    <value>Ses bildirimi</value>
+  </data>
+  <data name="notification.option.toast" xml:space="preserve">
+    <value>Ufak bildirim (toast)</value>
+  </data>
+  <data name="notification.option.customized" xml:space="preserve">
+    <value>Özelleştirilmiş ses bildirimi</value>
   </data>
   <data name="notification.tooltip" xml:space="preserve">
     <value>Windows bildirimi: Windows'un bildirim alanından yapılan alışılagelmiş bildirim.
@@ -171,169 +229,54 @@ Kişisel sesli bildirim: Geçilen ses çıkış cihazından kullanıcının seç
 Ufak bildirim (toast): Windows'un bildirim alanından yaptığı bildirimin farklı bir tipini kullanır.
 Bayrak bildirim (banner): Her zaman en üstte görünen özel bir bildirim. Oyun esnasında kullanışlı.</value>
   </data>
-  <data name="notification.option.toast" xml:space="preserve">
-    <value>Ufak bildirim (toast)</value>
-  </data>
-  <data name="notificationOptionNone" xml:space="preserve">
-    <value>Bildirim yok</value>
-  </data>
-  <data name="notification.option.windowsDefault" xml:space="preserve">
-    <value>Windows tarafından bildirim</value>
-  </data>
-  <data name="notification.option.sound" xml:space="preserve">
-    <value>Ses bildirimi</value>
-  </data>
-  <data name="keepSystemTrayIcon.tooltip" xml:space="preserve">
-    <value>Seçili olduğunda, bildirim alanı simgesi varsayılan ses cihazını gösterecek şekilde değişmez.</value>
-  </data>
-  <data name="keepSystemTrayIcon" xml:space="preserve">
-    <value>SoundSwitch bildirim alanı simgesi görünsün</value>
-  </data>
-  <data name="cycleThrough" xml:space="preserve">
-    <value>Döngüdeki cihazlar</value>
-  </data>
-  <data name="usePrimaryScreen.tooltip" xml:space="preserve">
-    <value>Bayrak bildirimini kullanımda olan ekran yerine ana ekranda göster.</value>
-  </data>
-  <data name="profile.explanation" xml:space="preserve">
-    <value>Belirli bir uygulama başlatıldığında ya da kullanıma girdiğinde otomatik olarak önceden belirlenmiş ses cihazlarının seçilmesi için bir profil oluşturun.</value>
-  </data>
-  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
-    <value>Bu tetikleyici, profili bildirim alanı simgesinin menüsünde görünür kılar. Simgeye ters tıklayarak profilinizi görebilirsiniz.</value>
-  </data>
-  <data name="profile.trigger.trayMenu" xml:space="preserve">
-    <value>Uygulama menüsünde</value>
-  </data>
-  <data name="mute.toggle.label" xml:space="preserve">
-    <value>Ses aç/kapat</value>
-  </data>
-  <data name="notification.microphone.unmuted" xml:space="preserve">
-    <value>{0} sesi açıldı.</value>
-  </data>
-  <data name="notification.microphone.muted" xml:space="preserve">
-    <value>{0} sesi kapatıldı.</value>
-  </data>
-  <data name="profile.trigger.uwp.desc" xml:space="preserve">
-    <value>Windows Store tarafından kurulan uygulamanın ismini girin. Netflix, Amazon Prime Video, vb…</value>
-  </data>
-  <data name="profile.trigger.uwp" xml:space="preserve">
-    <value>Microsoft Store uygulaması</value>
-  </data>
-  <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
-    <value>Sistemin eski durumu geri getirildi</value>
-  </data>
-  <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
-    <value>'{0}'ın etkin olmasını gerektirir.
-
-Uygulama kapatıldığında cihazların eski durumunu geri getirir.</value>
-  </data>
-  <data name="profile.trigger.restoreDevices" xml:space="preserve">
-    <value>Tetikleyici devreden çıktığında eski cihazları geri getir</value>
-  </data>
-  <data name="usePrimaryScreen" xml:space="preserve">
-    <value>Her zaman ana ekranı kullan</value>
-  </data>
-  <data name="profile.trigger.startup.desc" xml:space="preserve">
-    <value>SoundSwitch başlatıldığında bu profil tetiklenecektir</value>
-  </data>
-  <data name="profile.trigger.startup" xml:space="preserve">
-    <value>Başlangıçta</value>
-  </data>
-  <data name="buttonEdit" xml:space="preserve">
-    <value>Değiştir</value>
-  </data>
-  <data name="buttonSave" xml:space="preserve">
-    <value>Kaydet</value>
-  </data>
-  <data name="profile.notification.text" xml:space="preserve">
-    <value>Profil {0} tetiklendi</value>
-  </data>
-  <data name="profile.notifyOnActivation" xml:space="preserve">
-    <value>Profil tetiklendiğinde bildirim yap</value>
-  </data>
-  <data name="profile.error.window" xml:space="preserve">
-    <value>Bu pencere adıyla halihazırda zaten bir profil var: {0}.</value>
-  </data>
-  <data name="profile.error.steam" xml:space="preserve">
-    <value>Steam Geniş Ekran Modu için yalnızca bir profil tanımlayabilirsiniz.</value>
-  </data>
-  <data name="profile.error.triggers.min" xml:space="preserve">
-    <value>En az bir tetikleyici gerekli.</value>
-  </data>
-  <data name="profile.trigger.available" xml:space="preserve">
-    <value>Kullanılabilir Tetikleyiciler</value>
-  </data>
-  <data name="profile.trigger.actives" xml:space="preserve">
-    <value>Etkin Olan Tetikleyiciler</value>
-  </data>
-  <data name="profile.desc" xml:space="preserve">
-    <value>Tanım</value>
-  </data>
-  <data name="profile.trigger.steam.desc" xml:space="preserve">
-    <value>Steam Geniş Ekran Modu devrede olduğunda etkin hale getir. (Kapatıldığında tekrar eski hale dönülür.)</value>
-  </data>
-  <data name="profile.trigger.process.desc" xml:space="preserve">
-    <value>Seçili uygulama devrede olduğunda profili etkin hale getir</value>
-  </data>
-  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>Bu profili etkin hale getirmek için kullanılacak klavye kısayolu</value>
-  </data>
-  <data name="hotkeyEnabled" xml:space="preserve">
-    <value>Klavye kısayolu etkin</value>
-  </data>
-  <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
-    <value>Uygulamanın devrede olduğu tespit edildiğinde Windows'un o anki varsayılan ses cihazı da değiştirilir.</value>
-  </data>
-  <data name="profile.trigger.window.desc" xml:space="preserve">
-    <value>Devrede olan programın ismi bu karakterleri içeriyorsa profili etkin hale getir</value>
-  </data>
-  <data name="profile.trigger.steam" xml:space="preserve">
-    <value>Steam Geniş Ekran Modu</value>
-  </data>
-  <data name="profile.trigger.process" xml:space="preserve">
-    <value>Uygulama konumu</value>
-  </data>
-  <data name="profile.trigger.window" xml:space="preserve">
-    <value>Uygulamanın adı</value>
-  </data>
-  <data name="profile.error.deviceNotFound" xml:space="preserve">
-    <value>Cihaz {0} bulunamadı.</value>
-  </data>
-  <data name="profile.defaultDevice.checkbox" xml:space="preserve">
-    <value>Varsayılan cihazı da değiştir</value>
-  </data>
-  <data name="profile.feature.profile" xml:space="preserve">
-    <value>Profil</value>
-  </data>
-  <data name="profile.error.noName" xml:space="preserve">
-    <value>Profile bir isim vermeniz gerekli.</value>
-  </data>
-  <data name="profile.error.delete" xml:space="preserve">
-    <value>Profil bulunamadı.</value>
-  </data>
-  <data name="buttonDelete" xml:space="preserve">
-    <value>Sil</value>
-  </data>
-  <data name="profile.error.title" xml:space="preserve">
-    <value>Profil Hatası</value>
-  </data>
-  <data name="profile.feature.executable" xml:space="preserve">
-    <value>Çalıştırılabilir dosya (*.exe)</value>
-  </data>
-  <data name="profile.feature.add" xml:space="preserve">
-    <value>Profil Ekle</value>
-  </data>
-  <data name="profile.error.registerHotkeys.title" xml:space="preserve">
-    <value>Klayve kısayolu halihazırda kullanımda</value>
-  </data>
-  <data name="profile.error.registerHotkeys" xml:space="preserve">
-    <value>Bu profil için klavye kısayolu kaydedilemedi: {0}</value>
-  </data>
-  <data name="cycleThrough.tooltip" xml:space="preserve">
-    <value>Hangi cihazlar arasından seçim yapılabileceğini buradan belirleyin. Yalnızca ses çalma ve ses kayıt sayfalarında seçili olan cihazlar arasından ya da tüm cihazlar arasından seçim yapılabilir.</value>
-  </data>
   <data name="tooltipOnHover.option.playbackDevice" xml:space="preserve">
     <value>Ses çalma cihazı</value>
+  </data>
+  <data name="tooltipOnHover.option.recordingDevice" xml:space="preserve">
+    <value>Ses kayıt cihazı</value>
+  </data>
+  <data name="tooltipOnHover.option.bothDevices" xml:space="preserve">
+    <value>Her iki cihaz</value>
+  </data>
+  <data name="audioFileNotFound" xml:space="preserve">
+    <value>Sesli bildirim için seçmiş olduğunuz ses dosyası bulunamadı. SoundSwitch bildirim tipini tekrar {0} olarak değiştirdi.</value>
+  </data>
+  <data name="activeRecording" xml:space="preserve">
+    <value>Kayıt: {0}</value>
+  </data>
+  <data name="activePlayback" xml:space="preserve">
+    <value>Çalma: {0}</value>
+  </data>
+  <data name="language" xml:space="preserve">
+    <value>Dil</value>
+  </data>
+  <data name="languageRestartRequired" xml:space="preserve">
+    <value>Dil seçimi yalnızca SoundSwitch yeniden başlatıldığında devreye girecek.
+Şimdi yeniden başlatmak ister misiniz?</value>
+  </data>
+  <data name="languageRestartRequired.caption" xml:space="preserve">
+    <value>Yeniden başlatma gerekli</value>
+  </data>
+  <data name="updateNever.tooltip" xml:space="preserve">
+    <value>Kullanıcının kendisi tarafından yapılmadığı sürece program güncellenmez.</value>
+  </data>
+  <data name="updateNotify.tooltip" xml:space="preserve">
+    <value>Yeni bir güncelleme mevcut olduğunda SoundSwitch size bildirecektir. Bildiriye tıkladığınızda, güncellemeyi indirmek için bir pencere açılacak ve kurmak isteyip istemediğinize dair onayınız sorulacaktır.</value>
+  </data>
+  <data name="notification.option.banner" xml:space="preserve">
+    <value>Bayrak bildirim (banner)</value>
+  </data>
+  <data name="disableCustomSound.tooltip" xml:space="preserve">
+    <value>Kişisel bildirim sesini devre dışı bırak.</value>
+  </data>
+  <data name="foregroundApp" xml:space="preserve">
+    <value>Devrede olan program için de değiştir</value>
+  </data>
+  <data name="foregroundApp.tooltip" xml:space="preserve">
+    <value>Devrede olan program için de ses cihazlarını değiştirir. Oyunlar için kullanışlıdır.</value>
+  </data>
+  <data name="iconChange" xml:space="preserve">
+    <value>Bildirim alanı simgesi</value>
   </data>
   <data name="iconChange.tooltip" xml:space="preserve">
     <value>Bildirim alanı simgesinin ne zaman değiştirileceğini belirle.
@@ -343,67 +286,198 @@ Varsayılan: Asla değiştirme. SoundSwitch simgesi gösterilsin.
 Kayıt: Bir kayıt cihazı değiştirildiğinde.
 Her ikisi: Herhangi bir cihaz değiştirildiğinde.</value>
   </data>
-  <data name="iconChange" xml:space="preserve">
-    <value>Bildirim alanı simgesi</value>
-  </data>
-  <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
-    <value>Bir ses kayıt ya da çalma cihazı seçilmiş olmalı.</value>
-  </data>
-  <data name="profile.error.needHKOrPath" xml:space="preserve">
-    <value>Uygulama ve de/veya klavye kısayolu seçilmiş olmalı.</value>
-  </data>
-  <data name="profile.error.name" xml:space="preserve">
-    <value>{0} adıyla halihazırda başka bir profil kayıtlı.</value>
-  </data>
-  <data name="profile.error.application" xml:space="preserve">
-    <value>Bu uygulama {0} halihazırda başka bir profil ile ilişkilendirilmiş.</value>
-  </data>
-  <data name="profile.error.hotkey" xml:space="preserve">
-    <value>Bu klavye kısayolu ({}) halihazırda kullanımda.</value>
-  </data>
-  <data name="profile.name" xml:space="preserve">
-    <value>İsim</value>
-  </data>
-  <data name="profile.program" xml:space="preserve">
-    <value>Uygulama</value>
+  <data name="profile.tab" xml:space="preserve">
+    <value>Profiller</value>
   </data>
   <data name="buttonAdd" xml:space="preserve">
     <value>Ekle</value>
   </data>
-  <data name="profile.tab" xml:space="preserve">
-    <value>Profiller</value>
+  <data name="profile.program" xml:space="preserve">
+    <value>Uygulama</value>
   </data>
-  <data name="updateNotify.tooltip" xml:space="preserve">
-    <value>Yeni bir güncelleme mevcut olduğunda SoundSwitch size bildirecektir. Bildiriye tıkladığınızda, güncellemeyi indirmek için bir pencere açılacak ve kurmak isteyip istemediğinize dair onayınız sorulacaktır.</value>
+  <data name="profile.name" xml:space="preserve">
+    <value>İsim</value>
   </data>
-  <data name="foregroundApp" xml:space="preserve">
-    <value>Devrede olan program için de değiştir</value>
+  <data name="profile.error.hotkey" xml:space="preserve">
+    <value>Bu klavye kısayolu ({}) halihazırda kullanımda.</value>
   </data>
-  <data name="foregroundApp.tooltip" xml:space="preserve">
-    <value>Devrede olan program için de ses cihazlarını değiştirir. Oyunlar için kullanışlıdır.</value>
+  <data name="profile.error.application" xml:space="preserve">
+    <value>Bu uygulama {0} halihazırda başka bir profil ile ilişkilendirilmiş.</value>
   </data>
-  <data name="disableCustomSound.tooltip" xml:space="preserve">
-    <value>Kişisel bildirim sesini devre dışı bırak.</value>
+  <data name="profile.error.name" xml:space="preserve">
+    <value>{0} adıyla halihazırda başka bir profil kayıtlı.</value>
   </data>
-  <data name="audioFileNotFound" xml:space="preserve">
-    <value>Sesli bildirim için seçmiş olduğunuz ses dosyası bulunamadı. SoundSwitch bildirim tipini tekrar {0} olarak değiştirdi.</value>
+  <data name="profile.error.needHKOrPath" xml:space="preserve">
+    <value>Uygulama ve de/veya klavye kısayolu seçilmiş olmalı.</value>
   </data>
-  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-    <value>Araç ipucu yok</value>
+  <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
+    <value>Bir ses kayıt ya da çalma cihazı seçilmiş olmalı.</value>
   </data>
-  <data name="tooltipOnHover" xml:space="preserve">
-    <value>Araç ipucu</value>
+  <data name="profile.explanation" xml:space="preserve">
+    <value>Belirli bir uygulama başlatıldığında ya da kullanıma girdiğinde otomatik olarak önceden belirlenmiş ses cihazlarının seçilmesi için bir profil oluşturun.</value>
+  </data>
+  <data name="profile.error.registerHotkeys" xml:space="preserve">
+    <value>Bu profil için klavye kısayolu kaydedilemedi: {0}</value>
+  </data>
+  <data name="profile.error.registerHotkeys.title" xml:space="preserve">
+    <value>Klayve kısayolu halihazırda kullanımda</value>
+  </data>
+  <data name="profile.feature.add" xml:space="preserve">
+    <value>Profil Ekle</value>
+  </data>
+  <data name="profile.feature.executable" xml:space="preserve">
+    <value>Çalıştırılabilir dosya (*.exe)</value>
+  </data>
+  <data name="profile.error.title" xml:space="preserve">
+    <value>Profil Hatası</value>
+  </data>
+  <data name="buttonDelete" xml:space="preserve">
+    <value>Sil</value>
+  </data>
+  <data name="profile.error.delete" xml:space="preserve">
+    <value>Profil bulunamadı.</value>
+  </data>
+  <data name="profile.error.noName" xml:space="preserve">
+    <value>Profile bir isim vermeniz gerekli.</value>
+  </data>
+  <data name="profile.feature.profile" xml:space="preserve">
+    <value>Profil</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox" xml:space="preserve">
+    <value>Varsayılan cihazı da değiştir</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
+    <value>Uygulamanın devrede olduğu tespit edildiğinde Windows'un o anki varsayılan ses cihazı da değiştirilir.</value>
+  </data>
+  <data name="hotkeyEnabled" xml:space="preserve">
+    <value>Klavye kısayolu etkin</value>
+  </data>
+  <data name="profile.error.deviceNotFound" xml:space="preserve">
+    <value>Cihaz {0} bulunamadı.</value>
+  </data>
+  <data name="profile.trigger.window" xml:space="preserve">
+    <value>Uygulamanın adı</value>
+  </data>
+  <data name="profile.trigger.process" xml:space="preserve">
+    <value>Uygulama konumu</value>
+  </data>
+  <data name="profile.trigger.steam" xml:space="preserve">
+    <value>Steam Geniş Ekran Modu</value>
+  </data>
+  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
+    <value>Bu profili etkin hale getirmek için kullanılacak klavye kısayolu</value>
+  </data>
+  <data name="profile.trigger.window.desc" xml:space="preserve">
+    <value>Devrede olan programın ismi bu karakterleri içeriyorsa profili etkin hale getir</value>
+  </data>
+  <data name="profile.trigger.process.desc" xml:space="preserve">
+    <value>Seçili uygulama devrede olduğunda profili etkin hale getir</value>
+  </data>
+  <data name="profile.trigger.steam.desc" xml:space="preserve">
+    <value>Steam Geniş Ekran Modu devrede olduğunda etkin hale getir. (Kapatıldığında tekrar eski hale dönülür.)</value>
+  </data>
+  <data name="profile.desc" xml:space="preserve">
+    <value>Tanım</value>
+  </data>
+  <data name="profile.trigger.actives" xml:space="preserve">
+    <value>Etkin Olan Tetikleyiciler</value>
+  </data>
+  <data name="profile.trigger.available" xml:space="preserve">
+    <value>Kullanılabilir Tetikleyiciler</value>
   </data>
   <data name="communication" xml:space="preserve">
     <value>Varsayılan İletişim Cihazı</value>
   </data>
-  <data name="notification.option.banner" xml:space="preserve">
-    <value>Bayrak bildirim (banner)</value>
+  <data name="profile.error.triggers.min" xml:space="preserve">
+    <value>En az bir tetikleyici gerekli.</value>
   </data>
-  <data name="tooltipOnHover.option.bothDevices" xml:space="preserve">
-    <value>Her iki cihaz</value>
+  <data name="profile.error.steam" xml:space="preserve">
+    <value>Steam Geniş Ekran Modu için yalnızca bir profil tanımlayabilirsiniz.</value>
   </data>
-  <data name="tooltipOnHover.option.recordingDevice" xml:space="preserve">
-    <value>Ses kayıt cihazı</value>
+  <data name="profile.error.window" xml:space="preserve">
+    <value>Bu pencere adıyla halihazırda zaten bir profil var: {0}.</value>
+  </data>
+  <data name="profile.notifyOnActivation" xml:space="preserve">
+    <value>Profil tetiklendiğinde bildirim yap</value>
+  </data>
+  <data name="profile.notification.text" xml:space="preserve">
+    <value>Profil {0} tetiklendi</value>
+  </data>
+  <data name="buttonSave" xml:space="preserve">
+    <value>Kaydet</value>
+  </data>
+  <data name="buttonEdit" xml:space="preserve">
+    <value>Değiştir</value>
+  </data>
+  <data name="profile.trigger.startup" xml:space="preserve">
+    <value>Başlangıçta</value>
+  </data>
+  <data name="profile.trigger.startup.desc" xml:space="preserve">
+    <value>SoundSwitch başlatıldığında bu profil tetiklenecektir</value>
+  </data>
+  <data name="usePrimaryScreen" xml:space="preserve">
+    <value>Her zaman ana ekranı kullan</value>
+  </data>
+  <data name="usePrimaryScreen.tooltip" xml:space="preserve">
+    <value>Bayrak bildirimini kullanımda olan ekran yerine ana ekranda göster.</value>
+  </data>
+  <data name="profile.trigger.restoreDevices" xml:space="preserve">
+    <value>Tetikleyici devreden çıktığında eski cihazları geri getir</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
+    <value>'{0}'ın etkin olmasını gerektirir.
+
+Uygulama kapatıldığında cihazların eski durumunu geri getirir.</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
+    <value>Sistemin eski durumu geri getirildi</value>
+  </data>
+  <data name="profile.trigger.uwp" xml:space="preserve">
+    <value>Microsoft Store uygulaması</value>
+  </data>
+  <data name="profile.trigger.uwp.desc" xml:space="preserve">
+    <value>Windows Store tarafından kurulan uygulamanın ismini girin. Netflix, Amazon Prime Video, vb…</value>
+  </data>
+  <data name="notification.microphone.muted" xml:space="preserve">
+    <value>{0} sesi kapatıldı.</value>
+  </data>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>{0} sesi açıldı.</value>
+  </data>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>Ses aç/kapat</value>
+  </data>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>Uygulama menüsünde</value>
+  </data>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>Bu tetikleyici, profili bildirim alanı simgesinin menüsünde görünür kılar. Simgeye ters tıklayarak profilinizi görebilirsiniz.</value>
+  </data>
+  <data name="banner.mute.option.fading" xml:space="preserve">
+    <value />
+  </data>
+  <data name="banner.mute.option.persistent" xml:space="preserve">
+    <value />
+  </data>
+  <data name="switch.device.label" xml:space="preserve">
+    <value />
+  </data>
+  <data name="audioFileNotFoundCaption" xml:space="preserve">
+    <value>Ses dosyası bulunamadı</value>
+  </data>
+  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
+    <value>Araç ipucu yok</value>
+  </data>
+  <data name="notificationOptionNone" xml:space="preserve">
+    <value>Bildirim yok</value>
+  </data>
+  <data name="notification" xml:space="preserve">
+    <value>Bildirim</value>
+  </data>
+  <data name="notification.bannerOptions" xml:space="preserve">
+    <value />
+  </data>
+  <data name="seconds" xml:space="preserve">
+    <value />
   </data>
 </root>

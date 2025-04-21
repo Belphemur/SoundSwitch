@@ -22,10 +22,8 @@
     <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
         <value>[base64 mime encoded serialized .NET Framework object]</value>
     </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing"
-  mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework
-  object]</value>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
                 
@@ -61,8 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -115,12 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0,
-      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0,
-      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="selected" xml:space="preserve">
     <value>已选择</value>
@@ -157,9 +152,6 @@
   </data>
   <data name="communicationsDevice.tooltip" xml:space="preserve">
     <value>当检查时，“默认通信设备”和“默认播放设备”被切换到一起（对的Skype，TeamSpeak非常有用）。</value>
-  </data>
-  <data name="notification" xml:space="preserve">
-    <value>通知</value>
   </data>
   <data name="updateIncludeBetaVersions" xml:space="preserve">
     <value>包括测试版本</value>
@@ -224,8 +216,8 @@
   <data name="notification.option.sound" xml:space="preserve">
     <value>声音通知</value>
   </data>
-  <data name="notificationOptionNone" xml:space="preserve">
-    <value>没有通知</value>
+  <data name="none" xml:space="preserve">
+    <value>无</value>
   </data>
   <data name="notification.option.toast" xml:space="preserve">
     <value>弹出通知</value>
@@ -249,14 +241,11 @@
   <data name="tooltipOnHover.option.bothDevices" xml:space="preserve">
     <value>对于两种设备</value>
   </data>
-  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-    <value>没有工具提示</value>
-  </data>
   <data name="audioFileNotFound" xml:space="preserve">
     <value>找不到您选择用作通知的音频文件。SoundSwitch将通知设置切换回默认 {0}.</value>
   </data>
-  <data name="audioFileNotFoundCaption" xml:space="preserve">
-    <value>找不到音频文件</value>
+  <data name="audioFileNotFound.caption" xml:space="preserve">
+    <value>音频文件未找到</value>
   </data>
   <data name="activeRecording" xml:space="preserve">
     <value>录音：{0}</value>
@@ -360,85 +349,17 @@
   <data name="profile.feature.profile" xml:space="preserve">
     <value>用户配置</value>
   </data>
-  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>用于激活该配置的快捷键。如果创建了相同的快捷键，那么将会在对应配置中循环切换。</value>
+  <data name="profile.defaultDevice.checkbox" xml:space="preserve">
+    <value>同时切换默认设备</value>
+  </data>
+  <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
+    <value>当检测到应用程序，SoundSwitch 也将会切换当前的默认设备。</value>
   </data>
   <data name="hotkeyEnabled" xml:space="preserve">
     <value>快捷键启用</value>
   </data>
-  <data name="profile.trigger.uwp.desc" xml:space="preserve">
-    <value>输入通过 Windows 应用商店安装的应用程序的名称， 像是 Netflix，Amazon Prime视频等…</value>
-  </data>
-  <data name="profile.trigger.uwp" xml:space="preserve">
-    <value>Microsoft Store 应用</value>
-  </data>
-  <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
-    <value>系统状态已复原</value>
-  </data>
-  <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
-    <value>需要启用 "{0}" 。
-
-程序关闭时恢复系统原来的状态。</value>
-  </data>
-  <data name="profile.trigger.restoreDevices" xml:space="preserve">
-    <value>当触发结束时复原设备</value>
-  </data>
-  <data name="usePrimaryScreen.tooltip" xml:space="preserve">
-    <value>在主屏幕而不是焦点屏幕显示通知横幅。</value>
-  </data>
-  <data name="usePrimaryScreen" xml:space="preserve">
-    <value>总是使用主屏幕</value>
-  </data>
-  <data name="profile.trigger.startup.desc" xml:space="preserve">
-    <value>当 SoundSwitch 启动时配置将会自动触发</value>
-  </data>
-  <data name="profile.trigger.startup" xml:space="preserve">
-    <value>启动时</value>
-  </data>
-  <data name="buttonEdit" xml:space="preserve">
-    <value>编辑</value>
-  </data>
-  <data name="buttonSave" xml:space="preserve">
-    <value>保存</value>
-  </data>
-  <data name="profile.notification.text" xml:space="preserve">
-    <value>配置 {0} 已被触发</value>
-  </data>
-  <data name="profile.notifyOnActivation" xml:space="preserve">
-    <value>当配置被触发时发送提醒</value>
-  </data>
-  <data name="profile.error.window" xml:space="preserve">
-    <value>已有配置使用该窗口名称：{0} 。</value>
-  </data>
-  <data name="profile.error.steam" xml:space="preserve">
-    <value>只能保存一个 Steam 大屏幕模式配置。</value>
-  </data>
-  <data name="profile.error.triggers.min" xml:space="preserve">
-    <value>最少需要一个触发器。</value>
-  </data>
-  <data name="communication" xml:space="preserve">
-    <value>默认通信设备</value>
-  </data>
-  <data name="profile.trigger.available" xml:space="preserve">
-    <value>可用的触发器</value>
-  </data>
-  <data name="profile.trigger.actives" xml:space="preserve">
-    <value>已启用的触发器</value>
-  </data>
-  <data name="profile.desc" xml:space="preserve">
-    <value>描述</value>
-  </data>
-  <data name="profile.trigger.steam.desc" xml:space="preserve">
-    <value>当检测到 Steam 大屏幕模式时启用激活。（大屏幕模式关闭时会恢复状态）</value>
-  </data>
-  <data name="profile.trigger.process.desc" xml:space="preserve">
-    <value>当选中的应用程序在前台运行时激活配置</value>
-  </data>
-  <data name="profile.trigger.window.desc" xml:space="preserve">
-    <value>当前台运行的程序包含以下字符时激活配置</value>
-  </data>
-  <data name="profile.trigger.steam" xml:space="preserve">
-    <value>Steam 大屏幕模式</value>
+  <data name="profile.error.deviceNotFound" xml:space="preserve">
+    <value>无法找到设备 {0} 。</value>
   </data>
   <data name="profile.trigger.window" xml:space="preserve">
     <value>程序名</value>
@@ -446,71 +367,121 @@
   <data name="profile.trigger.process" xml:space="preserve">
     <value>应用程序路径</value>
   </data>
-  <data name="profile.error.deviceNotFound" xml:space="preserve">
-    <value>无法找到设备 {0} 。</value>
+  <data name="profile.trigger.steam" xml:space="preserve">
+    <value>Steam 大屏幕模式</value>
   </data>
-  <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
-    <value>当检测到应用程序，SoundSwitch 也将会切换当前的默认设备。</value>
+  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
+    <value>用于激活该配置的快捷键。如果创建了相同的快捷键，那么将会在对应配置中循环切换。</value>
   </data>
-  <data name="profile.defaultDevice.checkbox" xml:space="preserve">
-    <value>同时切换默认设备</value>
+  <data name="profile.trigger.window.desc" xml:space="preserve">
+    <value>当前台运行的程序包含以下字符时激活配置</value>
   </data>
-  <data name="mute.toggle.label" xml:space="preserve">
-    <value>切换禁音</value>
+  <data name="profile.trigger.process.desc" xml:space="preserve">
+    <value>当选中的应用程序在前台运行时激活配置</value>
   </data>
-  <data name="notification.microphone.unmuted" xml:space="preserve">
-    <value>{0} 已取消禁音。</value>
+  <data name="profile.trigger.steam.desc" xml:space="preserve">
+    <value>当检测到 Steam 大屏幕模式时启用激活。（大屏幕模式关闭时会恢复状态）</value>
+  </data>
+  <data name="profile.desc" xml:space="preserve">
+    <value>描述</value>
+  </data>
+  <data name="profile.trigger.actives" xml:space="preserve">
+    <value>已启用的触发器</value>
+  </data>
+  <data name="profile.trigger.available" xml:space="preserve">
+    <value>可用的触发器</value>
+  </data>
+  <data name="communication" xml:space="preserve">
+    <value>默认通信设备</value>
+  </data>
+  <data name="profile.error.triggers.min" xml:space="preserve">
+    <value>最少需要一个触发器。</value>
+  </data>
+  <data name="profile.error.steam" xml:space="preserve">
+    <value>只能保存一个 Steam 大屏幕模式配置。</value>
+  </data>
+  <data name="profile.error.window" xml:space="preserve">
+    <value>已有配置使用该窗口名称：{0} 。</value>
+  </data>
+  <data name="profile.notifyOnActivation" xml:space="preserve">
+    <value>当配置被触发时发送提醒</value>
+  </data>
+  <data name="profile.notification.text" xml:space="preserve">
+    <value>配置 {0} 已被触发</value>
+  </data>
+  <data name="buttonSave" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="buttonEdit" xml:space="preserve">
+    <value>编辑</value>
+  </data>
+  <data name="profile.trigger.startup" xml:space="preserve">
+    <value>启动时</value>
+  </data>
+  <data name="profile.trigger.startup.desc" xml:space="preserve">
+    <value>当 SoundSwitch 启动时配置将会自动触发</value>
+  </data>
+  <data name="usePrimaryScreen" xml:space="preserve">
+    <value>总是使用主屏幕</value>
+  </data>
+  <data name="usePrimaryScreen.tooltip" xml:space="preserve">
+    <value>在主屏幕而不是焦点屏幕显示通知横幅。</value>
+  </data>
+  <data name="profile.trigger.restoreDevices" xml:space="preserve">
+    <value>当触发结束时复原设备</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
+    <value>需要启用 "{0}" 。
+
+程序关闭时恢复系统原来的状态。</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
+    <value>系统状态已复原</value>
+  </data>
+  <data name="profile.trigger.uwp" xml:space="preserve">
+    <value>Microsoft Store 应用</value>
+  </data>
+  <data name="profile.trigger.uwp.desc" xml:space="preserve">
+    <value>输入通过 Windows 应用商店安装的应用程序的名称， 像是 Netflix，Amazon Prime视频等…</value>
   </data>
   <data name="notification.microphone.muted" xml:space="preserve">
     <value>{0} 已禁音。</value>
   </data>
-  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
-    <value>打开这个开关会让配置在托盘图标菜单中显示。可以左键点击托盘图标来查看你的配置。</value>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>{0} 已取消禁音。</value>
+  </data>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>切换禁音</value>
   </data>
   <data name="profile.trigger.trayMenu" xml:space="preserve">
     <value>在软件菜单中显示</value>
   </data>
-  <data name="telemetry.desc" xml:space="preserve">
-    <value>匿名地收集正在使用的SoundSwitch的版本。只与SoundSwitch的开发者分享。</value>
-  </data>
-  <data name="quickMenu.desc" xml:space="preserve">
-    <value>按下快捷键时展示类似 Winodws 语言切换的快捷菜单</value>
-  </data>
-  <data name="quickMenu" xml:space="preserve">
-    <value>快捷菜单</value>
-  </data>
-  <data name="telemetry" xml:space="preserve">
-    <value>使用情况数据匿名共享</value>
-  </data>
-  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
-    <value>当正在使用的声音设备发生变化时，这个配置将会自动触发。</value>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>打开这个开关会让配置在托盘图标菜单中显示。可以左键点击托盘图标来查看你的配置。</value>
   </data>
   <data name="profile.trigger.deviceChanged" xml:space="preserve">
     <value>强制配置</value>
   </data>
+  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
+    <value>当正在使用的声音设备发生变化时，这个配置将会自动触发。</value>
+  </data>
   <data name="profile.error.deviceChanged" xml:space="preserve">
     <value>只能拥有一个强制配置。</value>
   </data>
-  <data name="devices.AutoAddNewDevice" xml:space="preserve">
-    <value>自动选择新的设备</value>
-  </data>
-  <data name="devices.AutoAddNewDevice..tooltip" xml:space="preserve">
-    <value>当新设备连接到电脑时，自动添加到选择列表</value>
-  </data>
-  <data name="none" xml:space="preserve">
-    <value>无</value>
-  </data>
-  <data name="keepVolume" xml:space="preserve">
-    <value>跨设备保持音量级别</value>
-  </data>
-  <data name="audioFileNotFound.caption" xml:space="preserve">
-    <value>音频文件未找到</value>
+  <data name="telemetry" xml:space="preserve">
+    <value>使用情况数据匿名共享</value>
   </data>
   <data name="telemetry.tooltip" xml:space="preserve">
     <value>匿名方式收集使用的SoundSwitch版本，仅共享给开发人员。</value>
   </data>
+  <data name="quickMenu" xml:space="preserve">
+    <value>快捷菜单</value>
+  </data>
   <data name="quickMenu.tooltip" xml:space="preserve">
     <value>当使用热键时像界面语言一样显示快捷菜单。</value>
+  </data>
+  <data name="keepVolume" xml:space="preserve">
+    <value>跨设备保持音量级别</value>
   </data>
   <data name="keepVolume.tooltip" xml:space="preserve">
     <value>当切换设备时保持同样的音量级别</value>
@@ -587,22 +558,58 @@
   <data name="position.option.center" xml:space="preserve">
     <value>居中</value>
   </data>
-  <data name="notification.banner.onscreen.time" xml:space="preserve">
-    <value>屏幕显示时间</value>
-  </data>
-  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
-    <value>横幅在屏幕上停留的秒数。</value>
-  </data>
   <data name="microphone.on" xml:space="preserve">
     <value>麦克风开启</value>
   </data>
   <data name="microphone.off" xml:space="preserve">
     <value>麦克风关闭</value>
   </data>
-  <data name="banner.mute.persistent" xml:space="preserve">
+  <data name="banner.mute" xml:space="preserve">
     <value>持久性静音横幅</value>
   </data>
-  <data name="banner.mute.persistent.tooltip" xml:space="preserve">
+  <data name="banner.mute.tooltip" xml:space="preserve">
     <value>麦克风静音时显示持久性静音横幅</value>
+  </data>
+  <data name="banner.mute.option.fading" xml:space="preserve">
+    <value />
+  </data>
+  <data name="banner.mute.option.persistent" xml:space="preserve">
+    <value />
+  </data>
+  <data name="switch.device.label" xml:space="preserve">
+    <value />
+  </data>
+  <data name="audioFileNotFoundCaption" xml:space="preserve">
+    <value>找不到音频文件</value>
+  </data>
+  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
+    <value>没有工具提示</value>
+  </data>
+  <data name="notificationOptionNone" xml:space="preserve">
+    <value>没有通知</value>
+  </data>
+  <data name="quickMenu.desc" xml:space="preserve">
+    <value>按下快捷键时展示类似 Winodws 语言切换的快捷菜单</value>
+  </data>
+  <data name="telemetry.desc" xml:space="preserve">
+    <value>匿名地收集正在使用的SoundSwitch的版本。只与SoundSwitch的开发者分享。</value>
+  </data>
+  <data name="devices.AutoAddNewDevice..tooltip" xml:space="preserve">
+    <value>当新设备连接到电脑时，自动添加到选择列表</value>
+  </data>
+  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+    <value>横幅在屏幕上停留的秒数。</value>
+  </data>
+  <data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>屏幕显示时间</value>
+  </data>
+  <data name="notification" xml:space="preserve">
+    <value>通知</value>
+  </data>
+  <data name="notification.bannerOptions" xml:space="preserve">
+    <value />
+  </data>
+  <data name="seconds" xml:space="preserve">
+    <value />
   </data>
 </root>
