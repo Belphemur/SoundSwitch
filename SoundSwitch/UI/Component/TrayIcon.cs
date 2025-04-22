@@ -122,22 +122,6 @@ namespace SoundSwitch.UI.Component
                 }
             };
 
-            NotifyIcon.MouseDoubleClick += (sender, e) =>
-            {
-                if (e.Button != MouseButtons.Left) return;
-                switch (AppModel.Instance.IconDoubleClick)
-                {
-                    case IconDoubleClickEnum.SwitchDevice:
-                        AppModel.Instance.CycleActiveDevice(DataFlow.Render);
-                        break;
-                    case IconDoubleClickEnum.OpenSettings:
-                        ShowSettings();
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            };
-
             NotifyIcon.MouseClick += (sender, e) =>
             {
                 if (e.Button != MouseButtons.Left) return;
