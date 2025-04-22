@@ -23,6 +23,7 @@ using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Banner.Position;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
+using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.WinApi.Keyboard;
 using SoundSwitch.Localization.Factory;
@@ -141,6 +142,11 @@ namespace SoundSwitch.Model
         /// Show a banner when microphone is muted
         /// </summary>
         MicrophoneMuteEnum MicrophoneMuteNotification { get; set; }
+
+        /// <summary>
+        /// Select the action when double-clicking the tray icon
+        /// </summary>
+        IconDoubleClickEnum IconDoubleClick { get; set; }
 
         #endregion
 

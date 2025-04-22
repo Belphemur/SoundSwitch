@@ -28,6 +28,7 @@ using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Profile.Trigger;
 using SoundSwitch.Framework.TrayIcon.Icon;
+using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.Updater.Remind;
@@ -43,6 +44,7 @@ namespace SoundSwitch.Framework.Configuration
             // Basic Settings
             FirstRun = true;
             SwitchForegroundProgram = false;
+            IconDoubleClick = IconDoubleClickEnum.SwitchDevice;
 
             // Audio Settings
             ChangeCommunications = false;
@@ -90,17 +92,18 @@ namespace SoundSwitch.Framework.Configuration
         public bool ChangeCommunications { get; set; }
         public uint UpdateCheckInterval { get; set; }
         public UpdateMode UpdateMode { get; set; }
+        public IconDoubleClickEnum IconDoubleClick { get; set; }
         public TooltipInfoTypeEnum TooltipInfo { get; set; }
         public DeviceCyclerTypeEnum CyclerType { get; set; }
         public NotificationTypeEnum NotificationSettings { get; set; }
         public BannerPositionEnum BannerPosition { get; set; }
+        public MicrophoneMuteEnum MicrophoneMuteNotification { get; set; }
         public Language Language { get; set; }
         public bool IncludeBetaVersions { get; set; }
         public string CustomNotificationFilePath { get; set; }
         public bool NotifyUsingPrimaryScreen { get; set; }
         [Obsolete("Replaced by "+nameof(MicrophoneMutePersistent))]
         public bool PersistentMuteNotification { get; set; }
-        public MicrophoneMuteEnum MicrophoneMuteNotification { get; set; }
 
         [Obsolete("Feature has been removed")]
         public bool AutoAddNewConnectedDevices { get; set; }
