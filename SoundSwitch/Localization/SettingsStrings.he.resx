@@ -559,13 +559,13 @@
     <value>מרכז</value>
   </data>
   <data name="banner.mute.option.fading" xml:space="preserve">
-    <value />
+    <value>מתעמעמת</value>
   </data>
   <data name="banner.mute.option.persistent" xml:space="preserve">
-    <value />
+    <value>קבועה</value>
   </data>
   <data name="switch.device.label" xml:space="preserve">
-    <value />
+    <value>החלפת התקן</value>
   </data>
   <data name="audioFileNotFoundCaption" xml:space="preserve">
     <value>קובץ שמע לא נמצא</value>
@@ -592,15 +592,27 @@
     <value>כמה זמן תישאר הכרזה על המסך בשניות.</value>
   </data>
   <data name="notification.banner.onscreen.time" xml:space="preserve">
-    <value>בו־זמנית</value>
+    <value>זמן על המסך</value>
   </data>
   <data name="notification" xml:space="preserve">
-    <value>התראה</value>
+    <value>התראות</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
-    <value />
+    <value>אפשרויות כרזה</value>
   </data>
   <data name="seconds" xml:space="preserve">
-    <value />
+    <value>שניות</value>
+  </data>
+  <data name="banner.mute" xml:space="preserve">
+    <value>מיקרופון מושתק</value>
+  </data>
+  <data name="banner.mute.tooltip" xml:space="preserve">
+    <value>הצגת כרזה כשהמיקרופון מושתק או לא מושתק. קבועה זה אומר שהיא תמיד תופיע על המסך בזמן שהמיקרופון מושתק</value>
+  </data>
+  <data name="microphone.off" xml:space="preserve">
+    <value>מיקרופון כבוי</value>
+  </data>
+  <data name="microphone.on" xml:space="preserve">
+    <value>מיקרופון פועל</value>
   </data>
 </root>
