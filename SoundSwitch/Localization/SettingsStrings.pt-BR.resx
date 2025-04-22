@@ -526,13 +526,13 @@ Restaura o estado do sistema quando o aplicativo é fechado.</value>
     <value>Redefinir áudio por aplicativo</value>
   </data>
   <data name="banner.mute.option.fading" xml:space="preserve">
-    <value />
+    <value>Desvanecer</value>
   </data>
   <data name="banner.mute.option.persistent" xml:space="preserve">
-    <value />
+    <value>Persistente</value>
   </data>
   <data name="switch.device.label" xml:space="preserve">
-    <value />
+    <value>Trocar de dispositivo</value>
   </data>
   <data name="audioFileNotFoundCaption" xml:space="preserve">
     <value>Arquivo de áudio não encontrado</value>
@@ -556,12 +556,63 @@ Restaura o estado do sistema quando o aplicativo é fechado.</value>
     <value>Manter mesmo nível de volume ao alternar entre dispositivos</value>
   </data>
   <data name="notification" xml:space="preserve">
-    <value>Notificação</value>
+    <value>Notificações</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
-    <value />
+    <value>Opções do banner</value>
   </data>
   <data name="seconds" xml:space="preserve">
-    <value />
+    <value>segundos</value>
+  </data>
+  <data name="link.community" xml:space="preserve">
+    <value>Comunidade no Discord</value>
+  </data>
+  <data name="link.donate" xml:space="preserve">
+    <value>Doar</value>
+  </data>
+  <data name="link.help" xml:space="preserve">
+    <value>Discussão de ajuda</value>
+  </data>
+  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+    <value>Quanto tempo o banner permanece na tela, em segundos.</value>
+  </data>
+  <data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>Tempo na tela</value>
+  </data>
+  <data name="buttonReset" xml:space="preserve">
+    <value>Redefinir</value>
+  </data>
+  <data name="exportLogFiles" xml:space="preserve">
+    <value>Exportar arquivos de registro</value>
+  </data>
+  <data name="exportLogFiles.desc" xml:space="preserve">
+    <value>Exporta todos os arquivos de registro para um arquivo ZIP para posterior solução de problemas nas Discussões de Ajuda ou na Comunidade do Discord.</value>
+  </data>
+  <data name="buttonExport" xml:space="preserve">
+    <value>Exportar</value>
+  </data>
+  <data name="troubleshooting" xml:space="preserve">
+    <value>Solução de problemas</value>
+  </data>
+  <data name="banner.mute" xml:space="preserve">
+    <value>Microfone silenciado</value>
+  </data>
+  <data name="resetAudioDevices.desc" xml:space="preserve">
+    <value>Redefine a atribuição de dispositivos de áudio para programas especificados no Windows caso os dispositivos de áudio não sejam reatribuídos aos programas ao alternar dispositivos.</value>
+  </data>
+  <data name="troubleshooting.desc" xml:space="preserve">
+    <value>Se precisar de ajuda ou de mais soluções de problemas com o SoundSwitch, acesse o link Discussão de Ajuda ou Comunidade do Discord, ou nos ajude acessando o link Doar abaixo.</value>
+  </data>
+  <data name="banner.mute.tooltip" xml:space="preserve">
+    <value>Exibir banner quando o microfone estiver silenciado ou não. Persistente significa que ele estará sempre visível na tela quando silenciado</value>
+  </data>
+  <data name="position.option.center" xml:space="preserve">
+    <value>Centro</value>
+  </data>
+  <data name="microphone.on" xml:space="preserve">
+    <value>Microfone ligado</value>
+  </data>
+  <data name="microphone.off" xml:space="preserve">
+    <value>Microfone desligado</value>
   </data>
 </root>
