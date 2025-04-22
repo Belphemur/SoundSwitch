@@ -576,7 +576,7 @@ Restore the state of the system when the application is closed.</value>
   <data name="banner.mute.option.persistent" xml:space="preserve">
     <value>Persistent</value>
   </data>
-  <data name="switch.device.label" xml:space="preserve">
+  <data name="switchDevice" xml:space="preserve">
     <value>Switch device</value>
   </data>
   <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
@@ -593,5 +593,14 @@ Restore the state of the system when the application is closed.</value>
   </data>
   <data name="seconds" xml:space="preserve">
     <value>seconds</value>
+  </data>
+  <data name="openSettings" xml:space="preserve">
+    <value>Open settings</value>
+  </data>
+  <data name="iconDoubleClick.tooltip" xml:space="preserve">
+    <value>Select the action when double-clicking on the tray icon.</value>
+  </data>
+  <data name="iconDoubleClick" xml:space="preserve">
+    <value>Double-click action</value>
   </data>
 </root>

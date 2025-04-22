@@ -107,6 +107,8 @@ namespace SoundSwitch.UI.Forms
             muteHotKey = new SoundSwitch.UI.Component.HotKeyTextBox();
             muteHotKeyCheckbox = new System.Windows.Forms.CheckBox();
             switchDeviceLabel = new System.Windows.Forms.Label();
+            iconDoubleClickComboBox = new System.Windows.Forms.ComboBox();
+            iconDoubleClickLabel = new System.Windows.Forms.Label();
             tabControl.SuspendLayout();
             playbackTabPage.SuspendLayout();
             recordingTabPage.SuspendLayout();
@@ -584,9 +586,9 @@ namespace SoundSwitch.UI.Forms
             audioSettingsGroupBox.Controls.Add(tooltipOnHoverLabel);
             audioSettingsGroupBox.Controls.Add(tooltipInfoComboBox);
             audioSettingsGroupBox.Controls.Add(switchCommunicationDeviceCheckBox);
-            audioSettingsGroupBox.Location = new System.Drawing.Point(3, 99);
+            audioSettingsGroupBox.Location = new System.Drawing.Point(3, 165);
             audioSettingsGroupBox.Name = "audioSettingsGroupBox";
-            audioSettingsGroupBox.Size = new System.Drawing.Size(387, 352);
+            audioSettingsGroupBox.Size = new System.Drawing.Size(387, 286);
             audioSettingsGroupBox.TabIndex = 13;
             audioSettingsGroupBox.TabStop = false;
             audioSettingsGroupBox.Text = "Audio Settings";
@@ -661,12 +663,14 @@ namespace SoundSwitch.UI.Forms
             // 
             // basicSettingsGroupBox
             // 
+            basicSettingsGroupBox.Controls.Add(iconDoubleClickLabel);
+            basicSettingsGroupBox.Controls.Add(iconDoubleClickComboBox);
             basicSettingsGroupBox.Controls.Add(iconChangeLabel);
             basicSettingsGroupBox.Controls.Add(startWithWindowsCheckBox);
             basicSettingsGroupBox.Controls.Add(iconChangeChoicesComboBox);
             basicSettingsGroupBox.Location = new System.Drawing.Point(3, 3);
             basicSettingsGroupBox.Name = "basicSettingsGroupBox";
-            basicSettingsGroupBox.Size = new System.Drawing.Size(387, 90);
+            basicSettingsGroupBox.Size = new System.Drawing.Size(387, 156);
             basicSettingsGroupBox.TabIndex = 0;
             basicSettingsGroupBox.TabStop = false;
             basicSettingsGroupBox.Text = "Basic Settings";
@@ -956,6 +960,25 @@ namespace SoundSwitch.UI.Forms
             switchDeviceLabel.Text = "Switch device";
             switchDeviceLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // iconDoubleClickComboBox
+            // 
+            iconDoubleClickComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            iconDoubleClickComboBox.FormattingEnabled = true;
+            iconDoubleClickComboBox.Location = new System.Drawing.Point(167, 80);
+            iconDoubleClickComboBox.Name = "iconDoubleClickComboBox";
+            iconDoubleClickComboBox.Size = new System.Drawing.Size(182, 23);
+            iconDoubleClickComboBox.TabIndex = 28;
+            iconDoubleClickComboBox.SelectedIndexChanged += IconDoubleClickComboBox_SelectedIndexChanged;
+            // 
+            // iconDoubleClickLabel
+            // 
+            iconDoubleClickLabel.Location = new System.Drawing.Point(6, 80);
+            iconDoubleClickLabel.Name = "iconDoubleClickLabel";
+            iconDoubleClickLabel.Size = new System.Drawing.Size(155, 23);
+            iconDoubleClickLabel.TabIndex = 29;
+            iconDoubleClickLabel.Text = "Double Click Action";
+            iconDoubleClickLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // SettingsForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1078,5 +1101,7 @@ namespace SoundSwitch.UI.Forms
         private System.Windows.Forms.Label secondsLabel;
         private System.Windows.Forms.GroupBox bannerGroupBox;
         private System.Windows.Forms.GroupBox soundSwitchGroupBox;
+        private System.Windows.Forms.ComboBox iconDoubleClickComboBox;
+        private System.Windows.Forms.Label iconDoubleClickLabel;
     }
 }

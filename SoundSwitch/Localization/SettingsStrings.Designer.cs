@@ -426,6 +426,24 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Double-click action.
+        /// </summary>
+        internal static string iconDoubleClick {
+            get {
+                return ResourceManager.GetString("iconDoubleClick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the action when double-clicking on the tray icon..
+        /// </summary>
+        internal static string iconDoubleClick_tooltip {
+            get {
+                return ResourceManager.GetString("iconDoubleClick.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Keep SoundSwitch&apos;s System Tray Icon.
         /// </summary>
         internal static string keepSystemTrayIcon {
@@ -679,6 +697,15 @@ namespace SoundSwitch.Localization {
         internal static string notification_tooltip {
             get {
                 return ResourceManager.GetString("notification.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open settings.
+        /// </summary>
+        internal static string openSettings {
+            get {
+                return ResourceManager.GetString("openSettings", resourceCulture);
             }
         }
         
@@ -1290,9 +1317,9 @@ namespace SoundSwitch.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Switch device.
         /// </summary>
-        internal static string switch_device_label {
+        internal static string switchDevice {
             get {
-                return ResourceManager.GetString("switch.device.label", resourceCulture);
+                return ResourceManager.GetString("switchDevice", resourceCulture);
             }
         }
         

@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -459,7 +459,25 @@ Uygulama kapatıldığında cihazların eski durumunu geri getirir.</value>
   <data name="banner.mute.option.persistent" xml:space="preserve">
     <value />
   </data>
-  <data name="switch.device.label" xml:space="preserve">
+  <data name="switchDevice" xml:space="preserve">
+    <value />
+  </data>
+  <data name="notification" xml:space="preserve">
+    <value>Bildirim</value>
+  </data>
+  <data name="notification.bannerOptions" xml:space="preserve">
+    <value />
+  </data>
+  <data name="seconds" xml:space="preserve">
+    <value />
+  </data>
+  <data name="openSettings" xml:space="preserve">
+    <value />
+  </data>
+  <data name="iconDoubleClick.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="iconDoubleClick" xml:space="preserve">
     <value />
   </data>
   <data name="audioFileNotFoundCaption" xml:space="preserve">
@@ -470,14 +488,5 @@ Uygulama kapatıldığında cihazların eski durumunu geri getirir.</value>
   </data>
   <data name="notificationOptionNone" xml:space="preserve">
     <value>Bildirim yok</value>
-  </data>
-  <data name="notification" xml:space="preserve">
-    <value>Bildirim</value>
-  </data>
-  <data name="notification.bannerOptions" xml:space="preserve">
-    <value />
-  </data>
-  <data name="seconds" xml:space="preserve">
-    <value />
   </data>
 </root>

@@ -12,19 +12,11 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using SoundSwitch.Framework.Factory;
-using SoundSwitch.Framework.TrayIcon.Icon.Changer;
-
-namespace SoundSwitch.Framework.TrayIcon.Icon
+namespace SoundSwitch.Framework.TrayIcon.IconDoubleClick
 {
-    public class IconChangerFactory() : AbstractFactory<IconChangerEnum, IIconChanger>(Impl)
+    public enum IconDoubleClickEnum
     {
-        private static readonly IEnumImplList<IconChangerEnum, IIconChanger> Impl = new EnumImplList<IconChangerEnum, IIconChanger>()
-        {
-            new NeverIconIconChanger(),
-            new PlaybackIconChanger(),
-            new RecordingIconChanger(),
-            new AlwaysIconChanger()
-        };
+        SwitchDevice = 0,
+        OpenSettings = 1
     }
 }
