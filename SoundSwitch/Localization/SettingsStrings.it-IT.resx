@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -571,37 +571,37 @@ Ripristina lo stato del sistema quando l'applicazione viene chiusa.</value>
     <value>Mostra un banner persistente quando il microfono è disattivato</value>
   </data>
   <data name="banner.mute.option.fading" xml:space="preserve">
-    <value />
+    <value>Dissolvenza</value>
   </data>
   <data name="banner.mute.option.persistent" xml:space="preserve">
-    <value />
+    <value>Persistente</value>
   </data>
   <data name="switchDevice" xml:space="preserve">
-    <value />
+    <value>Cambia dispositivo</value>
   </data>
   <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
     <value>Per quanti secondi il banner deve rimanere visibile sullo schermo.</value>
   </data>
   <data name="notification.banner.onscreen.time" xml:space="preserve">
-    <value>Tempo di visualizzazione</value>
+    <value>Tempo visualizzazione</value>
   </data>
   <data name="notification" xml:space="preserve">
     <value>Notifiche</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
-    <value />
+    <value>Opzioni banner</value>
   </data>
   <data name="seconds" xml:space="preserve">
-    <value />
+    <value>secondi</value>
   </data>
   <data name="openSettings" xml:space="preserve">
-    <value />
+    <value>Apri impostazioni</value>
   </data>
   <data name="iconDoubleClick.tooltip" xml:space="preserve">
-    <value />
+    <value>Seleziona l'azione del doppio clic sull'icona della barra di sistema.</value>
   </data>
   <data name="iconDoubleClick" xml:space="preserve">
-    <value />
+    <value>Azione doppio clic</value>
   </data>
   <data name="audioFileNotFoundCaption" xml:space="preserve">
     <value>File audio non trovato</value>
