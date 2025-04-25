@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -577,7 +577,7 @@ Gjenopprett systemets tilstand når programmet lukkes.</value>
     <value />
   </data>
   <data name="switchDevice" xml:space="preserve">
-    <value />
+    <value>Bytt enhet</value>
   </data>
   <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
     <value>Hvor lenge banneret skal vises på skjermen i sekunder.</value>
@@ -586,22 +586,22 @@ Gjenopprett systemets tilstand når programmet lukkes.</value>
     <value>Tid på skjermen</value>
   </data>
   <data name="notification" xml:space="preserve">
-    <value>Merknad</value>
+    <value>Notifikasjoner</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
     <value />
   </data>
   <data name="seconds" xml:space="preserve">
-    <value />
+    <value>sekunder</value>
   </data>
   <data name="openSettings" xml:space="preserve">
-    <value />
+    <value>Åpne innstillinger</value>
   </data>
   <data name="iconDoubleClick.tooltip" xml:space="preserve">
-    <value />
+    <value>Velg hva du vil skal skje når systemkurvikonet dobbeltklikkes.</value>
   </data>
   <data name="iconDoubleClick" xml:space="preserve">
-    <value />
+    <value>Handling ved dobbeltklikk</value>
   </data>
   <data name="audioFileNotFoundCaption" xml:space="preserve">
     <value>Lydfil ble ikke funnet</value>
