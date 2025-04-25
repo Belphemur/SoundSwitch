@@ -603,13 +603,4 @@ Banner: Χρησιμοποιεί ένα προσαρμοσμένο πλαίσι�
   <data name="iconDoubleClick" xml:space="preserve">
     <value />
   </data>
-  <data name="audioFileNotFoundCaption" xml:space="preserve">
-    <value>Το αρχείο ήχου δεν βρέθηκε</value>
-  </data>
-  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-    <value>Καμία επεξήγηση</value>
-  </data>
-  <data name="notificationOptionNone" xml:space="preserve">
-    <value>Καμία ειδοποίηση</value>
-  </data>
 </root>

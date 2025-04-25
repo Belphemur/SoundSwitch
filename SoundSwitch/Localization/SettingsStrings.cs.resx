@@ -241,6 +241,9 @@ Okno: Používá přizpůsobené okno, které je vždy navrchu – užitečné p
   <data name="audioFileNotFound" xml:space="preserve">
     <value>Vybraný soubor se zvukem oznámení nebyl nalezen. SoundSwitch přepnul nastavení oznámení zpět na volbu {0}.</value>
   </data>
+  <data name="audioFileNotFound.caption" xml:space="preserve">
+    <value>Zvukový soubor nenalezen</value>
+  </data>
   <data name="activeRecording" xml:space="preserve">
     <value>Nahrát: {0}</value>
   </data>
@@ -465,8 +468,14 @@ Po zavření aplikace obnovte stav systému.</value>
   <data name="telemetry" xml:space="preserve">
     <value>Telemetrie</value>
   </data>
+  <data name="telemetry.tooltip" xml:space="preserve">
+    <value>Anonymně shromažďovat údaj o použité verzi SoundSwitch.  Sdíleno jen s vývojářem SoundSwitch.</value>
+  </data>
   <data name="quickMenu" xml:space="preserve">
     <value>Rychlá nabídka na klávesovou zkratku</value>
+  </data>
+  <data name="quickMenu.tooltip" xml:space="preserve">
+    <value>Při použití zkratky zobrazí rychlou nabídku jako je nabídka jazyků Windows</value>
   </data>
   <data name="devices.autoAddNewDevice" xml:space="preserve">
     <value>Automaticky vybrat nová zařízení</value>
@@ -584,20 +593,5 @@ Po zavření aplikace obnovte stav systému.</value>
   </data>
   <data name="iconDoubleClick" xml:space="preserve">
     <value />
-  </data>
-  <data name="audioFileNotFoundCaption" xml:space="preserve">
-    <value>Zvukový soubor nenalezen</value>
-  </data>
-  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-    <value>Bez popisku</value>
-  </data>
-  <data name="notificationOptionNone" xml:space="preserve">
-    <value>Žádné oznámení</value>
-  </data>
-  <data name="quickMenu.desc" xml:space="preserve">
-    <value>Při použití zkratky zobrazí rychlou nabídku jako je nabídka jazyků Windows</value>
-  </data>
-  <data name="telemetry.desc" xml:space="preserve">
-    <value>Anonymně shromažďovat údaj o použité verzi SoundSwitch.  Sdíleno jen s vývojářem SoundSwitch.</value>
   </data>
 </root>

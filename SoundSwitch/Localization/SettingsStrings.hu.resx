@@ -241,6 +241,9 @@ Banner: folyamatosan előtérben megjelenő értesítés, ami hasznos játékok 
   <data name="audioFileNotFound" xml:space="preserve">
     <value>A kiválasztott hangfájl nem található. A Soundswitch visszaállt {0} értesítésre.</value>
   </data>
+  <data name="audioFileNotFound.caption" xml:space="preserve">
+    <value>Hangfájl nem található</value>
+  </data>
   <data name="activeRecording" xml:space="preserve">
     <value>Felv: {0}</value>
   </data>
@@ -488,17 +491,5 @@ Előző állapot visszaállításra kerül, ha a program bezáródik.</value>
   </data>
   <data name="iconDoubleClick" xml:space="preserve">
     <value />
-  </data>
-  <data name="audioFileNotFoundCaption" xml:space="preserve">
-    <value>Hangfájl nem található</value>
-  </data>
-  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-    <value>Nincsenek tippek</value>
-  </data>
-  <data name="notificationOptionNone" xml:space="preserve">
-    <value>Nincs értesítés</value>
-  </data>
-  <data name="telemetry.desc" xml:space="preserve">
-    <value>Információkat gyűjt a SoundSwitch jelenlegi verziójáról. Csak a SoundSwitch fejlesztőivel van megosztva.</value>
   </data>
 </root>
