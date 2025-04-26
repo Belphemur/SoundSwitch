@@ -603,25 +603,4 @@ Ripristina lo stato del sistema quando l'applicazione viene chiusa.</value>
   <data name="iconDoubleClick" xml:space="preserve">
     <value>Azione doppio clic</value>
   </data>
-  <data name="audioFileNotFoundCaption" xml:space="preserve">
-    <value>File audio non trovato</value>
-  </data>
-  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-    <value>Nessun suggerimento</value>
-  </data>
-  <data name="notificationOptionNone" xml:space="preserve">
-    <value>Nessuna notifica</value>
-  </data>
-  <data name="quickMenu.desc" xml:space="preserve">
-    <value>Visualizza un menu rapido come la lingua di Windows quando usi un tasto di scelta rapida</value>
-  </data>
-  <data name="telemetry.desc" xml:space="preserve">
-    <value>Raccogli in modo anonimo quale versione di SoundSwitch è in uso. Info condivisa solo con lo sviluppatore di SoundSwitch.</value>
-  </data>
-  <data name="devices.AutoAddNewDevice..tooltip" xml:space="preserve">
-    <value>Aggiungi automaticamente un nuovo dispositivo all'elenco selezionato quando sono collegati al computer</value>
-  </data>
-  <data name="keepVolume.desc" xml:space="preserve">
-    <value>Quando cambi dispositivo mantieni lo stesso volume</value>
-  </data>
 </root>

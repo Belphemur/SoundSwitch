@@ -591,25 +591,4 @@ Obnovi stanje sustava kad se program zatvori.</value>
   <data name="iconDoubleClick" xml:space="preserve">
     <value />
   </data>
-  <data name="audioFileNotFoundCaption" xml:space="preserve">
-    <value>Audio datoteka nije pronađena</value>
-  </data>
-  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-    <value>Bez savjeta</value>
-  </data>
-  <data name="notificationOptionNone" xml:space="preserve">
-    <value>Bez obavijesti</value>
-  </data>
-  <data name="quickMenu.desc" xml:space="preserve">
-    <value>Prikaži brzi izbornik kad koristiš prečac (slično Windows izborniku jezika)</value>
-  </data>
-  <data name="telemetry.desc" xml:space="preserve">
-    <value>Prikupi anonimno koja se verzija programa koristi. Podatak će biti dostupan jedino programeru SoundSwitch-a.</value>
-  </data>
-  <data name="devices.AutoAddNewDevice..tooltip" xml:space="preserve">
-    <value>Automatski dodaj novi uređaj u popis odabira kad je spojen s računalom</value>
-  </data>
-  <data name="keepVolume.desc" xml:space="preserve">
-    <value>Zadrži istu glasnoću pri mijenjanju uređaja</value>
-  </data>
 </root>

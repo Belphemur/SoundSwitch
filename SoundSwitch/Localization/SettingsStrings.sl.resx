@@ -241,6 +241,9 @@ Pasica: Uporablja vedno prikazan,prilagojeni okvir na zaslonu - uporaben za upor
   <data name="audioFileNotFound" xml:space="preserve">
     <value>Zvočne datoteke, ki ste jo izbrali za uporabo kot obvestilo, ni mogoče najti. SoundSwitch je nastavitev obvestila preklopil nazaj na {0}.</value>
   </data>
+  <data name="audioFileNotFound.caption" xml:space="preserve">
+    <value>Zvočna datoteka ni bila najdena</value>
+  </data>
   <data name="activeRecording" xml:space="preserve">
     <value>Snemaj: {0}</value>
   </data>
@@ -465,14 +468,26 @@ Obnovi stanje sistema, ko se program zapre.</value>
   <data name="telemetry" xml:space="preserve">
     <value>Telemetrija</value>
   </data>
+  <data name="telemetry.tooltip" xml:space="preserve">
+    <value>Anonimno zberi, katera različica SoundSwitch je v uporabi. Deljeno le z razvijalcem SoundSwitcha.</value>
+  </data>
   <data name="quickMenu" xml:space="preserve">
     <value>Hitri meni na vroči tipki</value>
+  </data>
+  <data name="quickMenu.tooltip" xml:space="preserve">
+    <value>Prikaži hitri meni, kot je jezik Windows, pri uporabi vroče tipke</value>
   </data>
   <data name="keepVolume" xml:space="preserve">
     <value>Obdrži raven glasnosti v vseh napravah</value>
   </data>
+  <data name="keepVolume.tooltip" xml:space="preserve">
+    <value>Pri menjavi predvajalnih naprav obdrži enako glasnost</value>
+  </data>
   <data name="devices.autoAddNewDevice" xml:space="preserve">
     <value>Samodejno izberi nove naprave</value>
+  </data>
+  <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
+    <value>Samodejno dodaj nove naprave na izbrani seznam, ko so povezane z računalnikom</value>
   </data>
   <data name="resetAudioDevices" xml:space="preserve">
     <value>Ponastavi zvok na aplikacijo</value>
@@ -503,26 +518,5 @@ Obnovi stanje sistema, ko se program zapre.</value>
   </data>
   <data name="iconDoubleClick" xml:space="preserve">
     <value />
-  </data>
-  <data name="audioFileNotFoundCaption" xml:space="preserve">
-    <value>Zvočna datoteka ni bila najdena</value>
-  </data>
-  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-    <value>Brez namiga</value>
-  </data>
-  <data name="notificationOptionNone" xml:space="preserve">
-    <value>Brez obvestila</value>
-  </data>
-  <data name="quickMenu.desc" xml:space="preserve">
-    <value>Prikaži hitri meni, kot je jezik Windows, pri uporabi vroče tipke</value>
-  </data>
-  <data name="telemetry.desc" xml:space="preserve">
-    <value>Anonimno zberi, katera različica SoundSwitch je v uporabi. Deljeno le z razvijalcem SoundSwitcha.</value>
-  </data>
-  <data name="devices.AutoAddNewDevice..tooltip" xml:space="preserve">
-    <value>Samodejno dodaj nove naprave na izbrani seznam, ko so povezane z računalnikom</value>
-  </data>
-  <data name="keepVolume.desc" xml:space="preserve">
-    <value>Pri menjavi predvajalnih naprav obdrži enako glasnost</value>
   </data>
 </root>

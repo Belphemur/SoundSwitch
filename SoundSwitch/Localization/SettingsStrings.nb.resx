@@ -603,19 +603,4 @@ Gjenopprett systemets tilstand når programmet lukkes.</value>
   <data name="iconDoubleClick" xml:space="preserve">
     <value>Handling ved dobbeltklikk</value>
   </data>
-  <data name="audioFileNotFoundCaption" xml:space="preserve">
-    <value>Lydfil ble ikke funnet</value>
-  </data>
-  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-    <value>Uten verktøystips</value>
-  </data>
-  <data name="notificationOptionNone" xml:space="preserve">
-    <value>Uten merknad</value>
-  </data>
-  <data name="quickMenu.desc" xml:space="preserve">
-    <value>Vis en hurtigmeny lik Windows language ved bruk av hurtigtast</value>
-  </data>
-  <data name="telemetry.desc" xml:space="preserve">
-    <value>Hent anonym innmelding av hvilken versjon av SoundSwitch som brukes. Deles kun med utvikleren av SoundSwitch.</value>
-  </data>
 </root>
