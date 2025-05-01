@@ -583,13 +583,13 @@ Gjenopprett systemets tilstand når programmet lukkes.</value>
     <value>Hvor lenge banneret skal vises på skjermen i sekunder.</value>
   </data>
   <data name="notification.banner.onscreen.time" xml:space="preserve">
-    <value>Tid på skjermen</value>
+    <value>Tid vist på skjermen</value>
   </data>
   <data name="notification" xml:space="preserve">
     <value>Notifikasjoner</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
-    <value />
+    <value>Banner-innstillinger</value>
   </data>
   <data name="seconds" xml:space="preserve">
     <value>sekunder</value>
