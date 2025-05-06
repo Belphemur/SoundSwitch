@@ -113,7 +113,7 @@ namespace SoundSwitch.Common.Framework.Audio.Device
                 }
 
                 // Subscribe to notifications
-                deviceAudioEndpointVolume.OnVolumeNotification += DeviceAudioEndpointVolumeOnOnVolumeNotification;
+                deviceAudioEndpointVolume.OnVolumeNotification += DeviceOnVolumeNotification;
                 _isVolumeHandlerSubscribed = true;
                 _logger.Information("Successfully subscribed to volume notifications for active device {DeviceNameClean}", NameClean);
             }
@@ -127,7 +127,7 @@ namespace SoundSwitch.Common.Framework.Audio.Device
             }
         }
 
-        private void DeviceAudioEndpointVolumeOnOnVolumeNotification(AudioVolumeNotificationData data)
+        private void DeviceOnVolumeNotification(AudioVolumeNotificationData data)
         {
             // Store previous values before updating
             var previousVolume = Volume;
@@ -171,7 +171,7 @@ namespace SoundSwitch.Common.Framework.Audio.Device
                 // Unsubscribe only if we successfully subscribed
                 if (_isVolumeHandlerSubscribed && _device?.AudioEndpointVolume != null)
                 {
-                    _device.AudioEndpointVolume.OnVolumeNotification -= DeviceAudioEndpointVolumeOnOnVolumeNotification;
+                    _device.AudioEndpointVolume.OnVolumeNotification -= DeviceOnVolumeNotification;
                     _isVolumeHandlerSubscribed = false; // Mark as unsubscribed
                     _logger.Debug("Unsubscribed from volume notifications for device {DeviceNameClean}", NameClean);
                 }
