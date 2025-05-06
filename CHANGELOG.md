@@ -1,3 +1,48 @@
+## [6.14.0-beta.2](https://github.com/Belphemur/SoundSwitch/compare/v6.14.0-beta.1...v6.14.0-beta.2) (2025-05-06)
+
+### Languages
+
+* **Arabic:** Translated Settings using Weblate ([2c29b85](https://github.com/Belphemur/SoundSwitch/commit/2c29b85d911cd77947463993d4b4c01bbbf8f8fc))
+* **Bulgarian:** Translated Settings using Weblate ([3a4656c](https://github.com/Belphemur/SoundSwitch/commit/3a4656cc5a913df71e3e945187adb30f382ec0e3))
+* **Chinese (Simplified Han script):** Translated Settings using Weblate ([2175efc](https://github.com/Belphemur/SoundSwitch/commit/2175efc3bb1fb7aa5bc19aeb488688692e22e2fe))
+* **Chinese (Traditional Han script):** Translated Settings using Weblate ([f81ce81](https://github.com/Belphemur/SoundSwitch/commit/f81ce81ad16d931e021a3b8a6ed16f08eddbd7da))
+* **Croatian:** Translated Settings using Weblate ([a8ca4d2](https://github.com/Belphemur/SoundSwitch/commit/a8ca4d2378076c43a9cdad48537d288309c5a47f))
+* **Czech:** Translated Settings using Weblate ([5f792a6](https://github.com/Belphemur/SoundSwitch/commit/5f792a6fee79216bb875fd6425c780fb3155fa8d))
+* **Danish:** Translated Settings using Weblate ([ee3a78c](https://github.com/Belphemur/SoundSwitch/commit/ee3a78c72387626fab1e13d220ead18fdd31b836))
+* **Dutch:** Translated Settings using Weblate ([1ef9918](https://github.com/Belphemur/SoundSwitch/commit/1ef991847100115f86aa7f967262ec62dd766c30))
+* **French:** Translated Settings using Weblate ([ae5e32c](https://github.com/Belphemur/SoundSwitch/commit/ae5e32c7243155681d41c754cb311c69539b401e))
+* **German:** Translated Settings using Weblate ([40deacd](https://github.com/Belphemur/SoundSwitch/commit/40deacd095e2fa2119f1877ec5c44ecc932b83a3))
+* **Greek:** Translated Settings using Weblate ([0aa6656](https://github.com/Belphemur/SoundSwitch/commit/0aa6656cb5781127531ba5f4b97828b08ddc77e1))
+* **Hebrew:** Translated Settings using Weblate ([9c4c254](https://github.com/Belphemur/SoundSwitch/commit/9c4c254c259f0898fc65965dc872f8ceafb2cf02))
+* **Hebrew:** Translated Settings using Weblate ([df461d6](https://github.com/Belphemur/SoundSwitch/commit/df461d699a4f8c26795cba6d0463309f442fcb2d))
+* **Hungarian:** Translated Settings using Weblate ([6a6ff2b](https://github.com/Belphemur/SoundSwitch/commit/6a6ff2bb2f6818bfdbf348918782bcbca09afa2c))
+* **Italian:** Translated Settings using Weblate ([72763ea](https://github.com/Belphemur/SoundSwitch/commit/72763ea08cfb131bb82b6e79b50f23704a8f8ff9))
+* **Italian:** Translated Settings using Weblate ([8d6f52b](https://github.com/Belphemur/SoundSwitch/commit/8d6f52b46c5ecf91e589b8a26b5d9b127a9e8eff))
+* **Japanese:** Translated Settings using Weblate ([dc8aa59](https://github.com/Belphemur/SoundSwitch/commit/dc8aa59f7b4952d9e15ec03c7013ba16c7895f9b))
+* **Korean:** Translated Settings using Weblate ([1251740](https://github.com/Belphemur/SoundSwitch/commit/1251740978fac4a6b6f1f49e430e3252696c066c))
+* **Norwegian Bokmål:** Translated Settings using Weblate ([263ff53](https://github.com/Belphemur/SoundSwitch/commit/263ff5385d8998fb9ea64f50e418058513fa9df9))
+* **Norwegian Bokmål:** Translated Settings using Weblate ([f087a20](https://github.com/Belphemur/SoundSwitch/commit/f087a200cc0a7852f251724cec503f92d24b79ce))
+* **Norwegian Bokmål:** Translated Settings using Weblate ([be6a36d](https://github.com/Belphemur/SoundSwitch/commit/be6a36d485a825f30a8f858f9b0e47bb440361a0))
+* **Polish:** Translated Settings using Weblate ([99dcf0b](https://github.com/Belphemur/SoundSwitch/commit/99dcf0b010a2db111c9800eb3b5444eb3204a8db))
+* **Portuguese (Brazil):** Translated Settings using Weblate ([b73e5b2](https://github.com/Belphemur/SoundSwitch/commit/b73e5b25ef0008bd96c6d056f0313fc1e26a6819))
+* **Portuguese (Brazil):** Translated Settings using Weblate ([ee81ba4](https://github.com/Belphemur/SoundSwitch/commit/ee81ba4af2e62462c926c00a36fdeea26e5d7e4a))
+* **Portuguese (Brazil):** Translated Settings using Weblate ([9342c9d](https://github.com/Belphemur/SoundSwitch/commit/9342c9d414a97613b0eb0ddad9f2698ac288e3aa))
+* **Portuguese:** Translated Settings using Weblate ([dec3dc3](https://github.com/Belphemur/SoundSwitch/commit/dec3dc33eeecbd23aed80a0a25aa0db1a2394b13))
+* **Russian:** Translated Settings using Weblate ([12dbe7b](https://github.com/Belphemur/SoundSwitch/commit/12dbe7b891b481fcf35ec5e8011bdef264f9b84a))
+* **Russian:** Translated Settings using Weblate ([87f494a](https://github.com/Belphemur/SoundSwitch/commit/87f494ae02432d39166ae02daede399d2b9916e7))
+* **Serbian:** Translated Settings using Weblate ([8e60d30](https://github.com/Belphemur/SoundSwitch/commit/8e60d3050aa9ad0567824ec6c8b858450271ecc5))
+* **Slovenian:** Translated Settings using Weblate ([19e9405](https://github.com/Belphemur/SoundSwitch/commit/19e940514d13dc7e85de839c722be93f509fe6f4))
+* **Spanish:** Translated Settings using Weblate ([05065ac](https://github.com/Belphemur/SoundSwitch/commit/05065accd6daa02152e49e5577205896eea5c2e9))
+* **Swedish:** Translated Settings using Weblate ([607c843](https://github.com/Belphemur/SoundSwitch/commit/607c843d4b11c22b1e1872ac1f410ddfb2c60244))
+* **Tamil:** Translated Settings using Weblate ([66a6be0](https://github.com/Belphemur/SoundSwitch/commit/66a6be001751e87bcdd4cd7cd2a0f588aed8ff1c))
+* **Thai:** Translated Settings using Weblate ([e6bb066](https://github.com/Belphemur/SoundSwitch/commit/e6bb066b7ed1a9a9da34574ff866aafb38a280fe))
+* **Turkish:** Translated Settings using Weblate ([30a2747](https://github.com/Belphemur/SoundSwitch/commit/30a274710627a1c6f2af4b76a07851b3ecb98306))
+* **Ukrainian:** Translated Settings using Weblate ([a0ec425](https://github.com/Belphemur/SoundSwitch/commit/a0ec425959ada37f72dd8ac20bab86199f9c5f9e))
+
+### Bug Fixes
+
+* NotifyIcon.MouseDoubleClick() ([08405c8](https://github.com/Belphemur/SoundSwitch/commit/08405c8e700f265dc2a2b2d84d09544d43a14dd2))
+
 ## [6.14.0-beta.1](https://github.com/Belphemur/SoundSwitch/compare/v6.13.0...v6.14.0-beta.1) (2025-04-21)
 
 ### Enhancements
