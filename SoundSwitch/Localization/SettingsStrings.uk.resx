@@ -564,29 +564,8 @@
   <data name="banner.mute.option.persistent" xml:space="preserve">
     <value />
   </data>
-  <data name="switch.device.label" xml:space="preserve">
+  <data name="switchDevice" xml:space="preserve">
     <value />
-  </data>
-  <data name="audioFileNotFoundCaption" xml:space="preserve">
-    <value>Звуковий файл не знайдено</value>
-  </data>
-  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-    <value>Без підказок</value>
-  </data>
-  <data name="notificationOptionNone" xml:space="preserve">
-    <value>Без сповіщень</value>
-  </data>
-  <data name="quickMenu.desc" xml:space="preserve">
-    <value>Відображати швидке меню на кшталт перемикання мов у Windows при використанні гарячої клавіші</value>
-  </data>
-  <data name="telemetry.desc" xml:space="preserve">
-    <value>Анонімно збирати інформацію про те, яка версія SoundSwitch використовується. Інформація буде доступна лише розробнику SoundSwitch.</value>
-  </data>
-  <data name="devices.AutoAddNewDevice..tooltip" xml:space="preserve">
-    <value>Автоматичне додавання нових пристроїв до обраного списку при їх підключенні до комп'ютера</value>
-  </data>
-  <data name="keepVolume.desc" xml:space="preserve">
-    <value>Зберігати однаковий рівень гучності під час перемикання пристроїв відтворення</value>
   </data>
   <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
     <value>Скільки буде відображатися банер на екрані в секундах.</value>
@@ -601,6 +580,15 @@
     <value />
   </data>
   <data name="seconds" xml:space="preserve">
+    <value />
+  </data>
+  <data name="openSettings" xml:space="preserve">
+    <value />
+  </data>
+  <data name="iconDoubleClick.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="iconDoubleClick" xml:space="preserve">
     <value />
   </data>
 </root>

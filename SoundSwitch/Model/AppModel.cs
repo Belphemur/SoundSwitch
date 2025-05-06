@@ -36,6 +36,7 @@ using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Profile.Trigger;
 using SoundSwitch.Framework.Threading;
+using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.Updater.Job;
 using SoundSwitch.Framework.WinApi;
@@ -52,7 +53,7 @@ namespace SoundSwitch.Model
         private readonly NotificationManager _notificationManager;
         private UpdateChecker _updateChecker;
         private DeviceCollection<DeviceInfo> _selectedDevices;
-        private readonly BannerPositionFactory _bannerPositionFactory = new BannerPositionFactory();
+        private readonly BannerPositionFactory _bannerPositionFactory = new();
 
         private AppModel()
         {
@@ -176,6 +177,16 @@ namespace SoundSwitch.Model
                 AppConfigs.Configuration.Save();
                 BannerSettingsChanged?.Invoke(this,
                     new BannerDataChangedEvent(BannerPosition, BannerPosition, BannerOnScreenTime, BannerOnScreenTime, prevValue, value));
+            }
+        }
+
+        public IconDoubleClickEnum IconDoubleClick
+        {
+            get => AppConfigs.Configuration.IconDoubleClick;
+            set
+            {
+                AppConfigs.Configuration.IconDoubleClick = value;
+                AppConfigs.Configuration.Save();
             }
         }
 

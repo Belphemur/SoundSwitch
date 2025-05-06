@@ -576,26 +576,8 @@
   <data name="banner.mute.option.persistent" xml:space="preserve">
     <value />
   </data>
-  <data name="switch.device.label" xml:space="preserve">
+  <data name="switchDevice" xml:space="preserve">
     <value />
-  </data>
-  <data name="audioFileNotFoundCaption" xml:space="preserve">
-    <value>找不到音频文件</value>
-  </data>
-  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-    <value>没有工具提示</value>
-  </data>
-  <data name="notificationOptionNone" xml:space="preserve">
-    <value>没有通知</value>
-  </data>
-  <data name="quickMenu.desc" xml:space="preserve">
-    <value>按下快捷键时展示类似 Winodws 语言切换的快捷菜单</value>
-  </data>
-  <data name="telemetry.desc" xml:space="preserve">
-    <value>匿名地收集正在使用的SoundSwitch的版本。只与SoundSwitch的开发者分享。</value>
-  </data>
-  <data name="devices.AutoAddNewDevice..tooltip" xml:space="preserve">
-    <value>当新设备连接到电脑时，自动添加到选择列表</value>
   </data>
   <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
     <value>横幅在屏幕上停留的秒数。</value>
@@ -610,6 +592,15 @@
     <value />
   </data>
   <data name="seconds" xml:space="preserve">
+    <value />
+  </data>
+  <data name="openSettings" xml:space="preserve">
+    <value />
+  </data>
+  <data name="iconDoubleClick.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="iconDoubleClick" xml:space="preserve">
     <value />
   </data>
 </root>

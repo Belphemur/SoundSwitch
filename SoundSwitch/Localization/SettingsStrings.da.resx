@@ -378,6 +378,9 @@ Begge: Når enhver type enhed skiftes.</value>
   <data name="telemetry" xml:space="preserve">
     <value>Telemetri</value>
   </data>
+  <data name="telemetry.tooltip" xml:space="preserve">
+    <value>Indsaml anonymt hvilken version af SoundSwitch der bruges. Deles kun med SoundSwitch udvikleren.</value>
+  </data>
   <data name="quickMenu" xml:space="preserve">
     <value>Hurtigmenu ved genvejstast</value>
   </data>
@@ -471,23 +474,8 @@ Begge: Når enhver type enhed skiftes.</value>
   <data name="banner.mute.option.persistent" xml:space="preserve">
     <value />
   </data>
-  <data name="switch.device.label" xml:space="preserve">
+  <data name="switchDevice" xml:space="preserve">
     <value />
-  </data>
-  <data name="audioFileNotFoundCaption" xml:space="preserve">
-    <value>Lydfil ikke fundet</value>
-  </data>
-  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-    <value>Ingen værktøjstip</value>
-  </data>
-  <data name="notificationOptionNone" xml:space="preserve">
-    <value>Ingen notifikation</value>
-  </data>
-  <data name="quickMenu.desc" xml:space="preserve">
-    <value>Vis en hurtigmenu (ligesom Windows sprogmenu) når en genvejstast bruges</value>
-  </data>
-  <data name="telemetry.desc" xml:space="preserve">
-    <value>Indsaml anonymt hvilken version af SoundSwitch der bruges. Deles kun med SoundSwitch udvikleren.</value>
   </data>
   <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
     <value>Hvor længe banneret skal vises på skærmen i sekunder.</value>
@@ -502,6 +490,15 @@ Begge: Når enhver type enhed skiftes.</value>
     <value />
   </data>
   <data name="seconds" xml:space="preserve">
+    <value />
+  </data>
+  <data name="openSettings" xml:space="preserve">
+    <value />
+  </data>
+  <data name="iconDoubleClick.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="iconDoubleClick" xml:space="preserve">
     <value />
   </data>
 </root>

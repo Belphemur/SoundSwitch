@@ -507,23 +507,8 @@
   <data name="banner.mute.option.persistent" xml:space="preserve">
     <value />
   </data>
-  <data name="switch.device.label" xml:space="preserve">
+  <data name="switchDevice" xml:space="preserve">
     <value />
-  </data>
-  <data name="audioFileNotFoundCaption" xml:space="preserve">
-    <value>ไม่พบไฟล์เสียง</value>
-  </data>
-  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-    <value>ปิดคำอธิบาย</value>
-  </data>
-  <data name="notificationOptionNone" xml:space="preserve">
-    <value>ไม่แจ้งเตือน</value>
-  </data>
-  <data name="quickMenu.desc" xml:space="preserve">
-    <value>แสดงเมนูด่วน เหมือน การเปลี่ยนภาษาของ Windows เมื่อใช้ปุ่มลัด</value>
-  </data>
-  <data name="telemetry.desc" xml:space="preserve">
-    <value>ส่งข้อมูลเวอร์ชั่น SoundSwitch ที่ใช้งานแบบนิรนาม, ส่งให้กับผู้พัฒนา SoundSwitch เท่านั้น</value>
   </data>
   <data name="notification" xml:space="preserve">
     <value>การแจ้งเตือน</value>
@@ -532,6 +517,15 @@
     <value />
   </data>
   <data name="seconds" xml:space="preserve">
+    <value />
+  </data>
+  <data name="openSettings" xml:space="preserve">
+    <value />
+  </data>
+  <data name="iconDoubleClick.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="iconDoubleClick" xml:space="preserve">
     <value />
   </data>
 </root>

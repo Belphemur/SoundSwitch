@@ -450,8 +450,14 @@ Herstel systeemstatus wanneer de applicatie wordt gesloten.</value>
   <data name="telemetry" xml:space="preserve">
     <value>Telemetrie</value>
   </data>
+  <data name="telemetry.tooltip" xml:space="preserve">
+    <value>Verzend anoniem welke versie van SoundSwitch in gebruik is. Alleen gedeeld met de ontwikkelaars van SoundSwitch.</value>
+  </data>
   <data name="quickMenu" xml:space="preserve">
     <value>Snelmenu door sneltoets</value>
+  </data>
+  <data name="quickMenu.tooltip" xml:space="preserve">
+    <value>Laat een snelmenu zien (als Windows-Taal) bij gebruik van een sneltoets</value>
   </data>
   <data name="keepVolume" xml:space="preserve">
     <value>Behoud volume nivo tussen apparaten</value>
@@ -461,6 +467,9 @@ Herstel systeemstatus wanneer de applicatie wordt gesloten.</value>
   </data>
   <data name="devices.autoAddNewDevice" xml:space="preserve">
     <value>Automatische selectie van nieuwe apparaten</value>
+  </data>
+  <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
+    <value>Voeg automatisch nieuw apparaat toe aan de geselecteerde lijst wanneer het op de computer is aangesloten</value>
   </data>
   <data name="position" xml:space="preserve">
     <value>Positie</value>
@@ -492,29 +501,8 @@ Herstel systeemstatus wanneer de applicatie wordt gesloten.</value>
   <data name="banner.mute.option.persistent" xml:space="preserve">
     <value />
   </data>
-  <data name="switch.device.label" xml:space="preserve">
+  <data name="switchDevice" xml:space="preserve">
     <value />
-  </data>
-  <data name="audioFileNotFoundCaption" xml:space="preserve">
-    <value>Geluidsbestand is niet gevonden</value>
-  </data>
-  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-    <value>Geen knopinfo</value>
-  </data>
-  <data name="notificationOptionNone" xml:space="preserve">
-    <value>Geen melding</value>
-  </data>
-  <data name="quickMenu.desc" xml:space="preserve">
-    <value>Laat een snelmenu zien (als Windows-Taal) bij gebruik van een sneltoets</value>
-  </data>
-  <data name="telemetry.desc" xml:space="preserve">
-    <value>Verzend anoniem welke versie van SoundSwitch in gebruik is. Alleen gedeeld met de ontwikkelaars van SoundSwitch.</value>
-  </data>
-  <data name="devices.AutoAddNewDevice..tooltip" xml:space="preserve">
-    <value>Voeg automatisch nieuw apparaat toe aan de geselecteerde lijst wanneer het op de computer is aangesloten</value>
-  </data>
-  <data name="keepVolume.desc" xml:space="preserve">
-    <value>Behoudt hetzelfde volume nivo wanneer tussen apparaten wordt omgeschakeld</value>
   </data>
   <data name="notification" xml:space="preserve">
     <value>Melding</value>
@@ -523,6 +511,15 @@ Herstel systeemstatus wanneer de applicatie wordt gesloten.</value>
     <value />
   </data>
   <data name="seconds" xml:space="preserve">
+    <value />
+  </data>
+  <data name="openSettings" xml:space="preserve">
+    <value />
+  </data>
+  <data name="iconDoubleClick.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="iconDoubleClick" xml:space="preserve">
     <value />
   </data>
 </root>

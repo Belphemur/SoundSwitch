@@ -22,6 +22,7 @@ using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
+using RailSharp;
 using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
@@ -29,6 +30,7 @@ using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Profile.UI;
 using SoundSwitch.Framework.TrayIcon.Icon;
+using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.Updater.Releases;
@@ -75,6 +77,7 @@ namespace SoundSwitch.UI.Component
 
         private ToolStripMenuItem _updateMenuItem;
         private TimerForm _animationTimer;
+        private SettingsForm _settingsForm;
         private readonly Lazy<UpdateDownloadForm> _updateDownloadForm;
         private readonly MethodInfo? _showContextMenu;
 
@@ -102,29 +105,42 @@ namespace SoundSwitch.UI.Component
             PopulateSettingsMenu();
 
             _selectionMenu.Items.Add(TrayIconStrings.noDevicesSelected, ResourceSettingsSmallBitmap, (sender, e) => ShowSettings());
-            NotifyIcon.MouseDown += (sender, e) =>
+
+            NotifyIcon.MouseDoubleClick += (sender, e) =>
             {
-                Log.Debug("Click on systray icon: {times} {button}", e.Clicks, e.Button);
-                if (e.Clicks == 2)
-                {
-                    AppModel.Instance.CycleActiveDevice(DataFlow.Render);
-                    return;
-                }
-
                 if (e.Button != MouseButtons.Left) return;
+                switch (AppModel.Instance.IconDoubleClick)
+                {
+                    case IconDoubleClickEnum.SwitchDevice:
+                        AppModel.Instance.CycleActiveDevice(DataFlow.Render);
+                        break;
+                    case IconDoubleClickEnum.OpenSettings:
+                        ShowSettings();
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            };
 
+            NotifyIcon.MouseClick += (sender, e) =>
+            {
+                if (e.Button != MouseButtons.Left) return;
                 if (_updateMenuItem.Tag != null && !_postponeService.ShouldPostpone((AppRelease)_updateMenuItem.Tag))
                 {
                     OnUpdateClick(sender, e);
                     return;
                 }
-
+                
                 UpdateDeviceSelectionList();
                 NotifyIcon.ContextMenuStrip = _selectionMenu;
                 _showContextMenu.Invoke(NotifyIcon, null);
 
                 NotifyIcon.ContextMenuStrip = _settingsMenu;
             };
+
+            NotifyIcon.MouseDown += (sender, e) =>
+                Log.Debug("Click on systray icon: {times} {button}", e.Clicks, e.Button);
+            
             SetEventHandlers();
             _tooltipInfoManager.SetIconText();
         }
@@ -304,7 +320,15 @@ namespace SoundSwitch.UI.Component
 
         public void ShowSettings()
         {
-            _context.Send(state => { new SettingsForm(AppModel.Instance.AudioDeviceLister).Show(); }, null);
+            if (_settingsForm != null)
+                _settingsForm.BringToFront();
+            else
+            {
+                _settingsForm = new SettingsForm(AppModel.Instance.AudioDeviceLister);
+                _settingsForm.FormClosed += (object sender, FormClosedEventArgs e) =>
+                    _settingsForm = null;
+                _context.Send(state => { _settingsForm.Show(); }, null);
+            }
         }
 
         /// <summary>

@@ -151,7 +151,7 @@
     <value>Οι αλλαγές αποθηκεύονται αυτόματα</value>
   </data>
   <data name="communicationsDevice.tooltip" xml:space="preserve">
-    <value>Όταν τσεκάρετε, η 'Προεπιλεγμένη συσκευή επικοινωνίας' και η 'Προεπιλεγμένη συσκευή αναπαραγωγής' εναλλάσσονται μαζί (χρήσιμο για το Skype, το TeamSpeak, π.χ.).</value>
+    <value>Όταν είναι επιλεγμένο, η «Προεπιλεγμένη συσκευή επικοινωνίας» και η «Προεπιλεγμένη συσκευή αναπαραγωγής» εναλλάσσονται μαζί (χρήσιμο για Skype, TeamSpeak, π.χ.).</value>
   </data>
   <data name="updateIncludeBetaVersions" xml:space="preserve">
     <value>Συμπερίληψη εκδόσεων Beta</value>
@@ -328,11 +328,38 @@ Banner: Χρησιμοποιεί ένα προσαρμοσμένο πλαίσι�
   <data name="profile.error.registerHotkeys.title" xml:space="preserve">
     <value>Ήδη χρησιμοποιημένα πλήκτρα συντόμευσης</value>
   </data>
+  <data name="profile.feature.add" xml:space="preserve">
+    <value>Προσθήκη προφίλ</value>
+  </data>
+  <data name="profile.feature.executable" xml:space="preserve">
+    <value>Εκτελέσιμο (*.exe)</value>
+  </data>
+  <data name="profile.error.title" xml:space="preserve">
+    <value>Σφάλμα προφίλ</value>
+  </data>
+  <data name="buttonDelete" xml:space="preserve">
+    <value>Διαγραφή</value>
+  </data>
+  <data name="profile.error.delete" xml:space="preserve">
+    <value>Δεν μπορώ να βρω το προφίλ.</value>
+  </data>
+  <data name="profile.error.noName" xml:space="preserve">
+    <value>Ένα προφίλ χρειάζεται όνομα.</value>
+  </data>
+  <data name="profile.feature.profile" xml:space="preserve">
+    <value>Προφίλ</value>
+  </data>
   <data name="profile.defaultDevice.checkbox" xml:space="preserve">
     <value>Αλλαγή και προεπιλεγμένης συσκευής</value>
   </data>
   <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
     <value>Όταν εντοπιστεί η εφαρμογή, το SoundSwitch θα αλλάξει επίσης την τρέχουσα προεπιλεγμένη συσκευή.</value>
+  </data>
+  <data name="hotkeyEnabled" xml:space="preserve">
+    <value>Ενεργοποιημένο πλήκτρο συντόμευσης</value>
+  </data>
+  <data name="profile.error.deviceNotFound" xml:space="preserve">
+    <value>Η συσκευή {0} δεν βρέθηκε.</value>
   </data>
   <data name="profile.trigger.window" xml:space="preserve">
     <value>Όνομα προγράμματος</value>
@@ -343,14 +370,127 @@ Banner: Χρησιμοποιεί ένα προσαρμοσμένο πλαίσι�
   <data name="profile.trigger.steam" xml:space="preserve">
     <value>Steam Big Picture</value>
   </data>
+  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
+    <value>Πλήκτρο συντόμευσης που χρησιμοποιείται για την ενεργοποίηση του προφίλ. Εάν χρησιμοποιείτε το ίδιο πλήκτρο πρόσβασης, θα μπορείτε να εναλλάσσεστε μεταξύ των προφίλ.</value>
+  </data>
+  <data name="profile.trigger.window.desc" xml:space="preserve">
+    <value>Ενεργοποιήστε το προφίλ εάν το πρόγραμμα σε πρώτο πλάνο περιέχει τους ακόλουθους χαρακτήρες</value>
+  </data>
+  <data name="profile.trigger.process.desc" xml:space="preserve">
+    <value>Ενεργοποίηση του προφίλ όταν η επιλεγμένη εφαρμογή βρίσκεται στο προσκήνιο</value>
+  </data>
+  <data name="profile.trigger.steam.desc" xml:space="preserve">
+    <value>Ενεργοποιείται όταν ανιχνεύεται το Steam Big Picture. (Θα επαναφέρει την κατάσταση όταν κλείσει η Μεγάλη Εικόνα.)</value>
+  </data>
   <data name="profile.desc" xml:space="preserve">
     <value>Περιγραφή</value>
+  </data>
+  <data name="profile.trigger.actives" xml:space="preserve">
+    <value>Ενεργά ερεθίσματα</value>
+  </data>
+  <data name="profile.trigger.available" xml:space="preserve">
+    <value>Διαθέσιμα ερεθίσματα</value>
+  </data>
+  <data name="communication" xml:space="preserve">
+    <value>Προεπιλεγμένη συσκευή επικοινωνίας</value>
+  </data>
+  <data name="profile.error.triggers.min" xml:space="preserve">
+    <value>Χρειάζεστε τουλάχιστον μία σκανδάλη.</value>
+  </data>
+  <data name="profile.error.steam" xml:space="preserve">
+    <value>Μπορείτε να έχετε μόνο ένα προφίλ για το Steam Big Picture.</value>
+  </data>
+  <data name="profile.error.window" xml:space="preserve">
+    <value>Υπάρχει ήδη ένα προφίλ με αυτό το όνομα παραθύρου: {0}.</value>
+  </data>
+  <data name="profile.notifyOnActivation" xml:space="preserve">
+    <value>Ειδοποίηση όταν ενεργοποιείται το προφίλ</value>
+  </data>
+  <data name="profile.notification.text" xml:space="preserve">
+    <value>Προφίλ {0} ενεργοποιήθηκε</value>
+  </data>
+  <data name="buttonSave" xml:space="preserve">
+    <value>Αποθήκευση</value>
+  </data>
+  <data name="buttonEdit" xml:space="preserve">
+    <value>Επεξεργασία</value>
+  </data>
+  <data name="profile.trigger.startup" xml:space="preserve">
+    <value>Κατά την εκκίνηση</value>
+  </data>
+  <data name="profile.trigger.startup.desc" xml:space="preserve">
+    <value>Το προφίλ θα ενεργοποιηθεί αυτόματα όταν ξεκινήσει το SoundSwitch</value>
+  </data>
+  <data name="usePrimaryScreen" xml:space="preserve">
+    <value>Χρησιμοποιείτε πάντα την κύρια οθόνη</value>
+  </data>
+  <data name="usePrimaryScreen.tooltip" xml:space="preserve">
+    <value>Εμφάνιση banner στην κύρια οθόνη αντί της εστιασμένης οθόνης.</value>
+  </data>
+  <data name="profile.trigger.restoreDevices" xml:space="preserve">
+    <value>Επαναφορά συσκευών όταν λήξει η ενεργοποίηση</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
+    <value>Απαιτεί την ενεργοποίηση του «{0}».
+
+Επαναφορά της κατάστασης του συστήματος όταν κλείσει η εφαρμογή.</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
+    <value>Επαναφορά της κατάστασης του συστήματος</value>
   </data>
   <data name="profile.trigger.uwp" xml:space="preserve">
     <value>Εφαρμογή Microsoft Store</value>
   </data>
+  <data name="profile.trigger.uwp.desc" xml:space="preserve">
+    <value>Εισάγετε το όνομα της εφαρμογής που έχει εγκατασταθεί μέσω του καταστήματος των Windows. Όπως Netflix, Amazon Prime video, κ.λπ…</value>
+  </data>
+  <data name="notification.microphone.muted" xml:space="preserve">
+    <value>Το {0} είναι τώρα σιωπηλό.</value>
+  </data>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>{0} είναι τώρα μη σιωπηλό.</value>
+  </data>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>Εναλλαγή σίγασης</value>
+  </data>
   <data name="profile.trigger.trayMenu" xml:space="preserve">
     <value>Στο μενού εφαρμογής</value>
+  </data>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>Αυτή η ενεργοποίηση καθιστά το προφίλ ορατό στο μενού εικονιδίων του δίσκου. Κάντε αριστερό κλικ στο εικονίδιο του Συστήματος για να δείτε το προφίλ σας.</value>
+  </data>
+  <data name="profile.trigger.deviceChanged" xml:space="preserve">
+    <value>Προφίλ δύναμης</value>
+  </data>
+  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
+    <value>Το προφίλ θα ενεργοποιείται αυτόματα κάθε φορά που αλλάζει η τρέχουσα συσκευή ήχου.</value>
+  </data>
+  <data name="profile.error.deviceChanged" xml:space="preserve">
+    <value>Μπορείτε να έχετε μόνο ένα αναγκαστικό προφίλ.</value>
+  </data>
+  <data name="telemetry" xml:space="preserve">
+    <value>Τηλεμετρία</value>
+  </data>
+  <data name="telemetry.tooltip" xml:space="preserve">
+    <value>Συγκεντρώστε ανώνυμα ποια έκδοση του SoundSwitch χρησιμοποιείται. Μοιράζεται μόνο με τον προγραμματιστή του SoundSwitch.</value>
+  </data>
+  <data name="quickMenu" xml:space="preserve">
+    <value>Γρήγορο μενού στο πλήκτρο πρόσβασης</value>
+  </data>
+  <data name="quickMenu.tooltip" xml:space="preserve">
+    <value>Εμφάνιση ενός γρήγορου μενού όπως η γλώσσα των Windows κατά τη χρήση ενός πλήκτρου συντόμευσης</value>
+  </data>
+  <data name="keepVolume" xml:space="preserve">
+    <value>Διατήρηση του επιπέδου έντασης ήχου σε όλες τις συσκευές</value>
+  </data>
+  <data name="keepVolume.tooltip" xml:space="preserve">
+    <value>Διατηρήστε το ίδιο επίπεδο έντασης ήχου κατά την εναλλαγή συσκευών</value>
+  </data>
+  <data name="devices.autoAddNewDevice" xml:space="preserve">
+    <value>Αυτόματη επιλογή νέων συσκευών</value>
+  </data>
+  <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
+    <value>Αυτόματη προσθήκη νέας συσκευής στην επιλεγμένη λίστα όταν αυτή είναι συνδεδεμένη στον υπολογιστή</value>
   </data>
   <data name="position" xml:space="preserve">
     <value>Θέση</value>
@@ -436,20 +576,8 @@ Banner: Χρησιμοποιεί ένα προσαρμοσμένο πλαίσι�
   <data name="banner.mute.option.persistent" xml:space="preserve">
     <value />
   </data>
-  <data name="switch.device.label" xml:space="preserve">
+  <data name="switchDevice" xml:space="preserve">
     <value />
-  </data>
-  <data name="audioFileNotFoundCaption" xml:space="preserve">
-    <value>Το αρχείο ήχου δεν βρέθηκε</value>
-  </data>
-  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-    <value>Καμία επεξήγηση</value>
-  </data>
-  <data name="communicationsDevice.tooltip" xml:space="preserve">
-    <value>Όταν είναι επιλεγμένο, η «Προεπιλεγμένη συσκευή επικοινωνίας» και η «Προεπιλεγμένη συσκευή αναπαραγωγής» εναλλάσσονται μαζί (χρήσιμο για Skype, TeamSpeak, π.χ.).</value>
-  </data>
-  <data name="notificationOptionNone" xml:space="preserve">
-    <value>Καμία ειδοποίηση</value>
   </data>
   <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
     <value>Πόσα δευτερόλεπτα θα εμφανίζεται το πανό στην οθόνη.</value>
@@ -466,144 +594,13 @@ Banner: Χρησιμοποιεί ένα προσαρμοσμένο πλαίσι�
   <data name="seconds" xml:space="preserve">
     <value />
   </data>
-  <data name="profile.trigger.process.desc" xml:space="preserve">
-    <value>Ενεργοποίηση του προφίλ όταν η επιλεγμένη εφαρμογή βρίσκεται στο προσκήνιο</value>
+  <data name="openSettings" xml:space="preserve">
+    <value />
   </data>
-  <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>Πλήκτρο συντόμευσης που χρησιμοποιείται για την ενεργοποίηση του προφίλ. Εάν χρησιμοποιείτε το ίδιο πλήκτρο πρόσβασης, θα μπορείτε να εναλλάσσεστε μεταξύ των προφίλ.</value>
+  <data name="iconDoubleClick.tooltip" xml:space="preserve">
+    <value />
   </data>
-  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
-    <value>Το προφίλ θα ενεργοποιείται αυτόματα κάθε φορά που αλλάζει η τρέχουσα συσκευή ήχου.</value>
-  </data>
-  <data name="telemetry" xml:space="preserve">
-    <value>Τηλεμετρία</value>
-  </data>
-  <data name="profile.error.delete" xml:space="preserve">
-    <value>Δεν μπορώ να βρω το προφίλ.</value>
-  </data>
-  <data name="profile.trigger.steam.desc" xml:space="preserve">
-    <value>Ενεργοποιείται όταν ανιχνεύεται το Steam Big Picture. (Θα επαναφέρει την κατάσταση όταν κλείσει η Μεγάλη Εικόνα.)</value>
-  </data>
-  <data name="usePrimaryScreen.tooltip" xml:space="preserve">
-    <value>Εμφάνιση banner στην κύρια οθόνη αντί της εστιασμένης οθόνης.</value>
-  </data>
-  <data name="profile.trigger.restoreDevices" xml:space="preserve">
-    <value>Επαναφορά συσκευών όταν λήξει η ενεργοποίηση</value>
-  </data>
-  <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
-    <value>Απαιτεί την ενεργοποίηση του «{0}».
-
-Επαναφορά της κατάστασης του συστήματος όταν κλείσει η εφαρμογή.</value>
-  </data>
-  <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
-    <value>Αυτόματη προσθήκη νέας συσκευής στην επιλεγμένη λίστα όταν αυτή είναι συνδεδεμένη στον υπολογιστή</value>
-  </data>
-  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
-    <value>Αυτή η ενεργοποίηση καθιστά το προφίλ ορατό στο μενού εικονιδίων του δίσκου. Κάντε αριστερό κλικ στο εικονίδιο του Συστήματος για να δείτε το προφίλ σας.</value>
-  </data>
-  <data name="profile.feature.add" xml:space="preserve">
-    <value>Προσθήκη προφίλ</value>
-  </data>
-  <data name="profile.feature.executable" xml:space="preserve">
-    <value>Εκτελέσιμο (*.exe)</value>
-  </data>
-  <data name="profile.error.title" xml:space="preserve">
-    <value>Σφάλμα προφίλ</value>
-  </data>
-  <data name="hotkeyEnabled" xml:space="preserve">
-    <value>Ενεργοποιημένο πλήκτρο συντόμευσης</value>
-  </data>
-  <data name="profile.trigger.window.desc" xml:space="preserve">
-    <value>Ενεργοποιήστε το προφίλ εάν το πρόγραμμα σε πρώτο πλάνο περιέχει τους ακόλουθους χαρακτήρες</value>
-  </data>
-  <data name="profile.trigger.actives" xml:space="preserve">
-    <value>Ενεργά ερεθίσματα</value>
-  </data>
-  <data name="profile.trigger.available" xml:space="preserve">
-    <value>Διαθέσιμα ερεθίσματα</value>
-  </data>
-  <data name="communication" xml:space="preserve">
-    <value>Προεπιλεγμένη συσκευή επικοινωνίας</value>
-  </data>
-  <data name="profile.error.triggers.min" xml:space="preserve">
-    <value>Χρειάζεστε τουλάχιστον μία σκανδάλη.</value>
-  </data>
-  <data name="profile.error.steam" xml:space="preserve">
-    <value>Μπορείτε να έχετε μόνο ένα προφίλ για το Steam Big Picture.</value>
-  </data>
-  <data name="profile.error.window" xml:space="preserve">
-    <value>Υπάρχει ήδη ένα προφίλ με αυτό το όνομα παραθύρου: {0}.</value>
-  </data>
-  <data name="profile.trigger.startup" xml:space="preserve">
-    <value>Κατά την εκκίνηση</value>
-  </data>
-  <data name="profile.trigger.startup.desc" xml:space="preserve">
-    <value>Το προφίλ θα ενεργοποιηθεί αυτόματα όταν ξεκινήσει το SoundSwitch</value>
-  </data>
-  <data name="usePrimaryScreen" xml:space="preserve">
-    <value>Χρησιμοποιείτε πάντα την κύρια οθόνη</value>
-  </data>
-  <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
-    <value>Επαναφορά της κατάστασης του συστήματος</value>
-  </data>
-  <data name="profile.trigger.uwp.desc" xml:space="preserve">
-    <value>Εισάγετε το όνομα της εφαρμογής που έχει εγκατασταθεί μέσω του καταστήματος των Windows. Όπως Netflix, Amazon Prime video, κ.λπ…</value>
-  </data>
-  <data name="notification.microphone.muted" xml:space="preserve">
-    <value>Το {0} είναι τώρα σιωπηλό.</value>
-  </data>
-  <data name="notification.microphone.unmuted" xml:space="preserve">
-    <value>{0} είναι τώρα μη σιωπηλό.</value>
-  </data>
-  <data name="mute.toggle.label" xml:space="preserve">
-    <value>Εναλλαγή σίγασης</value>
-  </data>
-  <data name="profile.trigger.deviceChanged" xml:space="preserve">
-    <value>Προφίλ δύναμης</value>
-  </data>
-  <data name="profile.error.deviceChanged" xml:space="preserve">
-    <value>Μπορείτε να έχετε μόνο ένα αναγκαστικό προφίλ.</value>
-  </data>
-  <data name="quickMenu" xml:space="preserve">
-    <value>Γρήγορο μενού στο πλήκτρο πρόσβασης</value>
-  </data>
-  <data name="profile.notification.text" xml:space="preserve">
-    <value>Προφίλ {0} ενεργοποιήθηκε</value>
-  </data>
-  <data name="profile.feature.profile" xml:space="preserve">
-    <value>Προφίλ</value>
-  </data>
-  <data name="keepVolume" xml:space="preserve">
-    <value>Διατήρηση του επιπέδου έντασης ήχου σε όλες τις συσκευές</value>
-  </data>
-  <data name="buttonDelete" xml:space="preserve">
-    <value>Διαγραφή</value>
-  </data>
-  <data name="profile.error.noName" xml:space="preserve">
-    <value>Ένα προφίλ χρειάζεται όνομα.</value>
-  </data>
-  <data name="profile.error.deviceNotFound" xml:space="preserve">
-    <value>Η συσκευή {0} δεν βρέθηκε.</value>
-  </data>
-  <data name="profile.notifyOnActivation" xml:space="preserve">
-    <value>Ειδοποίηση όταν ενεργοποιείται το προφίλ</value>
-  </data>
-  <data name="buttonSave" xml:space="preserve">
-    <value>Αποθήκευση</value>
-  </data>
-  <data name="buttonEdit" xml:space="preserve">
-    <value>Επεξεργασία</value>
-  </data>
-  <data name="telemetry.tooltip" xml:space="preserve">
-    <value>Συγκεντρώστε ανώνυμα ποια έκδοση του SoundSwitch χρησιμοποιείται. Μοιράζεται μόνο με τον προγραμματιστή του SoundSwitch.</value>
-  </data>
-  <data name="quickMenu.tooltip" xml:space="preserve">
-    <value>Εμφάνιση ενός γρήγορου μενού όπως η γλώσσα των Windows κατά τη χρήση ενός πλήκτρου συντόμευσης</value>
-  </data>
-  <data name="keepVolume.tooltip" xml:space="preserve">
-    <value>Διατηρήστε το ίδιο επίπεδο έντασης ήχου κατά την εναλλαγή συσκευών</value>
-  </data>
-  <data name="devices.autoAddNewDevice" xml:space="preserve">
-    <value>Αυτόματη επιλογή νέων συσκευών</value>
+  <data name="iconDoubleClick" xml:space="preserve">
+    <value />
   </data>
 </root>

@@ -241,6 +241,9 @@ Bayrak bildirim (banner): Her zaman en üstte görünen özel bir bildirim. Oyun
   <data name="audioFileNotFound" xml:space="preserve">
     <value>Sesli bildirim için seçmiş olduğunuz ses dosyası bulunamadı. SoundSwitch bildirim tipini tekrar {0} olarak değiştirdi.</value>
   </data>
+  <data name="audioFileNotFound.caption" xml:space="preserve">
+    <value>Ses dosyası bulunamadı</value>
+  </data>
   <data name="activeRecording" xml:space="preserve">
     <value>Kayıt: {0}</value>
   </data>
@@ -459,17 +462,8 @@ Uygulama kapatıldığında cihazların eski durumunu geri getirir.</value>
   <data name="banner.mute.option.persistent" xml:space="preserve">
     <value />
   </data>
-  <data name="switch.device.label" xml:space="preserve">
+  <data name="switchDevice" xml:space="preserve">
     <value />
-  </data>
-  <data name="audioFileNotFoundCaption" xml:space="preserve">
-    <value>Ses dosyası bulunamadı</value>
-  </data>
-  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-    <value>Araç ipucu yok</value>
-  </data>
-  <data name="notificationOptionNone" xml:space="preserve">
-    <value>Bildirim yok</value>
   </data>
   <data name="notification" xml:space="preserve">
     <value>Bildirim</value>
@@ -478,6 +472,15 @@ Uygulama kapatıldığında cihazların eski durumunu geri getirir.</value>
     <value />
   </data>
   <data name="seconds" xml:space="preserve">
+    <value />
+  </data>
+  <data name="openSettings" xml:space="preserve">
+    <value />
+  </data>
+  <data name="iconDoubleClick.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="iconDoubleClick" xml:space="preserve">
     <value />
   </data>
 </root>

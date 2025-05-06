@@ -22,6 +22,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
+using Newtonsoft.Json.Linq;
 using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Device;
@@ -37,6 +38,7 @@ using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Profile.Trigger;
 using SoundSwitch.Framework.TrayIcon.Icon;
+using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 using SoundSwitch.Framework.Updater;
@@ -89,6 +91,10 @@ namespace SoundSwitch.UI.Forms
             new IconChangerFactory().ConfigureListControl(iconChangeChoicesComboBox);
             iconChangeChoicesComboBox.SelectedValue = AppConfigs.Configuration.SwitchIcon;
             new ToolTip().SetToolTip(iconChangeChoicesComboBox, SettingsStrings.iconChange_tooltip);
+
+            new IconDoubleClickFactory().ConfigureListControl(iconDoubleClickComboBox);
+            iconChangeChoicesComboBox.SelectedValue = AppConfigs.Configuration.IconDoubleClick;
+            new ToolTip().SetToolTip(iconDoubleClickComboBox, SettingsStrings.iconDoubleClick_tooltip);
 
             // Settings - Audio
             switchCommunicationDeviceCheckBox.Checked = AppModel.Instance.SetCommunications;
@@ -323,6 +329,7 @@ namespace SoundSwitch.UI.Forms
             basicSettingsGroupBox.Text = SettingsStrings.basicSettings;
             startWithWindowsCheckBox.Text = SettingsStrings.startWithWindows;
             iconChangeLabel.Text = SettingsStrings.iconChange;
+            iconDoubleClickLabel.Text = SettingsStrings.iconDoubleClick;
 
             // Settings - Audio
             audioSettingsGroupBox.Text = SettingsStrings.audioSettings;
@@ -377,7 +384,7 @@ namespace SoundSwitch.UI.Forms
             // Misc
             hotkeysCheckBox.Text = SettingsStrings.hotkeyEnabled;
             closeButton.Text = SettingsStrings.buttonClose;
-            switchDeviceLabel.Text = SettingsStrings.switch_device_label;
+            switchDeviceLabel.Text = SettingsStrings.switchDevice;
             toggleMuteLabel.Text = SettingsStrings.mute_toggle_label;
             muteHotKeyCheckbox.Text = SettingsStrings.hotkeyEnabled;
 
@@ -693,6 +700,15 @@ namespace SoundSwitch.UI.Forms
             new IconChangerFactory().Get(item.Enum).ChangeIcon(AppModel.Instance.TrayIcon);
         }
 
+        private void IconDoubleClickComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!_loaded) return;
+            var comboBox = (DisplayEnumObject<IconDoubleClickEnum>)((ComboBox)sender).SelectedItem; ;
+            if (comboBox == null) return;
+
+            AppModel.Instance.IconDoubleClick = comboBox.Enum;
+        }
+
         #endregion
 
         #region Audio Settings
@@ -724,19 +740,19 @@ namespace SoundSwitch.UI.Forms
         private void TooltipInfoComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
             if (!_loaded) return;
-            var value = (DisplayEnumObject<TooltipInfoTypeEnum>)((ComboBox)sender).SelectedItem;
-            if (value == null) return;
+            var comboBox = (DisplayEnumObject<TooltipInfoTypeEnum>)((ComboBox)sender).SelectedItem;
+            if (comboBox == null) return;
 
-            TooltipInfoManager.CurrentTooltipInfo = value.Enum;
+            TooltipInfoManager.CurrentTooltipInfo = comboBox.Enum;
         }
 
         private void CyclerComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
             if (!_loaded) return;
-            var value = (DisplayEnumObject<DeviceCyclerTypeEnum>)((ComboBox)sender).SelectedItem;
-            if (value == null) return;
+            var comboBox = (DisplayEnumObject<DeviceCyclerTypeEnum>)((ComboBox)sender).SelectedItem;
+            if (comboBox == null) return;
 
-            DeviceCyclerManager.CurrentCycler = value.Enum;
+            DeviceCyclerManager.CurrentCycler = comboBox.Enum;
         }
 
         #endregion
@@ -779,11 +795,11 @@ namespace SoundSwitch.UI.Forms
         private void LanguageComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!_loaded) return;
-            var value = (DisplayEnumObject<Language>)((ComboBox)sender).SelectedItem;
-            if (value == null) return;
+            var comboBox = (DisplayEnumObject<Language>)((ComboBox)sender).SelectedItem;
+            if (comboBox == null) return;
 
-            if (AppModel.Instance.Language == value.Enum) return;
-            AppModel.Instance.Language = value.Enum;
+            if (AppModel.Instance.Language == comboBox.Enum) return;
+            AppModel.Instance.Language = comboBox.Enum;
 
             if (MessageBox.Show(SettingsStrings.languageRestartRequired,
                     SettingsStrings.languageRestartRequired_caption,
@@ -800,10 +816,10 @@ namespace SoundSwitch.UI.Forms
         private void NotificationComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
             if (!_loaded) return;
-            var value = (DisplayEnumObject<NotificationTypeEnum>)((ComboBox)sender).SelectedItem;
-            if (value == null) return;
+            var comboBox = (DisplayEnumObject<NotificationTypeEnum>)((ComboBox)sender).SelectedItem;
+            if (comboBox == null) return;
 
-            var notificationType = value.Enum;
+            var notificationType = comboBox.Enum;
             if (notificationType == AppModel.Instance.NotificationSettings) return;
 
             var supportCustomSound = new NotificationFactory().Get(notificationType).SupportCustomSound();
@@ -817,10 +833,10 @@ namespace SoundSwitch.UI.Forms
         private void PositionComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
             if (!_loaded) return;
-            var value = (DisplayEnumObject<BannerPositionEnum>)((ComboBox)sender).SelectedItem;
-            if (value == null) return;
+            var comboBox = (DisplayEnumObject<BannerPositionEnum>)((ComboBox)sender).SelectedItem;
+            if (comboBox == null) return;
 
-            AppModel.Instance.BannerPosition = value.Enum;
+            AppModel.Instance.BannerPosition = comboBox.Enum;
         }
 
         private void SelectSoundButton_Click(object sender, EventArgs e)
@@ -842,10 +858,10 @@ namespace SoundSwitch.UI.Forms
         private void MicrophoneMuteNotificationComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
             if (!_loaded) return;
-            var value = (DisplayEnumObject<MicrophoneMuteEnum>)((ComboBox)sender).SelectedItem;
-            if (value == null) return;
+            var comboBox = (DisplayEnumObject<MicrophoneMuteEnum>)((ComboBox)sender).SelectedItem;
+            if (comboBox == null) return;
 
-            AppModel.Instance.MicrophoneMuteNotification = value.Enum;
+            AppModel.Instance.MicrophoneMuteNotification = comboBox.Enum;
         }
 
         #endregion

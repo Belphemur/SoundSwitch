@@ -241,6 +241,9 @@ Brak powiadomień: Brak powiadomień o przełączeniu urządzenia.</value>
   <data name="audioFileNotFound" xml:space="preserve">
     <value>Plik audio wskazany jako dźwięk powiadomienia nie mógł zostać znaleziony. SoundSwitch będzie używał {0} jako sposobu powiadamiania.</value>
   </data>
+  <data name="audioFileNotFound.caption" xml:space="preserve">
+    <value>Plik audio nie mógł zostać znaleziony</value>
+  </data>
   <data name="activeRecording" xml:space="preserve">
     <value>Nagrywanie: {0}</value>
   </data>
@@ -474,17 +477,8 @@ Przywróć stan systemu po zamknięciu aplikacji.</value>
   <data name="banner.mute.option.persistent" xml:space="preserve">
     <value />
   </data>
-  <data name="switch.device.label" xml:space="preserve">
+  <data name="switchDevice" xml:space="preserve">
     <value />
-  </data>
-  <data name="audioFileNotFoundCaption" xml:space="preserve">
-    <value>Plik audio nie mógł zostać znaleziony</value>
-  </data>
-  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-    <value>Brak informacji</value>
-  </data>
-  <data name="notificationOptionNone" xml:space="preserve">
-    <value>Brak powiadomień</value>
   </data>
   <data name="notification" xml:space="preserve">
     <value>Powiadomienia</value>
@@ -493,6 +487,15 @@ Przywróć stan systemu po zamknięciu aplikacji.</value>
     <value />
   </data>
   <data name="seconds" xml:space="preserve">
+    <value />
+  </data>
+  <data name="openSettings" xml:space="preserve">
+    <value />
+  </data>
+  <data name="iconDoubleClick.tooltip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="iconDoubleClick" xml:space="preserve">
     <value />
   </data>
 </root>

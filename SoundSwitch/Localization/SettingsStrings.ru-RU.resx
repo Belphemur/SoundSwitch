@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -559,34 +559,13 @@
     <value>Центр</value>
   </data>
   <data name="banner.mute.option.fading" xml:space="preserve">
-    <value />
+    <value>Угасание</value>
   </data>
   <data name="banner.mute.option.persistent" xml:space="preserve">
-    <value />
+    <value>Постоянно</value>
   </data>
-  <data name="switch.device.label" xml:space="preserve">
-    <value />
-  </data>
-  <data name="audioFileNotFoundCaption" xml:space="preserve">
-    <value>Аудиофайл не найден</value>
-  </data>
-  <data name="tooltipOnHoverOptionNone" xml:space="preserve">
-    <value>Без подсказки</value>
-  </data>
-  <data name="notificationOptionNone" xml:space="preserve">
-    <value>Без уведомления</value>
-  </data>
-  <data name="quickMenu.desc" xml:space="preserve">
-    <value>Показать быстрое меню (как при смене языка), используя горячую клавишу</value>
-  </data>
-  <data name="telemetry.desc" xml:space="preserve">
-    <value>Анонимный сбор информации о том, какая версия SoundSwitch используется. Предоставляется только разработчику SoundSwitch.</value>
-  </data>
-  <data name="devices.AutoAddNewDevice..tooltip" xml:space="preserve">
-    <value>Добавлять новое подключенное устройство в список выбранных</value>
-  </data>
-  <data name="keepVolume.desc" xml:space="preserve">
-    <value>Сохранять текущий уровень громкости при переключении устройств</value>
+  <data name="switchDevice" xml:space="preserve">
+    <value>Переключение устройства</value>
   </data>
   <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
     <value>Как долго оповещение остается на экране в секундах.</value>
@@ -595,12 +574,33 @@
     <value>Время на экране</value>
   </data>
   <data name="notification" xml:space="preserve">
-    <value>Уведомление</value>
+    <value>Уведомления</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
-    <value />
+    <value>Параметры баннера</value>
   </data>
   <data name="seconds" xml:space="preserve">
-    <value />
+    <value>секунд</value>
+  </data>
+  <data name="openSettings" xml:space="preserve">
+    <value>Открыть настройки</value>
+  </data>
+  <data name="iconDoubleClick.tooltip" xml:space="preserve">
+    <value>Выберите действие двойным щелчком на значке в трее.</value>
+  </data>
+  <data name="iconDoubleClick" xml:space="preserve">
+    <value>Действие двойного щелчка</value>
+  </data>
+  <data name="microphone.on" xml:space="preserve">
+    <value>Микрофон включён</value>
+  </data>
+  <data name="microphone.off" xml:space="preserve">
+    <value>Микрофон выключен</value>
+  </data>
+  <data name="banner.mute" xml:space="preserve">
+    <value>Микрофон заглушен</value>
+  </data>
+  <data name="banner.mute.tooltip" xml:space="preserve">
+    <value>Показывать баннер когда микрофон отключён или выключен. Постоянный будет означать, что он всегда виден на экране, когда отключён</value>
   </data>
 </root>
