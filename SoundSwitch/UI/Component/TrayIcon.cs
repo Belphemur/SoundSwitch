@@ -83,13 +83,12 @@ namespace SoundSwitch.UI.Component
 
         private bool _inDoubleClick;
         private DateTime _lastClick;
-        private TimerForm _clickTimer;
-        private TimeSpan _doubleClickMaxTime;
+        private readonly TimerForm _clickTimer;
 
         public TrayIcon()
         {
-            _doubleClickMaxTime = TimeSpan.FromMilliseconds(SystemInformation.DoubleClickTime);
-            _clickTimer = new TimerForm() { Interval = SystemInformation.DoubleClickTime };
+            var doubleClickMaxTime = TimeSpan.FromMilliseconds(SystemInformation.DoubleClickTime);
+            _clickTimer = new TimerForm { Interval = SystemInformation.DoubleClickTime };
             _clickTimer.Tick += NotifyIcon_MouseClick;
 
             _updateDownloadForm = new Lazy<UpdateDownloadForm>(() =>
@@ -124,7 +123,7 @@ namespace SoundSwitch.UI.Component
                     _inDoubleClick = false;
 
                     // If double click is valid, respond
-                    if (DateTime.Now - _lastClick < _doubleClickMaxTime)
+                    if (DateTime.Now - _lastClick < doubleClickMaxTime)
                     {
                         _clickTimer.Stop();
                         NotifyIcon_MouseDoubleClick();
