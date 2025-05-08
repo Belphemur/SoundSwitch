@@ -93,7 +93,7 @@ namespace SoundSwitch.UI.Forms
             new ToolTip().SetToolTip(iconChangeChoicesComboBox, SettingsStrings.iconChange_tooltip);
 
             new IconDoubleClickFactory().ConfigureListControl(iconDoubleClickComboBox);
-            iconChangeChoicesComboBox.SelectedValue = AppConfigs.Configuration.IconDoubleClick;
+            iconDoubleClickComboBox.SelectedValue = AppConfigs.Configuration.IconDoubleClick;
             new ToolTip().SetToolTip(iconDoubleClickComboBox, SettingsStrings.iconDoubleClick_tooltip);
 
             // Settings - Audio
@@ -703,7 +703,7 @@ namespace SoundSwitch.UI.Forms
         private void IconDoubleClickComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!_loaded) return;
-            var comboBox = (DisplayEnumObject<IconDoubleClickEnum>)((ComboBox)sender).SelectedItem; ;
+            var comboBox = (DisplayEnumObject<IconDoubleClickEnum>)((ComboBox)sender).SelectedItem;
             if (comboBox == null) return;
 
             AppModel.Instance.IconDoubleClick = comboBox.Enum;
