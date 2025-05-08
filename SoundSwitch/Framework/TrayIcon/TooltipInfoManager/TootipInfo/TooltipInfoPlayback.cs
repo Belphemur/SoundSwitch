@@ -39,8 +39,22 @@ namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo
                 }
 
                 _defaultDevice = AudioSwitcher.Instance.GetAudioEndpoint(@event.DeviceId);
+                if (_defaultDevice != null)
+                    AudioSwitcher.Instance.InteractWithDevice(_defaultDevice, device =>
+                    {
+                        // Subscribe to OS-level volume notifications
+                        device.SubscribeToVolumeNotifications();
+                        return device;
+                    });
             };
             _defaultDevice = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eConsole);
+            if (_defaultDevice != null)
+                AudioSwitcher.Instance.InteractWithDevice(_defaultDevice, device =>
+                {
+                    // Subscribe to OS-level volume notifications
+                    device.SubscribeToVolumeNotifications();
+                    return device;
+                });
         }
 
         /// <summary>
