@@ -81,8 +81,17 @@ namespace SoundSwitch.UI.Component
         private readonly Lazy<UpdateDownloadForm> _updateDownloadForm;
         private readonly MethodInfo? _showContextMenu;
 
+        private bool _inDoubleClick;
+        private DateTime _lastClick;
+        private TimerForm _clickTimer;
+        private TimeSpan _doubleClickMaxTime;
+
         public TrayIcon()
         {
+            _doubleClickMaxTime = TimeSpan.FromMilliseconds(SystemInformation.DoubleClickTime);
+            _clickTimer = new TimerForm() { Interval = SystemInformation.DoubleClickTime };
+            _clickTimer.Tick += NotifyIcon_MouseClick;
+
             _updateDownloadForm = new Lazy<UpdateDownloadForm>(() =>
             {
                 UpdateDownloadForm form = null;
@@ -105,44 +114,68 @@ namespace SoundSwitch.UI.Component
             PopulateSettingsMenu();
 
             _selectionMenu.Items.Add(TrayIconStrings.noDevicesSelected, ResourceSettingsSmallBitmap, (sender, e) => ShowSettings());
-
-            NotifyIcon.MouseDoubleClick += (sender, e) =>
+            NotifyIcon.MouseDown += (sender, e) =>
             {
-                if (e.Button != MouseButtons.Left) return;
-                switch (AppModel.Instance.IconDoubleClick)
-                {
-                    case IconDoubleClickEnum.SwitchDevice:
-                        AppModel.Instance.CycleActiveDevice(DataFlow.Render);
-                        break;
-                    case IconDoubleClickEnum.OpenSettings:
-                        ShowSettings();
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            };
+                Log.Debug("Click on systray icon: {times} {button}", e.Clicks, e.Button);
 
-            NotifyIcon.MouseClick += (sender, e) =>
-            {
                 if (e.Button != MouseButtons.Left) return;
-                if (_updateMenuItem.Tag != null && !_postponeService.ShouldPostpone((AppRelease)_updateMenuItem.Tag))
+                if (_inDoubleClick)
                 {
-                    OnUpdateClick(sender, e);
+                    _inDoubleClick = false;
+
+                    // If double click is valid, respond
+                    if (DateTime.Now - _lastClick < _doubleClickMaxTime)
+                    {
+                        _clickTimer.Stop();
+                        NotifyIcon_MouseDoubleClick();
+                    }
+
                     return;
                 }
-                
-                UpdateDeviceSelectionList();
-                NotifyIcon.ContextMenuStrip = _selectionMenu;
-                _showContextMenu.Invoke(NotifyIcon, null);
 
-                NotifyIcon.ContextMenuStrip = _settingsMenu;
+                // Double click was invalid, restart
+                _clickTimer.Stop();
+                _clickTimer.Start();
+                _lastClick = DateTime.Now;
+                _inDoubleClick = true;
             };
-
-            NotifyIcon.MouseDown += (sender, e) =>
-                Log.Debug("Click on systray icon: {times} {button}", e.Clicks, e.Button);
             
             SetEventHandlers();
             _tooltipInfoManager.SetIconText();
+        }
+
+        private void NotifyIcon_MouseDoubleClick()
+        {
+            switch (AppModel.Instance.IconDoubleClick)
+            {
+                case IconDoubleClickEnum.SwitchDevice:
+                    AppModel.Instance.CycleActiveDevice(DataFlow.Render);
+                    break;
+                case IconDoubleClickEnum.OpenSettings:
+                    ShowSettings();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private void NotifyIcon_MouseClick(object sender, EventArgs e)
+        {
+            // Clear double click watcher and timer
+            _inDoubleClick = false;
+            _clickTimer.Stop();
+
+            if (_updateMenuItem.Tag != null && !_postponeService.ShouldPostpone((AppRelease)_updateMenuItem.Tag))
+            {
+                OnUpdateClick(sender, e);
+                return;
+            }
+
+            UpdateDeviceSelectionList();
+            NotifyIcon.ContextMenuStrip = _selectionMenu;
+            _showContextMenu.Invoke(NotifyIcon, null);
+
+            NotifyIcon.ContextMenuStrip = _settingsMenu;
         }
 
         private void SetUpdateMenuItem(UpdateMode mode)
