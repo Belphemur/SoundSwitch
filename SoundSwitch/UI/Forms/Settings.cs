@@ -131,7 +131,6 @@ namespace SoundSwitch.UI.Forms
             onScreenTimeTooltip.SetToolTip(onScreenTimeLabel, SettingsStrings.notification_banner_onscreen_time_tooltip);
             onScreenUpDown.DataBindings.Add(nameof(NumericUpDown.Value), AppModel.Instance, nameof(AppModel.BannerOnScreenTimeSecs), false, DataSourceUpdateMode.OnPropertyChanged);
 
-            //var singleNotification = new ToolTip();
             new ToolTip().SetToolTip(singleNotificationCheckbox, SettingsStrings.notification_single_tooltip);
             singleNotificationCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.IsSingleNotification), false, DataSourceUpdateMode.OnPropertyChanged);
 
@@ -142,8 +141,7 @@ namespace SoundSwitch.UI.Forms
             microphoneMuteComboBox.SelectedValue = AppModel.Instance.MicrophoneMuteNotification;
             new ToolTip().SetToolTip(microphoneMuteComboBox, SettingsStrings.banner_mute_tooltip);
 
-            microphoneMuteComboBox.Visible = onScreenUpDown.Visible = onScreenTimeLabel.Visible = usePrimaryScreenCheckbox.Visible = positionLabel.Visible = positionComboBox.Visible = singleNotificationCheckbox.Visible =
-                AppModel.Instance.NotificationSettings == NotificationTypeEnum.BannerNotification;
+            bannerGroupBox.Enabled = AppModel.Instance.NotificationSettings == NotificationTypeEnum.BannerNotification;
 
             selectSoundFileDialog.Filter = SettingsStrings.audioFiles + @" (*.wav;*.mp3)|*.wav;*.mp3;*.aiff";
             selectSoundFileDialog.FileOk += SelectSoundFileDialogOnFileOk;
@@ -594,6 +592,8 @@ namespace SoundSwitch.UI.Forms
             }
         }
 
+        #endregion
+
         #region Groups
 
         /// <summary>
@@ -618,8 +618,6 @@ namespace SoundSwitch.UI.Forms
             listView.Groups.Add(new ListViewGroup(DeviceState.Active.ToString(), SettingsStrings.connected));
             listView.Groups.Add(new ListViewGroup(DeviceState.NotPresent.ToString(), SettingsStrings.disconnected));
         }
-
-        #endregion
 
         #endregion
 
@@ -690,14 +688,11 @@ namespace SoundSwitch.UI.Forms
         private void IconChangeChoicesComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!_loaded) return;
-            var comboBox = (ComboBox)sender;
+            var comboBox = (DisplayEnumObject<IconChangerEnum>)((ComboBox)sender).SelectedItem;
             if (comboBox == null) return;
 
-            var item = (DisplayEnumObject<IconChangerEnum>)iconChangeChoicesComboBox.SelectedItem;
-            AppConfigs.Configuration.SwitchIcon = item.Enum;
-            AppConfigs.Configuration.Save();
-
-            new IconChangerFactory().Get(item.Enum).ChangeIcon(AppModel.Instance.TrayIcon);
+            AppConfigs.Configuration.SwitchIcon = comboBox.Enum;
+            new IconChangerFactory().Get(comboBox.Enum).ChangeIcon(AppModel.Instance.TrayIcon);
         }
 
         private void IconDoubleClickComboBox_SelectedIndexChanged(object sender, EventArgs e)
