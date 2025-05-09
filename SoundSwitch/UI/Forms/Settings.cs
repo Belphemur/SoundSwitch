@@ -692,6 +692,7 @@ namespace SoundSwitch.UI.Forms
             if (comboBox == null) return;
 
             AppConfigs.Configuration.SwitchIcon = comboBox.Enum;
+            AppConfigs.Configuration.Save();
             new IconChangerFactory().Get(comboBox.Enum).ChangeIcon(AppModel.Instance.TrayIcon);
         }
 
