@@ -1,3 +1,17 @@
+## [6.14.0-beta.3](https://github.com/Belphemur/SoundSwitch/compare/v6.14.0-beta.2...v6.14.0-beta.3) (2025-05-10)
+
+### Languages
+
+* **French:** Translated Settings using Weblate ([5a3fdfd](https://github.com/Belphemur/SoundSwitch/commit/5a3fdfdd830cc05cc26cb67b2e418a98f8d50095))
+
+### Bug Fixes
+
+* **banner settings:** Banner Settings now properly disabled when notification type not set to banner ([f7b9305](https://github.com/Belphemur/SoundSwitch/commit/f7b93058be785793e3499f3f02b00d69002ee296))
+* **double-click:** fix issue where double-clicking on the icon triggered the switching menu ([b85adca](https://github.com/Belphemur/SoundSwitch/commit/b85adca12930132a74d6518e5cf527625b9f9d3e))
+* **settings:** fix systray icon selection being blank even when set ([28b12a4](https://github.com/Belphemur/SoundSwitch/commit/28b12a4a6e52ca0b30d3d32a95fc7fae0afdc76b))
+* single and double click properly distinguished on tray icon ([64711ef](https://github.com/Belphemur/SoundSwitch/commit/64711ef3ef4326aa154d8a8332d13349d7d352e8))
+* **tooltip:** fix volume tooltip stuck at 0% on the systray ([c33793d](https://github.com/Belphemur/SoundSwitch/commit/c33793d147b6f738b0958f7082f2459bd20e30b5))
+
 ## [6.14.0-beta.2](https://github.com/Belphemur/SoundSwitch/compare/v6.14.0-beta.1...v6.14.0-beta.2) (2025-05-06)
 
 ### Languages
