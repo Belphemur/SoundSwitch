@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -571,36 +571,36 @@ Restaurer l'état du système quand l'application est fermée.</value>
     <value>Afficher une bannière persistante lorsque le microphone est en sourdine</value>
   </data>
   <data name="banner.mute.option.fading" xml:space="preserve">
-    <value />
+    <value>Fading</value>
   </data>
   <data name="banner.mute.option.persistent" xml:space="preserve">
-    <value />
+    <value>Persistante</value>
   </data>
   <data name="switchDevice" xml:space="preserve">
-    <value />
+    <value>Permuter d'appareil</value>
   </data>
   <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
     <value>Durée de visibilité de la bannière à l'écran en secondes.</value>
   </data>
   <data name="notification.banner.onscreen.time" xml:space="preserve">
-    <value>Seconde visible</value>
+    <value>Temps à l'écran</value>
   </data>
   <data name="notification" xml:space="preserve">
-    <value>Notification</value>
+    <value>Notifications</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
-    <value />
+    <value>Options de la bannière</value>
   </data>
   <data name="seconds" xml:space="preserve">
-    <value />
+    <value>secondes</value>
   </data>
   <data name="openSettings" xml:space="preserve">
-    <value />
+    <value>Ouvrir les paramètres</value>
   </data>
   <data name="iconDoubleClick.tooltip" xml:space="preserve">
-    <value />
+    <value>Sélectionnez l'action en double-cliquant sur l'icône de la barre des tâches.</value>
   </data>
   <data name="iconDoubleClick" xml:space="preserve">
-    <value />
+    <value>Action de double-clic</value>
   </data>
 </root>
