@@ -22,7 +22,6 @@ using System.IO.Compression;
 using System.Linq;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
-using Newtonsoft.Json.Linq;
 using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Device;
@@ -685,24 +684,30 @@ namespace SoundSwitch.UI.Forms
             }
         }
 
-        private void IconChangeChoicesComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void SetComboBoxValue<T>(object sender, Action<DisplayEnumObject<T>> saveSetting) where T : Enum, IConvertible
         {
             if (!_loaded) return;
-            var comboBox = (DisplayEnumObject<IconChangerEnum>)((ComboBox)sender).SelectedItem;
-            if (comboBox == null) return;
+            var selectedItem = (DisplayEnumObject<T>)((ComboBox)sender).SelectedItem;
+            if (selectedItem == null ) return;
+            saveSetting(selectedItem);
+        }
 
-            AppConfigs.Configuration.SwitchIcon = comboBox.Enum;
-            AppConfigs.Configuration.Save();
-            new IconChangerFactory().Get(comboBox.Enum).ChangeIcon(AppModel.Instance.TrayIcon);
+        private void IconChangeChoicesComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SetComboBoxValue<IconChangerEnum>(sender, selectedItem =>
+            {
+                AppConfigs.Configuration.SwitchIcon = selectedItem.Enum;
+                AppConfigs.Configuration.Save();
+                new IconChangerFactory().Get(selectedItem.Enum).ChangeIcon(AppModel.Instance.TrayIcon);
+            });
         }
 
         private void IconDoubleClickComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!_loaded) return;
-            var comboBox = (DisplayEnumObject<IconDoubleClickEnum>)((ComboBox)sender).SelectedItem;
-            if (comboBox == null) return;
-
-            AppModel.Instance.IconDoubleClick = comboBox.Enum;
+            SetComboBoxValue<IconDoubleClickEnum>(sender, selectedItem =>
+            {
+                AppModel.Instance.IconDoubleClick = selectedItem.Enum;
+            });
         }
 
         #endregion
@@ -735,20 +740,18 @@ namespace SoundSwitch.UI.Forms
 
         private void TooltipInfoComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
-            if (!_loaded) return;
-            var comboBox = (DisplayEnumObject<TooltipInfoTypeEnum>)((ComboBox)sender).SelectedItem;
-            if (comboBox == null) return;
-
-            TooltipInfoManager.CurrentTooltipInfo = comboBox.Enum;
+            SetComboBoxValue<TooltipInfoTypeEnum>(sender, selectedItem =>
+            {
+                TooltipInfoManager.CurrentTooltipInfo = selectedItem.Enum;
+            });
         }
 
         private void CyclerComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
-            if (!_loaded) return;
-            var comboBox = (DisplayEnumObject<DeviceCyclerTypeEnum>)((ComboBox)sender).SelectedItem;
-            if (comboBox == null) return;
-
-            DeviceCyclerManager.CurrentCycler = comboBox.Enum;
+            SetComboBoxValue<DeviceCyclerTypeEnum>(sender, selectedItem =>
+            {
+                DeviceCyclerManager.CurrentCycler = selectedItem.Enum;
+            });
         }
 
         #endregion
@@ -790,19 +793,18 @@ namespace SoundSwitch.UI.Forms
 
         private void LanguageComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!_loaded) return;
-            var comboBox = (DisplayEnumObject<Language>)((ComboBox)sender).SelectedItem;
-            if (comboBox == null) return;
-
-            if (AppModel.Instance.Language == comboBox.Enum) return;
-            AppModel.Instance.Language = comboBox.Enum;
-
-            if (MessageBox.Show(SettingsStrings.languageRestartRequired,
-                    SettingsStrings.languageRestartRequired_caption,
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            SetComboBoxValue<Language>(sender, selectedItem =>
             {
-                Program.RestartApp();
-            }
+                if (AppModel.Instance.Language == selectedItem.Enum) return;
+                AppModel.Instance.Language = selectedItem.Enum;
+
+                if (MessageBox.Show(SettingsStrings.languageRestartRequired,
+                        SettingsStrings.languageRestartRequired_caption,
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    Program.RestartApp();
+                }
+            });
         }
 
         #endregion
@@ -811,28 +813,26 @@ namespace SoundSwitch.UI.Forms
 
         private void NotificationComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
-            if (!_loaded) return;
-            var comboBox = (DisplayEnumObject<NotificationTypeEnum>)((ComboBox)sender).SelectedItem;
-            if (comboBox == null) return;
+            SetComboBoxValue<NotificationTypeEnum>(sender, selectedItem =>
+            {
+                var notificationType = selectedItem.Enum;
+                if (notificationType == AppModel.Instance.NotificationSettings) return;
 
-            var notificationType = comboBox.Enum;
-            if (notificationType == AppModel.Instance.NotificationSettings) return;
+                var supportCustomSound = new NotificationFactory().Get(notificationType).SupportCustomSound();
+                selectSoundButton.Visible = supportCustomSound;
+                DeleteSoundButton_Visible(supportCustomSound);
 
-            var supportCustomSound = new NotificationFactory().Get(notificationType).SupportCustomSound();
-            selectSoundButton.Visible = supportCustomSound;
-            DeleteSoundButton_Visible(supportCustomSound);
-
-            bannerGroupBox.Enabled = notificationType == NotificationTypeEnum.BannerNotification;
-            AppModel.Instance.NotificationSettings = notificationType;
+                bannerGroupBox.Enabled = notificationType == NotificationTypeEnum.BannerNotification;
+                AppModel.Instance.NotificationSettings = notificationType;
+            });
         }
 
         private void PositionComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
-            if (!_loaded) return;
-            var comboBox = (DisplayEnumObject<BannerPositionEnum>)((ComboBox)sender).SelectedItem;
-            if (comboBox == null) return;
-
-            AppModel.Instance.BannerPosition = comboBox.Enum;
+            SetComboBoxValue<BannerPositionEnum>(sender, selectedItem =>
+            {
+                AppModel.Instance.BannerPosition = selectedItem.Enum;
+            });
         }
 
         private void SelectSoundButton_Click(object sender, EventArgs e)
@@ -853,11 +853,10 @@ namespace SoundSwitch.UI.Forms
 
         private void MicrophoneMuteNotificationComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
-            if (!_loaded) return;
-            var comboBox = (DisplayEnumObject<MicrophoneMuteEnum>)((ComboBox)sender).SelectedItem;
-            if (comboBox == null) return;
-
-            AppModel.Instance.MicrophoneMuteNotification = comboBox.Enum;
+            SetComboBoxValue<MicrophoneMuteEnum>(sender, selectedItem =>
+            {
+                AppModel.Instance.MicrophoneMuteNotification = selectedItem.Enum;
+            });
         }
 
         #endregion
@@ -880,23 +879,21 @@ namespace SoundSwitch.UI.Forms
                 RestoreDirectory = true
             };
 
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            if (saveFileDialog.ShowDialog() != DialogResult.OK) return;
+            if (File.Exists(saveFileDialog.FileName))
+                File.Delete(saveFileDialog.FileName);
+
+            Log.CloseAndFlush();
+
+            var files = Directory.EnumerateFiles(ApplicationPath.Logs, "*.log");
+            using var zip = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
+            foreach (var file in files)
             {
-                if (File.Exists(saveFileDialog.FileName))
-                    File.Delete(saveFileDialog.FileName);
-
-                Log.CloseAndFlush();
-
-                var files = Directory.EnumerateFiles(ApplicationPath.Logs, "*.log");
-                using var zip = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
-                foreach (var file in files)
-                {
-                    // Add the entry for each file
-                    zip.CreateEntryFromFile(file, Path.GetFileName(file), CompressionLevel.Optimal);
-                }
-
-                LoggerConfigurator.ConfigureLogger();
+                // Add the entry for each file
+                zip.CreateEntryFromFile(file, Path.GetFileName(file), CompressionLevel.Optimal);
             }
+
+            LoggerConfigurator.ConfigureLogger();
         }
 
         private void GitHubHelpLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
