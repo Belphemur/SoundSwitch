@@ -340,6 +340,24 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export Configuration File.
+        /// </summary>
+        internal static string exportConfigFile {
+            get {
+                return ResourceManager.GetString("exportConfigFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export the main configuration file into a zip archive for further troubleshooting in either the Help Discussions or Community Discord..
+        /// </summary>
+        internal static string exportConfigFile_desc {
+            get {
+                return ResourceManager.GetString("exportConfigFile.desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Export Log Files.
         /// </summary>
         internal static string exportLogFiles {

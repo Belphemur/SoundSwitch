@@ -293,9 +293,9 @@ namespace SoundSwitch.UI.Forms
             }
 
             if (AppModel.Instance.ProfileManager.Profiles.Count <= 0) return;
-                foreach (ColumnHeader column in profilesListView.Columns)
-                    column.Width = -2;
-                }
+            foreach (ColumnHeader column in profilesListView.Columns)
+                column.Width = -2;
+        }
 
         private void PopulateAudioDevices()
         {
@@ -364,9 +364,14 @@ namespace SoundSwitch.UI.Forms
             resetAudioDevicesGroupBox.Text = SettingsStrings.resetAudioDevices;
             resetAudioDevicesLabel.Text = SettingsStrings.resetAudioDevices_desc;
             resetAudioDevicesButton.Text = SettingsStrings.buttonReset;
+
             exportLogFilesGroupBox.Text = SettingsStrings.exportLogFiles;
             exportLogFilesLabel.Text = SettingsStrings.exportLogFiles_desc;
             exportLogFilesButton.Text = SettingsStrings.buttonExport;
+
+            exportConfigFileGroupBox.Text = SettingsStrings.exportConfigFile;
+            exportConfigFileLabel.Text = SettingsStrings.exportConfigFile_desc;
+            exportConfigFileButton.Text = SettingsStrings.buttonExport;
 
             appNameLabel.Text = Application.ProductName;
             troubleshootingLabel.Text = SettingsStrings.troubleshooting_desc;
@@ -555,7 +560,7 @@ namespace SoundSwitch.UI.Forms
         {
             if (!listView.SmallImageList.Images.ContainsKey(device.IconPath))
                 listView.SmallImageList.Images.Add(device.IconPath, device.LargeIcon);
-            }
+        }
 
         private void ListViewItemChecked(object sender, ItemCheckEventArgs e)
         {
@@ -744,19 +749,19 @@ namespace SoundSwitch.UI.Forms
         {
             if (updateSilentRadioButton.Checked)
                 AppModel.Instance.UpdateMode = UpdateMode.Silent;
-            }
+        }
 
         private void UpdateNotifyRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             if (updateNotifyRadioButton.Checked)
                 AppModel.Instance.UpdateMode = UpdateMode.Notify;
-            }
+        }
 
         private void UpdateNeverRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             if (updateNeverRadioButton.Checked)
                 AppModel.Instance.UpdateMode = UpdateMode.Never;
-            }
+        }
 
         private void BetaVersionCheckbox_CheckedChanged(object sender, EventArgs e)
         {
@@ -777,7 +782,7 @@ namespace SoundSwitch.UI.Forms
                 if (MessageBox.Show(SettingsStrings.languageRestartRequired,
                         SettingsStrings.languageRestartRequired_caption, MessageBoxButtons.YesNo,
                         MessageBoxIcon.Question) != DialogResult.Yes) return;
-                    Program.RestartApp();
+                Program.RestartApp();
             });
         }
 
@@ -842,12 +847,12 @@ namespace SoundSwitch.UI.Forms
             AudioSwitcher.Instance.ResetProcessDeviceConfiguration();
         }
 
-        private void ExportLogFilesButton_Click(object sender, EventArgs e)
+        private void PrepareZipArchive(string title, string fileName, Action<ZipArchive> exportArchive)
         {
             var saveFileDialog = new SaveFileDialog
             {
-                Title = SettingsStrings.exportLogFiles,
-                FileName = "soundswitch_logs",
+                Title = title,
+                FileName = fileName,
                 DefaultExt = "zip",
                 Filter = "Zip Archive (*.zip)|*.zip",
                 RestoreDirectory = true
@@ -857,32 +862,34 @@ namespace SoundSwitch.UI.Forms
             if (File.Exists(saveFileDialog.FileName))
                 File.Delete(saveFileDialog.FileName);
 
-            Log.CloseAndFlush();
-
-            var files = Directory.EnumerateFiles(ApplicationPath.Logs, "*.log");
             using var zip = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
-            foreach (var file in files)
+            exportArchive(zip);
+        }
+
+        private void ExportLogFilesButton_Click(object sender, EventArgs e)
+        {
+            PrepareZipArchive(SettingsStrings.exportLogFiles, "soundswitch_logs", zip =>
             {
-                // Add the entry for each file
-                zip.CreateEntryFromFile(file, Path.GetFileName(file), CompressionLevel.Optimal);
-            }
+                Log.CloseAndFlush();
 
-            LoggerConfigurator.ConfigureLogger();
+                var files = Directory.EnumerateFiles(ApplicationPath.Logs, "*.log");
+                foreach (var file in files)
+                {
+                    // Add the entry for each file
+                    zip.CreateEntryFromFile(file, Path.GetFileName(file), CompressionLevel.Optimal);
+                }
+
+                LoggerConfigurator.ConfigureLogger();
+            });
         }
 
-        private void GitHubHelpLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void ExportConfigFileButton_Click(object sender, EventArgs e)
         {
-            GitHubHelpLink();
-        }
-
-        private void DiscordCommunityLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            DiscordCommunityLink();
-        }
-
-        private void DonateLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            DonateLink();
+            PrepareZipArchive(SettingsStrings.exportConfigFile, "soundswitch_config", zip =>
+            {
+                const string configFile = "SoundSwitchConfiguration.json";
+                zip.CreateEntryFromFile(Path.Combine(ApplicationPath.Default, configFile), configFile, CompressionLevel.Optimal);
+            });
         }
 
         internal static void GitHubHelpLink(object sender, EventArgs e)

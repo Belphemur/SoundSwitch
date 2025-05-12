@@ -498,4 +498,10 @@ Przywróć stan systemu po zamknięciu aplikacji.</value>
   <data name="iconDoubleClick" xml:space="preserve">
     <value />
   </data>
+  <data name="exportConfigFile" xml:space="preserve">
+    <value />
+  </data>
+  <data name="exportConfigFile.desc" xml:space="preserve">
+    <value />
+  </data>
 </root>

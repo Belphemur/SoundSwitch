@@ -591,4 +591,10 @@ Stellt den Zustand des Systems wieder her, wenn die Anwendung geschlossen wird.<
   <data name="iconDoubleClick" xml:space="preserve">
     <value />
   </data>
+  <data name="exportConfigFile" xml:space="preserve">
+    <value />
+  </data>
+  <data name="exportConfigFile.desc" xml:space="preserve">
+    <value />
+  </data>
 </root>

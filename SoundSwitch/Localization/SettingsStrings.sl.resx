@@ -519,4 +519,10 @@ Obnovi stanje sistema, ko se program zapre.</value>
   <data name="iconDoubleClick" xml:space="preserve">
     <value />
   </data>
+  <data name="exportConfigFile" xml:space="preserve">
+    <value />
+  </data>
+  <data name="exportConfigFile.desc" xml:space="preserve">
+    <value />
+  </data>
 </root>

@@ -603,4 +603,10 @@ Restore the state of the system when the application is closed.</value>
   <data name="iconDoubleClick" xml:space="preserve">
     <value>Double-click action</value>
   </data>
+  <data name="exportConfigFile" xml:space="preserve">
+    <value>Export Configuration File</value>
+  </data>
+  <data name="exportConfigFile.desc" xml:space="preserve">
+    <value>Export the main configuration file into a zip archive for further troubleshooting in either the Help Discussions or Community Discord.</value>
+  </data>
 </root>
