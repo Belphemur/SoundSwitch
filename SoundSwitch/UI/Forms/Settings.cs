@@ -292,14 +292,10 @@ namespace SoundSwitch.UI.Forms
                 profilesListView.Items.Add(listViewItem);
             }
 
-            if (AppModel.Instance.ProfileManager.Profiles.Count > 0)
-            {
+            if (AppModel.Instance.ProfileManager.Profiles.Count <= 0) return;
                 foreach (ColumnHeader column in profilesListView.Columns)
-                {
                     column.Width = -2;
                 }
-            }
-        }
 
         private void PopulateAudioDevices()
         {
@@ -542,16 +538,11 @@ namespace SoundSwitch.UI.Forms
             };
             var isSelected = selected.Contains(device);
             if (device.State == DeviceState.Active && isSelected)
-            {
                 listViewItem.Group = listView.Groups["selectedGroup"];
-            }
             else
-            {
                 listViewItem.Group = GetGroup(device.State, listView);
-            }
 
             listViewItem.Checked = isSelected;
-
             return listViewItem;
         }
 
@@ -563,11 +554,8 @@ namespace SoundSwitch.UI.Forms
         private void AddDeviceIconSmallImage(DeviceFullInfo device, ListView listView)
         {
             if (!listView.SmallImageList.Images.ContainsKey(device.IconPath))
-            {
-                listView.SmallImageList.Images.Add(device.IconPath,
-                    device.LargeIcon);
+                listView.SmallImageList.Images.Add(device.IconPath, device.LargeIcon);
             }
-        }
 
         private void ListViewItemChecked(object sender, ItemCheckEventArgs e)
         {
@@ -606,16 +594,16 @@ namespace SoundSwitch.UI.Forms
             switch (deviceState)
             {
                 case DeviceState.Active:
-                    return listView.Groups[DeviceState.Active.ToString()];
+                    return listView.Groups[nameof(DeviceState.Active)];
                 default:
-                    return listView.Groups[DeviceState.NotPresent.ToString()];
+                    return listView.Groups[nameof(DeviceState.NotPresent)];
             }
         }
 
         private void PopulateDeviceTypeGroups(ListView listView)
         {
-            listView.Groups.Add(new ListViewGroup(DeviceState.Active.ToString(), SettingsStrings.connected));
-            listView.Groups.Add(new ListViewGroup(DeviceState.NotPresent.ToString(), SettingsStrings.disconnected));
+            listView.Groups.Add(new ListViewGroup(nameof(DeviceState.Active), SettingsStrings.connected));
+            listView.Groups.Add(new ListViewGroup(nameof(DeviceState.NotPresent), SettingsStrings.disconnected));
         }
 
         #endregion
@@ -636,10 +624,7 @@ namespace SoundSwitch.UI.Forms
 
         private void DeleteProfileButton_Click(object sender, EventArgs e)
         {
-            if (profilesListView.SelectedItems.Count <= 0)
-            {
-                return;
-            }
+            if (profilesListView.SelectedItems.Count <= 0) return;
 
             var profiles = profilesListView.SelectedItems.Cast<ListViewItem>()
                                            .Select(item => (Profile)item.Tag);
@@ -651,10 +636,7 @@ namespace SoundSwitch.UI.Forms
 
         private void EditProfileButton_Click(object sender, EventArgs e)
         {
-            if (profilesListView.SelectedItems.Count <= 0)
-            {
-                return;
-            }
+            if (profilesListView.SelectedItems.Count <= 0) return;
 
             var profile = (Profile)profilesListView.SelectedItems[0].Tag;
             var form = new UpsertProfileExtended(profile, _audioDeviceLister.GetDevices(DataFlow.Render, DeviceState.Active | DeviceState.Unplugged), _audioDeviceLister.GetDevices(DataFlow.Capture, DeviceState.Active | DeviceState.Unplugged), this, true);
@@ -688,7 +670,7 @@ namespace SoundSwitch.UI.Forms
         {
             if (!_loaded) return;
             var selectedItem = (DisplayEnumObject<T>)((ComboBox)sender).SelectedItem;
-            if (selectedItem == null ) return;
+            if (selectedItem == null) return;
             saveSetting(selectedItem);
         }
 
@@ -761,26 +743,20 @@ namespace SoundSwitch.UI.Forms
         private void UpdateSilentRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             if (updateSilentRadioButton.Checked)
-            {
                 AppModel.Instance.UpdateMode = UpdateMode.Silent;
             }
-        }
 
         private void UpdateNotifyRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             if (updateNotifyRadioButton.Checked)
-            {
                 AppModel.Instance.UpdateMode = UpdateMode.Notify;
             }
-        }
 
         private void UpdateNeverRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             if (updateNeverRadioButton.Checked)
-            {
                 AppModel.Instance.UpdateMode = UpdateMode.Never;
             }
-        }
 
         private void BetaVersionCheckbox_CheckedChanged(object sender, EventArgs e)
         {
@@ -799,11 +775,9 @@ namespace SoundSwitch.UI.Forms
                 AppModel.Instance.Language = selectedItem.Enum;
 
                 if (MessageBox.Show(SettingsStrings.languageRestartRequired,
-                        SettingsStrings.languageRestartRequired_caption,
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                {
+                        SettingsStrings.languageRestartRequired_caption, MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question) != DialogResult.Yes) return;
                     Program.RestartApp();
-                }
             });
         }
 
@@ -911,17 +885,17 @@ namespace SoundSwitch.UI.Forms
             DonateLink();
         }
 
-        internal static void GitHubHelpLink()
+        internal static void GitHubHelpLink(object sender, EventArgs e)
         {
             BrowserUtil.OpenUrl("https://github.com/Belphemur/SoundSwitch/discussions");
         }
 
-        internal static void DiscordCommunityLink()
+        internal static void DiscordCommunityLink(object sender, EventArgs e)
         {
             BrowserUtil.OpenUrl("https://discord.gg/gUCw3Ue");
         }
 
-        internal static void DonateLink()
+        internal static void DonateLink(object sender, EventArgs e)
         {
             BrowserUtil.OpenUrl($"https://soundswitch.aaflalo.me/?utm_campaign=application&utm_source={Application.ProductVersion}#donate");
         }

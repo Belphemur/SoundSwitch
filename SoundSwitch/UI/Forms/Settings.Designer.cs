@@ -830,7 +830,7 @@ namespace SoundSwitch.UI.Forms
             donateLinkLabel.TabStop = true;
             donateLinkLabel.Text = "Donate";
             donateLinkLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            donateLinkLabel.LinkClicked += DonateLinkLabel_LinkClicked;
+            donateLinkLabel.LinkClicked += DonateLink;
             // 
             // gitHubPictureBox
             // 
@@ -854,7 +854,7 @@ namespace SoundSwitch.UI.Forms
             gitHubHelpLinkLabel.TabStop = true;
             gitHubHelpLinkLabel.Text = "Help Discussion";
             gitHubHelpLinkLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            gitHubHelpLinkLabel.LinkClicked += GitHubHelpLinkLabel_LinkClicked;
+            gitHubHelpLinkLabel.LinkClicked += GitHubHelpLink;
             // 
             // appNameLabel
             // 
@@ -878,7 +878,7 @@ namespace SoundSwitch.UI.Forms
             discordCommunityLinkLabel.TabStop = true;
             discordCommunityLinkLabel.Text = "Community Discord";
             discordCommunityLinkLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            discordCommunityLinkLabel.LinkClicked += DiscordCommunityLinkLabel_LinkClicked;
+            discordCommunityLinkLabel.LinkClicked += DiscordCommunityLink;
             // 
             // donatePictureBox
             // 
