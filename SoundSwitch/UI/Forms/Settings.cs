@@ -864,7 +864,7 @@ namespace SoundSwitch.UI.Forms
             if (File.Exists(saveFileDialog.FileName))
                 File.Delete(saveFileDialog.FileName);
 
-            var archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
+            using var archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
             exportArchive(archive);
         }
 
