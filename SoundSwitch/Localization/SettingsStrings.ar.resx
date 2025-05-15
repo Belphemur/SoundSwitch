@@ -260,7 +260,7 @@
     <value>اللغه ستتغير بعد إعادة تشغيل SoundSwitch.
 هل تريد إعادة التشغيل الآن ؟</value>
   </data>
-  <data name="languageRestartRequired.caption" xml:space="preserve">
+  <data name="restartRequired.caption" xml:space="preserve">
     <value>يجب إعادة التشغيل</value>
   </data>
   <data name="updateNever.tooltip" xml:space="preserve">
@@ -591,10 +591,28 @@
   <data name="iconDoubleClick" xml:space="preserve">
     <value />
   </data>
+  <data name="importExportConfigFile" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importExportConfigFile.desc" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigErrorMessage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigRestartRequired" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigErrorMessage.caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="buttonImport" xml:space="preserve">
+    <value />
+  </data>
   <data name="exportConfigFile" xml:space="preserve">
     <value />
   </data>
-  <data name="exportConfigFile.desc" xml:space="preserve">
+  <data name="importConfigFile" xml:space="preserve">
     <value />
   </data>
 </root>

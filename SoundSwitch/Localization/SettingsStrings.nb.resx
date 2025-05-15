@@ -260,7 +260,7 @@ Banner: Bruker en ramme som alltid er i forgrunnen, nyttig til bruk i spill.</va
     <value>Språket vil endre seg etter at du starter SoundSwitch på nytt.
 Ønsker du å starte på nytt nå?</value>
   </data>
-  <data name="languageRestartRequired.caption" xml:space="preserve">
+  <data name="restartRequired.caption" xml:space="preserve">
     <value>Omstart kreves</value>
   </data>
   <data name="updateNever.tooltip" xml:space="preserve">
@@ -603,10 +603,28 @@ Gjenopprett systemets tilstand når programmet lukkes.</value>
   <data name="iconDoubleClick" xml:space="preserve">
     <value>Handling ved dobbeltklikk</value>
   </data>
+  <data name="importExportConfigFile" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importExportConfigFile.desc" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigErrorMessage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigRestartRequired" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigErrorMessage.caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="buttonImport" xml:space="preserve">
+    <value />
+  </data>
   <data name="exportConfigFile" xml:space="preserve">
     <value />
   </data>
-  <data name="exportConfigFile.desc" xml:space="preserve">
+  <data name="importConfigFile" xml:space="preserve">
     <value />
   </data>
 </root>

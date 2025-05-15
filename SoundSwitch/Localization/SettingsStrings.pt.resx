@@ -257,7 +257,7 @@ Bandeira: usa uma forma personalizada de janela 'sempre por cima', útil para ut
     <value>A linguagem irá ser alterada depois de reiniciar SoundSwitch.
 Deseja reiniciar agora?</value>
   </data>
-  <data name="languageRestartRequired.caption" xml:space="preserve">
+  <data name="restartRequired.caption" xml:space="preserve">
     <value>Necessário reiniciar</value>
   </data>
   <data name="updateNever.tooltip" xml:space="preserve">
@@ -540,10 +540,28 @@ Restaurar o estado do sistema quando a aplicação é fechada.</value>
   <data name="iconDoubleClick" xml:space="preserve">
     <value />
   </data>
+  <data name="importExportConfigFile" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importExportConfigFile.desc" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigErrorMessage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigRestartRequired" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigErrorMessage.caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="buttonImport" xml:space="preserve">
+    <value />
+  </data>
   <data name="exportConfigFile" xml:space="preserve">
     <value />
   </data>
-  <data name="exportConfigFile.desc" xml:space="preserve">
+  <data name="importConfigFile" xml:space="preserve">
     <value />
   </data>
 </root>

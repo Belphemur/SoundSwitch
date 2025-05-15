@@ -260,7 +260,7 @@ Bannière : Utilise une bannière personnalisée toujours au premier plan, utile
     <value>La langue sera modifiée après le redémarrage de SoundSwitch.
 Voulez-vous redémarrer maintenant ?</value>
   </data>
-  <data name="languageRestartRequired.caption" xml:space="preserve">
+  <data name="restartRequired.caption" xml:space="preserve">
     <value>Redémarrage nécessaire</value>
   </data>
   <data name="updateNever.tooltip" xml:space="preserve">
@@ -603,10 +603,28 @@ Restaurer l'état du système quand l'application est fermée.</value>
   <data name="iconDoubleClick" xml:space="preserve">
     <value>Action de double-clic</value>
   </data>
+  <data name="importExportConfigFile" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importExportConfigFile.desc" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigErrorMessage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigRestartRequired" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigErrorMessage.caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="buttonImport" xml:space="preserve">
+    <value />
+  </data>
   <data name="exportConfigFile" xml:space="preserve">
     <value />
   </data>
-  <data name="exportConfigFile.desc" xml:space="preserve">
+  <data name="importConfigFile" xml:space="preserve">
     <value />
   </data>
 </root>

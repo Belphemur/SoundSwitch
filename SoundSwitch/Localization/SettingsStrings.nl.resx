@@ -260,7 +260,7 @@ Banner: Gebruikt een aangepast scherm dat altijd te zien is. Dit is handig voor 
     <value>De taal verandert na het herstarten van SoundSwitch.
 Wil je nu opnieuw opstarten?</value>
   </data>
-  <data name="languageRestartRequired.caption" xml:space="preserve">
+  <data name="restartRequired.caption" xml:space="preserve">
     <value>Opnieuw opstarten nodig</value>
   </data>
   <data name="updateNever.tooltip" xml:space="preserve">
@@ -522,10 +522,28 @@ Herstel systeemstatus wanneer de applicatie wordt gesloten.</value>
   <data name="iconDoubleClick" xml:space="preserve">
     <value />
   </data>
+  <data name="importExportConfigFile" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importExportConfigFile.desc" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigErrorMessage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigRestartRequired" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigErrorMessage.caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="buttonImport" xml:space="preserve">
+    <value />
+  </data>
   <data name="exportConfigFile" xml:space="preserve">
     <value />
   </data>
-  <data name="exportConfigFile.desc" xml:space="preserve">
+  <data name="importConfigFile" xml:space="preserve">
     <value />
   </data>
 </root>

@@ -257,7 +257,7 @@ Bayrak bildirim (banner): Her zaman en üstte görünen özel bir bildirim. Oyun
     <value>Dil seçimi yalnızca SoundSwitch yeniden başlatıldığında devreye girecek.
 Şimdi yeniden başlatmak ister misiniz?</value>
   </data>
-  <data name="languageRestartRequired.caption" xml:space="preserve">
+  <data name="restartRequired.caption" xml:space="preserve">
     <value>Yeniden başlatma gerekli</value>
   </data>
   <data name="updateNever.tooltip" xml:space="preserve">
@@ -483,10 +483,28 @@ Uygulama kapatıldığında cihazların eski durumunu geri getirir.</value>
   <data name="iconDoubleClick" xml:space="preserve">
     <value />
   </data>
+  <data name="importExportConfigFile" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importExportConfigFile.desc" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigErrorMessage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigRestartRequired" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigErrorMessage.caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="buttonImport" xml:space="preserve">
+    <value />
+  </data>
   <data name="exportConfigFile" xml:space="preserve">
     <value />
   </data>
-  <data name="exportConfigFile.desc" xml:space="preserve">
+  <data name="importConfigFile" xml:space="preserve">
     <value />
   </data>
 </root>

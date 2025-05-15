@@ -369,9 +369,10 @@ namespace SoundSwitch.UI.Forms
             exportLogFilesLabel.Text = SettingsStrings.exportLogFiles_desc;
             exportLogFilesButton.Text = SettingsStrings.buttonExport;
 
-            exportConfigFileGroupBox.Text = SettingsStrings.exportConfigFile;
-            exportConfigFileLabel.Text = SettingsStrings.exportConfigFile_desc;
+            configFileGroupBox.Text = SettingsStrings.importExportConfigFile;
+            configFileLabel.Text = SettingsStrings.importExportConfigFile_desc;
             exportConfigFileButton.Text = SettingsStrings.buttonExport;
+            importConfigFileButton.Text = SettingsStrings.buttonImport;
 
             appNameLabel.Text = Application.ProductName;
             troubleshootingLabel.Text = SettingsStrings.troubleshooting_desc;
@@ -780,7 +781,8 @@ namespace SoundSwitch.UI.Forms
                 AppModel.Instance.Language = selectedItem.Enum;
 
                 if (MessageBox.Show(SettingsStrings.languageRestartRequired,
-                        SettingsStrings.languageRestartRequired_caption, MessageBoxButtons.YesNo,
+                        SettingsStrings.restartRequired_caption,
+                        MessageBoxButtons.YesNo,
                         MessageBoxIcon.Question) != DialogResult.Yes) return;
                 Program.RestartApp();
             });
@@ -855,29 +857,27 @@ namespace SoundSwitch.UI.Forms
                 FileName = fileName,
                 DefaultExt = "zip",
                 Filter = "Zip Archive (*.zip)|*.zip",
-                RestoreDirectory = true
+                RestoreDirectory = true,
             };
 
             if (saveFileDialog.ShowDialog() != DialogResult.OK) return;
             if (File.Exists(saveFileDialog.FileName))
                 File.Delete(saveFileDialog.FileName);
 
-            using var zip = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
-            exportArchive(zip);
+            var archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
+            exportArchive(archive);
         }
 
         private void ExportLogFilesButton_Click(object sender, EventArgs e)
         {
-            PrepareZipArchive(SettingsStrings.exportLogFiles, "soundswitch_logs", zip =>
+            PrepareZipArchive(SettingsStrings.exportLogFiles, "soundswitch_logs", archive =>
             {
                 Log.CloseAndFlush();
 
                 var files = Directory.EnumerateFiles(ApplicationPath.Logs, "*.log");
                 foreach (var file in files)
-                {
                     // Add the entry for each file
-                    zip.CreateEntryFromFile(file, Path.GetFileName(file), CompressionLevel.Optimal);
-                }
+                    archive.CreateEntryFromFile(file, Path.GetFileName(file), CompressionLevel.Optimal);
 
                 LoggerConfigurator.ConfigureLogger();
             });
@@ -885,11 +885,51 @@ namespace SoundSwitch.UI.Forms
 
         private void ExportConfigFileButton_Click(object sender, EventArgs e)
         {
-            PrepareZipArchive(SettingsStrings.exportConfigFile, "soundswitch_config", zip =>
+            PrepareZipArchive(SettingsStrings.exportConfigFile, "soundswitch_config", archive =>
             {
                 const string configFile = "SoundSwitchConfiguration.json";
-                zip.CreateEntryFromFile(Path.Combine(ApplicationPath.Default, configFile), configFile, CompressionLevel.Optimal);
+                archive.CreateEntryFromFile(Path.Combine(ApplicationPath.Default, configFile), configFile, CompressionLevel.Optimal);
             });
+        }
+
+        private void ImportConfigFileButton_Click(object sender, EventArgs e)
+        {
+            const string configFile = "SoundSwitchConfiguration.json";
+            var filePath = Path.Combine(ApplicationPath.Default, configFile);
+
+            var openFileDialog = new OpenFileDialog
+            {
+                Title = SettingsStrings.importConfigFile,
+                Filter = "Zip Archive (*.zip)|*.zip",
+                RestoreDirectory = true,
+            };
+
+            while (true)
+            {
+                if (openFileDialog.ShowDialog() != DialogResult.OK) return;
+
+                using var archive = ZipFile.Open(openFileDialog.FileName, ZipArchiveMode.Read);
+                var entry = archive.GetEntry(configFile);
+                if (entry == null)
+                {
+                    MessageBox.Show(SettingsStrings.importConfigErrorMessage,
+                        SettingsStrings.importConfigErrorMessage_caption,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Exclamation);
+                    continue;
+                }
+
+                if (MessageBox.Show(SettingsStrings.importConfigRestartRequired,
+                        SettingsStrings.restartRequired_caption,
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question) != DialogResult.Yes) return;
+
+                File.Copy(filePath, Path.ChangeExtension(filePath, ".old"), true);
+                entry.ExtractToFile(filePath, true);
+                break;
+            }
+
+            Program.RestartApp();
         }
 
         internal static void GitHubHelpLink(object sender, EventArgs e)

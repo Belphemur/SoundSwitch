@@ -260,7 +260,7 @@ Banner: usa uno speciale riquadro sempre in primo piano, utile per l'uso durante
     <value>La lingua verà modificata dopo il riavvio di SoundSwitch.
 Vuoi riavviare SoundSwitch ora?</value>
   </data>
-  <data name="languageRestartRequired.caption" xml:space="preserve">
+  <data name="restartRequired.caption" xml:space="preserve">
     <value>Richiede un riavvio</value>
   </data>
   <data name="updateNever.tooltip" xml:space="preserve">
@@ -603,10 +603,28 @@ Ripristina lo stato del sistema quando l'applicazione viene chiusa.</value>
   <data name="iconDoubleClick" xml:space="preserve">
     <value>Azione doppio clic</value>
   </data>
+  <data name="importExportConfigFile" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importExportConfigFile.desc" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigErrorMessage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigRestartRequired" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigErrorMessage.caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="buttonImport" xml:space="preserve">
+    <value />
+  </data>
   <data name="exportConfigFile" xml:space="preserve">
     <value />
   </data>
-  <data name="exportConfigFile.desc" xml:space="preserve">
+  <data name="importConfigFile" xml:space="preserve">
     <value />
   </data>
 </root>

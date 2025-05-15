@@ -260,7 +260,7 @@
     <value>சவுண்ட்ச்விட்சை மறுதொடக்கம் செய்த பிறகு மொழி மாறும்.
  நீங்கள் இப்போது மறுதொடக்கம் செய்ய விரும்புகிறீர்களா?</value>
   </data>
-  <data name="languageRestartRequired.caption" xml:space="preserve">
+  <data name="restartRequired.caption" xml:space="preserve">
     <value>மறுதொடக்கம் தேவை</value>
   </data>
   <data name="updateNever.tooltip" xml:space="preserve">
@@ -597,10 +597,28 @@
   <data name="iconDoubleClick" xml:space="preserve">
     <value />
   </data>
+  <data name="importExportConfigFile" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importExportConfigFile.desc" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigErrorMessage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigRestartRequired" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigErrorMessage.caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="buttonImport" xml:space="preserve">
+    <value />
+  </data>
   <data name="exportConfigFile" xml:space="preserve">
     <value />
   </data>
-  <data name="exportConfigFile.desc" xml:space="preserve">
+  <data name="importConfigFile" xml:space="preserve">
     <value />
   </data>
 </root>

@@ -214,6 +214,15 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Import.
+        /// </summary>
+        internal static string buttonImport {
+            get {
+                return ResourceManager.GetString("buttonImport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reset.
         /// </summary>
         internal static string buttonReset {
@@ -349,15 +358,6 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Export the main configuration file into a zip archive for further troubleshooting in either the Help Discussions or Community Discord..
-        /// </summary>
-        internal static string exportConfigFile_desc {
-            get {
-                return ResourceManager.GetString("exportConfigFile.desc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Export Log Files.
         /// </summary>
         internal static string exportLogFiles {
@@ -462,6 +462,61 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The zip archive must contain the SoundSwitch configuration file..
+        /// </summary>
+        internal static string importConfigErrorMessage {
+            get {
+                return ResourceManager.GetString("importConfigErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid archive.
+        /// </summary>
+        internal static string importConfigErrorMessage_caption {
+            get {
+                return ResourceManager.GetString("importConfigErrorMessage.caption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import Configuration File.
+        /// </summary>
+        internal static string importConfigFile {
+            get {
+                return ResourceManager.GetString("importConfigFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SoundSwitch will restart when the main configuration file has been imported.
+        ///Do you want to restart now?.
+        /// </summary>
+        internal static string importConfigRestartRequired {
+            get {
+                return ResourceManager.GetString("importConfigRestartRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import / Export Configuration File.
+        /// </summary>
+        internal static string importExportConfigFile {
+            get {
+                return ResourceManager.GetString("importExportConfigFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import or export the SoundSwitch configuration file into a zip archive..
+        /// </summary>
+        internal static string importExportConfigFile_desc {
+            get {
+                return ResourceManager.GetString("importExportConfigFile.desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Keep SoundSwitch&apos;s System Tray Icon.
         /// </summary>
         internal static string keepSystemTrayIcon {
@@ -513,15 +568,6 @@ namespace SoundSwitch.Localization {
         internal static string languageRestartRequired {
             get {
                 return ResourceManager.GetString("languageRestartRequired", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Need a restart.
-        /// </summary>
-        internal static string languageRestartRequired_caption {
-            get {
-                return ResourceManager.GetString("languageRestartRequired.caption", resourceCulture);
             }
         }
         
@@ -1284,6 +1330,15 @@ namespace SoundSwitch.Localization {
         internal static string resetAudioDevices_desc {
             get {
                 return ResourceManager.GetString("resetAudioDevices.desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Need a restart.
+        /// </summary>
+        internal static string restartRequired_caption {
+            get {
+                return ResourceManager.GetString("restartRequired.caption", resourceCulture);
             }
         }
         

@@ -86,9 +86,9 @@ namespace SoundSwitch.UI.Forms
             iconChangeLabel = new System.Windows.Forms.Label();
             iconChangeChoicesComboBox = new System.Windows.Forms.ComboBox();
             troubleshootingTabPage = new System.Windows.Forms.TabPage();
-            exportConfigFileGroupBox = new System.Windows.Forms.GroupBox();
+            configFileGroupBox = new System.Windows.Forms.GroupBox();
             exportConfigFileButton = new System.Windows.Forms.Button();
-            exportConfigFileLabel = new System.Windows.Forms.Label();
+            configFileLabel = new System.Windows.Forms.Label();
             exportLogFilesGroupBox = new System.Windows.Forms.GroupBox();
             exportLogFilesButton = new System.Windows.Forms.Button();
             exportLogFilesLabel = new System.Windows.Forms.Label();
@@ -112,6 +112,7 @@ namespace SoundSwitch.UI.Forms
             muteHotKey = new SoundSwitch.UI.Component.HotKeyTextBox();
             muteHotKeyCheckbox = new System.Windows.Forms.CheckBox();
             switchDeviceLabel = new System.Windows.Forms.Label();
+            importConfigFileButton = new System.Windows.Forms.Button();
             tabControl.SuspendLayout();
             playbackTabPage.SuspendLayout();
             recordingTabPage.SuspendLayout();
@@ -125,7 +126,7 @@ namespace SoundSwitch.UI.Forms
             audioSettingsGroupBox.SuspendLayout();
             basicSettingsGroupBox.SuspendLayout();
             troubleshootingTabPage.SuspendLayout();
-            exportConfigFileGroupBox.SuspendLayout();
+            configFileGroupBox.SuspendLayout();
             exportLogFilesGroupBox.SuspendLayout();
             resetAudioDevicesGroupBox.SuspendLayout();
             soundSwitchGroupBox.SuspendLayout();
@@ -719,7 +720,7 @@ namespace SoundSwitch.UI.Forms
             // 
             // troubleshootingTabPage
             // 
-            troubleshootingTabPage.Controls.Add(exportConfigFileGroupBox);
+            troubleshootingTabPage.Controls.Add(configFileGroupBox);
             troubleshootingTabPage.Controls.Add(exportLogFilesGroupBox);
             troubleshootingTabPage.Controls.Add(resetAudioDevicesGroupBox);
             troubleshootingTabPage.Controls.Add(soundSwitchGroupBox);
@@ -731,16 +732,17 @@ namespace SoundSwitch.UI.Forms
             troubleshootingTabPage.Text = "Troubleshooting";
             troubleshootingTabPage.UseVisualStyleBackColor = true;
             // 
-            // exportConfigFileGroupBox
+            // configFileGroupBox
             // 
-            exportConfigFileGroupBox.Controls.Add(exportConfigFileButton);
-            exportConfigFileGroupBox.Controls.Add(exportConfigFileLabel);
-            exportConfigFileGroupBox.Location = new System.Drawing.Point(3, 305);
-            exportConfigFileGroupBox.Name = "exportConfigFileGroupBox";
-            exportConfigFileGroupBox.Size = new System.Drawing.Size(290, 146);
-            exportConfigFileGroupBox.TabIndex = 13;
-            exportConfigFileGroupBox.TabStop = false;
-            exportConfigFileGroupBox.Text = "Export Configuration File";
+            configFileGroupBox.Controls.Add(importConfigFileButton);
+            configFileGroupBox.Controls.Add(exportConfigFileButton);
+            configFileGroupBox.Controls.Add(configFileLabel);
+            configFileGroupBox.Location = new System.Drawing.Point(3, 305);
+            configFileGroupBox.Name = "configFileGroupBox";
+            configFileGroupBox.Size = new System.Drawing.Size(290, 146);
+            configFileGroupBox.TabIndex = 13;
+            configFileGroupBox.TabStop = false;
+            configFileGroupBox.Text = "Configuration File";
             // 
             // exportConfigFileButton
             // 
@@ -753,14 +755,14 @@ namespace SoundSwitch.UI.Forms
             exportConfigFileButton.UseVisualStyleBackColor = true;
             exportConfigFileButton.Click += ExportConfigFileButton_Click;
             // 
-            // exportConfigFileLabel
+            // configFileLabel
             // 
-            exportConfigFileLabel.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            exportConfigFileLabel.Location = new System.Drawing.Point(6, 19);
-            exportConfigFileLabel.Name = "exportConfigFileLabel";
-            exportConfigFileLabel.Size = new System.Drawing.Size(278, 95);
-            exportConfigFileLabel.TabIndex = 4;
-            exportConfigFileLabel.Text = "description";
+            configFileLabel.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            configFileLabel.Location = new System.Drawing.Point(6, 19);
+            configFileLabel.Name = "configFileLabel";
+            configFileLabel.Size = new System.Drawing.Size(278, 95);
+            configFileLabel.TabIndex = 4;
+            configFileLabel.Text = "description";
             // 
             // exportLogFilesGroupBox
             // 
@@ -1015,6 +1017,17 @@ namespace SoundSwitch.UI.Forms
             switchDeviceLabel.Text = "Switch device";
             switchDeviceLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // importConfigFileButton
+            // 
+            importConfigFileButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            importConfigFileButton.Location = new System.Drawing.Point(128, 117);
+            importConfigFileButton.Name = "importConfigFileButton";
+            importConfigFileButton.Size = new System.Drawing.Size(75, 23);
+            importConfigFileButton.TabIndex = 5;
+            importConfigFileButton.Text = "Import";
+            importConfigFileButton.UseVisualStyleBackColor = true;
+            importConfigFileButton.Click += ImportConfigFileButton_Click;
+            // 
             // SettingsForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1050,7 +1063,7 @@ namespace SoundSwitch.UI.Forms
             basicSettingsGroupBox.ResumeLayout(false);
             basicSettingsGroupBox.PerformLayout();
             troubleshootingTabPage.ResumeLayout(false);
-            exportConfigFileGroupBox.ResumeLayout(false);
+            configFileGroupBox.ResumeLayout(false);
             exportLogFilesGroupBox.ResumeLayout(false);
             resetAudioDevicesGroupBox.ResumeLayout(false);
             soundSwitchGroupBox.ResumeLayout(false);
@@ -1140,8 +1153,9 @@ namespace SoundSwitch.UI.Forms
         private System.Windows.Forms.GroupBox soundSwitchGroupBox;
         private System.Windows.Forms.ComboBox iconDoubleClickComboBox;
         private System.Windows.Forms.Label iconDoubleClickLabel;
-        private System.Windows.Forms.GroupBox exportConfigFileGroupBox;
+        private System.Windows.Forms.GroupBox configFileGroupBox;
+        private System.Windows.Forms.Label configFileLabel;
         private System.Windows.Forms.Button exportConfigFileButton;
-        private System.Windows.Forms.Label exportConfigFileLabel;
+        private System.Windows.Forms.Button importConfigFileButton;
     }
 }
