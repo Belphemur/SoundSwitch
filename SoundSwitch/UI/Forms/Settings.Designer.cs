@@ -33,8 +33,8 @@ namespace SoundSwitch.UI.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
-            System.Windows.Forms.ListViewGroup listViewGroup4 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
+            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
+            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
             startWithWindowsCheckBox = new System.Windows.Forms.CheckBox();
             closeButton = new System.Windows.Forms.Button();
             switchCommunicationDeviceCheckBox = new System.Windows.Forms.CheckBox();
@@ -81,9 +81,14 @@ namespace SoundSwitch.UI.Forms
             tooltipOnHoverLabel = new System.Windows.Forms.Label();
             tooltipInfoComboBox = new System.Windows.Forms.ComboBox();
             basicSettingsGroupBox = new System.Windows.Forms.GroupBox();
+            iconDoubleClickLabel = new System.Windows.Forms.Label();
+            iconDoubleClickComboBox = new System.Windows.Forms.ComboBox();
             iconChangeLabel = new System.Windows.Forms.Label();
             iconChangeChoicesComboBox = new System.Windows.Forms.ComboBox();
             troubleshootingTabPage = new System.Windows.Forms.TabPage();
+            configFileGroupBox = new System.Windows.Forms.GroupBox();
+            exportConfigFileButton = new System.Windows.Forms.Button();
+            configFileLabel = new System.Windows.Forms.Label();
             exportLogFilesGroupBox = new System.Windows.Forms.GroupBox();
             exportLogFilesButton = new System.Windows.Forms.Button();
             exportLogFilesLabel = new System.Windows.Forms.Label();
@@ -107,8 +112,7 @@ namespace SoundSwitch.UI.Forms
             muteHotKey = new SoundSwitch.UI.Component.HotKeyTextBox();
             muteHotKeyCheckbox = new System.Windows.Forms.CheckBox();
             switchDeviceLabel = new System.Windows.Forms.Label();
-            iconDoubleClickComboBox = new System.Windows.Forms.ComboBox();
-            iconDoubleClickLabel = new System.Windows.Forms.Label();
+            importConfigFileButton = new System.Windows.Forms.Button();
             tabControl.SuspendLayout();
             playbackTabPage.SuspendLayout();
             recordingTabPage.SuspendLayout();
@@ -122,6 +126,7 @@ namespace SoundSwitch.UI.Forms
             audioSettingsGroupBox.SuspendLayout();
             basicSettingsGroupBox.SuspendLayout();
             troubleshootingTabPage.SuspendLayout();
+            configFileGroupBox.SuspendLayout();
             exportLogFilesGroupBox.SuspendLayout();
             resetAudioDevicesGroupBox.SuspendLayout();
             soundSwitchGroupBox.SuspendLayout();
@@ -196,10 +201,10 @@ namespace SoundSwitch.UI.Forms
             playbackListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             playbackListView.CheckBoxes = true;
             playbackListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            listViewGroup3.Header = "Selected";
-            listViewGroup3.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
-            listViewGroup3.Name = "selectedGroup";
-            playbackListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] { listViewGroup3 });
+            listViewGroup1.Header = "Selected";
+            listViewGroup1.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
+            listViewGroup1.Name = "selectedGroup";
+            playbackListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] { listViewGroup1 });
             playbackListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             playbackListView.Location = new System.Drawing.Point(3, 3);
             playbackListView.Name = "playbackListView";
@@ -225,10 +230,10 @@ namespace SoundSwitch.UI.Forms
             recordingListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             recordingListView.CheckBoxes = true;
             recordingListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            listViewGroup4.Header = "Selected";
-            listViewGroup4.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
-            listViewGroup4.Name = "selectedGroup";
-            recordingListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] { listViewGroup4 });
+            listViewGroup2.Header = "Selected";
+            listViewGroup2.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
+            listViewGroup2.Name = "selectedGroup";
+            recordingListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] { listViewGroup2 });
             recordingListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             recordingListView.Location = new System.Drawing.Point(3, 3);
             recordingListView.Name = "recordingListView";
@@ -675,6 +680,25 @@ namespace SoundSwitch.UI.Forms
             basicSettingsGroupBox.TabStop = false;
             basicSettingsGroupBox.Text = "Basic Settings";
             // 
+            // iconDoubleClickLabel
+            // 
+            iconDoubleClickLabel.Location = new System.Drawing.Point(6, 80);
+            iconDoubleClickLabel.Name = "iconDoubleClickLabel";
+            iconDoubleClickLabel.Size = new System.Drawing.Size(155, 23);
+            iconDoubleClickLabel.TabIndex = 29;
+            iconDoubleClickLabel.Text = "Double Click Action";
+            iconDoubleClickLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // iconDoubleClickComboBox
+            // 
+            iconDoubleClickComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            iconDoubleClickComboBox.FormattingEnabled = true;
+            iconDoubleClickComboBox.Location = new System.Drawing.Point(167, 80);
+            iconDoubleClickComboBox.Name = "iconDoubleClickComboBox";
+            iconDoubleClickComboBox.Size = new System.Drawing.Size(182, 23);
+            iconDoubleClickComboBox.TabIndex = 28;
+            iconDoubleClickComboBox.SelectedIndexChanged += IconDoubleClickComboBox_SelectedIndexChanged;
+            // 
             // iconChangeLabel
             // 
             iconChangeLabel.Location = new System.Drawing.Point(6, 51);
@@ -696,6 +720,7 @@ namespace SoundSwitch.UI.Forms
             // 
             // troubleshootingTabPage
             // 
+            troubleshootingTabPage.Controls.Add(configFileGroupBox);
             troubleshootingTabPage.Controls.Add(exportLogFilesGroupBox);
             troubleshootingTabPage.Controls.Add(resetAudioDevicesGroupBox);
             troubleshootingTabPage.Controls.Add(soundSwitchGroupBox);
@@ -707,13 +732,45 @@ namespace SoundSwitch.UI.Forms
             troubleshootingTabPage.Text = "Troubleshooting";
             troubleshootingTabPage.UseVisualStyleBackColor = true;
             // 
+            // configFileGroupBox
+            // 
+            configFileGroupBox.Controls.Add(importConfigFileButton);
+            configFileGroupBox.Controls.Add(exportConfigFileButton);
+            configFileGroupBox.Controls.Add(configFileLabel);
+            configFileGroupBox.Location = new System.Drawing.Point(3, 305);
+            configFileGroupBox.Name = "configFileGroupBox";
+            configFileGroupBox.Size = new System.Drawing.Size(290, 146);
+            configFileGroupBox.TabIndex = 13;
+            configFileGroupBox.TabStop = false;
+            configFileGroupBox.Text = "Configuration File";
+            // 
+            // exportConfigFileButton
+            // 
+            exportConfigFileButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            exportConfigFileButton.Location = new System.Drawing.Point(209, 117);
+            exportConfigFileButton.Name = "exportConfigFileButton";
+            exportConfigFileButton.Size = new System.Drawing.Size(75, 23);
+            exportConfigFileButton.TabIndex = 4;
+            exportConfigFileButton.Text = "Export";
+            exportConfigFileButton.UseVisualStyleBackColor = true;
+            exportConfigFileButton.Click += ExportConfigFileButton_Click;
+            // 
+            // configFileLabel
+            // 
+            configFileLabel.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            configFileLabel.Location = new System.Drawing.Point(6, 19);
+            configFileLabel.Name = "configFileLabel";
+            configFileLabel.Size = new System.Drawing.Size(278, 95);
+            configFileLabel.TabIndex = 4;
+            configFileLabel.Text = "description";
+            // 
             // exportLogFilesGroupBox
             // 
             exportLogFilesGroupBox.Controls.Add(exportLogFilesButton);
             exportLogFilesGroupBox.Controls.Add(exportLogFilesLabel);
-            exportLogFilesGroupBox.Location = new System.Drawing.Point(3, 129);
+            exportLogFilesGroupBox.Location = new System.Drawing.Point(3, 154);
             exportLogFilesGroupBox.Name = "exportLogFilesGroupBox";
-            exportLogFilesGroupBox.Size = new System.Drawing.Size(290, 110);
+            exportLogFilesGroupBox.Size = new System.Drawing.Size(290, 145);
             exportLogFilesGroupBox.TabIndex = 10;
             exportLogFilesGroupBox.TabStop = false;
             exportLogFilesGroupBox.Text = "Export Log Files";
@@ -721,7 +778,7 @@ namespace SoundSwitch.UI.Forms
             // exportLogFilesButton
             // 
             exportLogFilesButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            exportLogFilesButton.Location = new System.Drawing.Point(209, 81);
+            exportLogFilesButton.Location = new System.Drawing.Point(209, 116);
             exportLogFilesButton.Name = "exportLogFilesButton";
             exportLogFilesButton.Size = new System.Drawing.Size(75, 23);
             exportLogFilesButton.TabIndex = 3;
@@ -734,9 +791,9 @@ namespace SoundSwitch.UI.Forms
             exportLogFilesLabel.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             exportLogFilesLabel.Location = new System.Drawing.Point(6, 19);
             exportLogFilesLabel.Name = "exportLogFilesLabel";
-            exportLogFilesLabel.Size = new System.Drawing.Size(278, 59);
+            exportLogFilesLabel.Size = new System.Drawing.Size(278, 94);
             exportLogFilesLabel.TabIndex = 2;
-            exportLogFilesLabel.Text = "Export all log files into a zip archive for further troubleshooting in either the Help Discussions or Community Discord.\r\n";
+            exportLogFilesLabel.Text = "description";
             // 
             // resetAudioDevicesGroupBox
             // 
@@ -744,7 +801,7 @@ namespace SoundSwitch.UI.Forms
             resetAudioDevicesGroupBox.Controls.Add(resetAudioDevicesButton);
             resetAudioDevicesGroupBox.Location = new System.Drawing.Point(3, 3);
             resetAudioDevicesGroupBox.Name = "resetAudioDevicesGroupBox";
-            resetAudioDevicesGroupBox.Size = new System.Drawing.Size(290, 120);
+            resetAudioDevicesGroupBox.Size = new System.Drawing.Size(290, 145);
             resetAudioDevicesGroupBox.TabIndex = 1;
             resetAudioDevicesGroupBox.TabStop = false;
             resetAudioDevicesGroupBox.Text = "Reset Per App Audio";
@@ -754,14 +811,14 @@ namespace SoundSwitch.UI.Forms
             resetAudioDevicesLabel.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             resetAudioDevicesLabel.Location = new System.Drawing.Point(6, 19);
             resetAudioDevicesLabel.Name = "resetAudioDevicesLabel";
-            resetAudioDevicesLabel.Size = new System.Drawing.Size(278, 69);
+            resetAudioDevicesLabel.Size = new System.Drawing.Size(278, 94);
             resetAudioDevicesLabel.TabIndex = 2;
-            resetAudioDevicesLabel.Text = "Resets the audio device assignment to specified programs in Windows in case audio devices are not reassigned to programs when switching devices.";
+            resetAudioDevicesLabel.Text = "description";
             // 
             // resetAudioDevicesButton
             // 
             resetAudioDevicesButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            resetAudioDevicesButton.Location = new System.Drawing.Point(209, 91);
+            resetAudioDevicesButton.Location = new System.Drawing.Point(209, 116);
             resetAudioDevicesButton.Name = "resetAudioDevicesButton";
             resetAudioDevicesButton.Size = new System.Drawing.Size(75, 23);
             resetAudioDevicesButton.TabIndex = 0;
@@ -795,7 +852,7 @@ namespace SoundSwitch.UI.Forms
             troubleshootingLabel.Padding = new System.Windows.Forms.Padding(30);
             troubleshootingLabel.Size = new System.Drawing.Size(435, 175);
             troubleshootingLabel.TabIndex = 11;
-            troubleshootingLabel.Text = "If you need any help or further troubleshooting with SoundSwitch, you can visit the Help Discussion or Community Discord link, or help support us by visiting the Donate link below.";
+            troubleshootingLabel.Text = "description";
             troubleshootingLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // soundSwitchPictureBox
@@ -830,7 +887,7 @@ namespace SoundSwitch.UI.Forms
             donateLinkLabel.TabStop = true;
             donateLinkLabel.Text = "Donate";
             donateLinkLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            donateLinkLabel.LinkClicked += DonateLinkLabel_LinkClicked;
+            donateLinkLabel.LinkClicked += DonateLink;
             // 
             // gitHubPictureBox
             // 
@@ -854,7 +911,7 @@ namespace SoundSwitch.UI.Forms
             gitHubHelpLinkLabel.TabStop = true;
             gitHubHelpLinkLabel.Text = "Help Discussion";
             gitHubHelpLinkLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            gitHubHelpLinkLabel.LinkClicked += GitHubHelpLinkLabel_LinkClicked;
+            gitHubHelpLinkLabel.LinkClicked += GitHubHelpLink;
             // 
             // appNameLabel
             // 
@@ -878,7 +935,7 @@ namespace SoundSwitch.UI.Forms
             discordCommunityLinkLabel.TabStop = true;
             discordCommunityLinkLabel.Text = "Community Discord";
             discordCommunityLinkLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            discordCommunityLinkLabel.LinkClicked += DiscordCommunityLinkLabel_LinkClicked;
+            discordCommunityLinkLabel.LinkClicked += DiscordCommunityLink;
             // 
             // donatePictureBox
             // 
@@ -960,24 +1017,16 @@ namespace SoundSwitch.UI.Forms
             switchDeviceLabel.Text = "Switch device";
             switchDeviceLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // iconDoubleClickComboBox
+            // importConfigFileButton
             // 
-            iconDoubleClickComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            iconDoubleClickComboBox.FormattingEnabled = true;
-            iconDoubleClickComboBox.Location = new System.Drawing.Point(167, 80);
-            iconDoubleClickComboBox.Name = "iconDoubleClickComboBox";
-            iconDoubleClickComboBox.Size = new System.Drawing.Size(182, 23);
-            iconDoubleClickComboBox.TabIndex = 28;
-            iconDoubleClickComboBox.SelectedIndexChanged += IconDoubleClickComboBox_SelectedIndexChanged;
-            // 
-            // iconDoubleClickLabel
-            // 
-            iconDoubleClickLabel.Location = new System.Drawing.Point(6, 80);
-            iconDoubleClickLabel.Name = "iconDoubleClickLabel";
-            iconDoubleClickLabel.Size = new System.Drawing.Size(155, 23);
-            iconDoubleClickLabel.TabIndex = 29;
-            iconDoubleClickLabel.Text = "Double Click Action";
-            iconDoubleClickLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            importConfigFileButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            importConfigFileButton.Location = new System.Drawing.Point(128, 117);
+            importConfigFileButton.Name = "importConfigFileButton";
+            importConfigFileButton.Size = new System.Drawing.Size(75, 23);
+            importConfigFileButton.TabIndex = 5;
+            importConfigFileButton.Text = "Import";
+            importConfigFileButton.UseVisualStyleBackColor = true;
+            importConfigFileButton.Click += ImportConfigFileButton_Click;
             // 
             // SettingsForm
             // 
@@ -1014,6 +1063,7 @@ namespace SoundSwitch.UI.Forms
             basicSettingsGroupBox.ResumeLayout(false);
             basicSettingsGroupBox.PerformLayout();
             troubleshootingTabPage.ResumeLayout(false);
+            configFileGroupBox.ResumeLayout(false);
             exportLogFilesGroupBox.ResumeLayout(false);
             resetAudioDevicesGroupBox.ResumeLayout(false);
             soundSwitchGroupBox.ResumeLayout(false);
@@ -1103,5 +1153,9 @@ namespace SoundSwitch.UI.Forms
         private System.Windows.Forms.GroupBox soundSwitchGroupBox;
         private System.Windows.Forms.ComboBox iconDoubleClickComboBox;
         private System.Windows.Forms.Label iconDoubleClickLabel;
+        private System.Windows.Forms.GroupBox configFileGroupBox;
+        private System.Windows.Forms.Label configFileLabel;
+        private System.Windows.Forms.Button exportConfigFileButton;
+        private System.Windows.Forms.Button importConfigFileButton;
     }
 }

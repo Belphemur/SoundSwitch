@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -260,7 +260,7 @@ Banner: usa uno speciale riquadro sempre in primo piano, utile per l'uso durante
     <value>La lingua verà modificata dopo il riavvio di SoundSwitch.
 Vuoi riavviare SoundSwitch ora?</value>
   </data>
-  <data name="languageRestartRequired.caption" xml:space="preserve">
+  <data name="restartRequired.caption" xml:space="preserve">
     <value>Richiede un riavvio</value>
   </data>
   <data name="updateNever.tooltip" xml:space="preserve">
@@ -602,5 +602,29 @@ Ripristina lo stato del sistema quando l'applicazione viene chiusa.</value>
   </data>
   <data name="iconDoubleClick" xml:space="preserve">
     <value>Azione doppio clic</value>
+  </data>
+  <data name="importExportConfigFile" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importExportConfigFile.desc" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigErrorMessage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigRestartRequired" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigErrorMessage.caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="buttonImport" xml:space="preserve">
+    <value />
+  </data>
+  <data name="exportConfigFile" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigFile" xml:space="preserve">
+    <value />
   </data>
 </root>

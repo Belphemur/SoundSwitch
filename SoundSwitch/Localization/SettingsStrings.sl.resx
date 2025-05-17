@@ -257,7 +257,7 @@ Pasica: Uporablja vedno prikazan,prilagojeni okvir na zaslonu - uporaben za upor
     <value>Jezik bo spremenjen po ponovnem zagonu SoundSwitcha.
 Ali ga zdaj želite znova zagnati?</value>
   </data>
-  <data name="languageRestartRequired.caption" xml:space="preserve">
+  <data name="restartRequired.caption" xml:space="preserve">
     <value>Potrebujete ponovni zagon</value>
   </data>
   <data name="updateNever.tooltip" xml:space="preserve">
@@ -517,6 +517,30 @@ Obnovi stanje sistema, ko se program zapre.</value>
     <value />
   </data>
   <data name="iconDoubleClick" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importExportConfigFile" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importExportConfigFile.desc" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigErrorMessage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigRestartRequired" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigErrorMessage.caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="buttonImport" xml:space="preserve">
+    <value />
+  </data>
+  <data name="exportConfigFile" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigFile" xml:space="preserve">
     <value />
   </data>
 </root>

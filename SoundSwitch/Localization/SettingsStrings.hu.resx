@@ -257,7 +257,7 @@ Banner: folyamatosan előtérben megjelenő értesítés, ami hasznos játékok 
     <value>A nyelv a SoundSwitch újraindítása után változik meg.
 Szeretnéd most újraindítani a programot?</value>
   </data>
-  <data name="languageRestartRequired.caption" xml:space="preserve">
+  <data name="restartRequired.caption" xml:space="preserve">
     <value>Újraindítás szükséges</value>
   </data>
   <data name="updateNever.tooltip" xml:space="preserve">
@@ -490,6 +490,30 @@ Előző állapot visszaállításra kerül, ha a program bezáródik.</value>
     <value />
   </data>
   <data name="iconDoubleClick" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importExportConfigFile" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importExportConfigFile.desc" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigErrorMessage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigRestartRequired" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigErrorMessage.caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="buttonImport" xml:space="preserve">
+    <value />
+  </data>
+  <data name="exportConfigFile" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigFile" xml:space="preserve">
     <value />
   </data>
 </root>

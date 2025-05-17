@@ -260,7 +260,7 @@ Banner: Uses a custom always-on-top frame, useful for in-game usage.</value>
     <value>El idioma cambiará luego de reiniciar SoundSwitch.
 ¿Quiere reiniciarlo ahora?</value>
   </data>
-  <data name="languageRestartRequired.caption" xml:space="preserve">
+  <data name="restartRequired.caption" xml:space="preserve">
     <value>Es necesario reiniciar</value>
   </data>
   <data name="updateNever.tooltip" xml:space="preserve">
@@ -601,6 +601,30 @@ Restaura el estado del sistema cuando se cierra la aplicación.</value>
     <value />
   </data>
   <data name="iconDoubleClick" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importExportConfigFile" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importExportConfigFile.desc" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigErrorMessage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigRestartRequired" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigErrorMessage.caption" xml:space="preserve">
+    <value />
+  </data>
+  <data name="buttonImport" xml:space="preserve">
+    <value />
+  </data>
+  <data name="exportConfigFile" xml:space="preserve">
+    <value />
+  </data>
+  <data name="importConfigFile" xml:space="preserve">
     <value />
   </data>
 </root>

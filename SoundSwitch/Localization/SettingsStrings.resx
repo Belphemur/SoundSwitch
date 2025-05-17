@@ -260,7 +260,7 @@ Banner: Uses a custom always-on-top frame, useful for in-game usage.</value>
     <value>The language will change after restarting SoundSwitch.
 Do you want to restart now?</value>
   </data>
-  <data name="languageRestartRequired.caption" xml:space="preserve">
+  <data name="restartRequired.caption" xml:space="preserve">
     <value>Need a restart</value>
   </data>
   <data name="updateNever.tooltip" xml:space="preserve">
@@ -602,5 +602,30 @@ Restore the state of the system when the application is closed.</value>
   </data>
   <data name="iconDoubleClick" xml:space="preserve">
     <value>Double-click action</value>
+  </data>
+  <data name="importExportConfigFile" xml:space="preserve">
+    <value>Import / Export Configuration File</value>
+  </data>
+  <data name="importExportConfigFile.desc" xml:space="preserve">
+    <value>Import or export the SoundSwitch configuration file into a zip archive.</value>
+  </data>
+  <data name="importConfigErrorMessage" xml:space="preserve">
+    <value>The zip archive must contain the SoundSwitch configuration file.</value>
+  </data>
+  <data name="importConfigRestartRequired" xml:space="preserve">
+    <value>SoundSwitch will restart when the main configuration file has been imported.
+Do you want to restart now?</value>
+  </data>
+  <data name="importConfigErrorMessage.caption" xml:space="preserve">
+    <value>Invalid archive</value>
+  </data>
+  <data name="buttonImport" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="exportConfigFile" xml:space="preserve">
+    <value>Export Configuration File</value>
+  </data>
+  <data name="importConfigFile" xml:space="preserve">
+    <value>Import Configuration File</value>
   </data>
 </root>

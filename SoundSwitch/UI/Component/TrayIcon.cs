@@ -231,11 +231,11 @@ namespace SoundSwitch.UI.Component
                 (sender, e) => ShowSettings());
             _settingsMenu.Items.Add(new ToolStripSeparator());
             _settingsMenu.Items.Add(TrayIconStrings.help, ResourceGitHubHelpBitmap,
-                (sender, e) => SettingsForm.GitHubHelpLink());
+                SettingsForm.GitHubHelpLink);
             _settingsMenu.Items.Add(TrayIconStrings.community, ResourceDiscordCommunityBitmap,
-                (sender, e) => SettingsForm.DiscordCommunityLink());
+                SettingsForm.DiscordCommunityLink);
             _settingsMenu.Items.Add(TrayIconStrings.donate, ResourceDonateBitmap,
-                (sender, e) => SettingsForm.DonateLink());
+                SettingsForm.DonateLink);
             _settingsMenu.Items.Add(new ToolStripSeparator());
             _settingsMenu.Items.Add(TrayIconStrings.quit, ResourceExitBitmap, (sender, e) => Application.Exit());
 

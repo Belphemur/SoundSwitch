@@ -27,7 +27,7 @@ namespace SoundSwitch.Framework
             Environment.SpecialFolder.ApplicationData);
 
         /// <summary>
-        /// Path where the application store it's file like the configuration.
+        /// Path where the application store its file like the configuration.
         /// </summary>
         public static string Default { get; } = Path.Combine(AppData, Application.ProductName);
 
