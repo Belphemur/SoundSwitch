@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -604,27 +604,28 @@ Restaura o estado do sistema quando o aplicativo é fechado.</value>
     <value>Ação do duplo clique</value>
   </data>
   <data name="importExportConfigFile" xml:space="preserve">
-    <value />
+    <value>Importar/exportar arquivo de configurações</value>
   </data>
   <data name="importExportConfigFile.desc" xml:space="preserve">
-    <value />
+    <value>Importa ou exporta o arquivo de configurações do SoundSwith para um arquivo ZIP.</value>
   </data>
   <data name="importConfigErrorMessage" xml:space="preserve">
-    <value />
+    <value>O arquivo ZIP deve conter o arquivo de configurações do SoundSwitch.</value>
   </data>
   <data name="importConfigRestartRequired" xml:space="preserve">
-    <value />
+    <value>O SoundSwitch será reiniciado quando arquivo de configurações principal for importado.
+Você deseja reiniciar agora?</value>
   </data>
   <data name="importConfigErrorMessage.caption" xml:space="preserve">
-    <value />
+    <value>Arquivo inválido</value>
   </data>
   <data name="buttonImport" xml:space="preserve">
-    <value />
+    <value>Importar</value>
   </data>
   <data name="exportConfigFile" xml:space="preserve">
-    <value />
+    <value>Exportar arquivo de configurações</value>
   </data>
   <data name="importConfigFile" xml:space="preserve">
-    <value />
+    <value>Importar arquivo de configurações</value>
   </data>
 </root>
