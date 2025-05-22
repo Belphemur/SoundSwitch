@@ -22,8 +22,10 @@
     <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
         <value>[base64 mime encoded serialized .NET Framework object]</value>
     </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing"
+  mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework
+  object]</value>
         <comment>This is a comment</comment>
     </data>
                 
@@ -59,7 +61,8 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -112,10 +115,12 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="selected" xml:space="preserve">
     <value>Ausgewählt</value>
@@ -559,13 +564,13 @@ Stellt den Zustand des Systems wieder her, wenn die Anwendung geschlossen wird.<
     <value>Mitte</value>
   </data>
   <data name="banner.mute.option.fading" xml:space="preserve">
-    <value />
+    <value>Ausblendend</value>
   </data>
   <data name="banner.mute.option.persistent" xml:space="preserve">
-    <value />
+    <value>Dauerhaft</value>
   </data>
   <data name="switchDevice" xml:space="preserve">
-    <value />
+    <value>Gerät wechseln</value>
   </data>
   <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
     <value>Wie lange das Banner auf dem Bildschirm angezeigt wird (in Sekunden).</value>
@@ -577,42 +582,55 @@ Stellt den Zustand des Systems wieder her, wenn die Anwendung geschlossen wird.<
     <value>Benachrichtigung</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
-    <value />
+    <value>Banneroptionen</value>
   </data>
   <data name="seconds" xml:space="preserve">
-    <value />
+    <value>Sekunden</value>
   </data>
   <data name="openSettings" xml:space="preserve">
-    <value />
+    <value>Einstellungen öffnen</value>
   </data>
   <data name="iconDoubleClick.tooltip" xml:space="preserve">
-    <value />
+    <value>Wählen Sie die Aktion beim Doppelklick auf das Taskleistensymbol.</value>
   </data>
   <data name="iconDoubleClick" xml:space="preserve">
-    <value />
+    <value>Doppelklick-Aktion</value>
   </data>
   <data name="importExportConfigFile" xml:space="preserve">
-    <value />
+    <value>Konfigurationsdatei importieren / exportieren</value>
   </data>
   <data name="importExportConfigFile.desc" xml:space="preserve">
-    <value />
+    <value>Importieren oder exportieren Sie die SoundSwitch-Konfigurationsdatei in ein ZIP-Archiv.</value>
   </data>
   <data name="importConfigErrorMessage" xml:space="preserve">
-    <value />
+    <value>Das ZIP-Archiv muss die SoundSwitch-Konfigurationsdatei enthalten.</value>
   </data>
   <data name="importConfigRestartRequired" xml:space="preserve">
-    <value />
+    <value>SoundSwitch wird neu gestartet, nachdem die Hauptkonfigurationsdatei importiert wurde.
+Möchten Sie jetzt neu starten?</value>
   </data>
   <data name="importConfigErrorMessage.caption" xml:space="preserve">
-    <value />
+    <value>Ungültiges Archiv</value>
   </data>
   <data name="buttonImport" xml:space="preserve">
-    <value />
+    <value>Importieren</value>
   </data>
   <data name="exportConfigFile" xml:space="preserve">
-    <value />
+    <value>Konfigurationsdatei exportieren</value>
   </data>
   <data name="importConfigFile" xml:space="preserve">
-    <value />
+    <value>Konfigurationsdatei importieren</value>
+  </data>
+  <data name="importConfigErrorReadingFile" xml:space="preserve">
+    <value>Fehler beim Lesen der Konfigurationsdatei '{0}' aus dem Archiv: {1}</value>
+  </data>
+  <data name="importConfigErrorInvalidJson" xml:space="preserve">
+    <value>Die Konfigurationsdatei '{0}' ist kein gültiges JSON. Fehler: {1}</value>
+  </data>
+  <data name="importConfigErrorDeserializationNull" xml:space="preserve">
+    <value>Die Konfigurationsdatei '{0}' konnte nicht korrekt deserialisiert werden (Ergebnis war null). Bitte stellen Sie sicher, dass es sich um eine gültige SoundSwitch-Konfiguration handelt.</value>
+  </data>
+  <data name="importConfigErrorDeserializationFailed" xml:space="preserve">
+    <value>Fehler beim Deserialisieren der Konfigurationsdatei '{0}'. Fehler: {1}</value>
   </data>
 </root>

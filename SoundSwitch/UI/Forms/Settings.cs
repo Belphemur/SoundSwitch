@@ -22,6 +22,8 @@ using System.IO.Compression;
 using System.Linq;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Device;
@@ -916,6 +918,64 @@ namespace SoundSwitch.UI.Forms
                         SettingsStrings.importConfigErrorMessage_caption,
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Exclamation);
+                    continue;
+                }
+
+                // Read content of the entry
+                string jsonContent;
+                try
+                {
+                    using var stream = entry.Open();
+                    using var reader = new StreamReader(stream);
+                    jsonContent = reader.ReadToEnd();
+                }
+                catch (Exception ex)
+                {
+                    var errorMessage = string.Format(SettingsStrings.importConfigErrorReadingFile, configFile, ex.Message);
+                    Log.Error(ex, "Error reading configuration file '{ConfigFile}' from archive during import.", configFile);
+                    MessageBox.Show(errorMessage,
+                                    SettingsStrings.importConfigErrorMessage_caption,
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
+                    continue;
+                }
+
+                try
+                {
+                    // Validate JSON structure
+                    JObject.Parse(jsonContent);
+
+                    // Attempt to deserialize
+                    var config = JsonConvert.DeserializeObject<SoundSwitchConfiguration>(jsonContent);
+                    if (config == null)
+                    {
+                        var errorMessage = string.Format(SettingsStrings.importConfigErrorDeserializationNull, configFile);
+                        Log.Warning("Configuration file '{ConfigFile}' deserialized to null during import.", configFile);
+                        MessageBox.Show(errorMessage,
+                                        SettingsStrings.importConfigErrorMessage_caption,
+                                        MessageBoxButtons.OK,
+                                        MessageBoxIcon.Error);
+                        continue;
+                    }
+                }
+                catch (JsonReaderException jsonEx)
+                {
+                    var errorMessage = string.Format(SettingsStrings.importConfigErrorInvalidJson, configFile, jsonEx.Message);
+                    Log.Warning(jsonEx, "Configuration file '{ConfigFile}' is not valid JSON during import.", configFile);
+                    MessageBox.Show(errorMessage,
+                                    SettingsStrings.importConfigErrorMessage_caption,
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
+                    continue;
+                }
+                catch (Exception ex) // Catches other errors during deserialization
+                {
+                    var errorMessage = string.Format(SettingsStrings.importConfigErrorDeserializationFailed, configFile, ex.Message);
+                    Log.Warning(ex, "Failed to deserialize configuration file '{ConfigFile}' during import.", configFile);
+                    MessageBox.Show(errorMessage,
+                                    SettingsStrings.importConfigErrorMessage_caption,
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
                     continue;
                 }
 

@@ -22,8 +22,10 @@
     <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
         <value>[base64 mime encoded serialized .NET Framework object]</value>
     </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing"
+  mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework
+  object]</value>
         <comment>This is a comment</comment>
     </data>
                 
@@ -59,7 +61,8 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -112,10 +115,12 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="selected" xml:space="preserve">
     <value>Sélectionné</value>
@@ -604,27 +609,40 @@ Restaurer l'état du système quand l'application est fermée.</value>
     <value>Action de double-clic</value>
   </data>
   <data name="importExportConfigFile" xml:space="preserve">
-    <value />
+    <value>Importer / Exporter le fichier de configuration</value>
   </data>
   <data name="importExportConfigFile.desc" xml:space="preserve">
-    <value />
+    <value>Importer ou exporter le fichier de configuration SoundSwitch dans une archive zip.</value>
   </data>
   <data name="importConfigErrorMessage" xml:space="preserve">
-    <value />
+    <value>L'archive zip doit contenir le fichier de configuration SoundSwitch.</value>
   </data>
   <data name="importConfigRestartRequired" xml:space="preserve">
-    <value />
+    <value>SoundSwitch redémarrera après l'importation du fichier de configuration principal.
+Voulez-vous redémarrer maintenant ?</value>
   </data>
   <data name="importConfigErrorMessage.caption" xml:space="preserve">
-    <value />
+    <value>Archive invalide</value>
   </data>
   <data name="buttonImport" xml:space="preserve">
-    <value />
+    <value>Importer</value>
   </data>
   <data name="exportConfigFile" xml:space="preserve">
-    <value />
+    <value>Exporter le fichier de configuration</value>
   </data>
   <data name="importConfigFile" xml:space="preserve">
-    <value />
+    <value>Importer le fichier de configuration</value>
+  </data>
+  <data name="importConfigErrorReadingFile" xml:space="preserve">
+    <value>Erreur lors de la lecture du fichier de configuration '{0}' depuis l'archive : {1}</value>
+  </data>
+  <data name="importConfigErrorInvalidJson" xml:space="preserve">
+    <value>Le fichier de configuration '{0}' n'est pas un JSON valide. Erreur : {1}</value>
+  </data>
+  <data name="importConfigErrorDeserializationNull" xml:space="preserve">
+    <value>Le fichier de configuration '{0}' n'a pas pu être désérialisé correctement (résultat nul). Veuillez vous assurer qu'il s'agit d'une configuration SoundSwitch valide.</value>
+  </data>
+  <data name="importConfigErrorDeserializationFailed" xml:space="preserve">
+    <value>Échec de la désérialisation du fichier de configuration '{0}'. Erreur : {1}</value>
   </data>
 </root>
