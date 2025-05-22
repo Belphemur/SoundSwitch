@@ -1,3 +1,20 @@
+## [6.14.0-beta.4](https://github.com/Belphemur/SoundSwitch/compare/v6.14.0-beta.3...v6.14.0-beta.4) (2025-05-22)
+
+### Enhancements
+
+* **troubleshooting:** export configuration file for troubleshooting ([8f13c26](https://github.com/Belphemur/SoundSwitch/commit/8f13c26e05027480d66e3a1787d2d134fbee00c2))
+* **troubleshooting:** Import configuration file ([8a82ad7](https://github.com/Belphemur/SoundSwitch/commit/8a82ad76207fe57bcde8f14fea7a5ac9d39f0c60))
+* **troubleshooting:** Import configuration file ([88f2e1a](https://github.com/Belphemur/SoundSwitch/commit/88f2e1a485f327255c01cb16ca6dd9a88c29cfc6))
+
+### Languages
+
+* **Italian:** Translated Settings using Weblate ([9917b1f](https://github.com/Belphemur/SoundSwitch/commit/9917b1f35e398a75ed9769e862d05bc0c3f2b7b1))
+* **Portuguese (Brazil):** Translated Settings using Weblate ([18fb33b](https://github.com/Belphemur/SoundSwitch/commit/18fb33b09c19f7729fc608ab09ff6732e98dc4a4))
+
+### Bug Fixes
+
+* **import/export:** Verify that the configuration is valid before importing it. ([3786395](https://github.com/Belphemur/SoundSwitch/commit/3786395e4860f642747778ad991511404da5fa9a))
+
 ## [6.14.0-beta.3](https://github.com/Belphemur/SoundSwitch/compare/v6.14.0-beta.2...v6.14.0-beta.3) (2025-05-10)
 
 ### Languages
