@@ -123,12 +123,6 @@ function Invoke-KBInstall {
             Exit 3 # Update not found
         }
 
-        # Sanity check - if we reach here, we should have at least one update
-        if ($updatesToDownload.Count -eq 0) {
-            Write-LogOutput "Unexpected state: updateFound was true but no updates in collection. This should not happen."
-            Exit 5 # Unexpected error state
-        }
-
         $needsDownload = $false
         foreach ($updateToInstall in $updatesToDownload) {
             if (-not $updateToInstall.IsDownloaded) {
