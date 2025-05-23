@@ -87,7 +87,7 @@ xcopy /y Terms.txt %finalDir% >nul 2>nul
 
 echo Build Installer
 rem Run installer compiler script
-call ./Installer/Make-Installer.bat %buildPlatform%
+call ./Installer/Make-Installer.bat %buildPlatform% "%~2"
 if not %ERRORLEVEL% == 0 (set errorMessage=Make-installer.bat failed or not found & goto ERROR_QUIT)
 
 echo.

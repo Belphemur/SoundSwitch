@@ -1,0 +1,112 @@
+name: Test Installer Build (No Sign)
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - dev
+    paths:
+      - "Installer/**"
+  pull_request:
+    paths:
+      - "Installer/**"
+
+jobs:
+  build-installer-no-sign:
+    runs-on: windows-2025
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Inno Setup
+        run: winget install --id=JRSoftware.InnoSetup --exact --source winget --scope machine --accept-package-agreements --accept-source-agreements
+        shell: pwsh
+
+      - name: Setup .NET 9.0
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "9.0.x"
+          cache: true
+          cache-dependency-path: Directory.Packages.props
+
+      - name: Build SoundSwitch Application
+        run: |
+          echo "Cleaning build directories"
+          if exist bin rmdir /q /s bin
+          if exist obj rmdir /q /s obj
+          if exist Release rmdir /q /s Release
+          if exist Final rmdir /q /s Final
+          mkdir Final
+          
+          echo "Building SoundSwitch CLI and Main Application"
+          dotnet publish -c Release SoundSwitch.CLI\SoundSwitch.CLI.csproj -o Final
+          dotnet publish -c Release SoundSwitch\SoundSwitch.csproj -o Final
+        shell: cmd
+
+      - name: Prepare Installer Assets
+        run: |
+          echo "Generate dummy Changelog"
+          echo ^<html^>^<body^>^<h1^>Dummy Changelog, markdown-html is required^</h1^>^</body^>^</html^> > Final\Changelog.html
+          
+          echo "Generate dummy README"
+          echo ^<html^>^<body^>^<h1^>Dummy README, markdown-html is required^</h1^>^</body^>^</html^> > Final\Readme.html
+          
+          echo "Copy soundSwitched image"
+          xcopy /y img\soundSwitched.png Final >nul 2>nul
+          
+          echo "Copy CLI README"
+          xcopy /y SoundSwitch.CLI\README.md Final >nul 2>nul
+          
+          echo "Copy LICENSE"
+          xcopy /y LICENSE.txt Final >nul 2>nul
+          xcopy /y Terms.txt Final >nul 2>nul
+        shell: cmd
+
+      - name: Remove Signing from Installer Script
+        run: |
+          echo "Removing signing configurations from setup.iss"
+          
+          REM Remove SignTool lines
+          powershell -Command "(Get-Content 'Installer\setup.iss') -replace '^SignTool=.*$', '' | Set-Content 'Installer\setup.iss'"
+          
+          REM Remove SignedUninstaller
+          powershell -Command "(Get-Content 'Installer\setup.iss') -replace '^SignedUninstaller=.*$', '' | Set-Content 'Installer\setup.iss'"
+          
+          REM Remove signonce flags from Files section
+          powershell -Command "(Get-Content 'Installer\setup.iss') -replace ' signonce', '' | Set-Content 'Installer\setup.iss'"
+          
+          echo "Signing configurations removed"
+        shell: cmd
+
+      - name: Build Installer
+        run: .\\Installer\\Make-Installer.bat Nightly
+        shell: cmd
+
+      - name: Run Installer in Silent Mode (Machine Scope)
+        run: |
+          echo "Finding installer executable..."
+          for /f "delims=" %%i in ('dir /b Final\Installer\*.exe') do set INSTALLER_NAME=%%i
+          if not defined INSTALLER_NAME (
+            echo "ERROR: No installer found in Final\Installer\"
+            exit /b 1
+          )
+          echo "Found installer: %INSTALLER_NAME%"
+          
+          echo "Running installer in full silent mode for machine scope..."
+          Final\Installer\%INSTALLER_NAME% /VERYSILENT /ALLUSERS /NORESTART /SUPPRESSMSGBOXES /LOG="Final\Installer\install.log"
+          
+          echo "Installation completed. Exit code: %ERRORLEVEL%"
+          if %ERRORLEVEL% neq 0 (
+            echo "Installation failed with exit code %ERRORLEVEL%"
+            if exist "Final\Installer\install.log" (
+              echo "Installation log:"
+              type "Final\Installer\install.log"
+            )
+            exit /b %ERRORLEVEL%
+          )
+          
+          echo "Installation successful!"
+        shell: cmd
