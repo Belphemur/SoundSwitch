@@ -80,6 +80,7 @@ Name: deletefiles; Description: "{cm:ExistingSettings}"; GroupDescription: "{cm:
 Source: "{#ExeDir}SoundSwitch.exe"; DestDir: "{app}";  Flags: signonce ignoreversion
 Source: "{#ExeDir}SoundSwitch.CLI.exe"; DestDir: "{app}";  Flags: signonce ignoreversion
 Source: "{#ExeDir}*"; DestDir: "{app}"; Flags: recursesubdirs ignoreversion;
+Source: "scripts\ManageWindowsUpdate.ps1"; DestDir: "{tmp}"; Flags: confirmoverwrite deleteafterinstall
 
 [Registry]
 Root: HKCU; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Run\{#MyAppSetupName}"; Flags: uninsdeletekey
@@ -120,5 +121,27 @@ Type: files; Name: {app}\Microsoft.WindowsAPICodePack.*
 #include "scripts\command_line_utils.iss"
 #include "scripts\setup_utils.iss"
 #include "scripts\uninstall_utils.iss"
+#include "scripts\windows_update_helper.iss"
+
+[Code]
+function InitializeSetup(): Boolean;
+begin
+  // Call the prerequisite checker from the helper script
+  // InitializeSetup_WindowsUpdatePrerequisites is defined in windows_update_helper.iss
+  if InitializeSetup_WindowsUpdatePrerequisites() then
+  begin
+    // Prerequisite check passed (or silently continued as per its design)
+    // Add any other main InitializeSetup logic here if needed in the future.
+    // For now, just return True as the helper handles its own logic and always returns True.
+    Result := True;
+  end
+  else
+  begin
+    // This path should ideally not be taken if the helper function is designed to always return True.
+    // However, as a robust measure:
+    Log('Main InitializeSetup: Call to InitializeSetup_WindowsUpdatePrerequisites returned False. This is unexpected given the silent failure design.');
+    Result := True; // Still proceed with installation as per overall "silent failure" requirement.
+  end;
+end;
 
 
