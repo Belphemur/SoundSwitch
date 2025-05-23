@@ -64,7 +64,11 @@ function Invoke-KBInstall {
         # May need refinement if the KBID isn't directly searchable this way,
         # or if it's part of a cumulative update.
         # Using a general search for the KBID in the title or description.
-        $searchCriteria = "IsInstalled=0 and Type='Software' and BrowseOnly=0 and SearchHidden=1" 
+        # Use a more targeted search to reduce the number of updates returned.
+        # Try to match the KBID in the title, which is usually present for individual updates.
+        $searchCriteria = "IsInstalled=0 and Type='Software' and Title like '%$KBID%'"
+        # Note: The Windows Update API does not support direct search by KBArticleID in the query string.
+        # If $KBID is in the form "KB123456", this will match updates with that KB in the title.
         # It's often better to search for "KBxxxxxxx" within the title or description if a direct ID search fails.
         # $searchCriteria = "IsInstalled=0 and Type='Software' and Title like '%$KBID%'"
         # For more specific targeting, one might need to know if it's a security update, critical update etc.
@@ -119,9 +123,10 @@ function Invoke-KBInstall {
             Exit 3 # Update not found
         }
 
+        # Sanity check - if we reach here, we should have at least one update
         if ($updatesToDownload.Count -eq 0) {
-            Write-LogOutput "No updates matching $KBID require downloading or installation (already downloaded or not found)."
-            Exit 0 # Or appropriate code if it means already installed/not applicable
+            Write-LogOutput "Unexpected state: updateFound was true but no updates in collection. This should not happen."
+            Exit 5 # Unexpected error state
         }
 
         $needsDownload = $false
