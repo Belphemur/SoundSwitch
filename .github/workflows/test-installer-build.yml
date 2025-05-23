@@ -1,0 +1,29 @@
+name: Test Installer Build (No Sign)
+
+on:
+  push:
+    paths:
+      - "Installer/**"
+  pull_request:
+    paths:
+      - "Installer/**"
+
+jobs:
+  build-installer-no-sign:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Inno Setup
+        run: winget install --id=JRSoftware.InnoSetup --exact --source winget --accept-package-agreements --accept-source-agreements
+        shell: pwsh
+
+      - name: Modify SignTool in setup.iss
+        run: |
+          powershell -Command "(Get-Content -Path Installer/setup.iss) -replace 'SignTool=Certum', 'SignTool=none' | Set-Content -Path Installer/setup.iss"
+        shell: pwsh
+
+      - name: Build Installer
+        run: .\\Installer\\Make-Installer.bat Nightly
+        shell: cmd
