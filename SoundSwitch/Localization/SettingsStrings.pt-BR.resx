@@ -628,4 +628,16 @@ Você deseja reiniciar agora?</value>
   <data name="importConfigFile" xml:space="preserve">
     <value>Importar arquivo de configurações</value>
   </data>
+  <data name="importConfigErrorDeserializationFailed" xml:space="preserve">
+    <value>Falha ao desserializar o arquivo de configuração '{0}'. Erro: {1}</value>
+  </data>
+  <data name="importConfigErrorReadingFile" xml:space="preserve">
+    <value>Erro ao ler arquivo de configurações '{0}' a partir do arquivo: {1}</value>
+  </data>
+  <data name="importConfigErrorInvalidJson" xml:space="preserve">
+    <value>O arquivo de configurações '{0}' não é um JSON válido. Erro: {1}</value>
+  </data>
+  <data name="importConfigErrorDeserializationNull" xml:space="preserve">
+    <value>O arquivo de configuração '{0}' não pôde ser desserializado corretamente (resultou em nulo). Certifique-se de que seja uma configuração válida do SoundSwitch.</value>
+  </data>
 </root>
