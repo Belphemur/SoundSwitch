@@ -22,14 +22,20 @@ for /f "eol=; tokens=1,2*" %%a in ('REG QUERY "%innoSetupRegistryNode%" /v Insta
 )
 set innoSetupExe="%innoSetupExe%ISCC.exe"
 if not exist %innoSetupExe% (set errorMessage=Inno Setup not found in %innoSetupExe% & goto ERROR_QUIT)
-if not exist "..\Final\Installer" mkdir ..\Final\Installer
+if not exist "..\Final\Installer" (
+    echo Creating installer output directory: ..\Final\Installer
+    mkdir ..\Final\Installer
+)
 
+echo Cleaning previous installer files: ..\Final\Installer\*Installer.exe
 del ..\Final\Installer\*Installer.exe
 
 echo Building installer...
+echo Running Inno Setup: %innoSetupExe% setup.iss /DReleaseState=%1
 %innoSetupExe% setup.iss /DReleaseState=%1
 if not %ERRORLEVEL%==0 (set errorMessage=Installer script setup.iss failed & goto ERROR_QUIT)
 
+echo Moving installer to final location: ..\Final\*Installer.exe -^> ..\Final\Installer\
 move ..\Final\*Installer.exe ..\Final\Installer\
 
 echo Installer created successfully.
