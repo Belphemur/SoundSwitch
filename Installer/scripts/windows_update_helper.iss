@@ -131,14 +131,30 @@ end;
 function InitializeSetup_WindowsUpdatePrerequisites(): Boolean;
 begin
   PowerShellExePath_WU := FindPowerShell_WU();
-  if PowerShellExePath_WU = 'powershell.exe' then // Relying on PATH
+  if PowerShellExePath_WU = 'powershell.exe' then // FindPowerShell_WU is relying on PATH
   begin
-    LogMsg_WU('PowerShell.exe path set to "powershell.exe", relying on system PATH.');
+    LogMsg_WU('PowerShell.exe path determined as "powershell.exe" by FindPowerShell_WU, attempting to use system PATH.');
+    // Explicitly test if 'powershell.exe' is resolvable by FileExists (which should check PATH)
+    if not FileExists(PowerShellExePath_WU) then
+    begin
+      LogMsg_WU('Critical: PowerShell.exe (when relying on PATH) was not found by FileExists. Update checks will be skipped.');
+      PowerShellExePath_WU := ''; // Mark as unusable
+    end
+    else
+    begin
+      LogMsg_WU('PowerShell.exe (via PATH) confirmed by FileExists.');
+    end;
   end
-  else if not FileExists(PowerShellExePath_WU) then // Explicit path not found
+  else if PowerShellExePath_WU <> '' then // This means FindPowerShell_WU returned an explicit, existing path
   begin
-     LogMsg_WU('Critical: PowerShell.exe could not be definitively located via explicit path: ' + PowerShellExePath_WU + '. Update checks might fail.');
-     PowerShellExePath_WU := ''; // Prevent attempts if not found explicitly
+    // This is an explicit path. FindPowerShell_WU already confirmed FileExists.
+    // Re-check in case the file got deleted since FindPowerShell_WU was called.
+    if not FileExists(PowerShellExePath_WU) then
+    begin
+      LogMsg_WU('Critical: PowerShell.exe was found at explicit path "' + PowerShellExePath_WU + '" but is now missing. Update checks will be skipped.');
+      PowerShellExePath_WU := ''; // Mark as unusable
+    end;
+    // If it's still present, FindPowerShell_WU already logged its discovery.
   end;
 
   LogMsg_WU('Starting Windows Update prerequisite check.');

@@ -84,3 +84,29 @@ jobs:
       - name: Build Installer
         run: .\\Installer\\Make-Installer.bat Nightly
         shell: cmd
+
+      - name: Run Installer in Silent Mode (Machine Scope)
+        run: |
+          echo "Finding installer executable..."
+          for /f "delims=" %%i in ('dir /b Final\Installer\*.exe') do set INSTALLER_NAME=%%i
+          if not defined INSTALLER_NAME (
+            echo "ERROR: No installer found in Final\Installer\"
+            exit /b 1
+          )
+          echo "Found installer: %INSTALLER_NAME%"
+          
+          echo "Running installer in full silent mode for machine scope..."
+          Final\Installer\%INSTALLER_NAME% /VERYSILENT /ALLUSERS /NORESTART /SUPPRESSMSGBOXES /LOG="Final\Installer\install.log"
+          
+          echo "Installation completed. Exit code: %ERRORLEVEL%"
+          if %ERRORLEVEL% neq 0 (
+            echo "Installation failed with exit code %ERRORLEVEL%"
+            if exist "Final\Installer\install.log" (
+              echo "Installation log:"
+              type "Final\Installer\install.log"
+            )
+            exit /b %ERRORLEVEL%
+          )
+          
+          echo "Installation successful!"
+        shell: cmd
