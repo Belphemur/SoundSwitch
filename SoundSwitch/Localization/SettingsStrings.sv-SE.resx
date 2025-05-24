@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -571,13 +571,13 @@ Båda: Ändra när någon typ av enhet ändras.</value>
     <value>Visa en permanent banner när mikrofonen är tystad</value>
   </data>
   <data name="banner.mute.option.fading" xml:space="preserve">
-    <value />
+    <value>Tona ut</value>
   </data>
   <data name="banner.mute.option.persistent" xml:space="preserve">
-    <value />
+    <value>Beständig</value>
   </data>
   <data name="switchDevice" xml:space="preserve">
-    <value />
+    <value>Byt enhet</value>
   </data>
   <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
     <value>Hur länge bannern visas på skärmen i sekunder.</value>
@@ -586,45 +586,58 @@ Båda: Ändra när någon typ av enhet ändras.</value>
     <value>Visningstid</value>
   </data>
   <data name="notification" xml:space="preserve">
-    <value>Meddelande</value>
+    <value>Aviseringar</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
-    <value />
+    <value>Banneralternativ</value>
   </data>
   <data name="seconds" xml:space="preserve">
-    <value />
+    <value>sekunder</value>
   </data>
   <data name="openSettings" xml:space="preserve">
-    <value />
+    <value>Öppna inställningar</value>
   </data>
   <data name="iconDoubleClick.tooltip" xml:space="preserve">
-    <value />
+    <value>Välj åtgärden när du dubbelklickar på ikonen i aktivitetsfältet.</value>
   </data>
   <data name="iconDoubleClick" xml:space="preserve">
-    <value />
+    <value>Dubbelklicksåtgärd</value>
   </data>
   <data name="importExportConfigFile" xml:space="preserve">
-    <value />
+    <value>Importera / exportera konfigurationsfil</value>
   </data>
   <data name="importExportConfigFile.desc" xml:space="preserve">
-    <value />
+    <value>Importera eller exportera SoundSwitch-konfigurationsfilen till ett zip-arkiv.</value>
   </data>
   <data name="importConfigErrorMessage" xml:space="preserve">
-    <value />
+    <value>Zip-arkivet måste innehålla SoundSwitch-konfigurationsfilen.</value>
   </data>
   <data name="importConfigRestartRequired" xml:space="preserve">
-    <value />
+    <value>SoundSwitch kommer att startar om när huvudkonfigurationsfilen har importerats.
+Vill du starta om nu?</value>
   </data>
   <data name="importConfigErrorMessage.caption" xml:space="preserve">
-    <value />
+    <value>Ogiltigt arkiv</value>
   </data>
   <data name="buttonImport" xml:space="preserve">
-    <value />
+    <value>Importera</value>
   </data>
   <data name="exportConfigFile" xml:space="preserve">
-    <value />
+    <value>Exportera konfigurationsfil</value>
   </data>
   <data name="importConfigFile" xml:space="preserve">
-    <value />
+    <value>Importera konfigurationsfil</value>
+  </data>
+  <data name="importConfigErrorReadingFile" xml:space="preserve">
+    <value>Fel vid läsning av konfigurationsfilen '{0}' från arkivet: {1}</value>
+  </data>
+  <data name="importConfigErrorInvalidJson" xml:space="preserve">
+    <value>Konfigurationsfilen '{0}' är inte en giltig JSON-fil. Fel: {1}</value>
+  </data>
+  <data name="importConfigErrorDeserializationNull" xml:space="preserve">
+    <value>Konfigurationsfilen '{0}' kunde inte avserialiseras korrekt (resulterade i null). Kontrollera att det är en giltig SoundSwitch-konfigurationsfil.</value>
+  </data>
+  <data name="importConfigErrorDeserializationFailed" xml:space="preserve">
+    <value>Misslyckades med att avserialisering av konfigurationsfilen '{0}'. Fel: {1}</value>
   </data>
 </root>

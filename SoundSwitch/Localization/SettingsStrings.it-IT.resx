@@ -628,4 +628,16 @@ Vuoi riavviare Soundswitch?</value>
   <data name="importConfigFile" xml:space="preserve">
     <value>Importa file configurazione</value>
   </data>
+  <data name="importConfigErrorInvalidJson" xml:space="preserve">
+    <value>Il file di configurazione '{0}' non è un file JSON valido. Errore: {1}</value>
+  </data>
+  <data name="importConfigErrorDeserializationFailed" xml:space="preserve">
+    <value>Impossibile deserializzare il file di configurazione '{0}'. Errore: {1}</value>
+  </data>
+  <data name="importConfigErrorReadingFile" xml:space="preserve">
+    <value>Errore di lettura del file configurazione '{0}' dall'archivio: {1}</value>
+  </data>
+  <data name="importConfigErrorDeserializationNull" xml:space="preserve">
+    <value>Il file di configurazione '{0}' non può essere deserializzato correttamente (risulta nullo). Assicurati che si tratti di una file di configurazione SoundSwitch valido.</value>
+  </data>
 </root>
