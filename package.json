@@ -46,20 +46,20 @@
           "presetConfig": {
             "types": [
               {
-                "type": "boost",
-                "section": "Enhancements"
+                "type": "feat",
+                "section": "Features"
               },
               {
-                "type": "lang",
-                "section": "Languages"
+                "type": "boost",
+                "section": "Enhancements"
               },
               {
                 "type": "fix",
                 "section": "Bug Fixes"
               },
               {
-                "type": "feat",
-                "section": "Features"
+                "type": "lang",
+                "section": "Languages"
               },
               {
                 "type": "tests",
@@ -85,7 +85,7 @@
       [
         "@semantic-release/exec",
         {
-          "prepareCmd": "sed -i -E  's/AssemblyFileVersion\\(\"([0-9]+\\.[0-9]+\\.[0-9]+)(-[^\"]+)?\"\\)/AssemblyFileVersion(\"\\1\")/g' SoundSwitch/Properties/AssemblyInfo.cs" 
+          "prepareCmd": "sed -i -E  's/AssemblyFileVersion\\(\"([0-9]+\\.[0-9]+\\.[0-9]+)(-[^\"]+)?\"\\)/AssemblyFileVersion(\"\\1\")/g' SoundSwitch/Properties/AssemblyInfo.cs"
         }
       ],
       [
@@ -120,6 +120,5 @@
     "semantic-release": "^24.2.4",
     "trim-newlines": ">=5.0.0",
     "backblaze": "github:belphemur/backblaze#master"
-
   }
 }
