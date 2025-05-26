@@ -117,7 +117,7 @@
     "conventional-changelog-conventionalcommits": "^8.0.0",
     "discord-webhook-node": "^1.1.8",
     "normalize-url": ">=8.0.1",
-    "semantic-release": "^24.2.4",
+    "semantic-release": "^24.2.5",
     "trim-newlines": ">=5.0.0",
     "backblaze": "github:belphemur/backblaze#master"
   }
