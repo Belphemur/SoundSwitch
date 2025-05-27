@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="updateDisabled" xml:space="preserve">
-    <value>アップデートの確認が無効化されました</value>
+    <value>更新チェック無効</value>
   </data>
   <data name="community" xml:space="preserve">
     <value>コミュニティ</value>
@@ -127,7 +127,7 @@
     <value>両方</value>
   </data>
   <data name="iconChanger.none" xml:space="preserve">
-    <value>デフォルト</value>
+    <value>既定</value>
   </data>
   <data name="iconChanger.recording" xml:space="preserve">
     <value>録音</value>
@@ -145,48 +145,48 @@
     <value>エラー</value>
   </data>
   <data name="configurationNeededExplanation" xml:space="preserve">
-    <value>切り替えるデバイスが利用できません。アイコンを右クリックして設定を開きます。</value>
+    <value>切り替え可能なデバイスがありません。アイコンを右クリックして設定を開きます。</value>
   </data>
   <data name="configurationNeeded" xml:space="preserve">
     <value>SoundSwitch: 設定が必要です</value>
   </data>
   <data name="recordingChanged" xml:space="preserve">
-    <value>SoundSwitch: 録音デバイスが切り替えられました</value>
+    <value>SoundSwitch: 録音デバイスが切り替わりました</value>
   </data>
   <data name="playbackChanged" xml:space="preserve">
-    <value>SoundSwitch: 再生デバイスが切り替えられました</value>
+    <value>SoundSwitch: 再生デバイスが切り替わりました</value>
   </data>
   <data name="clickToUpdate" xml:space="preserve">
-    <value>ここをクリックしてアップデートします。</value>
+    <value>ここをクリックして更新。</value>
   </data>
   <data name="versionAvailable" xml:space="preserve">
-    <value>SoundSwitchのアップデートが利用可能です ({0})。</value>
+    <value>SoundSwitchのアップデート ({0}) が利用可能です。</value>
   </data>
   <data name="updateAvailable" xml:space="preserve">
-    <value>アップデートが利用可能です ({0})</value>
+    <value>アップデートあり ({0})</value>
   </data>
   <data name="quit" xml:space="preserve">
-    <value>終了</value>
+    <value>SoundSwitchを終了</value>
   </data>
   <data name="about" xml:space="preserve">
     <value>SoundSwitchについて</value>
   </data>
   <data name="volumeMixer" xml:space="preserve">
-    <value>ミキサー</value>
+    <value>音量ミキサー</value>
   </data>
   <data name="playbackDevices" xml:space="preserve">
     <value>再生デバイス</value>
   </data>
   <data name="noDevicesSelected" xml:space="preserve">
-    <value>デバイスが選択されていません</value>
+    <value>デバイスは選択されていません</value>
   </data>
   <data name="noUpdate" xml:space="preserve">
-    <value>利用可能なアップデートはありません</value>
+    <value>更新はありません</value>
   </data>
   <data name="settings" xml:space="preserve">
     <value>設定</value>
   </data>
   <data name="forceCheckForUpdate" xml:space="preserve">
-    <value>アップデートの確認</value>
+    <value>更新を確認</value>
   </data>
 </root>
