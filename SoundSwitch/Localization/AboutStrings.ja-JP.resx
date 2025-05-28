@@ -107,19 +107,19 @@
     <value>バージョン</value>
   </data>
   <data name="author" xml:space="preserve">
-    <value>作者とプログラム情報</value>
+    <value>作成者とプログラム情報</value>
   </data>
   <data name="credits" xml:space="preserve">
     <value>クレジットと帰属</value>
   </data>
   <data name="defaultPlaybackDeviceChange" xml:space="preserve">
-    <value>既定の再生デバイスの変更</value>
+    <value>既定の再生デバイス変更</value>
   </data>
   <data name="keyboardHotkeys" xml:space="preserve">
-    <value>キーボードショートカット機能</value>
+    <value>キーボードショートカット</value>
   </data>
   <data name="logo" xml:space="preserve">
-    <value>ロゴ制作</value>
+    <value>ロゴ作成</value>
   </data>
   <data name="icons" xml:space="preserve">
     <value>アイコン</value>

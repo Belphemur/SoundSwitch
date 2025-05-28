@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="selected" xml:space="preserve">
-    <value>選択済</value>
+    <value>選択済み</value>
   </data>
   <data name="connected" xml:space="preserve">
-    <value>接続済</value>
+    <value>接続済み</value>
   </data>
   <data name="disconnected" xml:space="preserve">
-    <value>切断済</value>
+    <value>切断済み</value>
   </data>
   <data name="recording" xml:space="preserve">
     <value>録音</value>
@@ -139,31 +139,31 @@
     <value>ショートカット</value>
   </data>
   <data name="communicationsDevice" xml:space="preserve">
-    <value>既定の通信デバイスを切り替える</value>
+    <value>既定の通信デバイスを切り替え</value>
   </data>
   <data name="startWithWindows" xml:space="preserve">
-    <value>Windows の起動時に自動的に開始する</value>
+    <value>Windowsと同時に起動</value>
   </data>
   <data name="buttonClose" xml:space="preserve">
     <value>閉じる</value>
   </data>
   <data name="buttonClose.tooltip" xml:space="preserve">
-    <value>変更を自動的に保存</value>
+    <value>変更は自動保存</value>
   </data>
   <data name="communicationsDevice.tooltip" xml:space="preserve">
-    <value>有効にすると「既定の通信デバイス」と「既定の再生デバイス」が一緒に切り替わります（Skype、TeamSpeakなどで便利です）。</value>
+    <value>有効にすると、既定の通信・再生デバイスが一緒に切り替わります（Skype、TeamSpeakなどで便利）。</value>
   </data>
   <data name="updateIncludeBetaVersions" xml:space="preserve">
     <value>ベータ版を含める</value>
   </data>
   <data name="updateIncludeBetaVersions.tooltip" xml:space="preserve">
-    <value>有効にすると SoundSwitch は GitHub のベータ版もチェックします。</value>
+    <value>有効にすると SoundSwitch は GitHub のベータ版も確認します。</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
     <value>オーディオファイル</value>
   </data>
   <data name="selectSoundButton.tooltip" xml:space="preserve">
-    <value>通知用のサウンドファイルを選択</value>
+    <value>通知音を選択</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>ショートカットを有効にする。</value>
@@ -175,43 +175,43 @@
     <value>オーディオ設定</value>
   </data>
   <data name="updateSettings" xml:space="preserve">
-    <value>アップデート設定</value>
+    <value>更新設定</value>
   </data>
   <data name="cycleThrough" xml:space="preserve">
-    <value>循環</value>
+    <value>順に切り替え</value>
   </data>
   <data name="keepSystemTrayIcon" xml:space="preserve">
-    <value>SoundSwitch のシステムトレイアイコンを保持</value>
+    <value>SoundSwitchのトレイアイコンを保持</value>
   </data>
   <data name="keepSystemTrayIcon.tooltip" xml:space="preserve">
-    <value>有効にすると「既定の再生デバイス」が変更されてもシステムトレイアイコンは変わりません。</value>
+    <value>有効にすると、既定の再生デバイス変更時もトレイアイコンは変わりません。</value>
   </data>
   <data name="updateInstallAutomatically" xml:space="preserve">
-    <value>自動的にアップデートをインストール</value>
+    <value>更新を自動インストール</value>
   </data>
   <data name="updateInstallAutomatically.tooltip" xml:space="preserve">
-    <value>プロンプトなしでアップデートが自動的にインストールされます。</value>
+    <value>プロンプトなしで更新を自動インストールします。</value>
   </data>
   <data name="updateNotify" xml:space="preserve">
-    <value>アップデートが利用可能な場合に通知</value>
+    <value>更新があったら通知</value>
   </data>
   <data name="updateNever" xml:space="preserve">
-    <value>アップデートを確認しない</value>
+    <value>更新を確認しない</value>
   </data>
   <data name="tooltipOnHover" xml:space="preserve">
-    <value>ホバー時のヒント</value>
+    <value>ホバーでツールヒント</value>
   </data>
   <data name="cycleThrough.option.allAudioDevices" xml:space="preserve">
     <value>すべてのオーディオデバイス</value>
   </data>
   <data name="cycleThrough.option.onlySelectedAudioDevices" xml:space="preserve">
-    <value>選択したオーディオデバイスのみ</value>
+    <value>選択したデバイスのみ</value>
   </data>
   <data name="cycleThrough.tooltip" xml:space="preserve">
-    <value>切り替えるデバイスを選択してください。選択したデバイスのみまたはすべてのデバイスのいずれかを選択できます。</value>
+    <value>切り替えるデバイスを選んでください。選択したデバイスのみか、すべてか。</value>
   </data>
   <data name="notification.option.windowsDefault" xml:space="preserve">
-    <value>Windows 通知</value>
+    <value>Windows通知</value>
   </data>
   <data name="notification.option.sound" xml:space="preserve">
     <value>サウンド通知</value>
@@ -242,10 +242,10 @@
     <value>両方のデバイス</value>
   </data>
   <data name="audioFileNotFound" xml:space="preserve">
-    <value>通知として使用するオーディオファイルが見つかりませんでした。SoundSwitchは通知設定を{0}に戻しました。</value>
+    <value>選択した通知音が見つかりません。SoundSwitch は通知設定を {0} に戻しました。</value>
   </data>
   <data name="audioFileNotFound.caption" xml:space="preserve">
-    <value>オーディオファイルが見つかりません</value>
+    <value>通知音が見つかりません</value>
   </data>
   <data name="activeRecording" xml:space="preserve">
     <value>録音: {0}</value>
@@ -264,22 +264,22 @@
     <value>再起動が必要</value>
   </data>
   <data name="updateNever.tooltip" xml:space="preserve">
-    <value>手動で確認したとき以外、プログラムのアップデートを行いません。</value>
+    <value>手動で確認するまで更新しません。</value>
   </data>
   <data name="updateNotify.tooltip" xml:space="preserve">
-    <value>新しいアップデートが利用可能になると、SoundSwitchは通知します。通知をクリックすると、アップデートをダウンロードし、インストールするかどうかを尋ねるポップアップが表示されます。</value>
+    <value>新しい更新があると通知します。通知をクリックするとダウンロードされ、インストール確認が表示されます。</value>
   </data>
   <data name="notification.option.banner" xml:space="preserve">
     <value>バナー通知</value>
   </data>
   <data name="disableCustomSound.tooltip" xml:space="preserve">
-    <value>設定されたカスタムサウンドを無効にします。</value>
+    <value>カスタムサウンドを無効にする。</value>
   </data>
   <data name="foregroundApp" xml:space="preserve">
-    <value>フォアグラウンドプログラムも切り替える</value>
+    <value>フォアグラウンドも切り替え</value>
   </data>
   <data name="foregroundApp.tooltip" xml:space="preserve">
-    <value>現在使用中のアプリケーションのサウンドも切り替えます。ビデオゲームなどで便利です。</value>
+    <value>使用中のアプリのサウンドも切り替えます。ゲームに便利です。</value>
   </data>
   <data name="iconChange" xml:space="preserve">
     <value>システムトレイアイコン</value>
@@ -305,31 +305,31 @@
     <value>名前</value>
   </data>
   <data name="profile.error.hotkey" xml:space="preserve">
-    <value>ショートカット{0} はすでに登録されています。</value>
+    <value>ショートカット {0} は登録済みです。</value>
   </data>
   <data name="profile.error.application" xml:space="preserve">
-    <value>このアプリケーション {0} はすでにプロファイルと連携済です。</value>
+    <value>このアプリ {0} はプロファイルと連携済みです。</value>
   </data>
   <data name="profile.error.name" xml:space="preserve">
-    <value>すでに {0} という名前のプロファイルが存在します。</value>
+    <value>プロファイル {0} はすでに存在します。</value>
   </data>
   <data name="profile.error.needHKOrPath" xml:space="preserve">
-    <value>ショートカットまたはアプリケーションを設定する必要があります。</value>
+    <value>ショートカットかアプリを設定してください。</value>
   </data>
   <data name="profile.error.needPlaybackOrRecording" xml:space="preserve">
-    <value>再生デバイスまたは録音デバイスを設定する必要があります。</value>
+    <value>再生または録音デバイスを設定してください。</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
-    <value>特定のアプリケーションが起動またはフォーカスされたときに特定の再生デバイスまたは録音デバイスに切り替えるプロファイルを追加します。また、特定のデバイスの組み合わせに対してショートカットを設定することもできます。</value>
+    <value>特定のアプリの起動・フォーカス時に、再生・録音デバイスを切り替えるプロファイルを追加します。独自のショートカットも設定可能。</value>
   </data>
   <data name="profile.error.registerHotkeys" xml:space="preserve">
-    <value>プロファイルのショートカットを登録できませんでした: {0}</value>
+    <value>次のプロファイルのショートカットを登録できませんでした: {0}</value>
   </data>
   <data name="profile.error.registerHotkeys.title" xml:space="preserve">
-    <value>すでに使用されているショートカット</value>
+    <value>使用中のショートカット</value>
   </data>
   <data name="profile.feature.add" xml:space="preserve">
-    <value>プロファイルを追加</value>
+    <value>プロファイル追加</value>
   </data>
   <data name="profile.feature.executable" xml:space="preserve">
     <value>実行可能ファイル (*.exe)</value>
@@ -350,10 +350,10 @@
     <value>プロファイル</value>
   </data>
   <data name="profile.defaultDevice.checkbox" xml:space="preserve">
-    <value>既定のデバイスも切り替える</value>
+    <value>既定デバイスも切り替え</value>
   </data>
   <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
-    <value>アプリケーションが検出された場合、SoundSwitchは現在の既定のデバイスも変更します。</value>
+    <value>アプリ検出時にSoundSwitchは現在の既定デバイスも変更します。</value>
   </data>
   <data name="hotkeyEnabled" xml:space="preserve">
     <value>ショートカット有効</value>
@@ -365,22 +365,22 @@
     <value>プログラム名</value>
   </data>
   <data name="profile.trigger.process" xml:space="preserve">
-    <value>アプリケーションパス</value>
+    <value>アプリのパス</value>
   </data>
   <data name="profile.trigger.steam" xml:space="preserve">
     <value>Steam Big Picture</value>
   </data>
   <data name="profile.trigger.hotkey.desc" xml:space="preserve">
-    <value>プロファイルを有効にするためのショートカット。同じショートカットを使用すると、プロファイル間を切り替えることができます。</value>
+    <value>プロファイルを有効にするショートカット。同じショートカットを使うと、プロファイル間を切り替えられます。</value>
   </data>
   <data name="profile.trigger.window.desc" xml:space="preserve">
-    <value>フォアグラウンドプログラムに指定の文字列が含まれている場合、プロファイルを有効にします</value>
+    <value>フォアグラウンドプログラムに以下の文字が含まれる場合、プロファイルを有効にする</value>
   </data>
   <data name="profile.trigger.process.desc" xml:space="preserve">
-    <value>選択したアプリケーションがフォアグラウンドにある場合、プロファイルを有効にします</value>
+    <value>選択したアプリがフォアグラウンドにある場合、プロファイルを有効にする</value>
   </data>
   <data name="profile.trigger.steam.desc" xml:space="preserve">
-    <value>Steam Big Picture が検出されると有効になります。（Big Picture が終了すると元の状態に戻ります。）</value>
+    <value>Steam Big Picture 検出時に有効。（閉じると状態を復元。）</value>
   </data>
   <data name="profile.desc" xml:space="preserve">
     <value>説明</value>
@@ -395,19 +395,19 @@
     <value>既定の通信デバイス</value>
   </data>
   <data name="profile.error.triggers.min" xml:space="preserve">
-    <value>少なくとも1つのトリガーが必要です。</value>
+    <value>トリガーが少なくとも1つ必要です。</value>
   </data>
   <data name="profile.error.steam" xml:space="preserve">
-    <value>Steam Big Picture用のプロファイルは1つだけ作成できます。</value>
+    <value>Steam Big Picture 用のプロファイルは1つのみです。</value>
   </data>
   <data name="profile.error.window" xml:space="preserve">
-    <value>このウィンドウ名のプロファイルはすでに存在します: {0}。</value>
+    <value>このウィンドウ名のプロファイル {0} はすでに存在します。</value>
   </data>
   <data name="profile.notifyOnActivation" xml:space="preserve">
-    <value>プロファイルがトリガーされたときに通知</value>
+    <value>プロファイル起動時に通知</value>
   </data>
   <data name="profile.notification.text" xml:space="preserve">
-    <value>プロファイル {0} がトリガーされました</value>
+    <value>プロファイル {0} が起動</value>
   </data>
   <data name="buttonSave" xml:space="preserve">
     <value>保存</value>
@@ -419,13 +419,13 @@
     <value>起動時</value>
   </data>
   <data name="profile.trigger.startup.desc" xml:space="preserve">
-    <value>SoundSwitchが起動したときにプロファイルが自動的にトリガーされます</value>
+    <value>SoundSwitch 起動時にプロファイルが自動的に起動します</value>
   </data>
   <data name="usePrimaryScreen" xml:space="preserve">
-    <value>常にメイン ディスプレイを使用</value>
+    <value>常にプライマリ画面を使う</value>
   </data>
   <data name="usePrimaryScreen.tooltip" xml:space="preserve">
-    <value>フォーカスされたディスプレイではなく、メイン ディスプレイに通知を表示します。</value>
+    <value>フォーカス画面ではなく、プライマリ画面にバナーを表示します。</value>
   </data>
   <data name="profile.trigger.restoreDevices" xml:space="preserve">
     <value>トリガー終了時にデバイスを復元</value>
@@ -436,61 +436,61 @@
 アプリケーションが閉じられたときにシステムの状態を復元します。</value>
   </data>
   <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
-    <value>システムの状態が復元されました</value>
+    <value>システムの状態を復元しました</value>
   </data>
   <data name="profile.trigger.uwp" xml:space="preserve">
     <value>Microsoft Store アプリ</value>
   </data>
   <data name="profile.trigger.uwp.desc" xml:space="preserve">
-    <value>Microsoft Store でインストールされたアプリの名前を入力してください。Netflix、Amazon Prime Videoなど…</value>
+    <value>Microsoft Store アプリの名前を入力してください（例: Netflix、Amazon Prime Videoなど）。</value>
   </data>
   <data name="notification.microphone.muted" xml:space="preserve">
-    <value>{0} はミュートされました。</value>
+    <value>{0} をミュートしました。</value>
   </data>
   <data name="notification.microphone.unmuted" xml:space="preserve">
-    <value>{0} はミュート解除されました。</value>
+    <value>{0} のミュートを解除しました。</value>
   </data>
   <data name="mute.toggle.label" xml:space="preserve">
-    <value>ミュート切替</value>
+    <value>ミュートの切り替え</value>
   </data>
   <data name="profile.trigger.trayMenu" xml:space="preserve">
-    <value>アプリメニューから選択</value>
+    <value>アプリメニュー内</value>
   </data>
   <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
-    <value>このトリガーはプロファイルをシステムトレイアイコンのメニューで表示します。システムトレイアイコンを左クリックしてプロファイルを表示できます。</value>
+    <value>このトリガーは、プロファイルをトレイアイコンメニューに表示します。トレイアイコンを左クリックしてプロファイルを表示できます。</value>
   </data>
   <data name="profile.trigger.deviceChanged" xml:space="preserve">
-    <value>強制プロファイル</value>
+    <value>プロファイルの強制</value>
   </data>
   <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
-    <value>現在のサウンドデバイスが変更されるたびに、プロファイルが自動的にトリガーされます。</value>
+    <value>現在のサウンドデバイスが変更されるたびに、プロファイルが自動的に起動します。</value>
   </data>
   <data name="profile.error.deviceChanged" xml:space="preserve">
-    <value>強制プロファイルは1つだけ作成できます。</value>
+    <value>強制プロファイルは1つのみ作成可能です。</value>
   </data>
   <data name="telemetry" xml:space="preserve">
-    <value>バージョン情報の共有</value>
+    <value>テレメトリ</value>
   </data>
   <data name="telemetry.tooltip" xml:space="preserve">
-    <value>SoundSwitchの使用中のバージョンを匿名で収集します。開発者のSoundSwitchとのみ共有されます。</value>
+    <value>SoundSwitch の使用バージョンを匿名で収集。開発者のみと共有されます。</value>
   </data>
   <data name="quickMenu" xml:space="preserve">
-    <value>ショートカットでクイックメニューを表示</value>
+    <value>ショートカットでクイックメニュー</value>
   </data>
   <data name="quickMenu.tooltip" xml:space="preserve">
-    <value>ショートカットを使用するときにWindows言語のようなクイックメニューを表示します</value>
+    <value>ショートカット使用時に Windows 言語のようなクイックメニューを表示します</value>
   </data>
   <data name="keepVolume" xml:space="preserve">
-    <value>デバイス間で音量レベルを保持</value>
+    <value>デバイス間で音量維持</value>
   </data>
   <data name="keepVolume.tooltip" xml:space="preserve">
-    <value>デバイスを切り替えるときに同じ音量レベルを保持します</value>
+    <value>デバイス切り替え時に同じ音量レベルを維持します</value>
   </data>
   <data name="devices.autoAddNewDevice" xml:space="preserve">
-    <value>新しいデバイスを自動選択します</value>
+    <value>新デバイスを自動選択</value>
   </data>
   <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
-    <value>新しいデバイスがコンピュータに接続されたときに、選択済リストに新しいデバイスを自動追加します</value>
+    <value>新デバイス接続時に選択済みリストに自動追加します</value>
   </data>
   <data name="position" xml:space="preserve">
     <value>位置</value>
@@ -517,34 +517,34 @@
     <value>中央上</value>
   </data>
   <data name="notification.single" xml:space="preserve">
-    <value>通知はひとつだけ</value>
+    <value>バナーは1つのみ</value>
   </data>
   <data name="notification.single.tooltip" xml:space="preserve">
-    <value>一度にひとつの通知だけを表示し、その内容を置き換えます。</value>
+    <value>一度に1つのバナーのみ表示し、内容を置き換えます。</value>
   </data>
   <data name="link.community" xml:space="preserve">
-    <value>コミュニティDiscord</value>
+    <value>コミュニティ Discord</value>
   </data>
   <data name="link.donate" xml:space="preserve">
-    <value>寄付する</value>
+    <value>寄付</value>
   </data>
   <data name="link.help" xml:space="preserve">
     <value>ヘルプディスカッション</value>
   </data>
   <data name="resetAudioDevices.desc" xml:space="preserve">
-    <value>デバイスを切り替えるときにプログラムにオーディオデバイスが再割り当てされない場合、Windowsの指定プログラムへのオーディオデバイスの割り当てをリセットします。</value>
+    <value>デバイス切り替え時にアプリにオーディオデバイスが再割り当てされない場合、Windowsの指定アプリへのオーディオデバイス割り当てをリセットします。</value>
   </data>
   <data name="buttonReset" xml:space="preserve">
     <value>リセット</value>
   </data>
   <data name="resetAudioDevices" xml:space="preserve">
-    <value>アプリごとのオーディオをリセット</value>
+    <value>アプリごとのオーディオリセット</value>
   </data>
   <data name="exportLogFiles" xml:space="preserve">
     <value>ログファイルのエクスポート</value>
   </data>
   <data name="exportLogFiles.desc" xml:space="preserve">
-    <value>すべてのログファイルをzipアーカイブにエクスポートし、ヘルプディスカッションまたはコミュニティDiscordでのさらなるトラブルシューティングに使用します。</value>
+    <value>すべてのログファイルをZIPアーカイブにエクスポートし、ヘルプディスカッションやDiscordでのトラブルシューティングに利用します。</value>
   </data>
   <data name="buttonExport" xml:space="preserve">
     <value>エクスポート</value>
@@ -553,7 +553,7 @@
     <value>トラブルシューティング</value>
   </data>
   <data name="troubleshooting.desc" xml:space="preserve">
-    <value>SoundSwitchのヘルプやさらなるトラブルシューティングが必要な場合は、ヘルプディスカッションまたはコミュニティDiscordのリンクを訪れるか、以下の寄付リンクを訪れてサポートをお願いします。</value>
+    <value>SoundSwitch のヘルプやトラブルシューティングは、ヘルプディスカッションやDiscord、または寄付リンクをご利用ください。</value>
   </data>
   <data name="position.option.center" xml:space="preserve">
     <value>中央</value>
@@ -568,19 +568,19 @@
     <value>マイクミュート</value>
   </data>
   <data name="banner.mute.tooltip" xml:space="preserve">
-    <value>マイクがミュートされているときに常時ミュート通知を表示する</value>
+    <value>マイクのミュート/ミュート解除時にバナーを表示。永続は、ミュート中に常に画面表示を意味します。</value>
   </data>
   <data name="banner.mute.option.fading" xml:space="preserve">
-    <value />
+    <value>フェード</value>
   </data>
   <data name="banner.mute.option.persistent" xml:space="preserve">
-    <value />
+    <value>永続</value>
   </data>
   <data name="switchDevice" xml:space="preserve">
-    <value />
+    <value>デバイス切り替え</value>
   </data>
   <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
-    <value>通知が画面に表示される時間（秒）。</value>
+    <value>バナーの表示時間（秒）。</value>
   </data>
   <data name="notification.banner.onscreen.time" xml:space="preserve">
     <value>表示時間</value>
@@ -589,42 +589,55 @@
     <value>通知</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
-    <value />
+    <value>バナーオプション</value>
   </data>
   <data name="seconds" xml:space="preserve">
-    <value />
+    <value>秒</value>
   </data>
   <data name="openSettings" xml:space="preserve">
-    <value />
+    <value>設定を開く</value>
   </data>
   <data name="iconDoubleClick.tooltip" xml:space="preserve">
-    <value />
+    <value>トレイアイコンをダブルクリックした時の動作を選択。</value>
   </data>
   <data name="iconDoubleClick" xml:space="preserve">
-    <value />
+    <value>ダブルクリックの動作</value>
   </data>
   <data name="importExportConfigFile" xml:space="preserve">
-    <value />
+    <value>構成ファイルのインポート/エクスポート</value>
   </data>
   <data name="importExportConfigFile.desc" xml:space="preserve">
-    <value />
+    <value>SoundSwitch 構成ファイルをZIPアーカイブにインポート/エクスポート。</value>
   </data>
   <data name="importConfigErrorMessage" xml:space="preserve">
-    <value />
+    <value>ZIPアーカイブには SoundSwitch 構成ファイルが必要です。</value>
   </data>
   <data name="importConfigRestartRequired" xml:space="preserve">
-    <value />
+    <value>構成ファイルインポート後、SoundSwitch を再起動します。
+今すぐ再起動しますか？</value>
   </data>
   <data name="importConfigErrorMessage.caption" xml:space="preserve">
-    <value />
+    <value>無効なアーカイブ</value>
   </data>
   <data name="buttonImport" xml:space="preserve">
-    <value />
+    <value>インポート</value>
   </data>
   <data name="exportConfigFile" xml:space="preserve">
-    <value />
+    <value>構成ファイルのエクスポート</value>
   </data>
   <data name="importConfigFile" xml:space="preserve">
-    <value />
+    <value>構成ファイルのインポート</value>
+  </data>
+  <data name="importConfigErrorDeserializationNull" xml:space="preserve">
+    <value>構成ファイル '{0}' は正しく逆シリアル化できませんでした (null)。有効な SoundSwitch 構成であることを確認してください。</value>
+  </data>
+  <data name="importConfigErrorDeserializationFailed" xml:space="preserve">
+    <value>構成ファイル '{0}' の逆シリアル化に失敗しました。エラー: {1}</value>
+  </data>
+  <data name="importConfigErrorReadingFile" xml:space="preserve">
+    <value>アーカイブから構成ファイル '{0}' の読み取りエラー: {1}</value>
+  </data>
+  <data name="importConfigErrorInvalidJson" xml:space="preserve">
+    <value>構成ファイル '{0}' は有効な JSON ではありません。エラー: {1}</value>
   </data>
 </root>
