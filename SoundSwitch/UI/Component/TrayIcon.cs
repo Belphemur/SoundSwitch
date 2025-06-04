@@ -352,15 +352,18 @@ namespace SoundSwitch.UI.Component
 
         public void ShowSettings()
         {
-            if (_settingsForm != null)
-                _settingsForm.BringToFront();
-            else
+            _context.Send(state =>
             {
-                _settingsForm = new SettingsForm(AppModel.Instance.AudioDeviceLister);
-                _settingsForm.FormClosed += (object sender, FormClosedEventArgs e) =>
-                    _settingsForm = null;
-                _context.Send(state => { _settingsForm.Show(); }, null);
-            }
+                if (_settingsForm != null)
+                    _settingsForm.BringToFront();
+                else
+                {
+                    _settingsForm = new SettingsForm(AppModel.Instance.AudioDeviceLister);
+                    _settingsForm.FormClosed += (object sender, FormClosedEventArgs e) =>
+                        _settingsForm = null;
+                    _settingsForm.Show();
+                }
+            }, null);
         }
 
         /// <summary>
