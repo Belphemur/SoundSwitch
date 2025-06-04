@@ -1,3 +1,21 @@
+## [6.14.1](https://github.com/Belphemur/SoundSwitch/compare/v6.14.0...v6.14.1) (2025-06-04)
+
+### Bug Fixes
+
+* **settings:** fix opening settings crashing the application when using CLI or opening SoundSwitch again ([b3dca74](https://github.com/Belphemur/SoundSwitch/commit/b3dca747e6434c21e0f88148abbf4723707388db))
+
+### Languages
+
+* **Amharic:** Added About translation using Weblate ([8a40dab](https://github.com/Belphemur/SoundSwitch/commit/8a40dab606120fa0c34d8ef5063d30ed5a9151ca))
+* **Japanese:** Translated About using Weblate ([3541994](https://github.com/Belphemur/SoundSwitch/commit/3541994b9b8f59c83272e3da7983c3f7a1efd92a))
+* **Japanese:** Translated Settings using Weblate ([ca5b2fe](https://github.com/Belphemur/SoundSwitch/commit/ca5b2fefb88d7a4c1db149f7f0b4d8e10fd7ac8f))
+* **Japanese:** Translated Settings using Weblate ([39a2340](https://github.com/Belphemur/SoundSwitch/commit/39a2340cacb22bac9e6097faceaa9485a8ae2b7a))
+* **Japanese:** Translated Tray Icon using Weblate ([1286b92](https://github.com/Belphemur/SoundSwitch/commit/1286b92a9b970eecd6c87e4948235d044c9e4acc))
+* **Japanese:** Translated Update Download using Weblate ([1c2c658](https://github.com/Belphemur/SoundSwitch/commit/1c2c6586aa4897ac7571210c83fddc31dc2af2da))
+* **Norwegian Bokmål:** Translated Settings using Weblate ([5aaf243](https://github.com/Belphemur/SoundSwitch/commit/5aaf243b4d0ec6c5d09158138cf6f4d07a3744e8))
+* **Portuguese:** Translated Settings using Weblate ([e11f18d](https://github.com/Belphemur/SoundSwitch/commit/e11f18d5f183ffbd9d52214dc7791dd9f3524e4d))
+* **Swedish:** Translated Settings using Weblate ([8b7b738](https://github.com/Belphemur/SoundSwitch/commit/8b7b7381075ffca73003630712ec5eed3429bc2e))
+
 ## [6.14.0](https://github.com/Belphemur/SoundSwitch/compare/v6.13.0...v6.14.0) (2025-05-25)
 
 ### Enhancements
