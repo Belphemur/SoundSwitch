@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -571,10 +571,10 @@ Gjenopprett systemets tilstand når programmet lukkes.</value>
     <value>Vis et permanent banner når mikrofonen er dempet</value>
   </data>
   <data name="banner.mute.option.fading" xml:space="preserve">
-    <value />
+    <value>Ton ut</value>
   </data>
   <data name="banner.mute.option.persistent" xml:space="preserve">
-    <value />
+    <value>Vedvarende</value>
   </data>
   <data name="switchDevice" xml:space="preserve">
     <value>Bytt enhet</value>
@@ -604,27 +604,40 @@ Gjenopprett systemets tilstand når programmet lukkes.</value>
     <value>Handling ved dobbeltklikk</value>
   </data>
   <data name="importExportConfigFile" xml:space="preserve">
-    <value />
+    <value>Importer/Eksporter konfigurasjonsfil</value>
   </data>
   <data name="importExportConfigFile.desc" xml:space="preserve">
-    <value />
+    <value>Importer eller eksporter SoundSwitch-konfigurasjonsfilen til et zip-arkiv.</value>
   </data>
   <data name="importConfigErrorMessage" xml:space="preserve">
-    <value />
+    <value>Zip-arkivet må inneholde Soundswitch-konfigurasjonsfilen.</value>
   </data>
   <data name="importConfigRestartRequired" xml:space="preserve">
-    <value />
+    <value>SoundSwitch startes på nytt etter at hovedkonfigurasjonsfilen har blitt importert.
+Vil du starte SoundSwitch på nytt nå?</value>
   </data>
   <data name="importConfigErrorMessage.caption" xml:space="preserve">
-    <value />
+    <value>Ugyldig arkiv</value>
   </data>
   <data name="buttonImport" xml:space="preserve">
-    <value />
+    <value>Importer</value>
   </data>
   <data name="exportConfigFile" xml:space="preserve">
-    <value />
+    <value>Eksporter konfigurasjonsfil</value>
   </data>
   <data name="importConfigFile" xml:space="preserve">
-    <value />
+    <value>Importer konfigurasjonsfil</value>
+  </data>
+  <data name="importConfigErrorInvalidJson" xml:space="preserve">
+    <value>Konfigurasjonsfilen «{0}» inneholder ikke gyldig JSON. Feil: {1}</value>
+  </data>
+  <data name="importConfigErrorReadingFile" xml:space="preserve">
+    <value>En feil oppsto under lesing av konfigurasjonsfilen «{0}» fra arkivet: {1}</value>
+  </data>
+  <data name="importConfigErrorDeserializationNull" xml:space="preserve">
+    <value>Konfigurasjonsfilen «{0}» kunne ikke bli deserialisert riktig (resultatet var null). Pass på at filen inneholder en gyldig SoundSwitch-konfigurasjon.</value>
+  </data>
+  <data name="importConfigErrorDeserializationFailed" xml:space="preserve">
+    <value>Kunne ikke deserialisere konfigurasjonsfilen «{0}». Feil: {1}</value>
   </data>
 </root>
