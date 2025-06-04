@@ -584,6 +584,9 @@ Restore the state of the system when the application is closed.</value>
   <data name="switchDevice" xml:space="preserve">
     <value>Switch device</value>
   </data>
+  <data name="switchProfile" xml:space="preserve">
+    <value>Switch profile</value>
+  </data>
   <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
     <value>How long the banner stays on the screen in seconds.</value>
   </data>
