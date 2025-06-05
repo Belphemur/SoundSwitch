@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -317,7 +317,7 @@ Oba urządzenia: Zmień ikonę, kiedy którekolwiek z urządzeń zostało przeł
     <value>Musisz ustawić urządzenie odtwarzania (albo nagrywania).</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
-    <value>Utwórz profil by przełączyć na dane urządzenie odtwarzania lub nagrywania kiedy wskazana aplikacja zostanie uruchomiona albo aktywowana.</value>
+    <value>Utwórz profil by przełączyć na dane urządzenie odtwarzania lub nagrywania kiedy wskazana aplikacja zostanie uruchomiona albo aktywowana. Możesz także dodać skrót klawiszowy dla wybranego zestawu urządzeń.</value>
   </data>
   <data name="profile.error.registerHotkeys" xml:space="preserve">
     <value>Nie udało się zapisać skrótu klawiszowego dla następujących profili: {0}</value>
@@ -371,7 +371,7 @@ Oba urządzenia: Zmień ikonę, kiedy którekolwiek z urządzeń zostało przeł
     <value>Skrót klawiszowy użyty do aktywacji profilu. Jeżeli użyjesz tego samego skrótu, będziesz mógł zmieniać profile.</value>
   </data>
   <data name="profile.trigger.window.desc" xml:space="preserve">
-    <value>Aktywuj profil, jeżeli bieżący program zawiera następujące znaki (argumenty)</value>
+    <value>Aktywuj profil, jeżeli bieżący program zawiera następujące znaki</value>
   </data>
   <data name="profile.trigger.process.desc" xml:space="preserve">
     <value>Aktywuj profil, jeżeli bieżąca aplikacja jest aktywna</value>
@@ -521,5 +521,71 @@ Przywróć stan systemu po zamknięciu aplikacji.</value>
   </data>
   <data name="importConfigFile" xml:space="preserve">
     <value />
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>Żadne</value>
+  </data>
+  <data name="profile.error.deviceChanged" xml:space="preserve">
+    <value>Możesz mieć tylko jeden wymuszony profil.</value>
+  </data>
+  <data name="keepVolume" xml:space="preserve">
+    <value>Zachowaj poziom głośności między urządzeniami</value>
+  </data>
+  <data name="keepVolume.tooltip" xml:space="preserve">
+    <value>Zachowaj poziom głośności podczas zmiany urządzeń</value>
+  </data>
+  <data name="telemetry.tooltip" xml:space="preserve">
+    <value>Automatycznie prześlij używaną wersję SoundSwitch. Tylko do informacji dla dewelopera SoundSwitch.</value>
+  </data>
+  <data name="quickMenu.tooltip" xml:space="preserve">
+    <value>Podczas używania klawisza skrótu pokaż menu szybkie menu, podobnie jak menu zmiany języka Windows</value>
+  </data>
+  <data name="devices.autoAddNewDevice.tooltip" xml:space="preserve">
+    <value>Automatycznie dodaj nowe urządzenia do listy wybranych podczas podłączenia do komputera</value>
+  </data>
+  <data name="position.tooltip" xml:space="preserve">
+    <value>Wybierz pozycję notyfikacji.</value>
+  </data>
+  <data name="link.help" xml:space="preserve">
+    <value>Pomoc</value>
+  </data>
+  <data name="link.community" xml:space="preserve">
+    <value>Discord Społeczności</value>
+  </data>
+  <data name="link.donate" xml:space="preserve">
+    <value>Wsparcie</value>
+  </data>
+  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
+    <value>Profil zostanie uruchomiony automatycznie gdy zmieni się bieżące urządzenie odtwarzania.</value>
+  </data>
+  <data name="position" xml:space="preserve">
+    <value>Pozycja</value>
+  </data>
+  <data name="position.option.bottomLeft" xml:space="preserve">
+    <value>Lewy dół</value>
+  </data>
+  <data name="position.option.bottomRight" xml:space="preserve">
+    <value>Prawy dół</value>
+  </data>
+  <data name="position.option.topRight" xml:space="preserve">
+    <value>Prawa góra</value>
+  </data>
+  <data name="position.option.bottomCenter" xml:space="preserve">
+    <value>Pośrodku na dole</value>
+  </data>
+  <data name="position.option.topCenter" xml:space="preserve">
+    <value>Pośrodku na górze</value>
+  </data>
+  <data name="notification.single.tooltip" xml:space="preserve">
+    <value>Pokazuj tylko jeden baner na raz.</value>
+  </data>
+  <data name="notification.single" xml:space="preserve">
+    <value>Tylko jeden baner</value>
+  </data>
+  <data name="position.option.topLeft" xml:space="preserve">
+    <value>Lewa góra</value>
+  </data>
+  <data name="position.option.center" xml:space="preserve">
+    <value>Na środku</value>
   </data>
 </root>
