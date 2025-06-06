@@ -607,7 +607,7 @@
     <value>構成ファイルのインポート/エクスポート</value>
   </data>
   <data name="importExportConfigFile.desc" xml:space="preserve">
-    <value>SoundSwitch 構成ファイルをZIPアーカイブにインポート/エクスポート。</value>
+    <value>SoundSwitch 構成ファイルをZIPアーカイブにインポート/エクスポートします。</value>
   </data>
   <data name="importConfigErrorMessage" xml:space="preserve">
     <value>ZIPアーカイブには SoundSwitch 構成ファイルが必要です。</value>

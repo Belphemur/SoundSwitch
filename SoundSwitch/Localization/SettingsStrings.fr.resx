@@ -61,8 +61,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -564,10 +563,10 @@ Restaurer l'état du système quand l'application est fermée.</value>
     <value>Centre</value>
   </data>
   <data name="microphone.on" xml:space="preserve">
-    <value>Microphone On</value>
+    <value>Microphone allumé</value>
   </data>
   <data name="microphone.off" xml:space="preserve">
-    <value>Microphone Off</value>
+    <value>Microphone éteint</value>
   </data>
   <data name="banner.mute" xml:space="preserve">
     <value>Bannière de sourdine persistante</value>
@@ -576,7 +575,7 @@ Restaurer l'état du système quand l'application est fermée.</value>
     <value>Afficher une bannière persistante lorsque le microphone est en sourdine</value>
   </data>
   <data name="banner.mute.option.fading" xml:space="preserve">
-    <value>Fading</value>
+    <value>sourdine</value>
   </data>
   <data name="banner.mute.option.persistent" xml:space="preserve">
     <value>Persistante</value>
