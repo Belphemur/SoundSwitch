@@ -14,6 +14,7 @@
  ********************************************************************/
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -28,6 +29,8 @@ using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
+using SoundSwitch.Framework.Profile;
+using SoundSwitch.Framework.Profile.Trigger;
 using SoundSwitch.Framework.Profile.UI;
 using SoundSwitch.Framework.TrayIcon.Icon;
 using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
@@ -84,6 +87,8 @@ namespace SoundSwitch.UI.Component
         private bool _inDoubleClick;
         private DateTime _lastClick;
         private readonly TimerForm _clickTimer;
+        private Profile _activeTrayProfile;
+        
 
         public TrayIcon()
         {
@@ -153,9 +158,35 @@ namespace SoundSwitch.UI.Component
                 case IconDoubleClickEnum.OpenSettings:
                     ShowSettings();
                     break;
+                case IconDoubleClickEnum.SwitchProfile:
+                    CycleActiveTrayProfile();
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        private void CycleActiveTrayProfile()
+        {
+            // Check if there are any profiles with tray menu triggers
+            List<Profile> profiles = AppModel.Instance.ProfileManager.Profiles
+                .Where(profile => profile.Triggers.Any(trigger => trigger.Type == TriggerFactory.Enum.TrayMenu))
+                .ToList();
+            
+            if (!profiles.Any())
+            {
+                Log.Warning("No profiles available for tray icon double click");
+                return;
+            }
+
+            Profile nextProfile = _activeTrayProfile != null && profiles.Contains(_activeTrayProfile) 
+                    ? profiles[(profiles.IndexOf(_activeTrayProfile) + 1) % profiles.Count]
+                    : profiles.First();
+            
+            _activeTrayProfile = nextProfile;
+            
+            Log.Information("Switching to profile {profile}", nextProfile.Name);
+            AppModel.Instance.ProfileManager.SwitchAudio(nextProfile);
         }
 
         private void NotifyIcon_MouseClick(object sender, EventArgs e)

@@ -572,6 +572,9 @@ Stellt den Zustand des Systems wieder her, wenn die Anwendung geschlossen wird.<
   <data name="switchDevice" xml:space="preserve">
     <value>Gerät wechseln</value>
   </data>
+  <data name="switchProfile" xml:space="preserve">
+    <value>Profil wechseln</value>
+  </data>
   <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
     <value>Wie lange das Banner auf dem Bildschirm angezeigt wird (in Sekunden).</value>
   </data>

@@ -1432,6 +1432,15 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Switch profile.
+        /// </summary>
+        internal static string switchProfile {
+            get {
+                return ResourceManager.GetString("switchProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Telemetry.
         /// </summary>
         internal static string telemetry {

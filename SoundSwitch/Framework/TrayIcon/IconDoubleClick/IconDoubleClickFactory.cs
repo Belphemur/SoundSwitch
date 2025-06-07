@@ -23,7 +23,8 @@ namespace SoundSwitch.Framework.TrayIcon.IconDoubleClick
             <IconDoubleClickEnum, IIconDoubleClick>
             {
                 new IconDoubleClickSwitchDevice(),
-                new IconDoubleClickOpenSettings()
+                new IconDoubleClickOpenSettings(),
+                new IconDoubleClickSwitchProfile()
             };
     }
 }

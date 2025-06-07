@@ -17,6 +17,7 @@ namespace SoundSwitch.Framework.TrayIcon.IconDoubleClick
     public enum IconDoubleClickEnum
     {
         SwitchDevice = 0,
-        OpenSettings = 1
+        OpenSettings = 1,
+        SwitchProfile = 2,
     }
 }
