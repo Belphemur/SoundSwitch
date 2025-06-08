@@ -640,4 +640,7 @@ Vil du starte SoundSwitch på nytt nå?</value>
   <data name="importConfigErrorDeserializationFailed" xml:space="preserve">
     <value>Kunne ikke deserialisere konfigurasjonsfilen «{0}». Feil: {1}</value>
   </data>
+  <data name="switchProfile" xml:space="preserve">
+    <value>Bytt profil</value>
+  </data>
 </root>

@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -475,7 +475,7 @@ Begge: Når enhver type enhed skiftes.</value>
     <value />
   </data>
   <data name="switchDevice" xml:space="preserve">
-    <value />
+    <value>Skift enhed</value>
   </data>
   <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
     <value>Hvor længe banneret skal vises på skærmen i sekunder.</value>
@@ -484,13 +484,13 @@ Begge: Når enhver type enhed skiftes.</value>
     <value>Visningstid</value>
   </data>
   <data name="notification" xml:space="preserve">
-    <value>Notifikation</value>
+    <value>Notifikationer</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
     <value />
   </data>
   <data name="seconds" xml:space="preserve">
-    <value />
+    <value>sekunder</value>
   </data>
   <data name="openSettings" xml:space="preserve">
     <value />
@@ -524,5 +524,23 @@ Begge: Når enhver type enhed skiftes.</value>
   </data>
   <data name="importConfigFile" xml:space="preserve">
     <value />
+  </data>
+  <data name="profile.desc" xml:space="preserve">
+    <value>Beskrivelse</value>
+  </data>
+  <data name="profile.trigger.uwp" xml:space="preserve">
+    <value>Microsoft Store-app</value>
+  </data>
+  <data name="buttonSave" xml:space="preserve">
+    <value>Gem</value>
+  </data>
+  <data name="buttonEdit" xml:space="preserve">
+    <value>Redigér</value>
+  </data>
+  <data name="usePrimaryScreen" xml:space="preserve">
+    <value>Brug altid primær skærm</value>
+  </data>
+  <data name="switchProfile" xml:space="preserve">
+    <value>Skift profil</value>
   </data>
 </root>
