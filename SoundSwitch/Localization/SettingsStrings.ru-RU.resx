@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -377,7 +377,7 @@
     <value>Активировать профиль, если активная программа содержит следующие символы</value>
   </data>
   <data name="profile.trigger.process.desc" xml:space="preserve">
-    <value>Активировать профиль, когда указанное приложение находится на переднем плане</value>
+    <value>Активировать профиль, когда указанное приложение активно</value>
   </data>
   <data name="profile.trigger.steam.desc" xml:space="preserve">
     <value>Активировать, если обнаружен Steam Big Picture. (Восстановит состояние, когда Steam Big Picture будет закрыт)</value>
@@ -398,7 +398,7 @@
     <value>Вам нужен как минимум один триггер.</value>
   </data>
   <data name="profile.error.steam" xml:space="preserve">
-    <value>У вас может быть только один профиль для Steam Big Picture.</value>
+    <value>Вы можете иметь только один профиль для Steam Big Picture.</value>
   </data>
   <data name="profile.error.window" xml:space="preserve">
     <value>Профиль с таким названием окна уже существует: {0}.</value>
@@ -428,7 +428,7 @@
     <value>Отображать баннер на основном экране вместо экрана в фокусе.</value>
   </data>
   <data name="profile.trigger.restoreDevices" xml:space="preserve">
-    <value>Восстановить устройства по окончании триггера</value>
+    <value>Восстанавить устройства, после окончания работы триггера</value>
   </data>
   <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
     <value>Требуется "{0}" , чтобы включить.
@@ -439,10 +439,10 @@
     <value>Состояние системы восстановлено</value>
   </data>
   <data name="profile.trigger.uwp" xml:space="preserve">
-    <value>Приложение из Microsoft Store</value>
+    <value>Приложение из магазина Microsoft Store</value>
   </data>
   <data name="profile.trigger.uwp.desc" xml:space="preserve">
-    <value>Введите название приложения, установленного через магазин Windows. Например, Netflix, Amazon Prime video и т.д…</value>
+    <value>Укажите название приложения, установленного через магазин Windows. Например, Netflix, Amazon Prime video и т.д…</value>
   </data>
   <data name="notification.microphone.muted" xml:space="preserve">
     <value>{0} теперь отключен.</value>
@@ -460,7 +460,7 @@
     <value>Этот переключатель сделает профиль видимым в меню значка в трее. Щелкните ЛКМ по значку в трее, чтобы увидеть свой профиль.</value>
   </data>
   <data name="profile.trigger.deviceChanged" xml:space="preserve">
-    <value>Принудительный профиль</value>
+    <value>Принудительное применение профиля</value>
   </data>
   <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
     <value>Профиль будет запускаться автоматически в любое время при смене текущего звукового устройства.</value>
@@ -604,27 +604,43 @@
     <value>Действие двойного щелчка</value>
   </data>
   <data name="importExportConfigFile" xml:space="preserve">
-    <value />
+    <value>Импорт / экспорт файла конфигурации</value>
   </data>
   <data name="importExportConfigFile.desc" xml:space="preserve">
-    <value />
+    <value>Импортируйте или экспортируйте файл конфигурации SoundSwitch в zip-архив.</value>
   </data>
   <data name="importConfigErrorMessage" xml:space="preserve">
-    <value />
+    <value>Архив zip должен содержать файл конфигурации SoundSwitch.</value>
   </data>
   <data name="importConfigRestartRequired" xml:space="preserve">
-    <value />
+    <value>SoundSwitch нужно перезапустится, когда основной файл конфигурации был импортирован.
+Хотите ли вы перезапустить сейчас?</value>
   </data>
   <data name="importConfigErrorMessage.caption" xml:space="preserve">
-    <value />
+    <value>Неверный архив</value>
   </data>
   <data name="buttonImport" xml:space="preserve">
-    <value />
+    <value>Импорт</value>
   </data>
   <data name="exportConfigFile" xml:space="preserve">
-    <value />
+    <value>Экспорт файла конфигурации</value>
   </data>
   <data name="importConfigFile" xml:space="preserve">
-    <value />
+    <value>Импорт файла конфигурации</value>
+  </data>
+  <data name="importConfigErrorInvalidJson" xml:space="preserve">
+    <value>Конфигурационный файл '{0}' не является корректным JSON. Ошибка: {1}</value>
+  </data>
+  <data name="importConfigErrorDeserializationNull" xml:space="preserve">
+    <value>Конфигурационный файл '{0}' не может быть десериализован корректно (в результате получен null). Убедитесь, что это действительная конфигурация SoundSwitch.</value>
+  </data>
+  <data name="importConfigErrorDeserializationFailed" xml:space="preserve">
+    <value>Не удалось десериализовать файл конфигурации '{0}'. Ошибка: {1}</value>
+  </data>
+  <data name="switchProfile" xml:space="preserve">
+    <value>Сменить профиль</value>
+  </data>
+  <data name="importConfigErrorReadingFile" xml:space="preserve">
+    <value>Ошибка при чтении файла конфигурации '{0}' из архива: {1}</value>
   </data>
 </root>
