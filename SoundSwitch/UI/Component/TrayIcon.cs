@@ -92,7 +92,6 @@ namespace SoundSwitch.UI.Component
 
         public TrayIcon()
         {
-            var doubleClickMaxTime = TimeSpan.FromMilliseconds(SystemInformation.DoubleClickTime);
             _clickTimer = new TimerForm { Interval = SystemInformation.DoubleClickTime };
             _clickTimer.Tick += NotifyIcon_MouseClick;
 
@@ -118,34 +117,37 @@ namespace SoundSwitch.UI.Component
             PopulateSettingsMenu();
 
             _selectionMenu.Items.Add(TrayIconStrings.noDevicesSelected, ResourceSettingsSmallBitmap, (sender, e) => ShowSettings());
-            NotifyIcon.MouseDown += (sender, e) =>
-            {
-                Log.Debug("Click on systray icon: {times} {button}", e.Clicks, e.Button);
-
-                if (e.Button != MouseButtons.Left) return;
-                if (_inDoubleClick)
-                {
-                    _inDoubleClick = false;
-
-                    // If double click is valid, respond
-                    if (DateTime.Now - _lastClick < doubleClickMaxTime)
-                    {
-                        _clickTimer.Stop();
-                        NotifyIcon_MouseDoubleClick();
-                    }
-
-                    return;
-                }
-
-                // Double click was invalid, restart
-                _clickTimer.Stop();
-                _clickTimer.Start();
-                _lastClick = DateTime.Now;
-                _inDoubleClick = true;
-            };
+            NotifyIcon.MouseDown += NotifyIcon_MouseDown;
             
             SetEventHandlers();
             _tooltipInfoManager.SetIconText();
+        }
+
+        private void NotifyIcon_MouseDown(object sender, MouseEventArgs e)
+        {
+            Log.Debug("Click on systray icon: {times} {button}", e.Clicks, e.Button);
+
+            if (e.Button != MouseButtons.Left) return;
+            if (_inDoubleClick)
+            {
+                var doubleClickMaxTime = TimeSpan.FromMilliseconds(SystemInformation.DoubleClickTime);
+                _inDoubleClick = false;
+
+                // If double click is valid, respond
+                if (DateTime.Now - _lastClick < doubleClickMaxTime)
+                {
+                    _clickTimer.Stop();
+                    NotifyIcon_MouseDoubleClick();
+                }
+
+                return;
+            }
+
+            // Double click was invalid, restart
+            _clickTimer.Stop();
+            _clickTimer.Start();
+            _lastClick = DateTime.Now;
+            _inDoubleClick = true;
         }
 
         private void NotifyIcon_MouseDoubleClick()
@@ -166,29 +168,6 @@ namespace SoundSwitch.UI.Component
             }
         }
 
-        private void CycleActiveTrayProfile()
-        {
-            // Check if there are any profiles with tray menu triggers
-            List<Profile> profiles = AppModel.Instance.ProfileManager.Profiles
-                .Where(profile => profile.Triggers.Any(trigger => trigger.Type == TriggerFactory.Enum.TrayMenu))
-                .ToList();
-            
-            if (!profiles.Any())
-            {
-                Log.Warning("No profiles available for tray icon double click");
-                return;
-            }
-
-            Profile nextProfile = _activeTrayProfile != null && profiles.Contains(_activeTrayProfile) 
-                    ? profiles[(profiles.IndexOf(_activeTrayProfile) + 1) % profiles.Count]
-                    : profiles.First();
-            
-            _activeTrayProfile = nextProfile;
-            
-            Log.Information("Switching to profile {profile}", nextProfile.Name);
-            AppModel.Instance.ProfileManager.SwitchAudio(nextProfile);
-        }
-
         private void NotifyIcon_MouseClick(object sender, EventArgs e)
         {
             // Clear double click watcher and timer
@@ -206,6 +185,29 @@ namespace SoundSwitch.UI.Component
             _showContextMenu.Invoke(NotifyIcon, null);
 
             NotifyIcon.ContextMenuStrip = _settingsMenu;
+        }
+
+        private void CycleActiveTrayProfile()
+        {
+            // Check if there are any profiles with tray menu triggers
+            List<Profile> profiles = AppModel.Instance.ProfileManager.Profiles
+                .Where(profile => profile.Triggers.Any(trigger => trigger.Type == TriggerFactory.Enum.TrayMenu))
+                .ToList();
+
+            if (!profiles.Any())
+            {
+                Log.Warning("No profiles available for tray icon double click");
+                return;
+            }
+
+            Profile nextProfile = _activeTrayProfile != null && profiles.Contains(_activeTrayProfile)
+                ? profiles[(profiles.IndexOf(_activeTrayProfile) + 1) % profiles.Count]
+                : profiles.First();
+
+            _activeTrayProfile = nextProfile;
+
+            Log.Information("Switching to profile {profile}", nextProfile.Name);
+            AppModel.Instance.ProfileManager.SwitchAudio(nextProfile);
         }
 
         private void SetUpdateMenuItem(UpdateMode mode)
