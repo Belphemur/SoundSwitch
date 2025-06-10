@@ -28,7 +28,6 @@ using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Audio.Lister.Job;
 using SoundSwitch.Framework.Audio.Microphone;
-using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Banner.BannerPosition;
 using SoundSwitch.Framework.Banner.BannerPosition.Position;
 using SoundSwitch.Framework.Banner.MicrophoneMute;

@@ -21,7 +21,6 @@ using Newtonsoft.Json;
 using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Device;
-using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Banner.BannerPosition;
 using SoundSwitch.Framework.Banner.MicrophoneMute;
 using SoundSwitch.Framework.Banner.MicrophoneMute.Type;

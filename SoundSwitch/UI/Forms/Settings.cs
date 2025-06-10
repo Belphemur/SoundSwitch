@@ -30,7 +30,6 @@ using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
-using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Banner.BannerPosition;
 using SoundSwitch.Framework.Banner.MicrophoneMute;
 using SoundSwitch.Framework.Configuration;

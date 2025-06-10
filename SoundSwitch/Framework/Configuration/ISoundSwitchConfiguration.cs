@@ -16,7 +16,6 @@ using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using SoundSwitch.Common.Framework.Audio.Device;
-using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Banner.BannerPosition;
 using SoundSwitch.Framework.Banner.MicrophoneMute;
 using SoundSwitch.Framework.DeviceCyclerManager;

@@ -16,7 +16,6 @@ using System;
 using System.IO;
 using System.Windows.Forms;
 using SoundSwitch.Framework.Audio;
-using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Banner.BannerPosition;
 using SoundSwitch.Framework.Banner.MicrophoneMute;
 

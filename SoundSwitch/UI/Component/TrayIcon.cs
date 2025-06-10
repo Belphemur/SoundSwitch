@@ -23,7 +23,6 @@ using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
-using RailSharp;
 using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
