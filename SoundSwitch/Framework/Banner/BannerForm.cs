@@ -40,7 +40,7 @@ public partial class BannerForm : Form
     private float _defaultFontSize;
     private Size _defaultPictureSize;
     private Padding _defaultPadding;
-    private bool _isCompact = false;
+    private bool _isCompact;
     public Guid Id { get; } = Guid.NewGuid();
 
     /// <summary>

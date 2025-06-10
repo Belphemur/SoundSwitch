@@ -41,42 +41,62 @@ namespace SoundSwitch.Framework.Configuration;
 public class SoundSwitchConfiguration : ISoundSwitchConfiguration
 {
     // Basic Settings
-    // Audio Settings
-    // Update Settings
-    // Language Settings
-    // Notification Settings
-
-    public TimeSpan BannerOnScreenTime { get; set; } = TimeSpan.FromSeconds(3);
-
-    public int MaxNumberNotification { get; set; } = 5;
-    public HashSet<string> SelectedPlaybackDeviceListId { get; } = new();
-    public HashSet<string> SelectedRecordingDeviceListId { get; } = new();
-    public HashSet<DeviceInfo> SelectedDevices { get; set; } = new();
     public bool FirstRun { get; set; } = true;
-    public HotKey PlaybackHotKey { get; set; } = new(Keys.F11, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
-    public HotKey RecordingHotKey { get; set; } = new(Keys.F7, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
-
-    public HotKey MuteRecordingHotKey { get; set; } = new(Keys.M, HotKey.ModifierKeys.Control | HotKey.ModifierKeys.Alt);
-    public bool ChangeCommunications { get; set; } = false;
-    public uint UpdateCheckInterval { get; set; } = 3600 * 24; // 24 hours
-    public UpdateMode UpdateMode { get; set; } = UpdateMode.Notify;
+    public IconChangerEnum SwitchIcon { get; set; } = IconChangerEnum.Never;
     public IconDoubleClickEnum IconDoubleClick { get; set; } = IconDoubleClickEnum.SwitchDevice;
+
+    // Audio Settings
+    public bool ChangeCommunications { get; set; } = false;
+    public bool SwitchForegroundProgram { get; set; }
+
+    /// <summary>
+    /// Is keep volume enabled
+    /// </summary>
+    public bool KeepVolumeEnabled { get; set; } = false;
+
+    /// <summary>
+    /// Is the quick menu showed when using a hotkey
+    /// </summary>
+    public bool QuickMenuEnabled { get; set; } = false;
     public TooltipInfoTypeEnum TooltipInfo { get; set; } = TooltipInfoTypeEnum.Playback;
     public DeviceCyclerTypeEnum CyclerType { get; set; } = DeviceCyclerTypeEnum.Available;
+
+    // Update Settings
+    public uint UpdateCheckInterval { get; set; } = 3600 * 24; // 24 hours
+    public UpdateMode UpdateMode { get; set; } = UpdateMode.Notify;
+    public bool IncludeBetaVersions { get; set; } = false;
+
+    /// <summary>
+    /// Is telemetry enabled
+    /// </summary>
+    public bool Telemetry { get; set; } = true;
+
+    // Language Settings
+    public Language Language { get; set; } = new LanguageFactory().GetWindowsLanguage();
+
+    // Notification Settings
     public NotificationTypeEnum NotificationSettings { get; set; } = NotificationTypeEnum.BannerNotification;
     public BannerPositionEnum BannerPosition { get; set; } = BannerPositionEnum.TopLeft;
     public MicrophoneMuteEnum MicrophoneMuteNotification { get; set; } = MicrophoneMuteEnum.Persistent;
-    public Language Language { get; set; } = new LanguageFactory().GetWindowsLanguage();
-    public bool IncludeBetaVersions { get; set; } = false;
     public string CustomNotificationFilePath { get; set; }
+    public TimeSpan BannerOnScreenTime { get; set; } = TimeSpan.FromSeconds(3);
+    public int MaxNumberNotification { get; set; } = 5;
     public bool NotifyUsingPrimaryScreen { get; set; }
-    [Obsolete("Replaced by "+nameof(MicrophoneMutePersistent))]
+    [Obsolete("Replaced by " + nameof(MicrophoneMutePersistent))]
     public bool PersistentMuteNotification { get; set; }
 
+    // Profile Settings
+    public HashSet<Profile.Profile> Profiles { get; set; } = new();
+    public HashSet<string> SelectedPlaybackDeviceListId { get; } = new();
+    public HashSet<string> SelectedRecordingDeviceListId { get; } = new();
+    public HashSet<DeviceInfo> SelectedDevices { get; set; } = new();
+    public HotKey PlaybackHotKey { get; set; } = new(Keys.F11, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
+    public HotKey RecordingHotKey { get; set; } = new(Keys.F7, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
+    public HotKey MuteRecordingHotKey { get; set; } = new(Keys.M, HotKey.ModifierKeys.Control | HotKey.ModifierKeys.Alt);
+    
     [Obsolete("Feature has been removed")]
     public bool AutoAddNewConnectedDevices { get; set; } = false;
-
-
+    
     public DateTime LastDonationNagTime { get; set; }
 
     [JsonIgnore]
@@ -85,13 +105,9 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
     [Obsolete]
     public bool KeepSystrayIcon { get; set; }
 
-    public bool SwitchForegroundProgram { get; set; } = false;
-    public IconChangerEnum SwitchIcon { get; set; } = IconChangerEnum.Never;
-
+    
     [Obsolete]
     public HashSet<ProfileSetting> ProfileSettings { get; set; } = new();
-
-    public HashSet<Profile.Profile> Profiles { get; set; } = new();
 
     public ReleasePostponed Postponed { get; set; }
 
@@ -101,21 +117,6 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
     public HashSet<string> MigratedFields { get; } = new();
 
     public Guid UniqueInstallationId { get; set; } = Guid.NewGuid();
-
-    /// <summary>
-    /// Is telemetry enabled
-    /// </summary>
-    public bool Telemetry { get; set; } = true;
-
-    /// <summary>
-    /// Is the quick menu showed when using a hotkey
-    /// </summary>
-    public bool QuickMenuEnabled { get; set; } = false;
-
-    /// <summary>
-    /// Is keep volume enabled
-    /// </summary>
-    public bool KeepVolumeEnabled { get; set; } = false;
 
     // Needed by Interface
     [JsonIgnore]

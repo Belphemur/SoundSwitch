@@ -14,7 +14,7 @@ namespace SoundSwitch.Framework.Profile;
 
 public class Profile : IEquatable<Profile>, IDisposable
 {
-    private bool? _restoreDevices = null;
+    private bool? _restoreDevices;
 
     internal class DeviceRoleWrapper
     {
@@ -35,9 +35,9 @@ public class Profile : IEquatable<Profile>, IDisposable
     public string Name { get; set; } = "";
     public IList<Trigger.Trigger> Triggers { get; set; } = new List<Trigger.Trigger>();
 
-    public bool AlsoSwitchDefaultDevice { get; set; } = false;
+    public bool AlsoSwitchDefaultDevice { get; set; }
 
-    public bool SwitchForegroundApp { get; set; } = false;
+    public bool SwitchForegroundApp { get; set; }
 
     public bool NotifyOnActivation { get; set; } = true;
 
