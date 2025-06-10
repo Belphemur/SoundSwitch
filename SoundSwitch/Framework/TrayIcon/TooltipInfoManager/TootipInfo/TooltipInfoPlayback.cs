@@ -19,35 +19,26 @@ using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
 
-namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo
+namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
+
+public class TooltipInfoPlayback : ITooltipInfo
 {
-    public class TooltipInfoPlayback : ITooltipInfo
+    private DeviceFullInfo _defaultDevice;
+    public TooltipInfoTypeEnum TypeEnum => TooltipInfoTypeEnum.Playback;
+    public string Label => SettingsStrings.tooltipOnHover_option_playbackDevice;
+
+    public TooltipInfoPlayback()
     {
-        private DeviceFullInfo _defaultDevice;
-        public TooltipInfoTypeEnum TypeEnum => TooltipInfoTypeEnum.Playback;
-        public string Label => SettingsStrings.tooltipOnHover_option_playbackDevice;
-
-        public TooltipInfoPlayback()
+        AppModel.Instance.DefaultDeviceChanged += (sender, @event) =>
         {
-            AppModel.Instance.DefaultDeviceChanged += (sender, @event) =>
+            if (@event.Device.Type != DataFlow.Render)
+                return;
+            if (_defaultDevice != null)
             {
-                if (@event.Device.Type != DataFlow.Render)
-                    return;
-                if (_defaultDevice != null)
-                {
-                    _defaultDevice.Dispose();
-                }
+                _defaultDevice.Dispose();
+            }
 
-                _defaultDevice = AudioSwitcher.Instance.GetAudioEndpoint(@event.DeviceId);
-                if (_defaultDevice != null)
-                    AudioSwitcher.Instance.InteractWithDevice(_defaultDevice, device =>
-                    {
-                        // Subscribe to OS-level volume notifications
-                        device.SubscribeToVolumeNotifications();
-                        return device;
-                    });
-            };
-            _defaultDevice = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eConsole);
+            _defaultDevice = AudioSwitcher.Instance.GetAudioEndpoint(@event.DeviceId);
             if (_defaultDevice != null)
                 AudioSwitcher.Instance.InteractWithDevice(_defaultDevice, device =>
                 {
@@ -55,19 +46,27 @@ namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo
                     device.SubscribeToVolumeNotifications();
                     return device;
                 });
-        }
-
-        /// <summary>
-        /// The text to display for this ToolTip
-        /// </summary>
-        /// <returns></returns>
-        public string TextToDisplay()
-        {
-            return _defaultDevice == null
-                ? null
-                : string.Format("[{1}%] " + SettingsStrings.activePlayback, _defaultDevice.NameClean, _defaultDevice.Volume);
-        }
-
-        public override string ToString() => Label;
+        };
+        _defaultDevice = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eConsole);
+        if (_defaultDevice != null)
+            AudioSwitcher.Instance.InteractWithDevice(_defaultDevice, device =>
+            {
+                // Subscribe to OS-level volume notifications
+                device.SubscribeToVolumeNotifications();
+                return device;
+            });
     }
+
+    /// <summary>
+    /// The text to display for this ToolTip
+    /// </summary>
+    /// <returns></returns>
+    public string TextToDisplay()
+    {
+        return _defaultDevice == null
+            ? null
+            : string.Format("[{1}%] " + SettingsStrings.activePlayback, _defaultDevice.NameClean, _defaultDevice.Volume);
+    }
+
+    public override string ToString() => Label;
 }

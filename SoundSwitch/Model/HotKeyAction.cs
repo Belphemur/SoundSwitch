@@ -1,9 +1,8 @@
-﻿namespace SoundSwitch.Model
+﻿namespace SoundSwitch.Model;
+
+public enum HotKeyAction
 {
-    public enum HotKeyAction
-    {
-        Playback,
-        Recording,
-        Mute
-    }
+    Playback,
+    Recording,
+    Mute
 }

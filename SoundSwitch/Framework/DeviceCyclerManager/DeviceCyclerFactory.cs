@@ -15,19 +15,18 @@
 using SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler;
 using SoundSwitch.Framework.Factory;
 
-namespace SoundSwitch.Framework.DeviceCyclerManager
+namespace SoundSwitch.Framework.DeviceCyclerManager;
+
+public class DeviceCyclerFactory : AbstractFactory<DeviceCyclerTypeEnum, IDeviceCycler>
 {
-    public class DeviceCyclerFactory : AbstractFactory<DeviceCyclerTypeEnum, IDeviceCycler>
-    {
-        private static readonly IEnumImplList<DeviceCyclerTypeEnum, IDeviceCycler> AllCycler = new EnumImplList
-            <DeviceCyclerTypeEnum, IDeviceCycler>
+    private static readonly IEnumImplList<DeviceCyclerTypeEnum, IDeviceCycler> AllCycler = new EnumImplList
+        <DeviceCyclerTypeEnum, IDeviceCycler>
         {
             new DeviceCyclerAvailable(),
             new DeviceCyclerAll()
         };
 
-        public DeviceCyclerFactory() : base(AllCycler)
-        {
-        }
+    public DeviceCyclerFactory() : base(AllCycler)
+    {
     }
 }

@@ -15,24 +15,23 @@
 using SoundSwitch.Framework.Banner.BannerPosition.Position;
 using SoundSwitch.Framework.Factory;
 
-namespace SoundSwitch.Framework.Banner.BannerPosition
-{
-    public class BannerPositionFactory : AbstractFactory<BannerPositionEnum, IPosition>
-    {
-        private static readonly IEnumImplList<BannerPositionEnum, IPosition> Positions = new EnumImplList
-            <BannerPositionEnum, IPosition>
-            {
-                new PositionTopLeft(),
-                new PositionTopCenter(),
-                new PositionTopRight(),
-                new PositionBottomLeft(),
-                new PositionBottomCenter(),
-                new PositionBottomRight(),
-                new PositionCenter()
-            };
+namespace SoundSwitch.Framework.Banner.BannerPosition;
 
-        public BannerPositionFactory() : base(Positions)
+public class BannerPositionFactory : AbstractFactory<BannerPositionEnum, IPosition>
+{
+    private static readonly IEnumImplList<BannerPositionEnum, IPosition> Positions = new EnumImplList
+        <BannerPositionEnum, IPosition>
         {
-        }
+            new PositionTopLeft(),
+            new PositionTopCenter(),
+            new PositionTopRight(),
+            new PositionBottomLeft(),
+            new PositionBottomCenter(),
+            new PositionBottomRight(),
+            new PositionCenter()
+        };
+
+    public BannerPositionFactory() : base(Positions)
+    {
     }
 }

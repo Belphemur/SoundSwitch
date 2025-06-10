@@ -1,288 +1,287 @@
 ﻿using System.Globalization;
 
-namespace SoundSwitch.Localization.Factory.Lang
+namespace SoundSwitch.Localization.Factory.Lang;
+
+public abstract class BaseLang : ILang
 {
-    public abstract class BaseLang : ILang
-    {
-        public abstract Language TypeEnum { get; }
-        public string Label => CultureInfo.NativeName;
-        public abstract CultureInfo CultureInfo { get; }
-        public virtual bool IsRightToLeft { get; }
-    }
+    public abstract Language TypeEnum { get; }
+    public string Label => CultureInfo.NativeName;
+    public abstract CultureInfo CultureInfo { get; }
+    public virtual bool IsRightToLeft { get; }
+}
 
-    public class EnglishLang : BaseLang
-    {
-        /// <summary>
-        /// Culture info of this language
-        /// </summary>
-        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("en");
+public class EnglishLang : BaseLang
+{
+    /// <summary>
+    /// Culture info of this language
+    /// </summary>
+    public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("en");
 
-        public override Language TypeEnum => Language.English;
-    }
+    public override Language TypeEnum => Language.English;
+}
 
-    public class FrenchLang : BaseLang
-    {
-        /// <summary>
-        /// Culture info of this language
-        /// </summary>
-        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("fr");
+public class FrenchLang : BaseLang
+{
+    /// <summary>
+    /// Culture info of this language
+    /// </summary>
+    public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("fr");
 
-        public override Language TypeEnum => Language.French;
-    }
+    public override Language TypeEnum => Language.French;
+}
 
-    public class GermanLang : BaseLang
-    {
-        /// <summary>
-        /// Culture info of this language
-        /// </summary>
-        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("de");
+public class GermanLang : BaseLang
+{
+    /// <summary>
+    /// Culture info of this language
+    /// </summary>
+    public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("de");
 
-        public override Language TypeEnum => Language.German;
-    }
+    public override Language TypeEnum => Language.German;
+}
 
-    public class SpanishLang : BaseLang
-    {
-        /// <summary>
-        /// Culture info of this language
-        /// </summary>
-        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("es");
+public class SpanishLang : BaseLang
+{
+    /// <summary>
+    /// Culture info of this language
+    /// </summary>
+    public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("es");
 
-        public override Language TypeEnum => Language.Spanish;
-    }
+    public override Language TypeEnum => Language.Spanish;
+}
 
-    public class NorwegianLang : BaseLang
-    {
-        /// <summary>
-        /// Culture info of this language
-        /// </summary>
-        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("nb");
+public class NorwegianLang : BaseLang
+{
+    /// <summary>
+    /// Culture info of this language
+    /// </summary>
+    public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("nb");
 
-        public override Language TypeEnum => Language.Norwegian;
-    }
+    public override Language TypeEnum => Language.Norwegian;
+}
 
-    public class PortugueseBRLang : BaseLang
-    {
-        /// <summary>
-        /// Culture info of this language
-        /// </summary>
-        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("pt-BR");
+public class PortugueseBRLang : BaseLang
+{
+    /// <summary>
+    /// Culture info of this language
+    /// </summary>
+    public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("pt-BR");
 
-        public override Language TypeEnum => Language.Portuguese;
-    }
+    public override Language TypeEnum => Language.Portuguese;
+}
 
-    public class ItalianLang : BaseLang
-    {
-        /// <summary>
-        /// Culture info of this language
-        /// </summary>
-        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("it-IT");
+public class ItalianLang : BaseLang
+{
+    /// <summary>
+    /// Culture info of this language
+    /// </summary>
+    public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("it-IT");
 
-        public override Language TypeEnum => Language.Italian;
-    }
+    public override Language TypeEnum => Language.Italian;
+}
 
-    public class ChineseLang : BaseLang
-    {
-        /// <summary>
-        /// Culture info of this language
-        /// </summary>
-        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("zh-Hans");
+public class ChineseLang : BaseLang
+{
+    /// <summary>
+    /// Culture info of this language
+    /// </summary>
+    public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("zh-Hans");
 
-        public override Language TypeEnum => Language.Chinese;
-    }
+    public override Language TypeEnum => Language.Chinese;
+}
 
 
-    public class ChineseTraditionalLang : BaseLang
-    {
-        /// <summary>
-        /// Culture info of this language
-        /// </summary>
-        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("zh-Hant");
+public class ChineseTraditionalLang : BaseLang
+{
+    /// <summary>
+    /// Culture info of this language
+    /// </summary>
+    public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("zh-Hant");
 
-        public override Language TypeEnum => Language.ChineseTrad;
-    }
+    public override Language TypeEnum => Language.ChineseTrad;
+}
 
-    public class PolishLang : BaseLang
-    {
-        /// <summary>
-        /// Culture info of this language
-        /// </summary>
-        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("pl-PL");
+public class PolishLang : BaseLang
+{
+    /// <summary>
+    /// Culture info of this language
+    /// </summary>
+    public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("pl-PL");
 
-        public override Language TypeEnum => Language.Polish;
-    }
+    public override Language TypeEnum => Language.Polish;
+}
 
-    public class RussianLang : BaseLang
-    {
-        /// <summary>
-        /// Culture info of this language
-        /// </summary>
-        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("ru-RU");
+public class RussianLang : BaseLang
+{
+    /// <summary>
+    /// Culture info of this language
+    /// </summary>
+    public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("ru-RU");
 
-        public override Language TypeEnum => Language.Russian;
-    }
+    public override Language TypeEnum => Language.Russian;
+}
 
-    public class KoreanLang : BaseLang
-    {
-        /// <summary>
-        /// Culture info of this language
-        /// </summary>
-        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("ko");
+public class KoreanLang : BaseLang
+{
+    /// <summary>
+    /// Culture info of this language
+    /// </summary>
+    public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("ko");
 
-        public override Language TypeEnum => Language.Korean;
-    }
+    public override Language TypeEnum => Language.Korean;
+}
 
-    public class DutchLang : BaseLang
-    {
-        /// <summary>
-        /// Culture info of this language
-        /// </summary>
-        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("nl");
+public class DutchLang : BaseLang
+{
+    /// <summary>
+    /// Culture info of this language
+    /// </summary>
+    public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("nl");
 
-        public override Language TypeEnum => Language.Dutch;
-    }
-
-
-    public class CroatianLang : BaseLang
-    {
-        /// <summary>
-        /// Culture info of this language
-        /// </summary>
-        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("hr");
-
-        public override Language TypeEnum => Language.Croatian;
-    }
-
-    public class SlovenianLang : BaseLang
-    {
-        /// <summary>
-        /// Culture info of this language
-        /// </summary>
-        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("sl");
-
-        public override Language TypeEnum => Language.Slovenian;
-    }
-
-    public class JapaneseLang : BaseLang
-    {
-        /// <summary>
-        /// Culture info of this language
-        /// </summary>
-        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("ja-JP");
-
-        public override Language TypeEnum => Language.Japanese;
-    }
-
-    public class HebrewLang : BaseLang
-    {
-        /// <summary>
-        /// Culture info of this language
-        /// </summary>
-        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("he");
-
-        public override Language TypeEnum => Language.Hebrew;
-
-        public override bool IsRightToLeft => true;
-    }
-
-    public class Czech : BaseLang
-    {
-        /// <summary>
-        /// Culture info of this language
-        /// </summary>
-        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("cs");
-
-        public override Language TypeEnum => Language.Czech;
-    }
-    public class Turkish : BaseLang
-    {
-        /// <summary>
-        /// Culture info of this language
-        /// </summary>
-        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("tr");
-
-        public override Language TypeEnum => Language.Turkish;
-    }
-
-    public class Arabic : BaseLang
-    {
-        /// <summary>
-        /// Culture info of this language
-        /// </summary>
-        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("ar");
-
-        public override Language TypeEnum => Language.Arabic;
-        public override bool IsRightToLeft => true;
-    }
-
-    public class Thai : BaseLang
-    {
-        /// <summary>
-        /// Culture info of this language
-        /// </summary>
-        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("th");
-
-        public override Language TypeEnum => Language.Thai;
-    }
+    public override Language TypeEnum => Language.Dutch;
+}
 
 
-    public class Serbian : BaseLang
-    {
-        /// <summary>
-        /// Culture info of this language
-        /// </summary>
-        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("sr");
+public class CroatianLang : BaseLang
+{
+    /// <summary>
+    /// Culture info of this language
+    /// </summary>
+    public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("hr");
 
-        public override Language TypeEnum => Language.Serbian;
-    }
+    public override Language TypeEnum => Language.Croatian;
+}
 
-    public class Danish : BaseLang
-    {
-        /// <summary>
-        /// Culture info of this language
-        /// </summary>
-        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("da");
+public class SlovenianLang : BaseLang
+{
+    /// <summary>
+    /// Culture info of this language
+    /// </summary>
+    public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("sl");
 
-        public override Language TypeEnum => Language.Danish;
-    }
+    public override Language TypeEnum => Language.Slovenian;
+}
+
+public class JapaneseLang : BaseLang
+{
+    /// <summary>
+    /// Culture info of this language
+    /// </summary>
+    public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("ja-JP");
+
+    public override Language TypeEnum => Language.Japanese;
+}
+
+public class HebrewLang : BaseLang
+{
+    /// <summary>
+    /// Culture info of this language
+    /// </summary>
+    public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("he");
+
+    public override Language TypeEnum => Language.Hebrew;
+
+    public override bool IsRightToLeft => true;
+}
+
+public class Czech : BaseLang
+{
+    /// <summary>
+    /// Culture info of this language
+    /// </summary>
+    public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("cs");
+
+    public override Language TypeEnum => Language.Czech;
+}
+public class Turkish : BaseLang
+{
+    /// <summary>
+    /// Culture info of this language
+    /// </summary>
+    public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("tr");
+
+    public override Language TypeEnum => Language.Turkish;
+}
+
+public class Arabic : BaseLang
+{
+    /// <summary>
+    /// Culture info of this language
+    /// </summary>
+    public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("ar");
+
+    public override Language TypeEnum => Language.Arabic;
+    public override bool IsRightToLeft => true;
+}
+
+public class Thai : BaseLang
+{
+    /// <summary>
+    /// Culture info of this language
+    /// </summary>
+    public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("th");
+
+    public override Language TypeEnum => Language.Thai;
+}
 
 
-    public class Ukrainian : BaseLang
-    {
-        /// <summary>
-        /// Culture info of this language
-        /// </summary>
-        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("uk");
+public class Serbian : BaseLang
+{
+    /// <summary>
+    /// Culture info of this language
+    /// </summary>
+    public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("sr");
 
-        public override Language TypeEnum => Language.Ukrainian;
-    }
+    public override Language TypeEnum => Language.Serbian;
+}
 
-    public class Bulgarian : BaseLang
-    {
-        /// <summary>
-        /// Culture info of this language
-        /// </summary>
-        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("bg");
+public class Danish : BaseLang
+{
+    /// <summary>
+    /// Culture info of this language
+    /// </summary>
+    public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("da");
 
-        public override Language TypeEnum => Language.Bulgarian;
-    }
+    public override Language TypeEnum => Language.Danish;
+}
 
-    public class Swedish : BaseLang
-    {
-        /// <summary>
-        /// Culture info of this language
-        /// </summary>
-        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("sv-SE");
 
-        public override Language TypeEnum => Language.Swedish;
-    }
+public class Ukrainian : BaseLang
+{
+    /// <summary>
+    /// Culture info of this language
+    /// </summary>
+    public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("uk");
 
-    public class Tamil : BaseLang
-    {
-        /// <summary>
-        /// Culture info of this language
-        /// </summary>
-        public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("ta");
+    public override Language TypeEnum => Language.Ukrainian;
+}
 
-        public override Language TypeEnum => Language.Tamil;
-    }
+public class Bulgarian : BaseLang
+{
+    /// <summary>
+    /// Culture info of this language
+    /// </summary>
+    public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("bg");
+
+    public override Language TypeEnum => Language.Bulgarian;
+}
+
+public class Swedish : BaseLang
+{
+    /// <summary>
+    /// Culture info of this language
+    /// </summary>
+    public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("sv-SE");
+
+    public override Language TypeEnum => Language.Swedish;
+}
+
+public class Tamil : BaseLang
+{
+    /// <summary>
+    /// Culture info of this language
+    /// </summary>
+    public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("ta");
+
+    public override Language TypeEnum => Language.Tamil;
 }

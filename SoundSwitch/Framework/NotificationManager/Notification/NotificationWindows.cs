@@ -22,51 +22,50 @@ using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
 using SoundSwitch.Localization;
 
-namespace SoundSwitch.Framework.NotificationManager.Notification
+namespace SoundSwitch.Framework.NotificationManager.Notification;
+
+internal class NotificationWindows : INotification
 {
-    internal class NotificationWindows : INotification
+    public NotificationTypeEnum TypeEnum => NotificationTypeEnum.DefaultWindowsNotification;
+    public string Label => SettingsStrings.notification_option_windowsDefault;
+
+    public INotificationConfiguration Configuration { get; set; }
+
+    public void NotifyDefaultChanged(DeviceFullInfo audioDevice)
     {
-        public NotificationTypeEnum TypeEnum => NotificationTypeEnum.DefaultWindowsNotification;
-        public string Label => SettingsStrings.notification_option_windowsDefault;
-
-        public INotificationConfiguration Configuration { get; set; }
-
-        public void NotifyDefaultChanged(DeviceFullInfo audioDevice)
+        switch (audioDevice.Type)
         {
-            switch (audioDevice.Type)
-            {
-                case DataFlow.Render:
-                    Configuration.Icon.ShowBalloonTip(500,
-                        TrayIconStrings.playbackChanged,
-                        audioDevice.NameClean, ToolTipIcon.Info);
-                    break;
-                case DataFlow.Capture:
-                    Configuration.Icon.ShowBalloonTip(500,
-                        TrayIconStrings.recordingChanged,
-                        audioDevice.NameClean, ToolTipIcon.Info);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(audioDevice.Type), audioDevice.Type, null);
-            }
+            case DataFlow.Render:
+                Configuration.Icon.ShowBalloonTip(500,
+                    TrayIconStrings.playbackChanged,
+                    audioDevice.NameClean, ToolTipIcon.Info);
+                break;
+            case DataFlow.Capture:
+                Configuration.Icon.ShowBalloonTip(500,
+                    TrayIconStrings.recordingChanged,
+                    audioDevice.NameClean, ToolTipIcon.Info);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(audioDevice.Type), audioDevice.Type, null);
         }
-
-        public void NotifyProfileChanged(Profile.Profile profile, Bitmap icon, uint? processId)
-        {
-            var title = string.Format(SettingsStrings.profile_notification_text, profile.Name);
-            var text  = string.Join("\n", profile.Devices.Select(wrapper => wrapper.DeviceInfo.NameClean));
-            Configuration.Icon.ShowBalloonTip(1000, title, text, ToolTipIcon.Info);
-        }
-
-        public void NotifyMuteChanged(string deviceId, string microphoneName, bool newMuteState)
-        {
-            var title = newMuteState ? string.Format(SettingsStrings.notification_microphone_muted, microphoneName) : string.Format(SettingsStrings.notification_microphone_unmuted, microphoneName);
-            Configuration.Icon.ShowBalloonTip(1000, title, microphoneName, ToolTipIcon.Info);
-        }
-
-        public void OnSoundChanged(CachedSound newSound) { }
-
-        public bool SupportCustomSound() => false;
-
-        public bool IsAvailable() => true;
     }
+
+    public void NotifyProfileChanged(Profile.Profile profile, Bitmap icon, uint? processId)
+    {
+        var title = string.Format(SettingsStrings.profile_notification_text, profile.Name);
+        var text  = string.Join("\n", profile.Devices.Select(wrapper => wrapper.DeviceInfo.NameClean));
+        Configuration.Icon.ShowBalloonTip(1000, title, text, ToolTipIcon.Info);
+    }
+
+    public void NotifyMuteChanged(string deviceId, string microphoneName, bool newMuteState)
+    {
+        var title = newMuteState ? string.Format(SettingsStrings.notification_microphone_muted, microphoneName) : string.Format(SettingsStrings.notification_microphone_unmuted, microphoneName);
+        Configuration.Icon.ShowBalloonTip(1000, title, microphoneName, ToolTipIcon.Info);
+    }
+
+    public void OnSoundChanged(CachedSound newSound) { }
+
+    public bool SupportCustomSound() => false;
+
+    public bool IsAvailable() => true;
 }

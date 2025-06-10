@@ -15,36 +15,35 @@
 using System.Windows.Forms;
 using Microsoft.Win32;
 
-namespace SoundSwitch.Framework
+namespace SoundSwitch.Framework;
+
+public static class AutoStart
 {
-    public static class AutoStart
+    private static readonly RegistryKey SstartupKey = Registry.CurrentUser.OpenSubKey
+        ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+
+    /// <summary>
+    ///     Enable autostarting using registry for the current user
+    /// </summary>
+    public static void EnableAutoStart()
     {
-        private static readonly RegistryKey SstartupKey = Registry.CurrentUser.OpenSubKey
-            ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+        SstartupKey?.SetValue(Application.ProductName, ApplicationPath.Executable);
+    }
 
-        /// <summary>
-        ///     Enable autostarting using registry for the current user
-        /// </summary>
-        public static void EnableAutoStart()
-        {
-            SstartupKey?.SetValue(Application.ProductName, ApplicationPath.Executable);
-        }
+    /// <summary>
+    ///     Disable autostarting using registry for the current user
+    /// </summary>
+    public static void DisableAutoStart()
+    {
+        SstartupKey?.DeleteValue(Application.ProductName, false);
+    }
 
-        /// <summary>
-        ///     Disable autostarting using registry for the current user
-        /// </summary>
-        public static void DisableAutoStart()
-        {
-            SstartupKey?.DeleteValue(Application.ProductName, false);
-        }
-
-        /// <summary>
-        ///     Check if the application is set to start with Windows
-        /// </summary>
-        /// <returns></returns>
-        public static bool IsAutoStarted()
-        {
-            return SstartupKey?.GetValue(Application.ProductName)?.ToString() == ApplicationPath.Executable;
-        }
+    /// <summary>
+    ///     Check if the application is set to start with Windows
+    /// </summary>
+    /// <returns></returns>
+    public static bool IsAutoStarted()
+    {
+        return SstartupKey?.GetValue(Application.ProductName)?.ToString() == ApplicationPath.Executable;
     }
 }

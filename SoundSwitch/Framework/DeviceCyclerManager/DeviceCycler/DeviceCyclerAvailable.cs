@@ -19,21 +19,20 @@ using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
 
-namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
-{
-    public class DeviceCyclerAvailable : ADeviceCycler
-    {
-        public override DeviceCyclerTypeEnum TypeEnum => DeviceCyclerTypeEnum.Available;
-        public override string Label => SettingsStrings.cycleThrough_option_onlySelectedAudioDevices;
+namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler;
 
-        protected override IEnumerable<DeviceFullInfo> GetDevices(DataFlow type)
+public class DeviceCyclerAvailable : ADeviceCycler
+{
+    public override DeviceCyclerTypeEnum TypeEnum => DeviceCyclerTypeEnum.Available;
+    public override string Label => SettingsStrings.cycleThrough_option_onlySelectedAudioDevices;
+
+    protected override IEnumerable<DeviceFullInfo> GetDevices(DataFlow type)
+    {
+        return type switch
         {
-            return type switch
-            {
-                DataFlow.Render  => AppModel.Instance.AvailablePlaybackDevices,
-                DataFlow.Capture => AppModel.Instance.AvailableRecordingDevices,
-                _                => throw new ArgumentOutOfRangeException(nameof(type), type, null)
-            };
-        }
+            DataFlow.Render  => AppModel.Instance.AvailablePlaybackDevices,
+            DataFlow.Capture => AppModel.Instance.AvailableRecordingDevices,
+            _                => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+        };
     }
 }

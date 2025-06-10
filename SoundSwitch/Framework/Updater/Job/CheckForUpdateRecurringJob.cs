@@ -7,35 +7,34 @@ using Job.Scheduler.Job.Exception;
 using Serilog;
 using SoundSwitch.Framework.Configuration;
 
-namespace SoundSwitch.Framework.Updater.Job
+namespace SoundSwitch.Framework.Updater.Job;
+
+public class CheckForUpdateRecurringJob : IRecurringJob
 {
-    public class CheckForUpdateRecurringJob : IRecurringJob
+    private readonly UpdateChecker _updateChecker;
+
+    public CheckForUpdateRecurringJob(UpdateChecker updateChecker)
     {
-        private readonly UpdateChecker _updateChecker;
+        _updateChecker = updateChecker;
+    }
 
-        public CheckForUpdateRecurringJob(UpdateChecker updateChecker)
+    public Task ExecuteAsync(CancellationToken cancellationToken)
+    {
+        if (AppConfigs.Configuration.UpdateMode == UpdateMode.Never)
         {
-            _updateChecker = updateChecker;
-        }
-
-        public Task ExecuteAsync(CancellationToken cancellationToken)
-        {
-            if (AppConfigs.Configuration.UpdateMode == UpdateMode.Never)
-            {
-                return Task.CompletedTask;
-            }
-
-            return _updateChecker.CheckForUpdate(cancellationToken);
-        }
-
-        public Task OnFailure(JobException exception)
-        {
-            Log.Warning(exception, "Couldn't check for update");
             return Task.CompletedTask;
         }
 
-        public IRetryAction FailRule { get; } = new ExponentialBackoffRetry(TimeSpan.FromMinutes(20), null);
-        public TimeSpan? MaxRuntime { get; }
-        public TimeSpan Delay { get; } = TimeSpan.FromSeconds(AppConfigs.Configuration.UpdateCheckInterval);
+        return _updateChecker.CheckForUpdate(cancellationToken);
     }
+
+    public Task OnFailure(JobException exception)
+    {
+        Log.Warning(exception, "Couldn't check for update");
+        return Task.CompletedTask;
+    }
+
+    public IRetryAction FailRule { get; } = new ExponentialBackoffRetry(TimeSpan.FromMinutes(20), null);
+    public TimeSpan? MaxRuntime { get; }
+    public TimeSpan Delay { get; } = TimeSpan.FromSeconds(AppConfigs.Configuration.UpdateCheckInterval);
 }

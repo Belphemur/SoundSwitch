@@ -14,11 +14,10 @@
 
 using SoundSwitch.Localization;
 
-namespace SoundSwitch.Framework.TrayIcon.IconDoubleClick.Action
+namespace SoundSwitch.Framework.TrayIcon.IconDoubleClick.Action;
+
+internal class IconDoubleClickSwitchDevice: IIconDoubleClick
 {
-    internal class IconDoubleClickSwitchDevice: IIconDoubleClick
-    {
-        public IconDoubleClickEnum TypeEnum => IconDoubleClickEnum.SwitchDevice;
-        public string Label => SettingsStrings.switchDevice;
-    }
+    public IconDoubleClickEnum TypeEnum => IconDoubleClickEnum.SwitchDevice;
+    public string Label => SettingsStrings.switchDevice;
 }

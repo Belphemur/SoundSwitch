@@ -15,21 +15,20 @@
 using System;
 using System.Windows.Forms;
 
-namespace SoundSwitch.Framework
-{
-    /// <summary>
-    /// Change the cursor into WaitCursor when created and return to default when Disposed.
-    /// </summary>
-    public class HourGlass : IDisposable
-    {
-        public HourGlass()
-        {
-            Cursor.Current = Cursors.WaitCursor;
-        }
+namespace SoundSwitch.Framework;
 
-        public void Dispose()
-        {
-            Cursor.Current = Cursors.Default;
-        }
+/// <summary>
+/// Change the cursor into WaitCursor when created and return to default when Disposed.
+/// </summary>
+public class HourGlass : IDisposable
+{
+    public HourGlass()
+    {
+        Cursor.Current = Cursors.WaitCursor;
+    }
+
+    public void Dispose()
+    {
+        Cursor.Current = Cursors.Default;
     }
 }

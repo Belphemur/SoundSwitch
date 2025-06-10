@@ -20,15 +20,14 @@ using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Banner.BannerPosition;
 using SoundSwitch.Framework.Banner.MicrophoneMute;
 
-namespace SoundSwitch.Framework.NotificationManager.Notification.Configuration
+namespace SoundSwitch.Framework.NotificationManager.Notification.Configuration;
+
+public class NotificationConfiguration : INotificationConfiguration
 {
-    public class NotificationConfiguration : INotificationConfiguration
-    {
-        public NotifyIcon Icon { get; set; }
-        public Stream DefaultSound { get; set; }
-        public CachedSound CustomSound { get; set; }
-        public BannerPositionEnum BannerPosition { get; set; }
-        public TimeSpan Ttl { get; set; }
-        public MicrophoneMuteEnum MicrophoneMuteNotification { get; set; }
-    }
+    public NotifyIcon Icon { get; set; }
+    public Stream DefaultSound { get; set; }
+    public CachedSound CustomSound { get; set; }
+    public BannerPositionEnum BannerPosition { get; set; }
+    public TimeSpan Ttl { get; set; }
+    public MicrophoneMuteEnum MicrophoneMuteNotification { get; set; }
 }

@@ -17,14 +17,13 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace SoundSwitch.Framework.Profile.UI
-{
-    internal class ProfileToolStripMenuItem : ToolStripMenuItem
-    {
+namespace SoundSwitch.Framework.Profile.UI;
 
-        public ProfileToolStripMenuItem(Profile profile, Image image, Action<Profile> onClick)
-            : base(profile.Name, image, (_, _) => onClick(profile))
-        {
-        }
+internal class ProfileToolStripMenuItem : ToolStripMenuItem
+{
+
+    public ProfileToolStripMenuItem(Profile profile, Image image, Action<Profile> onClick)
+        : base(profile.Name, image, (_, _) => onClick(profile))
+    {
     }
 }

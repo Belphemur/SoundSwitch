@@ -22,47 +22,46 @@ using SoundSwitch.Framework.Updater.Releases;
 using SoundSwitch.Localization;
 using SoundSwitch.Util;
 
-namespace SoundSwitch.Framework.Updater
+namespace SoundSwitch.Framework.Updater;
+
+/// <summary>
+/// Take the update, download it and execute the installer with the wanted parameter
+/// </summary>
+public class AutoUpdater
 {
+    private readonly SynchronizationContext _context = SynchronizationContext.Current ?? new SynchronizationContext();
+    public string InstallerParameters { get; }
+
     /// <summary>
-    /// Take the update, download it and execute the installer with the wanted parameter
+    /// Constructor of the AutoUpdater
     /// </summary>
-    public class AutoUpdater
+    /// <param name="installerParameters">Parameters given to the installer after downloading it</param>
+    public AutoUpdater(string installerParameters)
     {
-        private readonly SynchronizationContext _context = SynchronizationContext.Current ?? new SynchronizationContext();
-        public string InstallerParameters { get; }
+        InstallerParameters = installerParameters;
+    }
 
-        /// <summary>
-        /// Constructor of the AutoUpdater
-        /// </summary>
-        /// <param name="installerParameters">Parameters given to the installer after downloading it</param>
-        public AutoUpdater(string installerParameters)
+    public void Update(AppRelease appRelease, bool closeApp)
+    {
+        var file = new WebFile(new Uri(appRelease.Asset.BrowserDownloadUrl));
+        file.Downloaded += (sender, args) =>
         {
-            InstallerParameters = installerParameters;
-        }
-
-        public void Update(AppRelease appRelease, bool closeApp)
-        {
-            var file = new WebFile(new Uri(appRelease.Asset.BrowserDownloadUrl));
-            file.Downloaded += (sender, args) =>
+            Log.Information("Update downloaded: {File}", file);
+            var signatureResult = SignatureChecker.IsValid(file.FilePath).UnwrapFailure();
+            if (signatureResult != null)
             {
-                Log.Information("Update downloaded: {File}", file);
-                var signatureResult = SignatureChecker.IsValid(file.FilePath).UnwrapFailure();
-                if (signatureResult != null)
-                {
-                    Log.Error("The file has the wrong signature. Update cancelled. {signatureResult}", signatureResult);
-                    _context.Send(state => { MessageBox.Show(string.Format(UpdateDownloadStrings.wrongSignature, "https://soundswitch.aaflalo.me"), Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error); },
-                        null);
-                    return;
-                }
+                Log.Error("The file has the wrong signature. Update cancelled. {signatureResult}", signatureResult);
+                _context.Send(state => { MessageBox.Show(string.Format(UpdateDownloadStrings.wrongSignature, "https://soundswitch.aaflalo.me"), Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error); },
+                    null);
+                return;
+            }
 
-                new UpdateRunner().RunUpdate(file, InstallerParameters);
-                if (closeApp)
-                {
-                    _context.Send(s => { Application.Exit(); }, null);
-                }
-            };
-            file.DownloadFile();
-        }
+            new UpdateRunner().RunUpdate(file, InstallerParameters);
+            if (closeApp)
+            {
+                _context.Send(s => { Application.Exit(); }, null);
+            }
+        };
+        file.DownloadFile();
     }
 }

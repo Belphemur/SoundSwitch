@@ -15,12 +15,12 @@
 using SoundSwitch.Framework.Factory;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 
-namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager
+namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
+
+public class TooltipInfoFactory : AbstractFactory<TooltipInfoTypeEnum, ITooltipInfo>
 {
-    public class TooltipInfoFactory : AbstractFactory<TooltipInfoTypeEnum, ITooltipInfo>
-    {
-        private static readonly IEnumImplList<TooltipInfoTypeEnum, ITooltipInfo> TooltipInfos = new EnumImplList
-            <TooltipInfoTypeEnum, ITooltipInfo>
+    private static readonly IEnumImplList<TooltipInfoTypeEnum, ITooltipInfo> TooltipInfos = new EnumImplList
+        <TooltipInfoTypeEnum, ITooltipInfo>
         {
             new TooltipInfoNone(),
             new TooltipInfoPlayback(),
@@ -28,8 +28,7 @@ namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager
             new TooltipInfoBoth()
         };
 
-        public TooltipInfoFactory() : base(TooltipInfos)
-        {
-        }
+    public TooltipInfoFactory() : base(TooltipInfos)
+    {
     }
 }

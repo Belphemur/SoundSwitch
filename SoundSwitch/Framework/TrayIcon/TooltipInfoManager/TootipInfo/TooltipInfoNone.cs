@@ -14,19 +14,18 @@
 
 using SoundSwitch.Localization;
 
-namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo
+namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
+
+public class TooltipInfoNone : ITooltipInfo
 {
-    public class TooltipInfoNone : ITooltipInfo
-    {
-        public TooltipInfoTypeEnum TypeEnum => TooltipInfoTypeEnum.None;
-        public string Label => SettingsStrings.none;
+    public TooltipInfoTypeEnum TypeEnum => TooltipInfoTypeEnum.None;
+    public string Label => SettingsStrings.none;
 
-        /// <summary>
-        /// The text to display for this ToolTip
-        /// </summary>
-        /// <returns></returns>
-        public string TextToDisplay() => null;
+    /// <summary>
+    /// The text to display for this ToolTip
+    /// </summary>
+    /// <returns></returns>
+    public string TextToDisplay() => null;
 
-        public override string ToString() => Label;
-    }
+    public override string ToString() => Label;
 }

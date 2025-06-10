@@ -14,7 +14,6 @@
 
 using SoundSwitch.Framework.Factory;
 
-namespace SoundSwitch.Framework.Banner.MicrophoneMute.Type
-{
-    public interface IMicrophoneMute : IEnumImpl<MicrophoneMuteEnum>;
-}
+namespace SoundSwitch.Framework.Banner.MicrophoneMute.Type;
+
+public interface IMicrophoneMute : IEnumImpl<MicrophoneMuteEnum>;

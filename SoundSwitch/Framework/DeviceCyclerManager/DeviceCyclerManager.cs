@@ -16,44 +16,43 @@ using NAudio.CoreAudioApi;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Configuration;
 
-namespace SoundSwitch.Framework.DeviceCyclerManager
+namespace SoundSwitch.Framework.DeviceCyclerManager;
+
+public class DeviceCyclerManager
 {
-    public class DeviceCyclerManager
+    private readonly DeviceCyclerFactory _deviceCyclerFactory;
+
+    public DeviceCyclerManager()
     {
-        private readonly DeviceCyclerFactory _deviceCyclerFactory;
+        _deviceCyclerFactory = new DeviceCyclerFactory();
+    }
 
-        public DeviceCyclerManager()
+    public static DeviceCyclerTypeEnum CurrentCycler
+    {
+        get { return AppConfigs.Configuration.CyclerType; }
+        set
         {
-            _deviceCyclerFactory = new DeviceCyclerFactory();
+            if(value == AppConfigs.Configuration.CyclerType)
+                return;
+            AppConfigs.Configuration.CyclerType = value;
+            AppConfigs.Configuration.Save();
         }
-
-        public static DeviceCyclerTypeEnum CurrentCycler
-        {
-            get { return AppConfigs.Configuration.CyclerType; }
-            set
-            {
-                if(value == AppConfigs.Configuration.CyclerType)
-                    return;
-                AppConfigs.Configuration.CyclerType = value;
-                AppConfigs.Configuration.Save();
-            }
-        }
-        /// <summary>
-        /// Cycle the audio device
-        /// </summary>
-        /// <param name="type"></param>
-        public bool CycleDevice(DataFlow type)
-        {
-            return _deviceCyclerFactory.Get(CurrentCycler).CycleAudioDevice(type);
-        }
-        /// <summary>
-        /// Set the device as Default
-        /// </summary>
-        /// <param name="device"></param>
-        /// <returns></returns>
-        public bool SetAsDefault(DeviceInfo device)
-        {
-            return _deviceCyclerFactory.Get(CurrentCycler).SetActiveDevice(device);
-        }
+    }
+    /// <summary>
+    /// Cycle the audio device
+    /// </summary>
+    /// <param name="type"></param>
+    public bool CycleDevice(DataFlow type)
+    {
+        return _deviceCyclerFactory.Get(CurrentCycler).CycleAudioDevice(type);
+    }
+    /// <summary>
+    /// Set the device as Default
+    /// </summary>
+    /// <param name="device"></param>
+    /// <returns></returns>
+    public bool SetAsDefault(DeviceInfo device)
+    {
+        return _deviceCyclerFactory.Get(CurrentCycler).SetActiveDevice(device);
     }
 }

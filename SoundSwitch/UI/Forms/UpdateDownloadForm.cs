@@ -26,121 +26,120 @@ using SoundSwitch.Properties;
 using SoundSwitch.UI.Component;
 using SoundSwitch.Util;
 
-namespace SoundSwitch.UI.Forms
+namespace SoundSwitch.UI.Forms;
+
+public sealed partial class UpdateDownloadForm : Form
 {
-    public sealed partial class UpdateDownloadForm : Form
+    private WebFile _releaseFile;
+    private AppRelease _appReleaseInfo;
+    private readonly PostponeService _postponeService = new();
+
+    public UpdateDownloadForm()
     {
-        private WebFile _releaseFile;
-        private AppRelease _appReleaseInfo;
-        private readonly PostponeService _postponeService = new();
+        RightToLeft = new LanguageFactory().Get(AppModel.Instance.Language).IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
 
-        public UpdateDownloadForm()
+        InitializeComponent();
+        Icon = Resources.UpdateIcon;
+
+        LocalizeForm();
+        downloadProgress.DisplayStyle = TextProgressBar.ProgressBarDisplayText.Both;
+        downloadProgress.Visible = false;
+        TopMost = true;
+    }
+
+    public void DownloadRelease(AppRelease appRelease)
+    {
+        Text = appRelease.Name;
+        _appReleaseInfo = appRelease;
+        installButton.Enabled = true;
+        changeLog.SetChangelog(appRelease.Changelog);
+        Name = appRelease.Name;
+        downloadProgress.CustomText = appRelease.Asset.Name;
+        downloadProgress.Value = 0;
+
+        _releaseFile = new WebFile(new Uri(appRelease.Asset.BrowserDownloadUrl));
+
+        _releaseFile.DownloadProgress += (sender, progress) =>
         {
-            RightToLeft = new LanguageFactory().Get(AppModel.Instance.Language).IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
-
-            InitializeComponent();
-            Icon = Resources.UpdateIcon;
-
-            LocalizeForm();
-            downloadProgress.DisplayStyle = TextProgressBar.ProgressBarDisplayText.Both;
-            downloadProgress.Visible = false;
-            TopMost = true;
-        }
-
-        public void DownloadRelease(AppRelease appRelease)
-        {
-            Text = appRelease.Name;
-            _appReleaseInfo = appRelease;
-            installButton.Enabled = true;
-            changeLog.SetChangelog(appRelease.Changelog);
-            Name = appRelease.Name;
-            downloadProgress.CustomText = appRelease.Asset.Name;
-            downloadProgress.Value = 0;
-
-            _releaseFile = new WebFile(new Uri(appRelease.Asset.BrowserDownloadUrl));
-
-            _releaseFile.DownloadProgress += (sender, progress) =>
+            if (downloadProgress.IsDisposed)
             {
-                if (downloadProgress.IsDisposed)
-                {
-                    return;
-                }
+                return;
+            }
 
-                if (downloadProgress.InvokeRequired)
-                {
-                    downloadProgress.BeginInvoke(new Action(() => { downloadProgress.Value = (int)Math.Ceiling(progress.Percentage); }));
-                }
-                else
-                {
-                    downloadProgress.Value = (int)Math.Ceiling(progress.Percentage);
-                }
-            };
-            _releaseFile.DownloadFailed += (sender, @event) =>
+            if (downloadProgress.InvokeRequired)
             {
-                Log.Error(@event.Exception, "Couldn't download the Release ");
-                MessageBox.Show(@event.Exception.Message,
-                    UpdateDownloadStrings.downloadFailed,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            };
-            _releaseFile.Downloaded += (sender, args) =>
-            {
-                var signatureResult = SignatureChecker.IsValid(_releaseFile.FilePath).UnwrapFailure();
-                if (signatureResult != null)
-                {
-                    Log.Error("Wrong signature for the release: {signatureResult}", signatureResult);
-                    MessageBox.Show(UpdateDownloadStrings.notSigned,
-                        UpdateDownloadStrings.notSignedTitle,
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                new UpdateRunner().RunUpdate(_releaseFile, "/SILENT");
-                if (InvokeRequired)
-                {
-                    BeginInvoke(Close);
-                }
-                else
-                {
-                    Close();
-                }
-            };
-            ShowDialog();
-        }
-
-        private void LocalizeForm()
-        {
-            // Misc
-            changeLogGroup.Text = UpdateDownloadStrings.changelog;
-            cancelButton.Text = UpdateDownloadStrings.remindMe;
-            installButton.Text = UpdateDownloadStrings.install;
-        }
-
-        private void CancelButton_Click(object sender, EventArgs e)
-        {
-            if (_releaseFile.DownloadStarted)
-            {
-                _releaseFile.CancelDownload();
+                downloadProgress.BeginInvoke(new Action(() => { downloadProgress.Value = (int)Math.Ceiling(progress.Percentage); }));
             }
             else
             {
-                _postponeService.PostponeRelease(_appReleaseInfo);
+                downloadProgress.Value = (int)Math.Ceiling(progress.Percentage);
+            }
+        };
+        _releaseFile.DownloadFailed += (sender, @event) =>
+        {
+            Log.Error(@event.Exception, "Couldn't download the Release ");
+            MessageBox.Show(@event.Exception.Message,
+                UpdateDownloadStrings.downloadFailed,
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+        };
+        _releaseFile.Downloaded += (sender, args) =>
+        {
+            var signatureResult = SignatureChecker.IsValid(_releaseFile.FilePath).UnwrapFailure();
+            if (signatureResult != null)
+            {
+                Log.Error("Wrong signature for the release: {signatureResult}", signatureResult);
+                MessageBox.Show(UpdateDownloadStrings.notSigned,
+                    UpdateDownloadStrings.notSignedTitle,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
 
-            Close();
-        }
+            new UpdateRunner().RunUpdate(_releaseFile, "/SILENT");
+            if (InvokeRequired)
+            {
+                BeginInvoke(Close);
+            }
+            else
+            {
+                Close();
+            }
+        };
+        ShowDialog();
+    }
 
-        private void InstallButton_Click(object sender, EventArgs e)
-        {
-            downloadProgress.Enabled = true;
-            downloadProgress.Visible = true;
-            _releaseFile.DownloadFile();
-            installButton.Enabled = false;
-            cancelButton.Text = UpdateDownloadStrings.cancel;
-        }
+    private void LocalizeForm()
+    {
+        // Misc
+        changeLogGroup.Text = UpdateDownloadStrings.changelog;
+        cancelButton.Text = UpdateDownloadStrings.remindMe;
+        installButton.Text = UpdateDownloadStrings.install;
+    }
 
-        private void UpdateDownloadForm_FormClosing(object sender, FormClosingEventArgs e)
+    private void CancelButton_Click(object sender, EventArgs e)
+    {
+        if (_releaseFile.DownloadStarted)
         {
             _releaseFile.CancelDownload();
         }
+        else
+        {
+            _postponeService.PostponeRelease(_appReleaseInfo);
+        }
+
+        Close();
+    }
+
+    private void InstallButton_Click(object sender, EventArgs e)
+    {
+        downloadProgress.Enabled = true;
+        downloadProgress.Visible = true;
+        _releaseFile.DownloadFile();
+        installButton.Enabled = false;
+        cancelButton.Text = UpdateDownloadStrings.cancel;
+    }
+
+    private void UpdateDownloadForm_FormClosing(object sender, FormClosingEventArgs e)
+    {
+        _releaseFile.CancelDownload();
     }
 }

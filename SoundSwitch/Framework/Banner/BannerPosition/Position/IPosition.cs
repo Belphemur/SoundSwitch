@@ -16,18 +16,17 @@ using System.Drawing;
 using System.Windows.Forms;
 using SoundSwitch.Framework.Factory;
 
-namespace SoundSwitch.Framework.Banner.BannerPosition.Position
+namespace SoundSwitch.Framework.Banner.BannerPosition.Position;
+
+public interface IPosition : IEnumImpl<BannerPositionEnum>
 {
-    public interface IPosition : IEnumImpl<BannerPositionEnum>
-    {
-        /// <summary>
-        /// Get position in the screen for the banner
-        /// </summary>
-        /// <param name="screen"></param>
-        /// <param name="height"></param>
-        /// <param name="width"></param>
-        /// <param name="offset"></param>
-        /// <returns></returns>
-        public Point GetScreenPosition(Screen screen, int height, int width, int offset);
-    }
+    /// <summary>
+    /// Get position in the screen for the banner
+    /// </summary>
+    /// <param name="screen"></param>
+    /// <param name="height"></param>
+    /// <param name="width"></param>
+    /// <param name="offset"></param>
+    /// <returns></returns>
+    public Point GetScreenPosition(Screen screen, int height, int width, int offset);
 }

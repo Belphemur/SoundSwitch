@@ -15,16 +15,15 @@
 using SoundSwitch.Framework.Factory;
 using SoundSwitch.Framework.TrayIcon.IconDoubleClick.Action;
 
-namespace SoundSwitch.Framework.TrayIcon.IconDoubleClick
+namespace SoundSwitch.Framework.TrayIcon.IconDoubleClick;
+
+public class IconDoubleClickFactory() : AbstractFactory<IconDoubleClickEnum, IIconDoubleClick>(DoubleClick)
 {
-    public class IconDoubleClickFactory() : AbstractFactory<IconDoubleClickEnum, IIconDoubleClick>(DoubleClick)
-    {
-        private static readonly IEnumImplList<IconDoubleClickEnum, IIconDoubleClick> DoubleClick = new EnumImplList
-            <IconDoubleClickEnum, IIconDoubleClick>
-            {
-                new IconDoubleClickSwitchDevice(),
-                new IconDoubleClickSwitchProfile(),
-                new IconDoubleClickOpenSettings()
-            };
-    }
+    private static readonly IEnumImplList<IconDoubleClickEnum, IIconDoubleClick> DoubleClick = new EnumImplList
+        <IconDoubleClickEnum, IIconDoubleClick>
+        {
+            new IconDoubleClickSwitchDevice(),
+            new IconDoubleClickSwitchProfile(),
+            new IconDoubleClickOpenSettings()
+        };
 }

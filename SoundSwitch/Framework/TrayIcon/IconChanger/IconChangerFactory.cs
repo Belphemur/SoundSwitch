@@ -15,16 +15,15 @@
 using SoundSwitch.Framework.Factory;
 using SoundSwitch.Framework.TrayIcon.IconChanger.Changer;
 
-namespace SoundSwitch.Framework.TrayIcon.IconChanger
+namespace SoundSwitch.Framework.TrayIcon.IconChanger;
+
+public class IconChangerFactory() : AbstractFactory<IconChangerEnum, IIconChanger>(Impl)
 {
-    public class IconChangerFactory() : AbstractFactory<IconChangerEnum, IIconChanger>(Impl)
+    private static readonly IEnumImplList<IconChangerEnum, IIconChanger> Impl = new EnumImplList<IconChangerEnum, IIconChanger>()
     {
-        private static readonly IEnumImplList<IconChangerEnum, IIconChanger> Impl = new EnumImplList<IconChangerEnum, IIconChanger>()
-        {
-            new NeverIconIconChanger(),
-            new PlaybackIconChanger(),
-            new RecordingIconChanger(),
-            new AlwaysIconChanger()
-        };
-    }
+        new NeverIconIconChanger(),
+        new PlaybackIconChanger(),
+        new RecordingIconChanger(),
+        new AlwaysIconChanger()
+    };
 }

@@ -18,17 +18,16 @@ using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
 
-namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
+namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler;
+
+public class DeviceCyclerAll : ADeviceCycler
 {
-    public class DeviceCyclerAll : ADeviceCycler
-    {
-        public override DeviceCyclerTypeEnum TypeEnum => DeviceCyclerTypeEnum.All;
-        public override string Label => SettingsStrings.cycleThrough_option_allAudioDevices;
+    public override DeviceCyclerTypeEnum TypeEnum => DeviceCyclerTypeEnum.All;
+    public override string Label => SettingsStrings.cycleThrough_option_allAudioDevices;
         
 
-        protected override IEnumerable<DeviceFullInfo> GetDevices(DataFlow type)
-        {
-            return AppModel.Instance.AudioDeviceLister.GetDevices(type, DeviceState.Active);
-        }
+    protected override IEnumerable<DeviceFullInfo> GetDevices(DataFlow type)
+    {
+        return AppModel.Instance.AudioDeviceLister.GetDevices(type, DeviceState.Active);
     }
 }

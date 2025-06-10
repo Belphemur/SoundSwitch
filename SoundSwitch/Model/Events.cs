@@ -24,94 +24,93 @@ using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.Updater.Releases;
 
-namespace SoundSwitch.Model
+namespace SoundSwitch.Model;
+
+public class ExceptionEvent : EventArgs
 {
-    public class ExceptionEvent : EventArgs
+    public ExceptionEvent(Exception exception)
     {
-        public ExceptionEvent(Exception exception)
-        {
-            Exception = exception;
-        }
-
-        public Exception Exception { get; private set; }
+        Exception = exception;
     }
 
-    public class DeviceListChanged : EventArgs
-    {
-        public DeviceListChanged(IEnumerable<DeviceInfo> seletedDevicesList, DataFlow type)
-        {
-            SeletedDevicesList = seletedDevicesList;
-            Type = type;
-        }
+    public Exception Exception { get; private set; }
+}
 
-        public IEnumerable<DeviceInfo> SeletedDevicesList { get; private set; }
-        public DataFlow Type { get; private set; }
+public class DeviceListChanged : EventArgs
+{
+    public DeviceListChanged(IEnumerable<DeviceInfo> seletedDevicesList, DataFlow type)
+    {
+        SeletedDevicesList = seletedDevicesList;
+        Type = type;
     }
 
-    public class NotificationSettingsUpdatedEvent : EventArgs
-    {
-        public NotificationTypeEnum PrevSettings { get; }
-        public NotificationTypeEnum NewSettings { get; }
+    public IEnumerable<DeviceInfo> SeletedDevicesList { get; private set; }
+    public DataFlow Type { get; private set; }
+}
 
-        public NotificationSettingsUpdatedEvent(NotificationTypeEnum prevSettings, NotificationTypeEnum newSettings)
-        {
-            PrevSettings = prevSettings;
-            NewSettings = newSettings;
-        }
+public class NotificationSettingsUpdatedEvent : EventArgs
+{
+    public NotificationTypeEnum PrevSettings { get; }
+    public NotificationTypeEnum NewSettings { get; }
+
+    public NotificationSettingsUpdatedEvent(NotificationTypeEnum prevSettings, NotificationTypeEnum newSettings)
+    {
+        PrevSettings = prevSettings;
+        NewSettings = newSettings;
     }
+}
 
-    public class BannerDataChangedEvent : EventArgs
+public class BannerDataChangedEvent : EventArgs
+{
+    public BannerPositionEnum PrevBannerPosition { get; }
+    public BannerPositionEnum NewBannerPosition { get; }
+    public TimeSpan PrevTtl { get; }
+    public TimeSpan NewTtl { get; }
+    public MicrophoneMuteEnum PrevMicrophoneMuteNotification { get; }
+    public MicrophoneMuteEnum NewMicrophoneMuteNotification { get; }
+
+    public BannerDataChangedEvent(BannerPositionEnum prevBannerPosition, BannerPositionEnum newBannerPosition, TimeSpan prevTtl, TimeSpan newTtl, MicrophoneMuteEnum prevMicrophoneMuteNotification, MicrophoneMuteEnum newMicrophoneMuteNotification)
     {
-        public BannerPositionEnum PrevBannerPosition { get; }
-        public BannerPositionEnum NewBannerPosition { get; }
-        public TimeSpan PrevTtl { get; }
-        public TimeSpan NewTtl { get; }
-        public MicrophoneMuteEnum PrevMicrophoneMuteNotification { get; }
-        public MicrophoneMuteEnum NewMicrophoneMuteNotification { get; }
-
-        public BannerDataChangedEvent(BannerPositionEnum prevBannerPosition, BannerPositionEnum newBannerPosition, TimeSpan prevTtl, TimeSpan newTtl, MicrophoneMuteEnum prevMicrophoneMuteNotification, MicrophoneMuteEnum newMicrophoneMuteNotification)
-        {
-            PrevBannerPosition = prevBannerPosition;
-            NewBannerPosition = newBannerPosition;
-            PrevTtl = prevTtl;
-            NewTtl = newTtl;
-            PrevMicrophoneMuteNotification = prevMicrophoneMuteNotification;
-            NewMicrophoneMuteNotification = newMicrophoneMuteNotification;
-        }
+        PrevBannerPosition = prevBannerPosition;
+        NewBannerPosition = newBannerPosition;
+        PrevTtl = prevTtl;
+        NewTtl = newTtl;
+        PrevMicrophoneMuteNotification = prevMicrophoneMuteNotification;
+        NewMicrophoneMuteNotification = newMicrophoneMuteNotification;
     }
+}
 
-    public class CustomSoundChangedEvent : EventArgs
+public class CustomSoundChangedEvent : EventArgs
+{
+    public CachedSound PrevSound { get; }
+    public CachedSound NewSound { get; }
+
+    public CustomSoundChangedEvent(CachedSound prevSound, CachedSound newSound)
     {
-        public CachedSound PrevSound { get; }
-        public CachedSound NewSound { get; }
-
-        public CustomSoundChangedEvent(CachedSound prevSound, CachedSound newSound)
-        {
-            PrevSound = prevSound;
-            NewSound = newSound;
-        }
+        PrevSound = prevSound;
+        NewSound = newSound;
     }
+}
 
-    public class NewReleaseAvailableEvent : UpdateChecker.NewReleaseEvent
+public class NewReleaseAvailableEvent : UpdateChecker.NewReleaseEvent
+{
+    public UpdateMode UpdateMode { get; }
+
+    public NewReleaseAvailableEvent(AppRelease appRelease, UpdateMode updateMode) : base(appRelease)
     {
-        public UpdateMode UpdateMode { get; }
-
-        public NewReleaseAvailableEvent(AppRelease appRelease, UpdateMode updateMode) : base(appRelease)
-        {
-            UpdateMode = updateMode;
-        }
+        UpdateMode = updateMode;
     }
+}
 
-    public class DeviceDefaultChangedEvent
+public class DeviceDefaultChangedEvent
+{
+    public string DeviceId => Device.Id;
+    public Role Role { get; }
+    public DeviceFullInfo Device { get; }
+
+    public DeviceDefaultChangedEvent(DeviceFullInfo device, Role role)
     {
-        public string DeviceId => Device.Id;
-        public Role Role { get; }
-        public DeviceFullInfo Device { get; }
-
-        public DeviceDefaultChangedEvent(DeviceFullInfo device, Role role)
-        {
-            Device = device;
-            Role = role;
-        }
+        Device = device;
+        Role = role;
     }
 }

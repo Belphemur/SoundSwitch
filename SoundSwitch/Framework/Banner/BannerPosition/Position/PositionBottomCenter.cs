@@ -16,19 +16,18 @@ using System.Drawing;
 using System.Windows.Forms;
 using SoundSwitch.Localization;
 
-namespace SoundSwitch.Framework.Banner.BannerPosition.Position
-{
-    internal class PositionBottomCenter : APosition, IPosition
-    {
-        public BannerPositionEnum TypeEnum => BannerPositionEnum.BottomCenter;
-        public string Label => SettingsStrings.position_option_bottomCenter;
+namespace SoundSwitch.Framework.Banner.BannerPosition.Position;
 
-        public Point GetScreenPosition(Screen screen, int height, int width, int offset)
-        {
-            return new Point(
-                PositionCenterH(screen, width),
-                PositionBottom(screen, height, offset)
-                );
-        }
+internal class PositionBottomCenter : APosition, IPosition
+{
+    public BannerPositionEnum TypeEnum => BannerPositionEnum.BottomCenter;
+    public string Label => SettingsStrings.position_option_bottomCenter;
+
+    public Point GetScreenPosition(Screen screen, int height, int width, int offset)
+    {
+        return new Point(
+            PositionCenterH(screen, width),
+            PositionBottom(screen, height, offset)
+        );
     }
 }

@@ -18,25 +18,24 @@ using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
 using SoundSwitch.Localization;
 
-namespace SoundSwitch.Framework.NotificationManager.Notification
+namespace SoundSwitch.Framework.NotificationManager.Notification;
+
+internal class NotificationNone : INotification
 {
-    internal class NotificationNone : INotification
-    {
-        public NotificationTypeEnum TypeEnum => NotificationTypeEnum.NoNotification;
-        public string Label => SettingsStrings.none;
+    public NotificationTypeEnum TypeEnum => NotificationTypeEnum.NoNotification;
+    public string Label => SettingsStrings.none;
 
-        public INotificationConfiguration Configuration { get; set; }
+    public INotificationConfiguration Configuration { get; set; }
 
-        public void NotifyDefaultChanged(DeviceFullInfo audioDevice) { }
+    public void NotifyDefaultChanged(DeviceFullInfo audioDevice) { }
 
-        public void NotifyProfileChanged(Profile.Profile profile, Bitmap icon, uint? processId) { }
+    public void NotifyProfileChanged(Profile.Profile profile, Bitmap icon, uint? processId) { }
 
-        public void NotifyMuteChanged(string deviceId, string microphoneName, bool newMuteState) { }
+    public void NotifyMuteChanged(string deviceId, string microphoneName, bool newMuteState) { }
 
-        public void OnSoundChanged(CachedSound newSound) { }
+    public void OnSoundChanged(CachedSound newSound) { }
 
-        public bool SupportCustomSound() => false;
+    public bool SupportCustomSound() => false;
 
-        public bool IsAvailable() => true;
-    }
+    public bool IsAvailable() => true;
 }

@@ -15,45 +15,44 @@
 using System.Linq;
 using System.Reflection;
 
-namespace SoundSwitch.Util
+namespace SoundSwitch.Util;
+
+public static class AssemblyUtils
 {
-    public static class AssemblyUtils
+    public enum ReleaseState
     {
-        public enum ReleaseState
-        {
-            Stable,
-            Beta,
-            Debug,
-            Nightly
-        }
+        Stable,
+        Beta,
+        Debug,
+        Nightly
+    }
 
-        /// <summary>
-        /// Get Current Assembly configuration
-        /// </summary>
-        /// <returns></returns>
-        public static AssemblyConfigurationAttribute GetAssemblyConfigurationAttribute()
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            var attributes = assembly.GetCustomAttributes(true);
-            var config = attributes.OfType<AssemblyConfigurationAttribute>().FirstOrDefault();
-            return config;
-        }
+    /// <summary>
+    /// Get Current Assembly configuration
+    /// </summary>
+    /// <returns></returns>
+    public static AssemblyConfigurationAttribute GetAssemblyConfigurationAttribute()
+    {
+        var assembly = Assembly.GetExecutingAssembly();
+        var attributes = assembly.GetCustomAttributes(true);
+        var config = attributes.OfType<AssemblyConfigurationAttribute>().FirstOrDefault();
+        return config;
+    }
 
-        /// <summary>
-        /// Get the current state of the application
-        /// </summary>
-        /// <returns></returns>
-        public static ReleaseState GetReleaseState()
-        {
+    /// <summary>
+    /// Get the current state of the application
+    /// </summary>
+    /// <returns></returns>
+    public static ReleaseState GetReleaseState()
+    {
 #if BETA
             return ReleaseState.Beta;
 #elif DEBUG
-            return ReleaseState.Debug;
+        return ReleaseState.Debug;
 #elif NIGHTLY
             return ReleaseState.Nightly;
 #else
             return ReleaseState.Stable;
 #endif
-        }
     }
 }

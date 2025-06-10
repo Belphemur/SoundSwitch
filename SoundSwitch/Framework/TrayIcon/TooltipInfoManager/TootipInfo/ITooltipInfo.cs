@@ -14,15 +14,14 @@
 
 using SoundSwitch.Framework.Factory;
 
-namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo
-{
-    public interface ITooltipInfo : IEnumImpl<TooltipInfoTypeEnum>
-    {
+namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 
-        /// <summary>
-        /// The text to display for this ToolTip
-        /// </summary>
-        /// <returns></returns>
-        string TextToDisplay();
-    }
+public interface ITooltipInfo : IEnumImpl<TooltipInfoTypeEnum>
+{
+
+    /// <summary>
+    /// The text to display for this ToolTip
+    /// </summary>
+    /// <returns></returns>
+    string TextToDisplay();
 }

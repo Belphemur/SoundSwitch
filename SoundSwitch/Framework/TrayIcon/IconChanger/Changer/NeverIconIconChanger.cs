@@ -17,15 +17,14 @@ using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Localization;
 using SoundSwitch.Properties;
 
-namespace SoundSwitch.Framework.TrayIcon.IconChanger.Changer
+namespace SoundSwitch.Framework.TrayIcon.IconChanger.Changer;
+
+public class NeverIconIconChanger : IIconChanger
 {
-    public class NeverIconIconChanger : IIconChanger
-    {
-        public IconChangerEnum TypeEnum => IconChangerEnum.Never;
-        public string Label => TrayIconStrings.iconChanger_none;
+    public IconChangerEnum TypeEnum => IconChangerEnum.Never;
+    public string Label => TrayIconStrings.iconChanger_none;
 
-        public void ChangeIcon(UI.Component.TrayIcon trayIcon) => trayIcon.ReplaceIcon(Resources.Switch_SoundWave);
+    public void ChangeIcon(UI.Component.TrayIcon trayIcon) => trayIcon.ReplaceIcon(Resources.Switch_SoundWave);
 
-        public void ChangeIcon(UI.Component.TrayIcon trayIcon, DeviceFullInfo deviceInfo, ERole role) { }
-    }
+    public void ChangeIcon(UI.Component.TrayIcon trayIcon, DeviceFullInfo deviceInfo, ERole role) { }
 }

@@ -17,30 +17,30 @@ using System.Windows.Forms;
 using Markdig;
 using SoundSwitch.Util.Url;
 
-namespace SoundSwitch.UI.Component
+namespace SoundSwitch.UI.Component;
+
+public class ChangelogWebViewer : WebBrowser
 {
-    public class ChangelogWebViewer : WebBrowser
+    public ChangelogWebViewer()
     {
-        public ChangelogWebViewer()
-        {
-            IsWebBrowserContextMenuEnabled = false;
-            WebBrowserShortcutsEnabled = false;
-            Navigating += OnNavigating;
-        }
+        IsWebBrowserContextMenuEnabled = false;
+        WebBrowserShortcutsEnabled = false;
+        Navigating += OnNavigating;
+    }
 
-        private void OnNavigating(object sender, WebBrowserNavigatingEventArgs e)
-        {
-            if (e.Url.ToString() == "about:blank")
-                return;
+    private void OnNavigating(object sender, WebBrowserNavigatingEventArgs e)
+    {
+        if (e.Url.ToString() == "about:blank")
+            return;
 
-            e.Cancel = true;
-            var url = e.Url.ToString();
-            BrowserUtil.OpenUrl(url);
-        }
+        e.Cancel = true;
+        var url = e.Url.ToString();
+        BrowserUtil.OpenUrl(url);
+    }
 
-        private static List<string> HtmlHeaders => new()
-        {
-            @"<!doctype html>
+    private static List<string> HtmlHeaders => new()
+    {
+        @"<!doctype html>
             <html>
             <head>
                 <meta charset=""utf-8"">
@@ -64,21 +64,20 @@ namespace SoundSwitch.UI.Component
                     }
                 </style>
             </head>"
-        };
+    };
 
-        /// <summary>
-        /// Set the changelog in the WebBrowser
-        /// </summary>
-        /// <param name="changelogLines"></param>
-        public void SetChangelog(IEnumerable<string> changelogLines)
-        {
-            var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
-            var lines = HtmlHeaders;
-            lines.Add("<body>");
-            lines.Add(Markdown.ToHtml(string.Join("\n", changelogLines), pipeline));
-            lines.Add("</body>");
-            lines.Add("</html>");
-            DocumentText = string.Join("\n", lines);
-        }
+    /// <summary>
+    /// Set the changelog in the WebBrowser
+    /// </summary>
+    /// <param name="changelogLines"></param>
+    public void SetChangelog(IEnumerable<string> changelogLines)
+    {
+        var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
+        var lines = HtmlHeaders;
+        lines.Add("<body>");
+        lines.Add(Markdown.ToHtml(string.Join("\n", changelogLines), pipeline));
+        lines.Add("</body>");
+        lines.Add("</html>");
+        DocumentText = string.Join("\n", lines);
     }
 }

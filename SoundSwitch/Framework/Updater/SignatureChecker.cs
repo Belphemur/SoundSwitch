@@ -16,25 +16,24 @@ using AuthenticodeExaminer;
 using RailSharp;
 using RailSharp.Internal.Result;
 
-namespace SoundSwitch.Framework.Updater
-{
-    public static class SignatureChecker
-    {
-        /// <summary>
-        /// Does the given file have the right signature
-        /// </summary>
-        /// <param name="filename"></param>
-        /// <returns></returns>
-        public static Result<SignatureCheckResult, VoidSuccess> IsValid(string filename)
-        {
-            var inspector = new FileInspector(filename);
-            var result = inspector.Validate(RevocationChecking.Online);
-            if (result != SignatureCheckResult.Valid)
-            {
-                return result;
-            }
+namespace SoundSwitch.Framework.Updater;
 
-            return Result.Success();
+public static class SignatureChecker
+{
+    /// <summary>
+    /// Does the given file have the right signature
+    /// </summary>
+    /// <param name="filename"></param>
+    /// <returns></returns>
+    public static Result<SignatureCheckResult, VoidSuccess> IsValid(string filename)
+    {
+        var inspector = new FileInspector(filename);
+        var result = inspector.Validate(RevocationChecking.Online);
+        if (result != SignatureCheckResult.Valid)
+        {
+            return result;
         }
+
+        return Result.Success();
     }
 }

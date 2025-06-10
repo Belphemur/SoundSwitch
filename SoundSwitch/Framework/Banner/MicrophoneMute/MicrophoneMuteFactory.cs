@@ -15,20 +15,19 @@
 using SoundSwitch.Framework.Banner.MicrophoneMute.Type;
 using SoundSwitch.Framework.Factory;
 
-namespace SoundSwitch.Framework.Banner.MicrophoneMute
-{
-    public class MicrophoneMuteFactory : AbstractFactory<MicrophoneMuteEnum, IMicrophoneMute>
-    {
-        private static readonly IEnumImplList<MicrophoneMuteEnum, IMicrophoneMute> MicrophoneMute = new EnumImplList
-            <MicrophoneMuteEnum, IMicrophoneMute>
-            {
-                new MicrophoneMuteNone(),
-                new MicrophoneMuteFading(),
-                new MicrophoneMutePersistent()
-            };
+namespace SoundSwitch.Framework.Banner.MicrophoneMute;
 
-        public MicrophoneMuteFactory() : base(MicrophoneMute)
+public class MicrophoneMuteFactory : AbstractFactory<MicrophoneMuteEnum, IMicrophoneMute>
+{
+    private static readonly IEnumImplList<MicrophoneMuteEnum, IMicrophoneMute> MicrophoneMute = new EnumImplList
+        <MicrophoneMuteEnum, IMicrophoneMute>
         {
-        }
+            new MicrophoneMuteNone(),
+            new MicrophoneMuteFading(),
+            new MicrophoneMutePersistent()
+        };
+
+    public MicrophoneMuteFactory() : base(MicrophoneMute)
+    {
     }
 }

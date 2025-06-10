@@ -14,11 +14,10 @@
 
 using SoundSwitch.Localization;
 
-namespace SoundSwitch.Framework.Banner.MicrophoneMute.Type
+namespace SoundSwitch.Framework.Banner.MicrophoneMute.Type;
+
+internal class MicrophoneMuteFading : IMicrophoneMute
 {
-    internal class MicrophoneMuteFading : IMicrophoneMute
-    {
-        public MicrophoneMuteEnum TypeEnum => MicrophoneMuteEnum.Fading;
-        public string Label => SettingsStrings.banner_mute_option_fading;
-    }
+    public MicrophoneMuteEnum TypeEnum => MicrophoneMuteEnum.Fading;
+    public string Label => SettingsStrings.banner_mute_option_fading;
 }
