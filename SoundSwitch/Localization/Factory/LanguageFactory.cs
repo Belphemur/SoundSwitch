@@ -6,41 +6,37 @@ using SoundSwitch.Localization.Factory.Lang;
 
 namespace SoundSwitch.Localization.Factory;
 
-public class LanguageFactory : AbstractFactory<Language, ILang>
+public class LanguageFactory() : AbstractFactory<Language, ILang>(new EnumImplList<Language, ILang>
 {
-    public LanguageFactory() : base(new EnumImplList<Language, ILang>
-    {
-        new EnglishLang(),
-        new FrenchLang(),
-        new GermanLang(),
-        new SpanishLang(),
-        new NorwegianLang(),
-        new PortugueseBRLang(),
-        new ItalianLang(),
-        new PolishLang(),
-        new RussianLang(),
-        new ChineseLang(),
-        new KoreanLang(),
-        new DutchLang(),
-        new CroatianLang(),
-        new ChineseTraditionalLang(),
-        new SlovenianLang(),
-        new JapaneseLang(),
-        new HebrewLang(),
-        new Czech(),
-        new Turkish(),
-        new Arabic(),
-        new Thai(),
-        new Serbian(),
-        new Danish(),
-        new Ukrainian(),
-        new Bulgarian(),
-        new Swedish(),
-        new Tamil()
-    })
-    {
-    }
-
+    new EnglishLang(),
+    new FrenchLang(),
+    new GermanLang(),
+    new SpanishLang(),
+    new NorwegianLang(),
+    new PortugueseBRLang(),
+    new ItalianLang(),
+    new PolishLang(),
+    new RussianLang(),
+    new ChineseLang(),
+    new KoreanLang(),
+    new DutchLang(),
+    new CroatianLang(),
+    new ChineseTraditionalLang(),
+    new SlovenianLang(),
+    new JapaneseLang(),
+    new HebrewLang(),
+    new Czech(),
+    new Turkish(),
+    new Arabic(),
+    new Thai(),
+    new Serbian(),
+    new Danish(),
+    new Ukrainian(),
+    new Bulgarian(),
+    new Swedish(),
+    new Tamil()
+})
+{
     /// <summary>
     /// Get the language of Windows
     /// </summary>

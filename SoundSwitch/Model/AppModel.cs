@@ -728,12 +728,7 @@ public class AppModel : IAppModel
     }
 
     [Serializable]
-    public class NoDevicesException : InvalidOperationException
-    {
-        public NoDevicesException() : base("No devices to select")
-        {
-        }
-    }
+    public class NoDevicesException() : InvalidOperationException("No devices to select");
 
     #endregion
 

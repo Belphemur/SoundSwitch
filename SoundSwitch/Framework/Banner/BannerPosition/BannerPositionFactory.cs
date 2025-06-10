@@ -17,7 +17,7 @@ using SoundSwitch.Framework.Factory;
 
 namespace SoundSwitch.Framework.Banner.BannerPosition;
 
-public class BannerPositionFactory : AbstractFactory<BannerPositionEnum, IPosition>
+public class BannerPositionFactory() : AbstractFactory<BannerPositionEnum, IPosition>(Positions)
 {
     private static readonly IEnumImplList<BannerPositionEnum, IPosition> Positions = new EnumImplList
         <BannerPositionEnum, IPosition>
@@ -30,8 +30,4 @@ public class BannerPositionFactory : AbstractFactory<BannerPositionEnum, IPositi
             new PositionBottomRight(),
             new PositionCenter()
         };
-
-    public BannerPositionFactory() : base(Positions)
-    {
-    }
 }

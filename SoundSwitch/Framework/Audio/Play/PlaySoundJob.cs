@@ -11,21 +11,8 @@ using Serilog;
 
 namespace SoundSwitch.Framework.Audio.Play;
 
-public class PlaySoundJob : IJob
+public class PlaySoundJob([CanBeNull] string deviceId, [NotNull] CachedSound sound) : IJob
 {
-    [CanBeNull]
-    private readonly string _deviceId;
-
-    [NotNull]
-    private readonly CachedSound _sound;
-
-
-    public PlaySoundJob([CanBeNull] string deviceId, [NotNull] CachedSound sound)
-    {
-        _deviceId = deviceId;
-        _sound = sound;
-    }
-
     public async Task ExecuteAsync(CancellationToken cancellationToken)
     {
         try
@@ -33,13 +20,13 @@ public class PlaySoundJob : IJob
             using var semaphore = new SemaphoreSlim(0);
             MMDevice device = null;
             using var enumerator = new MMDeviceEnumerator();
-            if (_deviceId != null)
+            if (deviceId != null)
             {
-                device = enumerator.GetDevice(_deviceId);
+                device = enumerator.GetDevice(deviceId);
             }
 
             using var player = device == null ? new WasapiOut() : new WasapiOut(device, AudioClientShareMode.Shared, true, 200);
-            await using var waveStream = new CachedSoundWaveStream(_sound);
+            await using var waveStream = new CachedSoundWaveStream(sound);
             player.Init(waveStream);
 
             void PlayerOnPlaybackStopped(object o, StoppedEventArgs stoppedEventArgs)

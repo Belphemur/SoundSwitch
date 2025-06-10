@@ -20,12 +20,7 @@ namespace SoundSwitch.Framework.DeviceCyclerManager;
 
 public class DeviceCyclerManager
 {
-    private readonly DeviceCyclerFactory _deviceCyclerFactory;
-
-    public DeviceCyclerManager()
-    {
-        _deviceCyclerFactory = new DeviceCyclerFactory();
-    }
+    private readonly DeviceCyclerFactory _deviceCyclerFactory = new();
 
     public static DeviceCyclerTypeEnum CurrentCycler
     {

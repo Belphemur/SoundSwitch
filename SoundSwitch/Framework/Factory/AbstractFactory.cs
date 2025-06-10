@@ -25,15 +25,11 @@ namespace SoundSwitch.Framework.Factory;
 /// </summary>
 /// <typeparam name="TEnum">The Enum defining the type</typeparam>
 /// <typeparam name="TImplementation">The implementation of the enum</typeparam>
-public abstract class AbstractFactory<TEnum, TImplementation> where TImplementation : IEnumImpl<TEnum>
+public abstract class AbstractFactory<TEnum, TImplementation>(IEnumImplList<TEnum, TImplementation> enumImplList)
+    where TImplementation : IEnumImpl<TEnum>
     where TEnum : Enum, IConvertible
 {
-    protected AbstractFactory(IEnumImplList<TEnum, TImplementation> enumImplList)
-    {
-        AllImplementations = enumImplList.ToReadOnlyDictionary();
-    }
-
-    public IReadOnlyDictionary<TEnum, TImplementation> AllImplementations { get; }
+    public IReadOnlyDictionary<TEnum, TImplementation> AllImplementations { get; } = enumImplList.ToReadOnlyDictionary();
 
     /// <summary>
     /// Get the implementation for the given Enum

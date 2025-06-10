@@ -30,26 +30,19 @@ using SoundSwitch.Properties;
 
 namespace SoundSwitch.Framework.NotificationManager;
 
-public class NotificationManager
+public class NotificationManager(IAppModel model)
 {
-    private readonly IAppModel _model;
     private string _lastDeviceId;
     private INotification _notification;
-    private readonly NotificationFactory _notificationFactory;
-
-    public NotificationManager(IAppModel model)
-    {
-        _model = model;
-        _notificationFactory = new NotificationFactory();
-    }
+    private readonly NotificationFactory _notificationFactory = new();
 
     public void Init()
     {
-        _model.DefaultDeviceChanged += ModelOnDefaultDeviceChanged;
-        _model.NotificationSettingsChanged += ModelOnNotificationSettingsChanged;
-        SetNotification(_model.NotificationSettings);
-        _model.CustomSoundChanged += ModelOnCustomSoundChanged;
-        _model.BannerSettingsChanged += ModelOnBannerSettingsChanged;
+        model.DefaultDeviceChanged += ModelOnDefaultDeviceChanged;
+        model.NotificationSettingsChanged += ModelOnNotificationSettingsChanged;
+        SetNotification(model.NotificationSettings);
+        model.CustomSoundChanged += ModelOnCustomSoundChanged;
+        model.BannerSettingsChanged += ModelOnBannerSettingsChanged;
         Log.Information("Notification manager initiated");
     }
 
@@ -76,7 +69,7 @@ public class NotificationManager
         _notification = _notificationFactory.Get(notificationTypeEnum);
         _notification.Configuration = new NotificationConfiguration()
         {
-            Icon = _model.TrayIcon.NotifyIcon,
+            Icon = model.TrayIcon.NotifyIcon,
             DefaultSound = Resources.NotificationSound,
             BannerPosition = AppModel.Instance.BannerPosition,
             Ttl = AppModel.Instance.BannerOnScreenTime,
@@ -106,8 +99,8 @@ public class NotificationManager
     {
         return deviceInfo.Type switch
         {
-            DataFlow.Capture => _model.AvailableRecordingDevices.FirstOrDefault(info => info.Equals(deviceInfo)),
-            _ => _model.AvailablePlaybackDevices.FirstOrDefault(info => info.Equals(deviceInfo))
+            DataFlow.Capture => model.AvailableRecordingDevices.FirstOrDefault(info => info.Equals(deviceInfo)),
+            _ => model.AvailablePlaybackDevices.FirstOrDefault(info => info.Equals(deviceInfo))
         };
     }
 
@@ -166,8 +159,8 @@ public class NotificationManager
 
     ~NotificationManager()
     {
-        _model.DefaultDeviceChanged -= ModelOnDefaultDeviceChanged;
-        _model.NotificationSettingsChanged -= ModelOnNotificationSettingsChanged;
-        _model.CustomSoundChanged -= ModelOnCustomSoundChanged;
+        model.DefaultDeviceChanged -= ModelOnDefaultDeviceChanged;
+        model.NotificationSettingsChanged -= ModelOnNotificationSettingsChanged;
+        model.CustomSoundChanged -= ModelOnCustomSoundChanged;
     }
 }

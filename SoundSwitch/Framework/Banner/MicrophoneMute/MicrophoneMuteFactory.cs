@@ -17,7 +17,7 @@ using SoundSwitch.Framework.Factory;
 
 namespace SoundSwitch.Framework.Banner.MicrophoneMute;
 
-public class MicrophoneMuteFactory : AbstractFactory<MicrophoneMuteEnum, IMicrophoneMute>
+public class MicrophoneMuteFactory() : AbstractFactory<MicrophoneMuteEnum, IMicrophoneMute>(MicrophoneMute)
 {
     private static readonly IEnumImplList<MicrophoneMuteEnum, IMicrophoneMute> MicrophoneMute = new EnumImplList
         <MicrophoneMuteEnum, IMicrophoneMute>
@@ -26,8 +26,4 @@ public class MicrophoneMuteFactory : AbstractFactory<MicrophoneMuteEnum, IMicrop
             new MicrophoneMuteFading(),
             new MicrophoneMutePersistent()
         };
-
-    public MicrophoneMuteFactory() : base(MicrophoneMute)
-    {
-    }
 }

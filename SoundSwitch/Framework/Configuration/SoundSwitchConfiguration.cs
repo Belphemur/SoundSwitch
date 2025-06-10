@@ -41,74 +41,41 @@ namespace SoundSwitch.Framework.Configuration;
 
 public class SoundSwitchConfiguration : ISoundSwitchConfiguration
 {
-    public SoundSwitchConfiguration()
-    {
-        // Basic Settings
-        FirstRun = true;
-        SwitchForegroundProgram = false;
-        IconDoubleClick = IconDoubleClickEnum.SwitchDevice;
+    // Basic Settings
+    // Audio Settings
+    // Update Settings
+    // Language Settings
+    // Notification Settings
 
-        // Audio Settings
-        ChangeCommunications = false;
-        TooltipInfo = TooltipInfoTypeEnum.Playback;
-        CyclerType = DeviceCyclerTypeEnum.Available;
+    public TimeSpan BannerOnScreenTime { get; set; } = TimeSpan.FromSeconds(3);
 
-        // Update Settings
-        UpdateCheckInterval = 3600 * 24; // 24 hours
-        UpdateMode = UpdateMode.Notify;
-        IncludeBetaVersions = false;
+    public int MaxNumberNotification { get; set; } = 5;
+    public HashSet<string> SelectedPlaybackDeviceListId { get; } = new();
+    public HashSet<string> SelectedRecordingDeviceListId { get; } = new();
+    public HashSet<DeviceInfo> SelectedDevices { get; set; } = new();
+    public bool FirstRun { get; set; } = true;
+    public HotKey PlaybackHotKey { get; set; } = new(Keys.F11, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
+    public HotKey RecordingHotKey { get; set; } = new(Keys.F7, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
 
-        // Language Settings
-        Language = new LanguageFactory().GetWindowsLanguage();
-        SelectedPlaybackDeviceListId = new HashSet<string>();
-        SelectedRecordingDeviceListId = new HashSet<string>();
-        PlaybackHotKey = new HotKey(Keys.F11, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
-        RecordingHotKey = new HotKey(Keys.F7, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
-        MuteRecordingHotKey = new HotKey(Keys.M, HotKey.ModifierKeys.Control | HotKey.ModifierKeys.Alt);
-
-        // Notification Settings
-        NotificationSettings = NotificationTypeEnum.BannerNotification;
-        BannerPosition = BannerPositionEnum.TopLeft;
-        MaxNumberNotification = 5;
-        BannerOnScreenTime = TimeSpan.FromSeconds(3);
-        MicrophoneMuteNotification = MicrophoneMuteEnum.Persistent;
-
-        AutoAddNewConnectedDevices = false;
-
-        SelectedDevices = new HashSet<DeviceInfo>();
-        SwitchIcon = IconChangerEnum.Never;
-        MigratedFields = new HashSet<string>();
-    }
-
-    public TimeSpan BannerOnScreenTime { get; set; }
-
-    public int MaxNumberNotification { get; set; }
-    public HashSet<string> SelectedPlaybackDeviceListId { get; }
-    public HashSet<string> SelectedRecordingDeviceListId { get; }
-    public HashSet<DeviceInfo> SelectedDevices { get; set; }
-    public bool FirstRun { get; set; }
-    public HotKey PlaybackHotKey { get; set; }
-    public HotKey RecordingHotKey { get; set; }
-
-    public HotKey MuteRecordingHotKey { get; set; }
-    public bool ChangeCommunications { get; set; }
-    public uint UpdateCheckInterval { get; set; }
-    public UpdateMode UpdateMode { get; set; }
-    public IconDoubleClickEnum IconDoubleClick { get; set; }
-    public TooltipInfoTypeEnum TooltipInfo { get; set; }
-    public DeviceCyclerTypeEnum CyclerType { get; set; }
-    public NotificationTypeEnum NotificationSettings { get; set; }
-    public BannerPositionEnum BannerPosition { get; set; }
-    public MicrophoneMuteEnum MicrophoneMuteNotification { get; set; }
-    public Language Language { get; set; }
-    public bool IncludeBetaVersions { get; set; }
+    public HotKey MuteRecordingHotKey { get; set; } = new(Keys.M, HotKey.ModifierKeys.Control | HotKey.ModifierKeys.Alt);
+    public bool ChangeCommunications { get; set; } = false;
+    public uint UpdateCheckInterval { get; set; } = 3600 * 24; // 24 hours
+    public UpdateMode UpdateMode { get; set; } = UpdateMode.Notify;
+    public IconDoubleClickEnum IconDoubleClick { get; set; } = IconDoubleClickEnum.SwitchDevice;
+    public TooltipInfoTypeEnum TooltipInfo { get; set; } = TooltipInfoTypeEnum.Playback;
+    public DeviceCyclerTypeEnum CyclerType { get; set; } = DeviceCyclerTypeEnum.Available;
+    public NotificationTypeEnum NotificationSettings { get; set; } = NotificationTypeEnum.BannerNotification;
+    public BannerPositionEnum BannerPosition { get; set; } = BannerPositionEnum.TopLeft;
+    public MicrophoneMuteEnum MicrophoneMuteNotification { get; set; } = MicrophoneMuteEnum.Persistent;
+    public Language Language { get; set; } = new LanguageFactory().GetWindowsLanguage();
+    public bool IncludeBetaVersions { get; set; } = false;
     public string CustomNotificationFilePath { get; set; }
     public bool NotifyUsingPrimaryScreen { get; set; }
     [Obsolete("Replaced by "+nameof(MicrophoneMutePersistent))]
     public bool PersistentMuteNotification { get; set; }
 
     [Obsolete("Feature has been removed")]
-    public bool AutoAddNewConnectedDevices { get; set; }
+    public bool AutoAddNewConnectedDevices { get; set; } = false;
 
 
     public DateTime LastDonationNagTime { get; set; }
@@ -119,8 +86,8 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
     [Obsolete]
     public bool KeepSystrayIcon { get; set; }
 
-    public bool SwitchForegroundProgram { get; set; }
-    public IconChangerEnum SwitchIcon { get; set; }
+    public bool SwitchForegroundProgram { get; set; } = false;
+    public IconChangerEnum SwitchIcon { get; set; } = IconChangerEnum.Never;
 
     [Obsolete]
     public HashSet<ProfileSetting> ProfileSettings { get; set; } = new();
@@ -132,7 +99,7 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
     /// <summary>
     /// Fields of the config that got migrated
     /// </summary>
-    public HashSet<string> MigratedFields { get; }
+    public HashSet<string> MigratedFields { get; } = new();
 
     public Guid UniqueInstallationId { get; set; } = Guid.NewGuid();
 

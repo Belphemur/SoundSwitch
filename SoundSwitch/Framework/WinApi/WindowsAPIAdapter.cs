@@ -341,26 +341,15 @@ public class WindowsAPIAdapter : Form
 
     #region Events
 
-    public class WindowDestroyedEvent : EventArgs
+    public class WindowDestroyedEvent(User32.NativeMethods.HWND hwnd) : EventArgs
     {
-        public User32.NativeMethods.HWND Hwnd { get; }
-
-        public WindowDestroyedEvent(User32.NativeMethods.HWND hwnd)
-        {
-            Hwnd = hwnd;
-        }
+        public User32.NativeMethods.HWND Hwnd { get; } = hwnd;
     }
 
-    public class RestartManagerEvent : EventArgs
+    public class RestartManagerEvent(RestartManagerEventType type) : EventArgs
     {
-        public RestartManagerEvent(RestartManagerEventType type)
-        {
-            Result = new IntPtr(1);
-            Type = type;
-        }
-
-        public IntPtr Result { get; set; }
-        public RestartManagerEventType Type { get; }
+        public IntPtr Result { get; set; } = new(1);
+        public RestartManagerEventType Type { get; } = type;
     }
 
     public class DeviceChangeEvent : EventArgs;
@@ -368,14 +357,9 @@ public class WindowsAPIAdapter : Form
     /// <summary>
     ///     Event Args for the event that is fired after the hot key has been pressed.
     /// </summary>
-    public class KeyPressedEventArgs : EventArgs
+    public class KeyPressedEventArgs(HotKey hotKey) : EventArgs
     {
-        public KeyPressedEventArgs(HotKey hotKey)
-        {
-            HotKey = hotKey;
-        }
-
-        public HotKey HotKey { get; set; }
+        public HotKey HotKey { get; set; } = hotKey;
     }
 
     #endregion

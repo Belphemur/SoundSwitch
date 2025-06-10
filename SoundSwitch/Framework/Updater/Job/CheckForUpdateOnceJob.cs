@@ -8,18 +8,11 @@ using Serilog;
 
 namespace SoundSwitch.Framework.Updater.Job;
 
-public class CheckForUpdateOnceJob : IJob
+public class CheckForUpdateOnceJob(UpdateChecker updateChecker) : IJob
 {
-    private readonly UpdateChecker _updateChecker;
-
-    public CheckForUpdateOnceJob(UpdateChecker updateChecker)
-    {
-        _updateChecker = updateChecker;
-    }
-
     public Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        return _updateChecker.CheckForUpdate(cancellationToken);
+        return updateChecker.CheckForUpdate(cancellationToken);
     }
 
     public Task OnFailure(JobException exception)

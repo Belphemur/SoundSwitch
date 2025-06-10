@@ -18,19 +18,12 @@ using SoundSwitch.Framework.Updater.Releases.Models;
 
 namespace SoundSwitch.Framework.Updater.Releases;
 
-public class AppRelease
+public class AppRelease(SemanticVersion releaseVersion, Asset asset, string name)
 {
-    public AppRelease(SemanticVersion releaseVersion, Asset asset, string name)
-    {
-        ReleaseVersion = releaseVersion;
-        Asset = asset;
-        Name = name;
-    }
-
-    public SemanticVersion ReleaseVersion { get; private set; }
-    public Asset Asset { get; }
+    public SemanticVersion ReleaseVersion { get; private set; } = releaseVersion;
+    public Asset Asset { get; } = asset;
     public List<string> Changelog { get; } = new List<string>();
-    public string Name { get; private set; }
+    public string Name { get; private set; } = name;
 
     public override string ToString()
     {

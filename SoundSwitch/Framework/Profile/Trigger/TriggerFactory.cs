@@ -3,7 +3,7 @@ using SoundSwitch.Localization;
 
 namespace SoundSwitch.Framework.Profile.Trigger;
 
-public class TriggerFactory : AbstractFactory<TriggerFactory.Enum, ITriggerDefinition>
+public class TriggerFactory() : AbstractFactory<TriggerFactory.Enum, ITriggerDefinition>(Impl)
 {
     public enum Enum
     {
@@ -29,10 +29,6 @@ public class TriggerFactory : AbstractFactory<TriggerFactory.Enum, ITriggerDefin
             new TrayMenu(),
             new DeviceChanged()
         };
-
-    public TriggerFactory() : base(Impl)
-    {
-    }
 }
 
 public interface ITriggerDefinition : IEnumImpl<TriggerFactory.Enum>

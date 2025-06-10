@@ -129,25 +129,14 @@ public class WebFile
     }
 }
 
-public class DownloadProgress : EventArgs
+public class DownloadProgress(long downloadedBytes, long totalBytes) : EventArgs
 {
-    public long TotalBytes { get; }
-    public long DownloadedBytes { get; }
+    public long TotalBytes { get; } = totalBytes;
+    public long DownloadedBytes { get; } = downloadedBytes;
     public double Percentage => (double) DownloadedBytes * 100 / TotalBytes;
-
-    public DownloadProgress(long downloadedBytes, long totalBytes)
-    {
-        TotalBytes = totalBytes;
-        DownloadedBytes = downloadedBytes;
-    }
 }
 
-public class DownloadFailEvent : EventArgs
+public class DownloadFailEvent(Exception exception) : EventArgs
 {
-    public DownloadFailEvent(Exception exception)
-    {
-        Exception = exception;
-    }
-
-    public Exception Exception { get; set; }
+    public Exception Exception { get; set; } = exception;
 }

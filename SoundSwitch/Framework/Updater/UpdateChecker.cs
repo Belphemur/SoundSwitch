@@ -29,22 +29,15 @@ using SoundSwitch.Framework.Updater.Releases.Models;
 
 namespace SoundSwitch.Framework.Updater;
 
-public partial class UpdateChecker
+public partial class UpdateChecker(Uri releaseUrl, bool checkBeta)
 {
     private static readonly string UserAgent =
         $"Mozilla/5.0 (compatible; {Environment.OSVersion.Platform} {Environment.OSVersion.VersionString}; {Application.ProductName}/{Application.ProductVersion};)";
 
     private static readonly SemanticVersion AppVersion = SemanticVersion.Parse(Application.ProductVersion);
 
-    private readonly Uri _releaseUrl;
     public EventHandler<NewReleaseEvent> UpdateAvailable;
-    public bool Beta { get; set; }
-
-    public UpdateChecker(Uri releaseUrl, bool checkBeta)
-    {
-        _releaseUrl = releaseUrl;
-        Beta = checkBeta;
-    }
+    public bool Beta { get; set; } = checkBeta;
 
     /// <summary>
     /// Process the release, and notify about it if it's newer than the version of the app.
@@ -105,7 +98,7 @@ public partial class UpdateChecker
         httpClient.DefaultRequestHeaders.UserAgent.Add(ApplicationInfo.ProductValue);
         httpClient.DefaultRequestHeaders.UserAgent.Add(ApplicationInfo.CommentValue);
         httpClient.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
-        var releases = await httpClient.GetFromJsonAsync(_releaseUrl, GithubReleasesJsonContext.Default.ReleaseArray, token);
+        var releases = await httpClient.GetFromJsonAsync(releaseUrl, GithubReleasesJsonContext.Default.ReleaseArray, token);
         foreach (var release in (releases ?? Array.Empty<Release>()).OrderByDescending(release => SemanticVersion.Parse(release.TagName.Substring(1))))
         {
             token.ThrowIfCancellationRequested();
@@ -116,14 +109,9 @@ public partial class UpdateChecker
         }
     }
 
-    public class NewReleaseEvent : EventArgs
+    public class NewReleaseEvent(AppRelease appRelease) : EventArgs
     {
-        public AppRelease AppRelease { get; }
-
-        public NewReleaseEvent(AppRelease appRelease)
-        {
-            AppRelease = appRelease;
-        }
+        public AppRelease AppRelease { get; } = appRelease;
     }
 
     [GeneratedRegex("\r\n|\r|\n")]

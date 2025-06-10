@@ -19,11 +19,5 @@ using System.Windows.Forms;
 
 namespace SoundSwitch.Framework.Profile.UI;
 
-internal class ProfileToolStripMenuItem : ToolStripMenuItem
-{
-
-    public ProfileToolStripMenuItem(Profile profile, Image image, Action<Profile> onClick)
-        : base(profile.Name, image, (_, _) => onClick(profile))
-    {
-    }
-}
+internal class ProfileToolStripMenuItem(Profile profile, Image image, Action<Profile> onClick)
+    : ToolStripMenuItem(profile.Name, image, (_, _) => onClick(profile));

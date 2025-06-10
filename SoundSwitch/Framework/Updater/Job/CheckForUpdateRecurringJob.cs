@@ -9,15 +9,8 @@ using SoundSwitch.Framework.Configuration;
 
 namespace SoundSwitch.Framework.Updater.Job;
 
-public class CheckForUpdateRecurringJob : IRecurringJob
+public class CheckForUpdateRecurringJob(UpdateChecker updateChecker) : IRecurringJob
 {
-    private readonly UpdateChecker _updateChecker;
-
-    public CheckForUpdateRecurringJob(UpdateChecker updateChecker)
-    {
-        _updateChecker = updateChecker;
-    }
-
     public Task ExecuteAsync(CancellationToken cancellationToken)
     {
         if (AppConfigs.Configuration.UpdateMode == UpdateMode.Never)
@@ -25,7 +18,7 @@ public class CheckForUpdateRecurringJob : IRecurringJob
             return Task.CompletedTask;
         }
 
-        return _updateChecker.CheckForUpdate(cancellationToken);
+        return updateChecker.CheckForUpdate(cancellationToken);
     }
 
     public Task OnFailure(JobException exception)

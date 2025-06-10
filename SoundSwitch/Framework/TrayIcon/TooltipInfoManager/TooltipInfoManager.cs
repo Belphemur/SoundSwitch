@@ -21,7 +21,7 @@ using SoundSwitch.Util;
 
 namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
 
-public class TooltipInfoManager
+public class TooltipInfoManager(NotifyIcon icon)
 {
 
     private static class Fixes
@@ -37,14 +37,7 @@ public class TooltipInfoManager
         }
     }
 
-    private readonly NotifyIcon _icon;
-    private readonly TooltipInfoFactory _tooltipInfoFactory;
-
-    public TooltipInfoManager(NotifyIcon icon)
-    {
-        _icon = icon;
-        _tooltipInfoFactory = new TooltipInfoFactory();
-    }
+    private readonly TooltipInfoFactory _tooltipInfoFactory = new();
 
     /// <summary>
     /// Currently active tooltip info
@@ -76,10 +69,10 @@ public class TooltipInfoManager
         //Taken from NotifyIcon.MaxTextSize
         text = text.Truncate(127);
         //Only if changed
-        if (_icon.Text == text)
+        if (icon.Text == text)
         {
             return;
         }
-        Fixes.SetNotifyIconText(_icon, $"{Application.ProductName}\n{text}");
+        Fixes.SetNotifyIconText(icon, $"{Application.ProductName}\n{text}");
     }
 }

@@ -17,7 +17,7 @@ using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 
 namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
 
-public class TooltipInfoFactory : AbstractFactory<TooltipInfoTypeEnum, ITooltipInfo>
+public class TooltipInfoFactory() : AbstractFactory<TooltipInfoTypeEnum, ITooltipInfo>(TooltipInfos)
 {
     private static readonly IEnumImplList<TooltipInfoTypeEnum, ITooltipInfo> TooltipInfos = new EnumImplList
         <TooltipInfoTypeEnum, ITooltipInfo>
@@ -27,8 +27,4 @@ public class TooltipInfoFactory : AbstractFactory<TooltipInfoTypeEnum, ITooltipI
             new TooltipInfoRecording(),
             new TooltipInfoBoth()
         };
-
-    public TooltipInfoFactory() : base(TooltipInfos)
-    {
-    }
 }

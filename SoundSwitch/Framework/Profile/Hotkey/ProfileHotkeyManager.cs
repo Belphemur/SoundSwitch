@@ -21,12 +21,8 @@ public class ProfileHotkeyManager
         public Profile NextOne() => Profiles.SkipWhile(profile => profile != LastUsed).Skip(1).FirstOrDefault() ?? Profiles.First();
     };
 
-    private class HotKeyItem : IconMenuItem<Profile>.DataContainer
-    {
-        public HotKeyItem(bool selected, Profile payload) : base(payload.Icon, payload.Name, selected, payload.Name, payload)
-        {
-        }
-    }
+    private class HotKeyItem(bool selected, Profile payload)
+        : IconMenuItem<Profile>.DataContainer(payload.Icon, payload.Name, selected, payload.Name, payload);
 
     private readonly Dictionary<HotKey, HotKeysSelection> _profiles = new();
     private readonly ProfileManager _profileManager;

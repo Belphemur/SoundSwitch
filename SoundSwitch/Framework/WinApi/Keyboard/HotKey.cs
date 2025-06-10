@@ -122,14 +122,9 @@ public class HotKey : IEquatable<HotKey>
 }
 
 [AttributeUsage(AttributeTargets.Field)]
-public class OrderAttribute : Attribute
+public class OrderAttribute(int order) : Attribute
 {
-    public int Order { get; }
-
-    public OrderAttribute(int order)
-    {
-        Order = order;
-    }
+    public int Order { get; } = order;
 }
 
 public static class ModifierKeysExtensions
