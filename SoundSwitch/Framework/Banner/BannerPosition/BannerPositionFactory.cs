@@ -12,19 +12,27 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
+using SoundSwitch.Framework.Banner.BannerPosition.Position;
 using SoundSwitch.Framework.Factory;
-using SoundSwitch.Framework.TrayIcon.IconDoubleClick.Action;
 
-namespace SoundSwitch.Framework.TrayIcon.IconDoubleClick
+namespace SoundSwitch.Framework.Banner.BannerPosition
 {
-    public class IconDoubleClickFactory() : AbstractFactory<IconDoubleClickEnum, IIconDoubleClick>(DoubleClick)
+    public class BannerPositionFactory : AbstractFactory<BannerPositionEnum, IPosition>
     {
-        private static readonly IEnumImplList<IconDoubleClickEnum, IIconDoubleClick> DoubleClick = new EnumImplList
-            <IconDoubleClickEnum, IIconDoubleClick>
+        private static readonly IEnumImplList<BannerPositionEnum, IPosition> Positions = new EnumImplList
+            <BannerPositionEnum, IPosition>
             {
-                new IconDoubleClickSwitchDevice(),
-                new IconDoubleClickSwitchProfile(),
-                new IconDoubleClickOpenSettings()
+                new PositionTopLeft(),
+                new PositionTopCenter(),
+                new PositionTopRight(),
+                new PositionBottomLeft(),
+                new PositionBottomCenter(),
+                new PositionBottomRight(),
+                new PositionCenter()
             };
+
+        public BannerPositionFactory() : base(Positions)
+        {
+        }
     }
 }

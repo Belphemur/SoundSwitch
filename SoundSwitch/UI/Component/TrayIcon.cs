@@ -32,7 +32,7 @@ using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Profile.Trigger;
 using SoundSwitch.Framework.Profile.UI;
-using SoundSwitch.Framework.TrayIcon.Icon;
+using SoundSwitch.Framework.TrayIcon.IconChanger;
 using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
 using SoundSwitch.Framework.Updater;

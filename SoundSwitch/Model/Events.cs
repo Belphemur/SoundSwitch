@@ -18,6 +18,8 @@ using NAudio.CoreAudioApi;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Banner;
+using SoundSwitch.Framework.Banner.BannerPosition;
+using SoundSwitch.Framework.Banner.MicrophoneMute;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.Updater.Releases;

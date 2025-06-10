@@ -12,23 +12,22 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
-using System;
-using System.IO;
+using System.Drawing;
 using System.Windows.Forms;
-using SoundSwitch.Framework.Audio;
-using SoundSwitch.Framework.Banner;
-using SoundSwitch.Framework.Banner.BannerPosition;
-using SoundSwitch.Framework.Banner.MicrophoneMute;
+using SoundSwitch.Framework.Factory;
 
-namespace SoundSwitch.Framework.NotificationManager.Notification.Configuration
+namespace SoundSwitch.Framework.Banner.BannerPosition.Position
 {
-    public interface INotificationConfiguration
+    public interface IPosition : IEnumImpl<BannerPositionEnum>
     {
-        NotifyIcon Icon { get; set; }
-        Stream DefaultSound { get; set; }
-        CachedSound CustomSound { get; set; }
-        BannerPositionEnum BannerPosition { get; set; }
-        TimeSpan Ttl { get; set; }
-        MicrophoneMuteEnum MicrophoneMuteNotification { get; set; }
+        /// <summary>
+        /// Get position in the screen for the banner
+        /// </summary>
+        /// <param name="screen"></param>
+        /// <param name="height"></param>
+        /// <param name="width"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
+        public Point GetScreenPosition(Screen screen, int height, int width, int offset);
     }
 }

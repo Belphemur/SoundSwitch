@@ -12,23 +12,23 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
-using System;
-using System.IO;
-using System.Windows.Forms;
-using SoundSwitch.Framework.Audio;
-using SoundSwitch.Framework.Banner;
-using SoundSwitch.Framework.Banner.BannerPosition;
-using SoundSwitch.Framework.Banner.MicrophoneMute;
+using SoundSwitch.Framework.Banner.MicrophoneMute.Type;
+using SoundSwitch.Framework.Factory;
 
-namespace SoundSwitch.Framework.NotificationManager.Notification.Configuration
+namespace SoundSwitch.Framework.Banner.MicrophoneMute
 {
-    public interface INotificationConfiguration
+    public class MicrophoneMuteFactory : AbstractFactory<MicrophoneMuteEnum, IMicrophoneMute>
     {
-        NotifyIcon Icon { get; set; }
-        Stream DefaultSound { get; set; }
-        CachedSound CustomSound { get; set; }
-        BannerPositionEnum BannerPosition { get; set; }
-        TimeSpan Ttl { get; set; }
-        MicrophoneMuteEnum MicrophoneMuteNotification { get; set; }
+        private static readonly IEnumImplList<MicrophoneMuteEnum, IMicrophoneMute> MicrophoneMute = new EnumImplList
+            <MicrophoneMuteEnum, IMicrophoneMute>
+            {
+                new MicrophoneMuteNone(),
+                new MicrophoneMuteFading(),
+                new MicrophoneMutePersistent()
+            };
+
+        public MicrophoneMuteFactory() : base(MicrophoneMute)
+        {
+        }
     }
 }
