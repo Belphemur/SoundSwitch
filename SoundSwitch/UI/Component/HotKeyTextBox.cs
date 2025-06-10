@@ -10,9 +10,7 @@ namespace SoundSwitch.UI.Component
 {
     public class HotKeyTextBox : TextBox
     {
-        public class Event : EventArgs
-        {
-        }
+        public class Event : EventArgs;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         [DefaultValue(null)]

@@ -16,7 +16,5 @@ using SoundSwitch.Framework.Factory;
 
 namespace SoundSwitch.Framework.TrayIcon.IconDoubleClick.Action
 {
-    public interface IIconDoubleClick : IEnumImpl<IconDoubleClickEnum>
-    {
-    }
+    public interface IIconDoubleClick : IEnumImpl<IconDoubleClickEnum>;
 }
