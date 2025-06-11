@@ -640,4 +640,7 @@
   <data name="importConfigErrorInvalidJson" xml:space="preserve">
     <value>構成ファイル '{0}' は有効な JSON ではありません。エラー: {1}</value>
   </data>
+  <data name="switchProfile" xml:space="preserve">
+    <value>プロファイル切り替え</value>
+  </data>
 </root>
