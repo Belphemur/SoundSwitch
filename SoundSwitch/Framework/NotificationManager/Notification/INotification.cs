@@ -19,55 +19,54 @@ using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Factory;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
 
-namespace SoundSwitch.Framework.NotificationManager.Notification
+namespace SoundSwitch.Framework.NotificationManager.Notification;
+
+public interface INotification : IEnumImpl<NotificationTypeEnum>
 {
-    public interface INotification : IEnumImpl<NotificationTypeEnum>
-    {
-        /// <summary>
-        /// Configuration of the Notification
-        /// </summary>
-        INotificationConfiguration Configuration { get; set; }
+    /// <summary>
+    /// Configuration of the Notification
+    /// </summary>
+    INotificationConfiguration Configuration { get; set; }
 
-        /// <summary>
-        /// Notify the change of default audio device
-        /// </summary>
-        /// <param name="audioDevice"></param>
-        void NotifyDefaultChanged(DeviceFullInfo audioDevice);
+    /// <summary>
+    /// Notify the change of default audio device
+    /// </summary>
+    /// <param name="audioDevice"></param>
+    void NotifyDefaultChanged(DeviceFullInfo audioDevice);
 
-        /// <summary>
-        /// Notify when a profile has changed
-        /// </summary>
-        /// <param name="profile"></param>
-        /// <param name="icon"></param>
-        /// <param name="processId"></param>
-        void NotifyProfileChanged(Profile.Profile profile, [CanBeNull] Bitmap icon, uint? processId);
+    /// <summary>
+    /// Notify when a profile has changed
+    /// </summary>
+    /// <param name="profile"></param>
+    /// <param name="icon"></param>
+    /// <param name="processId"></param>
+    void NotifyProfileChanged(Profile.Profile profile, [CanBeNull] Bitmap icon, uint? processId);
 
-        /// <summary>
-        /// Notify about the mute state having changed
-        /// </summary>
-        void NotifyMuteChanged(string deviceId, string microphoneName, bool newMuteState);
+    /// <summary>
+    /// Notify about the mute state having changed
+    /// </summary>
+    void NotifyMuteChanged(string deviceId, string microphoneName, bool newMuteState);
 
-        /// <summary>
-        /// Does this notification support showing an icon
-        /// </summary>
-        bool SupportIcon => false;
+    /// <summary>
+    /// Does this notification support showing an icon
+    /// </summary>
+    bool SupportIcon => false;
 
-        /// <summary>
-        /// Called when the set sound changed
-        /// </summary>
-        /// <param name="newSound"></param>
-        void OnSoundChanged(CachedSound newSound);
+    /// <summary>
+    /// Called when the set sound changed
+    /// </summary>
+    /// <param name="newSound"></param>
+    void OnSoundChanged(CachedSound newSound);
 
-        /// <summary>
-        /// Does the notification support a Custom Sound
-        /// </summary>
-        /// <returns></returns>
-        bool SupportCustomSound();
+    /// <summary>
+    /// Does the notification support a Custom Sound
+    /// </summary>
+    /// <returns></returns>
+    bool SupportCustomSound();
 
-        /// <summary>
-        /// Is this notification available
-        /// </summary>
-        /// <returns></returns>
-        bool IsAvailable();
-    }
+    /// <summary>
+    /// Is this notification available
+    /// </summary>
+    /// <returns></returns>
+    bool IsAvailable();
 }

@@ -19,68 +19,60 @@ using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 using SoundSwitch.Util;
 
-namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager
+namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
+
+public class TooltipInfoManager(NotifyIcon icon)
 {
-    public class TooltipInfoManager
+
+    private static class Fixes
     {
-
-        private static class Fixes
+        public static void SetNotifyIconText(NotifyIcon ni, string text)
         {
-            public static void SetNotifyIconText(NotifyIcon ni, string text)
-            {
-                //if (text.Length >= 128) throw new ArgumentOutOfRangeException("Text limited to 127 characters");
-                Type t = typeof(NotifyIcon);
-                BindingFlags hidden = BindingFlags.NonPublic | BindingFlags.Instance;
-                t.GetField("_text", hidden)?.SetValue(ni, text);
-                if ((bool) t.GetField("_added", hidden).GetValue(ni))
-                    t.GetMethod("UpdateIcon", hidden).Invoke(ni, new object[] {true});
-            }
+            //if (text.Length >= 128) throw new ArgumentOutOfRangeException("Text limited to 127 characters");
+            Type t = typeof(NotifyIcon);
+            BindingFlags hidden = BindingFlags.NonPublic | BindingFlags.Instance;
+            t.GetField("_text", hidden)?.SetValue(ni, text);
+            if ((bool) t.GetField("_added", hidden).GetValue(ni))
+                t.GetMethod("UpdateIcon", hidden).Invoke(ni, new object[] {true});
         }
+    }
 
-        private readonly NotifyIcon _icon;
-        private readonly TooltipInfoFactory _tooltipInfoFactory;
+    private readonly TooltipInfoFactory _tooltipInfoFactory = new();
 
-        public TooltipInfoManager(NotifyIcon icon)
+    /// <summary>
+    /// Currently active tooltip info
+    /// </summary>
+    public static TooltipInfoTypeEnum CurrentTooltipInfo
+    {
+        get { return AppConfigs.Configuration.TooltipInfo; }
+        set
         {
-            _icon = icon;
-            _tooltipInfoFactory = new TooltipInfoFactory();
-        }
-
-        /// <summary>
-        /// Currently active tooltip info
-        /// </summary>
-        public static TooltipInfoTypeEnum CurrentTooltipInfo
-        {
-            get { return AppConfigs.Configuration.TooltipInfo; }
-            set
-            {
-                if (value == AppConfigs.Configuration.TooltipInfo)
-                    return;
-
-                AppConfigs.Configuration.TooltipInfo = value;
-                AppConfigs.Configuration.Save();
-            }
-        }
-
-        /// <summary>
-        /// Show the tooltip with the TrayIcon
-        /// </summary>
-        public void SetIconText()
-        {
-            var tooltipInfo = _tooltipInfoFactory.Get(CurrentTooltipInfo);
-            var text = tooltipInfo.TextToDisplay();
-
-            if (text == null)
+            if (value == AppConfigs.Configuration.TooltipInfo)
                 return;
 
-            //Taken from NotifyIcon.MaxTextSize
-            text = text.Truncate(127);
-            //Only if changed
-            if (_icon.Text == text)
-            {
-                return;
-            }
-            Fixes.SetNotifyIconText(_icon, $"{Application.ProductName}\n{text}");
+            AppConfigs.Configuration.TooltipInfo = value;
+            AppConfigs.Configuration.Save();
         }
+    }
+
+    /// <summary>
+    /// Show the tooltip with the TrayIcon
+    /// </summary>
+    public void SetIconText()
+    {
+        var tooltipInfo = _tooltipInfoFactory.Get(CurrentTooltipInfo);
+        var text = tooltipInfo.TextToDisplay();
+
+        if (text == null)
+            return;
+
+        //Taken from NotifyIcon.MaxTextSize
+        text = text.Truncate(127);
+        //Only if changed
+        if (icon.Text == text)
+        {
+            return;
+        }
+        Fixes.SetNotifyIconText(icon, $"{Application.ProductName}\n{text}");
     }
 }

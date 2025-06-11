@@ -16,25 +16,17 @@ using System.Collections.Generic;
 using NuGet.Versioning;
 using SoundSwitch.Framework.Updater.Releases.Models;
 
-namespace SoundSwitch.Framework.Updater.Releases
+namespace SoundSwitch.Framework.Updater.Releases;
+
+public class AppRelease(SemanticVersion releaseVersion, Asset asset, string name)
 {
-    public class AppRelease
+    public SemanticVersion ReleaseVersion { get; private set; } = releaseVersion;
+    public Asset Asset { get; } = asset;
+    public List<string> Changelog { get; } = new List<string>();
+    public string Name { get; private set; } = name;
+
+    public override string ToString()
     {
-        public AppRelease(SemanticVersion releaseVersion, Asset asset, string name)
-        {
-            ReleaseVersion = releaseVersion;
-            Asset = asset;
-            Name = name;
-        }
-
-        public SemanticVersion ReleaseVersion { get; private set; }
-        public Asset Asset { get; }
-        public List<string> Changelog { get; } = new List<string>();
-        public string Name { get; private set; }
-
-        public override string ToString()
-        {
-            return $"{nameof(ReleaseVersion)}: {ReleaseVersion}, {nameof(Name)}: {Name}";
-        }
+        return $"{nameof(ReleaseVersion)}: {ReleaseVersion}, {nameof(Name)}: {Name}";
     }
 }

@@ -26,69 +26,68 @@ using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
 using SoundSwitch.Framework.Threading;
 using SoundSwitch.Localization;
 
-namespace SoundSwitch.Framework.NotificationManager.Notification
+namespace SoundSwitch.Framework.NotificationManager.Notification;
+
+internal class NotificationSound : INotification
 {
-    internal class NotificationSound : INotification
+    private CancellationTokenSource _cancellationTokenSource;
+    public NotificationTypeEnum TypeEnum => NotificationTypeEnum.SoundNotification;
+    public string Label => SettingsStrings.notification_option_sound;
+    public INotificationConfiguration Configuration { get; set; }
+
+    public void NotifyDefaultChanged(DeviceFullInfo audioDevice)
     {
-        private CancellationTokenSource _cancellationTokenSource;
-        public NotificationTypeEnum TypeEnum => NotificationTypeEnum.SoundNotification;
-        public string Label => SettingsStrings.notification_option_sound;
-        public INotificationConfiguration Configuration { get; set; }
+        if (audioDevice.Type != DataFlow.Render) return;
 
-        public void NotifyDefaultChanged(DeviceFullInfo audioDevice)
+        CachedSound soundNotification;
+
+        _cancellationTokenSource?.Cancel();
+        _cancellationTokenSource?.Dispose();
+        _cancellationTokenSource = new CancellationTokenSource();
+
+        if (CustomSoundCheck(audioDevice))
+            soundNotification = Configuration.CustomSound;
+        else
+            soundNotification = new CachedSound(GetStreamCopy(), new WaveFormat(44100, 1));
+
+        JobScheduler.Instance.ScheduleJob(new PlaySoundJob(audioDevice.Id, soundNotification), _cancellationTokenSource.Token);
+    }
+
+    public void NotifyProfileChanged(Profile.Profile profile, Bitmap icon, uint? processId)
+    {
+        if (profile.Playback == null) return;
+
+        try
         {
-            if (audioDevice.Type != DataFlow.Render) return;
-
-            CachedSound soundNotification;
-
-            _cancellationTokenSource?.Cancel();
-            _cancellationTokenSource?.Dispose();
-            _cancellationTokenSource = new CancellationTokenSource();
-
-            if (CustomSoundCheck(audioDevice))
-                soundNotification = Configuration.CustomSound;
-            else
-                soundNotification = new CachedSound(GetStreamCopy(), new WaveFormat(44100, 1));
-
-            JobScheduler.Instance.ScheduleJob(new PlaySoundJob(audioDevice.Id, soundNotification), _cancellationTokenSource.Token);
+            var mmDevice = AudioSwitcher.Instance.GetDevice(profile.Playback.Id);
+            var device = AudioSwitcher.Instance.InteractWithDevice(mmDevice, device => new DeviceFullInfo(device));
+            NotifyDefaultChanged(device);
         }
-
-        public void NotifyProfileChanged(Profile.Profile profile, Bitmap icon, uint? processId)
+        catch (Exception)
         {
-            if (profile.Playback == null) return;
-
-            try
-            {
-                var mmDevice = AudioSwitcher.Instance.GetDevice(profile.Playback.Id);
-                var device = AudioSwitcher.Instance.InteractWithDevice(mmDevice, device => new DeviceFullInfo(device));
-                NotifyDefaultChanged(device);
-            }
-            catch (Exception)
-            {
-                //Ignored
-            }
+            //Ignored
         }
+    }
 
-        public void NotifyMuteChanged(string deviceId, string microphoneName, bool newMuteState) { }
+    public void NotifyMuteChanged(string deviceId, string microphoneName, bool newMuteState) { }
 
-        public void OnSoundChanged(CachedSound newSound) => Configuration.CustomSound = newSound;
+    public void OnSoundChanged(CachedSound newSound) => Configuration.CustomSound = newSound;
 
-        public bool SupportCustomSound() => true;
+    public bool SupportCustomSound() => true;
 
-        public bool IsAvailable() => true;
+    public bool IsAvailable() => true;
 
-        public bool CustomSoundCheck(DeviceFullInfo audioDevice) => audioDevice.Type == DataFlow.Render && Configuration.CustomSound != null && File.Exists(Configuration.CustomSound.FilePath);
+    public bool CustomSoundCheck(DeviceFullInfo audioDevice) => audioDevice.Type == DataFlow.Render && Configuration.CustomSound != null && File.Exists(Configuration.CustomSound.FilePath);
 
-        private MemoryStream GetStreamCopy()
+    private MemoryStream GetStreamCopy()
+    {
+        lock (this)
         {
-            lock (this)
-            {
-                Configuration.DefaultSound.Position = 0;
-                var memoryStreamedSound = new MemoryStream();
-                Configuration.DefaultSound.CopyTo(memoryStreamedSound);
-                memoryStreamedSound.Position = 0;
-                return memoryStreamedSound;
-            }
+            Configuration.DefaultSound.Position = 0;
+            var memoryStreamedSound = new MemoryStream();
+            Configuration.DefaultSound.CopyTo(memoryStreamedSound);
+            memoryStreamedSound.Position = 0;
+            return memoryStreamedSound;
         }
     }
 }

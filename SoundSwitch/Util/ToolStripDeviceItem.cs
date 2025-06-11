@@ -19,21 +19,12 @@ using System.Windows.Forms;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Properties;
 
-namespace SoundSwitch.Util
+namespace SoundSwitch.Util;
+
+internal class ToolStripDeviceItem(EventHandler onClick, DeviceInfo audioDevice, bool isDefault)
+    : ToolStripMenuItem(audioDevice.NameClean, null, onClick)
 {
-    internal class ToolStripDeviceItem : ToolStripMenuItem
-    {
-        private readonly bool _isDefault;
+    public override Image Image => isDefault ? Resources.Check : null;
 
-        public ToolStripDeviceItem(EventHandler onClick, DeviceInfo audioDevice, bool isDefault)
-            : base(audioDevice.NameClean, null, onClick)
-        {
-            AudioDevice = audioDevice;
-            _isDefault = isDefault;
-        }
-
-        public override Image Image => _isDefault ? Resources.Check : null;
-
-        public DeviceInfo AudioDevice { get; }
-    }
+    public DeviceInfo AudioDevice { get; } = audioDevice;
 }

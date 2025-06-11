@@ -17,22 +17,21 @@ using System.Linq;
 using SoundSwitch.Framework.Factory;
 using SoundSwitch.Framework.NotificationManager.Notification;
 
-namespace SoundSwitch.Framework.NotificationManager
-{
-    public class NotificationFactory() : AbstractFactory<NotificationTypeEnum, INotification>(Notifications)
-    {
-        private static readonly IEnumImplList<NotificationTypeEnum, INotification> Notifications = new EnumImplList
-            <NotificationTypeEnum, INotification>
-            {
-                new NotificationNone(),
-                new NotificationBanner(),
-                new NotificationWindows(),
-                new NotificationSound()
-            };
+namespace SoundSwitch.Framework.NotificationManager;
 
-        protected override IReadOnlyDictionary<NotificationTypeEnum, INotification> DataSource()
+public class NotificationFactory() : AbstractFactory<NotificationTypeEnum, INotification>(Notifications)
+{
+    private static readonly IEnumImplList<NotificationTypeEnum, INotification> Notifications = new EnumImplList
+        <NotificationTypeEnum, INotification>
         {
-            return AllImplementations.Where(pair => pair.Value.IsAvailable()).ToDictionary(pair => pair.Key, pair => pair.Value);
-        }
+            new NotificationNone(),
+            new NotificationBanner(),
+            new NotificationWindows(),
+            new NotificationSound()
+        };
+
+    protected override IReadOnlyDictionary<NotificationTypeEnum, INotification> DataSource()
+    {
+        return AllImplementations.Where(pair => pair.Value.IsAvailable()).ToDictionary(pair => pair.Key, pair => pair.Value);
     }
 }

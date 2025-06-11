@@ -9,74 +9,60 @@ using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using Serilog;
 
-namespace SoundSwitch.Framework.Audio.Play
+namespace SoundSwitch.Framework.Audio.Play;
+
+public class PlaySoundJob([CanBeNull] string deviceId, [NotNull] CachedSound sound) : IJob
 {
-    public class PlaySoundJob : IJob
+    public async Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        [CanBeNull]
-        private readonly string _deviceId;
-
-        [NotNull]
-        private readonly CachedSound _sound;
-
-
-        public PlaySoundJob([CanBeNull] string deviceId, [NotNull] CachedSound sound)
+        try
         {
-            _deviceId = deviceId;
-            _sound = sound;
-        }
-
-        public async Task ExecuteAsync(CancellationToken cancellationToken)
-        {
-            try
+            using var semaphore = new SemaphoreSlim(0);
+            MMDevice device = null;
+            using var enumerator = new MMDeviceEnumerator();
+            if (deviceId != null)
             {
-                using var semaphore = new SemaphoreSlim(0);
-                MMDevice device = null;
-                using var enumerator = new MMDeviceEnumerator();
-                if (_deviceId != null)
+                device = enumerator.GetDevice(deviceId);
+            }
+
+            using var player = device == null ? new WasapiOut() : new WasapiOut(device, AudioClientShareMode.Shared, true, 200);
+            await using var waveStream = new CachedSoundWaveStream(sound);
+            player.Init(waveStream);
+
+            void PlayerOnPlaybackStopped(object o, StoppedEventArgs stoppedEventArgs)
+            {
+                try
                 {
-                    device = enumerator.GetDevice(_deviceId);
+                    semaphore.Release();
                 }
-
-                using var player = device == null ? new WasapiOut() : new WasapiOut(device, AudioClientShareMode.Shared, true, 200);
-                await using var waveStream = new CachedSoundWaveStream(_sound);
-                player.Init(waveStream);
-
-                void PlayerOnPlaybackStopped(object o, StoppedEventArgs stoppedEventArgs)
+                catch (ObjectDisposedException)
                 {
-                    try
-                    {
-                        semaphore.Release();
-                    }
-                    catch (ObjectDisposedException)
-                    {
-                        //Ignored
-                        //Already disposed, no need to release anything
-                    }
+                    //Ignored
+                    //Already disposed, no need to release anything
                 }
+            }
 
-                player.PlaybackStopped += PlayerOnPlaybackStopped;
-                player.Play();
-                await semaphore.WaitAsync(cancellationToken);
-                player.PlaybackStopped -= PlayerOnPlaybackStopped;
-            }
-            catch (TaskCanceledException)
-            {
-                //Ignored
-            }
+            player.PlaybackStopped += PlayerOnPlaybackStopped;
+            player.Play();
+            await semaphore.WaitAsync(cancellationToken);
+            player.PlaybackStopped -= PlayerOnPlaybackStopped;
         }
-
-        public Task OnFailure(JobException exception)
+        catch (TaskCanceledException)
         {
-            if (exception.InnerException is OperationCanceledException)
-            {
-                return Task.CompletedTask;
-            }
-            Log.ForContext<PlaySoundJob>().Warning(exception, "Can play sound");
+            //Ignored
+        }
+    }
+
+    public Task OnFailure(JobException exception)
+    {
+        if (exception.InnerException is OperationCanceledException)
+        {
             return Task.CompletedTask;
         }
-
-        public IRetryAction FailRule { get; } = new NoRetry();
-        public TimeSpan? MaxRuntime => TimeSpan.FromSeconds(30);
+        Log.ForContext<PlaySoundJob>().Warning(exception, "Can play sound");
+        return Task.CompletedTask;
     }
+
+    public IRetryAction FailRule { get; } = new NoRetry();
+    public TimeSpan? MaxRuntime => TimeSpan.FromSeconds(30);
 }

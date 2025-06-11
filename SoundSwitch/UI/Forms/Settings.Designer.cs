@@ -33,8 +33,8 @@ namespace SoundSwitch.UI.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
-            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
+            System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
+            System.Windows.Forms.ListViewGroup listViewGroup4 = new System.Windows.Forms.ListViewGroup("Selected", System.Windows.Forms.HorizontalAlignment.Center);
             startWithWindowsCheckBox = new System.Windows.Forms.CheckBox();
             closeButton = new System.Windows.Forms.Button();
             switchCommunicationDeviceCheckBox = new System.Windows.Forms.CheckBox();
@@ -87,6 +87,7 @@ namespace SoundSwitch.UI.Forms
             iconChangeChoicesComboBox = new System.Windows.Forms.ComboBox();
             troubleshootingTabPage = new System.Windows.Forms.TabPage();
             configFileGroupBox = new System.Windows.Forms.GroupBox();
+            importConfigFileButton = new System.Windows.Forms.Button();
             exportConfigFileButton = new System.Windows.Forms.Button();
             configFileLabel = new System.Windows.Forms.Label();
             exportLogFilesGroupBox = new System.Windows.Forms.GroupBox();
@@ -112,7 +113,6 @@ namespace SoundSwitch.UI.Forms
             muteHotKey = new SoundSwitch.UI.Component.HotKeyTextBox();
             muteHotKeyCheckbox = new System.Windows.Forms.CheckBox();
             switchDeviceLabel = new System.Windows.Forms.Label();
-            importConfigFileButton = new System.Windows.Forms.Button();
             tabControl.SuspendLayout();
             playbackTabPage.SuspendLayout();
             recordingTabPage.SuspendLayout();
@@ -201,10 +201,10 @@ namespace SoundSwitch.UI.Forms
             playbackListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             playbackListView.CheckBoxes = true;
             playbackListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            listViewGroup1.Header = "Selected";
-            listViewGroup1.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
-            listViewGroup1.Name = "selectedGroup";
-            playbackListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] { listViewGroup1 });
+            listViewGroup3.Header = "Selected";
+            listViewGroup3.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
+            listViewGroup3.Name = "selectedGroup";
+            playbackListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] { listViewGroup3 });
             playbackListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             playbackListView.Location = new System.Drawing.Point(3, 3);
             playbackListView.Name = "playbackListView";
@@ -230,10 +230,10 @@ namespace SoundSwitch.UI.Forms
             recordingListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             recordingListView.CheckBoxes = true;
             recordingListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            listViewGroup2.Header = "Selected";
-            listViewGroup2.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
-            listViewGroup2.Name = "selectedGroup";
-            recordingListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] { listViewGroup2 });
+            listViewGroup4.Header = "Selected";
+            listViewGroup4.HeaderAlignment = System.Windows.Forms.HorizontalAlignment.Center;
+            listViewGroup4.Name = "selectedGroup";
+            recordingListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] { listViewGroup4 });
             recordingListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             recordingListView.Location = new System.Drawing.Point(3, 3);
             recordingListView.Name = "recordingListView";
@@ -744,6 +744,17 @@ namespace SoundSwitch.UI.Forms
             configFileGroupBox.TabStop = false;
             configFileGroupBox.Text = "Configuration File";
             // 
+            // importConfigFileButton
+            // 
+            importConfigFileButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            importConfigFileButton.Location = new System.Drawing.Point(128, 117);
+            importConfigFileButton.Name = "importConfigFileButton";
+            importConfigFileButton.Size = new System.Drawing.Size(75, 23);
+            importConfigFileButton.TabIndex = 5;
+            importConfigFileButton.Text = "Import";
+            importConfigFileButton.UseVisualStyleBackColor = true;
+            importConfigFileButton.Click += ImportConfigFileButton_Click;
+            // 
             // exportConfigFileButton
             // 
             exportConfigFileButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
@@ -868,9 +879,10 @@ namespace SoundSwitch.UI.Forms
             // discordPictureBox
             // 
             discordPictureBox.Image = Properties.Resources.DiscordMarkBlue32;
-            discordPictureBox.Location = new System.Drawing.Point(126, 310);
+            discordPictureBox.Location = new System.Drawing.Point(112, 344);
             discordPictureBox.Name = "discordPictureBox";
-            discordPictureBox.Size = new System.Drawing.Size(32, 32);
+            discordPictureBox.Padding = new System.Windows.Forms.Padding(7);
+            discordPictureBox.Size = new System.Drawing.Size(46, 46);
             discordPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             discordPictureBox.TabIndex = 4;
             discordPictureBox.TabStop = false;
@@ -880,7 +892,7 @@ namespace SoundSwitch.UI.Forms
             donateLinkLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             donateLinkLabel.AutoSize = true;
             donateLinkLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            donateLinkLabel.Location = new System.Drawing.Point(164, 348);
+            donateLinkLabel.Location = new System.Drawing.Point(164, 408);
             donateLinkLabel.Name = "donateLinkLabel";
             donateLinkLabel.Size = new System.Drawing.Size(60, 21);
             donateLinkLabel.TabIndex = 2;
@@ -892,9 +904,10 @@ namespace SoundSwitch.UI.Forms
             // gitHubPictureBox
             // 
             gitHubPictureBox.Image = Properties.Resources.GitHubMark32;
-            gitHubPictureBox.Location = new System.Drawing.Point(126, 272);
+            gitHubPictureBox.Location = new System.Drawing.Point(112, 292);
             gitHubPictureBox.Name = "gitHubPictureBox";
-            gitHubPictureBox.Size = new System.Drawing.Size(32, 32);
+            gitHubPictureBox.Padding = new System.Windows.Forms.Padding(7);
+            gitHubPictureBox.Size = new System.Drawing.Size(46, 46);
             gitHubPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             gitHubPictureBox.TabIndex = 3;
             gitHubPictureBox.TabStop = false;
@@ -904,7 +917,7 @@ namespace SoundSwitch.UI.Forms
             gitHubHelpLinkLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             gitHubHelpLinkLabel.AutoSize = true;
             gitHubHelpLinkLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            gitHubHelpLinkLabel.Location = new System.Drawing.Point(164, 272);
+            gitHubHelpLinkLabel.Location = new System.Drawing.Point(164, 304);
             gitHubHelpLinkLabel.Name = "gitHubHelpLinkLabel";
             gitHubHelpLinkLabel.Size = new System.Drawing.Size(120, 21);
             gitHubHelpLinkLabel.TabIndex = 0;
@@ -928,7 +941,7 @@ namespace SoundSwitch.UI.Forms
             discordCommunityLinkLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             discordCommunityLinkLabel.AutoSize = true;
             discordCommunityLinkLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            discordCommunityLinkLabel.Location = new System.Drawing.Point(164, 310);
+            discordCommunityLinkLabel.Location = new System.Drawing.Point(164, 356);
             discordCommunityLinkLabel.Name = "discordCommunityLinkLabel";
             discordCommunityLinkLabel.Size = new System.Drawing.Size(149, 21);
             discordCommunityLinkLabel.TabIndex = 1;
@@ -940,9 +953,10 @@ namespace SoundSwitch.UI.Forms
             // donatePictureBox
             // 
             donatePictureBox.Image = Properties.Resources.Heart32;
-            donatePictureBox.Location = new System.Drawing.Point(126, 348);
+            donatePictureBox.Location = new System.Drawing.Point(112, 396);
             donatePictureBox.Name = "donatePictureBox";
-            donatePictureBox.Size = new System.Drawing.Size(32, 32);
+            donatePictureBox.Padding = new System.Windows.Forms.Padding(7);
+            donatePictureBox.Size = new System.Drawing.Size(46, 46);
             donatePictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             donatePictureBox.TabIndex = 5;
             donatePictureBox.TabStop = false;
@@ -977,7 +991,7 @@ namespace SoundSwitch.UI.Forms
             // 
             toggleMuteLabel.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             toggleMuteLabel.AutoSize = true;
-            toggleMuteLabel.Location = new System.Drawing.Point(441, 500);
+            toggleMuteLabel.Location = new System.Drawing.Point(330, 500);
             toggleMuteLabel.Name = "toggleMuteLabel";
             toggleMuteLabel.Size = new System.Drawing.Size(73, 15);
             toggleMuteLabel.TabIndex = 22;
@@ -987,7 +1001,7 @@ namespace SoundSwitch.UI.Forms
             // muteHotKey
             // 
             muteHotKey.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            muteHotKey.Location = new System.Drawing.Point(441, 519);
+            muteHotKey.Location = new System.Drawing.Point(330, 519);
             muteHotKey.Name = "muteHotKey";
             muteHotKey.Size = new System.Drawing.Size(138, 23);
             muteHotKey.TabIndex = 24;
@@ -998,7 +1012,7 @@ namespace SoundSwitch.UI.Forms
             // 
             muteHotKeyCheckbox.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             muteHotKeyCheckbox.AutoSize = true;
-            muteHotKeyCheckbox.Location = new System.Drawing.Point(585, 522);
+            muteHotKeyCheckbox.Location = new System.Drawing.Point(474, 522);
             muteHotKeyCheckbox.Name = "muteHotKeyCheckbox";
             muteHotKeyCheckbox.Size = new System.Drawing.Size(100, 19);
             muteHotKeyCheckbox.TabIndex = 23;
@@ -1016,17 +1030,6 @@ namespace SoundSwitch.UI.Forms
             switchDeviceLabel.TabIndex = 25;
             switchDeviceLabel.Text = "Switch device";
             switchDeviceLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // importConfigFileButton
-            // 
-            importConfigFileButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            importConfigFileButton.Location = new System.Drawing.Point(128, 117);
-            importConfigFileButton.Name = "importConfigFileButton";
-            importConfigFileButton.Size = new System.Drawing.Size(75, 23);
-            importConfigFileButton.TabIndex = 5;
-            importConfigFileButton.Text = "Import";
-            importConfigFileButton.UseVisualStyleBackColor = true;
-            importConfigFileButton.Click += ImportConfigFileButton_Click;
             // 
             // SettingsForm
             // 

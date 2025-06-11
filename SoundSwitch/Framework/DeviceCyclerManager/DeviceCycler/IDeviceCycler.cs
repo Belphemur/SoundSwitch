@@ -16,20 +16,19 @@ using NAudio.CoreAudioApi;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Factory;
 
-namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler
-{
-    public interface IDeviceCycler : IEnumImpl<DeviceCyclerTypeEnum>
-    {
-        /// <summary>
-        /// Cycle the audio device for the given type
-        /// </summary>
-        /// <param name="type"></param>
-        bool CycleAudioDevice(DataFlow type);
+namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler;
 
-        /// <summary>
-        ///     Attempts to set active device to the specified name
-        /// </summary>
-        /// <param name="device"></param>
-        bool SetActiveDevice(DeviceInfo device);
-    }
+public interface IDeviceCycler : IEnumImpl<DeviceCyclerTypeEnum>
+{
+    /// <summary>
+    /// Cycle the audio device for the given type
+    /// </summary>
+    /// <param name="type"></param>
+    bool CycleAudioDevice(DataFlow type);
+
+    /// <summary>
+    ///     Attempts to set active device to the specified name
+    /// </summary>
+    /// <param name="device"></param>
+    bool SetActiveDevice(DeviceInfo device);
 }

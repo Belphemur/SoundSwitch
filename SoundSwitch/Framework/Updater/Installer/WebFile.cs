@@ -20,135 +20,123 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Serilog;
 
-namespace SoundSwitch.Framework.Updater.Installer
+namespace SoundSwitch.Framework.Updater.Installer;
+
+public class WebFile
 {
-    public class WebFile
-    {
-        private static readonly string UserAgent =
-            $"Mozilla/5.0 (compatible; {Environment.OSVersion.Platform} {Environment.OSVersion.VersionString}; {Application.ProductName}/{Application.ProductVersion};)";
+    private static readonly string UserAgent =
+        $"Mozilla/5.0 (compatible; {Environment.OSVersion.Platform} {Environment.OSVersion.VersionString}; {Application.ProductName}/{Application.ProductVersion};)";
 
-        public WebFile(Uri fileUri) : this(fileUri, DefaultFilePath(fileUri))
+    public WebFile(Uri fileUri) : this(fileUri, DefaultFilePath(fileUri))
+    {
+    }
+
+    public WebFile(Uri fileUri, string filePath)
+    {
+        if (fileUri == null || filePath == null)
         {
+            throw new ArgumentNullException();
         }
 
-        public WebFile(Uri fileUri, string filePath)
+        FileUri = fileUri;
+        FilePath = filePath;
+    }
+
+
+    public Uri FileUri { get; }
+    public string FilePath { get; }
+    public bool DownloadStarted { get; private set; }
+
+    private static string DefaultFilePath(Uri fileUri)
+    {
+        var fi = new FileInfo(fileUri.AbsolutePath);
+        return Path.Combine(Path.GetTempPath(), fi.Name);
+    }
+
+    public event EventHandler<EventArgs> Downloaded;
+    public event EventHandler<EventArgs> Cancelled;
+    public event EventHandler<DownloadFailEvent> DownloadFailed;
+    public event EventHandler<DownloadProgress> DownloadProgress;
+
+    private readonly CancellationTokenSource _cancellationTokenSource = new();
+
+
+    public bool Exists()
+    {
+        return File.Exists(FilePath);
+    }
+
+    public void Delete()
+    {
+        File.Delete(FilePath);
+    }
+
+    public Process Start(string args = null)
+    {
+        if (!Exists())
         {
-            if (fileUri == null || filePath == null)
+            throw new InvalidOperationException("The file to be run doesn't exists");
+        }
+
+        return args != null ? Process.Start(FilePath, args) : Process.Start(FilePath);
+    }
+
+    public void DownloadFile()
+    {
+        Task.Factory.StartNew(async () =>
+        {
+            try
             {
-                throw new ArgumentNullException();
+                await using (var stream = File.Open(FilePath, FileMode.Create))
+                {
+                    DownloadStarted = true;
+                    await FileDownloader.DownloadFileAsync(
+                        FileUri,
+                        stream,
+                        (downloaded, total) => { DownloadProgress?.Invoke(this, new DownloadProgress(downloaded, total)); }, _cancellationTokenSource.Token);
+                }
+
+                if (Exists())
+                {
+                    Downloaded?.Invoke(this, new EventArgs());
+                }
             }
-
-            FileUri = fileUri;
-            FilePath = filePath;
-        }
-
-
-        public Uri FileUri { get; }
-        public string FilePath { get; }
-        public bool DownloadStarted { get; private set; }
-
-        private static string DefaultFilePath(Uri fileUri)
-        {
-            var fi = new FileInfo(fileUri.AbsolutePath);
-            return Path.Combine(Path.GetTempPath(), fi.Name);
-        }
-
-        public event EventHandler<EventArgs> Downloaded;
-        public event EventHandler<EventArgs> Cancelled;
-        public event EventHandler<DownloadFailEvent> DownloadFailed;
-        public event EventHandler<DownloadProgress> DownloadProgress;
-
-        private readonly CancellationTokenSource _cancellationTokenSource = new();
-
-
-        public bool Exists()
-        {
-            return File.Exists(FilePath);
-        }
-
-        public void Delete()
-        {
-            File.Delete(FilePath);
-        }
-
-        public Process Start(string args = null)
-        {
-            if (!Exists())
+            catch (OperationCanceledException)
             {
-                throw new InvalidOperationException("The file to be run doesn't exists");
+                if (Exists())
+                {
+                    Delete();
+                }
+
+                Cancelled?.Invoke(this, new EventArgs());
             }
-
-            return args != null ? Process.Start(FilePath, args) : Process.Start(FilePath);
-        }
-
-        public void DownloadFile()
-        {
-            Task.Factory.StartNew(async () =>
+            catch (Exception e)
             {
-                try
-                {
-                    await using (var stream = File.Open(FilePath, FileMode.Create))
-                    {
-                        DownloadStarted = true;
-                        await FileDownloader.DownloadFileAsync(
-                            FileUri,
-                            stream,
-                            (downloaded, total) => { DownloadProgress?.Invoke(this, new DownloadProgress(downloaded, total)); }, _cancellationTokenSource.Token);
-                    }
-
-                    if (Exists())
-                    {
-                        Downloaded?.Invoke(this, new EventArgs());
-                    }
-                }
-                catch (OperationCanceledException)
-                {
-                    if (Exists())
-                    {
-                        Delete();
-                    }
-
-                    Cancelled?.Invoke(this, new EventArgs());
-                }
-                catch (Exception e)
-                {
-                    Log.Error(e, "Problem downloading file {file}:{url}", FilePath, FileUri);
-                    DownloadFailed?.Invoke(this, new DownloadFailEvent(e));
-                }
-            });
-        }
-
-        public void CancelDownload()
-        {
-            _cancellationTokenSource.Cancel();
-        }
-
-        public override string ToString()
-        {
-            return $"FileUri: {FileUri}, FilePath: {FilePath}";
-        }
+                Log.Error(e, "Problem downloading file {file}:{url}", FilePath, FileUri);
+                DownloadFailed?.Invoke(this, new DownloadFailEvent(e));
+            }
+        });
     }
 
-    public class DownloadProgress : EventArgs
+    public void CancelDownload()
     {
-        public long TotalBytes { get; }
-        public long DownloadedBytes { get; }
-        public double Percentage => (double) DownloadedBytes * 100 / TotalBytes;
-
-        public DownloadProgress(long downloadedBytes, long totalBytes)
-        {
-            TotalBytes = totalBytes;
-            DownloadedBytes = downloadedBytes;
-        }
+        _cancellationTokenSource.Cancel();
     }
 
-    public class DownloadFailEvent : EventArgs
+    public override string ToString()
     {
-        public DownloadFailEvent(Exception exception)
-        {
-            Exception = exception;
-        }
-
-        public Exception Exception { get; set; }
+        return $"FileUri: {FileUri}, FilePath: {FilePath}";
     }
+}
+
+public class DownloadProgress(long downloadedBytes, long totalBytes) : EventArgs
+{
+    public long TotalBytes { get; } = totalBytes;
+    public long DownloadedBytes { get; } = downloadedBytes;
+    public double Percentage => (double) DownloadedBytes * 100 / TotalBytes;
+}
+
+public class DownloadFailEvent(Exception exception) : EventArgs
+{
+    public Exception Exception { get; set; } = exception;
 }

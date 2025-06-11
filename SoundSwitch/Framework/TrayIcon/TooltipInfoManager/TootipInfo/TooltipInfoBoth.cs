@@ -14,31 +14,30 @@
 
 using SoundSwitch.Localization;
 
-namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo
+namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
+
+public class TooltipInfoBoth : ITooltipInfo
 {
-    public class TooltipInfoBoth : ITooltipInfo
+    private readonly TooltipInfoRecording _tooltipInfoRecording = new();
+    private readonly TooltipInfoPlayback _tooltipInfoPlayback = new();
+
+    public TooltipInfoTypeEnum TypeEnum => TooltipInfoTypeEnum.Both;
+    public string Label => SettingsStrings.tooltipOnHover_option_bothDevices;
+
+    /// <summary>
+    /// The text to display for this ToolTip
+    /// </summary>
+    /// <returns></returns>
+    public string TextToDisplay()
     {
-        private readonly TooltipInfoRecording _tooltipInfoRecording = new();
-        private readonly TooltipInfoPlayback _tooltipInfoPlayback = new();
+        var playbackToDisplay = _tooltipInfoPlayback.TextToDisplay();
+        var recordingToDisplay = _tooltipInfoRecording.TextToDisplay();
 
-        public TooltipInfoTypeEnum TypeEnum => TooltipInfoTypeEnum.Both;
-        public string Label => SettingsStrings.tooltipOnHover_option_bothDevices;
+        if (playbackToDisplay == null || recordingToDisplay == null)
+            return null;
 
-        /// <summary>
-        /// The text to display for this ToolTip
-        /// </summary>
-        /// <returns></returns>
-        public string TextToDisplay()
-        {
-            var playbackToDisplay = _tooltipInfoPlayback.TextToDisplay();
-            var recordingToDisplay = _tooltipInfoRecording.TextToDisplay();
-
-            if (playbackToDisplay == null || recordingToDisplay == null)
-                return null;
-
-            return string.Concat(playbackToDisplay, "\n", recordingToDisplay);
-        }
-
-        public override string ToString() => Label;
+        return string.Concat(playbackToDisplay, "\n", recordingToDisplay);
     }
+
+    public override string ToString() => Label;
 }

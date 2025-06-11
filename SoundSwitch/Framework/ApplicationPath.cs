@@ -16,40 +16,39 @@ using System;
 using System.IO;
 using System.Windows.Forms;
 
-namespace SoundSwitch.Framework
+namespace SoundSwitch.Framework;
+
+public static class ApplicationPath
 {
-    public static class ApplicationPath
-    {
-        /// <summary>
-        /// Application data directory
-        /// </summary>
-        public static string AppData { get; } = Environment.GetFolderPath(
-            Environment.SpecialFolder.ApplicationData);
+    /// <summary>
+    /// Application data directory
+    /// </summary>
+    public static string AppData { get; } = Environment.GetFolderPath(
+        Environment.SpecialFolder.ApplicationData);
 
-        /// <summary>
-        /// Path where the application store its file like the configuration.
-        /// </summary>
-        public static string Default { get; } = Path.Combine(AppData, Application.ProductName);
+    /// <summary>
+    /// Path where the application store its file like the configuration.
+    /// </summary>
+    public static string Default { get; } = Path.Combine(AppData, Application.ProductName);
 
-        /// <summary>
-        /// Path where the application store the logs
-        /// </summary>
-        public static string Logs { get; } = Path.Combine(Default, "Logs");
+    /// <summary>
+    /// Path where the application store the logs
+    /// </summary>
+    public static string Logs { get; } = Path.Combine(Default, "Logs");
 
-        /// <summary>
-        /// Where the application is installed
-        /// </summary>
-        public static string InstallDirectory { get; } =
-            Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
+    /// <summary>
+    /// Where the application is installed
+    /// </summary>
+    public static string InstallDirectory { get; } =
+        Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
 
-        /// <summary>
-        /// Where is the image to be used for toast
-        /// </summary>
-        public static string DefaultImagePath { get; } = Path.Combine(InstallDirectory, "img", "soundSwitched.png");
+    /// <summary>
+    /// Where is the image to be used for toast
+    /// </summary>
+    public static string DefaultImagePath { get; } = Path.Combine(InstallDirectory, "img", "soundSwitched.png");
 
-        /// <summary>
-        /// Application Executable Path
-        /// </summary>
-        public static string Executable { get; } = Application.ExecutablePath.Replace(".dll", ".exe");
-    }
+    /// <summary>
+    /// Application Executable Path
+    /// </summary>
+    public static string Executable { get; } = Application.ExecutablePath.Replace(".dll", ".exe");
 }

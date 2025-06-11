@@ -20,35 +20,34 @@ using SoundSwitch.Common.Framework.Audio.Collection;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio.Lister;
 
-namespace SoundSwitch.Model
+namespace SoundSwitch.Model;
+
+public interface IAudioDeviceLister : IDisposable
 {
-    public interface IAudioDeviceLister : IDisposable
-    {
 
-        bool Refreshing { get; }
-        IObservable<DefaultDevicePayload> DefaultDeviceChanged { get; }
+    bool Refreshing { get; }
+    IObservable<DefaultDevicePayload> DefaultDeviceChanged { get; }
 
-        /// <summary>
-        /// Observable that emits when a device's volume or mute state changes
-        /// </summary>
-        IObservable<DeviceVolumeChangedPayload> DeviceVolumeChanged { get; }
+    /// <summary>
+    /// Observable that emits when a device's volume or mute state changes
+    /// </summary>
+    IObservable<DeviceVolumeChangedPayload> DeviceVolumeChanged { get; }
 
-        void Refresh(CancellationToken token);
+    void Refresh(CancellationToken token);
 
-        /// <summary>
-        /// Get devices per type and state
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="state"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
-        DeviceReadOnlyCollection<DeviceFullInfo> GetDevices(DataFlow type, DeviceState state);
+    /// <summary>
+    /// Get devices per type and state
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="state"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    DeviceReadOnlyCollection<DeviceFullInfo> GetDevices(DataFlow type, DeviceState state);
 
-        /// <summary>
-        /// Process device updates
-        /// </summary>
-        /// <param name="deviceChangedEvents"></param>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
-        void ProcessDeviceUpdates(IEnumerable<DeviceChangedEvent> deviceChangedEvents);
-    }
+    /// <summary>
+    /// Process device updates
+    /// </summary>
+    /// <param name="deviceChangedEvents"></param>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    void ProcessDeviceUpdates(IEnumerable<DeviceChangedEvent> deviceChangedEvents);
 }

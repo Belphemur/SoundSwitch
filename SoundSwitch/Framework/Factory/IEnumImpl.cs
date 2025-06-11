@@ -14,18 +14,17 @@
 
 using System;
 
-namespace SoundSwitch.Framework.Factory
-{
-    public interface IEnumImpl<out TEnum> where TEnum : Enum, IConvertible
-    {
-        /// <summary>
-        ///     Type of the Tooltip Info
-        /// </summary>
-        TEnum TypeEnum { get; }
+namespace SoundSwitch.Framework.Factory;
 
-        /// <summary>
-        ///     Displaying label
-        /// </summary>
-        string Label { get; }
-    }
+public interface IEnumImpl<out TEnum> where TEnum : Enum, IConvertible
+{
+    /// <summary>
+    ///     Type of the Tooltip Info
+    /// </summary>
+    TEnum TypeEnum { get; }
+
+    /// <summary>
+    ///     Displaying label
+    /// </summary>
+    string Label { get; }
 }
