@@ -640,4 +640,7 @@ Vill du starta om nu?</value>
   <data name="importConfigErrorDeserializationFailed" xml:space="preserve">
     <value>Misslyckades med att avserialisering av konfigurationsfilen '{0}'. Fel: {1}</value>
   </data>
+  <data name="switchProfile" xml:space="preserve">
+    <value>Växla profil</value>
+  </data>
 </root>
