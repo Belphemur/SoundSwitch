@@ -79,13 +79,13 @@ public sealed partial class SettingsForm : Form
         hotKeyControl.HotKey = AppConfigs.Configuration.PlaybackHotKey;
         hotKeyControl.Tag =
             new Tuple<HotKeyAction, HotKey>(HotKeyAction.Playback, AppConfigs.Configuration.PlaybackHotKey);
-        hotKeyControl.Enabled = hotkeysCheckBox.Checked = AppConfigs.Configuration.PlaybackHotKey.Enabled;
+        hotKeyControl.Enabled = hotKeyCheckBox.Checked = AppConfigs.Configuration.PlaybackHotKey.Enabled;
 
         muteHotKey.HotKey = AppConfigs.Configuration.MuteRecordingHotKey;
         muteHotKey.Tag = new Tuple<HotKeyAction, HotKey>(HotKeyAction.Mute, AppConfigs.Configuration.MuteRecordingHotKey);
-        muteHotKey.Enabled = muteHotKeyCheckbox.Checked = AppConfigs.Configuration.MuteRecordingHotKey.Enabled;
+        muteHotKey.Enabled = muteHotKeyCheckBox.Checked = AppConfigs.Configuration.MuteRecordingHotKey.Enabled;
 
-        new ToolTip().SetToolTip(hotkeysCheckBox, SettingsStrings.hotkey_tooltip);
+        new ToolTip().SetToolTip(hotKeyCheckBox, SettingsStrings.hotkey_tooltip);
 
         // Settings - Basic
         startWithWindowsCheckBox.Checked = AppModel.Instance.RunAtStartup;
@@ -186,7 +186,7 @@ public sealed partial class SettingsForm : Form
         languageComboBox.SelectedValue = AppModel.Instance.Language;
 
         muteHotKey.Visible = false;
-        muteHotKeyCheckbox.Visible = false;
+        muteHotKeyCheckBox.Visible = false;
         toggleMuteLabel.Visible = false;
 
         telemetryCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.Telemetry), false, DataSourceUpdateMode.OnPropertyChanged);
@@ -384,11 +384,11 @@ public sealed partial class SettingsForm : Form
         donateLinkLabel.Text = SettingsStrings.link_donate;
 
         // Misc
-        hotkeysCheckBox.Text = SettingsStrings.hotkeyEnabled;
+        hotKeyCheckBox.Text = SettingsStrings.hotkeyEnabled;
         closeButton.Text = SettingsStrings.buttonClose;
         switchDeviceLabel.Text = SettingsStrings.switchDevice;
         toggleMuteLabel.Text = SettingsStrings.mute_toggle_label;
-        muteHotKeyCheckbox.Text = SettingsStrings.hotkeyEnabled;
+        muteHotKeyCheckBox.Text = SettingsStrings.hotkeyEnabled;
 
         addProfileButton.Image = Resources.profile_menu_add;
         editProfileButton.Image = Resources.profile_menu_edit;
@@ -405,43 +405,35 @@ public sealed partial class SettingsForm : Form
         var tabControlSender = (TabControl)sender;
         if (tabControlSender.SelectedTab == playbackTabPage)
         {
-            SetHotkeysFieldsVisibility(true);
+            SetHotKeyFieldsVisibility(true, false);
             hotKeyControl.HotKey = AppConfigs.Configuration.PlaybackHotKey;
             hotKeyControl.Tag =
                 new Tuple<HotKeyAction, HotKey>(HotKeyAction.Playback, AppConfigs.Configuration.PlaybackHotKey);
-            hotkeysCheckBox.Checked = AppConfigs.Configuration.PlaybackHotKey.Enabled;
-            muteHotKey.Visible = false;
-            muteHotKeyCheckbox.Visible = false;
-            switchDeviceLabel.Visible = true;
-            toggleMuteLabel.Visible = false;
+            hotKeyCheckBox.Checked = AppConfigs.Configuration.PlaybackHotKey.Enabled;
         }
         else if (tabControlSender.SelectedTab == recordingTabPage)
         {
-            SetHotkeysFieldsVisibility(true);
+            SetHotKeyFieldsVisibility(true, true);
             hotKeyControl.HotKey = AppConfigs.Configuration.RecordingHotKey;
             hotKeyControl.Tag =
                 new Tuple<HotKeyAction, HotKey>(HotKeyAction.Recording, AppConfigs.Configuration.RecordingHotKey);
-            hotkeysCheckBox.Checked = AppConfigs.Configuration.RecordingHotKey.Enabled;
-
-            muteHotKey.Visible = true;
-            muteHotKeyCheckbox.Visible = true;
-            switchDeviceLabel.Visible = true;
-            toggleMuteLabel.Visible = true;
+            hotKeyCheckBox.Checked = AppConfigs.Configuration.RecordingHotKey.Enabled;
         }
         else
         {
-            muteHotKey.Visible = false;
-            muteHotKeyCheckbox.Visible = false;
-            switchDeviceLabel.Visible = false;
-            toggleMuteLabel.Visible = false;
-            SetHotkeysFieldsVisibility(false);
+            SetHotKeyFieldsVisibility(false, false);
         }
     }
 
-    private void SetHotkeysFieldsVisibility(bool visibility)
+    private void SetHotKeyFieldsVisibility(bool switchHotKeyVisibility, bool muteHotKeyVisibility)
     {
-        hotkeysCheckBox.Visible = visibility;
-        hotKeyControl.Visible = visibility;
+        hotKeyControl.Visible = switchHotKeyVisibility;
+        hotKeyCheckBox.Visible = switchHotKeyVisibility;
+        switchDeviceLabel.Visible = switchHotKeyVisibility;
+
+        muteHotKey.Visible = muteHotKeyVisibility;
+        muteHotKeyCheckBox.Visible = muteHotKeyVisibility;
+        toggleMuteLabel.Visible = muteHotKeyVisibility;
     }
 
     private void SelectSoundFileDialogOnFileOk(object sender, CancelEventArgs cancelEventArgs)
@@ -465,12 +457,12 @@ public sealed partial class SettingsForm : Form
         deleteSoundButton.Visible = supportCustomSound && AppModel.Instance.CustomNotificationSound != null;
     }
 
-    private void HotkeysCheckbox_CheckedChanged(object sender, EventArgs e)
+    private void HotKeyCheckBox_CheckedChanged(object sender, EventArgs e)
     {
         ForceSetHotkeys(sender, hotKeyControl);
     }
 
-    private void MuteHotKeyCheckbox_CheckedChanged(object sender, EventArgs e)
+    private void MuteHotKeyCheckBox_CheckedChanged(object sender, EventArgs e)
     {
         ForceSetHotkeys(sender, muteHotKey);
     }

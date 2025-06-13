@@ -107,11 +107,11 @@ namespace SoundSwitch.UI.Forms
             discordCommunityLinkLabel = new System.Windows.Forms.LinkLabel();
             donatePictureBox = new System.Windows.Forms.PictureBox();
             selectSoundFileDialog = new System.Windows.Forms.OpenFileDialog();
-            hotkeysCheckBox = new System.Windows.Forms.CheckBox();
+            hotKeyCheckBox = new System.Windows.Forms.CheckBox();
             hotKeyControl = new SoundSwitch.UI.Component.HotKeyTextBox();
             toggleMuteLabel = new System.Windows.Forms.Label();
             muteHotKey = new SoundSwitch.UI.Component.HotKeyTextBox();
-            muteHotKeyCheckbox = new System.Windows.Forms.CheckBox();
+            muteHotKeyCheckBox = new System.Windows.Forms.CheckBox();
             switchDeviceLabel = new System.Windows.Forms.Label();
             tabControl.SuspendLayout();
             playbackTabPage.SuspendLayout();
@@ -965,17 +965,17 @@ namespace SoundSwitch.UI.Forms
             // 
             selectSoundFileDialog.FileName = "customSound";
             // 
-            // hotkeysCheckBox
+            // hotKeyCheckBox
             // 
-            hotkeysCheckBox.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            hotkeysCheckBox.AutoSize = true;
-            hotkeysCheckBox.Location = new System.Drawing.Point(163, 522);
-            hotkeysCheckBox.Name = "hotkeysCheckBox";
-            hotkeysCheckBox.Size = new System.Drawing.Size(100, 19);
-            hotkeysCheckBox.TabIndex = 20;
-            hotkeysCheckBox.Text = "Enable hotkey";
-            hotkeysCheckBox.UseVisualStyleBackColor = true;
-            hotkeysCheckBox.CheckedChanged += HotkeysCheckbox_CheckedChanged;
+            hotKeyCheckBox.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            hotKeyCheckBox.AutoSize = true;
+            hotKeyCheckBox.Location = new System.Drawing.Point(163, 522);
+            hotKeyCheckBox.Name = "hotKeyCheckBox";
+            hotKeyCheckBox.Size = new System.Drawing.Size(100, 19);
+            hotKeyCheckBox.TabIndex = 20;
+            hotKeyCheckBox.Text = "Enable hotkey";
+            hotKeyCheckBox.UseVisualStyleBackColor = true;
+            hotKeyCheckBox.CheckedChanged += HotKeyCheckBox_CheckedChanged;
             // 
             // hotKeyControl
             // 
@@ -1008,17 +1008,17 @@ namespace SoundSwitch.UI.Forms
             muteHotKey.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             muteHotKey.HotKeyChanged += HotKeyControl_HotKeyChanged;
             // 
-            // muteHotKeyCheckbox
+            // muteHotKeyCheckBox
             // 
-            muteHotKeyCheckbox.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            muteHotKeyCheckbox.AutoSize = true;
-            muteHotKeyCheckbox.Location = new System.Drawing.Point(474, 522);
-            muteHotKeyCheckbox.Name = "muteHotKeyCheckbox";
-            muteHotKeyCheckbox.Size = new System.Drawing.Size(100, 19);
-            muteHotKeyCheckbox.TabIndex = 23;
-            muteHotKeyCheckbox.Text = "Enable hotkey";
-            muteHotKeyCheckbox.UseVisualStyleBackColor = true;
-            muteHotKeyCheckbox.CheckedChanged += MuteHotKeyCheckbox_CheckedChanged;
+            muteHotKeyCheckBox.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            muteHotKeyCheckBox.AutoSize = true;
+            muteHotKeyCheckBox.Location = new System.Drawing.Point(474, 522);
+            muteHotKeyCheckBox.Name = "muteHotKeyCheckBox";
+            muteHotKeyCheckBox.Size = new System.Drawing.Size(100, 19);
+            muteHotKeyCheckBox.TabIndex = 23;
+            muteHotKeyCheckBox.Text = "Enable hotkey";
+            muteHotKeyCheckBox.UseVisualStyleBackColor = true;
+            muteHotKeyCheckBox.CheckedChanged += MuteHotKeyCheckBox_CheckedChanged;
             // 
             // switchDeviceLabel
             // 
@@ -1039,10 +1039,10 @@ namespace SoundSwitch.UI.Forms
             ClientSize = new System.Drawing.Size(779, 554);
             Controls.Add(switchDeviceLabel);
             Controls.Add(muteHotKey);
-            Controls.Add(muteHotKeyCheckbox);
+            Controls.Add(muteHotKeyCheckBox);
             Controls.Add(toggleMuteLabel);
             Controls.Add(hotKeyControl);
-            Controls.Add(hotkeysCheckBox);
+            Controls.Add(hotKeyCheckBox);
             Controls.Add(tabControl);
             Controls.Add(closeButton);
             MinimumSize = new System.Drawing.Size(795, 560);
@@ -1091,7 +1091,7 @@ namespace SoundSwitch.UI.Forms
         private System.Windows.Forms.Button editProfileButton;
         private System.Windows.Forms.CheckBox foregroundAppCheckbox;
         private SoundSwitch.UI.Component.HotKeyTextBox hotKeyControl;
-        private System.Windows.Forms.CheckBox hotkeysCheckBox;
+        private System.Windows.Forms.CheckBox hotKeyCheckBox;
         private System.Windows.Forms.ComboBox iconChangeChoicesComboBox;
         private System.Windows.Forms.Label iconChangeLabel;
         private System.Windows.Forms.CheckBox includeBetaVersionsCheckBox;
@@ -1120,7 +1120,7 @@ namespace SoundSwitch.UI.Forms
         private System.Windows.Forms.CheckBox usePrimaryScreenCheckbox;
         private System.Windows.Forms.Label toggleMuteLabel;
         private Component.HotKeyTextBox muteHotKey;
-        private System.Windows.Forms.CheckBox muteHotKeyCheckbox;
+        private System.Windows.Forms.CheckBox muteHotKeyCheckBox;
         private System.Windows.Forms.CheckBox telemetryCheckbox;
         private System.Windows.Forms.CheckBox quickMenuCheckbox;
         private System.Windows.Forms.CheckBox keepVolumeCheckbox;

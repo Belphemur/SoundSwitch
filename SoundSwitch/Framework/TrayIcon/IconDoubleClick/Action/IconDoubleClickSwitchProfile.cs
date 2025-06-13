@@ -1,3 +1,4 @@
+
 ﻿using SoundSwitch.Localization;
 
 namespace SoundSwitch.Framework.TrayIcon.IconDoubleClick.Action;
