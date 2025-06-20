@@ -406,23 +406,24 @@ public sealed partial class SettingsForm : Form
         if (tabControlSender.SelectedTab == playbackTabPage)
         {
             SetHotKeyFieldsVisibility(true, false);
-            hotKeyControl.HotKey = AppConfigs.Configuration.PlaybackHotKey;
-            hotKeyControl.Tag =
-                new Tuple<HotKeyAction, HotKey>(HotKeyAction.Playback, AppConfigs.Configuration.PlaybackHotKey);
-            hotKeyCheckBox.Checked = AppConfigs.Configuration.PlaybackHotKey.Enabled;
+            SetHotKeyValues(AppConfigs.Configuration.PlaybackHotKey, HotKeyAction.Playback);
         }
         else if (tabControlSender.SelectedTab == recordingTabPage)
         {
             SetHotKeyFieldsVisibility(true, true);
-            hotKeyControl.HotKey = AppConfigs.Configuration.RecordingHotKey;
-            hotKeyControl.Tag =
-                new Tuple<HotKeyAction, HotKey>(HotKeyAction.Recording, AppConfigs.Configuration.RecordingHotKey);
-            hotKeyCheckBox.Checked = AppConfigs.Configuration.RecordingHotKey.Enabled;
+            SetHotKeyValues(AppConfigs.Configuration.RecordingHotKey, HotKeyAction.Recording);
         }
         else
         {
             SetHotKeyFieldsVisibility(false, false);
         }
+    }
+
+    private void SetHotKeyValues(HotKey hotkey, HotKeyAction action)
+    {
+        hotKeyControl.HotKey = hotkey;
+        hotKeyControl.Tag = new Tuple<HotKeyAction, HotKey>(action, hotkey);
+        hotKeyCheckBox.Checked = hotkey.Enabled;
     }
 
     private void SetHotKeyFieldsVisibility(bool switchHotKeyVisibility, bool muteHotKeyVisibility)
