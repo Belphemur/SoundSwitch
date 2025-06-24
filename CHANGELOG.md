@@ -1,3 +1,20 @@
+## [6.14.2-beta.1](https://github.com/Belphemur/SoundSwitch/compare/v6.14.1...v6.14.2-beta.1) (2025-06-24)
+
+### Languages
+
+* **Amharic:** Translated About using Weblate ([1e0cf10](https://github.com/Belphemur/SoundSwitch/commit/1e0cf10e28971235c1cb1873b6b7bb9ec5c8bae6))
+* **Danish:** Translated Settings using Weblate ([fa13761](https://github.com/Belphemur/SoundSwitch/commit/fa137614ebebcce46f51fef4ab8f929b6fe67287))
+* **Danish:** Translated Tray Icon using Weblate ([2a589e1](https://github.com/Belphemur/SoundSwitch/commit/2a589e1e17ce7efe835562cd9c291cd8c72167b4))
+* **Danish:** Translated Update Download using Weblate ([4324bf6](https://github.com/Belphemur/SoundSwitch/commit/4324bf6ffb498526b7d3ba91351d583ae9df5c1b))
+* **French:** Translated Settings using Weblate ([cfa5014](https://github.com/Belphemur/SoundSwitch/commit/cfa5014d9cc51f56598c52058afdc413a0742070))
+* **Japanese:** Translated Settings using Weblate ([58caf63](https://github.com/Belphemur/SoundSwitch/commit/58caf63d9054aa459fba9e627e7cd7e50ffaf8c4))
+* **Japanese:** Translated Settings using Weblate ([56f8417](https://github.com/Belphemur/SoundSwitch/commit/56f8417374174cec431666782614b6e5972b313b))
+* **Norwegian Bokmål:** Translated Settings using Weblate ([bfeda5d](https://github.com/Belphemur/SoundSwitch/commit/bfeda5db8ea3288cab956803fabd189e35517748))
+* **Polish:** Translated Settings using Weblate ([ed920f6](https://github.com/Belphemur/SoundSwitch/commit/ed920f604dbd993f8b420a298a6ded82844ec476))
+* **Portuguese (Brazil):** Translated Settings using Weblate ([1712e65](https://github.com/Belphemur/SoundSwitch/commit/1712e655a3ef82aa2ebf251295a650d3f839e3fe))
+* **Russian:** Translated Settings using Weblate ([12cd94e](https://github.com/Belphemur/SoundSwitch/commit/12cd94ee2d2b0b265df77dbae80b54549f8f005b))
+* **Swedish:** Translated Settings using Weblate ([f8ff6ba](https://github.com/Belphemur/SoundSwitch/commit/f8ff6ba083f189f28144984a8f0003e9ffbbbecc))
+
 ## [6.14.1](https://github.com/Belphemur/SoundSwitch/compare/v6.14.0...v6.14.1) (2025-06-04)
 
 ### Bug Fixes
