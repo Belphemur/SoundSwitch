@@ -17,8 +17,16 @@ using SoundSwitch.Framework.TrayIcon.IconDoubleClick.Action;
 
 namespace SoundSwitch.Framework.TrayIcon.IconDoubleClick;
 
+/// <summary>
+/// Factory class for creating and managing system tray icon double-click action implementations.
+/// Provides access to all available double-click actions that users can configure for the SoundSwitch system tray icon.
+/// </summary>
 public class IconDoubleClickFactory() : AbstractFactory<IconDoubleClickEnum, IIconDoubleClick>(DoubleClick)
 {
+    /// <summary>
+    /// Collection of all available double-click action implementations.
+    /// Each implementation corresponds to a specific action users can perform by double-clicking the system tray icon.
+    /// </summary>
     private static readonly IEnumImplList<IconDoubleClickEnum, IIconDoubleClick> DoubleClick = new EnumImplList
         <IconDoubleClickEnum, IIconDoubleClick>
         {
@@ -26,4 +34,16 @@ public class IconDoubleClickFactory() : AbstractFactory<IconDoubleClickEnum, IIc
             new IconDoubleClickSwitchProfile(),
             new IconDoubleClickOpenSettings()
         };
+
+    /// <summary>
+    /// Executes the specified double-click action.
+    /// This method eliminates the need for switch statements in the calling code.
+    /// </summary>
+    /// <param name="actionType">The type of action to execute</param>
+    /// <param name="trayIcon">The TrayIcon instance to pass to the action</param>
+    public void ExecuteAction(IconDoubleClickEnum actionType, UI.Component.TrayIcon trayIcon)
+    {
+        var action = Get(actionType);
+        action.Execute(trayIcon);
+    }
 }
