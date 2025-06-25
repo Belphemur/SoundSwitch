@@ -12,7 +12,9 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
+using NAudio.CoreAudioApi;
 using SoundSwitch.Localization;
+using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.TrayIcon.IconDoubleClick.Action;
 
@@ -32,4 +34,13 @@ internal class IconDoubleClickSwitchDevice : IIconDoubleClick
     /// Gets the localized label for this action as displayed in the user interface.
     /// </summary>
     public string Label => SettingsStrings.switchDevice;
+
+    /// <summary>
+    /// Executes the switch device action by cycling through configured playback devices.
+    /// </summary>
+    /// <param name="trayIcon">The TrayIcon instance (not used for this action)</param>
+    public void Execute(UI.Component.TrayIcon trayIcon)
+    {
+        AppModel.Instance.CycleActiveDevice(DataFlow.Render);
+    }
 }

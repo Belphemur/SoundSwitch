@@ -32,4 +32,13 @@ internal class IconDoubleClickOpenSettings : IIconDoubleClick
     /// Gets the localized label for this action as displayed in the user interface.
     /// </summary>
     public string Label => SettingsStrings.openSettings;
+
+    /// <summary>
+    /// Executes the open settings action by showing the settings window.
+    /// </summary>
+    /// <param name="trayIcon">The TrayIcon instance used to show the settings window</param>
+    public void Execute(UI.Component.TrayIcon trayIcon)
+    {
+        trayIcon.ShowSettings();
+    }
 }

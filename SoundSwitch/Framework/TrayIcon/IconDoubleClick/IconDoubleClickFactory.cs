@@ -34,4 +34,16 @@ public class IconDoubleClickFactory() : AbstractFactory<IconDoubleClickEnum, IIc
             new IconDoubleClickSwitchProfile(),
             new IconDoubleClickOpenSettings()
         };
+
+    /// <summary>
+    /// Executes the specified double-click action.
+    /// This method eliminates the need for switch statements in the calling code.
+    /// </summary>
+    /// <param name="actionType">The type of action to execute</param>
+    /// <param name="trayIcon">The TrayIcon instance to pass to the action</param>
+    public void ExecuteAction(IconDoubleClickEnum actionType, UI.Component.TrayIcon trayIcon)
+    {
+        var action = Get(actionType);
+        action.Execute(trayIcon);
+    }
 }

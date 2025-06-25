@@ -20,4 +20,12 @@ namespace SoundSwitch.Framework.TrayIcon.IconDoubleClick.Action;
 /// Defines the contract for system tray icon double-click action implementations.
 /// Each implementation represents a specific action that can be performed when the user double-clicks the SoundSwitch system tray icon.
 /// </summary>
-public interface IIconDoubleClick : IEnumImpl<IconDoubleClickEnum>;
+public interface IIconDoubleClick : IEnumImpl<IconDoubleClickEnum>
+{
+    /// <summary>
+    /// Executes the double-click action.
+    /// This method is called when the user double-clicks the system tray icon and this action is configured.
+    /// </summary>
+    /// <param name="trayIcon">The TrayIcon instance that can be used to access UI functionality</param>
+    void Execute(UI.Component.TrayIcon trayIcon);
+}
