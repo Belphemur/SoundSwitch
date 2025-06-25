@@ -16,8 +16,20 @@ using SoundSwitch.Localization;
 
 namespace SoundSwitch.Framework.TrayIcon.IconDoubleClick.Action;
 
+/// <summary>
+/// Implementation for the "Open Settings" double-click action.
+/// When the user double-clicks the system tray icon, this action opens the SoundSwitch settings window.
+/// This provides quick access to application configuration and customization options.
+/// </summary>
 internal class IconDoubleClickOpenSettings : IIconDoubleClick
 {
+    /// <summary>
+    /// Gets the enum type that this implementation corresponds to.
+    /// </summary>
     public IconDoubleClickEnum TypeEnum => IconDoubleClickEnum.OpenSettings;
+
+    /// <summary>
+    /// Gets the localized label for this action as displayed in the user interface.
+    /// </summary>
     public string Label => SettingsStrings.openSettings;
 }

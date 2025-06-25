@@ -16,8 +16,20 @@ using SoundSwitch.Localization;
 
 namespace SoundSwitch.Framework.TrayIcon.IconDoubleClick.Action;
 
-internal class IconDoubleClickSwitchDevice: IIconDoubleClick
+/// <summary>
+/// Implementation for the "Switch Device" double-click action.
+/// When the user double-clicks the system tray icon, this action cycles through the configured playback devices.
+/// This is the default behavior and provides the traditional SoundSwitch functionality of device switching.
+/// </summary>
+internal class IconDoubleClickSwitchDevice : IIconDoubleClick
 {
+    /// <summary>
+    /// Gets the enum type that this implementation corresponds to.
+    /// </summary>
     public IconDoubleClickEnum TypeEnum => IconDoubleClickEnum.SwitchDevice;
+
+    /// <summary>
+    /// Gets the localized label for this action as displayed in the user interface.
+    /// </summary>
     public string Label => SettingsStrings.switchDevice;
 }
