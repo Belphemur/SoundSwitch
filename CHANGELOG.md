@@ -1,3 +1,13 @@
+## [6.14.2-beta.2](https://github.com/Belphemur/SoundSwitch/compare/v6.14.2-beta.1...v6.14.2-beta.2) (2025-06-25)
+
+### Enhancements
+
+* **double-click:** eliminate switch statement using factory pattern for double-click actions ([a8e9bbd](https://github.com/Belphemur/SoundSwitch/commit/a8e9bbd4be1f443858e3dcb80bd4eecf111d13a9)), closes [#491](https://github.com/Belphemur/SoundSwitch/issues/491) [#1800](https://github.com/Belphemur/SoundSwitch/issues/1800)
+
+### Bug Fixes
+
+* **double-click:** use singleton factory instance to maintain profile cycling state ([0591e4e](https://github.com/Belphemur/SoundSwitch/commit/0591e4e331c16a60e8081def9025b0a2980cf557)), closes [#491](https://github.com/Belphemur/SoundSwitch/issues/491) [#1800](https://github.com/Belphemur/SoundSwitch/issues/1800)
+
 ## [6.14.2-beta.1](https://github.com/Belphemur/SoundSwitch/compare/v6.14.1...v6.14.2-beta.1) (2025-06-24)
 
 ### Languages
