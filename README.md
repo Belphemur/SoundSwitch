@@ -49,7 +49,17 @@ First set up your devices you want to cycle through, using _right click_ on the 
 
   When a microphone is muted, a persistent banner will appear on your screen to remind you that your microphone is muted. The banner will remain visible until you unmute the microphone or click on the banner to unmute it directly.
 
-## 💻 Command Line Interface
+## 🖱️ System Tray Icon Actions
+
+The system tray icon supports configurable double-click actions. You can choose what happens when you double-click the SoundSwitch icon:
+
+- **🔊 Switch Device** (default): Cycles through your configured playback devices
+- **📋 Switch Profile**: Cycles through your configured audio profiles
+- **⚙️ Open Settings**: Opens the SoundSwitch settings window
+
+This behavior can be customized in the SoundSwitch settings to match your preferred workflow.
+
+## Command Line Interface
 
 SoundSwitch includes a powerful CLI that allows you to control the application through command line:
 

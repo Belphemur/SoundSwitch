@@ -43,6 +43,16 @@ Wählen Sie zuerst, wie im vorigen Abschnitt beschrieben, Ihre gewünschten Ger�
 
   Wenn ein Mikrofon stummgeschaltet wird, erscheint ein dauerhaftes Banner auf Ihrem Bildschirm, um Sie daran zu erinnern, dass Ihr Mikrofon stummgeschaltet ist. Das Banner bleibt sichtbar, bis Sie die Stummschaltung des Mikrofons aufheben oder auf das Banner klicken, um es direkt zu aktivieren.
 
+## 🖱️ Taskleisten-Symbol Aktionen
+
+Das Taskleisten-Symbol unterstützt konfigurierbare Doppelklick-Aktionen. Sie können wählen, was beim Doppelklick auf das SoundSwitch-Symbol passiert:
+
+- **🔊 Gerät wechseln** (Standard): Wechselt durch Ihre konfigurierten Wiedergabegeräte
+- **📋 Profil wechseln**: Wechselt durch Ihre konfigurierten Audio-Profile
+- **⚙️ Einstellungen öffnen**: Öffnet das SoundSwitch-Einstellungsfenster
+
+Dieses Verhalten kann in den SoundSwitch-Einstellungen angepasst werden, um Ihrem bevorzugten Arbeitsablauf zu entsprechen.
+
 ## 💻 Kommandozeile (CLI)
 
 SoundSwitch verfügt über eine leistungsfähige Kommandozeilen-Schnittstelle, mit der Sie die Anwendung über die Befehlszeile steuern können:
