@@ -76,6 +76,7 @@ public sealed class TrayIcon : IDisposable
 
     private readonly TooltipInfoManager _tooltipInfoManager;
     private readonly ProfileTrayIconBuilder _profileTrayIconBuilder;
+    private readonly IconDoubleClickFactory _iconDoubleClickFactory = new();
 
     private ToolStripMenuItem _updateMenuItem;
     private TimerForm _animationTimer;
@@ -150,8 +151,7 @@ public sealed class TrayIcon : IDisposable
 
     private void NotifyIcon_MouseDoubleClick()
     {
-        var factory = new IconDoubleClickFactory();
-        factory.ExecuteAction(AppModel.Instance.IconDoubleClick, this);
+        _iconDoubleClickFactory.ExecuteAction(AppModel.Instance.IconDoubleClick, this);
     }
 
     private void NotifyIcon_MouseClick(object sender, EventArgs e)
