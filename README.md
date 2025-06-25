@@ -3,7 +3,9 @@
 [![.NET](https://github.com/Belphemur/SoundSwitch/actions/workflows/dotnet.yml/badge.svg)](https://github.com/Belphemur/SoundSwitch/actions/workflows/dotnet.yml)[![Last Release](https://img.shields.io/github/release/Belphemur/SoundSwitch.svg)](https://soundswitch.aaflalo.me) [![Downloads for last Release](https://img.shields.io/github/downloads/Belphemur/SoundSwitch/total.svg)](https://soundswitch.aaflalo.me/) [![Translate](https://hosted.weblate.org/widgets/soundswitch/-/svg-badge.svg)](https://hosted.weblate.org/projects/soundswitch/) [![Donate](https://img.shields.io/badge/Donate-paypal%2Fcc-blue.svg)](https://soundswitch.aaflalo.me) [![Help](https://img.shields.io/badge/Discord-Community%20&%20Help-green?style=flat-square&logo=discord)](https://discord.gg/gUCw3Ue)
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-13-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 **SoundSwitch** offers you the opportunity to switch your playback and recording devices using simple **hotkeys**.
@@ -75,14 +77,38 @@ SoundSwitch provides four types of notification when a device is changed:
 
 ## Profiles
 
-Using profiles, it is possible to switch to a specific device when a condition occurs. Profiles can be defined for the following purposes:
+Using profiles, you can automatically switch to specific audio devices when certain conditions are met. Profiles support multiple trigger types and advanced device management:
 
-- ### 💫 Application profile
+### 🎯 Profile Triggers
 
-  When a application is focused, the sound settings are switched based on the profile. For example create a profile for Spotify to only play music on your speaker, while your favorite game is using your headset.
+- **⌨️ Hotkey Triggers**: Switch devices using custom key combinations. Multiple profiles can share the same hotkey and cycle through them automatically.
 
-- ### ⌨️ Hot key profile
-  When a hot key combination is pressed, the sound settings are switched based on the profile. For example you define a special combination to switch your playback device to your television.
+- **💫 Application Triggers**: Automatically switch devices when specific applications gain focus. For example, route Spotify to speakers while games use your headset.
+
+- **🪟 Window Triggers**: Switch devices based on window titles. Useful for applications that change their window names dynamically.
+
+- **🎮 Steam Big Picture**: Special profile that activates automatically when Steam Big Picture mode is launched.
+
+- **📱 UWP App Triggers**: Support for Universal Windows Platform applications with automatic device switching.
+
+- **🚀 Startup Triggers**: Profiles that activate automatically when SoundSwitch starts.
+
+- **🔄 Device Changed Triggers**: Force profiles that maintain specific device configurations even when Windows tries to change them.
+
+- **📋 Tray Menu Triggers**: Profiles accessible directly from the system tray context menu.
+
+### 🎚️ Advanced Profile Features
+
+- **Multi-Device Support**: Configure separate devices for playback, communication, recording, and recording communication
+- **Smart Device Restoration**: Automatically restore previous audio settings when a profile deactivates
+- **Foreground App Switching**: Option to switch only the focused application's audio instead of system-wide
+- **Default Device Control**: Choose whether to change Windows default devices or only application-specific routing
+- **Notification Control**: Enable/disable notifications when profiles activate
+- **Device Validation**: Automatic checking for device availability with fallback handling
+
+### 🔄 Hotkey Cycling
+
+When multiple profiles share the same hotkey, SoundSwitch automatically cycles through them. If Quick Menu is enabled, a visual selector appears allowing you to choose the specific profile to activate.
 
 ## Advanced
 

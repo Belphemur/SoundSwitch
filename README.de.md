@@ -71,14 +71,38 @@ SoundSwitch bietet vier verschiedenen Arten der Benachrichtigung, wenn ein Gerä
 
 ## Profile
 
-Mithilfe von Profilen ist es möglich zu einem bestimmten Gerät zu wechseln, wenn eine Bedingung eintritt. Profile können für die folgenden Zwecke definiert werden:
+Mithilfe von Profilen können Sie automatisch zu bestimmten Audiogeräten wechseln, wenn bestimmte Bedingungen erfüllt sind. Profile unterstützen mehrere Auslösertypen und erweiterte Geräteverwaltung:
 
-- ### 💫 Anwendungsprofil
+### 🎯 Profil-Auslöser
 
-  Wenn eine Anwendung fokussiert wird, werden die Soundeinstellungen auf der Grundlage des Profils geändert. Erstelle zum Beispiel ein Profil für Spotify, damit nur Musik über den Lautsprecher wiedergegeben wird, während das Lieblingsspiel über das Headset läuft.
+- **⌨️ Hotkey-Auslöser**: Geräte mit benutzerdefinierten Tastenkombinationen wechseln. Mehrere Profile können dieselbe Tastenkombination verwenden und automatisch durchwechseln.
 
-- ### ⌨️ Hotkeyprofil
-  Wenn eine bestimmte Tastenkombination gedrückt wird, werden die Soundeinstellungen auf der Grundlage des Profils geändert. Definiere zum Beispiel eine spezielle Kombination, um als Wiedergabegerät den Fernseher zu verwenden.
+- **💫 Anwendungs-Auslöser**: Automatischer Gerätewechsel, wenn bestimmte Anwendungen den Fokus erhalten. Zum Beispiel Spotify auf Lautsprecher leiten, während Spiele das Headset verwenden.
+
+- **🪟 Fenster-Auslöser**: Gerätewechsel basierend auf Fenstertiteln. Nützlich für Anwendungen, die ihre Fensternamen dynamisch ändern.
+
+- **🎮 Steam Big Picture**: Spezielles Profil, das automatisch aktiviert wird, wenn der Steam Big Picture-Modus gestartet wird.
+
+- **📱 UWP-App-Auslöser**: Unterstützung für Universal Windows Platform-Anwendungen mit automatischem Gerätewechsel.
+
+- **🚀 Startup-Auslöser**: Profile, die automatisch aktiviert werden, wenn SoundSwitch startet.
+
+- **🔄 Geräte-Geändert-Auslöser**: Erzwungene Profile, die bestimmte Gerätekonfigurationen beibehalten, auch wenn Windows versucht, sie zu ändern.
+
+- **📋 Tray-Menü-Auslöser**: Profile, die direkt über das Kontextmenü der Taskleiste zugänglich sind.
+
+### 🎚️ Erweiterte Profil-Funktionen
+
+- **Multi-Geräte-Unterstützung**: Separate Geräte für Wiedergabe, Kommunikation, Aufnahme und Aufnahme-Kommunikation konfigurieren
+- **Intelligente Gerätewiederherstllung**: Automatische Wiederherstellung vorheriger Audioeinstellungen, wenn ein Profil deaktiviert wird
+- **Vordergrund-App-Wechsel**: Option, nur die Audio-Einstellungen der fokussierten Anwendung zu wechseln anstatt systemweit
+- **Standard-Geräte-Kontrolle**: Wählen Sie, ob Windows-Standardgeräte geändert oder nur anwendungsspezifisches Routing verwendet werden soll
+- **Benachrichtigungskontrolle**: Benachrichtigungen bei Profilaktivierung aktivieren/deaktivieren
+- **Gerätevalidierung**: Automatische Überprüfung der Geräteverfügbarkeit mit Fallback-Behandlung
+
+### 🔄 Hotkey-Durchschaltung
+
+Wenn mehrere Profile dieselbe Tastenkombination verwenden, wechselt SoundSwitch automatisch zwischen ihnen durch. Wenn das Schnellmenü aktiviert ist, erscheint ein visueller Selektor, mit dem Sie das spezifische zu aktivierende Profil auswählen können.
 
 ## Erweiterte Funktionen
 
