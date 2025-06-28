@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -614,5 +614,17 @@
   </data>
   <data name="importConfigFile" xml:space="preserve">
     <value />
+  </data>
+  <data name="microphone.on" xml:space="preserve">
+    <value>마이크 켜짐</value>
+  </data>
+  <data name="microphone.off" xml:space="preserve">
+    <value>마이크 꺼짐</value>
+  </data>
+  <data name="banner.mute" xml:space="preserve">
+    <value>마이크 음소거됨</value>
+  </data>
+  <data name="banner.mute.tooltip" xml:space="preserve">
+    <value>마이크가 음소거되거나 음소거 해제되었을 때 배너를 표시합니다. 계속 표시는 음소거 시 항상 화면에 표시됨을 의미합니다.</value>
   </data>
 </root>
