@@ -475,16 +475,16 @@
     <value>사용 중인 SoundSwitch 버전을 익명으로 수집합니다. SoundSwitch 개발자와만 공유됩니다.</value>
   </data>
   <data name="quickMenu" xml:space="preserve">
-    <value>단축키로 빠른 메뉴 표시</value>
+    <value>단축키 사용 시 퀵 메뉴 표시</value>
   </data>
   <data name="quickMenu.tooltip" xml:space="preserve">
-    <value>단축키를 사용할 때 Windows 언어와 같은 빠른 메뉴 표시</value>
+    <value>장치 순환 단축키를 사용할 때 Windows 입력 언어를 변경할 때 처럼 빠른 메뉴를 표시합니다</value>
   </data>
   <data name="keepVolume" xml:space="preserve">
-    <value>여러 디바이스에서 볼륨 수준 유지</value>
+    <value>여러 디바이스간 볼륨 수준 유지</value>
   </data>
   <data name="keepVolume.tooltip" xml:space="preserve">
-    <value>장치를 전환할 때 볼륨 수준 동일하게 유지</value>
+    <value>장치를 전환할 때 볼륨 수준을 동일하게 유지합니다</value>
   </data>
   <data name="devices.autoAddNewDevice" xml:space="preserve">
     <value>새 장치 자동 선택</value>
