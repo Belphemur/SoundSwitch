@@ -276,7 +276,7 @@
     <value>설정된 사용자 정의 사운드를 사용하지 않습니다.</value>
   </data>
   <data name="foregroundApp" xml:space="preserve">
-    <value>전경 프로그램도 전환</value>
+    <value>포어그라운드 프로그램에서도 전환</value>
   </data>
   <data name="foregroundApp.tooltip" xml:space="preserve">
     <value>현재 사용 중인 응용 프로그램의 사운드도 전환합니다. 비디오 게임에 유용합니다.</value>
@@ -475,7 +475,7 @@
     <value>사용 중인 SoundSwitch 버전을 익명으로 수집합니다. SoundSwitch 개발자와만 공유됩니다.</value>
   </data>
   <data name="quickMenu" xml:space="preserve">
-    <value>바로 가기 키의 빠른 메뉴</value>
+    <value>단축키로 빠른 메뉴 표시</value>
   </data>
   <data name="quickMenu.tooltip" xml:space="preserve">
     <value>단축키를 사용할 때 Windows 언어와 같은 빠른 메뉴 표시</value>
@@ -614,7 +614,7 @@
     <value>설정 파일 내보내기</value>
   </data>
   <data name="importConfigFile" xml:space="preserve">
-    <value>설정 파일 가져오기</value>
+    <value>파일에서 설정 가져오기</value>
   </data>
   <data name="microphone.on" xml:space="preserve">
     <value>마이크 켜짐</value>
@@ -630,5 +630,17 @@
   </data>
   <data name="switchProfile" xml:space="preserve">
     <value>프로필 변경</value>
+  </data>
+  <data name="importConfigErrorReadingFile" xml:space="preserve">
+    <value>압축 파일에서 '{0}' 설정 파일을 읽는 중 오류가 발생했습니다: {1}</value>
+  </data>
+  <data name="importConfigErrorInvalidJson" xml:space="preserve">
+    <value>설정 파일 '{0}' 이 유효한 JSON 파일이 아닙니다. 오류: {1}</value>
+  </data>
+  <data name="importConfigErrorDeserializationNull" xml:space="preserve">
+    <value>설정 파일 '{0}'을(를) 올바르게 변환할 수 없습니다 (null로 반환됨). 올바른 SoundSwitch 설정 파일인지 확인하세요.</value>
+  </data>
+  <data name="importConfigErrorDeserializationFailed" xml:space="preserve">
+    <value>설정 파일 '{0}'을 변환하지 못했습니다. 오류: {1}</value>
   </data>
 </root>
