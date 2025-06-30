@@ -640,4 +640,7 @@ Vuoi riavviare Soundswitch?</value>
   <data name="importConfigErrorDeserializationNull" xml:space="preserve">
     <value>Il file di configurazione '{0}' non può essere deserializzato correttamente (risulta nullo). Assicurati che si tratti di una file di configurazione SoundSwitch valido.</value>
   </data>
+  <data name="switchProfile" xml:space="preserve">
+    <value>Cambia profilo</value>
+  </data>
 </root>
