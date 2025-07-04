@@ -510,6 +510,12 @@
     <value>此觸發會使設定檔在托盤圖示功能表中顯示。左鍵按一下系統匣圖示，即可看到您的設定檔。</value>
   </data>
   <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
-    <value>當目前的聲音裝置改變時，設定檔會隨時自動被觸發。</value>
+    <value>當目前的聲音裝置改變時，設定檔會一起被自動觸發。</value>
+  </data>
+  <data name="profile.error.deviceChanged" xml:space="preserve">
+    <value>您只能有一個強制設定檔。</value>
+  </data>
+  <data name="profile.trigger.deviceChanged" xml:space="preserve">
+    <value>強制設定檔</value>
   </data>
 </root>
