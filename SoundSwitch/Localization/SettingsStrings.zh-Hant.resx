@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -490,5 +490,32 @@
   </data>
   <data name="importConfigFile" xml:space="preserve">
     <value />
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>無</value>
+  </data>
+  <data name="notification.microphone.muted" xml:space="preserve">
+    <value>{0}  已靜音。</value>
+  </data>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>{0} 已解除靜音。</value>
+  </data>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>切換為靜音</value>
+  </data>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>在應用選單內</value>
+  </data>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>此觸發會使設定檔在托盤圖示功能表中顯示。左鍵按一下系統匣圖示，即可看到您的設定檔。</value>
+  </data>
+  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
+    <value>當目前的聲音裝置改變時，設定檔會一起被自動觸發。</value>
+  </data>
+  <data name="profile.error.deviceChanged" xml:space="preserve">
+    <value>您只能有一個強制設定檔。</value>
+  </data>
+  <data name="profile.trigger.deviceChanged" xml:space="preserve">
+    <value>強制設定檔</value>
   </data>
 </root>

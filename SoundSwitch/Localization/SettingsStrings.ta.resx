@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -577,10 +577,10 @@
     <value>பதாகை எவ்வளவு நேரம் திரையில் நொடிகளில் இருக்கும்.</value>
   </data>
   <data name="notification.banner.onscreen.time" xml:space="preserve">
-    <value>திரை நேரத்தில்</value>
+    <value>திரை-நேரம்</value>
   </data>
   <data name="notification" xml:space="preserve">
-    <value>அறிவிப்பு</value>
+    <value>அறிவிப்புகள்</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
     <value />
