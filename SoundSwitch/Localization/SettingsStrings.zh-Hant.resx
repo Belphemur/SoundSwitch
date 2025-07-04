@@ -495,6 +495,21 @@
     <value>無</value>
   </data>
   <data name="notification.microphone.muted" xml:space="preserve">
-    <value>{0}  已靜音</value>
+    <value>{0}  已靜音。</value>
+  </data>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>{0} 已解除靜音。</value>
+  </data>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>切換為靜音</value>
+  </data>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>在應用選單內</value>
+  </data>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>此觸發會使設定檔在托盤圖示功能表中顯示。左鍵按一下系統匣圖示，即可看到您的設定檔。</value>
+  </data>
+  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
+    <value>當目前的聲音裝置改變時，設定檔會隨時自動被觸發。</value>
   </data>
 </root>
