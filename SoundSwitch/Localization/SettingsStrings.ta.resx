@@ -565,13 +565,13 @@
     <value>மைக்ரோஃபோன் ஆஃப்</value>
   </data>
   <data name="banner.mute.option.fading" xml:space="preserve">
-    <value />
+    <value>குன்றல்</value>
   </data>
   <data name="banner.mute.option.persistent" xml:space="preserve">
-    <value />
+    <value>விடாமுயற்சி</value>
   </data>
   <data name="switchDevice" xml:space="preserve">
-    <value />
+    <value>சாதனத்தை மாற்றவும்</value>
   </data>
   <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
     <value>பதாகை எவ்வளவு நேரம் திரையில் நொடிகளில் இருக்கும்.</value>
@@ -583,42 +583,64 @@
     <value>அறிவிப்புகள்</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
-    <value />
+    <value>பேனர் விருப்பங்கள்</value>
   </data>
   <data name="seconds" xml:space="preserve">
-    <value />
+    <value>நொடிகள்</value>
   </data>
   <data name="openSettings" xml:space="preserve">
-    <value />
+    <value>திறந்த அமைப்புகள்</value>
   </data>
   <data name="iconDoubleClick.tooltip" xml:space="preserve">
-    <value />
+    <value>தட்டு ஐகானில் இருமுறை சொடுக்கு செய்யும் போது செயலைத் தேர்ந்தெடுக்கவும்.</value>
   </data>
   <data name="iconDoubleClick" xml:space="preserve">
-    <value />
+    <value>இரட்டை சொடுக்கு நடவடிக்கை</value>
   </data>
   <data name="importExportConfigFile" xml:space="preserve">
-    <value />
+    <value>இறக்குமதி / ஏற்றுமதி உள்ளமைவு கோப்பு</value>
   </data>
   <data name="importExportConfigFile.desc" xml:space="preserve">
-    <value />
+    <value>சவுண்ட்ச்விட்ச் உள்ளமைவு கோப்பை ஒரு சிப் காப்பகத்தில் இறக்குமதி செய்யுங்கள் அல்லது ஏற்றுமதி செய்யுங்கள்.</value>
   </data>
   <data name="importConfigErrorMessage" xml:space="preserve">
-    <value />
+    <value>சிப் காப்பகத்தில் சவுண்ட்ச்விட்ச் உள்ளமைவு கோப்பைக் கொண்டிருக்க வேண்டும்.</value>
   </data>
   <data name="importConfigRestartRequired" xml:space="preserve">
-    <value />
+    <value>முக்கிய உள்ளமைவு கோப்பு இறக்குமதி செய்யப்படும்போது சவுண்ட்ச்விட்ச் மறுதொடக்கம் செய்யும். 
+நீங்கள் இப்போது மறுதொடக்கம் செய்ய விரும்புகிறீர்களா?</value>
   </data>
   <data name="importConfigErrorMessage.caption" xml:space="preserve">
-    <value />
+    <value>தவறான காப்பகம்</value>
   </data>
   <data name="buttonImport" xml:space="preserve">
-    <value />
+    <value>இறக்குமதி</value>
   </data>
   <data name="exportConfigFile" xml:space="preserve">
-    <value />
+    <value>உள்ளமைவு கோப்பு ஏற்றுமதி</value>
   </data>
   <data name="importConfigFile" xml:space="preserve">
-    <value />
+    <value>உள்ளமைவு கோப்பை இறக்குமதி செய்யுங்கள்</value>
+  </data>
+  <data name="banner.mute" xml:space="preserve">
+    <value>மைக்ரோஃபோன் முடக்கியது</value>
+  </data>
+  <data name="banner.mute.tooltip" xml:space="preserve">
+    <value>மைக்ரோஃபோன் முடக்கப்பட்டபோது அல்லது அசைக்கப்படும்போது பேனரைக் காட்டு. முடக்கப்பட்டபோது அது எப்போதும் திரையில் தெரியும் என்று விடாமுயற்சி இருக்கும்</value>
+  </data>
+  <data name="switchProfile" xml:space="preserve">
+    <value>சுயவிவரத்தை மாற்றவும்</value>
+  </data>
+  <data name="importConfigErrorReadingFile" xml:space="preserve">
+    <value>காப்பகத்திலிருந்து '{0}' உள்ளமைவு கோப்பைப் படிப்பது பிழை: {1}</value>
+  </data>
+  <data name="importConfigErrorInvalidJson" xml:space="preserve">
+    <value>உள்ளமைவு கோப்பு '{0}' செல்லுபடியாகும் சாதொபொகு அல்ல. பிழை: {1}</value>
+  </data>
+  <data name="importConfigErrorDeserializationNull" xml:space="preserve">
+    <value>உள்ளமைவு கோப்பை '{0}' சரியாக தேய்மானம் செய்ய முடியாது (இதன் விளைவாக பூச்யமானது). இது செல்லுபடியாகும் சவுண்ட்ச்விட்ச் உள்ளமைவு என்பதை உறுதிப்படுத்தவும்.</value>
+  </data>
+  <data name="importConfigErrorDeserializationFailed" xml:space="preserve">
+    <value>உள்ளமைவு கோப்பை '{0}' தேடுங்கள். பிழை: {1}</value>
   </data>
 </root>
