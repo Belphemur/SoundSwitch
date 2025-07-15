@@ -23,7 +23,7 @@
     <PackageVersion Include="NUnit3TestAdapter" Version="5.0.0" />
     <PackageVersion Include="Polly.Core" Version="8.6.2" />
     <PackageVersion Include="RailSharp" Version="1.0.0" />
-    <PackageVersion Include="Sentry.Serilog" Version="5.11.2" />
+    <PackageVersion Include="Sentry.Serilog" Version="5.12.0" />
     <PackageVersion Include="Serilog" Version="4.3.0" />
     <PackageVersion Include="Serilog.Enrichers.Environment" Version="3.0.1" />
     <PackageVersion Include="Serilog.Exceptions" Version="8.4.0+build.694" />
@@ -33,7 +33,7 @@
     <PackageVersion Include="SerilogTraceListener" Version="3.2.0" />
     <PackageVersion Include="Spectre.Console" Version="0.50.0" />
     <PackageVersion Include="Spectre.Console.Cli" Version="0.50.0" />
-    <PackageVersion Include="System.CommandLine" Version="2.0.0-beta5.25306.1" />
+    <PackageVersion Include="System.CommandLine" Version="2.0.0-beta6.25358.103" />
     <PackageVersion Include="System.Diagnostics.TraceSource" Version="4.3.0" />
     <PackageVersion Include="System.Drawing.Common" Version="9.0.7" />
     <PackageVersion Include="System.Net.Http" Version="4.3.4" />
