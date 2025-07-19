@@ -61,6 +61,7 @@ public partial class BannerForm : Form
         StartPosition = FormStartPosition.Manual;
         Bounds = screen.Bounds;
         TopMost = true;
+        TopLevel = true;
         FormBorderStyle = FormBorderStyle.None;
         ShowInTaskbar = false;
 
@@ -99,6 +100,8 @@ public partial class BannerForm : Form
             cp.ExStyle |= 0x80;  // WS_EX_TOOLWINDOW
             // Add WS_EX_NOACTIVATE to prevent stealing focus
             cp.ExStyle |= 0x08000000; // WS_EX_NOACTIVATE
+            // Add WS_EX_TOPMOST to ensure it stays on top even in exclusive screen mode
+            cp.ExStyle |= 0x00000008; // WS_EX_TOPMOST
             return cp;
         }
     }
@@ -217,6 +220,10 @@ public partial class BannerForm : Form
 
         Show();
 
+        // Ensure banner stays on top even in exclusive screen mode
+        BringToFront();
+        TopMost = false;
+        TopMost = true;
     }
 
     /// <summary>
