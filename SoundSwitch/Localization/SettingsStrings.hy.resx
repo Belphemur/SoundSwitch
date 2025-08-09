@@ -70,4 +70,16 @@
   <data name="recording" xml:space="preserve">
     <value>Գրանցում</value>
   </data>
+  <data name="playback" xml:space="preserve">
+    <value>Նվագարկել</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>Կայանքներ</value>
+  </data>
+  <data name="hotkey" xml:space="preserve">
+    <value>Թեժստեղն</value>
+  </data>
+  <data name="communicationsDevice" xml:space="preserve">
+    <value>Փոխարկել Լռելյայն Հաղորդագկցման Սարքի</value>
+  </data>
 </root>
