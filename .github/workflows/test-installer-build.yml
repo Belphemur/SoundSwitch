@@ -19,7 +19,7 @@ jobs:
     runs-on: windows-2025
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install Inno Setup
         run: winget install --id=JRSoftware.InnoSetup --exact --source winget --scope machine --accept-package-agreements --accept-source-agreements
