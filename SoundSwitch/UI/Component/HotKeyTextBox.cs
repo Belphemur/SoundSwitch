@@ -27,8 +27,7 @@ public class HotKeyTextBox : TextBox
     private HotKey _hotKey;
     private bool _listenToHotkey;
 
-    [Browsable(true)]
-    public event EventHandler<Event> HotKeyChanged;
+    [Browsable(true)] public event EventHandler<Event> HotKeyChanged;
 
     [Browsable(true)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -61,6 +60,7 @@ public class HotKeyTextBox : TextBox
         {
             WindowsAPIAdapter.HotKeyPressed -= WindowsAPIAdapterOnHotKeyPressed;
         }
+
         base.Dispose(disposing);
     }
 
@@ -188,6 +188,8 @@ public class HotKeyTextBox : TextBox
             case Keys.LaunchApplication1:
             case Keys.LaunchApplication2:
             case Keys.LaunchMail:
+            case Keys.Multiply:
+            case Keys.Divide:
                 return true;
             default:
                 return false;
