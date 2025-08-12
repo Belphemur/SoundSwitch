@@ -82,4 +82,55 @@
   <data name="communicationsDevice" xml:space="preserve">
     <value>Փոխարկել Լռելյայն Հաղորդագկցման Սարքի</value>
   </data>
+  <data name="startWithWindows" xml:space="preserve">
+    <value>Մեկնարկել ինքնաշխատ Windows-ի հետ</value>
+  </data>
+  <data name="buttonClose" xml:space="preserve">
+    <value>Փակել</value>
+  </data>
+  <data name="buttonClose.tooltip" xml:space="preserve">
+    <value>Փոփոխումը ինքնաշխատ պահված</value>
+  </data>
+  <data name="communicationsDevice.tooltip" xml:space="preserve">
+    <value>Նշելիս «Լռելյայն Հաղորդակման Սարք» եւ «Լռելյայն Նվագարկմամ Սարք» փոխարկվում է միասին (օգտակար է, օրինակ, Skype-ի, TeamSpeak-ի համար)</value>
+  </data>
+  <data name="updateIncludeBetaVersions" xml:space="preserve">
+    <value>Ներառել Բետա վարկածները</value>
+  </data>
+  <data name="updateIncludeBetaVersions.tooltip" xml:space="preserve">
+    <value>Նշելիս, SoundSwitch-ը նաեւ կստուգի GitHub-ի բետա վարկածները</value>
+  </data>
+  <data name="audioFiles" xml:space="preserve">
+    <value>Հնչյունային Նիշքեր</value>
+  </data>
+  <data name="selectSoundButton.tooltip" xml:space="preserve">
+    <value>Ընտրեք ծանուցման համար նախատեսված ձայնային նիշքը</value>
+  </data>
+  <data name="hotkey.tooltip" xml:space="preserve">
+    <value>Ստուգեք՝ միացնելու համար թեժստեղնը</value>
+  </data>
+  <data name="basicSettings" xml:space="preserve">
+    <value>Հիմնական Կայանքներ</value>
+  </data>
+  <data name="audioSettings" xml:space="preserve">
+    <value>Հնչյունային Կայանքներ</value>
+  </data>
+  <data name="updateSettings" xml:space="preserve">
+    <value>Արդիականացման Կայանքներ</value>
+  </data>
+  <data name="cycleThrough" xml:space="preserve">
+    <value>Շրջանցիկ անցում</value>
+  </data>
+  <data name="keepSystemTrayIcon" xml:space="preserve">
+    <value>Պահել SoundSwitch-ի համակարգի դարակի պատկերակը</value>
+  </data>
+  <data name="keepSystemTrayIcon.tooltip" xml:space="preserve">
+    <value>Նշելիս, համակարգի դարակի պատկերակը չի փոխվի «Լռելյային Նվագարկման Սարքը» փոխվելիս։</value>
+  </data>
+  <data name="updateInstallAutomatically" xml:space="preserve">
+    <value>Տեղադրել արդիացումները ինքնաշխատ</value>
+  </data>
+  <data name="tooltipOnHover.option.playbackDevice" xml:space="preserve">
+    <value>Նվագարկման Սարք</value>
+  </data>
 </root>
