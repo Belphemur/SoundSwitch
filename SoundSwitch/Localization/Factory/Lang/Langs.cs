@@ -285,3 +285,13 @@ public class Tamil : BaseLang
 
     public override Language TypeEnum => Language.Tamil;
 }
+
+public class ArmenianLang : BaseLang
+{
+    /// <summary>
+    /// Culture info of this language
+    /// </summary>
+    public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("hy");
+
+    public override Language TypeEnum => Language.Armenian;
+}

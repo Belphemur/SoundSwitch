@@ -47,4 +47,5 @@ public enum Language
     Bulgarian,
     Swedish,
     Tamil,
+    Armenian
 }

@@ -34,7 +34,8 @@ public class LanguageFactory() : AbstractFactory<Language, ILang>(new EnumImplLi
     new Ukrainian(),
     new Bulgarian(),
     new Swedish(),
-    new Tamil()
+    new Tamil(),
+    new ArmenianLang()
 })
 {
     /// <summary>
