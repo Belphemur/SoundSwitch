@@ -190,6 +190,8 @@ public class HotKeyTextBox : TextBox
             case Keys.LaunchMail:
             case Keys.Multiply:
             case Keys.Divide:
+            case Keys.Add:
+            case Keys.Subtract:
                 return true;
             default:
                 return false;
