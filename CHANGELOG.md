@@ -1,3 +1,37 @@
+## [6.14.2-beta.3](https://github.com/Belphemur/SoundSwitch/compare/v6.14.2-beta.2...v6.14.2-beta.3) (2025-08-12)
+
+### Enhancements
+
+* **hotkey:** Add Subtract (-) and Add (+) as valid hotkey on a num pad ([ad7e2ae](https://github.com/Belphemur/SoundSwitch/commit/ad7e2aeaa2114325a3dd68583dbec86323f0ef33))
+
+### Bug Fixes
+
+* **banner:** Fix issue where the banner might not be Top Most. ([889c9a0](https://github.com/Belphemur/SoundSwitch/commit/889c9a0718c46b99094aaab870a2b81c7fbe56a7))
+* **hotkey:** Fix not being able to use Multiply and Device for hotkey ([f323d90](https://github.com/Belphemur/SoundSwitch/commit/f323d903a37241d76876a0be0e9a04d475be6701)), closes [#1853](https://github.com/Belphemur/SoundSwitch/issues/1853)
+
+### Languages
+
+* Add Armenian ([d232247](https://github.com/Belphemur/SoundSwitch/commit/d23224749255a71ecfa207860480cb6014dad0b1))
+* **Armenian:** Added About translation using Weblate ([61695d2](https://github.com/Belphemur/SoundSwitch/commit/61695d26d71ff66377159df879a7cd5ee2686dda))
+* **Armenian:** Added Settings translation using Weblate ([fabee80](https://github.com/Belphemur/SoundSwitch/commit/fabee8043abb0f6788647ec86220c290a50b5372))
+* **Armenian:** Added Tray Icon translation using Weblate ([fac6327](https://github.com/Belphemur/SoundSwitch/commit/fac63272b380614f51aef64b3c25b210ba63ea46))
+* **Armenian:** Added Update Download translation using Weblate ([8130310](https://github.com/Belphemur/SoundSwitch/commit/8130310d07c69962c0c0222574061ea30cd82ff3))
+* **Armenian:** Translated Settings using Weblate ([ce4adc1](https://github.com/Belphemur/SoundSwitch/commit/ce4adc16e6e9045837042595c400b22c8c0c7b6e))
+* **Armenian:** Translated Settings using Weblate ([abe0eb3](https://github.com/Belphemur/SoundSwitch/commit/abe0eb3f85eb5622bd11351b6e1ed1f93559027f))
+* **Armenian:** Translated Tray Icon using Weblate ([49dbffb](https://github.com/Belphemur/SoundSwitch/commit/49dbffbf855f29ad5edc12986bc134d45622e0bc))
+* **Armenian:** Translated Update Download using Weblate ([7831db5](https://github.com/Belphemur/SoundSwitch/commit/7831db5ecacb3b9e758c7f0353ab98ffdb4d7190))
+* **Chinese (Traditional Han script):** Translated Settings using Weblate ([d3fbfdb](https://github.com/Belphemur/SoundSwitch/commit/d3fbfdb2e8cd3772496e9e763edaa1a2679d86a1))
+* **Chinese (Traditional Han script):** Translated Settings using Weblate ([46cbc62](https://github.com/Belphemur/SoundSwitch/commit/46cbc624348faf48f94f3f25ef1355b71a1afdd4))
+* **Chinese (Traditional Han script):** Translated Settings using Weblate ([eede079](https://github.com/Belphemur/SoundSwitch/commit/eede079f88bd8aeb99efeb40ab7db4ecadeeb2dc))
+* **Dutch:** Translated Settings using Weblate ([0382374](https://github.com/Belphemur/SoundSwitch/commit/0382374abe2b30db6d4a87f40ff96a3b98ee348b))
+* **Italian:** Translated Settings using Weblate ([2919196](https://github.com/Belphemur/SoundSwitch/commit/2919196e33583353d046bc40975903edc659e334))
+* **Korean:** Translated Settings using Weblate ([2cfea16](https://github.com/Belphemur/SoundSwitch/commit/2cfea16ac56f160ae8665aab41988929d833a2db))
+* **Korean:** Translated Settings using Weblate ([fc4d827](https://github.com/Belphemur/SoundSwitch/commit/fc4d8278d8d2f2079295c7023b7e69ed942dbca7))
+* **Korean:** Translated Settings using Weblate ([45f2fd2](https://github.com/Belphemur/SoundSwitch/commit/45f2fd20e276782cb9c54433d095576026b24242))
+* **Korean:** Translated Settings using Weblate ([ccc03aa](https://github.com/Belphemur/SoundSwitch/commit/ccc03aa31a9165c3d218e11af9f56c0fa9b4a3a5))
+* **Tamil:** Translated Settings using Weblate ([eb9d573](https://github.com/Belphemur/SoundSwitch/commit/eb9d573aa0c5adb9f62948ed4e70fd897686d5bb))
+* **Tamil:** Translated Settings using Weblate ([40b9c4d](https://github.com/Belphemur/SoundSwitch/commit/40b9c4de855f248f204e4f48e151317db6800b5a))
+
 ## [6.14.2-beta.2](https://github.com/Belphemur/SoundSwitch/compare/v6.14.2-beta.1...v6.14.2-beta.2) (2025-06-25)
 
 ### Enhancements
