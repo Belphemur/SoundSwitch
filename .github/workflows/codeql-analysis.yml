@@ -44,7 +44,7 @@ jobs:
         all_but_latest: true
         access_token: ${{ github.token }}
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
