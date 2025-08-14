@@ -60,45 +60,45 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"></xsd:import>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="type" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="mimetype" type="xsd:string"></xsd:attribute>
+              <xsd:attribute ref="xml:space"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"></xsd:attribute>
+              <xsd:attribute name="name" type="xsd:string"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"></xsd:attribute>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"></xsd:attribute>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"></xsd:attribute>
+              <xsd:attribute ref="xml:space"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"></xsd:element>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"></xsd:attribute>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -317,7 +317,7 @@ Ambos: alterar quando qualquer aparelho for alterado.</value>
     <value>Necessário definir um aparelho de reprodução ou de gravação.</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
-    <value>Adiciona um perfil para alterar para um aparelho de reprodução ou gravação quando uma aplicação específica é iniciada ou realçada para primeiro-plano.</value>
+    <value>Adicione um perfil para alterar para um dispositivo de reprodução ou gravação específico quando uma aplicação específica for iniciada ou ativada. Também pode definir a sua própria tecla de atalho para uma combinação específica de dispositivos.</value>
   </data>
   <data name="profile.error.registerHotkeys" xml:space="preserve">
     <value>Não foi possível registar a tecla de atalho para os perfis seguintes: {0}</value>
@@ -371,7 +371,7 @@ Ambos: alterar quando qualquer aparelho for alterado.</value>
     <value>Tecla de atalho utilizada para ativar o perfil. Se usar a mesma tecla de atalho, poderá alternar entre perfis.</value>
   </data>
   <data name="profile.trigger.window.desc" xml:space="preserve">
-    <value>Ativar o perfil se o programa em primeiro plano contiver os seguintes caracteres</value>
+    <value>Ativa o perfil se o programa em primeiro plano conter os seguintes caracteres</value>
   </data>
   <data name="profile.trigger.process.desc" xml:space="preserve">
     <value>Ativar o perfil quando a aplicação selecionada estiver em primeiro plano</value>
@@ -454,7 +454,7 @@ Restaurar o estado do sistema quando a aplicação é fechada.</value>
     <value>No menu da aplicação</value>
   </data>
   <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
-    <value>Este gatilho torna o perfil visível no menu do ícone da barra de tarefas. Clique à esquerda no ícone na barra de tarefas para ver o seu perfil.</value>
+    <value>Este acionador faz o perfil visível no menu da área de notificação. Clique direito no ícone da área de notificação para ver o seu perfil.</value>
   </data>
   <data name="profile.trigger.deviceChanged" xml:space="preserve">
     <value>Forçar perfil</value>
@@ -514,57 +514,133 @@ Restaurar o estado do sistema quando a aplicação é fechada.</value>
     <value>Repor áudio por aplicação</value>
   </data>
   <data name="banner.mute.option.fading" xml:space="preserve">
-    <value />
+    <value>Desvanecer</value>
   </data>
   <data name="banner.mute.option.persistent" xml:space="preserve">
-    <value />
+    <value>Persistente</value>
   </data>
   <data name="switchDevice" xml:space="preserve">
-    <value />
+    <value>Alterar dispositivo</value>
   </data>
   <data name="notification" xml:space="preserve">
-    <value>Notificação</value>
+    <value>Notificações</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
-    <value />
+    <value>Opções do banner</value>
   </data>
   <data name="seconds" xml:space="preserve">
-    <value />
+    <value>segundos</value>
   </data>
   <data name="openSettings" xml:space="preserve">
-    <value />
+    <value>Abrir configurações</value>
   </data>
   <data name="iconDoubleClick.tooltip" xml:space="preserve">
-    <value />
+    <value>Selecione a ação ao clicar duas vezes no ícone da área de notificação.</value>
   </data>
   <data name="iconDoubleClick" xml:space="preserve">
-    <value />
+    <value>Ação do duplo clique</value>
   </data>
   <data name="importExportConfigFile" xml:space="preserve">
-    <value />
+    <value>Importar/exportar ficheiro de configurações</value>
   </data>
   <data name="importExportConfigFile.desc" xml:space="preserve">
-    <value />
+    <value>Importa ou exporta o ficheiro de configurações do SoundSwith para um arquivo ZIP.</value>
   </data>
   <data name="importConfigErrorMessage" xml:space="preserve">
-    <value />
+    <value>O arquivo ZIP deve conter o ficheiro de configurações do SoundSwitch.</value>
   </data>
   <data name="importConfigRestartRequired" xml:space="preserve">
-    <value />
+    <value>O SoundSwitch será reiniciado quando ficheiro de configurações principal for importado.
+Deseja reiniciar agora?</value>
   </data>
   <data name="importConfigErrorMessage.caption" xml:space="preserve">
-    <value />
+    <value>Arquivo inválido</value>
   </data>
   <data name="buttonImport" xml:space="preserve">
-    <value />
+    <value>Importar</value>
   </data>
   <data name="exportConfigFile" xml:space="preserve">
-    <value />
+    <value>Exportar ficheiro de configurações</value>
   </data>
   <data name="importConfigFile" xml:space="preserve">
-    <value />
+    <value>Importar ficheiro de configurações</value>
   </data>
   <data name="none" xml:space="preserve">
     <value>Nenhum</value>
+  </data>
+  <data name="position.tooltip" xml:space="preserve">
+    <value>Define a posição do banner de notificação.</value>
+  </data>
+  <data name="notification.single" xml:space="preserve">
+    <value>Somente um banner</value>
+  </data>
+  <data name="notification.single.tooltip" xml:space="preserve">
+    <value>Somente mostra um banner por vez e substitui o seu conteúdo.</value>
+  </data>
+  <data name="link.community" xml:space="preserve">
+    <value>Comunidade no Discord</value>
+  </data>
+  <data name="link.donate" xml:space="preserve">
+    <value>Doar</value>
+  </data>
+  <data name="link.help" xml:space="preserve">
+    <value>Discussão de ajuda</value>
+  </data>
+  <data name="resetAudioDevices.desc" xml:space="preserve">
+    <value>Redefine a atribuição de dispositivos de áudio para programas especificados no Windows caso os dispositivos de áudio não sejam reatribuídos aos programas ao alternar dispositivos.</value>
+  </data>
+  <data name="buttonReset" xml:space="preserve">
+    <value>Redefinir</value>
+  </data>
+  <data name="exportLogFiles" xml:space="preserve">
+    <value>Exportar ficheiros de registo</value>
+  </data>
+  <data name="exportLogFiles.desc" xml:space="preserve">
+    <value>Exporta todos os ficheiros de registo para um arquivo ZIP para posterior solução de problemas nas Discussões de Ajuda ou na Comunidade do Discord.</value>
+  </data>
+  <data name="buttonExport" xml:space="preserve">
+    <value>Exportar</value>
+  </data>
+  <data name="troubleshooting" xml:space="preserve">
+    <value>Solução de problemas</value>
+  </data>
+  <data name="troubleshooting.desc" xml:space="preserve">
+    <value>Se precisar de ajuda ou de mais soluções de problemas com o SoundSwitch, acede a ligação Discussão de Ajuda ou Comunidade do Discord ou ajude-nos por aceder a ligação Doar abaixo.</value>
+  </data>
+  <data name="position.option.center" xml:space="preserve">
+    <value>Centro</value>
+  </data>
+  <data name="microphone.on" xml:space="preserve">
+    <value>Microfone ligado</value>
+  </data>
+  <data name="microphone.off" xml:space="preserve">
+    <value>Microfone desligado</value>
+  </data>
+  <data name="banner.mute" xml:space="preserve">
+    <value>Microfone silenciado</value>
+  </data>
+  <data name="banner.mute.tooltip" xml:space="preserve">
+    <value>Exibir banner quando o microfone estiver silenciado ou não. Persistente significa que ele estará sempre visível no ecrã quando silenciado</value>
+  </data>
+  <data name="switchProfile" xml:space="preserve">
+    <value>Alterar perfil</value>
+  </data>
+  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+    <value>Quanto tempo o banner permanece no ecrã, em segundos.</value>
+  </data>
+  <data name="notification.banner.onscreen.time" xml:space="preserve">
+    <value>Tempo no ecrã</value>
+  </data>
+  <data name="importConfigErrorReadingFile" xml:space="preserve">
+    <value>Erro ao ler o ficheiro de configurações '{0}' do arquivo: {1}</value>
+  </data>
+  <data name="importConfigErrorInvalidJson" xml:space="preserve">
+    <value>O ficheiro de configurações '{0}' não é um JSON válido. Erro: {1}</value>
+  </data>
+  <data name="importConfigErrorDeserializationNull" xml:space="preserve">
+    <value>O ficheiro de configuração '{0}' não pôde ser desserializado corretamente (resultou em nulo). Certifique-se de que seja uma configuração válida do SoundSwitch.</value>
+  </data>
+  <data name="importConfigErrorDeserializationFailed" xml:space="preserve">
+    <value>Falha ao desserializar o ficheiro de configuração '{0}'. Erro: {1}</value>
   </data>
 </root>
