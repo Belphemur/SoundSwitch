@@ -132,16 +132,25 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Persistent.
+        ///   Looks up a localized string similar to Persistent OFF.
         /// </summary>
-        internal static string banner_mute_option_persistent {
+        internal static string banner_mute_option_persistent_off {
             get {
-                return ResourceManager.GetString("banner.mute.option.persistent", resourceCulture);
+                return ResourceManager.GetString("banner.mute.option.persistent_off", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show banner when the microphone is muted or unmuted. Persistent will mean it&apos;s always visible on the screen when muted.
+        ///   Looks up a localized string similar to Persistent ON.
+        /// </summary>
+        internal static string banner_mute_option_persistent_on {
+            get {
+                return ResourceManager.GetString("banner.mute.option.persistent_on", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show banner when the microphone is muted or unmuted.
         /// </summary>
         internal static string banner_mute_tooltip {
             get {

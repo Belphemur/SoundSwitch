@@ -82,13 +82,16 @@ internal class NotificationBanner : INotification
 
     public void NotifyMuteChanged(string deviceId, string microphoneName, bool newMuteState)
     {
-        if (Configuration.MicrophoneMuteNotification != MicrophoneMuteEnum.Persistent)
+        if (Configuration.MicrophoneMuteNotification != MicrophoneMuteEnum.PersistentOff && Configuration.MicrophoneMuteNotification != MicrophoneMuteEnum.PersistentOn)
             _microphoneMuteBannerManager.RemovePersistentMuteBanner(deviceId);
 
         switch (Configuration.MicrophoneMuteNotification)
         {
-            case MicrophoneMuteEnum.Persistent:
-                _microphoneMuteBannerManager.UpdateMicrophoneMuteState(deviceId, microphoneName, newMuteState);
+            case MicrophoneMuteEnum.PersistentOff:
+                _microphoneMuteBannerManager.UpdateMicrophoneMuteState(deviceId, microphoneName, newMuteState, false);
+                return;
+            case MicrophoneMuteEnum.PersistentOn:
+                _microphoneMuteBannerManager.UpdateMicrophoneMuteState(deviceId, microphoneName, newMuteState, true);
                 return;
             case MicrophoneMuteEnum.Fading:
                 FullBanner(microphoneName, newMuteState);

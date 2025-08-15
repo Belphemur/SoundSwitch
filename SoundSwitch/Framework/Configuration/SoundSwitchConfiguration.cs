@@ -77,12 +77,13 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
     // Notification Settings
     public NotificationTypeEnum NotificationSettings { get; set; } = NotificationTypeEnum.BannerNotification;
     public BannerPositionEnum BannerPosition { get; set; } = BannerPositionEnum.TopLeft;
-    public MicrophoneMuteEnum MicrophoneMuteNotification { get; set; } = MicrophoneMuteEnum.Persistent;
+    public MicrophoneMuteEnum MicrophoneMuteNotification { get; set; } = MicrophoneMuteEnum.PersistentOff;
     public string CustomNotificationFilePath { get; set; }
     public TimeSpan BannerOnScreenTime { get; set; } = TimeSpan.FromSeconds(3);
     public int MaxNumberNotification { get; set; } = 5;
     public bool NotifyUsingPrimaryScreen { get; set; }
-    [Obsolete("Replaced by " + nameof(MicrophoneMutePersistent))]
+    
+    [Obsolete("Replaced by " + nameof(MicrophoneMutePersistentOff))]
     public bool PersistentMuteNotification { get; set; }
 
     // Profile Settings

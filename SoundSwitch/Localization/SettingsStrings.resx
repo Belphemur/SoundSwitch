@@ -573,13 +573,16 @@ Restore the state of the system when the application is closed.</value>
     <value>Microphone Muted</value>
   </data>
   <data name="banner.mute.tooltip" xml:space="preserve">
-    <value>Show banner when the microphone is muted or unmuted. Persistent will mean it's always visible on the screen when muted</value>
+    <value>Show banner when the microphone is muted or unmuted</value>
   </data>
   <data name="banner.mute.option.fading" xml:space="preserve">
     <value>Fading</value>
   </data>
-  <data name="banner.mute.option.persistent" xml:space="preserve">
-    <value>Persistent</value>
+  <data name="banner.mute.option.persistent_off" xml:space="preserve">
+    <value>Persistent OFF</value>
+  </data>
+  <data name="banner.mute.option.persistent_on" xml:space="preserve">
+    <value>Persistent ON</value>
   </data>
   <data name="switchDevice" xml:space="preserve">
     <value>Switch device</value>
