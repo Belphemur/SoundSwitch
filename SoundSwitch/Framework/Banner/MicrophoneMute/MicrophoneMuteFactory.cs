@@ -24,6 +24,7 @@ public class MicrophoneMuteFactory() : AbstractFactory<MicrophoneMuteEnum, IMicr
         {
             new MicrophoneMuteNone(),
             new MicrophoneMuteFading(),
-            new MicrophoneMutePersistent()
+            new MicrophoneMutePersistentOff(),
+            new MicrophoneMutePersistentOn(),
         };
 }

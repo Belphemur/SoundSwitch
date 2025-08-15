@@ -18,5 +18,6 @@ public enum MicrophoneMuteEnum
 {
     None = 0,
     Fading = 1,
-    Persistent = 2
+    PersistentOff = 2,
+    PersistentOn = 3
 }
