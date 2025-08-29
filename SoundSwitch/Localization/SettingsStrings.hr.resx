@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -559,13 +559,13 @@ Obnovi stanje sustava kad se program zatvori.</value>
     <value>Centriraj</value>
   </data>
   <data name="banner.mute.option.fading" xml:space="preserve">
-    <value />
+    <value>Postupno nestajanje</value>
   </data>
   <data name="banner.mute.option.persistent" xml:space="preserve">
-    <value />
+    <value>Stalno</value>
   </data>
   <data name="switchDevice" xml:space="preserve">
-    <value />
+    <value>Promijeni uređaj</value>
   </data>
   <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
     <value>Trajanje prikaza natpisa na ekranu u sekundama.</value>
@@ -577,42 +577,70 @@ Obnovi stanje sustava kad se program zatvori.</value>
     <value>Obavijesti</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
-    <value />
+    <value>Opcije natpisa</value>
   </data>
   <data name="seconds" xml:space="preserve">
-    <value />
+    <value>sekunde</value>
   </data>
   <data name="openSettings" xml:space="preserve">
-    <value />
+    <value>Otvori postavke</value>
   </data>
   <data name="iconDoubleClick.tooltip" xml:space="preserve">
-    <value />
+    <value>Odaberi radnju dvostrukim klikom na ikonu u progrmaskoj traci.</value>
   </data>
   <data name="iconDoubleClick" xml:space="preserve">
-    <value />
+    <value>Radnja dvostrukim klikom</value>
   </data>
   <data name="importExportConfigFile" xml:space="preserve">
-    <value />
+    <value>Uvezi / Izvezi konfiguracijsku datoteku</value>
   </data>
   <data name="importExportConfigFile.desc" xml:space="preserve">
-    <value />
+    <value>Uvezi ili izvezi konfiguracijsku datoteku za SoundSwitch u zip arhivu.</value>
   </data>
   <data name="importConfigErrorMessage" xml:space="preserve">
-    <value />
+    <value>Zip arhiva mora sadržati konfiguracijsku datoteku za SoundSwitch.</value>
   </data>
   <data name="importConfigRestartRequired" xml:space="preserve">
-    <value />
+    <value>SoundSwitch će se ponovno pokrenuti nakon što se uveze glavna konfiguracijska datoteka.
+Želiš li sada ponovo pokrenuti aplikaciju?</value>
   </data>
   <data name="importConfigErrorMessage.caption" xml:space="preserve">
-    <value />
+    <value>Neispravna arhiva</value>
   </data>
   <data name="buttonImport" xml:space="preserve">
-    <value />
+    <value>Uvezi</value>
   </data>
   <data name="exportConfigFile" xml:space="preserve">
-    <value />
+    <value>Izvezi konfiguracijsku datoteku</value>
   </data>
   <data name="importConfigFile" xml:space="preserve">
-    <value />
+    <value>Uvezi konfiguracijsku datoteku</value>
+  </data>
+  <data name="microphone.on" xml:space="preserve">
+    <value>Mikrofon uključen</value>
+  </data>
+  <data name="microphone.off" xml:space="preserve">
+    <value>Mikrofon isključen</value>
+  </data>
+  <data name="banner.mute" xml:space="preserve">
+    <value>Mikrofon isključen</value>
+  </data>
+  <data name="switchProfile" xml:space="preserve">
+    <value>Promijeni profil</value>
+  </data>
+  <data name="banner.mute.tooltip" xml:space="preserve">
+    <value>Prikaži natpis kada je mikrofon isključen ili uključen. „Stalno” znači da je uvijek vidljiv na ekranu kada je mikrofon isključen</value>
+  </data>
+  <data name="importConfigErrorReadingFile" xml:space="preserve">
+    <value>Greška pri čitanju konfiguracijske datoteke „{0}” iz arhive: {1}</value>
+  </data>
+  <data name="importConfigErrorInvalidJson" xml:space="preserve">
+    <value>Konfiguracijska datoteka „{0}” nije valjani JSON. Greška: {1}</value>
+  </data>
+  <data name="importConfigErrorDeserializationNull" xml:space="preserve">
+    <value>Konfiguracijska datoteka „{0}” se nije mogla biti ispravno deserializirati (rezultat je null). Provjeri je li radi o valjanoj SoundSwitch konfiguraciji.</value>
+  </data>
+  <data name="importConfigErrorDeserializationFailed" xml:space="preserve">
+    <value>Neuspjelo deserijaliziranje konfiguracijske datoteke „{0}”. Greška: {1}</value>
   </data>
 </root>
