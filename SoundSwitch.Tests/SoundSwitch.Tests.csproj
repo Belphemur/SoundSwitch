@@ -18,6 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="JetBrains.Annotations" VersionOverride="2025.2.2" />
       <ProjectReference Include="..\SoundSwitch\SoundSwitch.csproj" />
     </ItemGroup>
 </Project>
