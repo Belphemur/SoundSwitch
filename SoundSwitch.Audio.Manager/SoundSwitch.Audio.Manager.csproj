@@ -28,6 +28,7 @@
     <CsWinRTWindowsMetadata>sdk</CsWinRTWindowsMetadata>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" VersionOverride="9.0.9" />
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
       <_Parameter1>SoundSwitch.Audio.Manager.Tests</_Parameter1>
     </AssemblyAttribute>
