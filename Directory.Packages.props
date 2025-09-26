@@ -21,7 +21,7 @@
     <PackageVersion Include="NuGet.Versioning" Version="6.14.0" />
     <PackageVersion Include="NUnit" Version="4.4.0" />
     <PackageVersion Include="NUnit3TestAdapter" Version="5.1.0" />
-    <PackageVersion Include="Polly.Core" Version="8.6.3" />
+    <PackageVersion Include="Polly.Core" Version="8.6.4" />
     <PackageVersion Include="RailSharp" Version="1.0.0" />
     <PackageVersion Include="Sentry.Serilog" Version="5.15.1" />
     <PackageVersion Include="Serilog" Version="4.3.0" />
