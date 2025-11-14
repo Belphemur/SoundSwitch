@@ -12,10 +12,12 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
-namespace SoundSwitch.Framework.DeviceCyclerManager;
+using SoundSwitch.Localization;
 
-public enum DeviceCyclerTypeEnum
+namespace SoundSwitch.Framework.Banner.BannerDisplayInfo.DisplayInfo;
+
+internal class DisplayInfoIconOnly : IDisplayInfo
 {
-    All = 0,
-    Available = 1
+    public BannerDisplayInfo TypeEnum => BannerDisplayInfo.IconOnly;
+    public string Label => SettingsStrings.banner_display_option_iconOnly;
 }

@@ -18,6 +18,6 @@ namespace SoundSwitch.Framework.Banner.MicrophoneMute.Type;
 
 internal class MicrophoneMuteFading : IMicrophoneMute
 {
-    public MicrophoneMuteEnum TypeEnum => MicrophoneMuteEnum.Fading;
+    public MicrophoneMute TypeEnum => MicrophoneMute.Fading;
     public string Label => SettingsStrings.banner_mute_option_fading;
 }

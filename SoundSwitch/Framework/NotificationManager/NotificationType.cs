@@ -12,15 +12,14 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
-namespace SoundSwitch.Framework.Banner.BannerPosition;
+namespace SoundSwitch.Framework.NotificationManager;
 
-public enum BannerPositionEnum
+public enum NotificationType
 {
-    TopLeft = 0,
-    TopCenter = 1,
-    TopRight = 2,
-    BottomLeft = 3,
-    BottomCenter = 4,
-    BottomRight = 5,
-    Center = 6
+    DefaultWindowsNotification = 0,
+    SoundNotification = 1,
+    NoNotification = 2,
+    CustomNotification = 3,
+    ToastNotification = 4,
+    BannerNotification = 5
 }

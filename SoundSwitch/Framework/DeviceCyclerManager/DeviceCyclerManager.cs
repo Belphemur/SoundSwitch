@@ -22,9 +22,9 @@ public class DeviceCyclerManager
 {
     private readonly DeviceCyclerFactory _deviceCyclerFactory = new();
 
-    public static DeviceCyclerTypeEnum CurrentCycler
+    public static DeviceCyclerType CurrentCycler
     {
-        get { return AppConfigs.Configuration.CyclerType; }
+        get => AppConfigs.Configuration.CyclerType;
         set
         {
             if(value == AppConfigs.Configuration.CyclerType)
@@ -33,21 +33,17 @@ public class DeviceCyclerManager
             AppConfigs.Configuration.Save();
         }
     }
+
     /// <summary>
     /// Cycle the audio device
     /// </summary>
     /// <param name="type"></param>
-    public bool CycleDevice(DataFlow type)
-    {
-        return _deviceCyclerFactory.Get(CurrentCycler).CycleAudioDevice(type);
-    }
+    public bool CycleDevice(DataFlow type) => _deviceCyclerFactory.Get(CurrentCycler).CycleAudioDevice(type);
+
     /// <summary>
     /// Set the device as Default
     /// </summary>
     /// <param name="device"></param>
     /// <returns></returns>
-    public bool SetAsDefault(DeviceInfo device)
-    {
-        return _deviceCyclerFactory.Get(CurrentCycler).SetActiveDevice(device);
-    }
+    public bool SetAsDefault(DeviceInfo device) => _deviceCyclerFactory.Get(CurrentCycler).SetActiveDevice(device);
 }

@@ -31,7 +31,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification;
 internal class NotificationSound : INotification
 {
     private CancellationTokenSource _cancellationTokenSource;
-    public NotificationTypeEnum TypeEnum => NotificationTypeEnum.SoundNotification;
+    public NotificationType TypeEnum => NotificationType.SoundNotification;
     public string Label => SettingsStrings.notification_option_sound;
     public INotificationConfiguration Configuration { get; set; }
 
@@ -69,7 +69,7 @@ internal class NotificationSound : INotification
         }
     }
 
-    public void NotifyMuteChanged(string deviceId, string microphoneName, bool newMuteState) { }
+    public void NotifyMicrophoneMuteChanged(string deviceId, string microphoneName, bool newMuteState) { }
 
     public void OnSoundChanged(CachedSound newSound) => Configuration.CustomSound = newSound;
 

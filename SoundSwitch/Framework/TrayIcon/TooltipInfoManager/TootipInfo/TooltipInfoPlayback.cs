@@ -24,7 +24,7 @@ namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 public class TooltipInfoPlayback : ITooltipInfo
 {
     private DeviceFullInfo _defaultDevice;
-    public TooltipInfoTypeEnum TypeEnum => TooltipInfoTypeEnum.Playback;
+    public TooltipInfoType TypeEnum => TooltipInfoType.Playback;
     public string Label => SettingsStrings.tooltipOnHover_option_playbackDevice;
 
     public TooltipInfoPlayback()

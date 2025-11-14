@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -161,9 +161,6 @@
   </data>
   <data name="audioFiles" xml:space="preserve">
     <value>Lydfiler</value>
-  </data>
-  <data name="selectSoundButton.tooltip" xml:space="preserve">
-    <value>Velg lydfil for merknaden</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Velg for å skru på snarvei.</value>
@@ -337,9 +334,6 @@ Begge: Endre når enhetstypen byttes.</value>
   <data name="profile.error.title" xml:space="preserve">
     <value>Profilfeil</value>
   </data>
-  <data name="buttonDelete" xml:space="preserve">
-    <value>Slett</value>
-  </data>
   <data name="profile.error.delete" xml:space="preserve">
     <value>Kunne ikke finne profilen.</value>
   </data>
@@ -498,22 +492,22 @@ Gjenopprett systemets tilstand når programmet lukkes.</value>
   <data name="position.tooltip" xml:space="preserve">
     <value>Velg posisjonen for banneret.</value>
   </data>
-  <data name="position.option.bottomLeft" xml:space="preserve">
+  <data name="position.bottomLeft" xml:space="preserve">
     <value>Nederst til venstre</value>
   </data>
-  <data name="position.option.bottomRight" xml:space="preserve">
+  <data name="position.bottomRight" xml:space="preserve">
     <value>Nederst til høyre</value>
   </data>
-  <data name="position.option.topLeft" xml:space="preserve">
+  <data name="position.topLeft" xml:space="preserve">
     <value>Øverst til venstre</value>
   </data>
-  <data name="position.option.topRight" xml:space="preserve">
+  <data name="position.topRight" xml:space="preserve">
     <value>Øverst til høyre</value>
   </data>
-  <data name="position.option.bottomCenter" xml:space="preserve">
+  <data name="position.bottomCenter" xml:space="preserve">
     <value>Nederst i midten</value>
   </data>
-  <data name="position.option.topCenter" xml:space="preserve">
+  <data name="position.topCenter" xml:space="preserve">
     <value>Øverst i midten</value>
   </data>
   <data name="notification.single" xml:space="preserve">
@@ -555,7 +549,7 @@ Gjenopprett systemets tilstand når programmet lukkes.</value>
   <data name="troubleshooting.desc" xml:space="preserve">
     <value>Hvis du trenger hjelp eller ytterligere feilsøking med SoundSwitch, kan du besøke hjelpelenken eller Discord-samfunnet, eller støtte oss ved å besøke donasjonslenken nedenfor.</value>
   </data>
-  <data name="position.option.center" xml:space="preserve">
+  <data name="position.center" xml:space="preserve">
     <value>I midten</value>
   </data>
   <data name="microphone.on" xml:space="preserve">
@@ -564,7 +558,7 @@ Gjenopprett systemets tilstand når programmet lukkes.</value>
   <data name="microphone.off" xml:space="preserve">
     <value>Mikrofon av</value>
   </data>
-  <data name="banner.mute" xml:space="preserve">
+  <data name="microphoneMuted" xml:space="preserve">
     <value>Permanent dempningsbanner</value>
   </data>
   <data name="banner.mute.tooltip" xml:space="preserve">
@@ -579,13 +573,16 @@ Gjenopprett systemets tilstand når programmet lukkes.</value>
   <data name="switchDevice" xml:space="preserve">
     <value>Bytt enhet</value>
   </data>
-  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+  <data name="switchProfile" xml:space="preserve">
+    <value>Bytt profil</value>
+  </data>
+  <data name="banner.onscreen.time.tooltip" xml:space="preserve">
     <value>Hvor lenge banneret skal vises på skjermen i sekunder.</value>
   </data>
-  <data name="notification.banner.onscreen.time" xml:space="preserve">
+  <data name="banner.onscreen.time" xml:space="preserve">
     <value>Tid vist på skjermen</value>
   </data>
-  <data name="notification" xml:space="preserve">
+  <data name="notifications" xml:space="preserve">
     <value>Notifikasjoner</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
@@ -628,11 +625,11 @@ Vil du starte SoundSwitch på nytt nå?</value>
   <data name="importConfigFile" xml:space="preserve">
     <value>Importer konfigurasjonsfil</value>
   </data>
-  <data name="importConfigErrorInvalidJson" xml:space="preserve">
-    <value>Konfigurasjonsfilen «{0}» inneholder ikke gyldig JSON. Feil: {1}</value>
-  </data>
   <data name="importConfigErrorReadingFile" xml:space="preserve">
     <value>En feil oppsto under lesing av konfigurasjonsfilen «{0}» fra arkivet: {1}</value>
+  </data>
+  <data name="importConfigErrorInvalidJson" xml:space="preserve">
+    <value>Konfigurasjonsfilen «{0}» inneholder ikke gyldig JSON. Feil: {1}</value>
   </data>
   <data name="importConfigErrorDeserializationNull" xml:space="preserve">
     <value>Konfigurasjonsfilen «{0}» kunne ikke bli deserialisert riktig (resultatet var null). Pass på at filen inneholder en gyldig SoundSwitch-konfigurasjon.</value>
@@ -640,7 +637,35 @@ Vil du starte SoundSwitch på nytt nå?</value>
   <data name="importConfigErrorDeserializationFailed" xml:space="preserve">
     <value>Kunne ikke deserialisere konfigurasjonsfilen «{0}». Feil: {1}</value>
   </data>
-  <data name="switchProfile" xml:space="preserve">
-    <value>Bytt profil</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="position.centerLeft" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="position.centerRight" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonSelect" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonCustom" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonDelete" xml:space="preserve">
+    <value>Slett</value>
+  </data>
+  <data name="customSoundFile" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.tooltip" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeySwitchDevice" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeyToggleMute" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.error" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
 </root>

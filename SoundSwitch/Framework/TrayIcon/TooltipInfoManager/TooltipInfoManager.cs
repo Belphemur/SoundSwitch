@@ -16,7 +16,6 @@ using System;
 using System.Reflection;
 using System.Windows.Forms;
 using SoundSwitch.Framework.Configuration;
-using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 using SoundSwitch.Util;
 
 namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
@@ -42,7 +41,7 @@ public class TooltipInfoManager(NotifyIcon icon)
     /// <summary>
     /// Currently active tooltip info
     /// </summary>
-    public static TooltipInfoTypeEnum CurrentTooltipInfo
+    public static TooltipInfoType CurrentTooltipInfo
     {
         get { return AppConfigs.Configuration.TooltipInfo; }
         set

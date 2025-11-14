@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
+using SoundSwitch.Framework.Banner.BannerDisplayInfo;
 using SoundSwitch.Framework.Banner.BannerPosition;
 using SoundSwitch.Framework.Banner.MicrophoneMute;
 using SoundSwitch.Framework.NotificationManager;
@@ -36,28 +37,50 @@ public class DeviceListChanged(IEnumerable<DeviceInfo> seletedDevicesList, DataF
     public DataFlow Type { get; private set; } = type;
 }
 
-public class NotificationSettingsUpdatedEvent(NotificationTypeEnum prevSettings, NotificationTypeEnum newSettings)
+public class NotificationSettingsUpdatedEvent(
+    NotificationType prevSwitchDeviceSettings,
+    NotificationType newSwitchDeviceSettings,
+    NotificationType prevSwitchProfileSettings,
+    NotificationType newSwitchProfileSettings,
+    NotificationType prevMicrophoneMuteSettings,
+    NotificationType newMicrophoneMuteSettings)
     : EventArgs
 {
-    public NotificationTypeEnum PrevSettings { get; } = prevSettings;
-    public NotificationTypeEnum NewSettings { get; } = newSettings;
+    public NotificationType PrevSwitchDeviceSettings { get; } = prevSwitchDeviceSettings;
+    public NotificationType NewSwitchDeviceSettings { get; } = newSwitchDeviceSettings;
+    public NotificationType PrevSwitchProfileSettings { get; } = prevSwitchProfileSettings;
+    public NotificationType NewSwitchProfileSettings { get; } = newSwitchProfileSettings;
+    public NotificationType PrevMicrophoneMuteSettings { get; } = prevMicrophoneMuteSettings;
+    public NotificationType NextMicrophoneMuteSettings { get; } = newMicrophoneMuteSettings;
 }
 
 public class BannerDataChangedEvent(
-    BannerPositionEnum prevBannerPosition,
-    BannerPositionEnum newBannerPosition,
+    BannerPosition prevBannerPosition,
+    BannerPosition newBannerPosition,
     TimeSpan prevTtl,
     TimeSpan newTtl,
-    MicrophoneMuteEnum prevMicrophoneMuteNotification,
-    MicrophoneMuteEnum newMicrophoneMuteNotification)
+    int prevOpacity,
+    int newOpacity,
+    BannerDisplayInfo prevBannerDisplayInfo,
+    BannerDisplayInfo newBannerDisplayInfo,
+    MicrophoneMute prevMicrophoneMuteBanner,
+    MicrophoneMute newMicrophoneMuteBanner,
+    MicrophoneMute prevMicrophoneUnmuteBanner,
+    MicrophoneMute newMicrophoneUnmuteBanner)
     : EventArgs
 {
-    public BannerPositionEnum PrevBannerPosition { get; } = prevBannerPosition;
-    public BannerPositionEnum NewBannerPosition { get; } = newBannerPosition;
+    public BannerPosition PrevBannerPosition { get; } = prevBannerPosition;
+    public BannerPosition NewBannerPosition { get; } = newBannerPosition;
     public TimeSpan PrevTtl { get; } = prevTtl;
     public TimeSpan NewTtl { get; } = newTtl;
-    public MicrophoneMuteEnum PrevMicrophoneMuteNotification { get; } = prevMicrophoneMuteNotification;
-    public MicrophoneMuteEnum NewMicrophoneMuteNotification { get; } = newMicrophoneMuteNotification;
+    public int PrevOpacity { get; } = prevOpacity;
+    public int NewOpacity { get; } = newOpacity;
+    public BannerDisplayInfo PrevBannerDisplayInfo { get; } = prevBannerDisplayInfo;
+    public BannerDisplayInfo NewBannerDisplayInfo { get; } = newBannerDisplayInfo;
+    public MicrophoneMute PrevMicrophoneMuteBanner { get; } = prevMicrophoneMuteBanner;
+    public MicrophoneMute NewMicrophoneMuteBanner { get; } = newMicrophoneMuteBanner;
+    public MicrophoneMute PrevMicrophoneUnmuteBanner { get; } = prevMicrophoneUnmuteBanner;
+    public MicrophoneMute NewMicrophoneUnmuteBanner { get; } = newMicrophoneUnmuteBanner;
 }
 
 public class CustomSoundChangedEvent(CachedSound prevSound, CachedSound newSound) : EventArgs

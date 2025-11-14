@@ -162,9 +162,6 @@
   <data name="audioFiles" xml:space="preserve">
     <value>Звукові файли</value>
   </data>
-  <data name="selectSoundButton.tooltip" xml:space="preserve">
-    <value>Виберіть звуковий файл для сповіщень</value>
-  </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Виберіть для активації гарячої клавіши.</value>
   </data>
@@ -337,9 +334,6 @@
   <data name="profile.error.title" xml:space="preserve">
     <value>Помилка профілю</value>
   </data>
-  <data name="buttonDelete" xml:space="preserve">
-    <value>Видалити</value>
-  </data>
   <data name="profile.error.delete" xml:space="preserve">
     <value>Не вдається знайти профіль.</value>
   </data>
@@ -498,22 +492,22 @@
   <data name="position.tooltip" xml:space="preserve">
     <value>Налаштувати позицію сповіщення у банері.</value>
   </data>
-  <data name="position.option.bottomLeft" xml:space="preserve">
+  <data name="position.bottomLeft" xml:space="preserve">
     <value>Внизу зліва</value>
   </data>
-  <data name="position.option.bottomRight" xml:space="preserve">
+  <data name="position.bottomRight" xml:space="preserve">
     <value>Внизу справа</value>
   </data>
-  <data name="position.option.topLeft" xml:space="preserve">
+  <data name="position.topLeft" xml:space="preserve">
     <value>Вгорі зліва</value>
   </data>
-  <data name="position.option.topRight" xml:space="preserve">
+  <data name="position.topRight" xml:space="preserve">
     <value>Вгорі справа</value>
   </data>
-  <data name="position.option.bottomCenter" xml:space="preserve">
+  <data name="position.bottomCenter" xml:space="preserve">
     <value>Внизу по центру</value>
   </data>
-  <data name="position.option.topCenter" xml:space="preserve">
+  <data name="position.topCenter" xml:space="preserve">
     <value>Вгорі по центру</value>
   </data>
   <data name="notification.single" xml:space="preserve">
@@ -555,7 +549,7 @@
   <data name="troubleshooting.desc" xml:space="preserve">
     <value>Якщо вам потрібна допомога або подальше усунення неполадок з SoundSwitch, ви можете відвідати посилання "Допомога та Обговорення" або "Спільнота Discord", або допомогти нам, відвідавши посилання «Донат».</value>
   </data>
-  <data name="position.option.center" xml:space="preserve">
+  <data name="position.center" xml:space="preserve">
     <value>По центру</value>
   </data>
   <data name="banner.mute.option.fading" xml:space="preserve">
@@ -567,13 +561,13 @@
   <data name="switchDevice" xml:space="preserve">
     <value />
   </data>
-  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+  <data name="banner.onscreen.time.tooltip" xml:space="preserve">
     <value>Скільки буде відображатися банер на екрані в секундах.</value>
   </data>
-  <data name="notification.banner.onscreen.time" xml:space="preserve">
+  <data name="banner.onscreen.time" xml:space="preserve">
     <value>Час відображення</value>
   </data>
-  <data name="notification" xml:space="preserve">
+  <data name="notifications" xml:space="preserve">
     <value>Сповіщення</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
@@ -613,6 +607,37 @@
     <value />
   </data>
   <data name="importConfigFile" xml:space="preserve">
+    <value />
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="position.centerLeft" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="position.centerRight" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonSelect" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonCustom" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonDelete" xml:space="preserve">
+    <value>Видалити</value>
+  </data>
+  <data name="customSoundFile" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.tooltip" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeySwitchDevice" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeyToggleMute" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.error" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
 </root>

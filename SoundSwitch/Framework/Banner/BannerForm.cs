@@ -12,16 +12,17 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
+using SoundSwitch.Framework.Audio.Play;
+using SoundSwitch.Framework.Banner.BannerPosition;
+using SoundSwitch.Framework.Threading;
+using SoundSwitch.Model;
+using SoundSwitch.UI.Menu.Util;
 using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SoundSwitch.Framework.Audio.Play;
-using SoundSwitch.Framework.Threading;
-using SoundSwitch.Model;
-using SoundSwitch.UI.Menu.Util;
 using Timer = System.Windows.Forms.Timer;
 
 namespace SoundSwitch.Framework.Banner;
@@ -31,9 +32,11 @@ namespace SoundSwitch.Framework.Banner;
 /// </summary>
 public partial class BannerForm : Form
 {
+
     private Timer _timerHide;
     private bool _hiding;
     private BannerData _currentData;
+    private BannerPositionFactory _bannerPositionFactory =new();
     private CancellationTokenSource _cancellationTokenSource = new();
     private int _currentOffset;
     private int _hide = 100;
@@ -41,15 +44,15 @@ public partial class BannerForm : Form
     private Size _defaultPictureSize;
     private Padding _defaultPadding;
     private bool _isCompact;
+    private Point _lastMousePosition;
     public Guid Id { get; } = Guid.NewGuid();
 
     /// <summary>
     /// Get the Screen object
     /// </summary>
-    private Screen GetScreen()
-    {
-        return (AppModel.Instance.NotifyUsingPrimaryScreen ? Screen.PrimaryScreen : Screen.FromPoint(Cursor.Position))!;
-    }
+    internal static Screen GetScreen() =>
+        (AppModel.Instance.NotifyUsingPrimaryScreen ? Screen.PrimaryScreen : Screen.FromPoint(Cursor.Position))!;
+    
 
     /// <summary>
     /// Constructor for the <see cref="BannerForm"/> class
@@ -57,9 +60,8 @@ public partial class BannerForm : Form
     public BannerForm()
     {
         InitializeComponent();
-        var screen = GetScreen();
         StartPosition = FormStartPosition.Manual;
-        Bounds = screen.Bounds;
+        Bounds = GetScreen().Bounds;
         TopMost = true;
         TopLevel = true;
         FormBorderStyle = FormBorderStyle.None;
@@ -70,11 +72,13 @@ public partial class BannerForm : Form
         _defaultPictureSize = pbxLogo.Size;
         _defaultPadding = Padding;
 
-        // Add click event handlers
-        Click += BannerForm_Click;
-        lblTitle.Click += BannerForm_Click;
-        lblTop.Click += BannerForm_Click;
-        pbxLogo.Click += BannerForm_Click;
+        // Register event handlers
+        RegisterHandlers(this);
+        RegisterHandlers(lblTitle);
+        RegisterHandlers(lblTop);
+        RegisterHandlers(pbxLogo);
+        RegisterHandlers(tableLayoutPanel);
+
         // Enable double buffering to reduce flicker
         SetStyle(ControlStyles.OptimizedDoubleBuffer |
                  ControlStyles.AllPaintingInWmPaint |
@@ -82,9 +86,16 @@ public partial class BannerForm : Form
 
         // Also enable double buffering for container controls
         foreach (Control control in Controls)
-        {
             EnableDoubleBuffering(control);
-        }
+    }
+
+    private void RegisterHandlers(Control control)
+    {
+        control.Click += BannerForm_Click;
+        control.MouseDown += BannerForm_MouseDown;
+        control.MouseUp += BannerForm_MouseUp;
+        control.MouseMove += BannerForm_MouseMove;
+        control.KeyDown += BannerForm_KeyDown;
     }
 
     protected override bool ShowWithoutActivation => true;
@@ -119,29 +130,27 @@ public partial class BannerForm : Form
         const int WM_LBUTTONUP = 0x0202;
         const int WM_ERASEBKGND = 0x0014;
 
-        if (m.Msg == WM_NCHITTEST)
+        switch (m.Msg)
         {
-            // Return HTCLIENT to handle mouse clicks properly with WS_EX_NOACTIVATE style
-            m.Result = (IntPtr)HTCLIENT;
-            return;
+            case WM_NCHITTEST:
+                // Return HTCLIENT to handle mouse clicks properly with WS_EX_NOACTIVATE style
+                m.Result = HTCLIENT;
+                return;
+            case WM_LBUTTONUP:
+                // Handle mouse clicks manually for WS_EX_NOACTIVATE windows
+                Point location = PointToClient(new Point(m.LParam.ToInt32() & 0xFFFF, m.LParam.ToInt32() >> 16));
+                BannerForm_Click(this, new MouseEventArgs(MouseButtons.Left, 1, location.X, location.Y, 0));
+                m.Result = IntPtr.Zero;
+                return;
+            case WM_ERASEBKGND:
+                // Return non-zero to indicate we handled erasing the background
+                // This prevents flickering during resize/update operations
+                m.Result = 1;
+                return;
+            default:
+                base.WndProc(ref m);
+                break;
         }
-        else if (m.Msg == WM_LBUTTONUP)
-        {
-            // Handle mouse clicks manually for WS_EX_NOACTIVATE windows
-            Point location = PointToClient(new Point(m.LParam.ToInt32() & 0xFFFF, m.LParam.ToInt32() >> 16));
-            BannerForm_Click(this, new MouseEventArgs(MouseButtons.Left, 1, location.X, location.Y, 0));
-            m.Result = IntPtr.Zero;
-            return;
-        }
-        else if (m.Msg == WM_ERASEBKGND)
-        {
-            // Return non-zero to indicate we handled erasing the background
-            // This prevents flickering during resize/update operations
-            m.Result = (IntPtr)1;
-            return;
-        }
-
-        base.WndProc(ref m);
     }
 
     /// <summary>
@@ -158,9 +167,7 @@ public partial class BannerForm : Form
 
         // Apply to child controls recursively
         foreach (Control childControl in control.Controls)
-        {
             EnableDoubleBuffering(childControl);
-        }
     }
 
 
@@ -170,10 +177,7 @@ public partial class BannerForm : Form
     /// <param name="data">The configuration data to setup the notification UI</param>
     internal void SetData(BannerData data)
     {
-        if (_currentData != null && _currentData.Priority > data.Priority)
-        {
-            return;
-        }
+        if (_currentData != null && _currentData.Priority > data.Priority) return;
 
         _currentData = data;
         // No need for timer since there isn't any ttl
@@ -201,7 +205,7 @@ public partial class BannerForm : Form
         }
 
         _hiding = false;
-        Opacity = .9;
+        Opacity = (double)data.Opacity / 100;
         lblTitle.Text = data.Text;
         lblTop.Text = data.Title;
 
@@ -211,12 +215,9 @@ public partial class BannerForm : Form
 
         Region = Region.FromHrgn(RoundedCorner.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
 
-        var screen = GetScreen();
+        Location = data.Position.GetScreenPosition(GetScreen(), Height, Width, _currentOffset);
 
-        Location = data.Position.GetScreenPosition(screen, Height, Width, _currentOffset);
-
-        if (_timerHide != null)
-            _timerHide.Enabled = true;
+        _timerHide?.Enabled = true;
 
         Show();
 
@@ -232,11 +233,9 @@ public partial class BannerForm : Form
     /// <param name="offset">Vertical offset to apply to the banner's position</param>
     public void UpdatePosition(int offset)
     {
-        if (_currentData?.Position == null)
-            return;
+        if (_currentData?.Position == null) return;
 
-        var screen = GetScreen();
-        Location = _currentData.Position.GetScreenPosition(screen, Height, Width, offset);
+        Location = _currentData.Position.GetScreenPosition(GetScreen(), Height, Width, offset);
         _currentOffset = offset;
     }
 
@@ -248,11 +247,11 @@ public partial class BannerForm : Form
     /// <param name="hideChange"></param>
     public void UpdateLocationOpacity(int positionChange, double opacityChange, int hideChange)
     {
-        var screen = GetScreen();
         _currentOffset += positionChange;
-        Location = _currentData.Position.GetScreenPosition(screen, Height, Width, _currentOffset);
+        Location = _currentData.Position.GetScreenPosition(GetScreen(), Height, Width, _currentOffset);
         Opacity -= opacityChange;
         _hide -= hideChange;
+
         if (Opacity <= 0.0 || _hide <= 0)
         {
             _hiding = true;
@@ -285,8 +284,7 @@ public partial class BannerForm : Form
     private void ApplyCompactMode()
     {
         // If already in compact mode, do nothing
-        if (_isCompact)
-            return;
+        if (_isCompact) return;
 
         const float scaleFactorImage = 0.1f;
         const float scaleFactorFont = 0.8f;
@@ -378,10 +376,7 @@ public partial class BannerForm : Form
                 Opacity -= 0.05;
             }
 
-            if (_hiding)
-            {
-                Dispose();
-            }
+            if (_hiding) Dispose();
         }
         catch (Win32Exception)
         {
@@ -403,13 +398,68 @@ public partial class BannerForm : Form
     /// <param name="e">Arguments of the event</param>
     private void BannerForm_Click(object sender, EventArgs e)
     {
-        if (_currentData?.OnClick == null)
+        if (_currentData.CustomPositionMode) return;
+
+        if (_currentData.OnClick == null)
         {
             TriggerHidingDisposal();
             return;
         }
 
-        // Invoke the click callback if it's set
-        _currentData?.OnClick?.Invoke(this, e);
+        // Invoke the click callback if set
+        _currentData.OnClick?.Invoke(this, e);
+    }
+
+    private void BannerForm_MouseDown(object sender, MouseEventArgs e)
+    {
+        if (!_currentData.CustomPositionMode) return;
+        if (e.Button == MouseButtons.Left)
+        {
+            _lastMousePosition = new Point(e.X, e.Y);
+            _timerHide.Stop(); 
+        }
+    }
+
+    private void BannerForm_MouseUp(object sender, MouseEventArgs e)
+    {
+        if (!_currentData.CustomPositionMode) return;
+        if (e.Button == MouseButtons.Left)
+        {
+            AppModel.Instance.CustomBannerPosition = Location;
+            _timerHide.Start();
+        }
+    }
+
+    private void BannerForm_MouseMove(object sender, MouseEventArgs e)
+    {
+        if (!_currentData.CustomPositionMode) return;
+        if (e.Button == MouseButtons.Left)
+        {
+            var screen = GetScreen().Bounds;
+
+            Point newLocation = new(
+                Left + e.X - _lastMousePosition.X,
+                Top + e.Y - _lastMousePosition.Y);
+
+            newLocation.X = Math.Max(0, Math.Min(newLocation.X, screen.Width - Width));
+            newLocation.Y = Math.Max(0, Math.Min(newLocation.Y, screen.Height - Height));
+
+            Location = newLocation;
+        }
+    }
+
+    private void BannerForm_KeyDown(object sender, KeyEventArgs e)
+    {
+        if (!_currentData.CustomPositionMode) return;
+        switch (e.KeyCode)
+        {
+            case Keys.Escape:
+                Dispose();
+                break;
+            case Keys.R:
+                Location = Point.Empty;
+                AppModel.Instance.CustomBannerPosition = Location;
+                break;
+        }
     }
 }

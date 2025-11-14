@@ -51,7 +51,7 @@ public class CachedSound
             wholeFile.AddRange(readBuffer.Take(samplesRead));
         }
 
-        AudioData = wholeFile.ToArray();
+        AudioData = [.. wholeFile];
     }
 
     public CachedSound(MemoryStream stream, WaveFormat waveFormat)
@@ -66,7 +66,7 @@ public class CachedSound
         {
             return new AudioFileReader(filename);
         }
-        catch (MmException e)
+        catch (MmException)
         {
             return new MediaFoundationReader(filename);
         }

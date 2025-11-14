@@ -14,7 +14,6 @@
  ********************************************************************/
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -22,14 +21,11 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
-using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
-using SoundSwitch.Framework.Profile;
-using SoundSwitch.Framework.Profile.Trigger;
 using SoundSwitch.Framework.Profile.UI;
 using SoundSwitch.Framework.TrayIcon.IconChanger;
 using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
@@ -87,7 +83,6 @@ public sealed class TrayIcon : IDisposable
     private bool _inDoubleClick;
     private DateTime _lastClick;
     private readonly TimerForm _clickTimer;
-
 
     public TrayIcon()
     {
@@ -228,11 +223,11 @@ public sealed class TrayIcon : IDisposable
             (sender, e) => ShowSettings());
         _settingsMenu.Items.Add(new ToolStripSeparator());
         _settingsMenu.Items.Add(TrayIconStrings.help, ResourceGitHubHelpBitmap,
-            SettingsForm.GitHubHelpLink);
+            SettingsForm.GitHubHelpLink_LinkClicked);
         _settingsMenu.Items.Add(TrayIconStrings.community, ResourceDiscordCommunityBitmap,
-            SettingsForm.DiscordCommunityLink);
+            SettingsForm.DiscordCommunityLink_LinkClicked);
         _settingsMenu.Items.Add(TrayIconStrings.donate, ResourceDonateBitmap,
-            SettingsForm.DonateLink);
+            SettingsForm.DonateLink_LinkClicked);
         _settingsMenu.Items.Add(new ToolStripSeparator());
         _settingsMenu.Items.Add(TrayIconStrings.quit, ResourceExitBitmap, (sender, e) => Application.Exit());
 
@@ -263,9 +258,7 @@ public sealed class TrayIcon : IDisposable
         AppModel.Instance.ErrorTriggered += (sender, @event) =>
         {
             if (@event.Exception is AppModel.NoDevicesException)
-            {
                 ShowNoDevices();
-            }
             else
             {
                 Log.Warning(@event.Exception, "Exception managed");

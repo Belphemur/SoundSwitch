@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -161,9 +161,6 @@
   </data>
   <data name="audioFiles" xml:space="preserve">
     <value>오디오 파일</value>
-  </data>
-  <data name="selectSoundButton.tooltip" xml:space="preserve">
-    <value>알림의 사운드 파일을 선택</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>단축키를 사용하려면 선택합니다.</value>
@@ -337,9 +334,6 @@
   <data name="profile.error.title" xml:space="preserve">
     <value>프로필 오류</value>
   </data>
-  <data name="buttonDelete" xml:space="preserve">
-    <value>삭제</value>
-  </data>
   <data name="profile.error.delete" xml:space="preserve">
     <value>프로필을 찾을 수 없습니다.</value>
   </data>
@@ -498,22 +492,22 @@
   <data name="position.tooltip" xml:space="preserve">
     <value>배너 알림의 위치를 설정합니다.</value>
   </data>
-  <data name="position.option.bottomLeft" xml:space="preserve">
+  <data name="position.bottomLeft" xml:space="preserve">
     <value>왼쪽 하단</value>
   </data>
-  <data name="position.option.bottomRight" xml:space="preserve">
+  <data name="position.bottomRight" xml:space="preserve">
     <value>오른쪽 하단</value>
   </data>
-  <data name="position.option.topLeft" xml:space="preserve">
+  <data name="position.topLeft" xml:space="preserve">
     <value>왼쪽 상단</value>
   </data>
-  <data name="position.option.topRight" xml:space="preserve">
+  <data name="position.topRight" xml:space="preserve">
     <value>오른쪽 상단</value>
   </data>
-  <data name="position.option.bottomCenter" xml:space="preserve">
+  <data name="position.bottomCenter" xml:space="preserve">
     <value>하단 중앙</value>
   </data>
-  <data name="position.option.topCenter" xml:space="preserve">
+  <data name="position.topCenter" xml:space="preserve">
     <value>상단 중앙</value>
   </data>
   <data name="notification.single" xml:space="preserve">
@@ -555,8 +549,20 @@
   <data name="troubleshooting.desc" xml:space="preserve">
     <value>SoundSwitch에 대한 도움이나 추가 문제 해결이 필요한 경우 도움말 토론 또는 Discord 커뮤니티 링크를 방문하거나 아래 기부 링크를 방문하여 지원을 받을 수 있습니다.</value>
   </data>
-  <data name="position.option.center" xml:space="preserve">
+  <data name="position.center" xml:space="preserve">
     <value>중앙</value>
+  </data>
+  <data name="microphone.on" xml:space="preserve">
+    <value>마이크 켜짐</value>
+  </data>
+  <data name="microphone.off" xml:space="preserve">
+    <value>마이크 꺼짐</value>
+  </data>
+  <data name="microphoneMuted" xml:space="preserve">
+    <value>마이크 음소거됨</value>
+  </data>
+  <data name="banner.mute.tooltip" xml:space="preserve">
+    <value>마이크가 음소거되거나 음소거 해제되었을 때 배너를 표시합니다. 계속 표시는 음소거 시 항상 화면에 표시됨을 의미합니다</value>
   </data>
   <data name="banner.mute.option.fading" xml:space="preserve">
     <value>표시 후 사라짐</value>
@@ -567,13 +573,16 @@
   <data name="switchDevice" xml:space="preserve">
     <value>장치 변경</value>
   </data>
-  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+  <data name="switchProfile" xml:space="preserve">
+    <value>프로필 변경</value>
+  </data>
+  <data name="banner.onscreen.time.tooltip" xml:space="preserve">
     <value>배너가 화면에 유지되는 시간 (초)입니다.</value>
   </data>
-  <data name="notification.banner.onscreen.time" xml:space="preserve">
+  <data name="banner.onscreen.time" xml:space="preserve">
     <value>화면 표시 시간</value>
   </data>
-  <data name="notification" xml:space="preserve">
+  <data name="notifications" xml:space="preserve">
     <value>알림</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
@@ -616,21 +625,6 @@
   <data name="importConfigFile" xml:space="preserve">
     <value>파일에서 설정 가져오기</value>
   </data>
-  <data name="microphone.on" xml:space="preserve">
-    <value>마이크 켜짐</value>
-  </data>
-  <data name="microphone.off" xml:space="preserve">
-    <value>마이크 꺼짐</value>
-  </data>
-  <data name="banner.mute" xml:space="preserve">
-    <value>마이크 음소거됨</value>
-  </data>
-  <data name="banner.mute.tooltip" xml:space="preserve">
-    <value>마이크가 음소거되거나 음소거 해제되었을 때 배너를 표시합니다. 계속 표시는 음소거 시 항상 화면에 표시됨을 의미합니다</value>
-  </data>
-  <data name="switchProfile" xml:space="preserve">
-    <value>프로필 변경</value>
-  </data>
   <data name="importConfigErrorReadingFile" xml:space="preserve">
     <value>압축 파일에서 '{0}' 설정 파일을 읽는 중 오류가 발생했습니다: {1}</value>
   </data>
@@ -642,5 +636,36 @@
   </data>
   <data name="importConfigErrorDeserializationFailed" xml:space="preserve">
     <value>설정 파일 '{0}'을 변환하지 못했습니다. 오류: {1}</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="position.centerLeft" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="position.centerRight" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonSelect" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonCustom" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonDelete" xml:space="preserve">
+    <value>삭제</value>
+  </data>
+  <data name="customSoundFile" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.tooltip" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeySwitchDevice" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeyToggleMute" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.error" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
 </root>

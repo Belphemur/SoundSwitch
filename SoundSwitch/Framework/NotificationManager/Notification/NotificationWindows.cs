@@ -26,7 +26,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification;
 
 internal class NotificationWindows : INotification
 {
-    public NotificationTypeEnum TypeEnum => NotificationTypeEnum.DefaultWindowsNotification;
+    public NotificationType TypeEnum => NotificationType.DefaultWindowsNotification;
     public string Label => SettingsStrings.notification_option_windowsDefault;
 
     public INotificationConfiguration Configuration { get; set; }
@@ -57,7 +57,7 @@ internal class NotificationWindows : INotification
         Configuration.Icon.ShowBalloonTip(1000, title, text, ToolTipIcon.Info);
     }
 
-    public void NotifyMuteChanged(string deviceId, string microphoneName, bool newMuteState)
+    public void NotifyMicrophoneMuteChanged(string deviceId, string microphoneName, bool newMuteState)
     {
         var title = newMuteState ? string.Format(SettingsStrings.notification_microphone_muted, microphoneName) : string.Format(SettingsStrings.notification_microphone_unmuted, microphoneName);
         Configuration.Icon.ShowBalloonTip(1000, title, microphoneName, ToolTipIcon.Info);

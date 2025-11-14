@@ -40,7 +40,7 @@ public class NotificationManager(IAppModel model)
     {
         model.DefaultDeviceChanged += ModelOnDefaultDeviceChanged;
         model.NotificationSettingsChanged += ModelOnNotificationSettingsChanged;
-        SetNotification(model.NotificationSettings);
+        SetNotification(model.SwitchDeviceNotification);
         model.CustomSoundChanged += ModelOnCustomSoundChanged;
         model.BannerSettingsChanged += ModelOnBannerSettingsChanged;
         Log.Information("Notification manager initiated");
@@ -50,7 +50,9 @@ public class NotificationManager(IAppModel model)
     {
         _notification.Configuration.BannerPosition = e.NewBannerPosition;
         _notification.Configuration.Ttl = e.NewTtl;
-        _notification.Configuration.MicrophoneMuteNotification = e.NewMicrophoneMuteNotification;
+        _notification.Configuration.Opacity = e.NewOpacity;
+        _notification.Configuration.MicrophoneMuteBanner = e.NewMicrophoneMuteBanner;
+        _notification.Configuration.MicrophoneUnmuteBanner = e.NewMicrophoneUnmuteBanner;
     }
 
     private void ModelOnCustomSoundChanged(object sender, CustomSoundChangedEvent customSoundChangedEvent)
@@ -60,21 +62,23 @@ public class NotificationManager(IAppModel model)
 
     private void ModelOnNotificationSettingsChanged(object sender, NotificationSettingsUpdatedEvent notificationSettingsUpdatedEvent)
     {
-        var notificationTypeEnum = notificationSettingsUpdatedEvent.NewSettings;
-        SetNotification(notificationTypeEnum);
+        var notificationType = notificationSettingsUpdatedEvent.NewSwitchDeviceSettings;
+        SetNotification(notificationType);
     }
 
-    private void SetNotification(NotificationTypeEnum notificationTypeEnum)
+    private void SetNotification(NotificationType notificationType)
     {
-        _notification = _notificationFactory.Get(notificationTypeEnum);
+        _notification = _notificationFactory.Get(notificationType);
         _notification.Configuration = new NotificationConfiguration()
         {
             Icon = model.TrayIcon.NotifyIcon,
             DefaultSound = Resources.NotificationSound,
             BannerPosition = AppModel.Instance.BannerPosition,
             Ttl = AppModel.Instance.BannerOnScreenTime,
-            MicrophoneMuteNotification = AppModel.Instance.MicrophoneMuteNotification
+            Opacity = AppModel.Instance.BannerOpacityPercentage,
+            MicrophoneMuteBanner = AppModel.Instance.MicrophoneMuteBanner,
         };
+
         try
         {
             _notification.Configuration.CustomSound = AppModel.Instance.CustomNotificationSound;
@@ -109,14 +113,12 @@ public class NotificationManager(IAppModel model)
     /// </summary>
     public void NotifyProfileChanged(Profile.Profile profile, uint? processId)
     {
-        if (!profile.NotifyOnActivation)
+        if (profile.NotifyOnActivation)
         {
-            return;
+            var icon = GetIcon(profile, processId);
+
+            _notification.NotifyProfileChanged(profile, icon, processId);
         }
-
-        var icon = GetIcon(profile, processId);
-
-        _notification.NotifyProfileChanged(profile, icon, processId);
     }
 
     private Bitmap GetIcon(Profile.Profile profile, uint? processId)
@@ -154,7 +156,7 @@ public class NotificationManager(IAppModel model)
 
     public void NotifyMuteChanged(string deviceId, string microphoneName, bool newMuteState)
     {
-        _notification.NotifyMuteChanged(deviceId, microphoneName, newMuteState);
+        _notification.NotifyMicrophoneMuteChanged(deviceId, microphoneName, newMuteState);
     }
 
     ~NotificationManager()

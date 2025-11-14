@@ -20,14 +20,9 @@ namespace SoundSwitch.Framework.Banner.BannerPosition.Position;
 
 internal class PositionTopRight : APosition, IPosition
 {
-    public BannerPositionEnum TypeEnum => BannerPositionEnum.TopRight;
-    public string Label => SettingsStrings.position_option_topRight;
+    public BannerPosition TypeEnum => BannerPosition.TopRight;
+    public string Label => SettingsStrings.position_topRight;
 
-    public Point GetScreenPosition(Screen screen, int height, int width, int offset)
-    {
-        return new Point(
-            PositionRight(screen, width),
-            PositionTop(screen, offset)
-        );
-    }
+    public Point GetScreenPosition(Screen screen, int height, int width, int offset) =>
+        new(PositionRight(screen, width), PositionTop(screen, offset));
 }

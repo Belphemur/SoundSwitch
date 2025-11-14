@@ -24,7 +24,7 @@ namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 public class TooltipInfoRecording : ITooltipInfo
 {
     private DeviceFullInfo _defaultDevice;
-    public TooltipInfoTypeEnum TypeEnum => TooltipInfoTypeEnum.Recording;
+    public TooltipInfoType TypeEnum => TooltipInfoType.Recording;
     public string Label => SettingsStrings.tooltipOnHover_option_recordingDevice;
 
     public TooltipInfoRecording()

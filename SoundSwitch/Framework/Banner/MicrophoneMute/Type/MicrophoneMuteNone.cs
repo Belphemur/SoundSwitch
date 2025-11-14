@@ -18,6 +18,6 @@ namespace SoundSwitch.Framework.Banner.MicrophoneMute.Type;
 
 internal class MicrophoneMuteNone : IMicrophoneMute
 {
-    public MicrophoneMuteEnum TypeEnum => MicrophoneMuteEnum.None;
+    public MicrophoneMute TypeEnum => MicrophoneMute.None;
     public string Label => SettingsStrings.none;
 }

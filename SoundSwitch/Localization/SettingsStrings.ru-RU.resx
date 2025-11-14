@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -161,9 +161,6 @@
   </data>
   <data name="audioFiles" xml:space="preserve">
     <value>Аудио файлы</value>
-  </data>
-  <data name="selectSoundButton.tooltip" xml:space="preserve">
-    <value>Выбор звукового файла для уведомления</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Установите флажок, чтобы включить горячие клавиши.</value>
@@ -337,9 +334,6 @@
   <data name="profile.error.title" xml:space="preserve">
     <value>Ошибка профиля</value>
   </data>
-  <data name="buttonDelete" xml:space="preserve">
-    <value>Удалить</value>
-  </data>
   <data name="profile.error.delete" xml:space="preserve">
     <value>Не могу найти профиль.</value>
   </data>
@@ -498,22 +492,22 @@
   <data name="position.tooltip" xml:space="preserve">
     <value>Установите позицию для всплывающих оповещений.</value>
   </data>
-  <data name="position.option.bottomLeft" xml:space="preserve">
+  <data name="position.bottomLeft" xml:space="preserve">
     <value>Снизу-Слева</value>
   </data>
-  <data name="position.option.bottomRight" xml:space="preserve">
+  <data name="position.bottomRight" xml:space="preserve">
     <value>Снизу-Справа</value>
   </data>
-  <data name="position.option.topLeft" xml:space="preserve">
+  <data name="position.topLeft" xml:space="preserve">
     <value>Сверху-Слева</value>
   </data>
-  <data name="position.option.topRight" xml:space="preserve">
+  <data name="position.topRight" xml:space="preserve">
     <value>Сверху-Справа</value>
   </data>
-  <data name="position.option.bottomCenter" xml:space="preserve">
+  <data name="position.bottomCenter" xml:space="preserve">
     <value>Снизу-Посередине</value>
   </data>
-  <data name="position.option.topCenter" xml:space="preserve">
+  <data name="position.topCenter" xml:space="preserve">
     <value>Сверху-Посередине</value>
   </data>
   <data name="notification.single" xml:space="preserve">
@@ -555,7 +549,7 @@
   <data name="troubleshooting.desc" xml:space="preserve">
     <value>Если Вам нужна любая помощь или дальнейшее решение проблемы с SoundSwitch, Вы можете перейти по ссылке в раздел "Помощь" или "Сообщество" в Discord, или поддержать нас по ссылке "Пожертвовать" ниже.</value>
   </data>
-  <data name="position.option.center" xml:space="preserve">
+  <data name="position.center" xml:space="preserve">
     <value>Центр</value>
   </data>
   <data name="microphone.on" xml:space="preserve">
@@ -564,7 +558,7 @@
   <data name="microphone.off" xml:space="preserve">
     <value>Микрофон выключен</value>
   </data>
-  <data name="banner.mute" xml:space="preserve">
+  <data name="microphoneMuted" xml:space="preserve">
     <value>Микрофон заглушен</value>
   </data>
   <data name="banner.mute.tooltip" xml:space="preserve">
@@ -579,13 +573,16 @@
   <data name="switchDevice" xml:space="preserve">
     <value>Переключение устройства</value>
   </data>
-  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+  <data name="switchProfile" xml:space="preserve">
+    <value>Сменить профиль</value>
+  </data>
+  <data name="banner.onscreen.time.tooltip" xml:space="preserve">
     <value>Как долго оповещение остается на экране в секундах.</value>
   </data>
-  <data name="notification.banner.onscreen.time" xml:space="preserve">
+  <data name="banner.onscreen.time" xml:space="preserve">
     <value>Время на экране</value>
   </data>
-  <data name="notification" xml:space="preserve">
+  <data name="notifications" xml:space="preserve">
     <value>Уведомления</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
@@ -628,6 +625,9 @@
   <data name="importConfigFile" xml:space="preserve">
     <value>Импорт файла конфигурации</value>
   </data>
+  <data name="importConfigErrorReadingFile" xml:space="preserve">
+    <value>Ошибка при чтении файла конфигурации '{0}' из архива: {1}</value>
+  </data>
   <data name="importConfigErrorInvalidJson" xml:space="preserve">
     <value>Конфигурационный файл '{0}' не является корректным JSON. Ошибка: {1}</value>
   </data>
@@ -637,10 +637,35 @@
   <data name="importConfigErrorDeserializationFailed" xml:space="preserve">
     <value>Не удалось десериализовать файл конфигурации '{0}'. Ошибка: {1}</value>
   </data>
-  <data name="switchProfile" xml:space="preserve">
-    <value>Сменить профиль</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="position.centerLeft" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
-  <data name="importConfigErrorReadingFile" xml:space="preserve">
-    <value>Ошибка при чтении файла конфигурации '{0}' из архива: {1}</value>
+  <data name="position.centerRight" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonSelect" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonCustom" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonDelete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="customSoundFile" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.tooltip" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeySwitchDevice" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeyToggleMute" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.error" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
 </root>

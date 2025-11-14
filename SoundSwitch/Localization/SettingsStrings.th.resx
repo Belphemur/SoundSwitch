@@ -162,9 +162,6 @@
   <data name="audioFiles" xml:space="preserve">
     <value>ไฟล์เสียง</value>
   </data>
-  <data name="selectSoundButton.tooltip" xml:space="preserve">
-    <value>เลือกไฟล์เสียงสำหรับเสียงแจ้งเตือน</value>
-  </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>เลือกเพื่อเปิดใช้งานปุ่มลัด</value>
   </data>
@@ -337,9 +334,6 @@
   <data name="profile.error.title" xml:space="preserve">
     <value>โปรไฟล์ผิดพลาด</value>
   </data>
-  <data name="buttonDelete" xml:space="preserve">
-    <value>ลบ</value>
-  </data>
   <data name="profile.error.delete" xml:space="preserve">
     <value>ไม่พบโปรไฟล์</value>
   </data>
@@ -510,7 +504,7 @@
   <data name="switchDevice" xml:space="preserve">
     <value />
   </data>
-  <data name="notification" xml:space="preserve">
+  <data name="notifications" xml:space="preserve">
     <value>การแจ้งเตือน</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
@@ -550,6 +544,37 @@
     <value />
   </data>
   <data name="importConfigFile" xml:space="preserve">
+    <value />
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="position.centerLeft" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="position.centerRight" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonSelect" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonCustom" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonDelete" xml:space="preserve">
+    <value>ลบ</value>
+  </data>
+  <data name="customSoundFile" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.tooltip" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeySwitchDevice" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeyToggleMute" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.error" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
 </root>

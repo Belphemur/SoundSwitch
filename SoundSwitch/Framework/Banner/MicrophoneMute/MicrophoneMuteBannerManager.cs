@@ -41,6 +41,8 @@ public class MicrophoneMuteBannerManager
     {
         _syncContext.Send(_ =>
         {
+            
+            
             if (isMuted)
             {
                 // Create or update a banner for the muted microphone

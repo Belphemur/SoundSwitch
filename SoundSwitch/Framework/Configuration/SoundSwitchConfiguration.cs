@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using NAudio.CoreAudioApi;
@@ -21,7 +22,10 @@ using Newtonsoft.Json;
 using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Framework.Banner;
+using SoundSwitch.Framework.Banner.BannerDisplayInfo;
 using SoundSwitch.Framework.Banner.BannerPosition;
+using SoundSwitch.Framework.Banner.BannerPosition.Position;
 using SoundSwitch.Framework.Banner.MicrophoneMute;
 using SoundSwitch.Framework.Banner.MicrophoneMute.Type;
 using SoundSwitch.Framework.DeviceCyclerManager;
@@ -30,11 +34,12 @@ using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Profile.Trigger;
 using SoundSwitch.Framework.TrayIcon.IconChanger;
 using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
-using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
+using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.Updater.Remind;
 using SoundSwitch.Framework.WinApi.Keyboard;
 using SoundSwitch.Localization.Factory;
+using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.Configuration;
 
@@ -42,8 +47,8 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
 {
     // Basic Settings
     public bool FirstRun { get; set; } = true;
-    public IconChangerEnum SwitchIcon { get; set; } = IconChangerEnum.Never;
-    public IconDoubleClickEnum IconDoubleClick { get; set; } = IconDoubleClickEnum.SwitchDevice;
+    public IconChanger SwitchIcon { get; set; } = IconChanger.Never;
+    public IconDoubleClick IconDoubleClick { get; set; } = IconDoubleClick.SwitchDevice;
 
     // Audio Settings
     public bool ChangeCommunications { get; set; } = false;
@@ -58,8 +63,8 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
     /// Is the quick menu showed when using a hotkey
     /// </summary>
     public bool QuickMenuEnabled { get; set; } = false;
-    public TooltipInfoTypeEnum TooltipInfo { get; set; } = TooltipInfoTypeEnum.Playback;
-    public DeviceCyclerTypeEnum CyclerType { get; set; } = DeviceCyclerTypeEnum.Available;
+    public TooltipInfoType TooltipInfo { get; set; } = TooltipInfoType.Playback;
+    public DeviceCyclerType CyclerType { get; set; } = DeviceCyclerType.Available;
 
     // Update Settings
     public uint UpdateCheckInterval { get; set; } = 3600 * 24; // 24 hours
@@ -75,13 +80,21 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
     public Language Language { get; set; } = new LanguageFactory().GetWindowsLanguage();
 
     // Notification Settings
-    public NotificationTypeEnum NotificationSettings { get; set; } = NotificationTypeEnum.BannerNotification;
-    public BannerPositionEnum BannerPosition { get; set; } = BannerPositionEnum.TopLeft;
-    public MicrophoneMuteEnum MicrophoneMuteNotification { get; set; } = MicrophoneMuteEnum.Persistent;
+    public bool NotificationAdvancedMode { get; set; }
+    public NotificationType SwitchDeviceNotification { get; set; } = NotificationType.BannerNotification;
+    public NotificationType SwitchProfileNotification { get; set; } = NotificationType.NoNotification;
+    public NotificationType MicrophoneMuteNotification { get; set; } = NotificationType.NoNotification;
+    public BannerPosition BannerPosition { get; set; } = BannerPosition.TopLeft;
+    public Point CustomBannerPosition { get; set; } = Point.Empty;
+    public MicrophoneMute MicrophoneMuteBanner { get; set; } = MicrophoneMute.Persistent;
+    public MicrophoneMute MicrophoneUnmuteBanner { get; set; } = MicrophoneMute.None;
     public string CustomNotificationFilePath { get; set; }
     public TimeSpan BannerOnScreenTime { get; set; } = TimeSpan.FromSeconds(3);
+    public int BannerOpacityPercentage { get; set; } = 100;
     public int MaxNumberNotification { get; set; } = 5;
     public bool NotifyUsingPrimaryScreen { get; set; }
+    public BannerDisplayInfo BannerDisplayInfo { get; set; } = BannerDisplayInfo.FullDisplay;
+
     [Obsolete("Replaced by " + nameof(MicrophoneMutePersistent))]
     public bool PersistentMuteNotification { get; set; }
 
@@ -144,28 +157,28 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
             migrated = true;
         }
 
-        if (NotificationSettings == NotificationTypeEnum.ToastNotification)
+        if (SwitchDeviceNotification == NotificationType.ToastNotification)
         {
-            NotificationSettings = NotificationTypeEnum.BannerNotification;
+            SwitchDeviceNotification = NotificationType.BannerNotification;
             migrated = true;
         }
 
-        if (NotificationSettings == NotificationTypeEnum.CustomNotification)
+        if (SwitchDeviceNotification == NotificationType.CustomNotification)
         {
-            NotificationSettings = NotificationTypeEnum.SoundNotification;
+            SwitchDeviceNotification = NotificationType.SoundNotification;
             migrated = true;
         }
 #pragma warning disable 612
 #pragma warning disable CS0618 // Type or member is obsolete
         if (!PersistentMuteNotification && !MigratedFields.Contains(nameof(PersistentMuteNotification)))
         {
-            MicrophoneMuteNotification = MicrophoneMuteEnum.None;
+            MicrophoneMuteBanner = MicrophoneMute.None;
             MigratedFields.Add(nameof(PersistentMuteNotification));
             migrated = true;
         }
         if (!MigratedFields.Contains(nameof(KeepSystrayIcon)))
         {
-            SwitchIcon = KeepSystrayIcon ? IconChangerEnum.Never : IconChangerEnum.Always;
+            SwitchIcon = KeepSystrayIcon ? IconChanger.Never : IconChanger.Always;
             MigratedFields.Add(nameof(KeepSystrayIcon));
             migrated = true;
         }

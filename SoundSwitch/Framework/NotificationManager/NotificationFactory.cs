@@ -19,10 +19,10 @@ using SoundSwitch.Framework.NotificationManager.Notification;
 
 namespace SoundSwitch.Framework.NotificationManager;
 
-public class NotificationFactory() : AbstractFactory<NotificationTypeEnum, INotification>(Notifications)
+public class NotificationFactory() : AbstractFactory<NotificationType, INotification>(Notifications)
 {
-    private static readonly IEnumImplList<NotificationTypeEnum, INotification> Notifications = new EnumImplList
-        <NotificationTypeEnum, INotification>
+    private static readonly IEnumImplList<NotificationType, INotification> Notifications = new EnumImplList
+        <NotificationType, INotification>
         {
             new NotificationNone(),
             new NotificationBanner(),
@@ -30,7 +30,7 @@ public class NotificationFactory() : AbstractFactory<NotificationTypeEnum, INoti
             new NotificationSound()
         };
 
-    protected override IReadOnlyDictionary<NotificationTypeEnum, INotification> DataSource()
+    protected override IReadOnlyDictionary<NotificationType, INotification> DataSource()
     {
         return AllImplementations.Where(pair => pair.Value.IsAvailable()).ToDictionary(pair => pair.Key, pair => pair.Value);
     }

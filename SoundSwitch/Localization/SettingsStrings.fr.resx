@@ -22,10 +22,8 @@
     <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
         <value>[base64 mime encoded serialized .NET Framework object]</value>
     </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing"
-  mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework
-  object]</value>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
                 
@@ -61,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -114,12 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0,
-      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0,
-      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="selected" xml:space="preserve">
     <value>Sélectionné</value>
@@ -165,9 +161,6 @@
   </data>
   <data name="audioFiles" xml:space="preserve">
     <value>Fichiers Audio</value>
-  </data>
-  <data name="selectSoundButton.tooltip" xml:space="preserve">
-    <value>Choisissez le fichier audio pour le son de notification</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Vérifiez que le raccourci clavier est activé.</value>
@@ -341,9 +334,6 @@ Toujours : Lors de la bascule vers un autre périphérique de lecture ou d'enreg
   <data name="profile.error.title" xml:space="preserve">
     <value>Erreur avec le profil</value>
   </data>
-  <data name="buttonDelete" xml:space="preserve">
-    <value>Supprimer</value>
-  </data>
   <data name="profile.error.delete" xml:space="preserve">
     <value>Profil introuvable.</value>
   </data>
@@ -502,22 +492,22 @@ Restaurer l'état du système quand l'application est fermée.</value>
   <data name="position.tooltip" xml:space="preserve">
     <value>Choisir le positionnement de la bannière.</value>
   </data>
-  <data name="position.option.bottomLeft" xml:space="preserve">
+  <data name="position.bottomLeft" xml:space="preserve">
     <value>En bas à gauche</value>
   </data>
-  <data name="position.option.bottomRight" xml:space="preserve">
+  <data name="position.bottomRight" xml:space="preserve">
     <value>En bas à droite</value>
   </data>
-  <data name="position.option.topLeft" xml:space="preserve">
+  <data name="position.topLeft" xml:space="preserve">
     <value>En haut à gauche</value>
   </data>
-  <data name="position.option.topRight" xml:space="preserve">
+  <data name="position.topRight" xml:space="preserve">
     <value>En haut à droite</value>
   </data>
-  <data name="position.option.bottomCenter" xml:space="preserve">
+  <data name="position.bottomCenter" xml:space="preserve">
     <value>En bas au centre</value>
   </data>
-  <data name="position.option.topCenter" xml:space="preserve">
+  <data name="position.topCenter" xml:space="preserve">
     <value>En haut au centre</value>
   </data>
   <data name="notification.single" xml:space="preserve">
@@ -559,7 +549,7 @@ Restaurer l'état du système quand l'application est fermée.</value>
   <data name="troubleshooting.desc" xml:space="preserve">
     <value>Si vous avez besoin d'aide ou d'un dépannage supplémentaire avec SoundSwitch, vous pouvez visiter le lien de discussion d'aide ou de Discord communautaire, ou nous aider en visitant le lien de don ci-dessous.</value>
   </data>
-  <data name="position.option.center" xml:space="preserve">
+  <data name="position.center" xml:space="preserve">
     <value>Centre</value>
   </data>
   <data name="microphone.on" xml:space="preserve">
@@ -568,7 +558,7 @@ Restaurer l'état du système quand l'application est fermée.</value>
   <data name="microphone.off" xml:space="preserve">
     <value>Microphone éteint</value>
   </data>
-  <data name="banner.mute" xml:space="preserve">
+  <data name="microphoneMuted" xml:space="preserve">
     <value>Bannière de sourdine persistante</value>
   </data>
   <data name="banner.mute.tooltip" xml:space="preserve">
@@ -583,13 +573,13 @@ Restaurer l'état du système quand l'application est fermée.</value>
   <data name="switchDevice" xml:space="preserve">
     <value>Permuter d'appareil</value>
   </data>
-  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+  <data name="banner.onscreen.time.tooltip" xml:space="preserve">
     <value>Durée de visibilité de la bannière à l'écran en secondes.</value>
   </data>
-  <data name="notification.banner.onscreen.time" xml:space="preserve">
+  <data name="banner.onscreen.time" xml:space="preserve">
     <value>Temps à l'écran</value>
   </data>
-  <data name="notification" xml:space="preserve">
+  <data name="notifications" xml:space="preserve">
     <value>Notifications</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
@@ -643,5 +633,36 @@ Voulez-vous redémarrer maintenant ?</value>
   </data>
   <data name="importConfigErrorDeserializationFailed" xml:space="preserve">
     <value>Échec de la désérialisation du fichier de configuration '{0}'. Erreur : {1}</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="position.centerLeft" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="position.centerRight" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonSelect" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonCustom" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonDelete" xml:space="preserve">
+    <value>Supprimer</value>
+  </data>
+  <data name="customSoundFile" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.tooltip" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeySwitchDevice" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeyToggleMute" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.error" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
 </root>

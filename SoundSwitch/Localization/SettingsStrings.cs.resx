@@ -162,9 +162,6 @@
   <data name="audioFiles" xml:space="preserve">
     <value>Audio soubory</value>
   </data>
-  <data name="selectSoundButton.tooltip" xml:space="preserve">
-    <value>Vyberte soubor, který se bude přehrávat jako oznámení</value>
-  </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Zaškrtnutím umožníte používání klávesových zkratek.</value>
   </data>
@@ -334,9 +331,6 @@ Obojí: Při přepnutí jakéhokoli typu zařízení.</value>
   <data name="profile.error.title" xml:space="preserve">
     <value>Chyba profilu</value>
   </data>
-  <data name="buttonDelete" xml:space="preserve">
-    <value>Smazat</value>
-  </data>
   <data name="profile.error.delete" xml:space="preserve">
     <value>Profil nelze najít.</value>
   </data>
@@ -489,22 +483,22 @@ Po zavření aplikace obnovte stav systému.</value>
   <data name="position.tooltip" xml:space="preserve">
     <value>Nastavte pozici oznamovacího okna.</value>
   </data>
-  <data name="position.option.bottomLeft" xml:space="preserve">
+  <data name="position.bottomLeft" xml:space="preserve">
     <value>Vlevo dole</value>
   </data>
-  <data name="position.option.bottomRight" xml:space="preserve">
+  <data name="position.bottomRight" xml:space="preserve">
     <value>Vpravo dole</value>
   </data>
-  <data name="position.option.topLeft" xml:space="preserve">
+  <data name="position.topLeft" xml:space="preserve">
     <value>Vlevo nahoře</value>
   </data>
-  <data name="position.option.topRight" xml:space="preserve">
+  <data name="position.topRight" xml:space="preserve">
     <value>Vpravo nahoře</value>
   </data>
-  <data name="position.option.bottomCenter" xml:space="preserve">
+  <data name="position.bottomCenter" xml:space="preserve">
     <value>Uprostřed dole</value>
   </data>
-  <data name="position.option.topCenter" xml:space="preserve">
+  <data name="position.topCenter" xml:space="preserve">
     <value>Uprostřed nahoře</value>
   </data>
   <data name="notification.single" xml:space="preserve">
@@ -546,7 +540,7 @@ Po zavření aplikace obnovte stav systému.</value>
   <data name="troubleshooting.desc" xml:space="preserve">
     <value>Pokud potřebujete pomoc nebo další řešení problémů s aplikací SoundSwitch, můžete navštívit odkaz na nápovědu nebo komunitní Discord, případně nás můžete podpořit přes odkaz na příspěvek níže.</value>
   </data>
-  <data name="position.option.center" xml:space="preserve">
+  <data name="position.center" xml:space="preserve">
     <value>Uprostřed</value>
   </data>
   <data name="microphone.on" xml:space="preserve">
@@ -555,7 +549,7 @@ Po zavření aplikace obnovte stav systému.</value>
   <data name="microphone.off" xml:space="preserve">
     <value>Mikrofon vypnutý</value>
   </data>
-  <data name="banner.mute" xml:space="preserve">
+  <data name="microphoneMuted" xml:space="preserve">
     <value>Trvalé okno ztlumení</value>
   </data>
   <data name="banner.mute.tooltip" xml:space="preserve">
@@ -570,13 +564,13 @@ Po zavření aplikace obnovte stav systému.</value>
   <data name="switchDevice" xml:space="preserve">
     <value />
   </data>
-  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+  <data name="banner.onscreen.time.tooltip" xml:space="preserve">
     <value>Jak dlouho zůstane oznamovací okno na obrazovce v sekundách.</value>
   </data>
-  <data name="notification.banner.onscreen.time" xml:space="preserve">
+  <data name="banner.onscreen.time" xml:space="preserve">
     <value>Doba zobrazení</value>
   </data>
-  <data name="notification" xml:space="preserve">
+  <data name="notifications" xml:space="preserve">
     <value>Oznámení</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
@@ -616,6 +610,37 @@ Po zavření aplikace obnovte stav systému.</value>
     <value />
   </data>
   <data name="importConfigFile" xml:space="preserve">
+    <value />
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="position.centerLeft" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="position.centerRight" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonSelect" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonCustom" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonDelete" xml:space="preserve">
+    <value>Smazat</value>
+  </data>
+  <data name="customSoundFile" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.tooltip" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeySwitchDevice" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeyToggleMute" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.error" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
 </root>

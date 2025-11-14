@@ -17,9 +17,9 @@ using SoundSwitch.Framework.TrayIcon.IconChanger.Changer;
 
 namespace SoundSwitch.Framework.TrayIcon.IconChanger;
 
-public class IconChangerFactory() : AbstractFactory<IconChangerEnum, IIconChanger>(Impl)
+public class IconChangerFactory() : AbstractFactory<IconChanger, IIconChanger>(Impl)
 {
-    private static readonly IEnumImplList<IconChangerEnum, IIconChanger> Impl = new EnumImplList<IconChangerEnum, IIconChanger>()
+    private static readonly IEnumImplList<IconChanger, IIconChanger> Impl = new EnumImplList<IconChanger, IIconChanger>()
     {
         new NeverIconIconChanger(),
         new PlaybackIconChanger(),

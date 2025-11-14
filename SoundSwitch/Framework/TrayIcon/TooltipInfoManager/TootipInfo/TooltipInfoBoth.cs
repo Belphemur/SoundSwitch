@@ -21,7 +21,7 @@ public class TooltipInfoBoth : ITooltipInfo
     private readonly TooltipInfoRecording _tooltipInfoRecording = new();
     private readonly TooltipInfoPlayback _tooltipInfoPlayback = new();
 
-    public TooltipInfoTypeEnum TypeEnum => TooltipInfoTypeEnum.Both;
+    public TooltipInfoType TypeEnum => TooltipInfoType.Both;
     public string Label => SettingsStrings.tooltipOnHover_option_bothDevices;
 
     /// <summary>
