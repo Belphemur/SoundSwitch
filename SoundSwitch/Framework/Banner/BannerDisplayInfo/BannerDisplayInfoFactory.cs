@@ -24,6 +24,6 @@ public class BannerDisplayInfoFactory() : AbstractFactory<BannerDisplayInfo, IDi
         {
             new DisplayInfoFullDisplay(),
             new DisplayInfoIconOnly(),
-            new DisplayInfoDecOnly()
+            new DisplayInfoDescOnly()
         };
 }

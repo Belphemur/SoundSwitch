@@ -16,7 +16,7 @@ using SoundSwitch.Localization;
 
 namespace SoundSwitch.Framework.Banner.BannerDisplayInfo.DisplayInfo;
 
-internal class DisplayInfoDecOnly : IDisplayInfo
+internal class DisplayInfoDescOnly : IDisplayInfo
 {
     public BannerDisplayInfo TypeEnum => BannerDisplayInfo.DescriptionOnly;
     public string Label => SettingsStrings.banner_display_option_descOnly;

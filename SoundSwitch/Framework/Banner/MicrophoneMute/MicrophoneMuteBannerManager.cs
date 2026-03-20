@@ -41,8 +41,6 @@ public class MicrophoneMuteBannerManager
     {
         _syncContext.Send(_ =>
         {
-            
-            
             if (isMuted)
             {
                 // Create or update a banner for the muted microphone
@@ -143,8 +141,9 @@ public class MicrophoneMuteBannerManager
     public void RemovePersistentMuteBanner(string microphoneId)
     {
         if (!_activeBanners.TryGetValue(microphoneId, out var existingBanner)) return;
+        _activeBanners.Remove(microphoneId);
         existingBanner.Dispose();
-        _activeBanners.Clear();
+        RearrangeBanners();
     }
 
     /// <summary>

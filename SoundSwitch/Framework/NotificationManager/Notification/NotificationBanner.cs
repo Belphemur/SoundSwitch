@@ -48,7 +48,8 @@ internal class NotificationBanner : INotification
             Image = audioDevice.LargeIcon.ToBitmap(),
             Text = audioDevice.NameClean,
             Position = BannerPosition,
-            Ttl = Configuration.Ttl
+            Ttl = Configuration.Ttl,
+            Opacity = Configuration.Opacity
         };
         if (CustomSoundCheck(audioDevice))
         {
@@ -75,7 +76,8 @@ internal class NotificationBanner : INotification
             Title = string.Format(SettingsStrings.profile_notification_text, profile.Name),
             Text = string.Join("\n", profile.Devices.Select(wrapper => wrapper.DeviceInfo.NameClean).Distinct()),
             Position = BannerPosition,
-            Ttl = Configuration.Ttl
+            Ttl = Configuration.Ttl,
+            Opacity = Configuration.Opacity
         };
         _bannerManager.ShowNotification(bannerData);
     }
@@ -116,7 +118,8 @@ internal class NotificationBanner : INotification
             Image = icon,
             Title = title,
             Position = BannerPosition,
-            Ttl = Configuration.Ttl
+            Ttl = Configuration.Ttl,
+            Opacity = Configuration.Opacity
         };
         _bannerManager.ShowNotification(bannerData);
     }
