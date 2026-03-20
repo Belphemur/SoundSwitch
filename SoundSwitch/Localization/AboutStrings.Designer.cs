@@ -39,7 +39,7 @@ namespace SoundSwitch.Localization {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SoundSwitch.Localization.AboutStrings", typeof(AboutStrings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::SoundSwitch.Localization.LocalizedStringProvider("SoundSwitch.Localization.AboutStrings", typeof(AboutStrings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

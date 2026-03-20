@@ -124,6 +124,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <Target Name="PatchLocalizedResourceDesigners" BeforeTargets="CoreCompile">
+    <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\Localization\Patch-LocalizedResourceDesigners.ps1&quot; &quot;$(MSBuildProjectDirectory)&quot;" />
+  </Target>
   <PropertyGroup>
     <ApplicationIcon>Resources\Switch-SoundWave.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
