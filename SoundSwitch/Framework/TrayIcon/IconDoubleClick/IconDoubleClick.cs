@@ -37,4 +37,10 @@ public enum IconDoubleClick
     /// Allows users to quickly switch between different audio device configurations.
     /// </summary>
     SwitchProfile = 2,
+
+    /// <summary>
+    /// Cycles through the configured recording devices.
+    /// Provides the same functionality as the recording hotkey but triggered by a double-click.
+    /// </summary>
+    SwitchRecordingDevice = 3,
 }

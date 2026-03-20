@@ -32,7 +32,8 @@ public class IconDoubleClickFactory() : AbstractFactory<IconDoubleClick, IIconDo
         {
             new IconDoubleClickSwitchDevice(),
             new IconDoubleClickSwitchProfile(),
-            new IconDoubleClickOpenSettings()
+            new IconDoubleClickOpenSettings(),
+            new IconDoubleClickSwitchRecordingDevice()
         };
 
     /// <summary>

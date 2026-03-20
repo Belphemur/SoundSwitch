@@ -578,6 +578,9 @@ Restore the state of the system when the application is closed.</value>
   <data name="switchDevice" xml:space="preserve">
     <value>Switch device</value>
   </data>
+  <data name="switchRecordingDevice" xml:space="preserve">
+    <value>Switch recording device</value>
+  </data>
   <data name="switchProfile" xml:space="preserve">
     <value>Switch profile</value>
   </data>
