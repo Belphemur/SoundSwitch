@@ -15,13 +15,42 @@ env:
   PROJECT_NAME: "SoundSwitch"
   ARCH: "win-x64"
   NODEJS: "lts/*"
-  DOTNET: "9.0.x"
-  DOTNET_PRERELEASE: true
   CONFIGURATION: "Nightly"
   SENTRY_NAME: "soundswitch"
 
 jobs:
+  detect-framework:
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}-framework
+      cancel-in-progress: true
+    runs-on: ubuntu-latest
+    outputs:
+      framework: ${{ steps.framework.outputs.framework }}
+      dotnet-version: ${{ steps.framework.outputs.dotnet-version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Detect target framework and SDK version
+        id: framework
+        shell: pwsh
+        run: |
+          [xml]$project = Get-Content "${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.csproj"
+          $framework = $project.Project.PropertyGroup.TargetFramework | Select-Object -First 1
+          if ([string]::IsNullOrWhiteSpace($framework)) {
+            throw "Unable to determine TargetFramework from ${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.csproj"
+          }
+
+          $match = [System.Text.RegularExpressions.Regex]::Match($framework, '^net(?<major>\d+)\.(?<minor>\d+)')
+          if (-not $match.Success) {
+            throw "Unable to derive .NET SDK version from TargetFramework '$framework'"
+          }
+
+          $dotnetVersion = "{0}.{1}.x" -f $match.Groups['major'].Value, $match.Groups['minor'].Value
+          "framework=$framework" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "dotnet-version=$dotnetVersion" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+
   build:
+    needs: [ detect-framework ]
     if: github.ref != 'refs/heads/dev'
     runs-on: windows-latest
     concurrency:
@@ -57,8 +86,7 @@ jobs:
         uses: actions/setup-dotnet@v5
         if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true' || github.ref == 'refs/heads/master'
         with:
-          dotnet-version: ${{ env.DOTNET }}
-          include-prerelease: ${{ env.DOTNET_PRERELEASE }}
+          dotnet-version: ${{ needs.detect-framework.outputs.dotnet-version }}
           cache: true
           cache-dependency-path: Directory.Packages.props
       - name: Restore
@@ -69,13 +97,13 @@ jobs:
         run: dotnet build -c Release --no-restore ${{env.PROJECT_NAME}}/${{env.PROJECT_NAME}}.csproj
       - name: Test
         if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true' || github.ref == 'refs/heads/master'
-        run: dotnet test -c Release --no-restore  --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}"
+        run: dotnet test -c Release --no-restore  --logger trx --results-directory "TestResults-${{ needs.detect-framework.outputs.dotnet-version }}"
       - name: Upload test results
         if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true' || github.ref == 'refs/heads/master'
         uses: actions/upload-artifact@v7
         with:
-          name: dotnet-results-${{ matrix.dotnet-version }}
-          path: TestResults-${{ matrix.dotnet-version }}
+          name: dotnet-results-${{ needs.detect-framework.outputs.dotnet-version }}
+          path: TestResults-${{ needs.detect-framework.outputs.dotnet-version }}
         # Use always() to always run this step to publish test results when there are test failures
       - name: Setup Node.js
         if: steps.filter.outputs.node == 'true'
@@ -120,7 +148,7 @@ jobs:
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}-nightly
       cancel-in-progress: true
-    needs: [ changes ]
+    needs: [ changes, detect-framework ]
     if: github.ref == 'refs/heads/dev' && needs.changes.outputs.ci == 'true'
     outputs:
       devVersion: ${{ steps.devVersion.outputs.version }}
@@ -133,35 +161,24 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: ${{ env.DOTNET }}
-          include-prerelease: ${{ env.DOTNET_PRERELEASE }}
+          dotnet-version: ${{ needs.detect-framework.outputs.dotnet-version }}
           cache: true
           cache-dependency-path: Directory.Packages.props
       - name: Restore
         run: dotnet restore -r ${{ env.ARCH }}
       - name: Tests
-        run: dotnet test -c ${{env.CONFIGURATION}}  --no-restore  --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}"
+        run: dotnet test -c ${{env.CONFIGURATION}}  --no-restore  --logger trx --results-directory "TestResults-${{ needs.detect-framework.outputs.dotnet-version }}"
       - name: Fetch tags
         run: git fetch --tags --force
       - name: Calculate version
         id: devVersion
         run: .\devVersion.ps1
-      - name: Detect target framework
-        id: framework
-        shell: pwsh
-        run: |
-          [xml]$project = Get-Content "${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj"
-          $framework = $project.Project.PropertyGroup.TargetFramework | Select-Object -First 1
-          if ([string]::IsNullOrWhiteSpace($framework)) {
-            throw "Unable to determine TargetFramework from ${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj"
-          }
-          "framework=$framework" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
       - name: Build pre-release
         run: dotnet publish -c ${{env.CONFIGURATION}} --no-restore -r ${{ env.ARCH }} ${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj
       - name: Set Env var from GitHub
         uses: rlespinasse/github-slug-action@v3.x
       - name: Zip Build ${{env.PROJECT_NAME}}-${{ steps.devVersion.outputs.version }}
-        run: tar caf   ${{env.PROJECT_NAME}}-${{ steps.devVersion.outputs.version }}.zip -C ${{ env.PROJECT_NAME }}\bin\${{env.CONFIGURATION}}\${{ steps.framework.outputs.framework }}\${{ env.ARCH }}\publish\ *
+        run: tar caf   ${{env.PROJECT_NAME}}-${{ steps.devVersion.outputs.version }}.zip -C ${{ env.PROJECT_NAME }}\bin\${{env.CONFIGURATION}}\${{ needs.detect-framework.outputs.framework }}\${{ env.ARCH }}\publish\ *
       - name: Setup Node.js
         uses: actions/setup-node@v6.3.0
         with:
@@ -207,7 +224,7 @@ jobs:
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}-release
       cancel-in-progress: true
-    needs: [ build, changes ]
+    needs: [ build, changes, detect-framework ]
     if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/beta'
     runs-on: ubuntu-latest
     steps:
