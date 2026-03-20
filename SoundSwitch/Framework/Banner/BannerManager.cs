@@ -27,6 +27,7 @@ public class BannerManager
     private static System.Threading.SynchronizationContext _syncContext;
     private readonly Dictionary<Guid, BannerForm> _bannerForms = new();
     private BannerForm _singleBanner;
+    private BannerForm _customPositionBanner;
     private const int SPACING = 10;
 
     /// <summary>
@@ -35,6 +36,12 @@ public class BannerManager
     /// <param name="data"></param>
     public void ShowNotification(BannerData data)
     {
+        if (data.CustomPositionMode)
+        {
+            ShowOrUpdateCustomPositionNotification(data);
+            return;
+        }
+
         if (AppModel.Instance.MaxNumberNotification > 1)
         {
             MultipleBannerShow(data);
@@ -50,6 +57,20 @@ public class BannerManager
             }
 
             _singleBanner.SetData(data);
+        }, null);
+    }
+
+    private void ShowOrUpdateCustomPositionNotification(BannerData data)
+    {
+        _syncContext.Send(_ =>
+        {
+            if (_customPositionBanner == null)
+            {
+                _customPositionBanner = new BannerForm();
+                _customPositionBanner.Disposed += (s, e) => { _customPositionBanner = null; };
+            }
+
+            _customPositionBanner.SetData(data);
         }, null);
     }
 

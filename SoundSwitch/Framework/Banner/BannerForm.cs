@@ -12,17 +12,17 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
-using SoundSwitch.Framework.Audio.Play;
-using SoundSwitch.Framework.Banner.BannerPosition;
-using SoundSwitch.Framework.Threading;
-using SoundSwitch.Model;
-using SoundSwitch.UI.Menu.Util;
 using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SoundSwitch.Framework.Audio.Play;
+using SoundSwitch.Framework.Banner.BannerPosition;
+using SoundSwitch.Framework.Threading;
+using SoundSwitch.Model;
+using SoundSwitch.UI.Menu.Util;
 using Timer = System.Windows.Forms.Timer;
 
 namespace SoundSwitch.Framework.Banner;
@@ -33,10 +33,26 @@ namespace SoundSwitch.Framework.Banner;
 public partial class BannerForm : Form
 {
 
+    private sealed class CustomPositionMessageFilter(BannerForm owner) : IMessageFilter
+    {
+        private const int WmKeyDown = 0x0100;
+        private const int WmSysKeyDown = 0x0104;
+
+        public bool PreFilterMessage(ref Message m)
+        {
+            if (m.Msg != WmKeyDown && m.Msg != WmSysKeyDown)
+            {
+                return false;
+            }
+
+            return owner.HandleCustomPositionKey((Keys)m.WParam.ToInt32());
+        }
+    }
+
     private Timer _timerHide;
     private bool _hiding;
     private BannerData _currentData;
-    private BannerPositionFactory _bannerPositionFactory =new();
+    private BannerPositionFactory _bannerPositionFactory = new();
     private CancellationTokenSource _cancellationTokenSource = new();
     private int _currentOffset;
     private int _hide = 100;
@@ -45,6 +61,7 @@ public partial class BannerForm : Form
     private Padding _defaultPadding;
     private bool _isCompact;
     private Point _lastMousePosition;
+    private CustomPositionMessageFilter _customPositionMessageFilter;
     public Guid Id { get; } = Guid.NewGuid();
 
     /// <summary>
@@ -52,7 +69,7 @@ public partial class BannerForm : Form
     /// </summary>
     internal static Screen GetScreen() =>
         (AppModel.Instance.NotifyUsingPrimaryScreen ? Screen.PrimaryScreen : Screen.FromPoint(Cursor.Position))!;
-    
+
 
     /// <summary>
     /// Constructor for the <see cref="BannerForm"/> class
@@ -209,6 +226,17 @@ public partial class BannerForm : Form
         lblTitle.Text = data.Text;
         lblTop.Text = data.Title;
 
+        if (data.CustomPositionMode)
+        {
+            _customPositionMessageFilter ??= new CustomPositionMessageFilter(this);
+            Application.AddMessageFilter(_customPositionMessageFilter);
+        }
+        else if (_customPositionMessageFilter != null)
+        {
+            Application.RemoveMessageFilter(_customPositionMessageFilter);
+            _customPositionMessageFilter = null;
+        }
+
         // Apply compact mode scaling if requested
         if (data.CompactMode)
             ApplyCompactMode();
@@ -327,6 +355,12 @@ public partial class BannerForm : Form
     {
         if (disposing)
         {
+            if (_customPositionMessageFilter != null)
+            {
+                Application.RemoveMessageFilter(_customPositionMessageFilter);
+                _customPositionMessageFilter = null;
+            }
+
             _timerHide?.Dispose();
             _cancellationTokenSource?.Dispose();
             components?.Dispose();
@@ -416,7 +450,7 @@ public partial class BannerForm : Form
         if (e.Button == MouseButtons.Left)
         {
             _lastMousePosition = new Point(e.X, e.Y);
-            _timerHide.Stop(); 
+            _timerHide.Stop();
         }
     }
 
@@ -451,15 +485,30 @@ public partial class BannerForm : Form
     private void BannerForm_KeyDown(object sender, KeyEventArgs e)
     {
         if (!_currentData.CustomPositionMode) return;
-        switch (e.KeyCode)
+        if (HandleCustomPositionKey(e.KeyCode))
+        {
+            e.Handled = true;
+        }
+    }
+
+    private bool HandleCustomPositionKey(Keys key)
+    {
+        if (_currentData == null || !_currentData.CustomPositionMode)
+        {
+            return false;
+        }
+
+        switch (key)
         {
             case Keys.Escape:
                 Dispose();
-                break;
+                return true;
             case Keys.R:
                 Location = Point.Empty;
                 AppModel.Instance.CustomBannerPosition = Location;
-                break;
+                return true;
+            default:
+                return false;
         }
     }
 }
