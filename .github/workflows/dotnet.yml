@@ -14,7 +14,6 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   PROJECT_NAME: "SoundSwitch"
   ARCH: "win-x64"
-  FRAMEWORK: "net9.0-windows"
   NODEJS: "lts/*"
   DOTNET: "9.0.x"
   DOTNET_PRERELEASE: true
@@ -147,12 +146,22 @@ jobs:
       - name: Calculate version
         id: devVersion
         run: .\devVersion.ps1
+      - name: Detect target framework
+        id: framework
+        shell: pwsh
+        run: |
+          [xml]$project = Get-Content "${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj"
+          $framework = $project.Project.PropertyGroup.TargetFramework | Select-Object -First 1
+          if ([string]::IsNullOrWhiteSpace($framework)) {
+            throw "Unable to determine TargetFramework from ${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj"
+          }
+          "framework=$framework" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
       - name: Build pre-release
         run: dotnet publish -c ${{env.CONFIGURATION}} --no-restore -r ${{ env.ARCH }} ${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj
       - name: Set Env var from GitHub
         uses: rlespinasse/github-slug-action@v3.x
       - name: Zip Build ${{env.PROJECT_NAME}}-${{ steps.devVersion.outputs.version }}
-        run: tar caf   ${{env.PROJECT_NAME}}-${{ steps.devVersion.outputs.version }}.zip -C ${{ env.PROJECT_NAME }}\bin\${{env.CONFIGURATION}}\${{ env.FRAMEWORK }}\${{ env.ARCH }}\publish\ *
+        run: tar caf   ${{env.PROJECT_NAME}}-${{ steps.devVersion.outputs.version }}.zip -C ${{ env.PROJECT_NAME }}\bin\${{env.CONFIGURATION}}\${{ steps.framework.outputs.framework }}\${{ env.ARCH }}\publish\ *
       - name: Setup Node.js
         uses: actions/setup-node@v6.3.0
         with:

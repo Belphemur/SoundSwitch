@@ -6,7 +6,6 @@ The installer will first check if the operating system is Windows 10 LTSC. If it
 **Detailed Plan:**
 
 1.  **Helper Script (PowerShell):**
-
     - **Filename:** `ManageWindowsUpdate.ps1`
     - **Location:** To be placed in `Installer/scripts/` relative to `setup.iss`.
     - **Functionality:**
@@ -25,9 +24,7 @@ The installer will first check if the operating system is Windows 10 LTSC. If it
         - This action should be designed to run without blocking the InnoSetup installer for too long (e.g., by initiating the update and exiting).
 
 2.  **Inno Setup Script (`Installer/setup.iss`) Modifications:**
-
     - **`[Files]` Section:**
-
       - Add an entry to include `ManageWindowsUpdate.ps1`. It will be extracted to `{tmp}` during setup and deleted after installation.
 
       ```iss
