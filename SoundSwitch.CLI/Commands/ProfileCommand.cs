@@ -17,7 +17,7 @@ public class ProfileCommand : AsyncCommand<ProfileCommand.Settings>
         public string? Name { get; set; }
     }
 
-    public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
+    public override async Task<int> ExecuteAsync(CommandContext context, Settings settings, CancellationToken cancellationToken)
     {
         try
         {
@@ -27,7 +27,7 @@ public class ProfileCommand : AsyncCommand<ProfileCommand.Settings>
                     .StartAsync("Fetching profiles...", async _ =>
                     {
                         var response = await NamedPipe.SendRequestAsync<GetProfileListResponse>(PipeConstants.GetUserPipeName(),
-                            new GetProfileListRequest());
+                            new GetProfileListRequest(), cancellationToken);
 
                         var table = new Table()
                             .AddColumn("Profile")
@@ -63,7 +63,7 @@ public class ProfileCommand : AsyncCommand<ProfileCommand.Settings>
                 .StartAsync($"Triggering profile {settings.Name}...", async _ =>
                 {
                     var response = await NamedPipe.SendRequestAsync<TriggerProfileResponse>(PipeConstants.GetUserPipeName(),
-                        new TriggerProfileRequest { ProfileName = settings.Name });
+                        new TriggerProfileRequest { ProfileName = settings.Name }, cancellationToken);
 
                     if (response.Success)
                     {

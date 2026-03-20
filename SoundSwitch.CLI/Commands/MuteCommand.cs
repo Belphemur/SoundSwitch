@@ -14,11 +14,10 @@ public class MuteCommand : AsyncCommand<MuteCommand.Settings>
         [CommandOption("-s|--state")]
         public bool? State { get; set; }
 
-        [CommandOption("-t|--toggle")]
-        public bool Toggle { get; set; }
+        [CommandOption("-t|--toggle")] public bool Toggle { get; set; }
     }
 
-    public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
+    public override async Task<int> ExecuteAsync(CommandContext context, Settings settings, CancellationToken cancellationToken)
     {
         try
         {
@@ -39,7 +38,8 @@ public class MuteCommand : AsyncCommand<MuteCommand.Settings>
                     // Just display current state if no action requested
                     if (!settings.State.HasValue && !settings.Toggle)
                     {
-                        AnsiConsole.MarkupLine($"[blue]{currentState.DeviceName}[/] is currently {(currentState.IsMuted ? "[red]muted[/]" : "[green]unmuted[/]")}");
+                        AnsiConsole.MarkupLine(
+                            $"[blue]{currentState.DeviceName}[/] is currently {(currentState.IsMuted ? "[red]muted[/]" : "[green]unmuted[/]")}");
                         return 0;
                     }
 
@@ -51,7 +51,7 @@ public class MuteCommand : AsyncCommand<MuteCommand.Settings>
                     {
                         var muteResponse = await NamedPipe.SendRequestAsync<MicrophoneStateResponse>(
                             PipeConstants.GetUserPipeName(),
-                            new MuteRequest { Mute = targetState });
+                            new MuteRequest { Mute = targetState }, cancellationToken);
 
                         if (!muteResponse.Success)
                         {
@@ -59,11 +59,13 @@ public class MuteCommand : AsyncCommand<MuteCommand.Settings>
                             return 1;
                         }
 
-                        AnsiConsole.MarkupLine($"[blue]{muteResponse.DeviceName}[/] is now {(muteResponse.IsMuted ? "[red]muted[/]" : "[green]unmuted[/]")}");
+                        AnsiConsole.MarkupLine(
+                            $"[blue]{muteResponse.DeviceName}[/] is now {(muteResponse.IsMuted ? "[red]muted[/]" : "[green]unmuted[/]")}");
                     }
                     else
                     {
-                        AnsiConsole.MarkupLine($"[blue]{currentState.DeviceName}[/] already {(currentState.IsMuted ? "[red]muted[/]" : "[green]unmuted[/]")}");
+                        AnsiConsole.MarkupLine(
+                            $"[blue]{currentState.DeviceName}[/] already {(currentState.IsMuted ? "[red]muted[/]" : "[green]unmuted[/]")}");
                     }
 
                     return 0;

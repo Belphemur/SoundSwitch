@@ -7,15 +7,16 @@ namespace SoundSwitch.CLI.Commands;
 
 public class SettingsCommand : AsyncCommand
 {
-    public override async Task<int> ExecuteAsync(CommandContext context)
+    public override async Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)
     {
         try
         {
             return await AnsiConsole.Status()
                 .StartAsync("Opening settings...", async _ =>
                 {
-                    var response = await NamedPipe.SendRequestAsync<OpenSettingsResponse>(PipeConstants.GetUserPipeName(),
-                        new OpenSettingsRequest());
+                    var response = await NamedPipe.SendRequestAsync<OpenSettingsResponse>(
+                        PipeConstants.GetUserPipeName(),
+                        new OpenSettingsRequest(), cancellationToken);
 
                     if (response.Success)
                     {

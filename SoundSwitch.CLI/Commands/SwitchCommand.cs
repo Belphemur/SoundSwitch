@@ -16,7 +16,7 @@ public class SwitchCommand : AsyncCommand<SwitchCommand.Settings>
         public AudioType Type { get; set; }
     }
 
-    public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
+    public override async Task<int> ExecuteAsync(CommandContext context, Settings settings, CancellationToken cancellationToken)
     {
         try
         {
@@ -24,7 +24,7 @@ public class SwitchCommand : AsyncCommand<SwitchCommand.Settings>
                 .StartAsync($"Switching {settings.Type} device...", async _ =>
                 {
                     var response = await NamedPipe.SendRequestAsync<TriggerSwitchResponse>(PipeConstants.GetUserPipeName(),
-                        new TriggerSwitchRequest { Type = settings.Type });
+                        new TriggerSwitchRequest { Type = settings.Type }, cancellationToken);
 
                     if (response.Success)
                     {
