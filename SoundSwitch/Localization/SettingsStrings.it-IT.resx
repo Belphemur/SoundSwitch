@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -161,9 +161,6 @@
   </data>
   <data name="audioFiles" xml:space="preserve">
     <value>File audio</value>
-  </data>
-  <data name="selectSoundButton.tooltip" xml:space="preserve">
-    <value>Seleziona il file audio per la notifica</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Spunta per abilitare il tasto rapido.</value>
@@ -337,9 +334,6 @@ Entrambi: Cambia quando qualsiasi tipo di dispositivo viene cambiato.</value>
   <data name="profile.error.title" xml:space="preserve">
     <value>Errore di profilo</value>
   </data>
-  <data name="buttonDelete" xml:space="preserve">
-    <value>Elimina</value>
-  </data>
   <data name="profile.error.delete" xml:space="preserve">
     <value>Impossibile trovare il profilo.</value>
   </data>
@@ -498,22 +492,22 @@ Ripristina lo stato del sistema quando l'applicazione viene chiusa.</value>
   <data name="position.tooltip" xml:space="preserve">
     <value>Imposta la posizione della notifica del banner.</value>
   </data>
-  <data name="position.option.bottomLeft" xml:space="preserve">
+  <data name="position.bottomLeft" xml:space="preserve">
     <value>In basso a sinistra</value>
   </data>
-  <data name="position.option.bottomRight" xml:space="preserve">
+  <data name="position.bottomRight" xml:space="preserve">
     <value>In basso a destra</value>
   </data>
-  <data name="position.option.topLeft" xml:space="preserve">
+  <data name="position.topLeft" xml:space="preserve">
     <value>In alto a sinistra</value>
   </data>
-  <data name="position.option.topRight" xml:space="preserve">
+  <data name="position.topRight" xml:space="preserve">
     <value>In alto a destra</value>
   </data>
-  <data name="position.option.bottomCenter" xml:space="preserve">
+  <data name="position.bottomCenter" xml:space="preserve">
     <value>In basso al centro</value>
   </data>
-  <data name="position.option.topCenter" xml:space="preserve">
+  <data name="position.topCenter" xml:space="preserve">
     <value>In alto al centro</value>
   </data>
   <data name="notification.single" xml:space="preserve">
@@ -555,7 +549,7 @@ Ripristina lo stato del sistema quando l'applicazione viene chiusa.</value>
   <data name="troubleshooting.desc" xml:space="preserve">
     <value>Se hai bisogno di aiuto o di ulteriore supporto per SoundSwitch, puoi visitare la discussione di supporto, o la comunità Discord, o aiutarci a sostenere il nostro progetto selezionando 'Dona' di seguito.</value>
   </data>
-  <data name="position.option.center" xml:space="preserve">
+  <data name="position.center" xml:space="preserve">
     <value>Al centro</value>
   </data>
   <data name="microphone.on" xml:space="preserve">
@@ -564,7 +558,7 @@ Ripristina lo stato del sistema quando l'applicazione viene chiusa.</value>
   <data name="microphone.off" xml:space="preserve">
     <value>Microfono spento</value>
   </data>
-  <data name="banner.mute" xml:space="preserve">
+  <data name="microphoneMuted" xml:space="preserve">
     <value>Banner persistente microfono disattivato</value>
   </data>
   <data name="banner.mute.tooltip" xml:space="preserve">
@@ -579,13 +573,16 @@ Ripristina lo stato del sistema quando l'applicazione viene chiusa.</value>
   <data name="switchDevice" xml:space="preserve">
     <value>Cambia dispositivo</value>
   </data>
-  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+  <data name="switchProfile" xml:space="preserve">
+    <value>Cambia profilo</value>
+  </data>
+  <data name="banner.onscreen.time.tooltip" xml:space="preserve">
     <value>Per quanti secondi il banner deve rimanere visibile sullo schermo.</value>
   </data>
-  <data name="notification.banner.onscreen.time" xml:space="preserve">
+  <data name="banner.onscreen.time" xml:space="preserve">
     <value>Tempo visualizzazione</value>
   </data>
-  <data name="notification" xml:space="preserve">
+  <data name="notifications" xml:space="preserve">
     <value>Notifiche</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
@@ -628,19 +625,47 @@ Vuoi riavviare Soundswitch?</value>
   <data name="importConfigFile" xml:space="preserve">
     <value>Importa file configurazione</value>
   </data>
-  <data name="importConfigErrorInvalidJson" xml:space="preserve">
-    <value>Il file di configurazione '{0}' non è un file JSON valido. Errore: {1}</value>
-  </data>
-  <data name="importConfigErrorDeserializationFailed" xml:space="preserve">
-    <value>Impossibile deserializzare il file di configurazione '{0}'. Errore: {1}</value>
-  </data>
   <data name="importConfigErrorReadingFile" xml:space="preserve">
     <value>Errore di lettura del file configurazione '{0}' dall'archivio: {1}</value>
+  </data>
+  <data name="importConfigErrorInvalidJson" xml:space="preserve">
+    <value>Il file di configurazione '{0}' non è un file JSON valido. Errore: {1}</value>
   </data>
   <data name="importConfigErrorDeserializationNull" xml:space="preserve">
     <value>Il file di configurazione '{0}' non può essere deserializzato correttamente (risulta nullo). Assicurati che si tratti di una file di configurazione SoundSwitch valido.</value>
   </data>
-  <data name="switchProfile" xml:space="preserve">
-    <value>Cambia profilo</value>
+  <data name="importConfigErrorDeserializationFailed" xml:space="preserve">
+    <value>Impossibile deserializzare il file di configurazione '{0}'. Errore: {1}</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="position.centerLeft" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="position.centerRight" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonSelect" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonCustom" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonDelete" xml:space="preserve">
+    <value>Elimina</value>
+  </data>
+  <data name="customSoundFile" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.tooltip" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeySwitchDevice" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeyToggleMute" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.error" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
 </root>

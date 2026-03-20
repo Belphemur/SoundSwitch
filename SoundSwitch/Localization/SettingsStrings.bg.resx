@@ -162,9 +162,6 @@
   <data name="audioFiles" xml:space="preserve">
     <value>Аудио файлове</value>
   </data>
-  <data name="selectSoundButton.tooltip" xml:space="preserve">
-    <value>Изберете звуков файл за известието</value>
-  </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Поставете отметка, за да активирате клавишната комбинация.</value>
   </data>
@@ -334,9 +331,6 @@
   <data name="profile.error.title" xml:space="preserve">
     <value>Грешка в профила</value>
   </data>
-  <data name="buttonDelete" xml:space="preserve">
-    <value>Изтриване</value>
-  </data>
   <data name="profile.error.delete" xml:space="preserve">
     <value>Профилът не може да бъде намерен.</value>
   </data>
@@ -489,22 +483,22 @@
   <data name="position.tooltip" xml:space="preserve">
     <value>Изберете позицията на банера.</value>
   </data>
-  <data name="position.option.bottomLeft" xml:space="preserve">
+  <data name="position.bottomLeft" xml:space="preserve">
     <value>Долу вляво</value>
   </data>
-  <data name="position.option.bottomRight" xml:space="preserve">
+  <data name="position.bottomRight" xml:space="preserve">
     <value>Долу вдясно</value>
   </data>
-  <data name="position.option.topLeft" xml:space="preserve">
+  <data name="position.topLeft" xml:space="preserve">
     <value>Горе вляво</value>
   </data>
-  <data name="position.option.topRight" xml:space="preserve">
+  <data name="position.topRight" xml:space="preserve">
     <value>Горе вдясно</value>
   </data>
-  <data name="position.option.bottomCenter" xml:space="preserve">
+  <data name="position.bottomCenter" xml:space="preserve">
     <value>Долу в центъра</value>
   </data>
-  <data name="position.option.topCenter" xml:space="preserve">
+  <data name="position.topCenter" xml:space="preserve">
     <value>Горе в центъра</value>
   </data>
   <data name="notification.single" xml:space="preserve">
@@ -546,7 +540,7 @@
   <data name="troubleshooting.desc" xml:space="preserve">
     <value>Ако се нуждаете от помощ или допълнително отстраняване на проблеми със SoundSwitch, можете да посетите връзката за помощ или Discord общността, или да ни подкрепите чрез връзката за дарение по-долу.</value>
   </data>
-  <data name="position.option.center" xml:space="preserve">
+  <data name="position.center" xml:space="preserve">
     <value>В центъра</value>
   </data>
   <data name="microphone.on" xml:space="preserve">
@@ -555,7 +549,7 @@
   <data name="microphone.off" xml:space="preserve">
     <value>Микрофонът е изключен</value>
   </data>
-  <data name="banner.mute" xml:space="preserve">
+  <data name="microphoneMuted" xml:space="preserve">
     <value>Постоянен банер при заглушаване</value>
   </data>
   <data name="banner.mute.tooltip" xml:space="preserve">
@@ -570,13 +564,13 @@
   <data name="switchDevice" xml:space="preserve">
     <value />
   </data>
-  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+  <data name="banner.onscreen.time.tooltip" xml:space="preserve">
     <value>Колко секунди да стои банера на екрана.</value>
   </data>
-  <data name="notification.banner.onscreen.time" xml:space="preserve">
+  <data name="banner.onscreen.time" xml:space="preserve">
     <value>Време на показване</value>
   </data>
-  <data name="notification" xml:space="preserve">
+  <data name="notifications" xml:space="preserve">
     <value>Известие</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
@@ -616,6 +610,37 @@
     <value />
   </data>
   <data name="importConfigFile" xml:space="preserve">
+    <value />
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="position.centerLeft" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="position.centerRight" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonSelect" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonCustom" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonDelete" xml:space="preserve">
+    <value>Изтриване</value>
+  </data>
+  <data name="customSoundFile" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.tooltip" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeySwitchDevice" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeyToggleMute" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.error" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
 </root>

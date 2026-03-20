@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -161,9 +161,6 @@
   </data>
   <data name="audioFiles" xml:space="preserve">
     <value>ஆடியோ கோப்புகள்</value>
-  </data>
-  <data name="selectSoundButton.tooltip" xml:space="preserve">
-    <value>அறிவிப்புக்கு ஒலி கோப்பைத் தேர்ந்தெடுக்கவும்</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>ஆட்ச்கியை இயக்க சரிபார்க்கவும்.</value>
@@ -337,9 +334,6 @@
   <data name="profile.error.title" xml:space="preserve">
     <value>சுயவிவர பிழை</value>
   </data>
-  <data name="buttonDelete" xml:space="preserve">
-    <value>நீக்கு</value>
-  </data>
   <data name="profile.error.delete" xml:space="preserve">
     <value>சுயவிவரத்தைக் கண்டுபிடிக்க முடியவில்லை.</value>
   </data>
@@ -498,22 +492,22 @@
   <data name="position.tooltip" xml:space="preserve">
     <value>பேனர் அறிவிப்பின் நிலையை அமைக்கவும்.</value>
   </data>
-  <data name="position.option.bottomLeft" xml:space="preserve">
+  <data name="position.bottomLeft" xml:space="preserve">
     <value>கீழே இடது</value>
   </data>
-  <data name="position.option.bottomRight" xml:space="preserve">
+  <data name="position.bottomRight" xml:space="preserve">
     <value>கீழே வலது</value>
   </data>
-  <data name="position.option.topLeft" xml:space="preserve">
+  <data name="position.topLeft" xml:space="preserve">
     <value>மேல் இடது</value>
   </data>
-  <data name="position.option.topRight" xml:space="preserve">
+  <data name="position.topRight" xml:space="preserve">
     <value>மேல் வலது</value>
   </data>
-  <data name="position.option.bottomCenter" xml:space="preserve">
+  <data name="position.bottomCenter" xml:space="preserve">
     <value>கீழே நடுவண்</value>
   </data>
-  <data name="position.option.topCenter" xml:space="preserve">
+  <data name="position.topCenter" xml:space="preserve">
     <value>மேல் நடுவண்</value>
   </data>
   <data name="notification.single" xml:space="preserve">
@@ -555,7 +549,7 @@
   <data name="troubleshooting.desc" xml:space="preserve">
     <value>சவுண்ட்ச்விட்சுடன் உங்களுக்கு ஏதேனும் உதவி அல்லது மேலும் சரிசெய்தல் தேவைப்பட்டால், நீங்கள் உதவி கலந்துரையாடல் அல்லது சமூக முரண்பாடு இணைப்பைப் பார்வையிடலாம் அல்லது கீழேயுள்ள நன்கொடை இணைப்பைப் பார்வையிடுவதன் மூலம் எங்களை ஆதரிக்க உதவலாம்.</value>
   </data>
-  <data name="position.option.center" xml:space="preserve">
+  <data name="position.center" xml:space="preserve">
     <value>நடுவண்</value>
   </data>
   <data name="microphone.on" xml:space="preserve">
@@ -563,6 +557,12 @@
   </data>
   <data name="microphone.off" xml:space="preserve">
     <value>மைக்ரோஃபோன் ஆஃப்</value>
+  </data>
+  <data name="microphoneMuted" xml:space="preserve">
+    <value>மைக்ரோஃபோன் முடக்கியது</value>
+  </data>
+  <data name="banner.mute.tooltip" xml:space="preserve">
+    <value>மைக்ரோஃபோன் முடக்கப்பட்டபோது அல்லது அசைக்கப்படும்போது பேனரைக் காட்டு. முடக்கப்பட்டபோது அது எப்போதும் திரையில் தெரியும் என்று விடாமுயற்சி இருக்கும்</value>
   </data>
   <data name="banner.mute.option.fading" xml:space="preserve">
     <value>குன்றல்</value>
@@ -573,13 +573,16 @@
   <data name="switchDevice" xml:space="preserve">
     <value>சாதனத்தை மாற்றவும்</value>
   </data>
-  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+  <data name="switchProfile" xml:space="preserve">
+    <value>சுயவிவரத்தை மாற்றவும்</value>
+  </data>
+  <data name="banner.onscreen.time.tooltip" xml:space="preserve">
     <value>பதாகை எவ்வளவு நேரம் திரையில் நொடிகளில் இருக்கும்.</value>
   </data>
-  <data name="notification.banner.onscreen.time" xml:space="preserve">
+  <data name="banner.onscreen.time" xml:space="preserve">
     <value>திரை-நேரம்</value>
   </data>
-  <data name="notification" xml:space="preserve">
+  <data name="notifications" xml:space="preserve">
     <value>அறிவிப்புகள்</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
@@ -622,15 +625,6 @@
   <data name="importConfigFile" xml:space="preserve">
     <value>உள்ளமைவு கோப்பை இறக்குமதி செய்யுங்கள்</value>
   </data>
-  <data name="banner.mute" xml:space="preserve">
-    <value>மைக்ரோஃபோன் முடக்கியது</value>
-  </data>
-  <data name="banner.mute.tooltip" xml:space="preserve">
-    <value>மைக்ரோஃபோன் முடக்கப்பட்டபோது அல்லது அசைக்கப்படும்போது பேனரைக் காட்டு. முடக்கப்பட்டபோது அது எப்போதும் திரையில் தெரியும் என்று விடாமுயற்சி இருக்கும்</value>
-  </data>
-  <data name="switchProfile" xml:space="preserve">
-    <value>சுயவிவரத்தை மாற்றவும்</value>
-  </data>
   <data name="importConfigErrorReadingFile" xml:space="preserve">
     <value>காப்பகத்திலிருந்து '{0}' உள்ளமைவு கோப்பைப் படிப்பது பிழை: {1}</value>
   </data>
@@ -642,5 +636,36 @@
   </data>
   <data name="importConfigErrorDeserializationFailed" xml:space="preserve">
     <value>உள்ளமைவு கோப்பை '{0}' தேடுங்கள். பிழை: {1}</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="position.centerLeft" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="position.centerRight" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonSelect" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonCustom" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonDelete" xml:space="preserve">
+    <value>நீக்கு</value>
+  </data>
+  <data name="customSoundFile" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.tooltip" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeySwitchDevice" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeyToggleMute" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.error" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
 </root>

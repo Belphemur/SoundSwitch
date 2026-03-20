@@ -19,7 +19,7 @@ internal class IconDoubleClickSwitchProfile : IIconDoubleClick
     /// <summary>
     /// Gets the enum type that this implementation corresponds to.
     /// </summary>
-    public IconDoubleClickEnum TypeEnum => IconDoubleClickEnum.SwitchProfile;
+    public IconDoubleClick TypeEnum => IconDoubleClick.SwitchProfile;
 
     /// <summary>
     /// Gets the localized label for this action as displayed in the user interface.

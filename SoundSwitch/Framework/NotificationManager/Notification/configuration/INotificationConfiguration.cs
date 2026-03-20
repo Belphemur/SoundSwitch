@@ -26,7 +26,9 @@ public interface INotificationConfiguration
     NotifyIcon Icon { get; set; }
     Stream DefaultSound { get; set; }
     CachedSound CustomSound { get; set; }
-    BannerPositionEnum BannerPosition { get; set; }
+    BannerPosition BannerPosition { get; set; }
     TimeSpan Ttl { get; set; }
-    MicrophoneMuteEnum MicrophoneMuteNotification { get; set; }
+    int Opacity { get; set; }
+    MicrophoneMute MicrophoneMuteBanner { get; set; }
+    MicrophoneMute MicrophoneUnmuteBanner { get; set; }
 }

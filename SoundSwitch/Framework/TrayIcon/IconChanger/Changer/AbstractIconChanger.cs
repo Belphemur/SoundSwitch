@@ -26,7 +26,7 @@ public abstract class AbstractIconChanger : IIconChanger
 
     protected AbstractIconChanger() => _log = Log.ForContext("IconChanger", TypeEnum);
 
-    public abstract IconChangerEnum TypeEnum { get; }
+    public abstract IconChanger TypeEnum { get; }
     public abstract string Label { get; }
 
     protected abstract DataFlow Flow { get; }

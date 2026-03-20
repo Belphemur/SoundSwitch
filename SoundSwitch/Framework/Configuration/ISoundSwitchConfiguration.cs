@@ -14,8 +14,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using JetBrains.Annotations;
 using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Framework.Banner.BannerDisplayInfo;
 using SoundSwitch.Framework.Banner.BannerPosition;
 using SoundSwitch.Framework.Banner.MicrophoneMute;
 using SoundSwitch.Framework.DeviceCyclerManager;
@@ -23,7 +25,7 @@ using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.TrayIcon.IconChanger;
 using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
-using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
+using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.Updater.Remind;
 using SoundSwitch.Framework.WinApi.Keyboard;
@@ -47,14 +49,23 @@ public interface ISoundSwitchConfiguration : IConfiguration
     bool ChangeCommunications { get; set; }
     uint UpdateCheckInterval { get; set; }
 
-    NotificationTypeEnum NotificationSettings { get; set; }
-    BannerPositionEnum BannerPosition { get; set; }
+    NotificationType SwitchDeviceNotification { get; set; }
+    NotificationType SwitchProfileNotification { get; set; }
+    NotificationType MicrophoneMuteNotification { get; set; }
+    BannerPosition BannerPosition { get; set; }
+    Point CustomBannerPosition { get; set; }
+
+    /// <summary>
+    /// Show a banner when microphone is muted
+    /// </summary>
+    MicrophoneMute MicrophoneMuteBanner { get; set; }
+    MicrophoneMute MicrophoneUnmuteBanner { get; set; }
     bool IncludeBetaVersions { get; set; }
     string CustomNotificationFilePath { get; set; }
     UpdateMode UpdateMode { get; set; }
     Language Language { get; set; }
-    TooltipInfoTypeEnum TooltipInfo { get; set; }
-    DeviceCyclerTypeEnum CyclerType { get; set; }
+    TooltipInfoType TooltipInfo { get; set; }
+    DeviceCyclerType CyclerType { get; set; }
     bool KeepSystrayIcon { get; set; }
 
     bool SwitchForegroundProgram { get; set; }
@@ -65,10 +76,11 @@ public interface ISoundSwitchConfiguration : IConfiguration
     /// <summary>
     /// What to do with the TrayIcon when changing default device
     /// </summary>
-    IconChangerEnum SwitchIcon { get; set; }
+    IconChanger SwitchIcon { get; set; }
 
-    IconDoubleClickEnum IconDoubleClick { get; set; }
+    IconDoubleClick IconDoubleClick { get; set; }
 
+    [Obsolete]
     HashSet<ProfileSetting> ProfileSettings { get; set; }
     HashSet<Profile.Profile> Profiles { get; set; }
     DateTime LastDonationNagTime { get; set; }
@@ -109,9 +121,7 @@ public interface ISoundSwitchConfiguration : IConfiguration
     int MaxNumberNotification { get; set; }
 
     TimeSpan BannerOnScreenTime { get; set; }
-
-    /// <summary>
-    /// Show a banner when microphone is muted
-    /// </summary>
-    MicrophoneMuteEnum MicrophoneMuteNotification { get; set; }
+    int BannerOpacityPercentage { get; set; }
+    bool NotificationAdvancedMode { get; set; }
+    BannerDisplayInfo BannerDisplayInfo { get; set; }
 }

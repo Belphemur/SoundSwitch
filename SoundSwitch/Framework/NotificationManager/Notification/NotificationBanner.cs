@@ -31,7 +31,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification;
 
 internal class NotificationBanner : INotification
 {
-    public NotificationTypeEnum TypeEnum => NotificationTypeEnum.BannerNotification;
+    public NotificationType TypeEnum => NotificationType.BannerNotification;
     public string Label => SettingsStrings.notification_option_banner;
 
     public INotificationConfiguration Configuration { get; set; }
@@ -48,7 +48,8 @@ internal class NotificationBanner : INotification
             Image = audioDevice.LargeIcon.ToBitmap(),
             Text = audioDevice.NameClean,
             Position = BannerPosition,
-            Ttl = Configuration.Ttl
+            Ttl = Configuration.Ttl,
+            Opacity = Configuration.Opacity
         };
         if (CustomSoundCheck(audioDevice))
         {
@@ -75,25 +76,28 @@ internal class NotificationBanner : INotification
             Title = string.Format(SettingsStrings.profile_notification_text, profile.Name),
             Text = string.Join("\n", profile.Devices.Select(wrapper => wrapper.DeviceInfo.NameClean).Distinct()),
             Position = BannerPosition,
-            Ttl = Configuration.Ttl
+            Ttl = Configuration.Ttl,
+            Opacity = Configuration.Opacity
         };
         _bannerManager.ShowNotification(bannerData);
     }
 
-    public void NotifyMuteChanged(string deviceId, string microphoneName, bool newMuteState)
+    public void NotifyMicrophoneMuteChanged(string deviceId, string microphoneName, bool newMuteState)
     {
-        if (Configuration.MicrophoneMuteNotification != MicrophoneMuteEnum.Persistent)
+        var microphoneMuteBanner = newMuteState ? Configuration.MicrophoneMuteBanner : Configuration.MicrophoneUnmuteBanner;
+
+        if (Configuration.MicrophoneMuteBanner != MicrophoneMute.Persistent || Configuration.MicrophoneUnmuteBanner != MicrophoneMute.Persistent)
             _microphoneMuteBannerManager.RemovePersistentMuteBanner(deviceId);
 
-        switch (Configuration.MicrophoneMuteNotification)
+        switch (microphoneMuteBanner)
         {
-            case MicrophoneMuteEnum.Persistent:
+            case MicrophoneMute.Persistent:
                 _microphoneMuteBannerManager.UpdateMicrophoneMuteState(deviceId, microphoneName, newMuteState);
                 return;
-            case MicrophoneMuteEnum.Fading:
+            case MicrophoneMute.Fading:
                 FullBanner(microphoneName, newMuteState);
                 return;
-            case MicrophoneMuteEnum.None:
+            case MicrophoneMute.None:
                 return;
             default:
                 throw new ArgumentOutOfRangeException();
@@ -102,7 +106,9 @@ internal class NotificationBanner : INotification
 
     private void FullBanner(string microphoneName, bool newMuteState)
     {
-        var title = newMuteState ? string.Format(SettingsStrings.notification_microphone_muted, microphoneName) : string.Format(SettingsStrings.notification_microphone_unmuted, microphoneName);
+        var title = newMuteState ?
+            string.Format(SettingsStrings.notification_microphone_muted, microphoneName) :
+            string.Format(SettingsStrings.notification_microphone_unmuted, microphoneName);
 
         var icon = newMuteState ? Resources.microphone_muted : Resources.microphone_unmuted;
 
@@ -112,7 +118,8 @@ internal class NotificationBanner : INotification
             Image = icon,
             Title = title,
             Position = BannerPosition,
-            Ttl = Configuration.Ttl
+            Ttl = Configuration.Ttl,
+            Opacity = Configuration.Opacity
         };
         _bannerManager.ShowNotification(bannerData);
     }
@@ -126,5 +133,6 @@ internal class NotificationBanner : INotification
     // Available in all Windows versions
     public bool IsAvailable() => true;
 
-    public bool CustomSoundCheck(DeviceFullInfo audioDevice) => audioDevice.Type == DataFlow.Render && Configuration.CustomSound != null && File.Exists(Configuration.CustomSound.FilePath);
+    public bool CustomSoundCheck(DeviceFullInfo audioDevice) =>
+        audioDevice.Type == DataFlow.Render && Configuration.CustomSound != null && File.Exists(Configuration.CustomSound.FilePath);
 }

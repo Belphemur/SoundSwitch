@@ -18,7 +18,7 @@ using SoundSwitch.Framework.Factory;
 
 namespace SoundSwitch.Framework.Banner.BannerPosition.Position;
 
-public interface IPosition : IEnumImpl<BannerPositionEnum>
+public interface IPosition : IEnumImpl<BannerPosition>
 {
     /// <summary>
     /// Get position in the screen for the banner

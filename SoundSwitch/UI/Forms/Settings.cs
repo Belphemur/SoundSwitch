@@ -13,14 +13,6 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Windows.Forms;
 using NAudio.CoreAudioApi;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -30,6 +22,7 @@ using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
+using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Banner.BannerPosition;
 using SoundSwitch.Framework.Banner.MicrophoneMute;
 using SoundSwitch.Framework.Configuration;
@@ -42,7 +35,6 @@ using SoundSwitch.Framework.Profile.Trigger;
 using SoundSwitch.Framework.TrayIcon.IconChanger;
 using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
-using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.WinApi.Keyboard;
 using SoundSwitch.Localization;
@@ -53,6 +45,16 @@ using SoundSwitch.UI.Component;
 using SoundSwitch.UI.Component.ListView;
 using SoundSwitch.Util;
 using SoundSwitch.Util.Url;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using System.Windows.Forms;
+using SoundSwitch.Audio.Manager.Interop.Enum;
+using SoundSwitch.Framework.Banner.BannerDisplayInfo;
 
 namespace SoundSwitch.UI.Forms;
 
@@ -60,8 +62,24 @@ public sealed partial class SettingsForm : Form
 {
     private static readonly Icon ResourceSettingsIcon = Resources.SettingsIcon;
 
-    private bool _loaded;
-    private IAudioDeviceLister _audioDeviceLister;
+    private readonly bool _loaded;
+    private readonly IAudioDeviceLister _audioDeviceLister;
+    private readonly BannerManager _bannerManager = new();
+
+    private const int RECT_PEN_WIDTH = 4;
+    private const int OFFSET_W = 15;
+    private const int OFFSET_H = 12;
+
+    private static Pen PenLine(int width = 1) => new(Color.Gainsboro, width);
+
+    private static Rectangle RectOutline(int offsetW, int offsetH, Control topLeft, Control bottomRight) =>
+        new(topLeft.Location.X - offsetW, topLeft.Location.Y - offsetH,
+            bottomRight.Location.X + bottomRight.Width - topLeft.Location.X + offsetW * 2,
+            bottomRight.Location.Y + bottomRight.Height - topLeft.Location.Y + offsetH * 2);
+    
+    private static Point CenterPoint(Control control, Control container = null) =>
+        new((container != null ? container.Location.X : 0) + control.Location.X + control.Width / 2,
+            (container != null ? container.Location.Y : 0) + control.Location.Y + control.Height / 2);
 
     public SettingsForm(IAudioDeviceLister audioDeviceLister)
     {
@@ -105,10 +123,12 @@ public sealed partial class SettingsForm : Form
         foregroundAppCheckbox.Checked = AppModel.Instance.SwitchForegroundProgram;
         new ToolTip().SetToolTip(foregroundAppCheckbox, SettingsStrings.foregroundApp_tooltip);
 
-        quickMenuCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.QuickMenuEnabled), false, DataSourceUpdateMode.OnPropertyChanged);
+        quickMenuCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance,
+            nameof(AppModel.QuickMenuEnabled), false, DataSourceUpdateMode.OnPropertyChanged);
         new ToolTip().SetToolTip(quickMenuCheckbox, SettingsStrings.quickMenu_tooltip);
 
-        keepVolumeCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.KeepVolumeEnabled), false, DataSourceUpdateMode.OnPropertyChanged);
+        keepVolumeCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance,
+            nameof(AppModel.KeepVolumeEnabled), false, DataSourceUpdateMode.OnPropertyChanged);
         new ToolTip().SetToolTip(keepVolumeCheckbox, SettingsStrings.keepVolume_tooltip);
 
         new TooltipInfoFactory().ConfigureListControl(tooltipInfoComboBox);
@@ -119,43 +139,96 @@ public sealed partial class SettingsForm : Form
         new ToolTip().SetToolTip(cycleThroughComboBox, SettingsStrings.cycleThrough_tooltip);
 
         // Settings - Notification
+        var isAdvancedMode = AppModel.Instance.NotificationAdvancedMode;
+        advancedModeCheckBox.Checked = isAdvancedMode;
+        NotificationAdvancedMode(isAdvancedMode);
+
         var notificationFactory = new NotificationFactory();
-        notificationFactory.ConfigureListControl(notificationComboBox);
-        notificationComboBox.SelectedValue = AppModel.Instance.NotificationSettings;
-        new ToolTip().SetToolTip(notificationComboBox, SettingsStrings.notification_tooltip);
+        notificationFactory.ConfigureListControl(switchDeviceNotificationComboBox);
+        notificationFactory.ConfigureListControl(switchProfileNotificationComboBox);
+        notificationFactory.ConfigureListControl(microphoneMuteNotificationComboBox);
+        switchDeviceNotificationComboBox.SelectedValue = AppModel.Instance.SwitchDeviceNotification;
+        switchProfileNotificationComboBox.SelectedValue = AppModel.Instance.SwitchProfileNotification;
+        microphoneMuteNotificationComboBox.SelectedValue = AppModel.Instance.MicrophoneMuteNotification;
+        new ToolTip().SetToolTip(switchDeviceNotificationComboBox, SettingsStrings.notification_tooltip);
+        new ToolTip().SetToolTip(switchProfileNotificationComboBox, SettingsStrings.notification_tooltip);
+        new ToolTip().SetToolTip(microphoneMuteNotificationComboBox, SettingsStrings.notification_tooltip);
 
-        new BannerPositionFactory().ConfigureListControl(positionComboBox);
-        positionComboBox.SelectedValue = AppModel.Instance.BannerPosition;
-        new ToolTip().SetToolTip(positionComboBox, SettingsStrings.position_tooltip);
-
+        onScreenUpDown.DataBindings.Add(nameof(NumericUpDown.Value), AppModel.Instance,
+            nameof(AppModel.BannerOnScreenTimeSecs), false, DataSourceUpdateMode.OnPropertyChanged);
         var onScreenTimeTooltip = new ToolTip();
-        onScreenTimeTooltip.SetToolTip(onScreenUpDown, SettingsStrings.notification_banner_onscreen_time_tooltip);
-        onScreenTimeTooltip.SetToolTip(onScreenTimeLabel, SettingsStrings.notification_banner_onscreen_time_tooltip);
-        onScreenUpDown.DataBindings.Add(nameof(NumericUpDown.Value), AppModel.Instance, nameof(AppModel.BannerOnScreenTimeSecs), false, DataSourceUpdateMode.OnPropertyChanged);
+        onScreenTimeTooltip.SetToolTip(onScreenUpDown, SettingsStrings.banner_onscreen_time_tooltip);
+        onScreenTimeTooltip.SetToolTip(onScreenTimeLabel, SettingsStrings.banner_onscreen_time_tooltip);
 
+        opacityUpDown.DataBindings.Add(nameof(NumericUpDown.Value), AppModel.Instance,
+            nameof(AppModel.BannerOpacityPercentage), false, DataSourceUpdateMode.OnPropertyChanged);
+        new ToolTip().SetToolTip(opacityUpDown, SettingsStrings.banner_opacity_tooltip);
+
+        singleNotificationCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance,
+            nameof(AppModel.IsSingleNotification), false, DataSourceUpdateMode.OnPropertyChanged);
         new ToolTip().SetToolTip(singleNotificationCheckbox, SettingsStrings.notification_single_tooltip);
-        singleNotificationCheckbox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance, nameof(AppModel.IsSingleNotification), false, DataSourceUpdateMode.OnPropertyChanged);
 
         usePrimaryScreenCheckbox.Checked = AppModel.Instance.NotifyUsingPrimaryScreen;
         new ToolTip().SetToolTip(usePrimaryScreenCheckbox, SettingsStrings.usePrimaryScreen_tooltip);
 
-        new MicrophoneMuteFactory().ConfigureListControl(microphoneMuteComboBox);
-        microphoneMuteComboBox.SelectedValue = AppModel.Instance.MicrophoneMuteNotification;
-        new ToolTip().SetToolTip(microphoneMuteComboBox, SettingsStrings.banner_mute_tooltip);
+        new MicrophoneMuteFactory().ConfigureListControl(microphoneMuteBannerComboBox);
+        microphoneMuteBannerComboBox.SelectedValue = AppModel.Instance.MicrophoneMuteBanner;
+        new ToolTip().SetToolTip(microphoneMuteBannerComboBox, SettingsStrings.banner_mute_tooltip);
 
-        bannerGroupBox.Enabled = AppModel.Instance.NotificationSettings == NotificationTypeEnum.BannerNotification;
+        new MicrophoneMuteFactory().ConfigureListControl(microphoneUnmuteBannerComboBox);
+        microphoneUnmuteBannerComboBox.SelectedValue = AppModel.Instance.MicrophoneUnmuteBanner;
+        new ToolTip().SetToolTip(microphoneUnmuteBannerComboBox, SettingsStrings.banner_mute_tooltip);
+
+        new BannerDisplayInfoFactory().ConfigureListControl(bannerDisplayComboBox);
+        bannerDisplayComboBox.SelectedValue = AppModel.Instance.BannerDisplayInfo;
+        new ToolTip().SetToolTip(bannerDisplayComboBox, SettingsStrings.banner_displayInfo_tooltip);
+
+        CustomSoundNotificationCheck();
 
         selectSoundFileDialog.Filter = SettingsStrings.audioFiles + @" (*.wav;*.mp3)|*.wav;*.mp3;*.aiff";
-        selectSoundFileDialog.FileOk += SelectSoundFileDialogOnFileOk;
+        selectSoundFileDialog.FileOk += SelectSoundFileDialog_FileOk;
         selectSoundFileDialog.CheckFileExists = true;
         selectSoundFileDialog.CheckPathExists = true;
 
-        var supportCustomSound = notificationFactory.Get(AppModel.Instance.NotificationSettings).SupportCustomSound();
-        selectSoundButton.Visible = supportCustomSound;
+        deleteSoundButton.Visible = AppModel.Instance.CustomNotificationSound != null;
+        new ToolTip().SetToolTip(deleteSoundButton, SettingsStrings.disableCustomSound_tooltip);        
         new ToolTip().SetToolTip(selectSoundButton, SettingsStrings.selectSoundButton_tooltip);
 
-        DeleteSoundButton_Visible(supportCustomSound);
-        new ToolTip().SetToolTip(deleteSoundButton, SettingsStrings.disableCustomSound_tooltip);
+        switch (AppModel.Instance.BannerPosition)
+        {
+            case BannerPosition.TopLeft:
+                positionTopLeftRadioButton.Checked = true;
+                break;
+            case BannerPosition.TopCenter:
+                positionTopCenterRadioButton.Checked = true;
+                break;
+            case BannerPosition.TopRight:
+                positionTopRightRadioButton.Checked = true;
+                break;
+            case BannerPosition.CenterLeft:
+                positionCenterLeftRadioButton.Checked = true;
+                break;
+            case BannerPosition.Center:
+                positionCenterRadioButton.Checked = true;
+                break;
+            case BannerPosition.CenterRight:
+                positionCenterRightRadioButton.Checked = true;
+                break;
+            case BannerPosition.BottomLeft:
+                positionBottomLeftRadioButton.Checked = true;
+                break;
+            case BannerPosition.BottomCenter:
+                positionBottomCenterRadioButton.Checked = true;
+                break;
+            case BannerPosition.BottomRight:
+                positionBottomRightRadioButton.Checked = true;
+                break;
+            case BannerPosition.Custom:
+                positionCustomRadioButton.Checked = true;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
 
         // Settings - Update
         includeBetaVersionsCheckBox.Checked = AppModel.Instance.IncludeBetaVersions;
@@ -178,7 +251,6 @@ public sealed partial class SettingsForm : Form
         new ToolTip().SetToolTip(updateSilentRadioButton, SettingsStrings.updateInstallAutomatically_tooltip);
         new ToolTip().SetToolTip(updateNotifyRadioButton, SettingsStrings.updateNotify_tooltip);
         new ToolTip().SetToolTip(updateNeverRadioButton, SettingsStrings.updateNever_tooltip);
-
         new ToolTip().SetToolTip(includeBetaVersionsCheckBox, SettingsStrings.updateIncludeBetaVersions_tooltip);
 
         // Settings - Language
@@ -318,7 +390,8 @@ public sealed partial class SettingsForm : Form
         recordingListView.Groups[0].Header = SettingsStrings.selected;
 
         profileTabPage.Text = SettingsStrings.profile_tab;
-        appSettingTabPage.Text = SettingsStrings.settings;
+        appSettingTabPage.Text = SettingsStrings.general;
+        notificationsTabPage.Text = SettingsStrings.notifications;
         troubleshootingTabPage.Text = SettingsStrings.troubleshooting;
 
         // Settings - Basic
@@ -354,14 +427,17 @@ public sealed partial class SettingsForm : Form
         languageGroupBox.Text = SettingsStrings.language;
 
         // Settings - Notification
-        notificationsGroupBox.Text = SettingsStrings.notification;
-        bannerGroupBox.Text = SettingsStrings.notification_bannerOptions;
-        positionLabel.Text = SettingsStrings.position;
-        onScreenTimeLabel.Text = SettingsStrings.notification_banner_onscreen_time;
-        secondsLabel.Text = SettingsStrings.seconds;
-        microphoneMuteLabel.Text = SettingsStrings.banner_mute;
+        notificationsGroupBox.Text = SettingsStrings.notification_type;
+        customSoundFileGroupBox.Text = SettingsStrings.customSoundFile;
+        bannerOptionsGroupBox.Text = SettingsStrings.notification_bannerOptions;
+        positionGroupBox.Text = SettingsStrings.position;
+        onScreenTimeLabel.Text = SettingsStrings.banner_onscreen_time;
+        onScreenUpDown.TextUnit = "s";
         usePrimaryScreenCheckbox.Text = SettingsStrings.usePrimaryScreen;
         singleNotificationCheckbox.Text = SettingsStrings.notification_single;
+        opacityLabel.Text = SettingsStrings.banner_opacity;
+        opacityUpDown.TextUnit = "%";
+        displayInfoLabel.Text = SettingsStrings.banner_displayInfo;
 
         // Settings - Troubleshooting
         resetAudioDevicesGroupBox.Text = SettingsStrings.resetAudioDevices;
@@ -395,10 +471,7 @@ public sealed partial class SettingsForm : Form
         deleteProfileButton.Image = Resources.profile_menu_delete;
     }
 
-    private void CloseButton_Click(object sender, EventArgs e)
-    {
-        Close();
-    }
+    private void CloseButton_Click(object sender, EventArgs e) => Close();
 
     private void TabControl_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -437,38 +510,13 @@ public sealed partial class SettingsForm : Form
         toggleMuteLabel.Visible = muteHotKeyVisibility;
     }
 
-    private void SelectSoundFileDialogOnFileOk(object sender, CancelEventArgs cancelEventArgs)
-    {
-        try
-        {
-            AppModel.Instance.CustomNotificationSound = new CachedSound(selectSoundFileDialog.FileName);
-        }
-        catch (Exception)
-        {
-            MessageBox.Show(@"Please select another file", @"Invalid Sound file", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            return;
-        }
-
-        deleteSoundButton.Visible = true;
-    }
-
-
-    private void DeleteSoundButton_Visible(bool supportCustomSound)
-    {
-        deleteSoundButton.Visible = supportCustomSound && AppModel.Instance.CustomNotificationSound != null;
-    }
-
-    private void HotKeyCheckBox_CheckedChanged(object sender, EventArgs e)
-    {
+    private void HotKeyCheckBox_CheckedChanged(object sender, EventArgs e) =>
         ForceSetHotkeys(sender, hotKeyControl);
-    }
 
-    private void MuteHotKeyCheckBox_CheckedChanged(object sender, EventArgs e)
-    {
+    private void MuteHotKeyCheckBox_CheckedChanged(object sender, EventArgs e) =>
         ForceSetHotkeys(sender, muteHotKey);
-    }
 
-    private void ForceSetHotkeys(object sender, HotKeyTextBox hotKeyTextBox)
+    private static void ForceSetHotkeys(object sender, HotKeyTextBox hotKeyTextBox)
     {
         var control = (CheckBox)sender;
         if (hotKeyTextBox.Tag == null) return;
@@ -490,6 +538,14 @@ public sealed partial class SettingsForm : Form
         hotKeyControl.Tag = newTuple;
 
         AppModel.Instance.SetHotkeyCombination(newTuple.Item2, newTuple.Item1);
+    }
+
+    private void SetComboBoxValue<T>(object sender, Action<DisplayEnumObject<T>> saveSetting) where T : Enum, IConvertible
+    {
+        if (!_loaded) return;
+        var selectedItem = (DisplayEnumObject<T>)((ComboBox)sender).SelectedItem;
+        if (selectedItem == null) return;
+        saveSetting(selectedItem);
     }
 
     #region Device List Playback
@@ -575,7 +631,7 @@ public sealed partial class SettingsForm : Form
                     throw new ArgumentOutOfRangeException();
             }
         }
-        catch (Exception exception)
+        catch (Exception)
         {
             e.NewValue = e.CurrentValue;
         }
@@ -656,10 +712,9 @@ public sealed partial class SettingsForm : Form
 
     private void RunAtStartup_CheckedChanged(object sender, EventArgs e)
     {
-        var ras = startWithWindowsCheckBox.Checked;
         try
         {
-            AppModel.Instance.RunAtStartup = ras;
+            AppModel.Instance.RunAtStartup = startWithWindowsCheckBox.Checked;
         }
         catch (Exception ex)
         {
@@ -668,17 +723,9 @@ public sealed partial class SettingsForm : Form
         }
     }
 
-    private void SetComboBoxValue<T>(object sender, Action<DisplayEnumObject<T>> saveSetting) where T : Enum, IConvertible
-    {
-        if (!_loaded) return;
-        var selectedItem = (DisplayEnumObject<T>)((ComboBox)sender).SelectedItem;
-        if (selectedItem == null) return;
-        saveSetting(selectedItem);
-    }
-
     private void IconChangeChoicesComboBox_SelectedIndexChanged(object sender, EventArgs e)
     {
-        SetComboBoxValue<IconChangerEnum>(sender, selectedItem =>
+        SetComboBoxValue<IconChanger>(sender, selectedItem =>
         {
             AppConfigs.Configuration.SwitchIcon = selectedItem.Enum;
             AppConfigs.Configuration.Save();
@@ -688,10 +735,8 @@ public sealed partial class SettingsForm : Form
 
     private void IconDoubleClickComboBox_SelectedIndexChanged(object sender, EventArgs e)
     {
-        SetComboBoxValue<IconDoubleClickEnum>(sender, selectedItem =>
-        {
-            AppModel.Instance.IconDoubleClick = selectedItem.Enum;
-        });
+        SetComboBoxValue<IconDoubleClick>(sender, selectedItem =>
+            AppModel.Instance.IconDoubleClick = selectedItem.Enum);
     }
 
     #endregion
@@ -724,41 +769,34 @@ public sealed partial class SettingsForm : Form
 
     private void TooltipInfoComboBox_SelectedValueChanged(object sender, EventArgs e)
     {
-        SetComboBoxValue<TooltipInfoTypeEnum>(sender, selectedItem =>
-        {
-            TooltipInfoManager.CurrentTooltipInfo = selectedItem.Enum;
-        });
+        SetComboBoxValue<TooltipInfoType>(sender, selectedItem =>
+            TooltipInfoManager.CurrentTooltipInfo = selectedItem.Enum);
     }
 
     private void CyclerComboBox_SelectedValueChanged(object sender, EventArgs e)
     {
-        SetComboBoxValue<DeviceCyclerTypeEnum>(sender, selectedItem =>
-        {
-            DeviceCyclerManager.CurrentCycler = selectedItem.Enum;
-        });
+        SetComboBoxValue<DeviceCyclerType>(sender, selectedItem =>
+            DeviceCyclerManager.CurrentCycler = selectedItem.Enum);
     }
 
     #endregion
 
     #region Update Settings
 
-    private void UpdateSilentRadioButton_CheckedChanged(object sender, EventArgs e)
+    private static void SetUpdateValue(RadioButton radioButton, UpdateMode updateMode)
     {
-        if (updateSilentRadioButton.Checked)
-            AppModel.Instance.UpdateMode = UpdateMode.Silent;
+        if (radioButton.Checked)
+            AppModel.Instance.UpdateMode = updateMode;
     }
 
-    private void UpdateNotifyRadioButton_CheckedChanged(object sender, EventArgs e)
-    {
-        if (updateNotifyRadioButton.Checked)
-            AppModel.Instance.UpdateMode = UpdateMode.Notify;
-    }
+    private void UpdateSilentRadioButton_CheckedChanged(object sender, EventArgs e) =>
+        SetUpdateValue(updateSilentRadioButton, UpdateMode.Silent);
 
-    private void UpdateNeverRadioButton_CheckedChanged(object sender, EventArgs e)
-    {
-        if (updateNeverRadioButton.Checked)
-            AppModel.Instance.UpdateMode = UpdateMode.Never;
-    }
+    private void UpdateNotifyRadioButton_CheckedChanged(object sender, EventArgs e) =>
+        SetUpdateValue(updateNotifyRadioButton, UpdateMode.Notify);
+
+    private void UpdateNeverRadioButton_CheckedChanged(object sender, EventArgs e) =>
+        SetUpdateValue(updateNeverRadioButton, UpdateMode.Never);
 
     private void BetaVersionCheckbox_CheckedChanged(object sender, EventArgs e)
     {
@@ -786,30 +824,64 @@ public sealed partial class SettingsForm : Form
 
     #endregion
 
-    #region Notification
+    #region Notifications
 
-    private void NotificationComboBox_SelectedValueChanged(object sender, EventArgs e)
+    private void NotificationAdvancedMode(bool isAdvancedMode)
     {
-        SetComboBoxValue<NotificationTypeEnum>(sender, selectedItem =>
+        switchProfileNotificationComboBox.Visible = isAdvancedMode;
+        switchProfileNotificationLabel.Visible = isAdvancedMode;
+        microphoneMuteNotificationComboBox.Visible = isAdvancedMode;
+        microphoneMuteNotificationLabel.Visible = isAdvancedMode;
+        notificationsGroupBox.Height = isAdvancedMode ? 166 : 93;
+    }
+
+    private void AdvancedModeCheckBox_CheckedChanged(object sender, EventArgs e)
+    {
+        var isAdvancedMode = advancedModeCheckBox.Checked;
+        NotificationAdvancedMode(isAdvancedMode);
+        AppModel.Instance.NotificationAdvancedMode = isAdvancedMode;
+    }
+
+    private void SwitchDeviceNotificationComboBox_SelectedValueChanged(object sender, EventArgs e)
+    {
+        SetComboBoxValue<NotificationType>(sender, selectedItem =>
         {
             var notificationType = selectedItem.Enum;
-            if (notificationType == AppModel.Instance.NotificationSettings) return;
-
-            var supportCustomSound = new NotificationFactory().Get(notificationType).SupportCustomSound();
-            selectSoundButton.Visible = supportCustomSound;
-            DeleteSoundButton_Visible(supportCustomSound);
-
-            bannerGroupBox.Enabled = notificationType == NotificationTypeEnum.BannerNotification;
-            AppModel.Instance.NotificationSettings = notificationType;
+            if (notificationType == AppModel.Instance.SwitchDeviceNotification) return;
+            AppModel.Instance.SwitchDeviceNotification = notificationType;
         });
     }
 
-    private void PositionComboBox_SelectedValueChanged(object sender, EventArgs e)
+    private void SwitchProfileNotificationComboBox_SelectedValueChanged(object sender, EventArgs e)
     {
-        SetComboBoxValue<BannerPositionEnum>(sender, selectedItem =>
+        SetComboBoxValue<NotificationType>(sender, selectedItem =>
+            AppModel.Instance.SwitchProfileNotification = selectedItem.Enum);
+    }
+
+    private void MicrophoneMuteNotificationComboBox_SelectedValueChanged(object sender, EventArgs e)
+    {
+        SetComboBoxValue<NotificationType>(sender, selectedItem =>
+            AppModel.Instance.MicrophoneMuteNotification = selectedItem.Enum);
+    }
+
+    private void CustomSoundNotificationCheck()
+    {
+        var customSound = AppModel.Instance.CustomNotificationSound;
+        void SetProperties(string text, Color color, FontStyle style = FontStyle.Regular)
         {
-            AppModel.Instance.BannerPosition = selectedItem.Enum;
-        });
+            var original = customSoundFileGroupBox.Width - 12;
+            selectSoundButton.Text = text;
+            selectSoundButton.ForeColor = color;
+            selectSoundButton.Width = customSound != null ? original - deleteSoundButton.Width - 6 : original;
+            selectSoundButton.Font = new Font("Segoe UI", 9F, style);
+        }
+
+        if (customSound == null)
+            SetProperties(SettingsStrings.buttonSelect + "…", SystemColors.ControlText);
+        else if (File.Exists(customSound.FilePath))
+            SetProperties(Path.GetFileName(customSound.FilePath), SystemColors.ControlText, FontStyle.Italic);
+        else
+            SetProperties(SettingsStrings.selectSoundButton_error, Color.Red, FontStyle.Bold);
     }
 
     private void SelectSoundButton_Click(object sender, EventArgs e)
@@ -817,10 +889,27 @@ public sealed partial class SettingsForm : Form
         selectSoundFileDialog.ShowDialog(this);
     }
 
+    private void SelectSoundFileDialog_FileOk(object sender, CancelEventArgs cancelEventArgs)
+    {
+        try
+        {
+            AppModel.Instance.CustomNotificationSound = new CachedSound(selectSoundFileDialog.FileName);
+        }
+        catch (Exception)
+        {
+            MessageBox.Show(@"Please select another file", @"Invalid Sound file", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return;
+        }
+
+        deleteSoundButton.Visible = true;
+        CustomSoundNotificationCheck();
+    }
+
     private void DeleteSoundButton_Click(object sender, EventArgs e)
     {
         AppModel.Instance.CustomNotificationSound = null;
         deleteSoundButton.Visible = false;
+        CustomSoundNotificationCheck();
     }
 
     private void UsePrimaryScreenCheckbox_CheckedChanged(object sender, EventArgs e)
@@ -828,12 +917,83 @@ public sealed partial class SettingsForm : Form
         AppModel.Instance.NotifyUsingPrimaryScreen = usePrimaryScreenCheckbox.Checked;
     }
 
-    private void MicrophoneMuteNotificationComboBox_SelectedValueChanged(object sender, EventArgs e)
+    private void MicrophoneMuteBannerComboBox_SelectedValueChanged(object sender, EventArgs e)
     {
-        SetComboBoxValue<MicrophoneMuteEnum>(sender, selectedItem =>
+        SetComboBoxValue<MicrophoneMute>(sender, selectedItem =>
+            AppModel.Instance.MicrophoneMuteBanner = selectedItem.Enum);
+    }
+
+    private void MicrophoneUnmuteBannerComboBox_SelectedValueChanged(object sender, EventArgs e)
+    {
+        SetComboBoxValue<MicrophoneMute>(sender, selectedItem =>
+            AppModel.Instance.MicrophoneUnmuteBanner = selectedItem.Enum);
+    }
+
+    private void PositionGroupBox_Paint(object sender, PaintEventArgs e)
+    {
+        Size round =  new(RECT_PEN_WIDTH * 4, RECT_PEN_WIDTH * 4);
+        Rectangle rect = RectOutline(OFFSET_W, OFFSET_H, positionTopLeftRadioButton, positionBottomRightRadioButton);
+
+        e.Graphics.FillRoundedRectangle(new SolidBrush(Color.AliceBlue), rect, round);
+        e.Graphics.DrawRoundedRectangle(PenLine(RECT_PEN_WIDTH), rect, round);
+
+        e.Graphics.DrawLine(PenLine(),
+            CenterPoint(positionCustomRadioButton),
+            CenterPoint(selectCustomPositionButton));
+    }
+
+    private static void SetBannerPositionValue(RadioButton radioButton, BannerPosition position)
+    {
+        if (!radioButton.Checked) return;
+        AppModel.Instance.BannerPosition = position;
+    }
+    private void PositionTopLeftRadioButton_CheckedChanged(object sender, EventArgs e) =>
+
+        SetBannerPositionValue(positionTopLeftRadioButton, BannerPosition.TopLeft);
+    private void PositionTopCenterRadioButton_CheckedChanged(object sender, EventArgs e) =>
+
+        SetBannerPositionValue(positionTopCenterRadioButton, BannerPosition.TopCenter);
+
+    private void PositionTopRightRadioButton_CheckedChanged(object sender, EventArgs e) =>
+        SetBannerPositionValue(positionTopRightRadioButton, BannerPosition.TopRight);
+
+    private void PositionCenterLeftRadioButton_CheckedChanged(object sender, EventArgs e) =>
+        SetBannerPositionValue(positionCenterLeftRadioButton, BannerPosition.CenterLeft);
+
+    private void PositionCenterRadioButton_CheckedChanged(object sender, EventArgs e) =>
+        SetBannerPositionValue(positionCenterRadioButton, BannerPosition.Center);
+
+    private void PositionCenterRightRadioButton_CheckedChanged(object sender, EventArgs e) =>
+        SetBannerPositionValue(positionCenterRightRadioButton, BannerPosition.CenterRight);
+
+    private void PositionBottomLeftRadioButton_CheckedChanged(object sender, EventArgs e) =>
+        SetBannerPositionValue(positionBottomLeftRadioButton, BannerPosition.BottomLeft);
+
+    private void PositionBottomCenterRadioButton_CheckedChanged(object sender, EventArgs e) =>
+        SetBannerPositionValue(positionBottomCenterRadioButton, BannerPosition.BottomCenter);
+
+    private void PositionBottomRightRadioButton_CheckedChanged(object sender, EventArgs e) =>
+        SetBannerPositionValue(positionBottomRightRadioButton, BannerPosition.BottomRight);
+
+    private void PositionCustomRadioButton_CheckedChanged(object sender, EventArgs e) =>
+        SetBannerPositionValue(positionCustomRadioButton, BannerPosition.Custom);
+
+    private void SelectCustomPositionButton_Click(object sender, EventArgs e)
+    {
+        positionCustomRadioButton.Checked = true;
+
+        var audioDevice = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eConsole);
+        var bannerData = new BannerData
         {
-            AppModel.Instance.MicrophoneMuteNotification = selectedItem.Enum;
-        });
+            Image = audioDevice.LargeIcon.ToBitmap(),
+            Title = SettingsStrings.customPositionBanner_title,
+            Text = SettingsStrings.customPositionBanner_text,
+            Position = AppModel.Instance.BannerPositionImpl,
+            Ttl = TimeSpan.FromSeconds(6),
+            CustomPositionMode = true
+        };
+
+        _bannerManager.ShowNotification(bannerData);
     }
 
     #endregion
@@ -986,17 +1146,17 @@ public sealed partial class SettingsForm : Form
         Program.RestartApp();
     }
 
-    internal static void GitHubHelpLink(object sender, EventArgs e)
+    public static void GitHubHelpLink_LinkClicked(object sender, EventArgs e)
     {
         BrowserUtil.OpenUrl("https://github.com/Belphemur/SoundSwitch/discussions");
     }
 
-    internal static void DiscordCommunityLink(object sender, EventArgs e)
+    public static void DiscordCommunityLink_LinkClicked(object sender, EventArgs e)
     {
         BrowserUtil.OpenUrl("https://discord.gg/gUCw3Ue");
     }
 
-    internal static void DonateLink(object sender, EventArgs e)
+    public static void DonateLink_LinkClicked(object sender, EventArgs e)
     {
         BrowserUtil.OpenUrl($"https://soundswitch.aaflalo.me/?utm_campaign=application&utm_source={Application.ProductVersion}#donate");
     }

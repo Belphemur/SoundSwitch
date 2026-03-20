@@ -162,9 +162,6 @@
   <data name="audioFiles" xml:space="preserve">
     <value>Hangfájlok</value>
   </data>
-  <data name="selectSoundButton.tooltip" xml:space="preserve">
-    <value>Válassz egy hangfájlt az értesítéshez</value>
-  </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Jelöld be a gyorsgomb engedélyezéséhez.</value>
   </data>
@@ -334,9 +331,6 @@ Mindig: ha bármelyik eszköz megváltozik.</value>
   <data name="profile.error.title" xml:space="preserve">
     <value>Profil hiba</value>
   </data>
-  <data name="buttonDelete" xml:space="preserve">
-    <value>Törlés</value>
-  </data>
   <data name="profile.error.delete" xml:space="preserve">
     <value>Profil nem található.</value>
   </data>
@@ -474,7 +468,7 @@ Előző állapot visszaállításra kerül, ha a program bezáródik.</value>
   <data name="switchDevice" xml:space="preserve">
     <value />
   </data>
-  <data name="notification" xml:space="preserve">
+  <data name="notifications" xml:space="preserve">
     <value>Értesítés</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
@@ -514,6 +508,37 @@ Előző állapot visszaállításra kerül, ha a program bezáródik.</value>
     <value />
   </data>
   <data name="importConfigFile" xml:space="preserve">
+    <value />
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="position.centerLeft" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="position.centerRight" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonSelect" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonCustom" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonDelete" xml:space="preserve">
+    <value>Törlés</value>
+  </data>
+  <data name="customSoundFile" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.tooltip" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeySwitchDevice" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeyToggleMute" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.error" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
 </root>

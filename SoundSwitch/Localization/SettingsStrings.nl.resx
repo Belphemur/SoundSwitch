@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -161,9 +161,6 @@
   </data>
   <data name="audioFiles" xml:space="preserve">
     <value>Geluidsbestanden</value>
-  </data>
-  <data name="selectSoundButton.tooltip" xml:space="preserve">
-    <value>Selecteer het geluidsbestand voor de melding</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Vink aan om sneltoets in te schakelen.</value>
@@ -337,9 +334,6 @@ Beide: wijzigen wanneer een ander apparaat wordt gewisseld.</value>
   <data name="profile.error.title" xml:space="preserve">
     <value>Profielfout</value>
   </data>
-  <data name="buttonDelete" xml:space="preserve">
-    <value>Verwijderen</value>
-  </data>
   <data name="profile.error.delete" xml:space="preserve">
     <value>Het profiel kan niet gevonden worden.</value>
   </data>
@@ -477,22 +471,22 @@ Herstel systeemstatus wanneer de applicatie wordt gesloten.</value>
   <data name="position.tooltip" xml:space="preserve">
     <value>Stel de positie van de bannermelding in.</value>
   </data>
-  <data name="position.option.bottomLeft" xml:space="preserve">
+  <data name="position.bottomLeft" xml:space="preserve">
     <value>Onder Links</value>
   </data>
-  <data name="position.option.bottomRight" xml:space="preserve">
+  <data name="position.bottomRight" xml:space="preserve">
     <value>Onder Rechts</value>
   </data>
-  <data name="position.option.topLeft" xml:space="preserve">
+  <data name="position.topLeft" xml:space="preserve">
     <value>Boven Links</value>
   </data>
-  <data name="position.option.topRight" xml:space="preserve">
+  <data name="position.topRight" xml:space="preserve">
     <value>Boven Rechts</value>
   </data>
-  <data name="position.option.bottomCenter" xml:space="preserve">
+  <data name="position.bottomCenter" xml:space="preserve">
     <value>Onder Midden</value>
   </data>
-  <data name="position.option.topCenter" xml:space="preserve">
+  <data name="position.topCenter" xml:space="preserve">
     <value>Boven Midden</value>
   </data>
   <data name="banner.mute.option.fading" xml:space="preserve">
@@ -504,7 +498,10 @@ Herstel systeemstatus wanneer de applicatie wordt gesloten.</value>
   <data name="switchDevice" xml:space="preserve">
     <value />
   </data>
-  <data name="notification" xml:space="preserve">
+  <data name="switchProfile" xml:space="preserve">
+    <value>Verander profiel</value>
+  </data>
+  <data name="notifications" xml:space="preserve">
     <value>Melding</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
@@ -546,7 +543,35 @@ Herstel systeemstatus wanneer de applicatie wordt gesloten.</value>
   <data name="importConfigFile" xml:space="preserve">
     <value />
   </data>
-  <data name="switchProfile" xml:space="preserve">
-    <value>Verander profiel</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="position.centerLeft" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="position.centerRight" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonSelect" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonCustom" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonDelete" xml:space="preserve">
+    <value>Verwijderen</value>
+  </data>
+  <data name="customSoundFile" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.tooltip" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeySwitchDevice" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeyToggleMute" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.error" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
 </root>

@@ -18,7 +18,7 @@ namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 
 public class TooltipInfoNone : ITooltipInfo
 {
-    public TooltipInfoTypeEnum TypeEnum => TooltipInfoTypeEnum.None;
+    public TooltipInfoType TypeEnum => TooltipInfoType.None;
     public string Label => SettingsStrings.none;
 
     /// <summary>

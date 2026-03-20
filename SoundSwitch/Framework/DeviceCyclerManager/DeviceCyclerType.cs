@@ -12,12 +12,10 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
-namespace SoundSwitch.Framework.TrayIcon.IconChanger;
+namespace SoundSwitch.Framework.DeviceCyclerManager;
 
-public enum IconChangerEnum
+public enum DeviceCyclerType
 {
-    Never = 0,
-    Recording = 1,
-    Playback = 2,
-    Always = 3
+    All = 0,
+    Available = 1
 }

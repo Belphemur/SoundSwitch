@@ -167,9 +167,6 @@
   <data name="audioFiles" xml:space="preserve">
     <value>Audio Files</value>
   </data>
-  <data name="selectSoundButton.tooltip" xml:space="preserve">
-    <value>Select the sound file for the notification</value>
-  </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Check to enable hotkey.</value>
   </data>
@@ -342,9 +339,6 @@ Both: Change when any type of device is switched.</value>
   <data name="profile.error.title" xml:space="preserve">
     <value>Profile Error</value>
   </data>
-  <data name="buttonDelete" xml:space="preserve">
-    <value>Delete</value>
-  </data>
   <data name="profile.error.delete" xml:space="preserve">
     <value>Can't find the profile.</value>
   </data>
@@ -503,22 +497,22 @@ Restore the state of the system when the application is closed.</value>
   <data name="position.tooltip" xml:space="preserve">
     <value>Set the position of the Banner notification.</value>
   </data>
-  <data name="position.option.bottomLeft" xml:space="preserve">
+  <data name="position.bottomLeft" xml:space="preserve">
     <value>Bottom Left</value>
   </data>
-  <data name="position.option.bottomRight" xml:space="preserve">
+  <data name="position.bottomRight" xml:space="preserve">
     <value>Bottom Right</value>
   </data>
-  <data name="position.option.topLeft" xml:space="preserve">
+  <data name="position.topLeft" xml:space="preserve">
     <value>Top Left</value>
   </data>
-  <data name="position.option.topRight" xml:space="preserve">
+  <data name="position.topRight" xml:space="preserve">
     <value>Top Right</value>
   </data>
-  <data name="position.option.bottomCenter" xml:space="preserve">
+  <data name="position.bottomCenter" xml:space="preserve">
     <value>Bottom Center</value>
   </data>
-  <data name="position.option.topCenter" xml:space="preserve">
+  <data name="position.topCenter" xml:space="preserve">
     <value>Top Center</value>
   </data>
   <data name="notification.single" xml:space="preserve">
@@ -560,7 +554,7 @@ Restore the state of the system when the application is closed.</value>
   <data name="troubleshooting.desc" xml:space="preserve">
     <value>If you need any help or further troubleshooting with SoundSwitch, you can visit the Help Discussion or Community Discord link, or help support us by visiting the Donate link below.</value>
   </data>
-  <data name="position.option.center" xml:space="preserve">
+  <data name="position.center" xml:space="preserve">
     <value>Center</value>
   </data>
   <data name="microphone.on" xml:space="preserve">
@@ -569,8 +563,8 @@ Restore the state of the system when the application is closed.</value>
   <data name="microphone.off" xml:space="preserve">
     <value>Microphone Off</value>
   </data>
-  <data name="banner.mute" xml:space="preserve">
-    <value>Microphone Muted</value>
+  <data name="microphoneMuted" xml:space="preserve">
+    <value>Microphone muted</value>
   </data>
   <data name="banner.mute.tooltip" xml:space="preserve">
     <value>Show banner when the microphone is muted or unmuted. Persistent will mean it's always visible on the screen when muted</value>
@@ -587,13 +581,13 @@ Restore the state of the system when the application is closed.</value>
   <data name="switchProfile" xml:space="preserve">
     <value>Switch profile</value>
   </data>
-  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+  <data name="banner.onscreen.time.tooltip" xml:space="preserve">
     <value>How long the banner stays on the screen in seconds.</value>
   </data>
-  <data name="notification.banner.onscreen.time" xml:space="preserve">
+  <data name="banner.onscreen.time" xml:space="preserve">
     <value>On-screen time</value>
   </data>
-  <data name="notification" xml:space="preserve">
+  <data name="notifications" xml:space="preserve">
     <value>Notifications</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
@@ -647,5 +641,69 @@ Do you want to restart now?</value>
   </data>
   <data name="importConfigErrorDeserializationFailed" xml:space="preserve">
     <value>Failed to deserialize the configuration file '{0}'. Error: {1}</value>
+  </data>
+  <data name="position.centerLeft" xml:space="preserve">
+    <value>Center Left</value>
+  </data>
+  <data name="position.centerRight" xml:space="preserve">
+    <value>Center Right</value>
+  </data>
+  <data name="buttonSelect" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="buttonCustom" xml:space="preserve">
+    <value>Custom</value>
+  </data>
+  <data name="buttonDelete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="customSoundFile" xml:space="preserve">
+    <value>Custom Sound File</value>
+  </data>
+  <data name="selectSoundButton.tooltip" xml:space="preserve">
+    <value>Select a sound file for Sound and Banner notifications</value>
+  </data>
+  <data name="hotkeySwitchDevice" xml:space="preserve">
+    <value>Switch device hotkey</value>
+  </data>
+  <data name="hotkeyToggleMute" xml:space="preserve">
+    <value>Toggle mute hotkey</value>
+  </data>
+  <data name="selectSoundButton.error" xml:space="preserve">
+    <value>Error: File not found</value>
+  </data>
+  <data name="customPositionBanner.title" xml:space="preserve">
+    <value>Move to new position</value>
+  </data>
+  <data name="customPositionBanner.text" xml:space="preserve">
+    <value>Press R to reset position.
+Press Esc to close.</value>
+  </data>
+  <data name="banner.opacity" xml:space="preserve">
+    <value>Opacity</value>
+  </data>
+  <data name="banner.opacity.tooltip" xml:space="preserve">
+    <value>Set the opacity of the banner</value>
+  </data>
+  <data name="banner.displayInfo" xml:space="preserve">
+    <value>Display Info</value>
+  </data>
+  <data name="banner.displayInfo.tooltip" xml:space="preserve">
+    <value>How the banner is displayed</value>
+  </data>
+  <data name="banner.display.option.fullDisplay" xml:space="preserve">
+    <value>Full Display</value>
+  </data>
+  <data name="banner.display.option.iconOnly" xml:space="preserve">
+    <value>Icon Only</value>
+  </data>
+  <data name="banner.display.option.descOnly" xml:space="preserve">
+    <value>Description Only</value>
+  </data>
+  <data name="general" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="notification.type" xml:space="preserve">
+    <value>Notification Type</value>
   </data>
 </root>

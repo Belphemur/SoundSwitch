@@ -69,13 +69,23 @@ public class BannerData
     public TimeSpan Ttl { get; internal set; }
 
     /// <summary>
+    /// Opacity of the banner
+    /// </summary>
+    public int Opacity { get; internal set; } = 100;
+
+    /// <summary>
     /// When enabled, displays the banner in compact mode (half the normal size)
     /// </summary>
     public bool CompactMode { get; internal set; }
+
+    /// <summary>
+    /// When enabled. sets the banner in custom position mode
+    /// </summary>
+    public bool CustomPositionMode { get; internal set; }
         
     /// <summary>
     /// Callback that is triggered when the banner is clicked
     /// </summary>
     [AllowNull]
-    public EventHandler? OnClick { get; internal set; }
+    public EventHandler OnClick { get; internal set; }
 }

@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -161,9 +161,6 @@
   </data>
   <data name="audioFiles" xml:space="preserve">
     <value>Arquivos de áudio</value>
-  </data>
-  <data name="selectSoundButton.tooltip" xml:space="preserve">
-    <value>Selecione o arquivo de som para a notificação</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Marque para ativar a tecla de atalho.</value>
@@ -337,9 +334,6 @@ Ambos: Alterar quando qualquer tipo de dispositivo é alterado.</value>
   <data name="profile.error.title" xml:space="preserve">
     <value>Erro de perfil</value>
   </data>
-  <data name="buttonDelete" xml:space="preserve">
-    <value>Excluir</value>
-  </data>
   <data name="profile.error.delete" xml:space="preserve">
     <value>Não foi possível localizar o perfil.</value>
   </data>
@@ -498,22 +492,22 @@ Restaura o estado do sistema quando o aplicativo é fechado.</value>
   <data name="position.tooltip" xml:space="preserve">
     <value>Define a posição do banner de notificação.</value>
   </data>
-  <data name="position.option.bottomLeft" xml:space="preserve">
+  <data name="position.bottomLeft" xml:space="preserve">
     <value>Inferior esquerdo</value>
   </data>
-  <data name="position.option.bottomRight" xml:space="preserve">
+  <data name="position.bottomRight" xml:space="preserve">
     <value>Inferior direito</value>
   </data>
-  <data name="position.option.topLeft" xml:space="preserve">
+  <data name="position.topLeft" xml:space="preserve">
     <value>Superior esquerdo</value>
   </data>
-  <data name="position.option.topRight" xml:space="preserve">
+  <data name="position.topRight" xml:space="preserve">
     <value>Superior direito</value>
   </data>
-  <data name="position.option.bottomCenter" xml:space="preserve">
+  <data name="position.bottomCenter" xml:space="preserve">
     <value>Inferior centralizado</value>
   </data>
-  <data name="position.option.topCenter" xml:space="preserve">
+  <data name="position.topCenter" xml:space="preserve">
     <value>Superior centralizado</value>
   </data>
   <data name="notification.single" xml:space="preserve">
@@ -555,7 +549,7 @@ Restaura o estado do sistema quando o aplicativo é fechado.</value>
   <data name="troubleshooting.desc" xml:space="preserve">
     <value>Se precisar de ajuda ou de mais soluções de problemas com o SoundSwitch, acesse o link Discussão de Ajuda ou Comunidade do Discord, ou nos ajude acessando o link Doar abaixo.</value>
   </data>
-  <data name="position.option.center" xml:space="preserve">
+  <data name="position.center" xml:space="preserve">
     <value>Centro</value>
   </data>
   <data name="microphone.on" xml:space="preserve">
@@ -564,7 +558,7 @@ Restaura o estado do sistema quando o aplicativo é fechado.</value>
   <data name="microphone.off" xml:space="preserve">
     <value>Microfone desligado</value>
   </data>
-  <data name="banner.mute" xml:space="preserve">
+  <data name="microphoneMuted" xml:space="preserve">
     <value>Microfone silenciado</value>
   </data>
   <data name="banner.mute.tooltip" xml:space="preserve">
@@ -579,13 +573,16 @@ Restaura o estado do sistema quando o aplicativo é fechado.</value>
   <data name="switchDevice" xml:space="preserve">
     <value>Alterar dispositivo</value>
   </data>
-  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+  <data name="switchProfile" xml:space="preserve">
+    <value>Alterar perfil</value>
+  </data>
+  <data name="banner.onscreen.time.tooltip" xml:space="preserve">
     <value>Quanto tempo o banner permanece na tela, em segundos.</value>
   </data>
-  <data name="notification.banner.onscreen.time" xml:space="preserve">
+  <data name="banner.onscreen.time" xml:space="preserve">
     <value>Tempo na tela</value>
   </data>
-  <data name="notification" xml:space="preserve">
+  <data name="notifications" xml:space="preserve">
     <value>Notificações</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
@@ -628,9 +625,6 @@ Você deseja reiniciar agora?</value>
   <data name="importConfigFile" xml:space="preserve">
     <value>Importar arquivo de configurações</value>
   </data>
-  <data name="importConfigErrorDeserializationFailed" xml:space="preserve">
-    <value>Falha ao desserializar o arquivo de configuração '{0}'. Erro: {1}</value>
-  </data>
   <data name="importConfigErrorReadingFile" xml:space="preserve">
     <value>Erro ao ler arquivo de configurações '{0}' a partir do arquivo: {1}</value>
   </data>
@@ -640,7 +634,38 @@ Você deseja reiniciar agora?</value>
   <data name="importConfigErrorDeserializationNull" xml:space="preserve">
     <value>O arquivo de configuração '{0}' não pôde ser desserializado corretamente (resultou em nulo). Certifique-se de que seja uma configuração válida do SoundSwitch.</value>
   </data>
-  <data name="switchProfile" xml:space="preserve">
-    <value>Alterar perfil</value>
+  <data name="importConfigErrorDeserializationFailed" xml:space="preserve">
+    <value>Falha ao desserializar o arquivo de configuração '{0}'. Erro: {1}</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="position.centerLeft" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="position.centerRight" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonSelect" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonCustom" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonDelete" xml:space="preserve">
+    <value>Excluir</value>
+  </data>
+  <data name="customSoundFile" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.tooltip" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeySwitchDevice" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeyToggleMute" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.error" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
 </root>

@@ -21,7 +21,7 @@ using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification;
 
-public interface INotification : IEnumImpl<NotificationTypeEnum>
+public interface INotification : IEnumImpl<NotificationType>
 {
     /// <summary>
     /// Configuration of the Notification
@@ -45,7 +45,7 @@ public interface INotification : IEnumImpl<NotificationTypeEnum>
     /// <summary>
     /// Notify about the mute state having changed
     /// </summary>
-    void NotifyMuteChanged(string deviceId, string microphoneName, bool newMuteState);
+    void NotifyMicrophoneMuteChanged(string deviceId, string microphoneName, bool newMuteState);
 
     /// <summary>
     /// Does this notification support showing an icon

@@ -162,9 +162,6 @@
   <data name="audioFiles" xml:space="preserve">
     <value>Zvočne datoteke</value>
   </data>
-  <data name="selectSoundButton.tooltip" xml:space="preserve">
-    <value>Izberite zvočno datoteko za obvestilo</value>
-  </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Označite, da omogočite vročo tipko.</value>
   </data>
@@ -334,9 +331,6 @@ Oboje: Spremeni ob preklopu katere koli vrste naprave.</value>
   <data name="profile.error.title" xml:space="preserve">
     <value>Napaka profila</value>
   </data>
-  <data name="buttonDelete" xml:space="preserve">
-    <value>Izbriši</value>
-  </data>
   <data name="profile.error.delete" xml:space="preserve">
     <value>Profila ni mogoče najti.</value>
   </data>
@@ -501,7 +495,7 @@ Obnovi stanje sistema, ko se program zapre.</value>
   <data name="switchDevice" xml:space="preserve">
     <value />
   </data>
-  <data name="notification" xml:space="preserve">
+  <data name="notifications" xml:space="preserve">
     <value>Obvestilo</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
@@ -541,6 +535,37 @@ Obnovi stanje sistema, ko se program zapre.</value>
     <value />
   </data>
   <data name="importConfigFile" xml:space="preserve">
+    <value />
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="position.centerLeft" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="position.centerRight" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonSelect" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonCustom" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonDelete" xml:space="preserve">
+    <value>Izbriši</value>
+  </data>
+  <data name="customSoundFile" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.tooltip" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeySwitchDevice" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeyToggleMute" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.error" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
 </root>

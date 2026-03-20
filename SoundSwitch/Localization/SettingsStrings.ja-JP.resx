@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -161,9 +161,6 @@
   </data>
   <data name="audioFiles" xml:space="preserve">
     <value>オーディオファイル</value>
-  </data>
-  <data name="selectSoundButton.tooltip" xml:space="preserve">
-    <value>通知音を選択</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>ショートカットを有効にする。</value>
@@ -337,9 +334,6 @@
   <data name="profile.error.title" xml:space="preserve">
     <value>プロファイルエラー</value>
   </data>
-  <data name="buttonDelete" xml:space="preserve">
-    <value>削除</value>
-  </data>
   <data name="profile.error.delete" xml:space="preserve">
     <value>プロファイルが見つかりません。</value>
   </data>
@@ -498,22 +492,22 @@
   <data name="position.tooltip" xml:space="preserve">
     <value>バナー通知の位置を設定します。</value>
   </data>
-  <data name="position.option.bottomLeft" xml:space="preserve">
+  <data name="position.bottomLeft" xml:space="preserve">
     <value>左下</value>
   </data>
-  <data name="position.option.bottomRight" xml:space="preserve">
+  <data name="position.bottomRight" xml:space="preserve">
     <value>右下</value>
   </data>
-  <data name="position.option.topLeft" xml:space="preserve">
+  <data name="position.topLeft" xml:space="preserve">
     <value>左上</value>
   </data>
-  <data name="position.option.topRight" xml:space="preserve">
+  <data name="position.topRight" xml:space="preserve">
     <value>右上</value>
   </data>
-  <data name="position.option.bottomCenter" xml:space="preserve">
+  <data name="position.bottomCenter" xml:space="preserve">
     <value>中央下</value>
   </data>
-  <data name="position.option.topCenter" xml:space="preserve">
+  <data name="position.topCenter" xml:space="preserve">
     <value>中央上</value>
   </data>
   <data name="notification.single" xml:space="preserve">
@@ -555,7 +549,7 @@
   <data name="troubleshooting.desc" xml:space="preserve">
     <value>SoundSwitch のヘルプやトラブルシューティングは、ヘルプディスカッションやDiscord、または寄付リンクをご利用ください。</value>
   </data>
-  <data name="position.option.center" xml:space="preserve">
+  <data name="position.center" xml:space="preserve">
     <value>中央</value>
   </data>
   <data name="microphone.on" xml:space="preserve">
@@ -564,7 +558,7 @@
   <data name="microphone.off" xml:space="preserve">
     <value>マイクオフ</value>
   </data>
-  <data name="banner.mute" xml:space="preserve">
+  <data name="microphoneMuted" xml:space="preserve">
     <value>マイクミュート</value>
   </data>
   <data name="banner.mute.tooltip" xml:space="preserve">
@@ -579,13 +573,16 @@
   <data name="switchDevice" xml:space="preserve">
     <value>デバイス切り替え</value>
   </data>
-  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+  <data name="switchProfile" xml:space="preserve">
+    <value>プロファイル切り替え</value>
+  </data>
+  <data name="banner.onscreen.time.tooltip" xml:space="preserve">
     <value>バナーの表示時間（秒）。</value>
   </data>
-  <data name="notification.banner.onscreen.time" xml:space="preserve">
+  <data name="banner.onscreen.time" xml:space="preserve">
     <value>表示時間</value>
   </data>
-  <data name="notification" xml:space="preserve">
+  <data name="notifications" xml:space="preserve">
     <value>通知</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
@@ -628,19 +625,47 @@
   <data name="importConfigFile" xml:space="preserve">
     <value>構成ファイルのインポート</value>
   </data>
-  <data name="importConfigErrorDeserializationNull" xml:space="preserve">
-    <value>構成ファイル '{0}' は正しく逆シリアル化できませんでした (null)。有効な SoundSwitch 構成であることを確認してください。</value>
-  </data>
-  <data name="importConfigErrorDeserializationFailed" xml:space="preserve">
-    <value>構成ファイル '{0}' の逆シリアル化に失敗しました。エラー: {1}</value>
-  </data>
   <data name="importConfigErrorReadingFile" xml:space="preserve">
     <value>アーカイブから構成ファイル '{0}' の読み取りエラー: {1}</value>
   </data>
   <data name="importConfigErrorInvalidJson" xml:space="preserve">
     <value>構成ファイル '{0}' は有効な JSON ではありません。エラー: {1}</value>
   </data>
-  <data name="switchProfile" xml:space="preserve">
-    <value>プロファイル切り替え</value>
+  <data name="importConfigErrorDeserializationNull" xml:space="preserve">
+    <value>構成ファイル '{0}' は正しく逆シリアル化できませんでした (null)。有効な SoundSwitch 構成であることを確認してください。</value>
+  </data>
+  <data name="importConfigErrorDeserializationFailed" xml:space="preserve">
+    <value>構成ファイル '{0}' の逆シリアル化に失敗しました。エラー: {1}</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="position.centerLeft" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="position.centerRight" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonSelect" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonCustom" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonDelete" xml:space="preserve">
+    <value>削除</value>
+  </data>
+  <data name="customSoundFile" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.tooltip" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeySwitchDevice" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeyToggleMute" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.error" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
 </root>

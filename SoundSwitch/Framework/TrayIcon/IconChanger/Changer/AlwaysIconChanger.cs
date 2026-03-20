@@ -20,7 +20,7 @@ namespace SoundSwitch.Framework.TrayIcon.IconChanger.Changer;
 
 public class AlwaysIconChanger : AbstractIconChanger
 {
-    public override IconChangerEnum TypeEnum => IconChangerEnum.Always;
+    public override IconChanger TypeEnum => IconChanger.Always;
     public override string Label => TrayIconStrings.iconChanger_both;
 
     protected override bool NeedsToChangeIcon(DeviceInfo deviceInfo) => true;

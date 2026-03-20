@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -161,9 +161,6 @@
   </data>
   <data name="audioFiles" xml:space="preserve">
     <value>Lydfiler</value>
-  </data>
-  <data name="selectSoundButton.tooltip" xml:space="preserve">
-    <value>Vælg lydfil til notifikation</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Markér for at aktivere genvej.</value>
@@ -330,9 +327,6 @@ Begge: Når enhver type enhed skiftes.</value>
   <data name="profile.error.title" xml:space="preserve">
     <value>Fejl i profil</value>
   </data>
-  <data name="buttonDelete" xml:space="preserve">
-    <value>Slet</value>
-  </data>
   <data name="profile.error.delete" xml:space="preserve">
     <value>Kan ikke finde profil.</value>
   </data>
@@ -359,6 +353,21 @@ Begge: Når enhver type enhed skiftes.</value>
   </data>
   <data name="profile.trigger.process" xml:space="preserve">
     <value>Programmets sti</value>
+  </data>
+  <data name="profile.desc" xml:space="preserve">
+    <value>Beskrivelse</value>
+  </data>
+  <data name="buttonSave" xml:space="preserve">
+    <value>Gem</value>
+  </data>
+  <data name="buttonEdit" xml:space="preserve">
+    <value>Redigér</value>
+  </data>
+  <data name="usePrimaryScreen" xml:space="preserve">
+    <value>Brug altid primær skærm</value>
+  </data>
+  <data name="profile.trigger.uwp" xml:space="preserve">
+    <value>Microsoft Store-app</value>
   </data>
   <data name="profile.trigger.trayMenu" xml:space="preserve">
     <value>I program-menuen</value>
@@ -396,22 +405,22 @@ Begge: Når enhver type enhed skiftes.</value>
   <data name="position.tooltip" xml:space="preserve">
     <value>Vælg bannerens placering.</value>
   </data>
-  <data name="position.option.bottomLeft" xml:space="preserve">
+  <data name="position.bottomLeft" xml:space="preserve">
     <value>Nederst til venstre</value>
   </data>
-  <data name="position.option.bottomRight" xml:space="preserve">
+  <data name="position.bottomRight" xml:space="preserve">
     <value>Nederst til højre</value>
   </data>
-  <data name="position.option.topLeft" xml:space="preserve">
+  <data name="position.topLeft" xml:space="preserve">
     <value>Øverst til venstre</value>
   </data>
-  <data name="position.option.topRight" xml:space="preserve">
+  <data name="position.topRight" xml:space="preserve">
     <value>Øverst til højre</value>
   </data>
-  <data name="position.option.bottomCenter" xml:space="preserve">
+  <data name="position.bottomCenter" xml:space="preserve">
     <value>Nederst i midten</value>
   </data>
-  <data name="position.option.topCenter" xml:space="preserve">
+  <data name="position.topCenter" xml:space="preserve">
     <value>Øverst i midten</value>
   </data>
   <data name="notification.single" xml:space="preserve">
@@ -453,7 +462,7 @@ Begge: Når enhver type enhed skiftes.</value>
   <data name="troubleshooting.desc" xml:space="preserve">
     <value>Hvis du har brug for hjælp eller yderligere fejlfinding med SoundSwitch, kan du besøge hjælpelinket eller Discord fællesskabet, eller støtte os ved at besøge donationslinket nedenfor.</value>
   </data>
-  <data name="position.option.center" xml:space="preserve">
+  <data name="position.center" xml:space="preserve">
     <value>Midt på</value>
   </data>
   <data name="microphone.on" xml:space="preserve">
@@ -462,7 +471,7 @@ Begge: Når enhver type enhed skiftes.</value>
   <data name="microphone.off" xml:space="preserve">
     <value>Mikrofon slukket</value>
   </data>
-  <data name="banner.mute" xml:space="preserve">
+  <data name="microphoneMuted" xml:space="preserve">
     <value>Permanent lydløs-banner</value>
   </data>
   <data name="banner.mute.tooltip" xml:space="preserve">
@@ -477,13 +486,16 @@ Begge: Når enhver type enhed skiftes.</value>
   <data name="switchDevice" xml:space="preserve">
     <value>Skift enhed</value>
   </data>
-  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+  <data name="switchProfile" xml:space="preserve">
+    <value>Skift profil</value>
+  </data>
+  <data name="banner.onscreen.time.tooltip" xml:space="preserve">
     <value>Hvor længe banneret skal vises på skærmen i sekunder.</value>
   </data>
-  <data name="notification.banner.onscreen.time" xml:space="preserve">
+  <data name="banner.onscreen.time" xml:space="preserve">
     <value>Visningstid</value>
   </data>
-  <data name="notification" xml:space="preserve">
+  <data name="notifications" xml:space="preserve">
     <value>Notifikationer</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
@@ -525,22 +537,35 @@ Begge: Når enhver type enhed skiftes.</value>
   <data name="importConfigFile" xml:space="preserve">
     <value />
   </data>
-  <data name="profile.desc" xml:space="preserve">
-    <value>Beskrivelse</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="position.centerLeft" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
-  <data name="profile.trigger.uwp" xml:space="preserve">
-    <value>Microsoft Store-app</value>
+  <data name="position.centerRight" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
-  <data name="buttonSave" xml:space="preserve">
-    <value>Gem</value>
+  <data name="buttonSelect" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
-  <data name="buttonEdit" xml:space="preserve">
-    <value>Redigér</value>
+  <data name="buttonCustom" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
-  <data name="usePrimaryScreen" xml:space="preserve">
-    <value>Brug altid primær skærm</value>
+  <data name="buttonDelete" xml:space="preserve">
+    <value>Slet</value>
   </data>
-  <data name="switchProfile" xml:space="preserve">
-    <value>Skift profil</value>
+  <data name="customSoundFile" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.tooltip" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeySwitchDevice" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeyToggleMute" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.error" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
 </root>

@@ -17,10 +17,10 @@ using SoundSwitch.Framework.Factory;
 
 namespace SoundSwitch.Framework.Banner.MicrophoneMute;
 
-public class MicrophoneMuteFactory() : AbstractFactory<MicrophoneMuteEnum, IMicrophoneMute>(MicrophoneMute)
+public class MicrophoneMuteFactory() : AbstractFactory<MicrophoneMute, IMicrophoneMute>(MicrophoneMute)
 {
-    private static readonly IEnumImplList<MicrophoneMuteEnum, IMicrophoneMute> MicrophoneMute = new EnumImplList
-        <MicrophoneMuteEnum, IMicrophoneMute>
+    private static readonly IEnumImplList<MicrophoneMute, IMicrophoneMute> MicrophoneMute = new EnumImplList
+        <MicrophoneMute, IMicrophoneMute>
         {
             new MicrophoneMuteNone(),
             new MicrophoneMuteFading(),

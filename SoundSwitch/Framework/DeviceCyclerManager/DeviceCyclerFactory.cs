@@ -17,10 +17,10 @@ using SoundSwitch.Framework.Factory;
 
 namespace SoundSwitch.Framework.DeviceCyclerManager;
 
-public class DeviceCyclerFactory() : AbstractFactory<DeviceCyclerTypeEnum, IDeviceCycler>(AllCycler)
+public class DeviceCyclerFactory() : AbstractFactory<DeviceCyclerType, IDeviceCycler>(AllCycler)
 {
-    private static readonly IEnumImplList<DeviceCyclerTypeEnum, IDeviceCycler> AllCycler = new EnumImplList
-        <DeviceCyclerTypeEnum, IDeviceCycler>
+    private static readonly IEnumImplList<DeviceCyclerType, IDeviceCycler> AllCycler = new EnumImplList
+        <DeviceCyclerType, IDeviceCycler>
         {
             new DeviceCyclerAvailable(),
             new DeviceCyclerAll()

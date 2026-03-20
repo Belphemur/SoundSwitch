@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -161,9 +161,6 @@
   </data>
   <data name="audioFiles" xml:space="preserve">
     <value>Ljudfiler</value>
-  </data>
-  <data name="selectSoundButton.tooltip" xml:space="preserve">
-    <value>Välj ljudfil för meddelande</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Markera för att aktivera snabbtangent.</value>
@@ -337,9 +334,6 @@ Båda: Ändra när någon typ av enhet ändras.</value>
   <data name="profile.error.title" xml:space="preserve">
     <value>Profilfel</value>
   </data>
-  <data name="buttonDelete" xml:space="preserve">
-    <value>Ta bort</value>
-  </data>
   <data name="profile.error.delete" xml:space="preserve">
     <value>Kan inte hitta profilen.</value>
   </data>
@@ -498,22 +492,22 @@ Båda: Ändra när någon typ av enhet ändras.</value>
   <data name="position.tooltip" xml:space="preserve">
     <value>Ange positionen för banner-meddelande.</value>
   </data>
-  <data name="position.option.bottomLeft" xml:space="preserve">
+  <data name="position.bottomLeft" xml:space="preserve">
     <value>Nedre vänster</value>
   </data>
-  <data name="position.option.bottomRight" xml:space="preserve">
+  <data name="position.bottomRight" xml:space="preserve">
     <value>Nedre höger</value>
   </data>
-  <data name="position.option.topLeft" xml:space="preserve">
+  <data name="position.topLeft" xml:space="preserve">
     <value>Övre vänster</value>
   </data>
-  <data name="position.option.topRight" xml:space="preserve">
+  <data name="position.topRight" xml:space="preserve">
     <value>Övre höger</value>
   </data>
-  <data name="position.option.bottomCenter" xml:space="preserve">
+  <data name="position.bottomCenter" xml:space="preserve">
     <value>Nedre mitten</value>
   </data>
-  <data name="position.option.topCenter" xml:space="preserve">
+  <data name="position.topCenter" xml:space="preserve">
     <value>Översta mitten</value>
   </data>
   <data name="notification.single" xml:space="preserve">
@@ -555,7 +549,7 @@ Båda: Ändra när någon typ av enhet ändras.</value>
   <data name="troubleshooting.desc" xml:space="preserve">
     <value>Om du behöver någon hjälp eller ytterligare felsökning med SoundSwitch kan du besöka länken Hjälpdiskussion eller Community Discord eller hjälpa till att stöda oss genom att besöka länken Donera nedan.</value>
   </data>
-  <data name="position.option.center" xml:space="preserve">
+  <data name="position.center" xml:space="preserve">
     <value>Centrerat</value>
   </data>
   <data name="microphone.on" xml:space="preserve">
@@ -564,7 +558,7 @@ Båda: Ändra när någon typ av enhet ändras.</value>
   <data name="microphone.off" xml:space="preserve">
     <value>Mikrofon av</value>
   </data>
-  <data name="banner.mute" xml:space="preserve">
+  <data name="microphoneMuted" xml:space="preserve">
     <value>Permanent tystad-banner</value>
   </data>
   <data name="banner.mute.tooltip" xml:space="preserve">
@@ -579,13 +573,16 @@ Båda: Ändra när någon typ av enhet ändras.</value>
   <data name="switchDevice" xml:space="preserve">
     <value>Byt enhet</value>
   </data>
-  <data name="notification.banner.onscreen.time.tooltip" xml:space="preserve">
+  <data name="switchProfile" xml:space="preserve">
+    <value>Växla profil</value>
+  </data>
+  <data name="banner.onscreen.time.tooltip" xml:space="preserve">
     <value>Hur länge bannern visas på skärmen i sekunder.</value>
   </data>
-  <data name="notification.banner.onscreen.time" xml:space="preserve">
+  <data name="banner.onscreen.time" xml:space="preserve">
     <value>Visningstid</value>
   </data>
-  <data name="notification" xml:space="preserve">
+  <data name="notifications" xml:space="preserve">
     <value>Aviseringar</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
@@ -640,7 +637,35 @@ Vill du starta om nu?</value>
   <data name="importConfigErrorDeserializationFailed" xml:space="preserve">
     <value>Misslyckades med att avserialisering av konfigurationsfilen '{0}'. Fel: {1}</value>
   </data>
-  <data name="switchProfile" xml:space="preserve">
-    <value>Växla profil</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="position.centerLeft" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="position.centerRight" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonSelect" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonCustom" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="buttonDelete" xml:space="preserve">
+    <value>Ta bort</value>
+  </data>
+  <data name="customSoundFile" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.tooltip" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeySwitchDevice" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="hotkeyToggleMute" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.error" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
 </root>

@@ -12,11 +12,17 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
-namespace SoundSwitch.Framework.Banner.MicrophoneMute;
+using System.Drawing;
+using System.Windows.Forms;
+using SoundSwitch.Localization;
 
-public enum MicrophoneMuteEnum
+namespace SoundSwitch.Framework.Banner.BannerPosition.Position;
+
+internal class PositionCenterRight : APosition, IPosition
 {
-    None = 0,
-    Fading = 1,
-    Persistent = 2
+    public BannerPosition TypeEnum => BannerPosition.CenterRight;
+    public string Label => SettingsStrings.position_centerRight;
+
+    public Point GetScreenPosition(Screen screen, int height, int width, int offset) =>
+        new(PositionRight(screen, width), PositionCenterY(screen, height));
 }

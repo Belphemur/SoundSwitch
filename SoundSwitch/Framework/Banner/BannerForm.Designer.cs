@@ -17,10 +17,10 @@
         {
             this.lblTitle          = new System.Windows.Forms.Label();
             this.pbxLogo           = new System.Windows.Forms.PictureBox();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.lblTop            = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize) (this.pbxLogo)).BeginInit();
-            this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblTitle
@@ -45,24 +45,24 @@
             this.pbxLogo.TabIndex = 1;
             this.pbxLogo.TabStop  = false;
             // 
-            // tableLayoutPanel1
+            // tableLayoutPanel
             // 
-            this.tableLayoutPanel1.AutoSize     = true;
-            this.tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanel1.ColumnCount  = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.Controls.Add(this.lblTitle, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.pbxLogo,  0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.lblTop,   1, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(15, 15);
-            this.tableLayoutPanel1.Margin   = new System.Windows.Forms.Padding(5);
-            this.tableLayoutPanel1.Name     = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size     = new System.Drawing.Size(89, 47);
-            this.tableLayoutPanel1.TabIndex = 2;
+            this.tableLayoutPanel.AutoSize     = true;
+            this.tableLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tableLayoutPanel.ColumnCount  = 2;
+            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel.Controls.Add(this.lblTitle, 1, 1);
+            this.tableLayoutPanel.Controls.Add(this.pbxLogo,  0, 0);
+            this.tableLayoutPanel.Controls.Add(this.lblTop,   1, 0);
+            this.tableLayoutPanel.Location = new System.Drawing.Point(15, 15);
+            this.tableLayoutPanel.Margin   = new System.Windows.Forms.Padding(5);
+            this.tableLayoutPanel.Name     = "tableLayoutPanel";
+            this.tableLayoutPanel.RowCount = 2;
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel.Size     = new System.Drawing.Size(89, 47);
+            this.tableLayoutPanel.TabIndex = 2;
             // 
             // lblTop
             // 
@@ -72,7 +72,7 @@
             this.lblTop.Name     = "lblTop";
             this.lblTop.Size     = new System.Drawing.Size(57, 21);
             this.lblTop.TabIndex = 2;
-            this.lblTop.Text     = "label1";
+            this.lblTop.Text     = "switchDeviceNotificationLabel";
             // 
             // BannerForm
             // 
@@ -83,7 +83,7 @@
             this.BackColor           = System.Drawing.Color.Black;
             this.ClientSize          = new System.Drawing.Size(428, 215);
             this.ControlBox          = false;
-            this.Controls.Add(this.tableLayoutPanel1);
+            this.Controls.Add(this.tableLayoutPanel);
             this.Font            = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (0)));
             this.ForeColor       = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -95,8 +95,8 @@
             this.StartPosition   = System.Windows.Forms.FormStartPosition.Manual;
             this.TopMost         = true;
             ((System.ComponentModel.ISupportInitialize) (this.pbxLogo)).EndInit();
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
+            this.tableLayoutPanel.ResumeLayout(false);
+            this.tableLayoutPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
         }
@@ -104,7 +104,7 @@
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Label lblTop;
         private System.Windows.Forms.PictureBox pbxLogo;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel;
 
         #endregion
     }

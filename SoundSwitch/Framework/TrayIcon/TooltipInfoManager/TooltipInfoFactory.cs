@@ -17,10 +17,10 @@ using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 
 namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
 
-public class TooltipInfoFactory() : AbstractFactory<TooltipInfoTypeEnum, ITooltipInfo>(TooltipInfos)
+public class TooltipInfoFactory() : AbstractFactory<TooltipInfoType, ITooltipInfo>(TooltipInfos)
 {
-    private static readonly IEnumImplList<TooltipInfoTypeEnum, ITooltipInfo> TooltipInfos = new EnumImplList
-        <TooltipInfoTypeEnum, ITooltipInfo>
+    private static readonly IEnumImplList<TooltipInfoType, ITooltipInfo> TooltipInfos = new EnumImplList
+        <TooltipInfoType, ITooltipInfo>
         {
             new TooltipInfoNone(),
             new TooltipInfoPlayback(),

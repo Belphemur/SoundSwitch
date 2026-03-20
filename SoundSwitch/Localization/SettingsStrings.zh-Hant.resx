@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -162,9 +162,6 @@
   <data name="audioFiles" xml:space="preserve">
     <value>音訊檔案</value>
   </data>
-  <data name="selectSoundButton.tooltip" xml:space="preserve">
-    <value>選取通知音效檔案</value>
-  </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>勾選以啟用快捷鍵。</value>
   </data>
@@ -215,6 +212,9 @@
   </data>
   <data name="notification.option.sound" xml:space="preserve">
     <value>音效通知</value>
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>無</value>
   </data>
   <data name="notification.option.toast" xml:space="preserve">
     <value>彈出式通知</value>
@@ -333,9 +333,6 @@
   <data name="profile.error.title" xml:space="preserve">
     <value>設定檔錯誤</value>
   </data>
-  <data name="buttonDelete" xml:space="preserve">
-    <value>刪除</value>
-  </data>
   <data name="profile.error.delete" xml:space="preserve">
     <value>無法找到設定檔。</value>
   </data>
@@ -440,6 +437,30 @@
   <data name="profile.trigger.uwp.desc" xml:space="preserve">
     <value>輸入通過 Windows 應用商店安裝的應用程式的名稱， 像是 Netflix，Amazon Prime影片等…</value>
   </data>
+  <data name="notification.microphone.muted" xml:space="preserve">
+    <value>{0}  已靜音。</value>
+  </data>
+  <data name="notification.microphone.unmuted" xml:space="preserve">
+    <value>{0} 已解除靜音。</value>
+  </data>
+  <data name="mute.toggle.label" xml:space="preserve">
+    <value>切換為靜音</value>
+  </data>
+  <data name="profile.trigger.trayMenu" xml:space="preserve">
+    <value>在應用選單內</value>
+  </data>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>此觸發會使設定檔在托盤圖示功能表中顯示。左鍵按一下系統匣圖示，即可看到您的設定檔。</value>
+  </data>
+  <data name="profile.trigger.deviceChanged" xml:space="preserve">
+    <value>強制設定檔</value>
+  </data>
+  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
+    <value>當目前的聲音裝置改變時，設定檔會一起被自動觸發。</value>
+  </data>
+  <data name="profile.error.deviceChanged" xml:space="preserve">
+    <value>您只能有一個強制設定檔。</value>
+  </data>
   <data name="banner.mute.option.fading" xml:space="preserve">
     <value />
   </data>
@@ -449,7 +470,7 @@
   <data name="switchDevice" xml:space="preserve">
     <value />
   </data>
-  <data name="notification" xml:space="preserve">
+  <data name="notifications" xml:space="preserve">
     <value>通知</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
@@ -491,31 +512,35 @@
   <data name="importConfigFile" xml:space="preserve">
     <value />
   </data>
-  <data name="none" xml:space="preserve">
-    <value>無</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="position.centerLeft" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
-  <data name="notification.microphone.muted" xml:space="preserve">
-    <value>{0}  已靜音。</value>
+  <data name="position.centerRight" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
-  <data name="notification.microphone.unmuted" xml:space="preserve">
-    <value>{0} 已解除靜音。</value>
+  <data name="buttonSelect" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
-  <data name="mute.toggle.label" xml:space="preserve">
-    <value>切換為靜音</value>
+  <data name="buttonCustom" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
-  <data name="profile.trigger.trayMenu" xml:space="preserve">
-    <value>在應用選單內</value>
+  <data name="buttonDelete" xml:space="preserve">
+    <value>刪除</value>
   </data>
-  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
-    <value>此觸發會使設定檔在托盤圖示功能表中顯示。左鍵按一下系統匣圖示，即可看到您的設定檔。</value>
+  <data name="customSoundFile" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
-  <data name="profile.trigger.deviceChanged.desc" xml:space="preserve">
-    <value>當目前的聲音裝置改變時，設定檔會一起被自動觸發。</value>
+  <data name="selectSoundButton.tooltip" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
-  <data name="profile.error.deviceChanged" xml:space="preserve">
-    <value>您只能有一個強制設定檔。</value>
+  <data name="hotkeySwitchDevice" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
-  <data name="profile.trigger.deviceChanged" xml:space="preserve">
-    <value>強制設定檔</value>
+  <data name="hotkeyToggleMute" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="selectSoundButton.error" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
 </root>

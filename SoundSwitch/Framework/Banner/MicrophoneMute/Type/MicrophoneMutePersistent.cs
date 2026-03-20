@@ -18,6 +18,6 @@ namespace SoundSwitch.Framework.Banner.MicrophoneMute.Type;
 
 internal class MicrophoneMutePersistent : IMicrophoneMute
 {
-    public MicrophoneMuteEnum TypeEnum => MicrophoneMuteEnum.Persistent;
+    public MicrophoneMute TypeEnum => MicrophoneMute.Persistent;
     public string Label => SettingsStrings.banner_mute_option_persistent;
 }

@@ -16,9 +16,9 @@ using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Factory;
 
-namespace SoundSwitch.Framework.TrayIcon.IconChanger;
+namespace SoundSwitch.Framework.TrayIcon.IconChanger.Changer;
 
-public interface IIconChanger : IEnumImpl<IconChangerEnum>
+public interface IIconChanger : IEnumImpl<IconChanger>
 {
 
     /// <summary>

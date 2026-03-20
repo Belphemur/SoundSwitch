@@ -18,7 +18,7 @@ namespace SoundSwitch.Framework.TrayIcon.IconDoubleClick;
 /// Defines the available actions that can be performed when double-clicking the SoundSwitch system tray icon.
 /// These actions are configurable by the user in the application settings.
 /// </summary>
-public enum IconDoubleClickEnum
+public enum IconDoubleClick
 {
     /// <summary>
     /// Cycles through the configured playback devices.

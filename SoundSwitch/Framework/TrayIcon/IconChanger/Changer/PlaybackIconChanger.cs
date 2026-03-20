@@ -19,7 +19,7 @@ namespace SoundSwitch.Framework.TrayIcon.IconChanger.Changer;
 
 public class PlaybackIconChanger : AbstractIconChanger
 {
-    public override IconChangerEnum TypeEnum => IconChangerEnum.Playback;
+    public override IconChanger TypeEnum => IconChanger.Playback;
     public override string Label => TrayIconStrings.iconChanger_playback;
     protected override DataFlow Flow => DataFlow.Render;
 }

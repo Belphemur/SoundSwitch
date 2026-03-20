@@ -15,10 +15,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Common.Framework.Audio.Collection;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
+using SoundSwitch.Framework.Banner.BannerDisplayInfo;
 using SoundSwitch.Framework.Banner.BannerPosition;
 using SoundSwitch.Framework.Banner.BannerPosition.Position;
 using SoundSwitch.Framework.Banner.MicrophoneMute;
@@ -64,12 +66,17 @@ public interface IAppModel : IDisposable
     /// <summary>
     /// What did the user want as Notification of device changed
     /// </summary>
-    NotificationTypeEnum NotificationSettings { get; set; }
+    NotificationType SwitchDeviceNotification { get; set; }
+    NotificationType SwitchProfileNotification { get; set; }
+    NotificationType MicrophoneMuteNotification { get; set; }
+    bool NotificationAdvancedMode { get; set; }
 
     /// <summary>
     /// What did the user want as Banner Position of device changed
     /// </summary>
-    BannerPositionEnum BannerPosition { get; set; }
+    BannerPosition BannerPosition { get; set; }
+
+    Point CustomBannerPosition { get; set; }
 
     /// <summary>
     /// The tray icon of the application
@@ -133,6 +140,7 @@ public interface IAppModel : IDisposable
 
     TimeSpan BannerOnScreenTime { get; set; }
     int BannerOnScreenTimeSecs { get; set; }
+    int BannerOpacityPercentage { get; set; }
 
     /// <summary>
     /// Current banner position implementation based on the BannerPosition setting
@@ -142,12 +150,18 @@ public interface IAppModel : IDisposable
     /// <summary>
     /// Show a banner when microphone is muted
     /// </summary>
-    MicrophoneMuteEnum MicrophoneMuteNotification { get; set; }
+    MicrophoneMute MicrophoneMuteBanner { get; set; }
+    /// <summary>
+    /// Show a banner when microphone is unmuted
+    /// </summary>
+    MicrophoneMute MicrophoneUnmuteBanner { get; set; }
 
     /// <summary>
     /// Select the action when double-clicking the tray icon
     /// </summary>
-    IconDoubleClickEnum IconDoubleClick { get; set; }
+    IconDoubleClick IconDoubleClick { get; set; }
+
+    BannerDisplayInfo BannerDisplayInfo { get; set; }
 
     #endregion
 

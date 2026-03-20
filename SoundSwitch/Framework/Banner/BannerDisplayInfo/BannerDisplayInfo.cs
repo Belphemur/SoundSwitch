@@ -12,12 +12,11 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
-namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
+namespace SoundSwitch.Framework.Banner.BannerDisplayInfo;
 
-public enum TooltipInfoTypeEnum
+public enum BannerDisplayInfo
 {
-    Recording,
-    Playback,
-    Both,
-    None
+    FullDisplay,
+    IconOnly,
+    DescriptionOnly
 }

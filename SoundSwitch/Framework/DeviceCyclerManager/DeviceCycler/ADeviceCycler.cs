@@ -27,7 +27,7 @@ namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler;
 
 public abstract class ADeviceCycler : IDeviceCycler
 {
-    public abstract DeviceCyclerTypeEnum TypeEnum { get; }
+    public abstract DeviceCyclerType TypeEnum { get; }
     public abstract string Label { get; }
 
     /// <summary>
@@ -80,9 +80,7 @@ public abstract class ADeviceCycler : IDeviceCycler
     public bool SetActiveDevice(DeviceInfo device)
     {
         if (AppModel.Instance.KeepVolumeEnabled)
-        {
             AudioSwitcher.Instance.SetVolumeFromDefaultDevice(device);
-        }
 
         Log.Information("Set Default device: {Device}", device);
         if (!AppModel.Instance.SetCommunications)

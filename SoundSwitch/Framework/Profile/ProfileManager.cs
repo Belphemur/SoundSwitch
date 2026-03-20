@@ -564,6 +564,7 @@ public class ProfileManager
         return Result.Success();
     }
 
+    [Obsolete]
     private Result<string, VoidSuccess> ValidateAddProfile(ProfileSetting profile)
     {
         if (string.IsNullOrEmpty(profile.ProfileName))

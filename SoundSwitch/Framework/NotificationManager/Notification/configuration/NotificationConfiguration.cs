@@ -26,7 +26,9 @@ public class NotificationConfiguration : INotificationConfiguration
     public NotifyIcon Icon { get; set; }
     public Stream DefaultSound { get; set; }
     public CachedSound CustomSound { get; set; }
-    public BannerPositionEnum BannerPosition { get; set; }
+    public BannerPosition BannerPosition { get; set; }
     public TimeSpan Ttl { get; set; }
-    public MicrophoneMuteEnum MicrophoneMuteNotification { get; set; }
+    public int Opacity { get; set; }
+    public MicrophoneMute MicrophoneMuteBanner { get; set; }
+    public MicrophoneMute MicrophoneUnmuteBanner { get; set; }
 }

@@ -161,10 +161,7 @@ namespace SoundSwitch.Common.Framework.Audio.Device
 
         protected virtual void Dispose(bool disposing)
         {
-            if (_disposed)
-            {
-                return;
-            }
+            if (_disposed) return;
 
             try
             {
@@ -178,12 +175,8 @@ namespace SoundSwitch.Common.Framework.Audio.Device
 
                 // Clean up event subscribers to prevent memory leaks
                 if (MuteVolumeChanged != null)
-                {
                     foreach (var subscriber in MuteVolumeChanged.GetInvocationList())
-                    {
                         MuteVolumeChanged -= (EventHandler<VolumeChangedEventArgs>)subscriber;
-                    }
-                }
 
                 _device?.Dispose();
             }

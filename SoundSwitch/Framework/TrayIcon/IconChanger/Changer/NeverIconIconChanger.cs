@@ -21,7 +21,7 @@ namespace SoundSwitch.Framework.TrayIcon.IconChanger.Changer;
 
 public class NeverIconIconChanger : IIconChanger
 {
-    public IconChangerEnum TypeEnum => IconChangerEnum.Never;
+    public IconChanger TypeEnum => IconChanger.Never;
     public string Label => TrayIconStrings.iconChanger_none;
 
     public void ChangeIcon(UI.Component.TrayIcon trayIcon) => trayIcon.ReplaceIcon(Resources.Switch_SoundWave);

@@ -17,17 +17,20 @@ using SoundSwitch.Framework.Factory;
 
 namespace SoundSwitch.Framework.Banner.BannerPosition;
 
-public class BannerPositionFactory() : AbstractFactory<BannerPositionEnum, IPosition>(Positions)
+public class BannerPositionFactory() : AbstractFactory<BannerPosition, IPosition>(Position)
 {
-    private static readonly IEnumImplList<BannerPositionEnum, IPosition> Positions = new EnumImplList
-        <BannerPositionEnum, IPosition>
+    private static readonly IEnumImplList<BannerPosition, IPosition> Position = new EnumImplList
+        <BannerPosition, IPosition>
         {
             new PositionTopLeft(),
             new PositionTopCenter(),
             new PositionTopRight(),
+            new PositionCenterLeft(),
+            new PositionCenter(),
+            new PositionCenterRight(),
             new PositionBottomLeft(),
             new PositionBottomCenter(),
             new PositionBottomRight(),
-            new PositionCenter()
+            new PositionCustom()
         };
 }

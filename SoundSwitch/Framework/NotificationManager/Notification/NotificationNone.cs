@@ -22,7 +22,7 @@ namespace SoundSwitch.Framework.NotificationManager.Notification;
 
 internal class NotificationNone : INotification
 {
-    public NotificationTypeEnum TypeEnum => NotificationTypeEnum.NoNotification;
+    public NotificationType TypeEnum => NotificationType.NoNotification;
     public string Label => SettingsStrings.none;
 
     public INotificationConfiguration Configuration { get; set; }
@@ -31,7 +31,7 @@ internal class NotificationNone : INotification
 
     public void NotifyProfileChanged(Profile.Profile profile, Bitmap icon, uint? processId) { }
 
-    public void NotifyMuteChanged(string deviceId, string microphoneName, bool newMuteState) { }
+    public void NotifyMicrophoneMuteChanged(string deviceId, string microphoneName, bool newMuteState) { }
 
     public void OnSoundChanged(CachedSound newSound) { }
 
