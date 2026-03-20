@@ -29,6 +29,16 @@ This file defines repository-wide guidance for the SoundSwitch workspace. More s
 - Preserve existing public behavior unless the change explicitly intends to alter it.
 - Prefer `NameClean` over raw device names when dealing with displayed audio device names.
 
+## Commits
+
+- Use conventional commits for commit messages.
+- Follow the repository semantic-release config in `package.json` rather than generic conventional-commit defaults.
+- Release-relevant commit types are `feat`, `fix`, `perf`, `lang`, and `boost`.
+- `feat` produces a minor release; `fix`, `perf`, `lang`, `boost`, and `revert` produce a patch release; breaking changes produce a major release.
+- `tests` is recognized in generated release notes, but it does not trigger a release on its own.
+- Scoped or module-style commit messages are encouraged when useful, for example `fix(localization): ...` or `feat(audio-manager): ...`.
+- Keep the subject concise and focused on the user-visible or engineering outcome.
+
 ## Validation
 
 - Default validation: `dotnet build SoundSwitch.sln -c Debug`
