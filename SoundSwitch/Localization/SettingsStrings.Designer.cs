@@ -1602,7 +1602,18 @@ namespace SoundSwitch.Localization {
                 return ResourceManager.GetString("switchDevice", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Switch recording device.
+        /// </summary>
+        internal static string switchRecordingDevice
+        {
+            get
+            {
+                return ResourceManager.GetString("switchRecordingDevice", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Switch profile.
         /// </summary>
