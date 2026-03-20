@@ -168,6 +168,23 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
             SwitchDeviceNotification = NotificationType.SoundNotification;
             migrated = true;
         }
+
+        if (!MigratedFields.Contains("SplitNotificationSettings"))
+        {
+            // Legacy configurations had a single notification type; initialize the split settings from it.
+            var wasLegacySplitSettings = !NotificationAdvancedMode
+                                         && SwitchProfileNotification == NotificationType.NoNotification
+                                         && MicrophoneMuteNotification == NotificationType.NoNotification;
+            if (wasLegacySplitSettings)
+            {
+                SwitchProfileNotification = SwitchDeviceNotification;
+                MicrophoneMuteNotification = SwitchDeviceNotification;
+                migrated = true;
+            }
+
+            MigratedFields.Add("SplitNotificationSettings");
+            migrated = true;
+        }
 #pragma warning disable 612
 #pragma warning disable CS0618 // Type or member is obsolete
         if (!PersistentMuteNotification && !MigratedFields.Contains(nameof(PersistentMuteNotification)))

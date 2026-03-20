@@ -51,7 +51,10 @@ public class NotificationSettingsUpdatedEvent(
     public NotificationType PrevSwitchProfileSettings { get; } = prevSwitchProfileSettings;
     public NotificationType NewSwitchProfileSettings { get; } = newSwitchProfileSettings;
     public NotificationType PrevMicrophoneMuteSettings { get; } = prevMicrophoneMuteSettings;
-    public NotificationType NextMicrophoneMuteSettings { get; } = newMicrophoneMuteSettings;
+    public NotificationType NewMicrophoneMuteSettings { get; } = newMicrophoneMuteSettings;
+
+    [Obsolete("Use " + nameof(NewMicrophoneMuteSettings))]
+    public NotificationType NextMicrophoneMuteSettings => NewMicrophoneMuteSettings;
 }
 
 public class BannerDataChangedEvent(

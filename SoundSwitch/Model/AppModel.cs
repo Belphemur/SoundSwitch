@@ -176,13 +176,29 @@ public class AppModel : IAppModel
         }
     }
 
-    public bool NotificationAdvancedMode 
+    public bool NotificationAdvancedMode
     {
         get => AppConfigs.Configuration.NotificationAdvancedMode;
         set
         {
+            var previousSwitchDeviceNotification = AppConfigs.Configuration.SwitchDeviceNotification;
+            var previousSwitchProfileNotification = AppConfigs.Configuration.SwitchProfileNotification;
+            var previousMicrophoneMuteNotification = AppConfigs.Configuration.MicrophoneMuteNotification;
+
             AppConfigs.Configuration.NotificationAdvancedMode = value;
+
+            if (!value)
+            {
+                AppConfigs.Configuration.SwitchProfileNotification = AppConfigs.Configuration.SwitchDeviceNotification;
+                AppConfigs.Configuration.MicrophoneMuteNotification = AppConfigs.Configuration.SwitchDeviceNotification;
+            }
+
             AppConfigs.Configuration.Save();
+
+            NotificationSettingsChanged?.Invoke(this,
+                new NotificationSettingsUpdatedEvent(previousSwitchDeviceNotification, AppConfigs.Configuration.SwitchDeviceNotification,
+                    previousSwitchProfileNotification, AppConfigs.Configuration.SwitchProfileNotification,
+                    previousMicrophoneMuteNotification, AppConfigs.Configuration.MicrophoneMuteNotification));
         }
     }
 
@@ -191,12 +207,24 @@ public class AppModel : IAppModel
         get => AppConfigs.Configuration.SwitchDeviceNotification;
         set
         {
-            var preValue = AppConfigs.Configuration.SwitchDeviceNotification;
+            var previousSwitchDeviceNotification = AppConfigs.Configuration.SwitchDeviceNotification;
+            var previousSwitchProfileNotification = AppConfigs.Configuration.SwitchProfileNotification;
+            var previousMicrophoneMuteNotification = AppConfigs.Configuration.MicrophoneMuteNotification;
+
             AppConfigs.Configuration.SwitchDeviceNotification = value;
+
+            if (!AppConfigs.Configuration.NotificationAdvancedMode)
+            {
+                AppConfigs.Configuration.SwitchProfileNotification = value;
+                AppConfigs.Configuration.MicrophoneMuteNotification = value;
+            }
+
             AppConfigs.Configuration.Save();
+
             NotificationSettingsChanged?.Invoke(this,
-                new NotificationSettingsUpdatedEvent(preValue, value, SwitchProfileNotification, SwitchProfileNotification,
-                    MicrophoneMuteNotification, MicrophoneMuteNotification));
+                new NotificationSettingsUpdatedEvent(previousSwitchDeviceNotification, AppConfigs.Configuration.SwitchDeviceNotification,
+                    previousSwitchProfileNotification, AppConfigs.Configuration.SwitchProfileNotification,
+                    previousMicrophoneMuteNotification, AppConfigs.Configuration.MicrophoneMuteNotification));
         }
     }
 
@@ -205,6 +233,12 @@ public class AppModel : IAppModel
         get => AppConfigs.Configuration.SwitchProfileNotification;
         set
         {
+            if (!AppConfigs.Configuration.NotificationAdvancedMode)
+            {
+                SwitchDeviceNotification = value;
+                return;
+            }
+
             var preValue = AppConfigs.Configuration.SwitchProfileNotification;
             AppConfigs.Configuration.SwitchProfileNotification = value;
             AppConfigs.Configuration.Save();
@@ -218,6 +252,12 @@ public class AppModel : IAppModel
         get => AppConfigs.Configuration.MicrophoneMuteNotification;
         set
         {
+            if (!AppConfigs.Configuration.NotificationAdvancedMode)
+            {
+                SwitchDeviceNotification = value;
+                return;
+            }
+
             var preValue = AppConfigs.Configuration.MicrophoneMuteNotification;
             AppConfigs.Configuration.MicrophoneMuteNotification = value;
             AppConfigs.Configuration.Save();
@@ -268,7 +308,7 @@ public class AppModel : IAppModel
             AppConfigs.Configuration.Save();
             BannerSettingsChanged?.Invoke(this,
                 new BannerDataChangedEvent(BannerPosition, BannerPosition, BannerOnScreenTime, BannerOnScreenTime,
-                    BannerOpacityPercentage, BannerOpacityPercentage, BannerDisplayInfo, BannerDisplayInfo, 
+                    BannerOpacityPercentage, BannerOpacityPercentage, BannerDisplayInfo, BannerDisplayInfo,
                     prevValue, value, MicrophoneUnmuteBanner, MicrophoneUnmuteBanner));
         }
     }
@@ -283,7 +323,7 @@ public class AppModel : IAppModel
             AppConfigs.Configuration.Save();
             BannerSettingsChanged?.Invoke(this,
                 new BannerDataChangedEvent(BannerPosition, BannerPosition, BannerOnScreenTime, BannerOnScreenTime,
-                    BannerOpacityPercentage, BannerOpacityPercentage, BannerDisplayInfo, BannerDisplayInfo, 
+                    BannerOpacityPercentage, BannerOpacityPercentage, BannerDisplayInfo, BannerDisplayInfo,
                     MicrophoneMuteBanner, MicrophoneMuteBanner, prevValue, value));
         }
     }
