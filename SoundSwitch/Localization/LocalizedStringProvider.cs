@@ -25,6 +25,8 @@ namespace SoundSwitch.Localization;
 internal sealed class LocalizedStringProvider(string baseName, Assembly assembly) : ResourceManager(baseName, assembly)
 {
     private static readonly CultureInfo EnglishCulture = CultureInfo.GetCultureInfo("en");
+    private const char LeftToRightEmbedding = '\u202A';
+    private const char PopDirectionalFormatting = '\u202C';
 
     /// <inheritdoc />
     public override string GetString(string name)
@@ -36,7 +38,7 @@ internal sealed class LocalizedStringProvider(string baseName, Assembly assembly
     public override string GetString(string name, CultureInfo culture)
     {
         var value = base.GetString(name, culture);
-        if (value is not null)
+        if (!string.IsNullOrWhiteSpace(value))
         {
             return value;
         }
@@ -44,9 +46,15 @@ internal sealed class LocalizedStringProvider(string baseName, Assembly assembly
         var effectiveCulture = culture ?? CultureInfo.CurrentUICulture;
         if (effectiveCulture.TwoLetterISOLanguageName.Equals(EnglishCulture.TwoLetterISOLanguageName, System.StringComparison.OrdinalIgnoreCase))
         {
-            return null;
+            return value;
         }
 
-        return base.GetString(name, EnglishCulture);
+        var fallbackValue = base.GetString(name, EnglishCulture);
+        if (fallbackValue is null || !effectiveCulture.TextInfo.IsRightToLeft)
+        {
+            return fallbackValue;
+        }
+
+        return $"{LeftToRightEmbedding}{fallbackValue}{PopDirectionalFormatting}";
     }
 }

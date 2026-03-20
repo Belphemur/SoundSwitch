@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -57,6 +58,7 @@ public abstract class AbstractFactory<TEnum, TImplementation>(IEnumImplList<TEnu
     /// <param name="list"></param>
     public void ConfigureListControl(ListControl list)
     {
+        list.RightToLeft = CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
         list.DataSource =
             DataSource().Values.Select(
                     implementation => new DisplayEnumObject<TEnum>(implementation))
