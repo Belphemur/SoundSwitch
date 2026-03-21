@@ -184,6 +184,7 @@ def send_discord_notification(
     commit_count: int,
     timestamp: str,
 ) -> None:
+    webhook_url = webhook_url.strip()
     if not webhook_url:
         print("DISCORD_WEBHOOK is not configured, skipping notification.")
         return
@@ -211,18 +212,28 @@ def send_discord_notification(
     http_request = request.Request(
         webhook_url,
         data=payload_bytes,
-        headers={"Content-Type": "application/json"},
+        headers={
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "User-Agent": "SoundSwitch-Nightly/1.0 (+https://github.com/Belphemur/SoundSwitch)",
+        },
         method="POST",
     )
-    with request.urlopen(http_request) as response:
-        if response.status >= 400:
-            raise error.HTTPError(
-                webhook_url,
-                response.status,
-                "Discord webhook failed",
-                response.headers,
-                None,
-            )
+
+    try:
+        with request.urlopen(http_request) as response:
+            if response.status >= 400:
+                raise RuntimeError(
+                    f"Discord webhook failed with status {response.status}."
+                )
+    except error.HTTPError as http_error:
+        response_body = http_error.fp.read().decode("utf-8", errors="replace").strip()
+
+        message = f"Discord webhook failed with status {http_error.code}."
+        if response_body:
+            message = f"{message} Response: {response_body}"
+
+        raise RuntimeError(message) from http_error
 
 
 def main() -> None:
