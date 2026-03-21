@@ -7,10 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SoundSwitch.Localization {
+namespace SoundSwitch.Localization
+{
     using System;
-    
-    
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -21,558 +22,680 @@ namespace SoundSwitch.Localization {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class SettingsStrings {
-        
+    internal class SettingsStrings
+    {
+
         private static global::System.Resources.ResourceManager resourceMan;
-        
+
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
+
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal SettingsStrings() {
+        internal SettingsStrings()
+        {
         }
-        
+
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
-            get {
-                if (object.ReferenceEquals(resourceMan, null)) {
+        internal static global::System.Resources.ResourceManager ResourceManager
+        {
+            get
+            {
+                if (object.ReferenceEquals(resourceMan, null))
+                {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SoundSwitch.Localization.SettingsStrings", typeof(SettingsStrings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
-            get {
+        internal static global::System.Globalization.CultureInfo Culture
+        {
+            get
+            {
                 return resourceCulture;
             }
-            set {
+            set
+            {
                 resourceCulture = value;
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Play: {0}.
         /// </summary>
-        internal static string activePlayback {
-            get {
+        internal static string activePlayback
+        {
+            get
+            {
                 return ResourceManager.GetString("activePlayback", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Rec: {0}.
         /// </summary>
-        internal static string activeRecording {
-            get {
+        internal static string activeRecording
+        {
+            get
+            {
                 return ResourceManager.GetString("activeRecording", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The audio file you selected to be used as notification can&apos;t be found. SoundSwitch switched the notification setting back to {0}..
         /// </summary>
-        internal static string audioFileNotFound {
-            get {
+        internal static string audioFileNotFound
+        {
+            get
+            {
                 return ResourceManager.GetString("audioFileNotFound", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Audio file not found.
         /// </summary>
-        internal static string audioFileNotFound_caption {
-            get {
+        internal static string audioFileNotFound_caption
+        {
+            get
+            {
                 return ResourceManager.GetString("audioFileNotFound.caption", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Audio Files.
         /// </summary>
-        internal static string audioFiles {
-            get {
+        internal static string audioFiles
+        {
+            get
+            {
                 return ResourceManager.GetString("audioFiles", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Audio Settings.
         /// </summary>
-        internal static string audioSettings {
-            get {
+        internal static string audioSettings
+        {
+            get
+            {
                 return ResourceManager.GetString("audioSettings", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Description Only.
         /// </summary>
-        internal static string banner_display_option_descOnly {
-            get {
+        internal static string banner_display_option_descOnly
+        {
+            get
+            {
                 return ResourceManager.GetString("banner.display.option.descOnly", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Full Display.
         /// </summary>
-        internal static string banner_display_option_fullDisplay {
-            get {
+        internal static string banner_display_option_fullDisplay
+        {
+            get
+            {
                 return ResourceManager.GetString("banner.display.option.fullDisplay", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Icon Only.
         /// </summary>
-        internal static string banner_display_option_iconOnly {
-            get {
+        internal static string banner_display_option_iconOnly
+        {
+            get
+            {
                 return ResourceManager.GetString("banner.display.option.iconOnly", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Display Info.
         /// </summary>
-        internal static string banner_displayInfo {
-            get {
+        internal static string banner_displayInfo
+        {
+            get
+            {
                 return ResourceManager.GetString("banner.displayInfo", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to How the banner is displayed.
         /// </summary>
-        internal static string banner_displayInfo_tooltip {
-            get {
+        internal static string banner_displayInfo_tooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("banner.displayInfo.tooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Fading.
         /// </summary>
-        internal static string banner_mute_option_fading {
-            get {
+        internal static string banner_mute_option_fading
+        {
+            get
+            {
                 return ResourceManager.GetString("banner.mute.option.fading", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Persistent.
         /// </summary>
-        internal static string banner_mute_option_persistent {
-            get {
+        internal static string banner_mute_option_persistent
+        {
+            get
+            {
                 return ResourceManager.GetString("banner.mute.option.persistent", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Show banner when the microphone is muted or unmuted. Persistent will mean it&apos;s always visible on the screen when muted.
         /// </summary>
-        internal static string banner_mute_tooltip {
-            get {
+        internal static string banner_mute_tooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("banner.mute.tooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to On-screen time.
         /// </summary>
-        internal static string banner_onscreen_time {
-            get {
+        internal static string banner_onscreen_time
+        {
+            get
+            {
                 return ResourceManager.GetString("banner.onscreen.time", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to How long the banner stays on the screen in seconds..
         /// </summary>
-        internal static string banner_onscreen_time_tooltip {
-            get {
+        internal static string banner_onscreen_time_tooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("banner.onscreen.time.tooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Opacity.
         /// </summary>
-        internal static string banner_opacity {
-            get {
+        internal static string banner_opacity
+        {
+            get
+            {
                 return ResourceManager.GetString("banner.opacity", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Set the opacity of the banner.
         /// </summary>
-        internal static string banner_opacity_tooltip {
-            get {
+        internal static string banner_opacity_tooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("banner.opacity.tooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Basic Settings.
         /// </summary>
-        internal static string basicSettings {
-            get {
+        internal static string basicSettings
+        {
+            get
+            {
                 return ResourceManager.GetString("basicSettings", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Add.
         /// </summary>
-        internal static string buttonAdd {
-            get {
+        internal static string buttonAdd
+        {
+            get
+            {
                 return ResourceManager.GetString("buttonAdd", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Close.
         /// </summary>
-        internal static string buttonClose {
-            get {
+        internal static string buttonClose
+        {
+            get
+            {
                 return ResourceManager.GetString("buttonClose", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Changes are automatically saved.
         /// </summary>
-        internal static string buttonClose_tooltip {
-            get {
+        internal static string buttonClose_tooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("buttonClose.tooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Custom.
         /// </summary>
-        internal static string buttonCustom {
-            get {
+        internal static string buttonCustom
+        {
+            get
+            {
                 return ResourceManager.GetString("buttonCustom", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
-        internal static string buttonDelete {
-            get {
+        internal static string buttonDelete
+        {
+            get
+            {
                 return ResourceManager.GetString("buttonDelete", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
-        internal static string buttonEdit {
-            get {
+        internal static string buttonEdit
+        {
+            get
+            {
                 return ResourceManager.GetString("buttonEdit", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Export.
         /// </summary>
-        internal static string buttonExport {
-            get {
+        internal static string buttonExport
+        {
+            get
+            {
                 return ResourceManager.GetString("buttonExport", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Import.
         /// </summary>
-        internal static string buttonImport {
-            get {
+        internal static string buttonImport
+        {
+            get
+            {
                 return ResourceManager.GetString("buttonImport", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Reset.
         /// </summary>
-        internal static string buttonReset {
-            get {
+        internal static string buttonReset
+        {
+            get
+            {
                 return ResourceManager.GetString("buttonReset", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
-        internal static string buttonSave {
-            get {
+        internal static string buttonSave
+        {
+            get
+            {
                 return ResourceManager.GetString("buttonSave", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Select.
         /// </summary>
-        internal static string buttonSelect {
-            get {
+        internal static string buttonSelect
+        {
+            get
+            {
                 return ResourceManager.GetString("buttonSelect", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Default Communication Device.
         /// </summary>
-        internal static string communication {
-            get {
+        internal static string communication
+        {
+            get
+            {
                 return ResourceManager.GetString("communication", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Switch Default Communication Device.
         /// </summary>
-        internal static string communicationsDevice {
-            get {
+        internal static string communicationsDevice
+        {
+            get
+            {
                 return ResourceManager.GetString("communicationsDevice", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to When checked, the &apos;Default Communication Device&apos; and &apos;Default Playback Device&apos; are switched together (useful for Skype, TeamSpeak, e.g.)..
         /// </summary>
-        internal static string communicationsDevice_tooltip {
-            get {
+        internal static string communicationsDevice_tooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("communicationsDevice.tooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Connected.
         /// </summary>
-        internal static string connected {
-            get {
+        internal static string connected
+        {
+            get
+            {
                 return ResourceManager.GetString("connected", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Press R to reset position.
         ///Press Esc to close..
         /// </summary>
-        internal static string customPositionBanner_text {
-            get {
+        internal static string customPositionBanner_text
+        {
+            get
+            {
                 return ResourceManager.GetString("customPositionBanner.text", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Move to new position.
         /// </summary>
-        internal static string customPositionBanner_title {
-            get {
+        internal static string customPositionBanner_title
+        {
+            get
+            {
                 return ResourceManager.GetString("customPositionBanner.title", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Custom Sound File.
         /// </summary>
-        internal static string customSoundFile {
-            get {
+        internal static string customSoundFile
+        {
+            get
+            {
                 return ResourceManager.GetString("customSoundFile", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Cycle through.
         /// </summary>
-        internal static string cycleThrough {
-            get {
+        internal static string cycleThrough
+        {
+            get
+            {
                 return ResourceManager.GetString("cycleThrough", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to All audio devices.
         /// </summary>
-        internal static string cycleThrough_option_allAudioDevices {
-            get {
+        internal static string cycleThrough_option_allAudioDevices
+        {
+            get
+            {
                 return ResourceManager.GetString("cycleThrough.option.allAudioDevices", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Only selected audio devices.
         /// </summary>
-        internal static string cycleThrough_option_onlySelectedAudioDevices {
-            get {
+        internal static string cycleThrough_option_onlySelectedAudioDevices
+        {
+            get
+            {
                 return ResourceManager.GetString("cycleThrough.option.onlySelectedAudioDevices", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Choose between which devices to switch. Either only between the selected or between all..
         /// </summary>
-        internal static string cycleThrough_tooltip {
-            get {
+        internal static string cycleThrough_tooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("cycleThrough.tooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Auto select new devices.
         /// </summary>
-        internal static string devices_autoAddNewDevice {
-            get {
+        internal static string devices_autoAddNewDevice
+        {
+            get
+            {
                 return ResourceManager.GetString("devices.autoAddNewDevice", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Auto add new device to the selected list when they are connected to the computer.
         /// </summary>
-        internal static string devices_autoAddNewDevice_tooltip {
-            get {
+        internal static string devices_autoAddNewDevice_tooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("devices.autoAddNewDevice.tooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Disable the set Custom Sound..
         /// </summary>
-        internal static string disableCustomSound_tooltip {
-            get {
+        internal static string disableCustomSound_tooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("disableCustomSound.tooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Disconnected.
         /// </summary>
-        internal static string disconnected {
-            get {
+        internal static string disconnected
+        {
+            get
+            {
                 return ResourceManager.GetString("disconnected", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Export Configuration File.
         /// </summary>
-        internal static string exportConfigFile {
-            get {
+        internal static string exportConfigFile
+        {
+            get
+            {
                 return ResourceManager.GetString("exportConfigFile", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Export Log Files.
         /// </summary>
-        internal static string exportLogFiles {
-            get {
+        internal static string exportLogFiles
+        {
+            get
+            {
                 return ResourceManager.GetString("exportLogFiles", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Export all log files into a zip archive for further troubleshooting in either the Help Discussions or Community Discord..
         /// </summary>
-        internal static string exportLogFiles_desc {
-            get {
+        internal static string exportLogFiles_desc
+        {
+            get
+            {
                 return ResourceManager.GetString("exportLogFiles.desc", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Also switch the foreground program.
         /// </summary>
-        internal static string foregroundApp {
-            get {
+        internal static string foregroundApp
+        {
+            get
+            {
                 return ResourceManager.GetString("foregroundApp", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Switch also the sound of the currently in use application. Useful with video games..
         /// </summary>
-        internal static string foregroundApp_tooltip {
-            get {
+        internal static string foregroundApp_tooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("foregroundApp.tooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to General.
         /// </summary>
-        internal static string general {
-            get {
+        internal static string general
+        {
+            get
+            {
                 return ResourceManager.GetString("general", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Hotkey.
         /// </summary>
-        internal static string hotkey {
-            get {
+        internal static string hotkey
+        {
+            get
+            {
                 return ResourceManager.GetString("hotkey", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Check to enable hotkey..
         /// </summary>
-        internal static string hotkey_tooltip {
-            get {
+        internal static string hotkey_tooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("hotkey.tooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Hotkey enabled.
         /// </summary>
-        internal static string hotkeyEnabled {
-            get {
+        internal static string hotkeyEnabled
+        {
+            get
+            {
                 return ResourceManager.GetString("hotkeyEnabled", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Switch device hotkey.
         /// </summary>
-        internal static string hotkeySwitchDevice {
-            get {
+        internal static string hotkeySwitchDevice
+        {
+            get
+            {
                 return ResourceManager.GetString("hotkeySwitchDevice", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Toggle mute hotkey.
         /// </summary>
-        internal static string hotkeyToggleMute {
-            get {
+        internal static string hotkeyToggleMute
+        {
+            get
+            {
                 return ResourceManager.GetString("hotkeyToggleMute", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Systray Icon.
         /// </summary>
-        internal static string iconChange {
-            get {
+        internal static string iconChange
+        {
+            get
+            {
                 return ResourceManager.GetString("iconChange", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Choose when to change the systray Icon of SoundSwitch.
         ///
@@ -581,338 +704,412 @@ namespace SoundSwitch.Localization {
         ///Recording: When a recording device is switched.
         ///Both: Change when any type of device is switched..
         /// </summary>
-        internal static string iconChange_tooltip {
-            get {
+        internal static string iconChange_tooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("iconChange.tooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Double-click action.
         /// </summary>
-        internal static string iconDoubleClick {
-            get {
+        internal static string iconDoubleClick
+        {
+            get
+            {
                 return ResourceManager.GetString("iconDoubleClick", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Select the action when double-clicking on the tray icon..
         /// </summary>
-        internal static string iconDoubleClick_tooltip {
-            get {
+        internal static string iconDoubleClick_tooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("iconDoubleClick.tooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Failed to deserialize the configuration file &apos;{0}&apos;. Error: {1}.
         /// </summary>
-        internal static string importConfigErrorDeserializationFailed {
-            get {
+        internal static string importConfigErrorDeserializationFailed
+        {
+            get
+            {
                 return ResourceManager.GetString("importConfigErrorDeserializationFailed", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The configuration file &apos;{0}&apos; could not be deserialized correctly (resulted in null). Please ensure it&apos;s a valid SoundSwitch configuration..
         /// </summary>
-        internal static string importConfigErrorDeserializationNull {
-            get {
+        internal static string importConfigErrorDeserializationNull
+        {
+            get
+            {
                 return ResourceManager.GetString("importConfigErrorDeserializationNull", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The configuration file &apos;{0}&apos; is not valid JSON. Error: {1}.
         /// </summary>
-        internal static string importConfigErrorInvalidJson {
-            get {
+        internal static string importConfigErrorInvalidJson
+        {
+            get
+            {
                 return ResourceManager.GetString("importConfigErrorInvalidJson", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The zip archive must contain the SoundSwitch configuration file..
         /// </summary>
-        internal static string importConfigErrorMessage {
-            get {
+        internal static string importConfigErrorMessage
+        {
+            get
+            {
                 return ResourceManager.GetString("importConfigErrorMessage", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Invalid archive.
         /// </summary>
-        internal static string importConfigErrorMessage_caption {
-            get {
+        internal static string importConfigErrorMessage_caption
+        {
+            get
+            {
                 return ResourceManager.GetString("importConfigErrorMessage.caption", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Error reading configuration file &apos;{0}&apos; from archive: {1}.
         /// </summary>
-        internal static string importConfigErrorReadingFile {
-            get {
+        internal static string importConfigErrorReadingFile
+        {
+            get
+            {
                 return ResourceManager.GetString("importConfigErrorReadingFile", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Import Configuration File.
         /// </summary>
-        internal static string importConfigFile {
-            get {
+        internal static string importConfigFile
+        {
+            get
+            {
                 return ResourceManager.GetString("importConfigFile", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to SoundSwitch will restart when the main configuration file has been imported.
         ///Do you want to restart now?.
         /// </summary>
-        internal static string importConfigRestartRequired {
-            get {
+        internal static string importConfigRestartRequired
+        {
+            get
+            {
                 return ResourceManager.GetString("importConfigRestartRequired", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Import / Export Configuration File.
         /// </summary>
-        internal static string importExportConfigFile {
-            get {
+        internal static string importExportConfigFile
+        {
+            get
+            {
                 return ResourceManager.GetString("importExportConfigFile", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Import or export the SoundSwitch configuration file into a zip archive..
         /// </summary>
-        internal static string importExportConfigFile_desc {
-            get {
+        internal static string importExportConfigFile_desc
+        {
+            get
+            {
                 return ResourceManager.GetString("importExportConfigFile.desc", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Keep SoundSwitch&apos;s System Tray Icon.
         /// </summary>
-        internal static string keepSystemTrayIcon {
-            get {
+        internal static string keepSystemTrayIcon
+        {
+            get
+            {
                 return ResourceManager.GetString("keepSystemTrayIcon", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to When checked, the System Tray Icon won&apos;t change when the &apos;Default Playback Device&apos; changes..
         /// </summary>
-        internal static string keepSystemTrayIcon_tooltip {
-            get {
+        internal static string keepSystemTrayIcon_tooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("keepSystemTrayIcon.tooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Keep volume level across devices.
         /// </summary>
-        internal static string keepVolume {
-            get {
+        internal static string keepVolume
+        {
+            get
+            {
                 return ResourceManager.GetString("keepVolume", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Keep the same volume level when switching devices.
         /// </summary>
-        internal static string keepVolume_tooltip {
-            get {
+        internal static string keepVolume_tooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("keepVolume.tooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
-        internal static string language {
-            get {
+        internal static string language
+        {
+            get
+            {
                 return ResourceManager.GetString("language", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The language will change after restarting SoundSwitch.
         ///Do you want to restart now?.
         /// </summary>
-        internal static string languageRestartRequired {
-            get {
+        internal static string languageRestartRequired
+        {
+            get
+            {
                 return ResourceManager.GetString("languageRestartRequired", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Community Discord.
         /// </summary>
-        internal static string link_community {
-            get {
+        internal static string link_community
+        {
+            get
+            {
                 return ResourceManager.GetString("link.community", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Donate.
         /// </summary>
-        internal static string link_donate {
-            get {
+        internal static string link_donate
+        {
+            get
+            {
                 return ResourceManager.GetString("link.donate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Help Discussion.
         /// </summary>
-        internal static string link_help {
-            get {
+        internal static string link_help
+        {
+            get
+            {
                 return ResourceManager.GetString("link.help", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Microphone Off.
         /// </summary>
-        internal static string microphone_off {
-            get {
+        internal static string microphone_off
+        {
+            get
+            {
                 return ResourceManager.GetString("microphone.off", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Microphone On.
         /// </summary>
-        internal static string microphone_on {
-            get {
+        internal static string microphone_on
+        {
+            get
+            {
                 return ResourceManager.GetString("microphone.on", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Microphone muted.
         /// </summary>
-        internal static string microphoneMuted {
-            get {
+        internal static string microphoneMuted
+        {
+            get
+            {
                 return ResourceManager.GetString("microphoneMuted", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Toggle mute.
         /// </summary>
-        internal static string mute_toggle_label {
-            get {
+        internal static string mute_toggle_label
+        {
+            get
+            {
                 return ResourceManager.GetString("mute.toggle.label", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to None.
         /// </summary>
-        internal static string none {
-            get {
+        internal static string none
+        {
+            get
+            {
                 return ResourceManager.GetString("none", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Banner Options.
         /// </summary>
-        internal static string notification_bannerOptions {
-            get {
+        internal static string notification_bannerOptions
+        {
+            get
+            {
                 return ResourceManager.GetString("notification.bannerOptions", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0} is now muted..
         /// </summary>
-        internal static string notification_microphone_muted {
-            get {
+        internal static string notification_microphone_muted
+        {
+            get
+            {
                 return ResourceManager.GetString("notification.microphone.muted", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0} is now unmuted..
         /// </summary>
-        internal static string notification_microphone_unmuted {
-            get {
+        internal static string notification_microphone_unmuted
+        {
+            get
+            {
                 return ResourceManager.GetString("notification.microphone.unmuted", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Banner Notification.
         /// </summary>
-        internal static string notification_option_banner {
-            get {
+        internal static string notification_option_banner
+        {
+            get
+            {
                 return ResourceManager.GetString("notification.option.banner", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Customized Sound Notification.
         /// </summary>
-        internal static string notification_option_customized {
-            get {
+        internal static string notification_option_customized
+        {
+            get
+            {
                 return ResourceManager.GetString("notification.option.customized", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Sound Notification.
         /// </summary>
-        internal static string notification_option_sound {
-            get {
+        internal static string notification_option_sound
+        {
+            get
+            {
                 return ResourceManager.GetString("notification.option.sound", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Toast Notification.
         /// </summary>
-        internal static string notification_option_toast {
-            get {
+        internal static string notification_option_toast
+        {
+            get
+            {
                 return ResourceManager.GetString("notification.option.toast", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Windows Notification.
         /// </summary>
-        internal static string notification_option_windowsDefault {
-            get {
+        internal static string notification_option_windowsDefault
+        {
+            get
+            {
                 return ResourceManager.GetString("notification.option.windowsDefault", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Only one banner.
         /// </summary>
-        internal static string notification_single {
-            get {
+        internal static string notification_single
+        {
+            get
+            {
                 return ResourceManager.GetString("notification.single", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Only show one banner at a time and replace its content..
         /// </summary>
-        internal static string notification_single_tooltip {
-            get {
+        internal static string notification_single_tooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("notification.single.tooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Windows Notification: The default windows tray pop-up.
         ///Sound Notification: Plays a sound on the switched Playback Device.
@@ -920,874 +1117,1068 @@ namespace SoundSwitch.Localization {
         ///Toast Notification: Uses a special form of the windows tray pop-up version.
         ///Banner: Uses a custom always-on-top frame, useful for in-game usage..
         /// </summary>
-        internal static string notification_tooltip {
-            get {
+        internal static string notification_tooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("notification.tooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Notification Type.
         /// </summary>
-        internal static string notification_type {
-            get {
+        internal static string notification_type
+        {
+            get
+            {
                 return ResourceManager.GetString("notification.type", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Notifications.
         /// </summary>
-        internal static string notifications {
-            get {
+        internal static string notifications
+        {
+            get
+            {
                 return ResourceManager.GetString("notifications", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Open settings.
         /// </summary>
-        internal static string openSettings {
-            get {
+        internal static string openSettings
+        {
+            get
+            {
                 return ResourceManager.GetString("openSettings", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Playback.
         /// </summary>
-        internal static string playback {
-            get {
+        internal static string playback
+        {
+            get
+            {
                 return ResourceManager.GetString("playback", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Position.
         /// </summary>
-        internal static string position {
-            get {
+        internal static string position
+        {
+            get
+            {
                 return ResourceManager.GetString("position", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Bottom Center.
         /// </summary>
-        internal static string position_bottomCenter {
-            get {
+        internal static string position_bottomCenter
+        {
+            get
+            {
                 return ResourceManager.GetString("position.bottomCenter", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Bottom Left.
         /// </summary>
-        internal static string position_bottomLeft {
-            get {
+        internal static string position_bottomLeft
+        {
+            get
+            {
                 return ResourceManager.GetString("position.bottomLeft", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Bottom Right.
         /// </summary>
-        internal static string position_bottomRight {
-            get {
+        internal static string position_bottomRight
+        {
+            get
+            {
                 return ResourceManager.GetString("position.bottomRight", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Center.
         /// </summary>
-        internal static string position_center {
-            get {
+        internal static string position_center
+        {
+            get
+            {
                 return ResourceManager.GetString("position.center", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Center Left.
         /// </summary>
-        internal static string position_centerLeft {
-            get {
+        internal static string position_centerLeft
+        {
+            get
+            {
                 return ResourceManager.GetString("position.centerLeft", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Center Right.
         /// </summary>
-        internal static string position_centerRight {
-            get {
+        internal static string position_centerRight
+        {
+            get
+            {
                 return ResourceManager.GetString("position.centerRight", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Set the position of the Banner notification..
         /// </summary>
-        internal static string position_tooltip {
-            get {
+        internal static string position_tooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("position.tooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Top Center.
         /// </summary>
-        internal static string position_topCenter {
-            get {
+        internal static string position_topCenter
+        {
+            get
+            {
                 return ResourceManager.GetString("position.topCenter", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Top Left.
         /// </summary>
-        internal static string position_topLeft {
-            get {
+        internal static string position_topLeft
+        {
+            get
+            {
                 return ResourceManager.GetString("position.topLeft", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Top Right.
         /// </summary>
-        internal static string position_topRight {
-            get {
+        internal static string position_topRight
+        {
+            get
+            {
                 return ResourceManager.GetString("position.topRight", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Also switch default device.
         /// </summary>
-        internal static string profile_defaultDevice_checkbox {
-            get {
+        internal static string profile_defaultDevice_checkbox
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.defaultDevice.checkbox", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to When the application is detected, SoundSwitch will change also the current default device..
         /// </summary>
-        internal static string profile_defaultDevice_checkbox_tooltip {
-            get {
+        internal static string profile_defaultDevice_checkbox_tooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.defaultDevice.checkbox.tooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
-        internal static string profile_desc {
-            get {
+        internal static string profile_desc
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.desc", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to This application {0} already has a linked profile..
         /// </summary>
-        internal static string profile_error_application {
-            get {
+        internal static string profile_error_application
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.error.application", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Can&apos;t find the profile..
         /// </summary>
-        internal static string profile_error_delete {
-            get {
+        internal static string profile_error_delete
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.error.delete", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to You can only have one forced profile..
         /// </summary>
-        internal static string profile_error_deviceChanged {
-            get {
+        internal static string profile_error_deviceChanged
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.error.deviceChanged", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Device {0} couldn&apos;t be found..
         /// </summary>
-        internal static string profile_error_deviceNotFound {
-            get {
+        internal static string profile_error_deviceNotFound
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.error.deviceNotFound", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to This hotkey {0} is already registered..
         /// </summary>
-        internal static string profile_error_hotkey {
-            get {
+        internal static string profile_error_hotkey
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.error.hotkey", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to There is already a profile named {0}..
         /// </summary>
-        internal static string profile_error_name {
-            get {
+        internal static string profile_error_name
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.error.name", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to You need to set the hotkey or/and the application..
         /// </summary>
-        internal static string profile_error_needHKOrPath {
-            get {
+        internal static string profile_error_needHKOrPath
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.error.needHKOrPath", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to You need to set a playback-, or recording device..
         /// </summary>
-        internal static string profile_error_needPlaybackOrRecording {
-            get {
+        internal static string profile_error_needPlaybackOrRecording
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.error.needPlaybackOrRecording", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to A profile needs a name..
         /// </summary>
-        internal static string profile_error_noName {
-            get {
+        internal static string profile_error_noName
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.error.noName", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Couldn&apos;t register hotkey for the following profiles: {0}.
         /// </summary>
-        internal static string profile_error_registerHotkeys {
-            get {
+        internal static string profile_error_registerHotkeys
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.error.registerHotkeys", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Already used hotkey.
         /// </summary>
-        internal static string profile_error_registerHotkeys_title {
-            get {
+        internal static string profile_error_registerHotkeys_title
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.error.registerHotkeys.title", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to You can only have one profile for Steam Big Picture..
         /// </summary>
-        internal static string profile_error_steam {
-            get {
+        internal static string profile_error_steam
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.error.steam", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Profile Error.
         /// </summary>
-        internal static string profile_error_title {
-            get {
+        internal static string profile_error_title
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.error.title", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to You need minimum one trigger..
         /// </summary>
-        internal static string profile_error_triggers_min {
-            get {
+        internal static string profile_error_triggers_min
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.error.triggers.min", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to There is already a profile with this window name: {0}..
         /// </summary>
-        internal static string profile_error_window {
-            get {
+        internal static string profile_error_window
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.error.window", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Add a profile to switch to a certain playback or recording device, when a specific application is started or focused. You can also set your own hotkey for specific device combo..
         /// </summary>
-        internal static string profile_explanation {
-            get {
+        internal static string profile_explanation
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.explanation", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Add Profile.
         /// </summary>
-        internal static string profile_feature_add {
-            get {
+        internal static string profile_feature_add
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.feature.add", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Executable (*.exe).
         /// </summary>
-        internal static string profile_feature_executable {
-            get {
+        internal static string profile_feature_executable
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.feature.executable", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Profile.
         /// </summary>
-        internal static string profile_feature_profile {
-            get {
+        internal static string profile_feature_profile
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.feature.profile", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
-        internal static string profile_name {
-            get {
+        internal static string profile_name
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.name", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Profile {0} triggered.
         /// </summary>
-        internal static string profile_notification_text {
-            get {
+        internal static string profile_notification_text
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.notification.text", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Notify when profile is triggered.
         /// </summary>
-        internal static string profile_notifyOnActivation {
-            get {
+        internal static string profile_notifyOnActivation
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.notifyOnActivation", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Application.
         /// </summary>
-        internal static string profile_program {
-            get {
+        internal static string profile_program
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.program", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Profiles.
         /// </summary>
-        internal static string profile_tab {
-            get {
+        internal static string profile_tab
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.tab", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Active Triggers.
         /// </summary>
-        internal static string profile_trigger_actives {
-            get {
+        internal static string profile_trigger_actives
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.trigger.actives", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Available Triggers.
         /// </summary>
-        internal static string profile_trigger_available {
-            get {
+        internal static string profile_trigger_available
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.trigger.available", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Force profile.
         /// </summary>
-        internal static string profile_trigger_deviceChanged {
-            get {
+        internal static string profile_trigger_deviceChanged
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.trigger.deviceChanged", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The profile will be triggered automatically anytime when the current sound device changes..
         /// </summary>
-        internal static string profile_trigger_deviceChanged_desc {
-            get {
+        internal static string profile_trigger_deviceChanged_desc
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.trigger.deviceChanged.desc", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Hotkey used to activate the profile. If you use the same hotkey, you&apos;ll be able to switch between profiles..
         /// </summary>
-        internal static string profile_trigger_hotkey_desc {
-            get {
+        internal static string profile_trigger_hotkey_desc
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.trigger.hotkey.desc", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Application path.
         /// </summary>
-        internal static string profile_trigger_process {
-            get {
+        internal static string profile_trigger_process
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.trigger.process", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Activate the profile when the selected application is in the foreground.
         /// </summary>
-        internal static string profile_trigger_process_desc {
-            get {
+        internal static string profile_trigger_process_desc
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.trigger.process.desc", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Restore devices when trigger ends.
         /// </summary>
-        internal static string profile_trigger_restoreDevices {
-            get {
+        internal static string profile_trigger_restoreDevices
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.trigger.restoreDevices", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Requires &quot;{0}&quot; to be enabled.
         ///
         ///Restore the state of the system when the application is closed..
         /// </summary>
-        internal static string profile_trigger_restoreDevices_desc {
-            get {
+        internal static string profile_trigger_restoreDevices_desc
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.trigger.restoreDevices.desc", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to System state restored.
         /// </summary>
-        internal static string profile_trigger_restoreDevices_title {
-            get {
+        internal static string profile_trigger_restoreDevices_title
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.trigger.restoreDevices.title", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to On Startup.
         /// </summary>
-        internal static string profile_trigger_startup {
-            get {
+        internal static string profile_trigger_startup
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.trigger.startup", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The profile will be triggered automatically when SoundSwitch starts.
         /// </summary>
-        internal static string profile_trigger_startup_desc {
-            get {
+        internal static string profile_trigger_startup_desc
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.trigger.startup.desc", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Steam Big Picture.
         /// </summary>
-        internal static string profile_trigger_steam {
-            get {
+        internal static string profile_trigger_steam
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.trigger.steam", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Activate when Steam Big Picture is detected. (Will restore the state when Big Picture is closed.).
         /// </summary>
-        internal static string profile_trigger_steam_desc {
-            get {
+        internal static string profile_trigger_steam_desc
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.trigger.steam.desc", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to In the app menu.
         /// </summary>
-        internal static string profile_trigger_trayMenu {
-            get {
+        internal static string profile_trigger_trayMenu
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.trigger.trayMenu", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to This trigger makes the profile visible in the tray icon menu. Left-click on the systray icon to see your profile..
         /// </summary>
-        internal static string profile_trigger_trayMenu_desc {
-            get {
+        internal static string profile_trigger_trayMenu_desc
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.trigger.trayMenu.desc", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Microsoft Store app.
         /// </summary>
-        internal static string profile_trigger_uwp {
-            get {
+        internal static string profile_trigger_uwp
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.trigger.uwp", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Input the name of the application installed through the Windows store. Like Netflix, Amazon Prime video, etc….
         /// </summary>
-        internal static string profile_trigger_uwp_desc {
-            get {
+        internal static string profile_trigger_uwp_desc
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.trigger.uwp.desc", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Name of the program.
         /// </summary>
-        internal static string profile_trigger_window {
-            get {
+        internal static string profile_trigger_window
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.trigger.window", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Activate the profile if the foreground program contains the following characters.
         /// </summary>
-        internal static string profile_trigger_window_desc {
-            get {
+        internal static string profile_trigger_window_desc
+        {
+            get
+            {
                 return ResourceManager.GetString("profile.trigger.window.desc", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Quick Menu on hotkey.
         /// </summary>
-        internal static string quickMenu {
-            get {
+        internal static string quickMenu
+        {
+            get
+            {
                 return ResourceManager.GetString("quickMenu", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Show a quick menu like Windows language when using a hotkey.
         /// </summary>
-        internal static string quickMenu_tooltip {
-            get {
+        internal static string quickMenu_tooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("quickMenu.tooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Recording.
         /// </summary>
-        internal static string recording {
-            get {
+        internal static string recording
+        {
+            get
+            {
                 return ResourceManager.GetString("recording", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Reset Per App Audio.
         /// </summary>
-        internal static string resetAudioDevices {
-            get {
+        internal static string resetAudioDevices
+        {
+            get
+            {
                 return ResourceManager.GetString("resetAudioDevices", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Resets the audio device assignment to specified programs in Windows in case audio devices are not reassigned to programs when switching devices..
         /// </summary>
-        internal static string resetAudioDevices_desc {
-            get {
+        internal static string resetAudioDevices_desc
+        {
+            get
+            {
                 return ResourceManager.GetString("resetAudioDevices.desc", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Need a restart.
         /// </summary>
-        internal static string restartRequired_caption {
-            get {
+        internal static string restartRequired_caption
+        {
+            get
+            {
                 return ResourceManager.GetString("restartRequired.caption", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to seconds.
         /// </summary>
-        internal static string seconds {
-            get {
+        internal static string seconds
+        {
+            get
+            {
                 return ResourceManager.GetString("seconds", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Selected.
         /// </summary>
-        internal static string selected {
-            get {
+        internal static string selected
+        {
+            get
+            {
                 return ResourceManager.GetString("selected", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Error: File not found.
         /// </summary>
-        internal static string selectSoundButton_error {
-            get {
+        internal static string selectSoundButton_error
+        {
+            get
+            {
                 return ResourceManager.GetString("selectSoundButton.error", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Select a sound file for Sound and Banner notifications.
         /// </summary>
-        internal static string selectSoundButton_tooltip {
-            get {
+        internal static string selectSoundButton_tooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("selectSoundButton.tooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
-        internal static string settings {
-            get {
+        internal static string settings
+        {
+            get
+            {
                 return ResourceManager.GetString("settings", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Start automatically with Windows.
         /// </summary>
-        internal static string startWithWindows {
-            get {
+        internal static string startWithWindows
+        {
+            get
+            {
                 return ResourceManager.GetString("startWithWindows", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Switch playback device.
         /// </summary>
-        internal static string switchDevice {
-            get {
+        internal static string switchDevice
+        {
+            get
+            {
                 return ResourceManager.GetString("switchDevice", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Switch profile.
         /// </summary>
-        internal static string switchProfile {
-            get {
+        internal static string switchProfile
+        {
+            get
+            {
                 return ResourceManager.GetString("switchProfile", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Switch recording device.
         /// </summary>
-        internal static string switchRecordingDevice {
-            get {
+        internal static string switchRecordingDevice
+        {
+            get
+            {
                 return ResourceManager.GetString("switchRecordingDevice", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Telemetry.
         /// </summary>
-        internal static string telemetry {
-            get {
+        internal static string telemetry
+        {
+            get
+            {
                 return ResourceManager.GetString("telemetry", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Gather anonymously which version of SoundSwitch is in use. Only shared with the developer of SoundSwitch..
         /// </summary>
-        internal static string telemetry_tooltip {
-            get {
+        internal static string telemetry_tooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("telemetry.tooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Tooltip on Hover.
         /// </summary>
-        internal static string tooltipOnHover {
-            get {
+        internal static string tooltipOnHover
+        {
+            get
+            {
                 return ResourceManager.GetString("tooltipOnHover", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Both Devices.
         /// </summary>
-        internal static string tooltipOnHover_option_bothDevices {
-            get {
+        internal static string tooltipOnHover_option_bothDevices
+        {
+            get
+            {
                 return ResourceManager.GetString("tooltipOnHover.option.bothDevices", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Playback Device.
         /// </summary>
-        internal static string tooltipOnHover_option_playbackDevice {
-            get {
+        internal static string tooltipOnHover_option_playbackDevice
+        {
+            get
+            {
                 return ResourceManager.GetString("tooltipOnHover.option.playbackDevice", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Recording Device.
         /// </summary>
-        internal static string tooltipOnHover_option_recordingDevice {
-            get {
+        internal static string tooltipOnHover_option_recordingDevice
+        {
+            get
+            {
                 return ResourceManager.GetString("tooltipOnHover.option.recordingDevice", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Troubleshooting.
         /// </summary>
-        internal static string troubleshooting {
-            get {
+        internal static string troubleshooting
+        {
+            get
+            {
                 return ResourceManager.GetString("troubleshooting", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to If you need any help or further troubleshooting with SoundSwitch, you can visit the Help Discussion or Community Discord link, or help support us by visiting the Donate link below..
         /// </summary>
-        internal static string troubleshooting_desc {
-            get {
+        internal static string troubleshooting_desc
+        {
+            get
+            {
                 return ResourceManager.GetString("troubleshooting.desc", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Include Beta versions.
         /// </summary>
-        internal static string updateIncludeBetaVersions {
-            get {
+        internal static string updateIncludeBetaVersions
+        {
+            get
+            {
                 return ResourceManager.GetString("updateIncludeBetaVersions", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to When checked, SoundSwitch will also check for Beta versions on GitHub..
         /// </summary>
-        internal static string updateIncludeBetaVersions_tooltip {
-            get {
+        internal static string updateIncludeBetaVersions_tooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("updateIncludeBetaVersions.tooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Install updates automatically.
         /// </summary>
-        internal static string updateInstallAutomatically {
-            get {
+        internal static string updateInstallAutomatically
+        {
+            get
+            {
                 return ResourceManager.GetString("updateInstallAutomatically", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Updates are installed automatically without any prompts..
         /// </summary>
-        internal static string updateInstallAutomatically_tooltip {
-            get {
+        internal static string updateInstallAutomatically_tooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("updateInstallAutomatically.tooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Never check for updates.
         /// </summary>
-        internal static string updateNever {
-            get {
+        internal static string updateNever
+        {
+            get
+            {
                 return ResourceManager.GetString("updateNever", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Don&apos;t update the program unless you do it manually..
         /// </summary>
-        internal static string updateNever_tooltip {
-            get {
+        internal static string updateNever_tooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("updateNever.tooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Notify me when updates are available.
         /// </summary>
-        internal static string updateNotify {
-            get {
+        internal static string updateNotify
+        {
+            get
+            {
                 return ResourceManager.GetString("updateNotify", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to SoundSwitch will notify you when there is a new update available. When clicking on the notification, you&apos;ll get a popup downloading the update for you and asking if you want to install it..
         /// </summary>
-        internal static string updateNotify_tooltip {
-            get {
+        internal static string updateNotify_tooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("updateNotify.tooltip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Update Settings.
         /// </summary>
-        internal static string updateSettings {
-            get {
+        internal static string updateSettings
+        {
+            get
+            {
                 return ResourceManager.GetString("updateSettings", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Always use primary screen.
         /// </summary>
-        internal static string usePrimaryScreen {
-            get {
+        internal static string usePrimaryScreen
+        {
+            get
+            {
                 return ResourceManager.GetString("usePrimaryScreen", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Display banner on primary screen instead of focused screen..
         /// </summary>
-        internal static string usePrimaryScreen_tooltip {
-            get {
+        internal static string usePrimaryScreen_tooltip
+        {
+            get
+            {
                 return ResourceManager.GetString("usePrimaryScreen.tooltip", resourceCulture);
             }
         }

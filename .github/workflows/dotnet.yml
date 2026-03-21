@@ -2,237 +2,78 @@ name: .NET
 
 on:
   push:
-    branches: [ dev, master, beta ]
+    branches: [dev, master, beta]
   pull_request:
-    # The branches below must be a subset of the branches above
-    branches: [ dev, master, beta ]
+    branches: [dev, master, beta]
+
 env:
-  # Stop wasting time caching packages
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
-  # Disable sending usage data to Microsoft
-  # DOTNET_CLI_TELEMETRY_OPTOUT: true
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  PROJECT_NAME: "SoundSwitch"
-  ARCH: "win-x64"
-  NODEJS: "lts/*"
-  CONFIGURATION: "Nightly"
-  SENTRY_NAME: "soundswitch"
+  NODEJS: lts/*
 
 jobs:
-  detect-framework:
+  changes:
     concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}-framework
+      group: ${{ github.workflow }}-${{ github.ref }}-changes
       cancel-in-progress: true
     runs-on: ubuntu-latest
     outputs:
-      framework: ${{ steps.framework.outputs.framework }}
-      dotnet-version: ${{ steps.framework.outputs.dotnet-version }}
+      ci: ${{ steps.filter.outputs.ci }}
+      sound-switch: ${{ steps.filter.outputs.sound-switch }}
+      node: ${{ steps.filter.outputs.node }}
+      translations: ${{ steps.filter.outputs.translations }}
+      translation-files: ${{ steps.filter.outputs.translations_files }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-      - name: Detect target framework and SDK version
-        id: framework
-        shell: pwsh
-        run: |
-          [xml]$project = Get-Content "${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.csproj"
-          $framework = $project.Project.PropertyGroup.TargetFramework | Select-Object -First 1
-          if ([string]::IsNullOrWhiteSpace($framework)) {
-            throw "Unable to determine TargetFramework from ${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.csproj"
-          }
-
-          $match = [System.Text.RegularExpressions.Regex]::Match($framework, '^net(?<major>\d+)\.(?<minor>\d+)')
-          if (-not $match.Success) {
-            throw "Unable to derive .NET SDK version from TargetFramework '$framework'"
-          }
-
-          $dotnetVersion = "{0}.{1}.x" -f $match.Groups['major'].Value, $match.Groups['minor'].Value
-          "framework=$framework" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
-          "dotnet-version=$dotnetVersion" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
-
-  build:
-    needs: [ detect-framework ]
-    if: github.ref != 'refs/heads/dev'
-    runs-on: windows-latest
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}-build
-      cancel-in-progress: true
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
       - uses: dorny/paths-filter@v4
         id: filter
         with:
           list-files: shell
           filters: |
             ci:
-             - '.github/**/*.yml'
-             - 'devRelease.js'
-            SoundSwitch:
+              - '.github/**/*.yml'
+            sound-switch:
               - 'SoundSwitch*/**'
             node:
               - 'package.json'
+              - 'package-lock.json'
             translations:
               - 'SoundSwitch/**/*.resx'
-      - name: Install Python
-        if: steps.filter.outputs.translations == 'true'
-        uses: actions/setup-python@v6
-        with:
-          python-version: '3.x'
-          
-      - name: Validate the string of translation (brackets)
-        if: steps.filter.outputs.translations == 'true'
-        run: python tools\check_brackets.py ${{ steps.filter.outputs.translations_files }}
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v5
-        if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true' || github.ref == 'refs/heads/master'
-        with:
-          dotnet-version: ${{ needs.detect-framework.outputs.dotnet-version }}
-          cache: true
-          cache-dependency-path: Directory.Packages.props
-      - name: Restore
-        if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true' || github.ref == 'refs/heads/master'
-        run: dotnet restore
-      - name: Build
-        if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true' || github.ref == 'refs/heads/master'
-        run: dotnet build -c Release --no-restore ${{env.PROJECT_NAME}}/${{env.PROJECT_NAME}}.csproj
-      - name: Test
-        if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true' || github.ref == 'refs/heads/master'
-        run: dotnet test -c Release --no-restore  --logger trx --results-directory "TestResults-${{ needs.detect-framework.outputs.dotnet-version }}"
-      - name: Upload test results
-        if: steps.filter.outputs.SoundSwitch == 'true' || steps.filter.outputs.ci == 'true' || github.ref == 'refs/heads/master'
-        uses: actions/upload-artifact@v7
-        with:
-          name: dotnet-results-${{ needs.detect-framework.outputs.dotnet-version }}
-          path: TestResults-${{ needs.detect-framework.outputs.dotnet-version }}
-        # Use always() to always run this step to publish test results when there are test failures
-      - name: Setup Node.js
-        if: steps.filter.outputs.node == 'true'
-        uses: actions/setup-node@v6.3.0
-        with:
-          node-version: ${{env.NODEJS}}
-      - name: Cache node modules
-        if: steps.filter.outputs.node == 'true'
-        uses: actions/cache@v5
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: npm-cache
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-      - name: Install semantic-release dependencies
-        if: steps.filter.outputs.node == 'true'
-        run: npm ci --prefer-offline --silent --cache npm-cache
-      - name: Release dry run
-        if: steps.filter.outputs.node == 'true'
-        run: npx semantic-release -d
 
-  changes:
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}-changes
-      cancel-in-progress: true
-    runs-on: ubuntu-latest
-    # Set job outputs to values from filter step
-    outputs:
-      ci: ${{ steps.filter.outputs.ci }}
-    steps:
-      - uses: actions/checkout@v6
-      - uses: dorny/paths-filter@v4
-        id: filter
-        with:
-          filters: |
-            ci:
-              - '.github/**/*.yml'
-              - 'SoundSwitch*/**'
-              - 'devRelease.js'
-
-  nightly-release:
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}-nightly
-      cancel-in-progress: true
-    needs: [ changes, detect-framework ]
-    if: github.ref == 'refs/heads/dev' && needs.changes.outputs.ci == 'true'
-    outputs:
-      devVersion: ${{ steps.devVersion.outputs.version }}
+  validate-translations:
+    needs: changes
+    if: needs.changes.outputs.translations == 'true'
     runs-on: windows-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
+      - name: Install Python
+        uses: actions/setup-python@v6
         with:
-          fetch-depth: 0
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: ${{ needs.detect-framework.outputs.dotnet-version }}
-          cache: true
-          cache-dependency-path: Directory.Packages.props
-      - name: Restore
-        run: dotnet restore -r ${{ env.ARCH }}
-      - name: Tests
-        run: dotnet test -c ${{env.CONFIGURATION}}  --no-restore  --logger trx --results-directory "TestResults-${{ needs.detect-framework.outputs.dotnet-version }}"
-      - name: Fetch tags
-        run: git fetch --tags --force
-      - name: Calculate version
-        id: devVersion
-        run: .\devVersion.ps1
-      - name: Build pre-release
-        run: dotnet publish -c ${{env.CONFIGURATION}} --no-restore -r ${{ env.ARCH }} ${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj
-      - name: Set Env var from GitHub
-        uses: rlespinasse/github-slug-action@v3.x
-      - name: Zip Build ${{env.PROJECT_NAME}}-${{ steps.devVersion.outputs.version }}
-        run: tar caf   ${{env.PROJECT_NAME}}-${{ steps.devVersion.outputs.version }}.zip -C ${{ env.PROJECT_NAME }}\bin\${{env.CONFIGURATION}}\${{ needs.detect-framework.outputs.framework }}\${{ env.ARCH }}\publish\ *
-      - name: Setup Node.js
-        uses: actions/setup-node@v6.3.0
-        with:
-          node-version: ${{env.NODEJS}}
-      - name: Cache node modules
-        uses: actions/cache@v5
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: npm-cache
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-      - name: Install dependencies
-        run: npm ci --prefer-offline --silent --cache npm-cache
-      - name: Upload prerelease & Notify
-        env:
-          UPLOAD_SECRET: ${{secrets.UPLOAD_SECRET}}
-          UPLOAD_PUBLIC: ${{secrets.UPLOAD_PUBLIC}}
-          UPLOAD_BUCKET: ${{env.PROJECT_NAME}}
-        run: node devRelease.js "${{ secrets.DISCORD_WEBHOOK }}" "${{ steps.devVersion.outputs.version }}" "${{env.GITHUB_REPOSITORY_OWNER_PART}}/${{env.GITHUB_REPOSITORY_NAME_PART}}" "${{env.PROJECT_NAME}}-${{ steps.devVersion.outputs.version }}.zip"
+          python-version: "3.x"
+      - name: Validate the string of translation (brackets)
+        shell: pwsh
+        run: python tools\check_brackets.py ${{ needs.changes.outputs.translation-files }}
 
-  nightly-sentry:
+  build:
+    needs: changes
+    if: github.ref != 'refs/heads/dev' && (needs.changes.outputs.sound-switch == 'true' || needs.changes.outputs.ci == 'true' || github.ref == 'refs/heads/master')
     concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}-sentry
+      group: ${{ github.workflow }}-${{ github.ref }}-build
       cancel-in-progress: true
-    needs: nightly-release
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-      - name: Sentry Release
-        uses: getsentry/action-release@v3.5.0
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: ${{env.SENTRY_NAME}}
-          SENTRY_PROJECT: ${{env.SENTRY_NAME}}
-        with:
-          environment: Nightly
-          version: "${{env.PROJECT_NAME}}@${{ needs.nightly-release.outputs.devVersion }}"
+    uses: ./.github/workflows/reusable-build.yml
+    with:
+      configuration: Release
+    secrets: inherit
 
-  master-release:
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}-release
-      cancel-in-progress: true
-    needs: [ build, changes, detect-framework ]
-    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/beta'
+  release-dry-run:
+    needs: changes
+    if: github.ref != 'refs/heads/dev' && needs.changes.outputs.node == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
       - name: Setup Node.js
         uses: actions/setup-node@v6.3.0
         with:
-          node-version: ${{env.NODEJS}}
+          node-version: ${{ env.NODEJS }}
       - name: Cache node modules
         uses: actions/cache@v5
         env:
@@ -242,20 +83,5 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
       - name: Install semantic-release dependencies
         run: npm ci --prefer-offline --silent --cache npm-cache
-      - name: Release
-        run: npx semantic-release
-      - name: Latest Version
-        run: | 
-          version=$(git describe --tags --abbrev=0 | cut -c 2-)
-          echo "version=$version" >> $GITHUB_OUTPUT
-        id: version
-      - name: Sentry Release
-        uses: getsentry/action-release@v3.5.0
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: ${{env.SENTRY_NAME}}
-          SENTRY_PROJECT: ${{env.SENTRY_NAME}}
-        with:
-          environment: Stable
-          version: "${{env.PROJECT_NAME}}@${{ steps.version.outputs.version }}"
-
+      - name: Release dry run
+        run: npx semantic-release -d

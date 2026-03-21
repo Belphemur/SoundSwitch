@@ -1,0 +1,73 @@
+name: Release
+
+on:
+    push:
+        branches: [master, beta]
+
+env:
+    DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+    NODEJS: lts/*
+    PROJECT_NAME: SoundSwitch
+    SENTRY_NAME: soundswitch
+
+jobs:
+    build:
+        concurrency:
+            group: ${{ github.workflow }}-${{ github.ref }}-build
+            cancel-in-progress: true
+        uses: ./.github/workflows/reusable-build.yml
+        with:
+            configuration: Release
+        secrets: inherit
+
+    release:
+        concurrency:
+            group: ${{ github.workflow }}-${{ github.ref }}-release
+            cancel-in-progress: true
+        needs: build
+        runs-on: ubuntu-latest
+        outputs:
+            version: ${{ steps.version.outputs.version }}
+        steps:
+            - uses: actions/checkout@v6
+            - name: Setup Node.js
+              uses: actions/setup-node@v6.3.0
+              with:
+                  node-version: ${{ env.NODEJS }}
+            - name: Cache node modules
+              uses: actions/cache@v5
+              env:
+                  cache-name: cache-node-modules
+              with:
+                  path: npm-cache
+                  key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+            - name: Install semantic-release dependencies
+              run: npm ci --prefer-offline --silent --cache npm-cache
+            - name: Release
+              run: npx semantic-release
+            - name: Latest Version
+              id: version
+              run: |
+                  version=$(git describe --tags --abbrev=0 | cut -c 2-)
+                  echo "version=$version" >> "$GITHUB_OUTPUT"
+
+    sentry:
+        concurrency:
+            group: ${{ github.workflow }}-${{ github.ref }}-sentry
+            cancel-in-progress: true
+        needs: release
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v6
+              with:
+                  fetch-depth: 0
+            - name: Sentry Release
+              uses: getsentry/action-release@v3.5.0
+              env:
+                  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+                  SENTRY_ORG: ${{ env.SENTRY_NAME }}
+                  SENTRY_PROJECT: ${{ env.SENTRY_NAME }}
+              with:
+                  environment: Stable
+                  release: "${{ env.PROJECT_NAME }}@${{ needs.release.outputs.version }}"

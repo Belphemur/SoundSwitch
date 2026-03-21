@@ -1,0 +1,264 @@
+name: Nightly
+
+on:
+    push:
+        branches: [dev]
+        paths:
+            - ".github/workflows/nightly.yml"
+            - ".github/workflows/reusable-build.yml"
+            - "SoundSwitch*/**"
+            - "devVersion.ps1"
+
+env:
+    DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+    PROJECT_NAME: SoundSwitch
+    ARCH: win-x64
+    CONFIGURATION: Nightly
+    NODEJS: "lts/*"
+    SENTRY_NAME: soundswitch
+
+jobs:
+    build:
+        concurrency:
+            group: ${{ github.workflow }}-${{ github.ref }}-build
+            cancel-in-progress: true
+        uses: ./.github/workflows/reusable-build.yml
+        with:
+            configuration: Nightly
+            runtime: win-x64
+            publish: true
+            update-nightly-version: true
+            publish-artifact-name: nightly-package
+        secrets: inherit
+
+    publish-nightly:
+        needs: build
+        runs-on: windows-latest
+        if: needs.build.result == 'success'
+        outputs:
+            version: ${{ steps.metadata.outputs.version }}
+        steps:
+            - uses: actions/checkout@v6
+              with:
+                  fetch-depth: 0
+            - name: Download published output
+              uses: actions/download-artifact@v4
+              with:
+                  name: nightly-package
+                  path: nightly-package
+            - name: Setup Node.js for Wrangler
+              uses: actions/setup-node@v6.3.0
+              with:
+                  node-version: ${{ env.NODEJS }}
+            - name: Install Wrangler
+              shell: pwsh
+              run: |
+                  npm install --global wrangler
+                  wrangler --version
+            - name: Create archive and upload nightly files
+              id: metadata
+              shell: pwsh
+              env:
+                  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+                  CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+                  NIGHTLY_BUCKET: ${{ secrets.NIGHTLY_BUCKET }}
+                  NIGHTLY_PREFIX: ${{ vars.NIGHTLY_PREFIX }}
+                  NIGHTLY_PUBLIC_BASE_URL: ${{ vars.NIGHTLY_PUBLIC_BASE_URL }}
+                  NIGHTLY_VERSION: ${{ needs.build.outputs.nightly-version }}
+                  WRANGLER_SEND_METRICS: false
+              run: |
+                  $version = $env:NIGHTLY_VERSION
+                  if ([string]::IsNullOrWhiteSpace($version)) {
+                    throw 'Nightly version was not produced by the build workflow.'
+                  }
+
+                  if ([string]::IsNullOrWhiteSpace($env:CLOUDFLARE_API_TOKEN)) {
+                    throw 'CLOUDFLARE_API_TOKEN is not configured.'
+                  }
+
+                  if ([string]::IsNullOrWhiteSpace($env:CLOUDFLARE_ACCOUNT_ID)) {
+                    throw 'CLOUDFLARE_ACCOUNT_ID is not configured.'
+                  }
+
+                  if ([string]::IsNullOrWhiteSpace($env:NIGHTLY_BUCKET)) {
+                    throw 'NIGHTLY_BUCKET is not configured.'
+                  }
+
+                  $archiveName = "${{ env.PROJECT_NAME }}-$version.zip"
+                  $archivePath = Join-Path $PWD $archiveName
+                  if (Test-Path $archivePath) {
+                    Remove-Item $archivePath -Force
+                  }
+
+                  Compress-Archive -Path (Join-Path $PWD 'nightly-package\*') -DestinationPath $archivePath
+
+                  $prefix = if ([string]::IsNullOrWhiteSpace($env:NIGHTLY_PREFIX)) { 'nightly' } else { $env:NIGHTLY_PREFIX.Trim('/') }
+                  $archiveKey = "$prefix/$archiveName"
+                  $versionKey = "$prefix/version.json"
+                  $publicBaseUrl = if ([string]::IsNullOrWhiteSpace($env:NIGHTLY_PUBLIC_BASE_URL)) { '' } else { $env:NIGHTLY_PUBLIC_BASE_URL.TrimEnd('/') }
+                  $downloadUrl = if ($publicBaseUrl) { "$publicBaseUrl/$archiveKey" } else { '' }
+                  $existingVersionPath = Join-Path $PWD 'existing-version.json'
+
+                  if (Test-Path $existingVersionPath) {
+                    Remove-Item $existingVersionPath -Force
+                  }
+
+                  & wrangler r2 object get "$($env:NIGHTLY_BUCKET)/$versionKey" --file="$existingVersionPath" --remote 2>$null
+                  $existingVersionFound = $LASTEXITCODE -eq 0 -and (Test-Path $existingVersionPath)
+                  if (-not $existingVersionFound -and (Test-Path $existingVersionPath)) {
+                    Remove-Item $existingVersionPath -Force
+                  }
+
+                  $existingArtifacts = @()
+                  if ($existingVersionFound) {
+                    try {
+                      $existingMetadata = Get-Content $existingVersionPath -Raw | ConvertFrom-Json
+                    }
+                    catch {
+                      $existingMetadata = $null
+                    }
+
+                    if ($null -ne $existingMetadata) {
+                      if ($existingMetadata.PSObject.Properties.Name -contains 'artifacts') {
+                        foreach ($artifact in @($existingMetadata.artifacts)) {
+                          if ($null -ne $artifact -and -not [string]::IsNullOrWhiteSpace($artifact.key)) {
+                            $existingArtifacts += [pscustomobject]@{
+                              key = [string]$artifact.key
+                              version = [string]$artifact.version
+                              published = [string]$artifact.published
+                              url = [string]$artifact.url
+                            }
+                          }
+                        }
+                      }
+                      elseif (
+                        -not [string]::IsNullOrWhiteSpace($existingMetadata.url) -and
+                        -not [string]::IsNullOrWhiteSpace($publicBaseUrl) -and
+                        $existingMetadata.url.StartsWith("$publicBaseUrl/")) {
+                        $existingArtifacts += [pscustomobject]@{
+                          key = $existingMetadata.url.Substring($publicBaseUrl.Length + 1)
+                          version = [string]$existingMetadata.latest
+                          published = [string]$existingMetadata.published
+                          url = [string]$existingMetadata.url
+                        }
+                      }
+                    }
+                  }
+
+                  $publishedAt = (Get-Date).ToUniversalTime().ToString('o')
+                  $currentArtifact = [pscustomobject]@{
+                    key = $archiveKey
+                    version = $version
+                    published = $publishedAt
+                    url = $downloadUrl
+                  }
+
+                  $retainedArtifacts = @($currentArtifact)
+                  foreach ($artifact in $existingArtifacts) {
+                    if ($artifact.key -ne $archiveKey) {
+                      $retainedArtifacts += $artifact
+                    }
+                  }
+
+                  $retainedArtifacts = @($retainedArtifacts | Select-Object -First 9)
+                  $retainedKeys = @($retainedArtifacts | ForEach-Object { $_.key })
+                  $deleteKeys = @($existingArtifacts | Where-Object { $_.key -and ($retainedKeys -notcontains $_.key) } | ForEach-Object { $_.key })
+
+                  & wrangler r2 object put "$($env:NIGHTLY_BUCKET)/$archiveKey" --file="$archivePath" --content-type="application/zip" --remote
+                  if ($LASTEXITCODE -ne 0) {
+                    throw 'Failed to upload nightly archive to R2 using Wrangler.'
+                  }
+
+                  foreach ($deleteKey in $deleteKeys) {
+                    & wrangler r2 object delete "$($env:NIGHTLY_BUCKET)/$deleteKey" --remote
+                    if ($LASTEXITCODE -ne 0) {
+                      throw "Failed to delete archived nightly object '$deleteKey' from R2 using Wrangler."
+                    }
+                  }
+
+                  $versionPayload = @{
+                    latest = $version
+                    published = $publishedAt
+                    url = $downloadUrl
+                    artifacts = $retainedArtifacts
+                  } | ConvertTo-Json -Compress
+                  $versionPayload | Set-Content -Path version.json -Encoding utf8
+
+                  & wrangler r2 object put "$($env:NIGHTLY_BUCKET)/$versionKey" --file="version.json" --content-type="application/json" --remote
+                  if ($LASTEXITCODE -ne 0) {
+                    throw 'Failed to upload nightly metadata to R2 using Wrangler.'
+                  }
+
+                  "version=$version" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+                  "download-url=$downloadUrl" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+            - name: Notify Discord
+              shell: pwsh
+              env:
+                  DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+                  NIGHTLY_VERSION: ${{ steps.metadata.outputs.version }}
+                  NIGHTLY_DOWNLOAD_URL: ${{ steps.metadata.outputs.download-url }}
+              run: |
+                  if ([string]::IsNullOrWhiteSpace($env:DISCORD_WEBHOOK)) {
+                    Write-Host 'DISCORD_WEBHOOK is not configured, skipping notification.'
+                    exit 0
+                  }
+
+                  $commitLines = git log --no-merges --oneline -10
+                  $formattedCommits = foreach ($line in $commitLines) {
+                    if ($line -match '^([\da-f]{7,})\s(\w+)\((.+)\)(.+)$') {
+                      $sha = $Matches[1]
+                      $type = $Matches[2]
+                      $scope = $Matches[3]
+                      $subject = $Matches[4].Trim()
+                      "* **$type**(*$scope*) $subject [$sha](https://github.com/${{ github.repository }}/commit/$sha)"
+                    }
+                    else {
+                      "* $line"
+                    }
+                  }
+
+                  $description = "**Last 10 commits**`n`n$($formattedCommits -join "`n")"
+                  $payload = @{
+                    embeds = @(
+                      @{
+                        author = @{
+                          name = 'Beta Build'
+                          icon_url = 'https://soundswitch.aaflalo.me/img/beta.png'
+                        }
+                        title = "New Build: $($env:NIGHTLY_VERSION)"
+                        url = $env:NIGHTLY_DOWNLOAD_URL
+                        color = 255
+                        description = $description
+                        timestamp = (Get-Date).ToUniversalTime().ToString('o')
+                      }
+                    )
+                  } | ConvertTo-Json -Depth 10
+
+                  Invoke-RestMethod -Method Post -Uri $env:DISCORD_WEBHOOK -ContentType 'application/json' -Body $payload
+            - name: Upload nightly metadata
+              uses: actions/upload-artifact@v4
+              with:
+                  name: nightly-metadata
+                  path: version.json
+
+    nightly-sentry:
+        concurrency:
+            group: ${{ github.workflow }}-${{ github.ref }}-sentry
+            cancel-in-progress: true
+        needs: publish-nightly
+        runs-on: ubuntu-latest
+        if: needs.publish-nightly.result == 'success'
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v6
+              with:
+                  fetch-depth: 0
+            - name: Sentry Release
+              uses: getsentry/action-release@v3.5.0
+              env:
+                  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+                  SENTRY_ORG: ${{ env.SENTRY_NAME }}
+                  SENTRY_PROJECT: ${{ env.SENTRY_NAME }}
+              with:
+                  environment: Nightly
+                  release: "${{ env.PROJECT_NAME }}@${{ needs.publish-nightly.outputs.version }}"

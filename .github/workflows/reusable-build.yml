@@ -1,0 +1,146 @@
+name: Reusable .NET Build
+
+on:
+    workflow_call:
+        inputs:
+            configuration:
+                required: true
+                type: string
+            runtime:
+                required: false
+                type: string
+                default: ""
+            publish:
+                required: false
+                type: boolean
+                default: false
+            run-tests:
+                required: false
+                type: boolean
+                default: true
+            upload-test-results:
+                required: false
+                type: boolean
+                default: true
+            update-nightly-version:
+                required: false
+                type: boolean
+                default: false
+            publish-artifact-name:
+                required: false
+                type: string
+                default: ""
+        outputs:
+            framework:
+                value: ${{ jobs.detect-framework.outputs.framework }}
+            dotnet-version:
+                value: ${{ jobs.detect-framework.outputs.dotnet-version }}
+            nightly-version:
+                value: ${{ jobs.build.outputs.nightly-version }}
+
+env:
+    DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+    PROJECT_NAME: SoundSwitch
+
+jobs:
+    detect-framework:
+        runs-on: ubuntu-latest
+        outputs:
+            framework: ${{ steps.framework.outputs.framework }}
+            dotnet-version: ${{ steps.framework.outputs.dotnet-version }}
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v6
+            - name: Detect target framework and SDK version
+              id: framework
+              shell: pwsh
+              run: |
+                  [xml]$project = Get-Content "${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.csproj"
+                  $framework = $project.Project.PropertyGroup.TargetFramework | Select-Object -First 1
+                  if ([string]::IsNullOrWhiteSpace($framework)) {
+                    throw "Unable to determine TargetFramework from ${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.csproj"
+                  }
+
+                  $match = [System.Text.RegularExpressions.Regex]::Match($framework, '^net(?<major>\d+)\.(?<minor>\d+)')
+                  if (-not $match.Success) {
+                    throw "Unable to derive .NET SDK version from TargetFramework '$framework'"
+                  }
+
+                  $dotnetVersion = "{0}.{1}.x" -f $match.Groups['major'].Value, $match.Groups['minor'].Value
+                  "framework=$framework" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+                  "dotnet-version=$dotnetVersion" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+
+    build:
+        needs: detect-framework
+        runs-on: windows-latest
+        outputs:
+            nightly-version: ${{ steps.nightly-version.outputs.version }}
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v6
+              with:
+                  fetch-depth: 0
+            - name: Setup .NET
+              uses: actions/setup-dotnet@v5
+              with:
+                  dotnet-version: ${{ needs.detect-framework.outputs.dotnet-version }}
+                  cache: true
+                  cache-dependency-path: Directory.Packages.props
+            - name: Restore
+              shell: pwsh
+              env:
+                  DOTNET_RUNTIME: ${{ inputs.runtime }}
+              run: |
+                  $arguments = @('restore')
+                  if ($env:DOTNET_RUNTIME) {
+                    $arguments += @('-r', $env:DOTNET_RUNTIME)
+                  }
+
+                  dotnet @arguments
+            - name: Fetch tags
+              if: inputs.update-nightly-version
+              shell: pwsh
+              run: git fetch --tags --force
+            - name: Calculate nightly version
+              if: inputs.update-nightly-version
+              id: nightly-version
+              shell: pwsh
+              run: .\devVersion.ps1
+            - name: Build
+              if: ${{ !inputs.publish }}
+              shell: pwsh
+              run: dotnet build -c ${{ inputs.configuration }} --no-restore ${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj
+            - name: Test
+              if: inputs.run-tests
+              shell: pwsh
+              run: dotnet test -c ${{ inputs.configuration }} --no-restore --logger trx --results-directory "TestResults-${{ needs.detect-framework.outputs.dotnet-version }}"
+            - name: Publish
+              if: inputs.publish
+              shell: pwsh
+              env:
+                  DOTNET_RUNTIME: ${{ inputs.runtime }}
+              run: |
+                  $arguments = @(
+                    'publish',
+                    '-c', '${{ inputs.configuration }}',
+                    '--no-restore',
+                    '${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj'
+                  )
+
+                  if ($env:DOTNET_RUNTIME) {
+                    $arguments += @('-r', $env:DOTNET_RUNTIME)
+                  }
+
+                  dotnet @arguments
+            - name: Upload test results
+              if: ${{ always() && inputs.run-tests && inputs.upload-test-results }}
+              uses: actions/upload-artifact@v4
+              with:
+                  name: dotnet-results-${{ inputs.configuration }}-${{ needs.detect-framework.outputs.dotnet-version }}
+                  path: TestResults-${{ needs.detect-framework.outputs.dotnet-version }}
+            - name: Upload publish output
+              if: ${{ inputs.publish && inputs.publish-artifact-name != '' }}
+              uses: actions/upload-artifact@v4
+              with:
+                  name: ${{ inputs.publish-artifact-name }}
+                  path: SoundSwitch\bin\${{ inputs.configuration }}\${{ needs.detect-framework.outputs.framework }}\${{ inputs.runtime }}\publish\*
