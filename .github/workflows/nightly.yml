@@ -59,9 +59,9 @@ jobs:
               id: metadata
               shell: pwsh
               env:
-                  CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-                  CF_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-                  NIGHTLY_BUCKET: ${{ secrets.NIGHTLY_BUCKET }}
+                  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+                  CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+                  NIGHTLY_BUCKET: ${{ vars.NIGHTLY_BUCKET }}
                   NIGHTLY_PUBLIC_BASE_URL: ${{ vars.NIGHTLY_PUBLIC_BASE_URL }}
                   NIGHTLY_VERSION: ${{ needs.build.outputs.nightly-version }}
                   WRANGLER_SEND_METRICS: false
@@ -71,12 +71,12 @@ jobs:
                     throw 'Nightly version was not produced by the build workflow.'
                   }
 
-                  if ([string]::IsNullOrWhiteSpace($env:CF_API_TOKEN)) {
-                    throw 'CF_API_TOKEN is not configured.'
+                  if ([string]::IsNullOrWhiteSpace($env:CLOUDFLARE_API_TOKEN)) {
+                    throw 'CLOUDFLARE_API_TOKEN is not configured.'
                   }
 
-                  if ([string]::IsNullOrWhiteSpace($env:CF_ACCOUNT_ID)) {
-                    throw 'CF_ACCOUNT_ID is not configured.'
+                  if ([string]::IsNullOrWhiteSpace($env:CLOUDFLARE_ACCOUNT_ID)) {
+                    throw 'CLOUDFLARE_ACCOUNT_ID is not configured.'
                   }
 
                   if ([string]::IsNullOrWhiteSpace($env:NIGHTLY_BUCKET)) {
