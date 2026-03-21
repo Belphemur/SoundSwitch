@@ -576,7 +576,7 @@ Restore the state of the system when the application is closed.</value>
     <value>Persistent</value>
   </data>
   <data name="switchDevice" xml:space="preserve">
-    <value>Switch device</value>
+    <value>Switch playback device</value>
   </data>
   <data name="switchRecordingDevice" xml:space="preserve">
     <value>Switch recording device</value>

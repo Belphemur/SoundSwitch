@@ -30,10 +30,10 @@ public class IconDoubleClickFactory() : AbstractFactory<IconDoubleClick, IIconDo
     private static readonly IEnumImplList<IconDoubleClick, IIconDoubleClick> DoubleClick = new EnumImplList
         <IconDoubleClick, IIconDoubleClick>
         {
-            new IconDoubleClickSwitchDevice(),
+            new IconDoubleClickSwitchPlaybackDevice(),
+            new IconDoubleClickSwitchRecordingDevice(),
             new IconDoubleClickSwitchProfile(),
             new IconDoubleClickOpenSettings(),
-            new IconDoubleClickSwitchRecordingDevice()
         };
 
     /// <summary>
