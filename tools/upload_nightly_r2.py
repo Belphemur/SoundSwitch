@@ -11,7 +11,6 @@ from typing import Any, cast
 from urllib import error, request
 
 import boto3  # type: ignore[import-not-found]
-from botocore.exceptions import ClientError  # type: ignore[import-not-found]
 
 
 @dataclass
@@ -40,15 +39,13 @@ def parse_args() -> argparse.Namespace:
 
 
 def create_client(args: argparse.Namespace) -> Any:
-    return cast(
-        Any,
-        boto3.client(
-            service_name="s3",
-            endpoint_url=f"https://{args.account_id}.r2.cloudflarestorage.com",
-            aws_access_key_id=args.access_key_id,
-            aws_secret_access_key=args.secret_access_key,
-            region_name="auto",
-        ),
+    boto3_module = cast(Any, boto3)
+    return boto3_module.client(
+        service_name="s3",
+        endpoint_url=f"https://{args.account_id}.r2.cloudflarestorage.com",
+        aws_access_key_id=args.access_key_id,
+        aws_secret_access_key=args.secret_access_key,
+        region_name="auto",
     )
 
 
@@ -59,32 +56,51 @@ def load_existing_artifacts(
         response = cast(
             dict[str, Any], client.get_object(Bucket=bucket, Key=version_key)
         )
-    except ClientError as error:
-        error_response = cast(dict[str, Any], error.response)
-        error_code = cast(dict[str, Any], error_response.get("Error", {})).get("Code")
+    except Exception as error:
+        error_response = getattr(error, "response", None)
+        error_code: str | None = None
+        if isinstance(error_response, dict):
+            typed_error_response = cast(dict[str, object], error_response)
+            error_details = (
+                typed_error_response["Error"]
+                if "Error" in typed_error_response
+                else None
+            )
+            if isinstance(error_details, dict):
+                typed_error_details = cast(dict[str, object], error_details)
+                error_code_value = (
+                    typed_error_details["Code"]
+                    if "Code" in typed_error_details
+                    else None
+                )
+                if isinstance(error_code_value, str):
+                    error_code = error_code_value
         if error_code in {"NoSuchKey", "404", "NotFound"}:
             return []
         raise
 
-    body_stream = cast(Any, response["Body"])
+    body_stream = response["Body"]
     body = cast(bytes, body_stream.read()).decode("utf-8")
     metadata = cast(dict[str, Any], json.loads(body))
 
-    artifacts = metadata.get("artifacts")
+    artifacts = cast(list[object] | None, metadata.get("artifacts"))
     if isinstance(artifacts, list):
         result: list[Artifact] = []
         for artifact in artifacts:
             if not isinstance(artifact, dict):
                 continue
-            key = str(artifact.get("key", "")).strip()
+
+            artifact_map = cast(dict[str, Any], artifact)
+            key = str(artifact_map.get("key", "")).strip()
             if not key:
                 continue
+
             result.append(
                 Artifact(
                     key=key,
-                    version=str(artifact.get("version", "")),
-                    published=str(artifact.get("published", "")),
-                    url=str(artifact.get("url", "")),
+                    version=str(artifact_map.get("version", "")),
+                    published=str(artifact_map.get("published", "")),
+                    url=str(artifact_map.get("url", "")),
                 )
             )
         return result
@@ -175,7 +191,7 @@ def send_discord_notification(
     description = "**Last 10 commits**\n\n" + format_commit_lines(
         get_recent_commits(commit_count), repository
     )
-    payload = {
+    payload: dict[str, Any] = {
         "embeds": [
             {
                 "author": {
