@@ -120,7 +120,7 @@ jobs:
                     --repository "${{ github.repository }}" `
                     --prefix nightly
             - name: Upload nightly metadata
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v7
               with:
                   name: nightly-metadata
                   path: version.json
