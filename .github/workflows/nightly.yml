@@ -42,7 +42,7 @@ jobs:
               with:
                   fetch-depth: 0
             - name: Download published output
-              uses: actions/download-artifact@v4
+              uses: actions/download-artifact@v8
               with:
                   name: nightly-package
                   path: nightly-package
