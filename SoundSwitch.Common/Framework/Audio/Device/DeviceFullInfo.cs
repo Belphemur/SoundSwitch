@@ -5,6 +5,7 @@ using NAudio.CoreAudioApi;
 using Newtonsoft.Json;
 using Serilog;
 using SoundSwitch.Common.Framework.Audio.Icon;
+using SoundSwitch.Common.Framework.Icon;
 
 namespace SoundSwitch.Common.Framework.Audio.Device
 {
@@ -19,10 +20,10 @@ namespace SoundSwitch.Common.Framework.Audio.Device
         private bool _isVolumeHandlerSubscribed = false;
 
         [JsonIgnore]
-        public System.Drawing.Icon LargeIcon => AudioDeviceIconExtractor.ExtractIconFromPath(IconPath, Type, true);
+        public IconHandle LargeIcon => AudioDeviceIconExtractor.ExtractIconFromPath(IconPath, Type, true);
 
         [JsonIgnore]
-        public System.Drawing.Icon SmallIcon => AudioDeviceIconExtractor.ExtractIconFromPath(IconPath, Type, false);
+        public IconHandle SmallIcon => AudioDeviceIconExtractor.ExtractIconFromPath(IconPath, Type, false);
 
         [JsonIgnore]
         public int Volume { get; private set; } = 0;

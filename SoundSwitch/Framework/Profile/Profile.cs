@@ -8,6 +8,7 @@ using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Common.Framework.Audio.Icon;
+using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Properties;
 
 namespace SoundSwitch.Framework.Profile;
@@ -15,6 +16,8 @@ namespace SoundSwitch.Framework.Profile;
 public class Profile : IEquatable<Profile>, IDisposable
 {
     private bool? _restoreDevices;
+
+    private static readonly IconHandle DefaultProfileIcon = IconExtractor.CreatePermanent(Resources.profile);
 
     internal class DeviceRoleWrapper
     {
@@ -42,14 +45,14 @@ public class Profile : IEquatable<Profile>, IDisposable
     public bool NotifyOnActivation { get; set; } = true;
 
     [JsonIgnore]
-    public Icon Icon
+    public IconHandle Icon
     {
         get
         {
             var device = AudioSwitcher.Instance.GetDevice(Devices.First().DeviceInfo.Id);
             if (device == null)
             {
-                return Resources.profile;
+                return DefaultProfileIcon.Acquire();
             }
 
             return AudioSwitcher.Instance.InteractWithDevice(device, mmDevice => AudioDeviceIconExtractor.ExtractIconFromPath(mmDevice.IconPath, mmDevice.DataFlow, true));

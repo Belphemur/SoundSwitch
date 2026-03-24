@@ -61,7 +61,8 @@ public abstract class AbstractIconChanger : IIconChanger
         }
 
 
-        trayIcon.ReplaceIcon(deviceInfo.SmallIcon);
+        using var iconHandle = deviceInfo.SmallIcon;
+        trayIcon.ReplaceIcon(iconHandle.Icon);
         log.Information("Icon replaced");
     }
 }

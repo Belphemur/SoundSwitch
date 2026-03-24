@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
  * Copyright (C) 2015-2017 Antoine Aflalo
  *
  * This program is free software; you can redistribute it and/or
@@ -14,103 +14,59 @@
 
 #nullable enable
 using System;
-using Microsoft.Extensions.Caching.Memory;
 using NAudio.CoreAudioApi;
 using Serilog;
+using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Common.Properties;
 
 namespace SoundSwitch.Common.Framework.Audio.Icon
 {
+    /// <summary>
+    /// Extracts icons for audio devices with DataFlow-specific fallback defaults.
+    /// Delegates caching and GDI reference counting to <see cref="IconExtractor"/>.
+    /// </summary>
     public class AudioDeviceIconExtractor
     {
-        private static readonly System.Drawing.Icon DefaultSpeakers = Resources.defaultSpeakers;
-        private static readonly System.Drawing.Icon DefaultMicrophone = Resources.defaultMicrophone;
-
-        private static readonly IMemoryCache IconCache = new MemoryCache(new MemoryCacheOptions
-        {
-            SizeLimit = 500
-        });
-
-        private static string GetKey(MMDevice audioDevice, bool largeIcon)
-        {
-            return $"{audioDevice.IconPath}-${largeIcon}";
-        }
+        private static readonly IconHandle DefaultSpeakersHandle = IconExtractor.CreatePermanent(Resources.defaultSpeakers);
+        private static readonly IconHandle DefaultMicrophoneHandle = IconExtractor.CreatePermanent(Resources.defaultMicrophone);
 
         /// <summary>
-        /// Extract an Icon form a given path
+        /// Extract an icon from an audio device icon path, falling back to a DataFlow-specific
+        /// default icon on failure.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="dataFlow"></param>
-        /// <param name="largeIcon"></param>
-        /// <returns></returns>
-        public static System.Drawing.Icon ExtractIconFromPath(string path, DataFlow dataFlow, bool largeIcon)
+        /// <param name="path">Audio device icon path (a <c>.ico</c> file or <c>dllPath,iconIndex</c>).</param>
+        /// <param name="dataFlow">Data flow of the device, used to select the fallback icon.</param>
+        /// <param name="largeIcon">When <see langword="true"/>, extract a 32×32 icon; otherwise 16×16.</param>
+        /// <returns>
+        /// An <see cref="IconHandle"/> the caller <strong>must dispose</strong> when done.
+        /// </returns>
+        public static IconHandle ExtractIconFromPath(string path, DataFlow dataFlow, bool largeIcon)
         {
-            System.Drawing.Icon? ExtractAssociatedIcon()
-            {
-                if (path.EndsWith(".ico"))
-                {
-                    return System.Drawing.Icon.ExtractAssociatedIcon(path);
-                }
-
-                var iconInfo = path.Split(',');
-                var dllPath = iconInfo[0];
-                var iconIndex = int.Parse(iconInfo[1]);
-                return System.Drawing.Icon.ExtractIcon(dllPath, iconIndex, largeIcon ? 32 : 16);
-            }
-
-            var key = $"{path}-${largeIcon}";
-
-            System.Drawing.Icon? icon;
             try
             {
-                if (IconCache.TryGetValue(key, out icon) && icon != null && icon.Handle != IntPtr.Zero)
-                    return icon;
-            }
-            catch (ObjectDisposedException)
-            {
-                // The icon has been disposed, we need to remove it from the cache
-                IconCache.Remove(key);
-            }
-
-            try
-            {
-                icon = ExtractAssociatedIcon();
-                if (icon == null)
-                {
-                    throw new ArgumentException("Can't find icon");
-                }
-
-                using var entry = IconCache.CreateEntry(key);
-                entry.SetValue(icon)
-                    .SetSize(largeIcon ? 2 : 1)
-                    .SetSlidingExpiration(TimeSpan.FromMinutes(30))
-                    .SetPriority(largeIcon ? CacheItemPriority.High : CacheItemPriority.Low)
-                    .RegisterPostEvictionCallback((o, value, reason, state) =>
-                    {
-                        if (value is not IDisposable disposable) return;
-                        disposable.Dispose();
-                    });
-                return icon;
+                return IconExtractor.ExtractFromPath(path, largeIcon);
             }
             catch (Exception e)
             {
                 Log.Warning(e, "Can't extract icon from {path}", path);
                 return dataFlow switch
                 {
-                    DataFlow.Capture => DefaultMicrophone,
-                    DataFlow.Render => DefaultSpeakers,
+                    DataFlow.Capture => DefaultMicrophoneHandle.Acquire(),
+                    DataFlow.Render => DefaultSpeakersHandle.Acquire(),
                     _ => throw new ArgumentOutOfRangeException()
                 };
             }
         }
 
         /// <summary>
-        ///     Extract the Icon out of an AudioDevice
+        /// Extract the icon out of an <see cref="MMDevice"/>.
         /// </summary>
         /// <param name="audioDevice"></param>
         /// <param name="largeIcon"></param>
-        /// <returns></returns>
-        public static System.Drawing.Icon ExtractIconFromAudioDevice(MMDevice audioDevice, bool largeIcon)
+        /// <returns>
+        /// An <see cref="IconHandle"/> the caller <strong>must dispose</strong> when done.
+        /// </returns>
+        public static IconHandle ExtractIconFromAudioDevice(MMDevice audioDevice, bool largeIcon)
         {
             return ExtractIconFromPath(audioDevice.IconPath, audioDevice.DataFlow, largeIcon);
         }

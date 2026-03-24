@@ -193,7 +193,8 @@ public class NotificationManager(IAppModel model)
             try
             {
                 var process = Process.GetProcessById((int)processId.Value);
-                icon = IconExtractor.Extract(process.MainModule?.FileName, 0, true).ToBitmap();
+                using var iconHandle = IconExtractor.Extract(process.MainModule?.FileName, 0, true);
+                icon = iconHandle.ToBitmap();
             }
             catch (Exception)
             {
@@ -206,7 +207,8 @@ public class NotificationManager(IAppModel model)
             var device = profile.Devices.Select(wrapper => CheckDeviceAvailable(wrapper.DeviceInfo)).FirstOrDefault(info => info != null);
             if (device != null)
             {
-                icon = device.LargeIcon.ToBitmap();
+                using var iconHandle = device.LargeIcon;
+                icon = iconHandle.ToBitmap();
             }
         }
 

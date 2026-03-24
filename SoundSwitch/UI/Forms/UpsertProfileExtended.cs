@@ -89,35 +89,27 @@ public partial class UpsertProfileExtended : Form
     private void InitRecordingPlaybackComboBoxes(IEnumerable<DeviceFullInfo> playbacks,
         IEnumerable<DeviceFullInfo> recordings)
     {
-        var recordingItems = recordings
-            .OrderBy(info => info.State)
-            .ThenBy(info => info.NameClean)
-            .Select(info => new IconTextComboBox.DropDownItem
-                {
-                    Icon = info.SmallIcon,
-                    Tag = info,
-                    Text = info.NameClean
-                }
-            )
-            .ToArray();
+        // Each combo box gets its own set of DropDownItem instances so that when one control
+        // replaces its DataSource (and disposes old items), the other control's handles
+        // are not affected.
+        static IconTextComboBox.DropDownItem[] BuildItems(IEnumerable<DeviceFullInfo> devices) =>
+            devices
+                .OrderBy(info => info.State)
+                .ThenBy(info => info.NameClean)
+                .Select(info => new IconTextComboBox.DropDownItem
+                    {
+                        IconHandle = info.SmallIcon,
+                        Tag = info,
+                        Text = info.NameClean
+                    }
+                )
+                .ToArray();
 
-        var playbackItems = playbacks
-            .OrderBy(info => info.State)
-            .ThenBy(info => info.NameClean)
-            .Select(info => new IconTextComboBox.DropDownItem
-                {
-                    Icon = info.SmallIcon,
-                    Tag = info,
-                    Text = info.NameClean
-                }
-            )
-            .ToArray();
+        communicationComboBox.DataSource = BuildItems(playbacks);
+        playbackComboBox.DataSource = BuildItems(playbacks);
 
-        communicationComboBox.DataSource = playbackItems;
-        playbackComboBox.DataSource = playbackItems.ToArray();
-
-        recordingComboBox.DataSource = recordingItems;
-        communicationRecordingComboBox.DataSource = recordingItems.ToArray();
+        recordingComboBox.DataSource = BuildItems(recordings);
+        communicationRecordingComboBox.DataSource = BuildItems(recordings);
 
         communicationComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(Profile.Communication), true, DataSourceUpdateMode.OnPropertyChanged);
         recordingComboBox.DataBindings.Add(nameof(ComboBox.SelectedValue), _profile, nameof(Profile.Recording), true, DataSourceUpdateMode.OnPropertyChanged);

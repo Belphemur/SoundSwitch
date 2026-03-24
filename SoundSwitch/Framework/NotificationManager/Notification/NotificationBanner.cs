@@ -45,9 +45,10 @@ internal class NotificationBanner : INotification
 
     public void NotifyDefaultChanged(DeviceFullInfo audioDevice)
     {
+        using var iconHandle = audioDevice.LargeIcon;
         var toastData = new BannerData
         {
-            Image = audioDevice.LargeIcon.ToBitmap(),
+            Image = iconHandle.ToBitmap(),
             Text = audioDevice.NameClean,
             Position = BannerPosition,
             Ttl = Configuration.Ttl,
