@@ -82,7 +82,10 @@ namespace SoundSwitch.Audio.Manager
                             _pendingProcesses.Add(pid);
                             _logger.Verbose("Detected new process {ProcessName} ({PID}), waiting for next iteration", process.ProcessName, pid);
                         }
-                        catch { }
+                        catch (Exception ex)
+                        {
+                            _logger.Debug(ex, "Failed to check if process {PID} is pending", pid);
+                        }
                     }
                 }
 
@@ -102,7 +105,11 @@ namespace SoundSwitch.Audio.Manager
                         {
                             var processName = process.ProcessName;
                             var processPath = string.Empty;
-                            try { processPath = process.MainModule?.FileName ?? string.Empty; } catch { }
+                            try { processPath = process.MainModule?.FileName ?? string.Empty; } 
+                            catch (Exception ex) 
+                            { 
+                                _logger.Debug(ex, "Failed to get process path for PID {PID}", pid); 
+                            }
 
                             events.Add(new Event((uint)pid, processName, processPath, process.MainWindowTitle));
                         }

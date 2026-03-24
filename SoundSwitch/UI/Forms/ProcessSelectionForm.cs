@@ -7,6 +7,7 @@ using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Localization;
+using Serilog;
 
 namespace SoundSwitch.UI.Forms;
 
@@ -16,6 +17,7 @@ public partial class ProcessSelectionForm : Form
     public string SelectedProcessPath { get; private set; } = string.Empty;
     public string SelectedWindowTitle { get; private set; } = string.Empty;
 
+    private static readonly ILogger _logger = Log.ForContext<ProcessSelectionForm>();
     private List<ProcessInfo> _allProcesses;
 
     public ProcessSelectionForm()
@@ -74,7 +76,11 @@ public partial class ProcessSelectionForm : Form
                 if (p.Id <= 4) continue;
 
                 var path = string.Empty;
-                try { path = p.MainModule?.FileName ?? string.Empty; } catch { }
+                try { path = p.MainModule?.FileName ?? string.Empty; } 
+                catch (Exception ex)
+                {
+                    _logger.Debug(ex, "Failed to get process path for {ProcessName} (PID: {PID})", p.ProcessName, p.Id);
+                }
 
                 var pid = (uint)p.Id;
 
@@ -93,7 +99,11 @@ public partial class ProcessSelectionForm : Form
                 System.Drawing.Image icon = SoundSwitch.Properties.Resources.program.ToBitmap();
                 if (!string.IsNullOrEmpty(path) && System.IO.File.Exists(path))
                 {
-                    try { icon = IconExtractor.Extract(path, 0, true).ToBitmap(); } catch { }
+                    try { icon = IconExtractor.Extract(path, 0, true).ToBitmap(); } 
+                    catch (Exception ex)
+                    {
+                        _logger.Debug(ex, "Failed to extract icon for {Path}", path);
+                    }
                 }
 
                 _allProcesses.Add(new ProcessInfo
@@ -106,7 +116,10 @@ public partial class ProcessSelectionForm : Form
                     InputDevice = inputName
                 });
             }
-            catch { }
+            catch (Exception ex)
+            {
+                _logger.Debug(ex, "Failed to load individual process info for PID {PID}", p.Id);
+            }
         }
 
         // Only show one row per process/path/window combination
