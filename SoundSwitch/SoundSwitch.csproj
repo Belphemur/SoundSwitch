@@ -49,7 +49,6 @@
     <PackageReference Include="JetBrains.Annotations" />
     <PackageReference Include="Job.Scheduler" />
     <PackageReference Include="Markdig" />
-    <PackageReference Include="Microsoft.CSharp" />
     <PackageReference Include="NuGet.Versioning" />
     <PackageReference Include="Polly.Core" />
     <PackageReference Include="RailSharp" />
@@ -60,13 +59,8 @@
     <PackageReference Include="Serilog.Formatting.Compact" />
     <PackageReference Include="Serilog.Sinks.File" />
     <PackageReference Include="SerilogTraceListener" />
-    <PackageReference Include="System.Diagnostics.TraceSource" />
-    <PackageReference Include="System.Drawing.Common" />
     <PackageReference Include="System.Management" />
-    <PackageReference Include="System.Net.Http" />
     <PackageReference Include="System.Reactive" />
-    <PackageReference Include="System.Resources.Extensions" />
-    <PackageReference Include="System.Text.RegularExpressions" />
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)' == 'Debug'">
     <PackageReference Include="Serilog.Sinks.Console" />
