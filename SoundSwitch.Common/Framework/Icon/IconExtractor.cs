@@ -209,7 +209,7 @@ namespace SoundSwitch.Common.Framework.Icon
             {
                 return GetOrCreate(key, largeIcon, () =>
                 {
-                    if (path.EndsWith(".ico"))
+                    if (path.EndsWith(".ico", StringComparison.OrdinalIgnoreCase))
                         return System.Drawing.Icon.ExtractAssociatedIcon(path)
                                ?? throw new IconExtractionException($"Can't extract icon from .ico file: {path}");
 

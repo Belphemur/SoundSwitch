@@ -60,8 +60,9 @@ public class IconTextComboBox : ComboBox
         get => (DropDownItem[]) base.DataSource;
         set
         {
-            // Dispose old items before replacing the data source.
             var old = base.DataSource as DropDownItem[];
+            // Avoid disposing items that are still being assigned to the same control.
+            if (ReferenceEquals(old, value)) return;
             base.DataSource = value;
             if (old != null)
             {

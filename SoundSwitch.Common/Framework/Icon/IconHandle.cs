@@ -15,6 +15,7 @@
 #nullable enable
 using System;
 using System.Drawing;
+using System.Threading;
 
 namespace SoundSwitch.Common.Framework.Icon
 {
@@ -39,7 +40,7 @@ namespace SoundSwitch.Common.Framework.Icon
     public sealed class IconHandle : IDisposable
     {
         private readonly IconExtractor.CachedEntry _entry;
-        private volatile bool _disposed;
+        private int _disposed; // 0 = not disposed, 1 = disposed; use Interlocked for thread safety
 
         internal IconHandle(IconExtractor.CachedEntry entry)
         {
@@ -55,7 +56,7 @@ namespace SoundSwitch.Common.Framework.Icon
         {
             get
             {
-                ObjectDisposedException.ThrowIf(_disposed, this);
+                ObjectDisposedException.ThrowIf(_disposed != 0, this);
                 return _entry.Icon;
             }
         }
@@ -77,15 +78,14 @@ namespace SoundSwitch.Common.Framework.Icon
         /// <exception cref="ObjectDisposedException">Thrown when this handle has already been disposed.</exception>
         public IconHandle Acquire()
         {
-            ObjectDisposedException.ThrowIf(_disposed, this);
+            ObjectDisposedException.ThrowIf(_disposed != 0, this);
             return _entry.AcquireHandle();
         }
 
         /// <inheritdoc />
         public void Dispose()
         {
-            if (_disposed) return;
-            _disposed = true;
+            if (Interlocked.Exchange(ref _disposed, 1) != 0) return;
             _entry.Release();
             GC.SuppressFinalize(this);
         }

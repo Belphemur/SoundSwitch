@@ -385,8 +385,8 @@ public sealed partial class SettingsForm : Form
         {
             foreach (ListViewItem.ListViewSubItem subItem in item.SubItems)
             {
-                if (subItem.Tag is IDisposable disposable)
-                    disposable.Dispose();
+                if (subItem.Tag is IconHandle iconHandle)
+                    iconHandle.Dispose();
             }
         }
     }
