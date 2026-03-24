@@ -1,12 +1,14 @@
-﻿using System.ComponentModel;
+using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using SoundSwitch.Common.Framework.Icon;
 
 namespace SoundSwitch.UI.Component;
 
 public class IconTextComboBox : ComboBox
 {
-    public class DropDownItem
+    public class DropDownItem : IDisposable
     {
         public static DropDownItem Empty = new DropDownItem
         {
@@ -19,9 +21,10 @@ public class IconTextComboBox : ComboBox
         public object Tag { get; set; }
 
         /// <summary>
-        /// Icon to use in the dropdown
+        /// Reference-counted GDI icon handle for this item.
+        /// The <see cref="DropDownItem"/> owns this handle and disposes it in <see cref="Dispose"/>.
         /// </summary>
-        public Icon Icon { get; set; }
+        public IconHandle IconHandle { get; set; }
 
         /// <summary>
         /// Text to use in the dropdown
@@ -37,6 +40,11 @@ public class IconTextComboBox : ComboBox
         {
             return (T) Tag;
         }
+
+        public void Dispose()
+        {
+            IconHandle?.Dispose();
+        }
     }
 
     public IconTextComboBox()
@@ -50,7 +58,17 @@ public class IconTextComboBox : ComboBox
     public new DropDownItem[] DataSource
     {
         get => (DropDownItem[]) base.DataSource;
-        set => base.DataSource = value;
+        set
+        {
+            // Dispose old items before replacing the data source.
+            var old = base.DataSource as DropDownItem[];
+            base.DataSource = value;
+            if (old != null)
+            {
+                foreach (var item in old)
+                    item.Dispose();
+            }
+        }
     }
 
     // Draws the items into the ColorSelector object
@@ -68,9 +86,16 @@ public class IconTextComboBox : ComboBox
                 return;
             }
 
-            var icon = item.Icon;
+            var iconHandle = item.IconHandle;
+            if (iconHandle == null)
+            {
+                base.OnDrawItem(e);
+                return;
+            }
+
             e.DrawBackground();
 
+            var icon = iconHandle.Icon;
             var imageRect = new Rectangle(e.Bounds.X, e.Bounds.Y, e.Bounds.Height, e.Bounds.Height);
             e.Graphics.DrawIcon(icon, imageRect);
 

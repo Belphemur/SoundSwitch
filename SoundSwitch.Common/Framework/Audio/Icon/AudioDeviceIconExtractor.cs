@@ -23,23 +23,24 @@ namespace SoundSwitch.Common.Framework.Audio.Icon
 {
     /// <summary>
     /// Extracts icons for audio devices with DataFlow-specific fallback defaults.
-    /// Delegates caching and GDI handle management to <see cref="IconExtractor"/>.
+    /// Delegates caching and GDI reference counting to <see cref="IconExtractor"/>.
     /// </summary>
     public class AudioDeviceIconExtractor
     {
-        private static readonly System.Drawing.Icon DefaultSpeakers = Resources.defaultSpeakers;
-        private static readonly System.Drawing.Icon DefaultMicrophone = Resources.defaultMicrophone;
+        private static readonly IconHandle DefaultSpeakersHandle = IconExtractor.CreatePermanent(Resources.defaultSpeakers);
+        private static readonly IconHandle DefaultMicrophoneHandle = IconExtractor.CreatePermanent(Resources.defaultMicrophone);
 
         /// <summary>
-        ///     Extract an icon from an audio device icon path, falling back to a DataFlow-specific
-        ///     default icon on failure.
-        ///     The returned icon is owned by the cache and must not be disposed by the caller.
+        /// Extract an icon from an audio device icon path, falling back to a DataFlow-specific
+        /// default icon on failure.
         /// </summary>
         /// <param name="path">Audio device icon path (a <c>.ico</c> file or <c>dllPath,iconIndex</c>).</param>
         /// <param name="dataFlow">Data flow of the device, used to select the fallback icon.</param>
-        /// <param name="largeIcon">When true, extract a large icon; otherwise a small icon.</param>
-        /// <returns>The device icon, or a default speaker/microphone icon on failure.</returns>
-        public static System.Drawing.Icon ExtractIconFromPath(string path, DataFlow dataFlow, bool largeIcon)
+        /// <param name="largeIcon">When <see langword="true"/>, extract a 32×32 icon; otherwise 16×16.</param>
+        /// <returns>
+        /// An <see cref="IconHandle"/> the caller <strong>must dispose</strong> when done.
+        /// </returns>
+        public static IconHandle ExtractIconFromPath(string path, DataFlow dataFlow, bool largeIcon)
         {
             try
             {
@@ -50,21 +51,22 @@ namespace SoundSwitch.Common.Framework.Audio.Icon
                 Log.Warning(e, "Can't extract icon from {path}", path);
                 return dataFlow switch
                 {
-                    DataFlow.Capture => DefaultMicrophone,
-                    DataFlow.Render => DefaultSpeakers,
+                    DataFlow.Capture => DefaultMicrophoneHandle.Acquire(),
+                    DataFlow.Render => DefaultSpeakersHandle.Acquire(),
                     _ => throw new ArgumentOutOfRangeException()
                 };
             }
         }
 
         /// <summary>
-        ///     Extract the Icon out of an AudioDevice.
-        ///     The returned icon is owned by the cache and must not be disposed by the caller.
+        /// Extract the icon out of an <see cref="MMDevice"/>.
         /// </summary>
         /// <param name="audioDevice"></param>
         /// <param name="largeIcon"></param>
-        /// <returns></returns>
-        public static System.Drawing.Icon ExtractIconFromAudioDevice(MMDevice audioDevice, bool largeIcon)
+        /// <returns>
+        /// An <see cref="IconHandle"/> the caller <strong>must dispose</strong> when done.
+        /// </returns>
+        public static IconHandle ExtractIconFromAudioDevice(MMDevice audioDevice, bool largeIcon)
         {
             return ExtractIconFromPath(audioDevice.IconPath, audioDevice.DataFlow, largeIcon);
         }

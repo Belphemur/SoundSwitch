@@ -61,6 +61,7 @@ namespace SoundSwitch.UI.Forms;
 public sealed partial class SettingsForm : Form
 {
     private static readonly Icon ResourceSettingsIcon = Resources.SettingsIcon;
+    private static readonly IconHandle FallbackAppIconHandle = IconExtractor.CreatePermanent(Resources.program);
 
     private readonly bool _loaded;
     private readonly IAudioDeviceLister _audioDeviceLister;
@@ -296,7 +297,7 @@ public sealed partial class SettingsForm : Form
         ListViewItem ProfileToListViewItem(Profile profile)
         {
             var listViewItem = new ListViewItem(profile.Name) { Tag = profile };
-            Icon appIcon = null;
+            IconHandle appIconHandle = null;
             DeviceFullInfo recording = null;
             DeviceFullInfo playback = null;
             DeviceFullInfo communication = null;
@@ -309,11 +310,11 @@ public sealed partial class SettingsForm : Form
             {
                 try
                 {
-                    appIcon = IconExtractor.Extract(applicationTrigger.ApplicationPath, 0, false);
+                    appIconHandle = IconExtractor.Extract(applicationTrigger.ApplicationPath, 0, false);
                 }
                 catch
                 {
-                    appIcon = Resources.program;
+                    appIconHandle = FallbackAppIconHandle.Acquire();
                 }
             }
 
@@ -344,7 +345,7 @@ public sealed partial class SettingsForm : Form
             listViewItem.SubItems.AddRange(new[]
             {
                 new ListViewItem.ListViewSubItem(listViewItem, applicationTrigger?.ApplicationPath.Split('\\').Last() ?? "")
-                    { Tag = appIcon },
+                    { Tag = appIconHandle },
                 new ListViewItem.ListViewSubItem(listViewItem, hotkeyTrigger?.HotKey.ToString() ?? ""),
                 new ListViewItem.ListViewSubItem(listViewItem, playback?.NameClean ?? profile.Playback?.ToString() ?? "")
                     { Tag = playback?.SmallIcon },
@@ -359,6 +360,7 @@ public sealed partial class SettingsForm : Form
             return listViewItem;
         }
 
+        DisposeProfileListViewIconHandles();
         profilesListView.Items.Clear();
 
         foreach (var profile in AppModel.Instance.ProfileManager.Profiles)
@@ -370,6 +372,23 @@ public sealed partial class SettingsForm : Form
         if (AppModel.Instance.ProfileManager.Profiles.Count <= 0) return;
         foreach (ColumnHeader column in profilesListView.Columns)
             column.Width = -2;
+    }
+
+    /// <summary>
+    /// Disposes all <see cref="IconHandle"/> objects stored in the profile list-view sub-item Tags.
+    /// Must be called before <c>profilesListView.Items.Clear()</c> so that GDI references are
+    /// released promptly.
+    /// </summary>
+    private void DisposeProfileListViewIconHandles()
+    {
+        foreach (ListViewItem item in profilesListView.Items)
+        {
+            foreach (ListViewItem.ListViewSubItem subItem in item.SubItems)
+            {
+                if (subItem.Tag is IDisposable disposable)
+                    disposable.Dispose();
+            }
+        }
     }
 
     private void PopulateAudioDevices()
@@ -472,6 +491,14 @@ public sealed partial class SettingsForm : Form
     }
 
     private void CloseButton_Click(object sender, EventArgs e) => Close();
+
+    protected override void OnFormClosed(FormClosedEventArgs e)
+    {
+        // Dispose all IconHandle objects stored in the profile list-view so GDI handles are
+        // released promptly rather than waiting for finalizer collection.
+        DisposeProfileListViewIconHandles();
+        base.OnFormClosed(e);
+    }
 
     private void TabControl_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -612,7 +639,10 @@ public sealed partial class SettingsForm : Form
     private void AddDeviceIconSmallImage(DeviceFullInfo device, ListView listView)
     {
         if (!listView.SmallImageList.Images.ContainsKey(device.IconPath))
-            listView.SmallImageList.Images.Add(device.IconPath, device.LargeIcon);
+        {
+            using var iconHandle = device.LargeIcon;
+            listView.SmallImageList.Images.Add(device.IconPath, iconHandle.Icon);
+        }
     }
 
     private void ListViewItemChecked(object sender, ItemCheckEventArgs e)
@@ -983,9 +1013,10 @@ public sealed partial class SettingsForm : Form
         positionCustomRadioButton.Checked = true;
 
         var audioDevice = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eConsole);
+        using var iconHandle = audioDevice.LargeIcon;
         var bannerData = new BannerData
         {
-            Image = audioDevice.LargeIcon.ToBitmap(),
+            Image = iconHandle.ToBitmap(),
             Title = SettingsStrings.customPositionBanner_title,
             Text = SettingsStrings.customPositionBanner_text,
             Position = AppModel.Instance.BannerPositionImpl,

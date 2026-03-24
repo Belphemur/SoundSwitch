@@ -94,7 +94,7 @@ public partial class UpsertProfileExtended : Form
             .ThenBy(info => info.NameClean)
             .Select(info => new IconTextComboBox.DropDownItem
                 {
-                    Icon = info.SmallIcon,
+                    IconHandle = info.SmallIcon,
                     Tag = info,
                     Text = info.NameClean
                 }
@@ -106,7 +106,7 @@ public partial class UpsertProfileExtended : Form
             .ThenBy(info => info.NameClean)
             .Select(info => new IconTextComboBox.DropDownItem
                 {
-                    Icon = info.SmallIcon,
+                    IconHandle = info.SmallIcon,
                     Tag = info,
                     Text = info.NameClean
                 }
