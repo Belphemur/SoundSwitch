@@ -37,7 +37,8 @@ public class ProfileTrayIconBuilder
             var appTrigger = profile.Triggers.FirstOrDefault(trigger => trigger.ApplicationPath != null);
             if (appTrigger != null)
             {
-                image = IconExtractor.Extract(appTrigger.ApplicationPath, 0, false).ToBitmap();
+                using var iconHandle = IconExtractor.Extract(appTrigger.ApplicationPath, 0, false);
+                image = iconHandle.ToBitmap();
             }
         }
         catch (Exception)
@@ -53,7 +54,8 @@ public class ProfileTrayIconBuilder
             try
             {
                 var device = AudioDeviceLister.GetDevices(wrapper.DeviceInfo.Type, DeviceState.Active).FirstOrDefault(info => info.Equals(wrapper.DeviceInfo));
-                image = device?.SmallIcon.ToBitmap();
+                using var iconHandle = device?.SmallIcon;
+                image = iconHandle?.ToBitmap();
             }
             catch (Exception)
             {

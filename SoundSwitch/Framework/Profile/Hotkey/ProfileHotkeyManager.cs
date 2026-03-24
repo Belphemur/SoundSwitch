@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Framework.WinApi.Keyboard;
 using SoundSwitch.Model;
@@ -21,8 +22,18 @@ public class ProfileHotkeyManager
         public Profile NextOne() => Profiles.SkipWhile(profile => profile != LastUsed).Skip(1).FirstOrDefault() ?? Profiles.First();
     };
 
-    private class HotKeyItem(bool selected, Profile payload)
-        : IconMenuItem<Profile>.DataContainer(payload.Icon, payload.Name, selected, payload.Name, payload);
+    private class HotKeyItem : IconMenuItem<Profile>.DataContainer
+    {
+        public HotKeyItem(bool selected, Profile payload)
+            : this(selected, payload, payload.Icon) { }
+
+        private HotKeyItem(bool selected, Profile payload, IconHandle iconHandle)
+            : base(iconHandle.Icon, payload.Name, selected, payload.Name, payload)
+        {
+            // DataContainer clones the icon immediately; release our reference.
+            iconHandle.Dispose();
+        }
+    }
 
     private readonly Dictionary<HotKey, HotKeysSelection> _profiles = new();
     private readonly ProfileManager _profileManager;

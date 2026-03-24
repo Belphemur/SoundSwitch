@@ -1,5 +1,6 @@
-﻿using System.Drawing;
+using System.Drawing;
 using System.Windows.Forms;
+using SoundSwitch.Common.Framework.Icon;
 
 namespace SoundSwitch.UI.Component.ListView;
 
@@ -20,7 +21,15 @@ public class IconListView : ListViewExtended
 
     protected override void OnDrawSubItem(DrawListViewSubItemEventArgs e)
     {
-        if (string.IsNullOrEmpty(e.SubItem.Text) || !(e.SubItem.Tag is Icon icon))
+        // Resolve an IconHandle or a raw Icon stored in the sub-item Tag.
+        System.Drawing.Icon icon = e.SubItem.Tag switch
+        {
+            IconHandle h => h.Icon,
+            System.Drawing.Icon i => i,
+            _ => null
+        };
+
+        if (string.IsNullOrEmpty(e.SubItem.Text) || icon == null)
         {
             e.DrawDefault = true;
             base.OnDrawSubItem(e);
