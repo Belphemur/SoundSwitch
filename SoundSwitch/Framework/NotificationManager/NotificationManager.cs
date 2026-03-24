@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
  * Copyright (C) 2015-2017 Antoine Aflalo
  *
  * This program is free software; you can redistribute it and/or
@@ -141,6 +141,43 @@ public class NotificationManager(IAppModel model)
 
             _switchProfileNotification.NotifyProfileChanged(profile, icon, processId);
         }
+    }
+
+    /// <summary>
+    /// Notify on App Rule matched
+    /// </summary>
+    public void NotifyAppRuleMatched(AppSoundRule rule, uint processId)
+    {
+        if (rule.Notify)
+        {
+            var icon = GetIconForRule(rule, processId);
+            
+            var playback = model.AvailablePlaybackDevices.FirstOrDefault(d => d.Id == rule.PlaybackDeviceId);
+            var recording = model.AvailableRecordingDevices.FirstOrDefault(d => d.Id == rule.RecordingDeviceId);
+            
+            _switchProfileNotification.NotifyAppRuleMatched(rule, playback, recording, icon, processId);
+        }
+    }
+
+    private Bitmap GetIconForRule(AppSoundRule rule, uint processId)
+    {
+        if (!_switchProfileNotification.SupportIcon)
+        {
+            return null;
+        }
+
+        Bitmap icon = null;
+        try
+        {
+            var process = Process.GetProcessById((int)processId);
+            icon = IconExtractor.Extract(process.MainModule?.FileName, 0, true).ToBitmap();
+        }
+        catch (Exception)
+        {
+            // ignored
+        }
+
+        return icon ?? Resources.default_profile_image;
     }
 
     private Bitmap GetIcon(Profile.Profile profile, uint? processId)

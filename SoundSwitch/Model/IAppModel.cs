@@ -124,6 +124,11 @@ public interface IAppModel : IDisposable
     /// </summary>
     ProfileManager ProfileManager { get; }
 
+    /// <summary>
+    /// Manage per-app audio routing (App Sound Lock)
+    /// </summary>
+    Services.AppSoundLockManager AppSoundLockManager { get; }
+
     bool Telemetry { get; set; }
     bool QuickMenuEnabled { get; set; }
     bool KeepVolumeEnabled { get; set; }
@@ -210,7 +215,7 @@ public interface IAppModel : IDisposable
     ///     Initialize the Main class with Updater and Hotkeys
     /// </summary>
     /// <param name="active"></param>
-    void InitializeMain(IAudioDeviceLister active);
+    void InitializeMain(IAudioDeviceLister active, bool skipUpdate = false);
 
 
     /// <summary>

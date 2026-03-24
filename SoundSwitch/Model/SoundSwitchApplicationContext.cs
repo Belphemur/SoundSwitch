@@ -1,4 +1,4 @@
-﻿#nullable enable
+#nullable enable
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -42,7 +42,7 @@ public class SoundSwitchApplicationContext : ApplicationContext
         deviceActiveLister.Refresh();
         MMNotificationClient.Instance.Register();
 
-        AppModel.Instance.InitializeMain(deviceActiveLister);
+        AppModel.Instance.InitializeMain(deviceActiveLister, Program.SkipUpdate);
 
         AppModel.Instance.NewVersionReleased += (sender, @event) =>
         {
