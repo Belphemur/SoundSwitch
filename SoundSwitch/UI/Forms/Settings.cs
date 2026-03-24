@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
  * Copyright (C) 2015 Jeroen Pelgrims
  * Copyright (C) 2015-2017 Antoine Aflalo
  *
@@ -392,6 +392,7 @@ public sealed partial class SettingsForm : Form
         profileTabPage.Text = SettingsStrings.profile_tab;
         appSettingTabPage.Text = SettingsStrings.general;
         notificationsTabPage.Text = SettingsStrings.notifications;
+        appSoundLockTabPage.Text = SettingsStrings.appSoundLock_tab;
         troubleshootingTabPage.Text = SettingsStrings.troubleshooting;
 
         // Settings - Basic
@@ -469,6 +470,14 @@ public sealed partial class SettingsForm : Form
         addProfileButton.Image = Resources.profile_menu_add;
         editProfileButton.Image = Resources.profile_menu_edit;
         deleteProfileButton.Image = Resources.profile_menu_delete;
+
+        addAppSoundRuleButton.Text = SettingsStrings.buttonAdd;
+        editAppSoundRuleButton.Text = SettingsStrings.buttonEdit;
+        deleteAppSoundRuleButton.Text = SettingsStrings.buttonDelete;
+
+        addAppSoundRuleButton.Image = Resources.profile_menu_add;
+        editAppSoundRuleButton.Image = Resources.profile_menu_edit;
+        deleteAppSoundRuleButton.Image = Resources.profile_menu_delete;
     }
 
     private void CloseButton_Click(object sender, EventArgs e) => Close();
@@ -485,6 +494,11 @@ public sealed partial class SettingsForm : Form
         {
             SetHotKeyFieldsVisibility(true, true);
             SetHotKeyValues(AppConfigs.Configuration.RecordingHotKey, HotKeyAction.Recording);
+        }
+        else if (tabControlSender.SelectedTab == appSoundLockTabPage)
+        {
+            SetHotKeyFieldsVisibility(false, false);
+            PopulateAppSoundLockRules();
         }
         else
         {
@@ -1159,6 +1173,138 @@ public sealed partial class SettingsForm : Form
     public static void DonateLink_LinkClicked(object sender, EventArgs e)
     {
         BrowserUtil.OpenUrl($"https://soundswitch.aaflalo.me/?utm_campaign=application&utm_source={Application.ProductVersion}#donate");
+    }
+
+    private void PopulateAppSoundLockRules()
+    {
+        appSoundLockListView.Columns.Clear();
+        appSoundLockListView.Columns.Add(SettingsStrings.profile_program, 150);
+        appSoundLockListView.Columns.Add(SettingsStrings.appSoundLock_rule_windowTitle, 150);
+        appSoundLockListView.Columns.Add(SettingsStrings.playback, 150);
+        appSoundLockListView.Columns.Add(SettingsStrings.recording, 150);
+
+        appSoundLockListView.Items.Clear();
+
+        var playbacks = _audioDeviceLister.GetDevices(DataFlow.Render, DeviceState.Active | DeviceState.Unplugged | DeviceState.Disabled).ToList();
+        var recordings = _audioDeviceLister.GetDevices(DataFlow.Capture, DeviceState.Active | DeviceState.Unplugged | DeviceState.Disabled).ToList();
+
+        appSoundLockListView.ItemCheck -= AppSoundLockListView_ItemCheck;
+        foreach (var rule in AppConfigs.Configuration.AppSoundRules)
+        {
+            var playback = playbacks.FirstOrDefault(d => d.Id == rule.PlaybackDeviceId);
+            var recording = recordings.FirstOrDefault(d => d.Id == rule.RecordingDeviceId);
+
+            var processName = GetCleanProcessName(rule.ProcessPath);
+            System.Drawing.Icon processIcon = null;
+            if (!string.IsNullOrEmpty(rule.ProcessPath) && System.IO.File.Exists(rule.ProcessPath))
+            {
+                try { processIcon = SoundSwitch.Common.Framework.Icon.IconExtractor.Extract(rule.ProcessPath, 0, true); } catch { }
+            }
+
+            var item = new ListViewItem(processName)
+            {
+                Tag = rule,
+                Checked = rule.Enabled
+            };
+            item.SubItems[0].Tag = processIcon;
+
+            // Window Title
+            item.SubItems.Add(rule.WindowName);
+
+            // Playback
+            var playbackSubItem = item.SubItems.Add(playback?.NameClean ?? rule.PlaybackDeviceId ?? string.Empty);
+            playbackSubItem.Tag = playback?.SmallIcon;
+
+            // Recording
+            var recordingSubItem = item.SubItems.Add(recording?.NameClean ?? rule.RecordingDeviceId ?? string.Empty);
+            recordingSubItem.Tag = recording?.SmallIcon;
+
+            appSoundLockListView.Items.Add(item);
+        }
+        appSoundLockListView.ItemCheck += AppSoundLockListView_ItemCheck;
+
+        if (AppConfigs.Configuration.AppSoundRules.Count <= 0) return;
+        foreach (ColumnHeader column in appSoundLockListView.Columns)
+            column.Width = -2;
+    }
+
+    private string GetCleanProcessName(string processPath)
+    {
+        if (string.IsNullOrEmpty(processPath)) return string.Empty;
+
+        // Extract filename from .*Regex\.Escape(filename).*
+        var match = System.Text.RegularExpressions.Regex.Match(processPath, @"\.\*(?<name>.*?)\.\*");
+        if (match.Success)
+        {
+            try { return System.Text.RegularExpressions.Regex.Unescape(match.Groups["name"].Value); } catch { }
+        }
+
+        // Fallback to filename if it looks like a path
+        try { return System.IO.Path.GetFileName(processPath); } catch { return processPath; }
+    }
+
+    private void AppSoundLockListView_ItemCheck(object sender, ItemCheckEventArgs e)
+    {
+        var rule = (AppSoundRule)appSoundLockListView.Items[e.Index].Tag;
+        rule.Enabled = e.NewValue == CheckState.Checked;
+        AppConfigs.Configuration.Save();
+    }
+
+    private void AddAppSoundRuleButton_Click(object sender, EventArgs e)
+    {
+        var playbacks = _audioDeviceLister.GetDevices(DataFlow.Render, DeviceState.Active);
+        var recordings = _audioDeviceLister.GetDevices(DataFlow.Capture, DeviceState.Active);
+        
+        using var form = new UpsertAppSoundLockRule(new AppSoundRule(), playbacks, recordings);
+        if (form.ShowDialog(this) == DialogResult.OK)
+        {
+            AppConfigs.Configuration.AppSoundRules.Add(form.Rule);
+            AppConfigs.Configuration.Save();
+            PopulateAppSoundLockRules();
+        }
+    }
+
+    private void EditAppSoundRuleButton_Click(object sender, EventArgs e)
+    {
+        if (appSoundLockListView.SelectedItems.Count == 0) return;
+        var rule = (AppSoundRule)appSoundLockListView.SelectedItems[0].Tag;
+
+        var playbacks = _audioDeviceLister.GetDevices(DataFlow.Render, DeviceState.Active);
+        var recordings = _audioDeviceLister.GetDevices(DataFlow.Capture, DeviceState.Active);
+
+        using var form = new UpsertAppSoundLockRule(rule, playbacks, recordings, true);
+        if (form.ShowDialog(this) == DialogResult.OK)
+        {
+            AppConfigs.Configuration.AppSoundRules.Remove(rule);
+            AppConfigs.Configuration.AppSoundRules.Add(form.Rule);
+            AppConfigs.Configuration.Save();
+            PopulateAppSoundLockRules();
+        }
+    }
+
+    private void DeleteAppSoundRuleButton_Click(object sender, EventArgs e)
+    {
+        if (appSoundLockListView.SelectedItems.Count == 0) return;
+        var rule = (AppSoundRule)appSoundLockListView.SelectedItems[0].Tag;
+
+        if (MessageBox.Show($"Are you sure you want to delete this rule?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+        {
+            AppConfigs.Configuration.AppSoundRules.Remove(rule);
+            AppConfigs.Configuration.Save();
+            PopulateAppSoundLockRules();
+        }
+    }
+
+    private void AppSoundLockListView_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        var hasSelection = appSoundLockListView.SelectedItems.Count > 0;
+        editAppSoundRuleButton.Enabled = hasSelection;
+        deleteAppSoundRuleButton.Enabled = hasSelection;
+    }
+
+    private void AppSoundLockListView_DoubleClick(object sender, EventArgs e)
+    {
+        EditAppSoundRuleButton_Click(sender, e);
     }
 
     #endregion
