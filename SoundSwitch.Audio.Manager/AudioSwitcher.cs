@@ -1,4 +1,4 @@
-﻿#nullable enable
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -108,7 +108,7 @@ namespace SoundSwitch.Audio.Manager
         /// <param name="role">Which role to switch</param>
         /// <param name="flow">Which flow to switch</param>
         /// <param name="processId">ProcessID of the process</param>
-        public void SwitchProcessTo(string deviceId, ERole role, EDataFlow flow, uint processId)
+        public bool SwitchProcessTo(string deviceId, ERole role, EDataFlow flow, uint processId)
         {
             var processName = "";
             try
@@ -116,19 +116,10 @@ namespace SoundSwitch.Audio.Manager
                 var process = Process.GetProcessById((int)processId);
                 processName = process.ProcessName;
             }
-            catch (InvalidOperationException e)
-            {
-                Trace.TraceInformation($"Attempt to switch [{processId}] but got exception: {e}");
-                return;
-            }
-            catch (ArgumentException e)
-            {
-                Trace.TraceInformation($"Attempt to switch [{processId}] but got exception: {e}");
-                return;
-            }
             catch (Exception e)
             {
-                Trace.TraceError($"Can't get process info: {e}");
+                Trace.TraceInformation($"Attempt to switch [{processId}] but got exception: {e}");
+                return false;
             }
 
             Trace.TraceInformation($"Attempt to switch [{processId}:{processName}] to {deviceId}");
@@ -147,16 +138,17 @@ namespace SoundSwitch.Audio.Manager
                 };
             }
 
-            ComThread.Invoke((() =>
+            return ComThread.Invoke((() =>
             {
                 var currentEndpoint = roles.Select(eRole => ExtendPolicyClient.GetDefaultEndPoint(flow, eRole, processId)).FirstOrDefault(endpoint => !string.IsNullOrEmpty(endpoint));
                 if (deviceId.Equals(currentEndpoint))
                 {
                     Trace.WriteLine($"Default endpoint for [{processId}:{processName}] already {deviceId}");
-                    return;
+                    return false;
                 }
 
                 ExtendPolicyClient.SetDefaultEndPoint(deviceId, flow, roles, processId);
+                return true;
             }));
         }
 
@@ -256,6 +248,76 @@ namespace SoundSwitch.Audio.Manager
         public string? GetUsedDevice(EDataFlow flow, ERole role, uint processId)
         {
             return ComThread.Invoke(() => ExtendPolicyClient.GetDefaultEndPoint(flow, role, processId));
+        }
+
+        /// <summary>
+        /// Get the device ID for a process based on active audio sessions.
+        /// </summary>
+        public string? GetSessionDeviceId(EDataFlow flow, uint processId)
+        {
+            return ComThread.Invoke(() =>
+            {
+                var devices = EnumeratorClient.GetEndpoints(flow, EDeviceState.Active);
+                foreach (var device in devices)
+                {
+                    try
+                    {
+                        var sessionManager = device.AudioSessionManager;
+                        if (sessionManager == null) continue;
+
+                        var sessions = sessionManager.Sessions;
+                        for (int i = 0; i < sessions.Count; i++)
+                        {
+                            var session = sessions[i];
+                            if (session.GetProcessID == processId && session.State == NAudio.CoreAudioApi.Interfaces.AudioSessionState.AudioSessionStateActive)
+                            {
+                                return device.ID;
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Debug(ex, "Failed to check sessions for device {DeviceId}", device.ID);
+                    }
+                }
+                return null;
+            });
+        }
+
+        /// <summary>
+        /// Builds a map of ProcessId -> DeviceId for all active sessions of a given flow.
+        /// </summary>
+        public Dictionary<uint, string> GetProcessDeviceMap(EDataFlow flow)
+        {
+            return ComThread.Invoke(() =>
+            {
+                var map = new Dictionary<uint, string>();
+                var devices = EnumeratorClient.GetEndpoints(flow, EDeviceState.Active);
+                foreach (var device in devices)
+                {
+                    try
+                    {
+                        var sessionManager = device.AudioSessionManager;
+                        if (sessionManager == null) continue;
+
+                        var sessions = sessionManager.Sessions;
+                        for (int i = 0; i < sessions.Count; i++)
+                        {
+                            var session = sessions[i];
+                            var pid = session.GetProcessID;
+                            if (pid != 0 && !map.ContainsKey(pid))
+                            {
+                                map[pid] = device.ID;
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Debug(ex, "Failed to build session map for device {DeviceId}", device.ID);
+                    }
+                }
+                return map;
+            });
         }
 
         /// <summary>

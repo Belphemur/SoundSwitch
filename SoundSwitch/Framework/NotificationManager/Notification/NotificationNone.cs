@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
 * Copyright (C) 2015-2017 Antoine Aflalo
 *
 * This program is free software; you can redistribute it and/or
@@ -17,6 +17,7 @@ using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
 using SoundSwitch.Localization;
+using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification;
 
@@ -30,6 +31,8 @@ internal class NotificationNone : INotification
     public void NotifyDefaultChanged(DeviceFullInfo audioDevice) { }
 
     public void NotifyProfileChanged(Profile.Profile profile, Bitmap icon, uint? processId) { }
+
+    public void NotifyAppRuleMatched(AppSoundRule rule, DeviceFullInfo playback, DeviceFullInfo recording, Bitmap icon, uint processId) { }
 
     public void NotifyMicrophoneMuteChanged(string deviceId, string microphoneName, bool newMuteState) { }
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Serilog;
@@ -22,6 +22,11 @@ namespace SoundSwitch.Audio.Manager
             public string ProcessName { get; }
 
             /// <summary>
+            /// Path of the process that is active
+            /// </summary>
+            public string ProcessPath { get; }
+
+            /// <summary>
             /// Name of the active window
             /// </summary>
             public string WindowName { get; }
@@ -36,10 +41,11 @@ namespace SoundSwitch.Audio.Manager
             /// </summary>
             public User32.NativeMethods.HWND Hwnd { get; }
 
-            public Event(uint processId, string processName, string windowName, string windowClass, User32.NativeMethods.HWND hwnd)
+            public Event(uint processId, string processName, string processPath, string windowName, string windowClass, User32.NativeMethods.HWND hwnd)
             {
                 ProcessId = processId;
                 ProcessName = processName;
+                ProcessPath = processPath;
                 WindowName = windowName;
                 WindowClass = windowClass;
                 Hwnd = hwnd;
@@ -47,7 +53,7 @@ namespace SoundSwitch.Audio.Manager
 
             public override string ToString()
             {
-                return $"{nameof(ProcessId)}: {ProcessId}, {nameof(ProcessName)}: {ProcessName}, {nameof(WindowName)}: {WindowName}, {nameof(WindowClass)}: {WindowClass}";
+                return $"{nameof(ProcessId)}: {ProcessId}, {nameof(ProcessName)}: {ProcessName}, {nameof(ProcessPath)}: {ProcessPath}, {nameof(WindowName)}: {WindowName}, {nameof(WindowClass)}: {WindowClass}";
             }
         }
 
@@ -84,17 +90,19 @@ namespace SoundSwitch.Audio.Manager
                         }
 
                         var process = Process.GetProcessById((int)processId);
+                        var processPath = "N/A";
                         var processName = "N/A";
                         try
                         {
-                            processName = process.MainModule?.FileName ?? "N/A";
+                            processPath = process.MainModule?.FileName ?? "N/A";
+                            processName = process.ProcessName;
                         }
                         catch (Exception)
                         {
                             // ignored
                         }
 
-                        ForegroundChanged?.Invoke(this, new Event(processId, processName, windowText, windowClass, hwnd));
+                        ForegroundChanged?.Invoke(this, new Event(processId, processName, processPath, windowText, windowClass, hwnd));
                     }
                     catch (Exception)
                     {
