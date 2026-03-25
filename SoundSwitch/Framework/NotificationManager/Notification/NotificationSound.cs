@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
  * Copyright (C) 2015-2017 Antoine Aflalo
  *
  * This program is free software; you can redistribute it and/or
@@ -25,6 +25,7 @@ using SoundSwitch.Framework.Audio.Play;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
 using SoundSwitch.Framework.Threading;
 using SoundSwitch.Localization;
+using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification;
 
@@ -66,6 +67,14 @@ internal class NotificationSound : INotification
         catch (Exception)
         {
             //Ignored
+        }
+    }
+
+    public void NotifyAppRuleMatched(AppSoundRule rule, DeviceFullInfo playback, DeviceFullInfo recording, Bitmap icon, uint processId)
+    {
+        if (playback != null)
+        {
+            NotifyDefaultChanged(playback);
         }
     }
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using SoundSwitch.Localization;
 using SoundSwitch.UI.Component.ListView;
 using SoundSwitch.Util.Url;
@@ -110,6 +110,12 @@ sealed partial class SettingsForm
         positionTopRightRadioButton = new System.Windows.Forms.RadioButton();
         positionTopCenterRadioButton = new System.Windows.Forms.RadioButton();
         positionTopLeftRadioButton = new System.Windows.Forms.RadioButton();
+        appSoundLockTabPage = new System.Windows.Forms.TabPage();
+        appSoundLockPanel = new System.Windows.Forms.Panel();
+        addAppSoundRuleButton = new System.Windows.Forms.Button();
+        editAppSoundRuleButton = new System.Windows.Forms.Button();
+        deleteAppSoundRuleButton = new System.Windows.Forms.Button();
+        appSoundLockListView = new SoundSwitch.UI.Component.ListView.IconListView();
         troubleshootingTabPage = new System.Windows.Forms.TabPage();
         troubleshootingLabel = new System.Windows.Forms.Label();
         appNameLabel = new System.Windows.Forms.Label();
@@ -197,6 +203,7 @@ sealed partial class SettingsForm
         tabControl.Controls.Add(playbackTabPage);
         tabControl.Controls.Add(recordingTabPage);
         tabControl.Controls.Add(profileTabPage);
+        tabControl.Controls.Add(appSoundLockTabPage);
         tabControl.Controls.Add(appSettingTabPage);
         tabControl.Controls.Add(notificationsTabPage);
         tabControl.Controls.Add(troubleshootingTabPage);
@@ -797,6 +804,91 @@ sealed partial class SettingsForm
         microphoneMuteBannerComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
         microphoneMuteBannerComboBox.FormattingEnabled = true;
         microphoneMuteBannerComboBox.Location = new System.Drawing.Point(30, 118);
+        // 
+        // appSoundLockTabPage
+        // 
+        appSoundLockTabPage.Controls.Add(appSoundLockPanel);
+        appSoundLockTabPage.Controls.Add(appSoundLockListView);
+        appSoundLockTabPage.Location = new System.Drawing.Point(4, 24);
+        appSoundLockTabPage.Name = "appSoundLockTabPage";
+        appSoundLockTabPage.Padding = new System.Windows.Forms.Padding(3);
+        appSoundLockTabPage.Size = new System.Drawing.Size(662, 363);
+        appSoundLockTabPage.TabIndex = 6;
+        appSoundLockTabPage.Text = "App Sound Lock";
+        appSoundLockTabPage.UseVisualStyleBackColor = true;
+        // 
+        // appSoundLockPanel
+        // 
+        appSoundLockPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right));
+        appSoundLockPanel.Controls.Add(addAppSoundRuleButton);
+        appSoundLockPanel.Controls.Add(editAppSoundRuleButton);
+        appSoundLockPanel.Controls.Add(deleteAppSoundRuleButton);
+        appSoundLockPanel.Location = new System.Drawing.Point(3, 256);
+        appSoundLockPanel.Name = "appSoundLockPanel";
+        appSoundLockPanel.Size = new System.Drawing.Size(656, 104);
+        appSoundLockPanel.TabIndex = 7;
+        // 
+        // addAppSoundRuleButton
+        // 
+        addAppSoundRuleButton.Anchor = ((System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right));
+        addAppSoundRuleButton.AutoSize = true;
+        addAppSoundRuleButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+        addAppSoundRuleButton.Location = new System.Drawing.Point(341, 76);
+        addAppSoundRuleButton.Name = "addAppSoundRuleButton";
+        addAppSoundRuleButton.Size = new System.Drawing.Size(100, 25);
+        addAppSoundRuleButton.TabIndex = 8;
+        addAppSoundRuleButton.Text = "Add";
+        addAppSoundRuleButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+        addAppSoundRuleButton.UseVisualStyleBackColor = true;
+        addAppSoundRuleButton.Click += AddAppSoundRuleButton_Click;
+        // 
+        // editAppSoundRuleButton
+        // 
+        editAppSoundRuleButton.Anchor = ((System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right));
+        editAppSoundRuleButton.AutoSize = true;
+        editAppSoundRuleButton.Enabled = false;
+        editAppSoundRuleButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+        editAppSoundRuleButton.Location = new System.Drawing.Point(447, 76);
+        editAppSoundRuleButton.Name = "editAppSoundRuleButton";
+        editAppSoundRuleButton.Size = new System.Drawing.Size(100, 25);
+        editAppSoundRuleButton.TabIndex = 9;
+        editAppSoundRuleButton.Text = "Edit";
+        editAppSoundRuleButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+        editAppSoundRuleButton.UseVisualStyleBackColor = true;
+        editAppSoundRuleButton.Click += EditAppSoundRuleButton_Click;
+        // 
+        // deleteAppSoundRuleButton
+        // 
+        deleteAppSoundRuleButton.Anchor = ((System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right));
+        deleteAppSoundRuleButton.AutoSize = true;
+        deleteAppSoundRuleButton.Enabled = false;
+        deleteAppSoundRuleButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+        deleteAppSoundRuleButton.Location = new System.Drawing.Point(553, 76);
+        deleteAppSoundRuleButton.Name = "deleteAppSoundRuleButton";
+        deleteAppSoundRuleButton.Size = new System.Drawing.Size(100, 25);
+        deleteAppSoundRuleButton.TabIndex = 10;
+        deleteAppSoundRuleButton.Text = "Delete";
+        deleteAppSoundRuleButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+        deleteAppSoundRuleButton.UseVisualStyleBackColor = true;
+        deleteAppSoundRuleButton.Click += DeleteAppSoundRuleButton_Click;
+        // 
+        // appSoundLockListView
+        // 
+        appSoundLockListView.Dock = System.Windows.Forms.DockStyle.Top;
+        appSoundLockListView.FullRowSelect = true;
+        appSoundLockListView.Location = new System.Drawing.Point(3, 3);
+        appSoundLockListView.Name = "appSoundLockListView";
+        appSoundLockListView.OwnerDraw = true;
+        appSoundLockListView.ShowGroups = false;
+        appSoundLockListView.Size = new System.Drawing.Size(656, 247);
+        appSoundLockListView.TabIndex = 11;
+        appSoundLockListView.UseCompatibleStateImageBehavior = false;
+        appSoundLockListView.View = System.Windows.Forms.View.Details;
+        appSoundLockListView.SelectedIndexChanged += AppSoundLockListView_SelectedIndexChanged;
+        appSoundLockListView.DoubleClick += AppSoundLockListView_DoubleClick;
+        // 
+        // troubleshootingTabPage
+        // 
         microphoneMuteBannerComboBox.Name = "microphoneMuteBannerComboBox";
         microphoneMuteBannerComboBox.Size = new System.Drawing.Size(120, 23);
         microphoneMuteBannerComboBox.TabIndex = 31;
@@ -1433,6 +1525,12 @@ sealed partial class SettingsForm
     private System.Windows.Forms.CheckBox switchCommunicationDeviceCheckBox;
     private System.Windows.Forms.TabControl tabControl;
     private System.Windows.Forms.TabPage profileTabPage;
+    private System.Windows.Forms.TabPage appSoundLockTabPage;
+    private System.Windows.Forms.Panel appSoundLockPanel;
+    private System.Windows.Forms.Button addAppSoundRuleButton;
+    private System.Windows.Forms.Button editAppSoundRuleButton;
+    private System.Windows.Forms.Button deleteAppSoundRuleButton;
+    private SoundSwitch.UI.Component.ListView.IconListView appSoundLockListView;
     private System.Windows.Forms.ComboBox tooltipInfoComboBox;
     private System.Windows.Forms.Label tooltipOnHoverLabel;
     private System.Windows.Forms.RadioButton updateNeverRadioButton;

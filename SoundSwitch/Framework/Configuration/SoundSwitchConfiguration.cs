@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
  * Copyright (C) 2015-2017 Antoine Aflalo
  *
  * This program is free software; you can redistribute it and/or
@@ -106,7 +106,10 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
     public HotKey PlaybackHotKey { get; set; } = new(Keys.F11, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
     public HotKey RecordingHotKey { get; set; } = new(Keys.F7, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
     public HotKey MuteRecordingHotKey { get; set; } = new(Keys.M, HotKey.ModifierKeys.Control | HotKey.ModifierKeys.Alt);
-    
+
+    /// <inheritdoc />
+    public HashSet<Model.AppSoundRule> AppSoundRules { get; set; } = new();
+
     [Obsolete("Feature has been removed")]
     public bool AutoAddNewConnectedDevices { get; set; } = false;
     

@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
 * Copyright (C) 2015-2017 Antoine Aflalo
 *
 * This program is free software; you can redistribute it and/or
@@ -13,6 +13,7 @@
 ********************************************************************/
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -21,6 +22,7 @@ using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
 using SoundSwitch.Localization;
+using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification;
 
@@ -54,6 +56,17 @@ internal class NotificationWindows : INotification
     {
         var title = string.Format(SettingsStrings.profile_notification_text, profile.Name);
         var text  = string.Join("\n", profile.Devices.Select(wrapper => wrapper.DeviceInfo.NameClean));
+        Configuration.Icon.ShowBalloonTip(1000, title, text, ToolTipIcon.Info);
+    }
+
+    public void NotifyAppRuleMatched(AppSoundRule rule, DeviceFullInfo playback, DeviceFullInfo recording, Bitmap icon, uint processId)
+    {
+        var devices = new List<string>();
+        if (playback != null) devices.Add(playback.NameClean);
+        if (recording != null) devices.Add(recording.NameClean);
+
+        var title = SettingsStrings.appSoundLock_tab;
+        var text = string.Join("\n", devices);
         Configuration.Icon.ShowBalloonTip(1000, title, text, ToolTipIcon.Info);
     }
 

@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
  * Copyright (C) 2015-2017 Antoine Aflalo
  *
  * This program is free software; you can redistribute it and/or
@@ -124,4 +124,9 @@ public interface ISoundSwitchConfiguration : IConfiguration
     int BannerOpacityPercentage { get; set; }
     bool NotificationAdvancedMode { get; set; }
     BannerDisplayInfo BannerDisplayInfo { get; set; }
+
+    /// <summary>
+    /// Rules for per-app audio routing (App Sound Lock)
+    /// </summary>
+    HashSet<Model.AppSoundRule> AppSoundRules { get; set; }
 }

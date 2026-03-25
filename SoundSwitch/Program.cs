@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
  * Copyright (C) 2015 Jeroen Pelgrims
  * Copyright (C) 2015-2024 Antoine Aflalo
  *
@@ -15,6 +15,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -38,16 +39,22 @@ namespace SoundSwitch;
 
 internal static class Program
 {
+    public static bool SkipUpdate { get; private set; }
     private static WindowsFormsSynchronizationContext _synchronizationContext;
 
     [DllImport("user32.dll")]
     private static extern bool SetProcessDPIAware();
         
     [STAThread]
-    private static void Main() => OldMain().GetAwaiter().GetResult();
+    private static void Main(string[] args) => OldMain(args).GetAwaiter().GetResult();
  
-    private static async Task OldMain()
+    private static async Task OldMain(string[] args)
     {
+        if (args != null && args.Any(arg => arg.Equals("--disable-updater", StringComparison.OrdinalIgnoreCase) || arg.Equals("-s", StringComparison.OrdinalIgnoreCase)))
+        {
+            SkipUpdate = true;
+        }
+
         using var mainCts = new CancellationTokenSource();
         var sentryOptions = new SentryOptions
         {

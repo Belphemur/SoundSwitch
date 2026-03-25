@@ -2182,5 +2182,116 @@ namespace SoundSwitch.Localization
                 return ResourceManager.GetString("usePrimaryScreen.tooltip", resourceCulture);
             }
         }
+        internal static string appSoundLock_tab
+        {
+            get
+            {
+                return ResourceManager.GetString("appSoundLock.tab", resourceCulture);
+            }
+        }
+
+        internal static string appSoundLock_addRule
+        {
+            get
+            {
+                return ResourceManager.GetString("appSoundLock.addRule", resourceCulture);
+            }
+        }
+
+        internal static string appSoundLock_editRule
+        {
+            get
+            {
+                return ResourceManager.GetString("appSoundLock.editRule", resourceCulture);
+            }
+        }
+
+        internal static string appSoundLock_rule_name
+        {
+            get
+            {
+                return ResourceManager.GetString("appSoundLock.rule.name", resourceCulture);
+            }
+        }
+
+        internal static string appSoundLock_rule_matchMode
+        {
+            get
+            {
+                return ResourceManager.GetString("appSoundLock.rule.matchMode", resourceCulture);
+            }
+        }
+
+        internal static string appSoundLock_rule_enabled
+        {
+            get
+            {
+                return ResourceManager.GetString("appSoundLock.rule.enabled", resourceCulture);
+            }
+        }
+
+        internal static string appSoundLock_rule_regexNotice
+        {
+            get
+            {
+                return ResourceManager.GetString("appSoundLock.rule.regexNotice", resourceCulture);
+            }
+        }
+
+        internal static string appSoundLock_selectProcess
+        {
+            get
+            {
+                return ResourceManager.GetString("appSoundLock.selectProcess", resourceCulture);
+            }
+        }
+
+        internal static string appSoundLock_rule_processName
+        {
+            get
+            {
+                return ResourceManager.GetString("appSoundLock.rule.processName", resourceCulture);
+            }
+        }
+
+        internal static string appSoundLock_rule_processPath
+        {
+            get
+            {
+                return ResourceManager.GetString("appSoundLock.rule.processPath", resourceCulture);
+            }
+        }
+
+        internal static string appSoundLock_rule_windowTitle
+        {
+            get
+            {
+                return ResourceManager.GetString("appSoundLock.rule.windowTitle", resourceCulture);
+            }
+        }
+
+        internal static string appSoundLock_rule_caseSensitive
+        {
+            get
+            {
+                return ResourceManager.GetString("appSoundLock.rule.caseSensitive", resourceCulture);
+            }
+        }
+
+        internal static string appSoundLock_rule_notify
+        {
+            get
+            {
+                return ResourceManager.GetString("appSoundLock.rule.notify", resourceCulture);
+            }
+        }
+
+        internal static string appSoundLock_filter
+        {
+            get
+            {
+                return ResourceManager.GetString("appSoundLock.filter", resourceCulture);
+            }
+        }
     }
 }

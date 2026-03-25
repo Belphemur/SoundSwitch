@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
 * Copyright (C) 2015-2017 Antoine Aflalo
 *
 * This program is free software; you can redistribute it and/or
@@ -18,6 +18,7 @@ using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Factory;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
+using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification;
 
@@ -41,6 +42,16 @@ public interface INotification : IEnumImpl<NotificationType>
     /// <param name="icon"></param>
     /// <param name="processId"></param>
     void NotifyProfileChanged(Profile.Profile profile, [CanBeNull] Bitmap icon, uint? processId);
+
+    /// <summary>
+    /// Notify when an App Rule has been matched
+    /// </summary>
+    /// <param name="rule"></param>
+    /// <param name="playback"></param>
+    /// <param name="recording"></param>
+    /// <param name="icon"></param>
+    /// <param name="processId"></param>
+    void NotifyAppRuleMatched(AppSoundRule rule, [CanBeNull] DeviceFullInfo playback, [CanBeNull] DeviceFullInfo recording, [CanBeNull] Bitmap icon, uint processId);
 
     /// <summary>
     /// Notify about the mute state having changed

@@ -709,4 +709,50 @@ Press Esc to close.</value>
   <data name="notification.type" xml:space="preserve">
     <value>Notification Type</value>
   </data>
+  <data name="appSoundLock.tab" xml:space="preserve">
+    <value>App Rules</value>
+  </data>
+  <data name="appSoundLock.explanation" xml:space="preserve">
+    <value>Bind specific playback and recording devices to processes or windows using Regex matching.</value>
+  </data>
+  <data name="appSoundLock.rule.processName" xml:space="preserve">
+    <value>Process Name</value>
+  </data>
+  <data name="appSoundLock.rule.processPath" xml:space="preserve">
+    <value>Process Path</value>
+  </data>
+  <data name="appSoundLock.rule.windowTitle" xml:space="preserve">
+    <value>Window Title</value>
+  </data>
+  <data name="appSoundLock.rule.matchMode" xml:space="preserve">
+    <value>Match Mode</value>
+  </data>
+  <data name="appSoundLock.rule.regexNotice" xml:space="preserve">
+    <value>Note: Patterns use standard Regex.</value>
+  </data>
+  <data name="appSoundLock.selectProcess" xml:space="preserve">
+    <value>Select Process...</value>
+  </data>
+  <data name="appSoundLock.addRule" xml:space="preserve">
+    <value>Add Rule</value>
+  </data>
+  <data name="appSoundLock.editRule" xml:space="preserve">
+    <value>Edit Rule</value>
+  </data>
+  <data name="appSoundLock.deleteRule" xml:space="preserve">
+    <value>Delete Rule</value>
+  </data>
+  <data name="appSoundLock.rule.enabled" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+
+  <data name="appSoundLock.rule.caseSensitive" xml:space="preserve">
+    <value>Case Sensitive</value>
+  </data>
+  <data name="appSoundLock.rule.notify" xml:space="preserve">
+    <value>Notify when triggered</value>
+  </data>
+  <data name="appSoundLock.filter" xml:space="preserve">
+    <value>Filter:</value>
+  </data>
 </root>

@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
  * Copyright (C) 2015 Jeroen Pelgrims
  * Copyright (C) 2015-2024 Antoine Aflalo
  *
@@ -52,6 +52,7 @@ namespace SoundSwitch.Model;
 
 public class AppModel : IAppModel
 {
+    private bool _skipUpdate;
     private bool _initialized;
     private readonly NotificationManager _notificationManager;
     private UpdateChecker _updateChecker;
@@ -76,6 +77,8 @@ public class AppModel : IAppModel
     private readonly LimitedConcurrencyLevelTaskScheduler _updateScheduler;
 
     public ProfileManager ProfileManager { get; private set; }
+
+    public Services.AppSoundLockManager AppSoundLockManager { get; private set; }
 
     public int BannerOnScreenTimeSecs
     {
@@ -493,8 +496,9 @@ public class AppModel : IAppModel
     ///     Initialize the Main class with Updater and Hotkeys
     /// </summary>
     /// <param name="active"></param>
-    public void InitializeMain(IAudioDeviceLister active)
+    public void InitializeMain(IAudioDeviceLister active, bool skipUpdate = false)
     {
+        _skipUpdate = skipUpdate;
         if (_initialized)
         {
             Log.Fatal("AppModel already initialized");
@@ -566,7 +570,12 @@ public class AppModel : IAppModel
 
                 return Result.Success();
             });
-        InitUpdateChecker();
+
+        AppSoundLockManager = new Services.AppSoundLockManager(AppConfigs.Configuration, AudioSwitcher.Instance, new WindowMonitor(), new ProcessMonitor(), _notificationManager);
+        AppSoundLockManager.Start();
+
+        if (!_skipUpdate)
+            InitUpdateChecker();
         _initialized = true;
     }
 
@@ -867,5 +876,6 @@ public class AppModel : IAppModel
     {
         TrayIcon?.Dispose();
         AudioDeviceLister?.Dispose();
+        AppSoundLockManager?.Dispose();
     }
 }
