@@ -50,7 +50,7 @@ public partial class UpsertAppSoundLockRule : Form
             Size = cmbMatchMode.Size,
             Anchor = cmbMatchMode.Anchor
         };
-        this.Controls.Add(_txtProcessPath);
+        Controls.Add(_txtProcessPath);
         
         // Add CaseSensitive checkbox
         _chkCaseSensitive = new CheckBox
@@ -59,7 +59,7 @@ public partial class UpsertAppSoundLockRule : Form
             Location = new System.Drawing.Point(chkNotify.Right + 20, chkEnabled.Top),
             AutoSize = true
         };
-        this.Controls.Add(_chkCaseSensitive);
+        Controls.Add(_chkCaseSensitive);
         
         btnSelectProcess.Location = new System.Drawing.Point(btnSelectProcess.Left, _txtProcessPath.Top);
     }
@@ -72,7 +72,7 @@ public partial class UpsertAppSoundLockRule : Form
             .ThenBy(info => info.NameClean)
             .Select(info => new IconTextComboBox.DropDownItem
             {
-                Icon = info.SmallIcon,
+                IconHandle = info.SmallIcon,
                 Tag = info.Id,
                 Text = info.NameClean
             })
@@ -83,7 +83,7 @@ public partial class UpsertAppSoundLockRule : Form
             .ThenBy(info => info.NameClean)
             .Select(info => new IconTextComboBox.DropDownItem
             {
-                Icon = info.SmallIcon,
+                IconHandle = info.SmallIcon,
                 Tag = info.Id,
                 Text = info.NameClean
             })

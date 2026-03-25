@@ -23,7 +23,7 @@ public partial class ProcessSelectionForm : Form
     public ProcessSelectionForm()
     {
         InitializeComponent();
-        this.MinimumSize = new System.Drawing.Size(600, 400);
+        MinimumSize = new System.Drawing.Size(600, 400);
         LocalizeForm();
         LoadProcesses();
     }
@@ -60,11 +60,11 @@ public partial class ProcessSelectionForm : Form
         _allProcesses = new List<ProcessInfo>();
         var audioSwitcher = AudioSwitcher.Instance;
 
-        var playbackMap = audioSwitcher.GetProcessDeviceMap(SoundSwitch.Audio.Manager.Interop.Enum.EDataFlow.eRender);
-        var recordingMap = audioSwitcher.GetProcessDeviceMap(SoundSwitch.Audio.Manager.Interop.Enum.EDataFlow.eCapture);
+        var playbackMap = audioSwitcher.GetProcessDeviceMap(Audio.Manager.Interop.Enum.EDataFlow.eRender);
+        var recordingMap = audioSwitcher.GetProcessDeviceMap(Audio.Manager.Interop.Enum.EDataFlow.eCapture);
 
-        var defaultPlayback = audioSwitcher.GetDefaultAudioEndpoint(SoundSwitch.Audio.Manager.Interop.Enum.EDataFlow.eRender, SoundSwitch.Audio.Manager.Interop.Enum.ERole.eConsole);
-        var defaultRecording = audioSwitcher.GetDefaultAudioEndpoint(SoundSwitch.Audio.Manager.Interop.Enum.EDataFlow.eCapture, SoundSwitch.Audio.Manager.Interop.Enum.ERole.eConsole);
+        var defaultPlayback = audioSwitcher.GetDefaultAudioEndpoint(Audio.Manager.Interop.Enum.EDataFlow.eRender, Audio.Manager.Interop.Enum.ERole.eConsole);
+        var defaultRecording = audioSwitcher.GetDefaultAudioEndpoint(Audio.Manager.Interop.Enum.EDataFlow.eCapture, Audio.Manager.Interop.Enum.ERole.eConsole);
 
         var defaultPlaybackName = defaultPlayback?.NameClean ?? "Default";
         var defaultRecordingName = defaultRecording?.NameClean ?? "Default";
@@ -85,8 +85,8 @@ public partial class ProcessSelectionForm : Form
                 var pid = (uint)p.Id;
 
                 // 1. Check persisted rules
-                var outputId = audioSwitcher.GetUsedDevice(SoundSwitch.Audio.Manager.Interop.Enum.EDataFlow.eRender, SoundSwitch.Audio.Manager.Interop.Enum.ERole.eConsole, pid);
-                var inputId = audioSwitcher.GetUsedDevice(SoundSwitch.Audio.Manager.Interop.Enum.EDataFlow.eCapture, SoundSwitch.Audio.Manager.Interop.Enum.ERole.eConsole, pid);
+                var outputId = audioSwitcher.GetUsedDevice(Audio.Manager.Interop.Enum.EDataFlow.eRender, Audio.Manager.Interop.Enum.ERole.eConsole, pid);
+                var inputId = audioSwitcher.GetUsedDevice(Audio.Manager.Interop.Enum.EDataFlow.eCapture, Audio.Manager.Interop.Enum.ERole.eConsole, pid);
 
                 // 2. Fallback to active sessions
                 if (string.IsNullOrEmpty(outputId)) playbackMap.TryGetValue(pid, out outputId);
@@ -96,7 +96,7 @@ public partial class ProcessSelectionForm : Form
                 var outputName = string.IsNullOrEmpty(outputId) ? defaultPlaybackName : (audioSwitcher.GetAudioEndpoint(outputId)?.NameClean ?? outputId);
                 var inputName = string.IsNullOrEmpty(inputId) ? defaultRecordingName : (audioSwitcher.GetAudioEndpoint(inputId)?.NameClean ?? inputId);
 
-                System.Drawing.Image icon = SoundSwitch.Properties.Resources.program.ToBitmap();
+                System.Drawing.Image icon = Properties.Resources.program.ToBitmap();
                 if (!string.IsNullOrEmpty(path) && System.IO.File.Exists(path))
                 {
                     try { icon = IconExtractor.Extract(path, 0, true).ToBitmap(); } 

@@ -1226,10 +1226,14 @@ public sealed partial class SettingsForm : Form
             var recording = recordings.FirstOrDefault(d => d.Id == rule.RecordingDeviceId);
 
             var processName = GetCleanProcessName(rule.ProcessPath);
-            System.Drawing.Icon processIcon = null;
-            if (!string.IsNullOrEmpty(rule.ProcessPath) && System.IO.File.Exists(rule.ProcessPath))
+            IconHandle processIcon = null;
+            if (!string.IsNullOrEmpty(rule.ProcessPath) && File.Exists(rule.ProcessPath))
             {
-                try { processIcon = SoundSwitch.Common.Framework.Icon.IconExtractor.Extract(rule.ProcessPath, 0, true); } catch { }
+                try { processIcon = IconExtractor.Extract(rule.ProcessPath, 0, true); }
+                catch
+                {
+                    // ignored
+                }
             }
 
             var item = new ListViewItem(processName)
@@ -1271,7 +1275,7 @@ public sealed partial class SettingsForm : Form
         }
 
         // Fallback to filename if it looks like a path
-        try { return System.IO.Path.GetFileName(processPath); } catch { return processPath; }
+        try { return Path.GetFileName(processPath); } catch { return processPath; }
     }
 
     private void AppSoundLockListView_ItemCheck(object sender, ItemCheckEventArgs e)
