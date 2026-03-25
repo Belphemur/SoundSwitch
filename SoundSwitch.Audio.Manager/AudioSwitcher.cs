@@ -140,8 +140,12 @@ namespace SoundSwitch.Audio.Manager
 
             return ComThread.Invoke((() =>
             {
-                var currentEndpoint = roles.Select(eRole => ExtendPolicyClient.GetDefaultEndPoint(flow, eRole, processId)).FirstOrDefault(endpoint => !string.IsNullOrEmpty(endpoint));
-                if (deviceId.Equals(currentEndpoint))
+                var allRolesAlreadyMatch = roles.All(eRole =>
+                {
+                    var current = ExtendPolicyClient.GetDefaultEndPoint(flow, eRole, processId);
+                    return !string.IsNullOrEmpty(current) && deviceId.Equals(current);
+                });
+                if (allRolesAlreadyMatch)
                 {
                     Trace.WriteLine($"Default endpoint for [{processId}:{processName}] already {deviceId}");
                     return false;
@@ -305,7 +309,9 @@ namespace SoundSwitch.Audio.Manager
                         {
                             var session = sessions[i];
                             var pid = session.GetProcessID;
-                            if (pid != 0 && !map.ContainsKey(pid))
+                            if (pid != 0 &&
+                                session.State == NAudio.CoreAudioApi.Interfaces.AudioSessionState.AudioSessionStateActive &&
+                                !map.ContainsKey(pid))
                             {
                                 map[pid] = device.ID;
                             }
