@@ -112,9 +112,9 @@ public interface IAppModel : IDisposable
     bool SwitchForegroundProgram { get; set; }
 
     /// <summary>
-    /// Always show banner on primary screen instead of active screen
+    /// Which screen the banner should be shown on.
     /// </summary>
-    bool NotifyUsingPrimaryScreen { get; set; }
+    ShowOnScreen ShowOn { get; set; }
 
     /// <summary>
     /// Manage the profile in the application

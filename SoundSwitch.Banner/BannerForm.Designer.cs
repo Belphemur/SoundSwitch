@@ -39,8 +39,8 @@ namespace SoundSwitch.Banner
             this.pbxLogo.Location = new System.Drawing.Point(5, 5);
             this.pbxLogo.Margin = new System.Windows.Forms.Padding(5);
             this.pbxLogo.Name = "pbxLogo";
-            this.pbxLogo.Size = new System.Drawing.Size(16, 16);
-            this.pbxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pbxLogo.Size = new System.Drawing.Size(32, 32);
+            this.pbxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbxLogo.TabIndex = 1;
             this.pbxLogo.TabStop = false;
             // 

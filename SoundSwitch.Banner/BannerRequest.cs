@@ -55,6 +55,11 @@ public record BannerRequest
     public bool CustomPositionMode { get; init; }
 
     /// <summary>
+    /// Gets/sets the target screen for this banner.
+    /// </summary>
+    public ShowOnScreen? ShowOn { get; init; }
+
+    /// <summary>
     /// Callback triggered when the banner is clicked.
     /// </summary>
     public EventHandler? OnClick { get; init; }

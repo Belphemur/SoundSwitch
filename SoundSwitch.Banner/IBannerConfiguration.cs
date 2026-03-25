@@ -24,9 +24,9 @@ public interface IBannerConfiguration
     int MaxConcurrentBanners { get; }
 
     /// <summary>
-    /// Gets whether to show banners on the primary screen only.
+    /// Gets which screen the banner should be shown on.
     /// </summary>
-    bool NotifyUsingPrimaryScreen { get; }
+    ShowOnScreen ShowOn { get; }
 
     /// <summary>
     /// Gets the custom position for the banner if applicable.

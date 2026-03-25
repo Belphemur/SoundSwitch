@@ -53,8 +53,17 @@ public partial class BannerForm : Form
     /// <summary>
     /// Gets the Screen object to display the banner on.
     /// </summary>
-    internal Screen GetScreen() =>
-        (_configuration.NotifyUsingPrimaryScreen ? Screen.PrimaryScreen : Screen.FromPoint(Cursor.Position))!;
+    internal Screen GetScreen(ShowOnScreen? showOnRequested = null)
+    {
+        var showOn = showOnRequested ?? _configuration.ShowOn;
+        return showOn switch
+        {
+            ShowOnScreen.PrimaryScreen => Screen.PrimaryScreen!,
+            ShowOnScreen.ActiveScreen => Screen.FromPoint(Cursor.Position)!,
+            ShowOnScreen.FollowCursor => Screen.FromPoint(Cursor.Position)!,
+            _ => Screen.PrimaryScreen!
+        };
+    }
 
     /// <summary>
     /// Constructor for the <see cref="BannerForm"/> class.
@@ -215,7 +224,7 @@ public partial class BannerForm : Form
             _currentPosition = position;
 
         if (_currentPosition != null)
-            Location = _currentPosition.GetScreenPosition(GetScreen(), Height, Width, _currentOffset, _configuration.CustomPosition);
+            Location = _currentPosition.GetScreenPosition(GetScreen(request.ShowOn), Height, Width, _currentOffset, _configuration.CustomPosition);
 
 
         if (_timerHide != null && !persistent && ttl != TimeSpan.MaxValue)
@@ -229,14 +238,14 @@ public partial class BannerForm : Form
 
     public void UpdatePosition(IPosition position, int offset)
     {
-        Location = position.GetScreenPosition(GetScreen(), Height, Width, offset, _configuration.CustomPosition);
+        Location = position.GetScreenPosition(GetScreen(_currentRequest?.ShowOn), Height, Width, offset, _configuration.CustomPosition);
         _currentOffset = offset;
     }
 
     public void UpdateLocationOpacity(IPosition position, int positionChange, double opacityChange, int hideChange)
     {
         _currentOffset += positionChange;
-        Location = position.GetScreenPosition(GetScreen(), Height, Width, _currentOffset, _configuration.CustomPosition);
+        Location = position.GetScreenPosition(GetScreen(_currentRequest?.ShowOn), Height, Width, _currentOffset, _configuration.CustomPosition);
         Opacity -= opacityChange;
         _hidePercentage -= hideChange;
 
@@ -258,7 +267,7 @@ public partial class BannerForm : Form
     {
         if (_isCompact) return;
 
-        const float scaleFactorImage = 0.1f;
+        const float scaleFactorImage = 0.6f;
         const float scaleFactorFont = 0.8f;
 
         Font = new Font(Font.FontFamily, _defaultFontSize * scaleFactorFont, Font.Style);
