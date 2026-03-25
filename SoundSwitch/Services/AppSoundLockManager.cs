@@ -63,32 +63,30 @@ namespace SoundSwitch.Services
 
         private void ApplyRulesToProcess(uint processId, string processName, string processPath, string windowTitle, HashSet<Guid>? notifiedRules)
         {
-            if (_configuration.AppSoundRules == null || !_configuration.AppSoundRules.Any()) return;
+            if (_configuration.AppSoundRules == null || _configuration.AppSoundRules.Count == 0) return;
 
             foreach (var rule in _configuration.AppSoundRules.Where(r => r.Enabled))
             {
-                if (IsMatch(rule, processName, processPath, windowTitle))
-                {
-                    _logger.Information("MATCH: Rule for {ProcessPattern} matched process {ProcessName} (PID: {PID})", rule.ProcessPath, processName, processId);
+                if (!IsMatch(rule, processName, processPath, windowTitle)) continue;
+                _logger.Information("MATCH: Rule for {ProcessPattern} matched process {ProcessName} (PID: {PID})", rule.ProcessPath, processName, processId);
                     
-                    var changed = false;
-                    if (!string.IsNullOrEmpty(rule.PlaybackDeviceId))
-                    {
-                        changed |= _audioSwitcher.SwitchProcessTo(rule.PlaybackDeviceId, ERole.ERole_enum_count, EDataFlow.eRender, processId);
-                    }
+                var changed = false;
+                if (!string.IsNullOrEmpty(rule.PlaybackDeviceId))
+                {
+                    changed |= _audioSwitcher.SwitchProcessTo(rule.PlaybackDeviceId, ERole.ERole_enum_count, EDataFlow.eRender, processId);
+                }
 
-                    if (!string.IsNullOrEmpty(rule.RecordingDeviceId))
-                    {
-                        changed |= _audioSwitcher.SwitchProcessTo(rule.RecordingDeviceId, ERole.ERole_enum_count, EDataFlow.eCapture, processId);
-                    }
+                if (!string.IsNullOrEmpty(rule.RecordingDeviceId))
+                {
+                    changed |= _audioSwitcher.SwitchProcessTo(rule.RecordingDeviceId, ERole.ERole_enum_count, EDataFlow.eCapture, processId);
+                }
 
-                    if (rule.Notify && changed)
+                if (rule.Notify && changed)
+                {
+                    if (notifiedRules == null || !notifiedRules.Contains(rule.Id))
                     {
-                        if (notifiedRules == null || !notifiedRules.Contains(rule.Id))
-                        {
-                            _notificationManager.NotifyAppRuleMatched(rule, processId);
-                            notifiedRules?.Add(rule.Id);
-                        }
+                        _notificationManager.NotifyAppRuleMatched(rule, processId);
+                        notifiedRules?.Add(rule.Id);
                     }
                 }
             }
