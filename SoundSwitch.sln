@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundSwitch.CLI", "SoundSwi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundSwitch.Banner", "SoundSwitch.Banner\SoundSwitch.Banner.csproj", "{C2233539-9152-4B20-972E-5C989EA6DB79}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundSwitch.Banner.CLI", "SoundSwitch.Banner.CLI\SoundSwitch.Banner.CLI.csproj", "{A68CC19A-D5A8-4D69-AA79-2F74B83AF169}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Beta|Any CPU = Beta|Any CPU
@@ -253,6 +255,30 @@ Global
 		{C2233539-9152-4B20-972E-5C989EA6DB79}.Release|x64.Build.0 = Release|Any CPU
 		{C2233539-9152-4B20-972E-5C989EA6DB79}.Release|x86.ActiveCfg = Release|Any CPU
 		{C2233539-9152-4B20-972E-5C989EA6DB79}.Release|x86.Build.0 = Release|Any CPU
+		{A68CC19A-D5A8-4D69-AA79-2F74B83AF169}.Beta|Any CPU.ActiveCfg = Debug|Any CPU
+		{A68CC19A-D5A8-4D69-AA79-2F74B83AF169}.Beta|Any CPU.Build.0 = Debug|Any CPU
+		{A68CC19A-D5A8-4D69-AA79-2F74B83AF169}.Beta|x64.ActiveCfg = Debug|Any CPU
+		{A68CC19A-D5A8-4D69-AA79-2F74B83AF169}.Beta|x64.Build.0 = Debug|Any CPU
+		{A68CC19A-D5A8-4D69-AA79-2F74B83AF169}.Beta|x86.ActiveCfg = Debug|Any CPU
+		{A68CC19A-D5A8-4D69-AA79-2F74B83AF169}.Beta|x86.Build.0 = Debug|Any CPU
+		{A68CC19A-D5A8-4D69-AA79-2F74B83AF169}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A68CC19A-D5A8-4D69-AA79-2F74B83AF169}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A68CC19A-D5A8-4D69-AA79-2F74B83AF169}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A68CC19A-D5A8-4D69-AA79-2F74B83AF169}.Debug|x64.Build.0 = Debug|Any CPU
+		{A68CC19A-D5A8-4D69-AA79-2F74B83AF169}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A68CC19A-D5A8-4D69-AA79-2F74B83AF169}.Debug|x86.Build.0 = Debug|Any CPU
+		{A68CC19A-D5A8-4D69-AA79-2F74B83AF169}.Nightly|Any CPU.ActiveCfg = Debug|Any CPU
+		{A68CC19A-D5A8-4D69-AA79-2F74B83AF169}.Nightly|Any CPU.Build.0 = Debug|Any CPU
+		{A68CC19A-D5A8-4D69-AA79-2F74B83AF169}.Nightly|x64.ActiveCfg = Debug|Any CPU
+		{A68CC19A-D5A8-4D69-AA79-2F74B83AF169}.Nightly|x64.Build.0 = Debug|Any CPU
+		{A68CC19A-D5A8-4D69-AA79-2F74B83AF169}.Nightly|x86.ActiveCfg = Debug|Any CPU
+		{A68CC19A-D5A8-4D69-AA79-2F74B83AF169}.Nightly|x86.Build.0 = Debug|Any CPU
+		{A68CC19A-D5A8-4D69-AA79-2F74B83AF169}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A68CC19A-D5A8-4D69-AA79-2F74B83AF169}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A68CC19A-D5A8-4D69-AA79-2F74B83AF169}.Release|x64.ActiveCfg = Release|Any CPU
+		{A68CC19A-D5A8-4D69-AA79-2F74B83AF169}.Release|x64.Build.0 = Release|Any CPU
+		{A68CC19A-D5A8-4D69-AA79-2F74B83AF169}.Release|x86.ActiveCfg = Release|Any CPU
+		{A68CC19A-D5A8-4D69-AA79-2F74B83AF169}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
