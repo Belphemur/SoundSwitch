@@ -1,4 +1,5 @@
-﻿using System;
+using SoundSwitch.Common.Framework.Factory;
+using System;
 
 namespace SoundSwitch.Framework.Factory;
 

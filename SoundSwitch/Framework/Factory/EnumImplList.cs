@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
 * Copyright (C) 2015-2017 Antoine Aflalo
 *
 * This program is free software; you can redistribute it and/or
@@ -12,10 +12,11 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System;
+using SoundSwitch.Common.Framework.Factory;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System;
 
 namespace SoundSwitch.Framework.Factory;
 

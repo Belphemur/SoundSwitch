@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
  * Copyright (C) 2015 Jeroen Pelgrims
  * Copyright (C) 2015-2017 Antoine Aflalo
  *
@@ -13,7 +13,26 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
-using System;
+using Serilog;
+using SoundSwitch.Audio.Manager.Interop.Enum;
+using SoundSwitch.Audio.Manager;
+using SoundSwitch.Common.Framework.UI;
+using SoundSwitch.Framework.Configuration;
+using SoundSwitch.Framework.Profile.UI;
+using SoundSwitch.Framework.TrayIcon.IconChanger;
+using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
+using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
+using SoundSwitch.Framework.Updater.Releases;
+using SoundSwitch.Framework.Updater.Remind;
+using SoundSwitch.Framework.Updater;
+using SoundSwitch.Framework;
+using SoundSwitch.Localization.Factory;
+using SoundSwitch.Localization;
+using SoundSwitch.Model;
+using SoundSwitch.Properties;
+using SoundSwitch.UI.Forms;
+using SoundSwitch.UI.Menu.Util;
+using SoundSwitch.Util;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -21,25 +40,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
-using Serilog;
-using SoundSwitch.Audio.Manager;
-using SoundSwitch.Audio.Manager.Interop.Enum;
-using SoundSwitch.Framework;
-using SoundSwitch.Framework.Configuration;
-using SoundSwitch.Framework.Profile.UI;
-using SoundSwitch.Framework.TrayIcon.IconChanger;
-using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
-using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
-using SoundSwitch.Framework.Updater;
-using SoundSwitch.Framework.Updater.Releases;
-using SoundSwitch.Framework.Updater.Remind;
-using SoundSwitch.Localization;
-using SoundSwitch.Localization.Factory;
-using SoundSwitch.Model;
-using SoundSwitch.Properties;
-using SoundSwitch.UI.Forms;
-using SoundSwitch.UI.Menu.Util;
-using SoundSwitch.Util;
+using System;
+
 using TimerForm = System.Windows.Forms.Timer;
 
 namespace SoundSwitch.UI.Component;
@@ -349,7 +351,7 @@ public sealed class TrayIcon : IDisposable
             else
             {
                 _settingsForm = new SettingsForm(AppModel.Instance.AudioDeviceLister);
-                _settingsForm.FormClosed += (object sender, FormClosedEventArgs e) =>
+                _settingsForm.FormClosed += (sender, e) =>
                     _settingsForm = null;
                 _settingsForm.Show();
             }
@@ -381,14 +383,14 @@ public sealed class TrayIcon : IDisposable
         }
 
         using var defaultPlayback = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eConsole);
-        _selectionMenu.Items.AddRange(playbackDevices.Select(info => new ToolStripDeviceItem(DeviceClicked, info, info.Equals(defaultPlayback))).ToArray());
+        _selectionMenu.Items.AddRange([.. playbackDevices.Select(info => new ToolStripDeviceItem(DeviceClicked, info, info.Equals(defaultPlayback)))]);
 
         if (recordingDevices.Length > 0)
         {
             using var defaultRecording = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eConsole);
 
             _selectionMenu.Items.Add(new ToolStripSeparator());
-            _selectionMenu.Items.AddRange(recordingDevices.Select(info => new ToolStripDeviceItem(DeviceClicked, info, info.Equals(defaultRecording))).ToArray());
+            _selectionMenu.Items.AddRange([.. recordingDevices.Select(info => new ToolStripDeviceItem(DeviceClicked, info, info.Equals(defaultRecording)))]);
         }
 
         RoundedCorner.RoundCorner(_selectionMenu.Handle, RoundedCorner.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND);

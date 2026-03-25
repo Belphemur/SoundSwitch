@@ -13,12 +13,13 @@
 ********************************************************************/
 
 using SoundSwitch.Banner;
+using SoundSwitch.Common.Framework.Factory;
 using SoundSwitch.Framework.Factory;
 using SoundSwitch.Localization;
 
 namespace SoundSwitch.Framework.Banner.MicrophoneMute;
 
-public interface IMicrophoneMute : SoundSwitch.Framework.Factory.IEnumImpl<SoundSwitch.Banner.MicrophoneMute> { }
+public interface IMicrophoneMute : IEnumImpl<SoundSwitch.Banner.MicrophoneMute> { }
 
 public class MicrophoneMuteNone : IMicrophoneMute
 {

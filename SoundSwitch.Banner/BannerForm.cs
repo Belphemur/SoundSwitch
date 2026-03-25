@@ -1,6 +1,9 @@
+using SoundSwitch.Common.Framework.UI;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using System;
+
 using Timer = System.Windows.Forms.Timer;
 
 namespace SoundSwitch.Banner;

@@ -1,4 +1,5 @@
-﻿using SoundSwitch.Framework.Factory;
+using SoundSwitch.Common.Framework.Factory;
+using SoundSwitch.Framework.Factory;
 using SoundSwitch.Localization;
 
 namespace SoundSwitch.Framework.Profile.Trigger;

@@ -18,4 +18,8 @@
       <PackageReference Include="JetBrains.Annotations" />
       <PackageReference Include="Serilog" />
     </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\SoundSwitch.Common\SoundSwitch.Common.csproj" />
+    </ItemGroup>
 </Project>

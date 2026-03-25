@@ -1,5 +1,5 @@
-﻿using System.Globalization;
-using SoundSwitch.Framework.Factory;
+using SoundSwitch.Common.Framework.Factory;
+using System.Globalization;
 
 namespace SoundSwitch.Localization.Factory.Lang;
 

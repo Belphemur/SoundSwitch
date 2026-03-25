@@ -12,13 +12,13 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System.Drawing;
 using JetBrains.Annotations;
 using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Common.Framework.Factory;
 using SoundSwitch.Framework.Audio;
-using SoundSwitch.Framework.Factory;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
 using SoundSwitch.Model;
+using System.Drawing;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification;
 

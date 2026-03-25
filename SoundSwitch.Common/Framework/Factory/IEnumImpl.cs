@@ -12,20 +12,19 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
-using SoundSwitch.Common.Framework.Factory;
+using System;
 
-namespace SoundSwitch.Framework.TrayIcon.IconDoubleClick.Action;
+namespace SoundSwitch.Common.Framework.Factory;
 
-/// <summary>
-/// Defines the contract for system tray icon double-click action implementations.
-/// Each implementation represents a specific action that can be performed when the user double-clicks the SoundSwitch system tray icon.
-/// </summary>
-public interface IIconDoubleClick : IEnumImpl<IconDoubleClick>
+public interface IEnumImpl<out TEnum> where TEnum : Enum, IConvertible
 {
     /// <summary>
-    /// Executes the double-click action.
-    /// This method is called when the user double-clicks the system tray icon and this action is configured.
+    ///     Type of the Tooltip Info
     /// </summary>
-    /// <param name="trayIcon">The TrayIcon instance that can be used to access UI functionality</param>
-    void Execute(UI.Component.TrayIcon trayIcon);
+    TEnum TypeEnum { get; }
+
+    /// <summary>
+    ///     Displaying label
+    /// </summary>
+    string Label { get; }
 }

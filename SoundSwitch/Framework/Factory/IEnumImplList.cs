@@ -12,8 +12,9 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System;
+using SoundSwitch.Common.Framework.Factory;
 using System.Collections.Generic;
+using System;
 
 namespace SoundSwitch.Framework.Factory;
 

@@ -12,7 +12,7 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using SoundSwitch.Framework.Factory;
+using SoundSwitch.Common.Framework.Factory;
 
 namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 

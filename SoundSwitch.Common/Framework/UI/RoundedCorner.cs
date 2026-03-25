@@ -1,7 +1,7 @@
-using System;
 using System.Runtime.InteropServices;
+using System;
 
-namespace SoundSwitch.Banner;
+namespace SoundSwitch.Common.Framework.UI;
 
 /// <summary>
 /// Utility class to handle rounded corners for forms.

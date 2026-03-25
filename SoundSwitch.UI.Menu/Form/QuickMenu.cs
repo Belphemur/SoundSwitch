@@ -1,13 +1,14 @@
-﻿using System;
+using SoundSwitch.Common.Framework.UI;
+using SoundSwitch.UI.Menu.Component;
+using SoundSwitch.UI.Menu.Util.Timer;
+using SoundSwitch.UI.Menu.Util;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SoundSwitch.UI.Menu.Component;
-using SoundSwitch.UI.Menu.Util;
-using SoundSwitch.UI.Menu.Util.Timer;
+using System;
 
 namespace SoundSwitch.UI.Menu.Form
 {

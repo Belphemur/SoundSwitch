@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
 * Copyright (C) 2015-2017 Antoine Aflalo
 *
 * This program is free software; you can redistribute it and/or
@@ -12,12 +12,13 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System;
+using SoundSwitch.Common.Framework.Factory;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
+using System;
 
 namespace SoundSwitch.Framework.Factory;
 
@@ -39,8 +40,7 @@ public abstract class AbstractFactory<TEnum, TImplementation>(IEnumImplList<TEnu
     /// <returns></returns>
     public TImplementation Get(TEnum eEnum)
     {
-        TImplementation value;
-        if (!DataSource().TryGetValue(eEnum, out value))
+        if (!DataSource().TryGetValue(eEnum, out TImplementation value))
         {
             throw new InvalidEnumArgumentException();
         }
@@ -63,7 +63,7 @@ public abstract class AbstractFactory<TEnum, TImplementation>(IEnumImplList<TEnu
             DataSource().Values.Select(
                     implementation => new DisplayEnumObject<TEnum>(implementation))
                 .ToArray();
-        list.ValueMember = nameof(DisplayEnumObject<TEnum>.Enum);
-        list.DisplayMember = nameof(DisplayEnumObject<TEnum>.Display);
+        list.ValueMember = nameof(DisplayEnumObject<>.Enum);
+        list.DisplayMember = nameof(DisplayEnumObject<>.Display);
     }
 }

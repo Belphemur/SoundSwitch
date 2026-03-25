@@ -16,4 +16,8 @@
     <PackageReference Include="Serilog" />
     <PackageReference Include="System.Drawing.Common" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SoundSwitch.Common\SoundSwitch.Common.csproj" />
+  </ItemGroup>
 </Project>
