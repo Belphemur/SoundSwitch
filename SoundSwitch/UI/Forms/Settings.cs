@@ -1271,7 +1271,8 @@ public sealed partial class SettingsForm : Form
         var match = System.Text.RegularExpressions.Regex.Match(processPath, @"\.\*(?<name>.*?)\.\*");
         if (match.Success)
         {
-            try { return System.Text.RegularExpressions.Regex.Unescape(match.Groups["name"].Value); } catch { }
+            try { return System.Text.RegularExpressions.Regex.Unescape(match.Groups["name"].Value); } 
+            catch (Exception ex) { Log.Debug(ex, "Failed to unescape regex pattern for display name: {Pattern}", processPath); }
         }
 
         // Fallback to filename if it looks like a path

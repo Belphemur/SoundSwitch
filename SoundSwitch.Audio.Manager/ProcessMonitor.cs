@@ -43,7 +43,6 @@ namespace SoundSwitch.Audio.Manager
         {
             _logger.Information("Starting ProcessMonitor");
             _pollTimer.Start();
-            PollProcesses();
         }
 
         public void Stop()
@@ -58,6 +57,7 @@ namespace SoundSwitch.Audio.Manager
 
         private void PollProcesses()
         {
+            List<Event> events = null;
             lock (_lock)
             {
                 var currentPids = new HashSet<int>();
@@ -65,26 +65,29 @@ namespace SoundSwitch.Audio.Manager
 
                 foreach (var process in Process.GetProcesses())
                 {
-                    var pid = process.Id;
-                    if (pid <= 4) continue;
-                    currentPids.Add(pid);
-
-                    if (_processedProcessIds.Contains(pid)) continue;
-
-                    if (_pendingProcesses.Contains(pid))
+                    using (process)
                     {
-                        toProcess.Add(pid);
-                    }
-                    else
-                    {
-                        try
+                        var pid = process.Id;
+                        if (pid <= 4) continue;
+                        currentPids.Add(pid);
+
+                        if (_processedProcessIds.Contains(pid)) continue;
+
+                        if (_pendingProcesses.Contains(pid))
                         {
-                            _pendingProcesses.Add(pid);
-                            _logger.Verbose("Detected new process {ProcessName} ({PID}), waiting for next iteration", process.ProcessName, pid);
+                            toProcess.Add(pid);
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            _logger.Debug(ex, "Failed to check if process {PID} is pending", pid);
+                            try
+                            {
+                                _pendingProcesses.Add(pid);
+                                _logger.Verbose("Detected new process {ProcessName} ({PID}), waiting for next iteration", process.ProcessName, pid);
+                            }
+                            catch (Exception ex)
+                            {
+                                _logger.Debug(ex, "Failed to check if process {PID} is pending", pid);
+                            }
                         }
                     }
                 }
@@ -93,9 +96,12 @@ namespace SoundSwitch.Audio.Manager
                 _processedProcessIds.RemoveWhere(pid => !currentPids.Contains(pid));
                 _pendingProcesses.RemoveWhere(pid => !currentPids.Contains(pid));
 
-                if (!toProcess.Any()) return;
+                if (!toProcess.Any())
+                {
+                    return;
+                }
 
-                var events = new List<Event>();
+                events = new List<Event>();
                 foreach (var pid in toProcess)
                 {
                     try
@@ -128,11 +134,11 @@ namespace SoundSwitch.Audio.Manager
                         _pendingProcesses.Remove(pid);
                     }
                 }
+            }
 
-                if (events.Any())
-                {
-                    ProcessesDetected?.Invoke(this, events);
-                }
+            if (events != null && events.Count > 0)
+            {
+                ProcessesDetected?.Invoke(this, events);
             }
         }
 

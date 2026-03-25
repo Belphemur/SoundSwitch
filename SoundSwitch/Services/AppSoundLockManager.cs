@@ -14,7 +14,7 @@ using SoundSwitch.Model;
 
 namespace SoundSwitch.Services
 {
-    public class AppSoundLockManager
+    public class AppSoundLockManager : IDisposable
     {
         private static readonly ILogger Log = Serilog.Log.ForContext<AppSoundLockManager>();
         private readonly ISoundSwitchConfiguration _configuration;
@@ -65,7 +65,7 @@ namespace SoundSwitch.Services
         {
             if (_configuration.AppSoundRules == null || _configuration.AppSoundRules.Count == 0) return;
 
-            foreach (var rule in _configuration.AppSoundRules.Where(r => r.Enabled))
+            foreach (var rule in _configuration.AppSoundRules.ToList().Where(r => r.Enabled))
             {
                 if (!IsMatch(rule, processName, processPath, windowTitle)) continue;
                 _logger.Information("MATCH: Rule for {ProcessPattern} matched process {ProcessName} (PID: {PID})", rule.ProcessPath, processName, processId);

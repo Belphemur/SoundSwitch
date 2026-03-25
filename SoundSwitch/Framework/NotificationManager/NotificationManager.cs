@@ -170,7 +170,8 @@ public class NotificationManager(IAppModel model)
         try
         {
             var process = Process.GetProcessById((int)processId);
-            icon = IconExtractor.Extract(process.MainModule?.FileName, 0, true).ToBitmap();
+            using var iconHandle = IconExtractor.Extract(process.MainModule?.FileName, 0, true);
+            icon = iconHandle.ToBitmap();
         }
         catch (Exception)
         {

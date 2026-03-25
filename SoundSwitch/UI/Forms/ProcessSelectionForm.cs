@@ -33,6 +33,7 @@ public partial class ProcessSelectionForm : Form
         Text = SettingsStrings.appSoundLock_selectProcess;
         btnSelect.Text = SettingsStrings.buttonSelect;
         btnCancel.Text = SettingsStrings.buttonClose;
+        lblFilter.Text = SettingsStrings.appSoundLock_filter;
         
         dgvProcesses.Columns.Clear();
         var colIcon = new DataGridViewImageColumn
@@ -71,64 +72,67 @@ public partial class ProcessSelectionForm : Form
 
         foreach (var p in Process.GetProcesses())
         {
-            try
+            using (p)
             {
-                if (p.Id <= 4) continue;
-
-                var path = string.Empty;
-                try { path = p.MainModule?.FileName ?? string.Empty; } 
-                catch (Exception ex)
+                try
                 {
-                    _logger.Debug(ex, "Failed to get process path for {ProcessName} (PID: {PID})", p.ProcessName, p.Id);
-                }
+                    if (p.Id <= 4) continue;
 
-                var pid = (uint)p.Id;
-
-                // 1. Check persisted rules
-                var outputId = audioSwitcher.GetUsedDevice(Audio.Manager.Interop.Enum.EDataFlow.eRender, Audio.Manager.Interop.Enum.ERole.eConsole, pid);
-                var inputId = audioSwitcher.GetUsedDevice(Audio.Manager.Interop.Enum.EDataFlow.eCapture, Audio.Manager.Interop.Enum.ERole.eConsole, pid);
-
-                // 2. Fallback to active sessions
-                if (string.IsNullOrEmpty(outputId)) playbackMap.TryGetValue(pid, out outputId);
-                if (string.IsNullOrEmpty(inputId)) recordingMap.TryGetValue(pid, out inputId);
-
-                // 3. Resolve names or fallback to system default
-                var outputName = string.IsNullOrEmpty(outputId) ? defaultPlaybackName : (audioSwitcher.GetAudioEndpoint(outputId)?.NameClean ?? outputId);
-                var inputName = string.IsNullOrEmpty(inputId) ? defaultRecordingName : (audioSwitcher.GetAudioEndpoint(inputId)?.NameClean ?? inputId);
-
-                System.Drawing.Image icon = Properties.Resources.program.ToBitmap();
-                if (!string.IsNullOrEmpty(path) && System.IO.File.Exists(path))
-                {
-                    try { icon = IconExtractor.Extract(path, 0, true).ToBitmap(); } 
+                    var path = string.Empty;
+                    try { path = p.MainModule?.FileName ?? string.Empty; } 
                     catch (Exception ex)
                     {
-                        _logger.Debug(ex, "Failed to extract icon for {Path}", path);
+                        _logger.Debug(ex, "Failed to get process path for {ProcessName} (PID: {PID})", p.ProcessName, p.Id);
                     }
-                }
 
-                _allProcesses.Add(new ProcessInfo
+                    var pid = (uint)p.Id;
+
+                    // 1. Check persisted rules
+                    var outputId = audioSwitcher.GetUsedDevice(Audio.Manager.Interop.Enum.EDataFlow.eRender, Audio.Manager.Interop.Enum.ERole.eConsole, pid);
+                    var inputId = audioSwitcher.GetUsedDevice(Audio.Manager.Interop.Enum.EDataFlow.eCapture, Audio.Manager.Interop.Enum.ERole.eConsole, pid);
+
+                    // 2. Fallback to active sessions
+                    if (string.IsNullOrEmpty(outputId)) playbackMap.TryGetValue(pid, out outputId);
+                    if (string.IsNullOrEmpty(inputId)) recordingMap.TryGetValue(pid, out inputId);
+
+                    // 3. Resolve names or fallback to system default
+                    var outputName = string.IsNullOrEmpty(outputId) ? defaultPlaybackName : (audioSwitcher.GetAudioEndpoint(outputId)?.NameClean ?? outputId);
+                    var inputName = string.IsNullOrEmpty(inputId) ? defaultRecordingName : (audioSwitcher.GetAudioEndpoint(inputId)?.NameClean ?? inputId);
+
+                    System.Drawing.Image icon = Properties.Resources.program.ToBitmap();
+                    if (!string.IsNullOrEmpty(path) && System.IO.File.Exists(path))
+                    {
+                        try { icon = IconExtractor.Extract(path, 0, true).ToBitmap(); } 
+                        catch (Exception ex)
+                        {
+                            _logger.Debug(ex, "Failed to extract icon for {Path}", path);
+                        }
+                    }
+
+                    _allProcesses.Add(new ProcessInfo
+                    {
+                        Name = p.ProcessName,
+                        Path = path,
+                        Icon = icon,
+                        WindowTitle = p.MainWindowTitle,
+                        OutputDevice = outputName,
+                        InputDevice = inputName
+                    });
+                }
+                catch (Exception ex)
                 {
-                    Name = p.ProcessName,
-                    Path = path,
-                    Icon = icon,
-                    WindowTitle = p.MainWindowTitle,
-                    OutputDevice = outputName,
-                    InputDevice = inputName
-                });
-            }
-            catch (Exception ex)
-            {
-                _logger.Debug(ex, "Failed to load individual process info for PID {PID}", p.Id);
+                    _logger.Debug(ex, "Failed to load individual process info for PID {PID}", p.Id);
+                }
             }
         }
 
         // Only show one row per process/path/window combination
-        var grouped = _allProcesses
+        _allProcesses = _allProcesses
             .GroupBy(x => new { x.Name, x.Path, x.WindowTitle })
             .Select(g => g.First())
             .ToList();
 
-        UpdateGrid(grouped);
+        UpdateGrid(_allProcesses);
     }
 
     private void UpdateGrid(IEnumerable<ProcessInfo> processes)

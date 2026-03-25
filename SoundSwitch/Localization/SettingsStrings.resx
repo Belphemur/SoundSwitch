@@ -752,4 +752,7 @@ Press Esc to close.</value>
   <data name="appSoundLock.rule.notify" xml:space="preserve">
     <value>Notify when triggered</value>
   </data>
+  <data name="appSoundLock.filter" xml:space="preserve">
+    <value>Filter:</value>
+  </data>
 </root>
