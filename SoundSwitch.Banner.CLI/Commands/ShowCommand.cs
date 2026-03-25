@@ -10,7 +10,7 @@ using System;
 
 namespace SoundSwitch.Banner.CLI.Commands;
 
-public class ShowCommand : Command<ShowCommand.Settings>
+public class ShowCommand : AsyncCommand<ShowCommand.Settings>
 {
     public class Settings : CommandSettings
     {
@@ -21,6 +21,10 @@ public class ShowCommand : Command<ShowCommand.Settings>
         [CommandOption("-m|--message")]
         [Description("The message content.")]
         public string Message { get; set; } = "This is a test notification.";
+
+        [CommandOption("-i|--image")]
+        [Description("Image input (URL, File Path, EXE/ICO, Base64, or Device ID).")]
+        public string? Image { get; set; }
 
         [CommandOption("-p|--persistent")]
         [Description("Enable persistent notification.")]
@@ -39,11 +43,11 @@ public class ShowCommand : Command<ShowCommand.Settings>
         public string? SoundPath { get; set; }
 
         [CommandOption("--pos")]
-        [Description("Position (TopLeft, TopRight, etc.)")]
+        [Description("Position (TopCenter,TopRight,CenterLeft,Center,CenterRight,BottomLeft,BottomCenter,BottomRight,Custom)")]
         public BannerPosition Position { get; set; } = BannerPosition.TopLeft;
     }
 
-    public override int Execute(CommandContext context, Settings settings, CancellationToken cancellationToken)
+    public override async Task<int> ExecuteAsync(CommandContext context, Settings settings, CancellationToken cancellationToken)
     {
         var config = new CliBannerConfiguration
         {
@@ -60,15 +64,22 @@ public class ShowCommand : Command<ShowCommand.Settings>
         BannerService.Setup();
         var bannerService = new BannerService(config, audioService, null);
 
+        var image = await ImageResolver.ResolveAsync(settings.Image);
+
         var request = new BannerRequest
         {
             Title = settings.Title,
             Text = settings.Message,
+            Image = image,
             Priority = 1,
             SoundPath = settings.SoundPath
         };
 
         AnsiConsole.MarkupLine($"[green]Showing banner:[/] {settings.Title} - {settings.Message} " + (settings.Persistent ? "[yellow](Persistent)[/]" : ""));
+        if (image != null)
+        {
+            AnsiConsole.MarkupLine($"[blue]Resolved image from:[/] {settings.Image}");
+        }
         
         bannerService.Show(request, settings.Position, settings.Persistent);
 
