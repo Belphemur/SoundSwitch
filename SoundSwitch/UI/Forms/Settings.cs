@@ -22,9 +22,8 @@ using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
-using SoundSwitch.Framework.Banner;
-using SoundSwitch.Framework.Banner.BannerPosition;
-using SoundSwitch.Framework.Banner.MicrophoneMute;
+using SoundSwitch.Banner;
+using SoundSwitch.Banner;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.Factory;
@@ -54,7 +53,9 @@ using System.IO.Compression;
 using System.Linq;
 using System.Windows.Forms;
 using SoundSwitch.Audio.Manager.Interop.Enum;
-using SoundSwitch.Framework.Banner.BannerDisplayInfo;
+using SoundSwitch.Framework.Banner;
+using SoundSwitch.Framework.Banner.MicrophoneMute;
+
 
 namespace SoundSwitch.UI.Forms;
 
@@ -65,7 +66,7 @@ public sealed partial class SettingsForm : Form
 
     private readonly bool _loaded;
     private readonly IAudioDeviceLister _audioDeviceLister;
-    private readonly BannerManager _bannerManager = new();
+    private readonly BannerService _bannerService = new(new BannerConfigurationBridge(), new BannerAudioServiceBridge());
 
     private const int RECT_PEN_WIDTH = 4;
     private const int OFFSET_W = 15;
@@ -180,9 +181,8 @@ public sealed partial class SettingsForm : Form
         microphoneUnmuteBannerComboBox.SelectedValue = AppModel.Instance.MicrophoneUnmuteBanner;
         new ToolTip().SetToolTip(microphoneUnmuteBannerComboBox, SettingsStrings.banner_mute_tooltip);
 
-        new BannerDisplayInfoFactory().ConfigureListControl(bannerDisplayComboBox);
-        bannerDisplayComboBox.SelectedValue = AppModel.Instance.BannerDisplayInfo;
-        new ToolTip().SetToolTip(bannerDisplayComboBox, SettingsStrings.banner_displayInfo_tooltip);
+
+
 
         CustomSoundNotificationCheck();
 
@@ -457,7 +457,7 @@ public sealed partial class SettingsForm : Form
         singleNotificationCheckbox.Text = SettingsStrings.notification_single;
         opacityLabel.Text = SettingsStrings.banner_opacity;
         opacityUpDown.TextUnit = "%";
-        displayInfoLabel.Text = SettingsStrings.banner_displayInfo;
+
 
         // Settings - Troubleshooting
         resetAudioDevicesGroupBox.Text = SettingsStrings.resetAudioDevices;
@@ -1028,17 +1028,15 @@ public sealed partial class SettingsForm : Form
 
         var audioDevice = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eConsole);
         using var iconHandle = audioDevice.LargeIcon;
-        var bannerData = new BannerData
+        var request = new BannerRequest
         {
             Image = iconHandle.ToBitmap(),
             Title = SettingsStrings.customPositionBanner_title,
             Text = SettingsStrings.customPositionBanner_text,
-            Position = AppModel.Instance.BannerPositionImpl,
             Ttl = TimeSpan.FromSeconds(6),
-            CustomPositionMode = true
         };
 
-        _bannerManager.ShowNotification(bannerData);
+        _bannerService.Show(request, (BannerPosition)AppModel.Instance.BannerPosition, true);
     }
 
     #endregion

@@ -29,10 +29,9 @@ using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Audio.Lister.Job;
 using SoundSwitch.Framework.Audio.Microphone;
-using SoundSwitch.Framework.Banner.BannerDisplayInfo;
-using SoundSwitch.Framework.Banner.BannerPosition;
-using SoundSwitch.Framework.Banner.BannerPosition.Position;
-using SoundSwitch.Framework.Banner.MicrophoneMute;
+using SoundSwitch.Audio.Manager.Interop.Enum;
+using SoundSwitch.Banner;
+using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
@@ -57,7 +56,7 @@ public class AppModel : IAppModel
     private readonly NotificationManager _notificationManager;
     private UpdateChecker _updateChecker;
     private DeviceCollection<DeviceInfo> _selectedDevices;
-    private readonly BannerPositionFactory _bannerPositionFactory = new();
+    private readonly BannerService _bannerService = new(new BannerConfigurationBridge(), new BannerAudioServiceBridge());
 
     private AppModel()
     {
@@ -97,7 +96,7 @@ public class AppModel : IAppModel
             AppConfigs.Configuration.Save();
             BannerSettingsChanged?.Invoke(this,
                 new BannerDataChangedEvent(BannerPosition, BannerPosition, preValue, value,
-                    BannerOpacityPercentage, BannerOpacityPercentage, BannerDisplayInfo, BannerDisplayInfo,
+                    BannerOpacityPercentage, BannerOpacityPercentage,
                     MicrophoneMuteBanner, MicrophoneMuteBanner, MicrophoneUnmuteBanner, MicrophoneUnmuteBanner));
         }
     }
@@ -113,7 +112,7 @@ public class AppModel : IAppModel
             AppConfigs.Configuration.Save();
             BannerSettingsChanged?.Invoke(this,
                 new BannerDataChangedEvent(BannerPosition, BannerPosition, BannerOnScreenTime, BannerOnScreenTime,
-                    preValue, value, BannerDisplayInfo, BannerDisplayInfo,
+                    preValue, value,
                     MicrophoneMuteBanner, MicrophoneMuteBanner, MicrophoneUnmuteBanner, MicrophoneUnmuteBanner));
         }
     }
@@ -164,20 +163,7 @@ public class AppModel : IAppModel
         }
     }
 
-    public BannerDisplayInfo BannerDisplayInfo
-    {
-        get => AppConfigs.Configuration.BannerDisplayInfo;
-        set
-        {
-            var preValue = AppConfigs.Configuration.BannerDisplayInfo;
-            AppConfigs.Configuration.BannerDisplayInfo = value;
-            AppConfigs.Configuration.Save();
-            BannerSettingsChanged?.Invoke(this,
-                new BannerDataChangedEvent(BannerPosition, BannerPosition, BannerOnScreenTime, BannerOnScreenTime,
-                    BannerOpacityPercentage, BannerOpacityPercentage, preValue, value,
-                    MicrophoneMuteBanner, MicrophoneMuteBanner, MicrophoneUnmuteBanner, MicrophoneUnmuteBanner));
-        }
-    }
+
 
     public bool NotificationAdvancedMode
     {
@@ -280,7 +266,7 @@ public class AppModel : IAppModel
             AppConfigs.Configuration.Save();
             BannerSettingsChanged?.Invoke(this,
                 new BannerDataChangedEvent(preValue, value, BannerOnScreenTime, BannerOnScreenTime,
-                    BannerOpacityPercentage, BannerOpacityPercentage, BannerDisplayInfo, BannerDisplayInfo,
+                    BannerOpacityPercentage, BannerOpacityPercentage,
                     MicrophoneMuteBanner, MicrophoneMuteBanner, MicrophoneUnmuteBanner, MicrophoneUnmuteBanner));
         }
     }
@@ -296,10 +282,7 @@ public class AppModel : IAppModel
 
     }
 
-    /// <summary>
-    /// Current banner position implementation based on the BannerPosition setting
-    /// </summary>
-    public IPosition BannerPositionImpl => _bannerPositionFactory.Get(BannerPosition);
+
 
     public MicrophoneMute MicrophoneMuteBanner
     {
@@ -311,7 +294,7 @@ public class AppModel : IAppModel
             AppConfigs.Configuration.Save();
             BannerSettingsChanged?.Invoke(this,
                 new BannerDataChangedEvent(BannerPosition, BannerPosition, BannerOnScreenTime, BannerOnScreenTime,
-                    BannerOpacityPercentage, BannerOpacityPercentage, BannerDisplayInfo, BannerDisplayInfo,
+                    BannerOpacityPercentage, BannerOpacityPercentage,
                     prevValue, value, MicrophoneUnmuteBanner, MicrophoneUnmuteBanner));
         }
     }
@@ -326,7 +309,7 @@ public class AppModel : IAppModel
             AppConfigs.Configuration.Save();
             BannerSettingsChanged?.Invoke(this,
                 new BannerDataChangedEvent(BannerPosition, BannerPosition, BannerOnScreenTime, BannerOnScreenTime,
-                    BannerOpacityPercentage, BannerOpacityPercentage, BannerDisplayInfo, BannerDisplayInfo,
+                    BannerOpacityPercentage, BannerOpacityPercentage,
                     MicrophoneMuteBanner, MicrophoneMuteBanner, prevValue, value));
         }
     }

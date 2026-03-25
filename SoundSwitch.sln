@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundSwitch.IPC", "SoundSwi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundSwitch.CLI", "SoundSwitch.CLI\SoundSwitch.CLI.csproj", "{D5655B17-6644-4255-BD7C-2248B8E16789}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundSwitch.Banner", "SoundSwitch.Banner\SoundSwitch.Banner.csproj", "{C2233539-9152-4B20-972E-5C989EA6DB79}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Beta|Any CPU = Beta|Any CPU
@@ -227,6 +229,30 @@ Global
 		{D5655B17-6644-4255-BD7C-2248B8E16789}.Release|x64.Build.0 = Release|Any CPU
 		{D5655B17-6644-4255-BD7C-2248B8E16789}.Release|x86.ActiveCfg = Release|Any CPU
 		{D5655B17-6644-4255-BD7C-2248B8E16789}.Release|x86.Build.0 = Release|Any CPU
+		{C2233539-9152-4B20-972E-5C989EA6DB79}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
+		{C2233539-9152-4B20-972E-5C989EA6DB79}.Beta|Any CPU.Build.0 = Beta|Any CPU
+		{C2233539-9152-4B20-972E-5C989EA6DB79}.Beta|x64.ActiveCfg = Beta|Any CPU
+		{C2233539-9152-4B20-972E-5C989EA6DB79}.Beta|x64.Build.0 = Beta|Any CPU
+		{C2233539-9152-4B20-972E-5C989EA6DB79}.Beta|x86.ActiveCfg = Beta|Any CPU
+		{C2233539-9152-4B20-972E-5C989EA6DB79}.Beta|x86.Build.0 = Beta|Any CPU
+		{C2233539-9152-4B20-972E-5C989EA6DB79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2233539-9152-4B20-972E-5C989EA6DB79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2233539-9152-4B20-972E-5C989EA6DB79}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C2233539-9152-4B20-972E-5C989EA6DB79}.Debug|x64.Build.0 = Debug|Any CPU
+		{C2233539-9152-4B20-972E-5C989EA6DB79}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C2233539-9152-4B20-972E-5C989EA6DB79}.Debug|x86.Build.0 = Debug|Any CPU
+		{C2233539-9152-4B20-972E-5C989EA6DB79}.Nightly|Any CPU.ActiveCfg = Nightly|Any CPU
+		{C2233539-9152-4B20-972E-5C989EA6DB79}.Nightly|Any CPU.Build.0 = Nightly|Any CPU
+		{C2233539-9152-4B20-972E-5C989EA6DB79}.Nightly|x64.ActiveCfg = Nightly|Any CPU
+		{C2233539-9152-4B20-972E-5C989EA6DB79}.Nightly|x64.Build.0 = Nightly|Any CPU
+		{C2233539-9152-4B20-972E-5C989EA6DB79}.Nightly|x86.ActiveCfg = Nightly|Any CPU
+		{C2233539-9152-4B20-972E-5C989EA6DB79}.Nightly|x86.Build.0 = Nightly|Any CPU
+		{C2233539-9152-4B20-972E-5C989EA6DB79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2233539-9152-4B20-972E-5C989EA6DB79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2233539-9152-4B20-972E-5C989EA6DB79}.Release|x64.ActiveCfg = Release|Any CPU
+		{C2233539-9152-4B20-972E-5C989EA6DB79}.Release|x64.Build.0 = Release|Any CPU
+		{C2233539-9152-4B20-972E-5C989EA6DB79}.Release|x86.ActiveCfg = Release|Any CPU
+		{C2233539-9152-4B20-972E-5C989EA6DB79}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

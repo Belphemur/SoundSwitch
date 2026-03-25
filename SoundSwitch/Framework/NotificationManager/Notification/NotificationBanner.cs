@@ -15,14 +15,14 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using NAudio.CoreAudioApi;
 using System.IO;
 using System.Linq;
-using NAudio.CoreAudioApi;
+using SoundSwitch.Audio.Manager.Interop.Enum;
+using SoundSwitch.Banner;
+using SoundSwitch.Framework.Banner;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
-using SoundSwitch.Framework.Banner;
-using SoundSwitch.Framework.Banner.BannerPosition;
-using SoundSwitch.Framework.Banner.BannerPosition.Position;
 using SoundSwitch.Framework.Banner.MicrophoneMute;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
 using SoundSwitch.Localization;
@@ -37,52 +37,50 @@ internal class NotificationBanner : INotification
     public string Label => SettingsStrings.notification_option_banner;
 
     public INotificationConfiguration Configuration { get; set; }
-    private readonly BannerManager _bannerManager = new();
+    private readonly BannerService _bannerService = new(new BannerConfigurationBridge(), new BannerAudioServiceBridge());
     private readonly BannerPositionFactory _bannerPositionFactory = new();
     private readonly MicrophoneMuteBannerManager _microphoneMuteBannerManager = new();
-
-    private IPosition BannerPosition => _bannerPositionFactory.Get(Configuration.BannerPosition);
 
     public void NotifyDefaultChanged(DeviceFullInfo audioDevice)
     {
         using var iconHandle = audioDevice.LargeIcon;
-        var toastData = new BannerData
+        var request = new BannerRequest
         {
             Image = iconHandle.ToBitmap(),
             Text = audioDevice.NameClean,
-            Position = BannerPosition,
             Ttl = Configuration.Ttl,
-            Opacity = Configuration.Opacity
+            CompactMode = false
         };
+
         if (CustomSoundCheck(audioDevice))
         {
-            toastData.SoundFile = Configuration.CustomSound;
-            toastData.CurrentDeviceId = audioDevice.Id;
+            request = request with { SoundPath = Configuration.CustomSound?.FilePath, PlaybackDeviceId = audioDevice.Id };
         }
 
-        toastData.Title = audioDevice.Type switch
+        request = request with
         {
-            DataFlow.Render => SettingsStrings.tooltipOnHover_option_playbackDevice,
-            DataFlow.Capture => SettingsStrings.tooltipOnHover_option_recordingDevice,
-            _ => throw new ArgumentOutOfRangeException(nameof(audioDevice.Type), audioDevice.Type, null)
+            Title = audioDevice.Type switch
+            {
+                DataFlow.Render => SettingsStrings.tooltipOnHover_option_playbackDevice,
+                DataFlow.Capture => SettingsStrings.tooltipOnHover_option_recordingDevice,
+                _ => throw new ArgumentOutOfRangeException(nameof(audioDevice.Type), audioDevice.Type, null)
+            }
         };
 
-        _bannerManager.ShowNotification(toastData);
+        _bannerService.Show(request, (BannerPosition)Configuration.BannerPosition);
     }
 
     public void NotifyProfileChanged(Profile.Profile profile, Bitmap icon, uint? processId)
     {
-        var bannerData = new BannerData
+        var request = new BannerRequest
         {
             Priority = 1,
             Image = icon,
             Title = string.Format(SettingsStrings.profile_notification_text, profile.Name),
             Text = string.Join("\n", profile.Devices.Select(wrapper => wrapper.DeviceInfo.NameClean).Distinct()),
-            Position = BannerPosition,
-            Ttl = Configuration.Ttl,
-            Opacity = Configuration.Opacity
+            CompactMode = false
         };
-        _bannerManager.ShowNotification(bannerData);
+        _bannerService.Show(request, (BannerPosition)Configuration.BannerPosition);
     }
 
     public void NotifyAppRuleMatched(AppSoundRule rule, DeviceFullInfo playback, DeviceFullInfo recording, Bitmap icon, uint processId)
@@ -91,17 +89,15 @@ internal class NotificationBanner : INotification
         if (playback != null) devices.Add(playback.NameClean);
         if (recording != null) devices.Add(recording.NameClean);
 
-        var bannerData = new BannerData
+        var request = new BannerRequest
         {
             Priority = 1,
             Image = icon,
             Title = SettingsStrings.appSoundLock_tab,
             Text = string.Join("\n", devices),
-            Position = BannerPosition,
-            Ttl = Configuration.Ttl,
-            Opacity = Configuration.Opacity
+            CompactMode = false
         };
-        _bannerManager.ShowNotification(bannerData);
+        _bannerService.Show(request, (BannerPosition)Configuration.BannerPosition);
     }
 
     public void NotifyMicrophoneMuteChanged(string deviceId, string microphoneName, bool newMuteState)
@@ -134,16 +130,14 @@ internal class NotificationBanner : INotification
 
         var icon = newMuteState ? Resources.microphone_muted : Resources.microphone_unmuted;
 
-        var bannerData = new BannerData
+        var request = new BannerRequest
         {
             Priority = 2,
             Image = icon,
             Title = title,
-            Position = BannerPosition,
-            Ttl = Configuration.Ttl,
-            Opacity = Configuration.Opacity
+            CompactMode = false
         };
-        _bannerManager.ShowNotification(bannerData);
+        _bannerService.Show(request, (BannerPosition)Configuration.BannerPosition);
     }
 
     public bool SupportIcon => true;

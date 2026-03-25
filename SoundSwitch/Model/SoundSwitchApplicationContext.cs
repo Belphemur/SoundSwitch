@@ -8,6 +8,7 @@ using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio.Lister;
+using SoundSwitch.Banner;
 using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Banner.MicrophoneMute;
 using SoundSwitch.Framework.Configuration;
@@ -33,7 +34,7 @@ public class SoundSwitchApplicationContext : ApplicationContext
 
     public SoundSwitchApplicationContext()
     {
-        BannerManager.Setup();
+        BannerService.Setup();
         MicrophoneMuteBannerManager.Setup();
         QuickMenuManager<DeviceFullInfo>.Instance.Setup();
         QuickMenuManager<Profile>.Instance.Setup();

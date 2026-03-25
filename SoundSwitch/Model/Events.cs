@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
  * Copyright (C) 2015-2017 Antoine Aflalo
  *
  * This program is free software; you can redistribute it and/or
@@ -17,9 +17,7 @@ using System.Collections.Generic;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
-using SoundSwitch.Framework.Banner.BannerDisplayInfo;
-using SoundSwitch.Framework.Banner.BannerPosition;
-using SoundSwitch.Framework.Banner.MicrophoneMute;
+using SoundSwitch.Banner;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.Updater.Releases;
@@ -64,8 +62,6 @@ public class BannerDataChangedEvent(
     TimeSpan newTtl,
     int prevOpacity,
     int newOpacity,
-    BannerDisplayInfo prevBannerDisplayInfo,
-    BannerDisplayInfo newBannerDisplayInfo,
     MicrophoneMute prevMicrophoneMuteBanner,
     MicrophoneMute newMicrophoneMuteBanner,
     MicrophoneMute prevMicrophoneUnmuteBanner,
@@ -78,8 +74,6 @@ public class BannerDataChangedEvent(
     public TimeSpan NewTtl { get; } = newTtl;
     public int PrevOpacity { get; } = prevOpacity;
     public int NewOpacity { get; } = newOpacity;
-    public BannerDisplayInfo PrevBannerDisplayInfo { get; } = prevBannerDisplayInfo;
-    public BannerDisplayInfo NewBannerDisplayInfo { get; } = newBannerDisplayInfo;
     public MicrophoneMute PrevMicrophoneMuteBanner { get; } = prevMicrophoneMuteBanner;
     public MicrophoneMute NewMicrophoneMuteBanner { get; } = newMicrophoneMuteBanner;
     public MicrophoneMute PrevMicrophoneUnmuteBanner { get; } = prevMicrophoneUnmuteBanner;

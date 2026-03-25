@@ -22,12 +22,7 @@ using Newtonsoft.Json;
 using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Device;
-using SoundSwitch.Framework.Banner;
-using SoundSwitch.Framework.Banner.BannerDisplayInfo;
-using SoundSwitch.Framework.Banner.BannerPosition;
-using SoundSwitch.Framework.Banner.BannerPosition.Position;
-using SoundSwitch.Framework.Banner.MicrophoneMute;
-using SoundSwitch.Framework.Banner.MicrophoneMute.Type;
+using SoundSwitch.Banner;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
@@ -93,9 +88,8 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
     public int BannerOpacityPercentage { get; set; } = 100;
     public int MaxNumberNotification { get; set; } = 5;
     public bool NotifyUsingPrimaryScreen { get; set; }
-    public BannerDisplayInfo BannerDisplayInfo { get; set; } = BannerDisplayInfo.FullDisplay;
 
-    [Obsolete("Replaced by " + nameof(MicrophoneMutePersistent))]
+    [Obsolete("Replaced by " + nameof(MicrophoneMuteBanner))]
     public bool PersistentMuteNotification { get; set; }
 
     // Profile Settings

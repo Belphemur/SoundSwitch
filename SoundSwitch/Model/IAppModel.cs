@@ -20,10 +20,7 @@ using NAudio.CoreAudioApi;
 using SoundSwitch.Common.Framework.Audio.Collection;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
-using SoundSwitch.Framework.Banner.BannerDisplayInfo;
-using SoundSwitch.Framework.Banner.BannerPosition;
-using SoundSwitch.Framework.Banner.BannerPosition.Position;
-using SoundSwitch.Framework.Banner.MicrophoneMute;
+using SoundSwitch.Banner;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
@@ -147,10 +144,7 @@ public interface IAppModel : IDisposable
     int BannerOnScreenTimeSecs { get; set; }
     int BannerOpacityPercentage { get; set; }
 
-    /// <summary>
-    /// Current banner position implementation based on the BannerPosition setting
-    /// </summary>
-    IPosition BannerPositionImpl { get; }
+
 
     /// <summary>
     /// Show a banner when microphone is muted
@@ -166,7 +160,7 @@ public interface IAppModel : IDisposable
     /// </summary>
     IconDoubleClick IconDoubleClick { get; set; }
 
-    BannerDisplayInfo BannerDisplayInfo { get; set; }
+
 
     #endregion
 

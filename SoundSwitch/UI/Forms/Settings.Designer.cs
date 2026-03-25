@@ -92,9 +92,9 @@ sealed partial class SettingsForm
         microphoneUnmuteBannerComboBox = new System.Windows.Forms.ComboBox();
         usePrimaryScreenCheckbox = new System.Windows.Forms.CheckBox();
         onScreenTimeLabel = new System.Windows.Forms.Label();
-        displayInfoLabel = new System.Windows.Forms.Label();
+
         singleNotificationCheckbox = new System.Windows.Forms.CheckBox();
-        bannerDisplayComboBox = new System.Windows.Forms.ComboBox();
+
         onScreenUpDown = new SoundSwitch.UI.Component.NumericUpDownWithUnits();
         opacityLabel = new System.Windows.Forms.Label();
         opacityUpDown = new SoundSwitch.UI.Component.NumericUpDownWithUnits();
@@ -761,9 +761,7 @@ sealed partial class SettingsForm
         bannerOptionsGroupBox.Controls.Add(microphoneMuteGroupBox);
         bannerOptionsGroupBox.Controls.Add(usePrimaryScreenCheckbox);
         bannerOptionsGroupBox.Controls.Add(onScreenTimeLabel);
-        bannerOptionsGroupBox.Controls.Add(displayInfoLabel);
         bannerOptionsGroupBox.Controls.Add(singleNotificationCheckbox);
-        bannerOptionsGroupBox.Controls.Add(bannerDisplayComboBox);
         bannerOptionsGroupBox.Controls.Add(onScreenUpDown);
         bannerOptionsGroupBox.Controls.Add(opacityLabel);
         bannerOptionsGroupBox.Controls.Add(opacityUpDown);
@@ -936,17 +934,7 @@ sealed partial class SettingsForm
         onScreenTimeLabel.TabIndex = 29;
         onScreenTimeLabel.Text = "On-screen time";
         onScreenTimeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-        // 
-        // displayInfoLabel
-        // 
-        displayInfoLabel.Location = new System.Drawing.Point(7, 130);
-        displayInfoLabel.Margin = new System.Windows.Forms.Padding(3);
-        displayInfoLabel.Name = "displayInfoLabel";
-        displayInfoLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
-        displayInfoLabel.Size = new System.Drawing.Size(130, 23);
-        displayInfoLabel.TabIndex = 54;
-        displayInfoLabel.Text = "Display Info";
-        displayInfoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+
         // 
         // singleNotificationCheckbox
         // 
@@ -957,16 +945,7 @@ sealed partial class SettingsForm
         singleNotificationCheckbox.TabIndex = 27;
         singleNotificationCheckbox.Text = "Single Notification";
         singleNotificationCheckbox.UseVisualStyleBackColor = true;
-        // 
-        // bannerDisplayComboBox
-        // 
-        bannerDisplayComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right));
-        bannerDisplayComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-        bannerDisplayComboBox.FormattingEnabled = true;
-        bannerDisplayComboBox.Location = new System.Drawing.Point(143, 130);
-        bannerDisplayComboBox.Name = "bannerDisplayComboBox";
-        bannerDisplayComboBox.Size = new System.Drawing.Size(120, 23);
-        bannerDisplayComboBox.TabIndex = 53;
+
         // 
         // onScreenUpDown
         // 
@@ -1451,9 +1430,7 @@ sealed partial class SettingsForm
 
     private System.Windows.Forms.GroupBox bannerOptionsGroupBox;
 
-    private System.Windows.Forms.Label displayInfoLabel;
 
-    private System.Windows.Forms.ComboBox bannerDisplayComboBox;
 
     private System.Windows.Forms.Label microphoneUnmuteLabel;
     private System.Windows.Forms.Label microphoneMuteLabel;

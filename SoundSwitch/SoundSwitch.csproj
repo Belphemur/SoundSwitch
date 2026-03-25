@@ -43,6 +43,7 @@
     <ProjectReference Include="..\SoundSwitch.Common\SoundSwitch.Common.csproj" />
     <ProjectReference Include="..\SoundSwitch.IPC\SoundSwitch.IPC.csproj" />
     <ProjectReference Include="..\SoundSwitch.UI.Menu\SoundSwitch.UI.Menu.csproj" />
+    <ProjectReference Include="..\SoundSwitch.Banner\SoundSwitch.Banner.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AuthenticodeExaminer" />

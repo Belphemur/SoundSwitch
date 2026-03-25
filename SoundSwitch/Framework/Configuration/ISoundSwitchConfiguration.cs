@@ -17,9 +17,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using JetBrains.Annotations;
 using SoundSwitch.Common.Framework.Audio.Device;
-using SoundSwitch.Framework.Banner.BannerDisplayInfo;
-using SoundSwitch.Framework.Banner.BannerPosition;
-using SoundSwitch.Framework.Banner.MicrophoneMute;
+using SoundSwitch.Banner;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
@@ -123,7 +121,6 @@ public interface ISoundSwitchConfiguration : IConfiguration
     TimeSpan BannerOnScreenTime { get; set; }
     int BannerOpacityPercentage { get; set; }
     bool NotificationAdvancedMode { get; set; }
-    BannerDisplayInfo BannerDisplayInfo { get; set; }
 
     /// <summary>
     /// Rules for per-app audio routing (App Sound Lock)
