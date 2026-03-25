@@ -1,5 +1,5 @@
-﻿using System;
 using SoundSwitch.Framework.WinApi.Keyboard;
+using System;
 
 namespace SoundSwitch.Framework.Profile.Trigger;
 

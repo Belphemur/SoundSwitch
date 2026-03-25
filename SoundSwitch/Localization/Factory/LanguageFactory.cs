@@ -1,8 +1,8 @@
-﻿using System.Globalization;
-using System.Linq;
 using Serilog;
 using SoundSwitch.Framework.Factory;
 using SoundSwitch.Localization.Factory.Lang;
+using System.Globalization;
+using System.Linq;
 
 namespace SoundSwitch.Localization.Factory;
 

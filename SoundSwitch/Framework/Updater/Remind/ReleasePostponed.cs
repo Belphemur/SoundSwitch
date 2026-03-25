@@ -1,5 +1,5 @@
-﻿using System;
 using NuGet.Versioning;
+using System;
 
 namespace SoundSwitch.Framework.Updater.Remind;
 

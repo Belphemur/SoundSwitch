@@ -1,4 +1,4 @@
-﻿
+
 namespace SoundSwitch.UI.Menu.Form
 {
     partial class QuickMenu<T>

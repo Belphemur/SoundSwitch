@@ -1,10 +1,10 @@
-﻿using System;
+using SoundSwitch.Framework.WinApi.Keyboard;
+using SoundSwitch.Framework.WinApi;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using SoundSwitch.Framework.WinApi;
-using SoundSwitch.Framework.WinApi.Keyboard;
+using System;
 
 namespace SoundSwitch.UI.Component;
 
@@ -152,49 +152,10 @@ public class HotKeyTextBox : TextBox
             return true;
 
         // Media and special keys
-        switch (key)
+        return key switch
         {
-            case Keys.PrintScreen:
-            case Keys.Scroll:
-            case Keys.Pause:
-            case Keys.Insert:
-            case Keys.Home:
-            case Keys.PageUp:
-            case Keys.Delete:
-            case Keys.End:
-            case Keys.PageDown:
-            case Keys.Left:
-            case Keys.Up:
-            case Keys.Right:
-            case Keys.Down:
-            case Keys.NumLock:
-            case Keys.Play:
-            case Keys.Zoom:
-            case Keys.SelectMedia:
-            case Keys.MediaStop:
-            case Keys.MediaPlayPause:
-            case Keys.MediaNextTrack:
-            case Keys.MediaPreviousTrack:
-            case Keys.VolumeDown:
-            case Keys.VolumeUp:
-            case Keys.VolumeMute:
-            case Keys.BrowserBack:
-            case Keys.BrowserFavorites:
-            case Keys.BrowserForward:
-            case Keys.BrowserHome:
-            case Keys.BrowserRefresh:
-            case Keys.BrowserSearch:
-            case Keys.BrowserStop:
-            case Keys.LaunchApplication1:
-            case Keys.LaunchApplication2:
-            case Keys.LaunchMail:
-            case Keys.Multiply:
-            case Keys.Divide:
-            case Keys.Add:
-            case Keys.Subtract:
-                return true;
-            default:
-                return false;
-        }
+            Keys.PrintScreen or Keys.Scroll or Keys.Pause or Keys.Insert or Keys.Home or Keys.PageUp or Keys.Delete or Keys.End or Keys.PageDown or Keys.Left or Keys.Up or Keys.Right or Keys.Down or Keys.NumLock or Keys.Play or Keys.Zoom or Keys.SelectMedia or Keys.MediaStop or Keys.MediaPlayPause or Keys.MediaNextTrack or Keys.MediaPreviousTrack or Keys.VolumeDown or Keys.VolumeUp or Keys.VolumeMute or Keys.BrowserBack or Keys.BrowserFavorites or Keys.BrowserForward or Keys.BrowserHome or Keys.BrowserRefresh or Keys.BrowserSearch or Keys.BrowserStop or Keys.LaunchApplication1 or Keys.LaunchApplication2 or Keys.LaunchMail or Keys.Multiply or Keys.Divide or Keys.Add or Keys.Subtract => true,
+            _ => false,
+        };
     }
 }

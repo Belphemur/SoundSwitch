@@ -12,20 +12,20 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
-using System;
-using System.Drawing;
-using System.IO;
-using System.Threading;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Device;
-using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Audio.Play;
+using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
 using SoundSwitch.Framework.Threading;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
+using System.Drawing;
+using System.IO;
+using System.Threading;
+using System;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification;
 

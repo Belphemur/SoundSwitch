@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
 * Copyright (C) 2015-2017 Antoine Aflalo
 *
 * This program is free software; you can redistribute it and/or
@@ -13,33 +13,28 @@
 ********************************************************************/
 
 #nullable enable
-using System;
-using System.Threading;
-using System.Windows.Forms;
 using Serilog;
 using SoundSwitch.Framework.Updater.Installer;
 using SoundSwitch.Framework.Updater.Releases;
 using SoundSwitch.Localization;
 using SoundSwitch.Util;
+using System.Threading;
+using System.Windows.Forms;
+using System;
 
 namespace SoundSwitch.Framework.Updater;
 
 /// <summary>
 /// Take the update, download it and execute the installer with the wanted parameter
 /// </summary>
-public class AutoUpdater
+/// <remarks>
+/// Constructor of the AutoUpdater
+/// </remarks>
+/// <param name="installerParameters">Parameters given to the installer after downloading it</param>
+public class AutoUpdater(string installerParameters)
 {
     private readonly SynchronizationContext _context = SynchronizationContext.Current ?? new SynchronizationContext();
-    public string InstallerParameters { get; }
-
-    /// <summary>
-    /// Constructor of the AutoUpdater
-    /// </summary>
-    /// <param name="installerParameters">Parameters given to the installer after downloading it</param>
-    public AutoUpdater(string installerParameters)
-    {
-        InstallerParameters = installerParameters;
-    }
+    public string InstallerParameters { get; } = installerParameters;
 
     public void Update(AppRelease appRelease, bool closeApp)
     {

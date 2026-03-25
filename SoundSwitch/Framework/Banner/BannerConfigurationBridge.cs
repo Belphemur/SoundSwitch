@@ -1,7 +1,7 @@
-using System;
-using System.Drawing;
 using SoundSwitch.Banner;
 using SoundSwitch.Model;
+using System.Drawing;
+using System;
 
 namespace SoundSwitch.Framework.Banner;
 

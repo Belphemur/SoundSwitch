@@ -1,4 +1,4 @@
-﻿using Job.Scheduler.Builder;
+using Job.Scheduler.Builder;
 using Job.Scheduler.Scheduler;
 
 namespace SoundSwitch.Framework.Threading;

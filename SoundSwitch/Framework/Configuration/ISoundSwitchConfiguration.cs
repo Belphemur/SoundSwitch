@@ -12,22 +12,22 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Drawing;
 using JetBrains.Annotations;
-using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Banner;
+using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.TrayIcon.IconChanger;
 using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
-using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.Updater.Remind;
+using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.WinApi.Keyboard;
 using SoundSwitch.Localization.Factory;
+using System.Collections.Generic;
+using System.Drawing;
+using System;
 
 namespace SoundSwitch.Framework.Configuration;
 

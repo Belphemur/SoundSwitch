@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Collections;
 using System.Windows.Forms;
+using System;
 
 namespace SoundSwitch.Framework.WinApi.Keyboard;
 
@@ -106,7 +106,7 @@ public static class HotKeyShared
         var keysConverter = new KeysConverter();
         key = (Keys) keysConverter.ConvertFrom(result.GetValue(result.Length - 1));
 
-        return new object[] {modifier, key};
+        return [modifier, key];
     }
 
     /// <summary>Parses a shortcut string like 'Control + Alt + Shift + V' and returns the key and modifiers.
@@ -127,7 +127,7 @@ public static class HotKeyShared
 
 
         string[] result;
-        string[] separators = {separator};
+        string[] separators = [separator];
         result = text.Split(separators, StringSplitOptions.RemoveEmptyEntries);
 
         //Iterate through the keys and find the modifier.
@@ -180,10 +180,10 @@ public static class HotKeyShared
             modifier |= HotKey.ModifierKeys.Win;
         }
 
-        KeysConverter keyconverter = new KeysConverter();
+        KeysConverter keyconverter = new();
         key = (Keys) keyconverter.ConvertFrom(result.GetValue(result.Length - 1));
 
-        return new object[] {modifier, key};
+        return [modifier, key];
     }
 
     /// <summary>Combines the modifier and key to a shortcut.
@@ -219,7 +219,7 @@ public static class HotKeyShared
         }
 
         if (hotkey.Contains(HotKey.ModifierKeys.None.ToString())) hotkey = "";
-        if (hotkey.Trim().EndsWith("+")) hotkey                          = hotkey.Trim().Substring(0, hotkey.Length - 1);
+        if (hotkey.Trim().EndsWith("+")) hotkey                          = hotkey.Trim()[..(hotkey.Length - 1)];
 
         return hotkey;
     }
@@ -228,7 +228,7 @@ public static class HotKeyShared
     /// </summary>
     public struct ParseModifier : IEnumerable
     {
-        private List<HotKey.ModifierKeys> Enumeration;
+        private readonly List<HotKey.ModifierKeys> Enumeration;
         public  bool                      HasAlt;
         public  bool                      HasControl;
         public  bool                      HasShift;
@@ -239,7 +239,7 @@ public static class HotKeyShared
         /// <param name="Modifier">The integer representation of the modifier to parse.</param>
         public ParseModifier(int Modifier)
         {
-            Enumeration = new List<HotKey.ModifierKeys>();
+            Enumeration = [];
             HasAlt      = false;
             HasWin      = false;
             HasShift    = false;
@@ -355,7 +355,7 @@ public static class HotKeyShared
         {
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        readonly IEnumerator IEnumerable.GetEnumerator()
         {
             return Enumeration.GetEnumerator();
         }

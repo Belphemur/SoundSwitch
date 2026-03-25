@@ -12,16 +12,16 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System.Collections.Generic;
-using System.Linq;
 using NAudio.CoreAudioApi;
 using Serilog;
-using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
+using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.QuickMenu.Model;
 using SoundSwitch.Model;
 using SoundSwitch.UI.Menu;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler;
 

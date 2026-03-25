@@ -1,22 +1,16 @@
 #nullable enable
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Audio.Manager;
+using SoundSwitch.Banner;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio.Lister;
-using SoundSwitch.Banner;
-using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Banner.MicrophoneMute;
+using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Updater;
-using SoundSwitch.IPC.Pipe;
-using SoundSwitch.IPC.Pipe.Messages;
 using SoundSwitch.IPC.Pipe.Messages.GetProfileList;
 using SoundSwitch.IPC.Pipe.Messages.Microphone;
 using SoundSwitch.IPC.Pipe.Messages.Models;
@@ -24,7 +18,13 @@ using SoundSwitch.IPC.Pipe.Messages.Mute;
 using SoundSwitch.IPC.Pipe.Messages.OpenSettings;
 using SoundSwitch.IPC.Pipe.Messages.TriggerProfile;
 using SoundSwitch.IPC.Pipe.Messages.TriggerSwitch;
+using SoundSwitch.IPC.Pipe.Messages;
+using SoundSwitch.IPC.Pipe;
 using SoundSwitch.UI.Menu;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System;
 
 namespace SoundSwitch.Model;
 

@@ -1,5 +1,5 @@
-﻿using System;
 using System.Runtime.InteropServices;
+using System;
 
 namespace SoundSwitch.Audio.Manager.Interop.Interface.Policy
 {

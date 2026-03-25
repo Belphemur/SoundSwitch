@@ -1,14 +1,14 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Net;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-using Polly;
 using Polly.Retry;
 using Polly.Timeout;
+using Polly;
 using Serilog;
+using System.Diagnostics;
+using System.IO;
+using System.Net.Http;
+using System.Net;
+using System.Threading.Tasks;
+using System.Threading;
+using System;
 
 namespace SoundSwitch.Framework.Updater;
 

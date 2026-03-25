@@ -1,9 +1,9 @@
 
-using System.Linq;
 using Serilog;
 using SoundSwitch.Framework.Profile.Trigger;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
+using System.Linq;
 
 namespace SoundSwitch.Framework.TrayIcon.IconDoubleClick.Action;
 

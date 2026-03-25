@@ -13,9 +13,9 @@
  ********************************************************************/
 
 #nullable enable
-using System;
 using System.Drawing;
 using System.Threading;
+using System;
 
 namespace SoundSwitch.Common.Framework.Icon
 {

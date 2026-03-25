@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
 * Copyright (C) 2015-2017 Antoine Aflalo
 *
 * This program is free software; you can redistribute it and/or
@@ -12,20 +12,20 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System;
+using RailSharp;
+using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Framework.Profile.Trigger;
+using SoundSwitch.Framework.Profile;
+using SoundSwitch.Localization.Factory;
+using SoundSwitch.Localization;
+using SoundSwitch.Model;
+using SoundSwitch.Properties;
+using SoundSwitch.UI.Component;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using RailSharp;
-using SoundSwitch.Common.Framework.Audio.Device;
-using SoundSwitch.Framework.Profile;
-using SoundSwitch.Framework.Profile.Trigger;
-using SoundSwitch.Localization;
-using SoundSwitch.Localization.Factory;
-using SoundSwitch.Model;
-using SoundSwitch.Properties;
-using SoundSwitch.UI.Component;
+using System;
 
 namespace SoundSwitch.UI.Forms;
 
@@ -93,7 +93,7 @@ public partial class UpsertProfileExtended : Form
         // replaces its DataSource (and disposes old items), the other control's handles
         // are not affected.
         static IconTextComboBox.DropDownItem[] BuildItems(IEnumerable<DeviceFullInfo> devices) =>
-            devices
+            [.. devices
                 .OrderBy(info => info.State)
                 .ThenBy(info => info.NameClean)
                 .Select(info => new IconTextComboBox.DropDownItem
@@ -102,8 +102,7 @@ public partial class UpsertProfileExtended : Form
                         Tag = info,
                         Text = info.NameClean
                     }
-                )
-                .ToArray();
+                )];
 
         communicationComboBox.DataSource = BuildItems(playbacks);
         playbackComboBox.DataSource = BuildItems(playbacks);
@@ -151,7 +150,7 @@ public partial class UpsertProfileExtended : Form
     private void InitializeFromProfile()
     {
         InitializeAvailableTriggers();
-        setTriggerBox.Items.AddRange(_profile.Triggers.Cast<object>().ToArray());
+        setTriggerBox.Items.AddRange([.. _profile.Triggers.Cast<object>()]);
     }
 
     private void InitializeAvailableTriggers()
@@ -204,7 +203,7 @@ public partial class UpsertProfileExtended : Form
 
         var trigger = (Trigger)setTriggerBox.SelectedItem;
         var triggerDefinition = _triggerFactory.Get(trigger.Type);
-        descriptionLabel.Text = $@"{triggerDefinition.Description} (Max: {(triggerDefinition.MaxGlobalOccurence == -1 ? "∞" : triggerDefinition.MaxGlobalOccurence.ToString())})";
+        descriptionLabel.Text = $@"{triggerDefinition.Description} (Max: {(triggerDefinition.MaxGlobalOccurence == -1 ? "8" : triggerDefinition.MaxGlobalOccurence.ToString())})";
         triggerLabel.Text = triggerDefinition.Label;
         descriptionLabel.Show();
         triggerLabel.Show();

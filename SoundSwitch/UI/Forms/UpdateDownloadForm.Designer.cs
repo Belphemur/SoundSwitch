@@ -1,4 +1,4 @@
-﻿using SoundSwitch.UI.Component;
+using SoundSwitch.UI.Component;
 
 namespace SoundSwitch.UI.Forms
 {

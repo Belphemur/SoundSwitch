@@ -1,8 +1,8 @@
+using NAudio.Wave;
 using SoundSwitch.Banner;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
-using NAudio.Wave;
+using System.Threading;
 
 namespace SoundSwitch.Banner.CLI.Infrastructure;
 

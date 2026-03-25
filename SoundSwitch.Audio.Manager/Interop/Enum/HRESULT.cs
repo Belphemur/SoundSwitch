@@ -1,4 +1,4 @@
-﻿namespace SoundSwitch.Audio.Manager.Interop.Enum
+namespace SoundSwitch.Audio.Manager.Interop.Enum
 {
     public enum HRESULT : uint
     {

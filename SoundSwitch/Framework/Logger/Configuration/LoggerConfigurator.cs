@@ -1,11 +1,11 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
 using Serilog.Formatting.Display;
+using Serilog;
 using SoundSwitch.Framework.Logger.Enricher;
+using System.Diagnostics;
+using System.IO;
+using System;
 
 namespace SoundSwitch.Framework.Logger.Configuration;
 

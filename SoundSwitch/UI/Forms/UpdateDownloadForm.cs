@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
 * Copyright (C) 2015-2017 Antoine Aflalo
 *
 * This program is free software; you can redistribute it and/or
@@ -12,19 +12,19 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System;
-using System.Windows.Forms;
 using Serilog;
-using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.Updater.Installer;
 using SoundSwitch.Framework.Updater.Releases;
 using SoundSwitch.Framework.Updater.Remind;
-using SoundSwitch.Localization;
+using SoundSwitch.Framework.Updater;
 using SoundSwitch.Localization.Factory;
+using SoundSwitch.Localization;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
 using SoundSwitch.UI.Component;
 using SoundSwitch.Util;
+using System.Windows.Forms;
+using System;
 
 namespace SoundSwitch.UI.Forms;
 

@@ -12,11 +12,11 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
-using System;
+using SoundSwitch.Banner;
+using SoundSwitch.Framework.Audio;
 using System.IO;
 using System.Windows.Forms;
-using SoundSwitch.Framework.Audio;
-using SoundSwitch.Banner;
+using System;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification.Configuration;
 

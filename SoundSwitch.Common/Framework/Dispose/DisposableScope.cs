@@ -1,5 +1,5 @@
-using System;
 using System.Threading;
+using System;
 
 namespace SoundSwitch.Common.Framework.Dispose
 {

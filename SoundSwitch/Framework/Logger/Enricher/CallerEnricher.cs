@@ -1,8 +1,8 @@
-﻿using System.Diagnostics;
-using Serilog;
 using Serilog.Configuration;
 using Serilog.Core;
 using Serilog.Events;
+using Serilog;
+using System.Diagnostics;
 
 namespace SoundSwitch.Framework.Logger.Enricher;
 

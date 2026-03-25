@@ -14,48 +14,46 @@
  ********************************************************************/
 
 using NAudio.CoreAudioApi;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 using Serilog;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Audio.Manager;
+using SoundSwitch.Banner;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Common.Framework.Icon;
-using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
-using SoundSwitch.Banner;
-using SoundSwitch.Banner;
+using SoundSwitch.Framework.Banner.MicrophoneMute;
+using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.Factory;
 using SoundSwitch.Framework.Logger.Configuration;
 using SoundSwitch.Framework.NotificationManager;
-using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Profile.Trigger;
+using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.TrayIcon.IconChanger;
 using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.WinApi.Keyboard;
-using SoundSwitch.Localization;
+using SoundSwitch.Framework;
 using SoundSwitch.Localization.Factory;
+using SoundSwitch.Localization;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
-using SoundSwitch.UI.Component;
 using SoundSwitch.UI.Component.ListView;
-using SoundSwitch.Util;
+using SoundSwitch.UI.Component;
 using SoundSwitch.Util.Url;
-using System;
+using SoundSwitch.Util;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.IO;
 using System.IO.Compression;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using SoundSwitch.Audio.Manager.Interop.Enum;
-using SoundSwitch.Framework.Banner;
-using SoundSwitch.Framework.Banner.MicrophoneMute;
-
+using System;
 
 namespace SoundSwitch.UI.Forms;
 
@@ -342,8 +340,8 @@ public sealed partial class SettingsForm : Form
                     info.Equals(profile.RecordingCommunication));
             }
 
-            listViewItem.SubItems.AddRange(new[]
-            {
+            listViewItem.SubItems.AddRange(
+            [
                 new ListViewItem.ListViewSubItem(listViewItem, applicationTrigger?.ApplicationPath.Split('\\').Last() ?? "")
                     { Tag = appIconHandle },
                 new ListViewItem.ListViewSubItem(listViewItem, hotkeyTrigger?.HotKey.ToString() ?? ""),
@@ -355,7 +353,7 @@ public sealed partial class SettingsForm : Form
                     communication?.NameClean ?? profile.Communication?.ToString() ?? "") { Tag = communication?.SmallIcon },
                 new ListViewItem.ListViewSubItem(listViewItem,
                     recordingCommunication?.NameClean ?? profile.RecordingCommunication?.ToString() ?? "") { Tag = recordingCommunication?.SmallIcon },
-            });
+            ]);
 
             return listViewItem;
         }
@@ -612,7 +610,7 @@ public sealed partial class SettingsForm : Form
                         return GenerateListViewItem(device, selectedDevices, listView);
                     })
                     .OrderBy(item => item.Text);
-            listView.Items.AddRange(items.ToArray());
+            listView.Items.AddRange([.. items]);
         }
         finally
         {
@@ -693,13 +691,11 @@ public sealed partial class SettingsForm : Form
     /// <returns></returns>
     private ListViewGroup GetGroup(DeviceState deviceState, ListView listView)
     {
-        switch (deviceState)
+        return deviceState switch
         {
-            case DeviceState.Active:
-                return listView.Groups[nameof(DeviceState.Active)];
-            default:
-                return listView.Groups[nameof(DeviceState.NotPresent)];
-        }
+            DeviceState.Active => listView.Groups[nameof(DeviceState.Active)],
+            _ => listView.Groups[nameof(DeviceState.NotPresent)],
+        };
     }
 
     private void PopulateDeviceTypeGroups(ListView listView)

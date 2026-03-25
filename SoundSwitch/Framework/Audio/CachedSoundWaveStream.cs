@@ -12,8 +12,8 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System;
 using NAudio.Wave;
+using System;
 
 namespace SoundSwitch.Framework.Audio;
 

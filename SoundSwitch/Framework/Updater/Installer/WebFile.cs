@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
  * Copyright (C) 2015-2017 Antoine Aflalo
  *
  * This program is free software; you can redistribute it and/or
@@ -12,13 +12,13 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
-using System;
+using Serilog;
 using System.Diagnostics;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
-using Serilog;
+using System;
 
 namespace SoundSwitch.Framework.Updater.Installer;
 

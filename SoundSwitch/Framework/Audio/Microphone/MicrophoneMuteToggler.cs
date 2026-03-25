@@ -1,27 +1,22 @@
-﻿using System;
 using JetBrains.Annotations;
 using NAudio.CoreAudioApi;
 using Serilog;
-using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
+using SoundSwitch.Audio.Manager;
+using System;
 
 namespace SoundSwitch.Framework.Audio.Microphone;
 
 /// <summary>
 /// Provides functionality to toggle microphone mute state
 /// </summary>
-public class MicrophoneMuteToggler
+/// <remarks>
+/// Initializes a new instance of the MicrophoneMuteToggler class
+/// </remarks>
+/// <param name="switcher">The audio switcher instance</param>
+public class MicrophoneMuteToggler(AudioSwitcher switcher)
 {
-    private readonly AudioSwitcher _switcher;
-
-    /// <summary>
-    /// Initializes a new instance of the MicrophoneMuteToggler class
-    /// </summary>
-    /// <param name="switcher">The audio switcher instance</param>
-    public MicrophoneMuteToggler(AudioSwitcher switcher)
-    {
-        _switcher = switcher;
-    }
+    private readonly AudioSwitcher _switcher = switcher;
 
     /// <summary>
     /// Toggle mute state for the default microphone

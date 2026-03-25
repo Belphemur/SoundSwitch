@@ -1,9 +1,9 @@
-﻿using System;
-using System.Runtime.InteropServices;
 using SoundSwitch.Audio.Manager.Interop.Client.ClientException;
 using SoundSwitch.Audio.Manager.Interop.Enum;
-using SoundSwitch.Audio.Manager.Interop.Interface;
 using SoundSwitch.Audio.Manager.Interop.Interface.Policy;
+using SoundSwitch.Audio.Manager.Interop.Interface;
+using System.Runtime.InteropServices;
+using System;
 
 namespace SoundSwitch.Audio.Manager.Interop.Client
 {

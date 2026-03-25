@@ -1,11 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
 using FluentAssertions;
 using NAudio.CoreAudioApi;
 using NUnit.Framework;
-using Serilog;
 using Serilog.Events;
+using Serilog;
 using SoundSwitch.Framework.Audio.Lister;
+using System.Threading.Tasks;
+using System;
 
 namespace SoundSwitch.Tests;
 

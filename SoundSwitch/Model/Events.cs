@@ -12,15 +12,15 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
-using System;
-using System.Collections.Generic;
 using NAudio.CoreAudioApi;
+using SoundSwitch.Banner;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
-using SoundSwitch.Banner;
 using SoundSwitch.Framework.NotificationManager;
-using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.Updater.Releases;
+using SoundSwitch.Framework.Updater;
+using System.Collections.Generic;
+using System;
 
 namespace SoundSwitch.Model;
 

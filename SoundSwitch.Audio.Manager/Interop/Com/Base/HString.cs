@@ -1,6 +1,6 @@
-﻿using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using System;
 using WinRT;
 
 namespace SoundSwitch.Audio.Manager.Interop.Com.Base

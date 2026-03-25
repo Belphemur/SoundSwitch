@@ -1,3 +1,3 @@
-﻿namespace SoundSwitch.Framework.Profile;
+namespace SoundSwitch.Framework.Profile;
 
 public record ProfileError(Profile Profile, string Error);

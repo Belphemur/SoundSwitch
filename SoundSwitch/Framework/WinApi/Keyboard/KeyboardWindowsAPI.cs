@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
 * Copyright (C) 2015-2017 Antoine Aflalo
 *
 * This program is free software; you can redistribute it and/or
@@ -12,11 +12,11 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System;
 
 namespace SoundSwitch.Framework.WinApi.Keyboard;
 
@@ -66,7 +66,7 @@ public static class KeyboardWindowsAPI
         var keyboardState = new byte[256];
         NativeMethods.GetKeyboardState(keyboardState);
 
-        return Enum.GetValues(typeof(Keys)).Cast<Keys>().Where(key =>(keyboardState[Code(key)] & 0x80) != 0).ToArray();
+        return [.. Enum.GetValues(typeof(Keys)).Cast<Keys>().Where(key =>(keyboardState[Code(key)] & 0x80) != 0)];
     }
 
     /// <summary>
@@ -147,7 +147,7 @@ public static class KeyboardWindowsAPI
     /// <returns></returns>
     public static IEnumerable<Keys> GetNormalPressedKeys()
     {
-        return GetPressedKeys().Where(key => !IsModifier(key)).Except(Blacklist).ToArray();
+        return [.. GetPressedKeys().Where(key => !IsModifier(key)).Except(Blacklist)];
     }
 
     #region WindowsNativeMethods

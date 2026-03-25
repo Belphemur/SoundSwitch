@@ -1,10 +1,10 @@
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using SoundSwitch.Banner;
-using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Audio.Play;
+using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Threading;
+using System.IO;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace SoundSwitch.Framework.Banner;
 

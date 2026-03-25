@@ -1,6 +1,6 @@
-﻿using System;
 using SoundSwitch.Audio.Manager.Interop.Com.Threading;
 using SoundSwitch.Audio.Manager.Interop.Interface.Policy.Extended;
+using System;
 
 namespace SoundSwitch.Audio.Manager.Interop.Client.Extended.Factory
 {

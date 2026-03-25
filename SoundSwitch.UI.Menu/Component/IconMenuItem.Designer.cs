@@ -1,4 +1,4 @@
-﻿
+
 namespace SoundSwitch.UI.Menu.Component
 {
     partial class IconMenuItem<T>

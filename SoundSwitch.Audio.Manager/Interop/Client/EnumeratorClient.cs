@@ -1,11 +1,11 @@
-﻿#nullable enable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
+#nullable enable
 using NAudio.CoreAudioApi;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Audio.Manager.Interop.Interface;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System;
 
 namespace SoundSwitch.Audio.Manager.Interop.Client
 {

@@ -1,15 +1,15 @@
-﻿#nullable enable
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
+#nullable enable
 using Newtonsoft.Json;
-using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
+using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Common.Framework.Audio.Icon;
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Properties;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System;
 
 namespace SoundSwitch.Framework.Profile;
 
@@ -36,7 +36,7 @@ public class Profile : IEquatable<Profile>, IDisposable
     public DeviceInfo? Recording { get; set; }
     public DeviceInfo? RecordingCommunication { get; set; }
     public string Name { get; set; } = "";
-    public IList<Trigger.Trigger> Triggers { get; set; } = new List<Trigger.Trigger>();
+    public IList<Trigger.Trigger> Triggers { get; set; } = [];
 
     public bool AlsoSwitchDefaultDevice { get; set; }
 
@@ -85,14 +85,13 @@ public class Profile : IEquatable<Profile>, IDisposable
             RestoreDevices = RestoreDevices,
             NotifyOnActivation = NotifyOnActivation,
             SwitchForegroundApp = SwitchForegroundApp,
-            Triggers = Triggers.Select(trigger => new Trigger.Trigger(trigger.Type)
+            Triggers = [.. Triggers.Select(trigger => new Trigger.Trigger(trigger.Type)
                 {
                     HotKey = trigger.HotKey,
                     ApplicationPath = trigger.ApplicationPath,
                     WindowName = trigger.WindowName,
                     ShouldRestoreDevices = trigger.ShouldRestoreDevices
-                })
-                .ToList()
+                })]
         };
     }
 

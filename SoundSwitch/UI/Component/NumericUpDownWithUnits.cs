@@ -1,5 +1,5 @@
-﻿using System.Windows.Forms;
 using System.ComponentModel;
+using System.Windows.Forms;
 
 namespace SoundSwitch.UI.Component;
 
@@ -23,7 +23,7 @@ public class NumericUpDownWithUnits : NumericUpDown
             // Attempt to parse the text back to a decimal, removing the unit
             if (!string.IsNullOrEmpty(TextUnit) && Text.EndsWith(TextUnit))
             {
-                string numericPart = Text.Substring(0, Text.Length - TextUnit.Length).Trim();
+                string numericPart = Text[..^TextUnit.Length].Trim();
                 Value = decimal.Parse(numericPart);
             }
             else

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace SoundSwitch.Audio.Manager.Interop.Com.Threading
 {

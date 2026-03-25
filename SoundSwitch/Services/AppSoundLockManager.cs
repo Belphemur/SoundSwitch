@@ -1,38 +1,29 @@
 #nullable enable
-using System;
+using Serilog;
+using SoundSwitch.Audio.Manager.Interop.Enum;
+using SoundSwitch.Audio.Manager;
+using SoundSwitch.Framework.Configuration;
+using SoundSwitch.Framework.NotificationManager;
+using SoundSwitch.Model;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Timers;
-using Serilog;
-using SoundSwitch.Audio.Manager;
-using SoundSwitch.Audio.Manager.Interop.Enum;
-using SoundSwitch.Framework.Configuration;
-using SoundSwitch.Framework.NotificationManager;
-using SoundSwitch.Model;
+using System;
 
 namespace SoundSwitch.Services
 {
-    public class AppSoundLockManager : IDisposable
+    public class AppSoundLockManager(ISoundSwitchConfiguration configuration, AudioSwitcher audioSwitcher, WindowMonitor windowMonitor, ProcessMonitor processMonitor, NotificationManager notificationManager) : IDisposable
     {
         private static readonly ILogger Log = Serilog.Log.ForContext<AppSoundLockManager>();
-        private readonly ISoundSwitchConfiguration _configuration;
-        private readonly AudioSwitcher _audioSwitcher;
-        private readonly WindowMonitor _windowMonitor;
-        private readonly ProcessMonitor _processMonitor;
-        private readonly NotificationManager _notificationManager;
+        private readonly ISoundSwitchConfiguration _configuration = configuration;
+        private readonly AudioSwitcher _audioSwitcher = audioSwitcher;
+        private readonly WindowMonitor _windowMonitor = windowMonitor;
+        private readonly ProcessMonitor _processMonitor = processMonitor;
+        private readonly NotificationManager _notificationManager = notificationManager;
         private readonly ILogger _logger = Log.ForContext<AppSoundLockManager>();
         private readonly object _lock = new();
-
-        public AppSoundLockManager(ISoundSwitchConfiguration configuration, AudioSwitcher audioSwitcher, WindowMonitor windowMonitor, ProcessMonitor processMonitor, NotificationManager notificationManager)
-        {
-            _configuration = configuration;
-            _audioSwitcher = audioSwitcher;
-            _windowMonitor = windowMonitor;
-            _processMonitor = processMonitor;
-            _notificationManager = notificationManager;
-        }
 
         public void Start()
         {

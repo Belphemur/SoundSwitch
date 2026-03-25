@@ -1,13 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Windows.Forms;
+using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Localization;
-using Serilog;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Windows.Forms;
+using System;
 
 namespace SoundSwitch.UI.Forms;
 
@@ -58,7 +58,7 @@ public partial class ProcessSelectionForm : Form
 
     private void LoadProcesses()
     {
-        _allProcesses = new List<ProcessInfo>();
+        _allProcesses = [];
         var audioSwitcher = AudioSwitcher.Instance;
 
         var playbackMap = audioSwitcher.GetProcessDeviceMap(Audio.Manager.Interop.Enum.EDataFlow.eRender);
@@ -127,10 +127,9 @@ public partial class ProcessSelectionForm : Form
         }
 
         // Only show one row per process/path/window combination
-        _allProcesses = _allProcesses
+        _allProcesses = [.. _allProcesses
             .GroupBy(x => new { x.Name, x.Path, x.WindowTitle })
-            .Select(g => g.First())
-            .ToList();
+            .Select(g => g.First())];
 
         UpdateGrid(_allProcesses);
     }

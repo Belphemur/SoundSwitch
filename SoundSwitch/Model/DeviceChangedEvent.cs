@@ -1,5 +1,5 @@
-﻿using System;
 using NAudio.CoreAudioApi;
+using System;
 
 namespace SoundSwitch.Model;
 

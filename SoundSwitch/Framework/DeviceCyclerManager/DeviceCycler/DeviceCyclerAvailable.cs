@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
 * Copyright (C) 2015-2017 Antoine Aflalo
 *
 * This program is free software; you can redistribute it and/or
@@ -12,12 +12,12 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System;
-using System.Collections.Generic;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
+using System.Collections.Generic;
+using System;
 
 namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler;
 

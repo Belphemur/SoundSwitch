@@ -1,4 +1,4 @@
-﻿using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.UI.Menu.Component;
 

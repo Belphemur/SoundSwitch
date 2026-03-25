@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
  * Copyright (C) 2015-2017 Antoine Aflalo
  *
  * This program is free software; you can redistribute it and/or
@@ -12,32 +12,32 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
-using System;
+using NAudio.CoreAudioApi;
+using Serilog;
+using SoundSwitch.Audio.Manager.Interop.Enum;
+using SoundSwitch.Audio.Manager;
+using SoundSwitch.Common.Framework.Audio.Collection;
+using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Model;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Runtime.InteropServices;
-using System.Threading;
 using System.Threading.Tasks;
-using NAudio.CoreAudioApi;
-using Serilog;
-using SoundSwitch.Audio.Manager;
-using SoundSwitch.Audio.Manager.Interop.Enum;
-using SoundSwitch.Common.Framework.Audio.Collection;
-using SoundSwitch.Common.Framework.Audio.Device;
-using SoundSwitch.Model;
+using System.Threading;
+using System;
 
 namespace SoundSwitch.Framework.Audio.Lister;
 
 public class CachedAudioDeviceLister : IAudioDeviceLister
 {
     /// <inheritdoc />
-    private Dictionary<string, DeviceFullInfo> PlaybackDevices { get; set; } = new();
+    private Dictionary<string, DeviceFullInfo> PlaybackDevices { get; set; } = [];
 
     /// <inheritdoc />
-    private Dictionary<string, DeviceFullInfo> RecordingDevices { get; set; } = new();
+    private Dictionary<string, DeviceFullInfo> RecordingDevices { get; set; } = [];
 
     private readonly ISubject<DefaultDevicePayload> _defaultDeviceChanged = new Subject<DefaultDevicePayload>();
     public IObservable<DefaultDevicePayload> DefaultDeviceChanged => _defaultDeviceChanged.AsObservable();
@@ -65,7 +65,7 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
     private readonly DeviceState _state;
     private readonly ILogger _context;
     private uint _threadSafeRefreshing;
-    private CancellationTokenSource _refreshCancellationTokenSource = new CancellationTokenSource();
+    private CancellationTokenSource _refreshCancellationTokenSource = new();
 
     public bool Refreshing
     {

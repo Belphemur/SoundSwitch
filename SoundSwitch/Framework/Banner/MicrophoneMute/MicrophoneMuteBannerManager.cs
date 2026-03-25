@@ -12,11 +12,11 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
-using System.Collections.Generic;
 using SoundSwitch.Banner;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
+using System.Collections.Generic;
 
 namespace SoundSwitch.Framework.Banner.MicrophoneMute;
 
@@ -24,7 +24,7 @@ public class MicrophoneMuteBannerManager
 {
     public static void Setup() { }
 
-    private readonly Dictionary<string, BannerForm> _persistentBanners = new();
+    private readonly Dictionary<string, BannerForm> _persistentBanners = [];
     private readonly BannerService _bannerService = new(new BannerConfigurationBridge(), new BannerAudioServiceBridge());
 
     public void UpdateMicrophoneMuteState(string deviceId, string microphoneName, bool isMuted)

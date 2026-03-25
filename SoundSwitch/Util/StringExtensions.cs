@@ -1,4 +1,4 @@
-﻿namespace SoundSwitch.Util;
+namespace SoundSwitch.Util;
 
 public static class StringExtensions
 {

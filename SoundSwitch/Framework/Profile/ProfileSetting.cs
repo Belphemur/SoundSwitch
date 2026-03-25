@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Newtonsoft.Json;
 using SoundSwitch.Common.Framework.Audio.Device;
+using System.Collections.Generic;
+using System.Linq;
+using System;
+
 using HotKey = SoundSwitch.Framework.WinApi.Keyboard.HotKey;
 
 namespace SoundSwitch.Framework.Profile;
@@ -23,7 +24,7 @@ public class ProfileSetting : IEquatable<ProfileSetting>
     /// <summary>
     /// Clone the current profile
     /// </summary>
-    public ProfileSetting Clone() => new ProfileSetting
+    public ProfileSetting Clone() => new()
     {
         ProfileName             = ProfileName,
         ApplicationPath         = ApplicationPath,

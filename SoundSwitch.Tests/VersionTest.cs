@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NuGet.Versioning;
 using NUnit.Framework;
 

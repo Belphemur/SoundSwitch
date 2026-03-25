@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
  * Copyright (C) 2015 Jeroen Pelgrims
  * Copyright (C) 2015-2017 Antoine Aflalo
  *
@@ -13,17 +13,17 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using Microsoft.Win32;
 using Serilog;
 using SoundSwitch.Audio.Manager.Interop.Com.User;
 using SoundSwitch.Framework.WinApi.Keyboard;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using System.Threading;
+using System.Windows.Forms;
+using System;
 
 namespace SoundSwitch.Framework.WinApi;
 
@@ -52,7 +52,7 @@ public class WindowsAPIAdapter : Form
     private const int WM_HOTKEY = 0x0312;
     private static WindowsAPIAdapter _instance;
     private static ThreadExceptionEventHandler _exceptionEventHandler;
-    private readonly Dictionary<HotKey, int> _registeredHotkeys = new Dictionary<HotKey, int>();
+    private readonly Dictionary<HotKey, int> _registeredHotkeys = [];
     private int _hotKeyId;
     private int _msgNotifyShell;
 

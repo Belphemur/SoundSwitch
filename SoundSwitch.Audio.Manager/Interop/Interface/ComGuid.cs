@@ -1,4 +1,4 @@
-﻿namespace SoundSwitch.Audio.Manager.Interop.Interface
+namespace SoundSwitch.Audio.Manager.Interop.Interface
 {
     internal static class ComGuid
     {

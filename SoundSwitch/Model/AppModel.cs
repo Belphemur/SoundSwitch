@@ -13,39 +13,39 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
-using System;
+using NAudio.CoreAudioApi;
+using RailSharp;
+using Serilog;
+using SoundSwitch.Audio.Manager.Interop.Enum;
+using SoundSwitch.Audio.Manager;
+using SoundSwitch.Banner;
+using SoundSwitch.Common.Framework.Audio.Collection;
+using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Framework.Audio.Lister.Job;
+using SoundSwitch.Framework.Audio.Microphone;
+using SoundSwitch.Framework.Audio;
+using SoundSwitch.Framework.Banner;
+using SoundSwitch.Framework.Configuration;
+using SoundSwitch.Framework.DeviceCyclerManager;
+using SoundSwitch.Framework.NotificationManager;
+using SoundSwitch.Framework.Profile.Trigger;
+using SoundSwitch.Framework.Profile;
+using SoundSwitch.Framework.Threading;
+using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
+using SoundSwitch.Framework.Updater.Job;
+using SoundSwitch.Framework.Updater;
+using SoundSwitch.Framework.WinApi.Keyboard;
+using SoundSwitch.Framework.WinApi;
+using SoundSwitch.Framework;
+using SoundSwitch.Localization.Factory;
+using SoundSwitch.Localization;
+using SoundSwitch.UI.Component;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading;
-using NAudio.CoreAudioApi;
-using RailSharp;
-using Serilog;
-using SoundSwitch.Audio.Manager;
-using SoundSwitch.Common.Framework.Audio.Collection;
-using SoundSwitch.Common.Framework.Audio.Device;
-using SoundSwitch.Framework;
-using SoundSwitch.Framework.Audio;
-using SoundSwitch.Framework.Audio.Lister.Job;
-using SoundSwitch.Framework.Audio.Microphone;
-using SoundSwitch.Audio.Manager.Interop.Enum;
-using SoundSwitch.Banner;
-using SoundSwitch.Framework.Banner;
-using SoundSwitch.Framework.Configuration;
-using SoundSwitch.Framework.DeviceCyclerManager;
-using SoundSwitch.Framework.NotificationManager;
-using SoundSwitch.Framework.Profile;
-using SoundSwitch.Framework.Profile.Trigger;
-using SoundSwitch.Framework.Threading;
-using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
-using SoundSwitch.Framework.Updater;
-using SoundSwitch.Framework.Updater.Job;
-using SoundSwitch.Framework.WinApi;
-using SoundSwitch.Framework.WinApi.Keyboard;
-using SoundSwitch.Localization;
-using SoundSwitch.Localization.Factory;
-using SoundSwitch.UI.Component;
+using System;
 
 namespace SoundSwitch.Model;
 
@@ -627,7 +627,7 @@ public class AppModel : IAppModel
 
             device.DiscoveredAt = DateTime.UtcNow;
             SelectedDevices.Add(device);
-            AppConfigs.Configuration.SelectedDevices = SelectedDevices.ToHashSet();
+            AppConfigs.Configuration.SelectedDevices = [.. SelectedDevices];
         }
         catch (ArgumentException)
         {
@@ -651,7 +651,7 @@ public class AppModel : IAppModel
         try
         {
             result = SelectedDevices.Remove(device);
-            AppConfigs.Configuration.SelectedDevices = SelectedDevices.ToHashSet();
+            AppConfigs.Configuration.SelectedDevices = [.. SelectedDevices];
         }
         catch (ArgumentException)
         {

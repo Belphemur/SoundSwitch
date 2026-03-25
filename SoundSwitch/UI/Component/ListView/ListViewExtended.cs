@@ -1,8 +1,8 @@
-﻿using System;
 using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System;
 
 namespace SoundSwitch.UI.Component.ListView;
 
@@ -68,7 +68,7 @@ public class ListViewExtended : System.Windows.Forms.ListView
         {
             int? GrpId = GetGroupID(lstvwgrp);
             int gIndex = lstvwgrp.ListView.Groups.IndexOf(lstvwgrp);
-            LVGROUP group = new LVGROUP();
+            LVGROUP group = new();
             group.CbSize = Marshal.SizeOf(group);
             group.State = state;
             group.Mask = ListViewGroupMask.State;
@@ -98,7 +98,7 @@ public class ListViewExtended : System.Windows.Forms.ListView
         {
             int? GrpId = GetGroupID(lstvwgrp);
             int gIndex = lstvwgrp.ListView.Groups.IndexOf(lstvwgrp);
-            LVGROUP group = new LVGROUP();
+            LVGROUP group = new();
             group.CbSize = Marshal.SizeOf(group);
             group.PszFooter = footer;
             group.Mask = ListViewGroupMask.Footer;
@@ -123,12 +123,7 @@ public class ListViewExtended : System.Windows.Forms.ListView
 
     public void SetGroupState(string name, ListViewGroupState state)
     {
-        var group = Groups[name];
-        if (group == null)
-        {
-            throw new ArgumentOutOfRangeException($"Unknown group {name}");
-        }
-
+        var group = Groups[name] ?? throw new ArgumentOutOfRangeException($"Unknown group {name}");
         SetGrpState(group, state);
     }
 

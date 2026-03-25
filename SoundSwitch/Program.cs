@@ -13,27 +13,27 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
-using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using Sentry;
 using Serilog;
-using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Logger.Configuration;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Threading;
 using SoundSwitch.Framework.WinApi;
-using SoundSwitch.IPC.Pipe;
+using SoundSwitch.Framework;
 using SoundSwitch.IPC.Pipe.Messages.OpenSettings;
+using SoundSwitch.IPC.Pipe;
 using SoundSwitch.Localization.Factory;
 using SoundSwitch.Model;
-using SoundSwitch.Util;
 using SoundSwitch.Util.Url;
+using SoundSwitch.Util;
+using System.Diagnostics;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using System.Threading;
+using System.Windows.Forms;
+using System;
 
 namespace SoundSwitch;
 

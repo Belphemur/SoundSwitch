@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
 * Copyright (C) 2015-2017 Antoine Aflalo
 *
 * This program is free software; you can redistribute it and/or
@@ -12,10 +12,10 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System.Collections.Generic;
-using System.Windows.Forms;
 using Markdig;
 using SoundSwitch.Util.Url;
+using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace SoundSwitch.UI.Component;
 
@@ -38,8 +38,8 @@ public class ChangelogWebViewer : WebBrowser
         BrowserUtil.OpenUrl(url);
     }
 
-    private static List<string> HtmlHeaders => new()
-    {
+    private static List<string> HtmlHeaders =>
+    [
         @"<!doctype html>
             <html>
             <head>
@@ -64,7 +64,7 @@ public class ChangelogWebViewer : WebBrowser
                     }
                 </style>
             </head>"
-    };
+    ];
 
     /// <summary>
     /// Set the changelog in the WebBrowser

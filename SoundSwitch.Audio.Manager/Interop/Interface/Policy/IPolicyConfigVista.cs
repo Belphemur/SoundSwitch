@@ -1,6 +1,6 @@
-﻿using System;
-using System.Runtime.InteropServices;
 using SoundSwitch.Audio.Manager.Interop.Enum;
+using System.Runtime.InteropServices;
+using System;
 
 namespace SoundSwitch.Audio.Manager.Interop.Interface.Policy
 {

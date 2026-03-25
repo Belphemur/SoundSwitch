@@ -12,29 +12,29 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
 using NAudio.CoreAudioApi;
 using Newtonsoft.Json;
 using Serilog;
 using SoundSwitch.Audio.Manager;
-using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Banner;
+using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
-using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Profile.Trigger;
+using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.TrayIcon.IconChanger;
 using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
-using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.Updater.Remind;
+using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.WinApi.Keyboard;
 using SoundSwitch.Localization.Factory;
 using SoundSwitch.Model;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+using System;
 
 namespace SoundSwitch.Framework.Configuration;
 
@@ -93,16 +93,16 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
     public bool PersistentMuteNotification { get; set; }
 
     // Profile Settings
-    public HashSet<Profile.Profile> Profiles { get; set; } = new();
-    public HashSet<string> SelectedPlaybackDeviceListId { get; } = new();
-    public HashSet<string> SelectedRecordingDeviceListId { get; } = new();
-    public HashSet<DeviceInfo> SelectedDevices { get; set; } = new();
+    public HashSet<Profile.Profile> Profiles { get; set; } = [];
+    public HashSet<string> SelectedPlaybackDeviceListId { get; } = [];
+    public HashSet<string> SelectedRecordingDeviceListId { get; } = [];
+    public HashSet<DeviceInfo> SelectedDevices { get; set; } = [];
     public HotKey PlaybackHotKey { get; set; } = new(Keys.F11, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
     public HotKey RecordingHotKey { get; set; } = new(Keys.F7, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
     public HotKey MuteRecordingHotKey { get; set; } = new(Keys.M, HotKey.ModifierKeys.Control | HotKey.ModifierKeys.Alt);
 
     /// <inheritdoc />
-    public HashSet<Model.AppSoundRule> AppSoundRules { get; set; } = new();
+    public HashSet<Model.AppSoundRule> AppSoundRules { get; set; } = [];
 
     [Obsolete("Feature has been removed")]
     public bool AutoAddNewConnectedDevices { get; set; } = false;
@@ -117,14 +117,14 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
 
     
     [Obsolete]
-    public HashSet<ProfileSetting> ProfileSettings { get; set; } = new();
+    public HashSet<ProfileSetting> ProfileSettings { get; set; } = [];
 
     public ReleasePostponed Postponed { get; set; }
 
     /// <summary>
     /// Fields of the config that got migrated
     /// </summary>
-    public HashSet<string> MigratedFields { get; } = new();
+    public HashSet<string> MigratedFields { get; } = [];
 
     public Guid UniqueInstallationId { get; set; } = Guid.NewGuid();
 
@@ -199,7 +199,7 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
 
         if (!MigratedFields.Contains(nameof(ProfileSettings) + "_final"))
         {
-            Profiles = ProfileSettings
+            Profiles = [.. ProfileSettings
                 .Select(setting =>
                 {
                     var profile = new Profile.Profile
@@ -227,8 +227,7 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
                     }
 
                     return profile;
-                })
-                .ToHashSet();
+                })];
             MigratedFields.Add(nameof(ProfileSettings) + "_final");
             migrated = true;
         }
@@ -249,7 +248,7 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
 
         if (!MigratedFields.Contains("CleanupSelectedDevices"))
         {
-            SelectedDevices = SelectedDevices.DistinctBy(info => info.NameClean).ToHashSet();
+            SelectedDevices = [.. SelectedDevices.DistinctBy(info => info.NameClean)];
             MigratedFields.Add("CleanupSelectedDevices");
             migrated = true;
         }
@@ -267,12 +266,11 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
 
         if (Environment.OSVersion.Version.Major < 10 && !MigratedFields.Contains("ProfileWin7"))
         {
-            Profiles = Profiles.Select(profile =>
+            Profiles = [.. Profiles.Select(profile =>
                 {
                     profile.SwitchForegroundApp = false;
                     return profile;
-                })
-                .ToHashSet();
+                })];
             MigratedFields.Add("ProfileWin7");
             migrated = true;
         }

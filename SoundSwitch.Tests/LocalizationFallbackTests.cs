@@ -1,11 +1,11 @@
-using System;
+using FluentAssertions;
+using NUnit.Framework;
+using SoundSwitch.Localization;
 using System.Collections;
 using System.Globalization;
 using System.Reflection;
 using System.Resources;
-using FluentAssertions;
-using NUnit.Framework;
-using SoundSwitch.Localization;
+using System;
 
 namespace SoundSwitch.Tests;
 

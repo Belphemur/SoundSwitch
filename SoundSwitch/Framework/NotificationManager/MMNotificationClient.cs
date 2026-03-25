@@ -1,12 +1,13 @@
-﻿using System;
+using NAudio.CoreAudioApi.Interfaces;
+using NAudio.CoreAudioApi;
+using SoundSwitch.Audio.Manager.Interop.Enum;
+using SoundSwitch.Audio.Manager;
+using SoundSwitch.Model;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using NAudio.CoreAudioApi;
-using NAudio.CoreAudioApi.Interfaces;
-using SoundSwitch.Audio.Manager;
-using SoundSwitch.Audio.Manager.Interop.Enum;
-using SoundSwitch.Model;
+using System;
+
 using PropertyKeys = NAudio.CoreAudioApi.PropertyKeys;
 
 namespace SoundSwitch.Framework.NotificationManager;
@@ -18,7 +19,7 @@ public class MMNotificationClient : IMMNotificationClient, IDisposable
     public static MMNotificationClient Instance { get; } = new();
     private MMDeviceEnumerator _enumerator;
 
-    private readonly Dictionary<DeviceRole, string> _lastRoleDevice = new();
+    private readonly Dictionary<DeviceRole, string> _lastRoleDevice = [];
 
     private readonly ConcurrentQueue<DeviceChangedEvent> _deviceChangedEvents = new();
         
@@ -29,7 +30,7 @@ public class MMNotificationClient : IMMNotificationClient, IDisposable
     public IEnumerable<DeviceChangedEvent> GetLastEvents()
     {
         if (_deviceChangedEvents.IsEmpty)
-            return ArraySegment<DeviceChangedEvent>.Empty;
+            return [];
 
         var events = new SortedSet<DeviceChangedEvent>();
         while (_deviceChangedEvents.TryDequeue(out var deviceChangedEvent))

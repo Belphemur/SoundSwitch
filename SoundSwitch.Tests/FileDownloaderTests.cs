@@ -1,10 +1,10 @@
-﻿using System;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
 using SoundSwitch.Framework.Updater;
+using System.IO;
+using System.Threading.Tasks;
+using System.Threading;
+using System;
 
 namespace SoundSwitch.Tests;
 

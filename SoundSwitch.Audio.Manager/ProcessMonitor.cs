@@ -1,9 +1,9 @@
-using System;
+using Serilog;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Timers;
-using Serilog;
+using System;
 
 namespace SoundSwitch.Audio.Manager
 {

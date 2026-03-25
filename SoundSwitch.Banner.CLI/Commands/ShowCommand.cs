@@ -1,12 +1,12 @@
-using System;
+using SoundSwitch.Banner.CLI.Infrastructure;
+using SoundSwitch.Banner;
+using Spectre.Console.Cli;
+using Spectre.Console;
 using System.ComponentModel;
 using System.Drawing;
-using SoundSwitch.Banner;
-using SoundSwitch.Banner.CLI.Infrastructure;
-using Spectre.Console;
-using Spectre.Console.Cli;
-using System.Windows.Forms;
 using System.Threading;
+using System.Windows.Forms;
+using System;
 
 namespace SoundSwitch.Banner.CLI.Commands;
 

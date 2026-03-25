@@ -1,10 +1,10 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Job.Scheduler.Job;
 using Job.Scheduler.Job.Action;
 using Job.Scheduler.Job.Exception;
+using Job.Scheduler.Job;
 using Serilog;
+using System.Threading.Tasks;
+using System.Threading;
+using System;
 
 namespace SoundSwitch.Framework.Updater.Job;
 

@@ -1,8 +1,8 @@
-using SoundSwitch.IPC.Pipe;
 using SoundSwitch.IPC.Pipe.Messages.GetProfileList;
 using SoundSwitch.IPC.Pipe.Messages.TriggerProfile;
-using Spectre.Console;
+using SoundSwitch.IPC.Pipe;
 using Spectre.Console.Cli;
+using Spectre.Console;
 
 namespace SoundSwitch.CLI.Commands;
 

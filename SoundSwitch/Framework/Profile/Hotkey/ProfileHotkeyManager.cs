@@ -1,12 +1,12 @@
-using System.Collections.Generic;
-using System.Linq;
 using JetBrains.Annotations;
 using SoundSwitch.Common.Framework.Icon;
-using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Framework.WinApi.Keyboard;
+using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Model;
-using SoundSwitch.UI.Menu;
 using SoundSwitch.UI.Menu.Component;
+using SoundSwitch.UI.Menu;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SoundSwitch.Framework.Profile.Hotkey;
 
@@ -35,7 +35,7 @@ public class ProfileHotkeyManager
         }
     }
 
-    private readonly Dictionary<HotKey, HotKeysSelection> _profiles = new();
+    private readonly Dictionary<HotKey, HotKeysSelection> _profiles = [];
     private readonly ProfileManager _profileManager;
 
     public ProfileHotkeyManager(ProfileManager profileManager)
@@ -94,7 +94,7 @@ public class ProfileHotkeyManager
                 return false;
             }
 
-            _profiles[hotKey] = new HotKeysSelection(new HashSet<Profile>(new[] { profile }))
+            _profiles[hotKey] = new HotKeysSelection([profile])
             {
                 LastUsed = profile
             };

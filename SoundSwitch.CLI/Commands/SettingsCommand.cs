@@ -1,7 +1,7 @@
-using SoundSwitch.IPC.Pipe;
 using SoundSwitch.IPC.Pipe.Messages.OpenSettings;
-using Spectre.Console;
+using SoundSwitch.IPC.Pipe;
 using Spectre.Console.Cli;
+using Spectre.Console;
 
 namespace SoundSwitch.CLI.Commands;
 

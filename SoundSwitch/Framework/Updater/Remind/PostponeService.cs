@@ -1,7 +1,7 @@
-﻿using System;
 using Serilog;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Updater.Releases;
+using System;
 
 namespace SoundSwitch.Framework.Updater.Remind;
 

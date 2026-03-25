@@ -13,11 +13,11 @@
  ********************************************************************/
 
 #nullable enable
-using System;
 using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Common.Properties;
+using System;
 
 namespace SoundSwitch.Common.Framework.Audio.Icon
 {

@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
  * Copyright (C) 2015-2017 Antoine Aflalo
  *
  * This program is free software; you can redistribute it and/or
@@ -12,9 +12,9 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
-using System.Collections.Generic;
 using NuGet.Versioning;
 using SoundSwitch.Framework.Updater.Releases.Models;
+using System.Collections.Generic;
 
 namespace SoundSwitch.Framework.Updater.Releases;
 
@@ -22,7 +22,7 @@ public class AppRelease(SemanticVersion releaseVersion, Asset asset, string name
 {
     public SemanticVersion ReleaseVersion { get; private set; } = releaseVersion;
     public Asset Asset { get; } = asset;
-    public List<string> Changelog { get; } = new List<string>();
+    public List<string> Changelog { get; } = [];
     public string Name { get; private set; } = name;
 
     public override string ToString()

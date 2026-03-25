@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
  * Copyright (C) 2015-2017 Antoine Aflalo
  *
  * This program is free software; you can redistribute it and/or
@@ -12,10 +12,10 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
-using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using System;
 
 namespace SoundSwitch.UI.Component;
 
@@ -79,16 +79,14 @@ public class TextProgressBar : ProgressBar
                 break;
         }
 
-        using (var f = new Font(FontFamily.GenericSansSerif, 8.25F))
-        {
-            var len = g.MeasureString(text, f);
-            // Calculate the location of the text (the middle of progress bar)
-            // Point location = new Point(Convert.ToInt32((rect.Width / 2) - (len.Width / 2)), Convert.ToInt32((rect.Height / 2) - (len.Height / 2)));
-            var location = new Point(Convert.ToInt32((Width / 2) - len.Width / 2),
-                Convert.ToInt32((Height / 2) - len.Height / 2));
-            // The commented-out code will centre the text into the highlighted area only. This will centre the text regardless of the highlighted area.
-            // Draw the custom text
-            g.DrawString(text, f, Brushes.Black, location);
-        }
+        using var f = new Font(FontFamily.GenericSansSerif, 8.25F);
+        var len = g.MeasureString(text, f);
+        // Calculate the location of the text (the middle of progress bar)
+        // Point location = new Point(Convert.ToInt32((rect.Width / 2) - (len.Width / 2)), Convert.ToInt32((rect.Height / 2) - (len.Height / 2)));
+        var location = new Point(Convert.ToInt32((Width / 2) - len.Width / 2),
+            Convert.ToInt32((Height / 2) - len.Height / 2));
+        // The commented-out code will centre the text into the highlighted area only. This will centre the text regardless of the highlighted area.
+        // Draw the custom text
+        g.DrawString(text, f, Brushes.Black, location);
     }
 }

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Serilog;
+using System.Threading.Tasks;
+using System.Threading;
+using System;
 
 namespace SoundSwitch.Audio.Manager.Interop.Com.Threading
 {

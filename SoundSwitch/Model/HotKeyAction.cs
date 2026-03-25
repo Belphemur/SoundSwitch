@@ -1,4 +1,4 @@
-﻿namespace SoundSwitch.Model;
+namespace SoundSwitch.Model;
 
 public enum HotKeyAction
 {

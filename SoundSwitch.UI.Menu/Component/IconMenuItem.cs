@@ -1,10 +1,10 @@
-﻿using System;
+using JetBrains.Annotations;
+using SoundSwitch.UI.Menu.Util;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
-using JetBrains.Annotations;
-using SoundSwitch.UI.Menu.Util;
+using System;
 
 namespace SoundSwitch.UI.Menu.Component
 {

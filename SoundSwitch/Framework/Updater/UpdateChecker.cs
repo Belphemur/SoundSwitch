@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
  * Copyright (C) 2015-2017 Antoine Aflalo
  *
  * This program is free software; you can redistribute it and/or
@@ -12,20 +12,20 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
-using System;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using NuGet.Versioning;
 using Sentry;
 using Serilog;
-using SoundSwitch.Framework.Updater.Releases;
 using SoundSwitch.Framework.Updater.Releases.Models;
+using SoundSwitch.Framework.Updater.Releases;
+using System.Linq;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Net.Http;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Threading;
+using System.Windows.Forms;
+using System;
 
 namespace SoundSwitch.Framework.Updater;
 
@@ -58,7 +58,7 @@ public partial class UpdateChecker(Uri releaseUrl, bool checkBeta)
             serverRelease.TagName += "-beta.1";
         }
 
-        if (!SemanticVersion.TryParse(serverRelease.TagName.Substring(1), out var version))
+        if (!SemanticVersion.TryParse(serverRelease.TagName[1..], out var version))
         {
             Log.Error("Invalid version: {version}", serverRelease.TagName);
             return false;
@@ -99,7 +99,7 @@ public partial class UpdateChecker(Uri releaseUrl, bool checkBeta)
         httpClient.DefaultRequestHeaders.UserAgent.Add(ApplicationInfo.CommentValue);
         httpClient.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
         var releases = await httpClient.GetFromJsonAsync(releaseUrl, GithubReleasesJsonContext.Default.ReleaseArray, token);
-        foreach (var release in (releases ?? Array.Empty<Release>()).OrderByDescending(release => SemanticVersion.Parse(release.TagName.Substring(1))))
+        foreach (var release in (releases ?? []).OrderByDescending(release => SemanticVersion.Parse(release.TagName[1..])))
         {
             token.ThrowIfCancellationRequested();
             if (ProcessAndNotifyRelease(release))

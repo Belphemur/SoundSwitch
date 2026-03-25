@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
 using NAudio.CoreAudioApi;
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework.Profile.Trigger;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+using System;
 
 namespace SoundSwitch.Framework.Profile.UI;
 
@@ -23,7 +23,7 @@ public class ProfileTrayIconBuilder
     /// <returns></returns>
     public IEnumerable<ToolStripMenuItem> GetMenuItems()
     {
-        return (ProfileManager?.Profiles ?? new Profile[0])
+        return (ProfileManager?.Profiles ?? [])
             .Where(profile => profile.Triggers.Any(trigger => trigger.Type == TriggerFactory.Enum.TrayMenu))
             .OrderBy(profile => profile.Name)
             .Select(BuildMenuItem);

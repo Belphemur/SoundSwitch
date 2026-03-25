@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
 using Serilog;
 using SoundSwitch.UI.Menu.Component;
 using SoundSwitch.UI.Menu.Form;
+using System.Collections.Generic;
+using System.Threading;
+using System;
 
 namespace SoundSwitch.UI.Menu
 {

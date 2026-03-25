@@ -1,6 +1,6 @@
-﻿#nullable enable
-using System;
+#nullable enable
 using SoundSwitch.Audio.Manager.Interop.Enum;
+using System;
 
 namespace SoundSwitch.Audio.Manager.Interop.Interface.Policy.Extended;
 

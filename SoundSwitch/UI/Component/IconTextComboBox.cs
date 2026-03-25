@@ -1,8 +1,8 @@
-using System;
+using SoundSwitch.Common.Framework.Icon;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using SoundSwitch.Common.Framework.Icon;
+using System;
 
 namespace SoundSwitch.UI.Component;
 
@@ -10,7 +10,7 @@ public class IconTextComboBox : ComboBox
 {
     public class DropDownItem : IDisposable
     {
-        public static DropDownItem Empty = new DropDownItem
+        public static DropDownItem Empty = new()
         {
             Text = ""
         };

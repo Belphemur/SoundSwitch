@@ -1,6 +1,6 @@
-﻿using NUnit.Framework;
-using SoundSwitch.Localization.Factory;
+using NUnit.Framework;
 using SoundSwitch.Localization.Factory.Lang;
+using SoundSwitch.Localization.Factory;
 
 namespace SoundSwitch.Tests
 {

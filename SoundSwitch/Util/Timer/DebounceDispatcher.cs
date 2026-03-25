@@ -1,4 +1,5 @@
-﻿using System;
+using System.Threading;
+using System;
 
 namespace SoundSwitch.Util.Timer;
 
@@ -18,8 +19,8 @@ public class DebounceDispatcher
 {
     private System.Timers.Timer? _timer;
     private DateTime TimerStarted { get; set; } = DateTime.UtcNow.AddYears(-1);
-    private readonly object _lockDebounce = new();
-    private readonly object _lockThrottle = new();
+    private readonly Lock _lockDebounce = new();
+    private readonly Lock _lockThrottle = new();
 
 
     /// <summary>

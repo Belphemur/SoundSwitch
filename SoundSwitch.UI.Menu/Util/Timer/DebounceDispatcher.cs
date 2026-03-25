@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace SoundSwitch.UI.Menu.Util.Timer
 {

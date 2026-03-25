@@ -1,4 +1,4 @@
-﻿namespace SoundSwitch.Audio.Manager.Interop.Client.ClientException
+namespace SoundSwitch.Audio.Manager.Interop.Client.ClientException
 {
     public class DeviceNotFoundException : System.Exception
     {

@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
 * Copyright (C) 2015 Jeroen Pelgrims
 * Copyright (C) 2015-2017 Antoine Aflalo
 *
@@ -13,11 +13,11 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System;
-using System.Drawing;
-using System.Windows.Forms;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Properties;
+using System.Drawing;
+using System.Windows.Forms;
+using System;
 
 namespace SoundSwitch.Util;
 

@@ -1,6 +1,6 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using System;
 
 namespace SoundSwitch.Framework.Updater.Releases.Models;
 

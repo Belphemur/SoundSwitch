@@ -1,8 +1,8 @@
-using System;
 using FluentAssertions;
 using NUnit.Framework;
-using SoundSwitch.Audio.Manager.Interop.Client.Extended;
 using SoundSwitch.Audio.Manager.Interop.Client.Extended.Factory;
+using SoundSwitch.Audio.Manager.Interop.Client.Extended;
+using System;
 
 namespace SoundSwitch.Audio.Manager.Tests;
 

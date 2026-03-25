@@ -1,4 +1,4 @@
-﻿#nullable enable
+#nullable enable
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Audio.Manager.Interop.Interface.Policy.Extended;
 

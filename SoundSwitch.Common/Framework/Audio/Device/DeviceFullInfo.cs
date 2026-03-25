@@ -1,11 +1,11 @@
-﻿#nullable enable
-using System;
-using System.Threading.Tasks;
+#nullable enable
 using NAudio.CoreAudioApi;
 using Newtonsoft.Json;
 using Serilog;
 using SoundSwitch.Common.Framework.Audio.Icon;
 using SoundSwitch.Common.Framework.Icon;
+using System.Threading.Tasks;
+using System;
 
 namespace SoundSwitch.Common.Framework.Audio.Device
 {

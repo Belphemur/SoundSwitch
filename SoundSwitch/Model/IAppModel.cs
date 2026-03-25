@@ -13,14 +13,11 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Drawing;
 using NAudio.CoreAudioApi;
+using SoundSwitch.Banner;
 using SoundSwitch.Common.Framework.Audio.Collection;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
-using SoundSwitch.Banner;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
@@ -28,6 +25,9 @@ using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.WinApi.Keyboard;
 using SoundSwitch.Localization.Factory;
 using SoundSwitch.UI.Component;
+using System.Collections.Generic;
+using System.Drawing;
+using System;
 
 namespace SoundSwitch.Model;
 

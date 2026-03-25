@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
 * Copyright (C) 2015-2017 Antoine Aflalo
 *
 * This program is free software; you can redistribute it and/or
@@ -13,8 +13,8 @@
 ********************************************************************/
 
 using NAudio.CoreAudioApi;
-using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
+using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
@@ -33,10 +33,7 @@ public class TooltipInfoPlayback : ITooltipInfo
         {
             if (@event.Device.Type != DataFlow.Render)
                 return;
-            if (_defaultDevice != null)
-            {
-                _defaultDevice.Dispose();
-            }
+            _defaultDevice?.Dispose();
 
             _defaultDevice = AudioSwitcher.Instance.GetAudioEndpoint(@event.DeviceId);
             if (_defaultDevice != null)

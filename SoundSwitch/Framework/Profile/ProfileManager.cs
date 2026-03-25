@@ -1,17 +1,11 @@
-﻿#nullable enable
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
+#nullable enable
 using NAudio.CoreAudioApi;
-using RailSharp;
 using RailSharp.Internal.Result;
+using RailSharp;
 using Serilog;
-using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Com.User;
 using SoundSwitch.Audio.Manager.Interop.Enum;
+using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Profile.Hotkey;
@@ -20,6 +14,12 @@ using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
 using SoundSwitch.Util;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
+using System;
 
 namespace SoundSwitch.Framework.Profile;
 
@@ -39,9 +39,9 @@ public class ProfileManager
 
     private readonly ConcurrentDictionary<User32.NativeMethods.HWND, Profile> _activeWindowsTrigger = new();
 
-    private readonly Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)> _profileByApplication = new();
-    private readonly Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)> _profilesByWindowName = new();
-    private readonly Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)> _profilesByUwpApp = new();
+    private readonly Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)> _profileByApplication = [];
+    private readonly Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)> _profilesByWindowName = [];
+    private readonly Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)> _profilesByUwpApp = [];
 
     private readonly ProfileHotkeyManager _profileHotkeyManager;
     private readonly ILogger _logger;
@@ -137,7 +137,7 @@ public class ProfileManager
         var errors = Array.Empty<ProfileError>();
         try
         {
-            errors = AppConfigs.Configuration.Profiles.Select(profile => (Profile: profile, Failure: ValidateProfile(profile, true).UnwrapFailure()))
+            errors = [.. AppConfigs.Configuration.Profiles.Select(profile => (Profile: profile, Failure: ValidateProfile(profile, true).UnwrapFailure()))
                 .Select(tuple =>
                 {
                     if (tuple.Failure == null)
@@ -148,8 +148,7 @@ public class ProfileManager
                     return tuple;
                 })
                 .Where(tuple => tuple.Failure != null)
-                .Select(tuple => new ProfileError(tuple.Profile, tuple.Failure))
-                .ToArray();
+                .Select(tuple => new ProfileError(tuple.Profile, tuple.Failure))];
 
             RegisterEvents();
             InitializeProfileExistingProcess();
@@ -226,8 +225,7 @@ public class ProfileManager
 
     private bool HandleApplication(WindowMonitor.Event @event)
     {
-        (Profile Profile, Trigger.Trigger Trigger) profileTuple;
-        if (_profileByApplication.TryGetValue(@event.ProcessName.ToLower(), out profileTuple))
+        if (_profileByApplication.TryGetValue(@event.ProcessName.ToLower(), out (Profile Profile, Trigger.Trigger Trigger) profileTuple))
         {
             SaveCurrentState(@event.Hwnd, profileTuple.Profile, profileTuple.Trigger);
             SwitchAudio(profileTuple.Profile, @event.ProcessId);
@@ -452,7 +450,7 @@ public class ProfileManager
     /// </summary>
     public Result<string, VoidSuccess> UpdateProfile(Profile oldProfile, Profile newProfile)
     {
-        DeleteProfiles(new[] { oldProfile });
+        DeleteProfiles([oldProfile]);
         return ValidateProfile(newProfile)
             .Map(success =>
             {

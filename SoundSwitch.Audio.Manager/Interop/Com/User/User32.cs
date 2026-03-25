@@ -1,7 +1,7 @@
-﻿using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Text;
+using System;
 
 namespace SoundSwitch.Audio.Manager.Interop.Com.User
 {

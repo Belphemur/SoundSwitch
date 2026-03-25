@@ -1,7 +1,7 @@
-﻿#nullable enable
+#nullable enable
 
-using System;
 using RailSharp.Internal.Result;
+using System;
 
 namespace SoundSwitch.Util;
 
@@ -11,7 +11,7 @@ public static class ResultTypeExtension
         this RailSharp.Result<TFailure, TSuccess> result,
         Func<TFailure, RailSharp.Result<TFailure, TSuccess>> mapper)
     {
-        return !(result is Failure<TFailure, TSuccess> failure) ? result : mapper((TFailure)failure);
+        return result is not Failure<TFailure, TSuccess> failure ? result : mapper((TFailure)failure);
     }
 
     /// <summary>

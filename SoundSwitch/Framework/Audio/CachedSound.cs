@@ -12,12 +12,12 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System;
+using NAudio.Wave;
+using NAudio;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using NAudio;
-using NAudio.Wave;
+using System;
 
 namespace SoundSwitch.Framework.Audio;
 

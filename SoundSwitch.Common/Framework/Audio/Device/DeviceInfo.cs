@@ -1,7 +1,8 @@
-﻿using System;
-using System.Text.RegularExpressions;
 using NAudio.CoreAudioApi;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
+using System;
+
 #pragma warning disable CS0618 // Type or member is obsolete
 
 namespace SoundSwitch.Common.Framework.Audio.Device

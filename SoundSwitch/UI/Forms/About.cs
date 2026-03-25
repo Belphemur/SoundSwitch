@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
 * Copyright (C) 2015 Jeroen Pelgrims
 * Copyright (C) 2015-2017 Antoine Aflalo
 *
@@ -13,12 +13,12 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System.Windows.Forms;
-using SoundSwitch.Localization;
 using SoundSwitch.Localization.Factory;
+using SoundSwitch.Localization;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
 using SoundSwitch.Util.Url;
+using System.Windows.Forms;
 
 namespace SoundSwitch.UI.Forms;
 

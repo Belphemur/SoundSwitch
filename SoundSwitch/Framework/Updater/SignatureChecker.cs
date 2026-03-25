@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
 * Copyright (C) 2015-2017 Antoine Aflalo
 *
 * This program is free software; you can redistribute it and/or
@@ -13,8 +13,8 @@
 ********************************************************************/
 
 using AuthenticodeExaminer;
-using RailSharp;
 using RailSharp.Internal.Result;
+using RailSharp;
 
 namespace SoundSwitch.Framework.Updater;
 

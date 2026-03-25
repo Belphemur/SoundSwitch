@@ -14,9 +14,9 @@
 //source : https://stackoverflow.com/questions/6872957/how-can-i-use-the-images-within-shell32-dll-in-my-c-sharp-project
 
 #nullable enable
-using System;
-using System.Runtime.Serialization;
 using Microsoft.Extensions.Caching.Memory;
+using System.Runtime.Serialization;
+using System;
 
 namespace SoundSwitch.Common.Framework.Icon
 {

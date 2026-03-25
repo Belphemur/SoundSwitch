@@ -1,13 +1,13 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
 using JetBrains.Annotations;
-using Job.Scheduler.Job;
 using Job.Scheduler.Job.Action;
 using Job.Scheduler.Job.Exception;
+using Job.Scheduler.Job;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using Serilog;
+using System.Threading.Tasks;
+using System.Threading;
+using System;
 
 namespace SoundSwitch.Framework.Audio.Play;
 

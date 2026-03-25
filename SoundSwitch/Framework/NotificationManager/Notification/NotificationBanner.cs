@@ -12,22 +12,22 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Drawing;
 using NAudio.CoreAudioApi;
-using System.IO;
-using System.Linq;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Banner;
-using SoundSwitch.Framework.Banner;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Banner.MicrophoneMute;
+using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification;
 
