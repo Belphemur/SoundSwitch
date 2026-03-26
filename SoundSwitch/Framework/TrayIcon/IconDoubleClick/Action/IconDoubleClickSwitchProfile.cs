@@ -1,4 +1,4 @@
-
+﻿
 using System.Linq;
 using Serilog;
 using SoundSwitch.Framework.Profile.Trigger;

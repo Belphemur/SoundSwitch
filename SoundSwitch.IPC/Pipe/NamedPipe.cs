@@ -1,4 +1,4 @@
-#nullable enable
+﻿#nullable enable
 using System.Collections.Concurrent;
 using System.IO.Pipes;
 using System.Runtime.Versioning;

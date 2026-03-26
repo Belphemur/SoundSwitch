@@ -1,4 +1,4 @@
-using SoundSwitch.IPC.Pipe;
+﻿using SoundSwitch.IPC.Pipe;
 using SoundSwitch.IPC.Pipe.Messages.GetProfileList;
 using SoundSwitch.IPC.Pipe.Messages.TriggerProfile;
 using Spectre.Console;

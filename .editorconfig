@@ -1,0 +1,14 @@
+root = true
+
+[*.{cs,vb}]
+# Organize usings
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = true
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:silent
+dotnet_style_readonly_field = true:suggestion
+
+# Formatting
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true

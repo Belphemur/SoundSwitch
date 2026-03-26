@@ -1,4 +1,4 @@
-#nullable enable
+﻿#nullable enable
 using MessagePack;
 using SoundSwitch.IPC.Pipe.Messages.GetProfileList;
 using SoundSwitch.IPC.Pipe.Messages.Microphone;
