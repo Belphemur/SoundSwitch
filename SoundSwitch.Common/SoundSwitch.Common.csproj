@@ -23,7 +23,5 @@
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="Serilog" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" />
-    <PackageReference Include="System.Drawing.Common" />
-    <PackageReference Include="System.Resources.Extensions" />
   </ItemGroup>
 </Project>

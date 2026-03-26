@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
 * Copyright (C) 2015-2017 Antoine Aflalo
 *
 * This program is free software; you can redistribute it and/or
@@ -42,7 +42,9 @@ public class CachedSoundFileNotExistsException : ArgumentException
     {
     }
 
+#pragma warning disable SYSLIB0051 // Type or member is obsolete
     protected CachedSoundFileNotExistsException(SerializationInfo info, StreamingContext context) : base(info, context)
     {
     }
+#pragma warning restore SYSLIB0051 // Type or member is obsolete
 }

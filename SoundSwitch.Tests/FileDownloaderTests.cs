@@ -1,9 +1,12 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+
 using FluentAssertions;
+
 using NUnit.Framework;
+
 using SoundSwitch.Framework.Updater;
 
 namespace SoundSwitch.Tests;
@@ -20,7 +23,7 @@ public class FileDownloaderTests
         // Read the first 8 bytes from the stream
         var buffer = new byte[8];
         stream.Position = 0;
-        stream.Read(buffer, 0, 8);
+        stream.ReadExactly(buffer, 0, 8);
 
         // Check if the byte sequence matches the MP4 magic number
         return buffer[0] == 0x00 && buffer[1] == 0x00 && buffer[2] == 0x00 && buffer[3] == 0x14 && buffer[4] == 0x66 && buffer[5] == 0x74 && buffer[6] == 0x79 && buffer[7] == 0x70;
