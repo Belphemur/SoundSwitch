@@ -6,6 +6,7 @@ using SoundSwitch.IPC.Pipe.Messages.Mute;
 using SoundSwitch.IPC.Pipe.Messages.OpenSettings;
 using SoundSwitch.IPC.Pipe.Messages.TriggerProfile;
 using SoundSwitch.IPC.Pipe.Messages.TriggerSwitch;
+using SoundSwitch.IPC.Pipe.Messages.ShowBanner;
 
 namespace SoundSwitch.IPC.Pipe.Messages;
 
@@ -20,6 +21,7 @@ namespace SoundSwitch.IPC.Pipe.Messages;
 [Union(8, typeof(MuteRequest))]
 [Union(9, typeof(MicrophoneStateResponse))]
 [Union(10, typeof(MicrophoneStateRequest))]
+[Union(11, typeof(ShowBannerRequest))]
 public interface IPipeMessage
 {
 }

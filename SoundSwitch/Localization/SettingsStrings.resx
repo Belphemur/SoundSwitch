@@ -1,107 +1,45 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing"
-  mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework
-  object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -115,11 +53,11 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0,
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0,&#xD;
       Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0,
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0,&#xD;
       Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="selected" xml:space="preserve">
@@ -228,10 +166,10 @@
     <value>Customized Sound Notification</value>
   </data>
   <data name="notification.tooltip" xml:space="preserve">
-    <value>Windows Notification: The default windows tray pop-up.
-Sound Notification: Plays a sound on the switched Playback Device.
-Customized Sound Notification: Plays the specified sound on the switched Playback Device.
-Toast Notification: Uses a special form of the windows tray pop-up version.
+    <value>Windows Notification: The default windows tray pop-up.&#xD;
+Sound Notification: Plays a sound on the switched Playback Device.&#xD;
+Customized Sound Notification: Plays the specified sound on the switched Playback Device.&#xD;
+Toast Notification: Uses a special form of the windows tray pop-up version.&#xD;
 Banner: Uses a custom always-on-top frame, useful for in-game usage.</value>
   </data>
   <data name="tooltipOnHover.option.playbackDevice" xml:space="preserve">
@@ -259,7 +197,7 @@ Banner: Uses a custom always-on-top frame, useful for in-game usage.</value>
     <value>Language</value>
   </data>
   <data name="languageRestartRequired" xml:space="preserve">
-    <value>The language will change after restarting SoundSwitch.
+    <value>The language will change after restarting SoundSwitch.&#xD;
 Do you want to restart now?</value>
   </data>
   <data name="restartRequired.caption" xml:space="preserve">
@@ -287,11 +225,11 @@ Do you want to restart now?</value>
     <value>Systray Icon</value>
   </data>
   <data name="iconChange.tooltip" xml:space="preserve">
-    <value>Choose when to change the systray Icon of SoundSwitch.
-
-Default: Don't change it. Keep SoundSwitch Icon.
-Playback: When a playback device is switched.
-Recording: When a recording device is switched.
+    <value>Choose when to change the systray Icon of SoundSwitch.&#xD;
+&#xD;
+Default: Don't change it. Keep SoundSwitch Icon.&#xD;
+Playback: When a playback device is switched.&#xD;
+Recording: When a recording device is switched.&#xD;
 Both: Change when any type of device is switched.</value>
   </data>
   <data name="profile.tab" xml:space="preserve">
@@ -430,8 +368,8 @@ Both: Change when any type of device is switched.</value>
     <value>Restore devices when trigger ends</value>
   </data>
   <data name="profile.trigger.restoreDevices.desc" xml:space="preserve">
-    <value>Requires "{0}" to be enabled.
-
+    <value>Requires "{0}" to be enabled.&#xD;
+&#xD;
 Restore the state of the system when the application is closed.</value>
   </data>
   <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
@@ -618,7 +556,7 @@ Restore the state of the system when the application is closed.</value>
     <value>The zip archive must contain the SoundSwitch configuration file.</value>
   </data>
   <data name="importConfigRestartRequired" xml:space="preserve">
-    <value>SoundSwitch will restart when the main configuration file has been imported.
+    <value>SoundSwitch will restart when the main configuration file has been imported.&#xD;
 Do you want to restart now?</value>
   </data>
   <data name="importConfigErrorMessage.caption" xml:space="preserve">
@@ -679,7 +617,7 @@ Do you want to restart now?</value>
     <value>Move to new position</value>
   </data>
   <data name="customPositionBanner.text" xml:space="preserve">
-    <value>Press R to reset position.
+    <value>Press R to reset position.&#xD;
 Press Esc to close.</value>
   </data>
   <data name="banner.opacity" xml:space="preserve">
@@ -745,7 +683,6 @@ Press Esc to close.</value>
   <data name="appSoundLock.rule.enabled" xml:space="preserve">
     <value>Enabled</value>
   </data>
-
   <data name="appSoundLock.rule.caseSensitive" xml:space="preserve">
     <value>Case Sensitive</value>
   </data>
@@ -754,5 +691,11 @@ Press Esc to close.</value>
   </data>
   <data name="appSoundLock.filter" xml:space="preserve">
     <value>Filter:</value>
+  </data>
+  <data name="bannerShowOn_primaryScreen">
+    <value>Primary Screen</value>
+  </data>
+  <data name="bannerShowOn_activeScreen">
+    <value>Active Screen (Focused window)</value>
   </data>
 </root>

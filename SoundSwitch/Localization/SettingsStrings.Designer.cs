@@ -2292,5 +2292,21 @@ namespace SoundSwitch.Localization
                 return ResourceManager.GetString("appSoundLock.filter", resourceCulture);
             }
         }
+
+        internal static string bannerShowOn_primaryScreen
+        {
+            get
+            {
+                return ResourceManager.GetString("bannerShowOn_primaryScreen", resourceCulture);
+            }
+        }
+
+        internal static string bannerShowOn_activeScreen
+        {
+            get
+            {
+                return ResourceManager.GetString("bannerShowOn_activeScreen", resourceCulture);
+            }
+        }
     }
 }

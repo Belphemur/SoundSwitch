@@ -18,6 +18,7 @@ using SoundSwitch.IPC.Pipe.Messages.Mute;
 using SoundSwitch.IPC.Pipe.Messages.OpenSettings;
 using SoundSwitch.IPC.Pipe.Messages.TriggerProfile;
 using SoundSwitch.IPC.Pipe.Messages.TriggerSwitch;
+using SoundSwitch.IPC.Pipe.Messages.ShowBanner;
 using SoundSwitch.IPC.Pipe.Messages;
 using SoundSwitch.IPC.Pipe;
 using SoundSwitch.UI.Menu;
@@ -55,6 +56,7 @@ public class SoundSwitchApplicationContext : ApplicationContext
         };
 
         _messageHandlerId = NamedPipe.RegisterMessageHandler(HandlePipeMessageAsync);
+        NamedPipe.StartListening(PipeConstants.GetUserPipeName());
 
         if (AppConfigs.Configuration.FirstRun)
         {
@@ -194,6 +196,11 @@ public class SoundSwitchApplicationContext : ApplicationContext
                     })
                     .ToArray();
                 return new GetProfileListResponse { Profiles = profiles };
+
+            case ShowBannerRequest bannerRequest:
+                Log.Information("Received banner request: {Title} - {Text}", bannerRequest.Title, bannerRequest.Text);
+                await AppModel.Instance.ShowBannerAsync(bannerRequest);
+                return new TriggerSwitchResponse { Success = true };
 
             default:
                 Log.Warning("Unknown message type received: {MessageType}", message.GetType());

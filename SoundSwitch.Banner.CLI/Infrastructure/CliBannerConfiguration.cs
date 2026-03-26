@@ -10,4 +10,5 @@ public class CliBannerConfiguration : IBannerConfiguration
     public int MaxConcurrentBanners => 5;
     public bool NotifyUsingPrimaryScreen => true;
     public Point? CustomPosition => null;
+    ShowOnScreen IBannerConfiguration.ShowOn => ShowOnScreen.PrimaryScreen;
 }

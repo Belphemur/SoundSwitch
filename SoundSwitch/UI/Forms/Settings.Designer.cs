@@ -90,7 +90,8 @@ sealed partial class SettingsForm
         microphoneMuteBannerComboBox = new System.Windows.Forms.ComboBox();
         microphoneUnmuteLabel = new System.Windows.Forms.Label();
         microphoneUnmuteBannerComboBox = new System.Windows.Forms.ComboBox();
-        usePrimaryScreenCheckbox = new System.Windows.Forms.CheckBox();
+        bannerShowOnComboBox = new System.Windows.Forms.ComboBox();
+        bannerShowOnLabel = new System.Windows.Forms.Label();
         onScreenTimeLabel = new System.Windows.Forms.Label();
 
         singleNotificationCheckbox = new System.Windows.Forms.CheckBox();
@@ -759,7 +760,8 @@ sealed partial class SettingsForm
         // bannerOptionsGroupBox
         // 
         bannerOptionsGroupBox.Controls.Add(microphoneMuteGroupBox);
-        bannerOptionsGroupBox.Controls.Add(usePrimaryScreenCheckbox);
+        bannerOptionsGroupBox.Controls.Add(bannerShowOnComboBox);
+        bannerOptionsGroupBox.Controls.Add(bannerShowOnLabel);
         bannerOptionsGroupBox.Controls.Add(onScreenTimeLabel);
         bannerOptionsGroupBox.Controls.Add(singleNotificationCheckbox);
         bannerOptionsGroupBox.Controls.Add(onScreenUpDown);
@@ -913,16 +915,25 @@ sealed partial class SettingsForm
         microphoneUnmuteBannerComboBox.TabIndex = 41;
         microphoneUnmuteBannerComboBox.SelectedValueChanged += MicrophoneUnmuteBannerComboBox_SelectedValueChanged;
         // 
-        // usePrimaryScreenCheckbox
         // 
-        usePrimaryScreenCheckbox.AutoSize = true;
-        usePrimaryScreenCheckbox.Location = new System.Drawing.Point(6, 22);
-        usePrimaryScreenCheckbox.Name = "usePrimaryScreenCheckbox";
-        usePrimaryScreenCheckbox.Size = new System.Drawing.Size(165, 19);
-        usePrimaryScreenCheckbox.TabIndex = 26;
-        usePrimaryScreenCheckbox.Text = "Always use primary screen";
-        usePrimaryScreenCheckbox.UseVisualStyleBackColor = true;
-        usePrimaryScreenCheckbox.CheckedChanged += UsePrimaryScreenCheckbox_CheckedChanged;
+        // bannerShowOnLabel
+        // 
+        bannerShowOnLabel.Location = new System.Drawing.Point(6, 22);
+        bannerShowOnLabel.Name = "bannerShowOnLabel";
+        bannerShowOnLabel.Size = new System.Drawing.Size(100, 23);
+        bannerShowOnLabel.TabIndex = 26;
+        bannerShowOnLabel.Text = "Show on";
+        bannerShowOnLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+        // 
+        // bannerShowOnComboBox
+        // 
+        bannerShowOnComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+        bannerShowOnComboBox.FormattingEnabled = true;
+        bannerShowOnComboBox.Location = new System.Drawing.Point(112, 22);
+        bannerShowOnComboBox.Name = "bannerShowOnComboBox";
+        bannerShowOnComboBox.Size = new System.Drawing.Size(151, 23);
+        bannerShowOnComboBox.TabIndex = 27;
+        bannerShowOnComboBox.SelectedValueChanged += BannerShowOnComboBox_SelectedValueChanged;
         // 
         // onScreenTimeLabel
         // 
@@ -1514,7 +1525,8 @@ sealed partial class SettingsForm
     private System.Windows.Forms.RadioButton updateNotifyRadioButton;
     private System.Windows.Forms.GroupBox updateSettingsGroupBox;
     private System.Windows.Forms.RadioButton updateSilentRadioButton;
-    private System.Windows.Forms.CheckBox usePrimaryScreenCheckbox;
+    private System.Windows.Forms.Label bannerShowOnLabel;
+    private System.Windows.Forms.ComboBox bannerShowOnComboBox;
     private System.Windows.Forms.Label toggleMuteLabel;
     private SoundSwitch.UI.Component.HotKeyTextBox muteHotKey;
     private System.Windows.Forms.CheckBox muteHotKeyCheckBox;

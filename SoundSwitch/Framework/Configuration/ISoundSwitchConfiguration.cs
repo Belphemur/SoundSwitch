@@ -67,7 +67,11 @@ public interface ISoundSwitchConfiguration : IConfiguration
     bool KeepSystrayIcon { get; set; }
 
     bool SwitchForegroundProgram { get; set; }
+
+    [Obsolete("Use BannerShowOn instead")]
     bool NotifyUsingPrimaryScreen { get; set; }
+
+    ShowOnScreen BannerShowOn { get; set; }
 
     bool AutoAddNewConnectedDevices { get; set; }
 

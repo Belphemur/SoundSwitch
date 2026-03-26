@@ -168,8 +168,9 @@ public sealed partial class SettingsForm : Form
             nameof(AppModel.IsSingleNotification), false, DataSourceUpdateMode.OnPropertyChanged);
         new ToolTip().SetToolTip(singleNotificationCheckbox, SettingsStrings.notification_single_tooltip);
 
-        usePrimaryScreenCheckbox.Checked = AppModel.Instance.NotifyUsingPrimaryScreen;
-        new ToolTip().SetToolTip(usePrimaryScreenCheckbox, SettingsStrings.usePrimaryScreen_tooltip);
+        new ShowOnScreenFactory().ConfigureListControl(bannerShowOnComboBox);
+        bannerShowOnComboBox.SelectedValue = AppModel.Instance.BannerShowOn;
+        new ToolTip().SetToolTip(bannerShowOnComboBox, SettingsStrings.usePrimaryScreen_tooltip);
 
         new MicrophoneMuteFactory().ConfigureListControl(microphoneMuteBannerComboBox);
         microphoneMuteBannerComboBox.SelectedValue = AppModel.Instance.MicrophoneMuteBanner;
@@ -451,7 +452,6 @@ public sealed partial class SettingsForm : Form
         positionGroupBox.Text = SettingsStrings.position;
         onScreenTimeLabel.Text = SettingsStrings.banner_onscreen_time;
         onScreenUpDown.TextUnit = "s";
-        usePrimaryScreenCheckbox.Text = SettingsStrings.usePrimaryScreen;
         singleNotificationCheckbox.Text = SettingsStrings.notification_single;
         opacityLabel.Text = SettingsStrings.banner_opacity;
         opacityUpDown.TextUnit = "%";
@@ -952,9 +952,10 @@ public sealed partial class SettingsForm : Form
         CustomSoundNotificationCheck();
     }
 
-    private void UsePrimaryScreenCheckbox_CheckedChanged(object sender, EventArgs e)
+    private void BannerShowOnComboBox_SelectedValueChanged(object sender, EventArgs e)
     {
-        AppModel.Instance.NotifyUsingPrimaryScreen = usePrimaryScreenCheckbox.Checked;
+        SetComboBoxValue<ShowOnScreen>(sender, selectedItem =>
+            AppModel.Instance.BannerShowOn = selectedItem.Enum);
     }
 
     private void MicrophoneMuteBannerComboBox_SelectedValueChanged(object sender, EventArgs e)

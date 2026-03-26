@@ -2,6 +2,7 @@ using SoundSwitch.Common.Framework.UI;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 using System;
 
 using Timer = System.Windows.Forms.Timer;
@@ -13,6 +14,9 @@ namespace SoundSwitch.Banner;
 /// </summary>
 public partial class BannerForm : Form
 {
+    [DllImport("user32.dll")]
+    private static extern IntPtr GetForegroundWindow();
+
     private sealed class CustomPositionMessageFilter(BannerForm owner) : IMessageFilter
     {
         private const int WmKeyDown = 0x0100;
@@ -59,8 +63,7 @@ public partial class BannerForm : Form
         return showOn switch
         {
             ShowOnScreen.PrimaryScreen => Screen.PrimaryScreen!,
-            ShowOnScreen.ActiveScreen => Screen.FromPoint(Cursor.Position)!,
-            ShowOnScreen.FollowCursor => Screen.FromPoint(Cursor.Position)!,
+            ShowOnScreen.ActiveScreen => Screen.FromHandle(GetForegroundWindow())!,
             _ => Screen.PrimaryScreen!
         };
     }
@@ -191,7 +194,14 @@ public partial class BannerForm : Form
         }
 
         if (request.Image != null)
+        {
             pbxLogo.Image = request.Image;
+            pbxLogo.Visible = true;
+        }
+        else
+        {
+            pbxLogo.Visible = false;
+        }
 
         if (request.SoundPath != null && _audioService != null)
         {
@@ -224,7 +234,7 @@ public partial class BannerForm : Form
             _currentPosition = position;
 
         if (_currentPosition != null)
-            Location = _currentPosition.GetScreenPosition(GetScreen(request.ShowOn), Height, Width, _currentOffset, _configuration.CustomPosition);
+            Location = _currentPosition.GetScreenPosition(GetScreen(request.Screen), Height, Width, _currentOffset, _configuration.CustomPosition);
 
 
         if (_timerHide != null && !persistent && ttl != TimeSpan.MaxValue)
@@ -238,14 +248,14 @@ public partial class BannerForm : Form
 
     public void UpdatePosition(IPosition position, int offset)
     {
-        Location = position.GetScreenPosition(GetScreen(_currentRequest?.ShowOn), Height, Width, offset, _configuration.CustomPosition);
+        Location = position.GetScreenPosition(GetScreen(_currentRequest?.Screen), Height, Width, offset, _configuration.CustomPosition);
         _currentOffset = offset;
     }
 
     public void UpdateLocationOpacity(IPosition position, int positionChange, double opacityChange, int hideChange)
     {
         _currentOffset += positionChange;
-        Location = position.GetScreenPosition(GetScreen(_currentRequest?.ShowOn), Height, Width, _currentOffset, _configuration.CustomPosition);
+        Location = position.GetScreenPosition(GetScreen(_currentRequest?.Screen), Height, Width, _currentOffset, _configuration.CustomPosition);
         Opacity -= opacityChange;
         _hidePercentage -= hideChange;
 

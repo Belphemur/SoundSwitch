@@ -27,6 +27,7 @@ using SoundSwitch.Localization.Factory;
 using SoundSwitch.UI.Component;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading.Tasks;
 using System;
 
 namespace SoundSwitch.Model;
@@ -114,7 +115,7 @@ public interface IAppModel : IDisposable
     /// <summary>
     /// Which screen the banner should be shown on.
     /// </summary>
-    ShowOnScreen ShowOn { get; set; }
+    ShowOnScreen BannerShowOn { get; set; }
 
     /// <summary>
     /// Manage the profile in the application
@@ -266,6 +267,11 @@ public interface IAppModel : IDisposable
     /// <param name="muteState">The desired mute state</param>
     /// <returns>Tuple with device name and mute state, null if no default microphone found or operation failed</returns>
     (string DeviceName, bool IsMuted)? SetMicrophoneMuteState(bool muteState);
+
+    /// <summary>
+    /// Shows a custom banner notification.
+    /// </summary>
+    Task<bool> ShowBannerAsync(SoundSwitch.IPC.Pipe.Messages.ShowBanner.ShowBannerRequest request);
 
     #endregion
 

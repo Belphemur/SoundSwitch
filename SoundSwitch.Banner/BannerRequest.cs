@@ -57,7 +57,7 @@ public record BannerRequest
     /// <summary>
     /// Gets/sets the target screen for this banner.
     /// </summary>
-    public ShowOnScreen? ShowOn { get; init; }
+    public ShowOnScreen? Screen { get; init; }
 
     /// <summary>
     /// Callback triggered when the banner is clicked.

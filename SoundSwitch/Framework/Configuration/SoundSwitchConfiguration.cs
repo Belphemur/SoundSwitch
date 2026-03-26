@@ -87,6 +87,9 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
     public TimeSpan BannerOnScreenTime { get; set; } = TimeSpan.FromSeconds(3);
     public int BannerOpacityPercentage { get; set; } = 100;
     public int MaxNumberNotification { get; set; } = 5;
+    public ShowOnScreen BannerShowOn { get; set; } = ShowOnScreen.ActiveScreen;
+
+    [Obsolete("Replaced by " + nameof(BannerShowOn))]
     public bool NotifyUsingPrimaryScreen { get; set; }
 
     [Obsolete("Replaced by " + nameof(MicrophoneMuteBanner))]
@@ -280,6 +283,13 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
         {
             AudioSwitcher.Instance.ResetProcessDeviceConfiguration();
             MigratedFields.Add(switchForegroundFix);
+            migrated = true;
+        }
+
+        if (!MigratedFields.Contains(nameof(BannerShowOn)))
+        {
+            BannerShowOn = NotifyUsingPrimaryScreen ? ShowOnScreen.PrimaryScreen : ShowOnScreen.ActiveScreen;
+            MigratedFields.Add(nameof(BannerShowOn));
             migrated = true;
         }
 

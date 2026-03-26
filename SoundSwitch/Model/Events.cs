@@ -64,6 +64,8 @@ public class BannerDataChangedEvent(
     int newOpacity,
     MicrophoneMute prevMicrophoneMuteBanner,
     MicrophoneMute newMicrophoneMuteBanner,
+    ShowOnScreen prevBannerShowOn,
+    ShowOnScreen newBannerShowOn,
     MicrophoneMute prevMicrophoneUnmuteBanner,
     MicrophoneMute newMicrophoneUnmuteBanner)
     : EventArgs
@@ -76,6 +78,8 @@ public class BannerDataChangedEvent(
     public int NewOpacity { get; } = newOpacity;
     public MicrophoneMute PrevMicrophoneMuteBanner { get; } = prevMicrophoneMuteBanner;
     public MicrophoneMute NewMicrophoneMuteBanner { get; } = newMicrophoneMuteBanner;
+    public ShowOnScreen PrevBannerShowOn { get; } = prevBannerShowOn;
+    public ShowOnScreen NewBannerShowOn { get; } = newBannerShowOn;
     public MicrophoneMute PrevMicrophoneUnmuteBanner { get; } = prevMicrophoneUnmuteBanner;
     public MicrophoneMute NewMicrophoneUnmuteBanner { get; } = newMicrophoneUnmuteBanner;
 }

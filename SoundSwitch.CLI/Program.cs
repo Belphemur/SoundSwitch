@@ -31,6 +31,12 @@ public static class Program
                 .WithExample("mute", "--state", "true")
                 .WithExample("mute", "--toggle")
                 .WithExample("mute");
+
+            config.AddCommand<BannerCommand>("banner")
+                .WithDescription("Show a banner notification via the running SoundSwitch instance")
+                .WithExample("banner", "Hello World")
+                .WithExample("banner", "Meeting starting", "--title", "Calendar", "--image", "C:\\icons\\calendar.png")
+                .WithExample("banner", "Battery Low", "--screen", "ActiveScreen", "--ttl", "10");
         });
 
         return await app.RunAsync(args);
