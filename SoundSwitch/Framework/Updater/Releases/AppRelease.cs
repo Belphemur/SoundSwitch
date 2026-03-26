@@ -13,7 +13,9 @@
  ********************************************************************/
 
 using System.Collections.Generic;
+
 using NuGet.Versioning;
+
 using SoundSwitch.Framework.Updater.Releases.Models;
 
 namespace SoundSwitch.Framework.Updater.Releases;

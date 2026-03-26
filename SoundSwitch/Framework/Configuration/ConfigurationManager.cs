@@ -13,7 +13,9 @@
 ********************************************************************/
 
 using System.IO;
+
 using Newtonsoft.Json;
+
 using Serilog;
 
 namespace SoundSwitch.Framework.Configuration;

@@ -13,7 +13,9 @@
 ********************************************************************/
 
 using System.Collections.Generic;
+
 using NAudio.CoreAudioApi;
+
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;

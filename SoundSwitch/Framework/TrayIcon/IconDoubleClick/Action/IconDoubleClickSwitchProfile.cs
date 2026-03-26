@@ -1,6 +1,8 @@
 ﻿
 using System.Linq;
+
 using Serilog;
+
 using SoundSwitch.Framework.Profile.Trigger;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;

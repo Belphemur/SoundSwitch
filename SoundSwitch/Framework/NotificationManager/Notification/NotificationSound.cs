@@ -16,8 +16,10 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Threading;
+
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
+
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;

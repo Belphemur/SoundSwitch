@@ -13,16 +13,30 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using System.Windows.Forms;
+
 using NAudio.CoreAudioApi;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+
 using Serilog;
+
 using SoundSwitch.Audio.Manager;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Banner;
+using SoundSwitch.Framework.Banner.BannerDisplayInfo;
 using SoundSwitch.Framework.Banner.BannerPosition;
 using SoundSwitch.Framework.Banner.MicrophoneMute;
 using SoundSwitch.Framework.Configuration;
@@ -45,16 +59,6 @@ using SoundSwitch.UI.Component;
 using SoundSwitch.UI.Component.ListView;
 using SoundSwitch.Util;
 using SoundSwitch.Util.Url;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Windows.Forms;
-using SoundSwitch.Audio.Manager.Interop.Enum;
-using SoundSwitch.Framework.Banner.BannerDisplayInfo;
 
 namespace SoundSwitch.UI.Forms;
 

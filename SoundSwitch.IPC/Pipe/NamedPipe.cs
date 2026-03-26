@@ -2,9 +2,12 @@
 using System.Collections.Concurrent;
 using System.IO.Pipes;
 using System.Runtime.Versioning;
+
 using MessagePack;
+
 using Serilog;
 using Serilog.Context;
+
 using SoundSwitch.IPC.Pipe.Messages;
 
 namespace SoundSwitch.IPC.Pipe;

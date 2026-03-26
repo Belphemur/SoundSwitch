@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+
 using SoundSwitch.Audio.Manager.Interop.Com.User;
 
 namespace SoundSwitch.Framework.WinApi;

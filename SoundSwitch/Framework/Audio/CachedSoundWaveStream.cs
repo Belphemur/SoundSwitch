@@ -13,6 +13,7 @@
 ********************************************************************/
 
 using System;
+
 using NAudio.Wave;
 
 namespace SoundSwitch.Framework.Audio;

@@ -1,6 +1,9 @@
 ﻿using System;
+
 using FluentAssertions;
+
 using NUnit.Framework;
+
 using SoundSwitch.Audio.Manager.Interop.Client.Extended;
 using SoundSwitch.Audio.Manager.Interop.Client.Extended.Factory;
 

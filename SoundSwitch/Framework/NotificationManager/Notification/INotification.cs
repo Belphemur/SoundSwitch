@@ -13,7 +13,9 @@
 ********************************************************************/
 
 using System.Drawing;
+
 using JetBrains.Annotations;
+
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Factory;

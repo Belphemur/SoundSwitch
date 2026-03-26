@@ -1,4 +1,5 @@
 ﻿using SoundSwitch.CLI.Commands;
+
 using Spectre.Console.Cli;
 
 namespace SoundSwitch.CLI;

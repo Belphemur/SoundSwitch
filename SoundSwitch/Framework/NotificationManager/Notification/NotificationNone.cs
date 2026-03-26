@@ -13,6 +13,7 @@
 ********************************************************************/
 
 using System.Drawing;
+
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;

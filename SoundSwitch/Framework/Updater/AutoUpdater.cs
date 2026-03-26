@@ -16,7 +16,9 @@
 using System;
 using System.Threading;
 using System.Windows.Forms;
+
 using Serilog;
+
 using SoundSwitch.Framework.Updater.Installer;
 using SoundSwitch.Framework.Updater.Releases;
 using SoundSwitch.Localization;

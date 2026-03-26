@@ -2,11 +2,14 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+
 using NAudio.CoreAudioApi;
 using NAudio.CoreAudioApi.Interfaces;
+
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Model;
+
 using PropertyKeys = NAudio.CoreAudioApi.PropertyKeys;
 
 namespace SoundSwitch.Framework.NotificationManager;

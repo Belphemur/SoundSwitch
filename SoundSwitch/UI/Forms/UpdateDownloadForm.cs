@@ -14,7 +14,9 @@
 
 using System;
 using System.Windows.Forms;
+
 using Serilog;
+
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.Updater.Installer;
 using SoundSwitch.Framework.Updater.Releases;

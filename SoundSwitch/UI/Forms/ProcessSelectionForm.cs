@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
+
+using Serilog;
+
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Localization;
-using Serilog;
 
 namespace SoundSwitch.UI.Forms;
 

@@ -15,7 +15,9 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+
 using JetBrains.Annotations;
+
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Banner.BannerDisplayInfo;
 using SoundSwitch.Framework.Banner.BannerPosition;

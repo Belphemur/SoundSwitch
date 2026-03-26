@@ -15,6 +15,7 @@
 using System;
 using System.Reflection;
 using System.Windows.Forms;
+
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Util;
 

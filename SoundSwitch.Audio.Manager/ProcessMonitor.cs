@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Timers;
+
 using Serilog;
 
 namespace SoundSwitch.Audio.Manager

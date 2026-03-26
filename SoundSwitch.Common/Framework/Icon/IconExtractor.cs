@@ -16,6 +16,7 @@
 #nullable enable
 using System;
 using System.Runtime.Serialization;
+
 using Microsoft.Extensions.Caching.Memory;
 
 namespace SoundSwitch.Common.Framework.Icon

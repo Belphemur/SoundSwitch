@@ -14,7 +14,9 @@
 
 using System;
 using System.Collections.Generic;
+
 using Serilog;
+
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;

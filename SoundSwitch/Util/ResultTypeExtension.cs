@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using System;
+
 using RailSharp.Internal.Result;
 
 namespace SoundSwitch.Util;

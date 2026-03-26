@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+
 using SoundSwitch.Framework.Factory;
 
 namespace SoundSwitch.Localization.Factory.Lang;

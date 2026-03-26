@@ -13,7 +13,9 @@
 ********************************************************************/
 
 using NAudio.CoreAudioApi;
+
 using Serilog;
+
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;

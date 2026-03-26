@@ -1,6 +1,7 @@
 ﻿using SoundSwitch.IPC.Pipe;
 using SoundSwitch.IPC.Pipe.Messages.Microphone;
 using SoundSwitch.IPC.Pipe.Messages.Mute;
+
 using Spectre.Console;
 using Spectre.Console.Cli;
 

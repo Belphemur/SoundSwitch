@@ -17,9 +17,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+
 using NAudio.CoreAudioApi;
+
 using Newtonsoft.Json;
+
 using Serilog;
+
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Banner;

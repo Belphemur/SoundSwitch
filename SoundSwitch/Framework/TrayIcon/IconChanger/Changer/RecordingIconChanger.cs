@@ -13,6 +13,7 @@
 ********************************************************************/
 
 using NAudio.CoreAudioApi;
+
 using SoundSwitch.Localization;
 
 namespace SoundSwitch.Framework.TrayIcon.IconChanger.Changer;

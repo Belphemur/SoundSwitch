@@ -1,5 +1,7 @@
 ﻿using FluentAssertions;
+
 using NuGet.Versioning;
+
 using NUnit.Framework;
 
 namespace SoundSwitch.Tests;
