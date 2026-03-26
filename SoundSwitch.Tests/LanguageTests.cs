@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+
 using SoundSwitch.Localization.Factory;
 using SoundSwitch.Localization.Factory.Lang;
 

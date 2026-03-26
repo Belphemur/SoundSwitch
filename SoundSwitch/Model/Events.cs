@@ -14,7 +14,9 @@
 
 using System;
 using System.Collections.Generic;
+
 using NAudio.CoreAudioApi;
+
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Banner.BannerDisplayInfo;

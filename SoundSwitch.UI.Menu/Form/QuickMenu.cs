@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 using SoundSwitch.UI.Menu.Component;
 using SoundSwitch.UI.Menu.Util;
 using SoundSwitch.UI.Menu.Util.Timer;
@@ -25,10 +26,10 @@ namespace SoundSwitch.UI.Menu.Form
         private readonly TimeSpan _menuTimeOut = TimeSpan.FromSeconds(2);
 
         [Browsable(true)]
-        public event EventHandler<MenuClickedEvent> ItemClicked;
+        public event EventHandler<MenuClickedEvent>? ItemClicked;
 
         [Browsable(true)]
-        public event EventHandler<MenuClickedEvent> SelectionChanged;
+        public event EventHandler<MenuClickedEvent>? SelectionChanged;
 
         protected override bool ShowWithoutActivation => true;
         
@@ -110,7 +111,7 @@ namespace SoundSwitch.UI.Menu.Form
                 foreach (var payload in originalOrderPayloads)
                 {
                     var control = controlCollection[payload.Id];
-                    control.Top = top;
+                    control!.Top = top;
                     top += control.Height;
                 }
 

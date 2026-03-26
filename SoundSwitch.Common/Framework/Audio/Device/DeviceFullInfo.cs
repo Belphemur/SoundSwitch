@@ -1,9 +1,13 @@
 ﻿#nullable enable
 using System;
 using System.Threading.Tasks;
+
 using NAudio.CoreAudioApi;
+
 using Newtonsoft.Json;
+
 using Serilog;
+
 using SoundSwitch.Common.Framework.Audio.Icon;
 using SoundSwitch.Common.Framework.Icon;
 

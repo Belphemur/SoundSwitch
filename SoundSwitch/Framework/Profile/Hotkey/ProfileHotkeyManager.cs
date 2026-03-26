@@ -1,6 +1,8 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+
 using JetBrains.Annotations;
+
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Framework.WinApi.Keyboard;

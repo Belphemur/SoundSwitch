@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+
 using NAudio.CoreAudioApi;
+
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework.Profile.Trigger;
 using SoundSwitch.Model;

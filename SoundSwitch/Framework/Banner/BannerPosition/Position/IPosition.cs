@@ -14,6 +14,7 @@
 
 using System.Drawing;
 using System.Windows.Forms;
+
 using SoundSwitch.Framework.Factory;
 
 namespace SoundSwitch.Framework.Banner.BannerPosition.Position;

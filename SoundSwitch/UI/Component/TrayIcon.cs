@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
  * Copyright (C) 2015 Jeroen Pelgrims
  * Copyright (C) 2015-2017 Antoine Aflalo
  *
@@ -13,6 +13,7 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
+#pragma warning disable CS8632
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -21,7 +22,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+
 using Serilog;
+
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Framework;
@@ -40,6 +43,7 @@ using SoundSwitch.Properties;
 using SoundSwitch.UI.Forms;
 using SoundSwitch.UI.Menu.Util;
 using SoundSwitch.Util;
+
 using TimerForm = System.Windows.Forms.Timer;
 
 namespace SoundSwitch.UI.Component;

@@ -1,7 +1,8 @@
-#nullable enable
+﻿#nullable enable
 using SoundSwitch.IPC.Pipe;
 using SoundSwitch.IPC.Pipe.Messages.Models;
 using SoundSwitch.IPC.Pipe.Messages.TriggerSwitch;
+
 using Spectre.Console;
 using Spectre.Console.Cli;
 

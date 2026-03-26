@@ -1,9 +1,11 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
+
 using JetBrains.Annotations;
+
 using SoundSwitch.UI.Menu.Util;
 
 namespace SoundSwitch.UI.Menu.Component
@@ -16,7 +18,7 @@ namespace SoundSwitch.UI.Menu.Component
         {
             private bool _selected;
             private Image? _image;
-            private string _label;
+            private string _label = string.Empty;
             private Icon? _icon;
 
             public bool Selected

@@ -1,4 +1,4 @@
-/********************************************************************
+﻿/********************************************************************
  * Copyright (C) 2015-2017 Antoine Aflalo
  *
  * This program is free software; you can redistribute it and/or
@@ -16,6 +16,7 @@
 #nullable enable
 using System;
 using System.Runtime.Serialization;
+
 using Microsoft.Extensions.Caching.Memory;
 
 namespace SoundSwitch.Common.Framework.Icon

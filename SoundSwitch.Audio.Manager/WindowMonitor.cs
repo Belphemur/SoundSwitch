@@ -1,7 +1,9 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+
 using Serilog;
+
 using SoundSwitch.Audio.Manager.Interop.Com.Threading;
 using SoundSwitch.Audio.Manager.Interop.Com.User;
 

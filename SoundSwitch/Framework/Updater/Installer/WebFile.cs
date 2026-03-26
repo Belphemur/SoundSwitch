@@ -18,6 +18,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 using Serilog;
 
 namespace SoundSwitch.Framework.Updater.Installer;

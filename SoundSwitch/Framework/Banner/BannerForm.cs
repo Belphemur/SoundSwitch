@@ -18,11 +18,13 @@ using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 using SoundSwitch.Framework.Audio.Play;
 using SoundSwitch.Framework.Banner.BannerPosition;
 using SoundSwitch.Framework.Threading;
 using SoundSwitch.Model;
 using SoundSwitch.UI.Menu.Util;
+
 using Timer = System.Windows.Forms.Timer;
 
 namespace SoundSwitch.Framework.Banner;

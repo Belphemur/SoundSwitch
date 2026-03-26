@@ -16,6 +16,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Properties;
 

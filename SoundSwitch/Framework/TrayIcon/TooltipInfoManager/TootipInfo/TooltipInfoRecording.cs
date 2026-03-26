@@ -13,6 +13,7 @@
 ********************************************************************/
 
 using NAudio.CoreAudioApi;
+
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;

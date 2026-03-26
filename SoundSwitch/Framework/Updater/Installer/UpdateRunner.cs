@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+
 using SoundSwitch.Framework.Configuration;
 
 namespace SoundSwitch.Framework.Updater.Installer;

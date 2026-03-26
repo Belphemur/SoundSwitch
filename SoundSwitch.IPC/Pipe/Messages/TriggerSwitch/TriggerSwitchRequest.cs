@@ -1,5 +1,6 @@
-#nullable enable
+﻿#nullable enable
 using MessagePack;
+
 using SoundSwitch.IPC.Pipe.Messages.Models;
 
 namespace SoundSwitch.IPC.Pipe.Messages.TriggerSwitch;

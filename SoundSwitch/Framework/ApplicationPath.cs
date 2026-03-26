@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
 * Copyright (C) 2015-2017 Antoine Aflalo
 *
 * This program is free software; you can redistribute it and/or
@@ -39,8 +39,7 @@ public static class ApplicationPath
     /// <summary>
     /// Where the application is installed
     /// </summary>
-    public static string InstallDirectory { get; } =
-        Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
+    public static string InstallDirectory { get; } = AppContext.BaseDirectory;
 
     /// <summary>
     /// Where is the image to be used for toast

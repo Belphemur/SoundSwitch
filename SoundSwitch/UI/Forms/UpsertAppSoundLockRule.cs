@@ -1,8 +1,9 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;

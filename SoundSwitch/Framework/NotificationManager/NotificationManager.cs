@@ -1,4 +1,4 @@
-/********************************************************************
+﻿/********************************************************************
  * Copyright (C) 2015-2017 Antoine Aflalo
  *
  * This program is free software; you can redistribute it and/or
@@ -17,8 +17,11 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+
 using NAudio.CoreAudioApi;
+
 using Serilog;
+
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework.Audio;

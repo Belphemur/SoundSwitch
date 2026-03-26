@@ -1,4 +1,4 @@
-/********************************************************************
+﻿/********************************************************************
 * Copyright (C) 2015-2017 Antoine Aflalo
 *
 * This program is free software; you can redistribute it and/or
@@ -13,6 +13,7 @@
 ********************************************************************/
 
 using NAudio.CoreAudioApi;
+
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Factory;
 

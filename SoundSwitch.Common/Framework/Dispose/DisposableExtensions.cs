@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading;
 
 namespace SoundSwitch.Common.Framework.Dispose

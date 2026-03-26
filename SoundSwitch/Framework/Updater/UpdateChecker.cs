@@ -21,9 +21,13 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 using NuGet.Versioning;
+
 using Sentry;
+
 using Serilog;
+
 using SoundSwitch.Framework.Updater.Releases;
 using SoundSwitch.Framework.Updater.Releases.Models;
 

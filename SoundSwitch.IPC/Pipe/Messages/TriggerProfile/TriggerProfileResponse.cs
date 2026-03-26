@@ -1,4 +1,4 @@
-#nullable enable
+﻿#nullable enable
 using MessagePack;
 
 namespace SoundSwitch.IPC.Pipe.Messages.TriggerProfile;

@@ -20,8 +20,11 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 using Microsoft.Win32;
+
 using Serilog;
+
 using SoundSwitch.Audio.Manager.Interop.Com.User;
 using SoundSwitch.Framework.WinApi.Keyboard;
 

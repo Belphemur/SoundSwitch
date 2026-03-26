@@ -1,4 +1,4 @@
-namespace SoundSwitch.UI.Forms
+﻿namespace SoundSwitch.UI.Forms
 {
     partial class UpsertAppSoundLockRule
     {

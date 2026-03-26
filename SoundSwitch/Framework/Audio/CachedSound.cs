@@ -1,4 +1,4 @@
-/********************************************************************
+﻿/********************************************************************
 * Copyright (C) 2015-2017 Antoine Aflalo
 *
 * This program is free software; you can redistribute it and/or
@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+
 using NAudio;
 using NAudio.Wave;
 

@@ -1,4 +1,4 @@
-/********************************************************************
+﻿/********************************************************************
  * Copyright (C) 2015 Jeroen Pelgrims
  * Copyright (C) 2015-2024 Antoine Aflalo
  *
@@ -19,9 +19,13 @@ using System.Drawing;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading;
+
 using NAudio.CoreAudioApi;
+
 using RailSharp;
+
 using Serilog;
+
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Collection;
 using SoundSwitch.Common.Framework.Audio.Device;

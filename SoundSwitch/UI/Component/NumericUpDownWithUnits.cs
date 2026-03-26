@@ -1,5 +1,5 @@
-﻿using System.Windows.Forms;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using System.Windows.Forms;
 
 namespace SoundSwitch.UI.Component;
 

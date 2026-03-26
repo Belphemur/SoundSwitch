@@ -1,14 +1,18 @@
-﻿#nullable enable
+#nullable enable
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+
 using NAudio.CoreAudioApi;
+
 using RailSharp;
 using RailSharp.Internal.Result;
+
 using Serilog;
+
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Com.User;
 using SoundSwitch.Audio.Manager.Interop.Enum;
@@ -501,7 +505,7 @@ public class ProfileManager
 
             var trigger = groups.First();
 
-            var error = groups.Key.Match(() => null,
+            var error = groups.Key.Match<string?>(() => null,
                 () => string.Format(SettingsStrings.profile_error_window, trigger.WindowName),
                 () => string.Format(SettingsStrings.profile_error_application, trigger.ApplicationPath),
                 () => SettingsStrings.profile_error_steam,

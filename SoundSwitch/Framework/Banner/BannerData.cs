@@ -15,6 +15,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
+
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Banner.BannerPosition.Position;
 

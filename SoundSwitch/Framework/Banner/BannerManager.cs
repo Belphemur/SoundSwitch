@@ -14,7 +14,9 @@
 
 using System;
 using System.Collections.Generic;
+
 using Serilog;
+
 using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.Banner;

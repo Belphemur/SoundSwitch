@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Newtonsoft.Json;
+
 using SoundSwitch.Common.Framework.Audio.Device;
+
 using HotKey = SoundSwitch.Framework.WinApi.Keyboard.HotKey;
 
 namespace SoundSwitch.Framework.Profile;

@@ -1,5 +1,7 @@
 ﻿using System;
+
 using Serilog;
+
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Updater.Releases;
 
