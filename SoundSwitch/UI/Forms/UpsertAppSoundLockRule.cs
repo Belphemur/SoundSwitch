@@ -33,6 +33,7 @@ public partial class UpsertAppSoundLockRule : Form
     private void LocalizeForm()
     {
         Text = _editing ? SettingsStrings.appSoundLock_editRule : SettingsStrings.appSoundLock_addRule;
+        lblDescription.Text = SettingsStrings.appSoundLock_rule_description;
         lblMatchMode.Text = SettingsStrings.appSoundLock_rule_processPath;
         lblPattern.Text = SettingsStrings.appSoundLock_rule_windowTitle;
         lblRegexNotice.Text = SettingsStrings.appSoundLock_rule_regexNotice;

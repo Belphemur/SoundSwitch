@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.lblDescription = new System.Windows.Forms.Label();
             this.lblMatchMode = new System.Windows.Forms.Label();
             this.cmbMatchMode = new System.Windows.Forms.ComboBox();
             this.lblPattern = new System.Windows.Forms.Label();
@@ -46,10 +47,19 @@
             this.btnRecordingReset = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
+            // lblDescription
+            // 
+            this.lblDescription.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
+            this.lblDescription.Location = new System.Drawing.Point(12, 9);
+            this.lblDescription.Name = "lblDescription";
+            this.lblDescription.Size = new System.Drawing.Size(460, 34);
+            this.lblDescription.TabIndex = 18;
+            this.lblDescription.Text = string.Empty;
+            // 
             // lblMatchMode
             // 
             this.lblMatchMode.AutoSize = true;
-            this.lblMatchMode.Location = new System.Drawing.Point(12, 15);
+            this.lblMatchMode.Location = new System.Drawing.Point(12, 57);
             this.lblMatchMode.Name = "lblMatchMode";
             this.lblMatchMode.Size = new System.Drawing.Size(73, 15);
             this.lblMatchMode.TabIndex = 2;
@@ -59,7 +69,7 @@
             // 
             this.cmbMatchMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbMatchMode.FormattingEnabled = true;
-            this.cmbMatchMode.Location = new System.Drawing.Point(110, 12);
+            this.cmbMatchMode.Location = new System.Drawing.Point(110, 54);
             this.cmbMatchMode.Name = "cmbMatchMode";
             this.cmbMatchMode.Size = new System.Drawing.Size(360, 23);
             this.cmbMatchMode.TabIndex = 3;
@@ -67,7 +77,7 @@
             // lblPattern
             // 
             this.lblPattern.AutoSize = true;
-            this.lblPattern.Location = new System.Drawing.Point(12, 45);
+            this.lblPattern.Location = new System.Drawing.Point(12, 87);
             this.lblPattern.Name = "lblPattern";
             this.lblPattern.Size = new System.Drawing.Size(45, 15);
             this.lblPattern.TabIndex = 4;
@@ -75,14 +85,14 @@
             // 
             // txtPattern
             // 
-            this.txtPattern.Location = new System.Drawing.Point(110, 42);
+            this.txtPattern.Location = new System.Drawing.Point(110, 84);
             this.txtPattern.Name = "txtPattern";
             this.txtPattern.Size = new System.Drawing.Size(326, 23);
             this.txtPattern.TabIndex = 5;
             // 
             // btnSelectProcess
             // 
-            this.btnSelectProcess.Location = new System.Drawing.Point(442, 42);
+            this.btnSelectProcess.Location = new System.Drawing.Point(442, 84);
             this.btnSelectProcess.Name = "btnSelectProcess";
             this.btnSelectProcess.Size = new System.Drawing.Size(28, 23);
             this.btnSelectProcess.TabIndex = 6;
@@ -94,7 +104,7 @@
             // 
             this.lblRegexNotice.AutoSize = true;
             this.lblRegexNotice.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
-            this.lblRegexNotice.Location = new System.Drawing.Point(110, 68);
+            this.lblRegexNotice.Location = new System.Drawing.Point(110, 110);
             this.lblRegexNotice.Name = "lblRegexNotice";
             this.lblRegexNotice.Size = new System.Drawing.Size(176, 15);
             this.lblRegexNotice.TabIndex = 7;
@@ -103,7 +113,7 @@
             // lblPlayback
             // 
             this.lblPlayback.AutoSize = true;
-            this.lblPlayback.Location = new System.Drawing.Point(12, 100);
+            this.lblPlayback.Location = new System.Drawing.Point(12, 142);
             this.lblPlayback.Name = "lblPlayback";
             this.lblPlayback.Size = new System.Drawing.Size(54, 15);
             this.lblPlayback.TabIndex = 8;
@@ -116,7 +126,7 @@
             this.cmbPlayback.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cmbPlayback.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbPlayback.FormattingEnabled = true;
-            this.cmbPlayback.Location = new System.Drawing.Point(110, 97);
+            this.cmbPlayback.Location = new System.Drawing.Point(110, 139);
             this.cmbPlayback.Name = "cmbPlayback";
             this.cmbPlayback.Size = new System.Drawing.Size(326, 24);
             this.cmbPlayback.TabIndex = 9;
@@ -126,7 +136,7 @@
             // btnPlaybackReset
             // 
             this.btnPlaybackReset.Image = global::SoundSwitch.Properties.Resources.delete;
-            this.btnPlaybackReset.Location = new System.Drawing.Point(442, 97);
+            this.btnPlaybackReset.Location = new System.Drawing.Point(442, 139);
             this.btnPlaybackReset.Name = "btnPlaybackReset";
             this.btnPlaybackReset.Size = new System.Drawing.Size(28, 23);
             this.btnPlaybackReset.TabIndex = 16;
@@ -137,7 +147,7 @@
             // lblRecording
             // 
             this.lblRecording.AutoSize = true;
-            this.lblRecording.Location = new System.Drawing.Point(12, 130);
+            this.lblRecording.Location = new System.Drawing.Point(12, 172);
             this.lblRecording.Name = "lblRecording";
             this.lblRecording.Size = new System.Drawing.Size(61, 15);
             this.lblRecording.TabIndex = 10;
@@ -150,7 +160,7 @@
             this.cmbRecording.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cmbRecording.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbRecording.FormattingEnabled = true;
-            this.cmbRecording.Location = new System.Drawing.Point(110, 127);
+            this.cmbRecording.Location = new System.Drawing.Point(110, 169);
             this.cmbRecording.Name = "cmbRecording";
             this.cmbRecording.Size = new System.Drawing.Size(326, 24);
             this.cmbRecording.TabIndex = 11;
@@ -160,7 +170,7 @@
             // btnRecordingReset
             // 
             this.btnRecordingReset.Image = global::SoundSwitch.Properties.Resources.delete;
-            this.btnRecordingReset.Location = new System.Drawing.Point(442, 127);
+            this.btnRecordingReset.Location = new System.Drawing.Point(442, 169);
             this.btnRecordingReset.Name = "btnRecordingReset";
             this.btnRecordingReset.Size = new System.Drawing.Size(28, 23);
             this.btnRecordingReset.TabIndex = 17;
@@ -171,7 +181,7 @@
             // chkEnabled
             // 
             this.chkEnabled.AutoSize = true;
-            this.chkEnabled.Location = new System.Drawing.Point(110, 157);
+            this.chkEnabled.Location = new System.Drawing.Point(110, 199);
             this.chkEnabled.Name = "chkEnabled";
             this.chkEnabled.Size = new System.Drawing.Size(68, 19);
             this.chkEnabled.TabIndex = 12;
@@ -181,7 +191,7 @@
             // chkNotify
             // 
             this.chkNotify.AutoSize = true;
-            this.chkNotify.Location = new System.Drawing.Point(200, 157);
+            this.chkNotify.Location = new System.Drawing.Point(200, 199);
             this.chkNotify.Name = "chkNotify";
             this.chkNotify.Size = new System.Drawing.Size(58, 19);
             this.chkNotify.TabIndex = 13;
@@ -190,7 +200,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(314, 190);
+            this.btnSave.Location = new System.Drawing.Point(314, 232);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 25);
             this.btnSave.TabIndex = 14;
@@ -201,7 +211,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(395, 190);
+            this.btnCancel.Location = new System.Drawing.Point(395, 232);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 25);
             this.btnCancel.TabIndex = 15;
@@ -214,7 +224,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(484, 231);
+            this.ClientSize = new System.Drawing.Size(484, 273);
+            this.Controls.Add(this.lblDescription);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.chkNotify);
@@ -244,6 +255,7 @@
 
         #endregion
 
+        private System.Windows.Forms.Label lblDescription;
         private System.Windows.Forms.Label lblMatchMode;
         private System.Windows.Forms.ComboBox cmbMatchMode;
         private System.Windows.Forms.Label lblPattern;
