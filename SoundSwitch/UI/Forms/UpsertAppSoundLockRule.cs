@@ -136,7 +136,7 @@ public partial class UpsertAppSoundLockRule : Form
         cmbRecording.SelectedIndex = -1;
     }
 
-    private void BtnSelectProcess_Click(object sender, EventArgs e)
+    private void SelectProcess()
     {
         using var form = new ProcessSelectionForm();
         if (form.ShowDialog(this) == DialogResult.OK)
@@ -161,12 +161,14 @@ public partial class UpsertAppSoundLockRule : Form
         }
     }
 
+    private void BtnSelectProcess_Click(object sender, EventArgs e) => SelectProcess();
+
     protected override void OnShown(EventArgs e)
     {
         base.OnShown(e);
         if (!_editing)
         {
-            BtnSelectProcess_Click(this, EventArgs.Empty);
+            SelectProcess();
         }
     }
 
