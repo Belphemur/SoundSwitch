@@ -758,4 +758,10 @@ Press Esc to close.</value>
   <data name="appSoundLock.rule.description" xml:space="preserve">
     <value>Select the process of the application whose audio you want to control. The selected devices will be automatically applied whenever that application is running.</value>
   </data>
+  <data name="appSoundLock.rule.error.patternRequired" xml:space="preserve">
+    <value>At least one pattern (Process or Window) is required.</value>
+  </data>
+  <data name="appSoundLock.rule.error.title" xml:space="preserve">
+    <value>Validation Error</value>
+  </data>
 </root>

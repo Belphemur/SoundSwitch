@@ -62,8 +62,6 @@ public partial class UpsertAppSoundLockRule : Form
             AutoSize = true
         };
         Controls.Add(_chkCaseSensitive);
-        
-        btnSelectProcess.Location = new System.Drawing.Point(btnSelectProcess.Left, _txtProcessPath.Top);
     }
 
     private void InitComboBoxes(IEnumerable<DeviceFullInfo> playbacks, IEnumerable<DeviceFullInfo> recordings)
@@ -169,7 +167,7 @@ public partial class UpsertAppSoundLockRule : Form
         base.OnShown(e);
         if (!_editing)
         {
-            SelectProcess();
+            BeginInvoke(new Action(SelectProcess));
         }
     }
 
@@ -185,7 +183,7 @@ public partial class UpsertAppSoundLockRule : Form
 
         if (string.IsNullOrWhiteSpace(_rule.ProcessPath) && string.IsNullOrWhiteSpace(_rule.WindowName))
         {
-            MessageBox.Show("At least one pattern (Process or Window) is required.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            MessageBox.Show(SettingsStrings.appSoundLock_rule_error_patternRequired, SettingsStrings.appSoundLock_rule_error_title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return;
         }
 

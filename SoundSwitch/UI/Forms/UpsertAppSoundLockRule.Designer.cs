@@ -92,7 +92,7 @@
             // 
             // btnSelectProcess
             // 
-            this.btnSelectProcess.Location = new System.Drawing.Point(442, 84);
+            this.btnSelectProcess.Location = new System.Drawing.Point(442, 54);
             this.btnSelectProcess.Name = "btnSelectProcess";
             this.btnSelectProcess.Size = new System.Drawing.Size(28, 23);
             this.btnSelectProcess.TabIndex = 6;
