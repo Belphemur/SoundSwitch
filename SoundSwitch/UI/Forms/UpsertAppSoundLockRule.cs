@@ -161,6 +161,15 @@ public partial class UpsertAppSoundLockRule : Form
         }
     }
 
+    protected override void OnShown(EventArgs e)
+    {
+        base.OnShown(e);
+        if (!_editing)
+        {
+            BtnSelectProcess_Click(this, EventArgs.Empty);
+        }
+    }
+
     private void BtnSave_Click(object sender, EventArgs e)
     {
         _rule.ProcessPath = _txtProcessPath.Text;
