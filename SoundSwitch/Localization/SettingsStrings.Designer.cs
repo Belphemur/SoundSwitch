@@ -2293,5 +2293,29 @@ namespace SoundSwitch.Localization
                 return ResourceManager.GetString("appSoundLock.filter", resourceCulture);
             }
         }
+
+        internal static string appSoundLock_rule_description
+        {
+            get
+            {
+                return ResourceManager.GetString("appSoundLock.rule.description", resourceCulture);
+            }
+        }
+
+        internal static string appSoundLock_rule_error_patternRequired
+        {
+            get
+            {
+                return ResourceManager.GetString("appSoundLock.rule.error.patternRequired", resourceCulture);
+            }
+        }
+
+        internal static string appSoundLock_rule_error_title
+        {
+            get
+            {
+                return ResourceManager.GetString("appSoundLock.rule.error.title", resourceCulture);
+            }
+        }
     }
 }

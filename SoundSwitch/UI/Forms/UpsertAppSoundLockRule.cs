@@ -33,6 +33,7 @@ public partial class UpsertAppSoundLockRule : Form
     private void LocalizeForm()
     {
         Text = _editing ? SettingsStrings.appSoundLock_editRule : SettingsStrings.appSoundLock_addRule;
+        lblDescription.Text = SettingsStrings.appSoundLock_rule_description;
         lblMatchMode.Text = SettingsStrings.appSoundLock_rule_processPath;
         lblPattern.Text = SettingsStrings.appSoundLock_rule_windowTitle;
         lblRegexNotice.Text = SettingsStrings.appSoundLock_rule_regexNotice;
@@ -61,8 +62,6 @@ public partial class UpsertAppSoundLockRule : Form
             AutoSize = true
         };
         Controls.Add(_chkCaseSensitive);
-        
-        btnSelectProcess.Location = new System.Drawing.Point(btnSelectProcess.Left, _txtProcessPath.Top);
     }
 
     private void InitComboBoxes(IEnumerable<DeviceFullInfo> playbacks, IEnumerable<DeviceFullInfo> recordings)
@@ -136,7 +135,7 @@ public partial class UpsertAppSoundLockRule : Form
         cmbRecording.SelectedIndex = -1;
     }
 
-    private void BtnSelectProcess_Click(object sender, EventArgs e)
+    private void SelectProcess()
     {
         using var form = new ProcessSelectionForm();
         if (form.ShowDialog(this) == DialogResult.OK)
@@ -161,6 +160,17 @@ public partial class UpsertAppSoundLockRule : Form
         }
     }
 
+    private void BtnSelectProcess_Click(object sender, EventArgs e) => SelectProcess();
+
+    protected override void OnShown(EventArgs e)
+    {
+        base.OnShown(e);
+        if (!_editing)
+        {
+            BeginInvoke(new Action(SelectProcess));
+        }
+    }
+
     private void BtnSave_Click(object sender, EventArgs e)
     {
         _rule.ProcessPath = _txtProcessPath.Text;
@@ -173,7 +183,7 @@ public partial class UpsertAppSoundLockRule : Form
 
         if (string.IsNullOrWhiteSpace(_rule.ProcessPath) && string.IsNullOrWhiteSpace(_rule.WindowName))
         {
-            MessageBox.Show("At least one pattern (Process or Window) is required.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            MessageBox.Show(SettingsStrings.appSoundLock_rule_error_patternRequired, SettingsStrings.appSoundLock_rule_error_title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return;
         }
 
