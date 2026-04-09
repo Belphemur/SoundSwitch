@@ -197,7 +197,8 @@ Want to improve an existing language or add another one? Translations are online
 - Discovered and reported a security vulnerability with the updater and its code signature checker [#415](https://github.com/Belphemur/SoundSwitch/issues/415) [@JarLob](https://github.com/JarLob)
 - Free Icons from [Font Awesome](https://fontawesome.com/), Creative Commons Attribution 4.0 International license: [License](https://fontawesome.com/license/free)
 
-### 🤝 JetBrains ![JetBrain Tooling](https://i.imgur.com/SN2qAuL.png "JetBrain Tooling")
+### 🤝 JetBrains 
+[![JetBrains logo.](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg)](https://jb.gg/OpenSource)
 
 Thanks for their Open-Source licence to their amazing IDEs and addons like [ReSharper](https://www.jetbrains.com/resharper) for Visual Studio.
 
