@@ -104,7 +104,9 @@ Install-WingetPackage -Id 'Python.Python.3.12' -Name 'Python 3.12' -Scope $Scope
 Write-Host "`nInstalling Python 'markdown' package ..." -ForegroundColor Cyan
 
 # Refresh PATH so that newly installed tools are visible
-$env:Path = [System.Environment]::GetEnvironmentVariable('Path', 'Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path', 'User')
+$machinePath = [System.Environment]::GetEnvironmentVariable('Path', 'Machine')
+$userPath = [System.Environment]::GetEnvironmentVariable('Path', 'User')
+$env:Path = (($machinePath, $userPath) | Where-Object { $_ }) -join ';'
 
 if (Test-CommandExists 'python') {
     python -m pip install --upgrade pip --quiet
