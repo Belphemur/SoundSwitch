@@ -83,13 +83,39 @@ _EXTENSIONS = [
 
 
 def convert(source: str, title: str = "") -> str:
-    """Return a full HTML document from *source* Markdown text."""
+    """
+    Convert Markdown text into a complete HTML document.
+    
+    Parameters:
+        source (str): Markdown source text to render.
+        title (str): Title to insert into the HTML document's <title> and title placeholder.
+    
+    Returns:
+        html (str): A full HTML5 document containing the rendered Markdown as the body and the provided title.
+    """
     md = markdown.Markdown(extensions=_EXTENSIONS, output_format="html")
     body = md.convert(source)
     return _HTML_TEMPLATE.format(title=title, body=body)
 
 
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    """
+    Parse command-line arguments for the Markdown-to-HTML converter.
+    
+    Builds an ArgumentParser that accepts one or more input Markdown files and a
+    mutually exclusive choice of either a single output file (`--output`) or an
+    output directory (`--output-dir`) to write generated HTML files.
+    
+    Parameters:
+        argv (list[str] | None): List of argument strings to parse. If None, uses
+            the arguments from sys.argv.
+    
+    Returns:
+        argparse.Namespace: Parsed arguments with attributes:
+            - files (list[str]): Input Markdown file paths.
+            - output (str | None): Explicit output HTML file path (valid only with a single input file).
+            - output_dir (str | None): Directory to write one .html file per input.
+    """
     parser = argparse.ArgumentParser(
         description="Convert Markdown files to standalone HTML documents."
     )
@@ -115,6 +141,19 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 
 def main(argv: list[str] | None = None) -> None:
+    """
+    Run the command-line conversion process for one or more Markdown files.
+    
+    Parses CLI arguments (or `argv` if provided), converts each specified Markdown file to a standalone HTML document using `convert`, writes the output files according to the chosen output mode, and prints a mapping line for each conversion.
+    
+    Parameters:
+        argv (list[str] | None): Optional list of command-line arguments to parse; if `None`, uses `sys.argv[1:]`.
+    
+    Behavior:
+        - If `--output` is provided with more than one input file, the process terminates via `sys.exit` with an error message.
+        - If any input path does not exist or is not a file, the process terminates via `sys.exit` with an error message.
+        - For each input file, derives a title from the file stem, converts Markdown to HTML, ensures the output directory exists, writes the HTML as UTF-8, and prints "  {input} -> {output}".
+    """
     args = _parse_args(argv)
 
     if args.output and len(args.files) > 1:
