@@ -1,16 +1,15 @@
 @echo off
 rem SoundSwitch Make file
-rem 
+rem
 rem Compiles SoundSwitch binaries and installer.
-rem 
-rem Requires Visual Studio >=2017 or add switch
-rem -legacy to force use of MSBuild tools from VS2015.
 rem
-rem Requires the npm package markdown-html:
-rem https://github.com/Belphemur/markdown-html
+rem When the Final\ directory already exists (populated by
+rem tools\Download-Release.ps1), the build and HTML generation steps are
+rem skipped and only signing + installer creation are performed.
 rem
-rem You may run this script without markdown-html,
-rem but a dummy Changelog and README is created then.
+rem Requires:
+rem   - Python 3 with the 'markdown' package (pip install markdown)
+rem   - Inno Setup 6 (for installer creation)
 
 setlocal enabledelayedexpansion
 cd /d "%~dp0"
@@ -29,19 +28,19 @@ for /f "delims=" %%a in ('findstr /C:"<TargetFramework>" "%FILE_DIR%SoundSwitch\
     set "FRAMEWORK=!line:</TargetFramework>=!"
 )
 
-echo Building SoundSwitch %buildPlatform% for %FRAMEWORK%
-
 set ARCH=win-x64
-
 set finalDir=%FILE_DIR%Final
 
-@REM rem Check if required commands exist
-@REM where markdown-html >nul 2>nul
-@REM set /a buildChangelogAndReadme=!ERRORLEVEL!
-@REM if %buildChangelogAndReadme% == 0 (
-@REM     echo markdown-html command not found, building with dummy Changelog and README!
-@REM )
-set /a buildChangelogAndReadme=1
+rem ── Check if Final\ was already populated by Download-Release.ps1 ──
+if exist "%finalDir%\SoundSwitch.exe" (
+    echo.
+    echo Final\ directory already contains binaries.
+    echo Skipping build and HTML generation ^(use tools\Download-Release.ps1 to refresh^).
+    echo.
+    goto SIGN
+)
+
+echo Building SoundSwitch %buildPlatform% for %FRAMEWORK%
 
 echo Cleaning build directories
 rmdir /q /s bin >nul 2>nul
@@ -52,27 +51,30 @@ rmdir /q /s %finalDir% >nul 2>nul
 mkdir %finalDir% >nul 2>nul
 
 echo Build AnyCPU
-dotnet publish -c %buildPlatform% %FILE_DIR%SoundSwitch.CLI\SoundSwitch.CLI.csproj -o %finalDir% || (set errorMessage=Build %ARCH% failed & goto ERROR_QUIT)
-dotnet publish -c %buildPlatform% %FILE_DIR%SoundSwitch\SoundSwitch.csproj -o %finalDir% || (set errorMessage=Build %ARCH% failed & goto ERROR_QUIT)
-
+dotnet publish -c %buildPlatform% %FILE_DIR%SoundSwitch.CLI\SoundSwitch.CLI.csproj -o %finalDir% || (set errorMessage=Build CLI failed & goto ERROR_QUIT)
+dotnet publish -c %buildPlatform% %FILE_DIR%SoundSwitch\SoundSwitch.csproj -o %finalDir% || (set errorMessage=Build SoundSwitch failed & goto ERROR_QUIT)
 
 echo.
 
-if %buildChangelogAndReadme% == 1 (
+rem ── Generate HTML documentation using Python markdown tool ──
+where python >nul 2>nul
+if %ERRORLEVEL% == 0 (
     echo Generate Changelog
-    cmd.exe /c markdown-html CHANGELOG.md -o %finalDir%\Changelog.html > NUL
+    python tools\markdown_to_html.py CHANGELOG.md -o %finalDir%\Changelog.html || (set errorMessage=Changelog HTML generation failed & goto ERROR_QUIT)
+
     echo Generate Terms
-    cmd.exe /c markdown-html Terms.md -o %finalDir%\Terms.html > NUL
+    python tools\markdown_to_html.py Terms.md -o %finalDir%\Terms.html || (set errorMessage=Terms HTML generation failed & goto ERROR_QUIT)
 
     echo Generate README
-    cmd.exe /c markdown-html README.md -o %finalDir%\Readme.html > NUL
-    cmd.exe /c markdown-html README.de.md -o %finalDir%\Readme.de.html > NUL
-) else (
-    echo Generate dummy Changelog
-    echo ^<html^>^<body^>^<h1^>Dummy Changelog, markdown-html is required^</h1^>^</body^>^</html^> > %finalDir%\Changelog.html
+    python tools\markdown_to_html.py README.md -o %finalDir%\Readme.html || (set errorMessage=README HTML generation failed & goto ERROR_QUIT)
 
-    echo Generate dummy README
-    echo ^<html^>^<body^>^<h1^>Dummy README, markdown-html is required^</h1^>^</body^>^</html^> > %finalDir%\Readme.html
+    if exist README.de.md (
+        python tools\markdown_to_html.py README.de.md -o %finalDir%\Readme.de.html || (set errorMessage=README.de HTML generation failed & goto ERROR_QUIT)
+    )
+) else (
+    echo WARNING: Python not found, generating dummy HTML files
+    echo ^<html^>^<body^>^<h1^>Dummy Changelog, Python with markdown is required^</h1^>^</body^>^</html^> > %finalDir%\Changelog.html
+    echo ^<html^>^<body^>^<h1^>Dummy README, Python with markdown is required^</h1^>^</body^>^</html^> > %finalDir%\Readme.html
 )
 
 echo Copy soundSwitched image
@@ -85,6 +87,18 @@ echo Copy LICENSE
 xcopy /y LICENSE.txt %finalDir% >nul 2>nul
 xcopy /y Terms.txt %finalDir% >nul 2>nul
 
+:SIGN
+echo.
+echo Signing binaries...
+rem Sign main executables if signinfo.txt exists
+if exist "%FILE_DIR%signinfo.txt" (
+    call "%FILE_DIR%Sign.bat" "%finalDir%\SoundSwitch.exe"
+    call "%FILE_DIR%Sign.bat" "%finalDir%\SoundSwitch.CLI.exe"
+) else (
+    echo WARNING: signinfo.txt not found, skipping code signing.
+)
+
+echo.
 echo Build Installer
 rem Run installer compiler script
 call ./Installer/Make-Installer.bat %buildPlatform% "%~2"

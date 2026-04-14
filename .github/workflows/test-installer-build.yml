@@ -46,20 +46,35 @@ jobs:
           dotnet publish -c Release SoundSwitch\SoundSwitch.csproj -o Final
         shell: cmd
 
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
+
       - name: Prepare Installer Assets
         run: |
-          echo "Generate dummy Changelog"
-          echo ^<html^>^<body^>^<h1^>Dummy Changelog, markdown-html is required^</h1^>^</body^>^</html^> > Final\Changelog.html
-          
-          echo "Generate dummy README"
-          echo ^<html^>^<body^>^<h1^>Dummy README, markdown-html is required^</h1^>^</body^>^</html^> > Final\Readme.html
-          
+          python -m pip install --upgrade pip --quiet
+          python -m pip install markdown --quiet
+
+          echo "Generate Changelog"
+          python tools\markdown_to_html.py CHANGELOG.md -o Final\Changelog.html
+
+          echo "Generate Terms"
+          python tools\markdown_to_html.py Terms.md -o Final\Terms.html
+
+          echo "Generate README"
+          python tools\markdown_to_html.py README.md -o Final\Readme.html
+
+          if exist README.de.md (
+            python tools\markdown_to_html.py README.de.md -o Final\Readme.de.html
+          )
+
           echo "Copy soundSwitched image"
           xcopy /y img\soundSwitched.png Final >nul 2>nul
-          
+
           echo "Copy CLI README"
           xcopy /y SoundSwitch.CLI\README.md Final >nul 2>nul
-          
+
           echo "Copy LICENSE"
           xcopy /y LICENSE.txt Final >nul 2>nul
           xcopy /y Terms.txt Final >nul 2>nul
