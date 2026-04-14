@@ -98,7 +98,7 @@ function Find-ReleaseAsset {
     } | Select-Object -First 1
 
     if (-not $asset) {
-        throw "No SoundSwitch zip asset found in release $($selected.tag_name). Available assets: $($selected.assets | ForEach-Object { $_.name } | Join-String -Separator ', ')"
+        throw "No SoundSwitch zip asset found in release $($selected.tag_name). Available assets: $(($selected.assets | ForEach-Object { $_.name }) -join ', ')"
     }
 
     return @{
@@ -161,4 +161,4 @@ Write-Host ""
 Write-Host "Done! Extracted $fileCount files to $OutputDir"
 Write-Host "Release: $($assetInfo.Version) ($Channel)"
 Write-Host ""
-Write-Host "You can now run Make.bat to sign binaries and build the installer."
+Write-Host "You can now run tools\Build-Installer.ps1 to sign binaries and build the installer."

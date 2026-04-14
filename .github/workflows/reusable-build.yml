@@ -137,6 +137,9 @@ jobs:
                       $arguments += @('-r', $env:DOTNET_RUNTIME)
                     }
                     dotnet @arguments
+                    if ($LASTEXITCODE -ne 0) {
+                      throw "dotnet publish failed for $proj with exit code $LASTEXITCODE."
+                    }
                   }
             - name: Setup Python
               if: inputs.publish
