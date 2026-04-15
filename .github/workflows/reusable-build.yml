@@ -109,7 +109,13 @@ jobs:
             - name: Build
               if: ${{ !inputs.publish }}
               shell: pwsh
-              run: dotnet build -c ${{ inputs.configuration }} --no-restore ${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj
+              run: |
+                  foreach ($proj in @("${{ env.PROJECT_NAME }}", "${{ env.PROJECT_NAME }}.CLI")) {
+                    dotnet build -c ${{ inputs.configuration }} --no-restore "$proj\$proj.csproj"
+                    if ($LASTEXITCODE -ne 0) {
+                      throw "dotnet build failed for $proj with exit code $LASTEXITCODE."
+                    }
+                  }
             - name: Test
               if: inputs.run-tests
               shell: pwsh

@@ -8,7 +8,7 @@ namespace SoundSwitch.CLI.Commands;
 
 public class SettingsCommand : AsyncCommand
 {
-    public override async Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)
+    protected override async Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)
     {
         try
         {
