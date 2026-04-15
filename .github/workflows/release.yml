@@ -18,6 +18,9 @@ jobs:
         uses: ./.github/workflows/reusable-build.yml
         with:
             configuration: Release
+            runtime: win-x64
+            publish: true
+            publish-artifact-name: release-package
         secrets: inherit
 
     release:
@@ -26,6 +29,8 @@ jobs:
             cancel-in-progress: true
         needs: build
         runs-on: ubuntu-latest
+        permissions:
+            contents: write
         outputs:
             version: ${{ steps.version.outputs.version }}
         steps:
@@ -50,6 +55,32 @@ jobs:
               run: |
                   version=$(git describe --tags --abbrev=0 | cut -c 2-)
                   echo "version=$version" >> "$GITHUB_OUTPUT"
+            - name: Download build output
+              uses: actions/download-artifact@v8
+              with:
+                  name: release-package
+                  path: release-package
+            - name: Create release zip
+              run: |
+                  version="${{ steps.version.outputs.version }}"
+                  archive="${{ env.PROJECT_NAME }}-v${version}.zip"
+                  cd release-package
+                  zip -r "../${archive}" .
+                  cd ..
+                  echo "archive=${archive}" >> "$GITHUB_ENV"
+            - name: Upload release zip to GitHub Release
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  version="${{ steps.version.outputs.version }}"
+                  tag="v${version}"
+                  # Upload to the GitHub release created by semantic-release
+                  if gh release view "${tag}" --repo "${{ github.repository }}" > /dev/null 2>&1; then
+                    gh release upload "${tag}" "${{ env.archive }}" --repo "${{ github.repository }}" --clobber
+                    echo "Uploaded ${{ env.archive }} to release ${tag}"
+                  else
+                    echo "Release ${tag} not found, skipping upload"
+                  fi
 
     sentry:
         concurrency:

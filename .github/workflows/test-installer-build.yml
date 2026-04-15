@@ -22,13 +22,56 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Install Inno Setup
-        run: winget install --id=JRSoftware.InnoSetup --exact --source winget --scope machine --accept-package-agreements --accept-source-agreements
+        run: |
+          # Check if Inno Setup is already installed by looking for ISCC.exe
+          $regPaths = @(
+            'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Inno Setup 6_is1',
+            'HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Inno Setup 6_is1'
+          )
+          $isccPath = $null
+          foreach ($rp in $regPaths) {
+            if (Test-Path $rp) {
+              $installDir = (Get-ItemProperty $rp).InstallLocation
+              if ($installDir -and (Test-Path (Join-Path $installDir 'ISCC.exe'))) {
+                $isccPath = Join-Path $installDir 'ISCC.exe'
+                break
+              }
+            }
+          }
+
+          if ($isccPath) {
+            Write-Host "Inno Setup is already installed at: $isccPath"
+          } else {
+            Write-Host "Inno Setup not found — installing via winget ..."
+            winget install --id=JRSoftware.InnoSetup --exact --source winget --scope machine --accept-package-agreements --accept-source-agreements
+            if ($LASTEXITCODE -ne 0) {
+              throw "winget install failed with exit code $LASTEXITCODE"
+            }
+            Write-Host "Inno Setup installed successfully."
+          }
         shell: pwsh
 
-      - name: Setup .NET 9.0
+      - name: Detect .NET SDK version
+        id: framework
+        shell: pwsh
+        run: |
+          [xml]$project = Get-Content "SoundSwitch/SoundSwitch.csproj"
+          $framework = $project.Project.PropertyGroup.TargetFramework | Select-Object -First 1
+          if ([string]::IsNullOrWhiteSpace($framework)) {
+            throw "Unable to determine TargetFramework from SoundSwitch/SoundSwitch.csproj"
+          }
+          $match = [System.Text.RegularExpressions.Regex]::Match($framework, '^net(?<major>\d+)\.(?<minor>\d+)')
+          if (-not $match.Success) {
+            throw "Unable to derive .NET SDK version from TargetFramework '$framework'"
+          }
+          $dotnetVersion = "{0}.{1}.x" -f $match.Groups['major'].Value, $match.Groups['minor'].Value
+          Write-Host "Detected .NET SDK version: $dotnetVersion (from $framework)"
+          "dotnet-version=$dotnetVersion" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+
+      - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: "9.0.x"
+          dotnet-version: ${{ steps.framework.outputs.dotnet-version }}
           cache: true
           cache-dependency-path: Directory.Packages.props
 
@@ -41,44 +84,53 @@ jobs:
           if exist Final rmdir /q /s Final
           mkdir Final
           
-          echo "Building SoundSwitch CLI and Main Application"
+          echo "Building SoundSwitch CLI"
           dotnet publish -c Release SoundSwitch.CLI\SoundSwitch.CLI.csproj -o Final
+          if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+
+          echo "Building SoundSwitch Main Application"
           dotnet publish -c Release SoundSwitch\SoundSwitch.csproj -o Final
+          if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
         shell: cmd
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
 
       - name: Prepare Installer Assets
         run: |
-          echo "Generate dummy Changelog"
-          echo ^<html^>^<body^>^<h1^>Dummy Changelog, markdown-html is required^</h1^>^</body^>^</html^> > Final\Changelog.html
-          
-          echo "Generate dummy README"
-          echo ^<html^>^<body^>^<h1^>Dummy README, markdown-html is required^</h1^>^</body^>^</html^> > Final\Readme.html
-          
+          python -m pip install --upgrade pip --quiet
+          if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+          python -m pip install markdown --quiet
+          if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+
+          echo "Generate Changelog"
+          python tools\markdown_to_html.py CHANGELOG.md -o Final\Changelog.html
+          if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+
+          echo "Generate Terms"
+          python tools\markdown_to_html.py Terms.md -o Final\Terms.html
+          if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+
+          echo "Generate README"
+          python tools\markdown_to_html.py README.md -o Final\Readme.html
+          if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+
+          if exist README.de.md (
+            python tools\markdown_to_html.py README.de.md -o Final\Readme.de.html
+            if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+          )
+
           echo "Copy soundSwitched image"
           xcopy /y img\soundSwitched.png Final >nul 2>nul
-          
+
           echo "Copy CLI README"
           xcopy /y SoundSwitch.CLI\README.md Final >nul 2>nul
-          
+
           echo "Copy LICENSE"
           xcopy /y LICENSE.txt Final >nul 2>nul
           xcopy /y Terms.txt Final >nul 2>nul
-        shell: cmd
-
-      - name: Remove Signing from Installer Script
-        run: |
-          echo "Removing signing configurations from setup.iss"
-          
-          REM Remove SignTool lines
-          powershell -Command "(Get-Content 'Installer\setup.iss') -replace '^SignTool=.*$', '' | Set-Content 'Installer\setup.iss'"
-          
-          REM Remove SignedUninstaller
-          powershell -Command "(Get-Content 'Installer\setup.iss') -replace '^SignedUninstaller=.*$', '' | Set-Content 'Installer\setup.iss'"
-          
-          REM Remove signonce flags from Files section
-          powershell -Command "(Get-Content 'Installer\setup.iss') -replace ' signonce', '' | Set-Content 'Installer\setup.iss'"
-          
-          echo "Signing configurations removed"
         shell: cmd
 
       - name: Build Installer

@@ -109,7 +109,11 @@ jobs:
             - name: Build
               if: ${{ !inputs.publish }}
               shell: pwsh
-              run: dotnet build -c ${{ inputs.configuration }} --no-restore ${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj
+              run: |
+                  dotnet build -c ${{ inputs.configuration }} --no-restore
+                  if ($LASTEXITCODE -ne 0) {
+                    throw "dotnet build failed with exit code $LASTEXITCODE."
+                  }
             - name: Test
               if: inputs.run-tests
               shell: pwsh
@@ -120,18 +124,66 @@ jobs:
               env:
                   DOTNET_RUNTIME: ${{ inputs.runtime }}
               run: |
-                  $arguments = @(
-                    'publish',
-                    '-c', '${{ inputs.configuration }}',
-                    '--no-restore',
-                    '${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj'
-                  )
+                  $outputDir = Join-Path $PWD 'Final'
+                  if (Test-Path $outputDir) { Remove-Item $outputDir -Recurse -Force }
+                  New-Item -ItemType Directory -Path $outputDir | Out-Null
 
-                  if ($env:DOTNET_RUNTIME) {
-                    $arguments += @('-r', $env:DOTNET_RUNTIME)
+                  # Publish CLI first, then main app (main app wins on shared files)
+                  foreach ($proj in @("${{ env.PROJECT_NAME }}.CLI", "${{ env.PROJECT_NAME }}")) {
+                    $arguments = @(
+                      'publish',
+                      '-c', '${{ inputs.configuration }}',
+                      '--no-restore',
+                      "$proj\$proj.csproj",
+                      '-o', $outputDir
+                    )
+                    if ($env:DOTNET_RUNTIME) {
+                      $arguments += @('-r', $env:DOTNET_RUNTIME)
+                    }
+                    dotnet @arguments
+                    if ($LASTEXITCODE -ne 0) {
+                      throw "dotnet publish failed for $proj with exit code $LASTEXITCODE."
+                    }
                   }
+            - name: Setup Python
+              if: inputs.publish
+              uses: actions/setup-python@v6
+              with:
+                  python-version: "3.x"
+            - name: Generate HTML documentation
+              if: inputs.publish
+              shell: pwsh
+              run: |
+                  python -m pip install --upgrade pip --quiet
+                  if ($LASTEXITCODE -ne 0) { throw "Failed to upgrade pip (exit code $LASTEXITCODE)." }
+                  python -m pip install markdown --quiet
+                  if ($LASTEXITCODE -ne 0) { throw "Failed to install Python 'markdown' package (exit code $LASTEXITCODE)." }
 
-                  dotnet @arguments
+                  $outputDir = Join-Path $PWD 'Final'
+
+                  # Convert markdown files to HTML
+                  python tools\markdown_to_html.py CHANGELOG.md -o "$outputDir\Changelog.html"
+                  if ($LASTEXITCODE -ne 0) { throw "Markdown conversion failed for CHANGELOG.md (exit code $LASTEXITCODE)." }
+                  python tools\markdown_to_html.py README.md -o "$outputDir\Readme.html"
+                  if ($LASTEXITCODE -ne 0) { throw "Markdown conversion failed for README.md (exit code $LASTEXITCODE)." }
+                  python tools\markdown_to_html.py Terms.md -o "$outputDir\Terms.html"
+                  if ($LASTEXITCODE -ne 0) { throw "Markdown conversion failed for Terms.md (exit code $LASTEXITCODE)." }
+
+                  if (Test-Path 'README.de.md') {
+                    python tools\markdown_to_html.py README.de.md -o "$outputDir\Readme.de.html"
+                    if ($LASTEXITCODE -ne 0) { throw "Markdown conversion failed for README.de.md (exit code $LASTEXITCODE)." }
+                  }
+            - name: Bundle release assets
+              if: inputs.publish
+              shell: pwsh
+              run: |
+                  $outputDir = Join-Path $PWD 'Final'
+
+                  # Copy additional assets
+                  Copy-Item 'img\soundSwitched.png' $outputDir -Force -ErrorAction SilentlyContinue
+                  Copy-Item 'SoundSwitch.CLI\README.md' $outputDir -Force -ErrorAction SilentlyContinue
+                  Copy-Item 'LICENSE.txt' $outputDir -Force
+                  Copy-Item 'Terms.txt' $outputDir -Force
             - name: Upload test results
               if: ${{ always() && inputs.run-tests && inputs.upload-test-results }}
               uses: actions/upload-artifact@v7
@@ -143,4 +195,4 @@ jobs:
               uses: actions/upload-artifact@v7
               with:
                   name: ${{ inputs.publish-artifact-name }}
-                  path: SoundSwitch\bin\${{ inputs.configuration }}\${{ needs.detect-framework.outputs.framework }}\${{ inputs.runtime }}\publish\*
+                  path: Final\*
