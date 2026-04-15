@@ -15,7 +15,7 @@
 
     This is the PowerShell replacement for the local build workflow.  It requires
     the tools from Install-BuildTools.ps1 (Inno Setup, Python with markdown, and
-    optionally the Windows SDK for signtool).
+    optionally signtool for code signing).
 
 .PARAMETER Configuration
     Build configuration: Release (default) or Debug.
