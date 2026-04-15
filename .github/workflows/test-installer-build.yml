@@ -23,21 +23,32 @@ jobs:
 
       - name: Install Inno Setup
         run: |
-          $result = winget install --id=JRSoftware.InnoSetup --exact --source winget --scope machine --accept-package-agreements --accept-source-agreements 2>&1
-          $exitCode = $LASTEXITCODE
-          # winget returns exit code 0 on success, but also returns non-zero when
-          # the package is already installed with no upgrade available.  Treat that
-          # as success so CI doesn't fail on pre-installed runners.
-          # Exit code -1978335135 (0x8A150061) = APPINSTALLER_CLI_ERROR_UPDATE_NOT_APPLICABLE
-          if ($exitCode -ne 0) {
-            $output = $result | Out-String
-            if ($output -match 'No available upgrade found|already installed' -or $exitCode -eq -1978335135) {
-              Write-Host "Inno Setup is already installed — continuing."
-            } else {
-              throw "winget install failed (exit code $exitCode): $output"
+          # Check if Inno Setup is already installed by looking for ISCC.exe
+          $regPaths = @(
+            'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Inno Setup 6_is1',
+            'HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Inno Setup 6_is1'
+          )
+          $isccPath = $null
+          foreach ($rp in $regPaths) {
+            if (Test-Path $rp) {
+              $installDir = (Get-ItemProperty $rp).InstallLocation
+              if ($installDir -and (Test-Path (Join-Path $installDir 'ISCC.exe'))) {
+                $isccPath = Join-Path $installDir 'ISCC.exe'
+                break
+              }
             }
           }
-          exit 0
+
+          if ($isccPath) {
+            Write-Host "Inno Setup is already installed at: $isccPath"
+          } else {
+            Write-Host "Inno Setup not found — installing via winget ..."
+            winget install --id=JRSoftware.InnoSetup --exact --source winget --scope machine --accept-package-agreements --accept-source-agreements
+            if ($LASTEXITCODE -ne 0) {
+              throw "winget install failed with exit code $LASTEXITCODE"
+            }
+            Write-Host "Inno Setup installed successfully."
+          }
         shell: pwsh
 
       - name: Detect .NET SDK version
