@@ -3,8 +3,8 @@
     Signs one or more executables with signtool using modern algorithms.
 
 .DESCRIPTION
-    Wraps signtool.exe to sign binaries with SHA-256 digest and a SHA-256
-    RFC 3161 timestamp, avoiding the deprecated SHA-1 algorithm.
+    Wraps signtool.exe to sign binaries with SHA-256 file digest and a
+    SHA-512 RFC 3161 timestamp, avoiding the deprecated SHA-1 algorithm.
 
     Requires PowerShell 7+ (ships with Windows 11).
 
@@ -24,7 +24,7 @@
 
 .PARAMETER TimestampUrl
     RFC 3161 timestamp server URL.
-    Defaults to http://time.certum.pl (Certum's timestamp authority).
+    Defaults to http://timestamp.digicert.com (DigiCert's timestamp authority).
 
 .PARAMETER MaxRetries
     Maximum number of signing attempts per file.  Defaults to 3.
@@ -53,7 +53,7 @@ param(
 
     [string]$CertificateName = 'OpenSource Developer, Antoine Aflalo',
 
-    [string]$TimestampUrl = 'http://time.certum.pl',
+    [string]$TimestampUrl = 'http://timestamp.digicert.com',
 
     [int]$MaxRetries = 3,
 
@@ -98,13 +98,13 @@ foreach ($file in $Path) {
         #   /n   — certificate subject name
         #   /fd  — file digest algorithm (SHA-256)
         #   /tr  — RFC 3161 timestamp URL
-        #   /td  — timestamp digest algorithm (SHA-256)
+        #   /td  — timestamp digest algorithm (SHA-512)
         #   /v   — verbose output
         & signtool.exe sign `
             /n  $CertificateName `
             /fd sha256 `
             /tr $TimestampUrl `
-            /td sha256 `
+            /td sha512 `
             /v  $resolvedPath
 
         if ($LASTEXITCODE -eq 0) {
