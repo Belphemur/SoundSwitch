@@ -151,9 +151,9 @@ jobs:
               shell: pwsh
               run: |
                   python -m pip install --upgrade pip --quiet
-                  if ($LASTEXITCODE -ne 0) { throw "pip upgrade failed with exit code $LASTEXITCODE." }
+                  if ($LASTEXITCODE -ne 0) { throw "Failed to upgrade pip (exit code $LASTEXITCODE)." }
                   python -m pip install markdown --quiet
-                  if ($LASTEXITCODE -ne 0) { throw "pip install markdown failed with exit code $LASTEXITCODE." }
+                  if ($LASTEXITCODE -ne 0) { throw "Failed to install Python 'markdown' package (exit code $LASTEXITCODE)." }
 
                   $outputDir = Join-Path $PWD 'Final'
 

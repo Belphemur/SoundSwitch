@@ -27,9 +27,10 @@ jobs:
           # winget returns exit code 0 on success, but also returns non-zero when
           # the package is already installed with no upgrade available.  Treat that
           # as success so CI doesn't fail on pre-installed runners.
+          # Exit code -1978335135 (0x8A150061) = APPINSTALLER_CLI_ERROR_UPDATE_NOT_APPLICABLE
           if ($LASTEXITCODE -ne 0) {
             $output = $result | Out-String
-            if ($output -match 'No available upgrade found|already installed') {
+            if ($output -match 'No available upgrade found|already installed' -or $LASTEXITCODE -eq -1978335135) {
               Write-Host "Inno Setup is already installed — continuing."
             } else {
               throw "winget install failed (exit code $LASTEXITCODE): $output"
