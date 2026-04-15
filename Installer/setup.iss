@@ -36,9 +36,10 @@ WizardSmallImageFile="logo.bmp"
 WizardImageStretch=no
 
 //SignTool=SoundSwitch
-SignTool=Certum
+//SignTool=Certum
+// Code signing is now handled by tools\Sign-Binary.ps1 (called from Build-Installer.ps1)
 
-SignedUninstaller=yes
+//SignedUninstaller=yes
 LicenseFile={#ExeDir}LICENSE.txt
 InfoBeforeFile={#ExeDir}Terms.txt
 SetupLogging=yes
@@ -77,8 +78,8 @@ Name: addtopath; Description: "{cm:AddToPath,{#MyAppSetupName}}"; GroupDescripti
 Name: deletefiles; Description: "{cm:ExistingSettings}"; GroupDescription: "{cm:SettingsGroupDescription}"; Flags: unchecked checkedonce
 
 [Files] 
-Source: "{#ExeDir}SoundSwitch.exe"; DestDir: "{app}";  Flags: signonce ignoreversion
-Source: "{#ExeDir}SoundSwitch.CLI.exe"; DestDir: "{app}";  Flags: signonce ignoreversion
+Source: "{#ExeDir}SoundSwitch.exe"; DestDir: "{app}";  Flags: ignoreversion
+Source: "{#ExeDir}SoundSwitch.CLI.exe"; DestDir: "{app}";  Flags: ignoreversion
 Source: "{#ExeDir}*"; DestDir: "{app}"; Flags: recursesubdirs ignoreversion;
 Source: "scripts\ManageWindowsUpdate.ps1"; DestDir: "{tmp}"; Flags: confirmoverwrite deleteafterinstall
 

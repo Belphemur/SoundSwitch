@@ -10,12 +10,12 @@
     2. Otherwise, builds the SoundSwitch binaries from source using dotnet publish.
     3. Generates HTML documentation from Markdown sources (Changelog, README, Terms).
     4. Bundles additional assets (images, licenses).
-    5. Optionally signs binaries when signinfo.txt is present.
+    5. Optionally signs binaries and the final installer with tools\Sign-Binary.ps1.
     6. Compiles the Inno Setup installer.
 
     This is the PowerShell replacement for the local build workflow.  It requires
     the tools from Install-BuildTools.ps1 (Inno Setup, Python with markdown, and
-    optionally signtool for code signing).
+    optionally signtool + Certum SimplySign for code signing).
 
 .PARAMETER Configuration
     Build configuration: Release (default) or Debug.
@@ -28,7 +28,11 @@
     Only used when -DownloadRelease is set.
 
 .PARAMETER SkipSigning
-    Skip code signing even if signinfo.txt is present.
+    Skip code signing even when signtool is available.
+
+.PARAMETER CertificateName
+    Subject name (CN) of the code-signing certificate passed to Sign-Binary.ps1.
+    Defaults to "OpenSource Developer, Antoine Aflalo".
 
 .PARAMETER InstallerReleaseState
     The release state label passed to Inno Setup (e.g. Release, Beta, Nightly).
@@ -57,6 +61,8 @@ param(
     [string]$Channel = 'release',
 
     [switch]$SkipSigning,
+
+    [string]$CertificateName = 'OpenSource Developer, Antoine Aflalo',
 
     [string]$InstallerReleaseState = 'Release'
 )
@@ -164,31 +170,31 @@ foreach ($asset in $assets) {
     }
 }
 
-# ── Step 4: Code signing ─────────────────────────────────────────────────────
+# ── Step 4: Code signing (binaries) ──────────────────────────────────────────
 
-$signInfoPath = Join-Path $repoRoot 'signinfo.txt'
+$signScript = Join-Path $PSScriptRoot 'Sign-Binary.ps1'
+$canSign    = -not $SkipSigning -and (Get-Command 'signtool.exe' -ErrorAction SilentlyContinue)
 
-if (-not $SkipSigning -and (Test-Path $signInfoPath)) {
+if ($canSign) {
     Write-Host "`n=== Signing binaries ===" -ForegroundColor White
-    $signBat = Join-Path $repoRoot 'Sign.bat'
 
-    foreach ($exe in @("$projectName.exe", "$cliProject.exe")) {
-        $exePath = Join-Path $finalDir $exe
-        if (Test-Path $exePath) {
-            Write-Host "  Signing $exe ..."
-            & cmd.exe /c "`"$signBat`" `"$exePath`""
-            if ($LASTEXITCODE -ne 0) {
-                throw "Signing failed for $exe."
-            }
-        }
+    $binaries = @("$projectName.exe", "$cliProject.exe") |
+        ForEach-Object { Join-Path $finalDir $_ } |
+        Where-Object  { Test-Path $_ }
+
+    if ($binaries) {
+        & $signScript -Path $binaries -CertificateName $CertificateName
+    }
+    else {
+        Write-Host "  No executables found to sign." -ForegroundColor DarkGray
     }
 }
 else {
     if ($SkipSigning) {
-        Write-Host "`n=== Skipping signing (--SkipSigning) ===" -ForegroundColor Yellow
+        Write-Host "`n=== Skipping signing (-SkipSigning) ===" -ForegroundColor Yellow
     }
     else {
-        Write-Host "`n=== Skipping signing (signinfo.txt not found) ===" -ForegroundColor Yellow
+        Write-Host "`n=== Skipping signing (signtool.exe not found) ===" -ForegroundColor Yellow
     }
 }
 
@@ -215,6 +221,13 @@ $installerDir = Join-Path $finalDir 'Installer'
 if (Test-Path $installerDir) {
     $installers = Get-ChildItem $installerDir -Filter '*Installer.exe'
     if ($installers) {
+        # ── Step 6: Sign the installer ───────────────────────────────────────
+        if ($canSign) {
+            Write-Host "`n=== Signing installer ===" -ForegroundColor White
+            $installerPaths = $installers | ForEach-Object { $_.FullName }
+            & $signScript -Path $installerPaths -CertificateName $CertificateName
+        }
+
         Write-Host "`nInstaller(s):"
         foreach ($ins in $installers) {
             Write-Host "  $($ins.FullName)" -ForegroundColor Cyan
