@@ -97,7 +97,7 @@ Install-WingetPackage -Id 'JRSoftware.InnoSetup' -Name 'Inno Setup 6' -Scope $Sc
 Install-WingetPackage -Id 'Microsoft.WindowsSDK.10.0.26100' -Name 'Windows 11 SDK (signtool)' -Scope $Scope
 
 # 3. Python 3 — used for markdown-to-HTML documentation generation
-Install-WingetPackage -Id 'Python.Python.3.12' -Name 'Python 3.12' -Scope $Scope
+Install-WingetPackage -Id 'Python.Python.3.14' -Name 'Python 3.14' -Scope $Scope
 
 # ── Post-install: Python markdown package ────────────────────────────────────
 
@@ -128,7 +128,7 @@ Write-Host ""
 Write-Host "Installed tools:"
 Write-Host "  - Inno Setup 6       (installer compiler)"
 Write-Host "  - Windows 11 SDK     (signtool for code signing)"
-Write-Host "  - Python 3.12        (markdown-to-HTML documentation)"
+Write-Host "  - Python 3.14        (markdown-to-HTML documentation)"
 Write-Host ""
 Write-Host "Next steps:"
 Write-Host "  1. Restart your terminal to pick up PATH changes"
