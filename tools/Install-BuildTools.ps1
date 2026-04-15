@@ -6,9 +6,12 @@
     Uses winget to install Inno Setup 6, Certum SimplySign Desktop (cloud
     certificate provider), and Python 3.  Also downloads signtool.exe from the
     lightweight Microsoft.Windows.SDK.BuildTools NuGet package (instead of the
-    full multi-GB Windows SDK).  Inno Setup uses signtool together with the
-    Certum SimplySign certificate to sign both the application executables and
-    the generated installer.
+    full multi-GB Windows SDK).  The downloaded signtool.exe is used by the
+    signing/build scripts (such as Sign-Binary.ps1 and Build-Installer.ps1)
+    together with the Certum SimplySign certificate to sign the application
+    executables and the generated installer.
+
+    Requires PowerShell 7+ (ships with Windows 11).
 
     Run this script once on a fresh Windows 11 machine to prepare the
     environment for building the SoundSwitch installer.
@@ -181,8 +184,8 @@ Install-WingetPackage -Id 'JRSoftware.InnoSetup' -Name 'Inno Setup 6' -Scope $Sc
 # 2. Certum SimplySign Desktop — cloud certificate provider used for code signing
 Install-WingetPackage -Id 'Certum.SmartSignSimplySignDesktop' -Name 'Certum SimplySign Desktop' -Scope $Scope
 
-# 3. signtool.exe — used by Inno Setup (with the Certum certificate) to sign
-#    executables and the installer.
+# 3. signtool.exe — used by Sign-Binary.ps1/Build-Installer.ps1 (with the
+#    Certum certificate) to sign executables and the installer.
 #    Downloaded from the SDK BuildTools NuGet package (lightweight, ~22 MB).
 Install-SignTool -InstallDir $SignToolDir
 
@@ -200,9 +203,12 @@ $env:Path = (($machinePath, $userPath) | Where-Object { $_ }) -join ';'
 
 if (Test-CommandExists 'python') {
     python -m pip install --upgrade pip --quiet
+    if ($LASTEXITCODE -ne 0) {
+        throw "Failed to upgrade pip (exit code $LASTEXITCODE)."
+    }
     python -m pip install markdown --quiet
     if ($LASTEXITCODE -ne 0) {
-        throw "Failed to install Python 'markdown' package."
+        throw "Failed to install Python 'markdown' package (exit code $LASTEXITCODE)."
     }
     Write-Host "  Python 'markdown' package installed." -ForegroundColor Green
 }
@@ -218,7 +224,7 @@ Write-Host ""
 Write-Host "Installed tools:"
 Write-Host "  - Inno Setup 6               (installer compiler)"
 Write-Host "  - Certum SimplySign Desktop   (cloud certificate provider for code signing)"
-Write-Host "  - signtool.exe                (used by Inno Setup for signing; from SDK BuildTools NuGet package)"
+Write-Host "  - signtool.exe                (used by Sign-Binary.ps1 for signing; from SDK BuildTools NuGet package)"
 Write-Host "  - Python 3.14                (markdown-to-HTML documentation)"
 Write-Host ""
 Write-Host "Next steps:"

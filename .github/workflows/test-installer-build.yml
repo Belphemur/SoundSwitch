@@ -22,7 +22,19 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Install Inno Setup
-        run: winget install --id=JRSoftware.InnoSetup --exact --source winget --scope machine --accept-package-agreements --accept-source-agreements
+        run: |
+          $result = winget install --id=JRSoftware.InnoSetup --exact --source winget --scope machine --accept-package-agreements --accept-source-agreements 2>&1
+          # winget returns exit code 0 on success, but also returns non-zero when
+          # the package is already installed with no upgrade available.  Treat that
+          # as success so CI doesn't fail on pre-installed runners.
+          if ($LASTEXITCODE -ne 0) {
+            $output = $result | Out-String
+            if ($output -match 'No available upgrade found|already installed') {
+              Write-Host "Inno Setup is already installed — continuing."
+            } else {
+              throw "winget install failed (exit code $LASTEXITCODE): $output"
+            }
+          }
         shell: pwsh
 
       - name: Detect .NET SDK version
@@ -58,9 +70,13 @@ jobs:
           if exist Final rmdir /q /s Final
           mkdir Final
           
-          echo "Building SoundSwitch CLI and Main Application"
+          echo "Building SoundSwitch CLI"
           dotnet publish -c Release SoundSwitch.CLI\SoundSwitch.CLI.csproj -o Final
+          if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+
+          echo "Building SoundSwitch Main Application"
           dotnet publish -c Release SoundSwitch\SoundSwitch.csproj -o Final
+          if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
         shell: cmd
 
       - name: Setup Python
@@ -71,19 +87,25 @@ jobs:
       - name: Prepare Installer Assets
         run: |
           python -m pip install --upgrade pip --quiet
+          if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
           python -m pip install markdown --quiet
+          if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 
           echo "Generate Changelog"
           python tools\markdown_to_html.py CHANGELOG.md -o Final\Changelog.html
+          if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 
           echo "Generate Terms"
           python tools\markdown_to_html.py Terms.md -o Final\Terms.html
+          if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 
           echo "Generate README"
           python tools\markdown_to_html.py README.md -o Final\Readme.html
+          if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 
           if exist README.de.md (
             python tools\markdown_to_html.py README.de.md -o Final\Readme.de.html
+            if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
           )
 
           echo "Copy soundSwitched image"
@@ -95,22 +117,6 @@ jobs:
           echo "Copy LICENSE"
           xcopy /y LICENSE.txt Final >nul 2>nul
           xcopy /y Terms.txt Final >nul 2>nul
-        shell: cmd
-
-      - name: Remove Signing from Installer Script
-        run: |
-          echo "Removing signing configurations from setup.iss"
-          
-          REM Remove SignTool lines
-          powershell -Command "(Get-Content 'Installer\setup.iss') -replace '^SignTool=.*$', '' | Set-Content 'Installer\setup.iss'"
-          
-          REM Remove SignedUninstaller
-          powershell -Command "(Get-Content 'Installer\setup.iss') -replace '^SignedUninstaller=.*$', '' | Set-Content 'Installer\setup.iss'"
-          
-          REM Remove signonce flags from Files section
-          powershell -Command "(Get-Content 'Installer\setup.iss') -replace ' signonce', '' | Set-Content 'Installer\setup.iss'"
-          
-          echo "Signing configurations removed"
         shell: cmd
 
       - name: Build Installer

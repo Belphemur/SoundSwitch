@@ -5,7 +5,9 @@
 .DESCRIPTION
     Uses the GitHub API to find the latest release (or pre-release / beta)
     artifact zip, downloads it, and extracts it into the Final\ directory so
-    that the local Make.bat can sign binaries and build the installer.
+    that the local Build-Installer.ps1 can sign binaries and build the installer.
+
+    Requires PowerShell 7+ (ships with Windows 11).
 
 .PARAMETER Channel
     Release channel to download: 'release' (default) or 'beta'.

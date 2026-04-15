@@ -6,6 +6,8 @@
     Wraps signtool.exe to sign binaries with SHA-256 digest and a SHA-256
     RFC 3161 timestamp, avoiding the deprecated SHA-1 algorithm.
 
+    Requires PowerShell 7+ (ships with Windows 11).
+
     The certificate is located by its subject name (CN).  By default the
     script looks for the Certum SimplySign certificate issued to
     "OpenSource Developer, Antoine Aflalo".
@@ -72,11 +74,11 @@ Write-Host "Using signtool: $($signtool.Source)" -ForegroundColor DarkGray
 # ── Sign each file ──────────────────────────────────────────────────────────
 
 foreach ($file in $Path) {
-    if (-not (Test-Path $file)) {
+    if (-not (Test-Path -LiteralPath $file)) {
         throw "File not found: $file"
     }
 
-    $resolvedPath = (Resolve-Path $file).Path
+    $resolvedPath = (Resolve-Path -LiteralPath $file).Path
     $fileName     = [System.IO.Path]::GetFileName($resolvedPath)
 
     Write-Host "Signing $fileName ..." -ForegroundColor Cyan

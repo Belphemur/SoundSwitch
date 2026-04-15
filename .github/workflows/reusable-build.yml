@@ -151,17 +151,23 @@ jobs:
               shell: pwsh
               run: |
                   python -m pip install --upgrade pip --quiet
+                  if ($LASTEXITCODE -ne 0) { throw "pip upgrade failed with exit code $LASTEXITCODE." }
                   python -m pip install markdown --quiet
+                  if ($LASTEXITCODE -ne 0) { throw "pip install markdown failed with exit code $LASTEXITCODE." }
 
                   $outputDir = Join-Path $PWD 'Final'
 
                   # Convert markdown files to HTML
                   python tools\markdown_to_html.py CHANGELOG.md -o "$outputDir\Changelog.html"
+                  if ($LASTEXITCODE -ne 0) { throw "Markdown conversion failed for CHANGELOG.md (exit code $LASTEXITCODE)." }
                   python tools\markdown_to_html.py README.md -o "$outputDir\Readme.html"
+                  if ($LASTEXITCODE -ne 0) { throw "Markdown conversion failed for README.md (exit code $LASTEXITCODE)." }
                   python tools\markdown_to_html.py Terms.md -o "$outputDir\Terms.html"
+                  if ($LASTEXITCODE -ne 0) { throw "Markdown conversion failed for Terms.md (exit code $LASTEXITCODE)." }
 
                   if (Test-Path 'README.de.md') {
                     python tools\markdown_to_html.py README.de.md -o "$outputDir\Readme.de.html"
+                    if ($LASTEXITCODE -ne 0) { throw "Markdown conversion failed for README.de.md (exit code $LASTEXITCODE)." }
                   }
             - name: Bundle release assets
               if: inputs.publish

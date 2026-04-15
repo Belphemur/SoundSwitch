@@ -17,6 +17,8 @@
     the tools from Install-BuildTools.ps1 (Inno Setup, Python with markdown, and
     optionally signtool + Certum SimplySign for code signing).
 
+    Requires PowerShell 7+ (ships with Windows 11).
+
 .PARAMETER Configuration
     Build configuration: Release (default) or Debug.
 
