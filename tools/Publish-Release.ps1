@@ -1,37 +1,48 @@
 <#
 .SYNOPSIS
-    Full release workflow: download a draft GitHub release, build and sign the
-    installer, upload the signed installer, and publish the release.
+    Full release workflow: prepare binaries, build and sign the installer,
+    upload to the draft GitHub release, and publish.
 
 .DESCRIPTION
     Orchestrates the complete SoundSwitch release process:
 
-    1. Uses the GitHub CLI (gh) to find the latest draft release created by
-       semantic-release for the chosen channel.
-    2. Downloads and extracts the build-artifact zip from that draft release
-       into the Final\ directory.
-    3. Delegates to Build-Installer.ps1 -SkipBuild to generate HTML docs,
-       bundle assets, sign binaries, and compile the Inno Setup installer.
-    4. Signs the installer (handled by Build-Installer.ps1).
-    5. Uploads the signed installer(s) to the draft release, replacing any
+    1. Populates the Final\ directory with binaries — either by downloading
+       the build-artifact zip from a draft GitHub release (default) or by
+       building from source (-BuildFromSource).
+    2. When building from source: generates HTML documentation from Markdown
+       and bundles additional assets.  When downloading from a draft release
+       the CI pipeline has already included these in the zip, so this step
+       is skipped.
+    3. Delegates to Build-Installer.ps1 to sign binaries, compile the Inno
+       Setup installer, and sign the installer.
+    4. Uploads the signed installer(s) to the draft release, replacing any
        existing installer assets.
-    6. Extracts the latest section from CHANGELOG.md as the release body.
-    7. Asks the user whether they want to prepend additional notes.
-    8. Updates the release body on GitHub.
-    9. Asks for confirmation before publishing the release.
+    5. Extracts the latest section from CHANGELOG.md as the release body,
+       asks the user whether they want to prepend additional notes, and
+       updates the release body on GitHub.
+    6. Asks for confirmation before publishing the release.
 
-    Requires PowerShell 7+ and an authenticated GitHub CLI (`gh auth login`).
+    When -BuildFromSource is used, steps 4–6 are skipped (no draft release
+    to publish to).
+
+    Requires PowerShell 7+ and an authenticated GitHub CLI (`gh auth login`)
+    when downloading from a draft release.
 
 .PARAMETER Channel
     Release channel: 'release' (default) or 'beta'.
     'release' looks for a non-pre-release draft; 'beta' looks for a
-    pre-release draft.
+    pre-release draft.  Only used when downloading from a draft release.
 
 .PARAMETER Repository
     GitHub repository in owner/repo format (default: Belphemur/SoundSwitch).
 
-.PARAMETER OutputDir
-    Directory to extract the artifact into (default: .\Final).
+.PARAMETER BuildFromSource
+    Build binaries from source instead of downloading from a draft release.
+    When set, the GitHub CLI is not required and publish steps are skipped.
+
+.PARAMETER Configuration
+    Build configuration when -BuildFromSource is set: Release (default) or
+    Debug.  Ignored when downloading from a draft release.
 
 .PARAMETER SkipSigning
     Skip code signing even when signtool is available.
@@ -53,6 +64,10 @@
     Full release workflow for the latest beta draft release.
 
 .EXAMPLE
+    .\tools\Publish-Release.ps1 -BuildFromSource
+    Build from source and create the installer locally (no publishing).
+
+.EXAMPLE
     .\tools\Publish-Release.ps1 -SkipSigning
     Full release workflow without code signing.
 #>
@@ -66,17 +81,32 @@ param(
 
     [string]$Repository = 'Belphemur/SoundSwitch',
 
-    [string]$OutputDir = (Join-Path $PSScriptRoot '..\Final'),
+    [switch]$BuildFromSource,
+
+    [ValidateSet('Release', 'Debug')]
+    [string]$Configuration = 'Release',
 
     [switch]$SkipSigning,
 
     [string]$CertificateName = 'OpenSource Developer, Antoine Aflalo',
 
-    [string]$InstallerReleaseState = 'Release'
+    [string]$InstallerReleaseState
 )
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
+
+# Derive InstallerReleaseState from Channel when not explicitly provided
+if (-not $PSBoundParameters.ContainsKey('InstallerReleaseState')) {
+    $InstallerReleaseState = if ($Channel -eq 'beta') { 'Beta' } else { 'Release' }
+}
+
+# ── Paths ────────────────────────────────────────────────────────────────────
+
+$repoRoot    = Split-Path $PSScriptRoot -Parent
+$finalDir    = Join-Path $repoRoot 'Final'
+$projectName = 'SoundSwitch'
+$cliProject  = 'SoundSwitch.CLI'
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -107,9 +137,10 @@ function Find-DraftRelease {
 
     Write-Host "Fetching releases from $Repository ..." -ForegroundColor Cyan
 
-    $json = gh release list --repo $Repository --json tagName,isDraft,isPrerelease,name --limit 30 2>&1
+    # Capture stdout only; let stderr pass through to the console for diagnostics
+    $json = gh release list --repo $Repository --json tagName,isDraft,isPrerelease,name --limit 30
     if ($LASTEXITCODE -ne 0) {
-        throw "Failed to list releases: $json"
+        throw "Failed to list releases (gh exit code $LASTEXITCODE)."
     }
 
     $releases = $json | ConvertFrom-Json
@@ -171,89 +202,183 @@ function Get-LatestChangelogEntry {
 Write-Host "SoundSwitch Release Publisher" -ForegroundColor White
 Write-Host "============================`n"
 
-Assert-GitHubCli
+$tag   = $null
+$draft = $null
 
-# ── Step 1: Find draft release ───────────────────────────────────────────────
-
-$includePreRelease = $Channel -eq 'beta'
-$draft = Find-DraftRelease -Repository $Repository -IncludePreRelease $includePreRelease
-
-if (-not $draft) {
-    throw "No matching draft $Channel release found for $Repository. Has semantic-release run?"
+if (-not $BuildFromSource) {
+    Assert-GitHubCli
 }
 
-$tag = $draft.tagName
-Write-Host "Found draft release: $($draft.name) ($tag)" -ForegroundColor Green
-Write-Host ""
+# ── Step 1: Populate Final\ ─────────────────────────────────────────────────
 
-# ── Step 2: Download release artifact ────────────────────────────────────────
+if ($BuildFromSource) {
+    # ── Build from source ────────────────────────────────────────────────
+    Write-Host "=== Building from source ($Configuration) ===" -ForegroundColor White
 
-Write-Host "=== Downloading release artifact ===" -ForegroundColor White
+    # Clean
+    foreach ($dir in @('bin', 'obj', 'Release', $finalDir)) {
+        $fullPath = if ([System.IO.Path]::IsPathRooted($dir)) { $dir } else { Join-Path $repoRoot $dir }
+        if (Test-Path $fullPath) {
+            Remove-Item $fullPath -Recurse -Force
+        }
+    }
+    New-Item -ItemType Directory -Path $finalDir -Force | Out-Null
 
-$OutputDir = [System.IO.Path]::GetFullPath($OutputDir)
-if (Test-Path $OutputDir) {
-    Write-Host "  Cleaning existing output directory: $OutputDir"
-    Remove-Item $OutputDir -Recurse -Force
+    # Publish CLI first, then main app (main app wins on shared files)
+    foreach ($proj in @($cliProject, $projectName)) {
+        $projPath = Join-Path $repoRoot "$proj\$proj.csproj"
+        Write-Host "  Publishing $proj ..."
+        dotnet publish -c $Configuration $projPath -o $finalDir
+        if ($LASTEXITCODE -ne 0) {
+            throw "dotnet publish failed for $proj with exit code $LASTEXITCODE."
+        }
+    }
 }
-New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null
+else {
+    # ── Download from draft release ──────────────────────────────────────
+    $includePreRelease = $Channel -eq 'beta'
+    $draft = Find-DraftRelease -Repository $Repository -IncludePreRelease $includePreRelease
 
-# Download the zip asset to a temp directory
-$tempDir = Join-Path ([System.IO.Path]::GetTempPath()) "soundswitch-release-$([guid]::NewGuid().ToString('N').Substring(0,8))"
-New-Item -ItemType Directory -Path $tempDir -Force | Out-Null
-
-try {
-    Write-Host "  Downloading SoundSwitch zip from $tag ..."
-    gh release download $tag --repo $Repository --pattern 'SoundSwitch-v*.zip' --dir $tempDir
-    if ($LASTEXITCODE -ne 0) {
-        throw "Failed to download release asset from $tag."
+    if (-not $draft) {
+        throw "No matching draft $Channel release found for $Repository. Has semantic-release run?"
     }
 
-    $zipFile = Get-ChildItem $tempDir -Filter 'SoundSwitch-v*.zip' | Select-Object -First 1
-    if (-not $zipFile) {
-        throw "No SoundSwitch zip asset found in release $tag."
+    $tag = $draft.tagName
+    Write-Host "Found draft release: $($draft.name) ($tag)" -ForegroundColor Green
+    Write-Host ""
+
+    Write-Host "=== Downloading release artifact ===" -ForegroundColor White
+
+    if (Test-Path $finalDir) {
+        Write-Host "  Cleaning existing output directory: $finalDir"
+        Remove-Item $finalDir -Recurse -Force
+    }
+    New-Item -ItemType Directory -Path $finalDir -Force | Out-Null
+
+    # Download the zip asset to a temp directory
+    $tempDir = Join-Path ([System.IO.Path]::GetTempPath()) "soundswitch-release-$([guid]::NewGuid().ToString('N').Substring(0,8))"
+    New-Item -ItemType Directory -Path $tempDir -Force | Out-Null
+
+    try {
+        Write-Host "  Downloading SoundSwitch zip from $tag ..."
+        gh release download $tag --repo $Repository --pattern 'SoundSwitch-v*.zip' --dir $tempDir
+        if ($LASTEXITCODE -ne 0) {
+            throw "Failed to download release asset from $tag."
+        }
+
+        $zipFiles = @(Get-ChildItem $tempDir -Filter 'SoundSwitch-v*.zip')
+        if ($zipFiles.Count -eq 0) {
+            throw "No SoundSwitch zip asset found in release $tag."
+        }
+        if ($zipFiles.Count -gt 1) {
+            $names = ($zipFiles | ForEach-Object { $_.Name }) -join ', '
+            throw "Multiple SoundSwitch zip assets found in release $tag ($names). Expected exactly one."
+        }
+
+        $zipFile = $zipFiles[0]
+        $zipSize = $zipFile.Length
+        Write-Host "  Downloaded $([math]::Round($zipSize / 1MB, 2)) MB -> $($zipFile.Name)"
+
+        # Extract
+        Write-Host "  Extracting to $finalDir ..."
+        Expand-Archive -Path $zipFile.FullName -DestinationPath $finalDir -Force
+    }
+    finally {
+        Remove-Item $tempDir -Recurse -Force -ErrorAction SilentlyContinue
     }
 
-    $zipSize = $zipFile.Length
-    Write-Host "  Downloaded $([math]::Round($zipSize / 1MB, 2)) MB -> $($zipFile.Name)"
-
-    # Extract
-    Write-Host "  Extracting to $OutputDir ..."
-    Expand-Archive -Path $zipFile.FullName -DestinationPath $OutputDir -Force
-}
-finally {
-    Remove-Item $tempDir -Recurse -Force -ErrorAction SilentlyContinue
+    $fileCount = (Get-ChildItem $finalDir -Recurse -File).Count
+    Write-Host "  Extracted $fileCount files to $finalDir" -ForegroundColor Green
 }
 
-$fileCount = (Get-ChildItem $OutputDir -Recurse -File).Count
-Write-Host "  Extracted $fileCount files to $OutputDir" -ForegroundColor Green
 Write-Host ""
+
+# ── Step 2: Generate HTML docs & bundle assets (only for source builds) ──────
+# When downloading from a draft release, the CI pipeline has already generated
+# HTML documentation and bundled assets into the zip artifact.
+
+if ($BuildFromSource) {
+    Write-Host "=== Generating HTML documentation ===" -ForegroundColor White
+
+    $markdownTool = Join-Path $PSScriptRoot 'markdown_to_html.py'
+
+    $mdFiles = @(
+        @{ Source = 'CHANGELOG.md'; Output = 'Changelog.html' }
+        @{ Source = 'README.md';    Output = 'Readme.html' }
+        @{ Source = 'Terms.md';     Output = 'Terms.html' }
+        @{ Source = 'README.de.md'; Output = 'Readme.de.html' }
+    )
+
+    foreach ($md in $mdFiles) {
+        $srcPath = Join-Path $repoRoot $md.Source
+        $outPath = Join-Path $finalDir $md.Output
+
+        if (Test-Path $srcPath) {
+            Write-Host "  Converting $($md.Source) -> $($md.Output)"
+            python $markdownTool $srcPath -o $outPath
+            if ($LASTEXITCODE -ne 0) {
+                throw "HTML generation failed for $($md.Source)."
+            }
+        }
+        else {
+            Write-Host "  Skipping $($md.Source) (not found)" -ForegroundColor DarkGray
+        }
+    }
+
+    Write-Host "`n=== Bundling assets ===" -ForegroundColor White
+
+    $assets = @(
+        @{ Source = 'img\soundSwitched.png';    Dest = $finalDir }
+        @{ Source = 'SoundSwitch.CLI\README.md'; Dest = $finalDir }
+        @{ Source = 'LICENSE.txt';               Dest = $finalDir }
+        @{ Source = 'Terms.txt';                 Dest = $finalDir }
+    )
+
+    foreach ($asset in $assets) {
+        $srcPath = Join-Path $repoRoot $asset.Source
+        if (Test-Path $srcPath) {
+            Copy-Item $srcPath -Destination $asset.Dest -Force
+            Write-Host "  Copied $($asset.Source)"
+        }
+        else {
+            Write-Host "  Skipping $($asset.Source) (not found)" -ForegroundColor DarkGray
+        }
+    }
+
+    Write-Host ""
+}
 
 # ── Step 3: Build installer ─────────────────────────────────────────────────
 
 Write-Host "=== Building installer ===" -ForegroundColor White
 
 $buildScript = Join-Path $PSScriptRoot 'Build-Installer.ps1'
-$buildArgs = @(
-    '-SkipBuild',
-    '-InstallerReleaseState', $InstallerReleaseState,
-    '-CertificateName', $CertificateName
-)
+$buildArgs = @{
+    FinalDir              = $finalDir
+    InstallerReleaseState = $InstallerReleaseState
+    CertificateName       = $CertificateName
+}
 if ($SkipSigning) {
-    $buildArgs += '-SkipSigning'
+    $buildArgs['SkipSigning'] = $true
 }
 
 & $buildScript @buildArgs
-if ($LASTEXITCODE -ne 0) {
-    throw "Build-Installer.ps1 failed with exit code $LASTEXITCODE."
-}
 
 Write-Host ""
+
+# ── Upload and publish (only when downloading from draft) ────────────────────
+
+if (-not $tag) {
+    Write-Host "Build-from-source complete. No draft release to publish." -ForegroundColor Green
+    Write-Host ""
+    return
+}
 
 # ── Step 4: Upload installer to draft release ────────────────────────────────
 
 Write-Host "=== Uploading installer to release $tag ===" -ForegroundColor White
 
-$installerDir = Join-Path $OutputDir 'Installer'
+$installerDir = Join-Path $finalDir 'Installer'
 if (-not (Test-Path $installerDir)) {
     throw "Installer directory not found at $installerDir. Did the build succeed?"
 }
@@ -278,7 +403,6 @@ Write-Host ""
 
 Write-Host "=== Preparing release body ===" -ForegroundColor White
 
-$repoRoot = Split-Path $PSScriptRoot -Parent
 $changelogPath = Join-Path $repoRoot 'CHANGELOG.md'
 $changelogEntry = Get-LatestChangelogEntry -Path $changelogPath
 

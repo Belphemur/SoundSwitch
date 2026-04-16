@@ -462,15 +462,38 @@ Describe 'Install-BuildTools.ps1 script' {
         Get-Command Install-SignTool          -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
     }
 
-    It 'installs GitHub CLI as the first package' {
+    It 'installs GitHub CLI as the first package via Install-WingetPackage' {
+        # Parse the script AST and find all Install-WingetPackage calls in
+        # order.  Verify 'GitHub.cli' comes before 'JRSoftware.InnoSetup'.
         $scriptPath = Join-Path $PSScriptRoot 'Install-BuildTools.ps1'
-        $content = Get-Content $scriptPath -Raw
-        # GitHub CLI should be installed before Inno Setup
-        $ghIndex = $content.IndexOf("'GitHub.cli'")
-        $innoIndex = $content.IndexOf("'JRSoftware.InnoSetup'")
-        $ghIndex | Should -BeGreaterThan -1
-        $innoIndex | Should -BeGreaterThan -1
-        $ghIndex | Should -BeLessThan $innoIndex
+        $tokens = $null
+        $errors = $null
+        $ast = [System.Management.Automation.Language.Parser]::ParseFile(
+            $scriptPath, [ref]$tokens, [ref]$errors
+        )
+
+        $calls = $ast.FindAll(
+            { param($node)
+                $node -is [System.Management.Automation.Language.CommandAst] -and
+                $node.GetCommandName() -eq 'Install-WingetPackage'
+            }, $true
+        )
+
+        # Extract the -Id argument from each call
+        $ids = foreach ($call in $calls) {
+            $idParam = $call.CommandElements | Where-Object {
+                $_ -is [System.Management.Automation.Language.StringConstantExpressionAst] -and
+                $_.Value -match '\.'
+            } | Select-Object -First 1
+            if ($idParam) { $idParam.Value }
+        }
+
+        $ghIdx   = [array]::IndexOf($ids, 'GitHub.cli')
+        $innoIdx = [array]::IndexOf($ids, 'JRSoftware.InnoSetup')
+
+        $ghIdx   | Should -BeGreaterOrEqual 0
+        $innoIdx | Should -BeGreaterOrEqual 0
+        $ghIdx   | Should -BeLessThan $innoIdx
     }
 }
 
@@ -493,6 +516,14 @@ Describe 'Publish-Release.ps1 script' {
         $content = Get-Content $scriptPath -Raw
         $content | Should -Match '#Requires\s+-Version\s+7\.0'
     }
+
+    It 'derives InstallerReleaseState from Channel when not explicitly set' {
+        $scriptPath = Join-Path $PSScriptRoot 'Publish-Release.ps1'
+        $content = Get-Content $scriptPath -Raw
+        # Verify the dynamic default logic is present
+        $content | Should -Match 'PSBoundParameters.*InstallerReleaseState'
+        $content | Should -Match "Channel\s+-eq\s+'beta'"
+    }
 }
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -509,10 +540,27 @@ Describe 'Build-Installer.ps1 script' {
         $errors.Count | Should -Be 0
     }
 
-    It 'has -SkipBuild parameter instead of -DownloadRelease' {
+    It 'has -FinalDir parameter' {
         $scriptPath = Join-Path $PSScriptRoot 'Build-Installer.ps1'
         $content = Get-Content $scriptPath -Raw
-        $content | Should -Match '\$SkipBuild'
-        $content | Should -Not -Match '\$DownloadRelease'
+        $content | Should -Match '\$FinalDir'
+    }
+
+    It 'does not use Make-Installer.bat (legacy)' {
+        $scriptPath = Join-Path $PSScriptRoot 'Build-Installer.ps1'
+        $content = Get-Content $scriptPath -Raw
+        $content | Should -Not -Match 'Make-Installer\.bat'
+    }
+
+    It 'invokes ISCC.exe directly' {
+        $scriptPath = Join-Path $PSScriptRoot 'Build-Installer.ps1'
+        $content = Get-Content $scriptPath -Raw
+        $content | Should -Match 'ISCC'
+    }
+
+    It 'uses Sign-Binary.ps1 for code signing' {
+        $scriptPath = Join-Path $PSScriptRoot 'Build-Installer.ps1'
+        $content = Get-Content $scriptPath -Raw
+        $content | Should -Match 'Sign-Binary\.ps1'
     }
 }

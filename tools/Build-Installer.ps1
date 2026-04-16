@@ -1,31 +1,29 @@
 <#
 .SYNOPSIS
-    Builds the SoundSwitch installer from a local build or pre-populated Final\ directory.
+    Builds and signs the SoundSwitch installer from a pre-populated directory.
 
 .DESCRIPTION
-    This script automates the full installer build process:
+    This script is focused exclusively on installer compilation and code signing:
 
-    1. Builds the SoundSwitch binaries from source using dotnet publish (or
-       skips this step when -SkipBuild is set, assuming Final\ is already
-       populated — e.g. by Publish-Release.ps1).
-    2. Generates HTML documentation from Markdown sources (Changelog, README, Terms).
-    3. Bundles additional assets (images, licenses).
-    4. Optionally signs binaries and the final installer with tools\Sign-Binary.ps1.
-    5. Compiles the Inno Setup installer.
+    1. Validates that the target directory contains the expected binaries.
+    2. Signs the application binaries using tools\Sign-Binary.ps1.
+    3. Locates Inno Setup 6 (ISCC.exe) and compiles the installer directly.
+    4. Signs the resulting installer using tools\Sign-Binary.ps1.
 
-    This script is focused exclusively on building and code signing.  It does
-    not interact with GitHub releases — use Publish-Release.ps1 for the full
-    release workflow (download draft, build installer, upload, publish).
+    It does NOT build from source, generate HTML documentation, or bundle
+    assets — those responsibilities belong to Publish-Release.ps1.
+
+    The target directory must be the canonical Final\ directory at the
+    repository root because Inno Setup (setup.iss) references it via a
+    hardcoded relative path.
 
     Requires PowerShell 7+ (ships with Windows 11).
 
-.PARAMETER Configuration
-    Build configuration: Release (default) or Debug.
-
-.PARAMETER SkipBuild
-    When set, skips the dotnet build/publish step and assumes the Final\
-    directory is already populated with binaries (e.g. extracted from a
-    downloaded release artifact).
+.PARAMETER FinalDir
+    Path to the directory containing the binaries, documentation, and assets
+    to package.  Defaults to .\Final (relative to the repository root).
+    Must be the canonical Final\ directory because Inno Setup references it
+    via a hardcoded relative path in Installer\scripts\app_defines.iss.
 
 .PARAMETER SkipSigning
     Skip code signing even when signtool is available.
@@ -39,25 +37,22 @@
 
 .EXAMPLE
     .\tools\Build-Installer.ps1
-    Builds from source (Release config) and creates the installer.
+    Builds and signs the installer from the default Final\ directory.
 
 .EXAMPLE
-    .\tools\Build-Installer.ps1 -SkipBuild
-    Builds the installer from an already-populated Final\ directory.
+    .\tools\Build-Installer.ps1 -SkipSigning
+    Builds the installer without code signing.
 
 .EXAMPLE
-    .\tools\Build-Installer.ps1 -SkipSigning -InstallerReleaseState Nightly
-    Builds from source without signing, using "Nightly" label for installer.
+    .\tools\Build-Installer.ps1 -InstallerReleaseState Beta
+    Builds the installer with "Beta" label.
 #>
 
 #Requires -Version 7.0
 
 [CmdletBinding()]
 param(
-    [ValidateSet('Release', 'Debug')]
-    [string]$Configuration = 'Release',
-
-    [switch]$SkipBuild,
+    [string]$FinalDir = (Join-Path (Split-Path $PSScriptRoot -Parent) 'Final'),
 
     [switch]$SkipSigning,
 
@@ -71,120 +66,74 @@ $ErrorActionPreference = 'Stop'
 
 # ── Paths ────────────────────────────────────────────────────────────────────
 
-$repoRoot = Split-Path $PSScriptRoot -Parent
-$finalDir = Join-Path $repoRoot 'Final'
+$repoRoot    = Split-Path $PSScriptRoot -Parent
+$FinalDir    = [System.IO.Path]::GetFullPath($FinalDir)
+$signScript  = Join-Path $PSScriptRoot 'Sign-Binary.ps1'
 $projectName = 'SoundSwitch'
-$cliProject = 'SoundSwitch.CLI'
+$cliProject  = 'SoundSwitch.CLI'
 
-# ── Detect target framework ─────────────────────────────────────────────────
+# ── Locate Inno Setup (ISCC.exe) ────────────────────────────────────────────
 
-$csprojPath = Join-Path $repoRoot "$projectName\$projectName.csproj"
-[xml]$project = Get-Content $csprojPath
-$framework = $project.Project.PropertyGroup.TargetFramework | Select-Object -First 1
+function Find-InnoSetup {
+    <#
+    .SYNOPSIS
+        Locates ISCC.exe from the Inno Setup 6 installation.
+    .DESCRIPTION
+        Searches the Windows registry for the Inno Setup 6 install location,
+        matching the logic used by the CI workflow test-installer-build.yml.
+    .OUTPUTS
+        The full path to ISCC.exe, or $null if not found.
+    #>
+    $registryPaths = @(
+        'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Inno Setup 6_is1',
+        'HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Inno Setup 6_is1'
+    )
 
-if ([string]::IsNullOrWhiteSpace($framework)) {
-    throw "Unable to determine TargetFramework from $csprojPath"
-}
-
-Write-Host "Detected target framework: $framework" -ForegroundColor Cyan
-
-# ── Step 1: Populate Final\ ─────────────────────────────────────────────────
-
-if ($SkipBuild) {
-    Write-Host "`n=== Using pre-populated Final\ directory ===" -ForegroundColor White
-    if (-not (Test-Path $finalDir)) {
-        throw "Final\ directory not found at $finalDir. Use -SkipBuild only when binaries are already extracted there (e.g. by Publish-Release.ps1)."
-    }
-    $fileCount = (Get-ChildItem $finalDir -File -ErrorAction SilentlyContinue).Count
-    if ($fileCount -eq 0) {
-        throw "Final\ directory at $finalDir is empty. Populate it with binaries before using -SkipBuild."
-    }
-    Write-Host "  Found $fileCount files in $finalDir"
-}
-else {
-    Write-Host "`n=== Building from source ($Configuration) ===" -ForegroundColor White
-
-    # Clean
-    foreach ($dir in @('bin', 'obj', 'Release', $finalDir)) {
-        $fullPath = if ([System.IO.Path]::IsPathRooted($dir)) { $dir } else { Join-Path $repoRoot $dir }
-        if (Test-Path $fullPath) {
-            Remove-Item $fullPath -Recurse -Force
+    foreach ($regPath in $registryPaths) {
+        if (Test-Path $regPath) {
+            $installDir = (Get-ItemProperty -Path $regPath -ErrorAction SilentlyContinue).InstallLocation
+            if ($installDir) {
+                $isccPath = Join-Path $installDir 'ISCC.exe'
+                if (Test-Path $isccPath) {
+                    return $isccPath
+                }
+            }
         }
     }
-    New-Item -ItemType Directory -Path $finalDir -Force | Out-Null
 
-    # Publish CLI first, then main app (main app wins on shared files)
-    foreach ($proj in @($cliProject, $projectName)) {
-        $projPath = Join-Path $repoRoot "$proj\$proj.csproj"
-        Write-Host "  Publishing $proj ..."
-        dotnet publish -c $Configuration $projPath -o $finalDir
-        if ($LASTEXITCODE -ne 0) {
-            throw "dotnet publish failed for $proj with exit code $LASTEXITCODE."
-        }
+    # Fallback: check PATH
+    $onPath = Get-Command 'ISCC.exe' -ErrorAction SilentlyContinue
+    if ($onPath) {
+        return $onPath.Source
     }
+
+    return $null
 }
 
-# ── Step 2: Generate HTML documentation ──────────────────────────────────────
+# ── Validate Final\ ─────────────────────────────────────────────────────────
 
-Write-Host "`n=== Generating HTML documentation ===" -ForegroundColor White
+Write-Host "SoundSwitch Installer Builder" -ForegroundColor White
+Write-Host "============================`n"
 
-$markdownTool = Join-Path $PSScriptRoot 'markdown_to_html.py'
-
-$mdFiles = @(
-    @{ Source = 'CHANGELOG.md'; Output = 'Changelog.html' }
-    @{ Source = 'README.md';    Output = 'Readme.html' }
-    @{ Source = 'Terms.md';     Output = 'Terms.html' }
-    @{ Source = 'README.de.md'; Output = 'Readme.de.html' }
-)
-
-foreach ($md in $mdFiles) {
-    $srcPath = Join-Path $repoRoot $md.Source
-    $outPath = Join-Path $finalDir $md.Output
-
-    if (Test-Path $srcPath) {
-        Write-Host "  Converting $($md.Source) -> $($md.Output)"
-        python $markdownTool $srcPath -o $outPath
-        if ($LASTEXITCODE -ne 0) {
-            throw "HTML generation failed for $($md.Source)."
-        }
-    }
-    else {
-        Write-Host "  Skipping $($md.Source) (not found)" -ForegroundColor DarkGray
-    }
+if (-not (Test-Path $FinalDir)) {
+    throw "Directory not found at $FinalDir. Populate it with binaries first (e.g. via Publish-Release.ps1)."
 }
 
-# ── Step 3: Bundle additional assets ─────────────────────────────────────────
-
-Write-Host "`n=== Bundling assets ===" -ForegroundColor White
-
-$assets = @(
-    @{ Source = 'img\soundSwitched.png';    Dest = $finalDir }
-    @{ Source = 'SoundSwitch.CLI\README.md'; Dest = $finalDir }
-    @{ Source = 'LICENSE.txt';               Dest = $finalDir }
-    @{ Source = 'Terms.txt';                 Dest = $finalDir }
-)
-
-foreach ($asset in $assets) {
-    $srcPath = Join-Path $repoRoot $asset.Source
-    if (Test-Path $srcPath) {
-        Copy-Item $srcPath -Destination $asset.Dest -Force
-        Write-Host "  Copied $($asset.Source)"
-    }
-    else {
-        Write-Host "  Skipping $($asset.Source) (not found)" -ForegroundColor DarkGray
-    }
+$fileCount = (Get-ChildItem $FinalDir -Recurse -File -ErrorAction SilentlyContinue).Count
+if ($fileCount -eq 0) {
+    throw "Directory at $FinalDir is empty. Populate it with binaries first."
 }
+Write-Host "Using $FinalDir ($fileCount files)" -ForegroundColor Cyan
 
-# ── Step 4: Code signing (binaries) ──────────────────────────────────────────
+# ── Step 1: Sign binaries ────────────────────────────────────────────────────
 
-$signScript = Join-Path $PSScriptRoot 'Sign-Binary.ps1'
-$canSign    = -not $SkipSigning -and (Get-Command 'signtool.exe' -ErrorAction SilentlyContinue)
+$canSign = -not $SkipSigning -and (Get-Command 'signtool.exe' -ErrorAction SilentlyContinue)
 
 if ($canSign) {
     Write-Host "`n=== Signing binaries ===" -ForegroundColor White
 
     $binaries = @("$projectName.exe", "$cliProject.exe") |
-        ForEach-Object { Join-Path $finalDir $_ } |
+        ForEach-Object { Join-Path $FinalDir $_ } |
         Where-Object  { Test-Path $_ }
 
     if ($binaries) {
@@ -203,40 +152,60 @@ else {
     }
 }
 
-# ── Step 5: Build installer ──────────────────────────────────────────────────
+# ── Step 2: Build installer (Inno Setup) ─────────────────────────────────────
 
 Write-Host "`n=== Building installer ===" -ForegroundColor White
 
-$makeInstallerBat = Join-Path $repoRoot 'Installer\Make-Installer.bat'
-if (-not (Test-Path $makeInstallerBat)) {
-    throw "Installer\Make-Installer.bat not found at $makeInstallerBat."
+$isccExe = Find-InnoSetup
+if (-not $isccExe) {
+    throw "Inno Setup 6 (ISCC.exe) not found. Run tools\Install-BuildTools.ps1 first."
+}
+Write-Host "  Using ISCC: $isccExe" -ForegroundColor DarkGray
+
+$installerDir = Join-Path $FinalDir 'Installer'
+if (-not (Test-Path $installerDir)) {
+    New-Item -ItemType Directory -Path $installerDir -Force | Out-Null
 }
 
-& cmd.exe /c "`"$makeInstallerBat`" $InstallerReleaseState"
+# Clean previous installer files
+Get-ChildItem $installerDir -Filter '*Installer.exe' -ErrorAction SilentlyContinue |
+    Remove-Item -Force
+
+$setupIss = Join-Path $repoRoot 'Installer\setup.iss'
+if (-not (Test-Path $setupIss)) {
+    throw "Installer\setup.iss not found at $setupIss."
+}
+
+Write-Host "  Compiling: ISCC $setupIss /DReleaseState=$InstallerReleaseState"
+& $isccExe $setupIss "/DReleaseState=$InstallerReleaseState"
 if ($LASTEXITCODE -ne 0) {
-    throw "Installer build failed with exit code $LASTEXITCODE."
+    throw "Inno Setup compilation failed with exit code $LASTEXITCODE."
 }
 
-# ── Done ─────────────────────────────────────────────────────────────────────
+# Move installer output from Final\ to Final\Installer\
+$builtInstallers = Get-ChildItem $FinalDir -Filter '*Installer.exe' -File
+foreach ($ins in $builtInstallers) {
+    $dest = Join-Path $installerDir $ins.Name
+    Move-Item $ins.FullName $dest -Force
+    Write-Host "  Moved $($ins.Name) -> Installer\"
+}
+
+# ── Step 3: Sign installer ───────────────────────────────────────────────────
 
 Write-Host "`n=================================" -ForegroundColor White
 Write-Host "Installer built successfully!" -ForegroundColor Green
 
-$installerDir = Join-Path $finalDir 'Installer'
-if (Test-Path $installerDir) {
-    $installers = Get-ChildItem $installerDir -Filter '*Installer.exe'
-    if ($installers) {
-        # ── Step 6: Sign the installer ───────────────────────────────────────
-        if ($canSign) {
-            Write-Host "`n=== Signing installer ===" -ForegroundColor White
-            $installerPaths = $installers | ForEach-Object { $_.FullName }
-            & $signScript -Path $installerPaths -CertificateName $CertificateName
-        }
+$installers = Get-ChildItem $installerDir -Filter '*Installer.exe'
+if ($installers) {
+    if ($canSign) {
+        Write-Host "`n=== Signing installer ===" -ForegroundColor White
+        $installerPaths = $installers | ForEach-Object { $_.FullName }
+        & $signScript -Path $installerPaths -CertificateName $CertificateName
+    }
 
-        Write-Host "`nInstaller(s):"
-        foreach ($ins in $installers) {
-            Write-Host "  $($ins.FullName)" -ForegroundColor Cyan
-        }
+    Write-Host "`nInstaller(s):"
+    foreach ($ins in $installers) {
+        Write-Host "  $($ins.FullName)" -ForegroundColor Cyan
     }
 }
 
