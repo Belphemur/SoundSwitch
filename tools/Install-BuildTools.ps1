@@ -5,11 +5,13 @@
 .DESCRIPTION
     Uses winget to install Inno Setup 6, Certum SimplySign Desktop (cloud
     certificate provider), and Python 3.  Locates signtool.exe from an
-    existing Windows Kits installation; if not present, installs the Windows
-    Driver Kit (WDK) via winget.  The signtool.exe is used by the
-    signing/build scripts (such as Sign-Binary.ps1 and Build-Installer.ps1)
-    together with the Certum SimplySign certificate to sign the application
-    executables and the generated installer.
+    existing Windows Kits installation; if not present, downloads a
+    standalone signtool.exe from the Delphier/SignTool GitHub repository;
+    if that also fails, installs the Windows SDK via winget as a last
+    resort.  The signtool.exe is used by the signing/build scripts (such
+    as Sign-Binary.ps1 and Build-Installer.ps1) together with the Certum
+    SimplySign certificate to sign the application executables and the
+    generated installer.
 
     Requires PowerShell 7+ (ships with Windows 11).
 
@@ -27,6 +29,8 @@
     .\tools\Install-BuildTools.ps1 -Scope user
     Installs tools in user scope (no elevation required for some packages).
 #>
+
+#Requires -Version 7.0
 
 [CmdletBinding()]
 param(
@@ -84,6 +88,31 @@ function Install-WingetPackage {
     Write-Host "  $displayName installed successfully." -ForegroundColor Green
 }
 
+function Test-SignToolWorks {
+    <#
+    .SYNOPSIS
+        Runs signtool.exe without arguments to verify it can execute.
+        Returns $true if the binary starts successfully, $false otherwise
+        (e.g. missing DLLs or SxS runtime errors).
+    .PARAMETER Path
+        Full path to signtool.exe.
+    #>
+    param([Parameter(Mandatory)][string]$Path)
+
+    if (-not (Test-Path $Path)) { return $false }
+
+    try {
+        # signtool with no args prints usage and exits with code 1 — that is fine.
+        # We only care that it starts at all (no DLL / SxS crash).
+        & $Path 2>&1 | Out-Null
+        # Exit code 0 or 1 both mean the binary ran successfully
+        return ($LASTEXITCODE -le 1)
+    }
+    catch {
+        return $false
+    }
+}
+
 function Find-SignToolInWindowsKits {
     <#
     .SYNOPSIS
@@ -97,18 +126,103 @@ function Find-SignToolInWindowsKits {
 
     $found = Get-ChildItem -Path $windowsKitsBase -Recurse -Filter 'signtool.exe' |
         Where-Object { $_.DirectoryName -match '[/\\]x64$' } |
-        Sort-Object { $_.DirectoryName } -Descending |
+        ForEach-Object {
+            $versionText = $_.Directory.Parent.Name
+            try {
+                [PSCustomObject]@{
+                    DirectoryName = $_.DirectoryName
+                    Version       = [version]$versionText
+                }
+            }
+            catch {
+                $null
+            }
+        } |
+        Sort-Object Version -Descending |
         Select-Object -First 1
 
-    return $found ? $found.DirectoryName : $null
+    if ($found) { return $found.DirectoryName } else { return $null }
+}
+
+function Install-SignToolFromGitHub {
+    <#
+    .SYNOPSIS
+        Downloads a standalone signtool.exe from the Delphier/SignTool GitHub
+        repository and extracts it to a local directory.  Runs signtool.exe
+        without arguments to verify the binary works.
+    .OUTPUTS
+        The directory containing the extracted signtool.exe, or $null on failure.
+    #>
+    $installDir = Join-Path $env:LOCALAPPDATA 'SignTool'
+
+    # Already downloaded previously? Verify it still works.
+    $existing = Join-Path $installDir 'signtool.exe'
+    if (Test-Path $existing) {
+        if (Test-SignToolWorks $existing) { return $installDir }
+        Write-Warning "  Cached signtool.exe at $installDir is broken — re-downloading."
+        Remove-Item $installDir -Recurse -Force -ErrorAction SilentlyContinue
+    }
+
+    Write-Host "  Downloading signtool.exe from GitHub (Delphier/SignTool) ..." -ForegroundColor Yellow
+
+    try {
+        # Query the GitHub API for the latest release
+        $releaseUrl = 'https://api.github.com/repos/Delphier/SignTool/releases/latest'
+        $release = Invoke-RestMethod -Uri $releaseUrl -Headers @{ Accept = 'application/vnd.github+json' } -ErrorAction Stop
+
+        # Find the x64 zip asset
+        $asset = $release.assets | Where-Object { $_.name -like '*x64*.zip' } | Select-Object -First 1
+        if (-not $asset) {
+            Write-Warning "  No x64 asset found in the latest Delphier/SignTool release."
+            return $null
+        }
+
+        # Download and extract
+        $zipPath = Join-Path ([System.IO.Path]::GetTempPath()) $asset.name
+        Invoke-WebRequest -Uri $asset.browser_download_url -OutFile $zipPath -ErrorAction Stop
+
+        if (Test-Path $installDir) { Remove-Item $installDir -Recurse -Force }
+        New-Item -ItemType Directory -Path $installDir -Force | Out-Null
+        Expand-Archive -Path $zipPath -DestinationPath $installDir -Force
+        Remove-Item $zipPath -Force -ErrorAction SilentlyContinue
+
+        # Locate signtool.exe (may be at root or nested in a subdirectory)
+        $signtoolExe = Join-Path $installDir 'signtool.exe'
+        $resultDir = $installDir
+        if (-not (Test-Path $signtoolExe)) {
+            $found = Get-ChildItem -Path $installDir -Recurse -Filter 'signtool.exe' | Select-Object -First 1
+            if (-not $found) {
+                Write-Warning "  signtool.exe not found after extracting the downloaded archive."
+                return $null
+            }
+            $signtoolExe = $found.FullName
+            $resultDir = $found.DirectoryName
+        }
+
+        # Smoke-test: run without args to verify the binary is functional
+        if (-not (Test-SignToolWorks $signtoolExe)) {
+            Write-Warning "  Downloaded signtool.exe failed smoke test — binary may have missing dependencies."
+            Remove-Item $installDir -Recurse -Force -ErrorAction SilentlyContinue
+            return $null
+        }
+
+        Write-Host "  signtool.exe downloaded to $resultDir" -ForegroundColor Green
+        return $resultDir
+    }
+    catch {
+        Write-Warning "  Failed to download signtool.exe from GitHub: $_"
+        return $null
+    }
 }
 
 function Install-SignTool {
     <#
     .SYNOPSIS
-        Ensures signtool.exe is available from the Windows Kits.
-        Searches existing installations first; installs the Windows Driver Kit
-        (WDK) via winget if signtool is not found.
+        Ensures signtool.exe is available.  Tries, in order:
+          1. Existing signtool.exe on PATH
+          2. Existing Windows Kits installation
+          3. Standalone download from Delphier/SignTool on GitHub
+          4. Windows SDK installation via winget
     #>
 
     Write-Host "`nChecking signtool.exe ..." -ForegroundColor Cyan
@@ -122,9 +236,13 @@ function Install-SignTool {
     # Search in Windows Kits (installed by a previous Windows SDK installation)
     $signtoolDir = Find-SignToolInWindowsKits
     if (-not $signtoolDir) {
-        # Install Windows Driver Kit (WDK) via winget to obtain a fully functional signtool.exe
-        Write-Host "  signtool.exe not found — installing Windows Driver Kit via winget ..." -ForegroundColor Yellow
-        Install-WingetPackage -Id 'Microsoft.WindowsWDK.10.0.26100' -Name 'Windows Driver Kit 10.0.26100' -Scope $Scope
+        # Try downloading a standalone signtool.exe from GitHub
+        $signtoolDir = Install-SignToolFromGitHub
+    }
+    if (-not $signtoolDir) {
+        # Last resort: install the full Windows SDK via winget
+        Write-Host "  signtool.exe not found — installing Windows SDK via winget ..." -ForegroundColor Yellow
+        Install-WingetPackage -Id 'Microsoft.WindowsSDK.10.0.26100' -Name 'Windows SDK 10.0.26100' -Scope $Scope
 
         $signtoolDir = Find-SignToolInWindowsKits
         if (-not $signtoolDir) {
@@ -166,8 +284,9 @@ Install-WingetPackage -Id 'Certum.SmartSignSimplySignDesktop' -Name 'Certum Simp
 
 # 3. signtool.exe — used by Sign-Binary.ps1/Build-Installer.ps1 (with the
 #    Certum certificate) to sign executables and the installer.
-#    Located from an existing Windows Kits installation, or the Windows
-#    Driver Kit (WDK) is installed via winget if signtool is not found.
+#    Located from an existing Windows Kits installation, downloaded from
+#    Delphier/SignTool on GitHub, or the full Windows SDK is installed
+#    via winget as a last resort.
 Install-SignTool
 
 # 4. Python 3 — used for markdown-to-HTML documentation generation
@@ -205,7 +324,7 @@ Write-Host ""
 Write-Host "Installed tools:"
 Write-Host "  - Inno Setup 6               (installer compiler)"
 Write-Host "  - Certum SimplySign Desktop   (cloud certificate provider for code signing)"
-Write-Host "  - signtool.exe                (used by Sign-Binary.ps1 for signing; from Windows Driver Kit installation)"
+Write-Host "  - signtool.exe                (used by Sign-Binary.ps1 for signing)"
 Write-Host "  - Python 3.14                (markdown-to-HTML documentation)"
 Write-Host ""
 Write-Host "Next steps:"
