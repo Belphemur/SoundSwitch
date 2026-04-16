@@ -28,6 +28,8 @@
     Installs tools in user scope (no elevation required for some packages).
 #>
 
+#Requires -Version 7.0
+
 [CmdletBinding()]
 param(
     [ValidateSet('machine', 'user')]
@@ -100,7 +102,7 @@ function Find-SignToolInWindowsKits {
         Sort-Object { $_.DirectoryName } -Descending |
         Select-Object -First 1
 
-    return $found ? $found.DirectoryName : $null
+    if ($found) { return $found.DirectoryName } else { return $null }
 }
 
 function Install-SignTool {
