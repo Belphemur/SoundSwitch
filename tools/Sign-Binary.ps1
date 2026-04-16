@@ -67,7 +67,21 @@ $ErrorActionPreference = 'Stop'
 
 $signtool = Get-Command 'signtool.exe' -ErrorAction SilentlyContinue
 if (-not $signtool) {
-    throw "signtool.exe not found on PATH. Run tools\Install-BuildTools.ps1 first."
+    # Fall back to searching the Windows Kits directory (Windows SDK installation)
+    $windowsKitsBase = 'C:\Program Files (x86)\Windows Kits\10\bin'
+    if (Test-Path $windowsKitsBase) {
+        $found = Get-ChildItem -Path $windowsKitsBase -Recurse -Filter 'signtool.exe' |
+            Where-Object { $_.DirectoryName -match '[/\\]x64$' } |
+            Sort-Object { $_.DirectoryName } -Descending |
+            Select-Object -First 1
+        if ($found) {
+            $env:Path = "$($found.DirectoryName);$env:Path"
+            $signtool = Get-Command 'signtool.exe' -ErrorAction SilentlyContinue
+        }
+    }
+}
+if (-not $signtool) {
+    throw "signtool.exe not found on PATH or in Windows Kits. Run tools\Install-BuildTools.ps1 first."
 }
 Write-Host "Using signtool: $($signtool.Source)" -ForegroundColor DarkGray
 

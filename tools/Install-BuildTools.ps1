@@ -4,9 +4,9 @@
 
 .DESCRIPTION
     Uses winget to install Inno Setup 6, Certum SimplySign Desktop (cloud
-    certificate provider), and Python 3.  Also downloads signtool.exe from the
-    lightweight Microsoft.Windows.SDK.BuildTools NuGet package (instead of the
-    full multi-GB Windows SDK).  The downloaded signtool.exe is used by the
+    certificate provider), and Python 3.  Locates signtool.exe from an
+    existing Windows Kits installation; if not present, installs the Windows
+    Driver Kit (WDK) via winget.  The signtool.exe is used by the
     signing/build scripts (such as Sign-Binary.ps1 and Build-Installer.ps1)
     together with the Certum SimplySign certificate to sign the application
     executables and the generated installer.
@@ -18,10 +18,6 @@
 
 .PARAMETER Scope
     Installation scope: 'machine' (default, requires elevation) or 'user'.
-
-.PARAMETER SignToolDir
-    Directory to install signtool.exe into. Defaults to
-    $env:LOCALAPPDATA\SoundSwitch\BuildTools\signtool.
 
 .EXAMPLE
     .\tools\Install-BuildTools.ps1
@@ -35,9 +31,7 @@
 [CmdletBinding()]
 param(
     [ValidateSet('machine', 'user')]
-    [string]$Scope = 'machine',
-
-    [string]$SignToolDir = (Join-Path $env:LOCALAPPDATA 'SoundSwitch\BuildTools\signtool')
+    [string]$Scope = 'machine'
 )
 
 Set-StrictMode -Version Latest
@@ -90,16 +84,32 @@ function Install-WingetPackage {
     Write-Host "  $displayName installed successfully." -ForegroundColor Green
 }
 
+function Find-SignToolInWindowsKits {
+    <#
+    .SYNOPSIS
+        Searches for the x64 signtool.exe inside the Windows Kits directory
+        that is created by a Windows SDK installation.
+    .OUTPUTS
+        The directory containing signtool.exe, or $null if not found.
+    #>
+    $windowsKitsBase = 'C:\Program Files (x86)\Windows Kits\10\bin'
+    if (-not (Test-Path $windowsKitsBase)) { return $null }
+
+    $found = Get-ChildItem -Path $windowsKitsBase -Recurse -Filter 'signtool.exe' |
+        Where-Object { $_.DirectoryName -match '[/\\]x64$' } |
+        Sort-Object { $_.DirectoryName } -Descending |
+        Select-Object -First 1
+
+    return $found ? $found.DirectoryName : $null
+}
+
 function Install-SignTool {
     <#
     .SYNOPSIS
-        Downloads signtool.exe from the Microsoft.Windows.SDK.BuildTools NuGet
-        package (~22 MB) instead of the full Windows SDK (several GB).
+        Ensures signtool.exe is available from the Windows Kits.
+        Searches existing installations first; installs the Windows Driver Kit
+        (WDK) via winget if signtool is not found.
     #>
-    param(
-        [Parameter(Mandatory)]
-        [string]$InstallDir
-    )
 
     Write-Host "`nChecking signtool.exe ..." -ForegroundColor Cyan
 
@@ -109,61 +119,31 @@ function Install-SignTool {
         return
     }
 
-    # Already in our managed directory?
-    $signtoolExe = Join-Path $InstallDir 'signtool.exe'
-    if (Test-Path $signtoolExe) {
-        Write-Host "  signtool.exe found at $InstallDir" -ForegroundColor Green
-        # Ensure it's on PATH for this session
-        if ($env:Path -notlike "*$InstallDir*") {
-            $env:Path = "$InstallDir;$env:Path"
+    # Search in Windows Kits (installed by a previous Windows SDK installation)
+    $signtoolDir = Find-SignToolInWindowsKits
+    if (-not $signtoolDir) {
+        # Install Windows Driver Kit (WDK) via winget to obtain a fully functional signtool.exe
+        Write-Host "  signtool.exe not found — installing Windows Driver Kit via winget ..." -ForegroundColor Yellow
+        Install-WingetPackage -Id 'Microsoft.WindowsWDK.10.0.26100' -Name 'Windows Driver Kit 10.0.26100' -Scope $Scope
+
+        $signtoolDir = Find-SignToolInWindowsKits
+        if (-not $signtoolDir) {
+            throw "signtool.exe not found after Windows SDK installation."
         }
-        return
     }
 
-    # Download the NuGet package and extract signtool
-    $nugetPkg = 'microsoft.windows.sdk.buildtools'
-    $nugetVer = '10.0.26100.7705'
-    $nupkgUrl = "https://api.nuget.org/v3-flatcontainer/$nugetPkg/$nugetVer/$nugetPkg.$nugetVer.nupkg"
+    Write-Host "  signtool.exe found at $signtoolDir" -ForegroundColor Green
 
-    Write-Host "  Downloading signtool from NuGet ($nugetPkg $nugetVer) ..." -ForegroundColor Yellow
-
-    $tempDir  = Join-Path ([System.IO.Path]::GetTempPath()) "sdk-buildtools-$PID"
-    $tempZip  = "$tempDir.zip"
-
-    try {
-        Invoke-WebRequest -Uri $nupkgUrl -OutFile $tempZip -UseBasicParsing
-        Expand-Archive -Path $tempZip -DestinationPath $tempDir -Force
-
-        # Locate x64 signtool.exe
-        $found = Get-ChildItem -Path $tempDir -Recurse -Filter 'signtool.exe' |
-            Where-Object { $_.DirectoryName -match '[/\\]x64$' } |
-            Select-Object -First 1
-
-        if (-not $found) {
-            throw "signtool.exe (x64) not found in the NuGet package."
-        }
-
-        # Copy just signtool.exe and its manifest
-        New-Item -ItemType Directory -Path $InstallDir -Force | Out-Null
-        Copy-Item $found.FullName -Destination $InstallDir -Force
-        $manifest = Join-Path $found.DirectoryName 'signtool.exe.manifest'
-        if (Test-Path $manifest) {
-            Copy-Item $manifest -Destination $InstallDir -Force
-        }
-
-        Write-Host "  signtool.exe installed to $InstallDir" -ForegroundColor Green
-    }
-    finally {
-        Remove-Item $tempZip  -Force   -ErrorAction SilentlyContinue
-        Remove-Item $tempDir  -Recurse -Force -ErrorAction SilentlyContinue
+    # Add to PATH for this session
+    if ($env:Path -notlike "*$signtoolDir*") {
+        $env:Path = "$signtoolDir;$env:Path"
     }
 
     # Add to user PATH permanently so future sessions find signtool
     $userPath = [System.Environment]::GetEnvironmentVariable('Path', 'User')
-    if ($userPath -notlike "*$InstallDir*") {
-        [System.Environment]::SetEnvironmentVariable('Path', "$InstallDir;$userPath", 'User')
-        $env:Path = "$InstallDir;$env:Path"
-        Write-Host "  Added $InstallDir to user PATH." -ForegroundColor Green
+    if ($userPath -notlike "*$signtoolDir*") {
+        [System.Environment]::SetEnvironmentVariable('Path', "$signtoolDir;$userPath", 'User')
+        Write-Host "  Added $signtoolDir to user PATH." -ForegroundColor Green
     }
 }
 
@@ -186,8 +166,9 @@ Install-WingetPackage -Id 'Certum.SmartSignSimplySignDesktop' -Name 'Certum Simp
 
 # 3. signtool.exe — used by Sign-Binary.ps1/Build-Installer.ps1 (with the
 #    Certum certificate) to sign executables and the installer.
-#    Downloaded from the SDK BuildTools NuGet package (lightweight, ~22 MB).
-Install-SignTool -InstallDir $SignToolDir
+#    Located from an existing Windows Kits installation, or the Windows
+#    Driver Kit (WDK) is installed via winget if signtool is not found.
+Install-SignTool
 
 # 4. Python 3 — used for markdown-to-HTML documentation generation
 Install-WingetPackage -Id 'Python.Python.3.14' -Name 'Python 3.14' -Scope $Scope
@@ -224,7 +205,7 @@ Write-Host ""
 Write-Host "Installed tools:"
 Write-Host "  - Inno Setup 6               (installer compiler)"
 Write-Host "  - Certum SimplySign Desktop   (cloud certificate provider for code signing)"
-Write-Host "  - signtool.exe                (used by Sign-Binary.ps1 for signing; from SDK BuildTools NuGet package)"
+Write-Host "  - signtool.exe                (used by Sign-Binary.ps1 for signing; from Windows Driver Kit installation)"
 Write-Host "  - Python 3.14                (markdown-to-HTML documentation)"
 Write-Host ""
 Write-Host "Next steps:"
