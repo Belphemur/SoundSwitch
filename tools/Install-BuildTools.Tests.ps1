@@ -55,6 +55,45 @@ Describe 'Test-CommandExists' {
 }
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Test-SignToolWorks
+# ─────────────────────────────────────────────────────────────────────────────
+Describe 'Test-SignToolWorks' {
+    It 'returns $false when the path does not exist' {
+        Test-SignToolWorks 'C:\nonexistent\signtool.exe' | Should -BeFalse
+    }
+
+    It 'returns $true when the binary runs successfully (exit code 0)' {
+        # whoami always exits 0 — use it as a known-good binary
+        $whoami = (Get-Command whoami -ErrorAction SilentlyContinue).Source
+        if (-not $whoami) { Set-ItResult -Skipped -Because 'whoami not found' }
+        Test-SignToolWorks $whoami | Should -BeTrue
+    }
+
+    It 'returns $true when binary exits with code 1 (signtool usage)' {
+        # Create a small script that exits 1 to simulate signtool no-args behavior
+        $tempScript = Join-Path ([System.IO.Path]::GetTempPath()) 'fake-signtool-exit1.cmd'
+        Set-Content -Path $tempScript -Value '@exit /b 1'
+        try {
+            Test-SignToolWorks $tempScript | Should -BeTrue
+        }
+        finally {
+            Remove-Item $tempScript -Force -ErrorAction SilentlyContinue
+        }
+    }
+
+    It 'returns $false when binary exits with code > 1' {
+        $tempScript = Join-Path ([System.IO.Path]::GetTempPath()) 'fake-signtool-exit99.cmd'
+        Set-Content -Path $tempScript -Value '@exit /b 99'
+        try {
+            Test-SignToolWorks $tempScript | Should -BeFalse
+        }
+        finally {
+            Remove-Item $tempScript -Force -ErrorAction SilentlyContinue
+        }
+    }
+}
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Find-SignToolInWindowsKits
 # ─────────────────────────────────────────────────────────────────────────────
 Describe 'Find-SignToolInWindowsKits' {
@@ -193,6 +232,96 @@ Describe 'Install-WingetPackage' {
 }
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Install-SignToolFromGitHub
+# ─────────────────────────────────────────────────────────────────────────────
+Describe 'Install-SignToolFromGitHub' {
+    BeforeEach {
+        Mock Write-Host {}
+        Mock Write-Warning {}
+    }
+
+    It 'returns cached directory when signtool.exe already exists and passes smoke test' {
+        $fakeDir = Join-Path $env:LOCALAPPDATA 'SignTool'
+        $fakePath = Join-Path $fakeDir 'signtool.exe'
+
+        Mock Test-Path { $true } -ParameterFilter { $Path -eq $fakePath }
+        Mock Test-SignToolWorks { $true } -ParameterFilter { $Path -eq $fakePath }
+        Mock Invoke-RestMethod {}
+
+        Install-SignToolFromGitHub | Should -Be $fakeDir
+        Should -Invoke Invoke-RestMethod -Times 0
+    }
+
+    It 're-downloads when cached signtool.exe fails smoke test' {
+        $fakeDir = Join-Path $env:LOCALAPPDATA 'SignTool'
+        $fakePath = Join-Path $fakeDir 'signtool.exe'
+
+        Mock Test-Path { $true } -ParameterFilter { $Path -eq $fakePath }
+        Mock Test-SignToolWorks { $false }
+        Mock Remove-Item {}
+        Mock Invoke-RestMethod { throw 'network error' }
+
+        Install-SignToolFromGitHub | Should -BeNullOrEmpty
+        Should -Invoke Write-Warning -ParameterFilter { $Message -like '*broken*' }
+    }
+
+    It 'returns $null when GitHub API call fails' {
+        $fakeDir = Join-Path $env:LOCALAPPDATA 'SignTool'
+        $fakePath = Join-Path $fakeDir 'signtool.exe'
+
+        Mock Test-Path { $false } -ParameterFilter { $Path -eq $fakePath }
+        Mock Invoke-RestMethod { throw 'API rate limit exceeded' }
+
+        Install-SignToolFromGitHub | Should -BeNullOrEmpty
+        Should -Invoke Write-Warning -ParameterFilter { $Message -like '*Failed to download*' }
+    }
+
+    It 'returns $null when no x64 asset is found in the release' {
+        $fakeDir = Join-Path $env:LOCALAPPDATA 'SignTool'
+        $fakePath = Join-Path $fakeDir 'signtool.exe'
+
+        Mock Test-Path { $false } -ParameterFilter { $Path -eq $fakePath }
+        Mock Invoke-RestMethod {
+            [PSCustomObject]@{
+                assets = @(
+                    [PSCustomObject]@{ name = 'SignTool-arm64.zip'; browser_download_url = 'https://example.com/arm64.zip' }
+                )
+            }
+        }
+
+        Install-SignToolFromGitHub | Should -BeNullOrEmpty
+        Should -Invoke Write-Warning -ParameterFilter { $Message -like '*No x64 asset*' }
+    }
+
+    It 'returns $null when downloaded binary fails smoke test' {
+        $fakeDir = Join-Path $env:LOCALAPPDATA 'SignTool'
+        $fakePath = Join-Path $fakeDir 'signtool.exe'
+
+        Mock Test-Path {
+            if ($Path -eq $fakePath) { return $false }
+            return $true
+        }
+        Mock Invoke-RestMethod {
+            [PSCustomObject]@{
+                assets = @(
+                    [PSCustomObject]@{ name = 'SignTool-x64.zip'; browser_download_url = 'https://example.com/x64.zip' }
+                )
+            }
+        }
+        Mock Invoke-WebRequest {}
+        Mock New-Item {}
+        Mock Expand-Archive {}
+        Mock Remove-Item {}
+        # After extraction, signtool.exe appears at the expected path
+        Mock Test-Path { $true } -ParameterFilter { $Path -like '*SignTool\signtool.exe' }
+        Mock Test-SignToolWorks { $false }
+
+        Install-SignToolFromGitHub | Should -BeNullOrEmpty
+        Should -Invoke Write-Warning -ParameterFilter { $Message -like '*smoke test*' }
+    }
+}
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Install-SignTool
 # ─────────────────────────────────────────────────────────────────────────────
 Describe 'Install-SignTool' {
@@ -233,13 +362,36 @@ Describe 'Install-SignTool' {
         }
     }
 
-    It 'installs WDK via winget when signtool.exe is not found initially' {
+    It 'tries GitHub download when Windows Kits search fails' {
+        $fakeDir = Join-Path $env:LOCALAPPDATA 'SignTool'
+
         Mock Test-CommandExists { $false } -ParameterFilter { $Command -eq 'signtool.exe' }
+        Mock Find-SignToolInWindowsKits { $null }
+        Mock Install-SignToolFromGitHub { $fakeDir }
+        Mock Install-WingetPackage {}
+
+        $originalPath = $env:Path
+        $env:Path = 'C:\Windows'
+        try {
+            Install-SignTool
+
+            Should -Invoke Install-SignToolFromGitHub -Times 1 -Exactly
+            # Should NOT fall through to winget
+            Should -Invoke Install-WingetPackage -Times 0
+        }
+        finally {
+            $env:Path = $originalPath
+        }
+    }
+
+    It 'installs Windows SDK via winget when both Windows Kits and GitHub fail' {
+        Mock Test-CommandExists { $false } -ParameterFilter { $Command -eq 'signtool.exe' }
+        Mock Install-SignToolFromGitHub { $null }
 
         $callCount = 0
         Mock Find-SignToolInWindowsKits {
             $script:callCount++
-            if ($script:callCount -eq 1) { return $null }
+            if ($script:callCount -le 1) { return $null }
             return 'C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64'
         }
         Mock Install-WingetPackage {}
@@ -250,7 +402,7 @@ Describe 'Install-SignTool' {
             Install-SignTool
 
             Should -Invoke Install-WingetPackage -Times 1 -Exactly -ParameterFilter {
-                $Id -eq 'Microsoft.WindowsWDK.10.0.26100'
+                $Id -eq 'Microsoft.WindowsSDK.10.0.26100'
             }
         }
         finally {
@@ -258,9 +410,10 @@ Describe 'Install-SignTool' {
         }
     }
 
-    It 'throws when signtool.exe is not found even after WDK installation' {
+    It 'throws when signtool.exe is not found even after SDK installation' {
         Mock Test-CommandExists { $false } -ParameterFilter { $Command -eq 'signtool.exe' }
         Mock Find-SignToolInWindowsKits { $null }
+        Mock Install-SignToolFromGitHub { $null }
         Mock Install-WingetPackage {}
 
         { Install-SignTool } | Should -Throw '*signtool.exe not found*'
@@ -289,9 +442,11 @@ Describe 'Install-BuildTools.ps1 script' {
 
     It 'defines the expected helper functions' {
         # These were already loaded in BeforeAll, so just verify they exist
-        Get-Command Test-CommandExists   -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
-        Get-Command Install-WingetPackage -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
+        Get-Command Test-CommandExists       -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
+        Get-Command Test-SignToolWorks        -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
+        Get-Command Install-WingetPackage    -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
         Get-Command Find-SignToolInWindowsKits -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
-        Get-Command Install-SignTool      -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
+        Get-Command Install-SignToolFromGitHub -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
+        Get-Command Install-SignTool          -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
     }
 }
