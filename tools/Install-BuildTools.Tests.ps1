@@ -461,4 +461,58 @@ Describe 'Install-BuildTools.ps1 script' {
         Get-Command Install-SignToolFromGitHub -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
         Get-Command Install-SignTool          -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
     }
+
+    It 'installs GitHub CLI as the first package' {
+        $scriptPath = Join-Path $PSScriptRoot 'Install-BuildTools.ps1'
+        $content = Get-Content $scriptPath -Raw
+        # GitHub CLI should be installed before Inno Setup
+        $ghIndex = $content.IndexOf("'GitHub.cli'")
+        $innoIndex = $content.IndexOf("'JRSoftware.InnoSetup'")
+        $ghIndex | Should -BeGreaterThan -1
+        $innoIndex | Should -BeGreaterThan -1
+        $ghIndex | Should -BeLessThan $innoIndex
+    }
+}
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Publish-Release.ps1 parse validation
+# ─────────────────────────────────────────────────────────────────────────────
+Describe 'Publish-Release.ps1 script' {
+    It 'has no parse errors' {
+        $scriptPath = Join-Path $PSScriptRoot 'Publish-Release.ps1'
+        $tokens = $null
+        $errors = $null
+        $null = [System.Management.Automation.Language.Parser]::ParseFile(
+            $scriptPath, [ref]$tokens, [ref]$errors
+        )
+        $errors.Count | Should -Be 0
+    }
+
+    It 'contains a #Requires -Version 7.0 directive' {
+        $scriptPath = Join-Path $PSScriptRoot 'Publish-Release.ps1'
+        $content = Get-Content $scriptPath -Raw
+        $content | Should -Match '#Requires\s+-Version\s+7\.0'
+    }
+}
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Build-Installer.ps1 parse validation
+# ─────────────────────────────────────────────────────────────────────────────
+Describe 'Build-Installer.ps1 script' {
+    It 'has no parse errors' {
+        $scriptPath = Join-Path $PSScriptRoot 'Build-Installer.ps1'
+        $tokens = $null
+        $errors = $null
+        $null = [System.Management.Automation.Language.Parser]::ParseFile(
+            $scriptPath, [ref]$tokens, [ref]$errors
+        )
+        $errors.Count | Should -Be 0
+    }
+
+    It 'has -SkipBuild parameter instead of -DownloadRelease' {
+        $scriptPath = Join-Path $PSScriptRoot 'Build-Installer.ps1'
+        $content = Get-Content $scriptPath -Raw
+        $content | Should -Match '\$SkipBuild'
+        $content | Should -Not -Match '\$DownloadRelease'
+    }
 }

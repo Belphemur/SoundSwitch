@@ -1,33 +1,31 @@
 <#
 .SYNOPSIS
-    Builds the SoundSwitch installer from a local build or downloaded release.
+    Builds the SoundSwitch installer from a local build or pre-populated Final\ directory.
 
 .DESCRIPTION
     This script automates the full installer build process:
 
-    1. If -DownloadRelease is set, downloads the latest release artifact using
-       tools\Download-Release.ps1 into the Final\ directory.
-    2. Otherwise, builds the SoundSwitch binaries from source using dotnet publish.
-    3. Generates HTML documentation from Markdown sources (Changelog, README, Terms).
-    4. Bundles additional assets (images, licenses).
-    5. Optionally signs binaries and the final installer with tools\Sign-Binary.ps1.
-    6. Compiles the Inno Setup installer.
+    1. Builds the SoundSwitch binaries from source using dotnet publish (or
+       skips this step when -SkipBuild is set, assuming Final\ is already
+       populated — e.g. by Publish-Release.ps1).
+    2. Generates HTML documentation from Markdown sources (Changelog, README, Terms).
+    3. Bundles additional assets (images, licenses).
+    4. Optionally signs binaries and the final installer with tools\Sign-Binary.ps1.
+    5. Compiles the Inno Setup installer.
 
-    This is the PowerShell replacement for the local build workflow.  It requires
-    the tools from Install-BuildTools.ps1 (Inno Setup, Python with markdown, and
-    optionally signtool + Certum SimplySign for code signing).
+    This script is focused exclusively on building and code signing.  It does
+    not interact with GitHub releases — use Publish-Release.ps1 for the full
+    release workflow (download draft, build installer, upload, publish).
 
     Requires PowerShell 7+ (ships with Windows 11).
 
 .PARAMETER Configuration
     Build configuration: Release (default) or Debug.
 
-.PARAMETER DownloadRelease
-    When set, downloads a pre-built release instead of building from source.
-
-.PARAMETER Channel
-    Release channel when downloading: 'release' (default) or 'beta'.
-    Only used when -DownloadRelease is set.
+.PARAMETER SkipBuild
+    When set, skips the dotnet build/publish step and assumes the Final\
+    directory is already populated with binaries (e.g. extracted from a
+    downloaded release artifact).
 
 .PARAMETER SkipSigning
     Skip code signing even when signtool is available.
@@ -44,23 +42,22 @@
     Builds from source (Release config) and creates the installer.
 
 .EXAMPLE
-    .\tools\Build-Installer.ps1 -DownloadRelease -Channel beta
-    Downloads the latest beta release and builds the installer from it.
+    .\tools\Build-Installer.ps1 -SkipBuild
+    Builds the installer from an already-populated Final\ directory.
 
 .EXAMPLE
     .\tools\Build-Installer.ps1 -SkipSigning -InstallerReleaseState Nightly
     Builds from source without signing, using "Nightly" label for installer.
 #>
 
+#Requires -Version 7.0
+
 [CmdletBinding()]
 param(
     [ValidateSet('Release', 'Debug')]
     [string]$Configuration = 'Release',
 
-    [switch]$DownloadRelease,
-
-    [ValidateSet('release', 'beta')]
-    [string]$Channel = 'release',
+    [switch]$SkipBuild,
 
     [switch]$SkipSigning,
 
@@ -93,10 +90,16 @@ Write-Host "Detected target framework: $framework" -ForegroundColor Cyan
 
 # ── Step 1: Populate Final\ ─────────────────────────────────────────────────
 
-if ($DownloadRelease) {
-    Write-Host "`n=== Downloading release artifact ($Channel) ===" -ForegroundColor White
-    $downloadScript = Join-Path $PSScriptRoot 'Download-Release.ps1'
-    & $downloadScript -Channel $Channel -OutputDir $finalDir
+if ($SkipBuild) {
+    Write-Host "`n=== Using pre-populated Final\ directory ===" -ForegroundColor White
+    if (-not (Test-Path $finalDir)) {
+        throw "Final\ directory not found at $finalDir. Use -SkipBuild only when binaries are already extracted there (e.g. by Publish-Release.ps1)."
+    }
+    $fileCount = (Get-ChildItem $finalDir -File -ErrorAction SilentlyContinue).Count
+    if ($fileCount -eq 0) {
+        throw "Final\ directory at $finalDir is empty. Populate it with binaries before using -SkipBuild."
+    }
+    Write-Host "  Found $fileCount files in $finalDir"
 }
 else {
     Write-Host "`n=== Building from source ($Configuration) ===" -ForegroundColor White
