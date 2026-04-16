@@ -276,20 +276,23 @@ if (-not (Test-CommandExists 'winget')) {
 
 # ── Install packages ─────────────────────────────────────────────────────────
 
-# 1. Inno Setup 6 — installer compiler
+# 1. GitHub CLI — used by Publish-Release.ps1 to interact with GitHub releases
+Install-WingetPackage -Id 'GitHub.cli' -Name 'GitHub CLI' -Scope $Scope
+
+# 2. Inno Setup 6 — installer compiler
 Install-WingetPackage -Id 'JRSoftware.InnoSetup' -Name 'Inno Setup 6' -Scope $Scope
 
-# 2. Certum SimplySign Desktop — cloud certificate provider used for code signing
+# 3. Certum SimplySign Desktop — cloud certificate provider used for code signing
 Install-WingetPackage -Id 'Certum.SmartSignSimplySignDesktop' -Name 'Certum SimplySign Desktop' -Scope $Scope
 
-# 3. signtool.exe — used by Sign-Binary.ps1/Build-Installer.ps1 (with the
+# 4. signtool.exe — used by Sign-Binary.ps1/Build-Installer.ps1 (with the
 #    Certum certificate) to sign executables and the installer.
 #    Located from an existing Windows Kits installation, downloaded from
 #    Delphier/SignTool on GitHub, or the full Windows SDK is installed
 #    via winget as a last resort.
 Install-SignTool
 
-# 4. Python 3 — used for markdown-to-HTML documentation generation
+# 5. Python 3 — used for markdown-to-HTML documentation generation
 Install-WingetPackage -Id 'Python.Python.3.14' -Name 'Python 3.14' -Scope $Scope
 
 # ── Post-install: Python markdown package ────────────────────────────────────
@@ -322,6 +325,7 @@ Write-Host "`n=================================" -ForegroundColor White
 Write-Host "All build tools installed successfully!" -ForegroundColor Green
 Write-Host ""
 Write-Host "Installed tools:"
+Write-Host "  - GitHub CLI                  (used by Publish-Release.ps1 for release management)"
 Write-Host "  - Inno Setup 6               (installer compiler)"
 Write-Host "  - Certum SimplySign Desktop   (cloud certificate provider for code signing)"
 Write-Host "  - signtool.exe                (used by Sign-Binary.ps1 for signing)"
