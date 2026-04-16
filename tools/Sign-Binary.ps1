@@ -45,6 +45,8 @@
     Signs the installer with a custom certificate name.
 #>
 
+#Requires -Version 7.0
+
 [CmdletBinding()]
 param(
     [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
