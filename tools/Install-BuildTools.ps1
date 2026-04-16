@@ -126,7 +126,19 @@ function Find-SignToolInWindowsKits {
 
     $found = Get-ChildItem -Path $windowsKitsBase -Recurse -Filter 'signtool.exe' |
         Where-Object { $_.DirectoryName -match '[/\\]x64$' } |
-        Sort-Object { $_.DirectoryName } -Descending |
+        ForEach-Object {
+            $versionText = $_.Directory.Parent.Name
+            try {
+                [PSCustomObject]@{
+                    DirectoryName = $_.DirectoryName
+                    Version       = [version]$versionText
+                }
+            }
+            catch {
+                $null
+            }
+        } |
+        Sort-Object Version -Descending |
         Select-Object -First 1
 
     if ($found) { return $found.DirectoryName } else { return $null }
