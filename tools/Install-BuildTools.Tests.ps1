@@ -108,6 +108,9 @@ Describe 'Find-SignToolInWindowsKits' {
         $fakeFile = [PSCustomObject]@{
             DirectoryName = $fakeDir
             Name          = 'signtool.exe'
+            Directory     = [PSCustomObject]@{
+                Parent = [PSCustomObject]@{ Name = '10.0.22621.0' }
+            }
         }
 
         Mock Test-Path { $true } -ParameterFilter { $Path -like '*Windows Kits*' }
@@ -121,17 +124,23 @@ Describe 'Find-SignToolInWindowsKits' {
             [PSCustomObject]@{
                 DirectoryName = 'C:\Program Files (x86)\Windows Kits\10\bin\10.0.19041.0\x64'
                 Name          = 'signtool.exe'
+                Directory     = [PSCustomObject]@{
+                    Parent = [PSCustomObject]@{ Name = '10.0.19041.0' }
+                }
             },
             [PSCustomObject]@{
                 DirectoryName = 'C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64'
                 Name          = 'signtool.exe'
+                Directory     = [PSCustomObject]@{
+                    Parent = [PSCustomObject]@{ Name = '10.0.22621.0' }
+                }
             }
         )
 
         Mock Test-Path { $true } -ParameterFilter { $Path -like '*Windows Kits*' }
         Mock Get-ChildItem { $fakeFiles } -ParameterFilter { $Path -like '*Windows Kits*' }
 
-        # Sort descending means 22621 comes before 19041
+        # Sort descending by version means 22621 comes before 19041
         Find-SignToolInWindowsKits | Should -Be 'C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64'
     }
 
@@ -139,6 +148,9 @@ Describe 'Find-SignToolInWindowsKits' {
         $fakeFile = [PSCustomObject]@{
             DirectoryName = 'C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\arm64'
             Name          = 'signtool.exe'
+            Directory     = [PSCustomObject]@{
+                Parent = [PSCustomObject]@{ Name = '10.0.22621.0' }
+            }
         }
 
         Mock Test-Path { $true } -ParameterFilter { $Path -like '*Windows Kits*' }
@@ -388,7 +400,7 @@ Describe 'Install-SignTool' {
         Mock Test-CommandExists { $false } -ParameterFilter { $Command -eq 'signtool.exe' }
         Mock Install-SignToolFromGitHub { $null }
 
-        $callCount = 0
+        $script:callCount = 0
         Mock Find-SignToolInWindowsKits {
             $script:callCount++
             if ($script:callCount -le 1) { return $null }
