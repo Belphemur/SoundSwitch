@@ -91,7 +91,7 @@ public class HotKeyTextBox : TextBox
         {
             SetInvalidState(Keys.None, 0);
             e.Handled = true;
-            base.OnKeyUp(e);
+            base.OnKeyDown(e);
             return;
         }
 

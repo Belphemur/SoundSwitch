@@ -160,13 +160,28 @@ public static class KeyboardWindowsAPI
     /// <returns>True if AltGr is currently being pressed</returns>
     public static bool IsAltGr()
     {
-        var pressedKeys = GetPressedKeys().ToHashSet();
         // AltGr is Right Alt (RMenu) + synthetic Left Ctrl (LControlKey).
-        // We distinguish it from a physical Ctrl+Alt press by checking that only
-        // the left Ctrl is active (injected by Windows for AltGr) and that it is
-        // accompanied by Right Alt rather than Left Alt.
-        return pressedKeys.Contains(Keys.RMenu) && pressedKeys.Contains(Keys.LControlKey)
-               && !pressedKeys.Contains(Keys.LMenu);
+        // We distinguish it from a physical Ctrl+Alt press by verifying:
+        //   - Right Alt is pressed
+        //   - Only the synthetic Left Ctrl (not Right Ctrl) is active
+        //   - Left Alt is not pressed (would indicate a genuine Alt+Ctrl chord)
+        var hasRMenu       = false;
+        var hasLControlKey = false;
+        var hasLMenu       = false;
+        var hasRControlKey = false;
+
+        foreach (var key in GetPressedKeys())
+        {
+            switch (key)
+            {
+                case Keys.RMenu:       hasRMenu       = true; break;
+                case Keys.LControlKey: hasLControlKey = true; break;
+                case Keys.LMenu:       hasLMenu       = true; break;
+                case Keys.RControlKey: hasRControlKey = true; break;
+            }
+        }
+
+        return hasRMenu && hasLControlKey && !hasLMenu && !hasRControlKey;
     }
 
     #region WindowsNativeMethods
