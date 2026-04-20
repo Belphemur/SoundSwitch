@@ -82,6 +82,19 @@ public class HotKeyTextBox : TextBox
 
     protected override void OnKeyDown(KeyEventArgs e)
     {
+        // AltGr (Right Alt) on international keyboard layouts generates a synthetic
+        // Ctrl+Alt combination in Windows. On Windows 11, registering a hotkey with
+        // both Ctrl and Alt modifiers intercepts AltGr key presses, preventing users
+        // from typing characters that require AltGr (e.g. the pipe | character on
+        // Swedish keyboards). Reject AltGr as a hotkey modifier to avoid this conflict.
+        if (KeyboardWindowsAPI.IsAltGr())
+        {
+            SetInvalidState(Keys.None, 0);
+            e.Handled = true;
+            base.OnKeyUp(e);
+            return;
+        }
+
         HotKey.ModifierKeys modifierKeys = 0;
         foreach (var pressedModifier in KeyboardWindowsAPI.GetPressedModifiers())
         {

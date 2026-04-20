@@ -150,6 +150,25 @@ public static class KeyboardWindowsAPI
         return GetPressedKeys().Where(key => !IsModifier(key)).Except(Blacklist).ToArray();
     }
 
+    /// <summary>
+    /// Determines whether AltGr (Right Alt on international keyboard layouts) is currently pressed.
+    /// On Windows, AltGr is implemented as Right Alt (VK_RMENU) combined with a synthetic
+    /// Left Ctrl (VK_LCONTROL) key press injected by the OS. Registering a hotkey with both
+    /// Ctrl and Alt modifiers conflicts with AltGr input on Windows 11, preventing users from
+    /// typing characters that require AltGr on international keyboard layouts (e.g. Swedish pipe |).
+    /// </summary>
+    /// <returns>True if AltGr is currently being pressed</returns>
+    public static bool IsAltGr()
+    {
+        var pressedKeys = GetPressedKeys().ToHashSet();
+        // AltGr is Right Alt (RMenu) + synthetic Left Ctrl (LControlKey).
+        // We distinguish it from a physical Ctrl+Alt press by checking that only
+        // the left Ctrl is active (injected by Windows for AltGr) and that it is
+        // accompanied by Right Alt rather than Left Alt.
+        return pressedKeys.Contains(Keys.RMenu) && pressedKeys.Contains(Keys.LControlKey)
+               && !pressedKeys.Contains(Keys.LMenu);
+    }
+
     #region WindowsNativeMethods
 
     public static class NativeMethods
