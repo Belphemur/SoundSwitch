@@ -53,7 +53,7 @@ param(
     [Alias('FullName')]
     [string[]]$Path,
 
-    [string]$CertificateName = 'OpenSource Developer, Antoine Aflalo',
+    [string]$CertificateName = 'OpenSource Developer Antoine Aflalo',
 
     [string]$TimestampUrl = 'http://timestamp.digicert.com',
 
