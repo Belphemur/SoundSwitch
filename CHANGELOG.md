@@ -56,6 +56,64 @@
 * update Python version to 3.14 in Install-BuildTools.ps1 ([e77b965](https://github.com/Belphemur/SoundSwitch/commit/e77b965e1e549d446305a6314522851cfd09be68))
 * winsdk detection ([f664d00](https://github.com/Belphemur/SoundSwitch/commit/f664d003313be1917eb04fe58aa612997a04a71a))
 
+## [6.15.0-beta.1](https://github.com/Belphemur/SoundSwitch/compare/v6.14.2...v6.15.0-beta.1) (2026-04-21)
+
+### Features
+
+* add copilot-setup-steps.yml to run Copilot agent on Windows ([6dbc87f](https://github.com/Belphemur/SoundSwitch/commit/6dbc87f598e0c6e7268e2865c7f5f2ec5b38cceb))
+* add Sign-Binary.ps1 with SHA-256 signing, move code signing out of Inno Setup ([95cc05b](https://github.com/Belphemur/SoundSwitch/commit/95cc05b5f949e3043dd465642f66a64d07d14358))
+* **app-rules:** auto-open process picker and add description when creating a new App Rule ([#2050](https://github.com/Belphemur/SoundSwitch/issues/2050)) ([0431a44](https://github.com/Belphemur/SoundSwitch/commit/0431a44ffe01e8a7a4d05f3c1be78d09d0b4671a))
+* **app-sound-lock:** decouple process polling and implement notification batching ([05b9f57](https://github.com/Belphemur/SoundSwitch/commit/05b9f573ecbff4aff5a48af3c96e9665e4111529))
+* **audio-manager:** add ProcessMonitor for periodic process polling ([202aa72](https://github.com/Belphemur/SoundSwitch/commit/202aa72b915caa84ba781dbf468ad62cd3779f25))
+* **notification:** add support for App Rule triggers and configuration ([4fafaec](https://github.com/Belphemur/SoundSwitch/commit/4fafaeceef2f9d6a71f7bc0a56a56ae09948d0eb))
+* rethink release pipeline with zip artifact, Python markdown tool, and PowerShell download script ([98a2a16](https://github.com/Belphemur/SoundSwitch/commit/98a2a16c915eca2c3413b405dac3ede8b36a1715))
+* **tools:** add GitHub CLI as dependency in Install-BuildTools.ps1 ([9a98686](https://github.com/Belphemur/SoundSwitch/commit/9a9868697b45c87aea4c41bb6067ecc6d8f3c610))
+* **tools:** add Publish-Release.ps1, refactor Build-Installer.ps1, enforce PS 7.0+ ([09a9e5b](https://github.com/Belphemur/SoundSwitch/commit/09a9e5b89a2301715f6257a7a3deeca98e8c64e4))
+* **ui:** improve app rules grid, add process selection icons, and clear buttons ([e48b47f](https://github.com/Belphemur/SoundSwitch/commit/e48b47f03ec43d252cbb3ab91fcd607413d45dcf))
+
+### Enhancements
+
+* bump version to 6.14.3 for app rules patches ([f6ba43c](https://github.com/Belphemur/SoundSwitch/commit/f6ba43cad977e4f86598d34e4c59e26a02975a6d))
+* **icon:** refactor icon extraction into general-purpose ref-counted GDI infrastructure ([#2039](https://github.com/Belphemur/SoundSwitch/issues/2039)) ([a44433a](https://github.com/Belphemur/SoundSwitch/commit/a44433ac77b30f0550c91eb41ebc9c762919229a))
+* move to .NET 10 ([0942d7c](https://github.com/Belphemur/SoundSwitch/commit/0942d7c6149e5be0a3e9724c8ad9d7b3c4642a08))
+* Notifications Tab ([877bd41](https://github.com/Belphemur/SoundSwitch/commit/877bd41d3366a0e778f1eede556416c4cc6ec1ff))
+
+### Bug Fixes
+
+* add Switch Recording Device option for tray icon double-click ([615e354](https://github.com/Belphemur/SoundSwitch/commit/615e3547f8f69fbeb1eb3c59d811bd69eb305b61))
+* address PR review feedback - revert Make.bat, add Build-Installer.ps1 and Install-BuildTools.ps1, fix LASTEXITCODE check, add permissions, auto-detect framework ([0fcc4c7](https://github.com/Belphemur/SoundSwitch/commit/0fcc4c72b4d069bc8af6c559f5ee12d6941b1147))
+* **app-rules:** add logging to empty catch blocks ([37e4867](https://github.com/Belphemur/SoundSwitch/commit/37e48672a19263120b0900da7133e58f9756cd00))
+* **app-rules:** fix NU1510 compiler warnings ([bbffe63](https://github.com/Belphemur/SoundSwitch/commit/bbffe63441e319eb5f2ab86d5a7493a85f6d32e8))
+* apply review feedback — error checks, LiteralPath, fix CI winget failure, document PowerShell 7+ ([f349ea4](https://github.com/Belphemur/SoundSwitch/commit/f349ea47a950964d2be77a74146f7cffd56213a9))
+* auto-detect .NET SDK version in copilot-setup-steps.yml from csproj TargetFramework ([f064d96](https://github.com/Belphemur/SoundSwitch/commit/f064d968a4036f376bcadfcd9783398d5f4d0998))
+* **banner:** reuse custom position notification and improve keyboard hints ([551c45f](https://github.com/Belphemur/SoundSwitch/commit/551c45f73bf51e0d931f7de6afac003f5266a011))
+* **build:** replace NuGet signtool with Windows Driver Kit (WDK) installation via winget ([8903306](https://github.com/Belphemur/SoundSwitch/commit/89033069137aa051ff97d5831dcc235a45dd9839))
+* **ci:** build the full solution instead of individual projects ([17a0c35](https://github.com/Belphemur/SoundSwitch/commit/17a0c3525977baad60c7e0fbe98bb71b465ee0a7))
+* **ci:** check Inno Setup registry before running winget install ([85b17db](https://github.com/Belphemur/SoundSwitch/commit/85b17db95bb5b3ace6c883c5755114b5e73424cb))
+* **ci:** finding the right version of the framework ([cfc8f32](https://github.com/Belphemur/SoundSwitch/commit/cfc8f32b5aff1c737e18225a73f321b618d2cecb))
+* **ci:** reset exit code after handling already-installed Inno Setup in test-installer-build ([4e97121](https://github.com/Belphemur/SoundSwitch/commit/4e97121cfe7b26eeb6722083adda356134e1319c))
+* **ci:** trigger build on root-level NuGet/SDK configuration file changes ([fcf1cc3](https://github.com/Belphemur/SoundSwitch/commit/fcf1cc3d450202e9b18c4aeb521a0a20f924d593))
+* **cli:** change ExecuteAsync to protected for Spectre.Console 0.55.0 and build CLI in normal CI ([4c9ab27](https://github.com/Belphemur/SoundSwitch/commit/4c9ab2759194b2a1b383c11629af9f605312bdfc))
+* **cli:** fix cli lib update ([a93a131](https://github.com/Belphemur/SoundSwitch/commit/a93a131da0e277406d5f28baca31590231193cb2))
+* **double-click:** fix naming of double click feature ([6101c48](https://github.com/Belphemur/SoundSwitch/commit/6101c4828671cb2bc133da736e2697385626fdb5))
+* download signtool from GitHub with smoke test, fallback to Windows SDK ([7bed774](https://github.com/Belphemur/SoundSwitch/commit/7bed774945a12eb0a9f606dbccf07c084f708611))
+* **hotkey:** reject AltGr input in hotkey capture to prevent blocking international key sequences on Windows 11 ([#2075](https://github.com/Belphemur/SoundSwitch/issues/2075)) ([21f66ba](https://github.com/Belphemur/SoundSwitch/commit/21f66bad7ab916ff7957221b3c96f774168cfd49))
+* **icon:** use the new way to extract icons ([8e53fa9](https://github.com/Belphemur/SoundSwitch/commit/8e53fa93f1d9be9bc9c8efa16176db524a1f7504))
+* improve error message consistency and winget exit code handling ([547fcc4](https://github.com/Belphemur/SoundSwitch/commit/547fcc4c9fa8994ecc7d79dffd5b3d954b05062e))
+* **localization:** Add fallback mechanism for missing localized strings ([5a36295](https://github.com/Belphemur/SoundSwitch/commit/5a3629567bdf5018aceb5ddef172df9867f15e4f))
+* missing designer file for switch Recording device ([a04c624](https://github.com/Belphemur/SoundSwitch/commit/a04c624059266610e86e08977803d03f34a7d71e))
+* **notifications:** address PR review feedback ([3ec10e7](https://github.com/Belphemur/SoundSwitch/commit/3ec10e7e08803d0126d50e57c85fa4555b380c67))
+* null-safe PATH refresh in Install-BuildTools.ps1 ([4a669ca](https://github.com/Belphemur/SoundSwitch/commit/4a669caf17dc3c67112b8b9c17f99217a4532fd8))
+* replace full Windows SDK with lightweight NuGet signtool, add Certum SimplySign Desktop ([1884ebf](https://github.com/Belphemur/SoundSwitch/commit/1884ebf23d62582e322f85fcbde11e4b54e11ff7))
+* replace ternary operator in Install-BuildTools.ps1 and add Pester tests ([0b69f88](https://github.com/Belphemur/SoundSwitch/commit/0b69f8887afd5c4e49ca6b987cc58029a907012d))
+* restore localized dropdown fallback behavior ([63ffe2b](https://github.com/Belphemur/SoundSwitch/commit/63ffe2bc8641a2dd0fedaec812ed546eddc22c62))
+* scope mismatch in callCount variable and add Directory.Parent mock properties ([9f18897](https://github.com/Belphemur/SoundSwitch/commit/9f18897b1c362c68fb4ad5d83b1b91682ee36327))
+* **settings:** align split notification settings with model and runtime ([c3e2c9a](https://github.com/Belphemur/SoundSwitch/commit/c3e2c9a7ec27cd8d6ba67e8dd2c9b67a113ff14b))
+* **signing:** switch to DigiCert timestamp server with SHA-512 timestamp digest ([ef978a1](https://github.com/Belphemur/SoundSwitch/commit/ef978a1bf4aca69994295a65d594bd2f8528bedb))
+* **tools:** streamline responsibilities, invoke ISCC directly, derive release state from channel ([83ef154](https://github.com/Belphemur/SoundSwitch/commit/83ef154b2ac200a282426815b2365e36f132e4ba))
+* update Python version to 3.14 in Install-BuildTools.ps1 ([e77b965](https://github.com/Belphemur/SoundSwitch/commit/e77b965e1e549d446305a6314522851cfd09be68))
+* winsdk detection ([f664d00](https://github.com/Belphemur/SoundSwitch/commit/f664d003313be1917eb04fe58aa612997a04a71a))
+
 ## [6.14.2](https://github.com/Belphemur/SoundSwitch/compare/v6.14.1...v6.14.2) (2025-09-15)
 
 ### Enhancements
