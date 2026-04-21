@@ -53,7 +53,7 @@ param(
     [Alias('FullName')]
     [string[]]$Path,
 
-    [string]$Sha1 = 'ee28017265640ae840edf0a5e1a4a9dc7b501774',
+    [string]$CertificateName = 'OpenSource Developer Antoine Aflalo',
 
     [string]$TimestampUrl = 'http://timestamp.digicert.com',
 
@@ -111,13 +111,13 @@ foreach ($file in $Path) {
         }
 
         # signtool sign
-        #   /sha1   — certificate hash
+        #   /n   — certificate subject name
         #   /fd  — file digest algorithm (SHA-256)
         #   /tr  — RFC 3161 timestamp URL
         #   /td  — timestamp digest algorithm (SHA-512)
         #   /v   — verbose output
         & signtool.exe sign `
-            /sha1  $Sha1 `
+            /n  $CertificateName `
             /fd sha256 `
             /tr $TimestampUrl `
             /td sha512 `
