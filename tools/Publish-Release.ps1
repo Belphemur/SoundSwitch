@@ -383,8 +383,8 @@ if (-not (Test-Path $installerDir)) {
     throw "Installer directory not found at $installerDir. Did the build succeed?"
 }
 
-$installers = Get-ChildItem $installerDir -Filter '*Installer.exe'
-if (-not $installers -or $installers.Count -eq 0) {
+$installers = @(Get-ChildItem $installerDir -Filter '*Installer.exe')
+if ($installers.Count -eq 0) {
     throw "No installer files found in $installerDir."
 }
 
