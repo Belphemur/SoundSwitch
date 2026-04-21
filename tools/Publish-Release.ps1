@@ -455,7 +455,7 @@ Write-Host "Channel:    $Channel" -ForegroundColor Cyan
 Write-Host "Installers: $($installers.Count) file(s)" -ForegroundColor Cyan
 Write-Host ""
 
-$confirm = Read-Host "Publish release $tag? (y/N)"
+$confirm = Read-Host "Publish release ${tag}? (y/N)"
 if ($confirm -eq 'y' -or $confirm -eq 'Y') {
     gh release edit $tag --repo $Repository --draft=false
     if ($LASTEXITCODE -ne 0) {
