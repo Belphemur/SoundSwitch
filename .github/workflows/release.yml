@@ -11,30 +11,20 @@ env:
     SENTRY_NAME: soundswitch
 
 jobs:
-    build:
-        concurrency:
-            group: ${{ github.workflow }}-${{ github.ref }}-build
-            cancel-in-progress: true
-        uses: ./.github/workflows/reusable-build.yml
-        with:
-            configuration: Release
-            runtime: win-x64
-            publish: true
-            publish-artifact-name: release-package
-        secrets: inherit
-
     release:
         concurrency:
             group: ${{ github.workflow }}-${{ github.ref }}-release
             cancel-in-progress: true
-        needs: build
         runs-on: ubuntu-latest
         permissions:
             contents: write
         outputs:
-            version: ${{ steps.version.outputs.version }}
+            version: ${{ steps.dry-run.outputs.version }}
+            released: ${{ steps.dry-run.outputs.released }}
         steps:
             - uses: actions/checkout@v6
+              with:
+                  fetch-depth: 0
             - name: Setup Node.js
               uses: actions/setup-node@v6.4.0
               with:
@@ -48,13 +38,54 @@ jobs:
                   key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
             - name: Install semantic-release dependencies
               run: npm ci --prefer-offline --silent --cache npm-cache
-            - name: Release
-              run: npx semantic-release
-            - name: Latest Version
-              id: version
+            - name: Determine next version (dry run)
+              id: dry-run
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: |
-                  version=$(git describe --tags --abbrev=0 | cut -c 2-)
-                  echo "version=$version" >> "$GITHUB_OUTPUT"
+                  output=$(npx semantic-release --dry-run 2>&1)
+                  echo "$output"
+                  version=$(echo "$output" | grep -oP 'The next release version is \K[0-9]+\.[0-9]+\.[0-9]+(-[^\s]+)?' | head -1)
+                  if [ -n "$version" ]; then
+                    echo "version=$version" >> "$GITHUB_OUTPUT"
+                    echo "released=true" >> "$GITHUB_OUTPUT"
+                    echo "Next release version: $version"
+                  else
+                    echo "released=false" >> "$GITHUB_OUTPUT"
+                    echo "No release will be created"
+                  fi
+            - name: Release
+              if: steps.dry-run.outputs.released == 'true'
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: npx semantic-release
+
+    build:
+        concurrency:
+            group: ${{ github.workflow }}-${{ github.ref }}-build
+            cancel-in-progress: true
+        needs: release
+        if: needs.release.outputs.released == 'true'
+        uses: ./.github/workflows/reusable-build.yml
+        with:
+            configuration: Release
+            runtime: win-x64
+            publish: true
+            publish-artifact-name: release-package
+            ref: v${{ needs.release.outputs.version }}
+            version: ${{ needs.release.outputs.version }}
+        secrets: inherit
+
+    upload:
+        concurrency:
+            group: ${{ github.workflow }}-${{ github.ref }}-upload
+            cancel-in-progress: true
+        needs: [release, build]
+        if: needs.release.outputs.released == 'true'
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+        steps:
             - name: Download build output
               uses: actions/download-artifact@v8
               with:
@@ -62,7 +93,7 @@ jobs:
                   path: release-package
             - name: Create release zip
               run: |
-                  version="${{ steps.version.outputs.version }}"
+                  version="${{ needs.release.outputs.version }}"
                   archive="${{ env.PROJECT_NAME }}-v${version}.zip"
                   cd release-package
                   zip -r "../${archive}" .
@@ -72,9 +103,8 @@ jobs:
               env:
                   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: |
-                  version="${{ steps.version.outputs.version }}"
+                  version="${{ needs.release.outputs.version }}"
                   tag="v${version}"
-                  # Upload to the GitHub release created by semantic-release
                   if gh release view "${tag}" --repo "${{ github.repository }}" > /dev/null 2>&1; then
                     gh release upload "${tag}" "${{ env.archive }}" --repo "${{ github.repository }}" --clobber
                     echo "Uploaded ${{ env.archive }} to release ${tag}"
@@ -86,7 +116,8 @@ jobs:
         concurrency:
             group: ${{ github.workflow }}-${{ github.ref }}-sentry
             cancel-in-progress: true
-        needs: release
+        needs: [release, upload]
+        if: needs.release.outputs.released == 'true'
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
