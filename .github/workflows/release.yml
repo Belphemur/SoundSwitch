@@ -50,6 +50,8 @@ jobs:
               run: npm ci --prefer-offline --silent --cache npm-cache
             - name: Release
               run: npx semantic-release
+              env:
+                GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             - name: Latest Version
               id: version
               run: |
