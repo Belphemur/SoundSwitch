@@ -66,6 +66,8 @@ jobs:
             cancel-in-progress: true
         needs: release
         if: needs.release.outputs.released == 'true'
+        permissions:
+            contents: read
         uses: ./.github/workflows/reusable-build.yml
         with:
             configuration: Release
