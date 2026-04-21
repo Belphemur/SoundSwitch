@@ -155,12 +155,10 @@ jobs:
                       $arguments += @('-r', $env:DOTNET_RUNTIME)
                     }
                     if ($env:PUBLISH_VERSION) {
-                      # Strip pre-release suffix for FileVersion/AssemblyVersion (must be numeric)
-                      $numericVersion = $env:PUBLISH_VERSION -replace '-.*$', ''
                       $arguments += @(
                         "-p:Version=$env:PUBLISH_VERSION",
-                        "-p:FileVersion=$numericVersion",
-                        "-p:AssemblyVersion=$numericVersion",
+                        "-p:FileVersion=$env:PUBLISH_VERSION",
+                        "-p:AssemblyVersion=$env:PUBLISH_VERSION",
                         "-p:InformationalVersion=$env:PUBLISH_VERSION"
                       )
                     }

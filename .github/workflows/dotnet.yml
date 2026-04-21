@@ -39,6 +39,14 @@ jobs:
             node:
               - 'package.json'
               - 'package-lock.json'
+              - '.releaserc'
+              - '.releaserc.json'
+              - '.releaserc.yaml'
+              - '.releaserc.yml'
+              - '.releaserc.js'
+              - '.releaserc.cjs'
+              - 'release.config.js'
+              - 'release.config.cjs'
             translations:
               - 'SoundSwitch/**/*.resx'
 
@@ -69,10 +77,12 @@ jobs:
 
   release-dry-run:
     needs: changes
-    if: github.ref != 'refs/heads/dev' && needs.changes.outputs.node == 'true'
+    if: needs.changes.outputs.node == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
       - name: Setup Node.js
         uses: actions/setup-node@v6.4.0
         with:
@@ -87,4 +97,31 @@ jobs:
       - name: Install semantic-release dependencies
         run: npm ci --prefer-offline --silent --cache npm-cache
       - name: Release dry run
-        run: npx semantic-release -d
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          node <<'EOF'
+          const fs = require('fs');
+          const semanticRelease = require('semantic-release');
+
+          (async () => {
+            const result = await semanticRelease(
+              { dryRun: true, ci: false },
+              {
+                cwd: process.cwd(),
+                env: process.env,
+                stdout: process.stdout,
+                stderr: process.stderr
+              }
+            );
+
+            if (result && result.nextRelease && result.nextRelease.version) {
+              console.log(`Next release version would be: ${result.nextRelease.version}`);
+            } else {
+              console.log('No release would be created from the current changes');
+            }
+          })().catch((error) => {
+            console.error(error);
+            process.exit(1);
+          });
+          EOF
