@@ -30,6 +30,16 @@ on:
                 required: false
                 type: string
                 default: ""
+            ref:
+                required: false
+                type: string
+                default: ""
+                description: "Git ref (branch, tag, or SHA) to check out. Defaults to the triggering commit."
+            version:
+                required: false
+                type: string
+                default: ""
+                description: "Version to embed in published binaries (e.g. '6.14.4'). Passed as MSBuild Version/FileVersion/AssemblyVersion/InformationalVersion properties."
         outputs:
             framework:
                 value: ${{ jobs.detect-framework.outputs.framework }}
@@ -51,6 +61,8 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v6
+              with:
+                  ref: ${{ inputs.ref || github.sha }}
             - name: Detect target framework and SDK version
               id: framework
               shell: pwsh
@@ -80,6 +92,7 @@ jobs:
               uses: actions/checkout@v6
               with:
                   fetch-depth: 0
+                  ref: ${{ inputs.ref || github.sha }}
             - name: Setup .NET
               uses: actions/setup-dotnet@v5
               with:
@@ -123,6 +136,7 @@ jobs:
               shell: pwsh
               env:
                   DOTNET_RUNTIME: ${{ inputs.runtime }}
+                  PUBLISH_VERSION: ${{ inputs.version }}
               run: |
                   $outputDir = Join-Path $PWD 'Final'
                   if (Test-Path $outputDir) { Remove-Item $outputDir -Recurse -Force }
@@ -139,6 +153,14 @@ jobs:
                     )
                     if ($env:DOTNET_RUNTIME) {
                       $arguments += @('-r', $env:DOTNET_RUNTIME)
+                    }
+                    if ($env:PUBLISH_VERSION) {
+                      $arguments += @(
+                        "-p:Version=$env:PUBLISH_VERSION",
+                        "-p:FileVersion=$env:PUBLISH_VERSION",
+                        "-p:AssemblyVersion=$env:PUBLISH_VERSION",
+                        "-p:InformationalVersion=$env:PUBLISH_VERSION"
+                      )
                     }
                     dotnet @arguments
                     if ($LASTEXITCODE -ne 0) {
