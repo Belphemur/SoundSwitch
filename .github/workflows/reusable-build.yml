@@ -155,10 +155,13 @@ jobs:
                       $arguments += @('-r', $env:DOTNET_RUNTIME)
                     }
                     if ($env:PUBLISH_VERSION) {
+                      # AssemblyVersion and FileVersion only accept numeric versions (major.minor.build.revision).
+                      # Strip any pre-release suffix (e.g. "-beta.1") before passing to those properties.
+                      $numericVersion = $env:PUBLISH_VERSION -replace '-.*$', ''
                       $arguments += @(
                         "-p:Version=$env:PUBLISH_VERSION",
-                        "-p:FileVersion=$env:PUBLISH_VERSION",
-                        "-p:AssemblyVersion=$env:PUBLISH_VERSION",
+                        "-p:FileVersion=$numericVersion",
+                        "-p:AssemblyVersion=$numericVersion",
                         "-p:InformationalVersion=$env:PUBLISH_VERSION"
                       )
                     }
