@@ -88,7 +88,7 @@ param(
 
     [switch]$SkipSigning,
 
-    [string]$CertificateName = 'OpenSource Developer Antoine Aflalo',
+    [string]$CertificateName = 'Open Source Developer Antoine Aflalo',
 
     [string]$InstallerReleaseState
 )
