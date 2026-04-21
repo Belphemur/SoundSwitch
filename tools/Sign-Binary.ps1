@@ -18,9 +18,9 @@
 .PARAMETER Path
     One or more file paths to sign.
 
-.PARAMETER CertificateName
-    Subject name (CN) of the code-signing certificate.
-    Defaults to "OpenSource Developer, Antoine Aflalo".
+.PARAMETER Sha1
+    Thumbprint of the code-signing certificate.
+    Defaults to "ee28017265640ae840edf0a5e1a4a9dc7b501774".
 
 .PARAMETER TimestampUrl
     RFC 3161 timestamp server URL.
@@ -41,8 +41,8 @@
     Signs multiple executables in one call.
 
 .EXAMPLE
-    .\tools\Sign-Binary.ps1 -Path Final\Installer\SoundSwitch_Installer.exe -CertificateName "My Cert"
-    Signs the installer with a custom certificate name.
+    .\tools\Sign-Binary.ps1 -Path Final\Installer\SoundSwitch_Installer.exe -Sha1 "ee28017265640ae840edf0a5e1a4a9dc7b501774"
+    Signs the installer with a custom sha1.
 #>
 
 #Requires -Version 7.0
