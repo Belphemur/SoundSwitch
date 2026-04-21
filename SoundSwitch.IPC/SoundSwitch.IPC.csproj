@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <OutputType>Library</OutputType>
     <TargetFramework>net10.0</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>
