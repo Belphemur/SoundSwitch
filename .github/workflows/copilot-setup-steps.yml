@@ -30,14 +30,12 @@ jobs:
                     exit 1
                   fi
 
-                  major=$(echo "$framework" | grep -oP '(?<=^net)\d+')
-                  minor=$(echo "$framework" | grep -oP '(?<=^net\d{1,3}\.)\d+')
-                  if [ -z "$major" ] || [ -z "$minor" ]; then
+                  dotnet_version=$(echo "$framework" | sed -E 's/^net([0-9]+\.[0-9]+).*/\1.x/')
+                  if [ "$dotnet_version" = "$framework" ]; then
                     echo "Unable to derive .NET SDK version from TargetFramework '$framework'"
                     exit 1
                   fi
 
-                  dotnet_version="${major}.${minor}.x"
                   echo "Detected .NET SDK version: $dotnet_version (from $framework)"
                   echo "dotnet-version=$dotnet_version" >> "$GITHUB_OUTPUT"
 
