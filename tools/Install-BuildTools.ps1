@@ -3,8 +3,9 @@
     Installs the build tools required to compile and package SoundSwitch.
 
 .DESCRIPTION
-    Uses winget to install Inno Setup 6, Certum SimplySign Desktop (cloud
-    certificate provider), and Python 3.  Locates signtool.exe from an
+    Uses winget to install GitHub CLI, Inno Setup 6, Certum SimplySign Desktop (cloud
+    certificate provider), Python 3, and the .NET SDK (version auto-detected from the
+    project's TargetFramework).  Locates signtool.exe from an
     existing Windows Kits installation; if not present, downloads a
     standalone signtool.exe from the Delphier/SignTool GitHub repository;
     if that also fails, installs the Windows SDK via winget as a last
@@ -46,6 +47,50 @@ $ErrorActionPreference = 'Stop'
 function Test-CommandExists {
     param([string]$Command)
     $null -ne (Get-Command $Command -ErrorAction SilentlyContinue)
+}
+
+function Get-DotNetSdkVersion {
+    <#
+    .SYNOPSIS
+        Reads the TargetFramework from SoundSwitch.csproj and returns the
+        corresponding .NET major version number (e.g. 10 for net10.0-windows).
+    .PARAMETER CsprojPath
+        Optional path to SoundSwitch.csproj.  Defaults to the location
+        relative to this script's directory.
+    .OUTPUTS
+        Integer major version number, or 0 if it cannot be determined.
+    #>
+    param(
+        [string]$CsprojPath
+    )
+
+    if (-not $CsprojPath) {
+        if (-not $PSScriptRoot) {
+            Write-Warning 'PSScriptRoot is not set; cannot locate SoundSwitch.csproj.'
+            return 0
+        }
+        $CsprojPath = Join-Path $PSScriptRoot '..\SoundSwitch\SoundSwitch.csproj'
+    }
+
+    if (-not (Test-Path $CsprojPath)) {
+        Write-Warning "Could not locate SoundSwitch.csproj at '$CsprojPath'."
+        return 0
+    }
+
+    try {
+        [xml]$project = Get-Content $CsprojPath -ErrorAction Stop
+        $framework = $project.Project.PropertyGroup.TargetFramework | Select-Object -First 1
+        $match = [System.Text.RegularExpressions.Regex]::Match($framework, '^net(?<major>\d+)')
+        if ($match.Success) {
+            return [int]$match.Groups['major'].Value
+        }
+        Write-Warning "Could not parse TargetFramework '$framework' from SoundSwitch.csproj."
+        return 0
+    }
+    catch {
+        Write-Warning "Failed to read SoundSwitch.csproj: $_"
+        return 0
+    }
 }
 
 function Install-WingetPackage {
@@ -295,6 +340,16 @@ Install-SignTool
 # 5. Python 3 — used for markdown-to-HTML documentation generation
 Install-WingetPackage -Id 'Python.Python.3.14' -Name 'Python 3.14' -Scope $Scope
 
+# 6. .NET SDK — required to build and test the application.
+#    Version is derived automatically from the project's TargetFramework.
+$dotNetMajor = Get-DotNetSdkVersion
+if ($dotNetMajor -gt 0) {
+    Install-WingetPackage -Id "Microsoft.DotNet.SDK.$dotNetMajor" -Name ".NET SDK $dotNetMajor" -Scope $Scope
+}
+else {
+    Write-Warning "Unable to detect .NET SDK version from SoundSwitch.csproj; skipping .NET SDK installation."
+}
+
 # ── Post-install: Python markdown package ────────────────────────────────────
 
 Write-Host "`nInstalling Python 'markdown' package ..." -ForegroundColor Cyan
@@ -330,6 +385,9 @@ Write-Host "  - Inno Setup 6               (installer compiler)"
 Write-Host "  - Certum SimplySign Desktop   (cloud certificate provider for code signing)"
 Write-Host "  - signtool.exe                (used by Sign-Binary.ps1 for signing)"
 Write-Host "  - Python 3.14                (markdown-to-HTML documentation)"
+if ($dotNetMajor -gt 0) {
+    Write-Host "  - .NET SDK $dotNetMajor               (build and test the application)"
+}
 Write-Host ""
 Write-Host "Next steps:"
 Write-Host "  1. Restart your terminal to pick up PATH changes"

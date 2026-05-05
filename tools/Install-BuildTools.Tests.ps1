@@ -433,6 +433,73 @@ Describe 'Install-SignTool' {
 }
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Get-DotNetSdkVersion
+# ─────────────────────────────────────────────────────────────────────────────
+Describe 'Get-DotNetSdkVersion' {
+    BeforeEach {
+        Mock Write-Warning {}
+    }
+
+    It 'returns the major version number for a standard net<major>.<minor>-windows TFM' {
+        $fakeCsproj = @"
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+  </PropertyGroup>
+</Project>
+"@
+        Mock Test-Path { $true }
+        Mock Get-Content { [xml]$fakeCsproj }
+
+        Get-DotNetSdkVersion -CsprojPath 'C:\fake\SoundSwitch.csproj' | Should -Be 10
+    }
+
+    It 'returns the major version number for a plain net<major>.<minor> TFM' {
+        $fakeCsproj = @"
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+  </PropertyGroup>
+</Project>
+"@
+        Mock Test-Path { $true }
+        Mock Get-Content { [xml]$fakeCsproj }
+
+        Get-DotNetSdkVersion -CsprojPath 'C:\fake\SoundSwitch.csproj' | Should -Be 9
+    }
+
+    It 'returns 0 when the csproj file does not exist' {
+        Mock Test-Path { $false }
+
+        Get-DotNetSdkVersion -CsprojPath 'C:\nonexistent\SoundSwitch.csproj' | Should -Be 0
+        Should -Invoke Write-Warning -ParameterFilter { $Message -like '*Could not locate*' }
+    }
+
+    It 'returns 0 and warns when TargetFramework cannot be parsed' {
+        $fakeCsproj = @"
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>unknown-framework</TargetFramework>
+  </PropertyGroup>
+</Project>
+"@
+        Mock Test-Path { $true }
+        Mock Get-Content { [xml]$fakeCsproj }
+
+        Get-DotNetSdkVersion -CsprojPath 'C:\fake\SoundSwitch.csproj' | Should -Be 0
+        Should -Invoke Write-Warning -ParameterFilter { $Message -like '*Could not parse*' }
+    }
+
+    It 'returns 0 and warns when Get-Content throws' {
+        Mock Test-Path { $true }
+        Mock Get-Content { throw 'file locked' }
+
+        Get-DotNetSdkVersion -CsprojPath 'C:\fake\SoundSwitch.csproj' | Should -Be 0
+        Should -Invoke Write-Warning -ParameterFilter { $Message -like '*Failed to read*' }
+    }
+}
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Script-level parse validation
 # ─────────────────────────────────────────────────────────────────────────────
 Describe 'Install-BuildTools.ps1 script' {
@@ -454,7 +521,8 @@ Describe 'Install-BuildTools.ps1 script' {
 
     It 'defines the expected helper functions' {
         # These were already loaded in BeforeAll, so just verify they exist
-        Get-Command Test-CommandExists       -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
+        Get-Command Test-CommandExists        -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
+        Get-Command Get-DotNetSdkVersion      -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
         Get-Command Test-SignToolWorks        -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
         Get-Command Install-WingetPackage    -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
         Get-Command Find-SignToolInWindowsKits -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty

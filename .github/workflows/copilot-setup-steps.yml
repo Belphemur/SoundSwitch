@@ -12,7 +12,7 @@ on:
 jobs:
     # The job MUST be called `copilot-setup-steps` or it will not be picked up by Copilot.
     copilot-setup-steps:
-        runs-on: windows-latest
+        runs-on: ubuntu-latest
 
         permissions:
             contents: read
@@ -23,22 +23,23 @@ jobs:
 
             - name: Detect .NET SDK version
               id: framework
-              shell: pwsh
               run: |
-                  [xml]$project = Get-Content "SoundSwitch/SoundSwitch.csproj"
-                  $framework = $project.Project.PropertyGroup.TargetFramework | Select-Object -First 1
-                  if ([string]::IsNullOrWhiteSpace($framework)) {
-                    throw "Unable to determine TargetFramework from SoundSwitch/SoundSwitch.csproj"
-                  }
+                  framework=$(grep -oP '(?<=<TargetFramework>)[^<]+' SoundSwitch/SoundSwitch.csproj | head -1)
+                  if [ -z "$framework" ]; then
+                    echo "Unable to determine TargetFramework from SoundSwitch/SoundSwitch.csproj"
+                    exit 1
+                  fi
 
-                  $match = [System.Text.RegularExpressions.Regex]::Match($framework, '^net(?<major>\d+)\.(?<minor>\d+)')
-                  if (-not $match.Success) {
-                    throw "Unable to derive .NET SDK version from TargetFramework '$framework'"
-                  }
+                  major=$(echo "$framework" | grep -oP '(?<=^net)\d+')
+                  minor=$(echo "$framework" | grep -oP '(?<=^net\d{1,3}\.)\d+')
+                  if [ -z "$major" ] || [ -z "$minor" ]; then
+                    echo "Unable to derive .NET SDK version from TargetFramework '$framework'"
+                    exit 1
+                  fi
 
-                  $dotnetVersion = "{0}.{1}.x" -f $match.Groups['major'].Value, $match.Groups['minor'].Value
-                  Write-Host "Detected .NET SDK version: $dotnetVersion (from $framework)"
-                  "dotnet-version=$dotnetVersion" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+                  dotnet_version="${major}.${minor}.x"
+                  echo "Detected .NET SDK version: $dotnet_version (from $framework)"
+                  echo "dotnet-version=$dotnet_version" >> "$GITHUB_OUTPUT"
 
             - name: Setup .NET
               uses: actions/setup-dotnet@v5
@@ -48,7 +49,6 @@ jobs:
                   cache-dependency-path: Directory.Packages.props
 
             - name: Restore dependencies
-              shell: pwsh
               run: dotnet restore
 
             - name: Setup Python
@@ -57,5 +57,4 @@ jobs:
                   python-version: "3.x"
 
             - name: Install Python markdown library
-              shell: pwsh
               run: python -m pip install markdown --quiet
