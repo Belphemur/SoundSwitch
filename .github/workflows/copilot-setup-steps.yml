@@ -47,7 +47,7 @@ jobs:
                   cache-dependency-path: Directory.Packages.props
 
             - name: Restore dependencies
-              run: dotnet restore
+              run: dotnet restore -p:EnableWindowsTargeting=true
 
             - name: Setup Python
               uses: actions/setup-python@v6
