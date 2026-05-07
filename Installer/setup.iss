@@ -1,5 +1,4 @@
 #include "scripts\app_defines.iss"
-#include "scripts\winget-dotnet-runtime.iss"
 // ReleaseState and DotNetMajorVersion are expected to be defined through the command line with /D parameter
 // e.g. iscc /DReleaseState=Beta /DDotNetMajorVersion=10 setup.iss
 
@@ -119,6 +118,8 @@ Type: files; Name: {app}\Microsoft.WindowsAPICodePack.*
 
 #include "scripts\path_operations.iss"
 #include "scripts\command_line_utils.iss"
+#include "scripts\CodeDependencies.iss"
+#include "scripts\uninstall_dotnet.iss"
 #include "scripts\setup_utils.iss"
 #include "scripts\uninstall_utils.iss"
 #include "scripts\windows_update_helper.iss"

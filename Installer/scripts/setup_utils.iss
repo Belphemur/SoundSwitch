@@ -16,26 +16,6 @@ begin
       // Add to PATH (function now handles admin/user mode internally)
       ModifyPath(ExpandConstant('{app}'));
     end;
-    
-    // Ensure .NET {#DotNetMajorVersion} Desktop Runtime is installed
-    if not IsDotNetDesktopRuntimeInstalled() then
-    begin
-      Log('Microsoft.WindowsDesktop.App {#DotNetMajorVersion}.x not found. Installing via winget...');
-      if not InstallDotNetDesktopRuntime() then
-      begin
-        Log('Failed to install .NET {#DotNetMajorVersion} Desktop Runtime.');
-      end;
-    end
-    else
-    begin
-      Log('Microsoft.WindowsDesktop.App {#DotNetMajorVersion}.x is already installed.');
-    end;
-
-    // Always try to upgrade to latest runtime version (non-fatal)
-    if IsDotNetDesktopRuntimeInstalled() then
-    begin
-      UpgradeDotNetDesktopRuntime();
-    end;
   end;
 end;
 
@@ -64,5 +44,34 @@ begin
     Sleep(5000);
     DeleteFile(setupExe);
   end;
+end;
+
+<event('InitializeWizard')>
+procedure ConfigureDotNetDependency;
+begin
+#if DotNetMajorVersion == "10"
+  Dependency_AddDotNet100Desktop;
+#elif DotNetMajorVersion == "9"
+  Dependency_AddDotNet90Desktop;
+#elif DotNetMajorVersion == "8"
+  Dependency_AddDotNet80Desktop;
+#else
+  #error "Unsupported .NET version: " + DotNetMajorVersion
+#endif
+end;
+
+<event('PrepareToInstall')>
+function MyPrepareToInstall(var NeedsRestart: Boolean): String;
+begin
+#if DotNetMajorVersion == "10"
+  UninstallOlderDotNetRuntimes(10, 0, 7, Dependency_ArchTitle);
+#elif DotNetMajorVersion == "9"
+  UninstallOlderDotNetRuntimes(9, 0, 15, Dependency_ArchTitle);
+#elif DotNetMajorVersion == "8"
+  UninstallOlderDotNetRuntimes(8, 0, 26, Dependency_ArchTitle);
+#else
+  #error "Unsupported .NET version: " + DotNetMajorVersion
+#endif
+  Result := '';
 end;
 #endif
