@@ -44,7 +44,7 @@ begin
                   if RegQueryStringValue(RootKey, SubKeyName, 'QuietUninstallString', QuietUninstallString) then
                   begin
                     Log('Uninstalling older .NET Desktop Runtime: ' + DisplayName);
-                    Exec(ExpandConstant('{cmd}'), '/c ' + QuietUninstallString, '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+                    Exec(ExpandConstant('{cmd}'), '/c ""' + QuietUninstallString + '""', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
                     if ResultCode <> 0 then
                     begin
                       Log('Warning: Uninstall of ' + DisplayName + ' failed with code ' + IntToStr(ResultCode));
