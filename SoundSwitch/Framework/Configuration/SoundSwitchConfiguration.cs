@@ -52,7 +52,7 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
     // Basic Settings
     public bool FirstRun { get; set; } = true;
     public IconChanger SwitchIcon { get; set; } = IconChanger.Never;
-    public IconDoubleClick IconDoubleClick { get; set; } = IconDoubleClick.SwitchDevice;
+    public IconDoubleClick IconDoubleClick { get; set; } = IconDoubleClick.SwitchPlaybackDevice;
 
     // Audio Settings
     public bool ChangeCommunications { get; set; } = false;

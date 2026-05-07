@@ -29,12 +29,12 @@ internal class IconDoubleClickSwitchPlaybackDevice : IIconDoubleClick
     /// <summary>
     /// Gets the enum type that this implementation corresponds to.
     /// </summary>
-    public IconDoubleClick TypeEnum => IconDoubleClick.SwitchDevice;
+    public IconDoubleClick TypeEnum => IconDoubleClick.SwitchPlaybackDevice;
 
     /// <summary>
     /// Gets the localized label for this action as displayed in the user interface.
     /// </summary>
-    public string Label => SettingsStrings.switchDevice;
+    public string Label => SettingsStrings.switchPlaybackDevice;
 
     /// <summary>
     /// Executes the switch device action by cycling through configured playback devices.
