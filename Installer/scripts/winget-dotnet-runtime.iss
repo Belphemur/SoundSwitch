@@ -3,44 +3,57 @@ var
   _dotnetRebootRequired: Boolean;
 
 // Checks if Microsoft.WindowsDesktop.App {#DotNetMajorVersion}.x is already installed
+// Uses dotnet --list-runtimes for reliable detection across all install locations
 function IsDotNetDesktopRuntimeInstalled(): Boolean;
 var
-  FindRec: TFindRec;
-  SharedDir: String;
+  TempFile: String;
+  Output: AnsiString;
+  ResultCode: Integer;
+  DotNetExe: String;
+  CmdLine: String;
 begin
   Result := false;
 
-  // Check machine-wide install: look for any {#DotNetMajorVersion}.0.* directory
-  SharedDir := ExpandConstant('{pf}\dotnet\shared\Microsoft.WindowsDesktop.App\');
-  if FindFirst(SharedDir + '*', FindRec) then
+  // Find dotnet.exe on system PATH
+  DotNetExe := FileSearch('dotnet.exe', GetEnv('PATH'));
+  if DotNetExe = '' then
   begin
-    repeat
-      if (FindRec.Attributes and FILE_ATTRIBUTE_DIRECTORY <> 0) and
-         (Pos('{#DotNetMajorVersion}.0', FindRec.Name) = 1) then
-      begin
-        Result := true;
-        FindClose(FindRec);
-        exit;
-      end;
-    until not FindNext(FindRec);
-    FindClose(FindRec);
+    Log('dotnet CLI not found on PATH. Cannot check for runtime.');
+    exit;
   end;
 
-  // Check per-user install
-  SharedDir := ExpandConstant('{localappdata}\Microsoft\dotnet\shared\Microsoft.WindowsDesktop.App\');
-  if FindFirst(SharedDir + '*', FindRec) then
+  TempFile := ExpandConstant('{tmp}\dotnet_runtimes.txt');
+
+  // Run dotnet --list-runtimes, redirect output to temp file
+  CmdLine := '/C "' + DotNetExe + '" --list-runtimes > "' + TempFile + '"';
+  if not Exec(ExpandConstant('{cmd}'), CmdLine, '', SW_HIDE, ewWaitUntilTerminated, ResultCode) then
   begin
-    repeat
-      if (FindRec.Attributes and FILE_ATTRIBUTE_DIRECTORY <> 0) and
-         (Pos('{#DotNetMajorVersion}.0', FindRec.Name) = 1) then
-      begin
-        Result := true;
-        FindClose(FindRec);
-        exit;
-      end;
-    until not FindNext(FindRec);
-    FindClose(FindRec);
+    Log('Failed to execute dotnet --list-runtimes.');
+    exit;
   end;
+
+  if ResultCode <> 0 then
+  begin
+    Log('dotnet --list-runtimes returned non-zero exit code: ' + IntToStr(ResultCode));
+    exit;
+  end;
+
+  // Read captured output
+  if not LoadStringFromFile(TempFile, Output) then
+  begin
+    Log('Failed to read dotnet --list-runtimes output from temp file.');
+    DeleteFile(TempFile);
+    exit;
+  end;
+
+  DeleteFile(TempFile);
+
+  // Check if Microsoft.WindowsDesktop.App {#DotNetMajorVersion}. is in the output
+  Result := Pos('Microsoft.WindowsDesktop.App {#DotNetMajorVersion}.', Output) > 0;
+  if Result then
+    Log('Microsoft.WindowsDesktop.App {#DotNetMajorVersion}.x found via dotnet --list-runtimes.')
+  else
+    Log('Microsoft.WindowsDesktop.App {#DotNetMajorVersion}.x not found in dotnet --list-runtimes output.');
 end;
 
 // Installs .NET {#DotNetMajorVersion} Desktop Runtime via winget
