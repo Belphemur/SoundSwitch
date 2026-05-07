@@ -1,3 +1,43 @@
+## [7.0.0-beta.1](https://github.com/Belphemur/SoundSwitch/compare/v6.15.0-beta.1...v7.0.0-beta.1) (2026-05-07)
+
+### ⚠ BREAKING CHANGES
+
+* support arm64 architecture
+
+### Features
+
+* **build-tools:** detect .NET SDK version from csproj and migrate copilot setup to Linux ([62be3ca](https://github.com/Belphemur/SoundSwitch/commit/62be3ca66b0c6360f26f42adc4f0047c3ebe9d58))
+* **build:** add ARM64 support with framework-dependent publish and winget-managed runtime ([bc048f1](https://github.com/Belphemur/SoundSwitch/commit/bc048f18c65d7a401bc77b00268be93b3fd65418))
+* **release:** add parserOpts breakingHeaderPattern for ! breaking change notation ([8a32b16](https://github.com/Belphemur/SoundSwitch/commit/8a32b169cae4c10e20755565f2ac0d320c917228))
+* support arm64 architecture ([9afc160](https://github.com/Belphemur/SoundSwitch/commit/9afc160bc3f895ebb664546b5e4d0393b5888651)), closes [#2094](https://github.com/Belphemur/SoundSwitch/issues/2094)
+
+### Bug Fixes
+
+* add missing [Code] section header to winget-dotnet-runtime.iss ([427a50a](https://github.com/Belphemur/SoundSwitch/commit/427a50a9c0424bea21ab532d24e9fc3358353e9e))
+* **copilot-setup:** add EnableWindowsTargeting=true to dotnet restore on Linux ([8af7cce](https://github.com/Belphemur/SoundSwitch/commit/8af7cce057e059f2707c79cce373708626481318))
+* **copilot-setup:** replace variable-length lookbehind with sed for .NET version extraction ([90de88c](https://github.com/Belphemur/SoundSwitch/commit/90de88c78be176aaf1e5d32a2bfa0ffc6da4e777))
+* filter null TargetFramework values, rename winget methods to version-agnostic names ([4f94862](https://github.com/Belphemur/SoundSwitch/commit/4f94862cf557b509d6e650a1822bfdf76404332d))
+* parameterize .NET version for winget, remove stale win-x64 references ([3e1daaa](https://github.com/Belphemur/SoundSwitch/commit/3e1daaa33e1db0099c7faac8e87c0b1e704570f5))
+* pass DotNetMajorVersion from CI to installer, add include guard, fix repoRoot init order ([31a041b](https://github.com/Belphemur/SoundSwitch/commit/31a041b36519db012df78f3e38d2943c6ddaf4c7))
+* pin System.Security.Cryptography.Xml 10.0.7 to resolve CVE-2026-33116 and CVE-2026-26171 ([5df71f9](https://github.com/Belphemur/SoundSwitch/commit/5df71f95b3fb14dcd37dbae10def9cb92d4183ea))
+* **publish:** disambiguate $tag variable in Read-Host string interpolation ([c86b702](https://github.com/Belphemur/SoundSwitch/commit/c86b7022371756e2182272aa52de5059b88b28bd))
+* **publish:** resolve Count property error when uploading single installer ([#2081](https://github.com/Belphemur/SoundSwitch/issues/2081)) ([f58f15a](https://github.com/Belphemur/SoundSwitch/commit/f58f15ade0e3c27e87fc97efda32734d546f14e7))
+* remove ready to run ([640b5b4](https://github.com/Belphemur/SoundSwitch/commit/640b5b4185809e18a83dfd795136a4e9bd0f74c7))
+* remove SelfContained from CLI, exclude arch-suffixed installers from fallback ([d46d93b](https://github.com/Belphemur/SoundSwitch/commit/d46d93b852d5bdd4c7631d0fc319eddea3dd1a39))
+* remove unsupported --scope from winget runtime install ([43caf63](https://github.com/Belphemur/SoundSwitch/commit/43caf63d85d4ae5921c519ad019c2157fb9bbb32))
+* typo on switch device hotkey labels ([e16a206](https://github.com/Belphemur/SoundSwitch/commit/e16a206bfdc212530dc7f9aa3a581ee0748afb41))
+* update CodeQL SDK to 10.0.x, remove unused ARCH env var ([bf71d15](https://github.com/Belphemur/SoundSwitch/commit/bf71d155da38eb74700fcf1347437829621ffc56))
+* use {pf} not {commonpf}, FileSearch for winget PATH, NeedRestart on 3010 ([5002a75](https://github.com/Belphemur/SoundSwitch/commit/5002a7584b72144d669fcd5427df02ece3425cf7))
+* use underscore for arch suffix in auto-updater, prefer arch-specific first ([4a524f7](https://github.com/Belphemur/SoundSwitch/commit/4a524f7ce37edc52d243c7f4e01025877c04078d))
+* use windows-latest runner instead of windows-2025 in test-installer-build.yml ([7f2061c](https://github.com/Belphemur/SoundSwitch/commit/7f2061c65bb015943e92e599a1b7bd47dc50c3c2))
+
+### Languages
+
+* **Slovak:** Added About translation using Weblate ([3c41295](https://github.com/Belphemur/SoundSwitch/commit/3c412959f153b396f2c593532d854a4fd28df088))
+* **Slovak:** Added Settings translation using Weblate ([1e9c83c](https://github.com/Belphemur/SoundSwitch/commit/1e9c83cf472df04303b2f20e005880fb7b2513db))
+* **Slovak:** Added Tray Icon translation using Weblate ([6fda308](https://github.com/Belphemur/SoundSwitch/commit/6fda30822b953c55784c2bb352009a9e319b8893))
+* **Slovak:** Added Update Download translation using Weblate ([3765663](https://github.com/Belphemur/SoundSwitch/commit/3765663b6bfb279c961db8b527bbd0fa65562ccc))
+
 ## [6.15.0-beta.1](https://github.com/Belphemur/SoundSwitch/compare/v6.14.2...v6.15.0-beta.1) (2026-04-21)
 
 ### Features
