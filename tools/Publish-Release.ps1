@@ -226,8 +226,7 @@ if ($BuildFromSource) {
 
     # Publish CLI first, then main app (main app wins on shared files)
     # When framework-dependent, use the RuntimeIdentifier from csproj (win-x64)
-    $publishDir = Join-Path $finalDir 'win-x64'
-    New-Item -ItemType Directory -Path $publishDir -Force | Out-Null
+    $publishDir = $finalDir
 
     foreach ($proj in @($cliProject, $projectName)) {
         $projPath = Join-Path $repoRoot "$proj\$proj.csproj"

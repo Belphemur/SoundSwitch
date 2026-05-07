@@ -57,15 +57,11 @@ jobs:
         if: needs.release.outputs.released == 'true'
         permissions:
             contents: read
-        strategy:
-            matrix:
-                runtime: [win-x64, win-arm64]
         uses: ./.github/workflows/reusable-build.yml
         with:
             configuration: Release
-            runtime: ${{ matrix.runtime }}
             publish: true
-            publish-artifact-name: soundswitch-${{ matrix.runtime }}
+            publish-artifact-name: soundswitch-release
             ref: v${{ needs.release.outputs.version }}
             version: ${{ needs.release.outputs.version }}
         secrets: inherit
@@ -80,22 +76,17 @@ jobs:
         permissions:
             contents: write
         steps:
-            - name: Download win-x64 artifact
+            - name: Download artifact
               uses: actions/download-artifact@v8
               with:
-                  name: soundswitch-win-x64
-                  path: release-package/win-x64
-            - name: Download win-arm64 artifact
-              uses: actions/download-artifact@v8
-              with:
-                  name: soundswitch-win-arm64
-                  path: release-package/win-arm64
+                  name: soundswitch-release
+                  path: release-package
             - name: Create release zip
               run: |
                   version="${{ needs.release.outputs.version }}"
                   archive="${{ env.PROJECT_NAME }}-v${version}.zip"
                   cd release-package
-                  zip -r "../${archive}" win-x64 win-arm64
+                  zip -r "../${archive}" .
                   cd ..
                   echo "archive=${archive}" >> "$GITHUB_ENV"
             - name: Upload release zip to GitHub Release

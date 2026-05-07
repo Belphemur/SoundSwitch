@@ -6,10 +6,6 @@ on:
             configuration:
                 required: true
                 type: string
-            runtime:
-                required: false
-                type: string
-                default: ""
             publish:
                 required: false
                 type: boolean
@@ -101,15 +97,7 @@ jobs:
                   cache-dependency-path: Directory.Packages.props
             - name: Restore
               shell: pwsh
-              env:
-                  DOTNET_RUNTIME: ${{ inputs.runtime }}
-              run: |
-                  $arguments = @('restore')
-                  if ($env:DOTNET_RUNTIME) {
-                    $arguments += @('-r', $env:DOTNET_RUNTIME)
-                  }
-
-                  dotnet @arguments
+              run: dotnet restore
             - name: Fetch tags
               if: inputs.update-nightly-version
               shell: pwsh
@@ -135,14 +123,9 @@ jobs:
               if: inputs.publish
               shell: pwsh
               env:
-                  DOTNET_RUNTIME: ${{ inputs.runtime }}
                   PUBLISH_VERSION: ${{ inputs.version }}
               run: |
-                  if ($env:DOTNET_RUNTIME) {
-                    $outputDir = Join-Path $PWD (Join-Path 'publish' $env:DOTNET_RUNTIME)
-                  } else {
-                    $outputDir = Join-Path $PWD 'Final'
-                  }
+                  $outputDir = Join-Path $PWD 'Final'
                   if (Test-Path $outputDir) { Remove-Item $outputDir -Recurse -Force }
                   New-Item -ItemType Directory -Path $outputDir | Out-Null
 
@@ -155,9 +138,6 @@ jobs:
                       "$proj\$proj.csproj",
                       '-o', $outputDir
                     )
-                    if ($env:DOTNET_RUNTIME) {
-                      $arguments += @('-r', $env:DOTNET_RUNTIME)
-                    }
                     if ($env:PUBLISH_VERSION) {
                       $numericVersion = $env:PUBLISH_VERSION -replace '-.*$', ''
                       $arguments += @(
@@ -186,11 +166,7 @@ jobs:
                   python -m pip install markdown --quiet
                   if ($LASTEXITCODE -ne 0) { throw "Failed to install Python 'markdown' package (exit code $LASTEXITCODE)." }
 
-                  if ($env:DOTNET_RUNTIME) {
-                    $outputDir = Join-Path $PWD (Join-Path 'publish' $env:DOTNET_RUNTIME)
-                  } else {
-                    $outputDir = Join-Path $PWD 'Final'
-                  }
+                  $outputDir = Join-Path $PWD 'Final'
 
                   # Convert markdown files to HTML
                   python tools\markdown_to_html.py CHANGELOG.md -o "$outputDir\Changelog.html"
@@ -208,11 +184,7 @@ jobs:
               if: inputs.publish
               shell: pwsh
               run: |
-                  if ($env:DOTNET_RUNTIME) {
-                    $outputDir = Join-Path $PWD (Join-Path 'publish' $env:DOTNET_RUNTIME)
-                  } else {
-                    $outputDir = Join-Path $PWD 'Final'
-                  }
+                  $outputDir = Join-Path $PWD 'Final'
 
                   # Copy additional assets
                   Copy-Item 'img\soundSwitched.png' $outputDir -Force -ErrorAction SilentlyContinue
@@ -230,4 +202,4 @@ jobs:
               uses: actions/upload-artifact@v7
               with:
                   name: ${{ inputs.publish-artifact-name }}
-                  path: ${{ inputs.runtime && format('publish/{0}/*', inputs.runtime) || 'Final\*' }}
+                  path: Final\*

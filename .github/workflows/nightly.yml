@@ -21,16 +21,12 @@ jobs:
         concurrency:
             group: ${{ github.workflow }}-${{ github.ref }}-build
             cancel-in-progress: true
-        strategy:
-            matrix:
-                runtime: [win-x64, win-arm64]
         uses: ./.github/workflows/reusable-build.yml
         with:
             configuration: Nightly
-            runtime: ${{ matrix.runtime }}
             publish: true
             update-nightly-version: true
-            publish-artifact-name: soundswitch-nightly-${{ matrix.runtime }}
+            publish-artifact-name: soundswitch-nightly
         secrets: inherit
 
     publish-nightly:
@@ -43,16 +39,11 @@ jobs:
             - uses: actions/checkout@v6
               with:
                   fetch-depth: 0
-            - name: Download published win-x64 output
+            - name: Download published output
               uses: actions/download-artifact@v8
               with:
-                  name: soundswitch-nightly-win-x64
-                  path: nightly-package/win-x64
-            - name: Download published win-arm64 output
-              uses: actions/download-artifact@v8
-              with:
-                  name: soundswitch-nightly-win-arm64
-                  path: nightly-package/win-arm64
+                  name: soundswitch-nightly
+                  path: nightly-package
             - name: Setup Python
               uses: actions/setup-python@v6
               with:

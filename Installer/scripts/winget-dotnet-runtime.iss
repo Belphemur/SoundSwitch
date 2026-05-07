@@ -70,7 +70,7 @@ begin
   end;
   
   // Build winget arguments
-  Args := 'install --exact --id Microsoft.DotNet.DesktopRuntime.10' +
+  Args := 'install --force --exact --id Microsoft.DotNet.DesktopRuntime.10' +
           ' --scope ' + Scope +
           ' --silent' +
           ' --accept-package-agreements' +

@@ -41,8 +41,8 @@ WizardImageStretch=no
 // Code signing is now handled by tools\Sign-Binary.ps1 (called from Build-Installer.ps1)
 
 //SignedUninstaller=yes
-LicenseFile={#ExeDir}win-x64\LICENSE.txt
-InfoBeforeFile={#ExeDir}win-x64\Terms.txt
+LicenseFile={#ExeDir}LICENSE.txt
+InfoBeforeFile={#ExeDir}Terms.txt
 SetupLogging=yes
 RestartApplications=no
 ;AppMutex={#MyAppSetupName}
@@ -79,8 +79,7 @@ Name: addtopath; Description: "{cm:AddToPath,{#MyAppSetupName}}"; GroupDescripti
 Name: deletefiles; Description: "{cm:ExistingSettings}"; GroupDescription: "{cm:SettingsGroupDescription}"; Flags: unchecked checkedonce
 
 [Files] 
-Source: "{#ExeDir}\win-x64\*"; DestDir: "{app}"; Check: IsX64; Flags: ignoreversion recursesubdirs
-Source: "{#ExeDir}\win-arm64\*"; DestDir: "{app}"; Check: IsArm64; Flags: ignoreversion recursesubdirs
+Source: "{#ExeDir}*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "scripts\ManageWindowsUpdate.ps1"; DestDir: "{tmp}"; Flags: confirmoverwrite deleteafterinstall
 
 [Registry]
