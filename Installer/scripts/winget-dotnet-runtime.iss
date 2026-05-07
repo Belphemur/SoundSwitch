@@ -63,16 +63,11 @@ end;
 // Returns True on success, False on failure (shows error message)
 function InstallDotNetDesktopRuntime(): Boolean;
 var
-  Scope: String;
   Args: String;
   ResultCode: Integer;
   WingetPath: String;
 begin
   Result := false;
-
-  // .NET Desktop Runtime is system-wide only. The installer already
-  // requires admin privileges (PrivilegesRequired=admin in setup.iss).
-  Scope := 'machine';
 
   // Find winget: search PATH first, then known location
   WingetPath := FileSearch('winget.exe', GetEnv('PATH'));
@@ -88,9 +83,8 @@ begin
     exit;
   end;
 
-  // Build winget arguments
+  // Build winget arguments (no --scope: not supported by .NET runtime package)
   Args := 'install --exact --id Microsoft.DotNet.DesktopRuntime.{#DotNetMajorVersion}' +
-          ' --scope ' + Scope +
           ' --silent' +
           ' --accept-package-agreements' +
           ' --accept-source-agreements' +
