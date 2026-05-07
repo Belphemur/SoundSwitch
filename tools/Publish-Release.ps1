@@ -90,7 +90,9 @@ param(
 
     [string]$CertificateName = 'Open Source Developer Antoine Aflalo',
 
-    [string]$InstallerReleaseState
+    [string]$InstallerReleaseState,
+
+    [string]$DotNetMajorVersion
 )
 
 Set-StrictMode -Version Latest
@@ -99,6 +101,22 @@ $ErrorActionPreference = 'Stop'
 # Derive InstallerReleaseState from Channel when not explicitly provided
 if (-not $PSBoundParameters.ContainsKey('InstallerReleaseState')) {
     $InstallerReleaseState = if ($Channel -eq 'beta') { 'Beta' } else { 'Release' }
+}
+
+# Detect .NET major version from global.json if not explicitly provided
+if (-not $PSBoundParameters.ContainsKey('DotNetMajorVersion')) {
+    $globalJson = Join-Path $repoRoot 'global.json'
+    if (Test-Path $globalJson) {
+        $json = Get-Content $globalJson -Raw | ConvertFrom-Json
+        if ($json.sdk.version) {
+            # Extract major version from "10.0" -> "10"
+            $DotNetMajorVersion = ($json.sdk.version -split '\.')[0]
+            Write-Host "  Detected .NET major version: $DotNetMajorVersion (from global.json)" -ForegroundColor DarkGray
+        }
+    }
+    if (-not $DotNetMajorVersion) {
+        $DotNetMajorVersion = '10'  # fallback default
+    }
 }
 
 # ── Paths ────────────────────────────────────────────────────────────────────
@@ -225,12 +243,12 @@ if ($BuildFromSource) {
     New-Item -ItemType Directory -Path $finalDir -Force | Out-Null
 
     # Publish CLI first, then main app (main app wins on shared files)
-    # When framework-dependent, use the RuntimeIdentifier from csproj (win-x64)
+    # Framework-dependent publish: IL assemblies are architecture-agnostic
     $publishDir = $finalDir
 
     foreach ($proj in @($cliProject, $projectName)) {
         $projPath = Join-Path $repoRoot "$proj\$proj.csproj"
-        Write-Host "  Publishing $proj (win-x64) ..."
+        Write-Host "  Publishing $proj ..."
         dotnet publish -c $Configuration $projPath -o $publishDir
         if ($LASTEXITCODE -ne 0) {
             throw "dotnet publish failed for $proj with exit code $LASTEXITCODE."
@@ -360,6 +378,7 @@ $buildArgs = @{
     FinalDir              = $finalDir
     InstallerReleaseState = $InstallerReleaseState
     CertificateName       = $CertificateName
+    DotNetMajorVersion    = $DotNetMajorVersion
 }
 if ($SkipSigning) {
     $buildArgs['SkipSigning'] = $true

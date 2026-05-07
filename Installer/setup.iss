@@ -1,7 +1,7 @@
 #include "scripts\app_defines.iss"
 #include "scripts\winget-dotnet-runtime.iss"
-// ReleaseState is expected to be defined through the command line with /D parameter
-// e.g. iscc /DReleaseState=Beta setup.iss
+// ReleaseState and DotNetMajorVersion are expected to be defined through the command line with /D parameter
+// e.g. iscc /DReleaseState=Beta /DDotNetMajorVersion=10 setup.iss
 
 
 [Setup]

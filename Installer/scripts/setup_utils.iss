@@ -17,19 +17,24 @@ begin
       ModifyPath(ExpandConstant('{app}'));
     end;
     
-    // Check and install .NET 10 Desktop Runtime if not present
+    // Ensure .NET {#DotNetMajorVersion} Desktop Runtime is installed
     if not IsDotNetDesktopRuntime10Installed() then
     begin
-      Log('Microsoft.WindowsDesktop.App 10.x not found. Installing via winget...');
+      Log('Microsoft.WindowsDesktop.App {#DotNetMajorVersion}.x not found. Installing via winget...');
       if not InstallDotNetDesktopRuntime10() then
       begin
-        // Installation failed — message already shown by InstallDotNetDesktopRuntime10()
-        Log('Failed to install .NET 10 Desktop Runtime.');
+        Log('Failed to install .NET {#DotNetMajorVersion} Desktop Runtime.');
       end;
     end
     else
     begin
-      Log('Microsoft.WindowsDesktop.App 10.x is already installed.');
+      Log('Microsoft.WindowsDesktop.App {#DotNetMajorVersion}.x is already installed.');
+    end;
+
+    // Always try to upgrade to latest runtime version (non-fatal)
+    if IsDotNetDesktopRuntime10Installed() then
+    begin
+      UpgradeDotNetDesktopRuntime10();
     end;
   end;
 end;

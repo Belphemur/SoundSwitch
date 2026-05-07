@@ -1,19 +1,19 @@
 [Code]
-// Checks if Microsoft.WindowsDesktop.App 10.x is already installed
+// Checks if Microsoft.WindowsDesktop.App {#DotNetMajorVersion}.x is already installed
 function IsDotNetDesktopRuntime10Installed(): Boolean;
 var
   FindRec: TFindRec;
   SharedDir: String;
 begin
   Result := false;
-  
-  // Check machine-wide install: look for any 10.0.* directory
+
+  // Check machine-wide install: look for any {#DotNetMajorVersion}.0.* directory
   SharedDir := ExpandConstant('{commonpf}\dotnet\shared\Microsoft.WindowsDesktop.App\');
   if FindFirst(SharedDir + '*', FindRec) then
   begin
     repeat
       if (FindRec.Attributes and FILE_ATTRIBUTE_DIRECTORY <> 0) and
-         (Pos('10.0', FindRec.Name) = 1) then
+         (Pos('{#DotNetMajorVersion}.0', FindRec.Name) = 1) then
       begin
         Result := true;
         FindClose(FindRec);
@@ -22,14 +22,14 @@ begin
     until not FindNext(FindRec);
     FindClose(FindRec);
   end;
-  
+
   // Check per-user install
   SharedDir := ExpandConstant('{localappdata}\Microsoft\dotnet\shared\Microsoft.WindowsDesktop.App\');
   if FindFirst(SharedDir + '*', FindRec) then
   begin
     repeat
       if (FindRec.Attributes and FILE_ATTRIBUTE_DIRECTORY <> 0) and
-         (Pos('10.0', FindRec.Name) = 1) then
+         (Pos('{#DotNetMajorVersion}.0', FindRec.Name) = 1) then
       begin
         Result := true;
         FindClose(FindRec);
@@ -40,7 +40,7 @@ begin
   end;
 end;
 
-// Installs .NET 10 Desktop Runtime via winget
+// Installs .NET {#DotNetMajorVersion} Desktop Runtime via winget
 // Returns True on success, False on failure (shows error message)
 function InstallDotNetDesktopRuntime10(): Boolean;
 var
@@ -50,49 +50,49 @@ var
   WingetPath: String;
 begin
   Result := false;
-  
+
   // .NET Desktop Runtime is system-wide only. The installer already
   // requires admin privileges (PrivilegesRequired=admin in setup.iss).
   Scope := 'machine';
-  
+
   // Find winget: try PATH first, then fallback to known location
   WingetPath := 'winget.exe';
   if not FileExists(WingetPath) then
     WingetPath := ExpandConstant('{localappdata}\Microsoft\WindowsApps\winget.exe');
-  
+
   if not FileExists(WingetPath) then
   begin
     MsgBox('Windows Package Manager (winget) is not available on this system.' + #13#10 +
-           'Please install .NET 10 Desktop Runtime manually from:' + #13#10 +
+           'Please install .NET {#DotNetMajorVersion} Desktop Runtime manually from:' + #13#10 +
            'https://dotnet.microsoft.com/en-us/download/dotnet', mbError, MB_OK);
     Result := false;
     exit;
   end;
-  
+
   // Build winget arguments
-  Args := 'install --force --exact --id Microsoft.DotNet.DesktopRuntime.10' +
+  Args := 'install --exact --id Microsoft.DotNet.DesktopRuntime.{#DotNetMajorVersion}' +
           ' --scope ' + Scope +
           ' --silent' +
           ' --accept-package-agreements' +
           ' --accept-source-agreements' +
           ' --source winget';
-  
+
   Log('Running: ' + WingetPath + ' ' + Args);
-  
+
   if Exec(WingetPath, Args, '', SW_HIDE, ewWaitUntilTerminated, ResultCode) then
   begin
     case ResultCode of
       0: begin
-        Log('.NET 10 Desktop Runtime installed successfully.');
+        Log('.NET {#DotNetMajorVersion} Desktop Runtime installed successfully.');
         Result := true;
       end;
       3010: begin
-        Log('.NET 10 Desktop Runtime installed (reboot required).');
+        Log('.NET {#DotNetMajorVersion} Desktop Runtime installed (reboot required).');
         Result := true; // Success, but needs reboot later
       end;
       else begin
         Log('winget failed with exit code: ' + IntToStr(ResultCode));
-        MsgBox('Failed to install .NET 10 Desktop Runtime (exit code: ' + IntToStr(ResultCode) + ').' + #13#10 +
+        MsgBox('Failed to install .NET {#DotNetMajorVersion} Desktop Runtime (exit code: ' + IntToStr(ResultCode) + ').' + #13#10 +
                'Please install it manually from:' + #13#10 +
                'https://dotnet.microsoft.com/en-us/download/dotnet', mbError, MB_OK);
         Result := false;
@@ -103,8 +103,48 @@ begin
   begin
     Log('Failed to execute winget.');
     MsgBox('Failed to run Windows Package Manager.' + #13#10 +
-           'Please install .NET 10 Desktop Runtime manually from:' + #13#10 +
+           'Please install .NET {#DotNetMajorVersion} Desktop Runtime manually from:' + #13#10 +
            'https://dotnet.microsoft.com/en-us/download/dotnet', mbError, MB_OK);
     Result := false;
+  end;
+end;
+
+// Attempts to upgrade .NET {#DotNetMajorVersion} Desktop Runtime to latest version via winget
+// Non-fatal: if nothing to upgrade or winget unavailable, just logs and continues
+procedure UpgradeDotNetDesktopRuntime10();
+var
+  Args: String;
+  ResultCode: Integer;
+  WingetPath: String;
+begin
+  WingetPath := 'winget.exe';
+  if not FileExists(WingetPath) then
+    WingetPath := ExpandConstant('{localappdata}\Microsoft\WindowsApps\winget.exe');
+
+  if not FileExists(WingetPath) then
+  begin
+    Log('winget not found, skipping runtime upgrade check.');
+    exit;
+  end;
+
+  Args := 'upgrade --id Microsoft.DotNet.DesktopRuntime.{#DotNetMajorVersion}' +
+          ' --silent' +
+          ' --accept-package-agreements' +
+          ' --accept-source-agreements' +
+          ' --source winget';
+
+  Log('Checking for .NET {#DotNetMajorVersion} Desktop Runtime updates: ' + WingetPath + ' ' + Args);
+
+  if Exec(WingetPath, Args, '', SW_HIDE, ewWaitUntilTerminated, ResultCode) then
+  begin
+    case ResultCode of
+      0: Log('.NET {#DotNetMajorVersion} Desktop Runtime upgrade completed successfully.');
+      3010: Log('.NET {#DotNetMajorVersion} Desktop Runtime upgraded (reboot required).');
+      else Log('winget upgrade exited with code: ' + IntToStr(ResultCode) + ' (may indicate no updates available).');
+    end;
+  end
+  else
+  begin
+    Log('Failed to execute winget upgrade check.');
   end;
 end;
