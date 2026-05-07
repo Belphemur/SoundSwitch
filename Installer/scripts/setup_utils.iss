@@ -16,26 +16,6 @@ begin
       // Add to PATH (function now handles admin/user mode internally)
       ModifyPath(ExpandConstant('{app}'));
     end;
-    
-    // Ensure .NET {#DotNetMajorVersion} Desktop Runtime is installed
-    if not IsDotNetDesktopRuntimeInstalled() then
-    begin
-      Log('Microsoft.WindowsDesktop.App {#DotNetMajorVersion}.x not found. Installing via winget...');
-      if not InstallDotNetDesktopRuntime() then
-      begin
-        Log('Failed to install .NET {#DotNetMajorVersion} Desktop Runtime.');
-      end;
-    end
-    else
-    begin
-      Log('Microsoft.WindowsDesktop.App {#DotNetMajorVersion}.x is already installed.');
-    end;
-
-    // Always try to upgrade to latest runtime version (non-fatal)
-    if IsDotNetDesktopRuntimeInstalled() then
-    begin
-      UpgradeDotNetDesktopRuntime();
-    end;
   end;
 end;
 
@@ -63,6 +43,30 @@ begin
     // Delete installer executable after 5 seconds
     Sleep(5000);
     DeleteFile(setupExe);
+  end;
+end;
+
+<event('InitializeWizard')>
+procedure ConfigureDotNetDependency;
+begin
+  if '{#DotNetMajorVersion}' = '10' then
+  begin
+    UninstallOlderDotNetRuntimes(10, 0, 7);
+    Dependency_AddDotNet100Desktop;
+  end
+  else if '{#DotNetMajorVersion}' = '9' then
+  begin
+    UninstallOlderDotNetRuntimes(9, 0, 15);
+    Dependency_AddDotNet90Desktop;
+  end
+  else if '{#DotNetMajorVersion}' = '8' then
+  begin
+    UninstallOlderDotNetRuntimes(8, 0, 26);
+    Dependency_AddDotNet80Desktop;
+  end
+  else
+  begin
+    MsgBox('Unsupported .NET version: {#DotNetMajorVersion}', mbError, MB_OK);
   end;
 end;
 #endif
