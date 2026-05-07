@@ -1,3 +1,13 @@
+## [7.0.0-beta.2](https://github.com/Belphemur/SoundSwitch/compare/v7.0.0-beta.1...v7.0.0-beta.2) (2026-05-07)
+
+### Bug Fixes
+
+* **instaler:** fix new light installer (requires internet for .NET framework) ([d0156cf](https://github.com/Belphemur/SoundSwitch/commit/d0156cf9520056c16e70b9eb5942ebf146b381d1)), closes [#2095](https://github.com/Belphemur/SoundSwitch/issues/2095)
+* **installer:** address code review feedback ([490b326](https://github.com/Belphemur/SoundSwitch/commit/490b3263f96ebe983573679e0dddc79e317f5abb))
+* **installer:** check uninstall ResultCode with proper logging ([7a771a6](https://github.com/Belphemur/SoundSwitch/commit/7a771a6ce73e73e90f202311b03ea72181d3350d))
+* **installer:** use Dependency_ArchTitle for uninstall display name suffix matching ([3048506](https://github.com/Belphemur/SoundSwitch/commit/30485060e88001b065ee3449631dfea712f9fb6d))
+* **installer:** wrap QuietUninstallString in quotes for safer cmd execution ([5b9ef83](https://github.com/Belphemur/SoundSwitch/commit/5b9ef836c4759b247988c8f848654245924db7d5))
+
 ## [7.0.0-beta.1](https://github.com/Belphemur/SoundSwitch/compare/v6.15.0-beta.1...v7.0.0-beta.1) (2026-05-07)
 
 ### ⚠ BREAKING CHANGES
