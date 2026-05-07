@@ -2,7 +2,7 @@
 #define uninstallDotnetIss
 
 [Code]
-procedure UninstallOlderDotNetRuntimes(Major, Minor, TargetRevision: Word);
+procedure UninstallOlderDotNetRuntimes(Major, Minor, TargetRevision: Word; ExpectedArchSuffix: String);
 var
   UninstallKeys: TArrayOfString;
   RootKeys: array of Integer;
@@ -31,7 +31,7 @@ begin
         
         if RegQueryStringValue(RootKey, SubKeyName, 'DisplayName', DisplayName) then
         begin
-          if Pos(TargetNamePrefix, DisplayName) = 1 then
+          if (Pos(TargetNamePrefix, DisplayName) = 1) and (Pos(ExpectedArchSuffix, DisplayName) > 0) then
           begin
             if RegQueryStringValue(RootKey, SubKeyName, 'DisplayVersion', DisplayVersion) then
             begin

@@ -158,6 +158,20 @@ begin
         if WizardNoIcons then begin
           TempValue := TempValue + ' /NOICONS';
         end;
+        if CmdLineParamExists('/VERYSILENT') then begin
+          TempValue := TempValue + ' /VERYSILENT';
+        end else if CmdLineParamExists('/SILENT') then begin
+          TempValue := TempValue + ' /SILENT';
+        end;
+        if CmdLineParamExists('/SUPPRESSMSGBOXES') then begin
+          TempValue := TempValue + ' /SUPPRESSMSGBOXES';
+        end;
+        if CmdLineParamExists('/NOCANCEL') then begin
+          TempValue := TempValue + ' /NOCANCEL';
+        end;
+        if CmdLineParamExists('/NORESTART') then begin
+          TempValue := TempValue + ' /NORESTART';
+        end;
         RegWriteStringValue(HKA, 'SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce', '{#SetupSetting("AppName")}', TempValue);
       end;
     end;

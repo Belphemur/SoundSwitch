@@ -49,24 +49,29 @@ end;
 <event('InitializeWizard')>
 procedure ConfigureDotNetDependency;
 begin
-  if '{#DotNetMajorVersion}' = '10' then
-  begin
-    UninstallOlderDotNetRuntimes(10, 0, 7);
-    Dependency_AddDotNet100Desktop;
-  end
-  else if '{#DotNetMajorVersion}' = '9' then
-  begin
-    UninstallOlderDotNetRuntimes(9, 0, 15);
-    Dependency_AddDotNet90Desktop;
-  end
-  else if '{#DotNetMajorVersion}' = '8' then
-  begin
-    UninstallOlderDotNetRuntimes(8, 0, 26);
-    Dependency_AddDotNet80Desktop;
-  end
-  else
-  begin
-    MsgBox('Unsupported .NET version: {#DotNetMajorVersion}', mbError, MB_OK);
-  end;
+#if DotNetMajorVersion == "10"
+  Dependency_AddDotNet100Desktop;
+#elif DotNetMajorVersion == "9"
+  Dependency_AddDotNet90Desktop;
+#elif DotNetMajorVersion == "8"
+  Dependency_AddDotNet80Desktop;
+#else
+  #error "Unsupported .NET version: " + DotNetMajorVersion
+#endif
+end;
+
+<event('PrepareToInstall')>
+function MyPrepareToInstall(var NeedsRestart: Boolean): String;
+begin
+#if DotNetMajorVersion == "10"
+  UninstallOlderDotNetRuntimes(10, 0, 7, Dependency_ArchSuffix);
+#elif DotNetMajorVersion == "9"
+  UninstallOlderDotNetRuntimes(9, 0, 15, Dependency_ArchSuffix);
+#elif DotNetMajorVersion == "8"
+  UninstallOlderDotNetRuntimes(8, 0, 26, Dependency_ArchSuffix);
+#else
+  #error "Unsupported .NET version: " + DotNetMajorVersion
+#endif
+  Result := '';
 end;
 #endif
