@@ -18,10 +18,10 @@ begin
     end;
     
     // Ensure .NET {#DotNetMajorVersion} Desktop Runtime is installed
-    if not IsDotNetDesktopRuntime10Installed() then
+    if not IsDotNetDesktopRuntimeInstalled() then
     begin
       Log('Microsoft.WindowsDesktop.App {#DotNetMajorVersion}.x not found. Installing via winget...');
-      if not InstallDotNetDesktopRuntime10() then
+      if not InstallDotNetDesktopRuntime() then
       begin
         Log('Failed to install .NET {#DotNetMajorVersion} Desktop Runtime.');
       end;
@@ -32,9 +32,9 @@ begin
     end;
 
     // Always try to upgrade to latest runtime version (non-fatal)
-    if IsDotNetDesktopRuntime10Installed() then
+    if IsDotNetDesktopRuntimeInstalled() then
     begin
-      UpgradeDotNetDesktopRuntime10();
+      UpgradeDotNetDesktopRuntime();
     end;
   end;
 end;

@@ -1,6 +1,6 @@
 [Code]
 // Checks if Microsoft.WindowsDesktop.App {#DotNetMajorVersion}.x is already installed
-function IsDotNetDesktopRuntime10Installed(): Boolean;
+function IsDotNetDesktopRuntimeInstalled(): Boolean;
 var
   FindRec: TFindRec;
   SharedDir: String;
@@ -42,7 +42,7 @@ end;
 
 // Installs .NET {#DotNetMajorVersion} Desktop Runtime via winget
 // Returns True on success, False on failure (shows error message)
-function InstallDotNetDesktopRuntime10(): Boolean;
+function InstallDotNetDesktopRuntime(): Boolean;
 var
   Scope: String;
   Args: String;
@@ -111,7 +111,7 @@ end;
 
 // Attempts to upgrade .NET {#DotNetMajorVersion} Desktop Runtime to latest version via winget
 // Non-fatal: if nothing to upgrade or winget unavailable, just logs and continues
-procedure UpgradeDotNetDesktopRuntime10();
+procedure UpgradeDotNetDesktopRuntime();
 var
   Args: String;
   ResultCode: Integer;
