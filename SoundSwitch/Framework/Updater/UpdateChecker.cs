@@ -72,10 +72,12 @@ public partial class UpdateChecker(Uri releaseUrl, bool checkBeta)
         {
             if (version > AppVersion)
             {
-                // Future-proof architecture matching: prefer arch-specific installer, fall back to generic
+                // Future-proof architecture matching: prefer arch-specific installer, fall back to generic (no arch suffix)
                 var archSuffix = RuntimeInformation.ProcessArchitecture == Architecture.Arm64 ? "_arm64" : "_x64";
                 var installer = serverRelease.Assets.FirstOrDefault(a => a.Name.Contains(archSuffix) && a.Name.EndsWith(".exe"))
-                                ?? serverRelease.Assets.FirstOrDefault(asset => asset.Name.EndsWith(".exe"));
+                                ?? serverRelease.Assets.FirstOrDefault(a => a.Name.EndsWith(".exe")
+                                                                           && !a.Name.Contains("_arm64")
+                                                                           && !a.Name.Contains("_x64"));
                 if (installer == null)
                 {
                     return false;
