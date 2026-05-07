@@ -1,4 +1,7 @@
 [Code]
+var
+  _dotnetRebootRequired: Boolean;
+
 // Checks if Microsoft.WindowsDesktop.App {#DotNetMajorVersion}.x is already installed
 function IsDotNetDesktopRuntimeInstalled(): Boolean;
 var
@@ -8,7 +11,7 @@ begin
   Result := false;
 
   // Check machine-wide install: look for any {#DotNetMajorVersion}.0.* directory
-  SharedDir := ExpandConstant('{commonpf}\dotnet\shared\Microsoft.WindowsDesktop.App\');
+  SharedDir := ExpandConstant('{pf}\dotnet\shared\Microsoft.WindowsDesktop.App\');
   if FindFirst(SharedDir + '*', FindRec) then
   begin
     repeat
@@ -55,12 +58,12 @@ begin
   // requires admin privileges (PrivilegesRequired=admin in setup.iss).
   Scope := 'machine';
 
-  // Find winget: try PATH first, then fallback to known location
-  WingetPath := 'winget.exe';
-  if not FileExists(WingetPath) then
+  // Find winget: search PATH first, then known location
+  WingetPath := FileSearch('winget.exe', GetEnv('PATH'));
+  if WingetPath = '' then
     WingetPath := ExpandConstant('{localappdata}\Microsoft\WindowsApps\winget.exe');
 
-  if not FileExists(WingetPath) then
+  if WingetPath = '' then
   begin
     MsgBox('Windows Package Manager (winget) is not available on this system.' + #13#10 +
            'Please install .NET {#DotNetMajorVersion} Desktop Runtime manually from:' + #13#10 +
@@ -88,6 +91,7 @@ begin
       end;
       3010: begin
         Log('.NET {#DotNetMajorVersion} Desktop Runtime installed (reboot required).');
+        _dotnetRebootRequired := true;
         Result := true; // Success, but needs reboot later
       end;
       else begin
@@ -117,11 +121,11 @@ var
   ResultCode: Integer;
   WingetPath: String;
 begin
-  WingetPath := 'winget.exe';
-  if not FileExists(WingetPath) then
+  WingetPath := FileSearch('winget.exe', GetEnv('PATH'));
+  if WingetPath = '' then
     WingetPath := ExpandConstant('{localappdata}\Microsoft\WindowsApps\winget.exe');
 
-  if not FileExists(WingetPath) then
+  if WingetPath = '' then
   begin
     Log('winget not found, skipping runtime upgrade check.');
     exit;
@@ -139,7 +143,10 @@ begin
   begin
     case ResultCode of
       0: Log('.NET {#DotNetMajorVersion} Desktop Runtime upgrade completed successfully.');
-      3010: Log('.NET {#DotNetMajorVersion} Desktop Runtime upgraded (reboot required).');
+      3010: begin
+        Log('.NET {#DotNetMajorVersion} Desktop Runtime upgraded (reboot required).');
+        _dotnetRebootRequired := true;
+      end;
       else Log('winget upgrade exited with code: ' + IntToStr(ResultCode) + ' (may indicate no updates available).');
     end;
   end
@@ -147,4 +154,9 @@ begin
   begin
     Log('Failed to execute winget upgrade check.');
   end;
+end;
+
+function NeedRestart(): Boolean;
+begin
+  Result := _dotnetRebootRequired;
 end;
