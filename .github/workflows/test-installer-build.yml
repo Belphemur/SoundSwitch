@@ -16,7 +16,7 @@ on:
 
 jobs:
   build-installer-no-sign:
-    runs-on: windows-2025
+    runs-on: windows-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -66,6 +66,8 @@ jobs:
           }
           $dotnetVersion = "{0}.{1}.x" -f $match.Groups['major'].Value, $match.Groups['minor'].Value
           Write-Host "Detected .NET SDK version: $dotnetVersion (from $framework)"
+          $major = $match.Groups['major'].Value
+          "major=$major" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
           "dotnet-version=$dotnetVersion" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
 
       - name: Setup .NET
@@ -76,6 +78,7 @@ jobs:
           cache-dependency-path: Directory.Packages.props
 
       - name: Build SoundSwitch Application
+        shell: cmd
         run: |
           echo "Cleaning build directories"
           if exist bin rmdir /q /s bin
@@ -83,7 +86,7 @@ jobs:
           if exist Release rmdir /q /s Release
           if exist Final rmdir /q /s Final
           mkdir Final
-          
+
           echo "Building SoundSwitch CLI"
           dotnet publish -c Release SoundSwitch.CLI\SoundSwitch.CLI.csproj -o Final
           if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
@@ -91,7 +94,6 @@ jobs:
           echo "Building SoundSwitch Main Application"
           dotnet publish -c Release SoundSwitch\SoundSwitch.csproj -o Final
           if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
-        shell: cmd
 
       - name: Setup Python
         uses: actions/setup-python@v6
@@ -123,18 +125,18 @@ jobs:
           )
 
           echo "Copy soundSwitched image"
-          xcopy /y img\soundSwitched.png Final >nul 2>nul
+          xcopy /y img\soundSwitched.png Final\ >nul 2>nul
 
           echo "Copy CLI README"
-          xcopy /y SoundSwitch.CLI\README.md Final >nul 2>nul
+          xcopy /y SoundSwitch.CLI\README.md Final\ >nul 2>nul
 
-          echo "Copy LICENSE"
-          xcopy /y LICENSE.txt Final >nul 2>nul
-          xcopy /y Terms.txt Final >nul 2>nul
+          echo "Copy LICENSE and Terms"
+          xcopy /y LICENSE.txt Final\ >nul 2>nul
+          xcopy /y Terms.txt Final\ >nul 2>nul
         shell: cmd
 
       - name: Build Installer
-        run: .\\Installer\\Make-Installer.bat Nightly
+        run: .\\Installer\\Make-Installer.bat Nightly ${{ steps.framework.outputs.major }}
         shell: cmd
 
       - name: Run Installer in Silent Mode (Machine Scope)

@@ -7,6 +7,9 @@
         "@semantic-release/commit-analyzer",
         {
           "preset": "conventionalcommits",
+          "parserOpts": {
+            "breakingHeaderPattern": "^(\\w*)(?:\\(([\\w$\\.\\-\\* ]*)\\))?!: (.*)$"
+          },
           "releaseRules": [
             {
               "breaking": true,

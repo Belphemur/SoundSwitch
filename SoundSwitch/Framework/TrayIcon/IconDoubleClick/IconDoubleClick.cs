@@ -24,7 +24,7 @@ public enum IconDoubleClick
     /// Cycles through the configured playback devices.
     /// This is the default behavior and matches the traditional SoundSwitch functionality.
     /// </summary>
-    SwitchDevice = 0,
+    SwitchPlaybackDevice = 0,
 
     /// <summary>
     /// Opens the SoundSwitch settings window.

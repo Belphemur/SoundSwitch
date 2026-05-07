@@ -60,9 +60,8 @@ jobs:
         uses: ./.github/workflows/reusable-build.yml
         with:
             configuration: Release
-            runtime: win-x64
             publish: true
-            publish-artifact-name: release-package
+            publish-artifact-name: soundswitch-release
             ref: v${{ needs.release.outputs.version }}
             version: ${{ needs.release.outputs.version }}
         secrets: inherit
@@ -77,10 +76,10 @@ jobs:
         permissions:
             contents: write
         steps:
-            - name: Download build output
+            - name: Download artifact
               uses: actions/download-artifact@v8
               with:
-                  name: release-package
+                  name: soundswitch-release
                   path: release-package
             - name: Create release zip
               run: |

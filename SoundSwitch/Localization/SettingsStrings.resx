@@ -576,7 +576,7 @@ Restore the state of the system when the application is closed.</value>
     <value>Persistent</value>
   </data>
   <data name="switchDevice" xml:space="preserve">
-    <value>Switch playback device</value>
+    <value>Switch device</value>
   </data>
   <data name="switchRecordingDevice" xml:space="preserve">
     <value>Switch recording device</value>
@@ -763,5 +763,8 @@ Press Esc to close.</value>
   </data>
   <data name="appSoundLock.rule.error.title" xml:space="preserve">
     <value>Validation Error</value>
+  </data>
+  <data name="switchPlaybackDevice" xml:space="preserve">
+    <value>Switch playback device</value>
   </data>
 </root>

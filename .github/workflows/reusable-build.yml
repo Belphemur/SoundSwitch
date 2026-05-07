@@ -6,10 +6,6 @@ on:
             configuration:
                 required: true
                 type: string
-            runtime:
-                required: false
-                type: string
-                default: ""
             publish:
                 required: false
                 type: boolean
@@ -101,15 +97,7 @@ jobs:
                   cache-dependency-path: Directory.Packages.props
             - name: Restore
               shell: pwsh
-              env:
-                  DOTNET_RUNTIME: ${{ inputs.runtime }}
-              run: |
-                  $arguments = @('restore')
-                  if ($env:DOTNET_RUNTIME) {
-                    $arguments += @('-r', $env:DOTNET_RUNTIME)
-                  }
-
-                  dotnet @arguments
+              run: dotnet restore
             - name: Fetch tags
               if: inputs.update-nightly-version
               shell: pwsh
@@ -135,7 +123,6 @@ jobs:
               if: inputs.publish
               shell: pwsh
               env:
-                  DOTNET_RUNTIME: ${{ inputs.runtime }}
                   PUBLISH_VERSION: ${{ inputs.version }}
               run: |
                   $outputDir = Join-Path $PWD 'Final'
@@ -151,9 +138,6 @@ jobs:
                       "$proj\$proj.csproj",
                       '-o', $outputDir
                     )
-                    if ($env:DOTNET_RUNTIME) {
-                      $arguments += @('-r', $env:DOTNET_RUNTIME)
-                    }
                     if ($env:PUBLISH_VERSION) {
                       $numericVersion = $env:PUBLISH_VERSION -replace '-.*$', ''
                       $arguments += @(

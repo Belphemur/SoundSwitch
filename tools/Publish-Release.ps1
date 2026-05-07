@@ -88,18 +88,15 @@ param(
 
     [switch]$SkipSigning,
 
-    [string]$CertificateName = 'OpenSource Developer, Antoine Aflalo',
+    [string]$CertificateName = 'Open Source Developer Antoine Aflalo',
 
-    [string]$InstallerReleaseState
+    [string]$InstallerReleaseState,
+
+    [string]$DotNetMajorVersion
 )
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
-
-# Derive InstallerReleaseState from Channel when not explicitly provided
-if (-not $PSBoundParameters.ContainsKey('InstallerReleaseState')) {
-    $InstallerReleaseState = if ($Channel -eq 'beta') { 'Beta' } else { 'Release' }
-}
 
 # ── Paths ────────────────────────────────────────────────────────────────────
 
@@ -107,6 +104,27 @@ $repoRoot    = Split-Path $PSScriptRoot -Parent
 $finalDir    = Join-Path $repoRoot 'Final'
 $projectName = 'SoundSwitch'
 $cliProject  = 'SoundSwitch.CLI'
+
+# Derive InstallerReleaseState from Channel when not explicitly provided
+if (-not $PSBoundParameters.ContainsKey('InstallerReleaseState')) {
+    $InstallerReleaseState = if ($Channel -eq 'beta') { 'Beta' } else { 'Release' }
+}
+
+# Detect .NET major version from global.json if not explicitly provided
+if (-not $PSBoundParameters.ContainsKey('DotNetMajorVersion')) {
+    $globalJson = Join-Path $repoRoot 'global.json'
+    if (Test-Path $globalJson) {
+        $json = Get-Content $globalJson -Raw | ConvertFrom-Json
+        if ($json.sdk.version) {
+            # Extract major version from "10.0" -> "10"
+            $DotNetMajorVersion = ($json.sdk.version -split '\.')[0]
+            Write-Host "  Detected .NET major version: $DotNetMajorVersion (from global.json)" -ForegroundColor DarkGray
+        }
+    }
+    if (-not $DotNetMajorVersion) {
+        $DotNetMajorVersion = '10'  # fallback default
+    }
+}
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -225,10 +243,13 @@ if ($BuildFromSource) {
     New-Item -ItemType Directory -Path $finalDir -Force | Out-Null
 
     # Publish CLI first, then main app (main app wins on shared files)
+    # Framework-dependent publish: IL assemblies are architecture-agnostic
+    $publishDir = $finalDir
+
     foreach ($proj in @($cliProject, $projectName)) {
         $projPath = Join-Path $repoRoot "$proj\$proj.csproj"
         Write-Host "  Publishing $proj ..."
-        dotnet publish -c $Configuration $projPath -o $finalDir
+        dotnet publish -c $Configuration $projPath -o $publishDir
         if ($LASTEXITCODE -ne 0) {
             throw "dotnet publish failed for $proj with exit code $LASTEXITCODE."
         }
@@ -357,6 +378,7 @@ $buildArgs = @{
     FinalDir              = $finalDir
     InstallerReleaseState = $InstallerReleaseState
     CertificateName       = $CertificateName
+    DotNetMajorVersion    = $DotNetMajorVersion
 }
 if ($SkipSigning) {
     $buildArgs['SkipSigning'] = $true
@@ -383,8 +405,8 @@ if (-not (Test-Path $installerDir)) {
     throw "Installer directory not found at $installerDir. Did the build succeed?"
 }
 
-$installers = Get-ChildItem $installerDir -Filter '*Installer.exe'
-if (-not $installers -or $installers.Count -eq 0) {
+$installers = @(Get-ChildItem $installerDir -Filter '*Installer.exe')
+if ($installers.Count -eq 0) {
     throw "No installer files found in $installerDir."
 }
 
@@ -455,7 +477,7 @@ Write-Host "Channel:    $Channel" -ForegroundColor Cyan
 Write-Host "Installers: $($installers.Count) file(s)" -ForegroundColor Cyan
 Write-Host ""
 
-$confirm = Read-Host "Publish release $tag? (y/N)"
+$confirm = Read-Host "Publish release ${tag}? (y/N)"
 if ($confirm -eq 'y' -or $confirm -eq 'Y') {
     gh release edit $tag --repo $Repository --draft=false
     if ($LASTEXITCODE -ne 0) {

@@ -58,7 +58,9 @@ param(
 
     [string]$CertificateName = 'OpenSource Developer, Antoine Aflalo',
 
-    [string]$InstallerReleaseState = 'Release'
+    [string]$InstallerReleaseState = 'Release',
+
+    [string]$DotNetMajorVersion = '10'
 )
 
 Set-StrictMode -Version Latest
@@ -134,7 +136,7 @@ if ($canSign) {
 
     $binaries = @("$projectName.exe", "$cliProject.exe") |
         ForEach-Object { Join-Path $FinalDir $_ } |
-        Where-Object  { Test-Path $_ }
+        Where-Object { Test-Path $_ }
 
     if ($binaries) {
         & $signScript -Path $binaries -CertificateName $CertificateName
@@ -176,8 +178,8 @@ if (-not (Test-Path $setupIss)) {
     throw "Installer\setup.iss not found at $setupIss."
 }
 
-Write-Host "  Compiling: ISCC $setupIss /DReleaseState=$InstallerReleaseState"
-& $isccExe $setupIss "/DReleaseState=$InstallerReleaseState"
+Write-Host "  Compiling: ISCC $setupIss /DReleaseState=$InstallerReleaseState /DDotNetMajorVersion=$DotNetMajorVersion"
+& $isccExe $setupIss "/DReleaseState=$InstallerReleaseState" "/DDotNetMajorVersion=$DotNetMajorVersion"
 if ($LASTEXITCODE -ne 0) {
     throw "Inno Setup compilation failed with exit code $LASTEXITCODE."
 }
