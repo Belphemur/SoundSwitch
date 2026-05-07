@@ -64,11 +64,11 @@ end;
 function MyPrepareToInstall(var NeedsRestart: Boolean): String;
 begin
 #if DotNetMajorVersion == "10"
-  UninstallOlderDotNetRuntimes(10, 0, 7, Dependency_ArchSuffix);
+  UninstallOlderDotNetRuntimes(10, 0, 7, Dependency_ArchTitle);
 #elif DotNetMajorVersion == "9"
-  UninstallOlderDotNetRuntimes(9, 0, 15, Dependency_ArchSuffix);
+  UninstallOlderDotNetRuntimes(9, 0, 15, Dependency_ArchTitle);
 #elif DotNetMajorVersion == "8"
-  UninstallOlderDotNetRuntimes(8, 0, 26, Dependency_ArchSuffix);
+  UninstallOlderDotNetRuntimes(8, 0, 26, Dependency_ArchTitle);
 #else
   #error "Unsupported .NET version: " + DotNetMajorVersion
 #endif
