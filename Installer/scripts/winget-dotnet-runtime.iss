@@ -1,3 +1,6 @@
+#ifndef wingetDotNetRuntimeIss
+#define wingetDotNetRuntimeIss
+
 [Code]
 var
   _dotnetRebootRequired: Boolean;
@@ -173,3 +176,5 @@ function NeedRestart(): Boolean;
 begin
   Result := _dotnetRebootRequired;
 end;
+
+#endif

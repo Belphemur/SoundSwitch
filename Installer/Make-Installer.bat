@@ -31,8 +31,13 @@ echo Cleaning previous installer files: ..\Final\Installer\*Installer.exe
 del ..\Final\Installer\*Installer.exe
 
 echo Building installer...
-echo Running Inno Setup: %innoSetupExe% setup.iss /DReleaseState=%1
-%innoSetupExe% setup.iss /DReleaseState=%1
+if "%2"=="" (
+    echo Running Inno Setup: %innoSetupExe% setup.iss /DReleaseState=%1
+    %innoSetupExe% setup.iss /DReleaseState=%1
+) else (
+    echo Running Inno Setup: %innoSetupExe% setup.iss /DReleaseState=%1 /DDotNetMajorVersion=%2
+    %innoSetupExe% setup.iss /DReleaseState=%1 /DDotNetMajorVersion=%2
+)
 if not %ERRORLEVEL%==0 (set errorMessage=Installer script setup.iss failed & goto ERROR_QUIT)
 
 echo Moving installer to final location: ..\Final\*Installer.exe -^> ..\Final\Installer\

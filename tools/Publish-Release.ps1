@@ -98,6 +98,13 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
+# ── Paths ────────────────────────────────────────────────────────────────────
+
+$repoRoot    = Split-Path $PSScriptRoot -Parent
+$finalDir    = Join-Path $repoRoot 'Final'
+$projectName = 'SoundSwitch'
+$cliProject  = 'SoundSwitch.CLI'
+
 # Derive InstallerReleaseState from Channel when not explicitly provided
 if (-not $PSBoundParameters.ContainsKey('InstallerReleaseState')) {
     $InstallerReleaseState = if ($Channel -eq 'beta') { 'Beta' } else { 'Release' }
@@ -118,13 +125,6 @@ if (-not $PSBoundParameters.ContainsKey('DotNetMajorVersion')) {
         $DotNetMajorVersion = '10'  # fallback default
     }
 }
-
-# ── Paths ────────────────────────────────────────────────────────────────────
-
-$repoRoot    = Split-Path $PSScriptRoot -Parent
-$finalDir    = Join-Path $repoRoot 'Final'
-$projectName = 'SoundSwitch'
-$cliProject  = 'SoundSwitch.CLI'
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
 
