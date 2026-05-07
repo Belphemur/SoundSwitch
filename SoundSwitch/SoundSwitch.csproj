@@ -6,8 +6,6 @@
     <UseWindowsForms>true</UseWindowsForms>
     <Deterministic>false</Deterministic>
     <PublishTrimmed>false</PublishTrimmed>
-    <TrimMode>link</TrimMode>
-    <PublishReadyToRun>true</PublishReadyToRun>
     <Configurations>Debug;Release;Beta;Nightly</Configurations>
     <TargetFramework>net10.0-windows</TargetFramework>
     <Platforms>AnyCPU</Platforms>
