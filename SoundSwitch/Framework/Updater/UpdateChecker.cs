@@ -13,6 +13,7 @@
  ********************************************************************/
 
 using System;
+using System.Runtime.InteropServices;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -71,7 +72,11 @@ public partial class UpdateChecker(Uri releaseUrl, bool checkBeta)
         {
             if (version > AppVersion)
             {
-                var installer = serverRelease.Assets.SingleOrDefault(asset => asset.Name.EndsWith(".exe"));
+                var installer = serverRelease.Assets.FirstOrDefault(asset => asset.Name.EndsWith(".exe"));
+                // Future-proof architecture matching: prefer arch-specific installer
+                var archSuffix = RuntimeInformation.ProcessArchitecture == Architecture.Arm64 ? "-arm64" : "-x64";
+                installer = serverRelease.Assets.FirstOrDefault(a => a.Name.Contains(archSuffix) && a.Name.EndsWith(".exe"))
+                            ?? installer;
                 if (installer == null)
                 {
                     return false;

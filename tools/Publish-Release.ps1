@@ -225,10 +225,14 @@ if ($BuildFromSource) {
     New-Item -ItemType Directory -Path $finalDir -Force | Out-Null
 
     # Publish CLI first, then main app (main app wins on shared files)
+    # When framework-dependent, use the RuntimeIdentifier from csproj (win-x64)
+    $publishDir = Join-Path $finalDir 'win-x64'
+    New-Item -ItemType Directory -Path $publishDir -Force | Out-Null
+
     foreach ($proj in @($cliProject, $projectName)) {
         $projPath = Join-Path $repoRoot "$proj\$proj.csproj"
-        Write-Host "  Publishing $proj ..."
-        dotnet publish -c $Configuration $projPath -o $finalDir
+        Write-Host "  Publishing $proj (win-x64) ..."
+        dotnet publish -c $Configuration $projPath -o $publishDir
         if ($LASTEXITCODE -ne 0) {
             throw "dotnet publish failed for $proj with exit code $LASTEXITCODE."
         }

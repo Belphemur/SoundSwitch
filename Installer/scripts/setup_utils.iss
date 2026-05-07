@@ -5,7 +5,7 @@
 #define setupUtilsIss
 
 [Code]
-// Called during setup process to handle PATH modifications
+// Called during setup process to handle PATH modifications and runtime installation
 procedure CurStepChanged(CurStep: TSetupStep);
 begin
   if CurStep = ssPostInstall then
@@ -15,6 +15,21 @@ begin
     begin
       // Add to PATH (function now handles admin/user mode internally)
       ModifyPath(ExpandConstant('{app}'));
+    end;
+    
+    // Check and install .NET 10 Desktop Runtime if not present
+    if not IsDotNetDesktopRuntime10Installed() then
+    begin
+      Log('Microsoft.WindowsDesktop.App 10.x not found. Installing via winget...');
+      if not InstallDotNetDesktopRuntime10() then
+      begin
+        // Installation failed — message already shown by InstallDotNetDesktopRuntime10()
+        Log('Failed to install .NET 10 Desktop Runtime.');
+      end;
+    end
+    else
+    begin
+      Log('Microsoft.WindowsDesktop.App 10.x is already installed.');
     end;
   end;
 end;

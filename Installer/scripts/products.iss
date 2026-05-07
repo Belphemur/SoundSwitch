@@ -272,6 +272,11 @@ begin
 	Result := Is64BitInstallMode and (ProcessorArchitecture = paX64);
 end;
 
+function IsArm64: boolean;
+begin
+  Result := ProcessorArchitecture = paARM64;
+end;
+
 function GetString(x86, x64, ia64: String): String;
 begin
 	if IsX64() and (x64 <> '') then begin
@@ -283,7 +288,9 @@ end;
 
 function GetArchitectureString(): String;
 begin
-	if IsX64() then begin
+	if IsArm64() then begin
+		Result := '_arm64';
+	end else if IsX64() then begin
 		Result := '_x64';
 	end else begin
 		Result := '';

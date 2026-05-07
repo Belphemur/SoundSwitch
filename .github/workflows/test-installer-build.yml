@@ -75,23 +75,43 @@ jobs:
           cache: true
           cache-dependency-path: Directory.Packages.props
 
-      - name: Build SoundSwitch Application
+      - name: Build SoundSwitch Application (win-x64)
+        shell: cmd
         run: |
           echo "Cleaning build directories"
           if exist bin rmdir /q /s bin
           if exist obj rmdir /q /s obj
           if exist Release rmdir /q /s Release
-          if exist Final rmdir /q /s Final
-          mkdir Final
-          
-          echo "Building SoundSwitch CLI"
-          dotnet publish -c Release SoundSwitch.CLI\SoundSwitch.CLI.csproj -o Final
+          if exist publish rmdir /q /s publish
+          mkdir publish\win-x64
+
+          echo "Building SoundSwitch CLI (win-x64)"
+          dotnet publish -c Release -r win-x64 SoundSwitch.CLI\SoundSwitch.CLI.csproj -o publish\win-x64
           if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 
-          echo "Building SoundSwitch Main Application"
-          dotnet publish -c Release SoundSwitch\SoundSwitch.csproj -o Final
+          echo "Building SoundSwitch Main Application (win-x64)"
+          dotnet publish -c Release -r win-x64 SoundSwitch\SoundSwitch.csproj -o publish\win-x64
           if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+
+      - name: Build SoundSwitch Application (win-arm64)
         shell: cmd
+        run: |
+          mkdir publish\win-arm64
+
+          echo "Building SoundSwitch CLI (win-arm64)"
+          dotnet publish -c Release -r win-arm64 SoundSwitch.CLI\SoundSwitch.CLI.csproj -o publish\win-arm64
+          if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+
+          echo "Building SoundSwitch Main Application (win-arm64)"
+          dotnet publish -c Release -r win-arm64 SoundSwitch\SoundSwitch.csproj -o publish\win-arm64
+          if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+
+      - name: Combine architectures into Final
+        shell: cmd
+        run: |
+          mkdir Final
+          xcopy /e /y publish\win-x64\* Final\win-x64\
+          xcopy /e /y publish\win-arm64\* Final\win-arm64\
 
       - name: Setup Python
         uses: actions/setup-python@v6
@@ -106,31 +126,39 @@ jobs:
           if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 
           echo "Generate Changelog"
-          python tools\markdown_to_html.py CHANGELOG.md -o Final\Changelog.html
+          python tools\markdown_to_html.py CHANGELOG.md -o Final\win-x64\Changelog.html
           if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+          xcopy /y Final\win-x64\Changelog.html Final\win-arm64\
 
           echo "Generate Terms"
-          python tools\markdown_to_html.py Terms.md -o Final\Terms.html
+          python tools\markdown_to_html.py Terms.md -o Final\win-x64\Terms.html
           if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+          xcopy /y Final\win-x64\Terms.html Final\win-arm64\
 
           echo "Generate README"
-          python tools\markdown_to_html.py README.md -o Final\Readme.html
+          python tools\markdown_to_html.py README.md -o Final\win-x64\Readme.html
           if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+          xcopy /y Final\win-x64\Readme.html Final\win-arm64\
 
           if exist README.de.md (
-            python tools\markdown_to_html.py README.de.md -o Final\Readme.de.html
+            python tools\markdown_to_html.py README.de.md -o Final\win-x64\Readme.de.html
             if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+            xcopy /y Final\win-x64\Readme.de.html Final\win-arm64\
           )
 
           echo "Copy soundSwitched image"
-          xcopy /y img\soundSwitched.png Final >nul 2>nul
+          xcopy /y img\soundSwitched.png Final\win-x64\ >nul 2>nul
+          xcopy /y img\soundSwitched.png Final\win-arm64\ >nul 2>nul
 
           echo "Copy CLI README"
-          xcopy /y SoundSwitch.CLI\README.md Final >nul 2>nul
+          xcopy /y SoundSwitch.CLI\README.md Final\win-x64\ >nul 2>nul
+          xcopy /y SoundSwitch.CLI\README.md Final\win-arm64\ >nul 2>nul
 
-          echo "Copy LICENSE"
-          xcopy /y LICENSE.txt Final >nul 2>nul
-          xcopy /y Terms.txt Final >nul 2>nul
+          echo "Copy LICENSE and Terms"
+          xcopy /y LICENSE.txt Final\win-x64\ >nul 2>nul
+          xcopy /y LICENSE.txt Final\win-arm64\ >nul 2>nul
+          xcopy /y Terms.txt Final\win-x64\ >nul 2>nul
+          xcopy /y Terms.txt Final\win-arm64\ >nul 2>nul
         shell: cmd
 
       - name: Build Installer

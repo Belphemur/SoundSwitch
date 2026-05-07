@@ -132,9 +132,18 @@ $canSign = -not $SkipSigning -and (Get-Command 'signtool.exe' -ErrorAction Silen
 if ($canSign) {
     Write-Host "`n=== Signing binaries ===" -ForegroundColor White
 
-    $binaries = @("$projectName.exe", "$cliProject.exe") |
-        ForEach-Object { Join-Path $FinalDir $_ } |
-        Where-Object  { Test-Path $_ }
+    $dirs = @('win-x64', 'win-arm64') | ForEach-Object { Join-Path $FinalDir $_ } | Where-Object { Test-Path $_ }
+
+    if (-not $dirs) {
+        # Fallback: old flat layout
+        $dirs = @($FinalDir)
+    }
+
+    $binaries = foreach ($dir in $dirs) {
+        @("$projectName.exe", "$cliProject.exe") |
+            ForEach-Object { Join-Path $dir $_ } |
+            Where-Object { Test-Path $_ }
+    }
 
     if ($binaries) {
         & $signScript -Path $binaries -CertificateName $CertificateName

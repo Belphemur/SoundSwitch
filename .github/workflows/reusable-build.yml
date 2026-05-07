@@ -138,7 +138,11 @@ jobs:
                   DOTNET_RUNTIME: ${{ inputs.runtime }}
                   PUBLISH_VERSION: ${{ inputs.version }}
               run: |
-                  $outputDir = Join-Path $PWD 'Final'
+                  if ($env:DOTNET_RUNTIME) {
+                    $outputDir = Join-Path $PWD (Join-Path 'publish' $env:DOTNET_RUNTIME)
+                  } else {
+                    $outputDir = Join-Path $PWD 'Final'
+                  }
                   if (Test-Path $outputDir) { Remove-Item $outputDir -Recurse -Force }
                   New-Item -ItemType Directory -Path $outputDir | Out-Null
 
@@ -182,7 +186,11 @@ jobs:
                   python -m pip install markdown --quiet
                   if ($LASTEXITCODE -ne 0) { throw "Failed to install Python 'markdown' package (exit code $LASTEXITCODE)." }
 
-                  $outputDir = Join-Path $PWD 'Final'
+                  if ($env:DOTNET_RUNTIME) {
+                    $outputDir = Join-Path $PWD (Join-Path 'publish' $env:DOTNET_RUNTIME)
+                  } else {
+                    $outputDir = Join-Path $PWD 'Final'
+                  }
 
                   # Convert markdown files to HTML
                   python tools\markdown_to_html.py CHANGELOG.md -o "$outputDir\Changelog.html"
@@ -200,7 +208,11 @@ jobs:
               if: inputs.publish
               shell: pwsh
               run: |
-                  $outputDir = Join-Path $PWD 'Final'
+                  if ($env:DOTNET_RUNTIME) {
+                    $outputDir = Join-Path $PWD (Join-Path 'publish' $env:DOTNET_RUNTIME)
+                  } else {
+                    $outputDir = Join-Path $PWD 'Final'
+                  }
 
                   # Copy additional assets
                   Copy-Item 'img\soundSwitched.png' $outputDir -Force -ErrorAction SilentlyContinue
@@ -218,4 +230,4 @@ jobs:
               uses: actions/upload-artifact@v7
               with:
                   name: ${{ inputs.publish-artifact-name }}
-                  path: Final\*
+                  path: ${{ inputs.runtime && format('publish/{0}/*', inputs.runtime) || 'Final\*' }}
