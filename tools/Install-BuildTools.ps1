@@ -79,7 +79,7 @@ function Get-DotNetSdkVersion {
 
     try {
         [xml]$project = Get-Content $CsprojPath -ErrorAction Stop
-        $framework = $project.Project.PropertyGroup.TargetFramework | Select-Object -First 1
+        $framework = $project.Project.PropertyGroup.TargetFramework | Where-Object { $_ } | Select-Object -First 1
         $match = [System.Text.RegularExpressions.Regex]::Match($framework, '^net(?<major>\d+)')
         if ($match.Success) {
             return [int]$match.Groups['major'].Value

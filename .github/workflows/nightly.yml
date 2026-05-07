@@ -13,7 +13,6 @@ on:
 env:
     DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
     PROJECT_NAME: SoundSwitch
-    ARCH: win-x64
     CONFIGURATION: Nightly
     SENTRY_NAME: soundswitch
 
@@ -25,10 +24,9 @@ jobs:
         uses: ./.github/workflows/reusable-build.yml
         with:
             configuration: Nightly
-            runtime: win-x64
             publish: true
             update-nightly-version: true
-            publish-artifact-name: nightly-package
+            publish-artifact-name: soundswitch-nightly
         secrets: inherit
 
     publish-nightly:
@@ -44,7 +42,7 @@ jobs:
             - name: Download published output
               uses: actions/download-artifact@v8
               with:
-                  name: nightly-package
+                  name: soundswitch-nightly
                   path: nightly-package
             - name: Setup Python
               uses: actions/setup-python@v6

@@ -5,7 +5,7 @@
 #define setupUtilsIss
 
 [Code]
-// Called during setup process to handle PATH modifications
+// Called during setup process to handle PATH modifications and runtime installation
 procedure CurStepChanged(CurStep: TSetupStep);
 begin
   if CurStep = ssPostInstall then
@@ -15,6 +15,26 @@ begin
     begin
       // Add to PATH (function now handles admin/user mode internally)
       ModifyPath(ExpandConstant('{app}'));
+    end;
+    
+    // Ensure .NET {#DotNetMajorVersion} Desktop Runtime is installed
+    if not IsDotNetDesktopRuntimeInstalled() then
+    begin
+      Log('Microsoft.WindowsDesktop.App {#DotNetMajorVersion}.x not found. Installing via winget...');
+      if not InstallDotNetDesktopRuntime() then
+      begin
+        Log('Failed to install .NET {#DotNetMajorVersion} Desktop Runtime.');
+      end;
+    end
+    else
+    begin
+      Log('Microsoft.WindowsDesktop.App {#DotNetMajorVersion}.x is already installed.');
+    end;
+
+    // Always try to upgrade to latest runtime version (non-fatal)
+    if IsDotNetDesktopRuntimeInstalled() then
+    begin
+      UpgradeDotNetDesktopRuntime();
     end;
   end;
 end;

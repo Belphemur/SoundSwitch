@@ -1,6 +1,7 @@
 #include "scripts\app_defines.iss"
-// ReleaseState is expected to be defined through the command line with /D parameter
-// e.g. iscc /DReleaseState=Beta setup.iss
+#include "scripts\winget-dotnet-runtime.iss"
+// ReleaseState and DotNetMajorVersion are expected to be defined through the command line with /D parameter
+// e.g. iscc /DReleaseState=Beta /DDotNetMajorVersion=10 setup.iss
 
 
 [Setup]
@@ -47,11 +48,11 @@ RestartApplications=no
 ;AppMutex={#MyAppSetupName}
 
 ;MinVersion default value: "0,5.0 (Windows 2000+) if Unicode Inno Setup, else 4.0,4.0 (Windows 95+)"
-MinVersion=6.1.7601sp1
+MinVersion=10.0.17763
 PrivilegesRequired=admin
 PrivilegesRequiredOverridesAllowed=commandline dialog
-ArchitecturesAllowed=x64compatible
-ArchitecturesInstallIn64BitMode=x64compatible
+ArchitecturesAllowed=x64compatible arm64
+ArchitecturesInstallIn64BitMode=x64compatible arm64
 
 ;Downloading and installing dependencies will only work if the memo/ready page is enabled (default behaviour)
 DisableReadyPage=no
@@ -78,9 +79,7 @@ Name: addtopath; Description: "{cm:AddToPath,{#MyAppSetupName}}"; GroupDescripti
 Name: deletefiles; Description: "{cm:ExistingSettings}"; GroupDescription: "{cm:SettingsGroupDescription}"; Flags: unchecked checkedonce
 
 [Files] 
-Source: "{#ExeDir}SoundSwitch.exe"; DestDir: "{app}";  Flags: ignoreversion
-Source: "{#ExeDir}SoundSwitch.CLI.exe"; DestDir: "{app}";  Flags: ignoreversion
-Source: "{#ExeDir}*"; DestDir: "{app}"; Flags: recursesubdirs ignoreversion;
+Source: "{#ExeDir}*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "scripts\ManageWindowsUpdate.ps1"; DestDir: "{tmp}"; Flags: confirmoverwrite deleteafterinstall
 
 [Registry]
@@ -145,4 +144,4 @@ begin
   end;
 end;
 
-
+end.

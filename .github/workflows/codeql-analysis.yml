@@ -20,10 +20,9 @@ on:
   schedule:
     - cron: '40 2 * * 4'
 env:
-  DOTNET: "7.0.x"
+  DOTNET: "10.0.x"
   DOTNET_PRERELEASE: true
   PROJECT_NAME: "SoundSwitch"
-  ARCH: "win-x64"
 jobs:
   analyze:
     name: Analyze
