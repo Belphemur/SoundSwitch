@@ -45,6 +45,14 @@ begin
                   begin
                     Log('Uninstalling older .NET Desktop Runtime: ' + DisplayName);
                     Exec(ExpandConstant('{cmd}'), '/c ' + QuietUninstallString, '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+                    if ResultCode <> 0 then
+                    begin
+                      Log('Warning: Uninstall of ' + DisplayName + ' failed with code ' + IntToStr(ResultCode));
+                    end
+                    else
+                    begin
+                      Log('Successfully uninstalled ' + DisplayName);
+                    end;
                   end;
                 end;
               end;
