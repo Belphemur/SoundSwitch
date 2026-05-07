@@ -1,3 +1,4 @@
+[Code]
 // Checks if Microsoft.WindowsDesktop.App 10.x is already installed
 function IsDotNetDesktopRuntime10Installed(): Boolean;
 var
