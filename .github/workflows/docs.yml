@@ -1,8 +1,11 @@
-name: Deploy Docs
+# Builds the VuePress docs as a CI sanity check on every PR and push.
+# Deployment is handled by Cloudflare Pages directly from the repo, so this
+# workflow no longer publishes to GitHub Pages.
+name: Build Docs
 
 on:
   push:
-    branches: [master]
+    branches: [master, dev]
     paths:
       - 'website/**'
       - '.github/workflows/docs.yml'
@@ -14,8 +17,6 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 jobs:
   build:
@@ -29,18 +30,3 @@ jobs:
         working-directory: website
       - run: npm run docs:build
         working-directory: website
-      - uses: actions/upload-pages-artifact@v3
-        if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/master')
-        with:
-          path: website/src/.vuepress/dist
-
-  deploy:
-    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/master')
-    runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
