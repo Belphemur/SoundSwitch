@@ -10,3 +10,5 @@ footerHtml: true
 <HomeHero />
 
 <GoogleAd />
+
+<HomeFooter />
