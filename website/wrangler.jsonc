@@ -3,6 +3,9 @@
   "name": "soundswitch",
   "compatibility_date": "2026-05-08",
   "main": "worker/index.ts",
+  "placement": {
+    "mode": "smart"
+  },
   "observability": {
     "enabled": true,
     "head_sampling_rate": 1,
