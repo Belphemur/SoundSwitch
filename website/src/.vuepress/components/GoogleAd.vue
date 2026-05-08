@@ -72,9 +72,8 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="google-ad">
-    <ins v-if="isMounted" ref="adRef" class="adsbygoogle" style="display:block"
-      data-ad-client="ca-pub-7284443005140816" data-ad-slot="3897699789" data-ad-format="auto"
-      data-full-width-responsive="true"></ins>
+    <ins v-if="isMounted" ref="adRef" class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7284443005140816"
+      data-ad-slot="3897699789" data-ad-format="auto" data-full-width-responsive="true"></ins>
   </div>
 </template>
 
