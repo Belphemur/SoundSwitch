@@ -6,9 +6,10 @@ The **Recording** tab is where you choose which audio input devices (microphones
 
 The main area lists all recording devices detected by Windows, grouped by their connection status:
 
-- **Connected** — Devices that are currently available.
+- **Connected** — Devices that are currently active and available.
+- **Disconnected** — Devices that are currently unplugged or disabled.
 
-Check the boxes next to the devices you want to include in the rotation. SoundSwitch will only switch between the checked devices when you use the hotkey.
+Check the boxes next to the devices you want to include in the rotation. Devices you have checked appear in the **Selected** group. SoundSwitch will only switch between the checked devices when you use the hotkey.
 
 ## Hotkey Settings
 

@@ -35,7 +35,7 @@ Activates when a specific executable becomes the foreground window. SoundSwitch 
 
 ### Name of the program
 
-A more general trigger that matches by process name rather than full path.
+Activates when a window whose title contains (or matches) a specific string gains focus. Useful for applications where the process name is too generic but the window title is distinctive.
 
 ### Steam Big Picture
 

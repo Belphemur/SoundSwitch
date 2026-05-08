@@ -6,9 +6,10 @@ The **Playback** tab is where you tell SoundSwitch which audio output devices (s
 
 The main area lists all playback devices detected by Windows, grouped by their connection status:
 
-- **Connected** — Devices that are currently available.
+- **Connected** — Devices that are currently active and available.
+- **Disconnected** — Devices that are currently unplugged or disabled.
 
-To include a device in the rotation, check the box next to its name. SoundSwitch will only switch between the devices you have checked. If you have selected **"Only selected audio devices"** on the General tab, only these checked devices will be cycled through.
+Check the boxes next to the devices you want to include in the rotation. Devices you have checked appear in the **Selected** group. SoundSwitch will only switch between the devices you have checked.
 
 ## Hotkey Settings
 
