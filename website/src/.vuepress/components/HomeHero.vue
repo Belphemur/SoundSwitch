@@ -192,7 +192,7 @@ onMounted(async () => {
                 :key="amount"
                 :href="buildDonateUrl(amount)"
                 target="_blank"
-                rel="noopener"
+                rel="noopener noreferrer"
                 class="amount-button"
                 @click="trackDonationAmount(amount)"
               >

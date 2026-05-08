@@ -21,7 +21,7 @@ Determines what icon the SoundSwitch tray icon displays.
 | **Playback** | Show the icon of the active playback (speaker/headphone) device. |
 | **Both** | Show the current device icons, alternating between playback and recording. |
 
-### Double Click Action
+### Double-click Action
 
 Sets what happens when you double-click the tray icon.
 

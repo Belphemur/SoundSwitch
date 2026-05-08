@@ -32,8 +32,9 @@ Be respectful, constructive, and inclusive. SoundSwitch is a community tool used
 1. Fork the repository.
 2. Create a branch from `dev` with a descriptive name (`fix/audio-device-cleanup`, `feat/profile-restore`).
 3. Make your changes following the conventions described below.
-4. Run the test suite (`dotnet test SoundSwitch.sln`) to ensure everything passes.
-5. Submit a pull request targeting the `dev` branch.
+4. Build the solution (`dotnet build SoundSwitch.sln -c Debug`) to verify compilation.
+5. Run the test suite (`dotnet test SoundSwitch.sln`) to ensure everything passes.
+6. Submit a pull request targeting the `dev` branch.
 
 ## Coding Conventions
 
@@ -65,7 +66,7 @@ SoundSwitch uses **Conventional Commits** with a custom configuration for automa
 
 #### Commit Format
 
-```
+```text
 type(scope): description
 
 [optional body explaining WHY, not what]
@@ -101,7 +102,7 @@ Use module-style scopes to indicate which area of the codebase the change affect
 
 To trigger a major release, append `!` to the type:
 
-```
+```text
 feat(api)!: change device switching API signature
 
 BREAKING CHANGE: The `SwitchDevice` method now requires a `DeviceType` enum parameter.
@@ -137,6 +138,14 @@ This `docs/` folder contains developer-facing guides. Update or add files here w
 ## Testing
 
 ### Running Tests Locally
+
+First, build the solution to verify compilation:
+
+```cmd
+dotnet build SoundSwitch.sln -c Debug
+```
+
+Then run the test suite:
 
 ```cmd
 dotnet test SoundSwitch.sln -c Debug

@@ -41,7 +41,7 @@ When a microphone is unmuted (`isMuted = false`):
 
 ### Manual Removal
 
-`RemovePersistentMuteBanner(microphoneId)` can be called to immediately remove a specific microphone's persistent banner and rearrange the remaining ones.
+You can call `RemovePersistentMuteBanner(microphoneId)` to immediately remove a specific microphone's persistent banner and rearrange the remaining ones.
 
 ## Key Design Points
 

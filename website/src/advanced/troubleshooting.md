@@ -24,5 +24,3 @@ If you need help or further troubleshooting with SoundSwitch, you can reach out 
 - **Help Discussion** — GitHub discussions for help and support (opens GitHub in your browser).
 - **Community Discord** — Join the SoundSwitch Discord server for real-time community support.
 - **Donate** — Support the project through a donation.
-
-![Troubleshoot](/images/Troubleshoot.png)
