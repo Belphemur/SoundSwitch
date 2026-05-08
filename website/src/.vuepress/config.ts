@@ -10,6 +10,9 @@ export default defineUserConfig({
       "script",
       {
         async: true,
+        // Loads AdSense Auto Ads (the `?client=` query parameter enables
+        // page-level ads). Manual ad units (see <GoogleAd>) are also
+        // delivered through this same script.
         src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7284443005140816",
         crossorigin: "anonymous",
       },
