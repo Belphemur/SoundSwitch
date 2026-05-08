@@ -4,7 +4,7 @@ import { defaultTheme } from "@vuepress/theme-default";
 
 export default defineUserConfig({
   base: "/",
-  title: "SoundSwitch Documentation",
+  title: "SoundSwitch",
   head: [
     [
       "script",
