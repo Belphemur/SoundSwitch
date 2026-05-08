@@ -5,6 +5,9 @@
  *  - Serve the dynamic `/api/downloads.json` endpoint that aggregates the
  *    total number of installer downloads across every GitHub release of the
  *    SoundSwitch repository.
+ *  - Serve the dynamic `/api/weblate-languages.json` endpoint that proxies
+ *    the SoundSwitch language list from Weblate, with a long edge cache so
+ *    the upstream API is rarely contacted.
  *  - Delegate every other request to the static assets binding so the
  *    VuePress site keeps behaving as before.
  *
@@ -16,45 +19,60 @@
  *  - The optional GITHUB_TOKEN secret raises the GitHub REST limit from
  *    60 req/hour to 5000 req/hour so cold cache misses are safe even
  *    during a traffic spike.
+ *  - The Weblate language list is cached for WEBLATE_LANGUAGES_TTL_SECONDS
+ *    (24 hours, matching the previous PHP implementation).
  */
 
 interface Env {
-  ASSETS: Fetcher
-  GITHUB_TOKEN?: string
+  ASSETS: Fetcher;
+  GITHUB_TOKEN?: string;
+  WEBLATE_TOKEN?: string;
 }
 
 interface GitHubAsset {
-  name: string
-  download_count: number
+  name: string;
+  download_count: number;
 }
 
 interface GitHubRelease {
-  tag_name: string
-  assets: GitHubAsset[]
+  tag_name: string;
+  assets: GitHubAsset[];
 }
 
-const DOWNLOAD_TOTAL_TTL_SECONDS = 6 * 60 * 60 // 6 hours
-const FALLBACK_ERROR_TTL_SECONDS = 5 * 60 // 5 minutes; cache failures briefly so we don't hammer GitHub during an outage
-const GITHUB_API_BASE = 'https://api.github.com'
-const REPO_OWNER = 'Belphemur'
-const REPO_NAME = 'SoundSwitch'
-const USER_AGENT = 'SoundSwitch-Website-Worker'
+const DOWNLOAD_TOTAL_TTL_SECONDS = 6 * 60 * 60; // 6 hours
+const FALLBACK_ERROR_TTL_SECONDS = 5 * 60; // 5 minutes; cache failures briefly so we don't hammer GitHub during an outage
+const GITHUB_API_BASE = "https://api.github.com";
+const REPO_OWNER = "Belphemur";
+const REPO_NAME = "SoundSwitch";
+const USER_AGENT = "SoundSwitch-Website-Worker";
 // Floor used when the GitHub API is unreachable. SoundSwitch had already
 // crossed this number well before the dynamic counter shipped, so it stays
 // truthful while keeping the home page from flashing a missing value.
-const FALLBACK_DOWNLOAD_TOTAL = 3_000_000
+const FALLBACK_DOWNLOAD_TOTAL = 3_000_000;
+
+const WEBLATE_LANGUAGES_TTL_SECONDS = 24 * 60 * 60; // 24 hours
+const WEBLATE_API_URL =
+  "https://hosted.weblate.org/api/projects/soundswitch/languages/";
 
 export default {
-  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-    const url = new URL(request.url)
+  async fetch(
+    request: Request,
+    env: Env,
+    ctx: ExecutionContext,
+  ): Promise<Response> {
+    const url = new URL(request.url);
 
-    if (url.pathname === '/api/downloads.json') {
-      return handleDownloadsRequest(request, env, ctx)
+    if (url.pathname === "/api/downloads.json") {
+      return handleDownloadsRequest(request, env, ctx);
     }
 
-    return env.ASSETS.fetch(request)
+    if (url.pathname === "/api/weblate-languages.json") {
+      return handleWeblateLanguagesRequest(request, env, ctx);
+    }
+
+    return env.ASSETS.fetch(request);
   },
-} satisfies ExportedHandler<Env>
+} satisfies ExportedHandler<Env>;
 
 async function handleDownloadsRequest(
   request: Request,
@@ -64,15 +82,15 @@ async function handleDownloadsRequest(
   // Reuse the Cache API as a per-edge KV. The key intentionally omits the
   // request URL search params so any visitor benefits from the same warm
   // entry.
-  const cache = caches.default
+  const cache = caches.default;
   const cacheKey = new Request(
     `https://cache.internal/soundswitch/downloads-total/v1`,
-    { method: 'GET' },
-  )
+    { method: "GET" },
+  );
 
-  const cached = await cache.match(cacheKey)
+  const cached = await cache.match(cacheKey);
   if (cached) {
-    return decorateResponse(cached, { cached: true })
+    return decorateResponse(cached, { cached: true });
   }
 
   try {
@@ -114,46 +132,49 @@ async function handleDownloadsRequest(
 }
 
 async function fetchTotalDownloads(env: Env): Promise<number> {
-  let page = 1
-  let total = 0
+  let page = 1;
+  let total = 0;
 
   // GitHub allows up to 100 results per page. The repository has well under
   // 10 pages of releases, so we cap the loop defensively to avoid runaway
   // requests if the API behaves unexpectedly.
-  const MAX_PAGES = 20
+  const MAX_PAGES = 20;
   while (page <= MAX_PAGES) {
-    const releases = await fetchReleasesPage(env, page)
-    if (releases.length === 0) break
+    const releases = await fetchReleasesPage(env, page);
+    if (releases.length === 0) break;
 
     for (const release of releases) {
       for (const asset of release.assets) {
-        total += asset.download_count
+        total += asset.download_count;
       }
     }
 
-    if (releases.length < 100) break
-    page += 1
+    if (releases.length < 100) break;
+    page += 1;
   }
 
-  return total
+  return total;
 }
 
-async function fetchReleasesPage(env: Env, page: number): Promise<GitHubRelease[]> {
-  const url = `${GITHUB_API_BASE}/repos/${REPO_OWNER}/${REPO_NAME}/releases?per_page=100&page=${page}`
+async function fetchReleasesPage(
+  env: Env,
+  page: number,
+): Promise<GitHubRelease[]> {
+  const url = `${GITHUB_API_BASE}/repos/${REPO_OWNER}/${REPO_NAME}/releases?per_page=100&page=${page}`;
   const headers: Record<string, string> = {
-    accept: 'application/vnd.github+json',
-    'user-agent': USER_AGENT,
-    'x-github-api-version': '2022-11-28',
-  }
+    accept: "application/vnd.github+json",
+    "user-agent": USER_AGENT,
+    "x-github-api-version": "2022-11-28",
+  };
   if (env.GITHUB_TOKEN) {
-    headers.authorization = `Bearer ${env.GITHUB_TOKEN}`
+    headers.authorization = `Bearer ${env.GITHUB_TOKEN}`;
   }
 
-  const response = await fetch(url, { headers })
+  const response = await fetch(url, { headers });
   if (!response.ok) {
-    throw new Error(`GitHub API ${response.status} ${response.statusText}`)
+    throw new Error(`GitHub API ${response.status} ${response.statusText}`);
   }
-  return (await response.json()) as GitHubRelease[]
+  return (await response.json()) as GitHubRelease[];
 }
 
 function decorateResponse(
@@ -172,5 +193,71 @@ function decorateResponse(
 }
 
 function formatNumber(value: number): string {
-  return value.toLocaleString('en-US')
+  return value.toLocaleString("en-US");
+}
+
+async function handleWeblateLanguagesRequest(
+  request: Request,
+  env: Env,
+  ctx: ExecutionContext,
+): Promise<Response> {
+  const cache = caches.default;
+  const cacheKey = new Request(
+    "https://cache.internal/soundswitch/weblate-languages/v1",
+    { method: "GET" },
+  );
+
+  const cached = await cache.match(cacheKey);
+  if (cached) {
+    return decorateResponse(cached, { cached: true });
+  }
+
+  if (!env.WEBLATE_TOKEN) {
+    return new Response(
+      JSON.stringify({ error: "WEBLATE_TOKEN secret is not configured" }),
+      {
+        status: 503,
+        headers: {
+          "content-type": "application/json; charset=utf-8",
+          "cache-control": `public, max-age=${FALLBACK_ERROR_TTL_SECONDS}, s-maxage=${FALLBACK_ERROR_TTL_SECONDS}`,
+          "access-control-allow-origin": "*",
+          "x-cache": "MISS",
+          "x-fallback": "1",
+        },
+      },
+    );
+  }
+
+  try {
+    const upstream = await fetch(WEBLATE_API_URL, {
+      headers: {
+        accept: "application/json",
+        "user-agent": USER_AGENT,
+        authorization: `Token ${env.WEBLATE_TOKEN}`,
+      },
+    });
+    if (!upstream.ok) {
+      throw new Error(`Weblate API ${upstream.status} ${upstream.statusText}`);
+    }
+    const body = await upstream.text();
+    const response = new Response(body, {
+      headers: {
+        "content-type": "application/json; charset=utf-8",
+        "cache-control": `public, max-age=${WEBLATE_LANGUAGES_TTL_SECONDS}, s-maxage=${WEBLATE_LANGUAGES_TTL_SECONDS}`,
+      },
+    });
+    ctx.waitUntil(cache.put(cacheKey, response.clone()));
+    return decorateResponse(response, { cached: false, fallback: false });
+  } catch {
+    return new Response(JSON.stringify({ error: "Weblate API unavailable" }), {
+      status: 502,
+      headers: {
+        "content-type": "application/json; charset=utf-8",
+        "cache-control": `public, max-age=${FALLBACK_ERROR_TTL_SECONDS}, s-maxage=${FALLBACK_ERROR_TTL_SECONDS}`,
+        "access-control-allow-origin": "*",
+        "x-cache": "MISS",
+        "x-fallback": "1",
+      },
+    });
+  }
 }
