@@ -25,7 +25,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 'lts/*'
+          node-version-file: 'website/.nvmrc'
       - run: npm ci
         working-directory: website
       - run: npm run docs:build
