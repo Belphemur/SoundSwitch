@@ -4,7 +4,7 @@ The **Troubleshooting** tab provides tools to help diagnose and resolve issues w
 
 ![Troubleshoot](/images/Troubleshoot.png)
 
-## Reset Per App Audio
+## Reset Per-App Audio
 
 Resets all audio device assignments that were made to specific programs. If audio devices are not being reassigned to programs when switching devices, click **Reset** to clear all per-app routing state. Windows will then reassign applications to their default devices, and App Sound Lock rules will reapply on the next process or window event.
 
