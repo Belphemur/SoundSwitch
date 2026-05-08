@@ -1,3 +1,8 @@
+---
+title: Multi-Language Support
+description: SoundSwitch ships in more than 20 languages and follows your Windows display language by default — discover supported locales and how to contribute translations.
+---
+
 # Multi-Language Support
 
 SoundSwitch is available in more than 20 languages.

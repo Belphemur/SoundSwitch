@@ -1,3 +1,8 @@
+---
+title: Advanced
+description: Power-user features for SoundSwitch — auto-updater channels, multi-language support, troubleshooting tools and the project changelog.
+---
+
 # Advanced
 
 This section covers advanced features and configuration options for power users.

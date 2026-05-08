@@ -1,3 +1,8 @@
+---
+title: Playback Settings
+description: Pick which audio output devices SoundSwitch cycles through, assign a playback hotkey and rename or hide devices from the Playback tab.
+---
+
 # Playback
 
 The **Playback** tab is where you tell SoundSwitch which audio output devices (speakers, headphones, etc.) it should cycle through.

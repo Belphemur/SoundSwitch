@@ -1,3 +1,8 @@
+---
+title: Usage
+description: Master SoundSwitch — global hotkeys, profiles, App Sound Lock per-app routing, communication device handling and the command-line interface.
+---
+
 # Usage
 
 Learn how to use SoundSwitch effectively, from hotkeys to profiles and per-app audio routing.

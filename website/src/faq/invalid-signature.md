@@ -1,3 +1,8 @@
+---
+title: Invalid Digital Signature when updating SoundSwitch
+description: Fix the "Invalid Digital Signature" error from the SoundSwitch auto-updater by refreshing your Windows root certificate store.
+---
+
 # "Invalid Digital Signature" when updating
 
 If the auto-updater fails with:

@@ -1,3 +1,8 @@
+---
+title: What is the SoundSwitch Quick Menu?
+description: Since version 6.0.0, pressing a SoundSwitch hotkey shows a small overlay called the Quick Menu. Learn what it does and how to disable it.
+---
+
 # What is the menu that appears when I use a hotkey?
 
 Since version **6.0.0**, pressing a SoundSwitch hotkey shows a small overlay called the **Quick Menu**.

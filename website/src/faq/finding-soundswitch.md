@@ -1,3 +1,8 @@
+---
+title: Where did SoundSwitch go?
+description: SoundSwitch lives in the Windows system tray after the first launch. Here's how to find the icon and reopen the settings window.
+---
+
 # I can't find SoundSwitch — where did it go?
 
 After the initial setup, SoundSwitch hides itself in the background. Reopening the application from the Start menu won't bring the settings window back.

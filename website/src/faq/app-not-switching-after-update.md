@@ -1,3 +1,8 @@
+---
+title: An app stopped switching audio after a SoundSwitch update
+description: Fix Windows app-level default device locks that keep one application stuck on the previous audio device after a SoundSwitch update.
+---
+
 # My applications don't switch sound after an update
 
 If after updating SoundSwitch one specific application (often a browser) keeps playing on the previous device while everything else switches correctly, it's because Windows has **locked the default device** for that application.

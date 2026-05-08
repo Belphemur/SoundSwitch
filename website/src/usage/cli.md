@@ -1,3 +1,8 @@
+---
+title: Command-Line Interface
+description: Automate SoundSwitch from scripts and shortcuts with the bundled SoundSwitch.CLI — switch playback, recording, profiles and microphone mute from any terminal.
+---
+
 # CLI
 
 SoundSwitch includes a command-line interface (`SoundSwitch.CLI`) for advanced users who want to control audio devices, manage profiles, and automate device switching through scripts.

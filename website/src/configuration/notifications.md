@@ -1,3 +1,8 @@
+---
+title: Notification Settings
+description: Choose how SoundSwitch alerts you on device changes — banner, Windows toast, sound only or silent — and configure the microphone mute banner.
+---
+
 # Notifications
 
 The **Notifications** tab lets you choose how SoundSwitch alerts you when an audio device is switched or when your microphone is muted or unmuted.

@@ -1,3 +1,8 @@
+---
+title: How do I rename an audio device?
+description: Rename audio devices or change their icon directly from SoundSwitch when Windows shows two devices with the same name.
+---
+
 # How do I rename a device or change its icon?
 
 ## Why rename a device?

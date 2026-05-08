@@ -1,3 +1,8 @@
+---
+title: Profiles
+description: Create SoundSwitch profiles that automatically change the Windows default audio device based on hotkeys, running applications, window focus or Steam Big Picture.
+---
+
 # Profiles
 
 Profiles let you automatically switch the **system default audio device** when specific conditions are met. A profile defines which devices to activate and what triggers the switch.

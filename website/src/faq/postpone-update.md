@@ -1,3 +1,8 @@
+---
+title: How does postponing a SoundSwitch update work?
+description: Choose Later when SoundSwitch finds a new release and learn exactly how long the auto-updater waits before prompting again.
+---
+
 # How does postponing an update work?
 
 When SoundSwitch finds a new release it asks whether you want to install it now or **Later**.

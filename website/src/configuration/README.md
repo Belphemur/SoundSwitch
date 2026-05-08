@@ -1,3 +1,8 @@
+---
+title: Configuration
+description: Overview of every SoundSwitch settings tab — Playback, Recording, Notifications, Profiles, App Rules and more.
+---
+
 # Configuration
 
 SoundSwitch's settings are organized into seven tabs. Open the settings by right-clicking the system tray icon and selecting **Settings**, or by double-clicking the tray icon.

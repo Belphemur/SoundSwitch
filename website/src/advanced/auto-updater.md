@@ -1,3 +1,8 @@
+---
+title: Auto Updater
+description: Learn how SoundSwitch checks GitHub for new releases every 24 hours and choose between automatic, notify-only or disabled update modes.
+---
+
 # Auto Updater
 
 SoundSwitch checks for updates every 24 hours via the GitHub API.

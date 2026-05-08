@@ -1,3 +1,8 @@
+---
+title: Getting Started
+description: Install SoundSwitch on Windows 10 or later, set up your first hotkeys, and start cycling between playback and recording devices in under a minute.
+---
+
 # Getting Started
 
 ## Requirements

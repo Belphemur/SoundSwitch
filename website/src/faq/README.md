@@ -1,3 +1,8 @@
+---
+title: Frequently Asked Questions
+description: Answers to the most common SoundSwitch questions — finding the tray icon, the Quick Menu, renaming devices, switching profiles, manual updates and more.
+---
+
 # Frequently Asked Questions
 
 Answers to the most common questions, collected over the years from the [GitHub Discussions FAQ](https://github.com/Belphemur/SoundSwitch/discussions/categories/faq).

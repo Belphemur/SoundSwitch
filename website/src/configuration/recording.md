@@ -1,3 +1,8 @@
+---
+title: Recording Settings
+description: Pick which microphones and recording devices SoundSwitch cycles through, set the input switch hotkey and configure microphone mute behavior.
+---
+
 # Recording
 
 The **Recording** tab is where you choose which audio input devices (microphones, line-in, etc.) SoundSwitch will cycle through.

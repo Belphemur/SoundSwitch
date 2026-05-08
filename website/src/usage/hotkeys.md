@@ -1,3 +1,8 @@
+---
+title: Hotkeys
+description: Configure global hotkeys to cycle audio devices, mute the microphone and switch profiles instantly from anywhere in Windows.
+---
+
 # Hotkeys
 
 SoundSwitch uses hotkeys to quickly switch between audio devices. Hotkeys can be configured on the **Playback** and **Recording** tabs of the Settings window, as well as within individual profiles.

@@ -1,3 +1,8 @@
+---
+title: Communication Devices
+description: Understand how SoundSwitch switches the Windows Default Communication Device for VoIP and conferencing apps alongside the regular default device.
+---
+
 # Communication Devices
 
 SoundSwitch can change the **Default Communication Device** when the "Switch Default Communication Device" option is enabled on the **General** settings tab.

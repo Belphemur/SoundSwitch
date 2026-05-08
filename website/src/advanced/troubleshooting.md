@@ -1,3 +1,8 @@
+---
+title: Troubleshooting
+description: Reset per-app audio routing, export SoundSwitch logs for debugging and import or export your full configuration from the Troubleshooting tab.
+---
+
 # Troubleshooting
 
 The **Troubleshooting** tab provides tools to help diagnose and resolve issues with SoundSwitch.

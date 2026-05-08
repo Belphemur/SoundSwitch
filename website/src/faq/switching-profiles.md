@@ -1,3 +1,8 @@
+---
+title: How do I switch between SoundSwitch profiles?
+description: Cycle between SoundSwitch profiles by assigning the same hotkey to several profiles — exactly like cycling between audio devices.
+---
+
 # How do I switch between profiles?
 
 Since version **6.1.0**, switching between profiles uses the same hotkey logic as switching devices: assign the **same hotkey** to two or more profiles, and SoundSwitch will cycle between them.

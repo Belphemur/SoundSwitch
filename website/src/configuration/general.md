@@ -1,3 +1,8 @@
+---
+title: General Settings
+description: Configure SoundSwitch startup behavior, device cycling, foreground app switching, system tray icon and update preferences from the General tab.
+---
+
 # General Settings
 
 The **General** tab controls how SoundSwitch behaves at the application level — from startup behavior and device cycling to notifications and updates.

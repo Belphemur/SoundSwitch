@@ -1,3 +1,8 @@
+---
+title: Can I control SoundSwitch from the command line?
+description: Yes — SoundSwitch ships with an official CLI bundled with the installer and added to your PATH so you can script device switching and profile changes.
+---
+
 # Is there a way to control SoundSwitch from the command line?
 
 Yes — SoundSwitch ships with an official **CLI** (`SoundSwitch.CLI`). It is bundled with the installer and added to your `PATH` so you can call it from any terminal:

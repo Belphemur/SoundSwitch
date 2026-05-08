@@ -1,3 +1,8 @@
+---
+title: App Sound Lock (App Rules)
+description: Route individual applications to specific audio devices in Windows without changing the system default — keep games on headphones while music plays through speakers.
+---
+
 # App Sound Lock (App Rules)
 
 App Sound Lock lets you route **individual applications** to specific audio devices — without changing the system default. This is the tool you reach for when you want Spotify to play through your speakers while your game audio goes to your headphones.
