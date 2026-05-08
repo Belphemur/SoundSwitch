@@ -12,16 +12,16 @@ description: Install SoundSwitch on Windows 10 or later, set up your first hotke
 
 ## Installation
 
-Download the latest release from the [SoundSwitch website](https://soundswitch.aaflalo.me) and run the installer. The installer will automatically detect and install the required .NET runtime if it's not already present on your system.
+Grab the installer from the **Download** button at the top of this site and run it. The installer automatically detects and installs the required .NET runtime if it isn't already present on your system.
 
 ## First Steps
 
-After installation, SoundSwitch runs in the background and places an icon in the system tray.
+After installation, SoundSwitch starts in the background and places an icon in the **system tray** (next to the clock). The settings window opens automatically the first time — after that, only the tray icon remains. If you can't see it, check the hidden icons (`^`) on the taskbar and see [Where did SoundSwitch go?](./faq/finding-soundswitch.md).
 
 1. **Right-click** the SoundSwitch tray icon and select **Settings**.
-2. Go to the **Playback** tab and check the devices you want to cycle through (e.g., headphones, speakers).
-3. Go to the **Recording** tab and check the microphones or input devices you want to cycle through.
-4. **Close** the settings window. SoundSwitch is now ready to use.
+2. On the **Playback** tab, check the devices you want to cycle through (e.g., headphones, speakers).
+3. On the **Recording** tab, check the microphones or input devices you want to cycle through.
+4. **Close** the settings window — SoundSwitch is ready to use.
 
 ## Quick Switch
 
