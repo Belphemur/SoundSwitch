@@ -101,20 +101,7 @@ Filename: "certutil.exe"; Parameters: "-delstore ""TrustedPublisher"" ""942A37BC
 
 [InstallDelete]
 Type: filesandordirs; Name: {userappdata}\SoundSwitch; Tasks: deletefiles
-Type: files; Name: {app}\Audio.EndPoint.Controller.Wrapper.*
-Type: files; Name: {app}\AudioEndPointLibrary.*
-Type: files; Name: {app}\TracerX-Logger.*
-Type: files; Name: {app}\System.*.dll
-Type: files; Name: {app}\Audio.Default.Switcher.Wrapper.*
-Type: files; Name: {app}\AudioDefaultSwitcher.*
-Type: files; Name: {app}\Microsoft.*.dll
-Type: files; Name: {app}\Microsoft.*.pdb
-Type: files; Name: {app}\CommonMark.dll
-Type: files; Name: {app}\CommonMark.pdb
-Type: files; Name: {app}\Serilog*.dll
-Type: files; Name: {app}\SoundSwitch.UI.UserControls.*
-Type: files; Name: {app}\SoundSwitch.InterProcess.Communication.*
-Type: files; Name: {app}\Microsoft.WindowsAPICodePack.*
+Type: filesandordirs; Name: {app}\*
 
 #include "scripts\path_operations.iss"
 #include "scripts\command_line_utils.iss"

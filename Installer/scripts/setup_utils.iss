@@ -49,29 +49,39 @@ end;
 <event('InitializeWizard')>
 procedure ConfigureDotNetDependency;
 begin
+  Log('Configuring .NET Desktop Runtime dependency for DotNetMajorVersion={#DotNetMajorVersion}.');
 #if DotNetMajorVersion == "10"
+  Log('Registering .NET 10 Desktop Runtime dependency package.');
   Dependency_AddDotNet100Desktop;
 #elif DotNetMajorVersion == "9"
+  Log('Registering .NET 9 Desktop Runtime dependency package.');
   Dependency_AddDotNet90Desktop;
 #elif DotNetMajorVersion == "8"
+  Log('Registering .NET 8 Desktop Runtime dependency package.');
   Dependency_AddDotNet80Desktop;
 #else
   #error "Unsupported .NET version: " + DotNetMajorVersion
 #endif
+  Log('.NET Desktop Runtime dependency configuration complete.');
 end;
 
 <event('PrepareToInstall')>
 function MyPrepareToInstall(var NeedsRestart: Boolean): String;
 begin
+  Log('Starting installed .NET Desktop Runtime cleanup for DotNetMajorVersion={#DotNetMajorVersion}.');
 #if DotNetMajorVersion == "10"
+  Log('Removing .NET 10 Desktop Runtime versions older than 10.0.7 for architecture "' + Dependency_ArchTitle + '".');
   UninstallOlderDotNetRuntimes(10, 0, 7, Dependency_ArchTitle);
 #elif DotNetMajorVersion == "9"
+  Log('Removing .NET 9 Desktop Runtime versions older than 9.0.15 for architecture "' + Dependency_ArchTitle + '".');
   UninstallOlderDotNetRuntimes(9, 0, 15, Dependency_ArchTitle);
 #elif DotNetMajorVersion == "8"
+  Log('Removing .NET 8 Desktop Runtime versions older than 8.0.26 for architecture "' + Dependency_ArchTitle + '".');
   UninstallOlderDotNetRuntimes(8, 0, 26, Dependency_ArchTitle);
 #else
   #error "Unsupported .NET version: " + DotNetMajorVersion
 #endif
+  Log('Completed installed .NET Desktop Runtime cleanup.');
   Result := '';
 end;
 #endif

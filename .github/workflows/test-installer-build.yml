@@ -55,11 +55,13 @@ jobs:
         id: framework
         shell: pwsh
         run: |
+          Write-Host "Reading target framework from SoundSwitch/SoundSwitch.csproj..."
           [xml]$project = Get-Content "SoundSwitch/SoundSwitch.csproj"
           $framework = $project.Project.PropertyGroup.TargetFramework | Select-Object -First 1
           if ([string]::IsNullOrWhiteSpace($framework)) {
             throw "Unable to determine TargetFramework from SoundSwitch/SoundSwitch.csproj"
           }
+          Write-Host "Detected target framework value: $framework"
           $match = [System.Text.RegularExpressions.Regex]::Match($framework, '^net(?<major>\d+)\.(?<minor>\d+)')
           if (-not $match.Success) {
             throw "Unable to derive .NET SDK version from TargetFramework '$framework'"
@@ -76,6 +78,17 @@ jobs:
           dotnet-version: ${{ steps.framework.outputs.dotnet-version }}
           cache: true
           cache-dependency-path: Directory.Packages.props
+
+      - name: Log .NET SDK details
+        shell: pwsh
+        run: |
+          Write-Host "Requested SDK channel: ${{ steps.framework.outputs.dotnet-version }}"
+          Write-Host "dotnet --version:"
+          dotnet --version
+          Write-Host "dotnet --list-sdks:"
+          dotnet --list-sdks
+          Write-Host "dotnet --info:"
+          dotnet --info
 
       - name: Build SoundSwitch Application
         shell: cmd
@@ -141,6 +154,9 @@ jobs:
 
       - name: Run Installer in Silent Mode (Machine Scope)
         run: |
+          set "INSTALL_LOG=%TEMP%\SoundSwitch-Installer-Test.log"
+          if exist "%INSTALL_LOG%" del /f /q "%INSTALL_LOG%"
+
           echo "Finding installer executable..."
           for /f "delims=" %%i in ('dir /b Final\Installer\*.exe') do set INSTALLER_NAME=%%i
           if not defined INSTALLER_NAME (
@@ -148,19 +164,31 @@ jobs:
             exit /b 1
           )
           echo "Found installer: %INSTALLER_NAME%"
+          echo "Installer log path: %INSTALL_LOG%"
           
           echo "Running installer in full silent mode for machine scope..."
-          Final\Installer\%INSTALLER_NAME% /VERYSILENT /ALLUSERS /NORESTART /SUPPRESSMSGBOXES /LOG="Final\Installer\install.log"
+          Final\Installer\%INSTALLER_NAME% /VERYSILENT /ALLUSERS /NORESTART /SUPPRESSMSGBOXES /LOG="%INSTALL_LOG%"
           
           echo "Installation completed. Exit code: %ERRORLEVEL%"
           if %ERRORLEVEL% neq 0 (
             echo "Installation failed with exit code %ERRORLEVEL%"
-            if exist "Final\Installer\install.log" (
+            if exist "%INSTALL_LOG%" (
               echo "Installation log:"
-              type "Final\Installer\install.log"
+              type "%INSTALL_LOG%"
             )
             exit /b %ERRORLEVEL%
           )
           
+          if exist "%INSTALL_LOG%" copy /y "%INSTALL_LOG%" "Final\Installer\install.log" >nul
           echo "Installation successful!"
         shell: cmd
+
+      - name: Upload installer and logs
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-installer-build-assets
+          path: |
+            Final/Installer/*.exe
+            Final/Installer/install.log
+          if-no-files-found: warn
