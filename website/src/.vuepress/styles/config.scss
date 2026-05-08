@@ -1,0 +1,10 @@
+// Theme-hope SCSS config overrides.
+// `$theme-color` MUST be declared here (not in palette.scss) because
+// theme-hope's accent generator reads it from the config module.
+// See: https://theme-hope.vuejs.press/guide/customize/color.html
+$theme-color: #2196f3;
+
+// Tone down theme-hope's built-in animations.
+// See: https://theme-hope.vuejs.press/guide/customize/effect.html
+$color-transition: 0s;
+$transform-transition: 0s;

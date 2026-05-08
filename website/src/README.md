@@ -3,5 +3,3 @@ home: true
 ---
 
 <HomeHero />
-
-<GoogleAd />

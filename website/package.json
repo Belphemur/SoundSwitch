@@ -17,6 +17,7 @@
     "vuepress-theme-hope": "2.0.0-rc.106"
   },
   "devDependencies": {
+    "@vuepress/plugin-slimsearch": "^2.0.0-rc.128",
     "wrangler": "^4.90.0"
   }
 }

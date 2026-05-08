@@ -176,6 +176,10 @@ onMounted(async () => {
       </div>
     </div>
 
+    <div class="hero-ad">
+      <GoogleAd />
+    </div>
+
     <div class="features-section">
       <div class="features-grid">
         <div class="feature-card">
@@ -272,23 +276,11 @@ onMounted(async () => {
 
 .home-wrapper {
   position: relative;
-  overflow: hidden;
   margin: -2rem -2rem 0;
   padding-bottom: 2rem;
-  background:
-    radial-gradient(ellipse at 20% 20%, rgba(33, 150, 243, 0.14) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 60%, rgba(25, 118, 210, 0.1) 0%, transparent 55%),
-    radial-gradient(ellipse at 50% 50%, rgba(66, 165, 245, 0.06) 0%, transparent 70%);
-}
-
-.home-wrapper::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  opacity: 0.02;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 0;
+  /* Background gradient is applied to .vp-project-home (in styles/index.scss)
+     so the entire home page shares the same blue tint. */
+  background: transparent;
 }
 
 .home-hero {
@@ -308,20 +300,6 @@ onMounted(async () => {
   z-index: 1;
   text-align: center;
   max-width: 720px;
-  animation: fadeInUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  opacity: 0;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .hero-title {
@@ -340,16 +318,6 @@ onMounted(async () => {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: titleReveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-@keyframes titleReveal {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .hero-tagline {
@@ -359,8 +327,10 @@ onMounted(async () => {
   font-weight: 400;
   line-height: 1.5;
   color: #546e7a;
-  animation: fadeInUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.5s forwards;
-  opacity: 0;
+}
+
+[data-theme="dark"] .hero-tagline {
+  color: #cfd8dc;
 }
 
 .hero-actions {
@@ -368,8 +338,14 @@ onMounted(async () => {
   flex-wrap: wrap;
   gap: 1rem;
   justify-content: center;
-  animation: fadeInUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.7s forwards;
-  opacity: 0;
+}
+
+.hero-ad {
+  position: relative;
+  z-index: 1;
+  max-width: 960px;
+  margin: 1.5rem auto 0;
+  padding: 0 2rem;
 }
 
 .action-button {
@@ -384,7 +360,7 @@ onMounted(async () => {
   text-decoration: none;
   border: none;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: box-shadow 0.2s ease;
   position: relative;
   overflow: hidden;
 }
@@ -396,12 +372,7 @@ onMounted(async () => {
 }
 
 .action-button--primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(33, 150, 243, 0.45), 0 2px 6px rgba(0, 0, 0, 0.12);
-}
-
-.action-button--primary:active {
-  transform: translateY(0);
+  box-shadow: 0 6px 24px rgba(33, 150, 243, 0.45), 0 2px 6px rgba(0, 0, 0, 0.12);
 }
 
 .action-button--secondary {
@@ -412,12 +383,7 @@ onMounted(async () => {
 }
 
 .action-button--secondary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(229, 57, 53, 0.4), 0 2px 6px rgba(0, 0, 0, 0.12);
-}
-
-.action-button--secondary:active {
-  transform: translateY(0);
+  box-shadow: 0 6px 24px rgba(229, 57, 53, 0.4), 0 2px 6px rgba(0, 0, 0, 0.12);
 }
 
 .action-button.is-loading {
@@ -453,18 +419,12 @@ onMounted(async () => {
   border-radius: 12px;
   padding: 1.5rem;
   text-align: center;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .feature-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(33, 150, 243, 0.12);
+  box-shadow: 0 4px 16px rgba(33, 150, 243, 0.12);
   border-color: rgba(33, 150, 243, 0.22);
-}
-
-.feature-card:hover .feature-icon {
-  transform: scale(1.15);
-  color: #1565c0;
 }
 
 .feature-icon {
@@ -473,7 +433,6 @@ onMounted(async () => {
   font-size: 2.5rem;
   color: #2196f3;
   margin: 0 auto 0.35rem;
-  transition: transform 0.3s ease, color 0.3s ease;
 }
 
 .feature-card h3 {
@@ -536,7 +495,6 @@ onMounted(async () => {
 .modal-close:hover {
   background: rgba(0, 0, 0, 0.08);
   color: #263238;
-  transform: rotate(90deg);
 }
 
 .modal-title {
@@ -574,17 +532,12 @@ onMounted(async () => {
   font-size: 1.1rem;
   font-weight: 700;
   text-decoration: none;
-  transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: box-shadow 0.2s ease;
   box-shadow: 0 2px 8px rgba(229, 57, 53, 0.25);
 }
 
 .amount-button:hover {
-  transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 6px 16px rgba(229, 57, 53, 0.35);
-}
-
-.amount-button:active {
-  transform: translateY(0) scale(0.98);
+  box-shadow: 0 4px 14px rgba(229, 57, 53, 0.35);
 }
 
 .amount-button--other {

@@ -28,7 +28,10 @@ export default defineUserConfig({
   ],
   bundler: viteBundler(),
   theme: hopeTheme({
-    logo: "/logo.svg",
+    logo: "/logo-icon.svg",
+    repo: "Belphemur/SoundSwitch",
+    repoLabel: "GitHub",
+    repoDisplay: true,
     navbar: [
       { text: "Home", link: "/" },
       { text: "Getting Started", link: "/getting-started.md" },
@@ -114,6 +117,13 @@ export default defineUserConfig({
     plugins: {
       icon: {
         assets: "fontawesome-with-brands",
+      },
+      slimsearch: {
+        // Index page metadata so titles, headings and content are searchable.
+        indexContent: true,
+        // Boost matches in the title over body content.
+        searchDelay: 150,
+        suggestDelay: 50,
       },
     },
   }),
