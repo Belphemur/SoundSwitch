@@ -12,7 +12,7 @@
 
 ## Anforderungen
 
-- ⚠ Betriebssystem: Windows 7 oder neuer
+- ⚠ Betriebssystem: Windows 10 oder neuer (x64 oder ARM64)
 
 ## Spenden
 

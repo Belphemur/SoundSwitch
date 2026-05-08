@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- **Operating System**: Windows 7 or newer
+- **Operating System**: Windows 10 or newer (x64 or ARM64)
 - **.NET**: Requires the .NET runtime (handled automatically by the installer)
 
 ## Installation
@@ -35,3 +35,13 @@ The SoundSwitch tray icon supports several actions:
 - **Right-click** → Opens the context menu with settings, device selection, and profile options.
 - **Double-click** → Cycles to the next audio device (configurable to switch playback, recording, profiles, or open settings).
 - **Hover** → Shows the current active device (configurable on the General settings tab).
+
+## Next Steps
+
+Now that SoundSwitch is up and running, dive into the configuration to tailor it to your workflow:
+
+- [General Settings](./configuration/general.md) — Startup, tray behavior, hotkeys, and language.
+- [Playback Devices](./configuration/playback.md) — Pick which output devices to cycle through.
+- [Recording Devices](./configuration/recording.md) — Pick which input devices to cycle through.
+- [Notifications](./configuration/notifications.md) — Customize banners, sounds, and Windows toast notifications.
+- [All Configuration Options](./configuration/) — Browse the full configuration reference.

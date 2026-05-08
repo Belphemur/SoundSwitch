@@ -16,7 +16,7 @@
 
 ## Requirements
 
-- ⚠ Operating System: Windows 7 or newer
+- ⚠ Operating System: Windows 10 or newer (x64 or ARM64)
 
 ## Donations
 
