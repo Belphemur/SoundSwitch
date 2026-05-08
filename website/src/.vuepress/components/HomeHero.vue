@@ -25,6 +25,11 @@ const isLoading = ref(true)
 const showDonateModal = ref(false)
 const showThanksModal = ref(false)
 const donatedAmount = ref('')
+// Tracks whether we're running on the client. Used to avoid SSR/CSR
+// hydration mismatches caused by <Teleport> (which renders inline during
+// SSR but moves to <body> on the client) and by client-only state derived
+// from `window.location`.
+const isMounted = ref(false)
 
 const donateAmounts = [5, 10, 25, 50]
 
@@ -78,6 +83,7 @@ function trackDonationAmount(amount: number) {
 }
 
 onMounted(async () => {
+  isMounted.value = true
   try {
     const response = await fetch('https://api.github.com/repos/Belphemur/SoundSwitch/releases')
     if (!response.ok) {
@@ -145,29 +151,23 @@ onMounted(async () => {
         </p>
 
         <div class="hero-actions">
-          <a
-            :href="downloadUrl"
-            class="action-button action-button--primary"
-            :class="{ 'is-loading': isLoading }"
-            @click="trackDownload"
-          >
+          <a :href="downloadUrl" class="action-button action-button--primary" :class="{ 'is-loading': isLoading }"
+            @click="trackDownload">
             <span class="button-icon">
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                <polyline points="7 10 12 15 17 10"/>
-                <line x1="12" y1="15" x2="12" y2="3"/>
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
               </svg>
             </span>
             <span class="button-text">{{ downloadText }}</span>
           </a>
 
-          <button
-            class="action-button action-button--secondary"
-            @click="openDonateModal"
-          >
+          <button class="action-button action-button--secondary" @click="openDonateModal">
             <span class="button-icon">
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                <path
+                  d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
               </svg>
             </span>
             <span class="button-text">Donate</span>
@@ -211,42 +211,34 @@ onMounted(async () => {
       </div>
     </div>
 
-    <Teleport to="body">
+    <Teleport v-if="isMounted" to="body">
       <Transition name="modal">
         <div v-if="showDonateModal" class="donate-modal-overlay" @click.self="closeDonateModal">
           <div class="donate-modal">
             <button class="modal-close" @click="closeDonateModal" aria-label="Close">
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="18" y1="6" x2="6" y2="18"/>
-                <line x1="6" y1="6" x2="18" y2="18"/>
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
               </svg>
             </button>
             <h3 class="modal-title">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#e53935" stroke-width="2" style="vertical-align: middle; margin-right: 0.4rem;">
-                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#e53935" stroke-width="2"
+                style="vertical-align: middle; margin-right: 0.4rem;">
+                <path
+                  d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
               </svg>
               Donation
             </h3>
-            <p class="modal-desc">Thank you very much for considering donating to SoundSwitch!<br>Once you choose the amount you'll be redirected to PayPal.</p>
+            <p class="modal-desc">Thank you very much for considering donating to SoundSwitch!<br>Once you choose the
+              amount you'll be redirected to PayPal.</p>
             <div class="donate-amounts">
-              <a
-                v-for="amount in donateAmounts"
-                :key="amount"
-                :href="buildDonateUrl(amount)"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="amount-button"
-                @click="trackDonationAmount(amount)"
-              >
+              <a v-for="amount in donateAmounts" :key="amount" :href="buildDonateUrl(amount)" target="_blank"
+                rel="noopener noreferrer" class="amount-button" @click="trackDonationAmount(amount)">
                 ${{ amount }}
               </a>
             </div>
-            <a
-              href="https://www.paypal.com/donate/?business=W4ZWXP7LSL29C&item_name=SoundSwitch+Donation&currency_code=USD"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="amount-button amount-button--other"
-            >
+            <a href="https://www.paypal.com/donate/?business=W4ZWXP7LSL29C&item_name=SoundSwitch+Donation&currency_code=USD"
+              target="_blank" rel="noopener noreferrer" class="amount-button amount-button--other">
               Other $ Amount
             </a>
           </div>
@@ -254,14 +246,14 @@ onMounted(async () => {
       </Transition>
     </Teleport>
 
-    <Teleport to="body">
+    <Teleport v-if="isMounted" to="body">
       <Transition name="modal">
         <div v-if="showThanksModal" class="donate-modal-overlay" @click.self="closeThanksModal">
           <div class="donate-modal">
             <button class="modal-close" @click="closeThanksModal" aria-label="Close">
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="18" y1="6" x2="6" y2="18"/>
-                <line x1="6" y1="6" x2="18" y2="18"/>
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
               </svg>
             </button>
             <h3 class="modal-title">Thank You!</h3>
@@ -325,6 +317,7 @@ onMounted(async () => {
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
