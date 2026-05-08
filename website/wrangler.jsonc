@@ -2,8 +2,9 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "soundswitch",
   "compatibility_date": "2026-05-08",
+  "main": "worker/index.ts",
   "observability": {
-    "enabled": false,
+    "enabled": true,
     "head_sampling_rate": 1,
     "logs": {
       "enabled": true,
@@ -14,11 +15,15 @@
     "traces": {
       "enabled": true,
       "persist": true,
-      "head_sampling_rate": 1
+      "head_sampling_rate": 0.1
     }
-  },  
+  },
   "assets": {
-    "directory": "src/.vuepress/dist/"
+    "directory": "src/.vuepress/dist/",
+    "binding": "ASSETS",
+    "run_worker_first": [
+      "/api/*"
+    ]
   },
   "compatibility_flags": [
     "nodejs_compat"

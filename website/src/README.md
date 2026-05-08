@@ -4,6 +4,8 @@ home: true
 
 <HomeHero />
 
+<DownloadCount />
+
 ## Quick Start
 
 Get up and running in under a minute:
