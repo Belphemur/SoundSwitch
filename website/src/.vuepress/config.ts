@@ -1,7 +1,6 @@
 import { defineUserConfig } from "vuepress";
 import { viteBundler } from "@vuepress/bundler-vite";
-import { defaultTheme } from "@vuepress/theme-default";
-import { iconPlugin } from "@vuepress/plugin-icon";
+import { hopeTheme } from "vuepress-theme-hope";
 
 export default defineUserConfig({
   base: "/",
@@ -28,14 +27,7 @@ export default defineUserConfig({
     ],
   ],
   bundler: viteBundler(),
-  plugins: [
-    iconPlugin({
-      assets: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css",
-      type: "fontawesome",
-      component: "Icon",
-    }),
-  ],
-  theme: defaultTheme({
+  theme: hopeTheme({
     logo: "/logo.svg",
     navbar: [
       { text: "Home", link: "/" },
@@ -115,5 +107,14 @@ export default defineUserConfig({
     editLink: false,
     lastUpdated: true,
     contributors: false,
+    footer:
+      'Released under the <a href="https://github.com/Belphemur/SoundSwitch/blob/master/LICENSE" target="_blank" rel="noopener noreferrer">GNU GPL v2 License</a>. ' +
+      'Copyright &copy; 2014&ndash;present <a href="https://github.com/Belphemur" target="_blank" rel="noopener noreferrer">Antoine Aflalo</a> &amp; contributors.',
+    displayFooter: true,
+    plugins: {
+      icon: {
+        assets: "fontawesome-with-brands",
+      },
+    },
   }),
 });

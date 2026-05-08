@@ -25,7 +25,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
-      - run: npm ci --legacy-peer-deps
+      - run: npm ci
         working-directory: website
       - run: npm run docs:build
         working-directory: website
