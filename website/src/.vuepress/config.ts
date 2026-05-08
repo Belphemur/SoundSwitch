@@ -109,7 +109,7 @@ export default defineUserConfig({
     contributors: false,
     footer:
       'Released under the <a href="https://github.com/Belphemur/SoundSwitch/blob/master/LICENSE" target="_blank" rel="noopener noreferrer">GNU GPL v2 License</a>. ' +
-      'Copyright &copy; 2014&ndash;present <a href="https://github.com/Belphemur" target="_blank" rel="noopener noreferrer">Antoine Aflalo</a> &amp; contributors.',
+      'Copyright © 2014–present <a href="https://github.com/Belphemur" target="_blank" rel="noopener noreferrer">Antoine Aflalo</a> & contributors.',
     displayFooter: true,
     plugins: {
       icon: {
