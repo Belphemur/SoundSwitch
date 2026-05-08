@@ -179,32 +179,32 @@ onMounted(async () => {
     <div class="features-section">
       <div class="features-grid">
         <div class="feature-card">
-          <Icon icon="fa-solid:headphones" class="feature-icon" />
+          <VPIcon icon="fa-solid:headphones" class="feature-icon" />
           <h3>Instant Switching</h3>
           <p>Toggle between playback and recording devices with a customizable global hotkey.</p>
         </div>
         <div class="feature-card">
-          <Icon icon="fa-solid:feather" class="feature-icon" />
+          <VPIcon icon="fa-solid:feather" class="feature-icon" />
           <h3>Lightweight</h3>
           <p>Runs quietly in the system tray with minimal resource usage.</p>
         </div>
         <div class="feature-card">
-          <Icon icon="fa-solid:gears" class="feature-icon" />
+          <VPIcon icon="fa-solid:gears" class="feature-icon" />
           <h3>Per-App Rules</h3>
           <p>Automatically switch devices when specific applications start or gain focus.</p>
         </div>
         <div class="feature-card">
-          <Icon icon="fa-solid:clone" class="feature-icon" />
+          <VPIcon icon="fa-solid:clone" class="feature-icon" />
           <h3>Profiles</h3>
           <p>Save and recall complete audio configurations in one click.</p>
         </div>
         <div class="feature-card">
-          <Icon icon="fa-solid:bell" class="feature-icon" />
+          <VPIcon icon="fa-solid:bell" class="feature-icon" />
           <h3>Smart Notifications</h3>
           <p>Choose between toast, banner, or sound notifications for switches.</p>
         </div>
         <div class="feature-card">
-          <Icon icon="fa-solid:video" class="feature-icon" />
+          <VPIcon icon="fa-solid:video" class="feature-icon" />
           <h3>Streamer Friendly</h3>
           <p>Switch devices without interrupting your broadcast.</p>
         </div>

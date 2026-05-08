@@ -8,12 +8,10 @@
     "docs:build": "vuepress build src"
   },
   "dependencies": {
-    "@vuepress/bundler-vite": "^2.0.0-rc.28",
-    "@vuepress/plugin-icon": "^2.0.0-rc.28",
-    "@vuepress/plugin-search": "^2.0.0-rc.28",
-    "@vuepress/theme-default": "^2.0.0-rc.28",
-    "sass-embedded": "^1.77.0",
+    "@vuepress/bundler-vite": "2.0.0-rc.28",
+    "sass-embedded": "^1.98.0",
     "vue": "^3.5.0",
-    "vuepress": "^2.0.0-rc.28"
+    "vuepress": "2.0.0-rc.28",
+    "vuepress-theme-hope": "2.0.0-rc.106"
   }
 }
