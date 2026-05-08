@@ -179,6 +179,7 @@ jobs:
             exit /b %ERRORLEVEL%
           )
           
+          if exist "%INSTALL_LOG%" copy /y "%INSTALL_LOG%" "Final\Installer\install.log" >nul
           echo "Installation successful!"
         shell: cmd
 
@@ -189,5 +190,5 @@ jobs:
           name: test-installer-build-assets
           path: |
             Final/Installer/*.exe
-            ${{ runner.temp }}/SoundSwitch-Installer-Test.log
+            Final/Installer/install.log
           if-no-files-found: warn
