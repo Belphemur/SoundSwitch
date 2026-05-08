@@ -4,8 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "docs:dev": "vuepress dev src",
-    "docs:build": "vuepress build src",
+    "sync:changelog": "node scripts/sync-changelog.mjs",
+    "docs:dev": "npm run sync:changelog && vuepress dev src",
+    "docs:build": "npm run sync:changelog && vuepress build src",
     "deploy": "npm run docs:build && wrangler deploy",
     "preview": "npm run docs:build && wrangler dev"
   },
