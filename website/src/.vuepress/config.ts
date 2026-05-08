@@ -2,9 +2,16 @@ import { defineUserConfig } from "vuepress";
 import { viteBundler } from "@vuepress/bundler-vite";
 import { hopeTheme } from "vuepress-theme-hope";
 
+const SITE_HOSTNAME = "https://soundswitch.aaflalo.me";
+const SITE_DESCRIPTION =
+  "SoundSwitch is a free, open-source Windows app that lets you switch audio playback and recording devices instantly with global hotkeys, per-app rules, profiles and notifications.";
+const SITE_AUTHOR = "Antoine Aflalo";
+
 export default defineUserConfig({
   base: "/",
+  lang: "en-US",
   title: "SoundSwitch",
+  description: SITE_DESCRIPTION,
   head: [
     [
       "script",
@@ -31,10 +38,24 @@ export default defineUserConfig({
   ],
   bundler: viteBundler(),
   theme: hopeTheme({
+    hostname: SITE_HOSTNAME,
+    author: {
+      name: SITE_AUTHOR,
+      url: "https://github.com/Belphemur",
+    },
     logo: "/logo-icon.svg",
+    favicon: "/favicon.ico",
     repo: "Belphemur/SoundSwitch",
     repoLabel: "GitHub",
     repoDisplay: true,
+    metaLocales: {
+      author: "Author",
+      date: "Published",
+      category: "Category",
+      tag: "Tag",
+      readingTime: "Reading Time",
+      pageview: "Page Views",
+    },
     navbar: [
       { text: "Home", link: "/" },
       { text: "Getting Started", link: "/getting-started.md" },
@@ -150,6 +171,20 @@ export default defineUserConfig({
         // Boost matches in the title over body content.
         searchDelay: 150,
         suggestDelay: 50,
+      },
+      // Open Graph / Twitter / JSON-LD metadata. The plugin reads `hostname`
+      // and `author` from the theme options above, plus per-page frontmatter.
+      seo: {
+        fallBackImage: `${SITE_HOSTNAME}/logo-icon.svg`,
+        ogp: (ogp) => ({
+          ...ogp,
+          "og:site_name": "SoundSwitch",
+          "twitter:card": "summary_large_image",
+        }),
+      },
+      // Generates `/sitemap.xml` automatically from the page list.
+      sitemap: {
+        changefreq: "weekly",
       },
     },
   }),
