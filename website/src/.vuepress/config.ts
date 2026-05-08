@@ -58,11 +58,16 @@ export default defineUserConfig({
         ],
       },
       {
+        text: "FAQ",
+        link: "/faq/",
+      },
+      {
         text: "Advanced",
         children: [
           { text: "Auto Updater", link: "/advanced/auto-updater.md" },
           { text: "Multi Language", link: "/advanced/multi-language.md" },
           { text: "Troubleshooting", link: "/advanced/troubleshooting.md" },
+          { text: "Changelog", link: "/changelog.md" },
         ],
       },
     ],
@@ -100,6 +105,24 @@ export default defineUserConfig({
             { text: "Auto Updater", link: "/advanced/auto-updater.md" },
             { text: "Multi Language", link: "/advanced/multi-language.md" },
             { text: "Troubleshooting", link: "/advanced/troubleshooting.md" },
+            { text: "Changelog", link: "/changelog.md" },
+          ],
+        },
+      ],
+      "/faq/": [
+        {
+          text: "FAQ",
+          children: [
+            { text: "Overview", link: "/faq/README.md" },
+            { text: "Find SoundSwitch", link: "/faq/finding-soundswitch.md" },
+            { text: "Quick Menu", link: "/faq/quick-menu.md" },
+            { text: "Rename a device", link: "/faq/rename-device.md" },
+            { text: "Switch profiles", link: "/faq/switching-profiles.md" },
+            { text: "Manually check for update", link: "/faq/manually-check-update.md" },
+            { text: "Postpone an update", link: "/faq/postpone-update.md" },
+            { text: "Invalid digital signature", link: "/faq/invalid-signature.md" },
+            { text: "App not switching after update", link: "/faq/app-not-switching-after-update.md" },
+            { text: "Command line", link: "/faq/command-line.md" },
           ],
         },
       ],
