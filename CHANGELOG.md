@@ -1,3 +1,33 @@
+## [7.0.0-beta.3](https://github.com/Belphemur/SoundSwitch/compare/v7.0.0-beta.2...v7.0.0-beta.3) (2026-05-08)
+
+### Features
+
+* **website:** add FAQ section and changelog page ([698f02a](https://github.com/Belphemur/SoundSwitch/commit/698f02a749e9f14a1655dc2f6004b4a0a113298f))
+* **website:** add quick start section to home page ([0cb75f1](https://github.com/Belphemur/SoundSwitch/commit/0cb75f14ad0f17e3746937a29addb240cf1fc6af))
+* **website:** add SEO title and description frontmatter to every doc page ([9e6455e](https://github.com/Belphemur/SoundSwitch/commit/9e6455ee354853ae571aaddbf7e896b61cc2d132))
+* **website:** blue theme, search, GitHub link and home redesign ([03522c2](https://github.com/Belphemur/SoundSwitch/commit/03522c2dd8e8a11ea3a4ca0e5fa820422a570ffc)), closes [#2196f3](https://github.com/Belphemur/SoundSwitch/issues/2196f3)
+* **website:** configure SEO plugin, sitemap and home metadata ([be2b5be](https://github.com/Belphemur/SoundSwitch/commit/be2b5be1f7011ccd012be1035a3f4f457ad6acb5))
+* **website:** migrate to vuepress-theme-hope with built-in footer, drop --legacy-peer-deps ([0f9513f](https://github.com/Belphemur/SoundSwitch/commit/0f9513f05cf9983062f564ba7bed944bc72fb4ba))
+* **website:** redesign homepage with custom hero, feature cards, and Font Awesome icons ([a25d6dd](https://github.com/Belphemur/SoundSwitch/commit/a25d6dddf3d7c36eb6ba409193b73e32e1a5a136))
+* **website:** show total GitHub download count on the home page ([9a752eb](https://github.com/Belphemur/SoundSwitch/commit/9a752eb8f6b00264be1b3dda575a5dc47a90b80f))
+
+### Bug Fixes
+
+* **ci:** align installer log artifact path ([d8de8c4](https://github.com/Belphemur/SoundSwitch/commit/d8de8c4595f582d8dd36edeab7e7daee80d6e804))
+* **ci:** upload installer artifacts and improve dotnet install logging ([e02e9c5](https://github.com/Belphemur/SoundSwitch/commit/e02e9c5db54d581b9a082f7125cf6e76966138fa))
+* **docs:** resolve PR review comments and fix CI build ([72bd74c](https://github.com/Belphemur/SoundSwitch/commit/72bd74cb3a87eb6821b074c3cb4477e8326c7649))
+* improve footer ([b95c45f](https://github.com/Belphemur/SoundSwitch/commit/b95c45f9c56aef43b5773efe52d739427115784f))
+* **installer:** clean app directory before install ([e6311ef](https://github.com/Belphemur/SoundSwitch/commit/e6311ef0a3eed146160e6b02617c16111ed81a91))
+* proper config for website ([a894e16](https://github.com/Belphemur/SoundSwitch/commit/a894e163e7eac17aac03078db6a5a04d72beb3c7))
+* **website:** correct AdSense slot id and defer push until laid out ([1d5a495](https://github.com/Belphemur/SoundSwitch/commit/1d5a4955a30557ae64a513c7890b5f56bd0d70d8))
+* **website:** disable theme-hope drop-in animation on page mount ([6cb7712](https://github.com/Belphemur/SoundSwitch/commit/6cb7712afed840e9d83688b4e2e24686900a55c2))
+* **website:** fix base path ([ab5c4f1](https://github.com/Belphemur/SoundSwitch/commit/ab5c4f1a791bd40d9dbd8d3026eb69ed8360f5b4))
+* **website:** generate changelog page from CHANGELOG.md instead of symlinking ([77a2884](https://github.com/Belphemur/SoundSwitch/commit/77a288458809c0726b0c3e64d2917936dce02395))
+* **website:** pin vuepress deps to compatible exact versions, add home page footer ([1af1b4e](https://github.com/Belphemur/SoundSwitch/commit/1af1b4eb244746ba8c272be1c0f4000af4808aae))
+* **website:** prevent SSR hydration mismatch in HomeHero ([e5685a8](https://github.com/Belphemur/SoundSwitch/commit/e5685a84e3c902dd47e94490b6a8406094be366e))
+* **website:** render banner position table correctly ([18650e9](https://github.com/Belphemur/SoundSwitch/commit/18650e974974b2855b3bc952d369ddd9401f608f))
+* **website:** use Unicode chars in footer string instead of HTML entities ([219d7d7](https://github.com/Belphemur/SoundSwitch/commit/219d7d7e5887227ddd1f1f3de5de6bfb3a4c729f))
+
 ## [7.0.0-beta.2](https://github.com/Belphemur/SoundSwitch/compare/v7.0.0-beta.1...v7.0.0-beta.2) (2026-05-07)
 
 ### Bug Fixes
