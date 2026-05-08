@@ -129,48 +129,85 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="home-hero">
-    <div class="hero-background">
-      <div class="gradient-mesh"></div>
-      <div class="noise-overlay"></div>
+  <div class="home-wrapper">
+    <div class="home-hero">
+      <div class="hero-background">
+        <div class="gradient-mesh"></div>
+        <div class="noise-overlay"></div>
+      </div>
+
+      <div class="hero-content">
+        <h1 class="hero-title">
+          <span class="title-line">SoundSwitch</span>
+        </h1>
+        <p class="hero-tagline">
+          Switch your audio devices with a single keystroke
+        </p>
+
+        <div class="hero-actions">
+          <a
+            :href="downloadUrl"
+            class="action-button action-button--primary"
+            :class="{ 'is-loading': isLoading }"
+            @click="trackDownload"
+          >
+            <span class="button-icon">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+            </span>
+            <span class="button-text">{{ downloadText }}</span>
+          </a>
+
+          <button
+            class="action-button action-button--secondary"
+            @click="openDonateModal"
+          >
+            <span class="button-icon">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+            </span>
+            <span class="button-text">Donate</span>
+          </button>
+        </div>
+      </div>
     </div>
 
-    <div class="hero-content">
-      <h1 class="hero-title">
-        <span class="title-line">SoundSwitch</span>
-      </h1>
-      <p class="hero-tagline">
-        Switch your audio devices with a single keystroke
-      </p>
-
-      <div class="hero-actions">
-        <a
-          :href="downloadUrl"
-          class="action-button action-button--primary"
-          :class="{ 'is-loading': isLoading }"
-          @click="trackDownload"
-        >
-          <span class="button-icon">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-              <polyline points="7 10 12 15 17 10"/>
-              <line x1="12" y1="15" x2="12" y2="3"/>
-            </svg>
-          </span>
-          <span class="button-text">{{ downloadText }}</span>
-        </a>
-
-        <button
-          class="action-button action-button--secondary"
-          @click="openDonateModal"
-        >
-          <span class="button-icon">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-            </svg>
-          </span>
-          <span class="button-text">Donate</span>
-        </button>
+    <div class="features-section">
+      <div class="features-grid">
+        <div class="feature-card">
+          <Icon icon="fa-solid:headphones" class="feature-icon" />
+          <h3>Instant Switching</h3>
+          <p>Toggle between playback and recording devices with a customizable global hotkey.</p>
+        </div>
+        <div class="feature-card">
+          <Icon icon="fa-solid:feather" class="feature-icon" />
+          <h3>Lightweight</h3>
+          <p>Runs quietly in the system tray with minimal resource usage.</p>
+        </div>
+        <div class="feature-card">
+          <Icon icon="fa-solid:gears" class="feature-icon" />
+          <h3>Per-App Rules</h3>
+          <p>Automatically switch devices when specific applications start or gain focus.</p>
+        </div>
+        <div class="feature-card">
+          <Icon icon="fa-solid:clone" class="feature-icon" />
+          <h3>Profiles</h3>
+          <p>Save and recall complete audio configurations in one click.</p>
+        </div>
+        <div class="feature-card">
+          <Icon icon="fa-solid:bell" class="feature-icon" />
+          <h3>Smart Notifications</h3>
+          <p>Choose between toast, banner, or sound notifications for switches.</p>
+        </div>
+        <div class="feature-card">
+          <Icon icon="fa-solid:video" class="feature-icon" />
+          <h3>Streamer Friendly</h3>
+          <p>Switch devices without interrupting your broadcast.</p>
+        </div>
       </div>
     </div>
 
@@ -184,8 +221,13 @@ onMounted(async () => {
                 <line x1="6" y1="6" x2="18" y2="18"/>
               </svg>
             </button>
-            <h3 class="modal-title">Support SoundSwitch</h3>
-            <p class="modal-desc">Choose an amount to donate via PayPal</p>
+            <h3 class="modal-title">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#e53935" stroke-width="2" style="vertical-align: middle; margin-right: 0.4rem;">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+              Donation
+            </h3>
+            <p class="modal-desc">Thank you very much for considering donating to SoundSwitch!<br>Once you choose the amount you'll be redirected to PayPal.</p>
             <div class="donate-amounts">
               <a
                 v-for="amount in donateAmounts"
@@ -199,6 +241,14 @@ onMounted(async () => {
                 ${{ amount }}
               </a>
             </div>
+            <a
+              href="https://www.paypal.com/donate/?business=W4ZWXP7LSL29C&item_name=SoundSwitch+Donation&currency_code=USD"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="amount-button amount-button--other"
+            >
+              Other $ Amount
+            </a>
           </div>
         </div>
       </Transition>
@@ -228,54 +278,37 @@ onMounted(async () => {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Outfit:wght@400;500&display=swap');
 
-.home-hero {
+.home-wrapper {
   position: relative;
-  min-height: 60vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   overflow: hidden;
-  padding: 4rem 2rem;
-  margin: -2.5rem -2rem 0;
+  margin: -2rem -2rem 0;
+  padding-bottom: 2rem;
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(33, 150, 243, 0.14) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 60%, rgba(25, 118, 210, 0.1) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 50%, rgba(66, 165, 245, 0.06) 0%, transparent 70%);
 }
 
-.hero-background {
+.home-wrapper::before {
+  content: '';
   position: absolute;
   inset: 0;
+  opacity: 0.02;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  pointer-events: none;
   z-index: 0;
 }
 
-.gradient-mesh {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse at 20% 30%, rgba(33, 150, 243, 0.18) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 70%, rgba(25, 118, 210, 0.14) 0%, transparent 55%),
-    radial-gradient(ellipse at 50% 50%, rgba(66, 165, 245, 0.08) 0%, transparent 70%);
-  animation: meshDrift 12s ease-in-out infinite alternate;
+.home-hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem 1rem;
 }
 
-@keyframes meshDrift {
-  0% {
-    transform: translate(0, 0) scale(1);
-  }
-  33% {
-    transform: translate(2%, -1%) scale(1.02);
-  }
-  66% {
-    transform: translate(-1%, 2%) scale(0.98);
-  }
-  100% {
-    transform: translate(1%, 1%) scale(1.01);
-  }
-}
-
-.noise-overlay {
-  position: absolute;
-  inset: 0;
-  opacity: 0.035;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  pointer-events: none;
+.hero-background {
+  display: none;
 }
 
 .hero-content {
@@ -299,14 +332,13 @@ onMounted(async () => {
 }
 
 .hero-title {
-  margin: 0 0 1rem;
+  margin: 0 0 0.5rem;
   font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(3rem, 8vw, 5.5rem);
+  font-size: clamp(2rem, 5vw, 3.5rem);
   font-weight: 700;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
-  color: #0d47a1;
-  text-shadow: 0 2px 20px rgba(33, 150, 243, 0.15);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: #1a1a2e;
 }
 
 .title-line {
@@ -328,7 +360,7 @@ onMounted(async () => {
 }
 
 .hero-tagline {
-  margin: 0 0 2.5rem;
+  margin: 0 0 1.5rem;
   font-family: 'Outfit', sans-serif;
   font-size: clamp(1.125rem, 2.5vw, 1.5rem);
   font-weight: 400;
@@ -380,17 +412,15 @@ onMounted(async () => {
 }
 
 .action-button--secondary {
-  background: #fff;
-  color: #1976d2;
-  border: 2px solid rgba(33, 150, 243, 0.25);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  background: linear-gradient(135deg, #e53935 0%, #ef5350 100%);
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 20px rgba(229, 57, 53, 0.3), 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .action-button--secondary:hover {
-  background: rgba(33, 150, 243, 0.04);
-  border-color: rgba(33, 150, 243, 0.45);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 30px rgba(229, 57, 53, 0.4), 0 2px 6px rgba(0, 0, 0, 0.12);
 }
 
 .action-button--secondary:active {
@@ -407,6 +437,66 @@ onMounted(async () => {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+}
+
+.features-section {
+  position: relative;
+  z-index: 1;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 2rem 2rem;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.feature-card {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(33, 150, 243, 0.1);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(33, 150, 243, 0.12);
+  border-color: rgba(33, 150, 243, 0.22);
+}
+
+.feature-card:hover .feature-icon {
+  transform: scale(1.15);
+  color: #1565c0;
+}
+
+.feature-icon {
+  display: block;
+  text-align: center;
+  font-size: 2.5rem;
+  color: #2196f3;
+  margin: 0 auto 0.35rem;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.feature-card h3 {
+  margin: 0 0 0.4rem;
+  padding-top: 0 !important;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #1565c0;
+  border-bottom: none !important;
+}
+
+.feature-card p {
+  margin: 0;
+  color: #546e7a;
+  line-height: 1.5;
+  font-size: 0.88rem;
 }
 
 /* Modal styles */
@@ -461,45 +551,67 @@ onMounted(async () => {
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0 0 0.5rem;
-  color: #1565c0;
+  color: #c62828;
 }
 
 .modal-desc {
   font-family: 'Outfit', sans-serif;
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: #78909c;
-  margin: 0 0 1.75rem;
+  margin: 0 0 1.25rem;
+  line-height: 1.5;
 }
 
 .donate-amounts {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 0.875rem;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 
 .amount-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.875rem 1rem;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #1976d2 0%, #2196f3 100%);
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #e53935 0%, #ef5350 100%);
   color: #fff;
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 1.125rem;
+  font-size: 1.1rem;
   font-weight: 700;
   text-decoration: none;
   transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.25);
+  box-shadow: 0 2px 8px rgba(229, 57, 53, 0.25);
 }
 
 .amount-button:hover {
   transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 6px 16px rgba(33, 150, 243, 0.35);
+  box-shadow: 0 6px 16px rgba(229, 57, 53, 0.35);
 }
 
 .amount-button:active {
   transform: translateY(0) scale(0.98);
+}
+
+.amount-button--other {
+  display: inline-flex;
+  grid-column: 1 / -1;
+  justify-self: center;
+  background: #fff;
+  color: #e53935;
+  border: 2px solid rgba(229, 57, 53, 0.3);
+  box-shadow: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.5rem 1.5rem;
+  border-radius: 8px;
+}
+
+.amount-button--other:hover {
+  background: rgba(229, 57, 53, 0.04);
+  border-color: rgba(229, 57, 53, 0.5);
+  box-shadow: 0 4px 12px rgba(229, 57, 53, 0.12);
 }
 
 .thanks-amount {

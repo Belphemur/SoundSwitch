@@ -1,1 +1,25 @@
 // Global style overrides and tweaks for SoundSwitch documentation
+
+// Hide default VuePress home hero (custom HomeHero component is used instead)
+.vp-hero {
+  display: none !important;
+}
+
+// Hide site name in navbar (logo is enough; title appears in hero)
+.vp-site-name {
+  display: none !important;
+}
+
+// Make navbar logo bigger
+.vp-navbar {
+  height: auto !important;
+}
+
+.vp-navbar .vp-site-logo {
+  height: 3.2rem !important;
+}
+
+// Hide default VuePress home hero (custom HomeHero component is used instead)
+.vp-hero {
+  display: none !important;
+}

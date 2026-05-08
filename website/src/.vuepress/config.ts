@@ -1,6 +1,7 @@
 import { defineUserConfig } from "vuepress";
 import { viteBundler } from "@vuepress/bundler-vite";
 import { defaultTheme } from "@vuepress/theme-default";
+import { iconPlugin } from "@vuepress/plugin-icon";
 
 export default defineUserConfig({
   base: "/",
@@ -27,6 +28,13 @@ export default defineUserConfig({
     ],
   ],
   bundler: viteBundler(),
+  plugins: [
+    iconPlugin({
+      assets: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css",
+      type: "fontawesome",
+      component: "Icon",
+    }),
+  ],
   theme: defaultTheme({
     logo: "/logo.svg",
     navbar: [
