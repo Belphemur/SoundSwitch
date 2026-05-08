@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "soundswitch-docs",
+  "compatibility_date": "2026-05-08",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": ".vuepress/src/dist"
+  },
+  "compatibility_flags": [
+    "nodejs_compat"
+  ]
+}

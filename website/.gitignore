@@ -2,3 +2,10 @@ node_modules/
 src/.vuepress/.temp/
 src/.vuepress/.cache/
 src/.vuepress/dist/
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
