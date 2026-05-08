@@ -36,8 +36,10 @@ Controls the notification behavior when the microphone mute toggle is activated:
 
 Select where on the screen the banner appears using the 3×3 grid of radio buttons:
 
-| Top Left | Top Center | Top Right |
-| Center Left | Center | Center Right |
+| Left        | Center        | Right        |
+| ----------- | ------------- | ------------ |
+| Top Left    | Top Center    | Top Right    |
+| Center Left | Center        | Center Right |
 | Bottom Left | Bottom Center | Bottom Right |
 
 A **Custom...** option with a slider lets you drag the banner to any position on your screen for fine-tuned placement.
