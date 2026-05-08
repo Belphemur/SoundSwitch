@@ -1,0 +1,9 @@
+@use "sass:color";
+
+// Brand color overrides for SoundSwitch documentation
+$theme-color: #2196F3;
+$c-brand: $theme-color;
+$c-brand-light: color.adjust($theme-color, $lightness: 10%);
+$c-brand-dark: color.adjust($theme-color, $lightness: -10%);
+$c-text-accent: $theme-color;
+$c-bg-accent: rgba($theme-color, 0.1);

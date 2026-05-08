@@ -1,0 +1,538 @@
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+
+interface GitHubAsset {
+  name: string
+  browser_download_url: string
+}
+
+interface GitHubRelease {
+  tag_name: string
+  prerelease: boolean
+  assets: GitHubAsset[]
+}
+
+declare global {
+  interface Window {
+    _paq?: unknown[]
+    _mtm?: unknown[]
+  }
+}
+
+const downloadUrl = ref('https://github.com/Belphemur/SoundSwitch/releases/latest')
+const downloadText = ref('Download')
+const isLoading = ref(true)
+const showDonateModal = ref(false)
+const showThanksModal = ref(false)
+const donatedAmount = ref('')
+
+const donateAmounts = [5, 10, 25, 50]
+
+function buildDonateUrl(amount: number): string {
+  const base = 'https://www.paypal.com/donate'
+  // Fallback for uuidv4
+  const uuid = typeof crypto !== 'undefined' && crypto.randomUUID
+    ? crypto.randomUUID()
+    : Math.random().toString(36).substring(2) + Date.now().toString(36)
+  const custom = 'SoundSwitch-' + uuid
+
+  const params = new URLSearchParams({
+    business: 'W4ZWXP7LSL29C',
+    item_name: 'SoundSwitch Donation',
+    currency_code: 'USD',
+    notify_url: 'https://www.aaflalo.me/?PAYPALIPN=1',
+    custom: custom,
+    return: window.location.href.split('#')[0].split('?')[0] + '#thanks',
+    bn: 'SeamlessDonations_SP',
+    amount: String(amount),
+  })
+  return `${base}?${params.toString()}`
+}
+
+function trackDownload() {
+  window._paq?.push(['trackEvent', 'download', 'Click', downloadText.value.replace('Download ', '')])
+}
+
+function openDonateModal() {
+  window._paq?.push(['trackEvent', 'donate', 'Click'])
+  showDonateModal.value = true
+}
+
+function closeDonateModal() {
+  window._paq?.push(['trackEvent', 'donate', 'Close'])
+  showDonateModal.value = false
+}
+
+function closeThanksModal() {
+  showThanksModal.value = false
+}
+
+function trackDonationAmount(amount: number) {
+  window._mtm?.push({
+    event: 'paypal-donation',
+    donation: {
+      amount: amount,
+      name: String(amount) + '$',
+    },
+  })
+}
+
+onMounted(async () => {
+  try {
+    const response = await fetch('https://api.github.com/repos/Belphemur/SoundSwitch/releases')
+    if (!response.ok) {
+      throw new Error(`GitHub API responded with ${response.status}`)
+    }
+
+    const releases: GitHubRelease[] = await response.json()
+    const stableRelease = releases.find((r) => r.prerelease === false)
+
+    if (!stableRelease) {
+      throw new Error('No stable release found')
+    }
+
+    const exeAsset = stableRelease.assets.find((a) => a.name.endsWith('.exe'))
+
+    if (exeAsset) {
+      downloadUrl.value = exeAsset.browser_download_url
+    }
+    downloadText.value = `Download ${stableRelease.tag_name}`
+  } catch {
+    // Fallback already set in refs
+  } finally {
+    isLoading.value = false
+  }
+
+  const url = window.location.href
+  const pageSearchParams = new URLSearchParams(window.location.search)
+  if (url.includes('#thanks')) {
+    let searchParamsString = window.location.search
+    if (!searchParamsString && url.includes('?')) {
+      searchParamsString = url.substring(url.indexOf('?'))
+    }
+    const urlParams = new URLSearchParams(searchParamsString)
+    const amount = parseFloat(urlParams.get('amt') || '0')
+    const currency = urlParams.get('cc')
+
+    if (amount > 0) {
+      donatedAmount.value = amount.toFixed(2) + ' ' + (currency ?? 'USD')
+      window._mtm?.push({
+        event: 'paypal-donation-thanks',
+        donation: { amount: amount, currency: currency }
+      })
+    }
+    showThanksModal.value = true
+  } else if (url.includes('#donate') || pageSearchParams.has('donate')) {
+    openDonateModal()
+  }
+})
+</script>
+
+<template>
+  <div class="home-hero">
+    <div class="hero-background">
+      <div class="gradient-mesh"></div>
+      <div class="noise-overlay"></div>
+    </div>
+
+    <div class="hero-content">
+      <h1 class="hero-title">
+        <span class="title-line">SoundSwitch</span>
+      </h1>
+      <p class="hero-tagline">
+        Switch your audio devices with a single keystroke
+      </p>
+
+      <div class="hero-actions">
+        <a
+          :href="downloadUrl"
+          class="action-button action-button--primary"
+          :class="{ 'is-loading': isLoading }"
+          @click="trackDownload"
+        >
+          <span class="button-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+          </span>
+          <span class="button-text">{{ downloadText }}</span>
+        </a>
+
+        <button
+          class="action-button action-button--secondary"
+          @click="openDonateModal"
+        >
+          <span class="button-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </span>
+          <span class="button-text">Donate</span>
+        </button>
+      </div>
+    </div>
+
+    <Teleport to="body">
+      <Transition name="modal">
+        <div v-if="showDonateModal" class="donate-modal-overlay" @click.self="closeDonateModal">
+          <div class="donate-modal">
+            <button class="modal-close" @click="closeDonateModal" aria-label="Close">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+            </button>
+            <h3 class="modal-title">Support SoundSwitch</h3>
+            <p class="modal-desc">Choose an amount to donate via PayPal</p>
+            <div class="donate-amounts">
+              <a
+                v-for="amount in donateAmounts"
+                :key="amount"
+                :href="buildDonateUrl(amount)"
+                target="_blank"
+                rel="noopener"
+                class="amount-button"
+                @click="trackDonationAmount(amount)"
+              >
+                ${{ amount }}
+              </a>
+            </div>
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
+
+    <Teleport to="body">
+      <Transition name="modal">
+        <div v-if="showThanksModal" class="donate-modal-overlay" @click.self="closeThanksModal">
+          <div class="donate-modal">
+            <button class="modal-close" @click="closeThanksModal" aria-label="Close">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+            </button>
+            <h3 class="modal-title">Thank You!</h3>
+            <p class="modal-desc">Thank you very much for your donation to SoundSwitch!</p>
+            <p v-if="donatedAmount" class="thanks-amount">{{ donatedAmount }}</p>
+            <button class="action-button action-button--primary" @click="closeThanksModal">Close</button>
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
+  </div>
+</template>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Outfit:wght@400;500&display=swap');
+
+.home-hero {
+  position: relative;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 4rem 2rem;
+  margin: -2.5rem -2rem 0;
+}
+
+.hero-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.gradient-mesh {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(33, 150, 243, 0.18) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 70%, rgba(25, 118, 210, 0.14) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 50%, rgba(66, 165, 245, 0.08) 0%, transparent 70%);
+  animation: meshDrift 12s ease-in-out infinite alternate;
+}
+
+@keyframes meshDrift {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(2%, -1%) scale(1.02);
+  }
+  66% {
+    transform: translate(-1%, 2%) scale(0.98);
+  }
+  100% {
+    transform: translate(1%, 1%) scale(1.01);
+  }
+}
+
+.noise-overlay {
+  position: absolute;
+  inset: 0;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 720px;
+  animation: fadeInUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  opacity: 0;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-title {
+  margin: 0 0 1rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: #0d47a1;
+  text-shadow: 0 2px 20px rgba(33, 150, 243, 0.15);
+}
+
+.title-line {
+  display: inline-block;
+  background: linear-gradient(135deg, #1565c0 0%, #2196f3 50%, #42a5f5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: titleReveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+@keyframes titleReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-tagline {
+  margin: 0 0 2.5rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+  font-weight: 400;
+  line-height: 1.5;
+  color: #546e7a;
+  animation: fadeInUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.5s forwards;
+  opacity: 0;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  animation: fadeInUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.7s forwards;
+  opacity: 0;
+}
+
+.action-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.75rem;
+  border-radius: 12px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.action-button--primary {
+  background: linear-gradient(135deg, #1976d2 0%, #2196f3 100%);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(33, 150, 243, 0.35), 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.action-button--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(33, 150, 243, 0.45), 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.action-button--primary:active {
+  transform: translateY(0);
+}
+
+.action-button--secondary {
+  background: #fff;
+  color: #1976d2;
+  border: 2px solid rgba(33, 150, 243, 0.25);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.action-button--secondary:hover {
+  background: rgba(33, 150, 243, 0.04);
+  border-color: rgba(33, 150, 243, 0.45);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.action-button--secondary:active {
+  transform: translateY(0);
+}
+
+.action-button.is-loading {
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.button-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Modal styles */
+.donate-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(13, 27, 42, 0.55);
+  backdrop-filter: blur(6px);
+  padding: 1rem;
+}
+
+.donate-modal {
+  position: relative;
+  background: #fff;
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.04);
+  color: #546e7a;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+  background: rgba(0, 0, 0, 0.08);
+  color: #263238;
+  transform: rotate(90deg);
+}
+
+.modal-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  color: #1565c0;
+}
+
+.modal-desc {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  color: #78909c;
+  margin: 0 0 1.75rem;
+}
+
+.donate-amounts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.875rem;
+}
+
+.amount-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.875rem 1rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1976d2 0%, #2196f3 100%);
+  color: #fff;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.125rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.25);
+}
+
+.amount-button:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 6px 16px rgba(33, 150, 243, 0.35);
+}
+
+.amount-button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.thanks-amount {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1976d2;
+  margin: 0 0 1.5rem;
+}
+
+/* Vue transition classes */
+.modal-enter-active,
+.modal-leave-active {
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
+}
+
+.modal-enter-from .donate-modal,
+.modal-leave-to .donate-modal {
+  transform: scale(0.92) translateY(10px);
+}
+
+.modal-enter-active .donate-modal,
+.modal-leave-active .donate-modal {
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.modal-enter-to .donate-modal,
+.modal-leave-from .donate-modal {
+  transform: scale(1) translateY(0);
+}
+</style>
