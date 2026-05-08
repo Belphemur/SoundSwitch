@@ -38,3 +38,14 @@
     radial-gradient(ellipse at 80% 60%, rgba(13, 71, 161, 0.28) 0%, transparent 55%),
     linear-gradient(180deg, #0d1b2a 0%, #11203a 60%, #0a1422 100%);
 }
+
+// Disable theme-hope's DropTransition (translateY slide-in) on page mount.
+// The transition is applied via inline styles on [vp-content] elements and
+// the hero wrapper, so we have to use !important to override it. Without
+// this, the homepage "bounces" each time it loads.
+[vp-content],
+.vp-hero-info-wrapper {
+  transition: none !important;
+  transform: none !important;
+  animation: none !important;
+}
