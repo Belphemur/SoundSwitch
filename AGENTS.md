@@ -39,6 +39,15 @@ This file defines repository-wide guidance for the SoundSwitch workspace. More s
 - Scoped or module-style commit messages are encouraged when useful, for example `fix(localization): ...` or `feat(audio-manager): ...`.
 - Keep the subject concise and focused on the user-visible or engineering outcome.
 
+## Development Documentation
+
+For additional developer-focused documentation — including build instructions, contribution guidelines, architecture overviews, and deep dives into specific components — see the [`docs/`](./docs/) folder:
+
+- [Building SoundSwitch](./docs/building.md) — Setup, build commands, and CI/CD pipeline.
+- [Contributing](./docs/contributing.md) — Standards, commit conventions, and PR process.
+- [Architecture Overview](./docs/architecture.md) — Project structure and key layers.
+- [Banner Manager](./docs/banner-manager.md) — Deep dive into the microphone mute banner subsystem.
+
 ## Validation
 
 - Default validation: `dotnet build SoundSwitch.sln -c Debug`
