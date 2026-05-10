@@ -12,13 +12,11 @@ const props = withDefaults(defineProps<{
   adSlot?: string
   adFormat?: string
   fullWidthResponsive?: boolean
-  placement?: 'content' | 'hero'
 }>(), {
   adClient: 'ca-pub-7284443005140816',
   adSlot: '3897699789',
   adFormat: 'auto',
   fullWidthResponsive: true,
-  placement: 'content',
 })
 
 const route = useRoute()
@@ -43,7 +41,7 @@ const pushAd = (attempt = 1) => {
     }
 
     const adSenseWindow = window as AdSenseWindow
-    ;(adSenseWindow.adsbygoogle = adSenseWindow.adsbygoogle || []).push({})
+      ; (adSenseWindow.adsbygoogle = adSenseWindow.adsbygoogle || []).push({})
   } catch (error) {
     console.error('[GoogleAd] Failed to initialize AdSense slot', error)
   }
@@ -58,18 +56,19 @@ watch(() => route.path, () => {
 </script>
 
 <template>
-  <div class="google-ad" :class="`google-ad--${props.placement}`">
-    <ins :key="adKey" ref="adSlotRef" class="adsbygoogle"
-      :data-ad-client="props.adClient"
-      :data-ad-slot="props.adSlot"
-      :data-ad-format="props.adFormat"
-      :data-full-width-responsive="props.fullWidthResponsive ? 'true' : 'false'"></ins>
+  <div class="google-ad">
+    <ins :key="adKey" ref="adSlotRef" class="adsbygoogle" :data-ad-client="props.adClient" :data-ad-slot="props.adSlot"
+      :data-ad-format="props.adFormat" :data-full-width-responsive="props.fullWidthResponsive ? 'true' : 'false'"></ins>
   </div>
 </template>
 
 <style scoped>
 .google-ad {
-  margin: 2rem 0;
+  position: relative;
+  z-index: 1;
+  max-width: 960px;
+  margin: 1.5rem auto 0;
+  padding: 0 2rem;
   min-height: 90px;
   min-width: 100%;
   width: 100%;
@@ -78,13 +77,6 @@ watch(() => route.path, () => {
   justify-content: center;
 }
 
-.google-ad--hero {
-  position: relative;
-  z-index: 1;
-  max-width: 960px;
-  margin: 1.5rem auto 0;
-  padding: 0 2rem;
-}
 .adsbygoogle {
   display: block;
   min-width: 100%;

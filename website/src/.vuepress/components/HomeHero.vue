@@ -176,7 +176,7 @@ onMounted(async () => {
       </div>
     </div>
 
-    <GoogleAd placement="hero" />
+    <GoogleAd />
 
     <div class="features-section">
       <div class="features-grid">
