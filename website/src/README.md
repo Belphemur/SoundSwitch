@@ -1,5 +1,6 @@
 ---
 home: true
+layout: Home
 title: SoundSwitch — Free Windows audio device switcher with hotkeys
 description: SoundSwitch is a free, open-source Windows app that switches audio playback and recording devices instantly with global hotkeys, per-app rules, profiles and notifications.
 head:
