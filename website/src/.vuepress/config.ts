@@ -15,6 +15,16 @@ export default defineUserConfig({
   head: [
     [
       "script",
+      {
+        async: true,
+        // Keep the shared AdSense loader for manual <GoogleAd> slots without
+        // enabling page-level auto ads.
+        src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js",
+        crossorigin: "anonymous",
+      },
+    ],
+    [
+      "script",
       {},
       `
       var _mtm = window._mtm = window._mtm || [];
