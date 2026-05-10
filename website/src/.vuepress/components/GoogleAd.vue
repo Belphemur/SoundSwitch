@@ -7,6 +7,18 @@ type AdSenseWindow = Window & {
   adsbygoogle?: AdSlotPushItem[]
 }
 
+const props = withDefaults(defineProps<{
+  adClient?: string
+  adSlot?: string
+  adFormat?: string
+  fullWidthResponsive?: boolean
+}>(), {
+  adClient: 'ca-pub-7284443005140816',
+  adSlot: '3897699789',
+  adFormat: 'auto',
+  fullWidthResponsive: true,
+})
+
 const route = useRoute()
 const adKey = ref(0)
 const adSlotRef = ref<HTMLElement | null>(null)
@@ -35,8 +47,11 @@ watch(() => route.path, () => {
 
 <template>
   <div class="google-ad">
-    <ins ref="adSlotRef" class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7284443005140816" data-ad-slot="3897699789"
-      data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <ins :key="adKey" ref="adSlotRef" class="adsbygoogle" style="display:block"
+      :data-ad-client="props.adClient"
+      :data-ad-slot="props.adSlot"
+      :data-ad-format="props.adFormat"
+      :data-full-width-responsive="props.fullWidthResponsive ? 'true' : 'false'"></ins>
   </div>
 </template>
 
