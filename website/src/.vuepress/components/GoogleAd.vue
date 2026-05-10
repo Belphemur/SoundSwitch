@@ -23,10 +23,20 @@ const route = useRoute()
 const adKey = ref(0)
 const adSlotRef = ref<HTMLElement | null>(null)
 
-const pushAd = () => {
+const MAX_PUSH_RETRIES = 10
+const PUSH_RETRY_DELAY_MS = 200
+
+const pushAd = (attempt = 1) => {
   try {
     const adSlot = adSlotRef.value
     if (!adSlot || adSlot.getAttribute('data-adsbygoogle-status')) {
+      return
+    }
+
+    if (adSlot.offsetWidth <= 0) {
+      if (attempt <= MAX_PUSH_RETRIES) {
+        setTimeout(() => pushAd(attempt + 1), PUSH_RETRY_DELAY_MS)
+      }
       return
     }
 
@@ -59,8 +69,17 @@ watch(() => route.path, () => {
 .google-ad {
   margin: 2rem 0;
   min-height: 90px;
+  min-width: 100%;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.adsbygoogle {
+  display: block;
+  min-width: 100%;
+  min-height: 90px;
+  width: 100%;
 }
 </style>
