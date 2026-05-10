@@ -1,5 +1,6 @@
 import { defineUserConfig } from "vuepress";
 import { viteBundler } from "@vuepress/bundler-vite";
+import { llmsPlugin } from "@vuepress/plugin-llms";
 import { hopeTheme } from "vuepress-theme-hope";
 
 const SITE_HOSTNAME = "https://soundswitch.aaflalo.me";
@@ -37,6 +38,12 @@ export default defineUserConfig({
     ],
   ],
   bundler: viteBundler(),
+  plugins: [
+    llmsPlugin({
+      domain: SITE_HOSTNAME,
+      stripHTML: true,
+    }),
+  ],
   theme: hopeTheme({
     hostname: SITE_HOSTNAME,
     author: {
