@@ -3,6 +3,27 @@
   "name": "soundswitch",
   "compatibility_date": "2026-05-08",
   "main": "worker/index.ts",
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "DOWNLOADS_TRACKER",
+        "class_name": "DownloadsTracker"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": [
+        "DownloadsTracker"
+      ]
+    }
+  ],
+  "triggers": {
+    "crons": [
+      "15 2 * * *"
+    ]
+  },
   "placement": {
     "mode": "smart"
   },
