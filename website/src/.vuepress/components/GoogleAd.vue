@@ -7,9 +7,10 @@ type AdSenseWindow = Window & {
 }
 
 const adSlotRef = ref<HTMLElement | null>(null)
+const MAX_LAYOUT_POLL_ATTEMPTS = 5
 
 const waitForVisibleSlot = async (): Promise<HTMLElement | null> => {
-  for (let attempt = 0; attempt < 5; attempt += 1) {
+  for (let pollAttempt = 0; pollAttempt < MAX_LAYOUT_POLL_ATTEMPTS; pollAttempt += 1) {
     await nextTick()
     const adSlot = adSlotRef.value
     if (adSlot && adSlot.offsetWidth > 0 && adSlot.offsetHeight > 0) {
