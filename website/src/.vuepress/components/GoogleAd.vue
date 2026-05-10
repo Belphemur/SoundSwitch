@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { nextTick, onMounted } from 'vue'
 
 type AdSlotPushItem = Record<string, unknown>
 type AdSenseWindow = Window & {
   adsbygoogle?: AdSlotPushItem[]
 }
 
-onMounted(() => {
+onMounted(async () => {
   try {
+    await nextTick()
     const adSenseWindow = window as AdSenseWindow
     ;(adSenseWindow.adsbygoogle = adSenseWindow.adsbygoogle || []).push({})
   } catch (error) {
