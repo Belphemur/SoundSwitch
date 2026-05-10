@@ -10,9 +10,8 @@ onMounted(() => {
   try {
     const adSenseWindow = window as AdSenseWindow
     ;(adSenseWindow.adsbygoogle = adSenseWindow.adsbygoogle || []).push({})
-  } catch {
-    // Silently ignore ad initialization failures so the page remains
-    // functional when an ad blocker is present or the script fails to load.
+  } catch (error) {
+    console.error('[GoogleAd] Failed to initialize AdSense slot', error)
   }
 })
 </script>
