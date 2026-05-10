@@ -7,34 +7,21 @@ type AdSenseWindow = Window & {
 }
 
 const adSlotRef = ref<HTMLElement | null>(null)
-const MAX_LAYOUT_POLL_ATTEMPTS = 5
 
-const waitForVisibleSlot = async (): Promise<HTMLElement | null> => {
-  for (let pollAttempt = 0; pollAttempt < MAX_LAYOUT_POLL_ATTEMPTS; pollAttempt += 1) {
-    await nextTick()
-    const adSlot = adSlotRef.value
-    if (adSlot && adSlot.offsetWidth > 0 && adSlot.offsetHeight > 0) {
-      return adSlot
+onMounted(() => {
+  nextTick(() => {
+    try {
+      const adSlot = adSlotRef.value
+      if (!adSlot || adSlot.getAttribute('data-adsbygoogle-status')) {
+        return
+      }
+
+      const adSenseWindow = window as AdSenseWindow
+      ;(adSenseWindow.adsbygoogle = adSenseWindow.adsbygoogle || []).push({})
+    } catch (error) {
+      console.error('[GoogleAd] Failed to initialize AdSense slot', error)
     }
-
-    await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()))
-  }
-
-  return adSlotRef.value
-}
-
-onMounted(async () => {
-  try {
-    const adSlot = await waitForVisibleSlot()
-    if (!adSlot || adSlot.getAttribute('data-adsbygoogle-status')) {
-      return
-    }
-
-    const adSenseWindow = window as AdSenseWindow
-    ;(adSenseWindow.adsbygoogle = adSenseWindow.adsbygoogle || []).push({})
-  } catch (error) {
-    console.error('[GoogleAd] Failed to initialize AdSense slot', error)
-  }
+  })
 })
 </script>
 
