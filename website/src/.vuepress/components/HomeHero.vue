@@ -176,9 +176,7 @@ onMounted(async () => {
       </div>
     </div>
 
-    <div class="hero-ad">
-      <GoogleAd />
-    </div>
+    <GoogleAd placement="hero" />
 
     <div class="features-section">
       <div class="features-grid">
@@ -338,14 +336,6 @@ onMounted(async () => {
   flex-wrap: wrap;
   gap: 1rem;
   justify-content: center;
-}
-
-.hero-ad {
-  position: relative;
-  z-index: 1;
-  max-width: 960px;
-  margin: 1.5rem auto 0;
-  padding: 0 2rem;
 }
 
 .action-button {

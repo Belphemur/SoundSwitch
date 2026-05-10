@@ -12,11 +12,13 @@ const props = withDefaults(defineProps<{
   adSlot?: string
   adFormat?: string
   fullWidthResponsive?: boolean
+  placement?: 'content' | 'hero'
 }>(), {
   adClient: 'ca-pub-7284443005140816',
   adSlot: '3897699789',
   adFormat: 'auto',
   fullWidthResponsive: true,
+  placement: 'content',
 })
 
 const route = useRoute()
@@ -56,8 +58,8 @@ watch(() => route.path, () => {
 </script>
 
 <template>
-  <div class="google-ad">
-    <ins :key="adKey" ref="adSlotRef" class="adsbygoogle" style="display:block"
+  <div class="google-ad" :class="`google-ad--${props.placement}`">
+    <ins :key="adKey" ref="adSlotRef" class="adsbygoogle"
       :data-ad-client="props.adClient"
       :data-ad-slot="props.adSlot"
       :data-ad-format="props.adFormat"
@@ -76,6 +78,13 @@ watch(() => route.path, () => {
   justify-content: center;
 }
 
+.google-ad--hero {
+  position: relative;
+  z-index: 1;
+  max-width: 960px;
+  margin: 1.5rem auto 0;
+  padding: 0 2rem;
+}
 .adsbygoogle {
   display: block;
   min-width: 100%;
