@@ -1,79 +1,26 @@
 <script setup lang="ts">
-import { onMounted, onBeforeUnmount, ref } from 'vue'
+import { onMounted } from 'vue'
 
-const adRef = ref<HTMLElement | null>(null)
-// Gate the <ins> behind a client-only flag so the AdSense element is never
-// emitted during SSR / pre-rendering. This avoids any Google ad code
-// running before the page is hydrated.
-const isMounted = ref(false)
-let observer: ResizeObserver | null = null
-let pushed = false
+type AdSlotPushItem = Record<string, unknown>
+type AdSenseWindow = Window & {
+  adsbygoogle?: AdSlotPushItem[]
+}
 
-function pushAd() {
-  if (pushed) return
-  // Skip if Google has already filled the slot (happens when the same
-  // <ins> is reused across SPA navigations).
-  if (adRef.value?.getAttribute('data-adsbygoogle-status')) {
-    pushed = true
-    return
-  }
+onMounted(() => {
   try {
-    const w = window as unknown as Record<string, unknown>
-    const adsbygoogle = (w.adsbygoogle = w.adsbygoogle || []) as Array<Record<string, unknown>>
-    adsbygoogle.push({})
-    pushed = true
+    const adSenseWindow = window as AdSenseWindow
+    ;(adSenseWindow.adsbygoogle = adSenseWindow.adsbygoogle || []).push({})
   } catch {
     // Silently ignore ad initialization failures so the page remains
     // functional when an ad blocker is present or the script fails to load.
   }
-}
-
-function startObserving() {
-  if (!adRef.value) return
-
-  // Google's adsbygoogle.push() throws "No slot size for availableWidth=0"
-  // when the <ins> is mounted before its container has been laid out
-  // (common with hydrated pages). Wait until we observe a non-zero
-  // width before pushing.
-  if (adRef.value.offsetWidth > 0) {
-    pushAd()
-    return
-  }
-
-  if (typeof ResizeObserver !== 'undefined') {
-    observer = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        if (entry.contentRect.width > 0) {
-          pushAd()
-          observer?.disconnect()
-          observer = null
-          break
-        }
-      }
-    })
-    observer.observe(adRef.value)
-  } else {
-    // Fallback: push on next frame.
-    requestAnimationFrame(pushAd)
-  }
-}
-
-onMounted(() => {
-  isMounted.value = true
-  // Wait one tick so the <ins> we toggled in via v-if is in the DOM.
-  requestAnimationFrame(startObserving)
-})
-
-onBeforeUnmount(() => {
-  observer?.disconnect()
-  observer = null
 })
 </script>
 
 <template>
   <div class="google-ad">
-    <ins v-if="isMounted" ref="adRef" class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7284443005140816"
-      data-ad-slot="3897699789" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7284443005140816" data-ad-slot="3897699789"
+      data-ad-format="auto" data-full-width-responsive="true"></ins>
   </div>
 </template>
 
