@@ -1,27 +1,35 @@
 <script setup lang="ts">
-import { nextTick, onMounted, ref } from 'vue'
+import { nextTick, onMounted, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 
 type AdSlotPushItem = Record<string, unknown>
 type AdSenseWindow = Window & {
   adsbygoogle?: AdSlotPushItem[]
 }
 
+const route = useRoute()
+const adKey = ref(0)
 const adSlotRef = ref<HTMLElement | null>(null)
 
-onMounted(() => {
-  nextTick(() => {
-    try {
-      const adSlot = adSlotRef.value
-      if (!adSlot || adSlot.getAttribute('data-adsbygoogle-status')) {
-        return
-      }
-
-      const adSenseWindow = window as AdSenseWindow
-      ;(adSenseWindow.adsbygoogle = adSenseWindow.adsbygoogle || []).push({})
-    } catch (error) {
-      console.error('[GoogleAd] Failed to initialize AdSense slot', error)
+const pushAd = () => {
+  try {
+    const adSlot = adSlotRef.value
+    if (!adSlot || adSlot.getAttribute('data-adsbygoogle-status')) {
+      return
     }
-  })
+
+    const adSenseWindow = window as AdSenseWindow
+    ;(adSenseWindow.adsbygoogle = adSenseWindow.adsbygoogle || []).push({})
+  } catch (error) {
+    console.error('[GoogleAd] Failed to initialize AdSense slot', error)
+  }
+}
+
+onMounted(() => nextTick(pushAd))
+
+watch(() => route.path, () => {
+  adKey.value += 1
+  nextTick(pushAd)
 })
 </script>
 
