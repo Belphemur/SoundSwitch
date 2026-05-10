@@ -143,6 +143,7 @@ export default defineUserConfig({
             { text: "Postpone an update", link: "/faq/postpone-update.md" },
             { text: "Invalid digital signature", link: "/faq/invalid-signature.md" },
             { text: "App not switching after update", link: "/faq/app-not-switching-after-update.md" },
+            { text: "Settings open at startup", link: "/faq/settings-open-at-startup.md" },
             { text: "Command line", link: "/faq/command-line.md" },
           ],
         },
