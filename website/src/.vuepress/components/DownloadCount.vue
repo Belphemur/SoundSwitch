@@ -43,6 +43,10 @@ const historyPoints = ref<DownloadsHistoryPoint[]>([])
 const historyYAxisTicks = ref<DownloadsHistoryAxisTick[]>([])
 let rafHandle: number | null = null
 
+function isValidYAxisTickValue(tick: DownloadsHistoryAxisTick) {
+    return typeof tick.value === 'number' && Number.isFinite(tick.value) && tick.value >= 0
+}
+
 function animateTo(target: number) {
     const start = performance.now()
     const from = total.value
@@ -70,7 +74,7 @@ const chartPlotInsetPercent = computed(() => `${((CHART_PADDING_X / CHART_WIDTH)
 
 const normalizedYAxisTicks = computed(() => {
     const ticks = historyYAxisTicks.value
-        .filter((tick) => typeof tick.value === 'number' && Number.isFinite(tick.value) && tick.value >= 0)
+        .filter(isValidYAxisTickValue)
         .sort((a, b) => b.value - a.value)
 
     if (ticks.length > 0) {
@@ -233,7 +237,7 @@ async function loadHistory() {
                 .sort((a, b) => a.date.localeCompare(b.date))
             : []
         historyYAxisTicks.value = Array.isArray(payload.yAxisTicks)
-            ? payload.yAxisTicks.filter((tick) => typeof tick.value === 'number' && Number.isFinite(tick.value) && tick.value >= 0)
+            ? payload.yAxisTicks.filter(isValidYAxisTickValue)
             : []
     } catch {
         historyError.value = 'History is temporarily unavailable.'

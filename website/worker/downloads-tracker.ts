@@ -131,6 +131,8 @@ export class DownloadsTracker {
 }
 
 function buildYAxisTicks(totals: number[]): Array<{ value: number; formatted: string }> {
+  const SINGLE_VALUE_PADDING_PERCENT = 0.02;
+
   if (totals.length === 0) {
     return [];
   }
@@ -139,7 +141,7 @@ function buildYAxisTicks(totals: number[]): Array<{ value: number; formatted: st
   let max = Math.max(...totals);
 
   if (min === max) {
-    const padded = Math.max(10_000, Math.round(min * 0.02));
+    const padded = Math.max(10_000, Math.round(min * SINGLE_VALUE_PADDING_PERCENT));
     min = Math.max(0, min - padded);
     max = max + padded;
   }
@@ -149,9 +151,11 @@ function buildYAxisTicks(totals: number[]): Array<{ value: number; formatted: st
   const step = chooseNiceStep(rawStep);
   const start = Math.floor(min / step) * step;
   const end = Math.ceil(max / step) * step;
+  const maxInclusiveRoundingTolerance = step / 2;
 
   const ticks: Array<{ value: number; formatted: string }> = [];
-  for (let value = start; value <= end + step / 2; value += step) {
+  // Include the upper boundary tick even when floating-point rounding drifts.
+  for (let value = start; value <= end + maxInclusiveRoundingTolerance; value += step) {
     ticks.push({
       value,
       formatted: formatNumber(value),
