@@ -14,17 +14,23 @@ interface DownloadsHistoryPoint {
     formatted?: string
 }
 
+interface DownloadsHistoryAxisTick {
+    value: number
+    formatted?: string
+}
+
 interface DownloadsHistoryPayload {
     asOf?: string
     retentionDays?: number
     history: DownloadsHistoryPoint[]
+    yAxisTicks?: DownloadsHistoryAxisTick[]
 }
 
 const FALLBACK_TOTAL = 3_000_000
 const ANIMATION_DURATION_MS = 1600
 const CHART_WIDTH = 860
 const CHART_HEIGHT = 250
-const CHART_PADDING_X = 28
+const CHART_PADDING_X = 76
 const CHART_PADDING_Y = 20
 
 const total = ref(0)
@@ -34,6 +40,7 @@ const isChartVisible = ref(false)
 const isHistoryLoading = ref(false)
 const historyError = ref<string | null>(null)
 const historyPoints = ref<DownloadsHistoryPoint[]>([])
+const historyYAxisTicks = ref<DownloadsHistoryAxisTick[]>([])
 let rafHandle: number | null = null
 
 function animateTo(target: number) {
@@ -59,9 +66,51 @@ function animateTo(target: number) {
 }
 
 const groupedDigits = computed(() => total.value.toLocaleString('en-US').split(','))
+const chartPlotInsetPercent = computed(() => `${((CHART_PADDING_X / CHART_WIDTH) * 100).toFixed(2)}%`)
+
+const normalizedYAxisTicks = computed(() => {
+    const ticks = historyYAxisTicks.value
+        .filter((tick) => typeof tick.value === 'number' && Number.isFinite(tick.value) && tick.value >= 0)
+        .sort((a, b) => b.value - a.value)
+
+    if (ticks.length > 0) {
+        return ticks
+    }
+
+    const totals = historyPoints.value.map((point) => point.total).filter((value) => Number.isFinite(value))
+    if (totals.length === 0) {
+        return []
+    }
+
+    const min = Math.min(...totals)
+    const max = Math.max(...totals)
+    if (max <= min) {
+        return [
+            { value: max, formatted: max.toLocaleString('en-US') },
+            { value: min, formatted: min.toLocaleString('en-US') },
+        ]
+    }
+
+    const step = (max - min) / 3
+    return [0, 1, 2, 3].map((index) => {
+        const value = Math.round(max - step * index)
+        return {
+            value,
+            formatted: value.toLocaleString('en-US'),
+        }
+    })
+})
 
 const chartDomain = computed(() => {
-    const totals = historyPoints.value.map((point) => point.total)
+    const axisValues = normalizedYAxisTicks.value.map((tick) => tick.value)
+    if (axisValues.length >= 2) {
+        return {
+            min: Math.min(...axisValues),
+            max: Math.max(...axisValues),
+        }
+    }
+
+    const totals = historyPoints.value.map((point) => point.total).filter((value) => Number.isFinite(value))
     if (totals.length === 0) {
         return { min: 0, max: 1 }
     }
@@ -79,6 +128,12 @@ const chartDomain = computed(() => {
     }
 })
 
+function toChartY(value: number) {
+    const innerHeight = CHART_HEIGHT - CHART_PADDING_Y * 2
+    const range = Math.max(1, chartDomain.value.max - chartDomain.value.min)
+    return CHART_PADDING_Y + (1 - (value - chartDomain.value.min) / range) * innerHeight
+}
+
 const chartCoordinates = computed(() => {
     const points = historyPoints.value
     const count = points.length
@@ -87,21 +142,24 @@ const chartCoordinates = computed(() => {
     }
 
     const innerWidth = CHART_WIDTH - CHART_PADDING_X * 2
-    const innerHeight = CHART_HEIGHT - CHART_PADDING_Y * 2
-    const range = Math.max(1, chartDomain.value.max - chartDomain.value.min)
 
     return points.map((point, index) => {
         const x =
             count === 1
                 ? CHART_PADDING_X + innerWidth / 2
                 : CHART_PADDING_X + (index / (count - 1)) * innerWidth
-        const y =
-            CHART_PADDING_Y +
-            (1 - (point.total - chartDomain.value.min) / range) * innerHeight
+        const y = toChartY(point.total)
 
         return { x, y }
     })
 })
+
+const chartYAxisTickCoordinates = computed(() =>
+    normalizedYAxisTicks.value.map((tick) => ({
+        label: tick.formatted ?? tick.value.toLocaleString('en-US'),
+        y: toChartY(tick.value),
+    })),
+)
 
 const chartPath = computed(() => {
     if (chartCoordinates.value.length === 0) {
@@ -174,8 +232,12 @@ async function loadHistory() {
                 .filter((point) => typeof point.total === 'number' && point.total > 0 && typeof point.date === 'string')
                 .sort((a, b) => a.date.localeCompare(b.date))
             : []
+        historyYAxisTicks.value = Array.isArray(payload.yAxisTicks)
+            ? payload.yAxisTicks.filter((tick) => typeof tick.value === 'number' && Number.isFinite(tick.value) && tick.value >= 0)
+            : []
     } catch {
         historyError.value = 'History is temporarily unavailable.'
+        historyYAxisTicks.value = []
     } finally {
         isHistoryLoading.value = false
     }
@@ -280,6 +342,11 @@ onBeforeUnmount(() => {
                                 </linearGradient>
                             </defs>
 
+                            <g v-for="(tick, idx) in chartYAxisTickCoordinates" :key="`y-tick-${idx}`" class="history-chart__y-tick">
+                                <line :x1="CHART_PADDING_X" :y1="tick.y" :x2="CHART_WIDTH - CHART_PADDING_X" :y2="tick.y" />
+                                <text :x="CHART_PADDING_X - 8" :y="tick.y + 4" text-anchor="end">{{ tick.label }}</text>
+                            </g>
+
                             <path v-if="chartAreaPath" :d="chartAreaPath" fill="url(#historyAreaGradient)" />
                             <path v-if="chartPath" :d="chartPath" fill="none" stroke="currentColor" stroke-width="4"
                                 stroke-linecap="round" stroke-linejoin="round" />
@@ -291,7 +358,8 @@ onBeforeUnmount(() => {
 
 
 
-                        <div class="history-panel__axis">
+                        <div class="history-panel__axis"
+                            :style="{ paddingLeft: chartPlotInsetPercent, paddingRight: chartPlotInsetPercent }">
                             <span>{{ firstDateLabel }}</span>
                             <span>{{ lastDateLabel }}</span>
 
@@ -440,6 +508,18 @@ color: #1976d2;
     display: block;
     width: 100%;
     height: auto;
+}
+
+.history-chart__y-tick line {
+    stroke: currentColor;
+    opacity: 0.2;
+    stroke-width: 1;
+}
+
+.history-chart__y-tick text {
+    fill: currentColor;
+    opacity: 0.78;
+    font-size: 10px;
 }
 
 .history-panel__axis {

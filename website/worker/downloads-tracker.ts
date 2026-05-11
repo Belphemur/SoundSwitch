@@ -111,12 +111,14 @@ export class DownloadsTracker {
         formatted: formatNumber(row.total),
       }),
     );
+    const yAxisTicks = buildYAxisTicks(history.map((point) => point.total));
 
     return new Response(
       JSON.stringify({
         asOf: new Date().toISOString(),
         retentionDays: HISTORY_RETENTION_DAYS,
         history,
+        yAxisTicks,
       }),
       {
         headers: {
@@ -126,6 +128,56 @@ export class DownloadsTracker {
       },
     );
   }
+}
+
+function buildYAxisTicks(totals: number[]): Array<{ value: number; formatted: string }> {
+  if (totals.length === 0) {
+    return [];
+  }
+
+  let min = Math.min(...totals);
+  let max = Math.max(...totals);
+
+  if (min === max) {
+    const padded = Math.max(10_000, Math.round(min * 0.02));
+    min = Math.max(0, min - padded);
+    max = max + padded;
+  }
+
+  const desiredTickCount = 4;
+  const rawStep = Math.max(1, (max - min) / Math.max(1, desiredTickCount - 1));
+  const step = chooseNiceStep(rawStep);
+  const start = Math.floor(min / step) * step;
+  const end = Math.ceil(max / step) * step;
+
+  const ticks: Array<{ value: number; formatted: string }> = [];
+  for (let value = start; value <= end + step / 2; value += step) {
+    ticks.push({
+      value,
+      formatted: formatNumber(value),
+    });
+  }
+
+  return ticks;
+}
+
+function chooseNiceStep(rawStep: number): number {
+  const power = Math.pow(10, Math.floor(Math.log10(rawStep)));
+  const normalized = rawStep / power;
+
+  if (normalized <= 1) {
+    return power;
+  }
+
+  if (normalized <= 2) {
+    return 2 * power;
+  }
+
+  if (normalized <= 5) {
+    return 5 * power;
+  }
+
+  return 10 * power;
 }
 
 export async function recordDownloadSnapshot(
