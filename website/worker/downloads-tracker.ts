@@ -4,7 +4,7 @@ import {
   HISTORY_RETENTION_DAYS,
 } from "./config";
 import { formatNumber } from "./http";
-import type { Env } from "./types";
+import type { DownloadsHistoryAxisTick, Env } from "./types";
 
 export class DownloadsTracker {
   constructor(private readonly state: DurableObjectState) {}
@@ -131,7 +131,7 @@ export class DownloadsTracker {
   }
 }
 
-function buildYAxisTicks(totals: number[]): Array<{ value: number; formatted: string }> {
+function buildYAxisTicks(totals: number[]): DownloadsHistoryAxisTick[] {
   const SINGLE_VALUE_PADDING_PERCENT = 0.02;
   const MIN_SINGLE_VALUE_PADDING = 10_000;
   const MIN_AXIS_VALUE = FALLBACK_DOWNLOAD_TOTAL;
@@ -143,6 +143,8 @@ function buildYAxisTicks(totals: number[]): Array<{ value: number; formatted: st
   let min = Math.min(...totals);
   let max = Math.max(...totals);
   min = Math.max(MIN_AXIS_VALUE, min);
+  // Ensure max is not below the clamped min (e.g. when all totals < MIN_AXIS_VALUE)
+  max = Math.max(min, max);
 
   if (min === max) {
     const padded = Math.max(
@@ -160,7 +162,7 @@ function buildYAxisTicks(totals: number[]): Array<{ value: number; formatted: st
   const end = Math.ceil(max / step) * step;
   const maxInclusiveRoundingTolerance = step / 2;
 
-  const ticks: Array<{ value: number; formatted: string }> = [];
+  const ticks: DownloadsHistoryAxisTick[] = [];
   // Include the upper boundary tick even when floating-point rounding drifts.
   for (let index = 0; ; index += 1) {
     const value = start + index * step;

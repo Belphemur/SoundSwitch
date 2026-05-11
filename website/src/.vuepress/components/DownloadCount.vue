@@ -46,7 +46,7 @@ const historyYAxisTicks = ref<DownloadsHistoryAxisTick[]>([])
 let rafHandle: number | null = null
 
 function isValidYAxisTickValue(tick: DownloadsHistoryAxisTick) {
-    return typeof tick.value === 'number' && Number.isFinite(tick.value) && tick.value >= 0
+    return typeof tick.value === 'number' && Number.isFinite(tick.value) && tick.value >= MIN_DOWNLOAD_AXIS_VALUE
 }
 
 function animateTo(target: number) {
