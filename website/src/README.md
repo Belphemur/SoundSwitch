@@ -28,4 +28,4 @@ Get up and running in under a minute:
 Need more detail? Head over to the [full Getting Started guide](./getting-started.md).
 
 For AI assistants and tooling, the website also publishes an LLM index at
-[`/llms.txt`](/llms.txt) (with [`/llm.txt`](/llm.txt) as a compatible alias).
+[`/llms.txt`](/llms.txt).
