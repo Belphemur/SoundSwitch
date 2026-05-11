@@ -28,8 +28,14 @@ export interface DownloadsHistoryPoint {
   formatted?: string;
 }
 
+export interface DownloadsHistoryAxisTick {
+  value: number;
+  formatted?: string;
+}
+
 export interface DownloadsHistoryPayload {
   asOf?: string;
   retentionDays?: number;
   history: DownloadsHistoryPoint[];
+  yAxisTicks?: DownloadsHistoryAxisTick[];
 }

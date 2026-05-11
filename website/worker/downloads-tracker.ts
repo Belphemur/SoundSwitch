@@ -1,9 +1,10 @@
 import {
   DOWNLOADS_TRACKER_OBJECT_NAME,
+  FALLBACK_DOWNLOAD_TOTAL,
   HISTORY_RETENTION_DAYS,
 } from "./config";
 import { formatNumber } from "./http";
-import type { Env } from "./types";
+import type { DownloadsHistoryAxisTick, Env } from "./types";
 
 export class DownloadsTracker {
   constructor(private readonly state: DurableObjectState) {}
@@ -111,12 +112,14 @@ export class DownloadsTracker {
         formatted: formatNumber(row.total),
       }),
     );
+    const yAxisTicks = buildYAxisTicks(history.map((point) => point.total));
 
     return new Response(
       JSON.stringify({
         asOf: new Date().toISOString(),
         retentionDays: HISTORY_RETENTION_DAYS,
         history,
+        yAxisTicks,
       }),
       {
         headers: {
@@ -126,6 +129,72 @@ export class DownloadsTracker {
       },
     );
   }
+}
+
+function buildYAxisTicks(totals: number[]): DownloadsHistoryAxisTick[] {
+  const SINGLE_VALUE_PADDING_PERCENT = 0.02;
+  const MIN_SINGLE_VALUE_PADDING = 10_000;
+  const MIN_AXIS_VALUE = FALLBACK_DOWNLOAD_TOTAL;
+
+  if (totals.length === 0) {
+    return [];
+  }
+
+  let min = Math.min(...totals);
+  let max = Math.max(...totals);
+  min = Math.max(MIN_AXIS_VALUE, min);
+  // Ensure max is not below the clamped min (e.g. when all totals < MIN_AXIS_VALUE)
+  max = Math.max(min, max);
+
+  if (min === max) {
+    const padded = Math.max(
+      MIN_SINGLE_VALUE_PADDING,
+      Math.round(min * SINGLE_VALUE_PADDING_PERCENT),
+    );
+    min = Math.max(MIN_AXIS_VALUE, min - padded);
+    max = max + padded;
+  }
+
+  const desiredTickCount = 4;
+  const rawStep = Math.max(1, (max - min) / Math.max(1, desiredTickCount - 1));
+  const step = chooseNiceStep(rawStep);
+  const start = Math.max(MIN_AXIS_VALUE, Math.floor(min / step) * step);
+  const end = Math.ceil(max / step) * step;
+  const maxInclusiveRoundingTolerance = step / 2;
+
+  const ticks: DownloadsHistoryAxisTick[] = [];
+  // Include the upper boundary tick even when floating-point rounding drifts.
+  for (let index = 0; ; index += 1) {
+    const value = start + index * step;
+    if (value > end + maxInclusiveRoundingTolerance) {
+      break;
+    }
+    ticks.push({
+      value,
+      formatted: formatNumber(value),
+    });
+  }
+
+  return ticks;
+}
+
+function chooseNiceStep(rawStep: number): number {
+  const power = Math.pow(10, Math.floor(Math.log10(rawStep)));
+  const normalized = rawStep / power;
+
+  if (normalized <= 1) {
+    return power;
+  }
+
+  if (normalized <= 2) {
+    return 2 * power;
+  }
+
+  if (normalized <= 5) {
+    return 5 * power;
+  }
+
+  return 10 * power;
 }
 
 export async function recordDownloadSnapshot(
