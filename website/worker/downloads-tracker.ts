@@ -1,5 +1,6 @@
 import {
   DOWNLOADS_TRACKER_OBJECT_NAME,
+  FALLBACK_DOWNLOAD_TOTAL,
   HISTORY_RETENTION_DAYS,
 } from "./config";
 import { formatNumber } from "./http";
@@ -133,6 +134,7 @@ export class DownloadsTracker {
 function buildYAxisTicks(totals: number[]): Array<{ value: number; formatted: string }> {
   const SINGLE_VALUE_PADDING_PERCENT = 0.02;
   const MIN_SINGLE_VALUE_PADDING = 10_000;
+  const MIN_AXIS_VALUE = FALLBACK_DOWNLOAD_TOTAL;
 
   if (totals.length === 0) {
     return [];
@@ -140,26 +142,31 @@ function buildYAxisTicks(totals: number[]): Array<{ value: number; formatted: st
 
   let min = Math.min(...totals);
   let max = Math.max(...totals);
+  min = Math.max(MIN_AXIS_VALUE, min);
 
   if (min === max) {
     const padded = Math.max(
       MIN_SINGLE_VALUE_PADDING,
       Math.round(min * SINGLE_VALUE_PADDING_PERCENT),
     );
-    min = Math.max(0, min - padded);
+    min = Math.max(MIN_AXIS_VALUE, min - padded);
     max = max + padded;
   }
 
   const desiredTickCount = 4;
   const rawStep = Math.max(1, (max - min) / Math.max(1, desiredTickCount - 1));
   const step = chooseNiceStep(rawStep);
-  const start = Math.floor(min / step) * step;
+  const start = Math.max(MIN_AXIS_VALUE, Math.floor(min / step) * step);
   const end = Math.ceil(max / step) * step;
   const maxInclusiveRoundingTolerance = step / 2;
 
   const ticks: Array<{ value: number; formatted: string }> = [];
   // Include the upper boundary tick even when floating-point rounding drifts.
-  for (let value = start; value <= end + maxInclusiveRoundingTolerance; value += step) {
+  for (let index = 0; ; index += 1) {
+    const value = start + index * step;
+    if (value > end + maxInclusiveRoundingTolerance) {
+      break;
+    }
     ticks.push({
       value,
       formatted: formatNumber(value),

@@ -33,6 +33,7 @@ const CHART_HEIGHT = 250
 const CHART_PADDING_X = 76
 const CHART_PADDING_Y = 20
 const FALLBACK_Y_AXIS_INTERVALS = 3
+const MIN_DOWNLOAD_AXIS_VALUE = 3_000_000
 
 const total = ref(0)
 const isLoading = ref(true)
@@ -87,7 +88,7 @@ const normalizedYAxisTicks = computed(() => {
         return []
     }
 
-    const min = Math.min(...totals)
+    const min = Math.max(MIN_DOWNLOAD_AXIS_VALUE, Math.min(...totals))
     const max = Math.max(...totals)
     if (max <= min) {
         return [
@@ -120,7 +121,7 @@ const chartDomain = computed(() => {
         return { min: 0, max: 1 }
     }
 
-    const min = Math.min(...totals)
+    const min = Math.max(MIN_DOWNLOAD_AXIS_VALUE, Math.min(...totals))
     const max = Math.max(...totals)
     if (min === max) {
         const padded = Math.max(10_000, Math.round(min * 0.02))
