@@ -132,6 +132,7 @@ export class DownloadsTracker {
 
 function buildYAxisTicks(totals: number[]): Array<{ value: number; formatted: string }> {
   const SINGLE_VALUE_PADDING_PERCENT = 0.02;
+  const MIN_SINGLE_VALUE_PADDING = 10_000;
 
   if (totals.length === 0) {
     return [];
@@ -141,7 +142,10 @@ function buildYAxisTicks(totals: number[]): Array<{ value: number; formatted: st
   let max = Math.max(...totals);
 
   if (min === max) {
-    const padded = Math.max(10_000, Math.round(min * SINGLE_VALUE_PADDING_PERCENT));
+    const padded = Math.max(
+      MIN_SINGLE_VALUE_PADDING,
+      Math.round(min * SINGLE_VALUE_PADDING_PERCENT),
+    );
     min = Math.max(0, min - padded);
     max = max + padded;
   }

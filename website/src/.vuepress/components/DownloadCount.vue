@@ -32,6 +32,7 @@ const CHART_WIDTH = 860
 const CHART_HEIGHT = 250
 const CHART_PADDING_X = 76
 const CHART_PADDING_Y = 20
+const FALLBACK_Y_AXIS_INTERVALS = 3
 
 const total = ref(0)
 const isLoading = ref(true)
@@ -95,8 +96,8 @@ const normalizedYAxisTicks = computed(() => {
         ]
     }
 
-    const step = (max - min) / 3
-    return [0, 1, 2, 3].map((index) => {
+    const step = (max - min) / FALLBACK_Y_AXIS_INTERVALS
+    return Array.from({ length: FALLBACK_Y_AXIS_INTERVALS + 1 }, (_, index) => {
         const value = Math.round(max - step * index)
         return {
             value,
