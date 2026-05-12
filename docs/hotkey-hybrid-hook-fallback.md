@@ -117,7 +117,7 @@ private static IntPtr LowLevelKeyboardHookCallback(int nCode, IntPtr wParam, Int
                 {
                     // Fire the same event the RegisterHotKey path uses
                     HotKeyPressed?.Invoke(_instance, new KeyPressedEventArgs(hotKey));
-                    return (IntPtr)1; // swallow key, prevent further dispatch
+                    break; // Don't swallow key - allow non-exclusive monitoring
                 }
             }
         }
@@ -177,7 +177,8 @@ lock (_instance)
             if (removed && _hookedHotkeys.Count == 0)
             {
                 // Clean up hook when no hooked hotkeys remain
-                Application.ExitThread(); // stops the hook message pump
+                // Post WM_QUIT to stop the hook thread's message pump
+                Interop.PostThreadMessage(_hookNativeThreadId, WM_QUIT, IntPtr.Zero, IntPtr.Zero);
                 _hookThread = null;
             }
             return removed;
@@ -239,4 +240,4 @@ No changes required. `HotKeyTextBox`, `AppModel.HandleHotkeyPress`, and `Profile
 
 1. **Antivirus false positives**: `WH_KEYBOARD_LL` hooks are commonly flagged by heuristic AV engines. Acceptable tradeoff — the hook is a fallback, not the primary path.
 2. **Modifier matching**: Ensure `KeyboardWindowsAPI.GetPressedModifiers()` normalization matches what `RegisterHotKey` expects. Potential edge case with modifier-only hotkeys (e.g., `Shift` alone).
-3. **Hook thread lifecycle**: The hook thread must be properly cleaned up on `Stop()`/`Dispose()`. Add `UnhookWindowsHookEx` and `Application.ExitThread` to the cleanup path.
+3. **Hook thread lifecycle**: The hook thread must be properly cleaned up on `Stop()`/`Dispose()`. Use `UnhookWindowsHookEx` to uninstall the hook and post `WM_QUIT` to the hook thread's message pump for clean shutdown.
