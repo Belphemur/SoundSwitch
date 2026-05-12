@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Runtime.InteropServices;
@@ -47,6 +48,14 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
 
     private readonly ISubject<DeviceVolumeChangedPayload> _deviceVolumeChanged = new Subject<DeviceVolumeChangedPayload>();
     public IObservable<DeviceVolumeChangedPayload> DeviceVolumeChanged => _deviceVolumeChanged.AsObservable();
+
+    private readonly ISubject<Unit> _deviceListRefreshed = new Subject<Unit>();
+
+    /// <summary>
+    /// Observable that emits when the device list has been successfully and fully refreshed.
+    /// Does not emit when a refresh is cancelled or fails.
+    /// </summary>
+    public IObservable<Unit> DeviceListRefreshed => _deviceListRefreshed.AsObservable();
 
     /// <summary>
     /// Get devices per type and state
@@ -191,14 +200,22 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                 switch (deviceChangedEvent.Action)
                 {
                     case EventType.Removed:
+                        var removed = false;
                         if (PlaybackDevices.Remove(deviceChangedEvent.DeviceId, out var playbackDevice))
                         {
                             DisposeDevice(playbackDevice);
+                            removed = true;
                         }
 
                         if (RecordingDevices.Remove(deviceChangedEvent.DeviceId, out var recordingDevice))
                         {
                             DisposeDevice(recordingDevice);
+                            removed = true;
+                        }
+
+                        if (removed)
+                        {
+                            _deviceListRefreshed.OnNext(Unit.Default);
                         }
 
                         break;
@@ -206,6 +223,7 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                     case EventType.StateChanged:
                     case EventType.PropertyChanged:
                         UpdateDeviceCache(deviceChangedEvent);
+                        _deviceListRefreshed.OnNext(Unit.Default);
                         break;
                     case EventType.DefaultChanged:
                         if (!PlaybackDevices.TryGetValue(deviceChangedEvent.DeviceId, out var device) && !RecordingDevices.TryGetValue(deviceChangedEvent.DeviceId, out device))
@@ -293,6 +311,10 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
 
 
                 logContext.Information("Refreshed all devices in {@StopTime}. {@Recording}/rec, {@Playback}/play", stopWatch.Elapsed, recordingDevices.Count, playbackDevices.Count);
+                if (!cancellationToken.IsCancellationRequested)
+                {
+                    _deviceListRefreshed.OnNext(Unit.Default);
+                }
             }
             //If cancellation token is cancelled, its expected to throw null since the device enumerator has been disposed
             catch (Exception e) when (cancellationToken.IsCancellationRequested && e is NullReferenceException or InvalidComObjectException)
@@ -321,6 +343,7 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
         // Dispose subjects and clear all subscriptions
         (_defaultDeviceChanged as Subject<DefaultDevicePayload>)?.Dispose();
         (_deviceVolumeChanged as Subject<DeviceVolumeChangedPayload>)?.Dispose();
+        (_deviceListRefreshed as Subject<Unit>)?.Dispose();
 
         _refreshCancellationTokenSource.Dispose();
     }

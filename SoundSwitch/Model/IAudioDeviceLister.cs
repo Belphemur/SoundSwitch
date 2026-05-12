@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reactive;
 using System.Threading;
 
 using NAudio.CoreAudioApi;
@@ -34,6 +35,11 @@ public interface IAudioDeviceLister : IDisposable
     /// Observable that emits when a device's volume or mute state changes
     /// </summary>
     IObservable<DeviceVolumeChangedPayload> DeviceVolumeChanged { get; }
+
+    /// <summary>
+    /// Observable that emits when the device list has been fully refreshed
+    /// </summary>
+    IObservable<Unit> DeviceListRefreshed { get; }
 
     void Refresh(CancellationToken token);
 
