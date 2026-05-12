@@ -223,7 +223,7 @@ Keep the existing `SystemEvents.PowerModeChanged` as a belt-and-suspenders fallb
 |---|---|
 | `_registeredHotkeys` | `lock(_instance)` (existing pattern) |
 | `_hookedHotkeys` | `lock(_hookedHotkeys)` (new) |
-| `HotKeyPressed` event | Both RegisterHotKey path (via Task.Factory.StartNew) and LL hook path (via Task.Factory.StartNew) fire events on background threads. UI thread marshaling is handled by BeginInvoke in the hook callback, but subscribers should handle cross-thread dispatch if needed. |
+| `HotKeyPressed` event | Both paths fire on background threads: RegisterHotKey path (ProcessHotKeyEvent via Task.Factory.StartNew) and LL hook path (LowLevelKeyboardHookCallback via Task.Factory.StartNew). ReRegisterAllHotkeys is dispatched via BeginInvoke from WndProc. Subscribers should handle cross-thread dispatch. |
 | `_hookProc` delegate | Static field prevents GC collection |
 
 ## What Subscribers See
