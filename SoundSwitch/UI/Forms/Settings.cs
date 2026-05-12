@@ -20,6 +20,7 @@ using System.Drawing;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Reactive;
 using System.Windows.Forms;
 
 using NAudio.CoreAudioApi;
@@ -70,6 +71,7 @@ public sealed partial class SettingsForm : Form
     private readonly bool _loaded;
     private readonly IAudioDeviceLister _audioDeviceLister;
     private readonly BannerManager _bannerManager = new();
+    private IDisposable _deviceListRefreshedSubscription;
 
     private const int RECT_PEN_WIDTH = 4;
     private const int OFFSET_W = 15;
@@ -272,6 +274,13 @@ public sealed partial class SettingsForm : Form
         PopulateSettings();
 
         _loaded = true;
+
+        _deviceListRefreshedSubscription = _audioDeviceLister.DeviceListRefreshed
+            .Subscribe(_ =>
+            {
+                if (!IsHandleCreated || IsDisposed) return;
+                BeginInvoke(RefreshAudioDevices);
+            });
     }
 
     private void PopulateSettings()
@@ -402,6 +411,31 @@ public sealed partial class SettingsForm : Form
         PopulateAudioList(recordingListView, selectedDevices, _audioDeviceLister.GetDevices(DataFlow.Capture, DeviceState.Active | DeviceState.Unplugged));
     }
 
+    private void RefreshAudioDevices()
+    {
+        // Unsubscribe ItemCheck before clearing to prevent spurious events
+        playbackListView.ItemCheck -= ListViewItemChecked;
+        recordingListView.ItemCheck -= ListViewItemChecked;
+
+        ClearListViewForRefresh(playbackListView);
+        ClearListViewForRefresh(recordingListView);
+
+        PopulateAudioDevices();
+        playbackListView.SetGroupsState(ListViewGroupState.Collapsible);
+        recordingListView.SetGroupsState(ListViewGroupState.Collapsible);
+    }
+
+    private static void ClearListViewForRefresh(ListView listView)
+    {
+        listView.Items.Clear();
+        listView.Groups.Remove(listView.Groups[nameof(DeviceState.Active)]);
+        listView.Groups.Remove(listView.Groups[nameof(DeviceState.NotPresent)]);
+        listView.Columns.Clear();
+        var oldImageList = listView.SmallImageList;
+        listView.SmallImageList = null;
+        oldImageList?.Dispose();
+    }
+
     private void LocalizeForm()
     {
         RightToLeft = new LanguageFactory().Get(AppModel.Instance.Language).IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
@@ -507,6 +541,7 @@ public sealed partial class SettingsForm : Form
 
     protected override void OnFormClosed(FormClosedEventArgs e)
     {
+        _deviceListRefreshedSubscription?.Dispose();
         // Dispose all IconHandle objects stored in the profile list-view so GDI handles are
         // released promptly rather than waiting for finalizer collection.
         DisposeProfileListViewIconHandles();
