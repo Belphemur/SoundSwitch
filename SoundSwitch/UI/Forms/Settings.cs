@@ -20,7 +20,7 @@ using System.Drawing;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Reactive;
+using System.Reactive.Linq;
 using System.Windows.Forms;
 
 using NAudio.CoreAudioApi;
@@ -276,6 +276,7 @@ public sealed partial class SettingsForm : Form
         _loaded = true;
 
         _deviceListRefreshedSubscription = _audioDeviceLister.DeviceListRefreshed
+            .Throttle(TimeSpan.FromMilliseconds(500))
             .Subscribe(_ =>
             {
                 if (!IsHandleCreated || IsDisposed) return;
