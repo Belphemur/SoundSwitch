@@ -115,8 +115,10 @@ private static IntPtr LowLevelKeyboardHookCallback(int nCode, IntPtr wParam, Int
             {
                 if (hotKey.Keys == key && hotKey.Modifier == modifier)
                 {
-                    // Fire the same event the RegisterHotKey path uses
-                    HotKeyPressed?.Invoke(_instance, new KeyPressedEventArgs(hotKey));
+                    // Fire via Task.Factory.StartNew like RegisterHotKey path for consistency
+                    var hotKeyCopy = hotKey;
+                    Task.Factory.StartNew(() =>
+                        HotKeyPressed?.Invoke(_instance, new KeyPressedEventArgs(hotKeyCopy)));
                     break; // Don't swallow key - allow non-exclusive monitoring
                 }
             }
@@ -205,8 +207,11 @@ case WM_POWERBROADCAST:
 
 private void ReRegisterAllHotkeys()
 {
+    // Take a thread-safe snapshot of registered hotkeys
+    var hotkeysSnapshot = _registeredHotkeys.ToArray();
+
     // Re-register RegisterHotKey hotkeys (hook-based survive sleep automatically)
-    foreach (var (hotKey, hotKeyId) in _registeredHotkeys)
+    foreach (var (hotKey, hotKeyId) in hotkeysSnapshot)
     {
         NativeMethods.UnregisterHotKey(_instance.Handle, hotKeyId);
         NativeMethods.RegisterHotKey(_instance.Handle, hotKeyId,
