@@ -22,7 +22,7 @@ Use a **hybrid approach**: prefer `RegisterHotKey`, but fall back to a `WH_KEYBO
 
 ## Implementation Plan
 
-All changes are confined to a single file:
+Changes span two files:
 
 - **`SoundSwitch/Framework/WinApi/WindowsAPIAdapter.cs`** — main changes
 - **`SoundSwitch/Framework/WinApi/Interop.cs`** — additional P/Invoke imports
@@ -222,7 +222,7 @@ Keep the existing `SystemEvents.PowerModeChanged` as a belt-and-suspenders fallb
 |---|---|
 | `_registeredHotkeys` | `lock(_instance)` (existing pattern) |
 | `_hookedHotkeys` | `lock(_hookedHotkeys)` (new) |
-| `HotKeyPressed` event | Raised on respective owner thread (UI for RegisterHotKey, hook thread for LL hook) — subscribers must handle cross-thread dispatch if needed |
+| `HotKeyPressed` event | Both RegisterHotKey path (via Task.Factory.StartNew) and LL hook path (via Task.Factory.StartNew) fire events on background threads. UI thread marshaling is handled by BeginInvoke in the hook callback, but subscribers should handle cross-thread dispatch if needed. |
 | `_hookProc` delegate | Static field prevents GC collection |
 
 ## What Subscribers See
