@@ -74,6 +74,8 @@ public class WindowsAPIAdapter : Form
     private static uint _hookNativeThreadId;
     private static Interop.LowLevelKeyboardProc _hookProc;
     private static readonly object _hookLock = new object();
+    private static readonly ManualResetEvent _hookInstallComplete = new ManualResetEvent(false);
+    private static bool _hookInstallSucceeded;
     private int _hotKeyId;
     private int _msgNotifyShell;
 
@@ -256,7 +258,18 @@ public class WindowsAPIAdapter : Form
                 {
                     _hookedHotkeys.Add(hotKey);
                 }
-                EnsureHookThreadRunning();
+
+                // Try to start the hook - if it fails, roll back and return false
+                if (!EnsureHookThreadRunning())
+                {
+                    lock (_hookedHotkeys)
+                    {
+                        _hookedHotkeys.Remove(hotKey);
+                    }
+                    Log.Error("Failed to install keyboard hook fallback for {hotkey}", hotKey);
+                    return false;
+                }
+
                 return true;
             });
         }
@@ -435,7 +448,14 @@ public class WindowsAPIAdapter : Form
                     {
                         _hookedHotkeys.Add(hotKey);
                     }
-                    EnsureHookThreadRunning();
+                    if (!EnsureHookThreadRunning())
+                    {
+                        lock (_hookedHotkeys)
+                        {
+                            _hookedHotkeys.Remove(hotKey);
+                        }
+                        Log.Error("Failed to install keyboard hook fallback during re-registration for {hotkey}", hotKey);
+                    }
                 }
                 else
                 {
@@ -449,14 +469,19 @@ public class WindowsAPIAdapter : Form
     ///     Ensures the low-level keyboard hook thread is running.
     ///     The hook requires a dedicated message pump, so a background STA thread is used.
     /// </summary>
+    /// <returns>True if hook is running and installed; false if installation failed.</returns>
     /// <remarks>Synchronized via _hookLock. If _hookThread is null or not alive, starts a new background
-    /// STA thread named "KeyboardHook" that runs HookThreadProc.</remarks>
-    private static void EnsureHookThreadRunning()
+    /// STA thread named "KeyboardHook" that runs HookThreadProc. Waits for hook installation to complete
+    /// and returns the installation result.</remarks>
+    private static bool EnsureHookThreadRunning()
     {
         lock (_hookLock)
         {
-            if (_hookThread != null && _hookThread.IsAlive)
-                return;
+            if (_hookThread != null && _hookThread.IsAlive && _hookHandle != IntPtr.Zero)
+                return true;
+
+            _hookInstallComplete.Reset();
+            _hookInstallSucceeded = false;
 
             _hookThread = new Thread(HookThreadProc)
             {
@@ -465,6 +490,15 @@ public class WindowsAPIAdapter : Form
             };
             _hookThread.SetApartmentState(ApartmentState.STA);
             _hookThread.Start();
+
+            // Wait for hook installation to complete (with timeout)
+            if (!_hookInstallComplete.WaitOne(5000))
+            {
+                Log.Error("Hook installation timed out after 5 seconds");
+                return false;
+            }
+
+            return _hookInstallSucceeded;
         }
     }
 
@@ -472,7 +506,8 @@ public class WindowsAPIAdapter : Form
     ///     Hook thread procedure: installs the low-level keyboard hook and runs a message pump.
     /// </summary>
     /// <remarks>Captures the native thread ID for cleanup, installs WH_KEYBOARD_LL hook, runs a message pump
-    /// (Application.Run) to process hook callbacks, and unhooks on the same thread before returning.</remarks>
+    /// (Application.Run) to process hook callbacks, signals installation success/failure via
+    /// _hookInstallComplete, and unhooks on the same thread before returning.</remarks>
     private static void HookThreadProc()
     {
         // Capture native thread ID for use in CleanupHook when posting WM_QUIT
@@ -488,8 +523,13 @@ public class WindowsAPIAdapter : Form
         {
             var error = Marshal.GetLastWin32Error();
             Log.Error("SetWindowsHookEx failed with Win32Error={error}", error);
+            _hookInstallSucceeded = false;
+            _hookInstallComplete.Set();
             return; // Don't start message pump if hook failed
         }
+
+        _hookInstallSucceeded = true;
+        _hookInstallComplete.Set();
 
         // Message pump required for WH_KEYBOARD_LL to function
         Application.Run();
