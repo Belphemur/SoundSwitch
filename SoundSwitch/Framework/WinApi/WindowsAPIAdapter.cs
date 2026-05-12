@@ -164,7 +164,7 @@ public class WindowsAPIAdapter : Form
         Log.Information("Computer coming back from sleep, re-registering hotkeys");
 
         // Dispatch to adapter thread to avoid race conditions with _registeredHotkeys
-        _instance?.BeginInvoke(new Action(ReRegisterAllHotkeys));
+        _instance?.BeginInvoke(new Action(_instance.ReRegisterAllHotkeys));
     }
 
     private void EndForm()
