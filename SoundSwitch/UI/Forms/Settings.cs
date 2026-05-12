@@ -655,12 +655,23 @@ public sealed partial class SettingsForm : Form
                     })
                     .OrderBy(item => item.Text);
             listView.Items.AddRange(items.ToArray());
-            listView.Columns[0].Width = -2;
+            ResizeAudioListColumn(listView);
         }
         finally
         {
             listView.ItemCheck += ListViewItemChecked;
         }
+    }
+
+    private static void ResizeAudioListColumn(ListView listView)
+    {
+        // WinForms only recomputes a details column from the item text when AutoResizeColumn is called
+        // after the ListView has already been populated. The device lists hide their header, so during a
+        // hot-plug refresh we resize the single column from its content to keep every device name visible.
+        var resizeStyle = listView.Items.Count > 0
+            ? ColumnHeaderAutoResizeStyle.ColumnContent
+            : ColumnHeaderAutoResizeStyle.HeaderSize;
+        listView.AutoResizeColumn(0, resizeStyle);
     }
 
     /// <summary>
