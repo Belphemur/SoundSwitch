@@ -655,6 +655,7 @@ public sealed partial class SettingsForm : Form
                     })
                     .OrderBy(item => item.Text);
             listView.Items.AddRange(items.ToArray());
+            listView.Columns[0].Width = -2;
         }
         finally
         {
