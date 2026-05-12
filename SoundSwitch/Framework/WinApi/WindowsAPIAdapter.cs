@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -53,9 +54,16 @@ public class WindowsAPIAdapter : Form
     private const int WM_CLOSE = 0x0010;
     private const int WM_DEVICECHANGE = 0x0219;
     private const int WM_HOTKEY = 0x0312;
+    private const int WM_POWERBROADCAST = 0x0218;
+    private const int PBT_APMRESUMEAUTOMATIC = 0x0012;
+
     private static WindowsAPIAdapter _instance;
     private static ThreadExceptionEventHandler _exceptionEventHandler;
     private readonly Dictionary<HotKey, int> _registeredHotkeys = new Dictionary<HotKey, int>();
+    private static readonly HashSet<HotKey> _hookedHotkeys = new HashSet<HotKey>();
+    private static IntPtr _hookHandle = IntPtr.Zero;
+    private static Thread _hookThread;
+    private static Interop.LowLevelKeyboardProc _hookProc;
     private int _hotKeyId;
     private int _msgNotifyShell;
 
@@ -145,9 +153,10 @@ public class WindowsAPIAdapter : Form
 
         Log.Information("Computer coming back from sleep, re-registering hotkeys");
 
-        foreach (var (hotKey, hotKeyId) in _instance._registeredHotkeys)
+        // Re-register RegisterHotKey-based hotkeys (hook-based ones survive sleep automatically)
+        foreach (var (hotKey, hotKeyId) in _instance._registeredHotkeys.ToArray())
         {
-            _instance.Invoke(() =>
+            _instance.BeginInvoke(() =>
             {
                 var wasRegistered = NativeMethods.UnregisterHotKey(_instance.Handle, hotKeyId);
                 var isRegistered = NativeMethods.RegisterHotKey(_instance.Handle, hotKeyId, (uint)hotKey.Modifier, (uint)hotKey.Keys);
@@ -160,6 +169,7 @@ public class WindowsAPIAdapter : Form
     {
         Close();
         SystemEvents.PowerModeChanged -= SystemEventsOnPowerModeChanged;
+        CleanupHook();
     }
 
     protected override void Dispose(bool disposing)
@@ -173,6 +183,8 @@ public class WindowsAPIAdapter : Form
                 NativeMethods.UnregisterHotKey(Handle, hotKeyId);
             }
 
+            CleanupHook();
+
             Interop.DeregisterShellHookWindow(User32.NativeMethods.HWND.Cast(Handle));
         }
 
@@ -181,6 +193,8 @@ public class WindowsAPIAdapter : Form
 
     /// <summary>
     ///     Registers a HotKey in the system.
+    ///     If <see cref="NativeMethods.RegisterHotKey"/> fails due to a conflict,
+    ///     falls back to monitoring via a low-level keyboard hook (<see cref="WH_KEYBOARD_LL"/>).
     /// </summary>
     /// <param name="hotKey">Represent the hotkey to register</param>
     public static bool RegisterHotKey(HotKey hotKey)
@@ -206,11 +220,33 @@ public class WindowsAPIAdapter : Form
                     return false;
                 }
 
+                // Also check if already hooked
+                lock (_hookedHotkeys)
+                {
+                    if (_hookedHotkeys.Contains(hotKey))
+                    {
+                        Log.Information("Already hooked {hotkeys}", hotKey);
+                        return false;
+                    }
+                }
+
                 var id = _instance._hotKeyId++;
                 _instance._registeredHotkeys.Add(hotKey, id);
                 // register the hot key.
-                return NativeMethods.RegisterHotKey(_instance.Handle, id, (uint)hotKey.Modifier,
-                    (uint)hotKey.Keys);
+                if (NativeMethods.RegisterHotKey(_instance.Handle, id, (uint)hotKey.Modifier,
+                        (uint)hotKey.Keys))
+                    return true;
+
+                // RegisterHotKey failed (conflict) — fallback to hook
+                _instance._registeredHotkeys.Remove(hotKey);
+                Log.Warning("RegisterHotKey conflict for {hotkey}, using hook fallback", hotKey);
+
+                lock (_hookedHotkeys)
+                {
+                    _hookedHotkeys.Add(hotKey);
+                }
+                EnsureHookThreadRunning();
+                return true;
             });
         }
     }
@@ -229,14 +265,27 @@ public class WindowsAPIAdapter : Form
             return (bool)_instance.Invoke(new Func<bool>(() =>
             {
                 Log.Information("Unregistering Hotkeys: {hotkeys}", hotKey);
-                if (!_instance._registeredHotkeys.TryGetValue(hotKey, out var id))
+                if (_instance._registeredHotkeys.TryGetValue(hotKey, out var id))
                 {
-                    Log.Information("Not registered {hotkeys}", hotKey);
-                    return false;
+                    _instance._registeredHotkeys.Remove(hotKey);
+                    return NativeMethods.UnregisterHotKey(_instance.Handle, id);
                 }
 
-                _instance._registeredHotkeys.Remove(hotKey);
-                return NativeMethods.UnregisterHotKey(_instance.Handle, id);
+                lock (_hookedHotkeys)
+                {
+                    if (_hookedHotkeys.Remove(hotKey))
+                    {
+                        Log.Information("Unregistered hooked hotkey {hotkeys}", hotKey);
+                        if (_hookedHotkeys.Count == 0)
+                        {
+                            CleanupHook();
+                        }
+                        return true;
+                    }
+                }
+
+                Log.Information("Not registered {hotkeys}", hotKey);
+                return false;
             }));
         }
     }
@@ -285,6 +334,14 @@ public class WindowsAPIAdapter : Form
             case WM_HOTKEY:
                 ProcessHotKeyEvent(m);
                 break;
+            case WM_POWERBROADCAST:
+                if (m.WParam.ToInt32() == PBT_APMRESUMEAUTOMATIC)
+                {
+                    // Re-register RegisterHotKey hotkeys asynchronously on UI thread.
+                    // Hook-based hotkeys survive sleep automatically.
+                    BeginInvoke(new Action(ReRegisterAllHotkeys));
+                }
+                break;
         }
 
         if (WindowDestroyed != null && m.Msg == _msgNotifyShell)
@@ -325,6 +382,139 @@ public class WindowsAPIAdapter : Form
         var modifier = (HotKey.ModifierKeys)(ConvertLParam(m.LParam) & 0xFFFF);
 
         Task.Factory.StartNew(() => { HotKeyPressed?.Invoke(this, new KeyPressedEventArgs(new HotKey(key, modifier))); });
+    }
+
+    /// <summary>
+    ///     Re-registers all RegisterHotKey-based hotkeys. Called on resume from sleep.
+    ///     Hook-based hotkeys survive sleep automatically and don't need re-registration.
+    /// </summary>
+    private void ReRegisterAllHotkeys()
+    {
+        foreach (var (hotKey, hotKeyId) in _registeredHotkeys.ToArray())
+        {
+            NativeMethods.UnregisterHotKey(_instance.Handle, hotKeyId);
+            NativeMethods.RegisterHotKey(_instance.Handle, hotKeyId, (uint)hotKey.Modifier, (uint)hotKey.Keys);
+        }
+    }
+
+    /// <summary>
+    ///     Ensures the low-level keyboard hook thread is running.
+    ///     The hook requires a dedicated message pump, so a background STA thread is used.
+    /// </summary>
+    private static void EnsureHookThreadRunning()
+    {
+        if (_hookThread != null && _hookThread.IsAlive)
+            return;
+
+        _hookThread = new Thread(HookThreadProc)
+        {
+            Name = "KeyboardHook",
+            IsBackground = true
+        };
+        _hookThread.SetApartmentState(ApartmentState.STA);
+        _hookThread.Start();
+    }
+
+    /// <summary>
+    ///     Hook thread procedure: installs the low-level keyboard hook and runs a message pump.
+    /// </summary>
+    private static void HookThreadProc()
+    {
+        _hookProc = LowLevelKeyboardHookCallback;
+        using var curProcess = Process.GetCurrentProcess();
+        using var curModule = curProcess.MainModule;
+        _hookHandle = Interop.SetWindowsHookEx(13 /* WH_KEYBOARD_LL */, _hookProc,
+            Interop.GetModuleHandle(curModule.ModuleName), 0);
+
+        // Message pump required for WH_KEYBOARD_LL to function
+        Application.Run();
+    }
+
+    /// <summary>
+    ///     Low-level keyboard hook callback. Checks pressed keys against hooked hotkeys
+    ///     and fires HotKeyPressed for matches.
+    /// </summary>
+    private static IntPtr LowLevelKeyboardHookCallback(int nCode, IntPtr wParam, IntPtr lParam)
+    {
+        if (nCode >= 0 && wParam == (IntPtr)0x0100 /* WM_KEYDOWN */)
+        {
+            var vkCode = Marshal.ReadInt32(lParam);
+            var key = (Keys)vkCode;
+            var modifier = PressedModifiersToModifierKeys(KeyboardWindowsAPI.GetPressedModifiers());
+
+            lock (_hookedHotkeys)
+            {
+                foreach (var hotKey in _hookedHotkeys)
+                {
+                    if (hotKey.Keys == key && hotKey.Modifier == modifier)
+                    {
+                        _instance.BeginInvoke(() =>
+                        {
+                            HotKeyPressed?.Invoke(_instance, new KeyPressedEventArgs(hotKey));
+                        });
+                        return (IntPtr)1; // swallow key to prevent further dispatch
+                    }
+                }
+            }
+        }
+
+        return Interop.CallNextHookEx(_hookHandle, nCode, wParam, lParam);
+    }
+
+    /// <summary>
+    ///     Converts the enumerable of pressed modifier Keys into a ModifierKeys flags value.
+    /// </summary>
+    private static HotKey.ModifierKeys PressedModifiersToModifierKeys(IEnumerable<Keys> modifiers)
+    {
+        HotKey.ModifierKeys result = 0;
+        foreach (var key in modifiers)
+        {
+            switch (key)
+            {
+                case Keys.Alt:
+                    result |= HotKey.ModifierKeys.Alt;
+                    break;
+                case Keys.Control:
+                    result |= HotKey.ModifierKeys.Control;
+                    break;
+                case Keys.Shift:
+                    result |= HotKey.ModifierKeys.Shift;
+                    break;
+                case Keys.LWin:
+                    result |= HotKey.ModifierKeys.Win;
+                    break;
+            }
+        }
+        return result;
+    }
+
+    /// <summary>
+    ///     Cleans up the low-level keyboard hook and its thread.
+    /// </summary>
+    private static void CleanupHook()
+    {
+        if (_hookHandle != IntPtr.Zero)
+        {
+            Interop.UnhookWindowsHookEx(_hookHandle);
+            _hookHandle = IntPtr.Zero;
+        }
+
+        if (_hookThread != null && _hookThread.IsAlive)
+        {
+            // Application.ExitThread will cause the hook thread's Application.Run() to return
+            // Post a WM_QUIT to the hook thread's message pump
+            Interop.PostThreadMessage((uint)_hookThread.ManagedThreadId, 0x0012 /* WM_QUIT */, IntPtr.Zero, IntPtr.Zero);
+            if (!_hookThread.Join(2000))
+            {
+                Log.Warning("Hook thread did not exit cleanly");
+            }
+        }
+        _hookThread = null;
+
+        lock (_hookedHotkeys)
+        {
+            _hookedHotkeys.Clear();
+        }
     }
 
     #region WindowsNativeMethods
