@@ -428,8 +428,10 @@ public sealed partial class SettingsForm : Form
     private static void ClearListViewForRefresh(ListView listView)
     {
         listView.Items.Clear();
-        listView.Groups.Remove(listView.Groups[nameof(DeviceState.Active)]);
-        listView.Groups.Remove(listView.Groups[nameof(DeviceState.NotPresent)]);
+        var activeGroup = listView.Groups[nameof(DeviceState.Active)];
+        if (activeGroup != null) listView.Groups.Remove(activeGroup);
+        var notPresentGroup = listView.Groups[nameof(DeviceState.NotPresent)];
+        if (notPresentGroup != null) listView.Groups.Remove(notPresentGroup);
         listView.Columns.Clear();
         var oldImageList = listView.SmallImageList;
         listView.SmallImageList = null;

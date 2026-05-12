@@ -50,6 +50,11 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
     public IObservable<DeviceVolumeChangedPayload> DeviceVolumeChanged => _deviceVolumeChanged.AsObservable();
 
     private readonly ISubject<Unit> _deviceListRefreshed = new Subject<Unit>();
+
+    /// <summary>
+    /// Observable that emits when the device list has been successfully and fully refreshed.
+    /// Does not emit when a refresh is cancelled or fails.
+    /// </summary>
     public IObservable<Unit> DeviceListRefreshed => _deviceListRefreshed.AsObservable();
 
     /// <summary>
