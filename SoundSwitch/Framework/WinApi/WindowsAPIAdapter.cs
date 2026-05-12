@@ -400,10 +400,26 @@ public class WindowsAPIAdapter : Form
     ///     Hook-based hotkeys survive sleep automatically and don't need re-registration.
     ///     Handles conflicts by falling back to hook-based capture.
     /// </summary>
+    /// <remarks>Enumerates current registered hotkeys and attempts to re-register each via
+    /// NativeMethods.RegisterHotKey. If registration fails due to conflict (ERROR_HOT_KEY_ALREADY_REGISTERED),
+    /// moves the hotkey to the hooked fallback set.</remarks>
     private void ReRegisterAllHotkeys()
     {
-        foreach (var (hotKey, hotKeyId) in _registeredHotkeys.ToArray())
+        HotKey[] hotKeysToReregister;
+        lock (_instance)
         {
+            hotKeysToReregister = _registeredHotkeys.Keys.ToArray();
+        }
+
+        foreach (var hotKey in hotKeysToReregister)
+        {
+            int hotKeyId;
+            lock (_instance)
+            {
+                if (!_registeredHotkeys.TryGetValue(hotKey, out hotKeyId))
+                    continue;
+            }
+
             NativeMethods.UnregisterHotKey(_instance.Handle, hotKeyId);
             if (!NativeMethods.RegisterHotKey(_instance.Handle, hotKeyId, (uint)hotKey.Modifier, (uint)hotKey.Keys))
             {
@@ -411,7 +427,10 @@ public class WindowsAPIAdapter : Form
                 if (lastError == ERROR_HOT_KEY_ALREADY_REGISTERED)
                 {
                     Log.Warning("Re-registration failed for {hotkey} with error {error}, falling back to hook", hotKey, lastError);
-                    _registeredHotkeys.Remove(hotKey);
+                    lock (_instance)
+                    {
+                        _registeredHotkeys.Remove(hotKey);
+                    }
                     lock (_hookedHotkeys)
                     {
                         _hookedHotkeys.Add(hotKey);
@@ -430,6 +449,8 @@ public class WindowsAPIAdapter : Form
     ///     Ensures the low-level keyboard hook thread is running.
     ///     The hook requires a dedicated message pump, so a background STA thread is used.
     /// </summary>
+    /// <remarks>Synchronized via _hookLock. If _hookThread is null or not alive, starts a new background
+    /// STA thread named "KeyboardHook" that runs HookThreadProc.</remarks>
     private static void EnsureHookThreadRunning()
     {
         lock (_hookLock)
@@ -450,6 +471,8 @@ public class WindowsAPIAdapter : Form
     /// <summary>
     ///     Hook thread procedure: installs the low-level keyboard hook and runs a message pump.
     /// </summary>
+    /// <remarks>Captures the native thread ID for cleanup, installs WH_KEYBOARD_LL hook, runs a message pump
+    /// (Application.Run) to process hook callbacks, and unhooks on the same thread before returning.</remarks>
     private static void HookThreadProc()
     {
         // Capture native thread ID for use in CleanupHook when posting WM_QUIT
@@ -483,6 +506,13 @@ public class WindowsAPIAdapter : Form
     ///     Low-level keyboard hook callback. Checks pressed keys against hooked hotkeys
     ///     and fires HotKeyPressed for matches. Non-exclusive - key continues to other apps.
     /// </summary>
+    /// <param name="nCode">The hook code. Positive values indicate processing is required.</param>
+    /// <param name="wParam">The WM_* message ID (e.g., WM_KEYDOWN = 0x0100).</param>
+    /// <param name="lParam">A pointer to the KBDLLHOOKSTRUCT structure containing keyboard event data.</param>
+    /// <returns>IntPtr.Zero to pass the message to the next hook, or a non-zero value to consume the message.</returns>
+    /// <remarks>On WM_KEYDOWN, reads the virtual key code and pressed modifiers, matches against
+    /// _hookedHotkeys, fires HotKeyPressed on match (on background thread), and returns after calling
+    /// CallNextHookEx to allow non-exclusive monitoring.</remarks>
     private static IntPtr LowLevelKeyboardHookCallback(int nCode, IntPtr wParam, IntPtr lParam)
     {
         if (nCode >= 0 && wParam == (IntPtr)WM_KEYDOWN)
@@ -514,6 +544,10 @@ public class WindowsAPIAdapter : Form
     /// <summary>
     ///     Converts the enumerable of pressed modifier Keys into a ModifierKeys flags value.
     /// </summary>
+    /// <param name="modifiers">An enumerable of Keys representing currently pressed modifier keys.</param>
+    /// <returns>A HotKey.ModifierFlags value representing the pressed modifiers as bit flags.</returns>
+    /// <remarks>Maps Keys.Alt, Keys.Control, Keys.Shift, and Keys.LWin to corresponding
+    /// HotKey.ModifierKeys flags (Alt, Control, Shift, Win). Keys.RWin is also accepted.</remarks>
     private static HotKey.ModifierKeys PressedModifiersToModifierKeys(IEnumerable<Keys> modifiers)
     {
         HotKey.ModifierKeys result = 0;
@@ -541,6 +575,9 @@ public class WindowsAPIAdapter : Form
     /// <summary>
     ///     Cleans up the low-level keyboard hook and its thread.
     /// </summary>
+    /// <remarks>Synchronized via _hookLock. Uninstalls the hook via UnhookWindowsHookEx (if handle is valid),
+    /// posts WM_QUIT to the hook thread's message pump to stop Application.Run, joins the thread with 2s timeout,
+    /// and clears the _hookedHotkeys set.</remarks>
     private static void CleanupHook()
     {
         lock (_hookLock)
