@@ -12,12 +12,12 @@ Issue: [#2105](https://github.com/Belphemur/SoundSwitch/issues/2105) — hotkeys
 
 ## Proposed Solution
 
-Use a **hybrid approach**: prefer `RegisterHotKey`, but fall back to a `WH_KEYBOARD_LL` hook when registration fails due to a conflict. This guarantees hotkey capture even when another application holds the same key combination.
+Use a **hybrid approach**: prefer `RegisterHotKey`, but fall back to a `WH_KEYBOARD_LL` hook when registration fails due to a conflict. This improves hotkey capture reliability as a fallback mechanism.
 
 ### Why This Works
 
 - `WH_KEYBOARD_LL` hooks are **not exclusive** — multiple apps can install them simultaneously without conflict.
-- The hook intercepts key events **before** they reach other apps' `RegisterHotKey` registrations, giving SoundSwitch guaranteed capture.
+- The hook intercepts key events **before** they reach other apps' `RegisterHotKey` registrations, providing a reliable fallback for SoundSwitch. However, capture is not 100% guaranteed due to real-world limitations (hook chain order, UIPI/security restrictions, bitness mismatches, or system timeouts).
 - The same `HotKeyPressed` event is fired from both paths, so all existing subscribers (UI, AppModel, ProfileManager) work transparently with zero changes.
 
 ## Implementation Plan
