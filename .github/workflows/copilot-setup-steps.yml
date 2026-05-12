@@ -12,7 +12,7 @@ on:
 jobs:
     # The job MUST be called `copilot-setup-steps` or it will not be picked up by Copilot.
     copilot-setup-steps:
-        runs-on: ubuntu-latest
+        runs-on: windows-latest
 
         permissions:
             contents: read
@@ -23,21 +23,23 @@ jobs:
 
             - name: Detect .NET SDK version
               id: framework
+              shell: pwsh
               run: |
-                  framework=$(grep -oP '(?<=<TargetFramework>)[^<]+' SoundSwitch/SoundSwitch.csproj | head -1)
-                  if [ -z "$framework" ]; then
-                    echo "Unable to determine TargetFramework from SoundSwitch/SoundSwitch.csproj"
+                  [xml]$project = Get-Content 'SoundSwitch/SoundSwitch.csproj'
+                  $framework = $project.Project.PropertyGroup.TargetFramework | Select-Object -First 1
+                  if ([string]::IsNullOrWhiteSpace($framework)) {
+                    Write-Error "Unable to determine TargetFramework from SoundSwitch/SoundSwitch.csproj"
                     exit 1
-                  fi
+                  }
 
-                  dotnet_version=$(echo "$framework" | sed -E 's/^net([0-9]+\.[0-9]+).*/\1.x/')
-                  if [ "$dotnet_version" = "$framework" ]; then
-                    echo "Unable to derive .NET SDK version from TargetFramework '$framework'"
+                  if ($framework -notmatch '^net(?<version>\d+\.\d+)') {
+                    Write-Error "Unable to derive .NET SDK version from TargetFramework '$framework'"
                     exit 1
-                  fi
+                  }
 
-                  echo "Detected .NET SDK version: $dotnet_version (from $framework)"
-                  echo "dotnet-version=$dotnet_version" >> "$GITHUB_OUTPUT"
+                  $dotnetVersion = "$($Matches.version).x"
+                  Write-Host "Detected .NET SDK version: $dotnetVersion (from $framework)"
+                  "dotnet-version=$dotnetVersion" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
 
             - name: Setup .NET
               uses: actions/setup-dotnet@v5
@@ -47,7 +49,7 @@ jobs:
                   cache-dependency-path: Directory.Packages.props
 
             - name: Restore dependencies
-              run: dotnet restore -p:EnableWindowsTargeting=true
+              run: dotnet restore
 
             - name: Setup Python
               uses: actions/setup-python@v6
