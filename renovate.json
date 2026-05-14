@@ -1,0 +1,34 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Update installer .NET runtime dependencies",
+      "managerFilePatterns": [
+        "/^Installer\\/scripts\\/CodeDependencies\\.iss$/"
+      ],
+      "matchStrings": [
+        "procedure (?<procedureName>Dependency_AddDotNet\\d+(?:Asp|Desktop)?);\\r?\\nbegin\\r?\\n  // https://dotnet\\.microsoft\\.com/download/dotnet/(?<packageName>\\d+\\.\\d+)\\r?\\n  if not Dependency_IsNetCoreInstalled\\('(?<runtimeName>[^']+)', \\d+, \\d+, \\d+\\) then begin\\r?\\n    Dependency_Add\\('(?<archiveName>[^']+)' \\+ Dependency_ArchSuffix \\+ '\\.exe',\\r?\\n      '/lcid ' \\+ IntToStr\\(GetUILanguage\\) \\+ ' /passive /norestart',\\r?\\n      '(?<displayNamePrefix>[^']+? )(?<currentValue>\\d+\\.\\d+\\.\\d+)' \\+ Dependency_ArchTitle,\\r?\\n      Dependency_String\\('https://builds\\.dotnet\\.microsoft\\.com/dotnet/(?<downloadPath>[^']+?)/\\d+\\.\\d+\\.\\d+/(?<binaryNamePrefix>[^']+?)-\\d+\\.\\d+\\.\\d+-win-x86\\.exe', 'https://builds\\.dotnet\\.microsoft\\.com/dotnet/[^']+?/\\d+\\.\\d+\\.\\d+/[^']+?-\\d+\\.\\d+\\.\\d+-win-x64\\.exe', 'https://builds\\.dotnet\\.microsoft\\.com/dotnet/[^']+?/\\d+\\.\\d+\\.\\d+/[^']+?-\\d+\\.\\d+\\.\\d+-win-arm64\\.exe'\\),\\r?\\n      '', False, False\\);\\r?\\n  end;\\r?\\nend;"
+      ],
+      "depNameTemplate": "dotnet-runtime {{{packageName}}}",
+      "datasourceTemplate": "custom.dotnet-runtime-channel",
+      "versioningTemplate": "semver"
+    }
+  ],
+  "customDatasources": {
+    "dotnet-runtime-channel": {
+      "defaultRegistryUrlTemplate": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/{{packageName}}/releases.json",
+      "transformTemplates": [
+        "{\"releases\":[{\"version\": $.\"latest-release\", \"releaseTimestamp\": $.\"latest-release-date\"}], \"sourceUrl\":\"https://github.com/dotnet/runtime\", \"homepage\":\"https://dotnet.microsoft.com/download/dotnet/\" & packageName}"
+      ]
+    }
+  },
+  "packageRules": [
+    {
+      "matchManagers": [
+        "custom.regex"
+      ],
+      "autoReplaceStringTemplate": "procedure {{{procedureName}}};\nbegin\n  // https://dotnet.microsoft.com/download/dotnet/{{{packageName}}}\n  if not Dependency_IsNetCoreInstalled('{{{runtimeName}}}', {{{newMajor}}}, {{{newMinor}}}, {{{newPatch}}}) then begin\n    Dependency_Add('{{{archiveName}}}' + Dependency_ArchSuffix + '.exe',\n      '/lcid ' + IntToStr(GetUILanguage) + ' /passive /norestart',\n      '{{{displayNamePrefix}}}{{{newValue}}}' + Dependency_ArchTitle,\n      Dependency_String('https://builds.dotnet.microsoft.com/dotnet/{{{downloadPath}}}/{{{newValue}}}/{{{binaryNamePrefix}}}-{{{newValue}}}-win-x86.exe', 'https://builds.dotnet.microsoft.com/dotnet/{{{downloadPath}}}/{{{newValue}}}/{{{binaryNamePrefix}}}-{{{newValue}}}-win-x64.exe', 'https://builds.dotnet.microsoft.com/dotnet/{{{downloadPath}}}/{{{newValue}}}/{{{binaryNamePrefix}}}-{{{newValue}}}-win-arm64.exe'),\n      '', False, False);\n  end;\nend;"
+    }
+  ]
+}
