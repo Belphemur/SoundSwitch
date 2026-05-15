@@ -26,7 +26,7 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version-file: 'website/.nvmrc'
-      - run: npm ci
+      - run: npm ci --legacy-peer-deps
         working-directory: website
       - run: npm run docs:build
         working-directory: website
