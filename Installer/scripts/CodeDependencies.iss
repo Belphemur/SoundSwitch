@@ -593,11 +593,11 @@ end;
 procedure Dependency_AddDotNet100;
 begin
   // https://dotnet.microsoft.com/download/dotnet/10.0
-  if not Dependency_IsNetCoreInstalled('Microsoft.NETCore.App', 10, 0, 7) then begin
+  if not Dependency_IsNetCoreInstalled('Microsoft.NETCore.App', 10, 0, 8) then begin
     Dependency_Add('dotnet100' + Dependency_ArchSuffix + '.exe',
       '/lcid ' + IntToStr(GetUILanguage) + ' /passive /norestart',
-      '.NET Runtime 10.0.7' + Dependency_ArchTitle,
-      Dependency_String('https://builds.dotnet.microsoft.com/dotnet/Runtime/10.0.7/dotnet-runtime-10.0.7-win-x86.exe', 'https://builds.dotnet.microsoft.com/dotnet/Runtime/10.0.7/dotnet-runtime-10.0.7-win-x64.exe', 'https://builds.dotnet.microsoft.com/dotnet/Runtime/10.0.7/dotnet-runtime-10.0.7-win-arm64.exe'),
+      '.NET Runtime 10.0.8' + Dependency_ArchTitle,
+      Dependency_String('https://builds.dotnet.microsoft.com/dotnet/Runtime/10.0.8/dotnet-runtime-10.0.8-win-x86.exe', 'https://builds.dotnet.microsoft.com/dotnet/Runtime/10.0.8/dotnet-runtime-10.0.8-win-x64.exe', 'https://builds.dotnet.microsoft.com/dotnet/Runtime/10.0.8/dotnet-runtime-10.0.8-win-arm64.exe'),
       '', False, False);
   end;
 end;
@@ -605,11 +605,11 @@ end;
 procedure Dependency_AddDotNet100Asp;
 begin
   // https://dotnet.microsoft.com/download/dotnet/10.0
-  if not Dependency_IsNetCoreInstalled('Microsoft.AspNetCore.App', 10, 0, 7) then begin
+  if not Dependency_IsNetCoreInstalled('Microsoft.AspNetCore.App', 10, 0, 8) then begin
     Dependency_Add('dotnet100asp' + Dependency_ArchSuffix + '.exe',
       '/lcid ' + IntToStr(GetUILanguage) + ' /passive /norestart',
-      'ASP.NET Core Runtime 10.0.7' + Dependency_ArchTitle,
-      Dependency_String('https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/10.0.7/aspnetcore-runtime-10.0.7-win-x86.exe', 'https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/10.0.7/aspnetcore-runtime-10.0.7-win-x64.exe', 'https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/10.0.7/aspnetcore-runtime-10.0.7-win-arm64.exe'),
+      'ASP.NET Core Runtime 10.0.8' + Dependency_ArchTitle,
+      Dependency_String('https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/10.0.8/aspnetcore-runtime-10.0.8-win-x86.exe', 'https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/10.0.8/aspnetcore-runtime-10.0.8-win-x64.exe', 'https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/10.0.8/aspnetcore-runtime-10.0.8-win-arm64.exe'),
       '', False, False);
   end;
 end;
@@ -617,11 +617,11 @@ end;
 procedure Dependency_AddDotNet100Desktop;
 begin
   // https://dotnet.microsoft.com/download/dotnet/10.0
-  if not Dependency_IsNetCoreInstalled('Microsoft.WindowsDesktop.App', 10, 0, 7) then begin
+  if not Dependency_IsNetCoreInstalled('Microsoft.WindowsDesktop.App', 10, 0, 8) then begin
     Dependency_Add('dotnet100desktop' + Dependency_ArchSuffix + '.exe',
       '/lcid ' + IntToStr(GetUILanguage) + ' /passive /norestart',
-      '.NET Desktop Runtime 10.0.7' + Dependency_ArchTitle,
-      Dependency_String('https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/10.0.7/windowsdesktop-runtime-10.0.7-win-x86.exe', 'https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/10.0.7/windowsdesktop-runtime-10.0.7-win-x64.exe', 'https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/10.0.7/windowsdesktop-runtime-10.0.7-win-arm64.exe'),
+      '.NET Desktop Runtime 10.0.8' + Dependency_ArchTitle,
+      Dependency_String('https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/10.0.8/windowsdesktop-runtime-10.0.8-win-x86.exe', 'https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/10.0.8/windowsdesktop-runtime-10.0.8-win-x64.exe', 'https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/10.0.8/windowsdesktop-runtime-10.0.8-win-arm64.exe'),
       '', False, False);
   end;
 end;
