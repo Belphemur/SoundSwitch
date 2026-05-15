@@ -11,7 +11,7 @@
     "preview": "npm run docs:build && wrangler dev"
   },
   "dependencies": {
-    "@vuepress/bundler-vite": "2.0.0-rc.28",
+    "@vuepress/bundler-vite": "2.0.0-rc.30",
     "sass-embedded": "^1.98.0",
     "vue": "^3.5.0",
     "vuepress": "2.0.0-rc.28",
