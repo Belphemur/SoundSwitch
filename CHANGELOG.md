@@ -1,3 +1,31 @@
+## [7.0.0-beta.4](https://github.com/Belphemur/SoundSwitch/compare/v7.0.0-beta.3...v7.0.0-beta.4) (2026-05-12)
+
+### Features
+
+* add FAQ-from-discussion Copilot skill ([c1ef56e](https://github.com/Belphemur/SoundSwitch/commit/c1ef56ef608a668a022d6f598b110bb1ba59e798))
+* **hotkey:** WH_KEYBOARD_LL fallback for RegisterHotKey conflicts ([#2105](https://github.com/Belphemur/SoundSwitch/issues/2105)) ([#2112](https://github.com/Belphemur/SoundSwitch/issues/2112)) ([2c74501](https://github.com/Belphemur/SoundSwitch/commit/2c745012e610f11996d7e216930c9a1336594410))
+* **website:** add backend-driven y-axis ticks for download chart ([633fd2c](https://github.com/Belphemur/SoundSwitch/commit/633fd2c84d531b478f678490178c0797d0f65cf2))
+* **website:** add custom theme layouts for ads ([3436be3](https://github.com/Belphemur/SoundSwitch/commit/3436be3acae69ba1e171b0df1d0cf69e3ff2cdda))
+* **website:** add durable download history ([b6fa8bc](https://github.com/Belphemur/SoundSwitch/commit/b6fa8bcdbe19d47cbbe017029a90a0bd3ad3b138))
+* **website:** add vuepress llms plugin to generate llms.txt ([22197f7](https://github.com/Belphemur/SoundSwitch/commit/22197f7fd125e03c0eda09f6cf58206d27c18f57))
+* **website:** add Weblate languages list with smart placement ([221e405](https://github.com/Belphemur/SoundSwitch/commit/221e4058525027342e92e21a7dbb8e9752f2376f))
+* **website:** make GoogleAd configurable, add :key for route reload, add AGENTS.md ([b106756](https://github.com/Belphemur/SoundSwitch/commit/b106756c0d9765fe85180e3b42e732f232df3ff2))
+
+### Bug Fixes
+
+* **website:** add llm.txt alias build step and document llms endpoint ([09c44b0](https://github.com/Belphemur/SoundSwitch/commit/09c44b0bdc79d36d50d2d57cf44f2963a018c7c5))
+* **website:** defer adsense slot init to next tick ([d786044](https://github.com/Belphemur/SoundSwitch/commit/d786044b18f2d1f42d10a900a5f917380288d76b))
+* **website:** force homepage to use Home layout ([5602d8e](https://github.com/Belphemur/SoundSwitch/commit/5602d8e9694785e9571b79663c8af90113deb4be))
+* **website:** guard adsense slot initialization against duplicate push ([9d9260c](https://github.com/Belphemur/SoundSwitch/commit/9d9260c5d62775ff639dd97cc403f96c87fd6433))
+* **website:** log adsense init errors in console ([91d5f44](https://github.com/Belphemur/SoundSwitch/commit/91d5f445190f88f00d4a00e134a6044de95f7645))
+* **website:** refine ad layout integration ([60e4027](https://github.com/Belphemur/SoundSwitch/commit/60e4027e85dffc9a5d4e4bf4779dff314e75ad17))
+* **website:** refine download count card ([6ca8fe8](https://github.com/Belphemur/SoundSwitch/commit/6ca8fe89880ccdc6cca1331199a1e65a62635d0f))
+* **website:** remove llm.txt alias - llms.txt is sufficient ([b7409fe](https://github.com/Belphemur/SoundSwitch/commit/b7409fe79cec2358d137898f5e8ba66b0399eaae))
+* **website:** remove page level ads ([#2109](https://github.com/Belphemur/SoundSwitch/issues/2109)) ([82ce157](https://github.com/Belphemur/SoundSwitch/commit/82ce1570f91718ece3a9f0ad99680b4da70a7bab))
+* **website:** restore adsense component to snippet flow ([e57cf3b](https://github.com/Belphemur/SoundSwitch/commit/e57cf3b15aedda9aa807f79c9b5c589aeca986e6))
+* **website:** retry Google Ad push when ad slot has no width ([808dace](https://github.com/Belphemur/SoundSwitch/commit/808dace19531867ab5deef4652010568363caa15))
+* **website:** use shared type, clamp max>=min, validate ticks against floor ([1cc076b](https://github.com/Belphemur/SoundSwitch/commit/1cc076b402222556c7ce571589f7ff07f648b97f))
+
 ## [7.0.0-beta.3](https://github.com/Belphemur/SoundSwitch/compare/v7.0.0-beta.2...v7.0.0-beta.3) (2026-05-08)
 
 ### Features
