@@ -51,9 +51,19 @@ rmdir /q /s Release >nul 2>nul
 rmdir /q /s %finalDir% >nul 2>nul
 mkdir %finalDir% >nul 2>nul
 
-echo Build AnyCPU
-dotnet publish -c %buildPlatform% %FILE_DIR%SoundSwitch.CLI\SoundSwitch.CLI.csproj -o %finalDir% || (set errorMessage=Build %ARCH% failed & goto ERROR_QUIT)
-dotnet publish -c %buildPlatform% %FILE_DIR%SoundSwitch\SoundSwitch.csproj -o %finalDir% || (set errorMessage=Build %ARCH% failed & goto ERROR_QUIT)
+echo Build CLI (AnyCPU)
+dotnet publish -c %buildPlatform% %FILE_DIR%SoundSwitch.CLI\SoundSwitch.CLI.csproj -o %finalDir% || (set errorMessage=Build CLI failed & goto ERROR_QUIT)
+
+echo Build SoundSwitch x64 apphost
+dotnet publish -c %buildPlatform% -r win-x64 --self-contained false %FILE_DIR%SoundSwitch\SoundSwitch.csproj -o %finalDir%\publish-x64 || (set errorMessage=Build win-x64 failed & goto ERROR_QUIT)
+move %finalDir%\publish-x64\SoundSwitch.exe %finalDir%\SoundSwitch.x64.exe
+xcopy /y /e %finalDir%\publish-x64\* %finalDir%\ >nul 2>nul
+rmdir /q /s %finalDir%\publish-x64 >nul 2>nul
+
+echo Build SoundSwitch arm64 apphost
+dotnet publish -c %buildPlatform% -r win-arm64 --self-contained false %FILE_DIR%SoundSwitch\SoundSwitch.csproj -o %finalDir%\publish-arm64 || (set errorMessage=Build win-arm64 failed & goto ERROR_QUIT)
+move %finalDir%\publish-arm64\SoundSwitch.exe %finalDir%\SoundSwitch.arm64.exe
+rmdir /q /s %finalDir%\publish-arm64 >nul 2>nul
 
 
 echo.

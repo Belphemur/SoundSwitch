@@ -242,17 +242,36 @@ if ($BuildFromSource) {
     }
     New-Item -ItemType Directory -Path $finalDir -Force | Out-Null
 
-    # Publish CLI first, then main app (main app wins on shared files)
-    # Framework-dependent publish: IL assemblies are architecture-agnostic
     $publishDir = $finalDir
 
-    foreach ($proj in @($cliProject, $projectName)) {
-        $projPath = Join-Path $repoRoot "$proj\$proj.csproj"
-        Write-Host "  Publishing $proj ..."
-        dotnet publish -c $Configuration $projPath -o $publishDir
+    # Publish CLI first (framework-dependent, AnyCPU)
+    $projPath = Join-Path $repoRoot "$cliProject\$cliProject.csproj"
+    Write-Host "  Publishing $cliProject ..."
+    dotnet publish -c $Configuration $projPath -o $publishDir
+    if ($LASTEXITCODE -ne 0) {
+        throw "dotnet publish failed for $cliProject with exit code $LASTEXITCODE."
+    }
+
+    # Publish main app for each architecture — only the apphost (.exe) is
+    # architecture-specific; all managed assemblies are AnyCPU-identical.
+    foreach ($rid in @('win-x64', 'win-arm64')) {
+        $ridTempDir = Join-Path $publishDir "publish-$rid"
+        Write-Host "  Publishing $projectName for $rid ..."
+        $projPath = Join-Path $repoRoot "$projectName\$projectName.csproj"
+        dotnet publish -c $Configuration -r $rid --self-contained false $projPath -o $ridTempDir
         if ($LASTEXITCODE -ne 0) {
-            throw "dotnet publish failed for $proj with exit code $LASTEXITCODE."
+            throw "dotnet publish failed for $projectName ($rid) with exit code $LASTEXITCODE."
         }
+
+        $archSuffix = $rid.Split('-')[1]   # 'x64' or 'arm64'
+        Move-Item (Join-Path $ridTempDir "$projectName.exe") `
+                  (Join-Path $publishDir "$projectName.$archSuffix.exe") -Force
+
+        # Copy architecture-neutral files to the output dir only once (from x64 publish)
+        if ($rid -eq 'win-x64') {
+            Get-ChildItem $ridTempDir | Copy-Item -Destination $publishDir -Force -Recurse
+        }
+        Remove-Item $ridTempDir -Recurse -Force
     }
 }
 else {

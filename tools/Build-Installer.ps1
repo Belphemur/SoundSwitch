@@ -134,15 +134,22 @@ $canSign = -not $SkipSigning -and (Get-Command 'signtool.exe' -ErrorAction Silen
 if ($canSign) {
     Write-Host "`n=== Signing binaries ===" -ForegroundColor White
 
-    $binaries = @("$projectName.exe", "$cliProject.exe") |
+    # Sign architecture-specific apphosts and CLI exe
+    $exes = @("$projectName.x64.exe", "$projectName.arm64.exe", "$cliProject.exe") |
         ForEach-Object { Join-Path $FinalDir $_ } |
         Where-Object { Test-Path $_ }
+
+    # Sign all DLLs (architecture-neutral managed assemblies)
+    $dlls = Get-ChildItem $FinalDir -Filter '*.dll' -File |
+        ForEach-Object { $_.FullName }
+
+    $binaries = @($exes) + @($dlls) | Where-Object { $_ }
 
     if ($binaries) {
         & $signScript -Path $binaries -CertificateName $CertificateName
     }
     else {
-        Write-Host "  No executables found to sign." -ForegroundColor DarkGray
+        Write-Host "  No binaries found to sign." -ForegroundColor DarkGray
     }
 }
 else {

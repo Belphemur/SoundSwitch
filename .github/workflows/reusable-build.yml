@@ -129,28 +129,54 @@ jobs:
                   if (Test-Path $outputDir) { Remove-Item $outputDir -Recurse -Force }
                   New-Item -ItemType Directory -Path $outputDir | Out-Null
 
-                  # Publish CLI first, then main app (main app wins on shared files)
-                  foreach ($proj in @("${{ env.PROJECT_NAME }}.CLI", "${{ env.PROJECT_NAME }}")) {
-                    $arguments = @(
-                      'publish',
-                      '-c', '${{ inputs.configuration }}',
-                      '--no-restore',
-                      "$proj\$proj.csproj",
-                      '-o', $outputDir
+                  # Collect optional version arguments
+                  $versionArgs = @()
+                  if ($env:PUBLISH_VERSION) {
+                    $numericVersion = $env:PUBLISH_VERSION -replace '-.*$', ''
+                    $versionArgs = @(
+                      "-p:Version=$env:PUBLISH_VERSION",
+                      "-p:FileVersion=$numericVersion",
+                      "-p:AssemblyVersion=$numericVersion",
+                      "-p:InformationalVersion=$env:PUBLISH_VERSION"
                     )
-                    if ($env:PUBLISH_VERSION) {
-                      $numericVersion = $env:PUBLISH_VERSION -replace '-.*$', ''
-                      $arguments += @(
-                        "-p:Version=$env:PUBLISH_VERSION",
-                        "-p:FileVersion=$numericVersion",
-                        "-p:AssemblyVersion=$numericVersion",
-                        "-p:InformationalVersion=$env:PUBLISH_VERSION"
-                      )
-                    }
+                  }
+
+                  # Publish CLI (framework-dependent, AnyCPU)
+                  $arguments = @(
+                    'publish', '-c', '${{ inputs.configuration }}', '--no-restore',
+                    "${{ env.PROJECT_NAME }}.CLI\${{ env.PROJECT_NAME }}.CLI.csproj",
+                    '-o', $outputDir
+                  ) + $versionArgs
+                  dotnet @arguments
+                  if ($LASTEXITCODE -ne 0) {
+                    throw "dotnet publish failed for CLI with exit code $LASTEXITCODE."
+                  }
+
+                  # Publish main app for each architecture — only the apphost (.exe) is
+                  # architecture-specific; all managed assemblies are AnyCPU-identical.
+                  foreach ($rid in @('win-x64', 'win-arm64')) {
+                    $ridTempDir = Join-Path $outputDir "publish-$rid"
+                    $arguments = @(
+                      'publish', '-c', '${{ inputs.configuration }}', '--no-restore',
+                      '-r', $rid, '--self-contained', 'false',
+                      "${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj",
+                      '-o', $ridTempDir
+                    ) + $versionArgs
                     dotnet @arguments
                     if ($LASTEXITCODE -ne 0) {
-                      throw "dotnet publish failed for $proj with exit code $LASTEXITCODE."
+                      throw "dotnet publish failed for $rid with exit code $LASTEXITCODE."
                     }
+
+                    # Rename the arch-specific apphost exe
+                    $archSuffix = $rid.Split('-')[1]   # 'x64' or 'arm64'
+                    Move-Item (Join-Path $ridTempDir "${{ env.PROJECT_NAME }}.exe") `
+                              (Join-Path $outputDir   "${{ env.PROJECT_NAME }}.$archSuffix.exe") -Force
+
+                    # Copy architecture-neutral files to the output dir only once (from x64 publish)
+                    if ($rid -eq 'win-x64') {
+                      Get-ChildItem $ridTempDir | Copy-Item -Destination $outputDir -Force -Recurse
+                    }
+                    Remove-Item $ridTempDir -Recurse -Force
                   }
             - name: Setup Python
               if: inputs.publish

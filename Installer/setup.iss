@@ -78,7 +78,12 @@ Name: addtopath; Description: "{cm:AddToPath,{#MyAppSetupName}}"; GroupDescripti
 Name: deletefiles; Description: "{cm:ExistingSettings}"; GroupDescription: "{cm:SettingsGroupDescription}"; Flags: unchecked checkedonce
 
 [Files] 
-Source: "{#ExeDir}*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
+; All files except architecture-specific apphosts
+Source: "{#ExeDir}*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs; Excludes: "SoundSwitch.x64.exe,SoundSwitch.arm64.exe"
+; x64 apphost — installed as SoundSwitch.exe on x64-compatible systems
+Source: "{#ExeDir}SoundSwitch.x64.exe"; DestDir: "{app}"; DestName: "SoundSwitch.exe"; Flags: ignoreversion; Check: not IsArm64()
+; ARM64 apphost — installed as SoundSwitch.exe on ARM64 systems
+Source: "{#ExeDir}SoundSwitch.arm64.exe"; DestDir: "{app}"; DestName: "SoundSwitch.exe"; Flags: ignoreversion; Check: IsArm64()
 Source: "scripts\ManageWindowsUpdate.ps1"; DestDir: "{tmp}"; Flags: confirmoverwrite deleteafterinstall
 
 [Registry]

@@ -91,22 +91,34 @@ jobs:
           dotnet --info
 
       - name: Build SoundSwitch Application
-        shell: cmd
+        shell: pwsh
         run: |
-          echo "Cleaning build directories"
-          if exist bin rmdir /q /s bin
-          if exist obj rmdir /q /s obj
-          if exist Release rmdir /q /s Release
-          if exist Final rmdir /q /s Final
-          mkdir Final
+          Write-Host "Cleaning build directories"
+          foreach ($dir in @('bin','obj','Release','Final')) {
+            if (Test-Path $dir) { Remove-Item $dir -Recurse -Force }
+          }
+          New-Item -ItemType Directory -Path Final | Out-Null
 
-          echo "Building SoundSwitch CLI"
+          Write-Host "Building SoundSwitch CLI"
           dotnet publish -c Release SoundSwitch.CLI\SoundSwitch.CLI.csproj -o Final
-          if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+          if ($LASTEXITCODE -ne 0) { throw "CLI publish failed with exit code $LASTEXITCODE." }
 
-          echo "Building SoundSwitch Main Application"
-          dotnet publish -c Release SoundSwitch\SoundSwitch.csproj -o Final
-          if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+          # Publish main app for each architecture — only the apphost (.exe) is
+          # architecture-specific; all managed assemblies are AnyCPU-identical.
+          foreach ($rid in @('win-x64', 'win-arm64')) {
+            Write-Host "Building SoundSwitch for $rid"
+            $ridTempDir = "Final\publish-$rid"
+            dotnet publish -c Release -r $rid --self-contained false SoundSwitch\SoundSwitch.csproj -o $ridTempDir
+            if ($LASTEXITCODE -ne 0) { throw "Main app publish failed for $rid with exit code $LASTEXITCODE." }
+
+            $archSuffix = $rid.Split('-')[1]   # 'x64' or 'arm64'
+            Move-Item "$ridTempDir\SoundSwitch.exe" "Final\SoundSwitch.$archSuffix.exe" -Force
+
+            if ($rid -eq 'win-x64') {
+              Get-ChildItem $ridTempDir | Copy-Item -Destination Final -Force -Recurse
+            }
+            Remove-Item $ridTempDir -Recurse -Force
+          }
 
       - name: Setup Python
         uses: actions/setup-python@v6
