@@ -215,6 +215,59 @@ function Get-LatestChangelogEntry {
     return ($sectionLines -join "`n").Trim()
 }
 
+function Publish-ProjectWithArchitectureSpecificLaunchers {
+    <#
+    .SYNOPSIS
+        Publishes a project to Final\ and replaces the machine-local apphost
+        with explicit x64 and arm64 launchers.
+    #>
+    param(
+        [Parameter(Mandatory)][string]$ProjectPath,
+        [Parameter(Mandatory)][string]$ProjectName,
+        [Parameter(Mandatory)][ValidateSet('Release', 'Debug')][string]$Configuration,
+        [Parameter(Mandatory)][string]$OutputDir
+    )
+
+    Write-Host "  Publishing $ProjectName ..."
+    dotnet publish -c $Configuration $ProjectPath -o $OutputDir
+    if ($LASTEXITCODE -ne 0) {
+        throw "dotnet publish failed for $ProjectName with exit code $LASTEXITCODE."
+    }
+
+    $launcherName = "$ProjectName.exe"
+    $defaultLauncher = Join-Path $OutputDir $launcherName
+    if (Test-Path $defaultLauncher) {
+        Remove-Item $defaultLauncher -Force
+    }
+
+    $tempRoot = Join-Path ([System.IO.Path]::GetTempPath()) "soundswitch-launchers-$([guid]::NewGuid().ToString('N').Substring(0,8))"
+    New-Item -ItemType Directory -Path $tempRoot -Force | Out-Null
+
+    try {
+        foreach ($rid in @('win-x64', 'win-arm64')) {
+            $architectureName = $rid -replace '^win-', ''
+            $launcherOutput = Join-Path $tempRoot "$ProjectName-$architectureName"
+            New-Item -ItemType Directory -Path $launcherOutput -Force | Out-Null
+
+            dotnet publish -c $Configuration $ProjectPath -r $rid --self-contained false -o $launcherOutput
+            if ($LASTEXITCODE -ne 0) {
+                throw "dotnet publish failed for $ProjectName ($rid) with exit code $LASTEXITCODE."
+            }
+
+            $launcherSource = Join-Path $launcherOutput $launcherName
+            if (-not (Test-Path $launcherSource)) {
+                throw "Expected launcher not found after publishing $ProjectName for $rid: $launcherSource"
+            }
+
+            $launcherDestination = Join-Path $OutputDir "$ProjectName-$architectureName.exe"
+            Copy-Item $launcherSource -Destination $launcherDestination -Force
+        }
+    }
+    finally {
+        Remove-Item $tempRoot -Recurse -Force -ErrorAction SilentlyContinue
+    }
+}
+
 # ── Pre-flight ───────────────────────────────────────────────────────────────
 
 Write-Host "SoundSwitch Release Publisher" -ForegroundColor White
@@ -243,16 +296,12 @@ if ($BuildFromSource) {
     New-Item -ItemType Directory -Path $finalDir -Force | Out-Null
 
     # Publish CLI first, then main app (main app wins on shared files)
-    # Framework-dependent publish: IL assemblies are architecture-agnostic
+    # Shared files remain framework-dependent; launchers are architecture-specific.
     $publishDir = $finalDir
 
     foreach ($proj in @($cliProject, $projectName)) {
         $projPath = Join-Path $repoRoot "$proj\$proj.csproj"
-        Write-Host "  Publishing $proj ..."
-        dotnet publish -c $Configuration $projPath -o $publishDir
-        if ($LASTEXITCODE -ne 0) {
-            throw "dotnet publish failed for $proj with exit code $LASTEXITCODE."
-        }
+        Publish-ProjectWithArchitectureSpecificLaunchers -ProjectPath $projPath -ProjectName $proj -Configuration $Configuration -OutputDir $publishDir
     }
 }
 else {
