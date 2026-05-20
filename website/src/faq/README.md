@@ -25,6 +25,7 @@ Answers to the most common questions, collected over the years from the [GitHub 
 - [How do I manually check for an update?](./manually-check-update.md)
 - [How does postponing an update work?](./postpone-update.md)
 - ["Invalid Digital Signature" when updating](./invalid-signature.md)
+- [SoundSwitch 7.0.0 keeps asking for .NET 10 even when installed](./update-7-0-dotnet-required.md)
 
 ## Troubleshooting
 

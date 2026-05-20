@@ -149,6 +149,7 @@ export default defineUserConfig({
             { text: "Manually check for update", link: "/faq/manually-check-update.md" },
             { text: "Postpone an update", link: "/faq/postpone-update.md" },
             { text: "Invalid digital signature", link: "/faq/invalid-signature.md" },
+            { text: ".NET required after 7.0.0 update", link: "/faq/update-7-0-dotnet-required.md" },
             { text: "App not switching after update", link: "/faq/app-not-switching-after-update.md" },
             { text: "Settings open at startup", link: "/faq/settings-open-at-startup.md" },
             { text: "Command line", link: "/faq/command-line.md" },
