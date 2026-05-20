@@ -11,6 +11,14 @@ head:
 
 <HomeHero />
 
+<TimedBanner
+  title="Having .NET issue with 7.0.0?"
+  description="Check the FAQ article with the clean reinstall steps."
+  link-text="Open the FAQ"
+  link-href="/faq/update-7-0-dotnet-required.html"
+  expires-at="2026-06-20T00:00:00Z"
+/>
+
 <DownloadCount />
 
 ## Quick Start

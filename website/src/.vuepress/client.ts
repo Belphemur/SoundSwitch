@@ -3,6 +3,7 @@ import HomeHero from "./components/HomeHero.vue";
 import GoogleAd from "./components/GoogleAd.vue";
 import DownloadCount from "./components/DownloadCount.vue";
 import WeblateLanguages from "./components/WeblateLanguages.vue";
+import TimedBanner from "./components/TimedBanner.vue";
 import CustomLayout from "./layouts/Layout.vue";
 import HomeLayout from "./layouts/Home.vue";
 
@@ -16,5 +17,6 @@ export default defineClientConfig({
     app.component("GoogleAd", GoogleAd);
     app.component("DownloadCount", DownloadCount);
     app.component("WeblateLanguages", WeblateLanguages);
+    app.component("TimedBanner", TimedBanner);
   },
 });
