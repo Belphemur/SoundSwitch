@@ -1,9 +1,9 @@
 ---
-title: SoundSwitch 7.0.0 keeps asking for .NET 10 even when installed
-description: Fix startup failures after updating to SoundSwitch 7.0.0 when Windows still reports Microsoft.NETCore.App 10.0.0 as missing.
+title: SoundSwitch 7.0.0 reports a missing .NET runtime at startup
+description: Fix startup failures after updating to SoundSwitch 7.0.0 when Windows reports Microsoft.NETCore.App 10.0.0 as missing.
 ---
 
-# SoundSwitch 7.0.0 keeps asking for .NET 10 even when installed
+# SoundSwitch 7.0.0 reports a missing .NET runtime at startup
 
 If SoundSwitch **7.0.0** shows this message at startup:
 
