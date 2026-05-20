@@ -99,25 +99,19 @@ jobs:
           }
           New-Item -ItemType Directory -Path Final | Out-Null
 
-          Write-Host "Building SoundSwitch CLI"
-          dotnet publish -c Release SoundSwitch.CLI\SoundSwitch.CLI.csproj -o Final
-          if ($LASTEXITCODE -ne 0) { throw "CLI publish failed with exit code $LASTEXITCODE." }
-
-          # Publish main app for each architecture — only the apphost (.exe) is
-          # architecture-specific; all managed assemblies are AnyCPU-identical.
           foreach ($rid in @('win-x64', 'win-arm64')) {
-            Write-Host "Building SoundSwitch for $rid"
-            $ridTempDir = "Final\publish-$rid"
-            dotnet publish -c Release -r $rid --self-contained false SoundSwitch\SoundSwitch.csproj -o $ridTempDir
-            if ($LASTEXITCODE -ne 0) { throw "Main app publish failed for $rid with exit code $LASTEXITCODE." }
+            $ridOutputDir = "Final\\$rid"
+            New-Item -ItemType Directory -Path $ridOutputDir -Force | Out-Null
 
-            $archSuffix = $rid.Split('-')[1]   # 'x64' or 'arm64'
-            Move-Item "$ridTempDir\SoundSwitch.exe" "Final\SoundSwitch.$archSuffix.exe" -Force
+            foreach ($project in @('SoundSwitch.CLI', 'SoundSwitch')) {
+              Write-Host "Building $project for $rid"
+              $ridTempDir = "Final\\$project-publish-$rid"
+              dotnet publish -c Release -r $rid --self-contained false "$project\\$project.csproj" -o $ridTempDir
+              if ($LASTEXITCODE -ne 0) { throw "$project publish failed for $rid with exit code $LASTEXITCODE." }
 
-            if ($rid -eq 'win-x64') {
-              Get-ChildItem $ridTempDir | Copy-Item -Destination Final -Force -Recurse
+              Get-ChildItem $ridTempDir | Copy-Item -Destination $ridOutputDir -Force -Recurse
+              Remove-Item $ridTempDir -Recurse -Force
             }
-            Remove-Item $ridTempDir -Recurse -Force
           }
 
       - name: Setup Python

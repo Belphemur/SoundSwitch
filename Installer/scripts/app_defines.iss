@@ -7,7 +7,7 @@
 
 #define MyAppSetupName 'SoundSwitch'
 #define ExeDir  '..\Final\'
-#define MyAppVersion GetVersionNumbersString('..\Final\SoundSwitch.x64.exe')
+#define MyAppVersion GetVersionNumbersString('..\Final\win-x64\SoundSwitch.exe')
 #define MyAppDescription 'SoundSwitch is a powerful audio switching application.'
 
 #endif

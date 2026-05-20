@@ -141,42 +141,26 @@ jobs:
                     )
                   }
 
-                  # Publish CLI (framework-dependent, AnyCPU)
-                  $arguments = @(
-                    'publish', '-c', '${{ inputs.configuration }}', '--no-restore',
-                    "${{ env.PROJECT_NAME }}.CLI\${{ env.PROJECT_NAME }}.CLI.csproj",
-                    '-o', $outputDir
-                  ) + $versionArgs
-                  dotnet @arguments
-                  if ($LASTEXITCODE -ne 0) {
-                    throw "dotnet publish failed for CLI with exit code $LASTEXITCODE."
-                  }
-
-                  # Publish main app for each architecture — only the apphost (.exe) is
-                  # architecture-specific; all managed assemblies are AnyCPU-identical.
                   foreach ($rid in @('win-x64', 'win-arm64')) {
-                    $ridTempDir = Join-Path $outputDir "publish-$rid"
-                    $arguments = @(
-                      'publish', '-c', '${{ inputs.configuration }}', '--no-restore',
-                      '-r', $rid, '--self-contained', 'false',
-                      "${{ env.PROJECT_NAME }}\${{ env.PROJECT_NAME }}.csproj",
-                      '-o', $ridTempDir
-                    ) + $versionArgs
-                    dotnet @arguments
-                    if ($LASTEXITCODE -ne 0) {
-                      throw "dotnet publish failed for $rid with exit code $LASTEXITCODE."
-                    }
+                    $ridOutputDir = Join-Path $outputDir $rid
+                    New-Item -ItemType Directory -Path $ridOutputDir -Force | Out-Null
 
-                    # Rename the arch-specific apphost exe
-                    $archSuffix = $rid.Split('-')[1]   # 'x64' or 'arm64'
-                    Move-Item (Join-Path $ridTempDir "${{ env.PROJECT_NAME }}.exe") `
-                              (Join-Path $outputDir   "${{ env.PROJECT_NAME }}.$archSuffix.exe") -Force
+                    foreach ($project in @("${{ env.PROJECT_NAME }}.CLI", "${{ env.PROJECT_NAME }}")) {
+                      $projectTempDir = Join-Path $outputDir "$project-publish-$rid"
+                      $arguments = @(
+                        'publish', '-c', '${{ inputs.configuration }}', '--no-restore',
+                        '-r', $rid, '--self-contained', 'false',
+                        "$project\$project.csproj",
+                        '-o', $projectTempDir
+                      ) + $versionArgs
+                      dotnet @arguments
+                      if ($LASTEXITCODE -ne 0) {
+                        throw "dotnet publish failed for $project ($rid) with exit code $LASTEXITCODE."
+                      }
 
-                    # Copy architecture-neutral files to the output dir only once (from x64 publish)
-                    if ($rid -eq 'win-x64') {
-                      Get-ChildItem $ridTempDir | Copy-Item -Destination $outputDir -Force -Recurse
+                      Get-ChildItem $projectTempDir | Copy-Item -Destination $ridOutputDir -Force -Recurse
+                      Remove-Item $projectTempDir -Recurse -Force
                     }
-                    Remove-Item $ridTempDir -Recurse -Force
                   }
             - name: Setup Python
               if: inputs.publish

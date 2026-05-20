@@ -50,6 +50,7 @@ RestartApplications=no
 MinVersion=10.0.17763
 PrivilegesRequired=admin
 PrivilegesRequiredOverridesAllowed=commandline dialog
+; 64-bit only installer: x86 Windows is not supported.
 ArchitecturesAllowed=x64compatible arm64
 ArchitecturesInstallIn64BitMode=x64compatible arm64
 
@@ -78,12 +79,12 @@ Name: addtopath; Description: "{cm:AddToPath,{#MyAppSetupName}}"; GroupDescripti
 Name: deletefiles; Description: "{cm:ExistingSettings}"; GroupDescription: "{cm:SettingsGroupDescription}"; Flags: unchecked checkedonce
 
 [Files] 
-; All files except architecture-specific apphosts
-Source: "{#ExeDir}*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs; Excludes: "SoundSwitch.x64.exe,SoundSwitch.arm64.exe"
-; x64 apphost — installed as SoundSwitch.exe on x64-compatible systems
-Source: "{#ExeDir}SoundSwitch.x64.exe"; DestDir: "{app}"; DestName: "SoundSwitch.exe"; Flags: ignoreversion; Check: not IsArm64()
-; ARM64 apphost — installed as SoundSwitch.exe on ARM64 systems
-Source: "{#ExeDir}SoundSwitch.arm64.exe"; DestDir: "{app}"; DestName: "SoundSwitch.exe"; Flags: ignoreversion; Check: IsArm64()
+; Shared files only; architecture-specific publish outputs are installed separately below.
+Source: "{#ExeDir}*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs; Excludes: "win-x64\*,win-arm64\*,Installer\*"
+; x64 publish output
+Source: "{#ExeDir}win-x64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs; Check: not IsArm64()
+; ARM64 publish output
+Source: "{#ExeDir}win-arm64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs; Check: IsArm64()
 Source: "scripts\ManageWindowsUpdate.ps1"; DestDir: "{tmp}"; Flags: confirmoverwrite deleteafterinstall
 
 [Registry]

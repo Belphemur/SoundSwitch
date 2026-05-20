@@ -34,12 +34,10 @@ dotnet build SoundSwitch.sln -c Debug
 
 ### Publish (Release)
 
-The recommended way to build a full release is through the PowerShell toolchain. For quick local builds, you can publish directly:
+The recommended way to build a full release is through the PowerShell toolchain. For an installer-ready `Final\` directory, use:
 
 ```powershell
-# Populate the Final\ directory with published binaries
-dotnet publish SoundSwitch.CLI\SoundSwitch.CLI.csproj -c Release -o Final
-dotnet publish SoundSwitch\SoundSwitch.csproj -c Release -o Final
+.\tools\Publish-Release.ps1 -BuildFromSource -Configuration Release
 ```
 
 ## Building an Installer
