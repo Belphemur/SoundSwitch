@@ -23,6 +23,13 @@ you likely have leftover files from a previous install that prevent SoundSwitch 
 
 After reinstalling on a clean folder, SoundSwitch should start normally.
 
+## Manual .NET Desktop Runtime installation (if needed)
+
+If SoundSwitch still reports missing .NET after reinstalling, install the .NET Desktop Runtime manually, then run the SoundSwitch installer again:
+
+- x64: <https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/10.0.8/windowsdesktop-runtime-10.0.8-win-x64.exe>
+- arm64: <https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/10.0.8/windowsdesktop-runtime-10.0.8-win-arm64.exe>
+
 ---
 
 _Source: [#2138](https://github.com/Belphemur/SoundSwitch/issues/2138)_
