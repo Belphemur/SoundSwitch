@@ -18,7 +18,7 @@ you likely have leftover files from a previous install that prevent SoundSwitch 
 1. Uninstall **SoundSwitch** from Windows Apps settings (or from Programs and Features).
 2. Delete any remaining SoundSwitch files in these folders. Make sure the folder is the actual **SoundSwitch** install/data directory before deleting it; removing files under `C:\Program Files\...` may require administrator rights.
    - `C:\Program Files\SoundSwitch\` (or your custom SoundSwitch install folder)
-   - `%localappdata%\SoundSwitch\` — this may contain your SoundSwitch profiles/settings, so back it up first if you want to keep them
+   - `%localappdata%\Programs\SoundSwitch\` — this may contain your SoundSwitch profiles/settings, so back it up first if you want to keep them
 3. Install SoundSwitch again using the latest installer.
 
 After reinstalling on a clean folder, SoundSwitch should start normally.
