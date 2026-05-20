@@ -135,7 +135,13 @@ if ($canSign) {
     Write-Host "`n=== Signing binaries ===" -ForegroundColor White
 
     $binaries = Get-ChildItem $FinalDir -Recurse -File -Include '*.exe', '*.dll' |
-        Where-Object { $_.FullName -notlike (Join-Path $FinalDir 'Installer\*') } |
+        Where-Object {
+            $_.FullName -notlike (Join-Path $FinalDir 'Installer\*') -and
+            (
+                $_.Extension -ieq '.exe' -or
+                $_.Name -like '*SoundSwitch*.dll'
+            )
+        } |
         ForEach-Object { $_.FullName }
 
     if ($binaries) {
