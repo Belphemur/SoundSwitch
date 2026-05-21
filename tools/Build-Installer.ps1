@@ -134,15 +134,21 @@ $canSign = -not $SkipSigning -and (Get-Command 'signtool.exe' -ErrorAction Silen
 if ($canSign) {
     Write-Host "`n=== Signing binaries ===" -ForegroundColor White
 
-    $binaries = @("$projectName.exe", "$cliProject.exe") |
-        ForEach-Object { Join-Path $FinalDir $_ } |
-        Where-Object { Test-Path $_ }
+    $binaries = Get-ChildItem $FinalDir -Recurse -File -Include '*.exe', '*.dll' |
+        Where-Object {
+            $_.FullName -notlike (Join-Path $FinalDir 'Installer\*') -and
+            (
+                $_.Name -like '*SoundSwitch*.exe' -or
+                $_.Name -like '*SoundSwitch*.dll'
+            )
+        } |
+        ForEach-Object { $_.FullName }
 
     if ($binaries) {
         & $signScript -Path $binaries -CertificateName $CertificateName
     }
     else {
-        Write-Host "  No executables found to sign." -ForegroundColor DarkGray
+        Write-Host "  No binaries found to sign." -ForegroundColor DarkGray
     }
 }
 else {

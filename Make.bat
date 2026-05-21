@@ -48,12 +48,22 @@ rmdir /q /s bin >nul 2>nul
 rmdir /q /s obj >nul 2>nul
 rmdir /q /s Release >nul 2>nul
 
-rmdir /q /s %finalDir% >nul 2>nul
-mkdir %finalDir% >nul 2>nul
+rmdir /q /s "%finalDir%" >nul 2>nul
+mkdir "%finalDir%" >nul 2>nul
 
-echo Build AnyCPU
-dotnet publish -c %buildPlatform% %FILE_DIR%SoundSwitch.CLI\SoundSwitch.CLI.csproj -o %finalDir% || (set errorMessage=Build %ARCH% failed & goto ERROR_QUIT)
-dotnet publish -c %buildPlatform% %FILE_DIR%SoundSwitch\SoundSwitch.csproj -o %finalDir% || (set errorMessage=Build %ARCH% failed & goto ERROR_QUIT)
+for %%R in (win-x64 win-arm64) do (
+    mkdir "%finalDir%\%%R" >nul 2>nul
+
+    echo Build SoundSwitch.CLI %%R publish
+    dotnet publish -c %buildPlatform% -r %%R --self-contained false "%FILE_DIR%SoundSwitch.CLI\SoundSwitch.CLI.csproj" -o "%finalDir%\SoundSwitch.CLI-publish-%%R" || (set errorMessage=Build CLI %%R failed & goto ERROR_QUIT)
+    xcopy /y /e "%finalDir%\SoundSwitch.CLI-publish-%%R\*" "%finalDir%\%%R\" >nul 2>nul || (set errorMessage=Copy CLI %%R payload failed & goto ERROR_QUIT)
+    rmdir /q /s "%finalDir%\SoundSwitch.CLI-publish-%%R" >nul 2>nul || (set errorMessage=Cleanup CLI %%R payload failed & goto ERROR_QUIT)
+
+    echo Build SoundSwitch %%R publish
+    dotnet publish -c %buildPlatform% -r %%R --self-contained false "%FILE_DIR%SoundSwitch\SoundSwitch.csproj" -o "%finalDir%\SoundSwitch-publish-%%R" || (set errorMessage=Build SoundSwitch %%R failed & goto ERROR_QUIT)
+    xcopy /y /e "%finalDir%\SoundSwitch-publish-%%R\*" "%finalDir%\%%R\" >nul 2>nul || (set errorMessage=Copy SoundSwitch %%R payload failed & goto ERROR_QUIT)
+    rmdir /q /s "%finalDir%\SoundSwitch-publish-%%R" >nul 2>nul || (set errorMessage=Cleanup SoundSwitch %%R payload failed & goto ERROR_QUIT)
+)
 
 
 echo.

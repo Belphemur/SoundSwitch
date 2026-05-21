@@ -242,16 +242,23 @@ if ($BuildFromSource) {
     }
     New-Item -ItemType Directory -Path $finalDir -Force | Out-Null
 
-    # Publish CLI first, then main app (main app wins on shared files)
-    # Framework-dependent publish: IL assemblies are architecture-agnostic
     $publishDir = $finalDir
 
-    foreach ($proj in @($cliProject, $projectName)) {
-        $projPath = Join-Path $repoRoot "$proj\$proj.csproj"
-        Write-Host "  Publishing $proj ..."
-        dotnet publish -c $Configuration $projPath -o $publishDir
-        if ($LASTEXITCODE -ne 0) {
-            throw "dotnet publish failed for $proj with exit code $LASTEXITCODE."
+    foreach ($rid in @('win-x64', 'win-arm64')) {
+        $ridOutputDir = Join-Path $publishDir $rid
+        New-Item -ItemType Directory -Path $ridOutputDir -Force | Out-Null
+
+        foreach ($project in @($cliProject, $projectName)) {
+            $projectTempDir = Join-Path $publishDir "$project-publish-$rid"
+            $projPath = Join-Path $repoRoot "$project\$project.csproj"
+            Write-Host "  Publishing $project for $rid ..."
+            dotnet publish -c $Configuration -r $rid --self-contained false $projPath -o $projectTempDir
+            if ($LASTEXITCODE -ne 0) {
+                throw "dotnet publish failed for $project ($rid) with exit code $LASTEXITCODE."
+            }
+
+            Get-ChildItem $projectTempDir | Copy-Item -Destination $ridOutputDir -Force -Recurse
+            Remove-Item $projectTempDir -Recurse -Force
         }
     }
 }

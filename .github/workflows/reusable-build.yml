@@ -129,27 +129,42 @@ jobs:
                   if (Test-Path $outputDir) { Remove-Item $outputDir -Recurse -Force }
                   New-Item -ItemType Directory -Path $outputDir | Out-Null
 
-                  # Publish CLI first, then main app (main app wins on shared files)
-                  foreach ($proj in @("${{ env.PROJECT_NAME }}.CLI", "${{ env.PROJECT_NAME }}")) {
-                    $arguments = @(
-                      'publish',
-                      '-c', '${{ inputs.configuration }}',
-                      '--no-restore',
-                      "$proj\$proj.csproj",
-                      '-o', $outputDir
+                  # Collect optional version arguments
+                  $versionArgs = @()
+                  if ($env:PUBLISH_VERSION) {
+                    $numericVersion = $env:PUBLISH_VERSION -replace '[-+].*$', ''
+                    $versionArgs = @(
+                      "-p:Version=$env:PUBLISH_VERSION",
+                      "-p:FileVersion=$numericVersion",
+                      "-p:AssemblyVersion=$numericVersion",
+                      "-p:InformationalVersion=$env:PUBLISH_VERSION"
                     )
-                    if ($env:PUBLISH_VERSION) {
-                      $numericVersion = $env:PUBLISH_VERSION -replace '-.*$', ''
-                      $arguments += @(
-                        "-p:Version=$env:PUBLISH_VERSION",
-                        "-p:FileVersion=$numericVersion",
-                        "-p:AssemblyVersion=$numericVersion",
-                        "-p:InformationalVersion=$env:PUBLISH_VERSION"
-                      )
-                    }
-                    dotnet @arguments
-                    if ($LASTEXITCODE -ne 0) {
-                      throw "dotnet publish failed for $proj with exit code $LASTEXITCODE."
+                  }
+
+                  $configuration = '${{ inputs.configuration }}'
+                  if ($configuration -notin @('Debug', 'Release', 'Nightly')) {
+                    throw "Invalid configuration: $configuration"
+                  }
+
+                  foreach ($rid in @('win-x64', 'win-arm64')) {
+                    $ridOutputDir = Join-Path $outputDir $rid
+                    New-Item -ItemType Directory -Path $ridOutputDir -Force | Out-Null
+
+                    foreach ($project in @("${{ env.PROJECT_NAME }}.CLI", "${{ env.PROJECT_NAME }}")) {
+                      $projectTempDir = Join-Path $outputDir "$project-publish-$rid"
+                      $arguments = @(
+                        'publish', '-c', $configuration, '--no-restore',
+                        '-r', $rid, '--self-contained', 'false',
+                        "$project\$project.csproj",
+                        '-o', $projectTempDir
+                      ) + $versionArgs
+                      dotnet @arguments
+                      if ($LASTEXITCODE -ne 0) {
+                        throw "dotnet publish failed for $project ($rid) with exit code $LASTEXITCODE."
+                      }
+
+                      Get-ChildItem $projectTempDir | Copy-Item -Destination $ridOutputDir -Force -Recurse
+                      Remove-Item $projectTempDir -Recurse -Force
                     }
                   }
             - name: Setup Python

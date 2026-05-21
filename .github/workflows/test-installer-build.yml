@@ -90,67 +90,23 @@ jobs:
           Write-Host "dotnet --info:"
           dotnet --info
 
-      - name: Build SoundSwitch Application
-        shell: cmd
-        run: |
-          echo "Cleaning build directories"
-          if exist bin rmdir /q /s bin
-          if exist obj rmdir /q /s obj
-          if exist Release rmdir /q /s Release
-          if exist Final rmdir /q /s Final
-          mkdir Final
-
-          echo "Building SoundSwitch CLI"
-          dotnet publish -c Release SoundSwitch.CLI\SoundSwitch.CLI.csproj -o Final
-          if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
-
-          echo "Building SoundSwitch Main Application"
-          dotnet publish -c Release SoundSwitch\SoundSwitch.csproj -o Final
-          if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
-
       - name: Setup Python
         uses: actions/setup-python@v6
         with:
           python-version: "3.x"
 
-      - name: Prepare Installer Assets
+      - name: Install markdown dependency
+        shell: pwsh
         run: |
           python -m pip install --upgrade pip --quiet
-          if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+          if ($LASTEXITCODE -ne 0) { throw "Failed to upgrade pip (exit code $LASTEXITCODE)." }
           python -m pip install markdown --quiet
-          if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+          if ($LASTEXITCODE -ne 0) { throw "Failed to install Python 'markdown' package (exit code $LASTEXITCODE)." }
 
-          echo "Generate Changelog"
-          python tools\markdown_to_html.py CHANGELOG.md -o Final\Changelog.html
-          if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
-
-          echo "Generate Terms"
-          python tools\markdown_to_html.py Terms.md -o Final\Terms.html
-          if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
-
-          echo "Generate README"
-          python tools\markdown_to_html.py README.md -o Final\Readme.html
-          if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
-
-          if exist README.de.md (
-            python tools\markdown_to_html.py README.de.md -o Final\Readme.de.html
-            if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
-          )
-
-          echo "Copy soundSwitched image"
-          xcopy /y img\soundSwitched.png Final\ >nul 2>nul
-
-          echo "Copy CLI README"
-          xcopy /y SoundSwitch.CLI\README.md Final\ >nul 2>nul
-
-          echo "Copy LICENSE and Terms"
-          xcopy /y LICENSE.txt Final\ >nul 2>nul
-          xcopy /y Terms.txt Final\ >nul 2>nul
-        shell: cmd
-
-      - name: Build Installer
-        run: .\\Installer\\Make-Installer.bat Nightly ${{ steps.framework.outputs.major }}
-        shell: cmd
+      - name: Build installer assets and installer
+        shell: pwsh
+        run: |
+          .\tools\Publish-Release.ps1 -BuildFromSource -Configuration Release -SkipSigning -InstallerReleaseState Nightly -DotNetMajorVersion ${{ steps.framework.outputs.major }}
 
       - name: Run Installer in Silent Mode (Machine Scope)
         run: |
