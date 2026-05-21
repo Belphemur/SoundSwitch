@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -314,7 +314,7 @@
     <value>Трябва да зададете устройство за възпроизвеждане или запис.</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
-    <value>Добавете профил за превключване към определено устройство за възпроизвеждане или запис, когато се стартира или фокусира определена програма.</value>
+    <value>Добавете профил за превключване към определено устройство за възпроизвеждане или запис, когато се стартира или фокусира определена програма. Можете да добавите и персонална клавишна комбинация.</value>
   </data>
   <data name="profile.error.registerHotkeys" xml:space="preserve">
     <value>Неуспешно регистриране на клавишна комбинация за следните профили: {0}</value>
@@ -514,7 +514,7 @@
     <value>Дарение</value>
   </data>
   <data name="link.help" xml:space="preserve">
-    <value>Помощ</value>
+    <value>Помощ и съвети</value>
   </data>
   <data name="resetAudioDevices.desc" xml:space="preserve">
     <value>Нулиране на зададените аудио устройства за приложенията в Windows, в случай че аудио устройствата не се пренасочват правилно при превключване.</value>
@@ -562,7 +562,7 @@
     <value />
   </data>
   <data name="switchDevice" xml:space="preserve">
-    <value />
+    <value>Превключи устройство</value>
   </data>
   <data name="banner.onscreen.time.tooltip" xml:space="preserve">
     <value>Колко секунди да стои банера на екрана.</value>
@@ -604,7 +604,7 @@
     <value />
   </data>
   <data name="buttonImport" xml:space="preserve">
-    <value />
+    <value>Импортиране</value>
   </data>
   <data name="exportConfigFile" xml:space="preserve">
     <value />
@@ -613,34 +613,49 @@
     <value />
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="position.centerLeft" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="position.centerLeft" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
     <value />
   </data>
-  <data name="position.centerRight" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="position.centerRight" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
     <value />
   </data>
-  <data name="buttonSelect" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="buttonSelect" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
     <value />
   </data>
-  <data name="buttonCustom" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="buttonCustom" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
     <value />
   </data>
   <data name="buttonDelete" xml:space="preserve">
     <value>Изтриване</value>
   </data>
-  <data name="customSoundFile" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="customSoundFile" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
     <value />
   </data>
-  <data name="selectSoundButton.tooltip" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="selectSoundButton.tooltip" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
     <value />
   </data>
-  <data name="hotkeySwitchDevice" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="hotkeySwitchDevice" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
     <value />
   </data>
-  <data name="hotkeyToggleMute" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="hotkeyToggleMute" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
     <value />
   </data>
-  <data name="selectSoundButton.error" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="selectSoundButton.error" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
     <value />
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>Без известие</value>
+  </data>
+  <data name="keepVolume.tooltip" xml:space="preserve">
+    <value>Запази еднакво ниво на звука при превключване</value>
+  </data>
+  <data name="keepVolume" xml:space="preserve">
+    <value>Еднакво ниво на звука при всички устройства</value>
+  </data>
+  <data name="switchProfile" xml:space="preserve">
+    <value>Превключване на профила</value>
+  </data>
+  <data name="switchRecordingDevice" xml:space="preserve">
+    <value>Превключи устройство за запис</value>
   </data>
 </root>
