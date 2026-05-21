@@ -70,6 +70,5 @@ Set-Content -Path $assemblyInfoPath -Value $assemblyInfo -Encoding utf8
 if ($Env:GITHUB_OUTPUT) {
     "version=$Version" | Out-File -FilePath $Env:GITHUB_OUTPUT -Encoding utf8 -Append
 }
-else {
-    Write-Output $Version
-}
+
+Write-Output $Version

@@ -17,6 +17,9 @@ env:
 
 jobs:
     publish-nightly:
+        concurrency:
+            group: ${{ github.workflow }}-${{ github.ref }}-publish-nightly
+            cancel-in-progress: true
         runs-on: windows-latest
         outputs:
             version: ${{ steps.dev-version.outputs.version }}
@@ -70,7 +73,13 @@ jobs:
             - name: Set nightly dev version
               id: dev-version
               shell: pwsh
-              run: .\devVersion.ps1
+              run: |
+                  $version = .\devVersion.ps1
+                  if ([string]::IsNullOrWhiteSpace($version)) {
+                    throw 'Nightly version was not produced by devVersion.ps1.'
+                  }
+
+                  "version=$version" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
             - name: Build nightly installer
               shell: pwsh
               env:
