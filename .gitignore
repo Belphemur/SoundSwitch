@@ -144,5 +144,6 @@ fabric.properties
 /SoundSwitch/.idea/.idea.SoundSwitch.dir/.idea
 .nuget/nuget.exe
 .jgitconfig
+**/.config/jgit/config
 *.trx
 **/TestResults/**
