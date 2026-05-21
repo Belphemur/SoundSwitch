@@ -14,18 +14,36 @@ if ([string]::IsNullOrWhiteSpace($Version)) {
     }
 
     $versionParts = $latestTag.Split('.')
-    $major = $versionParts[0]
-    $minor = $versionParts[1]
-    $build = $versionParts[2].Split('-')[0]
+    if ($versionParts.Length -lt 3) {
+        throw "Latest tag '$latestTag' does not match expected format major.minor.build."
+    }
+
+    $buildPart = $versionParts[2].Split('-')[0]
+    if (-not [int]::TryParse($versionParts[0], [ref]$major) -or
+        -not [int]::TryParse($versionParts[1], [ref]$minor) -or
+        -not [int]::TryParse($buildPart, [ref]$build)) {
+        throw "Latest tag '$latestTag' does not contain numeric major, minor, and build components."
+    }
 
     $currentDate = Get-Date
-    $newRevision = [int]$currentDate.DayOfYear * 24 + $currentDate.Day + $currentDate.Hour + $currentDate.Minute
+    $newRevision = ([int]$currentDate.DayOfYear * 1440) + ([int]$currentDate.Hour * 60) + [int]$currentDate.Minute
     $Version = (New-Object System.Version($major, $minor, $build, $newRevision)).ToString()
 }
 
 $numericVersion = $Version -replace '[-+].*$', ''
 if ($numericVersion -notmatch '^\d+\.\d+\.\d+(\.\d+)?$') {
     throw "Version '$Version' does not contain a valid numeric file version."
+}
+
+$numericVersionParts = $numericVersion.Split('.')
+if ($numericVersionParts.Length -eq 3) {
+    $fileVersion = "$numericVersion.0"
+}
+elseif ($numericVersionParts.Length -eq 4) {
+    $fileVersion = $numericVersion
+}
+else {
+    throw "Version '$Version' must contain 3 or 4 numeric components."
 }
 
 $assemblyInfoPath = Join-Path $PSScriptRoot 'SoundSwitch\Properties\AssemblyInfo.cs'
@@ -39,7 +57,7 @@ if ($assemblyInfo -notmatch 'AssemblyInformationalVersion\(".*?"\)') {
     throw "AssemblyInformationalVersion attribute was not found in $assemblyInfoPath."
 }
 
-$assemblyInfo = $assemblyInfo -replace 'AssemblyFileVersion\(".*?"\)', "AssemblyFileVersion(`"$numericVersion`")"
+$assemblyInfo = $assemblyInfo -replace 'AssemblyFileVersion\(".*?"\)', "AssemblyFileVersion(`"$fileVersion`")"
 $assemblyInfo = $assemblyInfo -replace 'AssemblyInformationalVersion\(".*?"\)', "AssemblyInformationalVersion(`"$Version`")"
 Set-Content -Path $assemblyInfoPath -Value $assemblyInfo -Encoding utf8
 
