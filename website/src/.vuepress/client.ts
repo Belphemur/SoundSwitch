@@ -2,6 +2,7 @@ import { defineClientConfig } from "vuepress/client";
 import HomeHero from "./components/HomeHero.vue";
 import GoogleAd from "./components/GoogleAd.vue";
 import DownloadCount from "./components/DownloadCount.vue";
+import NightlyBuilds from "./components/NightlyBuilds.vue";
 import WeblateLanguages from "./components/WeblateLanguages.vue";
 import TimedBanner from "./components/TimedBanner.vue";
 import CustomLayout from "./layouts/Layout.vue";
@@ -16,6 +17,7 @@ export default defineClientConfig({
     app.component("HomeHero", HomeHero);
     app.component("GoogleAd", GoogleAd);
     app.component("DownloadCount", DownloadCount);
+    app.component("NightlyBuilds", NightlyBuilds);
     app.component("WeblateLanguages", WeblateLanguages);
     app.component("TimedBanner", TimedBanner);
   },

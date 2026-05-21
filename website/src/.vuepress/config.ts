@@ -94,6 +94,7 @@ export default defineUserConfig({
         children: [
           { text: "Auto Updater", link: "/advanced/auto-updater.md" },
           { text: "Multi Language", link: "/advanced/multi-language.md" },
+          { text: "Nightly", link: "/advanced/nightly.md" },
           { text: "Troubleshooting", link: "/advanced/troubleshooting.md" },
           { text: "Changelog", link: "/changelog.md" },
         ],
@@ -132,6 +133,7 @@ export default defineUserConfig({
             { text: "Overview", link: "/advanced/README.md" },
             { text: "Auto Updater", link: "/advanced/auto-updater.md" },
             { text: "Multi Language", link: "/advanced/multi-language.md" },
+            { text: "Nightly", link: "/advanced/nightly.md" },
             { text: "Troubleshooting", link: "/advanced/troubleshooting.md" },
             { text: "Changelog", link: "/changelog.md" },
           ],
