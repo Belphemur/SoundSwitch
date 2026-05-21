@@ -153,7 +153,7 @@ jobs:
                     foreach ($project in @("${{ env.PROJECT_NAME }}.CLI", "${{ env.PROJECT_NAME }}")) {
                       $projectTempDir = Join-Path $outputDir "$project-publish-$rid"
                       $arguments = @(
-                        'publish', '-c', $configuration, '--no-restore',
+                        'publish', '-c', $configuration,
                         '-r', $rid, '--self-contained', 'false',
                         "$project\$project.csproj",
                         '-o', $projectTempDir
