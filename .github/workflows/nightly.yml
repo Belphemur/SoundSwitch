@@ -5,7 +5,6 @@ on:
         branches: [dev]
         paths:
             - ".github/workflows/nightly.yml"
-            - ".github/workflows/reusable-build.yml"
             - "SoundSwitch*/**"
             - "devVersion.ps1"
             - "tools/upload_nightly_r2.py"
@@ -17,22 +16,10 @@ env:
     SENTRY_NAME: soundswitch
 
 jobs:
-    build:
-        concurrency:
-            group: ${{ github.workflow }}-${{ github.ref }}-build
-            cancel-in-progress: true
-        uses: ./.github/workflows/reusable-build.yml
-        with:
-            configuration: Nightly
-            update-nightly-version: true
-        secrets: inherit
-
     publish-nightly:
-        needs: build
         runs-on: windows-latest
-        if: needs.build.result == 'success'
         outputs:
-            version: ${{ steps.metadata.outputs.version }}
+            version: ${{ steps.dev-version.outputs.version }}
         steps:
             - uses: actions/checkout@v6
               with:
@@ -40,7 +27,7 @@ jobs:
             - name: Setup .NET
               uses: actions/setup-dotnet@v5
               with:
-                  dotnet-version: ${{ needs.build.outputs.dotnet-version }}
+                  global-json-file: global.json
                   cache: true
                   cache-dependency-path: Directory.Packages.props
             - name: Install Inno Setup
@@ -80,29 +67,22 @@ jobs:
               run: |
                   python -m pip install --upgrade pip
                   python -m pip install boto3
+            - name: Set nightly dev version
+              id: dev-version
+              shell: pwsh
+              run: .\devVersion.ps1
             - name: Build nightly installer
               shell: pwsh
               env:
-                  FRAMEWORK: ${{ needs.build.outputs.framework }}
-                  NIGHTLY_VERSION: ${{ needs.build.outputs.nightly-version }}
+                  NIGHTLY_VERSION: ${{ steps.dev-version.outputs.version }}
               run: |
                   $version = $env:NIGHTLY_VERSION
                   if ([string]::IsNullOrWhiteSpace($version)) {
-                    throw 'Nightly version was not produced by the build workflow.'
-                  }
-
-                  $framework = $env:FRAMEWORK
-                  if ([string]::IsNullOrWhiteSpace($framework)) {
-                     throw 'Framework metadata was not produced by the build workflow.'
-                  }
-
-                  $match = [System.Text.RegularExpressions.Regex]::Match($framework, '^net(?<major>\d+)\.')
-                  if (-not $match.Success) {
-                     throw "Unable to derive .NET major version from framework '$framework'."
+                    throw 'Nightly version was not produced by devVersion.ps1.'
                   }
 
                   .\devVersion.ps1 -Version $version
-                  .\tools\Publish-Release.ps1 -BuildFromSource -Configuration Nightly -SkipSigning -InstallerReleaseState Nightly -DotNetMajorVersion $match.Groups['major'].Value
+                  .\tools\Publish-Release.ps1 -BuildFromSource -Configuration Nightly -SkipSigning -InstallerReleaseState Nightly
             - name: Upload nightly files
               id: metadata
               shell: pwsh
@@ -113,7 +93,7 @@ jobs:
                   DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
                   NIGHTLY_BUCKET: ${{ vars.NIGHTLY_BUCKET }}
                   NIGHTLY_PUBLIC_BASE_URL: ${{ vars.NIGHTLY_PUBLIC_BASE_URL }}
-                  NIGHTLY_VERSION: ${{ needs.build.outputs.nightly-version }}
+                  NIGHTLY_VERSION: ${{ steps.dev-version.outputs.version }}
               run: |
                   $version = $env:NIGHTLY_VERSION
                   if ([string]::IsNullOrWhiteSpace($version)) {
