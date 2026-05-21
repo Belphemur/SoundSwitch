@@ -67,6 +67,9 @@ public sealed partial class SettingsForm : Form
 {
     private static readonly Icon ResourceSettingsIcon = Resources.SettingsIcon;
     private static readonly IconHandle FallbackAppIconHandle = IconExtractor.CreatePermanent(Resources.program);
+    private const int BaseDpi = 96;
+    private const int BasicNotificationGroupBoxHeight = 93;
+    private const int AdvancedNotificationGroupBoxHeight = 166;
 
     private readonly bool _loaded;
     private readonly IAudioDeviceLister _audioDeviceLister;
@@ -930,8 +933,14 @@ public sealed partial class SettingsForm : Form
         switchProfileNotificationLabel.Visible = isAdvancedMode;
         microphoneMuteNotificationComboBox.Visible = isAdvancedMode;
         microphoneMuteNotificationLabel.Visible = isAdvancedMode;
-        notificationsGroupBox.Height = isAdvancedMode ? 166 : 93;
+        notificationsGroupBox.Height = ScaleNotificationGroupBoxHeight(
+            isAdvancedMode ? AdvancedNotificationGroupBoxHeight : BasicNotificationGroupBoxHeight);
     }
+
+    internal static int ScaleNotificationGroupBoxHeight(int logicalHeight, int deviceDpi) =>
+        (int)Math.Round(logicalHeight * deviceDpi / (double)BaseDpi, MidpointRounding.AwayFromZero);
+
+    private int ScaleNotificationGroupBoxHeight(int logicalHeight) => ScaleNotificationGroupBoxHeight(logicalHeight, DeviceDpi);
 
     private void AdvancedModeCheckBox_CheckedChanged(object sender, EventArgs e)
     {
