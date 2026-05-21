@@ -138,7 +138,7 @@ if ($canSign) {
         Where-Object {
             $_.FullName -notlike (Join-Path $FinalDir 'Installer\*') -and
             (
-                $_.Extension -ieq '.exe' -or
+                $_.Name -like '*SoundSwitch*.exe' -or
                 $_.Name -like '*SoundSwitch*.dll'
             )
         } |

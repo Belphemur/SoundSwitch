@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import mimetypes
 import os
 import re
 import subprocess
@@ -241,11 +242,11 @@ def main() -> None:
     client = create_client(args)
 
     prefix = args.prefix.strip("/") or "nightly"
-    archive_name = os.path.basename(args.file)
-    archive_key = f"{prefix}/{archive_name}"
+    artifact_name = os.path.basename(args.file)
+    artifact_key = f"{prefix}/{artifact_name}"
     version_key = f"{prefix}/version.json"
     public_base_url = args.public_base_url.rstrip("/")
-    download_url = f"{public_base_url}/{archive_key}" if public_base_url else ""
+    download_url = f"{public_base_url}/{artifact_key}" if public_base_url else ""
 
     existing_artifacts = load_existing_artifacts(
         client, args.bucket, version_key, public_base_url
@@ -253,7 +254,7 @@ def main() -> None:
 
     published_at = datetime.now(timezone.utc).isoformat()
     current_artifact = Artifact(
-        key=archive_key,
+        key=artifact_key,
         version=args.version,
         published=published_at,
         url=download_url,
@@ -261,7 +262,7 @@ def main() -> None:
 
     retained_artifacts = [current_artifact]
     retained_artifacts.extend(
-        artifact for artifact in existing_artifacts if artifact.key != archive_key
+        artifact for artifact in existing_artifacts if artifact.key != artifact_key
     )
     retained_artifacts = retained_artifacts[:9]
     retained_keys = {artifact.key for artifact in retained_artifacts}
@@ -271,14 +272,16 @@ def main() -> None:
         if artifact.key and artifact.key not in retained_keys
     ]
 
+    content_type = mimetypes.guess_type(args.file)[0] or "application/octet-stream"
+
     with open(args.file, "rb") as archive_stream:
         response = cast(
             dict[str, Any],
             client.put_object(
                 Bucket=args.bucket,
-                Key=archive_key,
+                Key=artifact_key,
                 Body=archive_stream,
-                ContentType="application/zip",
+                ContentType=content_type,
             ),
         )
         print(f"Uploaded successfully. ETag: {response['ETag']}")

@@ -90,73 +90,23 @@ jobs:
           Write-Host "dotnet --info:"
           dotnet --info
 
-      - name: Build SoundSwitch Application
-        shell: pwsh
-        run: |
-          Write-Host "Cleaning build directories"
-          foreach ($dir in @('bin','obj','Release','Final')) {
-            if (Test-Path $dir) { Remove-Item $dir -Recurse -Force }
-          }
-          New-Item -ItemType Directory -Path Final | Out-Null
-
-          foreach ($rid in @('win-x64', 'win-arm64')) {
-            $ridOutputDir = "Final\\$rid"
-            New-Item -ItemType Directory -Path $ridOutputDir -Force | Out-Null
-
-            foreach ($project in @('SoundSwitch.CLI', 'SoundSwitch')) {
-              Write-Host "Building $project for $rid"
-              $ridTempDir = "Final\\$project-publish-$rid"
-              dotnet publish -c Release -r $rid --self-contained false "$project\\$project.csproj" -o $ridTempDir
-              if ($LASTEXITCODE -ne 0) { throw "$project publish failed for $rid with exit code $LASTEXITCODE." }
-
-              Get-ChildItem $ridTempDir | Copy-Item -Destination $ridOutputDir -Force -Recurse
-              Remove-Item $ridTempDir -Recurse -Force
-            }
-          }
-
       - name: Setup Python
         uses: actions/setup-python@v6
         with:
           python-version: "3.x"
 
-      - name: Prepare Installer Assets
+      - name: Install markdown dependency
+        shell: pwsh
         run: |
           python -m pip install --upgrade pip --quiet
-          if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+          if ($LASTEXITCODE -ne 0) { throw "Failed to upgrade pip (exit code $LASTEXITCODE)." }
           python -m pip install markdown --quiet
-          if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+          if ($LASTEXITCODE -ne 0) { throw "Failed to install Python 'markdown' package (exit code $LASTEXITCODE)." }
 
-          echo "Generate Changelog"
-          python tools\markdown_to_html.py CHANGELOG.md -o Final\Changelog.html
-          if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
-
-          echo "Generate Terms"
-          python tools\markdown_to_html.py Terms.md -o Final\Terms.html
-          if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
-
-          echo "Generate README"
-          python tools\markdown_to_html.py README.md -o Final\Readme.html
-          if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
-
-          if exist README.de.md (
-            python tools\markdown_to_html.py README.de.md -o Final\Readme.de.html
-            if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
-          )
-
-          echo "Copy soundSwitched image"
-          xcopy /y img\soundSwitched.png Final\ >nul 2>nul
-
-          echo "Copy CLI README"
-          xcopy /y SoundSwitch.CLI\README.md Final\ >nul 2>nul
-
-          echo "Copy LICENSE and Terms"
-          xcopy /y LICENSE.txt Final\ >nul 2>nul
-          xcopy /y Terms.txt Final\ >nul 2>nul
-        shell: cmd
-
-      - name: Build Installer
-        run: .\\Installer\\Make-Installer.bat Nightly ${{ steps.framework.outputs.major }}
-        shell: cmd
+      - name: Build installer assets and installer
+        shell: pwsh
+        run: |
+          .\tools\Publish-Release.ps1 -BuildFromSource -Configuration Release -SkipSigning -InstallerReleaseState Nightly -DotNetMajorVersion ${{ steps.framework.outputs.major }}
 
       - name: Run Installer in Silent Mode (Machine Scope)
         run: |

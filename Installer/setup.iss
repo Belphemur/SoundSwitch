@@ -79,8 +79,8 @@ Name: addtopath; Description: "{cm:AddToPath,{#MyAppSetupName}}"; GroupDescripti
 Name: deletefiles; Description: "{cm:ExistingSettings}"; GroupDescription: "{cm:SettingsGroupDescription}"; Flags: unchecked checkedonce
 
 [Files] 
-; Shared files only; architecture-specific publish outputs are installed separately below.
-Source: "{#ExeDir}*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs; Excludes: "win-x64\*,win-arm64\*,Installer\*"
+; Shared top-level files only; architecture-specific publish outputs are installed separately below.
+Source: "{#ExeDir}*"; DestDir: "{app}"; Flags: ignoreversion
 ; x64 publish output
 Source: "{#ExeDir}win-x64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs; Check: not IsArm64()
 ; ARM64 publish output

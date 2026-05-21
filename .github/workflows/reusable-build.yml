@@ -132,13 +132,18 @@ jobs:
                   # Collect optional version arguments
                   $versionArgs = @()
                   if ($env:PUBLISH_VERSION) {
-                    $numericVersion = $env:PUBLISH_VERSION -replace '-.*$', ''
+                    $numericVersion = $env:PUBLISH_VERSION -replace '[-+].*$', ''
                     $versionArgs = @(
                       "-p:Version=$env:PUBLISH_VERSION",
                       "-p:FileVersion=$numericVersion",
                       "-p:AssemblyVersion=$numericVersion",
                       "-p:InformationalVersion=$env:PUBLISH_VERSION"
                     )
+                  }
+
+                  $configuration = '${{ inputs.configuration }}'
+                  if ($configuration -notin @('Debug', 'Release', 'Nightly')) {
+                    throw "Invalid configuration: $configuration"
                   }
 
                   foreach ($rid in @('win-x64', 'win-arm64')) {
@@ -148,7 +153,7 @@ jobs:
                     foreach ($project in @("${{ env.PROJECT_NAME }}.CLI", "${{ env.PROJECT_NAME }}")) {
                       $projectTempDir = Join-Path $outputDir "$project-publish-$rid"
                       $arguments = @(
-                        'publish', '-c', '${{ inputs.configuration }}', '--no-restore',
+                        'publish', '-c', $configuration, '--no-restore',
                         '-r', $rid, '--self-contained', 'false',
                         "$project\$project.csproj",
                         '-o', $projectTempDir
