@@ -67,6 +67,7 @@ public sealed partial class SettingsForm : Form
 {
     private static readonly Icon ResourceSettingsIcon = Resources.SettingsIcon;
     private static readonly IconHandle FallbackAppIconHandle = IconExtractor.CreatePermanent(Resources.program);
+    private const int BaseDpi = 96;
     private const int BasicNotificationGroupBoxHeight = 93;
     private const int AdvancedNotificationGroupBoxHeight = 166;
 
@@ -937,7 +938,7 @@ public sealed partial class SettingsForm : Form
     }
 
     internal static int ScaleNotificationGroupBoxHeight(int logicalHeight, int deviceDpi) =>
-        (int)Math.Round(logicalHeight * deviceDpi / 96d);
+        (int)Math.Round(logicalHeight * deviceDpi / (double)BaseDpi, MidpointRounding.AwayFromZero);
 
     private int ScaleNotificationGroupBoxHeight(int logicalHeight) => ScaleNotificationGroupBoxHeight(logicalHeight, DeviceDpi);
 

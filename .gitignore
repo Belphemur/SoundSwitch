@@ -143,3 +143,6 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 /SoundSwitch/.idea/.idea.SoundSwitch.dir/.idea
 .nuget/nuget.exe
+.jgitconfig
+*.trx
+**/TestResults/**
