@@ -8,6 +8,9 @@ $ErrorActionPreference = 'Stop'
 
 if ([string]::IsNullOrWhiteSpace($Version)) {
     $latestTag = git describe --tags --abbrev=0
+    if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($latestTag)) {
+        throw "Unable to determine the latest git tag."
+    }
 
     if ($latestTag.StartsWith('v')) {
         $latestTag = $latestTag.Substring(1)
@@ -19,6 +22,9 @@ if ([string]::IsNullOrWhiteSpace($Version)) {
     }
 
     $buildPart = $versionParts[2].Split('-')[0]
+    [int]$major = 0
+    [int]$minor = 0
+    [int]$build = 0
     if (-not [int]::TryParse($versionParts[0], [ref]$major) -or
         -not [int]::TryParse($versionParts[1], [ref]$minor) -or
         -not [int]::TryParse($buildPart, [ref]$build)) {
