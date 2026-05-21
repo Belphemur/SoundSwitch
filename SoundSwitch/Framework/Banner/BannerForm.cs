@@ -15,6 +15,7 @@
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -34,6 +35,11 @@ namespace SoundSwitch.Framework.Banner;
 /// </summary>
 public partial class BannerForm : Form
 {
+    private static readonly IntPtr HwndTopmost = new(-1);
+    private const uint SwpNoSize = 0x0001;
+    private const uint SwpNoMove = 0x0002;
+    private const uint SwpShowWindow = 0x0040;
+    private const uint SwpNoActivate = 0x0010;
 
     private sealed class CustomPositionMessageFilter(BannerForm owner) : IMessageFilter
     {
@@ -118,6 +124,17 @@ public partial class BannerForm : Form
     }
 
     protected override bool ShowWithoutActivation => true;
+
+    [DllImport("user32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool SetWindowPos(
+        IntPtr hWnd,
+        IntPtr hWndInsertAfter,
+        int x,
+        int y,
+        int cx,
+        int cy,
+        uint uFlags);
 
     protected override CreateParams CreateParams
     {
@@ -250,11 +267,7 @@ public partial class BannerForm : Form
         _timerHide?.Enabled = true;
 
         Show();
-
-        // Ensure banner stays on top even in exclusive screen mode
-        BringToFront();
-        TopMost = false;
-        TopMost = true;
+        EnsureTopMostWithoutActivation();
     }
 
     /// <summary>
@@ -296,6 +309,20 @@ public partial class BannerForm : Form
     private void PrepareSound(BannerData data)
     {
         JobScheduler.Instance.ScheduleJob(new PlaySoundJob(data.CurrentDeviceId, data.SoundFile), _cancellationTokenSource.Token);
+    }
+
+    private void EnsureTopMostWithoutActivation()
+    {
+        if (!IsHandleCreated) return;
+
+        SetWindowPos(
+            Handle,
+            HwndTopmost,
+            0,
+            0,
+            0,
+            0,
+            SwpNoMove | SwpNoSize | SwpNoActivate | SwpShowWindow);
     }
 
     /// <summary>
