@@ -41,8 +41,8 @@
     When set, the GitHub CLI is not required and publish steps are skipped.
 
 .PARAMETER Configuration
-    Build configuration when -BuildFromSource is set: Release (default) or
-    Debug.  Ignored when downloading from a draft release.
+    Build configuration when -BuildFromSource is set: Release (default),
+    Debug, or Nightly. Ignored when downloading from a draft release.
 
 .PARAMETER SkipSigning
     Skip code signing even when signtool is available.
@@ -83,7 +83,7 @@ param(
 
     [switch]$BuildFromSource,
 
-    [ValidateSet('Release', 'Debug')]
+    [ValidateSet('Release', 'Debug', 'Nightly')]
     [string]$Configuration = 'Release',
 
     [switch]$SkipSigning,
