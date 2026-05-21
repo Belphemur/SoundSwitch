@@ -20,6 +20,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using Serilog;
+
 using SoundSwitch.Framework.Audio.Play;
 using SoundSwitch.Framework.Banner.BannerPosition;
 using SoundSwitch.Framework.Threading;
@@ -35,11 +37,15 @@ namespace SoundSwitch.Framework.Banner;
 /// </summary>
 public partial class BannerForm : Form
 {
-    private static readonly IntPtr HwndTopmost = new(-1);
-    private const uint SwpNoSize = 0x0001;
-    private const uint SwpNoMove = 0x0002;
-    private const uint SwpShowWindow = 0x0040;
-    private const uint SwpNoActivate = 0x0010;
+    private static readonly IntPtr HWND_TOPMOST = new(-1);
+
+    [Flags]
+    private enum SetWindowPosFlags : uint
+    {
+        SWP_NOSIZE = 0x0001,
+        SWP_NOMOVE = 0x0002,
+        SWP_NOACTIVATE = 0x0010,
+    }
 
     private sealed class CustomPositionMessageFilter(BannerForm owner) : IMessageFilter
     {
@@ -134,7 +140,7 @@ public partial class BannerForm : Form
         int y,
         int cx,
         int cy,
-        uint uFlags);
+        SetWindowPosFlags uFlags);
 
     protected override CreateParams CreateParams
     {
@@ -315,14 +321,24 @@ public partial class BannerForm : Form
     {
         if (!IsHandleCreated) return;
 
-        SetWindowPos(
+        var flags = SetWindowPosFlags.SWP_NOMOVE |
+                    SetWindowPosFlags.SWP_NOSIZE |
+                    SetWindowPosFlags.SWP_NOACTIVATE;
+
+        if (SetWindowPos(
             Handle,
-            HwndTopmost,
+            HWND_TOPMOST,
             0,
             0,
             0,
             0,
-            SwpNoMove | SwpNoSize | SwpNoActivate | SwpShowWindow);
+            flags))
+        {
+            return;
+        }
+
+        var lastError = Marshal.GetLastWin32Error();
+        Log.Warning("SetWindowPos failed while refreshing the banner topmost state with Win32Error={error}", lastError);
     }
 
     /// <summary>
