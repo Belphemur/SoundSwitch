@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="6177c8ea-82b1-41da-be1f-894116c847ad" name="runneradmin@runnervmp4gaq 2026-05-21 15:25:16" runUser="runnervmp4gaq\runneradmin" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-05-21T15:25:16.3553305+00:00" queuing="2026-05-21T15:25:16.3553306+00:00" start="2026-05-21T15:25:15.4711968+00:00" finish="2026-05-21T15:25:16.3600300+00:00" />
+  <TestSettings name="default" id="d288e926-5e29-4738-a974-e6d733ee7500">
+    <Deployment runDeploymentRoot="runneradmin_runnervmp4gaq_2026-05-21_15_25_16" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="163535bf-d196-4da6-ba89-cb023cee2597" testId="cc7abeb6-5d21-9e2a-a4ef-865134066b71" testName="ScaleNotificationGroupBoxHeight_ShouldScaleWithDeviceDpi(93,120,116)" computerName="runnervmp4gaq" duration="00:00:00.0003150" startTime="2026-05-21T15:25:16.2271470+00:00" endTime="2026-05-21T15:25:16.2274624+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="163535bf-d196-4da6-ba89-cb023cee2597" />
+    <UnitTestResult executionId="c1e7cb41-9590-4f6d-bd0e-fc61dc8a6c55" testId="7398c37c-c307-1908-59b4-17fcfce25063" testName="ScaleNotificationGroupBoxHeight_ShouldScaleWithDeviceDpi(93,144,140)" computerName="runnervmp4gaq" duration="00:00:00.0000160" startTime="2026-05-21T15:25:16.2274771+00:00" endTime="2026-05-21T15:25:16.2274930+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c1e7cb41-9590-4f6d-bd0e-fc61dc8a6c55" />
+    <UnitTestResult executionId="c68aad4c-566b-4f6a-a609-efcad2e36172" testId="42267964-084c-6832-59ac-1aac7b13675c" testName="ScaleNotificationGroupBoxHeight_ShouldScaleWithDeviceDpi(166,144,249)" computerName="runnervmp4gaq" duration="00:00:00.0000030" startTime="2026-05-21T15:25:16.2274959+00:00" endTime="2026-05-21T15:25:16.2274984+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c68aad4c-566b-4f6a-a609-efcad2e36172" />
+    <UnitTestResult executionId="8b337ee2-7fc8-45b5-8078-0118a2e7d90f" testId="180d2fb5-895c-8526-3c93-7aeb4725be2a" testName="ScaleNotificationGroupBoxHeight_ShouldScaleWithDeviceDpi(93,96,93)" computerName="runnervmp4gaq" duration="00:00:00.0858759" startTime="2026-05-21T15:25:16.1401194+00:00" endTime="2026-05-21T15:25:16.2259016+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8b337ee2-7fc8-45b5-8078-0118a2e7d90f">
+      <Output>
+        <StdOut>Warning:&#xD;
+     The component "Fluent Assertions" is governed by the rules defined in the Xceed License Agreement and&#xD;
+     the Xceed Fluent Assertions Community License. You may use Fluent Assertions free of charge for&#xD;
+     non-commercial use only. An active subscription is required to use Fluent Assertions for commercial use.&#xD;
+&#xD;
+     Please contact Xceed Sales mailto:sales@xceed.com to acquire a subscription at a very low cost.&#xD;
+&#xD;
+     A paid commercial license supports the development and continued increasing support of&#xD;
+     Fluent Assertions users under both commercial and community licenses. Help us&#xD;
+     keep Fluent Assertions at the forefront of unit testing.&#xD;
+&#xD;
+     For more information, visit https://xceed.com/products/unit-testing/fluent-assertions/</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="ScaleNotificationGroupBoxHeight_ShouldScaleWithDeviceDpi(166,144,249)" storage="d:\a\soundswitch\soundswitch\soundswitch.tests\bin\debug\net10.0-windows\soundswitch.tests.dll" id="42267964-084c-6832-59ac-1aac7b13675c">
+      <Execution id="c68aad4c-566b-4f6a-a609-efcad2e36172" />
+      <TestMethod codeBase="D:\a\SoundSwitch\SoundSwitch\SoundSwitch.Tests\bin\Debug\net10.0-windows\SoundSwitch.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="SoundSwitch.Tests.SettingsFormTests" name="ScaleNotificationGroupBoxHeight_ShouldScaleWithDeviceDpi(166,144,249)" />
+    </UnitTest>
+    <UnitTest name="ScaleNotificationGroupBoxHeight_ShouldScaleWithDeviceDpi(93,120,116)" storage="d:\a\soundswitch\soundswitch\soundswitch.tests\bin\debug\net10.0-windows\soundswitch.tests.dll" id="cc7abeb6-5d21-9e2a-a4ef-865134066b71">
+      <Execution id="163535bf-d196-4da6-ba89-cb023cee2597" />
+      <TestMethod codeBase="D:\a\SoundSwitch\SoundSwitch\SoundSwitch.Tests\bin\Debug\net10.0-windows\SoundSwitch.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="SoundSwitch.Tests.SettingsFormTests" name="ScaleNotificationGroupBoxHeight_ShouldScaleWithDeviceDpi(93,120,116)" />
+    </UnitTest>
+    <UnitTest name="ScaleNotificationGroupBoxHeight_ShouldScaleWithDeviceDpi(93,144,140)" storage="d:\a\soundswitch\soundswitch\soundswitch.tests\bin\debug\net10.0-windows\soundswitch.tests.dll" id="7398c37c-c307-1908-59b4-17fcfce25063">
+      <Execution id="c1e7cb41-9590-4f6d-bd0e-fc61dc8a6c55" />
+      <TestMethod codeBase="D:\a\SoundSwitch\SoundSwitch\SoundSwitch.Tests\bin\Debug\net10.0-windows\SoundSwitch.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="SoundSwitch.Tests.SettingsFormTests" name="ScaleNotificationGroupBoxHeight_ShouldScaleWithDeviceDpi(93,144,140)" />
+    </UnitTest>
+    <UnitTest name="ScaleNotificationGroupBoxHeight_ShouldScaleWithDeviceDpi(93,96,93)" storage="d:\a\soundswitch\soundswitch\soundswitch.tests\bin\debug\net10.0-windows\soundswitch.tests.dll" id="180d2fb5-895c-8526-3c93-7aeb4725be2a">
+      <Execution id="8b337ee2-7fc8-45b5-8078-0118a2e7d90f" />
+      <TestMethod codeBase="D:\a\SoundSwitch\SoundSwitch\SoundSwitch.Tests\bin\Debug\net10.0-windows\SoundSwitch.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="SoundSwitch.Tests.SettingsFormTests" name="ScaleNotificationGroupBoxHeight_ShouldScaleWithDeviceDpi(93,96,93)" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="cc7abeb6-5d21-9e2a-a4ef-865134066b71" executionId="163535bf-d196-4da6-ba89-cb023cee2597" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7398c37c-c307-1908-59b4-17fcfce25063" executionId="c1e7cb41-9590-4f6d-bd0e-fc61dc8a6c55" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="42267964-084c-6832-59ac-1aac7b13675c" executionId="c68aad4c-566b-4f6a-a609-efcad2e36172" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="180d2fb5-895c-8526-3c93-7aeb4725be2a" executionId="8b337ee2-7fc8-45b5-8078-0118a2e7d90f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="4" executed="4" passed="4" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 1.0.0.0: Test execution started&#xD;
+Running selected tests in D:\a\SoundSwitch\SoundSwitch\SoundSwitch.Tests\bin\Debug\net10.0-windows\SoundSwitch.Tests.dll&#xD;
+   NUnit3TestExecutor discovered 4 of 4 NUnit test cases using Current Discovery mode, Non-Explicit run&#xD;
+     Warning:&#xD;
+     The component "Fluent Assertions" is governed by the rules defined in the Xceed License Agreement and&#xD;
+     the Xceed Fluent Assertions Community License. You may use Fluent Assertions free of charge for&#xD;
+     non-commercial use only. An active subscription is required to use Fluent Assertions for commercial use.&#xD;
+&#xD;
+     Please contact Xceed Sales mailto:sales@xceed.com to acquire a subscription at a very low cost.&#xD;
+&#xD;
+     A paid commercial license supports the development and continued increasing support of&#xD;
+     Fluent Assertions users under both commercial and community licenses. Help us&#xD;
+     keep Fluent Assertions at the forefront of unit testing.&#xD;
+&#xD;
+     For more information, visit https://xceed.com/products/unit-testing/fluent-assertions/&#xD;
+&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>
