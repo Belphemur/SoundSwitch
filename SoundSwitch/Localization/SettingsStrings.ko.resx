@@ -220,7 +220,7 @@
     <value>토스트 알림</value>
   </data>
   <data name="notification.option.customized" xml:space="preserve">
-    <value>사용자 정의 사운드 알림</value>
+    <value>사용자 지정 사운드 알림</value>
   </data>
   <data name="notification.tooltip" xml:space="preserve">
     <value>Windows 알림: 기본 창 트레이가 팝업됩니다.
@@ -251,7 +251,7 @@
     <value>재생 : {0}</value>
   </data>
   <data name="language" xml:space="preserve">
-    <value>언어</value>
+    <value>언어 - 번역: 비너스걸</value>
   </data>
   <data name="languageRestartRequired" xml:space="preserve">
     <value>SoundSwitch를 다시 시작한 후에 언어가 변경됩니다.
@@ -273,7 +273,7 @@
     <value>설정된 사용자 정의 사운드를 사용하지 않습니다.</value>
   </data>
   <data name="foregroundApp" xml:space="preserve">
-    <value>포어그라운드 프로그램에서도 전환</value>
+    <value>전경 프로그램도 전환</value>
   </data>
   <data name="foregroundApp.tooltip" xml:space="preserve">
     <value>현재 사용 중인 응용 프로그램의 사운드도 전환합니다. 비디오 게임에 유용합니다.</value>
@@ -469,13 +469,13 @@
     <value>사용 중인 SoundSwitch 버전을 익명으로 수집합니다. SoundSwitch 개발자와만 공유됩니다.</value>
   </data>
   <data name="quickMenu" xml:space="preserve">
-    <value>단축키 사용 시 퀵 메뉴 표시</value>
+    <value>단축키 사용 시 빠른 메뉴 표시</value>
   </data>
   <data name="quickMenu.tooltip" xml:space="preserve">
     <value>장치 순환 단축키를 사용할 때 Windows 입력 언어를 변경할 때 처럼 빠른 메뉴를 표시합니다</value>
   </data>
   <data name="keepVolume" xml:space="preserve">
-    <value>여러 디바이스간 볼륨 수준 유지</value>
+    <value>여러 장치간 볼륨 수준 유지</value>
   </data>
   <data name="keepVolume.tooltip" xml:space="preserve">
     <value>장치를 전환할 때 볼륨 수준을 동일하게 유지합니다</value>
@@ -604,7 +604,7 @@
     <value>설정 파일 가져오기 / 내보내기</value>
   </data>
   <data name="importExportConfigFile.desc" xml:space="preserve">
-    <value>zip 압축 파일로 된 SoundSwitch 설정 파일을 가져오거나 내보냅니다.</value>
+    <value>zip 압축파일로 된 SoundSwitch 설정 파일을 가져오거나 내보냅니다.</value>
   </data>
   <data name="importConfigErrorMessage" xml:space="preserve">
     <value>zip 압축 파일 안에 반드시 SoundSwitch 설정 파일이 포함되어있어야 합니다.</value>
@@ -709,7 +709,7 @@ Esc 키를 눌러 닫습니다.</value>
     <value>앱 규칙</value>
   </data>
   <data name="appSoundLock.explanation" xml:space="preserve">
-    <value>정규식 매칭을 사용하여 특정 재생 및 녹음 장치를 프로세스나 창에 바인딩합니다.</value>
+    <value>정규식 일치를 사용하여 특정 재생 및 녹음 장치를 프로세스나 창에 바인딩합니다.</value>
   </data>
   <data name="appSoundLock.rule.processName" xml:space="preserve">
     <value>프로세스 이름</value>
