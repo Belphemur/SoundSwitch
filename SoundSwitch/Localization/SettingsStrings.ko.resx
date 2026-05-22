@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -638,34 +638,128 @@
     <value>설정 파일 '{0}'을 변환하지 못했습니다. 오류: {1}</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="position.centerLeft" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="position.centerLeft" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
+    <value>중앙 왼쪽</value>
   </data>
-  <data name="position.centerRight" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="position.centerRight" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
+    <value>중앙 오른쪽</value>
   </data>
-  <data name="buttonSelect" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="buttonSelect" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
+    <value>선택</value>
   </data>
-  <data name="buttonCustom" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="buttonCustom" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
+    <value>사용자 지정</value>
   </data>
   <data name="buttonDelete" xml:space="preserve">
     <value>삭제</value>
   </data>
-  <data name="customSoundFile" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="customSoundFile" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
+    <value>사용자 지정 사운드 파일</value>
   </data>
-  <data name="selectSoundButton.tooltip" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="selectSoundButton.tooltip" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
+    <value>사운드 및 배너 알림을 위한 사운드 파일 선택</value>
   </data>
-  <data name="hotkeySwitchDevice" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="hotkeySwitchDevice" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
+    <value>장치 단축키 전환</value>
   </data>
-  <data name="hotkeyToggleMute" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="hotkeyToggleMute" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
+    <value>음소거 단축키 전환</value>
   </data>
-  <data name="selectSoundButton.error" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="selectSoundButton.error" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
+    <value>오류: 파일을 찾을 수 없습니다</value>
+  </data>
+  <data name="switchRecordingDevice" xml:space="preserve">
+    <value>녹음 장치 전환</value>
+  </data>
+  <data name="customPositionBanner.title" xml:space="preserve">
+    <value>새 위치로 이동</value>
+  </data>
+  <data name="customPositionBanner.text" xml:space="preserve">
+    <value>위치를 재설정하려면 R을 누릅니다.
+Esc 키를 눌러 닫습니다.</value>
+  </data>
+  <data name="banner.opacity" xml:space="preserve">
+    <value>불투명도</value>
+  </data>
+  <data name="banner.opacity.tooltip" xml:space="preserve">
+    <value>배너의 불투명도 설정</value>
+  </data>
+  <data name="banner.displayInfo" xml:space="preserve">
+    <value>표시 정보</value>
+  </data>
+  <data name="banner.displayInfo.tooltip" xml:space="preserve">
+    <value>배너 표시 방법</value>
+  </data>
+  <data name="banner.display.option.fullDisplay" xml:space="preserve">
+    <value>전체 표시</value>
+  </data>
+  <data name="banner.display.option.iconOnly" xml:space="preserve">
+    <value>아이콘만</value>
+  </data>
+  <data name="banner.display.option.descOnly" xml:space="preserve">
+    <value>설명만</value>
+  </data>
+  <data name="general" xml:space="preserve">
+    <value>일반</value>
+  </data>
+  <data name="notification.type" xml:space="preserve">
+    <value>알림 유형</value>
+  </data>
+  <data name="appSoundLock.tab" xml:space="preserve">
+    <value>앱 규칙</value>
+  </data>
+  <data name="appSoundLock.explanation" xml:space="preserve">
+    <value>정규식 매칭을 사용하여 특정 재생 및 녹음 장치를 프로세스나 창에 바인딩합니다.</value>
+  </data>
+  <data name="appSoundLock.rule.processName" xml:space="preserve">
+    <value>프로세스 이름</value>
+  </data>
+  <data name="appSoundLock.rule.processPath" xml:space="preserve">
+    <value>프로세스 경로</value>
+  </data>
+  <data name="appSoundLock.rule.windowTitle" xml:space="preserve">
+    <value>창 제목</value>
+  </data>
+  <data name="appSoundLock.rule.matchMode" xml:space="preserve">
+    <value>일치 모드</value>
+  </data>
+  <data name="appSoundLock.rule.regexNotice" xml:space="preserve">
+    <value>참고: 패턴은 표준 정규식을 사용합니다.</value>
+  </data>
+  <data name="appSoundLock.selectProcess" xml:space="preserve">
+    <value>프로세스 선택...</value>
+  </data>
+  <data name="appSoundLock.addRule" xml:space="preserve">
+    <value>규칙 추가</value>
+  </data>
+  <data name="appSoundLock.editRule" xml:space="preserve">
+    <value>규칙 편집</value>
+  </data>
+  <data name="appSoundLock.deleteRule" xml:space="preserve">
+    <value>규칙 삭제</value>
+  </data>
+  <data name="appSoundLock.rule.enabled" xml:space="preserve">
+    <value>사용함</value>
+  </data>
+  <data name="appSoundLock.rule.caseSensitive" xml:space="preserve">
+    <value>대소문자 구분</value>
+  </data>
+  <data name="appSoundLock.rule.notify" xml:space="preserve">
+    <value>트리거될 때 알림</value>
+  </data>
+  <data name="appSoundLock.filter" xml:space="preserve">
+    <value>필터:</value>
+  </data>
+  <data name="appSoundLock.rule.description" xml:space="preserve">
+    <value>오디오를 제어하려는 응용 프로그램의 프로세스를 선택합니다. 선택한 장치는 응용 프로그램이 실행될 때마다 자동으로 적용됩니다.</value>
+  </data>
+  <data name="appSoundLock.rule.error.patternRequired" xml:space="preserve">
+    <value>적어도 하나의 패턴 (프로세스 또는 창)이 필요합니다.</value>
+  </data>
+  <data name="appSoundLock.rule.error.title" xml:space="preserve">
+    <value>검증 오류</value>
+  </data>
+  <data name="switchPlaybackDevice" xml:space="preserve">
+    <value>재생 장치 전환</value>
   </data>
 </root>
