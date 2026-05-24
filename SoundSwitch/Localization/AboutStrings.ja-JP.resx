@@ -116,10 +116,10 @@
     <value>既定の再生デバイス変更</value>
   </data>
   <data name="keyboardHotkeys" xml:space="preserve">
-    <value>キーボードショートカット</value>
+    <value>キーボード ショートカット</value>
   </data>
   <data name="logo" xml:space="preserve">
-    <value>ロゴ作成</value>
+    <value>ロゴ作成者</value>
   </data>
   <data name="icons" xml:space="preserve">
     <value>アイコン</value>
