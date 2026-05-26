@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -638,34 +638,128 @@ Vill du starta om nu?</value>
     <value>Misslyckades med att avserialisering av konfigurationsfilen '{0}'. Fel: {1}</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="position.centerLeft" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="position.centerLeft" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
+    <value>Mitten vänster</value>
   </data>
-  <data name="position.centerRight" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="position.centerRight" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
+    <value>Mitten höger</value>
   </data>
-  <data name="buttonSelect" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="buttonSelect" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
+    <value>Välj</value>
   </data>
-  <data name="buttonCustom" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="buttonCustom" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
+    <value>Anpassad</value>
   </data>
   <data name="buttonDelete" xml:space="preserve">
     <value>Ta bort</value>
   </data>
-  <data name="customSoundFile" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="customSoundFile" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
+    <value>Anpassad ljudfil</value>
   </data>
-  <data name="selectSoundButton.tooltip" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="selectSoundButton.tooltip" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
+    <value>Välj en ljudfil för ljud och bannermeddelanden</value>
   </data>
-  <data name="hotkeySwitchDevice" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="hotkeySwitchDevice" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
+    <value>Byt enhet snabbtangent</value>
   </data>
-  <data name="hotkeyToggleMute" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="hotkeyToggleMute" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
+    <value>Växla mellan ljud av/på snabbtangent</value>
   </data>
-  <data name="selectSoundButton.error" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="selectSoundButton.error" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
+    <value>Fel: fil hittades inte</value>
+  </data>
+  <data name="switchRecordingDevice" xml:space="preserve">
+    <value>Byt inspelningsenhet</value>
+  </data>
+  <data name="customPositionBanner.title" xml:space="preserve">
+    <value>Flytta till ny position</value>
+  </data>
+  <data name="customPositionBanner.text" xml:space="preserve">
+    <value>Tryck på R för att återställa positionen.
+Tryck på Esc för att stänga.</value>
+  </data>
+  <data name="banner.opacity" xml:space="preserve">
+    <value>Genomskinlighet</value>
+  </data>
+  <data name="banner.opacity.tooltip" xml:space="preserve">
+    <value>Ställ in bannerns genomskinlighet</value>
+  </data>
+  <data name="banner.displayInfo" xml:space="preserve">
+    <value>Visa information</value>
+  </data>
+  <data name="banner.displayInfo.tooltip" xml:space="preserve">
+    <value>Hur bannern visas</value>
+  </data>
+  <data name="banner.display.option.fullDisplay" xml:space="preserve">
+    <value>Fullskärmsläge</value>
+  </data>
+  <data name="banner.display.option.iconOnly" xml:space="preserve">
+    <value>Ikon endast</value>
+  </data>
+  <data name="banner.display.option.descOnly" xml:space="preserve">
+    <value>Beskrivning endast</value>
+  </data>
+  <data name="general" xml:space="preserve">
+    <value>Allmänt</value>
+  </data>
+  <data name="notification.type" xml:space="preserve">
+    <value>Notifieringstyp</value>
+  </data>
+  <data name="appSoundLock.tab" xml:space="preserve">
+    <value>Appregler</value>
+  </data>
+  <data name="appSoundLock.explanation" xml:space="preserve">
+    <value>Koppla specifika uppspelnings och inspelningsenheter till processer eller fönster med hjälp av Regex-matchning.</value>
+  </data>
+  <data name="appSoundLock.rule.processName" xml:space="preserve">
+    <value>Processnamn</value>
+  </data>
+  <data name="appSoundLock.rule.processPath" xml:space="preserve">
+    <value>Process sökväg</value>
+  </data>
+  <data name="appSoundLock.rule.windowTitle" xml:space="preserve">
+    <value>Fönstertitel</value>
+  </data>
+  <data name="appSoundLock.rule.matchMode" xml:space="preserve">
+    <value>Matchningsläge</value>
+  </data>
+  <data name="appSoundLock.rule.regexNotice" xml:space="preserve">
+    <value>Obs: Mönster använder standard-Regex.</value>
+  </data>
+  <data name="appSoundLock.selectProcess" xml:space="preserve">
+    <value>Välj process...</value>
+  </data>
+  <data name="appSoundLock.addRule" xml:space="preserve">
+    <value>Lägg till regel</value>
+  </data>
+  <data name="appSoundLock.editRule" xml:space="preserve">
+    <value>Redigera regel</value>
+  </data>
+  <data name="appSoundLock.deleteRule" xml:space="preserve">
+    <value>Ta bort regel</value>
+  </data>
+  <data name="appSoundLock.rule.enabled" xml:space="preserve">
+    <value>Aktiverat</value>
+  </data>
+  <data name="appSoundLock.rule.caseSensitive" xml:space="preserve">
+    <value>Skiftlägeskänslig</value>
+  </data>
+  <data name="appSoundLock.rule.notify" xml:space="preserve">
+    <value>Notifera när det utlöses</value>
+  </data>
+  <data name="appSoundLock.filter" xml:space="preserve">
+    <value>Filter:</value>
+  </data>
+  <data name="appSoundLock.rule.description" xml:space="preserve">
+    <value>Välj processen för det programmet vars ljud du vill styra. De valda enheterna kommer automatiskt att tillämpas när det programmet körs.</value>
+  </data>
+  <data name="appSoundLock.rule.error.patternRequired" xml:space="preserve">
+    <value>Minst ett mönster (process eller fönster) krävs.</value>
+  </data>
+  <data name="appSoundLock.rule.error.title" xml:space="preserve">
+    <value>Valideringsfel</value>
+  </data>
+  <data name="switchPlaybackDevice" xml:space="preserve">
+    <value>Byt uppspelningsenhet</value>
   </data>
 </root>

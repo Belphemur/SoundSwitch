@@ -374,7 +374,7 @@
     <value>選択したアプリがフォアグラウンドにある場合にプロファイルを有効化</value>
   </data>
   <data name="profile.trigger.steam.desc" xml:space="preserve">
-    <value>Steam Big Picture 検出時に有効化（Big Picture 終了時に状態を復元）。</value>
+    <value>Steam Big Picture 検出時に有効化します。（Big Picture 終了時に状態を復元します。）</value>
   </data>
   <data name="profile.desc" xml:space="preserve">
     <value>説明</value>
@@ -395,7 +395,7 @@
     <value>Steam Big Picture 用のプロファイルは1つのみ作成可能です。</value>
   </data>
   <data name="profile.error.window" xml:space="preserve">
-    <value>このウィンドウ名のプロファイルがすでに存在します: {0}</value>
+    <value>このウィンドウ名のプロファイルはすでに存在します: {0}。</value>
   </data>
   <data name="profile.notifyOnActivation" xml:space="preserve">
     <value>プロファイル起動時に通知</value>
