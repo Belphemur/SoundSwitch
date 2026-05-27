@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
  * Copyright (C) 2015 Jeroen Pelgrims
  * Copyright (C) 2015-2017 Antoine Aflalo
  *
@@ -141,7 +141,7 @@ public interface IAppModel : IDisposable
     int MaxNumberNotification { get; set; }
 
     /// <summary>
-    /// Is there only 1 concurrent notification enabled ? 
+    /// Is there only 1 concurrent notification enabled ?
     /// </summary>
     bool IsSingleNotification { get; set; }
 
@@ -265,8 +265,13 @@ public interface IAppModel : IDisposable
     /// <summary>
     /// Toggles the mute state of the default microphone
     /// </summary>
-    /// <returns>Tuple with device name and mute state, null if no default microphone found or operation failed</returns>
-    (string DeviceName, bool IsMuted)? ToggleMicrophoneMute();
+    /// <summary>
+/// Toggles the mute state of the system's default recording (microphone) device.
+/// </summary>
+/// <remarks>
+/// If no default microphone is available or the operation fails, no change is made.
+/// </remarks>
+    void ToggleMicrophoneMute();
 
     /// <summary>
     /// Sets the mute state of the default microphone

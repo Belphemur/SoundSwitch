@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
 * Copyright (C) 2015-2017 Antoine Aflalo
 *
 * This program is free software; you can redistribute it and/or
@@ -19,12 +19,16 @@ using SoundSwitch.Properties;
 
 namespace SoundSwitch.Framework.TrayIcon.IconChanger.Changer;
 
-public class NeverIconIconChanger : IIconChanger
+public class IconChangerNone : IIconChanger
 {
-    public IconChanger TypeEnum => IconChanger.Never;
+    public IconChanger TypeEnum => IconChanger.None;
     public string Label => TrayIconStrings.iconChanger_none;
 
-    public void ChangeIcon(UI.Component.TrayIcon trayIcon) => trayIcon.ReplaceIcon(Resources.Switch_SoundWave);
+    /// <summary>
+/// Replaces the given tray icon with the default "Switch_SoundWave" icon.
+/// </summary>
+/// <param name="trayIcon">The tray icon whose visual icon will be replaced.</param>
+public void ChangeIcon(UI.Component.TrayIcon trayIcon) => trayIcon.ReplaceIcon(Resources.Switch_SoundWave);
 
     public void ChangeIcon(UI.Component.TrayIcon trayIcon, DeviceFullInfo deviceInfo, ERole role) { }
 }

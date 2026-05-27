@@ -43,4 +43,10 @@ public enum IconDoubleClick
     /// Provides the same functionality as the recording hotkey but triggered by a double-click.
     /// </summary>
     SwitchRecordingDevice = 3,
+
+    /// <summary>
+    /// Toggles mute status of microphone.
+    /// Allows users to quickly mute and unmute microphone.
+    /// </summary>
+    ToggleMicrophoneMute = 4
 }

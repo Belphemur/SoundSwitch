@@ -767,4 +767,7 @@ Press Esc to close.</value>
   <data name="switchPlaybackDevice" xml:space="preserve">
     <value>Switch playback device</value>
   </data>
+  <data name="toggleMicrophoneMute" xml:space="preserve">
+    <value>Toggle microphone mute</value>
+  </data>
 </root>
