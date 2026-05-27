@@ -765,17 +765,7 @@ public class AppModel : IAppModel
             else if (e.HotKey == AppConfigs.Configuration.RecordingHotKey)
                 CycleActiveDevice(DataFlow.Capture);
             else if (e.HotKey == AppConfigs.Configuration.MuteRecordingHotKey)
-            {
-                var result = ToggleMicrophoneMute();
-                if (result == null)
-                {
-                    Log.Error("No mic found or unable to toggle mute state");
-                }
-                else
-                {
-                    Log.Information("Microphone {DeviceName} mute state is now {IsMuted}", result.Value.DeviceName, result.Value.IsMuted);
-                }
-            }
+                ToggleMicrophoneMute();
         }
         catch (Exception ex)
         {
@@ -791,14 +781,18 @@ public class AppModel : IAppModel
     /// Toggles the mute state of the default microphone
     /// </summary>
     /// <returns>Tuple with device name and mute state, null if no default microphone found or operation failed</returns>
-    public (string DeviceName, bool IsMuted)? ToggleMicrophoneMute()
+    public void ToggleMicrophoneMute()
     {
         var result = _microphoneMuteToggler.ToggleDefaultMute();
         if (result == null)
         {
             ErrorTriggered?.Invoke(this, new ExceptionEvent(new Exception("No mic found or unable to toggle mute state")));
+            Log.Error("No mic found or unable to toggle mute state");
         }
-        return result;
+        else
+        {
+            Log.Information("Microphone {DeviceName} mute state is now {IsMuted}", result.Value.Name, result.Value.MuteState);
+        }
     }
 
     /// <summary>

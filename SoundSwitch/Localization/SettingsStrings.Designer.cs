@@ -1811,6 +1811,15 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Toggle microphone mute.
+        /// </summary>
+        internal static string toggleMicrophoneMute {
+            get {
+                return ResourceManager.GetString("toggleMicrophoneMute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tooltip on Hover.
         /// </summary>
         internal static string tooltipOnHover {

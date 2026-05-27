@@ -141,7 +141,7 @@ public interface IAppModel : IDisposable
     int MaxNumberNotification { get; set; }
 
     /// <summary>
-    /// Is there only 1 concurrent notification enabled ? 
+    /// Is there only 1 concurrent notification enabled ?
     /// </summary>
     bool IsSingleNotification { get; set; }
 
@@ -266,7 +266,7 @@ public interface IAppModel : IDisposable
     /// Toggles the mute state of the default microphone
     /// </summary>
     /// <returns>Tuple with device name and mute state, null if no default microphone found or operation failed</returns>
-    (string DeviceName, bool IsMuted)? ToggleMicrophoneMute();
+    void ToggleMicrophoneMute();
 
     /// <summary>
     /// Sets the mute state of the default microphone
