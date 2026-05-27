@@ -51,7 +51,7 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
 {
     // Basic Settings
     public bool FirstRun { get; set; } = true;
-    public IconChanger SwitchIcon { get; set; } = IconChanger.Never;
+    public IconChanger SwitchIcon { get; set; } = IconChanger.None;
     public IconDoubleClick IconDoubleClick { get; set; } = IconDoubleClick.SwitchPlaybackDevice;
 
     // Audio Settings
@@ -202,7 +202,7 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
         }
         if (!MigratedFields.Contains(nameof(KeepSystrayIcon)))
         {
-            SwitchIcon = KeepSystrayIcon ? IconChanger.Never : IconChanger.Always;
+            SwitchIcon = KeepSystrayIcon ? IconChanger.None : IconChanger.Always;
             MigratedFields.Add(nameof(KeepSystrayIcon));
             migrated = true;
         }

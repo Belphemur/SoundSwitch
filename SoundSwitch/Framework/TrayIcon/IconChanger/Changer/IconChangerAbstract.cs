@@ -22,11 +22,11 @@ using SoundSwitch.Common.Framework.Audio.Device;
 
 namespace SoundSwitch.Framework.TrayIcon.IconChanger.Changer;
 
-public abstract class AbstractIconChanger : IIconChanger
+public abstract class IconChangerAbstract : IIconChanger
 {
     private readonly ILogger _log;
 
-    protected AbstractIconChanger() => _log = Log.ForContext("IconChanger", TypeEnum);
+    protected IconChangerAbstract() => _log = Log.ForContext("IconChanger", TypeEnum);
 
     public abstract IconChanger TypeEnum { get; }
     public abstract string Label { get; }

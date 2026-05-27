@@ -12,19 +12,19 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using SoundSwitch.Audio.Manager.Interop.Enum;
+using NAudio.CoreAudioApi;
+
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Localization;
-using SoundSwitch.Properties;
 
 namespace SoundSwitch.Framework.TrayIcon.IconChanger.Changer;
 
-public class NeverIconIconChanger : IIconChanger
+public class IconChangerAlways : IconChangerAbstract
 {
-    public IconChanger TypeEnum => IconChanger.Never;
-    public string Label => TrayIconStrings.iconChanger_none;
+    public override IconChanger TypeEnum => IconChanger.Always;
+    public override string Label => TrayIconStrings.iconChanger_both;
 
-    public void ChangeIcon(UI.Component.TrayIcon trayIcon) => trayIcon.ReplaceIcon(Resources.Switch_SoundWave);
+    protected override bool NeedsToChangeIcon(DeviceInfo deviceInfo) => true;
 
-    public void ChangeIcon(UI.Component.TrayIcon trayIcon, DeviceFullInfo deviceInfo, ERole role) { }
+    protected override DataFlow Flow => DataFlow.Render;
 }

@@ -16,7 +16,7 @@ namespace SoundSwitch.Framework.TrayIcon.IconChanger;
 
 public enum IconChanger
 {
-    Never = 0,
+    None = 0,
     Recording = 1,
     Playback = 2,
     Always = 3

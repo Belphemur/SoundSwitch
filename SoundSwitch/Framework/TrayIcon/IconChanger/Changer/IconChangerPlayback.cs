@@ -14,17 +14,13 @@
 
 using NAudio.CoreAudioApi;
 
-using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Localization;
 
 namespace SoundSwitch.Framework.TrayIcon.IconChanger.Changer;
 
-public class AlwaysIconChanger : AbstractIconChanger
+public class IconChangerPlayback : IconChangerAbstract
 {
-    public override IconChanger TypeEnum => IconChanger.Always;
-    public override string Label => TrayIconStrings.iconChanger_both;
-
-    protected override bool NeedsToChangeIcon(DeviceInfo deviceInfo) => true;
-
+    public override IconChanger TypeEnum => IconChanger.Playback;
+    public override string Label => TrayIconStrings.iconChanger_playback;
     protected override DataFlow Flow => DataFlow.Render;
 }
