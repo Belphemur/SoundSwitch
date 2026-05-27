@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
  * Copyright (C) 2015 Jeroen Pelgrims
  * Copyright (C) 2015-2024 Antoine Aflalo
  *
@@ -748,6 +748,11 @@ public class AppModel : IAppModel
     }
 
 
+    /// <summary>
+    /// Handles hotkey press events and performs the configured action for playback, recording, or mute hotkeys.
+    /// </summary>
+    /// <param name="sender">The event source.</param>
+    /// <param name="e">Key press event data whose <c>HotKey</c> is checked; unrelated hotkeys are ignored.</param>
     private void HandleHotkeyPress(object sender, WindowsAPIAdapter.KeyPressedEventArgs e)
     {
         if (e.HotKey != AppConfigs.Configuration.PlaybackHotKey
@@ -780,7 +785,12 @@ public class AppModel : IAppModel
     /// <summary>
     /// Toggles the mute state of the default microphone
     /// </summary>
-    /// <returns>Tuple with device name and mute state, null if no default microphone found or operation failed</returns>
+    /// <summary>
+    /// Toggles the system default microphone's mute state.
+    /// </summary>
+    /// <remarks>
+    /// If no default microphone is found or the operation fails, the method invokes the <c>ErrorTriggered</c> event and logs an error; on success it logs the new mute state.
+    /// </remarks>
     public void ToggleMicrophoneMute()
     {
         var result = _microphoneMuteToggler.ToggleDefaultMute();

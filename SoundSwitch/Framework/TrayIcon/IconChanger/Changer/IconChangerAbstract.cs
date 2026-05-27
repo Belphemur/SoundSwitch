@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
 * Copyright (C) 2015-2017 Antoine Aflalo
 *
 * This program is free software; you can redistribute it and/or
@@ -26,7 +26,10 @@ public abstract class IconChangerAbstract : IIconChanger
 {
     private readonly ILogger _log;
 
-    protected IconChangerAbstract() => _log = Log.ForContext("IconChanger", TypeEnum);
+    /// <summary>
+/// Initializes a new instance of the <see cref="IconChangerAbstract"/> class and configures its logger context.
+/// </summary>
+protected IconChangerAbstract() => _log = Log.ForContext("IconChanger", TypeEnum);
 
     public abstract IconChanger TypeEnum { get; }
     public abstract string Label { get; }

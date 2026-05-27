@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
  * Copyright (C) 2015-2017 Antoine Aflalo
  *
  * This program is free software; you can redistribute it and/or
@@ -144,7 +144,10 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
 
     /// <summary>
     /// Migrate configuration to a new schema
+    /// <summary>
+    /// Apply schema migrations to the persisted configuration and record which migrations were performed.
     /// </summary>
+    /// <returns>`true` if any migration changes were applied, `false` otherwise.</returns>
     public bool Migrate()
     {
         var migrated = false;

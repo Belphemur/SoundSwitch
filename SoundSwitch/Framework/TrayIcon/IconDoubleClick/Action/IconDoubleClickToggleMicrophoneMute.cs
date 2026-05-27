@@ -1,4 +1,4 @@
-﻿/********************************************************************
+/********************************************************************
  * Copyright (C) 2015-2017 Antoine Aflalo
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,10 @@ internal class IconDoubleClickToggleMicrophoneMute : IIconDoubleClick
 
     public string Label => SettingsStrings.toggleMicrophoneMute;
 
+    /// <summary>
+    /// Toggles the application's microphone mute state.
+    /// </summary>
+    /// <param name="trayIcon">The tray icon instance associated with the action (not used).</param>
     public void Execute(UI.Component.TrayIcon trayIcon)
     {
         AppModel.Instance.ToggleMicrophoneMute();
