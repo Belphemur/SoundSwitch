@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -317,7 +317,7 @@ Beide: wijzigen wanneer een ander apparaat wordt gewisseld.</value>
     <value>U moet een afspeel- of opnameapparaat instellen.</value>
   </data>
   <data name="profile.explanation" xml:space="preserve">
-    <value>Voeg een profiel toe om over te schakelen naar een bepaald afspeel- of opnameapparaat wanneer een specifieke toepassing wordt gestart of wanneer de toepassing de focus krijgt.</value>
+    <value>Voeg een profiel toe om over te schakelen naar een bepaald afspeel- of opnameapparaat wanneer een specifieke toepassing wordt gestart of wanneer de toepassing de focus krijgt.U kunt ook uw eigen sneltoets instellen voor een specifieke apparaatcombinatie.</value>
   </data>
   <data name="profile.error.registerHotkeys" xml:space="preserve">
     <value>Kan de sneltoets niet registreren voor de volgende profielen: {0}</value>
@@ -457,7 +457,7 @@ Herstel systeemstatus wanneer de applicatie wordt gesloten.</value>
     <value>Behoud volume nivo tussen apparaten</value>
   </data>
   <data name="keepVolume.tooltip" xml:space="preserve">
-    <value>Behoud hetzelfde volume niveau wanneer er van apparaten wordt gewisseld.</value>
+    <value>Behoud hetzelfde volume niveau wanneer er van apparaten wordt gewisseld</value>
   </data>
   <data name="devices.autoAddNewDevice" xml:space="preserve">
     <value>Automatische selectie van nieuwe apparaten</value>
@@ -508,7 +508,7 @@ Herstel systeemstatus wanneer de applicatie wordt gesloten.</value>
     <value />
   </data>
   <data name="seconds" xml:space="preserve">
-    <value />
+    <value>seconden</value>
   </data>
   <data name="openSettings" xml:space="preserve">
     <value />
@@ -544,34 +544,43 @@ Herstel systeemstatus wanneer de applicatie wordt gesloten.</value>
     <value />
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="position.centerLeft" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="position.centerLeft" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
+    <value>Midden Links</value>
+  </data>
+  <data name="position.centerRight" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
+    <value>Midden Rechts</value>
+  </data>
+  <data name="buttonSelect" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
     <value />
   </data>
-  <data name="position.centerRight" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="buttonSelect" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="buttonCustom" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="buttonCustom" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
     <value />
   </data>
   <data name="buttonDelete" xml:space="preserve">
     <value>Verwijderen</value>
   </data>
-  <data name="customSoundFile" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="customSoundFile" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
     <value />
   </data>
-  <data name="selectSoundButton.tooltip" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="selectSoundButton.tooltip" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
     <value />
   </data>
-  <data name="hotkeySwitchDevice" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="hotkeySwitchDevice" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
     <value />
   </data>
-  <data name="hotkeyToggleMute" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="hotkeyToggleMute" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
     <value />
   </data>
-  <data name="selectSoundButton.error" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="selectSoundButton.error" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
+    <value>Fout: Bestand niet gevonden</value>
+  </data>
+  <data name="resetAudioDevices.desc" xml:space="preserve">
+    <value>Herstel de audioapparaat toewijzing aan specifieke programma's in Windows, in het geval dat audioapparaten niet opnieuw aan programma's worden toegewezen bij het wisselen van apparaten.</value>
+  </data>
+  <data name="position.center" xml:space="preserve">
+    <value>Midden</value>
+  </data>
+  <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
+    <value>Systeem status hersteld</value>
   </data>
 </root>
