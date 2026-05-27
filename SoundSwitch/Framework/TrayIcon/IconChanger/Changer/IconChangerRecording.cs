@@ -18,9 +18,9 @@ using SoundSwitch.Localization;
 
 namespace SoundSwitch.Framework.TrayIcon.IconChanger.Changer;
 
-public class PlaybackIconChanger : AbstractIconChanger
+public class IconChangerRecording : IconChangerAbstract
 {
-    public override IconChanger TypeEnum => IconChanger.Playback;
-    public override string Label => TrayIconStrings.iconChanger_playback;
-    protected override DataFlow Flow => DataFlow.Render;
+    public override IconChanger TypeEnum => IconChanger.Recording;
+    public override string Label => TrayIconStrings.iconChanger_recording;
+    protected override DataFlow Flow => DataFlow.Capture;
 }

@@ -21,9 +21,9 @@ public class IconChangerFactory() : AbstractFactory<IconChanger, IIconChanger>(I
 {
     private static readonly IEnumImplList<IconChanger, IIconChanger> Impl = new EnumImplList<IconChanger, IIconChanger>()
     {
-        new NeverIconIconChanger(),
-        new PlaybackIconChanger(),
-        new RecordingIconChanger(),
-        new AlwaysIconChanger()
+        new IconChangerNone(),
+        new IconChangerPlayback(),
+        new IconChangerRecording(),
+        new IconChangerAlways()
     };
 }
