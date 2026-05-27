@@ -147,11 +147,14 @@ def get_recent_commits(commit_count: int) -> list[str]:
         check=False,
         capture_output=True,
         text=True,
+        encoding="utf-8",
+        errors="replace",
     )
     if result.returncode != 0:
         return []
 
-    return [line.strip() for line in result.stdout.splitlines() if line.strip()]
+    stdout = result.stdout or ""
+    return [line.strip() for line in stdout.splitlines() if line.strip()]
 
 
 def format_commit_lines(commits: list[str], repository: str) -> str:
