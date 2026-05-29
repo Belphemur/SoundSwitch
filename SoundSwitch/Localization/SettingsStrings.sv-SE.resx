@@ -762,4 +762,7 @@ Tryck på Esc för att stänga.</value>
   <data name="switchPlaybackDevice" xml:space="preserve">
     <value>Byt uppspelningsenhet</value>
   </data>
+  <data name="toggleMicrophoneMute" xml:space="preserve">
+    <value>Växla mikrofon tysta</value>
+  </data>
 </root>
