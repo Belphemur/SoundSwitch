@@ -11,9 +11,9 @@ In this case, the issue was caused by a different audio device being set as the 
 
 ## How to fix it
 
-1. Open **Settings → System → Sound**.
-2. Go to **Input** and pick your preferred microphone.
-3. Ensure it is set as the **default communication device**.
+1. In SoundSwitch, open **Settings → General** and enable **Switch Default Communication Device**.
+2. Open **Windows Settings → System → Sound** and go to **Input**.
+3. Select the microphone you want SoundSwitch to toggle and ensure it is set as the **default communication device**.
 
 ---
 
