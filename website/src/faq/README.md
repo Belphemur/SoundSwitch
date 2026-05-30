@@ -30,6 +30,7 @@ Answers to the most common questions, collected over the years from the [GitHub 
 ## Troubleshooting
 
 - [My applications don't switch sound after an update](./app-not-switching-after-update.md)
+- [Microphone on/off stopped working](./mic-on-off-not-working.md)
 - [Settings window opens every time Windows starts](./settings-open-at-startup.md)
 
 ## Command Line
