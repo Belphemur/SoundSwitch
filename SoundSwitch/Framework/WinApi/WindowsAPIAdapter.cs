@@ -147,6 +147,8 @@ public class WindowsAPIAdapter : Form
 
         SystemEvents.PowerModeChanged += SystemEventsOnPowerModeChanged;
 
+        SystemEvents.SessionSwitch += SystemEventsSessionSwitch;
+
         _instance = new WindowsAPIAdapter();
         _instance.CreateHandle();
         _instance._msgNotifyShell = Interop.RegisterWindowMessage("SHELLHOOK");
@@ -169,10 +171,20 @@ public class WindowsAPIAdapter : Form
         _instance?.BeginInvoke(new Action(_instance.ReRegisterAllHotkeys));
     }
 
+    private static void SystemEventsSessionSwitch(object sender, SessionSwitchEventArgs e)
+    {
+        if (e.Reason.Equals(SessionSwitchReason.ConsoleConnect))
+        {
+            Log.Information("User login");
+            Program.RestartApp();
+        }
+    }
+
     private void EndForm()
     {
         Close();
         SystemEvents.PowerModeChanged -= SystemEventsOnPowerModeChanged;
+        SystemEvents.SessionSwitch -= SystemEventsSessionSwitch;
         CleanupHook();
     }
 
