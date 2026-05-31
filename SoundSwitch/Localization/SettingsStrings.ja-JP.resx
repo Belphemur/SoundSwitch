@@ -762,4 +762,7 @@
     <value>R を押すと位置をリセットします。
 Esc を押すと閉じます。</value>
   </data>
+  <data name="toggleMicrophoneMute" xml:space="preserve">
+    <value>マイクのミュートを切り替え</value>
+  </data>
 </root>
