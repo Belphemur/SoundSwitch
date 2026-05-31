@@ -173,7 +173,7 @@ public class WindowsAPIAdapter : Form
 
     private static void SystemEventsSessionSwitch(object sender, SessionSwitchEventArgs e)
     {
-        if (e.Reason.Equals(SessionSwitchReason.ConsoleConnect))
+        if (e.Reason == SessionSwitchReason.ConsoleConnect)
         {
             Log.Information("User login");
             Program.RestartApp();
