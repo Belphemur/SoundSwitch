@@ -87,6 +87,7 @@ public class WindowsAPIAdapter : Form
     public static event EventHandler<DeviceChangeEvent> DeviceChanged;
     public static event EventHandler<KeyPressedEventArgs> HotKeyPressed;
     public static event EventHandler<WindowDestroyedEvent> WindowDestroyed;
+    public static event EventHandler SessionUnlocked;
 
     /// <summary>
     ///     Start the Adapter thread
@@ -119,6 +120,7 @@ public class WindowsAPIAdapter : Form
         RestartManagerTriggered = null;
         DeviceChanged = null;
         HotKeyPressed = null;
+        SessionUnlocked = null;
 
         if (!_instance.IsDisposed)
         {
@@ -146,6 +148,7 @@ public class WindowsAPIAdapter : Form
         }
 
         SystemEvents.PowerModeChanged += SystemEventsOnPowerModeChanged;
+        SystemEvents.SessionSwitch += SystemEventsOnSessionSwitch;
 
         _instance = new WindowsAPIAdapter();
         _instance.CreateHandle();
@@ -169,10 +172,21 @@ public class WindowsAPIAdapter : Form
         _instance?.BeginInvoke(new Action(_instance.ReRegisterAllHotkeys));
     }
 
+    private static void SystemEventsOnSessionSwitch(object sender, SessionSwitchEventArgs e)
+    {
+        if (e.Reason != SessionSwitchReason.SessionUnlock)
+        {
+            return;
+        }
+
+        _instance?.BeginInvoke(new Action(() => SessionUnlocked?.Invoke(_instance, EventArgs.Empty)));
+    }
+
     private void EndForm()
     {
         Close();
         SystemEvents.PowerModeChanged -= SystemEventsOnPowerModeChanged;
+        SystemEvents.SessionSwitch -= SystemEventsOnSessionSwitch;
         CleanupHook();
     }
 

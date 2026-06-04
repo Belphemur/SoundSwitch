@@ -190,10 +190,22 @@ public class ProfileManager
         WindowsAPIAdapter.WindowDestroyed += (sender, @event) => { RestoreState(@event.Hwnd); };
         _logger.Information("Windows Destroyed Registered");
 
+        WindowsAPIAdapter.SessionUnlocked += (sender, @event) => { TriggerStartupProfiles(); };
+        _logger.Information("Session Unlock Registered");
+
         AppModel.Instance.DefaultDeviceChanged += (sender, audioChangeEvent) =>
         {
             if (HandleDeviceChanged(audioChangeEvent)) return;
         };
+    }
+
+    private void TriggerStartupProfiles()
+    {
+        foreach (var profile in Profiles.Where(profile => profile.Triggers.Any(trigger => trigger.Type == TriggerFactory.Enum.Startup)))
+        {
+            _logger.Information("Session unlocked, applying startup trigger profile {ProfileName}", profile.Name);
+            SwitchAudio(profile);
+        }
     }
 
     private bool HandleUwpApp(WindowMonitor.Event @event)
