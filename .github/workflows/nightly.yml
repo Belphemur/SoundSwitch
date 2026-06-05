@@ -27,10 +27,27 @@ jobs:
             - uses: actions/checkout@v6
               with:
                   fetch-depth: 0
+            - name: Detect target framework and SDK version
+              id: dotnet-version
+              shell: pwsh
+              run: |
+                  [xml]$project = Get-Content "${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.csproj"
+                  $framework = $project.Project.PropertyGroup.TargetFramework | Select-Object -First 1
+                  if ([string]::IsNullOrWhiteSpace($framework)) {
+                    throw "Unable to determine TargetFramework from ${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.csproj"
+                  }
+
+                  $match = [System.Text.RegularExpressions.Regex]::Match($framework, '^net(?<major>\d+)\.(?<minor>\d+)')
+                  if (-not $match.Success) {
+                    throw "Unable to derive .NET SDK version from TargetFramework '$framework'"
+                  }
+
+                  $dotnetVersion = "{0}.{1}.x" -f $match.Groups['major'].Value, $match.Groups['minor'].Value
+                  "dotnet-version=$dotnetVersion" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
             - name: Setup .NET
               uses: actions/setup-dotnet@v5
               with:
-                  global-json-file: global.json
+                  dotnet-version: ${{ steps.dotnet-version.outputs.dotnet-version }}
                   cache: true
                   cache-dependency-path: Directory.Packages.props
             - name: Install Inno Setup
