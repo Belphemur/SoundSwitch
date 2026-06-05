@@ -1,3 +1,18 @@
+## [7.1.0](https://github.com/Belphemur/SoundSwitch/compare/v7.0.0...v7.1.0) (2026-05-21)
+
+### Features
+
+* **website:** add Advanced nightly downloads page ([#2148](https://github.com/Belphemur/SoundSwitch/issues/2148)) ([4287d87](https://github.com/Belphemur/SoundSwitch/commit/4287d87c74962e70d440fd4dd8e4c7f7a7d7d063))
+
+### Bug Fixes
+
+* **banner:** Prevent banner notifications from stealing focus in exclusive fullscreen games ([#2156](https://github.com/Belphemur/SoundSwitch/issues/2156)) ([acfec27](https://github.com/Belphemur/SoundSwitch/commit/acfec2769bfa4da7d346d7e41593db8b6ffe8f29))
+* **build:** ship separate x64 and arm64 publish directories; installer selects correct one at install time ([#2143](https://github.com/Belphemur/SoundSwitch/issues/2143)) ([ba8dd75](https://github.com/Belphemur/SoundSwitch/commit/ba8dd7559ffd413e4e2d4402732b55f35038d456))
+* **ci:** prevent nightly devVersion failure under strict mode ([#2146](https://github.com/Belphemur/SoundSwitch/issues/2146)) ([4089154](https://github.com/Belphemur/SoundSwitch/commit/40891540478c9be3252ced617b25fdbc0ea9f691))
+* **settings:** DPI scaling for the Notifications settings layout ([#2154](https://github.com/Belphemur/SoundSwitch/issues/2154)) ([311fdbb](https://github.com/Belphemur/SoundSwitch/commit/311fdbb1638e48d3f2e165a116a170ba2b3135e2))
+* **website:** add temporary homepage banner to .NET 7.0.0 FAQ ([37963b2](https://github.com/Belphemur/SoundSwitch/commit/37963b2c368c333da24ab029e3038d035bb0c152))
+* **website:** place .NET FAQ banner before home hero ([d697a3f](https://github.com/Belphemur/SoundSwitch/commit/d697a3f849b27b75b2fac33a2315b7ea4eac25ed))
+
 ## [7.0.0](https://github.com/Belphemur/SoundSwitch/compare/v6.14.2...v7.0.0) (2026-05-19)
 
 ### ⚠ BREAKING CHANGES
