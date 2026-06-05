@@ -179,7 +179,13 @@ public class WindowsAPIAdapter : Form
             return;
         }
 
-        _instance?.BeginInvoke(new Action(() => SessionUnlocked?.Invoke(_instance, EventArgs.Empty)));
+        var instance = _instance;
+        if (instance == null || instance.IsDisposed || !instance.IsHandleCreated)
+        {
+            return;
+        }
+
+        instance.BeginInvoke(new Action(() => SessionUnlocked?.Invoke(instance, EventArgs.Empty)));
     }
 
     private void EndForm()

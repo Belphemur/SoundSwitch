@@ -201,7 +201,7 @@ public class ProfileManager
 
     private void TriggerStartupProfiles()
     {
-        foreach (var profile in Profiles.Where(profile => profile.Triggers.Any(trigger => trigger.Type == TriggerFactory.Enum.Startup)))
+        foreach (var profile in Profiles.Where(profile => profile.Triggers.Any(trigger => trigger.Type == TriggerFactory.Enum.Startup) && profile.Devices.Any()))
         {
             _logger.Information("Session unlocked, applying startup trigger profile {ProfileName}", profile.Name);
             SwitchAudio(profile);
