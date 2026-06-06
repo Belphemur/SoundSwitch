@@ -80,7 +80,21 @@ internal class NotificationSound : INotification
         }
     }
 
-    public void NotifyMicrophoneMuteChanged(string deviceId, string microphoneName, bool newMuteState) { }
+    public void NotifyMicrophoneMuteChanged(string deviceId, string microphoneName, bool newMuteState)
+    {
+        CachedSound soundNotification;
+
+        _cancellationTokenSource?.Cancel();
+        _cancellationTokenSource?.Dispose();
+        _cancellationTokenSource = new CancellationTokenSource();
+
+        if (Configuration.CustomSound != null && File.Exists(Configuration.CustomSound.FilePath))
+            soundNotification = Configuration.CustomSound;
+        else
+            soundNotification = new CachedSound(GetStreamCopy(), new WaveFormat(44100, 1));
+
+        JobScheduler.Instance.ScheduleJob(new PlaySoundJob(null, soundNotification), _cancellationTokenSource.Token);
+    }
 
     public void OnSoundChanged(CachedSound newSound) => Configuration.CustomSound = newSound;
 
