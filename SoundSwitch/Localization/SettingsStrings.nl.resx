@@ -583,4 +583,7 @@ Herstel systeemstatus wanneer de applicatie wordt gesloten.</value>
   <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
     <value>Systeem status hersteld</value>
   </data>
+  <data name="buttonReset" xml:space="preserve">
+    <value>Herstel</value>
+  </data>
 </root>
