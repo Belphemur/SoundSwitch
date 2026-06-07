@@ -187,6 +187,6 @@
     <value>Controleren op updates</value>
   </data>
   <data name="updateDisabled" xml:space="preserve">
-    <value>Update controle uitgeschakeld</value>
+    <value>Automatisch updaten uitgeschakeld</value>
   </data>
 </root>
