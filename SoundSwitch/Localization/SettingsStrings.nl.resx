@@ -344,7 +344,7 @@ Beide: wijzigen wanneer een ander apparaat wordt gewisseld.</value>
     <value>Profiel</value>
   </data>
   <data name="profile.defaultDevice.checkbox" xml:space="preserve">
-    <value>Schakel ook het standaardapparaat</value>
+    <value>Schakel ook tussen standaard apparaat</value>
   </data>
   <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
     <value>Wanneer het programma gedetecteerd is zal SoundSwitch overschakelen naar standaard apparaat.</value>
