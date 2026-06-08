@@ -344,7 +344,7 @@ Beide: wijzigen wanneer een ander apparaat wordt gewisseld.</value>
     <value>Profiel</value>
   </data>
   <data name="profile.defaultDevice.checkbox" xml:space="preserve">
-    <value>Schakel ook het standaardapparaat</value>
+    <value>Schakel ook tussen standaard apparaat</value>
   </data>
   <data name="profile.defaultDevice.checkbox.tooltip" xml:space="preserve">
     <value>Wanneer het programma gedetecteerd is zal SoundSwitch overschakelen naar standaard apparaat.</value>
@@ -365,16 +365,16 @@ Beide: wijzigen wanneer een ander apparaat wordt gewisseld.</value>
     <value>Sneltoets die wordt gebruikt om het profiel te activeren. Als u dezelfde sneltoets gebruikt, kunt u tussen profielen schakelen.</value>
   </data>
   <data name="profile.trigger.window.desc" xml:space="preserve">
-    <value>Aktiveer het profiel als het voorgrond programma de volgende karakters bevat</value>
+    <value>Activeer het profiel als het voorgrond programma de volgende karakters bevat</value>
   </data>
   <data name="profile.trigger.process.desc" xml:space="preserve">
     <value>Aktiveer het profiel wanneer de geselecteerde applicatie in de voorgrond is</value>
   </data>
   <data name="profile.desc" xml:space="preserve">
-    <value>Omschrijving</value>
+    <value>Beschrijving</value>
   </data>
   <data name="profile.trigger.actives" xml:space="preserve">
-    <value>Aktieve Triggers</value>
+    <value>Actieve Triggers</value>
   </data>
   <data name="profile.trigger.available" xml:space="preserve">
     <value>Beschikbare Triggers</value>
@@ -383,7 +383,7 @@ Beide: wijzigen wanneer een ander apparaat wordt gewisseld.</value>
     <value>Standaard Communicatie Apparaat</value>
   </data>
   <data name="profile.error.triggers.min" xml:space="preserve">
-    <value>U hebt minimaal één trigger nodig.</value>
+    <value>U heeft minimaal één trigger nodig.</value>
   </data>
   <data name="profile.error.window" xml:space="preserve">
     <value>Er is al een profiel met dit venster naam: {0}.</value>
@@ -490,13 +490,13 @@ Herstel systeemstatus wanneer de applicatie wordt gesloten.</value>
     <value>Boven Midden</value>
   </data>
   <data name="banner.mute.option.fading" xml:space="preserve">
-    <value />
+    <value>Vervagen</value>
   </data>
   <data name="banner.mute.option.persistent" xml:space="preserve">
-    <value />
+    <value>Aanhoudend</value>
   </data>
   <data name="switchDevice" xml:space="preserve">
-    <value />
+    <value>Verander apparaat</value>
   </data>
   <data name="switchProfile" xml:space="preserve">
     <value>Verander profiel</value>
@@ -505,43 +505,44 @@ Herstel systeemstatus wanneer de applicatie wordt gesloten.</value>
     <value>Melding</value>
   </data>
   <data name="notification.bannerOptions" xml:space="preserve">
-    <value />
+    <value>Banner Opties</value>
   </data>
   <data name="seconds" xml:space="preserve">
     <value>seconden</value>
   </data>
   <data name="openSettings" xml:space="preserve">
-    <value />
+    <value>Open Instellingen</value>
   </data>
   <data name="iconDoubleClick.tooltip" xml:space="preserve">
-    <value />
+    <value>Selecteer de actie wanneer de tray icoon dubbel geklikt wordt.</value>
   </data>
   <data name="iconDoubleClick" xml:space="preserve">
-    <value />
+    <value>Dubbel klik actie</value>
   </data>
   <data name="importExportConfigFile" xml:space="preserve">
-    <value />
+    <value>Importeer / Exporteer Configuratie Bestand</value>
   </data>
   <data name="importExportConfigFile.desc" xml:space="preserve">
-    <value />
+    <value>Importeer of exporteer het SoundSwitch configuratie bestand in een gezipt archief</value>
   </data>
   <data name="importConfigErrorMessage" xml:space="preserve">
-    <value />
+    <value>Het zip archief moet een SoundSwitch configuratie bestand bevatten</value>
   </data>
   <data name="importConfigRestartRequired" xml:space="preserve">
-    <value />
+    <value>SoundSwitch wordt opnieuw opgestart nadat de hoofd configuratie bestand is geïmporteerd.
+Wil je nu herstarten?</value>
   </data>
   <data name="importConfigErrorMessage.caption" xml:space="preserve">
-    <value />
+    <value>Invalide Archief</value>
   </data>
   <data name="buttonImport" xml:space="preserve">
-    <value />
+    <value>Importeer</value>
   </data>
   <data name="exportConfigFile" xml:space="preserve">
-    <value />
+    <value>Exporteer Configuratie Bestand</value>
   </data>
   <data name="importConfigFile" xml:space="preserve">
-    <value />
+    <value>Importeer Configuratie Bestand</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="position.centerLeft" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
@@ -551,7 +552,7 @@ Herstel systeemstatus wanneer de applicatie wordt gesloten.</value>
     <value>Midden Rechts</value>
   </data>
   <data name="buttonSelect" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
-    <value />
+    <value>Selecteer</value>
   </data>
   <data name="buttonCustom" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
     <value />
@@ -563,13 +564,13 @@ Herstel systeemstatus wanneer de applicatie wordt gesloten.</value>
     <value />
   </data>
   <data name="selectSoundButton.tooltip" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
-    <value />
+    <value>Selecteer een audiobestand voor Audio en Banner notificaties</value>
   </data>
   <data name="hotkeySwitchDevice" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
-    <value />
+    <value>Selecteer apparaat sneltoets</value>
   </data>
   <data name="hotkeyToggleMute" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
-    <value />
+    <value>Schakel demp sneltoets om</value>
   </data>
   <data name="selectSoundButton.error" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
     <value>Fout: Bestand niet gevonden</value>
@@ -582,5 +583,156 @@ Herstel systeemstatus wanneer de applicatie wordt gesloten.</value>
   </data>
   <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
     <value>Systeem status hersteld</value>
+  </data>
+  <data name="buttonReset" xml:space="preserve">
+    <value>Herstel</value>
+  </data>
+  <data name="profile.trigger.steam.desc" xml:space="preserve">
+    <value>Activeer wanneer Steam Big Picture gedetecteerd wordt. (Herstelt de staat wanneer Big Picture afgesloten wordt.)</value>
+  </data>
+  <data name="profile.error.steam" xml:space="preserve">
+    <value>U kunt maar één profiel voor Steam Big Picture hebben.</value>
+  </data>
+  <data name="profile.trigger.steam" xml:space="preserve">
+    <value>Steam Big Picture</value>
+  </data>
+  <data name="profile.trigger.startup.desc" xml:space="preserve">
+    <value>Het profiel wordt automatisch geactiveerd wanneer SoundSwitch opstart</value>
+  </data>
+  <data name="profile.trigger.trayMenu.desc" xml:space="preserve">
+    <value>Deze trigger maakt het profiel zichtbaar in de tray icoon menu. Linkerklik op de systray icoon om je profiel te zien.</value>
+  </data>
+  <data name="profile.trigger.uwp" xml:space="preserve">
+    <value>Microsoft Winkel app</value>
+  </data>
+  <data name="notification.single" xml:space="preserve">
+    <value>Alleen één banner</value>
+  </data>
+  <data name="notification.single.tooltip" xml:space="preserve">
+    <value>Toon een banner per keer en vervang de inhoud.</value>
+  </data>
+  <data name="link.community" xml:space="preserve">
+    <value>Community Discord</value>
+  </data>
+  <data name="link.donate" xml:space="preserve">
+    <value>Doneer</value>
+  </data>
+  <data name="resetAudioDevices" xml:space="preserve">
+    <value>Herstel per audio app</value>
+  </data>
+  <data name="exportLogFiles" xml:space="preserve">
+    <value>Exporteer log bestanden</value>
+  </data>
+  <data name="exportLogFiles.desc" xml:space="preserve">
+    <value>Exporteer alle log bestanden in een zip archief voor troubleshooting in ofwel de Help Discussies of de gemeenschappelijke Discord</value>
+  </data>
+  <data name="buttonExport" xml:space="preserve">
+    <value>Exporteer</value>
+  </data>
+  <data name="troubleshooting.desc" xml:space="preserve">
+    <value>Als je hulp of verdere troubleshooting met SoundSwitch nodig hebt, kan je de Help Discussie of Gemeenschappelijke Discord bezoeken, of help support door de onderstaande donatielink te bezoeken.</value>
+  </data>
+  <data name="microphone.on" xml:space="preserve">
+    <value>Microfoon aan</value>
+  </data>
+  <data name="microphone.off" xml:space="preserve">
+    <value>Microfoon uit</value>
+  </data>
+  <data name="microphoneMuted" xml:space="preserve">
+    <value>Microfoon gedempt</value>
+  </data>
+  <data name="banner.mute.tooltip" xml:space="preserve">
+    <value>Toon de banner wanneer de microfoon is gedempt of ongedempt. Aanhoudend betekend dat het altijd op het scherm zichtbaar is wanneer hij gedempt is</value>
+  </data>
+  <data name="switchRecordingDevice" xml:space="preserve">
+    <value>Verander opname apparaat</value>
+  </data>
+  <data name="banner.onscreen.time.tooltip" xml:space="preserve">
+    <value>Hoe lang de banner op het scherm blijft in seconden</value>
+  </data>
+  <data name="importConfigErrorReadingFile" xml:space="preserve">
+    <value>Error tijdens het lezen van het configuratie bestand '{0}' uit het archief: {1}</value>
+  </data>
+  <data name="importConfigErrorInvalidJson" xml:space="preserve">
+    <value>Het configuratie bestand '{0}' is ongeldige JSON. Error: {1}</value>
+  </data>
+  <data name="importConfigErrorDeserializationNull" xml:space="preserve">
+    <value>Het configuratie bestand '{0}' kan niet correct gedeserialiseerd worden (met als resultaat null).  Controleer of het een valide SoundSwitch configuratie is.</value>
+  </data>
+  <data name="customPositionBanner.title" xml:space="preserve">
+    <value>Verplaats naar nieuwe positie</value>
+  </data>
+  <data name="customPositionBanner.text" xml:space="preserve">
+    <value>Druk op R om positie te resetten.
+Druk op Esc om te sluiten.</value>
+  </data>
+  <data name="banner.opacity" xml:space="preserve">
+    <value>Doorzichtigheid</value>
+  </data>
+  <data name="banner.opacity.tooltip" xml:space="preserve">
+    <value>Zet de doorzichtigheid van de banner</value>
+  </data>
+  <data name="banner.displayInfo" xml:space="preserve">
+    <value>Informatie Weergeven</value>
+  </data>
+  <data name="banner.displayInfo.tooltip" xml:space="preserve">
+    <value>Hoe de banner wordt weergegeven</value>
+  </data>
+  <data name="banner.display.option.fullDisplay" xml:space="preserve">
+    <value>Volledig scherm</value>
+  </data>
+  <data name="banner.display.option.iconOnly" xml:space="preserve">
+    <value>Alleen Iconen</value>
+  </data>
+  <data name="banner.display.option.descOnly" xml:space="preserve">
+    <value>Alleen Omschrijvingen</value>
+  </data>
+  <data name="notification.type" xml:space="preserve">
+    <value>Notificatie Type</value>
+  </data>
+  <data name="appSoundLock.tab" xml:space="preserve">
+    <value>App Regels</value>
+  </data>
+  <data name="appSoundLock.explanation" xml:space="preserve">
+    <value>Verbind specifieke afspeel en opname apparaten aan processen of schermen doormiddel van Regex-overeenkomsten</value>
+  </data>
+  <data name="appSoundLock.rule.processName" xml:space="preserve">
+    <value>Proces Naam</value>
+  </data>
+  <data name="appSoundLock.rule.processPath" xml:space="preserve">
+    <value>Proces Pad</value>
+  </data>
+  <data name="appSoundLock.rule.windowTitle" xml:space="preserve">
+    <value>Scherm Titel</value>
+  </data>
+  <data name="appSoundLock.rule.regexNotice" xml:space="preserve">
+    <value>Notitie: Het patroon gebruikt standaard Regex.</value>
+  </data>
+  <data name="appSoundLock.selectProcess" xml:space="preserve">
+    <value>Selecteer Proces...</value>
+  </data>
+  <data name="appSoundLock.addRule" xml:space="preserve">
+    <value>Regel toevoegen</value>
+  </data>
+  <data name="appSoundLock.editRule" xml:space="preserve">
+    <value>Regel bewerken</value>
+  </data>
+  <data name="appSoundLock.deleteRule" xml:space="preserve">
+    <value>Regel verwijderen</value>
+  </data>
+  <data name="appSoundLock.rule.enabled" xml:space="preserve">
+    <value>Ingeschakeld</value>
+  </data>
+  <data name="appSoundLock.rule.caseSensitive" xml:space="preserve">
+    <value>Hoofdletter Gevoelig</value>
+  </data>
+  <data name="appSoundLock.rule.notify" xml:space="preserve">
+    <value>Melding geven wanneer getriggert</value>
+  </data>
+  <data name="appSoundLock.filter" xml:space="preserve">
+    <value>Filteren:</value>
+  </data>
+  <data name="appSoundLock.rule.description" xml:space="preserve">
+    <value>Selecteer het proces of de applicatie wiens audio je wil besturen. De geselecteerde apparaten worden automatisch toegewezen wanneer de applicatie draait.</value>
   </data>
 </root>
