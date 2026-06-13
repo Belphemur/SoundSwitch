@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: read
 
 env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
@@ -142,12 +143,18 @@ jobs:
           require_release="${{ needs.changes.outputs.node == 'true' || needs.changes.outputs.ci == 'true' }}"
           require_docs="${{ needs.changes.outputs.website == 'true' || needs.changes.outputs.ci == 'true' }}"
 
+          changes_result="${{ needs.changes.result }}"
           dotnet_result="${{ needs.build.result }}"
           translations_result="${{ needs.validate-translations.result }}"
           release_result="${{ needs['release-dry-run'].result }}"
           docs_result="${{ needs['build-docs'].result }}"
 
           failed=0
+
+          if [[ "${changes_result}" != "success" ]]; then
+            echo "Changes job failed or was cancelled. Result: ${changes_result}"
+            failed=1
+          fi
 
           if [[ "${require_dotnet}" == "true" && "${dotnet_result}" != "success" ]]; then
             echo "C# build is required but result was: ${dotnet_result}"
