@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using FluentAssertions;
 
@@ -38,33 +37,91 @@ public class DeviceCyclerTests
     }
 
     [Test]
-    public void TestCycleAudioDevice_WithSingleDevice()
+    public void TestCycleAudioDevice_WhenDeviceIsAlreadyDefault_ReturnsFalse()
     {
         if (Environment.GetEnvironmentVariable("CI") != null)
         {
             Assert.Ignore("CI doesn't have audio device to make this test work");
         }
 
-        var activeEndpoints = AudioSwitcher.Instance.GetAudioEndpoints(EDataFlow.eRender, EDeviceState.Active).ToList();
-        if (!activeEndpoints.Any())
+        using var enumerator = AudioSwitcher.Instance.GetAudioEndpoints(EDataFlow.eRender, EDeviceState.Active).GetEnumerator();
+        if (!enumerator.MoveNext())
         {
             Assert.Ignore("No active playback devices found to run the test");
         }
 
-        var singleDevice = activeEndpoints.First();
+        var singleDevice = enumerator.Current;
         var cycler = new TestDeviceCycler(new List<DeviceFullInfo> { singleDevice });
+        using var originalDefault = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eConsole);
 
-        using var currentDefaultDevice = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eConsole);
-
-        if (currentDefaultDevice != null && currentDefaultDevice.Id == singleDevice.Id)
+        try
         {
-            // If the single device is already default, CycleAudioDevice should return false
+            // Arrange: force singleDevice to be the system default
+            AudioSwitcher.Instance.SwitchTo(singleDevice.Id, ERole.eConsole);
+            AudioSwitcher.Instance.SwitchTo(singleDevice.Id, ERole.eMultimedia);
+
+            // Act & Assert: device is already the default, so cycling should return false
             cycler.CycleAudioDevice(DataFlow.Render).Should().BeFalse();
+
+            // Assert default endpoint ID is unchanged
+            using var currentDefault = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eConsole);
+            currentDefault?.Id.Should().Be(singleDevice.Id);
         }
-        else
+        finally
         {
-            // If the single device is not default, CycleAudioDevice should set it as active and return true
+            if (originalDefault != null)
+            {
+                AudioSwitcher.Instance.SwitchTo(originalDefault.Id, ERole.eConsole);
+                AudioSwitcher.Instance.SwitchTo(originalDefault.Id, ERole.eMultimedia);
+            }
+        }
+    }
+
+    [Test]
+    public void TestCycleAudioDevice_WhenDeviceIsNotDefault_ReturnsTrueAndSetsDefault()
+    {
+        if (Environment.GetEnvironmentVariable("CI") != null)
+        {
+            Assert.Ignore("CI doesn't have audio device to make this test work");
+        }
+
+        using var enumerator = AudioSwitcher.Instance.GetAudioEndpoints(EDataFlow.eRender, EDeviceState.Active).GetEnumerator();
+        if (!enumerator.MoveNext())
+        {
+            Assert.Ignore("No active playback devices found to run the test");
+        }
+
+        var singleDevice = enumerator.Current;
+
+        if (!enumerator.MoveNext())
+        {
+            Assert.Ignore("Need at least 2 active playback devices to test the mismatched-default scenario");
+        }
+
+        var otherDevice = enumerator.Current;
+        var cycler = new TestDeviceCycler(new List<DeviceFullInfo> { singleDevice });
+        using var originalDefault = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eConsole);
+
+        try
+        {
+            // Arrange: make otherDevice the system default so singleDevice is not the default
+            AudioSwitcher.Instance.SwitchTo(otherDevice.Id, ERole.eConsole);
+            AudioSwitcher.Instance.SwitchTo(otherDevice.Id, ERole.eMultimedia);
+
+            // Act & Assert: singleDevice is not the default, so cycling should activate it and return true
             cycler.CycleAudioDevice(DataFlow.Render).Should().BeTrue();
+
+            // Assert default endpoint is now singleDevice
+            using var currentDefault = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eConsole);
+            currentDefault?.Id.Should().Be(singleDevice.Id);
+        }
+        finally
+        {
+            if (originalDefault != null)
+            {
+                AudioSwitcher.Instance.SwitchTo(originalDefault.Id, ERole.eConsole);
+                AudioSwitcher.Instance.SwitchTo(originalDefault.Id, ERole.eMultimedia);
+            }
         }
     }
 }
