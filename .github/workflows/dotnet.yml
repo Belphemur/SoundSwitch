@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [dev, master, beta]
 
+permissions:
+  contents: read
+
 env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   NODEJS: lts/*
