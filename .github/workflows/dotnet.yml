@@ -107,7 +107,7 @@ jobs:
       - name: Release dry run
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: node tools/release-dry-run.js
+        run: npx semantic-release --dry-run --no-ci
 
   build-docs:
     needs: changes
