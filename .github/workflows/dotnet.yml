@@ -20,6 +20,7 @@ jobs:
       ci: ${{ steps.filter.outputs.ci }}
       sound-switch: ${{ steps.filter.outputs.sound-switch }}
       node: ${{ steps.filter.outputs.node }}
+      website: ${{ steps.filter.outputs.website }}
       translations: ${{ steps.filter.outputs.translations }}
       translation-files: ${{ steps.filter.outputs.translations_files }}
     steps:
@@ -47,6 +48,9 @@ jobs:
               - '.releaserc.cjs'
               - 'release.config.js'
               - 'release.config.cjs'
+            website:
+              - 'website/**'
+              - '.github/workflows/docs.yml'
             translations:
               - 'SoundSwitch/**/*.resx'
 
@@ -77,7 +81,7 @@ jobs:
 
   release-dry-run:
     needs: changes
-    if: needs.changes.outputs.node == 'true'
+    if: needs.changes.outputs.node == 'true' || needs.changes.outputs.ci == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -100,3 +104,70 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node tools/release-dry-run.js
+
+  build-docs:
+    needs: changes
+    if: needs.changes.outputs.website == 'true' || needs.changes.outputs.ci == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: 'website/.nvmrc'
+      - run: npm ci --legacy-peer-deps
+        working-directory: website
+      - run: npm run docs:build
+        working-directory: website
+
+  merge-gate:
+    if: always() && github.event_name == 'pull_request'
+    needs:
+      - changes
+      - validate-translations
+      - build
+      - release-dry-run
+      - build-docs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate required checks
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          require_dotnet="${{ needs.changes.outputs.sound-switch == 'true' || needs.changes.outputs.ci == 'true' }}"
+          require_translations="${{ needs.changes.outputs.translations == 'true' }}"
+          require_release="${{ needs.changes.outputs.node == 'true' || needs.changes.outputs.ci == 'true' }}"
+          require_docs="${{ needs.changes.outputs.website == 'true' || needs.changes.outputs.ci == 'true' }}"
+
+          dotnet_result="${{ needs.build.result }}"
+          translations_result="${{ needs.validate-translations.result }}"
+          release_result="${{ needs['release-dry-run'].result }}"
+          docs_result="${{ needs['build-docs'].result }}"
+
+          failed=0
+
+          if [[ "${require_dotnet}" == "true" && "${dotnet_result}" != "success" ]]; then
+            echo "C# build is required but result was: ${dotnet_result}"
+            failed=1
+          fi
+
+          if [[ "${require_translations}" == "true" && "${translations_result}" != "success" ]]; then
+            echo "Translation validation is required but result was: ${translations_result}"
+            failed=1
+          fi
+
+          if [[ "${require_release}" == "true" && "${release_result}" != "success" ]]; then
+            echo "Semantic release dry run is required but result was: ${release_result}"
+            failed=1
+          fi
+
+          if [[ "${require_docs}" == "true" && "${docs_result}" != "success" ]]; then
+            echo "Docs build is required but result was: ${docs_result}"
+            failed=1
+          fi
+
+          if [[ "${failed}" -eq 1 ]]; then
+            exit 1
+          fi
+
+          echo "Merge gate passed."
