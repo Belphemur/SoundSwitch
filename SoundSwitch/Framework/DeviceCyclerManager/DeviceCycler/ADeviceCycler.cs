@@ -55,9 +55,19 @@ public abstract class ADeviceCycler : IDeviceCycler
         return audioDevices switch
         {
             { Length: 0 } => throw new AppModel.NoDevicesException(),
-            { Length: 1 } => false,
+            { Length: 1 } => HandleSingleDevice(audioDevices[0], type),
             _             => CycleDevice()
         };
+    }
+
+    private bool HandleSingleDevice(DeviceFullInfo singleDevice, DataFlow type)
+    {
+        using var currentDefaultDevice = AudioSwitcher.Instance.GetDefaultAudioEndpoint((EDataFlow) type, ERole.eConsole);
+        if (currentDefaultDevice == null || currentDefaultDevice.Id != singleDevice.Id)
+        {
+            return SetActiveDevice(singleDevice);
+        }
+        return false;
     }
 
     protected abstract IEnumerable<DeviceFullInfo> GetDevices(DataFlow type);
