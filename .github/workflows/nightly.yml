@@ -23,6 +23,7 @@ jobs:
         runs-on: windows-latest
         outputs:
             version: ${{ steps.dev-version.outputs.version }}
+            download_url: ${{ steps.metadata.outputs.download-url }}
         steps:
             - uses: actions/checkout@v6
               with:
@@ -164,6 +165,80 @@ jobs:
               with:
                   name: nightly-metadata
                   path: version.json
+
+    comment-nightly-issues:
+        concurrency:
+            group: ${{ github.workflow }}-${{ github.ref }}-comment-nightly-issues
+            cancel-in-progress: true
+        needs: publish-nightly
+        runs-on: ubuntu-latest
+        if: needs.publish-nightly.result == 'success'
+        permissions:
+            issues: write
+        steps:
+            - uses: actions/checkout@v6
+              with:
+                  fetch-depth: 0
+            - name: Ensure nightly label exists
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  gh label create "nightly" \
+                    --description "Fix available in nightly build" \
+                    --color "0075ca" \
+                    --repo "${{ github.repository }}" 2>/dev/null || true
+            - name: Comment on fixed issues
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  DOWNLOAD_URL: ${{ needs.publish-nightly.outputs.download_url }}
+                  VERSION: ${{ needs.publish-nightly.outputs.version }}
+              run: |
+                  BEFORE="${{ github.event.before }}"
+                  AFTER="${{ github.sha }}"
+
+                  if git rev-parse --verify "$BEFORE" >/dev/null 2>&1; then
+                    COMMITS=$(git log "$BEFORE..$AFTER" --format="%B")
+                  else
+                    COMMITS=$(git log -20 --format="%B")
+                  fi
+
+                  ISSUES=$(echo "$COMMITS" | \
+                    grep -iEo "(close[sd]?|fix(e[sd])?|resolve[sd]?)[[:space:]:]*#([0-9]+)" | \
+                    grep -Eo "[0-9]+$" | sort -u)
+
+                  if [ -z "$ISSUES" ]; then
+                    echo "No issues referenced in commits."
+                    exit 0
+                  fi
+
+                  for ISSUE in $ISSUES; do
+                    STATE=$(gh issue view "$ISSUE" \
+                      --repo "${{ github.repository }}" \
+                      --json state --jq '.state' 2>/dev/null || echo "")
+                    if [ "$STATE" != "OPEN" ]; then
+                      echo "Issue #$ISSUE is not open (state: $STATE), skipping."
+                      continue
+                    fi
+
+                    LABELS=$(gh issue view "$ISSUE" \
+                      --repo "${{ github.repository }}" \
+                      --json labels --jq '.labels[].name' 2>/dev/null || echo "")
+                    if echo "$LABELS" | grep -qx "nightly"; then
+                      echo "Issue #$ISSUE already tagged nightly, skipping."
+                      continue
+                    fi
+
+                    BODY=$(printf '🌙 This fix is included in nightly build **%s**.\nYou can download it here: %s' "${VERSION}" "${DOWNLOAD_URL}")
+                    gh issue comment "$ISSUE" \
+                      --repo "${{ github.repository }}" \
+                      --body "$BODY"
+
+                    gh issue edit "$ISSUE" \
+                      --repo "${{ github.repository }}" \
+                      --add-label "nightly"
+
+                    echo "Commented and labelled issue #$ISSUE"
+                  done
 
     nightly-sentry:
         concurrency:
