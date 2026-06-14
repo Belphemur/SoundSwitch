@@ -38,7 +38,7 @@ public class PlaySoundJob([CanBeNull] string deviceId, [NotNull] CachedSound sou
 
     private async Task PlaySoundInternalAsync(CancellationToken cancellationToken)
     {
-        await using var semaphore = new SemaphoreSlim(0);
+        using var semaphore = new SemaphoreSlim(0);
 
         using var enumerator = new MMDeviceEnumerator();
         using var device = GetDevice(enumerator);
