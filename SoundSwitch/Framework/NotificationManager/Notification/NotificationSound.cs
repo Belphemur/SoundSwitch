@@ -80,7 +80,20 @@ internal class NotificationSound : INotification
         }
     }
 
-    public void NotifyMicrophoneMuteChanged(string deviceId, string microphoneName, bool newMuteState) { }
+    public void NotifyMicrophoneMuteChanged(string deviceId, string microphoneName, bool newMuteState)
+    {
+        _cancellationTokenSource?.Cancel();
+        _cancellationTokenSource?.Dispose();
+        _cancellationTokenSource = new CancellationTokenSource();
+
+        CachedSound soundNotification;
+        if (HasCustomSound())
+            soundNotification = Configuration.CustomSound;
+        else
+            soundNotification = new CachedSound(GetStreamCopy(), new WaveFormat(44100, 1));
+
+        JobScheduler.Instance.ScheduleJob(new PlaySoundJob(null, soundNotification), _cancellationTokenSource.Token);
+    }
 
     public void OnSoundChanged(CachedSound newSound) => Configuration.CustomSound = newSound;
 
@@ -89,6 +102,9 @@ internal class NotificationSound : INotification
     public bool IsAvailable() => true;
 
     public bool CustomSoundCheck(DeviceFullInfo audioDevice) => audioDevice.Type == DataFlow.Render && Configuration.CustomSound != null && File.Exists(Configuration.CustomSound.FilePath);
+
+    private bool HasCustomSound() =>
+        Configuration.CustomSound != null && File.Exists(Configuration.CustomSound.FilePath);
 
     private MemoryStream GetStreamCopy()
     {

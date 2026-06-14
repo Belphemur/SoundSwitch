@@ -19,41 +19,91 @@ public class PlaySoundJob([CanBeNull] string deviceId, [NotNull] CachedSound sou
 {
     public async Task ExecuteAsync(CancellationToken cancellationToken)
     {
+        if (sound == null)
+            throw new ArgumentNullException(nameof(sound));
+
         try
         {
-            using var semaphore = new SemaphoreSlim(0);
-            MMDevice device = null;
-            using var enumerator = new MMDeviceEnumerator();
-            if (deviceId != null)
+            await PlaySoundInternalAsync(cancellationToken);
+        }
+        catch (OperationCanceledException)
+        {
+        }
+        catch (Exception)
+        {
+            // Let OnFailure handle all failure logging
+            throw;
+        }
+    }
+
+    private async Task PlaySoundInternalAsync(CancellationToken cancellationToken)
+    {
+        await using var semaphore = new SemaphoreSlim(0);
+
+        using var enumerator = new MMDeviceEnumerator();
+        using var device = GetDevice(enumerator);
+        if (device == null)
+        {
+            Log.ForContext<PlaySoundJob>().Warning("No audio device found for specified ID.");
+            return;
+        }
+
+        using var player = CreatePlayer(device);
+        await using var waveStream = new CachedSoundWaveStream(sound);
+
+        player.Init(waveStream);
+
+        void OnPlaybackStoppedHandler(object o, StoppedEventArgs stoppedEventArgs)
+        {
+            try
             {
-                device = enumerator.GetDevice(deviceId);
+                semaphore.Release();
             }
-
-            using var player = device == null ? new WasapiOut() : new WasapiOut(device, AudioClientShareMode.Shared, true, 200);
-            await using var waveStream = new CachedSoundWaveStream(sound);
-            player.Init(waveStream);
-
-            void PlayerOnPlaybackStopped(object o, StoppedEventArgs stoppedEventArgs)
+            catch (ObjectDisposedException)
             {
-                try
-                {
-                    semaphore.Release();
-                }
-                catch (ObjectDisposedException)
-                {
-                    //Ignored
-                    //Already disposed, no need to release anything
-                }
             }
+        }
 
-            player.PlaybackStopped += PlayerOnPlaybackStopped;
+        player.PlaybackStopped += OnPlaybackStoppedHandler;
+        try
+        {
             player.Play();
             await semaphore.WaitAsync(cancellationToken);
-            player.PlaybackStopped -= PlayerOnPlaybackStopped;
         }
-        catch (TaskCanceledException)
+        finally
         {
-            //Ignored
+            player.PlaybackStopped -= OnPlaybackStoppedHandler;
+        }
+    }
+
+    private MMDevice GetDevice(MMDeviceEnumerator enumerator)
+    {
+        if (string.IsNullOrEmpty(deviceId))
+            return null;
+
+        var device = enumerator.GetDevice(deviceId);
+        if (device == null)
+        {
+            Log.ForContext<PlaySoundJob>().Warning($"Could not find audio device with ID: {deviceId}");
+        }
+        return device;
+    }
+
+    private WasapiOut CreatePlayer(MMDevice device)
+    {
+        if (device == null)
+        {
+            return new WasapiOut();
+        }
+
+        try
+        {
+            return new WasapiOut(device, AudioClientShareMode.Shared, true, 200);
+        }
+        catch (Exception ex)
+        {
+            Log.ForContext<PlaySoundJob>().Error(ex, "Failed to initialize WasapiOut with specified device.");
+            return new WasapiOut();
         }
     }
 
@@ -63,7 +113,8 @@ public class PlaySoundJob([CanBeNull] string deviceId, [NotNull] CachedSound sou
         {
             return Task.CompletedTask;
         }
-        Log.ForContext<PlaySoundJob>().Warning(exception, "Can play sound");
+
+        Log.ForContext<PlaySoundJob>().Warning(exception, "Failed to play sound notification");
         return Task.CompletedTask;
     }
 
