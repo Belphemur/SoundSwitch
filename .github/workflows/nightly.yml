@@ -224,10 +224,6 @@ jobs:
                     STATE=$(gh issue view "$ISSUE" \
                       --repo "${{ github.repository }}" \
                       --json state --jq '.state' 2>/dev/null || echo "")
-                    if [ "$STATE" != "OPEN" ]; then
-                      echo "Issue #$ISSUE is not open (state: $STATE), skipping."
-                      continue
-                    fi
 
                     LABELS=$(gh issue view "$ISSUE" \
                       --repo "${{ github.repository }}" \
