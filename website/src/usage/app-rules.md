@@ -28,8 +28,8 @@ When adding or editing a rule, you configure these fields:
 
 | Field | What It Matches | Example |
 |-------|-----------------|---------|
-| **Process Path** | The full process path or name — matched as a **regular expression** | `.*chrome\.exe.*` matches any Chrome process |
-| **Window Title** | The title of the application's active window — matched as a **regular expression** | `.*YouTube.*` matches any window with "YouTube" in the title |
+| **Process Path** | The full process path or name — matched as a **regular expression** (or a glob pattern fallback like `*chrome*`) | `.*chrome\.exe.*` matches any Chrome process |
+| **Window Title** | The title of the application's active window — matched as a **regular expression** (or a glob pattern fallback like `*YouTube*`) | `.*YouTube.*` matches any window with "YouTube" in the title |
 | **Playback** | The audio output device to route the application's sound to | Speakers, Headphones, etc. |
 | **Recording** | The audio input device to route the application's microphone access to | Microphone, Virtual Cable, etc. |
 

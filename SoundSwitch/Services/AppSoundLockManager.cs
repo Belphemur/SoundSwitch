@@ -102,14 +102,21 @@ namespace SoundSwitch.Services
             var processMatched = string.IsNullOrEmpty(rule.ProcessPath); // If empty, consider matched
             if (!processMatched)
             {
+                var targets = new[] { processPath, processName, processName + ".exe" };
                 try
                 {
-                    var targets = new[] { processPath, processName, processName + ".exe" };
+                    // Validate regex once
+                    _ = Regex.Match(string.Empty, rule.ProcessPath, options);
                     processMatched = targets.Any(t => !string.IsNullOrEmpty(t) && Regex.IsMatch(t, rule.ProcessPath, options));
+                }
+                catch (RegexParseException ex)
+                {
+                    _logger.Warning(ex, "Invalid Regex for ProcessPath: {Pattern}. Falling back to glob.", rule.ProcessPath);
+                    processMatched = targets.Any(t => !string.IsNullOrEmpty(t) && IsGlobMatch(t, rule.ProcessPath, options));
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error(ex, "Invalid Regex for ProcessPath: {Pattern}", rule.ProcessPath);
+                    _logger.Warning(ex, "Unexpected error matching pattern {Pattern}", rule.ProcessPath);
                 }
             }
 
@@ -117,17 +124,69 @@ namespace SoundSwitch.Services
             var windowMatched = string.IsNullOrEmpty(rule.WindowName); // If empty, consider matched
             if (!windowMatched)
             {
-                try
-                {
-                    windowMatched = !string.IsNullOrEmpty(windowTitle) && Regex.IsMatch(windowTitle, rule.WindowName, options);
-                }
-                catch (Exception ex)
-                {
-                    _logger.Error(ex, "Invalid Regex for WindowName: {Pattern}", rule.WindowName);
-                }
+                windowMatched = IsRegexOrGlobMatch(
+                    windowTitle,
+                    rule.WindowName,
+                    options,
+                    ex => _logger.Warning(ex, "Invalid Regex for WindowName: {Pattern}. Falling back to glob.", rule.WindowName)
+                );
             }
 
             return processMatched && windowMatched;
+        }
+
+        /// <summary>
+        /// Attempts to match a value against a pattern using regex, falling back to glob pattern matching if the regex is invalid.
+        /// </summary>
+        /// <param name="value">The value to match against. Returns false if null or empty.</param>
+        /// <param name="pattern">The pattern to match (regex or glob). Returns false if null or empty.</param>
+        /// <param name="options">Regex options to apply during matching.</param>
+        /// <param name="onInvalidRegex">Optional callback invoked when the pattern is invalid as regex before falling back to glob.</param>
+        /// <returns>True if the value matches the pattern (as regex or glob); otherwise false.</returns>
+        internal static bool IsRegexOrGlobMatch(string? value, string pattern, RegexOptions options, Action<RegexParseException>? onInvalidRegex = null)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return false;
+            }
+            
+            if (string.IsNullOrEmpty(pattern))
+            {
+                return false;
+            }
+
+            try
+            {
+                return Regex.IsMatch(value, pattern, options);
+            }
+            catch (RegexParseException ex)
+            {
+                onInvalidRegex?.Invoke(ex);
+                return IsGlobMatch(value, pattern, options);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "Unexpected error matching pattern {Pattern} against value {Value}", pattern, value);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Matches a value against a glob-style pattern (* for any characters, ? for single character).
+        /// </summary>
+        /// <param name="value">The value to match against.</param>
+        /// <param name="pattern">The glob pattern to match.</param>
+        /// <param name="options">Regex options to apply during matching.</param>
+        /// <returns>True if the value matches the glob pattern; otherwise false.</returns>
+        internal static bool IsGlobMatch(string value, string pattern, RegexOptions options)
+        {
+            if (string.IsNullOrEmpty(value) || string.IsNullOrEmpty(pattern))
+            {
+                return false;
+            }
+            
+            var globAsRegex = $"^{Regex.Escape(pattern).Replace("\\*", ".*").Replace("\\?", ".")}$";
+            return Regex.IsMatch(value, globAsRegex, options);
         }
 
         public void Dispose()
