@@ -168,17 +168,20 @@
   <data name="donate" xml:space="preserve">
     <value>Donate</value>
   </data>
+  <data name="iconChanger.both" xml:space="preserve">
+    <value>Both</value>
+  </data>
+  <data name="iconChanger.monochromeIcon" xml:space="preserve">
+    <value>Monochrome Icon</value>
+  </data>
+  <data name="iconChanger.none" xml:space="preserve">
+    <value>Default</value>
+  </data>
   <data name="iconChanger.playback" xml:space="preserve">
     <value>Playback</value>
   </data>
   <data name="iconChanger.recording" xml:space="preserve">
     <value>Recording</value>
-  </data>
-  <data name="iconChanger.none" xml:space="preserve">
-    <value>Default</value>
-  </data>
-  <data name="iconChanger.both" xml:space="preserve">
-    <value>Both</value>
   </data>
   <data name="community" xml:space="preserve">
     <value>Community</value>

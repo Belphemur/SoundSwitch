@@ -24,6 +24,7 @@ public class IconChangerFactory() : AbstractFactory<IconChanger, IIconChanger>(I
         new IconChangerNone(),
         new IconChangerPlayback(),
         new IconChangerRecording(),
-        new IconChangerAlways()
+        new IconChangerAlways(),
+        new IconChangerMonochromeIcon()
     };
 }

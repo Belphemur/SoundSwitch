@@ -151,6 +151,15 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Monochrome Icon.
+        /// </summary>
+        internal static string iconChanger_monochromeIcon {
+            get {
+                return ResourceManager.GetString("iconChanger.monochromeIcon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Default.
         /// </summary>
         internal static string iconChanger_none {
