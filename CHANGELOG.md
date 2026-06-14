@@ -1,3 +1,47 @@
+## [7.1.1-beta.1](https://github.com/Belphemur/SoundSwitch/compare/v7.1.0...v7.1.1-beta.1) (2026-06-14)
+
+### Enhancements
+
+* Added Toggle Microphone Mute as Double-click Action option ([9fec9f2](https://github.com/Belphemur/SoundSwitch/commit/9fec9f2f2ba3106b77f9d434e748c2ea7bb0fbba))
+
+### Bug Fixes
+
+* address PR feedback and release dry-run errors ([fd43a13](https://github.com/Belphemur/SoundSwitch/commit/fd43a139a9368dff0499efc447d7537e835cb584))
+* **ci:** add PR merge gate for docs and dotnet checks ([adbef45](https://github.com/Belphemur/SoundSwitch/commit/adbef45edb9186e3fafe2bb866f6afdef57f1402))
+* **ci:** address all nightly workflow review comments ([170e38b](https://github.com/Belphemur/SoundSwitch/commit/170e38b1d82d9d6ab319a1e01f1a700f278dd300))
+* **ci:** define semantic-release branches for dry-run checks ([2674993](https://github.com/Belphemur/SoundSwitch/commit/2674993d019de1f445d08e8a1415775acc0de27f))
+* **ci:** scope workflow token permissions ([bb3a56c](https://github.com/Belphemur/SoundSwitch/commit/bb3a56c288e14f80572d3ca3e704a488560f13e1))
+* **ci:** use semantic-release CLI dry run in PR gate ([ed88743](https://github.com/Belphemur/SoundSwitch/commit/ed887433f176d6844fa2471e5553e532e2a33132))
+* **device:** allow hotkey to force switch to only configured device ([5fc53d3](https://github.com/Belphemur/SoundSwitch/commit/5fc53d3984f912dca9338d99af4a9ceeef8f6a4e)), closes [#2211](https://github.com/Belphemur/SoundSwitch/issues/2211)
+* Force switch to the only configured device when current Windows default mismatches ([3630da0](https://github.com/Belphemur/SoundSwitch/commit/3630da0dbfb8126477fbf98ac2a5f176a3145277))
+* **profile:** trigger on startup on session change ([85ae6ba](https://github.com/Belphemur/SoundSwitch/commit/85ae6ba6f9fac0c9d7dca48d7eee0b2e215961b6))
+
+### Languages
+
+* **Bulgarian:** Translated Settings using Weblate ([f833f4d](https://github.com/Belphemur/SoundSwitch/commit/f833f4d97ec74a7835ade681db6462a6b8309a1c))
+* **Chinese (Simplified Han script):** Translated Settings using Weblate ([e1286cf](https://github.com/Belphemur/SoundSwitch/commit/e1286cf7b1f2646708ea5d96f90ac69a846ccd20))
+* **Dutch:** Translated Settings using Weblate ([a150073](https://github.com/Belphemur/SoundSwitch/commit/a150073fa760ba5e20c920aaa6d0362c4451d6f6))
+* **Dutch:** Translated Settings using Weblate ([dd17cbf](https://github.com/Belphemur/SoundSwitch/commit/dd17cbf2c638584c815963eb980fd37eaa06a3bc))
+* **Dutch:** Translated Settings using Weblate ([f30a384](https://github.com/Belphemur/SoundSwitch/commit/f30a384b454ff0b8b24cbfecfd0b6faad22fc5a7))
+* **Dutch:** Translated Settings using Weblate ([6174238](https://github.com/Belphemur/SoundSwitch/commit/6174238c78fef58e36e6e678acb0af2aba22190e))
+* **Dutch:** Translated Tray Icon using Weblate ([85084d5](https://github.com/Belphemur/SoundSwitch/commit/85084d530db507ef492f5b74ea51cde7b0fab7d9))
+* **Dutch:** Translated Update Download using Weblate ([6eeda3a](https://github.com/Belphemur/SoundSwitch/commit/6eeda3a35f4c2ed2a2d704b0f983559419ad8006))
+* **Japanese:** Translated About using Weblate ([3753e3e](https://github.com/Belphemur/SoundSwitch/commit/3753e3e6c6408e84579be4e32bb28eef2dab9ddc))
+* **Japanese:** Translated Settings using Weblate ([3d52068](https://github.com/Belphemur/SoundSwitch/commit/3d52068b4350b3e5a665d6afee2aae5c93f2b3ed))
+* **Japanese:** Translated Settings using Weblate ([3acc682](https://github.com/Belphemur/SoundSwitch/commit/3acc682d09e47f5100cd2c78c4ec5837ff4e341f))
+* **Japanese:** Translated Settings using Weblate ([50f2037](https://github.com/Belphemur/SoundSwitch/commit/50f2037d62ca59f8b508d260e1fcd45a33d3a560))
+* **Japanese:** Translated Tray Icon using Weblate ([0479f4e](https://github.com/Belphemur/SoundSwitch/commit/0479f4e724b52f590e41274ac81705f15f0c677f))
+* **Japanese:** Translated Update Download using Weblate ([0650f7c](https://github.com/Belphemur/SoundSwitch/commit/0650f7cbac95bb910db979aa166cc95438cb9b3b))
+* **Korean:** Translated Settings using Weblate ([be49871](https://github.com/Belphemur/SoundSwitch/commit/be49871845e636e758e53609307f22da452effce))
+* **Korean:** Translated Settings using Weblate ([eb218c6](https://github.com/Belphemur/SoundSwitch/commit/eb218c630585564cf89207d3dad2260a84fec953))
+* **Portuguese (Brazil):** Translated Settings using Weblate ([b5145af](https://github.com/Belphemur/SoundSwitch/commit/b5145af054034b3e11b8eac29a2020d38aed7b2d))
+* **Swedish:** Translated Settings using Weblate ([11674cb](https://github.com/Belphemur/SoundSwitch/commit/11674cb76ceddda2260119db6ec7d8f7d20189bc))
+* **Swedish:** Translated Settings using Weblate ([7932972](https://github.com/Belphemur/SoundSwitch/commit/79329723de7292b4e2b2bcde2a69e0ea6e079e11))
+
+### Tests
+
+* **cycler:** deterministic single-device tests with proper resource cleanup ([6eecdcc](https://github.com/Belphemur/SoundSwitch/commit/6eecdcc3cd94d456b87c2d3c306d72b4d50b9cc9))
+
 ## [7.1.0](https://github.com/Belphemur/SoundSwitch/compare/v7.0.0...v7.1.0) (2026-05-21)
 
 ### Features
