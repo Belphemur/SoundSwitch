@@ -87,10 +87,11 @@ public sealed class TrayIcon : IDisposable
     private bool _inDoubleClick;
     private DateTime _lastClick;
     private readonly TimerForm _clickTimer;
+    private const int ClickDetectionIntervalMs = 250;
 
     public TrayIcon()
     {
-        _clickTimer = new TimerForm { Interval = SystemInformation.DoubleClickTime };
+        _clickTimer = new TimerForm { Interval = ClickDetectionIntervalMs };
         _clickTimer.Tick += NotifyIcon_MouseClick;
 
         _updateDownloadForm = new Lazy<UpdateDownloadForm>(() =>
@@ -126,9 +127,18 @@ public sealed class TrayIcon : IDisposable
         Log.Debug("Click on systray icon: {times} {button}", e.Clicks, e.Button);
 
         if (e.Button != MouseButtons.Left) return;
+
+        if (AppModel.Instance.IconDoubleClick == IconDoubleClick.None)
+        {
+            _inDoubleClick = false;
+            _clickTimer.Stop();
+            NotifyIcon_MouseClick(sender, e);
+            return;
+        }
+
         if (_inDoubleClick)
         {
-            var doubleClickMaxTime = TimeSpan.FromMilliseconds(SystemInformation.DoubleClickTime);
+            var doubleClickMaxTime = TimeSpan.FromMilliseconds(ClickDetectionIntervalMs);
             _inDoubleClick = false;
 
             // If double click is valid, respond
