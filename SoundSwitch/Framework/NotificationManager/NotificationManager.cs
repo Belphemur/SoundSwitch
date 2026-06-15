@@ -33,7 +33,7 @@ using SoundSwitch.Properties;
 
 namespace SoundSwitch.Framework.NotificationManager;
 
-public class NotificationManager(INotificationSettings notificationSettings, IAppInfrastructure infrastructure, IDeviceService deviceService)
+public class NotificationManager(INotificationSettings notificationSettings, IAppInfrastructure infrastructure, IDeviceService deviceService) : IDisposable
 {
     private string _lastDeviceId;
     private INotification _switchDeviceNotification;
@@ -224,7 +224,7 @@ public class NotificationManager(INotificationSettings notificationSettings, IAp
         _microphoneMuteNotification.NotifyMicrophoneMuteChanged(deviceId, microphoneName, newMuteState);
     }
 
-    ~NotificationManager()
+    public void Dispose()
     {
         deviceService.DefaultDeviceChanged -= ModelOnDefaultDeviceChanged;
         notificationSettings.NotificationSettingsChanged -= ModelOnNotificationSettingsChanged;

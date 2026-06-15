@@ -41,10 +41,10 @@ public partial class AppModel
     }
 
     public IEnumerable<DeviceFullInfo> AvailablePlaybackDevices =>
-        AudioDeviceLister.GetDevices(DataFlow.Render, DeviceState.Active).IntersectWith(SelectedDevices);
+        AudioDeviceLister?.GetDevices(DataFlow.Render, DeviceState.Active).IntersectWith(SelectedDevices) ?? Enumerable.Empty<DeviceFullInfo>();
 
     public IEnumerable<DeviceFullInfo> AvailableRecordingDevices =>
-        AudioDeviceLister.GetDevices(DataFlow.Capture, DeviceState.Active).IntersectWith(SelectedDevices);
+        AudioDeviceLister?.GetDevices(DataFlow.Capture, DeviceState.Active).IntersectWith(SelectedDevices) ?? Enumerable.Empty<DeviceFullInfo>();
 
     public event EventHandler<DeviceListChanged> SelectedDeviceChanged;
     public event EventHandler<DeviceDefaultChangedEvent> DefaultDeviceChanged;
@@ -106,7 +106,7 @@ public partial class AppModel
             AppConfigs.Configuration.Save();
         }
 
-        return true;
+        return result;
     }
 
     #endregion

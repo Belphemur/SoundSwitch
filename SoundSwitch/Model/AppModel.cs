@@ -177,6 +177,7 @@ public partial class AppModel : IAppModel
 
     public void Dispose()
     {
+        _notificationManager?.Dispose();
         TrayIcon?.Dispose();
         AudioDeviceLister?.Dispose();
         AppSoundLockManager?.Dispose();
