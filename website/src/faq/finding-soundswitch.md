@@ -18,7 +18,7 @@ SoundSwitch lives in the **system tray** (the area next to the clock on the task
 From the tray icon you can:
 
 - **Right-click** → Open the context menu and choose **Settings** to reopen the configuration window.
-- **Double-click** → Cycle through playback devices (configurable in [General Settings](../configuration/general.md)).
+- **Double-click** → Cycle through playback or recording devices (configurable in [General Settings](../configuration/general.md)).
 - **Hover** → See the currently active device.
 
 ![SoundSwitch tray icon](/images/faq/tray-icon.gif)
