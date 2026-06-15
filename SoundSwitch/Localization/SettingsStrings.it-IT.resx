@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -445,7 +445,7 @@ Ripristina lo stato del sistema quando l'applicazione viene chiusa.</value>
     <value>{0} ha ora l'audio attivo.</value>
   </data>
   <data name="mute.toggle.label" xml:space="preserve">
-    <value>Audio OFF/ON</value>
+    <value>Audio on/off</value>
   </data>
   <data name="profile.trigger.trayMenu" xml:space="preserve">
     <value>Nel menu app</value>
@@ -604,10 +604,10 @@ Ripristina lo stato del sistema quando l'applicazione viene chiusa.</value>
     <value>Importa/esporta file configurazione</value>
   </data>
   <data name="importExportConfigFile.desc" xml:space="preserve">
-    <value>Importa/esporta il file configurazione di SoundSwitch in/da un archivio ZIP.</value>
+    <value>Importa/esporta il file configurazione di SoundSwitch in/da un archivio zip.</value>
   </data>
   <data name="importConfigErrorMessage" xml:space="preserve">
-    <value>L'archivio ZIP deve contenere il file configurazione di Soundwitch.</value>
+    <value>L'archivio zip deve contenere il file configurazione di Soundwitch.</value>
   </data>
   <data name="importConfigRestartRequired" xml:space="preserve">
     <value>Ad importazione del file configurazione completata SoundSwitch si riavvierà .
@@ -638,34 +638,131 @@ Vuoi riavviare Soundswitch?</value>
     <value>Impossibile deserializzare il file di configurazione '{0}'. Errore: {1}</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="position.centerLeft" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="position.centerLeft" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
+    <value>Centrato a sinistra</value>
   </data>
-  <data name="position.centerRight" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="position.centerRight" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
+    <value>Centrato a destra</value>
   </data>
-  <data name="buttonSelect" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="buttonSelect" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
+    <value>Seleziona</value>
   </data>
-  <data name="buttonCustom" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="buttonCustom" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
+    <value>Personalizzato</value>
   </data>
   <data name="buttonDelete" xml:space="preserve">
     <value>Elimina</value>
   </data>
-  <data name="customSoundFile" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="customSoundFile" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
+    <value>File audio personalizzato</value>
   </data>
-  <data name="selectSoundButton.tooltip" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="selectSoundButton.tooltip" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
+    <value>Seleziona un file audio per le notifiche audio e banner</value>
   </data>
-  <data name="hotkeySwitchDevice" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="hotkeySwitchDevice" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
+    <value>Tasto scelta rapida cambio dispositivo</value>
   </data>
-  <data name="hotkeyToggleMute" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="hotkeyToggleMute" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
+    <value>Tasto scelta rapida audio off/on</value>
   </data>
-  <data name="selectSoundButton.error" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="selectSoundButton.error" type="System.Resources.ResXNullRef, System.Windows.Forms" xml:space="preserve">
+    <value>Errore: file non trovato</value>
+  </data>
+  <data name="switchRecordingDevice" xml:space="preserve">
+    <value>Cambia dispositivo registrazione</value>
+  </data>
+  <data name="customPositionBanner.title" xml:space="preserve">
+    <value>Sposta nella nuova posizione</value>
+  </data>
+  <data name="customPositionBanner.text" xml:space="preserve">
+    <value>Premi 'R' per ripristinare la posizione.
+Premi 'Esc' per chiudere.</value>
+  </data>
+  <data name="banner.opacity" xml:space="preserve">
+    <value>Opacità</value>
+  </data>
+  <data name="banner.opacity.tooltip" xml:space="preserve">
+    <value>Imposta l'opacità del banner</value>
+  </data>
+  <data name="banner.displayInfo" xml:space="preserve">
+    <value>Visualizza info</value>
+  </data>
+  <data name="banner.displayInfo.tooltip" xml:space="preserve">
+    <value>Come viene visualizzato il banner</value>
+  </data>
+  <data name="banner.display.option.fullDisplay" xml:space="preserve">
+    <value>Schermo pieno</value>
+  </data>
+  <data name="banner.display.option.iconOnly" xml:space="preserve">
+    <value>Solo icona</value>
+  </data>
+  <data name="banner.display.option.descOnly" xml:space="preserve">
+    <value>Solo descrizione</value>
+  </data>
+  <data name="general" xml:space="preserve">
+    <value>Generale</value>
+  </data>
+  <data name="notification.type" xml:space="preserve">
+    <value>Tipo notifica</value>
+  </data>
+  <data name="appSoundLock.tab" xml:space="preserve">
+    <value>Regole app</value>
+  </data>
+  <data name="appSoundLock.explanation" xml:space="preserve">
+    <value>Associa dispositivi di riproduzione e registrazione specifici a processi o finestre usando la corrispondenza Regex.</value>
+  </data>
+  <data name="appSoundLock.rule.processName" xml:space="preserve">
+    <value>Nome processo</value>
+  </data>
+  <data name="appSoundLock.rule.processPath" xml:space="preserve">
+    <value>Percorso processo</value>
+  </data>
+  <data name="appSoundLock.rule.windowTitle" xml:space="preserve">
+    <value>Titolo finestra</value>
+  </data>
+  <data name="appSoundLock.rule.matchMode" xml:space="preserve">
+    <value>Modo corrispondenza</value>
+  </data>
+  <data name="appSoundLock.rule.regexNotice" xml:space="preserve">
+    <value>Nota: i modelli usano Regex standard.</value>
+  </data>
+  <data name="appSoundLock.selectProcess" xml:space="preserve">
+    <value>Seleziona processo...</value>
+  </data>
+  <data name="appSoundLock.addRule" xml:space="preserve">
+    <value>Aggiungi regola</value>
+  </data>
+  <data name="appSoundLock.editRule" xml:space="preserve">
+    <value>Modifica regola</value>
+  </data>
+  <data name="appSoundLock.deleteRule" xml:space="preserve">
+    <value>Elimina regola</value>
+  </data>
+  <data name="appSoundLock.rule.enabled" xml:space="preserve">
+    <value>Abilitata</value>
+  </data>
+  <data name="appSoundLock.rule.caseSensitive" xml:space="preserve">
+    <value>Sensibile maiuscolo/minuscolo</value>
+  </data>
+  <data name="appSoundLock.rule.notify" xml:space="preserve">
+    <value>Notifica quando attivato</value>
+  </data>
+  <data name="appSoundLock.filter" xml:space="preserve">
+    <value>Filtro:</value>
+  </data>
+  <data name="appSoundLock.rule.description" xml:space="preserve">
+    <value>Seleziona il processo dell'applicazione di cui vuoi controllare l'audio. I dispositivi selezionati verranno applicati automaticamente ogni volta che l'applicazione è in esecuzione.</value>
+  </data>
+  <data name="appSoundLock.rule.error.patternRequired" xml:space="preserve">
+    <value>È richiesto almeno un modello (processo o finestra).</value>
+  </data>
+  <data name="appSoundLock.rule.error.title" xml:space="preserve">
+    <value>Errore di convalida</value>
+  </data>
+  <data name="switchPlaybackDevice" xml:space="preserve">
+    <value>Cambia dispositivo riproduzione</value>
+  </data>
+  <data name="toggleMicrophoneMute" xml:space="preserve">
+    <value>Attiva/disattiva microfono</value>
   </data>
 </root>
