@@ -875,9 +875,6 @@ public class AppModel : IAppModel
         return false;
     }
 
-    [Serializable]
-    public class NoDevicesException() : InvalidOperationException("No devices to select");
-
     #endregion
 
     public void Dispose()

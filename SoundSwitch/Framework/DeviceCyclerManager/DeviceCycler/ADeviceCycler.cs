@@ -54,7 +54,7 @@ public abstract class ADeviceCycler : IDeviceCycler
 
         return audioDevices switch
         {
-            { Length: 0 } => throw new AppModel.NoDevicesException(),
+            { Length: 0 } => throw new NoDevicesException(),
             { Length: 1 } => HandleSingleDevice(audioDevices[0], type),
             _             => CycleDevice()
         };
