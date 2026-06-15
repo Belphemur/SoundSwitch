@@ -15,6 +15,7 @@
 
 using System;
 using System.Threading;
+using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;

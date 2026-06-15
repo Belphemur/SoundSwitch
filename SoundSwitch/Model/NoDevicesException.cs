@@ -17,5 +17,8 @@ using System;
 
 namespace SoundSwitch.Model;
 
+/// <summary>
+/// Thrown when no devices are available for selection.
+/// </summary>
 [Serializable]
 public class NoDevicesException() : InvalidOperationException("No devices to select");

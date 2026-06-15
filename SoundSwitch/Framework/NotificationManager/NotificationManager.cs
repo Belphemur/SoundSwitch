@@ -229,5 +229,6 @@ public class NotificationManager(INotificationSettings notificationSettings, IAp
         deviceService.DefaultDeviceChanged -= ModelOnDefaultDeviceChanged;
         notificationSettings.NotificationSettingsChanged -= ModelOnNotificationSettingsChanged;
         notificationSettings.CustomSoundChanged -= ModelOnCustomSoundChanged;
+        notificationSettings.BannerSettingsChanged -= ModelOnBannerSettingsChanged;
     }
 }
