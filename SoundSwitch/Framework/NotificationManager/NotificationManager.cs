@@ -33,21 +33,22 @@ using SoundSwitch.Properties;
 
 namespace SoundSwitch.Framework.NotificationManager;
 
-public class NotificationManager(IAppModel model)
+public class NotificationManager(INotificationSettings notificationSettings, IAppInfrastructure infrastructure, IDeviceService deviceService) : IDisposable
 {
     private string _lastDeviceId;
     private INotification _switchDeviceNotification;
     private INotification _switchProfileNotification;
     private INotification _microphoneMuteNotification;
     private readonly NotificationFactory _notificationFactory = new();
+    private bool _disposed;
 
     public void Init()
     {
-        model.DefaultDeviceChanged += ModelOnDefaultDeviceChanged;
-        model.NotificationSettingsChanged += ModelOnNotificationSettingsChanged;
-        SetNotifications(model.SwitchDeviceNotification, model.SwitchProfileNotification, model.MicrophoneMuteNotification);
-        model.CustomSoundChanged += ModelOnCustomSoundChanged;
-        model.BannerSettingsChanged += ModelOnBannerSettingsChanged;
+        deviceService.DefaultDeviceChanged += ModelOnDefaultDeviceChanged;
+        notificationSettings.NotificationSettingsChanged += ModelOnNotificationSettingsChanged;
+        SetNotifications(notificationSettings.SwitchDeviceNotification, notificationSettings.SwitchProfileNotification, notificationSettings.MicrophoneMuteNotification);
+        notificationSettings.CustomSoundChanged += ModelOnCustomSoundChanged;
+        notificationSettings.BannerSettingsChanged += ModelOnBannerSettingsChanged;
         Log.Information("Notification manager initiated");
     }
 
@@ -84,18 +85,18 @@ public class NotificationManager(IAppModel model)
         var notification = _notificationFactory.Get(notificationType);
         notification.Configuration = new NotificationConfiguration
         {
-            Icon = model.TrayIcon.NotifyIcon,
+            Icon = infrastructure.TrayIcon.NotifyIcon,
             DefaultSound = Resources.NotificationSound,
-            BannerPosition = AppModel.Instance.BannerPosition,
-            Ttl = AppModel.Instance.BannerOnScreenTime,
-            Opacity = AppModel.Instance.BannerOpacityPercentage,
-            MicrophoneMuteBanner = AppModel.Instance.MicrophoneMuteBanner,
-            MicrophoneUnmuteBanner = AppModel.Instance.MicrophoneUnmuteBanner,
+            BannerPosition = notificationSettings.BannerPosition,
+            Ttl = notificationSettings.BannerOnScreenTime,
+            Opacity = notificationSettings.BannerOpacityPercentage,
+            MicrophoneMuteBanner = notificationSettings.MicrophoneMuteBanner,
+            MicrophoneUnmuteBanner = notificationSettings.MicrophoneUnmuteBanner,
         };
 
         try
         {
-            notification.Configuration.CustomSound = AppModel.Instance.CustomNotificationSound;
+            notification.Configuration.CustomSound = notificationSettings.CustomNotificationSound;
         }
         catch (CachedSoundFileNotExistsException)
         {
@@ -128,8 +129,8 @@ public class NotificationManager(IAppModel model)
     {
         return deviceInfo.Type switch
         {
-            DataFlow.Capture => model.AvailableRecordingDevices.FirstOrDefault(info => info.Equals(deviceInfo)),
-            _ => model.AvailablePlaybackDevices.FirstOrDefault(info => info.Equals(deviceInfo))
+            DataFlow.Capture => deviceService.AvailableRecordingDevices.FirstOrDefault(info => info.Equals(deviceInfo)),
+            _ => deviceService.AvailablePlaybackDevices.FirstOrDefault(info => info.Equals(deviceInfo))
         };
     }
 
@@ -155,8 +156,8 @@ public class NotificationManager(IAppModel model)
         {
             var icon = GetIconForRule(rule, processId);
             
-            var playback = model.AvailablePlaybackDevices.FirstOrDefault(d => d.Id == rule.PlaybackDeviceId);
-            var recording = model.AvailableRecordingDevices.FirstOrDefault(d => d.Id == rule.RecordingDeviceId);
+            var playback = deviceService.AvailablePlaybackDevices.FirstOrDefault(d => d.Id == rule.PlaybackDeviceId);
+            var recording = deviceService.AvailableRecordingDevices.FirstOrDefault(d => d.Id == rule.RecordingDeviceId);
             
             _switchProfileNotification.NotifyAppRuleMatched(rule, playback, recording, icon, processId);
         }
@@ -224,10 +225,14 @@ public class NotificationManager(IAppModel model)
         _microphoneMuteNotification.NotifyMicrophoneMuteChanged(deviceId, microphoneName, newMuteState);
     }
 
-    ~NotificationManager()
+    public void Dispose()
     {
-        model.DefaultDeviceChanged -= ModelOnDefaultDeviceChanged;
-        model.NotificationSettingsChanged -= ModelOnNotificationSettingsChanged;
-        model.CustomSoundChanged -= ModelOnCustomSoundChanged;
+        if (_disposed) return;
+        _disposed = true;
+
+        deviceService.DefaultDeviceChanged -= ModelOnDefaultDeviceChanged;
+        notificationSettings.NotificationSettingsChanged -= ModelOnNotificationSettingsChanged;
+        notificationSettings.CustomSoundChanged -= ModelOnCustomSoundChanged;
+        notificationSettings.BannerSettingsChanged -= ModelOnBannerSettingsChanged;
     }
 }

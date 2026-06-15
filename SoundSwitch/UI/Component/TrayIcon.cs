@@ -261,7 +261,7 @@ public sealed class TrayIcon : IDisposable
     {
         AppModel.Instance.ErrorTriggered += (sender, @event) =>
         {
-            if (@event.Exception is AppModel.NoDevicesException)
+            if (@event.Exception is NoDevicesException)
                 ShowNoDevices();
             else
             {

@@ -2,7 +2,7 @@
  * Copyright (C) 2015 Jeroen Pelgrims
  * Copyright (C) 2015-2017 Antoine Aflalo
  *
- * This program is free software; you can redistribute it and/or
+ * This program is free software; you can redistribute and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
@@ -18,10 +18,7 @@ using System;
 namespace SoundSwitch.Model;
 
 /// <summary>
-/// Application model — composes device services, notification settings,
-/// app settings, and infrastructure. All members are declared on the
-/// focused sub-interfaces.
+/// Thrown when no devices are available for selection.
 /// </summary>
-public interface IAppModel : IDeviceService, INotificationSettings, IAppSettings, IAppInfrastructure, IDisposable
-{
-}
+[Serializable]
+public class NoDevicesException() : InvalidOperationException("No devices to select");
