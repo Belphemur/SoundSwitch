@@ -40,6 +40,7 @@ public class NotificationManager(INotificationSettings notificationSettings, IAp
     private INotification _switchProfileNotification;
     private INotification _microphoneMuteNotification;
     private readonly NotificationFactory _notificationFactory = new();
+    private bool _disposed;
 
     public void Init()
     {
@@ -226,6 +227,9 @@ public class NotificationManager(INotificationSettings notificationSettings, IAp
 
     public void Dispose()
     {
+        if (_disposed) return;
+        _disposed = true;
+
         deviceService.DefaultDeviceChanged -= ModelOnDefaultDeviceChanged;
         notificationSettings.NotificationSettingsChanged -= ModelOnNotificationSettingsChanged;
         notificationSettings.CustomSoundChanged -= ModelOnCustomSoundChanged;

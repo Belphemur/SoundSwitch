@@ -82,7 +82,7 @@ public partial class AppModel
     }
 
     /// <summary>
-    /// Add the device to the Selected device list
+    /// Remove the device from the Selected device list
     /// </summary>
     /// <param name="device"></param>
     /// <returns></returns>
@@ -126,9 +126,6 @@ public partial class AppModel
 
     #region Microphone control
 
-    /// <summary>
-    /// Toggles the mute state of the default microphone
-    /// </summary>
     /// <summary>
     /// Toggles the system default microphone's mute state.
     /// </summary>
