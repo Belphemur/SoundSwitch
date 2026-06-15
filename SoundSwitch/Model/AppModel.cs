@@ -54,7 +54,7 @@ using SoundSwitch.UI.Component;
 
 namespace SoundSwitch.Model;
 
-public class AppModel : IAppModel
+public partial class AppModel : IAppModel
 {
     private bool _skipUpdate;
     private bool _initialized;
