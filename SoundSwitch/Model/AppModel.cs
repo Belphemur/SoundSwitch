@@ -65,7 +65,7 @@ public partial class AppModel : IAppModel
 
     private AppModel()
     {
-        _notificationManager = new NotificationManager(this);
+        _notificationManager = new NotificationManager(this, this, this);
 
         _deviceCyclerManager = new DeviceCyclerManager();
         _selectedDevices = null;

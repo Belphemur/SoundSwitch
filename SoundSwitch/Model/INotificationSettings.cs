@@ -22,6 +22,7 @@ using SoundSwitch.Framework.Banner.BannerPosition.Position;
 using SoundSwitch.Framework.Banner.MicrophoneMute;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.UI.Component;
+using SoundSwitch.Framework.Audio;
 
 namespace SoundSwitch.Model;
 
