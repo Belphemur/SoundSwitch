@@ -34,6 +34,9 @@ Sets what happens when you double-click the tray icon.
 |--------|----------|
 | **Switch playback device** | Cycles to the next available playback device. |
 | **Switch recording device** | Cycles to the next available recording device. |
+| **Open settings** | Opens the SoundSwitch settings window. |
+| **Switch profile** | Cycles through the configured audio profiles. |
+| **Toggle mute microphone** | Mutes or unmutes the default recording (microphone) device. |
 | **Disabled** | Disables double-click detection entirely. The device menu opens instantly on a single click with **no delay**. Choose this if you never use the double-click action and want the fastest possible access to the tray menu. |
 
 ::: tip Faster tray menu
