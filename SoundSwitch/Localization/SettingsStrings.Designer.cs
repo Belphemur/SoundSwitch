@@ -984,6 +984,15 @@ namespace SoundSwitch.Localization {
                 return ResourceManager.GetString("none", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Disabled.
+        /// </summary>
+        internal static string disableDoubleClickAction {
+            get {
+                return ResourceManager.GetString("disableDoubleClickAction", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Banner Options.

@@ -48,5 +48,10 @@ public enum IconDoubleClick
     /// Toggles mute status of microphone.
     /// Allows users to quickly mute and unmute microphone.
     /// </summary>
-    ToggleMicrophoneMute = 4
+    ToggleMicrophoneMute = 4,
+
+    /// <summary>
+    /// Disables double-click detection entirely. Single-click shows the device selection menu immediately.
+    /// </summary>
+    None = 5
 }

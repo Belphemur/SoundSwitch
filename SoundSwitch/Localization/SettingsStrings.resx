@@ -221,6 +221,9 @@
   <data name="none" xml:space="preserve">
     <value>None</value>
   </data>
+  <data name="disableDoubleClickAction" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
   <data name="notification.option.toast" xml:space="preserve">
     <value>Toast Notification</value>
   </data>

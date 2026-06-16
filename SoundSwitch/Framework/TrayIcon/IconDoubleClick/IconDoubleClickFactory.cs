@@ -35,6 +35,7 @@ public class IconDoubleClickFactory() : AbstractFactory<IconDoubleClick, IIconDo
             new IconDoubleClickSwitchPlaybackDevice(),
             new IconDoubleClickSwitchRecordingDevice(),
             new IconDoubleClickToggleMicrophoneMute(),
+            new IconDoubleClickNone(),
         };
 
     /// <summary>
