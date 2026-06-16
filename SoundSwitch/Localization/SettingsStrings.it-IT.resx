@@ -607,7 +607,7 @@ Ripristina lo stato del sistema quando l'applicazione viene chiusa.</value>
     <value>Importa/esporta il file configurazione di SoundSwitch in/da un archivio zip.</value>
   </data>
   <data name="importConfigErrorMessage" xml:space="preserve">
-    <value>L'archivio zip deve contenere il file configurazione di Soundwitch.</value>
+    <value>L'archivio zip deve contenere il file configurazione di SoundSwitch.</value>
   </data>
   <data name="importConfigRestartRequired" xml:space="preserve">
     <value>Ad importazione del file configurazione completata SoundSwitch si riavvierà .
