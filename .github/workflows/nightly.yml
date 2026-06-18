@@ -25,7 +25,7 @@ jobs:
             version: ${{ steps.dev-version.outputs.version }}
             download_url: ${{ steps.metadata.outputs['download-url'] }}
         steps:
-            - uses: actions/checkout@v6
+            - uses: actions/checkout@v7
               with:
                   fetch-depth: 0
             - name: Detect target framework and SDK version
@@ -177,7 +177,7 @@ jobs:
             contents: read
             issues: write
         steps:
-            - uses: actions/checkout@v6
+            - uses: actions/checkout@v7
               with:
                   fetch-depth: 0
                   persist-credentials: false
@@ -254,7 +254,7 @@ jobs:
         if: needs.publish-nightly.result == 'success'
         steps:
             - name: Checkout
-              uses: actions/checkout@v6
+              uses: actions/checkout@v7
               with:
                   fetch-depth: 0
             - name: Sentry Release

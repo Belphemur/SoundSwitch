@@ -28,7 +28,7 @@ jobs:
       translations: ${{ steps.filter.outputs.translations }}
       translation-files: ${{ steps.filter.outputs.translations_files }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: dorny/paths-filter@v4
         id: filter
         with:
@@ -63,7 +63,7 @@ jobs:
     if: needs.changes.outputs.translations == 'true'
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Install Python
         uses: actions/setup-python@v6
         with:
@@ -88,7 +88,7 @@ jobs:
     if: needs.changes.outputs.node == 'true' || needs.changes.outputs.ci == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Setup Node.js
@@ -114,7 +114,7 @@ jobs:
     if: needs.changes.outputs.website == 'true' || needs.changes.outputs.ci == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v6
         with:
           node-version-file: 'website/.nvmrc'
