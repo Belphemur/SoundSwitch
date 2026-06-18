@@ -463,7 +463,7 @@
     <value>只能拥有一个强制配置。</value>
   </data>
   <data name="telemetry" xml:space="preserve">
-    <value>使用情况数据匿名共享</value>
+    <value>遥测</value>
   </data>
   <data name="telemetry.tooltip" xml:space="preserve">
     <value>匿名收集正在使用的 SoundSwitch 的具体版本信息。仅向 SoundSwitch 的开发者共享这些信息。</value>
@@ -760,5 +760,11 @@
   </data>
   <data name="switchPlaybackDevice" xml:space="preserve">
     <value>切换播放设备</value>
+  </data>
+  <data name="disableDoubleClickAction" xml:space="preserve">
+    <value>已禁用</value>
+  </data>
+  <data name="toggleMicrophoneMute" xml:space="preserve">
+    <value>切换麦克风静音</value>
   </data>
 </root>

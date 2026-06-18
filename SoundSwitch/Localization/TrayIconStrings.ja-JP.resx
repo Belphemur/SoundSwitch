@@ -189,4 +189,7 @@
   <data name="forceCheckForUpdate" xml:space="preserve">
     <value>更新プログラムを確認</value>
   </data>
+  <data name="iconChanger.monochromeIcon" xml:space="preserve">
+    <value>モノクロアイコン</value>
+  </data>
 </root>

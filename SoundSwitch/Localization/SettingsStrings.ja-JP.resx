@@ -765,4 +765,7 @@ Esc を押すと閉じます。</value>
   <data name="toggleMicrophoneMute" xml:space="preserve">
     <value>マイクのミュートを切り替え</value>
   </data>
+  <data name="disableDoubleClickAction" xml:space="preserve">
+    <value>無効</value>
+  </data>
 </root>
