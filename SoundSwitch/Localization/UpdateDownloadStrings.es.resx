@@ -110,7 +110,7 @@
 		<value>Histórico de cambios</value>
   </data>
   <data name="notSigned" xml:space="preserve">
-		<value>La actualización descargada no está rubricada con una firma válida. Aconsejamos eliminar el archivo y ponerse en contacto con el desarrollador.</value>
+		<value>La actualización descargada no está rubricada con una firma válida. ¡Aconsejamos eliminar el archivo y ponerse en contacto con el desarrollador!</value>
   </data>
   <data name="notSignedTitle" xml:space="preserve">
 		<value>La firma digital no es válida</value>
