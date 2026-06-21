@@ -22,7 +22,7 @@ Click **Select...** to choose an audio file that SoundSwitch plays when a device
 
 ## Banner Options
 
-Banner notifications are designed to **never steal focus** from other applications. They will appear on top of full-screen games and other apps without causing them to minimize or lose focus, so you can keep playing while still seeing which device was switched.
+Banner notifications are designed to **never steal focus** from other applications. They are shown as non-activating windows, so full-screen games and other apps should not minimize or lose focus when a banner appears.
 
 When using banner notifications, you can customize their behavior:
 
