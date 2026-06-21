@@ -1,3 +1,41 @@
+## [7.1.1-beta.2](https://github.com/Belphemur/SoundSwitch/compare/v7.1.1-beta.1...v7.1.1-beta.2) (2026-06-21)
+
+### Enhancements
+
+* **tray:** reduce click delay to 250ms, add Disabled double-click option ([aa2c03b](https://github.com/Belphemur/SoundSwitch/commit/aa2c03b318692bf9b2d76af367ec3027ef40633a))
+
+### Bug Fixes
+
+* **app-rules:** fallback to glob when regex pattern is invalid ([4672c6b](https://github.com/Belphemur/SoundSwitch/commit/4672c6b8a8a409f0cd8a26d6e0431afcc6a35a6c))
+* **banner:** prevent focus stealing and fix drag-position/NRE bugs in BannerForm ([feefcd6](https://github.com/Belphemur/SoundSwitch/commit/feefcd6b658b9cc8796d49393196bd9f2937e5c8))
+* **banner:** prevent focus stealing in fullscreen games with multi-layer defense ([#2241](https://github.com/Belphemur/SoundSwitch/issues/2241)) ([a81f169](https://github.com/Belphemur/SoundSwitch/commit/a81f169d508fca830e65b0e469ded36b30514dea)), closes [#2240](https://github.com/Belphemur/SoundSwitch/issues/2240)
+* build error and review feedback ([6f4ef44](https://github.com/Belphemur/SoundSwitch/commit/6f4ef44227ebf421827c95e77434f3422d1aff3e))
+* **build:** avoid CS8417 compiler bug with using var and await using in PlaySoundJob.cs ([9b7e9a9](https://github.com/Belphemur/SoundSwitch/commit/9b7e9a9b60f4eabc796350f9e4f3bca67c577ce5))
+* clean up doc comments and add dispose idempotency ([366ecb4](https://github.com/Belphemur/SoundSwitch/commit/366ecb4a99513c899f5572134c16b9081f099c28))
+* **installer:** update required .NET version to 10.0.9 in installer scripts ([385819b](https://github.com/Belphemur/SoundSwitch/commit/385819b4b375a686218835ff476f1068584f883d))
+* **notification:** implement mic mute sound notification and harden PlaySoundJob ([d030236](https://github.com/Belphemur/SoundSwitch/commit/d030236d53765165d0666f7336c7a25588592af2)), closes [#2187](https://github.com/Belphemur/SoundSwitch/issues/2187)
+* review feedback improvements ([ddc896f](https://github.com/Belphemur/SoundSwitch/commit/ddc896f5dfe6662d9710f9bf9f1523afd087dea2))
+* **tray-icon:** add monochrome systray icon option ([05e08e5](https://github.com/Belphemur/SoundSwitch/commit/05e08e51f0e4a5b5517bbf4df0c2e37fecad6781)), closes [#2029](https://github.com/Belphemur/SoundSwitch/issues/2029)
+* **website:** finding-soundswitch FAQ — reopening opens settings ([#2221](https://github.com/Belphemur/SoundSwitch/issues/2221)) ([590b247](https://github.com/Belphemur/SoundSwitch/commit/590b2470fbd273b872d10455a7830854f5f9c47a))
+
+### Languages
+
+* **Chinese (Simplified Han script):** Translated Settings using Weblate ([99cb9be](https://github.com/Belphemur/SoundSwitch/commit/99cb9be40550705771016a1cc0dd83784d1046ce))
+* **Chinese (Simplified Han script):** Translated Tray Icon using Weblate ([5cb5e90](https://github.com/Belphemur/SoundSwitch/commit/5cb5e90498312b41ecb9efa2687d1166410ce2f8))
+* **French:** Translated Settings using Weblate ([d823469](https://github.com/Belphemur/SoundSwitch/commit/d8234695ce43196f10dfcf717f824680192f5a1b))
+* **Hebrew:** Translated Tray Icon using Weblate ([385e059](https://github.com/Belphemur/SoundSwitch/commit/385e0598d301bb948108511a12fe84a2ddef261c))
+* **Italian:** Translated Settings using Weblate ([e8dfb91](https://github.com/Belphemur/SoundSwitch/commit/e8dfb91a58b3046cd813bf1878ff825eda5c545a))
+* **Italian:** Translated Settings using Weblate ([0541491](https://github.com/Belphemur/SoundSwitch/commit/0541491c9ce3610ea4fc498b5829c73505ec66cd))
+* **Italian:** Translated Tray Icon using Weblate ([c83eb2b](https://github.com/Belphemur/SoundSwitch/commit/c83eb2b1f3e4598596cb4a5ac3b9b0fb5cd10a9f))
+* **Japanese:** Translated Settings using Weblate ([2bfdf54](https://github.com/Belphemur/SoundSwitch/commit/2bfdf542ec6ac67f00c21d57ef9d796b522595c9))
+* **Japanese:** Translated Tray Icon using Weblate ([ba89f4a](https://github.com/Belphemur/SoundSwitch/commit/ba89f4a582dee8c3e09c3049595e2d508971e0b9))
+* **Portuguese (Brazil):** Translated Tray Icon using Weblate ([f18b4dd](https://github.com/Belphemur/SoundSwitch/commit/f18b4dd6ac290880eecdda06e8bbb5ee601448a7))
+* **Spanish:** Translated Settings using Weblate ([44bbb0e](https://github.com/Belphemur/SoundSwitch/commit/44bbb0e8034e8b981566764396ce641ac301108d))
+* **Spanish:** Translated Tray Icon using Weblate ([a38c28c](https://github.com/Belphemur/SoundSwitch/commit/a38c28ca5086a17cc45970289fc273b956fa50fc))
+* **Spanish:** Translated Update Download using Weblate ([906b4ac](https://github.com/Belphemur/SoundSwitch/commit/906b4ac4d1a274f8717626bf9cb255f8ad31f0e5))
+* **Swedish:** Translated Settings using Weblate ([0696a33](https://github.com/Belphemur/SoundSwitch/commit/0696a332fbc07923bdfc1bb209fb6a945b79dd50))
+* **Swedish:** Translated Tray Icon using Weblate ([c038b30](https://github.com/Belphemur/SoundSwitch/commit/c038b30372f6315226f2c81327a58809aeba113c))
+
 ## [7.1.1-beta.1](https://github.com/Belphemur/SoundSwitch/compare/v7.1.0...v7.1.1-beta.1) (2026-06-14)
 
 ### Enhancements
