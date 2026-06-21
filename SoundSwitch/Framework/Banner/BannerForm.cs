@@ -47,6 +47,22 @@ public partial class BannerForm : Form
         SWP_NOACTIVATE = 0x0010,
     }
 
+    /// <summary>
+    /// Mirrors the native WINDOWPOS struct received via WM_WINDOWPOSCHANGING / WM_WINDOWPOSCHANGED.
+    /// Used to inject <c>SWP_NOACTIVATE</c> into every position change so the banner never steals focus.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    private struct WINDOWPOS
+    {
+        public IntPtr hwnd;
+        public IntPtr hwndInsertAfter;
+        public int x;
+        public int y;
+        public int cx;
+        public int cy;
+        public uint flags;
+    }
+
     private sealed class CustomPositionMessageFilter(BannerForm owner) : IMessageFilter
     {
         private const int WmKeyDown = 0x0100;
@@ -93,7 +109,6 @@ public partial class BannerForm : Form
         InitializeComponent();
         StartPosition = FormStartPosition.Manual;
         Bounds = GetScreen().Bounds;
-        TopMost = true;
         TopLevel = true;
         FormBorderStyle = FormBorderStyle.None;
         ShowInTaskbar = false;
@@ -155,11 +170,13 @@ public partial class BannerForm : Form
             cp.ExStyle |= 0x08000000; // WS_EX_NOACTIVATE
             // Add WS_EX_TOPMOST to ensure it stays on top even in exclusive screen mode
             cp.ExStyle |= 0x00000008; // WS_EX_TOPMOST
+            // Add WS_EX_LAYERED so the window is created layered from the start.
+            // This prevents WinForms from recreating the handle when Opacity is set,
+            // which would cause a focus-stealing handle recreation cycle.
+            cp.ExStyle |= 0x00080000; // WS_EX_LAYERED
             return cp;
         }
     }
-
-    // Add this method to the BannerForm class
 
     /// <summary>
     /// Override the window procedure to handle paint messages and fix WS_EX_NOACTIVATE click issues
@@ -171,9 +188,33 @@ public partial class BannerForm : Form
         const int HTCLIENT = 1;
         const int WM_LBUTTONUP = 0x0202;
         const int WM_ERASEBKGND = 0x0014;
+        const int WM_ACTIVATE = 0x0006;
+        const int WA_INACTIVE = 0;
+        const int WM_MOUSEACTIVATE = 0x0021;
+        const int MA_NOACTIVATE = 3;
+        const int WM_WINDOWPOSCHANGING = 0x0046;
+        const uint SWP_NOACTIVATE = 0x0010;
 
         switch (m.Msg)
         {
+            case WM_WINDOWPOSCHANGING:
+                // Intercept every SetWindowPos call (including internal WinForms and
+                // system calls) and inject SWP_NOACTIVATE so the banner can never
+                // accidentally steal focus from a fullscreen game or any other app.
+                var windowPos = Marshal.PtrToStructure<WINDOWPOS>(m.LParam);
+                windowPos.flags |= SWP_NOACTIVATE;
+                Marshal.StructureToPtr(windowPos, m.LParam, false);
+                base.WndProc(ref m);
+                return;
+            case WM_ACTIVATE:
+                // Always force inactive state to prevent the banner from stealing focus
+                m.Result = (IntPtr)WA_INACTIVE;
+                return;
+            case WM_MOUSEACTIVATE:
+                // Prevent mouse clicks from activating the window while still
+                // allowing the click message to be delivered
+                m.Result = (IntPtr)MA_NOACTIVATE;
+                return;
             case WM_NCHITTEST:
                 // Return HTCLIENT to handle mouse clicks properly with WS_EX_NOACTIVATE style
                 m.Result = HTCLIENT;
