@@ -48,6 +48,7 @@ You can call `RemovePersistentMuteBanner(microphoneId)` to immediately remove a 
 | Aspect | Detail |
 |--------|--------|
 | Thread safety | UI-thread only; all operations marshaled via `SynchronizationContext` |
+| Focus safety | Banners never steal focus; safe over full-screen/exclusive games (`WS_EX_NOACTIVATE`, `WM_WINDOWPOSCHANGING` guard, `WM_ACTIVATE` rejection) |
 | Persistence | Mute banners live forever (`TimeSpan.MaxValue`) |
 | Auto-dismiss | Unmute banners auto-dismiss after 1.5s |
 | Stacking | Banners arranged vertically with fixed spacing |
