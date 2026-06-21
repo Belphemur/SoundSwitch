@@ -48,8 +48,10 @@ public partial class BannerForm : Form
     }
 
     /// <summary>
-    /// Mirrors the native WINDOWPOS struct received via WM_WINDOWPOSCHANGING / WM_WINDOWPOSCHANGED.
-    /// Used to inject <c>SWP_NOACTIVATE</c> into every position change so the banner never steals focus.
+    /// Mirrors the native WINDOWPOS struct received via WM_WINDOWPOSCHANGING /
+    /// WM_WINDOWPOSCHANGED.
+    /// Used to inject <c>SWP_NOACTIVATE</c> into every position change so the
+    /// banner never steals focus.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     private struct WINDOWPOS
@@ -71,9 +73,7 @@ public partial class BannerForm : Form
         public bool PreFilterMessage(ref Message m)
         {
             if (m.Msg != WmKeyDown && m.Msg != WmSysKeyDown)
-            {
                 return false;
-            }
 
             return owner.HandleCustomPositionKey((Keys)m.WParam.ToInt32());
         }
@@ -92,6 +92,7 @@ public partial class BannerForm : Form
     private bool _isCompact;
     private Point _lastMousePosition;
     private CustomPositionMessageFilter _customPositionMessageFilter;
+
     public Guid Id { get; } = Guid.NewGuid();
 
     /// <summary>
@@ -99,7 +100,6 @@ public partial class BannerForm : Form
     /// </summary>
     internal static Screen GetScreen() =>
         (AppModel.Instance.NotifyUsingPrimaryScreen ? Screen.PrimaryScreen : Screen.FromPoint(Cursor.Position))!;
-
 
     /// <summary>
     /// Constructor for the <see cref="BannerForm"/> class
@@ -162,74 +162,134 @@ public partial class BannerForm : Form
         get
         {
             var cp = base.CreateParams;
-            // turn on WS_EX_TOOLWINDOW style bit
-            // Used to hide the banner from alt+tab
-            // source: https://www.csharp411.com/hide-form-from-alttab/
-            cp.ExStyle |= 0x80;  // WS_EX_TOOLWINDOW
-            // Add WS_EX_NOACTIVATE to prevent stealing focus
-            cp.ExStyle |= 0x08000000; // WS_EX_NOACTIVATE
-            // Add WS_EX_TOPMOST to ensure it stays on top even in exclusive screen mode
-            cp.ExStyle |= 0x00000008; // WS_EX_TOPMOST
-            // Add WS_EX_LAYERED so the window is created layered from the start.
-            // This prevents WinForms from recreating the handle when Opacity is set,
-            // which would cause a focus-stealing handle recreation cycle.
-            cp.ExStyle |= 0x00080000; // WS_EX_LAYERED
+            // WS_EX_TOOLWINDOW — hide the banner from Alt+Tab
+            cp.ExStyle |= 0x80;
+            // WS_EX_NOACTIVATE — prevent the window from being activated
+            cp.ExStyle |= 0x08000000;
+            // WS_EX_TOPMOST — stay on top even in exclusive fullscreen
+            cp.ExStyle |= 0x00000008;
+            // WS_EX_LAYERED — prevent handle recreation when Opacity changes
+            cp.ExStyle |= 0x00080000;
             return cp;
         }
     }
 
     /// <summary>
-    /// Override the window procedure to handle paint messages and fix WS_EX_NOACTIVATE click issues
+    /// Override the window procedure to handle paint messages and fix
+    /// WS_EX_NOACTIVATE click issues.
+    ///
+    /// Focus-steal prevention uses three layers:
+    /// 1. WM_MOUSEACTIVATE  → MA_NOACTIVATE   (blocks click-triggered activation)
+    /// 2. WM_WINDOWPOSCHANGING → SWP_NOACTIVATE (blocks position-change activation)
+    /// 3. WM_ACTIVATE (WA_ACTIVE/WA_CLICKACTIVE) → swallowed (last-resort backstop)
     /// </summary>
     /// <param name="m">The Windows message to process</param>
     protected override void WndProc(ref Message m)
     {
         const int WM_NCHITTEST = 0x0084;
         const int HTCLIENT = 1;
+        const int WM_LBUTTONDOWN = 0x0201;
         const int WM_LBUTTONUP = 0x0202;
+        const int WM_MOUSEMOVE = 0x0200;
         const int WM_ERASEBKGND = 0x0014;
         const int WM_ACTIVATE = 0x0006;
         const int WA_INACTIVE = 0;
+        const int WA_ACTIVE = 1;
+        const int WA_CLICKACTIVE = 2;
         const int WM_MOUSEACTIVATE = 0x0021;
         const int MA_NOACTIVATE = 3;
         const int WM_WINDOWPOSCHANGING = 0x0046;
         const uint SWP_NOACTIVATE = 0x0010;
+        const int MK_LBUTTON = 0x0001;
 
         switch (m.Msg)
         {
             case WM_WINDOWPOSCHANGING:
-                // Intercept every SetWindowPos call (including internal WinForms and
-                // system calls) and inject SWP_NOACTIVATE so the banner can never
-                // accidentally steal focus from a fullscreen game or any other app.
+                // Intercept every SetWindowPos call (including internal WinForms
+                // and system calls) and inject SWP_NOACTIVATE so the banner can
+                // never accidentally steal focus from a fullscreen game or any
+                // other app.
                 var windowPos = Marshal.PtrToStructure<WINDOWPOS>(m.LParam);
                 windowPos.flags |= SWP_NOACTIVATE;
                 Marshal.StructureToPtr(windowPos, m.LParam, false);
                 base.WndProc(ref m);
                 return;
+
             case WM_ACTIVATE:
-                // Always force inactive state to prevent the banner from stealing focus
-                m.Result = (IntPtr)WA_INACTIVE;
+                int activationState = m.WParam.ToInt32() & 0xFFFF;
+
+                if (activationState == WA_INACTIVE)
+                {
+                    // Safe to pass to base: WA_INACTIVE means the window is
+                    // LOSING focus. DefWindowProc does NOT call SetFocus here,
+                    // so there is no risk of stealing focus. Passing it through
+                    // lets the Form.Deactivate event fire normally.
+                    base.WndProc(ref m);
+                }
+                // WA_ACTIVE and WA_CLICKACTIVE: swallow entirely.
+                // DefWindowProc would call SetFocus() for these states, which
+                // would steal focus. This is the final backstop for any
+                // OS/programmatic activation that slips past the other layers.
                 return;
+
             case WM_MOUSEACTIVATE:
                 // Prevent mouse clicks from activating the window while still
-                // allowing the click message to be delivered
+                // allowing the click message to be delivered (MA_NOACTIVATE,
+                // NOT MA_NOACTIVATEEAT, so the click still reaches us).
                 m.Result = (IntPtr)MA_NOACTIVATE;
                 return;
+
             case WM_NCHITTEST:
-                // Return HTCLIENT to handle mouse clicks properly with WS_EX_NOACTIVATE style
+                // Borderless form: force all hit-testing to the client area so
+                // mouse messages are delivered normally.
                 m.Result = HTCLIENT;
                 return;
-            case WM_LBUTTONUP:
-                // Handle mouse clicks manually for WS_EX_NOACTIVATE windows
-                Point location = PointToClient(new Point(m.LParam.ToInt32() & 0xFFFF, m.LParam.ToInt32() >> 16));
-                BannerForm_Click(this, new MouseEventArgs(MouseButtons.Left, 1, location.X, location.Y, 0));
+
+            case WM_LBUTTONDOWN:
+                // Forward left-button press manually so dragging works in
+                // CustomPositionMode. The (short) casts correctly handle
+                // negative screen coordinates on multi-monitor setups.
+                var downPoint = PointToClient(new Point(
+                    (short)(m.LParam.ToInt32() & 0xFFFF),
+                    (short)(m.LParam.ToInt32() >> 16)));
+                BannerForm_MouseDown(this, new MouseEventArgs(MouseButtons.Left, 1, downPoint.X, downPoint.Y, 0));
                 m.Result = IntPtr.Zero;
                 return;
-            case WM_ERASEBKGND:
-                // Return non-zero to indicate we handled erasing the background
-                // This prevents flickering during resize/update operations
-                m.Result = 1;
+
+            case WM_LBUTTONUP:
+                // For WS_EX_NOACTIVATE windows we forward the release manually.
+                // IMPORTANT: forward BOTH MouseUp and Click. MouseUp is what
+                // CustomPositionMode uses to persist the dragged position and
+                // restart the hide timer; Click is what normal-mode banners use
+                // to dismiss / invoke their OnClick callback. Each handler
+                // checks the mode internally, so calling both is safe.
+                var upPoint = PointToClient(new Point(
+                    (short)(m.LParam.ToInt32() & 0xFFFF),
+                    (short)(m.LParam.ToInt32() >> 16)));
+                BannerForm_MouseUp(this, new MouseEventArgs(MouseButtons.Left, 1, upPoint.X, upPoint.Y, 0));
+                BannerForm_Click(this, new MouseEventArgs(MouseButtons.Left, 1, upPoint.X, upPoint.Y, 0));
+                m.Result = IntPtr.Zero;
                 return;
+
+            case WM_MOUSEMOVE:
+                // Forward mouse moves while the left button is held so the
+                // CustomPositionMode drag logic receives them.
+                if ((m.WParam.ToInt32() & MK_LBUTTON) != 0)
+                {
+                    var movePoint = PointToClient(new Point(
+                        (short)(m.LParam.ToInt32() & 0xFFFF),
+                        (short)(m.LParam.ToInt32() >> 16)));
+                    BannerForm_MouseMove(this, new MouseEventArgs(MouseButtons.Left, 0, movePoint.X, movePoint.Y, 0));
+                }
+                m.Result = IntPtr.Zero;
+                return;
+
+            case WM_ERASEBKGND:
+                // Return non-zero to indicate we handled erasing the background.
+                // This prevents flickering during resize/update operations.
+                m.Result = (IntPtr)1;
+                return;
+
             default:
                 base.WndProc(ref m);
                 break;
@@ -242,20 +302,17 @@ public partial class BannerForm : Form
     /// <param name="control">The control to enable double buffering on</param>
     private void EnableDoubleBuffering(Control control)
     {
-        // Use reflection to enable double buffering on the control
         typeof(Control).GetProperty("DoubleBuffered",
                 System.Reflection.BindingFlags.NonPublic |
                 System.Reflection.BindingFlags.Instance)?
             .SetValue(control, true);
 
-        // Apply to child controls recursively
         foreach (Control childControl in control.Controls)
             EnableDoubleBuffering(childControl);
     }
 
-
     /// <summary>
-    /// Called internally to configure pass notification parameters
+    /// Called internally to configure and pass notification parameters
     /// </summary>
     /// <param name="data">The configuration data to setup the notification UI</param>
     internal void SetData(BannerData data)
@@ -263,7 +320,7 @@ public partial class BannerForm : Form
         if (_currentData != null && _currentData.Priority > data.Priority) return;
 
         _currentData = data;
-        // No need for timer since there isn't any ttl
+
         if (data.Ttl != TimeSpan.MaxValue)
         {
             if (_timerHide == null)
@@ -279,7 +336,6 @@ public partial class BannerForm : Form
 
         if (data.Image != null)
             pbxLogo.Image = data.Image;
-
 
         if (data.SoundFile != null)
         {
@@ -303,14 +359,15 @@ public partial class BannerForm : Form
             _customPositionMessageFilter = null;
         }
 
-        // Apply compact mode scaling if requested
         if (data.CompactMode)
             ApplyCompactMode();
 
         Region = Region.FromHrgn(RoundedCorner.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
-
         Location = data.Position.GetScreenPosition(GetScreen(), Height, Width, _currentOffset);
 
+        // C# 14 null-conditional assignment: only assigns when a timer exists
+        // (none is created when Ttl == TimeSpan.MaxValue). RHS is evaluated
+        // only if _timerHide is non-null.
         _timerHide?.Enabled = true;
 
         Show();
@@ -330,11 +387,8 @@ public partial class BannerForm : Form
     }
 
     /// <summary>
-    /// Update Location of banner depending of the position change
+    /// Update Location of banner depending on the position change
     /// </summary>
-    /// <param name="positionChange"></param>
-    /// <param name="opacityChange"></param>
-    /// <param name="hideChange"></param>
     public void UpdateLocationOpacity(int positionChange, double opacityChange, int hideChange)
     {
         _currentOffset += positionChange;
@@ -349,10 +403,6 @@ public partial class BannerForm : Form
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="data"></param>
     private void PrepareSound(BannerData data)
     {
         JobScheduler.Instance.ScheduleJob(new PlaySoundJob(data.CurrentDeviceId, data.SoundFile), _cancellationTokenSource.Token);
@@ -366,25 +416,13 @@ public partial class BannerForm : Form
                     SetWindowPosFlags.SWP_NOSIZE |
                     SetWindowPosFlags.SWP_NOACTIVATE;
 
-        if (SetWindowPos(
-            Handle,
-            HWND_TOPMOST,
-            0,
-            0,
-            0,
-            0,
-            flags))
-        {
+        if (SetWindowPos(Handle, HWND_TOPMOST, 0, 0, 0, 0, flags))
             return;
-        }
 
         var lastError = Marshal.GetLastWin32Error();
         Log.Warning("SetWindowPos failed while refreshing the banner topmost state with Win32Error={error}", lastError);
     }
 
-    /// <summary>
-    /// Destroy current sound player (if any)
-    /// </summary>
     private void DestroySound()
     {
         _cancellationTokenSource.Cancel();
@@ -392,51 +430,36 @@ public partial class BannerForm : Form
         _cancellationTokenSource = new();
     }
 
-    /// <summary>
-    /// Applies or removes compact mode styling to the banner
-    /// </summary>
     private void ApplyCompactMode()
     {
-        // If already in compact mode, do nothing
         if (_isCompact) return;
 
         const float scaleFactorImage = 0.1f;
         const float scaleFactorFont = 0.8f;
 
-        // Scale font
         Font = new Font(Font.FontFamily, _defaultFontSize * scaleFactorFont, Font.Style);
         lblTop.Font = new Font(lblTop.Font.FontFamily, lblTop.Font.Size * scaleFactorFont, lblTop.Font.Style);
         lblTitle.Font = new Font(lblTitle.Font.FontFamily, lblTitle.Font.Size * scaleFactorFont, lblTitle.Font.Style);
 
-        // Scale image
         if (pbxLogo.Image != null && _defaultPictureSize.Width > 0 && _defaultPictureSize.Height > 0)
         {
             var newWidth = (int)(_defaultPictureSize.Width * scaleFactorImage);
             var newHeight = (int)(_defaultPictureSize.Height * scaleFactorImage);
 
             if (newWidth > 0 && newHeight > 0)
-            {
                 pbxLogo.Size = new Size(newWidth, newHeight);
-            }
         }
 
-        // Scale padding
         Padding = new Padding(
             (int)(_defaultPadding.Left * scaleFactorImage),
             (int)(_defaultPadding.Top * scaleFactorImage),
             (int)(_defaultPadding.Right * scaleFactorImage),
-            (int)(_defaultPadding.Bottom * scaleFactorImage)
-        );
+            (int)(_defaultPadding.Bottom * scaleFactorImage));
 
-        // Force the form to recalculate its size
         PerformLayout();
         _isCompact = true;
     }
 
-    /// <summary>
-    /// Clean up any resources being used.
-    /// </summary>
-    /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
     protected override void Dispose(bool disposing)
     {
         if (disposing)
@@ -455,34 +478,21 @@ public partial class BannerForm : Form
         base.Dispose(disposing);
     }
 
-    /// <summary>
-    /// Event handler for the "hiding" timer.
-    /// </summary>
-    /// <param name="sender">The sender of the event</param>
-    /// <param name="e">Arguments of the event</param>
-    private void TimerHide_Tick(object sender, EventArgs e)
-    {
-        TriggerHidingDisposal();
-    }
+    private void TimerHide_Tick(object sender, EventArgs e) => TriggerHidingDisposal();
 
-    /// <summary>
-    /// Trigger hiding the banner and dispose when done fading out.
-    /// </summary>
     private void TriggerHidingDisposal()
     {
         if (_hiding) return;
 
         _hiding = true;
-        _timerHide.Enabled = false;
+        // A persistent banner (Ttl == TimeSpan.MaxValue) has no timer, yet can
+        // still be dismissed by a click. C# 14 null-conditional assignment makes
+        // this a no-op when _timerHide is null — no NRE, no explicit guard.
+        _timerHide?.Enabled = false;
         DestroySound();
         FadeOut();
     }
 
-    /// <summary>
-    /// Implements an "fadeout" animation while hiding the window.
-    /// In the end of the animation the form is self disposed.
-    /// <remarks>The animation is canceled if the method <see cref="SetData"/> is called along the animation.</remarks>
-    /// </summary>
     private async void FadeOut()
     {
         try
@@ -490,9 +500,7 @@ public partial class BannerForm : Form
             while (Opacity > 0.0)
             {
                 await Task.Delay(50);
-
-                if (!_hiding)
-                    break;
+                if (!_hiding) break;
                 Opacity -= 0.05;
             }
 
@@ -500,25 +508,14 @@ public partial class BannerForm : Form
         }
         catch (Win32Exception)
         {
-            try
-            {
-                Dispose();
-            }
-            catch (Exception)
-            {
-                //Ignored
-            }
+            try { Dispose(); }
+            catch { /* ignored */ }
         }
     }
 
-    /// <summary>
-    /// Event handler for clicks on any part of the banner
-    /// </summary>
-    /// <param name="sender">The sender of the event</param>
-    /// <param name="e">Arguments of the event</param>
     private void BannerForm_Click(object sender, EventArgs e)
     {
-        if (_currentData.CustomPositionMode) return;
+        if (_currentData == null || _currentData.CustomPositionMode) return;
 
         if (_currentData.OnClick == null)
         {
@@ -526,33 +523,32 @@ public partial class BannerForm : Form
             return;
         }
 
-        // Invoke the click callback if set
         _currentData.OnClick?.Invoke(this, e);
     }
 
     private void BannerForm_MouseDown(object sender, MouseEventArgs e)
     {
-        if (!_currentData.CustomPositionMode) return;
+        if (_currentData == null || !_currentData.CustomPositionMode) return;
         if (e.Button == MouseButtons.Left)
         {
             _lastMousePosition = new Point(e.X, e.Y);
-            _timerHide.Stop();
+            _timerHide?.Stop();
         }
     }
 
     private void BannerForm_MouseUp(object sender, MouseEventArgs e)
     {
-        if (!_currentData.CustomPositionMode) return;
+        if (_currentData == null || !_currentData.CustomPositionMode) return;
         if (e.Button == MouseButtons.Left)
         {
             AppModel.Instance.CustomBannerPosition = Location;
-            _timerHide.Start();
+            _timerHide?.Start();
         }
     }
 
     private void BannerForm_MouseMove(object sender, MouseEventArgs e)
     {
-        if (!_currentData.CustomPositionMode) return;
+        if (_currentData == null || !_currentData.CustomPositionMode) return;
         if (e.Button == MouseButtons.Left)
         {
             var screen = GetScreen().Bounds;
@@ -570,19 +566,15 @@ public partial class BannerForm : Form
 
     private void BannerForm_KeyDown(object sender, KeyEventArgs e)
     {
-        if (!_currentData.CustomPositionMode) return;
+        if (_currentData == null || !_currentData.CustomPositionMode) return;
         if (HandleCustomPositionKey(e.KeyCode))
-        {
             e.Handled = true;
-        }
     }
 
     private bool HandleCustomPositionKey(Keys key)
     {
         if (_currentData == null || !_currentData.CustomPositionMode)
-        {
             return false;
-        }
 
         switch (key)
         {
