@@ -1,3 +1,9 @@
+## [7.1.1-beta.3](https://github.com/Belphemur/SoundSwitch/compare/v7.1.1-beta.2...v7.1.1-beta.3) (2026-06-22)
+
+### Bug Fixes
+
+* **banner:** Disable layer approach. Banner is staggered. ([638bd1e](https://github.com/Belphemur/SoundSwitch/commit/638bd1e4a085d788f1b9d6e90781e7d1ac3019a3))
+
 ## [7.1.1-beta.2](https://github.com/Belphemur/SoundSwitch/compare/v7.1.1-beta.1...v7.1.1-beta.2) (2026-06-21)
 
 ### Enhancements
