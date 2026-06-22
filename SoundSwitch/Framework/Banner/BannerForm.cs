@@ -168,8 +168,6 @@ public partial class BannerForm : Form
             cp.ExStyle |= 0x08000000;
             // WS_EX_TOPMOST — stay on top even in exclusive fullscreen
             cp.ExStyle |= 0x00000008;
-            // WS_EX_LAYERED — prevent handle recreation when Opacity changes
-            cp.ExStyle |= 0x00080000;
             return cp;
         }
     }
