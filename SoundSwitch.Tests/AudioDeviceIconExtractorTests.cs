@@ -8,6 +8,10 @@ using SoundSwitch.Common.Framework.Audio.Icon;
 
 namespace SoundSwitch.Tests;
 
+/// <summary>
+/// Tests for the <see cref="AudioDeviceIconExtractor"/> class, verifying icon extraction
+/// behavior for audio devices including fallback handling for invalid icon paths.
+/// </summary>
 [TestFixture]
 public class AudioDeviceIconExtractorTests
 {

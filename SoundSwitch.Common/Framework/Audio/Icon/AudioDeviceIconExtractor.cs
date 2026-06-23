@@ -33,6 +33,13 @@ namespace SoundSwitch.Common.Framework.Audio.Icon
         private static readonly IconHandle DefaultSpeakersHandle = CreatePermanentDefaultIcon(() => Resources.defaultSpeakers, () => System.Drawing.SystemIcons.Application, nameof(Resources.defaultSpeakers));
         private static readonly IconHandle DefaultMicrophoneHandle = CreatePermanentDefaultIcon(() => Resources.defaultMicrophone, () => System.Drawing.SystemIcons.Information, nameof(Resources.defaultMicrophone));
 
+        /// <summary>
+        /// Creates a permanent icon handle from a bundled icon resource with a fallback option.
+        /// </summary>
+        /// <param name="bundledIconFactory">Factory function that provides the primary bundled icon.</param>
+        /// <param name="fallbackIconFactory">Factory function that provides a fallback system icon if the bundled icon fails to load.</param>
+        /// <param name="resourceName">The name of the resource being loaded, used for logging purposes.</param>
+        /// <returns>A permanent <see cref="IconHandle"/> that does not require disposal.</returns>
         private static IconHandle CreatePermanentDefaultIcon(Func<System.Drawing.Icon> bundledIconFactory, Func<System.Drawing.Icon> fallbackIconFactory, string resourceName)
         {
             try
