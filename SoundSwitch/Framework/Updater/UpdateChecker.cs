@@ -39,7 +39,26 @@ public partial class UpdateChecker(Uri releaseUrl, bool checkBeta)
     private static readonly string UserAgent =
         $"Mozilla/5.0 (compatible; {Environment.OSVersion.Platform} {Environment.OSVersion.VersionString}; {Application.ProductName}/{Application.ProductVersion};)";
 
-    private static readonly SemanticVersion AppVersion = SemanticVersion.Parse(Application.ProductVersion);
+    private static readonly SemanticVersion AppVersion = ParseVersion(Application.ProductVersion);
+
+    /// <summary>
+    /// Parses a version string into a <see cref="SemanticVersion"/>.
+    /// When a fourth version component is present (e.g. nightly builds like "7.1.0.229925"),
+    /// the last 5 digits of that component are used as the patch number so that nightly builds
+    /// remain orderable and distinguishable (e.g. "7.1.29925").
+    /// </summary>
+    private static SemanticVersion ParseVersion(string version)
+    {
+        var parts = version.Split('.');
+        if (parts.Length >= 4 && int.TryParse(parts[3], out var revision))
+        {
+            var patch = revision % 100_000;
+            return new SemanticVersion(int.Parse(parts[0]), int.Parse(parts[1]), patch);
+        }
+
+        var truncated = string.Join(".", parts.Take(3));
+        return SemanticVersion.Parse(truncated);
+    }
 
     public EventHandler<NewReleaseEvent> UpdateAvailable;
     public bool Beta { get; set; } = checkBeta;
@@ -109,7 +128,9 @@ public partial class UpdateChecker(Uri releaseUrl, bool checkBeta)
         httpClient.DefaultRequestHeaders.UserAgent.Add(ApplicationInfo.CommentValue);
         httpClient.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
         var releases = await httpClient.GetFromJsonAsync(releaseUrl, GithubReleasesJsonContext.Default.ReleaseArray, token);
-        foreach (var release in (releases ?? Array.Empty<Release>()).OrderByDescending(release => SemanticVersion.Parse(release.TagName.Substring(1))))
+        foreach (var release in (releases ?? Array.Empty<Release>())
+                     .Where(release => SemanticVersion.TryParse(release.TagName.Substring(1), out _))
+                     .OrderByDescending(release => SemanticVersion.Parse(release.TagName.Substring(1))))
         {
             token.ThrowIfCancellationRequested();
             if (ProcessAndNotifyRelease(release))
