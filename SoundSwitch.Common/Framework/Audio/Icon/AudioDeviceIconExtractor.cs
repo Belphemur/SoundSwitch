@@ -30,8 +30,21 @@ namespace SoundSwitch.Common.Framework.Audio.Icon
     /// </summary>
     public class AudioDeviceIconExtractor
     {
-        private static readonly IconHandle DefaultSpeakersHandle = IconExtractor.CreatePermanent(Resources.defaultSpeakers);
-        private static readonly IconHandle DefaultMicrophoneHandle = IconExtractor.CreatePermanent(Resources.defaultMicrophone);
+        private static readonly IconHandle DefaultSpeakersHandle = CreatePermanentDefaultIcon(() => Resources.defaultSpeakers, () => System.Drawing.SystemIcons.Application, nameof(Resources.defaultSpeakers));
+        private static readonly IconHandle DefaultMicrophoneHandle = CreatePermanentDefaultIcon(() => Resources.defaultMicrophone, () => System.Drawing.SystemIcons.Information, nameof(Resources.defaultMicrophone));
+
+        private static IconHandle CreatePermanentDefaultIcon(Func<System.Drawing.Icon> bundledIconFactory, Func<System.Drawing.Icon> fallbackIconFactory, string resourceName)
+        {
+            try
+            {
+                return IconExtractor.CreatePermanent(bundledIconFactory());
+            }
+            catch (Exception e)
+            {
+                Log.Warning(e, "Can't load bundled fallback icon {resourceName}, using system icon fallback", resourceName);
+                return IconExtractor.CreatePermanent((System.Drawing.Icon)fallbackIconFactory().Clone());
+            }
+        }
 
         /// <summary>
         /// Extract an icon from an audio device icon path, falling back to a DataFlow-specific
