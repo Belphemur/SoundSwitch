@@ -30,8 +30,28 @@ namespace SoundSwitch.Common.Framework.Audio.Icon
     /// </summary>
     public class AudioDeviceIconExtractor
     {
-        private static readonly IconHandle DefaultSpeakersHandle = IconExtractor.CreatePermanent(Resources.defaultSpeakers);
-        private static readonly IconHandle DefaultMicrophoneHandle = IconExtractor.CreatePermanent(Resources.defaultMicrophone);
+        private static readonly IconHandle DefaultSpeakersHandle = CreatePermanentDefaultIcon(() => Resources.defaultSpeakers, () => System.Drawing.SystemIcons.Application, nameof(Resources.defaultSpeakers));
+        private static readonly IconHandle DefaultMicrophoneHandle = CreatePermanentDefaultIcon(() => Resources.defaultMicrophone, () => System.Drawing.SystemIcons.Information, nameof(Resources.defaultMicrophone));
+
+        /// <summary>
+        /// Creates a permanent icon handle from a bundled icon resource with a fallback option.
+        /// </summary>
+        /// <param name="bundledIconFactory">Factory function that provides the primary bundled icon.</param>
+        /// <param name="fallbackIconFactory">Factory function that provides a fallback system icon if the bundled icon fails to load.</param>
+        /// <param name="resourceName">The name of the resource being loaded, used for logging purposes.</param>
+        /// <returns>A permanent <see cref="IconHandle"/> that does not require disposal.</returns>
+        private static IconHandle CreatePermanentDefaultIcon(Func<System.Drawing.Icon> bundledIconFactory, Func<System.Drawing.Icon> fallbackIconFactory, string resourceName)
+        {
+            try
+            {
+                return IconExtractor.CreatePermanent(bundledIconFactory());
+            }
+            catch (Exception e)
+            {
+                Log.Warning(e, "Can't load bundled fallback icon {resourceName}, using system icon fallback", resourceName);
+                return IconExtractor.CreatePermanent((System.Drawing.Icon)fallbackIconFactory().Clone());
+            }
+        }
 
         /// <summary>
         /// Extract an icon from an audio device icon path, falling back to a DataFlow-specific
