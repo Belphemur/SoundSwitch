@@ -1,3 +1,11 @@
+## [7.1.1-beta.4](https://github.com/Belphemur/SoundSwitch/compare/v7.1.1-beta.3...v7.1.1-beta.4) (2026-06-23)
+
+### Bug Fixes
+
+* **common:** avoid icon extractor type-init crash on invalid fallback resources ([01a7a43](https://github.com/Belphemur/SoundSwitch/commit/01a7a435acb14dd7607ed3486b54c8af9589e30d)), closes [#2243](https://github.com/Belphemur/SoundSwitch/issues/2243)
+* **updater:** handle 4-part version strings for nightly builds ([9b55ab1](https://github.com/Belphemur/SoundSwitch/commit/9b55ab185bf32253e94d6f8fcf7d82bab714ac15)), closes [#2248](https://github.com/Belphemur/SoundSwitch/issues/2248)
+* **updater:** use last 5 digits of nightly revision as patch version ([1382766](https://github.com/Belphemur/SoundSwitch/commit/1382766d981df0b8b91fa5de2d47fb59595426e2))
+
 ## [7.1.1-beta.3](https://github.com/Belphemur/SoundSwitch/compare/v7.1.1-beta.2...v7.1.1-beta.3) (2026-06-22)
 
 ### Bug Fixes
