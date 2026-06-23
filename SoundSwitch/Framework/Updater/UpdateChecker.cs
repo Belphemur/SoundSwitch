@@ -39,7 +39,18 @@ public partial class UpdateChecker(Uri releaseUrl, bool checkBeta)
     private static readonly string UserAgent =
         $"Mozilla/5.0 (compatible; {Environment.OSVersion.Platform} {Environment.OSVersion.VersionString}; {Application.ProductName}/{Application.ProductVersion};)";
 
-    private static readonly SemanticVersion AppVersion = SemanticVersion.Parse(Application.ProductVersion);
+    private static readonly SemanticVersion AppVersion = ParseVersion(Application.ProductVersion);
+
+    /// <summary>
+    /// Parses a version string, truncating it to the first three parts (major.minor.patch) to handle
+    /// nightly build versions that include a fourth component (e.g. "7.1.0.229925").
+    /// </summary>
+    private static SemanticVersion ParseVersion(string version)
+    {
+        var parts = version.Split('.');
+        var truncated = string.Join(".", parts.Take(3));
+        return SemanticVersion.Parse(truncated);
+    }
 
     public EventHandler<NewReleaseEvent> UpdateAvailable;
     public bool Beta { get; set; } = checkBeta;
@@ -109,7 +120,9 @@ public partial class UpdateChecker(Uri releaseUrl, bool checkBeta)
         httpClient.DefaultRequestHeaders.UserAgent.Add(ApplicationInfo.CommentValue);
         httpClient.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
         var releases = await httpClient.GetFromJsonAsync(releaseUrl, GithubReleasesJsonContext.Default.ReleaseArray, token);
-        foreach (var release in (releases ?? Array.Empty<Release>()).OrderByDescending(release => SemanticVersion.Parse(release.TagName.Substring(1))))
+        foreach (var release in (releases ?? Array.Empty<Release>())
+                     .Where(release => SemanticVersion.TryParse(release.TagName.Substring(1), out _))
+                     .OrderByDescending(release => SemanticVersion.Parse(release.TagName.Substring(1))))
         {
             token.ThrowIfCancellationRequested();
             if (ProcessAndNotifyRelease(release))
