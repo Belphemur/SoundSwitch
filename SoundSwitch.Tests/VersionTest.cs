@@ -18,14 +18,24 @@ public class VersionTest
         beta.Should().BeLessThan(release);
     }
 
-    [TestCase("7.1.0.229925", "7.1.0")]
-    [TestCase("1.2.3.456", "1.2.3")]
+    [TestCase("7.1.0.229925", "7.1.29925")]
+    [TestCase("1.2.3.456", "1.2.456")]
+    [TestCase("1.2.3.100001", "1.2.1")]
     [TestCase("1.2.3", "1.2.3")]
-    public void TestNightlyVersionTruncation(string rawVersion, string expectedVersion)
+    public void TestNightlyVersionParsing(string rawVersion, string expectedVersion)
     {
         var parts = rawVersion.Split('.');
-        var truncated = string.Join(".", parts.Take(3));
-        var parsed = SemanticVersion.Parse(truncated);
+        SemanticVersion parsed;
+        if (parts.Length >= 4 && int.TryParse(parts[3], out var revision))
+        {
+            var patch = revision % 100_000;
+            parsed = new SemanticVersion(int.Parse(parts[0]), int.Parse(parts[1]), patch);
+        }
+        else
+        {
+            var truncated = string.Join(".", parts.Take(3));
+            parsed = SemanticVersion.Parse(truncated);
+        }
         parsed.Should().Be(SemanticVersion.Parse(expectedVersion));
     }
 }

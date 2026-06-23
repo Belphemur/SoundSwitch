@@ -42,12 +42,20 @@ public partial class UpdateChecker(Uri releaseUrl, bool checkBeta)
     private static readonly SemanticVersion AppVersion = ParseVersion(Application.ProductVersion);
 
     /// <summary>
-    /// Parses a version string, truncating it to the first three parts (major.minor.patch) to handle
-    /// nightly build versions that include a fourth component (e.g. "7.1.0.229925").
+    /// Parses a version string into a <see cref="SemanticVersion"/>.
+    /// When a fourth version component is present (e.g. nightly builds like "7.1.0.229925"),
+    /// the last 5 digits of that component are used as the patch number so that nightly builds
+    /// remain orderable and distinguishable (e.g. "7.1.29925").
     /// </summary>
     private static SemanticVersion ParseVersion(string version)
     {
         var parts = version.Split('.');
+        if (parts.Length >= 4 && int.TryParse(parts[3], out var revision))
+        {
+            var patch = revision % 100_000;
+            return new SemanticVersion(int.Parse(parts[0]), int.Parse(parts[1]), patch);
+        }
+
         var truncated = string.Join(".", parts.Take(3));
         return SemanticVersion.Parse(truncated);
     }
