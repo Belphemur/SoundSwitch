@@ -89,6 +89,8 @@ Source: "scripts\ManageWindowsUpdate.ps1"; DestDir: "{tmp}"; Flags: confirmoverw
 
 [Registry]
 Root: HKCU; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Run\{#MyAppSetupName}"; Flags: uninsdeletekey
+Root: HKCR; Subkey: "AppUserModelId\aaflalo.SoundSwitch.Application"; ValueType: string; ValueName: "DisplayName"; ValueData: "{#MyAppSetupName}"; Flags: uninsdeletekey
+Root: HKCR; Subkey: "AppUserModelId\aaflalo.SoundSwitch.Application"; ValueType: string; ValueName: "IconUri"; ValueData: "{app}\SoundSwitch.exe"; Flags: uninsdeletekey
 
 [Icons]
 Name: "{group}\{#MyAppSetupName}"; Filename: "{app}\SoundSwitch.exe"; AppUserModelID: aaflalo.{#MyAppSetupName}.Application
