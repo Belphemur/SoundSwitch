@@ -33,7 +33,7 @@ namespace SoundSwitch.Framework.Banner;
 internal static class ToastBannerAdapter
 {
     // SoundSwitch's registered AppUserModelID.
-    // Must match the value set by the installer (NSIS/Inno sets this on the
+    // Must match the value set by the installer (Inno Setup sets this on the
     // Start Menu shortcut). If SoundSwitch is not installed (dev/portable),
     // we fall back to a generic ID — Windows will still show the toast but
     // may use a generic icon.
@@ -114,7 +114,7 @@ internal static class ToastBannerAdapter
         //
         // Schema: https://learn.microsoft.com/en-us/uwp/schemas/tiles/toastschema/schema-root
         var imageElement = imagePath != null
-            ? $"""<image placement="appLogoOverride" hint-crop="circle" src="file:///{Uri.EscapeDataString(imagePath).Replace("%2F", "/").Replace("%5C", "/")}" />"""
+            ? $"""<image placement="appLogoOverride" hint-crop="circle" src="{new Uri(imagePath).AbsoluteUri}" />"""
             : string.Empty;
 
         var xml = $"""

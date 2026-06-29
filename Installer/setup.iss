@@ -1,4 +1,5 @@
 #include "scripts\app_defines.iss"
+#define MyAppUserModelId "aaflalo." + MyAppSetupName + ".Application"
 // ReleaseState and DotNetMajorVersion are expected to be defined through the command line with /D parameter
 // e.g. iscc /DReleaseState=Beta /DDotNetMajorVersion=10 setup.iss
 
@@ -89,13 +90,13 @@ Source: "scripts\ManageWindowsUpdate.ps1"; DestDir: "{tmp}"; Flags: confirmoverw
 
 [Registry]
 Root: HKCU; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Run\{#MyAppSetupName}"; Flags: uninsdeletekey
-Root: HKCR; Subkey: "AppUserModelId\aaflalo.SoundSwitch.Application"; ValueType: string; ValueName: "DisplayName"; ValueData: "{#MyAppSetupName}"; Flags: uninsdeletekey
-Root: HKCR; Subkey: "AppUserModelId\aaflalo.SoundSwitch.Application"; ValueType: string; ValueName: "IconUri"; ValueData: "{app}\SoundSwitch.exe"; Flags: uninsdeletekey
+Root: HKCU; Subkey: "SOFTWARE\Classes\AppUserModelId\{#MyAppUserModelId}"; ValueType: string; ValueName: "DisplayName"; ValueData: "{#MyAppSetupName}"; Flags: uninsdeletekey
+Root: HKCU; Subkey: "SOFTWARE\Classes\AppUserModelId\{#MyAppUserModelId}"; ValueType: string; ValueName: "IconUri"; ValueData: "{app}\SoundSwitch.exe"; Flags: uninsdeletekey
 
 [Icons]
-Name: "{group}\{#MyAppSetupName}"; Filename: "{app}\SoundSwitch.exe"; AppUserModelID: aaflalo.{#MyAppSetupName}.Application
+Name: "{group}\{#MyAppSetupName}"; Filename: "{app}\SoundSwitch.exe"; AppUserModelID: {#MyAppUserModelId}
 Name: "{group}\{cm:UninstallProgram,{#MyAppSetupName}}"; Filename: "{uninstallexe}"
-Name: "{userdesktop}\{#MyAppSetupName}"; Filename: "{app}\SoundSwitch.exe"; Tasks: desktopicon; AppUserModelID: aaflalo.{#MyAppSetupName}.Application
+Name: "{userdesktop}\{#MyAppSetupName}"; Filename: "{app}\SoundSwitch.exe"; Tasks: desktopicon; AppUserModelID: {#MyAppUserModelId}
 
 [Run]
 Filename: "{app}\SoundSwitch.exe"; Description: "{cm:LaunchProgram,{#MyAppSetupName}}"; Flags: nowait postinstall;

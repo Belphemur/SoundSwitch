@@ -28,7 +28,7 @@ namespace SoundSwitch.Framework.Banner;
 /// minimize itself and release the exclusive mode.
 ///
 /// We detect this by combining three signals:
-///   1. The foreground window covers the entire monitor exactly.
+///   1. The foreground window covers at least the entire monitor.
 ///   2. It has WS_POPUP style (no title bar / border — typical for FSE).
 ///   3. It has WS_EX_TOPMOST (FSE windows are always topmost).
 ///
@@ -81,7 +81,7 @@ internal static class ExclusiveFullscreenDetector
             var screen = Screen.FromHandle(hWnd);
             var b = screen.Bounds;
 
-            // 3. Does the window cover the entire monitor exactly?
+            // 3. Does the window cover at least the entire monitor?
             bool coversMonitor = rect.Left   <= b.Left  &&
                                  rect.Top    <= b.Top   &&
                                  rect.Right  >= b.Right &&
@@ -106,16 +106,13 @@ internal static class ExclusiveFullscreenDetector
 
             // 6. Direct3D / Graphics loaded modules detection
             // If the foreground window meets style/bounds criteria, check if it uses D3D / graphics APIs.
-            // If it is indeed a Direct3D/graphics process, or if we cannot confidently check (e.g. access denied),
-            // we return true because the style/bounds check already passed.
-            if (IsGraphicsProcess(hWnd))
-            {
-                return true;
-            }
+            // Returns true if graphics modules are found, null if we couldn't determine (e.g. access denied),
+            // or false if enumeration succeeded but no graphics modules were found.
+            var graphicsResult = TryIsGraphicsProcess(hWnd);
 
-            // Fallback: If we couldn't confidently identify graphics modules, but the window size/style is an exact match,
-            // we still treat it as a potential exclusive fullscreen window.
-            return true;
+            // Only treat as FSE if we confirmed graphics modules or couldn't determine (benefit of the doubt).
+            // If enumeration succeeded but found no graphics modules, it's likely not a game.
+            return graphicsResult != false;
         }
         catch (Exception ex)
         {
@@ -127,17 +124,24 @@ internal static class ExclusiveFullscreenDetector
     [DllImport("user32.dll", SetLastError = true)]
     private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 
-    private static bool IsGraphicsProcess(IntPtr hWnd)
+    /// <summary>
+    /// Checks whether the process owning <paramref name="hWnd"/> has loaded
+    /// common Direct3D / graphics DLLs.
+    /// Returns <c>true</c> if graphics modules are found, <c>false</c> if
+    /// enumeration succeeded but no graphics modules were found, or
+    /// <c>null</c> if we couldn't determine (e.g. access denied).
+    /// </summary>
+    private static bool? TryIsGraphicsProcess(IntPtr hWnd)
     {
         try
         {
             GetWindowThreadProcessId(hWnd, out var pid);
             if (pid == 0)
-                return false;
+                return null;
 
             using var process = System.Diagnostics.Process.GetProcessById((int)pid);
             if (process == null)
-                return false;
+                return null;
 
             // Enumerate modules to check for common Direct3D/Graphics DLLs
             foreach (System.Diagnostics.ProcessModule module in process.Modules)
@@ -159,12 +163,14 @@ internal static class ExclusiveFullscreenDetector
         }
         catch (System.ComponentModel.Win32Exception)
         {
-            // Access denied on elevated processes, we log a verbose/debug line
+            // Access denied on elevated processes — can't determine, give benefit of the doubt
             Serilog.Log.Debug("Access denied when trying to read modules for foreground process.");
+            return null;
         }
         catch (Exception ex)
         {
             Serilog.Log.Debug(ex, "Could not determine if process uses Direct3D.");
+            return null;
         }
 
         return false;
