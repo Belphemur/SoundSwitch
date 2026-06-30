@@ -2,6 +2,31 @@
 
 The `MicrophoneMuteBannerManager` is a UI-thread manager responsible for displaying persistent banner notifications when microphones are muted, and for dismissing them when microphones are unmuted.
 
+## Exclusive Fullscreen Detection
+
+`SoundSwitch/Framework/Banner/ExclusiveFullscreenDetector.cs`
+
+The `ExclusiveFullscreenDetector` determines whether the foreground window is in **true exclusive fullscreen** (FSE) mode — where DWM composition is suspended and no Win32 overlay window can appear. When detected, notifications are routed to Windows Toast instead of the banner overlay.
+
+### Key Insight
+
+In true exclusive fullscreen, the application takes exclusive ownership of the display output via DXGI. DWM is suspended for that monitor, so no Win32 window can be rendered on screen. Toast notifications are the only option because they are handled by the OS notification layer independently of DWM.
+
+Modern games (e.g. Counter-Strike 2) use **borderless fullscreen** with the DXGI flip model, which provides equivalent performance without suspending DWM. In this mode, `BannerForm` is safe to show because it uses `WS_EX_NOACTIVATE` + `ShowWithoutActivation`, which does not trigger `WM_ACTIVATEAPP` in the game.
+
+### Detection Strategy (Layered)
+
+1. **SHQueryUserNotificationState** (primary signal) — The only Windows API that explicitly says "a D3D app is running in exclusive fullscreen" (`QUNS_RUNNING_D3D_FULL_SCREEN`). It is global (not per-window), but it is the strongest available signal.
+2. **Display mode change** (secondary signal, gated) — Compares `ENUM_CURRENT_SETTINGS` vs `ENUM_REGISTRY_SETTINGS`. Only fires if the foreground window also covers the monitor, to prevent false positives from unrelated display mode changes on the same monitor.
+3. **Shell exclusion** — Windows shell windows (explorer.exe, ShellExperienceHost.exe) are excluded to prevent false positives from the desktop/taskbar.
+
+### What Is NOT Treated as FSE
+
+- Borderless fullscreen games (QUNS will not report D3D FSE, no display mode change) → banner shown normally
+- Desktop shell windows (explorer.exe) → banner shown normally
+- Any windowed application → banner shown normally
+- Always-on-top borderless windows → banner shown normally (WS_EX_TOPMOST alone is NOT used as a FSE signal)
+
 ## Location
 
 `SoundSwitch/Framework/Banner/MicrophoneMute/MicrophoneMuteBannerManager.cs`

@@ -32,4 +32,13 @@ public class ExclusiveFullscreenDetectorTests
         act.Should().NotThrow();
     }
 
+    [Test]
+    public void TestIsForegroundInExclusiveFullscreen_ReturnsBool()
+    {
+        // Act
+        var result = ExclusiveFullscreenDetector.IsForegroundInExclusiveFullscreen();
+
+        // Assert
+        result.GetType().Should().Be(typeof(bool));
+    }
 }

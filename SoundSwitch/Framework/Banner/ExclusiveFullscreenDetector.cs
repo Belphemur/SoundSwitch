@@ -20,25 +20,47 @@ namespace SoundSwitch.Framework.Banner;
 
 /// <summary>
 /// Detects whether the current foreground window is running in true
-/// exclusive fullscreen (FSE) mode.
+/// exclusive fullscreen (FSE) mode, as opposed to borderless windowed.
 ///
-/// In FSE the application holds the DXGI flip chain exclusively.
-/// Any new top-level Win32 window — even with WS_EX_NOACTIVATE — causes
-/// Windows to send WM_ACTIVATEAPP(FALSE) to the game, which makes it
-/// minimize itself and release the exclusive mode.
+/// Why this matters:
+///   In FSE, the application owns the display flip chain. When any new
+///   top-level Win32 window appears, Windows sends WM_ACTIVATEAPP(FALSE) to
+///   the game, which typically minimizes itself and releases the exclusive
+///   mode. Borderless windowed is composited by DWM and does not have this
+///   problem.
 ///
-/// We detect this by combining three signals:
-///   1. The foreground window covers at least the entire monitor.
-///   2. It has WS_POPUP style (no title bar / border — typical for FSE).
-///   3. It has WS_EX_TOPMOST (FSE windows are always topmost).
+/// Detection strategy (layered):
 ///
-/// Borderless-windowed games also satisfy (1) and (2) but NOT (3), because
-/// modern games running in borderless windowed mode are NOT topmost — the
-/// Desktop Window Manager composites them normally. FSE windows are topmost
-/// because they bypass DWM entirely.
+///   1. PRIMARY: SHQueryUserNotificationState() returns
+///      QUNS_RUNNING_D3D_FULL_SCREEN. This is the only Windows API that
+///      explicitly says "a D3D app is running in exclusive fullscreen".
+///      It is global, not per-window, but it is the strongest signal.
+///
+///   2. SECONDARY: Display mode change on the foreground window's monitor.
+///      Compares ENUM_CURRENT_SETTINGS vs ENUM_REGISTRY_SETTINGS. Only true
+///      FSE changes resolution or refresh rate. Gated behind the foreground
+///      window covering the monitor to avoid false positives from unrelated
+///      mode changes.
+///
+///   3. SHELL EXCLUSION: The Windows shell (explorer.exe) is excluded to
+///      prevent false positives from the desktop or taskbar.
+///
+/// Known limitations:
+///   - Windows Fullscreen Optimizations (default on Win10/11) make many
+///     "Fullscreen" games actually run as borderless windowed. Those will
+///     correctly NOT be detected as FSE.
+///   - SHQueryUserNotificationState is global; if a FSE game is on a
+///     secondary monitor while the user is interacting with a windowed
+///     app on the primary monitor, we may still toast. This is acceptable
+///     because toast is non-disruptive.
 /// </summary>
 internal static class ExclusiveFullscreenDetector
 {
+    #region Native Methods
+
+    [DllImport("shell32.dll")]
+    private static extern int SHQueryUserNotificationState(out QueryUserNotificationState pquns);
+
     [DllImport("user32.dll")]
     private static extern IntPtr GetForegroundWindow();
 
@@ -49,11 +71,58 @@ internal static class ExclusiveFullscreenDetector
     [DllImport("user32.dll")]
     private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
 
-    private const int GWL_STYLE   = -16;
+    [DllImport("user32.dll", CharSet = CharSet.Auto)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool EnumDisplaySettings(string lpszDeviceName, int iModeNum, ref DEVMODE lpDevMode);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    private static extern int GetWindowThreadProcessId(IntPtr hWnd, out int lpdwProcessId);
+
+    [DllImport("kernel32.dll")]
+    private static extern IntPtr OpenProcess(uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, int dwProcessId);
+
+    [DllImport("psapi.dll", CharSet = CharSet.Auto)]
+    private static extern uint GetModuleBaseName(IntPtr hProcess, IntPtr hModule, System.Text.StringBuilder lpBaseName, int nSize);
+
+    [DllImport("kernel32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool CloseHandle(IntPtr hObject);
+
+    #endregion
+
+    #region Constants
+
+    private const int GWL_STYLE = -16;
     private const int GWL_EXSTYLE = -20;
-    private const uint WS_POPUP    = 0x80000000;
-    private const uint WS_CAPTION  = 0x00C00000;
+
+    private const uint WS_POPUP = 0x80000000;
+    private const uint WS_CAPTION = 0x00C00000;
+    private const uint WS_THICKFRAME = 0x00040000;
     private const uint WS_EX_TOPMOST = 0x00000008;
+
+    private const int ENUM_CURRENT_SETTINGS = -1;
+    private const int ENUM_REGISTRY_SETTINGS = -2;
+
+    private const uint PROCESS_QUERY_LIMITED_INFORMATION = 0x1000;
+
+    #endregion
+
+    #region Native Enums
+
+    private enum QueryUserNotificationState
+    {
+        NotPresent = 1,
+        Busy = 2,
+        RunningD3dFullScreen = 3,
+        PresentationMode = 4,
+        AcceptsNotifications = 5,
+        QuietTime = 6,
+        App = 7
+    }
+
+    #endregion
+
+    #region Native Structs
 
     [StructLayout(LayoutKind.Sequential)]
     private struct RECT
@@ -61,9 +130,55 @@ internal static class ExclusiveFullscreenDetector
         public int Left, Top, Right, Bottom;
     }
 
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    private struct DEVMODE
+    {
+        private const int CCHDEVICENAME = 32;
+        private const int CCHFORMNAME = 32;
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = CCHDEVICENAME)]
+        public string dmDeviceName;
+
+        public short dmSpecVersion;
+        public short dmDriverVersion;
+        public short dmSize;
+        public short dmDriverExtra;
+        public int dmFields;
+        public int dmPositionX;
+        public int dmPositionY;
+        public int dmDisplayOrientation;
+        public int dmDisplayFixedOutput;
+        public short dmColor;
+        public short dmDuplex;
+        public short dmYResolution;
+        public short dmTTOption;
+        public short dmCollate;
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = CCHFORMNAME)]
+        public string dmFormName;
+
+        public short dmLogPixels;
+        public int dmBitsPerPel;
+        public int dmPelsWidth;
+        public int dmPelsHeight;
+        public int dmDisplayFlags;
+        public int dmDisplayFrequency;
+        public int dmICMMethod;
+        public int dmICMIntent;
+        public int dmMediaType;
+        public int dmDitherType;
+        public int dmReserved1;
+        public int dmReserved2;
+        public int dmPanningWidth;
+        public int dmPanningHeight;
+    }
+
+    #endregion
+
     /// <summary>
     /// Returns <c>true</c> when the foreground window appears to be running
-    /// in true exclusive fullscreen mode on its monitor.
+    /// in true exclusive fullscreen mode. In that case, the banner cannot
+    /// be displayed and a toast notification should be used instead.
     /// </summary>
     public static bool IsForegroundInExclusiveFullscreen()
     {
@@ -73,46 +188,36 @@ internal static class ExclusiveFullscreenDetector
             if (hWnd == IntPtr.Zero)
                 return false;
 
-            // 1. Get the window bounds
+            // Exclude the Windows shell to prevent false positives.
+            if (IsShellWindow(hWnd))
+                return false;
+
+            // Layer 1: SHQueryUserNotificationState — the official Windows signal.
+            // QUNS_RUNNING_D3D_FULL_SCREEN is the only API that explicitly says
+            // "a D3D app is running in exclusive fullscreen".
+            if (QueryNotificationStateSaysFullscreen())
+                return true;
+
+            // Layer 2: Display mode change on the foreground window's monitor.
+            // Gated behind the foreground window covering the monitor to avoid
+            // false positives from unrelated mode changes (fixes CodeRabbit #158).
             if (!GetWindowRect(hWnd, out var rect))
                 return false;
 
-            // 2. Get the monitor this window lives on
             var screen = Screen.FromHandle(hWnd);
-            var b = screen.Bounds;
+            var monitorBounds = screen.Bounds;
 
-            // 3. Does the window cover at least the entire monitor?
-            bool coversMonitor = rect.Left   <= b.Left  &&
-                                 rect.Top    <= b.Top   &&
-                                 rect.Right  >= b.Right &&
-                                 rect.Bottom >= b.Bottom;
+            bool coversMonitor = rect.Left <= monitorBounds.Left &&
+                                 rect.Top <= monitorBounds.Top &&
+                                 rect.Right >= monitorBounds.Right &&
+                                 rect.Bottom >= monitorBounds.Bottom;
+
             if (!coversMonitor)
                 return false;
 
-            // 4. WS_POPUP + no WS_CAPTION → borderless, no title bar
-            //    (both FSE and borderless-windowed pass this)
-            var style = (uint)GetWindowLong(hWnd, GWL_STYLE);
-            bool isPopupStyle = (style & WS_POPUP) != 0 && (style & WS_CAPTION) == 0;
-            if (!isPopupStyle)
-                return false;
-
-            // 5. WS_EX_TOPMOST is the key differentiator:
-            //    FSE windows are always topmost; borderless-windowed are NOT.
-            var exStyle = (uint)GetWindowLong(hWnd, GWL_EXSTYLE);
-            bool isTopmost = (exStyle & WS_EX_TOPMOST) != 0;
-
-            if (!isTopmost)
-                return false;
-
-            // 6. Direct3D / Graphics loaded modules detection
-            // If the foreground window meets style/bounds criteria, check if it uses D3D / graphics APIs.
-            // Returns true if graphics modules are found, null if we couldn't determine (e.g. access denied),
-            // or false if enumeration succeeded but no graphics modules were found.
-            var graphicsResult = TryIsGraphicsProcess(hWnd);
-
-            // Only treat as FSE if we confirmed graphics modules or couldn't determine (benefit of the doubt).
-            // If enumeration succeeded but found no graphics modules, it's likely not a game.
-            return graphicsResult != false;
+            // Only if the foreground window covers the monitor AND the display
+            // mode has changed do we consider this true exclusive fullscreen.
+            return IsDisplayModeChanged(screen.DeviceName);
         }
         catch (Exception ex)
         {
@@ -121,58 +226,85 @@ internal static class ExclusiveFullscreenDetector
         }
     }
 
-    [DllImport("user32.dll", SetLastError = true)]
-    private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+    /// <summary>
+    /// Queries Windows notification state to determine if a D3D application
+    /// is running in exclusive fullscreen mode.
+    /// </summary>
+    private static bool QueryNotificationStateSaysFullscreen()
+    {
+        int hr = SHQueryUserNotificationState(out var state);
+        if (hr != 0) // S_OK == 0
+            return false;
+
+        return state == QueryUserNotificationState.RunningD3dFullScreen;
+    }
 
     /// <summary>
-    /// Checks whether the process owning <paramref name="hWnd"/> has loaded
-    /// common Direct3D / graphics DLLs.
-    /// Returns <c>true</c> if graphics modules are found, <c>false</c> if
-    /// enumeration succeeded but no graphics modules were found, or
-    /// <c>null</c> if we couldn't determine (e.g. access denied).
+    /// Checks if the current display mode on the given device differs from
+    /// the desktop's registry (default) settings. A mismatch indicates that
+    /// a process has taken exclusive control and changed the display mode.
     /// </summary>
-    private static bool? TryIsGraphicsProcess(IntPtr hWnd)
+    private static bool IsDisplayModeChanged(string deviceName)
+    {
+        try
+        {
+            var currentMode = new DEVMODE();
+            currentMode.dmSize = (short)Marshal.SizeOf<DEVMODE>();
+
+            var registryMode = new DEVMODE();
+            registryMode.dmSize = (short)Marshal.SizeOf<DEVMODE>();
+
+            if (!EnumDisplaySettings(deviceName, ENUM_CURRENT_SETTINGS, ref currentMode))
+                return false;
+
+            if (!EnumDisplaySettings(deviceName, ENUM_REGISTRY_SETTINGS, ref registryMode))
+                return false;
+
+            return currentMode.dmPelsWidth != registryMode.dmPelsWidth ||
+                   currentMode.dmPelsHeight != registryMode.dmPelsHeight ||
+                   currentMode.dmDisplayFrequency != registryMode.dmDisplayFrequency;
+        }
+        catch (Exception ex)
+        {
+            Serilog.Log.Debug(ex, "Could not compare display modes for FSE detection");
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Returns <c>true</c> if the given window belongs to the Windows shell
+    /// (explorer.exe or ShellExperienceHost.exe), which should never be
+    /// treated as exclusive fullscreen.
+    /// </summary>
+    private static bool IsShellWindow(IntPtr hWnd)
     {
         try
         {
             GetWindowThreadProcessId(hWnd, out var pid);
-            if (pid == 0)
-                return null;
 
-            using var process = System.Diagnostics.Process.GetProcessById((int)pid);
-            if (process == null)
-                return null;
+            var hProcess = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, false, pid);
+            if (hProcess == IntPtr.Zero)
+                return false;
 
-            // Enumerate modules to check for common Direct3D/Graphics DLLs
-            foreach (System.Diagnostics.ProcessModule module in process.Modules)
+            try
             {
-                if (module?.ModuleName == null)
-                    continue;
+                var name = new System.Text.StringBuilder(260);
+                uint len = GetModuleBaseName(hProcess, IntPtr.Zero, name, name.Capacity);
+                if (len == 0)
+                    return false;
 
-                var moduleName = module.ModuleName.ToLowerInvariant();
-                if (moduleName.StartsWith("d3d") && moduleName.EndsWith(".dll"))
-                {
-                    return true;
-                }
-
-                if (moduleName == "dxgi.dll" || moduleName == "opengl32.dll" || moduleName.Contains("vulkan-1"))
-                {
-                    return true;
-                }
+                string processName = name.ToString();
+                return processName.Equals("explorer.exe", StringComparison.OrdinalIgnoreCase) ||
+                       processName.Equals("ShellExperienceHost.exe", StringComparison.OrdinalIgnoreCase);
+            }
+            finally
+            {
+                CloseHandle(hProcess);
             }
         }
-        catch (System.ComponentModel.Win32Exception)
+        catch
         {
-            // Access denied on elevated processes — can't determine, give benefit of the doubt
-            Serilog.Log.Debug("Access denied when trying to read modules for foreground process.");
-            return null;
+            return false;
         }
-        catch (Exception ex)
-        {
-            Serilog.Log.Debug(ex, "Could not determine if process uses Direct3D.");
-            return null;
-        }
-
-        return false;
     }
 }
