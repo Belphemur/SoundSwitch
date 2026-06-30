@@ -2,6 +2,28 @@
 
 The `MicrophoneMuteBannerManager` is a UI-thread manager responsible for displaying persistent banner notifications when microphones are muted, and for dismissing them when microphones are unmuted.
 
+## Exclusive Fullscreen Detection
+
+`SoundSwitch/Framework/Banner/ExclusiveFullscreenDetector.cs`
+
+The `ExclusiveFullscreenDetector` determines whether the foreground window is in a fullscreen state that would be disrupted by a Win32 overlay. When detected, notifications are routed to Windows Toast instead of the banner overlay.
+
+### Detection Strategy
+
+The detector uses a multi-signal approach:
+
+1. **Monitor coverage** — The foreground window must cover at least the entire monitor bounds.
+2. **Borderless style** — The window must use WS_POPUP without WS_CAPTION, or lack both WS_CAPTION and WS_THICKFRAME.
+3. **Shell exclusion** — The window must not belong to explorer.exe (prevents false positives from desktop/taskbar).
+4. **WS_EX_TOPMOST** (strong signal) — If present, immediately confirms FSE.
+5. **Display mode change** — Compares current display settings to the desktop registry default. A resolution or refresh rate mismatch strongly indicates FSE.
+6. **DWM cloaked check** — Windows hidden by DWM (cloaked) are excluded.
+7. **Fallback** — A fullscreen borderless window from a non-shell process is treated as potentially FSE. This favors safety (toast notification) over precision.
+
+### Design Philosophy
+
+The detector intentionally errs on the side of caution: it is acceptable to show a toast notification for a borderless-windowed game (minor UX difference) but unacceptable to show a banner overlay that causes an exclusive fullscreen game to minimize.
+
 ## Location
 
 `SoundSwitch/Framework/Banner/MicrophoneMute/MicrophoneMuteBannerManager.cs`

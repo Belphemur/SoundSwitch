@@ -32,4 +32,13 @@ public class ExclusiveFullscreenDetectorTests
         act.Should().NotThrow();
     }
 
+    [Test]
+    public void TestIsForegroundInExclusiveFullscreen_ReturnsBool()
+    {
+        // Act — in the test environment there's no FSE window, so it should return false
+        var result = ExclusiveFullscreenDetector.IsForegroundInExclusiveFullscreen();
+
+        // Assert
+        result.Should().BeFalse("no fullscreen application is running in the test environment");
+    }
 }

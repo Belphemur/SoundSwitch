@@ -24,6 +24,19 @@ Click **Select...** to choose an audio file that SoundSwitch plays when a device
 
 Banner notifications are designed to **never steal focus** from other applications. They are shown as non-activating windows, so full-screen games and other apps should not minimize or lose focus when a banner appears.
 
+### Exclusive Fullscreen Detection
+
+When a game or application is running in **exclusive fullscreen** mode, SoundSwitch automatically switches from banner notifications to **Windows Toast** notifications. This prevents the game from being minimized or disrupted when a device switch occurs.
+
+SoundSwitch detects exclusive fullscreen by checking whether the foreground window:
+
+- Covers the entire monitor
+- Uses a borderless window style (no title bar or frame)
+- Is not part of the Windows desktop shell
+- Has changed the display mode, or is likely a game/media application
+
+This detection works with modern games like Counter-Strike 2 and other titles that use various fullscreen implementations. If you're in a **borderless windowed** game, SoundSwitch may also use toast notifications as a safety measure — this ensures your game is never disrupted.
+
 When using banner notifications, you can customize their behavior:
 
 - **Always use primary screen** — Forces the banner to display on your primary monitor instead of the monitor with the currently focused window.
