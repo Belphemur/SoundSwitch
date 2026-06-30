@@ -14,16 +14,18 @@ In true exclusive fullscreen, the application takes exclusive ownership of the d
 
 Modern games (e.g. Counter-Strike 2) use **borderless fullscreen** with the DXGI flip model, which provides equivalent performance without suspending DWM. In this mode, `BannerForm` is safe to show because it uses `WS_EX_NOACTIVATE` + `ShowWithoutActivation`, which does not trigger `WM_ACTIVATEAPP` in the game.
 
-### Detection Strategy
+### Detection Strategy (Layered)
 
-1. **Display mode change** (primary signal) — Compares `ENUM_CURRENT_SETTINGS` vs `ENUM_REGISTRY_SETTINGS`. A resolution or refresh rate mismatch means a process has changed the display mode, which only happens in true exclusive fullscreen.
-2. **Fullscreen + borderless + WS_EX_TOPMOST** (secondary signal) — For older-style FSE games that run at native resolution: if the foreground window covers the monitor, uses `WS_POPUP` without `WS_CAPTION`, and has `WS_EX_TOPMOST`, it is likely FSE. Note that DXGI `SetFullscreenState` does NOT itself set `WS_EX_TOPMOST`, but some game engines do.
+1. **SHQueryUserNotificationState** (primary signal) — The only Windows API that explicitly says "a D3D app is running in exclusive fullscreen" (`QUNS_RUNNING_D3D_FULL_SCREEN`). It is global (not per-window), but it is the strongest available signal.
+2. **Display mode change** (secondary signal, gated) — Compares `ENUM_CURRENT_SETTINGS` vs `ENUM_REGISTRY_SETTINGS`. Only fires if the foreground window also covers the monitor, to prevent false positives from unrelated display mode changes on the same monitor.
+3. **Shell exclusion** — Windows shell windows (explorer.exe, ShellExperienceHost.exe) are excluded to prevent false positives from the desktop/taskbar.
 
 ### What Is NOT Treated as FSE
 
-- Borderless fullscreen games (no display mode change, no WS_EX_TOPMOST) → banner shown normally
+- Borderless fullscreen games (QUNS will not report D3D FSE, no display mode change) → banner shown normally
 - Desktop shell windows (explorer.exe) → banner shown normally
 - Any windowed application → banner shown normally
+- Always-on-top borderless windows → banner shown normally (WS_EX_TOPMOST alone is NOT used as a FSE signal)
 
 ## Location
 

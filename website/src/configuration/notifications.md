@@ -28,10 +28,10 @@ Banner notifications are designed to **never steal focus** from other applicatio
 
 When a game or application is running in **true exclusive fullscreen** mode (where the game takes exclusive control of the display output and DWM composition is suspended), SoundSwitch automatically switches from banner notifications to **Windows Toast** notifications. In true exclusive fullscreen, no overlay window can appear on screen, so toast is the only way to deliver a notification.
 
-SoundSwitch detects true exclusive fullscreen by checking whether:
+SoundSwitch detects true exclusive fullscreen using a layered approach:
 
-- The **display mode has changed** — the current resolution or refresh rate differs from the desktop default, indicating an application has taken exclusive control of the display output.
-- The foreground window covers the entire monitor, uses a borderless style, and is set as **topmost** — a secondary signal for older-style FSE games running at native resolution.
+1. **Windows notification state** — SoundSwitch queries `SHQueryUserNotificationState`, the only Windows API that explicitly signals "a D3D app is running in exclusive fullscreen mode."
+2. **Display mode change** — If the foreground window covers the monitor and the current resolution or refresh rate differs from the desktop default, a process has taken exclusive control of the display output.
 
 **Borderless fullscreen** games (including modern titles like Counter-Strike 2 that use the DXGI flip model) are handled normally with banner notifications. Banners are designed to never steal focus — they use non-activating window styles that do not trigger focus-loss events in the game.
 
