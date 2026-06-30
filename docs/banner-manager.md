@@ -6,23 +6,24 @@ The `MicrophoneMuteBannerManager` is a UI-thread manager responsible for display
 
 `SoundSwitch/Framework/Banner/ExclusiveFullscreenDetector.cs`
 
-The `ExclusiveFullscreenDetector` determines whether the foreground window is in a fullscreen state that would be disrupted by a Win32 overlay. When detected, notifications are routed to Windows Toast instead of the banner overlay.
+The `ExclusiveFullscreenDetector` determines whether the foreground window is in **true exclusive fullscreen** (FSE) mode — where DWM composition is suspended and no Win32 overlay window can appear. When detected, notifications are routed to Windows Toast instead of the banner overlay.
+
+### Key Insight
+
+In true exclusive fullscreen, the application takes exclusive ownership of the display output via DXGI. DWM is suspended for that monitor, so no Win32 window can be rendered on screen. Toast notifications are the only option because they are handled by the OS notification layer independently of DWM.
+
+Modern games (e.g. Counter-Strike 2) use **borderless fullscreen** with the DXGI flip model, which provides equivalent performance without suspending DWM. In this mode, `BannerForm` is safe to show because it uses `WS_EX_NOACTIVATE` + `ShowWithoutActivation`, which does not trigger `WM_ACTIVATEAPP` in the game.
 
 ### Detection Strategy
 
-The detector uses a multi-signal approach:
+1. **Display mode change** (primary signal) — Compares `ENUM_CURRENT_SETTINGS` vs `ENUM_REGISTRY_SETTINGS`. A resolution or refresh rate mismatch means a process has changed the display mode, which only happens in true exclusive fullscreen.
+2. **Fullscreen + borderless + WS_EX_TOPMOST** (secondary signal) — For older-style FSE games that run at native resolution: if the foreground window covers the monitor, uses `WS_POPUP` without `WS_CAPTION`, and has `WS_EX_TOPMOST`, it is likely FSE. Note that DXGI `SetFullscreenState` does NOT itself set `WS_EX_TOPMOST`, but some game engines do.
 
-1. **Monitor coverage** — The foreground window must cover at least the entire monitor bounds.
-2. **Borderless style** — The window must use WS_POPUP without WS_CAPTION, or lack both WS_CAPTION and WS_THICKFRAME.
-3. **Shell exclusion** — The window must not belong to explorer.exe (prevents false positives from desktop/taskbar).
-4. **WS_EX_TOPMOST** (strong signal) — If present, immediately confirms FSE.
-5. **Display mode change** — Compares current display settings to the desktop registry default. A resolution or refresh rate mismatch strongly indicates FSE.
-6. **DWM cloaked check** — Windows hidden by DWM (cloaked) are excluded.
-7. **Fallback** — A fullscreen borderless window from a non-shell process is treated as potentially FSE. This favors safety (toast notification) over precision.
+### What Is NOT Treated as FSE
 
-### Design Philosophy
-
-The detector intentionally errs on the side of caution: it is acceptable to show a toast notification for a borderless-windowed game (minor UX difference) but unacceptable to show a banner overlay that causes an exclusive fullscreen game to minimize.
+- Borderless fullscreen games (no display mode change, no WS_EX_TOPMOST) → banner shown normally
+- Desktop shell windows (explorer.exe) → banner shown normally
+- Any windowed application → banner shown normally
 
 ## Location
 

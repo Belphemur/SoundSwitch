@@ -26,16 +26,14 @@ Banner notifications are designed to **never steal focus** from other applicatio
 
 ### Exclusive Fullscreen Detection
 
-When a game or application is running in **exclusive fullscreen** mode, SoundSwitch automatically switches from banner notifications to **Windows Toast** notifications. This prevents the game from being minimized or disrupted when a device switch occurs.
+When a game or application is running in **true exclusive fullscreen** mode (where the game takes exclusive control of the display output and DWM composition is suspended), SoundSwitch automatically switches from banner notifications to **Windows Toast** notifications. In true exclusive fullscreen, no overlay window can appear on screen, so toast is the only way to deliver a notification.
 
-SoundSwitch detects exclusive fullscreen by checking whether the foreground window:
+SoundSwitch detects true exclusive fullscreen by checking whether:
 
-- Covers the entire monitor
-- Uses a borderless window style (no title bar or frame)
-- Is not part of the Windows desktop shell
-- Has changed the display mode, or is likely a game/media application
+- The **display mode has changed** — the current resolution or refresh rate differs from the desktop default, indicating an application has taken exclusive control of the display output.
+- The foreground window covers the entire monitor, uses a borderless style, and is set as **topmost** — a secondary signal for older-style FSE games running at native resolution.
 
-This detection works with modern games like Counter-Strike 2 and other titles that use various fullscreen implementations. If you're in a **borderless windowed** game, SoundSwitch may also use toast notifications as a safety measure — this ensures your game is never disrupted.
+**Borderless fullscreen** games (including modern titles like Counter-Strike 2 that use the DXGI flip model) are handled normally with banner notifications. Banners are designed to never steal focus — they use non-activating window styles that do not trigger focus-loss events in the game.
 
 When using banner notifications, you can customize their behavior:
 

@@ -19,22 +19,34 @@ using System.Windows.Forms;
 namespace SoundSwitch.Framework.Banner;
 
 /// <summary>
-/// Detects whether the current foreground window is running in
-/// exclusive fullscreen (FSE) mode — or in a fullscreen state where
-/// showing a Win32 overlay would disrupt the application.
+/// Detects whether the current foreground window is running in true
+/// exclusive fullscreen (FSE) mode where DWM composition is suspended
+/// and no overlay window can be shown.
 ///
-/// Detection strategy (relaxed compared to previous implementation):
-///   1. The foreground window covers at least the entire monitor work area.
-///   2. It uses a borderless style (WS_POPUP without WS_CAPTION, or no
-///      WS_THICKFRAME/WS_CAPTION combination).
-///   3. The process is NOT a known desktop shell (explorer.exe).
-///   4. Optionally, if WS_EX_TOPMOST is set, that's a strong FSE signal.
-///   5. If the display mode differs from the desktop default, it's
-///      almost certainly FSE.
+/// <b>Key insight:</b> In true exclusive fullscreen, the application
+/// takes exclusive ownership of the display output via DXGI. DWM is
+/// suspended for that monitor, and no Win32 window — not even a
+/// WS_EX_TOPMOST one — can appear on screen. The only option is to
+/// use a toast notification, which is handled by the OS notification
+/// layer and does not require a visible window.
 ///
-/// The goal is to avoid false negatives (missing real FSE) at the cost
-/// of occasionally treating borderless-windowed games as FSE — which
-/// only means using a toast notification instead of a banner overlay.
+/// Modern games (e.g. Counter-Strike 2) use borderless fullscreen with
+/// DXGI flip model, which provides equivalent performance without
+/// suspending DWM. In this mode our banner overlay is safe because:
+///   - BannerForm uses WS_EX_NOACTIVATE + ShowWithoutActivation,
+///     which does NOT trigger WM_ACTIVATEAPP in the game.
+///   - WS_EX_TOPMOST on the banner keeps it above the game window.
+///   - DWM is still compositing, so the banner is rendered normally.
+///
+/// Detection strategy:
+///   1. Find the monitor where the foreground window resides.
+///   2. Compare the current display mode (resolution + refresh rate)
+///      against the desktop default stored in the registry.
+///   3. A mismatch means a process has changed the display mode,
+///      which only happens in true exclusive fullscreen.
+///   4. As a secondary signal, if the foreground window covers the
+///      monitor and has WS_EX_TOPMOST, it may be an older-style FSE
+///      game that runs at native resolution.
 /// </summary>
 internal static class ExclusiveFullscreenDetector
 {
@@ -50,15 +62,9 @@ internal static class ExclusiveFullscreenDetector
     [DllImport("user32.dll")]
     private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
 
-    [DllImport("user32.dll", SetLastError = true)]
-    private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
-
     [DllImport("user32.dll", CharSet = CharSet.Auto)]
     [return: MarshalAs(UnmanagedType.Bool)]
     private static extern bool EnumDisplaySettings(string lpszDeviceName, int iModeNum, ref DEVMODE lpDevMode);
-
-    [DllImport("dwmapi.dll")]
-    private static extern int DwmGetWindowAttribute(IntPtr hwnd, int dwAttribute, out int pvAttribute, int cbAttribute);
 
     #endregion
 
@@ -69,14 +75,10 @@ internal static class ExclusiveFullscreenDetector
 
     private const uint WS_POPUP = 0x80000000;
     private const uint WS_CAPTION = 0x00C00000;
-    private const uint WS_THICKFRAME = 0x00040000;
     private const uint WS_EX_TOPMOST = 0x00000008;
 
     private const int ENUM_CURRENT_SETTINGS = -1;
     private const int ENUM_REGISTRY_SETTINGS = -2;
-
-    // DWM window attribute: DWMWA_CLOAKED
-    private const int DWMWA_CLOAKED = 14;
 
     #endregion
 
@@ -135,8 +137,8 @@ internal static class ExclusiveFullscreenDetector
 
     /// <summary>
     /// Returns <c>true</c> when the foreground window appears to be running
-    /// in exclusive fullscreen mode (or a fullscreen state that would be
-    /// disrupted by showing a Win32 overlay).
+    /// in true exclusive fullscreen mode, where DWM composition is suspended
+    /// and no overlay window can be displayed.
     /// </summary>
     public static bool IsForegroundInExclusiveFullscreen()
     {
@@ -146,15 +148,25 @@ internal static class ExclusiveFullscreenDetector
             if (hWnd == IntPtr.Zero)
                 return false;
 
-            // 1. Get the window bounds
+            // 1. Identify the monitor where the foreground window resides
+            var screen = Screen.FromHandle(hWnd);
+
+            // 2. Primary check: has the display mode been changed?
+            //    True FSE takes exclusive control of the output and may change
+            //    the resolution or refresh rate. This is the most reliable signal.
+            if (IsDisplayModeChanged(screen.DeviceName))
+                return true;
+
+            // 3. Secondary check for older FSE games running at native resolution:
+            //    If the foreground window covers the monitor, is borderless
+            //    (WS_POPUP, no WS_CAPTION), and is WS_EX_TOPMOST, it is likely
+            //    an older-style FSE application. Note: DXGI SetFullscreenState
+            //    does not itself set WS_EX_TOPMOST, but some game engines do.
             if (!GetWindowRect(hWnd, out var rect))
                 return false;
 
-            // 2. Get the monitor this window lives on
-            var screen = Screen.FromHandle(hWnd);
             var monitorBounds = screen.Bounds;
 
-            // 3. Does the window cover at least the entire monitor?
             bool coversMonitor = rect.Left <= monitorBounds.Left &&
                                  rect.Top <= monitorBounds.Top &&
                                  rect.Right >= monitorBounds.Right &&
@@ -162,38 +174,15 @@ internal static class ExclusiveFullscreenDetector
             if (!coversMonitor)
                 return false;
 
-            // 4. Check window style — must be borderless
             var style = (uint)GetWindowLong(hWnd, GWL_STYLE);
-            bool isBorderless = IsBorderlessStyle(style);
+            bool isBorderless = (style & WS_POPUP) != 0 && (style & WS_CAPTION) == 0;
             if (!isBorderless)
                 return false;
 
-            // 5. Exclude desktop shell windows (explorer.exe desktop, taskbar, etc.)
-            if (IsDesktopShellWindow(hWnd))
-                return false;
-
-            // 6. Strong signal: WS_EX_TOPMOST is set — very likely FSE
             var exStyle = (uint)GetWindowLong(hWnd, GWL_EXSTYLE);
-            if ((exStyle & WS_EX_TOPMOST) != 0)
-                return true;
+            bool isTopmost = (exStyle & WS_EX_TOPMOST) != 0;
 
-            // 7. Check if display mode differs from desktop default
-            //    This catches FSE games that change resolution/refresh rate
-            if (IsDisplayModeChanged(screen.DeviceName))
-                return true;
-
-            // 8. If the window is fullscreen + borderless but not topmost and
-            //    no display mode change, it could still be FSE (e.g. CS2 running
-            //    at native resolution). Check if this is likely a game/media app
-            //    by verifying it's not cloaked (hidden by DWM).
-            if (IsCloakedByDwm(hWnd))
-                return false;
-
-            // A fullscreen borderless window that is not the desktop shell
-            // is very likely a game or media application. Treat it as FSE to
-            // avoid disrupting it with an overlay. The worst case is using
-            // toast for a borderless-windowed game, which is acceptable.
-            return true;
+            return isTopmost;
         }
         catch (Exception ex)
         {
@@ -203,53 +192,10 @@ internal static class ExclusiveFullscreenDetector
     }
 
     /// <summary>
-    /// Determines if the window style indicates a borderless window.
-    /// FSE and borderless-windowed games both use WS_POPUP without WS_CAPTION,
-    /// or sometimes just lack both WS_CAPTION and WS_THICKFRAME.
-    /// </summary>
-    private static bool IsBorderlessStyle(uint style)
-    {
-        // Classic FSE/borderless: WS_POPUP set, no caption
-        if ((style & WS_POPUP) != 0 && (style & WS_CAPTION) == 0)
-            return true;
-
-        // Some games use a child/overlapped window without caption or thick frame
-        if ((style & WS_CAPTION) == 0 && (style & WS_THICKFRAME) == 0)
-            return true;
-
-        return false;
-    }
-
-    /// <summary>
-    /// Returns true if the window belongs to explorer.exe (the Windows shell).
-    /// This prevents false positives from the desktop or taskbar.
-    /// </summary>
-    private static bool IsDesktopShellWindow(IntPtr hWnd)
-    {
-        try
-        {
-            GetWindowThreadProcessId(hWnd, out var pid);
-            if (pid == 0)
-                return false;
-
-            using var process = System.Diagnostics.Process.GetProcessById((int)pid);
-            var processName = process?.ProcessName;
-            if (string.IsNullOrEmpty(processName))
-                return false;
-
-            return string.Equals(processName, "explorer", StringComparison.OrdinalIgnoreCase);
-        }
-        catch
-        {
-            // If we can't determine, assume it's not the shell
-            return false;
-        }
-    }
-
-    /// <summary>
     /// Checks if the current display mode on the given device differs from
-    /// the desktop's registry (default) settings. A mismatch strongly indicates
-    /// that a game has taken exclusive control and changed the display mode.
+    /// the desktop's registry (default) settings. A mismatch indicates that
+    /// a process has taken exclusive control and changed the display mode —
+    /// the hallmark of true exclusive fullscreen.
     /// </summary>
     private static bool IsDisplayModeChanged(string deviceName)
     {
@@ -267,7 +213,6 @@ internal static class ExclusiveFullscreenDetector
             if (!EnumDisplaySettings(deviceName, ENUM_REGISTRY_SETTINGS, ref registryMode))
                 return false;
 
-            // Compare resolution and refresh rate
             return currentMode.dmPelsWidth != registryMode.dmPelsWidth ||
                    currentMode.dmPelsHeight != registryMode.dmPelsHeight ||
                    currentMode.dmDisplayFrequency != registryMode.dmDisplayFrequency;
@@ -275,23 +220,6 @@ internal static class ExclusiveFullscreenDetector
         catch (Exception ex)
         {
             Serilog.Log.Debug(ex, "Could not compare display modes for FSE detection");
-            return false;
-        }
-    }
-
-    /// <summary>
-    /// Checks if a window is cloaked (hidden) by DWM. Cloaked windows are
-    /// not visible to the user and should not be considered FSE.
-    /// </summary>
-    private static bool IsCloakedByDwm(IntPtr hWnd)
-    {
-        try
-        {
-            var hr = DwmGetWindowAttribute(hWnd, DWMWA_CLOAKED, out var cloaked, sizeof(int));
-            return hr == 0 && cloaked != 0;
-        }
-        catch
-        {
             return false;
         }
     }
