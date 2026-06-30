@@ -38,6 +38,13 @@ public class BannerManager
     /// <param name="data"></param>
     public void ShowNotification(BannerData data)
     {
+        if (OperatingSystem.IsWindowsVersionAtLeast(10, 0, 17763) && ExclusiveFullscreenDetector.IsForegroundInExclusiveFullscreen())
+        {
+            Log.Debug("Foreground window is in exclusive fullscreen — routing to Toast notification");
+            ToastBannerAdapter.Show(data);
+            return;
+        }
+
         if (data.CustomPositionMode)
         {
             ShowOrUpdateCustomPositionNotification(data);
@@ -104,5 +111,10 @@ public class BannerManager
         if (!(_syncContext is System.Windows.Forms.WindowsFormsSynchronizationContext))
             throw new InvalidOperationException("BannerManager must be called in the context of the UI thread.");
         Log.Information("Banner manager initialized");
+
+        if (OperatingSystem.IsWindowsVersionAtLeast(10, 0, 17763))
+        {
+            ToastBannerAdapter.EnsureRegistered();
+        }
     }
 }
