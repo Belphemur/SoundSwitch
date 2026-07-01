@@ -408,7 +408,11 @@ public class ProfileManager
     public void SwitchAudio(Profile profile)
     {
         _notificationManager.NotifyProfileChanged(profile, null);
-        var processDeviceConfigurationReset = false;
+        if (profile.SwitchForegroundApp)
+        {
+            _audioSwitcher.ResetProcessDeviceConfiguration();
+        }
+
         foreach (var device in profile.Devices)
         {
             var deviceToUse = CheckDeviceAvailable(device.DeviceInfo);
@@ -421,12 +425,6 @@ public class ProfileManager
             _audioSwitcher.SwitchTo(deviceToUse.Id, device.Role);
             if (profile.SwitchForegroundApp)
             {
-                if (!processDeviceConfigurationReset)
-                {
-                    _audioSwitcher.ResetProcessDeviceConfiguration();
-                    processDeviceConfigurationReset = true;
-                }
-
                 _audioSwitcher.SwitchForegroundProcessTo(deviceToUse.Id, device.Role, (EDataFlow)deviceToUse.Type);
             }
         }
