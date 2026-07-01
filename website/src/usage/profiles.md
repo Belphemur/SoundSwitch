@@ -19,7 +19,7 @@ Each profile consists of:
 | **Devices** | Playback, Recording, Default Communication Device (playback), and Default Communication Device (recording) to switch to. |
 | **Triggers** | One or more conditions that activate the profile. |
 | **Also switch default device** | When enabled, the profile sets the Windows default device on activation. |
-| **Also switch the foreground program** | Re-routes the foreground application to the new device in addition to changing the default. |
+| **Also switch the foreground program** | Re-routes the foreground application to the new device in addition to changing the default. Before applying the switch, SoundSwitch resets Windows per-app endpoint assignments for the profile activation to prevent stale routes. |
 | **Restore devices when trigger ends** | When enabled, the original audio configuration is restored when the triggering application closes or the trigger condition ends. |
 | **Notify when profile is triggered** | Shows a banner notification when the profile activates. |
 
@@ -71,7 +71,7 @@ Acts as a fallback: whenever the Windows default audio device changes externally
    - **Also switch default device** — Sets the Windows default device on activation.
    - **Restore devices when trigger ends** — Restores the previous device state when the trigger ends.
    - **Notify when profile is triggered** — Shows a notification when the profile activates.
-   - **Also switch the foreground program** — Routes the currently focused app to the new device.
+   - **Also switch the foreground program** — Routes the currently focused app to the new device and clears stale Windows per-app endpoint assignments first.
 5. Select target devices for each category:
    - **Playback** — speakers, headphones, HDMI audio, etc.
    - **Recording** — microphones, virtual cables, etc.
