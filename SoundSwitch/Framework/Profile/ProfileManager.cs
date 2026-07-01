@@ -420,6 +420,7 @@ public class ProfileManager
             _audioSwitcher.SwitchTo(deviceToUse.Id, device.Role);
             if (profile.SwitchForegroundApp)
             {
+                _audioSwitcher.ResetProcessDeviceConfiguration();
                 _audioSwitcher.SwitchForegroundProcessTo(deviceToUse.Id, device.Role, (EDataFlow)deviceToUse.Type);
             }
         }
