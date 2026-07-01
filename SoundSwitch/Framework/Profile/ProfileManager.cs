@@ -408,6 +408,11 @@ public class ProfileManager
     public void SwitchAudio(Profile profile)
     {
         _notificationManager.NotifyProfileChanged(profile, null);
+        if (profile.SwitchForegroundApp)
+        {
+            _audioSwitcher.ResetProcessDeviceConfiguration();
+        }
+
         foreach (var device in profile.Devices)
         {
             var deviceToUse = CheckDeviceAvailable(device.DeviceInfo);
