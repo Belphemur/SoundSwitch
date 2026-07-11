@@ -21,10 +21,11 @@ Determines what icon the SoundSwitch tray icon displays.
 
 | Option | Behavior |
 |--------|----------|
-| **Never** | Always display the default SoundSwitch icon. |
+| **Default** | Always display the default SoundSwitch icon. |
 | **Recording** | Show the icon of the active recording (microphone) device. |
 | **Playback** | Show the icon of the active playback (speaker/headphone) device. |
 | **Both** | Show the current device icons, alternating between playback and recording. |
+| **Theme Based** | Use a light or dark application icon that matches the current Windows taskbar theme. |
 
 ### Double-click Action
 
