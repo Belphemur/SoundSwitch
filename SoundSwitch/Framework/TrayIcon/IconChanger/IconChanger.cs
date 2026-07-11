@@ -20,5 +20,5 @@ public enum IconChanger
     Recording = 1,
     Playback = 2,
     Always = 3,
-    MonochromeIcon = 4
+    ThemeBased = 4
 }

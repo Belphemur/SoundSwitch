@@ -401,9 +401,19 @@ namespace SoundSwitch.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon SoundSwitchLogoMonochrome {
+        internal static System.Drawing.Icon AppIconDark {
             get {
-                object obj = ResourceManager.GetObject("SoundSwitchLogoMonochrome", resourceCulture);
+                object obj = ResourceManager.GetObject("AppIconDark", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon AppIconLight {
+            get {
+                object obj = ResourceManager.GetObject("AppIconLight", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
