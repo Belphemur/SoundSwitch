@@ -189,7 +189,7 @@
   <data name="iconChanger.both" xml:space="preserve">
     <value>Båda</value>
   </data>
-  <data name="iconChanger.monochromeIcon" xml:space="preserve">
-    <value>Monokrom ikon</value>
+  <data name="iconChanger.themeBased" xml:space="preserve">
+    <value>Theme Based</value>
   </data>
 </root>

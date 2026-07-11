@@ -151,11 +151,11 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Monochrome Icon.
+        ///   Looks up a localized string similar to Theme Based.
         /// </summary>
-        internal static string iconChanger_monochromeIcon {
+        internal static string iconChanger_themeBased {
             get {
-                return ResourceManager.GetString("iconChanger.monochromeIcon", resourceCulture);
+                return ResourceManager.GetString("iconChanger.themeBased", resourceCulture);
             }
         }
         
