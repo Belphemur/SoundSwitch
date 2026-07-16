@@ -90,7 +90,7 @@ jobs:
                   fetch-depth: 0
                   ref: ${{ inputs.ref || github.sha }}
             - name: Setup .NET
-              uses: actions/setup-dotnet@v5
+              uses: actions/setup-dotnet@v6
               with:
                   dotnet-version: ${{ needs.detect-framework.outputs.dotnet-version }}
                   cache: true

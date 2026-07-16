@@ -46,7 +46,7 @@ jobs:
                   $dotnetVersion = "{0}.{1}.x" -f $match.Groups['major'].Value, $match.Groups['minor'].Value
                   "dotnet-version=$dotnetVersion" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
             - name: Setup .NET
-              uses: actions/setup-dotnet@v5
+              uses: actions/setup-dotnet@v6
               with:
                   dotnet-version: ${{ steps.dotnet-version.outputs.dotnet-version }}
                   cache: true
