@@ -14,9 +14,9 @@
 
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Framework.TrayIcon;
 using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Localization;
-using SoundSwitch.Properties;
 
 namespace SoundSwitch.Framework.TrayIcon.IconChanger.Changer;
 
@@ -31,7 +31,7 @@ public class IconChangerThemeBased : IIconChanger
     /// </summary>
     /// <param name="trayIcon">The tray icon whose visual icon will be replaced.</param>
     public void ChangeIcon(UI.Component.TrayIcon trayIcon) =>
-        trayIcon.ReplaceIcon(WindowsThemeHelper.IsDarkModeEnabled() ? Resources.AppIconDark : Resources.AppIconLight);
+        trayIcon.ReplaceIcon(SpeakerIconGenerator.GenerateSpeakerIcon(WindowsThemeHelper.IsDarkModeEnabled()));
 
     public void ChangeIcon(UI.Component.TrayIcon trayIcon, DeviceFullInfo deviceInfo, ERole role) { }
 }
