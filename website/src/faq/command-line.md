@@ -7,10 +7,11 @@ description: Yes — SoundSwitch ships with an official CLI bundled with the ins
 
 Yes — SoundSwitch ships with an official **CLI** (`SoundSwitch.CLI`). It is bundled with the installer and added to your `PATH` so you can call it from any terminal:
 
-```text
-SoundSwitch.CLI playback next
-SoundSwitch.CLI recording next
-SoundSwitch.CLI mute toggle
+```shell
+SoundSwitch.CLI.exe switch --type Playback
+SoundSwitch.CLI.exe switch --type Recording
+SoundSwitch.CLI.exe mute --toggle
+SoundSwitch.CLI.exe status
 ```
 
 See the [CLI usage page](../usage/cli.md) for the full command reference.

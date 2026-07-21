@@ -32,6 +32,11 @@ public static class Program
                 .WithExample("mute", "--state", "true")
                 .WithExample("mute", "--toggle")
                 .WithExample("mute");
+
+            config.AddCommand<StatusCommand>("status")
+                .WithDescription("Show active profile and current audio devices")
+                .WithExample("status")
+                .WithExample("status", "--json");
         });
 
         return await app.RunAsync(args);

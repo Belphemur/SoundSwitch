@@ -41,6 +41,13 @@ public class ProfileManager
     private Profile? _steamProfile;
     private Profile? _forcedProfile;
 
+    /// <summary>
+    /// Name of the most recently triggered profile, or <c>null</c> if no profile
+    /// has been triggered since startup. Read by the IPC layer to report the
+    /// currently active profile to CLI consumers.
+    /// </summary>
+    public string? LastTriggeredProfile { get; private set; }
+
     private readonly ConcurrentDictionary<User32.NativeMethods.HWND, Profile> _activeWindowsTrigger = new();
 
     private readonly Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)> _profileByApplication = new();
@@ -382,6 +389,10 @@ public class ProfileManager
     private void SwitchAudio(Profile profile, uint processId)
     {
         _notificationManager.NotifyProfileChanged(profile, processId);
+        if (AppConfigs.Configuration.Profiles.Any(p => p.Name == profile.Name))
+        {
+            LastTriggeredProfile = profile.Name;
+        }
         foreach (var device in profile.Devices)
         {
             var deviceToUse = CheckDeviceAvailable(device.DeviceInfo);
@@ -408,6 +419,10 @@ public class ProfileManager
     public void SwitchAudio(Profile profile)
     {
         _notificationManager.NotifyProfileChanged(profile, null);
+        if (AppConfigs.Configuration.Profiles.Any(p => p.Name == profile.Name))
+        {
+            LastTriggeredProfile = profile.Name;
+        }
         if (profile.SwitchForegroundApp)
         {
             _audioSwitcher.ResetProcessDeviceConfiguration();

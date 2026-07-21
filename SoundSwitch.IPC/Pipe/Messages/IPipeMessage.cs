@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using MessagePack;
 
+using SoundSwitch.IPC.Pipe.Messages.GetActiveDevices;
 using SoundSwitch.IPC.Pipe.Messages.GetProfileList;
 using SoundSwitch.IPC.Pipe.Messages.Microphone;
 using SoundSwitch.IPC.Pipe.Messages.Mute;
@@ -21,6 +22,8 @@ namespace SoundSwitch.IPC.Pipe.Messages;
 [Union(8, typeof(MuteRequest))]
 [Union(9, typeof(MicrophoneStateResponse))]
 [Union(10, typeof(MicrophoneStateRequest))]
+[Union(11, typeof(GetActiveDevicesRequest))]
+[Union(12, typeof(GetActiveDevicesResponse))]
 public interface IPipeMessage
 {
 }

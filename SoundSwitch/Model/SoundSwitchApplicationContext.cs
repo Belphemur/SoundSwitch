@@ -19,6 +19,7 @@ using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.IPC.Pipe;
 using SoundSwitch.IPC.Pipe.Messages;
+using SoundSwitch.IPC.Pipe.Messages.GetActiveDevices;
 using SoundSwitch.IPC.Pipe.Messages.GetProfileList;
 using SoundSwitch.IPC.Pipe.Messages.Microphone;
 using SoundSwitch.IPC.Pipe.Messages.Models;
@@ -196,6 +197,52 @@ public class SoundSwitchApplicationContext : ApplicationContext
                     })
                     .ToArray();
                 return new GetProfileListResponse { Profiles = profiles };
+
+            case GetActiveDevicesRequest:
+                try
+                {
+                    var playback = await Task.Run(() =>
+                        AudioSwitcher.Instance.GetDefaultAudioEndpoint(
+                            Audio.Manager.Interop.Enum.EDataFlow.eRender,
+                            Audio.Manager.Interop.Enum.ERole.eMultimedia
+                        ), token);
+                    var playbackComm = await Task.Run(() =>
+                        AudioSwitcher.Instance.GetDefaultAudioEndpoint(
+                            Audio.Manager.Interop.Enum.EDataFlow.eRender,
+                            Audio.Manager.Interop.Enum.ERole.eCommunications
+                        ), token);
+                    var recording = await Task.Run(() =>
+                        AudioSwitcher.Instance.GetDefaultAudioEndpoint(
+                            Audio.Manager.Interop.Enum.EDataFlow.eCapture,
+                            Audio.Manager.Interop.Enum.ERole.eMultimedia
+                        ), token);
+                    var recordingComm = await Task.Run(() =>
+                        AudioSwitcher.Instance.GetDefaultAudioEndpoint(
+                            Audio.Manager.Interop.Enum.EDataFlow.eCapture,
+                            Audio.Manager.Interop.Enum.ERole.eCommunications
+                        ), token);
+
+                    return new GetActiveDevicesResponse
+                    {
+                        ActiveProfile = AppModel.Instance.ProfileManager.LastTriggeredProfile,
+                        PlaybackDevice = playback?.FriendlyName ?? "",
+                        RecordingDevice = recording?.FriendlyName ?? "",
+                        PlaybackCommunicationDevice = playbackComm?.FriendlyName ?? "",
+                        RecordingCommunicationDevice = recordingComm?.FriendlyName ?? ""
+                    };
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "Failed to get active devices");
+                    return new GetActiveDevicesResponse
+                    {
+                        ActiveProfile = null,
+                        PlaybackDevice = "",
+                        RecordingDevice = "",
+                        PlaybackCommunicationDevice = "",
+                        RecordingCommunicationDevice = ""
+                    };
+                }
 
             default:
                 Log.Warning("Unknown message type received: {MessageType}", message.GetType());
