@@ -11,6 +11,8 @@ namespace SoundSwitch.CLI.Commands;
 
 public class StatusCommand : AsyncCommand<StatusCommand.Settings>
 {
+    private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
+
     public class Settings : CommandSettings
     {
         [CommandOption("--json")]
@@ -49,7 +51,7 @@ public class StatusCommand : AsyncCommand<StatusCommand.Settings>
                 recordingDevice = response.RecordingDevice,
                 playbackCommunicationDevice = response.PlaybackCommunicationDevice,
                 recordingCommunicationDevice = response.RecordingCommunicationDevice
-            }, new JsonSerializerOptions { WriteIndented = true });
+            }, JsonOptions);
 
             Console.WriteLine(json);
             return 0;
@@ -103,7 +105,7 @@ public class StatusCommand : AsyncCommand<StatusCommand.Settings>
 
     private static void WriteJsonError(string message)
     {
-        var json = JsonSerializer.Serialize(new { error = message }, new JsonSerializerOptions { WriteIndented = true });
+        var json = JsonSerializer.Serialize(new { error = message }, JsonOptions);
         Console.WriteLine(json);
     }
 }
