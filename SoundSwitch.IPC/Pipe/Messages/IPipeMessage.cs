@@ -3,6 +3,7 @@ using MessagePack;
 
 using SoundSwitch.IPC.Pipe.Messages.GetActiveDevices;
 using SoundSwitch.IPC.Pipe.Messages.GetProfileList;
+using SoundSwitch.IPC.Pipe.Messages.GetSwitchableDevices;
 using SoundSwitch.IPC.Pipe.Messages.Microphone;
 using SoundSwitch.IPC.Pipe.Messages.Mute;
 using SoundSwitch.IPC.Pipe.Messages.OpenSettings;
@@ -24,6 +25,8 @@ namespace SoundSwitch.IPC.Pipe.Messages;
 [Union(10, typeof(MicrophoneStateRequest))]
 [Union(11, typeof(GetActiveDevicesRequest))]
 [Union(12, typeof(GetActiveDevicesResponse))]
+[Union(13, typeof(GetSwitchableDevicesRequest))]
+[Union(14, typeof(GetSwitchableDevicesResponse))]
 public interface IPipeMessage
 {
 }

@@ -1,5 +1,6 @@
 ﻿#nullable enable
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -21,6 +22,7 @@ using SoundSwitch.IPC.Pipe;
 using SoundSwitch.IPC.Pipe.Messages;
 using SoundSwitch.IPC.Pipe.Messages.GetActiveDevices;
 using SoundSwitch.IPC.Pipe.Messages.GetProfileList;
+using SoundSwitch.IPC.Pipe.Messages.GetSwitchableDevices;
 using SoundSwitch.IPC.Pipe.Messages.Microphone;
 using SoundSwitch.IPC.Pipe.Messages.Models;
 using SoundSwitch.IPC.Pipe.Messages.Mute;
@@ -252,6 +254,45 @@ public class SoundSwitchApplicationContext : ApplicationContext
                         RecordingDevice = "",
                         PlaybackCommunicationDevice = "",
                         RecordingCommunicationDevice = ""
+                    };
+                }
+
+            case GetSwitchableDevicesRequest:
+                try
+                {
+                    var playback = await Task.Run(() =>
+                    {
+                        var names = new List<string>();
+                        foreach (var device in AppModel.Instance.AvailablePlaybackDevices)
+                        {
+                            names.Add(device.NameClean);
+                        }
+                        return names.ToArray();
+                    }, token);
+                    var recording = await Task.Run(() =>
+                    {
+                        var names = new List<string>();
+                        foreach (var device in AppModel.Instance.AvailableRecordingDevices)
+                        {
+                            names.Add(device.NameClean);
+                        }
+                        return names.ToArray();
+                    }, token);
+
+                    return new GetSwitchableDevicesResponse
+                    {
+                        Success = true,
+                        PlaybackDevices = playback,
+                        RecordingDevices = recording
+                    };
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "Failed to get switchable devices");
+                    return new GetSwitchableDevicesResponse
+                    {
+                        Success = false,
+                        Error = ex.Message
                     };
                 }
 

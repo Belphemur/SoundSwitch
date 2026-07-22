@@ -1,13 +1,13 @@
 #nullable enable
 using SoundSwitch.IPC.Pipe;
-using SoundSwitch.IPC.Pipe.Messages.GetActiveDevices;
+using SoundSwitch.IPC.Pipe.Messages.GetSwitchableDevices;
 
 using Spectre.Console;
 using Spectre.Console.Cli;
 
 namespace SoundSwitch.CLI.Commands;
 
-public class StatusCommand : AsyncCommand<StatusCommand.Settings>
+public class DevicesCommand : AsyncCommand<DevicesCommand.Settings>
 {
     public class Settings : JsonCommandSettings
     {
@@ -27,24 +27,21 @@ public class StatusCommand : AsyncCommand<StatusCommand.Settings>
     {
         try
         {
-            var response = await NamedPipe.SendRequestAsync<GetActiveDevicesResponse>(
+            var response = await NamedPipe.SendRequestAsync<GetSwitchableDevicesResponse>(
                 PipeConstants.GetUserPipeName(),
-                new GetActiveDevicesRequest(),
+                new GetSwitchableDevicesRequest(),
                 cancellationToken);
 
             if (!response.Success)
             {
-                JsonOutput.WriteError(response.Error ?? "Failed to retrieve status");
+                JsonOutput.WriteError(response.Error ?? "Failed to retrieve devices");
                 return 1;
             }
 
             JsonOutput.Write(new
             {
-                activeProfile = response.ActiveProfile,
-                playbackDevice = response.PlaybackDevice,
-                recordingDevice = response.RecordingDevice,
-                playbackCommunicationDevice = response.PlaybackCommunicationDevice,
-                recordingCommunicationDevice = response.RecordingCommunicationDevice
+                playbackDevices = response.PlaybackDevices,
+                recordingDevices = response.RecordingDevices
             });
             return 0;
         }
@@ -60,29 +57,33 @@ public class StatusCommand : AsyncCommand<StatusCommand.Settings>
         try
         {
             return await AnsiConsole.Status()
-                .StartAsync("Fetching status...", async _ =>
+                .StartAsync("Fetching devices...", async _ =>
                 {
-                    var response = await NamedPipe.SendRequestAsync<GetActiveDevicesResponse>(
+                    var response = await NamedPipe.SendRequestAsync<GetSwitchableDevicesResponse>(
                         PipeConstants.GetUserPipeName(),
-                        new GetActiveDevicesRequest(),
+                        new GetSwitchableDevicesRequest(),
                         cancellationToken);
 
                     if (!response.Success)
                     {
-                        AnsiConsole.MarkupLine($"[red]Error:[/] {Markup.Escape(response.Error ?? "Failed to retrieve status")}");
+                        AnsiConsole.MarkupLine($"[red]Error:[/] {Markup.Escape(response.Error ?? "Failed to retrieve devices")}");
                         return 1;
                     }
 
                     var table = new Table()
-                        .AddColumn("Category")
-                        .AddColumn("Device / Profile")
+                        .AddColumn("Type")
+                        .AddColumn("Device")
                         .Border(TableBorder.Rounded);
 
-                    table.AddRow("Active Profile", response.ActiveProfile is null ? "[grey]None[/]" : Markup.Escape(response.ActiveProfile));
-                    table.AddRow("[green]Playback[/]", $"[green]{Markup.Escape(response.PlaybackDevice)}[/]");
-                    table.AddRow("[red]Recording[/]", $"[red]{Markup.Escape(response.RecordingDevice)}[/]");
-                    table.AddRow("[green]Playback Comm[/]", $"[green]{Markup.Escape(response.PlaybackCommunicationDevice)}[/]");
-                    table.AddRow("[red]Recording Comm[/]", $"[red]{Markup.Escape(response.RecordingCommunicationDevice)}[/]");
+                    foreach (var device in response.PlaybackDevices)
+                    {
+                        table.AddRow("[green]Playback[/]", $"[green]{Markup.Escape(device)}[/]");
+                    }
+
+                    foreach (var device in response.RecordingDevices)
+                    {
+                        table.AddRow("[red]Recording[/]", $"[red]{Markup.Escape(device)}[/]");
+                    }
 
                     AnsiConsole.Write(table);
                     return 0;

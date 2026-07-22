@@ -10,7 +10,7 @@ namespace SoundSwitch.CLI.Commands;
 
 public class SwitchCommand : AsyncCommand<SwitchCommand.Settings>
 {
-    public class Settings : CommandSettings
+    public class Settings : JsonCommandSettings
     {
         [CommandArgument(0, "[type]")]
         [CommandOption("-t|--type")]
@@ -18,6 +18,41 @@ public class SwitchCommand : AsyncCommand<SwitchCommand.Settings>
     }
 
     protected override async Task<int> ExecuteAsync(CommandContext context, Settings settings, CancellationToken cancellationToken)
+    {
+        if (settings.Json)
+        {
+            return await ExecuteJsonAsync(settings, cancellationToken);
+        }
+
+        return await ExecuteTableAsync(settings, cancellationToken);
+    }
+
+    private static async Task<int> ExecuteJsonAsync(Settings settings, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var response = await NamedPipe.SendRequestAsync<TriggerSwitchResponse>(
+                PipeConstants.GetUserPipeName(),
+                new TriggerSwitchRequest { Type = settings.Type },
+                cancellationToken);
+
+            if (response.Success)
+            {
+                JsonOutput.Write(new { success = true, type = settings.Type.ToString() });
+                return 0;
+            }
+
+            JsonOutput.WriteError($"Failed to switch {settings.Type} device");
+            return 1;
+        }
+        catch (Exception ex)
+        {
+            JsonOutput.WriteError(ex.Message);
+            return 1;
+        }
+    }
+
+    private static async Task<int> ExecuteTableAsync(Settings settings, CancellationToken cancellationToken)
     {
         try
         {

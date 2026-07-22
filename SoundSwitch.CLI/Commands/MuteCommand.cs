@@ -1,4 +1,5 @@
-﻿using SoundSwitch.IPC.Pipe;
+﻿#nullable enable
+using SoundSwitch.IPC.Pipe;
 using SoundSwitch.IPC.Pipe.Messages.Microphone;
 using SoundSwitch.IPC.Pipe.Messages.Mute;
 
@@ -9,7 +10,7 @@ namespace SoundSwitch.CLI.Commands;
 
 public class MuteCommand : AsyncCommand<MuteCommand.Settings>
 {
-    public class Settings : CommandSettings
+    public class Settings : JsonCommandSettings
     {
         [CommandArgument(0, "[state]")]
         [CommandOption("-s|--state")]
@@ -19,6 +20,71 @@ public class MuteCommand : AsyncCommand<MuteCommand.Settings>
     }
 
     protected override async Task<int> ExecuteAsync(CommandContext context, Settings settings, CancellationToken cancellationToken)
+    {
+        if (settings.Json)
+        {
+            return await ExecuteJsonAsync(settings, cancellationToken);
+        }
+
+        return await ExecuteTableAsync(settings, cancellationToken);
+    }
+
+    private static async Task<int> ExecuteJsonAsync(Settings settings, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var currentState = await NamedPipe.SendRequestAsync<MicrophoneStateResponse>(
+                PipeConstants.GetUserPipeName(),
+                new MicrophoneStateRequest(),
+                cancellationToken);
+
+            if (!currentState.Success)
+            {
+                JsonOutput.WriteError("Failed to get microphone state");
+                return 1;
+            }
+
+            // No action requested: just report the current state.
+            if (!settings.State.HasValue && !settings.Toggle)
+            {
+                WriteMicrophoneState(currentState);
+                return 0;
+            }
+
+            var targetState = settings.Toggle ? !currentState.IsMuted : settings.State!.Value;
+
+            // Already in the requested state: no change needed.
+            if (targetState == currentState.IsMuted)
+            {
+                WriteMicrophoneState(currentState);
+                return 0;
+            }
+
+            var muteResponse = await NamedPipe.SendRequestAsync<MicrophoneStateResponse>(
+                PipeConstants.GetUserPipeName(),
+                new MuteRequest { Mute = targetState },
+                cancellationToken);
+
+            if (!muteResponse.Success)
+            {
+                JsonOutput.WriteError("Failed to change microphone state");
+                return 1;
+            }
+
+            WriteMicrophoneState(muteResponse);
+            return 0;
+        }
+        catch (Exception ex)
+        {
+            JsonOutput.WriteError(ex.Message);
+            return 1;
+        }
+    }
+
+    private static void WriteMicrophoneState(MicrophoneStateResponse state) =>
+        JsonOutput.Write(new { deviceName = state.DeviceName, isMuted = state.IsMuted });
+
+    private static async Task<int> ExecuteTableAsync(Settings settings, CancellationToken cancellationToken)
     {
         try
         {
