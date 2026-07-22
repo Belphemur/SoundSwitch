@@ -1,3 +1,26 @@
+## [7.2.0-beta.1](https://github.com/Belphemur/SoundSwitch/compare/v7.1.1-beta.4...v7.2.0-beta.1) (2026-07-22)
+
+### Features
+
+* **cli:** add global --json output option and devices command ([44c421a](https://github.com/Belphemur/SoundSwitch/commit/44c421add3fe02f987eda77e698b4867938cf765))
+* **cli:** add status command for active profile and current audio devices ([09f9d77](https://github.com/Belphemur/SoundSwitch/commit/09f9d7762d6a3bfb03436299c4d1e4a5e97c3b0f))
+* **tray-icon:** draw theme-based speaker icon at runtime with Segoe glyph ([7a48f44](https://github.com/Belphemur/SoundSwitch/commit/7a48f44300346599adc245850d1af8d33d504e83))
+* **tray-icon:** replace monochrome icon with theme-based icon that adapts to Windows dark mode ([1e27c61](https://github.com/Belphemur/SoundSwitch/commit/1e27c61f2f8d400e1a753a9da8a6d7b66b6de20b))
+
+### Bug Fixes
+
+* **banner:** precisely detect true exclusive fullscreen, show banners in borderless windowed ([#2259](https://github.com/Belphemur/SoundSwitch/issues/2259)) ([514088d](https://github.com/Belphemur/SoundSwitch/commit/514088db7ff594031542f9768afc7f1ec22c046b)), closes [#2240](https://github.com/Belphemur/SoundSwitch/issues/2240)
+* **ci:** pin conventionalcommits preset to v9 to restore changelog generation ([47d910a](https://github.com/Belphemur/SoundSwitch/commit/47d910a172ce10d4e871731b0765e6ac432b7c58)), closes [semantic-release/release-notes-generator#992](https://github.com/semantic-release/release-notes-generator/issues/992)
+* **cli:** address PR review — JSON output safety, COM disposal, NameClean, failure contract ([3d20e3f](https://github.com/Belphemur/SoundSwitch/commit/3d20e3fa0a8e980265b128188a37fc36851e208b))
+* **cli:** cache JsonSerializerOptions static field, address reviewer nitpick ([ea63fbd](https://github.com/Belphemur/SoundSwitch/commit/ea63fbd9f0739e1c01ac69bd6b578756d1cdb58c))
+* **cli:** document empty-string device values in status --json output ([b97b1d7](https://github.com/Belphemur/SoundSwitch/commit/b97b1d72bdd2bf07d163e04d6d762956caffb663))
+* **profile:** Add reset per-app audio settings on profile switch ([#2262](https://github.com/Belphemur/SoundSwitch/issues/2262)) ([d39b88f](https://github.com/Belphemur/SoundSwitch/commit/d39b88fc24dafb59448490957d142fbd2aeb8b57)), closes [#2258](https://github.com/Belphemur/SoundSwitch/issues/2258) [#2258](https://github.com/Belphemur/SoundSwitch/issues/2258)
+* **tray-icon:** prevent TypeInitializationException in SpeakerIconGenerator static cctor ([a559e7b](https://github.com/Belphemur/SoundSwitch/commit/a559e7b87799c54d951ff62e42ae51d8cf423f42))
+
+### Languages
+
+* **localization:** update tray icon option label to Theme Based ([20180f5](https://github.com/Belphemur/SoundSwitch/commit/20180f58422d1a4a6e5eaba1a0d9b1dad07dc23a))
+
 ## [7.1.1-beta.4](https://github.com/Belphemur/SoundSwitch/compare/v7.1.1-beta.3...v7.1.1-beta.4) (2026-06-23)
 
 ### Bug Fixes
