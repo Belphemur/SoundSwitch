@@ -1,5 +1,6 @@
 ﻿#nullable enable
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -19,7 +20,9 @@ using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.IPC.Pipe;
 using SoundSwitch.IPC.Pipe.Messages;
+using SoundSwitch.IPC.Pipe.Messages.GetActiveDevices;
 using SoundSwitch.IPC.Pipe.Messages.GetProfileList;
+using SoundSwitch.IPC.Pipe.Messages.GetSwitchableDevices;
 using SoundSwitch.IPC.Pipe.Messages.Microphone;
 using SoundSwitch.IPC.Pipe.Messages.Models;
 using SoundSwitch.IPC.Pipe.Messages.Mute;
@@ -196,6 +199,102 @@ public class SoundSwitchApplicationContext : ApplicationContext
                     })
                     .ToArray();
                 return new GetProfileListResponse { Profiles = profiles };
+
+            case GetActiveDevicesRequest:
+                try
+                {
+                    var playback = await Task.Run(() =>
+                    {
+                        using var device = AudioSwitcher.Instance.GetDefaultAudioEndpoint(
+                            Audio.Manager.Interop.Enum.EDataFlow.eRender,
+                            Audio.Manager.Interop.Enum.ERole.eMultimedia);
+                        return device?.NameClean ?? "";
+                    }, token);
+                    var playbackComm = await Task.Run(() =>
+                    {
+                        using var device = AudioSwitcher.Instance.GetDefaultAudioEndpoint(
+                            Audio.Manager.Interop.Enum.EDataFlow.eRender,
+                            Audio.Manager.Interop.Enum.ERole.eCommunications);
+                        return device?.NameClean ?? "";
+                    }, token);
+                    var recording = await Task.Run(() =>
+                    {
+                        using var device = AudioSwitcher.Instance.GetDefaultAudioEndpoint(
+                            Audio.Manager.Interop.Enum.EDataFlow.eCapture,
+                            Audio.Manager.Interop.Enum.ERole.eMultimedia);
+                        return device?.NameClean ?? "";
+                    }, token);
+                    var recordingComm = await Task.Run(() =>
+                    {
+                        using var device = AudioSwitcher.Instance.GetDefaultAudioEndpoint(
+                            Audio.Manager.Interop.Enum.EDataFlow.eCapture,
+                            Audio.Manager.Interop.Enum.ERole.eCommunications);
+                        return device?.NameClean ?? "";
+                    }, token);
+
+                    return new GetActiveDevicesResponse
+                    {
+                        Success = true,
+                        ActiveProfile = AppModel.Instance.ProfileManager.LastTriggeredProfile,
+                        PlaybackDevice = playback,
+                        RecordingDevice = recording,
+                        PlaybackCommunicationDevice = playbackComm,
+                        RecordingCommunicationDevice = recordingComm
+                    };
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "Failed to get active devices");
+                    return new GetActiveDevicesResponse
+                    {
+                        Success = false,
+                        Error = ex.Message,
+                        ActiveProfile = null,
+                        PlaybackDevice = "",
+                        RecordingDevice = "",
+                        PlaybackCommunicationDevice = "",
+                        RecordingCommunicationDevice = ""
+                    };
+                }
+
+            case GetSwitchableDevicesRequest:
+                try
+                {
+                    var playback = await Task.Run(() =>
+                    {
+                        var names = new List<string>();
+                        foreach (var device in AppModel.Instance.AvailablePlaybackDevices)
+                        {
+                            names.Add(device.NameClean);
+                        }
+                        return names.ToArray();
+                    }, token);
+                    var recording = await Task.Run(() =>
+                    {
+                        var names = new List<string>();
+                        foreach (var device in AppModel.Instance.AvailableRecordingDevices)
+                        {
+                            names.Add(device.NameClean);
+                        }
+                        return names.ToArray();
+                    }, token);
+
+                    return new GetSwitchableDevicesResponse
+                    {
+                        Success = true,
+                        PlaybackDevices = playback,
+                        RecordingDevices = recording
+                    };
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "Failed to get switchable devices");
+                    return new GetSwitchableDevicesResponse
+                    {
+                        Success = false,
+                        Error = ex.Message
+                    };
+                }
 
             default:
                 Log.Warning("Unknown message type received: {MessageType}", message.GetType());
