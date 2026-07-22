@@ -1,4 +1,5 @@
-﻿using SoundSwitch.IPC.Pipe;
+﻿#nullable enable
+using SoundSwitch.IPC.Pipe;
 using SoundSwitch.IPC.Pipe.Messages.OpenSettings;
 
 using Spectre.Console;
@@ -6,9 +7,48 @@ using Spectre.Console.Cli;
 
 namespace SoundSwitch.CLI.Commands;
 
-public class SettingsCommand : AsyncCommand
+public class SettingsCommand : AsyncCommand<SettingsCommand.Settings>
 {
-    protected override async Task<int> ExecuteAsync(CommandContext context, CancellationToken cancellationToken)
+    public class Settings : JsonCommandSettings
+    {
+    }
+
+    protected override async Task<int> ExecuteAsync(CommandContext context, Settings settings, CancellationToken cancellationToken)
+    {
+        if (settings.Json)
+        {
+            return await ExecuteJsonAsync(cancellationToken);
+        }
+
+        return await ExecuteTableAsync(cancellationToken);
+    }
+
+    private static async Task<int> ExecuteJsonAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            var response = await NamedPipe.SendRequestAsync<OpenSettingsResponse>(
+                PipeConstants.GetUserPipeName(),
+                new OpenSettingsRequest(),
+                cancellationToken);
+
+            if (response.Success)
+            {
+                JsonOutput.Write(new { success = true });
+                return 0;
+            }
+
+            JsonOutput.WriteError("Failed to open settings");
+            return 1;
+        }
+        catch (Exception ex)
+        {
+            JsonOutput.WriteError(ex.Message);
+            return 1;
+        }
+    }
+
+    private static async Task<int> ExecuteTableAsync(CancellationToken cancellationToken)
     {
         try
         {

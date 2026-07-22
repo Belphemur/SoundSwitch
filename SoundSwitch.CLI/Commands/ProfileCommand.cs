@@ -1,4 +1,5 @@
-﻿using SoundSwitch.IPC.Pipe;
+﻿#nullable enable
+using SoundSwitch.IPC.Pipe;
 using SoundSwitch.IPC.Pipe.Messages.GetProfileList;
 using SoundSwitch.IPC.Pipe.Messages.TriggerProfile;
 
@@ -9,7 +10,7 @@ namespace SoundSwitch.CLI.Commands;
 
 public class ProfileCommand : AsyncCommand<ProfileCommand.Settings>
 {
-    public class Settings : CommandSettings
+    public class Settings : JsonCommandSettings
     {
         [CommandOption("-l|--list")]
         public bool List { get; set; }
@@ -19,6 +20,65 @@ public class ProfileCommand : AsyncCommand<ProfileCommand.Settings>
     }
 
     protected override async Task<int> ExecuteAsync(CommandContext context, Settings settings, CancellationToken cancellationToken)
+    {
+        if (settings.Json)
+        {
+            return await ExecuteJsonAsync(settings, cancellationToken);
+        }
+
+        return await ExecuteTableAsync(settings, cancellationToken);
+    }
+
+    private static async Task<int> ExecuteJsonAsync(Settings settings, CancellationToken cancellationToken)
+    {
+        try
+        {
+            if (settings.List)
+            {
+                var response = await NamedPipe.SendRequestAsync<GetProfileListResponse>(
+                    PipeConstants.GetUserPipeName(),
+                    new GetProfileListRequest(),
+                    cancellationToken);
+
+                JsonOutput.Write(response.Profiles.Select(p => new
+                {
+                    name = p.Name,
+                    playbackDevice = p.PlaybackDevice,
+                    playbackCommunicationDevice = p.PlaybackCommunicationDevice,
+                    recordingDevice = p.RecordingDevice,
+                    recordingCommunicationDevice = p.RecordingCommunicationDevice
+                }).ToArray());
+                return 0;
+            }
+
+            if (string.IsNullOrEmpty(settings.Name))
+            {
+                JsonOutput.WriteError("Profile name is required unless --list is specified");
+                return 1;
+            }
+
+            var triggerResponse = await NamedPipe.SendRequestAsync<TriggerProfileResponse>(
+                PipeConstants.GetUserPipeName(),
+                new TriggerProfileRequest { ProfileName = settings.Name },
+                cancellationToken);
+
+            if (triggerResponse.Success)
+            {
+                JsonOutput.Write(new { success = true, profile = settings.Name });
+                return 0;
+            }
+
+            JsonOutput.WriteError($"Failed to trigger profile: {triggerResponse.Error}");
+            return 1;
+        }
+        catch (Exception ex)
+        {
+            JsonOutput.WriteError(ex.Message);
+            return 1;
+        }
+    }
+
+    private static async Task<int> ExecuteTableAsync(Settings settings, CancellationToken cancellationToken)
     {
         try
         {
