@@ -11,4 +11,6 @@ public class GetActiveDevicesResponse : IPipeMessage
     public string RecordingDevice { get; set; } = "";
     public string PlaybackCommunicationDevice { get; set; } = "";
     public string RecordingCommunicationDevice { get; set; } = "";
+    public bool Success { get; set; }
+    public string? Error { get; set; }
 }

@@ -202,33 +202,42 @@ public class SoundSwitchApplicationContext : ApplicationContext
                 try
                 {
                     var playback = await Task.Run(() =>
-                        AudioSwitcher.Instance.GetDefaultAudioEndpoint(
+                    {
+                        using var device = AudioSwitcher.Instance.GetDefaultAudioEndpoint(
                             Audio.Manager.Interop.Enum.EDataFlow.eRender,
-                            Audio.Manager.Interop.Enum.ERole.eMultimedia
-                        ), token);
+                            Audio.Manager.Interop.Enum.ERole.eMultimedia);
+                        return device?.NameClean ?? "";
+                    }, token);
                     var playbackComm = await Task.Run(() =>
-                        AudioSwitcher.Instance.GetDefaultAudioEndpoint(
+                    {
+                        using var device = AudioSwitcher.Instance.GetDefaultAudioEndpoint(
                             Audio.Manager.Interop.Enum.EDataFlow.eRender,
-                            Audio.Manager.Interop.Enum.ERole.eCommunications
-                        ), token);
+                            Audio.Manager.Interop.Enum.ERole.eCommunications);
+                        return device?.NameClean ?? "";
+                    }, token);
                     var recording = await Task.Run(() =>
-                        AudioSwitcher.Instance.GetDefaultAudioEndpoint(
+                    {
+                        using var device = AudioSwitcher.Instance.GetDefaultAudioEndpoint(
                             Audio.Manager.Interop.Enum.EDataFlow.eCapture,
-                            Audio.Manager.Interop.Enum.ERole.eMultimedia
-                        ), token);
+                            Audio.Manager.Interop.Enum.ERole.eMultimedia);
+                        return device?.NameClean ?? "";
+                    }, token);
                     var recordingComm = await Task.Run(() =>
-                        AudioSwitcher.Instance.GetDefaultAudioEndpoint(
+                    {
+                        using var device = AudioSwitcher.Instance.GetDefaultAudioEndpoint(
                             Audio.Manager.Interop.Enum.EDataFlow.eCapture,
-                            Audio.Manager.Interop.Enum.ERole.eCommunications
-                        ), token);
+                            Audio.Manager.Interop.Enum.ERole.eCommunications);
+                        return device?.NameClean ?? "";
+                    }, token);
 
                     return new GetActiveDevicesResponse
                     {
+                        Success = true,
                         ActiveProfile = AppModel.Instance.ProfileManager.LastTriggeredProfile,
-                        PlaybackDevice = playback?.FriendlyName ?? "",
-                        RecordingDevice = recording?.FriendlyName ?? "",
-                        PlaybackCommunicationDevice = playbackComm?.FriendlyName ?? "",
-                        RecordingCommunicationDevice = recordingComm?.FriendlyName ?? ""
+                        PlaybackDevice = playback,
+                        RecordingDevice = recording,
+                        PlaybackCommunicationDevice = playbackComm,
+                        RecordingCommunicationDevice = recordingComm
                     };
                 }
                 catch (Exception ex)
@@ -236,6 +245,8 @@ public class SoundSwitchApplicationContext : ApplicationContext
                     Log.Error(ex, "Failed to get active devices");
                     return new GetActiveDevicesResponse
                     {
+                        Success = false,
+                        Error = ex.Message,
                         ActiveProfile = null,
                         PlaybackDevice = "",
                         RecordingDevice = "",
