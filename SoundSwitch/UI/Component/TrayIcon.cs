@@ -36,6 +36,7 @@ using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.Updater.Releases;
 using SoundSwitch.Framework.Updater.Remind;
+using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Localization;
 using SoundSwitch.Localization.Factory;
 using SoundSwitch.Model;
@@ -300,6 +301,13 @@ public sealed class TrayIcon : IDisposable
         {
             SetUpdateMenuItem(mode);
             PopulateSettingsMenu();
+        };
+        WindowsAPIAdapter.SystemThemeChanged += (_, _) =>
+        {
+            if (AppConfigs.Configuration.SwitchIcon == IconChanger.ThemeBased)
+            {
+                UpdateIcon();
+            }
         };
         NotifyIcon.MouseMove += (sender, args) => { _tooltipInfoManager.SetIconText(); };
     }

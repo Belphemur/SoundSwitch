@@ -63,6 +63,7 @@ public class WindowsAPIAdapter : Form
     private const int WH_KEYBOARD_LL = 13;
     private const int WM_KEYDOWN = 0x0100;
     private const int WM_QUIT = 0x0012;
+    private const int WM_SETTINGCHANGE = 0x001A;
     private const int ERROR_HOT_KEY_ALREADY_REGISTERED = 1409;
 
     private static WindowsAPIAdapter _instance;
@@ -88,6 +89,7 @@ public class WindowsAPIAdapter : Form
     public static event EventHandler<KeyPressedEventArgs> HotKeyPressed;
     public static event EventHandler<WindowDestroyedEvent> WindowDestroyed;
     public static event EventHandler SessionUnlocked;
+    public static event EventHandler SystemThemeChanged;
 
     /// <summary>
     ///     Start the Adapter thread
@@ -386,6 +388,12 @@ public class WindowsAPIAdapter : Form
                     BeginInvoke(new Action(ReRegisterAllHotkeys));
                 }
                 break;
+            case WM_SETTINGCHANGE:
+                if (IsImmersiveColorSetChange(m.LParam))
+                {
+                    BeginInvoke(new Action(() => SystemThemeChanged?.Invoke(this, EventArgs.Empty)));
+                }
+                break;
         }
 
         if (WindowDestroyed != null && m.Msg == _msgNotifyShell)
@@ -401,6 +409,25 @@ public class WindowsAPIAdapter : Form
         }
 
         base.WndProc(ref m);
+    }
+
+    /// <summary>
+    ///     Checks whether a WM_SETTINGCHANGE message signals a Windows accent/dark-mode change.
+    /// </summary>
+    private static bool IsImmersiveColorSetChange(IntPtr lParam)
+    {
+        if (lParam == IntPtr.Zero)
+            return false;
+
+        try
+        {
+            var param = Marshal.PtrToStringUni(lParam);
+            return param == "ImmersiveColorSet";
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     /// <summary>

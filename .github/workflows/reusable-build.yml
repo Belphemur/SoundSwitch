@@ -90,7 +90,7 @@ jobs:
                   fetch-depth: 0
                   ref: ${{ inputs.ref || github.sha }}
             - name: Setup .NET
-              uses: actions/setup-dotnet@v5
+              uses: actions/setup-dotnet@v6
               with:
                   dotnet-version: ${{ needs.detect-framework.outputs.dotnet-version }}
                   cache: true
@@ -169,7 +169,7 @@ jobs:
                   }
             - name: Setup Python
               if: inputs.publish
-              uses: actions/setup-python@v6
+              uses: actions/setup-python@v7
               with:
                   python-version: "3.x"
             - name: Generate HTML documentation

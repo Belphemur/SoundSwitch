@@ -10,10 +10,10 @@
     <PackageVersion Include="JetBrains.Annotations" Version="2026.2.0" />
     <PackageVersion Include="Job.Scheduler" Version="3.1.8" />
     <PackageVersion Include="Markdig" Version="1.3.2" />
-    <PackageVersion Include="MessagePack" Version="3.1.7" />
+    <PackageVersion Include="MessagePack" Version="3.1.8" />
     <PackageVersion Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="10.0.9" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.7.0" />
+    <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="10.0.10" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.8.1" />
     <PackageVersion Include="Microsoft.Windows.CsWinRT" Version="2.2.0" />
     <PackageVersion Include="NAudio" Version="2.3.0" />
     <PackageVersion Include="NAudio.Wasapi" Version="22.0.0" />
@@ -23,24 +23,24 @@
     <PackageVersion Include="NUnit3TestAdapter" Version="6.2.0" />
     <PackageVersion Include="Polly.Core" Version="8.7.0" />
     <PackageVersion Include="RailSharp" Version="1.0.0" />
-    <PackageVersion Include="Sentry.Serilog" Version="6.6.0" />
-    <PackageVersion Include="Serilog" Version="4.3.1" />
+    <PackageVersion Include="Sentry.Serilog" Version="6.7.0" />
+    <PackageVersion Include="Serilog" Version="4.4.0" />
     <PackageVersion Include="Serilog.Enrichers.Environment" Version="3.0.1" />
     <PackageVersion Include="Serilog.Exceptions" Version="8.4.0+build.694" />
     <PackageVersion Include="Serilog.Formatting.Compact" Version="3.0.0" />
     <PackageVersion Include="Serilog.Sinks.Console" Version="6.1.1" />
     <PackageVersion Include="Serilog.Sinks.File" Version="7.0.0" />
     <PackageVersion Include="SerilogTraceListener" Version="3.2.0" />
-    <PackageVersion Include="Spectre.Console" Version="0.57.0" />
+    <PackageVersion Include="Spectre.Console" Version="0.57.2" />
     <PackageVersion Include="Spectre.Console.Cli" Version="0.55.0" />
-    <PackageVersion Include="System.CommandLine" Version="2.0.9" />
+    <PackageVersion Include="System.CommandLine" Version="2.0.10" />
     <PackageVersion Include="System.Diagnostics.TraceSource" Version="4.3.0" />
-    <PackageVersion Include="System.Drawing.Common" Version="10.0.9" />
-    <PackageVersion Include="System.Management" Version="10.0.9" />
-    <PackageVersion Include="System.Security.Cryptography.Xml" Version="10.0.9" />
+    <PackageVersion Include="System.Drawing.Common" Version="10.0.10" />
+    <PackageVersion Include="System.Management" Version="10.0.10" />
+    <PackageVersion Include="System.Security.Cryptography.Xml" Version="10.0.10" />
     <PackageVersion Include="System.Net.Http" Version="4.3.4" />
-    <PackageVersion Include="System.Reactive" Version="6.1.0" />
-    <PackageVersion Include="System.Resources.Extensions" Version="10.0.9" />
+    <PackageVersion Include="System.Reactive" Version="7.0.0" />
+    <PackageVersion Include="System.Resources.Extensions" Version="10.0.10" />
     <PackageVersion Include="System.Text.RegularExpressions" Version="4.3.1" />
   </ItemGroup>
 </Project>

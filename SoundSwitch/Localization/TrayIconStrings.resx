@@ -171,8 +171,8 @@
   <data name="iconChanger.both" xml:space="preserve">
     <value>Both</value>
   </data>
-  <data name="iconChanger.monochromeIcon" xml:space="preserve">
-    <value>Monochrome Icon</value>
+  <data name="iconChanger.themeBased" xml:space="preserve">
+    <value>Theme Based</value>
   </data>
   <data name="iconChanger.none" xml:space="preserve">
     <value>Default</value>

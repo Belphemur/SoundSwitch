@@ -14,21 +14,24 @@
 
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Framework.TrayIcon;
+using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Localization;
-using SoundSwitch.Properties;
 
 namespace SoundSwitch.Framework.TrayIcon.IconChanger.Changer;
 
-public class IconChangerMonochromeIcon : IIconChanger
+public class IconChangerThemeBased : IIconChanger
 {
-    public IconChanger TypeEnum => IconChanger.MonochromeIcon;
-    public string Label => TrayIconStrings.iconChanger_monochromeIcon;
+    public IconChanger TypeEnum => IconChanger.ThemeBased;
+    public string Label => TrayIconStrings.iconChanger_themeBased;
 
     /// <summary>
-    /// Replaces the given tray icon with the monochrome logo icon.
+    /// Replaces the given tray icon with the theme-appropriate application icon:
+    /// a light icon for dark taskbars and a dark icon for light taskbars.
     /// </summary>
     /// <param name="trayIcon">The tray icon whose visual icon will be replaced.</param>
-    public void ChangeIcon(UI.Component.TrayIcon trayIcon) => trayIcon.ReplaceIcon(Resources.SoundSwitchLogoMonochrome);
+    public void ChangeIcon(UI.Component.TrayIcon trayIcon) =>
+        trayIcon.ReplaceIcon(SpeakerIconGenerator.GenerateSpeakerIcon(WindowsThemeHelper.IsDarkModeEnabled()));
 
     public void ChangeIcon(UI.Component.TrayIcon trayIcon, DeviceFullInfo deviceInfo, ERole role) { }
 }

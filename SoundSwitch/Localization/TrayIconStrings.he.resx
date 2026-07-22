@@ -189,7 +189,7 @@
   <data name="forceCheckForUpdate" xml:space="preserve">
     <value>לבדוק אם יש עדכונים</value>
   </data>
-  <data name="iconChanger.monochromeIcon" xml:space="preserve">
-    <value>סמל בצבע אחיד</value>
+  <data name="iconChanger.themeBased" xml:space="preserve">
+    <value>Theme Based</value>
   </data>
 </root>

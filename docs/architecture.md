@@ -19,6 +19,7 @@ SoundSwitch is a Windows desktop application built on .NET with a WinForms UI. I
 ## Key Layers
 
 - **Framework**: Infrastructure including banner notifications, configuration, updater, tray integration, and WinAPI adapters.
+  - `ProfileManager` applies profile device changes and, when "Also switch the foreground program" is enabled, resets Windows per-app endpoint assignments once before applying foreground process routing.
 - **Model**: Application state, events, interfaces, and context wiring.
 - **UI**: WinForms forms and components for user interaction.
 - **Services**: External integrations and business logic services.

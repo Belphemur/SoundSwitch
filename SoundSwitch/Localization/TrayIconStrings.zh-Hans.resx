@@ -189,7 +189,7 @@
   <data name="forceCheckForUpdate" xml:space="preserve">
     <value>检查更新</value>
   </data>
-  <data name="iconChanger.monochromeIcon" xml:space="preserve">
-    <value>单色图标</value>
+  <data name="iconChanger.themeBased" xml:space="preserve">
+    <value>Theme Based</value>
   </data>
 </root>
