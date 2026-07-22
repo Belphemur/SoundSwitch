@@ -103,7 +103,7 @@ SoundSwitch.CLI.exe status              # Human-readable table output
 SoundSwitch.CLI.exe status --json       # Machine-readable JSON output
 ```
 
-The JSON output includes: `activeProfile`, `playbackDevice`, `recordingDevice`, `playbackCommunicationDevice`, `recordingCommunicationDevice`. On failure, `status --json` prints a JSON object with an `error` field and exits with code 1.
+The JSON output includes: `activeProfile`, `playbackDevice`, `recordingDevice`, `playbackCommunicationDevice`, `recordingCommunicationDevice`. Devices that are not present are serialized as empty strings (`""`). On failure, `status --json` prints a JSON object with an `error` field and exits with code 1.
 
 ```json
 {

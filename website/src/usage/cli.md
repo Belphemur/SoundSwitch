@@ -64,6 +64,8 @@ When used with `--json`, each command produces machine-readable JSON output. The
 
 `activeProfile` is `null` when no profile has been triggered since startup.
 
+Device fields are empty strings (`""`) when no matching device is present.
+
 ### devices --json
 
 ```json
