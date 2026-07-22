@@ -18,6 +18,8 @@ jobs:
         runs-on: ubuntu-latest
         permissions:
             contents: write
+            issues: write
+            pull-requests: write
         outputs:
             version: ${{ steps.dry-run.outputs.version }}
             released: ${{ steps.dry-run.outputs.released }}

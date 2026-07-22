@@ -17,6 +17,19 @@
                 "major"
             ],
             "automerge": false
+        },
+        {
+            "matchPackageNames": [
+                "conventional-changelog-conventionalcommits"
+            ],
+            "allowedVersions": "<10.0.0",
+            "description": "Block v10: breaks @semantic-release/release-notes-generator notes generation (semantic-release/release-notes-generator#992) until semantic-release supports the new preset interface"
+        },
+        {
+            "matchManagers": [
+                "custom.regex"
+            ],
+            "autoReplaceStringTemplate": "procedure {{{procedureName}}};\nbegin\n  // https://dotnet.microsoft.com/download/dotnet/{{{packageName}}}\n  if not Dependency_IsNetCoreInstalled('{{{runtimeName}}}', {{{newMajor}}}, {{{newMinor}}}, {{{newPatch}}}) then begin\n    Dependency_Add('{{{archiveName}}}' + Dependency_ArchSuffix + '.exe',\n      '/lcid ' + IntToStr(GetUILanguage) + ' /passive /norestart',\n      '{{{displayNamePrefix}}}{{{newValue}}}' + Dependency_ArchTitle,\n      Dependency_String('https://builds.dotnet.microsoft.com/dotnet/{{{downloadPath}}}/{{{newValue}}}/{{{binaryNamePrefix}}}-{{{newValue}}}-win-x86.exe', 'https://builds.dotnet.microsoft.com/dotnet/{{{downloadPath}}}/{{{newValue}}}/{{{binaryNamePrefix}}}-{{{newValue}}}-win-x64.exe', 'https://builds.dotnet.microsoft.com/dotnet/{{{downloadPath}}}/{{{newValue}}}/{{{binaryNamePrefix}}}-{{{newValue}}}-win-arm64.exe'),\n      '', False, False);\n  end;\nend;"
         }
     ],
   "customManagers": [
@@ -41,13 +54,5 @@
         "{\"releases\":[{\"version\": $.\"latest-release\", \"releaseTimestamp\": $.\"latest-release-date\"}], \"sourceUrl\":\"https://github.com/dotnet/runtime\", \"homepage\":\"https://dotnet.microsoft.com/download/dotnet/\" & packageName}"
       ]
     }
-  },
-  "packageRules": [
-    {
-      "matchManagers": [
-        "custom.regex"
-      ],
-      "autoReplaceStringTemplate": "procedure {{{procedureName}}};\nbegin\n  // https://dotnet.microsoft.com/download/dotnet/{{{packageName}}}\n  if not Dependency_IsNetCoreInstalled('{{{runtimeName}}}', {{{newMajor}}}, {{{newMinor}}}, {{{newPatch}}}) then begin\n    Dependency_Add('{{{archiveName}}}' + Dependency_ArchSuffix + '.exe',\n      '/lcid ' + IntToStr(GetUILanguage) + ' /passive /norestart',\n      '{{{displayNamePrefix}}}{{{newValue}}}' + Dependency_ArchTitle,\n      Dependency_String('https://builds.dotnet.microsoft.com/dotnet/{{{downloadPath}}}/{{{newValue}}}/{{{binaryNamePrefix}}}-{{{newValue}}}-win-x86.exe', 'https://builds.dotnet.microsoft.com/dotnet/{{{downloadPath}}}/{{{newValue}}}/{{{binaryNamePrefix}}}-{{{newValue}}}-win-x64.exe', 'https://builds.dotnet.microsoft.com/dotnet/{{{downloadPath}}}/{{{newValue}}}/{{{binaryNamePrefix}}}-{{{newValue}}}-win-arm64.exe'),\n      '', False, False);\n  end;\nend;"
-    }
-  ]
+  }
 }
