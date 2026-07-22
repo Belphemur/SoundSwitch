@@ -15,6 +15,7 @@
 using System;
 using System.Drawing;
 using System.Drawing.Text;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Serilog;
@@ -27,7 +28,7 @@ namespace SoundSwitch.Framework.TrayIcon;
 /// </summary>
 public static class SpeakerIconGenerator
 {
-    private static readonly ILogger Log = Log.ForContext(typeof(SpeakerIconGenerator));
+    private static readonly ILogger Log = Serilog.Log.ForContext(typeof(SpeakerIconGenerator));
 
     // Font priority: Fluent (Win11) first, MDL2 (Win10+) fallback
     private static readonly string[] IconFonts = { "Segoe Fluent Icons", "Segoe MDL2 Assets" };
@@ -54,11 +55,11 @@ public static class SpeakerIconGenerator
             if (_cachedFontName != null)
                 return _cachedFontName;
 
+            using var installedFamilies = new InstalledFontCollection();
+
             foreach (var fontName in IconFonts)
             {
-                using var testFont = new Font(fontName, 16, FontStyle.Regular, GraphicsUnit.Pixel);
-                // A missing font falls back to a different family; check Name to detect fallback
-                if (testFont.Name == fontName)
+                if (installedFamilies.Families.Any(f => f.Name.Equals(fontName, StringComparison.OrdinalIgnoreCase)))
                 {
                     _cachedFontName = fontName;
                     Log.Information("Using icon font: {Font}", fontName);
@@ -67,8 +68,8 @@ public static class SpeakerIconGenerator
             }
 
             // Guaranteed on Windows 10+ — this should never be reached
-            _cachedFontName = "Segoe MDL2 Assets";
-            Log.Warning("No preferred icon font found; falling back to Segoe MDL2 Assets");
+            _cachedFontName = IconFonts.Last();
+            Log.Warning("No preferred icon font found; falling back to {Font}", _cachedFontName);
             return _cachedFontName;
         }
     }
