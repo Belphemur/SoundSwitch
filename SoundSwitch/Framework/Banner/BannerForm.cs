@@ -335,8 +335,9 @@ public partial class BannerForm : Form
             }
         }
 
-        if (data.Image != null)
-            pbxLogo.Image = data.Image;
+        // Assign unconditionally: banner forms are reused, so a null image must
+        // clear the previous notification's image instead of leaving it stale.
+        pbxLogo.Image = data.Image;
 
         if (data.SoundFile != null)
         {
