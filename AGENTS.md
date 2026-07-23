@@ -50,5 +50,8 @@ For additional developer-focused documentation — including build instructions,
 
 ## Validation
 
-- Default validation: `dotnet build SoundSwitch.sln -c Debug`
-- Run targeted tests for the area you change, and at minimum run the related test project when changing shared logic.
+- Default validation (Windows): `dotnet build SoundSwitch.sln -c Debug`
+- Linux validation: the full solution cannot build on Linux (CsWinRT projection generation in `SoundSwitch.Audio.Manager` requires Windows). Validate compile changes with:
+  `dotnet build SoundSwitch/SoundSwitch.csproj -c Debug -p:LinuxBuild=true -p:BuildProjectReferences=false`
+  `LinuxBuild=true` (defined in `Directory.Build.props`) enables `EnableWindowsTargeting` and skips the PowerShell-based `PatchLocalizedResourceDesigners` prebuild target, which is safe because the patched `*.Designer.cs` files are committed.
+- Run targeted tests for the area you change, and at minimum run the related test project when changing shared logic (Windows only).

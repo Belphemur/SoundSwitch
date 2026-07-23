@@ -112,7 +112,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <Target Name="PatchLocalizedResourceDesigners" BeforeTargets="CoreCompile">
+  <!-- Skipped when LinuxBuild=true: the patch script requires Windows PowerShell and the
+       Designer files it patches are committed to the repo already patched. -->
+  <Target Name="PatchLocalizedResourceDesigners" BeforeTargets="CoreCompile" Condition="'$(LinuxBuild)' != 'true'">
     <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\Localization\Patch-LocalizedResourceDesigners.ps1&quot; &quot;$(MSBuildProjectDirectory)&quot;" />
   </Target>
   <PropertyGroup>

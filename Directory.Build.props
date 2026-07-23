@@ -1,0 +1,6 @@
+<Project>
+  <!-- Opt-in properties for building on non-Windows hosts: -p:LinuxBuild=true -->
+  <PropertyGroup Condition="'$(LinuxBuild)' == 'true'">
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+  </PropertyGroup>
+</Project>
