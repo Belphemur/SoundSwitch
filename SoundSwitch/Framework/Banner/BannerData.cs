@@ -19,6 +19,10 @@ using System.Drawing;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Banner.BannerPosition.Position;
 
+// Alias required: inside namespace SoundSwitch.Framework.Banner the simple name
+// BannerDisplayInfo resolves to the nested namespace, shadowing the enum.
+using BannerDisplayInfoEnum = SoundSwitch.Framework.Banner.BannerDisplayInfo.BannerDisplayInfo;
+
 namespace SoundSwitch.Framework.Banner;
 
 /// <summary>
@@ -73,6 +77,20 @@ public class BannerData
     /// Opacity of the banner
     /// </summary>
     public int Opacity { get; internal set; } = 100;
+
+    /// <summary>
+    /// Which elements of the banner to display: icon, text, or both
+    /// </summary>
+    public BannerDisplayInfoEnum DisplayInfo { get; internal set; } = BannerDisplayInfoEnum.FullDisplay;
+
+    /// <summary>
+    /// The display mode that can actually be rendered for this banner.
+    /// An icon-only banner without an image would be empty, so it falls back to full display.
+    /// </summary>
+    public BannerDisplayInfoEnum EffectiveDisplayInfo =>
+        DisplayInfo == BannerDisplayInfoEnum.IconOnly && Image == null
+            ? BannerDisplayInfoEnum.FullDisplay
+            : DisplayInfo;
 
     /// <summary>
     /// When enabled, displays the banner in compact mode (half the normal size)

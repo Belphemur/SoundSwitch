@@ -17,6 +17,7 @@ using System.IO;
 using System.Windows.Forms;
 
 using SoundSwitch.Framework.Audio;
+using SoundSwitch.Framework.Banner.BannerDisplayInfo;
 using SoundSwitch.Framework.Banner.BannerPosition;
 using SoundSwitch.Framework.Banner.MicrophoneMute;
 
@@ -28,6 +29,7 @@ public class NotificationConfiguration : INotificationConfiguration
     public Stream DefaultSound { get; set; }
     public CachedSound CustomSound { get; set; }
     public BannerPosition BannerPosition { get; set; }
+    public BannerDisplayInfo DisplayInfo { get; set; }
     public TimeSpan Ttl { get; set; }
     public int Opacity { get; set; }
     public MicrophoneMute MicrophoneMuteBanner { get; set; }

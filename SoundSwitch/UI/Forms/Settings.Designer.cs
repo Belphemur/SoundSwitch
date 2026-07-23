@@ -967,6 +967,7 @@ sealed partial class SettingsForm
         bannerDisplayComboBox.Name = "bannerDisplayComboBox";
         bannerDisplayComboBox.Size = new System.Drawing.Size(120, 23);
         bannerDisplayComboBox.TabIndex = 53;
+        bannerDisplayComboBox.SelectedValueChanged += BannerDisplayComboBox_SelectedValueChanged;
         // 
         // onScreenUpDown
         // 
