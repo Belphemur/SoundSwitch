@@ -1036,6 +1036,12 @@ public sealed partial class SettingsForm : Form
             AppModel.Instance.MicrophoneUnmuteBanner = selectedItem.Enum);
     }
 
+    private void BannerDisplayComboBox_SelectedValueChanged(object sender, EventArgs e)
+    {
+        SetComboBoxValue<BannerDisplayInfo>(sender, selectedItem =>
+            AppModel.Instance.BannerDisplayInfo = selectedItem.Enum);
+    }
+
     private void PositionGroupBox_Paint(object sender, PaintEventArgs e)
     {
         Size round =  new(RECT_PEN_WIDTH * 4, RECT_PEN_WIDTH * 4);

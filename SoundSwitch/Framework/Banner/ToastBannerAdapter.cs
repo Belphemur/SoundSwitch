@@ -20,6 +20,10 @@ using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
 using Serilog;
 
+// Alias required: inside namespace SoundSwitch.Framework.Banner the simple name
+// BannerDisplayInfo resolves to the nested namespace, shadowing the enum.
+using BannerDisplayInfoEnum = SoundSwitch.Framework.Banner.BannerDisplayInfo.BannerDisplayInfo;
+
 namespace SoundSwitch.Framework.Banner;
 
 /// <summary>
@@ -104,10 +108,15 @@ internal static class ToastBannerAdapter
 
     private static XmlDocument BuildXml(BannerData data)
     {
+        var displayInfo = data.EffectiveDisplayInfo;
+
         // Save the Image to a temp PNG so the toast can reference it via
         // a file:// URI. System.Drawing.Image cannot be passed directly to
         // the WinRT toast XML; it requires a file path or ms-appx URI.
-        string? imagePath = SaveImageToTemp(data.Image);
+        // A description-only banner never shows the image, so skip saving it.
+        string? imagePath = displayInfo == BannerDisplayInfoEnum.DescriptionOnly
+            ? null
+            : SaveImageToTemp(data.Image);
 
         // Build the toast XML by hand — no dependency on
         // Microsoft.Toolkit.Uwp.Notifications needed for net10.0-windows.
@@ -117,13 +126,19 @@ internal static class ToastBannerAdapter
             ? $"""<image placement="appLogoOverride" hint-crop="circle" src="{new Uri(imagePath).AbsoluteUri}" />"""
             : string.Empty;
 
+        // An icon-only toast drops the text lines — unless there is no image
+        // to show, in which case the toast would be empty and we keep them.
+        var showText = displayInfo != BannerDisplayInfoEnum.IconOnly || imagePath == null;
+        var textElements = showText
+            ? $"<text>{EscapeXml(data.Title)}</text>\n          <text>{EscapeXml(data.Text)}</text>"
+            : string.Empty;
+
         var xml = $"""
             <toast>
               <visual>
                 <binding template="ToastGeneric">
                   {imageElement}
-                  <text>{EscapeXml(data.Title)}</text>
-                  <text>{EscapeXml(data.Text)}</text>
+                  {textElements}
                 </binding>
               </visual>
             </toast>

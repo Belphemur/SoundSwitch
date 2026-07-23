@@ -28,6 +28,9 @@ using SoundSwitch.Framework.Threading;
 using SoundSwitch.Model;
 using SoundSwitch.UI.Menu.Util;
 
+// Alias required: inside namespace SoundSwitch.Framework.Banner the simple name
+// BannerDisplayInfo resolves to the nested namespace, shadowing the enum.
+using BannerDisplayInfoEnum = SoundSwitch.Framework.Banner.BannerDisplayInfo.BannerDisplayInfo;
 using Timer = System.Windows.Forms.Timer;
 
 namespace SoundSwitch.Framework.Banner;
@@ -345,6 +348,7 @@ public partial class BannerForm : Form
         Opacity = (double)data.Opacity / 100;
         lblTitle.Text = data.Text;
         lblTop.Text = data.Title;
+        ApplyDisplayInfo(data);
 
         if (data.CustomPositionMode)
         {
@@ -426,6 +430,23 @@ public partial class BannerForm : Form
         _cancellationTokenSource.Cancel();
         _cancellationTokenSource.Dispose();
         _cancellationTokenSource = new();
+    }
+
+    /// <summary>
+    /// Applies the configured display mode (full, icon only, or description only)
+    /// by toggling control visibility. Must run before Region/Location are computed
+    /// so the auto-sized form reflects the final layout.
+    /// </summary>
+    private void ApplyDisplayInfo(BannerData data)
+    {
+        var displayInfo = data.EffectiveDisplayInfo;
+
+        var showText = displayInfo != BannerDisplayInfoEnum.IconOnly;
+        lblTop.Visible = showText;
+        lblTitle.Visible = showText;
+        pbxLogo.Visible = displayInfo != BannerDisplayInfoEnum.DescriptionOnly;
+
+        PerformLayout();
     }
 
     private void ApplyCompactMode()

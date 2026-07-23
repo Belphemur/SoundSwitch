@@ -45,17 +45,24 @@ internal class NotificationBanner : INotification
 
     private IPosition BannerPosition => _bannerPositionFactory.Get(Configuration.BannerPosition);
 
+    /// <summary>
+    /// Creates banner data pre-filled with the shared notification configuration
+    /// (position, TTL, opacity, display mode).
+    /// </summary>
+    private BannerData CreateBannerData() => new()
+    {
+        Position = BannerPosition,
+        Ttl = Configuration.Ttl,
+        Opacity = Configuration.Opacity,
+        DisplayInfo = Configuration.DisplayInfo
+    };
+
     public void NotifyDefaultChanged(DeviceFullInfo audioDevice)
     {
         using var iconHandle = audioDevice.LargeIcon;
-        var toastData = new BannerData
-        {
-            Image = iconHandle.ToBitmap(),
-            Text = audioDevice.NameClean,
-            Position = BannerPosition,
-            Ttl = Configuration.Ttl,
-            Opacity = Configuration.Opacity
-        };
+        var toastData = CreateBannerData();
+        toastData.Image = iconHandle.ToBitmap();
+        toastData.Text = audioDevice.NameClean;
         if (CustomSoundCheck(audioDevice))
         {
             toastData.SoundFile = Configuration.CustomSound;
@@ -74,16 +81,11 @@ internal class NotificationBanner : INotification
 
     public void NotifyProfileChanged(Profile.Profile profile, Bitmap icon, uint? processId)
     {
-        var bannerData = new BannerData
-        {
-            Priority = 1,
-            Image = icon,
-            Title = string.Format(SettingsStrings.profile_notification_text, profile.Name),
-            Text = string.Join("\n", profile.Devices.Select(wrapper => wrapper.DeviceInfo.NameClean).Distinct()),
-            Position = BannerPosition,
-            Ttl = Configuration.Ttl,
-            Opacity = Configuration.Opacity
-        };
+        var bannerData = CreateBannerData();
+        bannerData.Priority = 1;
+        bannerData.Image = icon;
+        bannerData.Title = string.Format(SettingsStrings.profile_notification_text, profile.Name);
+        bannerData.Text = string.Join("\n", profile.Devices.Select(wrapper => wrapper.DeviceInfo.NameClean).Distinct());
         _bannerManager.ShowNotification(bannerData);
     }
 
@@ -93,16 +95,11 @@ internal class NotificationBanner : INotification
         if (playback != null) devices.Add(playback.NameClean);
         if (recording != null) devices.Add(recording.NameClean);
 
-        var bannerData = new BannerData
-        {
-            Priority = 1,
-            Image = icon,
-            Title = SettingsStrings.appSoundLock_tab,
-            Text = string.Join("\n", devices),
-            Position = BannerPosition,
-            Ttl = Configuration.Ttl,
-            Opacity = Configuration.Opacity
-        };
+        var bannerData = CreateBannerData();
+        bannerData.Priority = 1;
+        bannerData.Image = icon;
+        bannerData.Title = SettingsStrings.appSoundLock_tab;
+        bannerData.Text = string.Join("\n", devices);
         _bannerManager.ShowNotification(bannerData);
     }
 
@@ -136,15 +133,10 @@ internal class NotificationBanner : INotification
 
         var icon = newMuteState ? Resources.microphone_muted : Resources.microphone_unmuted;
 
-        var bannerData = new BannerData
-        {
-            Priority = 2,
-            Image = icon,
-            Title = title,
-            Position = BannerPosition,
-            Ttl = Configuration.Ttl,
-            Opacity = Configuration.Opacity
-        };
+        var bannerData = CreateBannerData();
+        bannerData.Priority = 2;
+        bannerData.Image = icon;
+        bannerData.Title = title;
         _bannerManager.ShowNotification(bannerData);
     }
 

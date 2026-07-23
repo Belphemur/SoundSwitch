@@ -88,6 +88,7 @@ public class NotificationManager(INotificationSettings notificationSettings, IAp
             Icon = infrastructure.TrayIcon.NotifyIcon,
             DefaultSound = Resources.NotificationSound,
             BannerPosition = notificationSettings.BannerPosition,
+            DisplayInfo = notificationSettings.BannerDisplayInfo,
             Ttl = notificationSettings.BannerOnScreenTime,
             Opacity = notificationSettings.BannerOpacityPercentage,
             MicrophoneMuteBanner = notificationSettings.MicrophoneMuteBanner,
@@ -110,6 +111,7 @@ public class NotificationManager(INotificationSettings notificationSettings, IAp
     private static void ApplyConfigurationChanges(INotification notification, BannerDataChangedEvent e)
     {
         notification.Configuration.BannerPosition = e.NewBannerPosition;
+        notification.Configuration.DisplayInfo = e.NewBannerDisplayInfo;
         notification.Configuration.Ttl = e.NewTtl;
         notification.Configuration.Opacity = e.NewOpacity;
         notification.Configuration.MicrophoneMuteBanner = e.NewMicrophoneMuteBanner;
