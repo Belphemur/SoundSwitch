@@ -70,8 +70,8 @@ function MyPrepareToInstall(var NeedsRestart: Boolean): String;
 begin
   Log('Starting installed .NET Desktop Runtime cleanup for DotNetMajorVersion={#DotNetMajorVersion}.');
 #if DotNetMajorVersion == "10"
-  Log('Removing .NET 10 Desktop Runtime versions older than 10.0.9 for architecture "' + Dependency_ArchTitle + '".');
-  UninstallOlderDotNetRuntimes(10, 0, 9, Dependency_ArchTitle);
+  Log('Removing .NET 10 Desktop Runtime versions older than 10.0.10 for architecture "' + Dependency_ArchTitle + '".');
+  UninstallOlderDotNetRuntimes(10, 0, 10, Dependency_ArchTitle);
 #elif DotNetMajorVersion == "9"
   Log('Removing .NET 9 Desktop Runtime versions older than 9.0.15 for architecture "' + Dependency_ArchTitle + '".');
   UninstallOlderDotNetRuntimes(9, 0, 15, Dependency_ArchTitle);

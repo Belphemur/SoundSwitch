@@ -27,8 +27,8 @@ After reinstalling on a clean folder, SoundSwitch should start normally.
 
 If SoundSwitch still reports missing .NET after reinstalling, install the .NET Desktop Runtime manually, then run the SoundSwitch installer again:
 
-- x64: <https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/10.0.9/windowsdesktop-runtime-10.0.9-win-x64.exe>
-- arm64: <https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/10.0.9/windowsdesktop-runtime-10.0.9-win-arm64.exe>
+- x64: <https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/10.0.10/windowsdesktop-runtime-10.0.10-win-x64.exe>
+- arm64: <https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/10.0.10/windowsdesktop-runtime-10.0.10-win-arm64.exe>
 
 ---
 
