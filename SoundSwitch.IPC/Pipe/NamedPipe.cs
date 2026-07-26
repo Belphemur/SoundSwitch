@@ -147,8 +147,15 @@ public static class NamedPipe
                         await serverStream.DisposeAsync();
                     }
 
-                    // Retry creating the server stream after a brief delay
-                    await Task.Delay(1000, token);
+                    try
+                    {
+                        // Retry creating the server stream after a brief delay
+                        await Task.Delay(1000, token);
+                    }
+                    catch (OperationCanceledException) when (token.IsCancellationRequested)
+                    {
+                        break; // Listener is shutting down
+                    }
                 }
             }
         }, token);
