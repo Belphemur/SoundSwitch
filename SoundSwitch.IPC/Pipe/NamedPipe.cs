@@ -16,8 +16,9 @@ public static class NamedPipe
 {
     private static readonly MessagePackSerializerOptions SerializerOptions = MessagePackSerializerOptions.Standard;
     private static NamedPipeClientStream? _clientStream;
+    private static string? _clientPipeName;
     private const int CONNECTION_TIMEOUT = 5000; // 5 seconds
-    private static readonly TimeSpan ResponseTimeout = TimeSpan.FromSeconds(15);
+    internal static TimeSpan ResponseTimeout { get; set; } = TimeSpan.FromSeconds(15);
 
     private static readonly CancellationTokenSource CancellationTokenSource = new();
     private static readonly ConcurrentDictionary<Guid, Func<IPipeMessage, CancellationToken, Task<IPipeMessage>>> MessageHandlers = new();
@@ -29,17 +30,18 @@ public static class NamedPipe
         var token = linkedTokenSource.Token;
         try
         {
-            if (_clientStream is not { IsConnected: true })
+            if (_clientStream is not { IsConnected: true } || _clientPipeName != pipeName)
             {
                 _clientStream?.Dispose();
                 _clientStream = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.Asynchronous);
+                _clientPipeName = pipeName;
             }
 
             if (!_clientStream.IsConnected)
                 await _clientStream.ConnectAsync(CONNECTION_TIMEOUT, token);
 
             // Write with length prefix
-            var buffer = MessagePackSerializer.Serialize(request, SerializerOptions, cancellationToken);
+            var buffer = MessagePackSerializer.Serialize(request, SerializerOptions, token);
             var length = BitConverter.GetBytes(buffer.Length);
             await _clientStream.WriteAsync(length, token);
             await _clientStream.WriteAsync(buffer, token);
@@ -52,7 +54,7 @@ public static class NamedPipe
             var responseBuffer = new byte[responseLength];
             await ReadExactAsync(_clientStream, responseBuffer, 0, responseLength, token);
 
-            var response = MessagePackSerializer.Deserialize<IPipeMessage>(responseBuffer, SerializerOptions, cancellationToken);
+            var response = MessagePackSerializer.Deserialize<IPipeMessage>(responseBuffer, SerializerOptions, token);
             if (response == null)
             {
                 throw new InvalidOperationException("Received null response from server");
@@ -69,7 +71,7 @@ public static class NamedPipe
         {
             // Cancellation came from our own response timeout, not from the caller or app shutdown
             DisposeClientStream();
-            throw new TimeoutException("The server did not respond within 15 seconds");
+            throw new TimeoutException($"The server did not respond within {ResponseTimeout}");
         }
         catch (Exception)
         {
@@ -82,6 +84,7 @@ public static class NamedPipe
     {
         _clientStream?.Dispose();
         _clientStream = null;
+        _clientPipeName = null;
     }
 
     public static Guid RegisterMessageHandler(Func<IPipeMessage, CancellationToken, Task<IPipeMessage>> handler)
@@ -239,20 +242,17 @@ public static class NamedPipe
 
     private static async Task ClientConnectedAsync(NamedPipeServerStream stream, Guid id, CancellationToken token)
     {
-        var dispose = true;
         try
         {
             await HandleCommunicationAsync(stream, id, token).ConfigureAwait(false);
-            dispose = !stream.IsConnected;
         }
         catch (Exception)
         {
         }
 
-        if (dispose)
-        {
-            await DisposeStreamAsync(stream, id).ConfigureAwait(false);
-        }
+        // Always dispose: IsConnected stays true for a server stream until Disconnect/Dispose,
+        // so it cannot tell us the pipe died via an IOException break.
+        await DisposeStreamAsync(stream, id).ConfigureAwait(false);
     }
 
     private static async Task DisposeStreamAsync(NamedPipeServerStream stream, Guid id)
@@ -298,5 +298,6 @@ public static class NamedPipe
         CancellationTokenSource.Dispose();
         _clientStream?.Dispose();
         _clientStream = null;
+        _clientPipeName = null;
     }
 }

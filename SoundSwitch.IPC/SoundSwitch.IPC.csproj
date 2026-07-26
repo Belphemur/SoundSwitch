@@ -12,4 +12,8 @@
     <PackageReference Include="MessagePack" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="SoundSwitch.IPC.Tests" />
+  </ItemGroup>
+
 </Project>
