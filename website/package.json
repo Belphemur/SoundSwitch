@@ -18,8 +18,8 @@
     "vuepress-theme-hope": "2.0.0-rc.107"
   },
   "devDependencies": {
-    "@vuepress/plugin-llms": "^2.0.0-rc.130",
+    "@vuepress/plugin-llms": "^2.0.0-rc.132",
     "@vuepress/plugin-slimsearch": "^2.0.0-rc.130",
-    "wrangler": "^4.113.0"
+    "wrangler": "^4.114.0"
   }
 }
