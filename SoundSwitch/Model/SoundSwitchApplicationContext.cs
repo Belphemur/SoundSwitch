@@ -146,16 +146,32 @@ public class SoundSwitchApplicationContext : ApplicationContext
 
             case OpenSettingsRequest:
                 Log.Information("Asked by other instance to show settings");
-                AppModel.Instance.TrayIcon.ShowSettings();
-                return new OpenSettingsResponse { Success = true };
+                try
+                {
+                    AppModel.Instance.TrayIcon.ShowSettings();
+                    return new OpenSettingsResponse { Success = true };
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "Failed to show settings");
+                    return new OpenSettingsResponse { Success = false };
+                }
 
             case TriggerProfileRequest profileRequest:
                 Log.Information("Triggering profile: {ProfileName}", profileRequest.ProfileName);
                 var profile = AppModel.Instance.ProfileManager.Profiles.FirstOrDefault(p => p.Name == profileRequest.ProfileName);
                 if (profile != null)
                 {
-                    AppModel.Instance.ProfileManager.SwitchAudio(profile);
-                    return new TriggerProfileResponse { Success = true };
+                    try
+                    {
+                        AppModel.Instance.ProfileManager.SwitchAudio(profile);
+                        return new TriggerProfileResponse { Success = true };
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error(ex, "Failed to switch audio for profile {ProfileName}", profileRequest.ProfileName);
+                        return new TriggerProfileResponse { Success = false, Error = ex.Message };
+                    }
                 }
 
                 Log.Warning("Profile not found: {ProfileName}", profileRequest.ProfileName);

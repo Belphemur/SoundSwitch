@@ -27,6 +27,7 @@ namespace SoundSwitch.IPC.Pipe.Messages;
 [Union(12, typeof(GetActiveDevicesResponse))]
 [Union(13, typeof(GetSwitchableDevicesRequest))]
 [Union(14, typeof(GetSwitchableDevicesResponse))]
+[Union(15, typeof(ErrorResponse))]
 public interface IPipeMessage
 {
 }

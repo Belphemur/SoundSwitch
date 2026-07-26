@@ -161,9 +161,10 @@ internal static class Program
         _synchronizationContext = new WindowsFormsSynchronizationContext();
         SynchronizationContext.SetSynchronizationContext(_synchronizationContext);
 
+        var appContext = new SoundSwitchApplicationContext();
         NamedPipe.StartListening(userMutexName, mainCts.Token);
 
-        Application.Run(new SoundSwitchApplicationContext());
+        Application.Run(appContext);
 
 
 #if !DEBUG
