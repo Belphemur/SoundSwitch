@@ -19,6 +19,8 @@ public static class NamedPipe
     private static string? _clientPipeName;
     private const int CONNECTION_TIMEOUT = 5000; // 5 seconds
     internal static TimeSpan ResponseTimeout { get; set; } = TimeSpan.FromSeconds(15);
+    // Idle wait before the server disconnects a silent client; internal/settable for tests.
+    internal static TimeSpan ServerIdleTimeout { get; set; } = TimeSpan.FromSeconds(10);
 
     private static readonly CancellationTokenSource CancellationTokenSource = new();
     private static readonly ConcurrentDictionary<Guid, Func<IPipeMessage, CancellationToken, Task<IPipeMessage>>> MessageHandlers = new();
@@ -141,13 +143,12 @@ public static class NamedPipe
         var logger = Log.ForContext("PipeId", id);
         using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         var token = cts.Token;
-        var timeout = TimeSpan.FromSeconds(10);
-        cts.CancelAfter(timeout);
+        cts.CancelAfter(ServerIdleTimeout);
         token.Register(() =>
         {
             try
             {
-                logger.Warning("No message received in the last {Timeout}", timeout);
+                logger.Warning("No message received in the last {Timeout}", ServerIdleTimeout);
                 if (stream.IsConnected)
                 {
                     logger.Information("Disconnecting client");
@@ -201,7 +202,7 @@ public static class NamedPipe
             finally
             {
                 // Re-arm the idle timeout before waiting for the next request
-                cts.CancelAfter(timeout);
+                cts.CancelAfter(ServerIdleTimeout);
             }
         }
     }

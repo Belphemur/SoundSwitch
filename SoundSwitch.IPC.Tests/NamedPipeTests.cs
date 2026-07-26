@@ -24,10 +24,6 @@ namespace SoundSwitch.IPC.Tests;
 [NonParallelizable]
 public sealed class NamedPipeTests
 {
-    // Mirrors the hardcoded idle timeout in NamedPipe.HandleCommunicationAsync; after this long
-    // without traffic the server has disconnected and disposed the connection for sure.
-    private static readonly TimeSpan ServerIdleReapWait = TimeSpan.FromSeconds(12);
-
     private static string StartServer()
     {
         var pipeName = $"SoundSwitch_Test_{Guid.NewGuid():N}";
@@ -155,9 +151,14 @@ public sealed class NamedPipeTests
             TriggerSwitchRequest => new TriggerSwitchResponse { Success = true },
             _ => new ErrorResponse { Error = $"Unexpected request {request.GetType().Name}" }
         }));
+        var originalIdleTimeout = NamedPipe.ServerIdleTimeout;
         try
         {
             await WaitForServerReadyAsync();
+
+            // Shrink the idle timeout so the first connection is reaped fast enough to make the
+            // stale-connection reuse bug observable without a ~12s wait.
+            NamedPipe.ServerIdleTimeout = TimeSpan.FromMilliseconds(500);
 
             var firstResponse = await NamedPipe.SendRequestAsync<OpenSettingsResponse>(firstPipeName, new OpenSettingsRequest());
             firstResponse.Success.Should().BeTrue();
@@ -165,14 +166,15 @@ public sealed class NamedPipeTests
             // Regression setup for the client-stream reuse bug: without pipe-name tracking the
             // second call silently reuses the first pipe's connection. That is only observable
             // once the first connection is dead, so wait for the server to reap it as idle.
-            // With the fix the client reconnects by name and this wait is harmless.
-            await Task.Delay(ServerIdleReapWait);
+            // 2s is a bounded 4x margin over the 500ms idle timeout.
+            await Task.Delay(TimeSpan.FromSeconds(2));
 
             var secondResponse = await NamedPipe.SendRequestAsync<TriggerSwitchResponse>(secondPipeName, new TriggerSwitchRequest());
             secondResponse.Success.Should().BeTrue("the request must reach the server listening on the requested pipe name");
         }
         finally
         {
+            NamedPipe.ServerIdleTimeout = originalIdleTimeout;
             NamedPipe.UnregisterMessageHandler(handlerId);
         }
     }
