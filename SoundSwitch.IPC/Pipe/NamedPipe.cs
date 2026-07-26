@@ -21,6 +21,7 @@ public static class NamedPipe
     internal static TimeSpan ResponseTimeout { get; set; } = TimeSpan.FromSeconds(15);
     // Idle wait before the server disconnects a silent client; internal/settable for tests.
     internal static TimeSpan ServerIdleTimeout { get; set; } = TimeSpan.FromSeconds(10);
+    private const int MaxMessageSize = 1024 * 1024; // 1 MiB — control messages are a few KB at most
 
     private static readonly CancellationTokenSource CancellationTokenSource = new();
     private static readonly ConcurrentDictionary<Guid, Func<IPipeMessage, CancellationToken, Task<IPipeMessage>>> MessageHandlers = new();
@@ -53,6 +54,11 @@ public static class NamedPipe
             var lengthBuffer = new byte[4];
             await ReadExactAsync(_clientStream, lengthBuffer, 0, 4, token);
             var responseLength = BitConverter.ToInt32(lengthBuffer, 0);
+            if (responseLength <= 0 || responseLength > MaxMessageSize)
+            {
+                throw new InvalidDataException($"Server sent invalid response length {responseLength}");
+            }
+
             var responseBuffer = new byte[responseLength];
             await ReadExactAsync(_clientStream, responseBuffer, 0, responseLength, token);
 
@@ -124,8 +130,18 @@ public static class NamedPipe
 
                     _ = ClientConnectedAsync(serverStream, pipeId, token);
                 }
-                catch (Exception)
+                catch (OperationCanceledException) when (token.IsCancellationRequested)
                 {
+                    if (serverStream != null)
+                    {
+                        await serverStream.DisposeAsync();
+                    }
+
+                    break; // Listener is shutting down
+                }
+                catch (Exception ex)
+                {
+                    Log.Warning(ex, "Pipe accept loop failed, retrying");
                     if (serverStream != null)
                     {
                         await serverStream.DisposeAsync();
@@ -168,6 +184,12 @@ public static class NamedPipe
                 var lengthBuffer = new byte[4];
                 await ReadExactAsync(stream, lengthBuffer, 0, 4, token);
                 var messageLength = BitConverter.ToInt32(lengthBuffer, 0);
+                if (messageLength <= 0 || messageLength > MaxMessageSize)
+                {
+                    logger.Warning("Rejecting message with invalid length {MessageLength}", messageLength);
+                    break;
+                }
+
                 var messageBuffer = new byte[messageLength];
                 await ReadExactAsync(stream, messageBuffer, 0, messageLength, token);
 
@@ -247,8 +269,9 @@ public static class NamedPipe
         {
             await HandleCommunicationAsync(stream, id, token).ConfigureAwait(false);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            Log.ForContext("PipeId", id).Debug(ex, "Unhandled exception while handling pipe communication");
         }
 
         // Always dispose: IsConnected stays true for a server stream until Disconnect/Dispose,

@@ -1,5 +1,6 @@
 using System;
 using System.IO.Pipes;
+using System.Threading;
 using System.Threading.Tasks;
 
 using FluentAssertions;
@@ -31,7 +32,29 @@ public sealed class NamedPipeTests
         return pipeName;
     }
 
-    private static Task WaitForServerReadyAsync() => Task.Delay(TimeSpan.FromMilliseconds(200));
+    private static async Task WaitForServerReadyAsync(string pipeName)
+    {
+        using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        while (!cts.IsCancellationRequested)
+        {
+            var probe = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.Asynchronous);
+            try
+            {
+                await probe.ConnectAsync(250, cts.Token);
+                return; // Connected — server is ready
+            }
+            catch
+            {
+                // Server not ready yet; retry
+            }
+            finally
+            {
+                await probe.DisposeAsync();
+            }
+        }
+
+        Assert.Fail($"Server on pipe '{pipeName}' did not become ready within 5 seconds");
+    }
 
     [Test]
     public async Task SendRequestAsync_WhenHandlerResponds_ReturnsResponse()
@@ -40,7 +63,7 @@ public sealed class NamedPipeTests
         var handlerId = NamedPipe.RegisterMessageHandler((_, _) => Task.FromResult<IPipeMessage>(new OpenSettingsResponse { Success = true }));
         try
         {
-            await WaitForServerReadyAsync();
+            await WaitForServerReadyAsync(pipeName);
 
             var response = await NamedPipe.SendRequestAsync<OpenSettingsResponse>(pipeName, new OpenSettingsRequest());
 
@@ -56,7 +79,7 @@ public sealed class NamedPipeTests
     public async Task SendRequestAsync_WhenNoHandlerRegistered_ThrowsNotReadyPipeRequestException()
     {
         var pipeName = StartServer();
-        await WaitForServerReadyAsync();
+        await WaitForServerReadyAsync(pipeName);
 
         var act = () => NamedPipe.SendRequestAsync<OpenSettingsResponse>(pipeName, new OpenSettingsRequest());
 
@@ -71,7 +94,7 @@ public sealed class NamedPipeTests
         var handlerId = NamedPipe.RegisterMessageHandler((_, _) => throw new InvalidOperationException("boom"));
         try
         {
-            await WaitForServerReadyAsync();
+            await WaitForServerReadyAsync(pipeName);
 
             var act = () => NamedPipe.SendRequestAsync<OpenSettingsResponse>(pipeName, new OpenSettingsRequest());
 
@@ -92,7 +115,7 @@ public sealed class NamedPipeTests
         var handlerId = NamedPipe.RegisterMessageHandler((_, _) => Task.FromResult<IPipeMessage>(new OpenSettingsResponse { Success = true }));
         try
         {
-            await WaitForServerReadyAsync();
+            await WaitForServerReadyAsync(pipeName);
 
             // Connect raw, write a partial length prefix, then vanish mid-request
             await using (var rawClient = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.Asynchronous))
@@ -125,7 +148,7 @@ public sealed class NamedPipeTests
         try
         {
             NamedPipe.ResponseTimeout = TimeSpan.FromMilliseconds(500);
-            await WaitForServerReadyAsync();
+            await WaitForServerReadyAsync(pipeName);
 
             var act = () => NamedPipe.SendRequestAsync<OpenSettingsResponse>(pipeName, new OpenSettingsRequest());
 
@@ -135,6 +158,41 @@ public sealed class NamedPipeTests
         {
             NamedPipe.ResponseTimeout = originalTimeout;
             // Release the server-side handler so no slow request lingers past this test
+            gate.TrySetResult();
+            NamedPipe.UnregisterMessageHandler(handlerId);
+        }
+    }
+
+    [Test]
+    public async Task SendRequestAsync_WhenHandlerRunsLongerThanIdleTimeout_StillReturnsResponse()
+    {
+        var pipeName = StartServer();
+        var originalIdleTimeout = NamedPipe.ServerIdleTimeout;
+        var gate = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var handlerId = NamedPipe.RegisterMessageHandler(async (_, _) =>
+        {
+            await gate.Task;
+            return (IPipeMessage)new OpenSettingsResponse { Success = true };
+        });
+        try
+        {
+            NamedPipe.ServerIdleTimeout = TimeSpan.FromMilliseconds(500);
+            await WaitForServerReadyAsync(pipeName);
+
+            var sendTask = NamedPipe.SendRequestAsync<OpenSettingsResponse>(pipeName, new OpenSettingsRequest());
+
+            // Wait far past the idle timeout (4x margin) — the old code would have disconnected mid-request
+            await Task.Delay(TimeSpan.FromMilliseconds(2000));
+
+            // Release the server-side handler
+            gate.TrySetResult();
+
+            var response = await sendTask;
+            response.Success.Should().BeTrue("the connection should survive processing longer than the idle timeout");
+        }
+        finally
+        {
+            NamedPipe.ServerIdleTimeout = originalIdleTimeout;
             gate.TrySetResult();
             NamedPipe.UnregisterMessageHandler(handlerId);
         }
@@ -154,7 +212,7 @@ public sealed class NamedPipeTests
         var originalIdleTimeout = NamedPipe.ServerIdleTimeout;
         try
         {
-            await WaitForServerReadyAsync();
+            await WaitForServerReadyAsync(firstPipeName);
 
             // Shrink the idle timeout so the first connection is reaped fast enough to make the
             // stale-connection reuse bug observable without a ~12s wait.
@@ -175,6 +233,36 @@ public sealed class NamedPipeTests
         finally
         {
             NamedPipe.ServerIdleTimeout = originalIdleTimeout;
+            NamedPipe.UnregisterMessageHandler(handlerId);
+        }
+    }
+
+    [Test]
+    public async Task Server_WhenClientSendsInvalidLengthPrefix_KeepsServingNewConnections()
+    {
+        var pipeName = StartServer();
+        var handlerId = NamedPipe.RegisterMessageHandler((_, _) => Task.FromResult<IPipeMessage>(new OpenSettingsResponse { Success = true }));
+        try
+        {
+            await WaitForServerReadyAsync(pipeName);
+
+            // Raw client sends a bogus length prefix (int.MaxValue) — server must reject it
+            await using (var rawClient = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.Asynchronous))
+            {
+                await rawClient.ConnectAsync(5000);
+                var bogusLength = BitConverter.GetBytes(int.MaxValue);
+                await rawClient.WriteAsync(bogusLength);
+
+                // Stay connected briefly so the server reads the prefix and rejects it
+                await Task.Delay(TimeSpan.FromMilliseconds(300));
+            }
+
+            // Normal round-trip must still succeed after the bogus connection was handled
+            var response = await NamedPipe.SendRequestAsync<OpenSettingsResponse>(pipeName, new OpenSettingsRequest());
+            response.Success.Should().BeTrue("the server must keep serving after rejecting an invalid length prefix");
+        }
+        finally
+        {
             NamedPipe.UnregisterMessageHandler(handlerId);
         }
     }
