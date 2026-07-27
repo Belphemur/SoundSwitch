@@ -23,7 +23,7 @@
     <PackageVersion Include="NUnit3TestAdapter" Version="6.2.0" />
     <PackageVersion Include="Polly.Core" Version="8.7.0" />
     <PackageVersion Include="RailSharp" Version="1.0.0" />
-    <PackageVersion Include="Sentry.Serilog" Version="6.7.0" />
+    <PackageVersion Include="Sentry.Serilog" Version="6.8.0" />
     <PackageVersion Include="Serilog" Version="4.4.0" />
     <PackageVersion Include="Serilog.Enrichers.Environment" Version="3.0.1" />
     <PackageVersion Include="Serilog.Exceptions" Version="8.4.0+build.694" />
