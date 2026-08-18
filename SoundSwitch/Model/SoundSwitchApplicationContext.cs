@@ -17,6 +17,8 @@ using SoundSwitch.Framework.Banner.MicrophoneMute;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
+using SoundSwitch.Framework.Telemetry;
+using SoundSwitch.IPC.Pipe.Messages.Cli;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.IPC.Pipe;
 using SoundSwitch.IPC.Pipe.Messages;
@@ -131,6 +133,8 @@ public class SoundSwitchApplicationContext : ApplicationContext
                         return new MicrophoneStateResponse { Success = false, IsMuted = false, DeviceName = "" };
                     }
 
+                    TelemetryService.TrackMicMute("cli", result.Value.IsMuted);
+
                     return new MicrophoneStateResponse
                     {
                         Success = true,
@@ -143,6 +147,10 @@ public class SoundSwitchApplicationContext : ApplicationContext
                     Log.Error(ex, "Failed to set microphone state");
                     return new MicrophoneStateResponse { Success = false, IsMuted = false, DeviceName = "" };
                 }
+
+            case CliCommandExecuted cliCmd:
+                TelemetryService.TrackCliCommand(cliCmd.Command, cliCmd.ExitCode);
+                return new CliCommandExecutedResponse { Success = true };
 
             case OpenSettingsRequest:
                 Log.Information("Asked by other instance to show settings");
@@ -189,10 +197,12 @@ public class SoundSwitchApplicationContext : ApplicationContext
                     {
                         case AudioType.Recording:
                             AppModel.Instance.CycleActiveDevice(DataFlow.Capture);
+                            TelemetryService.TrackRecordingSwitch("cli");
                             break;
                         case AudioType.Playback:
                         default:
                             AppModel.Instance.CycleActiveDevice(DataFlow.Render);
+                            TelemetryService.TrackPlaybackSwitch("cli");
                             break;
                     }
 

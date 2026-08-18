@@ -1,5 +1,6 @@
 ﻿#nullable enable
 using SoundSwitch.IPC.Pipe;
+using SoundSwitch.IPC.Pipe.Messages.Cli;
 using SoundSwitch.IPC.Pipe.Messages.GetProfileList;
 using SoundSwitch.IPC.Pipe.Messages.TriggerProfile;
 
@@ -21,12 +22,18 @@ public class ProfileCommand : AsyncCommand<ProfileCommand.Settings>
 
     protected override async Task<int> ExecuteAsync(CommandContext context, Settings settings, CancellationToken cancellationToken)
     {
-        if (settings.Json)
+        var exitCode = settings.Json
+            ? await ExecuteJsonAsync(settings, cancellationToken)
+            : await ExecuteTableAsync(settings, cancellationToken);
+        try
         {
-            return await ExecuteJsonAsync(settings, cancellationToken);
+            await NamedPipe.SendRequestAsync<CliCommandExecutedResponse>(
+                PipeConstants.GetUserPipeName(),
+                new CliCommandExecuted { Command = "profile", ExitCode = exitCode },
+                cancellationToken);
         }
-
-        return await ExecuteTableAsync(settings, cancellationToken);
+        catch { /* best-effort */ }
+        return exitCode;
     }
 
     private static async Task<int> ExecuteJsonAsync(Settings settings, CancellationToken cancellationToken)

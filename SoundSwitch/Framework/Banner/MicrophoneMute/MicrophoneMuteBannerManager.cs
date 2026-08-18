@@ -17,6 +17,7 @@ using System.Collections.Generic;
 
 using Serilog;
 
+using SoundSwitch.Framework.Telemetry;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
@@ -73,7 +74,15 @@ public class MicrophoneMuteBannerManager
             Position = AppModel.Instance.BannerPositionImpl,
             Ttl = TimeSpan.MaxValue, // Effectively "infinite" until explicitly dismissed
             CompactMode = true,
-            OnClick = (sender, args) => AppModel.Instance.SetMicrophoneMuteState(microphoneId, false)
+            OnClick = (sender, args) =>
+            {
+                TelemetryService.TrackNotificationBanner("unmute_clicked");
+                var result = AppModel.Instance.SetMicrophoneMuteState(microphoneId, false);
+                if (result != null)
+                {
+                    TelemetryService.TrackMicMute("banner", false);
+                }
+            }
         };
 
         if (_activeBanners.TryGetValue(microphoneId, out var existingBanner))

@@ -19,6 +19,7 @@ using NAudio.CoreAudioApi;
 using Serilog;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
+using SoundSwitch.Framework.Telemetry;
 using SoundSwitch.Framework.Threading;
 using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
 using SoundSwitch.Framework.Updater;
@@ -68,6 +69,7 @@ public partial class AppModel
         {
             AppConfigs.Configuration.Telemetry = value;
             AppConfigs.Configuration.Save();
+            TelemetryService.Reload();
         }
     }
 
@@ -261,11 +263,26 @@ public partial class AppModel
         try
         {
             if (e.HotKey == AppConfigs.Configuration.PlaybackHotKey)
+            {
+                TelemetryService.AddBreadcrumb("hotkey", "PlaybackHotKey pressed");
                 CycleActiveDevice(DataFlow.Render);
+                TelemetryService.TrackPlaybackSwitch("hotkey");
+            }
             else if (e.HotKey == AppConfigs.Configuration.RecordingHotKey)
+            {
+                TelemetryService.AddBreadcrumb("hotkey", "RecordingHotKey pressed");
                 CycleActiveDevice(DataFlow.Capture);
+                TelemetryService.TrackRecordingSwitch("hotkey");
+            }
             else if (e.HotKey == AppConfigs.Configuration.MuteRecordingHotKey)
-                ToggleMicrophoneMute();
+            {
+                TelemetryService.AddBreadcrumb("hotkey", "MuteRecordingHotKey pressed");
+                var micResult = ToggleMicrophoneMute();
+                if (micResult != null)
+                {
+                    TelemetryService.TrackMicMute("hotkey", micResult.Value.IsMuted);
+                }
+            }
         }
         catch (Exception ex)
         {

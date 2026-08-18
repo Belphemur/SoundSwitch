@@ -90,6 +90,10 @@ export default defineUserConfig({
         link: "/faq/",
       },
       {
+        text: "Privacy & Telemetry",
+        link: "/privacy/telemetry.md",
+      },
+      {
         text: "Advanced",
         children: [
           { text: "Auto Updater", link: "/advanced/auto-updater.md" },

@@ -97,7 +97,7 @@ When enabled, SoundSwitch considers pre-release (beta) versions as available upd
 
 ### Telemetry
 
-Allows SoundSwitch to send anonymized usage data to help improve the application.
+Allows SoundSwitch to send usage metrics and crash-report context to Sentry to help improve the application. See [Telemetry and Privacy](../privacy/telemetry.md) for a full explanation of what is collected, why, and how to disable it.
 
 ### Language
 

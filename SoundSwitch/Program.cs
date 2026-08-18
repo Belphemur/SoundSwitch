@@ -29,6 +29,7 @@ using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Logger.Configuration;
 using SoundSwitch.Framework.NotificationManager;
+using SoundSwitch.Framework.Telemetry;
 using SoundSwitch.Framework.Threading;
 using SoundSwitch.Framework.WinApi;
 using SoundSwitch.IPC.Pipe;
@@ -61,7 +62,7 @@ internal static class Program
         using var mainCts = new CancellationTokenSource();
         var sentryOptions = new SentryOptions
         {
-            Dsn = "https://7d52dfb4f6554bf0b58b256337835332@o631137.ingest.sentry.io/5755327",
+            Dsn = TelemetryService.SentryDsn,
             Environment = AssemblyUtils.GetReleaseState().ToString(),
             DefaultTags = { { "ReleaseState", AssemblyUtils.GetReleaseState().ToString() } },
             Release = $"{Application.ProductName}@{Application.ProductVersion}",
@@ -78,6 +79,7 @@ internal static class Program
 
 
         SentrySdk.ConfigureScope(scope => { scope.User = user; });
+        TelemetryService.Reload();
         InitializeLogger();
         Log.Information("Application Starts");
 #if !DEBUG
@@ -175,6 +177,7 @@ internal static class Program
             }
 #endif
         SentrySdk.EndSession();
+        await SentrySdk.FlushAsync(TimeSpan.FromSeconds(2));
         AppModel.Instance.Dispose();
         WindowsAPIAdapter.Stop();
         MMNotificationClient.Instance?.Dispose();

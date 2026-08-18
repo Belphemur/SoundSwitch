@@ -20,6 +20,7 @@ using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Profile.Hotkey;
 using SoundSwitch.Framework.Profile.Trigger;
+using SoundSwitch.Framework.Telemetry;
 using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
@@ -105,7 +106,7 @@ public class ProfileManager
                         return true;
                     }
 
-                    SwitchAudio(profile);
+                    SwitchAudio(profile, TriggerFactory.Enum.Startup);
                     return true;
                 }, () =>
                 {
@@ -117,7 +118,7 @@ public class ProfileManager
                 {
                     _forcedProfile = profile;
 
-                    SwitchAudio(profile);
+                    SwitchAudio(profile, TriggerFactory.Enum.Changed);
                     return true;
                 });
         }
@@ -211,7 +212,7 @@ public class ProfileManager
         foreach (var profile in Profiles.Where(profile => profile.Triggers.Any(trigger => trigger.Type == TriggerFactory.Enum.Startup) && profile.Devices.Any()))
         {
             _logger.Information("Session unlocked, applying startup trigger profile {ProfileName}", profile.Name);
-            SwitchAudio(profile);
+            SwitchAudio(profile, TriggerFactory.Enum.Startup);
         }
     }
 
@@ -225,7 +226,7 @@ public class ProfileManager
         if (profileTuple != default && @event.WindowClass == "ApplicationFrameWindow")
         {
             SaveCurrentState(@event.Hwnd, profileTuple.Profile, profileTuple.Trigger);
-            SwitchAudio(profileTuple.Profile);
+            SwitchAudio(profileTuple.Profile, TriggerFactory.Enum.UwpApp);
             return true;
         }
 
@@ -240,7 +241,7 @@ public class ProfileManager
         if (profileTuple != default)
         {
             SaveCurrentState(@event.Hwnd, profileTuple.Profile, profileTuple.Trigger);
-            SwitchAudio(profileTuple.Profile, @event.ProcessId);
+            SwitchAudio(profileTuple.Profile, @event.ProcessId, TriggerFactory.Enum.Window);
             return true;
         }
 
@@ -253,7 +254,7 @@ public class ProfileManager
         if (_profileByApplication.TryGetValue(@event.ProcessName.ToLower(), out profileTuple))
         {
             SaveCurrentState(@event.Hwnd, profileTuple.Profile, profileTuple.Trigger);
-            SwitchAudio(profileTuple.Profile, @event.ProcessId);
+            SwitchAudio(profileTuple.Profile, @event.ProcessId, TriggerFactory.Enum.Process);
             return true;
         }
 
@@ -278,7 +279,7 @@ public class ProfileManager
 
         _logger.Debug("Forced profile activated: {profile}", _forcedProfile);
 
-        SwitchAudio(_forcedProfile);
+        SwitchAudio(_forcedProfile, TriggerFactory.Enum.Changed);
         return true;
     }
 
@@ -354,7 +355,7 @@ public class ProfileManager
 
         SaveCurrentState(@event.Hwnd, _steamProfile, _steamProfile.Triggers.First(trigger => trigger.Type == TriggerFactory.Enum.Steam));
 
-        SwitchAudio(_steamProfile);
+        SwitchAudio(_steamProfile, TriggerFactory.Enum.Steam);
         return true;
     }
 
@@ -386,18 +387,21 @@ public class ProfileManager
         return AppModel.Instance.AudioDeviceLister.GetDevices(deviceInfo.Type, DeviceState.Active).FirstOrDefault(info => info.Equals(deviceInfo));
     }
 
-    private void SwitchAudio(Profile profile, uint processId)
+    private void SwitchAudio(Profile profile, uint processId, TriggerFactory.Enum? triggerType = null)
     {
         _notificationManager.NotifyProfileChanged(profile, processId);
         if (AppConfigs.Configuration.Profiles.Any(p => p.Name == profile.Name))
         {
             LastTriggeredProfile = profile.Name;
         }
+
+        var deviceMissing = false;
         foreach (var device in profile.Devices)
         {
             var deviceToUse = CheckDeviceAvailable(device.DeviceInfo);
             if (deviceToUse == null)
             {
+                deviceMissing = true;
                 _showError.Invoke(string.Format(SettingsStrings.profile_error_deviceNotFound, device.DeviceInfo.NameClean), $"{SettingsStrings.profile_error_title}: {profile.Name}");
                 continue;
             }
@@ -413,10 +417,19 @@ public class ProfileManager
                 _audioSwitcher.SwitchTo(deviceToUse.Id, device.Role);
             }
         }
+
+        if (triggerType.HasValue)
+        {
+            TelemetryService.TrackProfileActivated(triggerType.Value, profile.Name);
+            if (deviceMissing)
+            {
+                TelemetryService.TrackProfileActivationFailed("device_unavailable");
+            }
+        }
     }
 
 
-    public void SwitchAudio(Profile profile)
+    public void SwitchAudio(Profile profile, TriggerFactory.Enum? triggerType = null)
     {
         _notificationManager.NotifyProfileChanged(profile, null);
         if (AppConfigs.Configuration.Profiles.Any(p => p.Name == profile.Name))
@@ -428,11 +441,13 @@ public class ProfileManager
             _audioSwitcher.ResetProcessDeviceConfiguration();
         }
 
+        var deviceMissing = false;
         foreach (var device in profile.Devices)
         {
             var deviceToUse = CheckDeviceAvailable(device.DeviceInfo);
             if (deviceToUse == null)
             {
+                deviceMissing = true;
                 _showError.Invoke(string.Format(SettingsStrings.profile_error_deviceNotFound, device.DeviceInfo.NameClean), $"{SettingsStrings.profile_error_title}: {profile.Name}");
                 continue;
             }
@@ -441,6 +456,15 @@ public class ProfileManager
             if (profile.SwitchForegroundApp)
             {
                 _audioSwitcher.SwitchForegroundProcessTo(deviceToUse.Id, device.Role, (EDataFlow)deviceToUse.Type);
+            }
+        }
+
+        if (triggerType.HasValue)
+        {
+            TelemetryService.TrackProfileActivated(triggerType.Value, profile.Name);
+            if (deviceMissing)
+            {
+                TelemetryService.TrackProfileActivationFailed("device_unavailable");
             }
         }
     }
@@ -478,6 +502,7 @@ public class ProfileManager
                 RegisterTriggers(profile);
                 AppConfigs.Configuration.Profiles.Add(profile);
                 AppConfigs.Configuration.Save();
+                TelemetryService.TrackProfileCreated();
 
                 return success;
             });
@@ -670,6 +695,8 @@ public class ProfileManager
             return errors.ToArray();
         }
 
+        TelemetryService.TrackProfileDeleted();
+
         if (resetProcessAudio)
         {
             _audioSwitcher.ResetProcessDeviceConfiguration();
@@ -707,7 +734,7 @@ public class ProfileManager
                     _logger.Debug("Profile {profile} match process {process}", profile, process);
                     var handle = User32.NativeMethods.HWND.Cast(process.Handle);
                     SaveCurrentState(handle, profile.Profile, profile.Trigger);
-                    SwitchAudio(profile.Profile, (uint)process.Id);
+                    SwitchAudio(profile.Profile, (uint)process.Id, TriggerFactory.Enum.Process);
                 }
             }
             catch (Win32Exception)

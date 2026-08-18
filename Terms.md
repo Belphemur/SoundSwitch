@@ -113,9 +113,27 @@ We reserve the right, at Our sole discretion, to modify or replace these Terms a
 By continuing to access or use Our Service after those revisions become effective, You agree to be bound by the revised terms. If You do not agree to the new terms, in whole or in part, please stop using the website and the Service.
 
 # Telemetry terms
-By having the telemetry enabled, you agree to have the version of SoundSwitch you have installed be shared with Us anynoumously using the service provided by [Sentry](https://sentry.io/). This information is only used as a way to gather the adoption of new version of the sofware.
+
+By having the telemetry enabled, you agree to have the following information shared with us anonymously using the service provided by [Sentry](https://sentry.io/). This information is only used as a way to understand which features of the software are used and to improve the application.
+
 ## Data gathered
-* Version of SoundSwitch
+
+- Version of SoundSwitch and release channel (Stable, Beta, Nightly)
+- A per-install anonymous identifier (random GUID, not tied to your identity)
+- Anonymous feature usage counts (e.g. playback device switches, profile activations, microphone mute toggles, notification types used)
+- Lightweight breadcrumbs of user actions (e.g. hotkey presses, settings saved) — used only as context for crash reports
+- Local Windows username — sent as a label on crash reports via Sentry's SDK to help distinguish users during debugging
+
+## Data NOT gathered
+
+- Audio device names or device IDs
+- Profile names, profile content, or profile rules
+- File paths, file names, or media content
+- Network identifiers, IP addresses, or location data
+
+## How to disable
+
+Uncheck **Telemetry** in SoundSwitch settings → General tab. The change takes effect immediately. When disabled, no usage data, breadcrumbs, or session tracking is sent.
 
 # Contact Us
 

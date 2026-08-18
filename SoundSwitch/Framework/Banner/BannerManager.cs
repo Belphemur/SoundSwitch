@@ -17,6 +17,7 @@ using System.Collections.Generic;
 
 using Serilog;
 
+using SoundSwitch.Framework.Telemetry;
 using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.Banner;
@@ -38,6 +39,9 @@ public class BannerManager
     /// <param name="data"></param>
     public void ShowNotification(BannerData data)
     {
+        TelemetryService.TrackNotificationBanner("shown");
+        TelemetryService.AddBreadcrumb("notification", "Banner shown");
+
         if (OperatingSystem.IsWindowsVersionAtLeast(10, 0, 17763) && ExclusiveFullscreenDetector.IsForegroundInExclusiveFullscreen())
         {
             Log.Debug("Foreground window is in exclusive fullscreen — routing to Toast notification");

@@ -12,6 +12,7 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
+using SoundSwitch.Framework.Telemetry;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
 
@@ -29,6 +30,11 @@ internal class IconDoubleClickToggleMicrophoneMute : IIconDoubleClick
     /// <param name="trayIcon">The tray icon instance associated with the action (not used).</param>
     public void Execute(UI.Component.TrayIcon trayIcon)
     {
-        AppModel.Instance.ToggleMicrophoneMute();
+        TelemetryService.AddBreadcrumb("tray", "Microphone mute toggle (double-click)");
+        var micResult = AppModel.Instance.ToggleMicrophoneMute();
+        if (micResult != null)
+        {
+            TelemetryService.TrackMicMute("tray", micResult.Value.IsMuted);
+        }
     }
 }

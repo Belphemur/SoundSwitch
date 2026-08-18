@@ -14,6 +14,7 @@
 
 using NAudio.CoreAudioApi;
 
+using SoundSwitch.Framework.Telemetry;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
 
@@ -41,6 +42,8 @@ internal class IconDoubleClickSwitchRecordingDevice : IIconDoubleClick
     /// <param name="trayIcon">The TrayIcon instance (not used for this action)</param>
     public void Execute(UI.Component.TrayIcon trayIcon)
     {
+        TelemetryService.AddBreadcrumb("tray", "Recording switch (double-click)");
         AppModel.Instance.CycleActiveDevice(DataFlow.Capture);
+        TelemetryService.TrackRecordingSwitch("tray");
     }
 }

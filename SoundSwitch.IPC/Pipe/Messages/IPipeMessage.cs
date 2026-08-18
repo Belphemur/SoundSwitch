@@ -9,6 +9,7 @@ using SoundSwitch.IPC.Pipe.Messages.Mute;
 using SoundSwitch.IPC.Pipe.Messages.OpenSettings;
 using SoundSwitch.IPC.Pipe.Messages.TriggerProfile;
 using SoundSwitch.IPC.Pipe.Messages.TriggerSwitch;
+using SoundSwitch.IPC.Pipe.Messages.Cli;
 
 namespace SoundSwitch.IPC.Pipe.Messages;
 
@@ -28,6 +29,8 @@ namespace SoundSwitch.IPC.Pipe.Messages;
 [Union(13, typeof(GetSwitchableDevicesRequest))]
 [Union(14, typeof(GetSwitchableDevicesResponse))]
 [Union(15, typeof(ErrorResponse))]
+[Union(16, typeof(CliCommandExecuted))]
+[Union(17, typeof(CliCommandExecutedResponse))]
 public interface IPipeMessage
 {
 }
