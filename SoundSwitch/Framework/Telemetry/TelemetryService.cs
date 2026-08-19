@@ -43,7 +43,7 @@ public static class TelemetryService
     /// <summary>
     /// Sentry DSN used by both the main application and the CLI.
     /// </summary>
-    public const string SentryDsn = "https://***@o631137.ingest.sentry.io/5755327";
+    public const string SentryDsn = "https://7d52dfb4f6554bf0b58b256337835332@o631137.ingest.sentry.io/5755327";
 
     private static volatile bool _enabled;
 
@@ -52,9 +52,11 @@ public static class TelemetryService
     /// profile on every activation. Never evicted — profile names are
     /// stable across the lifetime of an installation.
     ///
-    /// ConcurrentDictionary.GetOrAdd is thread-safe: concurrent calls for the
-    /// same key will only compute the value once; other threads either wait for
-    /// the result or get the cached value. No lock needed, no torn reads.
+    /// ConcurrentDictionary.GetOrAdd is thread-safe: the dictionary stores one
+    /// value per key atomically. Note that the value factory delegate may be
+    /// invoked more than once concurrently for the same key (only one result is
+    /// stored); this is acceptable because SHA256 hashing is side-effect free —
+    /// at most one extra hash computation is wasted per contention event.
     /// </summary>
     private static readonly ConcurrentDictionary<string, string> _profileHashCache = new();
 
