@@ -57,7 +57,7 @@ public interface IDeviceService
     bool UnselectDevice(DeviceFullInfo device);
     bool SetActiveDevice(DeviceInfo device);
     bool CycleActiveDevice(DataFlow type);
-    void ToggleMicrophoneMute();
+    (string DeviceName, bool IsMuted)? ToggleMicrophoneMute();
     (string DeviceName, bool IsMuted)? SetMicrophoneMuteState(bool muteState);
     (string DeviceName, bool IsMuted)? SetMicrophoneMuteState(string deviceId, bool muteState);
 }

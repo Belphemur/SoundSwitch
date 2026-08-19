@@ -23,6 +23,7 @@ using NAudio.CoreAudioApi;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
+using SoundSwitch.Framework.Telemetry;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
 
@@ -37,6 +38,7 @@ internal class NotificationWindows : INotification
 
     public void NotifyDefaultChanged(DeviceFullInfo audioDevice)
     {
+        TelemetryService.TrackNotificationWindows();
         switch (audioDevice.Type)
         {
             case DataFlow.Render:

@@ -29,6 +29,7 @@ using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Logger.Configuration;
 using SoundSwitch.Framework.NotificationManager;
+using SoundSwitch.Framework.Telemetry;
 using SoundSwitch.Framework.Threading;
 using SoundSwitch.Framework.WinApi;
 using SoundSwitch.IPC.Pipe;
@@ -43,6 +44,7 @@ namespace SoundSwitch;
 internal static class Program
 {
     public static bool SkipUpdate { get; private set; }
+    private const string SentryDsn = "https://7d52dfb4f6554bf0b58b256337835332@o631137.ingest.sentry.io/5755327";
     private static WindowsFormsSynchronizationContext _synchronizationContext;
 
     [DllImport("user32.dll")]
@@ -61,7 +63,7 @@ internal static class Program
         using var mainCts = new CancellationTokenSource();
         var sentryOptions = new SentryOptions
         {
-            Dsn = "https://7d52dfb4f6554bf0b58b256337835332@o631137.ingest.sentry.io/5755327",
+            Dsn = SentryDsn,
             Environment = AssemblyUtils.GetReleaseState().ToString(),
             DefaultTags = { { "ReleaseState", AssemblyUtils.GetReleaseState().ToString() } },
             Release = $"{Application.ProductName}@{Application.ProductVersion}",
@@ -71,7 +73,7 @@ internal static class Program
         var user = new SentryUser
         {
             Id = AppConfigs.Configuration.UniqueInstallationId.ToString(),
-            Username = Environment.UserName
+            Username = TelemetryService.UserNameHash()
         };
 
         using var _ = SentrySdk.Init(sentryOptions);
@@ -175,6 +177,7 @@ internal static class Program
             }
 #endif
         SentrySdk.EndSession();
+        await SentrySdk.FlushAsync(TimeSpan.FromSeconds(2));
         AppModel.Instance.Dispose();
         WindowsAPIAdapter.Stop();
         MMNotificationClient.Instance?.Dispose();

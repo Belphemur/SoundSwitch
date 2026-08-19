@@ -132,7 +132,7 @@ public partial class AppModel
     /// <remarks>
     /// If no default microphone is found or the operation fails, the method invokes the <c>ErrorTriggered</c> event and logs an error; on success it logs the new mute state.
     /// </remarks>
-    public void ToggleMicrophoneMute()
+    public (string DeviceName, bool IsMuted)? ToggleMicrophoneMute()
     {
         var result = _microphoneMuteToggler.ToggleDefaultMute();
         if (result == null)
@@ -144,6 +144,8 @@ public partial class AppModel
         {
             Log.Information("Microphone {DeviceName} mute state is now {IsMuted}", result.Value.Name, result.Value.MuteState);
         }
+
+        return result;
     }
 
     /// <summary>
