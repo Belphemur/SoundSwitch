@@ -69,7 +69,6 @@ public partial class AppModel
         {
             AppConfigs.Configuration.Telemetry = value;
             AppConfigs.Configuration.Save();
-            TelemetryService.Reload();
         }
     }
 

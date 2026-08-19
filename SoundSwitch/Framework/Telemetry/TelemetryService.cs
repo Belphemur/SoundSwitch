@@ -32,29 +32,12 @@ namespace SoundSwitch.Framework.Telemetry;
 ///   - SentrySdk.Metrics.Emit* and SentrySdk.AddBreadcrumb are buffered by the
 ///     Sentry SDK and flushed on its own background transport thread; the public
 ///     API calls themselves return immediately and do not block the caller.
-///   - All Track* methods gate on _enabled first (volatile read, no allocation)
-///     so a disabled-telemetry call path is a single branch + return.
+///   - Every Track* method gates on AppConfigs.Configuration.Telemetry directly —
+///     the setting is the single source of truth, owned by AppModel and persisted
+///     to the user's config file. There is no local cache to keep in sync.
 /// </summary>
 public static class TelemetryService
 {
-    /// <summary>
-    /// Sentry DSN used by both the main application and the CLI.
-    /// </summary>
-    public const string SentryDsn = "https://7d52dfb4f6554bf0b58b256337835332@o631137.ingest.sentry.io/5755327";
-
-    private static volatile bool _enabled;
-
-
-    /// <summary>
-    /// Call once at startup and whenever the Telemetry setting changes.
-    /// </summary>
-    public static void Reload()
-    {
-        _enabled = AppConfigs.Configuration.Telemetry;
-    }
-
-    public static bool IsEnabled() => _enabled;
-
     /// <summary>
     /// Build the attribute list for a metric call.
     /// Returns IEnumerable (lazy) instead of List to avoid an allocation per call;
@@ -67,21 +50,21 @@ public static class TelemetryService
 
     public static void TrackPlaybackSwitch(string trigger)
     {
-        if (!_enabled) return;
+        if (!AppConfigs.Configuration.Telemetry) return;
         SentrySdk.Metrics.EmitCounter("soundswitch.playback.switched", 1,
             Attributes(("trigger", trigger)), null);
     }
 
     public static void TrackRecordingSwitch(string trigger)
     {
-        if (!_enabled) return;
+        if (!AppConfigs.Configuration.Telemetry) return;
         SentrySdk.Metrics.EmitCounter("soundswitch.recording.switched", 1,
             Attributes(("trigger", trigger)), null);
     }
 
     public static void TrackMicMute(string trigger, bool muted)
     {
-        if (!_enabled) return;
+        if (!AppConfigs.Configuration.Telemetry) return;
         SentrySdk.Metrics.EmitCounter(muted ? "soundswitch.mic.muted" : "soundswitch.mic.unmuted", 1,
             Attributes(("trigger", trigger)), null);
     }
@@ -107,26 +90,26 @@ public static class TelemetryService
 
     public static void TrackProfileActivated(TriggerFactory.Enum triggerType, string profileName)
     {
-        if (!_enabled) return;
+        if (!AppConfigs.Configuration.Telemetry) return;
         SentrySdk.Metrics.EmitCounter("soundswitch.profile.activated", 1,
             Attributes(("trigger_type", triggerType.ToString()), ("profile_id", ProfileHash(profileName))), null);
     }
 
     public static void TrackProfileCreated()
     {
-        if (!_enabled) return;
+        if (!AppConfigs.Configuration.Telemetry) return;
         SentrySdk.Metrics.EmitCounter("soundswitch.profile.created", 1);
     }
 
     public static void TrackProfileDeleted()
     {
-        if (!_enabled) return;
+        if (!AppConfigs.Configuration.Telemetry) return;
         SentrySdk.Metrics.EmitCounter("soundswitch.profile.deleted", 1);
     }
 
     public static void TrackProfileActivationFailed(string reason)
     {
-        if (!_enabled) return;
+        if (!AppConfigs.Configuration.Telemetry) return;
         SentrySdk.Metrics.EmitCounter("soundswitch.profile.activation_failed", 1,
             Attributes(("reason", reason)), null);
     }
@@ -135,20 +118,20 @@ public static class TelemetryService
 
     public static void TrackNotificationBanner(string action)
     {
-        if (!_enabled) return;
+        if (!AppConfigs.Configuration.Telemetry) return;
         SentrySdk.Metrics.EmitCounter("soundswitch.notification.banner", 1,
             Attributes(("action", action)), null);
     }
 
     public static void TrackNotificationWindows()
     {
-        if (!_enabled) return;
+        if (!AppConfigs.Configuration.Telemetry) return;
         SentrySdk.Metrics.EmitCounter("soundswitch.notification.windows_shown", 1);
     }
 
     public static void TrackNotificationSound()
     {
-        if (!_enabled) return;
+        if (!AppConfigs.Configuration.Telemetry) return;
         SentrySdk.Metrics.EmitCounter("soundswitch.notification.sound_played", 1);
     }
 
@@ -156,7 +139,7 @@ public static class TelemetryService
 
     public static void TrackDevicesEnumerated(string deviceType, int count)
     {
-        if (!_enabled) return;
+        if (!AppConfigs.Configuration.Telemetry) return;
         SentrySdk.Metrics.EmitDistribution("soundswitch.devices.count", count, MeasurementUnit.None,
             Attributes(("device_type", deviceType)), null);
     }
@@ -170,7 +153,7 @@ public static class TelemetryService
     /// </summary>
     public static void AddBreadcrumb(string category, string message)
     {
-        if (!_enabled) return;
+        if (!AppConfigs.Configuration.Telemetry) return;
         SentrySdk.AddBreadcrumb(message, category, null, null, BreadcrumbLevel.Info);
     }
 }

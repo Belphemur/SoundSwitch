@@ -44,6 +44,7 @@ namespace SoundSwitch;
 internal static class Program
 {
     public static bool SkipUpdate { get; private set; }
+    private const string SentryDsn = "https://7d52dfb4f6554bf0b58b256337835332@o631137.ingest.sentry.io/5755327";
     private static WindowsFormsSynchronizationContext _synchronizationContext;
 
     [DllImport("user32.dll")]
@@ -62,7 +63,7 @@ internal static class Program
         using var mainCts = new CancellationTokenSource();
         var sentryOptions = new SentryOptions
         {
-            Dsn = TelemetryService.SentryDsn,
+            Dsn = SentryDsn,
             Environment = AssemblyUtils.GetReleaseState().ToString(),
             DefaultTags = { { "ReleaseState", AssemblyUtils.GetReleaseState().ToString() } },
             Release = $"{Application.ProductName}@{Application.ProductVersion}",
@@ -79,7 +80,6 @@ internal static class Program
 
 
         SentrySdk.ConfigureScope(scope => { scope.User = user; });
-        TelemetryService.Reload();
         InitializeLogger();
         Log.Information("Application Starts");
 #if !DEBUG
