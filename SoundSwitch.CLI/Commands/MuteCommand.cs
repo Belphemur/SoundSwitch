@@ -3,6 +3,7 @@ using SoundSwitch.IPC.Pipe;
 using SoundSwitch.IPC.Pipe.Messages.Cli;
 using SoundSwitch.IPC.Pipe.Messages.Microphone;
 using SoundSwitch.IPC.Pipe.Messages.Mute;
+using SoundSwitch.IPC.Pipe.Messages.Models;
 
 using Spectre.Console;
 using Spectre.Console.Cli;
@@ -29,7 +30,7 @@ public class MuteCommand : AsyncCommand<MuteCommand.Settings>
         {
             await NamedPipe.SendRequestAsync<CliCommandExecutedResponse>(
                 PipeConstants.GetUserPipeName(),
-                new CliCommandExecuted { Command = "mute", ExitCode = exitCode },
+                new CliCommandExecuted { Command = "mute" },
                 cancellationToken);
         }
         catch { /* best-effort */ }

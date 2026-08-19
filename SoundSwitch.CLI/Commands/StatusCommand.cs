@@ -23,7 +23,7 @@ public class StatusCommand : AsyncCommand<StatusCommand.Settings>
         {
             await NamedPipe.SendRequestAsync<CliCommandExecutedResponse>(
                 PipeConstants.GetUserPipeName(),
-                new CliCommandExecuted { Command = "status", ExitCode = exitCode },
+                new CliCommandExecuted { Command = "status" },
                 cancellationToken);
         }
         catch { /* best-effort */ }

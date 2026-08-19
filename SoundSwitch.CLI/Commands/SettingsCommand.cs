@@ -23,7 +23,7 @@ public class SettingsCommand : AsyncCommand<SettingsCommand.Settings>
         {
             await NamedPipe.SendRequestAsync<CliCommandExecutedResponse>(
                 PipeConstants.GetUserPipeName(),
-                new CliCommandExecuted { Command = "settings", ExitCode = exitCode },
+                new CliCommandExecuted { Command = "settings" },
                 cancellationToken);
         }
         catch { /* best-effort */ }

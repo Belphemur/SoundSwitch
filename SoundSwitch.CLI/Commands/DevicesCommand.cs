@@ -2,6 +2,7 @@
 using SoundSwitch.IPC.Pipe;
 using SoundSwitch.IPC.Pipe.Messages.Cli;
 using SoundSwitch.IPC.Pipe.Messages.GetSwitchableDevices;
+using SoundSwitch.IPC.Pipe.Messages.Models;
 
 using Spectre.Console;
 using Spectre.Console.Cli;
@@ -23,7 +24,7 @@ public class DevicesCommand : AsyncCommand<DevicesCommand.Settings>
         {
             await NamedPipe.SendRequestAsync<CliCommandExecutedResponse>(
                 PipeConstants.GetUserPipeName(),
-                new CliCommandExecuted { Command = "devices", ExitCode = exit },
+                new CliCommandExecuted { Command = "devices" },
                 cancellationToken);
         }
         catch { /* best-effort */ }

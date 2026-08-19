@@ -149,7 +149,7 @@ public class SoundSwitchApplicationContext : ApplicationContext
                 }
 
             case CliCommandExecuted cliCmd:
-                TelemetryService.TrackCliCommand(cliCmd.Command, cliCmd.ExitCode);
+                TelemetryService.TrackCliCommand(cliCmd.Command);
                 return new CliCommandExecutedResponse { Success = true };
 
             case OpenSettingsRequest:

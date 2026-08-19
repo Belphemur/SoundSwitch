@@ -7,5 +7,4 @@ namespace SoundSwitch.IPC.Pipe.Messages.Cli;
 public class CliCommandExecuted : IPipeMessage
 {
     public string Command { get; set; } = "";
-    public int ExitCode { get; set; }
 }

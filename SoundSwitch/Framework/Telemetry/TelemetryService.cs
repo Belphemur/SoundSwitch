@@ -171,11 +171,11 @@ public static class TelemetryService
 
     // ── CLI ──────────────────────────────────────────────────────────
 
-    public static void TrackCliCommand(string command, int exitCode)
+    public static void TrackCliCommand(string command)
     {
         if (!_enabled) return;
         SentrySdk.Metrics.EmitCounter("soundswitch.cli.command", 1,
-            Attributes(("command", command), ("exit_code", exitCode.ToString())), null);
+            Attributes(("command", command)), null);
     }
 
     // ── System ──────────────────────────────────────────────────────

@@ -29,7 +29,7 @@ public class ProfileCommand : AsyncCommand<ProfileCommand.Settings>
         {
             await NamedPipe.SendRequestAsync<CliCommandExecutedResponse>(
                 PipeConstants.GetUserPipeName(),
-                new CliCommandExecuted { Command = "profile", ExitCode = exitCode },
+                new CliCommandExecuted { Command = "profile" },
                 cancellationToken);
         }
         catch { /* best-effort */ }

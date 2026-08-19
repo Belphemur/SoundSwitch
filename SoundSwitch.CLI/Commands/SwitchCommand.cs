@@ -27,7 +27,7 @@ public class SwitchCommand : AsyncCommand<SwitchCommand.Settings>
         {
             await NamedPipe.SendRequestAsync<CliCommandExecutedResponse>(
                 PipeConstants.GetUserPipeName(),
-                new CliCommandExecuted { Command = "switch", ExitCode = exitCode },
+                new CliCommandExecuted { Command = "switch" },
                 cancellationToken);
         }
         catch { /* best-effort */ }
