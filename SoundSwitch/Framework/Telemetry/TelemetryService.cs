@@ -29,18 +29,15 @@ namespace SoundSwitch.Framework.Telemetry;
 /// When AppConfigs.Configuration.Telemetry is false, every method is a no-op.
 ///
 /// Threading / non-blocking design:
-///   - SentrySdk.Metrics.Emit* and SentrySdk.AddBreadcrumb are buffered by the
-///     Sentry SDK and flushed on its own background transport thread; the public
-///     API calls themselves return immediately and do not block the caller.
 ///   - All Track* methods gate on _enabled first (volatile read, no allocation)
 ///     so a disabled-telemetry call path is a single branch + return.
 /// </summary>
 public static class TelemetryService
 {
     /// <summary>
-    /// Sentry DSN used by the main application.
+    /// Sentry DSN used by both the main application and the CLI.
     /// </summary>
-    public const string SentryDsn = "REDACTED";
+    public const string SentryDsn = "https://7d52dfb4f6554bf0b58b256337835332@o631137.ingest.sentry.io/5755327";
 
     private static volatile bool _enabled;
 
@@ -103,73 +100,3 @@ public static class TelemetryService
         var hash = SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(name));
         return Convert.ToHexString(hash).Substring(0, 8).ToLowerInvariant();
     }
-
-    public static void TrackProfileActivated(TriggerFactory.Enum triggerType, string profileName)
-    {
-        if (!_enabled) return;
-        SentrySdk.Metrics.EmitCounter("soundswitch.profile.activated", 1,
-            Attributes(("trigger_type", triggerType.ToString()), ("profile_id", ProfileHash(profileName))), null);
-    }
-
-    public static void TrackProfileCreated()
-    {
-        if (!_enabled) return;
-        SentrySdk.Metrics.EmitCounter("soundswitch.profile.created", 1);
-    }
-
-    public static void TrackProfileDeleted()
-    {
-        if (!_enabled) return;
-        SentrySdk.Metrics.EmitCounter("soundswitch.profile.deleted", 1);
-    }
-
-    public static void TrackProfileActivationFailed(string reason)
-    {
-        if (!_enabled) return;
-        SentrySdk.Metrics.EmitCounter("soundswitch.profile.activation_failed", 1,
-            Attributes(("reason", reason)), null);
-    }
-
-    // ── Notifications ───────────────────────────────────────────────
-
-    public static void TrackNotificationBanner(string action)
-    {
-        if (!_enabled) return;
-        SentrySdk.Metrics.EmitCounter("soundswitch.notification.banner", 1,
-            Attributes(("action", action)), null);
-    }
-
-    public static void TrackNotificationWindows()
-    {
-        if (!_enabled) return;
-        SentrySdk.Metrics.EmitCounter("soundswitch.notification.windows_shown", 1);
-    }
-
-    public static void TrackNotificationSound()
-    {
-        if (!_enabled) return;
-        SentrySdk.Metrics.EmitCounter("soundswitch.notification.sound_played", 1);
-    }
-
-    // ── System ──────────────────────────────────────────────────────
-
-    public static void TrackDevicesEnumerated(string deviceType, int count)
-    {
-        if (!_enabled) return;
-        SentrySdk.Metrics.EmitDistribution("soundswitch.devices.count", count, MeasurementUnit.None,
-            Attributes(("device_type", deviceType)), null);
-    }
-
-    // ── Breadcrumbs ─────────────────────────────────────────────────
-
-    /// <summary>
-    /// Add a breadcrumb. SentrySdk.AddBreadcrumb is buffered by the SDK and
-    /// does not block the caller — it pushes to an in-memory queue that the
-    /// transport thread drains asynchronously.
-    /// </summary>
-    public static void AddBreadcrumb(string category, string message)
-    {
-        if (!_enabled) return;
-        SentrySdk.AddBreadcrumb(message, category, null, null, BreadcrumbLevel.Info);
-    }
-}
