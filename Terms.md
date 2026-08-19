@@ -122,7 +122,7 @@ By having the telemetry enabled, you agree to have the following information sha
 - A per-install anonymous identifier (random GUID, not tied to your identity)
 - Anonymous feature usage counts (e.g. playback device switches, profile activations, microphone mute toggles, notification types used)
 - Lightweight breadcrumbs of user actions (e.g. hotkey presses, settings saved) — used only as context for crash reports
-- Local Windows username — sent as a label on crash reports via Sentry's SDK to help distinguish users during debugging
+- Local Windows username, hashed with SHA256 (only the first 8 characters of the hex digest) — sent as an anonymized label on crash reports via Sentry's SDK to help distinguish users during debugging
 
 ## Data NOT gathered
 

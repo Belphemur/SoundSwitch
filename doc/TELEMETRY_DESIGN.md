@@ -23,7 +23,7 @@
 - No PII: no device names, no file paths, no profile content, no user identity beyond the existing `UniqueInstallationId`.
 - No change to the existing crash-reporting path (Sentry errors continue to work independently).
 
-Note: `Environment.UserName` is already sent as `SentryUser.Username` for crash-report labeling purposes; this is disclosed in the privacy documentation and Terms.
+Note: `Environment.UserName` is hashed with SHA256 (first 8 characters of the hex digest, lowercased) before being sent as `SentryUser.Username` for crash-report labeling purposes; this is disclosed in the privacy documentation and Terms.
 
 ---
 
@@ -39,9 +39,9 @@ Note: `Environment.UserName` is already sent as `SentryUser.Username` for crash-
 | Release | `{Application.ProductName}@{Application.ProductVersion}` |
 | Session tracking | `AutoSessionTracking = AppConfigs.Configuration.Telemetry` (line 69) — already gated |
 | User ID | `SentryUser.Id = AppConfigs.Configuration.UniqueInstallationId.ToString()` (line 73) |
-| Username | `Environment.UserName` sent as `SentryUser.Username` (line 74) — used as a label on crash reports to help distinguish users during debugging |
+| Username | `Environment.UserName` hashed with SHA256 and sent as `SentryUser.Username` (line 76) — used as an anonymized label on crash reports to help distinguish users during debugging |
 
-**Key observation:** The existing telemetry description in `Terms.md` says "only version shared anonymously", but the code already sends `UniqueInstallationId` (a per-install GUID) and `Environment.UserName`. The design doc and website copy must reflect what the code *actually* does, not an outdated description.
+**Key observation:** The existing telemetry description in `Terms.md` says "only version shared anonymously", but the code already sends `UniqueInstallationId` (a per-install GUID) and a SHA256 hash of `Environment.UserName`. The design doc and website copy must reflect what the code *actually* does, not an outdated description.
 
 ### 3.2 Settings / Persistence
 
@@ -170,7 +170,7 @@ Every metric event includes:
 | Environment | Auto-attached (`Stable`/`Beta`/`Nightly`) |
 | DSN project | Configured in Program.cs |
 
-**No user-attached data beyond what Sentry already sends** (`UniqueInstallationId`, `Environment.UserName`). No device names, no profile content, no file paths.
+**No user-attached data beyond what Sentry already sends** (`UniqueInstallationId`, SHA256 hash of `Environment.UserName`). No device names, no profile content, no file paths.
 
 ---
 
@@ -267,10 +267,10 @@ CLI is a separate process. It sends a `CliCommandExecuted` message via NamedPipe
 
 - App version / release / environment (via Sentry SDK)
 - `UniqueInstallationId` (per-install GUID) as Sentry user ID
-- `Environment.UserName` as Sentry username
+- SHA256 hash of `Environment.UserName` as Sentry username
 - Session count (when `AutoSessionTracking` is on)
 
-**Gap:** The user-facing description is narrower than what's actually sent. The design must fix this — either reduce what's sent to match the description, or expand the description to match the code. Given that `UniqueInstallationId` and `Environment.UserName` are already sent and the DSN is hard-coded to a specific Sentry project, the pragmatic path is to **update the documentation to be accurate**.
+**Gap:** The user-facing description is narrower than what's actually sent. The design must fix this — either reduce what's sent to match the description, or expand the description to match the code. Given that `UniqueInstallationId` and a SHA256 hash of `Environment.UserName` are already sent and the DSN is hard-coded to a specific Sentry project, the pragmatic path is to **update the documentation to be accurate**.
 
 ### 7.3 What the Expanded Telemetry Sends
 
@@ -323,7 +323,7 @@ Place in the top-level navbar, near "FAQ" or "Advanced".
 
 | # | Question | Recommendation |
 |---|----------|----------------|
-| OQ1 | Do we send `Environment.UserName` as Sentry username? | It's already sent. Either remove it (requires code change) or document it honestly. **Document it** — removing it changes crash-report context and is a separate decision. |
+| OQ1 | Do we send `Environment.UserName` as Sentry username? | We send a SHA256 hash of `Environment.UserName` (first 8 hex chars, lowercased) rather than the plaintext username. This preserves crash-report context while keeping the value anonymous. |
 | OQ2 | Do we hash profile names for `profile_id`? | Yes — use a short hash so we can count activations per profile without sending names. |
 | OQ3 | Do we add an offline buffer beyond Sentry's internal queue? | Defer to v2. Built-in queue + `FlushAsync` on shutdown is sufficient. |
 | OQ4 | Should the CLI call `TelemetryService` directly or use IPC? | **Use IPC.** The CLI sends a `CliCommandExecuted` message via NamedPipe; the running SoundSwitch instance records it through `TelemetryService` in `SoundSwitchApplicationContext.HandlePipeMessageAsync`. This avoids framework coupling in the CLI and prevents double counting. |
