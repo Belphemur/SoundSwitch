@@ -73,7 +73,7 @@ internal static class Program
         var user = new SentryUser
         {
             Id = AppConfigs.Configuration.UniqueInstallationId.ToString(),
-            Username = Environment.UserName
+            Username = TelemetryService.UserNameHash()
         };
 
         using var _ = SentrySdk.Init(sentryOptions);
