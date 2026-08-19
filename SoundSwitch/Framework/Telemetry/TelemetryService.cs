@@ -13,10 +13,10 @@
  ********************************************************************/
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Threading;
 
 using Sentry;
 
@@ -33,8 +33,8 @@ namespace SoundSwitch.Framework.Telemetry;
 ///   - SentrySdk.Metrics.Emit* and SentrySdk.AddBreadcrumb are buffered by the
 ///     Sentry SDK and flushed on its own background transport thread; the public
 ///     API calls themselves return immediately and do not block the caller.
-///   - ProfileHash uses a per-name cache to avoid recomputing SHA256 on the
-///     hot path. Cache entries are never evicted (profile names are stable).
+///   - ProfileHash uses a per-name ConcurrentDictionary cache to avoid recomputing
+///     SHA256 on the hot path. Cache entries are never evicted (profile names are stable).
 ///   - All Track* methods gate on _enabled first (volatile read, no allocation)
 ///     so a disabled-telemetry call path is a single branch + return.
 /// </summary>
@@ -43,7 +43,7 @@ public static class TelemetryService
     /// <summary>
     /// Sentry DSN used by both the main application and the CLI.
     /// </summary>
-    public const string SentryDsn = "https://7d52df...5332@o631137.ingest.sentry.io/5755327";
+    public const string SentryDsn = "https://***@o631137.ingest.sentry.io/5755327";
 
     private static volatile bool _enabled;
 
@@ -51,8 +51,12 @@ public static class TelemetryService
     /// Cache of already-hashed profile names. Avoids re-hashing the same
     /// profile on every activation. Never evicted — profile names are
     /// stable across the lifetime of an installation.
+    ///
+    /// ConcurrentDictionary.GetOrAdd is thread-safe: concurrent calls for the
+    /// same key will only compute the value once; other threads either wait for
+    /// the result or get the cached value. No lock needed, no torn reads.
     /// </summary>
-    private static readonly Dictionary<string, string> _profileHashCache = new();
+    private static readonly ConcurrentDictionary<string, string> _profileHashCache = new();
 
     /// <summary>
     /// Call once at startup and whenever the Telemetry setting changes.
@@ -66,8 +70,8 @@ public static class TelemetryService
 
     /// <summary>
     /// Build the attribute list for a metric call.
-    /// Inline instead of a separate method to avoid a separate allocation;
-    /// the caller supplies the exact key-value pairs it needs.
+    /// Returns IEnumerable (lazy) instead of List to avoid an allocation per call;
+    /// the Sentry SDK enumerates it once internally.
     /// </summary>
     private static IEnumerable<KeyValuePair<string, object>> Attributes(params (string Key, object Value)[] tags) =>
         tags.Select(t => new KeyValuePair<string, object>(t.Key, t.Value));
@@ -109,16 +113,11 @@ public static class TelemetryService
     {
         if (string.IsNullOrEmpty(name)) return "unknown";
 
-        if (_profileHashCache.TryGetValue(name, out var cached))
-            return cached;
-
-        var hash = SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(name));
-        var result = Convert.ToHexString(hash).Substring(0, 8).ToLowerInvariant();
-        lock (_profileHashCache)
+        return _profileHashCache.GetOrAdd(name, n =>
         {
-            _profileHashCache[name] = result;
-        }
-        return result;
+            var hash = SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(n));
+            return Convert.ToHexString(hash).Substring(0, 8).ToLowerInvariant();
+        });
     }
 
     public static void TrackProfileActivated(TriggerFactory.Enum triggerType, string profileName)
