@@ -13,7 +13,6 @@
  ********************************************************************/
 
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -33,32 +32,17 @@ namespace SoundSwitch.Framework.Telemetry;
 ///   - SentrySdk.Metrics.Emit* and SentrySdk.AddBreadcrumb are buffered by the
 ///     Sentry SDK and flushed on its own background transport thread; the public
 ///     API calls themselves return immediately and do not block the caller.
-///   - ProfileHash uses a per-name ConcurrentDictionary cache to avoid recomputing
-///     SHA256 on the hot path. Cache entries are never evicted (profile names are stable).
 ///   - All Track* methods gate on _enabled first (volatile read, no allocation)
 ///     so a disabled-telemetry call path is a single branch + return.
 /// </summary>
 public static class TelemetryService
 {
     /// <summary>
-    /// Sentry DSN used by both the main application and the CLI.
+    /// Sentry DSN used by the main application.
     /// </summary>
-    public const string SentryDsn = "https://7d52dfb4f6554bf0b58b256337835332@o631137.ingest.sentry.io/5755327";
+    public const string SentryDsn = "REDACTED";
 
     private static volatile bool _enabled;
-
-    /// <summary>
-    /// Cache of already-hashed profile names. Avoids re-hashing the same
-    /// profile on every activation. Never evicted — profile names are
-    /// stable across the lifetime of an installation.
-    ///
-    /// ConcurrentDictionary.GetOrAdd is thread-safe: the dictionary stores one
-    /// value per key atomically. Note that the value factory delegate may be
-    /// invoked more than once concurrently for the same key (only one result is
-    /// stored); this is acceptable because SHA256 hashing is side-effect free —
-    /// at most one extra hash computation is wasted per contention event.
-    /// </summary>
-    private static readonly ConcurrentDictionary<string, string> _profileHashCache = new();
 
     /// <summary>
     /// Call once at startup and whenever the Telemetry setting changes.
@@ -107,19 +91,17 @@ public static class TelemetryService
     /// Hash the profile name to an 8-char hex so we can count activations
     /// per profile without sending the actual name.
     ///
-    /// Result is cached per name so repeated activations of the same profile
-    /// don't re-compute SHA256. First call for a given name does the
-    /// one-time hash; subsequent calls return the cached value.
+    /// SHA256 of a short profile name is cheap enough to recompute on every
+    /// call — the cost is well below the noise floor of UI/event processing,
+    /// so a cache is not warranted. Recomputing also avoids the memory and
+    /// contention overhead of maintaining a dictionary.
     /// </summary>
     private static string ProfileHash(string name)
     {
         if (string.IsNullOrEmpty(name)) return "unknown";
 
-        return _profileHashCache.GetOrAdd(name, n =>
-        {
-            var hash = SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(n));
-            return Convert.ToHexString(hash).Substring(0, 8).ToLowerInvariant();
-        });
+        var hash = SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(name));
+        return Convert.ToHexString(hash).Substring(0, 8).ToLowerInvariant();
     }
 
     public static void TrackProfileActivated(TriggerFactory.Enum triggerType, string profileName)
@@ -167,15 +149,6 @@ public static class TelemetryService
     {
         if (!_enabled) return;
         SentrySdk.Metrics.EmitCounter("soundswitch.notification.sound_played", 1);
-    }
-
-    // ── CLI ──────────────────────────────────────────────────────────
-
-    public static void TrackCliCommand(string command)
-    {
-        if (!_enabled) return;
-        SentrySdk.Metrics.EmitCounter("soundswitch.cli.command", 1,
-            Attributes(("command", command)), null);
     }
 
     // ── System ──────────────────────────────────────────────────────
