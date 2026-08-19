@@ -1,6 +1,5 @@
 ﻿#nullable enable
 using SoundSwitch.IPC.Pipe;
-using SoundSwitch.IPC.Pipe.Messages.Cli;
 using SoundSwitch.IPC.Pipe.Messages.Models;
 using SoundSwitch.IPC.Pipe.Messages.TriggerSwitch;
 
@@ -20,18 +19,12 @@ public class SwitchCommand : AsyncCommand<SwitchCommand.Settings>
 
     protected override async Task<int> ExecuteAsync(CommandContext context, Settings settings, CancellationToken cancellationToken)
     {
-        var exitCode = settings.Json
-            ? await ExecuteJsonAsync(settings, cancellationToken)
-            : await ExecuteTableAsync(settings, cancellationToken);
-        try
+        if (settings.Json)
         {
-            await NamedPipe.SendRequestAsync<CliCommandExecutedResponse>(
-                PipeConstants.GetUserPipeName(),
-                new CliCommandExecuted { Command = "switch" },
-                cancellationToken);
+            return await ExecuteJsonAsync(settings, cancellationToken);
         }
-        catch { /* best-effort */ }
-        return exitCode;
+
+        return await ExecuteTableAsync(settings, cancellationToken);
     }
 
     private static async Task<int> ExecuteJsonAsync(Settings settings, CancellationToken cancellationToken)

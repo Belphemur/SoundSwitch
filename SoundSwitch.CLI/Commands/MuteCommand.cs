@@ -1,9 +1,7 @@
 ﻿#nullable enable
 using SoundSwitch.IPC.Pipe;
-using SoundSwitch.IPC.Pipe.Messages.Cli;
 using SoundSwitch.IPC.Pipe.Messages.Microphone;
 using SoundSwitch.IPC.Pipe.Messages.Mute;
-using SoundSwitch.IPC.Pipe.Messages.Models;
 
 using Spectre.Console;
 using Spectre.Console.Cli;
@@ -23,18 +21,12 @@ public class MuteCommand : AsyncCommand<MuteCommand.Settings>
 
     protected override async Task<int> ExecuteAsync(CommandContext context, Settings settings, CancellationToken cancellationToken)
     {
-        var exitCode = settings.Json
-            ? await ExecuteJsonAsync(settings, cancellationToken)
-            : await ExecuteTableAsync(settings, cancellationToken);
-        try
+        if (settings.Json)
         {
-            await NamedPipe.SendRequestAsync<CliCommandExecutedResponse>(
-                PipeConstants.GetUserPipeName(),
-                new CliCommandExecuted { Command = "mute" },
-                cancellationToken);
+            return await ExecuteJsonAsync(settings, cancellationToken);
         }
-        catch { /* best-effort */ }
-        return exitCode;
+
+        return await ExecuteTableAsync(settings, cancellationToken);
     }
 
     private static async Task<int> ExecuteJsonAsync(Settings settings, CancellationToken cancellationToken)

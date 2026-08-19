@@ -1,6 +1,5 @@
 #nullable enable
 using SoundSwitch.IPC.Pipe;
-using SoundSwitch.IPC.Pipe.Messages.Cli;
 using SoundSwitch.IPC.Pipe.Messages.GetActiveDevices;
 
 using Spectre.Console;
@@ -16,18 +15,12 @@ public class StatusCommand : AsyncCommand<StatusCommand.Settings>
 
     protected override async Task<int> ExecuteAsync(CommandContext context, Settings settings, CancellationToken cancellationToken)
     {
-        var exitCode = settings.Json
-            ? await ExecuteJsonAsync(cancellationToken)
-            : await ExecuteTableAsync(cancellationToken);
-        try
+        if (settings.Json)
         {
-            await NamedPipe.SendRequestAsync<CliCommandExecutedResponse>(
-                PipeConstants.GetUserPipeName(),
-                new CliCommandExecuted { Command = "status" },
-                cancellationToken);
+            return await ExecuteJsonAsync(cancellationToken);
         }
-        catch { /* best-effort */ }
-        return exitCode;
+
+        return await ExecuteTableAsync(cancellationToken);
     }
 
     private static async Task<int> ExecuteJsonAsync(CancellationToken cancellationToken)
