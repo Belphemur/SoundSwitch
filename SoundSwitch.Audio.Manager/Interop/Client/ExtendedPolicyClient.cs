@@ -28,6 +28,7 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
 
         internal ExtendedPolicyClient(IAudioPolicyConfig policyConfig)
         {
+            ArgumentNullException.ThrowIfNull(policyConfig);
             _log = Log.ForContext(GetType());
             _sharedPolicyConfig = policyConfig;
         }
@@ -86,7 +87,7 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
                     }
                     catch (InvalidComObjectException)
                     {
-                        _log.Warning("Set the default endpoint [{DeviceId}]for process {ProcessId}", deviceId, processId);
+                        _log.Warning("Set the default endpoint [{DeviceId}] for process {ProcessId}", deviceId, processId);
                     }
                     catch (COMException e) when ((e.ErrorCode & ErrorConst.COM_ERROR_MASK) == ErrorConst.COM_ERROR_NOT_FOUND)
                     {

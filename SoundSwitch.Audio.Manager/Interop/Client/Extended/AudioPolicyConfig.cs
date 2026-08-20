@@ -125,10 +125,20 @@ namespace SoundSwitch.Audio.Manager.Interop.Client.Extended
             var setPersistedDefaultAudioEndpointPtr = Marshal.PtrToStructure<IntPtr>(_vfTable + (_ptrSize * 25));
             var setPersistedDefaultAudioEndpoint = Marshal.GetDelegateForFunctionPointer<SetPersistedDefaultAudioEndpointDelegate>(setPersistedDefaultAudioEndpointPtr);
             var result = setPersistedDefaultAudioEndpoint(_factory, processId, flow, role, deviceIdHString);
-            if (result != HRESULT.S_OK && result != HRESULT.PROCESS_NO_AUDIO)
-                throw new InvalidComObjectException($"Can't set the persistent audio endpoint: {result}");
+            if (result == HRESULT.S_OK)
+            {
+                return true;
+            }
 
-            return true;
+            // PROCESS_NO_AUDIO (E_INVALIDARG) means the call was a no-op and the
+            // endpoint was not applied. Treat that as a failure so callers don't
+            // report a successful routing when nothing changed.
+            if (result == HRESULT.PROCESS_NO_AUDIO)
+            {
+                return false;
+            }
+
+            throw new InvalidComObjectException($"Can't set the persistent audio endpoint: {result}");
         }
 
         public void ClearAllPersistedApplicationDefaultEndpoints()

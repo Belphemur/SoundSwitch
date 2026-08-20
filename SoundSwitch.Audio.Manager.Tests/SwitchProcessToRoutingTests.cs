@@ -25,9 +25,9 @@ public sealed class SwitchProcessToRoutingTests
     private sealed class FakePolicyConfig : IAudioPolicyConfig
     {
         private readonly FakeMode _mode;
-        private readonly string _getResult;
+        private readonly string? _getResult;
 
-        public FakePolicyConfig(FakeMode mode, string getResult = null)
+        public FakePolicyConfig(FakeMode mode, string? getResult = null)
         {
             _mode = mode;
             _getResult = getResult;
@@ -48,7 +48,7 @@ public sealed class SwitchProcessToRoutingTests
             }
         }
 
-        public string GetPersistedDefaultAudioEndpoint(uint processId, EDataFlow flow, ERole role) => _getResult;
+        public string? GetPersistedDefaultAudioEndpoint(uint processId, EDataFlow flow, ERole role) => _getResult;
 
         public void ClearAllPersistedApplicationDefaultEndpoints()
         {
@@ -62,6 +62,14 @@ public sealed class SwitchProcessToRoutingTests
     private static uint ProcessId => (uint)Environment.ProcessId;
     private const string DeviceId = "test-device";
     private static readonly ERole[] AllRoles = { ERole.eConsole, ERole.eMultimedia, ERole.eCommunications };
+
+    [TearDown]
+    public void RestoreSingletonClient()
+    {
+        // The tests replace the cached ExtendedPolicyClient on the AudioSwitcher
+        // singleton; restore the default so later tests aren't order-dependent.
+        SoundSwitch.Audio.Manager.AudioSwitcher.Instance.SetExtendedPolicyClientForTest(null);
+    }
 
     [Test]
     public void ExtendedPolicyClient_SetDefaultEndPoint_ReturnsTrue_WhenPolicySucceeds()
