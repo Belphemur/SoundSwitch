@@ -47,6 +47,7 @@ using SoundSwitch.Framework.Logger.Configuration;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Profile.Trigger;
+using SoundSwitch.Framework.Telemetry;
 using SoundSwitch.Framework.TrayIcon.IconChanger;
 using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
@@ -1365,6 +1366,7 @@ public sealed partial class SettingsForm : Form
         {
             AppConfigs.Configuration.AppSoundRules.Add(form.Rule);
             AppConfigs.Configuration.Save();
+            TelemetryService.TrackAppRuleCreated();
             PopulateAppSoundLockRules();
         }
     }
@@ -1396,6 +1398,7 @@ public sealed partial class SettingsForm : Form
         {
             AppConfigs.Configuration.AppSoundRules.Remove(rule);
             AppConfigs.Configuration.Save();
+            TelemetryService.TrackAppRuleDeleted();
             PopulateAppSoundLockRules();
         }
     }

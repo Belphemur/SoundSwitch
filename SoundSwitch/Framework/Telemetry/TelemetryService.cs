@@ -120,6 +120,38 @@ public static class TelemetryService
         SentrySdk.Metrics.EmitCounter("soundswitch.profile.deleted", 1);
     }
 
+    // ── App Rules ───────────────────────────────────────────────────
+
+    /// <summary>
+    /// Hash the process basename to an 8-char hex so we can count activations
+    /// per application without sending the actual process name or path.
+    /// </summary>
+    private static string ProcessBasenameHash(string basename)
+    {
+        if (string.IsNullOrEmpty(basename)) return "unknown";
+        var hash = SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(basename));
+        return Convert.ToHexString(hash).Substring(0, 8).ToLowerInvariant();
+    }
+
+    public static void TrackAppRuleActivated(string processBasename, string triggerSource)
+    {
+        if (!AppConfigs.Configuration.Telemetry) return;
+        SentrySdk.Metrics.EmitCounter("soundswitch.apprule.activated", 1,
+            Attributes(("trigger", triggerSource), ("process", ProcessBasenameHash(processBasename))), null);
+    }
+
+    public static void TrackAppRuleCreated()
+    {
+        if (!AppConfigs.Configuration.Telemetry) return;
+        SentrySdk.Metrics.EmitCounter("soundswitch.apprule.created", 1);
+    }
+
+    public static void TrackAppRuleDeleted()
+    {
+        if (!AppConfigs.Configuration.Telemetry) return;
+        SentrySdk.Metrics.EmitCounter("soundswitch.apprule.deleted", 1);
+    }
+
     public static void TrackProfileActivationFailed(string reason)
     {
         if (!AppConfigs.Configuration.Telemetry) return;

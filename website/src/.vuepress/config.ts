@@ -90,8 +90,11 @@ export default defineUserConfig({
         link: "/faq/",
       },
       {
-        text: "Privacy & Telemetry",
-        link: "/privacy/telemetry.md",
+        text: "Legal",
+        children: [
+          { text: "Privacy & Telemetry", link: "/legal/telemetry.md" },
+          { text: "Terms and Conditions", link: "/legal/terms.md" },
+        ],
       },
       {
         text: "Advanced",
@@ -159,6 +162,15 @@ export default defineUserConfig({
             { text: "App not switching after update", link: "/faq/app-not-switching-after-update.md" },
             { text: "Settings open at startup", link: "/faq/settings-open-at-startup.md" },
             { text: "Command line", link: "/faq/command-line.md" },
+          ],
+        },
+      ],
+      "/legal/": [
+        {
+          text: "Legal",
+          children: [
+            { text: "Privacy & Telemetry", link: "/legal/telemetry.md" },
+            { text: "Terms and Conditions", link: "/legal/terms.md" },
           ],
         },
       ],

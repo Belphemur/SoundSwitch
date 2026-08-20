@@ -97,3 +97,7 @@ If audio routing gets into a confusing state, the **Troubleshooting** tab includ
 > **Profiles** change the **system default device** when a trigger condition is met. This affects all applications that use the default device.
 >
 > See [Profiles vs App Rules](../usage/#profiles-vs-app-rules) for a detailed comparison.
+
+## Telemetry and Privacy
+
+When telemetry is enabled, App Rule activations are counted anonymously. SoundSwitch records only a SHA256 hash of the matched process basename (the first 8 hex characters) — no process path or window title is ever sent. See the [Privacy and Telemetry](/legal/telemetry.md) page for full details.
