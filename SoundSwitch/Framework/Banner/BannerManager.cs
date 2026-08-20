@@ -31,6 +31,9 @@ public class BannerManager
     private readonly Dictionary<Guid, BannerForm> _bannerForms = new();
     private BannerForm _singleBanner;
     private BannerForm _customPositionBanner;
+    private string _lastSingleBannerText;
+    private DateTime _lastSingleBannerTimeUtc;
+    private const int SingleBannerCoalesceMs = 500;
     private const int SPACING = 10;
 
     /// <summary>
@@ -61,12 +64,29 @@ public class BannerManager
             return;
         }
 
+        // Single-banner mode reuses one form. Coalesce rapid notifications for the
+        // same device (e.g. "Switch default communication device" raises console,
+        // multimedia and communications role changes for the same device in quick
+        // succession) so only one banner is shown. See issue #2355.
+        if (_lastSingleBannerText != null && _lastSingleBannerText == data.Text &&
+            (DateTime.UtcNow - _lastSingleBannerTimeUtc).TotalMilliseconds < SingleBannerCoalesceMs)
+        {
+            return;
+        }
+
+        _lastSingleBannerText = data.Text;
+        _lastSingleBannerTimeUtc = DateTime.UtcNow;
+
         _syncContext.Send(_ =>
         {
             if (_singleBanner == null)
             {
                 _singleBanner = new BannerForm();
-                _singleBanner.Disposed += (s, e) => { _singleBanner = null; };
+                _singleBanner.Disposed += (s, e) =>
+                {
+                    _singleBanner = null;
+                    _lastSingleBannerText = null;
+                };
             }
 
             _singleBanner.SetData(data);
