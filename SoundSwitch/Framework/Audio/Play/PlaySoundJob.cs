@@ -55,6 +55,11 @@ public class PlaySoundJob([CanBeNull] string deviceId, [NotNull] CachedSound sou
 
         void OnPlaybackStoppedHandler(object o, StoppedEventArgs stoppedEventArgs)
         {
+            if (stoppedEventArgs.Exception != null)
+            {
+                Log.ForContext<PlaySoundJob>().Warning(stoppedEventArgs.Exception, "Sound notification playback stopped with an error");
+            }
+
             try
             {
                 semaphore.Release();
@@ -89,21 +94,21 @@ public class PlaySoundJob([CanBeNull] string deviceId, [NotNull] CachedSound sou
         return device;
     }
 
-    private WasapiOut CreatePlayer(MMDevice device)
+    private IWavePlayer CreatePlayer(MMDevice device)
     {
         if (device == null)
         {
-            return new WasapiOut();
+            return new WasapiPlayerBuilder().Build();
         }
 
         try
         {
-            return new WasapiOut(device, AudioClientShareMode.Shared, true, 200);
+            return new WasapiPlayerBuilder().WithDevice(device).WithSharedMode().WithEventSync().WithLatency(200).Build();
         }
         catch (Exception ex)
         {
-            Log.ForContext<PlaySoundJob>().Error(ex, "Failed to initialize WasapiOut with specified device.");
-            return new WasapiOut();
+            Log.ForContext<PlaySoundJob>().Error(ex, "Failed to initialize WasapiPlayer with specified device.");
+            return new WasapiPlayerBuilder().Build();
         }
     }
 
@@ -114,7 +119,7 @@ public class PlaySoundJob([CanBeNull] string deviceId, [NotNull] CachedSound sou
             return Task.CompletedTask;
         }
 
-        Log.ForContext<PlaySoundJob>().Warning(exception, "Failed to play sound notification");
+        Log.ForContext<PlaySoundJob>().Warning(exception.InnerException ?? (Exception)exception, "Failed to play sound notification");
         return Task.CompletedTask;
     }
 

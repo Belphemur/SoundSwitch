@@ -55,6 +55,25 @@ public class CachedSound
         AudioData = [.. wholeFile];
     }
 
+    /// <summary>
+    /// Decode the WAV from the stream using the right reader.
+    /// </summary>
+    /// <param name="stream">A stream containing a WAV file.</param>
+    public CachedSound(Stream stream)
+    {
+        using var reader = new WaveFileReader(stream);
+        WaveFormat = reader.WaveFormat;
+        var wholeFile = new List<byte>((int)reader.Length);
+        var readBuffer = new byte[reader.WaveFormat.SampleRate * reader.WaveFormat.Channels];
+        int samplesRead;
+        while ((samplesRead = reader.Read(readBuffer, 0, readBuffer.Length)) > 0)
+        {
+            wholeFile.AddRange(readBuffer.Take(samplesRead));
+        }
+
+        AudioData = [.. wholeFile];
+    }
+
     public CachedSound(MemoryStream stream, WaveFormat waveFormat)
     {
         WaveFormat = waveFormat;
