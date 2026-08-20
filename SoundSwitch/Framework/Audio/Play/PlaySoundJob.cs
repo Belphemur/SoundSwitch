@@ -84,7 +84,7 @@ public class PlaySoundJob([CanBeNull] string deviceId, [NotNull] CachedSound sou
     private MMDevice GetDevice(MMDeviceEnumerator enumerator)
     {
         if (string.IsNullOrEmpty(deviceId))
-            return null;
+            return enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
 
         var device = enumerator.GetDevice(deviceId);
         if (device == null)
