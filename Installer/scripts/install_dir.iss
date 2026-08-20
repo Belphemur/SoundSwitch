@@ -1,6 +1,13 @@
-// Issue #2353: robustly reuse the prior install location, independent of AppId.
-// Matches by DisplayName (exact, or name followed by a space + version), never by key
-// name, so it works across any AppId configuration. Falls back to the default dir.
+// Issue #2353: robustly reuse the prior install location.
+// UsePreviousAppDir (keyed on AppId) is the primary mechanism; this scripted
+// constant is a belt-and-suspenders safety net so the installer still lands in
+// the real install directory when launched without a /DIR (e.g. a transitional
+// update run by an older updater).
+// We skip our own stable key (UsePreviousAppDir handles it), then match any
+// other uninstall entry whose DisplayName is exactly {#MyAppSetupName} or begins
+// with "{#MyAppSetupName} " (name + space + version), and whose InstallLocation
+// actually contains SoundSwitch.exe. The ownership check avoids hijacking
+// unrelated entries such as "SoundSwitch Helper". Falls back to Default.
 
 [Code]
 
@@ -8,7 +15,7 @@ function GetInstallDir(Default: string): string;
 var
   Roots: array of Integer;
   Root, I, Count: Integer;
-  BaseKey, FullKey, KeyName, DisplayName, InstallLoc: string;
+  BaseKey, FullKey, KeyName, DisplayName, InstallLoc, ExePath: string;
   SubKeys: TArrayOfString;
 begin
   // Default is the value Inno would have used; fall back to it (or the
@@ -31,7 +38,7 @@ begin
     for I := 0 to Count - 1 do
     begin
       KeyName := SubKeys[I];
-      // Skip our own (stable) key; UsePreviousAppDir handles it.
+      // Skip our own stable key; UsePreviousAppDir already reuses it.
       if CompareText(KeyName, '{#MyAppSetupName}') = 0 then
         Continue;
 
@@ -47,9 +54,14 @@ begin
         begin
           if (InstallLoc <> '') and DirExists(InstallLoc) then
           begin
-            Log('GetInstallDir: reusing existing install location ' + InstallLoc);
-            Result := InstallLoc;
-            Exit;
+            // Ownership check: only reuse directories that contain SoundSwitch.exe.
+            ExePath := InstallLoc + '\SoundSwitch.exe';
+            if FileExists(ExePath) then
+            begin
+              Log('GetInstallDir: reusing existing install location ' + InstallLoc);
+              Result := InstallLoc;
+              Exit;
+            end;
           end;
         end;
       end;

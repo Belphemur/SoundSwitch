@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 
+using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
 
 namespace SoundSwitch.Framework.Updater.Installer;
@@ -27,9 +28,16 @@ public class UpdateRunner
         // so auto-updates respect a non-default install location (issue #2353).
         if (!args.Contains("/DIR", StringComparison.OrdinalIgnoreCase))
         {
-            var installDir = Path.GetDirectoryName(Application.ExecutablePath);
+            var installDir = ApplicationPath.InstallDirectory;
             if (!string.IsNullOrEmpty(installDir))
             {
+                // Guard a trailing backslash (e.g. "D:\") that would otherwise let
+                // Inno's command-line parser treat /DIR="D:\" as an escaped quote.
+                if (installDir.EndsWith("\\"))
+                {
+                    installDir += "\\";
+                }
+
                 args += $" /DIR=\"{installDir}\"";
             }
         }
