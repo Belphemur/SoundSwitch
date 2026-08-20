@@ -6,6 +6,7 @@
 
 [Setup]
 AppName={#MyAppSetupName}
+AppId={#MyAppSetupName}
 AppVersion={#MyAppVersion}
 AppVerName={#MyAppSetupName} {#MyAppVersion}
 AppCopyright=Copyright © 2010-2025 {#MyAppSetupName}
@@ -18,7 +19,7 @@ AppSupportURL=https://github.com/Belphemur/SoundSwitch
 AppUpdatesURL=https://github.com/Belphemur/SoundSwitch/releases
 OutputBaseFilename={#MyAppSetupName}_v{#MyAppVersion}_{#ReleaseState}_Installer
 DefaultGroupName={#MyAppSetupName}
-DefaultDirName={autopf}\{#MyAppSetupName}
+DefaultDirName={code:GetInstallDir}
 UninstallDisplayIcon={app}\SoundSwitch.exe
 OutputDir={#ExeDir}
 SourceDir=.
@@ -119,6 +120,7 @@ Type: filesandordirs; Name: {app}\*
 #include "scripts\setup_utils.iss"
 #include "scripts\uninstall_utils.iss"
 #include "scripts\windows_update_helper.iss"
+#include "scripts\install_dir.iss"
 
 [Code]
 function InitializeSetup(): Boolean;
