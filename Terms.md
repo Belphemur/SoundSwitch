@@ -121,6 +121,7 @@ By having the telemetry enabled, you agree to have the following information sha
 - Version of SoundSwitch and release channel (Stable, Beta, Nightly)
 - A per-install anonymous identifier (random GUID, not tied to your identity)
 - Anonymous feature usage counts (e.g. playback device switches, profile activations, microphone mute toggles, notification types used)
+- App Rule (App Sound Lock) activation, creation, and deletion counts — the matched process basename is hashed using SHA256 (first 8 hex characters), so the counts are anonymous
 - Lightweight breadcrumbs of user actions (e.g. hotkey presses, settings saved) — used only as context for crash reports
 - Local Windows username, hashed with SHA256 (only the first 8 characters of the hex digest) — sent as an anonymized label on crash reports via Sentry's SDK to help distinguish users during debugging
 
@@ -129,6 +130,7 @@ By having the telemetry enabled, you agree to have the following information sha
 - Audio device names or device IDs
 - Profile names, profile content, or profile rules
 - File paths, file names, or media content
+- Process paths, window titles, or App Rule content (App Rules are counted only via an anonymized SHA256 hash of the process basename)
 - Network identifiers, IP addresses, or location data
 
 ## How to disable

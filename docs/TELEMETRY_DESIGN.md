@@ -108,6 +108,9 @@ Default attributes are auto-attached: `environment`, `release`, `sdk.name`, `sdk
 │  TrackProfileCreated()          → Metrics.Counter  │
 │  TrackProfileDeleted()          → Metrics.Counter  │
 │  TrackProfileActivationFailed(…) → Metrics.Counter │
+│  TrackAppRuleActivated(string processBasename, string triggerSource) → Metrics.Counter │
+│  TrackAppRuleCreated()          → Metrics.Counter  │
+│  TrackAppRuleDeleted()          → Metrics.Counter  │
 │  TrackNotificationBanner(…)     → Metrics.Counter  │
 │  TrackNotificationWindows()     → Metrics.Counter  │
 │  TrackNotificationSound()       → Metrics.Counter  │
@@ -172,6 +175,8 @@ Every metric event includes:
 
 **No user-attached data beyond what Sentry already sends** (`UniqueInstallationId`, SHA256 hash of `Environment.UserName`). No device names, no profile content, no file paths.
 
+Note: the App Rules process identifier (`soundswitch.apprule.activated` → `process` attribute) is the **SHA256 hash of the process BASENAME** (e.g. `chrome.exe`), first 8 hex characters, lowercased — the same anonymity scheme used for `profile_id` and the Windows username hash. Only the anonymized hash is ever sent; never the process path or window title.
+
 ---
 
 ## 5. Feature → Metric Mapping
@@ -233,6 +238,18 @@ CLI is a separate process. It sends a `CliCommandExecuted` message via NamedPipe
 - Per-device switch counts with device names (PII-adjacent).
 - Application focus events at high frequency (noise).
 
+### 5.7 App Rules (App Sound Lock)
+
+Mirrors the Profile telemetry (§5.2). App Rules route individual application **processes** to specific audio devices (the system default stays unchanged), so the `process` attribute is an anonymized hash of the matched process basename — never the path or window title.
+
+| Event | Metric | Type | Attributes |
+|-------|--------|------|------------|
+| App Rule triggered (process matched) | `soundswitch.apprule.activated` | Counter | `trigger: process\|foreground`, `process: <hash>` |
+| App Rule created | `soundswitch.apprule.created` | Counter | — |
+| App Rule deleted | `soundswitch.apprule.deleted` | Counter | — |
+
+The `process` attribute is a **SHA256 hash of the process BASENAME** (e.g. `chrome.exe`), first 8 hex characters, lowercased — the exact same scheme used for `profile_id` (profile names) and the Windows username hash. This lets us count activations per application without ever sending the process path, window title, or App Rule content.
+
 ---
 
 ## 6. Hook Locations — Where to Place Calls
@@ -276,11 +293,11 @@ CLI is a separate process. It sends a `CliCommandExecuted` message via NamedPipe
 
 In addition to the above, after this feature:
 
-- Counters for feature usage (playback switches, profile activations, notifications, CLI commands) — categorical attributes only, no free-text user content.
+- Counters for feature usage (playback switches, profile activations, notifications, CLI commands, **App Rule activations, creations, and deletions**) — categorical attributes only, no free-text user content. The App Rule `process` attribute is a SHA256 hash of the process basename (first 8 hex chars, lowercased), never the path or window title.
 - Distribution for device counts at enumeration time.
 - Breadcrumbs for hotkey presses and UI interactions (attached to sessions/issues, not standalone events).
 
-**Still not sent:** device names, profile names/content, file paths, application names (except as categorical "app trigger" types), any network identifiers.
+**Still not sent:** device names, profile names/content, file paths, application names (except as categorical "app trigger" types), App Rule process paths or window titles, any network identifiers.
 
 ### 7.4 Documentation Deliverables
 

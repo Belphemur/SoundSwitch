@@ -14,6 +14,7 @@ When telemetry is enabled, SoundSwitch sends the following to [Sentry](https://s
 - **Application version and release channel** (Stable, Beta, or Nightly) — so we know which versions are in use.
 - **A per-install anonymous identifier** — a random GUID generated on first run, not tied to your name, account, or device serial. It is used only to distinguish one installation from another.
 - **Feature usage counts** — anonymous counters such as "a playback device switch occurred", "a profile was activated", "a microphone mute toggle happened". No user-chosen text (profile names, device names, file paths) is sent.
+- **App Sound Lock (App Rules) usage counts** — anonymous counters for when an App Rule is triggered (an application is routed to a specific device), created, or deleted. The matched process basename is hashed with SHA256 (first 8 hex characters) before being sent, so the count stays anonymous. No process paths, window titles, or App Rule content are sent.
 - **Breadcrumbs** — lightweight records of actions like "hotkey pressed" or "settings saved", attached to sessions and used only as context if a crash occurs.
 - **Local Windows username** — sent as a label on crash reports via Sentry's SDK to help distinguish users during debugging.
 
@@ -22,6 +23,7 @@ When telemetry is enabled, SoundSwitch sends the following to [Sentry](https://s
 - Audio device names or device IDs
 - Profile names, profile content, or profile rules
 - File paths, file names, or media content
+- Process paths, window titles, or App Rule content (App Rules are counted only via an anonymized SHA256 hash of the process basename)
 - Any network identifiers, IP addresses, or location data
 
 ### About the Sentry username field
