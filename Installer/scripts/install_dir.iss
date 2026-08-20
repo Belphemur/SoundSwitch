@@ -3,12 +3,14 @@
 // constant is a belt-and-suspenders safety net so the installer still lands in
 // the real install directory when launched without a /DIR (e.g. a transitional
 // update run by an older updater).
-// We resolve the directory by the *known* SoundSwitch uninstall key identity
-// (AppId "SoundSwitch" -> "SoundSwitch_is1", plus the bare "SoundSwitch" key for
-// very old installs) under HKLM then HKCU. Matching the key name (not a DisplayName
-// prefix) keeps the selection deterministic and unaffected by unrelated entries
-// such as "SoundSwitch Helper". The SoundSwitch.exe ownership check is defense-in-depth.
-// Falls back to Default when no approved identity is found.
+// We resolve the directory by known SoundSwitch uninstall key identities, under
+// HKLM then HKCU, in priority order:
+//   1. the new AppId identity (me.aaflalo.soundswitch -> "me.aaflalo.soundswitch_is1")
+//   2. the legacy AppId identity (SoundSwitch -> "SoundSwitch_is1", plus bare "SoundSwitch"
+//      for very old installs) so existing/non-default installs keep upgrading in place.
+// Matching the key name (not a DisplayName prefix) keeps selection deterministic and
+// unaffected by unrelated entries such as "SoundSwitch Helper". The SoundSwitch.exe
+// ownership check is defense-in-depth. Falls back to Default when no identity is found.
 
 [Code]
 
@@ -41,9 +43,11 @@ begin
     Result := ExpandConstant('{autopf}\{#MyAppSetupName}');
 
   // Known uninstall key identities for SoundSwitch, in priority order.
-  SetArrayLength(KeyNames, 2);
-  KeyNames[0] := '{#MyAppSetupName}_is1';   // canonical key (AppId + _is1 suffix)
-  KeyNames[1] := '{#MyAppSetupName}';       // bare key (very old installs)
+  // New identity first, then legacy identities from before the AppId change.
+  SetArrayLength(KeyNames, 3);
+  KeyNames[0] := 'me.aaflalo.soundswitch_is1'; // current AppId + _is1 suffix
+  KeyNames[1] := '{#MyAppSetupName}_is1';      // legacy AppId "SoundSwitch" + _is1
+  KeyNames[2] := '{#MyAppSetupName}';          // bare key (very old installs)
 
   SetArrayLength(Roots, 2);
   Roots[0] := HKLM;
@@ -53,7 +57,7 @@ begin
   // each trying the known key identities in priority order.
   for I := 0 to 1 do
   begin
-    for J := 0 to 1 do
+    for J := 0 to 2 do
     begin
       Dir := TryGetInstallDirFromKey(Roots[I], KeyNames[J]);
       if Dir <> '' then

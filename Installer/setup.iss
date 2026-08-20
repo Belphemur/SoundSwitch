@@ -6,7 +6,7 @@
 
 [Setup]
 AppName={#MyAppSetupName}
-AppId={#MyAppSetupName}
+AppId=me.aaflalo.soundswitch
 AppVersion={#MyAppVersion}
 AppVerName={#MyAppSetupName} {#MyAppVersion}
 AppCopyright=Copyright © 2010-2025 {#MyAppSetupName}
