@@ -87,7 +87,16 @@ namespace SoundSwitch.Services
 
                 if (changed)
                 {
-                    TelemetryService.TrackAppRuleActivated(Path.GetFileName(processPath) ?? processName, triggerSource);
+                    // Prefer the basename from the process path. If it's empty (ProcessMonitor
+                    // sets the path to string.Empty) or a placeholder (WindowMonitor uses "N/A"
+                    // when it can't read the path), fall back to the process name so we still
+                    // capture an anonymized hash instead of hashing the literal "N/A".
+                    var basename = Path.GetFileName(processPath);
+                    if (string.IsNullOrEmpty(basename) || basename == "N/A")
+                    {
+                        basename = processName;
+                    }
+                    TelemetryService.TrackAppRuleActivated(basename, triggerSource);
                 }
 
                 if (rule.Notify && changed)
