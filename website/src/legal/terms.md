@@ -44,13 +44,13 @@ By accessing or using the Service You agree to be bound by these Terms and Condi
 
 You represent that you are over the age of 18\. The Company does not permit those under 18 to use the Service.
 
-Your access to and use of the Service is also conditioned on Your acceptance of and compliance with the Privacy Policy of the Company. Our Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your personal information when You use the Application or the Website and tells You about Your privacy rights and how the law protects You. Please read Our Privacy Policy carefully before using Our Service.
+Your access to and use of the Service is also conditioned on Your acceptance of and compliance with the [Privacy Policy](/legal/telemetry.md) of the Company. Our Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your personal information when You use the Application or the Website and tells You about Your privacy rights and how the law protects You. Please read Our Privacy Policy carefully before using Our Service.
 
 # Links to Other Websites
 
 Our Service may contain links to third-party web sites or services that are not owned or controlled by the Company.
 
-The Company has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third party web sites or services. You further acknowledge and agree that the Company shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with the use of or reliance on any such content, goods or services available on or through any such web sites or services.
+The Company has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third-party websites or services. You further acknowledge and agree that the Company shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with the use of or reliance on any such content, goods or services available on or through any such web sites or services.
 
 We strongly advise You to read the terms and conditions and privacy policies of any third-party web sites or services that You visit.
 
@@ -70,7 +70,7 @@ Some states do not allow the exclusion of implied warranties or limitation of li
 
 # "AS IS" and "AS AVAILABLE" Disclaimer
 
-The Service is provided to You "AS IS" and "AS AVAILABLE" and with all faults and defects without warranty of any kind. To the maximum extent permitted under applicable law, the Company, on its own behalf and on behalf of its Affiliates and its and their respective licensors and service providers, expressly disclaims all warranties, whether express, implied, statutory or otherwise, with respect to the Service, including all implied warranties of merchantability, fitness for a particular purpose, title and non-infringement, and warranties that may arise out of course of dealing, course of performance, usage or trade practice. Without limitation to the foregoing, the Company provides no warranty or undertaking, and makes no representation of any kind that the Service will meet Your requirements, achieve any intended results, be compatible or work with any other software, applications, systems or services, operate without interruption, meet any performance or reliability standards or be error free or that any errors or defects can or will be corrected.
+The Service is provided to You "AS IS" and "AS AVAILABLE" and with all faults and defects without warranty of any kind. To the maximum extent permitted under applicable law, the Company, on its own behalf and on behalf of its Affiliates and its and their respective licensors and service providers, expressly disclaims all warranties, whether express, implied, statutory or otherwise, with respect to the Service, including all implied warranties of merchantability, fitness for a particular purpose, title and non-infringement, and warranties that may arise out of course of dealing, course of performance, usage or trade practice. Without limitation to the foregoing, the Company provides no warranty or undertaking, and makes no representation of any kind that the Service will meet Your requirements, achieve any intended results, be compatible or work with any other software, applications, systems or services, operate without interruption, meet any performance or reliability standards or be error-free or that any errors or defects can or will be corrected.
 
 Without limiting the foregoing, neither the Company nor any of the company's provider makes any representation or warranty of any kind, express or implied: (i) as to the operation or availability of the Service, or the information, content, and materials or products included thereon; (ii) that the Service will be uninterrupted or error-free; (iii) as to the accuracy, reliability, or currency of any information or content provided through the Service; or (iv) that the Service, its servers, the content, or e-mails sent from or on behalf of the Company are free of viruses, scripts, trojan horses, worms, malware, timebombs or other harmful components.
 
@@ -100,7 +100,7 @@ If any provision of these Terms is held to be unenforceable or invalid, such pro
 
 ## Waiver
 
-Except as provided herein, the failure to exercise a right or to require performance of an obligation under this Terms shall not effect a party's ability to exercise such right or require such performance at any time thereafter nor shall be the waiver of a breach constitute a waiver of any subsequent breach.
+Except as provided herein, the failure to exercise a right or to require performance of an obligation under this Terms shall not affect a party's ability to exercise such right or require such performance at any time thereafter nor shall the waiver of a breach constitute a waiver of any subsequent breach.
 
 # Translation Interpretation
 
@@ -114,32 +114,32 @@ By continuing to access or use Our Service after those revisions become effectiv
 
 # Telemetry terms
 
-SoundSwitch can send anonymous, opt-in usage telemetry and crash reports through [Sentry](https://sentry.io/). Telemetry is optional and controlled by the **Telemetry** setting in the General tab; it can be turned off at any time, and when disabled no usage data, breadcrumbs, or session tracking is sent.
+SoundSwitch can send opt-in usage telemetry and crash reports through [Sentry](https://sentry.io/). Telemetry is optional and controlled by the **Telemetry** setting in the General tab; it can be turned off at any time.
 
 ## Data gathered
 
 - Version of SoundSwitch and release channel (Stable, Beta, Nightly)
-- A per-install anonymous identifier (random GUID, not tied to your identity)
-- Anonymous feature usage counts (e.g. playback device switches, profile activations, microphone mute toggles, notification types used)
-- App Rule (App Sound Lock) activation, creation, and deletion counts — for activations, the matched process basename is hashed using SHA256 (first 8 hex characters) so the count stays anonymous; the creation and deletion counters contain no process identifier
+- A per-install pseudonymous identifier (a random GUID, not tied to your real identity)
+- Anonymous feature-usage counts (e.g. playback device switches, profile activations, microphone mute toggles, notification types used)
+- App Rule (App Sound Lock) activation, creation, and deletion counts. For activations, the metric also records the `trigger` source (process or foreground window) and a pseudonymous SHA256 prefix (first 8 hex characters) of the matched process basename; the creation and deletion counters contain no process identifier
 - Lightweight breadcrumbs of user actions (e.g. hotkey presses, settings saved) — used only as context for crash reports
-- Local Windows username, hashed with SHA256 (only the first 8 characters of the hex digest) — sent as an anonymized label on crash reports via Sentry's SDK to help distinguish users during debugging
+- Local Windows username, hashed with SHA256 (first 8 hex characters) — sent as a pseudonymous label on crash reports via Sentry's SDK to help distinguish users during debugging
 
-## Data NOT gathered
+## Data NOT gathered (telemetry counters)
 
-- Audio device names or device IDs
-- Profile names, profile content, or profile rules
-- File paths, file names, or media content
-- Process paths, window titles, or App Rule content in the telemetry counters — App Rules are counted only via an anonymized SHA256 hash of the process basename (note: a local crash breadcrumb can still include some of these fields; see the Sentry username note below)
+The opt-in telemetry counters above never receive audio device names or IDs, profile names/content/rules, file paths, file names, media content, full process paths, window titles, or App Rule content. App Rules are represented only by a pseudonymous SHA256 hash of the process basename.
+
+> **Note on crash breadcrumbs:** a local crash report's breadcrumbs (generated from application logs) may still include some of these fields — such as process names or paths, window titles, and App Rule patterns — because Sentry.Serilog forwards Debug-level and higher log events. These breadcrumbs are sent only with a crash report, not as part of the usage counters above.
+
 - Network identifiers, IP addresses, or location data
 
 ## How to disable
 
-Uncheck **Telemetry** in SoundSwitch settings → General tab. The change takes effect immediately. When disabled, no usage data, breadcrumbs, or session tracking is sent.
+Uncheck **Telemetry** in SoundSwitch settings → General tab. The change takes effect immediately. When telemetry is disabled, no usage counters are sent. Crash reports and their breadcrumbs are sent only when the application crashes, independent of this setting.
 
 ## Your data rights
 
-The telemetry described above is anonymous and not tied to your identity. If you would like any crash-report or breadcrumb data associated with your per-install identifier to be deleted, contact us using the details in the Contact section below and we will remove it where technically feasible. For the full picture of what is collected and your choices, see the [Privacy and Telemetry](/legal/telemetry.md) page on our website.
+The telemetry described above is pseudonymous, not tied to your real identity. If you would like any crash-report or breadcrumb data associated with your per-install identifier to be deleted, contact us using the details in the Contact section below and we will remove it where technically feasible. For the full picture of what is collected and your choices, see the [Privacy and Telemetry](/legal/telemetry.md) page on our website.
 
 ## Website cookies and analytics
 

@@ -175,7 +175,7 @@ Every metric event includes:
 
 **No user-attached data beyond what Sentry already sends** (`UniqueInstallationId`, SHA256 hash of `Environment.UserName`). No device names, no profile content, no file paths.
 
-Note: the App Rules process identifier (`soundswitch.apprule.activated` → `process` attribute) is the **SHA256 hash of the process BASENAME** (e.g. `chrome.exe`), first 8 hex characters, lowercased — the same anonymity scheme used for `profile_id` and the Windows username hash. Only the anonymized hash is ever sent; never the process path or window title.
+Note: the App Rules process identifier (`soundswitch.apprule.activated` → `process` attribute) is the **SHA256 hash of the process BASENAME** (e.g. `chrome.exe`), first 8 hex characters, lowercased — the same pseudonymous scheme used for `profile_id` and the Windows username hash. Only the pseudonymous hash is ever sent; never the process path or window title.
 
 ---
 

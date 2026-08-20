@@ -5,25 +5,25 @@ description: What SoundSwitch telemetry collects, why, and how to disable it.
 
 # Telemetry and Privacy
 
-SoundSwitch is a free, open-source application. To understand which features are actually used and where to focus development, SoundSwitch can send anonymized usage data to the developers.
+SoundSwitch is a free, open-source application. To understand which features are actually used and where to focus development, SoundSwitch can send pseudonymous usage data to the developers.
 
 ## What is sent
 
 When telemetry is enabled, SoundSwitch sends the following to [Sentry](https://sentry.io/) (a privacy-focused error and performance monitoring service):
 
 - **Application version and release channel** (Stable, Beta, or Nightly) — so we know which versions are in use.
-- **A per-install anonymous identifier** — a random GUID generated on first run, not tied to your name, account, or device serial. It is used only to distinguish one installation from another.
+- **A per-install pseudonymous identifier** — a random GUID generated on first run, not tied to your name, account, or device serial. It is used only to distinguish one installation from another.
 - **Feature usage counts** — anonymous counters such as "a playback device switch occurred", "a profile was activated", "a microphone mute toggle happened". No user-chosen text (profile names, device names, file paths) is sent.
-- **App Sound Lock (App Rules) usage counts** — anonymous counters for when an App Rule is triggered (the matched process basename is hashed with SHA256, first 8 hex characters, before being sent), created, or deleted. No process paths, window titles, or App Rule content are sent.
+- **App Sound Lock (App Rules) usage counts** — anonymous counters for when an App Rule is triggered (the matched process basename is hashed with SHA256, first 8 hex characters, before being sent), created, or deleted. The activation counter also records the `trigger` source (process or foreground window). No process paths, window titles, or App Rule content are sent.
 - **Breadcrumbs** — lightweight records of actions like "hotkey pressed" or "settings saved", attached to sessions and used only as context if a crash occurs.
-- **Local Windows username** — sent as a label on crash reports via Sentry's SDK to help distinguish users during debugging.
+- **Local Windows username** — hashed with SHA256 (first 8 hex characters) and sent as a pseudonymous label on crash reports via Sentry's SDK to help distinguish users during debugging.
 
 **What is NOT sent:**
 
 - Audio device names or device IDs
 - Profile names, profile content, or profile rules
 - File paths, file names, or media content
-- Process paths, window titles, or App Rule content in the telemetry counters — App Rules are counted only via an anonymized SHA256 hash of the process basename (note: a local crash breadcrumb can still include some of these fields; see the Sentry username note below)
+- Process paths, window titles, or App Rule content in the telemetry counters — App Rules are represented only by a pseudonymous SHA256 hash of the process basename. Note: a local crash report's breadcrumbs (from application logs) may still include some of these fields, because Sentry.Serilog forwards Debug-level and higher log events; those breadcrumbs are sent only with a crash, not as part of the usage counters.
 - Any network identifiers, IP addresses, or location data
 
 ### About the Sentry username field
@@ -52,9 +52,7 @@ SoundSwitch populates the Sentry username field with the local Windows username.
 The change takes effect immediately. No restart is required. When telemetry is disabled:
 
 - No feature-usage counters are sent.
-- No breadcrumbs are recorded.
-- Session tracking (used for crash reporting context) is also disabled.
-- Crash reports are not sent unless the app crashes while telemetry was enabled.
+- Crash reports and their breadcrumbs (which may include limited local context such as process names from application logs) are sent only if the application crashes, independent of this setting. The usage counters described above are not sent.
 
 ## Data retention
 

@@ -254,53 +254,60 @@ website and the Service.
 Telemetry terms
 ===============
 
-SoundSwitch can send anonymous, opt-in usage telemetry and crash reports
-through [Sentry](https://sentry.io/). Telemetry is optional and controlled by
-the **Telemetry** setting in the General tab; it can be turned off at any time,
-and when disabled no usage data, breadcrumbs, or session tracking is sent.
+SoundSwitch can send opt-in usage telemetry and crash reports through
+[Sentry](https://sentry.io/). Telemetry is optional and controlled by the
+**Telemetry** setting in the General tab; it can be turned off at any time.
 
 Data gathered
 -------------
 
 -   Version of SoundSwitch and release channel (Stable, Beta, Nightly)
--   A per-install anonymous identifier (random GUID, not tied to your
-    identity)
--   Anonymous feature usage counts (e.g. playback device switches, profile
+-   A per-install pseudonymous identifier (a random GUID, not tied to your
+    real identity)
+-   Anonymous feature-usage counts (e.g. playback device switches, profile
     activations, microphone mute toggles, notification types used)
--   App Rule (App Sound Lock) activation, creation, and deletion counts —
-    for activations, the matched process basename is hashed using SHA256
-    (first 8 hex characters) so the count stays anonymous; the creation
-    and deletion counters contain no process identifier
--   Lightweight breadcrumbs of user actions (e.g. hotkey presses,
-    settings saved) — used only as context for crash reports
--   Local Windows username, hashed with SHA256 (only the first 8
-    characters of the hex digest) — sent as an anonymized label on crash
-    reports via Sentry's SDK to help distinguish users during debugging
+-   App Rule (App Sound Lock) activation, creation, and deletion counts. For
+    activations, the metric also records the ``trigger`` source (process or
+    foreground window) and a pseudonymous SHA256 prefix (first 8 hex
+    characters) of the matched process basename; the creation and deletion
+    counters contain no process identifier
+-   Lightweight breadcrumbs of user actions (e.g. hotkey presses, settings
+    saved) — used only as context for crash reports
+-   Local Windows username, hashed with SHA256 (first 8 hex characters) —
+    sent as a pseudonymous label on crash reports via Sentry's SDK to help
+    distinguish users during debugging
 
-Data NOT gathered
------------------
+Data NOT gathered (telemetry counters)
+--------------------------------------
 
--   Audio device names or device IDs
--   Profile names, profile content, or profile rules
--   File paths, file names, or media content
--   Process paths, window titles, or App Rule content in the telemetry
-    counters — App Rules are counted only via an anonymized SHA256 hash of
-    the process basename (note: a local crash breadcrumb can still include
-    some of these fields; see the Sentry username note below)
+The opt-in telemetry counters above never receive audio device names or IDs,
+profile names/content/rules, file paths, file names, media content, full
+process paths, window titles, or App Rule content. App Rules are represented
+only by a pseudonymous SHA256 hash of the process basename.
+
+.. note::
+
+   A local crash report's breadcrumbs (generated from application logs) may
+   still include some of these fields — such as process names or paths,
+   window titles, and App Rule patterns — because Sentry.Serilog forwards
+   Debug-level and higher log events. These breadcrumbs are sent only with a
+   crash report, not as part of the usage counters above.
+
 -   Network identifiers, IP addresses, or location data
 
 How to disable
 --------------
 
-Uncheck **Telemetry** in SoundSwitch settings → General tab. The change
-takes effect immediately. When disabled, no usage data, breadcrumbs, or
-session tracking is sent.
+Uncheck **Telemetry** in SoundSwitch settings → General tab. The change takes
+effect immediately. When telemetry is disabled, no usage counters are sent.
+Crash reports and their breadcrumbs are sent only when the application
+crashes, independent of this setting.
 
 Your data rights
 ----------------
 
-The telemetry described above is anonymous and not tied to your identity. If
-you would like any crash-report or breadcrumb data associated with your
+The telemetry described above is pseudonymous, not tied to your real identity.
+If you would like any crash-report or breadcrumb data associated with your
 per-install identifier to be deleted, contact us using the details in the
 Contact section below and we will remove it where technically feasible. For
 the full picture of what is collected and your choices, see the Privacy and
@@ -309,11 +316,11 @@ Telemetry page on our website.
 Website cookies and analytics
 -----------------------------
 
-This website uses privacy-respecting analytics to understand aggregate
-usage, and third-party advertising (Google AdSense) that may set cookies in
-your browser. You can control or delete cookies through your browser
-settings at any time. Data collected by the website is not combined with the
-application telemetry described above.
+This website uses privacy-respecting analytics to understand aggregate usage,
+and third-party advertising (Google AdSense) that may set cookies in your
+browser. You can control or delete cookies through your browser settings at
+any time. Data collected by the website is not combined with the application
+telemetry described above.
 
 Contact Us
 ==========
