@@ -26,6 +26,12 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
             _log = Log.ForContext(GetType());
         }
 
+        internal ExtendedPolicyClient(IAudioPolicyConfig policyConfig)
+        {
+            _log = Log.ForContext(GetType());
+            _sharedPolicyConfig = policyConfig;
+        }
+
         private IAudioPolicyConfig PolicyConfig
         {
             get
@@ -57,34 +63,47 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
             return deviceId;
         }
 
-        public void SetDefaultEndPoint(string deviceId, EDataFlow flow, IEnumerable<ERole> roles, uint processId)
+        public bool SetDefaultEndPoint(string deviceId, EDataFlow flow, IEnumerable<ERole> roles, uint processId)
         {
             _log.Information("ExtendedPolicyClient SetDefaultEndPoint {DeviceId} [{Flow}] {ProcessId}", deviceId, flow, processId);
+            if (string.IsNullOrEmpty(deviceId))
+            {
+                return false;
+            }
+
+            var deviceIdStr = GenerateDeviceId(deviceId, flow);
+            var anySuccess = false;
             try
             {
-                if (string.IsNullOrEmpty(deviceId))
-                {
-                    return;
-                }
-
-                var deviceIdStr = GenerateDeviceId(deviceId, flow);
                 foreach (var eRole in roles)
                 {
-                    PolicyConfig.SetPersistedDefaultAudioEndpoint(processId, flow, eRole, deviceIdStr);
+                    try
+                    {
+                        if (PolicyConfig.SetPersistedDefaultAudioEndpoint(processId, flow, eRole, deviceIdStr))
+                        {
+                            anySuccess = true;
+                        }
+                    }
+                    catch (InvalidComObjectException)
+                    {
+                        _log.Warning("Set the default endpoint [{DeviceId}]for process {ProcessId}", deviceId, processId);
+                    }
+                    catch (COMException e) when ((e.ErrorCode & ErrorConst.COM_ERROR_MASK) == ErrorConst.COM_ERROR_NOT_FOUND)
+                    {
+                        throw new DeviceNotFoundException($"Can't set default as {deviceId}", e, deviceId);
+                    }
+                    catch (Exception ex)
+                    {
+                        _log.Error(ex, "Can't set the default endpoint");
+                    }
                 }
             }
-            catch (InvalidComObjectException)
+            catch (DeviceNotFoundException)
             {
-                _log.Warning("Set the default endpoint [{DeviceId}]for process {ProcessId}", deviceId, processId);
+                throw;
             }
-            catch (COMException e) when ((e.ErrorCode & ErrorConst.COM_ERROR_MASK) == ErrorConst.COM_ERROR_NOT_FOUND)
-            {
-                throw new DeviceNotFoundException($"Can't set default as {deviceId}", e, deviceId);
-            }
-            catch (Exception ex)
-            {
-                _log.Error(ex, "Can't set the default endpoint");
-            }
+
+            return anySuccess;
         }
 
         /// <summary>

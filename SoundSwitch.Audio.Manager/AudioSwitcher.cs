@@ -59,6 +59,12 @@ namespace SoundSwitch.Audio.Manager
             }
         }
 
+        /// <summary>
+        /// Test seam: inject a pre-built <see cref="ExtendedPolicyClient"/> so callers
+        /// can be exercised without relying on the COM-backed default instance.
+        /// </summary>
+        internal void SetExtendedPolicyClientForTest(ExtendedPolicyClient client) => _extendedPolicyClient = client;
+
         private AudioSwitcher()
         {
         }
@@ -154,8 +160,7 @@ namespace SoundSwitch.Audio.Manager
                     return false;
                 }
 
-                ExtendPolicyClient.SetDefaultEndPoint(deviceId, flow, roles, processId);
-                return true;
+                return ExtendPolicyClient.SetDefaultEndPoint(deviceId, flow, roles, processId);
             }));
         }
 

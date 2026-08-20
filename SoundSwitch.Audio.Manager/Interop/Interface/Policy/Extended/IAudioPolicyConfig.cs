@@ -14,7 +14,8 @@ public interface IAudioPolicyConfig : IDisposable
     /// <param name="flow"></param>
     /// <param name="role"></param>
     /// <param name="deviceId"></param>
-    void SetPersistedDefaultAudioEndpoint(uint processId, EDataFlow flow, ERole role, string deviceId);
+    /// <returns><c>true</c> if the endpoint was written successfully; <c>false</c> otherwise.</returns>
+    bool SetPersistedDefaultAudioEndpoint(uint processId, EDataFlow flow, ERole role, string deviceId);
 
     /// <summary>
     /// Get Audio endpoint of the process

@@ -119,7 +119,7 @@ namespace SoundSwitch.Audio.Manager.Interop.Client.Extended
             }
         }
 
-        public void SetPersistedDefaultAudioEndpoint(uint processId, EDataFlow flow, ERole role, string deviceId)
+        public bool SetPersistedDefaultAudioEndpoint(uint processId, EDataFlow flow, ERole role, string deviceId)
         {
             using var deviceIdHString = HSTRING.FromString(deviceId);
             var setPersistedDefaultAudioEndpointPtr = Marshal.PtrToStructure<IntPtr>(_vfTable + (_ptrSize * 25));
@@ -127,6 +127,8 @@ namespace SoundSwitch.Audio.Manager.Interop.Client.Extended
             var result = setPersistedDefaultAudioEndpoint(_factory, processId, flow, role, deviceIdHString);
             if (result != HRESULT.S_OK && result != HRESULT.PROCESS_NO_AUDIO)
                 throw new InvalidComObjectException($"Can't set the persistent audio endpoint: {result}");
+
+            return true;
         }
 
         public void ClearAllPersistedApplicationDefaultEndpoints()
