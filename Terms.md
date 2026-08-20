@@ -130,7 +130,7 @@ By having the telemetry enabled, you agree to have the following information sha
 - Audio device names or device IDs
 - Profile names, profile content, or profile rules
 - File paths, file names, or media content
-- Process paths, window titles, or App Rule content (App Rules are counted only via an anonymized SHA256 hash of the process basename)
+- Process paths, window titles, or App Rule content in the telemetry counters — App Rules are counted only via an anonymized SHA256 hash of the process basename (note: a local crash breadcrumb can still include some of these fields; see the Sentry username note below)
 - Network identifiers, IP addresses, or location data
 
 ## How to disable

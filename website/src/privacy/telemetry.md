@@ -23,7 +23,7 @@ When telemetry is enabled, SoundSwitch sends the following to [Sentry](https://s
 - Audio device names or device IDs
 - Profile names, profile content, or profile rules
 - File paths, file names, or media content
-- Process paths, window titles, or App Rule content (App Rules are counted only via an anonymized SHA256 hash of the process basename)
+- Process paths, window titles, or App Rule content in the telemetry counters — App Rules are counted only via an anonymized SHA256 hash of the process basename (note: a local crash breadcrumb can still include some of these fields; see the Sentry username note below)
 - Any network identifiers, IP addresses, or location data
 
 ### About the Sentry username field
