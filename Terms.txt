@@ -254,11 +254,10 @@ website and the Service.
 Telemetry terms
 ===============
 
-By having the telemetry enabled, you agree to have the following
-information shared with Us anonymously using the service provided by
-[Sentry](https://sentry.io/). This information is only used as a way to
-understand which features of the software are used and to improve the
-application.
+SoundSwitch can send anonymous, opt-in usage telemetry and crash reports
+through [Sentry](https://sentry.io/). Telemetry is optional and controlled by
+the **Telemetry** setting in the General tab; it can be turned off at any time,
+and when disabled no usage data, breadcrumbs, or session tracking is sent.
 
 Data gathered
 -------------
@@ -296,6 +295,25 @@ How to disable
 Uncheck **Telemetry** in SoundSwitch settings → General tab. The change
 takes effect immediately. When disabled, no usage data, breadcrumbs, or
 session tracking is sent.
+
+Your data rights
+----------------
+
+The telemetry described above is anonymous and not tied to your identity. If
+you would like any crash-report or breadcrumb data associated with your
+per-install identifier to be deleted, contact us using the details in the
+Contact section below and we will remove it where technically feasible. For
+the full picture of what is collected and your choices, see the Privacy and
+Telemetry page on our website.
+
+Website cookies and analytics
+-----------------------------
+
+This website uses privacy-respecting analytics to understand aggregate
+usage, and third-party advertising (Google AdSense) that may set cookies in
+your browser. You can control or delete cookies through your browser
+settings at any time. Data collected by the website is not combined with the
+application telemetry described above.
 
 Contact Us
 ==========
