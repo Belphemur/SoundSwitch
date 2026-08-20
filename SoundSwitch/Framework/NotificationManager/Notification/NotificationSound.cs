@@ -54,7 +54,7 @@ internal class NotificationSound : INotification
         if (CustomSoundCheck(audioDevice))
             soundNotification = Configuration.CustomSound;
         else
-            soundNotification = new CachedSound(GetStreamCopy(), new WaveFormat(44100, 1));
+            soundNotification = new CachedSound(GetStreamCopy());
 
         JobScheduler.Instance.ScheduleJob(new PlaySoundJob(audioDevice.Id, soundNotification), _cancellationTokenSource.Token);
     }
@@ -93,7 +93,7 @@ internal class NotificationSound : INotification
         if (HasCustomSound())
             soundNotification = Configuration.CustomSound;
         else
-            soundNotification = new CachedSound(GetStreamCopy(), new WaveFormat(44100, 1));
+            soundNotification = new CachedSound(GetStreamCopy());
 
         JobScheduler.Instance.ScheduleJob(new PlaySoundJob(null, soundNotification), _cancellationTokenSource.Token);
     }

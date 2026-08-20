@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 using NAudio.CoreAudioApi;
-using NAudio.CoreAudioApi.Interfaces;
 
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
@@ -14,12 +13,13 @@ using PropertyKeys = NAudio.CoreAudioApi.PropertyKeys;
 
 namespace SoundSwitch.Framework.NotificationManager;
 
-public class MMNotificationClient : IMMNotificationClient, IDisposable
+public class MMNotificationClient : IDisposable
 {
     private record struct DeviceRole(DataFlow Flow, Role Role);
 
     public static MMNotificationClient Instance { get; } = new();
     private MMDeviceEnumerator _enumerator;
+    private MMDeviceNotificationClient _client;
 
     private readonly Dictionary<DeviceRole, string> _lastRoleDevice = new();
 
@@ -49,7 +49,12 @@ public class MMNotificationClient : IMMNotificationClient, IDisposable
     public void Register()
     {
         _enumerator = new MMDeviceEnumerator();
-        _enumerator.RegisterEndpointNotificationCallback(this);
+        _client = _enumerator.CreateNotificationClient(false);
+        _client.DeviceStateChanged += OnDeviceStateChanged;
+        _client.DeviceAdded += OnDeviceAdded;
+        _client.DeviceRemoved += OnDeviceRemoved;
+        _client.DefaultDeviceChanged += OnDefaultDeviceChanged;
+        _client.PropertyValueChanged += OnPropertyValueChanged;
         foreach (var flow in Enum.GetValues<DataFlow>().Where(flow => flow != DataFlow.All))
         {
             foreach (var role in Enum.GetValues<Role>())
@@ -63,53 +68,53 @@ public class MMNotificationClient : IMMNotificationClient, IDisposable
         }
     }
 
-    public void OnDeviceStateChanged(string deviceId, DeviceState newState)
-    {
-        _deviceChangedEvents.Enqueue(new DeviceChangedEvent(EventType.StateChanged, deviceId));
-    }
+    private void OnDeviceStateChanged(object sender, DeviceStateChangedEventArgs e) => _deviceChangedEvents.Enqueue(new DeviceChangedEvent(EventType.StateChanged, e.DeviceId));
 
-    public void OnDeviceAdded(string deviceId)
-    {
-        _deviceChangedEvents.Enqueue(new DeviceChangedEvent(EventType.Added, deviceId));
-    }
+    private void OnDeviceAdded(object sender, DeviceNotificationEventArgs e) => _deviceChangedEvents.Enqueue(new DeviceChangedEvent(EventType.Added, e.DeviceId));
 
-    public void OnDeviceRemoved(string deviceId)
-    {
-        _deviceChangedEvents.Enqueue(new DeviceChangedEvent(EventType.Removed, deviceId));
-    }
+    private void OnDeviceRemoved(object sender, DeviceNotificationEventArgs e) => _deviceChangedEvents.Enqueue(new DeviceChangedEvent(EventType.Removed, e.DeviceId));
 
-    public void OnDefaultDeviceChanged(DataFlow flow, Role role, string deviceId)
+    private void OnDefaultDeviceChanged(object sender, DefaultDeviceChangedEventArgs e)
     {
-        if (deviceId == null)
+        if (e.DeviceId == null)
             return;
 
-        var deviceRole = new DeviceRole(flow, role);
-        if (_lastRoleDevice.TryGetValue(deviceRole, out var oldDeviceId) && oldDeviceId == deviceId)
+        var deviceRole = new DeviceRole(e.Flow, e.Role);
+        if (_lastRoleDevice.TryGetValue(deviceRole, out var oldDeviceId) && oldDeviceId == e.DeviceId)
         {
             return;
         }
 
-        _lastRoleDevice[deviceRole] = deviceId;
-        _deviceChangedEvents.Enqueue(new DefaultDeviceChangedEvent(EventType.DefaultChanged, deviceId, role));
+        _lastRoleDevice[deviceRole] = e.DeviceId;
+        _deviceChangedEvents.Enqueue(new DefaultDeviceChangedEvent(EventType.DefaultChanged, e.DeviceId, e.Role));
     }
 
-    public void OnPropertyValueChanged(string pwstrDeviceId, PropertyKey key)
+    private void OnPropertyValueChanged(object sender, DevicePropertyChangedEventArgs e)
     {
-        if (PropertyKeys.PKEY_DeviceInterface_FriendlyName.formatId != key.formatId
-            && PropertyKeys.PKEY_AudioEndpoint_GUID.formatId != key.formatId
-            && PropertyKeys.PKEY_Device_IconPath.formatId != key.formatId
-            && PropertyKeys.PKEY_Device_FriendlyName.formatId != key.formatId
+        if (PropertyKeys.PKEY_DeviceInterface_FriendlyName.formatId != e.PropertyKey.formatId
+            && PropertyKeys.PKEY_AudioEndpoint_GUID.formatId != e.PropertyKey.formatId
+            && PropertyKeys.PKEY_Device_IconPath.formatId != e.PropertyKey.formatId
+            && PropertyKeys.PKEY_Device_FriendlyName.formatId != e.PropertyKey.formatId
            )
         {
             return;
         }
 
-        _deviceChangedEvents.Enqueue(new DeviceChangedEvent(EventType.PropertyChanged, pwstrDeviceId));
+        _deviceChangedEvents.Enqueue(new DeviceChangedEvent(EventType.PropertyChanged, e.DeviceId));
     }
 
     public void Dispose()
     {
-        _enumerator.UnregisterEndpointNotificationCallback(this);
+        if (_client != null)
+        {
+            _client.DeviceStateChanged -= OnDeviceStateChanged;
+            _client.DeviceAdded -= OnDeviceAdded;
+            _client.DeviceRemoved -= OnDeviceRemoved;
+            _client.DefaultDeviceChanged -= OnDefaultDeviceChanged;
+            _client.PropertyValueChanged -= OnPropertyValueChanged;
+            _client.Dispose();
+        }
+
         _enumerator?.Dispose();
     }
 }
