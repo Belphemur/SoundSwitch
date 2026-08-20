@@ -92,7 +92,7 @@ export default defineUserConfig({
       {
         text: "Legal",
         children: [
-          { text: "Privacy & Telemetry", link: "/privacy/telemetry.md" },
+          { text: "Privacy & Telemetry", link: "/legal/telemetry.md" },
           { text: "Terms and Conditions", link: "/legal/terms.md" },
         ],
       },
@@ -169,6 +169,7 @@ export default defineUserConfig({
         {
           text: "Legal",
           children: [
+            { text: "Privacy & Telemetry", link: "/legal/telemetry.md" },
             { text: "Terms and Conditions", link: "/legal/terms.md" },
           ],
         },

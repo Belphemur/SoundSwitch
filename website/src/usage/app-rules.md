@@ -100,4 +100,4 @@ If audio routing gets into a confusing state, the **Troubleshooting** tab includ
 
 ## Telemetry and Privacy
 
-When telemetry is enabled, App Rule activations are counted anonymously. SoundSwitch records only a SHA256 hash of the matched process basename (the first 8 hex characters) — no process path or window title is ever sent. See the [Privacy and Telemetry](/privacy/telemetry.md) page for full details.
+When telemetry is enabled, App Rule activations are counted anonymously. SoundSwitch records only a SHA256 hash of the matched process basename (the first 8 hex characters) — no process path or window title is ever sent. See the [Privacy and Telemetry](/legal/telemetry.md) page for full details.

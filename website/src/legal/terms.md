@@ -139,7 +139,7 @@ Uncheck **Telemetry** in SoundSwitch settings → General tab. The change takes 
 
 ## Your data rights
 
-The telemetry described above is anonymous and not tied to your identity. If you would like any crash-report or breadcrumb data associated with your per-install identifier to be deleted, contact us using the details in the Contact section below and we will remove it where technically feasible. For the full picture of what is collected and your choices, see the Privacy and Telemetry page on our website.
+The telemetry described above is anonymous and not tied to your identity. If you would like any crash-report or breadcrumb data associated with your per-install identifier to be deleted, contact us using the details in the Contact section below and we will remove it where technically feasible. For the full picture of what is collected and your choices, see the [Privacy and Telemetry](/legal/telemetry.md) page on our website.
 
 ## Website cookies and analytics
 
