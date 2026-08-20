@@ -244,7 +244,7 @@ Mirrors the Profile telemetry (§5.2). App Rules route individual application **
 
 | Event | Metric | Type | Attributes |
 |-------|--------|------|------------|
-| App Rule triggered (process matched) | `soundswitch.apprule.activated` | Counter | `trigger: process\|foreground`, `process: <hash>` |
+| App Rule routing change applied (a device was actually switched) | `soundswitch.apprule.activated` | Counter | `trigger: process\|foreground`, `process: <hash>` |
 | App Rule created | `soundswitch.apprule.created` | Counter | — |
 | App Rule deleted | `soundswitch.apprule.deleted` | Counter | — |
 
