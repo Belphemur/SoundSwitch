@@ -4,14 +4,18 @@
 
 [Code]
 
-function GetInstallDir(): string;
+function GetInstallDir(Default: string): string;
 var
   Roots: array of Integer;
   Root, I, Count: Integer;
   BaseKey, FullKey, KeyName, DisplayName, InstallLoc: string;
   SubKeys: TArrayOfString;
 begin
-  Result := ExpandConstant('{autopf}\{#MyAppSetupName}');
+  // Default is the value Inno would have used; fall back to it (or the
+  // conventional Program Files path) if no existing install is found.
+  Result := Default;
+  if Result = '' then
+    Result := ExpandConstant('{autopf}\{#MyAppSetupName}');
 
   SetArrayLength(Roots, 2);
   Roots[0] := HKLM;
