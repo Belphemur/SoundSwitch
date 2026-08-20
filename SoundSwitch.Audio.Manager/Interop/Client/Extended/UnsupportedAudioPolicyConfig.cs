@@ -6,8 +6,9 @@ namespace SoundSwitch.Audio.Manager.Interop.Client.Extended;
 
 public class UnsupportedAudioPolicyConfig : IAudioPolicyConfig
 {
-    public void SetPersistedDefaultAudioEndpoint(uint processId, EDataFlow flow, ERole role, string deviceId)
+    public bool SetPersistedDefaultAudioEndpoint(uint processId, EDataFlow flow, ERole role, string deviceId)
     {
+        return false;
     }
 
     public string? GetPersistedDefaultAudioEndpoint(uint processId, EDataFlow flow, ERole role)
