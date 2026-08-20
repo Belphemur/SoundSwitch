@@ -3,11 +3,9 @@
 // constant is a belt-and-suspenders safety net so the installer still lands in
 // the real install directory when launched without a /DIR (e.g. a transitional
 // update run by an older updater).
-// We skip our own stable key (UsePreviousAppDir handles it), then match any
-// other uninstall entry whose DisplayName is exactly {#MyAppSetupName} or begins
-// with "{#MyAppSetupName} " (name + space + version), and whose InstallLocation
-// actually contains SoundSwitch.exe. The ownership check avoids hijacking
-// unrelated entries such as "SoundSwitch Helper". Falls back to Default.
+// We enumerate uninstall entries, skipping our own stable key(s) (UsePreviousAppDir
+// already reuses them) and any entry lacking SoundSwitch.exe, then prefer the
+// machine-wide (HKLM) install for determinism. Falls back to Default.
 
 [Code]
 
@@ -15,6 +13,7 @@ function GetInstallDir(Default: string): string;
 var
   Roots: array of Integer;
   Root, I, Count: Integer;
+  RootsCount: Integer;
   BaseKey, FullKey, KeyName, DisplayName, InstallLoc, ExePath: string;
   SubKeys: TArrayOfString;
 begin
@@ -38,8 +37,11 @@ begin
     for I := 0 to Count - 1 do
     begin
       KeyName := SubKeys[I];
-      // Skip our own stable key; UsePreviousAppDir already reuses it.
-      if CompareText(KeyName, '{#MyAppSetupName}') = 0 then
+      // Skip our own stable uninstall key(s): the bare AppId and the _is1-suffixed
+      // registry key Inno creates from it. UsePreviousAppDir already reuses them,
+      // and we must not let a legacy entry override the stable path.
+      if (CompareText(KeyName, '{#MyAppSetupName}') = 0) or
+         (CompareText(KeyName, '{#MyAppSetupName}_is1') = 0) then
         Continue;
 
       FullKey := BaseKey + '\' + KeyName;
@@ -54,13 +56,20 @@ begin
         begin
           if (InstallLoc <> '') and DirExists(InstallLoc) then
           begin
-            // Ownership check: only reuse directories that contain SoundSwitch.exe.
+            // Ownership check: only reuse directories that contain SoundSwitch.exe,
+            // so unrelated entries like "SoundSwitch Helper" are ignored.
             ExePath := InstallLoc + '\SoundSwitch.exe';
             if FileExists(ExePath) then
             begin
               Log('GetInstallDir: reusing existing install location ' + InstallLoc);
+              // Prefer the machine-wide (HKLM) install for determinism: return
+              // immediately on HKLM, otherwise remember and keep scanning HKCU.
+              if Root = 0 then
+              begin
+                Result := InstallLoc;
+                Exit;
+              end;
               Result := InstallLoc;
-              Exit;
             end;
           end;
         end;
