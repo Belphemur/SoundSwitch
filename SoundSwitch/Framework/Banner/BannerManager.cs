@@ -29,6 +29,7 @@ public class BannerManager
 {
     private static System.Threading.SynchronizationContext _syncContext;
     private readonly Dictionary<Guid, BannerForm> _bannerForms = new();
+    private readonly Dictionary<string, Guid> _bannerByKey = new();
     private BannerForm _singleBanner;
     private BannerForm _customPositionBanner;
     private const int SPACING = 10;
@@ -92,8 +93,28 @@ public class BannerManager
         // Execute the banner in the context of the UI thread
         _syncContext.Send(_ =>
         {
+            // If a banner for the same device + title is already shown, update it
+            // in place instead of stacking a new one. This keeps the "Only one banner"
+            // behavior even when several notifications for the same device are raised
+            // in quick succession (e.g. a default-device switch with
+            // "Switch default communication device" enabled).
+            if (_bannerByKey.TryGetValue(data.DedupKey, out var existingId)
+                && _bannerForms.TryGetValue(existingId, out var existingBanner)
+                && !existingBanner.IsDisposed)
+            {
+                existingBanner.SetData(data);
+                return;
+            }
+
             var banner = new BannerForm();
-            banner.Disposed += (s, e) => { _bannerForms.Remove(banner.Id); };
+            banner.Disposed += (s, e) =>
+            {
+                _bannerForms.Remove(banner.Id);
+                if (_bannerByKey.TryGetValue(data.DedupKey, out var keyedId) && keyedId == banner.Id)
+                {
+                    _bannerByKey.Remove(data.DedupKey);
+                }
+            };
             banner.SetData(data);
             foreach (var bannerForm in _bannerForms.Values)
             {
@@ -101,6 +122,7 @@ public class BannerManager
             }
 
             _bannerForms.Add(banner.Id, banner);
+            _bannerByKey[data.DedupKey] = banner.Id;
         }, null);
     }
 

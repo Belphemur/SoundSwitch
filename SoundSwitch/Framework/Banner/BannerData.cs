@@ -107,4 +107,13 @@ public class BannerData
     /// </summary>
     [AllowNull]
     public EventHandler OnClick { get; internal set; }
+
+    /// <summary>
+    /// Key used to deduplicate concurrently shown banners. Banners sharing the
+    /// same key (same device + same title) update the existing banner instead of
+    /// stacking a new one. This is what makes the "Only one banner" setting hold
+    /// when several notifications for the same device are raised in quick succession
+    /// (e.g. a default-device switch with "Switch default communication device" on).
+    /// </summary>
+    public string DedupKey => $"{CurrentDeviceId ?? string.Empty}|{Title ?? string.Empty}";
 }
