@@ -3,11 +3,12 @@
   "type": "module",
   "release": {
     "branches": [
-      "dev",
+      "master",
       {
         "name": "beta",
         "prerelease": true
-      }
+      },
+      "dev"
     ],
     "plugins": [
       [
