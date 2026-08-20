@@ -47,9 +47,8 @@ SoundSwitch populates the Sentry username field with the local Windows username.
 1. Open SoundSwitch settings (right-click the tray icon → **Settings**).
 2. Go to the **General** tab.
 3. Uncheck **Telemetry**.
-4. Click **Save**.
 
-The change takes effect immediately. No restart is required. When telemetry is disabled:
+The change takes effect immediately — there is no separate save button. No restart is required. When telemetry is disabled:
 
 - No feature-usage counters are sent.
 - Crash reports and their breadcrumbs (which may include limited local context such as process names from application logs) are sent only if the application crashes, independent of this setting. The usage counters described above are not sent.
