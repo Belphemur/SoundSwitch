@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Timers;
@@ -12,6 +13,7 @@ using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.NotificationManager;
+using SoundSwitch.Framework.Telemetry;
 using SoundSwitch.Model;
 
 namespace SoundSwitch.Services
@@ -49,7 +51,7 @@ namespace SoundSwitch.Services
             var notifiedRulesInBatch = new HashSet<Guid>();
             foreach (var @event in events)
             {
-                ApplyRulesToProcess(@event.ProcessId, @event.ProcessName, @event.ProcessPath, @event.WindowTitle, notifiedRulesInBatch);
+                ApplyRulesToProcess(@event.ProcessId, @event.ProcessName, @event.ProcessPath, @event.WindowTitle, notifiedRulesInBatch, "process");
             }
         }
 
@@ -60,10 +62,10 @@ namespace SoundSwitch.Services
             _logger.Verbose("Foreground window changed: {WindowTitle} (PID: {ProcessId})", e.WindowName, e.ProcessId);
             
             // For foreground changes, we re-apply immediately as it often means the app is interactive
-            ApplyRulesToProcess(e.ProcessId, e.ProcessName, e.ProcessPath, e.WindowName, null);
+            ApplyRulesToProcess(e.ProcessId, e.ProcessName, e.ProcessPath, e.WindowName, null, "foreground");
         }
 
-        private void ApplyRulesToProcess(uint processId, string processName, string processPath, string windowTitle, HashSet<Guid>? notifiedRules)
+        private void ApplyRulesToProcess(uint processId, string processName, string processPath, string windowTitle, HashSet<Guid>? notifiedRules, string triggerSource)
         {
             if (_configuration.AppSoundRules == null || _configuration.AppSoundRules.Count == 0) return;
 
@@ -81,6 +83,11 @@ namespace SoundSwitch.Services
                 if (!string.IsNullOrEmpty(rule.RecordingDeviceId))
                 {
                     changed |= _audioSwitcher.SwitchProcessTo(rule.RecordingDeviceId, ERole.ERole_enum_count, EDataFlow.eCapture, processId);
+                }
+
+                if (changed)
+                {
+                    TelemetryService.TrackAppRuleActivated(Path.GetFileName(processPath) ?? processName, triggerSource);
                 }
 
                 if (rule.Notify && changed)
