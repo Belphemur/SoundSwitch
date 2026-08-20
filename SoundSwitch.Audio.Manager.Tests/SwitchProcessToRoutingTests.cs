@@ -59,7 +59,7 @@ public sealed class SwitchProcessToRoutingTests
         }
     }
 
-    private static readonly uint ProcessId = 1234;
+    private static uint ProcessId => (uint)Environment.ProcessId;
     private const string DeviceId = "test-device";
     private static readonly ERole[] AllRoles = { ERole.eConsole, ERole.eMultimedia, ERole.eCommunications };
 
