@@ -1,3 +1,16 @@
+## [7.2.1](https://github.com/Belphemur/SoundSwitch/compare/v7.2.0...v7.2.1) (2026-08-22)
+
+### Enhancements
+
+* **telemetry:** add App Rules activation, creation, and deletion metrics ([#2348](https://github.com/Belphemur/SoundSwitch/issues/2348)) ([5b5b8a0](https://github.com/Belphemur/SoundSwitch/commit/5b5b8a0846a42ab2bcbbe72307cf24db8637f581))
+
+### Bug Fixes
+
+* **audio:** decode default WAV and migrate WasapiOut to WasapiPlayer (issue [#2351](https://github.com/Belphemur/SoundSwitch/issues/2351)) ([#2356](https://github.com/Belphemur/SoundSwitch/issues/2356)) ([d9052c8](https://github.com/Belphemur/SoundSwitch/commit/d9052c81c473ea66fca15b3f53c5b8ff9b83fa24))
+* **audio:** report persistent-policy routing failures from SwitchProcessTo ([#2350](https://github.com/Belphemur/SoundSwitch/issues/2350)) ([9dfe5b3](https://github.com/Belphemur/SoundSwitch/commit/9dfe5b36eef6838d5a7912d1c2d7ff41890c9dfe)), closes [#2349](https://github.com/Belphemur/SoundSwitch/issues/2349)
+* **common:** remove case-colliding duplicate icon resources ([91bcc50](https://github.com/Belphemur/SoundSwitch/commit/91bcc50d4078f3d3691ede51c9321e4e205542a6))
+* **updater:** install update into the running app directory (issue [#2353](https://github.com/Belphemur/SoundSwitch/issues/2353)) ([#2354](https://github.com/Belphemur/SoundSwitch/issues/2354)) ([3f61d69](https://github.com/Belphemur/SoundSwitch/commit/3f61d69cc0f970729dbf294427102f783627e6f8))
+
 ## [7.2.0](https://github.com/Belphemur/SoundSwitch/compare/v7.1.0...v7.2.0) (2026-08-20)
 
 ### Features
