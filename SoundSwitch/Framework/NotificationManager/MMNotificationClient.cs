@@ -13,6 +13,12 @@ using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.NotificationManager;
 
+/// <summary>
+/// App-side hub that owns the <see cref="AudioDeviceNotificationClient"/> registration with the
+/// device enumerator (register/unregister are marshalled onto the ComThread via
+/// <see cref="AudioSwitcher"/>) and translates the native default-device, device-lifecycle and
+/// property notifications into queued <see cref="DeviceChangedEvent"/>s for the app to consume.
+/// </summary>
 public class MMNotificationClient : IDisposable
 {
     private static readonly ILogger _logger = Log.ForContext<MMNotificationClient>();
@@ -66,7 +72,12 @@ public class MMNotificationClient : IDisposable
             client.PropertyValueChanged += OnPropertyValueChanged;
 
             // Construction and RegisterEndpointNotificationCallback happen on the ComThread here.
-            AudioSwitcher.Instance.RegisterNotificationClient(client);
+            if (!AudioSwitcher.Instance.RegisterNotificationClient(client))
+            {
+                // Registration failed (already logged in AudioSwitcher): do not publish a dead
+                // client that would never fire — leave _client null so Dispose is a no-op.
+                return;
+            }
 
             // The interop enums are [Flags] and carry *_enum_count sentinels (value 3) that have
             // no native meaning — filter them out along with eAll when seeding the defaults.

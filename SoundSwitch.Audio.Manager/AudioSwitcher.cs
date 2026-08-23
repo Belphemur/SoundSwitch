@@ -370,11 +370,16 @@ namespace SoundSwitch.Audio.Manager
         /// Register a client for default-device / endpoint notifications. The registration is
         /// marshalled onto the ComThread; the client must stay rooted until unregistered.
         /// </summary>
-        public void RegisterNotificationClient(AudioDeviceNotificationClient client) => ComThread.Invoke(() =>
+        /// <returns>
+        /// True when the registration succeeded, false when it failed (already logged here).
+        /// The caller must not publish a client whose registration failed — it would never fire.
+        /// </returns>
+        public bool RegisterNotificationClient(AudioDeviceNotificationClient client) => ComThread.Invoke(() =>
         {
             try
             {
                 EnumeratorClient.RegisterNotificationClient(client);
+                return true;
             }
             catch (Exception ex)
             {
@@ -389,6 +394,8 @@ namespace SoundSwitch.Audio.Manager
                 {
                     Log.Warning(ex, "Device notification registration failed.");
                 }
+
+                return false;
             }
         });
 
