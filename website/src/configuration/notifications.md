@@ -13,7 +13,7 @@ The **Notifications** tab lets you choose how SoundSwitch alerts you when an aud
 
 The **Notification Type** panel controls which notification method is used and provides an **Advanced...** toggle to reveal additional options.
 
-- **Switch device** — Sets the notification style used when switching audio devices via hotkey. Options include **Banner Notification**, **Windows Toast**, **Sound**, or **None**.
+- **Switch device** — Sets the notification style used when switching audio devices via hotkey. Options include **Banner Notification**, **Windows Notification**, **Sound**, or **None**.
 - **Advanced...** (checkbox) — When checked, reveals additional notification controls: **Switch profile** (notification for profile activation) and **Microphone mute** (notification for mute toggle). The panel height expands to accommodate these options.
 
 The **Windows Notification** option is rendered as a native Windows toast: it appears in and persists in the Action Center, follows the on-screen time, and shows the real device icon. It requires Windows 10 version 1809 or later; on older Windows versions it falls back to a legacy notification balloon.

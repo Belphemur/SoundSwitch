@@ -99,6 +99,7 @@ internal static class NotificationContentBuilder
         Title = newMuteState
             ? string.Format(SettingsStrings.notification_microphone_muted, microphoneName)
             : string.Format(SettingsStrings.notification_microphone_unmuted, microphoneName),
+        Text = microphoneName,
         Image = newMuteState ? Resources.microphone_muted : Resources.microphone_unmuted
     };
 }

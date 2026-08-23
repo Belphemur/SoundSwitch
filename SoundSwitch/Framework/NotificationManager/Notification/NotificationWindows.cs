@@ -65,6 +65,8 @@ internal class NotificationWindows : INotification
 
     private void ShowToastOrBalloon(BannerData data)
     {
+        data.Ttl = Configuration.Ttl;
+
         if (OperatingSystem.IsWindowsVersionAtLeast(10, 0, 17763) && ToastNotificationRenderer.Show(data))
         {
             return;

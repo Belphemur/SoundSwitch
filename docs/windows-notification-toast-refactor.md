@@ -1,6 +1,6 @@
 # Windows Notification → Toast Refactor
 
-**Status:** Design proposal (no code changed).
+**Status:** Implemented (see PR #2370).
 **Branch:** `refactor/windows-notification-toast`.
 
 ## 1. Problem
