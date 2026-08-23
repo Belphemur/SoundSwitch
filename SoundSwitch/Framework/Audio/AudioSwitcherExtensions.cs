@@ -18,7 +18,7 @@ namespace SoundSwitch.Framework.Audio
     /// </summary>
     public static class AudioSwitcherExtensions
     {
-        private static readonly ILogger Logger = Log.ForContext<AudioSwitcherExtensions>();
+        private static readonly ILogger Logger = Log.ForContext(typeof(AudioSwitcherExtensions));
 
         /// <summary>
         /// Get the current default endpoint
