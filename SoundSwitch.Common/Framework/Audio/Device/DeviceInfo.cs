@@ -4,12 +4,18 @@ using System.Text.RegularExpressions;
 using NAudio.CoreAudioApi;
 
 using Newtonsoft.Json;
+using Serilog;
 #pragma warning disable CS0618 // Type or member is obsolete
 
 namespace SoundSwitch.Common.Framework.Audio.Device
 {
     public partial class DeviceInfo : IEquatable<DeviceInfo>
     {
+        private static readonly ILogger _logger = Log.ForContext<DeviceInfo>();
+
+        // AUDCLNT_E_SERVICE_NOT_RUNNING: the Windows audio service is stopped/unavailable.
+        private const int AudioServiceNotRunningHResult = unchecked((int)0x88890010);
+
         private static readonly Regex NameSplitterRegex = NameSplitterRegexCompiled();
 
         private static readonly Regex NameCleanerRegex = NameCleanerRegexCompiled();
@@ -58,12 +64,37 @@ namespace SoundSwitch.Common.Framework.Audio.Device
 
         public DeviceInfo(MMDevice device)
         {
-            Name = device.FriendlyName;
-            Id = device.ID;
-            Type = device.DataFlow;
-            var deviceProperties = device.Properties;
-            var enumerator = deviceProperties.Contains(PropertyKeys.DEVPKEY_Device_EnumeratorName) ? (string)deviceProperties[PropertyKeys.DEVPKEY_Device_EnumeratorName].Value : "";
-            IsUsb = enumerator == "USB";
+            // The Windows audio service can disappear between device enumeration and
+            // object creation (service stop, fast-user-switch, RDP disconnect, sleep/resume).
+            // Reading device metadata can throw CoreAudioException/COMException in that window;
+            // fall back to safe defaults so the base construction never crashes the caller.
+            try
+            {
+                Name = device.FriendlyName;
+                Id = device.ID;
+                Type = device.DataFlow;
+                var deviceProperties = device.Properties;
+                var enumerator = deviceProperties.Contains(PropertyKeys.DEVPKEY_Device_EnumeratorName) ? (string)deviceProperties[PropertyKeys.DEVPKEY_Device_EnumeratorName].Value : "";
+                IsUsb = enumerator == "USB";
+            }
+            catch (Exception ex)
+            {
+                // Only the "service not running" HRESULT is the expected/transient case (Information);
+                // any other CoreAudio failure (e.g. device invalidation) is unexpected and stays at Warning.
+                if (ex is CoreAudioException { HResult: AudioServiceNotRunningHResult })
+                {
+                    _logger.Information(ex, "Failed to read metadata for device {DeviceId}: audio service not running; using defaults.", device?.ID);
+                }
+                else
+                {
+                    _logger.Warning(ex, "Failed to read metadata for device {DeviceId}; using defaults.", device?.ID);
+                }
+
+                Name = device?.ID ?? string.Empty;
+                Id = device?.ID ?? string.Empty;
+                Type = device?.DataFlow ?? DataFlow.Render;
+                IsUsb = false;
+            }
         }
 
         [JsonConstructor]

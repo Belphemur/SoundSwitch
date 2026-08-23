@@ -15,6 +15,10 @@ namespace SoundSwitch.Common.Framework.Audio.Device
 {
     public class DeviceFullInfo : DeviceInfo, IDisposable
     {
+        // AUDCLNT_E_SERVICE_NOT_RUNNING: the Windows audio service is stopped/unavailable.
+        // This is the expected, transient condition (not a crash) we downgrade to Information.
+        private const int AudioServiceNotRunningHResult = unchecked((int)0x88890010);
+
         private readonly MMDevice? _device;
         private readonly ILogger _logger;
         public string IconPath { get; }
@@ -62,7 +66,17 @@ namespace SoundSwitch.Common.Framework.Audio.Device
                 // The Windows audio service can disappear between device enumeration and
                 // object creation (service stop, fast-user-switch, RDP disconnect, sleep/resume).
                 // Never let that crash construction — fall back to safe defaults instead.
-                _logger.Warning(ex, "Failed to read icon path or state for device {DeviceId}; using defaults.", device.ID);
+                // Only the "service not running" HRESULT is the expected/transient case (Information);
+                // any other CoreAudio failure is unexpected and stays at Warning.
+                if (ex is CoreAudioException { HResult: AudioServiceNotRunningHResult })
+                {
+                    _logger.Information(ex, "Failed to read icon path or state for device {DeviceId}: audio service not running; using defaults.", device.ID);
+                }
+                else
+                {
+                    _logger.Warning(ex, "Failed to read icon path or state for device {DeviceId}; using defaults.", device.ID);
+                }
+
                 IconPath = IconPath ?? string.Empty;
                 if (State == default) State = DeviceState.Active;
             }
@@ -145,12 +159,18 @@ namespace SoundSwitch.Common.Framework.Audio.Device
                 // enumeration and this call (sleep/resume, RDP disconnect, fast-user-switch,
                 // service restart). It is expected, not a crash, so log it at Information to
                 // avoid generating a Sentry issue alert. Unexpected failures stay at Warning.
-                if (ex is CoreAudioException)
+                if (ex is CoreAudioException { HResult: AudioServiceNotRunningHResult })
                 {
+                    // "The Windows audio service is not running" is a transient condition when
+                    // the service stops between device enumeration and this call (sleep/resume,
+                    // RDP disconnect, fast-user-switch, service restart). It is expected, not a
+                    // crash, so log at Information to avoid generating a Sentry issue alert.
                     _logger.Information(ex, "Skipping volume subscription for device {DeviceNameClean}: audio endpoint unavailable (audio service not running?).", NameClean);
                 }
                 else
                 {
+                    // Any other CoreAudio failure (e.g. device invalidation) is unexpected and
+                    // must stay at Warning so it remains visible.
                     _logger.Warning(ex, "Failed during volume notification subscription or initial state retrieval for device {DeviceNameClean}", NameClean);
                 }
                 Volume = 0; // Ensure defaults are set on error
