@@ -22,8 +22,10 @@ using NAudio.CoreAudioApi;
 
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
+using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
 using SoundSwitch.Framework.Telemetry;
+using SoundSwitch.Framework.Toast;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
 
@@ -39,45 +41,43 @@ internal class NotificationWindows : INotification
     public void NotifyDefaultChanged(DeviceFullInfo audioDevice)
     {
         TelemetryService.TrackNotificationWindows();
-        switch (audioDevice.Type)
-        {
-            case DataFlow.Render:
-                Configuration.Icon.ShowBalloonTip(500,
-                    TrayIconStrings.playbackChanged,
-                    audioDevice.NameClean, ToolTipIcon.Info);
-                break;
-            case DataFlow.Capture:
-                Configuration.Icon.ShowBalloonTip(500,
-                    TrayIconStrings.recordingChanged,
-                    audioDevice.NameClean, ToolTipIcon.Info);
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(audioDevice.Type), audioDevice.Type, null);
-        }
+        var data = NotificationContentBuilder.BuildDefaultChanged(audioDevice, NotificationContentBuilder.DeviceChangeWording.WindowsNotification);
+        ShowToastOrBalloon(data);
     }
 
     public void NotifyProfileChanged(Profile.Profile profile, Bitmap icon, uint? processId)
     {
-        var title = string.Format(SettingsStrings.profile_notification_text, profile.Name);
-        var text  = string.Join("\n", profile.Devices.Select(wrapper => wrapper.DeviceInfo.NameClean));
-        Configuration.Icon.ShowBalloonTip(1000, title, text, ToolTipIcon.Info);
+        var data = NotificationContentBuilder.BuildProfileChanged(profile, icon);
+        ShowToastOrBalloon(data);
     }
 
     public void NotifyAppRuleMatched(AppSoundRule rule, DeviceFullInfo playback, DeviceFullInfo recording, Bitmap icon, uint processId)
     {
-        var devices = new List<string>();
-        if (playback != null) devices.Add(playback.NameClean);
-        if (recording != null) devices.Add(recording.NameClean);
-
-        var title = SettingsStrings.appSoundLock_tab;
-        var text = string.Join("\n", devices);
-        Configuration.Icon.ShowBalloonTip(1000, title, text, ToolTipIcon.Info);
+        var data = NotificationContentBuilder.BuildAppRuleMatched(playback, recording, icon);
+        ShowToastOrBalloon(data);
     }
 
     public void NotifyMicrophoneMuteChanged(string deviceId, string microphoneName, bool newMuteState)
     {
-        var title = newMuteState ? string.Format(SettingsStrings.notification_microphone_muted, microphoneName) : string.Format(SettingsStrings.notification_microphone_unmuted, microphoneName);
-        Configuration.Icon.ShowBalloonTip(1000, title, microphoneName, ToolTipIcon.Info);
+        var data = NotificationContentBuilder.BuildMicrophoneMuteChanged(microphoneName, newMuteState);
+        ShowToastOrBalloon(data);
+    }
+
+    private void ShowToastOrBalloon(BannerData data)
+    {
+        data.Ttl = Configuration.Ttl;
+
+        if (OperatingSystem.IsWindowsVersionAtLeast(10, 0, 17763) && ToastNotificationRenderer.Show(data))
+        {
+            return;
+        }
+
+        ShowBalloon(data);
+    }
+
+    private void ShowBalloon(BannerData data)
+    {
+        Configuration.Icon.ShowBalloonTip(1000, data.Title, data.Text, ToolTipIcon.Info);
     }
 
     public void OnSoundChanged(CachedSound newSound) { }

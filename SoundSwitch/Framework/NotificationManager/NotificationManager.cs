@@ -27,6 +27,7 @@ using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
+using SoundSwitch.Framework.Toast;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
@@ -44,6 +45,11 @@ public class NotificationManager(INotificationSettings notificationSettings, IAp
 
     public void Init()
     {
+        if (OperatingSystem.IsWindowsVersionAtLeast(10, 0, 17763))
+        {
+            ToastNotificationRenderer.EnsureRegistered();
+        }
+
         deviceService.DefaultDeviceChanged += ModelOnDefaultDeviceChanged;
         notificationSettings.NotificationSettingsChanged += ModelOnNotificationSettingsChanged;
         SetNotifications(notificationSettings.SwitchDeviceNotification, notificationSettings.SwitchProfileNotification, notificationSettings.MicrophoneMuteNotification);

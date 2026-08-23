@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using Serilog;
 
 using SoundSwitch.Framework.Telemetry;
+using SoundSwitch.Framework.Toast;
 using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.Banner;
@@ -45,7 +46,7 @@ public class BannerManager
         if (OperatingSystem.IsWindowsVersionAtLeast(10, 0, 17763) && ExclusiveFullscreenDetector.IsForegroundInExclusiveFullscreen())
         {
             Log.Debug("Foreground window is in exclusive fullscreen — routing to Toast notification");
-            ToastBannerAdapter.Show(data);
+            ToastNotificationRenderer.Show(data);
             return;
         }
 
@@ -115,10 +116,5 @@ public class BannerManager
         if (!(_syncContext is System.Windows.Forms.WindowsFormsSynchronizationContext))
             throw new InvalidOperationException("BannerManager must be called in the context of the UI thread.");
         Log.Information("Banner manager initialized");
-
-        if (OperatingSystem.IsWindowsVersionAtLeast(10, 0, 17763))
-        {
-            ToastBannerAdapter.EnsureRegistered();
-        }
     }
 }

@@ -20,11 +20,13 @@ using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
 using Serilog;
 
-// Alias required: inside namespace SoundSwitch.Framework.Banner the simple name
-// BannerDisplayInfo resolves to the nested namespace, shadowing the enum.
+using SoundSwitch.Framework.Banner;
+
+// Alias required: the imported SoundSwitch.Framework.Banner namespace contains a
+// nested BannerDisplayInfo namespace which shadows the same-named enum.
 using BannerDisplayInfoEnum = SoundSwitch.Framework.Banner.BannerDisplayInfo.BannerDisplayInfo;
 
-namespace SoundSwitch.Framework.Banner;
+namespace SoundSwitch.Framework.Toast;
 
 /// <summary>
 /// Renders a <see cref="BannerData"/> as a Windows Toast notification
@@ -34,7 +36,7 @@ namespace SoundSwitch.Framework.Banner;
 /// display over exclusive fullscreen games.
 /// </summary>
 [System.Runtime.Versioning.SupportedOSPlatform("windows10.0.17763.0")]
-internal static class ToastBannerAdapter
+internal static class ToastNotificationRenderer
 {
     // SoundSwitch's registered AppUserModelID.
     // Must match the value set by the installer (Inno Setup sets this on the
@@ -75,7 +77,7 @@ internal static class ToastBannerAdapter
     /// Shows a Windows Toast notification built from the provided
     /// <see cref="BannerData"/>. Safe to call from any thread.
     /// </summary>
-    public static void Show(BannerData data)
+    public static bool Show(BannerData data)
     {
         try
         {
@@ -95,10 +97,13 @@ internal static class ToastBannerAdapter
             ToastNotificationManager
                 .CreateToastNotifier(AppId)
                 .Show(toast);
+
+            return true;
         }
         catch (Exception ex)
         {
-            Log.Warning(ex, "ToastBannerAdapter failed to show notification for '{Title}'", data.Title);
+            Log.Warning(ex, "ToastNotificationRenderer failed to show notification for '{Title}'", data.Title);
+            return false;
         }
     }
 
@@ -176,7 +181,7 @@ internal static class ToastBannerAdapter
         }
         catch (Exception ex)
         {
-            Log.Warning(ex, "ToastBannerAdapter could not save image to temp");
+            Log.Warning(ex, "ToastNotificationRenderer could not save image to temp");
             return null;
         }
     }
