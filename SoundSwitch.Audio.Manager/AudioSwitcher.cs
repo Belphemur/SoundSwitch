@@ -191,13 +191,15 @@ namespace SoundSwitch.Audio.Manager
             if (currentDefault == null)
                 return;
 
-            var audioInfo = InteractWithDevice(currentDefault, device =>
+            // Nullable tuple: default(ValueTuple) is (0f, false), which collides with a genuine
+            // "volume 0, not muted" reading — null unambiguously means "couldn't read the volume".
+            var audioInfo = InteractWithDevice<(float Volume, bool IsMuted)?>(currentDefault, device =>
             {
                 var defaultDeviceAudioEndpointVolume = device.EndpointVolume;
-                return defaultDeviceAudioEndpointVolume == null ? default : (Volume: defaultDeviceAudioEndpointVolume.MasterVolumeLevelScalar, IsMuted: defaultDeviceAudioEndpointVolume.Mute);
+                return defaultDeviceAudioEndpointVolume == null ? null : (defaultDeviceAudioEndpointVolume.MasterVolumeLevelScalar, defaultDeviceAudioEndpointVolume.Mute);
             });
 
-            if (audioInfo == default)
+            if (audioInfo == null)
                 return;
 
             using var nextDevice = GetDevice(deviceId);
@@ -216,15 +218,15 @@ namespace SoundSwitch.Audio.Manager
 
                 if (endpointVolume.ChannelCount == 2)
                 {
-                    endpointVolume.SetChannelVolumeLevelScalar(0, audioInfo.Volume);
-                    endpointVolume.SetChannelVolumeLevelScalar(1, audioInfo.Volume);
+                    endpointVolume.SetChannelVolumeLevelScalar(0, audioInfo.Value.Volume);
+                    endpointVolume.SetChannelVolumeLevelScalar(1, audioInfo.Value.Volume);
                 }
                 else
                 {
-                    endpointVolume.MasterVolumeLevelScalar = audioInfo.Volume;
+                    endpointVolume.MasterVolumeLevelScalar = audioInfo.Value.Volume;
                 }
 
-                endpointVolume.Mute = audioInfo.IsMuted;
+                endpointVolume.Mute = audioInfo.Value.IsMuted;
                 return device;
             });
         }

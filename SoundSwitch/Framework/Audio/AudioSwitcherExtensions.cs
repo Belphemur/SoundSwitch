@@ -1,8 +1,8 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+
+using Serilog;
 
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
@@ -18,6 +18,8 @@ namespace SoundSwitch.Framework.Audio
     /// </summary>
     public static class AudioSwitcherExtensions
     {
+        private static readonly ILogger Logger = Log.ForContext<AudioSwitcherExtensions>();
+
         /// <summary>
         /// Get the current default endpoint
         /// </summary>
@@ -37,7 +39,7 @@ namespace SoundSwitch.Framework.Audio
             }
             catch (Exception e)
             {
-                Trace.TraceWarning("Couldn't get default device info [{0}|{1}]: {2}", flow, role, e);
+                Logger.Warning(e, "Couldn't get default device info [{Flow}|{Role}]", flow, role);
                 device.Dispose();
                 return null;
             }
@@ -61,7 +63,7 @@ namespace SoundSwitch.Framework.Audio
             }
             catch (Exception e)
             {
-                Trace.TraceWarning("Couldn't get device info [{0}]: {1}", deviceId, e);
+                Logger.Warning(e, "Couldn't get device info [{DeviceId}]", deviceId);
                 device.Dispose();
                 return null;
             }
@@ -89,7 +91,7 @@ namespace SoundSwitch.Framework.Audio
                 }
                 catch (Exception e)
                 {
-                    Trace.TraceWarning("Couldn't get device info [{0}]: {1}", device.Id, e);
+                    Logger.Warning(e, "Couldn't get device info [{DeviceId}]", device.Id);
                     device.Dispose();
                     continue;
                 }
