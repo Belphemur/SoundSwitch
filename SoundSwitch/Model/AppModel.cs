@@ -19,6 +19,7 @@ using System.Drawing;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 using NAudio.CoreAudioApi;
 
@@ -148,6 +149,7 @@ public partial class AppModel : IAppModel
             AppConfigs.Configuration.Save();
 
         WindowsAPIAdapter.HotKeyPressed += HandleHotkeyPress;
+        WindowsAPIAdapter.SystemResumed += OnSystemResumed;
 
         TrayIcon = new TrayIcon();
         _notificationManager.Init();
@@ -177,9 +179,31 @@ public partial class AppModel : IAppModel
 
     public void Dispose()
     {
+        _initialized = false;
         _notificationManager?.Dispose();
         TrayIcon?.Dispose();
         AudioDeviceLister?.Dispose();
         AppSoundLockManager?.Dispose();
+        WindowsAPIAdapter.SystemResumed -= OnSystemResumed;
+    }
+
+    private void OnSystemResumed(object sender, EventArgs e)
+    {
+        if (!_initialized || AudioDeviceLister == null)
+            return;
+
+        Task.Run(() =>
+        {
+            try
+            {
+                Log.Information("System resumed from sleep, refreshing audio devices and reconciling default device");
+                AudioDeviceLister.Refresh(CancellationToken.None);
+                MMNotificationClient.Instance.ReconcileDefaultDevices();
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "Failed to refresh audio devices after system resume");
+            }
+        });
     }
 }
