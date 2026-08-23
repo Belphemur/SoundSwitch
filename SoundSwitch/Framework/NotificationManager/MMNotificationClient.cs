@@ -6,6 +6,8 @@ using System.Linq;
 
 using NAudio.CoreAudioApi;
 
+using Serilog;
+
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Model;
@@ -16,6 +18,11 @@ namespace SoundSwitch.Framework.NotificationManager;
 
 public class MMNotificationClient : IDisposable
 {
+    private static readonly ILogger _logger = Log.ForContext<MMNotificationClient>();
+
+    // AUDCLNT_E_SERVICE_NOT_RUNNING: the Windows audio service is stopped/unavailable.
+    private const int AudioServiceNotRunningHResult = unchecked((int)0x88890010);
+
     private record struct DeviceRole(DataFlow Flow, Role Role);
 
     public static MMNotificationClient Instance { get; } = new();
@@ -50,25 +57,51 @@ public class MMNotificationClient : IDisposable
     /// </summary>
     public void Register()
     {
-        _enumerator = new MMDeviceEnumerator();
-        _client = _enumerator.CreateNotificationClient(false);
-        _client.DeviceStateChanged += OnDeviceStateChanged;
-        _client.DeviceAdded += OnDeviceAdded;
-        _client.DeviceRemoved += OnDeviceRemoved;
-        _client.DefaultDeviceChanged += OnDefaultDeviceChanged;
-        _client.PropertyValueChanged += OnPropertyValueChanged;
-        foreach (var flow in Enum.GetValues<DataFlow>().Where(flow => flow != DataFlow.All))
+        // Use locals during setup so a failure leaves no partial state on the instance.
+        // Only assign the fields once the whole registration (enumerator + client + events +
+        // default-device snapshot) has succeeded; Dispose() already null-checks both.
+        try
         {
-            foreach (var role in Enum.GetValues<Role>())
-            {
-                var device = AudioSwitcher.Instance.GetDefaultAudioEndpoint((EDataFlow)flow, (ERole)role);
-                if (device == null)
-                    continue;
+            var enumerator = new MMDeviceEnumerator();
+            var client = enumerator.CreateNotificationClient(false);
+            client.DeviceStateChanged += OnDeviceStateChanged;
+            client.DeviceAdded += OnDeviceAdded;
+            client.DeviceRemoved += OnDeviceRemoved;
+            client.DefaultDeviceChanged += OnDefaultDeviceChanged;
+            client.PropertyValueChanged += OnPropertyValueChanged;
 
-                using (_lastRoleDeviceLock.EnterScope())
+            foreach (var flow in Enum.GetValues<DataFlow>().Where(flow => flow != DataFlow.All))
+            {
+                foreach (var role in Enum.GetValues<Role>())
                 {
-                    _lastRoleDevice[new DeviceRole(flow, role)] = device.Id;
+                    var device = AudioSwitcher.Instance.GetDefaultAudioEndpoint((EDataFlow)flow, (ERole)role);
+                    if (device == null)
+                        continue;
+
+                    using (_lastRoleDeviceLock.EnterScope())
+                    {
+                        _lastRoleDevice[new DeviceRole(flow, role)] = device.Id;
+                    }
                 }
+            }
+
+            // All setup succeeded — publish the fully-initialized objects.
+            _enumerator = enumerator;
+            _client = client;
+        }
+        catch (Exception ex)
+        {
+            // The Windows audio service can be unavailable at startup (stopped, sleep/resume,
+            // RDP disconnect, fast-user-switch). Never let that fatal-exit the application —
+            // the tray app must still start. Only the "service not running" HRESULT is the
+            // expected case; everything else is an unexpected failure worth a Warning.
+            if (ex is CoreAudioException { HResult: AudioServiceNotRunningHResult })
+            {
+                _logger.Information(ex, "MMNotificationClient registration skipped: Windows audio service not running.");
+            }
+            else
+            {
+                _logger.Warning(ex, "MMNotificationClient registration failed; device notifications will be unavailable until restart.");
             }
         }
     }
