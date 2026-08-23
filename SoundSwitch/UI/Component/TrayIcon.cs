@@ -28,6 +28,7 @@ using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Framework;
+using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Profile.UI;
 using SoundSwitch.Framework.TrayIcon.IconChanger;

@@ -12,7 +12,7 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using NAudio.CoreAudioApi;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Localization;
@@ -26,5 +26,5 @@ public class IconChangerAlways : IconChangerAbstract
 
     protected override bool NeedsToChangeIcon(DeviceInfo deviceInfo) => true;
 
-    protected override DataFlow Flow => DataFlow.Render;
+    protected override EDataFlow Flow => EDataFlow.eRender;
 }

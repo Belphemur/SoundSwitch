@@ -17,7 +17,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
-using NAudio.CoreAudioApi;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Banner;
@@ -49,14 +49,14 @@ internal static class NotificationContentBuilder
         {
             DeviceChangeWording.Banner => device.Type switch
             {
-                DataFlow.Render => SettingsStrings.tooltipOnHover_option_playbackDevice,
-                DataFlow.Capture => SettingsStrings.tooltipOnHover_option_recordingDevice,
+                EDataFlow.eRender => SettingsStrings.tooltipOnHover_option_playbackDevice,
+                EDataFlow.eCapture => SettingsStrings.tooltipOnHover_option_recordingDevice,
                 _ => throw new ArgumentOutOfRangeException(nameof(device.Type), device.Type, null)
             },
             DeviceChangeWording.WindowsNotification => device.Type switch
             {
-                DataFlow.Render => TrayIconStrings.playbackChanged,
-                DataFlow.Capture => TrayIconStrings.recordingChanged,
+                EDataFlow.eRender => TrayIconStrings.playbackChanged,
+                EDataFlow.eCapture => TrayIconStrings.recordingChanged,
                 _ => throw new ArgumentOutOfRangeException(nameof(device.Type), device.Type, null)
             },
             _ => throw new ArgumentOutOfRangeException(nameof(wording), wording, null)

@@ -51,13 +51,14 @@ public class Profile : IEquatable<Profile>, IDisposable
     {
         get
         {
-            var device = AudioSwitcher.Instance.GetDevice(Devices.First().DeviceInfo.Id);
+            // The AudioDevice properties are an immutable snapshot — safe to read off the ComThread.
+            using var device = AudioSwitcher.Instance.GetDevice(Devices.First().DeviceInfo.Id);
             if (device == null)
             {
                 return DefaultProfileIcon.Acquire();
             }
 
-            return AudioSwitcher.Instance.InteractWithDevice(device, mmDevice => AudioDeviceIconExtractor.ExtractIconFromPath(mmDevice.IconPath, mmDevice.DataFlow, true));
+            return AudioDeviceIconExtractor.ExtractIconFromAudioDevice(device, true);
         }
     }
 

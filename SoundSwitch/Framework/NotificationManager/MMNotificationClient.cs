@@ -4,15 +4,12 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
-using NAudio.CoreAudioApi;
-
 using Serilog;
 
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
+using SoundSwitch.Audio.Manager.Interop.Interface;
 using SoundSwitch.Model;
-
-using PropertyKeys = NAudio.CoreAudioApi.PropertyKeys;
 
 namespace SoundSwitch.Framework.NotificationManager;
 
@@ -20,20 +17,16 @@ public class MMNotificationClient : IDisposable
 {
     private static readonly ILogger _logger = Log.ForContext<MMNotificationClient>();
 
-    // AUDCLNT_E_SERVICE_NOT_RUNNING: the Windows audio service is stopped/unavailable.
-    private const int AudioServiceNotRunningHResult = unchecked((int)0x88890010);
-
-    private record struct DeviceRole(DataFlow Flow, Role Role);
+    private record struct DeviceRole(EDataFlow Flow, ERole Role);
 
     public static MMNotificationClient Instance { get; } = new();
-    private MMDeviceEnumerator _enumerator;
-    private MMDeviceNotificationClient _client;
+    private AudioDeviceNotificationClient _client;
 
     private readonly Dictionary<DeviceRole, string> _lastRoleDevice = new();
     private readonly Lock _lastRoleDeviceLock = new();
 
     private readonly ConcurrentQueue<DeviceChangedEvent> _deviceChangedEvents = new();
-        
+
     /// <summary>
     /// Get the last events and clear the queue of events
     /// </summary>
@@ -53,28 +46,35 @@ public class MMNotificationClient : IDisposable
     }
 
     /// <summary>
-    /// Register the notification client in the Enumerator
+    /// Register the notification client in the Enumerator.
+    /// The enumerator access and registration are marshalled onto the ComThread inside
+    /// <see cref="AudioSwitcher.RegisterNotificationClient"/> — this method itself can be called
+    /// from any thread.
     /// </summary>
     public void Register()
     {
         // Use locals during setup so a failure leaves no partial state on the instance.
-        // Only assign the fields once the whole registration (enumerator + client + events +
-        // default-device snapshot) has succeeded; Dispose() already null-checks both.
+        // Only assign the field once the whole registration (client + events + default-device
+        // snapshot) has succeeded; Dispose() already null-checks it.
         try
         {
-            var enumerator = new MMDeviceEnumerator();
-            var client = enumerator.CreateNotificationClient(false);
+            var client = new AudioDeviceNotificationClient();
             client.DeviceStateChanged += OnDeviceStateChanged;
             client.DeviceAdded += OnDeviceAdded;
             client.DeviceRemoved += OnDeviceRemoved;
             client.DefaultDeviceChanged += OnDefaultDeviceChanged;
             client.PropertyValueChanged += OnPropertyValueChanged;
 
-            foreach (var flow in Enum.GetValues<DataFlow>().Where(flow => flow != DataFlow.All))
+            // Construction and RegisterEndpointNotificationCallback happen on the ComThread here.
+            AudioSwitcher.Instance.RegisterNotificationClient(client);
+
+            // The interop enums are [Flags] and carry *_enum_count sentinels (value 3) that have
+            // no native meaning — filter them out along with eAll when seeding the defaults.
+            foreach (var flow in Enum.GetValues<EDataFlow>().Where(flow => flow is not (EDataFlow.eAll or EDataFlow.EDataFlow_enum_count)))
             {
-                foreach (var role in Enum.GetValues<Role>())
+                foreach (var role in Enum.GetValues<ERole>().Where(role => role != ERole.ERole_enum_count))
                 {
-                    var device = AudioSwitcher.Instance.GetDefaultAudioEndpoint((EDataFlow)flow, (ERole)role);
+                    using var device = AudioSwitcher.Instance.GetDefaultAudioDevice(flow, role);
                     if (device == null)
                         continue;
 
@@ -85,8 +85,7 @@ public class MMNotificationClient : IDisposable
                 }
             }
 
-            // All setup succeeded — publish the fully-initialized objects.
-            _enumerator = enumerator;
+            // All setup succeeded — publish the fully-initialized object.
             _client = client;
         }
         catch (Exception ex)
@@ -95,7 +94,7 @@ public class MMNotificationClient : IDisposable
             // RDP disconnect, fast-user-switch). Never let that fatal-exit the application —
             // the tray app must still start. Only the "service not running" HRESULT is the
             // expected case; everything else is an unexpected failure worth a Warning.
-            if (ex is CoreAudioException { HResult: AudioServiceNotRunningHResult })
+            if (AudioDeviceException.IsAudioServiceNotRunning(ex))
             {
                 _logger.Information(ex, "MMNotificationClient registration skipped: Windows audio service not running.");
             }
@@ -119,13 +118,13 @@ public class MMNotificationClient : IDisposable
     /// </summary>
     public void ReconcileDefaultDevices()
     {
-        foreach (var flow in Enum.GetValues<DataFlow>().Where(flow => flow != DataFlow.All))
+        foreach (var flow in Enum.GetValues<EDataFlow>().Where(flow => flow is not (EDataFlow.eAll or EDataFlow.EDataFlow_enum_count)))
         {
-            foreach (var role in Enum.GetValues<Role>())
+            foreach (var role in Enum.GetValues<ERole>().Where(role => role != ERole.ERole_enum_count))
             {
                 using (_lastRoleDeviceLock.EnterScope())
                 {
-                    var device = AudioSwitcher.Instance.GetDefaultAudioEndpoint((EDataFlow)flow, (ERole)role);
+                    using var device = AudioSwitcher.Instance.GetDefaultAudioDevice(flow, role);
                     if (device == null)
                         continue;
 
@@ -162,10 +161,10 @@ public class MMNotificationClient : IDisposable
 
     private void OnPropertyValueChanged(object sender, DevicePropertyChangedEventArgs e)
     {
-        if (PropertyKeys.PKEY_DeviceInterface_FriendlyName.formatId != e.PropertyKey.formatId
-            && PropertyKeys.PKEY_AudioEndpoint_GUID.formatId != e.PropertyKey.formatId
-            && PropertyKeys.PKEY_Device_IconPath.formatId != e.PropertyKey.formatId
-            && PropertyKeys.PKEY_Device_FriendlyName.formatId != e.PropertyKey.formatId
+        if (PropertyKeys.PKEY_DeviceInterface_FriendlyName.fmtid != e.PropertyKey.fmtid
+            && PropertyKeys.PKEY_AudioEndpoint_GUID.fmtid != e.PropertyKey.fmtid
+            && PropertyKeys.PKEY_Device_IconPath.fmtid != e.PropertyKey.fmtid
+            && PropertyKeys.PKEY_Device_FriendlyName.fmtid != e.PropertyKey.fmtid
            )
         {
             return;
@@ -183,9 +182,8 @@ public class MMNotificationClient : IDisposable
             _client.DeviceRemoved -= OnDeviceRemoved;
             _client.DefaultDeviceChanged -= OnDefaultDeviceChanged;
             _client.PropertyValueChanged -= OnPropertyValueChanged;
-            _client.Dispose();
+            // Unregister marshalled onto the ComThread; the client itself is a pure managed object.
+            AudioSwitcher.Instance.UnregisterNotificationClient(_client);
         }
-
-        _enumerator?.Dispose();
     }
 }

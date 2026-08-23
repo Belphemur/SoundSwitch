@@ -12,7 +12,7 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using NAudio.CoreAudioApi;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 
 using SoundSwitch.Localization;
 
@@ -22,5 +22,5 @@ public class IconChangerRecording : IconChangerAbstract
 {
     public override IconChanger TypeEnum => IconChanger.Recording;
     public override string Label => TrayIconStrings.iconChanger_recording;
-    protected override DataFlow Flow => DataFlow.Capture;
+    protected override EDataFlow Flow => EDataFlow.eCapture;
 }

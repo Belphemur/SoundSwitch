@@ -17,7 +17,7 @@ using System.Collections.Generic;
 using System.Reactive;
 using System.Threading;
 
-using NAudio.CoreAudioApi;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 
 using SoundSwitch.Common.Framework.Audio.Collection;
 using SoundSwitch.Common.Framework.Audio.Device;
@@ -50,7 +50,7 @@ public interface IAudioDeviceLister : IDisposable
     /// <param name="state"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    DeviceReadOnlyCollection<DeviceFullInfo> GetDevices(DataFlow type, DeviceState state);
+    DeviceReadOnlyCollection<DeviceFullInfo> GetDevices(EDataFlow type, EDeviceState state);
 
     /// <summary>
     /// Process device updates

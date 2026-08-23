@@ -16,7 +16,7 @@
 using System;
 using System.Collections.Generic;
 
-using NAudio.CoreAudioApi;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 
 using SoundSwitch.Common.Framework.Audio.Collection;
 using SoundSwitch.Common.Framework.Audio.Device;
@@ -56,7 +56,7 @@ public interface IDeviceService
     bool SelectDevice(DeviceFullInfo device);
     bool UnselectDevice(DeviceFullInfo device);
     bool SetActiveDevice(DeviceInfo device);
-    bool CycleActiveDevice(DataFlow type);
+    bool CycleActiveDevice(EDataFlow type);
     (string DeviceName, bool IsMuted)? ToggleMicrophoneMute();
     (string DeviceName, bool IsMuted)? SetMicrophoneMuteState(bool muteState);
     (string DeviceName, bool IsMuted)? SetMicrophoneMuteState(string deviceId, bool muteState);

@@ -14,7 +14,7 @@
 
 using System.Collections.Generic;
 
-using NAudio.CoreAudioApi;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Localization;
@@ -28,8 +28,8 @@ public class DeviceCyclerAll : ADeviceCycler
     public override string Label => SettingsStrings.cycleThrough_option_allAudioDevices;
         
 
-    protected override IEnumerable<DeviceFullInfo> GetDevices(DataFlow type)
+    protected override IEnumerable<DeviceFullInfo> GetDevices(EDataFlow type)
     {
-        return AppModel.Instance.AudioDeviceLister.GetDevices(type, DeviceState.Active);
+        return AppModel.Instance.AudioDeviceLister.GetDevices(type, EDeviceState.Active);
     }
 }

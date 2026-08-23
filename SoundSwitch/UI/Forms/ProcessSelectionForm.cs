@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using Serilog;
 
 using SoundSwitch.Audio.Manager;
+using SoundSwitch.Framework.Audio;
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Localization;

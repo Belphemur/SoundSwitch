@@ -1,6 +1,6 @@
 ﻿using System;
 
-using NAudio.CoreAudioApi;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 
 namespace SoundSwitch.Model;
 
@@ -25,7 +25,7 @@ public record DeviceChangedEvent(EventType Action, string DeviceId) : IComparabl
     }
 }
 
-public record DefaultDeviceChangedEvent(EventType Action, string DeviceId, Role Role) : DeviceChangedEvent(Action, DeviceId), IComparable<DefaultDeviceChangedEvent>
+public record DefaultDeviceChangedEvent(EventType Action, string DeviceId, ERole Role) : DeviceChangedEvent(Action, DeviceId), IComparable<DefaultDeviceChangedEvent>
 {
     // Don't compare the role in this case, we don't want multiple times the same event for the same device with different role
     public int CompareTo(DefaultDeviceChangedEvent other)

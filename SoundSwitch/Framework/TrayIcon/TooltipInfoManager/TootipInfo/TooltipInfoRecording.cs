@@ -12,7 +12,7 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using NAudio.CoreAudioApi;
+using SoundSwitch.Framework.Audio;
 
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
@@ -32,7 +32,7 @@ public class TooltipInfoRecording : ITooltipInfo
     {
         AppModel.Instance.DefaultDeviceChanged += (sender, @event) =>
         {
-            if (@event.Device.Type != DataFlow.Capture)
+            if (@event.Device.Type != EDataFlow.eCapture)
                 return;
             if (_defaultDevice != null)
             {
@@ -40,21 +40,13 @@ public class TooltipInfoRecording : ITooltipInfo
             }
             _defaultDevice = AudioSwitcher.Instance.GetAudioEndpoint(@event.DeviceId);
             if (_defaultDevice != null)
-                AudioSwitcher.Instance.InteractWithDevice(_defaultDevice, device =>
-                {
-                    // Subscribe to OS-level volume notifications
-                    device.SubscribeToVolumeNotifications();
-                    return device;
-                });
+                // Subscribe to OS-level volume notifications (marshalled onto the ComThread internally)
+                _defaultDevice.SubscribeToVolumeNotifications();
         };
         _defaultDevice = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eConsole);
         if (_defaultDevice != null)
-            AudioSwitcher.Instance.InteractWithDevice(_defaultDevice, device =>
-            {
-                // Subscribe to OS-level volume notifications
-                device.SubscribeToVolumeNotifications();
-                return device;
-            });
+            // Subscribe to OS-level volume notifications (marshalled onto the ComThread internally)
+            _defaultDevice.SubscribeToVolumeNotifications();
     }
 
     /// <summary>

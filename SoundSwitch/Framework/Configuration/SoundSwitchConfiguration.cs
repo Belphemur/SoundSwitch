@@ -18,7 +18,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
-using NAudio.CoreAudioApi;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 
 using Newtonsoft.Json;
 
@@ -154,7 +154,7 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
         if (SelectedPlaybackDeviceListId.Count > 0)
         {
             SelectedDevices.UnionWith(
-                SelectedPlaybackDeviceListId.Select((s => new DeviceInfo("", s, DataFlow.Render, false, DateTime.UtcNow))));
+                SelectedPlaybackDeviceListId.Select((s => new DeviceInfo("", s, EDataFlow.eRender, false, DateTime.UtcNow))));
             SelectedPlaybackDeviceListId.Clear();
             migrated = true;
         }
@@ -162,7 +162,7 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
         if (SelectedRecordingDeviceListId.Count > 0)
         {
             SelectedDevices.UnionWith(
-                SelectedRecordingDeviceListId.Select((s => new DeviceInfo("", s, DataFlow.Capture, false, DateTime.UtcNow))));
+                SelectedRecordingDeviceListId.Select((s => new DeviceInfo("", s, EDataFlow.eCapture, false, DateTime.UtcNow))));
             SelectedRecordingDeviceListId.Clear();
             migrated = true;
         }
