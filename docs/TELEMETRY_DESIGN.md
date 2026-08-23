@@ -267,7 +267,7 @@ Mirrors the Profile / App-Rule telemetry (§5.2, §5.7): categorical counters on
 | Update mode changed (and once at app startup, as a baseline) | `soundswitch.update.mode` | Counter | `value: Silent\|Notify\|Never` |
 | User clicked "Check for update" in the tray menu | `soundswitch.update.check` | Counter | `trigger: manual` |
 | A newer release was found and offered (`NewVersionReleased` fired) | `soundswitch.update.available` | Counter | `mode: Silent\|Notify\|Never` |
-| An install was attempted/applied | `soundswitch.update.installed` | Counter | `mode: Silent\|Notify`, `result: success\|signature_error\|failed` |
+| An install was attempted/applied | `soundswitch.update.installed` | Counter | `mode: Silent\|Notify\|Never`, `result: success\|signature_error\|failed` |
 
 `value`/`mode` are the `UpdateMode` enum name (a categorical setting, not PII); `result` is a categorical install outcome.
 

@@ -251,7 +251,7 @@ public static class TelemetryService
     public static void TrackProfileCount(int count)
     {
         if (!AppConfigs.Configuration.Telemetry) return;
-        SentrySdk.Metrics.EmitDistribution("soundswitch.profile.count", count, MeasurementUnit.None, null, null);
+        SentrySdk.Metrics.EmitDistribution("soundswitch.profile.count", count, MeasurementUnit.None, Attributes(), null);
     }
 
     /// <summary>
@@ -260,7 +260,7 @@ public static class TelemetryService
     public static void TrackAppRuleCount(int count)
     {
         if (!AppConfigs.Configuration.Telemetry) return;
-        SentrySdk.Metrics.EmitDistribution("soundswitch.apprule.count", count, MeasurementUnit.None, null, null);
+        SentrySdk.Metrics.EmitDistribution("soundswitch.apprule.count", count, MeasurementUnit.None, Attributes(), null);
     }
 
     // ── System ──────────────────────────────────────────────────────

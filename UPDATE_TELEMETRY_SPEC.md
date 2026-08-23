@@ -13,7 +13,7 @@ Counters (add to `SoundSwitch/Framework/Telemetry/TelemetryService.cs`):
 | `soundswitch.update.mode` | `value` = Silent \| Notify \| Never | Emitted on every change of the setting, AND once at startup (baseline) |
 | `soundswitch.update.check` | `trigger` = manual | User clicked "Check for update" in the tray menu |
 | `soundswitch.update.available` | `mode` = Silent \| Notify \| Never | A newer release was found and offered (NewVersionReleased fired) |
-| `soundswitch.update.installed` | `mode` = Silent \| Notify, `result` = success \| signature_error \| failed | An install was attempted/applied |
+| `soundswitch.update.installed` | `mode` = Silent \| Notify \| Never, `result` = success \| signature_error \| failed | An install was attempted/applied |
 
 Mirror the existing method style exactly:
 ```csharp
