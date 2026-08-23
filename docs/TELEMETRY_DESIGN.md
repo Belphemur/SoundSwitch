@@ -265,11 +265,14 @@ Mirrors the Profile / App-Rule telemetry (§5.2, §5.7): categorical counters on
 | Event | Metric | Type | Attributes |
 |-------|--------|------|------------|
 | Update mode changed (and once at app startup, as a baseline) | `soundswitch.update.mode` | Counter | `value: Silent\|Notify\|Never` |
-| User clicked "Check for update" in the tray menu | `soundswitch.update.check` | Counter | `trigger: manual` |
+| A check for updates was triggered | `soundswitch.update.check` | Counter | `trigger: manual\|setting_change` |
 | A newer release was found and offered (`NewVersionReleased` fired) | `soundswitch.update.available` | Counter | `mode: Silent\|Notify\|Never` |
+| The update asset failed to download (network/storage failure, before any install) | `soundswitch.update.download_failed` | Counter | — |
 | An install was attempted/applied | `soundswitch.update.installed` | Counter | `mode: Silent\|Notify\|Never`, `result: success\|signature_error\|failed` |
 
-`value`/`mode` are the `UpdateMode` enum name (a categorical setting, not PII); `result` is a categorical install outcome.
+`value`/`mode` are the `UpdateMode` enum name (a categorical setting, not PII); `trigger` is the `UpdateCheckTrigger` enum name — `manual` for a user-initiated check from the tray menu, `setting_change` for a check kicked off automatically by a settings change (beta channel or update mode change).
+
+`result` is a categorical install outcome: `success` means the installer process was **launched** (the install itself is not awaited), `failed` means the installer process could not be launched or an exception was thrown, and `signature_error` means the downloaded file failed signature validation. **Download (network) failures are NOT reported as `installed`/`failed`** — they are counted separately by `soundswitch.update.download_failed`, which fires before any install attempt.
 
 ### 5.9 Startup snapshot & deferred Tier-1 counters
 

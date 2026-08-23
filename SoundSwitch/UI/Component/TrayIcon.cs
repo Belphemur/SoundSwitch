@@ -254,7 +254,7 @@ public sealed class TrayIcon : IDisposable
     {
         if (_updateMenuItem.Tag == null)
         {
-            AppModel.Instance.CheckForUpdate();
+            AppModel.Instance.CheckForUpdate(UpdateCheckTrigger.Manual);
             return;
         }
 

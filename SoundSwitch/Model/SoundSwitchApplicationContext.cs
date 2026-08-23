@@ -71,8 +71,8 @@ public class SoundSwitchApplicationContext : ApplicationContext
             {
                 TelemetryService.TrackUpdateAvailable(UpdateMode.Silent);
                 new AutoUpdater("/VERYSILENT").Update(
-                    @event.AppRelease, true);
-                TelemetryService.TrackUpdateInstalled(UpdateMode.Silent, "success");
+                    @event.AppRelease, true,
+                    onCompleted: ok => TelemetryService.TrackUpdateInstalled(UpdateMode.Silent, ok ? "success" : "failed"));
             }
         };
 

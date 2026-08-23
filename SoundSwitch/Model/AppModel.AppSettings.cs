@@ -54,7 +54,7 @@ public partial class AppModel
             if (value != IncludeBetaVersions && _updateChecker != null)
             {
                 _updateChecker.Beta = value;
-                CheckForUpdate();
+                CheckForUpdate(UpdateCheckTrigger.SettingChange);
             }
 
             AppConfigs.Configuration.IncludeBetaVersions = value;
@@ -110,7 +110,7 @@ public partial class AppModel
             if (value != AppConfigs.Configuration.UpdateMode)
             {
                 if (value != UpdateMode.Never)
-                    CheckForUpdate();
+                    CheckForUpdate(UpdateCheckTrigger.SettingChange);
 
                 TelemetryService.TrackUpdateMode(value);
                 UpdateModeChanged?.Invoke(this, value);
@@ -183,9 +183,9 @@ public partial class AppModel
     /// <summary>
     /// For the app to check for update
     /// </summary>
-    public void CheckForUpdate()
+    public void CheckForUpdate(UpdateCheckTrigger trigger = UpdateCheckTrigger.Manual)
     {
-        TelemetryService.TrackUpdateCheck("manual");
+        TelemetryService.TrackUpdateCheck(trigger.ToString());
         JobScheduler.Instance.ScheduleJob(new CheckForUpdateOnceJob(_updateChecker), CancellationToken.None, _updateScheduler);
     }
 

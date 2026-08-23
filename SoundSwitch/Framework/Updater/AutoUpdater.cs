@@ -43,7 +43,7 @@ public class AutoUpdater
         InstallerParameters = installerParameters;
     }
 
-    public void Update(AppRelease appRelease, bool closeApp)
+    public void Update(AppRelease appRelease, bool closeApp, Action<bool>? onCompleted = null)
     {
         var file = new WebFile(new Uri(appRelease.Asset.BrowserDownloadUrl));
         file.Downloaded += (sender, args) =>
@@ -53,12 +53,14 @@ public class AutoUpdater
             if (signatureResult != null)
             {
                 Log.Error("The file has the wrong signature. Update cancelled. {signatureResult}", signatureResult);
+                onCompleted?.Invoke(false);
                 _context.Send(state => { MessageBox.Show(string.Format(UpdateDownloadStrings.wrongSignature, "https://soundswitch.aaflalo.me"), Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error); },
                     null);
                 return;
             }
 
             new UpdateRunner().RunUpdate(file, InstallerParameters);
+            onCompleted?.Invoke(true);
             if (closeApp)
             {
                 _context.Send(s => { Application.Exit(); }, null);

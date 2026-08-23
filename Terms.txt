@@ -278,11 +278,18 @@ Data gathered
     distinguish users during debugging
 -   Update subsystem usage counts — anonymous counters for which update mode is
     configured (Silent, Notify, or Never, emitted when the setting changes and once
-    at startup as a baseline), when a manual update check is triggered, when a newer
-    release is found and offered, and when an install is attempted or applied (with a
-    categorical result of success, signature_error, or failed). Only the categorical
-    update mode and outcome are sent; no version numbers, file paths, or identifiers
-    are included
+    at startup as a baseline), when a check for updates is triggered (with a
+    categorical trigger of manual for a tray-menu "Check for update" click, or
+    setting_change when a check is kicked off automatically by a settings change such
+    as the beta channel or update mode), when a newer release is found and offered,
+    when an update download fails (``soundswitch.update.download_failed``, a network
+    or storage failure before any install is attempted), and when an install is
+    attempted or applied (with a categorical result of success — meaning the installer
+    was launched — signature_error, or failed — meaning the installer could not be
+    launched). Download (network) failures are reported separately from install
+    failures and are never labeled as an install attempt. Only the categorical update
+    mode, trigger, and outcome are sent; no version numbers, file paths, or
+    identifiers are included
 -   Update-postponed and startup configuration snapshot — an anonymous counter
     (``soundswitch.update.postponed``) when an offered update is postponed; and, once
     at startup, a categorical snapshot of which settings are enabled (for example:

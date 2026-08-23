@@ -225,6 +225,17 @@ public static class TelemetryService
     }
 
     /// <summary>
+    /// The update asset failed to download (network/storage failure) before any install
+    /// was attempted. This is a distinct metric from <c>soundswitch.update.installed</c>
+    /// with <c>result = "failed"</c>, which is reserved for install/launch or signature errors.
+    /// </summary>
+    public static void TrackUpdateDownloadFailed()
+    {
+        if (!AppConfigs.Configuration.Telemetry) return;
+        SentrySdk.Metrics.EmitCounter("soundswitch.update.download_failed", 1);
+    }
+
+    /// <summary>
     /// User postponed an offered update (clicked "Remind me" / cancel on the
     /// download form before the download started).
     /// </summary>
