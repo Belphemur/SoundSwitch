@@ -114,11 +114,15 @@ public class SoundSwitchApplicationContext : ApplicationContext
                             return null;
                         }
 
-                        return AudioSwitcher.Instance.InteractWithDevice(defaultDevice, device => new MicrophoneStateResponse
+                        return AudioSwitcher.Instance.InteractWithDevice(defaultDevice, device =>
                         {
-                            Success = true,
-                            IsMuted = device.EndpointVolume.Mute,
-                            DeviceName = device.FriendlyName
+                            var endpointVolume = device.EndpointVolume ?? throw new InvalidOperationException("No endpoint volume for the default capture device.");
+                            return new MicrophoneStateResponse
+                            {
+                                Success = true,
+                                IsMuted = endpointVolume.Mute,
+                                DeviceName = device.FriendlyName
+                            };
                         });
                     }, token);
 
