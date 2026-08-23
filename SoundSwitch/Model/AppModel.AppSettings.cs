@@ -112,6 +112,7 @@ public partial class AppModel
                 if (value != UpdateMode.Never)
                     CheckForUpdate();
 
+                TelemetryService.TrackUpdateMode(value);
                 UpdateModeChanged?.Invoke(this, value);
             }
 
@@ -184,6 +185,7 @@ public partial class AppModel
     /// </summary>
     public void CheckForUpdate()
     {
+        TelemetryService.TrackUpdateCheck("manual");
         JobScheduler.Instance.ScheduleJob(new CheckForUpdateOnceJob(_updateChecker), CancellationToken.None, _updateScheduler);
     }
 

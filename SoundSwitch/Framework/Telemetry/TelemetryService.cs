@@ -20,6 +20,7 @@ using System.Security.Cryptography;
 using Sentry;
 
 using SoundSwitch.Framework.Configuration;
+using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.Profile.Trigger;
 
 namespace SoundSwitch.Framework.Telemetry;
@@ -178,6 +179,88 @@ public static class TelemetryService
     {
         if (!AppConfigs.Configuration.Telemetry) return;
         SentrySdk.Metrics.EmitCounter("soundswitch.notification.sound_played", 1);
+    }
+
+    // ── Update subsystem ────────────────────────────────────────────
+
+    /// <summary>
+    /// Emitted on every change of the UpdateMode setting, AND once at startup
+    /// (baseline), so we know which update mode users run.
+    /// </summary>
+    public static void TrackUpdateMode(UpdateMode mode)
+    {
+        if (!AppConfigs.Configuration.Telemetry) return;
+        SentrySdk.Metrics.EmitCounter("soundswitch.update.mode", 1,
+            Attributes(("value", mode.ToString())), null);
+    }
+
+    /// <summary>
+    /// User clicked "Check for update" in the tray menu.
+    /// </summary>
+    public static void TrackUpdateCheck(string trigger)
+    {
+        if (!AppConfigs.Configuration.Telemetry) return;
+        SentrySdk.Metrics.EmitCounter("soundswitch.update.check", 1,
+            Attributes(("trigger", trigger)), null);
+    }
+
+    /// <summary>
+    /// A newer release was found and offered (NewVersionReleased fired).
+    /// </summary>
+    public static void TrackUpdateAvailable(UpdateMode mode)
+    {
+        if (!AppConfigs.Configuration.Telemetry) return;
+        SentrySdk.Metrics.EmitCounter("soundswitch.update.available", 1,
+            Attributes(("mode", mode.ToString())), null);
+    }
+
+    /// <summary>
+    /// An install was attempted/applied.
+    /// </summary>
+    public static void TrackUpdateInstalled(UpdateMode mode, string result)
+    {
+        if (!AppConfigs.Configuration.Telemetry) return;
+        SentrySdk.Metrics.EmitCounter("soundswitch.update.installed", 1,
+            Attributes(("mode", mode.ToString()), ("result", result)), null);
+    }
+
+    /// <summary>
+    /// User postponed an offered update (clicked "Remind me" / cancel on the
+    /// download form before the download started).
+    /// </summary>
+    public static void TrackUpdatePostponed()
+    {
+        if (!AppConfigs.Configuration.Telemetry) return;
+        SentrySdk.Metrics.EmitCounter("soundswitch.update.postponed", 1);
+    }
+
+    /// <summary>
+    /// Snapshot of a single configuration setting at startup. Categorical only —
+    /// the value is the setting's value (e.g. an enum name or bool), never free text.
+    /// </summary>
+    public static void TrackSetting(string name, object value)
+    {
+        if (!AppConfigs.Configuration.Telemetry) return;
+        SentrySdk.Metrics.EmitCounter("soundswitch.setting", 1,
+            Attributes(("name", name), ("value", value)), null);
+    }
+
+    /// <summary>
+    /// Number of configured profiles, emitted once at startup.
+    /// </summary>
+    public static void TrackProfileCount(int count)
+    {
+        if (!AppConfigs.Configuration.Telemetry) return;
+        SentrySdk.Metrics.EmitDistribution("soundswitch.profile.count", count, MeasurementUnit.None, null, null);
+    }
+
+    /// <summary>
+    /// Number of configured App Sound Lock rules, emitted once at startup.
+    /// </summary>
+    public static void TrackAppRuleCount(int count)
+    {
+        if (!AppConfigs.Configuration.Telemetry) return;
+        SentrySdk.Metrics.EmitDistribution("soundswitch.apprule.count", count, MeasurementUnit.None, null, null);
     }
 
     // ── System ──────────────────────────────────────────────────────

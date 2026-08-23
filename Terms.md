@@ -1,6 +1,6 @@
 # Terms and Conditions
 
-Last updated: August 20, 2026
+Last updated: August 23, 2026
 
 Please read these terms and conditions carefully before using Our Service.
 
@@ -124,6 +124,8 @@ SoundSwitch can send opt-in usage telemetry and crash reports through [Sentry](h
 - App Rule (App Sound Lock) activation, creation, and deletion counts. For activations, the metric also records the `trigger` source (process or foreground window) and a pseudonymous SHA256 prefix (first 8 hex characters) of the matched process basename; the creation and deletion counters contain no process identifier
 - Lightweight breadcrumbs of user actions (e.g. hotkey presses, settings saved) — used only as context for crash reports
 - Local Windows username, hashed with SHA256 (first 8 hex characters) — sent as a pseudonymous label on crash reports via Sentry's SDK to help distinguish users during debugging
+- Update subsystem usage counts — anonymous counters for which update mode is configured (Silent, Notify, or Never, emitted when the setting changes and once at startup as a baseline), when a manual update check is triggered, when a newer release is found and offered, and when an install is attempted or applied (with a categorical result of success, signature_error, or failed). Only the categorical update mode and outcome are sent; no version numbers, file paths, or identifiers are included
+- Update-postponed and startup configuration snapshot — an anonymous counter (`soundswitch.update.postponed`) when an offered update is postponed; and, once at startup, a categorical snapshot of which settings are enabled (for example: include beta versions, language, quick menu, keep volume, switch foreground program, advanced notification mode, auto-add new devices, and tray icon style) plus the counts of configured profiles (`soundswitch.profile.count`) and App Sound Lock rules (`soundswitch.apprule.count`). Only the categorical setting values and counts are sent; no free text, names, or identifiers are included
 
 ## Data NOT gathered (telemetry counters)
 
