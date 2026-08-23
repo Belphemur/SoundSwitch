@@ -67,8 +67,9 @@ internal class NotificationSound : INotification
             var audioDevice = AudioSwitcher.Instance.GetDevice(profile.Playback.Id);
             if (audioDevice == null) return;
             // The AudioDevice properties are an immutable snapshot — safe to read off the ComThread.
-            // Ownership transfers to the DeviceFullInfo (it disposes the device with itself).
-            var device = new DeviceFullInfo(audioDevice);
+            // The DeviceFullInfo owns the AudioDevice; NotifyDefaultChanged only reads it, so the
+            // using disposes both here (previously the device leaked on this path).
+            using var device = new DeviceFullInfo(audioDevice);
             NotifyDefaultChanged(device);
         }
         catch (Exception)

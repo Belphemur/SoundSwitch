@@ -79,21 +79,33 @@ namespace SoundSwitch.Framework.Audio
         public static IEnumerable<DeviceFullInfo> GetAudioEndpoints(this AudioSwitcher switcher, EDataFlow flow, EDeviceState state)
         {
             var devices = switcher.GetAudioDevices(flow, state) ?? throw new InvalidOperationException("Audio endpoint enumeration failed.");
-            return devices.Select(device =>
+            var endpoints = new List<DeviceFullInfo>(devices.Count);
+            foreach (var device in devices)
+            {
+                DeviceFullInfo deviceInfo;
+                try
                 {
-                    try
-                    {
-                        return new DeviceFullInfo(device);
-                    }
-                    catch (Exception e)
-                    {
-                        Trace.TraceWarning("Couldn't get device info [{0}]: {1}", device.Id, e);
-                        device.Dispose();
-                        return null;
-                    }
-                })
-                .Where(device => !string.IsNullOrEmpty(device?.NameClean))
-                .Cast<DeviceFullInfo>().ToArray();
+                    deviceInfo = new DeviceFullInfo(device);
+                }
+                catch (Exception e)
+                {
+                    Trace.TraceWarning("Couldn't get device info [{0}]: {1}", device.Id, e);
+                    device.Dispose();
+                    continue;
+                }
+
+                // Devices whose cleaned name is empty are filtered out; dispose them so the
+                // AudioDevice they own (a COM reference) doesn't leak.
+                if (string.IsNullOrEmpty(deviceInfo.NameClean))
+                {
+                    deviceInfo.Dispose();
+                    continue;
+                }
+
+                endpoints.Add(deviceInfo);
+            }
+
+            return endpoints.ToArray();
         }
     }
 }

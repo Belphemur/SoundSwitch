@@ -261,26 +261,44 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
             try
             {
                 logContext.Information("Refreshing all devices");
-                foreach (var deviceInfo in AudioSwitcher.Instance.GetAudioEndpoints(EDataFlow.eAll, _state))
+                // Materialize the enumeration up front: if cancellation (or any failure) interrupts
+                // the placement loop below, the catch disposes every enumerated entry — placed or
+                // not — so no DeviceFullInfo (and the AudioDevice COM reference it owns) is abandoned.
+                var enumeratedDevices = AudioSwitcher.Instance.GetAudioEndpoints(EDataFlow.eAll, _state).ToArray();
+                try
                 {
-                    cancellationToken.ThrowIfCancellationRequested();
-
-                    // Subscription is now handled after adding to the dictionary
-                    // SubscribeToDeviceEvents(deviceInfo);
-
-                    switch (deviceInfo.Type)
+                    foreach (var deviceInfo in enumeratedDevices)
                     {
-                        case EDataFlow.eRender:
-                            playbackDevices.Add(deviceInfo.Id, deviceInfo);
-                            break;
-                        case EDataFlow.eCapture:
-                            recordingDevices.Add(deviceInfo.Id, deviceInfo);
-                            break;
-                        case EDataFlow.eAll:
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
+                        cancellationToken.ThrowIfCancellationRequested();
+
+                        // Subscription is now handled after adding to the dictionary
+                        // SubscribeToDeviceEvents(deviceInfo);
+
+                        switch (deviceInfo.Type)
+                        {
+                            case EDataFlow.eRender:
+                                playbackDevices.Add(deviceInfo.Id, deviceInfo);
+                                break;
+                            case EDataFlow.eCapture:
+                                recordingDevices.Add(deviceInfo.Id, deviceInfo);
+                                break;
+                            case EDataFlow.eAll:
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
                     }
+                }
+                catch
+                {
+                    // The new dictionaries are discarded without having been published, so every
+                    // enumerated device is ours to dispose (each entry was placed at most once).
+                    foreach (var device in enumeratedDevices)
+                    {
+                        device.Dispose();
+                    }
+
+                    throw;
                 }
 
                 // Dispose old devices first
