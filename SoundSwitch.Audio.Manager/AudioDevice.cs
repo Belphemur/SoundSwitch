@@ -188,19 +188,40 @@ namespace SoundSwitch.Audio.Manager
         {
             get
             {
-                if (_disposed != 0) return null;
                 lock (_endpointVolumeLock)
                 {
-                    if (_endpointVolume != null || _disposed != 0) return _endpointVolume;
-                    _endpointVolume = ComThread.Invoke(() =>
+                    if (_disposed != 0) return null;
+                    if (_endpointVolume != null) return _endpointVolume;
+                }
+
+                // Activate outside the lock: never hold _endpointVolumeLock across a ComThread
+                // round-trip (a concurrent Dispose already on the ComThread takes the same lock
+                // in ReleaseResources — holding the lock here would invert the order and deadlock).
+                var client = ComThread.Invoke(() =>
+                {
+                    var iid = IidAudioEndpointVolume;
+                    var pointer = Activate(iid, "IAudioEndpointVolume");
+                    var volume = (IAudioEndpointVolume)Marshal.GetObjectForIUnknown(pointer);
+                    Marshal.Release(pointer);
+                    return new AudioEndpointVolumeClient(volume);
+                });
+                if (client == null) return null;
+
+                lock (_endpointVolumeLock)
+                {
+                    if (_disposed == 0 && _endpointVolume == null)
                     {
-                        var iid = IidAudioEndpointVolume;
-                        var pointer = Activate(iid, "IAudioEndpointVolume");
-                        var volume = (IAudioEndpointVolume)Marshal.GetObjectForIUnknown(pointer);
-                        Marshal.Release(pointer);
-                        return new AudioEndpointVolumeClient(volume);
-                    });
-                    return _endpointVolume;
+                        _endpointVolume = client;
+                        return client;
+                    }
+                }
+
+                // Lost the publication race (concurrent getter or disposed in between): dispose the
+                // rejected client so its COM reference doesn't leak, and report the current state.
+                client.Dispose();
+                lock (_endpointVolumeLock)
+                {
+                    return _disposed == 0 ? _endpointVolume : null;
                 }
             }
         }
@@ -284,12 +305,29 @@ namespace SoundSwitch.Audio.Manager
             // Finalizer path: do not marshal to the ComThread (it may already be gone during
             // process teardown). Releasing the RCW is safe from any thread and destroys the
             // native object, which also drops any outstanding callback registrations.
-            ReleaseNativeReferenceOnly();
+            try
+            {
+                ReleaseNativeReferenceOnly();
+            }
+            catch
+            {
+                // Never let a finalizer throw (would terminate the process): the GC has already
+                // released the RCW reference by the time we run.
+            }
         }
 
         private void ReleaseResources()
         {
-            _endpointVolume?.Dispose();
+            // Detach under the same lock the EndpointVolume getter publishes with, then dispose
+            // outside the lock (dispose marshals to the ComThread; we are already on it).
+            AudioEndpointVolumeClient? endpointVolume;
+            lock (_endpointVolumeLock)
+            {
+                endpointVolume = _endpointVolume;
+                _endpointVolume = null;
+            }
+
+            endpointVolume?.Dispose();
             ReleaseNativeReferenceOnly();
         }
 

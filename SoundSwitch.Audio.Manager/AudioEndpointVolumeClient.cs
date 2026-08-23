@@ -97,9 +97,13 @@ namespace SoundSwitch.Audio.Manager
             add
             {
                 if (value == null) return;
-                lock (_callbackLock)
+                // Marshal first, then lock inside the delegate: ReleaseResources acquires the same
+                // lock while already running on the ComThread, so taking the lock before invoking
+                // would invert the order and deadlock (lock holder waits on ComThread, ComThread
+                // waits on the lock).
+                ComThread.Invoke(() =>
                 {
-                    ComThread.Invoke(() =>
+                    lock (_callbackLock)
                     {
                         if (_disposed != 0) return;
                         if (_callback == null)
@@ -111,15 +115,16 @@ namespace SoundSwitch.Audio.Manager
                         }
 
                         _volumeNotification += value;
-                    });
-                }
+                    }
+                });
             }
             remove
             {
                 if (value == null) return;
-                lock (_callbackLock)
+                // Same ordering as add: ComThread first, lock inside the delegate.
+                ComThread.Invoke(() =>
                 {
-                    ComThread.Invoke(() =>
+                    lock (_callbackLock)
                     {
                         _volumeNotification -= value;
                         if (_volumeNotification == null && _callback != null && _disposed == 0)
@@ -129,8 +134,8 @@ namespace SoundSwitch.Audio.Manager
                             if (hr != HRESULT.S_OK)
                                 Logger.Warning("IAudioEndpointVolume.UnregisterControlChangeNotify failed: 0x{HResult:X8}", (uint)hr);
                         }
-                    });
-                }
+                    }
+                });
             }
         }
 
@@ -160,7 +165,15 @@ namespace SoundSwitch.Audio.Manager
             // Finalizer path: do not marshal to the ComThread (it may already be gone during
             // process teardown). Releasing the RCW is safe from any thread and destroys the native
             // object, which also drops any outstanding notification registration.
-            ReleaseNativeReferenceOnly();
+            try
+            {
+                ReleaseNativeReferenceOnly();
+            }
+            catch
+            {
+                // Never let a finalizer throw (would terminate the process): the GC has already
+                // released the RCW reference by the time we run.
+            }
         }
 
         private void ReleaseResources()
