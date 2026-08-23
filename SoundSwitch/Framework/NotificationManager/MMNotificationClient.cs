@@ -57,15 +57,19 @@ public class MMNotificationClient : IDisposable
     /// </summary>
     public void Register()
     {
+        // Use locals during setup so a failure leaves no partial state on the instance.
+        // Only assign the fields once the whole registration (enumerator + client + events +
+        // default-device snapshot) has succeeded; Dispose() already null-checks both.
         try
         {
-            _enumerator = new MMDeviceEnumerator();
-            _client = _enumerator.CreateNotificationClient(false);
-            _client.DeviceStateChanged += OnDeviceStateChanged;
-            _client.DeviceAdded += OnDeviceAdded;
-            _client.DeviceRemoved += OnDeviceRemoved;
-            _client.DefaultDeviceChanged += OnDefaultDeviceChanged;
-            _client.PropertyValueChanged += OnPropertyValueChanged;
+            var enumerator = new MMDeviceEnumerator();
+            var client = enumerator.CreateNotificationClient(false);
+            client.DeviceStateChanged += OnDeviceStateChanged;
+            client.DeviceAdded += OnDeviceAdded;
+            client.DeviceRemoved += OnDeviceRemoved;
+            client.DefaultDeviceChanged += OnDefaultDeviceChanged;
+            client.PropertyValueChanged += OnPropertyValueChanged;
+
             foreach (var flow in Enum.GetValues<DataFlow>().Where(flow => flow != DataFlow.All))
             {
                 foreach (var role in Enum.GetValues<Role>())
@@ -80,13 +84,17 @@ public class MMNotificationClient : IDisposable
                     }
                 }
             }
+
+            // All setup succeeded — publish the fully-initialized objects.
+            _enumerator = enumerator;
+            _client = client;
         }
         catch (Exception ex)
         {
             // The Windows audio service can be unavailable at startup (stopped, sleep/resume,
             // RDP disconnect, fast-user-switch). Never let that fatal-exit the application —
-            // the tray app must still start; _client/_enumerator stay null and Dispose() already
-            // null-checks them. Only the "service not running" HRESULT is the expected case.
+            // the tray app must still start. Only the "service not running" HRESULT is the
+            // expected case; everything else is an unexpected failure worth a Warning.
             if (ex is CoreAudioException { HResult: AudioServiceNotRunningHResult })
             {
                 _logger.Information(ex, "MMNotificationClient registration skipped: Windows audio service not running.");

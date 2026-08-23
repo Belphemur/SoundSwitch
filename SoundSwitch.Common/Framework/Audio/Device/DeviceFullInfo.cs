@@ -54,7 +54,9 @@ namespace SoundSwitch.Common.Framework.Audio.Device
 
         public DeviceFullInfo(MMDevice device) : base(device)
         {
-            _logger = Log.ForContext<DeviceFullInfo>().ForContext("DeviceID", device.ID);
+            // Build the logger WITHOUT touching device — its ID getter can throw when the audio
+            // service is down, and we must not fail before entering the guarded block below.
+            _logger = Log.ForContext<DeviceFullInfo>();
             _device = device;
             try
             {
@@ -68,13 +70,14 @@ namespace SoundSwitch.Common.Framework.Audio.Device
                 // Never let that crash construction — fall back to safe defaults instead.
                 // Only the "service not running" HRESULT is the expected/transient case (Information);
                 // any other CoreAudio failure is unexpected and stays at Warning.
+                // Do NOT read `device` here — its getters can throw the same CoreAudioException.
                 if (ex is CoreAudioException { HResult: AudioServiceNotRunningHResult })
                 {
-                    _logger.Information(ex, "Failed to read icon path or state for device {DeviceId}: audio service not running; using defaults.", device.ID);
+                    _logger.Information(ex, "Failed to read icon path or state: audio service not running; using defaults.");
                 }
                 else
                 {
-                    _logger.Warning(ex, "Failed to read icon path or state for device {DeviceId}; using defaults.", device.ID);
+                    _logger.Warning(ex, "Failed to read icon path or state; using defaults.");
                 }
 
                 IconPath = IconPath ?? string.Empty;
@@ -141,7 +144,16 @@ namespace SoundSwitch.Common.Framework.Audio.Device
                 }
                 catch (Exception ex)
                 {
-                    _logger.Warning(ex, "Failed to get initial volume/mute state for active device {DeviceNameClean}", NameClean);
+                    // A service-not-running failure here is the same transient condition — log at
+                    // Information. Any other failure (unexpected) stays at Warning.
+                    if (ex is CoreAudioException { HResult: AudioServiceNotRunningHResult })
+                    {
+                        _logger.Information(ex, "Audio service not running; using default volume/mute state for {DeviceNameClean}.", NameClean);
+                    }
+                    else
+                    {
+                        _logger.Warning(ex, "Failed to get initial volume/mute state for active device {DeviceNameClean}", NameClean);
+                    }
                     Volume = 0; // Set defaults if retrieval fails
                     IsMuted = false;
                     // Continue to attempt subscription even if initial state retrieval failed

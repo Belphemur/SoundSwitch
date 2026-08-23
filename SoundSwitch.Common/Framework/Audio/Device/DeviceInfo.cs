@@ -81,18 +81,20 @@ namespace SoundSwitch.Common.Framework.Audio.Device
             {
                 // Only the "service not running" HRESULT is the expected/transient case (Information);
                 // any other CoreAudio failure (e.g. device invalidation) is unexpected and stays at Warning.
+                // IMPORTANT: never touch `device` here — its ID/DataFlow getters can throw the same
+                // CoreAudioException, which would re-throw out of this catch and still crash construction.
                 if (ex is CoreAudioException { HResult: AudioServiceNotRunningHResult })
                 {
-                    _logger.Information(ex, "Failed to read metadata for device {DeviceId}: audio service not running; using defaults.", device?.ID);
+                    _logger.Information(ex, "Failed to read device metadata: Windows audio service not running; using defaults.");
                 }
                 else
                 {
-                    _logger.Warning(ex, "Failed to read metadata for device {DeviceId}; using defaults.", device?.ID);
+                    _logger.Warning(ex, "Failed to read device metadata; using defaults.");
                 }
 
-                Name = device?.ID ?? string.Empty;
-                Id = device?.ID ?? string.Empty;
-                Type = device?.DataFlow ?? DataFlow.Render;
+                Name = string.Empty;
+                Id = string.Empty;
+                Type = DataFlow.Render;
                 IsUsb = false;
             }
         }
