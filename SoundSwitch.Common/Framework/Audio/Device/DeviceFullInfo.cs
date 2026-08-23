@@ -52,8 +52,20 @@ namespace SoundSwitch.Common.Framework.Audio.Device
         {
             _logger = Log.ForContext<DeviceFullInfo>().ForContext("DeviceID", device.ID);
             _device = device;
-            IconPath = device.IconPath;
-            State = device.State;
+            try
+            {
+                IconPath = device.IconPath;
+                State = device.State;
+            }
+            catch (Exception ex)
+            {
+                // The Windows audio service can disappear between device enumeration and
+                // object creation (service stop, fast-user-switch, RDP disconnect, sleep/resume).
+                // Never let that crash construction — fall back to safe defaults instead.
+                _logger.Warning(ex, "Failed to read icon path or state for device {DeviceId}; using defaults.", device.ID);
+                IconPath = IconPath ?? string.Empty;
+                if (State == default) State = DeviceState.Active;
+            }
             // Initial volume/mute state retrieval and subscription moved to SubscribeToVolumeNotifications
         }
 
@@ -81,18 +93,22 @@ namespace SoundSwitch.Common.Framework.Audio.Device
                 return;
             }
 
-            // Check device state
-            if (_device.State != DeviceState.Active)
-            {
-                _logger.Information("Device {DeviceNameClean} is not active ({State}), skipping volume subscription and initial state retrieval.", NameClean, _device.State);
-                Volume = 0;
-                IsMuted = false;
-                return;
-            }
-
-            // Attempt subscription and initial state retrieval for active devices
+            // Attempt subscription and initial state retrieval for active devices.
+            // The entire active-device path (state read + endpoint volume retrieval +
+            // subscription) is wrapped so that any CoreAudio failure — e.g. the Windows
+            // audio service stopping between enumeration and this call — is swallowed
+            // instead of crashing the caller (CachedAudioDeviceLister, TooltipInfo*, etc.).
             try
             {
+                // Only active devices can have a usable audio endpoint volume
+                if (_device.State != DeviceState.Active)
+                {
+                    _logger.Information("Device {DeviceNameClean} is not active ({State}), skipping volume subscription and initial state retrieval.", NameClean, _device.State);
+                    Volume = 0;
+                    IsMuted = false;
+                    return;
+                }
+
                 var deviceAudioEndpointVolume = _device.AudioEndpointVolume;
                 if (deviceAudioEndpointVolume == null)
                 {
@@ -124,7 +140,19 @@ namespace SoundSwitch.Common.Framework.Audio.Device
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Failed during volume notification subscription or initial state retrieval for device {DeviceNameClean}", NameClean);
+                // A CoreAudioException here is almost always "The Windows audio service is not
+                // running" — a transient condition when the service stops between device
+                // enumeration and this call (sleep/resume, RDP disconnect, fast-user-switch,
+                // service restart). It is expected, not a crash, so log it at Information to
+                // avoid generating a Sentry issue alert. Unexpected failures stay at Warning.
+                if (ex is CoreAudioException)
+                {
+                    _logger.Information(ex, "Skipping volume subscription for device {DeviceNameClean}: audio endpoint unavailable (audio service not running?).", NameClean);
+                }
+                else
+                {
+                    _logger.Warning(ex, "Failed during volume notification subscription or initial state retrieval for device {DeviceNameClean}", NameClean);
+                }
                 Volume = 0; // Ensure defaults are set on error
                 IsMuted = false;
                 // Ensure we don't incorrectly flag as subscribed if subscription failed

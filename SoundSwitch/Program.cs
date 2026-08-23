@@ -106,12 +106,12 @@ internal static class Program
                 var response = await NamedPipe.SendRequestAsync<OpenSettingsResponse>(userMutexName, new OpenSettingsRequest(), mainCts.Token);
                 if (!response.Success)
                 {
-                    Log.Error("Failed to open settings in existing instance");
+                    Log.Warning("Failed to open settings in existing instance");
                 }
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "Failed to communicate with existing instance");
+                Log.Warning(ex, "Failed to communicate with existing instance");
             }
             WindowsAPIAdapter.Stop();
             Log.CloseAndFlush();
