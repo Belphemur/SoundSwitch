@@ -20,8 +20,10 @@ using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
 using Serilog;
 
-// Alias required: inside namespace SoundSwitch.Framework.Banner the simple name
-// BannerDisplayInfo resolves to the nested namespace, shadowing the enum.
+using SoundSwitch.Framework.Banner;
+
+// Alias required: the imported SoundSwitch.Framework.Banner namespace contains a
+// nested BannerDisplayInfo namespace which shadows the same-named enum.
 using BannerDisplayInfoEnum = SoundSwitch.Framework.Banner.BannerDisplayInfo.BannerDisplayInfo;
 
 namespace SoundSwitch.Framework.Toast;
