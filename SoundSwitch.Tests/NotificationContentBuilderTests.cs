@@ -15,7 +15,7 @@
 using System;
 using System.Drawing;
 
-using NAudio.CoreAudioApi;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 
 using NUnit.Framework;
 using FluentAssertions;
@@ -30,13 +30,13 @@ namespace SoundSwitch.Tests;
 [TestFixture]
 public class NotificationContentBuilderTests
 {
-    private static DeviceFullInfo CreateDevice(string name, DataFlow type) =>
-        new(name, $"id-{name}", type, @"C:\nonexistent\device.ico", DeviceState.Active, false);
+    private static DeviceFullInfo CreateDevice(string name, EDataFlow type) =>
+        new(name, $"id-{name}", type, @"C:\nonexistent\device.ico", EDeviceState.Active, false);
 
     [Test]
     public void BuildDefaultChanged_RenderWindowsNotification_SetsTitleTextAndImage()
     {
-        var device = CreateDevice("Test Speaker", DataFlow.Render);
+        var device = CreateDevice("Test Speaker", EDataFlow.eRender);
 
         var data = NotificationContentBuilder.BuildDefaultChanged(device, NotificationContentBuilder.DeviceChangeWording.WindowsNotification);
 
@@ -48,7 +48,7 @@ public class NotificationContentBuilderTests
     [Test]
     public void BuildDefaultChanged_RenderBanner_SetsPlaybackDeviceTitle()
     {
-        var device = CreateDevice("Test Speaker", DataFlow.Render);
+        var device = CreateDevice("Test Speaker", EDataFlow.eRender);
 
         var data = NotificationContentBuilder.BuildDefaultChanged(device, NotificationContentBuilder.DeviceChangeWording.Banner);
 
@@ -58,7 +58,7 @@ public class NotificationContentBuilderTests
     [Test]
     public void BuildDefaultChanged_CaptureWindowsNotification_SetsRecordingTitle()
     {
-        var device = CreateDevice("Test Microphone", DataFlow.Capture);
+        var device = CreateDevice("Test Microphone", EDataFlow.eCapture);
 
         var data = NotificationContentBuilder.BuildDefaultChanged(device, NotificationContentBuilder.DeviceChangeWording.WindowsNotification);
 
@@ -69,7 +69,7 @@ public class NotificationContentBuilderTests
     [Test]
     public void BuildDefaultChanged_CaptureBanner_SetsRecordingDeviceTitle()
     {
-        var device = CreateDevice("Test Microphone", DataFlow.Capture);
+        var device = CreateDevice("Test Microphone", EDataFlow.eCapture);
 
         var data = NotificationContentBuilder.BuildDefaultChanged(device, NotificationContentBuilder.DeviceChangeWording.Banner);
 
@@ -82,8 +82,8 @@ public class NotificationContentBuilderTests
         var profile = new Profile
         {
             Name = "Gaming",
-            Playback = new DeviceInfo("Speakers", "id-speakers", DataFlow.Render, false, DateTime.UtcNow),
-            Recording = new DeviceInfo("Mic", "id-mic", DataFlow.Capture, false, DateTime.UtcNow)
+            Playback = new DeviceInfo("Speakers", "id-speakers", EDataFlow.eRender, false, DateTime.UtcNow),
+            Recording = new DeviceInfo("Mic", "id-mic", EDataFlow.eCapture, false, DateTime.UtcNow)
         };
 
         var data = NotificationContentBuilder.BuildProfileChanged(profile, new Bitmap(1, 1));
@@ -97,8 +97,8 @@ public class NotificationContentBuilderTests
     [Test]
     public void BuildAppRuleMatched_SetsPriorityAndTitle()
     {
-        var playback = CreateDevice("Speakers", DataFlow.Render);
-        var recording = CreateDevice("Mic", DataFlow.Capture);
+        var playback = CreateDevice("Speakers", EDataFlow.eRender);
+        var recording = CreateDevice("Mic", EDataFlow.eCapture);
 
         var data = NotificationContentBuilder.BuildAppRuleMatched(playback, recording, new Bitmap(1, 1));
 

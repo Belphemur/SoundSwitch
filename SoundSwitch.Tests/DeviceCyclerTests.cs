@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 using FluentAssertions;
 
-using NAudio.CoreAudioApi;
 
 using NUnit.Framework;
 
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler;
 
@@ -30,7 +30,7 @@ public class DeviceCyclerTests
             _devices = devices;
         }
 
-        protected override IEnumerable<DeviceFullInfo> GetDevices(DataFlow type)
+        protected override IEnumerable<DeviceFullInfo> GetDevices(EDataFlow type)
         {
             return _devices;
         }
@@ -61,7 +61,7 @@ public class DeviceCyclerTests
             AudioSwitcher.Instance.SwitchTo(singleDevice.Id, ERole.eMultimedia);
 
             // Act & Assert: device is already the default, so cycling should return false
-            cycler.CycleAudioDevice(DataFlow.Render).Should().BeFalse();
+            cycler.CycleAudioDevice(EDataFlow.eRender).Should().BeFalse();
 
             // Assert default endpoint ID is unchanged
             using var currentDefault = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eConsole);
@@ -109,7 +109,7 @@ public class DeviceCyclerTests
             AudioSwitcher.Instance.SwitchTo(otherDevice.Id, ERole.eMultimedia);
 
             // Act & Assert: singleDevice is not the default, so cycling should activate it and return true
-            cycler.CycleAudioDevice(DataFlow.Render).Should().BeTrue();
+            cycler.CycleAudioDevice(EDataFlow.eRender).Should().BeTrue();
 
             // Assert default endpoint is now singleDevice
             using var currentDefault = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eConsole);

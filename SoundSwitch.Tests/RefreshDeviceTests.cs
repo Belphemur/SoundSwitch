@@ -3,13 +3,13 @@ using System.Threading.Tasks;
 
 using FluentAssertions;
 
-using NAudio.CoreAudioApi;
 
 using NUnit.Framework;
 
 using Serilog;
 using Serilog.Events;
 
+using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Framework.Audio.Lister;
 
 namespace SoundSwitch.Tests;
@@ -35,7 +35,7 @@ public class RefreshDeviceTests
             Assert.Ignore("CI doesn't have audio device to make this test work");
         }
 
-        var cachedAudioDeviceLister = new CachedAudioDeviceLister(DeviceState.All);
+        var cachedAudioDeviceLister = new CachedAudioDeviceLister(EDeviceState.All);
 
         var refresh = async () =>
         {
@@ -52,6 +52,6 @@ public class RefreshDeviceTests
 
         await Task.WhenAll(refresh(), refreshCancelled.Should().ThrowAsync<OperationCanceledException>());
 
-        cachedAudioDeviceLister.GetDevices(DataFlow.Render, DeviceState.Active).Should().NotBeEmpty();
+        cachedAudioDeviceLister.GetDevices(EDataFlow.eRender, EDeviceState.Active).Should().NotBeEmpty();
     }
 }
