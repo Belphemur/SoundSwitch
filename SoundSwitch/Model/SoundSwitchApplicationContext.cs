@@ -121,7 +121,10 @@ public class SoundSwitchApplicationContext : ApplicationContext
                             {
                                 Success = true,
                                 IsMuted = endpointVolume.Mute,
-                                DeviceName = device.FriendlyName
+                                // DeviceInfo is the non-owning DTO carrying the NameClean
+                                // normalization (DeviceFullInfo would wrongly take ownership of
+                                // the caller-owned AudioDevice).
+                                DeviceName = new DeviceInfo(device).NameClean
                             };
                         });
                     }, token);

@@ -270,7 +270,7 @@ public class ProfileManager
         _logger.Debug("We have a force profile set and audio device changed. Checking ....");
 
         //No need to trigger force profile if
-        if (_forcedProfile.Devices.Any(wrapper => wrapper.DeviceInfo.Equals(audioChangedEvent.Device) && wrapper.Role.HasFlag(audioChangedEvent.Role)))
+        if (_forcedProfile.Devices.Any(wrapper => wrapper.DeviceInfo.Equals(audioChangedEvent.Device) && wrapper.Roles.Contains(audioChangedEvent.Role)))
         {
             _logger.Debug("No need to force switching, already using forced profile.");
             return false;
@@ -405,15 +405,18 @@ public class ProfileManager
                 continue;
             }
 
-            _audioSwitcher.SwitchProcessTo(
-                deviceToUse.Id,
-                device.Role,
-                deviceToUse.Type,
-                processId);
-
-            if (profile.AlsoSwitchDefaultDevice)
+            foreach (var role in device.Roles)
             {
-                _audioSwitcher.SwitchTo(deviceToUse.Id, device.Role);
+                _audioSwitcher.SwitchProcessTo(
+                    deviceToUse.Id,
+                    role,
+                    deviceToUse.Type,
+                    processId);
+
+                if (profile.AlsoSwitchDefaultDevice)
+                {
+                    _audioSwitcher.SwitchTo(deviceToUse.Id, role);
+                }
             }
         }
 
@@ -451,10 +454,13 @@ public class ProfileManager
                 continue;
             }
 
-            _audioSwitcher.SwitchTo(deviceToUse.Id, device.Role);
-            if (profile.SwitchForegroundApp)
+            foreach (var role in device.Roles)
             {
-                _audioSwitcher.SwitchForegroundProcessTo(deviceToUse.Id, device.Role, deviceToUse.Type);
+                _audioSwitcher.SwitchTo(deviceToUse.Id, role);
+                if (profile.SwitchForegroundApp)
+                {
+                    _audioSwitcher.SwitchForegroundProcessTo(deviceToUse.Id, role, deviceToUse.Type);
+                }
             }
         }
 
