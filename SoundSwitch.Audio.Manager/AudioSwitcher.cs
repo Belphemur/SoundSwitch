@@ -4,15 +4,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-using NAudio.CoreAudioApi;
-
 using Serilog;
 
 using SoundSwitch.Audio.Manager.Interop.Client;
 using SoundSwitch.Audio.Manager.Interop.Com.Threading;
 using SoundSwitch.Audio.Manager.Interop.Com.User;
 using SoundSwitch.Audio.Manager.Interop.Enum;
-using SoundSwitch.Common.Framework.Audio.Device;
 
 namespace SoundSwitch.Audio.Manager
 {
@@ -20,18 +17,18 @@ namespace SoundSwitch.Audio.Manager
     {
         private static AudioSwitcher? _instance;
         private PolicyClient? _policyClient;
-        private EnumeratorClient? _enumerator;
+        private AudioDeviceEnumerator? _enumerator;
 
         private ExtendedPolicyClient? _extendedPolicyClient;
 
-        private EnumeratorClient EnumeratorClient
+        private AudioDeviceEnumerator EnumeratorClient
         {
             get
             {
                 if (_enumerator != null)
                     return _enumerator;
 
-                return _enumerator = ComThread.Invoke(() => new EnumeratorClient());
+                return _enumerator = ComThread.Invoke(() => new AudioDeviceEnumerator());
             }
         }
 
@@ -184,57 +181,51 @@ namespace SoundSwitch.Audio.Manager
         }
 
         /// <summary>
-        /// Get the current default endpoint
+        /// Set the same master volume level from the default audio device to the given device
         /// </summary>
-        /// <param name="flow"></param>
-        /// <param name="role"></param>
-        /// <returns>Null if no default device is defined</returns>
-        private MMDevice? GetMmDefaultAudioEndpoint(EDataFlow flow, ERole role) => ComThread.Invoke(() => EnumeratorClient.GetDefaultEndpoint(flow, role));
-
-        /// <summary>
-        /// Set the same master volume level from the default audio device to the next device
-        /// </summary>
-        /// <param name="device"></param>
-        public void SetVolumeFromDefaultDevice(DeviceInfo device)
+        /// <param name="flow">Flow of the device receiving the volume</param>
+        /// <param name="deviceId">Id of the device receiving the volume</param>
+        public void SetVolumeFromDefaultDevice(EDataFlow flow, string deviceId)
         {
-            var currentDefault = GetMmDefaultAudioEndpoint((EDataFlow)device.Type, ERole.eConsole);
+            using var currentDefault = GetDefaultAudioDevice(flow, ERole.eConsole);
             if (currentDefault == null)
                 return;
 
-            var audioInfo = InteractWithDevice(currentDefault, mmDevice =>
+            var audioInfo = InteractWithDevice(currentDefault, device =>
             {
-                var defaultDeviceAudioEndpointVolume = mmDevice.AudioEndpointVolume;
+                var defaultDeviceAudioEndpointVolume = device.EndpointVolume;
                 return defaultDeviceAudioEndpointVolume == null ? default : (Volume: defaultDeviceAudioEndpointVolume.MasterVolumeLevelScalar, IsMuted: defaultDeviceAudioEndpointVolume.Mute);
             });
 
             if (audioInfo == default)
                 return;
 
-            var nextDevice = GetDevice(device.Id);
+            using var nextDevice = GetDevice(deviceId);
 
             if (nextDevice == null)
                 return;
 
-            InteractWithDevice(nextDevice, mmDevice =>
+            InteractWithDevice(nextDevice, device =>
             {
-                if (mmDevice is not { State: DeviceState.Active })
-                    return nextDevice;
+                if (device.State != EDeviceState.Active)
+                    return device;
 
-                if (mmDevice.AudioEndpointVolume == null)
-                    return nextDevice;
+                var endpointVolume = device.EndpointVolume;
+                if (endpointVolume == null)
+                    return device;
 
-                if (mmDevice.AudioEndpointVolume.Channels.Count == 2)
+                if (endpointVolume.ChannelCount == 2)
                 {
-                    mmDevice.AudioEndpointVolume.Channels[0].VolumeLevelScalar = audioInfo.Volume;
-                    mmDevice.AudioEndpointVolume.Channels[1].VolumeLevelScalar = audioInfo.Volume;
+                    endpointVolume.SetChannelVolumeLevelScalar(0, audioInfo.Volume);
+                    endpointVolume.SetChannelVolumeLevelScalar(1, audioInfo.Volume);
                 }
                 else
                 {
-                    mmDevice.AudioEndpointVolume.MasterVolumeLevelScalar = audioInfo.Volume;
+                    endpointVolume.MasterVolumeLevelScalar = audioInfo.Volume;
                 }
 
-                mmDevice.AudioEndpointVolume.Mute = audioInfo.IsMuted;
-                return mmDevice;
+                endpointVolume.Mute = audioInfo.IsMuted;
+                return device;
             });
         }
 
@@ -271,29 +262,33 @@ namespace SoundSwitch.Audio.Manager
             return ComThread.Invoke(() =>
             {
                 var devices = EnumeratorClient.GetEndpoints(flow, EDeviceState.Active);
-                foreach (var device in devices)
+                try
                 {
-                    try
+                    foreach (var device in devices)
                     {
-                        var sessionManager = device.AudioSessionManager;
-                        if (sessionManager == null) continue;
-
-                        var sessions = sessionManager.Sessions;
-                        for (int i = 0; i < sessions.Count; i++)
+                        try
                         {
-                            var session = sessions[i];
-                            if (session.GetProcessID == processId && session.State == NAudio.CoreAudioApi.Interfaces.AudioSessionState.AudioSessionStateActive)
+                            foreach (var session in device.GetSessions())
                             {
-                                return device.ID;
+                                if (session.ProcessId == processId && session.State == AudioSessionState.Active)
+                                {
+                                    return device.Id;
+                                }
                             }
                         }
+                        catch (Exception ex)
+                        {
+                            Log.Debug(ex, "Failed to check sessions for device {DeviceId}", device.Id);
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        Log.Debug(ex, "Failed to check sessions for device {DeviceId}", device.ID);
-                    }
+
+                    return null;
                 }
-                return null;
+                finally
+                {
+                    foreach (var device in devices)
+                        device.Dispose();
+                }
             });
         }
 
@@ -306,120 +301,108 @@ namespace SoundSwitch.Audio.Manager
             {
                 var map = new Dictionary<uint, string>();
                 var devices = EnumeratorClient.GetEndpoints(flow, EDeviceState.Active);
-                foreach (var device in devices)
+                try
                 {
-                    try
+                    foreach (var device in devices)
                     {
-                        var sessionManager = device.AudioSessionManager;
-                        if (sessionManager == null) continue;
-
-                        var sessions = sessionManager.Sessions;
-                        for (int i = 0; i < sessions.Count; i++)
+                        try
                         {
-                            var session = sessions[i];
-                            var pid = session.GetProcessID;
-                            if (pid != 0 &&
-                                session.State == NAudio.CoreAudioApi.Interfaces.AudioSessionState.AudioSessionStateActive &&
-                                !map.ContainsKey(pid))
+                            foreach (var session in device.GetSessions())
                             {
-                                map[pid] = device.ID;
+                                if (session.ProcessId != 0 &&
+                                    session.State == AudioSessionState.Active &&
+                                    !map.ContainsKey(session.ProcessId))
+                                {
+                                    map[session.ProcessId] = device.Id;
+                                }
                             }
                         }
+                        catch (Exception ex)
+                        {
+                            Log.Debug(ex, "Failed to build session map for device {DeviceId}", device.Id);
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        Log.Debug(ex, "Failed to build session map for device {DeviceId}", device.ID);
-                    }
+
+                    return map;
                 }
-                return map;
+                finally
+                {
+                    foreach (var device in devices)
+                        device.Dispose();
+                }
             });
         }
 
         /// <summary>
-        /// Get the current default endpoint
-        /// </summary>
-        /// <param name="flow"></param>
-        /// <param name="role"></param>
-        /// <returns>Null if no default device is defined</returns>
-        public DeviceFullInfo? GetDefaultAudioEndpoint(EDataFlow flow, ERole role) => ComThread.Invoke(() =>
-        {
-            var defaultEndpoint = EnumeratorClient.GetDefaultEndpoint(flow, role);
-            return defaultEndpoint == null ? null : new DeviceFullInfo(defaultEndpoint);
-        });
-
-        /// <summary>
-        /// Used to interact directly with a <see cref="MMDevice"/>
+        /// Used to interact directly with an <see cref="AudioDevice"/> on the ComThread
         /// </summary>
         /// <param name="device"></param>
         /// <param name="interaction"></param>
         /// <typeparam name="T"></typeparam>
-        public T InteractWithDevice<T>(MMDevice device, Func<MMDevice, T> interaction) => ComThread.Invoke(() => interaction(device));
-
-        /// <summary>
-        /// Used to interact directly with a <see cref="DeviceFullInfo"/>
-        /// </summary>
-        /// <param name="device"></param>
-        /// <param name="interaction"></param>
-        /// <typeparam name="T"></typeparam>
-        public T InteractWithDevice<T>(DeviceFullInfo device, Func<DeviceFullInfo, T> interaction) => ComThread.Invoke(() => interaction(device));
+        public T InteractWithDevice<T>(AudioDevice device, Func<AudioDevice, T> interaction) => ComThread.Invoke(() => interaction(device));
 
         /// <summary>
         /// Get the current default endpoint
         /// </summary>
         /// <param name="flow"></param>
         /// <param name="role"></param>
-        /// <returns>Null if no default device is defined</returns>
-        public MMDevice? GetDefaultMmDevice(EDataFlow flow, ERole role) => ComThread.Invoke(() => EnumeratorClient.GetDefaultEndpoint(flow, role));
+        /// <returns>Null if no default device is defined. The caller owns the returned device.</returns>
+        public AudioDevice? GetDefaultAudioDevice(EDataFlow flow, ERole role) => ComThread.Invoke(() => EnumeratorClient.GetDefaultEndpoint(flow, role));
 
         /// <summary>
         /// Get a device with the given id, returns null if not present
         /// </summary>
         /// <param name="deviceId"></param>
-        /// <returns></returns>
-        public MMDevice? GetDevice(string deviceId) => ComThread.Invoke(() => EnumeratorClient.GetDevice(deviceId));
-
-        /// <summary>
-        /// Get a device with the given id, returns null if not present
-        /// </summary>
-        /// <param name="deviceId"></param>
-        /// <returns></returns>
-        public DeviceFullInfo? GetAudioEndpoint(string deviceId) => ComThread.Invoke(() =>
-        {
-            var device = EnumeratorClient.GetDevice(deviceId);
-            try
-            {
-                return device == null ? null : new DeviceFullInfo(device);
-            }
-            catch (Exception e)
-            {
-                Trace.TraceWarning("Couldn't get device info [{0}]: {1}", deviceId, e);
-                return null;
-            }
-        });
+        /// <returns>The caller owns the returned device.</returns>
+        public AudioDevice? GetDevice(string deviceId) => ComThread.Invoke(() => EnumeratorClient.GetDevice(deviceId));
 
         /// <summary>
         /// Get audio endpoints for the given flow and state
         /// </summary>
         /// <param name="flow"></param>
         /// <param name="state"></param>
-        /// <returns></returns>
-        public IEnumerable<DeviceFullInfo> GetAudioEndpoints(EDataFlow flow, EDeviceState state) => ComThread.Invoke(() =>
+        /// <returns>The devices, or null when the enumeration failed. The caller owns the returned devices.</returns>
+        public IReadOnlyList<AudioDevice>? GetAudioDevices(EDataFlow flow, EDeviceState state) => ComThread.Invoke(() => EnumeratorClient.GetEndpoints(flow, state));
+
+        /// <summary>
+        /// Register a client for default-device / endpoint notifications. The registration is
+        /// marshalled onto the ComThread; the client must stay rooted until unregistered.
+        /// </summary>
+        public void RegisterNotificationClient(AudioDeviceNotificationClient client) => ComThread.Invoke(() =>
         {
-            var devices = EnumeratorClient.GetEndpoints(flow, state);
-            return devices.Select(device =>
+            try
+            {
+                EnumeratorClient.RegisterNotificationClient(client);
+            }
+            catch (Exception ex)
+            {
+                // The Windows audio service can be unavailable (stopped, sleep/resume, RDP
+                // disconnect, fast-user-switch). Only that case is expected (Information);
+                // everything else is an unexpected failure worth a Warning.
+                if (AudioDeviceException.IsAudioServiceNotRunning(ex))
                 {
-                    try
-                    {
-                        return new DeviceFullInfo(device);
-                    }
-                    catch (Exception e)
-                    {
-                        Trace.TraceWarning("Couldn't get device info [{0}]: {1}", device.ID, e);
-                        return null;
-                    }
-                })
-                .Where(device => !string.IsNullOrEmpty(device?.NameClean))
-                .Cast<DeviceFullInfo>().ToArray();
+                    Log.Information(ex, "Device notification registration skipped: Windows audio service not running.");
+                }
+                else
+                {
+                    Log.Warning(ex, "Device notification registration failed.");
+                }
+            }
+        });
+
+        /// <summary>
+        /// Unregister a previously registered notification client. Marshalled onto the ComThread.
+        /// </summary>
+        public void UnregisterNotificationClient(AudioDeviceNotificationClient client) => ComThread.Invoke(() =>
+        {
+            try
+            {
+                EnumeratorClient.UnregisterNotificationClient(client);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "Device notification unregistration failed.");
+            }
         });
 
         /// <summary>

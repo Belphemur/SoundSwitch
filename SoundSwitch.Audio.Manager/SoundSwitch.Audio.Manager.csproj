@@ -20,9 +20,6 @@
     <Compile Remove="Interop\Interface\IPolicyConfigVista.cs" />
     <Compile Remove="Interop\Interface\IPolicyConfigX.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SoundSwitch.Common\SoundSwitch.Common.csproj" />
-  </ItemGroup>
   <PropertyGroup>
     <CsWinRTWindowsMetadata>sdk</CsWinRTWindowsMetadata>
   </PropertyGroup>
