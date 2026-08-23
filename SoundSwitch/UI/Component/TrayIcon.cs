@@ -34,6 +34,7 @@ using SoundSwitch.Framework.TrayIcon.IconChanger;
 using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
 using SoundSwitch.Framework.Updater;
+using SoundSwitch.Framework.Telemetry;
 using SoundSwitch.Framework.Updater.Releases;
 using SoundSwitch.Framework.Updater.Remind;
 using SoundSwitch.Framework.WinApi;
@@ -253,7 +254,7 @@ public sealed class TrayIcon : IDisposable
     {
         if (_updateMenuItem.Tag == null)
         {
-            AppModel.Instance.CheckForUpdate();
+            AppModel.Instance.CheckForUpdate(UpdateCheckTrigger.Manual);
             return;
         }
 
@@ -290,9 +291,11 @@ public sealed class TrayIcon : IDisposable
             switch (@event.UpdateMode)
             {
                 case UpdateMode.Never:
+                    TelemetryService.TrackUpdateAvailable(UpdateMode.Never);
                     _context.Send(_ => _updateDownloadForm.Value.DownloadRelease(@event.AppRelease), null);
                     break;
                 case UpdateMode.Notify:
+                    TelemetryService.TrackUpdateAvailable(UpdateMode.Notify);
                     _context.Send(_ => { NewReleaseAvailable(sender, @event); }, null);
                     break;
             }

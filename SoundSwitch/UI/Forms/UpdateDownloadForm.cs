@@ -18,6 +18,7 @@ using System.Windows.Forms;
 using Serilog;
 
 using SoundSwitch.Framework.Updater;
+using SoundSwitch.Framework.Telemetry;
 using SoundSwitch.Framework.Updater.Installer;
 using SoundSwitch.Framework.Updater.Releases;
 using SoundSwitch.Framework.Updater.Remind;
@@ -80,6 +81,7 @@ public sealed partial class UpdateDownloadForm : Form
         _releaseFile.DownloadFailed += (sender, @event) =>
         {
             Log.Error(@event.Exception, "Couldn't download the Release ");
+            TelemetryService.TrackUpdateDownloadFailed();
             MessageBox.Show(@event.Exception.Message,
                 UpdateDownloadStrings.downloadFailed,
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -93,10 +95,22 @@ public sealed partial class UpdateDownloadForm : Form
                 MessageBox.Show(UpdateDownloadStrings.notSigned,
                     UpdateDownloadStrings.notSignedTitle,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+                TelemetryService.TrackUpdateInstalled(SoundSwitch.Framework.Configuration.AppConfigs.Configuration.UpdateMode, "signature_error");
                 return;
             }
 
-            new UpdateRunner().RunUpdate(_releaseFile, "/SILENT");
+            var mode = SoundSwitch.Framework.Configuration.AppConfigs.Configuration.UpdateMode;
+            try
+            {
+                new UpdateRunner().RunUpdate(_releaseFile, "/SILENT");
+                TelemetryService.TrackUpdateInstalled(mode, "success");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Failed to launch the update installer");
+                TelemetryService.TrackUpdateInstalled(mode, "failed");
+            }
+
             if (InvokeRequired)
             {
                 BeginInvoke(Close);
@@ -125,6 +139,7 @@ public sealed partial class UpdateDownloadForm : Form
         }
         else
         {
+            TelemetryService.TrackUpdatePostponed();
             _postponeService.PostponeRelease(_appReleaseInfo);
         }
 

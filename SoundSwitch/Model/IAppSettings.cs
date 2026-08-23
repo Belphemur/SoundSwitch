@@ -14,6 +14,7 @@
  ********************************************************************/
 
 using System;
+using SoundSwitch.Framework.Telemetry;
 using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.WinApi.Keyboard;
@@ -73,7 +74,8 @@ public interface IAppSettings
     /// <summary>
     /// For the app to check for update
     /// </summary>
-    void CheckForUpdate();
+    /// <param name="trigger">What initiated the check (manual tray click or a settings change).</param>
+    void CheckForUpdate(UpdateCheckTrigger trigger = UpdateCheckTrigger.Manual);
 
     /// <summary>
     /// Triggered when the update mode has been changed

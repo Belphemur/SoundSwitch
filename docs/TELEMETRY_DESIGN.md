@@ -114,6 +114,14 @@ Default attributes are auto-attached: `environment`, `release`, `sdk.name`, `sdk
 │  TrackNotificationBanner(…)     → Metrics.Counter  │
 │  TrackNotificationWindows()     → Metrics.Counter  │
 │  TrackNotificationSound()       → Metrics.Counter  │
+│  TrackUpdateMode(mode)          → Metrics.Counter  │
+│  TrackUpdateCheck(trigger)      → Metrics.Counter  │
+│  TrackUpdateAvailable(mode)     → Metrics.Counter  │
+│  TrackUpdateInstalled(mode, result) → Metrics.Counter │
+│  TrackUpdatePostponed()       → Metrics.Counter  │
+│  TrackSetting(name, value)     → Metrics.Counter  │
+│  TrackProfileCount(count)      → Metrics.Distribution │
+│  TrackAppRuleCount(count)      → Metrics.Distribution │
 │  TrackCliCommand(cmd, exitCode) → Metrics.Counter  │
 │  TrackDevicesEnumerated(type, count) → Metrics.Distribution │
 │                                                     │
@@ -249,6 +257,35 @@ Mirrors the Profile telemetry (§5.2). App Rules route individual application **
 | App Rule deleted | `soundswitch.apprule.deleted` | Counter | — |
 
 The `process` attribute is a **SHA256 hash of the process BASENAME** (e.g. `chrome.exe`), first 8 hex characters, lowercased — the exact same scheme used for `profile_id` (profile names) and the Windows username hash. This lets us count activations per application without ever sending the process path, window title, or App Rule content.
+
+### 5.8 Update subsystem
+
+Mirrors the Profile / App-Rule telemetry (§5.2, §5.7): categorical counters only, no PII. These track which `UpdateMode` users run and the update funnel (checked → available → installed).
+
+| Event | Metric | Type | Attributes |
+|-------|--------|------|------------|
+| Update mode changed (and once at app startup, as a baseline) | `soundswitch.update.mode` | Counter | `value: Silent\|Notify\|Never` |
+| A check for updates was triggered | `soundswitch.update.check` | Counter | `trigger: manual\|setting_change` |
+| A newer release was found and offered (`NewVersionReleased` fired) | `soundswitch.update.available` | Counter | `mode: Silent\|Notify\|Never` |
+| The update asset failed to download (network/storage failure, before any install) | `soundswitch.update.download_failed` | Counter | — |
+| An install was attempted/applied | `soundswitch.update.installed` | Counter | `mode: Silent\|Notify\|Never`, `result: success\|signature_error\|failed` |
+
+`value`/`mode` are the `UpdateMode` enum name (a categorical setting, not PII); `trigger` is the `UpdateCheckTrigger` enum name — `manual` for a user-initiated check from the tray menu, `setting_change` for a check kicked off automatically by a settings change (beta channel or update mode change).
+
+`result` is a categorical install outcome: `success` means the installer process was **launched** (the install itself is not awaited), `failed` means the installer process could not be launched or an exception was thrown, and `signature_error` means the downloaded file failed signature validation. **Download (network) failures are NOT reported as `installed`/`failed`** — they are counted separately by `soundswitch.update.download_failed`, which fires before any install attempt.
+
+### 5.9 Startup snapshot & deferred Tier-1 counters
+
+These round out the Tier-1 telemetry: the update-postponed signal, a categorical snapshot of the user's settings taken once at startup, and the counts of configured profiles / App Sound Lock rules. All are categorical or numeric aggregates — no free text, no identifiers.
+
+| Event | Metric | Type | Attributes |
+|-------|--------|------|------------|
+| Offered update was postponed (download form "Remind me") | `soundswitch.update.postponed` | Counter | — |
+| Startup snapshot of a single config setting | `soundswitch.setting` | Counter | `name: <setting key>`, `value: <categorical value>` |
+| Number of configured profiles (once at startup) | `soundswitch.profile.count` | Distribution | — |
+| Number of configured App Sound Lock rules (once at startup) | `soundswitch.apprule.count` | Distribution | — |
+
+`value` for `soundswitch.setting` is the setting's value — an enum name (e.g. `Language`, `SwitchIcon`), a bool, or an integer — never free text such as a profile or device name. `soundswitch.profile.count` / `soundswitch.apprule.count` are numeric distributions (no attributes). These are emitted once from `SoundSwitchApplicationContext` after the baseline `TrackUpdateMode`, alongside the postponed call site in `UpdateDownloadForm.CancelButton_Click`.
 
 ---
 

@@ -17,6 +17,7 @@ using SoundSwitch.Framework.Banner.MicrophoneMute;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
+using SoundSwitch.Framework.Telemetry;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.IPC.Pipe;
 using SoundSwitch.IPC.Pipe.Messages;
@@ -50,12 +51,28 @@ public class SoundSwitchApplicationContext : ApplicationContext
 
         AppModel.Instance.InitializeMain(deviceActiveLister, Program.SkipUpdate);
 
+        TelemetryService.TrackUpdateMode(SoundSwitch.Framework.Configuration.AppConfigs.Configuration.UpdateMode);
+
+        var cfg = AppConfigs.Configuration;
+        TelemetryService.TrackSetting("include_beta_versions", cfg.IncludeBetaVersions);
+        TelemetryService.TrackSetting("language", cfg.Language.ToString());
+        TelemetryService.TrackSetting("quick_menu_enabled", cfg.QuickMenuEnabled);
+        TelemetryService.TrackSetting("keep_volume_enabled", cfg.KeepVolumeEnabled);
+        TelemetryService.TrackSetting("switch_foreground_program", cfg.SwitchForegroundProgram);
+        TelemetryService.TrackSetting("notification_advanced_mode", cfg.NotificationAdvancedMode);
+        TelemetryService.TrackSetting("auto_add_new_connected_devices", cfg.AutoAddNewConnectedDevices);
+        TelemetryService.TrackSetting("switch_icon", cfg.SwitchIcon.ToString());
+        TelemetryService.TrackProfileCount(AppModel.Instance.ProfileManager.Profiles.Count());
+        TelemetryService.TrackAppRuleCount(cfg.AppSoundRules.Count);
+
         AppModel.Instance.NewVersionReleased += (sender, @event) =>
         {
             if (@event.UpdateMode == UpdateMode.Silent)
             {
+                TelemetryService.TrackUpdateAvailable(UpdateMode.Silent);
                 new AutoUpdater("/VERYSILENT").Update(
-                    @event.AppRelease, true);
+                    @event.AppRelease, true,
+                    onCompleted: ok => TelemetryService.TrackUpdateInstalled(UpdateMode.Silent, ok ? "success" : "failed"));
             }
         };
 
