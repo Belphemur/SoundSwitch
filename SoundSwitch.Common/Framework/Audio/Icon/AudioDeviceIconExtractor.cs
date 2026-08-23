@@ -15,10 +15,10 @@
 #nullable enable
 using System;
 
-using NAudio.CoreAudioApi;
-
 using Serilog;
 
+using SoundSwitch.Audio.Manager;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Common.Properties;
 
@@ -63,7 +63,7 @@ namespace SoundSwitch.Common.Framework.Audio.Icon
         /// <returns>
         /// An <see cref="IconHandle"/> the caller <strong>must dispose</strong> when done.
         /// </returns>
-        public static IconHandle ExtractIconFromPath(string path, DataFlow dataFlow, bool largeIcon)
+        public static IconHandle ExtractIconFromPath(string path, EDataFlow dataFlow, bool largeIcon)
         {
             try
             {
@@ -74,22 +74,22 @@ namespace SoundSwitch.Common.Framework.Audio.Icon
                 Log.Warning(e, "Can't extract icon from {path}", path);
                 return dataFlow switch
                 {
-                    DataFlow.Capture => DefaultMicrophoneHandle.Acquire(),
-                    DataFlow.Render => DefaultSpeakersHandle.Acquire(),
+                    EDataFlow.eCapture => DefaultMicrophoneHandle.Acquire(),
+                    EDataFlow.eRender => DefaultSpeakersHandle.Acquire(),
                     _ => throw new ArgumentOutOfRangeException()
                 };
             }
         }
 
         /// <summary>
-        /// Extract the icon out of an <see cref="MMDevice"/>.
+        /// Extract the icon out of an <see cref="AudioDevice"/>.
         /// </summary>
         /// <param name="audioDevice"></param>
         /// <param name="largeIcon"></param>
         /// <returns>
         /// An <see cref="IconHandle"/> the caller <strong>must dispose</strong> when done.
         /// </returns>
-        public static IconHandle ExtractIconFromAudioDevice(MMDevice audioDevice, bool largeIcon)
+        public static IconHandle ExtractIconFromAudioDevice(AudioDevice audioDevice, bool largeIcon)
         {
             return ExtractIconFromPath(audioDevice.IconPath, audioDevice.DataFlow, largeIcon);
         }

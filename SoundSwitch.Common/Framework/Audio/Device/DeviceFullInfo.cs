@@ -2,12 +2,12 @@
 using System;
 using System.Threading.Tasks;
 
-using NAudio.CoreAudioApi;
-
 using Newtonsoft.Json;
 
 using Serilog;
 
+using SoundSwitch.Audio.Manager;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Icon;
 using SoundSwitch.Common.Framework.Icon;
 
@@ -15,14 +15,10 @@ namespace SoundSwitch.Common.Framework.Audio.Device
 {
     public class DeviceFullInfo : DeviceInfo, IDisposable
     {
-        // AUDCLNT_E_SERVICE_NOT_RUNNING: the Windows audio service is stopped/unavailable.
-        // This is the expected, transient condition (not a crash) we downgrade to Information.
-        private const int AudioServiceNotRunningHResult = unchecked((int)0x88890010);
-
-        private readonly MMDevice? _device;
+        private readonly AudioDevice? _device;
         private readonly ILogger _logger;
         public string IconPath { get; }
-        public DeviceState State { get; }
+        public EDeviceState State { get; }
 
         private bool _disposed = false;
         private bool _isVolumeHandlerSubscribed = false;
@@ -45,49 +41,32 @@ namespace SoundSwitch.Common.Framework.Audio.Device
         public event EventHandler<VolumeChangedEventArgs>? MuteVolumeChanged;
 
         [JsonConstructor]
-        public DeviceFullInfo(string name, string id, DataFlow type, string iconPath, DeviceState state, bool isUsb) : base(name, id, type, isUsb, DateTime.UtcNow)
+        public DeviceFullInfo(string name, string id, EDataFlow type, string iconPath, EDeviceState state, bool isUsb) : base(name, id, type, isUsb, DateTime.UtcNow)
         {
             _logger = Log.ForContext<DeviceFullInfo>().ForContext("DeviceID", id);
             IconPath = iconPath;
             State = state;
         }
 
-        public DeviceFullInfo(MMDevice device) : base(device)
+        /// <summary>
+        /// Build the DTO from a device snapshot and take ownership of the <see cref="AudioDevice"/>
+        /// (disposed with this instance). The metadata reads come from the snapshot captured at
+        /// device creation, so this constructor cannot fail on transient audio-service conditions.
+        /// </summary>
+        public DeviceFullInfo(AudioDevice device) : base(device)
         {
-            // Build the logger WITHOUT touching device — its ID getter can throw when the audio
-            // service is down, and we must not fail before entering the guarded block below.
+            // Build the logger without touching live COM state — the AudioDevice properties are an
+            // immutable snapshot and are safe to read from any thread.
             _logger = Log.ForContext<DeviceFullInfo>();
             _device = device;
-            try
-            {
-                IconPath = device.IconPath;
-                State = device.State;
-            }
-            catch (Exception ex)
-            {
-                // The Windows audio service can disappear between device enumeration and
-                // object creation (service stop, fast-user-switch, RDP disconnect, sleep/resume).
-                // Never let that crash construction — fall back to safe defaults instead.
-                // Only the "service not running" HRESULT is the expected/transient case (Information);
-                // any other CoreAudio failure is unexpected and stays at Warning.
-                // Do NOT read `device` here — its getters can throw the same CoreAudioException.
-                if (ex is CoreAudioException { HResult: AudioServiceNotRunningHResult })
-                {
-                    _logger.Information(ex, "Failed to read icon path or state: audio service not running; using defaults.");
-                }
-                else
-                {
-                    _logger.Warning(ex, "Failed to read icon path or state; using defaults.");
-                }
-
-                IconPath = IconPath ?? string.Empty;
-                if (State == default) State = DeviceState.Active;
-            }
+            IconPath = device.IconPath;
+            State = device.State;
             // Initial volume/mute state retrieval and subscription moved to SubscribeToVolumeNotifications
         }
 
         /// <summary>
         /// Subscribes to the volume notification events for the device and retrieves initial state.
+        /// The underlying COM calls are marshalled onto the ComThread that owns the device.
         /// </summary>
         public void SubscribeToVolumeNotifications()
         {
@@ -106,93 +85,99 @@ namespace SoundSwitch.Common.Framework.Audio.Device
 
             if (_device == null)
             {
-                _logger.Warning("Skipping volume subscription for {DeviceNameClean}: MMDevice is null.", NameClean);
+                _logger.Warning("Skipping volume subscription for {DeviceNameClean}: AudioDevice is null.", NameClean);
                 return;
             }
 
             // Attempt subscription and initial state retrieval for active devices.
             // The entire active-device path (state read + endpoint volume retrieval +
-            // subscription) is wrapped so that any CoreAudio failure — e.g. the Windows
+            // subscription) is wrapped so that any audio-service failure — e.g. the Windows
             // audio service stopping between enumeration and this call — is swallowed
             // instead of crashing the caller (CachedAudioDeviceLister, TooltipInfo*, etc.).
-            try
+            // Runs on the ComThread so failures surface here (not swallowed by the marshalling).
+            AudioSwitcher.Instance.InteractWithDevice(_device, device =>
             {
-                // Only active devices can have a usable audio endpoint volume
-                if (_device.State != DeviceState.Active)
-                {
-                    _logger.Information("Device {DeviceNameClean} is not active ({State}), skipping volume subscription and initial state retrieval.", NameClean, _device.State);
-                    Volume = 0;
-                    IsMuted = false;
-                    return;
-                }
-
-                var deviceAudioEndpointVolume = _device.AudioEndpointVolume;
-                if (deviceAudioEndpointVolume == null)
-                {
-                    _logger.Warning("Cannot subscribe or get initial state for active device {DeviceNameClean}: AudioEndpointVolume is null.", NameClean);
-                    Volume = 0;
-                    IsMuted = false;
-                    return;
-                }
-
-                // Get initial volume and mute state
                 try
                 {
-                    Volume = (int)Math.Round(deviceAudioEndpointVolume.MasterVolumeLevelScalar * 100);
-                    IsMuted = deviceAudioEndpointVolume.Mute;
-                    _logger.Information("Retrieved initial volume ({Volume}) and mute state ({IsMuted}) for {DeviceNameClean}", Volume, IsMuted, NameClean);
+                    // Only active devices can have a usable audio endpoint volume
+                    if (State != EDeviceState.Active)
+                    {
+                        _logger.Information("Device {DeviceNameClean} is not active ({State}), skipping volume subscription and initial state retrieval.", NameClean, State);
+                        Volume = 0;
+                        IsMuted = false;
+                        return device;
+                    }
+
+                    var deviceAudioEndpointVolume = device.EndpointVolume;
+                    if (deviceAudioEndpointVolume == null)
+                    {
+                        _logger.Warning("Cannot subscribe or get initial state for active device {DeviceNameClean}: AudioEndpointVolume is null.", NameClean);
+                        Volume = 0;
+                        IsMuted = false;
+                        return device;
+                    }
+
+                    // Get initial volume and mute state
+                    try
+                    {
+                        Volume = (int)Math.Round(deviceAudioEndpointVolume.MasterVolumeLevelScalar * 100);
+                        IsMuted = deviceAudioEndpointVolume.Mute;
+                        _logger.Information("Retrieved initial volume ({Volume}) and mute state ({IsMuted}) for {DeviceNameClean}", Volume, IsMuted, NameClean);
+                    }
+                    catch (Exception ex)
+                    {
+                        // A service-not-running failure here is the same transient condition — log at
+                        // Information. Any other failure (unexpected) stays at Warning.
+                        if (AudioDeviceException.IsAudioServiceNotRunning(ex))
+                        {
+                            _logger.Information(ex, "Audio service not running; using default volume/mute state for {DeviceNameClean}.", NameClean);
+                        }
+                        else
+                        {
+                            _logger.Warning(ex, "Failed to get initial volume/mute state for active device {DeviceNameClean}", NameClean);
+                        }
+                        Volume = 0; // Set defaults if retrieval fails
+                        IsMuted = false;
+                        // Continue to attempt subscription even if initial state retrieval failed
+                    }
+
+                    // Subscribe to notifications
+                    deviceAudioEndpointVolume.VolumeNotification += DeviceOnVolumeNotification;
+                    _isVolumeHandlerSubscribed = true;
+                    _logger.Information("Successfully subscribed to volume notifications for active device {DeviceNameClean}", NameClean);
                 }
                 catch (Exception ex)
                 {
-                    // A service-not-running failure here is the same transient condition — log at
-                    // Information. Any other failure (unexpected) stays at Warning.
-                    if (ex is CoreAudioException { HResult: AudioServiceNotRunningHResult })
+                    // A failure here is almost always "The Windows audio service is not
+                    // running" — a transient condition when the service stops between device
+                    // enumeration and this call (sleep/resume, RDP disconnect, fast-user-switch,
+                    // service restart). It is expected, not a crash, so log it at Information to
+                    // avoid generating a Sentry issue alert. Unexpected failures stay at Warning.
+                    if (AudioDeviceException.IsAudioServiceNotRunning(ex))
                     {
-                        _logger.Information(ex, "Audio service not running; using default volume/mute state for {DeviceNameClean}.", NameClean);
+                        // "The Windows audio service is not running" is a transient condition when
+                        // the service stops between device enumeration and this call (sleep/resume,
+                        // RDP disconnect, fast-user-switch, service restart). It is expected, not a
+                        // crash, so log at Information to avoid generating a Sentry issue alert.
+                        _logger.Information(ex, "Skipping volume subscription for device {DeviceNameClean}: audio endpoint unavailable (audio service not running?).", NameClean);
                     }
                     else
                     {
-                        _logger.Warning(ex, "Failed to get initial volume/mute state for active device {DeviceNameClean}", NameClean);
+                        // Any other audio failure (e.g. device invalidation) is unexpected and
+                        // must stay at Warning so it remains visible.
+                        _logger.Warning(ex, "Failed during volume notification subscription or initial state retrieval for device {DeviceNameClean}", NameClean);
                     }
-                    Volume = 0; // Set defaults if retrieval fails
+                    Volume = 0; // Ensure defaults are set on error
                     IsMuted = false;
-                    // Continue to attempt subscription even if initial state retrieval failed
+                    // Ensure we don't incorrectly flag as subscribed if subscription failed
+                    _isVolumeHandlerSubscribed = false;
                 }
 
-                // Subscribe to notifications
-                deviceAudioEndpointVolume.OnVolumeNotification += DeviceOnVolumeNotification;
-                _isVolumeHandlerSubscribed = true;
-                _logger.Information("Successfully subscribed to volume notifications for active device {DeviceNameClean}", NameClean);
-            }
-            catch (Exception ex)
-            {
-                // A CoreAudioException here is almost always "The Windows audio service is not
-                // running" — a transient condition when the service stops between device
-                // enumeration and this call (sleep/resume, RDP disconnect, fast-user-switch,
-                // service restart). It is expected, not a crash, so log it at Information to
-                // avoid generating a Sentry issue alert. Unexpected failures stay at Warning.
-                if (ex is CoreAudioException { HResult: AudioServiceNotRunningHResult })
-                {
-                    // "The Windows audio service is not running" is a transient condition when
-                    // the service stops between device enumeration and this call (sleep/resume,
-                    // RDP disconnect, fast-user-switch, service restart). It is expected, not a
-                    // crash, so log at Information to avoid generating a Sentry issue alert.
-                    _logger.Information(ex, "Skipping volume subscription for device {DeviceNameClean}: audio endpoint unavailable (audio service not running?).", NameClean);
-                }
-                else
-                {
-                    // Any other CoreAudio failure (e.g. device invalidation) is unexpected and
-                    // must stay at Warning so it remains visible.
-                    _logger.Warning(ex, "Failed during volume notification subscription or initial state retrieval for device {DeviceNameClean}", NameClean);
-                }
-                Volume = 0; // Ensure defaults are set on error
-                IsMuted = false;
-                // Ensure we don't incorrectly flag as subscribed if subscription failed
-                _isVolumeHandlerSubscribed = false;
-            }
+                return device;
+            });
         }
 
-        private void DeviceOnVolumeNotification(AudioVolumeNotificationData data)
+        private void DeviceOnVolumeNotification(object? sender, AudioVolumeNotificationData data)
         {
             // Store previous values before updating
             var previousVolume = Volume;
@@ -230,20 +215,36 @@ namespace SoundSwitch.Common.Framework.Audio.Device
 
             try
             {
-                // Unsubscribe only if we successfully subscribed
-                if (_isVolumeHandlerSubscribed && _device?.AudioEndpointVolume != null)
+                if (disposing && _device != null)
                 {
-                    _device.AudioEndpointVolume.OnVolumeNotification -= DeviceOnVolumeNotification;
-                    _isVolumeHandlerSubscribed = false; // Mark as unsubscribed
-                    _logger.Debug("Unsubscribed from volume notifications for device {DeviceNameClean}", NameClean);
+                    // Unsubscribe only if we successfully subscribed — marshalled onto the
+                    // ComThread that owns the device (no-op pass-through when already on it).
+                    AudioSwitcher.Instance.InteractWithDevice(_device, device =>
+                    {
+                        if (_isVolumeHandlerSubscribed && device.EndpointVolume != null)
+                        {
+                            device.EndpointVolume.VolumeNotification -= DeviceOnVolumeNotification;
+                            _isVolumeHandlerSubscribed = false; // Mark as unsubscribed
+                            _logger.Debug("Unsubscribed from volume notifications for device {DeviceNameClean}", NameClean);
+                        }
+
+                        return device;
+                    });
+
+                    _device.Dispose();
                 }
 
-                // Clean up event subscribers to prevent memory leaks
-                if (MuteVolumeChanged != null)
-                    foreach (var subscriber in MuteVolumeChanged.GetInvocationList())
-                        MuteVolumeChanged -= (EventHandler<VolumeChangedEventArgs>)subscriber;
+                if (disposing)
+                {
+                    // Clean up event subscribers to prevent memory leaks
+                    if (MuteVolumeChanged != null)
+                        foreach (var subscriber in MuteVolumeChanged.GetInvocationList())
+                            MuteVolumeChanged -= (EventHandler<VolumeChangedEventArgs>)subscriber;
+                }
 
-                _device?.Dispose();
+                // Finalizer path: do not marshal to the ComThread (it may be gone during process
+                // teardown). The AudioDevice's own finalizer releases the native reference, which
+                // also drops any outstanding notification registration.
             }
             catch (Exception ex)
             {

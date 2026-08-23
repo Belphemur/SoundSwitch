@@ -18,10 +18,11 @@
     <Content Include="Resources\defaultSpeakers.ico" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="NAudio" />
-    <PackageReference Include="NAudio.Wasapi" />
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="Serilog" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SoundSwitch.Audio.Manager\SoundSwitch.Audio.Manager.csproj" />
   </ItemGroup>
 </Project>
