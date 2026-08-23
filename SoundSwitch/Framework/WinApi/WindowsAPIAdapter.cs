@@ -90,6 +90,7 @@ public class WindowsAPIAdapter : Form
     public static event EventHandler<WindowDestroyedEvent> WindowDestroyed;
     public static event EventHandler SessionUnlocked;
     public static event EventHandler SystemThemeChanged;
+    public static event EventHandler SystemResumed;
 
     /// <summary>
     ///     Start the Adapter thread
@@ -123,6 +124,8 @@ public class WindowsAPIAdapter : Form
         DeviceChanged = null;
         HotKeyPressed = null;
         SessionUnlocked = null;
+        SystemResumed = null;
+        SystemThemeChanged = null;
 
         if (!_instance.IsDisposed)
         {
@@ -172,6 +175,8 @@ public class WindowsAPIAdapter : Form
 
         // Dispatch to adapter thread to avoid race conditions with _registeredHotkeys
         _instance?.BeginInvoke(new Action(_instance.ReRegisterAllHotkeys));
+
+        SystemResumed?.Invoke(_instance, EventArgs.Empty);
     }
 
     private static void SystemEventsOnSessionSwitch(object sender, SessionSwitchEventArgs e)

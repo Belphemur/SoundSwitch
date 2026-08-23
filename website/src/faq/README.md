@@ -11,6 +11,7 @@ Answers to the most common questions, collected over the years from the [GitHub 
 
 - [I can't find SoundSwitch — where did it go?](./finding-soundswitch.md)
 - [What is the menu that appears when I use a hotkey?](./quick-menu.md)
+- [Why does the tray icon show the wrong device after waking from sleep?](./tray-icon-wrong-after-sleep.md)
 
 ## Devices
 

@@ -153,6 +153,7 @@ export default defineUserConfig({
             { text: "Overview", link: "/faq/README.md" },
             { text: "Find SoundSwitch", link: "/faq/finding-soundswitch.md" },
             { text: "Quick Menu", link: "/faq/quick-menu.md" },
+            { text: "Tray icon wrong after sleep", link: "/faq/tray-icon-wrong-after-sleep.md" },
             { text: "Rename a device", link: "/faq/rename-device.md" },
             { text: "Switch profiles", link: "/faq/switching-profiles.md" },
             { text: "Manually check for update", link: "/faq/manually-check-update.md" },

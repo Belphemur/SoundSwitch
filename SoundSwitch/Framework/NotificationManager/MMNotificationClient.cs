@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ public class MMNotificationClient : IDisposable
     private MMDeviceNotificationClient _client;
 
     private readonly Dictionary<DeviceRole, string> _lastRoleDevice = new();
+    private readonly Lock _lastRoleDeviceLock = new();
 
     private readonly ConcurrentQueue<DeviceChangedEvent> _deviceChangedEvents = new();
         
@@ -63,7 +65,10 @@ public class MMNotificationClient : IDisposable
                 if (device == null)
                     continue;
 
-                _lastRoleDevice[new DeviceRole(flow, role)] = device.Id;
+                using (_lastRoleDeviceLock.EnterScope())
+                {
+                    _lastRoleDevice[new DeviceRole(flow, role)] = device.Id;
+                }
             }
         }
     }
@@ -74,19 +79,52 @@ public class MMNotificationClient : IDisposable
 
     private void OnDeviceRemoved(object sender, DeviceNotificationEventArgs e) => _deviceChangedEvents.Enqueue(new DeviceChangedEvent(EventType.Removed, e.DeviceId));
 
+    /// <summary>
+    /// Reconcile the cached default device per (flow, role) against the real OS default.
+    /// Enqueues a <see cref="DefaultDeviceChangedEvent"/> whenever the cached value diverges,
+    /// mirroring <see cref="OnDefaultDeviceChanged"/>. Intended to be called on resume from sleep.
+    /// </summary>
+    public void ReconcileDefaultDevices()
+    {
+        foreach (var flow in Enum.GetValues<DataFlow>().Where(flow => flow != DataFlow.All))
+        {
+            foreach (var role in Enum.GetValues<Role>())
+            {
+                using (_lastRoleDeviceLock.EnterScope())
+                {
+                    var device = AudioSwitcher.Instance.GetDefaultAudioEndpoint((EDataFlow)flow, (ERole)role);
+                    if (device == null)
+                        continue;
+
+                    var deviceRole = new DeviceRole(flow, role);
+                    if (_lastRoleDevice.TryGetValue(deviceRole, out var oldDeviceId) && oldDeviceId == device.Id)
+                    {
+                        continue;
+                    }
+
+                    _lastRoleDevice[deviceRole] = device.Id;
+                    _deviceChangedEvents.Enqueue(new DefaultDeviceChangedEvent(EventType.DefaultChanged, device.Id, role));
+                }
+            }
+        }
+    }
+
     private void OnDefaultDeviceChanged(object sender, DefaultDeviceChangedEventArgs e)
     {
         if (e.DeviceId == null)
             return;
 
         var deviceRole = new DeviceRole(e.Flow, e.Role);
-        if (_lastRoleDevice.TryGetValue(deviceRole, out var oldDeviceId) && oldDeviceId == e.DeviceId)
+        using (_lastRoleDeviceLock.EnterScope())
         {
-            return;
-        }
+            if (_lastRoleDevice.TryGetValue(deviceRole, out var oldDeviceId) && oldDeviceId == e.DeviceId)
+            {
+                return;
+            }
 
-        _lastRoleDevice[deviceRole] = e.DeviceId;
-        _deviceChangedEvents.Enqueue(new DefaultDeviceChangedEvent(EventType.DefaultChanged, e.DeviceId, e.Role));
+            _lastRoleDevice[deviceRole] = e.DeviceId;
+            _deviceChangedEvents.Enqueue(new DefaultDeviceChangedEvent(EventType.DefaultChanged, e.DeviceId, e.Role));
+        }
     }
 
     private void OnPropertyValueChanged(object sender, DevicePropertyChangedEventArgs e)
