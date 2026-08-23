@@ -1,0 +1,473 @@
+# NAudio Removal & Consolidation Plan
+
+> **Status: proposal.** This document describes how to remove the NAudio dependency from SoundSwitch and consolidate all Windows-audio functionality into `SoundSwitch.Audio.Manager`. It is a planning/architecture document — no code changes are included.
+
+---
+
+## 1. Goal & motivation
+
+Remove the NAudio dependency (`NAudio`, `NAudio.Wasapi` — the latter shipping the `NAudio.Wave`/`WasapiPlayer` surface) from SoundSwitch entirely, and consolidate every remaining Windows-audio capability the app actually uses into the project's own audio library, `SoundSwitch.Audio.Manager`.
+
+Motivation, in priority order:
+
+1. **Eliminate a recurring crash vector.** The NAudio 3.x migration (PR #2356, "migrate `WasapiOut` to `WasapiPlayer`", issue #2351) introduced a class of startup/runtime regressions where NAudio's COM wrappers throw `CoreAudioException` when the Windows audio service (`Audiosrv`) is down or an endpoint disappears between enumeration and use. PR #2371 ("harden audio device object ... against transient failures") had to wrap `MMDevice.IconPath`/`State` reads and volume subscription in `DeviceFullInfo` with defensive try/catch precisely because NAudio's managed objects throw on transient Windows conditions. NAudio's wrapper philosophy (eager property reads, managed event args, broad surface) is mismatched with SoundSwitch's need for a small, defensive, COM-thread-affined API.
+2. **Shrink the dependency surface.** Two centrally-pinned packages (`NAudio 3.0.1`, `NAudio.Wasapi 3.0.1` in `Directory.Packages.props`) exist solely to give us Core Audio enums, an endpoint object model, a notification client, endpoint volume access, and a short-clip WAV player. All of these map directly onto Windows Core Audio (MMDevice API, `IAudioEndpointVolume`, WASAPI) — which `SoundSwitch.Audio.Manager` already reaches through CsWinRT and hand-rolled COM interop.
+3. **Own the audio code path.** `SoundSwitch.Audio.Manager` already owns policy/default-device switching (`PolicyClient`, `ExtendedPolicyClient`, `AudioPolicyConfig`), COM threading (`ComThread`/`ComTaskScheduler`), and the canonical enums (`EDataFlow`, `ERole`, `EDeviceState`, `HRESULT`). Having a second, third-party object model (`MMDevice`/`MMDeviceEnumerator`) layered next to it forces constant enum casting (`(DataFlow)flow`, `(DeviceState)state` in `EnumeratorClient`) and splits threading/error-handling semantics across two libraries.
+4. **Implement only what SoundSwitch uses.** This is explicitly **not** a reimplementation of NAudio. The app needs: endpoint enumeration + ~6 device properties, 5 notification callbacks, volume/mute get/set + one change callback, per-session process-ID lookup, and shared-mode WAV playback of short clips. That is a fraction of NAudio's surface, and each piece maps to one or two COM interfaces.
+
+**Non-goals:** no change to user-visible behavior; no rewrite of `PolicyClient`/`ExtendedPolicyClient`/`AudioPolicyConfig` (already NAudio-free); no cross-platform abstraction (SoundSwitch is Windows-only); no support for non-WAV custom sounds beyond what `CachedSound` accepts today (WAV via `WaveFileReader`, anything via `AudioFileReader`/`MediaFoundationReader` — see §2.e and §3.5 for the parity decision).
+
+---
+
+## 2. Current NAudio usage map
+
+### 2.0 Package footprint
+
+| Location | Reference |
+|---|---|
+| `Directory.Packages.props` (L18–19) | `<PackageVersion Include="NAudio" Version="3.0.1" />`, `<PackageVersion Include="NAudio.Wasapi" Version="3.0.1" />` |
+| `SoundSwitch.Audio.Manager/SoundSwitch.Audio.Manager.csproj` (L17) | `<PackageReference Include="NAudio" />` |
+| `SoundSwitch.Common/SoundSwitch.Common.csproj` (L21–22) | `<PackageReference Include="NAudio" />`, `<PackageReference Include="NAudio.Wasapi" />` |
+| `SoundSwitch/SoundSwitch.csproj` | **no direct reference** — NAudio types flow in transitively via `SoundSwitch.Common` + `SoundSwitch.Audio.Manager` |
+| `SoundSwitch.CLI`, `SoundSwitch.IPC` | **zero NAudio usage** (verified by grep) |
+| `SoundSwitch.Tests` | **4 test files** import `NAudio.CoreAudioApi` (`NotificationContentBuilderTests.cs:18`, `RefreshDeviceTests.cs:6`, `DeviceCyclerTests.cs:6`, `AudioDeviceIconExtractorTests.cs:3`) — enum references only, no `MMDevice` construction (see §2.g) |
+| `SoundSwitch/packages.config` (L5) | dead vestige: `<package id="NAudio" version="2.2.1" targetFramework="net472" />` — delete during cleanup |
+
+**48 source files** import `using NAudio.*` across **51 `using NAudio` lines** — three files carry two using-lines each (`PlaySoundJob.cs`, `CachedSound.cs`, `NotificationSound.cs`). Two further grep hits are prose, not source: `.github/copilot-instructions.md:10` and `:48`. Every capability below is enumerated with its exact call sites.
+
+### 2.a Device enumeration & metadata
+
+**NAudio types:** `MMDeviceEnumerator`, `MMDevice`, `MMDeviceCollection`, `DataFlow`, `DeviceState`, `Role`, `PropertyKey(s)`.
+
+**The interop hub — `SoundSwitch.Audio.Manager/Interop/Client/EnumeratorClient.cs`** (internal class; the only place `new MMDeviceEnumerator()` happens in the library):
+
+- L16–26: `private readonly MMDeviceEnumerator _enumerator;` constructed eagerly, disposed in finalizer.
+- `GetDefaultEndpoint(EDataFlow flow, ERole role)` → `_enumerator.GetDefaultAudioEndpoint((DataFlow)flow, (Role)role)` (L54) — **own enums cast to NAudio enums**.
+- `GetDevice(string deviceId)` → `_enumerator.GetDevice(deviceId)` (L72). Both swallow exceptions and return `null` (comment cites issue #401).
+- `GetEndpoints(EDataFlow dataFlow, EDeviceState state)` → `_enumerator.EnumerateAudioEndPoints((DataFlow)dataFlow, (DeviceState)state)` (L88).
+- L93–96: **dormant `[ComImport]` coclass stub** `private class _MMDeviceEnumerator` with `Guid(ComGuid.AUDIO_IMMDEVICE_ENUMERATOR_OBJECT_IID)` — declared but never instantiated. `ComGuid.cs` already defines `AUDIO_IMMDEVICE_IID`, `AUDIO_IMMDEVICE_ENUMERATOR_IID`, `AUDIO_IMMDEVICE_ENUMERATOR_OBJECT_IID`. Direct COM activation of the native enumerator was already anticipated here.
+
+**Metadata reads off `MMDevice`:**
+
+- `SoundSwitch.Common/Framework/Audio/Device/DeviceInfo.cs` — `DeviceInfo(MMDevice device)` ctor (L59) reads `FriendlyName`, `ID`, `DataFlow`, and `Properties[PropertyKeys.DEVPKEY_Device_EnumeratorName].Value` (`"USB"` check → `IsUsb`). Public property `DataFlow Type { get; }` (L29) is **NAudio-typed and JSON-serialized** — the deepest single leak (see §4 cross-cutting concern).
+- `SoundSwitch.Common/Framework/Audio/Device/DeviceFullInfo.cs` — `DeviceFullInfo(MMDevice device)` ctor (L51) additionally reads `IconPath` and `State`; stores `private readonly MMDevice? _device` (L18) and **owns/disposes it** (L186). PR #2371 wrapped these reads in try/catch with fallbacks (`IconPath = ""`, `State = Active`) because NAudio throws `CoreAudioException` when the audio service is down.
+- `SoundSwitch.Common/Framework/Audio/Device/PropertyKeys.cs` — local `PropertyKeys` static class holding `DEVPKEY_Device_EnumeratorName` (`{A45C254E-DF1C-4EFD-8020-67D146A850E0}, pid 24`), built on NAudio's `PropertyKey` struct (NAudio 3.0's own `PropertyKeys` doesn't expose this PKEY). Name-shadows NAudio's `PropertyKeys` in the same namespace.
+- `SoundSwitch.Common/Framework/Audio/Icon/AudioDeviceIconExtractor.cs` — `ExtractIconFromAudioDevice(MMDevice, bool)` (L92) reads `IconPath`/`DataFlow`; actual icon extraction is Shell32 (`IconExtractor.ExtractFromPath`), NAudio-free. `ExtractIconFromPath(string, DataFlow, bool)` (L66) only uses the `DataFlow` enum for the mic/speaker fallback icon.
+- `SoundSwitch.Common/Framework/Audio/Collection/DeviceReadOnlyCollection.cs` — stores `private readonly DataFlow _dataFlow` (L13) and filters `info.Type == _dataFlow` (L50). Does **not** wrap `MMDeviceCollection`.
+- `SoundSwitch/Framework/Audio/Lister/CachedAudioDeviceLister.cs` — ctor takes NAudio `DeviceState` bitmask (L98, e.g. `DeviceState.Active | DeviceState.Unplugged`); `Refresh()` (L274) delegates enumeration to `AudioSwitcher.Instance.GetAudioEndpoints((EDataFlow)DataFlow.All, (EDeviceState)_state)` — NAudio bitmask cast to the in-house `EDeviceState`. Tolerates `NullReferenceException`/`InvalidComObjectException` on cancellation (L320: "the device enumerator has been disposed").
+
+### 2.b Default-device change notifications
+
+**NAudio types:** `MMDeviceNotificationClient` (NAudio 3.x event wrapper over `IMMNotificationClient`), `MMDeviceEnumerator.CreateNotificationClient(bool)`, event args `DeviceStateChangedEventArgs`, `DeviceNotificationEventArgs`, `DefaultDeviceChangedEventArgs`, `DevicePropertyChangedEventArgs`, NAudio `PropertyKeys` PKEY constants.
+
+**Sole consumer: `SoundSwitch/Framework/NotificationManager/MMNotificationClient.cs`** (singleton, `IDisposable`):
+
+- `Register()` (L51–74): `_enumerator = new MMDeviceEnumerator(); _client = _enumerator.CreateNotificationClient(false);` then subscribes `DeviceStateChanged`, `DeviceAdded`, `DeviceRemoved`, `DefaultDeviceChanged`, `PropertyValueChanged`.
+- Handlers translate NAudio event args into `SoundSwitch.Model.DeviceChangedEvent`/`DefaultDeviceChangedEvent` records enqueued into a `ConcurrentQueue<DeviceChangedEvent>`; drained every 200 ms by `ProcessNotificationEventsJob` → `CachedAudioDeviceLister.ProcessDeviceUpdates`. No UI touch on the callback thread.
+- `OnDefaultDeviceChanged` (L112–128) reads `e.Flow`, `e.Role`, `e.DeviceId` (NAudio `DataFlow`/`Role`) and dedups against a `_lastRoleDevice` dictionary keyed by `private record struct DeviceRole(DataFlow Flow, Role Role)`.
+- `OnPropertyValueChanged` (L130–142) filters on `e.PropertyKey.formatId` against NAudio `PropertyKeys.PKEY_DeviceInterface_FriendlyName`, `PKEY_AudioEndpoint_GUID`, `PKEY_Device_IconPath`, `PKEY_Device_FriendlyName` (`using PropertyKeys = NAudio.CoreAudioApi.PropertyKeys;` alias at L13).
+- `ReconcileDefaultDevices()` (L87–110) re-queries `AudioSwitcher` defaults per (flow, role) and synthesizes `DefaultDeviceChangedEvent` on divergence; invoked from `AppModel.OnSystemResumed`.
+
+This is a pure **event-source** role: enqueue-only, string IDs, plus `Role`. Nothing else in the repo implements or consumes `IMMNotificationClient`.
+
+### 2.c Endpoint volume & mute
+
+**NAudio types:** `AudioEndpointVolume` (`MasterVolumeLevelScalar`, `Mute`, `Channels[i].VolumeLevelScalar`, `OnVolumeNotification`), `AudioVolumeNotificationData`.
+
+Call sites:
+
+- `SoundSwitch.Common/Framework/Audio/Device/DeviceFullInfo.cs` — `SubscribeToVolumeNotifications()` (L63–133): active-state guard, reads `MasterVolumeLevelScalar`/`Mute` into `Volume`/`IsMuted`, subscribes `OnVolumeNotification += DeviceOnVolumeNotification`; handler (L135) reads `data.MasterVolume`/`data.Muted`. Unsubscribe in `Dispose(bool)` (L176). Subscription is always marshalled through `AudioSwitcher.InteractWithDevice` from `CachedAudioDeviceLister.SubscribeToDeviceEvents` (L104–115) — COM-thread affinity is already explicit.
+- `SoundSwitch.Audio.Manager/AudioSwitcher.cs` — `SetVolumeFromDefaultDevice(DeviceInfo)` (L198–238): reads default device's `AudioEndpointVolume.MasterVolumeLevelScalar`/`Mute`, then sets per-channel `Channels[0..1].VolumeLevelScalar` when `Channels.Count == 2` else `MasterVolumeLevelScalar`, plus `Mute`, on the target device. Uses `mmDevice is not { State: DeviceState.Active }` guard (L220).
+- `SoundSwitch/Framework/Audio/Microphone/MicrophoneMuteToggler.cs` — `ToggleDefaultMute`/`SetDefaultMuteState`/`SetMicrophoneMuteState`: get `MMDevice` via `AudioSwitcher.GetDefaultMmDevice(EDataFlow.eCapture, ERole.eCommunications)` or `GetDevice(deviceId)`, then inside `InteractWithDevice` flip `device.AudioEndpointVolume.Mute` and read `device.FriendlyName` (L47–49, 97).
+- `SoundSwitch/Model/SoundSwitchApplicationContext.cs` (L120) — IPC `MicrophoneStateRequest`: `InteractWithDevice(defaultDevice, device => ... device.AudioEndpointVolume.Mute ... device.FriendlyName)`.
+
+The full surface used: **get/set mute, get/set master scalar, get/set per-channel scalar (2-channel case), one change notification.** Nothing else of `IAudioEndpointVolume` is touched.
+
+### 2.d Policy / default-device switching
+
+**Mostly already owned in-house.** `AudioSwitcher.SwitchTo(string, ERole)` → `PolicyClient` (ComImport `_PolicyConfigClient`, `IPolicyConfigX`/`IPolicyConfig`/`IPolicyConfigVista` vtables, `SetDefaultEndpoint(devId, ERole)`); `SwitchProcessTo`/`SwitchForegroundProcessTo`/`GetProcessDeviceMap`/`ResetProcessDeviceConfiguration` → `ExtendedPolicyClient`/`AudioPolicyConfig` (CsWinRT `AudioSes.DllGetActivationFactory` → `Windows.Media.Internal.AudioPolicyConfig`, vtable slots 25/26/27, MMDEVAPI token packing). **No NAudio anywhere in that path.**
+
+What still touches NAudio here:
+
+- `AudioSwitcher.GetDefaultAudioEndpoint`/`GetAudioEndpoint`/`GetAudioEndpoints` wrap `MMDevice` results into `DeviceFullInfo` (L344, L386, L406).
+- `AudioSwitcher` public API leaks `MMDevice`: `InteractWithDevice<T>(MMDevice, Func<MMDevice,T>)` (L356), `GetDefaultMmDevice(EDataFlow, ERole)` (L372), `GetDevice(string)` (L379).
+- Per-process session lookup (`GetSessionDeviceId` L269, `GetProcessDeviceMap` L303) uses NAudio `AudioSessionManager.Sessions`, `AudioSessionControl.GetProcessID`, and `session.State == NAudio.CoreAudioApi.Interfaces.AudioSessionState.AudioSessionStateActive` (L285, L322) — i.e. `IAudioSessionManager2`/`IAudioSessionControl` behind NAudio's wrapper.
+- `ADeviceCycler` casts `(EDataFlow)type` / `(EDataFlow)device.Type` at the `AudioSwitcher` boundary (L65, 83, 106–117) because `DeviceInfo.Type` is NAudio `DataFlow`.
+
+### 2.e Notification sound playback
+
+**NAudio types:** `NAudio.Wave`: `WaveFormat`, `WaveStream`, `WaveFileReader`, `AudioFileReader`, `MediaFoundationReader`, `IWavePlayer`, `StoppedEventArgs`; `NAudio`: `MmException`; `NAudio.Wasapi` 3.0.1: `WasapiPlayerBuilder`/`WasapiPlayer` (namespace `NAudio.Wave`; legacy `WasapiOut` is `[Obsolete]` in 3.x and no longer used).
+
+Files:
+
+- `SoundSwitch/Framework/Audio/CachedSound.cs` — `public WaveFormat WaveFormat { get; }` (**NAudio type on a public property**, L28) + `byte[] AudioData`. Three ctors: file path (L36) via `GetReader` = `new AudioFileReader(filename)` with `catch (MmException)` → `new MediaFoundationReader(filename)` fallback (L83–93); `Stream` (WAV-only, `new WaveFileReader(stream)`, L62); `(MemoryStream, WaveFormat)` trusted passthrough (L77).
+- `SoundSwitch/Framework/Audio/CachedSoundWaveStream.cs` — trivial in-memory byte cursor **subclassing `NAudio.Wave.WaveStream`** (L21) purely so it can be fed to `IWavePlayer.Init(...)`.
+- `SoundSwitch/Framework/Audio/Play/PlaySoundJob.cs` — scheduled `IJob` (30 s max runtime). Creates **its own** `new MMDeviceEnumerator()` on the job thread (L43); `GetDevice` (L84): null/empty deviceId → `enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia)`, else `enumerator.GetDevice(deviceId)`; `CreatePlayer` (L97): `new WasapiPlayerBuilder().WithDevice(device).WithSharedMode().WithEventSync().WithLatency(200).Build()`, fallback `new WasapiPlayerBuilder().Build()` (default device) on init failure. `player.Init(new CachedSoundWaveStream(sound))`, completion awaited via `SemaphoreSlim` + `PlaybackStopped` (`StoppedEventArgs.Exception` logged).
+- `SoundSwitch/Framework/NotificationManager/Notification/NotificationSound.cs` — `NotifyDefaultChanged`: playback devices only (`DataFlow.Render` guard L44), cancels previous job, picks `Configuration.CustomSound` or `new CachedSound(GetStreamCopy())` (bundled `Resources.NotificationSound` WAV), schedules `PlaySoundJob(audioDevice.Id, sound)`. `NotifyMicrophoneMuteChanged` uses `PlaySoundJob(null, ...)` → default render/multimedia. `NotifyProfileChanged` resolves `profile.Playback.Id` through `AudioSwitcher.GetDevice` + `InteractWithDevice(mmDevice, d => new DeviceFullInfo(d))`.
+- Also typed by playback: `Model/INotificationSettings.cs` (`CachedSound CustomNotificationSound`), `Model/AppModel.NotificationSettings.cs` (builds `CachedSound` from custom file path), `Framework/Banner/BannerData.cs` (`CachedSound SoundFile`), `UI/Forms/Settings.cs` L1004 (`new CachedSound(dialog.FileName)`).
+
+SoundSwitch plays **short clips** — the bundled PCM WAV notification sound plus an optional user-selected custom sound, which may be non-WAV (MP3/FLAC/AAC via the `AudioFileReader`/`MediaFoundationReader` path above) — in **shared mode, event-driven, ~200 ms latency**, targeting a specific render endpoint or the default multimedia endpoint.
+
+### 2.f Error handling (`CoreAudioException` family)
+
+No source file names `CoreAudioException` explicitly (grep-verified) — the code catches broader `Exception` and inspects/logs. But the **thrown types are NAudio's**: `MMDeviceEnumerator`/`MMDevice`/`AudioEndpointVolume` raise `NAudio.CoreAudioApi.CoreAudioException` (wrapping COM HRESULTs, notably `0x80070490` ERROR_NOT_FOUND / device-not-present and AUDCLNT_E_* when `Audiosrv` is down), and `CachedSound` catches `NAudio.MmException` from `AudioFileReader`. PR #2371 documents the production failure mode: `CoreAudioException` from `_device.State`/`IconPath` reads and `OnVolumeNotification` subscription when the audio service stops mid-flight; the fix downgrades that specific exception from Error→Information in logs/Sentry. Any replacement must preserve a **typed, inspectable** error surface (HRESULT-carrying exception) so that the "audio service down / endpoint vanished" case remains distinguishable from real bugs. The in-house `HRESULT` enum already defines `AUDCLNT_E_DEVICE_INVALIDATED`, `ERROR_NOT_FOUND`, etc.
+
+### 2.g The enum leak — full file inventory
+
+Beyond the capability hubs above, the NAudio **enums** `DataFlow`/`DeviceState`/`Role` are embedded across the app: serialized DTOs, public model interfaces, Rx payloads, UI grouping. Complete inventory of the **48 `using NAudio.*` files (51 using-lines)**:
+
+| Project | File | NAudio surface used |
+|---|---|---|
+| Audio.Manager | `AudioSwitcher.cs` | `MMDevice`, `DeviceState`, `AudioEndpointVolume`, `AudioSessionManager`, `SessionCollection`, `AudioSessionControl`, `AudioSessionState` |
+| Audio.Manager | `Interop/Client/EnumeratorClient.cs` | `MMDeviceEnumerator`, `MMDevice`, casts `(DataFlow)`/`(Role)`/`(DeviceState)` |
+| Common | `Framework/Audio/Device/DeviceInfo.cs` | `MMDevice` ctor, `DataFlow Type` (serialized) |
+| Common | `Framework/Audio/Device/DeviceFullInfo.cs` | `MMDevice` field/ctor, `DeviceState State`, `AudioEndpointVolume`, `AudioVolumeNotificationData` |
+| Common | `Framework/Audio/Device/PropertyKeys.cs` | NAudio `PropertyKey` struct |
+| Common | `Framework/Audio/Collection/DeviceReadOnlyCollection.cs` | `DataFlow` filter |
+| Common | `Framework/Audio/Icon/AudioDeviceIconExtractor.cs` | `DataFlow`, `MMDevice` overload |
+| SoundSwitch | `Framework/Audio/CachedSound.cs` | `WaveFormat`, `WaveStream`, `WaveFileReader`, `AudioFileReader`, `MediaFoundationReader`, `MmException` |
+| SoundSwitch | `Framework/Audio/CachedSoundWaveStream.cs` | `WaveStream` base class |
+| SoundSwitch | `Framework/Audio/Play/PlaySoundJob.cs` | `MMDeviceEnumerator`, `MMDevice`, `DataFlow.Render`, `Role.Multimedia`, `IWavePlayer`, `WasapiPlayerBuilder`, `StoppedEventArgs` |
+| SoundSwitch | `Framework/Audio/Microphone/MicrophoneMuteToggler.cs` | `MMDevice`, `AudioEndpointVolume.Mute`, `FriendlyName` |
+| SoundSwitch | `Framework/Audio/Lister/CachedAudioDeviceLister.cs` | `DataFlow`, `DeviceState` (casts to `EDataFlow`/`EDeviceState`) |
+| SoundSwitch | `Framework/Audio/Lister/DefaultDevicePayload.cs` | `Role` in public record struct |
+| SoundSwitch | `Framework/NotificationManager/MMNotificationClient.cs` | `MMDeviceEnumerator`, `MMDeviceNotificationClient` + 4 event-arg types, NAudio `PropertyKeys`, `DataFlow`, `Role` |
+| SoundSwitch | `Framework/NotificationManager/NotificationManager.cs` | `DataFlow` switch only |
+| SoundSwitch | `Framework/NotificationManager/Notification/NotificationSound.cs` | `DataFlow.Render` guards (`using NAudio.Wave;` is unneeded) |
+| SoundSwitch | `Framework/NotificationManager/Notification/NotificationWindows.cs` | **unused using** — remove |
+| SoundSwitch | `Framework/NotificationManager/Notification/NotificationBanner.cs` | `DataFlow.Render` in `CustomSoundCheck` |
+| SoundSwitch | `Framework/NotificationManager/Notification/NotificationContentBuilder.cs` | `DataFlow` title switches |
+| SoundSwitch | `Model/Events.cs` | `DeviceListChanged(..., DataFlow)`, `DeviceDefaultChangedEvent(..., Role)` |
+| SoundSwitch | `Model/DeviceChangedEvent.cs` | `DefaultDeviceChangedEvent(..., Role Role)` |
+| SoundSwitch | `Model/AppModel.cs` | `DataFlow.Capture` filter; `CachedSound` field |
+| SoundSwitch | `Model/AppModel.DeviceService.cs` | `GetDevices(DataFlow.*, DeviceState.Active)`, `CycleActiveDevice(DataFlow)` |
+| SoundSwitch | `Model/AppModel.AppSettings.cs` | `CycleActiveDevice(DataFlow.Render/Capture)` |
+| SoundSwitch | `Model/IAudioDeviceLister.cs` | `GetDevices(DataFlow, DeviceState)` signature; `DefaultDevicePayload` |
+| SoundSwitch | `Model/IDeviceService.cs` | `CycleActiveDevice(DataFlow)`; events carrying `DataFlow`/`Role` |
+| SoundSwitch | `Model/SoundSwitchApplicationContext.cs` | `DeviceState` flags, `DataFlow`, `AudioEndpointVolume.Mute` via `MMDevice` lambda |
+| SoundSwitch | `Framework/DeviceCyclerManager/DeviceCyclerManager.cs` | `CycleDevice(DataFlow)` |
+| SoundSwitch | `Framework/DeviceCyclerManager/DeviceCycler/IDeviceCycler.cs` | `CycleAudioDevice(DataFlow)` |
+| SoundSwitch | `Framework/DeviceCyclerManager/DeviceCycler/ADeviceCycler.cs` | `DataFlow` params, `(EDataFlow)` casts |
+| SoundSwitch | `Framework/DeviceCyclerManager/DeviceCycler/DeviceCyclerAll.cs` | `DataFlow`, `DeviceState.Active` |
+| SoundSwitch | `Framework/DeviceCyclerManager/DeviceCycler/DeviceCyclerAvailable.cs` | `DataFlow` switch |
+| SoundSwitch | `Framework/Configuration/SoundSwitchConfiguration.cs` | `DataFlow.Render/Capture` in legacy `Migrate()` |
+| SoundSwitch | `Framework/TrayIcon/TooltipInfoManager/TootipInfo/TooltipInfoPlayback.cs` | `DataFlow.Render` filter |
+| SoundSwitch | `.../TooltipInfoRecording.cs` | `DataFlow.Capture` filter |
+| SoundSwitch | `Framework/TrayIcon/IconDoubleClick/Action/IconDoubleClickSwitchPlaybackDevice.cs` | `DataFlow.Render` |
+| SoundSwitch | `.../IconDoubleClickSwitchRecordingDevice.cs` | `DataFlow.Capture` |
+| SoundSwitch | `Framework/TrayIcon/IconChanger/Changer/IconChangerAbstract.cs` | `abstract DataFlow Flow`, `(EDataFlow)` cast |
+| SoundSwitch | `.../IconChangerAlways.cs` | `DataFlow.Render` |
+| SoundSwitch | `.../IconChangerPlayback.cs` | `DataFlow.Render` |
+| SoundSwitch | `.../IconChangerRecording.cs` | `DataFlow.Capture` |
+| SoundSwitch | `Framework/Profile/ProfileManager.cs` | `DeviceState.Active`, `(ERole)`/`(EDataFlow)` casts |
+| SoundSwitch | `Framework/Profile/UI/ProfileTrayIconBuilder.cs` | `DeviceState.Active` |
+| SoundSwitch | `UI/Forms/Settings.cs` | `DataFlow`, `DeviceState` flags, `nameof(DeviceState.Active)` ListView grouping |
+| Tests | `SoundSwitch.Tests/NotificationContentBuilderTests.cs` | `DataFlow`, `DeviceState` via JSON ctor (hermetic) |
+| Tests | `SoundSwitch.Tests/RefreshDeviceTests.cs` | `DeviceState.All/Active`, `DataFlow` (hardware, CI-skipped) |
+| Tests | `SoundSwitch.Tests/DeviceCyclerTests.cs` | `DataFlow` (hardware, CI-skipped, mutates real default) |
+| Tests | `SoundSwitch.Tests/AudioDeviceIconExtractorTests.cs` | `DataFlow` test cases (hermetic) |
+
+Key structural facts for the plan:
+
+- **Only 3 files** news up an enumerator: `EnumeratorClient.cs`, `MMNotificationClient.cs`, `PlaySoundJob.cs`.
+- **Only 5 files** touch `MMDevice` beyond carrying it: `AudioSwitcher.cs`, `DeviceInfo.cs`, `DeviceFullInfo.cs`, `MicrophoneMuteToggler.cs`, `SoundSwitchApplicationContext.cs` (+ the `ExtractIconFromAudioDevice` overload and `PlaySoundJob`).
+- **`DeviceInfo.Type` (NAudio `DataFlow`) is JSON-serialized** into user settings (`SoundSwitchConfiguration.SelectedDevices`) — wire-format compatibility constrains the enum migration (§4, Phase 1).
+- Tests **never construct `MMDevice`** (impossible — no public ctor). The four test files reference NAudio enums only; hermetic tests use the `[JsonConstructor]` string-based ctors and hardware tests self-skip under the `CI` env var. There is no mocking framework in `SoundSwitch.Tests`.
+
+---
+
+## 3. Target architecture
+
+`SoundSwitch.Audio.Manager` becomes the **single owner of Windows audio**. Everything the app knows about an endpoint, a default-device change, a volume level, or a notification sound comes from this assembly (plus NAudio-free DTOs in `SoundSwitch.Common`). No project references NAudio; no source file contains `using NAudio`.
+
+### 3.1 What already exists (do not rebuild)
+
+- **Canonical enums** — `EDataFlow`, `ERole`, `EDeviceState` (`Interop/Enum/`), numerically identical to the native constants and to NAudio's enums.
+- **COM threading** — `ComThread.Invoke(Action)` / `ComThread.Invoke<T>(Func<T>)` over a dedicated STA (`ComTaskScheduler`, thread name `"ComThread"`), `ComThread.Assert()`. All new COM work plugs into this, exactly as `EnumeratorClient` is used today.
+- **COM activation plumbing** — `ComGuid` already carries `AUDIO_IMMDEVICE_IID`, `AUDIO_IMMDEVICE_ENUMERATOR_IID`, `AUDIO_IMMDEVICE_ENUMERATOR_OBJECT_IID`; `EnumeratorClient.cs` L93–96 even contains a dormant `[ComImport]` coclass stub for the native `MMDeviceEnumerator` (`BCDE0395-E52F-467C-8E3D-C4579291692E`).
+- **Error vocabulary** — `HRESULT` enum (`AUDCLNT_E_DEVICE_INVALIDATED`, `ERROR_NOT_FOUND`, …).
+- **Policy switching** — `PolicyClient`, `ExtendedPolicyClient`, `AudioPolicyConfig`, `AudioPolicyConfigFactory`, `UnsupportedAudioPolicyConfig` — untouched by this migration.
+
+### 3.2 New interop surface in `SoundSwitch.Audio.Manager`
+
+All new types live under `SoundSwitch.Audio.Manager/Interop/` (raw COM) and `SoundSwitch.Audio.Manager/` (managed wrappers). Naming keeps the established `E*`/`I*`/`Client` conventions.
+
+**Raw COM interface declarations** (`Interop/Interface/`, `[ComImport]` + `Guid`, vtable order per Windows SDK):
+
+- `IMMDeviceEnumerator` — `EnumAudioEndpoints`, `GetDefaultAudioEndpoint`, `GetDevice`, `RegisterEndpointNotificationCallback`, `UnregisterEndpointNotificationCallback`.
+- `IMMDevice` — `Activate` (generic, used for `IAudioEndpointVolume`, `IAudioSessionManager2`, `IAudioClient`), `OpenPropertyStore`, `GetId`, `GetState`.
+- `IMMDeviceCollection` / `IMMEndpoint` — count + item; `IMMEndpoint.GetDataFlow` (replaces `MMDevice.DataFlow`).
+- `IMMNotificationClient` — the 7-callback vtable; SoundSwitch implements 5 (`OnDeviceStateChanged`, `OnDeviceAdded`, `OnDeviceRemoved`, `OnDefaultDeviceChanged`, `OnPropertyValueChanged`) with empty bodies for the other 2.
+- `IPropertyStore` — `GetCount`, `GetAt`, `GetValue` (+ inert `SetValue`/`Commit` vtable slots). Reads `PROPVARIANT`; a minimal `PROPVARIANT` blittable struct covering `VT_LPWSTR`/`VT_INT`/`VT_BOOL` suffices for the PKEYs SoundSwitch reads.
+- `IAudioEndpointVolume` — the full vtable must be declared up to the members used: `Get/SetMasterVolumeLevelScalar`, `Get/SetMute`, `GetChannelCount`, `Get/SetChannelVolumeLevelScalar`, `RegisterControlChangeNotify`, `UnregisterControlChangeNotify`.
+- `IAudioEndpointVolumeCallback` — `OnNotify(PAUDIO_VOLUME_NOTIFICATION_DATA)`; implemented in-house, translated into a managed event.
+- `IAudioSessionManager2` / `IAudioSessionEnumerator` / `IAudioSessionControl` (+`IAudioSessionControl2` for `GetProcessId`) — for `GetSessionDeviceId`/`GetProcessDeviceMap` parity with the NAudio `AudioSessionManager` path.
+- `IAudioClient`, `IAudioRenderClient` — for notification playback (§3.5). `IAudioClient.Initialize`/`GetMixFormat`/`GetBufferSize`/`SetEventHandle`/`Start`/`Stop`, `GetService` for the render client, render client `GetBuffer`/`ReleaseBuffer`.
+- New `PROPERTYKEY` struct (`fmtid` Guid + `pid`) and a `PropertyKeys` constants class **inside the audio library** holding exactly the keys in use: `PKEY_DeviceInterface_FriendlyName`, `PKEY_Device_FriendlyName`, `PKEY_Device_IconPath`, `PKEY_AudioEndpoint_GUID`, `DEVPKEY_Device_EnumeratorName` (the last currently hand-rolled in `SoundSwitch.Common/.../PropertyKeys.cs`, which is deleted).
+
+**Managed wrappers** (public API of the library):
+
+- `AudioDevice` (new; working name) — the `MMDevice` replacement. IDisposable wrapper over `IMMDevice` created and used only on the `ComThread`. Exposes exactly what §2 enumerates: `string Id`, `string FriendlyName`, `string IconPath`, `EDataFlow DataFlow`, `EDeviceState State`, `bool IsUsb` (via `DEVPKEY_Device_EnumeratorName`), `EndpointVolume` (see below), `Sessions` (process-ID lookup). Property reads are defensive: a failed read returns the documented fallback (`""`, `Active`, `false`) and logs at Information — **baking in the PR #2371 semantics instead of layering try/catch on top**.
+- `AudioDeviceEnumerator` (internal, evolves from `EnumeratorClient`) — activates the native coclass via the existing `ComGuid` constants, replacing `MMDeviceEnumerator`. Methods keep today's shape: `GetDefaultEndpoint(EDataFlow, ERole)`, `GetDevice(string)`, `GetEndpoints(EDataFlow, EDeviceState)` — but return `AudioDevice`, and the `(DataFlow)flow` casts disappear. Adds `RegisterNotificationClient`/`Unregister` (below).
+- `AudioEndpointVolumeClient` — get/set `MasterVolumeLevelScalar`, `Mute`, channel count, per-channel scalar; `event EventHandler<AudioVolumeNotificationData-equivalent>` (a small in-house record: `MasterVolume`, `Muted`).
+- `AudioDeviceNotificationClient` — managed implementation of `IMMNotificationClient`; exposes the five .NET events with payload records carrying **in-house enums only** (`EDataFlow`, `ERole`, device id string, `PROPERTYKEY`). Replaces NAudio's `MMDeviceNotificationClient` + `CreateNotificationClient`.
+
+**Ownership/disposal contract (must be preserved exactly):** today `DeviceFullInfo` owns and disposes its `MMDevice` (`DeviceFullInfo.cs:167` → `_device?.Dispose()` at L186) and subscribes to `AudioEndpointVolume.OnVolumeNotification` (L121), unsubscribing in `Dispose`. `AudioSwitcher.InteractWithDevice` (`AudioSwitcher.cs:356`) hands a raw `MMDevice` to callers, several of which construct `new DeviceFullInfo(d)` inside that lambda (e.g. `NotificationSound.cs:68`). The new `AudioDevice` wrapper must preserve this "caller owns the device object; volume callback must be unsubscribed on dispose" contract: whoever constructs an `AudioDevice` owns it, and any `IAudioEndpointVolumeCallback` subscription made through it must be torn down in `Dispose()` — otherwise §2.c volume/mute notifications will leak subscriptions and keep the device object alive.
+
+### 3.3 The `AudioSwitcher` public API after migration
+
+The breaking surface is deliberate and mechanical:
+
+| Today (NAudio-typed) | After |
+|---|---|
+| `InteractWithDevice<T>(MMDevice, Func<MMDevice,T>)` | `InteractWithDevice<T>(AudioDevice, Func<AudioDevice,T>)` |
+| `MMDevice? GetDefaultMmDevice(EDataFlow, ERole)` | `AudioDevice? GetDefaultAudioDevice(EDataFlow, ERole)` (rename; old name was NAudio-specific) |
+| `MMDevice? GetDevice(string)` | `AudioDevice? GetDevice(string)` |
+| `SetVolumeFromDefaultDevice(DeviceInfo)` | unchanged signature; internals switch to `AudioEndpointVolumeClient` |
+| `GetDefaultAudioEndpoint` / `GetAudioEndpoint` / `GetAudioEndpoints` | unchanged signatures; construct `DeviceFullInfo` from `AudioDevice` |
+| `GetSessionDeviceId` / `GetProcessDeviceMap` | unchanged signatures; internals switch to `IAudioSessionManager2` interop |
+
+### 3.4 Device model in `SoundSwitch.Common`
+
+- `DeviceInfo.Type` becomes `EDataFlow`; `DeviceFullInfo.State` becomes `EDeviceState`. The `[JsonConstructor]` ctors keep their shapes. **Serialization compatibility:** no `StringEnumConverter` is registered anywhere in the configuration path (grep-verified), so Json.NET uses its default **numeric** enum encoding — `DeviceInfo.Type` is written as `0`/`1` and `DeviceFullInfo.State` likewise. Migration to `EDataFlow`/`EDeviceState` with the same underlying values (`eRender`=0, `eCapture`=1; `Active`=1) is therefore wire-compatible for free. A settings-migration test must pin the **numeric** wire form (Phase 0/Phase 1 verification). Note `EDeviceState.All` (=0xF) equals NAudio `DeviceState.All`; flag masks are numerically identical.
+- **Enum shape caveat (required behavioral change):** the interop enums are `[Flags]` with `*_enum_count` sentinels — `EDataFlow { eRender=0, eCapture=1, eAll=2, EDataFlow_enum_count=3 }` (`Interop/Enum/EDataFlow.cs`) and `ERole { eConsole=0, eMultimedia=1, eCommunications=2, ERole_enum_count=3 }` (`Interop/Enum/ERole.cs`) — whereas NAudio's `DataFlow`/`Role` are plain enums with no sentinel. Any `Enum.GetValues<T>()` seeding loop that migrates from `DataFlow`/`Role` to `EDataFlow`/`ERole` must **additionally filter out the `*_enum_count` member (value `3`)**, or it will iterate a bogus role/flow. `MMNotificationClient.Register()` (`MMNotificationClient.cs:60–73`) filters only `All` today and must gain the sentinel filter (see Phase 1). `EnumeratorClient.IsDefault` (`EnumeratorClient.cs:28`) already special-cases `ERole.ERole_enum_count`, so the codebase is aware of the sentinel.
+- `DeviceFullInfo` drops `private readonly MMDevice? _device` in favor of either (a) holding an `AudioDevice` with the same dispose semantics, or (b) holding only the device id and calling back into `AudioSwitcher` for volume subscription — **(a) is recommended**: it preserves the current ownership/lifetime model and keeps `SubscribeToVolumeNotifications()` a local operation.
+- `SoundSwitch.Common/Framework/Audio/Device/PropertyKeys.cs` is deleted; consumers use the library's constants.
+
+### 3.5 Notification sound playback (`WavePlayer`)
+
+A focused replacement, not a `WasapiPlayer` clone:
+
+- `WaveFileReader` (SoundSwitch-owned, ~100 lines): RIFF/WAVE chunk parser producing `byte[] AudioData` + a small `WaveFormat` record (sample rate, channels, bits per sample, encoding tag). **Format conversion is not optional:** the default endpoint mix format is typically 48 kHz 32-bit IEEE float, and the bundled PCM WAV is *not* guaranteed to match it. A minimal player that only "restricts to matching formats and falls back" will fail on the *default* render endpoint whenever the WAV is not already 48 kHz float — i.e. the common case. `WavePlayer.Initialize` must therefore either (a) negotiate with `IAudioClient.IsFormatSupported`/`GetMixFormat` and perform at minimum PCM→float conversion and resampling of the cached PCM, or (b) accept the mix format and convert. Without this, §2.e notification playback regresses.
+- **Custom-sound parity (a real, user-facing path, not hypothetical):** user-selected custom sounds go through `CachedSound.GetReader` (`CachedSound.cs:83–93`), which tries `new AudioFileReader(filename)` and falls back to `new MediaFoundationReader(filename)` on `MmException` — i.e. custom sounds support non-WAV (MP3/FLAC/AAC) today. Live call sites: `Settings.cs:1004` (`AppModel.Instance.CustomNotificationSound = new CachedSound(selectSoundFileDialog.FileName)`) and `Model/AppModel.NotificationSettings.cs:98` (`new CachedSound(AppConfigs.Configuration.CustomNotificationFilePath)`). The parity options are (a) keep a thin Media Foundation fallback (`IMFSourceReader` via CsWinRT) for non-WAV custom sounds, or (b) scope custom sounds to WAV. **Recommendation: keep (a) if the `IMFSourceReader` path is small, since it is already the documented behavior; if it lands as "WAV-only", call that out as a deliberate user-visible regression and tighten the file-open dialog filter to match.** This is the one place the migration can accidentally remove a feature — flag it in the PR and require a `feat`/`fix` framing either way.
+- `WavePlayer` (internal to the library): `IAudioClient` on a chosen `AudioDevice` (or default render + `eMultimedia`), `AudioClientShareMode.Shared` equivalent (AUDCLNT_SHAREMODE_SHARED), event-driven buffering (`SetEventHandle` + `WaitHandle`, matching current `WithEventSync().WithLatency(200)` semantics), `IAudioRenderClient` fill loop on a background thread, `PlaybackStopped`-style completion event with an `Exception` payload slot (today `PlaySoundJob` logs `StoppedEventArgs.Exception`). Because `PlaySoundJob` constructs its own enumerator off the `ComThread` (no `ComThread.Invoke`), its init-failure path is one of the few places a genuine exception can still surface to the job — the new `WavePlayer` must expose an equivalent init-failure signal rather than rely on the swallowed-`ComThread` model (§3.6).
+- `CachedSound`/`CachedSoundWaveStream`/`PlaySoundJob` (app side) are reshaped: `CachedSound` holds `byte[]` + in-house `WaveFormat` (no NAudio base types), `CachedSoundWaveStream` is deleted (it existed only to satisfy `IWavePlayer.Init`), `PlaySoundJob` calls `AudioSwitcher`-adjacent playback API instead of building its own `MMDeviceEnumerator` — this also removes the only off-`ComThread` enumerator instance in the codebase.
+
+### 3.6 Error model
+
+New `CoreAudioException` equivalent — e.g. `AudioDeviceException : Exception` carrying an `HRESULT` — thrown by the interop layer on failed COM calls, with static factories for the known-cases (`HRESULT.ERROR_NOT_FOUND`, `AUDCLNT_E_DEVICE_INVALIDATED`). `AudioSwitcher` keeps today's swallow-and-return-null behavior at the `EnumeratorClient` boundary (issue #401 semantics), and `DeviceFullInfo`/volume code keeps PR #2371's "audio service down ⇒ log Information, no Sentry" behavior — now keyed off the in-house exception instead of NAudio's.
+
+**Limitation (documented, not fixed):** the typed exception does **not** reliably reach callers. `ComThread.BeginInvoke`/`BeginInvoke<T>` (`ComThread.cs:36`/`:56`) wrap their delegate in `try/catch` that logs `Warning` and returns `default` (`ComThread.cs:44–47`, `:64–67`); `Invoke<T>` (`ComThread.cs:51`) funnels through `BeginInvoke`. Whenever `InvokeRequired` is true — i.e. the caller is not already on the `ComThread` — any exception thrown inside the interop lambda (including `AudioDeviceException`) is logged and swallowed, and `Invoke<T>` returns `default(T)` (`null` for `AudioDevice`-shaped wrappers). `AudioSwitcher.Instance` (`AudioSwitcher.cs:73`), `SwitchTo` (L91), `SetVolumeFromDefaultDevice` (L198), `InteractWithDevice` (L356), and `GetDevice` (L379) all funnel through `ComThread.Invoke`/`BeginInvoke`. **Consequence:** most public callers observe `null`/`default` plus a warning log, not an exception; the HRESULT is only directly observable to code already running on the `ComThread`. This plan deliberately accepts that (option (b), minimal change) — it is consistent with the existing swallow-and-null boundary — but does not promise an exception that reaches callers. (Rejected alternative: change `BeginInvoke<T>` to marshal exceptions to the caller.)
+
+### 3.7 Dependency rule (the end state)
+
+- `SoundSwitch.Audio.Manager` — owns every COM/CsWinRT touchpoint. No NAudio package.
+- `SoundSwitch.Common` — DTOs (`DeviceInfo`, `DeviceFullInfo`, collections, icon extraction) typed on `EDataFlow`/`EDeviceState` and `AudioDevice`. No NAudio package.
+- `SoundSwitch`, `SoundSwitch.CLI`, `SoundSwitch.IPC`, both test projects — import device types from `SoundSwitch.Audio.Manager` / `SoundSwitch.Common` only. **Zero `using NAudio.*` anywhere in the repo.**
+- `Directory.Packages.props` loses both `NAudio` lines; the dead `SoundSwitch/packages.config` entry goes with them.
+
+---
+
+## 4. Migration strategy
+
+Six phases, each independently mergeable and each leaving the tree in a working state. Phases 1–4 are additive/replacement work; Phase 5 is deletion. Every phase gates on the Windows CI `build / build` job (which runs `dotnet build` + `dotnet test`; hardware tests self-skip via the `CI` env var) and `Analyze (csharp)` — **`SoundSwitch.Audio.Manager` cannot compile on Linux** (CsWinRT projection generation requires Windows), so the Linux `LinuxBuild=true` compile of `SoundSwitch.csproj` is a smoke check only, never the gate for this work.
+
+### Phase 0 — Inventory & behavior freeze
+
+- **Work:** this document. Pin current behavior with tests where cheap: a settings round-trip test proving `DeviceInfo.Type`/`DeviceFullInfo.State` serialize **numerically** (no `StringEnumConverter` — `Type` as `0`/`1`, `State` as its integer) and identically before/after an enum swap (numeric values for `Render`/`Capture`/`Active`); an `AudioSwitcher`-adjacent characterization test where hardware allows (reuse the `CI`-guard + `SetExtendedPolicyClientForTest` seam pattern). Drop the two **unused** `using NAudio` directives now (zero risk): `NotificationSound.cs:21` (`using NAudio.Wave`) and `NotificationWindows.cs:21` (`using NAudio.CoreAudioApi`).
+- **Files:** `SoundSwitch.Tests/` (new test file(s)); `SoundSwitch/Framework/NotificationManager/Notification/NotificationSound.cs`, `NotificationWindows.cs` (unused-usings only); this doc.
+- **Risk:** none. **Verify:** existing suites green.
+
+### Phase 1 — Enum migration (`DataFlow`/`Role`/`DeviceState` → `EDataFlow`/`ERole`/`EDeviceState`)
+
+The widest-blast-radius, lowest-technical-risk phase — pure type substitution behind adapters. The enums are numerically identical, so `(EDataFlow)flow`-style casts already litter the boundary (`EnumeratorClient`, `ADeviceCycler`, `IconChangerAbstract`, `ProfileManager`); this phase moves the canonical type and deletes the casts.
+
+- **Work:**
+  1. Change `DeviceInfo.Type` to `EDataFlow`, `DeviceFullInfo.State` to `EDeviceState`, `DefaultDevicePayload.Role` → `ERole`, `DeviceChangedEvent.DefaultDeviceChangedEvent.Role` → `ERole`, `DeviceListChanged.Type` → `EDataFlow`.
+  2. Update signatures: `IAudioDeviceLister.GetDevices(EDataFlow, EDeviceState)`, `IDeviceService.CycleActiveDevice(EDataFlow)`, `IDeviceCycler.CycleAudioDevice(EDataFlow)`, `CachedAudioDeviceLister(EDeviceState)`, `AudioDeviceIconExtractor.ExtractIconFromPath(string, EDataFlow, bool)`, `DeviceReadOnlyCollection<T>(…, EDataFlow)`.
+  3. Mechanical sweep of the ~30 enum-only consumers (table §2.g): `DataFlow.Render` → `EDataFlow.eRender`, `DeviceState.Active` → `EDeviceState.Active`, `nameof(DeviceState.Active)` → `nameof(EDeviceState.Active)` (Settings.cs ListView grouping), delete every now-redundant `(EDataFlow)`/`(ERole)`/`(EDeviceState)` cast.
+  4. **Sentinel filter (required behavioral change):** the `[Flags]` interop enums carry `*_enum_count` sentinels (value `3`) that NAudio's plain enums lack. After migrating `Enum.GetValues<Role>()`/`Enum.GetValues<DataFlow>()` seeding loops to `ERole`/`EDataFlow`, they must **also filter out `ERole_enum_count`/`EDataFlow_enum_count`**. Specifically `MMNotificationClient.Register()` (`MMNotificationClient.cs:60–73`) currently filters only `All`; it must filter the sentinel too, or `ReconcileDefaultDevices` (L87–110) and `OnDefaultDeviceChanged` (L112–128) will iterate a bogus role/flow. (`EnumeratorClient.IsDefault` at `EnumeratorClient.cs:28` already special-cases `ERole.ERole_enum_count` — follow that pattern.)
+  5. **Interop shim:** `EnumeratorClient` keeps returning `MMDevice` for now; only its public parameter casts change (callers now pass `EDataFlow`, it casts to NAudio internally — same as today, just relocated).
+- **Files:** all "enum-level usage" rows of §2.g; `SoundSwitch.Common/Framework/Audio/Device/DeviceInfo.cs`, `DeviceFullInfo.cs`, `DeviceReadOnlyCollection.cs`, `AudioDeviceIconExtractor.cs`; `SoundSwitch/Model/{Events,DeviceChangedEvent,IAudioDeviceLister,IDeviceService,AppModel*}.cs`; DeviceCycler, TrayIcon, Profile, Settings.cs, tests.
+- **Risk:** medium — wide diff, JSON wire compat, the `*_enum_count` sentinel. Mitigation: `EDeviceState` needs an explicit `All = 0xF` (it has one) and the Phase-0 numeric-serialization test; `EDataFlow.eAll` exists for the `DataFlow.All` users (`CachedAudioDeviceLister.Refresh`, `MMNotificationClient` seeding loop skips `All`); the seeding loops gain the sentinel filter (work item 4).
+- **Verify:** Phase-0 round-trip test; full `SoundSwitch.Tests` suite; Windows CI green.
+
+### Phase 2 — Device enumeration & notification client in the library
+
+- **Work:**
+  1. Add `Interop/Interface/` COM declarations: `IMMDeviceEnumerator`, `IMMDevice`, `IMMDeviceCollection`, `IMMEndpoint`, `IMMNotificationClient`, `IPropertyStore`, `PROPERTYKEY`, minimal `PROPVARIANT`, library `PropertyKeys` (5 PKEYs from §3.2).
+  2. Implement `AudioDeviceEnumerator` (evolved `EnumeratorClient`): activate via `ComGuid.AUDIO_IMMDEVICE_ENUMERATOR_OBJECT_IID` (finally replacing the dormant `_MMDeviceEnumerator` stub); same four methods, returning `AudioDevice`.
+  3. Implement `AudioDevice` with the §3.2 property set, defensive-read semantics, and the §3.2 ownership/disposal contract.
+  4. Implement `AudioDeviceNotificationClient` (managed `IMMNotificationClient`) + register/unregister on the enumerator; expose the five .NET events with `EDataFlow`/`ERole` payloads.
+  5. Rewire `MMNotificationClient` (app) onto the new client — it becomes a thin queue/translator, keeping its dedup/`ReconcileDefaultDevices` logic; delete NAudio event-args types and the `using PropertyKeys = NAudio…` alias (filters now use the library's PKEY constants, still comparing `fmtid` only, matching today).
+  6. Migrate `DeviceInfo(MMDevice)`/`DeviceFullInfo(MMDevice)` ctors to `AudioDevice`; migrate `AudioDeviceIconExtractor.ExtractIconFromAudioDevice`; migrate `AudioSwitcher.GetDefaultAudioEndpoint/GetAudioEndpoint/GetAudioEndpoints` internals and the three `MMDevice`-leaking public members (`InteractWithDevice`, `GetDefaultMmDevice`→`GetDefaultAudioDevice`, `GetDevice`).
+  7. Migrate `MicrophoneMuteToggler` and `SoundSwitchApplicationContext` (L120) lambdas to `AudioDevice`; replace session lookup internals in `GetSessionDeviceId`/`GetProcessDeviceMap` with `IAudioSessionManager2` interop (may alternatively land in Phase 3 — it shares the `IMMDevice.Activate` plumbing).
+- **Files:** `SoundSwitch.Audio.Manager/Interop/**` (new), `EnumeratorClient.cs`, `AudioSwitcher.cs`; `SoundSwitch.Common/Framework/Audio/Device/*`, `Icon/AudioDeviceIconExtractor.cs`; `SoundSwitch/Framework/NotificationManager/MMNotificationClient.cs`, `Framework/Audio/Microphone/MicrophoneMuteToggler.cs`, `Model/SoundSwitchApplicationContext.cs`, `Framework/NotificationManager/Notification/NotificationSound.cs` (`NotifyProfileChanged` lambda).
+- **Risk:** high — real COM vtable authoring; `IMMNotificationClient` lifetime (must stay rooted while registered; register/unregister on `ComThread`); `AudioDevice` disposal parity with today's `MMDevice` ownership in `DeviceFullInfo` (see §3.2 ownership contract). Mitigation: vtables are small and documented; keep `EnumeratorClient`'s swallow-and-null behavior; add `SoundSwitch.Audio.Manager.Tests` coverage for enum↔native plumbing (pure logic) and rely on Windows CI for integration.
+- **Verify:** `SoundSwitch.Audio.Manager.Tests` + `SoundSwitch.Tests` green on Windows CI; manual smoke (device add/remove/rename/default-change all still refresh tray + lister; sleep/resume `ReconcileDefaultDevices` still works — issue #2009 path).
+
+### Phase 3 — Endpoint volume & mute
+
+- **Work:** `IAudioEndpointVolume` + `IAudioEndpointVolumeCallback` interop; `AudioEndpointVolumeClient` (get/set master scalar, mute, channel count, per-channel scalar); rewrite `DeviceFullInfo.SubscribeToVolumeNotifications`/`DeviceOnVolumeNotification`/`Dispose` onto it; rewrite `AudioSwitcher.SetVolumeFromDefaultDevice` internals (incl. the 2-channel branch); volume path of `MicrophoneMuteToggler`/`SoundSwitchApplicationContext` if not done in Phase 2.
+- **Files:** `SoundSwitch.Audio.Manager/Interop/**` (new), `AudioSwitcher.cs`, `SoundSwitch.Common/Framework/Audio/Device/DeviceFullInfo.cs`, `SoundSwitch/Framework/Audio/Microphone/MicrophoneMuteToggler.cs`, `SoundSwitch/Model/SoundSwitchApplicationContext.cs`.
+- **Risk:** medium — notification callback marshaling (`OnNotify` arrives on an audio-service thread; must marshal to `ComThread` or directly raise the managed event — today NAudio raises on its own thread and `DeviceFullInfo` already copes, so preserve "cope" semantics); the `Channels.Count == 2` quirk must be preserved exactly (per-channel set vs master set).
+- **Verify:** banner volume text updates, mic-mute toggle + tray tooltip volume, `DeviceVolumeChanged` Rx stream; Windows CI; manual volume-slider-while-watching-tooltip test.
+
+### Phase 4 — WAV notification playback (WASAPI render)
+
+- **Work:** in-house `WaveFileReader` (RIFF/PCM+IEEE-float) + `WaveFormat` record; `WavePlayer` over `IAudioClient`/`IAudioRenderClient` (shared mode, event-sync, ~200 ms buffer, explicit endpoint or default render/`eMultimedia`, completion event with exception slot). **Format negotiation is mandatory:** `WavePlayer.Initialize` must query `IAudioClient.GetMixFormat` (typically 48 kHz 32-bit IEEE float) and either negotiate via `IsFormatSupported` or perform PCM→float conversion + resampling — a "matching-formats-only" player fails on the default render endpoint for any WAV that isn't already 48 kHz float, i.e. the common case (§3.5). Reshape `CachedSound` (drops NAudio `WaveFormat`, decodes via the in-house reader; resolve the custom-sound parity decision from §3.5 — recommended: keep a thin Media Foundation `IMFSourceReader` fallback, else accept and document a deliberate WAV-only regression and tighten the file dialog filter); delete `CachedSoundWaveStream`; rewrite `PlaySoundJob` to call the library playback API (killing its private `MMDeviceEnumerator`); touch `NotificationSound`, `BannerData`, `INotificationSettings`, `AppModel.NotificationSettings`, `Settings.cs` L1004 only for the `CachedSound`/`WaveFormat` type change.
+- **Files:** `SoundSwitch.Audio.Manager` (new playback interop) or a small sibling namespace; `SoundSwitch/Framework/Audio/{CachedSound,CachedSoundWaveStream,Play/PlaySoundJob}.cs`, `Framework/NotificationManager/Notification/NotificationSound.cs`, `Framework/Banner/BannerData.cs`, `Model/INotificationSettings.cs`, `Model/AppModel.NotificationSettings.cs`, `UI/Forms/Settings.cs`.
+- **Risk:** medium — WASAPI buffer/timing bugs manifest as silence, clicks, or hung jobs (the 30 s `MaxRuntime` + `SemaphoreSlim` watchdog in `PlaySoundJob` bounds failure); format conversion (PCM→float/resample) is now a hard requirement, not optional; custom-sound format parity (§3.5) is a product decision, not a technical one.
+- **Verify:** default-change sound, mic-mute sound, profile-change sound, custom sound file (including a non-WAV custom sound if the Media Foundation fallback is kept); cancellation when two switches happen back-to-back (`_cancellationTokenSource` path in `NotificationSound`).
+
+### Phase 5 — Delete NAudio
+
+- **Work:** remove `<PackageReference Include="NAudio" />` from `SoundSwitch.Audio.Manager.csproj`; remove `NAudio` + `NAudio.Wasapi` from `SoundSwitch.Common.csproj`; remove both `PackageVersion` pins from `Directory.Packages.props`; delete the dead `SoundSwitch/packages.config` NAudio entry (`<package id="NAudio" version="2.2.1" targetFramework="net472" />`, L5 — not covered by the `PackageVersion` cleanup); repo-wide sweep for `using NAudio` (expect zero across the 48 files / 51 using-lines — Phase 1–4 left none); delete `SoundSwitch.Common/Framework/Audio/Device/PropertyKeys.cs`; remove the unused `using NAudio.CoreAudioApi;` in `NotificationWindows.cs`; update `SoundSwitch.Audio.Manager/AGENTS.md` ("Wrap NAudio…" line — repoint it at the new interop) and `.github/copilot-instructions.md` (**both** `:10` "Manages audio device switching using NAudio and Windows APIs" and `:48` "Use NAudio for audio device enumeration and control").
+- **Risk:** low if Phases 1–4 were honest; the compile itself is the audit — any missed reference fails the build.
+- **Verify:** Windows CI `build / build` (Release build + full `dotnet test`), `Analyze (csharp)`, plus the manual smoke matrix in §6.
+
+### Cross-cutting concern — `MMDevice`-typed signatures move in lockstep
+
+The public surface change is not per-phase optional: `AudioSwitcher.InteractWithDevice<T>(MMDevice, …)`, `GetDefaultMmDevice`, `GetDevice`, and the `DeviceInfo(MMDevice)`/`DeviceFullInfo(MMDevice)` ctors form one connected component. Phase 2 must migrate **all** of them plus their callers (`MicrophoneMuteToggler`, `SoundSwitchApplicationContext`, `NotificationSound.NotifyProfileChanged`, `CachedAudioDeviceLister.SubscribeToDeviceEvents`/`Dispose` round-trips, `AudioDeviceIconExtractor.ExtractIconFromAudioDevice`) in one PR — splitting leaves the tree with two device object models crossing `AudioSwitcher`'s boundary, which is exactly the dual-model mess this migration removes. The enum phase (1) is deliberately sequenced first so Phase 2's diff is purely about the device object, not enums *and* the device object at once.
+
+---
+
+## 5. Risks & mitigations
+
+| Risk | Impact | Mitigation |
+|---|---|---|
+| **COM/STA threading** — new interop must respect single-STA semantics; `IMMNotificationClient.On*` and `IAudioEndpointVolumeCallback.OnNotify` arrive on audio-service threads | Deadlocks, torn state, `InvalidThreadException` at runtime | Reuse `ComThread`/`ComTaskScheduler` for all object creation and calls (the library already enforces this via `ComThread.Assert()`). Callbacks follow NAudio's existing implicit contract (raise on a background thread; consumers already marshal — `MMNotificationClient` only enqueues, `DeviceFullInfo` only sets properties + raises Rx). Document the contract on each new event. |
+| **Behavior parity — device notifications** | Missed/duplicated default-change events → stale tray icon, broken profiles | Preserve `MMNotificationClient`'s queue-and-dedup logic verbatim; only the event source changes. Keep `ReconcileDefaultDevices` (sleep/resume path, issue #2009). Property filter keeps comparing `fmtid` only (today's behavior). |
+| **Behavior parity — notification sound timing** | Silent or truncated switch sounds; regression vs `WasapiPlayer` | Mirror the current configuration exactly: shared mode, event-driven, 200 ms latency, per-endpoint targeting with default-device fallback, `PlaybackStopped`-equivalent completion with exception capture. The `PlaySoundJob` 30 s watchdog + cancellation-token pattern is retained. |
+| **WASAPI format mismatch** (`IAudioClient` init against a non-matching mix format) | Silent playback or `AUDCLNT_E_*` init failures on the default render endpoint whenever the WAV isn't already 48 kHz float | `WavePlayer.Initialize` **must** query `IAudioClient.GetMixFormat` (typically 48 kHz 32-bit IEEE float) and either negotiate via `IsFormatSupported` or perform PCM→float conversion + resampling; a matching-formats-only player regresses the common case. Additionally falls back to the default render endpoint on failure — exactly today's `CreatePlayer` catch-and-retry-default behavior. |
+| **Custom-sound format regression** (`AudioFileReader`/`MediaFoundationReader` accept MP3 etc. today) | Users with non-WAV custom sounds lose playback | Product decision surfaced in the release notes; recommended to keep a thin `IMFSourceReader` decoding fallback via CsWinRT (small but real work), otherwise explicitly scope custom sounds to WAV and tighten the file dialog filter (§3.5). Do not silently drop. |
+| **Error-surface regression** — PR #2371's hardening accidentally narrowed | `Audiosrv`-down crashes return; Sentry noise returns | The in-house exception carries `HRESULT`; the "service down / endpoint vanished ⇒ log Information, no Sentry" rule is re-keyed to it. The defensive-read semantics move *into* `AudioDevice` so they can't be bypassed by new callers. Note the §3.6 limitation: `ComThread` swallows exceptions for off-thread callers, so most callers see `null`/`default` + warning — this is the existing behavior and is preserved. |
+| **Enum sentinel iteration** (`ERole`/`EDataFlow` are `[Flags]` with `*_enum_count` sentinels) | Seeding loops in `MMNotificationClient` iterate a bogus role/flow → spurious default-device reconciliation | Phase 1 work item 4: filter `ERole_enum_count`/`EDataFlow_enum_count` (value `3`) out of any `Enum.GetValues<T>()` loop migrated from NAudio's plain enums; follow the `EnumeratorClient.IsDefault` sentinel special-case. |
+| **Windows-only compile constraint** | Local iteration is blind; Linux contributors can't compile the touched code | CI is the real gate: `build / build` (Windows, Release, build+test) and `Analyze (csharp)` on every phase PR. The Linux `LinuxBuild=true` compile of `SoundSwitch.csproj` remains useful as a fast smoke check for the enum-phase diffs in `SoundSwitch`/`SoundSwitch.Common`, but it **cannot** validate `SoundSwitch.Audio.Manager` — never treat a green Linux build as sufficient for Phases 2–4. |
+| **Test blind spot** — existing tests deliberately avoid NAudio paths; `SoundSwitch.Audio.Manager.Tests` covers only the `ExtendedPolicyClient` seam | Regressions slip through | Phase 0 adds the numeric-serialization round-trip pin; Phases 2–4 add pure-logic tests where hardware isn't needed (enum plumbing, MMDEVAPI id packing, WAV parser). Hardware paths remain covered by the CI-guarded integration tests + manual smoke. Accept that full device-path coverage on CI is impossible (no audio endpoints on runners) — this is already true today. |
+| **Lockstep PR size (Phase 2)** | Large diff, review fatigue | Non-negotiable per §4 cross-cutting concern; mitigate by landing Phase 1 first so Phase 2 is mechanically focused, and by keeping the COM declarations in a separate, easily-reviewed file set. |
+
+---
+
+## 6. Verification
+
+**Automated gates (per phase PR, all on Windows):**
+
+1. `build / build` (`.github/workflows/reusable-build.yml`, windows-latest, Release): `dotnet restore`, `dotnet build -c Release --no-restore`, `dotnet test -c Release --no-restore`. This is the compile + regression gate; it is the only environment that compiles `SoundSwitch.Audio.Manager`.
+2. `Analyze (csharp)` (`.github/workflows/codeql-analysis.yml`, job `analyze`, matrix language `csharp`): static analysis over the built solution.
+3. `SoundSwitch.Audio.Manager.Tests` — must stay green and grow per phase (WAV parser tests in Phase 4, enum/plumbing tests in Phases 1–2). Note CI sets `CI=true`, so the hardware-dependent tests in `SoundSwitch.Tests` (`RefreshDeviceTests`, `DeviceCyclerTests`) self-skip; they still run on a developer machine with real audio devices and should be run locally before merging Phases 2–4.
+4. Linux compile smoke only: `dotnet build SoundSwitch/SoundSwitch.csproj -c Debug -p:LinuxBuild=true -p:BuildProjectReferences=false` — useful for catching non-Windows API leaks in `SoundSwitch`/`SoundSwitch.Common` during Phase 1. **Explicitly not a gate**: the full solution, and `SoundSwitch.Audio.Manager` in particular, cannot compile on Linux (CsWinRT projection generation requires Windows).
+
+**Manual smoke matrix (before Phase 5 merge, on a real Windows machine with ≥2 playback + ≥1 recording device):**
+
+- Switch default playback device via hotkey, tray double-click, profile, and app rule; confirm banner/toast content and tray icon/tooltip track the change.
+- Notification sounds: default change, microphone mute toggle, profile change, and a user-selected custom sound; rapid double-switch to exercise cancellation.
+- Microphone mute toggle from tray + IPC (`SoundSwitch.CLI` mute state query path in `SoundSwitchApplicationContext`).
+- Device hot-plug/unplug/rename while running; disable/enable a device in Windows Sound settings; confirm lister refresh and no crash.
+- Sleep/resume cycle (`ReconcileDefaultDevices` path).
+- Kill `Audiosrv` (`net stop audiosrv`) while SoundSwitch is running: confirm the PR #2371 behavior — log Information, no crash, no Sentry event; restart service and confirm recovery.
+- Settings upgrade: run the build over a settings file written by the NAudio-era version; confirm `SelectedDevices` deserialize (enum numeric wire-format pin).
+
+**Done criteria:** zero `using NAudio` in the repo; zero NAudio `PackageReference`/`PackageVersion`; all four automated gates green; the smoke matrix passes; two releases' worth of Sentry quiet on the audio-service-down signature.
+
+---
+
+## Appendix A — Spec review (OpenCode default model)
+
+> **Review record** — this is the original spec review (previously §7), retained verbatim as provenance. Its findings have been folded into §1–§6 above. Internal self-references ("§7.x"/"§8.x") and section numbers are kept as in the original review.
+
+This section critiques the plan above without modifying sections 1–6. Each point cites real source locations.
+
+### 7.1 File-count over-claim
+
+The plan states "51 source files import `using NAudio.*`". `grep -rn 'using NAudio' --include=*.cs` yields **51 using-lines across 48 files** — three files carry two using-lines each (`PlaySoundJob.cs`, `CachedSound.cs`, `NotificationSound.cs`). The remaining two grep hits are prose, not source: `.github/copilot-instructions.md:10` and `:48`. So the correct figure is **48 source files / 51 using-lines**, not 51 files. This matters because §5/§6 gate on "zero `using NAudio` in the repo"; the Phase 5 cleanup checklist and the "52 grep hits" framing should be corrected to avoid a reviewer chasing a non-existent 4th–5th file.
+
+A second internal contradiction: §2.0 says "`SoundSwitch.CLI`, `SoundSwitch.IPC`, test projects — zero NAudio usage", but §2.g's own inventory lists four `SoundSwitch.Tests` files with `using NAudio.CoreAudioApi` (`NotificationContentBuilderTests.cs:18`, `RefreshDeviceTests.cs:6`, `DeviceCyclerTests.cs:6`, `AudioDeviceIconExtractorTests.cs:3`). The §2.g table is right; §2.0 is wrong.
+
+### 7.2 ComThread swallows exceptions — the typed error model is partly unreachable
+
+§3.6 promises an `AudioDeviceException` carrying an HRESULT, "thrown by interop, caught at the boundary". That model only works if exceptions raised on the COM thread can reach callers. They mostly cannot. In `SoundSwitch.Audio.Manager/Interop/Com/Threading/ComThread.cs`:
+
+- `Invoke(Action)` (L25) delegates to `BeginInvoke().Wait()`.
+- `Invoke<T>(Func<T>)` (L51) is `!InvokeRequired ? func() : BeginInvoke(func).GetAwaiter().GetResult()`.
+- Both `BeginInvoke(Action)` (L36) and `BeginInvoke<T>` (L56) wrap their delegate in `try/catch` that calls `Log.Warning(e, "Issue while running action/func in {class}")` and **returns `default`** (L44–47 and L64–67).
+
+Consequence: whenever `InvokeRequired` is true (i.e., the caller is not already on the `ComThread`), *any* exception thrown inside the interop lambda — including a future `AudioDeviceException` — is logged and swallowed, and `Invoke<T>` returns `default(T)` (e.g. `null` for `MMDevice`-shaped wrappers). `AudioSwitcher.Instance` (L73), `SwitchTo` (L91), `SetVolumeFromDefaultDevice` (L198), `InteractWithDevice` (L356), and `GetDevice` (L379) all funnel through `ComThread.Invoke`/`BeginInvoke`. So the plan's §3.6 must either (a) change `BeginInvoke<T>` to rethrow/marshal exceptions to the caller, or (b) explicitly document that the HRESULT is only observable when already on the COM thread, and that most public callers will see `null`/`default` plus a warning log instead of an exception. As written, §3.6 over-promises.
+
+### 7.3 Enum-migration underestimation — the `*_enum_count` sentinels
+
+§4 Phase 1 maps `DataFlow`→`EDataFlow`, `Role`→`ERole`, `DeviceState`→`EDeviceState` and, in §3.4, notes only that NAudio's `DataFlow.All`/`DeviceState.All` map onto the interop equivalents. But the interop enums are declared differently from NAudio's:
+
+- `Interop/Enum/EDataFlow.cs` is `[Flags] uint { eRender=0, eCapture=1, eAll=2, EDataFlow_enum_count=3 }`.
+- `Interop/Enum/ERole.cs` is `[Flags] uint { eConsole=0, eMultimedia=1, eCommunications=2, ERole_enum_count=3 }`.
+- `Interop/Enum/EDeviceState.cs` is `[Flags] { Active=1, Disabled=2, NotPresent=4, Unplugged=8, All=0xF }`.
+
+NAudio's `DataFlow`/`Role` are non-flags enums with no count sentinel. The sentinels are not cosmetic: `Enum.GetValues<T>()` iteration emits `EDataFlow_enum_count`/`ERole_enum_count`, and the existing seeding loops iterate exactly this way. `MMNotificationClient.Register()` (SoundSwitch/Framework/NotificationManager/MMNotificationClient.cs:60–73) does `foreach (var flow in Enum.GetValues<DataFlow>().Where(flow => flow != DataFlow.All)) foreach (var role in Enum.GetValues<Role>())` — i.e. it explicitly filters only `All`, not a `*_enum_count` sentinel. After migration that same loop over `ERole` will additionally enumerate `ERole_enum_count` (value `3`) as a real role unless the filter is extended. `ReconcileDefaultDevices` (L87–110) and `OnDefaultDeviceChanged` (L112–128) consume these same values. Note also `EnumeratorClient.IsDefault` (SoundSwitch.Audio.Manager/Interop/Client/EnumeratorClient.cs:28) already special-cases `ERole.ERole_enum_count`, so the codebase is aware of the sentinel; the plan's Phase 1 should call this out as a required behavioral change, not a mechanical rename.
+
+### 7.4 WavePlayer sufficiency — the format-conversion gap
+
+§3.5 proposes an in-house `WaveFileReader` (~100 lines) restricted to PCM/IEEE-float, with a fallback/parity decision vs `AudioFileReader`/`MediaFoundationReader`. The current playback path relies on `WasapiPlayerBuilder.WithDevice(device).WithSharedMode().WithEventSync().WithLatency(200)` (SoundSwitch/Framework/Audio/Play/PlaySoundJob.cs:97–113), and NAudio's `WasapiOut` performs sample-rate/bit-depth/channel negotiation against the endpoint's **mix format** (typically 48 kHz 32-bit IEEE float). The bundled default sound is a PCM WAV (`SoundSwitch/Resources/216676__robinhood76__04864-notification-music-box.wav`, surfaced as `Resources.Designer.cs:265`), which is *not* guaranteed to match the endpoint mix format. A minimal `WavePlayer` that only "restricts to matching formats and falls back" will fail on the *default* render endpoint whenever the WAV is not already 48 kHz float — i.e. the common case — unless the plan includes at minimum PCM→float conversion and resampling, or explicitly negotiates with `IAudioClient.IsFormatSupported`/`GetMixFormat`. §3.5's "PCM/IEEE-float only" should be strengthened with a concrete conversion requirement; otherwise §2.e (notification sound playback) regresses.
+
+### 7.5 Custom-sound parity is a real user-facing path, not hypothetical
+
+§3.5 flags `AudioFileReader`/`MediaFoundationReader` parity as an open question. It is not optional: user-selected custom sounds go through `CachedSound.GetReader` (SoundSwitch/Framework/Audio/Play/CachedSound.cs:83–93), which tries `new AudioFileReader(filename)` then falls back to `new MediaFoundationReader(filename)` on `MmException` — i.e. custom sounds support non-WAV (MP3/FLAC/AAC). The two live call sites are `Settings.cs:1004` (`AppModel.Instance.CustomNotificationSound = new CachedSound(selectSoundFileDialog.FileName)`) and `Model/AppModel.NotificationSettings.cs:98` (`new CachedSound(AppConfigs.Configuration.CustomNotificationFilePath)`). If the plan lands on "WAV-only", this is a deliberate user-visible regression and must be stated as such (and the file-open dialog's filter, if any, should be tightened to match).
+
+### 7.6 JSON wire format — trivially compatible, but assert it
+
+`DeviceInfo.Type` (`SoundSwitch.Common/.../DeviceInfo.cs:29`) is a NAudio `DataFlow` serialized into `SelectedDevices` (a `HashSet<DeviceInfo>`, `SoundSwitchConfiguration.cs:109`) by Json.NET. No `StringEnumConverter` is registered anywhere in the configuration path (grep-verified), so Json.NET's default numeric enum encoding applies: `Type` is written as `0`/`1` (and `DeviceFullInfo.State` likewise). Migration to `EDataFlow`/`EDeviceState` with the same underlying values (`eRender=0`, `eCapture=1`; `Active=1`) is therefore wire-compatible for free. §3.4's "or its name depending on converters" caveat is correct in principle but the concrete answer here is "numeric, no converter", and Phase 0's serialization round-trip test (§4/§6) should pin the numeric wire form explicitly rather than leave it conditional.
+
+### 7.7 Ownership model must survive into `AudioDevice`
+
+`DeviceFullInfo` owns and disposes its `MMDevice` (`SoundSwitch.Common/.../DeviceFullInfo.cs:167` Dispose → `_device?.Dispose()` at L186) and subscribes to `AudioEndpointVolume.OnVolumeNotification` (L121), unsubscribing in Dispose. `AudioSwitcher.InteractWithDevice` (SoundSwitch.Audio.Manager/AudioSwitcher.cs:356) hands a raw `MMDevice` to callers, and several call sites construct `new DeviceFullInfo(d)` inside that lambda (e.g. NotificationSound.cs:68). The plan's new `AudioDevice` wrapper must preserve this "caller owns the device object, volume callback must be unsubscribed on dispose" contract exactly, or the §2.c volume/mute notifications will leak subscriptions and keep the device object alive. §3.2 lists the managed wrappers but does not state an ownership/disposal contract — this should be explicit.
+
+### 7.8 The one off-ComThread enumerator is real, and correctly flagged
+
+§2.b/§4 correctly identify `PlaySoundJob` as the outlier: `new MMDeviceEnumerator()` is created on the job thread (SoundSwitch/Framework/Audio/Play/PlaySoundJob.cs:43), not via `ComThread`. This is the only enumerator constructed off the `ComThread`, and the plan's lockstep Phase 2 note is right to call it out. Worth adding: because §7.2's exception swallowing does not apply here (no `ComThread.Invoke`), the `WasapiPlayer` init failure path at `PlaySoundJob.cs:97–113` (fallback to `new WasapiPlayerBuilder().Build()`) is one of the few places a genuine exception can still surface to the job, and it is already handled via `PlaybackStopped`/`StoppedEventArgs.Exception` logging at L72 — so the new `WavePlayer` should expose an equivalent init-failure signal rather than relying on the swallowed-`ComThread` model.
+
+---
+
+## Appendix B — Whole-package review (OpenCode default model)
+
+> **Review record** — this is the original whole-package review (previously §8), retained verbatim as provenance. Its findings have been folded into §1–§6 above. Internal self-references ("§7.x"/"§8.x") and section numbers are kept as in the original review.
+
+This section cross-checks the spec against the actual repository. Unless noted, each statement is grep- or read-verified.
+
+### 8.1 Package references — the plan's dependency map is accurate
+
+- `Directory.Packages.props:18` `<PackageVersion Include="NAudio" Version="3.0.1" />`; `:19` `<PackageVersion Include="NAudio.Wasapi" Version="3.0.1" />` (central package management).
+- `SoundSwitch.Audio.Manager/SoundSwitch.Audio.Manager.csproj:17` `<PackageReference Include="NAudio" />` (also references CsWinRT + Serilog). This is where the native interop is expected to land.
+- `SoundSwitch.Common/SoundSwitch.Common.csproj:21–22` references both `NAudio` and `NAudio.Wasapi` (plus Newtonsoft.Json, Serilog, Microsoft.Extensions.Caching.Memory). The plan's end-state of dropping both from `Common` is consistent with the device-model types it hosts (`DeviceInfo`, `DeviceFullInfo`, `PropertyKeys`).
+- `SoundSwitch/SoundSwitch.csproj` has **no** direct NAudio reference — it reaches NAudio transitively via `SoundSwitch.Common`. `SoundSwitch.Tests.csproj` and `SoundSwitch.Audio.Manager.Tests.csproj` likewise have no direct reference (transitive through project references). The plan is correct that NAudio is effectively transitively viral through `SoundSwitch.Common`.
+- `SoundSwitch/packages.config:5` still contains `<package id="NAudio" version="2.2.1" targetFramework="net472" />` — a dead .NET Framework vestige; §2's mention of the packages.config artifact is confirmed and Phase 5 should delete it too (it is not covered by the `PackageVersion` cleanup).
+
+### 8.2 The new interop surface is genuinely new (plan correct, not duplicative)
+
+`SoundSwitch.Audio.Manager/Interop/Interface/ComGuid.cs` currently defines only `AUDIO_IMMDEVICE_IID`, `AUDIO_IMMDEVICE_ENUMERATOR_IID`, `AUDIO_IMMDEVICE_ENUMERATOR_OBJECT_IID` (`BCDE0395-E52F-467C-8E3D-C4579291692E`), and `POLICY_CONFIG_*` IIDs. There are **no** definitions yet for `IAudioEndpointVolume`, `IPropertyStore`, `IAudioSessionManager2`, `IAudioClient`, `IAudioRenderClient`, `IMMDeviceCollection`, `IMMEndpoint`, or `IMMNotificationClient`. So §3.2's list of new interop is accurate — none of it is being re-invented unnecessarily, and none already exists to be reused. The dormant `[ComImport, Guid(...)] private class _MMDeviceEnumerator` at `EnumeratorClient.cs:93–96` is the only partial stub and is unused.
+
+### 8.3 Audio.Manager/Common equivalents — what already exists vs what is invented
+
+What already exists and should be the migration target rather than rebuilt:
+
+- Enumerator facade: `Interop/Client/EnumeratorClient.cs` (`GetDefaultAudioEndpoint` L54, `GetDevice` L72, `EnumerateAudioEndPoints` L88, `IsDefault` L28) — already wraps `MMDeviceEnumerator` (L16/L20), though it currently leaks `MMDevice`/NAudio types.
+- `AudioSwitcher` public API (SoundSwitch.Audio.Manager/AudioSwitcher.cs): `SwitchTo` L91, `SetVolumeFromDefaultDevice` L198–238, `GetSessionDeviceId` L269–298, `GetProcessDeviceMap` L303–336, `InteractWithDevice` L356, `GetDefaultMmDevice` L372, `GetDevice` L379, `GetDefaultAudioEndpoint` L344, `GetAudioEndpoint` L386, `GetAudioEndpoints` L406 — these are the exact §3.3 API surface, and they all still return/accept `MMDevice`.
+- Interop enums already exist and are `[Flags]` with sentinels (see §7.3), plus `Interop/Enum/HRESULT.cs` (`S_OK`, `S_FALSE`, `AUDCLNT_E_DEVICE_INVALIDATED`, `ERROR_NOT_FOUND=0x80070490`, `PROCESS_NO_AUDIO`).
+
+What the plan invents (correctly, because nothing exists yet): the §3.2 COM interfaces and the managed wrappers `AudioDevice`, `AudioDeviceEnumerator`, `AudioEndpointVolumeClient`, `AudioDeviceNotificationClient`, plus §3.5's `WaveFileReader`/`WaveFormat`/`WavePlayer`.
+
+### 8.4 Notification/playback path (the highest-risk surface)
+
+- `CachedSound` (SoundSwitch/Framework/Audio/Play/CachedSound.cs) exposes NAudio types publicly: `public WaveFormat WaveFormat` (L28), and constructs `new WaveFileReader(stream)` (L62) and `new AudioFileReader`/`MediaFoundationReader` (L83–93). This is the load-bearing format-abstraction type; its `WaveFormat` property is consumed by the player path, so the replacement must carry a format descriptor too.
+- `CachedSoundWaveStream` (SoundSwitch/Framework/Audio/Play/CachedSoundWaveStream.cs:21) is a `WaveStream` in-memory cursor that exists **only** to satisfy `IWavePlayer.Init`. It has no NAudio behavior worth preserving; it disappears when `IWavePlayer` is replaced.
+- `PlaySoundJob` (SoundSwitch/Framework/Audio/Play/PlaySoundJob.cs) is the single off-ComThread path (§7.8): `new MMDeviceEnumerator()` at L43, `GetDevice` L84–95 (empty id → `GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia)`), `CreatePlayer` L97–113 (`WasapiPlayerBuilder...WithSharedMode().WithEventSync().WithLatency(200).Build()`, fallback `new WasapiPlayerBuilder().Build()`), `player.Init(...)` L54, `PlaybackStopped` handler L72, `SemaphoreSlim(0).WaitAsync(token)` L76, `MaxRuntime = 30s` L127. The new `WavePlayer` must reproduce shared-mode event-sync latency behavior, the init-failure fallback, and the 30 s cap.
+- `NotificationSound` (SoundSwitch/Framework/NotificationManager/Notification/NotificationSound.cs): render-device guard L44 (`audioDevice.Type != DataFlow.Render`), default vs custom sound selection L54, `ScheduleJob(PlaySoundJob(audioDevice.Id, sound))` L59, profile-change path `AudioSwitcher.GetDevice` + `InteractWithDevice(mmDevice, d => new DeviceFullInfo(d))` L68, microphone-mute path `PlaySoundJob(null, sound)` L98, and `CustomSoundCheck` L107. Its `using NAudio.Wave` at L21 is **unused** (no `Wave` type referenced) and can be dropped immediately.
+- Notification client: `MMNotificationClient` (SoundSwitch/Framework/NotificationManager/MMNotificationClient.cs) is the default-device/subscription engine — `new MMDeviceEnumerator()` L53, `CreateNotificationClient(false)` L54, five event subscriptions L55–59, `Register()` seeding loops L60–73, `OnDefaultDeviceChanged` L112–128, `OnPropertyValueChanged` L130–142 (fmtid-only PKEY filter), `ReconcileDefaultDevices` L87–110, `Dispose` L144–157. It is NAudio's `MMDeviceNotificationClient` that §3.2's `AudioDeviceNotificationClient`/`IMMNotificationClient` must replace, and it is the piece that exercises the `[Flags]` sentinel hazard from §7.3 most directly.
+
+### 8.5 Unused using-directives (safe, zero-risk cleanups)
+
+Two files carry `using NAudio` directives that reference nothing: `NotificationSound.cs:21` (`using NAudio.Wave`) and `NotificationWindows.cs:21` (`using NAudio.CoreAudioApi`). These can be removed in Phase 0 with no behavioral change.
+
+### 8.6 Cross-cutting consumers confirmed (enum migration blast radius)
+
+The §2.g inventory matches grep. Representative high-traffic consumers of the NAudio enums, all of which Phase 1 touches: `CachedAudioDeviceLister.cs:67/77/98/274` (`GetDevices(DataFlow, DeviceState)`, `AudioSwitcher.Instance.GetAudioEndpoints((EDataFlow)DataFlow.All, (EDeviceState)_state)`), `ADeviceCycler.cs:40/65/83/106/117`, `IconChangerAbstract.cs:37/43`, `ProfileManager.cs:387/411/412/458`, `AppModel.DeviceService.cs:44/47/207`, `AppModel.AppSettings.cs:269/275`, `DeviceCyclerAvailable.cs:35–36`, `SoundSwitchApplicationContext.cs:48/108–122/208/212`, `MicrophoneMuteToggler.cs:36/69/43/93`, and the event payloads `DefaultDevicePayload.cs:7`, `DeviceChangedEvent.cs:28`, `Events.cs:36/103`, `IAudioDeviceLister.cs:53`. All currently mix NAudio enums with `(EDataFlow)`/`(ERole)`/`(EDeviceState)` casts, confirming §4's "move in lockstep" note is well-founded.
+
+### 8.7 Test surface
+
+`SoundSwitch.Tests` imports `NAudio.CoreAudioApi` in four files (`NotificationContentBuilderTests.cs:18`, `RefreshDeviceTests.cs:6`, `DeviceCyclerTests.cs:6`, `AudioDeviceIconExtractorTests.cs:3`) — for enum/type references only; no test constructs an `MMDevice` (there is no public constructor), matching the spec's claim. `AudioDeviceIconExtractor` (SoundSwitch/.../AudioDeviceIconExtractor.cs:66 `ExtractIconFromPath(string, DataFlow, bool)`, :92 `ExtractIconFromAudioDevice(MMDevice, bool)`) is the one test-facing helper with an `MMDevice` parameter, so its `MMDevice` overload (L92) has to be migrated or replaced in lockstep with Phase 2.
+
+### 8.8 Non-code artifacts to update
+
+`.github/copilot-instructions.md` mentions NAudio in two places: line 10 ("Manages audio device switching using NAudio and Windows APIs") and line 48 ("Use NAudio for audio device enumeration and control"). The plan's Phase 5 references line 10 only; line 48 must be included too. `SoundSwitch.Audio.Manager/AGENTS.md` states "Wrap NAudio and native interop details behind focused APIs", which Phase 5's intent to point that file at the new interop addresses correctly.
+
+### 8.9 Overall verdict
+
+The spec's architecture (§3), phase ordering (§4), and risk table (§5) are sound and match the code. The material gaps are: the file-count over-claim (§7.1), the `ComThread` exception-swallowing that undermines §3.6 (§7.2), the `[Flags]` sentinel hazard in Phase 1 (§7.3), the WavePlayer format-conversion requirement (§7.4), the unstated ownership/disposal contract (§7.7), and the omission of `packages.config` and `copilot-instructions.md:48` from the cleanup checklist (§8.1, §8.8). None of these invalidate the plan; they are corrections and clarifications to fold in before execution.
