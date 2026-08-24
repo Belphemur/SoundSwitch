@@ -78,6 +78,9 @@ namespace SoundSwitch.Audio.Manager.Playback
             var tempPath = Path.Combine(Path.GetTempPath(), $"soundswitch-{Guid.NewGuid():N}.mp3");
             try
             {
+                if (stream.CanSeek)
+                    stream.Position = 0;
+
                 using (var file = File.Create(tempPath))
                 {
                     stream.CopyTo(file);
@@ -157,11 +160,17 @@ namespace SoundSwitch.Audio.Manager.Playback
                 using var pcmData = new MemoryStream();
                 while (true)
                 {
-                    hr = reader.ReadSample(MediaFoundationInterop.SourceReaderFirstAudioStream, 0, out _, out _, out _, out var sample);
+                    hr = reader.ReadSample(MediaFoundationInterop.SourceReaderFirstAudioStream, 0, out _, out var streamFlags, out _, out var sample);
                     if (hr != HRESULT.S_OK)
                         throw new InvalidDataException($"Failed to read MP3 audio data (0x{(uint)hr:X8}).");
+                    // A null sample without the end-of-stream flag is a stream tick (gap), not
+                    // genuine EOS — keep reading so the decoded audio isn't truncated.
                     if (sample == null)
-                        break; // end of stream
+                    {
+                        if ((streamFlags & MediaFoundationInterop.SourceReaderFlagEndOfStream) != 0)
+                            break;
+                        continue;
+                    }
 
                     IMFMediaBuffer? buffer = null;
                     try
