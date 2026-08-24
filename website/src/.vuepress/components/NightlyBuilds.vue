@@ -24,6 +24,37 @@ function formatPublishedDate(value: string): string {
   })
 }
 
+interface ChangelogToken {
+  isLink: boolean
+  text: string
+  href?: string
+}
+
+const MARKDOWN_LINK_PATTERN = /\[([^\]]+)\]\(([^)\s]+)\)/g
+
+function changelogTokens(line: string): ChangelogToken[] {
+  const stripped = line.replace(/^\s*[-*]\s?/, '')
+  const tokens: ChangelogToken[] = []
+  const regex = new RegExp(MARKDOWN_LINK_PATTERN.source, 'g')
+  let lastIndex = 0
+  let match: RegExpExecArray | null
+
+  while ((match = regex.exec(stripped)) !== null) {
+    if (match.index > lastIndex) {
+      tokens.push({ isLink: false, text: stripped.slice(lastIndex, match.index) })
+    }
+
+    tokens.push({ isLink: true, text: match[1], href: match[2] })
+    lastIndex = regex.lastIndex
+  }
+
+  if (lastIndex < stripped.length) {
+    tokens.push({ isLink: false, text: stripped.slice(lastIndex) })
+  }
+
+  return tokens
+}
+
 onMounted(async () => {
   try {
     nightlies.value = await fetchAvailableNightlies()
@@ -54,6 +85,20 @@ onMounted(async () => {
           </div>
           <div class="nightly-builds__filename">{{ nightly.filename }}</div>
           <div class="nightly-builds__meta">Published {{ formatPublishedDate(nightly.published) }}</div>
+          <details v-if="nightly.changelog && nightly.changelog.length" class="nightly-builds__details">
+            <summary>What's changed</summary>
+            <ul class="nightly-builds__changelog">
+              <li v-for="(line, index) in nightly.changelog" :key="index">
+                <template v-for="(token, tokenIndex) in changelogTokens(line)" :key="tokenIndex">
+                  <a v-if="token.isLink" :href="token.href" target="_blank" rel="noopener">{{ token.text }}</a>
+                  <span v-else>{{ token.text }}</span>
+                </template>
+              </li>
+            </ul>
+          </details>
+          <div v-if="nightly.sha512" class="nightly-builds__sha512">
+            <code>{{ nightly.sha512 }}</code>
+          </div>
         </div>
         <a class="nightly-builds__link" :href="nightly.url" target="_blank" rel="noopener">
           Download
@@ -143,6 +188,38 @@ onMounted(async () => {
 .nightly-builds__meta {
   margin-top: 0.25rem;
   font-size: 0.9rem;
+}
+
+.nightly-builds__details {
+  margin-top: 0.6rem;
+}
+
+.nightly-builds__details summary {
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--vp-c-text, #2c3e50);
+}
+
+.nightly-builds__changelog {
+  margin: 0.5rem 0 0;
+  padding-left: 1.25rem;
+  font-size: 0.85rem;
+  color: var(--vp-c-text-mute, #5a6878);
+}
+
+.nightly-builds__changelog li + li {
+  margin-top: 0.25rem;
+}
+
+.nightly-builds__sha512 {
+  margin-top: 0.5rem;
+}
+
+.nightly-builds__sha512 code {
+  font-size: 0.72rem;
+  overflow-wrap: anywhere;
+  white-space: normal;
 }
 
 .nightly-builds__link {

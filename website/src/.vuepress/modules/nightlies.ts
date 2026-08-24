@@ -5,6 +5,9 @@ interface NightlyArtifactPayload {
   version?: string
   published?: string
   url?: string
+  sha512?: string
+  commit?: string
+  changelog?: string[]
 }
 
 interface NightliesPayload {
@@ -19,6 +22,9 @@ export interface AvailableNightly {
   version: string
   published: string
   url: string
+  sha512?: string
+  commit?: string
+  changelog?: string[]
   isLatest: boolean
 }
 
@@ -64,6 +70,9 @@ export async function fetchAvailableNightlies(limit = 5): Promise<AvailableNight
       version: artifact.version,
       published: artifact.published,
       url: artifact.url,
+      sha512: artifact.sha512,
+      commit: artifact.commit,
+      changelog: artifact.changelog,
       isLatest: artifact.version === payload.latest || artifact.url === payload.url,
     }))
 }
