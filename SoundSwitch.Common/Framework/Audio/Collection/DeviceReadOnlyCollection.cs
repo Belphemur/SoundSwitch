@@ -2,19 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using NAudio.CoreAudioApi;
-
+using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
 
 namespace SoundSwitch.Common.Framework.Audio.Collection
 {
     public class DeviceReadOnlyCollection<T> : IReadOnlyCollection<T> where T : DeviceInfo
     {
-        private readonly DataFlow _dataFlow;
+        private readonly EDataFlow _dataFlow;
         private readonly Dictionary<string, T> _byId = new();
         private readonly Dictionary<string, T> _byName = new();
 
-        public DeviceReadOnlyCollection(IEnumerable<T> deviceInfos, DataFlow dataFlow)
+        public DeviceReadOnlyCollection(IEnumerable<T> deviceInfos, EDataFlow dataFlow)
         {
             _dataFlow = dataFlow;
             foreach (var item in deviceInfos)

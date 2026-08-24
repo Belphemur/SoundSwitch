@@ -15,7 +15,7 @@
 
 using System;
 using System.Threading;
-using NAudio.CoreAudioApi;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 using Serilog;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
@@ -266,13 +266,13 @@ public partial class AppModel
             if (e.HotKey == AppConfigs.Configuration.PlaybackHotKey)
             {
                 TelemetryService.AddBreadcrumb("hotkey", "PlaybackHotKey pressed");
-                CycleActiveDevice(DataFlow.Render);
+                CycleActiveDevice(EDataFlow.eRender);
                 TelemetryService.TrackPlaybackSwitch("hotkey");
             }
             else if (e.HotKey == AppConfigs.Configuration.RecordingHotKey)
             {
                 TelemetryService.AddBreadcrumb("hotkey", "RecordingHotKey pressed");
-                CycleActiveDevice(DataFlow.Capture);
+                CycleActiveDevice(EDataFlow.eCapture);
                 TelemetryService.TrackRecordingSwitch("hotkey");
             }
             else if (e.HotKey == AppConfigs.Configuration.MuteRecordingHotKey)

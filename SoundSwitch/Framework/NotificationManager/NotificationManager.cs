@@ -18,7 +18,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
-using NAudio.CoreAudioApi;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 
 using Serilog;
 
@@ -137,7 +137,7 @@ public class NotificationManager(INotificationSettings notificationSettings, IAp
     {
         return deviceInfo.Type switch
         {
-            DataFlow.Capture => deviceService.AvailableRecordingDevices.FirstOrDefault(info => info.Equals(deviceInfo)),
+            EDataFlow.eCapture => deviceService.AvailableRecordingDevices.FirstOrDefault(info => info.Equals(deviceInfo)),
             _ => deviceService.AvailablePlaybackDevices.FirstOrDefault(info => info.Equals(deviceInfo))
         };
     }

@@ -160,7 +160,7 @@
     <value>Si se activa, SoundSwitch comprobará también si hay versiones beta en GitHub.</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
-    <value>Archivos de audio</value>
+    <value>Archivos de audio (*.wav;*.mp3)</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Marque para activar el atajo.</value>

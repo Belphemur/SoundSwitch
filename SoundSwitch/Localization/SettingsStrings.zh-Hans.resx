@@ -160,7 +160,7 @@
     <value>一旦进行检查，SoundSwitch 还会检查 GitHub 上的测试版版本。</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
-    <value>音频文件</value>
+    <value>音频文件 (*.wav;*.mp3)</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>检查是否启用快捷键。</value>

@@ -7,7 +7,7 @@ This project owns Windows audio device switching, endpoint interaction, policy c
 ## Responsibilities
 
 - Keep Windows audio behavior isolated here.
-- Wrap NAudio and native interop details behind focused APIs.
+- Wrap native COM interop details behind focused APIs (AudioDevice, AudioEndpointVolumeClient, AudioDeviceNotificationClient).
 - Expose stable device operations to the main app.
 
 ## Change Rules

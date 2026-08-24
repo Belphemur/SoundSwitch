@@ -1,21 +1,15 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-using NAudio.CoreAudioApi;
-
 using Newtonsoft.Json;
-using Serilog;
+using SoundSwitch.Audio.Manager;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 #pragma warning disable CS0618 // Type or member is obsolete
 
 namespace SoundSwitch.Common.Framework.Audio.Device
 {
     public partial class DeviceInfo : IEquatable<DeviceInfo>
     {
-        private static readonly ILogger _logger = Log.ForContext<DeviceInfo>();
-
-        // AUDCLNT_E_SERVICE_NOT_RUNNING: the Windows audio service is stopped/unavailable.
-        private const int AudioServiceNotRunningHResult = unchecked((int)0x88890010);
-
         private static readonly Regex NameSplitterRegex = NameSplitterRegexCompiled();
 
         private static readonly Regex NameCleanerRegex = NameCleanerRegexCompiled();
@@ -24,15 +18,15 @@ namespace SoundSwitch.Common.Framework.Audio.Device
 
         [Obsolete("Use " + nameof(NameClean))]
         public string Name { get; }
-        
+
         [JsonIgnore]
         public string FriendlyName { get; private set; }
-        
+
         [JsonIgnore]
         public string DeviceName { get; private set; }
 
         public string Id { get; }
-        public DataFlow Type { get; }
+        public EDataFlow Type { get; }
 
         public bool IsUsb { get; } = true;
 
@@ -62,45 +56,21 @@ namespace SoundSwitch.Common.Framework.Audio.Device
             }
         }
 
-        public DeviceInfo(MMDevice device)
+        /// <summary>
+        /// Build the DTO from a device snapshot. The <see cref="AudioDevice"/> properties are an
+        /// immutable snapshot captured on the ComThread (with the defensive fallbacks baked in), so
+        /// this constructor cannot fail on transient audio-service conditions.
+        /// </summary>
+        public DeviceInfo(AudioDevice device)
         {
-            // The Windows audio service can disappear between device enumeration and
-            // object creation (service stop, fast-user-switch, RDP disconnect, sleep/resume).
-            // Reading device metadata can throw CoreAudioException/COMException in that window;
-            // fall back to safe defaults so the base construction never crashes the caller.
-            try
-            {
-                Name = device.FriendlyName;
-                Id = device.ID;
-                Type = device.DataFlow;
-                var deviceProperties = device.Properties;
-                var enumerator = deviceProperties.Contains(PropertyKeys.DEVPKEY_Device_EnumeratorName) ? (string)deviceProperties[PropertyKeys.DEVPKEY_Device_EnumeratorName].Value : "";
-                IsUsb = enumerator == "USB";
-            }
-            catch (Exception ex)
-            {
-                // Only the "service not running" HRESULT is the expected/transient case (Information);
-                // any other CoreAudio failure (e.g. device invalidation) is unexpected and stays at Warning.
-                // IMPORTANT: never touch `device` here — its ID/DataFlow getters can throw the same
-                // CoreAudioException, which would re-throw out of this catch and still crash construction.
-                if (ex is CoreAudioException { HResult: AudioServiceNotRunningHResult })
-                {
-                    _logger.Information(ex, "Failed to read device metadata: Windows audio service not running; using defaults.");
-                }
-                else
-                {
-                    _logger.Warning(ex, "Failed to read device metadata; using defaults.");
-                }
-
-                Name = string.Empty;
-                Id = string.Empty;
-                Type = DataFlow.Render;
-                IsUsb = false;
-            }
+            Name = device.FriendlyName;
+            Id = device.Id;
+            Type = device.DataFlow;
+            IsUsb = device.IsUsb;
         }
 
         [JsonConstructor]
-        public DeviceInfo(string name, string id, DataFlow type, bool isUsb, DateTime discoveredAt)
+        public DeviceInfo(string name, string id, EDataFlow type, bool isUsb, DateTime discoveredAt)
         {
             Name = name;
             Id = id;

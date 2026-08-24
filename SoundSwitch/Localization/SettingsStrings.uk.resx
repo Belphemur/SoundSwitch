@@ -160,7 +160,7 @@
     <value>Коли вибрано, SoundSwitch буде перевіряти наявність бета версій на GitHub.</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
-    <value>Звукові файли</value>
+    <value>Звукові файли (*.wav;*.mp3)</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Виберіть для активації гарячої клавіши.</value>

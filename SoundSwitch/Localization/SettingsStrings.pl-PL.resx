@@ -160,7 +160,7 @@
     <value>Jeśli zaznaczone, SoundSwitch będzie instalował także wersje beta z GitHuba.</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
-    <value>Pliki audio</value>
+    <value>Pliki audio (*.wav;*.mp3)</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Zaznacz by włączyć skrót klawiszowy.</value>

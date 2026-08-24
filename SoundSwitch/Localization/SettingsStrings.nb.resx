@@ -160,7 +160,7 @@
     <value>Når dette velges, vil SoundSwitch også se etter betaversjoner på GitHub.</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
-    <value>Lydfiler</value>
+    <value>Lydfiler (*.wav;*.mp3)</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Velg for å skru på snarvei.</value>

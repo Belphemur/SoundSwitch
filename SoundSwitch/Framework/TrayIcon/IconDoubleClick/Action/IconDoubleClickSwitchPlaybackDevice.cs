@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
-using NAudio.CoreAudioApi;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 
 using SoundSwitch.Framework.Telemetry;
 using SoundSwitch.Localization;
@@ -44,7 +44,7 @@ internal class IconDoubleClickSwitchPlaybackDevice : IIconDoubleClick
     public void Execute(UI.Component.TrayIcon trayIcon)
     {
         TelemetryService.AddBreadcrumb("tray", "Playback switch (double-click)");
-        AppModel.Instance.CycleActiveDevice(DataFlow.Render);
+        AppModel.Instance.CycleActiveDevice(EDataFlow.eRender);
         TelemetryService.TrackPlaybackSwitch("tray");
     }
 }

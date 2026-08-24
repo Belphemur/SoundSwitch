@@ -160,7 +160,7 @@
     <value>有効にすると、SoundSwitchはGitHub上のベータ版もチェックします。</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
-    <value>オーディオファイル</value>
+    <value>オーディオファイル (*.wav;*.mp3)</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>チェックしてショートカットを有効化。</value>

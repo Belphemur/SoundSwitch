@@ -17,8 +17,7 @@ using System.Drawing;
 using System.IO;
 using System.Threading;
 
-using NAudio.CoreAudioApi;
-using NAudio.Wave;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Device;
@@ -41,7 +40,7 @@ internal class NotificationSound : INotification
 
     public void NotifyDefaultChanged(DeviceFullInfo audioDevice)
     {
-        if (audioDevice.Type != DataFlow.Render) return;
+        if (audioDevice.Type != EDataFlow.eRender) return;
 
         TelemetryService.TrackNotificationSound();
 
@@ -65,8 +64,12 @@ internal class NotificationSound : INotification
 
         try
         {
-            var mmDevice = AudioSwitcher.Instance.GetDevice(profile.Playback.Id);
-            var device = AudioSwitcher.Instance.InteractWithDevice(mmDevice, device => new DeviceFullInfo(device));
+            var audioDevice = AudioSwitcher.Instance.GetDevice(profile.Playback.Id);
+            if (audioDevice == null) return;
+            // The AudioDevice properties are an immutable snapshot — safe to read off the ComThread.
+            // The DeviceFullInfo owns the AudioDevice; NotifyDefaultChanged only reads it, so the
+            // using disposes both here (previously the device leaked on this path).
+            using var device = new DeviceFullInfo(audioDevice);
             NotifyDefaultChanged(device);
         }
         catch (Exception)
@@ -104,7 +107,7 @@ internal class NotificationSound : INotification
 
     public bool IsAvailable() => true;
 
-    public bool CustomSoundCheck(DeviceFullInfo audioDevice) => audioDevice.Type == DataFlow.Render && Configuration.CustomSound != null && File.Exists(Configuration.CustomSound.FilePath);
+    public bool CustomSoundCheck(DeviceFullInfo audioDevice) => audioDevice.Type == EDataFlow.eRender && Configuration.CustomSound != null && File.Exists(Configuration.CustomSound.FilePath);
 
     private bool HasCustomSound() =>
         Configuration.CustomSound != null && File.Exists(Configuration.CustomSound.FilePath);

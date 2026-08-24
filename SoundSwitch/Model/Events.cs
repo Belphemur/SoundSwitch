@@ -15,7 +15,7 @@
 using System;
 using System.Collections.Generic;
 
-using NAudio.CoreAudioApi;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
@@ -33,10 +33,10 @@ public class ExceptionEvent(Exception exception) : EventArgs
     public Exception Exception { get; private set; } = exception;
 }
 
-public class DeviceListChanged(IEnumerable<DeviceInfo> seletedDevicesList, DataFlow type) : EventArgs
+public class DeviceListChanged(IEnumerable<DeviceInfo> selectedDevicesList, EDataFlow type) : EventArgs
 {
-    public IEnumerable<DeviceInfo> SeletedDevicesList { get; private set; } = seletedDevicesList;
-    public DataFlow Type { get; private set; } = type;
+    public IEnumerable<DeviceInfo> SelectedDevicesList { get; private set; } = selectedDevicesList;
+    public EDataFlow Type { get; private set; } = type;
 }
 
 public class NotificationSettingsUpdatedEvent(
@@ -100,9 +100,9 @@ public class NewReleaseAvailableEvent(AppRelease appRelease, UpdateMode updateMo
     public UpdateMode UpdateMode { get; } = updateMode;
 }
 
-public class DeviceDefaultChangedEvent(DeviceFullInfo device, Role role)
+public class DeviceDefaultChangedEvent(DeviceFullInfo device, ERole role)
 {
     public string DeviceId => Device.Id;
-    public Role Role { get; } = role;
+    public ERole Role { get; } = role;
     public DeviceFullInfo Device { get; } = device;
 }

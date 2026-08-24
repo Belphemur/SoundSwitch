@@ -16,7 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NAudio.CoreAudioApi;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Common.Framework.Audio.Collection;
@@ -41,10 +41,10 @@ public partial class AppModel
     }
 
     public IEnumerable<DeviceFullInfo> AvailablePlaybackDevices =>
-        AudioDeviceLister?.GetDevices(DataFlow.Render, DeviceState.Active).IntersectWith(SelectedDevices) ?? Enumerable.Empty<DeviceFullInfo>();
+        AudioDeviceLister?.GetDevices(EDataFlow.eRender, EDeviceState.Active).IntersectWith(SelectedDevices) ?? Enumerable.Empty<DeviceFullInfo>();
 
     public IEnumerable<DeviceFullInfo> AvailableRecordingDevices =>
-        AudioDeviceLister?.GetDevices(DataFlow.Capture, DeviceState.Active).IntersectWith(SelectedDevices) ?? Enumerable.Empty<DeviceFullInfo>();
+        AudioDeviceLister?.GetDevices(EDataFlow.eCapture, EDeviceState.Active).IntersectWith(SelectedDevices) ?? Enumerable.Empty<DeviceFullInfo>();
 
     public event EventHandler<DeviceListChanged> SelectedDeviceChanged;
     public event EventHandler<DeviceDefaultChangedEvent> DefaultDeviceChanged;
@@ -204,7 +204,7 @@ public partial class AppModel
     ///     as far as we can tell), returns false if could not successfully switch. Throws NoDevicesException
     ///     if there are no devices configured.
     /// </summary>
-    public bool CycleActiveDevice(DataFlow type)
+    public bool CycleActiveDevice(EDataFlow type)
     {
         try
         {

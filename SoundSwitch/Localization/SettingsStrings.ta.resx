@@ -160,7 +160,7 @@
     <value>சரிபார்க்கும்போது, கிட்அப்பில் பீட்டா பதிப்புகளையும் சவுண்ட்ச்விட்ச் சரிபார்க்கும்.</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
-    <value>ஆடியோ கோப்புகள்</value>
+    <value>ஆடியோ கோப்புகள் (*.wav;*.mp3)</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>ஆட்ச்கியை இயக்க சரிபார்க்கவும்.</value>

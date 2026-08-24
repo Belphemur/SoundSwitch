@@ -160,7 +160,7 @@
     <value>เมื่อเลือก SoundSwitch จะตรวจสอบเวอร์ชั่นทดลองจาก Github.</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
-    <value>ไฟล์เสียง</value>
+    <value>ไฟล์เสียง (*.wav;*.mp3)</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>เลือกเพื่อเปิดใช้งานปุ่มลัด</value>

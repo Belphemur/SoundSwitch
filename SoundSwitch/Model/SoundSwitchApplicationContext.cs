@@ -5,12 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using NAudio.CoreAudioApi;
-
 using Serilog;
 
 using SoundSwitch.Audio.Manager;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Audio.Lister;
 using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Banner.MicrophoneMute;
@@ -45,7 +45,7 @@ public class SoundSwitchApplicationContext : ApplicationContext
         QuickMenuManager<DeviceFullInfo>.Instance.Setup();
         QuickMenuManager<Profile>.Instance.Setup();
 
-        var deviceActiveLister = new CachedAudioDeviceLister(DeviceState.Active | DeviceState.Unplugged);
+        var deviceActiveLister = new CachedAudioDeviceLister(EDeviceState.Active | EDeviceState.Unplugged);
         deviceActiveLister.Refresh();
         MMNotificationClient.Instance.Register();
 
@@ -105,20 +105,27 @@ public class SoundSwitchApplicationContext : ApplicationContext
                 {
                     var stateResponse = await Task.Run(() =>
                     {
-                        var defaultDevice = AudioSwitcher.Instance.GetDefaultMmDevice(
-                            Audio.Manager.Interop.Enum.EDataFlow.eCapture,
-                            Audio.Manager.Interop.Enum.ERole.eCommunications
+                        using var defaultDevice = AudioSwitcher.Instance.GetDefaultAudioDevice(
+                            EDataFlow.eCapture,
+                            ERole.eCommunications
                         );
                         if (defaultDevice == null)
                         {
                             return null;
                         }
 
-                        return AudioSwitcher.Instance.InteractWithDevice(defaultDevice, device => new MicrophoneStateResponse
+                        return AudioSwitcher.Instance.InteractWithDevice(defaultDevice, device =>
                         {
-                            Success = true,
-                            IsMuted = device.AudioEndpointVolume.Mute,
-                            DeviceName = device.FriendlyName
+                            var endpointVolume = device.EndpointVolume ?? throw new InvalidOperationException("No endpoint volume for the default capture device.");
+                            return new MicrophoneStateResponse
+                            {
+                                Success = true,
+                                IsMuted = endpointVolume.Mute,
+                                // DeviceInfo is the non-owning DTO carrying the NameClean
+                                // normalization (DeviceFullInfo would wrongly take ownership of
+                                // the caller-owned AudioDevice).
+                                DeviceName = new DeviceInfo(device).NameClean
+                            };
                         });
                     }, token);
 
@@ -205,11 +212,11 @@ public class SoundSwitchApplicationContext : ApplicationContext
                     switch (switchRequest.Type)
                     {
                         case AudioType.Recording:
-                            AppModel.Instance.CycleActiveDevice(DataFlow.Capture);
+                            AppModel.Instance.CycleActiveDevice(EDataFlow.eCapture);
                             break;
                         case AudioType.Playback:
                         default:
-                            AppModel.Instance.CycleActiveDevice(DataFlow.Render);
+                            AppModel.Instance.CycleActiveDevice(EDataFlow.eRender);
                             break;
                     }
 
@@ -239,29 +246,29 @@ public class SoundSwitchApplicationContext : ApplicationContext
                     var playback = await Task.Run(() =>
                     {
                         using var device = AudioSwitcher.Instance.GetDefaultAudioEndpoint(
-                            Audio.Manager.Interop.Enum.EDataFlow.eRender,
-                            Audio.Manager.Interop.Enum.ERole.eMultimedia);
+                            EDataFlow.eRender,
+                            ERole.eMultimedia);
                         return device?.NameClean ?? "";
                     }, token);
                     var playbackComm = await Task.Run(() =>
                     {
                         using var device = AudioSwitcher.Instance.GetDefaultAudioEndpoint(
-                            Audio.Manager.Interop.Enum.EDataFlow.eRender,
-                            Audio.Manager.Interop.Enum.ERole.eCommunications);
+                            EDataFlow.eRender,
+                            ERole.eCommunications);
                         return device?.NameClean ?? "";
                     }, token);
                     var recording = await Task.Run(() =>
                     {
                         using var device = AudioSwitcher.Instance.GetDefaultAudioEndpoint(
-                            Audio.Manager.Interop.Enum.EDataFlow.eCapture,
-                            Audio.Manager.Interop.Enum.ERole.eMultimedia);
+                            EDataFlow.eCapture,
+                            ERole.eMultimedia);
                         return device?.NameClean ?? "";
                     }, token);
                     var recordingComm = await Task.Run(() =>
                     {
                         using var device = AudioSwitcher.Instance.GetDefaultAudioEndpoint(
-                            Audio.Manager.Interop.Enum.EDataFlow.eCapture,
-                            Audio.Manager.Interop.Enum.ERole.eCommunications);
+                            EDataFlow.eCapture,
+                            ERole.eCommunications);
                         return device?.NameClean ?? "";
                     }, token);
 

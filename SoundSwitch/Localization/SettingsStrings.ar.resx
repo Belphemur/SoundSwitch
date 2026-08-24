@@ -160,7 +160,7 @@
     <value>عند الإختيار, SoundSwitch سيبحث ايضا عن نسخ تجريبيه في GitHub.</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
-    <value>ملفات سمع</value>
+    <value>ملفات سمع (*.wav;*.mp3)</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>اضغط لتشغيل اختصارات لوحة المفاتيح.</value>

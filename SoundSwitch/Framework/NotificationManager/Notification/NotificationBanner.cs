@@ -16,7 +16,7 @@ using System;
 using System.Drawing;
 using System.IO;
 
-using NAudio.CoreAudioApi;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
@@ -136,5 +136,5 @@ internal class NotificationBanner : INotification
     public bool IsAvailable() => true;
 
     public bool CustomSoundCheck(DeviceFullInfo audioDevice) =>
-        audioDevice.Type == DataFlow.Render && Configuration.CustomSound != null && File.Exists(Configuration.CustomSound.FilePath);
+        audioDevice.Type == EDataFlow.eRender && Configuration.CustomSound != null && File.Exists(Configuration.CustomSound.FilePath);
 }

@@ -21,7 +21,7 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using NAudio.CoreAudioApi;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 
 using RailSharp;
 
@@ -107,7 +107,7 @@ public partial class AppModel : IAppModel
         AudioDeviceLister.DeviceVolumeChanged
             .Where(payload =>
                 // Only listen for recording devices (microphones)
-                payload.Device.Type == DataFlow.Capture &&
+                payload.Device.Type == EDataFlow.eCapture &&
                 // Only care about mute changes
                 payload.MuteChanged)
             .Subscribe(HandleMicrophoneMuteChanged);

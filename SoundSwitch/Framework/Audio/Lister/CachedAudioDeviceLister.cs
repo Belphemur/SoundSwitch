@@ -23,8 +23,6 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
-using NAudio.CoreAudioApi;
-
 using Serilog;
 
 using SoundSwitch.Audio.Manager;
@@ -64,17 +62,17 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
     /// <param name="state"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public DeviceReadOnlyCollection<DeviceFullInfo> GetDevices(DataFlow type, DeviceState state)
+    public DeviceReadOnlyCollection<DeviceFullInfo> GetDevices(EDataFlow type, EDeviceState state)
     {
         return type switch
         {
-            DataFlow.Render => new DeviceReadOnlyCollection<DeviceFullInfo>(PlaybackDevices.Values.Where(info => state.HasFlag(info.State)), type),
-            DataFlow.Capture => new DeviceReadOnlyCollection<DeviceFullInfo>(RecordingDevices.Values.Where(info => state.HasFlag(info.State)), type),
+            EDataFlow.eRender => new DeviceReadOnlyCollection<DeviceFullInfo>(PlaybackDevices.Values.Where(info => state.HasFlag(info.State)), type),
+            EDataFlow.eCapture => new DeviceReadOnlyCollection<DeviceFullInfo>(RecordingDevices.Values.Where(info => state.HasFlag(info.State)), type),
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }
 
-    private readonly DeviceState _state;
+    private readonly EDeviceState _state;
     private readonly ILogger _context;
     private uint _threadSafeRefreshing;
     private CancellationTokenSource _refreshCancellationTokenSource = new CancellationTokenSource();
@@ -95,7 +93,7 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
         }
     }
 
-    public CachedAudioDeviceLister(DeviceState state)
+    public CachedAudioDeviceLister(EDeviceState state)
     {
         _state = state;
         _context = Log.ForContext("State", _state);
@@ -105,13 +103,8 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
     {
         // Subscribe to volume change events for this device
         deviceFullInfo.MuteVolumeChanged += DeviceOnMuteVolumeChanged;
-        // Attempt to subscribe to OS-level volume notifications
-        AudioSwitcher.Instance.InteractWithDevice(deviceFullInfo, device =>
-        {
-            // Subscribe to OS-level volume notifications
-            device.SubscribeToVolumeNotifications();
-            return device;
-        });
+        // Subscribe to OS-level volume notifications (marshalled onto the ComThread internally)
+        deviceFullInfo.SubscribeToVolumeNotifications();
     }
 
     private void UnsubscribeFromDeviceEvents(DeviceFullInfo deviceFullInfo)
@@ -134,11 +127,8 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
     {
         UnsubscribeFromDeviceEvents(deviceFullInfo);
 
-        _ = AudioSwitcher.Instance.InteractWithDevice(deviceFullInfo, device =>
-        {
-            device.Dispose();
-            return device;
-        });
+        // Disposal tears down the underlying device on the ComThread internally
+        deviceFullInfo.Dispose();
     }
 
     /// <summary>
@@ -166,7 +156,7 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
 
             switch (device.Type)
             {
-                case DataFlow.Render:
+                case EDataFlow.eRender:
                     if (PlaybackDevices.TryGetValue(device.Id, out var oldPlaybackDevice))
                     {
                         DisposeDevice(oldPlaybackDevice);
@@ -175,7 +165,7 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                     PlaybackDevices[device.Id] = device;
                     SubscribeToDeviceEvents(device);
                     break;
-                case DataFlow.Capture:
+                case EDataFlow.eCapture:
                     if (RecordingDevices.TryGetValue(device.Id, out var oldRecordingDevice))
                     {
                         DisposeDevice(oldRecordingDevice);
@@ -184,7 +174,7 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                     RecordingDevices[device.Id] = device;
                     SubscribeToDeviceEvents(device);
                     break;
-                case DataFlow.All:
+                case EDataFlow.eAll:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -271,26 +261,44 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
             try
             {
                 logContext.Information("Refreshing all devices");
-                foreach (var deviceInfo in AudioSwitcher.Instance.GetAudioEndpoints((EDataFlow)DataFlow.All, (EDeviceState)_state))
+                // Materialize the enumeration up front: if cancellation (or any failure) interrupts
+                // the placement loop below, the catch disposes every enumerated entry — placed or
+                // not — so no DeviceFullInfo (and the AudioDevice COM reference it owns) is abandoned.
+                var enumeratedDevices = AudioSwitcher.Instance.GetAudioEndpoints(EDataFlow.eAll, _state).ToArray();
+                try
                 {
-                    cancellationToken.ThrowIfCancellationRequested();
-
-                    // Subscription is now handled after adding to the dictionary
-                    // SubscribeToDeviceEvents(deviceInfo);
-
-                    switch (deviceInfo.Type)
+                    foreach (var deviceInfo in enumeratedDevices)
                     {
-                        case DataFlow.Render:
-                            playbackDevices.Add(deviceInfo.Id, deviceInfo);
-                            break;
-                        case DataFlow.Capture:
-                            recordingDevices.Add(deviceInfo.Id, deviceInfo);
-                            break;
-                        case DataFlow.All:
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
+                        cancellationToken.ThrowIfCancellationRequested();
+
+                        // Subscription is now handled after adding to the dictionary
+                        // SubscribeToDeviceEvents(deviceInfo);
+
+                        switch (deviceInfo.Type)
+                        {
+                            case EDataFlow.eRender:
+                                playbackDevices.Add(deviceInfo.Id, deviceInfo);
+                                break;
+                            case EDataFlow.eCapture:
+                                recordingDevices.Add(deviceInfo.Id, deviceInfo);
+                                break;
+                            case EDataFlow.eAll:
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
                     }
+                }
+                catch
+                {
+                    // The new dictionaries are discarded without having been published, so every
+                    // enumerated device is ours to dispose (each entry was placed at most once).
+                    foreach (var device in enumeratedDevices)
+                    {
+                        device.Dispose();
+                    }
+
+                    throw;
                 }
 
                 // Dispose old devices first

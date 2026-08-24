@@ -12,13 +12,12 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using NAudio.CoreAudioApi;
-
 using Serilog;
 
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Framework.Audio;
 
 namespace SoundSwitch.Framework.TrayIcon.IconChanger.Changer;
 
@@ -34,13 +33,13 @@ protected IconChangerAbstract() => _log = Log.ForContext("IconChanger", TypeEnum
     public abstract IconChanger TypeEnum { get; }
     public abstract string Label { get; }
 
-    protected abstract DataFlow Flow { get; }
+    protected abstract EDataFlow Flow { get; }
 
     protected virtual bool NeedsToChangeIcon(DeviceInfo deviceInfo) => deviceInfo.Type == Flow;
 
     public void ChangeIcon(UI.Component.TrayIcon trayIcon)
     {
-        using var audio = AudioSwitcher.Instance.GetDefaultAudioEndpoint((EDataFlow)Flow, ERole.eConsole);
+        using var audio = AudioSwitcher.Instance.GetDefaultAudioEndpoint(Flow, ERole.eConsole);
         ChangeIcon(trayIcon, audio, ERole.eConsole);
     }
 

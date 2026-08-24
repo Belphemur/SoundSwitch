@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
-using NAudio.CoreAudioApi;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework.Profile.Trigger;
@@ -55,7 +55,7 @@ public class ProfileTrayIconBuilder
 
             try
             {
-                var device = AudioDeviceLister.GetDevices(wrapper.DeviceInfo.Type, DeviceState.Active).FirstOrDefault(info => info.Equals(wrapper.DeviceInfo));
+                var device = AudioDeviceLister.GetDevices(wrapper.DeviceInfo.Type, EDeviceState.Active).FirstOrDefault(info => info.Equals(wrapper.DeviceInfo));
                 using var iconHandle = device?.SmallIcon;
                 image = iconHandle?.ToBitmap();
             }

@@ -15,13 +15,12 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using NAudio.CoreAudioApi;
-
 using Serilog;
 
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.QuickMenu.Model;
 using SoundSwitch.Model;
 using SoundSwitch.UI.Menu;
@@ -37,7 +36,7 @@ public abstract class ADeviceCycler : IDeviceCycler
     /// Cycle the audio device for the given type
     /// </summary>
     /// <param name="type"></param>
-    public bool CycleAudioDevice(DataFlow type)
+    public bool CycleAudioDevice(EDataFlow type)
     {
         var audioDevices = GetDevices(type).ToArray();
 
@@ -60,9 +59,9 @@ public abstract class ADeviceCycler : IDeviceCycler
         };
     }
 
-    private bool HandleSingleDevice(DeviceFullInfo singleDevice, DataFlow type)
+    private bool HandleSingleDevice(DeviceFullInfo singleDevice, EDataFlow type)
     {
-        using var currentDefaultDevice = AudioSwitcher.Instance.GetDefaultAudioEndpoint((EDataFlow) type, ERole.eConsole);
+        using var currentDefaultDevice = AudioSwitcher.Instance.GetDefaultAudioEndpoint(type, ERole.eConsole);
         if (currentDefaultDevice == null || currentDefaultDevice.Id != singleDevice.Id)
         {
             return SetActiveDevice(singleDevice);
@@ -70,7 +69,7 @@ public abstract class ADeviceCycler : IDeviceCycler
         return false;
     }
 
-    protected abstract IEnumerable<DeviceFullInfo> GetDevices(DataFlow type);
+    protected abstract IEnumerable<DeviceFullInfo> GetDevices(EDataFlow type);
 
     /// <summary>
     /// Get the next device that need to be set as Default
@@ -78,9 +77,9 @@ public abstract class ADeviceCycler : IDeviceCycler
     /// <param name="audioDevices"></param>
     /// <param name="type"></param>
     /// <returns></returns>
-    private DeviceInfo GetNextDevice(DeviceInfo[] audioDevices, DataFlow type)
+    private DeviceInfo GetNextDevice(DeviceInfo[] audioDevices, EDataFlow type)
     {
-        using var currentDefaultDevice = AudioSwitcher.Instance.GetDefaultAudioEndpoint((EDataFlow) type, ERole.eConsole);
+        using var currentDefaultDevice = AudioSwitcher.Instance.GetDefaultAudioEndpoint(type, ERole.eConsole);
         var defaultDev = currentDefaultDevice ?? audioDevices.Last();
         var next = audioDevices.SkipWhile((device, _) => device.Id != defaultDev.Id).Skip(1).FirstOrDefault() ?? audioDevices[0];
         return next;
@@ -93,7 +92,7 @@ public abstract class ADeviceCycler : IDeviceCycler
     public bool SetActiveDevice(DeviceInfo device)
     {
         if (AppModel.Instance.KeepVolumeEnabled)
-            AudioSwitcher.Instance.SetVolumeFromDefaultDevice(device);
+            AudioSwitcher.Instance.SetVolumeFromDefaultDevice(device.Type, device.Id);
 
         Log.Information("Set Default device: {Device}", device);
         if (!AppModel.Instance.SetCommunications)
@@ -103,8 +102,8 @@ public abstract class ADeviceCycler : IDeviceCycler
             if (AppModel.Instance.SwitchForegroundProgram)
             {
                 AudioSwitcher.Instance.ResetProcessDeviceConfiguration();
-                AudioSwitcher.Instance.SwitchForegroundProcessTo(device.Id, ERole.eConsole, (EDataFlow) device.Type);
-                AudioSwitcher.Instance.SwitchForegroundProcessTo(device.Id, ERole.eMultimedia, (EDataFlow) device.Type);
+                AudioSwitcher.Instance.SwitchForegroundProcessTo(device.Id, ERole.eConsole, device.Type);
+                AudioSwitcher.Instance.SwitchForegroundProcessTo(device.Id, ERole.eMultimedia, device.Type);
             }
         }
         else
@@ -114,7 +113,7 @@ public abstract class ADeviceCycler : IDeviceCycler
             if (AppModel.Instance.SwitchForegroundProgram)
             {
                 AudioSwitcher.Instance.ResetProcessDeviceConfiguration();
-                AudioSwitcher.Instance.SwitchForegroundProcessTo(device.Id, ERole.ERole_enum_count, (EDataFlow) device.Type);
+                AudioSwitcher.Instance.SwitchForegroundProcessTo(device.Id, ERole.ERole_enum_count, device.Type);
             }
         }
 

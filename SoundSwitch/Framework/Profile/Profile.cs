@@ -24,12 +24,18 @@ public class Profile : IEquatable<Profile>, IDisposable
     internal class DeviceRoleWrapper
     {
         public DeviceInfo DeviceInfo { get; }
-        public ERole Role { get; }
 
-        internal DeviceRoleWrapper(DeviceInfo deviceInfo, ERole role)
+        /// <summary>
+        /// The native roles this device entry applies to. The native ERole values are not powers
+        /// of two (eConsole = 0, eMultimedia = 1, eCommunications = 2), so they cannot be combined
+        /// with bitwise OR or tested with HasFlag — keep them as a set of individual values.
+        /// </summary>
+        public IReadOnlyCollection<ERole> Roles { get; }
+
+        internal DeviceRoleWrapper(DeviceInfo deviceInfo, params ERole[] roles)
         {
             DeviceInfo = deviceInfo;
-            Role = role;
+            Roles = roles;
         }
     }
 
@@ -51,13 +57,14 @@ public class Profile : IEquatable<Profile>, IDisposable
     {
         get
         {
-            var device = AudioSwitcher.Instance.GetDevice(Devices.First().DeviceInfo.Id);
+            // The AudioDevice properties are an immutable snapshot — safe to read off the ComThread.
+            using var device = AudioSwitcher.Instance.GetDevice(Devices.First().DeviceInfo.Id);
             if (device == null)
             {
                 return DefaultProfileIcon.Acquire();
             }
 
-            return AudioSwitcher.Instance.InteractWithDevice(device, mmDevice => AudioDeviceIconExtractor.ExtractIconFromPath(mmDevice.IconPath, mmDevice.DataFlow, true));
+            return AudioDeviceIconExtractor.ExtractIconFromAudioDevice(device, true);
         }
     }
 
@@ -104,11 +111,11 @@ public class Profile : IEquatable<Profile>, IDisposable
         get
         {
             if (Playback != null)
-                yield return new DeviceRoleWrapper(Playback, ERole.eConsole | ERole.eMultimedia);
+                yield return new DeviceRoleWrapper(Playback, ERole.eConsole, ERole.eMultimedia);
             if (Communication != null)
                 yield return new DeviceRoleWrapper(Communication, ERole.eCommunications);
             if (Recording != null)
-                yield return new DeviceRoleWrapper(Recording, ERole.eConsole | ERole.eMultimedia);
+                yield return new DeviceRoleWrapper(Recording, ERole.eConsole, ERole.eMultimedia);
             if (RecordingCommunication != null)
                 yield return new DeviceRoleWrapper(RecordingCommunication, ERole.eCommunications);
         }

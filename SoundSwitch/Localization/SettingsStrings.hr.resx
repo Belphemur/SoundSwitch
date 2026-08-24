@@ -160,7 +160,7 @@
     <value>Kad je označeno, SoundSwitch će također tražiti beta verzije na GitHub-u.</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
-    <value>Audio datoteke</value>
+    <value>Audio datoteke (*.wav;*.mp3)</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Označi za aktiviranje prečaca.</value>

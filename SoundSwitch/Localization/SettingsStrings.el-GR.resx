@@ -160,7 +160,7 @@
     <value>Όταν επιλεγεί, το SoundSwitch θα ελέγχει επίσης για εκδόσεις beta στο GitHub.</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
-    <value>Αρχεία ήχου</value>
+    <value>Αρχεία ήχου (*.wav;*.mp3)</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Επιλέξτε για ενεργοποίηση συντόμευσης.</value>

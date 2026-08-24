@@ -23,8 +23,6 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Windows.Forms;
 
-using NAudio.CoreAudioApi;
-
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -196,7 +194,7 @@ public sealed partial class SettingsForm : Form
 
         CustomSoundNotificationCheck();
 
-        selectSoundFileDialog.Filter = SettingsStrings.audioFiles + @" (*.wav;*.mp3)|*.wav;*.mp3;*.aiff";
+        selectSoundFileDialog.Filter = SettingsStrings.audioFiles + "|*.wav;*.mp3";
         selectSoundFileDialog.FileOk += SelectSoundFileDialog_FileOk;
         selectSoundFileDialog.CheckFileExists = true;
         selectSoundFileDialog.CheckPathExists = true;
@@ -338,25 +336,25 @@ public sealed partial class SettingsForm : Form
 
             if (profile.Playback != null)
             {
-                playback = _audioDeviceLister.GetDevices(DataFlow.Render, DeviceState.Active).FirstOrDefault(info =>
+                playback = _audioDeviceLister.GetDevices(EDataFlow.eRender, EDeviceState.Active).FirstOrDefault(info =>
                     info.Equals(profile.Playback));
             }
 
             if (profile.Recording != null)
             {
-                recording = _audioDeviceLister.GetDevices(DataFlow.Capture, DeviceState.Active).FirstOrDefault(info =>
+                recording = _audioDeviceLister.GetDevices(EDataFlow.eCapture, EDeviceState.Active).FirstOrDefault(info =>
                     info.Equals(profile.Recording));
             }
 
             if (profile.Communication != null)
             {
-                communication = _audioDeviceLister.GetDevices(DataFlow.Render, DeviceState.Active).FirstOrDefault(info =>
+                communication = _audioDeviceLister.GetDevices(EDataFlow.eRender, EDeviceState.Active).FirstOrDefault(info =>
                     info.Equals(profile.Communication));
             }
 
             if (profile.RecordingCommunication != null)
             {
-                recordingCommunication = _audioDeviceLister.GetDevices(DataFlow.Capture, DeviceState.Active).FirstOrDefault(info =>
+                recordingCommunication = _audioDeviceLister.GetDevices(EDataFlow.eCapture, EDeviceState.Active).FirstOrDefault(info =>
                     info.Equals(profile.RecordingCommunication));
             }
 
@@ -412,8 +410,8 @@ public sealed partial class SettingsForm : Form
     private void PopulateAudioDevices()
     {
         var selectedDevices = AppModel.Instance.SelectedDevices;
-        PopulateAudioList(playbackListView, selectedDevices, _audioDeviceLister.GetDevices(DataFlow.Render, DeviceState.Active | DeviceState.Unplugged));
-        PopulateAudioList(recordingListView, selectedDevices, _audioDeviceLister.GetDevices(DataFlow.Capture, DeviceState.Active | DeviceState.Unplugged));
+        PopulateAudioList(playbackListView, selectedDevices, _audioDeviceLister.GetDevices(EDataFlow.eRender, EDeviceState.Active | EDeviceState.Unplugged));
+        PopulateAudioList(recordingListView, selectedDevices, _audioDeviceLister.GetDevices(EDataFlow.eCapture, EDeviceState.Active | EDeviceState.Unplugged));
     }
 
     private void RefreshAudioDevices()
@@ -433,9 +431,9 @@ public sealed partial class SettingsForm : Form
     private static void ClearListViewForRefresh(ListView listView)
     {
         listView.Items.Clear();
-        var activeGroup = listView.Groups[nameof(DeviceState.Active)];
+        var activeGroup = listView.Groups[nameof(EDeviceState.Active)];
         if (activeGroup != null) listView.Groups.Remove(activeGroup);
-        var notPresentGroup = listView.Groups[nameof(DeviceState.NotPresent)];
+        var notPresentGroup = listView.Groups[nameof(EDeviceState.NotPresent)];
         if (notPresentGroup != null) listView.Groups.Remove(notPresentGroup);
         listView.Columns.Clear();
         var oldImageList = listView.SmallImageList;
@@ -694,7 +692,7 @@ public sealed partial class SettingsForm : Form
             Tag = device
         };
         var isSelected = selected.Contains(device);
-        if (device.State == DeviceState.Active && isSelected)
+        if (device.State == EDeviceState.Active && isSelected)
             listViewItem.Group = listView.Groups["selectedGroup"];
         else
             listViewItem.Group = GetGroup(device.State, listView);
@@ -749,21 +747,21 @@ public sealed partial class SettingsForm : Form
     /// <param name="deviceState"></param>
     /// <param name="listView"></param>
     /// <returns></returns>
-    private ListViewGroup GetGroup(DeviceState deviceState, ListView listView)
+    private ListViewGroup GetGroup(EDeviceState deviceState, ListView listView)
     {
         switch (deviceState)
         {
-            case DeviceState.Active:
-                return listView.Groups[nameof(DeviceState.Active)];
+            case EDeviceState.Active:
+                return listView.Groups[nameof(EDeviceState.Active)];
             default:
-                return listView.Groups[nameof(DeviceState.NotPresent)];
+                return listView.Groups[nameof(EDeviceState.NotPresent)];
         }
     }
 
     private void PopulateDeviceTypeGroups(ListView listView)
     {
-        listView.Groups.Add(new ListViewGroup(nameof(DeviceState.Active), SettingsStrings.connected));
-        listView.Groups.Add(new ListViewGroup(nameof(DeviceState.NotPresent), SettingsStrings.disconnected));
+        listView.Groups.Add(new ListViewGroup(nameof(EDeviceState.Active), SettingsStrings.connected));
+        listView.Groups.Add(new ListViewGroup(nameof(EDeviceState.NotPresent), SettingsStrings.disconnected));
     }
 
     #endregion
@@ -772,7 +770,7 @@ public sealed partial class SettingsForm : Form
 
     private void AddProfileButton_Click(object sender, EventArgs e)
     {
-        var form = new UpsertProfileExtended(new Profile(), _audioDeviceLister.GetDevices(DataFlow.Render, DeviceState.Active | DeviceState.Unplugged), _audioDeviceLister.GetDevices(DataFlow.Capture, DeviceState.Active | DeviceState.Unplugged), this);
+        var form = new UpsertProfileExtended(new Profile(), _audioDeviceLister.GetDevices(EDataFlow.eRender, EDeviceState.Active | EDeviceState.Unplugged), _audioDeviceLister.GetDevices(EDataFlow.eCapture, EDeviceState.Active | EDeviceState.Unplugged), this);
         form.Show(this);
     }
 
@@ -799,7 +797,7 @@ public sealed partial class SettingsForm : Form
         if (profilesListView.SelectedItems.Count <= 0) return;
 
         var profile = (Profile)profilesListView.SelectedItems[0].Tag;
-        var form = new UpsertProfileExtended(profile, _audioDeviceLister.GetDevices(DataFlow.Render, DeviceState.Active | DeviceState.Unplugged), _audioDeviceLister.GetDevices(DataFlow.Capture, DeviceState.Active | DeviceState.Unplugged), this, true);
+        var form = new UpsertProfileExtended(profile, _audioDeviceLister.GetDevices(EDataFlow.eRender, EDeviceState.Active | EDeviceState.Unplugged), _audioDeviceLister.GetDevices(EDataFlow.eCapture, EDeviceState.Active | EDeviceState.Unplugged), this, true);
         form.Show(this);
     }
 
@@ -1286,8 +1284,8 @@ public sealed partial class SettingsForm : Form
 
         appSoundLockListView.Items.Clear();
 
-        var playbacks = _audioDeviceLister.GetDevices(DataFlow.Render, DeviceState.Active | DeviceState.Unplugged | DeviceState.Disabled).ToList();
-        var recordings = _audioDeviceLister.GetDevices(DataFlow.Capture, DeviceState.Active | DeviceState.Unplugged | DeviceState.Disabled).ToList();
+        var playbacks = _audioDeviceLister.GetDevices(EDataFlow.eRender, EDeviceState.Active | EDeviceState.Unplugged | EDeviceState.Disabled).ToList();
+        var recordings = _audioDeviceLister.GetDevices(EDataFlow.eCapture, EDeviceState.Active | EDeviceState.Unplugged | EDeviceState.Disabled).ToList();
 
         appSoundLockListView.ItemCheck -= AppSoundLockListView_ItemCheck;
         foreach (var rule in AppConfigs.Configuration.AppSoundRules)
@@ -1358,8 +1356,8 @@ public sealed partial class SettingsForm : Form
 
     private void AddAppSoundRuleButton_Click(object sender, EventArgs e)
     {
-        var playbacks = _audioDeviceLister.GetDevices(DataFlow.Render, DeviceState.Active);
-        var recordings = _audioDeviceLister.GetDevices(DataFlow.Capture, DeviceState.Active);
+        var playbacks = _audioDeviceLister.GetDevices(EDataFlow.eRender, EDeviceState.Active);
+        var recordings = _audioDeviceLister.GetDevices(EDataFlow.eCapture, EDeviceState.Active);
         
         using var form = new UpsertAppSoundLockRule(new AppSoundRule(), playbacks, recordings);
         if (form.ShowDialog(this) == DialogResult.OK)
@@ -1376,8 +1374,8 @@ public sealed partial class SettingsForm : Form
         if (appSoundLockListView.SelectedItems.Count == 0) return;
         var rule = (AppSoundRule)appSoundLockListView.SelectedItems[0].Tag;
 
-        var playbacks = _audioDeviceLister.GetDevices(DataFlow.Render, DeviceState.Active);
-        var recordings = _audioDeviceLister.GetDevices(DataFlow.Capture, DeviceState.Active);
+        var playbacks = _audioDeviceLister.GetDevices(EDataFlow.eRender, EDeviceState.Active);
+        var recordings = _audioDeviceLister.GetDevices(EDataFlow.eCapture, EDeviceState.Active);
 
         using var form = new UpsertAppSoundLockRule(rule, playbacks, recordings, true);
         if (form.ShowDialog(this) == DialogResult.OK)

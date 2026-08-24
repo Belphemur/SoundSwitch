@@ -160,7 +160,7 @@
     <value>Engedélyezés esetén a SoundSwitch a béta verziókat is ellenőrzi GitHub-on.</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
-    <value>Hangfájlok</value>
+    <value>Hangfájlok (*.wav;*.mp3)</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Jelöld be a gyorsgomb engedélyezéséhez.</value>

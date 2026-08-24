@@ -160,7 +160,7 @@
     <value>Falls aktiv, wird SoundSwitch auch nach Beta Versionen auf GitHub suchen.</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
-    <value>Audiodateien</value>
+    <value>Audiodateien (*.wav;*.mp3)</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Markieren um die Tastenkombination zu aktivieren.</value>

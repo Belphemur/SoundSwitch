@@ -160,7 +160,7 @@
     <value>Si cette option est cochée, SoundSwitch vérifiera également si des version bêta sont disponibles sur GitHub.</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
-    <value>Fichiers Audio</value>
+    <value>Fichiers Audio (*.wav;*.mp3)</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Vérifiez que le raccourci clavier est activé.</value>

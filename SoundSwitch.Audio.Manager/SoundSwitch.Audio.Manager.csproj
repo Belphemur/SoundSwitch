@@ -14,14 +14,8 @@
     <PackageReference Include="Serilog" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="NAudio" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Remove="Interop\Interface\IPolicyConfigVista.cs" />
     <Compile Remove="Interop\Interface\IPolicyConfigX.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SoundSwitch.Common\SoundSwitch.Common.csproj" />
   </ItemGroup>
   <PropertyGroup>
     <CsWinRTWindowsMetadata>sdk</CsWinRTWindowsMetadata>
@@ -30,5 +24,8 @@
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
       <_Parameter1>SoundSwitch.Audio.Manager.Tests</_Parameter1>
     </AssemblyAttribute>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SoundSwitch.Mp3Sharp\SoundSwitch.Mp3Sharp.csproj" />
   </ItemGroup>
 </Project>

@@ -1,6 +1,6 @@
 using FluentAssertions;
 
-using NAudio.CoreAudioApi;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 
 using NUnit.Framework;
 
@@ -15,9 +15,9 @@ namespace SoundSwitch.Tests;
 [TestFixture]
 public class AudioDeviceIconExtractorTests
 {
-    [TestCase(DataFlow.Render)]
-    [TestCase(DataFlow.Capture)]
-    public void ExtractIconFromPath_WhenPathIsInvalid_ReturnsFallbackIcon(DataFlow dataFlow)
+    [TestCase(EDataFlow.eRender)]
+    [TestCase(EDataFlow.eCapture)]
+    public void ExtractIconFromPath_WhenPathIsInvalid_ReturnsFallbackIcon(EDataFlow dataFlow)
     {
         using var iconHandle = AudioDeviceIconExtractor.ExtractIconFromPath("invalid-icon-path", dataFlow, false);
 

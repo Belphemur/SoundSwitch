@@ -160,7 +160,7 @@
     <value>Նշելիս, SoundSwitch-ը նաեւ կստուգի GitHub-ի բետա վարկածները</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
-    <value>Հնչյունային Նիշքեր</value>
+    <value>Հնչյունային Նիշքեր (*.wav;*.mp3)</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Ստուգեք՝ միացնելու համար թեժստեղնը</value>

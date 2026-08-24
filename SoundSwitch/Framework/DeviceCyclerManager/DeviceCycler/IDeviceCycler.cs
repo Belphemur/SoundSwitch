@@ -12,7 +12,7 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using NAudio.CoreAudioApi;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Factory;
@@ -25,7 +25,7 @@ public interface IDeviceCycler : IEnumImpl<DeviceCyclerType>
     /// Cycle the audio device for the given type
     /// </summary>
     /// <param name="type"></param>
-    bool CycleAudioDevice(DataFlow type);
+    bool CycleAudioDevice(EDataFlow type);
 
     /// <summary>
     ///     Attempts to set active device to the specified name

@@ -160,7 +160,7 @@
     <value>Если флажок установлен, SoundSwitch также проверяет наличие бета версий на GitHub.</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
-    <value>Аудио файлы</value>
+    <value>Аудио файлы (*.wav;*.mp3)</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Установите флажок, чтобы включить горячие клавиши.</value>

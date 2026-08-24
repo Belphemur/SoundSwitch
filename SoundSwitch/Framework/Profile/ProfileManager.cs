@@ -6,8 +6,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 
-using NAudio.CoreAudioApi;
-
 using RailSharp;
 using RailSharp.Internal.Result;
 
@@ -17,6 +15,7 @@ using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Com.User;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Profile.Hotkey;
 using SoundSwitch.Framework.Profile.Trigger;
@@ -271,7 +270,7 @@ public class ProfileManager
         _logger.Debug("We have a force profile set and audio device changed. Checking ....");
 
         //No need to trigger force profile if
-        if (_forcedProfile.Devices.Any(wrapper => wrapper.DeviceInfo.Equals(audioChangedEvent.Device) && wrapper.Role.HasFlag((ERole)audioChangedEvent.Role)))
+        if (_forcedProfile.Devices.Any(wrapper => wrapper.DeviceInfo.Equals(audioChangedEvent.Device) && wrapper.Roles.Contains(audioChangedEvent.Role)))
         {
             _logger.Debug("No need to force switching, already using forced profile.");
             return false;
@@ -384,7 +383,7 @@ public class ProfileManager
 
     private DeviceInfo? CheckDeviceAvailable(DeviceInfo deviceInfo)
     {
-        return AppModel.Instance.AudioDeviceLister.GetDevices(deviceInfo.Type, DeviceState.Active).FirstOrDefault(info => info.Equals(deviceInfo));
+        return AppModel.Instance.AudioDeviceLister.GetDevices(deviceInfo.Type, EDeviceState.Active).FirstOrDefault(info => info.Equals(deviceInfo));
     }
 
     private void SwitchAudio(Profile profile, uint processId, TriggerFactory.Enum? triggerType = null)
@@ -406,15 +405,18 @@ public class ProfileManager
                 continue;
             }
 
-            _audioSwitcher.SwitchProcessTo(
-                deviceToUse.Id,
-                device.Role,
-                (EDataFlow)deviceToUse.Type,
-                processId);
-
-            if (profile.AlsoSwitchDefaultDevice)
+            foreach (var role in device.Roles)
             {
-                _audioSwitcher.SwitchTo(deviceToUse.Id, device.Role);
+                _audioSwitcher.SwitchProcessTo(
+                    deviceToUse.Id,
+                    role,
+                    deviceToUse.Type,
+                    processId);
+
+                if (profile.AlsoSwitchDefaultDevice)
+                {
+                    _audioSwitcher.SwitchTo(deviceToUse.Id, role);
+                }
             }
         }
 
@@ -452,10 +454,13 @@ public class ProfileManager
                 continue;
             }
 
-            _audioSwitcher.SwitchTo(deviceToUse.Id, device.Role);
-            if (profile.SwitchForegroundApp)
+            foreach (var role in device.Roles)
             {
-                _audioSwitcher.SwitchForegroundProcessTo(deviceToUse.Id, device.Role, (EDataFlow)deviceToUse.Type);
+                _audioSwitcher.SwitchTo(deviceToUse.Id, role);
+                if (profile.SwitchForegroundApp)
+                {
+                    _audioSwitcher.SwitchForegroundProcessTo(deviceToUse.Id, role, deviceToUse.Type);
+                }
             }
         }
 
