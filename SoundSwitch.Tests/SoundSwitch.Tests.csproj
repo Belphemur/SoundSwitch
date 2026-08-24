@@ -9,6 +9,10 @@
         <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)' == 'Nightly'">
+        <DefineConstants>$(DefineConstants);NIGHTLY</DefineConstants>
+    </PropertyGroup>
+
     <ItemGroup>
         <PackageReference Include="FluentAssertions" />
         <PackageReference Include="NUnit" />
