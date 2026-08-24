@@ -33,9 +33,16 @@ public class ExceptionEvent(Exception exception) : EventArgs
     public Exception Exception { get; private set; } = exception;
 }
 
-public class DeviceListChanged(IEnumerable<DeviceInfo> seletedDevicesList, EDataFlow type) : EventArgs
+public class DeviceListChanged(IEnumerable<DeviceInfo> selectedDevicesList, EDataFlow type) : EventArgs
 {
-    public IEnumerable<DeviceInfo> SeletedDevicesList { get; private set; } = seletedDevicesList;
+    [Obsolete("Misspelled; use SelectedDevicesList instead.")]
+    public IEnumerable<DeviceInfo> SeletedDevicesList
+    {
+        get => SelectedDevicesList;
+        private set => SelectedDevicesList = value;
+    }
+
+    public IEnumerable<DeviceInfo> SelectedDevicesList { get; private set; } = selectedDevicesList;
     public EDataFlow Type { get; private set; } = type;
 }
 

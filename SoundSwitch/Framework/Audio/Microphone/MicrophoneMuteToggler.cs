@@ -42,6 +42,12 @@ public class MicrophoneMuteToggler
         {
             try
             {
+                if (device.EndpointVolume == null)
+                {
+                    Log.Warning("Microphone {device} has no endpoint volume (activation failed); cannot toggle mute", device.FriendlyName);
+                    return default;
+                }
+
                 var newMuteState = !device.EndpointVolume.Mute;
                 device.EndpointVolume.Mute = newMuteState;
                 return (device.FriendlyName, newMuteState);
@@ -92,6 +98,12 @@ public class MicrophoneMuteToggler
         {
             try
             {
+                if (device.EndpointVolume == null)
+                {
+                    Log.Warning("Microphone {device} has no endpoint volume (activation failed); cannot set mute state", device.FriendlyName);
+                    return default;
+                }
+
                 device.EndpointVolume.Mute = muteState;
                 return (device.FriendlyName, muteState);
             }
