@@ -54,8 +54,7 @@ public sealed class SoundPlayerTests
     [Test]
     public void PlayAsync_NullData_Throws()
     {
-        var act = () => SoundPlayer.PlayAsync(null!, new WaveFormat(WaveFormatEncoding.Pcm, 8000, 16, 1));
-
-        act.Should().Throw<ArgumentNullException>();
+        Func<Task> actAsync = () => SoundPlayer.PlayAsync(null!, new WaveFormat(WaveFormatEncoding.Pcm, 8000, 16, 1));
+        await actAsync.Should().ThrowAsync<ArgumentNullException>();
     }
 }
