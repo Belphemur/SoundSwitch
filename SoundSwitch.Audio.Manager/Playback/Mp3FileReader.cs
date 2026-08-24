@@ -12,7 +12,7 @@ namespace SoundSwitch.Audio.Manager.Playback
     /// <see cref="WaveFileReader"/>: raw PCM bytes plus a <see cref="WaveFormat"/>.
     ///
     /// Decoding is done by the vendored MP3Sharp library (a pure-managed C# port of
-    /// JavaLayer, LGPL-3.0 — see <c>Playback/Mp3Sharp/LICENSE.txt</c>), so it has no
+    /// JavaLayer, LGPL-3.0 — see <c>SoundSwitch.Mp3Sharp/LICENSE.txt</c>), so it has no
     /// OS dependency and runs on any machine, unlike the previous Media Foundation
     /// pipeline. MP3Sharp always emits 16-bit stereo PCM (mono sources are doubled
     /// to stereo) at the file's native sample rate, which is what the returned

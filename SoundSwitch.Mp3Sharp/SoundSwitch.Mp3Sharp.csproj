@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <AssemblyTitle>SoundSwitch.Mp3Sharp</AssemblyTitle>
+    <Version>1.0.0</Version>
+    <Description>Vendored MP3Sharp pure-managed MP3 decoder (LGPL-3.0, C# port of JavaLayer), modernized for .NET 10.</Description>
+  </PropertyGroup>
+</Project>

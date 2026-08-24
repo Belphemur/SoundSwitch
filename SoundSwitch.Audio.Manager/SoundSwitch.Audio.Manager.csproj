@@ -25,4 +25,7 @@
       <_Parameter1>SoundSwitch.Audio.Manager.Tests</_Parameter1>
     </AssemblyAttribute>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SoundSwitch.Mp3Sharp\SoundSwitch.Mp3Sharp.csproj" />
+  </ItemGroup>
 </Project>
