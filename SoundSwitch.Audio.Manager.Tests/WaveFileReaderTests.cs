@@ -123,6 +123,20 @@ public sealed class WaveFileReaderTests
     }
 
     [Test]
+    public void Read_OddSizedDataChunkBeforeFmtChunk_PadsAndParses()
+    {
+        // An odd-length data chunk before fmt must be word-aligned (pad byte) so chunk
+        // scanning still finds the fmt chunk that follows it.
+        var samples = new byte[] { 0x11, 0x22, 0x33 }; // odd (3 bytes)
+        var wav = WaveTestData.BuildWav(formatTag: 1, channels: 1, sampleRate: 8000, bitsPerSample: 16, data: samples, dataBeforeFmt: true);
+
+        var (audioData, format) = WaveFileReader.Read(new MemoryStream(wav));
+
+        format.SampleRate.Should().Be(8000);
+        audioData.Should().Equal(samples);
+    }
+
+    [Test]
     public void Read_ListInfoChunk_IsSkipped()
     {
         var samples = new byte[] { 0x55, 0x66 };

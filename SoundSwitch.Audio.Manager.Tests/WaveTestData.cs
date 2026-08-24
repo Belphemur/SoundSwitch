@@ -46,6 +46,11 @@ internal static class WaveTestData
             writer.Write(Encoding.ASCII.GetBytes("data"));
             writer.Write(dataChunkSizeOverride ?? (uint)data.Length);
             writer.Write(data);
+            // RIFF chunks are word-aligned: an odd-sized chunk is followed by one pad byte,
+            // which the parser (and real encoders) skip. Required so a `data`-before-`fmt`
+            // layout with an odd data size doesn't desynchronize chunk scanning.
+            if (data.Length % 2 == 1)
+                writer.Write((byte)0);
         }
 
         writer.Write(Encoding.ASCII.GetBytes("RIFF"));
