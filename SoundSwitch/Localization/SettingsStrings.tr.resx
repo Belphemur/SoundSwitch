@@ -160,7 +160,7 @@
     <value>İşaretli olduğunda SoundSwitch GitHub'daki beta sürümleri de kontrol edecektir.</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
-    <value>Ses Dosyaları</value>
+    <value>Ses Dosyaları (*.wav;*.mp3)</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Klavye kısayolunu etkin hale getirmek için işaretleyin.</value>

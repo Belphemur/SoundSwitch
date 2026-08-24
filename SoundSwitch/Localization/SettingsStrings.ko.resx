@@ -160,7 +160,7 @@
     <value>선택하면 SoundSwitch는 GitHub에서 베타 버전도 확인합니다.</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
-    <value>오디오 파일</value>
+    <value>오디오 파일 (*.wav;*.mp3)</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>단축키를 사용하려면 선택합니다.</value>

@@ -160,7 +160,7 @@
     <value>Je-li zaškrtnuto, SoundSwitch bude hledat na GitHubu i beta verze.</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
-    <value>Audio soubory</value>
+    <value>Audio soubory (*.wav;*.mp3)</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Zaškrtnutím umožníte používání klávesových zkratek.</value>

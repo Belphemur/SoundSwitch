@@ -165,7 +165,7 @@
     <value>When checked, SoundSwitch will also check for Beta versions on GitHub.</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
-    <value>Audio Files (*.wav)</value>
+    <value>Audio Files (*.wav;*.mp3)</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Check to enable hotkey.</value>

@@ -160,7 +160,7 @@
     <value>啟用後，SoundSwitch 將檢查 GitHub 上是否有可用的測試版本。</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
-    <value>音訊檔案</value>
+    <value>音訊檔案 (*.wav;*.mp3)</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>勾選以啟用快捷鍵。</value>

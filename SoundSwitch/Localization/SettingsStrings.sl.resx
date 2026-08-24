@@ -160,7 +160,7 @@
     <value>Ko je označeno, bo SoundSwitch preveril tudi različice beta na GitHubu.</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
-    <value>Zvočne datoteke</value>
+    <value>Zvočne datoteke (*.wav;*.mp3)</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Označite, da omogočite vročo tipko.</value>

@@ -160,7 +160,7 @@
     <value>Quando selezionato, SoundSwitch controllerà anche la presenza di versioni beta su Github.</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
-    <value>File audio</value>
+    <value>File audio (*.wav;*.mp3)</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Spunta per abilitare il tasto rapido.</value>

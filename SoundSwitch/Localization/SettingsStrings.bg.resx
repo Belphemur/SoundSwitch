@@ -160,7 +160,7 @@
     <value>Когато е маркирано, SoundSwitch ще проверява и за бета версии в GitHub.</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
-    <value>Аудио файлове</value>
+    <value>Аудио файлове (*.wav;*.mp3)</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Поставете отметка, за да активирате клавишната комбинация.</value>

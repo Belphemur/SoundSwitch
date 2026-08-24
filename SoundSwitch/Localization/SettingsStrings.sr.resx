@@ -160,7 +160,7 @@
     <value>Када је изабрано, SoundSwitch ће такође проверавати постојање бет верзија на GitHub-у.</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
-    <value>Датотеке звука</value>
+    <value>Датотеке звука (*.wav;*.mp3)</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Изаберите да омогућите пречицу.</value>

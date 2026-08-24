@@ -104,8 +104,8 @@ public partial class AppModel
             }
             catch (InvalidDataException)
             {
-                // Custom sounds are WAV-only now: a stored path to a previously supported
-                // non-WAV file (MP3/FLAC/AAC) is ignored, falling back to the default sound.
+                // Custom sounds are WAV and MP3: a stored path to a format that is still
+                // unsupported (FLAC/AAC) is ignored, falling back to the default sound.
                 return null;
             }
         }
