@@ -34,7 +34,7 @@ using SoundSwitch.Framework.Updater.Releases.Models;
 
 namespace SoundSwitch.Framework.Updater;
 
-public partial class UpdateChecker(Uri releaseUrl, bool checkBeta)
+public partial class UpdateChecker(Uri releaseUrl, bool checkBeta) : IUpdateChecker
 {
     private static readonly string UserAgent =
         $"Mozilla/5.0 (compatible; {Environment.OSVersion.Platform} {Environment.OSVersion.VersionString}; {Application.ProductName}/{Application.ProductVersion};)";
@@ -60,7 +60,7 @@ public partial class UpdateChecker(Uri releaseUrl, bool checkBeta)
         return SemanticVersion.Parse(truncated);
     }
 
-    public EventHandler<NewReleaseEvent> UpdateAvailable;
+    public event EventHandler<NewReleaseEvent> UpdateAvailable;
     public bool Beta { get; set; } = checkBeta;
 
     /// <summary>

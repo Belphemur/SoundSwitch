@@ -12,7 +12,7 @@ using SoundSwitch.Framework.Configuration;
 
 namespace SoundSwitch.Framework.Updater.Job;
 
-public class CheckForUpdateRecurringJob(UpdateChecker updateChecker) : IRecurringJob
+public class CheckForUpdateRecurringJob(IUpdateChecker updateChecker) : IRecurringJob
 {
     public Task ExecuteAsync(CancellationToken cancellationToken)
     {

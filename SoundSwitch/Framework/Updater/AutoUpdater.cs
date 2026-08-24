@@ -49,6 +49,17 @@ public class AutoUpdater
         file.Downloaded += (sender, args) =>
         {
             Log.Information("Update downloaded: {File}", file);
+#if NIGHTLY
+            var checksumResult = UpdateVerifier.Verify(file.FilePath, appRelease.ExpectedSha512).UnwrapFailure();
+            if (checksumResult != null)
+            {
+                Log.Error("The file has the wrong checksum. Update cancelled. {checksumResult}", checksumResult);
+                onCompleted?.Invoke(false);
+                _context.Send(state => { MessageBox.Show(UpdateDownloadStrings.ResourceManager.GetString("wrongChecksum")!, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error); },
+                    null);
+                return;
+            }
+#else
             var signatureResult = SignatureChecker.IsValid(file.FilePath).UnwrapFailure();
             if (signatureResult != null)
             {
@@ -58,6 +69,7 @@ public class AutoUpdater
                     null);
                 return;
             }
+#endif
 
             new UpdateRunner().RunUpdate(file, InstallerParameters);
             onCompleted?.Invoke(true);

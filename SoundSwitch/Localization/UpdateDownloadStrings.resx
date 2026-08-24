@@ -118,7 +118,13 @@
 	<data name="remindMe" xml:space="preserve">
 		<value>Later</value>
 	</data>
-	<data name="wrongSignature" xml:space="preserve">
-		<value>There is a problem with the last SoundSwitch update. You'll need to manually download the new version at {0}</value>
-	</data>
+  <data name="wrongChecksum" xml:space="preserve">
+    <value>The downloaded update failed its SHA-512 checksum verification. The file may be corrupted or tampered with. Please try downloading it again.</value>
+  </data>
+  <data name="wrongChecksumTitle" xml:space="preserve">
+    <value>Invalid Checksum</value>
+  </data>
+  <data name="wrongSignature" xml:space="preserve">
+    <value>There is a problem with the last SoundSwitch update. You'll need to manually download the new version at {0}</value>
+  </data>
 </root>

@@ -60,7 +60,7 @@ public partial class AppModel : IAppModel
     private bool _skipUpdate;
     private bool _initialized;
     private readonly NotificationManager _notificationManager;
-    private UpdateChecker _updateChecker;
+    private IUpdateChecker _updateChecker;
     private DeviceCollection<DeviceInfo> _selectedDevices;
     private readonly BannerPositionFactory _bannerPositionFactory = new();
 

@@ -88,6 +88,18 @@ public sealed partial class UpdateDownloadForm : Form
         };
         _releaseFile.Downloaded += (sender, args) =>
         {
+#if NIGHTLY
+            var checksumResult = UpdateVerifier.Verify(_releaseFile.FilePath, _appReleaseInfo.ExpectedSha512).UnwrapFailure();
+            if (checksumResult != null)
+            {
+                Log.Error("Wrong checksum for the release: {checksumResult}", checksumResult);
+                MessageBox.Show(UpdateDownloadStrings.ResourceManager.GetString("wrongChecksum"),
+                    UpdateDownloadStrings.ResourceManager.GetString("wrongChecksumTitle"),
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                TelemetryService.TrackUpdateInstalled(SoundSwitch.Framework.Configuration.AppConfigs.Configuration.UpdateMode, "checksum_error");
+                return;
+            }
+#else
             var signatureResult = SignatureChecker.IsValid(_releaseFile.FilePath).UnwrapFailure();
             if (signatureResult != null)
             {
@@ -98,6 +110,7 @@ public sealed partial class UpdateDownloadForm : Form
                 TelemetryService.TrackUpdateInstalled(SoundSwitch.Framework.Configuration.AppConfigs.Configuration.UpdateMode, "signature_error");
                 return;
             }
+#endif
 
             var mode = SoundSwitch.Framework.Configuration.AppConfigs.Configuration.UpdateMode;
             try
