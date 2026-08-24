@@ -14,9 +14,6 @@
     <PackageReference Include="Serilog" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="NAudio" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Remove="Interop\Interface\IPolicyConfigVista.cs" />
     <Compile Remove="Interop\Interface\IPolicyConfigX.cs" />
   </ItemGroup>
