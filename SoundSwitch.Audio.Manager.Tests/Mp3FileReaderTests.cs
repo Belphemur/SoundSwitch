@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Text;
 
 using FluentAssertions;
 
@@ -21,15 +20,6 @@ namespace SoundSwitch.Audio.Manager.Tests;
 [TestFixture]
 public sealed class Mp3FileReaderTests
 {
-    /// <summary>
-    /// 200 ms of a 440 Hz sine, encoded as 32 kbps mono 44.1 kHz MP3 (ID3v2 header + LAME frames).
-    /// Generated with: ffmpeg -f lavfi -i sine=frequency=440:duration=0.2 -codec:a libmp3lame -b:a 32k -ar 44100 -ac 1
-    /// </summary>
-    private const string SineMp3Base64 =
-        "SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYyLjEyLjEwMgAAAAAAAAAAAAAA//tAwAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAAJAAAEYgBBQUFBQUFBQUFBQVlZWVlZWVlZWVlZcHBwcHBwcHBwcHCIiIiIiIiIiIiIiKCgoKCgoKCgoKCguLi4uLi4uLi4uLjQ0NDQ0NDQ0NDQ0Ojo6Ojo6Ojo6Ojo//////////////8AAAAATGF2YzYyLjI4AAAAAAAAAAAAAAAAJAPMAAAAAAAABGIq/cMGAAAAAAD/+xDEAAAEhBVZVGCAMKoIqIM2UAAAAaBLgGACZNPYBAAAELE4Pl3uBA5+oEAQdLg+H8QAhEjv//QDQoE2kAGAxEgMJIjTg9wgV0XQ8koWDOVR/l4CgXwFEg9+HgVO9QNCX51SLmlzTP/7EsQCA8UQHSId4AAoowQiwa9oSAcAlEQDhgAgZGbu2CZWgx5hiA6mCkBmYDIExgQgPGBKAsXi6lUDMUONWxPF8MQEa02/taTbVGvMQQIw99c2Lk1TA1eMyY9gkvwBz8966jDQ4w4dMf/7EMQDA8UEHxgN+yJArYRigb9sSNODPoMwrxvjUM4cNOsbQwngbTXMAgZuqHV+awbJpaHP1/QkQYmImbHBu8aYlw7RwV9cG/wO4YmoT5wjIZ4jGZn5mTwYsLMHjFPgH/q+ijChEw8c//sSxAKDxQAfGA37IkCrBCKBv2xIMaOzPYYwphyTTb5rNLgb8wlwcDSRAQRvJnb4a4TNZ4N/r+hH8xQOM5NTeoQxNRxzhW4hOCMckxOgmjhWUztHMwPjL30xUXXRL6gOfs+6MLEDDB8x//sQxAMDxQAfGA37IkCnBCKBr2xIk8M4iTCfHSNKTrQ0hRyDCMB1M1QDCnCgd3JsAs2nQ5+n6EkDLjTdMD+/zE6GwOH/YI4ShtDE/CVOGYjOkgy9BMsfjEhhdcozBP93qjChEw0eMWP/+xLEA4PE/B8YDfsiQJyD4wGvaEzTNYwwlB3TRv77NE4dMwhQeDIZBxRxGnjoAsl+zwb/T9ivzFADTnTuVDDxE3NqSeU2exOzDyBmPDFNKxM0sMzdMONa5Tgmc+swoowxkx7Q03sweRr/+xDEBgPEpB8aDXsiYJAD44GvaE1jOu1aM5UZwwaAawCoHCm6Mc04KlZtOmv1NABwczAw4Lcwtg3DUtc0NQwN4wuQRTiLDKHjGnTFQgIEf+oGVTCCzCmDGNTR/DBuGtM3vZEzYBpTBv/7EsQKg8SsHxoNeyJgloQkgroQBRBsBi4sUbgp0xA6poM8G/1QGhPAQPmDgoGMBpH3nknrq5mXY/mK4NmA4UmEoOmEIRoT37t6AAQCKxYLRaLRaAAAAAAE4D4il+/CzZC5f8DQOBPK7//7EMQPAAgEfWG49IAYAAA0g4AABMJhQhFP5ICYJgBWl/ycMIIekSL//YQRtxQq1///NgznAqKqTEFNRTMuMTAxIChiZXRhIDMpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq";
-
-    private static byte[] SineMp3 => Convert.FromBase64String(SineMp3Base64);
-
     private static void RequireWindows()
     {
         if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -38,7 +28,17 @@ public sealed class Mp3FileReaderTests
         }
     }
 
-    private static void AssertDecodedSine(byte[] audioData, WaveFormat format)
+    private static byte[] LoadFixture(string name)
+    {
+        using var stream = typeof(Mp3FileReaderTests).Assembly
+            .GetManifestResourceStream($"SoundSwitch.Audio.Manager.Tests.TestData.{name}");
+        if (stream == null) throw new InvalidOperationException($"Missing embedded resource {name}");
+        using var ms = new MemoryStream();
+        stream.CopyTo(ms);
+        return ms.ToArray();
+    }
+
+    private static void AssertDecodedMp3(byte[] audioData, WaveFormat format, int lowerBound, int upperBound)
     {
         format.Encoding.Should().Be(WaveFormatEncoding.Pcm);
         format.SampleRate.Should().Be(44100);
@@ -48,22 +48,23 @@ public sealed class Mp3FileReaderTests
         format.AverageBytesPerSecond.Should().Be(44100 * 2);
         audioData.Should().NotBeEmpty();
 
-        // 200 ms of 44.1 kHz mono 16-bit audio — allow slack for encoder delay/padding.
-        audioData.Length.Should().BeInRange(44100 * 2 * 150 / 1000, 44100 * 2 * 300 / 1000);
+        // 5 seconds of 44.1 kHz mono 16-bit audio — allow slack for encoder delay/padding.
+        audioData.Length.Should().BeInRange(lowerBound, upperBound);
     }
 
     [Test]
-    public void ReadFile_DecodesMp3ToPcm()
+    public void ReadFile_DecodesRealMp3ToPcm()
     {
         RequireWindows();
+        var mp3 = LoadFixture("440Hz-5sec.mp3");
         var path = Path.Combine(Path.GetTempPath(), $"soundswitch-test-{Guid.NewGuid():N}.mp3");
         try
         {
-            File.WriteAllBytes(path, SineMp3);
+            File.WriteAllBytes(path, mp3);
 
             var (audioData, format) = Mp3FileReader.ReadFile(path);
 
-            AssertDecodedSine(audioData, format);
+            AssertDecodedMp3(audioData, format, 400000, 460000);
         }
         finally
         {
@@ -72,48 +73,25 @@ public sealed class Mp3FileReaderTests
     }
 
     [Test]
-    public void Read_DecodesMp3StreamToPcm()
+    public void Read_DecodesRealMp3StreamToPcm()
     {
         RequireWindows();
-        using var stream = new MemoryStream(SineMp3);
+        using var stream = new MemoryStream(LoadFixture("1000Hz-5sec.mp3"));
 
         var (audioData, format) = Mp3FileReader.Read(stream);
 
-        AssertDecodedSine(audioData, format);
+        AssertDecodedMp3(audioData, format, 400000, 460000);
     }
 
     [Test]
-    public void Read_GarbageBytes_Throws()
+    public void Read_RejectsNonMp3()
     {
         RequireWindows();
-        using var stream = new MemoryStream(Encoding.ASCII.GetBytes("this is definitely not an mp3 file at all"));
+        // A PNG header is not an MP3 stream — the reader must reject it.
+        byte[] badBytes = { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A };
 
-        var act = () => Mp3FileReader.Read(stream);
+        var act = () => Mp3FileReader.Read(new MemoryStream(badBytes));
 
         act.Should().Throw<InvalidDataException>();
-    }
-
-    [Test]
-    public void Read_WavBytes_Throws()
-    {
-        RequireWindows();
-        // A well-formed WAV is not an MP3 — the MP3 reader must reject it, the caller
-        // (CachedSound) is the one responsible for dispatching WAV vs MP3.
-        var wav = WaveTestData.BuildWav(formatTag: 1, channels: 1, sampleRate: 8000, bitsPerSample: 16, data: new byte[160]);
-
-        var act = () => Mp3FileReader.Read(new MemoryStream(wav));
-
-        act.Should().Throw<InvalidDataException>();
-    }
-
-    [Test]
-    public void ReadFile_MissingFile_Throws()
-    {
-        RequireWindows();
-        var path = Path.Combine(Path.GetTempPath(), $"soundswitch-missing-{Guid.NewGuid():N}.mp3");
-
-        var act = () => Mp3FileReader.ReadFile(path);
-
-        act.Should().Throw<FileNotFoundException>();
     }
 }

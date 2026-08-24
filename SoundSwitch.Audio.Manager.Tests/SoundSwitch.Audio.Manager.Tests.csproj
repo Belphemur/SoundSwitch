@@ -21,4 +21,9 @@
       <PackageReference Include="System.Drawing.Common" />
       <ProjectReference Include="..\SoundSwitch.Audio.Manager\SoundSwitch.Audio.Manager.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="TestData\440Hz-5sec.mp3" />
+      <EmbeddedResource Include="TestData\1000Hz-5sec.mp3" />
+    </ItemGroup>
 </Project>
