@@ -156,7 +156,7 @@ namespace SoundSwitch.Audio.Manager.Playback
         [PreserveSig] HRESULT GetCurrentMediaType(uint streamIndex, out IMFMediaType mediaType);
         [PreserveSig] HRESULT SetCurrentMediaType(uint streamIndex, IntPtr reserved, IMFMediaType mediaType);
         [PreserveSig] HRESULT SetCurrentPosition(ref Guid timeFormat, IntPtr position);
-        [PreserveSig] HRESULT ReadSample(uint streamIndex, uint controlFlags, out uint streamFlags, out long timestamp, out IMFSample sample);
+        [PreserveSig] HRESULT ReadSample(uint streamIndex, uint controlFlags, out uint actualStreamIndex, out uint streamFlags, out long timestamp, out IMFSample sample);
         [PreserveSig] HRESULT Flush(uint streamIndex);
         [PreserveSig] HRESULT GetServiceForStream(uint streamIndex, ref Guid serviceId, ref Guid iid, out IntPtr service);
         [PreserveSig] HRESULT GetPresentationAttribute(uint streamIndex, ref Guid attribute, IntPtr value);

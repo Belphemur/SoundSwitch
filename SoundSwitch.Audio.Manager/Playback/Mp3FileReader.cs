@@ -157,7 +157,7 @@ namespace SoundSwitch.Audio.Manager.Playback
                 using var pcmData = new MemoryStream();
                 while (true)
                 {
-                    hr = reader.ReadSample(MediaFoundationInterop.SourceReaderFirstAudioStream, 0, out _, out _, out var sample);
+                    hr = reader.ReadSample(MediaFoundationInterop.SourceReaderFirstAudioStream, 0, out _, out _, out _, out var sample);
                     if (hr != HRESULT.S_OK)
                         throw new InvalidDataException($"Failed to read MP3 audio data (0x{(uint)hr:X8}).");
                     if (sample == null)
