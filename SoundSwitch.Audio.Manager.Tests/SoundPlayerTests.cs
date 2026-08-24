@@ -52,9 +52,44 @@ public sealed class SoundPlayerTests
     }
 
     [Test]
-    public void PlayAsync_NullData_Throws()
+    public async Task PlayAsync_UnknownDeviceId_CompletesWithoutInvokingCallback()
+    {
+        var (data, format) = Silence();
+        var callbackInvoked = false;
+
+        var playTask = SoundPlayer.PlayAsync(data, format, deviceId: "not-a-real-endpoint-id", onCompleted: _ => callbackInvoked = true);
+        var settled = await Task.WhenAny(playTask, Task.Delay(TimeSpan.FromSeconds(15)));
+
+        settled.Should().Be(playTask, "a device id that resolves to nothing must complete, not hang");
+        await playTask; // must not fault
+        callbackInvoked.Should().BeFalse("the completion callback reports playback errors, not a missing device");
+    }
+
+    [Test]
+    public async Task PlayAsync_EmptyData_CompletesWithoutFaulting()
+    {
+        var format = new WaveFormat(WaveFormatEncoding.Pcm, 8000, 16, 1);
+
+        var playTask = SoundPlayer.PlayAsync(Array.Empty<byte>(), format);
+        var settled = await Task.WhenAny(playTask, Task.Delay(TimeSpan.FromSeconds(15)));
+
+        settled.Should().Be(playTask, "zero-length audio must settle immediately");
+        await playTask; // must not fault
+    }
+
+    [Test]
+    public async Task PlayAsync_NullData_Throws()
     {
         Func<Task> actAsync = () => SoundPlayer.PlayAsync(null!, new WaveFormat(WaveFormatEncoding.Pcm, 8000, 16, 1));
+
+        await actAsync.Should().ThrowAsync<ArgumentNullException>();
+    }
+
+    [Test]
+    public async Task PlayAsync_NullFormat_Throws()
+    {
+        Func<Task> actAsync = () => SoundPlayer.PlayAsync(new byte[4], null!);
+
         await actAsync.Should().ThrowAsync<ArgumentNullException>();
     }
 }
