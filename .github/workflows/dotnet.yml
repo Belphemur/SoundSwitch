@@ -83,6 +83,17 @@ jobs:
       configuration: Release
     secrets: inherit
 
+  build-nightly:
+    needs: changes
+    if: github.ref != 'refs/heads/dev' && (needs.changes.outputs.sound-switch == 'true' || needs.changes.outputs.ci == 'true' || github.ref == 'refs/heads/master')
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}-build-nightly
+      cancel-in-progress: true
+    uses: ./.github/workflows/reusable-build.yml
+    with:
+      configuration: Nightly
+    secrets: inherit
+
   release-dry-run:
     needs: changes
     if: needs.changes.outputs.node == 'true' || needs.changes.outputs.ci == 'true'
@@ -131,6 +142,7 @@ jobs:
       - changes
       - validate-translations
       - build
+      - build-nightly
       - release-dry-run
       - build-docs
     runs-on: ubuntu-latest
@@ -147,6 +159,7 @@ jobs:
 
           changes_result="${{ needs.changes.result }}"
           dotnet_result="${{ needs.build.result }}"
+          nightly_result="${{ needs.build-nightly.result }}"
           translations_result="${{ needs.validate-translations.result }}"
           release_result="${{ needs['release-dry-run'].result }}"
           docs_result="${{ needs['build-docs'].result }}"
@@ -160,6 +173,11 @@ jobs:
 
           if [[ "${require_dotnet}" == "true" && "${dotnet_result}" != "success" ]]; then
             echo "C# build is required but result was: ${dotnet_result}"
+            failed=1
+          fi
+
+          if [[ "${require_dotnet}" == "true" && "${nightly_result}" != "success" ]]; then
+            echo "C# Nightly build is required but result was: ${nightly_result}"
             failed=1
           fi
 
