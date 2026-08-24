@@ -159,6 +159,7 @@ jobs:
                     --metadata-file "version.json" `
                     --discord-webhook "$env:DISCORD_WEBHOOK" `
                     --repository "${{ github.repository }}" `
+                    --commit "${{ github.sha }}" `
                     --prefix nightly
             - name: Upload nightly metadata
               uses: actions/upload-artifact@v7

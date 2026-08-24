@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import mimetypes
 import os
@@ -20,6 +21,9 @@ class Artifact:
     version: str
     published: str
     url: str
+    sha512: str | None = None
+    commit: str | None = None
+    changelog: list[str] | None = None
 
 
 def parse_args() -> argparse.Namespace:
@@ -36,6 +40,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--discord-webhook", default="")
     parser.add_argument("--repository", default="")
     parser.add_argument("--commit-count", type=int, default=10)
+    parser.add_argument("--commit", default="")
     return parser.parse_args()
 
 
@@ -96,12 +101,30 @@ def load_existing_artifacts(
             if not key:
                 continue
 
+            sha512_value = artifact_map.get("sha512")
+            commit_value = artifact_map.get("commit")
+            changelog_value = artifact_map.get("changelog")
+            changelog: list[str] | None = None
+            if isinstance(changelog_value, list):
+                changelog = [str(item) for item in changelog_value]
+
             result.append(
                 Artifact(
                     key=key,
                     version=str(artifact_map.get("version", "")),
                     published=str(artifact_map.get("published", "")),
                     url=str(artifact_map.get("url", "")),
+                    sha512=(
+                        str(sha512_value)
+                        if isinstance(sha512_value, str) and sha512_value
+                        else None
+                    ),
+                    commit=(
+                        str(commit_value)
+                        if isinstance(commit_value, str) and commit_value
+                        else None
+                    ),
+                    changelog=changelog,
                 )
             )
         return result
@@ -138,12 +161,9 @@ def write_metadata_file(metadata_file: str, version_payload: dict[str, Any]) -> 
         json.dump(version_payload, output_file, separators=(",", ":"))
 
 
-def get_recent_commits(commit_count: int) -> list[str]:
-    if commit_count <= 0:
-        return []
-
+def run_git_log(args: list[str]) -> list[str]:
     result = subprocess.run(
-        ["git", "log", "--no-merges", "--oneline", f"-{commit_count}"],
+        ["git", "log", "--no-merges", "--oneline", *args],
         check=False,
         capture_output=True,
         text=True,
@@ -155,6 +175,51 @@ def get_recent_commits(commit_count: int) -> list[str]:
 
     stdout = result.stdout or ""
     return [line.strip() for line in stdout.splitlines() if line.strip()]
+
+
+def get_recent_commits(commit_count: int) -> list[str]:
+    if commit_count <= 0:
+        return []
+
+    return run_git_log([f"-{commit_count}"])
+
+
+def get_changelog_commits(
+    previous_commit: str | None, current_commit: str | None
+) -> list[str]:
+    if previous_commit and current_commit and previous_commit != current_commit:
+        commits = run_git_log(["-20", f"{previous_commit}..{current_commit}"])
+        if commits:
+            return commits
+
+    if current_commit:
+        return run_git_log(["-10", current_commit])
+
+    return []
+
+
+def build_changelog(
+    previous_commit: str | None, current_commit: str | None, repository: str
+) -> list[str]:
+    commits = get_changelog_commits(previous_commit, current_commit)
+    if not commits:
+        return []
+
+    return format_commit_lines(commits, repository).split("\n")
+
+
+def compute_sha512(file_path: str) -> str:
+    digest = hashlib.sha512()
+    with open(file_path, "rb") as archive_stream:
+        for chunk in iter(lambda: archive_stream.read(1024 * 1024), b""):
+            digest.update(chunk)
+
+    return digest.hexdigest()
+
+
+def artifact_to_dict(artifact: Artifact) -> dict[str, Any]:
+    data = asdict(artifact)
+    return {key: value for key, value in data.items() if value is not None}
 
 
 def format_commit_lines(commits: list[str], repository: str) -> str:
@@ -255,12 +320,27 @@ def main() -> None:
         client, args.bucket, version_key, public_base_url
     )
 
+    sha512 = compute_sha512(args.file)
+
+    previous_commit: str | None = None
+    for artifact in sorted(
+        existing_artifacts, key=lambda item: item.published, reverse=True
+    ):
+        if artifact.commit:
+            previous_commit = artifact.commit
+            break
+
+    changelog = build_changelog(previous_commit, args.commit, args.repository)
+
     published_at = datetime.now(timezone.utc).isoformat()
     current_artifact = Artifact(
         key=artifact_key,
         version=args.version,
         published=published_at,
         url=download_url,
+        sha512=sha512,
+        commit=args.commit or None,
+        changelog=changelog,
     )
 
     retained_artifacts = [current_artifact]
@@ -296,7 +376,7 @@ def main() -> None:
         "latest": args.version,
         "published": published_at,
         "url": download_url,
-        "artifacts": [asdict(artifact) for artifact in retained_artifacts],
+        "artifacts": [artifact_to_dict(artifact) for artifact in retained_artifacts],
     }
 
     client.put_object(
