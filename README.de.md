@@ -163,7 +163,7 @@ Sie möchten etwas verbessern oder eine neue Sprache hinzufügen? Übersetzungen
 
 Vielen Dank für die Open-Source-Lizenz für ihre ausgezeichneten IDEs und Addons wie z.B. [ReSharper](https://www.jetbrains.com/resharper) für Visual Studio.
 
-## Lizenz: GPLv2
+## Lizenz: GPLv3
 
 <a href="https://app.fossa.io/projects/git%2Bgithub.com%2FBelphemur%2FSoundSwitch?ref=badge_large"><img alt="FOSSA Status" align="right" src="https://app.fossa.io/api/projects/git%2Bgithub.com%2FBelphemur%2FSoundSwitch.svg?type=large"></a>
 
@@ -173,7 +173,7 @@ Copyright (C) 2015-2025 Antoine Aflalo
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
+as published by the Free Software Foundation; either version 3
 of the License, or any later version.
 
 This program is distributed in the hope that it will be useful,
@@ -181,4 +181,4 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
-Die vollständige GPLv2-Lizenzdatei befindet sich [hier](https://github.com/Belphemur/SoundSwitch/blob/master/LICENSE.txt).
+Die vollständige GPLv3-Lizenzdatei befindet sich [hier](https://github.com/Belphemur/SoundSwitch/blob/master/LICENSE.txt).
