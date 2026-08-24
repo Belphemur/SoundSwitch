@@ -42,9 +42,9 @@
     <PackageReference Include="JetBrains.Annotations" />
     <PackageReference Include="Job.Scheduler" />
     <PackageReference Include="Markdig" />
-    <!-- NAudio is still used by the notification-sound playback path (CachedSound, PlaySoundJob)
-         until Phase 4 of the NAudio removal; it previously flowed in transitively via
-         SoundSwitch.Common. Removed together with that path in Phase 4/5. -->
+    <!-- NAudio is no longer referenced by any code (Phase 4 of the NAudio removal replaced the
+         notification-sound playback path with the in-house SoundSwitch.Audio.Manager.Playback stack).
+         The package references themselves are removed in Phase 5. -->
     <PackageReference Include="NAudio" />
     <PackageReference Include="NAudio.Wasapi" />
     <PackageReference Include="NuGet.Versioning" />

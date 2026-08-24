@@ -12,27 +12,24 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
-using NAudio;
-using NAudio.Wave;
+using SoundSwitch.Audio.Manager.Playback;
 
 namespace SoundSwitch.Framework.Audio;
 
 public class CachedSound
 {
-    public byte[] AudioData { get; private set; }
-    public WaveFormat WaveFormat { get; private set; }
+    public byte[] AudioData { get; }
+    public WaveFormat WaveFormat { get; }
     public string FilePath { get; }
 
     /// <summary>
-    /// Load the AudioFile into the memory using the right reader.
+    /// Load the WAV file into memory.
     /// </summary>
     /// <param name="audioFileName"></param>
-    /// <exception cref="ArgumentException">Audio file doesn't exists</exception>
+    /// <exception cref="CachedSoundFileNotExistsException">Audio file doesn't exist</exception>
+    /// <exception cref="InvalidDataException">Not a supported WAV file (only PCM and IEEE float WAV are supported)</exception>
     public CachedSound(string audioFileName)
     {
         if (!File.Exists(audioFileName))
@@ -41,54 +38,16 @@ public class CachedSound
         }
 
         FilePath = audioFileName;
-        using var audioFileReader = GetReader(audioFileName);
-        // TODO: could add resampling in here if required
-        WaveFormat = audioFileReader.WaveFormat;
-        var wholeFile = new List<byte>((int)(audioFileReader.Length));
-        var readBuffer = new byte[audioFileReader.WaveFormat.SampleRate * audioFileReader.WaveFormat.Channels];
-        int samplesRead;
-        while ((samplesRead = audioFileReader.Read(readBuffer, 0, readBuffer.Length)) > 0)
-        {
-            wholeFile.AddRange(readBuffer.Take(samplesRead));
-        }
-
-        AudioData = [.. wholeFile];
+        (AudioData, WaveFormat) = WaveFileReader.ReadFile(audioFileName);
     }
 
     /// <summary>
-    /// Decode the WAV from the stream using the right reader.
+    /// Decode the WAV from the stream.
     /// </summary>
     /// <param name="stream">A stream containing a WAV file.</param>
+    /// <exception cref="InvalidDataException">Not a supported WAV file (only PCM and IEEE float WAV are supported)</exception>
     public CachedSound(Stream stream)
     {
-        using var reader = new WaveFileReader(stream);
-        WaveFormat = reader.WaveFormat;
-        var wholeFile = new List<byte>((int)reader.Length);
-        var readBuffer = new byte[reader.WaveFormat.SampleRate * reader.WaveFormat.Channels];
-        int samplesRead;
-        while ((samplesRead = reader.Read(readBuffer, 0, readBuffer.Length)) > 0)
-        {
-            wholeFile.AddRange(readBuffer.Take(samplesRead));
-        }
-
-        AudioData = [.. wholeFile];
-    }
-
-    public CachedSound(MemoryStream stream, WaveFormat waveFormat)
-    {
-        WaveFormat = waveFormat;
-        AudioData = stream.ToArray();
-    }
-
-    private static WaveStream GetReader(string filename)
-    {
-        try
-        {
-            return new AudioFileReader(filename);
-        }
-        catch (MmException)
-        {
-            return new MediaFoundationReader(filename);
-        }
+        (AudioData, WaveFormat) = WaveFileReader.Read(stream);
     }
 }

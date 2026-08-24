@@ -8,10 +8,9 @@ using Job.Scheduler.Job;
 using Job.Scheduler.Job.Action;
 using Job.Scheduler.Job.Exception;
 
-using NAudio.CoreAudioApi;
-using NAudio.Wave;
-
 using Serilog;
+
+using SoundSwitch.Audio.Manager.Playback;
 
 namespace SoundSwitch.Framework.Audio.Play;
 
@@ -24,7 +23,7 @@ public class PlaySoundJob([CanBeNull] string deviceId, [NotNull] CachedSound sou
 
         try
         {
-            await PlaySoundInternalAsync(cancellationToken);
+            await SoundPlayer.PlayAsync(sound.AudioData, sound.WaveFormat, deviceId, cancellationToken, OnPlaybackStopped);
         }
         catch (OperationCanceledException)
         {
@@ -36,79 +35,11 @@ public class PlaySoundJob([CanBeNull] string deviceId, [NotNull] CachedSound sou
         }
     }
 
-    private async Task PlaySoundInternalAsync(CancellationToken cancellationToken)
+    private static void OnPlaybackStopped(Exception exception)
     {
-        using var semaphore = new SemaphoreSlim(0);
-
-        using var enumerator = new MMDeviceEnumerator();
-        using var device = GetDevice(enumerator);
-        if (device == null)
+        if (exception != null)
         {
-            Log.ForContext<PlaySoundJob>().Warning("No audio device found for specified ID.");
-            return;
-        }
-
-        using var player = CreatePlayer(device);
-        await using var waveStream = new CachedSoundWaveStream(sound);
-
-        player.Init(waveStream);
-
-        void OnPlaybackStoppedHandler(object o, StoppedEventArgs stoppedEventArgs)
-        {
-            if (stoppedEventArgs.Exception != null)
-            {
-                Log.ForContext<PlaySoundJob>().Warning(stoppedEventArgs.Exception, "Sound notification playback stopped with an error");
-            }
-
-            try
-            {
-                semaphore.Release();
-            }
-            catch (ObjectDisposedException)
-            {
-            }
-        }
-
-        player.PlaybackStopped += OnPlaybackStoppedHandler;
-        try
-        {
-            player.Play();
-            await semaphore.WaitAsync(cancellationToken);
-        }
-        finally
-        {
-            player.PlaybackStopped -= OnPlaybackStoppedHandler;
-        }
-    }
-
-    private MMDevice GetDevice(MMDeviceEnumerator enumerator)
-    {
-        if (string.IsNullOrEmpty(deviceId))
-            return enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
-
-        var device = enumerator.GetDevice(deviceId);
-        if (device == null)
-        {
-            Log.ForContext<PlaySoundJob>().Warning($"Could not find audio device with ID: {deviceId}");
-        }
-        return device;
-    }
-
-    private IWavePlayer CreatePlayer(MMDevice device)
-    {
-        if (device == null)
-        {
-            return new WasapiPlayerBuilder().Build();
-        }
-
-        try
-        {
-            return new WasapiPlayerBuilder().WithDevice(device).WithSharedMode().WithEventSync().WithLatency(200).Build();
-        }
-        catch (Exception ex)
-        {
-            Log.ForContext<PlaySoundJob>().Error(ex, "Failed to initialize WasapiPlayer with specified device.");
-            return new WasapiPlayerBuilder().Build();
+            Log.ForContext<PlaySoundJob>().Warning(exception, "Sound notification playback stopped with an error");
         }
     }
 
