@@ -120,6 +120,10 @@ namespace MP3Sharp.Decoding.Decoders.LayerII {
                     float[] source = Groupingtable[1];
                     int tmp = 0;
                     int temp = samplecode;
+
+                    if (temp > source.Length - 3)
+                        temp = source.Length - 3;
+
                     target[tmp] = source[temp];
                     temp++;
                     tmp++;

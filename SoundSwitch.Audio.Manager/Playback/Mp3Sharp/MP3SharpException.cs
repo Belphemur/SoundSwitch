@@ -16,7 +16,6 @@
 
 using System;
 using System.IO;
-using System.Runtime.Serialization;
 using MP3Sharp.Support;
 
 namespace MP3Sharp {
@@ -33,8 +32,6 @@ namespace MP3Sharp {
         internal MP3SharpException(string message) : base(message) { }
 
         internal MP3SharpException(string message, Exception inner) : base(message, inner) { }
-
-        protected MP3SharpException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
         internal void PrintStackTrace() {
             SupportClass.WriteStackTrace(this, Console.Error);

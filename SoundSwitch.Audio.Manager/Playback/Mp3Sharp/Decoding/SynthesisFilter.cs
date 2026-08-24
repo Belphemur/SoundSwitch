@@ -59,13 +59,6 @@ namespace MP3Sharp.Decoding {
         private static readonly float Cos38 = (float)(1.0 / (2.0 * Math.Cos(MY_PI * 3.0 / 8.0)));
         private static readonly float Cos14 = (float)(1.0 / (2.0 * Math.Cos(MY_PI / 4.0)));
 
-        private static float[] _d;
-
-        /// d[] split into subarrays of length 16. This provides for
-        /// more faster access by allowing a block of 16 to be addressed
-        /// with constant offset.
-        private static float[][] _d16;
-
         // The original data for d[]. This data (was) loaded from a file
         // to reduce the overall package size and to improve performance. 
         private static readonly float[] DData = {
@@ -199,6 +192,13 @@ namespace MP3Sharp.Decoding {
             0.007919312f, -0.003326416f, 0.000473022f, 0.000015259f
         };
 
+        private static readonly float[] _d = DData;
+
+        /// d[] split into subarrays of length 16. This provides for
+        /// more faster access by allowing a block of 16 to be addressed
+        /// with constant offset.
+        private static readonly float[][] _d16 = SplitArray(_d, 16);
+
         private readonly int _Channel;
         private readonly float[] _Samples; // 32 new subband samples
         private readonly float _Scalefactor;
@@ -224,10 +224,6 @@ namespace MP3Sharp.Decoding {
         /// </summary>
         internal SynthesisFilter(int channelnumber, float factor, float[] eq0) {
             InitBlock();
-            if (_d == null) {
-                _d = DData; // load_d();
-                _d16 = SplitArray(_d, 16);
-            }
 
             _V1 = new float[512];
             _V2 = new float[512];

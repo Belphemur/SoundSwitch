@@ -435,6 +435,7 @@ namespace MP3Sharp.Decoding.Decoders.LayerII {
         protected readonly int Subbandnumber;
 
         internal SubbandLayer2(int subbandnumber) {
+            InitBlock();
             Subbandnumber = subbandnumber;
             Groupnumber = Samplenumber = 0;
         }

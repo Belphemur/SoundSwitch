@@ -299,9 +299,10 @@ namespace MP3Sharp.Decoding.Decoders {
 
             if (_reorderTable == null) {
                 // SZD: generate LUT
-                _reorderTable = new int[9][];
+                int[][] reorderTable = new int[9][];
                 for (int i = 0; i < 9; i++)
-                    _reorderTable[i] = Reorder(_SfBandIndex[i].S);
+                    reorderTable[i] = Reorder(_SfBandIndex[i].S);
+                _reorderTable = reorderTable;
             }
 
             // Sftable

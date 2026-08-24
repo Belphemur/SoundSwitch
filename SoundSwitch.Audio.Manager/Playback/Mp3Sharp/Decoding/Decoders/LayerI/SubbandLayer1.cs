@@ -60,10 +60,13 @@ namespace MP3Sharp.Decoding.Decoders.LayerI {
         /// *
         /// </summary>
         internal override void ReadAllocation(Bitstream stream, Header header, Crc16 crc) {
-            if ((Allocation = stream.GetBitsFromBuffer(4)) == 15) { }
-            // cerr << "WARNING: stream contains an illegal allocation!\n";
-            // MPEG-stream is corrupted!
-            crc?.AddBits(Allocation, 4);
+            Allocation = stream.GetBitsFromBuffer(4);
+            if (Allocation > 14) {
+                return;
+            }
+            if (crc != null) {
+                crc.AddBits(Allocation, 4);
+            }
             if (Allocation != 0) {
                 Samplelength = Allocation + 1;
                 Factor = TableFactor[Allocation];
