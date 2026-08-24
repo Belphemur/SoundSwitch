@@ -7,7 +7,7 @@ SoundSwitch is a Windows application for switching audio playback and recording 
 ### Core Components
 
 - **SoundSwitch (Main Project)**: The core application handling UI, notifications, and user interaction
-- **SoundSwitch.Audio.Manager**: Manages audio device switching using NAudio and Windows APIs
+- **SoundSwitch.Audio.Manager**: Manages audio device switching using in-house Windows Core Audio interop (MMDevice API, WASAPI, IAudioEndpointVolume) and Windows APIs
 - **SoundSwitch.Common**: Shared utilities and framework components
 - **SoundSwitch.CLI**: Command-line interface for controlling SoundSwitch
 - **SoundSwitch.IPC**: Inter-process communication for integration with other applications
@@ -45,7 +45,7 @@ SoundSwitch is a Windows application for switching audio playback and recording 
 
 ### Audio Device Management
 
-- Use NAudio for audio device enumeration and control
+- Use the in-house interop in SoundSwitch.Audio.Manager for audio device enumeration and control
 - Handle device addition/removal events
 - Support both playback and recording devices
 
