@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundSwitch.IPC.Tests", "So
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoundSwitch.Mp3Sharp", "SoundSwitch.Mp3Sharp\SoundSwitch.Mp3Sharp.csproj", "{CC82B351-9872-4929-8F7C-459E016292F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundSwitch.Mp3Sharp.Tests", "SoundSwitch.Mp3Sharp.Tests\SoundSwitch.Mp3Sharp.Tests.csproj", "{2BDAF1BB-747F-41C4-9DEF-D26471CBC0B3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Beta|Any CPU = Beta|Any CPU
@@ -279,6 +281,30 @@ Global
 		{CC82B351-9872-4929-8F7C-459E016292F3}.Release|x64.Build.0 = Release|Any CPU
 		{CC82B351-9872-4929-8F7C-459E016292F3}.Release|x86.ActiveCfg = Release|Any CPU
 		{CC82B351-9872-4929-8F7C-459E016292F3}.Release|x86.Build.0 = Release|Any CPU
+		{2BDAF1BB-747F-41C4-9DEF-D26471CBC0B3}.Beta|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BDAF1BB-747F-41C4-9DEF-D26471CBC0B3}.Beta|Any CPU.Build.0 = Debug|Any CPU
+		{2BDAF1BB-747F-41C4-9DEF-D26471CBC0B3}.Beta|x64.ActiveCfg = Debug|Any CPU
+		{2BDAF1BB-747F-41C4-9DEF-D26471CBC0B3}.Beta|x64.Build.0 = Debug|Any CPU
+		{2BDAF1BB-747F-41C4-9DEF-D26471CBC0B3}.Beta|x86.ActiveCfg = Debug|Any CPU
+		{2BDAF1BB-747F-41C4-9DEF-D26471CBC0B3}.Beta|x86.Build.0 = Debug|Any CPU
+		{2BDAF1BB-747F-41C4-9DEF-D26471CBC0B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BDAF1BB-747F-41C4-9DEF-D26471CBC0B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BDAF1BB-747F-41C4-9DEF-D26471CBC0B3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2BDAF1BB-747F-41C4-9DEF-D26471CBC0B3}.Debug|x64.Build.0 = Debug|Any CPU
+		{2BDAF1BB-747F-41C4-9DEF-D26471CBC0B3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2BDAF1BB-747F-41C4-9DEF-D26471CBC0B3}.Debug|x86.Build.0 = Debug|Any CPU
+		{2BDAF1BB-747F-41C4-9DEF-D26471CBC0B3}.Nightly|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BDAF1BB-747F-41C4-9DEF-D26471CBC0B3}.Nightly|Any CPU.Build.0 = Debug|Any CPU
+		{2BDAF1BB-747F-41C4-9DEF-D26471CBC0B3}.Nightly|x64.ActiveCfg = Debug|Any CPU
+		{2BDAF1BB-747F-41C4-9DEF-D26471CBC0B3}.Nightly|x64.Build.0 = Debug|Any CPU
+		{2BDAF1BB-747F-41C4-9DEF-D26471CBC0B3}.Nightly|x86.ActiveCfg = Debug|Any CPU
+		{2BDAF1BB-747F-41C4-9DEF-D26471CBC0B3}.Nightly|x86.Build.0 = Debug|Any CPU
+		{2BDAF1BB-747F-41C4-9DEF-D26471CBC0B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BDAF1BB-747F-41C4-9DEF-D26471CBC0B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BDAF1BB-747F-41C4-9DEF-D26471CBC0B3}.Release|x64.ActiveCfg = Release|Any CPU
+		{2BDAF1BB-747F-41C4-9DEF-D26471CBC0B3}.Release|x64.Build.0 = Release|Any CPU
+		{2BDAF1BB-747F-41C4-9DEF-D26471CBC0B3}.Release|x86.ActiveCfg = Release|Any CPU
+		{2BDAF1BB-747F-41C4-9DEF-D26471CBC0B3}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
