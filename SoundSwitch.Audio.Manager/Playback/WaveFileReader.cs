@@ -23,6 +23,22 @@ namespace SoundSwitch.Audio.Manager.Playback
         /// <exception cref="InvalidDataException">Malformed RIFF/WAVE, or an unsupported encoding.</exception>
         public static (byte[] AudioData, WaveFormat Format) Read(Stream stream)
         {
+            try
+            {
+                return ReadInternal(stream);
+            }
+            catch (EndOfStreamException ex)
+            {
+                // A truncated RIFF/WAVE (e.g. a file containing only "RIFF", or a chunk whose
+                // declared size runs past EOF) must surface as InvalidDataException so the
+                // CustomNotificationSound fallback can handle it gracefully instead of letting it
+                // escape and block the Settings dialog.
+                throw new InvalidDataException("WAV file is truncated or malformed.", ex);
+            }
+        }
+
+        private static (byte[] AudioData, WaveFormat Format) ReadInternal(Stream stream)
+        {
             var reader = new BinaryReader(stream, Encoding.ASCII, leaveOpen: true);
 
             if (ReadChunkId(reader) != "RIFF") throw new InvalidDataException("Not a RIFF file.");

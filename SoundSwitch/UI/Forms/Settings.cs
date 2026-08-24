@@ -194,7 +194,7 @@ public sealed partial class SettingsForm : Form
 
         CustomSoundNotificationCheck();
 
-        selectSoundFileDialog.Filter = SettingsStrings.audioFiles + @" (*.wav)|*.wav";
+        selectSoundFileDialog.Filter = SettingsStrings.audioFiles + "|*.wav";
         selectSoundFileDialog.FileOk += SelectSoundFileDialog_FileOk;
         selectSoundFileDialog.CheckFileExists = true;
         selectSoundFileDialog.CheckPathExists = true;
