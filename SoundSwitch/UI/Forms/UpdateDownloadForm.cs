@@ -91,8 +91,8 @@ public sealed partial class UpdateDownloadForm : Form
 #if NIGHTLY
             // Nightly artifacts carry a SHA-512 (unsigned builds); release-train
             // installers are Authenticode-signed and verified by signature.
-            var checksumResult = string.IsNullOrEmpty(_appReleaseInfo.ExpectedSha512)
-                ? SignatureChecker.IsValid(_releaseFile.FilePath).UnwrapFailure()
+            var checksumResult = _appReleaseInfo.ExpectedSha512 == null
+                ? SignatureChecker.IsValid(_releaseFile.FilePath).UnwrapFailure()?.ToString()
                 : UpdateVerifier.Verify(_releaseFile.FilePath, _appReleaseInfo.ExpectedSha512).UnwrapFailure();
             if (checksumResult != null)
             {

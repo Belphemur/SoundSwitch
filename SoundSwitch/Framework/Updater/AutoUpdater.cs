@@ -52,8 +52,8 @@ public class AutoUpdater
 #if NIGHTLY
             // Nightly artifacts carry a SHA-512 (unsigned builds); release-train
             // installers are Authenticode-signed and verified by signature.
-            var checksumResult = string.IsNullOrEmpty(appRelease.ExpectedSha512)
-                ? SignatureChecker.IsValid(file.FilePath).UnwrapFailure()
+            var checksumResult = appRelease.ExpectedSha512 == null
+                ? SignatureChecker.IsValid(file.FilePath).UnwrapFailure()?.ToString()
                 : UpdateVerifier.Verify(file.FilePath, appRelease.ExpectedSha512).UnwrapFailure();
             if (checksumResult != null)
             {
