@@ -49,6 +49,25 @@ public class AutoUpdater
         file.Downloaded += (sender, args) =>
         {
             Log.Information("Update downloaded: {File}", file);
+#if NIGHTLY
+            // Nightly artifacts carry a SHA-512 (unsigned builds); release-train
+            // installers are Authenticode-signed and verified by signature.
+            var checksumResult = appRelease.ExpectedSha512 == null
+                ? SignatureChecker.IsValid(file.FilePath).UnwrapFailure()?.ToString()
+                : UpdateVerifier.Verify(file.FilePath, appRelease.ExpectedSha512).UnwrapFailure();
+            if (checksumResult != null)
+            {
+                Log.Error("The file failed its integrity check ({Kind}). Update cancelled. {checksumResult}",
+                    appRelease.ExpectedSha512 == null ? "signature" : "sha512", checksumResult);
+                onCompleted?.Invoke(false);
+                var message = appRelease.ExpectedSha512 == null
+                    ? string.Format(UpdateDownloadStrings.wrongSignature, "https://soundswitch.aaflalo.me")
+                    : UpdateDownloadStrings.wrongChecksum;
+                _context.Send(state => { MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error); },
+                    null);
+                return;
+            }
+#else
             var signatureResult = SignatureChecker.IsValid(file.FilePath).UnwrapFailure();
             if (signatureResult != null)
             {
@@ -58,6 +77,7 @@ public class AutoUpdater
                     null);
                 return;
             }
+#endif
 
             new UpdateRunner().RunUpdate(file, InstallerParameters);
             onCompleted?.Invoke(true);

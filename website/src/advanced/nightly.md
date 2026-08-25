@@ -9,6 +9,8 @@ Nightly builds are the newest SoundSwitch snapshots.
 
 Use them only if you want the latest bleeding-edge changes, if you are helping translate the app and need a recent build, or if a developer asked you to test a specific fix.
 
+Each nightly build lists the commits it contains and a SHA-512 checksum. The SoundSwitch updater verifies downloads against that checksum before installing them; if you download an installer manually, compare the SHA-512 value yourself before running it.
+
 ::: warning
 Nightly builds are **untested** and **unsigned**. Windows, your browser, or your antivirus may warn you before opening them. Only use these builds if you understand the risk and trust the source.
 :::

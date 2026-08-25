@@ -164,6 +164,12 @@
   <data name="updateIncludeBetaVersions.tooltip" xml:space="preserve">
     <value>When checked, SoundSwitch will also check for Beta versions on GitHub.</value>
   </data>
+  <data name="updateNightlyChannel" xml:space="preserve">
+    <value>Receive nightly updates</value>
+  </data>
+  <data name="updateNightlyChannel.tooltip" xml:space="preserve">
+    <value>This build updates from the unsigned nightly channel. Downloads are verified with SHA-512.</value>
+  </data>
   <data name="audioFiles" xml:space="preserve">
     <value>Audio Files (*.wav;*.mp3)</value>
   </data>

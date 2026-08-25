@@ -88,6 +88,28 @@ public sealed partial class UpdateDownloadForm : Form
         };
         _releaseFile.Downloaded += (sender, args) =>
         {
+#if NIGHTLY
+            // Nightly artifacts carry a SHA-512 (unsigned builds); release-train
+            // installers are Authenticode-signed and verified by signature.
+            var checksumResult = _appReleaseInfo.ExpectedSha512 == null
+                ? SignatureChecker.IsValid(_releaseFile.FilePath).UnwrapFailure()?.ToString()
+                : UpdateVerifier.Verify(_releaseFile.FilePath, _appReleaseInfo.ExpectedSha512).UnwrapFailure();
+            if (checksumResult != null)
+            {
+                Log.Error("Wrong integrity check ({Kind}) for the release: {checksumResult}",
+                    _appReleaseInfo.ExpectedSha512 == null ? "signature" : "sha512", checksumResult);
+                var title = _appReleaseInfo.ExpectedSha512 == null ? UpdateDownloadStrings.notSignedTitle : UpdateDownloadStrings.wrongChecksumTitle;
+                var message = _appReleaseInfo.ExpectedSha512 == null
+                    ? string.Format(UpdateDownloadStrings.wrongSignature, "https://soundswitch.aaflalo.me")
+                    : UpdateDownloadStrings.wrongChecksum;
+                MessageBox.Show(message,
+                    title,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                TelemetryService.TrackUpdateInstalled(SoundSwitch.Framework.Configuration.AppConfigs.Configuration.UpdateMode,
+                    _appReleaseInfo.ExpectedSha512 == null ? "signature_error" : "checksum_error");
+                return;
+            }
+#else
             var signatureResult = SignatureChecker.IsValid(_releaseFile.FilePath).UnwrapFailure();
             if (signatureResult != null)
             {
@@ -98,6 +120,7 @@ public sealed partial class UpdateDownloadForm : Form
                 TelemetryService.TrackUpdateInstalled(SoundSwitch.Framework.Configuration.AppConfigs.Configuration.UpdateMode, "signature_error");
                 return;
             }
+#endif
 
             var mode = SoundSwitch.Framework.Configuration.AppConfigs.Configuration.UpdateMode;
             try

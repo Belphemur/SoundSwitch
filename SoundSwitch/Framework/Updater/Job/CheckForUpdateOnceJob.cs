@@ -10,7 +10,7 @@ using Serilog;
 
 namespace SoundSwitch.Framework.Updater.Job;
 
-public class CheckForUpdateOnceJob(UpdateChecker updateChecker) : IJob
+public class CheckForUpdateOnceJob(IUpdateChecker updateChecker) : IJob
 {
     public Task ExecuteAsync(CancellationToken cancellationToken)
     {

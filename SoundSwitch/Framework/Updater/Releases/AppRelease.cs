@@ -26,6 +26,9 @@ public class AppRelease(SemanticVersion releaseVersion, Asset asset, string name
     public Asset Asset { get; } = asset;
     public List<string> Changelog { get; } = new List<string>();
     public string Name { get; private set; } = name;
+#if NIGHTLY
+    public string ExpectedSha512 { get; set; }
+#endif
 
     public override string ToString()
     {

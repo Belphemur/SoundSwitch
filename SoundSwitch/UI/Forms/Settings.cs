@@ -95,6 +95,22 @@ public sealed partial class SettingsForm : Form
         _audioDeviceLister = audioDeviceLister;
         // Form itself
         InitializeComponent();
+#if NIGHTLY
+        var nightlyChannelCheckBox = new CheckBox
+        {
+            Checked = true,
+            Enabled = false,
+            AutoCheck = false,
+            AutoSize = true,
+            Location = new Point(6, 122),
+            TabIndex = 0,
+            Text = SettingsStrings.updateNightlyChannel,
+            UseVisualStyleBackColor = true
+        };
+        updateSettingsGroupBox.Controls.Add(nightlyChannelCheckBox);
+        new ToolTip().SetToolTip(nightlyChannelCheckBox, SettingsStrings.updateNightlyChannel_tooltip);
+        telemetryCheckbox.Location = new Point(6, 147);
+#endif
         Icon = ResourceSettingsIcon;
         Text = AssemblyUtils.GetReleaseState() == AssemblyUtils.ReleaseState.Beta
             ? $"{SettingsStrings.settings} {AssemblyUtils.GetReleaseState()}"

@@ -165,12 +165,17 @@ public partial class AppModel
 
     private void InitUpdateChecker()
     {
+#if NIGHTLY
+        const string url = "https://nightly.soundswitch.aaflalo.me/nightly/version.json";
+        _updateChecker = new NightlyUpdateChecker(new Uri(url));
+#else
 #if DEBUG
         const string url = "https://www.aaflalo.me/api.json";
 #else
-            const string url = "https://api.github.com/repos/Belphemur/SoundSwitch/releases";
+        const string url = "https://api.github.com/repos/Belphemur/SoundSwitch/releases";
 #endif
         _updateChecker = new UpdateChecker(new Uri(url), AppConfigs.Configuration.IncludeBetaVersions);
+#endif
 
         _updateChecker.UpdateAvailable += (sender, @event) => NewVersionReleased?.Invoke(this,
             new NewReleaseAvailableEvent(@event.AppRelease, AppConfigs.Configuration.UpdateMode));
