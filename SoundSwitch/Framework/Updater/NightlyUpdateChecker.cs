@@ -1,3 +1,17 @@
+/********************************************************************
+ * Copyright (C) 2015-2017 Antoine Aflalo
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ ********************************************************************/
+
 #if NIGHTLY
 using System;
 using System.Collections.Generic;
@@ -19,6 +33,7 @@ using Serilog;
 
 using SoundSwitch.Framework.Updater.Releases;
 using SoundSwitch.Framework.Updater.Releases.Models;
+using SoundSwitch.Localization;
 
 namespace SoundSwitch.Framework.Updater;
 
@@ -45,16 +60,25 @@ public class NightlyUpdateChecker(Uri feedUrl) : IUpdateChecker
         httpClient.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
         // The release train takes priority: a nightly can always be upgraded back onto
-        // stable/beta. Pre-releases are always included (beta-track semantics).
+        // stable/beta. Pre-releases are always included (beta-track semantics). If the
+        // release train cannot be reached, fall through to the nightly feed instead of
+        // blocking nightly updates entirely.
         var baseVersion = GetBaseVersion(Application.ProductVersion);
         if (baseVersion != null)
         {
-            var releases = await httpClient.GetFromJsonAsync(ReleaseTrainUrl, GithubReleasesJsonContext.Default.ReleaseArray, token);
-            var trainRelease = BuildReleaseTrainUpdate(releases, baseVersion);
-            if (trainRelease != null)
+            try
             {
-                UpdateAvailable?.Invoke(this, new UpdateChecker.NewReleaseEvent(trainRelease));
-                return;
+                var releases = await httpClient.GetFromJsonAsync(ReleaseTrainUrl, GithubReleasesJsonContext.Default.ReleaseArray, token);
+                var trainRelease = BuildReleaseTrainUpdate(releases, baseVersion);
+                if (trainRelease != null)
+                {
+                    UpdateAvailable?.Invoke(this, new UpdateChecker.NewReleaseEvent(trainRelease));
+                    return;
+                }
+            }
+            catch (Exception ex) when (ex is not OperationCanceledException)
+            {
+                Log.Warning(ex, "Unable to query the release train; falling back to the nightly feed.");
             }
         }
 
@@ -77,7 +101,8 @@ public class NightlyUpdateChecker(Uri feedUrl) : IUpdateChecker
             Name = Path.GetFileName(new Uri(artifact.Url).AbsolutePath),
             BrowserDownloadUrl = artifact.Url
         };
-        var release = new AppRelease(ToSemanticVersion(version), installer, $"SoundSwitch Nightly {version}");
+        var release = new AppRelease(ToSemanticVersion(version), installer,
+            string.Format(UpdateDownloadStrings.nightlyReleaseName, version));
         if (artifact.Changelog != null)
         {
             release.Changelog.AddRange(artifact.Changelog);
@@ -100,7 +125,8 @@ public class NightlyUpdateChecker(Uri feedUrl) : IUpdateChecker
         {
             if (string.IsNullOrWhiteSpace(artifact.Sha512))
             {
-                Log.Error("Nightly artifact {Version} is missing its sha512 checksum; it will not be offered.", artifact.Version);
+                // Expected for artifacts published before checksums existed; skip quietly.
+                Log.Information("Nightly artifact {Version} is missing its sha512 checksum; it will not be offered.", artifact.Version);
                 continue;
             }
 
@@ -175,7 +201,14 @@ public class NightlyUpdateChecker(Uri feedUrl) : IUpdateChecker
                 continue;
             }
 
-            if (version <= baseVersion)
+            // Same major.minor.patch as the nightly's base still counts: installing that
+            // stable/beta moves the user back onto the release train. Only strictly older
+            // bases are ineligible.
+            var eligible = version.Major > baseVersion.Major
+                           || (version.Major == baseVersion.Major && version.Minor > baseVersion.Minor)
+                           || (version.Major == baseVersion.Major && version.Minor == baseVersion.Minor
+                               && version.Patch >= baseVersion.Patch);
+            if (!eligible)
             {
                 continue;
             }
@@ -208,8 +241,11 @@ public class NightlyUpdateChecker(Uri feedUrl) : IUpdateChecker
 
     private static SemanticVersion ToSemanticVersion(NightlyVersion version)
     {
+        // Keep the revision in the version so distinct nightlies never collapse to the
+        // same SemanticVersion (postpone/version bookkeeping relies on ReleaseVersion):
+        // the 4th component becomes a revision metadata segment (ignored by precedence).
         var patch = version.Revision % 100_000;
-        return new SemanticVersion(version.Major, version.Minor, patch);
+        return SemanticVersion.Parse($"{version.Major}.{version.Minor}.{patch}+nightly.{version.Revision}");
     }
 }
 #endif

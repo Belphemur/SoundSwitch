@@ -60,8 +60,10 @@ public class AutoUpdater
                 Log.Error("The file failed its integrity check ({Kind}). Update cancelled. {checksumResult}",
                     appRelease.ExpectedSha512 == null ? "signature" : "sha512", checksumResult);
                 onCompleted?.Invoke(false);
-                var messageKey = appRelease.ExpectedSha512 == null ? "wrongSignature" : "wrongChecksum";
-                _context.Send(state => { MessageBox.Show(UpdateDownloadStrings.ResourceManager.GetString(messageKey)!, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error); },
+                var message = appRelease.ExpectedSha512 == null
+                    ? string.Format(UpdateDownloadStrings.wrongSignature, "https://soundswitch.aaflalo.me")
+                    : UpdateDownloadStrings.wrongChecksum;
+                _context.Send(state => { MessageBox.Show(message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error); },
                     null);
                 return;
             }

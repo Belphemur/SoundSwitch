@@ -124,6 +124,33 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The downloaded update failed its SHA-512 checksum verification. The file may be corrupted or tampered with. Please try downloading it again.
+        /// </summary>
+        internal static string wrongChecksum {
+            get {
+                return ResourceManager.GetString("wrongChecksum", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Checksum.
+        /// </summary>
+        internal static string wrongChecksumTitle {
+            get {
+                return ResourceManager.GetString("wrongChecksumTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to SoundSwitch Nightly {0}.
+        /// </summary>
+        internal static string nightlyReleaseName {
+            get {
+                return ResourceManager.GetString("nightlyReleaseName", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to There is a problem with the last SoundSwitch update. You&apos;ll need to manually download the new version at {0}.
         /// </summary>
         internal static string wrongSignature {

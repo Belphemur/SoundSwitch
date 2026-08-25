@@ -104,11 +104,11 @@ public sealed partial class SettingsForm : Form
             AutoSize = true,
             Location = new Point(6, 122),
             TabIndex = 0,
-            Text = SettingsStrings.ResourceManager.GetString("updateNightlyChannel"),
+            Text = SettingsStrings.updateNightlyChannel,
             UseVisualStyleBackColor = true
         };
         updateSettingsGroupBox.Controls.Add(nightlyChannelCheckBox);
-        new ToolTip().SetToolTip(nightlyChannelCheckBox, SettingsStrings.ResourceManager.GetString("updateNightlyChannel.tooltip"));
+        new ToolTip().SetToolTip(nightlyChannelCheckBox, SettingsStrings.updateNightlyChannel_tooltip);
         telemetryCheckbox.Location = new Point(6, 147);
 #endif
         Icon = ResourceSettingsIcon;

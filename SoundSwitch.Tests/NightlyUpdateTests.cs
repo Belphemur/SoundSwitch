@@ -1,3 +1,17 @@
+/********************************************************************
+ * Copyright (C) 2015-2017 Antoine Aflalo
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ ********************************************************************/
+
 #if NIGHTLY
 using System;
 using System.Collections.Generic;
@@ -17,6 +31,10 @@ using SoundSwitch.Util;
 
 namespace SoundSwitch.Tests;
 
+/// <summary>
+/// Unit tests for the nightly update channel: version ordering, artifact selection,
+/// release-train fallback and checksum verification.
+/// </summary>
 [TestFixture]
 public class NightlyUpdateTests
 {
@@ -214,8 +232,8 @@ public class NightlyUpdateTests
     {
         var releases = new List<Release>
         {
-            TrainRelease("v7.2.2", false, "SoundSwitch_v7.2.2_x64_Installer.exe"),
-            TrainRelease("v7.3.0-beta.1", true, "SoundSwitch_v7.3.0_x64_Installer.exe")
+            TrainRelease("v7.2.2", false, "SoundSwitch_v7.2.2_Installer.exe"),
+            TrainRelease("v7.3.0-beta.1", true, "SoundSwitch_v7.3.0_Installer.exe")
         };
 
         var update = NightlyUpdateChecker.BuildReleaseTrainUpdate(releases, SemanticVersion.Parse("7.2.1"));
@@ -227,12 +245,26 @@ public class NightlyUpdateTests
     }
 
     [Test]
-    public void BuildReleaseTrainUpdate_OlderOrEqualOnly_ShouldReturnNull()
+    public void BuildReleaseTrainUpdate_SameBaseStableAndBeta_AreEligible()
     {
         var releases = new List<Release>
         {
-            TrainRelease("v7.2.1", false, "SoundSwitch_v7.2.1_x64_Installer.exe"),
-            TrainRelease("v7.2.0", false, "SoundSwitch_v7.2.0_x64_Installer.exe")
+            TrainRelease("v7.2.1-beta.2", true, "SoundSwitch_v7.2.1_Installer.exe")
+        };
+
+        var update = NightlyUpdateChecker.BuildReleaseTrainUpdate(releases, SemanticVersion.Parse("7.2.1"));
+
+        update.Should().NotBeNull();
+        update.ReleaseVersion.Should().Be(SemanticVersion.Parse("7.2.1-beta.2"));
+    }
+
+    [Test]
+    public void BuildReleaseTrainUpdate_StrictlyOlderOnly_ShouldReturnNull()
+    {
+        var releases = new List<Release>
+        {
+            TrainRelease("v7.2.0", false, "SoundSwitch_v7.2.0_Installer.exe"),
+            TrainRelease("v7.1.9", false, "SoundSwitch_v7.1.9_Installer.exe")
         };
 
         NightlyUpdateChecker.BuildReleaseTrainUpdate(releases, SemanticVersion.Parse("7.2.1"))

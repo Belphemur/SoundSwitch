@@ -1955,6 +1955,24 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Receive nightly updates.
+        /// </summary>
+        internal static string updateNightlyChannel {
+            get {
+                return ResourceManager.GetString("updateNightlyChannel", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to This build updates from the unsigned nightly channel. Downloads are verified with SHA-512.
+        /// </summary>
+        internal static string updateNightlyChannel_tooltip {
+            get {
+                return ResourceManager.GetString("updateNightlyChannel.tooltip", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Update Settings.
         /// </summary>
         internal static string updateSettings {

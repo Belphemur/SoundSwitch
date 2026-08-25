@@ -98,10 +98,12 @@ public sealed partial class UpdateDownloadForm : Form
             {
                 Log.Error("Wrong integrity check ({Kind}) for the release: {checksumResult}",
                     _appReleaseInfo.ExpectedSha512 == null ? "signature" : "sha512", checksumResult);
-                var titleKey = _appReleaseInfo.ExpectedSha512 == null ? "notSignedTitle" : "wrongChecksumTitle";
-                var messageKey = _appReleaseInfo.ExpectedSha512 == null ? "notSigned" : "wrongChecksum";
-                MessageBox.Show(UpdateDownloadStrings.ResourceManager.GetString(messageKey),
-                    UpdateDownloadStrings.ResourceManager.GetString(titleKey),
+                var title = _appReleaseInfo.ExpectedSha512 == null ? UpdateDownloadStrings.notSignedTitle : UpdateDownloadStrings.wrongChecksumTitle;
+                var message = _appReleaseInfo.ExpectedSha512 == null
+                    ? string.Format(UpdateDownloadStrings.wrongSignature, "https://soundswitch.aaflalo.me")
+                    : UpdateDownloadStrings.wrongChecksum;
+                MessageBox.Show(message,
+                    title,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 TelemetryService.TrackUpdateInstalled(SoundSwitch.Framework.Configuration.AppConfigs.Configuration.UpdateMode,
                     _appReleaseInfo.ExpectedSha512 == null ? "signature_error" : "checksum_error");
