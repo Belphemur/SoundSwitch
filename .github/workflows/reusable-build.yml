@@ -18,10 +18,6 @@ on:
                 required: false
                 type: boolean
                 default: true
-            update-nightly-version:
-                required: false
-                type: boolean
-                default: false
             publish-artifact-name:
                 required: false
                 type: string
@@ -41,8 +37,6 @@ on:
                 value: ${{ jobs.detect-framework.outputs.framework }}
             dotnet-version:
                 value: ${{ jobs.detect-framework.outputs.dotnet-version }}
-            nightly-version:
-                value: ${{ jobs.build.outputs.nightly-version }}
 
 env:
     DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
@@ -81,8 +75,6 @@ jobs:
     build:
         needs: detect-framework
         runs-on: windows-latest
-        outputs:
-            nightly-version: ${{ steps.nightly-version.outputs.version }}
         steps:
             - name: Checkout
               uses: actions/checkout@v7
@@ -98,15 +90,6 @@ jobs:
             - name: Restore
               shell: pwsh
               run: dotnet restore
-            - name: Fetch tags
-              if: inputs.update-nightly-version
-              shell: pwsh
-              run: git fetch --tags --force
-            - name: Calculate nightly version
-              if: inputs.update-nightly-version
-              id: nightly-version
-              shell: pwsh
-              run: .\devVersion.ps1
             - name: Build
               if: ${{ !inputs.publish }}
               shell: pwsh

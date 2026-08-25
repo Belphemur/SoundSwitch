@@ -6,7 +6,6 @@ on:
         paths:
             - ".github/workflows/nightly.yml"
             - "SoundSwitch*/**"
-            - "devVersion.ps1"
             - "tools/upload_nightly_r2.py"
 
 env:
@@ -92,9 +91,47 @@ jobs:
               id: dev-version
               shell: pwsh
               run: |
-                  $version = .\devVersion.ps1
+                  # Base version from the latest tag; revision = total commit count.
+                  # A .NET AssemblyFileVersion component is a 16-bit ushort, so the
+                  # revision must stay below 65536 to avoid silent wrap-around
+                  # (the old time-of-day revision overflowed daily: e.g. 341394 was
+                  # truncated to 13714 in the built binaries).
+                  $latestTag = git describe --tags --abbrev=0
+                  if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($latestTag)) {
+                    throw 'Unable to determine the latest git tag.'
+                  }
+
+                  if ($latestTag.StartsWith('v')) {
+                    $latestTag = $latestTag.Substring(1)
+                  }
+
+                  $versionParts = $latestTag.Split('.')
+                  if ($versionParts.Length -lt 3) {
+                    throw "Latest tag '$latestTag' does not match expected format major.minor.build."
+                  }
+
+                  $buildPart = $versionParts[2].Split('-')[0]
+                  [int]$major = 0
+                  [int]$minor = 0
+                  [int]$build = 0
+                  if (-not [int]::TryParse($versionParts[0], [ref]$major) -or
+                      -not [int]::TryParse($versionParts[1], [ref]$minor) -or
+                      -not [int]::TryParse($buildPart, [ref]$build)) {
+                    throw "Latest tag '$latestTag' does not contain numeric major, minor, and build components."
+                  }
+
+                  $revision = git rev-list --count HEAD
+                  if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($revision)) {
+                    throw 'Unable to count commits for the nightly revision.'
+                  }
+
+                  if ([int]$revision -ge 65536) {
+                    throw "Commit count ($revision) reached the 16-bit revision limit. Bump the base version."
+                  }
+
+                  $version = (New-Object System.Version($major, $minor, $build, [int]$revision)).ToString()
                   if ([string]::IsNullOrWhiteSpace($version)) {
-                    throw 'Nightly version was not produced by devVersion.ps1.'
+                    throw 'Nightly version was not produced.'
                   }
 
                   "version=$version" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
@@ -105,11 +142,12 @@ jobs:
               run: |
                   $version = $env:NIGHTLY_VERSION
                   if ([string]::IsNullOrWhiteSpace($version)) {
-                    throw 'Nightly version was not produced by devVersion.ps1.'
+                    throw 'Nightly version was not produced by the build workflow.'
                   }
 
-                  .\devVersion.ps1 -Version $version
-                  .\tools\Publish-Release.ps1 -BuildFromSource -Configuration Nightly -SkipSigning -InstallerReleaseState Nightly
+                  $numericVersion = $version -replace '[-+].*$', ''
+                  .\tools\Publish-Release.ps1 -BuildFromSource -Configuration Nightly -SkipSigning -InstallerReleaseState Nightly `
+                    -MsBuildProperties "/p:Version=$version /p:InformationalVersion=$version /p:FileVersion=$numericVersion /p:AssemblyVersion=$numericVersion"
             - name: Upload nightly files
               id: metadata
               shell: pwsh
