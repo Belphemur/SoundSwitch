@@ -9,6 +9,8 @@ using FluentAssertions;
 
 using NUnit.Framework;
 
+using NuGet.Versioning;
+
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.Updater.Releases.Models;
 using SoundSwitch.Util;
@@ -165,6 +167,88 @@ public class NightlyUpdateTests
         {
             File.Delete(filePath);
         }
+    }
+
+    [Test]
+    public void GetBaseVersion_ShouldReturnFirstThreeParts()
+    {
+        var baseVersion = NightlyUpdateChecker.GetBaseVersion("7.2.1.341149");
+
+        baseVersion.Should().NotBeNull();
+        baseVersion.Major.Should().Be(7);
+        baseVersion.Minor.Should().Be(2);
+        baseVersion.Patch.Should().Be(1);
+    }
+
+    [Test]
+    public void GetBaseVersion_InvalidVersions_ShouldReturnNull()
+    {
+        NightlyUpdateChecker.GetBaseVersion("7.2").Should().BeNull();
+        NightlyUpdateChecker.GetBaseVersion("").Should().BeNull();
+        NightlyUpdateChecker.GetBaseVersion("a.b.c.d").Should().BeNull();
+    }
+
+    private static Release TrainRelease(string tag, bool prerelease, string installerName = null)
+    {
+        var release = new Release
+        {
+            TagName = tag,
+            Prerelease = prerelease,
+            Name = $"SoundSwitch {tag}",
+            Assets = new List<Asset>()
+        };
+        if (installerName != null)
+        {
+            release.Assets.Add(new Asset
+            {
+                Name = installerName,
+                BrowserDownloadUrl = $"https://example.com/{installerName}"
+            });
+        }
+
+        return release;
+    }
+
+    [Test]
+    public void BuildReleaseTrainUpdate_ShouldPickHighestNewerIncludingPrerelease()
+    {
+        var releases = new List<Release>
+        {
+            TrainRelease("v7.2.2", false, "SoundSwitch_v7.2.2_x64_Installer.exe"),
+            TrainRelease("v7.3.0-beta.1", true, "SoundSwitch_v7.3.0_x64_Installer.exe")
+        };
+
+        var update = NightlyUpdateChecker.BuildReleaseTrainUpdate(releases, SemanticVersion.Parse("7.2.1"));
+
+        update.Should().NotBeNull();
+        update.ReleaseVersion.Should().Be(SemanticVersion.Parse("7.3.0-beta.1"));
+        // A release-train install is Authenticode-signed: no nightly hash attached.
+        update.ExpectedSha512.Should().BeNull();
+    }
+
+    [Test]
+    public void BuildReleaseTrainUpdate_OlderOrEqualOnly_ShouldReturnNull()
+    {
+        var releases = new List<Release>
+        {
+            TrainRelease("v7.2.1", false, "SoundSwitch_v7.2.1_x64_Installer.exe"),
+            TrainRelease("v7.2.0", false, "SoundSwitch_v7.2.0_x64_Installer.exe")
+        };
+
+        NightlyUpdateChecker.BuildReleaseTrainUpdate(releases, SemanticVersion.Parse("7.2.1"))
+            .Should().BeNull();
+    }
+
+    [Test]
+    public void BuildReleaseTrainUpdate_NewerButMissingInstaller_ShouldReturnNull()
+    {
+        var releases = new List<Release>
+        {
+            TrainRelease("v7.3.0", false)
+        };
+
+        NightlyUpdateChecker.BuildReleaseTrainUpdate(releases, SemanticVersion.Parse("7.2.1"))
+            .Should().BeNull();
     }
 }
 #endif

@@ -89,14 +89,22 @@ public sealed partial class UpdateDownloadForm : Form
         _releaseFile.Downloaded += (sender, args) =>
         {
 #if NIGHTLY
-            var checksumResult = UpdateVerifier.Verify(_releaseFile.FilePath, _appReleaseInfo.ExpectedSha512).UnwrapFailure();
+            // Nightly artifacts carry a SHA-512 (unsigned builds); release-train
+            // installers are Authenticode-signed and verified by signature.
+            var checksumResult = string.IsNullOrEmpty(_appReleaseInfo.ExpectedSha512)
+                ? SignatureChecker.IsValid(_releaseFile.FilePath).UnwrapFailure()
+                : UpdateVerifier.Verify(_releaseFile.FilePath, _appReleaseInfo.ExpectedSha512).UnwrapFailure();
             if (checksumResult != null)
             {
-                Log.Error("Wrong checksum for the release: {checksumResult}", checksumResult);
-                MessageBox.Show(UpdateDownloadStrings.ResourceManager.GetString("wrongChecksum"),
-                    UpdateDownloadStrings.ResourceManager.GetString("wrongChecksumTitle"),
+                Log.Error("Wrong integrity check ({Kind}) for the release: {checksumResult}",
+                    _appReleaseInfo.ExpectedSha512 == null ? "signature" : "sha512", checksumResult);
+                var titleKey = _appReleaseInfo.ExpectedSha512 == null ? "notSignedTitle" : "wrongChecksumTitle";
+                var messageKey = _appReleaseInfo.ExpectedSha512 == null ? "notSigned" : "wrongChecksum";
+                MessageBox.Show(UpdateDownloadStrings.ResourceManager.GetString(messageKey),
+                    UpdateDownloadStrings.ResourceManager.GetString(titleKey),
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
-                TelemetryService.TrackUpdateInstalled(SoundSwitch.Framework.Configuration.AppConfigs.Configuration.UpdateMode, "checksum_error");
+                TelemetryService.TrackUpdateInstalled(SoundSwitch.Framework.Configuration.AppConfigs.Configuration.UpdateMode,
+                    _appReleaseInfo.ExpectedSha512 == null ? "signature_error" : "checksum_error");
                 return;
             }
 #else

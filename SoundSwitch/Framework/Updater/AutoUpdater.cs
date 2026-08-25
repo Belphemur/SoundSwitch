@@ -50,12 +50,18 @@ public class AutoUpdater
         {
             Log.Information("Update downloaded: {File}", file);
 #if NIGHTLY
-            var checksumResult = UpdateVerifier.Verify(file.FilePath, appRelease.ExpectedSha512).UnwrapFailure();
+            // Nightly artifacts carry a SHA-512 (unsigned builds); release-train
+            // installers are Authenticode-signed and verified by signature.
+            var checksumResult = string.IsNullOrEmpty(appRelease.ExpectedSha512)
+                ? SignatureChecker.IsValid(file.FilePath).UnwrapFailure()
+                : UpdateVerifier.Verify(file.FilePath, appRelease.ExpectedSha512).UnwrapFailure();
             if (checksumResult != null)
             {
-                Log.Error("The file has the wrong checksum. Update cancelled. {checksumResult}", checksumResult);
+                Log.Error("The file failed its integrity check ({Kind}). Update cancelled. {checksumResult}",
+                    appRelease.ExpectedSha512 == null ? "signature" : "sha512", checksumResult);
                 onCompleted?.Invoke(false);
-                _context.Send(state => { MessageBox.Show(UpdateDownloadStrings.ResourceManager.GetString("wrongChecksum")!, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error); },
+                var messageKey = appRelease.ExpectedSha512 == null ? "wrongSignature" : "wrongChecksum";
+                _context.Send(state => { MessageBox.Show(UpdateDownloadStrings.ResourceManager.GetString(messageKey)!, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error); },
                     null);
                 return;
             }
