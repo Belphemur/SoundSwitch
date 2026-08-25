@@ -239,13 +239,15 @@ public class NightlyUpdateChecker(Uri feedUrl) : IUpdateChecker
         // ExpectedSha512 stays null: release installers are Authenticode-signed.
     }
 
-    private static SemanticVersion ToSemanticVersion(NightlyVersion version)
+    internal static SemanticVersion ToSemanticVersion(NightlyVersion version)
     {
-        // Keep the revision in the version so distinct nightlies never collapse to the
-        // same SemanticVersion (postpone/version bookkeeping relies on ReleaseVersion):
-        // the 4th component becomes a revision metadata segment (ignored by precedence).
-        var patch = version.Revision % 100_000;
-        return SemanticVersion.Parse($"{version.Major}.{version.Minor}.{patch}+nightly.{version.Revision}");
+        // Preserve nightly ordering across revision boundaries: keep major.minor.build as
+        // the release version and encode the revision as a numeric prerelease identifier
+        // (e.g. 7.2.1-nightly.200000). Numeric prerelease identifiers compare by value,
+        // so ordering always matches the feed (no %100_000 wrap-around), and every
+        // nightly sorts below its own base release — consistent with the rule that a
+        // release-train update wins over nightly artifacts.
+        return SemanticVersion.Parse($"{version.Major}.{version.Minor}.{version.Build}-nightly.{version.Revision}");
     }
 }
 #endif

@@ -206,6 +206,18 @@ public class NightlyUpdateTests
         NightlyUpdateChecker.GetBaseVersion("a.b.c.d").Should().BeNull();
     }
 
+    [Test]
+    public void ToSemanticVersion_ShouldPreserveOrderingAcrossRevisionBoundaries()
+    {
+        // %100_000 wrap-around would make 200000 (patch 0) compare older than 199999.
+        var lower = NightlyUpdateChecker.ToSemanticVersion(NightlyVersion.Parse("7.2.1.199999"));
+        var higher = NightlyUpdateChecker.ToSemanticVersion(NightlyVersion.Parse("7.2.1.200000"));
+
+        higher.Should().BeGreaterThan(lower);
+        // Every nightly sorts below its own base release, so a release-train update wins.
+        lower.Should().BeLessThan(SemanticVersion.Parse("7.2.1"));
+    }
+
     private static Release TrainRelease(string tag, bool prerelease, string installerName = null)
     {
         var release = new Release
