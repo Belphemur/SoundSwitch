@@ -108,9 +108,8 @@ jobs:
                     throw 'Nightly version was not produced by the build workflow.'
                   }
 
-                  $numericVersion = $version -replace '[-+].*$', ''
-                  .\tools\Publish-Release.ps1 -BuildFromSource -Configuration Nightly -SkipSigning -InstallerReleaseState Nightly `
-                    -MsBuildProperties "/p:Version=$version /p:InformationalVersion=$version /p:FileVersion=$numericVersion /p:AssemblyVersion=$numericVersion"
+                  .\devVersion.ps1 -Version $version
+                  .\tools\Publish-Release.ps1 -BuildFromSource -Configuration Nightly -SkipSigning -InstallerReleaseState Nightly
             - name: Upload nightly files
               id: metadata
               shell: pwsh

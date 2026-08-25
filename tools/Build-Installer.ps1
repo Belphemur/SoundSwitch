@@ -60,11 +60,7 @@ param(
 
     [string]$InstallerReleaseState = 'Release',
 
-    [string]$DotNetMajorVersion = '10',
-
-    # Optional MSBuild version properties (accepted for forward-compatibility;
-    # version stamping happens at dotnet publish time in Publish-Release.ps1).
-    [string]$MsBuildProperties
+    [string]$DotNetMajorVersion = '10'
 )
 
 Set-StrictMode -Version Latest

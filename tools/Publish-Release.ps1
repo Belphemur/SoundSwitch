@@ -92,11 +92,7 @@ param(
 
     [string]$InstallerReleaseState,
 
-    [string]$DotNetMajorVersion,
-
-    # Optional MSBuild version properties (e.g. "/p:Version=1.2.3.4 /p:FileVersion=1.2.3.4")
-    # forwarded to dotnet publish when building from source.
-    [string]$MsBuildProperties
+    [string]$DotNetMajorVersion
 )
 
 Set-StrictMode -Version Latest
@@ -256,11 +252,7 @@ if ($BuildFromSource) {
             $projectTempDir = Join-Path $publishDir "$project-publish-$rid"
             $projPath = Join-Path $repoRoot "$project\$project.csproj"
             Write-Host "  Publishing $project for $rid ..."
-            $publishArgs = @('publish', '-c', $Configuration, '-r', $rid, '--self-contained', 'false', $projPath, '-o', $projectTempDir)
-            if (-not [string]::IsNullOrWhiteSpace($MsBuildProperties)) {
-                $publishArgs += ($MsBuildProperties -split ' ' | Where-Object { $_ })
-            }
-            dotnet @publishArgs
+            dotnet publish -c $Configuration -r $rid --self-contained false $projPath -o $projectTempDir
             if ($LASTEXITCODE -ne 0) {
                 throw "dotnet publish failed for $project ($rid) with exit code $LASTEXITCODE."
             }
@@ -394,9 +386,6 @@ $buildArgs = @{
     InstallerReleaseState = $InstallerReleaseState
     CertificateName       = $CertificateName
     DotNetMajorVersion    = $DotNetMajorVersion
-}
-if (-not [string]::IsNullOrWhiteSpace($MsBuildProperties)) {
-    $buildArgs['MsBuildProperties'] = $MsBuildProperties
 }
 if ($SkipSigning) {
     $buildArgs['SkipSigning'] = $true
