@@ -234,16 +234,10 @@ jobs:
                       continue
                     fi
 
-                    # Derive the displayed version from the installer filename embedded in
-                    # DOWNLOAD_URL so the number printed in the comment always matches the
-                    # installer users actually download (both come from the compiled EXE's
-                    # version resource). Fall back to VERSION if extraction fails.
-                    INSTALLER_VERSION=$(basename "$DOWNLOAD_URL" | grep -iEo '(^|_)v?[0-9]+\.[0-9]+\.[0-9]+(\.[0-9]+)?(_|$)' | head -n1 | tr -d 'vV_')
-                    if [ -z "$INSTALLER_VERSION" ]; then
-                      INSTALLER_VERSION="$VERSION"
-                    fi
-
-                    BODY=$(printf '🌙 This fix is included in nightly build **%s**.\nYou can download it here: %s' "${INSTALLER_VERSION}" "${DOWNLOAD_URL}")
+                    # Since devVersion.ps1 stamps AssemblyInfo directly (16-bit-safe
+                    # revision), VERSION matches the installer filename and the app
+                    # version by construction - print it without any name parsing.
+                    BODY=$(printf '🌙 This fix is included in nightly build **%s**.\nYou can download it here: %s' "${VERSION}" "${DOWNLOAD_URL}")
                     gh issue comment "$ISSUE" \
                       --repo "${{ github.repository }}" \
                       --body "$BODY"
