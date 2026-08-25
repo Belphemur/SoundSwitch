@@ -64,6 +64,15 @@ if ($numericVersion -notmatch '^\d+\.\d+\.\d+(\.\d+)?$') {
     throw "Version '$Version' does not contain a valid numeric file version."
 }
 
+# Every AssemblyFileVersion component is a 16-bit ushort (max 65535); reject
+# out-of-range components on the explicit -Version path too, not just the
+# auto-computed one.
+foreach ($component in $numericVersion.Split('.')) {
+    if ([int]$component -ge 65536) {
+        throw "Version '$Version' contains a component ($component) exceeding the 16-bit AssemblyFileVersion limit (65535)."
+    }
+}
+
 $fileVersion = $numericVersion
 $parts = $numericVersion.Split('.')
 if ($parts.Length -eq 3) {
