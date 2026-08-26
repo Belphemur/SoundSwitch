@@ -1,3 +1,53 @@
+## [7.3.0](https://github.com/Belphemur/SoundSwitch/compare/v7.2.1...v7.3.0) (2026-08-26)
+
+### Features
+
+* **audio:** add AudioDevice COM wrappers + AudioDeviceEnumerator (Phase 2) ([3defcfc](https://github.com/Belphemur/SoundSwitch/commit/3defcfcee9600a888b0b8962c8e8c81bc7defce9)), closes [#2371](https://github.com/Belphemur/SoundSwitch/issues/2371) [#401](https://github.com/Belphemur/SoundSwitch/issues/401)
+* **audio:** decode MP3 via vendored MP3Sharp (pure managed) ([d796683](https://github.com/Belphemur/SoundSwitch/commit/d796683c792f2175368d00f85ad938b32035bb90))
+* **audio:** replace NAudio notification playback with in-house WASAPI renderer ([f8e6792](https://github.com/Belphemur/SoundSwitch/commit/f8e6792dac92e4cba688ac2faacc26113d1ee44a))
+* **audio:** support MP3 custom notification sounds ([9b2e40d](https://github.com/Belphemur/SoundSwitch/commit/9b2e40dc95e7dfe178a7228a99dd682e19b16a22))
+* **nightly:** record sha512, commit and changelog per nightly artifact ([2f8f015](https://github.com/Belphemur/SoundSwitch/commit/2f8f015e621ab4bd83f7e8e4973466872335e09c))
+* **ui:** show nightly update channel indicator in settings ([bbc6332](https://github.com/Belphemur/SoundSwitch/commit/bbc6332fc46f58c980e41906ecfd9b95c610a5c5))
+* **updater:** add nightly update channel with SHA-512 verification ([443206a](https://github.com/Belphemur/SoundSwitch/commit/443206a6500bb8fde1c02ba9246833f6a735919f))
+* **updater:** offer release-train updates to nightly builds as a beta track ([fe599bb](https://github.com/Belphemur/SoundSwitch/commit/fe599bb3a253f46e6dee2c8add5e7eee89d6af31))
+* **website:** show nightly changelog and SHA-512 checksum ([2535e7a](https://github.com/Belphemur/SoundSwitch/commit/2535e7a948f25a96c470c97a7b09d0530502f18d))
+
+### Enhancements
+
+* **notification:** render Windows notification as native toast with balloon fallback ([#2370](https://github.com/Belphemur/SoundSwitch/issues/2370)) ([3fb1282](https://github.com/Belphemur/SoundSwitch/commit/3fb1282d988a3cd5a7b8d5eeee741733d4bac653))
+* **telemetry:** track update subsystem usage and startup config snapshot ([#2369](https://github.com/Belphemur/SoundSwitch/issues/2369)) ([1f43f32](https://github.com/Belphemur/SoundSwitch/commit/1f43f32e4d0d3505bc0590b6e73aeedaa6130db0)), closes [#1](https://github.com/Belphemur/SoundSwitch/issues/1) [#4](https://github.com/Belphemur/SoundSwitch/issues/4) [#2](https://github.com/Belphemur/SoundSwitch/issues/2) [#5](https://github.com/Belphemur/SoundSwitch/issues/5) [#7](https://github.com/Belphemur/SoundSwitch/issues/7)
+
+### Bug Fixes
+
+* **audio:** address Copilot review — SeletedDevicesList typo + EndpointVolume null guard ([e0b32b5](https://github.com/Belphemur/SoundSwitch/commit/e0b32b58f3c92cde7d5a494c6fa387267b1146a1))
+* **audio:** correct ERole profile matching + NameClean in mic response ([8583f2d](https://github.com/Belphemur/SoundSwitch/commit/8583f2de79c3d1b42c0ffb1e8f3ae81fce7ed43a))
+* **audio:** correct IMFSourceReader.ReadSample native signature (MP3 crash) ([0a0cdb3](https://github.com/Belphemur/SoundSwitch/commit/0a0cdb31b77b2166b0ffbd34e315b074fbbeb4f9))
+* **audio:** dispose DeviceFullInfo on all non-happy paths (COM leak) ([7841e7b](https://github.com/Belphemur/SoundSwitch/commit/7841e7bfed9bc8421134afaa9a630cce6eb4392f))
+* **audio:** guard nullable EndpointVolume in IPC microphone-state lambda ([f8ff7c4](https://github.com/Belphemur/SoundSwitch/commit/f8ff7c4aee01317184587cca5b52c52cd601ebd9))
+* **audio:** harden vendored MP3Sharp decoder (7 CodeRabbit findings) ([92e7920](https://github.com/Belphemur/SoundSwitch/commit/92e7920f0d96ed85a5360eca7ca66aaecfbdd47c))
+* **audio:** normalize truncated WAV errors + localize WAV filter label ([a3feb8b](https://github.com/Belphemur/SoundSwitch/commit/a3feb8bd3e5f4f39ca4b00e210979af80aa26478))
+* **audio:** prevent AudioDevice deadlock and finalizer crash in volume client ([b0d5199](https://github.com/Belphemur/SoundSwitch/commit/b0d5199582952d75c0717b41c4412704f93f1a8a))
+* **audio:** propagate registration failure + document MMNotificationClient ([e6229ab](https://github.com/Belphemur/SoundSwitch/commit/e6229abacb583bd4f250e2c989152be6ba4309a2))
+* **audio:** refresh default device after waking from sleep (issue [#2009](https://github.com/Belphemur/SoundSwitch/issues/2009)) ([3e3ac93](https://github.com/Belphemur/SoundSwitch/commit/3e3ac939d33342e6151219d2de44de315a13a35a))
+* **audio:** reset seekable stream + handle non-EOS null samples (MP3) ([6ccb148](https://github.com/Belphemur/SoundSwitch/commit/6ccb148dcd6ff885b68104a0406e48909fe55f53))
+* **audio:** use FluentAssertions v8 ThrowAsync for async null-data test ([7b48ee6](https://github.com/Belphemur/SoundSwitch/commit/7b48ee676d788853c3c8f1a341853c27b0d4c326))
+* **audio:** use nullable tuple for volume-copy + Serilog for conversion warnings ([b8df9f1](https://github.com/Belphemur/SoundSwitch/commit/b8df9f11d3042d41938b31f87faf841b952f282e))
+* **audio:** use typeof() for the static-class Serilog context ([b2abcf2](https://github.com/Belphemur/SoundSwitch/commit/b2abcf212184481044a05538ed1ebbde108d3c47))
+* **ci:** stamp version via AssemblyInfo rewrite and tag-relative revision ([19c0604](https://github.com/Belphemur/SoundSwitch/commit/19c060493d84b6eb86d107d7152650fbbced7389))
+* **ci:** validate all -Version components against the 16-bit limit ([d8db090](https://github.com/Belphemur/SoundSwitch/commit/d8db09089df292a2eb3d8d9ebef53589d5b6635a))
+* **model:** fully remove misspelled seletedDevicesList (param + property) ([ceaef69](https://github.com/Belphemur/SoundSwitch/commit/ceaef69c9664970ee1197cd9032a20bd467f39d4))
+* **model:** rename misspelled SeletedDevicesList property to SelectedDevicesList ([a3c949e](https://github.com/Belphemur/SoundSwitch/commit/a3c949e5ed45abe3c94f3b617618d323f76c2b43))
+* **nightly:** use installer version in issue comment so the build number matches the download link ([373cd27](https://github.com/Belphemur/SoundSwitch/commit/373cd27703d0901b36331eb333a83af0f321c077))
+* **reliability:** harden audio device object and single-instance IPC against transient failures ([#2371](https://github.com/Belphemur/SoundSwitch/issues/2371)) ([06fe289](https://github.com/Belphemur/SoundSwitch/commit/06fe289b7a29334edee5a1a726172eed16fb8bcf))
+* **updater:** address review findings on nightly release-train fallback ([436c8af](https://github.com/Belphemur/SoundSwitch/commit/436c8afa194c2751d9be6e8061079a9200f0b8b0))
+* **updater:** encode nightly revision as prerelease identifier ([8bccc3e](https://github.com/Belphemur/SoundSwitch/commit/8bccc3eb12598cddea1a2de761eb1fe3c955412e))
+* **updater:** normalize integrity-check failure to string in nightly ternary ([d03435d](https://github.com/Belphemur/SoundSwitch/commit/d03435d49354fcbc45283dd4aa04ccc5da135baa))
+* **website:** parse bold/italic and bullet markers in nightly changelog ([4b4b18a](https://github.com/Belphemur/SoundSwitch/commit/4b4b18aeb211114aad1303dc67277a27e76ad1a2))
+
+### Tests
+
+* **audio:** migrate tests to in-house enums, add PROPVARIANT contract tests ([89fd591](https://github.com/Belphemur/SoundSwitch/commit/89fd5915a6cecb6df44643da001661cd1dbc0515))
+
 ## [7.2.1](https://github.com/Belphemur/SoundSwitch/compare/v7.2.0...v7.2.1) (2026-08-22)
 
 ### Enhancements
