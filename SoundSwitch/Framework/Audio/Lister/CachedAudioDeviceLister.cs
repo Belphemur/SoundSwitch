@@ -36,11 +36,24 @@ namespace SoundSwitch.Framework.Audio.Lister;
 
 public class CachedAudioDeviceLister : IAudioDeviceLister
 {
-    /// <inheritdoc />
-    private ImmutableDictionary<string, DeviceFullInfo> PlaybackDevices { get; set; } = ImmutableDictionary<string, DeviceFullInfo>.Empty;
+    // Backing fields are kept separate from the properties so the lock-free CompareExchange
+    // swaps below can pass them by `ref` (auto-properties cannot be passed by ref — CS0206).
+    private ImmutableDictionary<string, DeviceFullInfo> _playbackDevices = ImmutableDictionary<string, DeviceFullInfo>.Empty;
+    private ImmutableDictionary<string, DeviceFullInfo> _recordingDevices = ImmutableDictionary<string, DeviceFullInfo>.Empty;
 
     /// <inheritdoc />
-    private ImmutableDictionary<string, DeviceFullInfo> RecordingDevices { get; set; } = ImmutableDictionary<string, DeviceFullInfo>.Empty;
+    private ImmutableDictionary<string, DeviceFullInfo> PlaybackDevices
+    {
+        get => _playbackDevices;
+        set => _playbackDevices = value;
+    }
+
+    /// <inheritdoc />
+    private ImmutableDictionary<string, DeviceFullInfo> RecordingDevices
+    {
+        get => _recordingDevices;
+        set => _recordingDevices = value;
+    }
 
     private readonly ISubject<DefaultDevicePayload> _defaultDeviceChanged = new Subject<DefaultDevicePayload>();
     public IObservable<DefaultDevicePayload> DefaultDeviceChanged => _defaultDeviceChanged.AsObservable();
@@ -139,8 +152,10 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
     /// (e.g. <see cref="ProcessDeviceUpdates"/> handling device arrival/removal) mutates
     /// <c>PlaybackDevices</c>/<c>RecordingDevices</c> while we enumerate them.
     /// </summary>
-    /// <param name="oldDevices">A materialized snapshot of the devices to dispose.</param>
-    private void DisposeOldDevices(IEnumerable<DeviceFullInfo> oldDevices)
+    /// <param name="oldDevices">A materialized snapshot (array) of the devices to dispose. The array
+    /// type is deliberate: it forces callers to pass an already-snapshotted collection rather than a
+    /// lazy enumeration over the live dictionaries, which would reintroduce the race.</param>
+    private void DisposeOldDevices(DeviceFullInfo[] oldDevices)
     {
         foreach (var device in oldDevices)
         {
@@ -221,7 +236,7 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                         DisposeDevice(oldPlaybackDevice);
                     }
 
-                    SwapReplace(ref PlaybackDevices, device.Id, device);
+                    SwapReplace(ref _playbackDevices, device.Id, device);
                     SubscribeToDeviceEvents(device);
                     break;
                 case EDataFlow.eCapture:
@@ -230,7 +245,7 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                         DisposeDevice(oldRecordingDevice);
                     }
 
-                    SwapReplace(ref RecordingDevices, device.Id, device);
+                    SwapReplace(ref _recordingDevices, device.Id, device);
                     SubscribeToDeviceEvents(device);
                     break;
                 case EDataFlow.eAll:
@@ -250,14 +265,14 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                 {
                     case EventType.Removed:
                         var removed = false;
-                        SwapRemove(ref PlaybackDevices, deviceChangedEvent.DeviceId, out var playbackDevice);
+                        SwapRemove(ref _playbackDevices, deviceChangedEvent.DeviceId, out var playbackDevice);
                         if (playbackDevice != null)
                         {
                             DisposeDevice(playbackDevice);
                             removed = true;
                         }
 
-                        SwapRemove(ref RecordingDevices, deviceChangedEvent.DeviceId, out var recordingDevice);
+                        SwapRemove(ref _recordingDevices, deviceChangedEvent.DeviceId, out var recordingDevice);
                         if (recordingDevice != null)
                         {
                             DisposeDevice(recordingDevice);
