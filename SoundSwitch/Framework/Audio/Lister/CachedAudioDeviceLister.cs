@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
@@ -35,11 +36,24 @@ namespace SoundSwitch.Framework.Audio.Lister;
 
 public class CachedAudioDeviceLister : IAudioDeviceLister
 {
-    /// <inheritdoc />
-    private Dictionary<string, DeviceFullInfo> PlaybackDevices { get; set; } = new();
+    // Backing fields are kept separate from the properties so the lock-free CompareExchange
+    // swaps below can pass them by `ref` (auto-properties cannot be passed by ref — CS0206).
+    private ImmutableDictionary<string, DeviceFullInfo> _playbackDevices = ImmutableDictionary<string, DeviceFullInfo>.Empty;
+    private ImmutableDictionary<string, DeviceFullInfo> _recordingDevices = ImmutableDictionary<string, DeviceFullInfo>.Empty;
 
     /// <inheritdoc />
-    private Dictionary<string, DeviceFullInfo> RecordingDevices { get; set; } = new();
+    private ImmutableDictionary<string, DeviceFullInfo> PlaybackDevices
+    {
+        get => _playbackDevices;
+        set => _playbackDevices = value;
+    }
+
+    /// <inheritdoc />
+    private ImmutableDictionary<string, DeviceFullInfo> RecordingDevices
+    {
+        get => _recordingDevices;
+        set => _recordingDevices = value;
+    }
 
     private readonly ISubject<DefaultDevicePayload> _defaultDeviceChanged = new Subject<DefaultDevicePayload>();
     public IObservable<DefaultDevicePayload> DefaultDeviceChanged => _defaultDeviceChanged.AsObservable();
@@ -132,6 +146,66 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
     }
 
     /// <summary>
+    /// Disposes a collection of devices that has already been snapshotted, so callers can
+    /// enumerate a stable copy instead of the live published dictionaries. This avoids
+    /// <see cref="InvalidOperationException"/> ("Collection was modified") when another thread
+    /// (e.g. <see cref="ProcessDeviceUpdates"/> handling device arrival/removal) mutates
+    /// <c>PlaybackDevices</c>/<c>RecordingDevices</c> while we enumerate them.
+    /// </summary>
+    /// <param name="oldDevices">A materialized snapshot (array) of the devices to dispose. The array
+    /// type is deliberate: it forces callers to pass an already-snapshotted collection rather than a
+    /// lazy enumeration over the live dictionaries, which would reintroduce the race.</param>
+    private void DisposeOldDevices(DeviceFullInfo[] oldDevices)
+    {
+        foreach (var device in oldDevices)
+        {
+            DisposeDevice(device);
+        }
+    }
+
+    /// <summary>
+    /// Lock-free read-modify-write that replaces (or inserts) <paramref name="device"/> under
+    /// <paramref name="id"/> in the published immutable dictionary, retrying on concurrent
+    /// modification via <see cref="Interlocked.CompareExchange{T}(ref T,T,T)"/>. The dictionary
+    /// reference itself is a single field, so the swap is an atomic reference assignment.
+    /// </summary>
+    private static ImmutableDictionary<string, DeviceFullInfo> SwapReplace(
+        ref ImmutableDictionary<string, DeviceFullInfo> field,
+        string id, DeviceFullInfo device)
+    {
+        ImmutableDictionary<string, DeviceFullInfo> current, updated;
+        do
+        {
+            current = field;
+            updated = current.SetItem(id, device);
+        } while (Interlocked.CompareExchange(ref field, updated, current) != current);
+        return updated;
+    }
+
+    /// <summary>
+    /// Lock-free read-modify-write that removes <paramref name="id"/> from the published immutable
+    /// dictionary, retrying on concurrent modification. Returns the (possibly unchanged) dictionary;
+    /// <paramref name="removed"/> is the evicted device or <c>null</c> when the id wasn't present.
+    /// </summary>
+    private static ImmutableDictionary<string, DeviceFullInfo> SwapRemove(
+        ref ImmutableDictionary<string, DeviceFullInfo> field,
+        string id, out DeviceFullInfo? removed)
+    {
+        ImmutableDictionary<string, DeviceFullInfo> current, updated;
+        do
+        {
+            current = field;
+            if (!current.TryGetValue(id, out removed))
+            {
+                removed = null;
+                return current; // nothing to remove
+            }
+            updated = current.Remove(id);
+        } while (Interlocked.CompareExchange(ref field, updated, current) != current);
+        return updated;
+    }
+
+    /// <summary>
     /// Process device updates
     /// </summary>
     /// <param name="deviceChangedEvents"></param>
@@ -162,7 +236,7 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                         DisposeDevice(oldPlaybackDevice);
                     }
 
-                    PlaybackDevices[device.Id] = device;
+                    SwapReplace(ref _playbackDevices, device.Id, device);
                     SubscribeToDeviceEvents(device);
                     break;
                 case EDataFlow.eCapture:
@@ -171,7 +245,7 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                         DisposeDevice(oldRecordingDevice);
                     }
 
-                    RecordingDevices[device.Id] = device;
+                    SwapReplace(ref _recordingDevices, device.Id, device);
                     SubscribeToDeviceEvents(device);
                     break;
                 case EDataFlow.eAll:
@@ -191,13 +265,15 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                 {
                     case EventType.Removed:
                         var removed = false;
-                        if (PlaybackDevices.Remove(deviceChangedEvent.DeviceId, out var playbackDevice))
+                        SwapRemove(ref _playbackDevices, deviceChangedEvent.DeviceId, out var playbackDevice);
+                        if (playbackDevice != null)
                         {
                             DisposeDevice(playbackDevice);
                             removed = true;
                         }
 
-                        if (RecordingDevices.Remove(deviceChangedEvent.DeviceId, out var recordingDevice))
+                        SwapRemove(ref _recordingDevices, deviceChangedEvent.DeviceId, out var recordingDevice);
+                        if (recordingDevice != null)
                         {
                             DisposeDevice(recordingDevice);
                             removed = true;
@@ -301,15 +377,17 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                     throw;
                 }
 
-                // Dispose old devices first
-                foreach (var device in PlaybackDevices.Union(RecordingDevices))
-                {
-                    DisposeDevice(device.Value);
-                }
+                // Snapshot the currently published devices and dispose them outside the live
+                // dictionaries, so a concurrent ProcessDeviceUpdates (device arrival/removal on
+                // another thread) cannot mutate the collection while we enumerate it. The Union
+                // over the live dictionaries used to be lazy and threw
+                // "Collection was modified" under concurrent mutation (Sentry SOUNDSWITCH-49X).
+                var oldDevices = PlaybackDevices.Values.Concat(RecordingDevices.Values).ToArray();
+                DisposeOldDevices(oldDevices);
 
-                // Update caches
-                PlaybackDevices = playbackDevices;
-                RecordingDevices = recordingDevices;
+                // Update caches (swap happens once, atomically via field assignment)
+                PlaybackDevices = playbackDevices.ToImmutableDictionary();
+                RecordingDevices = recordingDevices.ToImmutableDictionary();
 
                 // Now subscribe to events for the new devices in the cache
                 foreach (var device in PlaybackDevices.Values.Concat(RecordingDevices.Values))
@@ -343,10 +421,7 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
 
     public void Dispose()
     {
-        foreach (var device in PlaybackDevices.Union(RecordingDevices))
-        {
-            DisposeDevice(device.Value);
-        }
+        DisposeOldDevices(PlaybackDevices.Values.Concat(RecordingDevices.Values).ToArray());
 
         // Dispose subjects and clear all subscriptions
         (_defaultDeviceChanged as Subject<DefaultDevicePayload>)?.Dispose();
