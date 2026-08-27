@@ -233,11 +233,13 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                 switch (deviceChangedEvent.Action)
                 {
                     case EventType.Removed:
-                        DeviceFullInfo playbackDevice, recordingDevice;
+                        DeviceFullInfo? playbackDevice, recordingDevice;
                         lock (_cacheLock)
                         {
-                            PlaybackDevices = PlaybackDevices.Remove(deviceChangedEvent.DeviceId, out playbackDevice);
-                            RecordingDevices = RecordingDevices.Remove(deviceChangedEvent.DeviceId, out recordingDevice);
+                            PlaybackDevices.TryGetValue(deviceChangedEvent.DeviceId, out playbackDevice);
+                            PlaybackDevices = PlaybackDevices.Remove(deviceChangedEvent.DeviceId);
+                            RecordingDevices.TryGetValue(deviceChangedEvent.DeviceId, out recordingDevice);
+                            RecordingDevices = RecordingDevices.Remove(deviceChangedEvent.DeviceId);
                         }
 
                         var removed = false;
