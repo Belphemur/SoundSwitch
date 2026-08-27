@@ -451,7 +451,14 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                     DisposeOldDevices(rejectedFresh.ToArray());
                 }
 
-                var retainedIds = new HashSet<string>(playbackDevices.Keys.Concat(recordingDevices.Keys));
+                // Devices to dispose: those published before the refresh but absent from the
+                // NEWLY PUBLISHED merged caches (which include both reused existing instances and
+                // freshly enumerated ones). Deriving the retained set from the published caches —
+                // not from the freshly enumerated dictionaries — is essential: reused instances are
+                // NOT in the fresh-enumeration keys, so using those would schedule still-published
+                // (reused) devices for disposal. Disposal happens outside the lock.
+                var retainedIds = new HashSet<string>(
+                    PlaybackDevices.Keys.Concat(RecordingDevices.Keys));
                 var removedOld = oldDevices.Where(d => !retainedIds.Contains(d.Id)).ToArray();
                 if (removedOld.Length > 0)
                 {

@@ -212,20 +212,27 @@ public class RefreshDeviceTests
         }));
         recordingProperty!.SetValue(lister, ImmutableDictionary.CreateRange(new Dictionary<string, DeviceFullInfo>()));
 
-        // Refresh's reconcile step computes exactly this delta: reuse when present + alive, dispose
-        // only when absent from the new enumeration. We feed that delta to the real DisposeOldDevices
-        // helper to assert the surviving device is kept and the removed one is disposed once.
-        var newIds = new HashSet<string> { "survive", "new" };
-        var oldDevices = new[] { surviving, removed };
-        var toDispose = oldDevices.Where(d => !newIds.Contains(d.Id)).ToArray();
+        // Refresh's reconcile step publishes a merged cache (reusing surviving instances AND
+        // adding fresh ones), then disposes only old devices absent from that PUBLISHED cache.
+        // The retained set MUST be derived from the published cache, not from the freshly
+        // enumerated ids alone — otherwise a reused (still-published) device would be disposed.
+        // We replicate the corrected contract: published keys = both reused + fresh ids.
+        var publishedPlayback = new Dictionary<string, DeviceFullInfo>
+        {
+            ["survive"] = surviving, // reused from old cache
+            ["new"] = fresh           // freshly enumerated
+        };
+        var retainedIds = new HashSet<string>(publishedPlayback.Keys); // mirrors fixed Refresh
+        var toDispose = oldDevices.Where(d => !retainedIds.Contains(d.Id)).ToArray();
 
         var disposeMethod = typeof(CachedAudioDeviceLister)
             .GetMethod("DisposeOldDevices", BindingFlags.NonPublic | BindingFlags.Instance);
         disposeMethod.Should().NotBeNull();
         disposeMethod!.Invoke(lister, new object[] { toDispose });
 
-        // The removed device is disposed; the surviving one is reused and left intact.
-        removed.Disposed.Should().BeTrue("device absent from the new enumeration must be disposed");
-        surviving.Disposed.Should().BeFalse("surviving device must be reused, not disposed");
+        // The removed device is disposed; the surviving one is published-and-reused, so untouched.
+        removed.Disposed.Should().BeTrue("device absent from the published cache must be disposed");
+        surviving.Disposed.Should().BeFalse("reused device is in the published cache, must NOT be disposed");
+        fresh.Disposed.Should().BeFalse("fresh device is in the published cache, must NOT be disposed");
     }
 }
