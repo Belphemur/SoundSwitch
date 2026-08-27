@@ -36,10 +36,18 @@ namespace SoundSwitch.Framework.Audio.Lister;
 
 public class CachedAudioDeviceLister : IAudioDeviceLister
 {
-    // Backing fields are kept separate from the properties so the lock-free CompareExchange
-    // swaps below can pass them by `ref` (auto-properties cannot be passed by ref — CS0206).
-    private ImmutableDictionary<string, DeviceFullInfo> _playbackDevices = ImmutableDictionary<string, DeviceFullInfo>.Empty;
-    private ImmutableDictionary<string, DeviceFullInfo> _recordingDevices = ImmutableDictionary<string, DeviceFullInfo>.Empty;
+    // Dedicated .NET 9 lock serializing the two mutation paths (Refresh's wholesale publish and
+    // ProcessDeviceUpdates' incremental edits). It is held ONLY for the immutable-dictionary
+    // reference swaps (microseconds) — never during COM enumeration, event subscription, or
+    // device disposal. Readers never take it: they read the published immutable snapshot, which
+    // is inherently safe to enumerate.
+    private readonly Lock _cacheLock = new Lock();
+
+    // Volatile backing fields give the lock-free readers (GetDevices, DefaultChanged lookup) acquire
+    // semantics on every read, so a reference published inside Refresh's/ProcessDeviceUpdates' lock
+    // is always seen as the latest snapshot. The properties are thin wrappers over these fields.
+    private volatile ImmutableDictionary<string, DeviceFullInfo> _playbackDevices = ImmutableDictionary<string, DeviceFullInfo>.Empty;
+    private volatile ImmutableDictionary<string, DeviceFullInfo> _recordingDevices = ImmutableDictionary<string, DeviceFullInfo>.Empty;
 
     /// <inheritdoc />
     private ImmutableDictionary<string, DeviceFullInfo> PlaybackDevices
@@ -78,6 +86,8 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     public DeviceReadOnlyCollection<DeviceFullInfo> GetDevices(EDataFlow type, EDeviceState state)
     {
+        // Lock-free read: the published dictionaries are immutable, so enumerating a snapshot
+        // can never throw "Collection was modified" even while another thread swaps the reference.
         return type switch
         {
             EDataFlow.eRender => new DeviceReadOnlyCollection<DeviceFullInfo>(PlaybackDevices.Values.Where(info => state.HasFlag(info.State)), type),
@@ -164,48 +174,6 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
     }
 
     /// <summary>
-    /// Lock-free read-modify-write that replaces (or inserts) <paramref name="device"/> under
-    /// <paramref name="id"/> in the published immutable dictionary, retrying on concurrent
-    /// modification via <see cref="Interlocked.CompareExchange{T}(ref T,T,T)"/>. The dictionary
-    /// reference itself is a single field, so the swap is an atomic reference assignment.
-    /// </summary>
-    private static ImmutableDictionary<string, DeviceFullInfo> SwapReplace(
-        ref ImmutableDictionary<string, DeviceFullInfo> field,
-        string id, DeviceFullInfo device)
-    {
-        ImmutableDictionary<string, DeviceFullInfo> current, updated;
-        do
-        {
-            current = field;
-            updated = current.SetItem(id, device);
-        } while (Interlocked.CompareExchange(ref field, updated, current) != current);
-        return updated;
-    }
-
-    /// <summary>
-    /// Lock-free read-modify-write that removes <paramref name="id"/> from the published immutable
-    /// dictionary, retrying on concurrent modification. Returns the (possibly unchanged) dictionary;
-    /// <paramref name="removed"/> is the evicted device or <c>null</c> when the id wasn't present.
-    /// </summary>
-    private static ImmutableDictionary<string, DeviceFullInfo> SwapRemove(
-        ref ImmutableDictionary<string, DeviceFullInfo> field,
-        string id, out DeviceFullInfo? removed)
-    {
-        ImmutableDictionary<string, DeviceFullInfo> current, updated;
-        do
-        {
-            current = field;
-            if (!current.TryGetValue(id, out removed))
-            {
-                removed = null;
-                return current; // nothing to remove
-            }
-            updated = current.Remove(id);
-        } while (Interlocked.CompareExchange(ref field, updated, current) != current);
-        return updated;
-    }
-
-    /// <summary>
     /// Process device updates
     /// </summary>
     /// <param name="deviceChangedEvents"></param>
@@ -228,24 +196,41 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
         {
             if (GetDevice(deviceChangedEvent, out var device)) return;
 
+            // The lookup of the replaced device and the swap are a single atomic step under
+            // _cacheLock, so we always dispose exactly the instance that was evicted and a
+            // concurrent Refresh can never overwrite this edit (or vice versa).
             switch (device.Type)
             {
                 case EDataFlow.eRender:
-                    if (PlaybackDevices.TryGetValue(device.Id, out var oldPlaybackDevice))
+                    DeviceFullInfo? oldPlaybackDevice;
+                    lock (_cacheLock)
+                    {
+                        PlaybackDevices.TryGetValue(device.Id, out oldPlaybackDevice);
+                        PlaybackDevices = PlaybackDevices.SetItem(device.Id, device);
+                    }
+
+                    // Dispose the previously-cached instance only if it isn't the one we just
+                    // published (guards against a no-op update of the same object).
+                    if (oldPlaybackDevice != null && !ReferenceEquals(oldPlaybackDevice, device))
                     {
                         DisposeDevice(oldPlaybackDevice);
                     }
 
-                    SwapReplace(ref _playbackDevices, device.Id, device);
                     SubscribeToDeviceEvents(device);
                     break;
                 case EDataFlow.eCapture:
-                    if (RecordingDevices.TryGetValue(device.Id, out var oldRecordingDevice))
+                    DeviceFullInfo? oldRecordingDevice;
+                    lock (_cacheLock)
+                    {
+                        RecordingDevices.TryGetValue(device.Id, out oldRecordingDevice);
+                        RecordingDevices = RecordingDevices.SetItem(device.Id, device);
+                    }
+
+                    if (oldRecordingDevice != null && !ReferenceEquals(oldRecordingDevice, device))
                     {
                         DisposeDevice(oldRecordingDevice);
                     }
 
-                    SwapReplace(ref _recordingDevices, device.Id, device);
                     SubscribeToDeviceEvents(device);
                     break;
                 case EDataFlow.eAll:
@@ -264,15 +249,22 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                 switch (deviceChangedEvent.Action)
                 {
                     case EventType.Removed:
+                        DeviceFullInfo? playbackDevice, recordingDevice;
+                        lock (_cacheLock)
+                        {
+                            PlaybackDevices.TryGetValue(deviceChangedEvent.DeviceId, out playbackDevice);
+                            PlaybackDevices = PlaybackDevices.Remove(deviceChangedEvent.DeviceId);
+                            RecordingDevices.TryGetValue(deviceChangedEvent.DeviceId, out recordingDevice);
+                            RecordingDevices = RecordingDevices.Remove(deviceChangedEvent.DeviceId);
+                        }
+
                         var removed = false;
-                        SwapRemove(ref _playbackDevices, deviceChangedEvent.DeviceId, out var playbackDevice);
                         if (playbackDevice != null)
                         {
                             DisposeDevice(playbackDevice);
                             removed = true;
                         }
 
-                        SwapRemove(ref _recordingDevices, deviceChangedEvent.DeviceId, out var recordingDevice);
                         if (recordingDevice != null)
                         {
                             DisposeDevice(recordingDevice);
@@ -292,6 +284,7 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                         _deviceListRefreshed.OnNext(Unit.Default);
                         break;
                     case EventType.DefaultChanged:
+                        // Read-only lookup on the published immutable snapshots: no lock needed.
                         if (!PlaybackDevices.TryGetValue(deviceChangedEvent.DeviceId, out var device) && !RecordingDevices.TryGetValue(deviceChangedEvent.DeviceId, out device))
                         {
                             _context.Warning("Can't get device {deviceId}", deviceChangedEvent.DeviceId);
@@ -331,6 +324,10 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
             Refreshing = true;
             var playbackDevices = new Dictionary<string, DeviceFullInfo>();
             var recordingDevices = new Dictionary<string, DeviceFullInfo>();
+            // Ids of devices newly enumerated this refresh (used to subscribe only the new ones
+            // after publishing, and to detect fresh instances rejected in favour of a still-alive
+            // existing instance).
+            var newIds = new HashSet<string>();
 
             using var registration = cancellationToken.Register(_ => { logContext.Warning("Cancellation received."); }, null);
 
@@ -340,6 +337,8 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                 // Materialize the enumeration up front: if cancellation (or any failure) interrupts
                 // the placement loop below, the catch disposes every enumerated entry — placed or
                 // not — so no DeviceFullInfo (and the AudioDevice COM reference it owns) is abandoned.
+                // The lock is NOT held here: COM enumeration is the slow part and must not block
+                // ProcessDeviceUpdates or hold _cacheLock across COM calls.
                 var enumeratedDevices = AudioSwitcher.Instance.GetAudioEndpoints(EDataFlow.eAll, _state).ToArray();
                 try
                 {
@@ -347,16 +346,21 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                     {
                         cancellationToken.ThrowIfCancellationRequested();
 
-                        // Subscription is now handled after adding to the dictionary
-                        // SubscribeToDeviceEvents(deviceInfo);
-
+                        // Build the candidate (new) cache from the freshly enumerated endpoints.
+                        // We do NOT peek at the published caches here; the reconcile decision
+                        // (reuse existing vs. keep fresh) is made atomically under _cacheLock below,
+                        // so a concurrent ProcessDeviceUpdates removal cannot leave a device that we
+                        // reused and then disposed (use-after-free), and a freshly enumerated device
+                        // that loses the race is still disposed (no COM AudioDevice leak).
                         switch (deviceInfo.Type)
                         {
                             case EDataFlow.eRender:
                                 playbackDevices.Add(deviceInfo.Id, deviceInfo);
+                                newIds.Add(deviceInfo.Id);
                                 break;
                             case EDataFlow.eCapture:
                                 recordingDevices.Add(deviceInfo.Id, deviceInfo);
+                                newIds.Add(deviceInfo.Id);
                                 break;
                             case EDataFlow.eAll:
                                 break;
@@ -377,27 +381,112 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                     throw;
                 }
 
-                // Capture the previously published devices BEFORE swapping in the new cache, so the
-                // dispose list contains exactly the old devices (not the ones we are about to publish).
-                var oldDevices = PlaybackDevices.Values.Concat(RecordingDevices.Values).ToArray();
-
-                // Publish the new cache so any reader that starts during disposal sees the fresh,
-                // valid devices (not the ones we are about to tear down). The swap is an atomic
-                // reference assignment; the old devices live on only in the local array above.
-                PlaybackDevices = playbackDevices.ToImmutableDictionary();
-                RecordingDevices = recordingDevices.ToImmutableDictionary();
-
-                // Dispose the captured old devices outside the live dictionaries, so a concurrent
-                // ProcessDeviceUpdates (device arrival/removal on another thread) cannot mutate the
-                // collection while we enumerate it. The Union over the live dictionaries used to be
-                // lazy and threw "Collection was modified" under concurrent mutation (Sentry SOUNDSWITCH-49X).
-                if (oldDevices.Length > 0)
+                // Reconcile atomically under _cacheLock (this is the only place that reads the
+                // published caches for the reuse decision, so it is immune to concurrent mutation):
+                //  - for each id, keep the EXISTING instance if still alive (preserves its COM
+                //    endpoint + volume subscription); otherwise keep the freshly enumerated one;
+                //  - a freshly enumerated instance that is NOT chosen (existing won), is disposed
+                //    here so its AudioDevice COM reference is released;
+                //  - an old instance absent from the new enumeration is disposed (genuinely removed).
+                // The dispose lists are materialized and disposal itself happens AFTER the swap,
+                // outside the lock (COM-heavy). Readers see the fresh cache during disposal.
+                DeviceFullInfo[] oldDevices;
+                List<DeviceFullInfo> rejectedFresh;
+                List<DeviceFullInfo> newlyPublished;
+                lock (_cacheLock)
                 {
-                    DisposeOldDevices(oldDevices);
+                    oldDevices = PlaybackDevices.Values.Concat(RecordingDevices.Values).ToArray();
+
+                    // Choose the surviving instance per id (reuse existing when alive).
+                    var mergedPlayback = new Dictionary<string, DeviceFullInfo>(playbackDevices.Count);
+                    var mergedRecording = new Dictionary<string, DeviceFullInfo>(recordingDevices.Count);
+                    rejectedFresh = new List<DeviceFullInfo>();
+                    // Instances we actually publish fresh (vs. reuse an existing one). Used to
+                    // subscribe ONLY the new devices after publishing, so reused instances keep
+                    // their existing volume subscription instead of being re-subscribed.
+                    newlyPublished = new List<DeviceFullInfo>();
+
+                    foreach (var kvp in playbackDevices)
+                    {
+                        DeviceFullInfo chosen;
+                        if (PlaybackDevices.TryGetValue(kvp.Key, out var existing) && !existing.IsDisposed)
+                        {
+                            chosen = existing;
+                        }
+                        else
+                        {
+                            chosen = kvp.Value; // fresh wins
+                        }
+
+                        mergedPlayback[kvp.Key] = chosen;
+
+                        if (!newIds.Contains(kvp.Key)) continue; // not fresh, no reject/subscribe possible
+                        if (!ReferenceEquals(chosen, kvp.Value))
+                        {
+                            rejectedFresh.Add(kvp.Value); // fresh instance lost the race
+                        }
+                        else
+                        {
+                            newlyPublished.Add(chosen); // fresh instance published
+                        }
+                    }
+
+                    foreach (var kvp in recordingDevices)
+                    {
+                        DeviceFullInfo chosen;
+                        if (RecordingDevices.TryGetValue(kvp.Key, out var existing) && !existing.IsDisposed)
+                        {
+                            chosen = existing;
+                        }
+                        else
+                        {
+                            chosen = kvp.Value; // fresh wins
+                        }
+
+                        mergedRecording[kvp.Key] = chosen;
+
+                        if (!newIds.Contains(kvp.Key)) continue;
+                        if (!ReferenceEquals(chosen, kvp.Value))
+                        {
+                            rejectedFresh.Add(kvp.Value);
+                        }
+                        else
+                        {
+                            newlyPublished.Add(chosen);
+                        }
+                    }
+
+                    PlaybackDevices = mergedPlayback.ToImmutableDictionary();
+                    RecordingDevices = mergedRecording.ToImmutableDictionary();
                 }
 
-                // Now subscribe to events for the new devices in the cache
-                foreach (var device in PlaybackDevices.Values.Concat(RecordingDevices.Values))
+                // Dispose freshly enumerated instances that were not published (rejected in favour
+                // of a still-alive existing instance), then dispose old instances absent from the
+                // new enumeration. Both happen outside the lock.
+                if (rejectedFresh.Count > 0)
+                {
+                    DisposeOldDevices(rejectedFresh.ToArray());
+                }
+
+                // Devices to dispose: those published before the refresh but absent from the
+                // NEWLY PUBLISHED merged caches (which include both reused existing instances and
+                // freshly enumerated ones). Deriving the retained set from the published caches —
+                // not from the freshly enumerated dictionaries — is essential: reused instances are
+                // NOT in the fresh-enumeration keys, so using those would schedule still-published
+                // (reused) devices for disposal. Disposal happens outside the lock.
+                var retainedIds = new HashSet<string>(
+                    PlaybackDevices.Keys.Concat(RecordingDevices.Keys));
+                var removedOld = oldDevices.Where(d => !retainedIds.Contains(d.Id)).ToArray();
+                if (removedOld.Length > 0)
+                {
+                    DisposeOldDevices(removedOld);
+                }
+
+                // Subscribe to events for ONLY the freshly-published instances. Reused instances
+                // keep their existing volume subscription; subscribing them again would re-add the
+                // MuteVolumeChanged handler (guarded against double-subscribe, but wasteful and
+                // misleading). `newlyPublished` is the exact set of instances we chose fresh.
+                foreach (var device in newlyPublished)
                 {
                     SubscribeToDeviceEvents(device);
                 }
@@ -428,7 +517,17 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
 
     public void Dispose()
     {
-        DisposeOldDevices(PlaybackDevices.Values.Concat(RecordingDevices.Values).ToArray());
+        // Swap both caches to Empty under the lock so no concurrent mutation can reintroduce a
+        // device after the snapshot, then dispose the captured devices outside the lock.
+        DeviceFullInfo[] oldDevices;
+        lock (_cacheLock)
+        {
+            oldDevices = PlaybackDevices.Values.Concat(RecordingDevices.Values).ToArray();
+            PlaybackDevices = ImmutableDictionary<string, DeviceFullInfo>.Empty;
+            RecordingDevices = ImmutableDictionary<string, DeviceFullInfo>.Empty;
+        }
+
+        DisposeOldDevices(oldDevices);
 
         // Dispose subjects and clear all subscriptions
         (_defaultDeviceChanged as Subject<DefaultDevicePayload>)?.Dispose();
