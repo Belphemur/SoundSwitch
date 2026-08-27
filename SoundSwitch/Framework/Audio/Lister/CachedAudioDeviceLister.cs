@@ -392,6 +392,7 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                 // outside the lock (COM-heavy). Readers see the fresh cache during disposal.
                 DeviceFullInfo[] oldDevices;
                 List<DeviceFullInfo> rejectedFresh;
+                List<DeviceFullInfo> newlyPublished;
                 lock (_cacheLock)
                 {
                     oldDevices = PlaybackDevices.Values.Concat(RecordingDevices.Values).ToArray();
@@ -400,42 +401,58 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                     var mergedPlayback = new Dictionary<string, DeviceFullInfo>(playbackDevices.Count);
                     var mergedRecording = new Dictionary<string, DeviceFullInfo>(recordingDevices.Count);
                     rejectedFresh = new List<DeviceFullInfo>();
+                    // Instances we actually publish fresh (vs. reuse an existing one). Used to
+                    // subscribe ONLY the new devices after publishing, so reused instances keep
+                    // their existing volume subscription instead of being re-subscribed.
+                    newlyPublished = new List<DeviceFullInfo>();
 
                     foreach (var kvp in playbackDevices)
                     {
+                        DeviceFullInfo chosen;
                         if (PlaybackDevices.TryGetValue(kvp.Key, out var existing) && !existing.IsDisposed)
                         {
-                            mergedPlayback[kvp.Key] = existing;
+                            chosen = existing;
                         }
                         else
                         {
-                            mergedPlayback[kvp.Key] = kvp.Value; // fresh wins
+                            chosen = kvp.Value; // fresh wins
                         }
 
-                        if (!newIds.Contains(kvp.Key)) continue; // not fresh, no reject possible
-                        var chosen = mergedPlayback[kvp.Key];
+                        mergedPlayback[kvp.Key] = chosen;
+
+                        if (!newIds.Contains(kvp.Key)) continue; // not fresh, no reject/subscribe possible
                         if (!ReferenceEquals(chosen, kvp.Value))
                         {
                             rejectedFresh.Add(kvp.Value); // fresh instance lost the race
+                        }
+                        else
+                        {
+                            newlyPublished.Add(chosen); // fresh instance published
                         }
                     }
 
                     foreach (var kvp in recordingDevices)
                     {
+                        DeviceFullInfo chosen;
                         if (RecordingDevices.TryGetValue(kvp.Key, out var existing) && !existing.IsDisposed)
                         {
-                            mergedRecording[kvp.Key] = existing;
+                            chosen = existing;
                         }
                         else
                         {
-                            mergedRecording[kvp.Key] = kvp.Value; // fresh wins
+                            chosen = kvp.Value; // fresh wins
                         }
 
+                        mergedRecording[kvp.Key] = chosen;
+
                         if (!newIds.Contains(kvp.Key)) continue;
-                        var chosen = mergedRecording[kvp.Key];
                         if (!ReferenceEquals(chosen, kvp.Value))
                         {
-                            rejectedFresh.Add(kvp.Value); // fresh instance lost the race
+                            rejectedFresh.Add(kvp.Value);
+                        }
+                        else
+                        {
+                            newlyPublished.Add(chosen);
                         }
                     }
 
@@ -465,16 +482,13 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                     DisposeOldDevices(removedOld);
                 }
 
-                // Now subscribe to events, but ONLY for devices that weren't already in the cache
-                // (reused instances keep their existing volume subscription). The newIds set was
-                // built from the freshly enumerated ids, so subscribing only those is correct and
-                // avoids tearing down/re-adding the COM volume registration on every refresh.
-                foreach (var device in PlaybackDevices.Values.Concat(RecordingDevices.Values))
+                // Subscribe to events for ONLY the freshly-published instances. Reused instances
+                // keep their existing volume subscription; subscribing them again would re-add the
+                // MuteVolumeChanged handler (guarded against double-subscribe, but wasteful and
+                // misleading). `newlyPublished` is the exact set of instances we chose fresh.
+                foreach (var device in newlyPublished)
                 {
-                    if (newIds.Contains(device.Id))
-                    {
-                        SubscribeToDeviceEvents(device);
-                    }
+                    SubscribeToDeviceEvents(device);
                 }
 
 
