@@ -308,6 +308,10 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
             Refreshing = true;
             var playbackDevices = new Dictionary<string, DeviceFullInfo>();
             var recordingDevices = new Dictionary<string, DeviceFullInfo>();
+            // Devices to dispose after publishing: those present before but absent from the new
+            // enumeration. Devices newly added this refresh (for post-publish subscription).
+            var toDispose = new List<DeviceFullInfo>();
+            var newIds = new HashSet<string>();
 
             using var registration = cancellationToken.Register(_ => { logContext.Warning("Cancellation received."); }, null);
 
@@ -322,11 +326,6 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                 var enumeratedDevices = AudioSwitcher.Instance.GetAudioEndpoints(EDataFlow.eAll, _state).ToArray();
                 try
                 {
-                    // Captured old devices live on only in the published caches until the swap
-                    // below. We dispose the ones that are absent from the new enumeration AFTER
-                    // publishing, so we never dispose a device still in use.
-                    var toDispose = new List<DeviceFullInfo>();
-
                     foreach (var deviceInfo in enumeratedDevices)
                     {
                         cancellationToken.ThrowIfCancellationRequested();
@@ -350,6 +349,7 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                                 else
                                 {
                                     playbackDevices.Add(deviceInfo.Id, deviceInfo);
+                                    newIds.Add(deviceInfo.Id);
                                 }
 
                                 break;
@@ -361,6 +361,7 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                                 else
                                 {
                                     recordingDevices.Add(deviceInfo.Id, deviceInfo);
+                                    newIds.Add(deviceInfo.Id);
                                 }
 
                                 break;
@@ -401,7 +402,6 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                 // they are never disposed. Disposal happens OUTSIDE the lock (COM-heavy).
                 if (oldDevices.Length > 0)
                 {
-                    var newIds = new HashSet<string>(playbackDevices.Keys.Concat(recordingDevices.Keys));
                     foreach (var oldDevice in oldDevices)
                     {
                         if (!newIds.Contains(oldDevice.Id))
