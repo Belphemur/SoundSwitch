@@ -49,7 +49,7 @@ public class PlaySoundJob([CanBeNull] string deviceId, [NotNull] CachedSound sou
 
         // Real (non-cancellation) playback failures must surface as errors so they reach Sentry
         // (see issue #2384: a silent WASAPI render failure shipped unnoticed because this was Warning).
-        Log.ForContext<PlaySoundJob>().Error(exception, "Sound notification playback stopped with an error (deviceId: {DeviceId})", deviceId ?? "<default>");
+        Log.ForContext<PlaySoundJob>().Error(exception, "Sound notification playback stopped with an error (deviceId: {DeviceId})", string.IsNullOrEmpty(deviceId) ? "<default>" : deviceId);
     }
 
     public Task OnFailure(JobException exception)
@@ -61,7 +61,7 @@ public class PlaySoundJob([CanBeNull] string deviceId, [NotNull] CachedSound sou
 
         // Real (non-cancellation) playback failures must surface as errors so they reach Sentry
         // (see issue #2384: a silent WASAPI render failure shipped unnoticed because this was Warning).
-        Log.ForContext<PlaySoundJob>().Error(exception.InnerException ?? (Exception)exception, "Failed to play sound notification (deviceId: {DeviceId})", deviceId ?? "<default>");
+        Log.ForContext<PlaySoundJob>().Error(exception.InnerException ?? (Exception)exception, "Failed to play sound notification (deviceId: {DeviceId})", string.IsNullOrEmpty(deviceId) ? "<default>" : deviceId);
         return Task.CompletedTask;
     }
 
