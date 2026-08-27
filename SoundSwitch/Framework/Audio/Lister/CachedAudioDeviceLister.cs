@@ -132,6 +132,22 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
     }
 
     /// <summary>
+    /// Disposes a collection of devices that has already been snapshotted, so callers can
+    /// enumerate a stable copy instead of the live published dictionaries. This avoids
+    /// <see cref="InvalidOperationException"/> ("Collection was modified") when another thread
+    /// (e.g. <see cref="ProcessDeviceUpdates"/> handling device arrival/removal) mutates
+    /// <c>PlaybackDevices</c>/<c>RecordingDevices</c> while we enumerate them.
+    /// </summary>
+    /// <param name="oldDevices">A materialized snapshot of the devices to dispose.</param>
+    private void DisposeOldDevices(IEnumerable<DeviceFullInfo> oldDevices)
+    {
+        foreach (var device in oldDevices)
+        {
+            DisposeDevice(device);
+        }
+    }
+
+    /// <summary>
     /// Process device updates
     /// </summary>
     /// <param name="deviceChangedEvents"></param>
@@ -301,13 +317,15 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                     throw;
                 }
 
-                // Dispose old devices first
-                foreach (var device in PlaybackDevices.Union(RecordingDevices))
-                {
-                    DisposeDevice(device.Value);
-                }
+                // Snapshot the currently published devices and dispose them outside the live
+                // dictionaries, so a concurrent ProcessDeviceUpdates (device arrival/removal on
+                // another thread) cannot mutate the collection while we enumerate it. The Union
+                // over the live dictionaries used to be lazy and threw
+                // "Collection was modified" under concurrent mutation (Sentry SOUNDSWITCH-49X).
+                var oldDevices = PlaybackDevices.Values.Concat(RecordingDevices.Values).ToArray();
+                DisposeOldDevices(oldDevices);
 
-                // Update caches
+                // Update caches (swap happens once, atomically via field assignment)
                 PlaybackDevices = playbackDevices;
                 RecordingDevices = recordingDevices;
 
@@ -343,10 +361,7 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
 
     public void Dispose()
     {
-        foreach (var device in PlaybackDevices.Union(RecordingDevices))
-        {
-            DisposeDevice(device.Value);
-        }
+        DisposeOldDevices(PlaybackDevices.Values.Concat(RecordingDevices.Values).ToArray());
 
         // Dispose subjects and clear all subscriptions
         (_defaultDeviceChanged as Subject<DefaultDevicePayload>)?.Dispose();
