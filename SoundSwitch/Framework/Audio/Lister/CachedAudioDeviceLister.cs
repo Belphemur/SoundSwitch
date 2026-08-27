@@ -377,17 +377,24 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                     throw;
                 }
 
-                // Snapshot the currently published devices and dispose them outside the live
-                // dictionaries, so a concurrent ProcessDeviceUpdates (device arrival/removal on
-                // another thread) cannot mutate the collection while we enumerate it. The Union
-                // over the live dictionaries used to be lazy and threw
-                // "Collection was modified" under concurrent mutation (Sentry SOUNDSWITCH-49X).
+                // Capture the previously published devices BEFORE swapping in the new cache, so the
+                // dispose list contains exactly the old devices (not the ones we are about to publish).
                 var oldDevices = PlaybackDevices.Values.Concat(RecordingDevices.Values).ToArray();
-                DisposeOldDevices(oldDevices);
 
-                // Update caches (swap happens once, atomically via field assignment)
+                // Publish the new cache so any reader that starts during disposal sees the fresh,
+                // valid devices (not the ones we are about to tear down). The swap is an atomic
+                // reference assignment; the old devices live on only in the local array above.
                 PlaybackDevices = playbackDevices.ToImmutableDictionary();
                 RecordingDevices = recordingDevices.ToImmutableDictionary();
+
+                // Dispose the captured old devices outside the live dictionaries, so a concurrent
+                // ProcessDeviceUpdates (device arrival/removal on another thread) cannot mutate the
+                // collection while we enumerate it. The Union over the live dictionaries used to be
+                // lazy and threw "Collection was modified" under concurrent mutation (Sentry SOUNDSWITCH-49X).
+                if (oldDevices.Length > 0)
+                {
+                    DisposeOldDevices(oldDevices);
+                }
 
                 // Now subscribe to events for the new devices in the cache
                 foreach (var device in PlaybackDevices.Values.Concat(RecordingDevices.Values))
