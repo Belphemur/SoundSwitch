@@ -36,10 +36,19 @@ namespace SoundSwitch.Framework.Audio.Lister;
 
 public class CachedAudioDeviceLister : IAudioDeviceLister
 {
-    // Backing fields are kept separate from the properties so the lock-free CompareExchange
+    // Backing fields are kept separate from the properties so the CompareExchange
     // swaps below can pass them by `ref` (auto-properties cannot be passed by ref — CS0206).
     private ImmutableDictionary<string, DeviceFullInfo> _playbackDevices = ImmutableDictionary<string, DeviceFullInfo>.Empty;
     private ImmutableDictionary<string, DeviceFullInfo> _recordingDevices = ImmutableDictionary<string, DeviceFullInfo>.Empty;
+
+    // Guards only the immutable-dictionary reference swaps below. The swap itself is a single
+    // atomic reference assignment, but Refresh publishes a freshly rebuilt cache while
+    // ProcessDeviceUpdates swaps individual entries in (via SwapReplace/SwapRemove). Serializing
+    // just the swaps — not the COM-heavy enumeration/subscribe/dispose work — keeps the two
+    // publications mutually exclusive so a concurrent update can neither be overwritten/lost nor
+    // left undisposed (Sentry SOUNDSWITCH-49X-adjacent race flagged in PR #2393 review).
+    // Static because the swap helpers are static (they take the backing field by ref).
+    private static readonly object _cacheLock = new();
 
     /// <inheritdoc />
     private ImmutableDictionary<string, DeviceFullInfo> PlaybackDevices
@@ -164,27 +173,32 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
     }
 
     /// <summary>
-    /// Lock-free read-modify-write that replaces (or inserts) <paramref name="device"/> under
-    /// <paramref name="id"/> in the published immutable dictionary, retrying on concurrent
-    /// modification via <see cref="Interlocked.CompareExchange{T}(ref T,T,T)"/>. The dictionary
-    /// reference itself is a single field, so the swap is an atomic reference assignment.
+    /// Read-modify-write that replaces (or inserts) <paramref name="device"/> under
+    /// <paramref name="id"/> in the published immutable dictionary. The swap is guarded by
+    /// <c>_cacheLock</c> so it is mutually exclusive with <see cref="Refresh"/> publishing a rebuilt
+    /// cache (and with <see cref="SwapRemove"/>), preventing a concurrent update from being
+    /// overwritten/lost or left undisposed.
     /// </summary>
     private static ImmutableDictionary<string, DeviceFullInfo> SwapReplace(
         ref ImmutableDictionary<string, DeviceFullInfo> field,
         string id, DeviceFullInfo device)
     {
         ImmutableDictionary<string, DeviceFullInfo> current, updated;
-        do
+        lock (_cacheLock)
         {
-            current = field;
-            updated = current.SetItem(id, device);
-        } while (Interlocked.CompareExchange(ref field, updated, current) != current);
+            do
+            {
+                current = field;
+                updated = current.SetItem(id, device);
+            } while (Interlocked.CompareExchange(ref field, updated, current) != current);
+        }
         return updated;
     }
 
     /// <summary>
-    /// Lock-free read-modify-write that removes <paramref name="id"/> from the published immutable
-    /// dictionary, retrying on concurrent modification. Returns the (possibly unchanged) dictionary;
+    /// Read-modify-write that removes <paramref name="id"/> from the published immutable
+    /// dictionary. Guarded by <c>_cacheLock</c> (see <see cref="SwapReplace"/>) so it cannot race
+    /// with <see cref="Refresh"/>'s publication. Returns the (possibly unchanged) dictionary;
     /// <paramref name="removed"/> is the evicted device or <c>null</c> when the id wasn't present.
     /// </summary>
     private static ImmutableDictionary<string, DeviceFullInfo> SwapRemove(
@@ -192,16 +206,20 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
         string id, out DeviceFullInfo? removed)
     {
         ImmutableDictionary<string, DeviceFullInfo> current, updated;
-        do
+        lock (_cacheLock)
         {
-            current = field;
-            if (!current.TryGetValue(id, out removed))
+            do
             {
-                removed = null;
-                return current; // nothing to remove
-            }
-            updated = current.Remove(id);
-        } while (Interlocked.CompareExchange(ref field, updated, current) != current);
+                current = field;
+                if (!current.TryGetValue(id, out removed))
+                {
+                    removed = null;
+                    return current; // nothing to remove
+                }
+
+                updated = current.Remove(id);
+            } while (Interlocked.CompareExchange(ref field, updated, current) != current);
+        }
         return updated;
     }
 
@@ -382,10 +400,14 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                 var oldDevices = PlaybackDevices.Values.Concat(RecordingDevices.Values).ToArray();
 
                 // Publish the new cache so any reader that starts during disposal sees the fresh,
-                // valid devices (not the ones we are about to tear down). The swap is an atomic
-                // reference assignment; the old devices live on only in the local array above.
-                PlaybackDevices = playbackDevices.ToImmutableDictionary();
-                RecordingDevices = recordingDevices.ToImmutableDictionary();
+                // valid devices (not the ones we are about to tear down). The publish is guarded by
+                // _cacheLock (same as SwapReplace/SwapRemove) so a concurrent ProcessDeviceUpdates
+                // swap cannot land between our snapshot and our publish and get overwritten/lost.
+                lock (_cacheLock)
+                {
+                    PlaybackDevices = playbackDevices.ToImmutableDictionary();
+                    RecordingDevices = recordingDevices.ToImmutableDictionary();
+                }
 
                 // Dispose the captured old devices outside the live dictionaries, so a concurrent
                 // ProcessDeviceUpdates (device arrival/removal on another thread) cannot mutate the
