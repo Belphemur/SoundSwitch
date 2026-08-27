@@ -22,6 +22,8 @@ namespace SoundSwitch.Common.Framework.Audio.Device
         public EDeviceState State { get; }
 
         private int _disposed; // 0 = not disposed, 1 = disposed (Interlocked)
+        [JsonIgnore]
+        public bool IsDisposed => _disposed != 0;
         private bool _isVolumeHandlerSubscribed = false;
 
         [JsonIgnore]

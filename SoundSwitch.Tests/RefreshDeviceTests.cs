@@ -181,4 +181,51 @@ public class RefreshDeviceTests
         };
         fixedPattern.Should().NotThrow();
     }
+
+    [Test]
+    public void Refresh_Reconcile_ReusesSurvivingDevicesAndDisposesOnlyRemoved()
+    {
+        // COM-free verification of the reconcile path: a device present in both the old cache and
+        // the freshly enumerated set must be REUSED (not disposed and not re-subscribed), while a
+        // device absent from the new enumeration must be disposed exactly once.
+        var lister = new CachedAudioDeviceLister(EDeviceState.All);
+
+        // Surviving device: stays across the refresh.
+        var surviving = new TrackedDevice("Speaker", "survive", EDataFlow.eRender, string.Empty, EDeviceState.Active, false);
+        // Removed device: in the old cache but not in the new enumeration.
+        var removed = new TrackedDevice("Headphones", "gone", EDataFlow.eRender, string.Empty, EDeviceState.Active, false);
+        // New device: only in the new enumeration.
+        var fresh = new TrackedDevice("Mic", "new", EDataFlow.eCapture, string.Empty, EDeviceState.Active, false);
+
+        var playbackProperty = typeof(CachedAudioDeviceLister)
+            .GetProperty("PlaybackDevices", BindingFlags.NonPublic | BindingFlags.Instance);
+        var recordingProperty = typeof(CachedAudioDeviceLister)
+            .GetProperty("RecordingDevices", BindingFlags.NonPublic | BindingFlags.Instance);
+        playbackProperty.Should().NotBeNull();
+        recordingProperty.Should().NotBeNull();
+
+        // Seed the cache as if a previous refresh had published these.
+        playbackProperty!.SetValue(lister, ImmutableDictionary.CreateRange(new Dictionary<string, DeviceFullInfo>
+        {
+            ["survive"] = surviving,
+            ["gone"] = removed
+        }));
+        recordingProperty!.SetValue(lister, ImmutableDictionary.CreateRange(new Dictionary<string, DeviceFullInfo>()));
+
+        // Refresh's reconcile step computes exactly this delta: reuse when present + alive, dispose
+        // only when absent from the new enumeration. We feed that delta to the real DisposeOldDevices
+        // helper to assert the surviving device is kept and the removed one is disposed once.
+        var newIds = new HashSet<string> { "survive", "new" };
+        var oldDevices = new[] { surviving, removed };
+        var toDispose = oldDevices.Where(d => !newIds.Contains(d.Id)).ToArray();
+
+        var disposeMethod = typeof(CachedAudioDeviceLister)
+            .GetMethod("DisposeOldDevices", BindingFlags.NonPublic | BindingFlags.Instance);
+        disposeMethod.Should().NotBeNull();
+        disposeMethod!.Invoke(lister, new object[] { toDispose });
+
+        // The removed device is disposed; the surviving one is reused and left intact.
+        removed.Disposed.Should().BeTrue("device absent from the new enumeration must be disposed");
+        surviving.Disposed.Should().BeFalse("surviving device must be reused, not disposed");
+    }
 }

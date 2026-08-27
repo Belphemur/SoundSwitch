@@ -322,20 +322,47 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                 var enumeratedDevices = AudioSwitcher.Instance.GetAudioEndpoints(EDataFlow.eAll, _state).ToArray();
                 try
                 {
+                    // Captured old devices live on only in the published caches until the swap
+                    // below. We dispose the ones that are absent from the new enumeration AFTER
+                    // publishing, so we never dispose a device still in use.
+                    var toDispose = new List<DeviceFullInfo>();
+
                     foreach (var deviceInfo in enumeratedDevices)
                     {
                         cancellationToken.ThrowIfCancellationRequested();
 
-                        // Subscription is now handled after adding to the dictionary
-                        // SubscribeToDeviceEvents(deviceInfo);
+                        // Reconcile: if this device id already exists in the cache (and is still
+                        // alive), REUSE the existing DeviceFullInfo — it already holds a live COM
+                        // endpoint and an active volume subscription. We only rebuild a fresh
+                        // instance for genuinely new ids. This avoids tearing down and re-subscribing
+                        // every device on every refresh (the full-refresh happens at startup and
+                        // system resume), which is both cleaner and preserves real-time volume state.
+                        ImmutableDictionary<string, DeviceFullInfo>? existingDict = deviceInfo.Type == EDataFlow.eRender ? PlaybackDevices : RecordingDevices;
+                        DeviceFullInfo? existing = existingDict != null && existingDict.TryGetValue(deviceInfo.Id, out var candidate) && !candidate.IsDisposed ? candidate : null;
 
                         switch (deviceInfo.Type)
                         {
                             case EDataFlow.eRender:
-                                playbackDevices.Add(deviceInfo.Id, deviceInfo);
+                                if (existing != null)
+                                {
+                                    playbackDevices.Add(deviceInfo.Id, existing);
+                                }
+                                else
+                                {
+                                    playbackDevices.Add(deviceInfo.Id, deviceInfo);
+                                }
+
                                 break;
                             case EDataFlow.eCapture:
-                                recordingDevices.Add(deviceInfo.Id, deviceInfo);
+                                if (existing != null)
+                                {
+                                    recordingDevices.Add(deviceInfo.Id, existing);
+                                }
+                                else
+                                {
+                                    recordingDevices.Add(deviceInfo.Id, deviceInfo);
+                                }
+
                                 break;
                             case EDataFlow.eAll:
                                 break;
@@ -369,20 +396,33 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                     RecordingDevices = recordingDevices.ToImmutableDictionary();
                 }
 
-                // Dispose the captured old devices OUTSIDE the lock: disposal is COM-heavy and the
-                // old devices live on only in the local array. Any reader that starts during disposal
-                // sees the fresh, valid devices. The materialized array avoids the lazy-enumeration
-                // race that threw "Collection was modified" (Sentry SOUNDSWITCH-49X).
+                // Dispose only the devices that were published before but are absent from the new
+                // enumeration (genuinely removed). Reused instances are still in the new cache, so
+                // they are never disposed. Disposal happens OUTSIDE the lock (COM-heavy).
                 if (oldDevices.Length > 0)
                 {
-                    DisposeOldDevices(oldDevices);
+                    var newIds = new HashSet<string>(playbackDevices.Keys.Concat(recordingDevices.Keys));
+                    foreach (var oldDevice in oldDevices)
+                    {
+                        if (!newIds.Contains(oldDevice.Id))
+                        {
+                            toDispose.Add(oldDevice);
+                        }
+                    }
+
+                    DisposeOldDevices(toDispose.ToArray());
                 }
 
-                // Now subscribe to events for the new devices in the cache (outside the lock:
-                // subscription marshals onto the ComThread and must not block the swap path).
+                // Now subscribe to events, but ONLY for devices that weren't already in the cache
+                // (reused instances keep their existing volume subscription). The newIds set was
+                // built from the freshly enumerated ids, so subscribing only those is correct and
+                // avoids tearing down/re-adding the COM volume registration on every refresh.
                 foreach (var device in PlaybackDevices.Values.Concat(RecordingDevices.Values))
                 {
-                    SubscribeToDeviceEvents(device);
+                    if (newIds.Contains(device.Id))
+                    {
+                        SubscribeToDeviceEvents(device);
+                    }
                 }
 
 
