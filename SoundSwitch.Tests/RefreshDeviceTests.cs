@@ -222,6 +222,10 @@ public class RefreshDeviceTests
             ["survive"] = surviving, // reused from old cache
             ["new"] = fresh           // freshly enumerated
         };
+        // The old (pre-refresh) cache holds the surviving + removed devices; the published cache
+        // (reused + fresh) holds surviving + fresh. Disposal targets only old devices absent from
+        // the published cache — i.e. the removed one.
+        var oldDevices = new[] { surviving, removed };
         var retainedIds = new HashSet<string>(publishedPlayback.Keys); // mirrors fixed Refresh
         var toDispose = oldDevices.Where(d => !retainedIds.Contains(d.Id)).ToArray();
 
