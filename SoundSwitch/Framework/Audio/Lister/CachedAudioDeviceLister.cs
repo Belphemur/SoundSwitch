@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
@@ -36,10 +37,10 @@ namespace SoundSwitch.Framework.Audio.Lister;
 public class CachedAudioDeviceLister : IAudioDeviceLister
 {
     /// <inheritdoc />
-    private Dictionary<string, DeviceFullInfo> PlaybackDevices { get; set; } = new();
+    private ImmutableDictionary<string, DeviceFullInfo> PlaybackDevices { get; set; } = ImmutableDictionary<string, DeviceFullInfo>.Empty;
 
     /// <inheritdoc />
-    private Dictionary<string, DeviceFullInfo> RecordingDevices { get; set; } = new();
+    private ImmutableDictionary<string, DeviceFullInfo> RecordingDevices { get; set; } = ImmutableDictionary<string, DeviceFullInfo>.Empty;
 
     private readonly ISubject<DefaultDevicePayload> _defaultDeviceChanged = new Subject<DefaultDevicePayload>();
     public IObservable<DefaultDevicePayload> DefaultDeviceChanged => _defaultDeviceChanged.AsObservable();
@@ -148,6 +149,48 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
     }
 
     /// <summary>
+    /// Lock-free read-modify-write that replaces (or inserts) <paramref name="device"/> under
+    /// <paramref name="id"/> in the published immutable dictionary, retrying on concurrent
+    /// modification via <see cref="Interlocked.CompareExchange{T}(ref T,T,T)"/>. The dictionary
+    /// reference itself is a single field, so the swap is an atomic reference assignment.
+    /// </summary>
+    private static ImmutableDictionary<string, DeviceFullInfo> SwapReplace(
+        ref ImmutableDictionary<string, DeviceFullInfo> field,
+        string id, DeviceFullInfo device)
+    {
+        ImmutableDictionary<string, DeviceFullInfo> current, updated;
+        do
+        {
+            current = field;
+            updated = current.SetItem(id, device);
+        } while (Interlocked.CompareExchange(ref field, updated, current) != current);
+        return updated;
+    }
+
+    /// <summary>
+    /// Lock-free read-modify-write that removes <paramref name="id"/> from the published immutable
+    /// dictionary, retrying on concurrent modification. Returns the (possibly unchanged) dictionary;
+    /// <paramref name="removed"/> is the evicted device or <c>null</c> when the id wasn't present.
+    /// </summary>
+    private static ImmutableDictionary<string, DeviceFullInfo> SwapRemove(
+        ref ImmutableDictionary<string, DeviceFullInfo> field,
+        string id, out DeviceFullInfo? removed)
+    {
+        ImmutableDictionary<string, DeviceFullInfo> current, updated;
+        do
+        {
+            current = field;
+            if (!current.TryGetValue(id, out removed))
+            {
+                removed = null;
+                return current; // nothing to remove
+            }
+            updated = current.Remove(id);
+        } while (Interlocked.CompareExchange(ref field, updated, current) != current);
+        return updated;
+    }
+
+    /// <summary>
     /// Process device updates
     /// </summary>
     /// <param name="deviceChangedEvents"></param>
@@ -178,7 +221,7 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                         DisposeDevice(oldPlaybackDevice);
                     }
 
-                    PlaybackDevices[device.Id] = device;
+                    SwapReplace(ref PlaybackDevices, device.Id, device);
                     SubscribeToDeviceEvents(device);
                     break;
                 case EDataFlow.eCapture:
@@ -187,7 +230,7 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                         DisposeDevice(oldRecordingDevice);
                     }
 
-                    RecordingDevices[device.Id] = device;
+                    SwapReplace(ref RecordingDevices, device.Id, device);
                     SubscribeToDeviceEvents(device);
                     break;
                 case EDataFlow.eAll:
@@ -207,13 +250,15 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                 {
                     case EventType.Removed:
                         var removed = false;
-                        if (PlaybackDevices.Remove(deviceChangedEvent.DeviceId, out var playbackDevice))
+                        SwapRemove(ref PlaybackDevices, deviceChangedEvent.DeviceId, out var playbackDevice);
+                        if (playbackDevice != null)
                         {
                             DisposeDevice(playbackDevice);
                             removed = true;
                         }
 
-                        if (RecordingDevices.Remove(deviceChangedEvent.DeviceId, out var recordingDevice))
+                        SwapRemove(ref RecordingDevices, deviceChangedEvent.DeviceId, out var recordingDevice);
+                        if (recordingDevice != null)
                         {
                             DisposeDevice(recordingDevice);
                             removed = true;
@@ -326,8 +371,8 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                 DisposeOldDevices(oldDevices);
 
                 // Update caches (swap happens once, atomically via field assignment)
-                PlaybackDevices = playbackDevices;
-                RecordingDevices = recordingDevices;
+                PlaybackDevices = playbackDevices.ToImmutableDictionary();
+                RecordingDevices = recordingDevices.ToImmutableDictionary();
 
                 // Now subscribe to events for the new devices in the cache
                 foreach (var device in PlaybackDevices.Values.Concat(RecordingDevices.Values))

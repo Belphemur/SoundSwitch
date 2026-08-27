@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -122,8 +123,8 @@ public class RefreshDeviceTests
 
         var playback = new Dictionary<string, DeviceFullInfo> { ["p1"] = MakeDevice() };
         var recording = new Dictionary<string, DeviceFullInfo> { ["r1"] = MakeDevice() };
-        playbackProperty!.SetValue(lister, playback);
-        recordingProperty!.SetValue(lister, recording);
+        playbackProperty!.SetValue(lister, ImmutableDictionary.CreateRange(playback));
+        recordingProperty!.SetValue(lister, ImmutableDictionary.CreateRange(recording));
 
         // Snapshot exactly as Refresh does: materialize before the concurrent mutator starts.
         var snapshot = playback.Values.Concat(recording.Values).ToArray();

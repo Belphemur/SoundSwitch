@@ -1,5 +1,6 @@
 ﻿#nullable enable
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Newtonsoft.Json;
@@ -20,7 +21,7 @@ namespace SoundSwitch.Common.Framework.Audio.Device
         public string IconPath { get; }
         public EDeviceState State { get; }
 
-        private bool _disposed = false;
+        private int _disposed; // 0 = not disposed, 1 = disposed (Interlocked)
         private bool _isVolumeHandlerSubscribed = false;
 
         [JsonIgnore]
@@ -71,7 +72,7 @@ namespace SoundSwitch.Common.Framework.Audio.Device
         public void SubscribeToVolumeNotifications()
         {
             // Precondition checks: Use guard clauses to avoid nesting
-            if (_disposed)
+            if (_disposed != 0)
             {
                 _logger.Debug("Skipping volume subscription for {DeviceNameClean}: Device is disposed.", NameClean);
                 return;
@@ -211,7 +212,7 @@ namespace SoundSwitch.Common.Framework.Audio.Device
 
         protected virtual void Dispose(bool disposing)
         {
-            if (_disposed) return;
+            if (Interlocked.Exchange(ref _disposed, 1) != 0) return;
 
             try
             {
@@ -253,7 +254,7 @@ namespace SoundSwitch.Common.Framework.Audio.Device
             }
             finally
             {
-                _disposed = true;
+                _disposed = 1;
             }
         }
     }
