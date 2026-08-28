@@ -101,6 +101,13 @@ public partial class AppModel
             {
                 return null;
             }
+            // A stored path may point to a corrupt or unsupported file (decode failure). Fall back to
+            // the default notification sound rather than surfacing the exception into the Settings UI
+            // or notification path.
+            catch (Exception)
+            {
+                return null;
+            }
         }
         set
         {

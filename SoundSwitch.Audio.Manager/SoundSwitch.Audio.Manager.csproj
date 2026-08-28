@@ -11,8 +11,6 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.CsWinRT" />
-    <PackageReference Include="NAudio" />
-    <PackageReference Include="NAudio.Wasapi" />
     <PackageReference Include="Serilog" />
   </ItemGroup>
   <ItemGroup>

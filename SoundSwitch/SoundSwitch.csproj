@@ -42,8 +42,13 @@
     <PackageReference Include="JetBrains.Annotations" />
     <PackageReference Include="Job.Scheduler" />
     <PackageReference Include="Markdig" />
+    <!-- NAudio umbrella (3.0.1) brings NAudio.Wasapi 3.0.1 via its net9.0-windows leg.
+         Referencing NAudio.Wasapi directly is intentionally avoided: that package only ships a
+         net9.0 (portable) asset, which on a net10.0-windows TFM silently drops the entire Windows
+         stack (no WASAPI/MediaFoundation types) — the "notification sound won't play" regression
+         (#2384 follow-up, NAudio issue #1407). The umbrella's net9.0-windows10.0.19041 leg selects
+         the correct Windows assets. -->
     <PackageReference Include="NAudio" />
-    <PackageReference Include="NAudio.Wasapi" />
     <PackageReference Include="NuGet.Versioning" />
     <PackageReference Include="Polly.Core" />
     <PackageReference Include="RailSharp" />

@@ -32,7 +32,7 @@ public class CachedSound
     /// Load the AudioFile into the memory using the right reader.
     /// </summary>
     /// <param name="audioFileName"></param>
-    /// <exception cref="ArgumentException">Audio file doesn't exists</exception>
+    /// <exception cref="CachedSoundFileNotExistsException">Audio file doesn't exist</exception>
     public CachedSound(string audioFileName)
     {
         if (!File.Exists(audioFileName))
@@ -56,12 +56,20 @@ public class CachedSound
     }
 
     /// <summary>
-    /// Decode the WAV from the stream using the right reader.
+    /// Decode the WAV / MP3 from the stream using the right reader.
     /// </summary>
-    /// <param name="stream">A stream containing a WAV file.</param>
+    /// <param name="stream">A stream containing a WAV or an MP3 file.</param>
     public CachedSound(Stream stream)
     {
-        using var reader = new WaveFileReader(stream);
+        // Buffer the stream so the format can be sniffed from the start regardless of
+        // the stream's position, and so the reader sees a rewound stream.
+        using var buffered = new MemoryStream();
+        stream.CopyTo(buffered);
+        buffered.Position = 0;
+
+        using var reader = IsMp3Stream(buffered)
+            ? new AudioFileReader(buffered)
+            : new WaveFileReader(buffered);
         WaveFormat = reader.WaveFormat;
         var wholeFile = new List<byte>((int)reader.Length);
         var readBuffer = new byte[reader.WaveFormat.SampleRate * reader.WaveFormat.Channels];
@@ -90,5 +98,17 @@ public class CachedSound
         {
             return new MediaFoundationReader(filename);
         }
+    }
+
+    /// <summary>
+    /// Detects MP3 content in a stream (ID3v2 tag or a raw MPEG frame sync). The stream is left
+    /// positioned at its start so the chosen reader can consume it from the beginning.
+    /// </summary>
+    private static bool IsMp3Stream(Stream stream)
+    {
+        var header = new byte[3];
+        var read = stream.Read(header, 0, header.Length);
+        stream.Position = 0;
+        return IsMp3Data(header.AsSpan(0, read));
     }
 }

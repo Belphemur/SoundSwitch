@@ -44,7 +44,7 @@ public class PlaySoundJob([CanBeNull] string deviceId, [NotNull] CachedSound sou
         using var device = GetDevice(enumerator);
         if (device == null)
         {
-            Log.ForContext<PlaySoundJob>().Warning("No audio device found for specified ID.");
+            Log.ForContext<PlaySoundJob>().Warning("No audio device found for specified ID: {DeviceId}.", string.IsNullOrEmpty(deviceId) ? "<default>" : deviceId);
             return;
         }
 

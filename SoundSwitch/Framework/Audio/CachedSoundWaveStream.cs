@@ -23,6 +23,9 @@ public class CachedSoundWaveStream(CachedSound cachedSound) : WaveStream
     public override WaveFormat WaveFormat => cachedSound.WaveFormat;
     public override int Read(byte[] buffer, int offset, int count)
     {
+        if (Position >= cachedSound.AudioData.Length)
+            return 0;
+
         var availableSamples = cachedSound.AudioData.Length - Position;
         var samplesToCopy = Math.Min(availableSamples, count);
         Array.Copy(cachedSound.AudioData, Position, buffer, offset, samplesToCopy);
