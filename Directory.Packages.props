@@ -15,6 +15,11 @@
     <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="10.0.11" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.9.0" />
     <PackageVersion Include="Microsoft.Windows.CsWinRT" Version="2.3.1" />
+    <!-- NAudio split packages (3.0.1): the app only uses Core + Wasapi types.
+         Referenced directly instead of the NAudio umbrella to avoid pulling the
+         unused Midi/Asio/WinForms/WinMM/Dmo packages. NAudio.Wasapi 3.0.1 ships
+         only a net9.0 (portable) asset; on the net10.0-windows TFM the Windows
+         stack must still resolve (see #1407 / PR #2400). -->
     <PackageVersion Include="NAudio.Core" Version="3.0.1" />
     <PackageVersion Include="NAudio.Wasapi" Version="3.0.1" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
