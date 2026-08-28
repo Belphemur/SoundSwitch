@@ -88,12 +88,18 @@ public class PlaySoundJob([CanBeNull] string deviceId, [NotNull] CachedSound sou
         if (string.IsNullOrEmpty(deviceId))
             return enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
 
-        var device = enumerator.GetDevice(deviceId);
-        if (device == null)
+        try
         {
-            Log.ForContext<PlaySoundJob>().Warning($"Could not find audio device with ID: {deviceId}");
+            return enumerator.GetDevice(deviceId);
         }
-        return device;
+        catch (CoreAudioException)
+        {
+            // The configured device was unplugged or no longer exists: fall back to the default
+            // render endpoint so the notification still plays (NAudio throws rather than returning
+            // null for a missing device ID).
+            Log.ForContext<PlaySoundJob>().Warning("Configured audio device no longer exists (ID: {DeviceId}); falling back to default render endpoint.", deviceId);
+            return enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+        }
     }
 
     private IWavePlayer CreatePlayer(MMDevice device)
