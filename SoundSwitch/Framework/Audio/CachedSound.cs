@@ -67,9 +67,7 @@ public class CachedSound
         stream.CopyTo(buffered);
         buffered.Position = 0;
 
-        using var reader = IsMp3Stream(buffered)
-            ? new AudioFileReader(buffered)
-            : new WaveFileReader(buffered);
+        using var reader = new AudioFileReader(buffered);
         WaveFormat = reader.WaveFormat;
         var wholeFile = new List<byte>((int)reader.Length);
         var readBuffer = new byte[reader.WaveFormat.SampleRate * reader.WaveFormat.Channels];
@@ -98,17 +96,5 @@ public class CachedSound
         {
             return new MediaFoundationReader(filename);
         }
-    }
-
-    /// <summary>
-    /// Detects MP3 content in a stream (ID3v2 tag or a raw MPEG frame sync). The stream is left
-    /// positioned at its start so the chosen reader can consume it from the beginning.
-    /// </summary>
-    private static bool IsMp3Stream(Stream stream)
-    {
-        var header = new byte[3];
-        var read = stream.Read(header, 0, header.Length);
-        stream.Position = 0;
-        return IsMp3Data(header.AsSpan(0, read));
     }
 }
