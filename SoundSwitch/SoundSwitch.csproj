@@ -42,6 +42,17 @@
     <PackageReference Include="JetBrains.Annotations" />
     <PackageReference Include="Job.Scheduler" />
     <PackageReference Include="Markdig" />
+    <!-- NAudio split packages (3.0.1): the app only uses Core + Wasapi types
+         (WaveStream/IWavePlayer/WaveFormat/WaveFileReader in Core; MMDevice enumerator,
+         WasapiPlayerBuilder, MediaFoundationReader, CoreAudioException in Wasapi).
+         We reference the two directly instead of the NAudio umbrella to avoid pulling
+         the Midi/Asio/WinForms/WinMM/Dmo packages we don't use.
+         NOTE: NAudio.Wasapi 3.0.1 ships only a net9.0 (portable) asset; on the
+         net10.0-windows TFM NuGet must still resolve it to the Windows-capable build
+         (the #1407 "sound won't play" regression came from the portable leg dropping
+         the Windows stack). Verified by the Windows CI build + manual playback test. -->
+    <PackageReference Include="NAudio.Core" />
+    <PackageReference Include="NAudio.Wasapi" />
     <PackageReference Include="NuGet.Versioning" />
     <PackageReference Include="Polly.Core" />
     <PackageReference Include="RailSharp" />
