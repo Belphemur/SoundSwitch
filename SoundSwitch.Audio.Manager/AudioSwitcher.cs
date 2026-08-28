@@ -359,16 +359,6 @@ namespace SoundSwitch.Audio.Manager
         public AudioDevice? GetDevice(string deviceId) => ComThread.Invoke(() => EnumeratorClient.GetDevice(deviceId));
 
         /// <summary>
-        /// Resolve the given device (or the default render endpoint when <paramref name="deviceId"/>
-        /// is null or empty) on the ComThread and return a COM stream holding a marshalled
-        /// <c>IMMDevice</c> reference. The caller unmarshals it on its own COM-initialized thread
-        /// via <see cref="Interop.Com.Base.Ole32.CoGetInterfaceAndReleaseStream"/>.
-        /// </summary>
-        /// <param name="deviceId"></param>
-        /// <returns>The marshalled <c>IStream</c> pointer, or <see cref="IntPtr.Zero"/>.</returns>
-        internal IntPtr GetDeviceStream(string? deviceId) => ComThread.Invoke(() => EnumeratorClient.MarshalDeviceToStream(deviceId));
-
-        /// <summary>
         /// Get audio endpoints for the given flow and state
         /// </summary>
         /// <param name="flow"></param>

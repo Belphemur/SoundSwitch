@@ -42,6 +42,8 @@
     <PackageReference Include="JetBrains.Annotations" />
     <PackageReference Include="Job.Scheduler" />
     <PackageReference Include="Markdig" />
+    <PackageReference Include="NAudio" />
+    <PackageReference Include="NAudio.Wasapi" />
     <PackageReference Include="NuGet.Versioning" />
     <PackageReference Include="Polly.Core" />
     <PackageReference Include="RailSharp" />

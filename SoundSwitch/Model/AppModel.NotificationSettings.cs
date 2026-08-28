@@ -15,7 +15,6 @@
 
 using System;
 using System.Drawing;
-using System.IO;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Banner.BannerDisplayInfo;
 using SoundSwitch.Framework.Banner.BannerPosition;
@@ -100,12 +99,6 @@ public partial class AppModel
             }
             catch (CachedSoundFileNotExistsException)
             {
-                return null;
-            }
-            catch (InvalidDataException)
-            {
-                // Custom sounds are WAV and MP3: a stored path to a format that is still
-                // unsupported (FLAC/AAC) is ignored, falling back to the default sound.
                 return null;
             }
         }
