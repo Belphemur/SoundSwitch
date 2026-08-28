@@ -45,12 +45,15 @@ function buildDonateUrl(amount: number): string {
     business: 'W4ZWXP7LSL29C',
     item_name: 'SoundSwitch Donation',
     currency_code: 'USD',
-    notify_url: 'https://www.aaflalo.me/?PAYPALIPN=1',
+    notify_url: 'https://soundswitch.aaflalo.me/api/paypal-ipn',
     custom: custom,
-    return: window.location.href.split('#')[0].split('?')[0] + '#thanks',
+    return: window.location.origin + '/thanks.html',
     bn: 'SeamlessDonations_SP',
-    amount: String(amount),
   })
+  // amount < 0 means "let the donor choose" — omit the fixed amount param.
+  if (amount >= 0) {
+    params.set('amount', String(amount))
+  }
   return `${base}?${params.toString()}`
 }
 
@@ -239,8 +242,8 @@ onMounted(async () => {
                 ${{ amount }}
               </a>
             </div>
-            <a href="https://www.paypal.com/donate/?business=W4ZWXP7LSL29C&item_name=SoundSwitch+Donation&currency_code=USD"
-              target="_blank" rel="noopener noreferrer" class="amount-button amount-button--other">
+            <a :href="buildDonateUrl(-1)" target="_blank" rel="noopener noreferrer"
+              class="amount-button amount-button--other">
               Other $ Amount
             </a>
           </div>

@@ -5,6 +5,7 @@ import {
 } from "./downloads";
 import { DownloadsTracker, recordDownloadSnapshot } from "./downloads-tracker";
 import { handleWeblateLanguagesRequest } from "./weblate";
+import { handlePayPalIpn } from "./donations";
 import type { Env } from "./types";
 
 export default {
@@ -25,6 +26,10 @@ export default {
 
     if (url.pathname === "/api/downloads-history.json") {
       return handleDownloadsHistoryRequest(env);
+    }
+
+    if (request.method === "POST" && url.pathname === "/api/paypal-ipn") {
+      return handlePayPalIpn(request, env, ctx);
     }
 
     return env.ASSETS.fetch(request);

@@ -49,6 +49,17 @@
       "/api/*"
     ]
   },
+  "kv_namespaces": [
+    {
+      "binding": "IPN_DEDUPE",
+      "id": "42b6d9bab6c046ef906bf02ac68df459"
+    }
+  ],
   "compatibility_flags": [
     "nodejs_compat"
-  ]}
+  ],
+  "vars": {
+    "SITE_HOSTNAME": "https://soundswitch.aaflalo.me",
+    "PAYPAL_IPN_MODE": "live"
+  }
+}

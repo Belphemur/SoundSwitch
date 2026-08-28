@@ -3,6 +3,15 @@ export interface Env {
   DOWNLOADS_TRACKER: DurableObjectNamespace;
   GITHUB_TOKEN?: string;
   WEBLATE_TOKEN?: string;
+  // Donation thank-you flow (PayPal IPN -> Postmark email) — all secrets:
+  POSTMARK_SERVER_TOKEN?: string; // required
+  POSTMARK_FROM?: string; // required — must be set via `wrangler secret put`
+  PAYPAL_MERCHANT_EMAIL?: string; // optional anti-fraud guard (receiver_email)
+  // Required KV for idempotent, retry-safe email delivery (keyed by PayPal txn_id)
+  IPN_DEDUPE?: KVNamespace;
+  // Non-secret donation config (set via wrangler.jsonc `vars`):
+  PAYPAL_IPN_MODE?: string; // "live" | "sandbox" (defaults to live in code)
+  SITE_HOSTNAME?: string;
 }
 
 export interface GitHubAsset {

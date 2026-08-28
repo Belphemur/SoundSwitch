@@ -13,24 +13,26 @@
 ********************************************************************/
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
-using SoundSwitch.Audio.Manager.Playback;
+using NAudio;
+using NAudio.Wave;
 
 namespace SoundSwitch.Framework.Audio;
 
 public class CachedSound
 {
-    public byte[] AudioData { get; }
-    public WaveFormat WaveFormat { get; }
+    public byte[] AudioData { get; private set; }
+    public WaveFormat WaveFormat { get; private set; }
     public string FilePath { get; }
 
     /// <summary>
-    /// Load the audio file (WAV or MP3) into memory.
+    /// Load the AudioFile into the memory using the right reader.
     /// </summary>
     /// <param name="audioFileName"></param>
     /// <exception cref="CachedSoundFileNotExistsException">Audio file doesn't exist</exception>
-    /// <exception cref="InvalidDataException">Not a supported audio file (only PCM/IEEE float WAV and MP3 are supported)</exception>
     public CachedSound(string audioFileName)
     {
         if (!File.Exists(audioFileName))
@@ -39,67 +41,60 @@ public class CachedSound
         }
 
         FilePath = audioFileName;
-        (AudioData, WaveFormat) = IsMp3(audioFileName)
-            ? Mp3FileReader.ReadFile(audioFileName)
-            : WaveFileReader.ReadFile(audioFileName);
+        using var audioFileReader = GetReader(audioFileName);
+        // TODO: could add resampling in here if required
+        WaveFormat = audioFileReader.WaveFormat;
+        var wholeFile = new List<byte>((int)(audioFileReader.Length));
+        var readBuffer = new byte[audioFileReader.WaveFormat.SampleRate * audioFileReader.WaveFormat.Channels];
+        int samplesRead;
+        while ((samplesRead = audioFileReader.Read(readBuffer, 0, readBuffer.Length)) > 0)
+        {
+            wholeFile.AddRange(readBuffer.Take(samplesRead));
+        }
+
+        AudioData = [.. wholeFile];
     }
 
     /// <summary>
-    /// Decode the audio (WAV or MP3) from the stream.
+    /// Decode the WAV / MP3 from the stream using the right reader.
     /// </summary>
     /// <param name="stream">A stream containing a WAV or an MP3 file.</param>
-    /// <exception cref="InvalidDataException">Not a supported audio file (only PCM/IEEE float WAV and MP3 are supported)</exception>
     public CachedSound(Stream stream)
     {
         // Buffer the stream so the format can be sniffed from the start regardless of
-        // the stream's position, and so the WAV reader sees a rewound stream.
+        // the stream's position, and so the reader sees a rewound stream.
         using var buffered = new MemoryStream();
         stream.CopyTo(buffered);
-        var data = buffered.ToArray();
+        buffered.Position = 0;
 
-        (AudioData, WaveFormat) = IsMp3Data(data)
-            ? Mp3FileReader.Read(new MemoryStream(data, writable: false))
-            : WaveFileReader.Read(new MemoryStream(data, writable: false));
+        using var reader = new AudioFileReader(buffered);
+        WaveFormat = reader.WaveFormat;
+        var wholeFile = new List<byte>((int)reader.Length);
+        var readBuffer = new byte[reader.WaveFormat.SampleRate * reader.WaveFormat.Channels];
+        int samplesRead;
+        while ((samplesRead = reader.Read(readBuffer, 0, readBuffer.Length)) > 0)
+        {
+            wholeFile.AddRange(readBuffer.Take(samplesRead));
+        }
+
+        AudioData = [.. wholeFile];
     }
 
-    private static bool IsMp3(string path)
+    public CachedSound(MemoryStream stream, WaveFormat waveFormat)
     {
-        if (path.EndsWith(".mp3", StringComparison.OrdinalIgnoreCase))
-            return true;
+        WaveFormat = waveFormat;
+        AudioData = stream.ToArray();
+    }
 
-        // Not obviously an MP3 by name: sniff the header — an MP3 may carry any
-        // extension, and conversely a mislabeled file should fall through to the WAV
-        // reader so its (more precise) error surfaces.
+    private static WaveStream GetReader(string filename)
+    {
         try
         {
-            using var stream = File.OpenRead(path);
-            var header = new byte[3];
-            var read = stream.Read(header, 0, header.Length);
-            return IsMp3Data(header.AsSpan(0, read));
+            return new AudioFileReader(filename);
         }
-        catch (IOException)
+        catch (MmException)
         {
-            return false;
+            return new MediaFoundationReader(filename);
         }
-        catch (UnauthorizedAccessException)
-        {
-            return false;
-        }
-    }
-
-    /// <summary>
-    /// Detects MP3 content: an ID3v2 tag ("ID3") or a raw MPEG audio frame sync
-    /// (0xFF + frame header whose version isn't reserved and whose layer is III).
-    /// </summary>
-    private static bool IsMp3Data(ReadOnlySpan<byte> header)
-    {
-        if (header.Length >= 3 && header[0] == 0x49 && header[1] == 0x44 && header[2] == 0x33)
-            return true; // "ID3"
-
-        return header.Length >= 2
-               && header[0] == 0xFF
-               && (header[1] & 0xE0) == 0xE0 // frame sync
-               && ((header[1] >> 3) & 0x3) != 1 // MPEG version: not reserved
-               && ((header[1] >> 1) & 0x3) == 1; // layer III
     }
 }

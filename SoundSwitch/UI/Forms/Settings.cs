@@ -210,7 +210,7 @@ public sealed partial class SettingsForm : Form
 
         CustomSoundNotificationCheck();
 
-        selectSoundFileDialog.Filter = SettingsStrings.audioFiles + "|*.wav;*.mp3";
+        selectSoundFileDialog.Filter = SettingsStrings.audioFiles + "|*.wav;*.mp3;*.aac;*.m4a";
         selectSoundFileDialog.FileOk += SelectSoundFileDialog_FileOk;
         selectSoundFileDialog.CheckFileExists = true;
         selectSoundFileDialog.CheckPathExists = true;
