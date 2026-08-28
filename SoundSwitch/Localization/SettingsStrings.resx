@@ -171,7 +171,7 @@
     <value>This build updates from the unsigned nightly channel. Downloads are verified with SHA-512.</value>
   </data>
   <data name="audioFiles" xml:space="preserve">
-    <value>Audio Files (*.wav;*.mp3)</value>
+    <value>Audio Files (*.wav;*.mp3;*.aac;*.m4a)</value>
   </data>
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Check to enable hotkey.</value>

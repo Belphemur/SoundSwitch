@@ -15,7 +15,6 @@
 
 using System;
 using System.Drawing;
-using System.IO;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Banner.BannerDisplayInfo;
 using SoundSwitch.Framework.Banner.BannerPosition;
@@ -102,10 +101,11 @@ public partial class AppModel
             {
                 return null;
             }
-            catch (InvalidDataException)
+            // A stored path may point to a corrupt or unsupported file (decode failure). Fall back to
+            // the default notification sound rather than surfacing the exception into the Settings UI
+            // or notification path.
+            catch (Exception)
             {
-                // Custom sounds are WAV and MP3: a stored path to a format that is still
-                // unsupported (FLAC/AAC) is ignored, falling back to the default sound.
                 return null;
             }
         }

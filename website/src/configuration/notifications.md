@@ -20,7 +20,15 @@ The **Windows Notification** option is rendered as a native Windows toast: it ap
 
 ## Custom Sound File
 
-Click **Select...** to choose an audio file that SoundSwitch plays when a device is switched. Click the delete (×) button to remove the custom sound.
+Click **Select...** to choose an audio file that SoundSwitch plays when a device is switched (or when the relevant notification fires). Click the delete (×) button to remove the custom sound and go back to the built-in sound.
+
+Supported audio formats:
+
+- **WAV** (`.wav`)
+- **MP3** (`.mp3`)
+- **AAC** (`.aac`, `.m4a`)
+
+The file is loaded into memory and played through your selected playback device using the system's default audio endpoint, so playback works without any extra setup. If the chosen file is missing, corrupt, or in an unsupported format, SoundSwitch silently falls back to the built-in notification sound.
 
 ## Banner Options
 
