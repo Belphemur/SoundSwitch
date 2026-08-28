@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using Serilog;
 
+using SoundSwitch.Audio.Manager.Interop.Com.Base;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Audio.Manager.Interop.Interface;
 
@@ -17,9 +18,11 @@ namespace SoundSwitch.Audio.Manager.Playback
     /// third-party <c>WasapiOut</c>. One instance renders one buffer of samples once.
     ///
     /// Threading contract: each instance owns a dedicated COM-initialized STA thread. The shared
-    /// <see cref="Interop.Com.Threading.ComThread"/> is never used — a render loop blocking on
-    /// buffer events would stall device switching. Every COM object (enumerator, device, audio
-    /// client, render client) is created, used, and released on that thread.
+    /// <see cref="Interop.Com.Threading.ComThread"/> is never used for the render loop — a render
+    /// loop blocking on buffer events would stall device switching. The endpoint (<c>IMMDevice</c>)
+    /// is resolved on the shared ComThread via <see cref="AudioSwitcher"/> and unmarshalled onto
+    /// this thread; the audio client, render client, and everything the render loop touches are
+    /// then created, used, and released on this thread.
     ///
     /// Completion contract (mirrors the legacy <c>PlaybackStopped</c> semantics):
     /// - The returned <see cref="Task"/> completes when playback has fully drained, the device is
@@ -49,11 +52,6 @@ namespace SoundSwitch.Audio.Manager.Playback
 
         private static readonly Guid IidAudioClient = new("1CB9AD4C-DBFA-4C32-B178-C2F568A703B2");
         private static readonly Guid IidAudioRenderClient = new("F294ACFC-3146-4483-A7BF-ADDCA7C260E2");
-
-        [ComImport, Guid(ComGuid.AUDIO_IMMDEVICE_ENUMERATOR_OBJECT_IID)]
-        private class MMDeviceEnumeratorComObject
-        {
-        }
 
         private readonly byte[] _audioData;
         private readonly WaveFormat _sourceFormat;
@@ -103,16 +101,14 @@ namespace SoundSwitch.Audio.Manager.Playback
         /// <summary>Plays the sound; throws only for initialization-phase failures.</summary>
         private void Play()
         {
-            IMMDeviceEnumerator? enumerator = null;
             IMMDevice? device = null;
             RenderSession? session = null;
             try
             {
-                enumerator = (IMMDeviceEnumerator)new MMDeviceEnumeratorComObject();
-                device = ResolveDevice(enumerator, _deviceId);
+                device = ResolveDevice(_deviceId);
                 if (device == null)
                 {
-                    Logger.Warning("No audio device found for notification playback (device id: {DeviceId}).", _deviceId ?? "<default>");
+                    Logger.Warning("No audio device found for notification playback (device id: {DeviceId}).", string.IsNullOrEmpty(_deviceId) ? "<default>" : _deviceId);
                     return;
                 }
 
@@ -129,7 +125,7 @@ namespace SoundSwitch.Audio.Manager.Playback
                     session?.Dispose();
                     session = null;
                     Marshal.ReleaseComObject(device);
-                    device = ResolveDevice(enumerator, null);
+                    device = ResolveDevice(null);
                     if (device == null)
                         throw new AudioDeviceException(HRESULT.PROCESS_NO_AUDIO, "No default render endpoint available for playback fallback");
                     session = CreateSession(device);
@@ -145,7 +141,6 @@ namespace SoundSwitch.Audio.Manager.Playback
                 // Teardown on the owning thread: stop the stream, then release every COM reference.
                 session?.Dispose();
                 if (device != null) Marshal.ReleaseComObject(device);
-                if (enumerator != null) Marshal.ReleaseComObject(enumerator);
             }
         }
 
@@ -216,15 +211,25 @@ namespace SoundSwitch.Audio.Manager.Playback
             }
         }
 
-        private static IMMDevice? ResolveDevice(IMMDeviceEnumerator enumerator, string? deviceId)
+        private static IMMDevice? ResolveDevice(string? deviceId)
         {
-            var hr = string.IsNullOrEmpty(deviceId)
-                ? enumerator.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia, out var device)
-                : enumerator.GetDevice(deviceId, out device);
-            if (hr == HRESULT.S_OK && device != null) return device;
+            // Resolve the endpoint on the shared ComThread (via AudioSwitcher) and unmarshal the
+            // IMMDevice reference onto this thread. No private enumerator is ever constructed here.
+            var stream = AudioSwitcher.Instance.GetDeviceStream(deviceId);
+            if (stream == IntPtr.Zero)
+                return null;
 
-            if (device != null) Marshal.ReleaseComObject(device);
-            return null;
+            var iid = new Guid(ComGuid.AUDIO_IMMDEVICE_IID);
+            var hr = Ole32.CoGetInterfaceAndReleaseStream(stream, ref iid, out var devicePointer);
+            if (hr != HRESULT.S_OK || devicePointer == IntPtr.Zero)
+            {
+                if (devicePointer != IntPtr.Zero) Marshal.Release(devicePointer);
+                return null;
+            }
+
+            var device = (IMMDevice)Marshal.GetObjectForIUnknown(devicePointer);
+            Marshal.Release(devicePointer);
+            return device;
         }
 
         /// <summary>

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
+using SoundSwitch.Audio.Manager.Interop.Com.Base;
 using SoundSwitch.Audio.Manager.Interop.Com.Threading;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Audio.Manager.Interop.Interface;
@@ -97,6 +98,45 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
             catch
             {
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// Resolves an endpoint — the default render/multimedia endpoint when
+        /// <paramref name="deviceId"/> is null or empty, otherwise the endpoint with that id — and
+        /// marshals its <c>IMMDevice</c> reference into an inter-thread COM stream so a caller on
+        /// another COM-initialized thread can unmarshal it (see
+        /// <see cref="Ole32.CoGetInterfaceAndReleaseStream"/>). Returns <see cref="IntPtr.Zero"/>
+        /// when no endpoint is available.
+        /// </summary>
+        /// <param name="deviceId"></param>
+        /// <returns>The marshalled <c>IStream</c> pointer, or <see cref="IntPtr.Zero"/>.</returns>
+        public IntPtr MarshalDeviceToStream(string? deviceId)
+        {
+            ComThread.Assert();
+            IMMDevice? device = null;
+            try
+            {
+                var hr = string.IsNullOrEmpty(deviceId)
+                    ? _enumerator.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia, out device)
+                    : _enumerator.GetDevice(deviceId, out device);
+                if (hr != HRESULT.S_OK || device == null)
+                    return IntPtr.Zero;
+
+                var iid = new Guid(ComGuid.AUDIO_IMMDEVICE_IID);
+                var marshalResult = Ole32.CoMarshalInterThreadInterfaceInStream(ref iid, device, out var stream);
+                return marshalResult == HRESULT.S_OK && stream != IntPtr.Zero ? stream : IntPtr.Zero;
+            }
+            catch (Exception)
+            {
+                // Mirrors the swallow-and-return-null boundary of GetDefaultEndpoint / GetDevice
+                // (issue #401 semantics): no default endpoint, or an endpoint that vanished.
+                return IntPtr.Zero;
+            }
+            finally
+            {
+                // The stream now owns the marshalled reference; release the local RCW reference.
+                if (device != null) Marshal.ReleaseComObject(device);
             }
         }
 
