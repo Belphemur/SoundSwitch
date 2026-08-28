@@ -1,0 +1,18 @@
+# Local dev secrets for `wrangler dev` (example only — DO NOT put real values here).
+# Copy to `.dev.vars` (which is gitignored) and fill in real values, OR set them
+# in production with `wrangler secret put <NAME>`.
+#
+# These names match the `Env` interface in website/worker/types.ts.
+# Only one donation secret exists; everything else is a non-secret var.
+
+# Postmark Server API key — the X-Postmark-Server-Token value (required to send email).
+# This is a required secret. Never commit it or put it in wrangler.jsonc.
+POSTMARK_SERVER_TOKEN=your_postmark_server_api_token
+
+# Required sender — must be a verified Postmark sender signature/domain.
+# NOT defined in wrangler.jsonc; set only via `wrangler secret put POSTMARK_FROM`.
+POSTMARK_FROM=ss-donation-no-reply@aaflalo.me
+
+# Optional anti-fraud guard — your PayPal receiver email. If set, IPNs addressed to a
+# different receiver are ignored. Also a secret (set via `wrangler secret put`).
+PAYPAL_MERCHANT_EMAIL=your_paypal_business_email@example.com
