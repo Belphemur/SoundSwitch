@@ -57,11 +57,10 @@ function Env_merchant(_env: Env): string | undefined {
  * account or REST app required.
  */
 export async function verifyIpn(rawBody: string, env: Env): Promise<boolean> {
-  // Fail closed: only the explicit "sandbox" mode uses the sandbox host. Any
-  // other value (including a typo or unset) selects live, so a sandbox IPN can
-  // never be verified against the live host and mislabeled INVALID.
+  // Only "sandbox" uses the sandbox host. "live" (or unset) uses the live host.
+  // Any other value is invalid and fails closed (the IPN is not verified).
   const mode = env.PAYPAL_IPN_MODE;
-  if (mode !== "sandbox" && mode !== undefined && mode !== "") {
+  if (mode !== "sandbox" && mode !== "live" && mode !== undefined && mode !== "") {
     console.error(`Invalid PAYPAL_IPN_MODE: ${mode}`);
     return false;
   }
