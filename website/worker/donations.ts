@@ -56,13 +56,26 @@ function Env_merchant(_env: Env): string | undefined {
  * IPN verification handshake and works on a Personal PayPal account — no Business
  * account or REST app required.
  */
-export async function verifyIpn(rawBody: string, env: Env): Promise<boolean> {
-  // Only "sandbox" uses the sandbox host. "live" (or unset) uses the live host.
-  // Any other value is invalid and fails closed (the IPN is not verified).
+/**
+ * Verifies a PayPal IPN by echoing it back to PayPal with `cmd=_notify-validate`.
+ * PayPal responds with the body `VERIFIED` (or `INVALID`). This is the standard
+ * IPN verification handshake and works on a Personal PayPal account — no Business
+ * account or REST app required.
+ *
+ * Returns `verified: false` with a `reason`:
+ * - "invalid": PayPal itself said the message is not a valid IPN.
+ * - "error":  the verification request failed (network/timeout/PayPal 5xx) or the
+ *             worker is misconfigured. Treat as retryable.
+ */
+export type IpnVerifyResult =
+  | { verified: true }
+  | { verified: false; reason: "invalid" | "error" };
+
+export async function verifyIpn(rawBody: string, env: Env): Promise<IpnVerifyResult> {
   const mode = env.PAYPAL_IPN_MODE;
   if (mode !== "sandbox" && mode !== "live" && mode !== undefined && mode !== "") {
     console.error(`Invalid PAYPAL_IPN_MODE: ${mode}`);
-    return false;
+    return { verified: false, reason: "error" };
   }
   const endpoint = mode === "sandbox" ? PAYPAL_IPN_SANDBOX : PAYPAL_IPN_LIVE;
   const body = `cmd=_notify-validate&${rawBody}`;
@@ -73,11 +86,17 @@ export async function verifyIpn(rawBody: string, env: Env): Promise<boolean> {
       headers: { "content-type": "application/x-www-form-urlencoded" },
       body,
     });
-    if (!res.ok) return false;
+    if (!res.ok) {
+      console.error(`PayPal IPN verification request failed: HTTP ${res.status}`);
+      return { verified: false, reason: "error" };
+    }
     const text = (await res.text()).trim();
-    return text === "VERIFIED";
-  } catch {
-    return false;
+    if (text === "VERIFIED") return { verified: true };
+    console.warn(`PayPal IPN verification returned "${text}"`);
+    return { verified: false, reason: text === "INVALID" ? "invalid" : "error" };
+  } catch (err) {
+    console.error("PayPal IPN verification request threw", err);
+    return { verified: false, reason: "error" };
   }
 }
 
@@ -177,10 +196,11 @@ export async function sendPostmarkThankYou(
 
 /**
  * Worker handler for `POST /api/paypal-ipn`.
- * Verifies the IPN with PayPal, then sends the thank-you email. Acknowledges
- * with `200` only after a successful send; a Postmark failure returns `500` so
- * PayPal retries the IPN (retry-safe). Replayed IPNs are de-duplicated by txn_id
- * via the optional `IPN_DEDUPE` KV, so the donor never gets a duplicate email.
+ * Verifies the IPN with PayPal, then sends the thank-you email. Never
+ * acknowledges a non-verified IPN with 2xx (returns 500 so PayPal retries);
+ * acknowledges with 200 only after a successful send. A Postmark failure also
+ * returns 500 so PayPal retries (retry-safe). Replayed IPNs are de-duplicated by
+ * txn_id via the required `IPN_DEDUPE` KV, so the donor never gets a duplicate.
  */
 export async function handlePayPalIpn(
   request: Request,
@@ -230,10 +250,16 @@ export async function handlePayPalIpn(
     }
   }
 
-  const verified = await verifyIpn(rawBody, env);
-  if (!verified) {
-    return new Response(JSON.stringify({ received: false }), {
-      status: 200,
+  const result = await verifyIpn(rawBody, env);
+  if (!result.verified) {
+    // Never acknowledge a non-verified IPN with 2xx: PayPal retries notifications
+    // that get a non-2xx response. A verification failure (network, PayPal 5xx,
+    // worker misconfiguration, or a message PayPal rejects) must be retried so we
+    // never silently drop a real donation. (Genuine spoofs will keep retrying until
+    // PayPal gives up after ~4 days — an acceptable cost versus losing a real one.)
+    console.error(`IPN not verified (${result.reason}) — returning 500 so PayPal retries`);
+    return new Response(JSON.stringify({ received: false, reason: result.reason }), {
+      status: 500,
       headers: { "content-type": "application/json; charset=utf-8" },
     });
   }
