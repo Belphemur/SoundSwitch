@@ -102,19 +102,38 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
                 if (device != null) Marshal.ReleaseComObject(device);
 
                 Logger.Information("IMMDeviceEnumerator.GetDevice({DeviceId}) failed with HR {HR}: falling back to endpoint enumeration", deviceId, hr);
-                foreach (var endpoint in GetEndpoints(EDataFlow.eAll, EDeviceState.All))
+                var endpoints = GetEndpoints(EDataFlow.eAll, EDeviceState.All);
+                AudioDevice? resolved = null;
+                try
                 {
-                    if (endpoint.Id == deviceId)
+                    foreach (var endpoint in endpoints)
                     {
-                        Logger.Information("Resolved device {DeviceId} via enumeration fallback", deviceId);
-                        return endpoint;
+                        if (endpoint.Id == deviceId)
+                        {
+                            resolved = endpoint;
+                            break;
+                        }
                     }
 
-                    endpoint.Dispose();
-                }
+                    if (resolved != null)
+                    {
+                        Logger.Information("Resolved device {DeviceId} via enumeration fallback", deviceId);
+                        return resolved;
+                    }
 
-                Logger.Warning("Device {DeviceId} not found: direct lookup failed with HR {HR} and enumeration fallback found no match", deviceId, hr);
-                return null;
+                    Logger.Warning("Device {DeviceId} not found: direct lookup failed with HR {HR} and enumeration fallback found no match", deviceId, hr);
+                    return null;
+                }
+                finally
+                {
+                    // Dispose every enumerated endpoint except the one we return, so a successful
+                    // match that isn't the final list item doesn't leak its COM reference until GC.
+                    foreach (var endpoint in endpoints)
+                    {
+                        if (!ReferenceEquals(endpoint, resolved))
+                            endpoint.Dispose();
+                    }
+                }
             }
             catch
             {
