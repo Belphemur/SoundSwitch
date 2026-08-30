@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Reactive;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ using Serilog.Events;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio.Lister;
+using SoundSwitch.Model;
 
 namespace SoundSwitch.Tests;
 
