@@ -55,19 +55,12 @@ namespace SoundSwitch.Audio.Manager.Interop.Com.Threading
 
         private static Task<T> BeginInvoke<T>(Func<T> func)
         {
-            return Task<T>.Factory.StartNew(() =>
-            {
-                try
-                {
-                    return func();
-                }
-                catch (Exception e)
-                {
-                    Log.Warning(e, "Issue while running func in {class}", nameof(ComThread));
-                    return default;
-                }
-               
-            }, CancellationToken.None, TaskCreationOptions.None, Scheduler);
+            // Exceptions are deliberately NOT caught here: the faulted Task rethrows through
+            // Invoke<T>'s GetAwaiter().GetResult(), so the caller sees the real failure instead
+            // of a silent default(T) ("no device") result. Issue #2404: converting a transient
+            // COM failure into null made devices disappear from the cache until a full restart.
+            // The void BeginInvoke(Action) overload stays tolerant on purpose.
+            return Task<T>.Factory.StartNew(func, CancellationToken.None, TaskCreationOptions.None, Scheduler);
         }
     }
 }
