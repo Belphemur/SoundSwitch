@@ -245,11 +245,15 @@ public class RefreshDeviceTests
 
     /// <summary>
     /// Records how many times Refresh() was invoked, so the test can observe whether an
-    /// inconclusive incremental update escalates to a full refresh (the #2404 fix).
+    /// inconclusive incremental update escalates to a full refresh (the #2404 fix). The
+    /// real Refresh runs on Windows CI; here we just count invocations (no COM) and optionally
+    /// signal a completion source once the bounded retry cascade has drained.
     /// </summary>
     private sealed class CountingLister : CachedAudioDeviceLister
     {
         public int RefreshCount { get; private set; }
+
+        public TaskCompletionSource<int>? CascadeCompletion { get; set; }
 
         public CountingLister(EDeviceState state) : base(state)
         {
@@ -259,8 +263,19 @@ public class RefreshDeviceTests
         {
             RefreshCount++;
             // Do not touch COM; the real Refresh runs on Windows CI. The escalate logic only
-            // cares that Refresh was requested.
+            // cares that Refresh was requested. Signal the test ONLY once the bounded retry
+            // cascade has fully drained (RefreshCount == MaxRetries), so the test doesn't wake
+            // early and assert the count before the background retries finish.
+            if (RefreshCount >= MaxRetries)
+            {
+                CascadeCompletion?.TrySetResult(RefreshCount);
+            }
         }
+
+        // Expose the retry-cap so the test can wait for the cascade to complete deterministically
+        // without flaking on timing. The cascade does (maxRetries) refreshes, so after that many
+        // invocations it has fully drained.
+        public int MaxRetries => 3;
     }
 
     [Test]
@@ -284,6 +299,34 @@ public class RefreshDeviceTests
 
         lister.RefreshCount.Should().BeGreaterThan(0,
             "an inconclusive incremental update must trigger a full refresh (issue #2404)");
+    }
+
+    [Test]
+    public void ForceRefresh_RetriesUntilEndpointAppears()
+    {
+        // Regression for the CodeRabbit finding on #2404: a single Refresh() snapshot can still miss
+        // an endpoint that only registers AFTER that snapshot was taken (mid Bluetooth-swap). The
+        // fix must retry a BOUNDED number of times so a late-appearing endpoint is eventually
+        // picked up, and must not retry forever (no storm / no hang).
+        var lister = new CountingLister(EDeviceState.Active | EDeviceState.Unplugged);
+
+        // Wait for the cascade to fully drain (the retry loop stops after MaxRetries refreshes).
+        var drained = new TaskCompletionSource<int>();
+        lister.CascadeCompletion = drained;
+
+        // Trigger the cascade the same way ProcessDeviceUpdates does on an inconclusive update.
+        lister.GetType()
+            .GetMethod("ForceRefresh", BindingFlags.Public | BindingFlags.Instance)!
+            .Invoke(lister, null);
+
+        // The bounded retry (MaxRetries = 3) must complete within a few seconds; if it retried
+        // forever this would time out / hang the test.
+        drained.Task.Wait(TimeSpan.FromSeconds(5))
+            .Should().BeTrue("the bounded ForceRefresh retry cascade must drain without hanging");
+
+        lister.RefreshCount.Should().Be(lister.MaxRetries,
+            "ForceRefresh must retry a bounded number of times (not once, not forever) so a " +
+            "late-registering endpoint is eventually captured (issue #2404)");
     }
 
     [Test]
