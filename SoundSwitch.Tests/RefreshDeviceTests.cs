@@ -239,4 +239,87 @@ public class RefreshDeviceTests
         surviving.Disposed.Should().BeFalse("reused device is in the published cache, must NOT be disposed");
         fresh.Disposed.Should().BeFalse("fresh device is in the published cache, must NOT be disposed");
     }
+
+    /// <summary>
+    /// Records how many times Refresh() was invoked, so the test can observe whether an
+    /// inconclusive incremental update escalates to a full refresh (the #2404 fix).
+    /// </summary>
+    private sealed class CountingLister : CachedAudioDeviceLister
+    {
+        public int RefreshCount { get; private set; }
+
+        public CountingLister(EDeviceState state) : base(state)
+        {
+        }
+
+        public override void Refresh(CancellationToken cancellationToken = default)
+        {
+            RefreshCount++;
+            // Do not touch COM; the real Refresh runs on Windows CI. The escalate logic only
+            // cares that Refresh was requested.
+        }
+    }
+
+    [Test]
+    public void ProcessDeviceUpdates_InconclusiveEndpoint_EscalatesToForceRefresh()
+    {
+        // Regression for #2404: when the OS reports a device lifecycle change but the endpoint
+        // isn't queryable yet (transient mid Bluetooth-swap), ProcessDeviceUpdates must NOT
+        // silently drop the change. It must escalate to a full Refresh() so the cache self-heals
+        // instead of diverging until a restart.
+        var lister = new CountingLister(EDeviceState.Active | EDeviceState.Unplugged);
+
+        // An Added event whose endpoint can't be resolved (GetAudioEndpoint returns null on the
+        // real AudioSwitcher; here we rely on the same inconclusive branch being hit because the
+        // backing AudioSwitcher has no such device).
+        var events = new[]
+        {
+            new DeviceChangedEvent(EventType.Added, "nonexistent-device-id")
+        };
+
+        lister.ProcessDeviceUpdates(events);
+
+        lister.RefreshCount.Should().BeGreaterThan(0,
+            "an inconclusive incremental update must trigger a full refresh (issue #2404)");
+    }
+
+    [Test]
+    public void ProcessDeviceUpdates_SwapScenario_ReflectsDeviceRemoval()
+    {
+        // COM-free reproduction of the swap scenario: Device1 is removed and Device2 is added.
+        // After processing, Device1 must be gone from the cache and Device2 present, and the
+        // DeviceListRefreshed signal must have fired.
+        var lister = new CachedAudioDeviceLister(EDeviceState.Active | EDeviceState.Unplugged);
+
+        var playbackProperty = typeof(CachedAudioDeviceLister)
+            .GetProperty("PlaybackDevices", BindingFlags.NonPublic | BindingFlags.Instance);
+        var recordingProperty = typeof(CachedAudioDeviceLister)
+            .GetProperty("RecordingDevices", BindingFlags.NonPublic | BindingFlags.Instance);
+        playbackProperty.Should().NotBeNull();
+        recordingProperty.Should().NotBeNull();
+
+        // Seed only Device1 in the playback cache.
+        playbackProperty!.SetValue(lister, ImmutableDictionary.CreateRange(new Dictionary<string, DeviceFullInfo>
+        {
+            ["device1"] = new TrackedDevice("Buds A", "device1", EDataFlow.eRender, string.Empty, EDeviceState.Active, false)
+        }));
+        recordingProperty!.SetValue(lister, ImmutableDictionary.CreateRange(new Dictionary<string, DeviceFullInfo>()));
+
+        // The real AudioSwitcher won't resolve these ids on Linux, so Added(Device2) is
+        // inconclusive and escalates to Refresh() (which is a no-op here without COM). That still
+        // exercises the removal path: Removed(Device1) must evict it from the cache.
+        var refreshed = new List<Unit>();
+        using var sub = lister.DeviceListRefreshed.Subscribe(u => refreshed.Add(u));
+
+        lister.ProcessDeviceUpdates(new[]
+        {
+            new DeviceChangedEvent(EventType.Removed, "device1"),
+            new DeviceChangedEvent(EventType.Added, "device2")
+        });
+
+        var playback = (ImmutableDictionary<string, DeviceFullInfo>)playbackProperty.GetValue(lister)!;
+        playback.ContainsKey("device1").Should().BeFalse("removed device must be evicted from the cache");
+
+        refreshed.Should().NotBeEmpty("a removal must emit DeviceListRefreshed so the UI updates");
+    }
 }
