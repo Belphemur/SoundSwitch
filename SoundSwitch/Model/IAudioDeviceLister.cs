@@ -58,12 +58,4 @@ public interface IAudioDeviceLister : IDisposable
     /// <param name="deviceChangedEvents"></param>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     void ProcessDeviceUpdates(IEnumerable<DeviceChangedEvent> deviceChangedEvents);
-
-    /// <summary>
-    /// Trigger a full device re-enumeration. Used as a fallback when an incremental
-    /// (event-driven) update cannot be applied — e.g. the OS reported a device lifecycle
-    /// change but the endpoint wasn't fully queryable yet, which would otherwise leave the
-    /// cache stale until the next restart.
-    /// </summary>
-    void ForceRefresh();
 }
