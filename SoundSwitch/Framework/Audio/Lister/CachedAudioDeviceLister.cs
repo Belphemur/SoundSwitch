@@ -71,21 +71,6 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
 
     private readonly ISubject<Unit> _deviceListRefreshed = new Subject<Unit>();
 
-    // Throttle for ForceRefresh so a burst of inconclusive incremental updates (e.g. several
-    // devices swapping within a few hundred ms) collapses into a single refresh cascade instead
-    // of a refresh storm. Retries within a cascade bypass this window (see ForceRefresh).
-    private readonly object _forceRefreshLock = new object();
-    private long _lastForceRefreshAt = -1;
-    private const long _forceRefreshWindow = 2000; // ms
-    // Bounded retry: a single Refresh() snapshot can still miss an endpoint that only registers
-    // AFTER that snapshot was taken (mid Bluetooth-swap: the OS fires the lifecycle event, then the
-    // device appears in the enumerator a beat later). We retry a fixed number of times on a short,
-    // growing delay so the cache self-heals instead of diverging until a restart.
-    private const int _forceRefreshMaxRetries = 3;
-    private const int _forceRefreshRetryDelayMs = 300;
-    private int _forceRefreshRetries;
-    private volatile bool _disposed;
-
     /// <summary>
     /// Observable that emits when the device list has been successfully and fully refreshed.
     /// Does not emit when a refresh is cancelled or fails.
@@ -195,8 +180,6 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     public void ProcessDeviceUpdates(IEnumerable<DeviceChangedEvent> deviceChangedEvents)
     {
-        var inconclusive = false;
-
         bool GetDevice(DeviceChangedEvent deviceChangedEvent, out DeviceFullInfo device)
         {
             device = AudioSwitcher.Instance.GetAudioEndpoint(deviceChangedEvent.DeviceId);
@@ -209,15 +192,9 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
             return false;
         }
 
-        // Returns false when the update was inconclusive (the endpoint couldn't be queried),
-        // signalling the caller to escalate to a full Refresh().
-        bool UpdateDeviceCache(DeviceChangedEvent deviceChangedEvent)
+        void UpdateDeviceCache(DeviceChangedEvent deviceChangedEvent)
         {
-            // The endpoint couldn't be queried right now (transient during a connect/disconnect
-            // swap — the OS fires the lifecycle event before the device is fully registered).
-            // Signal inconclusive so the caller escalates to a full Refresh() rather than leaving
-            // this device missing from the cache until a restart.
-            if (GetDevice(deviceChangedEvent, out var device)) return false;
+            if (GetDevice(deviceChangedEvent, out var device)) return;
 
             // The lookup of the replaced device and the swap are a single atomic step under
             // _cacheLock, so we always dispose exactly the instance that was evicted and a
@@ -263,7 +240,6 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
             }
 
             _context.Information("Updated device {deviceId} in cache", device.Id);
-            return true;
         }
 
         foreach (var deviceChangedEvent in deviceChangedEvents)
@@ -304,14 +280,7 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                     case EventType.Added:
                     case EventType.StateChanged:
                     case EventType.PropertyChanged:
-                        if (!UpdateDeviceCache(deviceChangedEvent))
-                        {
-                            // The endpoint wasn't queryable right now (transient during a
-                            // connect/disconnect swap). Escalate to a full refresh so the cache
-                            // self-heals instead of diverging until a restart.
-                            inconclusive = true;
-                            break;
-                        }
+                        UpdateDeviceCache(deviceChangedEvent);
                         _deviceListRefreshed.OnNext(Unit.Default);
                         break;
                     case EventType.DefaultChanged:
@@ -333,81 +302,9 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                 _context.Warning(e, "Couldn't process event: {event} for device {deviceId}", deviceChangedEvent.Action, deviceChangedEvent.DeviceId);
             }
         }
-
-        // An incremental update was inconclusive (an endpoint that the OS reported as
-        // added/changed wasn't queryable yet — typical mid-Bluetooth-swap). Rather than leave the
-        // cache stale until the next restart, reconcile it against a full re-enumeration.
-        if (inconclusive)
-        {
-            ForceRefresh();
-        }
     }
 
-    /// <summary>
-    /// Force a full re-enumeration of the device list from the OS. Unlike the incremental
-    /// <see cref="ProcessDeviceUpdates"/> path (which can silently fail to apply a lifecycle
-    /// event when the endpoint isn't queryable yet, e.g. mid-Bluetooth-swap), a full refresh
-    /// always reconciles the cache against reality. Throttled so a burst of failed incremental
-    /// updates collapses into at most one refresh per <see cref="_forceRefreshWindow"/>.
-    /// </summary>
-    public void ForceRefresh()
-    {
-        var now = Environment.TickCount64;
-        lock (_forceRefreshLock)
-        {
-            // The initial escalation is throttled so a burst of inconclusive incremental updates
-            // collapses into one refresh cascade. Scheduled retries re-enter here with
-            // _forceRefreshRetries > 0 and bypass the throttle so the cascade can complete rather
-            // than be starved by the window.
-            if (_forceRefreshRetries == 0 && now - _lastForceRefreshAt < _forceRefreshWindow)
-                return;
-            _lastForceRefreshAt = now;
-        }
-
-        if (_disposed)
-        {
-            Interlocked.Exchange(ref _forceRefreshRetries, 0);
-            return;
-        }
-
-        _context.Information("Incremental update was inconclusive; triggering full refresh (attempt {Attempt})", _forceRefreshRetries + 1);
-        Refresh();
-
-        // A single snapshot can still miss an endpoint that only registers AFTER this refresh ran
-        // (typical mid Bluetooth-swap). Retry a bounded number of times on a short, growing delay so
-        // the cache self-heals instead of staying stale until the next restart or OS event.
-        var attempt = Interlocked.Increment(ref _forceRefreshRetries);
-        if (attempt < _forceRefreshMaxRetries)
-        {
-            _ = Task.Delay(_forceRefreshRetryDelayMs * attempt)
-                .ContinueWith(_ => RetryForceRefresh(), TaskScheduler.Default);
-        }
-        else
-        {
-            Interlocked.Exchange(ref _forceRefreshRetries, 0);
-        }
-    }
-
-    private void RetryForceRefresh()
-    {
-        try
-        {
-            if (_disposed)
-            {
-                Interlocked.Exchange(ref _forceRefreshRetries, 0);
-                return;
-            }
-
-            ForceRefresh();
-        }
-        catch (Exception e)
-        {
-            _context.Warning(e, "ForceRefresh retry failed; stopping the cascade");
-            Interlocked.Exchange(ref _forceRefreshRetries, 0);
-        }
-    }
-
-    public virtual void Refresh(CancellationToken cancellationToken = default)
+    public void Refresh(CancellationToken cancellationToken = default)
     {
         var logContext = _context.ForContext("TaskID", Task.CurrentId).ForContext("ThreadID", Environment.CurrentManagedThreadId);
         // Cancel the previous refresh operation, if any
@@ -620,8 +517,6 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
 
     public void Dispose()
     {
-        _disposed = true;
-
         // Swap both caches to Empty under the lock so no concurrent mutation can reintroduce a
         // device after the snapshot, then dispose the captured devices outside the lock.
         DeviceFullInfo[] oldDevices;

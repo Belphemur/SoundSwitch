@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Reactive;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 
 using FluentAssertions;
@@ -18,7 +16,6 @@ using Serilog.Events;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio.Lister;
-using SoundSwitch.Model;
 
 namespace SoundSwitch.Tests;
 
@@ -241,131 +238,5 @@ public class RefreshDeviceTests
         removed.Disposed.Should().BeTrue("device absent from the published cache must be disposed");
         surviving.Disposed.Should().BeFalse("reused device is in the published cache, must NOT be disposed");
         fresh.Disposed.Should().BeFalse("fresh device is in the published cache, must NOT be disposed");
-    }
-
-    /// <summary>
-    /// Records how many times Refresh() was invoked, so the test can observe whether an
-    /// inconclusive incremental update escalates to a full refresh (the #2404 fix). The
-    /// real Refresh runs on Windows CI; here we just count invocations (no COM) and optionally
-    /// signal a completion source once the bounded retry cascade has drained.
-    /// </summary>
-    private sealed class CountingLister : CachedAudioDeviceLister
-    {
-        public int RefreshCount { get; private set; }
-
-        public TaskCompletionSource<int>? CascadeCompletion { get; set; }
-
-        public CountingLister(EDeviceState state) : base(state)
-        {
-        }
-
-        public override void Refresh(CancellationToken cancellationToken = default)
-        {
-            RefreshCount++;
-            // Do not touch COM; the real Refresh runs on Windows CI. The escalate logic only
-            // cares that Refresh was requested. Signal the test ONLY once the bounded retry
-            // cascade has fully drained (RefreshCount == MaxRetries), so the test doesn't wake
-            // early and assert the count before the background retries finish.
-            if (RefreshCount >= MaxRetries)
-            {
-                CascadeCompletion?.TrySetResult(RefreshCount);
-            }
-        }
-
-        // Expose the retry-cap so the test can wait for the cascade to complete deterministically
-        // without flaking on timing. The cascade does (maxRetries) refreshes, so after that many
-        // invocations it has fully drained.
-        public int MaxRetries => 3;
-    }
-
-    [Test]
-    public void ProcessDeviceUpdates_InconclusiveEndpoint_EscalatesToForceRefresh()
-    {
-        // Regression for #2404: when the OS reports a device lifecycle change but the endpoint
-        // isn't queryable yet (transient mid Bluetooth-swap), ProcessDeviceUpdates must NOT
-        // silently drop the change. It must escalate to a full Refresh() so the cache self-heals
-        // instead of diverging until a restart.
-        var lister = new CountingLister(EDeviceState.Active | EDeviceState.Unplugged);
-
-        // An Added event whose endpoint can't be resolved (GetAudioEndpoint returns null on the
-        // real AudioSwitcher; here we rely on the same inconclusive branch being hit because the
-        // backing AudioSwitcher has no such device).
-        var events = new[]
-        {
-            new DeviceChangedEvent(EventType.Added, "nonexistent-device-id")
-        };
-
-        lister.ProcessDeviceUpdates(events);
-
-        lister.RefreshCount.Should().BeGreaterThan(0,
-            "an inconclusive incremental update must trigger a full refresh (issue #2404)");
-    }
-
-    [Test]
-    public void ForceRefresh_RetriesUntilEndpointAppears()
-    {
-        // Regression for the CodeRabbit finding on #2404: a single Refresh() snapshot can still miss
-        // an endpoint that only registers AFTER that snapshot was taken (mid Bluetooth-swap). The
-        // fix must retry a BOUNDED number of times so a late-appearing endpoint is eventually
-        // picked up, and must not retry forever (no storm / no hang).
-        var lister = new CountingLister(EDeviceState.Active | EDeviceState.Unplugged);
-
-        // Wait for the cascade to fully drain (the retry loop stops after MaxRetries refreshes).
-        var drained = new TaskCompletionSource<int>();
-        lister.CascadeCompletion = drained;
-
-        // Trigger the cascade the same way ProcessDeviceUpdates does on an inconclusive update.
-        lister.GetType()
-            .GetMethod("ForceRefresh", BindingFlags.Public | BindingFlags.Instance)!
-            .Invoke(lister, null);
-
-        // The bounded retry (MaxRetries = 3) must complete within a few seconds; if it retried
-        // forever this would time out / hang the test.
-        drained.Task.Wait(TimeSpan.FromSeconds(5))
-            .Should().BeTrue("the bounded ForceRefresh retry cascade must drain without hanging");
-
-        lister.RefreshCount.Should().Be(lister.MaxRetries,
-            "ForceRefresh must retry a bounded number of times (not once, not forever) so a " +
-            "late-registering endpoint is eventually captured (issue #2404)");
-    }
-
-    [Test]
-    public void ProcessDeviceUpdates_SwapScenario_ReflectsDeviceRemoval()
-    {
-        // COM-free reproduction of the swap scenario: Device1 is removed and Device2 is added.
-        // After processing, Device1 must be gone from the cache and Device2 present, and the
-        // DeviceListRefreshed signal must have fired.
-        var lister = new CachedAudioDeviceLister(EDeviceState.Active | EDeviceState.Unplugged);
-
-        var playbackProperty = typeof(CachedAudioDeviceLister)
-            .GetProperty("PlaybackDevices", BindingFlags.NonPublic | BindingFlags.Instance);
-        var recordingProperty = typeof(CachedAudioDeviceLister)
-            .GetProperty("RecordingDevices", BindingFlags.NonPublic | BindingFlags.Instance);
-        playbackProperty.Should().NotBeNull();
-        recordingProperty.Should().NotBeNull();
-
-        // Seed only Device1 in the playback cache.
-        playbackProperty!.SetValue(lister, ImmutableDictionary.CreateRange(new Dictionary<string, DeviceFullInfo>
-        {
-            ["device1"] = new TrackedDevice("Buds A", "device1", EDataFlow.eRender, string.Empty, EDeviceState.Active, false)
-        }));
-        recordingProperty!.SetValue(lister, ImmutableDictionary.CreateRange(new Dictionary<string, DeviceFullInfo>()));
-
-        // The real AudioSwitcher won't resolve these ids on Linux, so Added(Device2) is
-        // inconclusive and escalates to Refresh() (which is a no-op here without COM). That still
-        // exercises the removal path: Removed(Device1) must evict it from the cache.
-        var refreshed = new List<Unit>();
-        using var sub = lister.DeviceListRefreshed.Subscribe(u => refreshed.Add(u));
-
-        lister.ProcessDeviceUpdates(new[]
-        {
-            new DeviceChangedEvent(EventType.Removed, "device1"),
-            new DeviceChangedEvent(EventType.Added, "device2")
-        });
-
-        var playback = (ImmutableDictionary<string, DeviceFullInfo>)playbackProperty.GetValue(lister)!;
-        playback.ContainsKey("device1").Should().BeFalse("removed device must be evicted from the cache");
-
-        refreshed.Should().NotBeEmpty("a removal must emit DeviceListRefreshed so the UI updates");
     }
 }

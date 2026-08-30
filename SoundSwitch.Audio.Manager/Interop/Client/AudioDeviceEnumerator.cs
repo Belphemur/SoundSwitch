@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
+using Serilog;
+
 using SoundSwitch.Audio.Manager.Interop.Com.Threading;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Audio.Manager.Interop.Interface;
@@ -17,6 +19,8 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
     /// </summary>
     internal sealed class AudioDeviceEnumerator : IDisposable
     {
+        private static readonly ILogger Logger = Log.ForContext<AudioDeviceEnumerator>();
+
         [ComImport, Guid(ComGuid.AUDIO_IMMDEVICE_ENUMERATOR_OBJECT_IID)]
         private class MMDeviceEnumeratorComObject
         {
@@ -80,19 +84,56 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
         /// <summary>
         /// Get device with the given id
         /// </summary>
+        /// <remarks>
+        /// The direct <c>IMMDeviceEnumerator::GetDevice</c> lookup legitimately fails with E_NOTFOUND
+        /// when the OS fires a device lifecycle event before the endpoint is fully registered
+        /// (typical mid Bluetooth-swap). In that window the call falls back to a full enumeration
+        /// (issue #2404) instead of silently dropping the device from the cache.
+        /// </remarks>
         public AudioDevice? GetDevice(string deviceId)
         {
             ComThread.Assert();
             try
             {
                 var hr = _enumerator.GetDevice(deviceId, out var device);
-                if (hr != HRESULT.S_OK || device == null)
+                if (hr == HRESULT.S_OK && device != null)
+                    return new AudioDevice(device);
+
+                if (device != null) Marshal.ReleaseComObject(device);
+
+                Logger.Information("IMMDeviceEnumerator.GetDevice({DeviceId}) failed with HR {HR}: falling back to endpoint enumeration", deviceId, hr);
+                var endpoints = GetEndpoints(EDataFlow.eAll, EDeviceState.All);
+                AudioDevice? resolved = null;
+                try
                 {
-                    if (device != null) Marshal.ReleaseComObject(device);
+                    foreach (var endpoint in endpoints)
+                    {
+                        if (endpoint.Id == deviceId)
+                        {
+                            resolved = endpoint;
+                            break;
+                        }
+                    }
+
+                    if (resolved != null)
+                    {
+                        Logger.Information("Resolved device {DeviceId} via enumeration fallback", deviceId);
+                        return resolved;
+                    }
+
+                    Logger.Warning("Device {DeviceId} not found: direct lookup failed with HR {HR} and enumeration fallback found no match", deviceId, hr);
                     return null;
                 }
-
-                return new AudioDevice(device);
+                finally
+                {
+                    // Dispose every enumerated endpoint except the one we return, so a successful
+                    // match that isn't the final list item doesn't leak its COM reference until GC.
+                    foreach (var endpoint in endpoints)
+                    {
+                        if (!ReferenceEquals(endpoint, resolved))
+                            endpoint.Dispose();
+                    }
+                }
             }
             catch
             {
