@@ -16,6 +16,7 @@ public class ProcessNotificationEventsJob : IRecurringJob
     public Task ExecuteAsync(CancellationToken cancellationToken)
     {
         var events = MMNotificationClient.Instance.GetLastEvents();
+        if(events.Count == 0) return Task.CompletedTask;
         AppModel.Instance.AudioDeviceLister.ProcessDeviceUpdates(events);
         return Task.CompletedTask;
     }

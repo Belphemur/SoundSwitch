@@ -37,7 +37,7 @@ public class MMNotificationClient : IDisposable
     /// Get the last events and clear the queue of events
     /// </summary>
     /// <returns></returns>
-    public IEnumerable<DeviceChangedEvent> GetLastEvents()
+    public IReadOnlyCollection<DeviceChangedEvent> GetLastEvents()
     {
         if (_deviceChangedEvents.IsEmpty)
             return ArraySegment<DeviceChangedEvent>.Empty;

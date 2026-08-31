@@ -46,22 +46,14 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
     // Volatile backing fields give the lock-free readers (GetDevices, DefaultChanged lookup) acquire
     // semantics on every read, so a reference published inside Refresh's/ProcessDeviceUpdates' lock
     // is always seen as the latest snapshot. The properties are thin wrappers over these fields.
-    private volatile ImmutableDictionary<string, DeviceFullInfo> _playbackDevices = ImmutableDictionary<string, DeviceFullInfo>.Empty;
-    private volatile ImmutableDictionary<string, DeviceFullInfo> _recordingDevices = ImmutableDictionary<string, DeviceFullInfo>.Empty;
+    private Dictionary<string, DeviceFullInfo> _playbackDevices = new();
+    private Dictionary<string, DeviceFullInfo> _recordingDevices = new();
 
     /// <inheritdoc />
-    private ImmutableDictionary<string, DeviceFullInfo> PlaybackDevices
-    {
-        get => _playbackDevices;
-        set => _playbackDevices = value;
-    }
+    private IReadOnlyDictionary<string, DeviceFullInfo> PlaybackDevices => _playbackDevices;
 
     /// <inheritdoc />
-    private ImmutableDictionary<string, DeviceFullInfo> RecordingDevices
-    {
-        get => _recordingDevices;
-        set => _recordingDevices = value;
-    }
+    private IReadOnlyDictionary<string, DeviceFullInfo> RecordingDevices => _recordingDevices;
 
     private readonly ISubject<DefaultDevicePayload> _defaultDeviceChanged = new Subject<DefaultDevicePayload>();
     public IObservable<DefaultDevicePayload> DefaultDeviceChanged => _defaultDeviceChanged.AsObservable();
@@ -205,8 +197,8 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                     DeviceFullInfo? oldPlaybackDevice;
                     lock (_cacheLock)
                     {
-                        PlaybackDevices.TryGetValue(device.Id, out oldPlaybackDevice);
-                        PlaybackDevices = PlaybackDevices.SetItem(device.Id, device);
+                        _playbackDevices.TryGetValue(device.Id, out oldPlaybackDevice);
+                        _playbackDevices[device.Id] = device;
                     }
 
                     // Dispose the previously-cached instance only if it isn't the one we just
@@ -222,8 +214,8 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                     DeviceFullInfo? oldRecordingDevice;
                     lock (_cacheLock)
                     {
-                        RecordingDevices.TryGetValue(device.Id, out oldRecordingDevice);
-                        RecordingDevices = RecordingDevices.SetItem(device.Id, device);
+                        _recordingDevices.TryGetValue(device.Id, out oldRecordingDevice);
+                        _recordingDevices[device.Id] = device;
                     }
 
                     if (oldRecordingDevice != null && !ReferenceEquals(oldRecordingDevice, device))
@@ -252,10 +244,8 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                         DeviceFullInfo? playbackDevice, recordingDevice;
                         lock (_cacheLock)
                         {
-                            PlaybackDevices.TryGetValue(deviceChangedEvent.DeviceId, out playbackDevice);
-                            PlaybackDevices = PlaybackDevices.Remove(deviceChangedEvent.DeviceId);
-                            RecordingDevices.TryGetValue(deviceChangedEvent.DeviceId, out recordingDevice);
-                            RecordingDevices = RecordingDevices.Remove(deviceChangedEvent.DeviceId);
+                            _playbackDevices.Remove(deviceChangedEvent.DeviceId, out playbackDevice);
+                            _recordingDevices.Remove(deviceChangedEvent.DeviceId, out recordingDevice);
                         }
 
                         var removed = false;
@@ -456,8 +446,8 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                         }
                     }
 
-                    PlaybackDevices = mergedPlayback.ToImmutableDictionary();
-                    RecordingDevices = mergedRecording.ToImmutableDictionary();
+                    _playbackDevices = mergedPlayback;
+                    _recordingDevices = mergedRecording;
                 }
 
                 // Dispose freshly enumerated instances that were not published (rejected in favour
@@ -523,8 +513,8 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
         lock (_cacheLock)
         {
             oldDevices = PlaybackDevices.Values.Concat(RecordingDevices.Values).ToArray();
-            PlaybackDevices = ImmutableDictionary<string, DeviceFullInfo>.Empty;
-            RecordingDevices = ImmutableDictionary<string, DeviceFullInfo>.Empty;
+            _playbackDevices.Clear();
+            _recordingDevices.Clear();
         }
 
         DisposeOldDevices(oldDevices);
