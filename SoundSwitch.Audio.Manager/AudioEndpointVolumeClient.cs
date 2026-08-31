@@ -40,14 +40,14 @@ namespace SoundSwitch.Audio.Manager
             get => ComThread.Invoke(() =>
             {
                 var hr = _volume.GetMasterVolumeLevelScalar(out var level);
-                if (hr != HRESULT.S_OK) throw AudioDeviceException.FromHResult(hr, "IAudioEndpointVolume.GetMasterVolumeLevelScalar");
+                if (hr.Failed()) throw AudioDeviceException.FromHResult(hr, "IAudioEndpointVolume.GetMasterVolumeLevelScalar");
                 return level;
             });
             set => ComThread.Invoke(() =>
             {
                 var eventContext = Guid.Empty;
                 var hr = _volume.SetMasterVolumeLevelScalar(value, ref eventContext);
-                if (hr != HRESULT.S_OK) throw AudioDeviceException.FromHResult(hr, "IAudioEndpointVolume.SetMasterVolumeLevelScalar");
+                if (hr.Failed()) throw AudioDeviceException.FromHResult(hr, "IAudioEndpointVolume.SetMasterVolumeLevelScalar");
             });
         }
 
@@ -56,28 +56,28 @@ namespace SoundSwitch.Audio.Manager
             get => ComThread.Invoke(() =>
             {
                 var hr = _volume.GetMute(out var mute);
-                if (hr != HRESULT.S_OK) throw AudioDeviceException.FromHResult(hr, "IAudioEndpointVolume.GetMute");
+                if (hr.Failed()) throw AudioDeviceException.FromHResult(hr, "IAudioEndpointVolume.GetMute");
                 return mute;
             });
             set => ComThread.Invoke(() =>
             {
                 var eventContext = Guid.Empty;
                 var hr = _volume.SetMute(value, ref eventContext);
-                if (hr != HRESULT.S_OK) throw AudioDeviceException.FromHResult(hr, "IAudioEndpointVolume.SetMute");
+                if (hr.Failed()) throw AudioDeviceException.FromHResult(hr, "IAudioEndpointVolume.SetMute");
             });
         }
 
         public int ChannelCount => ComThread.Invoke(() =>
         {
             var hr = _volume.GetChannelCount(out var count);
-            if (hr != HRESULT.S_OK) throw AudioDeviceException.FromHResult(hr, "IAudioEndpointVolume.GetChannelCount");
+            if (hr.Failed()) throw AudioDeviceException.FromHResult(hr, "IAudioEndpointVolume.GetChannelCount");
             return (int)count;
         });
 
         public float GetChannelVolumeLevelScalar(int channel) => ComThread.Invoke(() =>
         {
             var hr = _volume.GetChannelVolumeLevelScalar((uint)channel, out var level);
-            if (hr != HRESULT.S_OK) throw AudioDeviceException.FromHResult(hr, "IAudioEndpointVolume.GetChannelVolumeLevelScalar");
+            if (hr.Failed()) throw AudioDeviceException.FromHResult(hr, "IAudioEndpointVolume.GetChannelVolumeLevelScalar");
             return level;
         });
 
@@ -85,7 +85,7 @@ namespace SoundSwitch.Audio.Manager
         {
             var eventContext = Guid.Empty;
             var hr = _volume.SetChannelVolumeLevelScalar((uint)channel, level, ref eventContext);
-            if (hr != HRESULT.S_OK) throw AudioDeviceException.FromHResult(hr, "IAudioEndpointVolume.SetChannelVolumeLevelScalar");
+            if (hr.Failed()) throw AudioDeviceException.FromHResult(hr, "IAudioEndpointVolume.SetChannelVolumeLevelScalar");
         });
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace SoundSwitch.Audio.Manager
                         {
                             var callback = new EndpointVolumeCallback(this);
                             var hr = _volume.RegisterControlChangeNotify(callback);
-                            if (hr != HRESULT.S_OK) throw AudioDeviceException.FromHResult(hr, "IAudioEndpointVolume.RegisterControlChangeNotify");
+                            if (hr.Failed()) throw AudioDeviceException.FromHResult(hr, "IAudioEndpointVolume.RegisterControlChangeNotify");
                             _callback = callback;
                         }
 
