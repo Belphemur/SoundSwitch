@@ -1,3 +1,22 @@
+## [7.3.1](https://github.com/Belphemur/SoundSwitch/compare/v7.3.0...v7.3.1) (2026-08-28)
+
+### Enhancements
+
+* **audio:** widen custom-sound picker to AAC (.aac/.m4a) ([#2384](https://github.com/Belphemur/SoundSwitch/issues/2384)) ([b6b38ee](https://github.com/Belphemur/SoundSwitch/commit/b6b38ee3a45119deddd934315078b2f3bf3e52f3))
+
+### Bug Fixes
+
+* **audio:** fall back to default endpoint when configured device is missing ([#2384](https://github.com/Belphemur/SoundSwitch/issues/2384)) ([e79e8ba](https://github.com/Belphemur/SoundSwitch/commit/e79e8ba73097deac502d42a8aee577b171bdf87a))
+* **audio:** include target device id in playback-failure Sentry logs ([#2384](https://github.com/Belphemur/SoundSwitch/issues/2384)) ([#2391](https://github.com/Belphemur/SoundSwitch/issues/2391)) ([ba429e5](https://github.com/Belphemur/SoundSwitch/commit/ba429e5fbe088a56bdae54418376aa0476a9deb5)), closes [#2388](https://github.com/Belphemur/SoundSwitch/issues/2388)
+* **audio:** log non-cancellation playback failures at Error so they reach Sentry ([#2384](https://github.com/Belphemur/SoundSwitch/issues/2384)) ([1ad3997](https://github.com/Belphemur/SoundSwitch/commit/1ad39976892dbb1b784f609cb8847c7716a4ed2d))
+* **audio:** pin NAudio via umbrella (Windows-asset fix) + address playback review threads ([#2384](https://github.com/Belphemur/SoundSwitch/issues/2384)) ([59a80d7](https://github.com/Belphemur/SoundSwitch/commit/59a80d7c1f3253e644e4e718de7e77fe1e8d40af)), closes [#1407](https://github.com/Belphemur/SoundSwitch/issues/1407)
+* **audio:** publish new device cache before disposing old devices in Refresh ([#2389](https://github.com/Belphemur/SoundSwitch/issues/2389)) ([#2393](https://github.com/Belphemur/SoundSwitch/issues/2393)) ([7914a3a](https://github.com/Belphemur/SoundSwitch/commit/7914a3a43e8179e3ca07f5d2d432930f499017fb)), closes [#2390](https://github.com/Belphemur/SoundSwitch/issues/2390)
+* **audio:** resolve notification IMMDevice via ComThread to kill InvalidCastException ([#2384](https://github.com/Belphemur/SoundSwitch/issues/2384)) ([#2397](https://github.com/Belphemur/SoundSwitch/issues/2397)) ([537fb1e](https://github.com/Belphemur/SoundSwitch/commit/537fb1e1dd1ee873c5b4f4a2c30d8287023746f6))
+* **audio:** serialize device-cache publication with a dedicated .NET 9 Lock ([#2389](https://github.com/Belphemur/SoundSwitch/issues/2389)) ([#2396](https://github.com/Belphemur/SoundSwitch/issues/2396)) ([c4b59b2](https://github.com/Belphemur/SoundSwitch/commit/c4b59b224d81abf5babe7b904927f671e6c12ee1))
+* **audio:** snapshot devices before disposal in Refresh to fix collection-modified race ([#2389](https://github.com/Belphemur/SoundSwitch/issues/2389)) ([#2390](https://github.com/Belphemur/SoundSwitch/issues/2390)) ([6dcf17d](https://github.com/Belphemur/SoundSwitch/commit/6dcf17d6bdddbcb36e4f3f65a355a425a88ccadd))
+* **audio:** treat empty deviceId as default in playback-failure logs ([#2384](https://github.com/Belphemur/SoundSwitch/issues/2384)) ([d3eb590](https://github.com/Belphemur/SoundSwitch/commit/d3eb59083bd5555aecaa739ee094c364e803cab6)), closes [#2391](https://github.com/Belphemur/SoundSwitch/issues/2391)
+* **audio:** use AudioFileReader for stream decode (handles WAV+MP3), drop unused IsMp3Stream ([d243ede](https://github.com/Belphemur/SoundSwitch/commit/d243ede37ff7fa03f9096aef08f8c80bac0ec4b2))
+
 ## [7.3.0](https://github.com/Belphemur/SoundSwitch/compare/v7.2.1...v7.3.0) (2026-08-26)
 
 ### Features
