@@ -32,7 +32,28 @@ public class MicrophoneMuteBannerManager
 {
     private static System.Threading.SynchronizationContext _syncContext;
     private readonly Dictionary<string, BannerForm> _activeBanners = new();
+    private readonly Dictionary<string, string> _activeMicNames = new();
     private const int SPACING = 10;
+
+    public MicrophoneMuteBannerManager()
+    {
+        AppModel.Instance.BannerSettingsChanged += OnBannerSettingsChanged;
+    }
+
+    private void OnBannerSettingsChanged(object? sender, BannerDataChangedEvent e)
+    {
+        _syncContext.Send(_ =>
+        {
+            foreach (var micId in _activeBanners.Keys)
+            {
+                if (_activeMicNames.TryGetValue(micId, out var name))
+                {
+                    ShowMuteBanner(micId, name);
+                }
+            }
+            RearrangeBanners();
+        }, null);
+    }
 
     /// <summary>
     /// Updates or creates a banner when a microphone's mute state changes
@@ -89,6 +110,8 @@ public class MicrophoneMuteBannerManager
         {
             // Update existing banner
             existingBanner.SetData(data);
+            // Keep mic name current in case it was updated
+            _activeMicNames[microphoneId] = microphoneName;
         }
         else
         {
@@ -97,6 +120,7 @@ public class MicrophoneMuteBannerManager
             newBanner.SetData(data);
             // Arrange existing banners vertically
             _activeBanners.Add(microphoneId, newBanner);
+            _activeMicNames[microphoneId] = microphoneName;
             RearrangeBanners();
         }
     }
@@ -129,6 +153,7 @@ public class MicrophoneMuteBannerManager
 
             // Remove from our tracking dictionary
             _activeBanners.Remove(microphoneId);
+            _activeMicNames.Remove(microphoneId);
 
             // Banner will auto-dispose after TTL expires
             existingBanner.Disposed += (s, e) => RearrangeBanners();
@@ -153,6 +178,7 @@ public class MicrophoneMuteBannerManager
     {
         if (!_activeBanners.TryGetValue(microphoneId, out var existingBanner)) return;
         _activeBanners.Remove(microphoneId);
+        _activeMicNames.Remove(microphoneId);
         existingBanner.Dispose();
         RearrangeBanners();
     }
