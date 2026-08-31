@@ -216,17 +216,27 @@ namespace SoundSwitch.Audio.Manager
                 if (endpointVolume == null)
                     return device;
 
-                if (endpointVolume.ChannelCount == 2)
+                // This "keep volume" copy is a best-effort nicety: a COM failure here must not
+                // abort the ongoing device switch, so every exception is logged and swallowed.
+                try
                 {
-                    endpointVolume.SetChannelVolumeLevelScalar(0, audioInfo.Value.Volume);
-                    endpointVolume.SetChannelVolumeLevelScalar(1, audioInfo.Value.Volume);
+                    if (endpointVolume.ChannelCount == 2)
+                    {
+                        endpointVolume.SetChannelVolumeLevelScalar(0, audioInfo.Value.Volume);
+                        endpointVolume.SetChannelVolumeLevelScalar(1, audioInfo.Value.Volume);
+                    }
+                    else
+                    {
+                        endpointVolume.MasterVolumeLevelScalar = audioInfo.Value.Volume;
+                    }
+
+                    endpointVolume.Mute = audioInfo.Value.IsMuted;
                 }
-                else
+                catch (Exception e)
                 {
-                    endpointVolume.MasterVolumeLevelScalar = audioInfo.Value.Volume;
+                    Log.Warning(e, "Failed to apply kept volume/mute to {Device}; continuing device switch", device.FriendlyName);
                 }
 
-                endpointVolume.Mute = audioInfo.Value.IsMuted;
                 return device;
             });
         }

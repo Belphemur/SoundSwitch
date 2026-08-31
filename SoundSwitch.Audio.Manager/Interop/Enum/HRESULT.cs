@@ -11,4 +11,14 @@
         ERROR_NOT_FOUND = 0x80070490,
         PROCESS_NO_AUDIO = 0x80070057
     }
+
+    public static class HRESULTExtensions
+    {
+        /// <summary>
+        /// COM success is "severity bit clear": only a negative (as int32) HRESULT is a failure.
+        /// S_FALSE (0x1) is a success code returned e.g. by IAudioEndpointVolume setters when the
+        /// endpoint is already in the requested state.
+        /// </summary>
+        public static bool Failed(this HRESULT hr) => (int)hr < 0;
+    }
 }
