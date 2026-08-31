@@ -1,3 +1,21 @@
+## [7.3.2](https://github.com/Belphemur/SoundSwitch/compare/v7.3.1...v7.3.2) (2026-08-31)
+
+### Enhancements
+
+* **website:** send donation thank-you email via PayPal IPN + Postmark ([#2402](https://github.com/Belphemur/SoundSwitch/issues/2402)) ([94e7114](https://github.com/Belphemur/SoundSwitch/commit/94e71141c53482b3e105ad4c7dbb69d78cd6ff49))
+
+### Bug Fixes
+
+* **audio::cache:** be sure we keep updating properly our cache to represent current state of devices ([69f89e5](https://github.com/Belphemur/SoundSwitch/commit/69f89e5c1aa54f000561b789ae7403725722e5c6)), closes [#2407](https://github.com/Belphemur/SoundSwitch/issues/2407)
+* **audio:** refresh cached device list on connect/disconnect swap ([#2404](https://github.com/Belphemur/SoundSwitch/issues/2404)) ([#2405](https://github.com/Belphemur/SoundSwitch/issues/2405)) ([0cc81fb](https://github.com/Belphemur/SoundSwitch/commit/0cc81fb8796252ff3be00ffc3caebe9401577223))
+* **audio:** resolve device by id via enumeration fallback ([#2404](https://github.com/Belphemur/SoundSwitch/issues/2404)) ([#2406](https://github.com/Belphemur/SoundSwitch/issues/2406)) ([49d49f4](https://github.com/Belphemur/SoundSwitch/commit/49d49f4b21efe8d77c3f5fa6e73a4e084689085a)), closes [#2405](https://github.com/Belphemur/SoundSwitch/issues/2405) [#2405](https://github.com/Belphemur/SoundSwitch/issues/2405)
+* **website:** accept PAYPAL_IPN_MODE=live instead of failing closed ([50c50e0](https://github.com/Belphemur/SoundSwitch/commit/50c50e06efcd5944261a16b102f1c0ad299c61ed))
+* **website:** return 500 (not 200) when PayPal IPN fails verification ([6d6fe99](https://github.com/Belphemur/SoundSwitch/commit/6d6fe99a5441a89ce817fd192abf4ff04830d0c9))
+
+### Tests
+
+* **audio:** adapt refresh tests to the mutable device cache ([296a752](https://github.com/Belphemur/SoundSwitch/commit/296a75266f6f52ba34a5d0810a23d6b3272099e0))
+
 ## [7.3.1](https://github.com/Belphemur/SoundSwitch/compare/v7.3.0...v7.3.1) (2026-08-28)
 
 ### Enhancements
