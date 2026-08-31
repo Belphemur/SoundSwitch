@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -68,6 +67,41 @@ public class RefreshDeviceTests
     private static DeviceFullInfo MakeDevice() =>
         new DeviceFullInfo("Test Device", Guid.NewGuid().ToString(), EDataFlow.eRender, string.Empty, EDeviceState.Active, false);
 
+    private const BindingFlags InstanceMembers = BindingFlags.NonPublic | BindingFlags.Instance;
+
+    /// <summary>
+    /// <see cref="CachedAudioDeviceLister"/> publishes its caches through read-only properties
+    /// backed by mutable dictionaries swapped/mutated under its internal lock. Seeding the backing
+    /// fields directly lets a test (a) install a cache without enumerating COM endpoints and
+    /// (b) keep holding the very same dictionary instance the lister uses, so a concurrent mutator
+    /// can edit the live cache the way <c>ProcessDeviceUpdates</c> does.
+    /// </summary>
+    private static void SetCache(CachedAudioDeviceLister lister,
+        Dictionary<string, DeviceFullInfo> playback,
+        Dictionary<string, DeviceFullInfo> recording)
+    {
+        typeof(CachedAudioDeviceLister).GetField("_playbackDevices", InstanceMembers)!.SetValue(lister, playback);
+        typeof(CachedAudioDeviceLister).GetField("_recordingDevices", InstanceMembers)!.SetValue(lister, recording);
+    }
+
+    /// <summary>
+    /// Reads a published cache through the lister's own property, so assertions observe what
+    /// readers (and <c>Refresh</c>'s retained-set computation) would see.
+    /// </summary>
+    private static IReadOnlyDictionary<string, DeviceFullInfo> GetCache(CachedAudioDeviceLister lister, string propertyName)
+    {
+        var property = typeof(CachedAudioDeviceLister).GetProperty(propertyName, InstanceMembers);
+        property.Should().NotBeNull();
+        return (IReadOnlyDictionary<string, DeviceFullInfo>)property!.GetValue(lister)!;
+    }
+
+    private static MethodInfo GetDisposeOldDevices()
+    {
+        var method = typeof(CachedAudioDeviceLister).GetMethod("DisposeOldDevices", InstanceMembers);
+        method.Should().NotBeNull();
+        return method!;
+    }
+
     /// <summary>
     /// A device that records whether it was disposed, so tests can observe disposal of a
     /// COM-free <see cref="DeviceFullInfo"/> without relying on platform-specific side effects.
@@ -95,10 +129,7 @@ public class RefreshDeviceTests
         var lister = new CachedAudioDeviceLister(EDeviceState.All);
         var device = new TrackedDevice("Test Device", "test-id", EDataFlow.eRender, string.Empty, EDeviceState.Active, false);
 
-        var method = typeof(CachedAudioDeviceLister)
-            .GetMethod("DisposeOldDevices", BindingFlags.NonPublic | BindingFlags.Instance);
-        method.Should().NotBeNull();
-        method!.Invoke(lister, new object[] { new[] { device } });
+        GetDisposeOldDevices().Invoke(lister, new object[] { new[] { device } });
 
         device.Disposed.Should().BeTrue("DisposeOldDevices must dispose every device in the snapshot");
     }
@@ -111,20 +142,13 @@ public class RefreshDeviceTests
         // With the snapshot fix the disposal enumerates a stable array and must not throw
         // "Collection was modified" (Sentry SOUNDSWITCH-49X).
         var lister = new CachedAudioDeviceLister(EDeviceState.All);
-        var playbackProperty = typeof(CachedAudioDeviceLister)
-            .GetProperty("PlaybackDevices", BindingFlags.NonPublic | BindingFlags.Instance);
-        var recordingProperty = typeof(CachedAudioDeviceLister)
-            .GetProperty("RecordingDevices", BindingFlags.NonPublic | BindingFlags.Instance);
-        var disposeMethod = typeof(CachedAudioDeviceLister)
-            .GetMethod("DisposeOldDevices", BindingFlags.NonPublic | BindingFlags.Instance);
-        playbackProperty.Should().NotBeNull();
-        recordingProperty.Should().NotBeNull();
-        disposeMethod.Should().NotBeNull();
+        var disposeMethod = GetDisposeOldDevices();
 
         var playback = new Dictionary<string, DeviceFullInfo> { ["p1"] = MakeDevice() };
         var recording = new Dictionary<string, DeviceFullInfo> { ["r1"] = MakeDevice() };
-        playbackProperty!.SetValue(lister, ImmutableDictionary.CreateRange(playback));
-        recordingProperty!.SetValue(lister, ImmutableDictionary.CreateRange(recording));
+        // Hand the lister the very dictionaries the mutator below edits, so the concurrent
+        // mutation hits the live published caches instead of detached copies.
+        SetCache(lister, playback, recording);
 
         // Snapshot exactly as Refresh does: materialize before the concurrent mutator starts.
         var snapshot = playback.Values.Concat(recording.Values).ToArray();
@@ -143,7 +167,7 @@ public class RefreshDeviceTests
             }
         });
 
-        Action dispose = () => disposeMethod!.Invoke(lister, new object[] { snapshot });
+        Action dispose = () => disposeMethod.Invoke(lister, new object[] { snapshot });
         dispose.Should().NotThrow();
 
         mutator.Wait();
@@ -189,6 +213,7 @@ public class RefreshDeviceTests
         // the freshly enumerated set must be REUSED (not disposed and not re-subscribed), while a
         // device absent from the new enumeration must be disposed exactly once.
         var lister = new CachedAudioDeviceLister(EDeviceState.All);
+        var disposeMethod = GetDisposeOldDevices();
 
         // Surviving device: stays across the refresh.
         var surviving = new TrackedDevice("Speaker", "survive", EDataFlow.eRender, string.Empty, EDeviceState.Active, false);
@@ -197,46 +222,43 @@ public class RefreshDeviceTests
         // New device: only in the new enumeration.
         var fresh = new TrackedDevice("Mic", "new", EDataFlow.eCapture, string.Empty, EDeviceState.Active, false);
 
-        var playbackProperty = typeof(CachedAudioDeviceLister)
-            .GetProperty("PlaybackDevices", BindingFlags.NonPublic | BindingFlags.Instance);
-        var recordingProperty = typeof(CachedAudioDeviceLister)
-            .GetProperty("RecordingDevices", BindingFlags.NonPublic | BindingFlags.Instance);
-        playbackProperty.Should().NotBeNull();
-        recordingProperty.Should().NotBeNull();
-
         // Seed the cache as if a previous refresh had published these.
-        playbackProperty!.SetValue(lister, ImmutableDictionary.CreateRange(new Dictionary<string, DeviceFullInfo>
+        var oldPlayback = new Dictionary<string, DeviceFullInfo>
         {
             ["survive"] = surviving,
             ["gone"] = removed
-        }));
-        recordingProperty!.SetValue(lister, ImmutableDictionary.CreateRange(new Dictionary<string, DeviceFullInfo>()));
-
-        // Refresh's reconcile step publishes a merged cache (reusing surviving instances AND
-        // adding fresh ones), then disposes only old devices absent from that PUBLISHED cache.
-        // The retained set MUST be derived from the published cache, not from the freshly
-        // enumerated ids alone — otherwise a reused (still-published) device would be disposed.
-        // We replicate the corrected contract: published keys = both reused + fresh ids.
-        var publishedPlayback = new Dictionary<string, DeviceFullInfo>
-        {
-            ["survive"] = surviving, // reused from old cache
-            ["new"] = fresh           // freshly enumerated
         };
-        // The old (pre-refresh) cache holds the surviving + removed devices; the published cache
-        // (reused + fresh) holds surviving + fresh. Disposal targets only old devices absent from
-        // the published cache — i.e. the removed one.
-        var oldDevices = new[] { surviving, removed };
-        var retainedIds = new HashSet<string>(publishedPlayback.Keys); // mirrors fixed Refresh
+        SetCache(lister, oldPlayback, new Dictionary<string, DeviceFullInfo>());
+
+        // Snapshot of the pre-refresh cache, taken under the lock by Refresh before publishing.
+        var oldDevices = oldPlayback.Values.ToArray();
+
+        // Refresh's reconcile step then publishes a merged cache (reusing surviving instances AND
+        // adding fresh ones), and only after that disposes old devices absent from the PUBLISHED
+        // cache. The retained set MUST come from the published cache, not from the freshly
+        // enumerated ids alone — otherwise a reused (still-published) device would be disposed.
+        SetCache(lister, new Dictionary<string, DeviceFullInfo>
+        {
+            ["survive"] = surviving, // reused from the old cache
+            ["new"] = fresh           // freshly enumerated
+        }, new Dictionary<string, DeviceFullInfo>());
+
+        var retainedIds = new HashSet<string>(
+            GetCache(lister, "PlaybackDevices").Keys.Concat(GetCache(lister, "RecordingDevices").Keys));
         var toDispose = oldDevices.Where(d => !retainedIds.Contains(d.Id)).ToArray();
 
-        var disposeMethod = typeof(CachedAudioDeviceLister)
-            .GetMethod("DisposeOldDevices", BindingFlags.NonPublic | BindingFlags.Instance);
-        disposeMethod.Should().NotBeNull();
-        disposeMethod!.Invoke(lister, new object[] { toDispose });
+        disposeMethod.Invoke(lister, new object[] { toDispose });
 
-        // The removed device is disposed; the surviving one is published-and-reused, so untouched.
+        toDispose.Should().ContainSingle().Which.Should().Be(removed,
+            "only the device missing from the published cache may be disposed");
         removed.Disposed.Should().BeTrue("device absent from the published cache must be disposed");
         surviving.Disposed.Should().BeFalse("reused device is in the published cache, must NOT be disposed");
         fresh.Disposed.Should().BeFalse("fresh device is in the published cache, must NOT be disposed");
+
+        // Regression contrast: deriving the retained set from the freshly enumerated ids alone
+        // (the pre-fix behaviour) would schedule the still-published reused instance for disposal.
+        var freshlyEnumeratedIds = new HashSet<string> { fresh.Id };
+        oldDevices.Where(d => !freshlyEnumeratedIds.Contains(d.Id))
+            .Should().Contain(surviving, "the bug this test guards against disposes reused devices");
     }
 }
