@@ -201,13 +201,14 @@ public class NightlyUpdateChecker(Uri feedUrl) : IUpdateChecker
                 continue;
             }
 
-            // Same major.minor.patch as the nightly's base still counts: installing that
-            // stable/beta moves the user back onto the release train. Only strictly older
-            // bases are ineligible.
+            // A stable/beta release is only offered when it is strictly newer than the
+            // nightly's base version. The nightly's revision makes it at least as new as
+            // its own base (7.3.1.1 is newer than 7.3.1), so a same-major.minor.patch
+            // release must NOT be offered — it would be a downgrade.
             var eligible = version.Major > baseVersion.Major
                            || (version.Major == baseVersion.Major && version.Minor > baseVersion.Minor)
                            || (version.Major == baseVersion.Major && version.Minor == baseVersion.Minor
-                               && version.Patch >= baseVersion.Patch);
+                               && version.Patch > baseVersion.Patch);
             if (!eligible)
             {
                 continue;

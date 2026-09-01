@@ -257,17 +257,66 @@ public class NightlyUpdateTests
     }
 
     [Test]
-    public void BuildReleaseTrainUpdate_SameBaseStableAndBeta_AreEligible()
+    public void BuildReleaseTrainUpdate_SameBaseRelease_ShouldNotBeOfferedToNightly()
     {
+        // A nightly of base 7.2.1 (e.g. 7.2.1.N) is at least as new as the 7.2.1 release,
+        // so a same-base stable release must not be offered (it would be a downgrade).
         var releases = new List<Release>
         {
+            TrainRelease("v7.2.1", false, "SoundSwitch_v7.2.1_Installer.exe"),
             TrainRelease("v7.2.1-beta.2", true, "SoundSwitch_v7.2.1_Installer.exe")
         };
 
-        var update = NightlyUpdateChecker.BuildReleaseTrainUpdate(releases, SemanticVersion.Parse("7.2.1"));
+        NightlyUpdateChecker.BuildReleaseTrainUpdate(releases, SemanticVersion.Parse("7.2.1"))
+            .Should().BeNull();
+    }
+
+    [Test]
+    public void BuildReleaseTrainUpdate_NightlyWithRevision_ShouldBeLatestOverBaseRelease()
+    {
+        // Scenario: both 7.3.1 (stable) and 7.3.1.1 (nightly) exist. The running nightly is
+        // 7.3.1.1; its base is 7.3.1. The stable release is NOT strictly newer, so it must
+        // not be offered — the nightly 7.3.1.1 stays the latest.
+        var releases = new List<Release>
+        {
+            TrainRelease("v7.3.1", false, "SoundSwitch_v7.3.1_Installer.exe")
+        };
+        var baseVersion = NightlyUpdateChecker.GetBaseVersion("7.3.1.1");
+
+        baseVersion.Should().Be(SemanticVersion.Parse("7.3.1"));
+        NightlyUpdateChecker.BuildReleaseTrainUpdate(releases, baseVersion).Should().BeNull();
+    }
+
+    [Test]
+    public void BuildReleaseTrainUpdate_SameBaseBeta_ShouldNotBeOfferedToNightlyWithHigherRevision()
+    {
+        // Scenario: both 7.2.5-beta.3 (release-train prerelease) and 7.2.5.10 (nightly,
+        // base 7.2.5, revision 10) exist. The running nightly 7.2.5.10 is newer than the
+        // same-base beta, so the beta must not be offered — the user stays on the nightly.
+        var releases = new List<Release>
+        {
+            TrainRelease("v7.2.5-beta.3", true, "SoundSwitch_v7.2.5_Installer.exe")
+        };
+        var baseVersion = NightlyUpdateChecker.GetBaseVersion("7.2.5.10");
+
+        baseVersion.Should().Be(SemanticVersion.Parse("7.2.5"));
+        NightlyUpdateChecker.BuildReleaseTrainUpdate(releases, baseVersion).Should().BeNull();
+    }
+
+    [Test]
+    public void BuildReleaseTrainUpdate_LaterRelease_ShouldStillBeOfferedToNightly()
+    {
+        // A strictly newer release must still win over the nightly of an older base.
+        var releases = new List<Release>
+        {
+            TrainRelease("v7.3.1", false, "SoundSwitch_v7.3.1_Installer.exe"),
+            TrainRelease("v7.3.2", false, "SoundSwitch_v7.3.2_Installer.exe")
+        };
+
+        var update = NightlyUpdateChecker.BuildReleaseTrainUpdate(releases, SemanticVersion.Parse("7.3.1"));
 
         update.Should().NotBeNull();
-        update.ReleaseVersion.Should().Be(SemanticVersion.Parse("7.2.1-beta.2"));
+        update.ReleaseVersion.Should().Be(SemanticVersion.Parse("7.3.2"));
     }
 
     [Test]
