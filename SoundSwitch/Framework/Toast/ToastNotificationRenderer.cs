@@ -92,7 +92,7 @@ internal static class ToastNotificationRenderer
             // Suppress the pop-up but still add to Action Center when TTL
             // is very short (< 4 s) — avoids a flash the user can't read.
             // For normal TTLs, show the pop-up banner.
-            toast.SuppressPopup = data.Ttl < TimeSpan.FromSeconds(4);
+            toast.SuppressPopup = data.Ttl < TimeSpan.FromSeconds(1);
 
             ToastNotificationManager
                 .CreateToastNotifier(AppId)
