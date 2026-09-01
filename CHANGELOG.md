@@ -1,3 +1,10 @@
+## [7.3.3](https://github.com/Belphemur/SoundSwitch/compare/v7.3.2...v7.3.3) (2026-09-01)
+
+### Bug Fixes
+
+* **audio:** treat S_FALSE as success for IAudioEndpointVolume calls ([#2409](https://github.com/Belphemur/SoundSwitch/issues/2409)) ([#2410](https://github.com/Belphemur/SoundSwitch/issues/2410)) ([c295ac7](https://github.com/Belphemur/SoundSwitch/commit/c295ac77813a627270a1d9130a868ae00aaddf3a))
+* **notification:Windows:** Show the popup unless less than 1 sec of display ([88d724f](https://github.com/Belphemur/SoundSwitch/commit/88d724fed1038f1d55127004998821443a31544b))
+
 ## [7.3.2](https://github.com/Belphemur/SoundSwitch/compare/v7.3.1...v7.3.2) (2026-08-31)
 
 ### Enhancements
