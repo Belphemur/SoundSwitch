@@ -32,7 +32,13 @@ internal static class ThemeIcons
     private static IconHandle _applicationFallback;
     private static IconHandle _informationFallback;
 
-    public static Icon GetIcon(IconKind kind, bool isDarkTaskbar)
+    /// <summary>
+    /// Returns a permanent <see cref="IconHandle"/> for the requested form factor and taskbar theme.
+    /// The handle is application-lifetime and must NOT be disposed by callers; it is owned by the
+    /// permanent cache. <see cref="TrayIcon.ReplaceIcon"/> will clone the underlying <see cref="Icon"/>
+    /// internally, so callers should not clone again.
+    /// </summary>
+    public static IconHandle GetIcon(IconKind kind, bool isDarkTaskbar)
     {
         try
         {
@@ -42,7 +48,7 @@ internal static class ThemeIcons
 
             var handle = icons[(int) kind];
             if (handle != null)
-                return handle.Icon;
+                return handle;
         }
         catch (Exception e)
         {
@@ -100,18 +106,18 @@ internal static class ThemeIcons
         }
     }
 
-    private static Icon GetFallbackIcon(IconKind kind)
+    private static IconHandle GetFallbackIcon(IconKind kind)
     {
         lock (FallbackLock)
         {
             if (kind == IconKind.Microphone)
             {
                 _informationFallback ??= IconExtractor.CreatePermanent((Icon) SystemIcons.Information.Clone());
-                return _informationFallback.Icon;
+                return _informationFallback;
             }
 
             _applicationFallback ??= IconExtractor.CreatePermanent((Icon) SystemIcons.Application.Clone());
-            return _applicationFallback.Icon;
+            return _applicationFallback;
         }
     }
 }

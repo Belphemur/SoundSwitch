@@ -14,6 +14,7 @@
 
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework.TrayIcon;
 using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Localization;
@@ -25,13 +26,22 @@ public class IconChangerThemeBased : IIconChanger
     public IconChanger TypeEnum => IconChanger.ThemeBased;
     public string Label => TrayIconStrings.iconChanger_themeBased;
 
-    public void ChangeIcon(UI.Component.TrayIcon trayIcon) =>
-        trayIcon.ReplaceIcon(ThemeIcons.GetIcon(IconKind.Speaker, WindowsThemeHelper.IsDarkModeEnabled()).Icon);
+    /// <summary>
+    /// Replaces the given tray icon with the theme-appropriate application icon:
+    /// a light icon for dark taskbars and a dark icon for light taskbars.
+    /// </summary>
+    /// <param name="trayIcon">The tray icon whose visual icon will be replaced.</param>
+    public void ChangeIcon(UI.Component.TrayIcon trayIcon)
+    {
+        using var handle = ThemeIcons.GetIcon(IconKind.Speaker, WindowsThemeHelper.IsDarkModeEnabled()).Acquire();
+        trayIcon.ReplaceIcon(handle.Icon);
+    }
 
     public void ChangeIcon(UI.Component.TrayIcon trayIcon, DeviceFullInfo deviceInfo, ERole role)
     {
         if (role == ERole.eCommunications) return;
         var kind = DeviceFormFactorDetector.From(deviceInfo);
-        trayIcon.ReplaceIcon(ThemeIcons.GetIcon(kind, WindowsThemeHelper.IsDarkModeEnabled()).Icon);
+        using var handle = ThemeIcons.GetIcon(kind, WindowsThemeHelper.IsDarkModeEnabled()).Acquire();
+        trayIcon.ReplaceIcon(handle.Icon);
     }
 }

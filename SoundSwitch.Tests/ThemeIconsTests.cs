@@ -11,23 +11,23 @@ public class ThemeIconsTests
     [Test]
     public void Speaker_IconDiffersBetweenLightAndDarkTaskbar()
     {
-        var light = ThemeIcons.GetIcon(IconKind.Speaker, false);
-        var dark = ThemeIcons.GetIcon(IconKind.Speaker, true);
+        using var light = ThemeIcons.GetIcon(IconKind.Speaker, false).Acquire();
+        using var dark = ThemeIcons.GetIcon(IconKind.Speaker, true).Acquire();
 
-        light.Should().NotBeNull();
-        dark.Should().NotBeNull();
-        light.Should().NotBeSameAs(dark);
+        light.Icon.Should().NotBeNull();
+        dark.Icon.Should().NotBeNull();
+        light.Icon.Should().NotBeSameAs(dark.Icon);
     }
 
     [Test]
     public void Speaker_And_Headphone_IconsDiffer()
     {
-        var speaker = ThemeIcons.GetIcon(IconKind.Speaker, false);
-        var headphone = ThemeIcons.GetIcon(IconKind.Headphone, false);
+        using var speaker = ThemeIcons.GetIcon(IconKind.Speaker, false).Acquire();
+        using var headphone = ThemeIcons.GetIcon(IconKind.Headphone, false).Acquire();
 
-        speaker.Should().NotBeNull();
-        headphone.Should().NotBeNull();
-        speaker.Should().NotBeSameAs(headphone);
+        speaker.Icon.Should().NotBeNull();
+        headphone.Icon.Should().NotBeNull();
+        speaker.Icon.Should().NotBeSameAs(headphone.Icon);
     }
 
     [Test]
@@ -35,8 +35,10 @@ public class ThemeIconsTests
     {
         foreach (IconKind kind in Enum.GetValues(typeof(IconKind)))
         {
-            ThemeIcons.GetIcon(kind, false).Should().NotBeNull();
-            ThemeIcons.GetIcon(kind, true).Should().NotBeNull();
+            using var light = ThemeIcons.GetIcon(kind, false).Acquire();
+            using var dark = ThemeIcons.GetIcon(kind, true).Acquire();
+            light.Icon.Should().NotBeNull();
+            dark.Icon.Should().NotBeNull();
         }
     }
 }

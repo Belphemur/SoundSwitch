@@ -21,16 +21,16 @@ using SoundSwitch.Common.Framework.Audio.Device;
 
 namespace SoundSwitch.Framework.TrayIcon;
 
-internal static class DeviceFormFactorDetector
+internal static partial class DeviceFormFactorDetector
 {
-    private static readonly Regex IconPathRegex =
-        new(@"mmres\.dll,-(?<index>\d+)$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+    [GeneratedRegex(@"mmres\.dll,-(?<index>\d+)$", RegexOptions.IgnoreCase)]
+    private static partial Regex IconPathRegex();
 
-    private static readonly Regex HeadphoneRegex =
-        new(@"\b(headphone|earbud|earphone|airpods|qc\d|wh-\d)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+    [GeneratedRegex(@"\b(headphone|earbud|earphone|airpods|qc\d|wh-\d)", RegexOptions.IgnoreCase)]
+    private static partial Regex HeadphoneRegex();
 
-    private static readonly Regex HeadsetRegex =
-        new(@"\b(headset|game[ ]?com)\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+    [GeneratedRegex(@"\b(headset|game[ ]?com)\b", RegexOptions.IgnoreCase)]
+    private static partial Regex HeadsetRegex();
 
     private static readonly IReadOnlyDictionary<int, IconKind> IconPathMap = new Dictionary<int, IconKind>
     {
@@ -55,10 +55,10 @@ internal static class DeviceFormFactorDetector
         if (kind.HasValue)
             return kind.Value;
 
-        if (HeadphoneRegex.IsMatch(deviceInfo.NameClean))
+        if (HeadphoneRegex().IsMatch(deviceInfo.NameClean))
             return IconKind.Headphone;
 
-        if (HeadsetRegex.IsMatch(deviceInfo.NameClean))
+        if (HeadsetRegex().IsMatch(deviceInfo.NameClean))
             return IconKind.Headset;
 
         return IconKind.Speaker;
@@ -69,7 +69,7 @@ internal static class DeviceFormFactorDetector
         if (string.IsNullOrEmpty(iconPath))
             return null;
 
-        var match = IconPathRegex.Match(iconPath);
+        var match = IconPathRegex().Match(iconPath);
         if (!match.Success)
             return null;
 
