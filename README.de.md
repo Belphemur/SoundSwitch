@@ -158,6 +158,7 @@ Sie möchten etwas verbessern oder eine neue Sprache hinzufügen? Übersetzungen
 - Awesome Logo [#278](https://github.com/Belphemur/SoundSwitch/pull/278) [@linadesteem](https://github.com/linadesteem)
 - Icons [Pastel SVG icon set](https://codefisher.org/pastel-svg/), by Michael Buckley ([CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/))
 - Icons [Font Awesome](https://fontawesome.com/), Creative Commons Attribution 4.0 International license: [License](https://fontawesome.com/license/free)
+- Themebasierte Tray-Symbole abgeleitet von [Lucide](https://lucide.dev/), ISC-Lizenz — Copyright © 2026 Lucide Icons und Mitwirkende. Siehe `SoundSwitch.Common/Resources/LICENSES/Lucide-ISC.txt`.
 
 ### 🤝 JetBrains ![JetBrain Tooling](https://i.imgur.com/SN2qAuL.png "JetBrain Tooling")
 
