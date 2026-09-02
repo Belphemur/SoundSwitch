@@ -2,7 +2,7 @@
 
 **Status:** Draft v3 for review — anchored on issue #2417
 **Author:** Hermes
-**Branch:** `feat/theme-icon-form-factor` (worktree: `/home/balor/workspace/soundswitch-feat-theme-icon`)
+**Branch:** `feat/theme-icon-form-factor`
 **Base:** `origin/dev` @ `c295ac77`
 **Issue:** https://github.com/Belphemur/SoundSwitch/issues/2417 ("Dark mode support - Theme Based issues")
 **Reporter:** notsobigguyanymore via Answer Overflow
@@ -61,7 +61,7 @@ Pulled from [lucide-icons/lucide](https://github.com/lucide-icons/lucide) (ISC L
 2. Render each at 4× oversample to PNG via `cairosvg`, then downsample to 16/20/24/32/40/48/64 with Lanczos.
 3. Pack into a single multi-resolution ICO file (manual ICONDIR + ICONDIRENTRY headers, one PNG entry per size).
 
-Result: 4 ICO files, total ~25 KB on disk, each contains 7 resolution entries (16 → 64), 32-bit ARGB. Already rendered to `/tmp/icons/` and ready to drop into the worktree.
+Result: **8 ICO files** (4 form-factor shapes × 2 colour variants), total ~57 KB on disk, each contains 7 resolution entries (16 → 64), 32-bit ARGB. The 4 black variants are rendered from Lucide SVGs; the 4 white variants are the same SVGs with RGB-inverted via `ImageOps.invert` before ICO packing. Already rendered and ready to drop into the worktree.
 
 **Files to be added to `SoundSwitch.Common/Resources/`** — black + white variants shipped as static assets, no runtime inversion:
 
@@ -80,17 +80,15 @@ The white variants are pre-rendered once from the same SVGs (RGB-inverted via `I
 
 ### 4.2 Theme picker
 
-No runtime `ColorMatrix`, no lazy cache. `ThemeIcons` is a thin static lookup:
+`ThemeIcons` is a lazy-initialized lookup. On first call to `GetIcon(kind, isDarkTaskbar)` for a given theme, it loads the 4 ICOs for that theme via `ResourceManager` and wraps each as a permanent `IconHandle` via `IconExtractor.CreatePermanent`. The cache (`_blackIcons[]` / `_whiteIcons[]`) is then retained for the application lifetime — subsequent calls are a direct array lookup. Permanent `IconHandle`s are never disposed.
+
+Each caller does `using var handle = ThemeIcons.GetIcon(...).Acquire(); trayIcon.ReplaceIcon(handle.Icon);` — the `Acquire()` gives a per-call disposable reference that increments the permanent entry's refCount and is released when the `using` block exits, matching the icon-framework lifecycle rule (per `SoundSwitch.Common/Framework/Icon/AGENTS.md` §"Permanent").
 
 ```csharp
-public static Icon GetIcon(IconKind kind, bool isDarkTaskbar)
-{
-    var handle = isDarkTaskbar ? _white[(int)kind] : _black[(int)kind];
-    return handle.Icon;
-}
+public static IconHandle GetIcon(IconKind kind, bool isDarkTaskbar) { ... }  // returns permanent handle
 ```
 
-Backed by 8 `static readonly IconHandle _black[4]` / `_white[4]` created via `IconExtractor.CreatePermanent` (same pattern as `AudioDeviceIconExtractor.DefaultSpeakersHandle`). Permanent handles are never disposed; the cache is alive for the application lifetime.
+Each `CreatePermanent` call is wrapped in try/catch and falls back to `SystemIcons.Application` (speaker/headphone/headset) or `SystemIcons.Information` (microphone) on load failure. `IconChangerThemeBased` never throws on missing/corrupt assets.
 
 ### 4.3 Form-factor detection (Option A+B from earlier analysis)
 
@@ -114,11 +112,11 @@ Priority order:
 2. **NameClean heuristic** — regex against `DeviceFullInfo.NameClean`. Case-insensitive. Order matters: scan Headphone first.
 
    ```
-   \b(headphone|headset|earbud|earphone|airpods|qc\d|wh-\d)\b  →  Headphone
-   \b(headset|game[ ]?com)\b                                      →  Headset
+   \b(headphone|earbud|earphone|airpods|qc\d|wh-\d)\b  →  Headphone
+   \b(headset|game[ ]?com)\b                          →  Headset
    ```
 
-   Examples: "Bose Headset 700" → Headset (Headset regex matches first); "Sony WH-1000XM4" → Headphone; "AirPods Pro" → Headphone; "Realtek HD Audio" → no match → fallback.
+   The Headphone regex deliberately **excludes** `headset` so that names like "Bose Headset 700" fall through to the Headset regex below and resolve to Headset, not Headphone. Examples: "Sony WH-1000XM4" → Headphone (digit-letter boundary, so no trailing `\b` required); "AirPods Pro" → Headphone; "Realtek HD Audio" → no match → fallback.
 
 3. **Default** — `Speaker` for `eRender`, `Microphone` for `eCapture`. Safe, never wrong.
 
@@ -126,13 +124,17 @@ Priority order:
 
 ```csharp
 public void ChangeIcon(UI.Component.TrayIcon trayIcon)
-    => trayIcon.ReplaceIcon(ThemeIcons.GetIcon(IconKind.Speaker, WindowsThemeHelper.IsDarkModeEnabled()).Icon);
+{
+    using var handle = ThemeIcons.GetIcon(IconKind.Speaker, WindowsThemeHelper.IsDarkModeEnabled()).Acquire();
+    trayIcon.ReplaceIcon(handle.Icon);
+}
 
 public void ChangeIcon(UI.Component.TrayIcon trayIcon, DeviceFullInfo deviceInfo, ERole role)
 {
     if (role == ERole.eCommunications) return;       // matches IconChangerAbstract's guard
     var kind = DeviceFormFactorDetector.From(deviceInfo);
-    trayIcon.ReplaceIcon(ThemeIcons.GetIcon(kind, WindowsThemeHelper.IsDarkModeEnabled()).Icon);
+    using var handle = ThemeIcons.GetIcon(kind, WindowsThemeHelper.IsDarkModeEnabled()).Acquire();
+    trayIcon.ReplaceIcon(handle.Icon);
 }
 ```
 
@@ -220,7 +222,7 @@ No tests for visual quality — manual review on the PR.
 
 ## 7. Build & merge
 
-- **Linux partial build only** — `dotnet build SoundSwitch/SoundSwitch.csproj -p:LinuxBuild=true -p:BuildProjectReferences=false`. Per `soundswitch-dev` §5a, this won't catch missing `using`s or `Resources.Designer.cs` regressions — namespace-audit every edited file before claiming done.
+- **Linux partial build only** — `dotnet build SoundSwitch/SoundSwitch.csproj -c Debug -p:LinuxBuild=true -p:BuildProjectReferences=false`. Per `soundswitch-dev` §5a, this won't catch missing `using`s or `Resources.Designer.cs` regressions — namespace-audit every edited file before claiming done.
 - **CI gate.** PR against `dev` (`gh pr create --base dev`). `build / build` must pass.
 - **Merge gate.** `scripts/pr-merge-gated.sh` after CI green.
 
