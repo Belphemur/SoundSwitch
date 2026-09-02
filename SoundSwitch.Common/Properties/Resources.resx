@@ -124,4 +124,28 @@
   <data name="defaultSpeakers" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\defaultSpeakers.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="themeIconSpeaker" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\themeIcon_speaker.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="themeIconSpeakerWhite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\themeIcon_speaker_white.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="themeIconHeadphone" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\themeIcon_headphone.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="themeIconHeadphoneWhite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\themeIcon_headphone_white.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="themeIconHeadset" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\themeIcon_headset.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="themeIconHeadsetWhite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\themeIcon_headset_white.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="themeIconMicrophone" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\themeIcon_microphone.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="themeIconMicrophoneWhite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\themeIcon_microphone_white.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

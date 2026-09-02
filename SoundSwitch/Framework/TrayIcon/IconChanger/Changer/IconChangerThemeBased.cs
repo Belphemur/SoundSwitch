@@ -25,13 +25,13 @@ public class IconChangerThemeBased : IIconChanger
     public IconChanger TypeEnum => IconChanger.ThemeBased;
     public string Label => TrayIconStrings.iconChanger_themeBased;
 
-    /// <summary>
-    /// Replaces the given tray icon with the theme-appropriate application icon:
-    /// a light icon for dark taskbars and a dark icon for light taskbars.
-    /// </summary>
-    /// <param name="trayIcon">The tray icon whose visual icon will be replaced.</param>
     public void ChangeIcon(UI.Component.TrayIcon trayIcon) =>
-        trayIcon.ReplaceIcon(SpeakerIconGenerator.GenerateSpeakerIcon(WindowsThemeHelper.IsDarkModeEnabled()));
+        trayIcon.ReplaceIcon(ThemeIcons.GetIcon(IconKind.Speaker, WindowsThemeHelper.IsDarkModeEnabled()).Icon);
 
-    public void ChangeIcon(UI.Component.TrayIcon trayIcon, DeviceFullInfo deviceInfo, ERole role) { }
+    public void ChangeIcon(UI.Component.TrayIcon trayIcon, DeviceFullInfo deviceInfo, ERole role)
+    {
+        if (role == ERole.eCommunications) return;
+        var kind = DeviceFormFactorDetector.From(deviceInfo);
+        trayIcon.ReplaceIcon(ThemeIcons.GetIcon(kind, WindowsThemeHelper.IsDarkModeEnabled()).Icon);
+    }
 }

@@ -196,6 +196,7 @@ Want to improve an existing language or add another one? Translations are online
 - Icons [Pastel SVG icon set](https://codefisher.org/pastel-svg/), by Michael Buckley ([CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/))
 - Discovered and reported a security vulnerability with the updater and its code signature checker [#415](https://github.com/Belphemur/SoundSwitch/issues/415) [@JarLob](https://github.com/JarLob)
 - Free Icons from [Font Awesome](https://fontawesome.com/), Creative Commons Attribution 4.0 International license: [License](https://fontawesome.com/license/free)
+- Theme-based tray icons derived from [Lucide](https://lucide.dev/), ISC License — Copyright © 2026 Lucide Icons and Contributors. See `SoundSwitch.Common/Resources/LICENSES/Lucide-ISC.txt`.
 
 ### 🤝 JetBrains 
 [![JetBrains logo.](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg)](https://jb.gg/OpenSource)

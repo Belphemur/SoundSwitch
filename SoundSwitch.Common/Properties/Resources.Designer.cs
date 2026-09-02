@@ -79,5 +79,85 @@ namespace SoundSwitch.Common.Properties {
                 return ((System.Drawing.Icon)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon themeIconSpeaker {
+            get {
+                object obj = ResourceManager.GetObject("themeIconSpeaker", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon themeIconSpeakerWhite {
+            get {
+                object obj = ResourceManager.GetObject("themeIconSpeakerWhite", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon themeIconHeadphone {
+            get {
+                object obj = ResourceManager.GetObject("themeIconHeadphone", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon themeIconHeadphoneWhite {
+            get {
+                object obj = ResourceManager.GetObject("themeIconHeadphoneWhite", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon themeIconHeadset {
+            get {
+                object obj = ResourceManager.GetObject("themeIconHeadset", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon themeIconHeadsetWhite {
+            get {
+                object obj = ResourceManager.GetObject("themeIconHeadsetWhite", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon themeIconMicrophone {
+            get {
+                object obj = ResourceManager.GetObject("themeIconMicrophone", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon themeIconMicrophoneWhite {
+            get {
+                object obj = ResourceManager.GetObject("themeIconMicrophoneWhite", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
     }
 }
