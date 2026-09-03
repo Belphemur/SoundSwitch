@@ -85,9 +85,9 @@ public sealed partial class SettingsForm : Form
     /// Colour of the custom outline borders, following the Windows app light/dark mode:
     /// dark grey so the border stays visible on a dark background.
     /// </summary>
-    private static Color OutlineColor => WindowsThemeHelper.IsDarkModeEnabled()
-        ? Color.FromArgb(80, 80, 80)
-        : Color.Gainsboro;
+    private static Color OutlineColor => Application.IsDarkModeEnabled()
+            ? Color.FromArgb(80, 80, 80)   // dark grey on dark bg
+            : Color.Gainsboro;
 
     private static Pen PenLine(int width = 1) => new(OutlineColor, width);
 

@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Windows.Forms;
 
 using SoundSwitch.Common.Framework.Icon;
-using SoundSwitch.Framework.WinApi;
 
 namespace SoundSwitch.UI.Component;
 
@@ -108,19 +107,24 @@ public class IconTextComboBox : ComboBox
             }
 
             if (e.State.HasFlag(DrawItemState.Selected))
-            {
-                // Selected row: keep the system highlight in light mode, but use a
-                // dark grey in dark mode so the white highlight text stays readable.
-                var highlightColor = WindowsThemeHelper.IsDarkModeEnabled()
-                    ? Color.FromArgb(51, 51, 51)
-                    : SystemColors.Highlight;
-                using var highlightBrush = new SolidBrush(highlightColor);
-                e.Graphics.FillRectangle(highlightBrush, e.Bounds);
-            }
-            else
-            {
-                e.DrawBackground();
-            }
+                        {
+                            // Selected row: keep the system highlight in light mode, but use a
+                            // dark grey in dark mode so the white highlight text stays readable.
+                            // Use Application.IsDarkModeEnabled (not WindowsThemeHelper) so the
+                            // custom highlight matches the WinForms palette (and defers to High
+                            // Contrast mode automatically).
+                            var highlightColor = Application.IsDarkModeEnabled()
+                                ? Color.FromArgb(51, 51, 51)
+                                : SystemColors.Highlight;
+                            using var highlightBrush = new SolidBrush(highlightColor);
+                            e.Graphics.FillRectangle(highlightBrush, e.Bounds);
+                            // Re-draw the focus cue on top of our custom fill so keyboard focus is still visible.
+                            e.DrawFocusRectangle();
+                        }
+                        else
+                        {
+                            e.DrawBackground();
+                        }
 
             var icon = iconHandle.Icon;
             var imageRect = new Rectangle(e.Bounds.X, e.Bounds.Y, e.Bounds.Height, e.Bounds.Height);
