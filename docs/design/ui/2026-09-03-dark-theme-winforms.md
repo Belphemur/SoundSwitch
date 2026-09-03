@@ -22,7 +22,7 @@ The "old style window" complaint refers to the pre-WinUI standard WinForms chrom
 
 1. All six WinForms (`SettingsForm`, `About`, `ProcessSelectionForm`, `UpdateDownloadForm`, `UpsertAppSoundLockRule`, `UpsertProfileExtended`) follow the OS dark/light setting automatically — no app-level toggle, no user-facing setting to add.
 2. Dark mode flips live when the user toggles the OS theme while the app is running (the `WindowsAPIAdapter.SystemThemeChanged` plumbing already exists; this PR reuses it).
-3. `BannerForm` is **not** touched (per user directive). Banner styling stays as-is.
+3. `BannerForm` is **not** touched (per user directive). Banner styling stays as-is. (`BannerForm` is a WinForms `Form` class — the directive applies to its theming treatment, not its class hierarchy.)
 4. No visual regression on Windows 10 light mode (the minimum supported OS). No new build warnings (`WFO5001` was the only one and is no longer relevant on .NET 10).
 5. No new package dependencies. No designer-file regeneration needed (the existing forms inherit the theme via framework defaults).
 
@@ -30,7 +30,7 @@ The "old style window" complaint refers to the pre-WinUI standard WinForms chrom
 
 - No WinUI rewrite. The forms stay WinForms. (A WinUI swap is a separate, larger effort — out of scope.)
 - No per-user "Force light / Force dark / Follow system" preference UI. The OS theme is the source of truth. (Adding a preference toggle is a separate follow-up if users ask.)
-- No BannerForm changes. The banner is a custom-drawn translucent overlay, not a form — its theme is independent.
+- No BannerForm changes. The banner is a custom-drawn translucent overlay — not chrome-themed like the forms above. Its appearance is intentionally independent of the system theme.
 - No telemetry. Out of scope.
 - No RTL regression. The `RightToLeft` wiring (`new LanguageFactory().Get(...).IsRightToLeft ? RightToLeft.Yes : RightToLeft.No`) stays as-is.
 
@@ -63,7 +63,7 @@ A single line in `Program.cs`, placed **after** `Application.EnableVisualStyles(
 Application.SetColorMode(SystemColorMode.System);
 ```
 
-`SystemColorMode.System` (enum value `2`) makes every form created after this call follow the current OS `AppsUseLightTheme` registry value. `SystemColorMode.Dark` (1) forces dark; `Classic` (0) keeps the old behaviour. We pick `System` because the user's stated requirement is "follow the theme of Windows".
+`SystemColorMode.System` (enum value `1`) makes every form created after this call follow the current OS `AppsUseLightTheme` registry value. `SystemColorMode.Dark` (enum value `2`) forces dark; `Classic` (enum value `0`) keeps the old behaviour. We pick `System` because the user's stated requirement is "follow the theme of Windows".
 
 This automatically:
 - Repaints every standard control (Button, CheckBox, RadioButton, TextBox, ComboBox, GroupBox, TabPage, Label, LinkLabel, NumericUpDown, TrackBar, ToolStrip, MenuStrip, ContextMenuStrip, DataGridView, ListView in details mode, StatusStrip, ProgressBar).
@@ -75,9 +75,16 @@ The change is opt-in only at one place; per-form code changes are limited to (a)
 
 `WindowsAPIAdapter` already raises `SystemThemeChanged` on `WM_SETTINGCHANGE` when `IsImmersiveColorSetChange` is true (`WindowsAPIAdapter.cs:392-398`). Today, `TrayIcon.cs:309` subscribes and calls `UpdateIcon()` for theme-aware tray icons.
 
-We add a parallel hook: when `SystemThemeChanged` fires and the SettingsForm is open, we call `SettingsForm.RefreshTheme()` (new method). The hook lives in `SoundSwitchApplicationContext` (the existing `appContext`) so the subscription has a clear owner and doesn't leak across form instances.
+We add a parallel hook: when `SystemThemeChanged` fires and the SettingsForm is open, we call `SettingsForm.RefreshTheme()` (new method). The subscription is created inside the `SettingsForm` constructor (paired with `_deviceListRefreshedSubscription`) and disposed in `OnFormClosed`, matching the existing form-internal subscription pattern.
 
-**Important caveat:** `Application.SetColorMode(SystemColorMode.System)` does NOT automatically repaint existing forms on theme change in .NET 10 — only newly-created controls/forms honour it. The PR needs to either (a) close-and-reopen the open forms, or (b) explicitly call a refresh method. (a) would lose form state; (b) is the right answer. The refresh method iterates the form's `Controls` and toggles a no-op property that forces a `WM_PAINT` for owner-drawn controls, plus calls `Invalidate(true)` on the form. .NET 10's actual behaviour here is verified on Windows CI (see §8 validation).
+**Important caveat — what `SetColorMode(SystemColorMode.System)` does and doesn't do at runtime:**
+
+- **At startup** (the first call): every subsequently-created form and control reads the current OS `AppsUseLightTheme` registry value and renders with the matching palette. This is the primary mechanism; it covers all six forms automatically with no per-control code.
+- **On OS theme change** (live flip): `SetColorMode` does NOT propagate the new colour to existing standard controls on its own — Microsoft documents this as "the application does not automatically adapt" ([Microsoft Learn — `SetColorMode`](https://learn.microsoft.com/en-us/dotnet/api/system.windows.forms.application.setcolormode)). However, WinForms raises `OnSystemColorsChanged` (and the newer `OnSystemVisualSettingsChanged`) on every control when the OS theme flips, so controls that subscribe to those events can repaint themselves.
+- **Our strategy**: `SettingsForm` overrides `OnSystemColorsChanged` and calls `RefreshTheme()` (form-wide `Invalidate(true)` + per-child `Invalidate()`). The custom-painted border (`PenLine` → `OutlineColor`) and the two owner-drawn custom controls (`IconTextComboBox`, `TextProgressBar`) repaint from their new theme-aware brushes. Standard controls are expected to repaint themselves via the framework's built-in handlers — if any standard control is observed to stay in the old colour after a live flip, the fix is targeted `Invalidate()` calls in `RefreshTheme()` (no form restart needed).
+- **Why we keep the existing `WindowsAPIAdapter.SystemThemeChanged` hook**: the API adapter fires on `WM_SETTINGCHANGE` for any immersive-colour change (accent, contrast, hot tracking). `OnSystemColorsChanged` fires on `WM_SYSCOLORCHANGE`. Both paths reach `RefreshTheme()` so we don't double-fire on a single user toggle (the framework coalesces, but if it doesn't we can guard with a timestamp).
+
+A future improvement (out of scope) is to call `Application.SetColorMode(...)` again from `RefreshTheme()` with the live mode and then invalidate — Microsoft documents this works for some controls but inconsistently across `WM_PAINT`-driven custom paint. We accept the current strategy's known limitations on live flip; for users who want a 100% clean theme they can close and reopen Settings (loses no persisted state).
 
 ### 5.3 Custom-painted borders in SettingsForm
 
@@ -91,7 +98,7 @@ private static Rectangle RectOutline(int offsetW, int offsetH, Control topLeft, 
 `Gainsboro` is hardcoded for the outline border on the playback/recording/profiles preview pane. In dark mode that produces a near-invisible border on a dark background. Replace with a theme-aware colour:
 
 ```csharp
-private static Color OutlineColor => WindowsThemeHelper.IsDarkModeEnabled()
+private static Color OutlineColor => Application.IsDarkModeEnabled()
     ? Color.FromArgb(80, 80, 80)   // dark grey on dark bg
     : Color.Gainsboro;
 private static Pen PenLine(int width = 1) => new(OutlineColor, width);
@@ -122,7 +129,8 @@ Both extend base WinForms controls and disable the framework's automatic drawing
 From Microsoft Learn and dotnet/winforms issues (verified by web search 2026-09-03):
 
 - **Windows 11 only**: DWM `DWMWA_USE_IMMERSIVE_DARK_MODE` (attribute 19) is honoured. Title bar, minimise/maximise/close buttons, and most `UxTheme` controls render dark.
-- **Windows 10 1903+**: `SetColorMode(System)` recolours the controls (Button, CheckBox, ComboBox, TabControl, etc.) but the title bar chrome stays light. This is a Windows 10 DWM limitation — there's no documented workaround that doesn't break the title bar on Win11. **We accept this for the Win10 minimum-supported-platform path** and document it in the user-facing release notes.
+- **Windows 10 1903+**: `SetColorMode(System)` recolours the **content of standard controls** (Button, CheckBox, ComboBox, TabControl, etc.) and respects the system palette, but the **title-bar chrome stays light** because the Win10 DWM does not honour `DWMWA_USE_IMMERSIVE_DARK_MODE`. This is a Windows 10 DWM limitation — there's no documented workaround that doesn't break the title bar on Win11. **We accept this for the Win10 minimum-supported-platform path** and document it in the user-facing release notes. Custom-drawn controls (`IconTextComboBox`, `TextProgressBar`, `SettingsForm`'s outline border) follow the OS theme on both Win10 and Win11 because they paint with our theme-aware brushes.
+- **High Contrast mode**: `Application.SetColorMode(SystemColorMode.System)` defers to the High Contrast palette when High Contrast is active (the framework honours `WM_THEMECHANGED`). Our custom paint uses `Application.IsDarkModeEnabled` (not the bare registry helper) so the same deferral applies — High Contrast forces a light custom border rather than `Color.FromArgb(80, 80, 80)`.
 - **ListView "Details" view on dark theme**: ListView's header strip and row highlight colour are system-derived and work in .NET 10 dark mode. The custom `profilesListView` / `playbackListView` / `recordingListView` in Settings (`Settings.cs:308, 425-444`) use the default ListView; no code change needed, but verify on Windows CI.
 - **`ComboBox` dropdown popup** (separate window from the closed box): the popup's background is rendered by the OS listbox control, which honours dark mode in Win11 22H2+. Pre-22H2 Win11 and all Win10 keep the dropdown light. Documented in the .NET 10 release notes.
 
@@ -166,7 +174,7 @@ From Microsoft Learn and dotnet/winforms issues (verified by web search 2026-09-
 One PR, `feat(ui): follow Windows dark theme on all settings forms (#2417, third item)`. Body references issue #2417, the prior #2418 PR, and the .NET 10 dark-mode stabilisation note from Microsoft Learn. Branch: `feat/ui-dark-theme` from `origin/dev`. Worktree lives under the active Hermes workspace per the soundswitch-dev §4 convention.
 
 Commit message:
-```
+```text
 feat(ui): follow Windows dark theme on WinForms settings
 
 Resolves the third item of #2417. SoundSwitch already targets
