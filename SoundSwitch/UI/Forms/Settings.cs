@@ -50,6 +50,7 @@ using SoundSwitch.Framework.TrayIcon.IconChanger;
 using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
 using SoundSwitch.Framework.Updater;
+using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Framework.WinApi.Keyboard;
 using SoundSwitch.Localization;
 using SoundSwitch.Localization.Factory;
@@ -74,12 +75,21 @@ public sealed partial class SettingsForm : Form
     private readonly IAudioDeviceLister _audioDeviceLister;
     private readonly BannerManager _bannerManager = new();
     private IDisposable _deviceListRefreshedSubscription;
+    private IDisposable _themeChangedSubscription;
 
     private const int RECT_PEN_WIDTH = 4;
     private const int OFFSET_W = 15;
     private const int OFFSET_H = 12;
 
-    private static Pen PenLine(int width = 1) => new(Color.Gainsboro, width);
+    /// <summary>
+    /// Colour of the custom outline borders, following the Windows app light/dark mode:
+    /// dark grey so the border stays visible on a dark background.
+    /// </summary>
+    private static Color OutlineColor => WindowsThemeHelper.IsDarkModeEnabled()
+        ? Color.FromArgb(80, 80, 80)
+        : Color.Gainsboro;
+
+    private static Pen PenLine(int width = 1) => new(OutlineColor, width);
 
     private static Rectangle RectOutline(int offsetW, int offsetH, Control topLeft, Control bottomRight) =>
         new(topLeft.Location.X - offsetW, topLeft.Location.Y - offsetH,
@@ -299,6 +309,18 @@ public sealed partial class SettingsForm : Form
             {
                 if (!IsHandleCreated || IsDisposed) return;
                 BeginInvoke(RefreshAudioDevices);
+            });
+
+        // Repaint the custom-drawn surfaces when the OS light/dark theme flips
+        // while the form is open (standard controls follow via SetColorMode).
+        _themeChangedSubscription = Observable
+            .FromEventPattern<EventHandler, EventArgs>(
+                h => WindowsAPIAdapter.SystemThemeChanged += h,
+                h => WindowsAPIAdapter.SystemThemeChanged -= h)
+            .Subscribe(_ =>
+            {
+                if (!IsHandleCreated || IsDisposed) return;
+                BeginInvoke(RefreshTheme);
             });
     }
 
@@ -563,10 +585,32 @@ public sealed partial class SettingsForm : Form
     protected override void OnFormClosed(FormClosedEventArgs e)
     {
         _deviceListRefreshedSubscription?.Dispose();
+        _themeChangedSubscription?.Dispose();
         // Dispose all IconHandle objects stored in the profile list-view so GDI handles are
         // released promptly rather than waiting for finalizer collection.
         DisposeProfileListViewIconHandles();
         base.OnFormClosed(e);
+    }
+
+    /// <summary>
+    /// Repaint the form and its owner-drawn children so theme-dependent custom
+    /// painting (the outline borders drawn with <see cref="PenLine"/>) picks up
+    /// the new system colours when the OS light/dark mode changes.
+    /// </summary>
+    public void RefreshTheme()
+    {
+        if (IsDisposed || Disposing) return;
+        Invalidate(true);
+        foreach (Control control in Controls)
+        {
+            control.Invalidate();
+        }
+    }
+
+    protected override void OnSystemColorsChanged(EventArgs e)
+    {
+        base.OnSystemColorsChanged(e);
+        RefreshTheme();
     }
 
     private void TabControl_SelectedIndexChanged(object sender, EventArgs e)

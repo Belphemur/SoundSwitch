@@ -124,6 +124,9 @@ internal static class Program
         Application.EnableVisualStyles();
 #if NETCORE
         Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
+        // Follow the OS light/dark app-mode so every form created afterwards
+        // honours the Windows "Apps use light/dark theme" setting.
+        Application.SetColorMode(SystemColorMode.System);
 #endif
         Application.SetCompatibleTextRenderingDefault(false);
         // Manage the Closing events send by Windows

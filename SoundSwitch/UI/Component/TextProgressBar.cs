@@ -35,6 +35,24 @@ public class TextProgressBar : ProgressBar
         SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
     }
 
+    protected override CreateParams CreateParams
+    {
+        get
+        {
+            // Opt into .NET 10 implicit theming for the owner-drawn surface.
+            // Must be called BEFORE base.CreateParams is read, per the .NET 10 docs.
+            SetStyle(ControlStyles.ApplyThemingImplicitly, true);
+            return base.CreateParams;
+        }
+    }
+
+    protected override void OnSystemColorsChanged(EventArgs e)
+    {
+        base.OnSystemColorsChanged(e);
+        // Re-render the bar so the owner-drawn paint follows the new system colours.
+        Invalidate();
+    }
+
     //Property to set to decide whether to print a % or Text
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 

@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 
 using SoundSwitch.Common.Framework.Icon;
+using SoundSwitch.Framework.WinApi;
 
 namespace SoundSwitch.UI.Component;
 
@@ -55,6 +56,17 @@ public class IconTextComboBox : ComboBox
         ValueMember = nameof(DropDownItem.Tag);
     }
 
+    protected override CreateParams CreateParams
+    {
+        get
+        {
+            // Opt into .NET 10 implicit theming for the owner-drawn surfaces.
+            // Must be called BEFORE base.CreateParams is read, per the .NET 10 docs.
+            SetStyle(ControlStyles.ApplyThemingImplicitly, true);
+            return base.CreateParams;
+        }
+    }
+
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public new DropDownItem[] DataSource
     {
@@ -95,7 +107,20 @@ public class IconTextComboBox : ComboBox
                 return;
             }
 
-            e.DrawBackground();
+            if (e.State.HasFlag(DrawItemState.Selected))
+            {
+                // Selected row: keep the system highlight in light mode, but use a
+                // dark grey in dark mode so the white highlight text stays readable.
+                var highlightColor = WindowsThemeHelper.IsDarkModeEnabled()
+                    ? Color.FromArgb(51, 51, 51)
+                    : SystemColors.Highlight;
+                using var highlightBrush = new SolidBrush(highlightColor);
+                e.Graphics.FillRectangle(highlightBrush, e.Bounds);
+            }
+            else
+            {
+                e.DrawBackground();
+            }
 
             var icon = iconHandle.Icon;
             var imageRect = new Rectangle(e.Bounds.X, e.Bounds.Y, e.Bounds.Height, e.Bounds.Height);
