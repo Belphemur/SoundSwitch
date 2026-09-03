@@ -17,25 +17,33 @@ using Microsoft.Win32;
 namespace SoundSwitch.Framework.WinApi;
 
 /// <summary>
-/// Helper that reports whether Windows is currently using a light or dark taskbar/shell theme.
+/// Helper that reports whether Windows is currently using a light or dark application mode.
 /// </summary>
 public static class WindowsThemeHelper
 {
     private const string PersonalizeKey = @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
-    private const string SystemUsesLightThemeValue = "SystemUsesLightTheme";
+
+    // AppsUseLightTheme (not SystemUsesLightTheme) — matches what Application.SetColorMode
+    // and Application.IsDarkModeEnabled resolve internally, so the tray icon path and the
+    // custom-paint path stay consistent. When the user sets Windows mode and App mode
+    // independently (Win11 Personalization → 'Choose your default app mode'), this helper
+    // follows the App mode so our colour choices match the rest of WinForms.
+    private const string AppsUseLightThemeValue = "AppsUseLightTheme";
 
     /// <summary>
-    /// Returns true when Windows is using a dark taskbar/shell theme (the default for dark mode).
+    /// Returns true when Windows is currently using a dark application mode
+    /// (the default for dark mode; this is the registry value WinForms reads via
+    /// Application.SetColorMode / Application.IsDarkModeEnabled).
     /// </summary>
     public static bool IsDarkModeEnabled()
     {
         using var key = Registry.CurrentUser.OpenSubKey(PersonalizeKey);
-        if (key?.GetValue(SystemUsesLightThemeValue) is int value)
+        if (key?.GetValue(AppsUseLightThemeValue) is int value)
         {
             return value == 0;
         }
 
-        // Default to dark mode if the value is missing, matching Windows' default dark taskbar.
+        // Default to dark mode if the value is missing, matching Windows' default dark apps.
         return true;
     }
 }
