@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 
 using SoundSwitch.Common.Framework.Icon;
+using SoundSwitch.Framework.WinApi;
 
 namespace SoundSwitch.UI.Component;
 
@@ -110,10 +111,11 @@ public class IconTextComboBox : ComboBox
                         {
                             // Selected row: keep the system highlight in light mode, but use a
                             // dark grey in dark mode so the white highlight text stays readable.
-                            // Use Application.IsDarkModeEnabled (not WindowsThemeHelper) so the
-                            // custom highlight matches the WinForms palette (and defers to High
-                            // Contrast mode automatically).
-                            var highlightColor = Application.IsDarkModeEnabled()
+                            // Use WindowsThemeHelper.IsDarkModeEnabled (the project's single
+                            // source of truth) so custom colours match the tray icon's
+                            // theme-driven icon selection. High Contrast deferral is
+                            // documented as out of scope for this PR.
+                            var highlightColor = WindowsThemeHelper.IsDarkModeEnabled()
                                 ? Color.FromArgb(51, 51, 51)
                                 : SystemColors.Highlight;
                             using var highlightBrush = new SolidBrush(highlightColor);

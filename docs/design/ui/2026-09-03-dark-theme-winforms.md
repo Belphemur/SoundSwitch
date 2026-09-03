@@ -98,7 +98,7 @@ private static Rectangle RectOutline(int offsetW, int offsetH, Control topLeft, 
 `Gainsboro` is hardcoded for the outline border on the playback/recording/profiles preview pane. In dark mode that produces a near-invisible border on a dark background. Replace with a theme-aware colour:
 
 ```csharp
-private static Color OutlineColor => Application.IsDarkModeEnabled()
+private static Color OutlineColor => WindowsThemeHelper.IsDarkModeEnabled()
     ? Color.FromArgb(80, 80, 80)   // dark grey on dark bg
     : Color.Gainsboro;
 private static Pen PenLine(int width = 1) => new(OutlineColor, width);
@@ -130,7 +130,7 @@ From Microsoft Learn and dotnet/winforms issues (verified by web search 2026-09-
 
 - **Windows 11 only**: DWM `DWMWA_USE_IMMERSIVE_DARK_MODE` (attribute 19) is honoured. Title bar, minimise/maximise/close buttons, and most `UxTheme` controls render dark.
 - **Windows 10 1903+**: `SetColorMode(System)` recolours the **content of standard controls** (Button, CheckBox, ComboBox, TabControl, etc.) and respects the system palette, but the **title-bar chrome stays light** because the Win10 DWM does not honour `DWMWA_USE_IMMERSIVE_DARK_MODE`. This is a Windows 10 DWM limitation — there's no documented workaround that doesn't break the title bar on Win11. **We accept this for the Win10 minimum-supported-platform path** and document it in the user-facing release notes. Custom-drawn controls (`IconTextComboBox`, `TextProgressBar`, `SettingsForm`'s outline border) follow the OS theme on both Win10 and Win11 because they paint with our theme-aware brushes.
-- **High Contrast mode**: `Application.SetColorMode(SystemColorMode.System)` defers to the High Contrast palette when High Contrast is active (the framework honours `WM_THEMECHANGED`). Our custom paint uses `Application.IsDarkModeEnabled` (not the bare registry helper) so the same deferral applies — High Contrast forces a light custom border rather than `Color.FromArgb(80, 80, 80)`.
+- **High Contrast mode**: out of scope for this PR. `WindowsThemeHelper.IsDarkModeEnabled()` reads the bare registry (`SystemUsesLightTheme`); if the user is in High Contrast AND the system is also dark, the helper still returns `true`, so our custom brush colours will render dark on the HC palette. This is acceptable — HC is its own palette and a separate theming exercise. Future improvement: switch the helper (or add a sibling) to consult `SystemParameters.HighContrast` and force a light brush in that case.
 - **ListView "Details" view on dark theme**: ListView's header strip and row highlight colour are system-derived and work in .NET 10 dark mode. The custom `profilesListView` / `playbackListView` / `recordingListView` in Settings (`Settings.cs:308, 425-444`) use the default ListView; no code change needed, but verify on Windows CI.
 - **`ComboBox` dropdown popup** (separate window from the closed box): the popup's background is rendered by the OS listbox control, which honours dark mode in Win11 22H2+. Pre-22H2 Win11 and all Win10 keep the dropdown light. Documented in the .NET 10 release notes.
 
