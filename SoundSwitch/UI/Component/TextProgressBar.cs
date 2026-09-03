@@ -35,6 +35,24 @@ public class TextProgressBar : ProgressBar
         SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
     }
 
+    protected override CreateParams CreateParams
+    {
+        get
+        {
+            // Opt into .NET 10 implicit theming for the owner-drawn surface.
+            // Must be called BEFORE base.CreateParams is read, per the .NET 10 docs.
+            SetStyle(ControlStyles.ApplyThemingImplicitly, true);
+            return base.CreateParams;
+        }
+    }
+
+    protected override void OnSystemColorsChanged(EventArgs e)
+    {
+        base.OnSystemColorsChanged(e);
+        // Re-render the bar so the owner-drawn paint follows the new system colours.
+        Invalidate();
+    }
+
     //Property to set to decide whether to print a % or Text
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 
@@ -88,7 +106,14 @@ public class TextProgressBar : ProgressBar
                 Convert.ToInt32((Height / 2) - len.Height / 2));
             // The commented-out code will centre the text into the highlighted area only. This will centre the text regardless of the highlighted area.
             // Draw the custom text
-            g.DrawString(text, f, Brushes.Black, location);
+            // Theme-aware text colour so the percentage stays legible over both
+            // the filled (ProgressBarRenderer highlight) and empty segments in
+            // dark and light modes. SystemColors.ControlText tracks the active
+            // WinForms palette and defers to High Contrast automatically.
+            using (var textBrush = new SolidBrush(SystemColors.ControlText))
+            {
+                g.DrawString(text, f, textBrush, location);
+            }
         }
     }
 }
