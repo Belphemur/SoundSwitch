@@ -85,7 +85,11 @@ $cliProject  = 'SoundSwitch.CLI'
 # -FinalDir would sign/clean a different directory than the one ISCC packages.
 # Reject it BEFORE any destructive operation (cleaning/signing).
 $canonicalFinalDir = [System.IO.Path]::GetFullPath((Join-Path $repoRoot 'Final'))
-if ([string]::Compare($FinalDir, $canonicalFinalDir, $true) -ne 0) {
+# TrimEndingDirectorySeparator keeps trailing-separator variants ('.\Final\')
+# and rooted equivalents of the canonical directory accepted.
+$FinalDirNormalized        = [System.IO.Path]::TrimEndingDirectorySeparator($FinalDir)
+$canonicalFinalDirNormalized = [System.IO.Path]::TrimEndingDirectorySeparator($canonicalFinalDir)
+if ([string]::Compare($FinalDirNormalized, $canonicalFinalDirNormalized, $true) -ne 0) {
     throw "-FinalDir must be the canonical repository Final\ directory ('$canonicalFinalDir') because Installer\scripts\app_defines.iss packages the payload via the hardcoded relative path '..\Final\'. Got: $FinalDir"
 }
 
