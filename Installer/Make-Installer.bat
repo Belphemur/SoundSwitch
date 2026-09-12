@@ -47,6 +47,7 @@ for %%A in (%targetArchs:,= %) do (
 
 echo Moving installer to final location: ..\Final\*Installer*.exe -^> ..\Final\Installer\
 move ..\Final\*Installer*.exe ..\Final\Installer\
+if errorlevel 1 (set errorMessage=Failed to move installer output to ..\Final\Installer & goto ERROR_QUIT)
 
 echo Installer created successfully.
 exit /b 0

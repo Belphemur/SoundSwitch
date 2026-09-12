@@ -14,17 +14,17 @@ This skill guides GitHub Copilot and other agents on how to correctly and consis
 
 When a request is made to bump the required .NET version (for example, from `10.0.8` to `10.0.9`), the following files must be updated:
 
-1. **`Directory.Build.props` / project files**: Update `TargetFramework` (and any pinned SDK version in `global.json`) to the new .NET version.
+1. **`global.json`** (if it pins an SDK version) for SDK patch/minor updates — the self-contained publish picks the bundled runtime patch from the SDK used to publish, so `TargetFramework` (`net10.0`) does NOT change for a patch bump. Change `TargetFramework` only when the framework itself changes (e.g. `net10.0` → `net11.0`).
 2. **`website/src/faq/update-7-0-dotnet-required.md`**: Provides manual installation instructions and download links for the .NET Desktop Runtime for users still running an old (pre-self-contained) installer.
 
 ---
 
 ## Detailed Update Steps
 
-### 1. Update the Target Framework
+### 1. Update the SDK / Target Framework
 
-- Update `<TargetFramework>` in `SoundSwitch/SoundSwitch.csproj` (and the other projects sharing the framework) to `net<MAJOR>.<MINOR>`.
-- If `global.json` pins an SDK version, update `sdk.version` accordingly.
+- **Patch/minor SDK bump** (e.g. 10.0.8 → 10.0.9): update `sdk.version` in `global.json` only — `TargetFramework` stays `net<MAJOR>.<MINOR>`.
+- **Major/minor framework change** (e.g. `net10.0` → `net11.0`): update `<TargetFramework>` in the project files (`SoundSwitch/SoundSwitch.csproj` and the other projects sharing the framework) and `global.json` accordingly.
 
 ### 2. Update User Documentation (`website/src/faq/update-7-0-dotnet-required.md`)
 

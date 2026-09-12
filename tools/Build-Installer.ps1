@@ -207,6 +207,13 @@ if (-not (Test-Path $setupIss)) {
     throw "Installer\setup.iss not found at $setupIss."
 }
 
+# Clean stale installer outputs from Final\ root as well: setup.iss writes
+# the compiled installer(s) there, and leftovers from an interrupted or
+# differently-scoped previous build must not be moved/sign as if they were
+# produced by this run.
+Get-ChildItem $FinalDir -Filter '*Installer*.exe' -File -ErrorAction SilentlyContinue |
+    Remove-Item -Force
+
 # One ISCC pass per architecture: setup.iss uses /DTargetArch to select which
 # payload (Final\<rid>) is bundled and which installer filename is produced.
 # x64 keeps the unsuffixed installer name (legacy tooling compatibility);
