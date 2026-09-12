@@ -11,14 +11,14 @@
     "preview": "npm run docs:build && wrangler dev"
   },
   "dependencies": {
-    "@vuepress/bundler-vite": "2.0.0-rc.30",
+    "@vuepress/bundler-vite": "2.0.0-rc.31",
     "sass-embedded": "^1.100.0",
     "vue": "^3.5.40",
-    "vuepress": "2.0.0-rc.30",
-    "vuepress-theme-hope": "2.0.0-rc.107"
+    "vuepress": "2.0.0-rc.31",
+    "vuepress-theme-hope": "2.0.0-rc.109"
   },
   "devDependencies": {
-    "@vuepress/plugin-llms": "^2.0.0-rc.132",
+    "@vuepress/plugin-llms": "^2.0.0-rc.134",
     "@vuepress/plugin-slimsearch": "^2.0.0-rc.130",
     "wrangler": "^4.114.0"
   }

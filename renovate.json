@@ -19,6 +19,15 @@
             "automerge": false
         },
         {
+            "description": "VuePress core + bundler + theme must move together (peer deps)",
+            "matchPackageNames": [
+                "vuepress",
+                "@vuepress/bundler-vite",
+                "vuepress-theme-hope"
+            ],
+            "groupName": "vuepress"
+        },
+        {
             "matchPackageNames": [
                 "conventional-changelog-conventionalcommits"
             ],
