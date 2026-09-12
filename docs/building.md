@@ -54,11 +54,13 @@ The build/release pipeline is orchestrated by PowerShell scripts in `tools/`. Th
 ```
 
 This script:
-1. Cleans and publishes all projects into `Final\`.
+1. Cleans and publishes all projects into `Final\` (self-contained: the .NET Desktop Runtime is bundled into the payload).
 2. Converts Markdown documentation (`CHANGELOG.md`, `README.md`, `Terms.md`) to HTML via `tools\markdown_to_html.py`.
 3. Bundles assets (images, CLI README, license, terms) into `Final\`.
-4. Delegates to `Build-Installer.ps1` to compile and sign the Inno Setup installer.
+4. Delegates to `Build-Installer.ps1` to compile and sign the Inno Setup installer for each selected architecture (one arch-specific installer per architecture; see `-Architectures` below).
 5. When run without `-BuildFromSource`, also downloads from a draft GitHub release, uploads the signed installer, and publishes the release.
+
+By default BOTH architectures (`win-x64`, `win-arm64`) are published and compiled. Pass `-Architectures win-x64` (or a comma-separated list) to restrict the build — the nightly pipeline publishes the x64 installer only.
 
 ### Installer-Only Build
 
@@ -77,7 +79,7 @@ For a signed build:
 `Build-Installer.ps1` handles:
 1. Signature validation of binaries in `Final\`.
 2. Signing application binaries via `tools\Sign-Binary.ps1`.
-3. Invoking Inno Setup (`ISCC.exe`) to compile the installer.
+3. Invoking Inno Setup (`ISCC.exe`) to compile the installer — once per architecture, passing `/DTargetArch=x64` or `/DTargetArch=arm64` (controlled by the optional `-Architectures` parameter, default both). The x64 installer keeps the legacy unsuffixed filename; the arm64 installer is named `*_Installer_arm64.exe`.
 4. Signing the resulting installer.
 
 ### Publishing to GitHub Releases
@@ -133,7 +135,7 @@ dotnet test SoundSwitch.sln -c Debug
 
 - **Debug**: Binaries land in each project's `bin/Debug/` directory with full debug symbols.
 - **Release**: The `Final\` directory at the repository root contains published binaries, HTML documentation, and assets ready for packaging.
-- **Installer**: The Inno Setup compiler outputs signed installers to `Final\Installer\`.
+- **Installer**: The Inno Setup compiler outputs signed installers to `Final\Installer\` — one per architecture: the unsuffixed x64 installer and the `*_Installer_arm64.exe` arm64 installer.
 
 ## CI/CD Pipeline
 
