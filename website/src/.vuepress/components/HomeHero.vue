@@ -33,6 +33,35 @@ const isMounted = ref(false)
 
 const donateAmounts = [5, 10, 25, 50]
 
+function detectArm64(): Promise<boolean> {
+  const uaData = (
+    navigator as Navigator & {
+      userAgentData?: {
+        getHighEntropyValues?: (hints: string[]) => Promise<{ architecture?: string }>
+      }
+    }
+  ).userAgentData
+  const uaFallback = (): boolean => /arm64|aarch64/i.test(navigator.userAgent)
+  if (uaData?.getHighEntropyValues) {
+    return uaData
+      .getHighEntropyValues(['architecture'])
+      .then((v) => v.architecture?.includes('arm') ?? false)
+      .catch(uaFallback)
+  }
+  return Promise.resolve(uaFallback())
+}
+
+// Picks the installer matching the client architecture. New dual-arch releases
+// ship `SoundSwitch_v<ver>_<state>_Installer.exe` (x64, unsuffixed) and
+// `..._Installer_arm64.exe`; old releases only have the unsuffixed x64 one.
+function pickInstallerAsset(assets: GitHubAsset[], isArm64: boolean): GitHubAsset | undefined {
+  const exes = assets.filter((a) => a.name.endsWith('.exe'))
+  if (isArm64) {
+    return exes.find((a) => a.name.includes('_arm64')) ?? exes.find((a) => !a.name.includes('_arm64')) ?? exes[0]
+  }
+  return exes.find((a) => !a.name.includes('_arm64')) ?? exes[0]
+}
+
 function buildDonateUrl(amount: number): string {
   const base = 'https://www.paypal.com/donate'
   // Fallback for uuidv4
@@ -100,12 +129,14 @@ onMounted(async () => {
       throw new Error('No stable release found')
     }
 
-    const exeAsset = stableRelease.assets.find((a) => a.name.endsWith('.exe'))
+    const isArm64 = await detectArm64()
+
+    const exeAsset = pickInstallerAsset(stableRelease.assets, isArm64)
 
     if (exeAsset) {
       downloadUrl.value = exeAsset.browser_download_url
     }
-    downloadText.value = `Download ${stableRelease.tag_name}`
+    downloadText.value = `Download ${stableRelease.tag_name} (${isArm64 ? 'arm64' : 'x64'})`
   } catch {
     // Fallback already set in refs
   } finally {
