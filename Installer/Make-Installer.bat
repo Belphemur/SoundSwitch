@@ -36,8 +36,8 @@ set releaseState=%~1
 set targetArchs=%~2
 if "%targetArchs%"=="" set targetArchs=x64,arm64
 
-echo Cleaning previous installer files: ..\Final\Installer\*Installer.exe
-del ..\Final\Installer\*Installer.exe
+echo Cleaning previous installer files: ..\Final\Installer\*Installer*.exe
+del ..\Final\Installer\*Installer*.exe
 
 echo Building installer...
 for %%A in (%targetArchs:,= %) do (
@@ -45,8 +45,8 @@ for %%A in (%targetArchs:,= %) do (
     if errorlevel 1 (set errorMessage=Installer script setup.iss failed for %%A & goto ERROR_QUIT)
 )
 
-echo Moving installer to final location: ..\Final\*Installer.exe -^> ..\Final\Installer\
-move ..\Final\*Installer.exe ..\Final\Installer\
+echo Moving installer to final location: ..\Final\*Installer*.exe -^> ..\Final\Installer\
+move ..\Final\*Installer*.exe ..\Final\Installer\
 
 echo Installer created successfully.
 exit /b 0

@@ -199,7 +199,7 @@ if (-not (Test-Path $installerDir)) {
 }
 
 # Clean previous installer files
-Get-ChildItem $installerDir -Filter '*Installer.exe' -ErrorAction SilentlyContinue |
+Get-ChildItem $installerDir -Filter '*Installer*.exe' -ErrorAction SilentlyContinue |
     Remove-Item -Force
 
 $setupIss = Join-Path $repoRoot 'Installer\setup.iss'
@@ -226,7 +226,7 @@ foreach ($arch in $Architectures) {
 }
 
 # Move installer output from Final\ to Final\Installer\
-$builtInstallers = Get-ChildItem $FinalDir -Filter '*Installer.exe' -File
+$builtInstallers = Get-ChildItem $FinalDir -Filter '*Installer*.exe' -File
 foreach ($ins in $builtInstallers) {
     $dest = Join-Path $installerDir $ins.Name
     Move-Item $ins.FullName $dest -Force
@@ -238,7 +238,7 @@ foreach ($ins in $builtInstallers) {
 Write-Host "`n=================================" -ForegroundColor White
 Write-Host "Installer built successfully!" -ForegroundColor Green
 
-$installers = Get-ChildItem $installerDir -Filter '*Installer.exe'
+$installers = Get-ChildItem $installerDir -Filter '*Installer*.exe'
 if ($installers) {
     if ($canSign) {
         Write-Host "`n=== Signing installer ===" -ForegroundColor White
