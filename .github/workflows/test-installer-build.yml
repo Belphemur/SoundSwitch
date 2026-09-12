@@ -68,8 +68,6 @@ jobs:
           }
           $dotnetVersion = "{0}.{1}.x" -f $match.Groups['major'].Value, $match.Groups['minor'].Value
           Write-Host "Detected .NET SDK version: $dotnetVersion (from $framework)"
-          $major = $match.Groups['major'].Value
-          "major=$major" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
           "dotnet-version=$dotnetVersion" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
 
       - name: Setup .NET
@@ -106,7 +104,21 @@ jobs:
       - name: Build installer assets and installer
         shell: pwsh
         run: |
-          .\tools\Publish-Release.ps1 -BuildFromSource -Configuration Release -SkipSigning -InstallerReleaseState Nightly -DotNetMajorVersion ${{ steps.framework.outputs.major }}
+          # Self-contained publish of BOTH architectures; the installers bundle
+          # the .NET Desktop Runtime, no runtime download happens at install time.
+          .\tools\Publish-Release.ps1 -BuildFromSource -Configuration Release -SkipSigning -InstallerReleaseState Nightly
+
+      - name: Assert both architecture installers exist
+        shell: pwsh
+        run: |
+          $installerDir = Join-Path $PWD 'Final\Installer'
+          $x64 = Get-ChildItem $installerDir -Filter '*_Installer.exe' |
+            Where-Object { $_.Name -notlike '*_arm64*' } | Select-Object -First 1
+          $arm64 = Get-ChildItem $installerDir -Filter '*_Installer_arm64.exe' | Select-Object -First 1
+          if (-not $x64) { throw "Missing x64 installer (*_Installer.exe) in $installerDir." }
+          if (-not $arm64) { throw "Missing arm64 installer (*_Installer_arm64.exe) in $installerDir." }
+          Write-Host "x64 installer:   $($x64.Name)"
+          Write-Host "arm64 installer: $($arm64.Name)"
 
       - name: Run Installer in Silent Mode (Machine Scope)
         run: |
@@ -114,7 +126,9 @@ jobs:
           if exist "%INSTALL_LOG%" del /f /q "%INSTALL_LOG%"
 
           echo "Finding installer executable..."
-          for /f "delims=" %%i in ('dir /b Final\Installer\*.exe') do set INSTALLER_NAME=%%i
+          rem The *_Installer.exe pattern matches only the unsuffixed (x64)
+          rem installer; *_Installer_arm64.exe does not match it.
+          for /f "delims=" %%i in ('dir /b Final\Installer\*_Installer.exe') do set INSTALLER_NAME=%%i
           if not defined INSTALLER_NAME (
             echo "ERROR: No installer found in Final\Installer\"
             exit /b 1

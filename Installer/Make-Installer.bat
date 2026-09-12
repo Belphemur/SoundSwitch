@@ -1,7 +1,12 @@
 @echo off
 rem SoundSwitch Installer Make file
 rem
-rem Compiles the installer.
+rem Compiles the installer(s), one per target architecture.
+rem
+rem Usage: Make-Installer.bat <ReleaseState> [architectures]
+rem   ReleaseState:  label passed to ISCC as /DReleaseState (e.g. Release, Beta, Nightly)
+rem   architectures: optional comma-separated list of target architectures
+rem                  (x64 and/or arm64). Defaults to both.
 rem
 rem Requires installed Inno Setup:
 rem http://www.jrsoftware.org/isdl.php
@@ -27,23 +32,29 @@ if not exist "..\Final\Installer" (
     mkdir ..\Final\Installer
 )
 
+set releaseState=%~1
+set targetArchs=%~2
+if "%targetArchs%"=="" set targetArchs=x64,arm64
+
 echo Cleaning previous installer files: ..\Final\Installer\*Installer.exe
 del ..\Final\Installer\*Installer.exe
 
 echo Building installer...
-if "%2"=="" (
-    echo Running Inno Setup: %innoSetupExe% setup.iss /DReleaseState=%1
-    %innoSetupExe% setup.iss /DReleaseState=%1
-) else (
-    echo Running Inno Setup: %innoSetupExe% setup.iss /DReleaseState=%1 /DDotNetMajorVersion=%2
-    %innoSetupExe% setup.iss /DReleaseState=%1 /DDotNetMajorVersion=%2
+for %%A in (%targetArchs:,= %) do (
+    call :COMPILE_ARCH %%A "%releaseState%"
+    if errorlevel 1 (set errorMessage=Installer script setup.iss failed for %%A & goto ERROR_QUIT)
 )
-if not %ERRORLEVEL%==0 (set errorMessage=Installer script setup.iss failed & goto ERROR_QUIT)
 
 echo Moving installer to final location: ..\Final\*Installer.exe -^> ..\Final\Installer\
 move ..\Final\*Installer.exe ..\Final\Installer\
 
 echo Installer created successfully.
+exit /b 0
+
+:COMPILE_ARCH
+echo Running Inno Setup: %innoSetupExe% setup.iss /DReleaseState=%~2 /DTargetArch=%~1
+%innoSetupExe% setup.iss /DReleaseState=%~2 /DTargetArch=%~1
+if not "%ERRORLEVEL%"=="0" exit /b 1
 exit /b 0
 
 :ERROR_QUIT
