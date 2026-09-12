@@ -35,6 +35,12 @@
 .PARAMETER InstallerReleaseState
     The release state label passed to Inno Setup (e.g. Release, Beta, Nightly).
 
+.PARAMETER Architectures
+    Architectures to compile installers for: 'win-x64' and/or 'win-arm64'.
+    Accepts a comma-separated string (e.g. 'win-x64,win-arm64') or an array.
+    Defaults to BOTH architectures.  One ISCC pass is run per architecture
+    with /DTargetArch=<arch>.
+
 .EXAMPLE
     .\tools\Build-Installer.ps1
     Builds and signs the installer from the default Final\ directory.
@@ -60,7 +66,7 @@ param(
 
     [string]$InstallerReleaseState = 'Release',
 
-    [string]$DotNetMajorVersion = '10'
+    [string[]]$Architectures = @('win-x64', 'win-arm64')
 )
 
 Set-StrictMode -Version Latest
@@ -73,6 +79,22 @@ $FinalDir    = [System.IO.Path]::GetFullPath($FinalDir)
 $signScript  = Join-Path $PSScriptRoot 'Sign-Binary.ps1'
 $projectName = 'SoundSwitch'
 $cliProject  = 'SoundSwitch.CLI'
+
+# Normalize -Architectures: accept a comma-separated string (e.g.
+# 'win-x64,win-arm64', typical for CI inputs) as well as an explicit array.
+$Architectures = @(
+    $Architectures |
+        ForEach-Object { $_ -split ',' } |
+        ForEach-Object { $_.Trim() } |
+        Where-Object { $_ }
+)
+if ($Architectures.Count -eq 0) {
+    $Architectures = @('win-x64', 'win-arm64')
+}
+$invalidArchitectures = @($Architectures | Where-Object { $_ -notin @('win-x64', 'win-arm64') })
+if ($invalidArchitectures.Count -gt 0) {
+    throw "Invalid architecture(s): $($invalidArchitectures -join ', '). Supported values: win-x64, win-arm64."
+}
 
 # ── Locate Inno Setup (ISCC.exe) ────────────────────────────────────────────
 
@@ -169,6 +191,7 @@ if (-not $isccExe) {
     throw "Inno Setup 6 (ISCC.exe) not found. Run tools\Install-BuildTools.ps1 first."
 }
 Write-Host "  Using ISCC: $isccExe" -ForegroundColor DarkGray
+Write-Host "  Architectures: $($Architectures -join ', ')" -ForegroundColor DarkGray
 
 $installerDir = Join-Path $FinalDir 'Installer'
 if (-not (Test-Path $installerDir)) {
@@ -184,10 +207,22 @@ if (-not (Test-Path $setupIss)) {
     throw "Installer\setup.iss not found at $setupIss."
 }
 
-Write-Host "  Compiling: ISCC $setupIss /DReleaseState=$InstallerReleaseState /DDotNetMajorVersion=$DotNetMajorVersion"
-& $isccExe $setupIss "/DReleaseState=$InstallerReleaseState" "/DDotNetMajorVersion=$DotNetMajorVersion"
-if ($LASTEXITCODE -ne 0) {
-    throw "Inno Setup compilation failed with exit code $LASTEXITCODE."
+# One ISCC pass per architecture: setup.iss uses /DTargetArch to select which
+# payload (Final\<rid>) is bundled and which installer filename is produced.
+# x64 keeps the unsuffixed installer name (legacy tooling compatibility);
+# arm64 produces *_arm64.exe.
+foreach ($arch in $Architectures) {
+    $targetArch = switch ($arch) {
+        'win-x64'   { 'x64' }
+        'win-arm64' { 'arm64' }
+        default     { throw "Unsupported architecture: $arch" }
+    }
+
+    Write-Host "  Compiling $targetArch installer: ISCC $setupIss /DReleaseState=$InstallerReleaseState /DTargetArch=$targetArch"
+    & $isccExe $setupIss "/DReleaseState=$InstallerReleaseState" "/DTargetArch=$targetArch"
+    if ($LASTEXITCODE -ne 0) {
+        throw "Inno Setup compilation failed for $targetArch with exit code $LASTEXITCODE."
+    }
 }
 
 # Move installer output from Final\ to Final\Installer\

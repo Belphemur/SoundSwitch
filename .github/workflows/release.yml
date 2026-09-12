@@ -66,6 +66,7 @@ jobs:
             publish-artifact-name: soundswitch-release
             ref: v${{ needs.release.outputs.version }}
             version: ${{ needs.release.outputs.version }}
+            architectures: win-x64,win-arm64
         secrets: inherit
 
     upload:

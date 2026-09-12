@@ -32,6 +32,11 @@ on:
                 type: string
                 default: ""
                 description: "Version to embed in published binaries (e.g. '6.14.4'). Passed as MSBuild Version/FileVersion/AssemblyVersion/InformationalVersion properties."
+            architectures:
+                required: false
+                type: string
+                default: "win-x64,win-arm64"
+                description: "Comma-separated list of architectures to publish (win-x64 and/or win-arm64). One arch-specific installer is compiled per architecture."
         outputs:
             framework:
                 value: ${{ jobs.detect-framework.outputs.framework }}
@@ -129,7 +134,24 @@ jobs:
                     throw "Invalid configuration: $configuration"
                   }
 
-                  foreach ($rid in @('win-x64', 'win-arm64')) {
+                  # Self-contained publish: the .NET Desktop Runtime ships inside
+                  # the installer payload, so the app does not depend on a
+                  # machine-wide runtime install.
+                  # Comma-separated architectures (win-x64 and/or win-arm64).
+                  $architectures = @(
+                    '${{ inputs.architectures }}' -split ',' |
+                      ForEach-Object { $_.Trim() } |
+                      Where-Object { $_ }
+                  )
+                  if ($architectures.Count -eq 0) {
+                    $architectures = @('win-x64', 'win-arm64')
+                  }
+                  $invalidArchs = @($architectures | Where-Object { $_ -notin @('win-x64', 'win-arm64') })
+                  if ($invalidArchs.Count -gt 0) {
+                    throw "Invalid architecture(s): $($invalidArchs -join ', '). Supported values: win-x64, win-arm64."
+                  }
+
+                  foreach ($rid in $architectures) {
                     $ridOutputDir = Join-Path $outputDir $rid
                     New-Item -ItemType Directory -Path $ridOutputDir -Force | Out-Null
 
@@ -137,7 +159,7 @@ jobs:
                       $projectTempDir = Join-Path $outputDir "$project-publish-$rid"
                       $arguments = @(
                         'publish', '-c', $configuration,
-                        '-r', $rid, '--self-contained', 'false',
+                        '-r', $rid, '--self-contained', 'true',
                         "$project\$project.csproj",
                         '-o', $projectTempDir
                       ) + $versionArgs
