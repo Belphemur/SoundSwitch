@@ -136,7 +136,12 @@ onMounted(async () => {
     if (exeAsset) {
       downloadUrl.value = exeAsset.browser_download_url
     }
-    downloadText.value = `Download ${stableRelease.tag_name} (${isArm64 ? 'arm64' : 'x64'})`
+    // Label reflects the installer actually served: an arm64 client on an old
+    // release without an _arm64 asset gets the unsuffixed x64 installer.
+    const archTag = exeAsset
+      ? exeAsset.name.includes('_arm64') ? 'arm64' : 'x64'
+      : isArm64 ? 'arm64' : 'x64'
+    downloadText.value = `Download ${stableRelease.tag_name} (${archTag})`
   } catch {
     // Fallback already set in refs
   } finally {

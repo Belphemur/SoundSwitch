@@ -23,7 +23,8 @@
             "matchPackageNames": [
                 "vuepress",
                 "@vuepress/bundler-vite",
-                "vuepress-theme-hope"
+                "vuepress-theme-hope",
+                "@vuepress/plugin-llms"
             ],
             "groupName": "vuepress"
         },
