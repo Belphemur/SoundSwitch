@@ -55,6 +55,12 @@
 .PARAMETER InstallerReleaseState
     The release state label passed to Inno Setup (e.g. Release, Beta).
 
+.PARAMETER Architectures
+    Architectures to publish and bundle into installers: 'win-x64' and/or
+    'win-arm64'.  Accepts a comma-separated string (e.g. 'win-x64,win-arm64')
+    or an array.  Defaults to BOTH architectures.  One arch-specific installer
+    is compiled per selected architecture.
+
 .EXAMPLE
     .\tools\Publish-Release.ps1
     Full release workflow for the latest stable draft release.
@@ -70,6 +76,10 @@
 .EXAMPLE
     .\tools\Publish-Release.ps1 -SkipSigning
     Full release workflow without code signing.
+
+.EXAMPLE
+    .\tools\Publish-Release.ps1 -BuildFromSource -Architectures win-x64
+    Build from source and create the x64 installer only.
 #>
 
 #Requires -Version 7.0
@@ -92,7 +102,7 @@ param(
 
     [string]$InstallerReleaseState,
 
-    [string]$DotNetMajorVersion
+    [string[]]$Architectures = @('win-x64', 'win-arm64')
 )
 
 Set-StrictMode -Version Latest
@@ -110,21 +120,22 @@ if (-not $PSBoundParameters.ContainsKey('InstallerReleaseState')) {
     $InstallerReleaseState = if ($Channel -eq 'beta') { 'Beta' } else { 'Release' }
 }
 
-# Detect .NET major version from global.json if not explicitly provided
-if (-not $PSBoundParameters.ContainsKey('DotNetMajorVersion')) {
-    $globalJson = Join-Path $repoRoot 'global.json'
-    if (Test-Path $globalJson) {
-        $json = Get-Content $globalJson -Raw | ConvertFrom-Json
-        if ($json.sdk.version) {
-            # Extract major version from "10.0" -> "10"
-            $DotNetMajorVersion = ($json.sdk.version -split '\.')[0]
-            Write-Host "  Detected .NET major version: $DotNetMajorVersion (from global.json)" -ForegroundColor DarkGray
-        }
-    }
-    if (-not $DotNetMajorVersion) {
-        $DotNetMajorVersion = '10'  # fallback default
-    }
+# Normalize -Architectures: accept a comma-separated string (e.g.
+# 'win-x64,win-arm64', typical for CI inputs) as well as an explicit array.
+$Architectures = @(
+    $Architectures |
+        ForEach-Object { $_ -split ',' } |
+        ForEach-Object { $_.Trim() } |
+        Where-Object { $_ }
+)
+if ($Architectures.Count -eq 0) {
+    $Architectures = @('win-x64', 'win-arm64')
 }
+$invalidArchitectures = @($Architectures | Where-Object { $_ -notin @('win-x64', 'win-arm64') })
+if ($invalidArchitectures.Count -gt 0) {
+    throw "Invalid architecture(s): $($invalidArchitectures -join ', '). Supported values: win-x64, win-arm64."
+}
+Write-Host "  Architectures: $($Architectures -join ', ')" -ForegroundColor DarkGray
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -244,15 +255,17 @@ if ($BuildFromSource) {
 
     $publishDir = $finalDir
 
-    foreach ($rid in @('win-x64', 'win-arm64')) {
+    # Self-contained publish: the .NET Desktop Runtime ships inside the
+    # installer payload, so the app does not depend on a machine-wide install.
+    foreach ($rid in $Architectures) {
         $ridOutputDir = Join-Path $publishDir $rid
         New-Item -ItemType Directory -Path $ridOutputDir -Force | Out-Null
 
         foreach ($project in @($cliProject, $projectName)) {
             $projectTempDir = Join-Path $publishDir "$project-publish-$rid"
             $projPath = Join-Path $repoRoot "$project\$project.csproj"
-            Write-Host "  Publishing $project for $rid ..."
-            dotnet publish -c $Configuration -r $rid --self-contained false $projPath -o $projectTempDir
+            Write-Host "  Publishing $project for $rid (self-contained) ..."
+            dotnet publish -c $Configuration -r $rid --self-contained true $projPath -o $projectTempDir
             if ($LASTEXITCODE -ne 0) {
                 throw "dotnet publish failed for $project ($rid) with exit code $LASTEXITCODE."
             }
@@ -385,7 +398,7 @@ $buildArgs = @{
     FinalDir              = $finalDir
     InstallerReleaseState = $InstallerReleaseState
     CertificateName       = $CertificateName
-    DotNetMajorVersion    = $DotNetMajorVersion
+    Architectures         = $Architectures
 }
 if ($SkipSigning) {
     $buildArgs['SkipSigning'] = $true
@@ -412,7 +425,7 @@ if (-not (Test-Path $installerDir)) {
     throw "Installer directory not found at $installerDir. Did the build succeed?"
 }
 
-$installers = @(Get-ChildItem $installerDir -Filter '*Installer.exe')
+$installers = @(Get-ChildItem $installerDir -Filter '*Installer*.exe')
 if ($installers.Count -eq 0) {
     throw "No installer files found in $installerDir."
 }

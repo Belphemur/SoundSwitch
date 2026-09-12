@@ -1,7 +1,19 @@
+// ReleaseState and TargetArch are expected to be defined through the command line with /D parameter
+// e.g. iscc /DReleaseState=Beta /DTargetArch=x64 setup.iss
+
+// Compile-time architecture selection: each installer bundles exactly one
+// arch payload (self-contained, the .NET Desktop Runtime ships inside it).
+// x64 keeps the legacy unsuffixed installer filename; arm64 gains _arm64.
+// Validated BEFORE app_defines.iss is included, which branches on TargetArch.
+#ifndef TargetArch
+  #error "TargetArch is not defined. Pass /DTargetArch=x64 or /DTargetArch=arm64 to ISCC."
+#endif
+#if (TargetArch != "x64") && (TargetArch != "arm64")
+  #error "Invalid TargetArch. Supported values: x64, arm64."
+#endif
+
 #include "scripts\app_defines.iss"
 #define MyAppUserModelId "aaflalo." + MyAppSetupName + ".Application"
-// ReleaseState and DotNetMajorVersion are expected to be defined through the command line with /D parameter
-// e.g. iscc /DReleaseState=Beta /DDotNetMajorVersion=10 setup.iss
 
 
 [Setup]
@@ -17,7 +29,7 @@ AppComments={#MyAppDescription}
 AppPublisherURL=https://soundswitch.aaflalo.me
 AppSupportURL=https://github.com/Belphemur/SoundSwitch
 AppUpdatesURL=https://github.com/Belphemur/SoundSwitch/releases
-OutputBaseFilename={#MyAppSetupName}_v{#MyAppVersion}_{#ReleaseState}_Installer
+OutputBaseFilename={#MyAppSetupName}_v{#MyAppVersion}_{#ReleaseState}_Installer{#InstallerArchSuffix}
 DefaultGroupName={#MyAppSetupName}
 DefaultDirName={code:GetInstallDir}
 UninstallDisplayIcon={app}\SoundSwitch.exe
@@ -52,9 +64,15 @@ RestartApplications=no
 MinVersion=10.0.17763
 PrivilegesRequired=admin
 PrivilegesRequiredOverridesAllowed=commandline dialog
-; 64-bit only installer: x86 Windows is not supported.
-ArchitecturesAllowed=x64compatible arm64
-ArchitecturesInstallIn64BitMode=x64compatible arm64
+; 64-bit only installer: x86 Windows is not supported. The allowed
+; architecture is selected at compile time via /DTargetArch.
+#if TargetArch == "x64"
+ArchitecturesAllowed=x64compatible
+ArchitecturesInstallIn64BitMode=x64compatible
+#elif TargetArch == "arm64"
+ArchitecturesAllowed=arm64
+ArchitecturesInstallIn64BitMode=arm64
+#endif
 
 ;Downloading and installing dependencies will only work if the memo/ready page is enabled (default behaviour)
 DisableReadyPage=no
@@ -81,12 +99,12 @@ Name: addtopath; Description: "{cm:AddToPath,{#MyAppSetupName}}"; GroupDescripti
 Name: deletefiles; Description: "{cm:ExistingSettings}"; GroupDescription: "{cm:SettingsGroupDescription}"; Flags: unchecked checkedonce
 
 [Files] 
-; Shared top-level files only; architecture-specific publish outputs are installed separately below.
+; Shared top-level files; the arch-specific publish payload is selected at
+; compile time via /DTargetArch (see scripts\app_defines.iss).
 Source: "{#ExeDir}*"; DestDir: "{app}"; Flags: ignoreversion
-; x64 publish output
-Source: "{#ExeDir}win-x64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs; Check: not IsArm64()
-; ARM64 publish output
-Source: "{#ExeDir}win-arm64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs; Check: IsArm64()
+; Selected architecture publish output (self-contained: bundles the .NET
+; Desktop Runtime, no machine-wide runtime install required)
+Source: "{#ArchPayloadDir}*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "scripts\ManageWindowsUpdate.ps1"; DestDir: "{tmp}"; Flags: confirmoverwrite deleteafterinstall
 
 [Registry]
@@ -115,8 +133,6 @@ Type: filesandordirs; Name: {app}\*
 
 #include "scripts\path_operations.iss"
 #include "scripts\command_line_utils.iss"
-#include "scripts\CodeDependencies.iss"
-#include "scripts\uninstall_dotnet.iss"
 #include "scripts\setup_utils.iss"
 #include "scripts\uninstall_utils.iss"
 #include "scripts\windows_update_helper.iss"

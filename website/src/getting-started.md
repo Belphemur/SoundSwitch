@@ -8,11 +8,11 @@ description: Install SoundSwitch on Windows 10 or later, set up your first hotke
 ## Requirements
 
 - **Operating System**: Windows 10 or newer (x64 or ARM64)
-- **.NET**: Requires the .NET runtime (handled automatically by the installer)
+- **.NET**: Bundled — each installer ships its own copy of the .NET Desktop Runtime, no separate runtime install is needed
 
 ## Installation
 
-Grab the installer from the **Download** button at the top of this site and run it. The installer automatically detects and installs the required .NET runtime if it isn't already present on your system.
+Grab the installer from the **Download** button at the top of this site and run it. Pick the installer that matches your hardware: the standard installer for Intel/AMD (x64) PCs, or the installer with the `_arm64` suffix for Windows on ARM devices. Each installer bundles the required .NET Desktop Runtime, so nothing is downloaded during installation.
 
 ## First Steps
 

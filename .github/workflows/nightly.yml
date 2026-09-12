@@ -109,7 +109,8 @@ jobs:
                   }
 
                   .\devVersion.ps1 -Version $version
-                  .\tools\Publish-Release.ps1 -BuildFromSource -Configuration Nightly -SkipSigning -InstallerReleaseState Nightly
+                  # Nightly ships x64 only; arm64 nightlies are not built.
+                  .\tools\Publish-Release.ps1 -BuildFromSource -Configuration Nightly -SkipSigning -InstallerReleaseState Nightly -Architectures win-x64
             - name: Upload nightly files
               id: metadata
               shell: pwsh
@@ -143,7 +144,11 @@ jobs:
                     throw 'NIGHTLY_BUCKET is not configured.'
                   }
 
-                  $installer = Get-ChildItem (Join-Path $PWD 'Final\Installer') -Filter '*Nightly_Installer.exe' | Select-Object -First 1
+                  # Nightly is x64-only: deterministically pick the unsuffixed
+                  # (x64) installer, never an arm64 one.
+                  $installer = Get-ChildItem (Join-Path $PWD 'Final\Installer') -Filter '*Nightly_Installer.exe' |
+                    Where-Object { $_.Name -notlike '*_arm64*' } |
+                    Select-Object -First 1
                   if (-not $installer) {
                     throw 'No nightly installer was produced.'
                   }
