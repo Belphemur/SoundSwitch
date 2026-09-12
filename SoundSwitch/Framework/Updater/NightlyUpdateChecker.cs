@@ -20,7 +20,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -226,11 +225,8 @@ public class NightlyUpdateChecker(Uri feedUrl) : IUpdateChecker
             return null;
         }
 
-        var archSuffix = RuntimeInformation.ProcessArchitecture == Architecture.Arm64 ? "_arm64" : "_x64";
-        var installer = bestRelease.Assets.FirstOrDefault(a => a.Name.Contains(archSuffix) && a.Name.EndsWith(".exe"))
-                        ?? bestRelease.Assets.FirstOrDefault(a => a.Name.EndsWith(".exe")
-                                                                   && !a.Name.Contains("_arm64")
-                                                                   && !a.Name.Contains("_x64"));
+        // Architecture-aware installer selection (shared helper).
+        var installer = InstallerAssetSelector.SelectInstallerAsset(bestRelease.Assets);
         if (installer == null)
         {
             return null;
