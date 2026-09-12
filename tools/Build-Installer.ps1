@@ -80,6 +80,15 @@ $signScript  = Join-Path $PSScriptRoot 'Sign-Binary.ps1'
 $projectName = 'SoundSwitch'
 $cliProject  = 'SoundSwitch.CLI'
 
+# setup.iss references the payload via the hardcoded relative path '..\Final\'
+# (Installer\scripts\app_defines.iss ExeDir define), so a non-canonical
+# -FinalDir would sign/clean a different directory than the one ISCC packages.
+# Reject it BEFORE any destructive operation (cleaning/signing).
+$canonicalFinalDir = [System.IO.Path]::GetFullPath((Join-Path $repoRoot 'Final'))
+if ([string]::Compare($FinalDir, $canonicalFinalDir, $true) -ne 0) {
+    throw "-FinalDir must be the canonical repository Final\ directory ('$canonicalFinalDir') because Installer\scripts\app_defines.iss packages the payload via the hardcoded relative path '..\Final\'. Got: $FinalDir"
+}
+
 # Normalize -Architectures: accept a comma-separated string (e.g.
 # 'win-x64,win-arm64', typical for CI inputs) as well as an explicit array.
 $Architectures = @(
