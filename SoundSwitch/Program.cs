@@ -55,6 +55,12 @@ internal static class Program
  
     private static async Task OldMain(string[] args)
     {
+        // Must be called before the first IWin32Window object is created.
+        // WindowsAPIAdapter.Start() creates a hidden message-pump Form on a
+        // background STA thread, so this cannot wait until the normal
+        // application startup block below.
+        Application.SetCompatibleTextRenderingDefault(false);
+
         if (args != null && args.Any(arg => arg.Equals("--disable-updater", StringComparison.OrdinalIgnoreCase) || arg.Equals("-s", StringComparison.OrdinalIgnoreCase)))
         {
             SkipUpdate = true;
@@ -128,7 +134,6 @@ internal static class Program
         // honours the Windows "Apps use light/dark theme" setting.
         Application.SetColorMode(SystemColorMode.System);
 #endif
-        Application.SetCompatibleTextRenderingDefault(false);
         // Manage the Closing events send by Windows
         // Since this app don't use a Form as "main window" the app doesn't close
         // when it should without this.
