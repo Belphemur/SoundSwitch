@@ -3,7 +3,10 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using Serilog;
+
 using SoundSwitch.Audio.Manager.Interop.Enum;
+using SoundSwitch.Common.Framework.Audio.Collection;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Model;
 
@@ -11,12 +14,15 @@ namespace SoundSwitch.Services
 {
     /// <summary>
     /// Resolve a persisted <see cref="DeviceInfo"/> against the currently active devices.
-    /// Matching follows the same rules as <c>ProfileManager.CheckDeviceAvailable</c>:
-    /// the type must match, then the <see cref="DeviceInfo.Id"/>, falling back to <see cref="DeviceInfo.NameClean"/>.
-    /// This is what lets rules and profiles survive device id changes (e.g. after a driver update).
+    /// All matching knowledge lives in <see cref="DeviceReadOnlyCollection{T}.Match"/>:
+    /// exact Id, then stable device-instance path (same type), then unique <see cref="DeviceInfo.NameClean"/>.
+    /// Ambiguously named devices are never guessed — the rule is skipped and flagged.
+    /// This is what lets rules survive device id changes (e.g. after a driver update).
     /// </summary>
     public static class AppRuleDeviceResolver
     {
+        private static readonly ILogger Logger = Log.ForContext(typeof(AppRuleDeviceResolver));
+
         /// <summary>
         /// Resolve a stored device against the active devices of an <see cref="IAudioDeviceLister"/>.
         /// </summary>
@@ -31,19 +37,40 @@ namespace SoundSwitch.Services
         }
 
         /// <summary>
+        /// Resolve a stored device against a set of candidate devices, with the full
+        /// <see cref="MatchResult{T}"/> so callers can distinguish an ambiguous match from none.
+        /// Logs a warning when the name is ambiguous.
+        /// </summary>
+        /// <param name="stored">The persisted device information</param>
+        /// <param name="candidates">The devices to match against</param>
+        public static MatchResult<DeviceFullInfo> ResolveResult(DeviceInfo? stored, IEnumerable<DeviceFullInfo> candidates)
+        {
+            if (stored == null) return MatchResult<DeviceFullInfo>.None();
+
+            // Reuse the caller's collection when possible; otherwise index the candidates once.
+            var collection = candidates as DeviceReadOnlyCollection<DeviceFullInfo>
+                             ?? new DeviceReadOnlyCollection<DeviceFullInfo>(candidates, stored.Type);
+
+            var result = collection.Match(stored);
+            if (result.Kind == DeviceMatchKind.Ambiguous)
+            {
+                Logger.Warning("Ambiguous device match for {NameClean}: {Count} active devices share the name, skipping",
+                    stored.NameClean, result.Candidates!.Count);
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Resolve a stored device against a set of candidate devices.
         /// </summary>
         /// <param name="stored">The persisted device information</param>
         /// <param name="candidates">The devices to match against</param>
-        /// <returns>The matching device, or `null` when none matches.</returns>
+        /// <returns>The matching device, or `null` when none matches (including ambiguous names).</returns>
         public static DeviceFullInfo? Resolve(DeviceInfo? stored, IEnumerable<DeviceFullInfo> candidates)
         {
-            if (stored == null) return null;
-
-            // Exact id match first: with duplicate cleaned names, an earlier same-name
-            // candidate must not shadow the candidate actually carrying the stored id.
-            return candidates.FirstOrDefault(info => info.Type == stored.Type && info.Id == stored.Id)
-                   ?? candidates.FirstOrDefault(info => info.Equals(stored));
+            var result = ResolveResult(stored, candidates);
+            return result.IsResolved ? result.Device : null;
         }
 
         /// <summary>
