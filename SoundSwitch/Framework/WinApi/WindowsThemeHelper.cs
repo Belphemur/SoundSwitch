@@ -12,6 +12,7 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
+using System;
 using Microsoft.Win32;
 
 namespace SoundSwitch.Framework.WinApi;
@@ -35,7 +36,21 @@ public static class WindowsThemeHelper
     /// (the default for dark mode; this is the registry value WinForms reads via
     /// Application.SetColorMode / Application.IsDarkModeEnabled).
     /// </summary>
-    public static bool IsDarkModeEnabled()
+    public static bool IsDarkModeEnabled() => _darkModeProvider();
+
+    /// <summary>
+    /// Test-only seam for deterministic dark-mode behaviour. Production code never sets
+    /// this; assigning null restores the normal registry lookup.
+    /// </summary>
+    internal static Func<bool> DarkModeProvider
+    {
+        get => _darkModeProvider;
+        set => _darkModeProvider = value ?? ReadDarkModeEnabled;
+    }
+
+    private static Func<bool> _darkModeProvider = ReadDarkModeEnabled;
+
+    private static bool ReadDarkModeEnabled()
     {
         using var key = Registry.CurrentUser.OpenSubKey(PersonalizeKey);
         if (key?.GetValue(AppsUseLightThemeValue) is int value)

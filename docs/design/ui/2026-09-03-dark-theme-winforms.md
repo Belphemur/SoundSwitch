@@ -273,8 +273,9 @@ file is changed and `BannerForm` remains untouched.
 - Focused regression tests cover the deterministic dark/light colour selections, the
   dark group-header background/separator painting, and the native custom-draw dispatch
   (`CDDS_PREPAINT` → `CDRF_NOTIFYITEMDRAW`, group-ID resolution, and `CDRF_SKIPDEFAULT`)
-  through `WndProc`. The Windows-hosted test project remains the executable validation
-  path.
+  through `WndProc`. The dispatch test uses a test-only `WindowsThemeHelper` provider seam
+  rather than writing the real registry. The Windows-hosted test project remains the
+  executable validation path.
 - Linux can only run the partial build described in §8; it is a dependency-reference
   check, not a compile gate. Windows CI remains authoritative, especially for the
   native custom-draw code path.

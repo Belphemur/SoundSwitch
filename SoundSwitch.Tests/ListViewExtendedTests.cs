@@ -4,8 +4,6 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 
-using Microsoft.Win32;
-
 using NUnit.Framework;
 
 using SoundSwitch.Framework.WinApi;
@@ -26,9 +24,6 @@ public class ListViewExtendedTests
     private const uint CDRF_SKIPDEFAULT = 0x00000004;
     private const uint CDRF_NOTIFYITEMDRAW = 0x00000020;
     private const uint LVCDI_GROUP = 0x00000001;
-
-    private const string PersonalizeKey = @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
-    private const string AppsUseLightThemeValue = "AppsUseLightTheme";
 
     [Test]
     public void DrawGroupHeader_ShouldPaintDarkBackgroundAndSeparator()
@@ -53,18 +48,9 @@ public class ListViewExtendedTests
     [Test]
     public void WndProc_CustomDraw_ShouldRequestItemDrawAndDrawGroupHeader()
     {
-        var originalValue = (object?)null;
-        var hadOriginalValue = false;
-        using (var key = Registry.CurrentUser.CreateSubKey(PersonalizeKey, true))
-        {
-            originalValue = key.GetValue(AppsUseLightThemeValue);
-            hadOriginalValue = originalValue != null;
-            key.SetValue(AppsUseLightThemeValue, 0, RegistryValueKind.DWord);
-        }
-
         try
         {
-            Assert.That(WindowsThemeHelper.IsDarkModeEnabled(), Is.True);
+            WindowsThemeHelper.DarkModeProvider = () => true;
 
             using var listView = new TestableListViewExtended
             {
@@ -110,11 +96,8 @@ public class ListViewExtendedTests
         }
         finally
         {
-            using var key = Registry.CurrentUser.CreateSubKey(PersonalizeKey, true);
-            if (hadOriginalValue)
-                key.SetValue(AppsUseLightThemeValue, originalValue);
-            else
-                key.DeleteValue(AppsUseLightThemeValue, false);
+            // The provider seam is reset even on assertion failure so no test state leaks.
+            WindowsThemeHelper.DarkModeProvider = null;
         }
     }
 
