@@ -248,15 +248,16 @@ file is changed and `BannerForm` remains untouched.
    already introduced in §5.3 stays theme-aware.
 
 3. **ListView group headers.** Handle `NM_CUSTOMDRAW` in `ListViewExtended` only when
-   Windows is in dark app mode. Return `CDRF_NOTIFYITEMDRAW` at `CDDS_PREPAINT`, then
-   process the notification at `CDDS_ITEMPREPAINT` when `NMLVCUSTOMDRAW.dwItemType` is
-   `LVCDI_GROUP`. Draw that group header with `CDRF_SKIPDEFAULT` using the ListView
-   background, a dark separator, `Color.LightSkyBlue` text, the native header alignment,
-   and a collapse-state arrow; leave every other custom-draw notification—and all light-mode
-   painting—to WinForms/native comctl32. This uses the documented list-view custom-draw
-   mechanism instead of replacing native groups or introducing a third-party theming
-   library. The header is repainted from current theme state on every paint, so no cached
-   brush/colour is stale.
+   Windows is in dark app mode. Cache that decision once per custom-draw cycle at
+   `CDDS_PREPAINT` and return `CDRF_NOTIFYITEMDRAW`; then process the notification at
+   `CDDS_ITEMPREPAINT` when `NMLVCUSTOMDRAW.dwItemType` is `LVCDI_GROUP`. Draw that group
+   header with `CDRF_SKIPDEFAULT` using the ListView background, a dark separator,
+   `Color.LightSkyBlue` text, the native header alignment, and a collapse-state arrow;
+   leave every other custom-draw notification—and all light-mode painting—to
+   WinForms/native comctl32. This uses the documented list-view custom-draw mechanism
+   instead of replacing native groups or introducing a third-party theming library. The
+   header is repainted from current theme state on every paint, so no cached brush/colour
+   is stale.
 
 4. **Live theme flip.** Reuse the existing `WindowsAPIAdapter.SystemThemeChanged`
    subscription and `OnSystemColorsChanged` from §5.2. `RefreshTheme()` will first call
