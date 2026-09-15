@@ -248,9 +248,10 @@ file is changed and `BannerForm` remains untouched.
    already introduced in §5.3 stays theme-aware.
 
 3. **ListView group headers.** Handle `NM_CUSTOMDRAW` in `ListViewExtended` only when
-   Windows is in dark app mode. Cache that decision once per custom-draw cycle at
-   `CDDS_PREPAINT` and return `CDRF_NOTIFYITEMDRAW`; then process the notification at
-   `CDDS_ITEMPREPAINT` when `NMLVCUSTOMDRAW.dwItemType` is `LVCDI_GROUP`. Draw that group
+   Windows is in dark app mode. Return `CDRF_NOTIFYITEMDRAW` at `CDDS_PREPAINT`, then
+   process the notification at `CDDS_ITEMPREPAINT` when `NMLVCUSTOMDRAW.dwItemType` is
+   `LVCDI_GROUP`. Evaluate the live dark-mode state at each custom-draw stage so unpaired
+   or partial repaints cannot rely on stale cached state. Draw a qualifying group
    header with `CDRF_SKIPDEFAULT` using the ListView background, a dark separator,
    `Color.LightSkyBlue` text, the native header alignment, and a collapse-state arrow;
    leave every other custom-draw notification—and all light-mode painting—to
