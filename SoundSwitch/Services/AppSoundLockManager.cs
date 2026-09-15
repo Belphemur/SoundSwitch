@@ -132,19 +132,26 @@ namespace SoundSwitch.Services
             }
 #pragma warning restore CS0618 // Type or member is obsolete
 
-            var switched = _audioSwitcher.SwitchProcessTo(resolved.Id, ERole.ERole_enum_count, flow, processId);
-
-            if (healed)
+            var switched = false;
+            try
             {
-                _logger.Information("Self-healing app rule device: {Old} -> {New}", stored.NameClean, resolved.NameClean);
-                // Persisted after switching so a save failure can never block audio routing
-                try
+                switched = _audioSwitcher.SwitchProcessTo(resolved.Id, ERole.ERole_enum_count, flow, processId);
+            }
+            finally
+            {
+                // Persist in `finally` so memory and disk stay consistent even if the
+                // switch throws; the save itself never blocks or aborts audio routing.
+                if (healed)
                 {
-                    _configuration.Save();
-                }
-                catch (Exception ex)
-                {
-                    _logger.Warning(ex, "Failed to save self-healed app rule device {NameClean}", resolved.NameClean);
+                    _logger.Information("Self-healing app rule device: {Old} -> {New}", stored.NameClean, resolved.NameClean);
+                    try
+                    {
+                        _configuration.Save();
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Warning(ex, "Failed to save self-healed app rule device {NameClean}", resolved.NameClean);
+                    }
                 }
             }
 
