@@ -20,19 +20,18 @@ public class ListViewExtended : System.Windows.Forms.ListView
     private const int NM_CUSTOMDRAW = -12;
 
     private const uint CDDS_PREPAINT = 0x00000001;
-    private const uint CDDS_ITEMPREPAINT = 0x00010001;
-    private const uint CDRF_DODEFAULT = 0x00000000;
-    private const uint CDRF_NEWFONT = 0x00000002;
-    private const uint CDRF_NOTIFYITEMDRAW = 0x00000020;
+    private const uint CDRF_SKIPDEFAULT = 0x00000004;
 
     private const uint LVCDI_GROUP = 0x00000001;
 
     /// <summary>
-    /// Light grey used for native ListView group headers when Windows uses dark app mode.
-    /// The native control normally paints them with a light-theme link colour, which is
-    /// almost invisible on a dark background.
+    /// Accent used for native ListView group headers when Windows uses dark app mode.
+    /// The native control normally paints them with a low-contrast blue.
     /// </summary>
-    private static Color GroupHeaderDarkColor => Color.FromArgb(240, 240, 240);
+    private static Color GroupHeaderDarkColor => Color.LightSkyBlue;
+
+    private const int GroupHeaderArrowWidth = 24;
+    private const int GroupHeaderPadding = 4;
 
     private delegate void CallBackSetGroupState(ListViewGroup lstvwgrp, ListViewGroupState state);
     private delegate void CallbackSetGroupString(ListViewGroup lstvwgrp, string value);
@@ -170,9 +169,9 @@ public class ListViewExtended : System.Windows.Forms.ListView
     }
 
     /// <summary>
-    /// Gives the native ListView group headers a readable foreground colour in dark mode.
-    /// Their colour is owned by the native common control and is not exposed as a managed
-    /// <see cref="ListViewGroup"/> property.
+    /// Draws native ListView group headers in dark mode. Their colour and painting are
+    /// owned by the native common control and are not exposed as a managed
+    /// <see cref="ListViewGroup"/> property or by WinForms owner drawing.
     /// </summary>
     private bool TryHandleGroupHeaderCustomDraw(ref Message m)
     {
@@ -182,29 +181,67 @@ public class ListViewExtended : System.Windows.Forms.ListView
             return false;
 
         var nmhdr = Marshal.PtrToStructure<NMHDR>(m.LParam);
-        if (nmhdr.Code != NM_CUSTOMDRAW)
+        if (nmhdr.Code != NM_CUSTOMDRAW || !WindowsThemeHelper.IsDarkModeEnabled())
             return false;
 
         var customDraw = Marshal.PtrToStructure<NMLVCUSTOMDRAW>(m.LParam);
-        switch (customDraw.Nmcd.DrawStage)
+        if (customDraw.Nmcd.DrawStage != CDDS_PREPAINT || customDraw.ItemType != LVCDI_GROUP)
+            return false;
+
+        var group = FindGroupByID((int)customDraw.Nmcd.ItemSpec);
+        if (group == null)
+            return false;
+
+        using var graphics = Graphics.FromHdc(customDraw.Nmcd.HDC);
+        var bounds = Rectangle.FromLTRB(
+            customDraw.Nmcd.Rect.Left,
+            customDraw.Nmcd.Rect.Top,
+            customDraw.Nmcd.Rect.Right,
+            customDraw.Nmcd.Rect.Bottom);
+        DrawGroupHeader(graphics, bounds, group);
+
+        m.Result = (IntPtr)CDRF_SKIPDEFAULT;
+        return true;
+    }
+
+    private ListViewGroup FindGroupByID(int id)
+    {
+        foreach (ListViewGroup group in Groups)
         {
-            case CDDS_PREPAINT:
-                m.Result = (IntPtr)(long)CDRF_NOTIFYITEMDRAW;
-                return true;
-
-            case CDDS_ITEMPREPAINT:
-                m.Result = (IntPtr)(long)CDRF_DODEFAULT;
-                if (customDraw.ItemType == LVCDI_GROUP && WindowsThemeHelper.IsDarkModeEnabled())
-                {
-                    customDraw.TextColor = unchecked((uint)ColorTranslator.ToWin32(GroupHeaderDarkColor));
-                    Marshal.StructureToPtr(customDraw, m.LParam, false);
-                    m.Result = (IntPtr)(long)CDRF_NEWFONT;
-                }
-
-                return true;
+            if (GetGroupID(group) == id)
+                return group;
         }
 
-        return false;
+        return null;
+    }
+
+    private void DrawGroupHeader(Graphics graphics, Rectangle bounds, ListViewGroup group)
+    {
+        using var backgroundBrush = new SolidBrush(BackColor);
+        graphics.FillRectangle(backgroundBrush, bounds);
+
+        using var separatorPen = new Pen(Color.FromArgb(80, 80, 80));
+        graphics.DrawLine(separatorPen, bounds.Left, bounds.Bottom - 1, bounds.Right, bounds.Bottom - 1);
+
+        var arrowWidth = Math.Min(GroupHeaderArrowWidth, bounds.Width);
+        var arrowRect = new Rectangle(bounds.Right - arrowWidth - GroupHeaderPadding, bounds.Top,
+            arrowWidth, bounds.Height);
+        var textRect = new Rectangle(bounds.Left + GroupHeaderPadding, bounds.Top,
+            Math.Max(1, bounds.Width - arrowWidth - GroupHeaderPadding * 3), bounds.Height);
+
+        var textFormat = group.HeaderAlignment switch
+        {
+            HorizontalAlignment.Center => TextFormatFlags.HorizontalCenter,
+            HorizontalAlignment.Right => TextFormatFlags.Right,
+            _ => TextFormatFlags.Left
+        } | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis | TextFormatFlags.PreserveGraphicsClipping;
+
+        using var font = new Font(Font, FontStyle.Bold);
+        TextRenderer.DrawText(graphics, group.Header, font, textRect, GroupHeaderDarkColor, textFormat);
+
+        var arrow = group.CollapsedState == ListViewGroupCollapsedState.Collapsed ? "►" : "▼";
+        TextRenderer.DrawText(graphics, arrow, font, arrowRect, GroupHeaderDarkColor,
+            TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.PreserveGraphicsClipping);
     }
 
     [StructLayout(LayoutKind.Sequential)]

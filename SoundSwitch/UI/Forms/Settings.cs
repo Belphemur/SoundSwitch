@@ -98,12 +98,20 @@ public sealed partial class SettingsForm : Form
             : SystemColors.ControlText;
 
     /// <summary>
-    /// Surface used by the settings panels and the banner-position preview, following
-    /// the Windows app light/dark mode.
+    /// Surface used by the Notifications GroupBox. It preserves the explicit light-mode
+    /// white from the Designer while providing a dark-mode equivalent.
     /// </summary>
-    private static Color ThemeSurfaceColor => WindowsThemeHelper.IsDarkModeEnabled()
+    private static Color NotificationPanelColor => WindowsThemeHelper.IsDarkModeEnabled()
             ? Color.FromArgb(32, 32, 32)
-            : SystemColors.Control;
+            : Color.White;
+
+    /// <summary>
+    /// Surface used by the custom-painted banner-position preview, following the
+    /// Windows app light/dark mode.
+    /// </summary>
+    private static Color PreviewFillColor => WindowsThemeHelper.IsDarkModeEnabled()
+            ? Color.FromArgb(45, 45, 45)
+            : Color.AliceBlue;
 
     private static Pen PenLine(int width = 1) => new(OutlineColor, width);
 
@@ -619,7 +627,7 @@ public sealed partial class SettingsForm : Form
         if (IsDisposed || Disposing) return;
 
         var textColor = ThemeTextColor;
-        notificationsGroupBox.BackColor = ThemeSurfaceColor;
+        notificationsGroupBox.BackColor = NotificationPanelColor;
         foreach (var groupBox in EnumerateControls(this).OfType<GroupBox>())
         {
             groupBox.ForeColor = textColor;
@@ -1154,7 +1162,7 @@ public sealed partial class SettingsForm : Form
         Size round =  new(RECT_PEN_WIDTH * 4, RECT_PEN_WIDTH * 4);
         Rectangle rect = RectOutline(OFFSET_W, OFFSET_H, positionTopLeftRadioButton, positionBottomRightRadioButton);
 
-        e.Graphics.FillRoundedRectangle(new SolidBrush(ThemeSurfaceColor), rect, round);
+        e.Graphics.FillRoundedRectangle(new SolidBrush(PreviewFillColor), rect, round);
         e.Graphics.DrawRoundedRectangle(PenLine(RECT_PEN_WIDTH), rect, round);
 
         e.Graphics.DrawLine(PenLine(),

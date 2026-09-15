@@ -234,22 +234,26 @@ file is changed and `BannerForm` remains untouched.
 1. **Theme-aware surfaces/text.** Add a private `ApplyTheme()` helper to `SettingsForm`
    using `WindowsThemeHelper.IsDarkModeEnabled()`:
    - dark text: `Color.FromArgb(240, 240, 240)`; light text: `SystemColors.ControlText`;
-   - dark surface: `Color.FromArgb(32, 32, 32)`; light surface: `SystemColors.Control`.
+   - Notifications panel: dark `Color.FromArgb(32, 32, 32)`; light stays the Designer's
+     `Color.White`;
+   - position-preview fill: dark `Color.FromArgb(45, 45, 45)`; light stays `Color.AliceBlue`.
    Assign the text colour to all `GroupBox` controls so captions and ambient children
    follow the theme. Reset `notificationsGroupBox.BackColor` from its explicit Designer
-   white to the theme surface colour.
+   white in dark mode.
 
 2. **Position preview.** Replace the hard-coded `AliceBlue` fill in
-   `PositionGroupBox_Paint` with the same theme-aware surface colour. The outline pen
+   `PositionGroupBox_Paint` with a dedicated `PreviewFillColor`. The outline pen
    already introduced in §5.3 stays theme-aware.
 
-3. **ListView group headers.** Extend `ListViewExtended`'s reflected `WM_NOTIFY`
-   handling to handle `NM_CUSTOMDRAW`. In dark mode, when `NMLVCUSTOMDRAW.dwItemType`
-   is `LVCDI_GROUP`, set `clrText` to the dark-theme text colour and return
-   `CDRF_NEWFONT`; leave light-mode painting untouched. This uses the documented
-   list-view custom-draw colour mechanism instead of replacing native group headers
-   or introducing a third-party theming library. Custom draw is re-read on every paint,
-   so no cached brush/colour is stale.
+3. **ListView group headers.** Handle `NM_CUSTOMDRAW` in `ListViewExtended` only when
+   the notification is for `NMLVCUSTOMDRAW.dwItemType == LVCDI_GROUP` and Windows is in
+   dark app mode. Draw the group header with `CDRF_SKIPDEFAULT` using the ListView
+   background, a dark separator, `Color.LightSkyBlue` text, the native header alignment,
+   and a collapse-state arrow; leave every other custom-draw notification—and all light-mode
+   painting—to WinForms/native comctl32. This uses the documented list-view custom-draw
+   mechanism instead of replacing native groups or introducing a third-party theming
+   library. The header is repainted from current theme state on every paint, so no cached
+   brush/colour is stale.
 
 4. **Live theme flip.** Reuse the existing `WindowsAPIAdapter.SystemThemeChanged`
    subscription and `OnSystemColorsChanged` from §5.2. `RefreshTheme()` will first call
