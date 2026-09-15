@@ -84,7 +84,7 @@ public class AppSoundRuleMigrationTests
     [Test]
     public void Migrate_MigratedRule_DoesNotPersistObsoleteIds()
     {
-        var json = $@"{{""PlaybackDeviceId"":""{OldPlaybackId}""}}";
+        var json = $@"{{""PlaybackDeviceId"":""{OldPlaybackId}"",""RecordingDeviceId"":""{OldRecordingId}""}}";
         var rule = JsonConvert.DeserializeObject<AppSoundRule>(json)!;
         AppSoundRuleMigrator.Migrate(new[] { rule });
 
