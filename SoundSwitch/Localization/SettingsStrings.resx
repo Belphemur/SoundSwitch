@@ -739,6 +739,9 @@ Press Esc to close.</value>
   <data name="appSoundLock.rule.regexNotice" xml:space="preserve">
     <value>Note: Patterns use standard Regex.</value>
   </data>
+  <data name="appSoundLock.rule.ambiguousDevice" xml:space="preserve">
+    <value>⚠ (ambiguous name)</value>
+  </data>
   <data name="appSoundLock.selectProcess" xml:space="preserve">
     <value>Select Process...</value>
   </data>

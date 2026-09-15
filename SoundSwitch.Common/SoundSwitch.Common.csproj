@@ -14,6 +14,9 @@
     <Version>2.4.0</Version>
   </PropertyGroup>
   <ItemGroup>
+    <InternalsVisibleTo Include="SoundSwitch.Tests" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Resources\defaultMicrophone.ico" />
     <Content Include="Resources\defaultSpeakers.ico" />
   </ItemGroup>

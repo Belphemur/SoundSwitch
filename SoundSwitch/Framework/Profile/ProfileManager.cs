@@ -14,6 +14,7 @@ using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Com.User;
 using SoundSwitch.Audio.Manager.Interop.Enum;
+using SoundSwitch.Common.Framework.Audio.Collection;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Configuration;
@@ -383,7 +384,16 @@ public class ProfileManager
 
     private DeviceInfo? CheckDeviceAvailable(DeviceInfo deviceInfo)
     {
-        return AppModel.Instance.AudioDeviceLister.GetDevices(deviceInfo.Type, EDeviceState.Active).FirstOrDefault(info => info.Equals(deviceInfo));
+        var collection = AppModel.Instance.AudioDeviceLister.GetDevices(deviceInfo.Type, EDeviceState.Active);
+        var result = collection.Match(deviceInfo);
+        if (result.Kind == DeviceMatchKind.Ambiguous)
+        {
+            _logger.Warning("Ambiguous profile device match for {NameClean}: {Count} active devices share the name, treating as not found",
+                deviceInfo.NameClean, result.Candidates!.Count);
+            return null;
+        }
+
+        return result.IsResolved ? result.Device : null;
     }
 
     private void SwitchAudio(Profile profile, uint processId, TriggerFactory.Enum? triggerType = null)

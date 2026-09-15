@@ -30,6 +30,7 @@ using Serilog;
 
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
+using SoundSwitch.Common.Framework.Audio.Collection;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework;
@@ -1413,12 +1414,18 @@ public sealed partial class SettingsForm : Form
 
         var playbacks = _audioDeviceLister.GetDevices(EDataFlow.eRender, EDeviceState.Active | EDeviceState.Unplugged | EDeviceState.Disabled).ToList();
         var recordings = _audioDeviceLister.GetDevices(EDataFlow.eCapture, EDeviceState.Active | EDeviceState.Unplugged | EDeviceState.Disabled).ToList();
+        // The runtime (AppSoundLockManager) resolves rules against ACTIVE devices only; the
+        // ambiguity marker must reflect that same view, not the wider display list.
+        var activePlaybacks = _audioDeviceLister.GetDevices(EDataFlow.eRender, EDeviceState.Active);
+        var activeRecordings = _audioDeviceLister.GetDevices(EDataFlow.eCapture, EDeviceState.Active);
 
         appSoundLockListView.ItemCheck -= AppSoundLockListView_ItemCheck;
         foreach (var rule in AppConfigs.Configuration.AppSoundRules)
         {
-            var playback = AppRuleDeviceResolver.Resolve(rule.PlaybackDevice, playbacks);
-            var recording = AppRuleDeviceResolver.Resolve(rule.RecordingDevice, recordings);
+            var playbackResult = AppRuleDeviceResolver.ResolveResult(rule.PlaybackDevice, playbacks);
+            var recordingResult = AppRuleDeviceResolver.ResolveResult(rule.RecordingDevice, recordings);
+            var playback = playbackResult.IsResolved ? playbackResult.Device : null;
+            var recording = recordingResult.IsResolved ? recordingResult.Device : null;
 
             var processName = GetCleanProcessName(rule.ProcessPath);
             IconHandle processIcon = null;
@@ -1442,11 +1449,11 @@ public sealed partial class SettingsForm : Form
             item.SubItems.Add(rule.WindowName);
 
             // Playback
-            var playbackSubItem = item.SubItems.Add(playback?.NameClean ?? rule.PlaybackDevice?.NameClean ?? string.Empty);
+            var playbackSubItem = item.SubItems.Add(FormatResolvedDevice(playback, rule.PlaybackDevice, activePlaybacks));
             playbackSubItem.Tag = playback?.SmallIcon;
 
             // Recording
-            var recordingSubItem = item.SubItems.Add(recording?.NameClean ?? rule.RecordingDevice?.NameClean ?? string.Empty);
+            var recordingSubItem = item.SubItems.Add(FormatResolvedDevice(recording, rule.RecordingDevice, activeRecordings));
             recordingSubItem.Tag = recording?.SmallIcon;
 
             appSoundLockListView.Items.Add(item);
@@ -1456,6 +1463,20 @@ public sealed partial class SettingsForm : Form
         if (AppConfigs.Configuration.AppSoundRules.Count <= 0) return;
         foreach (ColumnHeader column in appSoundLockListView.Columns)
             column.Width = -2;
+    }
+
+    /// <summary>
+    /// Text for an app-rule device list cell: the live device name when resolved, otherwise the
+    /// stored name. The ambiguity marker reflects the ACTIVE-only runtime view (what a rule
+    /// switch will actually see), not the wider display list — see #2457.
+    /// </summary>
+    private static string FormatResolvedDevice(DeviceFullInfo? resolved, DeviceInfo? stored, DeviceReadOnlyCollection<DeviceFullInfo> runtimeCandidates)
+    {
+        var text = resolved?.NameClean ?? stored?.NameClean ?? string.Empty;
+        var ambiguousAtRuntime = runtimeCandidates.Match(stored).Kind == DeviceMatchKind.Ambiguous;
+        return ambiguousAtRuntime && text.Length > 0
+            ? text + " " + SettingsStrings.ResourceManager.GetString("appSoundLock.rule.ambiguousDevice")
+            : text;
     }
 
     private string GetCleanProcessName(string processPath)
