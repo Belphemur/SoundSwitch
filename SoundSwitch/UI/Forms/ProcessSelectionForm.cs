@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -29,6 +30,57 @@ public partial class ProcessSelectionForm : Form
         MinimumSize = new System.Drawing.Size(600, 400);
         LocalizeForm();
         LoadProcesses();
+        ApplyTheme();
+    }
+
+    protected override void OnSystemColorsChanged(EventArgs e)
+    {
+        base.OnSystemColorsChanged(e);
+        ApplyTheme();
+    }
+
+    internal static Color DarkGridBackgroundColor => Color.FromArgb(32, 32, 32);
+    internal static Color DarkGridForegroundColor => Color.FromArgb(240, 240, 240);
+    internal static Color DarkGridLineColor => Color.FromArgb(80, 80, 80);
+    internal static Color DarkGridHeaderColor => Color.FromArgb(45, 45, 45);
+
+    /// <summary>
+    /// Theme the DataGridView: it does not follow the application dark mode automatically,
+    /// so its cell styles are set explicitly. Light mode uses the standard framework palette.
+    /// </summary>
+    internal void ApplyTheme()
+    {
+        ApplyTheme(dgvProcesses, WindowsThemeHelper.IsDarkModeEnabled());
+    }
+
+    internal static void ApplyTheme(DataGridView dgv, bool isDarkMode)
+    {
+        if (isDarkMode)
+        {
+            dgv.EnableHeadersVisualStyles = false;
+            dgv.BackgroundColor = DarkGridBackgroundColor;
+            dgv.GridColor = DarkGridLineColor;
+            dgv.DefaultCellStyle.BackColor = DarkGridBackgroundColor;
+            dgv.DefaultCellStyle.ForeColor = DarkGridForegroundColor;
+            dgv.DefaultCellStyle.SelectionBackColor = SystemColors.Highlight;
+            dgv.DefaultCellStyle.SelectionForeColor = SystemColors.HighlightText;
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = DarkGridHeaderColor;
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = DarkGridForegroundColor;
+            dgv.ColumnHeadersDefaultCellStyle.SelectionBackColor = DarkGridHeaderColor;
+        }
+        else
+        {
+            dgv.EnableHeadersVisualStyles = true;
+            dgv.BackgroundColor = SystemColors.AppWorkspace;
+            dgv.GridColor = SystemColors.ControlDark;
+            dgv.DefaultCellStyle.BackColor = SystemColors.Window;
+            dgv.DefaultCellStyle.ForeColor = SystemColors.ControlText;
+            dgv.DefaultCellStyle.SelectionBackColor = SystemColors.Highlight;
+            dgv.DefaultCellStyle.SelectionForeColor = SystemColors.HighlightText;
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = SystemColors.Control;
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = SystemColors.ControlText;
+            dgv.ColumnHeadersDefaultCellStyle.SelectionBackColor = SystemColors.Highlight;
+        }
     }
 
     private void LocalizeForm()

@@ -280,3 +280,75 @@ file is changed and `BannerForm` remains untouched.
 - Linux can only run the partial build described in §8; it is a dependency-reference
   check, not a compile gate. Windows CI remains authoritative, especially for the
   native custom-draw code path.
+
+---
+
+## 11. Addendum (2026-09-15): all-screens dark-theme consistency audit (#2417 item 3 follow-up)
+
+The maintainer asked (issue #2417 discussion, after #2451): "Need to be sure that all
+screens are properly updated — update screen, about, profile, app rules etc." This
+addendum is the requested audit of every user-facing surface, written before any code
+change of this follow-up. Basis: `Application.SetColorMode(SystemColorMode.System)`
+(`Program.cs:135`) makes the framework resolve `SystemColors.*`/ambient colours dark on
+Windows 11 for every standard control; any **explicit** colour set in code bypasses
+that and must be theme-aware itself. Audit tool: line-level read of every colour
+source under `SoundSwitch/UI/Forms` and `SoundSwitch/UI/Component`.
+
+### 11.1 Per-screen audit table (2026-09-15)
+
+| Screen | Control | Colour source | Status | Fix / note |
+|---|---|---|---|---|
+| Settings (all tabs) | Standard controls | Framework via `SetColorMode(System)` | OK | Spot-checked after #2451; no explicit light colours left. |
+| Settings | Custom paint (`OutlineColor`, `ThemeTextColor`, `NotificationPanelColor`, `PreviewFillColor`) | Theme-aware accessors on `IsDarkModeEnabled()` | OK | #2451 patterns retained; no duplicated colour logic elsewhere. |
+| Settings | `selectSoundButton` error state (`Color.Red`) | Hardcoded status colour | OK | Deliberate error indicator; legible on both palettes. |
+| About | Form controls | Framework ambient | OK | No colour code in `About.cs`/Designer. |
+| About / Update → changelog | `ChangelogWebViewer` (WebBrowser) | Hardcoded `background: #fff`, `#eaecef` borders in local `DocumentText` HTML | **GAP** | Inject theme-aware CSS at `SetChangelog` time (see §11.2.1). Trident ignores `prefers-color-scheme`, so explicit colours are required. |
+| Update download | `UpdateDownloadForm` form surface | Designer `SystemColors.Control` | OK | Framework-resolved dark; Designer file stays untouched. |
+| Update download | `TextProgressBar` | `ApplyThemingImplicitly` + `ProgressBarRenderer` + `SystemColors.ControlText` text | OK | Owner-draw follows the system palette; `OnSystemColorsChanged` invalidates on live flips. |
+| Profile editor | `UpsertProfileExtended` | Framework ambient + `IconTextComboBox` | OK | No colour code; combo is theme-aware (see below). |
+| App-rule editor | `UpsertAppSoundLockRule` | Framework ambient | OK | No colour code. |
+| App-rule editor | `NumericUpDownWithUnits` | None (plain `NumericUpDown` subclass) | OK | Framework-resolved. |
+| Process picker | `ProcessSelectionForm.dgvProcesses` (`DataGridView`) | No explicit theming in code; framework dark mode does not reliably recolour `DataGridView` | **GAP** | #2420 §4 already planned explicit theming ("DataGridView needs explicit theming") but it was never implemented — this follow-up implements it (§11.2). |
+| Shared (hotkey fields, Settings hotkey tab) | `HotKeyTextBox` | Hardcoded `Color.Green` (valid) / `Color.Crimson` (invalid) foregrounds | **GAP** | Poor contrast on the dark TextBox background; make both state colours theme-aware (§11.2). |
+| Shared (profile editor, app-rule editor) | `IconTextComboBox` | Theme-aware highlight via `IsDarkModeEnabled()` + `ApplyThemingImplicitly` | OK | Already fixed by #2420; remaining `FromArgb(51,51,51)` is the dark branch. |
+| Shared (Settings device lists) | `ListViewExtended`, `IconListView` | Theme-gated custom draw / `SystemColors.*` | OK | #2451 custom draw + framework palette. |
+| Tray context menu | `_selectionMenu`, `_settingsMenu` (`ContextMenuStrip`) | Framework ambient | OK | Standard menus inherit the theme; no colour code in `TrayIcon.cs`. |
+
+### 11.2 Fixes for this follow-up
+
+1. **`ChangelogWebViewer`** — the changelog is rendered from **local** `DocumentText`
+   HTML, so per the brief the correct fix is CSS injection, not a documented limitation.
+   Replace the static light-only `HtmlHeaders` with a theme-aware header generator keyed
+   on `WindowsThemeHelper.IsDarkModeEnabled()`: dark mode uses a dark body background and
+   light text/borders (same palette family as the #2451 settings surfaces), light mode
+   keeps the existing colours. Reuses the approved helper; no new dependencies.
+
+2. **`HotKeyTextBox`** — introduce internal, testable colour selectors
+   (`ValidColor(bool isDarkMode)` / `InvalidColor(bool isDarkMode)`) following the #2451
+   test-seam pattern. Dark mode uses legible bright green/red; light mode keeps the
+   existing `Color.Green`/`Color.Crimson`. All three assignment sites switch to the
+   selectors.
+
+3. **`ProcessSelectionForm`** — add a runtime `ApplyTheme()` (constructor +
+   `OnSystemColorsChanged` for live flips) that gives `dgvProcesses` an explicit palette
+   when dark mode is on: dark background/cell/header colours, light foreground, dark
+   grid lines, and a dark selection pair — the palette family already used by #2451.
+   Light mode keeps the Designer defaults. Colour choices live behind internal static
+   selectors so tests can pin them without Windows.
+
+### 11.3 Documentation corrections
+
+- §5.5 says `WindowsThemeHelper` reads `SystemUsesLightTheme`; the helper actually reads
+  **`AppsUseLightTheme`** (see the comment block in `WindowsThemeHelper.cs`) so that
+  custom paint and the tray icon share the same axis as `SetColorMode`/
+  `Application.IsDarkModeEnabled`. This addendum supersedes that sentence.
+- §4 listed `ProcessSelectionForm` as "construct only" while its Notes column already
+  flagged the DataGridView as needing explicit theming; that theming was never shipped.
+  §11.2 (3) closes the gap.
+
+### 11.4 Framework limitations (unchanged, for completeness)
+
+- `WebBrowser` (Trident) never follows app dark mode; the §11.2 (1) CSS injection is the
+  supported approach for the local changelog HTML.
+- `ComboBox` dropdown popup stays light on pre-22H2 Windows 11 and on Windows 10 (§6).
+- Windows 10 title-bar chrome stays light (§6).

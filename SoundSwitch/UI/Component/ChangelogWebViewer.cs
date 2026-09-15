@@ -17,6 +17,7 @@ using System.Windows.Forms;
 
 using Markdig;
 
+using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Util.Url;
 
 namespace SoundSwitch.UI.Component;
@@ -40,13 +41,9 @@ public class ChangelogWebViewer : WebBrowser
         BrowserUtil.OpenUrl(url);
     }
 
-    private static List<string> HtmlHeaders => new()
-    {
-        @"<!doctype html>
-            <html>
-            <head>
-                <meta charset=""utf-8"">
-                <style>
+    // The WebBrowser control (Trident) does not honor prefers-color-scheme,
+    // so the style sheet is selected explicitly based on the app theme.
+    internal const string LightStyleSheet = @"
                     body {
                         background: #fff; margin: 0 auto;
                         font-family: ""Segoe UI"", Helvetica, Arial, sans-serif;
@@ -64,7 +61,43 @@ public class ChangelogWebViewer : WebBrowser
                     .center {
                         text-align: center
                     }
-                </style>
+                ";
+
+    internal const string DarkStyleSheet = @"
+                    body {
+                        background: #202020; color: #e0e0e0; margin: 0 auto;
+                        font-family: ""Segoe UI"", Helvetica, Arial, sans-serif;
+                    }
+                    h1 {
+                        padding: 0.3em 0em 0.3em;
+                        font-size: 1.2em;
+                        border-bottom: 1px solid #3f3f3f;
+                    }
+                    h2 {
+                        padding: 0.3em 0em 0.3em;
+                        font-size: 1em;
+                        border-bottom: 1px solid #3f3f3f;
+                    }
+                    a {
+                        color: #6cb2f5;
+                    }
+                    .center {
+                        text-align: center
+                    }
+                ";
+
+    internal static string GetStyleSheet(bool isDarkMode)
+    {
+        return isDarkMode ? DarkStyleSheet : LightStyleSheet;
+    }
+
+    private static List<string> HtmlHeaders => new()
+    {
+        $@"<!doctype html>
+            <html>
+            <head>
+                <meta charset=""utf-8"">
+                <style>{GetStyleSheet(WindowsThemeHelper.IsDarkModeEnabled())}</style>
             </head>"
     };
 

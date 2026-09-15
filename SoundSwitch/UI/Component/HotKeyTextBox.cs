@@ -75,9 +75,25 @@ public class HotKeyTextBox : TextBox
             }
 
             HotKey = e.HotKey;
-            ForeColor = Color.Green;
+            ForeColor = ValidColor(WindowsThemeHelper.IsDarkModeEnabled());
             HotKeyChanged?.Invoke(this, new Event());
         }), null);
+    }
+
+    /// <summary>
+    /// Foreground color used for a valid hotkey, chosen for legibility on both light and dark TextBox backgrounds.
+    /// </summary>
+    internal static Color ValidColor(bool isDarkMode)
+    {
+        return isDarkMode ? Color.FromArgb(102, 187, 106) : Color.Green;
+    }
+
+    /// <summary>
+    /// Foreground color used for an invalid hotkey, chosen for legibility on both light and dark TextBox backgrounds.
+    /// </summary>
+    internal static Color InvalidColor(bool isDarkMode)
+    {
+        return isDarkMode ? Color.FromArgb(255, 107, 107) : Color.Crimson;
     }
 
     protected override void OnKeyDown(KeyEventArgs e)
@@ -149,14 +165,14 @@ public class HotKeyTextBox : TextBox
     private void SetValidHotKey(Keys key, HotKey.ModifierKeys modifierKeys)
     {
         HotKey = new HotKey(key, modifierKeys);
-        ForeColor = Color.Green;
+        ForeColor = ValidColor(WindowsThemeHelper.IsDarkModeEnabled());
         HotKeyChanged?.Invoke(this, new Event());
     }
 
     private void SetInvalidState(Keys key, HotKey.ModifierKeys modifierKeys)
     {
         Text = new HotKey(key, modifierKeys).Display();
-        ForeColor = Color.Crimson;
+        ForeColor = InvalidColor(WindowsThemeHelper.IsDarkModeEnabled());
     }
 
     private static bool IsSpecialKey(Keys key)
