@@ -124,15 +124,31 @@ namespace SoundSwitch.Services
             }
 
 #pragma warning disable CS0618 // Type or member is obsolete
+            var healed = false;
             if (resolved.Id != stored.Id || resolved.Name != stored.Name)
             {
-                _logger.Information("Self-healing app rule device: {Old} -> {New}", stored.NameClean, resolved.NameClean);
                 setter(rule, new DeviceInfo(resolved.Name, resolved.Id, resolved.Type, resolved.IsUsb, DateTime.UtcNow));
-                _configuration.Save();
+                healed = true;
             }
 #pragma warning restore CS0618 // Type or member is obsolete
 
-            return _audioSwitcher.SwitchProcessTo(resolved.Id, ERole.ERole_enum_count, flow, processId);
+            var switched = _audioSwitcher.SwitchProcessTo(resolved.Id, ERole.ERole_enum_count, flow, processId);
+
+            if (healed)
+            {
+                _logger.Information("Self-healing app rule device: {Old} -> {New}", stored.NameClean, resolved.NameClean);
+                // Persisted after switching so a save failure can never block audio routing
+                try
+                {
+                    _configuration.Save();
+                }
+                catch (Exception ex)
+                {
+                    _logger.Warning(ex, "Failed to save self-healed app rule device {NameClean}", resolved.NameClean);
+                }
+            }
+
+            return switched;
         }
 
         private bool IsMatch(AppSoundRule rule, string processName, string processPath, string windowTitle)

@@ -40,7 +40,10 @@ namespace SoundSwitch.Services
         {
             if (stored == null) return null;
 
-            return candidates.FirstOrDefault(info => info.Equals(stored));
+            // Exact id match first: with duplicate cleaned names, an earlier same-name
+            // candidate must not shadow the candidate actually carrying the stored id.
+            return candidates.FirstOrDefault(info => info.Type == stored.Type && info.Id == stored.Id)
+                   ?? candidates.FirstOrDefault(info => info.Equals(stored));
         }
 
         /// <summary>
@@ -51,12 +54,11 @@ namespace SoundSwitch.Services
         /// <returns>The matching available device, or `null` when none matches.</returns>
         public static DeviceFullInfo? Resolve(DeviceInfo? stored, IDeviceService deviceService)
         {
-            return stored switch
-            {
-                null => null,
-                { Type: EDataFlow.eCapture } => deviceService.AvailableRecordingDevices.FirstOrDefault(info => info.Equals(stored)),
-                _ => deviceService.AvailablePlaybackDevices.FirstOrDefault(info => info.Equals(stored))
-            };
+            if (stored == null) return null;
+
+            return stored.Type == EDataFlow.eCapture
+                ? Resolve(stored, deviceService.AvailableRecordingDevices)
+                : Resolve(stored, deviceService.AvailablePlaybackDevices);
         }
     }
 }
