@@ -1,8 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+
+using SoundSwitch.Framework.WinApi;
 
 namespace SoundSwitch.UI.Component.ListView;
 
@@ -11,6 +14,26 @@ public class ListViewExtended : System.Windows.Forms.ListView
     private const int LVM_FIRST = 0x1000;                    // ListView messages
     private const int LVM_SETGROUPINFO = (LVM_FIRST + 147);  // ListView messages Setinfo on Group
     private const int WM_LBUTTONUP = 0x0202;                 // Windows message left button
+
+    // The common-control notifications are reflected back to the control by WinForms.
+    private const int WM_REFLECT_NOTIFY = 0x204E;
+    private const int NM_CUSTOMDRAW = -12;
+
+    private const uint CDDS_PREPAINT = 0x00000001;
+    private const uint CDDS_ITEMPREPAINT = 0x00010001;
+    private const uint CDRF_SKIPDEFAULT = 0x00000004;
+    private const uint CDRF_NOTIFYITEMDRAW = 0x00000020;
+
+    private const uint LVCDI_GROUP = 0x00000001;
+
+    /// <summary>
+    /// Accent used for native ListView group headers when Windows uses dark app mode.
+    /// The native control normally paints them with a low-contrast blue.
+    /// </summary>
+    private static Color GroupHeaderDarkColor => Color.LightSkyBlue;
+
+    private const int GroupHeaderArrowWidth = 24;
+    private const int GroupHeaderPadding = 4;
 
     private delegate void CallBackSetGroupState(ListViewGroup lstvwgrp, ListViewGroupState state);
     private delegate void CallbackSetGroupString(ListViewGroup lstvwgrp, string value);
@@ -141,7 +164,146 @@ public class ListViewExtended : System.Windows.Forms.ListView
     {
         if (m.Msg == WM_LBUTTONUP)
             base.DefWndProc(ref m);
+        else if (TryHandleGroupHeaderCustomDraw(ref m))
+            return;
+
         base.WndProc(ref m);
+    }
+
+    /// <summary>
+    /// Draws native ListView group headers in dark mode. Their colour and painting are
+    /// owned by the native common control and are not exposed as a managed
+    /// <see cref="ListViewGroup"/> property or by WinForms owner drawing.
+    /// </summary>
+    private bool TryHandleGroupHeaderCustomDraw(ref Message m)
+    {
+        // OwnerDraw controls already receive their full painting pipeline through WinForms;
+        // do not alter the notifications they rely on.
+        if (m.Msg != WM_REFLECT_NOTIFY || m.LParam == IntPtr.Zero || OwnerDraw)
+            return false;
+
+        var nmhdr = Marshal.PtrToStructure<NMHDR>(m.LParam);
+        if (nmhdr.Code != NM_CUSTOMDRAW)
+            return false;
+
+        var customDraw = Marshal.PtrToStructure<NMLVCUSTOMDRAW>(m.LParam);
+
+        // Ask comctl32 for item-level notifications first; group headers are reported
+        // at CDDS_ITEMPREPAINT, not during the control-level pre-paint stage. Cache the
+        // theme decision once per paint cycle to avoid registry reads for each group.
+        if (customDraw.Nmcd.DrawStage == CDDS_PREPAINT)
+        {
+            if (!WindowsThemeHelper.IsDarkModeEnabled())
+                return false;
+
+            m.Result = (IntPtr)(long)CDRF_NOTIFYITEMDRAW;
+            return true;
+        }
+
+        if (customDraw.Nmcd.DrawStage != CDDS_ITEMPREPAINT || customDraw.ItemType != LVCDI_GROUP ||
+            !WindowsThemeHelper.IsDarkModeEnabled())
+            return false;
+
+        var group = FindGroupByID((int)customDraw.Nmcd.ItemSpec);
+        if (group == null)
+            return false;
+
+        using var graphics = Graphics.FromHdc(customDraw.Nmcd.HDC);
+        var bounds = Rectangle.FromLTRB(
+            customDraw.Nmcd.Rect.Left,
+            customDraw.Nmcd.Rect.Top,
+            customDraw.Nmcd.Rect.Right,
+            customDraw.Nmcd.Rect.Bottom);
+        DrawGroupHeader(graphics, bounds, group);
+
+        m.Result = (IntPtr)CDRF_SKIPDEFAULT;
+        return true;
+    }
+
+    private ListViewGroup FindGroupByID(int id)
+    {
+        foreach (ListViewGroup group in Groups)
+        {
+            if (GetGroupID(group) == id)
+                return group;
+        }
+
+        return null;
+    }
+
+    internal void DrawGroupHeader(Graphics graphics, Rectangle bounds, ListViewGroup group)
+    {
+        using var backgroundBrush = new SolidBrush(BackColor);
+        graphics.FillRectangle(backgroundBrush, bounds);
+
+        using var separatorPen = new Pen(Color.FromArgb(80, 80, 80));
+        graphics.DrawLine(separatorPen, bounds.Left, bounds.Bottom - 1, bounds.Right, bounds.Bottom - 1);
+
+        var arrowWidth = Math.Min(GroupHeaderArrowWidth, bounds.Width);
+        var arrowRect = new Rectangle(bounds.Right - arrowWidth - GroupHeaderPadding, bounds.Top,
+            arrowWidth, bounds.Height);
+        var textRect = new Rectangle(bounds.Left + GroupHeaderPadding, bounds.Top,
+            Math.Max(1, bounds.Width - arrowWidth - GroupHeaderPadding * 3), bounds.Height);
+
+        var textFormat = group.HeaderAlignment switch
+        {
+            HorizontalAlignment.Center => TextFormatFlags.HorizontalCenter,
+            HorizontalAlignment.Right => TextFormatFlags.Right,
+            _ => TextFormatFlags.Left
+        } | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis | TextFormatFlags.PreserveGraphicsClipping;
+
+        using var font = new Font(Font, FontStyle.Bold);
+        TextRenderer.DrawText(graphics, group.Header, font, textRect, GroupHeaderDarkColor, textFormat);
+
+        var arrow = group.CollapsedState == ListViewGroupCollapsedState.Collapsed ? "►" : "▼";
+        TextRenderer.DrawText(graphics, arrow, font, arrowRect, GroupHeaderDarkColor,
+            TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.PreserveGraphicsClipping);
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct NMHDR
+    {
+        public IntPtr HwndFrom;
+        public IntPtr IdFrom;
+        public int Code;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct NMCUSTOMDRAW
+    {
+        public NMHDR Header;
+        public uint DrawStage;
+        public IntPtr HDC;
+        public RECT Rect;
+        public IntPtr ItemSpec;
+        public uint ItemState;
+        public IntPtr ItemParam;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct NMLVCUSTOMDRAW
+    {
+        public NMCUSTOMDRAW Nmcd;
+        public uint TextColor;
+        public uint TextBackColor;
+        public int SubItem;
+        public uint ItemType;
+        public uint FaceColor;
+        public int IconEffect;
+        public int IconPhase;
+        public int PartId;
+        public int StateId;
+        public RECT TextRect;
+        public uint Align;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct RECT
+    {
+        public int Left;
+        public int Top;
+        public int Right;
+        public int Bottom;
     }
 }
 

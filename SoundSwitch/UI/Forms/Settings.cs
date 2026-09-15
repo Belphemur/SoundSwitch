@@ -89,6 +89,36 @@ public sealed partial class SettingsForm : Form
             ? Color.FromArgb(80, 80, 80)   // dark grey on dark bg
             : Color.Gainsboro;
 
+    /// <summary>
+    /// Foreground used by the custom surfaces and GroupBox captions, following the
+    /// Windows app light/dark mode.
+    /// </summary>
+    internal static Color GetThemeTextColor(bool darkModeEnabled) => darkModeEnabled
+            ? Color.FromArgb(240, 240, 240)
+            : SystemColors.ControlText;
+
+    private static Color ThemeTextColor => GetThemeTextColor(WindowsThemeHelper.IsDarkModeEnabled());
+
+    /// <summary>
+    /// Surface used by the Notifications GroupBox. It preserves the explicit light-mode
+    /// white from the Designer while providing a dark-mode equivalent.
+    /// </summary>
+    internal static Color GetNotificationPanelColor(bool darkModeEnabled) => darkModeEnabled
+            ? Color.FromArgb(32, 32, 32)
+            : Color.White;
+
+    private static Color NotificationPanelColor => GetNotificationPanelColor(WindowsThemeHelper.IsDarkModeEnabled());
+
+    /// <summary>
+    /// Surface used by the custom-painted banner-position preview, following the
+    /// Windows app light/dark mode.
+    /// </summary>
+    internal static Color GetPreviewFillColor(bool darkModeEnabled) => darkModeEnabled
+            ? Color.FromArgb(45, 45, 45)
+            : Color.AliceBlue;
+
+    private static Color PreviewFillColor => GetPreviewFillColor(WindowsThemeHelper.IsDarkModeEnabled());
+
     private static Pen PenLine(int width = 1) => new(OutlineColor, width);
 
     private static Rectangle RectOutline(int offsetW, int offsetH, Control topLeft, Control bottomRight) =>
@@ -105,6 +135,7 @@ public sealed partial class SettingsForm : Form
         _audioDeviceLister = audioDeviceLister;
         // Form itself
         InitializeComponent();
+        ApplyTheme();
 #if NIGHTLY
         var nightlyChannelCheckBox = new CheckBox
         {
@@ -593,6 +624,40 @@ public sealed partial class SettingsForm : Form
     }
 
     /// <summary>
+    /// Apply theme-aware colours to the surfaces that do not follow the framework's
+    /// dark-mode palette on their own: explicit Designer colours, GroupBox captions
+    /// and the custom-painted banner-position preview.
+    /// </summary>
+    private void ApplyTheme()
+    {
+        if (IsDisposed || Disposing) return;
+
+        var textColor = ThemeTextColor;
+        notificationsGroupBox.BackColor = NotificationPanelColor;
+        foreach (var groupBox in EnumerateControls(this).OfType<GroupBox>())
+        {
+            groupBox.ForeColor = textColor;
+        }
+
+        // The custom-sound check sets an explicit state-dependent foreground, so it must
+        // be recalculated after the theme changes instead of relying on GroupBox inheritance.
+        CustomSoundNotificationCheck();
+    }
+
+    private static IEnumerable<Control> EnumerateControls(Control root)
+    {
+        foreach (Control control in root.Controls)
+        {
+            yield return control;
+
+            foreach (var child in EnumerateControls(control))
+            {
+                yield return child;
+            }
+        }
+    }
+
+    /// <summary>
     /// Repaint the form and its owner-drawn children so theme-dependent custom
     /// painting (the outline borders drawn with <see cref="PenLine"/>) picks up
     /// the new system colours when the OS light/dark mode changes.
@@ -600,6 +665,7 @@ public sealed partial class SettingsForm : Form
     public void RefreshTheme()
     {
         if (IsDisposed || Disposing) return;
+        ApplyTheme();
         Invalidate(true);
         foreach (Control control in Controls)
         {
@@ -1043,9 +1109,9 @@ public sealed partial class SettingsForm : Form
         }
 
         if (customSound == null)
-            SetProperties(SettingsStrings.buttonSelect + "…", SystemColors.ControlText);
+            SetProperties(SettingsStrings.buttonSelect + "…", ThemeTextColor);
         else if (File.Exists(customSound.FilePath))
-            SetProperties(Path.GetFileName(customSound.FilePath), SystemColors.ControlText, FontStyle.Italic);
+            SetProperties(Path.GetFileName(customSound.FilePath), ThemeTextColor, FontStyle.Italic);
         else
             SetProperties(SettingsStrings.selectSoundButton_error, Color.Red, FontStyle.Bold);
     }
@@ -1106,7 +1172,7 @@ public sealed partial class SettingsForm : Form
         Size round =  new(RECT_PEN_WIDTH * 4, RECT_PEN_WIDTH * 4);
         Rectangle rect = RectOutline(OFFSET_W, OFFSET_H, positionTopLeftRadioButton, positionBottomRightRadioButton);
 
-        e.Graphics.FillRoundedRectangle(new SolidBrush(Color.AliceBlue), rect, round);
+        e.Graphics.FillRoundedRectangle(new SolidBrush(PreviewFillColor), rect, round);
         e.Graphics.DrawRoundedRectangle(PenLine(RECT_PEN_WIDTH), rect, round);
 
         e.Graphics.DrawLine(PenLine(),

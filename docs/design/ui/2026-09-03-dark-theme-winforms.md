@@ -205,3 +205,78 @@ Conventional-commit type is `feat` (confirmed by maintainer during review) becau
 1. **Conventional-commit type: `feat` (→ minor release).** Rationale: this is effectively a UI rewrite — every settings form is re-skinned. From the user's perspective it's a fully new surface (the WinForms chrome they see today is replaced with native dark controls), so a minor bump is the honest signal. Final commit message: see §9.
 2. **No per-app "always light / always dark / system" preference in this PR.** The OS theme is the source of truth. Can be added as a follow-up if users ask.
 3. **`BannerForm` stays untouched for this PR.** The banner is a custom-drawn translucent overlay, intentionally independent of the system theme (it's a notification, not chrome). If a future user reports banner readability in dark mode, that's a separate decision.
+
+---
+
+## 10. Addendum (2026-09-15): #2450 settings dark-theme gaps
+
+Issue #2450 reports follow-up gaps after #2420. Several per-control surfaces in
+`SettingsForm` still keep light-theme colours on Windows 11. The Profiles tab is correct;
+the gaps are concentrated on custom-painted colours and controls whose foreground colour
+is not driven by the framework's dark-mode palette. Root-cause review also found one
+incorrect assumption in the issue: the blue Playback/Recording text is not an
+application-hardcoded `Color.Blue`; it is the native ListView group-header caption.
+
+### 10.1 Root causes
+
+| Defect | Root cause | Evidence |
+|---|---|---|
+| Playback/Recording device-state group headers ("Selected", "Connected", "Disconnected") render saturated blue on dark | The native `ListView` control owns group-header painting; `ListViewGroup` has no managed `ForeColor`. In dark mode the common-control theme still supplies the light-theme link-style accent. | `Settings.Designer.cs` uses `ListViewExtended` groups; `Settings.cs` creates `Active`/`NotPresent` groups; `ListViewExtended` has no custom-draw handling. |
+| Notifications "Notification Type" panel stays white | The Designer explicitly pins `notificationsGroupBox.BackColor = Color.White`. `Application.SetColorMode(SystemColorMode.System)` does not override an explicit colour. | `Settings.Designer.cs:667`; no runtime reset exists. |
+| Banner-position preview background stays light | `PositionGroupBox_Paint` fills the rounded preview with hard-coded `Color.AliceBlue`. | `Settings.cs:1109`. |
+| GroupBox captions and their labels/check boxes remain dark-on-dark (General/Notifications) | `GroupBox` caption rendering does not reliably follow the framework dark palette; child controls inherit the GroupBox `ForeColor`, so the wrong ambient colour propagates. | Issue screenshots; Designer sets no explicit `ForeColor`, so it remains ambient. |
+
+### 10.2 Fix
+
+All fixes stay runtime-wired in `Settings.cs` / `ListViewExtended.cs`. No `.Designer.cs`
+file is changed and `BannerForm` remains untouched.
+
+1. **Theme-aware surfaces/text.** Add a private `ApplyTheme()` helper to `SettingsForm`
+   using `WindowsThemeHelper.IsDarkModeEnabled()`:
+   - dark text: `Color.FromArgb(240, 240, 240)`; light text: `SystemColors.ControlText`;
+   - Notifications panel: dark `Color.FromArgb(32, 32, 32)`; light stays the Designer's
+     `Color.White`;
+   - position-preview fill: dark `Color.FromArgb(45, 45, 45)`; light stays `Color.AliceBlue`.
+   Assign the text colour to all `GroupBox` controls so captions and ambient children
+   follow the theme. Reset `notificationsGroupBox.BackColor` from its explicit Designer
+   white in dark mode. Re-run `CustomSoundNotificationCheck()` so the custom-sound
+   button's explicit state foreground follows the theme text colour while preserving
+   its red error state.
+
+2. **Position preview.** Replace the hard-coded `AliceBlue` fill in
+   `PositionGroupBox_Paint` with a dedicated `PreviewFillColor`. The outline pen
+   already introduced in §5.3 stays theme-aware.
+
+3. **ListView group headers.** Handle `NM_CUSTOMDRAW` in `ListViewExtended` only when
+   Windows is in dark app mode. Return `CDRF_NOTIFYITEMDRAW` at `CDDS_PREPAINT`, then
+   process the notification at `CDDS_ITEMPREPAINT` when `NMLVCUSTOMDRAW.dwItemType` is
+   `LVCDI_GROUP`. Evaluate the live dark-mode state at each custom-draw stage so unpaired
+   or partial repaints cannot rely on stale cached state. Draw a qualifying group
+   header with `CDRF_SKIPDEFAULT` using the ListView background, a dark separator,
+   `Color.LightSkyBlue` text, the native header alignment, and a collapse-state arrow;
+   leave every other custom-draw notification—and all light-mode painting—to
+   WinForms/native comctl32. This uses the documented list-view custom-draw mechanism
+   instead of replacing native groups or introducing a third-party theming library. The
+   header is repainted from current theme state on every paint, so no cached brush/colour
+   is stale.
+
+4. **Live theme flip.** Reuse the existing `WindowsAPIAdapter.SystemThemeChanged`
+   subscription and `OnSystemColorsChanged` from §5.2. `RefreshTheme()` will first call
+   `ApplyTheme()` (so explicit runtime colours are updated) and then invalidate the
+   form tree, which also repaints the position preview and ListView headers.
+
+### 10.3 Constraints and validation
+
+- The fix deliberately avoids `Application.IsDarkModeEnabled` (experimental warning in
+  .NET 10) and continues to use `WindowsThemeHelper.IsDarkModeEnabled()` so the tray-icon
+  and custom-paint paths use the same `AppsUseLightTheme` axis.
+- No localization strings are added; colours only.
+- Focused regression tests cover the deterministic dark/light colour selections, the
+  dark group-header background/separator painting, and the native custom-draw dispatch
+  (`CDDS_PREPAINT` → `CDRF_NOTIFYITEMDRAW`, group-ID resolution, and `CDRF_SKIPDEFAULT`)
+  through `WndProc`. The dispatch test uses a test-only `WindowsThemeHelper` provider seam
+  rather than writing the real registry. The Windows-hosted test project remains the
+  executable validation path.
+- Linux can only run the partial build described in §8; it is a dependency-reference
+  check, not a compile gate. Windows CI remains authoritative, especially for the
+  native custom-draw code path.
