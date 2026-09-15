@@ -215,7 +215,7 @@ public class ListViewExtended : System.Windows.Forms.ListView
         return null;
     }
 
-    private void DrawGroupHeader(Graphics graphics, Rectangle bounds, ListViewGroup group)
+    internal void DrawGroupHeader(Graphics graphics, Rectangle bounds, ListViewGroup group)
     {
         using var backgroundBrush = new SolidBrush(BackColor);
         graphics.FillRectangle(backgroundBrush, bounds);

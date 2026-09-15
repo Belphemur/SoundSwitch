@@ -93,25 +93,31 @@ public sealed partial class SettingsForm : Form
     /// Foreground used by the custom surfaces and GroupBox captions, following the
     /// Windows app light/dark mode.
     /// </summary>
-    private static Color ThemeTextColor => WindowsThemeHelper.IsDarkModeEnabled()
+    internal static Color GetThemeTextColor(bool darkModeEnabled) => darkModeEnabled
             ? Color.FromArgb(240, 240, 240)
             : SystemColors.ControlText;
+
+    private static Color ThemeTextColor => GetThemeTextColor(WindowsThemeHelper.IsDarkModeEnabled());
 
     /// <summary>
     /// Surface used by the Notifications GroupBox. It preserves the explicit light-mode
     /// white from the Designer while providing a dark-mode equivalent.
     /// </summary>
-    private static Color NotificationPanelColor => WindowsThemeHelper.IsDarkModeEnabled()
+    internal static Color GetNotificationPanelColor(bool darkModeEnabled) => darkModeEnabled
             ? Color.FromArgb(32, 32, 32)
             : Color.White;
+
+    private static Color NotificationPanelColor => GetNotificationPanelColor(WindowsThemeHelper.IsDarkModeEnabled());
 
     /// <summary>
     /// Surface used by the custom-painted banner-position preview, following the
     /// Windows app light/dark mode.
     /// </summary>
-    private static Color PreviewFillColor => WindowsThemeHelper.IsDarkModeEnabled()
+    internal static Color GetPreviewFillColor(bool darkModeEnabled) => darkModeEnabled
             ? Color.FromArgb(45, 45, 45)
             : Color.AliceBlue;
+
+    private static Color PreviewFillColor => GetPreviewFillColor(WindowsThemeHelper.IsDarkModeEnabled());
 
     private static Pen PenLine(int width = 1) => new(OutlineColor, width);
 

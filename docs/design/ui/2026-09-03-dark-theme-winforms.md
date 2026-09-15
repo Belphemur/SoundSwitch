@@ -268,6 +268,9 @@ file is changed and `BannerForm` remains untouched.
   .NET 10) and continues to use `WindowsThemeHelper.IsDarkModeEnabled()` so the tray-icon
   and custom-paint paths use the same `AppsUseLightTheme` axis.
 - No localization strings are added; colours only.
+- Focused regression tests cover the deterministic dark/light colour selections and the
+  dark group-header background/separator painting. The Windows-hosted test project remains
+  the executable validation path.
 - Linux can only run the partial build described in §8; it is a dependency-reference
   check, not a compile gate. Windows CI remains authoritative, especially for the
   native custom-draw code path.
