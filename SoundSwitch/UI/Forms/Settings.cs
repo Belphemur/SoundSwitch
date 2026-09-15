@@ -30,6 +30,7 @@ using Serilog;
 
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
+using SoundSwitch.Common.Framework.Audio.Collection;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework;
@@ -1417,8 +1418,10 @@ public sealed partial class SettingsForm : Form
         appSoundLockListView.ItemCheck -= AppSoundLockListView_ItemCheck;
         foreach (var rule in AppConfigs.Configuration.AppSoundRules)
         {
-            var playback = AppRuleDeviceResolver.Resolve(rule.PlaybackDevice, playbacks);
-            var recording = AppRuleDeviceResolver.Resolve(rule.RecordingDevice, recordings);
+            var playbackResult = AppRuleDeviceResolver.ResolveResult(rule.PlaybackDevice, playbacks);
+            var recordingResult = AppRuleDeviceResolver.ResolveResult(rule.RecordingDevice, recordings);
+            var playback = playbackResult.IsResolved ? playbackResult.Device : null;
+            var recording = recordingResult.IsResolved ? recordingResult.Device : null;
 
             var processName = GetCleanProcessName(rule.ProcessPath);
             IconHandle processIcon = null;
@@ -1442,11 +1445,11 @@ public sealed partial class SettingsForm : Form
             item.SubItems.Add(rule.WindowName);
 
             // Playback
-            var playbackSubItem = item.SubItems.Add(playback?.NameClean ?? rule.PlaybackDevice?.NameClean ?? string.Empty);
+            var playbackSubItem = item.SubItems.Add(FormatResolvedDevice(playback, rule.PlaybackDevice, playbackResult));
             playbackSubItem.Tag = playback?.SmallIcon;
 
             // Recording
-            var recordingSubItem = item.SubItems.Add(recording?.NameClean ?? rule.RecordingDevice?.NameClean ?? string.Empty);
+            var recordingSubItem = item.SubItems.Add(FormatResolvedDevice(recording, rule.RecordingDevice, recordingResult));
             recordingSubItem.Tag = recording?.SmallIcon;
 
             appSoundLockListView.Items.Add(item);
@@ -1456,6 +1459,18 @@ public sealed partial class SettingsForm : Form
         if (AppConfigs.Configuration.AppSoundRules.Count <= 0) return;
         foreach (ColumnHeader column in appSoundLockListView.Columns)
             column.Width = -2;
+    }
+
+    /// <summary>
+    /// Text for an app-rule device list cell: the live device name when resolved, otherwise the
+    /// stored name; ambiguous matches get a localized warning marker appended (see #2457).
+    /// </summary>
+    private static string FormatResolvedDevice(DeviceFullInfo? resolved, DeviceInfo? stored, MatchResult<DeviceFullInfo> match)
+    {
+        var text = resolved?.NameClean ?? stored?.NameClean ?? string.Empty;
+        return match.Kind == DeviceMatchKind.Ambiguous && text.Length > 0
+            ? text + " " + SettingsStrings.ResourceManager.GetString("appSoundLock.rule.ambiguousDevice")
+            : text;
     }
 
     private string GetCleanProcessName(string processPath)
