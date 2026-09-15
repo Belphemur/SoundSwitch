@@ -1,5 +1,6 @@
 ﻿#nullable enable
 using System;
+using SoundSwitch.Common.Framework.Audio.Device;
 
 namespace SoundSwitch.Model
 {
@@ -9,7 +10,13 @@ namespace SoundSwitch.Model
         public bool CaseSensitive { get; set; } = false;
         public string ProcessPath { get; set; } = string.Empty;
         public string WindowName { get; set; } = string.Empty;
+        public DeviceInfo? PlaybackDevice { get; set; }
+        public DeviceInfo? RecordingDevice { get; set; }
+
+        [Obsolete("Migrated to " + nameof(PlaybackDevice))]
         public string? PlaybackDeviceId { get; set; }
+
+        [Obsolete("Migrated to " + nameof(RecordingDevice))]
         public string? RecordingDeviceId { get; set; }
         public bool Enabled { get; set; } = true;
         public bool Notify { get; set; } = true;
@@ -22,8 +29,8 @@ namespace SoundSwitch.Model
                 CaseSensitive = CaseSensitive,
                 ProcessPath = ProcessPath,
                 WindowName = WindowName,
-                PlaybackDeviceId = PlaybackDeviceId,
-                RecordingDeviceId = RecordingDeviceId,
+                PlaybackDevice = PlaybackDevice,
+                RecordingDevice = RecordingDevice,
                 Enabled = Enabled,
                 Notify = Notify
             };

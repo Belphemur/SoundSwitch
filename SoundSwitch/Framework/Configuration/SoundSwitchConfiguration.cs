@@ -167,6 +167,8 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
             migrated = true;
         }
 
+        migrated |= Model.AppSoundRuleMigrator.Migrate(AppSoundRules);
+
         if (SwitchDeviceNotification == NotificationType.ToastNotification)
         {
             SwitchDeviceNotification = NotificationType.BannerNotification;

@@ -15,6 +15,8 @@ public partial class UpsertAppSoundLockRule : Form
 {
     private readonly AppSoundRule _rule;
     private readonly bool _editing;
+    private readonly List<DeviceFullInfo> _playbacks;
+    private readonly List<DeviceFullInfo> _recordings;
     private TextBox _txtProcessPath;
     private CheckBox _chkCaseSensitive;
 
@@ -24,9 +26,11 @@ public partial class UpsertAppSoundLockRule : Form
     {
         _rule = editing ? rule.Copy() : rule;
         _editing = editing;
+        _playbacks = playbacks.ToList();
+        _recordings = recordings.ToList();
         InitializeComponent();
         LocalizeForm();
-        InitComboBoxes(playbacks, recordings);
+        InitComboBoxes(_playbacks, _recordings);
         InitializeFromRule();
     }
 
@@ -101,15 +105,8 @@ public partial class UpsertAppSoundLockRule : Form
         chkEnabled.Checked = _rule.Enabled;
         chkNotify.Checked = _rule.Notify;
 
-        if (!string.IsNullOrEmpty(_rule.PlaybackDeviceId))
-            cmbPlayback.SelectedValue = _rule.PlaybackDeviceId;
-        else
-            cmbPlayback.SelectedIndex = -1;
-
-        if (!string.IsNullOrEmpty(_rule.RecordingDeviceId))
-            cmbRecording.SelectedValue = _rule.RecordingDeviceId;
-        else
-            cmbRecording.SelectedIndex = -1;
+        SelectDevice(cmbPlayback, _rule.PlaybackDevice, _playbacks);
+        SelectDevice(cmbRecording, _rule.RecordingDevice, _recordings);
 
         btnPlaybackReset.Visible = cmbPlayback.SelectedIndex != -1;
         btnRecordingReset.Visible = cmbRecording.SelectedIndex != -1;
@@ -171,6 +168,44 @@ public partial class UpsertAppSoundLockRule : Form
         }
     }
 
+    /// <summary>
+    /// Preselect the combo box for a stored device: exact id match first, then
+    /// <see cref="DeviceInfo.Equals(DeviceInfo)"/> (NameClean) match — this survives device id changes.
+    /// When nothing matches, the combo is left unselected; the user re-picks the device once.
+    /// </summary>
+    private static void SelectDevice(ComboBox comboBox, DeviceInfo? stored, IEnumerable<DeviceFullInfo> devices)
+    {
+        if (stored == null)
+        {
+            comboBox.SelectedIndex = -1;
+            return;
+        }
+
+        var match = devices.FirstOrDefault(d => d.Id == stored.Id) ?? devices.FirstOrDefault(d => d.Equals(stored));
+        if (match == null)
+        {
+            comboBox.SelectedIndex = -1;
+            return;
+        }
+
+        comboBox.SelectedValue = match.Id;
+    }
+
+    /// <summary>
+    /// Build the <see cref="DeviceInfo"/> to persist from the device selected in the combo box.
+    /// </summary>
+#pragma warning disable CS0618 // Type or member is obsolete
+    private static DeviceInfo? GetSelectedDevice(ComboBox comboBox, IEnumerable<DeviceFullInfo> devices)
+    {
+        if (comboBox.SelectedValue is not string id || string.IsNullOrEmpty(id)) return null;
+
+        var info = devices.FirstOrDefault(d => d.Id == id);
+        if (info == null) return null;
+
+        return new DeviceInfo(info.Name, info.Id, info.Type, info.IsUsb, DateTime.UtcNow);
+    }
+#pragma warning restore CS0618 // Type or member is obsolete
+
     private void BtnSave_Click(object sender, EventArgs e)
     {
         _rule.ProcessPath = _txtProcessPath.Text;
@@ -178,8 +213,8 @@ public partial class UpsertAppSoundLockRule : Form
         _rule.CaseSensitive = _chkCaseSensitive.Checked;
         _rule.Enabled = chkEnabled.Checked;
         _rule.Notify = chkNotify.Checked;
-        _rule.PlaybackDeviceId = cmbPlayback.SelectedValue?.ToString();
-        _rule.RecordingDeviceId = cmbRecording.SelectedValue?.ToString();
+        _rule.PlaybackDevice = GetSelectedDevice(cmbPlayback, _playbacks);
+        _rule.RecordingDevice = GetSelectedDevice(cmbRecording, _recordings);
 
         if (string.IsNullOrWhiteSpace(_rule.ProcessPath) && string.IsNullOrWhiteSpace(_rule.WindowName))
         {

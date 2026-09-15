@@ -31,6 +31,7 @@ using SoundSwitch.Framework.Toast;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
+using SoundSwitch.Services;
 
 namespace SoundSwitch.Framework.NotificationManager;
 
@@ -164,8 +165,8 @@ public class NotificationManager(INotificationSettings notificationSettings, IAp
         {
             var icon = GetIconForRule(rule, processId);
             
-            var playback = deviceService.AvailablePlaybackDevices.FirstOrDefault(d => d.Id == rule.PlaybackDeviceId);
-            var recording = deviceService.AvailableRecordingDevices.FirstOrDefault(d => d.Id == rule.RecordingDeviceId);
+            var playback = AppRuleDeviceResolver.Resolve(rule.PlaybackDevice, deviceService);
+            var recording = AppRuleDeviceResolver.Resolve(rule.RecordingDevice, deviceService);
             
             _switchProfileNotification.NotifyAppRuleMatched(rule, playback, recording, icon, processId);
         }
