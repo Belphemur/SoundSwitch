@@ -1,4 +1,5 @@
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 
 using NUnit.Framework;
@@ -8,7 +9,9 @@ using SoundSwitch.UI.Forms;
 
 namespace SoundSwitch.Tests;
 
+// WinForms controls (DataGridView) are constructed here; they require an STA thread.
 [TestFixture]
+[Apartment(ApartmentState.STA)]
 public class DarkThemeConsistencyTests
 {
     [Test]
