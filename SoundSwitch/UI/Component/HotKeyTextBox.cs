@@ -28,6 +28,22 @@ public class HotKeyTextBox : TextBox
     private HotKey _hotKey;
     private bool _listenToHotkey;
 
+    private enum HotKeyDisplayState
+    {
+        Neutral,
+        Valid,
+        Invalid
+    }
+
+    private HotKeyDisplayState _displayState = HotKeyDisplayState.Neutral;
+
+    public HotKeyTextBox()
+    {
+        // App-mode light/dark flips do not raise OnSystemColorsChanged; the repository
+        // exposes them through WindowsAPIAdapter.SystemThemeChanged (see Settings form).
+        WindowsAPIAdapter.SystemThemeChanged += OnSystemThemeChanged;
+    }
+
     [Browsable(true)] public event EventHandler<Event> HotKeyChanged;
 
     [Browsable(true)]
@@ -57,12 +73,49 @@ public class HotKeyTextBox : TextBox
 
     protected override void Dispose(bool disposing)
     {
-        if (disposing && ListenToHotkey)
+        if (disposing)
         {
-            WindowsAPIAdapter.HotKeyPressed -= WindowsAPIAdapterOnHotKeyPressed;
+            WindowsAPIAdapter.SystemThemeChanged -= OnSystemThemeChanged;
+            if (ListenToHotkey)
+            {
+                WindowsAPIAdapter.HotKeyPressed -= WindowsAPIAdapterOnHotKeyPressed;
+            }
         }
 
         base.Dispose(disposing);
+    }
+
+    private void OnSystemThemeChanged(object? sender, EventArgs e)
+    {
+        if (IsDisposed || Disposing)
+        {
+            return;
+        }
+
+        if (InvokeRequired)
+        {
+            BeginInvoke(new Action(ReapplyThemedColor));
+            return;
+        }
+
+        ReapplyThemedColor();
+    }
+
+    /// <summary>
+    /// Reapply the themed status color for the currently displayed hotkey state,
+    /// so a live light/dark switch does not leave the previous palette in place.
+    /// </summary>
+    private void ReapplyThemedColor()
+    {
+        switch (_displayState)
+        {
+            case HotKeyDisplayState.Valid:
+                ForeColor = ValidColor(WindowsThemeHelper.IsDarkModeEnabled());
+                break;
+            case HotKeyDisplayState.Invalid:
+                ForeColor = InvalidColor(WindowsThemeHelper.IsDarkModeEnabled());
+                break;
+        }
     }
 
     private void WindowsAPIAdapterOnHotKeyPressed(object? sender, WindowsAPIAdapter.KeyPressedEventArgs e)
@@ -75,6 +128,7 @@ public class HotKeyTextBox : TextBox
             }
 
             HotKey = e.HotKey;
+            _displayState = HotKeyDisplayState.Valid;
             ForeColor = ValidColor(WindowsThemeHelper.IsDarkModeEnabled());
             HotKeyChanged?.Invoke(this, new Event());
         }), null);
@@ -165,6 +219,7 @@ public class HotKeyTextBox : TextBox
     private void SetValidHotKey(Keys key, HotKey.ModifierKeys modifierKeys)
     {
         HotKey = new HotKey(key, modifierKeys);
+        _displayState = HotKeyDisplayState.Valid;
         ForeColor = ValidColor(WindowsThemeHelper.IsDarkModeEnabled());
         HotKeyChanged?.Invoke(this, new Event());
     }
@@ -172,6 +227,7 @@ public class HotKeyTextBox : TextBox
     private void SetInvalidState(Keys key, HotKey.ModifierKeys modifierKeys)
     {
         Text = new HotKey(key, modifierKeys).Display();
+        _displayState = HotKeyDisplayState.Invalid;
         ForeColor = InvalidColor(WindowsThemeHelper.IsDarkModeEnabled());
     }
 

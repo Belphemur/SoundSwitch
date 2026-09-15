@@ -336,6 +336,19 @@ source under `SoundSwitch/UI/Forms` and `SoundSwitch/UI/Component`.
    Light mode keeps the Designer defaults. Colour choices live behind internal static
    selectors so tests can pin them without Windows.
 
+   **Live theme switches (review follow-up)**: app-mode light/dark flips surface as
+   immersive `WM_SETTINGCHANGE` messages, exposed via
+   `WindowsAPIAdapter.SystemThemeChanged` — they do **not** raise
+   `OnSystemColorsChanged` (that is `WM_SYSCOLORCHANGE` only). All three fixes
+   therefore also subscribe to `WindowsAPIAdapter.SystemThemeChanged` while the
+   surface is alive and re-apply their theme-aware state on the UI thread:
+   `HotKeyTextBox` tracks its displayed valid/invalid state and re-applies the
+   selector colour (subscription released in `Dispose`), `ChangelogWebViewer` caches
+   the changelog source and re-renders the HTML (subscription released in `Dispose`),
+   and `ProcessSelectionForm` re-runs `ApplyTheme()` (subscription tied to
+   `OnHandleCreated`/`OnHandleDestroyed`). This mirrors the `SettingsForm`/
+   `TrayIcon` pattern.
+
 ### 11.3 Documentation corrections
 
 - §5.5 says `WindowsThemeHelper` reads `SystemUsesLightTheme`; the helper actually reads

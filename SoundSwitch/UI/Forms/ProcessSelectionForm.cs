@@ -39,6 +39,30 @@ public partial class ProcessSelectionForm : Form
         ApplyTheme();
     }
 
+    protected override void OnHandleCreated(EventArgs e)
+    {
+        base.OnHandleCreated(e);
+        // App-mode light/dark flips do not raise OnSystemColorsChanged; the repository
+        // exposes them through WindowsAPIAdapter.SystemThemeChanged (see Settings form).
+        WindowsAPIAdapter.SystemThemeChanged += OnSystemThemeChanged;
+    }
+
+    protected override void OnHandleDestroyed(EventArgs e)
+    {
+        WindowsAPIAdapter.SystemThemeChanged -= OnSystemThemeChanged;
+        base.OnHandleDestroyed(e);
+    }
+
+    private void OnSystemThemeChanged(object sender, EventArgs e)
+    {
+        if (IsDisposed || Disposing || !IsHandleCreated)
+        {
+            return;
+        }
+
+        BeginInvoke(new Action(ApplyTheme));
+    }
+
     internal static Color DarkGridBackgroundColor => Color.FromArgb(32, 32, 32);
     internal static Color DarkGridForegroundColor => Color.FromArgb(240, 240, 240);
     internal static Color DarkGridLineColor => Color.FromArgb(80, 80, 80);

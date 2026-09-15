@@ -12,7 +12,9 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 using Markdig;
@@ -24,11 +26,42 @@ namespace SoundSwitch.UI.Component;
 
 public class ChangelogWebViewer : WebBrowser
 {
+    private IReadOnlyList<string> _changelogLines;
+
     public ChangelogWebViewer()
     {
         IsWebBrowserContextMenuEnabled = false;
         WebBrowserShortcutsEnabled = false;
         Navigating += OnNavigating;
+        // Re-render with the matching palette when the app-mode theme flips live;
+        // the cached source is kept so the theme change alone can trigger the rebuild.
+        WindowsAPIAdapter.SystemThemeChanged += OnSystemThemeChanged;
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            WindowsAPIAdapter.SystemThemeChanged -= OnSystemThemeChanged;
+        }
+
+        base.Dispose(disposing);
+    }
+
+    private void OnSystemThemeChanged(object sender, EventArgs e)
+    {
+        if (IsDisposed || Disposing)
+        {
+            return;
+        }
+
+        if (InvokeRequired)
+        {
+            BeginInvoke(new Action(RenderChangelog));
+            return;
+        }
+
+        RenderChangelog();
     }
 
     private void OnNavigating(object sender, WebBrowserNavigatingEventArgs e)
@@ -107,10 +140,21 @@ public class ChangelogWebViewer : WebBrowser
     /// <param name="changelogLines"></param>
     public void SetChangelog(IEnumerable<string> changelogLines)
     {
+        _changelogLines = changelogLines.ToList();
+        RenderChangelog();
+    }
+
+    private void RenderChangelog()
+    {
+        if (_changelogLines == null)
+        {
+            return;
+        }
+
         var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
         var lines = HtmlHeaders;
         lines.Add("<body>");
-        lines.Add(Markdown.ToHtml(string.Join("\n", changelogLines), pipeline));
+        lines.Add(Markdown.ToHtml(string.Join("\n", _changelogLines), pipeline));
         lines.Add("</body>");
         lines.Add("</html>");
         DocumentText = string.Join("\n", lines);
