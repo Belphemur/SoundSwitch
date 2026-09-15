@@ -239,7 +239,9 @@ file is changed and `BannerForm` remains untouched.
    - position-preview fill: dark `Color.FromArgb(45, 45, 45)`; light stays `Color.AliceBlue`.
    Assign the text colour to all `GroupBox` controls so captions and ambient children
    follow the theme. Reset `notificationsGroupBox.BackColor` from its explicit Designer
-   white in dark mode.
+   white in dark mode. Re-run `CustomSoundNotificationCheck()` so the custom-sound
+   button's explicit state foreground follows the theme text colour while preserving
+   its red error state.
 
 2. **Position preview.** Replace the hard-coded `AliceBlue` fill in
    `PositionGroupBox_Paint` with a dedicated `PreviewFillColor`. The outline pen

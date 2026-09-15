@@ -632,6 +632,10 @@ public sealed partial class SettingsForm : Form
         {
             groupBox.ForeColor = textColor;
         }
+
+        // The custom-sound check sets an explicit state-dependent foreground, so it must
+        // be recalculated after the theme changes instead of relying on GroupBox inheritance.
+        CustomSoundNotificationCheck();
     }
 
     private static IEnumerable<Control> EnumerateControls(Control root)
@@ -1099,9 +1103,9 @@ public sealed partial class SettingsForm : Form
         }
 
         if (customSound == null)
-            SetProperties(SettingsStrings.buttonSelect + "…", SystemColors.ControlText);
+            SetProperties(SettingsStrings.buttonSelect + "…", ThemeTextColor);
         else if (File.Exists(customSound.FilePath))
-            SetProperties(Path.GetFileName(customSound.FilePath), SystemColors.ControlText, FontStyle.Italic);
+            SetProperties(Path.GetFileName(customSound.FilePath), ThemeTextColor, FontStyle.Italic);
         else
             SetProperties(SettingsStrings.selectSoundButton_error, Color.Red, FontStyle.Bold);
     }
