@@ -20,7 +20,9 @@ public class ListViewExtended : System.Windows.Forms.ListView
     private const int NM_CUSTOMDRAW = -12;
 
     private const uint CDDS_PREPAINT = 0x00000001;
+    private const uint CDDS_ITEMPREPAINT = 0x00010001;
     private const uint CDRF_SKIPDEFAULT = 0x00000004;
+    private const uint CDRF_NOTIFYITEMDRAW = 0x00000020;
 
     private const uint LVCDI_GROUP = 0x00000001;
 
@@ -185,7 +187,16 @@ public class ListViewExtended : System.Windows.Forms.ListView
             return false;
 
         var customDraw = Marshal.PtrToStructure<NMLVCUSTOMDRAW>(m.LParam);
-        if (customDraw.Nmcd.DrawStage != CDDS_PREPAINT || customDraw.ItemType != LVCDI_GROUP)
+
+        // Ask comctl32 for item-level notifications first; group headers are reported
+        // at CDDS_ITEMPREPAINT, not during the control-level pre-paint stage.
+        if (customDraw.Nmcd.DrawStage == CDDS_PREPAINT)
+        {
+            m.Result = (IntPtr)(long)CDRF_NOTIFYITEMDRAW;
+            return true;
+        }
+
+        if (customDraw.Nmcd.DrawStage != CDDS_ITEMPREPAINT || customDraw.ItemType != LVCDI_GROUP)
             return false;
 
         var group = FindGroupByID((int)customDraw.Nmcd.ItemSpec);
