@@ -89,6 +89,22 @@ public sealed partial class SettingsForm : Form
             ? Color.FromArgb(80, 80, 80)   // dark grey on dark bg
             : Color.Gainsboro;
 
+    /// <summary>
+    /// Foreground used by the custom surfaces and GroupBox captions, following the
+    /// Windows app light/dark mode.
+    /// </summary>
+    private static Color ThemeTextColor => WindowsThemeHelper.IsDarkModeEnabled()
+            ? Color.FromArgb(240, 240, 240)
+            : SystemColors.ControlText;
+
+    /// <summary>
+    /// Surface used by the settings panels and the banner-position preview, following
+    /// the Windows app light/dark mode.
+    /// </summary>
+    private static Color ThemeSurfaceColor => WindowsThemeHelper.IsDarkModeEnabled()
+            ? Color.FromArgb(32, 32, 32)
+            : SystemColors.Control;
+
     private static Pen PenLine(int width = 1) => new(OutlineColor, width);
 
     private static Rectangle RectOutline(int offsetW, int offsetH, Control topLeft, Control bottomRight) =>
@@ -105,6 +121,7 @@ public sealed partial class SettingsForm : Form
         _audioDeviceLister = audioDeviceLister;
         // Form itself
         InitializeComponent();
+        ApplyTheme();
 #if NIGHTLY
         var nightlyChannelCheckBox = new CheckBox
         {
@@ -593,6 +610,36 @@ public sealed partial class SettingsForm : Form
     }
 
     /// <summary>
+    /// Apply theme-aware colours to the surfaces that do not follow the framework's
+    /// dark-mode palette on their own: explicit Designer colours, GroupBox captions
+    /// and the custom-painted banner-position preview.
+    /// </summary>
+    private void ApplyTheme()
+    {
+        if (IsDisposed || Disposing) return;
+
+        var textColor = ThemeTextColor;
+        notificationsGroupBox.BackColor = ThemeSurfaceColor;
+        foreach (var groupBox in EnumerateControls(this).OfType<GroupBox>())
+        {
+            groupBox.ForeColor = textColor;
+        }
+    }
+
+    private static IEnumerable<Control> EnumerateControls(Control root)
+    {
+        foreach (Control control in root.Controls)
+        {
+            yield return control;
+
+            foreach (var child in EnumerateControls(control))
+            {
+                yield return child;
+            }
+        }
+    }
+
+    /// <summary>
     /// Repaint the form and its owner-drawn children so theme-dependent custom
     /// painting (the outline borders drawn with <see cref="PenLine"/>) picks up
     /// the new system colours when the OS light/dark mode changes.
@@ -600,6 +647,7 @@ public sealed partial class SettingsForm : Form
     public void RefreshTheme()
     {
         if (IsDisposed || Disposing) return;
+        ApplyTheme();
         Invalidate(true);
         foreach (Control control in Controls)
         {
@@ -1106,7 +1154,7 @@ public sealed partial class SettingsForm : Form
         Size round =  new(RECT_PEN_WIDTH * 4, RECT_PEN_WIDTH * 4);
         Rectangle rect = RectOutline(OFFSET_W, OFFSET_H, positionTopLeftRadioButton, positionBottomRightRadioButton);
 
-        e.Graphics.FillRoundedRectangle(new SolidBrush(Color.AliceBlue), rect, round);
+        e.Graphics.FillRoundedRectangle(new SolidBrush(ThemeSurfaceColor), rect, round);
         e.Graphics.DrawRoundedRectangle(PenLine(RECT_PEN_WIDTH), rect, round);
 
         e.Graphics.DrawLine(PenLine(),

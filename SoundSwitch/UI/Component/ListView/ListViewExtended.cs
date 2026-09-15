@@ -1,8 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+
+using SoundSwitch.Framework.WinApi;
 
 namespace SoundSwitch.UI.Component.ListView;
 
@@ -11,6 +14,25 @@ public class ListViewExtended : System.Windows.Forms.ListView
     private const int LVM_FIRST = 0x1000;                    // ListView messages
     private const int LVM_SETGROUPINFO = (LVM_FIRST + 147);  // ListView messages Setinfo on Group
     private const int WM_LBUTTONUP = 0x0202;                 // Windows message left button
+
+    // The common-control notifications are reflected back to the control by WinForms.
+    private const int WM_REFLECT_NOTIFY = 0x204E;
+    private const int NM_CUSTOMDRAW = -12;
+
+    private const uint CDDS_PREPAINT = 0x00000001;
+    private const uint CDDS_ITEMPREPAINT = 0x00010001;
+    private const uint CDRF_DODEFAULT = 0x00000000;
+    private const uint CDRF_NEWFONT = 0x00000002;
+    private const uint CDRF_NOTIFYITEMDRAW = 0x00000020;
+
+    private const uint LVCDI_GROUP = 0x00000001;
+
+    /// <summary>
+    /// Light grey used for native ListView group headers when Windows uses dark app mode.
+    /// The native control normally paints them with a light-theme link colour, which is
+    /// almost invisible on a dark background.
+    /// </summary>
+    private static Color GroupHeaderDarkColor => Color.FromArgb(240, 240, 240);
 
     private delegate void CallBackSetGroupState(ListViewGroup lstvwgrp, ListViewGroupState state);
     private delegate void CallbackSetGroupString(ListViewGroup lstvwgrp, string value);
@@ -141,7 +163,94 @@ public class ListViewExtended : System.Windows.Forms.ListView
     {
         if (m.Msg == WM_LBUTTONUP)
             base.DefWndProc(ref m);
+        else if (TryHandleGroupHeaderCustomDraw(ref m))
+            return;
+
         base.WndProc(ref m);
+    }
+
+    /// <summary>
+    /// Gives the native ListView group headers a readable foreground colour in dark mode.
+    /// Their colour is owned by the native common control and is not exposed as a managed
+    /// <see cref="ListViewGroup"/> property.
+    /// </summary>
+    private bool TryHandleGroupHeaderCustomDraw(ref Message m)
+    {
+        // OwnerDraw controls already receive their full painting pipeline through WinForms;
+        // do not alter the notifications they rely on.
+        if (m.Msg != WM_REFLECT_NOTIFY || m.LParam == IntPtr.Zero || OwnerDraw)
+            return false;
+
+        var nmhdr = Marshal.PtrToStructure<NMHDR>(m.LParam);
+        if (nmhdr.Code != NM_CUSTOMDRAW)
+            return false;
+
+        var customDraw = Marshal.PtrToStructure<NMLVCUSTOMDRAW>(m.LParam);
+        switch (customDraw.Nmcd.DrawStage)
+        {
+            case CDDS_PREPAINT:
+                m.Result = (IntPtr)(long)CDRF_NOTIFYITEMDRAW;
+                return true;
+
+            case CDDS_ITEMPREPAINT:
+                m.Result = (IntPtr)(long)CDRF_DODEFAULT;
+                if (customDraw.ItemType == LVCDI_GROUP && WindowsThemeHelper.IsDarkModeEnabled())
+                {
+                    customDraw.TextColor = unchecked((uint)ColorTranslator.ToWin32(GroupHeaderDarkColor));
+                    Marshal.StructureToPtr(customDraw, m.LParam, false);
+                    m.Result = (IntPtr)(long)CDRF_NEWFONT;
+                }
+
+                return true;
+        }
+
+        return false;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct NMHDR
+    {
+        public IntPtr HwndFrom;
+        public IntPtr IdFrom;
+        public int Code;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct NMCUSTOMDRAW
+    {
+        public NMHDR Header;
+        public uint DrawStage;
+        public IntPtr HDC;
+        public RECT Rect;
+        public IntPtr ItemSpec;
+        public uint ItemState;
+        public IntPtr ItemParam;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct NMLVCUSTOMDRAW
+    {
+        public NMCUSTOMDRAW Nmcd;
+        public uint TextColor;
+        public uint TextBackColor;
+        public int SubItem;
+        public uint ItemType;
+        public uint FaceColor;
+        public int IconEffect;
+        public int IconPhase;
+        public int PartId;
+        public int StateId;
+        public RECT TextRect;
+        public uint Align;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct RECT
+    {
+        public int Left;
+        public int Top;
+        public int Right;
+        public int Bottom;
     }
 }
 
