@@ -35,13 +35,6 @@ public class ListViewExtended : System.Windows.Forms.ListView
     private const int GroupHeaderArrowWidth = 24;
     private const int GroupHeaderPadding = 4;
 
-    /// <summary>
-    /// Caches the dark-mode decision for one native custom-draw paint cycle. Set at
-    /// <see cref="CDDS_PREPAINT"/> on the UI thread and reused for every group header in
-    /// that cycle so repaints do not repeatedly read the registry.
-    /// </summary>
-    private bool _customDrawDarkMode;
-
     private delegate void CallBackSetGroupState(ListViewGroup lstvwgrp, ListViewGroupState state);
     private delegate void CallbackSetGroupString(ListViewGroup lstvwgrp, string value);
 
@@ -190,7 +183,7 @@ public class ListViewExtended : System.Windows.Forms.ListView
             return false;
 
         var nmhdr = Marshal.PtrToStructure<NMHDR>(m.LParam);
-        if (nmhdr.Code != NM_CUSTOMDRAW || !WindowsThemeHelper.IsDarkModeEnabled())
+        if (nmhdr.Code != NM_CUSTOMDRAW)
             return false;
 
         var customDraw = Marshal.PtrToStructure<NMLVCUSTOMDRAW>(m.LParam);
@@ -200,15 +193,15 @@ public class ListViewExtended : System.Windows.Forms.ListView
         // theme decision once per paint cycle to avoid registry reads for each group.
         if (customDraw.Nmcd.DrawStage == CDDS_PREPAINT)
         {
-            _customDrawDarkMode = WindowsThemeHelper.IsDarkModeEnabled();
-            if (!_customDrawDarkMode)
+            if (!WindowsThemeHelper.IsDarkModeEnabled())
                 return false;
 
             m.Result = (IntPtr)(long)CDRF_NOTIFYITEMDRAW;
             return true;
         }
 
-        if (!_customDrawDarkMode || customDraw.Nmcd.DrawStage != CDDS_ITEMPREPAINT || customDraw.ItemType != LVCDI_GROUP)
+        if (customDraw.Nmcd.DrawStage != CDDS_ITEMPREPAINT || customDraw.ItemType != LVCDI_GROUP ||
+            !WindowsThemeHelper.IsDarkModeEnabled())
             return false;
 
         var group = FindGroupByID((int)customDraw.Nmcd.ItemSpec);
