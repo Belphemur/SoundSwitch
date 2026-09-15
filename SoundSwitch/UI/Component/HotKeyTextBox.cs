@@ -87,18 +87,9 @@ public class HotKeyTextBox : TextBox
 
     private void OnSystemThemeChanged(object? sender, EventArgs e)
     {
-        if (IsDisposed || Disposing)
-        {
-            return;
-        }
-
-        if (InvokeRequired)
-        {
-            BeginInvoke(new Action(ReapplyThemedColor));
-            return;
-        }
-
-        ReapplyThemedColor();
+        // The event is posted asynchronously, so re-check teardown state on both
+        // sides of the marshal (see ThemeChangeDispatcher).
+        ThemeChangeDispatcher.BeginThemeUpdate(this, ReapplyThemedColor);
     }
 
     /// <summary>

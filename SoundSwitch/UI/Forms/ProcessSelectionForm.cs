@@ -12,6 +12,7 @@ using SoundSwitch.Framework.Audio;
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Localization;
+using SoundSwitch.UI.Component;
 
 namespace SoundSwitch.UI.Forms;
 
@@ -55,12 +56,9 @@ public partial class ProcessSelectionForm : Form
 
     private void OnSystemThemeChanged(object sender, EventArgs e)
     {
-        if (IsDisposed || Disposing || !IsHandleCreated)
-        {
-            return;
-        }
-
-        BeginInvoke(new Action(ApplyTheme));
+        // The event is posted asynchronously, so re-check teardown state on both
+        // sides of the marshal (see ThemeChangeDispatcher).
+        ThemeChangeDispatcher.BeginThemeUpdate(this, ApplyTheme);
     }
 
     internal static Color DarkGridBackgroundColor => Color.FromArgb(32, 32, 32);

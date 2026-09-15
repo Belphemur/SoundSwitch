@@ -50,18 +50,9 @@ public class ChangelogWebViewer : WebBrowser
 
     private void OnSystemThemeChanged(object sender, EventArgs e)
     {
-        if (IsDisposed || Disposing)
-        {
-            return;
-        }
-
-        if (InvokeRequired)
-        {
-            BeginInvoke(new Action(RenderChangelog));
-            return;
-        }
-
-        RenderChangelog();
+        // The event is posted asynchronously, so re-check teardown state on both
+        // sides of the marshal (see ThemeChangeDispatcher).
+        ThemeChangeDispatcher.BeginThemeUpdate(this, RenderChangelog);
     }
 
     private void OnNavigating(object sender, WebBrowserNavigatingEventArgs e)
