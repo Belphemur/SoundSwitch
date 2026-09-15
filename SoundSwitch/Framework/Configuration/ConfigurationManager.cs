@@ -92,14 +92,23 @@ public static class ConfigurationManager
     }
 
     /// <summary>
+    /// Serializes all configuration saves: writers from the UI thread, the process/foreground
+    /// monitors and the self-heal path must not interleave writes to the same file.
+    /// </summary>
+    private static readonly object SaveLock = new();
+
+    /// <summary>
     /// Save the configuration in a json file.
     /// </summary>
     /// <param name="configuration">configuration object to save</param>
     public static void SaveConfiguration<T>(T configuration) where T : IConfiguration, new()
     {
-        var serializer = new JsonSerializer {NullValueHandling = NullValueHandling.Ignore};
-        using var streamWriter = new StreamWriter(GetFilePath<T>());
-        using var writer = new JsonTextWriter(streamWriter);
-        serializer.Serialize(writer, configuration);
+        lock (SaveLock)
+        {
+            var serializer = new JsonSerializer {NullValueHandling = NullValueHandling.Ignore};
+            using var streamWriter = new StreamWriter(GetFilePath<T>());
+            using var writer = new JsonTextWriter(streamWriter);
+            serializer.Serialize(writer, configuration);
+        }
     }
 }

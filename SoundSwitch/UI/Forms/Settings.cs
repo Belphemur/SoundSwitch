@@ -56,6 +56,7 @@ using SoundSwitch.Localization;
 using SoundSwitch.Localization.Factory;
 using SoundSwitch.Model;
 using SoundSwitch.Properties;
+using SoundSwitch.Services;
 using SoundSwitch.UI.Component;
 using SoundSwitch.UI.Component.ListView;
 using SoundSwitch.Util;
@@ -1416,8 +1417,8 @@ public sealed partial class SettingsForm : Form
         appSoundLockListView.ItemCheck -= AppSoundLockListView_ItemCheck;
         foreach (var rule in AppConfigs.Configuration.AppSoundRules)
         {
-            var playback = playbacks.FirstOrDefault(d => d.Id == rule.PlaybackDeviceId);
-            var recording = recordings.FirstOrDefault(d => d.Id == rule.RecordingDeviceId);
+            var playback = AppRuleDeviceResolver.Resolve(rule.PlaybackDevice, playbacks);
+            var recording = AppRuleDeviceResolver.Resolve(rule.RecordingDevice, recordings);
 
             var processName = GetCleanProcessName(rule.ProcessPath);
             IconHandle processIcon = null;
@@ -1441,11 +1442,11 @@ public sealed partial class SettingsForm : Form
             item.SubItems.Add(rule.WindowName);
 
             // Playback
-            var playbackSubItem = item.SubItems.Add(playback?.NameClean ?? rule.PlaybackDeviceId ?? string.Empty);
+            var playbackSubItem = item.SubItems.Add(playback?.NameClean ?? rule.PlaybackDevice?.NameClean ?? string.Empty);
             playbackSubItem.Tag = playback?.SmallIcon;
 
             // Recording
-            var recordingSubItem = item.SubItems.Add(recording?.NameClean ?? rule.RecordingDeviceId ?? string.Empty);
+            var recordingSubItem = item.SubItems.Add(recording?.NameClean ?? rule.RecordingDevice?.NameClean ?? string.Empty);
             recordingSubItem.Tag = recording?.SmallIcon;
 
             appSoundLockListView.Items.Add(item);

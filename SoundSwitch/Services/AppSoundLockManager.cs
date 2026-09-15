@@ -11,6 +11,7 @@ using Serilog;
 
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Enum;
+using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Telemetry;
@@ -75,15 +76,8 @@ namespace SoundSwitch.Services
                 _logger.Information("MATCH: Rule for {ProcessPattern} matched process {ProcessName} (PID: {PID})", rule.ProcessPath, processName, processId);
                     
                 var changed = false;
-                if (!string.IsNullOrEmpty(rule.PlaybackDeviceId))
-                {
-                    changed |= _audioSwitcher.SwitchProcessTo(rule.PlaybackDeviceId, ERole.ERole_enum_count, EDataFlow.eRender, processId);
-                }
-
-                if (!string.IsNullOrEmpty(rule.RecordingDeviceId))
-                {
-                    changed |= _audioSwitcher.SwitchProcessTo(rule.RecordingDeviceId, ERole.ERole_enum_count, EDataFlow.eCapture, processId);
-                }
+                changed |= SwitchRuleDevice(rule, r => r.PlaybackDevice, (r, v) => r.PlaybackDevice = v, EDataFlow.eRender, processId);
+                changed |= SwitchRuleDevice(rule, r => r.RecordingDevice, (r, v) => r.RecordingDevice = v, EDataFlow.eCapture, processId);
 
                 if (changed)
                 {
@@ -108,6 +102,60 @@ namespace SoundSwitch.Services
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Resolve the rule's stored device against the active devices, switch the process to it and
+        /// self-heal the stored <see cref="DeviceInfo"/> when the live device differs (new id or name,
+        /// e.g. after a driver update). This is what keeps rules working and turns the migrated
+        /// name=id placeholder rules back into properly named rules after the first successful match.
+        /// </summary>
+        /// <returns>`true` when the process was switched to the device.</returns>
+        private bool SwitchRuleDevice(AppSoundRule rule, Func<AppSoundRule, DeviceInfo?> getter, Action<AppSoundRule, DeviceInfo> setter, EDataFlow flow, uint processId)
+        {
+            var stored = getter(rule);
+            if (stored == null) return false;
+
+            var resolved = AppRuleDeviceResolver.Resolve(stored, AppModel.Instance.AudioDeviceLister);
+            if (resolved == null)
+            {
+                _logger.Warning("App rule device {NameClean} ({DeviceId}) not found among active {Flow} devices, skipping switch", stored.NameClean, stored.Id, flow);
+                return false;
+            }
+
+#pragma warning disable CS0618 // Type or member is obsolete
+            var healed = false;
+            if (resolved.Id != stored.Id || resolved.Name != stored.Name)
+            {
+                setter(rule, new DeviceInfo(resolved.Name, resolved.Id, resolved.Type, resolved.IsUsb, DateTime.UtcNow));
+                healed = true;
+            }
+#pragma warning restore CS0618 // Type or member is obsolete
+
+            var switched = false;
+            try
+            {
+                switched = _audioSwitcher.SwitchProcessTo(resolved.Id, ERole.ERole_enum_count, flow, processId);
+            }
+            finally
+            {
+                // Persist in `finally` so memory and disk stay consistent even if the
+                // switch throws; the save itself never blocks or aborts audio routing.
+                if (healed)
+                {
+                    _logger.Information("Self-healing app rule device: {Old} -> {New}", stored.NameClean, resolved.NameClean);
+                    try
+                    {
+                        _configuration.Save();
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Warning(ex, "Failed to save self-healed app rule device {NameClean}", resolved.NameClean);
+                    }
+                }
+            }
+
+            return switched;
         }
 
         private bool IsMatch(AppSoundRule rule, string processName, string processPath, string windowTitle)
