@@ -2,11 +2,20 @@
 using System.Windows.Forms;
 
 using SoundSwitch.Common.Framework.Icon;
+using SoundSwitch.Framework.WinApi;
 
 namespace SoundSwitch.UI.Component.ListView;
 
 public class IconListView : ListViewExtended
 {
+    /// <summary>
+    /// Column header text colour in dark mode. The native common control does not expose
+    /// a managed palette for the header strip, so it is painted explicitly.
+    /// </summary>
+    internal static Color DarkColumnHeaderTextColor => Color.FromArgb(240, 240, 240);
+
+    private const int ColumnHeaderPadding = 7;
+
     public IconListView()
     {
         OwnerDraw = true;
@@ -16,8 +25,20 @@ public class IconListView : ListViewExtended
 
     protected override void OnDrawColumnHeader(DrawListViewColumnHeaderEventArgs e)
     {
-        e.DrawDefault = true;
-        base.OnDrawColumnHeader(e);
+        if (!WindowsThemeHelper.IsDarkModeEnabled())
+        {
+            e.DrawDefault = true;
+            base.OnDrawColumnHeader(e);
+            return;
+        }
+
+        using var backgroundBrush = new SolidBrush(SystemColors.Window);
+        e.Graphics.FillRectangle(backgroundBrush, e.Bounds);
+
+        using var font = new Font(Font, FontStyle.Bold);
+        TextRenderer.DrawText(e.Graphics, e.Header.Text, font, e.Bounds, DarkColumnHeaderTextColor,
+            TextFormatFlags.VerticalCenter | TextFormatFlags.Left | TextFormatFlags.EndEllipsis |
+            TextFormatFlags.PreserveGraphicsClipping);
     }
 
     protected override void OnDrawSubItem(DrawListViewSubItemEventArgs e)
