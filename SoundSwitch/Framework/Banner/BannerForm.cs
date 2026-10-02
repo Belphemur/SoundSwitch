@@ -90,10 +90,12 @@ public partial class BannerForm : Form
     private int _currentOffset;
     private int _hide = 100;
     private float _defaultFontSize;
+    private float _defaultTitleFontSize;
+    private float _defaultTextFontSize;
     private Size _defaultPictureSize;
     private Padding _defaultPadding;
-    private bool _isCompact;
-    private Point _lastMousePosition;
+    private Point _dragStartCursor;
+    private Point _dragStartLocation;
     private CustomPositionMessageFilter _customPositionMessageFilter;
 
     public Guid Id { get; } = Guid.NewGuid();
@@ -101,8 +103,18 @@ public partial class BannerForm : Form
     /// <summary>
     /// Get the Screen object
     /// </summary>
-    internal static Screen GetScreen() =>
-        (AppModel.Instance.NotifyUsingPrimaryScreen ? Screen.PrimaryScreen : Screen.FromPoint(Cursor.Position))!;
+    internal static Screen GetScreen()
+    {
+        var monitor = AppModel.Instance.BannerMonitorDeviceName;
+        if (!string.IsNullOrEmpty(monitor))
+        {
+            foreach (var screen in Screen.AllScreens)
+                if (string.Equals(screen.DeviceName, monitor, StringComparison.OrdinalIgnoreCase))
+                    return screen;
+        }
+
+        return (AppModel.Instance.NotifyUsingPrimaryScreen ? Screen.PrimaryScreen : Screen.FromPoint(Cursor.Position))!;
+    }
 
     /// <summary>
     /// Constructor for the <see cref="BannerForm"/> class
@@ -118,6 +130,8 @@ public partial class BannerForm : Form
 
         // Store default sizes for compact mode calculations
         _defaultFontSize = Font.Size;
+        _defaultTitleFontSize = lblTop.Font.Size;
+        _defaultTextFontSize = lblTitle.Font.Size;
         _defaultPictureSize = pbxLogo.Size;
         _defaultPadding = Padding;
 
@@ -321,6 +335,10 @@ public partial class BannerForm : Form
         if (_currentData != null && _currentData.Priority > data.Priority) return;
 
         _currentData = data;
+        BackColor = AppModel.Instance.BannerBackgroundColor;
+        ForeColor = BackColor.GetBrightness() < 0.5f ? Color.White : Color.Black;
+        lblTitle.ForeColor = ForeColor;
+        lblTop.ForeColor = ForeColor;
 
         if (data.Ttl != TimeSpan.MaxValue)
         {
@@ -362,8 +380,7 @@ public partial class BannerForm : Form
             _customPositionMessageFilter = null;
         }
 
-        if (data.CompactMode)
-            ApplyCompactMode();
+        ApplyBannerScale(data.CompactMode);
 
         Region = Region.FromHrgn(RoundedCorner.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
         Location = data.Position.GetScreenPosition(GetScreen(), Height, Width, _currentOffset);
@@ -450,34 +467,27 @@ public partial class BannerForm : Form
         PerformLayout();
     }
 
-    private void ApplyCompactMode()
+    private void ApplyBannerScale(bool compactMode)
     {
-        if (_isCompact) return;
+        var scale = AppModel.Instance.BannerScalePercentage / 100f;
+        var fontScale = scale * (compactMode ? 0.8f : 1f);
+        var imageScale = scale * (compactMode ? 1.5f : 1f);
+        Font = new Font(Font.FontFamily, _defaultFontSize * fontScale, Font.Style);
+        lblTop.Font = new Font(lblTop.Font.FontFamily, _defaultTitleFontSize * fontScale, lblTop.Font.Style);
+        lblTitle.Font = new Font(lblTitle.Font.FontFamily, _defaultTextFontSize * fontScale, lblTitle.Font.Style);
 
-        const float scaleFactorImage = 0.1f;
-        const float scaleFactorFont = 0.8f;
+        pbxLogo.SizeMode = PictureBoxSizeMode.Zoom;
+        pbxLogo.Size = new Size(
+            Math.Max(1, (int)Math.Round(_defaultPictureSize.Width * imageScale)),
+            Math.Max(1, (int)Math.Round(_defaultPictureSize.Height * imageScale)));
 
-        Font = new Font(Font.FontFamily, _defaultFontSize * scaleFactorFont, Font.Style);
-        lblTop.Font = new Font(lblTop.Font.FontFamily, lblTop.Font.Size * scaleFactorFont, lblTop.Font.Style);
-        lblTitle.Font = new Font(lblTitle.Font.FontFamily, lblTitle.Font.Size * scaleFactorFont, lblTitle.Font.Style);
-
-        if (pbxLogo.Image != null && _defaultPictureSize.Width > 0 && _defaultPictureSize.Height > 0)
-        {
-            var newWidth = (int)(_defaultPictureSize.Width * scaleFactorImage);
-            var newHeight = (int)(_defaultPictureSize.Height * scaleFactorImage);
-
-            if (newWidth > 0 && newHeight > 0)
-                pbxLogo.Size = new Size(newWidth, newHeight);
-        }
-
+        var paddingScale = scale * (compactMode ? 0.8f : 1f);
         Padding = new Padding(
-            (int)(_defaultPadding.Left * scaleFactorImage),
-            (int)(_defaultPadding.Top * scaleFactorImage),
-            (int)(_defaultPadding.Right * scaleFactorImage),
-            (int)(_defaultPadding.Bottom * scaleFactorImage));
-
+            (int)Math.Round(_defaultPadding.Left * paddingScale),
+            (int)Math.Round(_defaultPadding.Top * paddingScale),
+            (int)Math.Round(_defaultPadding.Right * paddingScale),
+            (int)Math.Round(_defaultPadding.Bottom * paddingScale));
         PerformLayout();
-        _isCompact = true;
     }
 
     protected override void Dispose(bool disposing)
@@ -551,7 +561,9 @@ public partial class BannerForm : Form
         if (_currentData == null || !_currentData.CustomPositionMode) return;
         if (e.Button == MouseButtons.Left)
         {
-            _lastMousePosition = new Point(e.X, e.Y);
+            _dragStartCursor = Cursor.Position;
+            _dragStartLocation = Location;
+            Capture = true;
             _timerHide?.Stop();
         }
     }
@@ -561,6 +573,7 @@ public partial class BannerForm : Form
         if (_currentData == null || !_currentData.CustomPositionMode) return;
         if (e.Button == MouseButtons.Left)
         {
+            Capture = false;
             AppModel.Instance.CustomBannerPosition = Location;
             _timerHide?.Start();
         }
@@ -574,11 +587,11 @@ public partial class BannerForm : Form
             var screen = GetScreen().Bounds;
 
             Point newLocation = new(
-                Left + e.X - _lastMousePosition.X,
-                Top + e.Y - _lastMousePosition.Y);
+                _dragStartLocation.X + Cursor.Position.X - _dragStartCursor.X,
+                _dragStartLocation.Y + Cursor.Position.Y - _dragStartCursor.Y);
 
-            newLocation.X = Math.Max(0, Math.Min(newLocation.X, screen.Width - Width));
-            newLocation.Y = Math.Max(0, Math.Min(newLocation.Y, screen.Height - Height));
+            newLocation.X = Math.Max(screen.Left, Math.Min(newLocation.X, screen.Right - Width));
+            newLocation.Y = Math.Max(screen.Top, Math.Min(newLocation.Y, screen.Bottom - Height));
 
             Location = newLocation;
         }
@@ -602,7 +615,10 @@ public partial class BannerForm : Form
                 Dispose();
                 return true;
             case Keys.R:
-                Location = Point.Empty;
+                var screen = GetScreen();
+                Location = new Point(
+                    (screen.Bounds.Left + screen.Bounds.Right - Width) / 2,
+                    (screen.Bounds.Top + screen.Bounds.Bottom - Height) / 2);
                 AppModel.Instance.CustomBannerPosition = Location;
                 return true;
             default:
