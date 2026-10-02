@@ -18,7 +18,7 @@
     <PackageVersion Include="NAudio" Version="3.1.0" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageVersion Include="NuGet.Versioning" Version="7.9.0" />
-    <PackageVersion Include="NUnit" Version="4.6.1" />
+    <PackageVersion Include="NUnit" Version="5.0.0" />
     <PackageVersion Include="NUnit3TestAdapter" Version="6.3.0" />
     <PackageVersion Include="Polly.Core" Version="8.8.0" />
     <PackageVersion Include="RailSharp" Version="1.0.0" />
