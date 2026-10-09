@@ -97,6 +97,9 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
     public int BannerOpacityPercentage { get; set; } = 100;
     public int MaxNumberNotification { get; set; } = 5;
     public bool NotifyUsingPrimaryScreen { get; set; }
+    public string BannerMonitorDeviceName { get; set; }
+    public int BannerBackgroundArgb { get; set; } = Color.Black.ToArgb();
+    public int BannerScalePercentage { get; set; } = 100;
     public BannerDisplayInfo BannerDisplayInfo { get; set; } = BannerDisplayInfo.FullDisplay;
 
     [Obsolete("Replaced by " + nameof(MicrophoneMutePersistent))]

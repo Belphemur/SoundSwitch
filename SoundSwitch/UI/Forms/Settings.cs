@@ -78,6 +78,9 @@ public sealed partial class SettingsForm : Form
     private readonly BannerManager _bannerManager = new();
     private IDisposable _deviceListRefreshedSubscription;
     private IDisposable _themeChangedSubscription;
+    private ComboBox _bannerMonitorComboBox;
+    private Button _bannerColorButton;
+    private NumericUpDownWithUnits _bannerScaleUpDown;
 
     private const int RECT_PEN_WIDTH = 4;
     private const int OFFSET_W = 15;
@@ -137,6 +140,7 @@ public sealed partial class SettingsForm : Form
         _audioDeviceLister = audioDeviceLister;
         // Form itself
         InitializeComponent();
+        InitializeBannerAppearanceControls();
         ApplyTheme();
 #if NIGHTLY
         var nightlyChannelCheckBox = new CheckBox
@@ -355,6 +359,90 @@ public sealed partial class SettingsForm : Form
                 if (!IsHandleCreated || IsDisposed) return;
                 BeginInvoke(RefreshTheme);
             });
+    }
+
+    private void InitializeBannerAppearanceControls()
+    {
+        // Keep the legacy checkbox setting readable, but use one monitor selector in the UI.
+        usePrimaryScreenCheckbox.Visible = false;
+        ClientSize = new Size(ClientSize.Width, ClientSize.Height + 50);
+        tabControl.Height += 50;
+        closeButton.Top += 50;
+        bannerOptionsGroupBox.Height = 230;
+        positionGroupBox.Height = 210;
+
+        _bannerMonitorComboBox = new ComboBox
+        {
+            Name = "bannerMonitorComboBox",
+            DropDownStyle = ComboBoxStyle.DropDownList,
+            Location = new Point(8, 178),
+            Size = new Size(180, 23)
+        };
+        _bannerMonitorComboBox.Items.Add(SettingsStrings.ResourceManager.GetString("banner.monitor.cursor"));
+        _bannerMonitorComboBox.Items.Add(SettingsStrings.ResourceManager.GetString("banner.monitor.primary"));
+        var screens = Screen.AllScreens;
+        for (var i = 0; i < screens.Length; i++)
+            _bannerMonitorComboBox.Items.Add($"{SettingsStrings.ResourceManager.GetString("banner.monitor.screen")} {i + 1} ({screens[i].DeviceName})");
+
+        var selectedMonitor = AppModel.Instance.BannerMonitorDeviceName;
+        var selectedScreen = Array.FindIndex(screens,
+            screen => string.Equals(screen.DeviceName, selectedMonitor, StringComparison.OrdinalIgnoreCase));
+        _bannerMonitorComboBox.SelectedIndex = selectedScreen >= 0 ? selectedScreen + 2
+            : AppModel.Instance.NotifyUsingPrimaryScreen ? 1 : 0;
+        _bannerMonitorComboBox.SelectedIndexChanged += (_, _) =>
+        {
+            if (_bannerMonitorComboBox.SelectedIndex == 1)
+            {
+                AppModel.Instance.BannerMonitorDeviceName = null;
+                AppModel.Instance.NotifyUsingPrimaryScreen = true;
+            }
+            else
+            {
+                AppModel.Instance.BannerMonitorDeviceName = _bannerMonitorComboBox.SelectedIndex >= 2
+                    ? screens[_bannerMonitorComboBox.SelectedIndex - 2].DeviceName
+                    : null;
+            }
+        };
+        positionGroupBox.Controls.Add(_bannerMonitorComboBox);
+
+        _bannerColorButton = new Button
+        {
+            Name = "bannerColorButton",
+            Text = SettingsStrings.ResourceManager.GetString("banner.backgroundColor"),
+            Location = new Point(143, 158),
+            Size = new Size(120, 25),
+            UseVisualStyleBackColor = true
+        };
+        _bannerColorButton.Click += (_, _) =>
+        {
+            using var dialog = new ColorDialog { Color = AppModel.Instance.BannerBackgroundColor, FullOpen = true };
+            if (dialog.ShowDialog(this) == DialogResult.OK)
+                AppModel.Instance.BannerBackgroundColor = dialog.Color;
+        };
+        bannerOptionsGroupBox.Controls.Add(_bannerColorButton);
+
+        var scaleLabel = new Label
+        {
+            Text = SettingsStrings.ResourceManager.GetString("banner.scale"),
+            Location = new Point(7, 189),
+            Size = new Size(130, 23),
+            TextAlign = ContentAlignment.MiddleRight
+        };
+        _bannerScaleUpDown = new NumericUpDownWithUnits
+        {
+            Name = "bannerScaleUpDown",
+            Location = new Point(143, 189),
+            Size = new Size(65, 23),
+            Minimum = 50,
+            Maximum = 200,
+            Increment = 10,
+            TextUnit = "%",
+            TextAlign = HorizontalAlignment.Center
+        };
+        _bannerScaleUpDown.DataBindings.Add(nameof(NumericUpDown.Value), AppModel.Instance,
+            nameof(AppModel.BannerScalePercentage), false, DataSourceUpdateMode.OnPropertyChanged);
+        bannerOptionsGroupBox.Controls.Add(scaleLabel);
+        bannerOptionsGroupBox.Controls.Add(_bannerScaleUpDown);
     }
 
     private void PopulateSettings()
