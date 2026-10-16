@@ -432,6 +432,21 @@ Both: Change when any type of device is switched.</value>
   <data name="usePrimaryScreen" xml:space="preserve">
     <value>Always use primary screen</value>
   </data>
+  <data name="banner.monitor.cursor" xml:space="preserve">
+    <value>Screen with cursor</value>
+  </data>
+  <data name="banner.monitor.primary" xml:space="preserve">
+    <value>Primary screen</value>
+  </data>
+  <data name="banner.monitor.screen" xml:space="preserve">
+    <value>Monitor</value>
+  </data>
+  <data name="banner.backgroundColor" xml:space="preserve">
+    <value>Background color...</value>
+  </data>
+  <data name="banner.scale" xml:space="preserve">
+    <value>Scale</value>
+  </data>
   <data name="usePrimaryScreen.tooltip" xml:space="preserve">
     <value>Display banner on primary screen instead of focused screen.</value>
   </data>

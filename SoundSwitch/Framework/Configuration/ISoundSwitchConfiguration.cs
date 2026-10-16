@@ -72,6 +72,9 @@ public interface ISoundSwitchConfiguration : IConfiguration
 
     bool SwitchForegroundProgram { get; set; }
     bool NotifyUsingPrimaryScreen { get; set; }
+    string BannerMonitorDeviceName { get; set; }
+    int BannerBackgroundArgb { get; set; }
+    int BannerScalePercentage { get; set; }
 
     bool AutoAddNewConnectedDevices { get; set; }
 

@@ -85,6 +85,9 @@ public interface INotificationSettings
     /// Always show banner on primary screen instead of active screen
     /// </summary>
     bool NotifyUsingPrimaryScreen { get; set; }
+    string BannerMonitorDeviceName { get; set; }
+    Color BannerBackgroundColor { get; set; }
+    int BannerScalePercentage { get; set; }
 
     /// <summary>
     /// If the NotificationSettings has been modified

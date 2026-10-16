@@ -26,5 +26,13 @@ internal class PositionCustom : APosition, IPosition
     public string Label => SettingsStrings.buttonCustom;
 
     public Point GetScreenPosition(Screen screen, int height, int width, int offset) =>
-        AppModel.Instance.CustomBannerPosition;
+        ResolvePosition(screen, AppModel.Instance.CustomBannerPosition, height, width);
+
+    internal static Point ResolvePosition(Screen screen, Point savedPosition, int height, int width)
+    {
+        if (screen.Bounds.Contains(new Rectangle(savedPosition, new Size(width, height))))
+            return savedPosition;
+
+        return new Point(PositionCenterX(screen, width), PositionCenterY(screen, height));
+    }
 }

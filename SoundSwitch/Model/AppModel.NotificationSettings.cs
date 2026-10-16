@@ -296,6 +296,39 @@ public partial class AppModel
         }
     }
 
+    public string BannerMonitorDeviceName
+    {
+        get => AppConfigs.Configuration.BannerMonitorDeviceName;
+        set
+        {
+            AppConfigs.Configuration.BannerMonitorDeviceName = value;
+            AppConfigs.Configuration.NotifyUsingPrimaryScreen = false;
+            AppConfigs.Configuration.Save();
+        }
+    }
+
+    public Color BannerBackgroundColor
+    {
+        get => Color.FromArgb(AppConfigs.Configuration.BannerBackgroundArgb);
+        set
+        {
+            AppConfigs.Configuration.BannerBackgroundArgb = value.ToArgb();
+            AppConfigs.Configuration.Save();
+        }
+    }
+
+    public int BannerScalePercentage
+    {
+        get => AppConfigs.Configuration.BannerScalePercentage is >= 50 and <= 200
+            ? AppConfigs.Configuration.BannerScalePercentage : 100;
+        set
+        {
+            if (value is < 50 or > 200) return;
+            AppConfigs.Configuration.BannerScalePercentage = value;
+            AppConfigs.Configuration.Save();
+        }
+    }
+
     public event EventHandler<NotificationSettingsUpdatedEvent> NotificationSettingsChanged;
     public event EventHandler<BannerDataChangedEvent> BannerSettingsChanged;
     public event EventHandler<CustomSoundChangedEvent> CustomSoundChanged;
