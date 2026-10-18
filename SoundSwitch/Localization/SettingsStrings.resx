@@ -439,7 +439,7 @@ Both: Change when any type of device is switched.</value>
     <value>Primary screen</value>
   </data>
   <data name="banner.monitor.screen" xml:space="preserve">
-    <value>Monitor</value>
+    <value>Monitor {0} ({1})</value>
   </data>
   <data name="banner.backgroundColor" xml:space="preserve">
     <value>Background color...</value>

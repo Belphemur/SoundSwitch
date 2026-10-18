@@ -23,6 +23,8 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Windows.Forms;
 
+using Microsoft.Win32;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -78,6 +80,8 @@ public sealed partial class SettingsForm : Form
     private readonly BannerManager _bannerManager = new();
     private IDisposable _deviceListRefreshedSubscription;
     private IDisposable _themeChangedSubscription;
+    private IDisposable _displaySettingsChangedSubscription;
+    private bool _suppressBannerMonitorSelection;
     private ComboBox _bannerMonitorComboBox;
     private Button _bannerColorButton;
     private NumericUpDownWithUnits _bannerScaleUpDown;
@@ -359,59 +363,85 @@ public sealed partial class SettingsForm : Form
                 if (!IsHandleCreated || IsDisposed) return;
                 BeginInvoke(RefreshTheme);
             });
+
+        // The monitor selector is built from a snapshot of the connected displays, so refresh it
+        // when one is plugged in or unplugged while the form is open.
+        _displaySettingsChangedSubscription = Observable
+            .FromEventPattern<EventHandler, EventArgs>(
+                h => SystemEvents.DisplaySettingsChanged += h,
+                h => SystemEvents.DisplaySettingsChanged -= h)
+            .Subscribe(_ =>
+            {
+                if (!IsHandleCreated || IsDisposed) return;
+                BeginInvoke(() =>
+                {
+                    if (IsDisposed || _bannerMonitorComboBox == null) return;
+                    PopulateBannerMonitorChoices();
+                });
+            });
     }
 
+    /// <summary>
+    /// One entry of the banner monitor selector.
+    /// <para>
+    /// <see cref="DeviceName"/> is null for the two pseudo entries that map onto the legacy
+    /// <see cref="INotificationSettings.NotifyUsingPrimaryScreen"/> setting.
+    /// </para>
+    /// </summary>
+    private sealed record BannerMonitorChoice(string Label, string DeviceName, bool IsPrimary)
+    {
+        public override string ToString() => Label;
+    }
+
+    /// <summary>
+    /// Builds the banner monitor, background colour and scale controls and grows the form just
+    /// enough to fit them.
+    /// </summary>
+    /// <remarks>
+    /// Every coordinate and size is derived from the designer's own controls, which
+    /// <see cref="InitializeComponent"/> has already scaled for the current DPI. Fixed pixel values
+    /// would instead be measured against the unscaled 96 DPI design and overlap the existing rows
+    /// at 125% and above.
+    /// </remarks>
     private void InitializeBannerAppearanceControls()
     {
-        // Keep the legacy checkbox setting readable, but use one monitor selector in the UI.
+        // The monitor selector supersedes the legacy "always use primary screen" checkbox. Keep the
+        // setting readable so existing configurations still resolve, but expose a single control.
         usePrimaryScreenCheckbox.Visible = false;
-        ClientSize = new Size(ClientSize.Width, ClientSize.Height + 50);
-        tabControl.Height += 50;
-        closeButton.Top += 50;
-        bannerOptionsGroupBox.Height = 230;
-        positionGroupBox.Height = 210;
+
+        // Row geometry taken from the designer's own rows: pitch between two rows, row height and
+        // the gap left between them.
+        var rowPitch = Math.Max(1, opacityUpDown.Top - onScreenUpDown.Top);
+        var rowHeight = Math.Max(opacityUpDown.Height, opacityLabel.Height);
+        var rowGap = rowPitch - rowHeight;
+        var colorRowTop = bannerDisplayComboBox.Bottom + rowGap;
+        var scaleRowTop = colorRowTop + rowPitch;
+
+        // Same idea for the position group: append a row under the existing content.
+        var positionContentBottom = positionGroupBox.Controls.Cast<Control>().Max(control => control.Bottom);
+        var positionMargin = positionGroupBox.Height - positionContentBottom;
+        var monitorRowTop = positionContentBottom + positionMargin;
 
         _bannerMonitorComboBox = new ComboBox
         {
             Name = "bannerMonitorComboBox",
             DropDownStyle = ComboBoxStyle.DropDownList,
-            Location = new Point(8, 178),
-            Size = new Size(180, 23)
+            Location = new Point(positionGroupBox.DisplayRectangle.X, monitorRowTop),
+            Size = new Size(positionGroupBox.Width - 2 * positionGroupBox.DisplayRectangle.X, rowHeight),
+            TabIndex = positionGroupBox.Controls.Count
         };
-        _bannerMonitorComboBox.Items.Add(SettingsStrings.ResourceManager.GetString("banner.monitor.cursor"));
-        _bannerMonitorComboBox.Items.Add(SettingsStrings.ResourceManager.GetString("banner.monitor.primary"));
-        var screens = Screen.AllScreens;
-        for (var i = 0; i < screens.Length; i++)
-            _bannerMonitorComboBox.Items.Add($"{SettingsStrings.ResourceManager.GetString("banner.monitor.screen")} {i + 1} ({screens[i].DeviceName})");
-
-        var selectedMonitor = AppModel.Instance.BannerMonitorDeviceName;
-        var selectedScreen = Array.FindIndex(screens,
-            screen => string.Equals(screen.DeviceName, selectedMonitor, StringComparison.OrdinalIgnoreCase));
-        _bannerMonitorComboBox.SelectedIndex = selectedScreen >= 0 ? selectedScreen + 2
-            : AppModel.Instance.NotifyUsingPrimaryScreen ? 1 : 0;
-        _bannerMonitorComboBox.SelectedIndexChanged += (_, _) =>
-        {
-            if (_bannerMonitorComboBox.SelectedIndex == 1)
-            {
-                AppModel.Instance.BannerMonitorDeviceName = null;
-                AppModel.Instance.NotifyUsingPrimaryScreen = true;
-            }
-            else
-            {
-                AppModel.Instance.BannerMonitorDeviceName = _bannerMonitorComboBox.SelectedIndex >= 2
-                    ? screens[_bannerMonitorComboBox.SelectedIndex - 2].DeviceName
-                    : null;
-            }
-        };
+        _bannerMonitorComboBox.SelectedIndexChanged += (_, _) => BannerMonitorSelectionChanged();
         positionGroupBox.Controls.Add(_bannerMonitorComboBox);
+        PopulateBannerMonitorChoices();
 
         _bannerColorButton = new Button
         {
             Name = "bannerColorButton",
-            Text = SettingsStrings.ResourceManager.GetString("banner.backgroundColor"),
-            Location = new Point(143, 158),
-            Size = new Size(120, 25),
-            UseVisualStyleBackColor = true
+            Text = GetBannerString("banner.backgroundColor"),
+            Location = new Point(bannerDisplayComboBox.Left, colorRowTop),
+            Size = new Size(bannerDisplayComboBox.Width, Math.Max(bannerDisplayComboBox.Height, rowHeight)),
+            UseVisualStyleBackColor = true,
+            TabIndex = bannerOptionsGroupBox.Controls.Count
         };
         _bannerColorButton.Click += (_, _) =>
         {
@@ -421,29 +451,102 @@ public sealed partial class SettingsForm : Form
         };
         bannerOptionsGroupBox.Controls.Add(_bannerColorButton);
 
-        var scaleLabel = new Label
+        bannerOptionsGroupBox.Controls.Add(new Label
         {
-            Text = SettingsStrings.ResourceManager.GetString("banner.scale"),
-            Location = new Point(7, 189),
-            Size = new Size(130, 23),
+            Name = "bannerScaleLabel",
+            Text = GetBannerString("banner.scale"),
+            Location = new Point(displayInfoLabel.Left, scaleRowTop),
+            Size = new Size(displayInfoLabel.Width, displayInfoLabel.Height),
             TextAlign = ContentAlignment.MiddleRight
-        };
+        });
         _bannerScaleUpDown = new NumericUpDownWithUnits
         {
             Name = "bannerScaleUpDown",
-            Location = new Point(143, 189),
-            Size = new Size(65, 23),
-            Minimum = 50,
-            Maximum = 200,
+            Location = new Point(opacityUpDown.Left, scaleRowTop),
+            Size = new Size(opacityUpDown.Width, opacityUpDown.Height),
+            Minimum = AppModel.BannerScaleMinimum,
+            Maximum = AppModel.BannerScaleMaximum,
             Increment = 10,
             TextUnit = "%",
-            TextAlign = HorizontalAlignment.Center
+            TextAlign = HorizontalAlignment.Center,
+            TabIndex = bannerOptionsGroupBox.Controls.Count
         };
         _bannerScaleUpDown.DataBindings.Add(nameof(NumericUpDown.Value), AppModel.Instance,
             nameof(AppModel.BannerScalePercentage), false, DataSourceUpdateMode.OnPropertyChanged);
-        bannerOptionsGroupBox.Controls.Add(scaleLabel);
         bannerOptionsGroupBox.Controls.Add(_bannerScaleUpDown);
+
+        // Grow the containers, and with them the tab page and the form, by exactly the extra rows.
+        // closeButton is anchored Bottom|Right, so it follows ClientSize on its own; nudging its
+        // Top as well would push it past the bottom edge of the client area.
+        var originalOptionsHeight = bannerOptionsGroupBox.Height;
+        var optionsMargin = originalOptionsHeight - (microphoneMuteGroupBox.Top + microphoneMuteGroupBox.Height);
+        bannerOptionsGroupBox.Height = scaleRowTop + rowHeight + optionsMargin;
+        positionGroupBox.Height = monitorRowTop + rowHeight + positionMargin;
+
+        var extraHeight = bannerOptionsGroupBox.Height - originalOptionsHeight;
+        if (extraHeight <= 0) return;
+
+        tabControl.Height += extraHeight;
+        ClientSize = new Size(ClientSize.Width, ClientSize.Height + extraHeight);
     }
+
+    /// <summary>
+    /// (Re)fills the monitor selector from the currently connected displays, keeping the saved
+    /// selection. A monitor that disappeared falls back to the cursor/primary entry.
+    /// </summary>
+    private void PopulateBannerMonitorChoices()
+    {
+        var savedDeviceName = AppModel.Instance.BannerMonitorDeviceName;
+
+        _suppressBannerMonitorSelection = true;
+        try
+        {
+            _bannerMonitorComboBox.BeginUpdate();
+            _bannerMonitorComboBox.Items.Clear();
+            _bannerMonitorComboBox.Items.Add(new BannerMonitorChoice(GetBannerString("banner.monitor.cursor"), null, false));
+            _bannerMonitorComboBox.Items.Add(new BannerMonitorChoice(GetBannerString("banner.monitor.primary"), null, true));
+
+            // The device name travels with the entry: the position in the list shifts as soon as a
+            // display is plugged in or unplugged, so an index would then name a different monitor.
+            var monitorLabel = GetBannerString("banner.monitor.screen");
+            var screens = Screen.AllScreens;
+            for (var i = 0; i < screens.Length; i++)
+            {
+                _bannerMonitorComboBox.Items.Add(new BannerMonitorChoice(
+                    string.Format(monitorLabel, i + 1, screens[i].DeviceName), screens[i].DeviceName, false));
+            }
+
+            var selectedIndex = Array.FindIndex(screens,
+                screen => string.Equals(screen.DeviceName, savedDeviceName, StringComparison.OrdinalIgnoreCase));
+            if (selectedIndex < 0)
+                selectedIndex = AppModel.Instance.NotifyUsingPrimaryScreen ? 1 : 0;
+
+            // Skip the two pseudo entries prepended above.
+            _bannerMonitorComboBox.SelectedIndex = selectedIndex + 2;
+        }
+        finally
+        {
+            _bannerMonitorComboBox.EndUpdate();
+            _suppressBannerMonitorSelection = false;
+        }
+    }
+
+    private void BannerMonitorSelectionChanged()
+    {
+        if (_suppressBannerMonitorSelection || _bannerMonitorComboBox.SelectedItem is not BannerMonitorChoice choice)
+            return;
+
+        // An explicit monitor always wins; the two pseudo entries map onto the cursor/primary
+        // fallback that GetScreen() uses when no monitor is configured.
+        AppModel.Instance.BannerMonitorDeviceName = choice.DeviceName;
+        AppModel.Instance.NotifyUsingPrimaryScreen = choice.IsPrimary;
+    }
+
+    /// <summary>
+    /// Reads a banner specific resource, falling back to the key so a missing translation is
+    /// visible instead of rendering an empty control.
+    /// </summary>
+    private static string GetBannerString(string key) => SettingsStrings.ResourceManager.GetString(key) ?? key;
 
     private void PopulateSettings()
     {
@@ -707,6 +810,7 @@ public sealed partial class SettingsForm : Form
     {
         _deviceListRefreshedSubscription?.Dispose();
         _themeChangedSubscription?.Dispose();
+        _displaySettingsChangedSubscription?.Dispose();
         // Dispose all IconHandle objects stored in the profile list-view so GDI handles are
         // released promptly rather than waiting for finalizer collection.
         DisposeProfileListViewIconHandles();

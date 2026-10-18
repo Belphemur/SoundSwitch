@@ -16,6 +16,7 @@
 using System;
 using System.Drawing;
 using SoundSwitch.Framework.Audio;
+using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Banner.BannerDisplayInfo;
 using SoundSwitch.Framework.Banner.BannerPosition;
 using SoundSwitch.Framework.Banner.BannerPosition.Position;
@@ -28,6 +29,15 @@ namespace SoundSwitch.Model;
 
 public partial class AppModel
 {
+    /// <summary>
+    /// Smallest banner scale, in percent, the UI offers.
+    /// </summary>
+    public const int BannerScaleMinimum = 50;
+
+    /// <summary>
+    /// Largest banner scale, in percent, the UI offers.
+    /// </summary>
+    public const int BannerScaleMaximum = 200;
     public int BannerOnScreenTimeSecs
     {
         get => (int)BannerOnScreenTime.TotalSeconds;
@@ -304,6 +314,7 @@ public partial class AppModel
             AppConfigs.Configuration.BannerMonitorDeviceName = value;
             AppConfigs.Configuration.NotifyUsingPrimaryScreen = false;
             AppConfigs.Configuration.Save();
+            BannerForm.RefreshVisibleBanners();
         }
     }
 
@@ -314,18 +325,20 @@ public partial class AppModel
         {
             AppConfigs.Configuration.BannerBackgroundArgb = value.ToArgb();
             AppConfigs.Configuration.Save();
+            BannerForm.RefreshVisibleBanners();
         }
     }
 
     public int BannerScalePercentage
     {
-        get => AppConfigs.Configuration.BannerScalePercentage is >= 50 and <= 200
+        get => AppConfigs.Configuration.BannerScalePercentage is >= BannerScaleMinimum and <= BannerScaleMaximum
             ? AppConfigs.Configuration.BannerScalePercentage : 100;
         set
         {
-            if (value is < 50 or > 200) return;
+            if (value is < BannerScaleMinimum or > BannerScaleMaximum) return;
             AppConfigs.Configuration.BannerScalePercentage = value;
             AppConfigs.Configuration.Save();
+            BannerForm.RefreshVisibleBanners();
         }
     }
 

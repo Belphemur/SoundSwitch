@@ -13,6 +13,7 @@
  ********************************************************************/
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
@@ -89,16 +90,39 @@ public partial class BannerForm : Form
     private CancellationTokenSource _cancellationTokenSource = new();
     private int _currentOffset;
     private int _hide = 100;
-    private float _defaultFontSize;
-    private float _defaultTitleFontSize;
-    private float _defaultTextFontSize;
     private Size _defaultPictureSize;
     private Padding _defaultPadding;
+    private BannerFontSpec _defaultFont;
+    private BannerFontSpec _defaultTopFont;
+    private BannerFontSpec _defaultTitleFont;
+    private Font _scaledFont;
+    private Font _scaledTopFont;
+    private Font _scaledTitleFont;
+    private float _appliedFontScale = float.NaN;
     private Point _dragStartCursor;
     private Point _dragStartLocation;
     private CustomPositionMessageFilter _customPositionMessageFilter;
 
+    /// <summary>
+    /// Banner forms are created and destroyed on the UI thread, so this list is only ever
+    /// touched there.
+    /// </summary>
+    private static readonly List<BannerForm> ActiveBanners = new();
+    private static SynchronizationContext _uiContext;
+
+    private const float COMPACT_FONT_SCALE = 0.8f;
+    private const float COMPACT_IMAGE_SCALE = 1.5f;
+
     public Guid Id { get; } = Guid.NewGuid();
+
+    /// <summary>
+    /// Immutable description of a control's design-time font, so scaling always derives from the
+    /// pristine values instead of compounding the previous scale.
+    /// </summary>
+    private sealed record BannerFontSpec(FontFamily Family, FontStyle Style, float Size)
+    {
+        public static BannerFontSpec From(Font font) => new(font.FontFamily, font.Style, font.Size);
+    }
 
     /// <summary>
     /// Get the Screen object
@@ -117,6 +141,45 @@ public partial class BannerForm : Form
     }
 
     /// <summary>
+    /// Re-apply the appearance settings and the selected monitor to every banner currently on
+    /// screen, so changing them in Settings does not have to wait for the next notification.
+    /// </summary>
+    public static void RefreshVisibleBanners()
+    {
+        var context = _uiContext;
+        if (context == null) return;
+
+        if (SynchronizationContext.Current == context)
+        {
+            RefreshVisibleBannersCore();
+            return;
+        }
+
+        context.Send(_ => RefreshVisibleBannersCore(), null);
+    }
+
+    private static void RefreshVisibleBannersCore()
+    {
+        // Snapshot the list: resizing a banner can make it disappear and dispose itself.
+        foreach (var banner in ActiveBanners.ToArray())
+            banner.RefreshAppearance();
+    }
+
+    /// <summary>
+    /// Re-read the banner appearance settings and move this banner back onto the configured
+    /// monitor. The refresh is idempotent, so it is safe to call on banners that are being hidden.
+    /// </summary>
+    public void RefreshAppearance()
+    {
+        if (IsDisposed || _currentData?.Position == null) return;
+
+        ApplyColors();
+        ApplyBannerScale(_currentData.CompactMode);
+        UpdateRegion();
+        Location = _currentData.Position.GetScreenPosition(GetScreen(), Height, Width, _currentOffset);
+    }
+
+    /// <summary>
     /// Constructor for the <see cref="BannerForm"/> class
     /// </summary>
     public BannerForm()
@@ -128,12 +191,17 @@ public partial class BannerForm : Form
         FormBorderStyle = FormBorderStyle.None;
         ShowInTaskbar = false;
 
-        // Store default sizes for compact mode calculations
-        _defaultFontSize = Font.Size;
-        _defaultTitleFontSize = lblTop.Font.Size;
-        _defaultTextFontSize = lblTitle.Font.Size;
+        // Store default sizes for banner scaling calculations
         _defaultPictureSize = pbxLogo.Size;
         _defaultPadding = Padding;
+        _defaultFont = BannerFontSpec.From(Font);
+        _defaultTopFont = BannerFontSpec.From(lblTop.Font);
+        _defaultTitleFont = BannerFontSpec.From(lblTitle.Font);
+
+        // BannerManager marshals every banner onto the UI thread, so this is the context that owns
+        // the forms and must also run the appearance refreshes.
+        _uiContext ??= SynchronizationContext.Current;
+        ActiveBanners.Add(this);
 
         // Register event handlers
         RegisterHandlers(this);
@@ -173,6 +241,13 @@ public partial class BannerForm : Form
         int cx,
         int cy,
         SetWindowPosFlags uFlags);
+
+    /// <summary>
+    /// Releases a GDI handle created by <c>CreateRoundRectRgn</c>.
+    /// </summary>
+    [DllImport("gdi32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool DeleteObject(IntPtr handle);
 
     protected override CreateParams CreateParams
     {
@@ -335,10 +410,7 @@ public partial class BannerForm : Form
         if (_currentData != null && _currentData.Priority > data.Priority) return;
 
         _currentData = data;
-        BackColor = AppModel.Instance.BannerBackgroundColor;
-        ForeColor = BackColor.GetBrightness() < 0.5f ? Color.White : Color.Black;
-        lblTitle.ForeColor = ForeColor;
-        lblTop.ForeColor = ForeColor;
+        ApplyColors();
 
         if (data.Ttl != TimeSpan.MaxValue)
         {
@@ -382,7 +454,7 @@ public partial class BannerForm : Form
 
         ApplyBannerScale(data.CompactMode);
 
-        Region = Region.FromHrgn(RoundedCorner.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+        UpdateRegion();
         Location = data.Position.GetScreenPosition(GetScreen(), Height, Width, _currentOffset);
 
         // C# 14 null-conditional assignment: only assigns when a timer exists
@@ -467,33 +539,104 @@ public partial class BannerForm : Form
         PerformLayout();
     }
 
+    /// <summary>
+    /// Applies the configured banner colours, picking the foreground that contrasts best with the
+    /// configured background.
+    /// </summary>
+    private void ApplyColors()
+    {
+        BackColor = AppModel.Instance.BannerBackgroundColor;
+        ForeColor = BackColor.GetBrightness() < 0.5f ? Color.White : Color.Black;
+        lblTitle.ForeColor = ForeColor;
+        lblTop.ForeColor = ForeColor;
+    }
+
+    /// <summary>
+    /// Recomputes the rounded corner region for the current size, releasing the previous region
+    /// and the intermediate GDI handle. Banners are refreshed repeatedly, so leaking either one
+    /// would grow the process' GDI handle count for as long as SoundSwitch runs.
+    /// </summary>
+    private void UpdateRegion()
+    {
+        var handle = RoundedCorner.CreateRoundRectRgn(0, 0, Width, Height, 20, 20);
+        Region region;
+        try
+        {
+            region = Region.FromHrgn(handle);
+        }
+        finally
+        {
+            // Region.FromHrgn copies the handle, so ours has to be released either way.
+            if (handle != IntPtr.Zero)
+                DeleteObject(handle);
+        }
+
+        var previous = Region;
+        Region = region;
+        previous?.Dispose();
+    }
+
+    /// <summary>
+    /// Applies the user configured scale, optionally reduced for the compact microphone banners.
+    /// </summary>
     private void ApplyBannerScale(bool compactMode)
     {
         var scale = AppModel.Instance.BannerScalePercentage / 100f;
-        var fontScale = scale * (compactMode ? 0.8f : 1f);
-        var imageScale = scale * (compactMode ? 1.5f : 1f);
-        Font = new Font(Font.FontFamily, _defaultFontSize * fontScale, Font.Style);
-        lblTop.Font = new Font(lblTop.Font.FontFamily, _defaultTitleFontSize * fontScale, lblTop.Font.Style);
-        lblTitle.Font = new Font(lblTitle.Font.FontFamily, _defaultTextFontSize * fontScale, lblTitle.Font.Style);
+        var fontScale = scale * (compactMode ? COMPACT_FONT_SCALE : 1f);
+        ApplyScaledFonts(fontScale);
 
+        // Scale the icon actually being displayed. _defaultPictureSize is the designer's 16x16
+        // placeholder box while notification icons are 32x32, so scaling that placeholder would
+        // halve every regular banner.
+        var imageScale = scale * (compactMode ? COMPACT_IMAGE_SCALE : 1f);
+        var baseSize = pbxLogo.Image?.Size ?? _defaultPictureSize;
         pbxLogo.SizeMode = PictureBoxSizeMode.Zoom;
         pbxLogo.Size = new Size(
-            Math.Max(1, (int)Math.Round(_defaultPictureSize.Width * imageScale)),
-            Math.Max(1, (int)Math.Round(_defaultPictureSize.Height * imageScale)));
+            Math.Max(1, (int)Math.Round(baseSize.Width * imageScale)),
+            Math.Max(1, (int)Math.Round(baseSize.Height * imageScale)));
 
-        var paddingScale = scale * (compactMode ? 0.8f : 1f);
         Padding = new Padding(
-            (int)Math.Round(_defaultPadding.Left * paddingScale),
-            (int)Math.Round(_defaultPadding.Top * paddingScale),
-            (int)Math.Round(_defaultPadding.Right * paddingScale),
-            (int)Math.Round(_defaultPadding.Bottom * paddingScale));
+            (int)Math.Round(_defaultPadding.Left * fontScale),
+            (int)Math.Round(_defaultPadding.Top * fontScale),
+            (int)Math.Round(_defaultPadding.Right * fontScale),
+            (int)Math.Round(_defaultPadding.Bottom * fontScale));
         PerformLayout();
+    }
+
+    /// <summary>
+    /// Resizes the banner fonts for <paramref name="fontScale"/>, skipping the allocation entirely
+    /// when the effective scale has not changed. Banner forms are reused for successive
+    /// notifications, so without this guard every update would add three GDI font handles.
+    /// </summary>
+    private void ApplyScaledFonts(float fontScale)
+    {
+        if (_appliedFontScale.Equals(fontScale)) return;
+        _appliedFontScale = fontScale;
+
+        _scaledFont = ReplaceFont(_scaledFont, this, _defaultFont, fontScale);
+        _scaledTopFont = ReplaceFont(_scaledTopFont, lblTop, _defaultTopFont, fontScale);
+        _scaledTitleFont = ReplaceFont(_scaledTitleFont, lblTitle, _defaultTitleFont, fontScale);
+    }
+
+    /// <summary>
+    /// Swaps in a font derived from <paramref name="spec"/>. The previous instance is disposed only
+    /// after the control points at its replacement, because a control still rendering with a
+    /// released GDI font handle brings the process down.
+    /// </summary>
+    private static Font ReplaceFont(Font owned, Control control, BannerFontSpec spec, float scale)
+    {
+        var font = new Font(spec.Family, spec.Size * scale, spec.Style);
+        control.Font = font;
+        owned?.Dispose();
+        return font;
     }
 
     protected override void Dispose(bool disposing)
     {
         if (disposing)
         {
+            ActiveBanners.Remove(this);
+
             if (_customPositionMessageFilter != null)
             {
                 Application.RemoveMessageFilter(_customPositionMessageFilter);
@@ -506,6 +649,15 @@ public partial class BannerForm : Form
         }
 
         base.Dispose(disposing);
+
+        if (!disposing) return;
+
+        // Fonts this form created for scaling; the designer's originals are not ours to dispose.
+        // Released only after the controls are torn down, because a control still holding a
+        // released GDI font handle brings the process down.
+        _scaledFont?.Dispose();
+        _scaledTopFont?.Dispose();
+        _scaledTitleFont?.Dispose();
     }
 
     private void TimerHide_Tick(object sender, EventArgs e) => TriggerHidingDisposal();

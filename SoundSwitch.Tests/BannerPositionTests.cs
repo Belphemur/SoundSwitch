@@ -1,3 +1,4 @@
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -11,34 +12,99 @@ namespace SoundSwitch.Tests;
 [TestFixture]
 public class BannerPositionTests
 {
+    private const int WIDTH = 120;
+    private const int HEIGHT = 60;
+    private const int OFFSET = 10;
+
+    /// <summary>
+    /// A display that does not start at the desktop origin, which is the layout the position maths
+    /// has to get right: it used to mix screen-relative offsets with desktop-absolute coordinates,
+    /// which placed banners on the wrong monitor.
+    /// </summary>
+    private static readonly Rectangle OffsetBounds = new(1920, -600, 2560, 1440);
+
     [Test]
-    public void PositionsUseTheSelectedScreensDesktopOrigin()
+    public void TopPositionsUseTheGivenBoundsEdges()
+    {
+        new PositionTopLeft().GetPosition(OffsetBounds, HEIGHT, WIDTH, OFFSET)
+            .Should().Be(new Point(OffsetBounds.Left + 50, OffsetBounds.Top + 60 + OFFSET));
+        new PositionTopCenter().GetPosition(OffsetBounds, HEIGHT, WIDTH, OFFSET)
+            .Should().Be(new Point(OffsetBounds.Left + (OffsetBounds.Width - WIDTH) / 2, OffsetBounds.Top + 60 + OFFSET));
+        new PositionTopRight().GetPosition(OffsetBounds, HEIGHT, WIDTH, OFFSET)
+            .Should().Be(new Point(OffsetBounds.Right - WIDTH - 50, OffsetBounds.Top + 60 + OFFSET));
+    }
+
+    [Test]
+    public void CenterPositionsUseTheGivenBoundsCenter()
+    {
+        new PositionCenterLeft().GetPosition(OffsetBounds, HEIGHT, WIDTH, OFFSET)
+            .Should().Be(new Point(OffsetBounds.Left + 50, OffsetBounds.Top + (OffsetBounds.Height - HEIGHT) / 2));
+        new PositionCenter().GetPosition(OffsetBounds, HEIGHT, WIDTH, OFFSET)
+            .Should().Be(new Point(OffsetBounds.Left + (OffsetBounds.Width - WIDTH) / 2,
+                OffsetBounds.Top + (OffsetBounds.Height - HEIGHT) / 2));
+        new PositionCenterRight().GetPosition(OffsetBounds, HEIGHT, WIDTH, OFFSET)
+            .Should().Be(new Point(OffsetBounds.Right - WIDTH - 50, OffsetBounds.Top + (OffsetBounds.Height - HEIGHT) / 2));
+    }
+
+    [Test]
+    public void BottomPositionsUseTheGivenBoundsBottomEdge()
+    {
+        new PositionBottomLeft().GetPosition(OffsetBounds, HEIGHT, WIDTH, OFFSET)
+            .Should().Be(new Point(OffsetBounds.Left + 50, OffsetBounds.Bottom - HEIGHT - 60 - OFFSET));
+        new PositionBottomCenter().GetPosition(OffsetBounds, HEIGHT, WIDTH, OFFSET)
+            .Should().Be(new Point(OffsetBounds.Left + (OffsetBounds.Width - WIDTH) / 2,
+                OffsetBounds.Bottom - HEIGHT - 60 - OFFSET));
+        new PositionBottomRight().GetPosition(OffsetBounds, HEIGHT, WIDTH, OFFSET)
+            .Should().Be(new Point(OffsetBounds.Right - WIDTH - 50, OffsetBounds.Bottom - HEIGHT - 60 - OFFSET));
+    }
+
+    [Test]
+    public void ScreenOverloadsMatchTheBoundsOverloads()
+    {
+        var screen = Screen.AllScreens[0];
+
+        new PositionBottomCenter().GetScreenPosition(screen, HEIGHT, WIDTH, OFFSET)
+            .Should().Be(new PositionBottomCenter().GetPosition(screen.Bounds, HEIGHT, WIDTH, OFFSET));
+    }
+
+    [Test]
+    public void CustomPositionKeepsASavedPointInsideItsOwnScreen()
+    {
+        var savedPosition = new Point(OffsetBounds.Left + 20, OffsetBounds.Top + 20);
+
+        PositionCustom.ResolvePosition(OffsetBounds, savedPosition, HEIGHT, WIDTH)
+            .Should().Be(savedPosition);
+    }
+
+    [Test]
+    public void CustomPositionIsClampedBackIntoItsOwnScreen()
+    {
+        // Past the bottom-right edge: pulled back in, without drifting to the screen centre.
+        PositionCustom.ResolvePosition(OffsetBounds, new Point(OffsetBounds.Right, OffsetBounds.Bottom), HEIGHT, WIDTH)
+            .Should().Be(new Point(OffsetBounds.Right - WIDTH, OffsetBounds.Bottom - HEIGHT));
+
+        // Before the top-left edge of a screen that is not at the desktop origin.
+        PositionCustom.ResolvePosition(OffsetBounds, new Point(-1000, -2000), HEIGHT, WIDTH)
+            .Should().Be(new Point(OffsetBounds.Left, OffsetBounds.Top));
+    }
+
+    /// <summary>
+    /// Integration check against a real display that is not at the desktop origin. Kept separate
+    /// from the bounds tests above so the geometry stays covered on single-monitor machines.
+    /// </summary>
+    [Test]
+    public void PositionsMatchTheConnectedDisplayBounds()
     {
         var screen = Screen.AllScreens.FirstOrDefault(candidate =>
             candidate.Bounds.Left != 0 || candidate.Bounds.Top != 0);
         if (screen == null)
             Assert.Ignore("Requires a display outside the desktop origin.");
 
-        const int width = 120;
-        const int height = 60;
-        const int offset = 10;
-
-        new PositionBottomCenter().GetScreenPosition(screen, height, width, offset).Y
-            .Should().Be(screen.Bounds.Bottom - height - 60 - offset);
-        new PositionBottomCenter().GetScreenPosition(screen, height, width, offset).X
-            .Should().Be(screen.Bounds.Left + (screen.Bounds.Width - width) / 2);
-        new PositionTopRight().GetScreenPosition(screen, height, width, offset).X
-            .Should().Be(screen.Bounds.Right - width - 50);
-        new PositionCenter().GetScreenPosition(screen, height, width, offset).Y
-            .Should().Be(screen.Bounds.Top + (screen.Bounds.Height - height) / 2);
-
-        PositionCustom.ResolvePosition(screen, System.Drawing.Point.Empty, height, width)
-            .Should().Be(new System.Drawing.Point(
-                screen.Bounds.Left + (screen.Bounds.Width - width) / 2,
-                screen.Bounds.Top + (screen.Bounds.Height - height) / 2));
-
-        var savedPosition = new System.Drawing.Point(screen.Bounds.Left + 20, screen.Bounds.Top + 20);
-        PositionCustom.ResolvePosition(screen, savedPosition, height, width)
-            .Should().Be(savedPosition);
+        var bounds = screen.Bounds;
+        new PositionTopRight().GetPosition(bounds, HEIGHT, WIDTH, OFFSET)
+            .Should().Be(new Point(bounds.Right - WIDTH - 50, bounds.Top + 60 + OFFSET));
+        new PositionBottomCenter().GetPosition(bounds, HEIGHT, WIDTH, OFFSET)
+            .Should().Be(new Point(bounds.Left + (bounds.Width - WIDTH) / 2,
+                bounds.Bottom - HEIGHT - 60 - OFFSET));
     }
 }

@@ -12,6 +12,7 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -28,11 +29,38 @@ internal class PositionCustom : APosition, IPosition
     public Point GetScreenPosition(Screen screen, int height, int width, int offset) =>
         ResolvePosition(screen, AppModel.Instance.CustomBannerPosition, height, width);
 
-    internal static Point ResolvePosition(Screen screen, Point savedPosition, int height, int width)
-    {
-        if (screen.Bounds.Contains(new Rectangle(savedPosition, new Size(width, height))))
-            return savedPosition;
+    public Point GetPosition(Rectangle bounds, int height, int width, int offset) =>
+        ResolvePosition(bounds, AppModel.Instance.CustomBannerPosition, height, width);
 
-        return new Point(PositionCenterX(screen, width), PositionCenterY(screen, height));
-    }
+    /// <summary>
+    /// Resolve the saved custom position against the display the banner actually belongs to.
+    /// </summary>
+    /// <remarks>
+    /// A custom position is expressed in desktop coordinates, so it belongs to the display the user
+    /// dragged it onto. When the banner is pinned to a specific monitor that monitor is the only
+    /// valid target; otherwise the target is the screen holding the saved point, which keeps a
+    /// banner dragged onto a secondary display in place when the cursor moves elsewhere.
+    /// </remarks>
+    internal static Point ResolvePosition(Screen screen, Point savedPosition, int height, int width) =>
+        ResolvePosition(TargetBounds(screen, savedPosition), savedPosition, height, width);
+
+    /// <summary>
+    /// Clamp the banner inside <paramref name="bounds"/>. Clamping rather than re-centering keeps a
+    /// position the user deliberately chose: only a display that went away or a banner that grew
+    /// past the edge nudges it back.
+    /// </summary>
+    internal static Point ResolvePosition(Rectangle bounds, Point savedPosition, int height, int width) =>
+        new(
+            Math.Clamp(savedPosition.X, bounds.Left, Math.Max(bounds.Left, bounds.Right - width)),
+            Math.Clamp(savedPosition.Y, bounds.Top, Math.Max(bounds.Top, bounds.Bottom - height)));
+
+    /// <summary>
+    /// Bounds the saved position has to stay inside. <see cref="Screen.FromPoint(Point)"/> falls
+    /// back to the primary screen when the point is on no connected display, which keeps a stale
+    /// position off any other monitor.
+    /// </summary>
+    private static Rectangle TargetBounds(Screen screen, Point savedPosition) =>
+        string.IsNullOrEmpty(AppModel.Instance.BannerMonitorDeviceName)
+            ? Screen.FromPoint(savedPosition).Bounds
+            : screen.Bounds;
 }
