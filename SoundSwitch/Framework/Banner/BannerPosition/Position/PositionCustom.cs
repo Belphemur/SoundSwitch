@@ -41,8 +41,16 @@ internal class PositionCustom : APosition, IPosition
     /// valid target; otherwise the target is the screen holding the saved point, which keeps a
     /// banner dragged onto a secondary display in place when the cursor moves elsewhere.
     /// </remarks>
-    internal static Point ResolvePosition(Screen screen, Point savedPosition, int height, int width) =>
-        ResolvePosition(TargetBounds(screen, savedPosition), savedPosition, height, width);
+    internal static Point ResolvePosition(Screen screen, Point savedPosition, int height, int width)
+    {
+        // Point.Empty is the initial value, i.e. the banner was never dragged into place. There is
+        // no position to honour, so centre it on the selected display instead of pinning it to the
+        // top-left corner of whichever display happens to own the desktop origin.
+        if (savedPosition.IsEmpty)
+            return new Point(PositionCenterX(screen.Bounds, width), PositionCenterY(screen.Bounds, height));
+
+        return ResolvePosition(TargetBounds(screen, savedPosition), savedPosition, height, width);
+    }
 
     /// <summary>
     /// Clamp the banner inside <paramref name="bounds"/>. Clamping rather than re-centering keeps a

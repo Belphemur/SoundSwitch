@@ -68,6 +68,19 @@ public class BannerPositionTests
     }
 
     [Test]
+    public void CustomPositionWithNoSavedPointIsCentredOnTheSelectedScreen()
+    {
+        // Point.Empty is the initial value: the banner was never dragged, so it must not end up
+        // pinned to the desktop origin.
+        var screen = Screen.AllScreens[0];
+
+        PositionCustom.ResolvePosition(screen, Point.Empty, HEIGHT, WIDTH)
+            .Should().Be(new Point(
+                screen.Bounds.Left + (screen.Bounds.Width - WIDTH) / 2,
+                screen.Bounds.Top + (screen.Bounds.Height - HEIGHT) / 2));
+    }
+
+    [Test]
     public void CustomPositionKeepsASavedPointInsideItsOwnScreen()
     {
         var savedPosition = new Point(OffsetBounds.Left + 20, OffsetBounds.Top + 20);

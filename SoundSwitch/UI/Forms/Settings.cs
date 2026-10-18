@@ -516,13 +516,16 @@ public sealed partial class SettingsForm : Form
                     string.Format(monitorLabel, i + 1, screens[i].DeviceName), screens[i].DeviceName, false));
             }
 
-            var selectedIndex = Array.FindIndex(screens,
+            var screenIndex = Array.FindIndex(screens,
                 screen => string.Equals(screen.DeviceName, savedDeviceName, StringComparison.OrdinalIgnoreCase));
-            if (selectedIndex < 0)
-                selectedIndex = AppModel.Instance.NotifyUsingPrimaryScreen ? 1 : 0;
 
-            // Skip the two pseudo entries prepended above.
-            _bannerMonitorComboBox.SelectedIndex = selectedIndex + 2;
+            // Indices 0 and 1 are the cursor/primary pseudo entries, so only a matched screen has
+            // to be shifted by the two entries prepended above. Offsets 0/1 are already combo
+            // indices, and adding the offset to them would name a physical monitor instead - or run
+            // past the end of the list on a single-display setup.
+            _bannerMonitorComboBox.SelectedIndex = screenIndex >= 0
+                ? screenIndex + 2
+                : AppModel.Instance.NotifyUsingPrimaryScreen ? 1 : 0;
         }
         finally
         {
@@ -536,10 +539,9 @@ public sealed partial class SettingsForm : Form
         if (_suppressBannerMonitorSelection || _bannerMonitorComboBox.SelectedItem is not BannerMonitorChoice choice)
             return;
 
-        // An explicit monitor always wins; the two pseudo entries map onto the cursor/primary
-        // fallback that GetScreen() uses when no monitor is configured.
-        AppModel.Instance.BannerMonitorDeviceName = choice.DeviceName;
-        AppModel.Instance.NotifyUsingPrimaryScreen = choice.IsPrimary;
+        // Applied as one update: both values decide which screen GetScreen() resolves, so they have
+        // to be in place together before the banners are moved.
+        AppModel.Instance.SetBannerMonitor(choice.DeviceName, choice.IsPrimary);
     }
 
     /// <summary>

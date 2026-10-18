@@ -90,6 +90,16 @@ public interface INotificationSettings
     int BannerScalePercentage { get; set; }
 
     /// <summary>
+    /// Selects the display the banner is shown on, applying the monitor and the primary-screen
+    /// fallback as one update.
+    /// </summary>
+    /// <param name="deviceName">Device name of the monitor to pin the banner to, or null to follow
+    /// the cursor/primary fallback</param>
+    /// <param name="usePrimaryScreen">Whether to fall back to the primary screen when no monitor is
+    /// pinned</param>
+    void SetBannerMonitor(string deviceName, bool usePrimaryScreen);
+
+    /// <summary>
     /// If the NotificationSettings has been modified
     /// </summary>
     event EventHandler<NotificationSettingsUpdatedEvent> NotificationSettingsChanged;

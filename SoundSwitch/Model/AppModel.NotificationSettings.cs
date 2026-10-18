@@ -318,6 +318,27 @@ public partial class AppModel
         }
     }
 
+    /// <summary>
+    /// Selects the display the banner is shown on.
+    /// </summary>
+    /// <param name="deviceName">Device name of the monitor to pin the banner to, or null to follow
+    /// the cursor/primary fallback</param>
+    /// <param name="usePrimaryScreen">Whether to fall back to the primary screen when no monitor is
+    /// pinned</param>
+    /// <remarks>
+    /// Both settings take part in <c>GetScreen()</c>, so they are written together and the refresh
+    /// runs once, afterwards. Setting them through the individual properties would move the visible
+    /// banners while only half of the new selection was in place.
+    /// </remarks>
+    public void SetBannerMonitor(string deviceName, bool usePrimaryScreen)
+    {
+        AppConfigs.Configuration.BannerMonitorDeviceName = deviceName;
+        AppConfigs.Configuration.NotifyUsingPrimaryScreen =
+            string.IsNullOrEmpty(deviceName) && usePrimaryScreen;
+        AppConfigs.Configuration.Save();
+        BannerForm.RefreshVisibleBanners();
+    }
+
     public Color BannerBackgroundColor
     {
         get => Color.FromArgb(AppConfigs.Configuration.BannerBackgroundArgb);
