@@ -36,7 +36,7 @@ symlink; change the real file in `img/Documentation/`.
 | `website/src/configuration/recording.md` | `Recording.png` | Recording |
 | `website/src/configuration/notifications.md` | `Notifications.png` | Notifications |
 | `website/src/usage/profiles.md` | `Profile.png`, `Profile Add.png` | Profiles (+ profile editor) |
-| `website/src/usage/app-rules.md` | `AppRules.png`, `AppRules Add.png` | App Sound Lock (+ rule dialog) |
+| `website/src/usage/app-rules.md` | `AppRules.png`, `AppRules Add.png` | App Rules (+ rule dialog, `-Click addAppSoundRuleButton`) |
 | `website/src/advanced/troubleshooting.md` | `Troubleshoot.png` | Troubleshooting |
 | `website/src/faq/**` | `faq/*.png`, `faq/*.gif` | — |
 
@@ -53,6 +53,7 @@ surface, selects the tab, and captures **only the Settings window bounds**:
 # From the repository root. Requires PowerShell 7+.
 pwsh .\tools\Capture-DocumentationScreenshot.ps1 -Name Notifications -Tab Notifications
 pwsh .\tools\Capture-DocumentationScreenshot.ps1 -Name Playback -Tab Playback
+pwsh .\tools\Capture-DocumentationScreenshot.ps1 -Name "AppRules Add" -Tab "App Rules" -Click addAppSoundRuleButton
 pwsh .\tools\Capture-DocumentationScreenshot.ps1 -Name faq/quick-menu-popup
 ```
 
@@ -64,7 +65,8 @@ What the script does, and why:
    with `--disable-updater`.
 3. Opens the Settings window with `SoundSwitch.CLI.exe settings` — the supported
    automation surface — instead of simulating tray clicks.
-4. Selects the tab by name with UI Automation (`System.Windows.Automation`).
+4. Selects the tab by name with UI Automation (`System.Windows.Automation`) and,
+   with `-Click`, invokes a button to open a sub-dialog.
 5. Captures the window with `PrintWindow(PW_RENDERFULLCONTENT)` clipped to
    `GetWindowRect`, so the PNG is cropped to the window (title bar included, no
    desktop background) and matches the existing screenshots.
@@ -80,9 +82,13 @@ Notes and gotchas:
 - The committed screenshots use the **English** UI. If SoundSwitch is set to another
   language, switch it back (General tab) before capturing, and pass tab names in
   the language currently displayed (`-Tab` matches the localized label).
-- For dialogs that are not a settings tab (add-profile, add-rule, colour picker),
-  open them once by hand, then run the script with `-AllowExistingInstance` and no
-  `-Tab` while the dialog is visible, or capture the dialog window directly.
+- Sub-dialogs (add-profile, add-rule, …) are captured with `-Click`: after the tab
+  is selected the script clicks the named button and captures the dialog it opens,
+  e.g. `-Tab "App Rules" -Click addAppSoundRuleButton`. Pass the control name from
+  the designer (`addAppSoundRuleButton`, `addProfileButton`) or its visible label
+  (`Add`) when the label is unambiguous on that tab. Dialogs with no launching
+  button (the colour picker, the file picker) still need `-AllowExistingInstance`
+  and no `-Tab` while the dialog is visible.
 - Use `-ListWindows` to see what the script finds, and `-KeepOpen` to inspect the
   result before the window closes.
 

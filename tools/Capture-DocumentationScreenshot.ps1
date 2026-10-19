@@ -13,7 +13,8 @@
          SoundSwitch.exe with --disable-updater.
       3. Opens the Settings window through the CLI (`SoundSwitch.CLI.exe settings`),
          using the app's public IPC surface instead of simulated tray input.
-      4. Selects a settings tab by name with UI Automation.
+      4. Selects a settings tab by name with UI Automation and, when -Click is
+         given, invokes a button to open a dialog (e.g. "Add app rule").
       5. Captures ONLY the Settings window bounds with PrintWindow(PW_RENDERFULLCONTENT),
          so the PNG is cropped to the window and never includes the desktop.
       6. Saves the PNG into img\Documentation and closes what it opened.
@@ -27,9 +28,17 @@
 
 .PARAMETER Tab
     Settings tab to select before capturing. One of: Playback, Recording, Profiles,
-    App Sound Lock, General, Notifications, Troubleshooting. The name is the
-    localized display label, so pass the translated text on a non-English UI.
+    App Rules, General, Notifications, Troubleshooting. The name is the localized
+    display label, so pass the translated text on a non-English UI.
     When omitted, the current tab is captured.
+
+.PARAMETER Click
+    Accessible name or automation id of a button to click after the tab is
+    selected. The window that button opens (usually a dialog) is captured instead
+    of the Settings window, so dialogs such as "Add app rule" or "Add profile" can
+    be produced with automation too. The automation id is the control name from the
+    designer (e.g. addAppSoundRuleButton, addProfileButton); the visible label
+    (e.g. "Add") also works when it is unambiguous on the selected tab.
 
 .PARAMETER OutputDirectory
     Directory the PNG is written to when -Name is not rooted.
@@ -68,6 +77,10 @@
     Builds the app, opens the Notifications tab and writes img\Documentation\Notifications.png.
 
 .EXAMPLE
+    .\tools\Capture-DocumentationScreenshot.ps1 -Name "AppRules Add" -Tab "App Rules" -Click addAppSoundRuleButton
+    Opens the App Rules tab, clicks Add and captures the "Add Rule" dialog.
+
+.EXAMPLE
     .\tools\Capture-DocumentationScreenshot.ps1 -Name Playback -Tab Playback -NoBuild -KeepOpen
     Captures the Playback tab with the existing build and leaves the window open for review.
 
@@ -80,6 +93,8 @@ param(
     [string]$Name,
 
     [string]$Tab,
+
+    [string]$Click,
 
     [string]$OutputDirectory,
 
@@ -176,6 +191,7 @@ namespace SoundSwitch.DocCapture
 }
 
 $Script:WmClose = 0x0010
+$Script:BmClick = 0x00F5
 $Script:SwRestore = 9
 $Script:PwRenderFullContent = 0x00000002
 
@@ -254,6 +270,90 @@ function Select-SettingsTab {
     }
 
     return $false
+}
+
+function Find-VisibleButton {
+    <#
+        Finds a button inside the window by accessible name or automation id,
+        preferring the one actually on screen (the same label can exist on several
+        tab pages, e.g. the two "Add" buttons).
+    #>
+    param(
+        [Parameter(Mandatory = $true)]
+        [IntPtr]$Handle,
+
+        [Parameter(Mandatory = $true)]
+        [string]$ButtonId
+    )
+
+    Add-Type -AssemblyName UIAutomationClient
+    Add-Type -AssemblyName UIAutomationTypes
+
+    $window = [System.Windows.Automation.AutomationElement]::FromHandle($Handle)
+    if ($null -eq $window) {
+        return $null
+    }
+
+    $condition = [System.Windows.Automation.AndCondition]::new(
+        [System.Windows.Automation.PropertyCondition]::new(
+            [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+            [System.Windows.Automation.ControlType]::Button),
+        [System.Windows.Automation.OrCondition]::new(
+            [System.Windows.Automation.PropertyCondition]::new(
+                [System.Windows.Automation.AutomationElement]::NameProperty, $ButtonId),
+            [System.Windows.Automation.PropertyCondition]::new(
+                [System.Windows.Automation.AutomationElement]::AutomationIdProperty, $ButtonId)))
+
+    $buttons = $window.FindAll([System.Windows.Automation.TreeScope]::Descendants, $condition)
+    $visible = [System.Collections.Generic.List[object]]::new()
+    foreach ($button in $buttons) {
+        if ($button.Current.AutomationId -eq $ButtonId) {
+            return $button
+        }
+
+        if (-not $button.Current.IsOffscreen) {
+            $visible.Add($button)
+        }
+    }
+
+    if ($visible.Count -gt 0) {
+        return $visible[0]
+    }
+
+    return $null
+}
+
+function Invoke-Element {
+    <#
+        Clicks a button without blocking. The UI Automation Invoke pattern waits for
+        the click handler to return, so clicking a button that opens a modal dialog
+        (ShowDialog) hangs the caller until the dialog is closed. Posting WM_COMMAND's
+        BM_CLICK to the button's own window handle returns immediately instead.
+    #>
+    param(
+        [Parameter(Mandatory = $true)]
+        $Element
+    )
+
+    $windowHandle = $Element.Current.NativeWindowHandle
+    if ($windowHandle -ne 0) {
+        [SoundSwitch.DocCapture.Native]::PostMessage([IntPtr]$windowHandle, $Script:BmClick, [IntPtr]::Zero, [IntPtr]::Zero) | Out-Null
+        return
+    }
+
+    $invoke = $null
+    if ($Element.TryGetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern, [ref]$invoke)) {
+        $invoke.Invoke()
+        return
+    }
+
+    $legacy = $null
+    if ($Element.TryGetCurrentPattern([System.Windows.Automation.LegacyIAccessiblePattern]::Pattern, [ref]$legacy)) {
+        $legacy.DoDefaultAction()
+        return
+    }
+
+    throw "The control '$($Element.Current.Name)' cannot be invoked."
 }
 
 function Save-WindowScreenshot {
@@ -413,40 +513,68 @@ try {
     }
 
     $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
-    $handle = [IntPtr]::Zero
+    $settingsHandle = [IntPtr]::Zero
     $windowTitle = $null
 
-    while ((Get-Date) -lt $deadline -and $handle -eq [IntPtr]::Zero) {
+    while ((Get-Date) -lt $deadline -and $settingsHandle -eq [IntPtr]::Zero) {
         foreach ($candidate in @(Get-TopLevelWindows -ProcessId $process.Id)) {
-            if ($Tab -and (Select-SettingsTab -Handle $candidate.Handle -TabName $Tab)) {
-                $handle = $candidate.Handle
-                $windowTitle = $candidate.Title
-                break
-            }
-
-            if (-not $Tab -and (Select-SettingsTab -Handle $candidate.Handle -TabName $null)) {
-                $handle = $candidate.Handle
+            if (Select-SettingsTab -Handle $candidate.Handle -TabName $Tab) {
+                $settingsHandle = $candidate.Handle
                 $windowTitle = $candidate.Title
                 break
             }
         }
 
-        if ($handle -eq [IntPtr]::Zero) {
+        if ($settingsHandle -eq [IntPtr]::Zero) {
             Start-Sleep -Milliseconds 300
         }
     }
 
-    if ($handle -eq [IntPtr]::Zero) {
+    if ($settingsHandle -eq [IntPtr]::Zero) {
         $tabHint = if ($Tab) { " with the '$Tab' tab" } else { '' }
         throw "Settings window$tabHint was not found within $TimeoutSeconds seconds."
     }
 
-    if ($Tab) {
-        Write-Host "Capturing '$Tab' tab from window '$windowTitle'..." -ForegroundColor Cyan
+    $captureHandle = $settingsHandle
+    $captureLabel = if ($Tab) { "the '$Tab' tab" } else { 'the Settings window' }
+
+    if ($Click) {
+        # Remember what is already on screen so the dialog opened by the click can be
+        # told apart from the Settings window that owns it.
+        $existingHandles = @(Get-TopLevelWindows -ProcessId $process.Id | ForEach-Object { $_.Handle.ToInt64() })
+
+        $button = Find-VisibleButton -Handle $settingsHandle -ButtonId $Click
+        if ($null -eq $button) {
+            throw "Button '$Click' was not found in the Settings window."
+        }
+
+        Write-Host "Clicking '$Click'..." -ForegroundColor Cyan
+        Invoke-Element -Element $button
+
+        $dialogHandle = [IntPtr]::Zero
+        $dialogDeadline = (Get-Date).AddSeconds($TimeoutSeconds)
+        while ((Get-Date) -lt $dialogDeadline -and $dialogHandle -eq [IntPtr]::Zero) {
+            foreach ($candidate in @(Get-TopLevelWindows -ProcessId $process.Id)) {
+                if ($existingHandles -notcontains $candidate.Handle.ToInt64()) {
+                    $dialogHandle = $candidate.Handle
+                    $captureLabel = "'$($candidate.Title)' dialog"
+                    break
+                }
+            }
+
+            if ($dialogHandle -eq [IntPtr]::Zero) {
+                Start-Sleep -Milliseconds 250
+            }
+        }
+
+        if ($dialogHandle -eq [IntPtr]::Zero) {
+            throw "No window opened after clicking '$Click' within $TimeoutSeconds seconds."
+        }
+
+        $captureHandle = $dialogHandle
     }
-    else {
-        Write-Host "Capturing window '$windowTitle'..." -ForegroundColor Cyan
-    }
+
+    Write-Host "Capturing $captureLabel..." -ForegroundColor Cyan
 
     Start-Sleep -Milliseconds $RenderedDelayMilliseconds
 
@@ -457,11 +585,16 @@ try {
     $fileName = if ([System.IO.Path]::GetExtension($Name) -eq '.png') { $Name } else { "$Name.png" }
     $targetPath = if ([System.IO.Path]::IsPathRooted($fileName)) { $fileName } else { Join-Path $OutputDirectory $fileName }
 
-    $result = Save-WindowScreenshot -Handle $handle -Path $targetPath
+    $result = Save-WindowScreenshot -Handle $captureHandle -Path $targetPath
     Write-Host "Saved $($result.Path) ($($result.Width)x$($result.Height))." -ForegroundColor Green
 
     if (-not $KeepOpen) {
-        [SoundSwitch.DocCapture.Native]::PostMessage($handle, $Script:WmClose, [IntPtr]::Zero, [IntPtr]::Zero) | Out-Null
+        if ($captureHandle -ne $settingsHandle) {
+            [SoundSwitch.DocCapture.Native]::PostMessage($captureHandle, $Script:WmClose, [IntPtr]::Zero, [IntPtr]::Zero) | Out-Null
+            Start-Sleep -Milliseconds 300
+        }
+
+        [SoundSwitch.DocCapture.Native]::PostMessage($settingsHandle, $Script:WmClose, [IntPtr]::Zero, [IntPtr]::Zero) | Out-Null
     }
 }
 finally {
