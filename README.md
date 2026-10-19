@@ -3,7 +3,7 @@
 [![.NET](https://github.com/Belphemur/SoundSwitch/actions/workflows/dotnet.yml/badge.svg)](https://github.com/Belphemur/SoundSwitch/actions/workflows/dotnet.yml)[![Last Release](https://img.shields.io/github/release/Belphemur/SoundSwitch.svg)](https://soundswitch.aaflalo.me) [![Downloads for last Release](https://img.shields.io/github/downloads/Belphemur/SoundSwitch/total.svg)](https://soundswitch.aaflalo.me/) [![Translate](https://hosted.weblate.org/widgets/soundswitch/-/svg-badge.svg)](https://hosted.weblate.org/projects/soundswitch/) [![Donate](https://img.shields.io/badge/Donate-paypal%2Fcc-blue.svg)](https://soundswitch.aaflalo.me) [![Help](https://img.shields.io/badge/Discord-Community%20&%20Help-green?style=flat-square&logo=discord)](https://discord.gg/gUCw3Ue)
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-14-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-15-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 **SoundSwitch** offers you the opportunity to switch your playback and recording devices using simple **hotkeys**.
@@ -166,6 +166,9 @@ Want to improve an existing language or add another one? Translations are online
       <td align="center" valign="top" width="14.28%"><a href="http://gradyn.com"><img src="https://avatars.githubusercontent.com/u/20762604?v=4?s=100" width="100px;" alt="Gradyn Wursten"/><br /><sub><b>Gradyn Wursten</b></sub></a><br /><a href="https://github.com/Belphemur/SoundSwitch/commits?author=GNUGradyn" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Scordo"><img src="https://avatars.githubusercontent.com/u/2535846?v=4?s=100" width="100px;" alt="Scordo"/><br /><sub><b>Scordo</b></sub></a><br /><a href="https://github.com/Belphemur/SoundSwitch/commits?author=Scordo" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://profile-summary-for-github.com/user/Bluscream"><img src="https://avatars.githubusercontent.com/u/3318223?v=4?s=100" width="100px;" alt="Bluscream"/><br /><sub><b>Bluscream</b></sub></a><br /><a href="https://github.com/Belphemur/SoundSwitch/commits?author=Bluscream" title="Code">💻</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/ampersandru"><img src="https://avatars.githubusercontent.com/u/43594741?v=4?s=100" width="100px;" alt="ampersandru"/><br /><sub><b>ampersandru</b></sub></a><br /><a href="https://github.com/Belphemur/SoundSwitch/commits?author=ampersandru" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
