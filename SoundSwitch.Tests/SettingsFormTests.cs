@@ -96,6 +96,73 @@ public class SettingsFormTests
         Assert.That(SettingsForm.ScaleNotificationGroupBoxHeight(logicalHeight, deviceDpi), Is.EqualTo(expectedHeight));
     }
 
+    // --- Banner settings row layout -------------------------------------------------
+    // The rows appended by InitializeBannerAppearanceControls reuse the designer's own row pitch
+    // and border gap, so they follow the DPI scaling InitializeComponent already applied. The
+    // properties below are what stop a scaled row from colliding with the content above it.
+
+    [Test]
+    public void AppendedRowStartsAtTheGroupsExistingBottomMargin()
+    {
+        // Group box 167 tall, lowest child ends at 161 -> 6px gap, so the row starts at 167.
+        SettingsForm.AppendedRowTop(167, 161).Should().Be(167);
+        SettingsForm.BottomMargin(167, 161).Should().Be(6);
+    }
+
+    [Test]
+    public void AppendedRowStaysBelowTheExistingContent()
+    {
+        for (var gap = 0; gap <= 20; gap++)
+        {
+            var contentBottom = 100 + gap * 3;
+            var groupBoxHeight = contentBottom + gap;
+
+            SettingsForm.AppendedRowTop(groupBoxHeight, contentBottom)
+                .Should().BeGreaterThanOrEqualTo(contentBottom);
+        }
+    }
+
+    [Test]
+    public void HeightForRowKeepsTheSameGapBelowTheNewContent()
+    {
+        SettingsForm.HeightForRow(167, 161, 190).Should().Be(196);
+        SettingsForm.BottomMargin(196, 190).Should().Be(6);
+    }
+
+    [Test]
+    public void HeightForRowNeverShrinksTheGroupBox()
+    {
+        // Group box 200 tall, reference content ends at 190, so a row ending at 185 already fits
+        // inside the existing padding and the height must stay put.
+        SettingsForm.HeightForRow(200, 190, 185).Should().Be(200);
+    }
+
+    [Test]
+    public void HeightForRowGrowsWhenTheRowGoesPastTheExistingContent()
+    {
+        // Same group box, but the row now ends below the reference content: it has to be pushed
+        // down by the same border gap, which means growing the box.
+        SettingsForm.HeightForRow(200, 190, 195).Should().Be(205);
+        SettingsForm.BottomMargin(205, 195).Should().Be(10);
+    }
+
+    [Test]
+    public void HeightForRowAlwaysContainsEveryChild()
+    {
+        for (var margin = 0; margin <= 12; margin++)
+        for (var rowBottom = 150; rowBottom <= 400; rowBottom++)
+        {
+            var groupBoxHeight = 190 + margin;
+            var referenceContentBottom = groupBoxHeight - margin;
+
+            var height = SettingsForm.HeightForRow(groupBoxHeight, referenceContentBottom, rowBottom);
+
+            height.Should().BeGreaterThanOrEqualTo(referenceContentBottom);
+            height.Should().BeGreaterThanOrEqualTo(rowBottom);
+            height.Should().BeGreaterThanOrEqualTo(groupBoxHeight);
+        }
+    }
+
     [Test]
     public void ThemeColors_ForDarkMode_ShouldUseReadableSurfaces()
     {

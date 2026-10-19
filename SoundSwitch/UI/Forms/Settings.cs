@@ -419,8 +419,7 @@ public sealed partial class SettingsForm : Form
 
         // Same idea for the position group: append a row under the existing content.
         var positionContentBottom = positionGroupBox.Controls.Cast<Control>().Max(control => control.Bottom);
-        var positionMargin = positionGroupBox.Height - positionContentBottom;
-        var monitorRowTop = positionContentBottom + positionMargin;
+        var monitorRowTop = AppendedRowTop(positionGroupBox.Height, positionContentBottom);
 
         _bannerMonitorComboBox = new ComboBox
         {
@@ -479,15 +478,44 @@ public sealed partial class SettingsForm : Form
         // closeButton is anchored Bottom|Right, so it follows ClientSize on its own; nudging its
         // Top as well would push it past the bottom edge of the client area.
         var originalOptionsHeight = bannerOptionsGroupBox.Height;
-        var optionsMargin = originalOptionsHeight - (microphoneMuteGroupBox.Top + microphoneMuteGroupBox.Height);
-        bannerOptionsGroupBox.Height = scaleRowTop + rowHeight + optionsMargin;
-        positionGroupBox.Height = monitorRowTop + rowHeight + positionMargin;
+        // microphoneMuteGroupBox is the tallest child the designer placed in this group box, and
+        // unlike positionGroupBox it is not resized here, so it stays a stable reference.
+        bannerOptionsGroupBox.Height = HeightForRow(
+            originalOptionsHeight, microphoneMuteGroupBox.Bottom, scaleRowTop + rowHeight);
+        positionGroupBox.Height = HeightForRow(
+            positionGroupBox.Height, positionContentBottom, monitorRowTop + rowHeight);
 
         var extraHeight = bannerOptionsGroupBox.Height - originalOptionsHeight;
         if (extraHeight <= 0) return;
 
         tabControl.Height += extraHeight;
         ClientSize = new Size(ClientSize.Width, ClientSize.Height + extraHeight);
+    }
+
+    /// <summary>
+    /// Gap between the lowest child of a group box and its border.
+    /// </summary>
+    internal static int BottomMargin(int groupBoxHeight, int contentBottom) => groupBoxHeight - contentBottom;
+
+    /// <summary>
+    /// Top edge of a row appended below <paramref name="contentBottom"/>, leaving the group box's
+    /// existing gap between its content and its border.
+    /// </summary>
+    internal static int AppendedRowTop(int groupBoxHeight, int contentBottom) =>
+        contentBottom + BottomMargin(groupBoxHeight, contentBottom);
+
+    /// <summary>
+    /// Height a group box needs so that <paramref name="rowBottom"/> sits the same distance from
+    /// the border as the content that is already there. Never shrinks the group box.
+    /// </summary>
+    /// <param name="groupBoxHeight">Current height of the group box</param>
+    /// <param name="referenceContentBottom">Bottom of the content the gap is measured from</param>
+    /// <param name="rowBottom">Bottom of the content being added</param>
+    internal static int HeightForRow(int groupBoxHeight, int referenceContentBottom, int rowBottom)
+    {
+        var margin = BottomMargin(groupBoxHeight, referenceContentBottom);
+        var lowestContent = Math.Max(referenceContentBottom, rowBottom);
+        return Math.Max(groupBoxHeight, lowestContent + margin);
     }
 
     /// <summary>
