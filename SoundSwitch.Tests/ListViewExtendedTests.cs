@@ -28,21 +28,60 @@ public class ListViewExtendedTests
     [Test]
     public void DrawGroupHeader_ShouldPaintDarkBackgroundAndSeparator()
     {
-        using var listView = new ListViewExtended
+        try
         {
-            BackColor = Color.FromArgb(32, 32, 32)
-        };
-        var group = new ListViewGroup("Selected", HorizontalAlignment.Center);
-        listView.Groups.Add(group);
+            WindowsThemeHelper.DarkModeProvider = () => true;
 
-        using var bitmap = new Bitmap(80, 24);
-        using var graphics = Graphics.FromImage(bitmap);
-        graphics.Clear(Color.Red);
+            using var listView = new ListViewExtended
+            {
+                BackColor = Color.FromArgb(32, 32, 32)
+            };
+            var group = new ListViewGroup("Selected", HorizontalAlignment.Center);
+            listView.Groups.Add(group);
 
-        listView.DrawGroupHeader(graphics, new Rectangle(0, 0, 80, 24), group);
+            using var bitmap = new Bitmap(80, 24);
+            using var graphics = Graphics.FromImage(bitmap);
+            graphics.Clear(Color.Red);
 
-        Assert.That(bitmap.GetPixel(1, 1), Is.EqualTo(Color.FromArgb(32, 32, 32)));
-        Assert.That(bitmap.GetPixel(40, 23), Is.EqualTo(Color.FromArgb(80, 80, 80)));
+            listView.DrawGroupHeader(graphics, new Rectangle(0, 0, 80, 24), group);
+
+            Assert.That(bitmap.GetPixel(1, 1), Is.EqualTo(Color.FromArgb(32, 32, 32)));
+            // Dark mode draws a light separator so it reads as a divider on the dark surface.
+            Assert.That(bitmap.GetPixel(40, 23), Is.EqualTo(Color.FromArgb(240, 240, 240)));
+        }
+        finally
+        {
+            WindowsThemeHelper.DarkModeProvider = null;
+        }
+    }
+
+    [Test]
+    public void DrawGroupHeader_ShouldPaintDarkBlueSeparatorInLightMode()
+    {
+        try
+        {
+            WindowsThemeHelper.DarkModeProvider = () => false;
+
+            using var listView = new ListViewExtended
+            {
+                BackColor = Color.White
+            };
+            var group = new ListViewGroup("Selected", HorizontalAlignment.Center);
+            listView.Groups.Add(group);
+
+            using var bitmap = new Bitmap(80, 24);
+            using var graphics = Graphics.FromImage(bitmap);
+            graphics.Clear(Color.Red);
+
+            listView.DrawGroupHeader(graphics, new Rectangle(0, 0, 80, 24), group);
+
+            // Light mode keeps a dark blue separator.
+            Assert.That(bitmap.GetPixel(40, 23), Is.EqualTo(Color.FromArgb(0, 76, 141)));
+        }
+        finally
+        {
+            WindowsThemeHelper.DarkModeProvider = null;
+        }
     }
 
     [Test]

@@ -13,7 +13,10 @@ public class ListViewExtended : System.Windows.Forms.ListView
 {
     private const int LVM_FIRST = 0x1000;                    // ListView messages
     private const int LVM_SETGROUPINFO = (LVM_FIRST + 147);  // ListView messages Setinfo on Group
+    private const int LVM_GETGROUPRECT = (LVM_FIRST + 98);   // ListView message: geometry of a group band
+    private const int LVGGR_HEADER = 1;                      // LVM_GETGROUPRECT selector: header band only
     private const int WM_LBUTTONUP = 0x0202;                 // Windows message left button
+    private const int WM_PAINT = 0x000F;                     // Windows message paint
 
     // The common-control notifications are reflected back to the control by WinForms.
     private const int WM_REFLECT_NOTIFY = 0x204E;
@@ -31,6 +34,23 @@ public class ListViewExtended : System.Windows.Forms.ListView
     /// The native control normally paints them with a low-contrast blue.
     /// </summary>
     private static Color GroupHeaderDarkColor => Color.LightSkyBlue;
+
+    /// <summary>
+    /// Group header caption colour in light mode.
+    /// </summary>
+    private static Color GroupHeaderLightColor => Color.FromArgb(0, 76, 141);
+
+    /// <summary>
+    /// Separator colour drawn under the group header. Dark mode uses a plain light line so it
+    /// reads as a divider on the dark surface; light mode keeps a dark blue line.
+    /// </summary>
+    private static Color GroupSeparatorDarkColor => Color.FromArgb(240, 240, 240);
+
+    /// <summary>
+    /// Separator colour drawn under the group header in light mode.
+    /// Treated as a dark blue so it stays clearly blue in light themes.
+    /// </summary>
+    private static Color GroupSeparatorLightColor => Color.FromArgb(0, 76, 141);
 
     private const int GroupHeaderArrowWidth = 24;
     private const int GroupHeaderPadding = 4;
@@ -166,15 +186,103 @@ public class ListViewExtended : System.Windows.Forms.ListView
             base.DefWndProc(ref m);
         else if (TryHandleGroupHeaderCustomDraw(ref m))
             return;
+        else if (m.Msg == WM_PAINT)
+        {
+            // Let the native control paint first (it owns items, columns and the group band),
+            // then repaint the group headers on top.
+            base.WndProc(ref m);
+            PaintGroupHeaders();
+            return;
+        }
 
         base.WndProc(ref m);
     }
 
     /// <summary>
-    /// Draws native ListView group headers in dark mode. Their colour and painting are
-    /// owned by the native common control and are not exposed as a managed
-    /// <see cref="ListViewGroup"/> property or by WinForms owner drawing.
+    /// Repaints the group headers after the native pass. The control is a native common control
+    /// without <see cref="ControlStyles.UserPaint"/>, so <see cref="OnPaint"/> is never invoked;
+    /// the work must happen from <see cref="WndProc"/> once the native painting has finished.
     /// </summary>
+    private void PaintGroupHeaders()
+    {
+        // Light mode already gets the correct dark blue separator from the native common
+        // control, so only dark mode needs the override.
+        if (!WindowsThemeHelper.IsDarkModeEnabled() || _paintingGroupHeaders || !IsHandleCreated)
+            return;
+
+        _paintingGroupHeaders = true;
+        try
+        {
+            using var graphics = CreateGraphics();
+            PaintGroupHeaderSeparators(graphics);
+        }
+        finally
+        {
+            _paintingGroupHeaders = false;
+        }
+    }
+
+    // Repainting group headers needs their on-screen geometry, and LVM_GETGROUPRECT can
+    // synchronously re-enter WM_PAINT through this control's WndProc. Without this guard
+    // the repaint recurses until the process runs out of memory.
+    private bool _paintingGroupHeaders;
+
+    /// <summary>
+    /// Repaints each visible group header band after the native pass. ListView is a native
+    /// common control without <see cref="ControlStyles.UserPaint"/>, so WinForms never routes
+    /// WM_PAINT through <see cref="OnPaint"/> (measured: 0 calls); the work has to happen in
+    /// <see cref="WndProc"/> once the native painting has finished.
+    /// </summary>
+    private void PaintGroupHeaderSeparators(Graphics graphics)
+    {
+        foreach (ListViewGroup group in Groups)
+        {
+            if (!TryGetGroupHeaderBounds(group, out var headerBounds))
+                continue;
+
+            // Repaint the whole band so the native line underneath cannot show through.
+            DrawGroupHeader(graphics, headerBounds, group);
+        }
+    }
+
+    /// <summary>
+    /// Resolves the on-screen bounds of a group's header band. Returns false when the native
+    /// control has not laid the group out yet, in which case there is nothing to repaint.
+    /// </summary>
+    private bool TryGetGroupHeaderBounds(ListViewGroup group, out Rectangle headerBounds)
+    {
+        headerBounds = Rectangle.Empty;
+
+        var groupId = GetGroupID(group);
+        if (groupId == null || !IsHandleCreated)
+            return false;
+
+        // LVM_GETGROUPRECT takes a plain RECT. ListView_GetGroupRect stores the requested
+        // rectangle type in the RECT's Top member before sending, so LVGGR_HEADER selects
+        // the header band rather than the whole group.
+        var rect = new RECT { Top = LVGGR_HEADER };
+        // IntPtr (LRESULT): a 32-bit return type corrupts the call frame here and recurses.
+        // The filled rectangle is the reliable success signal; the BOOL result is not used.
+        SendMessage(Handle, LVM_GETGROUPRECT, (IntPtr)groupId.Value, ref rect);
+        if (rect.Right <= rect.Left || rect.Bottom <= rect.Top)
+            return false;
+
+        headerBounds = Rectangle.FromLTRB(rect.Left, rect.Top, rect.Right, rect.Bottom);
+        return true;
+    }
+
+    [DllImport("User32.dll", EntryPoint = "SendMessageW", CharSet = CharSet.Unicode)]
+    private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wParam, ref RECT lParam);
+
+    /// <summary>
+    /// Requests item-level custom-draw notifications so the group header band can be
+    /// identified during painting.
+    /// </summary>
+    /// <remarks>
+    /// Measured against a live control: comctl32 does not deliver <c>CDDS_ITEMPREPAINT</c>
+    /// with <c>ItemType == LVCDI_GROUP</c>, so the group branch below never matches and the
+    /// band is painted natively. <see cref="PaintGroupHeaderSeparators"/> repaints it instead.
+    /// </remarks>
     private bool TryHandleGroupHeaderCustomDraw(ref Message m)
     {
         // OwnerDraw controls already receive their full painting pipeline through WinForms;
@@ -236,7 +344,11 @@ public class ListViewExtended : System.Windows.Forms.ListView
         using var backgroundBrush = new SolidBrush(BackColor);
         graphics.FillRectangle(backgroundBrush, bounds);
 
-        using var separatorPen = new Pen(Color.FromArgb(80, 80, 80));
+        var darkMode = WindowsThemeHelper.IsDarkModeEnabled();
+        // The caption stays the light blue accent in dark mode; only the separator is neutral.
+        var textColor = darkMode ? GroupHeaderDarkColor : GroupHeaderLightColor;
+        var separatorColor = darkMode ? GroupSeparatorDarkColor : GroupSeparatorLightColor;
+        using var separatorPen = new Pen(separatorColor);
         graphics.DrawLine(separatorPen, bounds.Left, bounds.Bottom - 1, bounds.Right, bounds.Bottom - 1);
 
         var arrowWidth = Math.Min(GroupHeaderArrowWidth, bounds.Width);
@@ -253,10 +365,10 @@ public class ListViewExtended : System.Windows.Forms.ListView
         } | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis | TextFormatFlags.PreserveGraphicsClipping;
 
         using var font = new Font(Font, FontStyle.Bold);
-        TextRenderer.DrawText(graphics, group.Header, font, textRect, GroupHeaderDarkColor, textFormat);
+        TextRenderer.DrawText(graphics, group.Header, font, textRect, textColor, textFormat);
 
         var arrow = group.CollapsedState == ListViewGroupCollapsedState.Collapsed ? "►" : "▼";
-        TextRenderer.DrawText(graphics, arrow, font, arrowRect, GroupHeaderDarkColor,
+        TextRenderer.DrawText(graphics, arrow, font, arrowRect, textColor,
             TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.PreserveGraphicsClipping);
     }
 
