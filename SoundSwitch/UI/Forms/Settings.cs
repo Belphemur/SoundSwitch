@@ -1874,6 +1874,7 @@ public sealed partial class SettingsForm : Form
         appSoundLockListView.Columns.Add(SettingsStrings.appSoundLock_rule_windowTitle, 150);
         appSoundLockListView.Columns.Add(SettingsStrings.playback, 150);
         appSoundLockListView.Columns.Add(SettingsStrings.recording, 150);
+        appSoundLockListView.Columns.Add(SettingsStrings.hotkey, 120);
 
         appSoundLockListView.Items.Clear();
 
@@ -1921,6 +1922,9 @@ public sealed partial class SettingsForm : Form
             var recordingSubItem = item.SubItems.Add(FormatResolvedDevice(recording, rule.RecordingDevice, activeRecordings));
             recordingSubItem.Tag = recording?.SmallIcon;
 
+            // Hotkey
+            item.SubItems.Add(rule.HotKey?.Display() ?? string.Empty);
+
             appSoundLockListView.Items.Add(item);
         }
         appSoundLockListView.ItemCheck += AppSoundLockListView_ItemCheck;
@@ -1965,6 +1969,7 @@ public sealed partial class SettingsForm : Form
         var rule = (AppSoundRule)appSoundLockListView.Items[e.Index].Tag;
         rule.Enabled = e.NewValue == CheckState.Checked;
         AppConfigs.Configuration.Save();
+        AppModel.Instance.AppSoundLockManager.ReloadHotkeys();
     }
 
     private void AddAppSoundRuleButton_Click(object sender, EventArgs e)
@@ -1978,6 +1983,7 @@ public sealed partial class SettingsForm : Form
             AppConfigs.Configuration.AppSoundRules.Add(form.Rule);
             AppConfigs.Configuration.Save();
             TelemetryService.TrackAppRuleCreated();
+            AppModel.Instance.AppSoundLockManager.ReloadHotkeys();
             PopulateAppSoundLockRules();
         }
     }
@@ -1996,6 +2002,7 @@ public sealed partial class SettingsForm : Form
             AppConfigs.Configuration.AppSoundRules.Remove(rule);
             AppConfigs.Configuration.AppSoundRules.Add(form.Rule);
             AppConfigs.Configuration.Save();
+            AppModel.Instance.AppSoundLockManager.ReloadHotkeys();
             PopulateAppSoundLockRules();
         }
     }
@@ -2010,6 +2017,7 @@ public sealed partial class SettingsForm : Form
             AppConfigs.Configuration.AppSoundRules.Remove(rule);
             AppConfigs.Configuration.Save();
             TelemetryService.TrackAppRuleDeleted();
+            AppModel.Instance.AppSoundLockManager.ReloadHotkeys();
             PopulateAppSoundLockRules();
         }
     }

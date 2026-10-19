@@ -45,6 +45,9 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnPlaybackReset = new System.Windows.Forms.Button();
             this.btnRecordingReset = new System.Windows.Forms.Button();
+            this.lblHotKey = new System.Windows.Forms.Label();
+            this.hotKeyBox = new SoundSwitch.UI.Component.HotKeyTextBox();
+            this.btnHotKeyReset = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblDescription
@@ -181,7 +184,7 @@
             // chkEnabled
             // 
             this.chkEnabled.AutoSize = true;
-            this.chkEnabled.Location = new System.Drawing.Point(110, 199);
+            this.chkEnabled.Location = new System.Drawing.Point(110, 236);
             this.chkEnabled.Name = "chkEnabled";
             this.chkEnabled.Size = new System.Drawing.Size(68, 19);
             this.chkEnabled.TabIndex = 12;
@@ -191,16 +194,43 @@
             // chkNotify
             // 
             this.chkNotify.AutoSize = true;
-            this.chkNotify.Location = new System.Drawing.Point(200, 199);
+            this.chkNotify.Location = new System.Drawing.Point(200, 236);
             this.chkNotify.Name = "chkNotify";
             this.chkNotify.Size = new System.Drawing.Size(58, 19);
             this.chkNotify.TabIndex = 13;
             this.chkNotify.Text = string.Empty;
             this.chkNotify.UseVisualStyleBackColor = true;
             // 
+            // lblHotKey
+            // 
+            this.lblHotKey.AutoSize = true;
+            this.lblHotKey.Location = new System.Drawing.Point(12, 204);
+            this.lblHotKey.Name = "lblHotKey";
+            this.lblHotKey.Size = new System.Drawing.Size(45, 15);
+            this.lblHotKey.TabIndex = 19;
+            this.lblHotKey.Text = string.Empty;
+            // 
+            // hotKeyBox
+            // 
+            this.hotKeyBox.Location = new System.Drawing.Point(110, 199);
+            this.hotKeyBox.Name = "hotKeyBox";
+            this.hotKeyBox.Size = new System.Drawing.Size(326, 23);
+            this.hotKeyBox.TabIndex = 20;
+            // 
+            // btnHotKeyReset
+            // 
+            this.btnHotKeyReset.Image = global::SoundSwitch.Properties.Resources.delete;
+            this.btnHotKeyReset.Location = new System.Drawing.Point(442, 199);
+            this.btnHotKeyReset.Name = "btnHotKeyReset";
+            this.btnHotKeyReset.Size = new System.Drawing.Size(28, 23);
+            this.btnHotKeyReset.TabIndex = 21;
+            this.btnHotKeyReset.UseVisualStyleBackColor = true;
+            this.btnHotKeyReset.Visible = false;
+            this.btnHotKeyReset.Click += new System.EventHandler(this.BtnHotKeyReset_Click);
+            // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(314, 232);
+            this.btnSave.Location = new System.Drawing.Point(314, 268);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 25);
             this.btnSave.TabIndex = 14;
@@ -211,7 +241,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(395, 232);
+            this.btnCancel.Location = new System.Drawing.Point(395, 268);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 25);
             this.btnCancel.TabIndex = 15;
@@ -224,10 +254,13 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(484, 273);
+            this.ClientSize = new System.Drawing.Size(484, 310);
             this.Controls.Add(this.lblDescription);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSave);
+            this.Controls.Add(this.hotKeyBox);
+            this.Controls.Add(this.btnHotKeyReset);
+            this.Controls.Add(this.lblHotKey);
             this.Controls.Add(this.chkNotify);
             this.Controls.Add(this.chkEnabled);
             this.Controls.Add(this.cmbRecording);
@@ -272,5 +305,8 @@
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnPlaybackReset;
         private System.Windows.Forms.Button btnRecordingReset;
+        private System.Windows.Forms.Label lblHotKey;
+        private SoundSwitch.UI.Component.HotKeyTextBox hotKeyBox;
+        private System.Windows.Forms.Button btnHotKeyReset;
     }
 }

@@ -32,6 +32,9 @@ public partial class UpsertAppSoundLockRule : Form
         LocalizeForm();
         InitComboBoxes(_playbacks, _recordings);
         InitializeFromRule();
+
+        hotKeyBox.ListenToHotkey = true;
+        hotKeyBox.HotKeyChanged += (sender, args) => btnHotKeyReset.Visible = hotKeyBox.HotKey != null;
     }
 
     private void LocalizeForm()
@@ -43,6 +46,7 @@ public partial class UpsertAppSoundLockRule : Form
         lblRegexNotice.Text = SettingsStrings.appSoundLock_rule_regexNotice;
         lblPlayback.Text = SettingsStrings.playback;
         lblRecording.Text = SettingsStrings.recording;
+        lblHotKey.Text = SettingsStrings.hotkey;
         chkEnabled.Text = SettingsStrings.appSoundLock_rule_enabled;
         chkNotify.Text = SettingsStrings.appSoundLock_rule_notify;
         btnSave.Text = SettingsStrings.buttonSave;
@@ -104,12 +108,20 @@ public partial class UpsertAppSoundLockRule : Form
         _chkCaseSensitive.Checked = _rule.CaseSensitive;
         chkEnabled.Checked = _rule.Enabled;
         chkNotify.Checked = _rule.Notify;
+        hotKeyBox.HotKey = _rule.HotKey;
 
         SelectDevice(cmbPlayback, _rule.PlaybackDevice, _playbacks);
         SelectDevice(cmbRecording, _rule.RecordingDevice, _recordings);
 
         btnPlaybackReset.Visible = cmbPlayback.SelectedIndex != -1;
         btnRecordingReset.Visible = cmbRecording.SelectedIndex != -1;
+        btnHotKeyReset.Visible = _rule.HotKey != null;
+    }
+
+    private void BtnHotKeyReset_Click(object sender, EventArgs e)
+    {
+        hotKeyBox.HotKey = null;
+        btnHotKeyReset.Visible = false;
     }
 
     private void CmbPlayback_SelectedIndexChanged(object sender, EventArgs e)
@@ -213,6 +225,13 @@ public partial class UpsertAppSoundLockRule : Form
         _rule.CaseSensitive = _chkCaseSensitive.Checked;
         _rule.Enabled = chkEnabled.Checked;
         _rule.Notify = chkNotify.Checked;
+        _rule.HotKey = hotKeyBox.HotKey;
+        if (_rule.HotKey != null && !AppModel.Instance.AppSoundLockManager.IsHotkeyAvailable(_rule.HotKey, _rule.Id))
+        {
+            MessageBox.Show(string.Format(SettingsStrings.profile_error_hotkey, _rule.HotKey), SettingsStrings.appSoundLock_rule_error_title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
         _rule.PlaybackDevice = GetSelectedDevice(cmbPlayback, _playbacks);
         _rule.RecordingDevice = GetSelectedDevice(cmbRecording, _recordings);
 

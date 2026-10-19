@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using System;
 using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Framework.WinApi.Keyboard;
 
 namespace SoundSwitch.Model
 {
@@ -12,6 +13,13 @@ namespace SoundSwitch.Model
         public string WindowName { get; set; } = string.Empty;
         public DeviceInfo? PlaybackDevice { get; set; }
         public DeviceInfo? RecordingDevice { get; set; }
+
+        /// <summary>
+        /// Optional global hotkey that re-applies this rule's devices to the matching
+        /// running process(es) on demand. Only the app's audio is switched; the default
+        /// device is never touched.
+        /// </summary>
+        public HotKey? HotKey { get; set; }
 
         [Obsolete("Migrated to " + nameof(PlaybackDevice))]
         public string? PlaybackDeviceId { get; set; }
@@ -31,6 +39,7 @@ namespace SoundSwitch.Model
                 WindowName = WindowName,
                 PlaybackDevice = PlaybackDevice,
                 RecordingDevice = RecordingDevice,
+                HotKey = HotKey,
                 Enabled = Enabled,
                 Notify = Notify
             };
