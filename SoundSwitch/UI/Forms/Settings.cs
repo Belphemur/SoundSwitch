@@ -516,22 +516,42 @@ public sealed partial class SettingsForm : Form
                     string.Format(monitorLabel, i + 1, screens[i].DeviceName), screens[i].DeviceName, false));
             }
 
-            var screenIndex = Array.FindIndex(screens,
-                screen => string.Equals(screen.DeviceName, savedDeviceName, StringComparison.OrdinalIgnoreCase));
-
-            // Indices 0 and 1 are the cursor/primary pseudo entries, so only a matched screen has
-            // to be shifted by the two entries prepended above. Offsets 0/1 are already combo
-            // indices, and adding the offset to them would name a physical monitor instead - or run
-            // past the end of the list on a single-display setup.
-            _bannerMonitorComboBox.SelectedIndex = screenIndex >= 0
-                ? screenIndex + 2
-                : AppModel.Instance.NotifyUsingPrimaryScreen ? 1 : 0;
+            _bannerMonitorComboBox.SelectedIndex = ResolveMonitorSelectionIndex(
+                screens.Select(screen => screen.DeviceName).ToList(),
+                savedDeviceName,
+                AppModel.Instance.NotifyUsingPrimaryScreen);
         }
         finally
         {
             _bannerMonitorComboBox.EndUpdate();
             _suppressBannerMonitorSelection = false;
         }
+    }
+
+    /// <summary>
+    /// Combo box index for the banner monitor selection.
+    /// </summary>
+    /// <param name="connectedDeviceNames">Device names of the connected displays, in list order</param>
+    /// <param name="savedDeviceName">Pinned device name, may be null</param>
+    /// <param name="usePrimaryScreen">Whether to fall back to the primary screen</param>
+    /// <remarks>
+    /// Indices 0 and 1 are the cursor and primary pseudo entries, the connected displays follow, so
+    /// the result is always inside the list. Only a matched display has to be shifted past the two
+    /// pseudo entries: 0 and 1 are already usable indices, and shifting them would name a physical
+    /// monitor instead - or run past the end of the list on a single-display setup.
+    /// </remarks>
+    internal static int ResolveMonitorSelectionIndex(
+        IReadOnlyList<string> connectedDeviceNames, string savedDeviceName, bool usePrimaryScreen)
+    {
+        const int MONITOR_ENTRY_OFFSET = 2;
+
+        for (var i = 0; i < connectedDeviceNames.Count; i++)
+        {
+            if (string.Equals(connectedDeviceNames[i], savedDeviceName, StringComparison.OrdinalIgnoreCase))
+                return i + MONITOR_ENTRY_OFFSET;
+        }
+
+        return usePrimaryScreen ? 1 : 0;
     }
 
     private void BannerMonitorSelectionChanged()

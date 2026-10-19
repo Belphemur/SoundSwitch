@@ -110,9 +110,6 @@ public partial class BannerForm : Form
     private static readonly List<BannerForm> ActiveBanners = new();
     private static SynchronizationContext _uiContext;
 
-    private const float COMPACT_FONT_SCALE = 0.8f;
-    private const float COMPACT_IMAGE_SCALE = 1.5f;
-
     public Guid Id { get; } = Guid.NewGuid();
 
     /// <summary>
@@ -129,16 +126,24 @@ public partial class BannerForm : Form
     /// </summary>
     internal static Screen GetScreen()
     {
-        var monitor = AppModel.Instance.BannerMonitorDeviceName;
-        if (!string.IsNullOrEmpty(monitor))
-        {
-            foreach (var screen in Screen.AllScreens)
-                if (string.Equals(screen.DeviceName, monitor, StringComparison.OrdinalIgnoreCase))
-                    return screen;
-        }
+        foreach (var screen in Screen.AllScreens)
+            if (IsPinnedDevice(screen.DeviceName, AppModel.Instance.BannerMonitorDeviceName))
+                return screen;
 
         return (AppModel.Instance.NotifyUsingPrimaryScreen ? Screen.PrimaryScreen : Screen.FromPoint(Cursor.Position))!;
     }
+
+    /// <summary>
+    /// Whether <paramref name="deviceName"/> is the display pinned for the banner.
+    /// </summary>
+    /// <remarks>
+    /// An unpinned or no-longer connected display never matches, so <see cref="GetScreen"/> falls
+    /// back to the primary or cursor screen. Matching is case-insensitive because displays are
+    /// identified by name rather than by handle.
+    /// </remarks>
+    internal static bool IsPinnedDevice(string? deviceName, string? pinnedDeviceName) =>
+        !string.IsNullOrEmpty(pinnedDeviceName) &&
+        string.Equals(deviceName, pinnedDeviceName, StringComparison.OrdinalIgnoreCase);
 
     /// <summary>
     /// Re-apply the appearance settings and the selected monitor to every banner currently on
@@ -546,7 +551,7 @@ public partial class BannerForm : Form
     private void ApplyColors()
     {
         BackColor = AppModel.Instance.BannerBackgroundColor;
-        ForeColor = BackColor.GetBrightness() < 0.5f ? Color.White : Color.Black;
+        ForeColor = BannerAppearance.ContrastingForeground(BackColor);
         lblTitle.ForeColor = ForeColor;
         lblTop.ForeColor = ForeColor;
     }
@@ -581,19 +586,16 @@ public partial class BannerForm : Form
     /// </summary>
     private void ApplyBannerScale(bool compactMode)
     {
-        var scale = AppModel.Instance.BannerScalePercentage / 100f;
-        var fontScale = scale * (compactMode ? COMPACT_FONT_SCALE : 1f);
+        var scalePercentage = AppModel.Instance.BannerScalePercentage;
+        var fontScale = BannerAppearance.FontScale(scalePercentage, compactMode);
         ApplyScaledFonts(fontScale);
 
-        // Scale the icon actually being displayed. _defaultPictureSize is the designer's 16x16
+        // The icon being displayed drives the size: _defaultPictureSize is the designer's 16x16
         // placeholder box while notification icons are 32x32, so scaling that placeholder would
         // halve every regular banner.
-        var imageScale = scale * (compactMode ? COMPACT_IMAGE_SCALE : 1f);
-        var baseSize = pbxLogo.Image?.Size ?? _defaultPictureSize;
+        var imageScale = BannerAppearance.ImageScale(scalePercentage, compactMode);
         pbxLogo.SizeMode = PictureBoxSizeMode.Zoom;
-        pbxLogo.Size = new Size(
-            Math.Max(1, (int)Math.Round(baseSize.Width * imageScale)),
-            Math.Max(1, (int)Math.Round(baseSize.Height * imageScale)));
+        pbxLogo.Size = BannerAppearance.ResolveImageSize(pbxLogo.Image?.Size, _defaultPictureSize, imageScale);
 
         Padding = new Padding(
             (int)Math.Round(_defaultPadding.Left * fontScale),

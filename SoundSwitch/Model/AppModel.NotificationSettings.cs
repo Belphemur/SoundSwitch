@@ -32,12 +32,12 @@ public partial class AppModel
     /// <summary>
     /// Smallest banner scale, in percent, the UI offers.
     /// </summary>
-    public const int BannerScaleMinimum = 50;
+    public const int BannerScaleMinimum = BannerAppearance.MinScalePercentage;
 
     /// <summary>
     /// Largest banner scale, in percent, the UI offers.
     /// </summary>
-    public const int BannerScaleMaximum = 200;
+    public const int BannerScaleMaximum = BannerAppearance.MaxScalePercentage;
     public int BannerOnScreenTimeSecs
     {
         get => (int)BannerOnScreenTime.TotalSeconds;
