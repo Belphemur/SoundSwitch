@@ -49,6 +49,15 @@ website/
 - Keep user-visible strings in the Markdown pages; avoid embedding prose in
   Vue component templates.
 
+## Documentation Sync
+
+This folder is the canonical user-facing documentation, and `img/Documentation/`
+is the single source of the screenshots served here as `/images/` (through the
+`src/.vuepress/public/images` symlink). When a user-visible feature or setting
+changes, update the affected page **and** re-capture its screenshot in the same
+change. Never hand-crop a screenshot — use the `documentation-sync` skill and
+`tools/Capture-DocumentationScreenshot.ps1`.
+
 ## Validation
 
 ```bash

@@ -33,6 +33,14 @@ This file defines repository-wide guidance for the SoundSwitch workspace. More s
 
 Apply **DRY > SOLID > KISS** in that priority order when they conflict. The detailed guidance lives in the repo skill [`.opencode/skills/dry-solid-kiss/SKILL.md`](./.opencode/skills/dry-solid-kiss/SKILL.md); load the `dry-solid-kiss` skill when implementing, refactoring, or reviewing code.
 
+## User Documentation
+
+When a change alters what a user **sees or does** — a new setting, tab, button, default, trigger, or notification behaviour — update the matching website pages and screenshots in the same change. Docs drift counts as an incomplete change, not a follow-up. The detailed workflow lives in the repo skill [`.opencode/skills/documentation-sync/SKILL.md`](./.opencode/skills/documentation-sync/SKILL.md); load the `documentation-sync` skill when implementing or reviewing a user-visible feature.
+
+- Website pages live in `website/src/**/*.md`; validate with `cd website && npm run docs:build`.
+- Screenshots live in `img/Documentation/**` and are exposed to the site as `/images/` through the symlink `website/src/.vuepress/public/images`. Update the PNG once there and both the website and the root `README.md` pick it up.
+- Capture screenshots with automation, never a manual full-screen grab: `pwsh tools/Capture-DocumentationScreenshot.ps1 -Name Notifications -Tab Notifications`.
+
 ## Commits
 
 - Use conventional commits for commit messages.
