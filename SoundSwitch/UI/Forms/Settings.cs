@@ -110,6 +110,16 @@ public sealed partial class SettingsForm : Form
             : Color.White;
 
     /// <summary>
+    /// Accent used by <see cref="LinkLabel"/> links. The framework defaults
+    /// (blue / red / purple) are unreadable on the dark surface, so dark mode uses the
+    /// same light accent as the ListView group captions. <see cref="Color.Empty"/> keeps
+    /// the framework defaults in light mode.
+    /// </summary>
+    internal static Color GetLinkColor(bool darkModeEnabled) => darkModeEnabled
+            ? Color.LightSkyBlue
+            : Color.Empty;
+
+    /// <summary>
     /// Surface used by the settings tab pages. The Designer sets
     /// <c>UseVisualStyleBackColor = true</c>, which paints the classic light tab-page strip
     /// even when Windows is in dark app mode, so the pages take an explicit surface instead.
@@ -659,6 +669,17 @@ public sealed partial class SettingsForm : Form
         foreach (var groupBox in EnumerateControls(this).OfType<GroupBox>())
         {
             groupBox.ForeColor = textColor;
+        }
+
+        // LinkLabel defaults to blue/red/purple, which disappear on the dark surface.
+        // One accent for every state keeps links readable; Color.Empty restores the
+        // framework defaults in light mode.
+        var linkColor = GetLinkColor(darkMode);
+        foreach (var linkLabel in EnumerateControls(this).OfType<LinkLabel>())
+        {
+            linkLabel.LinkColor = linkColor;
+            linkLabel.ActiveLinkColor = linkColor;
+            linkLabel.VisitedLinkColor = linkColor;
         }
 
         // The custom-sound check sets an explicit state-dependent foreground, so it must
