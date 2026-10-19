@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "sync:changelog": "node scripts/sync-changelog.mjs",
-    "docs:dev": "npm run sync:changelog && vuepress dev src",
-    "docs:build": "npm run sync:changelog && vuepress build src",
+    "sync:contributors": "node scripts/sync-contributors.mjs",
+    "docs:dev": "npm run sync:changelog && npm run sync:contributors && vuepress dev src",
+    "docs:build": "npm run sync:changelog && npm run sync:contributors && vuepress build src",
     "deploy": "npm run docs:build && wrangler deploy",
     "preview": "npm run docs:build && wrangler dev"
   },

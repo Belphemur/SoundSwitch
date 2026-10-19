@@ -37,3 +37,11 @@ Need more detail? Head over to the [full Getting Started guide](./getting-starte
 
 For AI assistants and tooling, the website also publishes an LLM index at
 [`/llms.txt`](/llms.txt).
+
+---
+
+## Contributors
+
+SoundSwitch is built and maintained by volunteers in their spare time. See the
+[contributors page](/contributors.html) for everyone who has contributed code,
+documentation, translations and designs.
