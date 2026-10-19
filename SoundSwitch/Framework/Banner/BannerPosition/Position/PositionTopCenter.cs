@@ -25,5 +25,8 @@ internal class PositionTopCenter : APosition, IPosition
     public string Label => SettingsStrings.position_topCenter;
 
     public Point GetScreenPosition(Screen screen, int height, int width, int offset) =>
-        new(PositionCenterX(screen, width), PositionTop(screen, offset));
+        GetPosition(screen.Bounds, height, width, offset);
+
+    public Point GetPosition(Rectangle bounds, int height, int width, int offset) =>
+        new(PositionCenterX(bounds, width), PositionTop(bounds, offset));
 }

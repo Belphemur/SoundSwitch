@@ -90,6 +90,7 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
     public NotificationType MicrophoneMuteNotification { get; set; } = NotificationType.NoNotification;
     public BannerPosition BannerPosition { get; set; } = BannerPosition.TopLeft;
     public Point CustomBannerPosition { get; set; } = Point.Empty;
+    public bool HasCustomBannerPosition { get; set; }
     public MicrophoneMute MicrophoneMuteBanner { get; set; } = MicrophoneMute.Persistent;
     public MicrophoneMute MicrophoneUnmuteBanner { get; set; } = MicrophoneMute.None;
     public string CustomNotificationFilePath { get; set; }
@@ -97,6 +98,9 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
     public int BannerOpacityPercentage { get; set; } = 100;
     public int MaxNumberNotification { get; set; } = 5;
     public bool NotifyUsingPrimaryScreen { get; set; }
+    public string BannerMonitorDeviceName { get; set; }
+    public int BannerBackgroundArgb { get; set; } = Color.Black.ToArgb();
+    public int BannerScalePercentage { get; set; } = 100;
     public BannerDisplayInfo BannerDisplayInfo { get; set; } = BannerDisplayInfo.FullDisplay;
 
     [Obsolete("Replaced by " + nameof(MicrophoneMutePersistent))]
@@ -277,6 +281,20 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
             }
 
             MigratedFields.Add("CleanupProfilesForeground");
+            migrated = true;
+        }
+
+        if (!MigratedFields.Contains(nameof(HasCustomBannerPosition)))
+        {
+            // Configurations from before the flag existed only stored the point, so a non-empty
+            // one is a placement the user chose. Deriving the flag from it keeps their custom
+            // position instead of dropping them back to the centre of the screen.
+            if (!CustomBannerPosition.IsEmpty)
+            {
+                HasCustomBannerPosition = true;
+            }
+
+            MigratedFields.Add(nameof(HasCustomBannerPosition));
             migrated = true;
         }
 

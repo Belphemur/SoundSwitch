@@ -30,4 +30,15 @@ public interface IPosition : IEnumImpl<BannerPosition>
     /// <param name="offset"></param>
     /// <returns></returns>
     public Point GetScreenPosition(Screen screen, int height, int width, int offset);
+
+    /// <summary>
+    /// Same as <see cref="GetScreenPosition"/>, but working on plain bounds instead of a
+    /// <see cref="Screen"/>, so the strategy can be exercised against any display layout.
+    /// </summary>
+    /// <param name="bounds">Bounds of the display the banner must be placed on</param>
+    /// <param name="height"></param>
+    /// <param name="width"></param>
+    /// <param name="offset"></param>
+    /// <returns></returns>
+    public Point GetPosition(Rectangle bounds, int height, int width, int offset);
 }

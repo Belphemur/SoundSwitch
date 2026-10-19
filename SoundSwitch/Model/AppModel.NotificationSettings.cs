@@ -16,6 +16,7 @@
 using System;
 using System.Drawing;
 using SoundSwitch.Framework.Audio;
+using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Banner.BannerDisplayInfo;
 using SoundSwitch.Framework.Banner.BannerPosition;
 using SoundSwitch.Framework.Banner.BannerPosition.Position;
@@ -28,6 +29,15 @@ namespace SoundSwitch.Model;
 
 public partial class AppModel
 {
+    /// <summary>
+    /// Smallest banner scale, in percent, the UI offers.
+    /// </summary>
+    public const int BannerScaleMinimum = BannerAppearance.MinScalePercentage;
+
+    /// <summary>
+    /// Largest banner scale, in percent, the UI offers.
+    /// </summary>
+    public const int BannerScaleMaximum = BannerAppearance.MaxScalePercentage;
     public int BannerOnScreenTimeSecs
     {
         get => (int)BannerOnScreenTime.TotalSeconds;
@@ -246,10 +256,19 @@ public partial class AppModel
         set
         {
             AppConfigs.Configuration.CustomBannerPosition = value;
+            // Records that the user chose this position. The point itself cannot signal that:
+            // its default (0,0) is also a reachable position on the primary display.
+            AppConfigs.Configuration.HasCustomBannerPosition = true;
             AppConfigs.Configuration.Save();
         }
 
     }
+
+    /// <summary>
+    /// Whether the user has placed the banner at a custom position. False until the banner is
+    /// dragged into place or recentred with the R shortcut.
+    /// </summary>
+    public bool HasCustomBannerPosition => AppConfigs.Configuration.HasCustomBannerPosition;
 
     /// <summary>
     /// Current banner position implementation based on the BannerPosition setting
@@ -293,6 +312,63 @@ public partial class AppModel
         {
             AppConfigs.Configuration.NotifyUsingPrimaryScreen = value;
             AppConfigs.Configuration.Save();
+        }
+    }
+
+    public string BannerMonitorDeviceName
+    {
+        get => AppConfigs.Configuration.BannerMonitorDeviceName;
+        set
+        {
+            AppConfigs.Configuration.BannerMonitorDeviceName = value;
+            AppConfigs.Configuration.NotifyUsingPrimaryScreen = false;
+            AppConfigs.Configuration.Save();
+            BannerForm.RefreshVisibleBanners();
+        }
+    }
+
+    /// <summary>
+    /// Selects the display the banner is shown on.
+    /// </summary>
+    /// <param name="deviceName">Device name of the monitor to pin the banner to, or null to follow
+    /// the cursor/primary fallback</param>
+    /// <param name="usePrimaryScreen">Whether to fall back to the primary screen when no monitor is
+    /// pinned</param>
+    /// <remarks>
+    /// Both settings take part in <c>GetScreen()</c>, so they are written together and the refresh
+    /// runs once, afterwards. Setting them through the individual properties would move the visible
+    /// banners while only half of the new selection was in place.
+    /// </remarks>
+    public void SetBannerMonitor(string deviceName, bool usePrimaryScreen)
+    {
+        AppConfigs.Configuration.BannerMonitorDeviceName = deviceName;
+        AppConfigs.Configuration.NotifyUsingPrimaryScreen =
+            string.IsNullOrEmpty(deviceName) && usePrimaryScreen;
+        AppConfigs.Configuration.Save();
+        BannerForm.RefreshVisibleBanners();
+    }
+
+    public Color BannerBackgroundColor
+    {
+        get => Color.FromArgb(AppConfigs.Configuration.BannerBackgroundArgb);
+        set
+        {
+            AppConfigs.Configuration.BannerBackgroundArgb = value.ToArgb();
+            AppConfigs.Configuration.Save();
+            BannerForm.RefreshVisibleBanners();
+        }
+    }
+
+    public int BannerScalePercentage
+    {
+        get => AppConfigs.Configuration.BannerScalePercentage is >= BannerScaleMinimum and <= BannerScaleMaximum
+            ? AppConfigs.Configuration.BannerScalePercentage : 100;
+        set
+        {
+            if (value is < BannerScaleMinimum or > BannerScaleMaximum) return;
+            AppConfigs.Configuration.BannerScalePercentage = value;
+            AppConfigs.Configuration.Save();
+            BannerForm.RefreshVisibleBanners();
         }
     }
 

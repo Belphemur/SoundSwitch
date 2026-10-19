@@ -13,6 +13,7 @@
  ********************************************************************/
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
@@ -89,20 +90,99 @@ public partial class BannerForm : Form
     private CancellationTokenSource _cancellationTokenSource = new();
     private int _currentOffset;
     private int _hide = 100;
-    private float _defaultFontSize;
     private Size _defaultPictureSize;
     private Padding _defaultPadding;
-    private bool _isCompact;
-    private Point _lastMousePosition;
+    private BannerFontSpec _defaultFont;
+    private BannerFontSpec _defaultTopFont;
+    private BannerFontSpec _defaultTitleFont;
+    private Font _scaledFont;
+    private Font _scaledTopFont;
+    private Font _scaledTitleFont;
+    private float _appliedFontScale = float.NaN;
+    private Point _dragStartCursor;
+    private Point _dragStartLocation;
     private CustomPositionMessageFilter _customPositionMessageFilter;
+
+    /// <summary>
+    /// Banner forms are created and destroyed on the UI thread, so this list is only ever
+    /// touched there.
+    /// </summary>
+    private static readonly List<BannerForm> ActiveBanners = new();
+    private static SynchronizationContext _uiContext;
 
     public Guid Id { get; } = Guid.NewGuid();
 
     /// <summary>
+    /// Immutable description of a control's design-time font, so scaling always derives from the
+    /// pristine values instead of compounding the previous scale.
+    /// </summary>
+    private sealed record BannerFontSpec(FontFamily Family, FontStyle Style, float Size)
+    {
+        public static BannerFontSpec From(Font font) => new(font.FontFamily, font.Style, font.Size);
+    }
+
+    /// <summary>
     /// Get the Screen object
     /// </summary>
-    internal static Screen GetScreen() =>
-        (AppModel.Instance.NotifyUsingPrimaryScreen ? Screen.PrimaryScreen : Screen.FromPoint(Cursor.Position))!;
+    internal static Screen GetScreen()
+    {
+        foreach (var screen in Screen.AllScreens)
+            if (IsPinnedDevice(screen.DeviceName, AppModel.Instance.BannerMonitorDeviceName))
+                return screen;
+
+        return (AppModel.Instance.NotifyUsingPrimaryScreen ? Screen.PrimaryScreen : Screen.FromPoint(Cursor.Position))!;
+    }
+
+    /// <summary>
+    /// Whether <paramref name="deviceName"/> is the display pinned for the banner.
+    /// </summary>
+    /// <remarks>
+    /// An unpinned or no-longer connected display never matches, so <see cref="GetScreen"/> falls
+    /// back to the primary or cursor screen. Matching is case-insensitive because displays are
+    /// identified by name rather than by handle.
+    /// </remarks>
+    internal static bool IsPinnedDevice(string? deviceName, string? pinnedDeviceName) =>
+        !string.IsNullOrEmpty(pinnedDeviceName) &&
+        string.Equals(deviceName, pinnedDeviceName, StringComparison.OrdinalIgnoreCase);
+
+    /// <summary>
+    /// Re-apply the appearance settings and the selected monitor to every banner currently on
+    /// screen, so changing them in Settings does not have to wait for the next notification.
+    /// </summary>
+    public static void RefreshVisibleBanners()
+    {
+        var context = _uiContext;
+        if (context == null) return;
+
+        if (SynchronizationContext.Current == context)
+        {
+            RefreshVisibleBannersCore();
+            return;
+        }
+
+        context.Send(_ => RefreshVisibleBannersCore(), null);
+    }
+
+    private static void RefreshVisibleBannersCore()
+    {
+        // Snapshot the list: resizing a banner can make it disappear and dispose itself.
+        foreach (var banner in ActiveBanners.ToArray())
+            banner.RefreshAppearance();
+    }
+
+    /// <summary>
+    /// Re-read the banner appearance settings and move this banner back onto the configured
+    /// monitor. The refresh is idempotent, so it is safe to call on banners that are being hidden.
+    /// </summary>
+    public void RefreshAppearance()
+    {
+        if (IsDisposed || _currentData?.Position == null) return;
+
+        ApplyColors();
+        ApplyBannerScale(_currentData.CompactMode);
+        UpdateRegion();
+        Location = _currentData.Position.GetScreenPosition(GetScreen(), Height, Width, _currentOffset);
+    }
 
     /// <summary>
     /// Constructor for the <see cref="BannerForm"/> class
@@ -116,10 +196,17 @@ public partial class BannerForm : Form
         FormBorderStyle = FormBorderStyle.None;
         ShowInTaskbar = false;
 
-        // Store default sizes for compact mode calculations
-        _defaultFontSize = Font.Size;
+        // Store default sizes for banner scaling calculations
         _defaultPictureSize = pbxLogo.Size;
         _defaultPadding = Padding;
+        _defaultFont = BannerFontSpec.From(Font);
+        _defaultTopFont = BannerFontSpec.From(lblTop.Font);
+        _defaultTitleFont = BannerFontSpec.From(lblTitle.Font);
+
+        // BannerManager marshals every banner onto the UI thread, so this is the context that owns
+        // the forms and must also run the appearance refreshes.
+        _uiContext ??= SynchronizationContext.Current;
+        ActiveBanners.Add(this);
 
         // Register event handlers
         RegisterHandlers(this);
@@ -159,6 +246,13 @@ public partial class BannerForm : Form
         int cx,
         int cy,
         SetWindowPosFlags uFlags);
+
+    /// <summary>
+    /// Releases a GDI handle created by <c>CreateRoundRectRgn</c>.
+    /// </summary>
+    [DllImport("gdi32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool DeleteObject(IntPtr handle);
 
     protected override CreateParams CreateParams
     {
@@ -321,6 +415,7 @@ public partial class BannerForm : Form
         if (_currentData != null && _currentData.Priority > data.Priority) return;
 
         _currentData = data;
+        ApplyColors();
 
         if (data.Ttl != TimeSpan.MaxValue)
         {
@@ -362,10 +457,9 @@ public partial class BannerForm : Form
             _customPositionMessageFilter = null;
         }
 
-        if (data.CompactMode)
-            ApplyCompactMode();
+        ApplyBannerScale(data.CompactMode);
 
-        Region = Region.FromHrgn(RoundedCorner.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+        UpdateRegion();
         Location = data.Position.GetScreenPosition(GetScreen(), Height, Width, _currentOffset);
 
         // C# 14 null-conditional assignment: only assigns when a timer exists
@@ -450,40 +544,101 @@ public partial class BannerForm : Form
         PerformLayout();
     }
 
-    private void ApplyCompactMode()
+    /// <summary>
+    /// Applies the configured banner colours, picking the foreground that contrasts best with the
+    /// configured background.
+    /// </summary>
+    private void ApplyColors()
     {
-        if (_isCompact) return;
+        BackColor = AppModel.Instance.BannerBackgroundColor;
+        ForeColor = BannerAppearance.ContrastingForeground(BackColor);
+        lblTitle.ForeColor = ForeColor;
+        lblTop.ForeColor = ForeColor;
+    }
 
-        const float scaleFactorImage = 0.1f;
-        const float scaleFactorFont = 0.8f;
-
-        Font = new Font(Font.FontFamily, _defaultFontSize * scaleFactorFont, Font.Style);
-        lblTop.Font = new Font(lblTop.Font.FontFamily, lblTop.Font.Size * scaleFactorFont, lblTop.Font.Style);
-        lblTitle.Font = new Font(lblTitle.Font.FontFamily, lblTitle.Font.Size * scaleFactorFont, lblTitle.Font.Style);
-
-        if (pbxLogo.Image != null && _defaultPictureSize.Width > 0 && _defaultPictureSize.Height > 0)
+    /// <summary>
+    /// Recomputes the rounded corner region for the current size, releasing the previous region
+    /// and the intermediate GDI handle. Banners are refreshed repeatedly, so leaking either one
+    /// would grow the process' GDI handle count for as long as SoundSwitch runs.
+    /// </summary>
+    private void UpdateRegion()
+    {
+        var handle = RoundedCorner.CreateRoundRectRgn(0, 0, Width, Height, 20, 20);
+        Region region;
+        try
         {
-            var newWidth = (int)(_defaultPictureSize.Width * scaleFactorImage);
-            var newHeight = (int)(_defaultPictureSize.Height * scaleFactorImage);
-
-            if (newWidth > 0 && newHeight > 0)
-                pbxLogo.Size = new Size(newWidth, newHeight);
+            region = Region.FromHrgn(handle);
+        }
+        finally
+        {
+            // Region.FromHrgn copies the handle, so ours has to be released either way.
+            if (handle != IntPtr.Zero)
+                DeleteObject(handle);
         }
 
-        Padding = new Padding(
-            (int)(_defaultPadding.Left * scaleFactorImage),
-            (int)(_defaultPadding.Top * scaleFactorImage),
-            (int)(_defaultPadding.Right * scaleFactorImage),
-            (int)(_defaultPadding.Bottom * scaleFactorImage));
+        var previous = Region;
+        Region = region;
+        previous?.Dispose();
+    }
 
+    /// <summary>
+    /// Applies the user configured scale, optionally reduced for the compact microphone banners.
+    /// </summary>
+    private void ApplyBannerScale(bool compactMode)
+    {
+        var scalePercentage = AppModel.Instance.BannerScalePercentage;
+        var fontScale = BannerAppearance.FontScale(scalePercentage, compactMode);
+        ApplyScaledFonts(fontScale);
+
+        // The icon being displayed drives the size: _defaultPictureSize is the designer's 16x16
+        // placeholder box while notification icons are 32x32, so scaling that placeholder would
+        // halve every regular banner.
+        var imageScale = BannerAppearance.ImageScale(scalePercentage, compactMode);
+        pbxLogo.SizeMode = PictureBoxSizeMode.Zoom;
+        pbxLogo.Size = BannerAppearance.ResolveImageSize(pbxLogo.Image?.Size, _defaultPictureSize, imageScale);
+
+        Padding = new Padding(
+            (int)Math.Round(_defaultPadding.Left * fontScale),
+            (int)Math.Round(_defaultPadding.Top * fontScale),
+            (int)Math.Round(_defaultPadding.Right * fontScale),
+            (int)Math.Round(_defaultPadding.Bottom * fontScale));
         PerformLayout();
-        _isCompact = true;
+    }
+
+    /// <summary>
+    /// Resizes the banner fonts for <paramref name="fontScale"/>, skipping the allocation entirely
+    /// when the effective scale has not changed. Banner forms are reused for successive
+    /// notifications, so without this guard every update would add three GDI font handles.
+    /// </summary>
+    private void ApplyScaledFonts(float fontScale)
+    {
+        if (_appliedFontScale.Equals(fontScale)) return;
+        _appliedFontScale = fontScale;
+
+        _scaledFont = ReplaceFont(_scaledFont, this, _defaultFont, fontScale);
+        _scaledTopFont = ReplaceFont(_scaledTopFont, lblTop, _defaultTopFont, fontScale);
+        _scaledTitleFont = ReplaceFont(_scaledTitleFont, lblTitle, _defaultTitleFont, fontScale);
+    }
+
+    /// <summary>
+    /// Swaps in a font derived from <paramref name="spec"/>. The previous instance is disposed only
+    /// after the control points at its replacement, because a control still rendering with a
+    /// released GDI font handle brings the process down.
+    /// </summary>
+    private static Font ReplaceFont(Font owned, Control control, BannerFontSpec spec, float scale)
+    {
+        var font = new Font(spec.Family, spec.Size * scale, spec.Style);
+        control.Font = font;
+        owned?.Dispose();
+        return font;
     }
 
     protected override void Dispose(bool disposing)
     {
         if (disposing)
         {
+            ActiveBanners.Remove(this);
+
             if (_customPositionMessageFilter != null)
             {
                 Application.RemoveMessageFilter(_customPositionMessageFilter);
@@ -496,6 +651,15 @@ public partial class BannerForm : Form
         }
 
         base.Dispose(disposing);
+
+        if (!disposing) return;
+
+        // Fonts this form created for scaling; the designer's originals are not ours to dispose.
+        // Released only after the controls are torn down, because a control still holding a
+        // released GDI font handle brings the process down.
+        _scaledFont?.Dispose();
+        _scaledTopFont?.Dispose();
+        _scaledTitleFont?.Dispose();
     }
 
     private void TimerHide_Tick(object sender, EventArgs e) => TriggerHidingDisposal();
@@ -551,7 +715,9 @@ public partial class BannerForm : Form
         if (_currentData == null || !_currentData.CustomPositionMode) return;
         if (e.Button == MouseButtons.Left)
         {
-            _lastMousePosition = new Point(e.X, e.Y);
+            _dragStartCursor = Cursor.Position;
+            _dragStartLocation = Location;
+            Capture = true;
             _timerHide?.Stop();
         }
     }
@@ -561,6 +727,7 @@ public partial class BannerForm : Form
         if (_currentData == null || !_currentData.CustomPositionMode) return;
         if (e.Button == MouseButtons.Left)
         {
+            Capture = false;
             AppModel.Instance.CustomBannerPosition = Location;
             _timerHide?.Start();
         }
@@ -574,11 +741,11 @@ public partial class BannerForm : Form
             var screen = GetScreen().Bounds;
 
             Point newLocation = new(
-                Left + e.X - _lastMousePosition.X,
-                Top + e.Y - _lastMousePosition.Y);
+                _dragStartLocation.X + Cursor.Position.X - _dragStartCursor.X,
+                _dragStartLocation.Y + Cursor.Position.Y - _dragStartCursor.Y);
 
-            newLocation.X = Math.Max(0, Math.Min(newLocation.X, screen.Width - Width));
-            newLocation.Y = Math.Max(0, Math.Min(newLocation.Y, screen.Height - Height));
+            newLocation.X = Math.Max(screen.Left, Math.Min(newLocation.X, screen.Right - Width));
+            newLocation.Y = Math.Max(screen.Top, Math.Min(newLocation.Y, screen.Bottom - Height));
 
             Location = newLocation;
         }
@@ -602,7 +769,10 @@ public partial class BannerForm : Form
                 Dispose();
                 return true;
             case Keys.R:
-                Location = Point.Empty;
+                var screen = GetScreen();
+                Location = new Point(
+                    (screen.Bounds.Left + screen.Bounds.Right - Width) / 2,
+                    (screen.Bounds.Top + screen.Bounds.Bottom - Height) / 2);
                 AppModel.Instance.CustomBannerPosition = Location;
                 return true;
             default:

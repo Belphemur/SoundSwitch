@@ -58,6 +58,13 @@ public interface ISoundSwitchConfiguration : IConfiguration
     Point CustomBannerPosition { get; set; }
 
     /// <summary>
+    /// Whether <see cref="CustomBannerPosition"/> holds a position the user actually chose.
+    /// A separate flag is needed because (0,0) is both the default value and the reachable
+    /// top-left corner of the primary display.
+    /// </summary>
+    bool HasCustomBannerPosition { get; set; }
+
+    /// <summary>
     /// Show a banner when microphone is muted
     /// </summary>
     MicrophoneMute MicrophoneMuteBanner { get; set; }
@@ -72,6 +79,9 @@ public interface ISoundSwitchConfiguration : IConfiguration
 
     bool SwitchForegroundProgram { get; set; }
     bool NotifyUsingPrimaryScreen { get; set; }
+    string BannerMonitorDeviceName { get; set; }
+    int BannerBackgroundArgb { get; set; }
+    int BannerScalePercentage { get; set; }
 
     bool AutoAddNewConnectedDevices { get; set; }
 

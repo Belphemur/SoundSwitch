@@ -25,5 +25,8 @@ internal class PositionTopRight : APosition, IPosition
     public string Label => SettingsStrings.position_topRight;
 
     public Point GetScreenPosition(Screen screen, int height, int width, int offset) =>
-        new(PositionRight(screen, width), PositionTop(screen, offset));
+        GetPosition(screen.Bounds, height, width, offset);
+
+    public Point GetPosition(Rectangle bounds, int height, int width, int offset) =>
+        new(PositionRight(bounds, width), PositionTop(bounds, offset));
 }

@@ -25,5 +25,8 @@ internal class PositionCenter : APosition, IPosition
     public string Label => SettingsStrings.position_center;
 
     public Point GetScreenPosition(Screen screen, int height, int width, int offset) =>
-        new(PositionCenterX(screen, width), PositionCenterY(screen, height));
+        GetPosition(screen.Bounds, height, width, offset);
+
+    public Point GetPosition(Rectangle bounds, int height, int width, int offset) =>
+        new(PositionCenterX(bounds, width), PositionCenterY(bounds, height));
 }

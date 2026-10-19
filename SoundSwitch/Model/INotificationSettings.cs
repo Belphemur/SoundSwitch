@@ -51,6 +51,12 @@ public interface INotificationSettings
 
     Point CustomBannerPosition { get; set; }
 
+    /// <summary>
+    /// Whether <see cref="CustomBannerPosition"/> holds a position the user actually chose.
+    /// Its default (0,0) is also a reachable position, so the point cannot signal this itself.
+    /// </summary>
+    bool HasCustomBannerPosition { get; }
+
     TimeSpan BannerOnScreenTime { get; set; }
     int BannerOnScreenTimeSecs { get; set; }
     int BannerOpacityPercentage { get; set; }
@@ -85,6 +91,19 @@ public interface INotificationSettings
     /// Always show banner on primary screen instead of active screen
     /// </summary>
     bool NotifyUsingPrimaryScreen { get; set; }
+    string BannerMonitorDeviceName { get; set; }
+    Color BannerBackgroundColor { get; set; }
+    int BannerScalePercentage { get; set; }
+
+    /// <summary>
+    /// Selects the display the banner is shown on, applying the monitor and the primary-screen
+    /// fallback as one update.
+    /// </summary>
+    /// <param name="deviceName">Device name of the monitor to pin the banner to, or null to follow
+    /// the cursor/primary fallback</param>
+    /// <param name="usePrimaryScreen">Whether to fall back to the primary screen when no monitor is
+    /// pinned</param>
+    void SetBannerMonitor(string deviceName, bool usePrimaryScreen);
 
     /// <summary>
     /// If the NotificationSettings has been modified

@@ -23,6 +23,8 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Windows.Forms;
 
+using Microsoft.Win32;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -78,6 +80,12 @@ public sealed partial class SettingsForm : Form
     private readonly BannerManager _bannerManager = new();
     private IDisposable _deviceListRefreshedSubscription;
     private IDisposable _themeChangedSubscription;
+    private IDisposable _displaySettingsChangedSubscription;
+    private bool _suppressBannerMonitorSelection;
+    private Panel _bannerColorSwatch;
+    private ComboBox _bannerMonitorComboBox;
+    private Button _bannerColorButton;
+    private NumericUpDownWithUnits _bannerScaleUpDown;
 
     private const int RECT_PEN_WIDTH = 4;
     private const int OFFSET_W = 15;
@@ -154,6 +162,7 @@ public sealed partial class SettingsForm : Form
         _audioDeviceLister = audioDeviceLister;
         // Form itself
         InitializeComponent();
+        InitializeBannerAppearanceControls();
         ApplyTheme();
 #if NIGHTLY
         var nightlyChannelCheckBox = new CheckBox
@@ -372,7 +381,281 @@ public sealed partial class SettingsForm : Form
                 if (!IsHandleCreated || IsDisposed) return;
                 BeginInvoke(RefreshTheme);
             });
+
+        // The monitor selector is built from a snapshot of the connected displays, so refresh it
+        // when one is plugged in or unplugged while the form is open.
+        _displaySettingsChangedSubscription = Observable
+            .FromEventPattern<EventHandler, EventArgs>(
+                h => SystemEvents.DisplaySettingsChanged += h,
+                h => SystemEvents.DisplaySettingsChanged -= h)
+            .Subscribe(_ =>
+            {
+                if (!IsHandleCreated || IsDisposed) return;
+                BeginInvoke(() =>
+                {
+                    if (IsDisposed || _bannerMonitorComboBox == null) return;
+                    PopulateBannerMonitorChoices();
+                });
+            });
     }
+
+    /// <summary>
+    /// One entry of the banner monitor selector.
+    /// <para>
+    /// <see cref="DeviceName"/> is null for the two pseudo entries that map onto the legacy
+    /// <see cref="INotificationSettings.NotifyUsingPrimaryScreen"/> setting.
+    /// </para>
+    /// </summary>
+    private sealed record BannerMonitorChoice(string Label, string DeviceName, bool IsPrimary)
+    {
+        public override string ToString() => Label;
+    }
+
+    /// <summary>
+    /// Builds the banner monitor, background colour and scale controls and grows the form just
+    /// enough to fit them.
+    /// </summary>
+    /// <remarks>
+    /// Every coordinate and size is derived from the designer's own controls, which
+    /// <see cref="InitializeComponent"/> has already scaled for the current DPI. Fixed pixel values
+    /// would instead be measured against the unscaled 96 DPI design and overlap the existing rows
+    /// at 125% and above.
+    /// </remarks>
+    private void InitializeBannerAppearanceControls()
+    {
+        // The monitor selector supersedes the legacy "always use primary screen" checkbox. Keep the
+        // setting readable so existing configurations still resolve, but expose a single control.
+        usePrimaryScreenCheckbox.Visible = false;
+
+        // Row geometry taken from the designer's own rows: pitch between two rows, row height and
+        // the gap left between them.
+        var rowPitch = Math.Max(1, opacityUpDown.Top - onScreenUpDown.Top);
+        var rowHeight = Math.Max(opacityUpDown.Height, opacityLabel.Height);
+        var rowGap = rowPitch - rowHeight;
+        var colorRowTop = bannerDisplayComboBox.Bottom + rowGap;
+        var scaleRowTop = colorRowTop + rowPitch;
+
+        // Same idea for the position group: append a row under the existing content.
+        var positionContentBottom = positionGroupBox.Controls.Cast<Control>().Max(control => control.Bottom);
+        var monitorRowTop = AppendedRowTop(positionGroupBox.Height, positionContentBottom);
+
+        _bannerMonitorComboBox = new ComboBox
+        {
+            Name = "bannerMonitorComboBox",
+            DropDownStyle = ComboBoxStyle.DropDownList,
+            Location = new Point(positionGroupBox.DisplayRectangle.X, monitorRowTop),
+            Size = new Size(positionGroupBox.Width - 2 * positionGroupBox.DisplayRectangle.X, rowHeight),
+            TabIndex = positionGroupBox.Controls.Count
+        };
+        _bannerMonitorComboBox.SelectedIndexChanged += (_, _) => BannerMonitorSelectionChanged();
+        positionGroupBox.Controls.Add(_bannerMonitorComboBox);
+        PopulateBannerMonitorChoices();
+
+        // Every other row on this tab is "label on the left, control on the right"; the colour picker
+        // follows that instead of doubling as its own caption.
+        bannerOptionsGroupBox.Controls.Add(new Label
+        {
+            Name = "bannerColorLabel",
+            Text = GetBannerString("banner.backgroundColor"),
+            Location = new Point(displayInfoLabel.Left, colorRowTop),
+            Size = new Size(displayInfoLabel.Width, displayInfoLabel.Height),
+            TextAlign = ContentAlignment.MiddleRight
+        });
+
+        _bannerColorButton = new Button
+        {
+            Name = "bannerColorButton",
+            Location = new Point(bannerDisplayComboBox.Left, colorRowTop),
+            Size = new Size(bannerDisplayComboBox.Width, Math.Max(bannerDisplayComboBox.Height, rowHeight)),
+            UseVisualStyleBackColor = true,
+            TabIndex = bannerOptionsGroupBox.Controls.Count
+        };
+        void PickBannerBackgroundColor()
+        {
+            using var dialog = new ColorDialog { Color = AppModel.Instance.BannerBackgroundColor, FullOpen = true };
+            if (dialog.ShowDialog(this) != DialogResult.OK) return;
+
+            AppModel.Instance.BannerBackgroundColor = dialog.Color;
+            ShowSelectedBannerColor();
+        }
+
+        _bannerColorButton.Click += (_, _) => PickBannerBackgroundColor();
+
+        // The colour is painted by a child panel: under the system dark mode this app opts into,
+        // WinForms renders the button itself with the themed background and ignores an explicitly
+        // assigned BackColor. Keeping the button means the control stays clickable and focusable.
+        _bannerColorSwatch = new Panel
+        {
+            Name = "bannerColorSwatch",
+            Location = new Point(2, 2),
+            Size = new Size(_bannerColorButton.Width - 4, _bannerColorButton.Height - 4),
+            TabStop = false
+        };
+        // The swatch sits on top of the button, so without this it would swallow the clicks that
+        // are meant to open the picker.
+        _bannerColorSwatch.Click += (_, _) => PickBannerBackgroundColor();
+        _bannerColorButton.Controls.Add(_bannerColorSwatch);
+        bannerOptionsGroupBox.Controls.Add(_bannerColorButton);
+        ShowSelectedBannerColor();
+
+        bannerOptionsGroupBox.Controls.Add(new Label
+        {
+            Name = "bannerScaleLabel",
+            Text = GetBannerString("banner.scale"),
+            Location = new Point(displayInfoLabel.Left, scaleRowTop),
+            Size = new Size(displayInfoLabel.Width, displayInfoLabel.Height),
+            TextAlign = ContentAlignment.MiddleRight
+        });
+        _bannerScaleUpDown = new NumericUpDownWithUnits
+        {
+            Name = "bannerScaleUpDown",
+            Location = new Point(opacityUpDown.Left, scaleRowTop),
+            Size = new Size(opacityUpDown.Width, opacityUpDown.Height),
+            Minimum = AppModel.BannerScaleMinimum,
+            Maximum = AppModel.BannerScaleMaximum,
+            Increment = 10,
+            TextUnit = "%",
+            TextAlign = HorizontalAlignment.Center,
+            TabIndex = bannerOptionsGroupBox.Controls.Count
+        };
+        _bannerScaleUpDown.DataBindings.Add(nameof(NumericUpDown.Value), AppModel.Instance,
+            nameof(AppModel.BannerScalePercentage), false, DataSourceUpdateMode.OnPropertyChanged);
+        bannerOptionsGroupBox.Controls.Add(_bannerScaleUpDown);
+
+        // Grow the containers, and with them the tab page and the form, by exactly the extra rows.
+        // closeButton is anchored Bottom|Right, so it follows ClientSize on its own; nudging its
+        // Top as well would push it past the bottom edge of the client area.
+        var originalOptionsHeight = bannerOptionsGroupBox.Height;
+        // microphoneMuteGroupBox is the tallest child the designer placed in this group box, and
+        // unlike positionGroupBox it is not resized here, so it stays a stable reference.
+        bannerOptionsGroupBox.Height = HeightForRow(
+            originalOptionsHeight, microphoneMuteGroupBox.Bottom, scaleRowTop + rowHeight);
+        positionGroupBox.Height = HeightForRow(
+            positionGroupBox.Height, positionContentBottom, monitorRowTop + rowHeight);
+
+        var extraHeight = bannerOptionsGroupBox.Height - originalOptionsHeight;
+        if (extraHeight <= 0) return;
+
+        tabControl.Height += extraHeight;
+        ClientSize = new Size(ClientSize.Width, ClientSize.Height + extraHeight);
+    }
+
+    /// <summary>
+    /// Gap between the lowest child of a group box and its border.
+    /// </summary>
+    internal static int BottomMargin(int groupBoxHeight, int contentBottom) => groupBoxHeight - contentBottom;
+
+    /// <summary>
+    /// Top edge of a row appended below <paramref name="contentBottom"/>, leaving the group box's
+    /// existing gap between its content and its border.
+    /// </summary>
+    internal static int AppendedRowTop(int groupBoxHeight, int contentBottom) =>
+        contentBottom + BottomMargin(groupBoxHeight, contentBottom);
+
+    /// <summary>
+    /// Height a group box needs so that <paramref name="rowBottom"/> sits the same distance from
+    /// the border as the content that is already there. Never shrinks the group box.
+    /// </summary>
+    /// <param name="groupBoxHeight">Current height of the group box</param>
+    /// <param name="referenceContentBottom">Bottom of the content the gap is measured from</param>
+    /// <param name="rowBottom">Bottom of the content being added</param>
+    internal static int HeightForRow(int groupBoxHeight, int referenceContentBottom, int rowBottom)
+    {
+        var margin = BottomMargin(groupBoxHeight, referenceContentBottom);
+        var lowestContent = Math.Max(referenceContentBottom, rowBottom);
+        return Math.Max(groupBoxHeight, lowestContent + margin);
+    }
+
+    /// <summary>
+    /// (Re)fills the monitor selector from the currently connected displays, keeping the saved
+    /// selection. A monitor that disappeared falls back to the cursor/primary entry.
+    /// </summary>
+    private void PopulateBannerMonitorChoices()
+    {
+        var savedDeviceName = AppModel.Instance.BannerMonitorDeviceName;
+
+        _suppressBannerMonitorSelection = true;
+        try
+        {
+            _bannerMonitorComboBox.BeginUpdate();
+            _bannerMonitorComboBox.Items.Clear();
+            _bannerMonitorComboBox.Items.Add(new BannerMonitorChoice(GetBannerString("banner.monitor.cursor"), null, false));
+            _bannerMonitorComboBox.Items.Add(new BannerMonitorChoice(GetBannerString("banner.monitor.primary"), null, true));
+
+            // The device name travels with the entry: the position in the list shifts as soon as a
+            // display is plugged in or unplugged, so an index would then name a different monitor.
+            var monitorLabel = GetBannerString("banner.monitor.screen");
+            var screens = Screen.AllScreens;
+            for (var i = 0; i < screens.Length; i++)
+            {
+                _bannerMonitorComboBox.Items.Add(new BannerMonitorChoice(
+                    string.Format(monitorLabel, i + 1, screens[i].DeviceName), screens[i].DeviceName, false));
+            }
+
+            _bannerMonitorComboBox.SelectedIndex = ResolveMonitorSelectionIndex(
+                screens.Select(screen => screen.DeviceName).ToList(),
+                savedDeviceName,
+                AppModel.Instance.NotifyUsingPrimaryScreen);
+        }
+        finally
+        {
+            _bannerMonitorComboBox.EndUpdate();
+            _suppressBannerMonitorSelection = false;
+        }
+    }
+
+    /// <summary>
+    /// Combo box index for the banner monitor selection.
+    /// </summary>
+    /// <param name="connectedDeviceNames">Device names of the connected displays, in list order</param>
+    /// <param name="savedDeviceName">Pinned device name, may be null</param>
+    /// <param name="usePrimaryScreen">Whether to fall back to the primary screen</param>
+    /// <remarks>
+    /// Indices 0 and 1 are the cursor and primary pseudo entries, the connected displays follow, so
+    /// the result is always inside the list. Only a matched display has to be shifted past the two
+    /// pseudo entries: 0 and 1 are already usable indices, and shifting them would name a physical
+    /// monitor instead - or run past the end of the list on a single-display setup.
+    /// </remarks>
+    internal static int ResolveMonitorSelectionIndex(
+        IReadOnlyList<string> connectedDeviceNames, string savedDeviceName, bool usePrimaryScreen)
+    {
+        const int MONITOR_ENTRY_OFFSET = 2;
+
+        for (var i = 0; i < connectedDeviceNames.Count; i++)
+        {
+            if (string.Equals(connectedDeviceNames[i], savedDeviceName, StringComparison.OrdinalIgnoreCase))
+                return i + MONITOR_ENTRY_OFFSET;
+        }
+
+        return usePrimaryScreen ? 1 : 0;
+    }
+
+    private void BannerMonitorSelectionChanged()
+    {
+        if (_suppressBannerMonitorSelection || _bannerMonitorComboBox.SelectedItem is not BannerMonitorChoice choice)
+            return;
+
+        // Applied as one update: both values decide which screen GetScreen() resolves, so they have
+        // to be in place together before the banners are moved.
+        AppModel.Instance.SetBannerMonitor(choice.DeviceName, choice.IsPrimary);
+    }
+
+    /// <summary>
+    /// Paints the swatch with the banner background currently configured, so the setting is
+    /// visible without opening the dialog.
+    /// </summary>
+    /// <remarks>
+    /// A <see cref="Panel"/> carries the colour rather than the button itself: under the system
+    /// dark mode this app opts into, WinForms renders <see cref="Button"/> with the themed
+    /// background and ignores an explicitly assigned <c>BackColor</c>.
+    /// </remarks>
+    private void ShowSelectedBannerColor() => _bannerColorSwatch.BackColor = AppModel.Instance.BannerBackgroundColor;
+
+    /// <summary>
+    /// Reads a banner specific resource, falling back to the key so a missing translation is
+    /// visible instead of rendering an empty control.
+    /// </summary>
+    private static string GetBannerString(string key) => SettingsStrings.ResourceManager.GetString(key) ?? key;
 
     private void PopulateSettings()
     {
@@ -636,6 +919,7 @@ public sealed partial class SettingsForm : Form
     {
         _deviceListRefreshedSubscription?.Dispose();
         _themeChangedSubscription?.Dispose();
+        _displaySettingsChangedSubscription?.Dispose();
         // Dispose all IconHandle objects stored in the profile list-view so GDI handles are
         // released promptly rather than waiting for finalizer collection.
         DisposeProfileListViewIconHandles();
