@@ -29,6 +29,10 @@ This file defines repository-wide guidance for the SoundSwitch workspace. More s
 - Preserve existing public behavior unless the change explicitly intends to alter it.
 - Prefer `NameClean` over raw device names when dealing with displayed audio device names.
 
+## Engineering Principles
+
+Apply **DRY > SOLID > KISS** in that priority order when they conflict. The detailed guidance lives in the repo skill [`.opencode/skills/dry-solid-kiss/SKILL.md`](./.opencode/skills/dry-solid-kiss/SKILL.md); load the `dry-solid-kiss` skill when implementing, refactoring, or reviewing code.
+
 ## Commits
 
 - Use conventional commits for commit messages.
