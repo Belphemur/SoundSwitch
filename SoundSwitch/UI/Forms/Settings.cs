@@ -82,6 +82,7 @@ public sealed partial class SettingsForm : Form
     private IDisposable _themeChangedSubscription;
     private IDisposable _displaySettingsChangedSubscription;
     private bool _suppressBannerMonitorSelection;
+    private Panel _bannerColorSwatch;
     private ComboBox _bannerMonitorComboBox;
     private Button _bannerColorButton;
     private NumericUpDownWithUnits _bannerScaleUpDown;
@@ -433,22 +434,52 @@ public sealed partial class SettingsForm : Form
         positionGroupBox.Controls.Add(_bannerMonitorComboBox);
         PopulateBannerMonitorChoices();
 
+        // Every other row on this tab is "label on the left, control on the right"; the colour picker
+        // follows that instead of doubling as its own caption.
+        bannerOptionsGroupBox.Controls.Add(new Label
+        {
+            Name = "bannerColorLabel",
+            Text = GetBannerString("banner.backgroundColor"),
+            Location = new Point(displayInfoLabel.Left, colorRowTop),
+            Size = new Size(displayInfoLabel.Width, displayInfoLabel.Height),
+            TextAlign = ContentAlignment.MiddleRight
+        });
+
         _bannerColorButton = new Button
         {
             Name = "bannerColorButton",
-            Text = GetBannerString("banner.backgroundColor"),
             Location = new Point(bannerDisplayComboBox.Left, colorRowTop),
             Size = new Size(bannerDisplayComboBox.Width, Math.Max(bannerDisplayComboBox.Height, rowHeight)),
             UseVisualStyleBackColor = true,
             TabIndex = bannerOptionsGroupBox.Controls.Count
         };
-        _bannerColorButton.Click += (_, _) =>
+        void PickBannerBackgroundColor()
         {
             using var dialog = new ColorDialog { Color = AppModel.Instance.BannerBackgroundColor, FullOpen = true };
-            if (dialog.ShowDialog(this) == DialogResult.OK)
-                AppModel.Instance.BannerBackgroundColor = dialog.Color;
+            if (dialog.ShowDialog(this) != DialogResult.OK) return;
+
+            AppModel.Instance.BannerBackgroundColor = dialog.Color;
+            ShowSelectedBannerColor();
+        }
+
+        _bannerColorButton.Click += (_, _) => PickBannerBackgroundColor();
+
+        // The colour is painted by a child panel: under the system dark mode this app opts into,
+        // WinForms renders the button itself with the themed background and ignores an explicitly
+        // assigned BackColor. Keeping the button means the control stays clickable and focusable.
+        _bannerColorSwatch = new Panel
+        {
+            Name = "bannerColorSwatch",
+            Location = new Point(2, 2),
+            Size = new Size(_bannerColorButton.Width - 4, _bannerColorButton.Height - 4),
+            TabStop = false
         };
+        // The swatch sits on top of the button, so without this it would swallow the clicks that
+        // are meant to open the picker.
+        _bannerColorSwatch.Click += (_, _) => PickBannerBackgroundColor();
+        _bannerColorButton.Controls.Add(_bannerColorSwatch);
         bannerOptionsGroupBox.Controls.Add(_bannerColorButton);
+        ShowSelectedBannerColor();
 
         bannerOptionsGroupBox.Controls.Add(new Label
         {
@@ -591,6 +622,17 @@ public sealed partial class SettingsForm : Form
         // to be in place together before the banners are moved.
         AppModel.Instance.SetBannerMonitor(choice.DeviceName, choice.IsPrimary);
     }
+
+    /// <summary>
+    /// Paints the swatch with the banner background currently configured, so the setting is
+    /// visible without opening the dialog.
+    /// </summary>
+    /// <remarks>
+    /// A <see cref="Panel"/> carries the colour rather than the button itself: under the system
+    /// dark mode this app opts into, WinForms renders <see cref="Button"/> with the themed
+    /// background and ignores an explicitly assigned <c>BackColor</c>.
+    /// </remarks>
+    private void ShowSelectedBannerColor() => _bannerColorSwatch.BackColor = AppModel.Instance.BannerBackgroundColor;
 
     /// <summary>
     /// Reads a banner specific resource, falling back to the key so a missing translation is
