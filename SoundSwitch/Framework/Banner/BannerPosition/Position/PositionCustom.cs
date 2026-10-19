@@ -36,10 +36,9 @@ internal class PositionCustom : APosition, IPosition
     /// Resolve the saved custom position against the display the banner actually belongs to.
     /// </summary>
     /// <remarks>
-    /// A custom position is expressed in desktop coordinates, so it belongs to the display the user
-    /// dragged it onto. When the banner is pinned to a specific monitor that monitor is the only
-    /// valid target; otherwise the target is the screen holding the saved point, which keeps a
-    /// banner dragged onto a secondary display in place when the cursor moves elsewhere.
+    /// A custom position is expressed in desktop coordinates, so it belongs to one display. An
+    /// explicit monitor selection moves it onto that display, the same as every other position
+    /// strategy; otherwise the saved point keeps the banner on the display the user dropped it on.
     /// </remarks>
     internal static Point ResolvePosition(Screen screen, Point savedPosition, bool hasSavedPosition, int height, int width)
     {
@@ -69,12 +68,22 @@ internal class PositionCustom : APosition, IPosition
                 Math.Clamp(savedPosition.Y, bounds.Top, Math.Max(bounds.Top, bounds.Bottom - height)));
 
     /// <summary>
-    /// Bounds the saved position has to stay inside. <see cref="Screen.FromPoint(Point)"/> falls
-    /// back to the primary screen when the point is on no connected display, which keeps a stale
-    /// position off any other monitor.
+    /// Bounds the saved position has to stay inside.
     /// </summary>
+    /// <remarks>
+    /// An explicit choice from the monitor selector - a pinned display or the primary screen -
+    /// wins, so a custom position follows the same screen as every other position strategy.
+    /// Only in "follow the cursor" mode does the saved point decide, which is what keeps a banner
+    /// dragged onto a secondary display in place while the cursor is elsewhere.
+    /// <see cref="Screen.FromPoint(Point)"/> falls back to the primary screen when the point is on
+    /// no connected display, which keeps a stale position off any other monitor.
+    /// </remarks>
     private static Rectangle TargetBounds(Screen screen, Point savedPosition) =>
-        string.IsNullOrEmpty(AppModel.Instance.BannerMonitorDeviceName)
-            ? Screen.FromPoint(savedPosition).Bounds
-            : screen.Bounds;
+        IsScreenExplicitlySelected()
+            ? screen.Bounds
+            : Screen.FromPoint(savedPosition).Bounds;
+
+    private static bool IsScreenExplicitlySelected() =>
+        !string.IsNullOrEmpty(AppModel.Instance.BannerMonitorDeviceName) ||
+        AppModel.Instance.NotifyUsingPrimaryScreen;
 }

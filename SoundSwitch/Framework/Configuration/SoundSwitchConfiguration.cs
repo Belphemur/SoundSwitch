@@ -284,6 +284,20 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
             migrated = true;
         }
 
+        if (!MigratedFields.Contains(nameof(HasCustomBannerPosition)))
+        {
+            // Configurations from before the flag existed only stored the point, so a non-empty
+            // one is a placement the user chose. Deriving the flag from it keeps their custom
+            // position instead of dropping them back to the centre of the screen.
+            if (!CustomBannerPosition.IsEmpty)
+            {
+                HasCustomBannerPosition = true;
+            }
+
+            MigratedFields.Add(nameof(HasCustomBannerPosition));
+            migrated = true;
+        }
+
         if (Environment.OSVersion.Version.Major < 10 && !MigratedFields.Contains("ProfileWin7"))
         {
             Profiles = Profiles.Select(profile =>
