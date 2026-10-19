@@ -109,7 +109,14 @@ public sealed partial class SettingsForm : Form
             ? Color.FromArgb(32, 32, 32)
             : Color.White;
 
-    private static Color NotificationPanelColor => GetNotificationPanelColor(WindowsThemeHelper.IsDarkModeEnabled());
+    /// <summary>
+    /// Surface used by the settings tab pages. The Designer sets
+    /// <c>UseVisualStyleBackColor = true</c>, which paints the classic light tab-page strip
+    /// even when Windows is in dark app mode, so the pages take an explicit surface instead.
+    /// </summary>
+    internal static Color GetTabPageColor(bool darkModeEnabled) => darkModeEnabled
+            ? Color.FromArgb(32, 32, 32)
+            : SystemColors.Control;
 
     /// <summary>
     /// Surface used by the custom-painted banner-position preview, following the
@@ -634,8 +641,21 @@ public sealed partial class SettingsForm : Form
     {
         if (IsDisposed || Disposing) return;
 
-        var textColor = ThemeTextColor;
-        notificationsGroupBox.BackColor = NotificationPanelColor;
+        var darkMode = WindowsThemeHelper.IsDarkModeEnabled();
+        var textColor = GetThemeTextColor(darkMode);
+        notificationsGroupBox.BackColor = GetNotificationPanelColor(darkMode);
+
+        // The Designer enables visual-style backgrounds on every TabPage. That path paints
+        // the light tab strip regardless of the OS palette, leaving any area not covered by
+        // a child control bright white in dark mode.
+        foreach (TabPage tabPage in tabControl.TabPages)
+        {
+            // Keep the Designer's visual-style background in light mode; only dark mode has
+            // to opt out so the explicit surface below is actually painted.
+            tabPage.UseVisualStyleBackColor = !darkMode;
+            tabPage.BackColor = GetTabPageColor(darkMode);
+        }
+
         foreach (var groupBox in EnumerateControls(this).OfType<GroupBox>())
         {
             groupBox.ForeColor = textColor;

@@ -24,6 +24,7 @@ public class SettingsFormTests
     {
         Assert.That(SettingsForm.GetThemeTextColor(true), Is.EqualTo(Color.FromArgb(240, 240, 240)));
         Assert.That(SettingsForm.GetNotificationPanelColor(true), Is.EqualTo(Color.FromArgb(32, 32, 32)));
+        Assert.That(SettingsForm.GetTabPageColor(true), Is.EqualTo(Color.FromArgb(32, 32, 32)));
         Assert.That(SettingsForm.GetPreviewFillColor(true), Is.EqualTo(Color.FromArgb(45, 45, 45)));
     }
 
@@ -32,6 +33,7 @@ public class SettingsFormTests
     {
         Assert.That(SettingsForm.GetThemeTextColor(false), Is.EqualTo(SystemColors.ControlText));
         Assert.That(SettingsForm.GetNotificationPanelColor(false), Is.EqualTo(Color.White));
+        Assert.That(SettingsForm.GetTabPageColor(false), Is.EqualTo(SystemColors.Control));
         Assert.That(SettingsForm.GetPreviewFillColor(false), Is.EqualTo(Color.AliceBlue));
     }
 }
