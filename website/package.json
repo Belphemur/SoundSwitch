@@ -19,7 +19,6 @@
   },
   "devDependencies": {
     "@vuepress/plugin-llms": "^2.0.0-rc.134",
-    "@vuepress/plugin-slimsearch": "^2.0.0-rc.130",
     "wrangler": "^4.114.0"
   }
 }
