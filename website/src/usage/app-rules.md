@@ -21,6 +21,7 @@ Each rule is displayed in a list with the following columns:
 | **Window Title** | The window title pattern to match (can be blank to match any window). |
 | **Playback** | The audio output device to route the application's sound to. |
 | **Recording** | The audio input device to route the application's microphone access to. |
+| **Hotkey** | The optional global shortcut that re-applies the rule to the application on demand. |
 
 ### Rule Fields
 
@@ -32,6 +33,7 @@ When adding or editing a rule, you configure these fields:
 | **Window Title** | The title of the application's active window — matched as a **regular expression** (or a glob pattern fallback like `*YouTube*`) | `.*YouTube.*` matches any window with "YouTube" in the title |
 | **Playback** | The audio output device to route the application's sound to | Speakers, Headphones, etc. |
 | **Recording** | The audio input device to route the application's microphone access to | Microphone, Virtual Cable, etc. |
+| **Hotkey** | Optional global shortcut — pressing it re-applies the rule's devices to the matching running application without changing the system default | `Ctrl + Shift + F1` |
 
 If a field is left blank, it acts as a wildcard — meaning it matches **any** value for that field. A rule with only a Process Path set will match that process regardless of its window title.
 
@@ -49,10 +51,11 @@ The **Process Path** field has a **...** button. Clicking it opens a process pic
 
 ## When Rules Are Applied
 
-App Sound Lock monitors the system in two ways:
+App Sound Lock monitors the system in three ways:
 
 1. **Process Detection** — Whenever a new process starts or is detected, all enabled rules are evaluated against it.
 2. **Foreground Window Changes** — Whenever you switch to a different window, rules are re-evaluated against the newly focused application.
+3. **Manual Hotkey** — If you assigned a **Hotkey** to a rule, pressing it immediately re-applies that rule's devices to every matching running process, even if the application isn't focused. Only that application's audio is switched; the system default stays untouched.
 
 Once a rule matches a process, the application's audio is immediately routed to the configured device(s). The routing persists as long as the process is running.
 
@@ -64,8 +67,9 @@ Once a rule matches a process, the application's audio is immediately routed to 
 4. Select a running process from the picker. The **Process Path** field is auto-filled based on the selected process. You can edit it manually for more precise matching.
 5. Optionally set a **Window Title** pattern.
 6. Choose the target **Playback** device and/or **Recording** device from the dropdowns.
-7. Adjust the **Enabled**, **Notify when triggered**, and **Case Sensitive** options as desired.
-8. Click **Save**.
+7. Optionally assign a **Hotkey** — a global shortcut that re-applies the rule to the running application on demand. Click the field and press the combination you want; use the reset button to clear it. SoundSwitch warns you if the shortcut is already used by another rule, a profile, or another application.
+8. Adjust the **Enabled**, **Notify when triggered**, and **Case Sensitive** options as desired.
+9. Click **Save**.
 
 ![App Sound Lock Rules List](/images/AppRules.png)
 
