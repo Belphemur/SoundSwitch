@@ -13,7 +13,7 @@ public class DevicesCommand : AsyncCommand<DevicesCommand.Settings>
     {
     }
 
-    protected override async Task<int> ExecuteAsync(CommandContext context, Settings settings, CancellationToken cancellationToken)
+    public override async Task<int> ExecuteAsync(CommandContext context, Settings settings, CancellationToken cancellationToken)
     {
         if (settings.Json)
         {
