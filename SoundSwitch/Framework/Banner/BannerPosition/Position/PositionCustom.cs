@@ -27,10 +27,10 @@ internal class PositionCustom : APosition, IPosition
     public string Label => SettingsStrings.buttonCustom;
 
     public Point GetScreenPosition(Screen screen, int height, int width, int offset) =>
-        ResolvePosition(screen, AppModel.Instance.CustomBannerPosition, height, width);
+        ResolvePosition(screen, AppModel.Instance.CustomBannerPosition, AppModel.Instance.HasCustomBannerPosition, height, width);
 
     public Point GetPosition(Rectangle bounds, int height, int width, int offset) =>
-        ResolvePosition(bounds, AppModel.Instance.CustomBannerPosition, height, width);
+        ResolvePosition(bounds, AppModel.Instance.CustomBannerPosition, AppModel.Instance.HasCustomBannerPosition, height, width);
 
     /// <summary>
     /// Resolve the saved custom position against the display the banner actually belongs to.
@@ -41,26 +41,32 @@ internal class PositionCustom : APosition, IPosition
     /// valid target; otherwise the target is the screen holding the saved point, which keeps a
     /// banner dragged onto a secondary display in place when the cursor moves elsewhere.
     /// </remarks>
-    internal static Point ResolvePosition(Screen screen, Point savedPosition, int height, int width)
+    internal static Point ResolvePosition(Screen screen, Point savedPosition, bool hasSavedPosition, int height, int width)
     {
-        // Point.Empty is the initial value, i.e. the banner was never dragged into place. There is
-        // no position to honour, so centre it on the selected display instead of pinning it to the
-        // top-left corner of whichever display happens to own the desktop origin.
-        if (savedPosition.IsEmpty)
+        if (!hasSavedPosition)
             return new Point(PositionCenterX(screen.Bounds, width), PositionCenterY(screen.Bounds, height));
 
-        return ResolvePosition(TargetBounds(screen, savedPosition), savedPosition, height, width);
+        return ResolvePosition(TargetBounds(screen, savedPosition), savedPosition, true, height, width);
     }
 
     /// <summary>
-    /// Clamp the banner inside <paramref name="bounds"/>. Clamping rather than re-centering keeps a
-    /// position the user deliberately chose: only a display that went away or a banner that grew
-    /// past the edge nudges it back.
+    /// Places the banner inside <paramref name="bounds"/>.
     /// </summary>
-    internal static Point ResolvePosition(Rectangle bounds, Point savedPosition, int height, int width) =>
-        new(
-            Math.Clamp(savedPosition.X, bounds.Left, Math.Max(bounds.Left, bounds.Right - width)),
-            Math.Clamp(savedPosition.Y, bounds.Top, Math.Max(bounds.Top, bounds.Bottom - height)));
+    /// <remarks>
+    /// With no position saved yet the banner is centred. Otherwise it is clamped rather than
+    /// re-centred, which keeps a position the user deliberately chose: only a display that went
+    /// away or a banner that grew past the edge nudges it back.
+    /// <para>
+    /// The saved point must not double as the "never placed" marker: (0,0) is the default value
+    /// <em>and</em> the top-left corner of the primary display, which a drag can produce.
+    /// </para>
+    /// </remarks>
+    internal static Point ResolvePosition(Rectangle bounds, Point savedPosition, bool hasSavedPosition, int height, int width) =>
+        !hasSavedPosition
+            ? new Point(PositionCenterX(bounds, width), PositionCenterY(bounds, height))
+            : new Point(
+                Math.Clamp(savedPosition.X, bounds.Left, Math.Max(bounds.Left, bounds.Right - width)),
+                Math.Clamp(savedPosition.Y, bounds.Top, Math.Max(bounds.Top, bounds.Bottom - height)));
 
     /// <summary>
     /// Bounds the saved position has to stay inside. <see cref="Screen.FromPoint(Point)"/> falls

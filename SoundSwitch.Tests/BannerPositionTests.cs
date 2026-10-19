@@ -70,14 +70,28 @@ public class BannerPositionTests
     [Test]
     public void CustomPositionWithNoSavedPointIsCentredOnTheSelectedScreen()
     {
-        // Point.Empty is the initial value: the banner was never dragged, so it must not end up
-        // pinned to the desktop origin.
+        // The banner was never dragged, so it must not end up pinned to the desktop origin.
         var screen = Screen.AllScreens[0];
 
-        PositionCustom.ResolvePosition(screen, Point.Empty, HEIGHT, WIDTH)
+        PositionCustom.ResolvePosition(screen, Point.Empty, false, HEIGHT, WIDTH)
             .Should().Be(new Point(
                 screen.Bounds.Left + (screen.Bounds.Width - WIDTH) / 2,
                 screen.Bounds.Top + (screen.Bounds.Height - HEIGHT) / 2));
+    }
+
+    [Test]
+    public void CustomPositionKeepsASavedPointAtTheDesktopOrigin()
+    {
+        // (0,0) is both the default value and the reachable top-left corner of the primary
+        // display, so the saved point cannot double as the "never placed" marker. The same point
+        // must therefore produce two different results depending on the flag.
+        var primaryBounds = new Rectangle(0, 0, 1920, 1080);
+
+        PositionCustom.ResolvePosition(primaryBounds, Point.Empty, true, HEIGHT, WIDTH)
+            .Should().Be(Point.Empty);
+
+        PositionCustom.ResolvePosition(primaryBounds, Point.Empty, false, HEIGHT, WIDTH)
+            .Should().Be(new Point(900, 510));
     }
 
     [Test]
@@ -85,7 +99,7 @@ public class BannerPositionTests
     {
         var savedPosition = new Point(OffsetBounds.Left + 20, OffsetBounds.Top + 20);
 
-        PositionCustom.ResolvePosition(OffsetBounds, savedPosition, HEIGHT, WIDTH)
+        PositionCustom.ResolvePosition(OffsetBounds, savedPosition, true, HEIGHT, WIDTH)
             .Should().Be(savedPosition);
     }
 
@@ -93,11 +107,11 @@ public class BannerPositionTests
     public void CustomPositionIsClampedBackIntoItsOwnScreen()
     {
         // Past the bottom-right edge: pulled back in, without drifting to the screen centre.
-        PositionCustom.ResolvePosition(OffsetBounds, new Point(OffsetBounds.Right, OffsetBounds.Bottom), HEIGHT, WIDTH)
+        PositionCustom.ResolvePosition(OffsetBounds, new Point(OffsetBounds.Right, OffsetBounds.Bottom), true, HEIGHT, WIDTH)
             .Should().Be(new Point(OffsetBounds.Right - WIDTH, OffsetBounds.Bottom - HEIGHT));
 
         // Before the top-left edge of a screen that is not at the desktop origin.
-        PositionCustom.ResolvePosition(OffsetBounds, new Point(-1000, -2000), HEIGHT, WIDTH)
+        PositionCustom.ResolvePosition(OffsetBounds, new Point(-1000, -2000), true, HEIGHT, WIDTH)
             .Should().Be(new Point(OffsetBounds.Left, OffsetBounds.Top));
     }
 

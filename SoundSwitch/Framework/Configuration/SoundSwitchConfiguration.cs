@@ -90,6 +90,7 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
     public NotificationType MicrophoneMuteNotification { get; set; } = NotificationType.NoNotification;
     public BannerPosition BannerPosition { get; set; } = BannerPosition.TopLeft;
     public Point CustomBannerPosition { get; set; } = Point.Empty;
+    public bool HasCustomBannerPosition { get; set; }
     public MicrophoneMute MicrophoneMuteBanner { get; set; } = MicrophoneMute.Persistent;
     public MicrophoneMute MicrophoneUnmuteBanner { get; set; } = MicrophoneMute.None;
     public string CustomNotificationFilePath { get; set; }

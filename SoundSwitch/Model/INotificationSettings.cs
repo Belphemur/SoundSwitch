@@ -51,6 +51,12 @@ public interface INotificationSettings
 
     Point CustomBannerPosition { get; set; }
 
+    /// <summary>
+    /// Whether <see cref="CustomBannerPosition"/> holds a position the user actually chose.
+    /// Its default (0,0) is also a reachable position, so the point cannot signal this itself.
+    /// </summary>
+    bool HasCustomBannerPosition { get; }
+
     TimeSpan BannerOnScreenTime { get; set; }
     int BannerOnScreenTimeSecs { get; set; }
     int BannerOpacityPercentage { get; set; }

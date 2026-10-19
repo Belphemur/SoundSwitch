@@ -256,10 +256,19 @@ public partial class AppModel
         set
         {
             AppConfigs.Configuration.CustomBannerPosition = value;
+            // Records that the user chose this position. The point itself cannot signal that:
+            // its default (0,0) is also a reachable position on the primary display.
+            AppConfigs.Configuration.HasCustomBannerPosition = true;
             AppConfigs.Configuration.Save();
         }
 
     }
+
+    /// <summary>
+    /// Whether the user has placed the banner at a custom position. False until the banner is
+    /// dragged into place or recentred with the R shortcut.
+    /// </summary>
+    public bool HasCustomBannerPosition => AppConfigs.Configuration.HasCustomBannerPosition;
 
     /// <summary>
     /// Current banner position implementation based on the BannerPosition setting
