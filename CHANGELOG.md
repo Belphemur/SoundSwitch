@@ -1,3 +1,24 @@
+## [7.4.0-beta.1](https://github.com/Belphemur/SoundSwitch/compare/v7.3.3...v7.4.0-beta.1) (2026-10-19)
+
+### Features
+
+* **banner:** customize monitor, color, and scale ([2c90212](https://github.com/Belphemur/SoundSwitch/commit/2c90212a88d0dd304bb62b090ad1ece51e454210))
+* **installer:** self-contained dual-arch installers, no runtime download ([#2442](https://github.com/Belphemur/SoundSwitch/issues/2442)) ([a9c1d56](https://github.com/Belphemur/SoundSwitch/commit/a9c1d562425999d2189b691b373197fcff74ff03)), closes [#2435](https://github.com/Belphemur/SoundSwitch/issues/2435) [#2435](https://github.com/Belphemur/SoundSwitch/issues/2435) [#2435](https://github.com/Belphemur/SoundSwitch/issues/2435) [#2435](https://github.com/Belphemur/SoundSwitch/issues/2435) [#2435](https://github.com/Belphemur/SoundSwitch/issues/2435) [#2435](https://github.com/Belphemur/SoundSwitch/issues/2435) [#2435](https://github.com/Belphemur/SoundSwitch/issues/2435)
+* **ui:** follow Windows dark theme on WinForms settings ([#2417](https://github.com/Belphemur/SoundSwitch/issues/2417), item 3) ([#2420](https://github.com/Belphemur/SoundSwitch/issues/2420)) ([fcf551c](https://github.com/Belphemur/SoundSwitch/commit/fcf551c03fb763fc3744d9ea0c7addc5f1b7b853)), closes [#2418](https://github.com/Belphemur/SoundSwitch/issues/2418)
+
+### Bug Fixes
+
+* **app-rules:** persist device info to survive device id changes ([#2454](https://github.com/Belphemur/SoundSwitch/issues/2454)) ([#2455](https://github.com/Belphemur/SoundSwitch/issues/2455)) ([a2bbca7](https://github.com/Belphemur/SoundSwitch/commit/a2bbca72ece10e71d5c3e8662ceca962c694e203))
+* **tray-icon:** device-aware theme icons with crisper rendering ([#2417](https://github.com/Belphemur/SoundSwitch/issues/2417)) ([#2418](https://github.com/Belphemur/SoundSwitch/issues/2418)) ([1eb5a14](https://github.com/Belphemur/SoundSwitch/commit/1eb5a14c8457ab8f18833139f477f7fcbe3dcad7))
+* **ui:** extend dark mode to remaining screens and shared controls ([#2417](https://github.com/Belphemur/SoundSwitch/issues/2417)) ([#2452](https://github.com/Belphemur/SoundSwitch/issues/2452)) ([39aa664](https://github.com/Belphemur/SoundSwitch/commit/39aa66426f211c1bb650adab080ab38be9ebbf9c)), closes [#2420](https://github.com/Belphemur/SoundSwitch/issues/2420) [#2450](https://github.com/Belphemur/SoundSwitch/issues/2450)
+* **ui:** initialize text rendering before hidden WinForms window ([#2448](https://github.com/Belphemur/SoundSwitch/issues/2448)) ([#2449](https://github.com/Belphemur/SoundSwitch/issues/2449)) ([df928b9](https://github.com/Belphemur/SoundSwitch/commit/df928b977e7e78173e0a1806ea4db6bacdf0cd70)), closes [#2420](https://github.com/Belphemur/SoundSwitch/issues/2420) [#2435](https://github.com/Belphemur/SoundSwitch/issues/2435)
+* **ui:** make remaining settings controls follow dark mode ([#2450](https://github.com/Belphemur/SoundSwitch/issues/2450)) ([#2451](https://github.com/Belphemur/SoundSwitch/issues/2451)) ([003eb7b](https://github.com/Belphemur/SoundSwitch/commit/003eb7bdc44ba8ecfcc460d4c4fc8bb70b28faa5)), closes [#2420](https://github.com/Belphemur/SoundSwitch/issues/2420)
+* **ui:** paint list column headers light in dark mode ([607f449](https://github.com/Belphemur/SoundSwitch/commit/607f44948860a7e6171018aaf4d14e5caec0d9b9))
+* **ui:** repaint list group headers in dark mode ([47a022c](https://github.com/Belphemur/SoundSwitch/commit/47a022cb06b23e7b1a9a590bd0ca18a3f1ba81cd))
+* **ui:** theme settings tab pages in dark mode ([90cc77c](https://github.com/Belphemur/SoundSwitch/commit/90cc77cb9c5161de9c3ae2941daa48160e227446))
+* **ui:** use readable link color in dark mode ([8b47af1](https://github.com/Belphemur/SoundSwitch/commit/8b47af1354dee88ed627e6698bb86a6a5373968e))
+* **updater:** do not offer same-base release to a nightly install ([87d8476](https://github.com/Belphemur/SoundSwitch/commit/87d8476f195a7e9a73ef14732192b3ea924d42b3))
+
 ## [7.3.3](https://github.com/Belphemur/SoundSwitch/compare/v7.3.2...v7.3.3) (2026-09-01)
 
 ### Bug Fixes
