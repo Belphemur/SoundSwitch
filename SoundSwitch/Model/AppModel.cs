@@ -103,8 +103,8 @@ public partial class AppModel : IAppModel
         AudioDeviceLister.DefaultDeviceChanged.Subscribe((@event) =>
         {
             if (_initialized && LimitMuteBannersToTarget && string.IsNullOrEmpty(MuteRecordingDeviceId) &&
-                @event.Role == ERole.eConsole && @event.Device.Type == EDataFlow.eCapture)
-                _notificationManager.ClearPersistentMuteBanners();
+                @event.Role == ERole.eCommunications && @event.Device.Type == EDataFlow.eCapture)
+                RefreshMicrophoneMuteBanners();
 
             DefaultDeviceChanged?.Invoke(this, new DeviceDefaultChangedEvent(@event.Device, @event.Role));
         });

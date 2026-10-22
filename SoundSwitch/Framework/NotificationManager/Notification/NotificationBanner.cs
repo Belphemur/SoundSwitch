@@ -13,6 +13,7 @@
  ********************************************************************/
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 
@@ -42,6 +43,24 @@ internal class NotificationBanner : INotification
     private readonly MicrophoneMuteBannerManager _microphoneMuteBannerManager = new();
 
     internal void ClearPersistentMuteBanners() => _microphoneMuteBannerManager.ClearPersistentMuteBanners();
+
+    /// <summary>
+    /// Reconciles the persistent mute banners with the current mute target and banner scope:
+    /// banners for microphones that left the scope are dismissed and in-scope microphones
+    /// that are currently muted get their banner back.
+    /// </summary>
+    /// <param name="inScopeMicrophoneIds">Identifiers of the microphones that remain in scope</param>
+    /// <param name="mutedInScopeMicrophones">In-scope microphones that are currently muted</param>
+    internal void SyncMuteBanners(IReadOnlyCollection<string> inScopeMicrophoneIds,
+        IReadOnlyCollection<(string Id, string Name)> mutedInScopeMicrophones)
+    {
+        _microphoneMuteBannerManager.RetainPersistentMuteBanners(inScopeMicrophoneIds);
+
+        // Only persistent banners are reconciled; fading banners are transient by design.
+        if (Configuration.MicrophoneMuteBanner != MicrophoneMute.Persistent) return;
+        foreach (var (id, name) in mutedInScopeMicrophones)
+            NotifyMicrophoneMuteChanged(id, name, true);
+    }
 
     private IPosition BannerPosition => _bannerPositionFactory.Get(Configuration.BannerPosition);
 

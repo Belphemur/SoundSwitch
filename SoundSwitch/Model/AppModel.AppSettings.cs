@@ -39,9 +39,9 @@ public partial class AppModel
         set
         {
             if (AppConfigs.Configuration.MuteRecordingDeviceId == value) return;
-            _notificationManager.ClearPersistentMuteBanners();
             AppConfigs.Configuration.MuteRecordingDeviceId = value;
             AppConfigs.Configuration.Save();
+            RefreshMicrophoneMuteBanners();
         }
     }
 
@@ -51,9 +51,9 @@ public partial class AppModel
         set
         {
             if (AppConfigs.Configuration.LimitMuteBannersToTarget == value) return;
-            _notificationManager.ClearPersistentMuteBanners();
             AppConfigs.Configuration.LimitMuteBannersToTarget = value;
             AppConfigs.Configuration.Save();
+            RefreshMicrophoneMuteBanners();
         }
     }
 

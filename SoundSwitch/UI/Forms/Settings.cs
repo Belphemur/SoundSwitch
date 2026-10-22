@@ -480,7 +480,7 @@ public sealed partial class SettingsForm : Form
                 _muteTargetComboBox.Items.Add(new MuteTargetChoice(device.NameClean, device.Id));
 
             var selected = _muteTargetComboBox.Items.Cast<MuteTargetChoice>()
-                .FirstOrDefault(choice => choice.DeviceId == selectedId);
+                .FirstOrDefault(choice => string.Equals(choice.DeviceId, selectedId, StringComparison.OrdinalIgnoreCase));
             if (selected == null)
             {
                 selected = new MuteTargetChoice(GetBannerString("mute.target.unavailable"), selectedId);

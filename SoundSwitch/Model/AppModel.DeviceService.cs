@@ -117,25 +117,67 @@ public partial class AppModel
     /// <param name="payload">The volume changed payload</param>
     private void HandleMicrophoneMuteChanged(DeviceVolumeChangedPayload payload)
     {
-        if (LimitMuteBannersToTarget)
-        {
-            var targetId = MuteRecordingDeviceId;
-            if (string.IsNullOrEmpty(targetId))
-            {
-                using var defaultInput = AudioSwitcher.Instance.GetDefaultAudioDevice(EDataFlow.eCapture, ERole.eConsole);
-                targetId = defaultInput?.Id;
-            }
-
-            if (string.IsNullOrEmpty(targetId) ||
-                !string.Equals(payload.Device.Id, targetId, StringComparison.OrdinalIgnoreCase))
-                return;
-        }
+        // The "only selected input" option limits mute banners. Sound and toast
+        // notifications keep reporting every microphone.
+        if (_notificationManager.MicrophoneMuteNotificationIsBanner && !IsMuteBannerInScope(payload.Device.Id))
+            return;
 
         Log.Information("Microphone {DeviceName} mute state changed from {WasMuted} to {IsMuted}",
             payload.Device.NameClean, payload.WasMuted, payload.IsMuted);
 
         // Notify about the mute state change
         _notificationManager.NotifyMuteChanged(payload.Device.Id, payload.Device.FriendlyName, payload.IsMuted);
+    }
+
+    /// <summary>
+    /// Resolves the recording endpoint muted by the global mute action, using the Windows
+    /// default input when no target is configured.
+    /// </summary>
+    private string GetConfiguredOrDefaultMuteDeviceId()
+    {
+        if (!string.IsNullOrEmpty(MuteRecordingDeviceId)) return MuteRecordingDeviceId;
+
+        using var defaultInput = AudioSwitcher.Instance.GetDefaultAudioDevice(EDataFlow.eCapture, ERole.eCommunications);
+        return defaultInput?.Id;
+    }
+
+    /// <summary>
+    /// Whether mute banners may be shown for the given recording endpoint.
+    /// </summary>
+    private bool IsMuteBannerInScope(string deviceId) =>
+        IsMuteBannerInScope(deviceId, LimitMuteBannersToTarget ? GetConfiguredOrDefaultMuteDeviceId() : null);
+
+    private bool IsMuteBannerInScope(string deviceId, string targetId)
+    {
+        if (!LimitMuteBannersToTarget) return true;
+
+        return !string.IsNullOrEmpty(targetId) &&
+               string.Equals(deviceId, targetId, StringComparison.OrdinalIgnoreCase);
+    }
+
+    /// <summary>
+    /// Reconciles the persistent mute banners with the current mute target and banner scope:
+    /// banners for microphones that left the scope are dismissed and in-scope microphones
+    /// that are currently muted get their banner back.
+    /// </summary>
+    private void RefreshMicrophoneMuteBanners()
+    {
+        if (!_initialized || AudioDeviceLister == null) return;
+
+        var targetId = LimitMuteBannersToTarget ? GetConfiguredOrDefaultMuteDeviceId() : null;
+        var inScope = AudioDeviceLister.GetDevices(EDataFlow.eCapture, EDeviceState.Active)
+            .Where(device => IsMuteBannerInScope(device.Id, targetId))
+            .ToList();
+
+        var mutedInScope = new List<(string Id, string Name)>();
+        foreach (var device in inScope)
+        {
+            var state = _microphoneMuteToggler.GetMuteState(device.Id);
+            if (state is { MuteState: true })
+                mutedInScope.Add((device.Id, state.Value.Name));
+        }
+
+        _notificationManager.SyncMuteBanners(inScope.Select(device => device.Id).ToList(), mutedInScope);
     }
 
     #region Microphone control
@@ -160,6 +202,16 @@ public partial class AppModel
         }
 
         return result;
+    }
+
+    /// <summary>
+    /// Gets the mute state of the configured mute microphone, or the Windows default input.
+    /// </summary>
+    /// <returns>Tuple with device name and mute state, null if no microphone found or state unavailable</returns>
+    public (string DeviceName, bool IsMuted)? GetMicrophoneMuteState()
+    {
+        var result = _microphoneMuteToggler.GetMuteState(MuteRecordingDeviceId);
+        return result == null ? null : (result.Value.Name, result.Value.MuteState);
     }
 
     /// <summary>

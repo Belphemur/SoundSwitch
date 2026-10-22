@@ -13,6 +13,7 @@
  ********************************************************************/
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
@@ -234,8 +235,28 @@ public class NotificationManager(INotificationSettings notificationSettings, IAp
         _microphoneMuteNotification.NotifyMicrophoneMuteChanged(deviceId, microphoneName, newMuteState);
     }
 
-    public void ClearPersistentMuteBanners() =>
-        ((NotificationBanner)_notificationFactory.Get(NotificationType.BannerNotification)).ClearPersistentMuteBanners();
+    /// <summary>
+    /// True when microphone mute changes are rendered as banners. Only banners honour the
+    /// "show mute banners only for the selected input" scope; sound and toast notifications
+    /// keep reporting every microphone.
+    /// </summary>
+    public bool MicrophoneMuteNotificationIsBanner =>
+        _microphoneMuteNotification?.TypeEnum == NotificationType.BannerNotification;
+
+    /// <summary>
+    /// Reconciles the persistent mute banners after the mute target or banner scope changed.
+    /// </summary>
+    /// <param name="inScopeMicrophoneIds">Identifiers of the microphones that remain in scope</param>
+    /// <param name="mutedInScopeMicrophones">In-scope microphones that are currently muted</param>
+    public void SyncMuteBanners(IReadOnlyCollection<string> inScopeMicrophoneIds,
+        IReadOnlyCollection<(string Id, string Name)> mutedInScopeMicrophones)
+    {
+        var banner = (NotificationBanner)_notificationFactory.Get(NotificationType.BannerNotification);
+        if (MicrophoneMuteNotificationIsBanner)
+            banner.SyncMuteBanners(inScopeMicrophoneIds, mutedInScopeMicrophones);
+        else
+            banner.ClearPersistentMuteBanners();
+    }
 
     public void Dispose()
     {
