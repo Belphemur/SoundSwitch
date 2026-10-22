@@ -5,9 +5,9 @@ description: Choose how SoundSwitch alerts you on device changes — banner, Win
 
 # Notifications
 
-The **Notifications** tab lets you choose how SoundSwitch alerts you when an audio device is switched or when your microphone is muted or unmuted.
-
 ![Notifications](/images/Notifications.png)
+
+The **Notifications** tab lets you choose how SoundSwitch alerts you when an audio device is switched or when your microphone is muted or unmuted.
 
 ## Notification Type
 
@@ -53,15 +53,20 @@ When using banner notifications, you can customize their appearance and behavior
 - **Background color** — Opens a color picker and sets the banner's background color. The button shows the color currently in use.
 - **Scale** — Scales the banner between **50%** and **200%** (default 100%), so it stays readable on high-DPI displays.
 - **Display Info** — How much detail to show on the banner: **Full Display** (device name and icon), **Name Only**, or **Icon Only**.
+- **Show mute banners only for selected input** — When checked (default), mute banners appear only for the microphone selected in **Mute microphone** on the Recording tab. Uncheck it to show a banner for every microphone's mute changes.
 
 Changing any of these options refreshes banners that are already on screen instead of waiting for the next notification.
 
 ## Microphone Mute
 
+![Mute microphone target](/images/Recording.png)
+
 Controls the notification behavior when the microphone mute toggle is activated:
 
 - **Microphone On** — Notification style when the microphone is unmuted. Options include **None**, **Fading In**, or **Persistent**.
 - **Microphone Off** — Notification style when the microphone is muted. Options include **None**, **Fading In**, or **Persistent**.
+
+The microphone these notifications describe is chosen with **Mute microphone** on the [Recording](recording.md) tab.
 
 ## Position
 

@@ -14,7 +14,7 @@ All commands accept `--json` for machine-readable output; failures in JSON mode 
 The CLI provides the following capabilities:
 
 - **Switch devices** — Cycle through available playback or recording devices.
-- **Mute microphone** — Toggle or set the mute state of the default communication microphone.
+- **Mute microphone** — Toggle or set the mute state of the microphone selected in **Mute microphone** (the Windows default input by default).
 - **Manage profiles** — Switch between saved audio profiles or list available profiles.
 - **Access settings** — Open the SoundSwitch settings window.
 - **Check status** — Display the active profile and current default audio endpoints (playback, recording, and communication).
