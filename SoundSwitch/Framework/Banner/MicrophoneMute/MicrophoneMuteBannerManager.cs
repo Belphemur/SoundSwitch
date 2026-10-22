@@ -158,6 +158,20 @@ public class MicrophoneMuteBannerManager
     }
 
     /// <summary>
+    /// Dismiss status banners for the previous mute target when the configured microphone changes.
+    /// </summary>
+    public void ClearPersistentMuteBanners()
+    {
+        _syncContext.Send(_ =>
+        {
+            foreach (var banner in _activeBanners.Values)
+                banner.Dispose();
+
+            _activeBanners.Clear();
+        }, null);
+    }
+
+    /// <summary>
     /// Rearranges all active banners vertically
     /// </summary>
     private void RearrangeBanners()

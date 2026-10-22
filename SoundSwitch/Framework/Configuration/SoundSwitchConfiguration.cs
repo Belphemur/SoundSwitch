@@ -114,6 +114,8 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
     public HotKey PlaybackHotKey { get; set; } = new(Keys.F11, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
     public HotKey RecordingHotKey { get; set; } = new(Keys.F7, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
     public HotKey MuteRecordingHotKey { get; set; } = new(Keys.M, HotKey.ModifierKeys.Control | HotKey.ModifierKeys.Alt);
+    public string MuteRecordingDeviceId { get; set; }
+    public bool LimitMuteBannersToTarget { get; set; } = true;
 
     /// <inheritdoc />
     public HashSet<Model.AppSoundRule> AppSoundRules { get; set; } = new();
@@ -155,6 +157,12 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
     public bool Migrate()
     {
         var migrated = false;
+        if (MigratedFields.Add(nameof(MuteRecordingDeviceId)))
+        {
+            // Legacy configurations have no selected target and use the Windows default input.
+            migrated = true;
+        }
+
         if (SelectedPlaybackDeviceListId.Count > 0)
         {
             SelectedDevices.UnionWith(

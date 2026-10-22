@@ -98,6 +98,8 @@ public interface ISoundSwitchConfiguration : IConfiguration
     DateTime LastDonationNagTime { get; set; }
     TimeSpan TimeBetweenDonateNag { get; set; }
     HotKey MuteRecordingHotKey { get; set; }
+    string MuteRecordingDeviceId { get; set; }
+    bool LimitMuteBannersToTarget { get; set; }
 
     /// <summary>
     /// Unique ID assigned at installation

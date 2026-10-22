@@ -41,6 +41,8 @@ internal class NotificationBanner : INotification
     private readonly BannerPositionFactory _bannerPositionFactory = new();
     private readonly MicrophoneMuteBannerManager _microphoneMuteBannerManager = new();
 
+    internal void ClearPersistentMuteBanners() => _microphoneMuteBannerManager.ClearPersistentMuteBanners();
+
     private IPosition BannerPosition => _bannerPositionFactory.Get(Configuration.BannerPosition);
 
     /// <summary>

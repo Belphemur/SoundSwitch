@@ -72,6 +72,16 @@ public interface IAppSettings
     bool SetHotkeyCombination(HotKey hotKey, HotKeyAction action, bool force = false);
 
     /// <summary>
+    /// Recording endpoint muted by the global mute action. Null uses the Windows default input.
+    /// </summary>
+    string MuteRecordingDeviceId { get; set; }
+
+    /// <summary>
+    /// Show microphone mute banners only for the configured mute target.
+    /// </summary>
+    bool LimitMuteBannersToTarget { get; set; }
+
+    /// <summary>
     /// For the app to check for update
     /// </summary>
     /// <param name="trigger">What initiated the check (manual tray click or a settings change).</param>

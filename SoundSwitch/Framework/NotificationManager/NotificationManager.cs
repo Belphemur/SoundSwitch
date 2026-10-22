@@ -234,6 +234,9 @@ public class NotificationManager(INotificationSettings notificationSettings, IAp
         _microphoneMuteNotification.NotifyMicrophoneMuteChanged(deviceId, microphoneName, newMuteState);
     }
 
+    public void ClearPersistentMuteBanners() =>
+        ((NotificationBanner)_notificationFactory.Get(NotificationType.BannerNotification)).ClearPersistentMuteBanners();
+
     public void Dispose()
     {
         if (_disposed) return;

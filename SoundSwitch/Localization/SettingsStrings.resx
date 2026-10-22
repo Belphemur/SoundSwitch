@@ -587,6 +587,24 @@ Restore the state of the system when the application is closed.</value>
   <data name="microphone.off" xml:space="preserve">
     <value>Microphone Off</value>
   </data>
+  <data name="mute.target" xml:space="preserve">
+    <value>Mute microphone</value>
+  </data>
+  <data name="mute.target.default" xml:space="preserve">
+    <value>Windows default input</value>
+  </data>
+  <data name="mute.target.unavailable" xml:space="preserve">
+    <value>Selected microphone (unavailable)</value>
+  </data>
+  <data name="mute.target.tooltip" xml:space="preserve">
+    <value>Choose the microphone used by the app you want to mute, such as NVIDIA Broadcast.</value>
+  </data>
+  <data name="mute.banner.targetOnly" xml:space="preserve">
+    <value>Show mute banners only for selected input</value>
+  </data>
+  <data name="mute.banner.targetOnly.tooltip" xml:space="preserve">
+    <value>When off, mute changes on any microphone can show a banner.</value>
+  </data>
   <data name="microphoneMuted" xml:space="preserve">
     <value>Microphone muted</value>
   </data>

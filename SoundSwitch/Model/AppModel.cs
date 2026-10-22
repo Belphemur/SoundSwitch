@@ -101,7 +101,13 @@ public partial class AppModel : IAppModel
         AudioDeviceLister = active;
         JobScheduler.Instance.ScheduleJob(new ProcessNotificationEventsJob());
         AudioDeviceLister.DefaultDeviceChanged.Subscribe((@event) =>
-            { DefaultDeviceChanged?.Invoke(this, new DeviceDefaultChangedEvent(@event.Device, @event.Role)); });
+        {
+            if (_initialized && LimitMuteBannersToTarget && string.IsNullOrEmpty(MuteRecordingDeviceId) &&
+                @event.Role == ERole.eConsole && @event.Device.Type == EDataFlow.eCapture)
+                _notificationManager.ClearPersistentMuteBanners();
+
+            DefaultDeviceChanged?.Invoke(this, new DeviceDefaultChangedEvent(@event.Device, @event.Role));
+        });
 
         // Subscribe to volume change events for microphones
         AudioDeviceLister.DeviceVolumeChanged
@@ -113,20 +119,17 @@ public partial class AppModel : IAppModel
             .Subscribe(HandleMicrophoneMuteChanged);
 
         RegisterHotKey(AppConfigs.Configuration.PlaybackHotKey);
-        var saveConfig = false;
         if (!RegisterHotKey(AppConfigs.Configuration.RecordingHotKey))
         {
-            Log.Information("Disabling Recording hotkey: {hotkey}", AppConfigs.Configuration.RecordingHotKey);
-            AppConfigs.Configuration.RecordingHotKey.Enabled = false;
-            saveConfig = true;
+            Log.Warning("Recording hotkey could not be registered: {hotkey}", AppConfigs.Configuration.RecordingHotKey);
         }
 
         if (!RegisterHotKey(AppConfigs.Configuration.MuteRecordingHotKey))
         {
-            Log.Information("Disabling Mute hotkey: {hotkey}", AppConfigs.Configuration.MuteRecordingHotKey);
-            AppConfigs.Configuration.MuteRecordingHotKey.Enabled = false;
-            saveConfig = true;
+            Log.Warning("Mute hotkey could not be registered: {hotkey}", AppConfigs.Configuration.MuteRecordingHotKey);
         }
+
+        var saveConfig = false;
 
         if (!AppConfigs.Configuration.MigratedFields.Contains($"{nameof(SwitchForegroundProgram)}_cleanup")
             && AppConfigs.Configuration.MigratedFields.Contains($"{nameof(SwitchForegroundProgram)}_force_off") &&

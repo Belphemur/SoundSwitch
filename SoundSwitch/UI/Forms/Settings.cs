@@ -86,6 +86,11 @@ public sealed partial class SettingsForm : Form
     private ComboBox _bannerMonitorComboBox;
     private Button _bannerColorButton;
     private NumericUpDownWithUnits _bannerScaleUpDown;
+    private TableLayoutPanel _muteTargetPanel;
+    private Label _muteTargetLabel;
+    private ComboBox _muteTargetComboBox;
+    private bool _suppressMuteTargetSelection;
+    private CheckBox _limitMuteBannersCheckBox;
 
     private const int RECT_PEN_WIDTH = 4;
     private const int OFFSET_W = 15;
@@ -163,6 +168,7 @@ public sealed partial class SettingsForm : Form
         // Form itself
         InitializeComponent();
         InitializeBannerAppearanceControls();
+        InitializeMuteTargetControls();
         ApplyTheme();
 #if NIGHTLY
         var nightlyChannelCheckBox = new CheckBox
@@ -411,6 +417,84 @@ public sealed partial class SettingsForm : Form
         public override string ToString() => Label;
     }
 
+    private sealed record MuteTargetChoice(string Label, string DeviceId)
+    {
+        public override string ToString() => Label;
+    }
+
+    private void InitializeMuteTargetControls()
+    {
+        _muteTargetPanel = new TableLayoutPanel
+        {
+            Dock = DockStyle.Bottom,
+            ColumnCount = 2,
+            RowCount = 1,
+            Height = Math.Max(muteHotKey.Height, Font.Height) + 12,
+            Padding = new Padding(3),
+        };
+        _muteTargetPanel.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+        _muteTargetPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+        _muteTargetPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+
+        _muteTargetLabel = new Label
+        {
+            AutoSize = true,
+            Dock = DockStyle.Fill,
+            TextAlign = ContentAlignment.MiddleLeft,
+            Text = GetBannerString("mute.target"),
+        };
+        _muteTargetComboBox = new ComboBox
+        {
+            Dock = DockStyle.Fill,
+            DropDownStyle = ComboBoxStyle.DropDownList,
+            Name = "muteTargetComboBox",
+        };
+        _muteTargetComboBox.SelectedIndexChanged += (_, _) =>
+        {
+            if (!_loaded || _suppressMuteTargetSelection || _muteTargetComboBox.SelectedItem is not MuteTargetChoice choice)
+                return;
+
+            AppModel.Instance.MuteRecordingDeviceId = choice.DeviceId;
+        };
+
+        var tooltip = new ToolTip();
+        tooltip.SetToolTip(_muteTargetLabel, GetBannerString("mute.target.tooltip"));
+        tooltip.SetToolTip(_muteTargetComboBox, GetBannerString("mute.target.tooltip"));
+        _muteTargetPanel.Controls.Add(_muteTargetLabel, 0, 0);
+        _muteTargetPanel.Controls.Add(_muteTargetComboBox, 1, 0);
+        recordingTabPage.Controls.Add(_muteTargetPanel);
+        recordingListView.BringToFront();
+    }
+
+    private void PopulateMuteTargetChoices()
+    {
+        _suppressMuteTargetSelection = true;
+        try
+        {
+            var selectedId = AppModel.Instance.MuteRecordingDeviceId;
+            _muteTargetComboBox.Items.Clear();
+            _muteTargetComboBox.Items.Add(new MuteTargetChoice(GetBannerString("mute.target.default"), null));
+
+            foreach (var device in _audioDeviceLister.GetDevices(EDataFlow.eCapture, EDeviceState.Active | EDeviceState.Unplugged)
+                         .OrderBy(device => device.NameClean))
+                _muteTargetComboBox.Items.Add(new MuteTargetChoice(device.NameClean, device.Id));
+
+            var selected = _muteTargetComboBox.Items.Cast<MuteTargetChoice>()
+                .FirstOrDefault(choice => choice.DeviceId == selectedId);
+            if (selected == null)
+            {
+                selected = new MuteTargetChoice(GetBannerString("mute.target.unavailable"), selectedId);
+                _muteTargetComboBox.Items.Add(selected);
+            }
+
+            _muteTargetComboBox.SelectedItem = selected;
+        }
+        finally
+        {
+            _suppressMuteTargetSelection = false;
+        }
+    }
+
     /// <summary>
     /// Builds the banner monitor, background colour and scale controls and grows the form just
     /// enough to fit them.
@@ -434,6 +518,7 @@ public sealed partial class SettingsForm : Form
         var rowGap = rowPitch - rowHeight;
         var colorRowTop = bannerDisplayComboBox.Bottom + rowGap;
         var scaleRowTop = colorRowTop + rowPitch;
+        var muteBannerRowTop = scaleRowTop + rowPitch;
 
         // Same idea for the position group: append a row under the existing content.
         var positionContentBottom = positionGroupBox.Controls.Cast<Control>().Max(control => control.Bottom);
@@ -522,6 +607,20 @@ public sealed partial class SettingsForm : Form
             nameof(AppModel.BannerScalePercentage), false, DataSourceUpdateMode.OnPropertyChanged);
         bannerOptionsGroupBox.Controls.Add(_bannerScaleUpDown);
 
+        _limitMuteBannersCheckBox = new CheckBox
+        {
+            Name = "limitMuteBannersCheckBox",
+            Text = GetBannerString("mute.banner.targetOnly"),
+            Location = new Point(singleNotificationCheckbox.Left, muteBannerRowTop),
+            AutoSize = true,
+            UseVisualStyleBackColor = true,
+            TabIndex = bannerOptionsGroupBox.Controls.Count
+        };
+        _limitMuteBannersCheckBox.DataBindings.Add(nameof(CheckBox.Checked), AppModel.Instance,
+            nameof(AppModel.LimitMuteBannersToTarget), false, DataSourceUpdateMode.OnPropertyChanged);
+        new ToolTip().SetToolTip(_limitMuteBannersCheckBox, GetBannerString("mute.banner.targetOnly.tooltip"));
+        bannerOptionsGroupBox.Controls.Add(_limitMuteBannersCheckBox);
+
         // Grow the containers, and with them the tab page and the form, by exactly the extra rows.
         // closeButton is anchored Bottom|Right, so it follows ClientSize on its own; nudging its
         // Top as well would push it past the bottom edge of the client area.
@@ -529,7 +628,7 @@ public sealed partial class SettingsForm : Form
         // microphoneMuteGroupBox is the tallest child the designer placed in this group box, and
         // unlike positionGroupBox it is not resized here, so it stays a stable reference.
         bannerOptionsGroupBox.Height = HeightForRow(
-            originalOptionsHeight, microphoneMuteGroupBox.Bottom, scaleRowTop + rowHeight);
+            originalOptionsHeight, microphoneMuteGroupBox.Bottom, _limitMuteBannersCheckBox.Bottom);
         positionGroupBox.Height = HeightForRow(
             positionGroupBox.Height, positionContentBottom, monitorRowTop + rowHeight);
 
@@ -783,6 +882,7 @@ public sealed partial class SettingsForm : Form
         var selectedDevices = AppModel.Instance.SelectedDevices;
         PopulateAudioList(playbackListView, selectedDevices, _audioDeviceLister.GetDevices(EDataFlow.eRender, EDeviceState.Active | EDeviceState.Unplugged));
         PopulateAudioList(recordingListView, selectedDevices, _audioDeviceLister.GetDevices(EDataFlow.eCapture, EDeviceState.Active | EDeviceState.Unplugged));
+        PopulateMuteTargetChoices();
     }
 
     private void RefreshAudioDevices()
@@ -898,6 +998,8 @@ public sealed partial class SettingsForm : Form
         closeButton.Text = SettingsStrings.buttonClose;
         switchDeviceLabel.Text = SettingsStrings.switchDevice;
         toggleMuteLabel.Text = SettingsStrings.mute_toggle_label;
+        _muteTargetLabel.Text = GetBannerString("mute.target");
+        _limitMuteBannersCheckBox.Text = GetBannerString("mute.banner.targetOnly");
         muteHotKeyCheckBox.Text = SettingsStrings.hotkeyEnabled;
 
         addProfileButton.Image = Resources.profile_menu_add;
@@ -949,6 +1051,9 @@ public sealed partial class SettingsForm : Form
             tabPage.UseVisualStyleBackColor = !darkMode;
             tabPage.BackColor = GetTabPageColor(darkMode);
         }
+
+        _muteTargetLabel.ForeColor = textColor;
+        _muteTargetPanel.BackColor = GetTabPageColor(darkMode);
 
         foreach (var groupBox in EnumerateControls(this).OfType<GroupBox>())
         {
@@ -1054,16 +1159,24 @@ public sealed partial class SettingsForm : Form
     private void MuteHotKeyCheckBox_CheckedChanged(object sender, EventArgs e) =>
         ForceSetHotkeys(sender, muteHotKey);
 
-    private static void ForceSetHotkeys(object sender, HotKeyTextBox hotKeyTextBox)
+    private void ForceSetHotkeys(object sender, HotKeyTextBox hotKeyTextBox)
     {
         var control = (CheckBox)sender;
         if (hotKeyTextBox.Tag == null) return;
 
         var (action, hotKey) = (Tuple<HotKeyAction, HotKey>)hotKeyTextBox.Tag;
-        var currentState = hotKey.Enabled;
-        hotKeyTextBox.Enabled = hotKey.Enabled = control.Checked;
-        if (currentState != hotKey.Enabled)
-            AppModel.Instance.SetHotkeyCombination(hotKey, action, true);
+        if (hotKey.Enabled == control.Checked) return;
+
+        var updatedHotKey = new HotKey(hotKey.Keys, hotKey.Modifier) { Enabled = control.Checked };
+        if (AppModel.Instance.SetHotkeyCombination(updatedHotKey, action, true))
+        {
+            hotKeyTextBox.Tag = new Tuple<HotKeyAction, HotKey>(action, updatedHotKey);
+            hotKeyTextBox.Enabled = updatedHotKey.Enabled;
+        }
+        else
+        {
+            control.Checked = hotKey.Enabled;
+        }
     }
 
     private void HotKeyControl_HotKeyChanged(object sender, HotKeyTextBox.Event e)
@@ -1073,9 +1186,10 @@ public sealed partial class SettingsForm : Form
         if (tuple == null) return;
 
         var newTuple = new Tuple<HotKeyAction, HotKey>(tuple.Item1, control.HotKey);
-        hotKeyControl.Tag = newTuple;
-
-        AppModel.Instance.SetHotkeyCombination(newTuple.Item2, newTuple.Item1);
+        if (AppModel.Instance.SetHotkeyCombination(newTuple.Item2, newTuple.Item1))
+            control.Tag = newTuple;
+        else
+            control.HotKey = tuple.Item2;
     }
 
     private void SetComboBoxValue<T>(object sender, Action<DisplayEnumObject<T>> saveSetting) where T : Enum, IConvertible

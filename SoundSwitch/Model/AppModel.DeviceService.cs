@@ -117,6 +117,20 @@ public partial class AppModel
     /// <param name="payload">The volume changed payload</param>
     private void HandleMicrophoneMuteChanged(DeviceVolumeChangedPayload payload)
     {
+        if (LimitMuteBannersToTarget)
+        {
+            var targetId = MuteRecordingDeviceId;
+            if (string.IsNullOrEmpty(targetId))
+            {
+                using var defaultInput = AudioSwitcher.Instance.GetDefaultAudioDevice(EDataFlow.eCapture, ERole.eConsole);
+                targetId = defaultInput?.Id;
+            }
+
+            if (string.IsNullOrEmpty(targetId) ||
+                !string.Equals(payload.Device.Id, targetId, StringComparison.OrdinalIgnoreCase))
+                return;
+        }
+
         Log.Information("Microphone {DeviceName} mute state changed from {WasMuted} to {IsMuted}",
             payload.Device.NameClean, payload.WasMuted, payload.IsMuted);
 
@@ -127,14 +141,14 @@ public partial class AppModel
     #region Microphone control
 
     /// <summary>
-    /// Toggles the system default microphone's mute state.
+    /// Toggles the configured mute microphone's state, or the Windows default input.
     /// </summary>
     /// <remarks>
     /// If no default microphone is found or the operation fails, the method invokes the <c>ErrorTriggered</c> event and logs an error; on success it logs the new mute state.
     /// </remarks>
     public (string DeviceName, bool IsMuted)? ToggleMicrophoneMute()
     {
-        var result = _microphoneMuteToggler.ToggleDefaultMute();
+        var result = _microphoneMuteToggler.ToggleMute(MuteRecordingDeviceId);
         if (result == null)
         {
             ErrorTriggered?.Invoke(this, new ExceptionEvent(new Exception("No mic found or unable to toggle mute state")));
@@ -163,13 +177,13 @@ public partial class AppModel
     }
 
     /// <summary>
-    /// Sets the mute state of the default microphone
+    /// Sets the mute state of the configured mute microphone, or the Windows default input.
     /// </summary>
     /// <param name="muteState">The desired mute state</param>
     /// <returns>Tuple with device name and mute state, null if no default microphone found or operation failed</returns>
     public (string DeviceName, bool IsMuted)? SetMicrophoneMuteState(bool muteState)
     {
-        var result = _microphoneMuteToggler.SetDefaultMuteState(muteState);
+        var result = _microphoneMuteToggler.SetConfiguredMuteState(muteState, MuteRecordingDeviceId);
         if (result == null)
         {
             ErrorTriggered?.Invoke(this, new ExceptionEvent(new Exception("No mic found or unable to set mute state")));

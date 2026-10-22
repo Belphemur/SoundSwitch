@@ -33,6 +33,30 @@ namespace SoundSwitch.Model;
 
 public partial class AppModel
 {
+    public string MuteRecordingDeviceId
+    {
+        get => AppConfigs.Configuration.MuteRecordingDeviceId;
+        set
+        {
+            if (AppConfigs.Configuration.MuteRecordingDeviceId == value) return;
+            _notificationManager.ClearPersistentMuteBanners();
+            AppConfigs.Configuration.MuteRecordingDeviceId = value;
+            AppConfigs.Configuration.Save();
+        }
+    }
+
+    public bool LimitMuteBannersToTarget
+    {
+        get => AppConfigs.Configuration.LimitMuteBannersToTarget;
+        set
+        {
+            if (AppConfigs.Configuration.LimitMuteBannersToTarget == value) return;
+            _notificationManager.ClearPersistentMuteBanners();
+            AppConfigs.Configuration.LimitMuteBannersToTarget = value;
+            AppConfigs.Configuration.Save();
+        }
+    }
+
     public IconDoubleClick IconDoubleClick
     {
         get => AppConfigs.Configuration.IconDoubleClick;
@@ -216,7 +240,11 @@ public partial class AppModel
         WindowsAPIAdapter.UnRegisterHotKey(confHotKey);
         Log.Information("Unregistered previous hotkeys {hotkeys}", confHotKey);
 
-        if (!RegisterHotKey(hotKey)) return false;
+        if (!RegisterHotKey(hotKey))
+        {
+            RegisterHotKey(confHotKey);
+            return false;
+        }
 
         Log.Information("New Hotkeys registered {hotkeys}", hotKey);
 
@@ -282,6 +310,7 @@ public partial class AppModel
             }
             else if (e.HotKey == AppConfigs.Configuration.MuteRecordingHotKey)
             {
+                Log.Information("Mute hotkey pressed: {hotkey}", e.HotKey);
                 TelemetryService.AddBreadcrumb("hotkey", "MuteRecordingHotKey pressed");
                 var micResult = ToggleMicrophoneMute();
                 if (micResult != null)
