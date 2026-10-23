@@ -235,7 +235,9 @@ public partial class AppModel
             _ => throw new ArgumentOutOfRangeException(nameof(action), action, null)
         };
 
-        if (!force && confHotKey == hotKey)
+        // Nothing to change: same combination and same enabled state (Equality ignores
+        // Enabled, so compare it explicitly).
+        if (confHotKey == hotKey && confHotKey.Enabled == hotKey.Enabled)
         {
             Log.Information("HotKey {action} already set {hotkeys}", action, confHotKey);
             return true;
@@ -248,7 +250,9 @@ public partial class AppModel
             return false;
         }
 
-        if (confHotKey.Enabled)
+        // Only unbind the previous combination when it is actually registered: a binding
+        // that failed to register at startup must not make the new one look like a failure.
+        if (confHotKey.Enabled && WindowsAPIAdapter.IsHotKeyRegistered(confHotKey))
         {
             Log.Information("Unregister previous hotkeys {hotkeys}", confHotKey);
             if (!WindowsAPIAdapter.UnRegisterHotKey(confHotKey))
