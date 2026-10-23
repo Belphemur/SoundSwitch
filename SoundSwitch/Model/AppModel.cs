@@ -81,6 +81,11 @@ public partial class AppModel : IAppModel
     private readonly MicrophoneMuteToggler _microphoneMuteToggler;
     private readonly LimitedConcurrencyLevelTaskScheduler _updateScheduler;
 
+    // The default capture endpoint is resolved with a COM call; microphone mute events are
+    // frequent, so cache it and invalidate whenever the default or the device list changes.
+    private string _defaultMuteDeviceId;
+    private volatile bool _defaultMuteDeviceIdValid;
+
     public ProfileManager ProfileManager { get; private set; }
 
     public Services.AppSoundLockManager AppSoundLockManager { get; private set; }
@@ -102,6 +107,9 @@ public partial class AppModel : IAppModel
         JobScheduler.Instance.ScheduleJob(new ProcessNotificationEventsJob());
         AudioDeviceLister.DefaultDeviceChanged.Subscribe((@event) =>
         {
+            if (@event.Role == ERole.eCommunications && @event.Device.Type == EDataFlow.eCapture)
+                _defaultMuteDeviceIdValid = false;
+
             if (_initialized && LimitMuteBannersToTarget && MuteRecordingDevice == null &&
                 @event.Role == ERole.eCommunications && @event.Device.Type == EDataFlow.eCapture)
                 RefreshMicrophoneMuteBanners();
@@ -113,6 +121,7 @@ public partial class AppModel : IAppModel
         // (and whether it resolves at all), so reconcile the persistent mute banners too.
         AudioDeviceLister.DeviceListRefreshed.Subscribe(_ =>
         {
+            _defaultMuteDeviceIdValid = false;
             if (_initialized && LimitMuteBannersToTarget && MuteRecordingDevice != null)
                 RefreshMicrophoneMuteBanners();
         });

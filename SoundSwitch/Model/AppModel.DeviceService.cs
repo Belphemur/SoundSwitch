@@ -176,8 +176,22 @@ public partial class AppModel
                 stored.NameClean, stored.Id);
         }
 
+        return GetDefaultMuteDeviceId();
+    }
+
+    /// <summary>
+    /// Cached id of the Windows default communication input. Caching avoids a blocking COM
+    /// lookup on every microphone mute event; the cache is invalidated on default-device and
+    /// device-list changes.
+    /// </summary>
+    private string GetDefaultMuteDeviceId()
+    {
+        if (_defaultMuteDeviceIdValid) return _defaultMuteDeviceId;
+
         using var defaultInput = AudioSwitcher.Instance.GetDefaultAudioDevice(EDataFlow.eCapture, ERole.eCommunications);
-        return defaultInput?.Id;
+        _defaultMuteDeviceId = defaultInput?.Id;
+        _defaultMuteDeviceIdValid = true;
+        return _defaultMuteDeviceId;
     }
 
     /// <summary>
@@ -249,8 +263,14 @@ public partial class AppModel
     /// <returns>Tuple with device name and mute state, null if no microphone found or state unavailable</returns>
     public (string DeviceName, bool IsMuted)? GetMicrophoneMuteState()
     {
-        var result = _microphoneMuteToggler.GetMuteState(GetConfiguredOrDefaultMuteDeviceId());
-        return result == null ? null : (result.Value.Name, result.Value.MuteState);
+        var deviceId = GetConfiguredOrDefaultMuteDeviceId();
+        var result = _microphoneMuteToggler.GetMuteState(deviceId);
+        if (result == null) return null;
+
+        // CLI/JSON clients expect the stable DeviceInfo.NameClean form (duplicate-instance
+        // suffixes removed), not the raw Windows friendly name.
+        var deviceName = new DeviceInfo(result.Value.Name, deviceId ?? string.Empty, EDataFlow.eCapture, false, DateTime.UtcNow).NameClean;
+        return (deviceName, result.Value.MuteState);
     }
 
     /// <summary>

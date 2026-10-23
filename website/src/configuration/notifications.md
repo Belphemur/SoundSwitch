@@ -66,7 +66,7 @@ Controls the notification behavior when the microphone mute toggle is activated:
 - **Microphone On** — Notification style when the microphone is unmuted. Options include **None**, **Fading In**, or **Persistent**.
 - **Microphone Off** — Notification style when the microphone is muted. Options include **None**, **Fading In**, or **Persistent**.
 
-The microphone these notifications describe is chosen with **Mute microphone** on the [Recording](recording.md) tab.
+The mute action targets the microphone chosen with **Mute microphone** on the [Recording](recording.md) tab. Only mute banners follow that choice; Windows toasts and sounds still report every microphone.
 
 ## Position
 

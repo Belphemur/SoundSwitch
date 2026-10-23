@@ -83,9 +83,15 @@ public class NotificationManager(INotificationSettings notificationSettings, IAp
 
     private void SetNotifications(NotificationType switchDeviceType, NotificationType switchProfileType, NotificationType microphoneMuteType)
     {
+        var wasMicrophoneMuteBanner = MicrophoneMuteNotificationIsBanner;
         _switchDeviceNotification = BuildNotification(switchDeviceType);
         _switchProfileNotification = BuildNotification(switchProfileType);
         _microphoneMuteNotification = BuildNotification(microphoneMuteType);
+
+        // The banner notification instance is shared, so leaving banner notifications must
+        // dismiss persistent mute banners that were already on screen.
+        if (wasMicrophoneMuteBanner && microphoneMuteType != NotificationType.BannerNotification)
+            ((NotificationBanner)_notificationFactory.Get(NotificationType.BannerNotification)).ClearPersistentMuteBanners();
     }
 
     private INotification BuildNotification(NotificationType notificationType)

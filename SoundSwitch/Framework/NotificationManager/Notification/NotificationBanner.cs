@@ -59,7 +59,11 @@ internal class NotificationBanner : INotification
         // Only persistent banners are reconciled; fading banners are transient by design.
         if (Configuration.MicrophoneMuteBanner != MicrophoneMute.Persistent) return;
         foreach (var (id, name) in mutedInScopeMicrophones)
-            NotifyMicrophoneMuteChanged(id, name, true);
+        {
+            // Re-add directly: NotifyMicrophoneMuteChanged would remove the banner first
+            // (because the unmute style is usually not persistent) and make it flicker.
+            _microphoneMuteBannerManager.UpdateMicrophoneMuteState(id, name, true);
+        }
     }
 
     private IPosition BannerPosition => _bannerPositionFactory.Get(Configuration.BannerPosition);
