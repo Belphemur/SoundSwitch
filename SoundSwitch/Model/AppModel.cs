@@ -110,7 +110,10 @@ public partial class AppModel : IAppModel
             if (@event.Role == ERole.eCommunications && @event.Device.Type == EDataFlow.eCapture)
                 _defaultMuteDeviceIdValid = false;
 
-            if (_initialized && LimitMuteBannersToTarget && MuteRecordingDevice == null &&
+            // Refresh on every communications-input change: with a configured target that is
+            // available the result is unchanged, and when it is unavailable the mute action falls
+            // back to the default input, whose banners must follow the new default.
+            if (_initialized && LimitMuteBannersToTarget &&
                 @event.Role == ERole.eCommunications && @event.Device.Type == EDataFlow.eCapture)
                 RefreshMicrophoneMuteBanners();
 
