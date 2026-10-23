@@ -225,13 +225,12 @@ public partial class AppModel
             .Where(device => IsMuteBannerInScope(device.Id, targetId))
             .ToList();
 
-        var mutedInScope = new List<(string Id, string Name)>();
-        foreach (var device in inScope)
-        {
-            var state = _microphoneMuteToggler.GetMuteState(device.Id);
-            if (state is { MuteState: true })
-                mutedInScope.Add((device.Id, state.Value.Name));
-        }
+        // The lister already tracks each device's mute state from its volume notifications,
+        // so reuse it instead of opening every endpoint through COM on the caller's thread.
+        var mutedInScope = inScope
+            .Where(device => device.IsMuted)
+            .Select(device => (device.Id, device.NameClean))
+            .ToList();
 
         _notificationManager.SyncMuteBanners(inScope.Select(device => device.Id).ToList(), mutedInScope);
     }
