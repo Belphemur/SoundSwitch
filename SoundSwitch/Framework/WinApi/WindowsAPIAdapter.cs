@@ -318,8 +318,16 @@ public class WindowsAPIAdapter : Form
                 Log.Information("Unregistering Hotkeys: {hotkeys}", hotKey);
                 if (_instance._registeredHotkeys.TryGetValue(hotKey, out var id))
                 {
+                    // Keep the tracking record until Windows confirms the unregistration; if
+                    // the native call fails the binding is still active and must stay tracked.
+                    if (!NativeMethods.UnregisterHotKey(_instance.Handle, id))
+                    {
+                        Log.Warning("Failed to unregister hotkey {hotkeys}", hotKey);
+                        return false;
+                    }
+
                     _instance._registeredHotkeys.Remove(hotKey);
-                    return NativeMethods.UnregisterHotKey(_instance.Handle, id);
+                    return true;
                 }
 
                 lock (_hookedHotkeys)

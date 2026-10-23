@@ -241,14 +241,25 @@ public partial class AppModel
             return true;
         }
 
-        Log.Information("Unregister previous hotkeys {hotkeys}", confHotKey);
-        WindowsAPIAdapter.UnRegisterHotKey(confHotKey);
-        Log.Information("Unregistered previous hotkeys {hotkeys}", confHotKey);
-
+        Log.Information("Register new hotkeys {hotkeys}", hotKey);
         if (!RegisterHotKey(hotKey))
         {
-            RegisterHotKey(confHotKey);
+            // The previous binding was never touched, so it stays in effect.
             return false;
+        }
+
+        if (confHotKey.Enabled)
+        {
+            Log.Information("Unregister previous hotkeys {hotkeys}", confHotKey);
+            if (!WindowsAPIAdapter.UnRegisterHotKey(confHotKey))
+            {
+                Log.Warning("Couldn't unregister previous hotkeys {hotkeys}, rolling back {newHotkeys}", confHotKey, hotKey);
+                if (hotKey.Enabled && !WindowsAPIAdapter.UnRegisterHotKey(hotKey))
+                    Log.Error("Couldn't roll back newly registered hotkeys {hotkeys}", hotKey);
+                return false;
+            }
+
+            Log.Information("Unregistered previous hotkeys {hotkeys}", confHotKey);
         }
 
         Log.Information("New Hotkeys registered {hotkeys}", hotKey);
