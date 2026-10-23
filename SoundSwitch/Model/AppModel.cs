@@ -83,8 +83,11 @@ public partial class AppModel : IAppModel
 
     // The default capture endpoint is resolved with a COM call; microphone mute events are
     // frequent, so cache it and invalidate whenever the default or the device list changes.
+    // Invalidation and publication share this lock so a lookup that started before an event
+    // cannot publish the former default after the cache was invalidated.
+    private readonly object _defaultMuteDeviceIdLock = new();
     private string _defaultMuteDeviceId;
-    private volatile bool _defaultMuteDeviceIdValid;
+    private bool _defaultMuteDeviceIdValid;
 
     public ProfileManager ProfileManager { get; private set; }
 
@@ -108,7 +111,10 @@ public partial class AppModel : IAppModel
         AudioDeviceLister.DefaultDeviceChanged.Subscribe((@event) =>
         {
             if (@event.Role == ERole.eCommunications && @event.Device.Type == EDataFlow.eCapture)
-                _defaultMuteDeviceIdValid = false;
+            {
+                lock (_defaultMuteDeviceIdLock)
+                    _defaultMuteDeviceIdValid = false;
+            }
 
             // Refresh on every communications-input change: with a configured target that is
             // available the result is unchanged, and when it is unavailable the mute action falls
@@ -124,7 +130,8 @@ public partial class AppModel : IAppModel
         // (and whether it resolves at all), so reconcile the persistent mute banners too.
         AudioDeviceLister.DeviceListRefreshed.Subscribe(_ =>
         {
-            _defaultMuteDeviceIdValid = false;
+            lock (_defaultMuteDeviceIdLock)
+                _defaultMuteDeviceIdValid = false;
             if (_initialized && LimitMuteBannersToTarget && MuteRecordingDevice != null)
                 RefreshMicrophoneMuteBanners();
         });

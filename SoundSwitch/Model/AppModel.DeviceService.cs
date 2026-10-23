@@ -186,12 +186,15 @@ public partial class AppModel
     /// </summary>
     private string GetDefaultMuteDeviceId()
     {
-        if (_defaultMuteDeviceIdValid) return _defaultMuteDeviceId;
+        lock (_defaultMuteDeviceIdLock)
+        {
+            if (_defaultMuteDeviceIdValid) return _defaultMuteDeviceId;
 
-        using var defaultInput = AudioSwitcher.Instance.GetDefaultAudioDevice(EDataFlow.eCapture, ERole.eCommunications);
-        _defaultMuteDeviceId = defaultInput?.Id;
-        _defaultMuteDeviceIdValid = true;
-        return _defaultMuteDeviceId;
+            using var defaultInput = AudioSwitcher.Instance.GetDefaultAudioDevice(EDataFlow.eCapture, ERole.eCommunications);
+            _defaultMuteDeviceId = defaultInput?.Id;
+            _defaultMuteDeviceIdValid = true;
+            return _defaultMuteDeviceId;
+        }
     }
 
     /// <summary>
