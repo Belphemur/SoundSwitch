@@ -15,7 +15,7 @@ Automatic mode applies when a matching process starts or comes to the foreground
 - **Is the window title wrong?** If **Window Title** is set, the rule only matches windows whose title matches. Clear it to match every window of the process.
 - **Is it a child process?** Some applications launch the audio-owning process separately. Add a rule for that process, or use a broader pattern such as `.*game.*`.
 - **Is the device available?** An unplugged or disabled device is skipped. Reconnect it, or edit the pair to use an active device.
-- **Still stuck?** Open the **Troubleshooting** tab and click **Reset** under **Reset Per App Audio**. Windows reassigns applications to their default devices, and the rule re-applies on the next process or window event.
+- **Still stuck?** Open the **Troubleshooting** tab and click **Reset** under **Reset Per App Audio**. Windows reassigns applications to their default devices. An **Automatic** rule then re-applies on the next process or window event; a **Hotkey** rule needs another press of its shortcut.
 
 ## The hotkey does nothing
 

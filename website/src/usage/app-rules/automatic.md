@@ -44,7 +44,7 @@ Every time a Chrome window whose title contains "YouTube" comes to the foregroun
 - **Both devices together.** A pair can set playback and recording. When both are set, both are applied.
 - **One side is enough.** Leave a side unset to keep the application's current device on that side.
 - **Re-evaluated on focus.** Switching back to the application can re-apply the rule if Windows moved its audio in the meantime.
-- **Multiple matching processes.** All matching processes receive the same pair. For example, a browser with several child processes is routed as a group.
+- **Multiple matching processes.** Each matching process is routed when its own process or foreground event is handled. For example, a browser with several child processes is rerouted as each one starts or comes to the foreground — the rule does not push a group update to every matching process when only one of them gains focus.
 - **Unavailable device.** If the stored playback or recording device is not currently active, that side is skipped and the other side is still applied. The skip is written to the log.
 - **Device changes.** If a device gets a new id, SoundSwitch resolves it by its stable device-instance path or unique name and updates the stored identity. See [Device pairs](./device-pairs.md).
 - **Disabled rules** keep their settings but are never applied.

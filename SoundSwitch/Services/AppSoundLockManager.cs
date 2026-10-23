@@ -179,12 +179,14 @@ namespace SoundSwitch.Services
                 }
             }
 
-            return WindowsAPIAdapter.RegisterHotKey(hotKey) && WindowsAPIAdapter.UnRegisterHotKey(hotKey);
+            return WindowsAPIAdapter.IsHotKeyAvailable(hotKey);
         }
 
         /// <summary>
         /// Two hotkey rules may not target the same application/window, otherwise the
-        /// cycle would be ambiguous.
+        /// cycle would be ambiguous. Comparison honours each rule's <see cref="AppSoundRule.CaseSensitive"/>
+        /// flag the same way <see cref="IsMatch"/> does: only when both rules are case-sensitive
+        /// are the patterns compared case-sensitively.
         /// </summary>
         public bool IsHotkeyTargetAvailable(AppSoundRule rule)
         {
@@ -195,10 +197,13 @@ namespace SoundSwitch.Services
                 return !_configuration.AppSoundRules.Any(other =>
                     other.Id != rule.Id &&
                     other.Mode == AppRuleMode.Hotkey &&
-                    string.Equals(other.ProcessPath, rule.ProcessPath, StringComparison.OrdinalIgnoreCase) &&
-                    string.Equals(other.WindowName, rule.WindowName, StringComparison.OrdinalIgnoreCase));
+                    PatternsEqual(other.ProcessPath, rule.ProcessPath, rule.CaseSensitive && other.CaseSensitive) &&
+                    PatternsEqual(other.WindowName, rule.WindowName, rule.CaseSensitive && other.CaseSensitive));
             }
         }
+
+        private static bool PatternsEqual(string left, string right, bool caseSensitive) =>
+            string.Equals(left, right, caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase);
 
         private void ApplyRulesToProcess(uint processId, string processName, string processPath, string windowTitle, HashSet<Guid>? notifiedRules, string triggerSource)
         {
@@ -267,7 +272,7 @@ namespace SoundSwitch.Services
                 return;
             }
 
-            var pairIndex = GetNextPairIndex(rule.Id, pairs.Count);
+            var pairIndex = TakeNextPairIndex(rule.Id, pairs.Count);
             var pair = pairs[pairIndex];
 
             // Find every matching process first so "nothing running" always wins over an
@@ -280,7 +285,7 @@ namespace SoundSwitch.Services
                     if (process.Id <= 4 || process.HasExited) continue;
 
                     var processName = process.ProcessName;
-                    var processPath = process.MainModule?.FileName ?? string.Empty;
+                    var processPath = GetModulePath(process);
                     var windowTitle = GetWindowTitle(process);
 
                     if (!IsMatch(rule, processName, processPath, windowTitle)) continue;
@@ -301,6 +306,7 @@ namespace SoundSwitch.Services
             {
                 _logger.Information("App rule hotkey pressed but no running process matches {ProcessPattern}", rule.ProcessPath);
                 _notificationManager.NotifyAppRuleNoProcess(rule);
+                RevertPairIndex(rule.Id, pairIndex);
                 return;
             }
 
@@ -309,6 +315,7 @@ namespace SoundSwitch.Services
             if (!CanApplyPair(pair))
             {
                 _logger.Warning("App rule hotkey pressed but no device of pair {Index} could be resolved for {ProcessPattern}", pairIndex, rule.ProcessPath);
+                RevertPairIndex(rule.Id, pairIndex);
                 return;
             }
 
@@ -328,9 +335,8 @@ namespace SoundSwitch.Services
 
             // Notify even when the endpoint already matched: the hotkey did apply this pair,
             // and the banner is the feedback that tells the user which pair is now active.
-            // Advance first so a notification failure cannot block the cycle.
-            AdvancePairIndex(rule.Id, pairIndex, pairs.Count);
-
+            // The cycle index was already reserved by TakeNextPairIndex, so a notification
+            // failure cannot block the cycle.
             if (rule.Notify)
             {
                 _notificationManager.NotifyAppRuleMatched(rule, pair, matches[0].ProcessId);
@@ -353,19 +359,21 @@ namespace SoundSwitch.Services
                 device != null && AppRuleDeviceResolver.Resolve(device, AppModel.Instance.AudioDeviceLister) != null;
         }
 
-        private int GetNextPairIndex(Guid ruleId, int pairCount)
+        private int TakeNextPairIndex(Guid ruleId, int pairCount)
         {
             lock (_lock)
             {
-                return _nextPairIndex.TryGetValue(ruleId, out var index) && index >= 0 && index < pairCount ? index : 0;
+                var index = _nextPairIndex.TryGetValue(ruleId, out var i) && i >= 0 && i < pairCount ? i : 0;
+                _nextPairIndex[ruleId] = pairCount <= 0 ? 0 : (index + 1) % pairCount;
+                return index;
             }
         }
 
-        private void AdvancePairIndex(Guid ruleId, int appliedIndex, int pairCount)
+        private void RevertPairIndex(Guid ruleId, int appliedIndex)
         {
             lock (_lock)
             {
-                _nextPairIndex[ruleId] = pairCount <= 0 ? 0 : (appliedIndex + 1) % pairCount;
+                _nextPairIndex[ruleId] = appliedIndex;
             }
         }
 
@@ -373,11 +381,29 @@ namespace SoundSwitch.Services
         {
             try
             {
-                return process.MainWindowTitle;
+                return process.MainWindowTitle ?? string.Empty;
             }
             catch (Exception ex)
             {
                 _logger.Verbose(ex, "Couldn't read window title for PID {PID}", process.Id);
+                return string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Best-effort module path for a process. Mirroring the automatic path, an
+        /// unreadable path degrades to an empty string so name-based rules can still
+        /// match a process whose module path is inaccessible.
+        /// </summary>
+        private string GetModulePath(Process process)
+        {
+            try
+            {
+                return process.MainModule?.FileName ?? string.Empty;
+            }
+            catch (Exception ex)
+            {
+                _logger.Verbose(ex, "Couldn't read module path for PID {PID}", process.Id);
                 return string.Empty;
             }
         }

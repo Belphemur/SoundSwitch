@@ -338,6 +338,43 @@ public class WindowsAPIAdapter : Form
     }
 
     /// <summary>
+    /// Strict availability probe: true only if the hotkey can be natively registered
+    /// right now. Unlike <see cref="RegisterHotKey"/>, it does NOT fall back to the
+    /// low-level keyboard hook, so a shortcut already owned by another application,
+    /// a profile, or another SoundSwitch feature is reported as unavailable. The
+    /// registration is always removed before returning.
+    /// </summary>
+    /// <param name="hotKey">The hotkey to probe.</param>
+    /// <returns>True when the OS accepted a native registration for the hotkey.</returns>
+    public static bool IsHotKeyAvailable(HotKey hotKey)
+    {
+        WaitForHandle();
+
+        if (_instance.IsDisposed)
+        {
+            return false;
+        }
+
+        lock (_instance)
+        {
+            return (bool)_instance.Invoke(() =>
+            {
+                var id = _instance._hotKeyId++;
+                if (NativeMethods.RegisterHotKey(_instance.Handle, id, (uint)hotKey.Modifier,
+                        (uint)hotKey.Keys))
+                {
+                    NativeMethods.UnregisterHotKey(_instance.Handle, id);
+                    return true;
+                }
+
+                var lastError = Marshal.GetLastWin32Error();
+                Log.Warning("Hotkey {hotkey} is not available natively (error {error})", hotKey, lastError);
+                return false;
+            });
+        }
+    }
+
+    /// <summary>
     ///     Unregister a registered HotKey
     /// </summary>
     /// <param name="hotKey"></param>

@@ -29,7 +29,7 @@ Every Chrome process is routed to the speakers. Recording is left alone.
 | Mode | Automatic |
 | Pair | Headphones / *(not set)* |
 
-Chrome windows whose title contains "YouTube" use the headphones. Other Chrome windows keep the speakers.
+Chrome windows whose title contains "YouTube" use the headphones when they are the foreground window. Because Chrome shares one process for all its windows, the process's audio then follows that rule — other Chrome windows in the same process are routed with it, so they do not keep the speakers.
 
 ### Give a game its own microphone
 

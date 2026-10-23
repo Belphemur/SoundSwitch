@@ -299,6 +299,7 @@
             this.cmbPairPlayback.Size = new System.Drawing.Size(190, 24);
             this.cmbPairPlayback.TabIndex = 4;
             this.cmbPairPlayback.ValueMember = "Tag";
+            this.cmbPairPlayback.SelectedIndexChanged += new System.EventHandler(this.CmbPairPlayback_SelectedIndexChanged);
             // 
             // cmbPairRecording
             // 
@@ -312,6 +313,7 @@
             this.cmbPairRecording.Size = new System.Drawing.Size(190, 24);
             this.cmbPairRecording.TabIndex = 5;
             this.cmbPairRecording.ValueMember = "Tag";
+            this.cmbPairRecording.SelectedIndexChanged += new System.EventHandler(this.CmbPairRecording_SelectedIndexChanged);
             // 
             // btnAddPair
             // 

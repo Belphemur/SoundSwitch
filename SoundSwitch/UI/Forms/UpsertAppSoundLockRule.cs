@@ -22,6 +22,10 @@ public partial class UpsertAppSoundLockRule : Form
     private int _selectedPairIndex = -1;
     private bool _initializing;
     private bool _handlingModeChange;
+    private bool _formLoaded;
+    private bool _loadingPairBuilder;
+    private bool _pairPlaybackDirty;
+    private bool _pairRecordingDirty;
 
     public AppSoundRule Rule => _rule;
 
@@ -219,16 +223,38 @@ public partial class UpsertAppSoundLockRule : Form
         btnRecordingReset.Visible = !hotkeyMode && cmbRecording.SelectedIndex != -1;
         grpHotkey.Visible = hotkeyMode;
 
-        var checkboxY = hotkeyMode ? 398 : 240;
-        chkEnabled.Location = new Point(110, checkboxY);
-        chkCaseSensitive.Location = new Point(210, checkboxY);
-        chkNotify.Location = new Point(340, checkboxY);
+        // The design-time coordinates are set by the constructor before the form
+        // is shown, and the framework scales them once with AutoScaleMode.Font.
+        // Mode changes after the form is loaded must apply that same font factor
+        // themselves, otherwise the moved controls land at DPI-scaled, not
+        // font-scaled, positions at 125%+ text scaling.
+        var factor = _formLoaded ? FontScaleFactor() : 1f;
 
-        var buttonY = hotkeyMode ? 430 : 272;
-        btnSave.Location = new Point(378, buttonY);
-        btnCancel.Location = new Point(459, buttonY);
+        var checkboxY = (int)Math.Round((hotkeyMode ? 398 : 240) * factor);
+        chkEnabled.Location = new Point((int)Math.Round(110 * factor), checkboxY);
+        chkCaseSensitive.Location = new Point((int)Math.Round(210 * factor), checkboxY);
+        chkNotify.Location = new Point((int)Math.Round(340 * factor), checkboxY);
 
-        ClientSize = new Size(560, hotkeyMode ? 470 : 310);
+        var buttonY = (int)Math.Round((hotkeyMode ? 430 : 272) * factor);
+        btnSave.Location = new Point((int)Math.Round(378 * factor), buttonY);
+        btnCancel.Location = new Point((int)Math.Round(459 * factor), buttonY);
+
+        ClientSize = new Size((int)Math.Round(560 * factor), (int)Math.Round((hotkeyMode ? 470 : 310) * factor));
+    }
+
+    /// <summary>
+    /// Ratio between the runtime font metrics and the form's design-time font. The
+    /// framework auto-scales the designer layout by this factor on the first
+    /// <see cref="Form.AutoScaleMode.Font"/> pass; mode switches performed after
+    /// the form is shown apply it here so the two layouts line up.
+    /// </summary>
+    private float FontScaleFactor()
+    {
+        var designHeight = AutoScaleDimensions.Height;
+        if (designHeight <= 0) return 1f;
+        var currentHeight = CurrentAutoScaleDimensions.Height;
+        if (currentHeight <= 0) return 1f;
+        return currentHeight / designHeight;
     }
 
     private void PopulatePairList()
@@ -316,20 +342,68 @@ public partial class UpsertAppSoundLockRule : Form
 
         _selectedPairIndex = lvPairs.SelectedIndices[0];
         var pair = _pairs[_selectedPairIndex];
-        SelectPairDevice(cmbPairPlayback, pair.Playback, _playbacks);
-        SelectPairDevice(cmbPairRecording, pair.Recording, _recordings);
+        LoadPairIntoBuilder(pair);
         UpdatePairButtons();
+    }
+
+    /// <summary>
+    /// Load a stored pair into the builder. Programmatic loads reset the per-side
+    /// dirty flags so an untouched side that is temporarily unavailable is not
+    /// silently dropped on Save (see <see cref="BuildEditedPair"/>).
+    /// </summary>
+    private void LoadPairIntoBuilder(AppSoundRuleDevicePair pair)
+    {
+        _loadingPairBuilder = true;
+        try
+        {
+            SelectPairDevice(cmbPairPlayback, pair.Playback, _playbacks);
+            SelectPairDevice(cmbPairRecording, pair.Recording, _recordings);
+        }
+        finally
+        {
+            _loadingPairBuilder = false;
+        }
+
+        _pairPlaybackDirty = false;
+        _pairRecordingDirty = false;
     }
 
     private void ResetPairBuilder()
     {
-        cmbPairPlayback.SelectedIndex = 0;
-        cmbPairRecording.SelectedIndex = 0;
+        _loadingPairBuilder = true;
+        try
+        {
+            cmbPairPlayback.SelectedIndex = 0;
+            cmbPairRecording.SelectedIndex = 0;
+        }
+        finally
+        {
+            _loadingPairBuilder = false;
+        }
+
+        _pairPlaybackDirty = false;
+        _pairRecordingDirty = false;
+    }
+
+    private void CmbPairPlayback_SelectedIndexChanged(object? sender, EventArgs e)
+    {
+        if (!_loadingPairBuilder)
+        {
+            _pairPlaybackDirty = true;
+        }
+    }
+
+    private void CmbPairRecording_SelectedIndexChanged(object? sender, EventArgs e)
+    {
+        if (!_loadingPairBuilder)
+        {
+            _pairRecordingDirty = true;
+        }
     }
 
     private void BtnAddPair_Click(object sender, EventArgs e)
     {
-        var pair = BuildPairFromCombo(cmbPairPlayback, cmbPairRecording, _playbacks, _recordings);
+        var pair = BuildEditedPair();
         if (pair == null)
         {
             MessageBox.Show(SettingsStrings.appSoundLock_rule_error_pairIncomplete, SettingsStrings.appSoundLock_rule_error_title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -452,6 +526,7 @@ public partial class UpsertAppSoundLockRule : Form
     protected override void OnShown(EventArgs e)
     {
         base.OnShown(e);
+        _formLoaded = true;
         if (!_editing)
         {
             BeginInvoke(new Action(SelectProcess));
@@ -518,6 +593,33 @@ public partial class UpsertAppSoundLockRule : Form
         return pair.HasAnyDevice ? pair : null;
     }
 
+    /// <summary>
+    /// Build the pair from the builder combos, merging any side the user did not
+    /// touch from the stored selected pair. This keeps an unavailable side that
+    /// the builder displayed as "Keep current" in place, while a side the user
+    /// explicitly changed (including to "Keep current") is honoured.
+    /// </summary>
+    private AppSoundRuleDevicePair? BuildEditedPair()
+    {
+        var builderPair = BuildPairFromCombo(cmbPairPlayback, cmbPairRecording, _playbacks, _recordings);
+        if (builderPair == null || _selectedPairIndex < 0 || _selectedPairIndex >= _pairs.Count)
+        {
+            return builderPair;
+        }
+
+        var storedPair = _pairs[_selectedPairIndex];
+        if (!_pairPlaybackDirty)
+        {
+            builderPair.Playback = storedPair.Playback;
+        }
+        if (!_pairRecordingDirty)
+        {
+            builderPair.Recording = storedPair.Recording;
+        }
+
+        return builderPair.HasAnyDevice ? builderPair : null;
+    }
+
     private static bool SamePair(AppSoundRuleDevicePair left, AppSoundRuleDevicePair right)
     {
         return left.Playback?.Id == right.Playback?.Id && left.Recording?.Id == right.Recording?.Id;
@@ -553,7 +655,7 @@ public partial class UpsertAppSoundLockRule : Form
         else
         {
             // Apply a builder edit that wasn't confirmed with the Add/Update button.
-            var builderPair = BuildPairFromCombo(cmbPairPlayback, cmbPairRecording, _playbacks, _recordings);
+            var builderPair = BuildEditedPair();
             if (_selectedPairIndex >= 0 && _selectedPairIndex < _pairs.Count && builderPair != null)
             {
                 _pairs[_selectedPairIndex] = builderPair;
@@ -563,7 +665,7 @@ public partial class UpsertAppSoundLockRule : Form
                 _pairs.Add(builderPair);
             }
 
-            if (hotKeyBox.HotKey == null)
+            if (hotKeyBox.HotKey == null || !hotKeyBox.IsValid)
             {
                 MessageBox.Show(SettingsStrings.appSoundLock_rule_error_hotkeyRequired, SettingsStrings.appSoundLock_rule_error_title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
