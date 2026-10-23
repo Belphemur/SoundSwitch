@@ -122,9 +122,6 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
     /// </summary>
     public DeviceInfo MuteRecordingDevice { get; set; }
 
-    [Obsolete("Use " + nameof(MuteRecordingDevice))]
-    public string MuteRecordingDeviceId { get; set; }
-
     public bool LimitMuteBannersToTarget { get; set; } = true;
 
     /// <inheritdoc />
@@ -167,20 +164,6 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
     public bool Migrate()
     {
         var migrated = false;
-        if (MigratedFields.Add(nameof(MuteRecordingDevice)))
-        {
-#pragma warning disable CS0618 // Type or member is obsolete
-            // Configurations written by early builds stored only the endpoint id. Convert it to a
-            // device snapshot; the id doubles as the placeholder name until the device is resolved,
-            // at which point it is healed with the real name.
-            if (MuteRecordingDevice == null && !string.IsNullOrEmpty(MuteRecordingDeviceId))
-            {
-                MuteRecordingDevice = new DeviceInfo(MuteRecordingDeviceId, MuteRecordingDeviceId, EDataFlow.eCapture, false, DateTime.UtcNow);
-                MuteRecordingDeviceId = null;
-            }
-#pragma warning restore CS0618 // Type or member is obsolete
-            migrated = true;
-        }
 
         if (SelectedPlaybackDeviceListId.Count > 0)
         {

@@ -21,7 +21,6 @@ public class MuteTargetConfigurationTests
         config.Migrate().Should().BeTrue();
         config.MuteRecordingDevice.Should().BeNull();
         config.LimitMuteBannersToTarget.Should().BeTrue();
-        config.MigratedFields.Should().Contain(nameof(SoundSwitchConfiguration.MuteRecordingDevice));
     }
 
     [Test]
@@ -50,20 +49,5 @@ public class MuteTargetConfigurationTests
         restored.MuteRecordingDevice.Type.Should().Be(EDataFlow.eCapture);
         restored.MuteRecordingDevice.IsUsb.Should().BeTrue();
         restored.MuteRecordingDevice.NameClean.Should().Be(device.NameClean);
-    }
-
-    [Test]
-    public void LegacyMuteTargetId_IsMigratedToDeviceSnapshot()
-    {
-        const string deviceId = "{0.0.1.00000000}.{59e4df6f-d9a6-4ce0-9899-49dede000000}";
-        var config = JsonConvert.DeserializeObject<SoundSwitchConfiguration>(
-            $"{{\"MuteRecordingDeviceId\":\"{deviceId}\"}}");
-
-        config.Should().NotBeNull();
-        config!.Migrate().Should().BeTrue();
-
-        config.MuteRecordingDevice.Should().NotBeNull();
-        config.MuteRecordingDevice!.Id.Should().Be(deviceId);
-        config.MuteRecordingDevice.Type.Should().Be(EDataFlow.eCapture);
     }
 }
