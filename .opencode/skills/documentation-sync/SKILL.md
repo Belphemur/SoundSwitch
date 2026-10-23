@@ -36,7 +36,7 @@ symlink; change the real file in `img/Documentation/`.
 | `website/src/configuration/recording.md` | `Recording.png` | Recording |
 | `website/src/configuration/notifications.md` | `Notifications.png` | Notifications |
 | `website/src/usage/profiles.md` | `Profile.png`, `Profile Add.png` | Profiles (+ profile editor) |
-| `website/src/usage/app-rules.md` | `AppRules.png`, `AppRules Add.png` | App Rules (+ rule dialog, `-Click addAppSoundRuleButton`) |
+| `website/src/usage/app-rules/**` | `AppRules.png`, `AppRules Add.png`, `AppRules Add Hotkey.png` | App Rules (+ rule dialog, `-Click addAppSoundRuleButton`; Hotkey mode with `-Select rdoHotkey`) |
 | `website/src/advanced/troubleshooting.md` | `Troubleshoot.png` | Troubleshooting |
 | `website/src/faq/**` | `faq/*.png`, `faq/*.gif` | — |
 
@@ -54,6 +54,7 @@ surface, selects the tab, and captures **only the Settings window bounds**:
 pwsh .\tools\Capture-DocumentationScreenshot.ps1 -Name Notifications -Tab Notifications
 pwsh .\tools\Capture-DocumentationScreenshot.ps1 -Name Playback -Tab Playback
 pwsh .\tools\Capture-DocumentationScreenshot.ps1 -Name "AppRules Add" -Tab "App Rules" -Click addAppSoundRuleButton
+pwsh .\tools\Capture-DocumentationScreenshot.ps1 -Name "AppRules Add Hotkey" -Tab "App Rules" -Click addAppSoundRuleButton -Select rdoHotkey
 pwsh .\tools\Capture-DocumentationScreenshot.ps1 -Name faq/quick-menu-popup
 ```
 
@@ -86,7 +87,9 @@ Notes and gotchas:
   is selected the script clicks the named button and captures the dialog it opens,
   e.g. `-Tab "App Rules" -Click addAppSoundRuleButton`. Pass the control name from
   the designer (`addAppSoundRuleButton`, `addProfileButton`) or its visible label
-  (`Add`) when the label is unambiguous on that tab. Dialogs with no launching
+  (`Add`) when the label is unambiguous on that tab. Use `-Select` to switch a
+  radio button, check box, or tab inside that dialog before capturing, e.g.
+  `-Click addAppSoundRuleButton -Select rdoHotkey`. Dialogs with no launching
   button (the colour picker, the file picker) still need `-AllowExistingInstance`
   and no `-Tab` while the dialog is visible.
 - Use `-ListWindows` to see what the script finds, and `-KeepOpen` to inspect the

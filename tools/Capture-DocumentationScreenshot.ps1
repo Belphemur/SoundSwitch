@@ -40,6 +40,11 @@
     designer (e.g. addAppSoundRuleButton, addProfileButton); the visible label
     (e.g. "Add") also works when it is unambiguous on the selected tab.
 
+.PARAMETER Select
+    Accessible name or automation id of a radio button, check box, or tab to select
+    inside the dialog opened by -Click, before capturing. Use it to capture a
+    specific mode, e.g. -Click addAppSoundRuleButton -Select rdoHotkey.
+
 .PARAMETER OutputDirectory
     Directory the PNG is written to when -Name is not rooted.
     Defaults to <repo>\img\Documentation.
@@ -95,6 +100,8 @@ param(
     [string]$Tab,
 
     [string]$Click,
+
+    [string]$Select,
 
     [string]$OutputDirectory,
 
@@ -321,6 +328,75 @@ function Find-VisibleButton {
     }
 
     return $null
+}
+
+function Find-VisibleControl {
+    <#
+        Finds any control (radio button, check box, tab, ...) inside the window by
+        accessible name or automation id, preferring the one actually on screen.
+    #>
+    param(
+        [Parameter(Mandatory = $true)]
+        [IntPtr]$Handle,
+
+        [Parameter(Mandatory = $true)]
+        [string]$ControlId
+    )
+
+    Add-Type -AssemblyName UIAutomationClient
+    Add-Type -AssemblyName UIAutomationTypes
+
+    $window = [System.Windows.Automation.AutomationElement]::FromHandle($Handle)
+    if ($null -eq $window) {
+        return $null
+    }
+
+    $condition = [System.Windows.Automation.OrCondition]::new(
+        [System.Windows.Automation.PropertyCondition]::new(
+            [System.Windows.Automation.AutomationElement]::NameProperty, $ControlId),
+        [System.Windows.Automation.PropertyCondition]::new(
+            [System.Windows.Automation.AutomationElement]::AutomationIdProperty, $ControlId))
+
+    $controls = $window.FindAll([System.Windows.Automation.TreeScope]::Descendants, $condition)
+    foreach ($control in $controls) {
+        if ($control.Current.AutomationId -eq $ControlId) {
+            return $control
+        }
+    }
+
+    foreach ($control in $controls) {
+        if (-not $control.Current.IsOffscreen) {
+            return $control
+        }
+    }
+
+    return $null
+}
+
+function Select-Element {
+    <#
+        Selects a radio button, toggles a check box, or invokes a generic control.
+    #>
+    param(
+        [Parameter(Mandatory = $true)]
+        $Element
+    )
+
+    $selection = $null
+    if ($Element.TryGetCurrentPattern([System.Windows.Automation.SelectionItemPattern]::Pattern, [ref]$selection)) {
+        $selection.Select()
+        return
+    }
+
+    $toggle = $null
+    if ($Element.TryGetCurrentPattern([System.Windows.Automation.TogglePattern]::Pattern, [ref]$toggle)) {
+        if ($toggle.Current.ToggleState -ne [System.Windows.Automation.ToggleState]::On) {
+            $toggle.Toggle()
+        }
+        return
+    }
+
+    Invoke-Element -Element $Element
 }
 
 function Invoke-Element {
@@ -569,6 +645,17 @@ try {
 
         if ($dialogHandle -eq [IntPtr]::Zero) {
             throw "No window opened after clicking '$Click' within $TimeoutSeconds seconds."
+        }
+
+        if ($Select) {
+            $control = Find-VisibleControl -Handle $dialogHandle -ControlId $Select
+            if ($null -eq $control) {
+                throw "Control '$Select' was not found in the dialog opened by '$Click'."
+            }
+
+            Write-Host "Selecting '$Select'..." -ForegroundColor Cyan
+            Select-Element -Element $control
+            Start-Sleep -Milliseconds 200
         }
 
         $captureHandle = $dialogHandle
