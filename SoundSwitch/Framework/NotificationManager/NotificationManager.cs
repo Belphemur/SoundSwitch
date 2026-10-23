@@ -26,6 +26,7 @@ using Serilog;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework.Audio;
+using SoundSwitch.Framework.Banner.MicrophoneMute;
 using SoundSwitch.Framework.NotificationManager.Notification;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
 using SoundSwitch.Framework.Toast;
@@ -65,6 +66,11 @@ public class NotificationManager(INotificationSettings notificationSettings, IAp
         ApplyConfigurationChanges(_switchDeviceNotification, e);
         ApplyConfigurationChanges(_switchProfileNotification, e);
         ApplyConfigurationChanges(_microphoneMuteNotification, e);
+
+        // Leaving the persistent mute style must dismiss banners that are already pinned on
+        // screen; otherwise they would stay visible until the next mute-target or device event.
+        if (e.PrevMicrophoneMuteBanner == MicrophoneMute.Persistent && e.NewMicrophoneMuteBanner != MicrophoneMute.Persistent)
+            ((NotificationBanner)_notificationFactory.Get(NotificationType.BannerNotification)).ClearPersistentMuteBanners();
     }
 
     private void ModelOnCustomSoundChanged(object sender, CustomSoundChangedEvent customSoundChangedEvent)

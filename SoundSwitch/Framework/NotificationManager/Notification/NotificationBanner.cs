@@ -54,10 +54,15 @@ internal class NotificationBanner : INotification
     internal void SyncMuteBanners(IReadOnlyCollection<string> inScopeMicrophoneIds,
         IReadOnlyCollection<(string Id, string Name)> mutedInScopeMicrophones)
     {
-        _microphoneMuteBannerManager.RetainPersistentMuteBanners(inScopeMicrophoneIds);
+        // Persistent banners are only valid while the persistent style is selected. Otherwise
+        // dismiss them instead of retaining their always-on-screen TTL.
+        if (Configuration.MicrophoneMuteBanner != MicrophoneMute.Persistent)
+        {
+            _microphoneMuteBannerManager.ClearPersistentMuteBanners();
+            return;
+        }
 
-        // Only persistent banners are reconciled; fading banners are transient by design.
-        if (Configuration.MicrophoneMuteBanner != MicrophoneMute.Persistent) return;
+        _microphoneMuteBannerManager.RetainPersistentMuteBanners(inScopeMicrophoneIds);
         foreach (var (id, name) in mutedInScopeMicrophones)
         {
             // Re-add directly: NotifyMicrophoneMuteChanged would remove the banner first
