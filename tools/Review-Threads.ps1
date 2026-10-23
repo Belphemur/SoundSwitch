@@ -98,7 +98,7 @@ param(
     [string]$Body,
     [string]$Resolve,
     [string]$Unresolve,
-    [string]$ResolveAll,
+    [switch]$ResolveAll,
     [string]$Plan,
     [switch]$DryRun,
     [int]$MaxThreads = 100
@@ -253,12 +253,12 @@ if ($Unresolve) {
 if ($ResolveAll) {
     if ([string]::IsNullOrWhiteSpace($Plan)) { Fail "-Plan <file.json> is required with -ResolveAll." }
     if (-not (Test-Path $Plan)) { Fail "Plan file not found: $Plan" }
-    $plan = ConvertFrom-Json ([System.IO.File]::ReadAllText($Plan))
+    $planObject = ConvertFrom-Json ([System.IO.File]::ReadAllText($Plan))
 
-    if ($plan.repo -and $plan.repo -ne $Repo) { Fail "Plan targets $($plan.repo), script was called with $Repo." }
+    if ($planObject.repo -and $planObject.repo -ne $Repo) { Fail "Plan targets $($planObject.repo), script was called with $Repo." }
 
     $ids = @{}
-    foreach ($entry in $plan.threads) {
+    foreach ($entry in $planObject.threads) {
         if ([string]::IsNullOrWhiteSpace($entry.threadId)) { Fail "Plan entry missing threadId." }
         if ($ids.ContainsKey($entry.threadId)) { Fail "Duplicate threadId in plan: $($entry.threadId)" }
         $ids[$entry.threadId] = $true
@@ -266,8 +266,8 @@ if ($ResolveAll) {
     }
 
     if ($DryRun) {
-        Write-Host "DRY RUN - $($plan.threads.Count) thread(s):"
-        foreach ($entry in $plan.threads) {
+        Write-Host "DRY RUN - $($planObject.threads.Count) thread(s):"
+        foreach ($entry in $planObject.threads) {
             $preview = ([string]::IsNullOrWhiteSpace($entry.body) ? '(no reply)' : "$($entry.body.Substring(0, [Math]::Min(50, $entry.body.Length)))…")
             Write-Host "  $($entry.threadId) [$($entry.action)] $preview"
         }
@@ -275,7 +275,7 @@ if ($ResolveAll) {
     }
 
     $results = @()
-    foreach ($entry in $plan.threads) {
+    foreach ($entry in $planObject.threads) {
         $r = @{ threadId = $entry.threadId; action = $entry.action }
         try {
             if (-not [string]::IsNullOrWhiteSpace($entry.body)) {
@@ -296,7 +296,9 @@ if ($ResolveAll) {
 
     foreach ($r in $results) {
         $status = $r.ok ? 'OK  ' : 'FAIL'
-        Write-Host "[$status] $($r.threadId) $($r.action) $($r.replyUrl ?? '') $($r.error ?? '')"
+        $replyUrl = $r.Contains('replyUrl') ? $r.replyUrl : ''
+        $error = $r.Contains('error') ? $r.error : ''
+        Write-Host "[$status] $($r.threadId) $($r.action) $replyUrl $error"
     }
 
     Write-Host ''
