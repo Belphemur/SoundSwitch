@@ -17,6 +17,7 @@ using System;
 using System.Threading;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using Serilog;
+using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Telemetry;
@@ -33,6 +34,34 @@ namespace SoundSwitch.Model;
 
 public partial class AppModel
 {
+    public DeviceInfo MuteRecordingDevice
+    {
+        get => AppConfigs.Configuration.MuteRecordingDevice;
+        set
+        {
+            var current = AppConfigs.Configuration.MuteRecordingDevice;
+            if (current == null && value == null) return;
+            if (current != null && value != null &&
+                string.Equals(current.Id, value.Id, StringComparison.OrdinalIgnoreCase)) return;
+
+            AppConfigs.Configuration.MuteRecordingDevice = value;
+            AppConfigs.Configuration.Save();
+            RefreshMicrophoneMuteBanners();
+        }
+    }
+
+    public bool LimitMuteBannersToTarget
+    {
+        get => AppConfigs.Configuration.LimitMuteBannersToTarget;
+        set
+        {
+            if (AppConfigs.Configuration.LimitMuteBannersToTarget == value) return;
+            AppConfigs.Configuration.LimitMuteBannersToTarget = value;
+            AppConfigs.Configuration.Save();
+            RefreshMicrophoneMuteBanners();
+        }
+    }
+
     public IconDoubleClick IconDoubleClick
     {
         get => AppConfigs.Configuration.IconDoubleClick;
@@ -206,17 +235,36 @@ public partial class AppModel
             _ => throw new ArgumentOutOfRangeException(nameof(action), action, null)
         };
 
-        if (!force && confHotKey == hotKey)
+        // Nothing to change: same combination and same enabled state (Equality ignores
+        // Enabled, so compare it explicitly).
+        if (confHotKey == hotKey && confHotKey.Enabled == hotKey.Enabled)
         {
             Log.Information("HotKey {action} already set {hotkeys}", action, confHotKey);
             return true;
         }
 
-        Log.Information("Unregister previous hotkeys {hotkeys}", confHotKey);
-        WindowsAPIAdapter.UnRegisterHotKey(confHotKey);
-        Log.Information("Unregistered previous hotkeys {hotkeys}", confHotKey);
+        Log.Information("Register new hotkeys {hotkeys}", hotKey);
+        if (!RegisterHotKey(hotKey))
+        {
+            // The previous binding was never touched, so it stays in effect.
+            return false;
+        }
 
-        if (!RegisterHotKey(hotKey)) return false;
+        // Only unbind the previous combination when it is actually registered: a binding
+        // that failed to register at startup must not make the new one look like a failure.
+        if (confHotKey.Enabled && WindowsAPIAdapter.IsHotKeyRegistered(confHotKey))
+        {
+            Log.Information("Unregister previous hotkeys {hotkeys}", confHotKey);
+            if (!WindowsAPIAdapter.UnRegisterHotKey(confHotKey))
+            {
+                Log.Warning("Couldn't unregister previous hotkeys {hotkeys}, rolling back {newHotkeys}", confHotKey, hotKey);
+                if (hotKey.Enabled && !WindowsAPIAdapter.UnRegisterHotKey(hotKey))
+                    Log.Error("Couldn't roll back newly registered hotkeys {hotkeys}", hotKey);
+                return false;
+            }
+
+            Log.Information("Unregistered previous hotkeys {hotkeys}", confHotKey);
+        }
 
         Log.Information("New Hotkeys registered {hotkeys}", hotKey);
 
@@ -282,6 +330,7 @@ public partial class AppModel
             }
             else if (e.HotKey == AppConfigs.Configuration.MuteRecordingHotKey)
             {
+                Log.Information("Mute hotkey pressed: {hotkey}", e.HotKey);
                 TelemetryService.AddBreadcrumb("hotkey", "MuteRecordingHotKey pressed");
                 var micResult = ToggleMicrophoneMute();
                 if (micResult != null)

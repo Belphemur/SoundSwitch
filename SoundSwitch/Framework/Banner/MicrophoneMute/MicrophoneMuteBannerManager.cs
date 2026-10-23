@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Serilog;
 
@@ -151,11 +152,41 @@ public class MicrophoneMuteBannerManager
     /// <param name="microphoneId">Unique identifier for the microphone</param>
     public void RemovePersistentMuteBanner(string microphoneId)
     {
-        if (!_activeBanners.TryGetValue(microphoneId, out var existingBanner)) return;
-        _activeBanners.Remove(microphoneId);
-        existingBanner.Dispose();
-        RearrangeBanners();
+        // Live mute events arrive on an audio thread while the tracked banners are only
+        // mutated on the UI thread, so marshal the mutation to keep _activeBanners safe.
+        _syncContext.Send(_ =>
+        {
+            if (!_activeBanners.TryGetValue(microphoneId, out var existingBanner)) return;
+            _activeBanners.Remove(microphoneId);
+            existingBanner.Dispose();
+            RearrangeBanners();
+        }, null);
     }
+
+    /// <summary>
+    /// Dismisses persistent mute banners for microphones that are no longer in scope,
+    /// keeping the ones that remain relevant.
+    /// </summary>
+    /// <param name="inScopeMicrophoneIds">Identifiers of the microphones that may keep a banner</param>
+    public void RetainPersistentMuteBanners(IReadOnlyCollection<string> inScopeMicrophoneIds)
+    {
+        _syncContext.Send(_ =>
+        {
+            var inScope = new HashSet<string>(inScopeMicrophoneIds, StringComparer.OrdinalIgnoreCase);
+            foreach (var microphoneId in _activeBanners.Keys.Where(id => !inScope.Contains(id)).ToArray())
+            {
+                _activeBanners.Remove(microphoneId, out var banner);
+                banner?.Dispose();
+            }
+
+            RearrangeBanners();
+        }, null);
+    }
+
+    /// <summary>
+    /// Dismisses all persistent mute banners.
+    /// </summary>
+    public void ClearPersistentMuteBanners() => RetainPersistentMuteBanners(Array.Empty<string>());
 
     /// <summary>
     /// Rearranges all active banners vertically

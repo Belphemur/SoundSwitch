@@ -14,6 +14,7 @@
  ********************************************************************/
 
 using System;
+using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Telemetry;
 using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
 using SoundSwitch.Framework.Updater;
@@ -70,6 +71,16 @@ public interface IAppSettings
     /// Sets the hotkey combination
     /// </summary>
     bool SetHotkeyCombination(HotKey hotKey, HotKeyAction action, bool force = false);
+
+    /// <summary>
+    /// Recording endpoint controlled by the global mute action. Null uses the Windows default input.
+    /// </summary>
+    DeviceInfo MuteRecordingDevice { get; set; }
+
+    /// <summary>
+    /// Show microphone mute banners only for the configured mute target.
+    /// </summary>
+    bool LimitMuteBannersToTarget { get; set; }
 
     /// <summary>
     /// For the app to check for update

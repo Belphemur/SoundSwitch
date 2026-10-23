@@ -8,7 +8,7 @@ description: Overview of every SoundSwitch settings tab — Playback, Recording,
 SoundSwitch's settings are organized into seven tabs. Open the settings by right-clicking the system tray icon and selecting **Settings**, or by double-clicking the tray icon.
 
 - **[Playback](playback.md)** — Choose which audio output devices to cycle through and set the playback switch hotkey.
-- **[Recording](recording.md)** — Choose which audio input devices to cycle through and set the recording switch and mute hotkeys.
+- **[Recording](recording.md)** — Choose which audio input devices to cycle through, pick the microphone muted by the mute hotkey and set the recording hotkeys.
 - **[Profiles](../usage/profiles.md)** — Create profiles that automatically switch your audio devices based on hotkeys, applications, and other triggers.
 - **[App Rules](../usage/app-rules.md)** — Route individual applications to specific audio devices without changing the system default.
 - **[General](general.md)** — Control startup behavior, device cycling preferences, updates, language, and more.

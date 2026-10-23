@@ -65,6 +65,7 @@ public class WindowsAPIAdapter : Form
     private const int WM_QUIT = 0x0012;
     private const int WM_SETTINGCHANGE = 0x001A;
     private const int ERROR_HOT_KEY_ALREADY_REGISTERED = 1409;
+    private const int ERROR_HOT_KEY_NOT_REGISTERED = 1419;
 
     private static WindowsAPIAdapter _instance;
     private static ThreadExceptionEventHandler _exceptionEventHandler;
@@ -245,10 +246,20 @@ public class WindowsAPIAdapter : Form
             return (bool)_instance.Invoke(() =>
             {
                 Log.Information("Registering Hotkeys: {hotkeys}", hotKey);
-                if (_instance._registeredHotkeys.ContainsKey(hotKey))
+                if (_instance._registeredHotkeys.TryGetValue(hotKey, out var trackedId))
                 {
-                    Log.Information("Already registered {hotkeys}", hotKey);
-                    return false;
+                    // The entry can be stale when a previous native unregistration failed
+                    // transiently. Ask Windows to drop the tracked id; success (or "not
+                    // registered") means we can register the combination again, anything
+                    // else means Windows still owns it.
+                    if (!NativeMethods.UnregisterHotKey(_instance.Handle, trackedId) &&
+                        Marshal.GetLastWin32Error() != ERROR_HOT_KEY_NOT_REGISTERED)
+                    {
+                        Log.Information("Already registered {hotkeys}", hotKey);
+                        return false;
+                    }
+
+                    _instance._registeredHotkeys.Remove(hotKey);
                 }
 
                 // Also check if already hooked
@@ -303,6 +314,30 @@ public class WindowsAPIAdapter : Form
     }
 
     /// <summary>
+    ///     Whether the hotkey currently has a binding tracked by this adapter (native
+    ///     registration or the keyboard-hook fallback).
+    /// </summary>
+    /// <remarks>
+    ///     Callers use this to tell "nothing to unregister" apart from "unregistration
+    ///     failed", since <see cref="UnRegisterHotKey"/> reports both as <c>false</c>
+    ///     when no record exists.
+    /// </remarks>
+    public static bool IsHotKeyRegistered(HotKey hotKey)
+    {
+        WaitForHandle();
+
+        lock (_instance)
+        {
+            if (_instance._registeredHotkeys.ContainsKey(hotKey)) return true;
+
+            lock (_hookedHotkeys)
+            {
+                return _hookedHotkeys.Contains(hotKey);
+            }
+        }
+    }
+
+    /// <summary>
     ///     Unregister a registered HotKey
     /// </summary>
     /// <param name="hotKey"></param>
@@ -318,8 +353,23 @@ public class WindowsAPIAdapter : Form
                 Log.Information("Unregistering Hotkeys: {hotkeys}", hotKey);
                 if (_instance._registeredHotkeys.TryGetValue(hotKey, out var id))
                 {
+                    // Keep the tracking record until Windows confirms the unregistration; if
+                    // the native call fails the binding may still be active and must stay
+                    // tracked. "Not registered" means the record is stale: drop it.
+                    if (!NativeMethods.UnregisterHotKey(_instance.Handle, id))
+                    {
+                        var error = Marshal.GetLastWin32Error();
+                        if (error != ERROR_HOT_KEY_NOT_REGISTERED)
+                        {
+                            Log.Warning("Failed to unregister hotkey {hotkeys} (error {error})", hotKey, error);
+                            return false;
+                        }
+
+                        Log.Warning("Hotkey {hotkeys} was not registered with Windows, dropping stale record", hotKey);
+                    }
+
                     _instance._registeredHotkeys.Remove(hotKey);
-                    return NativeMethods.UnregisterHotKey(_instance.Handle, id);
+                    return true;
                 }
 
                 lock (_hookedHotkeys)

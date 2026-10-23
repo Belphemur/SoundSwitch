@@ -115,6 +115,15 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
     public HotKey RecordingHotKey { get; set; } = new(Keys.F7, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
     public HotKey MuteRecordingHotKey { get; set; } = new(Keys.M, HotKey.ModifierKeys.Control | HotKey.ModifierKeys.Alt);
 
+    /// <summary>
+    /// Recording endpoint controlled by the global mute action. Null uses the Windows default input.
+    /// The full device snapshot is persisted because endpoint ids change after driver updates and
+    /// re-enumeration; it lets the device be matched by stable path or unique name.
+    /// </summary>
+    public DeviceInfo MuteRecordingDevice { get; set; }
+
+    public bool LimitMuteBannersToTarget { get; set; } = true;
+
     /// <inheritdoc />
     public HashSet<Model.AppSoundRule> AppSoundRules { get; set; } = new();
 
@@ -155,6 +164,7 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
     public bool Migrate()
     {
         var migrated = false;
+
         if (SelectedPlaybackDeviceListId.Count > 0)
         {
             SelectedDevices.UnionWith(

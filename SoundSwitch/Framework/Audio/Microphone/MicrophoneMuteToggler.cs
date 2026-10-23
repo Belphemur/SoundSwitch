@@ -32,9 +32,33 @@ public class MicrophoneMuteToggler
     public (string Name, bool MuteState)? ToggleDefaultMute()
     {
         using var microphone = _switcher.GetDefaultAudioDevice(EDataFlow.eCapture, ERole.eCommunications);
+        return ToggleMute(microphone);
+    }
+
+    /// <summary>
+    /// Toggle a specific recording endpoint, or the Windows default input when no ID is configured.
+    /// </summary>
+    public (string Name, bool MuteState)? ToggleMute(string deviceId)
+    {
+        if (string.IsNullOrEmpty(deviceId)) return ToggleDefaultMute();
+
+        using var microphone = _switcher.GetDevice(deviceId);
+        if (microphone == null)
+            Log.Warning("Configured mute microphone {deviceId} is unavailable", deviceId);
+        else if (microphone.DataFlow != EDataFlow.eCapture)
+        {
+            Log.Warning("Configured mute device {deviceId} is not a microphone", deviceId);
+            return null;
+        }
+
+        return ToggleMute(microphone);
+    }
+
+    private (string Name, bool MuteState)? ToggleMute([CanBeNull] AudioDevice microphone)
+    {
         if (microphone == null)
         {
-            Log.Information("Couldn't find a default microphone to toggle mute");
+            Log.Information("Couldn't find a microphone to toggle mute");
             return null;
         }
 
@@ -71,6 +95,56 @@ public class MicrophoneMuteToggler
     public (string Name, bool MuteState)? SetDefaultMuteState(bool muteState)
     {
         using var microphone = _switcher.GetDefaultAudioDevice(EDataFlow.eCapture, ERole.eCommunications);
+        return SetMuteState(muteState, microphone);
+    }
+
+    /// <summary>
+    /// Reads the mute state of a specific recording endpoint, or the Windows default input
+    /// when no ID is configured.
+    /// </summary>
+    /// <param name="deviceId">Recording endpoint ID, or null/empty to use the Windows default input</param>
+    /// <returns>Tuple with the device name and current mute state, null if the microphone couldn't be read</returns>
+    public (string Name, bool MuteState)? GetMuteState(string deviceId)
+    {
+        using var microphone = string.IsNullOrEmpty(deviceId)
+            ? _switcher.GetDefaultAudioDevice(EDataFlow.eCapture, ERole.eCommunications)
+            : _switcher.GetDevice(deviceId);
+        if (microphone == null || microphone.DataFlow != EDataFlow.eCapture) return null;
+
+        var result = _switcher.InteractWithDevice<(string Name, bool MuteState)>(microphone, device =>
+        {
+            try
+            {
+                if (device.EndpointVolume == null)
+                {
+                    Log.Warning("Microphone {device} has no endpoint volume (activation failed); cannot read mute state", device.FriendlyName);
+                    return default;
+                }
+
+                return (device.FriendlyName, device.EndpointVolume.Mute);
+            }
+            catch (Exception e)
+            {
+                Log.Error("Couldn't read mute state on {device}:\n{exception}", device.FriendlyName, e);
+            }
+
+            return default;
+        });
+
+        return result.Name == null ? null : result;
+    }
+
+    public (string Name, bool MuteState)? SetConfiguredMuteState(bool muteState, string deviceId)
+    {
+        if (string.IsNullOrEmpty(deviceId)) return SetDefaultMuteState(muteState);
+
+        using var microphone = _switcher.GetDevice(deviceId);
+        if (microphone == null || microphone.DataFlow != EDataFlow.eCapture)
+        {
+            Log.Warning("Configured mute microphone {deviceId} is unavailable", deviceId);
+            return null;
+        }
+
         return SetMuteState(muteState, microphone);
     }
 
