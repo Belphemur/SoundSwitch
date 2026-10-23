@@ -375,3 +375,4 @@ The `pairCount` string is formatted with the number of pairs; the middle dot mat
 - Consider a third mode, `Automatic + Hotkey`, where the rule applies pair 1 on match and the hotkey cycles from there.
 - Persist the cycle index per rule if users ask for it.
 - Expose the pair list as an expandable row in the App Rules list if the tooltip proves too subtle.
+- Enumerate all top-level windows of a process for the hotkey scan so a Window Title rules matches a secondary window, not just `MainWindowTitle` (the automatic path already sees the real foreground title).
